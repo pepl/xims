@@ -31,32 +31,6 @@ use Class::MethodMaker
 ##
 #
 # SYNOPSIS
-#    my $vlibitem = XIMS::VLibraryItem->new( [ %args ] )
-#
-# PARAMETER
-#    %args                  (optional) :  Takes the same arguments as its super class XIMS::Object
-#
-# RETURNS
-#    $vlibitem    : instance of XIMS::VLibraryItem
-#
-# DESCRIPTION
-#    Fetches existing objects or creates a new instance of XIMS::VLibraryItem for object creation.
-#
-sub new {
-    my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
-
-    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
-        $args{data_format_id} = XIMS::DataFormat->new( name => 'VLibraryItem' )->id() unless defined $args{data_format_id};
-    }
-
-    return $class->SUPER::new( %args );
-}
-
-##
-#
-# SYNOPSIS
 #    my @authors = $vlibitem->vleauthors();
 #    my $boolean = $vlibitem->vleauthors( @authors );
 #
@@ -216,11 +190,11 @@ sub _vleproperties {
         my $mapclass= $class."Map";
         foreach my $object ( @objects ) {
             next unless defined $object and ref $object and $object->isa( $class );
-            $objectmap = $mapclass->new( document_id => $self->document_id(), object_id => $object->id() );
+            my $method = lc $property."_id";
+            $objectmap = $mapclass->new( document_id => $self->document_id(), $method => $object->id() );
             if ( not defined $objectmap ) {
                 $objectmap = $mapclass->new();
                 $objectmap->document_id( $self->document_id() );
-                my $method = $property."_id";
                 $objectmap->$method( $object->id() );
                 my $id = $objectmap->create();
                 if ( defined $id ) {
@@ -230,6 +204,9 @@ sub _vleproperties {
                 else {
                     XIMS::Debug( 2, "could not create objectmap for object " . $object->id() );
                 }
+            }
+            else {
+                XIMS::Debug( 4, "mapping already exists" );
             }
         }
         return $retval;
