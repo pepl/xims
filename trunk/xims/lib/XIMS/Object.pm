@@ -426,17 +426,16 @@ sub descendants {
 
     # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
     my @sorted_descendants;
-    my $index;
-    my $i;
-    foreach my $descendant ( @descendants ) {
-        for ( $i=0; $i < @doc_ids; $i++ ) {
-            if ( $doc_ids[$i] == $descendant->document_id() ) {
-                $index = $i;
+    my ($i, $j);
+    for ( $i=0; $i < @doc_ids; $i++ ) {
+        for ( $j=0; $j < @descendants; $j++ ) {
+            if ( $doc_ids[$i] == $descendants[$j]->document_id() ) {
+                $descendants[$j]->{level} = $lvls[$i];
+                push( @sorted_descendants, $descendants[$j] );
+                splice( @descendants,$j,1 );
                 last;
             }
         }
-        $descendant->{level} = $lvls[$index];
-        push( @sorted_descendants, $descendant );
     }
 
     #warn "descendants" . Dumper( \@sorted_descendants ) . "\n";
@@ -492,17 +491,16 @@ sub descendants_granted {
 
     # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
     my @sorted_descendants;
-    my $index;
-    my $i;
-    foreach my $descendant ( @descendants ) {
-        for ( $i=0; $i < @candidate_doc_ids; $i++ ) {
-            if ( $candidate_doc_ids[$i] == $descendant->document_id() ) {
-                $index = $i;
+    my ($i, $j);
+    for ( $i=0; $i < @candidate_doc_ids; $i++ ) {
+        for ( $j=0; $j < @descendants; $j++ ) {
+            if ( $candidate_doc_ids[$i] == $descendants[$j]->document_id() ) {
+                $descendants[$j]->{level} = $candidate_lvls[$i];
+                push( @sorted_descendants, $descendants[$j] );
+                splice( @descendants,$j,1 );
                 last;
             }
         }
-        $descendant->{level} = $candidate_lvls[$index];
-        push( @sorted_descendants, $descendant );
     }
 
     #warn "descendants" . Dumper( \@sorted_descendants ) . "\n";
@@ -980,7 +978,7 @@ sub delete {
 #
 # PARAMETER
 #    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
-#    $args{ no_modder }   (optional) :  If set, last modifier will properties will not be set.
+#    $args{ no_modder }   (optional) :  If set, last modifier and last modification timestamp properties will not be set.
 #
 # RETURNS
 #    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
