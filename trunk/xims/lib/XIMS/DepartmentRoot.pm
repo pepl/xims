@@ -71,7 +71,7 @@ sub add_departmentlinks {
 
     # hardcode alarm
     my $dpl_location = 'departmentlinks';
-    my $dplp_location = 'departmentlinks_portlet';
+    my $dplp_location = 'departmentlinks_portlet.ptlt';
 
     # check for portlet
     my @portlet_ids = $self->get_portlet_ids();
