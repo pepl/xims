@@ -1,33 +1,26 @@
 #!/usr/bin/perl -w
-
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 
 use strict;
+use warnings;
 
 my $prefix = $ENV{'XIMS_PREFIX'} || '/usr/local';
 die "\nWhere am I?\n\nPlease set the XIMS_PREFIX environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$prefix/xims/Makefile";
-
-use lib qw(lib ../lib $prefix/xims/lib);
+use lib ($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/lib",($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/tools/lib";
 
 use XIMS::Installer;
+
+use XIMS::Term;
 use Getopt::Std;
 
 my %args;
-getopts('hu:p:n:t:', \%args);
+getopts('hd:u:p:n:t:', \%args);
 
-print q*
-  __  _____ __  __ ____
-  \ \/ /_ _|  \/  / ___|
-   \  / | || |\/| \___ \
-   /  \ | || |  | |___) |
-  /_/\_\___|_|  |_|____/
-
-  Database Setup Tool
-
-*;
+my $term = XIMS::Term->new( debuglevel => $args{d} );
+print $term->banner( "Database Setup Tool" );
 
 if ( $args{h} ) {
     print qq*
