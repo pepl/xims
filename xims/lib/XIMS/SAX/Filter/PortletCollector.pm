@@ -89,7 +89,7 @@ sub handle_data {
             XIMS::Debug( 6, "getting custom properties: " . join( "," , @$cols ));
             # add a list of base properties
             push( @{$cols}, qw( id document_id parent_id object_type_id
-                                data_format_id symname_to_doc_id location title) );
+                                data_format_id symname_to_doc_id location title position) );
             $childrenargs{properties} = $cols;
 
         }
