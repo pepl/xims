@@ -14,7 +14,7 @@ sub handle_data {
     my $location = shift;
 
     my $object = $self->SUPER::handle_data( $location, 1 );
-    my $root = $self->get_rootelement( $location, $object, nochunk => 1 );
+    my $root = $self->get_rootelement( $location, nochunk => 1 );
     return undef unless $root;
 
     my %importmap = (
