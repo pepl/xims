@@ -228,8 +228,8 @@ sub resolve_suffix {
         $dataformatmap{$htmldf->id()} = XIMS::ObjectType->new( fullname => 'Document' );
         my $xmldf = XIMS::DataFormat->new( name => 'XML' );
         $dataformatmap{$xmldf->id()} = XIMS::ObjectType->new( fullname => 'XML' );
-        #my $vlibitemdf = XIMS::DataFormat->new( name => 'VLibraryItem::DocBookXML' );
-        #$dataformatmap{$vlibitemdf->id()} = XIMS::ObjectType->new( fullname => 'VLibraryItem::DocBookXML' );
+        my $vlibitemdf = XIMS::DataFormat->new( name => 'VLibraryItem::DocBookXML' );
+        $dataformatmap{$vlibitemdf->id()} = XIMS::ObjectType->new( fullname => 'VLibraryItem::DocBookXML' );
         # !</its_a_hack_alarm>
         my $image_ot = XIMS::ObjectType->new( name => 'Image' ); # preload to avoid redundant instantiation in the loop
         my $file_ot  = XIMS::ObjectType->new( name => 'File' );
@@ -246,6 +246,11 @@ sub resolve_suffix {
                 $dataformatmap{$data_format->id()} = $file_ot;
             }
         }
+
+        # suffix mappings for html.xy documents ( its_a_hack_alarm ^ 2 )
+        map { $suffixmap{$_} = XIMS::DataFormat->new( name => 'HTML' );
+              $suffixmap{$_}->{suffix}=$_ } qw(en de es it fr);
+
         $self->{dataformatmap} = \%dataformatmap;
         $self->{suffixmap} = \%suffixmap;
     }
@@ -373,6 +378,7 @@ sub _clean_location {
                   /
                     $escapes{$1}
                   /segx;              # *coff*
+    $location =~ s/_+/_/g;
     return lc($location);
 }
 
