@@ -2,12 +2,12 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package xspscript;
+package XIMS::CGI::XSPScript;
 
 use strict;
 use vars qw( $VERSION @ISA );
 
-use xml;
+use XIMS::CGI::XML;
 use Apache;
 use AxKit;
 use Apache::AxKit::ConfigReader;
@@ -16,7 +16,7 @@ use Apache::AxKit::Language::XSP;
 # version string (for makemaker, so don't touch!)
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
-@ISA = qw( xml );
+@ISA = qw( XIMS::CGI::XML );
 
 sub registerEvents {
     return

@@ -2,11 +2,11 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package tan_list;
+package XIMS::CGI::TAN_List;
 
 use strict;
 use vars qw( $VERSION @ISA );
-use text;
+use XIMS::CGI;
 
 use XIMS::DataFormat;
 

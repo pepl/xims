@@ -2,7 +2,7 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package xml;
+package XIMS::CGI::XML;
 
 use strict;
 use vars qw( $VERSION @ISA @MSG @params );
@@ -49,7 +49,7 @@ sub registerEvents {
 }
 
 # error messages
-@MSG = ( "Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
+@MSG = ( "Document body is not well-formed. Please consult the User's Reference for information on well-formed document bodies." );
 
 # parameters recognized by the script
 @params = qw( id parid name title depid symid delforce del plain trytobalance);
@@ -83,11 +83,11 @@ sub event_store {
         }
 
         my $object = $ctxt->object();
-        if ( $object->body( $body, dontbalance => 1 ) ) {
+        if ( $object->body( $body ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
         }
         else {
-            XIMS::Debug( 2, "could not convert to a well balanced string" );
+            XIMS::Debug( 2, "body is not well-formed" );
             $self->sendError( $ctxt, $MSG[0] );
             return 0;
         }

@@ -2,12 +2,12 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package newsitem;
+package XIMS::CGI::NewsItem;
 
 use strict;
 use vars qw( $VERSION @ISA );
 
-use document;
+use XIMS::CGI::Document;
 
 # #############################################################################
 # GLOBAL SETTINGS
@@ -16,7 +16,7 @@ use document;
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 # inheritation information
-@ISA = qw( document );
+@ISA = qw( XIMS::CGI::Document );
 
 sub event_default {
     my ( $self, $ctxt) = @_;

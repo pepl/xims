@@ -2,18 +2,18 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package css;
+package XIMS::CGI::CSS;
 
 use strict;
 use vars qw( $VERSION @ISA );
-use text;
+use XIMS::CGI::Text;
 
 use CSS::Tiny;
 
 # version string (for makemaker, so don't touch!)
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
-@ISA = qw( text );
+@ISA = qw( XIMS::CGI::Text );
 
 # (de)register events here
 sub registerEvents {
