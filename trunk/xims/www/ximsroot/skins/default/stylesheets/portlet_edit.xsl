@@ -13,16 +13,14 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-create"/>
-    <body onLoad="document.eform.name.focus()">
+    <xsl:call-template name="head-edit"/>
+    <body>
         <div class="edit">
-            <xsl:call-template name="table-create"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
-                <input type="hidden" name="objtype" value="{$objtype}"/>
+            <xsl:call-template name="table-edit"/>
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
                 <table border="0" width="98%">
-                    <xsl:call-template name="tr-locationtitletarget-create"/>
+                    <xsl:call-template name="tr-locationtitletarget-edit"/>
                     <xsl:call-template name="markednew"/>
-                    <xsl:call-template name="grantowneronly"/>
                     <tr>
                         <td colspan="3">
                             <xsl:call-template name="extra_properties"/>
@@ -31,11 +29,11 @@
                         </td>
                     </tr>
                 </table>
-                <xsl:call-template name="saveaction"/>
+                <xsl:call-template name="saveedit"/>
             </form>
-            </div>
-            <br />
-            <xsl:call-template name="cancelaction"/>
+        </div>
+        <br />
+        <xsl:call-template name="canceledit"/>
     </body>
 </html>
 </xsl:template>
