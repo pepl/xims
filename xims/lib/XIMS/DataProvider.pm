@@ -250,7 +250,6 @@ sub getObject {
     }
 }
 
-
 sub updateObject {
     my $self = shift;
     my %doc_properties = ();
@@ -317,12 +316,20 @@ sub driver { $_[0]->{Driver} }
 sub recurse_ancestor {
     my $self = shift;
     my $object = shift;
+    my $filter_objectroots = shift;
     my @ancestors = @_;
     #warn "testing id " . $object->document_id() . " (title: ". $object->title() . ") against " . $object->parent_id() . "\n";
     if ( $object->document_id() != 1 ) {
         my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $object->User() );
-        push @ancestors, $parent;
-        $self->recurse_ancestor( $parent, @ancestors );
+        if ( defined $filter_objectroots ) {
+            if ( $parent->object_type->is_objectroot() ) {
+                push( @ancestors, $parent );
+            }
+        }
+        else {
+            push( @ancestors, $parent );
+        }
+        $self->recurse_ancestor( $parent, $filter_objectroots, @ancestors );
     }
     else {
         return reverse @ancestors;

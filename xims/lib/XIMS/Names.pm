@@ -125,7 +125,8 @@ use XIMS;
               'objecttype.is_xims_data',
               'objecttype.redir_to_self',
               'objecttype.publish_gopublic',
-              'objecttype.parent_id'
+              'objecttype.parent_id',
+              'objecttype.is_objectroot'
              ],
     Bookmark =>
              [
