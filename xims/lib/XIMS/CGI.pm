@@ -488,7 +488,7 @@ sub redirect_path {
     my $redirectpath;
     my $r = $self->param('r');
     if ( defined $r ) {
-        $redirectpath = $dp->location_path( document_id => $r );
+        $redirectpath = $dp->location_path( id => $r );
     }
     elsif ( defined $id ) {
         $redirectpath = $dp->location_path( id => $id );
