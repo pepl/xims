@@ -22,8 +22,8 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 # Credentials in whichs context the SQLReport query will be executed.
 # This user needs to have SELECT grants on the database objects refered to in the SQLReport query.
-$AGENTUSER = 'ximsagent';
-$AGENTPASSWORD = 'ofruba62';
+$AGENTUSER = '';
+$AGENTPASSWORD = '';
 
 # If defined, all refered database objects need to exists in a database schema and have to be
 # referenced explicitly with the schema name (select foo from schemaname.tablename). In addition,
