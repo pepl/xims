@@ -540,6 +540,7 @@ sub find_objects_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
+    delete $args{limit} if exists $args{limit}; # we have to get the ids of *all* matching objects
     return $self->__find_ids_count( %args );
 }
 
@@ -603,9 +604,10 @@ sub find_objects_granted_count {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
 
-    $args{user_id} = $user->id();
-    ( $args{role_ids} ) = $user->role_ids();
-    delete $args{limit} if exists $args{limit}; # we have to get the ids of *all* matching objects
+    if ( not $user->admin() ) {
+        $args{user_id} = $user->id();
+        ( $args{role_ids} ) = $user->role_ids();
+    }
 
     return $self->find_objects_count( %args );
 }
