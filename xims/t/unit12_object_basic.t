@@ -1,4 +1,4 @@
-use Test::More tests => 30;
+use Test::More tests => 32;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
@@ -55,6 +55,8 @@ is( $o->last_modified_by_id(), $user->id(), 'testobject has correct last_modifie
 isnt($o->locked(), 1, 'object currently not locked');
 is($o->lock( User => $user ), 1, 'locking object');
 is($o->locked(), 1, 'object currently locked');
+isa_ok($o->locker(), 'XIMS::User');
+is( $user->id(), $o->locker()->id(), 'locker has matching id');
 is($o->unlock(), 1, 'unlocking object');
 isnt($o->locked(), 1, 'object not locked anymore');
 
