@@ -15,27 +15,8 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 @ISA = qw( XIMS::CGI::Text );
 
-# (de)register events here
 sub registerEvents {
-    return qw(
-          default
-          create
-          edit
-          store
-          trashcan
-          trashcan_prompt
-          delete
-          delete_prompt
-          obj_acllist
-          obj_aclgrant
-          obj_aclrevoke
-          publish
-          publish_prompt
-          unpublish
-          cancel
-          parse_css
-          plain
-          );
+    $_[0]->SUPER::registerEvents( qw( parse_css ) );
 }
 
 sub event_parse_css {

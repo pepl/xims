@@ -21,16 +21,13 @@ sub registerEvents {
            create
            edit
            store
-           delete
-           delete_prompt
-           view_data
            obj_acllist
            obj_aclgrant
            obj_aclrevoke
            publish
            publish_prompt
            unpublish
-           cancel
+           view_data
           )
         );
 }
@@ -71,8 +68,8 @@ sub event_store {
 
     return 0 unless $self->init_store_object( $ctxt );
 
-    # if the mimetype provided by the UA is unknown, 
-    # fall back to 'application/octet-stream'  
+    # if the mimetype provided by the UA is unknown,
+    # fall back to 'application/octet-stream'
     if ( length $fh ) {
         my $type = $self->uploadInfo($fh)->{'Content-Type'};
         my $df;

@@ -29,19 +29,15 @@ sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
         qw(
-          default
           create
           edit
           store
-          delete
-          delete_prompt
           obj_acllist
           obj_aclgrant
           obj_aclrevoke
           publish
           publish_prompt
           unpublish
-          cancel
           test_wellformedness
           pub_preview
           )
@@ -186,15 +182,10 @@ sub event_pub_preview {
 
     $ctxt->properties->application->style("pub_preview");
 
-    # not mod_perl safe...
-    #*XIMS::CGI::Document::getDOM = *XIMS::CGI::Document::getPubPreviewDOM;
-    #*XIMS::CGI::Document::selectStylesheet = *XIMS::CGI::Document::selectPubPreviewStylesheet;
-    # ...therefore we are overriding getDom() and selectStylesheet() below...
-
     # $self->process_xinclude( 1 );
 
     # hmmm, we are guessing there... :-|
-    # print $self->header('-charset' => 'ISO-8859-1' );
+    #print $self->header('-charset' => 'ISO-8859-1' );
 
     return 0;
 }

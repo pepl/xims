@@ -15,28 +15,20 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 @ISA = qw( XIMS::CGI );
 
-# (de)register events here
 sub registerEvents {
-    XIMS::Debug( 5, "called" );
-    $_[0]->SUPER::registerEvents(
-        qw(
-          default
-          create
-          edit
-          store
-          trashcan
-          trashcan_prompt
-          delete
-          delete_prompt
-          obj_acllist
-          obj_aclgrant
-          obj_aclrevoke
-          publish
-          publish_prompt
-          unpublish
-          cancel
-          )
-        );
+    my $self = shift;
+    $self->SUPER::registerEvents(
+                                'create',
+                                'edit',
+                                'store',
+                                'publish',
+                                'publish_prompt',
+                                'unpublish',
+                                'obj_acllist',
+                                'obj_aclgrant',
+                                'obj_aclrevoke',
+                                @_
+                                );
 }
 
 sub event_store {

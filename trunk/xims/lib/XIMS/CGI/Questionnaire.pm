@@ -20,21 +20,15 @@ sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
         qw(
-            default
             create
             edit
             store
-            trashcan
-            trashcan_prompt
-            delete
-            delete_prompt
             obj_acllist
             obj_aclgrant
             obj_aclrevoke
             publish
             publish_prompt
             unpublish
-            cancel
             answer
             download_results
             download_all_results
