@@ -1898,7 +1898,7 @@ sub event_search {
         my $qbr = $qb->build( [qw(title abstract keywords body)] );
         if ( defined $qbr->{criteria} and length $qbr->{criteria} ) {
             my %param = (
-                        criteria => $qbr->{criteria},
+                        criteria => $qbr->{criteria} . " AND title <> '.diff_to_second_last'",
                         limit => $rowlimit,
                         offset => $offset,
                         order => $qbr->{order},
