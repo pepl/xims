@@ -197,7 +197,6 @@
 <Grant_role>Grant Role</Grant_role>
 <!-- End users_create_update-->
 <!-- Begin user_bookmarks -->
-
 <Path>Path</Path>
 <Bookmarks>Bookmarks</Bookmarks>
 <Bookmark>Bookmark</Bookmark>
@@ -218,4 +217,8 @@
 <BXE_XPath>Node to edit (XPath)</BXE_XPath>
 <edit_with_BXE>Edit with BXE</edit_with_BXE>
 <!-- End BXE Add ons -->
+<!-- Begin AxPoint -->
+<Download_PDF>Download as PDF</Download_PDF>
+<print_version>print version</print_version>
+<!-- End AxPoint -->
 </l>

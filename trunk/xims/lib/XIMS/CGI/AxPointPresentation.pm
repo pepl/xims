@@ -34,6 +34,19 @@ sub event_create {
     return 0;
 }
 
+sub event_default {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    return 0 if $self->SUPER::event_default( $ctxt );
+
+    if ( $self->user_agent('MSIE') ) {
+        $self->param( 'msie', 1 );
+    }
+
+    return 0;
+}
+
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -43,16 +56,8 @@ sub event_edit {
     return 0 if $ctxt->properties->application->style() eq 'error';
 
     $ctxt->properties->application->style( "edit" );
+
     return 0;
-}
-
-sub event_exit {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    $ctxt->properties->content->escapebody( 1 );
-
-    return $self->SUPER::event_exit( $ctxt );
 }
 
 sub event_download_pdf {

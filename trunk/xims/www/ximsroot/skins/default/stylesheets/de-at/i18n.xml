@@ -217,4 +217,8 @@
 <BXE_XPath>XPath zum Bearbeiten</BXE_XPath>
 <edit_with_BXE>Mit BXE editieren</edit_with_BXE>
 <!-- End BXE Add ons -->
+<!-- Begin AxPoint -->
+<Download_PDF>Als PDF herunterladen</Download_PDF>
+<print_version>Druckversion</print_version>
+<!-- End AxPoint -->
 </l>
