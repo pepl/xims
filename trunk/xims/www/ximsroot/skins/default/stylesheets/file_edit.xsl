@@ -15,7 +15,7 @@
     <body>
         <p class="edit">
             <xsl:call-template name="table-edit"/>
-                <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=file" method="POST" enctype="multipart/form-data">
+            <form action="{$xims_box}{$goxims_content}?id={@id};objtype=file" name="eform" method="POST" enctype="multipart/form-data">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-title-edit"/>
                     <xsl:call-template name="tr-file-edit"/>

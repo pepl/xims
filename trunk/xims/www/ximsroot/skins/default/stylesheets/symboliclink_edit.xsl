@@ -17,17 +17,17 @@
     <body>
         <p class="edit">
             <xsl:call-template name="table-edit"/>
-                <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="eform">
-                    <table border="0" width="95%">
-                        <xsl:call-template name="tr-location-edit"/>
-                        <xsl:call-template name="tr-target-edit"/>
-                        <tr>
-                            <td colspan="2">
-                                <xsl:value-of select="$i18n/l/Title"/>: <xsl:value-of select="title"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <xsl:call-template name="saveedit"/>
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
+                <table border="0" width="95%">
+                    <xsl:call-template name="tr-location-edit"/>
+                    <xsl:call-template name="tr-target-edit"/>
+                    <tr>
+                        <td colspan="2">
+                            <xsl:value-of select="$i18n/l/Title"/>: <xsl:value-of select="title"/>
+                        </td>
+                    </tr>
+                </table>
+                <xsl:call-template name="saveedit"/>
             </form>
         </p>
         <br />
