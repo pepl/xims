@@ -13,3 +13,6 @@ ALTER TABLE CI_CONTENT ADD (CONSTRAINT
   (ID))
 /
 
+PROMPT Renaming ci_documents.status to ci_documents.document_status 
+ALTER TABLE ci_documents RENAME COLUMN status TO document_status
+/

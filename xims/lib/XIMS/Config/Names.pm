@@ -109,7 +109,7 @@ sub Properties() { (
     Document =>
              [
               'document.location',
-              'document.status',
+              'document.document_status',
               'document.id',
               'document.parent_id',
               'document.object_type_id',
