@@ -102,7 +102,12 @@ sub handler {
             XIMS::Debug( 4, "session confirmed: storing cookie" );
             set_session_cookie( $r, $cSession->session_id() );
             if ( $browsepublished ) {
-                return view_privilege_handler( $r, $cSession );
+                my $rv = view_privilege_handler( $r, $cSession );
+                return FORBIDDEN if $rv == FORBIDDEN;
+                $r->status_line( "302 Found" );
+                $r->header_out( Location => $r->uri );
+                $r->send_http_header( "text/html" );
+                return OK;
             }
             else {
                 redirToDefault( $r, $dp, $cSession->user_id() );
