@@ -11,7 +11,7 @@
 
     <xsl:import href="../common.xsl"/>
 
-    <xsl:output method="xml" encoding="ISO-8859-1"/>
+    <xsl:output method="xml"/>
 
     <xsl:template match="/document">
         <xsl:apply-templates select="context/object"/>

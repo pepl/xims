@@ -8,7 +8,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 >
-    <xsl:output method="xml" encoding="ISO-8859-1" indent="yes"/>
+    <xsl:output method="xml" indent="yes"/>
 
     <xsl:template match="/document">
         <xsl:if test="string-length(context/object/style_id)">

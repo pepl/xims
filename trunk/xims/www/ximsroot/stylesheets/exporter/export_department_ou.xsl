@@ -11,7 +11,7 @@
 
     <xsl:import href="../common.xsl"/>
 
-    <xsl:output method="xml" encoding="ISO-8859-1" indent="yes"/>
+    <xsl:output method="xml" indent="yes"/>
 
     <xsl:template match="/document">
         <ou>
