@@ -9,10 +9,31 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-    <xsl:variable name="i18n_qn" select="document(concat($currentuilanguage,'/i18n_questionnaire.xml'))" />
+<xsl:variable name="i18n_qn" select="document(concat($currentuilanguage,'/i18n_questionnaire.xml'))" />
+
+<xsl:template match="/document/context/object">
+    <html>
+        <xsl:call-template name="head_default"/>
+        <body>
+            <xsl:call-template name="header"/>
+            <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
+                <tr>
+                    <td colspan="2">
+                        <xsl:call-template name="tan-list"/>
+                    </td>
+                </tr>
+            </table>
+            <table align="center" width="98.7%" class="footer">
+                <xsl:call-template name="user-metadata"/>
+                <xsl:call-template name="footer"/>
+            </table>
+        </body>
+    </html>
+</xsl:template>
+
 
 <xsl:template name="tan-list">
-    <xsl:value-of select="$i18n_qn/l/TAN_number" />:<xsl:value-of select="attributes/number" /><br/>
+    <xsl:value-of select="$i18n_qn/l/TAN_number" />: <xsl:value-of select="attributes/number" /><br/>
     <xsl:value-of select="$i18n_qn/l/Download" />:
     <ul>
         <li>
