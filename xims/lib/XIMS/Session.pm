@@ -59,10 +59,10 @@ sub new {
             $host =~ /^([0-9]{1,3}\.[0-9]{1,3})/;
             my $hostnet = $1;
 
-            my $time = time();
-            my $session_id = Digest::MD5::md5_hex( $args{user_id} . $time . $hostnet );
+            my $salt = time() . int(rand(100));
+            my $session_id = Digest::MD5::md5_hex( $args{user_id} . $salt . $hostnet );
             $args{session_id} = $session_id;
-            $args{salt} = $time;
+            $args{salt} = $salt;
             $args{host} = $host;
             $args{id} = 1;
             my $id = $self->data_provider->createSession( %args );
