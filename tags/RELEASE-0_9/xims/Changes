@@ -1,0 +1,138 @@
+0.9
+  - Fixed wrong entries in location_path columns when creating objects directly under /root (PostgreSQL)
+  - Fixed foreign key constraints going to the wrong table (Oracle)
+  - Implemented option to assign a stylesheet directory for /gopublic/-published objects instead of using public/*.xsl
+  - Got rid of hard-coded publishing preview style. It is customizable using/assigning document_publishing_preview.xsl now
+  - New 'is_objectroot' object type property for inheritation logic (Currently set for DepartmentRoot, 
+    SiteRoot, VLibrary, and Portal)
+  - New XIMS::Object methods: objectroot_ancestors(), stylesheet(), css(), image(), and script() using
+    ancestrial objectroot settings for cases where inheritation is wanted
+  - New JavaScript object type
+  - Search terms are highlighted in the search result now
+  - When uploading Files, content type 'application/octet-stream' is used as fallback value for unknown
+    content types instead of rejecting the File
+  - Fixed utf-8 encoded strings in XIMS::Importer::_clean_location()
+  - Various smaller fixes and updates
+
+0.8
+  - Better Performance (children are fetched only if needed, updates for fewer DB hits and cached queries)
+  - Users can select their favourite document editor (Plain, HTMLArea, eWebEditPro) during editing now
+  - Initial version of VLibrary modules. This virtual library object type will support storing and management
+    of documents, links and other media with separate management of metadata. The modules are neither document nor
+    finished yet, this will come with the next XIMS releases. For now, only the import of valid DocBookXML
+    documents (XIMS::VLibraryItem::DocBookXML) is supported. 
+  - Fixes for the XIMS setup process (Amongst other things: Support for installing to remote
+    PostgreSQL databases and PostgreSQL databases with password or md5 authentification)
+  - Searching can be limited specific branches of the hierarchy using the "start from here" option
+  - XML object type objects (XML, XSLStylesheet, XSPScript) are handled as full XML documents and
+    no longer as document fragments now
+  - Updated DBIx::SQLEngine module dependancy to 0.017 (fetch_select_rows)
+  - Moved application classes to XIMS::CGI::*
+  - Reactivated cot_creator.pl for creating module templates of new object types
+  - Better path handling during image/link selection using the eWebEditPro WYSIWYG editor
+  - Fixes for Oracle support of the Questionnaire module
+  - Added o:, c:, and u: search macros to enable explicit searches for creators,
+    owners, and modifiers of objects
+  - Updated search result pagination
+  - Support for hierarchical object types
+  - Deleted objects are not shown during object browsing any longer
+  - A lot of smaller fixes and updates
+
+0.7
+  - The user interface language is chosen based on 'Accept-Language' headers now
+  - XSP object type supports an attribute whether or not to process the XSP at event default
+  - Updated module dependencies to XML::LibXML::Iterator, CGI::XMLApplication 1.1.3, and DBIx::SQLEngine 0.016
+  - Added "-f" option for fs_import.pl to update existing objects
+  - Intro and Exit text feature for Questionnaires
+  - TAN lists of Questionnaires can be exported in MS Excel and Text format now
+  - Added "-l" option for specifying a setup_db.pl logfile
+  - Show 'id' instead of 'document_id' in object tooltip (container_common.xsl)
+  - Added new $object->siteroot() and $object->siteroot->url convenience methods
+  - removed children_latest() and children_latest_granted() (functionality now provided by $object->children_granted)
+  - Various smaller fixes and updates
+
+0.6
+  - Added Questionnaire objects for creating online evaluations, surveys and polls
+  - Removed nested set implementation and replaced it with hierarchical queries.
+    With that, support for Pg 7.2 is dropped. DBD::Pg is needed in
+    version > 1.30_1 now.
+  - Added basic documentation for content object class API
+  - Added HowTos for AnonDiscussionForum and AxPointPresentation object types
+  - Restructured documentation
+  - Updated class-diagrams
+  - Added view_privilege_handler() for Apache::AuthXIMS to allow simple
+    access control of published documents
+  - New data format for "Icon" and special MS PowerPoint files.
+  - Renamed DocBookXML objecttype to sDocBookXML with new suffix .sdbk
+  - Renamed suffix of Portlets to .ptlt
+  - UI Stylesheet updates
+  - Added generic constructor, create(), update(), and delete() methods in
+    XIMS::AbstractClass for easier object class creation
+  - Various smaller fixes and updates
+
+0.5
+  - Filesystem importer to batch import HTML documents or folder hierarchies
+  - Added a feature to create copies of objects (optionally with all its descendants)
+  - Added Building Sites with XIMS (Admin Guide) document which gives a
+    step-by-step example how to build a simple XIMS powered site from an
+    admin's perspective.
+  - Added Auto(re)publish feature for container children
+  - Introduced SiteRoot URLs (former title of SiteRoots). Clicking on the
+    link to the published URL of an object takes you to the server specified
+    in the SiteRoot URL
+  - The DataProvider object and with it the database connection is globally
+    shared for command-line usage and shared per Apache child using now
+  - Changed default value of ResolveSiteRoots to '1'. Users are expected to
+    use XIMS in a Apache vhost scenario per default now.
+  - Updated the default stylesheets for published content in 'ximspubroot'
+    Christoph Wild did most of the new design, Armin Lanzinger did
+    fine tuning on the colors.
+  - The database for PostgreSQL will be created with Unicode encoding now.
+  - An UTF-8 encoded database is assumed to be the default in Config.pm now.
+  - The CGI application classes accept UTF-8 encoded input per default now.
+    If XIMS::DBENCODING is set, the content of CGI params will be converted
+    to it.
+  - Converted encoding of all stylesheets to UTF-8 and changed the
+    xls:output encoding to UTF-8
+  - Eliminated hardcoded ISO-8859-1 encoding and make use of
+    config option XIMS::DBENCODING()
+  - Added and updated unit tests
+  - Introduced 'admin','devel', and 'install' subdirs for the tools directory
+  - Added publisher.pl command line tool for recursive publishing
+  - Added user_privileges.pl command line tool for recursively
+    granting and revoking user privileges
+  - Added add_departmentlinks.pl command line tool for automated
+    DepartmentLink creation
+  - Added folder_to_objectroot.pl command line tool to convert imported
+    folders to SiteRoots or DepartmentRoots.
+  - Added set_user_metadata.pl command line tool for managing user metadata
+  - Added support for HTMLArea 3.0
+  - Links to published objects open in a new window now
+  - Added an example homepage "simple.examplesite.tld" under examples
+  - No more hardcoded object type IDs in the object classes
+  - Added a bottom line under "last modified date" and "content length" to
+    optically guide to the options in the default skin.
+  - Fixed editing of DocumentLinks
+  - Allow repositioning of DocumentLinks
+  - Introduced new content object type property "publish_gopublic" to
+    denote whether objects are published to the filesystem or publishing
+    means granting to the public user
+  - Cleanup of NewsItem object type implementation
+  - No need for HTML::Entities any more
+  - Various smaller fixes and updates
+0.1.1
+  - Allow installation directories other than "/usr/local/xims"
+  - Personal user start pages with bookmark management and password update (/goxims/user)
+  - Internationalization (i18n.xml) and "de-at" localization of "default"-skin stylesheets
+  - Added unit tests
+  - System privileges are actually used now
+  - Stylesheet optimizations (folder_default.xsl runs ~25% faster now)
+  - New content object types "Text" and "CSS"
+  - Config directive for Tidy installation path
+  - Additional search macros to find objects by creator or last modifier
+  - Search results are paged and search result count is shown now
+  - Sitemap feature for container objects (tree_view)
+  - Deactivated "patch_modules.pl"
+  - Added "Content Object Type Creator Tool"
+  - Added "show_data_formats.pl" and "show_object_types.pl" in "tools"
+
