@@ -22,19 +22,20 @@
 
 
 <xsl:template name="meta">
+      <xsl:param name="context_node" select="."/>  
       <link rel="schema.DC" href="http://purl.org/DC/elements/1.0/"/>
-      <meta name="DC.Title" content="{rdf:RDF/rdf:Description/dc:title}"/>
-      <meta name="DC.Creator" content="{rdf:RDF/rdf:Description/dc:creator}"/>
-      <meta name="DC.Subject" content="{rdf:RDF/rdf:Description/dc:subject}"/>
-      <meta name="DC.Description" content="{rdf:RDF/rdf:Description/dc:description}"/>
-      <meta name="DC.Publisher" content="{rdf:RDF/rdf:Description/dc:publisher}"/>
-      <meta name="DC.Contributor" content="{rdf:RDF/rdf:Description/dc:contributor}"/>
-      <meta name="DC.Date.Created" scheme="{rdf:RDF/rdf:Description/dc:date/dcq:created/rdf:Description/dcq:dateScheme}" content="{rdf:RDF/rdf:Description/dc:date/dcq:created/rdf:Description/rdf:value}"/>
-      <meta name="DC.Date.Modified" scheme="{rdf:RDF/rdf:Description/dc:date/dcq:modified/rdf:Description/dcq:dateScheme}" content="{rdf:RDF/rdf:Description/dc:date/dcq:modified/rdf:Description/rdf:value}"/>
-      <meta name="DC.Format" content="{rdf:RDF/rdf:Description/dc:format}"/>
-      <meta name="DC.Language" content="{rdf:RDF/rdf:Description/dc:language}"/>
+      <meta name="DC.Title" content="{$context_node/rdf:RDF/rdf:Description/dc:title}"/>
+      <meta name="DC.Creator" content="{$context_node/rdf:RDF/rdf:Description/dc:creator}"/>
+      <meta name="DC.Subject" content="{$context_node/rdf:RDF/rdf:Description/dc:subject}"/>
+      <meta name="DC.Description" content="{$context_node/rdf:RDF/rdf:Description/dc:description}"/>
+      <meta name="DC.Publisher" content="{$context_node/rdf:RDF/rdf:Description/dc:publisher}"/>
+      <meta name="DC.Contributor" content="{$context_node/rdf:RDF/rdf:Description/dc:contributor}"/>
+      <meta name="DC.Date.Created" scheme="{$context_node/rdf:RDF/rdf:Description/dc:date/dcq:created/rdf:Description/dcq:dateScheme}" content="{rdf:RDF/rdf:Description/dc:date/dcq:created/rdf:Description/rdf:value}"/>
+      <meta name="DC.Date.Modified" scheme="{$context_node/rdf:RDF/rdf:Description/dc:date/dcq:modified/rdf:Description/dcq:dateScheme}" content="{rdf:RDF/rdf:Description/dc:date/dcq:modified/rdf:Description/rdf:value}"/>
+      <meta name="DC.Format" content="{$context_node/rdf:RDF/rdf:Description/dc:format}"/>
+      <meta name="DC.Language" content="{$context_node/rdf:RDF/rdf:Description/dc:language}"/>
       <!-- for compatibility -->
-      <meta name="keywords" content="{rdf:RDF/rdf:Description/dc:subject}"/>
+      <meta name="keywords" content="{$context_node/rdf:RDF/rdf:Description/dc:subject}"/>
 </xsl:template>
 
 <xsl:template name="pathinfo">
