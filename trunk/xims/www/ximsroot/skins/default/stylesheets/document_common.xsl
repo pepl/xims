@@ -54,11 +54,72 @@
     </xsl:template>
 
     <xsl:template name="testbodysxml">
-        <tr>
-            <td colspan="3">
-                <a href="javascript:openTestWFWindow()"><xsl:value-of select="$i18n/l/Test_body_xml"/></a>
-            </td>
-        </tr>
+        <a href="javascript:openTestWFWindow()">
+            <img src="{$skimages}option_wfcheck.png"
+                 border="0"
+                 alt="{$i18n/l/Test_body_xml}"
+                 title="{$i18n/l/Test_body_xml}"
+                 align="left"
+                 width="32"
+                 height="19"
+            />
+        </a>
+    </xsl:template>
+
+    <xsl:template name="prettyprint">
+        <xsl:call-template name="prettyprintjs"/>
+        <a href="javascript:void()" onclick="return prettyprint();">
+            <img src="{$skimages}option_prettyprint.png"
+                 border="0"
+                 alt="{$i18n/l/Prettyprint}"
+                 title="{$i18n/l/Prettyprint}"
+                 align="left"
+                 width="32"
+                 height="19"
+            />
+        </a>
+    </xsl:template>
+
+    <xsl:template name="prettyprintjs">
+        <script type="text/javascript">
+            var xmlhttp=false;
+            /*@cc_on @*/
+            /*@if (@_jscript_version &gt;= 5)
+            // JScript gives us Conditional compilation, we can cope with old IE versions.
+            // and security blocked creation of the objects.
+            try {
+                xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+            }
+            catch (e) {
+                try {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                catch (E) {
+                    xmlhttp = false;
+                }
+            }
+            @end @*/
+            if (!xmlhttp &amp;&amp; typeof XMLHttpRequest!='undefined') {
+              xmlhttp = new XMLHttpRequest();
+            }
+
+            function prettyprint() {
+                var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>";
+                xmlhttp.open("POST",url,true);
+                xmlhttp.onreadystatechange=function() {
+                    if (xmlhttp.readyState==4) {
+                        if (xmlhttp.status!=200) {
+                            alert("Parse Failure. Could not pretty print.")
+                        }
+                        else {
+                            document.eform.body.value=xmlhttp.responseText;
+                        }
+                    }
+                }
+                xmlhttp.send('prettyprint=1&amp;body='+encodeURIComponent(document.eform.body.value));
+                return false;
+            }
+        </script>
     </xsl:template>
 
     <xsl:template name="setdefaulteditor">
