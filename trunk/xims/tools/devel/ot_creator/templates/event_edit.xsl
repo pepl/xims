@@ -35,7 +35,7 @@
 &lt;html&gt;
     &lt;xsl:call-template name=&quot;head-edit&quot;/&gt;
     &lt;body&gt;
-        &lt;p class=&quot;edit&quot;&gt;
+        &lt;div class=&quot;edit&quot;&gt;
             &lt;xsl:call-template name=&quot;table-edit&quot;/&gt;
             &lt;form action=&quot;{$xims_box}{$goxims_content}{$absolute_path}&quot; method=&quot;POST&quot; name=&quot;eform&quot;&gt;
                 &lt;table border=&quot;0&quot; width=&quot;98%&quot;&gt;
@@ -47,7 +47,7 @@
                 &lt;/table&gt;
                 &lt;xsl:call-template name=&quot;saveedit&quot;/&gt;
             &lt;/form&gt;
-        &lt;/p&gt;
+        &lt;/div&gt;
         &lt;br /&gt;
         &lt;xsl:call-template name=&quot;canceledit&quot;/&gt;
     &lt;/body&gt;

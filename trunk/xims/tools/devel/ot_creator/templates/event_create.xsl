@@ -35,7 +35,7 @@
 &lt;html&gt;
     &lt;xsl:call-template name=&quot;head-create&quot;/&gt;
     &lt;body onLoad=&quot;document.eform.body.value=&apos;&apos;; document.eform[&apos;abstract&apos;].value=&apos;&apos;; document.eform.name.focus();&quot;&gt;
-        &lt;p class=&quot;edit&quot;&gt;
+        &lt;div class=&quot;edit&quot;&gt;
             &lt;xsl:call-template name=&quot;table-create&quot;/&gt;
             &lt;form action=&quot;{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}&quot; name=&quot;eform&quot; method=&quot;POST&quot; style=&quot;margin-top:0px;&quot;&gt;
                 &lt;input type=&quot;hidden&quot; name=&quot;objtype&quot; value=&quot;{$objtype}&quot;/&gt;
@@ -49,7 +49,7 @@
                 &lt;/table&gt;
                 &lt;xsl:call-template name=&quot;saveaction&quot;/&gt;
             &lt;/form&gt;
-        &lt;/p&gt;
+        &lt;/div&gt;
         &lt;br /&gt;
         &lt;xsl:call-template name=&quot;cancelaction&quot;/&gt;
     &lt;/body&gt;
