@@ -1,3 +1,11 @@
+\echo Adding IS_OBJECTROOT column on 'CI_OBJECT_TYPES'
+ALTER TABLE ci_object_types ADD COLUMN IS_OBJECTROOT SMALLINT;
+ALTER TABLE ci_object_types ALTER COLUMN IS_OBJECTROOT SET DEFAULT 0;
+
+\echo Inserting new object type JavaScript
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
+       VALUES ( nextval('ci_object_types_id_seq'), 'JavaScript', 0, 1, 1, 0 );
+
 -- location_path functions, triggers,  and rules
 CREATE OR REPLACE FUNCTION location_path_make(INTEGER, TEXT) RETURNS TEXT AS '
 DECLARE
@@ -22,3 +30,6 @@ BEGIN
     RETURN new_location_path;
 END;
 ' LANGUAGE plpgsql;
+
+-- write location_path values to existing data in ci_documents
+SELECT sync_location_path();
