@@ -54,12 +54,12 @@
                 </tr>
                 <tr>
                     <td valign="top" width="40%" style="border:1px solid;">
-                        <p><b>Document Links</b></p>
+                        <p><strong><xsl:value-of select="$i18n/l/Document_links"/></strong></p>
                         <table>
                             <xsl:if test="$m='e' and user_privileges/create">
                                 <tr>
                                     <td colspan="2">
-                                        <a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=urllink">add link</a>
+                                        <a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=URLLink"><xsl:value-of select="$i18n/l/Add_link"/></a>
                                     </td>
                                 </tr>
                             </xsl:if>
@@ -69,10 +69,11 @@
                     <td valign="top" width="60%" style="border:1px solid;">
                         <table width="100%" border="0">
                             <tr>
-                                <td><b>Comments</b></td>
+                                <td><strong>Annotation</strong></td>
                                 <td colspan="2">
                                     <xsl:if test="$m='e' and user_privileges/create">
-                                        <a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=annotation">comment this</a>
+                                        <!--<a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=Annotation">-->Annotation hinzufügen<!--</a>-->
+                                        <xsl:text>&#160;&#160;</xsl:text>
                                     </xsl:if>
                                 </td>
                             </tr>
