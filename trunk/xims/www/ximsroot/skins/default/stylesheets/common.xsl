@@ -84,8 +84,9 @@
 </xsl:template>
 
 <xsl:template name="save_jsbutton">
-    <input type="submit" name="submit_eform" value="{$i18n/l/save}" 
-           onClick="document.eform.store.click(); return false" class="control"/>
+    <script type="text/javascript">
+       document.write('<input type="submit" name="submit_eform" value="{$i18n/l/save}" onClick="document.eform.store.click(); return false" class="control"/>');
+    </script>
 </xsl:template>
 
 <xsl:template name="exitredirectform">
