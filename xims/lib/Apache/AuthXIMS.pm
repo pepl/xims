@@ -38,8 +38,8 @@ sub handler {
     XIMS::Debug( 4, "creating dataprovider" );
     my $dp = XIMS::DataProvider->new();
     # pepl: need a config directive for access.xsp here
-    $r->custom_response(DECLINED, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instanciated.%20There%20may%20be%20a%20database%20connection%20problem.");
-    return DECLINED unless $dp;
+    $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instanciated.%20There%20may%20be%20a%20database%20connection%20problem.");
+    return SERVER_ERROR unless $dp;
 
     XIMS::Debug( 4, "getting session cookie" );
     my $cSession = undef;
