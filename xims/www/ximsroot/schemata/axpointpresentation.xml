@@ -225,13 +225,11 @@
                 <element name="image">
                     <optional>
                         <attribute name="scale">
-                            <data type="anyURI"/>
+                            <text/>
                         </attribute>
                     </optional>
                     <choice>
-                        <attribute name="xlink:href" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <data type="anyURI"/>
-                        </attribute>
+                        <attribute xmlns:xlink="http://www.w3.org/1999/xlink" name="xlink:href"/>
                         <text/>
                     </choice>
                 </element>
