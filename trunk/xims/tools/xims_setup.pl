@@ -153,6 +153,8 @@ elsif ( $Conf{DBdsn} eq 'Oracle' ) {
 fixupDBConfig( \%Conf ); # set config options depending on RDMBS type
 
 # writing back to Config.pm
+# to keep things friendly and to avoid a second loop, we put ApacheDocumentRoot inside %Conf
+$Conf{ApacheDocumentRoot} = $installer->apache_document_root();
 foreach my $directive ( @upd_fields ) {
     $installer->inplace_edit($configpm,
                              "s!^\\s*sub $directive\\(\\)\\s+{s*.+\\s*}!sub $directive() { '$Conf{$directive}' }!");
