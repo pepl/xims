@@ -1,3 +1,22 @@
+0.6
+  - Added Questionnaire objects for creating online evaluations, surveys and polls
+  - Removed nested set implementation and replaced it with hierarchical queries.
+    With that, support for Pg 7.2 is dropped. DBD::Pg is needed in
+    version > 1.30_1 now.
+  - Added basic documentation for content object class API
+  - Added HowTos for AnonDiscussionForum and AxPointPresentation object types
+  - Restructured documentation
+  - Updated class-diagrams
+  - Added view_privilege_handler() for Apache::AuthXIMS to allow simple
+    access control of published documents
+  - New data format for "Icon" and special MS PowerPoint files.
+  - Renamed DocBookXML objecttype to sDocBookXML with new suffix .sdbk
+  - Renamed suffix of Portlets to .ptlt
+  - UI Stylesheet updates
+  - Added generic constructor, create(), update(), and delete() methods in
+    XIMS::AbstractClass for easier object class creation
+  - Various smaller fixes and updates
+
 0.5
   - Filesystem importer to batch import HTML documents or folder hierarchies
   - Added a feature to create copies of objects (optionally with all its descendants)
