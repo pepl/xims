@@ -687,8 +687,9 @@ sub siteroot {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    my $ancestors = $self->ancestors();
-    my $siteroot = $ancestors->[1];
+    my $ancestors_and_self = $self->ancestors();
+    push @{$ancestors_and_self}, $self;
+    my $siteroot = $ancestors_and_self->[1];
     return unless $siteroot;
 
     bless $siteroot, 'XIMS::SiteRoot';
