@@ -46,7 +46,7 @@
                 </xsl:choose>
             </td>
             <td align="right">
-                <!--<a href="{$xims_box}{$goxims_content}/xims/xims-doku/">-->Systeminfo<!--</a>-->
+                <a href="http://xims.info/documentation/" target="_blank">Systeminfo</a>
             </td>
         </tr>
     </xsl:template>
