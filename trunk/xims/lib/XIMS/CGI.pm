@@ -1692,7 +1692,7 @@ sub body_ref_objects {
     my $parser = XML::LibXML->new();
     my $chunk;
     eval {
-        my $data = XIMS::DBENCODING() ? XML::LibXML::encodeToUTF8( XIMS::DBENCODING(), $body ) : $body;
+        my $data = XIMS::encode( $body );
         $chunk = $parser->parse_xml_chunk( $data );
     };
     if ( $@ ) {
@@ -1721,6 +1721,7 @@ sub body_ref_objects {
 
     # lets see if the objects exist in our system.
     my %paths_seen;
+    my %ximspaths_seen;
     foreach my $p ( @paths ) {
         $p =~ s/\?.*$//; # strip querystring
         next unless length $p;
@@ -1735,10 +1736,9 @@ sub body_ref_objects {
         }
         my $exp = $p;
         if ( $exp =~ m|^\.\./| ) {
-            my $anclevel = ( $exp =~ tr|../|../| );
-            $anclevel = ($anclevel - 1) / 3;
+            my $anclevel = split('\.\./', $exp) - 1;
             $ancestors ||= $object->ancestors();
-            my $i = scalar @{$ancestors} - 1 - $anclevel; # ancestors include self
+            my $i = scalar @{$ancestors} - 1 - $anclevel; # ancestors include root
             my $relparent = ${@{$ancestors}}[$i];
             next unless $relparent;
             $exp =~ s|\.\./||g;
@@ -1751,8 +1751,14 @@ sub body_ref_objects {
         elsif ( $exp !~ m|^/| ) {
             $exp = "$parent_path/$exp";
         }
+        elsif ( $exp =~ m|^/| and XIMS::RESOLVERELTOSITEROOTS() ) {
+            $exp = '/' . $object->siteroot->location() . $exp;
+        }
 
-        XIMS::Debug( 6, "resolve path $p ($exp)" );
+        next if $ximspaths_seen{$exp};
+        $ximspaths_seen{$exp}++;
+
+        XIMS::Debug( 6, "resolving path $p ($exp)" );
         my $object = XIMS::Object->new( path => $exp, language_id => $object->language_id() );
         $paths_seen{$p}++;
         next unless $object;
