@@ -4,14 +4,14 @@
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:dcq="http://purl.org/dc/qualifiers/1.0/"
-                xmlns="http://www.w3.org/TR/xhtml1/strict"
+                xmlns="http://www.w3.org/1999/xhtml"
                 >
 <!--$Id$-->
 
 <xsl:import href="include/default_header.xsl"/>
 <xsl:import href="include/common.xsl"/>
 
-<xsl:output method="html" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"/>
+<xsl:output method="html" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 
 <xsl:template match="/page">
     <html>
