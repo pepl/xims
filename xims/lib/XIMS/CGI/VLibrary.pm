@@ -405,7 +405,12 @@ sub event_most_recent {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @objects = $ctxt->object->children_granted( limit => 5, order => 'last_modification_timestamp DESC' );
+    my %param = ( limit => 5, order => 'last_modification_timestamp DESC' );
+    if ( $self->param('mn') ) {
+        $param{marked_new} = 1;
+    }
+
+    my @objects = $ctxt->object->children_granted( %param );
     $ctxt->objectlist( \@objects );
     $ctxt->properties->application->style( "objectlist" ) ;
 
