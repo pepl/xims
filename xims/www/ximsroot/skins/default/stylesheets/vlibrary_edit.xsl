@@ -20,7 +20,6 @@
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-stylesheet-edit"/>
                     <xsl:call-template name="markednew"/>
-                    <xsl:call-template name="autoindex"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>
@@ -33,6 +32,7 @@
 
 
 <xsl:template name="tr-stylesheet-edit">
+<xsl:variable name="parentid" select="parents/object[/document/context/object/@parent_id=@document_id]/@id"/>
 <tr>
     <td valign="top"><xsl:value-of select="$i18n/l/Stylesheet"/></td>
     <td colspan="2">
@@ -40,7 +40,7 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Folder;sbfield=eform.stylesheet')" class="doclink">Browse for Stylesheet directory</a>
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=Folder;sbfield=eform.stylesheet')" class="doclink">Browse for Stylesheet directory</a>
     </td>
 </tr>
 </xsl:template>
