@@ -6,12 +6,9 @@ package XIMS::SAX::Generator::Exporter;
 
 use strict;
 use vars qw(@ISA);
-# this package could be a subclass of XIMS::SAX::Generator::Content <- think of it
-@ISA = qw(XIMS::SAX::Generator XML::Generator::PerlData);
+@ISA = qw(XIMS::SAX::Generator::Content);
 
-use XIMS::SAX::Generator;
-use XML::Generator::PerlData;
-use XIMS::DataProvider;
+use XIMS::SAX::Generator::Content;
 use XML::Filter::CharacterChunk;
 
 ##
@@ -59,57 +56,6 @@ sub prepare {
     return $doc_data;
 }
 
-
-##
-#
-# SYNOPSIS
-#    $generator->parse( $ctxt );
-#
-# PARAMETER
-#    $ctxt : the appcontext object
-#
-# RETURNS
-#    the result of the last handler after parsing
-#
-# DESCRIPTION
-#    Used privately by XIMS::SAX to kick off the SAX event stream.
-#
-sub parse {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $ctxt = shift;
-    my %opts = (@_, $self->get_config);
-    $self->parse_start( %opts );
-    $self->parse_chunk( $ctxt );
-    return $self->parse_end;
-}
-
-##
-#
-# SYNOPSIS
-#    $generator->get_filters();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    @filters : an @array of Filter class names
-#
-# DESCRIPTION
-#    Used internally by XIMS::SAX to allow this class to set
-#    additional SAX Filters in the filter chain
-#
-sub get_filters {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my @filters =  $self->SUPER::get_filters();
-
-    push @filters, @{$self->{FilterList}};
-
-    return @filters;
-}
-
-
 # helper function to fetch the children.
 sub _set_children {
     XIMS::Debug( 5, "called" );
@@ -139,21 +85,6 @@ sub _set_children {
     }
 
     $doc_data->{context}->{object}->{children} = {object => \@children};
-}
-
-# helper function to fetch the used dataformats and object types
-sub _set_formats_and_types {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my ( $ctxt, $doc_data, $object_types, $data_formats ) = @_;
-
-    my $used_types;
-    my $used_formats;
-    @{$used_types}   = grep { exists $object_types->{$_->id()} } $ctxt->data_provider->object_types() ;
-    @{$used_formats} = grep { exists $data_formats->{$_->id()} } $ctxt->data_provider->data_formats() ;
-
-    $doc_data->{object_types} = {object_type => $used_types};
-    $doc_data->{data_formats} = {data_format => $used_formats};
 }
 
 1;
