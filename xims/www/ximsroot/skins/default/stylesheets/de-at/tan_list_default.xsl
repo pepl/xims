@@ -11,7 +11,7 @@
 
 <xsl:import href="common.xsl"/>
 <xsl:import href="../tan_list_default.xsl" />
-<xsl:output method="html" encoding="ISO-8859-1"/>
+<xsl:output method="html" encoding="utf-8"/>
     
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>

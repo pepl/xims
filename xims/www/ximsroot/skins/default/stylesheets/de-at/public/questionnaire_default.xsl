@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 
 <xsl:import href="common.xsl"/>
-<xsl:output method="html" encoding="ISO-8859-1"/>
+<xsl:output method="html" encoding="utf-8"/>
     
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
