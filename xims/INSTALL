@@ -101,15 +101,6 @@ XIMS Installation Guide
         customizations after finishing "make install". For example,
         you could activate a WYSIWYG-Editor for editing documents there.
 
-        If you are using PostgreSQL, you have to install the
-        table functions into the xims database now. You can do this
-        using a command like the following:
-
-        [root@host tablefunc]# psql -U postgres xims </usr/share/postgresql/contrib/tablefunc.sql
-
-        You may have to adjust the path to your copy of 'tablefunc.sql'
-
-
     3.4) (Re)start the apache server. Check if it prints warnings or errors.
 
     3.5) Run the test suite
