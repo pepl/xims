@@ -1,3 +1,11 @@
+0.9.1
+  - Fixed value of XIMS::Privileges::COPY() and XIMS::Privileges::MODIFY()
+  - Fixed wrong object privs that have been introduced by a typo in the 0.7_0.8/upgrade_common.sql script
+    (for 0.7 to 0.8 updated installations)
+  - Made COPY privilege available to the user interface
+  - Do not include .ptlt suffix in the title of departmentlinks portlets which are added
+    via XIMS::DepartmentRoot::add_departmentlinks()
+
 0.9
   - Fixed wrong entries in location_path columns when creating objects directly under /root (PostgreSQL)
   - Fixed foreign key constraints going to the wrong table (Oracle)

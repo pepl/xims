@@ -1,3 +1,45 @@
+0.9 to 0.9.1
+-------------
+
+  * Unpack the contents of xims-0.9.1.tar.gz to your target installation
+    directory.
+
+    For example:
+    [root@host local]# cd /usr/local
+    [root@host local]# tar xzpvf xims-0.9.1.tar.gz
+
+
+  * Copy Config.pm
+
+    For example:
+    [root@host local]# cp xims-0.9/lib/XIMS/Config.pm xims-0.9.1/lib/XIMS/Config.pm
+
+
+  * Update database (no existing content will be erased nor damaged)
+
+    Run the SQL script in the "upgrade/0.9_0.9.1" directory.
+
+    For example:
+
+    PostgreSQL:
+    [root@host 0.9_0.9.1]# psql -U xims xims -f upgrade-common.sql
+
+    Oracle:
+    [root@host 0.9_0.9.1]# sqlplus user@db @upgrade-common.sql
+
+  * Move published content and activate xims-0.9.1
+
+    - Shutdown Apache or prevent XIMS logins
+    - Move everything under your old "ximspubroot" directory besides
+        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        to your new "ximspubroot" directory.
+    - Replace the link to xims-0.9 with a link to xims-0.9.1
+      For example:
+        [root@host local]# cd /usr/local
+        [root@host local]# rm xims && ln -s xims-0.9.1 xims
+    - (Re)Start Apache
+
+
 0.8 to 0.9
 -------------
 
