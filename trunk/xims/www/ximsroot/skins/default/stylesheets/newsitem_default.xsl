@@ -25,30 +25,46 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:call-template name="toggle_hls"/>
-            <h1 class="documenttitle"><xsl:value-of select="title"/></h1>
             <span id="body">
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-                <xsl:choose>
-                    <xsl:when test="string-length(image_id)">
-                        <tr>
-                            <td>
-                                <img src="{$goxims_content}{image_id}"/>
-                            </td>
-                            <td bgcolor="#dddddd">
-                                <!-- should be class newslead! -->
-                                <xsl:apply-templates select="abstract"/>
-                            </td>
-                        </tr>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <tr>
-                            <td bgcolor="#dddddd" colspan="2">
-                                <!-- should be class newslead! -->
-                                <xsl:apply-templates select="abstract"/>
-                            </td>
-                        </tr>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <tr>
+                    <td>
+                        <table>
+                            <tr><td colspan="2"><h1 class="newstitle"><xsl:value-of select="title"/></h1></td></tr>
+                            <xsl:choose>
+                                <xsl:when test="string-length(image_id)">
+                                    <tr>
+                                        <td width="180">
+                                            <img src="{$goxims_content}{image_id}" width="170" height="130" alt="{image_id}" title="{image_id}"/>
+                                        </td>
+                                        <td valign="top">
+                                            <div class="newsdate">
+                                                <!-- should be valid_from_timestamp -->
+                                                <xsl:apply-templates select="creation_timestamp" mode="date"/>
+                                            </div>
+                                            <div class="newslead">
+                                                <xsl:apply-templates select="abstract"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <tr>
+                                        <td valign="top" colspan="2">
+                                            <div class="newsdate">
+                                                <!-- should be valid_from_timestamp -->
+                                                <xsl:apply-templates select="creation_timestamp" mode="date"/>
+                                            </div>
+                                            <div class="newslead">
+                                                <xsl:apply-templates select="abstract"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </table>
+                    </td>
+                </tr>
                 <tr>
                     <td bgcolor="#ffffff" colspan="2">
                         <xsl:apply-templates select="body"/>

@@ -802,6 +802,14 @@ li.emaillist, ul.emaillist {
 	border:1px solid #c0c0c0;
 }
 
+.newstitle {
+    margin-bottom: 5px;
+}
+
+.newslead {
+    font-weight: bold;
+}
+
 /* formating margins */
 
 .marginless {
