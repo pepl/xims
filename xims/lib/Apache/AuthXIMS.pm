@@ -339,9 +339,10 @@ sub create_session_id {
 
     if ( $dp and $r and $cUser) {
         XIMS::Debug( 4, "completing dataset for cookie creation" );
+
         $cSession =  XIMS::Session->new( 'user_id'   => $cUser->id(),
                                          'user_name' => $cUser->name(),
-                                         'host'      => $r->connection->remote_ip());
+                                         'host'      => $r->connection->remote_ip() );
         unless ( $cSession ) {
             XIMS::Debug( 2, "session cannot be created in system database" );
             $cSession = undef;
