@@ -62,6 +62,9 @@
                 <td width="30">
                     <xsl:call-template name="cttobject.status"/>
                 </td>
+                <td align="center">
+                    <xsl:call-template name="cttobject.position"/>
+                </td>
                 <td>
                 <a>
                     <xsl:attribute name="href">
@@ -79,7 +82,34 @@
             </td>
             <xsl:if test="$m='e'">
                 <td align="right">
-
+                    <xsl:choose>
+                        <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+                            <a href="{$goxims_content}?id={@id};edit=1">
+                                <img src="{$skimages}option_edit.png"
+                                    alt="{$l_Edit}"
+                                    title="{$l_Edit}"
+                                    border="0"
+                                    onmouseover="pass('edit{@document_id}','edit','h'); return true;"
+                                    onmouseout="pass('edit{@document_id}','edit','c'); return true;"
+                                    onmousedown="pass('edit{@document_id}','edit','s'); return true;"
+                                    onmouseup="pass('edit{@document_id}','edit','s'); return true;"
+                                    name="edit{@document_id}"
+                                    width="32"
+                                    height="19"
+                                    align="left"
+                                />
+                            </a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <img src="{$ximsroot}images/spacer_white.gif"
+                                width="32"
+                                height="19"
+                                border="0"
+                                alt=" "
+                                align="left"
+                            />
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <xsl:choose>
                         <xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all) and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                             <a href="{$goxims_content}?id={@id};publish_prompt=1">
