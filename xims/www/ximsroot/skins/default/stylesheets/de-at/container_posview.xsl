@@ -10,8 +10,6 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="../container_posview.xsl"/>
     <xsl:output method="html"
-                encoding="utf-8"
-                media-type="application/xml+xhtml"
                 doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
                 doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"/>
 </xsl:stylesheet>
