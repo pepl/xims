@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article>
+  <title>XIMS AxPointPresentation Howto</title>
+
+  <articleinfo>
+    <authorgroup>
+      <author>
+        <firstname>Britta</firstname>
+
+        <surname>Tautermann</surname>
+
+        <affiliation>
+          <orgname>University of Innsbruck</orgname>
+        </affiliation>
+
+        <authorblurb>
+          <para><email>britta.tautermann@uibk.ac.at</email></para>
+        </authorblurb>
+      </author>
+    </authorgroup>
+
+   <legalnotice>
+            <para>Copyright © 2003</para>
+   </legalnotice>
+  
+ </articleinfo>
+
+  <section>
+    <title>What is an AxPointPresentation ?</title>
+
+    <para>An AxPointPresentation is a XML-based PDF-slideshow.</para>
+
+    <para/>
+
+    <figure>
+      <title/>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/xims_axpres_whatis.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Included features are:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Ability to create slideshows with your choice of background
+        image.</para>
+      </listitem>
+
+      <listitem>
+        <para>Slideshows break down into slidesets, or not at your choice.</para>
+      </listitem>
+
+      <listitem>
+        <para>Slides can show bullet points, source code (fixed font), or
+        images.</para>
+      </listitem>
+
+      <listitem>
+        <para>Slides can have transition effects (dissolve, box, wipe, etc)</para>
+      </listitem>
+
+      <listitem>
+        <para>All elements of a slide can transition in too.</para>
+      </listitem>
+
+      <listitem>
+        <para>Text on slides supports bold, italics, and colours. Colours can
+        be any one of the 16 HTML colours, or defined as hex RGB values.</para>
+      </listitem>
+
+      <listitem>
+        <para>PDF bookmarks to allow direct navigation to any slide.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>How to create an AxPointPresentation:</title>
+
+    <para/>
+
+    <orderedlist>
+      <listitem>
+        <para>Chose &quot;AxPointPresentation&quot; from the menu, assign title
+        and location and save it.</para>
+
+        <figure>
+          <title/>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/xims_axpres_howto_step1.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </listitem>
+
+      <listitem>
+        <para>To write the XML-code for the presentation you have to use a
+        text-editor.</para>
+
+        <para>The XML-body has to be well-formed.</para>
+
+        <para>For more detailed information about the syntax see the <ulink url="http://www.xml.com/pub/a/2002/06/19/perl-xml.html">tutorial</ulink><phrase>
+        and the <ulink url="http://search.cpan.org/dist/XML-Handler-AxPoint/lib/XML/Handler/AxPoint.pm">documentation</ulink></phrase></para>
+      </listitem>
+
+      <listitem>
+        <para>Copy-paste the XML-code into the XIMS-editor-window of your
+        AxPointPresentation, save and publish it.</para>
+
+        <para>An example of a presentation can be seen <ulink url="http://xims.uibk.ac.at/ximsroot/xims/xims-info/presentations/zid20020213.axp">here.</ulink></para>
+      </listitem>
+    </orderedlist>
+  </section>
+</article>
