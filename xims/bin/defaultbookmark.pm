@@ -93,8 +93,10 @@ sub redirToDefault {
         $uri->path($path);
     }
 
-    # we got user login information including the password in $uri->query which we want to get rid of
-    $uri->query(undef);
+    # get rid of user login information in the querystring
+    my $query = $uri->query();
+    $query =~ s/userid|password//;
+    $uri->query($query);
 
     XIMS::Debug( 6, "redirecting to " . $uri->unparse() );
     $self->redirect( $uri->unparse() );
