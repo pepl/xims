@@ -4,24 +4,12 @@
 # $Id$
 package XIMS::AnonDiscussionForumContrib;
 
-use vars qw( $VERSION @ISA );
 use strict;
-
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+use vars qw( $VERSION @ISA );
 use XIMS::Document;
 
+$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Document');
-
-
-sub new {
-    my $class   = shift;
-    my %args = @_;
-
-    $args{object_type_id} = 14 unless defined( $args{object_type_id} );
-
-    my $self = $class->SUPER::new( %args );
-    return $self;
-}
 
 sub author {
     my $self= shift;

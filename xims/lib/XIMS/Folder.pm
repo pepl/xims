@@ -6,11 +6,10 @@ package XIMS::Folder;
 
 use strict;
 use vars qw( $VERSION @ISA );
+use XIMS::Object;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Object');
-
-use XIMS::Object;
 
 ##
 #
@@ -32,8 +31,9 @@ sub new {
     my $class = ref($proto) || $proto;
     my %args = @_;
 
-    $args{object_type_id} = 1 unless defined( $args{object_type_id} );
-    $args{data_format_id} = 18 unless defined( $args{data_format_id} );
+    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'Container' )->id() unless defined $args{data_format_id};
+    }
 
     return $class->SUPER::new( %args );
 }

@@ -11,30 +11,4 @@ use XIMS::Object;
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Object');
 
-##
-#
-# SYNOPSIS
-#    XIMS::SymbolicLink->new( %args )
-#
-# PARAMETER
-#    %args: recognized keys are the fields from ...
-#
-# RETURNS
-#    $symlink: XIMS::SymbolicLink instance
-#
-# DESCRIPTION
-#    Constructor
-#
-
-sub new {
-    my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
-
-    $args{object_type_id} = 12 unless defined $args{object_type_id};
-    $args{data_format_id} = 23 unless defined $args{data_format_id};
-    
-    return $class->SUPER::new( %args );
-}
-
 1;
