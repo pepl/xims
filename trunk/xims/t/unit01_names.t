@@ -1,10 +1,9 @@
-use Test::More tests => 11;
+use Test::More tests => 10;
 use lib "../lib";
 use strict;
 use XIMS;
 
-BEGIN { use_ok( 'XIMS::Names' ); use_ok( 'XIMS::Config::Names' ); }
-
+BEGIN { use_ok( 'XIMS::Names' ); }
 
 my @r_types = XIMS::Names::resource_types();
 my @config_r_types = XIMS::Config::Names::ResourceTypes();
@@ -24,4 +23,4 @@ isnt( XIMS::Names::valid_property('Foo'), 1, 'valid_property' );
 cmp_ok( scalar( XIMS::Names::property_interface_names('Session') ), '>', 0, 'property_interface_names');
 
 diag("an ErrorMSG expected from the next one");
-is(  XIMS::Names::get_URI('Foo', 'Bar'), 'foo.Bar' , 'getURI' );
+is( XIMS::Names::get_URI('Foo', 'Bar'), 'foo.Bar' , 'getURI' );

@@ -1,6 +1,5 @@
 #!/usr/bin/perl -w
-
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -21,7 +20,7 @@ my %prompts = (
                              "2 - run all acceptance tests.\n".
                              "3 - run both unit and acceptance tests.\n".
                              "4 - select tests individually.\n".
-                             "5 - edit/create the test suite config file.\n    (For acceptance tests and alternate configs to XIMS::Config. Note for Pg users: Per default db user 'ximsrun' is configured in XIMS::Config. Because that user cannot manipulate data formats amongst other things, you should configure the db user 'xims' here not to let some basic unit tests fail.).\n",
+                             "5 - edit/create the test suite config file.\n    (For acceptance tests and alternate configs to 'ximsconfig.xml'. Note for Pg users: Per default db user 'ximsrun' is configured in 'ximsconfig.xml'. Because that user cannot manipulate data formats amongst other things, you should configure the db user 'xims' here not to let some basic unit tests fail.).\n",
                    var   => \$Args{test_type},
                    re    => '(1|2|3|4|5)',
                    error => 'You must select the numbers 1, 2, 3, 4, or 5',
@@ -112,20 +111,16 @@ print q*
 my @selected_tests = select_tests();
 
 if ( $prompt_config and $prompt_config == 1 ) {
-    print "\nNo test suite config file found, trying to use XIMS::Config.\n";
-    eval { require XIMS::Config; };
-    die "Could not load XIMS::Config (possibly due to access rights).\n" if $@;
-    print "\n\033[1mNote: Per default, the database user configured in XIMS::Config - for example 'ximsrun' if you have used the config defaults for Pg -, does not have sufficient database object privileges to sucessfully run the unit tests. You may consider to set up a test suite config file for that before running the tests.\033[m\n\n";
+    print "\nNo test suite config file found, trying to use default config.\n";
+    eval { require XIMS; };
+    die "Could not load XIMS (possibly due to access rights).\n" if $@;
+    print "\n\033[1mNote: Per default, the database user configured in ximsconfig.xml - for example 'ximsrun' if you have used the config defaults for Pg -, does not have sufficient database object privileges to sucessfully run the unit tests. You may consider to set up a test suite config file for that before running the tests.\033[m\n\n";
 }
 else {
     print "Using config information from lib/XIMS/.ximstest.conf\n";
 }
 
 prompt( $prompts{log} );
-
-#warn Dumper( \%Args );
-#warn Dumper( \%Conf );
-#exit;
 
 local *SAVEERR;
 open(SAVEERR, ">&STDERR");

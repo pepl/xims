@@ -1,8 +1,12 @@
+# Copyright (c) 2002-2005 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
 package XIMS::Test;
+
 use lib "../../../lib";
 use strict;
 use XIMS;
-use XIMS::Config;
 use XIMS::DataProvider;
 use LWP::UserAgent;
 use HTTP::Cookies;
