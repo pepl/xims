@@ -308,6 +308,49 @@ sub find_objects {
     return @objects;
 }
 
+sub children_latest {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    $args{rowlimit} ||= 1;
+    $args{criteria} = 'parent_id = ' . $self->document_id();
+
+    delete $args{document_id};
+    delete $args{parent_id};
+
+    my @found_ids = $self->__find_ids( %args );
+    return () unless scalar( @found_ids ) > 0 ;
+    my @object_data = $self->data_provider->getObject( %args, document_id => \@found_ids, properties => \@Default_Properties );
+    my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
+
+    #warn "objects found" . Dumper( \@objects ) . "\n";
+    return @objects;
+}
+
+sub children_latest_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+
+    return $self->children_latest( %args ) if $user->admin();
+
+    $args{rowlimit} ||= 1;
+    $args{criteria} = 'parent_id = ' . $self->document_id();
+
+    delete $args{document_id};
+    delete $args{parent_id};
+
+    my @found_candidate_doc_ids = $self->__find_ids( %args );
+    return () unless scalar( @found_candidate_doc_ids ) > 0 ;
+
+    my @found = $self->__get_granted_objects( doc_ids => \@found_candidate_doc_ids, User => $user, %args ) ;
+
+    #warn "found" . Dumper( \@found ) . "\n";
+    return wantarray ? @found : $found[0];
+}
+
 sub find_objects_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;

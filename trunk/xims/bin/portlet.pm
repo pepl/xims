@@ -191,6 +191,7 @@ sub generate_body {
     my $body = "";
 
     # code to be rewritten follows
+    # parse the fragment and work with it using the DOM API...
 
     $body = "<content>";
     # pepl: *ouch*; this should not be HERE!
@@ -215,7 +216,11 @@ sub generate_body {
     }
 
     if ( $self->param( "levels" ) ) {
-        $body .= '\n<depth level="'. $self->param( "levels" ) . '"/>\n';
+        $body .= '<depth level="'. $self->param( "levels" ) . '"/>';
+    }
+
+    if ( $self->param( "f_latest" ) eq 'true'  and $self->param( "latest" ) ) {
+        $body .= '<latest>' . $self->param( "latest" ) . '</latest>';
     }
 
     foreach my $type ( map { $_->name() } $ctxt->data_provider->object_types() ) {
