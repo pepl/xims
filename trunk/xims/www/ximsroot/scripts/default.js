@@ -57,11 +57,18 @@ function stringHighlight( mystring ) {
     if (highlighted) {
         return;
     }
-    mystringRE = new RegExp('('+mystring+')', 'gi');
-    var body = document.getElementById("body");
-    content = body.innerHTML;
-    content = content.replace(mystringRE, '<span name="highlighted" style="background: yellow">$1</span>');
-    body.innerHTML = content;
+    re = /\s+/;
+    var splitted = mystring.split(re);
+    for (var i in splitted) {
+        /* should not match inside <>. browser's regex implementations are
+           quite different so it matches currently. better solution pending
+        */
+        splittedRE = new RegExp('('+splitted[i]+')', 'gi');
+        var body = document.getElementById("body");
+        content = body.innerHTML;
+        content = content.replace(splittedRE, '<span name="highlighted" style="background: yellow">$1</span>');
+        body.innerHTML = content;
+    }
 
     highlighted = true
 }
