@@ -738,8 +738,9 @@ sub get_object_id_by_path {
 
             # this is rather inefficient, but there seems to be no better way
             foreach my $loc ( @path ) {
-                my $sqlstr = "SELECT id,symname_to_doc_id FROM ci_documents".
-                    " WHERE location = '" . $loc . "' AND parent_id IN ( ". join( ",", grep { defined $_ } ( $id, $symid )) ." )";
+                my $sqlstr = "SELECT d.id,symname_to_doc_id FROM ci_documents d, ci_content c WHERE c.document_id=d.id AND ".
+	                        " c.marked_deleted IS NULL AND location = '" . $loc . "' AND parent_id IN ( ". join( ",", grep { defined $_ } ( $id, $symid )) ." )";
+
                 XIMS::Debug( 6, "SQL: $sqlstr");
                 if ( ($id, $symid) = $dbh->selectrow_array( $sqlstr ) ) {
                     XIMS::Debug( 6, "new id: $id ($symid)") if defined $id and defined $symid;
