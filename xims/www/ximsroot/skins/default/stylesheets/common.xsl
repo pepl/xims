@@ -62,17 +62,30 @@
 </xsl:template>
 
 <xsl:template name="cancelform">
+    <xsl:param name="with_save" select="'no'"/>
     <!-- method GET is needed, because goxims does not handle a PUTed 'id' -->
     <form action="{$xims_box}{$goxims_content}" name="cform" method="GET" style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">
         <input type="hidden" name="id" value="{@id}"/>
-        <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control"/>
+        <xsl:if test="$with_save = 'yes'">
+            <xsl:call-template name="save_jsbutton"/>
+        </xsl:if>
+        <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C"/>
     </form>
 </xsl:template>
 
 <xsl:template name="cancelcreateform">
+    <xsl:param name="with_save" select="'no'"/>
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST">
-        <input type="submit" name="cancel_create" value="{$i18n/l/cancel}" class="control"/>
+        <xsl:if test="$with_save = 'yes'">
+            <xsl:call-template name="save_jsbutton"/>
+        </xsl:if>
+        <input type="submit" name="cancel_create" value="{$i18n/l/cancel}" class="control" accesskey="C"/>
     </form>
+</xsl:template>
+
+<xsl:template name="save_jsbutton">
+    <input type="submit" name="submit_eform" value="{$i18n/l/save}" 
+           onClick="document.eform.store.click(); return false" class="control"/>
 </xsl:template>
 
 <xsl:template name="exitredirectform">
@@ -95,12 +108,12 @@
 
 <xsl:template name="saveaction">
     <input type="hidden" name="id" value="{/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id}"/>
-    <input type="submit" name="store" value="{$i18n/l/save}" class="control"/>
+    <input type="submit" name="store" value="{$i18n/l/save}" class="control" accesskey="S"/>
 </xsl:template>
 
 <xsl:template name="saveedit">
     <input type="hidden" name="id" value="{@id}"/>
-    <input type="submit" name="store" value="{$i18n/l/save}" class="control"/>
+    <input type="submit" name="store" value="{$i18n/l/save}" class="control" accesskey="S"/>
 </xsl:template>
 
 <xsl:template name="grantowneronly">
@@ -207,7 +220,9 @@
                 <xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>
             </td>
             <td align="right" valign="top">
-                <xsl:call-template name="cancelcreateform"/>
+                <xsl:call-template name="cancelcreateform">
+                    <xsl:with-param name="with_save">yes</xsl:with-param>
+                </xsl:call-template>
             </td>
         </tr>
     </table>
@@ -220,7 +235,9 @@
                 <xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
             </td>
             <td align="right" valign="top">
-                <xsl:call-template name="cancelform"/>
+                <xsl:call-template name="cancelform">
+                    <xsl:with-param name="with_save">yes</xsl:with-param>
+                </xsl:call-template>
             </td>
         </tr>
     </table>
