@@ -99,11 +99,15 @@ sub event_default {
 
     # create query for the search result count
 
+    # remove trailing semicolons
+    $sql =~ s/\s*;\s*$//;
+
     # order by and group by clauses have to be removed not to clash
     # with the SQLEngine generated where clause
     my ($orderby) = ( $sql =~ /\s+order\s+by\s+(\w+(\s+\w+)?)\s*$/i );
-    my ($groupby) = ( $sql =~ /\s+group\s+by\s+(\w+(\s+\w+)?)\s*$/i );
-    $sql =~ s/\s+(order|group)\s+by\s+\w+(\s+\w+)?\s*$//i;
+    my ($groupby) = ( $sql =~ /\s+group\s+by\s+(\w+)/i );
+    $sql =~ s/\s+group\s+by\s+\w+//i;
+    $sql =~ s/\s+order\s+by\s+\w+(\s+\w+)?\s*$//i;
 
     my $countsql = $sql;
     my ($properties) = ($countsql =~ /^\s*SELECT\s(.*?)\sFROM/i);
@@ -114,8 +118,14 @@ sub event_default {
         return 0;
     }
 
-    $countsql =~ s/\Q$properties\E/count(*) as count/;
-    my $data = $dbh->fetch_select( sql => $countsql, criteria => $criteria, order => $orderby, group => $groupby );
+    my $countproperty = 'count(*) as count';
+    if ( defined $groupby ) {
+        $countproperty = "count(distinct $groupby) as count";
+    }
+
+    $countsql =~ s/\Q$properties\E/$countproperty/;
+
+    my $data = $dbh->fetch_select( sql => $countsql, criteria => $criteria );
     my $count = @{$data}[0]->{count};
 
     if ( $count eq '0' or not defined $count ) {
