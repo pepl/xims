@@ -17,6 +17,7 @@ use XIMS::DataProvider;
 use XIMS::Object;
 use XIMS::User;
 use XIMS::Session;
+use Apache::AuthXIMS;
 #use Data::Dumper;
 use Time::Piece;
 ##
@@ -58,16 +59,24 @@ sub handler {
     else {
         # using the ximsPublic role
         $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.");
-
         return SERVER_ERROR unless $ctxt->data_provider();
 
-        XIMS::Debug(6, "Setting user to $publicuser");
-        my $public = XIMS::User->new( name => $publicuser );
-        my $session = XIMS::Session->new( 'user_id' => $public->id(),
-                                          'host'    => $r->get_remote_host() );
+        XIMS::Debug( 6, "setting user to $publicuser" );
+        my $sessionid  = Apache::AuthXIMS::get_session_cookie( $r );
+        my $session;
+        if ( $sessionid and length $sessionid ) {
+            XIMS::Debug( 4, "got session cookie for $publicuser" );
+            $session = XIMS::Session->new( session_id => $sessionid );
+        }
+        else {
+            my $public = XIMS::User->new( name => $publicuser );
+            $session = XIMS::Session->new( 'user_id' => $public->id(),
+                                           'host'    => $r->get_remote_host() );
+            XIMS::Debug( 4, "setting session cookie for $publicuser" );
+            Apache::AuthXIMS::set_session_cookie( $r, $session->session_id() );
+        }
 
         $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20create%20session.");
-
         return SERVER_ERROR unless ( $session and $ctxt->session( $session ) );
     }
 
