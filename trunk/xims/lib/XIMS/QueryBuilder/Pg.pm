@@ -89,30 +89,24 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "ci_documents.id = " . $search->[$i];
         }
-        elsif ( $search->[$i] =~ s/^o:(\w+|\d+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^o:([A-Za-z0-9öäüßÖÄÜß\-]+)$/$1/ ) {
             # 'o:x' find object by OWNER
-            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]+$/ ) {
-                my $user = XIMS::User->new( name => $search->[$i] );
-                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
-            }
+            my $user = XIMS::User->new( name => $search->[$i] );
+            $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
         }
-        elsif ( $search->[$i] =~ s/^c:(\w+|\d+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^c:([A-Za-z0-9öäüßÖÄÜß\-]+)$/$1/ ) {
             # 'c:x' find object by CREATOR
-            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]+$/ ) {
-                my $user = XIMS::User->new( name => $search->[$i] );
-                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
-            }
+            my $user = XIMS::User->new( name => $search->[$i] );
+            $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "ci_content.created_by_id = " . $search->[$i];
         }
-        elsif ( $search->[$i] =~ s/^u:(\w+|\d+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^u:([A-Za-z0-9öäüßÖÄÜß\-]+)$/$1/ ) {
             # 'u:x' find object by CREATOR or MODIFIER
-            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]+$/ ) {
-                my $user = XIMS::User->new( name => $search->[$i] );
-                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
-            }
+            my $user = XIMS::User->new( name => $search->[$i] );
+            $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "(ci_content.created_by_id = " . $search->[$i] . " OR ci_content.last_modified_by_id = " . $search->[$i] . ")";
         }
