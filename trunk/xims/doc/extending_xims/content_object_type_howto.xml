@@ -84,6 +84,10 @@
                 </listitem>
 
                 <listitem>
+                    <para>/tmp/ot_creator_out/lib/XIMS/Importer/FileSystem/Text.pm</para>
+                </listitem>
+
+                <listitem>
                     <para>/tmp/ot_creator_out/lib/XIMS/Text.pm</para>
                 </listitem>
 
@@ -207,8 +211,28 @@
     return 1;
 }</programlisting>
 
-            <para>Object type <literal>Text</literal> is now fully functional but yet open for extensions. For example, with a few lines of code an additional
-            plain text file upload facility can be implemented. See <literal>text::event_store()</literal>, <filename>text_edit.xsl</filename>, and
+            <para>Similar to the generated the Exporter class we have to change the value of the @ISA variable to <literal>XIMS::Importer::FileSystem::Binary</literal>
+            for the generated Importer class. Also, while we need the Text object&#39;s content to be XML-unescaped during exporting, we want it to be
+            XML-escaped during importing. To achieve that, we have to adapt the generated <literal>XIMS::Importer::FileSystem::Text</literal> class accordingly
+            by overriding <literal>handle_data()</literal>:</para>
+
+            <programlisting>use XIMS;
+
+sub handle_data {
+    XIMS::Debug( 5, &#34;called&#34; );
+    my $self = shift;
+    my $location = shift;
+
+    my $object = $self-&#62;SUPER::handle_data( $location );
+
+    my $data = $self-&#62;get_binref( $location );
+    $object-&#62;body( XIMS::xml_escape( $$data ) );
+
+    return $object;
+}</programlisting>
+
+            <para>Object type <literal>Text</literal> is now fully functional but yet open for extensions. For example, one can implement an additional plain
+            text file upload facility with a few lines of code. See <literal>text::event_store()</literal>, <filename>text_edit.xsl</filename>, and
             <filename>text_create.xsl</filename> in the XIMS distribution for an example of that functionality.</para>
         </section>
 
@@ -225,8 +249,8 @@
             content object type that just misses the basic formatting of the CSS objects during event <literal>default</literal>. Copying the templates or the
             whole file of <filename>text_default.xsl</filename> to <filename>css_default.xsl</filename> helps with that.</para>
 
-            <para>We need the CPAN <literal>CSS::Tiny</literal> module to implement CSS validation. If you do not have it installed you may do it by issueing
-            the command</para>
+            <para>We need the CPAN <literal>CSS::Tiny</literal> module to implement CSS validation. If you do not have it installed you may do it by issuing the
+            command</para>
 
             <para><command>perl -MCPAN -e &#39;install CSS::Tiny&#39;</command></para>
 
@@ -299,7 +323,7 @@ sub event_parse_css {
 1;</programlisting>
 
             <para>Now, we a got a working new event. As a final step, we want to make it available through the user interface. Inserting the following fragment
-            before the footer table in <filename>css_default.xsl</filename> provides the neccessary link to activate it in a new window:</para>
+            before the footer table in <filename>css_default.xsl</filename> provides the necessary link to activate it in a new window:</para>
 
             <programlisting>&#60;table align=&#34;center&#34; width=&#34;98.7%&#34; class=&#34;footer&#34;&#62;
     &#60;tr&#62;
