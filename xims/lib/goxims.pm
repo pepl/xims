@@ -91,7 +91,8 @@ sub handler {
     # Big fork here
     #
 
-    my ($app_pm, $cms_pm);
+    my $app_class = 'XIMS::CGI::';
+    my $object_class = 'XIMS::';
 
     if ( $interface_type eq 'content' ) {
         # now we know, that we have to get the content-object
@@ -103,20 +104,21 @@ sub handler {
             return NOT_FOUND;
         }
 
-        $cms_pm = "XIMS::" . $ctxt->object->object_type->name();
+        my $ot_fullname = $ctxt->object->object_type->fullname();
+        $object_class .= $ot_fullname;
 
         # load the object class
-        eval "require $cms_pm;" if $cms_pm;
+        eval "require $object_class;" if $object_class;
         if (  $@ ) {
-            XIMS::Debug( 2, "could not load object class $cms_pm: $@" );
-            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20object%20class%20$cms_pm.");
+            XIMS::Debug( 2, "could not load object class $object_class: $@" );
+            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20object%20class%20$object_class.");
 
             return SERVER_ERROR;
         }
 
         # rebless the object
-        XIMS::Debug( 4, "reblessing object to " . $cms_pm );
-        bless $ctxt->object(), $cms_pm;
+        XIMS::Debug( 4, "reblessing object to " . $object_class );
+        bless $ctxt->object(), $object_class;
 
         # find out if we want to create an object!
         # if goxims finds an 'objtype'-param it assumes that it
@@ -125,16 +127,18 @@ sub handler {
         my $objtype = $args{objtype};
         # my $objtype = $apr->param('objtype');
         if ( defined $objtype and length $objtype ) {
-            XIMS::Debug( 4, "we are creating a new $objtype" );
-            $app_pm = lc( $objtype );
+            XIMS::Debug( 6, "we are creating a new $objtype" );
+            $app_class .= $objtype;
         }
         else {
-            $app_pm = lc( $ctxt->object->object_type->name() );
+            $app_class .= $ot_fullname;
         }
-        $ctxt->properties->application->styleprefix( $app_pm );
+        my $prefix = lc $ot_fullname;
+        $prefix =~ s/::/_/g;
+        $ctxt->properties->application->styleprefix( $prefix );
     }# end 'content' case
     else {
-        $app_pm = $interface_type;
+        $app_class .= $interface_type;
         $ctxt->properties->application->styleprefix( $interface_type );
     }
 
@@ -142,22 +146,21 @@ sub handler {
     # end interface-lookup
     ##
 
-    eval "require $app_pm";
+    eval "require $app_class";
     if ( $@ ) {
-        XIMS::Debug( 2, "could not load application-class $app_pm: $@" );
-        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20application%20class%20$app_pm.");
+        XIMS::Debug( 2, "could not load application-class $app_class: $@" );
+        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20application%20class%20$app_class.");
 
         return SERVER_ERROR;
     }
 
     #instance the application class
-    #if ( my $appclass = $app_pm->new( $r ) ) {
-    if ( my $appclass = $app_pm->new() ) {
-        XIMS::Debug( 4, "application-class $app_pm initiated." );
+    #if ( my $appclass = $app_class->new( $r ) ) {
+    if ( my $appclass = $app_class->new() ) {
+        XIMS::Debug( 4, "application-class $app_class initiated." );
         $appclass->setStylesheetDir( XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/' . $ctxt->session->uilanguage() );
         my $rv = $appclass->run( $ctxt );
-        XIMS::Debug( 4, "application-class $app_pm sucessfully run") if $rv;
-        XIMS::Debug( 4, "goxims finished" );
+        XIMS::Debug( 4, "application-class $app_class sucessfully run") if $rv;
         return OK;
     }
 
