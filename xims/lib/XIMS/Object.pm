@@ -2237,4 +2237,21 @@ sub content_field {
     return 'body';
 }
 
+
+#workflow implementation#
+sub forward {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    return $self->data_provider->updateObject( status => 'pending', id => $self->id() );
+}
+
+sub reject {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    return $self->data_provider->updateObject( status => 'rejected', id => $self->id() );
+}
+#end workflow implementation#
+
 1;
