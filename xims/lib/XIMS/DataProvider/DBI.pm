@@ -727,7 +727,7 @@ sub _get_descendant_sql {
 #    $retval: document_id on success, undef otherwise
 #
 # DESCRIPTION
-#    Fetches document_id corresponding to $param{path} using an recursing algorithm.
+#    Fetches document_id corresponding to $param{path}.
 #
 sub get_object_id_by_path {
     XIMS::Debug( 5, "called" );
@@ -737,45 +737,55 @@ sub get_object_id_by_path {
 
     if ( exists $param{path} and length $param{path} ) {
         return 1 if $param{path} eq '/root' or $param{path} eq '/'; # special case for 'root' since it does not have got a parent_id
-        my @path = split("/", $param{path});
-        my $count = scalar( @path );
-        my $id = 1; # start with objects in the first level of the hierarchy
-        my $symid;
-
-        if ( not length $path[0] ) {
-            shift @path; # remove the root
+        # first, try a lookup via location_path
+        my $location_path_sqlstr = "SELECT d.id FROM ci_documents d, ci_content c WHERE c.document_id=d.id AND c.marked_deleted IS NULL AND location_path = ?";
+        my $data = $self->{dbh}->fetch_select( sql => [ $location_path_sqlstr, $param{path} ] );
+        my $docid = $data->[0]->{'id'};
+        if ( defined $docid ) {
+            $retval = $docid;
         }
+        else {
+            # either we have got a 404 or the path contains a symname
+            my @path = split("/", $param{path});
+            my $count = scalar( @path );
+            my $id = 1; # start with objects in the first level of the hierarchy
+            my $symid;
 
-        # this is rather inefficient, but there seems to be no better way
-        foreach my $location ( @path ) {
-            my @ids = ();
-            map { defined $_ and push(@ids, $_) } ( $id, $symid );
-            my $sqlstr = "SELECT d.id,symname_to_doc_id
-                          FROM ci_documents d, ci_content c
-                          WHERE c.document_id=d.id
-                          AND c.marked_deleted IS NULL
-                          AND location = ?
-                          AND parent_id IN (" .  join(',', map { '?' } @ids ) . ") ";
+            if ( not length $path[0] ) {
+                shift @path; # remove the root
+            }
 
-            my $row;
-            if ( $row = $self->{dbh}->fetch_select_rows(
-                                                    sql => [ $sqlstr,
-                                                             $location,
-                                                             @ids
-                                                           ]
-                                                       )
-                  and $row->[0]->[0] ) {
-                $id = $row->[0]->[0];
-                $symid = $row->[0]->[1];
-                XIMS::Debug( 6, "new id: '$id' (symid '" . (defined $symid ? $symid : '') . "')" );
+            # this is rather inefficient, but there seems to be no better way
+            foreach my $location ( @path ) {
+                my @ids = ();
+                map { defined $_ and push(@ids, $_) } ( $id, $symid );
+                my $sqlstr = "SELECT d.id,symname_to_doc_id
+                              FROM ci_documents d, ci_content c
+                              WHERE c.document_id=d.id
+                              AND c.marked_deleted IS NULL
+                              AND location = ?
+                              AND parent_id IN (" .  join(',', map { '?' } @ids ) . ") ";
+
+                my $row;
+                if ( $row = $self->{dbh}->fetch_select_rows(
+                                                        sql => [ $sqlstr,
+                                                                 $location,
+                                                                 @ids
+                                                               ]
+                                                           )
+                      and $row->[0]->[0] ) {
+                    $id = $row->[0]->[0];
+                    $symid = $row->[0]->[1];
+                    XIMS::Debug( 6, "new id: '$id' (symid '" . (defined $symid ? $symid : '') . "')" );
+                }
+                else {
+                    XIMS::Debug( 3, "could not resolve path, got 404" );
+                    return undef;
+                }
             }
-            else {
-                XIMS::Debug( 3, "empty result set, 404" );
-                return undef;
-            }
+            $retval = $id;
         }
-        $retval = $id;
-        XIMS::Debug( 6, "retval is '$retval'" );
+        XIMS::Debug( 6, "got id '$retval' from path '" . $param{path} . "'" );
     }
     else {
         XIMS::Debug( 2, "need path to fetch the document_id by path" );
