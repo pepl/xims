@@ -8,7 +8,7 @@
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="common.xsl"/>
-    <xsl:import href="../tan_list_create.xsl"/>
+    <xsl:import href="../tan_list_edit.xsl"/>
     <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 </xsl:stylesheet>
 
