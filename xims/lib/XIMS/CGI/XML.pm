@@ -88,9 +88,12 @@ sub event_edit {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
 
-    $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
-
+    # expand the attributes to XML-nodes
     $self->expand_attributes( $ctxt );
+
+    # resolve document_ids to location_path after attributes have been expanded, 
+    # because bxeconfig_id is stored in the attributes
+    $self->resolve_content( $ctxt, [ qw( STYLE_ID CSS_ID SCHEMA_ID BXECONFIG_ID ) ] );
 
     $self->SUPER::event_edit( $ctxt );
     return 0 if $ctxt->properties->application->style() eq 'error';
