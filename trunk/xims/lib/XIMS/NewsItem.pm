@@ -6,36 +6,9 @@ package XIMS::NewsItem;
 
 use strict;
 use vars qw( $VERSION @ISA );
+use XIMS::Document;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Document');
-
-use XIMS::Document;
-
-##
-#
-# SYNOPSIS
-#    XIMS::Document->new( %args )
-#
-# PARAMETER
-#    %args: recognized keys are the fields from ...
-#
-# RETURNS
-#    $document: XIMS::Document instance
-#
-# DESCRIPTION
-#    Constructor
-#
-
-sub new {
-    my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
-
-    $args{object_type_id} = 15 unless defined $args{object_type_id};
-    $args{data_format_id} = 2 unless defined $args{data_format_id};
-
-    return $class->SUPER::new( %args );
-}
 
 1;

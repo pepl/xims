@@ -6,10 +6,11 @@ package XIMS::SiteRoot;
 
 use strict;
 use vars qw( $VERSION @ISA );
+use XIMS::DepartmentRoot;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::DepartmentRoot');
-use XIMS::DepartmentRoot;
+
 ##
 #
 # SYNOPSIS
@@ -30,8 +31,9 @@ sub new {
     my $class = ref( $proto ) || $proto;
     my %args = @_;
 
-    $args{object_type_id} = 19 unless defined $args{object_type_id};
-    $args{data_format_id} = 31 unless defined $args{data_format_id};
+    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'SiteRoot' )->id() unless defined $args{data_format_id};
+    }
 
     return $class->SUPER::new( %args );
 }

@@ -2,27 +2,38 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #$Id$
-
 package XIMS::Portal;
 
-use warnings;
 use strict;
-
-use vars qw( @ISA );
-use XIMS;
+use vars qw( $VERSION @ISA );
 use XIMS::Object;
 
+$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Object');
 
+##
+#
+# SYNOPSIS
+#    XIMS::Portal->new( %args )
+#
+# PARAMETER
+#    %args: recognized keys are the fields from ...
+#
+# RETURNS
+#    $dept: XIMS::Portal instance
+#
+# DESCRIPTION
+#    Constructor
+#
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
     my %args = @_;
 
-    $args{object_type_id} = 18 unless defined $args{object_type_id};
-    $args{data_format_id} = 4 unless defined $args{data_format_id}; 
+    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'XML' )->id() unless defined $args{data_format_id};
+    }
 
     return $class->SUPER::new( %args );
 }
-
 1;

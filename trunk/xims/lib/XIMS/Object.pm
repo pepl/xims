@@ -20,7 +20,6 @@ use XIMS::AbstractClass;
 
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
-use XIMS::User;
 
 #use Data::Dumper;
 
@@ -52,37 +51,56 @@ sub new {
     my $self = bless {}, $class;
     $self->{User} = delete $args{User} if defined $args{User};
     my $real_object;
-    my ( $package, $file, $line ) = caller(1);
-    #warn "Object init called by $package line $line, passed " . Dumper( \%args ) . "\n";
+    if ( defined( $args{path} )) {
+        XIMS::Debug( 5, "fetching object id from path $args{path}." );
 
-    if ( scalar( keys(%args)) > 0 ) {
-        if ( defined( $args{path} )) {
-            XIMS::Debug( 5, "fetching object id from path $args{path}." );
+        # this is bad... fix me later
+        my $document_id = $self->data_provider->get_object_id_by_path( path => $args{path} );
+        $args{document_id} = $document_id;
+    }
 
-            # this is bad... fix me later
-            my $document_id = $self->data_provider->get_object_id_by_path( path => $args{path} );
-            $args{document_id} = $document_id;
+    # check to see if we are using the constructor
+    # to fetch an *existing* object by passing in it's ID
+    if ( defined($args{id}) or defined($args{document_id}) ) {
+        XIMS::Debug( 6, "fetching object by id: $args{id}." ) if defined($args{id});
+        XIMS::Debug( 6, "fetching object by document_id: $args{document_id}." ) if defined($args{document_id});
+        $real_object = $self->data_provider->getObject( %args, properties => \@Default_Properties );
+        if ( defined( $real_object )) {
+            delete $real_object->{'document.id'};
+            $self->data( %{$real_object} );
         }
-
-        # check to see if we are using the constructor
-        # to fetch an *existing* object by passing in it's ID
-        if ( defined($args{id}) or defined($args{document_id}) ) {
-            XIMS::Debug( 6, "fetching object by id: $args{id}." ) if defined($args{id});
-            XIMS::Debug( 6, "fetching object by document_id: $args{document_id}." ) if defined($args{document_id});
-            $real_object = $self->data_provider->getObject( %args, properties => \@Default_Properties );
-            if ( defined( $real_object )) {
-                delete $real_object->{'document.id'};
-                $self->data( %{$real_object} );
-            }
-            else {
-                return undef;
-            }
-        }
-        # otherwise just use the args to load the unserialized (new) object.
         else {
-            $self->data( %args );
+            return undef;
         }
     }
+    # otherwise just use the args to load the unserialized (new) object.
+    else {
+        if ( $class ne 'XIMS::Object' ) {
+            my $otname = ( split /::/, $class )[-1];
+            if ( not $args{object_type_id} ) {
+                my $ot = XIMS::ObjectType->new( name => $otname );
+                if ( $ot ) {
+                    $args{object_type_id} = $ot->id();
+                }
+                else {
+                    XIMS::Debug( 1, "could not resolve object type $otname" );
+                    return undef;
+                }
+            }
+            if ( not $args{data_format_id} ) {
+                my $df = XIMS::DataFormat->new( name => $otname );
+                if ( $df ) {
+                    $args{data_format_id} = $df->id();
+                }
+                else {
+                    XIMS::Debug( 4, "using 'Binary' as data format fallback" );
+                    $args{data_format_id} = XIMS::DataFormat->new( name => 'Binary' )->id();
+                }
+            }
+        }
+        $self->data( %args );
+    }
+
     return $self;
 }
 
@@ -578,7 +596,7 @@ sub attribute {
     my %attr = @_;
     my $text = $self->attributes();
 
-    if ( length $text ) {
+    if ( $text and length $text ) {
         my %attributes = ( $text =~ /([^;\=]+)\=([^\;]+)/g );
         foreach my $key ( keys %attr ) {
             $attributes{$key} = $attr{$key};
@@ -983,7 +1001,7 @@ sub content_field {
     }
     # pepl: departmentroot portlet info is stored in its body
     # return undef if $df->name() eq 'Container';
-    return 'binfile' if ( $df->mime_type =~ /^(application|image)\//i and $df->mime_type !~ /container/i );
+    return 'binfile' if ( $df->mime_type and $df->mime_type =~ /^(application|image)\//i and $df->mime_type !~ /container/i );
     return 'body';
 }
 

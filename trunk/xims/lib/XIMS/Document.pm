@@ -10,17 +10,18 @@ use vars qw( $VERSION @ISA );
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 use XIMS;
 use XIMS::Object;
+use XIMS::DataFormat;
 use XIMS::Entities qw(decode);
 @ISA = ('XIMS::Object');
-
 
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
     my %args = @_;
 
-    $args{object_type_id} = 2 unless defined $args{object_type_id};
-    $args{data_format_id} = 2 unless defined $args{data_format_id};
+    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'HTML' )->id() unless defined $args{data_format_id};
+    }
 
     return $class->SUPER::new( %args );
 }

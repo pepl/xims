@@ -4,8 +4,8 @@
 # $Id$
 package XIMS::AnonDiscussionForum;
 
-use vars qw( $VERSION @ISA );
 use strict;
+use vars qw( $VERSION @ISA );
 use XIMS::Folder;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
@@ -26,11 +26,13 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 #    Constructor
 #
 sub new {
-    my $class = shift;
+    my $proto = shift;
+    my $class = ref( $proto ) || $proto;
     my %args = @_;
 
-    $args{object_type_id} = 13 unless defined( $args{object_type_id} );
-    $args{data_format_id} = 28 unless defined $args{data_format_id}; 
+    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'AnonDiscussionForum' )->id() unless defined $args{data_format_id};
+    }
 
     return $class->SUPER::new( %args );
 }
