@@ -139,7 +139,7 @@ sub import {
     # check if the same location already exists in the current container
     my $op = $object->parent;
     my $parent = $op ? $op : $self->parent;
-    if ( $parent->children( location => $object->location, marked_deleted => undef )->getLength() ) {
+    if ( $parent->children( location => $object->location, marked_deleted => undef ) ) {
         # overwrite the existing document, if we are told to do so
         if ( $updateexisting ) {
             my $oldobject = XIMS::Object->new( path => $parent->location_path() . '/' . $object->location(), marked_deleted => undef );
