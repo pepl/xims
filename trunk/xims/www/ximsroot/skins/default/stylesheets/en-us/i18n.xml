@@ -185,5 +185,13 @@
 <!-- Begin users_create_update -->
 <Grant_role>Grant Role</Grant_role>
 <!-- End users_create_update-->
+<!-- Begin user_bookmarks -->
+<Path>Path</Path>
+<Bookmarks>Bookmarks</Bookmarks>
+<Bookmark>Bookmark</Bookmark>
+<default_bookmark>default bookmark</default_bookmark>
+<Set_as>Set as</Set_as>
+<set_as>set as</set_as>
+<!-- End user_bookmarks-->
 </l>
 

@@ -185,5 +185,13 @@
 <!-- Begin users_create_update -->
 <Grant_role>Rolle zuweisen</Grant_role>
 <!-- End users_create_update-->
+<!-- Begin user_bookmarks -->
+<Path>Pfad</Path>
+<Bookmarks>Lesezeichen</Bookmarks>
+<Bookmark>Lesezeichen</Bookmark>
+<default_bookmark>Standard Lesezeichen</default_bookmark>
+<Set_as>Setze als</Set_as>
+<set_as>setze als</set_as>
+<!-- End user_bookmarks-->
 </l>
 
