@@ -16,7 +16,7 @@ use XIMS::AbstractClass;
 sub fields {
     return @Fields;
 }
- 
+
 BEGIN {
     @Fields = (
                 'properties',
@@ -25,6 +25,7 @@ BEGIN {
                 'userlist', # used for privilege managment
                 'object', # used for content-object-management
                 'objectlist', # used for content-object-listings like search results or site maps
+                'userobjectlist', # used for content-object-listings with user context
                 'parent', # needed during object creation
                 'session',
                 'cookie',
@@ -41,7 +42,7 @@ sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
     my %args = @_;
-    
+
     my $self = bless {}, $class;
 
     if ( scalar( keys(%args)) > 0 ) {
@@ -98,8 +99,8 @@ use Class::MethodMaker
                     # objectid    to get targetchildren for contentbrowsing
                     # objecttypes to filter specific objecttypes (useful for browsing for special objecttypes)
                     # level       to get more flexible containerviews or sitemaps
-                    # addinfo     to get info on levels of hierarchy of chidlren, 
-                    #             timestamp of last modified child, and total count of 
+                    # addinfo     to get info on levels of hierarchy of chidlren,
+                    #             timestamp of last modified child, and total count of
                     #             children
                     # columns     to select columns other than the default ones (do we want this?)
 

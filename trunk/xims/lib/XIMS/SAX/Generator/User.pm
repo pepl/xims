@@ -11,4 +11,22 @@ use vars qw(@ISA);
 #use Data::Dumper;
 use XIMS::SAX::Generator::Users;
 
+sub prepare {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $ctxt = shift;
+
+    my $doc_data = $self->SUPER::prepare( $ctxt );
+    if ( $ctxt->userobjectlist() ) {
+        $doc_data->{userobjectlist}->{objectlist} = { object => $ctxt->userobjectlist() };
+    }
+
+    my @object_types = $ctxt->data_provider->object_types();
+    my @data_formats = $ctxt->data_provider->data_formats();
+    $doc_data->{object_types} = {object_type => \@object_types};
+    $doc_data->{data_formats} = {data_format => \@data_formats};
+
+    return $doc_data;
+}
+
 1;
