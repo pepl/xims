@@ -30,11 +30,11 @@ sub new {
                     $self = bless { User => $user}, $class;
                 }
                 else {
-                    XIMS::Debug( 2, "user could not be found in xims-db" );
+                    XIMS::Debug( 3, "user could not be found in xims-db" );
                 }
             }
             else {
-                XIMS::Debug( 2, "could not authenticate" );
+                XIMS::Debug( 3, "could not authenticate" );
             }
         }
         else {
