@@ -108,7 +108,10 @@ sub handle_data {
             XIMS::Debug( 6, "found n = " . scalar( @children ) . " child objects" );
             my $location_path;
             foreach my $o ( @children ) {
-                if ( $self->{Export} ) {
+                if ( $o->data_format->name() eq 'URL' ) {
+                    $location_path = $o->location();
+                }
+                elsif ( $self->{Export} ) {
                     XIMS::RESOLVERELTOSITEROOTS() eq '1' ? $location_path = $o->location_path_relative()
                                                          : $location_path = XIMS::PUBROOT_URL()
                                                            . $o->location_path_relative();
