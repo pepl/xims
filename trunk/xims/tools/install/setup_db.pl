@@ -17,7 +17,7 @@ use XIMS::Term;
 use Getopt::Std;
 
 my %args;
-getopts('hd:u:p:n:t:', \%args);
+getopts('hl:f:b:o:d:u:p:n:t:', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "Database Setup Tool" );
@@ -25,7 +25,7 @@ print $term->banner( "Database Setup Tool" );
 if ( $args{h} ) {
     print qq*
 
-  Usage: $0 [-h|-u user -p -pwd -n dbname -t dbtype [-b host [-o port] -f path] ]
+  Usage: $0 [-h|-u user -p -pwd -n dbname -t dbtype [-b host [-o port] -f path] -l logfile ]
         -u The name of your database user to connect to the XIMS
            database
         -p The password of your database user to connect to the XIMS
@@ -36,6 +36,7 @@ if ( $args{h} ) {
         -b The name of the database host if you connect to a remote machine (optional for Pg)
         -o The port number of the database listener at the remote machine, omit for default (Pg if -b is needed)
         -f Path to your copy of 'tablefunc.sql' (Pg only)
+        -l Path to the setup_db.pl logfile
         -h prints this screen
 
 *;
@@ -78,9 +79,9 @@ my %conf_prompts = (
 );
 
 if ( $args{u}
-        and $args{p}
         and $args{n}
-        and $args{t} ) {
+        and $args{t}
+        and $args{l} ) {
     # command line mode
     print "Using command line arguments to set up db.\n";
     $Conf{DBUser} = $args{u};
@@ -90,6 +91,7 @@ if ( $args{u}
     $Conf{DBhost} = $args{b};
     $Conf{DBport} = $args{o};
     $Conf{DBPgtablefunc} = $args{f};
+    $Conf{log_file} = $args{l};
 }
 else {
     # interactive mode
@@ -118,17 +120,16 @@ else {
                               error => 'Please specify a path to your copy of "tablefunc.sql"',
                               default => PgFindTableFunc(),
                             } );
-
     }
-}
-
-$installer->prompt( { text  => "Enter a log file name\n",
+    $installer->prompt( { text  => "Enter a log file name\n",
                       var   => \$Conf{log_file},
                       re    => '\w+',
                       error => 'No nutty characters, just a simple file name, please.',
                       default => 'sql/setup_db.log',
                     }
                   );
+}
+
 
 if ( $Conf{DBhost} and length $Conf{DBhost} ) {
     print "\nYou specified a database host. The postmaster on that host\n".
@@ -147,7 +148,7 @@ elsif ( $Conf{DBdsn} eq 'Pg' ) {
     my $current_user = getpwuid($>);
     if ( $current_user ne $Conf{DBUser} ) {
         if ( $> == 0 ) {
-            @args = ('su', $Conf{DBUser}, join(' ', @args));
+            @args = ('su', $Conf{DBUser}, '-c', join(' ', @args));
         }
         else {
             warn "\n\n[WARNING] You are neither logged in as root nor the database user you specified.\n",
