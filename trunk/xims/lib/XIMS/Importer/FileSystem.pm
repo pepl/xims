@@ -49,7 +49,7 @@ sub parent_by_location {
     my $plocation = $self->parent->location_path();
     $plocation .= '/' . $dirname if ( length $dirname and $dirname ne '.' );
 
-    return XIMS::Object->new( path => $plocation );
+    return XIMS::Object->new( path => lc($plocation) );
 }
 
 sub resolve_location {
