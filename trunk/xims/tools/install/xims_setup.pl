@@ -1,35 +1,26 @@
 #!/usr/bin/perl -w
-
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 
 use strict;
+use warnings;
 
 my $prefix = $ENV{'XIMS_PREFIX'} || '/usr/local';
-
 die "\nWhere am I?\n\nPlease set the XIMS_PREFIX environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$prefix/xims/Makefile";
+use lib ($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/lib",($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/tools/lib";
 
-use lib qw( lib ../lib $prefix/xims/lib);
 use XIMS::Installer;
+
+use XIMS::Term;
 use Getopt::Std;
 
-#use Data::Dumper;
-
 my %args;
-getopts('hca:u:p:n:t:b:o:x:', \%args);
+getopts('hcd:a:u:p:n:t:b:o:x:', \%args);
 
-print q*
-  __  _____ __  __ ____
-  \ \/ /_ _|  \/  / ___|
-   \  / | || |\/| \___ \
-   /  \ | || |  | |___) |
-  /_/\_\___|_|  |_|____/
-
-  Setup Tool
-
-*;
+my $term = XIMS::Term->new( debuglevel => $args{d} );
+print $term->banner( "Setup Tool" );
 
 if ( $args{h} ) {
     print qq*
@@ -109,7 +100,7 @@ my %conf_prompts = (
 );
 
 if (     $args{a} and -f $args{a}
-     and $args{u} 
+     and $args{u}
      and $args{p}
      and $args{n}
      and ($args{t} eq 'Pg' or $args{t} eq 'Oracle')
@@ -184,7 +175,7 @@ if ( $Conf{DBdsn} eq 'Pg' ) {
     }
     else {
  	print "  ok\n"
-    }	
+    }
 }
 elsif ( $Conf{DBdsn} eq 'Oracle' ) {
     print "\n Checking for DBD::Oracle...\n";
