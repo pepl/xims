@@ -477,8 +477,10 @@ sub find_object_id {
     $columns ||= 'ci_content.id';
 
     my %param;
-    $param{order} = delete $args{order};
-    $param{order} ||= 'ci_content.last_modification_timestamp DESC';
+    unless ( delete $args{noorder} ) {
+        $param{order} = delete $args{order};
+        $param{order} ||= 'ci_content.last_modification_timestamp DESC';
+    }
 
     $param{criteria} = delete $args{criteria};
     $param{criteria} = 'ci_content.document_id = ci_documents.id AND ' . $param{criteria};
@@ -497,7 +499,7 @@ sub find_object_id {
 
     my $start_here = delete $args{start_here};
     if ( defined $start_here and ref $start_here and $start_here->id() ) {
-        $param{criteria} .= "AND location_path LIKE '". $start_here->location_path() . "%'";
+        $param{criteria} .= " AND location_path LIKE '". $start_here->location_path() . "%'";
     }
 
     if ( scalar keys %args > 0 ) {
@@ -524,7 +526,7 @@ sub find_object_id_count {
     my %args = @_;
     $args{columns} = 'count(DISTINCT ci_content.id) AS id';
 
-    my $ids = $self->find_object_id( %args );
+    my $ids = $self->find_object_id( %args, noorder => 1 );
     return $ids->[0] if $ids;
 }
 
