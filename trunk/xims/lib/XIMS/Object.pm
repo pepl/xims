@@ -352,6 +352,32 @@ sub child_count {
     return scalar ( @child_ids );
 }
 
+
+##
+#
+# SYNOPSIS
+#    my $count = $object->child_count_granted( %args );
+#
+# PARAMETER
+#    %args     : Same as for descendants_granted()
+#
+# RETURNS
+#    $count    : Number of granted children in the content hierarchy
+#
+# DESCRIPTION
+#
+#    Returns number of children granted to $args{User}. If that is not given, $object->User() will be used.
+#
+sub child_count_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    my $iterator = $self->children_granted( @_ );
+    return undef unless defined $iterator;
+    return $iterator->getLength();
+}
+
+
 ##
 #
 # SYNOPSIS
@@ -578,6 +604,32 @@ sub descendant_count {
 
     return ( scalar( @doc_ids ), $lvls[-1] - $lvls[0] + 1 );
 }
+
+
+##
+#
+# SYNOPSIS
+#    my $count = $object->descendant_count_granted( %args );
+#
+# PARAMETER
+#    %args     : Same as for descendants_granted()
+#
+# RETURNS
+#    $count    : Number of granted descendants in the content hierarchy
+#
+# DESCRIPTION
+#
+#    Returns number of descendants granted to $args{User}. If that is not given, $object->User() will be used.
+#
+sub descendant_count_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    my $iterator = $self->descendants_granted( @_ );
+    return undef unless defined $iterator;
+    return $iterator->getLength();
+}
+
 
 ##
 #
