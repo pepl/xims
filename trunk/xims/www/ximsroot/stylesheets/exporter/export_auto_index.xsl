@@ -57,7 +57,7 @@
             <body>
                 <h1><xsl:value-of select="title"/></h1>
                 <ul>
-                    <xsl:apply-templates select="children/object">
+                    <xsl:apply-templates select="children/object[published=1]">
                         <xsl:sort select="position"
                         order="ascending"
                         data-type="number"/>
