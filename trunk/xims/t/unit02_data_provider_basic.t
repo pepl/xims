@@ -8,8 +8,11 @@ BEGIN {
     plan tests => 26;
 }
 
-my $dp = XIMS::DataProvider->new();
-
+my $dp;
+eval {
+    $dp = XIMS::DataProvider->new();
+};
+unless ( $@ ) { ok( 1 ); }
 ok( $dp );
 
 # test the AUTOLOAD stuff
