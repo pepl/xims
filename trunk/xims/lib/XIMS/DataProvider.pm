@@ -54,7 +54,7 @@ sub request_factory {
                ) {
                 $conditions{$outname} = delete $properties{$outname};
             }
-            elsif ($k eq 'document_id' and $method_type eq 'update') {
+            elsif ($k eq 'document_id' and $method_type eq 'update' and $r_type eq 'Object') {
                 $conditions{'document.id'} = $request_params{$k};
             }
         }
@@ -65,9 +65,9 @@ sub request_factory {
             $properties{$prop} = undef;
         }
 
-        if ( $method_type eq 'update' ) {
+        #if ( $method_type eq 'update' ) {
             #warn  "UPDATE properties: " . Dumper( \%properties ) . "\nconditions: ". Dumper( \%conditions );
-        }
+        #}
     }
     else {
         foreach my $k ( keys( %request_params )) {
