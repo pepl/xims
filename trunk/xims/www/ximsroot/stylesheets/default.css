@@ -208,6 +208,20 @@ img {
 	border: 0px;
 }
 
+/* nathalie sequeira */
+img.rightfloat {
+    caption:Float Right;
+    float:right;
+    padding:10px;
+    padding-right:0;
+}
+img.leftfloat {
+    caption:Float Left;
+    float:left;
+    padding:10px;
+    padding-left:0;
+}
+
 /* Table elements */
 /* für col, colgroup, tbody und tr wurden keine Styles definiert. */
 
