@@ -39,6 +39,8 @@ sub registerEvents {
           create
           edit
           store
+          trahscan
+          trashcan_prompt
           delete
           delete_prompt
           obj_acllist
