@@ -368,9 +368,17 @@ sub create {
 
     $self->{User} ||= $user;
 
-
     my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
     $self->position( $max_position + 1 );
+
+    my $parent= XIMS::Object->new( id=>$self->parent_id() );
+
+    if ( ($parent->object_type->name() eq 'DepartmentRoot') or ($parent->object_type->name() eq 'SiteRoot') ) {
+            $self->department_id( $parent->id() );
+    }
+    else {
+            $self->department_id( $parent->department_id() );
+    }
 
     my $now = $self->data_provider->db_now();
 
