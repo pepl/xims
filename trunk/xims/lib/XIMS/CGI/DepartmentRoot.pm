@@ -7,7 +7,7 @@ package XIMS::CGI::DepartmentRoot;
 use strict;
 use vars qw( $VERSION @params @ISA);
 
-use XIMS::CGI;
+use XIMS::CGI::Folder;
 
 # #############################################################################
 # GLOBAL SETTINGS
@@ -15,7 +15,7 @@ use XIMS::CGI;
 # version string (for makemaker, so don't touch!)
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
-@ISA = qw( XIMS::CGI );
+@ISA = qw( XIMS::CGI::Folder );
 
 sub registerEvents {
     XIMS::Debug( 5, "called");
@@ -46,55 +46,14 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
-sub event_default {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    return 0 if $self->SUPER::event_default( $ctxt );
-
-    $ctxt->properties->content->getformatsandtypes( 1 );
-
-    return 0;
-}
-
 sub event_edit {
-    my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
 
-    $self->expand_attributes( $ctxt );
     $self->expand_bodydeptinfo( $ctxt );
     $self->resolve_content( $ctxt, [ qw( STYLE_ID IMAGE_ID ) ] );
 
     return $self->SUPER::event_edit( $ctxt );
-}
-
-
-sub event_store {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    return 0 unless $self->init_store_object( $ctxt )
-                    and defined $ctxt->object();
-
-    my $object = $ctxt->object();
-    my $autoindex  = $self->param( 'autoindex' );
-    if ( defined $autoindex ) {
-        XIMS::Debug( 6, "autoindex: $autoindex" );
-        if ( $autoindex eq 'true' ) {
-            $object->attribute( autoindex => '1' );
-        }
-        elsif ( $autoindex eq 'false' ) {
-            $object->attribute( autoindex => '0' );
-        }
-    }
-
-    my $defaultprivmask  = $self->param( 'defaultprivmask' );
-    if ( defined $defaultprivmask ) {
-        XIMS::Debug( 6, "defaultprivmask: $defaultprivmask" );
-        $object->attribute( defaultprivmask => $defaultprivmask );
-    }
-
-    return $self->SUPER::event_store( $ctxt );
 }
 
 # hmmm, really needed?
