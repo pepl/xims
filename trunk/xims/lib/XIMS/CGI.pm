@@ -44,7 +44,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 # first we register the events we handle
 sub registerEvents {
     my $self = shift;
-    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', @_ );
+    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', 'prettyprint', @_ );
 }
 
 ############################################################################
@@ -1473,6 +1473,33 @@ sub event_test_wellformedness {
 
     $ctxt->properties->application->styleprefix( "common" );
     $ctxt->properties->application->style( "message_window_plain" );
+    return 0;
+}
+
+sub event_prettyprint {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $body = XIMS::decode( $self->param('body') );
+    $body ||= $ctxt->object->body();
+
+    print $self->header( -type => 'text/plain', -charset => (XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8') );
+    $self->skipSerialization(1);
+
+    my $doc = $ctxt->object->balanced_string( $body );
+    if ( defined $doc and $doc->isa('XML::LibXML::DocumentFragment') ) {
+        # $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' ); does not work
+        # correctly for whatever reasons - we have to manually decode again then.
+        # Format 2 deals better with the one-line fragment produced by
+        # HTMLArea's serializer with Gecko
+        my $pprinted = XIMS::Entities::decode( XIMS::decode( $doc->toString(2) ) );
+        $pprinted =~ s/\n\s*\n/\n/g; # remove duplicate linebreaks added by toString(2)
+        print $pprinted;
+    }
+    else {
+        $self->setPanicMsg( "Parse Failure. Could not prettyprint." );
+        return -4;
+    }
     return 0;
 }
 
