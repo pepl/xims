@@ -83,15 +83,6 @@ sub event_publish {
     return 0;
 }
 
-sub event_publish_prompt {
-    my ( $self, $ctxt ) = @_;
-
-    $self->SUPER::event_publish_prompt( $ctxt );
-    $ctxt->properties->application->styleprefix( 'anondiscussionforum_publish' );
-
-    return 0;
-}
-
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
