@@ -10,8 +10,6 @@ use vars qw($VERSION @Fields @ISA);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = qw( XIMS::AbstractClass );
 
-use Text::Iconv;
-
 sub resource_type {
     return 'QuestionnaireResult';
 }
@@ -34,7 +32,7 @@ sub store {
 
     $self->answer_timestamp( $self->data_provider->db_now() );
     $self->id();
-    $self->answer( _decode( $self->answer() ) );
+    $self->answer( XIMS::decode( $self->answer() ) );
     my $id = $self->data_provider->createQuestionnaireResult( $self->data());
     $self->id( $id );
 
@@ -48,7 +46,7 @@ sub store {
 #
 # PARAMETER
 #    $questionnaire_id: Document-ID of the questionnaire
-#    $last_question   : number of the last question that has 
+#    $last_question   : number of the last question that has
 #                       to be answered (= total number of questions)
 #
 # RETURNS
@@ -57,16 +55,16 @@ sub store {
 #    $total_count-$valid_count: number of invalid answered questionnaires
 #
 # DESCRIPTION
-#   
+#
 sub get_result_count {
     XIMS::Debug ( 5, "called" );
     my $self = shift;
     my $questionnaire_id = shift;
     my $last_question = shift;
-    my $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id GROUP BY tan ) sub1";
-    my $total_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
-    $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$last_question' GROUP BY tan) sub1";
-    my $valid_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
+    my $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = ? GROUP BY tan ) sub1";
+    my $total_count = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id ] );
+    $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = ? AND question_id = ? GROUP BY tan) sub1";
+    my $valid_count = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id, $last_question ] );
 
     return ($total_count, $valid_count, $total_count - $valid_count);
 }
@@ -93,8 +91,8 @@ sub get_answer_count {
     my $question_id = shift;
     my $answer = shift;
 
-    my $sql = "SELECT count(*) AS answercount FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$question_id' AND answer='$answer' ";
-    my $answer_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
+    my $sql = "SELECT count(*) AS answercount FROM ci_questionnaire_results WHERE document_id = ? AND question_id = ? AND answer= ? ";
+    my $answer_count = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id, $question_id, $answer ] );
 
     return $answer_count;
 }
@@ -120,10 +118,10 @@ sub get_answers {
     my $questionnaire_id = shift;
     my $question_id = shift;
 
-    my $sql = "SELECT answer, count(answer) AS count FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$question_id' GROUP BY answer";
-    my $answers = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
+    my $sql = "SELECT answer, count(answer) AS count FROM ci_questionnaire_results WHERE document_id = ? AND question_id = ? GROUP BY answer";
+    my $answers = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $questionnaire_id, $question_id] );
     foreach my $answer_text ( @{$answers} ) {
-        ${$answer_text}{'answer'} = _encode( ${$answer_text}{'answer'} );
+        ${$answer_text}{'answer'} = XIMS::encode( ${$answer_text}{'answer'} );
     }
 
     return $answers;
@@ -143,7 +141,7 @@ sub get_answers {
 #
 # DESCRIPTION
 #    Before a question can be answered we check if the question has not been answered before
-#    This function returns the ID of the last question the TAN has answered. 
+#    This function returns the ID of the last question the TAN has answered.
 #    The answering of the questionnaire continues at the next question.
 #    See XIMS::Questionnaire::set_answer_data()
 #
@@ -153,28 +151,12 @@ sub get_last_answer {
     my $questionnaire_id = shift;
     my $tan = shift;
 
-    my $sql = "select max(to_number(question_id,'999999')) AS lid FROM ci_questionnaire_results WHERE document_id = '$questionnaire_id' AND tan='$tan' AND answer = 'ANSWERED'";
-XIMS::Debug(5,">>>> ".$sql);
-    my $last_answered_question = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
+    my $sql = "SELECT max(to_number(question_id,'999999')) AS lid FROM ci_questionnaire_results WHERE document_id = ? AND tan = ? AND answer = 'ANSWERED'";
+    my $last_answered_question = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id, $tan ] );
     if ( !( $last_answered_question) ) {
         $last_answered_question = 0;
     }
     return $last_answered_question;
-}
-
-
-sub _encode {
-    my $string = shift;
-    my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
-    $string = $converter->convert($string) if defined $string;
-    return $string;
-}
-
-sub _decode {
-    my $string = shift;
-    my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
-    $string = $converter->convert($string) if defined $string;
-    return $string;
 }
 
 1;

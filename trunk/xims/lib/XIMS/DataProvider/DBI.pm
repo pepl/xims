@@ -615,12 +615,14 @@ sub get_descendant_infos {
     return undef unless exists $args{parent_id};
 
     my $desc_subquery = $self->_get_descendant_sql( $args{parent_id}, undef, undef, 1 );
-    my $query = 'SELECT count(last_modification_timestamp) AS count, max(last_modification_timestamp) AS max FROM ci_content WHERE document_id IN ( ' . $desc_subquery . ')';
+    my $desc_subquery_sql = shift @{$desc_subquery};
+    my $query = [ 'SELECT count(last_modification_timestamp) AS count, max(last_modification_timestamp) AS max FROM ci_content WHERE document_id IN ( ' . $desc_subquery_sql . ')', @{$desc_subquery} ];
     my $data = $self->{dbh}->fetch_select( sql => $query );
     my @rv = ( @{$data}[0]->{count}, @{$data}[0]->{max} ); # NOTE: assumes that there is one content_child per document;
                                                            #       may have to be changed in future!
-    return  \@rv ;
+    return \@rv ;
 }
+
 
 sub location_path {
     my $self = shift;
@@ -668,21 +670,22 @@ sub _sqlwhere_from_hashgroup {
 ##
 #
 # SYNOPSIS
-#    $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel] );
+#    my $query = $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel, $noorder] );
 #
 # PARAMETER
 #    $parent_id            :  document_id of the parent object to descend from
 #    $maxlevel  (optional) :  maxlevel of recursion, if unspecified or 0 means no recursion limit
 #    $getlevel  (optional) :  per default, only document_id is returned, if $getlevel is specified,
 #                             the level property will be included in the query
+#    $noorder   (optional) :  if given, siblings are not ordered by position
 #
 # RETURNS
-#    $query : Hierarchical SQL query including ci_documents.id or
-#             level and ci_documents.id properties
+#    $query : Reference to an Array, including the hierarchical SQL query with ci_documents.id, or
+#             level and ci_documents.id at index '0' and bind params at the following indices
 #
 # DESCRIPTION
 #    Helper method for get_descendant_id_level() and get_descendant_infos()
-#    Returns hierarchical SQL query string
+#    Returns reference to an array which may be passed to $dbh->fetch_select( sql => $query ) for example
 #
 sub _get_descendant_sql {
     my $self = shift;
@@ -701,18 +704,22 @@ sub _get_descendant_sql {
         # PostgreSQL 7.3.x contrib-tablefunction connectby() does not support ordering of siblings :-|...
         #
         if ( DBD::Pg::_pg_server_version( $self->dbh ) =~ '7.3' ) {
-            return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', '". $parent_id . "', " . $maxlevel . ") AS t(id int, parent_id int, lvl int) WHERE t.id <> t.parent_id";
+            return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', '?', ?) AS t(id int, parent_id int, lvl int) WHERE t.id <> t.parent_id", $parent_id, $maxlevel];
         }
         else {
-            return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', '". $parent_id . "', " . $maxlevel . ") AS t(id int, parent_id int, lvl int, pos int) WHERE t.id <> t.parent_id $orderby";
+            return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', '?', ?) AS t(id int, parent_id int, lvl int, pos int) WHERE t.id <> t.parent_id $orderby", $parent_id, $maxlevel];
         }
     }
     elsif ( $self->{RDBMSClass} eq 'Oracle' ) {
+        my @binds = ( $parent_id );
         $levelproperty = 'level-1 lvl,' if defined $getlevel;
         my $levelcond = '';
-        $levelcond = "AND level <= " . ($maxlevel + 1) if defined $maxlevel and $maxlevel > 0;
+        if ( defined $maxlevel and $maxlevel > 0 ) {
+            $levelcond = "AND level <= ?";
+            push( @binds, $maxlevel + 1 );
+        }
         $orderby = "ORDER SIBLINGS BY position" unless defined $noorder;
-        return "SELECT $levelproperty id FROM ci_documents WHERE id <> " . $parent_id . " $levelcond START WITH id = " . $parent_id . " CONNECT BY PRIOR id = parent_id $orderby";
+        return ["SELECT $levelproperty id FROM ci_documents WHERE id <> ? $levelcond START WITH id = ? CONNECT BY PRIOR id = parent_id $orderby", @binds, $parent_id];
     }
     else {
         XIMS::Debug( 1, "Unsupported RDBMSClass!" );
