@@ -605,6 +605,33 @@ sub get_descendant_infos {
     return  \@rv ;
 }
 
+sub location_path {
+    my $self = shift;
+    my $obj;
+
+    if ( scalar( @_ ) == 1 and ref( $_[0] ) ) {
+        $obj = shift;
+    }
+    else {
+        $obj = XIMS::Object->new( @_ );
+        return undef unless $obj and $obj->id;
+    }
+
+    my $data = $self->{dbh}->fetch_select( table   =>  'ci_documents',
+                                           columns =>  'location_path',
+                                           criteria => { id => $obj->document_id() } );
+
+    return undef unless ref( $data ) and scalar( @{$data} > 0);
+    return $data->[0]->{location_path};
+}
+
+sub location_path_relative {
+    my $self = shift;
+    my $relative_path = $self->location_path( @_ );
+    # snip off the site portion of the path ('/site/somepath')
+    $relative_path =~ s/^\/[^\/]+//;
+    return $relative_path;
+}
 
 # mini request factory to allow compatibility of 'property => value' conditions
 # currently used by find_object_ids and find_object_id_count

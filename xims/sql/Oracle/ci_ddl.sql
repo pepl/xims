@@ -41,6 +41,9 @@
 
 @@default_data.sql
 
+-- Functions and triggers for location_path denormalization
+@@ci_util_location_path.sql
+
 -- commit;
 -- PROMPT Changes have not been commited yet. Type commit; to do so!
 commit;
