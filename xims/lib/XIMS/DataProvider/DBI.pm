@@ -539,8 +539,14 @@ sub get_descendant_id_level {
     my $query = $self->_get_descendant_sql( $args{parent_id}, $maxlevel, 1 );
     return undef unless $query;
 
+    my %param;
+    my $limit = $args{limit};
+    $param{limit} = $limit+1 if defined $limit;
+    my $offset = $args{offset};
+    $param{offset} = $offset if defined $offset;
+
     #warn "query: $query";
-    my $data = $self->{dbh}->fetch_select( sql => $query );
+    my $data = $self->{dbh}->fetch_select( sql => $query, %param );
 
     my @ids;
     my @lvls;
