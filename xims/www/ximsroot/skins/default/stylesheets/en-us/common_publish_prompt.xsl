@@ -22,7 +22,7 @@
             <head>
                 <title>
                     Confirm Publishing - XIMS
-                </title> 
+                </title>
                 <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
                 <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
                 <script type="text/javascript">
@@ -60,7 +60,7 @@
                     <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
                         <tr>
                             <td align="center">
-                                
+
                                 <br />
                                 <!-- begin widget table -->
                                 <table width="350" cellpadding="2" cellspacing="2" border="0">
@@ -73,7 +73,7 @@
                                     <tr>
                                         <td>
                                             <strong>
-                                                Status: This object is 
+                                                Status: This object is
                                                 <xsl:if test="published/text()!='1'">
                                                     <xsl:text> NOT </xsl:text>
                                                 </xsl:if>
@@ -121,7 +121,7 @@
 
                                     <tr>
                                         <td>
-                                            Click 
+                                            Click
                                             <xsl:choose>
                                                 <xsl:when test="published/text()='1'">
                                                     'Republish'
@@ -133,7 +133,7 @@
                                             to export the current object,
                                             <xsl:if test="published/text()='1'">
                                                 'Unpublish' to remove the object from the live server,
-                                            </xsl:if> 
+                                            </xsl:if>
                                             or 'Cancel' to return to the previous screen.
                                         </td>
                                     </tr>
@@ -212,7 +212,7 @@
                                                         <td>
                                                             <input name="unpublish" type="submit" value="Unpublish" class="control"/>
                                                         </td>
-                                                    </xsl:if> 
+                                                    </xsl:if>
                                                     <td>
                                                         <input name="default" type="button" value="Cancel" onClick="javascript:history.go(-1)" class="control"/>
                                                     </td>
@@ -274,14 +274,16 @@
                         <xsl:when test="string-length(location) &lt;= 0">
                             <xsl:attribute name="disabled">true</xsl:attribute>
                         </xsl:when>
-                        <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &gt; concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
+                        <xsl:when test="published/text() = '1' and
+concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &gt; concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                             <xsl:attribute name="checked">true</xsl:attribute>
                         </xsl:when>
-                        <xsl:when test="published != 1">
-                            <xsl:attribute name="onClick">document.forms[1].autopublishlinks.checked = 1</xsl:attribute>
-                        </xsl:when>
-                        <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
+                        <xsl:when test="published/text() = '1' and
+concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                             <xsl:attribute name="disabled">true</xsl:attribute>
+                        </xsl:when>
+                        <xsl:when test="published/text() != '1'">
+                            <xsl:attribute name="onClick">document.forms[1].autopublishlinks.checked = 1</xsl:attribute>
                         </xsl:when>
                    </xsl:choose>
                 </input>
@@ -305,13 +307,13 @@
                 </a>
                 <br/>
 
-                This 
+                This
                 <xsl:choose>
                     <xsl:when test="string-length(location) &lt;= 0">
                         <xsl:text> is not a XIMS object or could not be resolved.</xsl:text>
                     </xsl:when>
-                    <xsl:when test="published != 1">
-                        <xsl:text> object has not been published yet.</xsl:text>
+                    <xsl:when test="published/text() != '1'">
+                        <xsl:text> object is not currently published.</xsl:text>
                     </xsl:when>
                     <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                        <xsl:text> object has last been published at </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/><xsl:text> and not modified since then.</xsl:text>
