@@ -396,7 +396,8 @@ sub ancestors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     if ( defined $self->{Ancestors} and $self->{_cached_parent_id} == $self->{parent_id} ) {
-        return $self->{Ancestors};
+        my @ancs = @{$self->{Ancestors}};
+        return \@ancs;
     }
     my @ancestors = $self->data_provider->recurse_ancestor( $self );
     #warn "parents " . Dumper( \@ancestors ) . "\n";
@@ -405,7 +406,8 @@ sub ancestors {
     $self->{Ancestors} = \@ancestors;
     $self->{_cached_parent_id} = $self->{parent_id};
 
-    return $self->{Ancestors};
+    my @ancs = @ancestors;
+    return \@ancs;
 }
 
 ##
@@ -885,6 +887,9 @@ sub referenced_by_granted {
     my @candidate_data = $self->data_provider->getObject( %args, properties => [ qw( object_type_id document_id ) ] );
     my @candidate_docids = map { $_->{'content.document_id'} } @candidate_data;
     return () unless scalar( @candidate_docids ) > 0;
+
+    # not needed anymore
+    delete $args{symname_to_doc_id};
 
     if ( not wantarray ) {
         my @ids = $self->__get_granted_ids( doc_ids => \@candidate_docids, User => $user, %args );
