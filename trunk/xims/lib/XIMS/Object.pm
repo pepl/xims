@@ -106,7 +106,8 @@ sub new {
     # otherwise just use the args to load the unserialized (new) object.
     else {
         if ( $class ne 'XIMS::Object' ) {
-            my $otname = ( split /::/, $class )[-1];
+            my $otname = $class;	
+            $otname =~ s/XIMS:://;
             if ( not $args{object_type_id} ) {
                 my $ot = XIMS::ObjectType->new( name => $otname );
                 if ( $ot ) {
