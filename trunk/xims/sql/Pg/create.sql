@@ -9,17 +9,9 @@
 
 \set ON_ERROR_STOP yes
 
--- start over with a clean new db, set it's encoding to UNICODE
--- the clientlib will be set up to LATIN1, it will translate on the fly as we are
--- currently using this encoding in xims it is said that Pg will get UNICODE as
--- default in upcoming versions and IIRC we have the LATIN1 thing in XIMS just because
--- of a limitation with Oracle8
--- i just think this is the 'save' option here ATM
--- CREATE DATABASE XIMS WITH ENCODING = 'UNICODE';
-
 -- connect to the newly created ximsdb
 
-\connect xims;
+\connect xims
 
 SET SESSION AUTHORIZATION 'xims';
 
