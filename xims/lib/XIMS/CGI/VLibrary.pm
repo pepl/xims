@@ -68,15 +68,14 @@ sub event_subject {
 
     my $subjectid = $self->param('subject_id');
     unless ( $subjectid ) {
-        my $subjectname = $self->decode( $self->param('subject_name') );
+        my $subjectname = XIMS::decode( $self->param('subject_name') );
         if ( defined $subjectname ) {
             my $subject = XIMS::VLibSubject->new( name => $subjectname );
-            #use Data::Dumper; XIMS::Debug( 1, Dumper( $subject ) );
             if ( $subject and $subject->id() ) {
                 $subjectid = $subject->id();
             }
             else { return 0; }
-        } 
+        }
         else { return 0; }
     }
 
@@ -113,15 +112,14 @@ sub event_keyword {
 
     my $keywordid = $self->param('keyword_id');
     unless ( $keywordid ) {
-        my $keywordname = $self->decode( $self->param('keyword_name') );
+        my $keywordname = XIMS::decode( $self->param('keyword_name') );
         if ( defined $keywordname ) {
             my $keyword = XIMS::VLibKeyword->new( name => $keywordname );
-            #use Data::Dumper; XIMS::Debug( 1, Dumper( $keyword ) );
             if ( $keyword and $keyword->id() ) {
                 $keywordid = $keyword->id();
             }
             else { return 0; }
-        } 
+        }
         else { return 0; }
     }
 
@@ -158,15 +156,14 @@ sub event_author {
 
     my $authorid = $self->param('author_id');
     unless ( $authorid ) {
-        my $authorfirstname  = $self->decode( $self->param('author_firstname') );
-        my $authormiddlename = $self->decode( $self->param('author_middlename') );
-        my $authorlastname   = $self->decode( $self->param('author_lastname') );
-        #XIMS::Debug( 1, "authorfirstname: $authorfirstname authormiddlename: $authormiddlename authorlastname: $authorlastname");
-        
+        my $authorfirstname  = XIMS::decode( $self->param('author_firstname') );
+        my $authormiddlename = XIMS::decode( $self->param('author_middlename') );
+        my $authorlastname   = XIMS::decode( $self->param('author_lastname') );
+
         my $author;
         my $author_type;
         if ( $authorlastname and $authorfirstname ) {
-            #XIMS::Debug( 1, "high chance for personal author" );
+            XIMS::Debug( 4, "high chance for personal author" );
             $author = XIMS::VLibAuthor->new( firstname  => $authorfirstname,
                                              middlename => $authormiddlename,
                                              lastname   => $authorlastname );
@@ -174,22 +171,21 @@ sub event_author {
                 $author_type = "personal";
             }
         }
-        
-        unless ( $author_type ) { 
+
+        unless ( $author_type ) {
             if ( $authorlastname ) {
-                #XIMS::Debug( 1, "high chance for corporate author" );
-                $author = XIMS::VLibAuthor->new( lastname    => $authorlastname, 
+                XIMS::Debug( 4, "high chance for corporate author" );
+                $author = XIMS::VLibAuthor->new( lastname    => $authorlastname,
                                                  object_type => 1 );
                 if ( $author and $author->id() ) {
                     $author_type = "corporate";
                 }
-            } 
+            }
             else { return 0; }
         }
-        
+
         if ( $author_type ) {
             $authorid = $author->id();
-            #XIMS::Debug( 1, "secondary lookup on authorid returned: $authorid" );
         }
         else { return 0; }
     }
@@ -222,19 +218,19 @@ sub event_publication {
 
     my $publicationid = $self->param('publication_id');
     unless ( $publicationid ) {
-        my $publicationname   = $self->decode( $self->param('publication_name') );
-        my $publicationvolume = $self->decode( $self->param('publication_volume') );
-        #XIMS::Debug( 1, "publicationname: $publicationname publicationvolume: $publicationvolume" ); 
+        my $publicationname   = XIMS::decode( $self->param('publication_name') );
+        my $publicationvolume = XIMS::decode( $self->param('publication_volume') );
+        #XIMS::Debug( 6, "publicationname: $publicationname publicationvolume: $publicationvolume" );
         if ( $publicationname and $publicationvolume ) {
             my $publication = XIMS::VLibPublication->new( name   => $publicationname,
                                                           volume => $publicationvolume );
             #use Data::Dumper; XIMS::Debug( 1, Dumper( $publication ) );
             if ( $publication and $publication->id() ) {
                 $publicationid = $publication->id();
-                #XIMS::Debug( 1, "secondary lookup on publicationid returned: $publicationid" );
+                #XIMS::Debug( 6, "secondary lookup on publicationid returned: $publicationid" );
             }
             else { return 0; }
-        } 
+        }
         else { return 0; }
     }
 
@@ -309,7 +305,7 @@ sub event_vlsearch {
             my @objects = $ctxt->object->find_objects_granted( %param );
 
             if ( not @objects ) {
-                 $ctxt->session->warning_msg( "Query returned no objects!" );
+                $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
                 %param = ( criteria => $qbr->{criteria}, start_here => $ctxt->object() );

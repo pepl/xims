@@ -55,9 +55,9 @@ sub event_default {
         $self->_default_public( $ctxt );
     }
     else {
-        $object->body( $self->encode( $object->body() ) );
+        $object->body( XIMS::encode( $object->body() ) );
         $object->set_statistics();
-        $object->body( $self->decode( $object->body() ) );
+        $object->body( XIMS::decode( $object->body() ) );
     }
     $self->SUPER::event_default( $ctxt );
 }
@@ -67,7 +67,7 @@ sub _default_public {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     my $user = $ctxt->session->user;
-    $object->body( $self->encode( $object->body() ) );
+    $object->body( XIMS::encode( $object->body() ) );
     my $tan_needed = $object->tan_needed();
     XIMS::Debug(6, "User ".$user->name." is answering the questionnaire" );
     # If a public users is starting to answer the questionnaire
@@ -85,7 +85,7 @@ sub _default_public {
     $tan = $ctxt->session->id() unless $tan;
     $params{'tan'} = $tan;
     $object->set_answer_data( %params );
-    $object->body( $self->decode( $object->body() ) );
+    $object->body( XIMS::decode( $object->body() ) );
 }
 
 sub event_edit {
@@ -95,21 +95,21 @@ sub event_edit {
     # because edit is a hidden field in the html-form.
     # So if the Save-button is clicked this event has to be handled manually.
     if ( $self->param('store') ) {
-      $self->event_store( $ctxt );
-      return 0;
+        $self->event_store( $ctxt );
+        return 0;
     }
     my $object = $ctxt->object();
-    $object->body( $self->encode( $object->body() ) ) if defined $object->body();
-    # a published questionnaire or a questionnaire which allready
-    # has been answered must not be edited
+    $object->body( XIMS::encode( $object->body() ) ) if defined $object->body();
+    # a published questionnaire or a questionnaire which
+    # has already been answered must not be edited
     if ( $object->has_answers() ) {
         XIMS::Debug( 5, "cannot edit answered questionnaire" );
-        $self->sendError( $ctxt, 'Allready answered questionnaires cannot be edited! You can copy the questionnaire and edit the copy.' );
+        $self->sendError( $ctxt, 'Already answered questionnaires cannot be edited! You can copy the questionnaire and edit the copy.' );
         return 0;
     }
     if ( $object->published() ) {
         XIMS::Debug( 5, "cannot edit published questionnaire" );
-        $self->sendError( $ctxt, 'Published Questionnaire cannot be edited! Unpublish first' );
+        $self->sendError( $ctxt, 'Published Questionnaires can not be edited! Unpublish first' );
         return 0;
     }
     my $method = $self->param('edit');
@@ -125,7 +125,7 @@ sub event_edit {
         $self->delete( $_ ) if /^[question|answer]/ ;
     }
     $object->$method( $edit_id, $parsed_object );
-    $object->body( $self->decode( $object->body() ) ) if defined $object->body();
+    $object->body( XIMS::decode( $object->body() ) ) if defined $object->body();
     $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
     $self->SUPER::event_edit( $ctxt );
 }
@@ -145,19 +145,19 @@ sub event_store {
     return 0 unless $self->init_store_object( $ctxt ) and defined $ctxt->object();
     if ( $body =~ /questionnaire/ ) {
         #build xml from HTML-Form. This is done before init_store,
-    #because params have to be UTF-8, init_store converts all
-    #parameters to XIMS::DBENCODING
-    my %params = $self->Vars;
-    my $parsed_object = $object->form_to_xml( %params );
-    $body = $self->decode( $parsed_object->documentElement()->toString() );
+        #because params have to be UTF-8, init_store converts all
+        #parameters to XIMS::DBENCODING
+        my %params = $self->Vars;
+        my $parsed_object = $object->form_to_xml( %params );
+        $body = XIMS::decode( $parsed_object->documentElement()->toString() );
     }
     else {
-    $ctxt->object()->body( "<questionnaire><title>".$self->param( 'questionnaire_title' )."</title><comment>".$self->param( 'questionnaire_comment' ). "</comment></questionnaire>" );
+        $ctxt->object()->body( "<questionnaire><title>".$self->param( 'questionnaire_title' )."</title><comment>".$self->param( 'questionnaire_comment' ). "</comment></questionnaire>" );
         $body = $ctxt->object()->body();
     }
       $object->body( $body , dontbalance => 1 );
     XIMS::Debug( 6, "body set, len: " . length($body) );
-    $ctxt->object()->title( $self->decode( $self->param( 'questionnaire_title' ) ) );
+    $ctxt->object()->title( XIMS::decode( $self->param( 'questionnaire_title' ) ) );
     return $self->SUPER::event_store( $ctxt );
 }
 
@@ -165,7 +165,7 @@ sub event_answer {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
-    $object->body( $self->encode( $object->body() ) ) if defined $object->body();
+    $object->body( XIMS::encode( $object->body() ) ) if defined $object->body();
     my $question_id = $self->param('qid');
     my $tan = $self->param( 'tan' );
     my $questionnaire_id = $object->document_id() ;
@@ -195,8 +195,8 @@ sub event_answer {
     }
     # if question_id (top-level) and TAN are
     # allready in the questionnaire check if all needed answers are given
-        # if not all answers are stored, display the question
-        # if all answers are stored redirect to next question
+    # if not all answers are stored, display the question
+    # if all answers are stored redirect to next question
 
     # Check if all necessary answers are given (to do)
 
@@ -211,7 +211,7 @@ sub event_answer {
     foreach ( $self->param() ) {
         $self->delete( $_ ) if /^[question|answer]/ ;
     }
-    $object->body( $self->decode( $object->body() ) ) if defined $object->body();
+    $object->body( XIMS::decode( $object->body() ) ) if defined $object->body();
     $self->SUPER::event_default( $ctxt );
 }
 
@@ -221,9 +221,9 @@ sub event_download_results {
     my $object = $ctxt->object();
     my $questionnaire_id = $object->document_id();
     #get count of answers for each Question from the Questionnaire
-    $object->body( $self->encode( $object->body() ) ) if defined $object->body();
+    $object->body( XIMS::encode( $object->body() ) ) if defined $object->body();
     $object->set_results();
-    $object->body( $self->decode( $object->body() ) ) if defined $object->body();
+    $object->body( XIMS::decode( $object->body() ) ) if defined $object->body();
     $ctxt->properties->application->style( 'download_results' );
     return 0;
 }
