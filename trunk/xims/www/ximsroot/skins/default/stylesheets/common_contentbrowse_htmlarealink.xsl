@@ -25,7 +25,7 @@
     </xsl:variable>
     <xsl:variable name="gopublic">
         <xsl:if test="/document/object_types/object_type[@id=$objecttype]/publish_gopublic='1'">
-            <xsl:value-of select="concat($xims_box,$gopublic_content)"/>
+            <xsl:value-of select="concat($xims_box,$gopublic_content,'/',/document/context/object/targetparents/object[@parent_id = 1]/location)"/>
         </xsl:if>
     </xsl:variable>
     <tr><td>

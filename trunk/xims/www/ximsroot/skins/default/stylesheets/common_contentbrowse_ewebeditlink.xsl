@@ -29,6 +29,11 @@
     <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
+    <xsl:variable name="gopublic">
+        <xsl:if test="/document/object_types/object_type[@id=$objecttype]/publish_gopublic='1'">
+            <xsl:value-of select="concat($xims_box,$gopublic_content,'/',/document/context/object/targetparents/object[@parent_id = 1]/location)"/>
+        </xsl:if>
+    </xsl:variable>
     <tr><td>
         <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{10*@level}" height="10"/>
         <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>
@@ -41,7 +46,7 @@
             </xsl:otherwise>
         </xsl:choose>
         <xsl:if test="$otfilter = '' or /document/object_types/object_type[@id=$objecttype]/name = $otfilter">
-            (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onClick="storeBack('{$target_path}/{location}', '{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
+            (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onClick="storeBack('{$gopublic}{$target_path}/{location}', '{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
         </xsl:if>
     </td></tr>
 </xsl:template>
@@ -108,9 +113,10 @@
         function storeBack(target, linktext) {
       ]]>
             re = new RegExp("<xsl:value-of select="$parent_path_nosite"/>/");
+            re_gopublic = new RegExp("<xsl:value-of select="concat($xims_box,$gopublic_content)"/>/");
       <![CDATA[
             re.test(target);
-            if (RegExp.rightContext.length > 0) {
+            if (RegExp.rightContext.length > 0 && !target.match(re_gopublic)) {
                 document.selectform.httpLink.value=RegExp.rightContext;
             }
             else {
