@@ -25,8 +25,13 @@
                     <xsl:call-template name="tr-title-create"/>
                     <xsl:call-template name="tr-leadimage-create"/>
                     <xsl:call-template name="tr-body-create"/>
+                    <tr>
+                        <td colspan="3">
+                            <xsl:call-template name="testbodysxml"/>
+                            <xsl:call-template name="prettyprint"/>
+                        </td>
+                    </tr>
                     <xsl:call-template name="trytobalance"/>
-                    <xsl:call-template name="testbodysxml"/>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="grantowneronly"/>

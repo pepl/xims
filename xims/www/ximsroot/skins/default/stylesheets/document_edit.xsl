@@ -23,7 +23,12 @@
                             <xsl:call-template name="tr-body-edit">
                                 <xsl:with-param name="with_origbody" select="'yes'"/>
                             </xsl:call-template>
-                            <xsl:call-template name="testbodysxml"/>
+                            <tr>
+                                <td colspan="3">
+                                    <xsl:call-template name="testbodysxml"/>
+                                    <xsl:call-template name="prettyprint"/>
+                                </td>
+                            </tr>
                             <xsl:call-template name="trytobalance"/>
                             <xsl:call-template name="tr-keywords-edit"/>
                             <xsl:call-template name="tr-abstract-edit"/>
