@@ -18,4 +18,10 @@
         </xsl:copy>
 </xsl:template>
 
+<xsl:template name="path2topics">
+    <xsl:for-each select="/document/context/object/parents/object[object_type_id != /document/object_types/object_type[name='AnonDiscussionForumContrib']/@id and @id != 1]">
+        <xsl:text>/</xsl:text><xsl:value-of select="location"/>
+    </xsl:for-each>
+</xsl:template>
+
 </xsl:stylesheet>
