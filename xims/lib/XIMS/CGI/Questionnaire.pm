@@ -223,9 +223,7 @@ sub event_download_results {
     my $object = $ctxt->object();
     my $questionnaire_id = $object->document_id();
     #get count of answers for each Question from the Questionnaire
-    $object->body( XIMS::encode( $object->body() ) ) if defined $object->body();
     $object->set_results();
-    $object->body( XIMS::decode( $object->body() ) ) if defined $object->body();
     if ($self->param('download_results') eq 'html') {
         $ctxt->properties->application->style( 'download_results_html' );
     } elsif ($self->param('download_results') eq 'excel') {
@@ -243,7 +241,6 @@ sub event_download_all_results {
     my $object = $ctxt->object();
     my $questionnaire_id = $object->document_id();
     my $body = "";
-    my $converter_to_UTF8 = Text::Iconv->new(XIMS::DBENCODING, "UTF-8");
     my $converter_to_Latin1 = Text::Iconv->new("UTF-8", "ISO-8859-1");
     #set filename and mime type of the file to download
     my $filename = $object->location;
@@ -261,9 +258,7 @@ sub event_download_all_results {
     if ( $type =~ /xls/i ) {
         XIMS::Debug(5,"Type is Excel");
         foreach my $answer (@{$answers}) {
-            # The ANSWER text is double UTF-8 encoded. WHY?? 
-            # Before something else is done, it is decoded to Latin1
-            my $answer_text = $converter_to_Latin1->convert(${$answer}{'answer'});
+            my $answer_text = ${$answer}{'answer'};
             $answer_text =~ s/\n//;
             $answer_text =~ s/\t/    /;
             $answer_text =~s/\r//;
@@ -272,25 +267,27 @@ sub event_download_all_results {
         }
         if ( $encoding =~ /latin1/i ) {
             XIMS::Debug(5,"Encoding is Latin1");
-            my $converter = Text::Iconv->new(XIMS::DBENCODING, "ISO-8859-1");
-XIMS::Debug(5,"1>>>".$body);
-            $body = $converter_to_Latin1->convert($body);
-XIMS::Debug(5,"2>>>".$body);
+            $body = XIMS::decode( $body );
+            $encoding = 'ISO-8859-1';
+        }
+        else {
+            $encoding = 'UTF-8';
         }
     } elsif ( $type =~ /html/i ) {
         XIMS::Debug(5, "Type is HTML" );
+        # Why not use DBIx::XHTML_Table here?
         $body = '<html><head><title>'.$filename.'</title></head><body><table border="1">';
         $body .= "<tr><td>Q ID</td><td>Q</td><td>A ID</td><td>A</td><td>Timestamp</td></tr>";
         foreach my $answer (@{$answers}) {
           XIMS::Debug(5,"Question:". $question_titles{ ${$answer}{'question_id'} } ."Answer:" . $converter_to_Latin1->convert(${$answer}{'answer'}));
-            $body .= "<tr><td>" . ${$answer}{'tan'} . "</td><td>" . $question_titles{ ${$answer}{'question_id'} } . "</td><td>" . ${$answer}{'question_id'} . "</td><td>" . $converter_to_Latin1->convert(${$answer}{'answer'}) .  "</td><td>" . ${$answer}{'answer_timestamp'}."</td></tr>";
+            $body .= "<tr><td>" . ${$answer}{'tan'} . "</td><td>" . $converter_to_Latin1->convert( $question_titles{ ${$answer}{'question_id'} } ) . "</td><td>" . ${$answer}{'question_id'} . "</td><td>" . ${$answer}{'answer'} .  "</td><td>" . ${$answer}{'answer_timestamp'}."</td></tr>";
         }
         $body .= "</table></body></html>";
     }
     # older browsers use the suffix of the URL for content-type sniffing,
     # so we have to supply a content-disposition header
     return 0 unless $body;
-    print $self->header('-charset' => 'UTF-8',   -type => $mime_type, '-Content-disposition' => "attachment; filename=$filename" );
+    print $self->header('-charset' => $encoding, -type => $mime_type, '-Content-disposition' => "attachment; filename=$filename" );
     print $body;
     $self->skipSerialization(1);
 
