@@ -84,7 +84,7 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'Text', 'text/plain', 'txt' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
-       VALUES ( nextval('ci_data_formats_id_seq'), 'HTML', 'text/xhtml', 'html' );
+       VALUES ( nextval('ci_data_formats_id_seq'), 'HTML', 'text/html', 'html' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'XSLT', 'text/xml', 'xsl' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
