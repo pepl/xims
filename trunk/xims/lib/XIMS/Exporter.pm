@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -649,11 +649,14 @@ sub update_related {
     foreach my $obj ( @referenced_by, $image, $css, $stylesheet ) {
         next unless defined $obj;
         my $base = XIMS::PUBROOT() . $obj->location_path();
+        my $basedir = $base;
+        $basedir =~ s#/[^/]+$##;
         my $obj_handler = $helper->exporterclass(
                                             Provider       => $self->{Provider},
                                             exportfilename => $base,
                                             User           => $self->{User},
                                             Object         => $obj,
+                                            Basedir        => $basedir,
                                           );
         return undef unless $obj_handler;
 
@@ -663,6 +666,8 @@ sub update_related {
                 last if $ancestor->published();
                 XIMS::Debug( 4, "Creating ancestor container" );
                 my $anc_filename = XIMS::PUBROOT() . $ancestor->location_path();
+                my $anc_dir = $anc_filename;
+                $anc_dir =~ s#/[^/]+$##;
 
                 # pop and pass ancestors so that they do not get looked up again
                 pop @{$obj_handler->{Ancestors}};
@@ -671,6 +676,7 @@ sub update_related {
                                                  exportfilename => $anc_filename,
                                                  User           => $self->{User},
                                                  Object         => $ancestor,
+                                                 Basedir        => $anc_dir,
                                                  Options        => {norecurse => 1},
                                                  Ancestors      => $obj_handler->{Ancestors}
                                                 );
@@ -1402,7 +1408,7 @@ sub generate_dom {
     # exporter_document.xsl
 
     $self->{Stylesheet} = XIMS::XIMSROOT() . '/stylesheets/exporter/' . XIMS::AUTOINDEXEXPORTSTYLESHEET();
-    $self->{Exportfile} = XIMS::PUBROOT() . '/' . $self->{Object}->location_path() . '/' . XIMS::AUTOINDEXFILENAME();
+    $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/' . XIMS::AUTOINDEXFILENAME();
 
     return $dom;
 }
