@@ -71,17 +71,15 @@
       </listitem>
 
       <listitem>
-        <para>Unter welcher Adresse wird das Forum veröffentlicht? <br/>
+        <para>Unter welcher Adresse wird das Forum veröffentlicht?
         Ein Forum, das im Verzeichnis
         &quot;http://xims.uibk.ac.at/xims/myfolder/myforum &quot;erstellt wird,
         wird unter der Adresse
         &quot;http://xims.uibk.ac.at/xims/myfolder/myforum &quot;
-        veröffentlicht.<br/> Das Testforum wurde z.B. unter
+        veröffentlicht. Das Testforum wurde z.B. unter
         &quot;http://xims.uibk.ac.at/xims/test/anondiscussionforum_demo&quot;
-        erstellt und unter:<br/><phrase/></para>
-
-        <para><phrase><ulink url="http://xims.uibk.ac.at/gopublic/content/xims/test/anondiscussionforum_demo">&quot;
-        http://xims.uibk.ac.at/gopublic/content/xims/test/anondiscussionforum_demo&quot;</ulink></phrase>
+        erstellt und unter: <ulink url="http://xims.uibk.ac.at/gopublic/content/xims/test/anondiscussionforum_demo">&quot;
+        http://xims.uibk.ac.at/gopublic/content/xims/test/anondiscussionforum_demo&quot;</ulink>
         veröffentlicht</para>
       </listitem>
     </orderedlist>
