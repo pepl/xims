@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -20,7 +20,17 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r;
 %Tables = XIMS::Config::DataProvider::DBI::Tables();
 %Names =  reverse ( %Tables );
 
-my @AllProps = map {@{$_}} values %XIMS::Names::Properties;
+# build forward and reverse property indices
+my %PropIndex;
+my %PropIndexByName;
+my $i = 0;
+foreach my $values (values %XIMS::Names::Properties) {
+    foreach my $property ( @{$values} ) {
+        $PropIndexByName{$property} = $i;
+        $PropIndex{$i} = $property;
+        $i++;
+    }
+}
 
 sub resolve_resource {
     # here is where we resolve the uri-id to the tables and fields
@@ -30,7 +40,7 @@ sub resolve_resource {
     my $resource_id = shift;
     my ($r_type, $property_name) = split /\./, $resource_id;
     my $table_name = $Tables{$r_type};
-    return [ $table_name,  $table_name . '.' . $property_name ];
+    return [ $table_name, $table_name . '.' . $property_name ];
 }
 
 ##################################################################################
@@ -148,7 +158,7 @@ sub name_fixer {
         my $out_name;
         my ($token, $idx) =  split(/__/, $_);
         if ( defined( $idx ) and length( $idx ) ) {
-            $out_name = $AllProps[$idx];
+            $out_name = $PropIndex{$idx};
         }
         else {
             $out_name = 'adhoc.' . $token;
@@ -162,14 +172,6 @@ sub set_attributes {
     my $prop_name = shift;
     return undef unless defined( $PropertyAttributes{$prop_name} );
     return $PropertyAttributes{$prop_name};
-}
-
-sub _prop_index {
-   my $qname = shift;
-   my $i = 0;
-   for ($i = 0; $i < scalar ( @AllProps ); $i++ ) {
-       return $i if $AllProps[$i] eq $qname;
-   }
 }
 
 sub tables_and_columns {
@@ -192,7 +194,7 @@ sub tables_and_columns_get {
     my %columns = ();
     foreach my $key ( keys %{$hashref} ) {
         my ($table, $column) = @{$self->resolve_resource( $key )};
-        my $idx = _prop_index( $key );
+        my $idx = $PropIndexByName{$key};
         my $fake_key = 'a__' . $idx;
         my $col_string = "$column AS $fake_key";
         $columns{$col_string} = $hashref->{$key};
