@@ -18,10 +18,11 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    $ctxt->properties->content->getchildren->level( 1 );
     $ctxt->properties->content->getchildren->addinfo( 1 );
     $self->expand_attributes( $ctxt );
 
-    return $self->SUPER::event_default( $ctxt );
+    return 0;
 }
 
 # override SUPER::events
