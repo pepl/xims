@@ -167,6 +167,8 @@ CREATE TABLE ci_documents
  ,symname_to_doc_id INTEGER      REFERENCES ci_documents( id ) 
                                  ON DELETE cascade
  ,position          INTEGER
+ ,lft               INTEGER
+ ,rgt               INTEGER
  )
 ;
 
@@ -176,11 +178,17 @@ COMMENT ON COLUMN ci_documents.position
 ;
 
 
-\echo creating index on ci_documents
+\echo creating indices on ci_documents
 -- found some queries with 'in( parent_id,  )' conditions
 -- thence default btree 
 CREATE INDEX ci_documents_par_id_idx 
        ON ci_documents ( parent_id )
+;
+CREATE INDEX ci_documents_lft_idx 
+       ON ci_documents ( lft )
+;
+CREATE INDEX ci_documents_rgt_idx 
+       ON ci_documents ( rgt )
 ;
 
 
@@ -533,6 +541,12 @@ GRANT INSERT, UPDATE, DELETE
       ,ci_users_roles
    TO ximsrun
 ;  
+
+-- add default data (object types, data formats, languages, root folder, ...)
+\i defaultdata.sql
+
+-- add the nested set triggers, functions and rule for inserts, deletes and updates
+\i nested_set_triggers_and_functions.sql
 
 
 -- commit

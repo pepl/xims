@@ -36,35 +36,35 @@ PACKAGE BODY ci_util IS
         RETURN TRUE;
     END;
 
-    FUNCTION move_tree(cleft_in IN NUMBER, crgt_in IN NUMBER, pleft_in IN NUMBER) RETURN BOOLEAN IS
+    FUNCTION move_tree(clft_in IN NUMBER, crgt_in IN NUMBER, parid_in IN NUMBER) RETURN BOOLEAN IS
      leftbound NUMBER; rightbound NUMBER;
      treeshift NUMBER; cwidth NUMBER;
      leftrange NUMBER; rightrange NUMBER;
     BEGIN
-        IF cleft_in > pleft_in THEN 
-            treeshift  := pleft_in - cleft_in + 1;
-            leftbound  := pleft_in + 1;
-            rightbound := cleft_in - 1;
-            cwidth     := crgt_in - cleft_in + 1;
+        IF clft_in > parid_in THEN 
+            treeshift  := parid_in - clft_in + 1;
+            leftbound  := parid_in + 1;
+            rightbound := clft_in - 1;
+            cwidth     := crgt_in - clft_in + 1;
             leftrange  := crgt_in;
-            rightrange := pleft_in;
+            rightrange := parid_in;
         ELSE
-            treeshift  := pleft_in - crgt_in;
+            treeshift  := parid_in - crgt_in;
             leftbound  := crgt_in + 1;
-            rightbound := pleft_in;
-            cwidth     := cleft_in - crgt_in - 1;
-            leftrange  := pleft_in + 1;
-            rightrange := cleft_in;
+            rightbound := parid_in;
+            cwidth     := clft_in - crgt_in - 1;
+            leftrange  := parid_in + 1;
+            rightrange := clft_in;
         END IF;
 
         UPDATE ci_documents
           SET lft = CASE
                     WHEN lft BETWEEN leftbound AND rightbound THEN lft + cwidth
-                    WHEN lft BETWEEN cleft_in AND crgt_in THEN lft + treeshift
+                    WHEN lft BETWEEN clft_in AND crgt_in THEN lft + treeshift
                     ELSE lft END,
               rgt = CASE
                     WHEN rgt BETWEEN leftbound AND rightbound THEN rgt + cwidth
-                    WHEN rgt BETWEEN cleft_in AND crgt_in THEN rgt + treeshift
+                    WHEN rgt BETWEEN clft_in AND crgt_in THEN rgt + treeshift
                     ELSE rgt END
         WHERE lft < leftrange OR rgt > rightrange;
 
@@ -126,8 +126,11 @@ AFTER UPDATE
 OF parent_id
 ON ci_documents
 DECLARE
+--
+--   PRAGMA AUTONOMOUS_TRANSACTION;
+--
     CURSOR tree_cur IS
-        SELECT clft,crgt,pid
+        SELECT clft,crgt,lft
         FROM ci_documents_mv_tmp tmp, ci_documents d
         WHERE tmp.pid = d.id;
     tree_rec tree_cur%ROWTYPE;
@@ -163,6 +166,10 @@ CREATE OR REPLACE TRIGGER ci_doc_lftrgt_after_del
 AFTER DELETE
 ON ci_documents
 DECLARE
+--
+--   PRAGMA AUTONOMOUS_TRANSACTION;
+--
+
     CURSOR tree_cur IS
         SELECT min(lft) lft, max(rgt) rgt
         FROM ci_documents_del_tmp;
