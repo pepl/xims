@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -44,13 +44,15 @@ sub new {
     $data{ObjectType} = $param{ObjectType} if defined $param{ObjectType};
     $data{DataFormat} = $param{DataFormat} if defined $param{DataFormat};
 
-    # check if parent and user exist and user has create privileges...
-    if ( $data{Parent} and $data{Parent}->id() and $data{User} and $data{User}->id() ) {
-        my $privmask = $data{User}->object_privmask( $data{Parent} );
-        return undef unless $privmask & XIMS::Privileges::CREATE();
-    }
-    else {
-        return undef;
+    unless ( exists $param{IgnoreCreatePriv} ) {
+        # check if parent and user exist and user has create privileges...
+        if ( $data{Parent} and $data{Parent}->id() and $data{User} and $data{User}->id() ) {
+            my $privmask = $data{User}->object_privmask( $data{Parent} );
+            return undef unless $privmask & XIMS::Privileges::CREATE();
+        }
+        else {
+            return undef;
+        }
     }
 
     my $self = bless \%data, $class;

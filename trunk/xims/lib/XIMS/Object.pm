@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -2229,7 +2229,7 @@ sub store_diff_to_second_last {
         return $diffobject->update( User => $self->User );
     }
     else {
-        my $oimporter = XIMS::Importer::Object->new( User => $self->User, Parent => $self );
+        my $oimporter = XIMS::Importer::Object->new( User => $self->User, Parent => $self, IgnoreCreatePriv => 1 );
         $diffobject = XIMS::Text->new( User => $self->User, location => $diffobject_location );
         $diffobject->body( XIMS::xml_escape( $diff ) );
 
