@@ -494,9 +494,9 @@ sub find_object_id {
     my %args = @_;
     return unless (defined $args{criteria} and length $args{criteria});
 
-    my $tables = 'ci_documents, ci_content';
+    my $tables = 'ci_content';
     my $columns = delete $args{columns};
-    $columns ||= 'ci_content.id';
+    $columns ||= 'DISTINCT ci_content.ID, last_modification_timestamp as ts';
 
     my %param;
     unless ( delete $args{noorder} ) {
@@ -504,8 +504,14 @@ sub find_object_id {
         $param{order} ||= 'ci_content.last_modification_timestamp DESC';
     }
 
+    # hack alarm - fix this in Intermedia.pm (after refactoring QueryBuilder) and CGI.pm event_search!!!
+    $columns .= ', score(1) as s' if ($param{order} and $param{order} eq 'score(1) DESC');
+
     $param{criteria} = delete $args{criteria};
-    $param{criteria} = 'ci_content.document_id = ci_documents.id AND ' . $param{criteria};
+    if ( exists $args{start_here} or $param{criteria} =~ /ci_documents|location_path|object_type_id|data_format_id/i ) {
+        $tables .= ',ci_documents ';
+        $param{criteria} = ' ci_documents.id=ci_content.document_id AND ' . $param{criteria};
+    }
 
     $param{limit} = delete $args{limit};
     $param{offset} = delete $args{offset};
@@ -514,9 +520,16 @@ sub find_object_id {
     # privilege check here, and not higher up in the chain
     my $user_id = delete $args{user_id};
     my $role_ids = delete $args{role_ids};
+    my @critparams;
     if ( $user_id and scalar @{$role_ids} > 0 ) {
-        $param{criteria} .= " AND ci_content.id = ci_object_privs_granted.content_id AND ci_object_privs_granted.grantee_id IN (" . join(',', ($user_id, @{$role_ids})) . ") AND ci_object_privs_granted.privilege_mask > 0 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = ci_content.id AND grantee_id = " . $user_id . " AND privilege_mask = 0) IS NULL ";
+        my @user_ids =( $user_id, @{$role_ids} );
+        @critparams = @user_ids;
+
+        $param{criteria} .= " AND ci_content.id = ci_object_privs_granted.content_id AND ci_object_privs_granted.grantee_id IN (" . join(',', map { '?' } @user_ids) . ") AND ci_object_privs_granted.privilege_mask > 0";
+
         $tables .= ', ci_object_privs_granted';
+        # tell the Oracle optimizer to use the fk index - this speeds up the query by about 100%!
+        $columns = '/*+ INDEX (ci_object_privs_granted opg_usr_grantee_fk_i) */ ' . $columns if $self->{RDBMSClass} eq 'Oracle';
     }
 
     my $start_here = delete $args{start_here};
@@ -526,7 +539,10 @@ sub find_object_id {
 
     if ( scalar keys %args > 0 ) {
         my ( $sql, @params ) = $self->_sqlwhere_from_hashgroup( %args );
-        $param{criteria} = [ $param{criteria} . ' AND ' . $sql, @params ];
+        $param{criteria} = [ $param{criteria} . ' AND ' . $sql, @critparams, @params ];
+    }
+    else {
+        $param{criteria} = [ $param{criteria}, @critparams ];
     }
 
     my $data = $self->{dbh}->fetch_select( table   => $tables,
@@ -623,7 +639,6 @@ sub get_descendant_infos {
     return \@rv ;
 }
 
-
 sub location_path {
     my $self = shift;
     my $obj;
@@ -670,7 +685,7 @@ sub _sqlwhere_from_hashgroup {
 ##
 #
 # SYNOPSIS
-#    my $query = $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel, $noorder] );
+#    $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel, $noorder] );
 #
 # PARAMETER
 #    $parent_id            :  document_id of the parent object to descend from
@@ -726,6 +741,7 @@ sub _get_descendant_sql {
         return undef;
     }
 }
+
 
 ##
 #
@@ -846,7 +862,6 @@ sub new {
 
     return bless $self, $class;
 }
-
 
 sub DESTROY {
     my $self = shift;
