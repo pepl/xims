@@ -58,8 +58,8 @@ sub registerEvents {
 # RUNTIME EVENTS
 
 sub event_default {
-    my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
 
     # the request method 'PUT' is only used by BXE to save XML-code
     if ( $self->request_method() eq 'PUT' ) {
@@ -80,8 +80,8 @@ sub event_default {
 
 
 sub event_edit {
-    my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
 
     # expand the attributes to XML-nodes
     $self->expand_attributes( $ctxt );
@@ -204,6 +204,7 @@ sub update_decl_encoding {
 sub save_PUT_data {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
     # Read PUT-request
     my $content_length = $ctxt->apache->header_in('Content-length');
     my $content;
@@ -223,6 +224,7 @@ sub save_PUT_data {
     $content = update_decl_encoding( $content );
 
     $ctxt->object->body( $content );
+
     # Store in database
     if ( $ctxt->object->update() ) {
         return 1;
