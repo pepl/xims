@@ -9,7 +9,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
-    <xsl:import href="../../../../anondiscussionforum_common.xsl"/>
+    <xsl:import href="../../../../stylesheets/anondiscussionforum_common.xsl"/>
     <xsl:output method="html" encoding="ISO-8859-1"/>
 
     <xsl:template match="/document">
@@ -93,11 +93,11 @@
                 <a href="#reply">Reply</a>
             </p>
             <br/>
-            <xsl:if test="children/object">
+            <xsl:if test="../../objectlist/object">
                 <p class="10left">
                     Previous replies:<br/>
                 <table>
-                    <xsl:apply-templates select="children/object"/>
+                    <xsl:apply-templates select="/document/objectlist/object"/>
                 </table>
             </p>
         </xsl:if>
@@ -107,37 +107,81 @@
     </body>
 </html>
 </xsl:template>
+<!--
+     <xsl:template match="/object/objectlist/object">
+         <tr>
+             <td class="10left">
+                 <xsl:choose>
+                     <xsl:when test="@level &gt; '0'">
+                         <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{10*@level}" height="10"/><img src="{$ximsroot}images/icons/list_HTML.gif" alt="Discussion-Entry-Icon" width="20" height="18"/><a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
+                         (<xsl:choose>
+                         <xsl:when test="attributes/email">
+                             <a href="mailto:{attributes/email}"><xsl:value-of select="attributes/author"/></a>
+                         </xsl:when>
+                         <xsl:otherwise>
+                             <xsl:value-of select="attributes/author"/>
+                         </xsl:otherwise>
+                     </xsl:choose>,
+                     <xsl:apply-templates select="creation_time" mode="datetime"/>)
+                 </xsl:when>
+                 <xsl:otherwise>
+                     <img src="{$ximsroot}images/icons/list_HTML.gif" alt="Discussion-Entry-Icon" width="20" height="18"/><xsl:value-of select="title"/>
+                 </xsl:otherwise>
+             </xsl:choose>
+         </td>
+         <td valign="bottom" height="25">
+             <xsl:if test="user_privileges/delete">
+                 <a href="{$goxims_content}?id={@id};del_prompt=1;">
+                     <img src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" border="0" width="37" height="19" title="delete" alt="delete"/>
+                 </a>
+             </xsl:if>
+         </td>
+     </tr>
+ </xsl:template>
+ -->
 
-<xsl:template match="children/object">
-    <tr>
-        <td class="10left">
-            <xsl:choose>
-                <xsl:when test="@level &gt; '0'">
-                    <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{10*@level}" height="10"/><img src="{$ximsroot}images/icons/list_HTML.gif" alt="Discussion-Entry-Icon" width="20" height="18"/><a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
-                    (<xsl:choose>
-                    <xsl:when test="attributes/email">
-                        <a href="mailto:{attributes/email}"><xsl:value-of select="attributes/author"/></a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="attributes/author"/>
-                    </xsl:otherwise>
-                </xsl:choose>,
-                <xsl:apply-templates select="creation_time" mode="datetime"/>)
-            </xsl:when>
-            <xsl:otherwise>
-                <img src="{$ximsroot}images/icons/list_HTML.gif" alt="Discussion-Entry-Icon" width="20" height="18"/><xsl:value-of select="title"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </td>
-    <td valign="bottom" height="25">
-        <xsl:if test="user_privileges/delete">
-            <a href="{$goxims_content}?id={@id};del_prompt=1;">
-                <img src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" border="0" width="37" height="19" title="delete" alt="delete"/>
-            </a>
-        </xsl:if>
-    </td>
-</tr>
-</xsl:template>
+ <xsl:template match="/document/objectlist/object">
+     <xsl:variable name="dataformat">
+         <xsl:value-of select="data_format_id"/>
+     </xsl:variable>
+     <xsl:variable name="objecttype">
+         <xsl:value-of select="object_type_id"/>
+     </xsl:variable>
+     <tr>
+         <td class="10left">
+             <img src="{$ximsroot}images/spacer_white.gif"
+                 alt="spacer"
+                 width="{20*(number(@level)-ceiling(number(/document/objectlist/object/@level)))+1}"
+                 height="10"
+                 />
+             <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif"
+                 alt=""
+                 width="20"
+                 height="18"
+                 />
+             <a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
+             (
+             <xsl:choose>
+                 <xsl:when test="attributes/email">
+                     <a href="mailto:{attributes/email}"><xsl:value-of select="attributes/author"/></a>
+                 </xsl:when>
+                 <xsl:otherwise>
+                     <xsl:value-of select="attributes/author"/>
+                 </xsl:otherwise>
+             </xsl:choose>
+             ,
+             <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
+            )
+         </td>
+         <td valign="bottom" height="25">
+             <xsl:if test="/document/context/object/user_privileges/delete">
+                 <a href="{$goxims_content}?id={@id};delete_prompt=1;">
+                     <img src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" border="0" width="37" height="19" title="delete" alt="delete"/>
+                 </a>
+             </xsl:if>
+         </td>
+     </tr>
+ </xsl:template>
 
 <xsl:template name="replyform">
     <a name="reply"/>
@@ -155,11 +199,11 @@
             </tr>
             <tr>
                 <td valign="middle" class="forumcontent">Author:</td>
-                <td><input class="foruminput" type="text" name="author" size="60"/></td>
+                <td><input class="foruminput" type="text" name="author" size="30"/></td>
             </tr>
             <tr>
                 <td valign="middle" class="forumcontent">Email:</td>
-                <td><input class="foruminput" type="text" name="email" size="60"/></td>
+                <td><input class="foruminput" type="text" name="email" size="30"/></td>
             </tr>
             <tr>
                 <td></td>

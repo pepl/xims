@@ -20,8 +20,11 @@
 <html>
     <xsl:call-template name="head-create_discussionforum"/>
     <body onLoad="document.eform.body.value='';document.eform.title.focus()" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" method="POST">
-            <input type="hidden" name="objtype" value="{$objtype}"/>
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="POST">
+        <!--    <input type="hidden" name="objtype" value="{$objtype}"/> -->
+        <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
+        <input type="hidden" name="parid" value="{@id}" />
+        
             <table border="0" width="770" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
                 <tr>
                     <td valign="top" class="forumhead" colspan="2">Create new topic</td>
@@ -32,19 +35,19 @@
                 </tr>
                 <tr>
                     <td valign="middle" class="forumcontent">Author:</td>
-                    <td><input type="text" name="author" size="40"/></td>
+                    <td><input type="text" name="author" size="30"/></td>
                 </tr>
                 <tr>
                     <td valign="middle" class="forumcontent">Email:</td>
-                    <td><input type="text" name="email" size="40"/></td>
+                    <td><input type="text" name="email" size="30"/></td>
                 </tr>
                 <tr>
                     <td valign="middle" class="forumcontent">Co-Author:</td>
-                    <td><input type="text" name="coauthor" size="40"/></td>
+                    <td><input type="text" name="coauthor" size="30"/></td>
                 </tr>
                 <tr>
                     <td valign="middle" class="forumcontent">Co-Author-Email:</td>
-                    <td><input type="text" name="coemail" size="40"/></td>
+                    <td><input type="text" name="coemail" size="30"/></td>
                 </tr>
                 <tr>
                     <td valign="top" class="forumcontent" style="padding-top:3px;">Text:</td>
