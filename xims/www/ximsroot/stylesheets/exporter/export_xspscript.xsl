@@ -10,7 +10,7 @@
 
     <xsl:import href="../common.xsl"/>
 
-    <xsl:output method="xml" encoding="ISO-8859-1"/>
+    <xsl:output method="xml"/>
 
     <xsl:template match="/document">
         <xsl:if test="string-length(context/object/style_id)">

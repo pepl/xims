@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" encoding="ISO-8859-1"/>
+<xsl:output method="xml"/>
 <xsl:template match="/document">
         <xsl:if test="string-length(context/object/style_id)">
             <xsl:processing-instruction name="xml-stylesheet"> type="text/xsl" href="<xsl:apply-templates select="context/object/style_id"/>" </xsl:processing-instruction>
