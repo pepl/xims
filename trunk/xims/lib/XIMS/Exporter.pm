@@ -192,7 +192,7 @@ sub publish {
 
                 # since we don't want autoindexes to be rewritten automatically,
                 # we create only unpublished ancestors
-                if ( $ancestor->published() != 1) {
+                if ( not $ancestor->published() ) {
                     XIMS::Debug( 4, "Creating ancestor container." );
                     my $anc_handler = $helper->exporterclass(
                                                      Provider   => $self->{Provider},
@@ -215,10 +215,8 @@ sub publish {
     }
 
     my $retval = $handler->create();
-    if ( $retval ) {
-        $self->update_dependencies( state => "create",
-                                    handler => $handler,
-                                    object => $object,);
+    if ( $retval and not defined $param{no_dependencies_update} ) {
+        $self->update_dependencies( handler => $handler );
     }
 
     return $retval;
@@ -312,10 +310,8 @@ sub unpublish {
     }
 
     my $retval = $handler->remove();
-    if ( $retval ) {
-        $self->update_dependencies( state => "remove",
-                                    object => $object,
-                                    handler => $handler );
+    if ( $retval and not defined $param{no_dependencies_update} ) {
+        $self->update_dependencies( handler => $handler );
     }
     return $retval;
 }
@@ -326,55 +322,30 @@ sub unpublish {
 #   $exporter->update_dependencies( %params );
 #
 # PARAMETER
-#   object: the currently published object
-#   state: either "create" or "remove".
+#   $params{handler}    : The exporter handler instance.
 #
 # DESCRIPTION
 #
-# This function automaticly updates any portlet where the object may
-# occour. also it should check if there are any published symlink
-# objects, that have to be updated. also the objects department root
-# has to be updated. later we have to check any department, where
-# the object may have included)
+# This method (un)publishes related and/or depending objects. For this
+# it calls
+#   * update_related()
+#         - (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
+#           are not published yet, they will be published.
+#         - Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
+#           of the object or its ancestors
+#   * update_parent_autoindex()
+#         updates autoindex of parent unless its 'autoindex' attribute is set to '0'
 #
-# there are three types of dependencies
-# a) references such as directly linked images
-# b) parent objects
-# c) referrer
-#
-# while a) + b) are somewhat trivial c) requires some extra
-# information:
-#
-# a referrer is an object that (directly or inderectly) points to
-# the object. Such objects are symbolic links, URL links or
-# portlets. while the first point directly to the object by their
-# SYMNAME_TO_DOC_ID, the latter may points to one of the objects parents.
-#
-# to satisfy these three types the Exporter::Handler has to
-# implement three functions:
-# * update_references
-# * update_parents
-# * update_referrer
-#
-# the split into these three functions is required, because in
-# case of dependency updates we may not want to update all
-# information of an object.
 #
 sub update_dependencies {
+    XIMS::Debug( 5, "called" );
     my $self = shift;
-    my %param = @_;
+    my %params = @_;
 
-    my $handler = $param{handler};
+    my $handler = $params{handler};
 
-    unless ( defined $handler ) {
-        XIMS::Debug( 3, "no handler defined for dep-update???" );
-        return;
-    }
-
-    # temporarily deactivated until reimplementation
-    #$handler->update_references( state => $param{state} );
-    #$handler->update_referrer(   state => $param{state} ); # updates the referrer per object
-    #$handler->update_parents(    state => $param{state} );
+    $handler->update_related();
+    $handler->update_parent_autoindex();
 }
 
 1;
@@ -478,6 +449,7 @@ sub new {
     $self->{Options}     = $param{Options} || {};
     $self->{AppContext}  = XIMS::AppContext->new();
     my $bdir             = $param{Basedir}        if defined $param{Basedir};
+    $self->{Ancestors}   = $param{Ancestors}      if defined $param{Ancestors};
 
     if ( defined $bdir and -d $bdir ) {
         XIMS::Debug( 4, "export directory '$bdir' exists" );
@@ -501,17 +473,17 @@ sub new {
     $self->{Stylesheet} ||= $helper->stylesheet( $self->{Object} );
 
     # ancestors
-    my $ancestors = $self->{Object}->ancestors();
-    # remove /root
-    shift @{$ancestors};
-    $self->{Ancestors} = $ancestors;
+    if ( not defined $self->{Ancestors} ) {
+        # >> do we really need to load all the full ancestor object data? <<
+        my $ancestors = $self->{Object}->ancestors();
+        # remove /root
+        shift @{$ancestors};
+        $self->{Ancestors} = $ancestors;
+    }
+
     # publish only non-fs-container children here
-    my @non_fscont_types = map { $_->id() } grep { !$_->is_fs_container() } $self->{Provider}->object_types();
+    my @non_fscont_types = map { $_->id() } $self->{Provider}->object_types( is_fs_container => 0 );
     @{$self->{Children}} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
-    #
-    # Make children_selection available via UI and publish_promt event
-    # $self->{Children} = $self->{Object}->children_granted( User => $self->{User}, id => \@selected_ids, object_type_id => \@non_fscont_types );
-    #
 
     return $self;
 }
@@ -630,13 +602,11 @@ sub test_ancestors {
     my $self = shift;
     my $retval = undef;
 
+    # is this really needed?
     if ( defined $self->{Ancestors} and scalar @{ $self->{Ancestors} } ) {
         # the following line is safe since we have at least two OTs by default
-        my %types      = map { $_->id() => $_->is_fs_container()} $self->{Provider}->object_types();
-
-        # what is this?
-        my @ancestors  = grep { $types{$_->object_type_id} == 1 } @{$self->{Ancestors}};
-
+        my %types = map { $_->id() => 1 } $self->{Provider}->object_types( is_fs_container => 1, properties => [qw(id)] );
+        my @ancestors  = grep { exists $types{$_->object_type_id} } @{$self->{Ancestors}};
         if ( scalar( @ancestors ) == scalar(  @{ $self->{Ancestors} } ) ) {
             #
             # the function returns TRUE only if all ancestors are FS container
@@ -650,285 +620,112 @@ sub test_ancestors {
 
 ##
 # SYNOPSIS
-#    $self->update_references( %params );
+#    my $boolean = $self->update_related();
 #
 # PARAMETER
-#    state: the state of the current operation
+#    none
 #
 # RETURNS
-#    Nothing
+#    $boolean : True or False for updating related objects
 #
 # DESCRIPTION
+#    - (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
+#      are not published yet, they will be published.
+#    - Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
+#      of the object or its ancestors
 #
-# This exports all refered objects, that are not published yet.  the
-# user must have the privileges to export the data. also this function
-# has to be forced explicitly by a property switch.
-#
-# The method will fail unless the attribute 'expandrefs' is set to
-# '1'.
-#
-sub update_references {
-    #
-    # dead code, to be rewritten!!!
-    #
-    return undef;
-
+sub update_related {
     XIMS::Debug( 5, "called" );
     my ( $self, %params ) = @_;
 
-    my $dp     = $self->{Provider};
     my $object = $self->{Object};
-    my $attr   = $object->attribute_by_key( 'expandrefs' );
-
-    unless ( defined $attr and $attr == 1 ) {
-        XIMS::Debug( 6, "do not expand references" );
-        return;
-    }
-
-    my $language = $object->language_id();
-    my $xslsheet = $object->style_id();
-    my $csssheet = $object->css_id();
-    my $image    = $object->image_id();
-
     my $helper = XIMS::Exporter::Helper->new();
 
-    my $xobj = XIMS::Object->new( document_id => $xslsheet, language_id  => $language );
-    my $cobj = XIMS::Object->new( document_id => $csssheet, language_id  => $language );
-    my $iobj = XIMS::Object->new( document_id => $image,    language_id  => $language );
+    my $stylesheet = $object->stylesheet();
+    my $css        = $object->css();
+    my $image      = $object->image();
 
-    foreach my $obj ( $xobj, $cobj, $iobj ) {
+    my @referenced_by = $object->referenced_by_granted( include_ancestors => 1, published => 1 );
+    foreach my $obj ( @referenced_by, $image, $css, $stylesheet ) {
         next unless defined $obj;
-        if ( $params{state} eq "create" ) {
-            # if the object is already published, there is nothing to
-            # do here.
-            unless ( $obj->published() ) {
-                my $base = XIMS::PUBROOT() . $obj->location_path();
-                my $dep_handler = $helper->exporterclass(
-                                                    Provider       => $self->{Provider},
-                                                    exportfilename => $base,
-                                                    User           => $self->{User},
-                                                    Object         => $obj,
-                                                  );
-                return undef unless $dep_handler;
-                # check if the objects parents are published!
-                if ( $dep_handler->test_ancestors() ) {
-                    #
-                    # after it is ashured that the object resides in the system as
-                    # a separate object, the exporter can export the object.
-                    #
-                    if (scalar @{$dep_handler->{Ancestors}} > 0) {
-                        foreach my $ancestor ( @{$dep_handler->{Ancestors}} ) {
-                            #
-                            # in order to update the entire exported ancestors, we
-                            # need to recreate them.
-                            #
-                            my $anc_base = XIMS::PUBROOT() . $ancestor->location_path();
+        my $base = XIMS::PUBROOT() . $obj->location_path();
+        my $obj_handler = $helper->exporterclass(
+                                            Provider       => $self->{Provider},
+                                            exportfilename => $base,
+                                            User           => $self->{User},
+                                            Object         => $obj,
+                                          );
+        return undef unless $obj_handler;
 
-                            XIMS::Debug( 4, "Creating ancestor container." );
-                            my $anc_handler = $helper->exporterclass(
-                                                             Provider       => $self->{Provider},
-                                                             exportfilename => $anc_base,
-                                                             User           => $self->{User},
-                                                             Object         => $ancestor,
-                                                             Options        => {norecurse => 1}
-                                                            );
-                            return undef unless ($anc_handler and $anc_handler->create());
-                        }
-                    }
-                }
-                XIMS::Debug( 5, "dependent ancestors exported" );
+        # check if the object's ancestors are published
+        if ( $obj_handler->test_ancestors() ) {
+            foreach my $ancestor ( reverse @{$obj_handler->{Ancestors}} ) {
+                last if $ancestor->published();
+                XIMS::Debug( 4, "Creating ancestor container" );
+                my $anc_filename = XIMS::PUBROOT() . $ancestor->location_path();
 
-                # init the objects full exporter
-
-                if ( $dep_handler->create( ) ) {
-                    XIMS::Debug( 6, "reference successfully pubished" );
-                }
-                else {
-                    XIMS::Debug( 3, "reference was not published" );
+                # pop and pass ancestors so that they do not get looked up again
+                pop @{$obj_handler->{Ancestors}};
+                my $anc_handler = $helper->exporterclass(
+                                                 Provider       => $self->{Provider},
+                                                 exportfilename => $anc_filename,
+                                                 User           => $self->{User},
+                                                 Object         => $ancestor,
+                                                 Options        => {norecurse => 1},
+                                                 Ancestors      => $obj_handler->{Ancestors}
+                                                );
+                unless ( $anc_handler and $anc_handler->create() ) {
+                    XIMS::Debug( 2, "Ancestor of '" . $object->title() .  "' could not be published!" );
+                    last;
                 }
             }
         }
-    }
 
-    # note for pepl.
-    #
-    # additionally it should be possible to write out all internal
-    # object refered by the current object. since there may be objects
-    # that are not stored in XIMS. I assume it would be useful to
-    # keep these informations in a database and do some more
-    # sophisticated logic, so we are able to strip internal links from
-    # documents, too.
-    #
+        if ( $obj_handler->create( ) ) {
+            XIMS::Debug( 4, "Related object published" );
+        }
+        else {
+            XIMS::Debug( 3, "Related object could not be published" );
+        }
+    }
+    return 1;
 }
 
 ##
 # SYNOPSIS
-#    $self->update_referrer( %params );
+#    my $boolean = $self->update_parent_autoindex();
 #
 # PARAMETER
-#    state: the state of the current operation
+#    none
 #
 # RETURNS
-#    Nothing
+#    $boolean : True or False for updating the parent's autoindex
 #
 # DESCRIPTION
+#    Updates the autoindex of the parent object unless its 'autoindex' attribute is set to '0'
 #
-# This updates the direct referrer of a particular object.  this
-# commonly means that these objects are re-exported, while the
-# referrer's export handler's update_dependencies() is not called!
-#
-# This can be used to update portlets and similar items. Note that
-# symlinks has to be handled differently.
-#
-sub update_referrer {
-    #
-    # dead code, to be rewritten!!!
-    #
-    return undef;
-
-
+sub update_parent_autoindex {
     XIMS::Debug( 5, "called" );
-    my ( $self ) = @_;
+    my ( $self, %params ) = @_;
 
-
-    my $dp     = $self->{Provider};
     my $object = $self->{Object};
-    my $language = $object->language_id();
+    my $parent = $object->parent();
 
-    my $helper = XIMS::Exporter::Helper->new();
+    my $autoindex = $parent->attribute_by_key( 'autoindex' );
+    if ( not defined $autoindex or $autoindex == 1 ) {
+        my @ancestors = @{$self->{Ancestors}};
+        pop @ancestors; # remove the parent folder of the current object
 
-    my $referrer = undef; # yet to be reimplemented
-    #my $referrer = $dp->findReferrer( object => $object, published => 1  );
-
-
-    if ( defined $referrer and  scalar @{$referrer} ) {
-        XIMS::Debug( 6, "update exported referrer" );
-        foreach my $obj ( @{$referrer} ) {
-            unless ( defined $obj ) {
-                next;
-            }
-            if ( $obj->isPublished() ) {
-                # init the objects full exporter
-                my $base = XIMS::PUBROOT() . $obj->location_path();
-                my $dep_handler =  $helper->exporterclass(
-                                                    Provider       => $self->{Provider},
-                                                    exportfilename => $base,
-                                                    User           => $self->{User},
-                                                    Object         => $obj,
-                                                  );
-                return unless $dep_handler;
-
-                # rewrite the referrer, but not its ancestors or
-                # referrers
-                #
-                # phish108 NOTE: this may is done by a separate
-                # update() function, so each obejct that is able to
-                # act as a referrer may has it's own special logic
-                # (e.g. symlinks will have to run the full exporter)
-                $dep_handler->create();
-            }
-        }
-    }
-    else {
-        XIMS::Debug( 3, "no referrer found" );
-    }
-}
-
-##
-# SYNOPSIS
-#    $self->update_parents( %params );
-#
-# PARAMETER
-#    state: the state of the current operation
-#
-# RETURNS
-#    Nothing
-#
-# DESCRIPTION
-#
-# To ensure all parents and their related portlets are updated, this
-# has to be called! the function will test if an object requires an
-# (partial) reexport and will call update_referrer() for the
-# particular object.
-#
-sub update_parents {
-    #
-    # dead code, to be rewritten!!!
-    #
-    return undef;
-
-    XIMS::Debug( 5, "called" );
-    my ( $self ) = @_;
-
-    my $dp     = $self->{Provider};
-    my $object = $self->{Object};
-    my $language = $object->language_id();
-
-    my $helper = XIMS::Exporter::Helper->new();
-
-    my $parents = undef; # yet to be reimplemented
-                         # current $object->ancestors does not accept sth like published => 1 as argument
-
-#    my $cols = [qw(majorid minorid location object_type_id parent_id
-#                   department_id image_id title alevel attributes)];
-
-#    my $parents = $dp->getAncestor( object => $object,
-#                                    published => 1,
-#                                    -columns => $cols, );
-
-    if ( defined $parents and scalar @{$parents} ) {
-        XIMS::Debug( 6, "update parents (" . scalar( @{$parents} ) ." )" );
-        my $last_path = '';
-        foreach my $parent ( @{$parents} ) {
-            next unless defined $parent;
-            if ( $object->id == $parent->id ) {
-                XIMS::Debug( 3, "will not handle object itself!" );
-                next;
-            }
-            unless ( defined $parent->language_id() and $parent->language_id() > 0 ) {
-                XIMS::Debug( 6, "use original language id!" );
-                $parent->language_id( $object->language_id() );
-            }
-
-            XIMS::Debug( 6, "run the exporter for " . $parent->location );
-            # init the objects full exporter
-            my $dep_handler =  $helper->exporterclass(
-                                                Provider   => $self->{Provider},
-                                                User       => $self->{User},
-                                                Basedir    => $self->{Basedir} . $last_path,
-                                                Object     => $parent,
-                                              );
-            return undef unless $dep_handler;
-
-            $last_path .= '/'. $parent->location;
-
-            # rewrite the parent object. this may causes a parent
-            # object to be written twice during an export. it
-            # might happen if the parent wasn't published before.
-            if ( $parent->object_type->is_fs_container() ) {
-                my $autoindex = $parent->attribute_by_key( 'autoindex' );
-                if ( not defined $autoindex or $autoindex == 1 ) {
-                    XIMS::Debug( 4, "run auto indexer" );
-                    my $idx_generator =  XIMS::Exporter::AutoIndexer->new(
-                                                 Provider   => $self->{Provider},
-                                                 User       => $self->{User},
-                                                 Object     => $parent,
-                                                 Options    => {norecurse => 1},
-                                                                         );
-                    $idx_generator->create();
-                }
-            }
-            else {
-                XIMS::Debug( 5, $parent->location ." is not a autoindexer, run default exporter!" );
-                $dep_handler->create();
-            }
-
-            # restore the parents referrer
-            $dep_handler->update_referrer();
-        }
-    }
-    else {
-        XIMS::Debug( 3, "no parents found" );
+        XIMS::Debug( 4, "autoindex attribute of parent is set, updating the autoindex" );
+        my $idx_generator =  XIMS::Exporter::AutoIndexer->new(
+                                     Provider   => $self->{Provider},
+                                     User       => $self->{User},
+                                     Object     => $parent,
+                                     Options    => {norecurse => 1},
+                                     Ancestors  => \@ancestors
+                                                             );
+        $idx_generator->create();
+        return 1;
     }
 }
 
@@ -1399,7 +1196,8 @@ sub create {
                                                                Basedir    => $self->{Basedir},
                                                                User       => $self->{User},
                                                                Object     => $self->{Object},
-                                                               Options    => {norecurse => 1}
+                                                               Options    => {norecurse => 1},
+                                                               Ancestors  => $self->{Ancestors},
                                                            );
         $idx_generator->create();
     }
