@@ -5,73 +5,18 @@ package XIMS::DataProvider::DBI;
 
 use strict;
 use XIMS;
+use XIMS::Config::DataProvider::DBI;
 use XIMS::Names;
 use DBIx::SQLEngine 0.017;
 use DBIx::SQLEngine::Criteria::And;
 use XIMS::DataProvider;
-use vars qw( %Tables %Names %PropertyAttributes %PropertyRelations $VERSION);
+use vars qw( %Tables %Names %PropertyAttributes %PropertyRelations $VERSION );
 #use Data::Dumper;
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
-# now only needs scalar refs (for sql literals). The previous was
-# a premature and unneeded 'enhancement'.
-
-# move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
-%PropertyAttributes = (
-    'content.id'                          => \'ci_content_id_seq_nval()',
-    'user.id'                             => \'ci_users_roles_id_seq_nval()',
-    'session.id'                          => \'ci_sessions_id_seq_nval()',
-    'session.last_access_timestamp'       => \'now()',
-    'document.id'                         => \'ci_documents_id_seq_nval()',
-    'bookmark.id'                         => \'ci_bookmarks_id_seq_nval()',
-    'language.id'                         => \'ci_languages_id_seq_nval()',
-    'objecttype.id'                       => \'ci_object_types_id_seq_nval()',
-    'dataformat.id'                       => \'ci_data_formats_id_seq_nval()',
-    'mimetype.id'                         => \'ci_mime_aliases_id_seq_nval()',
-    'questionnaireresult.id'              => \'ci_quest_results_id_seq_nval()',
-    'vlibauthor.id'                       => \'cilib_authors_id_seq_nval()',
-    'vlibauthormap.id'                    => \'cilib_authormap_id_seq_nval()',
-    'vlibkeyword.id'                      => \'cilib_keywords_id_seq_nval()',
-    'vlibkeywordmap.id'                   => \'cilib_keywordmap_id_seq_nval()',
-    'vlibsubject.id'                      => \'cilib_subjects_id_seq_nval()',
-    'vlibsubjectmap.id'                   => \'cilib_subjectmap_id_seq_nval()',
-    'vlibpublication.id'                  => \'cilib_publications_id_seq_nval()',
-    'vlibpublicationmap.id'               => \'cilib_publmap_id_seq_nval()',
-    'vlibmeta.id'                         => \'cilib_meta_id_seq_nval()',
-);
-
-# move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
-%PropertyRelations = (
-    'Object' => { 'document.id' => \'ci_content.document_id' }
-);
-
-# move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
-%Tables = (
-            content        => 'ci_content',
-            user           => 'ci_users_roles',
-            session        => 'ci_sessions',
-            document       => 'ci_documents',
-            objecttype     => 'ci_object_types',
-            userpriv       => 'ci_roles_granted',
-            objectpriv     => 'ci_object_privs_granted',
-            objecttypepriv => 'ci_object_type_privs',
-            dataformat     => 'ci_data_formats',
-            language       => 'ci_languages',
-            mimetype       => 'ci_mime_type_aliases',
-            bookmark       => 'ci_bookmarks',
-            questionnaireresult => 'ci_questionnaire_results',
-            vlibauthor          => 'cilib_authors',
-            vlibauthormap       => 'cilib_authormap',
-            vlibkeyword         => 'cilib_keywords',
-            vlibkeywordmap      => 'cilib_keywordmap',
-            vlibsubject         => 'cilib_subjects',
-            vlibsubjectmap      => 'cilib_subjectmap',
-            vlibpublication     => 'cilib_publications',
-            vlibpublicationmap  => 'cilib_publicationmap',
-            vlibmeta            => 'cilib_meta',
-          );
-
-
+%PropertyAttributes = XIMS::Config::DataProvider::DBI::PropertyAttributes();
+%PropertyRelations = XIMS::Config::DataProvider::DBI::PropertyRelations();
+%Tables = XIMS::Config::DataProvider::DBI::Tables();
 %Names =  reverse ( %Tables );
 
 my @AllProps = map {@{$_}} values %XIMS::Names::Properties;
