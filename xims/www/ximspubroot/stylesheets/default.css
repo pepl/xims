@@ -126,10 +126,7 @@ a:hover {
 }
 
 #footer {
-    position:absolute;
-    bottom: 0px;
-    left: 160px;
-    width: 630px;
+    margin-top: 50px;
     font: 7pt/7pt helvetica, arial, sans-serif;
     color: #a9a9a9;
 }

@@ -32,14 +32,14 @@
         <div id="centercontent">
             <xsl:comment>/UdmComment</xsl:comment>
             <xsl:apply-templates select="body"/>
-        </div>
-        <div id="footer">
-            <span class="left">
-                <xsl:call-template name="copyfooter"/>
-            </span>
-            <span class="right">
-                <xsl:call-template name="powerdbyfooter"/>
-            </span>
+            <div id="footer">
+                <span class="left">
+                    <xsl:call-template name="copyfooter"/>
+                </span>
+                <span class="right">
+                    <xsl:call-template name="powerdbyfooter"/>
+                </span>
+            </div>
         </div>
       </body>
     </html>
