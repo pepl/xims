@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar ns="" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
 
-    <!-- 
+    <!--
         The following included files are Copyright (c) 2001-2003 Thai Open Source Software Center Ltd.
         Please read the file xhtmlmodules/README !
     -->
@@ -34,7 +34,7 @@
             <ref name="Block.model"/>
         </element>
     </define>
-    
+
     <define name="body.attlist">
         <ref name="Common.attrib"/>
     </define>
@@ -236,6 +236,12 @@
                 <element name="locked_by_id">
                     <ref name="uid"/>
                 </element>
+                <element name="schema_id">
+                    <text/>
+                </element>
+                <element name="document_status">
+                    <text/>
+                </element>
                 <optional>
                     <element name="user_privileges">
                         <ref name="user_privileges"/>
@@ -251,7 +257,7 @@
             <data type="integer"/>
         </choice>
     </define>
-    
+
     <define name="attributes">
         <element name="attributes">
             <choice>
@@ -269,7 +275,7 @@
             </element>
         </zeroOrMore>
     </define>
-    
+
     <define name="day">
         <element name="day">
             <data type="integer"/>
@@ -310,7 +316,7 @@
         <ref name="minute"/>
         <ref name="second"/>
     </define>
-    
+
     <define name="name">
         <element name="name">
             <text/>
@@ -331,7 +337,7 @@
             </element>
         </element>
     </define>
- 
+
     <define name="object_type">
         <element name="object_type">
             <attribute name="id">
@@ -365,7 +371,7 @@
             </interleave>
         </element>
     </define>
-    
+
     <define name="user_privileges">
         <interleave>
             <element name="delete">
@@ -467,7 +473,7 @@
             </interleave>
         </element>
     </define>
-    
+
     <define name="bookmark">
         <element name="bookmark">
             <interleave>
@@ -494,7 +500,7 @@
               </oneOrMore>
         </element>
     </define>
-    
+
     <define name="session">
         <element name="session">
             <attribute name="id">
@@ -543,9 +549,9 @@
                     <text/>
                 </element>
             </interleave>
-        </element>    
+        </element>
     </define>
-    
+
     <define name="objectlist">
         <element name="objectlist">
             <oneOrMore>
@@ -561,7 +567,7 @@
             </oneOrMore>
         </element>
     </define>
-    
+
     <start>
         <element name="document">
             <interleave>
