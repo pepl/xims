@@ -29,19 +29,19 @@ sub new {
 ##
 #
 # SYNOPSIS
-#    $document->body( [ $body ] )
+#    my $body = $object->body();
+#    my $boolean = $object->body( $body [, %args] );
 #
 # PARAMETER
-#    $body: scalar value of body-string
-#    %args: hash, recognized keys:
-#         'dontbalance' if set, there will be no attempt to convert the body to a well-balanced string, this may be neccessary
-#                       if users don't want their whitespace info munged by tidy.
+#    $body                  (optional) :  Body string to save
+#    $args{ dontbalance }   (optional) :  If set, there will be no attempt to convert the body to a well-balanced string, this may be neccessary if users don't want their whitespace info munged by tidy.
 #
 # RETURNS
-#    :
+#    $body    : Body string from object
+#    $boolean : True or False for storing back body to object
 #
 # DESCRIPTION
-#    none yet
+#    Overrides XIMS::Object::body(). Tests $body for being well-balanced and if it is not, tries to well-balance $body unless $args{dontbalance} is given.
 #
 sub body {
     XIMS::Debug( 5, "called");
