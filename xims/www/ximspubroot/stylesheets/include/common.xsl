@@ -30,8 +30,8 @@
       <meta name="DC.Description" content="{$context_node/rdf:RDF/rdf:Description/dc:description}"/>
       <meta name="DC.Publisher" content="{$context_node/rdf:RDF/rdf:Description/dc:publisher}"/>
       <meta name="DC.Contributor" content="{$context_node/rdf:RDF/rdf:Description/dc:contributor}"/>
-      <meta name="DC.Date.Created" scheme="{$context_node/rdf:RDF/rdf:Description/dc:date/dcq:created/rdf:Description/dcq:dateScheme}" content="{rdf:RDF/rdf:Description/dc:date/dcq:created/rdf:Description/rdf:value}"/>
-      <meta name="DC.Date.Modified" scheme="{$context_node/rdf:RDF/rdf:Description/dc:date/dcq:modified/rdf:Description/dcq:dateScheme}" content="{rdf:RDF/rdf:Description/dc:date/dcq:modified/rdf:Description/rdf:value}"/>
+      <meta name="DC.Date.Created"  scheme="{$context_node/rdf:RDF/rdf:Description/dc:date/dcq:created/rdf:Description/dcq:dateScheme}" content="{$context_node/rdf:RDF/rdf:Description/dc:date/dcq:created/rdf:Description/rdf:value}"/>
+      <meta name="DC.Date.Modified" scheme="{$context_node/rdf:RDF/rdf:Description/dc:date/dcq:modified/rdf:Description/dcq:dateScheme}" content="{$context_node/rdf:RDF/rdf:Description/dc:date/dcq:modified/rdf:Description/rdf:value}"/>
       <meta name="DC.Format" content="{$context_node/rdf:RDF/rdf:Description/dc:format}"/>
       <meta name="DC.Language" content="{$context_node/rdf:RDF/rdf:Description/dc:language}"/>
       <!-- for compatibility -->
