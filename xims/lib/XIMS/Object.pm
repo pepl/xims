@@ -48,7 +48,7 @@ sub new {
     my %args = @_;
 
     my $self = bless {}, $class;
-    $self->{User} = defined( $args{User} ) ? delete $args{User} : undef;
+    $self->{User} = delete $args{User} if defined $args{User};
     my $real_object;
     my ( $package, $file, $line ) = caller(1);
     #warn "Object init called by $package line $line, passed " . Dumper( \%args ) . "\n";
