@@ -6,7 +6,7 @@ package XIMS::DataProvider::DBI;
 use strict;
 use XIMS;
 use XIMS::Names;
-use DBIx::SQLEngine 0.016;
+use DBIx::SQLEngine 0.017;
 use DBIx::SQLEngine::Criteria::And;
 use XIMS::DataProvider;
 use vars qw( %Tables %Names %PropertyAttributes %PropertyRelations $VERSION);
@@ -704,10 +704,10 @@ sub _get_descendant_sql {
         # PostgreSQL 7.3.x contrib-tablefunction connectby() does not support ordering of siblings :-|...
         #
         if ( DBD::Pg::_pg_server_version( $self->dbh ) =~ '7.3' ) {
-            return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', '?', ?) AS t(id int, parent_id int, lvl int) WHERE t.id <> t.parent_id", $parent_id, $maxlevel];
+            return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', ?, ?) AS t(id int, parent_id int, lvl int) WHERE t.id <> t.parent_id", [$parent_id, 12], $maxlevel]; # 12 => bind as 'Text'
         }
         else {
-            return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', '?', ?) AS t(id int, parent_id int, lvl int, pos int) WHERE t.id <> t.parent_id $orderby", $parent_id, $maxlevel];
+            return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', ?, ?) AS t(id int, parent_id int, lvl int, pos int) WHERE t.id <> t.parent_id $orderby", [$parent_id, 12], $maxlevel]; # 12 => bind as 'Text'
         }
     }
     elsif ( $self->{RDBMSClass} eq 'Oracle' ) {
