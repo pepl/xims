@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<article><title>Portlets and Portals</title> 
+<article><title>Portlets and Portals</title>
     <articleinfo><author><firstname>Christian</firstname><surname>Glahn</surname><affiliation><address format="linespecific">christian.glahn@uibk.ac.at</address></affiliation></author></articleinfo>
-    
+
     <section><title>Introduction</title><para>
             XIMS data was not only designed for monolitic content. One
             key target was to be able to have <emphasis>information
@@ -16,20 +16,20 @@
             may display to a user. Therefore XIMS offers an abstract
             view on a portlet or portal.
         </para>
-        
+
         <para>
             This document is split into two major parts: (a) A major
             outline about the concept of Portals and portlets in XIMS
             and (b) an introduction into the technical implementation
             of these special object-types.
         </para></section>
-    
+
     <section><title>Concept of Portals and Portlets</title>
-        
+
         <para>
             Poratals and Portlets should provide a different view on
             data stored in different places and/ or different
-            ways. This is often called content syndication. 
+            ways. This is often called content syndication.
         </para><section><title>Portlets</title><section><title>What are Portlets</title><para>
                     A portlet is a special view on a set of data. On
                     webpages portlets commonly appear as boxes aside
@@ -46,7 +46,7 @@
                     the information which information should made
                     available to the real widget (which is part of the
                     stylesheet) - once more XIMS splits information and
-                    presentation. 
+                    presentation.
                 </para><para>
                     For the content manager this means he has to
                     decide how to organize the information that will
@@ -70,14 +70,14 @@
                     will not filter the object itself but the child
                     objects (descendants?) of the given
                     object. Therfore a portlet pointing to a container
-                    has an object filter in <strong>addition</strong>
+                    has an object filter in <emphasis>addition</emphasis>
                     to the content filter as already described.
                 </para><para>
                     While a content filter restricts the data of an
                     object that is stored in the portlet, the object
                     filter allows to define a subset of objects, that
                     are made available. For example a news portlet may
-                    only display those <strong>documents</strong> of
+                    only display those <emphasis>documents</emphasis> of
                     the referred folder that have the
                     <emphasis>new</emphasis> flag set. How these
                     filters are build are described below in more
@@ -86,7 +86,7 @@
                     Portlets are always useful when information should
                     be made available in the same (or at least
                     similar) way on a set of pages. Portlets help to
-                    organize such views. 
+                    organize such views.
                 </para><para>
                     Therefore a portlet is always usefull if such a
                     view is shared by many content pages or if data
@@ -94,7 +94,7 @@
                     objects. The latter is important for portal pages
                     (see below).
                 </para></section></section>
-    
+
         <section><title>Portals</title><section><title>What are Portals</title><para>
                     After discussing portlets, portals are the next
                     step. Basicly a portal is a page containing
@@ -113,17 +113,17 @@
                     stylesheet. Instead they are provided directly by
                     the portal document.
                 </para>
-                
+
             </section><section><title>When to use Portals</title>
-                
+
                 <para>
                     Portals are useful if there is content spread over
                     various object or folders and should be shown
                     under a single location as an overview.
                 </para></section></section></section><section><title>Technical Outline</title><para>
-        </para>          
+        </para>
         <section><title>Portlets</title><section><title>Common Implementation</title>
-                
+
                 <para>
                     All Portlets are special symbolic links. Different
                     to symbolic links they don't make the referred
@@ -133,14 +133,14 @@
                     these filters: Content filter and Object
                     Filter. From the view of the filesystem portlets
                     are pseudo container, containing parts of the data
-                    of other objects. 
+                    of other objects.
                 </para><para>
                     The different filter types do not affect
                     each other. A content filter must be aware
                     about the different object types, since not
                     all object types have all columns present.
                 </para>
- 
+
                 <section><title>Object Filter</title><para>
                         An object filter decides which objects are
                         stored inside the portlet.
@@ -172,7 +172,7 @@
                         conditions</listitem><listitem>Fetch the object id's from the
                         database</listitem><listitem>Check which information each object
                         should contain</listitem>
-                        
+
                         <listitem>Fetch the objects as required from
                         the database</listitem></orderedlist></section><section><title>Exporter</title><para>
                         There are two stages of the portlet
@@ -181,17 +181,17 @@
                         the filters are run to decide which content is
                         stored inside the portlet. After the initial
                         export the portlet enters an
-                        <emphasis>auto-export</emphasis> mode. 
+                        <emphasis>auto-export</emphasis> mode.
                     </para></section></section><section><title>Portlet Types</title><para>
-                    
+
                 </para><section><title>Headlines</title><para>not done yet</para></section><section><title>Journals</title><para>not done yet</para></section><section><title>Link Lists</title><para>not done yet</para></section><section><title>Navigation</title><para>not done yet</para></section><section><title>Object Portlets</title><para>
                         An object portlet is a little special to the
                         other portlet types. First it is a link to a
-                        special object, that is <strong>not</strong> a
+                        special object, that is <emphasis>not</emphasis> a
                         container. Because of this an object portlet
-                        has only Content Filter. 
+                        has only Content Filter.
                     </para></section></section><section><title>Filter Language</title>
-                
+
                 <para>
                     A user should be able to define the filters
                     applied on a portlet through the
@@ -230,7 +230,7 @@
                         content. For each extra column to be loaded in
                         the portlet on MUST specify a new column tag.
                     </para>
-                    
+
                     <para>
                         The <emphasis>object-type</emphasis> entry
                         tells the content definition which object
@@ -272,7 +272,7 @@
                         done by the portlet
                         <emphasis>filter</emphasis>. One can think of
                         a portlet filter as of the WHERE clause in SQL
-                        queries. 
+                        queries.
                     </para><para>
                         The Filter definition contains several tags:
                     </para><orderedlist><listitem><para>column</para><para>
@@ -316,9 +316,9 @@
                                 For filters that work only on the
                                 first child level this is equivalent
                                 to the object-type entry in the
-                                content definition. 
+                                content definition.
                             </para></listitem>
-                        
+
                         <listitem><para>child-object</para><para>
                                 This entry defines some condition at
                                 least one child object must match to
@@ -356,7 +356,7 @@
                         This example loads the extra information about
                         the object's New flag, its last modifier, the
                         abstract and the keywords of each object found.
-                        All this is done for all objects in scope. 
+                        All this is done for all objects in scope.
                     </para><para>
                         If no filter would be set this would load all
                         this information for all objects inside the
@@ -451,7 +451,7 @@
                         types can efficiently be filtered.
                     </para></section></section></section><section><title>Portals</title><para>
                 Technically a portal is a special Folderobject that
-                may contain <strong>only</strong> portlet
+                may contain <emphasis>only</emphasis> portlet
                 ojects. Since a single portlet may is used in various
                 places, the portal itself may contain only
                 <emphasis>symbolic links</emphasis> to the Portlets it
