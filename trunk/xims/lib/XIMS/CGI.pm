@@ -341,10 +341,12 @@ sub selectStylesheet {
             $stylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/' . $ctxt->session->uilanguage . '/';
         }
         else {
-            my $filepath = $stylepath . "public/" . $stylefilename;
+            my $pubstylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/' . $ctxt->session->uilanguage() . '/';
+            my $filepath = $pubstylepath . $stylefilename;
+            # my $filepath = $stylepath . "public/" . $stylefilename;
             if ( -f $filepath and -r $filepath ) {
                 XIMS::Debug( 4, "using fallback public-user-stylesheet" );
-                $stylepath .= "public/";
+                $stylepath = $pubstylepath;
             }
             else {
                 XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
@@ -686,8 +688,17 @@ sub init_store_object {
             }
         }
 
-        if ( ($location ne $object->location()) and $object->published() ) {
-            $self->sendError( $ctxt, "Cannot rename published objects, please unpublish first!" );
+        if ( ($location ne $object->location())
+            and $object->published()
+            and not $object->object_type->publish_gopublic()
+            and $object->object_type->name() ne 'URLLink' ) { # URLLink is a special case for now.
+                                                              # Maybe we set publish_gopublic to 1 for it,
+                                                              # or we will be adding an object-type
+                                                              # property at the point when similar
+                                                              # object-types will be added that do not have
+                                                              # publish_gopublic set but are not published
+                                                              # to the filesystem either
+            $self->sendError( $ctxt, "Cannot rename this published object, please unpublish it first!" );
             return 0;
         }
 
