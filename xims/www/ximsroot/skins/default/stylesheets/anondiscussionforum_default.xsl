@@ -23,7 +23,6 @@
         <br />
         <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" style="margin-left:5px; margin-bottom: 0px;">
         <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-            <input type="hidden" name="parid" value="{@document_id}" />
             <xsl:if test="user_privileges/create">
                 <input type="submit" name="create" value="{$i18n/l/Create_topic}" class="control" /><br /><br />
             </xsl:if>
