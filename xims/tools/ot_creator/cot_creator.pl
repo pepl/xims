@@ -9,7 +9,10 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use lib qw(lib ../lib ../../lib /usr/local/xims/lib);
+my $prefix = $ENV{'XIMS_PREFIX'} || '/usr/local';
+die "\nWhere am I?\n\nPlease set the XIMS_PREFIX environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$prefix/xims/Makefile";
+use lib qw(lib ../lib ../../lib),($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/lib";
+
 use Getopt::Std;
 use XIMS;
 use XIMS::ObjectType;
@@ -150,12 +153,17 @@ else {
 my $e_isa = $o_isa;
 $e_isa =~ s/XIMS::/XIMS::Exporter::/;
 $e_isa = $e_isa eq 'XIMS::Exporter::Object' ? 'XIMS::Exporter::XML' : $e_isa;
+my $i_isa = $o_isa;
+$i_isa =~ s/XIMS::/XIMS::Importer::/;
+$i_isa = $i_isa eq 'XIMS::Importer::Object' ? 'XIMS::Importer::FileSystem' : $i_isa;
+
 
 my $objecttype = {
             object_type_name => $ot->name(),
             o_isa => $o_isa,
             a_isa => $a_isa,
             e_isa => $e_isa,
+            i_isa => $i_isa,
             object_type_id => $ot->id(),
             data_format_id => $df->id(),
            };
@@ -165,6 +173,7 @@ my %templates_outputpaths = (
     'templates/ObjectClass.xsl' => 'lib/XIMS/'. $objecttype->{object_type_name} . '.pm',
     'templates/ApplicationClass.xsl' => 'bin/'. lc($objecttype->{object_type_name}) . '.pm',
     'templates/ExporterClass.xsl' => 'lib/XIMS/Exporter/'. $objecttype->{object_type_name} . '.pm',
+    'templates/ImporterClass.xsl' => 'lib/XIMS/Importer/FileSystem/'. $objecttype->{object_type_name} . '.pm',
     'templates/event_create.xsl' => $styledir . lc($objecttype->{object_type_name}) . '_create.xsl',
     'templates/event_default.xsl' => $styledir . lc($objecttype->{object_type_name}) . '_default.xsl',
     'templates/event_edit.xsl' => $styledir . lc($objecttype->{object_type_name}) . '_edit.xsl',
