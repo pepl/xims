@@ -153,7 +153,7 @@ sub get_last_answer {
     my $questionnaire_id = shift;
     my $tan = shift;
 
-    my $sql = "select max(to_number(question_id,'999999')) AS last_id FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND tan='$tan' AND answer = 'ANSWERED';";
+    my $sql = "select max(to_number(question_id,'999999')) AS lid FROM ci_questionnaire_results WHERE document_id = '$questionnaire_id' AND tan='$tan' AND answer = 'ANSWERED'";
 XIMS::Debug(5,">>>> ".$sql);
     my $last_answered_question = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
     if ( !( $last_answered_question) ) {
