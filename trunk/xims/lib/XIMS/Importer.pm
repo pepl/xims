@@ -151,7 +151,7 @@ sub import {
     }
 
     $object->title( $object->location ) unless $object->title();
-    $object->parent_id( $self->parent->id() ) unless $object->parent_id();
+    $object->parent_id( $self->parent->document_id() ) unless $object->parent_id();
     $object->language_id( $self->parent->language_id() ) ;
     my $id = $object->create();
     $self->default_grants();
