@@ -29,10 +29,13 @@
     <xsl:param name="subject_name"/>
     <xsl:param name="author"/>
     <xsl:param name="author_id"/>
-    <xsl:param name="author_name"/>
+    <xsl:param name="author_firstname"/>
+    <xsl:param name="author_middlename"/>
+    <xsl:param name="author_lastname"/>
     <xsl:param name="publication"/>
     <xsl:param name="publication_id"/>
     <xsl:param name="publication_name"/>
+    <xsl:param name="publication_volume"/>
     <xsl:param name="most_recent"/>
 
     <xsl:template name="head_default">
@@ -71,7 +74,7 @@
                         <xsl:call-template name="author_link"/>
                     </div>
                     <div>
-                        <xsl:call-template name="decide_plural"/>
+                        <xsl:call-template name="item_count"/>
                     </div>
                 </xsl:when>
                 <xsl:when test="$mo = 'publication'">
@@ -79,7 +82,7 @@
                         <xsl:call-template name="publication_link"/>
                     </div>
                     <div>
-                        <xsl:call-template name="decide_plural"/>
+                        <xsl:call-template name="item_count"/>
                     </div>
                 </xsl:when>
                 <xsl:otherwise>
@@ -87,7 +90,7 @@
                         <xsl:call-template name="subject_link"/>
                     </div>
                     <div>
-                        <xsl:call-template name="decide_plural"/>
+                        <xsl:call-template name="item_count"/>
                         <xsl:text> </xsl:text>
                         <xsl:value-of select="$i18n_vlib/l/last_modified_at"/>
                         <br />
@@ -98,11 +101,17 @@
         </div>
     </xsl:template>
 
-    <xsl:template name="decide_plural">
+    <xsl:template name="item_count">
         <xsl:value-of select="object_count"/>
         <xsl:text> </xsl:text>
+        <xsl:call-template name="decide_plural">
+            <xsl:with-param name="objectitems_count" select="object_count"/>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template name="decide_plural">
         <xsl:choose>
-            <xsl:when test="number(object_count) = 1">
+            <xsl:when test="number($objectitems_count) = 1">
                 <xsl:value-of select="$i18n_vlib/l/item"/>
             </xsl:when>
             <xsl:otherwise>
@@ -189,13 +198,19 @@
     </xsl:template>
 
     <xsl:template name="author_link">
-        <a href="{$xims_box}{$goxims_content}{$absolute_path}?author=1;author_id={id};author_name={firstname} {lastname}">
-        <xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></a>
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?author=1;author_id={id};author_firstname={firstname};author_middlename={middlename};author_lastname={lastname}">
+        <xsl:value-of select="firstname"/>
+        <xsl:text> </xsl:text>
+        <xsl:if test="middlename">
+            <xsl:value-of select="middlename"/>
+            <xsl:text> </xsl:text>
+        </xsl:if>
+        <xsl:value-of select="lastname"/></a>
     </xsl:template>
 
 
     <xsl:template name="publication_link">
-        <xsl:variable name="publication_url" select="concat($xims_box,$goxims_content,$absolute_path,'?publication=1;publication_id=',id,';publication_name=',name,' (',volume,')')"/>
+        <xsl:variable name="publication_url" select="concat($xims_box,$goxims_content,$absolute_path,'?publication=1;publication_id=',id,';publication_name=',name,';publication_volume=',volume)"/>
         <a href="{$publication_url}">
             <xsl:value-of select="name"/> (<xsl:value-of select="volume"/>)
         </a>
