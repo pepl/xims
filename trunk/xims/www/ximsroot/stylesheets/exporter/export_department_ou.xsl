@@ -20,7 +20,16 @@
                 <image url="{context/object/image_id}"/>
             </xsl:if>
             <stylesheet><xsl:apply-templates select="context/object/style_id"/></stylesheet>
-            <path><xsl:value-of select="$absolute_path"/></path>
+            <path>
+                <xsl:choose>
+                    <xsl:when test="$resolvereltositeroots = 1">
+                        <xsl:value-of select="$absolute_path_nosite"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$absolute_path"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </path>
             <xsl:apply-templates select="/document/objectlist/object"/>
         </ou>
     </xsl:template>
