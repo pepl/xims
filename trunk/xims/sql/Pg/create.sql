@@ -159,9 +159,11 @@ CREATE TABLE ci_documents
                                  ON DELETE  CASCADE
  ,object_type_id    INTEGER      NOT NULL 
                                  REFERENCES ci_object_types ( id ) 
- ,department_id     INTEGER      DEFAULT 1 
+ ,department_id     INTEGER      NOT NULL 
                                  REFERENCES ci_documents( id ) 
-                                 ON DELETE CASCADE
+                                 ON DELETE NO ACTION 
+                                 DEFERRABLE 
+                                 INITIALLY DEFERRED
  ,data_format_id    INTEGER      NOT NULL 
                                  REFERENCES ci_data_formats ( id )
  ,symname_to_doc_id INTEGER      REFERENCES ci_documents( id ) 
