@@ -39,4 +39,31 @@ sub new {
     return $class->SUPER::new( %args );
 }
 
+##
+#
+# SYNOPSIS
+#    my $url = $siteroot->url( [ $url ] );
+#
+# PARAMETER
+#    $url    (optional) : SiteRoot URL to be set (will be set as 'title' internally)
+#
+# RETURNS
+#    $url : SiteRoot URL (='title')
+#
+# DESCRIPTION
+#    Get/set accessor for SiteRoot URL. Internally, the SiteRoot is the content object's title.
+#
+sub url {
+    my $self = shift;
+    my $url = shift;
+
+    if ( $url ) {
+        $self->title( $url );
+    }
+    else {
+        return $self->title();
+    }
+    return $url;
+}
+
 1;
