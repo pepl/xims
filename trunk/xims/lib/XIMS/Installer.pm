@@ -33,6 +33,7 @@ sub new {
                 [ "DBIx::SQLEngine", '0.0.8' ],
                 [ "Time::Piece", '' ],
                 [ "XML::Schematron", '' ],
+                [ "Apache::DBI", '' ],
               );
 
     my @optional_mods = ();
