@@ -30,12 +30,31 @@
     For example:
 
     PostgreSQL:
-    [root@host 0.5_0.6]# psql -U xims -f upgrade-pg.sql
-    [root@host 0.5_0.6]# psql -U xims -f upgrade-pg_eval.sql
+    [root@host 0.5_0.6]# psql -U xims xims -f upgrade-pg.sql
+    [root@host 0.5_0.6]# psql -U xims xims -f upgrade-pg_eval.sql
 
     Oracle:
     [root@host 0.5_0.6]# sqlplus user@db @upgrade-oracle.sql
     [root@host 0.5_0.6]# sqlplus user@db @upgrade-ora_eval.sql
+
+    Add tablefunctions to the XIMS database if you are using PostgreSQL.
+
+    For the following you have to have the tablefunctions in
+    'contrib/tablefunc' of PostgreSQL installed. The tablefunctions are
+    only supported by PostgreSQL version 7.3 and greater!
+
+    You can build and install them for your source build PostgreSQL version using
+    'make' and 'make install' in your 'contrib/tablefunc' directory.
+    If you are using a packaged version of PostgreSQL, you will very likely
+    find a postgresql-contrib package for your distribution which you
+    can install using your favourite package manager.
+
+    You can add the tablefunctions to your XIMS database using a command like the
+    following:
+
+    [root@host 0.5_0.6]# psql -U xims xims -f /usr/share/postgresql/contrib/tablefunc.sql
+
+    Depending on your PostgreSQL installation 'tablefunc.sql' may be located at another path.
 
 
   * Rename DocBookXML to sDocBookXML using dkb_to_sdbk.pl
