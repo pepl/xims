@@ -44,11 +44,7 @@
 
 <body onLoad="document.forms['login'].userid.focus()">
 
-<if-param:reason>
-    <p style="color: maroon; border: 1px solid grey; padding: 2px; background: #eeeeee">
-        <param:reason/>
-    </p>
-</if-param:reason>
+<h1>Login to XIMS</h1>
 
 <form method="post" name="login">
     <xsp:logic>
@@ -69,9 +65,8 @@
     </xsp:logic>
 
     <input type="hidden" name="dologin" id="dologin" value="1"/>
-
-    <table align="left" border="0" cellpadding="2" cellspacing="0" class="action">
-        <tr><td style="background-color:maroon; color:white; border:1px solid;" colspan="2">Login</td></tr>
+    <table align="center" border="0" cellpadding="2" cellspacing="2" style="background: #C9EBA7; border: 1px solid #336633;">
+        <tr><td colspan="2" style="border-bottom: 1px solid #336633; color: black; font-weight: bold;">Login</td></tr>
         <tr>
             <td>Username:</td>
             <td>
@@ -102,6 +97,13 @@
         </xsp:logic>
     </table>
 </form>
+
+<if-param:reason>
+    <div align="center">
+        <span style="color: #DF7900; font-weight: bold"><param:reason/></span>
+    </div>
+</if-param:reason>
+
 </body>
 
 </page>
