@@ -11,6 +11,29 @@
 
 <xsl:variable name="i18n_qn" select="document(concat($currentuilanguage,'/i18n_questionnaire.xml'))" />
 
+<xsl:template match="/document/context/object">
+<html>
+    <xsl:call-template name="questionnaire-head-edit"/>
+    <body>
+        <div class="edit">
+            <xsl:call-template name="table-edit"/>
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST" name="eform">
+                <table border="0" width="98%">
+                    <xsl:call-template name="tr-location-edit"/>
+                    <xsl:call-template name="tr-questionnaire-edit"/>
+                    <xsl:call-template name="tr-keywords-edit"/>
+                    <xsl:call-template name="tr-abstract-edit"/>
+                    <xsl:call-template name="markednew"/>
+                </table>
+                <xsl:call-template name="saveedit"/>
+            </form>
+        </div>
+        <br />
+        <xsl:call-template name="canceledit"/>
+    </body>
+</html>
+</xsl:template>
+
 <xsl:template name="questionnaire-head-edit">
     <xsl:param name="with_wfcheck" select="'no'"/>
     <head>
