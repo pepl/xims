@@ -17,7 +17,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 @ISA = qw( XIMS::CGI::Folder );
 
 # parameters recognized by the script
-@params = qw( id parid name title depid symid delforce del);
+@params = qw( id name title depid symid delforce del);
 
 # END GLOBAL SETTINGS
 # #############################################################################

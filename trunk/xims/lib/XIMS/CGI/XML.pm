@@ -52,7 +52,7 @@ sub registerEvents {
 @MSG = ( "Document body is not well-formed. Please consult the User's Reference for information on well-formed document bodies." );
 
 # parameters recognized by the script
-@params = qw( id parid name title depid symid delforce del plain trytobalance);
+@params = qw( id name title depid symid delforce del plain trytobalance);
 
 # END GLOBAL SETTINGS
 # #############################################################################

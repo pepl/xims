@@ -47,7 +47,7 @@ sub registerEvents {
 }
 
 # parameters recognized by the script
-@params = qw( id parid name title depid symid delforce del);
+@params = qw( id name title depid symid delforce del);
 
 # END GLOBAL SETTINGS
 # #############################################################################
