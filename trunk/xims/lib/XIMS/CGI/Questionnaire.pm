@@ -54,9 +54,9 @@ sub event_default {
         $self->_default_public( $ctxt );
     }
     else {
-        $object->body( _encode( $object->body() ) );
+        $object->body( $self->encode( $object->body() ) );
         $object->set_statistics();
-        $object->body( _decode( $object->body() ) );
+        $object->body( $self->decode( $object->body() ) );
     }
     $self->SUPER::event_default( $ctxt );
 }
@@ -65,7 +65,7 @@ sub _default_public {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     my $user = $ctxt->session->user;
-    $object->body( _encode( $object->body() ) );
+    $object->body( $self->encode( $object->body() ) );
     my $tan_needed = $object->tan_needed();
     XIMS::Debug(6, "User ".$user->name." is answering the questionnaire" );
     # If a public users is starting to answer the questionnaire
@@ -83,7 +83,7 @@ sub _default_public {
     $tan = $ctxt->session->id() unless $tan;
     $params{'tan'} = $tan;
     $object->set_answer_data( %params );
-    $object->body( _decode( $object->body() ) );
+    $object->body( $self->decode( $object->body() ) );
 }
 
 sub event_edit {
@@ -97,7 +97,7 @@ sub event_edit {
       return 0;
     }
     my $object = $ctxt->object();
-    $object->body( _encode( $object->body() ) ) if defined $object->body();
+    $object->body( $self->encode( $object->body() ) ) if defined $object->body();
     # a published questionnaire or a questionnaire which allready
     # has been answered must not be edited
     if ( $object->has_answers() ) {
@@ -123,7 +123,7 @@ sub event_edit {
         $self->delete( $_ ) if /^[question|answer]/ ;
     }
     $object->$method( $edit_id, $parsed_object );
-    $object->body( _decode( $object->body() ) ) if defined $object->body();
+    $object->body( $self->decode( $object->body() ) ) if defined $object->body();
     $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
     $self->SUPER::event_edit( $ctxt );
 }
@@ -147,7 +147,7 @@ sub event_store {
     #parameters to XIMS::DBENCODING
     my %params = $self->Vars;
     my $parsed_object = $object->form_to_xml( %params );
-    $body = _decode( $parsed_object->documentElement()->toString() );
+    $body = $self->decode( $parsed_object->documentElement()->toString() );
     }
     else {
     $ctxt->object()->body( "<questionnaire><title>".$self->param( 'questionnaire_title' )."</title><comment>".$self->param( 'questionnaire_comment' ). "</comment></questionnaire>" );
@@ -163,7 +163,7 @@ sub event_answer {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
-    $object->body( _encode( $object->body() ) ) if defined $object->body();
+    $object->body( $self->encode( $object->body() ) ) if defined $object->body();
     my $question_id = $self->param('qid');
     my $tan = $self->param( 'tan' );
     my $questionnaire_id = $object->document_id() ;
@@ -209,7 +209,7 @@ sub event_answer {
     foreach ( $self->param() ) {
         $self->delete( $_ ) if /^[question|answer]/ ;
     }
-    $object->body( _decode( $object->body() ) ) if defined $object->body();
+    $object->body( $self->decode( $object->body() ) ) if defined $object->body();
     $self->SUPER::event_default( $ctxt );
 }
 
@@ -219,9 +219,9 @@ sub event_download_results {
     my $object = $ctxt->object();
     my $questionnaire_id = $object->document_id();
     #get count of answers for each Question from the Questionnaire
-    $object->body( _encode( $object->body() ) ) if defined $object->body();
+    $object->body( $self->encode( $object->body() ) ) if defined $object->body();
     $object->set_results();
-    $object->body( _decode( $object->body() ) ) if defined $object->body();
+    $object->body( $self->decode( $object->body() ) ) if defined $object->body();
     $ctxt->properties->application->style( 'download_results' );
     return 0;
 }
@@ -322,22 +322,6 @@ sub event_exit {
     $self->SUPER::event_exit( $ctxt );
     $ctxt->properties->content->escapebody( 0 ); # do not escape body
     return 0;
-}
-
-sub _encode {
-    my $string = shift;
-    return $string unless XIMS::DBENCODING();
-    my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
-    $string = $converter->convert($string) if defined $string;
-    return $string;
-}
-
-sub _decode {
-    my $string = shift;
-    return $string unless XIMS::DBENCODING();
-    my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
-    $string = $converter->convert($string) if defined $string;
-    return $string;
 }
 
 1;
