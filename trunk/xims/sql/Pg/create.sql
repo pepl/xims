@@ -169,8 +169,10 @@ CREATE TABLE ci_documents
  ,symname_to_doc_id INTEGER      REFERENCES ci_documents( id ) 
                                  ON DELETE cascade
  ,position          INTEGER
- ,lft               INTEGER
- ,rgt               INTEGER
+ ,lft               INTEGER      NOT NULL
+                                 CONSTRAINT ci_lft_chk CHECK(lft > 0)
+ ,rgt               INTEGER      NOT NULL
+                                 CONSTRAINT ci_rgt_chk CHECK(rgt > 1)
  )
 ;
 
