@@ -573,7 +573,8 @@ sub find_objects_granted {
     return $self->find_objects( %args ) if $user->admin();
 
     $args{user_id} = $user->id();
-    ($args{role_ids}) = $user->role_ids();
+    my @role_ids = $user->role_ids();
+    $args{role_ids} = \@role_ids;
 
     my @found_ids = $self->__find_ids( %args );
     return () unless scalar( @found_ids ) > 0 ;
@@ -607,7 +608,8 @@ sub find_objects_granted_count {
 
     if ( not $user->admin() ) {
         $args{user_id} = $user->id();
-        ( $args{role_ids} ) = $user->role_ids();
+        my @role_ids = $user->role_ids();
+        $args{role_ids} = \@role_ids;
     }
 
     return $self->find_objects_count( %args );
