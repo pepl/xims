@@ -22,6 +22,7 @@ sub new {
 
     if ( not exists $self->{RelToSite} ) {
         $self->{RelToSite} = XIMS::RESOLVERELTOSITEROOTS() eq '1' ? 1 : 0;
+        $self->{RelToSite} = XIMS::RESOLVERELTOSITEROOTS() eq '1' ? 1 : 0;
     }
 
     return $self;
@@ -41,7 +42,7 @@ sub start_element {
 sub end_element {
     my $self = shift;
 
-    if ( defined $self->{got_to_resolve} and defined $self->{document_id} ) {
+    if ( defined $self->{got_to_resolve} and defined $self->{document_id} and $self->{document_id} =~ /^[0-9]+$/ ) {
         # replace the document_id contained in the current element with the corresponding path
         my $path;
         if ( $self->{RelToSite} ) {

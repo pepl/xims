@@ -1771,7 +1771,7 @@ use XIMS::SAX::Filter::PortletCollector;
 sub set_sax_filters {
     XIMS::Debug( 5, "called" );
     my $self  = shift;
-    my @retval = $self->SUPER::set_sax_filters();
+    my @retval;
     unshift @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
                                                                     ResolveContent => [ qw( DEPARTMENT_ID IMAGE_ID) ] );
 
