@@ -30,7 +30,7 @@ sub new {
                 [ "XML::Filter::GenericChunk", '' ],
                 [ "CGI::XMLApplication", '1.1.3' ],
                 [ "Class::MethodMaker", '' ],
-                [ "DBIx::SQLEngine", '0.014' ],
+                [ "DBIx::SQLEngine", '0.016' ],
                 [ "Time::Piece", '' ],
                 [ "XML::Schematron", '' ],
                 [ "Apache::DBI", '' ],
