@@ -77,9 +77,23 @@
     margin-top: 30px;
     text-align: right;
 }
+
 .vlitemcreate {
     margin-top: 20px;
     border-top: 1px solid #a0a0a0;
+}
+
+#vlitemmeta {
+    background-color: #eeeeee;
+    margin: 5px;
+    border: dotted 1px #a0a0a0;
+}
+
+#vlitemmeta ul {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 5px;
+    list-style-type: none
 }
 
 .vltitle {
