@@ -22,6 +22,7 @@
         <p class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
+                <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
                     <xsl:call-template name="tr-body-create"/>
