@@ -269,7 +269,10 @@ sub updateObject {
     my @doc_cond_keys = grep { (split /\./, $_)[0] eq 'document' } keys %{$conditions};
     @doc_conditions{@doc_cond_keys} = delete @{$conditions}{@doc_cond_keys};
 
-    $doc_conditions{'document.id'} ||= $properties->{'content.document_id'} if $properties->{'content.document_id'};
+    if ( $properties->{'content.document_id'} ) {
+        $doc_conditions{'document.id'} ||= $properties->{'content.document_id'};
+        delete $properties->{'content.document_id'};
+    }
 
     # update document table if wanted
     if ( scalar keys %doc_properties ) {
