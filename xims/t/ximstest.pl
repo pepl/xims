@@ -115,7 +115,7 @@ if ( $prompt_config and $prompt_config == 1 ) {
     print "\nNo test suite config file found, trying to use XIMS::Config.\n";
     eval { require XIMS::Config; };
     die "Could not load XIMS::Config (possibly due to access rights).\n" if $@;
-    print "\n\033[1mNote: Per default, the database user configured in XIMS::Config, e.g. 'ximsrun' if you have used the config defaults, does not have sufficient database object privileges to sucessfully run the unit tests. You may consider to set up a test suite config file for that.\033[m\n\n";
+    print "\n\033[1mNote: Per default, the database user configured in XIMS::Config - for example 'ximsrun' if you have used the config defaults for Pg -, does not have sufficient database object privileges to sucessfully run the unit tests. You may consider to set up a test suite config file for that before running the tests.\033[m\n\n";
 }
 else {
     print "Using config information from lib/XIMS/.ximstest.conf\n";
@@ -146,6 +146,7 @@ sub do_config {
     }
     store( \%Conf, 'lib/XIMS/.ximstest.conf' ) || die "Could not write conf file, aborting\n";
     print "Config file written.\n";
+    $prompt_config = 0;
     $Args{ask_config} = 'n';
 }
 
@@ -186,7 +187,7 @@ sub test_loop {
        test_loop( @tests );
     }
     else {
-       return;
+       exit;
     }
 }
 
