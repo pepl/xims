@@ -13,7 +13,7 @@
 <html>
     <xsl:call-template name="head-create"/>
     <body onLoad="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.name.focus();">
-        <p class="edit">
+        <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
@@ -28,9 +28,9 @@
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>
-        </p>
-        <br />
-        <xsl:call-template name="cancelaction"/>
+            </div>
+            <br />
+            <xsl:call-template name="cancelaction"/>
     </body>
 </html>
 </xsl:template>

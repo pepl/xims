@@ -16,7 +16,7 @@
 <html>
     <xsl:call-template name="head-create_htmlarea"/>
     <body onLoad="document.eform['abstract'].value=''; initEditor(); document.eform.name.focus()">
-        <p class="edit">
+        <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
@@ -34,9 +34,9 @@
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>
-        </p>
-        <br />
-        <xsl:call-template name="cancelaction"/>
+            </div>
+            <br />
+            <xsl:call-template name="cancelaction"/>
         <xsl:call-template name="without-wysiwyg"/>
     </body>
 </html>

@@ -20,7 +20,7 @@
   </head>
   <body>
     <xsl:call-template name="header"/>
-    <p class="edit">
+    <div class="edit">
     <form action="{$xims_box}{$goxims_content}" method="GET">
         <xsl:value-of select="$i18n/l/Move_object"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/from"/> '<xsl:value-of select="$parent_path"/>'
         <xsl:value-of select="$i18n/l/to"/>:
@@ -47,7 +47,7 @@
     </form>
     <br/>
     <xsl:call-template name="canceledit"/>
-    </p>
+    </div>
   </body>
 
 </html>

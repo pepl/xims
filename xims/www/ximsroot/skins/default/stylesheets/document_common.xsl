@@ -24,11 +24,6 @@
                 <xsl:call-template name="cancelform"/>
             </td>
         </tr>
-        <tr>
-            <td colspan="2">
-                <a href="{$goxims_content}{$absolute_path}?edit=1;plain=1">Ohne WYSIWYG-Editor bearbeiten</a>
-            </td>
-        </tr>
     </table>
 </xsl:template>
 
