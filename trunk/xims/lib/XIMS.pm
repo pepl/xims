@@ -58,6 +58,15 @@ sub AUTOINDEXFILENAME()         { $_CONFIG_->AutoIndexFilename() }
 sub AUTOINDEXEXPORTSTYLESHEET() { $_CONFIG_->AutoindexExportStylesheet() }
 sub RESOLVERELTOSITEROOTS()     { $_CONFIG_->ResolveRelToSiteRoots() }
 sub SEARCHRESULTROWLIMIT()      { $_CONFIG_->SearchResultRowLimit() }
+sub UILANGUAGES() {
+    my %rv;
+    foreach ( $_CONFIG_->UILanguages() ) {
+        my $rex = $_;
+        $rex =~ s/^(\w{1,8})(?:-\w+)/\^$1\.\*/;
+        $rv{$_}=$rex;
+    }
+    return %rv;
+}
 
 #  Utility methods
 

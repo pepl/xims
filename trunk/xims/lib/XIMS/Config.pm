@@ -171,10 +171,12 @@ sub DefaultLanguage()             { 'en-us' }                # (default)language
                                                              # while objects with (even multiple) non-default
                                                              # language content(s) are in the datastructures,
                                                              # there's no usable implemetation for it UI-wise yet;
-sub UIFallbackLang()              { 'en-us' }                # once a multilanguage userinterface is implemented, XIMS
-                                                             # will fall back to this, if it cannot provide stylesheets
-                                                             # for the language requested by the UserAgent; this setting
-                                                             # maps 1:1 to the names of the subdir in /ximsroot/skins/default/stylesheets
+sub UILanguages()                 { ("de-at", "en-us") }     # Array of language-tags XIMS has UI-Stylesheets for.
+                                                             # maps 1:1 to the names of the subdir in
+                                                             # /ximsroot/skins/default/stylesheets
                                                              # i.e: /ximsroot/skins/default/stylesheets/en-us/
                                                              #                                          ^^^^^
+sub UIFallbackLang()              { 'en-us' }                # XIMS will fall back to this, if it cannot provide
+                                                             # stylesheets for the language requested by the UserAgent;
+
 1;
