@@ -191,7 +191,7 @@ def calculate_diff(filespec, contextlines):
         if contextlines > 0:
             difftype = "-C " + str(contextlines)
         else:
-            difftype = "-u"
+            difftype = "-ub"
         diffcmd = "/usr/bin/cvs -f diff -kk %s --minimal -r %s -r %s %s" \
                   % (difftype, oldrev, newrev, filestr)
         fp = os.popen(diffcmd)
