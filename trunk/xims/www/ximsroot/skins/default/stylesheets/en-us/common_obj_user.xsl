@@ -31,7 +31,7 @@
                   </xsl:choose>
                 Privileges on Object <xsl:value-of select="$absolute_path"/> - XIMS</title>
                 <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
+                <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             </head>
             <body>
                 <xsl:call-template name="header"/>
@@ -48,7 +48,7 @@
           </tr>
           <tr>
             <td align="center">
-            
+
             <br />
 
             <!-- begin widget table -->
@@ -63,7 +63,7 @@
                       Edit
                     </xsl:otherwise>
                   </xsl:choose>
-                  Privileges on Object '<xsl:value-of select="$absolute_path"/>' 
+                  Privileges on Object '<xsl:value-of select="$absolute_path"/>'
                   for User/Role '<xsl:value-of select="name"/>'</td>
               </tr>
 
@@ -86,7 +86,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Write 
+                   Write
                  </span>
                  <span class="cboxitem">
                    <input type="checkbox" name="acl_create" value="1">
@@ -94,7 +94,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Create 
+                   Create
                  </span>
                  <span class="cboxitem">
                    <input type="checkbox" name="acl_delete" value="1">
@@ -102,7 +102,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Delete 
+                   Delete
                  </span>
 
                  <br clear="all"/>
@@ -113,7 +113,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Move 
+                   Move
                  </span>
 <!--                 <span class="cboxitem">
                    <input type="checkbox" name="acl_link" value="1">
@@ -121,7 +121,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                    Link 
+                    Link
                  </span>
                  <span class="cboxitem">
                    <input type="checkbox" name="acl_attributes" value="1">
@@ -129,7 +129,7 @@
                       <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Attributes 
+                   Attributes
                  </span>
                  <span class="cboxitem">
                    <input type="checkbox" name="acl_translate" value="1">
@@ -150,7 +150,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Attributes All 
+                   Attributes All
                  </span>
                  <span class="cboxitem">
                    <input type="checkbox" name="acl_delete_all" value="1">
@@ -158,7 +158,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Delete All 
+                   Delete All
                  </span>
                </td>
              </tr> -->
@@ -171,7 +171,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Publish 
+                   Publish
                  </span>
      <!--            <span class="cboxitem">
                    <input type="checkbox" name="acl_publish_all" value="1">
@@ -179,7 +179,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Publish All 
+                   Publish All
                  </span> -->
                </td>
              </tr>
@@ -192,7 +192,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Grant 
+                   Grant
                  </span>
  <!--                <span class="cboxitem">
                    <input type="checkbox" name="acl_grant_all" value="1">
@@ -200,7 +200,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   Grant All 
+                   Grant All
                  </span> -->
                </td>
              </tr>
@@ -213,7 +213,7 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                  </input>
-                 is Owner 
+                 is Owner
                  </span>
                  <span class="cboxitem">
                    <input type="checkbox" name="acl_master" value="1">
@@ -221,18 +221,18 @@
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
                    </input>
-                   is Master 
+                   is Master
                  </span>
                </td>
              </tr> -->
-              <tr>  
+              <tr>
                 <td colspan="2" align="center">
                   &#160;
                 </td>
               </tr>
               <tr>
                 <td colspan="2" align="center">
-        
+
                   <!-- begin buttons table -->
                   <table cellpadding="2" cellspacing="0" border="0">
                     <tr align="center">
@@ -247,7 +247,7 @@
                     </tr>
                   </table>
                   <!-- end buttons table -->
-                    
+
                 </td>
               </tr>
               <!-- begin revoke  -->
@@ -257,20 +257,20 @@
                   &#160;
                 </td>
               </tr>
-              <tr>  
+              <tr>
                 <td colspan="2" class="bluebg" align="center">
                   Revoke All Privileges on Object '<xsl:value-of select="$absolute_path"/>'
                   for User/Role '<xsl:value-of select="name"/>'
                 </td>
               </tr>
-              <tr>  
+              <tr>
                 <td colspan="2" align="center">
                   &#160;
                 </td>
               </tr>
               <tr>
                 <td colspan="2" align="center">
-        
+
                   <!-- begin buttons table -->
                   <table cellpadding="2" cellspacing="0" border="0">
                     <tr align="center">
@@ -283,13 +283,13 @@
                     </tr>
                   </table>
                   <!-- end buttons table -->
-                    
+
                 </td>
               </tr>
               </xsl:if>
               <!-- end revoke  -->
 
-              <tr>  
+              <tr>
                 <td colspan="2" align="center">
                   &#160;
                 </td>
