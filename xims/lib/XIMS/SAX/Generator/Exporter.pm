@@ -40,6 +40,8 @@ sub prepare {
 
     $doc_data->{context}->{object} = {$ctxt->object->data()};
 
+    $self->_set_parents( $ctxt, $doc_data, \%object_types, \%data_formats );
+
     $object_types{$ctxt->object->object_type_id()} = 1;
     $data_formats{$ctxt->object->data_format_id()} = 1;
 
