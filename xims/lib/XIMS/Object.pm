@@ -642,9 +642,7 @@ sub move {
         }
     }
 
-   # warn Dumper(\@o);
-
-    my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
+    my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() ) || 0;
     $self->position( $max_position + 1 );
     return $self->data_provider->updateObject( $self->data() );
 }
