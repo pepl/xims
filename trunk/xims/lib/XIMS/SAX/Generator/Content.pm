@@ -38,8 +38,10 @@ sub prepare {
     $self->{FilterList} = [];
 
     my $doc_data = { context => {} };
-    $doc_data->{context}->{session} = {$ctxt->session->data()};
-    $doc_data->{context}->{session}->{user} = {$ctxt->session->user->data()};
+    if ( $ctxt->session() ) {
+        $doc_data->{context}->{session} = {$ctxt->session->data()};
+        $doc_data->{context}->{session}->{user} = {$ctxt->session->user->data()};
+    }
 
     # shove parent into object if we are creating things
     if ( $ctxt->parent() ) {
@@ -80,9 +82,11 @@ sub prepare {
         $object_types{$ctxt->object->object_type_id()} = 1;
         $data_formats{$ctxt->object->data_format_id()} = 1;
 
-        # add the user's privs.
-        my %userprivs = $ctxt->session->user->object_privileges( $ctxt->object() );
-        $doc_data->{context}->{object}->{user_privileges} = {%userprivs} if ( grep { defined $_ } values %userprivs );
+        if ( $ctxt->session() ) {
+            # add the user's privs.
+            my %userprivs = $ctxt->session->user->object_privileges( $ctxt->object() );
+            $doc_data->{context}->{object}->{user_privileges} = {%userprivs} if ( grep { defined $_ } values %userprivs );
+        }
 
         $self->_set_formats_and_types( $ctxt, $doc_data, \%object_types, \%data_formats);
     }
@@ -213,7 +217,7 @@ sub _set_children {
     if ( scalar( @children ) > 0 ) {
         foreach my $child ( @children ) {
             if ( $ctxt->properties->content->getchildren->addinfo() ) {
-                my @info =  $ctxt->data_provider->get_descendant_infos( parent_id => $child->document_id() );
+                my @info = $ctxt->data_provider->get_descendant_infos( parent_id => $child->document_id() );
                 $child->{descendant_count}         = $info[0];
                 $child->{descendant_last_modified} = $info[1];
             }
@@ -232,8 +236,10 @@ sub _set_children {
             #
 
             # added the users object privileges if he got one
-            my %uprivs = $ctxt->session->user->object_privileges( $child );
-            $child->{user_privileges} = {%uprivs} if ( grep { defined $_ } values %uprivs );
+            if ( $ctxt->session() ) {
+                my %uprivs = $ctxt->session->user->object_privileges( $child );
+                $child->{user_privileges} = {%uprivs} if ( grep { defined $_ } values %uprivs );
+            }
 
             # yet another superfluos db hit! this has to be changed!!!
             $child->{content_length} = $child->content_length();
