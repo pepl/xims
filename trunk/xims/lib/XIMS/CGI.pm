@@ -370,6 +370,7 @@ sub setHttpHeader {
     my $self = shift;
     my $ctxt = shift;
     my %my_headers = ();
+    $my_headers{-cookie} = $ctxt->properties->application->cookie() if defined $ctxt->properties->application->cookie();
     $my_headers{-nocache} = 1 if defined $ctxt->properties->application->nocache();
     return %my_headers;
 }
