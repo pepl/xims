@@ -11,6 +11,7 @@ use XIMS::CGI;
 use XIMS::User;
 
 use Digest::MD5 qw( md5_hex );
+#use Data::Dumper;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = qw( XIMS::CGI );
@@ -45,10 +46,41 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    # fill $ctxt->objectlist() with either
-    #    the last XX objects updated by $user
-    #    the last XX objects updated readable by $user
-    #    the objects updated today readable by $user
+    # as long as DBIx::SQLEngine does not implement LIMIT and ORDERBY
+    # we have to use $object->find_objects_granted() instead of
+    # $dp->getObject()
+
+    # fill $ctxt->objectlist with the 5 last modified objects readable by the user
+    my $object = XIMS::Object->new( User => $ctxt->session->user() );
+    my @lmobjects = $object->find_objects_granted( rowlimit => 5 );
+    $ctxt->objectlist( \@lmobjects );
+
+    # fill $ctxt->userobjectlist with the 5 objects most recently created or modified by the user
+    my $qbdriver;
+    if ( XIMS::DBMS() eq 'DBI' ) {
+        $qbdriver = XIMS::DBDSN();
+        $qbdriver = ( split(':',$qbdriver))[1];
+    }
+    else {
+        XIMS::Debug( 2, "search not implemented for non DBI DPs" );
+        $ctxt->session->error_msg( "Search mechanism has not yet been implemented for non DBI based datastores!" );
+        return 0;
+    }
+
+    $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
+    eval "require $qbdriver"; #
+    if ( $@ ) {
+        XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
+        $ctxt->session->error_msg( "QueryBuilder-Driver could not be found!" );
+        return 0;
+    }
+
+    my $qb = $qbdriver->new( { search => "u:".$ctxt->session->user->id(), allowed => q{u:\w\döäüßÖÄÜß} } );
+    my $qbr = $qb->build();
+    my @lmuobjects = $object->find_objects_granted( criteria => $qbr->{criteria},
+                                                    rowlimit => 5,
+                                                  );
+    $ctxt->userobjectlist( \@lmuobjects );
 }
 
 # the 'change password' data entry screen

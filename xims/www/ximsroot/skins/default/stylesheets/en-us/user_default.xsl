@@ -10,11 +10,8 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 
 <xsl:import href="common.xsl"/>
+<xsl:import href="../user_default.xsl"/>
 <xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/session/user"/>
-</xsl:template>
 
 <xsl:template match="/document/context/session/user">
     <html>
@@ -26,7 +23,7 @@
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0">
             <xsl:call-template name="header">
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
@@ -39,12 +36,16 @@
                     Proceed to your <a href="{$xims_box}{$goxims}/defaultbookmark">default bookmark</a>
                 </p>
 
-                <p>
-                    Your last XX updated objects|Last XX updated objects
-                </p>
-                <p>
-                    <a href="{$xims_box}{$goxims}/defaultbookmark?search=1;s=M:1">Objects updated today</a><br/>
-                </p>
+                <table>
+                    <tr>
+                        <th>Five last objects created or modified by you</th>
+                        <th>Five last modified objects</th>
+                    </tr>
+                    <tr>
+                        <td><xsl:apply-templates select="/document/userobjectlist/objectlist"/></td>
+                        <td><xsl:apply-templates select="/document/objectlist"/></td>
+                    </tr>
+                </table>
 
             <hr/>
 

@@ -10,6 +10,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 
 <xsl:import href="common.xsl"/>
+<xsl:import href="../user_default.xsl"/>
 <xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document">
@@ -28,23 +29,27 @@
         </head>
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
             <xsl:call-template name="header">
-                <xsl:with-param name="noncontent">wahr</xsl:with-param>
+                <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
             <h1>
-                Herzlich wilkommen <xsl:value-of select="name" />!
+                Herzlich willkommen <xsl:value-of select="name" />!
             </h1>
 
             <h2>Inhalte verwalten</h2>
                 <p>
-                    Proceed to your <a href="{$xims_box}{$goxims}/defaultbookmark">default bookmark</a>
+                    Zur <a href="{$xims_box}{$goxims}/defaultbookmark">default bookmark</a>
                 </p>
 
-                <p>
-                    Ihre letzten upgedateten Objekth| Zuletzt upgedatete Objekte
-                </p>
-                <p>
-                    <a href="{$xims_box}{$goxims}/defaultbookmark?search=1;s=M:1">heute upgedatete Objekte</a><br/>
-                </p>
+                <table>
+                    <tr>
+                        <th>Ihre 5 letzten erstellten oder geänderten Objekte</th>
+                        <th>Die 5 zuletzt geänderten Objekte</th>
+                    </tr>
+                    <tr>
+                        <td><xsl:apply-templates select="/document/userobjectlist/objectlist"/></td>
+                        <td><xsl:apply-templates select="/document/objectlist"/></td>
+                    </tr>
+                </table>
 
             <hr/>
 
@@ -72,7 +77,7 @@
                 <hr/>
                 <p>
                     <!-- check sysprivs here and xsl:choose -->
-                    Als Mitglied in der Admin Role haben sie folgende administrative Optionen:
+                    Als Mitglied in der Admin-Role haben sie folgende administrative Optionen:
                     <ul>
                         <li><a href="{$xims_box}{$goxims_users}">User und Roles verwalten</a></li>
                     </ul>
