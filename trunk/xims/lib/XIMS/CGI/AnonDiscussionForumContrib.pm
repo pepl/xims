@@ -47,6 +47,7 @@ sub event_default {
     my ( $self, $ctxt) = @_;
 
     return 0 if $self->SUPER::event_default( $ctxt );
+    $ctxt->properties->content->getchildren->level( 0 );
 
     my $object = $ctxt->object();
     my @descendants = $object->descendants_granted();
