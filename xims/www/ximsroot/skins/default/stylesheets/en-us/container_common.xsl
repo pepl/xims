@@ -789,7 +789,7 @@ select="location"/>, created by: <xsl:call-template name="creatorfullname"/>, ow
         </td>
         <td align="right">
             <!-- we may put /document/data-format[@id=$dataformat]/name into a var or find a better way to do this (OT property "hasloblength" for example) -->
-            <xsl:if test="/document/data_formats/data_format[@id=$dataformat]/name!='Container' and /document/object_types/object_type[@id=$objecttype]/name!='URLLink' and /document/data_formats/data_format[@id=$objecttype]/name!='SymbolicLink'">
+            <xsl:if test="/document/data_formats/data_format[@id=$dataformat]/mime_type!='application/x-container' and /document/object_types/object_type[@id=$objecttype]/name!='URLLink' and /document/data_formats/data_format[@id=$objecttype]/name!='SymbolicLink'">
                 <xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>
                 <img src="{$ximsroot}images/spacer_white.gif" width="9" border="0" alt="" />
             </xsl:if>
