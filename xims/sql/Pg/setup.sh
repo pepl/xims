@@ -32,13 +32,7 @@ create_database() {
    createlang -U $PG_SUPER_USER plpgsql   $XIMS_DB_NAME 
 
    psql       -U $XIMS_DB_OWNER           $XIMS_DB_NAME < $BASE/create.sql
-   
 }
-
-insert_defaultdata() {
-   psql       -U $XIMS_DB_OWNER           $XIMS_DB_NAME < $BASE/defaultdata.sql
-}
-
 
 # set some variables
 
@@ -94,7 +88,7 @@ cat << SCREEN1
           WE WILL DROP AND CREATE THE RELEVANT USERS, DATABASES, 
        EVENTUALLY EVEN GO ON VACATION TO VENICE WITH YOUR GIRLFRIEND. 
 
-                  YOU HAVE A GOOD CHANCE TO LOOSE DATA!!!!
+                  YOU HAVE A GOOD CHANCE TO LOSE DATA!!!!
 
 SCREEN1
 
@@ -150,39 +144,13 @@ cat << SCREEN4
             After that a new database and all objects within will 
                          be created by the user xims.
  
-             YOU NOW HAVE A REAL GOOD CHANCE TO LOOSE DATA!!!!
+             YOU NOW HAVE A REAL GOOD CHANCE TO LOSE DATA!!!!
 
 SCREEN4
 
 decide "drop and recreate database?" && create_database
 
 cat << SCREEN5
-
-              -  -  - - ---[ DataBase - Setup ]---  - -  -  -
-                                        
-                    @@@  @@@  @@@  @@@@@@@@@@    @@@@@@   
-                    @@@  @@@  @@@  @@@@@@@@@@@  @@@@@@@   
-                    @@!  !@@  @@!  @@! @@! @@!  !@@       
-                    !@!  @!!  !@!  !@! !@! !@!  !@!       
-                     !@@!@!   !!@  @!! !!@ @!@  !!@@!!    
-                      @!!!    !!!  !@!   ! !@!   !!@!!!   
-                     !: :!!   !!:  !!:     !!:       !:!  
-                    :!:  !:!  :!:  :!:     :!:      !:!   
-                     ::  :::   ::  :::     ::   :::: ::   
-                     :   ::   :     :      :    :: : :    
-    
-                    I will now insert the default dataset. 
-      It is required for running the tests and for the operation of xims.
-
-     Unless something failed before or you have ...uh... special interests,
-     you want me to do that. Note that it must fail if you decided not to
-     recrate the database before -- you will mess things up, in this case.
- 
-SCREEN5
-
-decide "insert default data?" && insert_defaultdata
-
-cat << SCREEN6
 
               -  -  - - ---[ DataBase - Setup ]---  - -  -  -
                                         
@@ -206,5 +174,5 @@ cat << SCREEN6
 Thank you, that would be it.
 
 
-SCREEN6
+SCREEN5
 
