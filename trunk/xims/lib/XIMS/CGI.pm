@@ -929,9 +929,10 @@ sub event_trashcan {
     }
 
     XIMS::Debug( 4, "redirecting to the parent");
-    $self->redirect( $self->redirect_path( $ctxt, $object->parent_id() ) );
+    $self->redirect( $self->redirect_path( $ctxt, $object->parent->id ) );
     return 0;
 }
+
 
 sub event_delete {
     XIMS::Debug( 5, "called" );
