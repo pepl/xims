@@ -20,7 +20,6 @@ use XIMS::DataFormat;
 use XIMS::ObjectType;
 use XIMS::Term;
 use Getopt::Std;
-use Time::Piece;
 
 my %args;
 getopts('hd:u:p:', \%args);
@@ -76,7 +75,7 @@ die "Could not instantiate Exporter\n" unless $exporter;
 
 # update object-type and data-format names
 my $df = XIMS::DataFormat->new( name => 'Portlet' );
-die "Could not find dataformat 'Portlet'. Perhaps the update has already been run?!\n" unless $df;
+die "Could not find dataformat 'Portlet'.\n" unless $df;
 
 $df->suffix( 'ptlt' );
 if ( $df->update() ) {
@@ -114,8 +113,6 @@ foreach my $object ( @objects ) {
     my $need_repub = 0;
 
     if ( $object->published() ){ 
-         # and (Time::Piece->strptime( $object->last_publication_timestamp(), "%d.%m.%Y %T" )->epoch
-         #    >= Time::Piece->strptime( $object->last_modification_timestamp(), "%d.%m.%Y %T" )->epoch ){
         print "Object '" . $object->location_path . "' is published, will be republished with the new name.\n";
 	$need_repub = 1;
    
@@ -164,9 +161,8 @@ sub usage {
 sub warning {
     return qq*
 
-  $0 will update the 'Portlet' dataformat in your XIMS database. 
-  Furthermore, it will add the suffix 'ptlt' to existing and republish
-  published portlets. 
+  $0 will update the 'Portlet' dataformat in your XIMS 
+  database. Furthermore, it will add the suffix 'ptlt' to existing and republish published portlets. 
 
 *;
 }
