@@ -1830,7 +1830,7 @@ sub body_ref_objects {
     # resolve path for relative references
     my $parent = XIMS::Object->new( document_id => $object->parent_id(), language_id => $object->language_id);
     my $parent_path = $parent->location_path();
-    my $ancestors;
+    my @ancestors = @{$object->ancestors()};
 
     # lets see if the objects exist in our system.
     my %paths_seen;
@@ -1850,9 +1850,9 @@ sub body_ref_objects {
         my $exp = $p;
         if ( $exp =~ m|^\.\./| ) {
             my $anclevel = split('\.\./', $exp) - 1;
-            $ancestors ||= $object->ancestors();
-            my $i = scalar @{$ancestors} - 1 - $anclevel; # ancestors include root
-            my $relparent = ${@{$ancestors}}[$i];
+            my $i = scalar @ancestors - 1 - $anclevel; # ancestors include root
+            my $relparent;
+            $relparent = $ancestors[$i] if $i >= 0;
             next unless $relparent;
             $exp =~ s|\.\./||g;
             $exp = $relparent->location_path() . "/" . $exp;
