@@ -14,10 +14,6 @@ $VERSION = do { my @r=(q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 %Properties = XIMS::Config::Names::Properties();
 @ResourceTypes = XIMS::Config::Names::ResourceTypes();
 
-# think about moving the following two lines to XIMS::Config::Names::Properties...
-my @oprops = ( @{$Properties{Document}}, @{$Properties{Content}} );
-$Properties{Object} = \@oprops;
-
 sub get_URI {
     my ($r_type, $property_name) = @_;
     XIMS::Debug( 1, "Unknown resource type '$r_type'!" ) unless grep { $_ eq $r_type} @ResourceTypes;
