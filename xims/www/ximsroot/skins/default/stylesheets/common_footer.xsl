@@ -19,25 +19,25 @@
             <td colspan="2">
                 <xsl:choose>
                     <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type='application/x-container'">
-                        <a href="{$xims_box}{$goxims_content}{$absolute_path}?sitemap=1">Tree view</a>
+                        <a href="{$xims_box}{$goxims_content}{$absolute_path}?sitemap=1"><xsl:value-of select="$i18n/l/Treeview"/></a>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="$printview != '0'">
-                                <a href="{$goxims_content}{$absolute_path}?m={$m}">Default view</a>
+                                <a href="{$goxims_content}{$absolute_path}?m={$m}"><xsl:value-of select="$i18n/l/Defaultview"/></a>
                                 <xsl:if test="$link_pub_preview='true'">
                                     &#160;
                                     <a href="javascript:previewWindow('{$xims_box}{$goxims_content}{$absolute_path}?pub_preview=1')">
-                                        Publishing preview
+                                        <xsl:value-of select="$i18n/l/Publishingpreview"/>
                                     </a>
                                 </xsl:if>
                             </xsl:when>
                             <xsl:otherwise>
-                                <a href="{$goxims_content}{$absolute_path}?m={$m};printview=1">Print view</a>
+                                <a href="{$goxims_content}{$absolute_path}?m={$m};printview=1"><xsl:value-of select="$i18n/l/Printview"/></a>
                                 <xsl:if test="$link_pub_preview='true'">
                                     &#160;
                                     <a href="javascript:previewWindow('{$xims_box}{$goxims_content}{$absolute_path}?pub_preview=1')">
-                                        Publishing preview
+                                        <xsl:value-of select="$i18n/l/Publishingpreview"/>
                                     </a>
                                 </xsl:if>
                             </xsl:otherwise>

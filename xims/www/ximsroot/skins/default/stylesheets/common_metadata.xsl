@@ -11,31 +11,31 @@
 
 <xsl:template name="object-metadata">
     <p>
-        Metadata for <xsl:value-of select="$absolute_path"/>
+        <xsl:value-of select="$i18n/l/Metadata"/> <xsl:value-of select="$absolute_path"/>
     </p>
     <p>
         <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
             <tr>
-                <td valign="top">Title</td>
+                <td valign="top"><xsl:value-of select="$i18n/l/Title"/></td>
                 <td><xsl:apply-templates select="title"/></td>
             </tr>
             <tr>
-                <td valign="top">Abstract</td>
+                <td valign="top"><xsl:value-of select="$i18n/l/abstract"/></td>
                 <td> <xsl:apply-templates select="abstract"/></td>
             </tr>
             <tr>
-                <td valign="top">Keywords</td>
+                <td valign="top"><xsl:value-of select="$i18n/l/keywords"/></td>
                 <td><xsl:apply-templates select="keywords" /></td>
             </tr>
             <tr>
-                <td valign="top">Stored as</td>
+                <td valign="top"><xsl:value-of select="$i18n/l/Dataformat"/></td>
                 <td>
                     <xsl:value-of select="data_format/name" />-<xsl:value-of select="object_type/name" />&#160;
                     <xsl:value-of select="data_format/mime_type" />
                 </td>
             </tr>
             <tr>
-                <td valign="top">Size</td>
+                <td valign="top"><xsl:value-of select="$i18n/l/Size"/></td>
                 <td>
                     <xsl:value-of select="format-number(lob_length , ',###,##0')"/>&#160;Bytes
                 </td>
@@ -47,19 +47,17 @@
 <xsl:template name="user-metadata">
         <tr>
             <td valign="top">
-                Created by <xsl:call-template name="creatorfullname"/>
-                at <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
+                <xsl:value-of select="$i18n/l/Created_by"/> <xsl:call-template name="creatorfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                 <br/>
-                Owned by <xsl:call-template name="ownerfullname"/>
+                <xsl:value-of select="$i18n/l/Owned_by"/> <xsl:call-template name="ownerfullname"/>
             </td>
             <td>&#160;</td>
             <td align="right" valign="top">
-                Last modified by <xsl:call-template name="modifierfullname"/>
-                at <xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
+                <xsl:value-of select="$i18n/l/Last_modified_by"/> <xsl:call-template name="modifierfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
                 <br/>
                 <xsl:if test="published=1">
-                    Last published by <xsl:call-template name="lastpublisherfullname"/>
-                    at <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
+                    <xsl:value-of select="$i18n/l/Last_published_by"/> <xsl:call-template name="lastpublisherfullname"/>
+                    <xsl:value-of select="$i18n/l/at_time"/> <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
                 </xsl:if>
             </td>
         </tr>
@@ -69,13 +67,13 @@
     <p class="documentquote">
             Document:
             <!-- created_by should be replaced by owned_by! -->
-            <xsl:call-template name="ownerfullname"/>, 
+            <xsl:call-template name="ownerfullname"/>,
             <xsl:value-of select="title"/>,
             [<xsl:value-of select="concat($goxims_content,$absolute_path)"/>],
             <xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
            <br/>
            <xsl:if test="abstract != '&#160;'">
-                Abstract:<br/>
+                <xsl:value-of select="$i18n/l/Abstract"/>:<br/>
                 <xsl:apply-templates select="abstract"/>
             </xsl:if>
     </p>
