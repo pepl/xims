@@ -5,10 +5,8 @@
 
 -- drop users
 DROP USER xims;
-DROP USER ximsadm;
 DROP USER ximsrun;
 -- create with extended privs and empty password
 CREATE USER xims    WITH NOCREATEUSER   CREATEDB UNENCRYPTED PASSWORD 'xims';
-CREATE USER ximsadm WITH NOCREATEUSER NOCREATEDB UNENCRYPTED PASSWORD 'ximsadm';
 CREATE USER ximsrun WITH NOCREATEUSER NOCREATEDB UNENCRYPTED PASSWORD 'ximsrun';
 

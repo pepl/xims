@@ -460,44 +460,9 @@ CREATE FUNCTION ci_mime_aliases_id_seq_nval() RETURNS INTEGER
        LANGUAGE 'plpgsql'
 ;
 
--- we'll try to have a 3-level privilegesystem here 
--- first we have a user who OWNS the db and its objects,
--- having full control over them. whether this can be the db's 
--- superuser or not, depends on your environment.
--- i'd leave the superuser alone and use xims :-) 
---  
--- the xims account shall NOT be the owner of the db
--- and its objects, but it shall be able to do anything
--- with the data inside. 
-
-GRANT SELECT, INSERT, UPDATE, DELETE
-   ON  ci_bookmarks
-      ,ci_bookmarks_id_seq
-      ,ci_content
-      ,ci_content_id_seq
-      ,ci_data_formats
-      ,ci_data_formats_id_seq
-      ,ci_documents
-      ,ci_documents_id_seq
-      ,ci_languages
-      ,ci_languages_id_seq
-      ,ci_mime_type_aliases
-      ,ci_mime_type_aliases_id_seq
-      ,ci_object_privs_granted
-      ,ci_object_type_privs
-      ,ci_object_types
-      ,ci_object_types_id_seq
-      ,ci_roles_granted
-      ,ci_sessions
-      ,ci_sessions_id_seq
-      ,ci_users_roles
-      ,ci_users_roles_id_seq
-      ,ci_content_loblength
-   TO ximsadm
-;  
-
-
--- ximsrun is the user XIMS connects as at runtime.
+-- we have a user 'xims' who OWNS the db and its
+-- objects, having full control over them. 
+-- ximsrun is the user XIMS connects as at runtime,
 -- least possible privileges here.
 GRANT SELECT
    ON  ci_bookmarks
@@ -554,7 +519,6 @@ GRANT INSERT, UPDATE, DELETE
 
 -- add the nested set triggers, functions and rule for inserts, deletes and updates
 \i nested_set_triggers_and_functions.sql
-
 
 -- commit
 END WORK;
