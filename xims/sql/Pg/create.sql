@@ -166,6 +166,7 @@ CREATE TABLE ci_documents
  ,symname_to_doc_id INTEGER      REFERENCES ci_documents( id )
                                  ON DELETE cascade
  ,position          INTEGER
+ ,location_path     TEXT
  )
 ;
 
@@ -524,9 +525,6 @@ GRANT INSERT, UPDATE, DELETE
       ,ci_users_roles
    TO ximsrun
 ;
-
--- add default data (object types, data formats, languages, root folder, ...)
-\i defaultdata.sql
 
 -- commit
 END WORK;

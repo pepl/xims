@@ -44,6 +44,9 @@
 -- Functions and triggers for location_path denormalization
 @@ci_util_location_path.sql
 
+-- VLibrary tables
+@@cilib_library_ddl.sql
+
 -- commit;
 -- PROMPT Changes have not been commited yet. Type commit; to do so!
 commit;
