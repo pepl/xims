@@ -1,4 +1,4 @@
-This is XIMS, version 0.1 (beta).
+This is XIMS, version 0.1.1.
 
 Overview
 --------
@@ -35,8 +35,8 @@ Note: Documentation is currently quite rudimentary :-/.
 
 Release Notes
 -------------
-Keep it mind that this is an early XIMS package, it is BETA.
-For the next beta releases we are planning to adress at least the
+Keep it mind that this is an early XIMS package.
+For the next packages we are planning to address at least the
 following issues:
 
 * Finish the UI and Homepage redesign
@@ -44,28 +44,17 @@ following issues:
 * Add HTMLArea-Editor customizations (object browser for links and images, table plugin, ...)
 * Add Bitflux-Editor integration
 * Update acceptance tests for the test suite
+* Start with user preferences (skin, ui-language, editor-preference, ...)
 
 Other issues to be adressed include the following:
 
 * Importer for filesystem objects
 * SQL queries and data retrieval in general is not performance but
   genericity optimized - Work on that.
-* Start with user preferences (skin, ui-language, editor-preference, ...)
 * Start with bigger things like Versioning and Multilanguage Content UI
-
-Until user-start-pages are implemented, admins have to know the URL
-for the user management interface. It is http://yourbox/goxims/users
 
 More issues can be found at the TODO at
 https://sourceforge.net/tracker/?atid=432919&group_id=42250&func=browse
-
-This is an early development version of XIMS.
-Production use is NOT recommended!
-
-(If you can't wait to use XIMS for your site in a production environment
-and are interested in the old Oracle-tied version of XIMS which has been
-running in an production environment at the University of Innsbruck
-since April 2002 without any troubles, please contact us.)
 
 
 Changes
@@ -87,15 +76,26 @@ https://sourceforge.net/tracker/?group_id=42250&atid=432505
 Credits
 -------
 
-XIMS is developed and maintained by:
-
+XIMS was originally developed by:
 Michael Kröll <michael.kroell@uibk.ac.at>
 Hansjörg Pehofer <haensel@catbull.com>
 Kip Hampton <khampton@totalcinema.com>
 Christian Glahn <christian.glahn@uibk.ac.at>
 
-The user interface has originally been designed by:
+XIMS is currently developed and maintained by:
+Michael Kröll <michael.kroell@uibk.ac.at>
+Hansjörg Pehofer <haensel@catbull.com>
 
+Contributors:
+Jochen Frühwirth <jochen.fruehwirth@mci.edu>
+Volker Hess <volker.hess@mz.uni-siegen.de>
+Joachim Kargl <joachim.kargl@uibk.ac.at>
+Martina Kinzl <martina.kinzl@uibk.ac.at>
+Britta Tautermann <britta.tautermann@uibk.ac.at>
+
+The user interface has originally been designed by:
 Georg Schönwiese <csab2314@uibk.ac.at>
 (This UI is not part of this distribution but currently still used at
 xims.uibk.ac.at)
+
+Additionally, we would like to thank everyone who supplied valuable feedback!

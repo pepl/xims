@@ -15,8 +15,7 @@ package XIMS;
 
     use XIMS::Config;
 
-#    $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-    $VERSION = 1.1;
+    $VERSION = 0.1;
 
     # test if this is a local script or if we are running under mod_perl
     $_MODPERL_ = $ENV{MOD_PERL} ? 1 : 0 ;
