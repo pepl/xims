@@ -46,13 +46,11 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    # as long as DBIx::SQLEngine does not implement LIMIT and ORDERBY
-    # we have to use $object->find_objects_granted() instead of
-    # $dp->getObject()
-
     # fill $ctxt->objectlist with the 5 last modified objects readable by the user
+    # 'criteria' is a mandatory argument, so we add a dummy criteria here...
     my $object = XIMS::Object->new( User => $ctxt->session->user() );
-    my @lmobjects = $object->find_objects_granted( limit => 5 );
+    my @lmobjects = $object->find_objects_granted( criteria => '1 = 1',
+                                                   limit => 5 );
     $ctxt->objectlist( \@lmobjects );
 
     # fill $ctxt->userobjectlist with the 5 objects most recently created or modified by the user

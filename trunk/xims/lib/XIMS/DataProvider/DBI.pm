@@ -6,7 +6,8 @@ package XIMS::DataProvider::DBI;
 use strict;
 use XIMS;
 use XIMS::Names;
-use DBIx::SQLEngine 0.014;
+use DBIx::SQLEngine 0.016;
+use DBIx::SQLEngine::Criteria::And;
 use XIMS::DataProvider;
 use vars qw( %Tables %Names %PropertyAttributes %PropertyRelations $VERSION);
 #use Data::Dumper;
@@ -343,9 +344,7 @@ sub update_content_binfile {
     # bind the id (should be the same for all)
     $sth->bind_param( 2, $content_id );
 
-    my $ret = $sth->execute;
-    #warn "update binary returning $ret";
-    return $ret;
+    return $sth->execute;
 }
 
 sub update_content_body {
@@ -353,23 +352,11 @@ sub update_content_body {
     my $self = shift;
     my ( $content_id, $data ) = @_;
 
-    my $sth = $self->{dbh}->get_dbh->prepare("UPDATE ci_content set body = ? where id = ?");
-
-    if ( $self->{RDBMSClass} eq 'Oracle' ) {
-        $sth->bind_param( 1, $data, { ora_type => 112 } );
-    }
-    # other special binds in 'elsif's here as needed
-    # the following is the default
-    else {
-        $sth->bind_param( 1, $data );
-    }
-
-    # bind the id (should be the same for all)
-    $sth->bind_param( 2, $content_id );
-
-    my $ret = $sth->execute;
-    #warn "update character returning $ret";
-    return $ret;
+    # Oracle needs a special bind to update CLOBs
+    return $self->{dbh}->do_sql("UPDATE ci_content set body = ? where id = ?",
+      [$data, ($self->{RDBMSClass} eq 'Oracle') ? {ora_type=>112} : ()],
+      $content_id
+    );
 }
 
 sub dbh { $_[0]->{dbh} }
@@ -485,6 +472,10 @@ sub find_object_id {
     my %args = @_;
     return unless (defined $args{criteria} and length $args{criteria});
 
+    my $tables = 'ci_documents, ci_content';
+    my $columns = delete $args{columns};
+    $columns ||= 'ci_content.id';
+
     my %param;
     $param{order} = delete $args{order};
     $param{order} ||= 'ci_content.last_modification_timestamp DESC';
@@ -495,18 +486,41 @@ sub find_object_id {
     $param{limit} = delete $args{limit};
     $param{offset} = delete $args{offset};
 
+    # since we want to use limit and offset here, we have to include the basic
+    # privilege check here, and not higher up in the chain
+    my $user_id = delete $args{user_id};
+    my @role_ids = delete $args{role_ids};
+    if ( $user_id and scalar @role_ids > 0 ) {
+        $param{criteria} .= " AND ci_content.id = ci_object_privs_granted.content_id AND ci_object_privs_granted.grantee_id IN (" . join(',', ($user_id, @role_ids)) . ") AND ci_object_privs_granted.privilege_mask > 0 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = ci_content.id AND grantee_id = " . $user_id . " AND privilege_mask = 0) IS NULL";
+        $tables .= ', ci_object_privs_granted';
+    }
+
+    #my $sh = delete $args{start_here};
+    #my $descendant_ids_lvls;
+    #if ( defined $sh ) {
+    #    # an alternative, better scaling implementation instead of fetching
+    #    # the descendant ids would be the following:
+    #    #   - create a 'location_path' column in ci_documents
+    #    #   - fill it on updates and inserts by a trigger on 'location' and 'parent_id'
+    #    #   - add a condition like "AND location_path LIKE '".$start_from->location_path."%'
+    #    $descendant_ids_lvls = $self->get_descendant_id_level( parent_id => $sh );
+    #    $args{document_id} = $descendant_ids_lvls->[0]->[0];
+    #}
+
     if ( scalar keys %args > 0 ) {
         my ( $sql, @params ) = $self->_sqlwhere_from_hashgroup( %args );
         $param{criteria} = [ $param{criteria} . ' AND ' . $sql, @params ];
     }
 
-    my $data = $self->{dbh}->fetch_select( table   => 'ci_documents, ci_content',
-                                           columns => 'ci_documents.id',
+    my $data = $self->{dbh}->fetch_select( table   => $tables,
+                                           columns => $columns,
                                            %param );
 
     my @ids;
+    my %seen = ();
     foreach my $row ( @{$data} ) {
-        push @ids, $row->{id};
+        # remove duplicates resulting from different role grants
+        push (@ids, $row->{id}) unless $seen{$row->{id}}++;
     }
     return \@ids;
 }
@@ -515,25 +529,10 @@ sub find_object_id_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    return unless (defined $args{criteria} and length $args{criteria});
+    $args{columns} = 'count(DISTINCT ci_content.id) AS id';
 
-    my %param;
-    $param{criteria} = delete $args{criteria};
-    $param{criteria} = 'ci_content.document_id = ci_documents.id AND ' . $param{criteria};
-
-    delete $args{order};
-    delete $args{limit};
-    delete $args{offset};
-
-    if ( scalar keys %args > 0 ) {
-        my ( $sql, @params ) = $self->_sqlwhere_from_hashgroup( %args );
-        $param{criteria} = [ $param{criteria} . ' AND ' . $sql, @params ];
-    }
-
-    my $data = $self->{dbh}->fetch_select( table   =>  'ci_documents, ci_content',
-                                           columns =>  'count(ci_documents.id) AS COUNT',
-                                           %param );
-    return $data->[0]->{count};
+    my $ids = $self->find_object_id( %args );
+    return $ids->[0] if $ids;
 }
 
 sub content_length {
