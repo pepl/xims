@@ -25,7 +25,7 @@ sub data {
     my %data = ();
 
     my $body_hack = 0;
-    if ( $self->isa('XIMS::Object') and $self->content_field and $self->content_field eq 'binfile') {
+    if ( $self->isa('XIMS::Object') and $self->content_field eq 'binfile') {
         $body_hack++;
     }
 
