@@ -71,7 +71,7 @@
             <input name="trytobalance" type="radio" value="true" checked="checked"/>Yes
             <input name="trytobalance" type="radio" value="false" />No
         </td>
-    </tr>      
+    </tr>
 </xsl:template>
 
 <xsl:template name="testbodysxml">
@@ -179,7 +179,7 @@
             <script src="{$ximsroot}ewebedit/ewebeditpro.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <base href="{$xims_box}{$goxims_content}{$parent_path}/" />
                 <script type="text/javascript">
-                <![CDATA[ 
+                <![CDATA[
                 function setEWProperties(sEditorName) {
                     eWebEditPro.instances[sEditorName].editor.setProperty("BaseURL", "]]><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/><![CDATA[");
                     eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty("TransferMethod","]]><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/><![CDATA[?contentbrowse=1;style=ewebeditimage;otfilter=Image");
@@ -209,7 +209,7 @@
         <script src="{$ximsroot}ewebedit/ewebeditpro.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <base href="{$xims_box}{$goxims_content}{$parent_path}/" />
             <script type="text/javascript">
-            <![CDATA[ 
+            <![CDATA[
             function setEWProperties(sEditorName) {
                 eWebEditPro.instances[sEditorName].editor.setProperty("BaseURL", "]]><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/><![CDATA[");
                 eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty("TransferMethod","]]><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/><![CDATA[?contentbrowse=1;style=ewebeditimage;otfilter=Image");
@@ -226,9 +226,9 @@
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
         <script src="{$ximsroot}scripts/default.js" type="text/javascript">
             <xsl:text>&#160;</xsl:text>
-        </script> 
+        </script>
         <script type="text/javascript">
-            <![CDATA[ 
+            <![CDATA[
             function openTestWFWindow() {
                 var testwfwindow = window.open('','windowName',"resizable=yes,scrollbars=yes,width=550,height=400,screenX=50,screenY=200");
                 var body = document.forms['eform'].body.value;
@@ -309,7 +309,7 @@
     <xsl:call-template name="tr-title-create"/>
 </xsl:template>
 
-  
+
 <xsl:template name="tr-locationtitle-edit">
     <xsl:call-template name="tr-location-edit"/>
     <xsl:call-template name="tr-title-edit"/>
@@ -413,7 +413,7 @@
             <span class="compulsory">Location</span>
         </td>
         <td>
-            <input tabindex="10" type="text" class="text" name="name" size="40"> 
+            <input tabindex="10" type="text" class="text" name="name" size="40">
                 <xsl:choose>
                     <xsl:when test="string-length(symname_to_doc_id) > 0 ">
                         <xsl:attribute name="value"><xsl:value-of select="symname_to_doc_id"/></xsl:attribute>
@@ -422,7 +422,7 @@
                         <xsl:attribute name="value"><xsl:value-of select="location"/></xsl:attribute>
                     </xsl:otherwise>
                 </xsl:choose>
-            </input> 
+            </input>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         </td>
@@ -441,7 +441,7 @@
             <span class="compulsory">Location</span>
         </td>
         <td>
-            <input tabindex="10" type="text" class="text" name="name" size="40" 
+            <input tabindex="10" type="text" class="text" name="name" size="40"
                         value="{substring-before(location, concat('.', /document/data_formats/data_format
                          [@id = /document/data_formats/data_format]/suffix))}"/>
             <xsl:text>&#160;</xsl:text>
@@ -451,7 +451,7 @@
     <xsl:call-template name="tr-title-edit"/>
 </xsl:template>
 
- 
+
 <xsl:template name="tr-file-create">
     <tr>
         <td valign="top"><span class="compulsory">File</span></td>
@@ -472,7 +472,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('File')" class="doclink">(?)</a>
         </td>
-    </tr>   
+    </tr>
 </xsl:template>
 
 
@@ -513,7 +513,7 @@
     </tr>
 </xsl:template>
 
-    
+
 <xsl:template name="tr-imagedepartmentroot-edit">
     <tr>
         <td valign="top">Image</td>
@@ -599,7 +599,7 @@
     </tr>
 </xsl:template>
 
- 
+
 <xsl:template name="tr-body-create">
 <tr>
     <td colspan="3">
@@ -684,7 +684,7 @@
     </tr>
 </xsl:template>
 
- 
+
 <xsl:template name="tr-description-create">
     <tr>
         <td colspan="3">
@@ -811,7 +811,7 @@
     </tr>
 </xsl:template>
 
-   
+
 <xsl:template name="tr-stylesheet-create">
 <tr>
     <td valign="top">Stylesheet</td>
@@ -867,7 +867,7 @@
     </tr>
 </xsl:template>
 
- 
+
 <xsl:template name="without-wysiwyg">
     <a style="margin-left:18px;" href="{$goxims_content}{$absolute_path}?create=1;plain=1;objtype=Document;parid={@id}">Create without WYSIWYG-Editor</a>
 </xsl:template>
@@ -888,19 +888,48 @@
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
     <xsl:if test="/document/data_formats/data_format[@id=$dataformat]/name='URL' or /document/data_formats/data_format[@id=$dataformat]/name='SymbolicLink'">
-
-        <tr>
-            <td bgcolor="#ffffff">
+            <tr>
+                <td width="30">
+                    <xsl:choose>
+                        <xsl:when test="published = '1'">
+                            <img border="0"
+                                    width="26"
+                                    height="19"
+                                    alt="Published"
+                            >
+                                <xsl:choose>
+                                    <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
+                                        <xsl:attribute name="title">This object has last been published at <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/> by <xsl:call-template name="lastpublisherfullname"/></xsl:attribute>
+                                        <xsl:attribute name="src"><xsl:value-of select="$ximsroot"/>skins/<xsl:value-of select="$currentskin"/>/images/status_pub.png</xsl:attribute>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="title">This object has been modified since the last publication by <xsl:call-template name="lastpublisherfullname"/> at <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>.</xsl:attribute>
+                                        <xsl:attribute name="src"><xsl:value-of select="$ximsroot"/>skins/<xsl:value-of select="$currentskin"/>/images/status_pub_async.png</xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </img>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <img src="{$ximsroot}images/spacer_white.gif"
+                                 width="26"
+                                 height="19"
+                                 border="0"
+                                 alt=""
+                                 />
+                        </xsl:otherwise>
+                    </xsl:choose>
+            </td>
+            <td>
                 <!-- icon -->
                 <!-- link -->
                 <a>
                     <xsl:attribute name="href">
                         <xsl:choose>
                             <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='URL'">
-                                <xsl:value-of select="concat(location,'?sb=',$sb,';order=',$order,';m=',$m)"/>
+                                <xsl:value-of select="location"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:value-of select="concat($goxims_content,symname_to_doc_id,'?m=',$m)"/>
+                                <xsl:value-of select="concat($goxims_content,symname_to_doc_id,'?sb=',$sb,';order=',$order,';m=',$m)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
@@ -908,71 +937,99 @@
                 </a>
             </td>
             <xsl:if test="$m='e'">
-                <td>
+                <td align="right">
                     <xsl:choose>
                         <xsl:when test="user_privileges/write and locked_time = '' or locked_by = /document/session/user/@id">
                             <a href="{$goxims_content}?id={@document_id};edit=1">
-                                <img src="{$ximsroot}skins/{$currentskin}/images/option_edit.png" 
-                                     border="0" 
-                                     alt="Edit" 
+                                <img src="{$ximsroot}skins/{$currentskin}/images/option_edit.png"
+                                     border="0"
+                                     alt="Edit"
                                      title="Edit this document"
-                                     width="32" height="19" 
-                                     align="left" 
-                                     onmouseover="pass('edit{@document_id}','edit','h'); return true;" 
-                                     onmouseout="pass('edit{@document_id}','edit','c'); return true;" 
-                                     onmousedown="pass('edit{@document_id}','edit','s'); return true;" 
-                                     onmouseup="pass('edit{@document_id}','edit','c'); return true;" 
-                                     name="edit{@document_id}" 
+                                     width="32" height="19"
+                                     align="left"
+                                     onmouseover="pass('edit{@document_id}','edit','h'); return true;"
+                                     onmouseout="pass('edit{@document_id}','edit','c'); return true;"
+                                     onmousedown="pass('edit{@document_id}','edit','s'); return true;"
+                                     onmouseup="pass('edit{@document_id}','edit','c'); return true;"
+                                     name="edit{@document_id}"
                                      />
                             </a>
                         </xsl:when>
                         <xsl:otherwise>
-                            <img src="{$ximsroot}images/spacer_white.gif" 
-                                 width="32" 
-                                 height="19" 
-                                 border="0" 
-                                 alt="" 
-                                 align="left" 
+                            <img src="{$ximsroot}images/spacer_white.gif"
+                                 width="32"
+                                 height="19"
+                                 border="0"
+                                 alt=""
+                                 align="left"
+                                 />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all) and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+                            <a href="{$goxims_content}?id={@id};publish_prompt=1">
+                                <img src="{$ximsroot}skins/{$currentskin}/images/option_pub.png"
+                                     border="0"
+                                     alt="Publishing options"
+                                     title="Publishing options"
+                                     name="publish{@document_id}"
+                                     width="32"
+                                     height="19"
+                                     align="left"
+                                     />
+                            </a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <img src="{$ximsroot}images/spacer_white.gif"
+                                 border="0"
+                                 width="32"
+                                 height="19"
+                                 alt=""
+                                 align="left"
                                  />
                         </xsl:otherwise>
                     </xsl:choose>
                     <xsl:choose>
                         <xsl:when test="user_privileges/grant|user_privileges/grant_all">
                             <a href="{$goxims_content}?id={@document_id};obj_acllist=1">
-                                <img src="{$ximsroot}skins/{$currentskin}/images/option_acl.png" 
-                                     border="0" 
-                                     alt="Access Control" 
+                                <img src="{$ximsroot}skins/{$currentskin}/images/option_acl.png"
+                                     border="0"
+                                     alt="Access Control"
                                      title="Access Control"
-                                     align="left" 
-                                     width="32" 
+                                     align="left"
+                                     width="32"
                                      height="19"
                                      />
                             </a>
                         </xsl:when>
                         <xsl:otherwise>
-                            <img src="{$ximsroot}images/spacer_white.gif" 
-                                 width="32" 
-                                 height="19" 
-                                 border="0" 
-                                 alt="" 
-                                 align="left" 
+                            <img src="{$ximsroot}images/spacer_white.gif"
+                                 width="32"
+                                 height="19"
+                                 border="0"
+                                 alt=""
+                                 align="left"
                                  />
                         </xsl:otherwise>
                     </xsl:choose>
                     <xsl:choose>
-                        <xsl:when test="user_privileges/delete">
+                        <xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                             <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
                             <!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
-                            <form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
-                                <input type="hidden" name="del_prompt" value="1"/>
-                                <input type="hidden" name="id" value="{@document_id}"/>
+                            <form style="margin:0px;" name="delete"
+                                  method="GET"
+                                  action="{$xims_box}{$goxims_content}">
+                                <input type="hidden" name="delete_prompt" value="1"/>
+                                <input type="hidden" name="id" value="{@id}"/>
                                 <input
-                                       type="image" 
-                                       name="del{@document_id}" 
-                                       src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" 
-                                       border="0" 
-                                       width="37" 
+                                       type="image"
+                                       name="del{@id}"
+                                       src="{$ximsroot}skins/{$currentskin}/images/option_purge.png"
+                                       border="0"
+                                       width="37"
                                        height="19"
+                                       alt="Permanent delete"
+                                       title="Permanently delete this object"
                                        />
                             </form>
                         </xsl:when>
@@ -992,8 +1049,8 @@
     </xsl:variable>
 
     <!-- <xsl:if test="/document/object_types/object_type[@id=$objecttype]/name='Annotation'"> -->
-    <!-- 
-         pepl: This hardcoded OT would not be neccessary if the Annotations would be loaded via -getchildren!!! 
+    <!--
+         pepl: This hardcoded OT would not be neccessary if the Annotations would be loaded via -getchildren!!!
          (I guess its time to change the "definition" regarding Annotations and their granted privs)
      -->
     <xsl:if test="$objecttype=16">
@@ -1017,46 +1074,50 @@
                     <xsl:choose>
                         <xsl:when test="/document/context/object/user_privileges/write and locked_time = '' or locked_by = /document/session/user/@id">
                             <a href="{$goxims_content}?id={@document_id};edit=1">
-                                <img src="{$ximsroot}skins/{$currentskin}/images/option_edit.png" 
-                                     border="0" 
+                                <img src="{$ximsroot}skins/{$currentskin}/images/option_edit.png"
+                                     border="0"
                                      alt="Edit"
-                                     title="Edit this Document" 
-                                     width="32" height="19" 
-                                     align="left" 
-                                     onmouseover="pass('edit{@document_id}','edit','h'); return true;" 
-                                     onmouseout="pass('edit{@document_id}','edit','c'); return true;" 
-                                     onmousedown="pass('edit{@document_id}','edit','s'); return true;" 
-                                     onmouseup="pass('edit{@document_id}','edit','c'); return true;" 
-                                     name="edit{@document_id}" 
+                                     title="Edit this Document"
+                                     width="32" height="19"
+                                     align="left"
+                                     onmouseover="pass('edit{@document_id}','edit','h'); return true;"
+                                     onmouseout="pass('edit{@document_id}','edit','c'); return true;"
+                                     onmousedown="pass('edit{@document_id}','edit','s'); return true;"
+                                     onmouseup="pass('edit{@document_id}','edit','c'); return true;"
+                                     name="edit{@document_id}"
                                      />
                             </a>
                         </xsl:when>
                         <xsl:otherwise>
-                            <img src="{$ximsroot}images/spacer_white.gif" 
-                                 width="32" 
-                                 height="19" 
-                                 border="0" 
-                                 alt="" 
-                                 align="left" 
+                            <img src="{$ximsroot}images/spacer_white.gif"
+                                 width="32"
+                                 height="19"
+                                 border="0"
+                                 alt=""
+                                 align="left"
                                  />
                         </xsl:otherwise>
                     </xsl:choose>
                 </td>
                 <td width="2%">
                     <xsl:choose>
-                        <xsl:when test="/document/context/object/user_privileges/delete">
+                        <xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                             <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
                             <!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
-                            <form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
-                                <input type="hidden" name="del_prompt" value="1"/>
-                                <input type="hidden" name="id" value="{@document_id}"/>
+                            <form style="margin:0px;" name="delete"
+                                  method="GET"
+                                  action="{$xims_box}{$goxims_content}">
+                                <input type="hidden" name="delete_prompt" value="1"/>
+                                <input type="hidden" name="id" value="{@id}"/>
                                 <input
-                                       type="image" 
-                                       name="del{@document_id}" 
-                                       src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" 
-                                       border="0" 
-                                       width="37" 
+                                       type="image"
+                                       name="del{@id}"
+                                       src="{$ximsroot}skins/{$currentskin}/images/option_purge.png"
+                                       border="0"
+                                       width="37"
                                        height="19"
+                                       alt="Permanent delete"
+                                       title="Permanently delete this object"
                                        />
                             </form>
                         </xsl:when>
