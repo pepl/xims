@@ -33,5 +33,9 @@
 	<Delete_Answer>Antwort löschen</Delete_Answer>
 	<Add_to_selection>Zur Auswahl hinzufügen</Add_to_selection>
 	<Remove_from_selection>Von Auswahl entfernen</Remove_from_selection>
+    <show_questions>Fragen anzeigen</show_questions>
+    <hide_questions>Fragen ausblenden</hide_questions>
+    <download_all_results>Ausgefüllte Fragebögen herunterladen</download_all_results>
+    <download_results>Ergebnisse herunterladen</download_results>
 	<!-- End Questionnaire -->
 </l>

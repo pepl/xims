@@ -21,10 +21,10 @@
         <xsl:call-template name="questionnaire_download" />
         <xsl:choose>
             <xsl:when test="$show_questions =  'none'">
-                <a href="?show_questions=top" class="text" type="submit">Fragen anzeigen</a>
+                <a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
             </xsl:when>
             <xsl:when test="$show_questions =  'top'">
-                <a href="?show_questions=none" class="text" type="submit">Fragen ausblenden</a><br/>
+                <a href="?show_questions=none" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
                 <xsl:call-template name="top_question" />
             </xsl:when>
         </xsl:choose>
@@ -51,7 +51,15 @@
 <xsl:template name="questionnaire_download">
     <xsl:if test="@total_answered > 0">
         <p>
-            Download <xsl:value-of select="$i18n_qn/l/results" /> <a class="text" type="submit" target="_blank" href="?download_results=excel">HTML</a>
+            <br/>
+            <xsl:value-of select="$i18n_qn/l/download_results" />&#160;
+            <a class="text" type="submit" target="_blank" href="?download_results=html">HTML</a>,
+            <a class="text" type="submit" target="_self" href="?download_results=excel">Excel</a>
+        </p><p>
+            <xsl:value-of select="$i18n_qn/l/download_all_results" />&#160;
+            <a class="text" type="submit" href="?download_all_results=HTML">HTML</a>,
+            Excel (<a class="text" type="submit" href="?download_all_results=XLS;encoding=Latin1">Latin1</a>,
+            <a class="text" type="submit" href="?download_all_results=XLS;encoding=UTF8">UTF-8</a>)
         </p>
     </xsl:if>
 </xsl:template>
