@@ -13,6 +13,7 @@ sub data {
     if ( scalar( keys( %args ) ) > 0 ) {
         foreach my $field ( keys ( %args ) ) {
             my ( $field_method, $r_type ) = reverse ( split /\./, $field );
+            $field_method = 'document_id' if $field_method eq 'id' and $r_type and $r_type eq 'document';
             $field_method = 'body' if $field_method eq 'binfile';
             $self->$field_method( $args{$field} ) if $self->can( $field_method );
         }
