@@ -20,6 +20,7 @@
         <xsl:otherwise>/gopublic/content</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+  <xsl:variable name="gopublic_content">/gopublic/content</xsl:variable>
   <xsl:variable name="goxims_users">/goxims/users</xsl:variable>
   <xsl:variable name="ximsroot"><xsl:value-of select="$xims_box"/>/ximsroot/</xsl:variable>
   <xsl:variable name="publishingroot">/ximspubroot</xsl:variable>

@@ -8,21 +8,10 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:variable name="absolute_path"><xsl:call-template name="pathinfoinit"/></xsl:variable>
-<xsl:variable name="parent_path"><xsl:call-template name="pathinfoparent" /></xsl:variable>
-
-<xsl:template match="abbr|acronym|address|b|bdo|big|blockquote|br|cite|code|div|del|dfn|em|hr|h1|h2|h3|h4|h5|h6|i|ins|kbd|p|pre|q|samp|small|span|strong|sub|sup|tt|var|
-        dl|dt|dd|li|ol|ul|
-        a|
-        img|map|area|
-        caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|
-        button|fieldset|form|label|legend|input|option|optgroup|select|textarea|
-        applet|object|param">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates/>
-        </xsl:copy>
-</xsl:template>
+<xsl:import href="../common.xsl"/>
+<xsl:import href="default_header.xsl"/>
+<xsl:import href="../../../../../stylesheets/config.xsl"/>
+<xsl:import href="../../../../../stylesheets/anondiscussionforum_common.xsl"/>
 
 <xsl:template name="meta">
     <xsl:variable name="dataformat">
@@ -36,12 +25,12 @@
     </meta>
     <meta name="DC.Subject" content="{keywords}"/>
     <meta name="DC.Description" content="{abstract}"/>
-    <meta name="DC.Publisher" content="Universität Innsbruck"/>
+    <meta name="DC.Publisher" content="Foo Inc."/>
     <meta name="DC.Contributor">
         <xsl:attribute name="content"><xsl:call-template name="modifierfullname"/></xsl:attribute>
     </meta>
     <meta name="DC.Date.Created" scheme="W3CDTF">
-        <xsl:attribute name="content"><xsl:apply-templates select="creation_time" mode="datetime"/></xsl:attribute>
+        <xsl:attribute name="content"><xsl:apply-templates select="creation_timestamp" mode="datetime"/></xsl:attribute>
     </meta>
     <meta name="DC.Date.Modified" scheme="W3CDTF">
         <xsl:attribute name="content"><xsl:apply-templates select="last_modification_timestamp" mode="datetime"/></xsl:attribute>
@@ -88,21 +77,6 @@
    </xsl:choose>
 </xsl:template>
 
-<xsl:template name="search">
-     <form class="qsearch" action="http://www2.uibk.ac.at/suche/" method="POST" name="quicksearch">
-        <table cellpadding="0" cellspacing="0" border="0" width="128" >
-        <tr>
-            <td>
-                  <input class="qsfield" type="text" name="search" size="6" value="[Schnellsuche]" onfocus="document.quicksearch.search.value=&apos;&apos;"/>
-            </td>
-            <td>
-                  <input class="qsbutton" type="image" name="submit" src="/images/icons/search_go.gif" border="0"/>
-            </td>
-        </tr>
-        </table>
-      </form>
-</xsl:template>
-
 <xsl:template name="stdlinks">
     <p class="stdlinks">
         <a href="http://xims.info/">The Xims Project</a><br />
@@ -128,62 +102,36 @@
 
 <xsl:template name="copyfooter">
     <p class="copy">
-          © 2000 - 2012 Example Org. - All rights reserved <br /><a href="http://www.foo.bar/">Help</a> | <a href="mailto:webmaster@doesnot.exist">Mail the webmaster</a>
+          © 2000 - 2012 Example Org. - All rights reserved <br /><a href="http://www.foo.bar/">Help</a> | <a href="mailto:webmaster@doesnot.exist">Mail to the webmaster</a>
     </p>
-</xsl:template>
-
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_time|locked_time" mode="datetime">
-    <xsl:value-of select="./day"/>
-    <xsl:text>.</xsl:text>
-    <xsl:value-of select="./month"/>
-    <xsl:text>.</xsl:text>
-    <xsl:value-of select="./year"/>
-    <xsl:text> </xsl:text>
-    <xsl:value-of select="./hour"/>
-    <xsl:text>:</xsl:text>
-    <xsl:value-of select="./minute"/>
-</xsl:template>
-
-<xsl:template name="pathinfoinit">
-    <xsl:for-each select="/document/context/object/parents/object">
-        <xsl:text>/</xsl:text><xsl:value-of select="location"/>
-    </xsl:for-each>
-</xsl:template>
-
-<xsl:template name="pathinfoparent">
-    <xsl:for-each select="/document/context/object/parents/object[position() != last()]">
-        <xsl:text>/</xsl:text>
-        <xsl:value-of select="location"/>
-    </xsl:for-each>
-</xsl:template>
-
-<xsl:template name="parentpath">
-    <xsl:for-each select="preceding-sibling::object"><xsl:text>/</xsl:text><xsl:value-of select="location"/></xsl:for-each>
-</xsl:template>
-
-<xsl:template name="parentpath_nosite">
-    <xsl:for-each select="preceding-sibling::object[@parent_id != 1]"><xsl:text>/</xsl:text><xsl:value-of select="location"/></xsl:for-each>
 </xsl:template>
 
 <xsl:template match="/document/context/object/parents/object">
    <xsl:param name="no_navigation_at_all">false</xsl:param>
-   <xsl:variable name="thispath"><xsl:call-template name="parentpath_nosite"/></xsl:variable>
+   <xsl:variable name="thispath"><xsl:value-of select="$parent_path_nosite"/></xsl:variable>
 
    <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
    </xsl:variable>
 
-   <xsl:if test="$objecttype != 16">
+   <xsl:if test="/document/object_types/object_type[@id=$objecttype]/name!='AnonDiscussionForumContrib'">
    <xsl:choose>
         <xsl:when test="$no_navigation_at_all='true'">
-                / <xsl:value-of select="location"/>
+            / <xsl:value-of select="location"/>
         </xsl:when>
         <xsl:otherwise>
             <!-- / <a class="nodeco" href="{$goxims_content}{$thispath}/{location}"><xsl:value-of select="location"/></a> -->
-            / <a class="nodeco" href="http://www2.uibk.ac.at{$thispath}/{location}"><xsl:value-of select="location"/></a>
+            / <a class="nodeco" href="http://xims.uibk.ac.at{$thispath}/{location}"><xsl:value-of select="location"/></a>
         </xsl:otherwise>
     </xsl:choose>
   </xsl:if>
+</xsl:template>
+
+<xsl:template name="path2topics">
+    <!-- and /document/context/object/parents/object[@document_id != 1] -->
+    <xsl:for-each select="/document/context/object/parents/object[object_type_id != /document/object_types/object_type[name='AnonDiscussionForumContrib']/@id]">
+        <xsl:text>/</xsl:text><xsl:value-of select="location"/>
+    </xsl:for-each>
 </xsl:template>
 
 </xsl:stylesheet>

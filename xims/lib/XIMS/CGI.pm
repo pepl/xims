@@ -343,8 +343,9 @@ sub selectStylesheet {
     my $stylepath =  $self->getStylesheetDir() . '/';
     my $stylefilename = $styleprefix . '_' . $stylesuffix . '.xsl';
 
-    if ( $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
-        if ( -f ($stylepath . "public/" . $stylefilename) ) {
+    if ( $ctxt->session->user->id() eq XIMS::PUBLICUSERID() ) {
+        my $filepath = $stylepath . "public/" . $stylefilename;
+        if ( -f $filepath and -r $filepath ) {
             XIMS::Debug( 4, "using public-user-stylesheet" );
             $stylepath .= "public/";
         }

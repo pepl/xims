@@ -8,10 +8,8 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
-                
+
 <xsl:import href="common.xsl"/>
-<xsl:import href="default_header.xsl"/>
-<xsl:import href="../../../../../stylesheets/config.xsl"/>
 <xsl:import href="../../../../../anondiscussionforum_common.xsl"/>
 <xsl:output method="html" encoding="ISO-8859-1"/>
 <xsl:param name="request.uri"/>
@@ -40,7 +38,7 @@
         ]]>
     </script>
   </head>
-  
+
    <body margintop="0" marginleft="0" marginwidth="0" marginheight="0">
     <table border="0" cellpadding="0" cellspacing="0" width="790">
             <xsl:call-template name="header">
@@ -48,27 +46,21 @@
                 <xsl:with-param name="nocreatewidget">true</xsl:with-param>
             </xsl:call-template>
             <tr>
-                  <td class="links" colspan="5">
-             
-               <!-- Begin Search -->
-                <xsl:call-template name="search"/>
-               <!-- End Search -->
-             
-              <!-- Begin Standard Links -->
+                <td class="links">
+                <!-- Begin Standard Links -->
                 <xsl:call-template name="stdlinks"/>
-              <!-- End Standard Links -->
+                <!-- End Standard Links -->
 
-              <!-- Begin Department Links -->
+                <!-- Begin Department Links -->
                 <xsl:call-template name="deptlinks"/>
-              <!-- End Department Links -->
+                <!-- End Department Links -->
 
-              <!-- Begin Document Links -->
-              <!-- End Document Links -->
+                <!-- Begin Document Links -->
+                <!-- End Document Links -->
+             </td>
+             <td>
 
-             </td>           
-             <td class="content" colspan="16">
-               
-              <!-- Begin forum -->
+            <!-- Begin forum -->
             <p>
                 <a href="{concat($goxims_content,$parent_path)}">Up</a>
                 <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
@@ -81,7 +73,7 @@
                 </xsl:attribute>Overview of topics
             </a>
         </p>
-        
+
           <table width="608" style="border: 1px solid #888888; margin-bottom: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
                 <tr>
                     <td class="forumhead">
@@ -104,50 +96,46 @@
                             )
                     </td>
                     <td class="forumhead" align="right">
-                        <xsl:apply-templates select="creation_time" mode="datetime"/>
+                        <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" class="forumcontent">
-                            <xsl:apply-templates select="body"/>
+                        <xsl:apply-templates select="body"/>
                     </td>
                 </tr>
             </table>
 
-        <p>
+            <p>
                 <a href="#reply">Reply</a>
-        </p>
-        <br />
-        
-        <xsl:if test="children/object">
+            </p>
+            <br />
+
+        <xsl:if test="/document/objectlist/object">
                 <p>
                 Previous replies:<br/>
                 <table>
-                    <xsl:apply-templates select="children/object"/>
+                    <xsl:apply-templates select="/document/objectlist/object"/>
                 </table>
                 </p>
-         </xsl:if>
+        </xsl:if>
 
-                <xsl:call-template name="replyform"/>
+        <xsl:call-template name="replyform"/>
 
-        <!-- End forum -->      
-                    
-              <!-- Begin footer -->
-                    <xsl:call-template name="copyfooter"/>
-           <!-- End footer -->
-                               
+        <!-- End forum -->
+        <!-- Begin footer -->
+            <xsl:call-template name="copyfooter"/>
+        <!-- End footer -->
+
                 </td>
            </tr>
 
-  </table>
-   
+    </table>
     </body>
 </html>
 </xsl:template>
 
-
-
-<xsl:template match="children/object">
+<xsl:template match="/document/objectlist/object">
     <tr>
     <td>
     <xsl:choose>
@@ -161,14 +149,14 @@
                     <xsl:value-of select="attributes/author"/>
                 </xsl:otherwise>
             </xsl:choose>,
-            <xsl:apply-templates select="creation_time" mode="datetime"/>)
+            <xsl:apply-templates select="creation_timestamp" mode="datetime"/>)
         </xsl:when>
         <xsl:otherwise>
             <img src="{$ximsroot}images/icons/list_HTML.gif" alt="Discussion-Entry-Icon" width="20" height="18"/><xsl:value-of select="title"/>
         </xsl:otherwise>
     </xsl:choose>
     <xsl:if test="user_privileges/delete">
-        <a href="{$goxims_content}?id={@id};del_prompt=1;">
+        <a href="{$goxims_content}?id={@id};delete_prompt=1;">
             <img src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" border="0" width="37" height="19" title="delete" alt="delete"/>
         </a>
     </xsl:if>
@@ -179,28 +167,29 @@
 
 <xsl:template name="replyform">
     <a name="reply"/>
-    <form name="replyform" action="{/document/session/serverurl}{$goxims_content}{$absolute_path}?objtype=anondiscussionforumcontrib" method="POST" onSubmit="return checkFields()">
+    <form name="replyform" action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="POST" onSubmit="return checkFields()">
+        <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
+        <input type="hidden" name="parid" value="{@id}" />
         <table width="608" style="border: 1px solid #888888; margin-bottom: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
             <tr>
-                    <td class="forumhead" colspan="2">Reply</td>
+                <td class="forumhead" colspan="2">Reply</td>
             </tr>
             <tr>
-                    <td valign="middle" class="forumcontent">Title:</td>
-                    <td><input class="foruminput" type="text" name="title" size="33" value="Re: {title}"/></td>
+                <td valign="middle" class="forumcontent">Title:</td>
+                <td><input class="foruminput" type="text" name="title" size="33" value="Re: {title}"/></td>
             </tr>
             <tr>
-                    <td valign="middle" class="forumcontent">Author:</td>
-                    <td><input class="foruminput" type="text" name="author" size="33"/></td>
+                <td valign="middle" class="forumcontent">Author:</td>
+                <td><input class="foruminput" type="text" name="author" size="33"/></td>
             </tr>
-           <tr>
+            <tr>
                 <td valign="middle" class="forumcontent">Email:</td>
                 <td><input class="foruminput" type="text" name="email" size="33"/></td>
-           </tr>
+            </tr>
             <tr>
-                   <td valign="middle" class="forumcontent"></td>
+                <td valign="middle" class="forumcontent"></td>
                 <td>
                     <textarea class="foruminput" name="body" rows="10" cols="35"></textarea>
-                    <input type="hidden" name="parid" value="{/document/context/object/@document_id}"/>
                     <input type="hidden" name="store" value="1"/><br/>
                 </td>
             </tr>
@@ -209,13 +198,6 @@
           <input type="submit" border="0" value="Send reply" name="submit" class="control" />
       </div>
   </form>
-</xsl:template>
-
-
-<xsl:template name="path2topics">
-    <xsl:for-each select="parents/object[object_type != 16]">
-            <xsl:text>/</xsl:text><xsl:value-of select="location"/>
-    </xsl:for-each>
 </xsl:template>
 
 </xsl:stylesheet>
