@@ -5,10 +5,11 @@
 package XIMS::Importer::FileSystem::XML;
 
 use XIMS::Importer::FileSystem;
+use XIMS::Importer::Object::XML;
 use XML::LibXML;
 
 use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::FileSystem);
+@ISA = qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XML);
 
 sub handle_data {
     XIMS::Debug( 5, "called" );
@@ -35,3 +36,14 @@ sub handle_data {
 
     return $object;
 }
+
+sub get_rootelement {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $location = shift;
+    my %args = @_;
+
+    my $strref = $self->get_strref( $location );
+    return $self->SUPER::get_rootelement( $strref, @_ );
+}
+

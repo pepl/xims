@@ -12,9 +12,6 @@ use vars qw( @ISA );
 
 use File::Basename;
 
-# for compatibility, to be removed later
-use Text::Iconv;
-
 sub handle_data {
     XIMS::Debug( 5, "called" );
     my $self = shift;
