@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -77,6 +77,8 @@ sub set_sax_generator {
     return XIMS::SAX::Generator::VLibraryItem->new();
 }
 
+sub update_related { return undef }
+sub update_parent_autoindex { return undef }
 
 1;
 
