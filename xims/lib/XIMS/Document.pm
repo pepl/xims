@@ -6,12 +6,12 @@ package XIMS::Document;
 
 use strict;
 use vars qw( $VERSION @ISA );
-
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 use XIMS;
 use XIMS::Object;
 use XIMS::DataFormat;
 use XIMS::Entities qw(decode);
+
+$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Object');
 
 sub new {

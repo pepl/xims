@@ -7,6 +7,7 @@ package XIMS::SiteRoot;
 use strict;
 use vars qw( $VERSION @ISA );
 use XIMS::DepartmentRoot;
+use XIMS::DataFormat;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::DepartmentRoot');

@@ -4,9 +4,10 @@
 # $Id$
 package XIMS::URLLink;
 
-use vars qw( $VERSION @ISA );
 use strict;
+use vars qw( $VERSION @ISA );
 use XIMS::Object;
+use XIMS::DataFormat;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Object');

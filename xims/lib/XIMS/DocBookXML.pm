@@ -7,6 +7,7 @@ package XIMS::DocBookXML;
 use vars qw( $VERSION @ISA );
 use strict;
 use XIMS::XML;
+use XIMS::DataFormat;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::XML');
