@@ -16,6 +16,9 @@ use XIMS::ObjectType;
 use XIMS::DataFormat;
 use XIMS::User;
 use XIMS::SiteRoot;
+use XIMS::Importer::Object;
+use XIMS::Text;
+use Text::Diff;
 use XIMS::AbstractClass;
 @ISA = qw( XIMS::AbstractClass );
 
@@ -1885,6 +1888,70 @@ sub location_path {
 sub location_path_relative {
     my $self = shift;
     return $self->data_provider->location_path_relative( $self );
+}
+
+##
+#
+# SYNOPSIS
+#    my $boolean = $object->store_diff_to_second_last( $oldbody, $newbody );
+#
+# PARAMETER
+#    $oldbody : Old body string
+#    $newbody : New body string
+#
+# RETURNS
+#    $boolean : True or False for storing diff
+#
+# DESCRIPTION
+#    When given two strings store_diff_to_second_last() stores the unified diff of them
+#    in a child XIMS::Text object called '.diff_to_second_last'. This may
+#    be useful to track the most recent changes to a text-based object,
+#    and will co-exist with the upcoming versioning implementation, which
+#    will only explicitly save versions and will allow reviewing the changes
+#    not only between the latest and second to last modification of objects.
+#
+sub store_diff_to_second_last {
+    XIMS::Debug( 5, "called");
+    my $self = shift;
+    my $oldbody = shift;
+    my $newbody = shift;
+
+    # do not store anything for objects that have not been created yet
+    return undef unless $self->id();
+
+    # check for params
+    return undef unless (defined $oldbody and length $oldbody and defined $newbody);
+
+    my $diffobject_location = '.diff_to_second_last';
+
+    # not i18n'd :-|
+    # could be be filled with edit trail auditing information after that will be
+    # implemented (http://sourceforge.net/tracker/index.php?func=detail&aid=824274&group_id=42250&atid=432508)
+    my %diffoptions = ( FILENAME_A  => $self->location() . " (" . $self->last_modifier->firstname . " " . $self->last_modifier->lastname . ", " . $self->last_modification_timestamp . ")",
+                        FILENAME_B  => $self->location() . " (" . $self->User->firstname . " " . $self->User->lastname . ", " . $self->data_provider->db_now . ")",
+                      );
+
+    my $diff = diff \$oldbody, \$newbody, \%diffoptions;
+
+    # check for ".diff_to_second_last"
+    my $diffobject = $self->children( location => $diffobject_location );
+    if ( $diffobject and $diffobject->id() ) {
+        $diffobject->body( XIMS::xml_escape( $diff ) );
+        return $diffobject->update( User => $self->User );
+    }
+    else {
+        my $oimporter = XIMS::Importer::Object->new( User => $self->User, Parent => $self );
+        $diffobject = XIMS::Text->new( User => $self->User, location => $diffobject_location );
+        $diffobject->body( XIMS::xml_escape( $diff ) );
+
+        my $id = $oimporter->import( $diffobject );
+        if ( not $id ) {
+            XIMS::Debug( 2, "could not create diff-object" );
+            return undef;
+        }
+    }
+
+    return 1;
 }
 
 ###

@@ -110,6 +110,22 @@
         </script>
     </xsl:template>
 
+    <xsl:template name="document-options">
+        <tr>
+            <td colspan="2">
+                <a href="javascript:previewWindow('{$xims_box}{$goxims_content}{$absolute_path}?pub_preview=1')">
+                    <xsl:value-of select="$i18n/l/Publishingpreview"/>
+                </a>
+                <img style="margin-left: 2px" src="{$ximsroot}images/icons/opens_new_window.gif" width="11" height="11" border="0" alt="opens_in_new_window" title="{$i18n/l/Opens_in_new_window}"/>
+                <xsl:if test="children/object[location='.diff_to_second_last']">
+                    &#xa0;
+                    <a href="javascript:diffWindow('{$xims_box}{$goxims_content}{$absolute_path}/.diff_to_second_last?bodyonly=1;pre=1')"><xsl:value-of select="$i18n/l/See_changes_latest_edit"/></a>
+                    <img style="margin-left: 2px" src="{$ximsroot}images/icons/opens_new_window.gif" width="11" height="11" border="0" alt="opens_in_new_window" title="{$i18n/l/Opens_in_new_window}"/>
+                </xsl:if>
+            </td>
+        </tr>
+    </xsl:template>
+
     <xsl:template match="children/object" mode="link">
         <xsl:variable name="dataformat">
             <xsl:value-of select="data_format_id"/>

@@ -58,6 +58,8 @@
 <Treeview>Baumansicht</Treeview>
 <Defaultview>Standardansicht</Defaultview>
 <Publishingpreview>Veröffentlichungsvorschau</Publishingpreview>
+<Opens_in_new_window>Öffnet in neuem Fenster</Opens_in_new_window>
+<See_changes_latest_edit>Änderungen der letzten Bearbeitung anzeigen</See_changes_latest_edit>
 <Printview>Druckansicht</Printview>
 <Metadata>Metadaten für</Metadata>
 <Dataformat>Datenformat</Dataformat>

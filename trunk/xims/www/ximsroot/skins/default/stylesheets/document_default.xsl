@@ -76,11 +76,9 @@
             </table>
             <table align="center" width="98.7%" class="footer">
                 <xsl:call-template name="user-metadata"/>
-                <xsl:call-template name="footer">
-                    <xsl:with-param name="link_pub_preview">true</xsl:with-param>
-                </xsl:call-template>
+                <xsl:call-template name="document-options"/>
+                <xsl:call-template name="footer"/>
             </table>
-            <xsl:call-template name="edit-without-wysiwyg"/>
         </body>
     </html>
 </xsl:template>
