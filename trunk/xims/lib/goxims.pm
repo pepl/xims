@@ -51,24 +51,19 @@ sub handler {
         if ( defined $sessioninfo->{cookie} and length $sessioninfo->{cookie} ) {
             $ctxt->cookie( $sessioninfo->{cookie} );
         }
-
-        $ctxt->data_provider( $sessioninfo->{provider} );
-        return DECLINED unless $ctxt->data_provider();
-
-        $ctxt->session( $sessioninfo->{session} );
-        return DECLINED unless $ctxt->session();
     }
     else {
         # using the ximsPublic role
-        return DECLINED unless $ctxt->data_provider();
+        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instanciated.%20There%20may%20be%20a%20database%20connection%20problem.");
+        return SERVER_ERROR unless $ctxt->data_provider();
 
         XIMS::Debug(6, "Setting user to $publicuser");
         my $public = XIMS::User->new( name => $publicuser );
         my $session = XIMS::Session->new( 'user_id' => $public->id(),
                                           'host'    => $r->get_remote_host() );
 
-        $ctxt->session->( $session );
-        return DECLINED unless $ctxt->session();
+        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20create%20session.");
+        return SERVER_ERROR unless ( $session and $ctxt->session( $session ) );
     }
 
     # set some session information
@@ -107,7 +102,8 @@ sub handler {
         eval "require $cms_pm;" if $cms_pm;
         if (  $@ ) {
             XIMS::Debug( 2, "could not load object class $cms_pm: $@" );
-            return DECLINED;
+            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20object%20class%20$cms_pm.");
+            return SERVER_ERROR;
         }
 
         # rebless the object
@@ -140,7 +136,8 @@ sub handler {
     eval "require $app_pm";
     if ( $@ ) {
         XIMS::Debug( 2, "could not load application-class $app_pm: $@" );
-        return DECLINED;
+        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20application%20class%20$app_pm.");
+        return SERVER_ERROR;
     }
 
     #instance the application class

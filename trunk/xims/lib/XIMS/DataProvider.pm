@@ -123,14 +123,14 @@ sub new {
         $args->{dbsessionopt} = XIMS::DBSESSIONOPT() unless defined $args->{dbsessionopt};
         $args->{dbdopt}       = XIMS::DBDOPT()       unless defined $args->{dbdopt};
 
-        eval { $driver = $drvcls->new( %{$args} ); };
-        if ( $@ ) {
-            XIMS::Debug( 2, "driver class $drvcls did not initialize! reason: $@" );
-        }
-        else {
+        $driver = $drvcls->new( %{$args} );
+        if ( $driver ) {
             $self = bless {} , $class;
             $self->{Driver} = $driver;
             XIMS::Debug( 4, "init complete" );
+        }
+        else {
+            XIMS::Debug( 1, "driver class $drvcls did not initialize!" );
         }
     }
     XIMS::Debug( 5, "done" );

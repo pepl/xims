@@ -574,7 +574,9 @@ sub new {
         };
 
         if ( $@ ) {
-            XIMS::Debug( 2, $@ );
+            XIMS::Debug( 1, "could not connect to database" );
+            XIMS::Debug( 1, $@ );
+            return;
         }
         else {
             
@@ -600,8 +602,6 @@ sub new {
     else {
         XIMS::Debug( 2, "wrong parameters!" );
     }
-
-    XIMS::Debug( 1, "no database connection found!" ) unless defined $self;
 
     XIMS::Debug( 5, "done" );
     return bless $self, $class;
