@@ -16,6 +16,7 @@ use vars qw( @ISA );
 sub import {
     my $self = shift;
     my $location = shift;
+    my $updateexisting = shift;
     return undef unless $location;
 
     my $importer = $self->resolve_importer( $location );
@@ -23,7 +24,7 @@ sub import {
 
     my $object = $importer->handle_data( $location );
 
-    return $self->SUPER::import( $object );
+    return $self->SUPER::import( $object, $updateexisting );
 }
 
 sub handle_data {
