@@ -36,7 +36,9 @@
     <xsl:call-template name="header"/>
     <div id="leftcontent">
         <xsl:call-template name="stdlinks"/>
-        <xsl:call-template name="departmentlinks"/>
+        <xsl:call-template name="departmentlinks">
+            <xsl:with-param name="context" select="article"/>
+        </xsl:call-template>
     </div>
     <div id="centercontent">
         <xsl:comment>/UdmComment</xsl:comment>
@@ -63,7 +65,6 @@
                 </xsl:otherwise>
             </xsl:choose>
         <xsl:comment>/UdmComment</xsl:comment>
-        <xsl:apply-templates select="body"/>
         <div id="footer">
             <span class="left">
                 <xsl:call-template name="copyfooter"/>
