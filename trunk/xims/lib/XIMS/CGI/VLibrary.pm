@@ -74,7 +74,7 @@ sub event_subject {
     my $rowlimit = 5;
     $offset = $offset * $rowlimit;
 
-    my @objects = $ctxt->object->vlitems_bysubject( subject_id => $subjectid,
+    my @objects = $ctxt->object->vlitems_bysubject_granted( subject_id => $subjectid,
                                                     limit => $rowlimit,
                                                     offset => $offset,
                                                     order => 'title'
@@ -103,7 +103,7 @@ sub event_author {
 
     $ctxt->properties->content->getformatsandtypes( 1 );
 
-    my @objects = $ctxt->object->vlitems_byauthor(  author_id => $authorid,
+    my @objects = $ctxt->object->vlitems_byauthor_granted(  author_id => $authorid,
                                                     order => 'title'
                                                  );
     $ctxt->objectlist( \@objects );
@@ -131,7 +131,7 @@ sub event_publication {
 
     $ctxt->properties->content->getformatsandtypes( 1 );
 
-    my @objects = $ctxt->object->vlitems_bypublication(  publication_id => $publicationid,
+    my @objects = $ctxt->object->vlitems_bypublication_granted(  publication_id => $publicationid,
                                                          order => 'title'
                                                       );
     $ctxt->objectlist( \@objects );
