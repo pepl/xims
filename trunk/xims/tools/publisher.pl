@@ -22,7 +22,7 @@ use Getopt::Std;
 $ENV{PATH} = '/bin'; # CWD.pm needs '/bin/pwd'
 
 my %args;
-getopts('hd:u:p:m:r', \%args);
+getopts('hd:u:p:m:ra', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "Object Publisher" );
@@ -45,6 +45,7 @@ die "Could not find object '".$ARGV[0]."'\n" unless $object and $object->id;
 my $privmask = $user->object_privmask( $object );
 die "Access Denied. You do not have privileges to publish '".$ARGV[0]."'\n" unless $privmask and ($privmask & XIMS::Privileges::PUBLISH());
 
+die "Option -a specified but object is not published.\n" if ( $args{a} and not $object->published() );
 die "No write access to '" . XIMS::PUBROOT() . "'.\n"  unless -d XIMS::PUBROOT() and -w XIMS::PUBROOT();
 
 my $exporter = XIMS::Exporter->new( Basedir  => XIMS::PUBROOT(),
@@ -71,7 +72,8 @@ else {
 }
 
 if ( $successful and $args{r} ) {
-    recurse_children( $object, $user, $exporter, $method );
+    my $republishonly = 1 if $args{a};
+    recurse_children( $object, $user, $exporter, $method, $republishonly );
 }
 
 my $gid = (stat XIMS::PUBROOT())[5]; # after install, XIMS::PUBROOT is writable by the
@@ -102,9 +104,10 @@ exit 0;
 sub usage {
     return qq*
 
-  Usage: $0 [-h][-d][-u username -p password] [-m method -r] path-to-publish
+  Usage: $0 [-h][-d][-u username -p password] [-a] [-m method -r] path-to-publish
         -m Currently, only 'publish' is implemented.
         -r Recursively publish descendants.
+        -a If specified, published objects will be republished only
 
         -u The username to connect to XIMS. If not specified,
            you will be asked for it interactively.
@@ -121,10 +124,13 @@ sub recurse_children {
     my $user = shift;
     my $exporter = shift;
     my $method = shift;
+    my $republishonly = shift;
 
     my $privmask;
     my $path;
-    foreach my $child ( $object->children_granted( User => $user, marked_deleted => undef ) ) {
+    my %args = (User => $user, marked_deleted => undef );
+    $args{published} = 1 if defined $republishonly;
+    foreach my $child ( $object->children_granted( %args ) ) {
         $privmask = $user->object_privmask( $child );
         $path = $child->location_path();
         if ( $privmask & XIMS::Privileges::PUBLISH() ) {
@@ -132,7 +138,7 @@ sub recurse_children {
                 print "Object '$path' ".$method."ed successfully.\n";
                 $total++;
                 $successful++;
-                recurse_children( $child, $user, $exporter, $method );
+                recurse_children( $child, $user, $exporter, $method, $republishonly );
             }
             else {
                 print "could not $method object '$path'.\n";
