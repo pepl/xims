@@ -4,9 +4,9 @@
 # $Id$
 package XIMS::Importer::FileSystem::Document;
 
-use XIMS::Importer::FileSystem::XML;
+use XIMS::Importer::FileSystem::XMLChunk;
 use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::FileSystem::XML);
+@ISA = qw(XIMS::Importer::FileSystem::XMLChunk);
 
 sub handle_data {
     XIMS::Debug( 5, "called" );

@@ -79,7 +79,7 @@ sub resolve_importer {
     return undef unless $location;
 
     my ($object_type, $data_format) = $self->resolve_location( $location );
-    my $impclass = "XIMS::Importer::FileSystem::" . $object_type->name();
+    my $impclass = "XIMS::Importer::FileSystem::" . $object_type->fullname();
     eval "require $impclass;";
     if ( $@ ) {
         XIMS::Debug( 3 , "Could not load importer class: $@" );
@@ -93,6 +93,16 @@ sub resolve_importer {
                                    );
 
     return $importer;
+}
+
+sub get_strref {
+    my $self = shift;
+    my $file = shift;
+    local $/;
+    open (INPUT, $file) || die "could not open $file: $!";
+    my $contents = <INPUT>;
+    close INPUT;
+    return \$contents;
 }
 
 1;

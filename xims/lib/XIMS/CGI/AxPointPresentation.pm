@@ -6,11 +6,11 @@ package XIMS::CGI::AxPointPresentation;
 
 use strict;
 use vars qw( $VERSION @ISA);
-use XIMS::CGI::XML;
+use XIMS::CGI::Document;
 
 # version string (for makemaker, so don't touch!)
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
-@ISA = qw( XIMS::CGI::XML );
+@ISA = qw( XIMS::CGI::Document );
 
 1;
