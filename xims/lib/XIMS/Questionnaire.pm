@@ -369,13 +369,108 @@ sub delete_answer {
 sub get_value {
     my $self = shift;
     my $XPath = shift;
-
+    XIMS::Debug( 5, "Called" );
     my $questionnaire = $self->_parser->parse_string( $self->body() );
     $questionnaire = $questionnaire->documentElement();
     # replace 'questionnaire' in XPath, because it is the actual node
     $XPath =~ s/questionnaire/\./;
-
     return $questionnaire->find( $XPath )->get_node( 1 )->textContent();
+}
+
+##
+#
+# SYNOPSIS
+#    XIMS::Questionnaire->get_full_question_title( $question_id )
+#
+# PARAMETER
+#    $question_id: Id of the question the title should be returned
+#
+# RETURNS
+#    Title of all the Questions in the Question id - hirarchy
+#
+# DESCRIPTION
+#    The titles of all question in the id-hirarchy are returned, 
+#    seperated by ":"
+#
+sub get_full_question_title {
+    my $self = shift;
+    my $question_id = shift;
+    XIMS::Debug( 5, "Called" );
+    my $full_question_title = "";
+    my $full_id = "";
+    my $question_title = "";
+    foreach my $split_id ( split(/\./, $question_id ) ) {
+        $full_id .= $split_id;
+        $question_title = $self->get_question_title( $full_id );
+        if ($question_title) {
+            $full_question_title .= " - " if $full_question_title;
+            $full_question_title .= $question_title;
+            $full_id .= "." if $full_id;
+        }
+    }
+    return $full_question_title;
+}
+
+#
+# SYNOPSIS
+#    XIMS::Questionnaire->get_full_question_titles( )
+#
+# PARAMETER
+#
+# RETURNS
+#    A hash with the question titles to all answers
+#
+# DESCRIPTION
+#
+sub get_full_question_titles {
+    my $self = shift;
+    my $question_id = shift;
+    XIMS::Debug( 5, "Called" );
+    my $questionnaire = $self->_parser->parse_string( $self->body() );
+    $questionnaire = $questionnaire->documentElement();
+    my $answer_nodes = $questionnaire->find( '//answer' );
+    my $full_question_title = "";
+    my $full_id = "";
+    my $question_title = "";
+    my %question_titles;
+    foreach my $node ($answer_nodes->get_nodelist) {
+        foreach my $split_id ( split(/\./, $node->getAttribute('id') ) ) {
+            $full_id .= $split_id;
+            $question_title = $questionnaire->findvalue( '//question[@id="' . $full_id . '"]/title' );
+            if ($question_title) {
+                $full_question_title .= " - " if $full_question_title;
+                $full_question_title .= $question_title;
+                $full_id .= "." if $full_id;
+            }
+        }
+        $question_titles{$full_id} = $full_question_title;
+        $full_id = ""; $full_question_title = "";
+    }
+    return %question_titles;
+}
+
+##
+#
+# SYNOPSIS
+#    XIMS::Questionnaire->get_question_title( $question_id )
+#
+# PARAMETER
+#    $question_id: Id of the question the title should be returned
+#
+# RETURNS
+#    Title of the Question with the Question id
+#
+# DESCRIPTION
+#
+#
+sub get_question_title {
+    my $self = shift;
+    my $question_id = shift;
+    XIMS::Debug( 5, "Called" );
+    my $questionnaire = $self->_parser->parse_string( $self->body() );
+    $questionnaire = $questionnaire->documentElement();
+    my $question_title = $questionnaire->findvalue( '//question[@id="' . $question_id. '"]/title' );
+    return $question_title;
 }
 
 ##
@@ -503,7 +598,12 @@ sub store_result {
     XIMS::Debug( 5, "called" );
     my ($self, %params) = @_ ;
     my $result;
-
+    my $docid = $params{'docid'};
+    my $tan = $params{'tan'};
+    my $question = $params{'q'} - 1;
+    # Check if question allready has been answered
+    # ToDo: Questionnaire-setting if answer update is allowed.
+    return 0 if (XIMS::QuestionnaireResult->getResult( $docid, $tan, $question) eq "ANSWERED");
     # Store every parameter containing answer and a id as a result
     foreach ( keys( %params ) ) {
         next unless ( /^answer/ );
@@ -511,8 +611,8 @@ sub store_result {
         next unless ( $answer_id[1] );
         foreach my $answer (split( /\0/,$params{$_} ) ) {
             $result = XIMS::QuestionnaireResult->new() ;
-            $result->document_id( $params{'docid'} );
-            $result->tan( $params{'tan'} );
+            $result->document_id( $docid );
+            $result->tan( $tan );
             $result->question_id( $answer_id[1] );
             $result->answer( $answer );
             $result->store();
@@ -520,11 +620,12 @@ sub store_result {
     }
     # Set question as answered
     $result = XIMS::QuestionnaireResult->new() ;
-    $result->document_id( $params{'docid'} );
-    $result->tan( $params{'tan'} );
-    $result->question_id( $params{'q'} - 1 );
+    $result->document_id( $docid );
+    $result->tan( $tan );
+    $result->question_id( $question );
     $result->answer( 'ANSWERED' );
     $result->store();
+    return 1;
 }
 
 sub _create_tanlists {
