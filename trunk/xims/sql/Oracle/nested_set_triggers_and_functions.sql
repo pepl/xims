@@ -143,7 +143,11 @@ FOR EACH ROW
 DECLARE
     lv_return BOOLEAN;
 BEGIN
-    lv_return := ci_util.move_tree(:OLD.lft, :OLD.rgt, :NEW.parent_id, :NEW.lft, :NEW.rgt);
+    IF :NEW.parent_id = :OLD.parent_id THEN
+        lv_return := TRUE;
+    ELSE
+        lv_return := ci_util.move_tree(:OLD.lft, :OLD.rgt, :NEW.parent_id, :NEW.lft, :NEW.rgt);
+    END IF;
 END;
 /
 
