@@ -9,7 +9,6 @@ use vars qw( $VERSION @ISA );
 use XIMS::CGI::VLibraryItem;
 use XIMS::CGI::XML;
 use XIMS::Importer::Object::VLibraryItem::DocBookXML;
-use Text::Iconv;
 
 # version string (for makemaker, so don't touch!)
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
@@ -35,7 +34,7 @@ sub event_store {
         $body = $self->param( 'body' );
 
         if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
+            $body = XIMS::decode( $body );
         }
 
         # The VLibraryItem::DocBookXML importer needs an XML::Document and not just
