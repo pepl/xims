@@ -43,6 +43,9 @@ sub handler {
 
     $ctxt->properties->application->nocache( 1 );
 
+    # set default 500 error document
+    $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp");
+
     my $publicuser = $r->dir_config('ximsPublicUserName');
     if ( not $publicuser ) {
         # we have non-public authentification
@@ -58,8 +61,10 @@ sub handler {
     }
     else {
         # using the ximsPublic role
-        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.");
-        return SERVER_ERROR unless $ctxt->data_provider();
+        unless ( $ctxt->data_provider() ) {
+            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp?reason=A%20database%20connection%20problem%20occured.");
+            return SERVER_ERROR;
+        }
 
         XIMS::Debug( 6, "setting user to $publicuser" );
         my $sessionid  = Apache::AuthXIMS::get_session_cookie( $r );
@@ -68,7 +73,7 @@ sub handler {
         if ( $sessionid and length $sessionid ) {
             XIMS::Debug( 4, "found existing session cookie, user already logged in" );
             $session = XIMS::Session->new( session_id => $sessionid );
-            # fake session user's id to public user's id, so that actions happen in the context of the 
+            # fake session user's id to public user's id, so that actions happen in the context of the
             # public user and the currently logged-in user does not need to logout while coming in via /gopublic/
             $session->user_id( $public->id() );
         }
@@ -79,8 +84,10 @@ sub handler {
             Apache::AuthXIMS::set_session_cookie( $r, $session->session_id() );
         }
 
-        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20create%20session.");
-        return SERVER_ERROR unless ( $session and $ctxt->session( $session ) );
+        unless ( $session and $ctxt->session( $session ) ) {
+            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp?reason=Could%20not%20create%20session.");
+            return SERVER_ERROR;
+        }
     }
 
     # set some session information
@@ -110,9 +117,11 @@ sub handler {
         # now we know, that we have to get the content-object
         $ctxt->object( getObject( $r, $ctxt->session->user() ) );
         if ( not ($ctxt->object() and $ctxt->object->id()) ) {
-            # in this case we should pass the user to a more informative
+            # in this case we could pass the user to a more informative
             # page, where one can select the defaultbookmark!!
-            XIMS::Debug( 2, "unable to get object from request" );
+
+            # emulate default 404 log entry
+            $r->log->warn("File does not exist: " . $r->document_root() . $r->uri());
             return NOT_FOUND;
         }
 
@@ -121,10 +130,9 @@ sub handler {
 
         # load the object class
         eval "require $object_class;" if $object_class;
-        if (  $@ ) {
+        if ( $@ ) {
             XIMS::Debug( 2, "could not load object class $object_class: $@" );
-            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20object%20class%20$object_class.");
-
+            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp?reason=Could%20not%20load%20object%20class%20$object_class.");
             return SERVER_ERROR;
         }
 
@@ -168,7 +176,6 @@ sub handler {
     if ( $@ ) {
         XIMS::Debug( 2, "could not load application-class $app_class: $@" );
         $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20application%20class%20$app_class.");
-
         return SERVER_ERROR;
     }
 
