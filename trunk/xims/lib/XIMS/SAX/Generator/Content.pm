@@ -132,41 +132,6 @@ sub parse {
     return $self->parse_end;
 }
 
-
-##
-#
-# SYNOPSIS
-#    $self->get_config();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    %opts : a plain HASH containing the PerlData parse options.
-#
-# DESCRIPTION
-#    used internally to retrieve the XML::Generator::PerlData options for this class.
-#
-sub get_config {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-
-    # The number of options here should become less and less as time goes on
-    # and the API stablizes a bit.
-
-    my %opts = (
-                keymap  => { '*' => \&XIMS::SAX::Generator::elementname_fixer },
-                attrmap => {object      => ['id', 'document_id', 'parent_id', 'level'],
-                            data_format => 'id',
-                            user        => 'id',
-                            session     => 'id',
-                            object_type => 'id' },
-                skipelements => ['username', 'salt', 'objtype', 'properties', 'password', 'provider', 'driver', 'dbh'],
-               );
-    return %opts;
-}
-
-
 ##
 #
 # SYNOPSIS

@@ -1,6 +1,7 @@
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+
 package XIMS::SAX::Generator;
 
 use strict;
@@ -54,19 +55,34 @@ sub get_filters {
 ##
 #
 # SYNOPSIS
-#
+#    $self->get_config();
 #
 # PARAMETER
+#    none
 #
 # RETURNS
+#    %opts : a plain HASH containing the PerlData parse options.
 #
-# DESCRIPION
-#    none yet
+# DESCRIPTION
+#    used internally to retrieve the XML::Generator::PerlData options for this class.
 #
-sub elementname_fixer {
-    my $name = shift;
-    $name =~ s/^-//;
-    return lc( $name );
+sub get_config {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    # The number of options here should become less and less as time goes on
+    # and the API stablizes a bit.
+
+    my %opts = (
+                attrmap => {object      => ['id', 'document_id', 'parent_id', 'level'],
+                            data_format => 'id',
+                            user        => 'id',
+                            session     => 'id',
+                            object_type => 'id' },
+                skipelements => ['username', 'salt', 'objtype', 'properties', 'password', 'Provider','User'],
+               );
+    return %opts;
 }
+
 
 1;
