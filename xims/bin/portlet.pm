@@ -231,6 +231,10 @@ sub generate_body {
     if ( $self->param( "filternews" ) ) {
         $body .= qq{<new>1</new>\n};
     }
+    if ( $self->param( "filterpublished" ) ) {
+        $body .= qq{<published>1</published>\n};
+    }
+
 
     if ( $self->param( "extra_filters" ) ) {
         XIMS::Debug( 5, "add additional xims filter!" );

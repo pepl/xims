@@ -11,6 +11,7 @@ use strict;
 # to real objects.
 #
 use XML::LibXML;
+use XIMS::Object;
 use XIMS::SAX::Filter::DataCollector;
 @XIMS::SAX::Filter::PortletCollector::ISA = qw(XIMS::SAX::Filter::DataCollector);
 use DBIx::SQLEngine::Criteria;
@@ -94,11 +95,8 @@ sub handle_data {
         #                DATA_FORMAT_ID SYMNAME_TO_DOC_ID LANGUAGE_ID
         #                OBJECT_TYPE_ID LOB_LENGTH POSITION);
         #$param{-columns} = $cols;
-        #my $direct_filter= $self->get_direct_filter();
-        #if ( defined $direct_filter ) {
-        #    $param{-sql_extra} = $direct_filter;
-        #}
-        my @children = $object->children_granted( %childrenargs );
+        my $direct_filter = $self->get_direct_filter();
+        my @children = $object->children_granted( %childrenargs, %{$direct_filter}, marked_deleted => undef );
         if ( @children  and scalar( @children ) ) {
             XIMS::Debug( 6, "found n = " . scalar( @children ) . " child objects" );
             my $location_path;
@@ -170,23 +168,22 @@ sub get_level {
 sub get_direct_filter {
     my $self = shift;
     my $fragment = $self->get_data_fragment;
-    my $retval;
+    my %retval;
+    my @fields = XIMS::Object::fields();
     my ( $filter ) = grep {$_->nodeName eq "filter" } $fragment->childNodes;
     if ( $filter ) {
         my @cnodes = $filter->childNodes;
-        # PHISH NOTE:
-        # as soon the new data provider will get applied to the new
-        # system the the $cond will be returned and passed directly to
-        # the DataProvider.
-        my $cond  = $self->build_or_filter( @cnodes );
-        $retval = $cond;
-        # ( $retval ) = $cond->sql_where if defined $cond;
+        foreach my $node ( @cnodes) {
+            next unless $node->nodeType == XML_ELEMENT_NODE;
+            next unless grep { $node->nodeName() eq $_ } @fields;
+            $retval{$node->nodeName()} = $node->string_value();
+        }
     }
-    return $retval;
+    return \%retval;
 }
 sub build_or_filter {
     my $self = shift;
-    my @tags =@_;
+    my @tags = @_;
     my $retval = undef;
     my @conds = ();
     if ( scalar @tags ) {

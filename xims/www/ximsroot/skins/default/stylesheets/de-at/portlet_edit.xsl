@@ -185,10 +185,13 @@
                 <table border="0" cellspacing="0" cellpadding="1" width="100%">
                     <tr>
                         <td width="20%">
-                            Nur Objekte die als neu markiert sind:
+                            Nur Objekte die als neu markiert sind:<br/>
+                            Nur Objekte die publiziert markiert sind:
+
                         </td>
                         <td valign="top" width="20%">
                             <input type="checkbox" name="filternews"><xsl:if test="body/filter[new=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
+                            <input type="checkbox" name="filterpublished"><xsl:if test="body/filter[published=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
                         </td>
                         <td valign="top" width="20%"><xsl:text>Filter Objekt Typen </xsl:text></td>
                         <td valign="top" width="20%"><xsl:text> </xsl:text></td>
@@ -204,8 +207,8 @@
                         <td colspan="2" valign="top">
                             <textarea name="extra_filters" rows="30" cols="45">
                                 <xsl:choose>
-                                    <xsl:when test="body/filter/*[not(name() = 'new')]">
-                                        <xsl:apply-templates select="body/filter/*[not(name() = 'new')]" mode="filter"/>
+                                    <xsl:when test="body/filter/*[not(name() = 'new') and not(name() = 'published')]">
+                                        <xsl:apply-templates select="body/filter/*[not(name() = 'new') and not(name() = 'published')]" mode="filter"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:text> </xsl:text>
