@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -23,7 +23,7 @@
         </head>
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
         <xsl:call-template name="header">
-          <xsl:with-param name="noncontent">wahr</xsl:with-param>
+          <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
         <xsl:apply-templates select="/document/context/user"/>
         </body>
@@ -85,7 +85,7 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_CHANGE_PASSWORD">
-                                    <xsl:if test="( floor(system_privs_mask div 1) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/change_password = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
@@ -95,7 +95,7 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_GRANT_ROLE">
-                                    <xsl:if test="( floor(system_privs_mask div 2) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/grant_role = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
@@ -119,7 +119,7 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_RESET_PASSWORD">
-                                    <xsl:if test="( floor(system_privs_mask div 4096) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/reset_password = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
@@ -129,7 +129,7 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_SET_STATUS">
-                                    <xsl:if test="( floor(system_privs_mask div 8192) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/set_status = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
@@ -141,7 +141,7 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_CREATE_ROLE">
-                                    <xsl:if test="( floor(system_privs_mask div 16384) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/create_role = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
@@ -151,7 +151,7 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_DELETE_ROLE">
-                                    <xsl:if test="( floor(system_privs_mask div 32768) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/delete_role = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
@@ -163,21 +163,21 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_CHANGE_ROLE_FULLNAME">
-                                    <xsl:if test="( floor(system_privs_mask div 65536) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/change_role_fullname = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Role ganzen Namen ändern
+                                Role Fullname ändern
                             </span>
                         </td>
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_CHANGE_USER_FULLNAME">
-                                    <xsl:if test="( floor(system_privs_mask div 131072) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/change_user_fullname = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                User ganzen Namen ändern
+                                User Fullname ändern
                             </span>
                         </td>
                       </tr>
@@ -185,21 +185,21 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_CHANGE_ROLE_NAME">
-                                    <xsl:if test="( floor(system_privs_mask div 262144) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/change_role_name = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Role ganzen Namen ändern
+                                Name von Rolen ändern
                             </span>
                         </td>
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_CHANGE_USER_NAME">
-                                    <xsl:if test="( floor(system_privs_mask div 524288) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/change_user_name = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                User ganzen Namen ändern
+                                Name von Users ändern
                             </span>
                         </td>
                       </tr>
@@ -207,7 +207,7 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_CREATE_USER">
-                                    <xsl:if test="( floor(system_privs_mask div 1048576) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/create_user = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
@@ -217,7 +217,7 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_DELETE_USER">
-                                    <xsl:if test="( floor(system_privs_mask div 2097152) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/delete_user = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
@@ -232,7 +232,7 @@
               <tr>
                 <td>
                     <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                    System management:
+                    System Management:
                 </td>
                 <td>
                   <!-- begin system management sys privs table -->
@@ -241,21 +241,21 @@
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_CHANGE_SYSPRIVS_MASK">
-                                    <xsl:if test="( floor(system_privs_mask div 268435456) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/change_sysprivs_mask = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Change Sysprivs Mask
+                                Sysprivs Mask ändern
                             </span>
                         </td>
                         <td>
                            <span class="cboxitem">
                                 <input type="checkbox" name="system_privs_SET_ADMIN_EQU">
-                                    <xsl:if test="( floor(system_privs_mask div 536870912) mod 2) &gt; 0">
+                                    <xsl:if test="system_privileges/set_admin_equ = 1">
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Set Admin EQU
+                                Administrator Equivalenz ändern
                             </span>
                         </td>
                     </tr>
@@ -264,33 +264,33 @@
                 </td>
               </tr>
               <tr>
-                <td>User is Administrator:</td>
+                <td>User ist Administrator:</td>
                 <td>
                     <input name="admin" type="radio" value="true">
                       <xsl:if test="admin = '1'">
                         <xsl:attribute name="checked" select="checked"/>
                       </xsl:if>
-                    </input>Yes
+                    </input>Ja
                     <input name="admin" type="radio" value="false">
                       <xsl:if test="admin != '1'">
                         <xsl:attribute name="checked" select="checked"/>
                       </xsl:if>
-                    </input>No
+                    </input>Nein
                 </td>
               </tr>
               <tr>
-                <td>Account is Enabled:</td>
+                <td>Account ist aktiv:</td>
                 <td>
                     <input name="enabled" type="radio" value="true">
                       <xsl:if test="enabled = '1'">
                         <xsl:attribute name="checked" select="checked"/>
                       </xsl:if>
-                    </input>Yes
+                    </input>Ja
                     <input name="enabled" type="radio" value="false">
                       <xsl:if test="enabled != '1'">
                         <xsl:attribute name="checked" select="checked"/>
                       </xsl:if>
-                    </input>No
+                    </input>Nein
                 </td>
               </tr>
               <tr>
