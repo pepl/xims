@@ -30,29 +30,14 @@ use Class::MethodMaker
 
 sub store {
     my $self = shift;
+
     $self->answer_timestamp( $self->data_provider->db_now() );
     $self->id();
     $self->answer( _decode( $self->answer() ) );
     my $id = $self->data_provider->createQuestionnaireResult( $self->data());
     $self->id( $id );
+
     return $id;
-}
-
-sub delete {
-    my $self = shift;
-    my $retval = $self->data_provider->deleteQuestionnaireResult( $self->data() );
-    if ( $retval ) {
-        map { $self->$_( undef ) } $self->fields();
-        return 1;
-    }
-    else {
-        return undef;
-    }
-}
-
-sub update {
-    my $self = shift;
-    return $self->data_provider->updateQuestionnaireResult( $self->data() );
 }
 
 # if called in a list context it returns:
@@ -63,10 +48,12 @@ sub get_result_count {
     my $self = shift;
     my $questionnaire_id = shift;
     my $last_question = shift; # number of the last question that has to be answered (= total number of questions)
-    my $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id GROUP BY tan )AS sub1";
-    my $total_count = $self->data_provider->{Driver}->{dbh}->fetch_one_value( sql => $sql );
-    $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = $last_question GROUP BY tan) AS sub1";
-    my $valid_count = $self->data_provider->{Driver}->{dbh}->fetch_one_value( sql => $sql );
+
+    my $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id GROUP BY tan ) sub1";
+    my $total_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
+    $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = $last_question GROUP BY tan) sub1";
+    my $valid_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
+
     #  XIMS::Debug (6, "#### ".Dumper( $valid_count ) );
     return ($total_count, $valid_count, $total_count - $valid_count);
 }
@@ -76,8 +63,10 @@ sub get_answer_count {
     my $questionnaire_id = shift;
     my $question_id = shift;
     my $answer = shift;
+
     my $sql = "SELECT count(*) FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$question_id' AND answer='$answer' ";
-    my $answer_count = $self->data_provider->{Driver}->{dbh}->fetch_one_value( sql => $sql );
+    my $answer_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
+
     #  XIMS::Debug (6, "#### ".Dumper( $answer_count ) );
     return $answer_count;
 }
@@ -86,11 +75,13 @@ sub get_answers {
     my $self = shift;
     my $questionnaire_id = shift;
     my $question_id = shift;
+
     my $sql = "SELECT answer, count(answer) AS count FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$question_id' GROUP BY answer";
-    my $answers = $self->data_provider->{Driver}->{dbh}->fetch_select( sql => $sql );
+    my $answers = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
     foreach my $answer_text ( @{$answers} ) {
-    ${$answer_text}{'answer'} = _encode( ${$answer_text}{'answer'} );
+        ${$answer_text}{'answer'} = _encode( ${$answer_text}{'answer'} );
     }
+
     return $answers;
 }
 
