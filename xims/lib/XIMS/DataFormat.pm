@@ -63,28 +63,4 @@ sub new {
     return $self;
 }
 
-sub create {
-    my $self = shift;
-    my $id = $self->data_provider->createDataFormat( $self->data());
-    $self->id( $id );
-    return $id;
-}
-
-sub delete {
-    my $self = shift;
-    my $retval = $self->data_provider->deleteDataFormat( $self->data() );
-    if ( $retval ) {
-        map { $self->$_( undef ) } $self->fields();
-        return 1;
-    }
-    else {
-       return undef;
-    }
-}
-
-sub update {
-    my $self = shift;
-    return $self->data_provider->updateDataFormat( $self->data() );
-}
-
 1;

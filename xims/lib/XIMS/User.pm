@@ -23,61 +23,6 @@ BEGIN {
 use Class::MethodMaker
         get_set       => \@Fields;
 
-sub new {
-    XIMS::Debug( 5, "called" );
-    my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
-
-    my $self = bless {}, $class;
-    my ( $package, $file, $line ) = caller(1);
-    #warn "USER init called by $package line $line, passed " . Dumper( \%args );
-
-    # fetch or create, based on the presence of an 'id' or 'name' argument
-    if ( defined( $args{id} ) or defined( $args{name} ) ) {
-        my $real_user = $self->data_provider->getUser( %args );
-        if ( scalar( keys( %{$real_user} ) ) > 0 ) {
-            $self->data( %{$real_user} );
-        }
-        else {
-            return undef;
-        }
-    }
-    elsif ( scalar( keys( %args) ) > 0 ) {
-        $self->data( %args );
-    }
-
-    # special instance cacheing for some foreign properties
-    return $self;
-}
-
-
-sub update {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    return $self->data_provider->updateUser( $self->data() );
-}
-
-sub create {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $id = $self->data_provider->createUser( $self->data() );
-    $self->id( $id );
-    return $id;
-}
-
-sub delete {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $retval = $self->data_provider->deleteUser( $self->data() );
-    if ( $retval ) {
-        map { $self->$_( undef ) } @Fields if $retval;
-        return 1;
-    }
-    else {
-       return undef;
-    }
-}
 
 sub fields {
     XIMS::Debug( 5, "called" );

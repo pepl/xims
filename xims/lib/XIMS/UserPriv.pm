@@ -51,27 +51,4 @@ sub new {
     return $self;
 }
 
-sub create {
-    my $self = shift;
-    my $ret = $self->data_provider->createUserPriv( $self->data());
-    return $ret;
-}
-
-sub delete {
-    my $self = shift;
-    my $retval = $self->data_provider->deleteUserPriv( $self->data() );
-    if ( $retval ) {
-        map { $self->$_( undef ) } $self->fields();
-        return 1;
-    }
-    else {
-       return undef;
-    }
-}
-
-sub update {
-    my $self = shift;
-    return $self->data_provider->updateUserPriv( $self->data() );
-}
-
 1;
