@@ -1,6 +1,7 @@
 use Test::More tests => 10;
 use lib "../lib";
 use strict;
+use XIMS;
 use XIMS::Names;
 
 BEGIN { use_ok( 'XIMS::Names' ); }
