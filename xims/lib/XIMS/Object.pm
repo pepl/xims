@@ -22,7 +22,7 @@ use HTML::Entities qw(decode_entities); # for abstract()
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 use XIMS::User;
-#use Data::Dumper;
+use Data::Dumper;
 
 sub resource_type {
     return 'Object';
@@ -643,24 +643,46 @@ sub lock {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
+
     $self->locked_by_id( $user->id() );
     $self->locked_by_firstname( $user->firstname() );
     $self->locked_by_middlename( $user->middlename() );
     $self->locked_by_lastname( $user->lastname() );
     $self->locked_time( $self->data_provider->db_now() );
-    return $self->data_provider->updateObject( $self->data() );
+
+    return $self->data_provider->updateObject( $self->_lock_data() );
 }
 
 # the application layer decides whether or not an object may be unlocked
 sub unlock {
+    XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
+
     $self->locked_by_id( undef );
     $self->locked_by_firstname( undef );
     $self->locked_by_middlename( undef );
     $self->locked_by_lastname( undef );
     $self->locked_time( undef );
-    return $self->data_provider->updateObject( $self->data() );
+
+    return $self->data_provider->updateObject( $self->_lock_data() );
+}
+
+# Calling $self->_lock_data() instead of $self->data() causes a database
+# update of the locking related fields only.
+# 'Later' we could have a version of $self->data() which accepts a list
+# of fields to be loaded/returned. This list of fields could be passed
+# based on the current event or objecttype for example;
+# also for portleting and during $object->descendants(), where
+# currently, every field including the body-field is loaded for
+# every single object.
+sub _lock_data {
+    my $self = shift;
+    my %data = ();
+    foreach ( qw/locked_by_id locked_by_firstname locked_by_middlename locked_by_lastname locked_time id/ ) {
+        $data{$_} = $self->$_;
+    }
+    return %data;
 }
 
 sub locked {
