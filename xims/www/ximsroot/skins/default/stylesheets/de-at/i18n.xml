@@ -21,8 +21,8 @@
 <create_portlet>Ein neues Portlet erstellen</create_portlet>
 <delete>Löschen</delete>
 <purge>Endgültig löschen</purge>
-<Keywords>Keywords</Keywords>
-<Abstract>Abstract</Abstract>
+<Keywords>Schlagworte</Keywords>
+<Abstract>Zusammenfassung</Abstract>
 <Description>Beschreibung</Description>
 <Stylesheet>Stylesheet</Stylesheet>
 <logout>abmelden</logout>
@@ -200,4 +200,3 @@
 <set_as>setze als</set_as>
 <!-- End user_bookmarks-->
 </l>
-
