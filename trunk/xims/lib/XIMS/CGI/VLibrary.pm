@@ -34,6 +34,7 @@ sub registerEvents {
           author
           publications
           publication
+          vlsearch
           )
         );
 }
@@ -69,7 +70,7 @@ sub event_subject {
 
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
-    my $rowlimit = 10;
+    my $rowlimit = 5;
     $offset = $offset * $rowlimit;
 
     my @objects = $ctxt->object->vlitems_bysubject( subject_id => $subjectid,
@@ -170,10 +171,83 @@ sub event_publish_prompt {
     $ctxt->properties->application->styleprefix('common_publish');
     $ctxt->properties->application->style('prompt');
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
+
+sub event_vlsearch {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user = $ctxt->session->user();
+    my $search = $self->param('vls');
+    my $offset = $self->param('page');
+    my $rowlimit = 5;
+    $offset = $offset * $rowlimit;
+
+    XIMS::Debug( 6, "param $search");
+    # length within 2..30 chars
+    if (( length($search) >= 2 ) && ( length($search) <= 30 )) {
+        my $qbdriver = XIMS::DBDSN();
+        $qbdriver = ( split(':',$qbdriver))[1];
+        $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . 'InterMedia'; # XIMS::QBDRIVER()
+
+        eval "require $qbdriver"; #
+        if ( $@ ) {
+            XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
+            $ctxt->send_error( "QueryBuilder-Driver could not be found!" );
+            return 0;
+        }
+
+        my $qb = $qbdriver->new( { search => $search, allowed => q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} } );
+
+        # refactor! build() should not be needed and only $qb should be passed
+
+        #'# just for emacs' font-lock...
+        my $qbr = $qb->build( [qw(title abstract body)] );
+        if ( defined $qbr->{criteria} and length $qbr->{criteria} ) {
+            my %param = (
+                        criteria => $qbr->{criteria},
+                        limit => $rowlimit,
+                        offset => $offset,
+                        order => $qbr->{order},
+                        start_here => $ctxt->object(),
+                        );
+            my @objects = $ctxt->object->find_objects_granted( %param );
+
+            if ( not @objects ) {
+                 $ctxt->session->warning_msg( "Query returned no objects!" );
+            }
+            else {
+                %param = ( criteria => $qbr->{criteria}, start_here => $ctxt->object() );
+                my $count = $ctxt->object->find_objects_granted_count( %param );
+                my $message = "Query returned $count objects.";
+                $message .= " Displaying objects " . ($offset+1) if $count >= $rowlimit;
+                $message .= " to " . ($offset+$rowlimit) if ( $offset+$rowlimit <= $count );
+                $ctxt->session->message( $message );
+                $ctxt->session->searchresultcount( $count );
+            }
+
+            for ( @objects ) {
+                bless $_, "XIMS::VLibraryItem";
+                $_->{authorgroup} = { author => [$_->vleauthors()] };
+            }
+
+            $ctxt->objectlist( \@objects );
+            $ctxt->properties->application->style( "objectlist" ) ;
+        }
+        else {
+            XIMS::Debug( 3, "please specify a valid query" );
+            $self->sendError( $ctxt, "Please specify a valid query!" );
+        }
+    }
+    else {
+        XIMS::Debug( 3, "catched improper query length" );
+        $self->sendError( $ctxt, "Please keep your queries between 2 and 30 characters!" );
+    }
+
+    return 0;
+}
 
 # END RUNTIME EVENTS
 # #############################################################################
