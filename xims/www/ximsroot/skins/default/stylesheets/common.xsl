@@ -499,7 +499,7 @@
     </xsl:choose>
     <xsl:choose>
         <xsl:when test="published = '1'">
-            <a href="{$published_path}">
+            <a href="{$published_path}" target="_blank">
                 <img
                     border="0"
                     width="26"
