@@ -83,11 +83,11 @@ INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask,
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'public', 'public', 1, 1, 1);
 
 -- grant roles
--- grant xgu and admin their default role
+-- grant 'xgu' and 'admin' their default roles 'guests' and 'admins'
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id, default_role ) VALUES ( 3, 2, 1, 1 );
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id, role_master, default_role ) VALUES ( 4, 2, 2, 1, 1 );
 
--- grant public, user guests and admins to everyone
+-- grant 'everyone' role to 'public' user, 'guests' and 'admins' roles
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id ) VALUES ( 5, 2, 6 );
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id ) VALUES ( 5, 2, 3 );
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id, role_master ) VALUES ( 5, 2, 4, 1 );

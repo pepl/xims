@@ -164,12 +164,12 @@ INSERT INTO ci_users_roles ( id, name, lastname, object_type, system_privs_mask,
 -- grant roles
 \echo inserting into ci_roles_granted...
 
--- grant xgu and admin their default role
+-- grant 'xgu' and 'admin' their default roles 'guests' and 'admins'
 INSERT INTO ci_roles_granted ( id, grantor_id, grantee_id, default_role ) 
-       VALUES ( 3, 2, 1, 1 );                                                         
+       VALUES ( 3, 2, 1, 1 );
 INSERT INTO ci_roles_granted ( id, grantor_id, grantee_id, role_master, default_role ) 
        VALUES ( 4, 2, 2, 1, 1 );
--- grant public, user guests and admins to everyone
+-- grant 'everyone' role to 'public' user, 'guests' and 'admins' roles
 INSERT INTO ci_roles_granted ( id, grantor_id, grantee_id ) 
        VALUES ( 5, 2, 6 );
 INSERT INTO ci_roles_granted ( id, grantor_id, grantee_id ) 
