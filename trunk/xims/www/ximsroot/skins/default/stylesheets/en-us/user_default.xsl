@@ -24,7 +24,7 @@
             <div id="content">
 
             <h1>
-                Welcome <xsl:value-of select="name" />!
+                Welcome <xsl:value-of select="firstname" />&#xa0;<xsl:value-of select="lastname" />!
             </h1>
 
             <h2>Manage content</h2>
