@@ -269,8 +269,17 @@ sub updateObject {
     my @doc_cond_keys = grep { (split /\./, $_)[0] eq 'document' } keys %{$conditions};
     @doc_conditions{@doc_cond_keys} = delete @{$conditions}{@doc_cond_keys};
 
-    $doc_conditions{'document.id'} ||= $properties->{'content.document_id'};
-    push @ret, $self->{Driver}->update( properties => \%doc_properties, conditions => \%doc_conditions );
+    $doc_conditions{'document.id'} ||= $properties->{'content.document_id'} if $properties->{'content.document_id'};
+
+    # update document table if wanted
+    if ( scalar keys %doc_properties ) {
+        push @ret, $self->{Driver}->update( properties => \%doc_properties, conditions => \%doc_conditions );
+    }
+
+    # return if we do not want to update the content table
+    if ( not scalar keys %{$properties} ) {
+        return @ret;
+    }
 
     if ( defined( $properties->{'content.body'} ) ) {
         $update_body_method = 'update_content_body';
@@ -287,7 +296,7 @@ sub updateObject {
         $self->{Driver}->$update_body_method( $conditions->{'content.id'}, $body_data );
     }
 
-    return 1;
+    return @ret;
 }
 
 sub deleteObject {
