@@ -113,7 +113,7 @@ if ( $Conf{DBdsn} eq 'Oracle' ) {
 }
 elsif ( $Conf{DBdsn} eq 'Pg' ) {
     chdir '/usr/local/xims/sql/Pg';
-    system('psql','-U',$Conf{DBUser},'-d'.$Conf{DBName},'-f','setup.sql') == 0
+    system('psql','-U',$Conf{DBUser},'-d',$Conf{DBName},'-f','setup.sql') == 0
         or die "Setting up DB failed: $?\n. Please check your config information or try manually setting up the DB.\b";
 
 }
