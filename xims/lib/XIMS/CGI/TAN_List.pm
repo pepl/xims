@@ -21,6 +21,7 @@ sub registerEvents {
     $_[0]->SUPER::registerEvents(
         qw(
           create
+          edit
           store
           obj_acllist
           obj_aclgrant
@@ -50,9 +51,10 @@ sub event_default {
 sub event_download {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
     my $type = $self->param('download');
 
-    my $body = $ctxt->object->body();
+    my $body;
     my $filename = $ctxt->object->location;
     $filename =~ s/\.[^\.]*$//;
     my $mime_type = "text/". lc $type;
@@ -85,37 +87,10 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $number = $self->param( 'number' );
-
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
 
     my $object = $ctxt->object();
-
-    XIMS::Debug( 6, "Number of TANs: $number" );
-    $object->number( $number );
-
-    if ( defined $number and length $number ) {
-        $number = $self->param('number');
-    }
-    else {
-        $self->sendError( $ctxt, "Number of TANs not set!" );
-        return 0;
-    }
-
-    my $body = $object->create_TANs( $number );
-
-    if ( length $body ) {
-        my $object = $ctxt->object();
-        if ( $object->body( $body ) ) {
-            XIMS::Debug( 6, "TANs created: ".length( $body ) );
-        }
-        else {
-            XIMS::Debug( 2, "could not create TANs" );
-            $self->sendError( $ctxt, "TAN-List could not be created." );
-            return 0;
-        }
-    }
 
     if ( not $ctxt->parent() ) {
         XIMS::Debug( 6, "unlocking object" );
@@ -131,6 +106,27 @@ sub event_store {
     }
     else {
         XIMS::Debug( 4, "creating new object" );
+
+        my $number = $self->param( 'number' );
+        if ( not (defined $number and length $number) ) {
+            $self->sendError( $ctxt, "Number of TANs not set!" );
+            return 0;
+        }
+        XIMS::Debug( 6, "Number of TANs: $number" );
+        $object->number( $number );
+
+        my $body = $object->create_TANs( $number );
+        if ( length $body ) {
+            if ( $object->body( $body ) ) {
+                XIMS::Debug( 6, "TANs created: " . length( $body ) );
+            }
+            else {
+                XIMS::Debug( 2, "could not create TANs" );
+                $self->sendError( $ctxt, "TAN-List could not be created." );
+                return 0;
+            }
+        }
+
         if ( not $object->create() ) {
             XIMS::Debug( 2, "create failed" );
             $self->sendError( $ctxt, "Creation of object failed." );
