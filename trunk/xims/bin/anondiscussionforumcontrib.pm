@@ -10,6 +10,7 @@ use warnings;
 use vars qw( $VERSION @ISA @MSG );
 
 use XIMS::CGI;
+use Text::Iconv;
 
 use Digest::MD5 qw(md5_hex); # for location-setting (do we really need this?)
 
@@ -66,6 +67,14 @@ sub event_store {
     my $coemail   = $self->param( 'coemail' );
     my $title     = $self->param( 'title' );
 
+    my $converter;
+    if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+        $converter = Text::Iconv->new("UTF-8", XIMS::DBENCODING());
+        $author = $converter->convert($author) if defined $author;
+        $coauthor = $converter->convert($coauthor) if defined $coauthor;
+        $title = $converter->convert($title) if defined $title;
+    }
+
     if ( defined $title and length $title ) {
         $self->param( name =>  md5_hex( $title .  $author . localtime() ) );
     }
@@ -99,7 +108,11 @@ sub event_store {
     my $trytobalance  = $self->param( 'trytobalance' );
     my $body = $self->param( 'body' );
 
-    if ( length $body ) {
+    if ( defined $body and length $body ) {
+        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+            $body = $converter->convert($body);
+        }
+
         my $object = $ctxt->object();
         if ( $trytobalance eq 'true' and $object->body( $body ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );

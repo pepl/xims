@@ -6,7 +6,9 @@ package text;
 
 use strict;
 use vars qw( $VERSION @ISA );
+
 use XIMS::CGI;
+use Text::Iconv;
 
 # version string (for makemaker, so don't touch!)
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
@@ -54,9 +56,14 @@ sub event_store {
     }
     else {
         $body = $self->param( 'body' );
+        if ( defined $body and length $body ) {
+            if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+                $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
+            }
+        }
     }
 
-    if ( length $body ) {
+    if ( defined $body and length $body ) {
         my $object = $ctxt->object();
         $object->body( XIMS::xml_escape( $body ) );
     }

@@ -8,6 +8,7 @@ use strict;
 use vars qw( $VERSION @ISA @MSG @params );
 
 use XIMS::CGI;
+use Text::Iconv;
 
 # #############################################################################
 # GLOBAL SETTINGS
@@ -76,10 +77,12 @@ sub event_store {
                     and defined $ctxt->object();
 
     my $body = $self->param( 'body' );
+    if ( defined $body and length $body ) {
+        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+            $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
+        }
 
-    if ( length $body ) {
         my $object = $ctxt->object();
-
         if ( $object->body( $body, dontbalance => 1 ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
         }
