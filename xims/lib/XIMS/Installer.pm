@@ -37,6 +37,8 @@ sub new {
                 [ "CSS::Tiny", '' ],
                 [ "Term::ReadKey", '' ],
                 [ "Text::Diff", '' ],
+                [ "DBIx::XHTML_Table", '' ],
+                [ "XML::Generator::DBI", '' ],
                 [ "XML::LibXML::Iterator", '' ],
               );
 
