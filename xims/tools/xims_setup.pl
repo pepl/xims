@@ -15,10 +15,10 @@ use lib qw( lib ../lib $prefix/xims/lib);
 use XIMS::Installer;
 use Getopt::Std;
 
-use Data::Dumper;
+#use Data::Dumper;
 
 my %args;
-getopts('hca:u:p:n:t:b:o:', \%args);
+getopts('hca:u:p:n:t:b:o:x:', \%args);
 
 print q*
   __  _____ __  __ ____
@@ -34,7 +34,7 @@ print q*
 if ( $args{h} ) {
     print qq*
 
-  Usage: $0 [-h|-c|-a httpdconf -u user -p -pwd -n dbname -t dbtype [-b host [-o port]]]
+  Usage: $0 [-h|-c|-a httpdconf -u user -p -pwd -n dbname -x path_to_tidy -t dbtype [-b host [-o port]]]
         -a The path to your Apache's config file
         -u The name of your database user to connect to the XIMS
            database
@@ -45,14 +45,15 @@ if ( $args{h} ) {
            'Pg' or 'Oracle' are supported
         -b The name of the database host if you connect to a remote machine (optional for Pg)
         -o The port number of the database listener at the remote machine, omit for default (Pg)
+        -x The path to your tidy executable
         -c Update XIMS::Config only
-        -x The Path to your tidy executable
         -h prints this screen
 
 *;
     exit;
 }
 
+#' just for syntax-highlighting
 
 my @upd_fields = qw{ApacheDocumentRoot DBUser DBPassword DBName DBdsn DBDOpt DBSessionOpt TidyPath TidyOptions};
 my $installer = XIMS::Installer->new();
@@ -99,7 +100,7 @@ my %conf_prompts = (
                           error => 'You must enter the database type (Pg or Oracle).',
                           default => $dbdsn_default,
                         },
-    f_tidy_path       => { text  => 'Full Path to the tidy executable',
+    f_tidy_path       => { text  => 'Full path to the tidy executable',
 			   var   => \$Conf{TidyPath},
 			   re    => '^/\S+/tidy$',
 			   error => 'You must enter the full path to the tidy executable.',
@@ -107,11 +108,13 @@ my %conf_prompts = (
 	                 },
 );
 
-if ( $args{a}
-        and $args{u}
-        and $args{p}
-        and $args{n}
-        and $args{t} ) {
+if (     $args{a} and -f $args{a}
+     and $args{u} 
+     and $args{p}
+     and $args{n}
+     and ($args{t} eq 'Pg' or $args{t} eq 'Oracle')
+     and $args{x} and -x $args{x} ) {
+
     # command line mode
     print "Using command line arguments to write config.\n";
     $Conf{ApacheHttpdConf} = $args{a};
@@ -122,6 +125,7 @@ if ( $args{a}
     $Conf{DBhost} = $args{b};
     $Conf{DBport} = $args{o};
     $Conf{TidyPath} = $args{x};
+
 }
 else {
     # interactive mode
@@ -170,6 +174,7 @@ if ( $> > 0 ) {
 
 # check for DBD drivers in case someone did not read the INSTALL file
 if ( $Conf{DBdsn} eq 'Pg' ) {
+    print "\n Checking for DBD::Pg...";
     eval{ require DBD::Pg;};
     if ( $@ ) {
         print "\nCould not load DBD::Pg. Perhaps it is not installed.\n",
@@ -177,14 +182,21 @@ if ( $Conf{DBdsn} eq 'Pg' ) {
         die "Could not install DBD::Pg, you have to install it manually!\n\n"
             unless system("$prefix/xims/tools/cpan_install.pl","-m","DBD::Pg") == 0;
     }
+    else {
+ 	print "  ok\n"
+    }	
 }
 elsif ( $Conf{DBdsn} eq 'Oracle' ) {
+    print "\n Checking for DBD::Oracle...\n";
     eval{ require DBD::Oracle;};
     if ( $@ ) {
         print "\nCould not load DBD::Oracle. Perhaps it is not installed.\n",
               "Press enter to let cpan_install.pl try installing it.\n";<STDIN>;
         die "Could not install DBD::Oracle, you have to install it manually!\n\n"
             unless system("$prefix/xims/tools/cpan_install.pl","-m","DBD::Oracle") == 0;
+    }
+    else {
+        print "  ok\n"
     }
 }
 
