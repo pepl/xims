@@ -92,11 +92,11 @@ my %conf_prompts = (
                           default => $dbdsn_default,
                         },
     f_tidy_path       => { text  => 'Full path to the tidy executable',
-			   var   => \$Conf{TidyPath},
-			   re    => '^/\S+/tidy$',
-			   error => 'You must enter the full path to the tidy executable.',
-			   default => $tidypath_default,
-	                 },
+                           var   => \$Conf{TidyPath},
+                           re    => '^/\S+/tidy$',
+                           error => 'You must enter the full path to the tidy executable.',
+                           default => $tidypath_default,
+                        },
 );
 
 if (     $args{a} and -f $args{a}
@@ -174,7 +174,7 @@ if ( $Conf{DBdsn} eq 'Pg' ) {
             unless system("$prefix/xims/tools/cpan_install.pl","-m","DBD::Pg") == 0;
     }
     else {
- 	print "  ok\n"
+     print "  ok\n"
     }
 }
 elsif ( $Conf{DBdsn} eq 'Oracle' ) {
