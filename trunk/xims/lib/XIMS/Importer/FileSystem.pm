@@ -14,7 +14,6 @@ use vars qw( @ISA );
 @ISA = qw(XIMS::Importer);
 
 sub import {
-    XIMS::Debug( 5, "called" );
     my $self = shift;
     my $location = shift;
     return undef unless $location;
@@ -58,11 +57,14 @@ sub resolve_location {
     my $location = shift;
     XIMS::Debug( 6, "location: $location" );
 
-    if ( -f $location ) {
+    if ( -l $location ) {
+        return ( XIMS::ObjectType->new( name => 'SymbolicLink' ), XIMS::DataFormat->new( name => 'SymbolicLink' ) );
+    }
+    elsif ( -f $location ) {
         return $self->resolve_filename( basename($location) );
     }
     elsif ( -d $location ) {
-        return ( XIMS::ObjectType->new( name => 'Folder'), XIMS::DataFormat->new( name => 'Container' ) );
+        return ( XIMS::ObjectType->new( name => 'Folder' ), XIMS::DataFormat->new( name => 'Container' ) );
     }
     else {
         die "could not resolve location '$location'. (we should not get there)";
