@@ -36,7 +36,7 @@
             <!-- begin widget table -->
             <table width="300" cellpadding="2" cellspacing="0" border="0">
               <tr>
-                <td class="bluebg">Warning - Child Objects Found!</td>
+                <td class="bluebg">Warnung - Kindobjekt gefunden!</td>
               </tr>
               <tr>
                 <td>&#160;</td>
@@ -48,10 +48,10 @@
                         that could also be copied.
                     </p>
                     <p>
-                        Include all children in copy:&#160;<input type="checkbox" name="recursivecopy" value="1" checked="true"/>
+                        Alle Kindobjekte mitkopieren:&#160;<input type="checkbox" name="recursivecopy" value="1" checked="true"/>
                     </p>
                     <p>
-                        Click 'Confirm' to continue, or 'Cancel' to return to abort this action.
+                        Klicken Sie 'Bestätigen' um fortzufahren, oder 'Abbrechen' um diese Aktion abzubrechen.
                     </p>
                 </td>
               </tr>
@@ -65,7 +65,7 @@
                   <table cellpadding="2" cellspacing="0" border="0">
                     <tr align="center">
                       <td>
-                        <input name="submit" type="submit" value="Confirm" class="control"/>
+                        <input name="submit" type="submit" value="Bestätigen" class="control"/>
                         <input name="id" type="hidden" value="{$id}"/>
                         <input type="hidden" name="confirmcopy" value="1"/>
                         <input type="hidden" name="copy" value="1"/>

@@ -36,7 +36,7 @@
             <!-- begin widget table -->
             <table width="300" cellpadding="2" cellspacing="0" border="0">
               <tr>
-                <td class="bluebg">Warning - Child Objects Found!</td>
+                <td class="bluebg">Warnung - Kindobjekt gefunden!</td>
               </tr>
               <tr>
                 <td>&#160;</td>
@@ -45,13 +45,13 @@
                 <td>
                     <p>
                         <xsl:value-of select="/document/context/session/warning_msg"/>
-                        that will also be permanently removed.
+                        that would also be deleted.
                     </p>
                     <p>
-                        <strong>This is a <em>permanent</em> action that cannot be undone!</strong>
+                        <strong>Dies ist ein <em>endgültiger</em> Vorgang, der nicht rückgängig gemacht werden kann!</strong>
                     </p>
                     <p>
-                        Click 'Confirm' to continue, or 'Cancel' to return to abort this action.
+                        Klicken Sie 'Bestätigen' um fortzufahren, oder 'Abbrechen' um diese Aktion abzubrechen.
                     </p>
                 </td>
               </tr>
@@ -65,7 +65,7 @@
                   <table cellpadding="2" cellspacing="0" border="0">
                     <tr align="center">
                       <td>
-                        <input name="submit" type="submit" value="Confirm" class="control"/>
+                        <input name="submit" type="submit" value="Bestätigen" class="control"/>
                         <input name="id" type="hidden" value="{$id}"/>
                         <input type="hidden" name="forcedelete" value="1"/>
                         <input type="hidden" name="delete" value="1"/>
