@@ -18,11 +18,11 @@ use XIMS::User;
 use XIMS::AbstractClass;
 @ISA = qw( XIMS::AbstractClass );
 
-use HTML::Entities qw(decode_entities); # for abstract()
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 use XIMS::User;
-use Data::Dumper;
+
+#use Data::Dumper;
 
 sub resource_type {
     return 'Object';
@@ -33,7 +33,6 @@ sub fields {
 }
 
 BEGIN {
-
     # the binfile field is no longer available via the method interface, but is set
     # internally in the object's HASH to allow binary object types to alias body() to the binfile
     # field. This avoids madness during data serialization.
