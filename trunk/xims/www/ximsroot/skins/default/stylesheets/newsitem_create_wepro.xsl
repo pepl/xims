@@ -10,6 +10,7 @@
         xmlns="http://www.w3.org/TR/xhtml1/strict">
 
 <xsl:import href="document_create_wepro.xsl"/>
+<xsl:import href="newsitem_common.xsl"/>
 
 <xsl:template match="/document/context/object">
 <html>

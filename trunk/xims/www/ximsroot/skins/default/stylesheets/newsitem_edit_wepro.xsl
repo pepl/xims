@@ -11,6 +11,7 @@
 
 <xsl:import href="document_common.xsl"/>
 <xsl:import href="document_edit_wepro.xsl"/>
+<xsl:import href="newsitem_common.xsl"/>
 
 <xsl:template match="/document/context/object">
 <html>
