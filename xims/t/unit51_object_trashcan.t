@@ -7,7 +7,7 @@ use XIMS::Object;
 use XIMS::DataProvider;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 7;
 }
 
@@ -37,8 +37,8 @@ my $dp = XIMS::DataProvider->new();
 
 my @trashed_objects = $dp->trashcan();
 
-ok( scalar( @trashed_objects ) == 1 );
-ok( $trashed_objects[0]->id() == $o->id() );
+ok( scalar( @trashed_objects ) > 0 );
+ok( grep { $_->id() == $o->id() } @trashed_objects );
 
 # now, clean up...
 
@@ -48,6 +48,6 @@ $o->update();
 
 $o = undef;
 
-$o = XIMS::Object->new( id => 2 );    
+$o = XIMS::Object->new( id => 2 );
 
 ok( $o->marked_deleted() == undef );

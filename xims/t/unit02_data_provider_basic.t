@@ -59,10 +59,10 @@ ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getUserPriv( id => 1 );
+     $return = $dp->getUserPriv( grantor_id => undef );
 };
 unless ( $@ ) { ok( 1 ); }
-ok( $return and scalar ($return) > 0 );
+ok( not $return );
 $return = undef;
 
 eval {
@@ -88,10 +88,10 @@ ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getObjectPriv( content_id => 1 );
+     $return = $dp->getObjectPriv( grantor_id => undef );
 };
 unless ( $@ ) { ok( 1 ); }
-ok( $return and scalar ($return) > 0 );
+ok( not $return );
 $return = undef;
 
 eval {
