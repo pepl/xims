@@ -58,13 +58,13 @@
 
             <!-- Begin forum -->
             <p>
-                <a href="{concat($goxims_content,$parent_path)}">Up</a>
+                <a href="{concat($xims_box,$goxims_content,$parent_path)}">Up</a>
                 <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
              |
              <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
             <a>
                 <xsl:attribute name="href">
-                        <xsl:value-of select="$goxims_content"/>
+                        <xsl:value-of select="concat($xims_box,$goxims_content)"/>
                         <xsl:call-template name="path2topics"/>
                 </xsl:attribute>Overview of topics
             </a>
@@ -163,9 +163,8 @@
 
 <xsl:template name="replyform">
     <a name="reply"/>
-    <form name="replyform" action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="POST" onSubmit="return checkFields()">
+    <form name="replyform" action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="GET" onSubmit="return checkFields()">
         <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-        <input type="hidden" name="parid" value="{@id}" />
         <table width="608" style="border: 1px solid #888888; margin-bottom: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
             <tr>
                 <td class="forumhead" colspan="2">Reply</td>
