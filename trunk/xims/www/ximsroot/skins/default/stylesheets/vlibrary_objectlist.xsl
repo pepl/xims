@@ -8,14 +8,6 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:output
-     method="xml"
-     encoding="utf-8"
-     media-type="text/html"
-     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-     indent="no"/>
-
     <xsl:variable name="subjectID">
         <xsl:choose>
             <xsl:when test="$subject_name">
@@ -40,6 +32,9 @@
             </xsl:when>
             <xsl:when test="$vls">
                 <xsl:value-of select="$i18n/l/Search_for"/> '<xsl:value-of select="$vls"/>'
+            </xsl:when>
+            <xsl:when test="$most_recent">
+                <xsl:value-of select="$i18n_vlib/l/Latest_entries"/>
             </xsl:when>
         </xsl:choose>
     </xsl:variable>
@@ -66,39 +61,44 @@
         <xsl:call-template name="head_default"/>
         <body onLoad="setBg('vlchildrenlistitem');">
             <xsl:call-template name="header" />
-            <h1 id="vlchildrenlisttitle">
-                <xsl:value-of select="$objectname"/>
-                <span style="font-size: small">
-                    (<xsl:value-of select="$objectitems_count"/>
-                    <xsl:text> </xsl:text>
-                    <xsl:call-template name="decide_plural"/>,
-                    <xsl:value-of select="$i18n_vlib/l/Page"/>
-                    <xsl:text> </xsl:text><xsl:value-of select="$page"/>/<xsl:value-of select="$totalpages"/>)
-                </span>
-            </h1>
 
-            <xsl:call-template name="childrenlist"/>
+            <div id="vlbody">
+                <h1 id="vlchildrenlisttitle">
+                    <xsl:value-of select="$objectname"/>
+                    <span style="font-size: small">
+                        (<xsl:value-of select="$objectitems_count"/>
+                        <xsl:text> </xsl:text>
+                        <xsl:call-template name="decide_plural"/>,
+                        <xsl:value-of select="$i18n_vlib/l/Page"/>
+                        <xsl:text> </xsl:text><xsl:value-of select="$page"/>/<xsl:value-of select="$totalpages"/>)
+                    </span>
+                </h1>
 
-            <xsl:choose>
-                <xsl:when test="$subject">
-                    <xsl:call-template name="pagenav">
-                        <xsl:with-param name="totalitems" select="$objectitems_count"/>
-                        <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
-                        <xsl:with-param name="currentpage" select="$page"/>
-                        <xsl:with-param name="url"
-                                        select="concat($xims_box,$goxims_content,$absolute_path,'?subject=1;subject_id=',$subjectID,';m=',$m)"/>
-                    </xsl:call-template>
-                </xsl:when>
-                <xsl:when test="/document/context/session/searchresultcount != ''">
-                    <xsl:call-template name="pagenav">
-                        <xsl:with-param name="totalitems" select="$objectitems_count"/>
-                        <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
-                        <xsl:with-param name="currentpage" select="$page"/>
-                        <xsl:with-param name="url"
-                                        select="concat($xims_box,$goxims_content,$absolute_path,'?vls=',$vls,';vlsearch=1;start_here=1;m=',$m)"/>
-                    </xsl:call-template>
-                </xsl:when>
-            </xsl:choose>
+                <xsl:call-template name="search_switch"/>
+
+                <xsl:call-template name="childrenlist"/>
+
+                <xsl:choose>
+                    <xsl:when test="$subject">
+                        <xsl:call-template name="pagenav">
+                            <xsl:with-param name="totalitems" select="$objectitems_count"/>
+                            <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
+                            <xsl:with-param name="currentpage" select="$page"/>
+                            <xsl:with-param name="url"
+                                            select="concat($xims_box,$goxims_content,$absolute_path,'?subject=1;subject_id=',$subjectID,';m=',$m)"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:when test="/document/context/session/searchresultcount != ''">
+                        <xsl:call-template name="pagenav">
+                            <xsl:with-param name="totalitems" select="$objectitems_count"/>
+                            <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
+                            <xsl:with-param name="currentpage" select="$page"/>
+                            <xsl:with-param name="url"
+                                            select="concat($xims_box,$goxims_content,$absolute_path,'?vls=',$vls,';vlsearch=1;start_here=1;m=',$m)"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                </xsl:choose>
+            </div>
         </body>
     </html>
 </xsl:template>
@@ -165,16 +165,23 @@
     </xsl:if>
 </xsl:template>
 
-
-
 <xsl:template name="childrenlist">
     <div id="vlchildrenlist">
-        <xsl:apply-templates select="children/object" mode="divlist"/>
+        <xsl:choose>
+            <xsl:when test="$most_recent ='1'">
+                <xsl:apply-templates select="children/object" mode="divlist">
+                    <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="descending"/>
+                </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates select="children/object" mode="divlist"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </div>
 </xsl:template>
 
 <xsl:template match="children/object" mode="divlist">
-    <div name="vlchildrenlistitem" class="vlchildrenlistitem">
+    <div class="vlchildrenlistitem" name="vlchildrenlistitem">
         <xsl:apply-templates select="title"/>
         <xsl:apply-templates select="authorgroup"/>
         <xsl:call-template name="last_modified"/>,

@@ -60,12 +60,14 @@ sub prepare {
         my @vlchildren = @{$ctxt->objectlist()};
         if ( scalar( @vlchildren ) > 0 ) {
             foreach my $child ( @vlchildren ) {
+                bless $child, "XIMS::VLibraryItem";
                 # added the users object privileges if he got one
                 my %uprivs = $ctxt->session->user->object_privileges( $child );
                 $child->{user_privileges} = {%uprivs} if ( grep { defined $_ } values %uprivs );
 
                 # yet another superfluos db hit! this has to be changed!!!
                 $child->{content_length} = $child->content_length();
+                $child->{authorgroup} = { author => [$child->vleauthors()] };
             }
             $doc_data->{context}->{object}->{children} = { object => \@vlchildren };
         }
