@@ -594,10 +594,10 @@
                 <xsl:with-param name="dfmime" select="$dfmime"/>
             </xsl:call-template>
         </td>
-        <td>
+        <td background="{$skimages}containerlist_bg_transparent.gif">
             <xsl:call-template name="cttobject.last_modified"/>
         </td>
-        <td align="right">
+        <td background="{$skimages}containerlist_bg_transparent.gif" align="right">
             <xsl:call-template name="cttobject.content_length">
                 <xsl:with-param name="dfname" select="$dfname"/>
                 <xsl:with-param name="dfmime" select="$dfmime"/>
