@@ -34,11 +34,17 @@
                                     return;
                                 }
                                 var i;
-                                for (i = 0; i < autoexport.length; i++) {
-                                    if ( !(autoexport[i].disabled) ) {
-                                        obj.disabled = false;
-                                        return true;
+                                if ( autoexport.length ) {
+                                    for (i = 0; i < autoexport.length; i++) {
+                                        if ( !(autoexport[i].disabled) ) {
+                                            obj.disabled = false;
+                                            return true;
+                                        }
                                     }
+                                }
+                                else if ( !(autoexport.disabled) ) {
+                                    obj.disabled = false;
+                                    return true;
                                 }
                             }
                         ]]>
@@ -272,6 +278,7 @@
                             <xsl:attribute name="checked">true</xsl:attribute>
                         </xsl:when>
                         <xsl:when test="published != 1">
+                            <xsl:attribute name="onClick">document.forms[1].autopublishlinks.checked = 1</xsl:attribute>
                         </xsl:when>
                         <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                             <xsl:attribute name="disabled">true</xsl:attribute>
@@ -301,10 +308,10 @@
                 This 
                 <xsl:choose>
                     <xsl:when test="string-length(location) &lt;= 0">
-                        <xsl:text> is not a XIMS object</xsl:text>
+                        <xsl:text> is not a XIMS object or could not be resolved.</xsl:text>
                     </xsl:when>
                     <xsl:when test="published != 1">
-                        <xsl:text> object has not been published yet</xsl:text>
+                        <xsl:text> object has not been published yet.</xsl:text>
                     </xsl:when>
                     <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                        <xsl:text> object has last been published at </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/><xsl:text> and not modified since then.</xsl:text>
