@@ -64,9 +64,30 @@ sub event_init {
          || ( length $self->checkPush('store')
               and length $self->param('parid') ) ) {
 
-        $ctxt->parent( $ctxt->object() ); # store for serialization
+        my $objtype = $self->param( 'objtype' );
+        if ( not $objtype ) {
+            $self->sendError( $ctxt, "Specify an object type to create an object!" );
+            return 0;
+        }
+
+        my $parent = $ctxt->object();
+        $ctxt->parent( $parent ); # used later in the app chain and for serialization
+
         my $privmask = $ctxt->session->user->object_privmask( $ctxt->object() );
         return $self->event_access_denied( $ctxt ) unless $privmask & XIMS::Privileges::CREATE();
+
+        my %obj = ( parent_id           => $parent->document_id(),
+                    language_id         => $parent->language_id(),
+                  );
+
+        my $class = 'XIMS::' . $objtype;
+        eval "require $class";
+        if ( $@ ) {
+            $self->sendError( $ctxt, "Can't find the object class: " . $@ );
+            return 0;
+        }
+
+        $ctxt->object( $class->new( %obj, User => $ctxt->session->user ) );
     }
     else {
         my $privmask = $ctxt->session->user->object_privmask( $ctxt->object() );
@@ -586,8 +607,6 @@ sub init_store_object {
 
     my $object = $ctxt->object();
     my $parent;
-
-    my $objtype    = $self->param( 'objtype' );
     my $location   = $self->param( 'name' );
     my $title      = $self->param( 'title' );
     my $markednew  = $self->param( 'markednew' );
@@ -603,45 +622,15 @@ sub init_store_object {
         $keywords = $converter->convert($keywords) if defined $keywords;
     }
 
-    my $existing_flag = 0;
-
-    if ( $object and length $self->param( 'id' ) ) {
+    if ( $object and $object->id() and length $self->param( 'id' ) ) {
         unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
             return $self->event_access_denied( $ctxt );
         }
         XIMS::Debug( 4, "storing existing object" );
-        $existing_flag = 1;
         $parent = XIMS::Object->new( document_id => $object->parent_id );
     }
-    elsif ( defined $ctxt->parent() and length $objtype ) {
-        XIMS::Debug( 4, "storing new object" );
-
-        $parent = $ctxt->parent();
-
-        my %obj = ( parent_id           => $parent->document_id(),
-                    language_id         => $parent->language_id(),
-                  );
-
-        my $class = 'XIMS::' . $objtype;
-        unless ( defined $class ) {
-            $self->sendError( $ctxt, "No object class found" );
-            return 0;
-        }
-
-        eval "require $class";
-        if ( $@ ) {
-            $self->sendError( $ctxt, "Can't find the object class: " . $@ );
-            return 0;
-        }
-
-        $object = $class->new( %obj, User => $ctxt->session->user );
-
-        $ctxt->object( $object );
-    }
     else {
-        XIMS::Debug( 3, "no parent object found" );
-        $self->sendError( $ctxt, "No parent object found" );
-        return 0;
+        $parent = $ctxt->parent();
     }
 
     if ( defined $location and length $location ) {
@@ -675,7 +664,7 @@ sub init_store_object {
         # check if the same location already exists in the current container (and its a different object)
         if ( defined $parent ) {
             my $child = $parent->children( location => $location, marked_deleted => undef );
-            if ( ( $existing_flag and $child and $child->id != $self->param( 'id' ) ) or ( not $existing_flag and defined $child ) ) {
+            if ( ( $object->id() and $child and $child->id() != $self->param( 'id' ) ) or ( not $object->id() and defined $child ) ) {
                 XIMS::Debug( 2, "location already exists" );
                 $self->sendError( $ctxt, "Location '$location' already exists in container." );
                 return 0;
