@@ -306,7 +306,7 @@ sub fixupDBConfig {
     elsif ( $conf->{DBdsn} eq 'Oracle' ) {
         $conf->{DBdsn} = 'dbi:Oracle:' . $conf->{DBName};
         $conf->{DBDOpt} = 'LongReadLen=10485760;LongTruncOk=1' unless $conf->{DBDOpt} =~ /LongReadLen/;
-        $conf->{DBSessionOpt} = "ALTER SESSION SET NLS_DATE_FORMAT=\\'DD.MM.YYYY HH24:MI:SS\\';" unless $conf->{DBSessionOpt} =~ /ALTER SESSION SET NLS_DATE_FORMAT=/;
+        $conf->{DBSessionOpt} = "ALTER SESSION SET NLS_DATE_FORMAT='DD.MM.YYYY HH24:MI:SS';" unless $conf->{DBSessionOpt} =~ /ALTER SESSION SET NLS_DATE_FORMAT=/;
     }
 }
 

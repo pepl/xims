@@ -34,7 +34,7 @@
         <!--
         # Example settings for Oracle
         <DBdsn>dbi:Oracle:test</DBdsn>
-        <DBSessionOpt>ALTER SESSION SET NLS_DATE_FORMAT=\'DD.MM.YYYY HH24:MI:SS\';</DBSessionOpt>
+        <DBSessionOpt>ALTER SESSION SET NLS_DATE_FORMAT='DD.MM.YYYY HH24:MI:SS';</DBSessionOpt>
         <DBDOpt>LongReadLen=10485760;LongTruncOk=1</DBDOpt>
         -->
 
