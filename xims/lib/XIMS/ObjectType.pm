@@ -62,7 +62,7 @@ sub new {
             $args{name} = ( split /::/, $args{fullname} )[-1] if defined( $args{fullname} );
             my @real_ot = $self->data_provider->getObjectType( %args );
             if ( scalar @real_ot == 1 ) {
-               $self->data( %{$real_ot[0]} );
+                $self->data( %{$real_ot[0]} );
             }
             elsif ( defined( $args{fullname} ) ) {
                 my @ids = map { $_->{'objecttype.id'} } @real_ot;
@@ -100,7 +100,6 @@ sub new {
 #    the names of the object type's ancestors.
 #
 sub fullname {
-    XIMS::Debug( 5, "called" );
     my $self = shift;
 
     my @ancestors = @{$self->ancestors()};
@@ -129,7 +128,6 @@ sub fullname {
 #    Returns ancestor object types.
 #
 sub ancestors {
-    XIMS::Debug( 5, "called" );
     my $self = shift;
     my $objecttype = (shift || $self);
     my @ancestors = @_;
