@@ -27,10 +27,6 @@
     &lt;xsl:import href=&quot;common.xsl&quot;/&gt;
     &lt;xsl:output method=&quot;html&quot; encoding=&quot;utf-8&quot; media-type=&quot;text/html&quot; doctype-system=&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot; doctype-public=&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; indent=&quot;no&quot;/&gt;
 
-&lt;xsl:template match=&quot;/document&quot;&gt;
-    &lt;xsl:apply-templates select=&quot;context/object&quot;/&gt;
-&lt;/xsl:template&gt;
-
 &lt;xsl:template match=&quot;/document/context/object&quot;&gt;
 &lt;html&gt;
     &lt;xsl:call-template name=&quot;head-edit&quot;/&gt;
