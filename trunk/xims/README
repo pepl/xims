@@ -1,4 +1,4 @@
-This is XIMS, version 0.9.
+This is XIMS, version 0.9.1.
 
 Overview
 --------
@@ -40,15 +40,12 @@ XIMS documentation for users, developers, and system administrators.
 
 Release Notes
 -------------
-This is a bug fix and minor feature release. For a detailed list of changes
-review the "Changes" file.
+This is a bug fix release correcting wrong object privileges introduced with release 0.8, which
+resulted into users not having CREATE privileges where they have been given grants using the
+pseudo privilege MODIFY.
 
-For users of XIMS release 0.8 with PostgreSQL as database backend, it is
-highly recommended to upgrade to release 0.9 to fix a bug affecting
-area searching and post-event redirects!
-
-Open issues can be found at the TODO at
-https://sourceforge.net/tracker/?atid=432919&group_id=42250&func=browse
+It is recommended to update to this release 0.9.1 to fix the privileges on existing objects
+and take advantage of the new COPY privilege.
 
 
 Changes
