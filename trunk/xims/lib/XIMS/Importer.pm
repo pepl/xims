@@ -151,15 +151,16 @@ sub import {
                 return undef;
             }
 
-            # copy content data
-            my %olddata = $oldobject->data();
+            # update content data
             my %newdata = $object->data();
-            foreach my $key ( keys %olddata ) {
-                $newdata{$key} = $olddata{$key} unless defined $newdata{$key};
+            my $method;
+            foreach my $key ( keys %newdata ) {
+                $method = $key;
+                $method = 'body' if $key eq 'binfile';
+                $oldobject->$method( $newdata{$key} ) if defined $newdata{$key};
             }
-            my $nobject = XIMS::Object->new->data( %newdata );
-            $nobject->update( User => $self->user() );
-            return $nobject->id();
+            $oldobject->update( User => $self->user() );
+            return $oldobject->id();
         }
         else {
             XIMS::Debug( 2, "location already exists" );
