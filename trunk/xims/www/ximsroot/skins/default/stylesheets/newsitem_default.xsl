@@ -54,16 +54,19 @@
                 </tr>
                 <tr>
                     <td valign="top" width="40%" style="border:1px solid;">
-                        <p><strong><xsl:value-of select="$i18n/l/Document_links"/></strong></p>
-                        <table>
-                            <xsl:if test="$m='e' and user_privileges/create">
-                                <tr>
-                                    <td colspan="2">
+                        <table width="100%" border="0">
+                            <tr>
+                                <td width="60%" colspan="2"><strong><xsl:value-of select="$i18n/l/Document_links"/></strong></td>
+                                <xsl:if test="$m='e' and user_privileges/create">
+                                    <td width="40%" align="right">
                                         <a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=URLLink"><xsl:value-of select="$i18n/l/Add_link"/></a>
+                                        <xsl:text>&#160;&#160;</xsl:text>
                                     </td>
-                                </tr>
-                            </xsl:if>
-                            <xsl:apply-templates select="children/object" mode="link"/>
+                                </xsl:if>
+                            </tr>
+                           <xsl:apply-templates select="children/object" mode="link">
+                                <xsl:sort select="position" data-type="number"/>
+                           </xsl:apply-templates>
                         </table>
                     </td>
                     <td valign="top" width="60%" style="border:1px solid;">
