@@ -11,6 +11,10 @@ XIMS Installation Guide
     * libxml2, libxslt (http://www.xmlsoft.org/),
       and Expat (http://sourceforge.net/projects/expat/) C libraries
 
+      Note: Some parts of XML::LibXML (<= 1.56) break with libxml2 >= 2.6.0.
+      We recommend to use libxml 2.5.11. Hopefully, XML::LibXML 1.57 will
+      fix this.
+
     * XIMS currently supports either
       Oracle (>=8.1.6) or PostgreSQL (>=7.2)
       as RDBMS backend. You need access to either one and have the
@@ -106,8 +110,11 @@ XIMS Installation Guide
         the addresses quoted at the end of this document.
 
 4) If the installation went fine so far, login to XIMS at
-   http://host/goxims/defaultbookmark as user 'xgu' (pw: xgu) or user
+   http://host/goxims/user as user 'xgu' (pw: xgu) or user
    'admin' (pw: _adm1nXP).
+
+5) Consult the documentation documents, e.g. "Building Sites with XIMS (Admin Guide)",
+   for the next steps.
 
 Please actually read the file README.
 
