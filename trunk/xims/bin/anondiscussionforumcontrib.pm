@@ -48,9 +48,10 @@ sub event_default {
 
     return 0 if $self->SUPER::event_default( $ctxt );
 
-    # not yet reimplemented
-    #$ctxt->properties->content->children->level( undef );
+    my $object = $ctxt->object();
+    my @descendants = $object->descendants_granted();
 
+    $ctxt->objectlist( \@descendants );
     $self->expand_attributes( $ctxt );
 
     return 0;
