@@ -275,7 +275,7 @@ sub default_grants {
     if ( $self->object->grant_user_privileges(
                                          grantee  => $self->user(),
                                          grantor  => $self->user(),
-                                         privmask => XIMS::Privileges::MODIFY|XIMS::Privileges::PUBLISH
+                                         privmask => XIMS::Privileges::MODIFY()|XIMS::Privileges::PUBLISH()
                                        )
        ) {
         XIMS::Debug( 6, "granted user " . $self->user->name . " default privs on " . $self->object->id() );
@@ -305,7 +305,7 @@ sub default_grants {
                 $self->object->grant_user_privileges(
                                                      grantee  => $role,
                                                      grantor  => $self->user(),
-                                                     privmask => XIMS::Privileges::VIEW
+                                                     privmask => XIMS::Privileges::VIEW()
                                                     );
                 XIMS::Debug( 6, "granted role " . $role->name . " view privs on " . $self->object->id()  );
             }
