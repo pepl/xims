@@ -726,7 +726,7 @@ sub get_object_id_by_path {
     my $dbh = $self->{dbh};
     if ( $dbh ) {
         if ( exists $param{path} and length $param{path} ) {
-            return 1 if $param{path} eq '/root'; # special case for 'root' since it does not have got a parent_id
+            return 1 if $param{path} eq '/root' or $param{path} eq '/'; # special case for 'root' since it does not have got a parent_id
             my @path = split("/", $param{path});
             my $count = scalar( @path );
             my $id = 1; # start with objects in the first level of the hierarchy
