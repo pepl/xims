@@ -35,7 +35,7 @@ sub fields {
     return @Fields;
 }
 
-@Reference_Id_Names = qw( symname_to_doc_id style_id script_id css_id image_id );
+@Reference_Id_Names = qw( symname_to_doc_id style_id script_id css_id image_id schema_id);
 
 BEGIN {
     # the binfile field is no longer available via the method interface, but is set
