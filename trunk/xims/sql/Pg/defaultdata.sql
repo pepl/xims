@@ -62,9 +62,13 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'Text', 0, 1, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'CSS', 0, 1, 1, 0 );
-
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Questionnaire', 1, 1, 0, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
+       VALUES ( nextval('ci_object_types_id_seq'), 'TAN_List', 1, 1, 0, 0 );
 
 \echo inserting into ci_data_formats...
+
 
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'Text', 'text/plain', 'txt' );
@@ -130,6 +134,11 @@ INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( nextval('ci_data_formats_id_seq'), 'SiteRoot', 'application/x-container' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'Postscript', 'application/postscript', 'ps' );
+INSERT INTO ci_data_formats ( id, name, mime_type )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'Questionnaire', 'text/xml' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'TAN_List', 'text/plain', 'tls' );
+
 
 \echo inserting into ci_mime_type_aliases...
 
