@@ -900,7 +900,8 @@ sub update_parents {
             # object to be written twice during an export. it
             # might happen if the parent wasn't published before.
             if ( $parent->object_type->is_fs_container() ) {
-                if ( $parent->attribute_by_key( 'autoindex' ) == 1 ) {
+                my $autoindex = $parent->attribute_by_key( 'autoindex' );
+                if ( not defined $autoindex or $autoindex == 1 ) {
                     XIMS::Debug( 4, "run auto indexer" );
                     my $idx_generator =  XIMS::Exporter::AutoIndexer->new(
                                                  Provider   => $self->{Provider},
@@ -1363,7 +1364,9 @@ sub create {
     # MUST come after any children were published above since
     # publishing states may have changed in this session.
 
-    if ( $self->{Object}->attribute_by_key( 'autoindex' ) == 1 ) {
+    my $autoindex = $self->{Object}->attribute_by_key( 'autoindex' );
+    # if attribute is not explictly set to 0, we do autoindexing
+    if ( not defined $autoindex or $autoindex == 1 ) {
         my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
                                                                Basedir    => $self->{Basedir},
                                                                User       => $self->{User},
