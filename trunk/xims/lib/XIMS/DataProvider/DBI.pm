@@ -8,7 +8,7 @@ use XIMS;
 use XIMS::Names;
 use DBIx::SQLEngine 0.008;
 use XIMS::DataProvider;
-use vars qw( %ResourceMap %Tables %Names %InsertAutoFields %PropertyAttributes %PropertyRelations $VERSION);
+use vars qw( %Tables %Names %PropertyAttributes %PropertyRelations $VERSION);
 #use Data::Dumper;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
@@ -16,6 +16,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r;
 # now only needs scalar refs (for sql literals). The previous was
 # a premature and unneeded 'enhancement'.
 
+# move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
 %PropertyAttributes = (
     'content.id'                          => \'ci_content_id_seq_nval()',
     'user.id'                             => \'ci_users_roles_id_seq_nval()',
@@ -29,10 +30,12 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r;
     'mimetype.id'                         => \'ci_mime_aliases_id_seq_nval()',
 );
 
+# move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
 %PropertyRelations = (
     'Object' => { 'document.id' => \'ci_content.document_id' }
 );
 
+# move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
 %Tables = (
             content        => 'ci_content',
             user           => 'ci_users_roles',
@@ -683,7 +686,7 @@ sub new {
                 $dbh->do("$_");
             }
 
-            XIMS::DEBUGLEVEL > 5 ? $dbh->SQLLogging( 1 ) : $dbh->SQLLogging( 0 );
+            XIMS::DEBUGLEVEL() == 6 ? $dbh->SQLLogging( 1 ) : $dbh->SQLLogging( 0 );
 
             $self->{dbh} = $dbh;
         }
