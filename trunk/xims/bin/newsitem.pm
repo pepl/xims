@@ -18,4 +18,14 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 # inheritation information
 @ISA = qw( document );
 
+sub event_default {
+    my ( $self, $ctxt) = @_;
+    XIMS::Debug( 5, "called" );
+
+    # replace image id with image path
+    $self->resolve_content( $ctxt, [ qw( IMAGE_ID ) ] );
+
+    return $self->SUPER::event_default( $ctxt );
+}
+
 1;
