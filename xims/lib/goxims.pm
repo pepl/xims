@@ -126,14 +126,16 @@ sub handler {
         my %args = $r->args();
         my $objtype = $args{objtype};
         # my $objtype = $apr->param('objtype');
+        my $prefix;
         if ( defined $objtype and length $objtype ) {
             XIMS::Debug( 6, "we are creating a new $objtype" );
             $app_class .= $objtype;
+            $prefix = lc $objtype;
         }
         else {
             $app_class .= $ot_fullname;
+            $prefix = lc $ot_fullname;
         }
-        my $prefix = lc $ot_fullname;
         $prefix =~ s/::/_/g;
         $ctxt->properties->application->styleprefix( $prefix );
     }# end 'content' case
@@ -324,6 +326,5 @@ sub getLanguagePref {
 
     return XIMS::UIFALLBACKLANG();
 }
-
 
 1;
