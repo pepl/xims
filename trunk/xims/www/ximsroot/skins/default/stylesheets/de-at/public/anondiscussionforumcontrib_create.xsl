@@ -60,7 +60,7 @@
              <td>
 
               <!-- Begin forum -->
-    <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" method="GET">
+    <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" method="POST">
         <input type="hidden" name="objtype" value="{$objtype}"/>
         <table border="0" width="600" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
         <tr>
