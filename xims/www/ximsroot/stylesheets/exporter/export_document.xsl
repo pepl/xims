@@ -58,7 +58,9 @@
             </body>
 
             <links>
-                <xsl:apply-templates select="children/object"/>
+                <xsl:apply-templates select="children/object">
+                    <xsl:sort select="position" data-type="number"/>
+                </xsl:apply-templates>
             </links>
         </page>
     </xsl:template>
