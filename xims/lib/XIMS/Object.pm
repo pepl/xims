@@ -501,6 +501,7 @@ sub descendant_count {
 #    $args{ limit }     :
 #    $args{ offset }    :
 #    $args{ order }     :
+#    $args{ start_from } :
 #
 # RETURNS
 #    @objects    : Array of XIMS::Objects
@@ -514,7 +515,7 @@ sub find_objects {
     my %args = @_;
     my @found_ids = $self->__find_ids( %args );
     return () unless scalar( @found_ids ) > 0 ;
-    my @object_data = $self->data_provider->getObject( document_id => \@found_ids, properties => \@Default_Properties );
+    my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => \@Default_Properties );
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
 
     #warn "objects found" . Dumper( \@objects ) . "\n";
@@ -553,6 +554,7 @@ sub find_objects_count {
 #    $args{ limit }     :
 #    $args{ offset }    :
 #    $args{ order }     :
+#    $args{ start_from } :
 #
 # RETURNS
 #    @objects    : Array of XIMS::Objects
@@ -568,13 +570,17 @@ sub find_objects_granted {
 
     return $self->find_objects( %args ) if $user->admin();
 
-    my @found_candidate_doc_ids = $self->__find_ids( %args );
-    return () unless scalar( @found_candidate_doc_ids ) > 0 ;
+    $args{user_id} = $user->id();
+    ($args{role_ids}) = $user->role_ids();
 
-    my @found = $self->__get_granted_objects( doc_ids => \@found_candidate_doc_ids, User => $user ) ;
+    my @found_ids = $self->__find_ids( %args );
+    return () unless scalar( @found_ids ) > 0 ;
 
-    #warn "found" . Dumper( \@found ) . "\n";
-    return wantarray ? @found : $found[0];
+    my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => \@Default_Properties );
+    my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
+
+    #warn "objects found" . Dumper( \@objects ) . "\n";
+    return @objects;
 }
 
 ##
@@ -596,29 +602,16 @@ sub find_objects_granted_count {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    my @role_ids = ( $user->role_ids(), $user->id() );
 
-    return $self->find_objects_count( %args ) if $user->admin();
-
+    $args{user_id} = $user->id();
+    ( $args{role_ids} ) = $user->role_ids();
     delete $args{limit} if exists $args{limit}; # we have to get the ids of *all* matching objects
-    my @found_candidate_doc_ids = $self->__find_ids( %args );
-    return unless scalar( @found_candidate_doc_ids ) > 0 ;
 
-    my @priv_data = $self->data_provider->getObjectPriv( content_id => \@found_candidate_doc_ids,
-                                                         grantee_id => \@role_ids,
-                                                         properties => [ 'content_id' ] );
-
-    # extract and remove duplicate content ids
-    my @ids = map{ $_->{'objectpriv.content_id'} } @priv_data;
-    my %seen = ();
-    my $count;
-    grep { !$seen{$_}++ and $count++} @ids;
-
-    return $count;
+    return $self->find_objects_count( %args );
 }
 
 # internal helper to filter out granted objects, accepts a hash as parameters, mandatory key: doc_ids => @doc_ids
-# shared by children_granted, descendants_granted, and find_objects_granted
+# shared by children_granted and descendants_granted
 # returns a list of XIMS::Objects
 sub __get_granted_objects {
     my $self = shift;
@@ -638,7 +631,15 @@ sub __get_granted_objects {
 
     return () unless scalar( @priv_data ) > 0;
 
-    my @ids = map{ $_->{'objectpriv.content_id'} } @priv_data;
+    my @ids;
+    for ( @priv_data ) {
+        # check for explicit lockout of a user, where he is denied access to
+        # objects where he would have privileges from a role grant but is
+        # denied because of a grant with privilege_mask '0'
+        if ( not ($_->{'objectpriv.grantee_id'} == $user->id() and not defined $_->{'objectpriv.privilege_mask'}) ) {
+            push (@ids, $_->{'objectpriv.content_id'});
+        }
+    };
     my @data = $self->data_provider->getObject( id  => \@ids,
                                                 %args,
                                                 properties => \@Default_Properties );
