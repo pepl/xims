@@ -93,7 +93,7 @@ sub event_store {
     XIMS::Debug( 6, "email $email" );
     $object->email( $email );
 
-    if ( length $coauthor ) {
+    if ( defined $coauthor and length $coauthor ) {
         XIMS::Debug( 6, "coauthor $coauthor" );
         $object->coauthor( $coauthor );
 
@@ -113,7 +113,7 @@ sub event_store {
         }
 
         my $object = $ctxt->object();
-        if ( $trytobalance eq 'true' and $object->body( $body ) ) {
+        if ( $trytobalance and $trytobalance eq 'true' and $object->body( $body ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
         }
         elsif ( $object->body( $body, dontbalance => 1 ) ) {
