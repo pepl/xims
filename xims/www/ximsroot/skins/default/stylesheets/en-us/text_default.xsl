@@ -14,10 +14,10 @@
 <xsl:template name="body_display_format_switcher">
     <xsl:choose>
         <xsl:when test="$pre = '0'">
-            <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=1;m={$m}">Zeige Body vorformatiert</a>
+            <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=1;m={$m}">Show body pre-formatted</a>
         </xsl:when>
         <xsl:otherwise>
-            <a href="{$xims_box}{$goxims_content}{$absolute_path}?m={$m}">Zeige Body in Standardformatierung</a>
+            <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=0;m={$m}">Show body in standard format</a>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>

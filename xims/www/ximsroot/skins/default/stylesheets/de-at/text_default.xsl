@@ -17,7 +17,7 @@
             <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=1;m={$m}">Zeige Body vorformatiert</a>
         </xsl:when>
         <xsl:otherwise>
-            <a href="{$xims_box}{$goxims_content}{$absolute_path}?m={$m}">Zeige Body in Standardformatierung</a>
+            <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=0;m={$m}">Zeige Body in Standardformatierung</a>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
