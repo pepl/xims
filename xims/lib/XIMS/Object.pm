@@ -206,7 +206,8 @@ sub descendants {
     my $self = shift;
     my %args = @_;
 
-    my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
+    delete $args{parent_id};
+    my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id(), %args );
 
     my @doc_ids  = @{$descendant_ids_lvls->[0]};
     my @lvls = @{$descendant_ids_lvls->[1]};
@@ -239,6 +240,26 @@ sub descendants {
     return wantarray ? @sorted_descendants : $sorted_descendants[0];
 }
 
+##
+#
+# SYNOPSIS
+#    $object->descendants_granted( [ %args ] );
+#
+# PARAMETER
+#    $args{ User }             (optional) :  XIMS::User instance if you want to override the user already stored in $object
+#                                            or if there is no $object->User yet.
+#    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
+#                                            Multiple object properties can be specified in the %args hash. For example,
+#                                            $object->descendants_granted( department_id => $document_id, location => 'index.html' )
+#    $args{ maxlevel }         (optional) :  Maxlevel of recursion, if unspecified or 0 results in no recursion limit
+#
+# RETURNS
+#    @objects : Array of XIMS::Objects
+#
+# DESCRIPTION
+#    Returns all descendant content objects, where $user has been granted view privileges.
+#
+#
 sub descendants_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -247,7 +268,8 @@ sub descendants_granted {
 
     return $self->descendants( %args ) if $user->admin();
 
-    my $descendant_candidate_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
+    delete $args{parent_id};
+    my $descendant_candidate_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id(), %args );
 
     my @candidate_doc_ids  = @{$descendant_candidate_ids_lvls->[0]};
     my @candidate_lvls = @{$descendant_candidate_ids_lvls->[1]};

@@ -10,7 +10,6 @@ use DBIx::SQLEngine 0.008;
 use XIMS::DataProvider;
 use vars qw( %Tables %Names %PropertyAttributes %PropertyRelations $VERSION);
 #use Data::Dumper;
-
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
 # now only needs scalar refs (for sql literals). The previous was
@@ -149,27 +148,11 @@ sub create {
 
 sub delete {
     my ($self, %args) = @_;
-    #warn "delete called " . Dumper( $args{properties} ) . "\n"
-    #                      . Dumper( $args{conditions} ) . "\n";
     my ($table, $columns) = $self->tables_and_columns( $args{properties} );
 
-    if ( ($table->[0]  eq "ci_documents") and ($self->{RDBMSClass} eq 'Pg') ) {
-        # this is the ugly workaround for object deletion on Pg :-\
-        if ( defined $args{conditions}->{'document.id'}
-             and     $args{conditions}->{'document.id'} > 1 ) {
-            my $query = 'SELECT ci_del_tree(' . $args{conditions}->{'document.id'} . ');';
-            return $self->{dbh}->fetch_select( sql => $query );
-        }
-        else {
-            return undef;
-        }
-    }
-    else {
-        # "generic" deletion
-        my $crit = $self->crit( $args{conditions} );
-        return $self->{dbh}->do_delete( table     => $table->[0],
-                                        criteria  => $crit );
-    }
+    my $crit = $self->crit( $args{conditions} );
+    return $self->{dbh}->do_delete( table     => $table->[0],
+                                    criteria  => $crit );
 }
 
 
@@ -540,7 +523,12 @@ sub get_descendant_id_level {
 
     return undef unless exists $args{parent_id};
 
-    my $query = 'SELECT COUNT(d2.id) AS lvl, d1.id FROM ci_documents d1, ci_documents d2 WHERE d1.lft BETWEEN d2.lft AND d2.rgt AND d1.lft BETWEEN (SELECT lft FROM ci_documents WHERE id=' . $args{parent_id} . ') AND (SELECT rgt FROM ci_documents WHERE id=' . $args{parent_id} . ') AND d1.id <> ' . $args{parent_id} . ' GROUP BY d1.id, d1.lft ORDER BY d1.lft';
+    my $maxlevel = $args{maxlevel};
+    $maxlevel ||= 0;
+
+    my $query = $self->_get_descendant_sql( $args{parent_id}, $maxlevel, 1 );
+    return undef unless $query;
+
     #warn "query: $query";
     my $data = $self->{dbh}->fetch_select( sql => $query );
 
@@ -577,11 +565,54 @@ sub get_descendant_infos {
     my %args = @_;
     return undef unless exists $args{parent_id};
 
-    my $query = 'SELECT count(last_modification_timestamp), max(last_modification_timestamp) FROM ci_content WHERE document_id IN ( SELECT id FROM ci_documents WHERE lft BETWEEN ( SELECT lft FROM ci_documents WHERE id = ' . $args{parent_id} . ') AND ( SELECT rgt FROM ci_documents WHERE id = ' . $args{parent_id} . '))';
+    my $desc_subquery = $self->_get_descendant_sql( $args{parent_id} );
+    my $query = 'SELECT count(last_modification_timestamp), max(last_modification_timestamp) FROM ci_content WHERE document_id IN ( ' . $desc_subquery . ')';
     my $data = $self->{dbh}->fetch_select( sql => $query );
     my @rv = ( @{$data}[0]->{COUNT} - 1, @{$data}[0]->{MAX} ); # NOTE: assumes that there is one content_child per document;
                                                                #       may have to be changed in future!
     return  \@rv ;
+}
+
+##
+#
+# SYNOPSIS
+#    $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel] );
+#
+# PARAMETER
+#    $parent_id            :  document_id of the parent object to descend from
+#    $maxlevel  (optional) :  maxlevel of recursion, if unspecified or 0 means no recursion limit
+#    $getlevel  (optional) :  per default, only document_id is returned, if $getlevel is specified,
+#                             the level property will be included in the query
+#
+# RETURNS
+#    $query : Hierarchical SQL query including ci_documents.id or
+#             level and ci_documents.id properties
+#
+# DESCRIPTION
+#    Helper method for get_descendant_id_level() and get_descendant_infos()
+#    Returns hierarchical SQL query string
+#
+sub _get_descendant_sql {
+    my $self = shift;
+    my $parent_id = shift;
+    my $maxlevel = shift;
+    my $getlevel = shift;
+
+    my $levelproperty;
+    if ( $self->{RDBMSClass} eq 'Pg' ) {
+        $levelproperty = 't.lvl,' if defined $getlevel;
+        return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', '". $parent_id . "', " . $maxlevel . ") AS t(id text, parent_id text, lvl int, pos int) WHERE t.id <> t.parent_id ORDER BY t.pos";
+    }
+    elsif ( $self->{RDBMSClass} eq 'Oracle' ) {
+        $levelproperty = 'level-1 lvl,' if defined $getlevel;
+        my $levelcond = '';
+        $levelcond = "AND level <= " . ($maxlevel + 1) if defined $maxlevel and $maxlevel > 0;
+        return "SELECT $levelproperty id FROM ci_documents WHERE id <> " . $parent_id . " $levelcond START WITH id = " . $parent_id . " CONNECT BY PRIOR id = parent_id ORDER SIBLINGS BY position";
+    }
+    else {
+        XIMS::Debug( 1, "Unsupported RDBMSClass!" );
+        return undef;
+    }
 }
 
 

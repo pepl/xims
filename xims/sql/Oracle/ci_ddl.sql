@@ -41,9 +41,6 @@
 
 @@default_data.sql
 
--- Nested Set triggers and functions
-@@nested_set_triggers_and_functions.sql
-
 -- commit;
 -- PROMPT Changes have not been commited yet. Type commit; to do so!
 commit;
