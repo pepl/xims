@@ -223,6 +223,9 @@ sub _set_children {
     }
 
     if ( scalar( @children ) > 0 ) {
+        my @container_id_data = $object->data_provider->getDataFormat( mime_type => 'application/x-container ' );
+        my %container_ids;
+        map { $container_ids{$_->{'dataformat.id'}}++ } @container_id_data;
         foreach my $child ( @children ) {
             if ( $ctxt->properties->content->getchildren->addinfo() ) {
                 my @info = $ctxt->data_provider->get_descendant_infos( parent_id => $child->document_id() );
@@ -249,8 +252,10 @@ sub _set_children {
                 $child->{user_privileges} = {%uprivs} if ( grep { defined $_ } values %uprivs );
             }
 
-            # yet another superfluos db hit! this has to be changed!!!
-            $child->{content_length} = $child->content_length();
+            # yet again superfluos db hits! this has to be changed!!!
+            if ( not exists $container_ids{$child->data_format_id()} ) {
+                $child->{content_length} = $child->content_length();
+            }
         }
     }
 
