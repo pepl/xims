@@ -462,6 +462,19 @@ sub move {
     my $parent_id = delete $args{target};
     return undef unless $parent_id;
     $self->parent_id( $parent_id );
+
+    my $dpt_id  = XIMS::Object->new( id=>$parent_id )->department_id(); 
+
+    $self->department_id( $dpt_id );
+
+    my @o = $self->descendants();
+
+    foreach( @o ) {
+       $_->department_id( $dpt_id );
+       $_->data_provider->updateObject( $_->data() );
+    }       
+
+    warn Dumper(\@o);
     my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
     $self->position( $max_position + 1 );
     return $self->data_provider->updateObject( $self->data() );
