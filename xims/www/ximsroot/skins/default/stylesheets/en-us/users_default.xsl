@@ -15,7 +15,13 @@
 
 <xsl:template match="/document">
     <html>
-        <xsl:call-template name="head_default"/>
+        <head>
+            <title>
+                <xsl:value-of select="title" /> - XIMS
+            </title>
+            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        </head>
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
         <xsl:call-template name="header">
             <xsl:with-param name="noncontent">true</xsl:with-param>
