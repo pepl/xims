@@ -530,7 +530,7 @@ sub content_length {
                                            criteria => { id => $args{id} } );
 
     return undef unless ref( $data ) and scalar( @{$data} > 0);
-    return $data->[0]->{LOB_LENGTH};
+    return $data->[0]->{lob_length};
 }
 
 sub get_descendant_id_level {
