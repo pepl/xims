@@ -24,12 +24,12 @@
             <div id="content">
 
             <h1>
-                Herzlich willkommen <xsl:value-of select="name" />!
+                Willkommen <xsl:value-of select="firstname" />&#xa0;<xsl:value-of select="lastname" />!
             </h1>
 
             <h2>Inhalte verwalten</h2>
                 <p>
-                    <a href="{$xims_box}{$goxims}/defaultbookmark">Standard Lesezeichen</a>
+                    <a href="{$xims_box}{$goxims}/defaultbookmark">Standardlesezeichen</a>
                 </p>
 
                 <table>
