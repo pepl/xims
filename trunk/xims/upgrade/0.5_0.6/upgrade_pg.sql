@@ -11,6 +11,20 @@ DROP FUNCTION ci_del_tree(INTEGER);
 ALTER TABLE ci_documents DROP COLUMN lft;
 ALTER TABLE ci_documents DROP COLUMN rgt;
 ALTER TABLE ci_documents DROP CONSTRAINT "$1";
-ALTER TABLE ci_documents ADD  CONSTRAINT "$1" 
+ALTER TABLE ci_documents ADD  CONSTRAINT "$1"
       FOREIGN KEY (parent_id) REFERENCES ci_documents (id) ON DELETE CASCADE;
-	
+
+\echo Inserting new data format 'Icon'
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'Icon', 'image/x-icon', 'ico' );
+\echo Inserting new data format 'PPZ'
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'PPZ', 'application/vnd.ms-powerpoint', 'ppz' );
+\echo Inserting new data format 'POT'
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'POT', 'application/vnd.ms-powerpoint', 'pot' );
+\echo Inserting new data format 'PPS'
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'PPS', 'application/vnd.ms-powerpoint', 'pps' );
+
+
