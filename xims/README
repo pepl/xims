@@ -46,7 +46,7 @@ set implementation and the use of hierarchical queries requires an update
 to 7.3 or 7.4 for PostgreSQL 7.2 users, but is a major boost for performance
 and scalability of XIMS. With XIMS 0.6 also comes basic documentation of the
 content object class API and a list of minor updates and fixes including
-restructured and cleaned up documentation and updates for the user interface.
+restructured and cleaned up documentation as well as updates for the user interface.
 For a detailed list of changes review the "Changes" file.
 
 For the next packages we are planning to add a "Virtual Library" module and
