@@ -137,7 +137,7 @@
 
         <programlisting>[user@host admin]# ./set_user_metadata.pl -u admin -r -o bender -c bender -l bender /simple.examplesite.tld</programlisting>
 
-        <para>This will set the owner, creator and last modifier of all 15 objects at <filename>/simple.examplesite.tld</filename> to the user
+        <para>This will set the owner, creator and last modifier of all 16 objects at <filename>/simple.examplesite.tld</filename> to the user
         <literal>bender</literal>. Note that <filename>set_user_metadata.pl</filename> requires <acronym>XIMS</acronym> admin privileges to run.</para>
     </section>
 
