@@ -1,0 +1,93 @@
+# Copyright (c) 2002-2003 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+package XIMS::Importer::FileSystem;
+
+use XIMS::Importer;
+use XIMS::DataFormat;
+use XIMS::ObjectType;
+use XIMS::Folder;
+use File::Basename;
+
+use vars qw( @ISA );
+@ISA = qw(XIMS::Importer);
+
+sub import {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $location = shift;
+    return undef unless $location;
+
+    my $importer = $self->resolve_importer( $location );
+    return undef unless $importer;
+
+    my $object = $importer->handle_data( $location );
+
+    return $self->SUPER::import( $object );
+}
+
+sub handle_data {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $location = shift;
+
+    my $object = $self->object();
+    $object->location( $location );
+    $object->parent_id( $self->parent_by_location( $location )->id() );
+    $object->data_format_id( $self->data_format->id() );
+
+    return $object;
+}
+
+sub parent_by_location {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $location = shift;
+
+    my $plocation = $self->parent->location() . dirname($location);
+
+    return XIMS::Folder->new( path => $plocation );
+}
+
+sub resolve_location {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $location = shift;
+    XIMS::Debug( 6, "location: $location" );
+
+    if ( -f $location ) {
+        return $self->resolve_filename( basename($location) );
+    }
+    elsif ( -d $location ) {
+        return ( XIMS::ObjectType->new( name => 'Folder'), XIMS::DataFormat->new( name => 'Container' ) );
+    }
+    else {
+        die "could not resolve location '$location'. (we should not get there)";
+    }
+}
+
+sub resolve_importer {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $location = shift;
+    return undef unless $location;
+
+    my ($object_type, $data_format) = $self->resolve_location( $location );
+    my $impclass = "XIMS::Importer::FileSystem::" . $object_type->name();
+    eval "require $impclass;";
+    if ( $@ ) {
+        XIMS::Debug( 3 , "Could not load importer class: $@" );
+        return undef;
+    }
+    my $importer = $impclass->new( Provider => $self->data_provider(),
+                                   Parent => $self->parent(),
+                                   User => $self->user(),
+                                   ObjectType => $object_type,
+                                   DataFormat => $data_format,
+                                   );
+
+    return $importer;
+}
+
+1;
