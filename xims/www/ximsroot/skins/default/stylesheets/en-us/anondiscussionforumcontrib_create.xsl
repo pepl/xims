@@ -6,10 +6,10 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
         xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
-    <xsl:import href="../anondiscussionforum_common.xsl"/>
+    <xsl:import href="../../../../stylesheets/anondiscussionforum_common.xsl"/>
     <xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document">
@@ -19,8 +19,9 @@
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-create_discussionforum"/>
-    <body onLoad="document.eform.abstract.value='';document.eform.name.focus()" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST">
+    <body onLoad="document.eform.body.value='';document.eform.title.focus()" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" method="POST">
+            <input type="hidden" name="objtype" value="{$objtype}"/>
             <table border="0" width="770" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
                 <tr>
                     <td valign="top" class="forumhead" colspan="2">Create new topic</td>
@@ -49,15 +50,13 @@
                     <td valign="top" class="forumcontent" style="padding-top:3px;">Text:</td>
                     <td>
                         <textarea name="body" rows="20" cols="70"><xsl:text>&#160;</xsl:text></textarea>
-                        <input type="hidden" name="parid" value="{@document_id}"/>
-                        <input type="hidden" name="store" value="1"/><br/>
                     </td>
                 </tr>
             </table>
             <br />
             <p style="margin-left:380px;">
-                <input type="submit" name="submit" value=" Save " class="control"/>
-            </p>
+                <xsl:call-template name="saveaction"/>
+            </p>   
           </form>
           <xsl:call-template name="cancelaction"/>
     </body>
