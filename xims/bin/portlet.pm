@@ -32,8 +32,8 @@ sub registerEvents {
           create
           edit
           store
-          del
-          del_prompt
+          delete
+          delete_prompt
           publish
           publish_prompt
           unpublish
@@ -58,9 +58,11 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
 
+    return 0 if $self->SUPER::event_default( $ctxt );
+
     $self->expand_portletinfo( $ctxt );
 
-    return $self->SUPER::event_default( $ctxt );
+    return 0;
 }
 
 sub event_edit {
@@ -98,7 +100,7 @@ sub event_store {
     if ( defined $target ) {
         XIMS::Debug( 6, "target: $target" );
         my $targetobj;
-        if ( $target =~ /^\d+$/ 
+        if ( $target =~ /^\d+$/
                 and $targetobj = XIMS::Object->new( document_id => $target, language => $object->language_id ) ) {
             $object->symname_to_doc_id( $targetobj->document_id() );
         }

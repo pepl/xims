@@ -21,8 +21,8 @@ sub registerEvents {
            create
            edit
            store
-           del
-           del_prompt
+           delete
+           delete_prompt
            view_data
            obj_acllist
            obj_aclgrant
@@ -39,7 +39,7 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    return 0 unless $ctxt->object();
+    return 0 if $self->SUPER::event_default( $ctxt );
 
     print $self->header( -type => $ctxt->object->data_format->mime_type() );
     print $ctxt->object->body();
@@ -60,7 +60,7 @@ sub event_store {
 
     # set the location parameter, so init_store_object sets the right location
     # do not override existing locations
-    # the following code prevents changing location of existing files. this should 
+    # the following code prevents changing location of existing files. this should
     # possible for unpublished files.
     if ( not defined $ctxt->parent() ) {
         $self->param( name => $ctxt->object->location() );

@@ -32,12 +32,12 @@ sub registerEvents {
           create
           edit
           store
-          del
-          del_prompt
+          delete
+          delete_prompt
           obj_acllist
           obj_aclgrant
           obj_aclrevoke
-          publish 
+          publish
           publish_prompt
           unpublish
           add_portlet
@@ -61,9 +61,11 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    return 0 if $self->SUPER::event_default( $ctxt );
+
     $ctxt->properties->content->getformatsandtypes( 1 );
 
-    return $self->SUPER::event_default( $ctxt );
+    return 0;
 }
 
 sub event_edit {
@@ -114,7 +116,7 @@ sub event_add_portlet {
 
     my $object = $ctxt->object();
     my $body   = $object->body();
-    
+
     unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
         return $self->event_access_denied( $ctxt );
     }
@@ -190,7 +192,7 @@ sub event_rem_portlet {
 
     my $object = $ctxt->object();
     my $body   = $object->body();
-    
+
     unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
         return $self->event_access_denied( $ctxt );
     }

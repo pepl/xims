@@ -36,8 +36,8 @@ sub registerEvents {
           create
           edit
           store
-          del
-          del_prompt
+          delete
+          delete_prompt
           obj_acllist
           obj_aclgrant
           obj_aclrevoke
@@ -76,9 +76,7 @@ sub event_default {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
 
-    # event edit in SUPER implements operation control
-    $self->SUPER::event_default( $ctxt );
-    return 0 if $ctxt->{Properties}->{Application}->{style} eq 'error';
+    return 0 if $self->SUPER::event_default( $ctxt );
 
     $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
 

@@ -63,10 +63,10 @@ sub event_init {
     if ( length $self->checkPush('create')
          || ( length $self->checkPush('store')
               and length $self->param('parid') ) ) {
-          
+
 
          my $parent = XIMS::Object->new( id => $self->param('parid'), User => $ctxt->session->user() );
-         
+
          # still needed?
          $ctxt->parent( $parent );
 
@@ -103,6 +103,20 @@ sub event_access_denied {
 
 sub event_default {
     XIMS::Debug( 5, "called");
+    my ( $self, $ctxt ) = @_;
+
+    # redirect to full path in case object is called via id
+    if ( $self->path_info() eq XIMS::CONTENTINTERFACE()
+         and not $ctxt->object->marked_deleted() ) {
+
+        # not needed anymore
+        $self->delete('id');
+
+        XIMS::Debug( 4, "redirecting to full path" );
+        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
+
+        return 1;
+    }
 
     XIMS::Debug( 5, "done");
     return 0;
@@ -177,7 +191,7 @@ sub event_create {
         return $self->event_access_denied( $ctxt ) unless defined( $self->param('parid') );
 
         my $parent = XIMS::Object->new( id => $self->param('parid'), User => $ctxt->session->user() );
-         
+
         $ctxt->parent( $parent );
 
         $privmask = $ctxt->session->user->object_privmask( $parent );
@@ -405,7 +419,7 @@ sub redirect {
 }
 
 # small helper to determine what sort of 'thingie'
-# we are operating on (user, content object, whatever 
+# we are operating on (user, content object, whatever
 # we might add later)
 sub resource_type {
     my $self = shift;
@@ -713,7 +727,7 @@ sub init_store_object {
     if ( defined $image ) {
         XIMS::Debug( 6, "image: $image" );
         my $imageobj;
-        if ( $image =~ /^\d+$/ 
+        if ( $image =~ /^\d+$/
              and $imageobj = XIMS::Object->new( id => $image )
              and $imageobj->object_type->name() eq 'Image' ) {
             $object->image_id( $imageobj->id() );
@@ -731,7 +745,7 @@ sub init_store_object {
     if ( defined $stylesheet and length $stylesheet ) {
         XIMS::Debug( 6, "stylesheet: $stylesheet" );
         my $styleobj;
-        if ( $stylesheet =~ /^\d+$/ 
+        if ( $stylesheet =~ /^\d+$/
              and $styleobj = XIMS::Object->new( id => $stylesheet )
              and $styleobj->object_type->name() eq 'XSLStylesheet' ) {
             $object->style_id( $styleobj->id() );
@@ -759,7 +773,7 @@ sub default_grants {
     # grant the object to the current user (not yet implemented)
     if ( $ctxt->object->grant_user_privileges(
                                          grantee  => $ctxt->session->user(),
-                                         grantor  => $ctxt->session->user(), 
+                                         grantor  => $ctxt->session->user(),
                                          privmask => XIMS::Privileges::MODIFY|XIMS::Privileges::PUBLISH
                                        )
        ) {
@@ -776,7 +790,7 @@ sub default_grants {
     if ( defined $retval and $grantowneronly != 1) {
         my @roles = $ctxt->session->user->roles_granted( default_role => 1 ); # get granted default roles
         foreach my $role ( @roles ) {
-            $ctxt->object->grant_user_privileges( 
+            $ctxt->object->grant_user_privileges(
                                                  grantee  => $role,
                                                  grantor => $ctxt->session->user(),
                                                  privmask => XIMS::Privileges::VIEW
@@ -793,7 +807,7 @@ sub event_undelete {
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
-    
+
     # test for a non deleted object in the current container with the same location
     my $parent = XIMS::Object->new( id => $object->parent_id(), User => $ctxt->session->user() );
     my @children = $parent->children( location => $object->location() );
@@ -835,7 +849,7 @@ sub event_trashcan {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied() 
+    return $self->event_access_denied()
            unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
@@ -898,7 +912,7 @@ sub event_delete {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied() 
+    return $self->event_access_denied()
            unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
@@ -1007,7 +1021,7 @@ sub event_move_browse {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied() 
+    return $self->event_access_denied()
            unless $current_user_object_priv & XIMS::Privileges::MOVE();
 
     if ( not $ctxt->object->published() ) {
@@ -1017,7 +1031,7 @@ sub event_move_browse {
             $ctxt->session->error_msg("Where to move?");
             return 0;
         }
-        
+
         $ctxt->properties->content->getchildren->objecttypes( [qw(Folder DepartmentRoot)] );
         $ctxt->properties->content->getchildren->objectid( $to );
         $ctxt->properties->application->style( "move_browse" );
@@ -1043,7 +1057,7 @@ sub event_move {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
 
-    return $self->event_access_denied() 
+    return $self->event_access_denied()
            unless $current_user_object_priv & XIMS::Privileges::MOVE();
 
     if ( not $object->published() ) {
@@ -1114,7 +1128,7 @@ sub event_publish_prompt {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied() 
+    return $self->event_access_denied()
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     # check for body references in (X)HTML and XML documents
@@ -1164,7 +1178,7 @@ sub event_publish {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied() 
+    return $self->event_access_denied()
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     require XIMS::Exporter;
@@ -1225,7 +1239,7 @@ sub event_unpublish {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied() 
+    return $self->event_access_denied()
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     require XIMS::Exporter;
@@ -1294,10 +1308,10 @@ sub event_obj_acllist {
         if ( $objprivs & XIMS::Privileges::GRANT()
              || $objprivs & XIMS::Privileges::GRANT_ALL() ) {
               XIMS::Debug( 6, "ACL check passed (" . $user->name() . ")" );
-                
+
             # get the existing grants on the object
             my @object_privs = map { XIMS::ObjectPriv->new->data( %{$_} ) } $dp->getObjectPriv( content_id => $object->id() );
-    
+
             if ( my $user_id = $self->param( "userid" ) ){
                 if ( my $context_user = XIMS::User->new( id => $user_id ) ) {
                     $context_user->{object_privileges} = {$context_user->object_privileges( $object )};
@@ -1323,7 +1337,7 @@ sub event_obj_acllist {
                 my @user_data_list = ();
                 foreach my $record ( @big_user_data_list ) {
                      next if grep { $_ == $record->{'user.id'} } @granted_user_ids;
-                     next unless $record->{'user.name'} =~ /$userquery/ig;   
+                     next unless $record->{'user.name'} =~ /$userquery/ig;
                      push @user_data_list, $record;
                 }
                 my @user_list = map{ XIMS::User->new( id => $_->{'user.id'} ) } @user_data_list;
@@ -1340,58 +1354,58 @@ sub event_obj_acllist {
                 $ctxt->userlist( \@granted_users );
                 $ctxt->properties->application->style( 'obj_userlist' );
             }
-                 
+
         }
         else {
             XIMS::Debug( 2, "user " . $user->name() . " denied to list privileges on object" );
             $self->sendError( $ctxt,
                                "user " .
                                $user->name() .
-                               " denied to list privileges on object" );     
+                               " denied to list privileges on object" );
         }
     }
     else {
         XIMS::Debug( 3, "anonymous granting rejected" );
     }
-                
+
     XIMS::Debug( 5, "done" );
-            
+
     return 0;
 }
 
 sub event_obj_aclgrant {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
-                
+
     my $user = $ctxt->session->user();
     my $object = $ctxt->object();
     my $objprivs = $user->object_privmask( $object );
-        
+
     $ctxt->properties->application->styleprefix( 'common' );
     $ctxt->properties->application->style( 'error' );
-                               
+
     if ( $user and $objprivs and $object ) {
         #
         # the aclist event will only work if there can be an user,
         # object found, plus a minimal privilege mask is found.
-        # 
+        #
         # before one can really see the privileges on an object, one
         # needs one or the other grant privilege
         # (XIMS::Privilege::GRANT or XIMS::Privilege::GRANT_ALL) for his
         # own. Optional a system privilege may does the same trick.
-        #   
+        #
         if ( $objprivs & XIMS::Privileges::GRANT()
              || $objprivs & XIMS::Privileges::GRANT_ALL() ) {
             XIMS::Debug( 6, "ACL check passed (" . $user->name() . ")" );
 
             # get the other userid
             my $uid = $self->param('userid');
-    
+
             # build the privilege mask
             my $bitmask = 0;
-        
-            foreach my $priv ( XIMS::Privileges::list() ) { 
-                my $lcname = 'acl_' . lc( $priv );   
+
+            foreach my $priv ( XIMS::Privileges::list() ) {
+                my $lcname = 'acl_' . lc( $priv );
                 if ( $self->param($lcname) ) {
                     {
                         no strict 'refs';
@@ -1399,7 +1413,7 @@ sub event_obj_aclgrant {
                     }
                 }
             }
-        
+
             # store the set to the database
             my $boolean = $object->grant_user_privileges ( grantee         => $uid,
                                                            privilege_mask  => $bitmask,
@@ -1421,9 +1435,9 @@ sub event_obj_aclgrant {
     }
     else {
         XIMS::Debug( 3, "anonymous granting rejected" );
-    }   
+    }
     XIMS::Debug( 5, "done" );
-        
+
     return 0;
 }
 
@@ -1431,14 +1445,14 @@ sub event_obj_aclgrant {
 sub event_obj_aclrevoke {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
-            
+
     my $user = $ctxt->session->user();
     my $object = $ctxt->object();
     my $objprivs = $user->object_privmask( $object );
-            
+
     $ctxt->properties->application->styleprefix( 'common' );
     $ctxt->properties->application->style( 'error' );
-                
+
     if ( $user and $objprivs and $object ) {
         #
         # the aclist event will only work if there can be an user,
@@ -1469,7 +1483,7 @@ sub event_obj_aclrevoke {
             else {
                 XIMS::Debug( 2, "ACL grant failure on " . $object->document_id . " for " . $user->name() );
             }
-        
+
         }
         else {
             XIMS::Debug( 2, "ACL check failed (" . $user->name() . ")" );
@@ -1478,7 +1492,7 @@ sub event_obj_aclrevoke {
     else {
         XIMS::Debug( 3, "anonymous granting rejected" );
     }
-    
+
     XIMS::Debug( 5, "done" );
     return 0;
 }
@@ -1505,7 +1519,7 @@ sub event_reposition {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
 
-    return $self->event_access_denied() 
+    return $self->event_access_denied()
            unless $current_user_object_priv & XIMS::Privileges::WRITE();
 
     my $new_position = $self->param( "new_position" );
@@ -1699,7 +1713,7 @@ sub event_search {
             $ctxt->session->error_msg( "Search mechanism has not yet been implemented for non DBI based datastores!" );
             return 0;
         }
-        
+
         # XIMS::DBMS_OPTION() has been used for Intermedia querybuilding, we should rename that config directive
         $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::DBMS_OPTION();
 

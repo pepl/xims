@@ -32,8 +32,8 @@ sub registerEvents {
           create
           edit
           store
-          del
-          del_prompt
+          delete
+          delete_prompt
           obj_acllist
           obj_aclgrant
           obj_aclrevoke
@@ -143,18 +143,7 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    # redirect to full path in case document is called via id
-    if ( $self->path_info() eq XIMS::CONTENTINTERFACE()
-         and not $ctxt->object->marked_deleted() ) {
-
-        # not needed anymore
-        $self->delete('id');
-
-        XIMS::Debug( 4, "redirecting to full path" );
-        $self->redirect( $self->redirect_path( $ctxt ) );
-
-        return 0;
-    }
+    return 0 if $self->SUPER::event_default( $ctxt );
 
     # pepl: why do we need two ways to load links and annotations? if
     # annotations would have the privs/grants of the owner document
@@ -164,21 +153,22 @@ sub event_default {
     # system we have to discuss more intense.
 
     # the following still has to be implemented with the new system
-    
+
     $ctxt->properties->content->getchildren->objecttypes( [ qw( URLLink SymbolicLink ) ] );
 
     # temporarily deactivated until privilege inheritation of annotations is dicussed and clear
     #$self->resolve_annotations( $ctxt );
 
-    return $self->SUPER::event_default( $ctxt );
+    return 0;
 }
 
 sub event_pub_preview {
     my ( $self, $ctxt ) = @_;
 
-    $self->SUPER::event_default( $ctxt );
+    return 0 if $self->SUPER::event_default( $ctxt );
 
     $ctxt->properties->application->style("pub_preview");
+
     return 0;
 }
 
