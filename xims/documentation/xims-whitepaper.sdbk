@@ -320,7 +320,7 @@
         contributions organized in threads. With XIMS, such a forum can be
         established rather easily: All that is needed are two object types and
         their <ulink
-        url="xims-developer's-guide.sdbk#WritingaximsModule">module</ulink>
+        url="developers/xims-developer_s-guide.sdbk#WritingaximsModule">module</ulink>
         implementations, (a) <emphasis>Discussion Forum</emphasis> storing the
         topic and forum-wide attributes, and (b) <emphasis>Discussion
         Contribution</emphasis> handling discussion entries. A discussion
@@ -356,7 +356,7 @@
     <section>
       <title>Test-Drive the current XIMS beta</title>
 
-      <para><ulink url="/goxims/defaultbookmark">Login</ulink> with username
+      <para><ulink url="/goxims/user">Login</ulink> with username
       &#34;xgu&#34; and password &#34;xgu&#34;</para>
     </section>
 

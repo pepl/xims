@@ -81,7 +81,7 @@
 
                     <mediaobject>
                         <imageobject>
-                            <imagedata align="center" fileref="xims-publishing-architecture.png" format="PNG" scalefit="" />
+                            <imagedata align="center" fileref="../xims-publishing-architecture.png" format="PNG" scalefit="" />
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -248,12 +248,14 @@
             <section>
                 <title><literal>Body</literal> in <acronym>XHTML</acronym> - Documents</title>
 
-                <para>Depending on your platform, you will get one of two possible views: (in the future, this will be a user-preference too)</para>
+                <para>Depending on your XIMS configuration platform, you will get one of two possible views: (in the future, this will be a user-preference too)</para>
 
                 <itemizedlist>
                     <listitem>
-                        <para>Using MSIE and Netscape &#62;= 4.x on Windows, the <literal>body</literal> is editable with a WYSIWYG-editor, which is described
-                        <ulink url="ewebeditpro_schnellhilfe.pdf">here</ulink> (german translation).</para>
+                        <para>WYSIWYG-Editing using <ulink url="http://sourceforge.net/projects/itools-htmlarea/">HTMLArea</ulink></para>
+                    </listitem>
+                    <listitem>
+                        <para>WYSIWYG-Editing using <ulink url="http://www.ektron.com/ewebeditpro.aspx">eWebeditPro</ulink></para>
                     </listitem>
 
                     <listitem>
