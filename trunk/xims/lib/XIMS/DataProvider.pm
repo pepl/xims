@@ -11,6 +11,7 @@ use XIMS::Names;
 
 # following uses are for the classed we bless into
 use XIMS::ObjectType;
+use XIMS::Iterator::Object;
 use vars qw/$AUTOLOAD/;
 
 # The idea here is to create a generic bridge between the data store and the
@@ -222,11 +223,14 @@ sub getObject {
     my $span_tables = 1;
     my ( $properties, $conditions ) = $self->request_factory( 'Object', 'get', %args );
 
-    if ( defined( $args{properties} ) ) {
+    if ( wantarray() and defined( $args{properties} ) ) {
         #warn "explicit properties " . Dumper( $args{properties}  );
         my $doc_prop_count = grep{ (split /\./, $_)[0] eq 'document' } keys %{$properties};
         my $content_prop_count = grep{ (split /\./, $_)[0] eq 'content' } keys %{$properties};
         $span_tables-- unless $doc_prop_count > 0 and $content_prop_count > 0;
+    }
+    else {
+        $properties = { 'content.id' => 1, 'document.id' => 1 };
     }
 
     # remove the 'join' if we are only selecting data from one table or the other.
@@ -235,18 +239,17 @@ sub getObject {
     }
 
     my $data = $self->{Driver}->get( properties => $properties, conditions => $conditions );
-
-    foreach my $obj ( @{$data} ) {
-        if ( defined( $obj->{'content.binfile'} ) ) {
-            $obj->{'content.body'} = delete $obj->{'content.binfile'}
+    if ( wantarray() ) {
+        foreach my $obj ( @{$data} ) {
+            if ( defined( $obj->{'content.binfile'} ) ) {
+                $obj->{'content.body'} = delete $obj->{'content.binfile'}
+            }
         }
-    }
-
-    if ( ref( $data ) eq 'ARRAY' ) {
-        return wantarray() ? @{$data} : $data->[0];
+        return @{$data};
     }
     else {
-        return $data;
+        my @ids = map { $_->{'document.id'} } @{$data};
+        return XIMS::Iterator::Object->new( \@ids );
     }
 }
 
@@ -383,9 +386,14 @@ sub admins {
 # list all objects
 sub objects {
     my $self = shift;
-    my @data = $self->getObject( @_ );
-    my @out = map { XIMS::Object->new->data( %{$_} ) } @data;
-    return @out;
+    if ( wantarray() ) {
+        my @data = $self->getObject( @_ );
+        my @out = map { XIMS::Object->new->data( %{$_} ) } @data;
+        return @out;
+    }
+    else {
+        return $self->getObject( @_ );
+    }
 }
 
 # the global dump site
@@ -393,9 +401,14 @@ sub trashcan {
     my $self = shift;
     my %args = @_;
     $args{marked_deleted} = 1;
-    my @data = $self->getObject( %args );
-    my @out = map { XIMS::Object->new->data( %{$_} ) } @data;
-    return @out;
+    if ( wantarray() ) {
+        my @data = $self->getObject( @_ );
+        my @out = map { XIMS::Object->new->data( %{$_} ) } @data;
+        return @out;
+    }
+    else {
+        return $self->getObject( @_ );
+    }
 }
 
 1;

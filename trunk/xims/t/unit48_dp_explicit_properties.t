@@ -13,8 +13,8 @@ my $dp = XIMS::DataProvider->new();
 
 ok( $dp );
 
-my $odata = $dp->getObject( id => 2, properties => ['title', 'id'] );
-
+my @data = $dp->getObject( id => 2, properties => ['title', 'id'] );
+my $odata = $data[0];
 ok( $odata );
 ok( scalar( keys( %{$odata} ) ) == 2 );
 ok( $odata->{'content.title'} eq '/ximspubroot/xims' );
