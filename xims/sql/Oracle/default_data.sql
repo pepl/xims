@@ -13,7 +13,7 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'Document', 0, 1, 1 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'Image', 0, 0, 0);
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'File', 0, 0, 0 );
-INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'XML', 0, 0, 0 );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'XML', 0, 1, 1 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'DepartmentRoot', 1, 1, 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'XSLStylesheet', 0, 0, 1 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'AxPointPresentation', 0, 0, 1 );
@@ -28,6 +28,8 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'Portlet', 0, 1, 1 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'Portal', 0, 0, 1 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'SiteRoot', 1, 1, 0 );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'Text', 0, 1, 1 );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self ) VALUES ( OBT_SEQ.NEXTVAL, 'CSS', 0, 1, 1 );
 
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'Text', 'text/plain', 'txt' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'HTML', 'text/xhtml', 'html' );

@@ -34,6 +34,7 @@ sub new {
                 [ "Time::Piece", '' ],
                 [ "XML::Schematron", '' ],
                 [ "Apache::DBI", '' ],
+                [ "CSS::Tiny", '' ],
               );
 
     my @optional_mods = ();
