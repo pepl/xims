@@ -87,6 +87,15 @@
                  <br clear="all"/>
 
                  <span class="cboxitem">
+                   <input type="checkbox" name="acl_copy" value="1">
+                     <xsl:if test="object_privileges/copy">
+                       <xsl:attribute name="checked">checked</xsl:attribute>
+                     </xsl:if>
+                   </input>
+                   Copy
+                 </span>
+
+                 <span class="cboxitem">
                    <input type="checkbox" name="acl_move" value="1">
                      <xsl:if test="object_privileges/move">
                        <xsl:attribute name="checked">checked</xsl:attribute>
