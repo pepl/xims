@@ -48,7 +48,7 @@ sub vlproperties_from_document {
     my $object = shift;
 
     #title
-    $object->title( $self->_trim(
+    $object->title( $self->_clean(
       $self->_nodevalue($root->findnodes( "/article/articleinfo/title|/book/bookinfo/title|/book/title" ) )));
 
     #abstract
@@ -77,7 +77,7 @@ sub vlproperties_from_document {
     my @metaset = $root->findnodes( "/book/bookinfo|/article/articleinfo" );
 
     my $meta = $self->meta_from_node( $metaset[0] );
-    $meta->subtitle( $self->_trim(
+    $meta->subtitle( $self->_clean(
            $self->_nodevalue($root->findnodes( '/book/bookinfo/subtitle|/article/articleinfo/subtitle' ))));
 
     $object->vlemeta( $meta );
@@ -86,13 +86,13 @@ sub vlproperties_from_document {
     my @issuenumnode = $root->findnodes( "/article/articleinfo/biblioset|/book/bookinfo/biblioset");
     if ( @issuenumnode ) {
         my ($journal, $volume);
-        if ( $journal = $self->_trim( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("title") ) ) ) {
-            $volume = $self->_trim( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("issuenum") ) );
+        if ( $journal = $self->_clean( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("title") ) ) ) {
+            $volume = $self->_clean( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("issuenum") ) );
             #$isbn = $self->_trim( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("isbn") ) ) or "";
             #$issn = $self->_trim( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("issn") ) ) or "";
 
             if ( $journal ) {
-                my $vlpublication = $self->vlpublication( $self->_trim($journal), $self->_trim($volume) );
+                my $vlpublication = $self->vlpublication( $journal, $volume );
                 $object->vlepublications( ($vlpublication) );
             }
         }
@@ -108,6 +108,163 @@ sub vlproperties_from_document {
 
         return $object->update();
     }
+}
+
+
+sub authors_from_node {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $authorset = shift;
+    my @authors;
+
+    return () unless $authorset;
+
+    foreach my $author ( $authorset->getChildrenByTagName("author") ) {
+        my $lastname = $self->_clean( $self->_nodevalue( $author->getChildrenByTagName("surname") ) );
+        my $middlename = $self->_clean( $self->_nodevalue( $author->getChildrenByTagName("othername") ) );
+        my $firstname = $self->_clean( $self->_nodevalue( $author->getChildrenByTagName("firstname") ) );
+        $middlename ||= '';
+        $firstname ||= '';
+        my $vlibauthor = XIMS::VLibAuthor->new( lastname => $self->_escapewildcard( $lastname ),
+                                                middlename => $middlename,
+                                                firstname => $firstname);
+        if ( not (defined $vlibauthor and $vlibauthor->id) ) {
+            $vlibauthor = XIMS::VLibAuthor->new();
+            $vlibauthor->lastname( $lastname );
+            $vlibauthor->middlename( $middlename );
+            $vlibauthor->firstname( $firstname );
+            if ( not $vlibauthor->create() ) {
+                XIMS::Debug( 3, "could not create VLibauthor $lastname" );
+                next;
+            }
+        }
+        push(@authors, $vlibauthor);
+    }
+
+    foreach my $author ( $authorset->getChildrenByTagName("corpauthor") ) {
+        my $lastname = $self->_clean( $self->_nodevalue( $author ) );
+        my $vlibauthor = XIMS::VLibAuthor->new( lastname => $self->_escapewildcard( $lastname ),
+                                                object_type => '1' );
+        if ( not (defined $vlibauthor and $vlibauthor->id) ) {
+            $vlibauthor = XIMS::VLibAuthor->new();
+            $vlibauthor->lastname( $lastname );
+            $vlibauthor->object_type( '1' );
+            if ( not $vlibauthor->create() ) {
+                XIMS::Debug( 3, "could not create VLibauthor $lastname" );
+                next;
+            }
+        }
+        push(@authors, $vlibauthor);
+    }
+
+    return @authors;
+}
+
+
+sub keywords_from_node {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $keywordset = shift;
+    my @keywords;
+
+    return () unless $keywordset;
+
+    foreach my $keyword ( $keywordset->getChildrenByTagName("keyword") ) {
+        $keywordvalue = $self->_clean( $self->_nodevalue( $keyword ) );
+        my $vlibkeyword = XIMS::VLibKeyword->new( name => $keywordvalue );
+        if ( not (defined $vlibkeyword and $vlibkeyword->id) ) {
+            $vlibkeyword = XIMS::VLibKeyword->new();
+            $vlibkeyword->name( $keywordvalue );
+            if ( not $vlibkeyword->create() ) {
+                XIMS::Debug( 3, "could not create VLibKeyword $keywordvalue" );
+                next;
+            }
+        }
+        push(@keywords, $vlibkeyword);
+    }
+
+    return @keywords;
+}
+
+
+sub subjects_from_node {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $subjectset = shift;
+    my @subjects;
+
+    return () unless $subjectset;
+
+    foreach my $subject ( $subjectset->findnodes("subject/subjectterm") ) {
+        $subjectvalue = $self->_clean( $self->_nodevalue( $subject ) );
+        my $vlibsubject = XIMS::VLibSubject->new( name => $subjectvalue );
+        if ( not (defined $vlibsubject and $vlibsubject->id) ) {
+            $vlibsubject = XIMS::VLibSubject->new();
+            $vlibsubject->name( $subjectvalue );
+            if ( not $vlibsubject->create() ) {
+                XIMS::Debug( 3, "could not create VLibSubject $subjectvalue" );
+                next;
+            }
+        }
+        push(@subjects, $vlibsubject);
+    }
+
+    return @subjects;
+}
+
+
+sub meta_from_node {
+    XIMS::Debug( 5, "called" );
+
+    my $self = shift;
+    my $metaset = shift;
+    my $meta = XIMS::VLibMeta->new();
+    return undef unless $metaset;
+
+    # legalnotice
+    my $legalnotice = $self->_clean(
+      $self->_nodevalue( $metaset->findnodes('//legalnotice/simpara|//legalnotice/para')));
+    $meta->legalnotice( $legalnotice ) if length( $legalnotice );
+
+    # mediatype
+    $meta->mediatype( $self->_clean( $self->_nodevalue( $metaset->findnodes('biblioset/@relation'))));
+
+    # bibliosource
+    my @bibliosourceset = $metaset->getChildrenByTagName("biblioset");
+    my $bibliosource;
+    if ( $bibliosourceset[0] ) {
+        map { $bibliosource .= $self->_nodevalue($_) }
+          ($bibliosourceset[0]->getChildrenByTagName('bibliosource'));
+        $meta->bibliosource( $self->_clean( $bibliosource ) );
+    }
+
+    return $meta;
+}
+
+
+sub vlpublication {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $name = shift;
+    my $volume = shift;
+    #my $isbn = shift;
+    #my $issn = shift;
+
+    return undef unless $name;
+
+    my $vlpublication = XIMS::VLibPublication->new( name => $name, volume => $volume );
+    if ( not (defined $vlpublication and $vlpublication->id) ) {
+        $vlpublication = XIMS::VLibPublication->new();
+        $vlpublication->name( $name );
+        $vlpublication->volume( $volume );
+        #$vlpublication->volume( $isbn );
+        #$vlpublication->volume( $issn );
+        if ( not $vlpublication->create() ) {
+            XIMS::Debug( 3, "could not create VLibPublication $name" );
+        }
+    }
+
+    return $vlpublication;
 }
 
 
@@ -157,6 +314,18 @@ sub _unquot {
 }
 
 
+sub _clean {
+    my $self = shift;
+    my $string = shift;
+
+    return undef unless $string;
+
+    $string = $self->_unquot( $self->_trim( $string ) );
+    
+    return $string;
+}
+
+
 sub _escapewildcard {
     my $self = shift;
     my $string = shift;
@@ -167,162 +336,5 @@ sub _escapewildcard {
     return $string;
 }
 
-
-sub authors_from_node {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $authorset = shift;
-    my @authors;
-
-    return () unless $authorset;
-
-    foreach my $author ( $authorset->getChildrenByTagName("author") ) {
-        my $lastname = $self->_unquot( $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("surname") ) ) );
-        my $middlename = $self->_unquot( $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("othername") ) ) );
-        my $firstname = $self->_unquot( $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("firstname") ) ) );
-        $middlename ||= '';
-        $firstname ||= '';
-        my $vlibauthor = XIMS::VLibAuthor->new( lastname => $self->_escapewildcard( $lastname ),
-                                                middlename => $middlename,
-                                                firstname => $firstname);
-        if ( not (defined $vlibauthor and $vlibauthor->id) ) {
-            $vlibauthor = XIMS::VLibAuthor->new();
-            $vlibauthor->lastname( $lastname );
-            $vlibauthor->middlename( $middlename );
-            $vlibauthor->firstname( $firstname );
-            if ( not $vlibauthor->create() ) {
-                XIMS::Debug( 3, "could not create VLibauthor $lastname" );
-                next;
-            }
-        }
-        push(@authors, $vlibauthor);
-    }
-
-    foreach my $author ( $authorset->getChildrenByTagName("corpauthor") ) {
-        my $lastname = $self->_unquot( $self->_trim( $self->_nodevalue( $author ) ) );
-        my $vlibauthor = XIMS::VLibAuthor->new( lastname => $self->_escapewildcard( $lastname ),
-                                                object_type => '1' );
-        if ( not (defined $vlibauthor and $vlibauthor->id) ) {
-            $vlibauthor = XIMS::VLibAuthor->new();
-            $vlibauthor->lastname( $lastname );
-            $vlibauthor->object_type( '1' );
-            if ( not $vlibauthor->create() ) {
-                XIMS::Debug( 3, "could not create VLibauthor $lastname" );
-                next;
-            }
-        }
-        push(@authors, $vlibauthor);
-    }
-
-    return @authors;
-}
-
-
-sub keywords_from_node {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $keywordset = shift;
-    my @keywords;
-
-    return () unless $keywordset;
-
-    foreach my $keyword ( $keywordset->getChildrenByTagName("keyword") ) {
-        $keywordvalue = $self->_nodevalue( $keyword );
-        my $vlibkeyword = XIMS::VLibKeyword->new( name => $keywordvalue );
-        if ( not (defined $vlibkeyword and $vlibkeyword->id) ) {
-            $vlibkeyword = XIMS::VLibKeyword->new();
-            $vlibkeyword->name( $keywordvalue );
-            if ( not $vlibkeyword->create() ) {
-                XIMS::Debug( 3, "could not create VLibKeyword $keywordvalue" );
-                next;
-            }
-        }
-        push(@keywords, $vlibkeyword);
-    }
-
-    return @keywords;
-}
-
-
-sub subjects_from_node {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $subjectset = shift;
-    my @subjects;
-
-    return () unless $subjectset;
-
-    foreach my $subject ( $subjectset->findnodes("subject/subjectterm") ) {
-
-        $subjectvalue = $self->_nodevalue( $subject );
-        my $vlibsubject = XIMS::VLibSubject->new( name => $subjectvalue );
-        if ( not (defined $vlibsubject and $vlibsubject->id) ) {
-            $vlibsubject = XIMS::VLibSubject->new();
-            $vlibsubject->name( $subjectvalue );
-            if ( not $vlibsubject->create() ) {
-                XIMS::Debug( 3, "could not create VLibSubject $subjectvalue" );
-                next;
-            }
-        }
-        push(@subjects, $vlibsubject);
-    }
-
-    return @subjects;
-}
-
-
-sub meta_from_node {
-    XIMS::Debug( 5, "called" );
-
-    my $self = shift;
-    my $metaset = shift;
-    my $meta = XIMS::VLibMeta->new();
-    return undef unless $metaset;
-
-    # legalnotice
-    my $legalnotice = $self->_trim(
-      $self->_nodevalue( $metaset->findnodes('//legalnotice/simpara|//legalnotice/para')));
-    $meta->legalnotice( $legalnotice ) if length( $legalnotice );
-
-    # mediatype
-    $meta->mediatype( $self->_trim( $self->_nodevalue( $metaset->findnodes('biblioset/@relation'))));
-
-    # bibliosource
-    my @bibliosourceset = $metaset->getChildrenByTagName("biblioset");
-    my $bibliosource;
-    if ( $bibliosourceset[0] ) {
-        map { $bibliosource .= $self->_nodevalue($_) }
-          ($bibliosourceset[0]->getChildrenByTagName('bibliosource'));
-        $meta->bibliosource( $self->_trim( $bibliosource ) );
-    }
-
-    return $meta;
-}
-
-
-sub vlpublication {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $name = shift;
-    my $volume = shift;
-    #my $isbn = shift;
-    #my $issn = shift;
-
-    return undef unless $name;
-
-    my $vlpublication = XIMS::VLibPublication->new( name => $name, volume => $volume );
-    if ( not (defined $vlpublication and $vlpublication->id) ) {
-        $vlpublication = XIMS::VLibPublication->new();
-        $vlpublication->name( $name );
-        $vlpublication->volume( $volume );
-        #$vlpublication->volume( $isbn );
-        #$vlpublication->volume( $issn );
-        if ( not $vlpublication->create() ) {
-            XIMS::Debug( 3, "could not create VLibPublication $name" );
-        }
-    }
-
-    return $vlpublication;
-}
 
 1;
