@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -69,6 +69,7 @@
                         <input name="id" type="hidden" value="{$id}"/>
                         <input type="hidden" name="forcedelete" value="1"/>
                         <input type="hidden" name="delete" value="1"/>
+                        <xsl:call-template name="rbacknav"/>
                       </td>
                       <td>
                         <input name="default" type="button" value="Cancel" onClick="javascript:history.go(-2)"  class="control"/>
