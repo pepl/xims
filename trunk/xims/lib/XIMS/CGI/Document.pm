@@ -9,6 +9,7 @@ use vars qw( $VERSION @ISA @MSG @params );
 
 use XIMS::CGI;
 use Text::Iconv;
+use Text::Template;
 
 # #############################################################################
 # GLOBAL SETTINGS
@@ -33,6 +34,7 @@ sub registerEvents {
                                 'obj_aclrevoke',
                                 'test_wellformedness',
                                 'pub_preview',
+                                'bxeconfig',
                                 @_
                                 );
 }
@@ -325,6 +327,64 @@ sub _absrel_urlmangle {
     }
 
     return $body;
+}
+
+sub save_PUT_data {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    # Read PUT-request
+    my $content_length = $ctxt->apache->header_in('Content-length');
+    my $content;
+    $ctxt->apache->read($content, $content_length);
+
+    if ( XIMS::DBENCODING() ) {
+        $content = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($content);
+    }
+
+    $ctxt->object->body( $content );
+
+    # Store in database
+    if ( $ctxt->object->update() ) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+sub event_bxeconfig {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+    my $otname = lc $object->object_type->name();
+
+    my $templatepath = XIMS::XIMSROOT() . '/templates/bxe/';
+    my $templatefile = 'config-' . $otname . '.tmpl';
+    if ( not -f $templatepath . $templatefile ) {
+        $templatefile = $templatepath . 'config-generic.tmpl';
+    }
+
+    my $template = Text::Template->new(TYPE => 'FILE',  SOURCE => $templatefile );
+    if ( not $template ) {
+        XIMS::Debug( 2, "could not get template" );
+        $self->sendError( $ctxt, "Could not get template" );
+        return 0;
+    }
+
+    # Your webserver probably needs sth like "AddType text/xml .rng"
+    my %vars = ( validationfile  => XIMS::XIMSROOT_URL() . '/schemata/' . $otname . '.rng',
+                 css             => XIMS::XIMSROOT_URL() . '/stylesheets/' . $otname . '.css',
+                 exitdestination => '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE() . '?id=' . $object->id() . ';edit=1',
+                 xmlfile         => '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE() . '?id=' . $object->id() . ';plain=1' );
+    my $text = $template->fill_in( HASH => \%vars );
+
+    print $self->header( -Content_type => 'text/xml; charset=UTF-8' );
+    print $text;
+
+    $self->skipSerialization(1);
+    return 0;
 }
 
 1;
