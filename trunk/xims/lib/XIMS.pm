@@ -108,10 +108,9 @@ sub Debug {
 #    $text: escaped string
 #
 # DESCRIPTION
-#    escape 'dangerous' characters to xml-entities
+#    xml-escape string
 #
 sub xml_escape {
-    # phish: is this obsolete ?
     my $text = shift;
 
     my %escapes = (
@@ -129,6 +128,40 @@ sub xml_escape {
 
     return $text;
 }
+
+##
+#
+# SYNOPSIS
+#    XIMS::xml_unescape( $text )
+#
+# PARAMETER
+#    $text: string
+#
+# RETURNS
+#    $text: unescaped string
+#
+# DESCRIPTION
+#    xml-unescape string
+#
+sub xml_unescape {
+    my $text = shift;
+
+    my %escapes = (
+                   '&lt;' => '<',
+                   '&gt;' => '>',
+                   '&apos;' => '\'',
+                   '&amp;' => '&',
+                   '&quot;' => '"',
+                  );
+
+    $text =~ s/(&lt;|&gt;|&apos;|&amp;|&quot;)
+        /
+        $escapes{$1}
+        /egsx;
+
+    return $text;
+}
+
 
 # ##########################################################################
 # Package XIMS::Privileges
