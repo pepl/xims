@@ -1,3 +1,18 @@
+PROMPT Adding LOCATION_PATH column on 'CI_DOCUMENTS'
+ALTER TABLE CI_DOCUMENTS ADD (LOCATION_PATH VARCHAR2(4000))
+/
+
+-- Functions and triggers for location_path denormalization
+@@../../sql/Oracle/ci_util_location_path.sql
+
+-- write location_path values to existing data in ci_documents
+DECLARE
+ rv BOOLEAN;
+BEGIN
+ rv := ci_util.sync_location_path;
+END;
+/
+
 PROMPT Adding PARENT_ID column on 'CI_OBJECT_TYPES'
 ALTER TABLE CI_OBJECT_TYPES ADD (PARENT_ID NUMBER)
 /

@@ -313,44 +313,7 @@ sub deleteObject {
 
 sub driver { $_[0]->{Driver} }
 
-sub location_path {
-    my $self = shift;
-    my $obj;
-
-    if ( scalar( @_ ) == 1 and ref( $_[0] ) ) {
-        $obj = shift;
-    }
-    else {
-        $obj = XIMS::Object->new( @_ );
-    }
-
-    # special case for the system root
-    return '/root' if $obj->id() == 1;
-
-    my @ancestors = $self->recurse_ancestor( $obj );
-
-    #remove the system root from the list of ancestors
-    shift @ancestors;
-
-    my $path;
-    if ( scalar( @ancestors ) > 0 ) {
-        $path .= '/';
-        $path .= join '/', map { $_->location() } @ancestors;
-    }
-
-    $path .= '/' . $obj->location();
-    #warn "path returning $path \n";
-    return $path;
-}
-
-sub location_path_relative {
-    my $self = shift;
-    my $relative_path = $self->location_path( @_ );
-    # snip off the site portion of the path ('/site/somepath')
-    $relative_path =~ s/^\/[^\/]+//;
-    return $relative_path;
-}
-
+# to be replaced by hierarchical query...
 sub recurse_ancestor {
     my $self = shift;
     my $object = shift;
