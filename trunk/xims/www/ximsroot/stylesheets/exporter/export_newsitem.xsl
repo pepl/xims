@@ -36,11 +36,7 @@
                     <xsl:apply-templates select="body"/>
                 </story>
 
-                <!--
-                    image_id should be expanded to have child elements with the image's meta-information by
-                    sth like XIMS::Sax::Filter::ContentImageIdExpander.pm
-                -->
-                <image url="{image_id}" alt="{image_id}" />
+                <image url="{image_id/location_path}" alt="{image_id/title}" longdesc="{image_id/abstract}"/>
                 <links>
                     <xsl:apply-templates select="children/object"/>
                 </links>
