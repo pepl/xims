@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -51,14 +51,14 @@
     if (<web:request_prev_parsed_uri omit="query"/> eq <web:request_parsed_uri omit="query"/>) {
     </xsp:logic>
         <xsp:attribute name="action">
-            <web:request_parsed_uri omit="path"/>/goxims/user?dologin=1
+            /goxims/user?dologin=1
         </xsp:attribute>
     <xsp:logic>
     }
     else {
     </xsp:logic>
         <xsp:attribute name="action">
-            <web:request_prev_parsed_uri omit="query"/>?dologin=1
+            <web:request_prev_uri/>?dologin=1
         </xsp:attribute>
     <xsp:logic>
     }
@@ -79,6 +79,8 @@
         </tr>
         <tr><td>Password:</td><td><input tabindex="2" type="password" name="password" class="text"/></td></tr>
         <tr><td colspan="2" align="center"><input tabindex="3" type="submit" name="login" value="Login" class="control"/></td></tr>
+        <!-- you may want to reactivate the following section if you do offer https --> 
+        <!--
         <xsp:logic>
         if (!<web:is_https/>) {
         </xsp:logic>
@@ -95,6 +97,8 @@
         <xsp:logic>
         }
         </xsp:logic>
+        -->
+        <!-- end section -->
     </table>
 </form>
 
