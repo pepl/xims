@@ -28,7 +28,11 @@ XIMS Installation Guide
 1) Unpack the distribution to /usr/local:
 
     [root@host local]# cd /usr/local
-    [root@host local]# tar xzpvf xims-pkg.tar.gz
+    [root@host local]# tar xzpvf xims-X.Y.tar.gz
+    [root@host local]# ln -s xims-X.Y xims
+
+    X and Y represent the major and minor version numbers of your
+    XIMS package.
 
 2) Install the latest tidy binary (http://sourceforge.net/projects/tidy)
 
@@ -76,9 +80,9 @@ XIMS Installation Guide
 
         [root@host xims] make test
 
-        If tests fail, take a look at the debug.log. If that does not
-        help, feel free to contact us at the addresses quoted at the end
-        of this document.
+        If tests fail, check you testsuite config and|or take a look at
+        the debug.log. If that does not help, feel free to contact us at
+        the addresses quoted at the end of this document.
 
 4) If the installation went fine so far, you now can fire up Apache and
     login to XIMS at http://host/goxims/defaultbookmark as user 'xgu' or
