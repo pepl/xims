@@ -68,14 +68,9 @@
     <xsl:template match="/document/context/object/parents/object">
         <xsl:param name="no_navigation_at_all">false</xsl:param>
         <xsl:variable name="thispath"><xsl:call-template name="parentpath"/></xsl:variable>
-        <xsl:choose>
-                <xsl:when test="$no_navigation_at_all='true'">
-                    / <xsl:value-of select="location"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    / <a class="" href="{$goxims_content}{$thispath}/{location}?m={$m}"><xsl:value-of select="location"/></a>
-                </xsl:otherwise>
-            </xsl:choose>
+        <xsl:if test="$no_navigation_at_all = 'false'">
+            / <a class="" href="{$goxims_content}{$thispath}/{location}?m={$m}"><xsl:value-of select="location"/></a>
+        </xsl:if>
     </xsl:template>
 
      <xsl:template match="abbr|acronym|address|b|bdo|big|blockquote|br|cite|code|div|del|dfn|em|hr|h1|h2|h3|h4|h5|h6    |i|u|ins|kbd|p|pre|q|samp|small|span|strong|sub|sup|tt|var|
