@@ -65,7 +65,12 @@
         <script type="text/javascript">
             if (document.readyState != 'complete') {
                 var f = function() { origbody = window.editor.getHTML(); }
-                setTimeout(f, 2700); // MSIE needs that hight timeout value
+                if ( navigator.userAgent.indexOf("MSIE") != -1 ) {
+                    setTimeout(f, 3700); // MSIE needs that high timeout value
+                }
+                else {
+                    setTimeout(f, 1000);
+                }
             }
             else {
                 origbody = window.editor.getHTML();
