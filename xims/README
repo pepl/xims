@@ -67,7 +67,8 @@ See the file "Changes"
 Known Issues
 ------------
 
-
+Using PostgreSQL 7.3.x, siblings will not be sorted by position in the
+treeview event as they should be. PostgreSQL >= 7.4 fixes this behaviour.
 
 Bug Reporting
 -------------
