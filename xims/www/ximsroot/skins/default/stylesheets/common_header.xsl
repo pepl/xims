@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -256,6 +256,12 @@
                     alt="{$i18n/l/Create}"
                     title="{$i18n/l/Create}"
                     border="0" />
+            <input name="page" type="hidden" value="{$page}"/>
+            <input name="r" type="hidden" value="{/document/context/object/@id}"/>
+            <xsl:if test="$defsorting != 1">
+                <input name="sb" type="hidden" value="{$sb}"/>
+                <input name="order" type="hidden" value="{$order}"/>
+            </xsl:if>
         </td>
     </form>
 </xsl:template>

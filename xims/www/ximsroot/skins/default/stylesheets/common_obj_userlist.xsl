@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -91,6 +91,7 @@
                   <input name="obj_acllist" type="hidden" value="1"/>
                   <input name="sort-by" type="hidden" value="{$sort-by}"/>
                   <input name="order-by" type="hidden" value="{$order-by}"/>
+                  <xsl:call-template name="rbacknav"/>
                 </td>
                 <td>&#160;</td>
                 <td>
@@ -125,13 +126,12 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?',
-                                                       'obj_acllist=1;',
-                                                       'sort-by=id;',
-                                                       'order-by=', $order-by-opposite, ';',
-                                                       'userquery=', $userquery, ';',
-                                                       'usertype=', $usertype
+                                                       '?obj_acllist=1;sort-by=id',
+                                                       ';order-by=', $order-by-opposite,
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
                                                       )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
                         ID
                       </a>
@@ -141,13 +141,12 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?',
-                                                       'obj_acllist=1;',
-                                                       'sort-by=id;',
-                                                       'order-by=', $order-by, ';',
-                                                       'userquery=', $userquery, ';',
-                                                       'usertype=', $usertype
+                                                       '?obj_acllist=1;sort-by=id',
+                                                       ';order-by=', $order-by,
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
                                                       )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
                         ID
                       </a>
@@ -161,13 +160,12 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?',
-                                                       'obj_acllist=1;',
-                                                       'sort-by=name;',
-                                                       'order-by=', $order-by-opposite, ';',
-                                                       'userquery=', $userquery, ';',
-                                                       'usertype=', $usertype
+                                                       '?obj_acllist=1;sort-by=name',
+                                                       ';order-by=', $order-by-opposite,
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
                                                       )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
                         <xsl:value-of select="$i18n/l/Username"/>
                       </a>
@@ -177,13 +175,12 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?',
-                                                       'obj_acllist=1;',
-                                                       'sort-by=name;',
-                                                       'order-by=', $order-by, ';',
-                                                       'userquery=', $userquery, ';',
-                                                       'usertype=', $usertype
+                                                       '?obj_acllist=1;sort-by=name',
+                                                       ';order-by=', $order-by,
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
                                                       )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
                         <xsl:value-of select="$i18n/l/Username"/>
                       </a>
@@ -197,13 +194,12 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?',
-                                                       'obj_acllist=1;',
-                                                       'sort-by=fullname;',
-                                                       'order-by=', $order-by-opposite, ';',
-                                                       'userquery=', $userquery, ';',
-                                                       'usertype=', $usertype
+                                                       '?obj_acllist=1;sort-by=fullname',
+                                                       ';order-by=', $order-by-opposite,
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
                                                       )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
                         <xsl:value-of select="$i18n/l/Name"/>
                       </a>
@@ -213,13 +209,12 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?',
-                                                       'obj_acllist=1;',
-                                                       'sort-by=fullname;',
-                                                       'order-by=', $order-by, ';',
-                                                       'userquery=', $userquery, ';',
-                                                       'usertype=', $usertype
+                                                       '?obj_acllist=1;sort-by=fullname',
+                                                       ';order-by=', $order-by,
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
                                                       )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
                         <xsl:value-of select="$i18n/l/Name"/>
                       </a>
@@ -233,13 +228,12 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?',
-                                                       'obj_acllist=1;',
-                                                       'sort-by=enabled;',
-                                                       'order-by=', $order-by-opposite, ';',
-                                                       'userquery=', $userquery, ';',
-                                                       'usertype=', $usertype
+                                                       '?obj_acllist=1;sort-by=enabled',
+                                                       ';order-by=', $order-by-opposite,
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
                                                       )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
                         <xsl:value-of select="$i18n/l/Account_status"/>
                       </a>
@@ -249,13 +243,12 @@
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
-                                                       '?',
-                                                       'obj_acllist=1;',
-                                                       'sort-by=enabled;',
-                                                       'order-by=', $order-by, ';',
-                                                       'userquery=', $userquery, ';',
-                                                       'usertype=', $usertype
+                                                       '?obj_acllist=1;sort-by=enabled',
+                                                       ';order-by=', $order-by,
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
                                                       )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
                         <xsl:value-of select="$i18n/l/Account_status"/>
                       </a>
@@ -390,6 +383,7 @@
              <a>
                <xsl:attribute name="href">
                  <xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';newgrant=1;id=',/document/context/object/@id)"/>
+                 <xsl:call-template name="rbacknav_qs"/>
                </xsl:attribute>
                <xsl:value-of select="$i18n/l/Grant_newprivs"/>
              </a>
@@ -398,6 +392,7 @@
              <a>
                <xsl:attribute name="href">
                  <xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/>
+                 <xsl:call-template name="rbacknav_qs"/>
                </xsl:attribute>
                <xsl:value-of select="$i18n/l/Manage_privs"/>
              </a>

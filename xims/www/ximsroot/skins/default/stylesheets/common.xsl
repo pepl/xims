@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -71,6 +71,7 @@
         <xsl:if test="$with_save = 'yes'">
             <xsl:call-template name="save_jsbutton"/>
         </xsl:if>
+        <xsl:call-template name="rbacknav"/>
         <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C"/>
     </form>
 </xsl:template>
@@ -81,6 +82,7 @@
         <xsl:if test="$with_save = 'yes'">
             <xsl:call-template name="save_jsbutton"/>
         </xsl:if>
+        <xsl:call-template name="rbacknav"/>
         <input type="submit" name="cancel_create" value="{$i18n/l/cancel}" class="control" accesskey="C"/>
     </form>
 </xsl:template>
@@ -96,26 +98,44 @@
     <xsl:variable name="parent_id" select="@parent_id"/>
     <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="GET">
         <input class="control" name="exit" type="submit" value="Done"/>
-        <input name="id" type="hidden">
-            <xsl:choose>
-                <xsl:when test="/document/object_types/object_type[@id=$object_type_id]/redir_to_self='0'">
-                    <xsl:attribute name="value"><xsl:value-of select="parents/object[@document_id=$parent_id]/@id"/></xsl:attribute>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-                </xsl:otherwise>
-            </xsl:choose>
-        </input>
+        <xsl:choose>
+            <xsl:when test="$r != ''">
+                <input name="id" type="hidden" value="{$r}"/>
+                <input name="page" type="hidden" value="{$page}"/>
+                <input name="sb" type="hidden" value="{$sb}"/>
+                <input name="order" type="hidden" value="{$order}"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <input name="id" type="hidden">
+                    <xsl:choose>
+                        <xsl:when test="/document/object_types/object_type[@id=$object_type_id]/redir_to_self='0'">
+                            <xsl:attribute name="value"><xsl:value-of select="parents/object[@document_id=$parent_id]/@id"/></xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </input>
+            </xsl:otherwise>
+        </xsl:choose>
     </form>
 </xsl:template>
 
 <xsl:template name="saveaction">
     <input type="hidden" name="id" value="{/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id}"/>
+    <xsl:if test="/document/object_types/object_type[name=$objtype]/redir_to_self='0'">
+        <input name="sb" type="hidden" value="date"/>
+        <input name="order" type="hidden" value="desc"/>
+    </xsl:if>
     <input type="submit" name="store" value="{$i18n/l/save}" class="control" accesskey="S"/>
 </xsl:template>
 
 <xsl:template name="saveedit">
     <input type="hidden" name="id" value="{@id}"/>
+    <xsl:if test="/document/object_types/object_type[@id=/document/context/object/object_type_id]/redir_to_self='0'">
+        <input name="sb" type="hidden" value="date"/>
+        <input name="order" type="hidden" value="desc"/>
+    </xsl:if>
     <input type="submit" name="store" value="{$i18n/l/save}" class="control" accesskey="S"/>
 </xsl:template>
 
@@ -577,6 +597,7 @@
             <a>
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/>
+                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if>
                     <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
                 </xsl:attribute>
                 <img src="{$skimages}status_locked.png"
@@ -622,7 +643,11 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a href="{$goxims_content}?id={$id};edit=1">
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
+                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+                </xsl:attribute>
                 <img src="{$skimages}option_edit.png"
                     alt="{$l_Edit}"
                     title="{$l_Edit}"
@@ -649,8 +674,8 @@
         <xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
             <a>
                 <xsl:attribute name="href">
-                    <xsl:value-of select="concat($goxims_content,'?id=',@id,';copy=1')"/>
-                    <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/>
+                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
                 <img src="{$skimages}option_copy.png"
                     alt="{$l_Copy}"
@@ -669,10 +694,25 @@
 </xsl:template>
 
 <xsl:template name="cttobject.options.move">
+    <xsl:variable name="parentid" select="@parent_id"/>
     <xsl:variable name="id" select="@id"/>
+    <xsl:variable name="to">
+        <xsl:choose>
+            <xsl:when test="$currobjmime='application/x-container'">
+                <xsl:value-of select="/document/context/object/@id"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="/document/context/object/parents/object[@document_id=$parentid]/@id"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a href="{$goxims_content}?id={$id};move_browse=1;to={$id}">
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/>
+                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+                </xsl:attribute>
                 <img src="{$skimages}option_move.png"
                     alt="{$l_Move}"
                     title="{$l_Move}"
@@ -697,15 +737,19 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
-            <a href="{$goxims_content}?id={$id};publish_prompt=1">
-            <img src="{$skimages}option_pub.png"
-                border="0"
-                alt="{$l_Publishing_options}"
-                title="{$l_Publishing_options}"
-                name="publish{$id}"
-                width="32"
-                height="19"
-            />
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/>
+                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+                </xsl:attribute>
+                <img src="{$skimages}option_pub.png"
+                    border="0"
+                    alt="{$l_Publishing_options}"
+                    title="{$l_Publishing_options}"
+                    name="publish{$id}"
+                    width="32"
+                    height="19"
+                />
             </a>
         </xsl:when>
         <xsl:otherwise>
@@ -718,7 +762,11 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a href="{$goxims_content}?id={$id};obj_acllist=1">
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/>
+                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+                </xsl:attribute>
                 <img src="{$skimages}option_acl.png"
                     border="0"
                     alt="{$l_Access_control}"
@@ -730,7 +778,11 @@
             </a>
         </xsl:when>
         <xsl:when test="user_privileges/delete and marked_deleted = '1'">
-            <a href="{$goxims_content}?id={$id};undelete=1">
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/>
+                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+                </xsl:attribute>
                 <img src="{$skimages}option_undelete.png"
                     border="0"
                     alt="{$l_Undelete}"
@@ -758,6 +810,12 @@
                     action="{$xims_box}{$goxims_content}">
                 <input type="hidden" name="delete_prompt" value="1"/>
                 <input type="hidden" name="id" value="{$id}"/>
+                <xsl:if test="$currobjmime='application/x-container'">
+                    <input name="sb" type="hidden" value="{$sb}"/>
+                    <input name="page" type="hidden" value="{$page}"/>
+                    <input name="order" type="hidden" value="{$order}"/>
+                    <input name="r" type="hidden" value="{/document/context/object/@id}"/>
+                </xsl:if>
                 <input
                     type="image"
                     name="delete{$id}"
@@ -776,6 +834,12 @@
                     action="{$xims_box}{$goxims_content}">
                 <input type="hidden" name="trashcan_prompt" value="1"/>
                 <input type="hidden" name="id" value="{$id}"/>
+                <xsl:if test="$currobjmime='application/x-container'">
+                    <input name="sb" type="hidden" value="{$sb}"/>
+                    <input name="page" type="hidden" value="{$page}"/>
+                    <input name="order" type="hidden" value="{$order}"/>
+                    <input name="r" type="hidden" value="{/document/context/object/@id}"/>
+                </xsl:if>
                 <input
                     type="image"
                     name="delete{$id}"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -15,7 +15,6 @@
         <xsl:otherwise>1</xsl:otherwise>
     </xsl:choose>
 </xsl:param>
-<xsl:param name="page" select="1" />
 <xsl:variable name="pagesperpagenav" select="10" />
 <xsl:variable name="totalpages" select="ceiling(/document/context/object/children/@totalobjects div $searchresultrowlimit)"/>
 
@@ -834,14 +833,6 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
                 <input type="hidden"
                         name="new_position"
                         value="{$position}"/>
-                <xsl:if test="$defsorting != 1">
-                    <input type="hidden"
-                            name="sb"
-                            value="{$sb}"/>
-                    <input type="hidden"
-                            name="order"
-                            value="{$order}"/>
-                </xsl:if>
             </form>
         </xsl:when>
         <xsl:otherwise>

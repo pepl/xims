@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -61,6 +61,7 @@
                     <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="GET">
                         <input class="control" name="obj_acllist" type="submit" value="{$i18n/l/Choose_another_user}"/>
                         <input name="id" type="hidden" value="{@id}"/>
+                        <xsl:call-template name="rbacknav"/>
                     </form>
                    </td>
                    <td>
