@@ -88,16 +88,20 @@
 
 <xsl:template match="author">
     <xsl:call-template name="author_link"/>
-    <!--
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?author=1;author_id={id};author_name={firstname} {middlename} {lastname}">
-        <xsl:value-of select="firstname"/>
-        <xsl:text> </xsl:text>
-        <xsl:value-of select="lastname"/>
-    </a>
-    -->
     <xsl:if test="position()!=last()">
         <xsl:text>, </xsl:text>
     </xsl:if>
+</xsl:template>
+
+<xsl:template name="author_link">
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?author=1;author_id={id};author_firstname={firstname};author_middlename={middlename};author_lastname={lastname}">
+    <xsl:value-of select="firstname"/>
+    <xsl:text> </xsl:text>
+    <xsl:if test="middlename">
+        <xsl:value-of select="middlename"/>
+        <xsl:text> </xsl:text>
+    </xsl:if>
+    <xsl:value-of select="lastname"/></a>
 </xsl:template>
 
 <xsl:template match="publication">
