@@ -11,7 +11,7 @@ use XIMS;
 use XIMS::DataFormat;
 use XIMS::SAX;
 use XIMS::ObjectPriv;
-use CGI::XMLApplication 1.1.2; # sub-sub-version is not recognized here :-/
+use CGI::XMLApplication 1.1.3; # sub-sub-version is not recognized here :-/
 use XML::LibXML::SAX::Builder;
 use Apache::URI;
 # <pepl> The LibXML utf8(de|en-)coding functions won't convert strings coming from
@@ -62,7 +62,7 @@ sub event_init {
     # ACL check
     if ( length $self->checkPush('create')
          || ( length $self->checkPush('store')
-              and length $self->param('parid') ) ) {
+              and length $self->param( 'objtype' ) ) ) {
 
         my $objtype = $self->param( 'objtype' );
         if ( not $objtype ) {
@@ -309,7 +309,6 @@ sub selectStylesheet {
     my $retval = undef;
 
     my $stylesuffix = $ctxt->properties->application->style() || 'default';
-
     my $styleprefix = $ctxt->properties->application->styleprefix();
     if ( not defined $styleprefix ) {
         if ( $stylesuffix ne 'error' ) {
@@ -1140,7 +1139,7 @@ sub event_copy {
     $ctxt->properties->application->styleprefix( "common" );
     $ctxt->properties->application->style( "error" );
 
-    my $parent = XIMS::Object->new( id => $object->parent_id, User => $ctxt->session->user() );
+    my $parent = XIMS::Object->new( document_id => $object->parent_id, User => $ctxt->session->user() );
     my $parent_user_object_priv = $ctxt->session->user->object_privmask( $parent );
     return $self->event_access_denied( $ctxt )
            unless $parent_user_object_priv & XIMS::Privileges::CREATE();
@@ -1160,8 +1159,7 @@ sub event_copy {
         }
         else {
             XIMS::Debug( 4, "copy ok, redirecting to the parent");
-
-            $self->redirect( $self->redirect_path( $ctxt, $object->parent_id() ) );
+            $self->redirect( $self->redirect_path( $ctxt, $parent->id() ) );
             return 0;
         }
     }
