@@ -251,7 +251,7 @@ sub children {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    my @child_ids = $self->__child_ids( $self->document_id() );
+    my @child_ids = $self->__child_ids( %args );
     return () unless scalar( @child_ids ) > 0 ;
     my @children_data = $self->data_provider->getObject( document_id => \@child_ids, %args, properties => \@Default_Properties );
     my @children = map { XIMS::Object->new->data( %{$_} ) } @children_data;
@@ -290,7 +290,7 @@ sub children_granted {
     # do a join in __child_ids?
     # it does not have to be the Do-it-all-in-one-query-with-Oracle way ;-)
     # SELECT d.id,c.id,location,title,object_type_id,data_format_id,privilege_mask,depth FROM ci_content c,(SELECT ci_documents.*, level depth FROM ci_documents START WITH id IN ( SELECT document_id FROM ci_content WHERE id = ?) CONNECT BY PRIOR id = parent_id AND level <= ? AND id != parent_id ORDER BY level) d,ci_object_privs_granted p,(SELECT id, level FROM ci_roles_granted START WITH grantee_id = ? CONNECT BY PRIOR id = grantee_id ORDER BY level) r WHERE c.document_id = d.id AND depth > 1 AND p.content_id = c.id AND p.content_id = c.id AND (p.grantee_id = ? OR p.grantee_id = r.id ) AND p.privilege_mask >= 1 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = c.id AND grantee_id = ? AND privilege_mask = 0) IS NULL AND marked_deleted IS NULL ORDER BY d.position
-    my @child_candidate_docids = $self->__child_ids( $self->document_id() );
+    my @child_candidate_docids = $self->__child_ids( %args );
     return () unless scalar( @child_candidate_docids ) > 0;
 
     my @children = $self->__get_granted_objects( doc_ids => \@child_candidate_docids, User => $user, %args ) ;
@@ -316,7 +316,7 @@ sub children_granted {
 sub child_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-    my @child_ids = $self->__child_ids( $self->document_id() );
+    my @child_ids = $self->__child_ids();
     return scalar ( @child_ids );
 }
 
@@ -498,7 +498,7 @@ sub descendant_count {
 # PARAMETER
 #    refactor!
 #    $args{ criteria }  :
-#    $args{ rowlimit }  :
+#    $args{ limit }     :
 #    $args{ offset }    :
 #    $args{ order }     :
 #
@@ -550,7 +550,7 @@ sub find_objects_count {
 # PARAMETER
 #    refactor!
 #    $args{ criteria }  :
-#    $args{ rowlimit }  :
+#    $args{ limit }     :
 #    $args{ offset }    :
 #    $args{ order }     :
 #
@@ -600,7 +600,7 @@ sub find_objects_granted_count {
 
     return $self->find_objects_count( %args ) if $user->admin();
 
-    delete $args{rowlimit} if exists $args{rowlimit}; # we have to get the ids of *all* matching objects
+    delete $args{limit} if exists $args{limit}; # we have to get the ids of *all* matching objects
     my @found_candidate_doc_ids = $self->__find_ids( %args );
     return unless scalar( @found_candidate_doc_ids ) > 0 ;
 
@@ -615,81 +615,6 @@ sub find_objects_granted_count {
     grep { !$seen{$_}++ and $count++} @ids;
 
     return $count;
-}
-
-##
-#
-# SYNOPSIS
-#    my @objects = $object->children_latest( %args );
-#
-# PARAMETER
-#    refactor!
-#    $args{ rowlimit }  :
-#
-# RETURNS
-#    @objects    : Array of XIMS::Objects
-#
-# DESCRIPTION
-#    Returns $args{rowlimit} latest children of $object.
-#    (This method will be obsoleted by future usage of $object->children( limit => $rowlimit, orderby => 'last_modification_timestamp' )
-#
-sub children_latest {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my %args = @_;
-
-    $args{rowlimit} ||= 1;
-    $args{criteria} = 'parent_id = ' . $self->document_id();
-
-    delete $args{document_id};
-    delete $args{parent_id};
-
-    my @found_ids = $self->__find_ids( %args );
-    return () unless scalar( @found_ids ) > 0 ;
-    my @object_data = $self->data_provider->getObject( %args, document_id => \@found_ids, properties => \@Default_Properties );
-    my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
-
-    #warn "objects found" . Dumper( \@objects ) . "\n";
-    return @objects;
-}
-
-##
-#
-# SYNOPSIS
-#    my @objects = $object->children_latest_granted( %args );
-#
-# PARAMETER
-#    refactor!
-#    $args{ rowlimit }  :
-#
-# RETURNS
-#    @objects    : Array of XIMS::Objects
-#
-# DESCRIPTION
-#    Returns $args{rowlimit} latest children granted to $args{User}. If that is not given, $object->User() will be used.
-#    (This method will be obsoleted by future usage of $object->children_granted( limit => $rowlimit, orderby => 'last_modification_timestamp' )
-#
-sub children_latest_granted {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my %args = @_;
-    my $user = delete $args{User} || $self->{User};
-
-    return $self->children_latest( %args ) if $user->admin();
-
-    $args{rowlimit} ||= 1;
-    $args{criteria} = 'parent_id = ' . $self->document_id();
-
-    delete $args{document_id};
-    delete $args{parent_id};
-
-    my @found_candidate_doc_ids = $self->__find_ids( %args );
-    return () unless scalar( @found_candidate_doc_ids ) > 0 ;
-
-    my @found = $self->__get_granted_objects( doc_ids => \@found_candidate_doc_ids, User => $user, %args ) ;
-
-    #warn "found" . Dumper( \@found ) . "\n";
-    return wantarray ? @found : $found[0];
 }
 
 # internal helper to filter out granted objects, accepts a hash as parameters, mandatory key: doc_ids => @doc_ids
@@ -757,14 +682,11 @@ sub siteroot {
 # shared by 'children', 'child_count'
 sub __child_ids {
     my $self = shift;
-    my @ids = @_;
-    my @out_ids;
-    my @child_ids = $self->data_provider->get_object_id( parent_id => \@ids );
-    foreach my $id ( @child_ids ) {
-        next if grep { $_ == $id } @ids;
-        push @out_ids, $id;
-    }
-    return @out_ids;
+    my %args = @_;
+    my @child_ids = $self->data_provider->get_object_id( %args, parent_id => $self->document_id() );
+    # cover the special case for 'root' where parent_id == id
+    @child_ids = grep { $_ != $self->document_id() } @child_ids;
+    return @child_ids;
 }
 
 sub __find_ids {

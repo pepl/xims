@@ -97,13 +97,7 @@ sub handle_data {
         #                OBJECT_TYPE_ID LOB_LENGTH POSITION);
         #$param{-columns} = $cols;
         my $direct_filter = $self->get_direct_filter();
-        my $latest = $self->get_latest();
-        if ( $latest ) {
-            @children = $object->children_latest_granted( %childrenargs, %{$direct_filter}, marked_deleted => undef, rowlimit => $latest );
-        }
-        else {
-            @children = $object->children_granted( %childrenargs, %{$direct_filter}, marked_deleted => undef );
-        }
+        @children = $object->children_granted( %childrenargs, %{$direct_filter}, marked_deleted => undef, limit => $self->get_latest(), order => 'last_modification_timestamp DESC' );
         if ( @children  and scalar( @children ) ) {
             XIMS::Debug( 6, "found n = " . scalar( @children ) . " child objects" );
             my $location_path;
