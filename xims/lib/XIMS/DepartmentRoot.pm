@@ -84,7 +84,8 @@ sub add_departmentlinks {
     $deptlinksfolder = undef if (defined $deptlinksfolder and $deptlinksfolder->marked_deleted());
     if ( not $deptlinksfolder ) {
         # add folder if its not here already
-        $deptlinksfolder = $self->children( location => $dpl_location, marked_deleted => undef );
+        my @children = $self->children( location => $dpl_location, marked_deleted => undef );
+        $deptlinksfolder = $children[0];
         if ( not ($deptlinksfolder and $deptlinksfolder->id) ) {
             $deptlinksfolder = XIMS::Folder->new( User => $self->User, location => $dpl_location );
             my $id = $oimporter->import( $deptlinksfolder );
