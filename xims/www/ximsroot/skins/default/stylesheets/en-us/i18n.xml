@@ -201,5 +201,7 @@
 <set_as>set as</set_as>
 <!-- End user_bookmarks-->
 <using>using</using>
+<you_searched_for>You searched for</you_searched_for>
+<toggle_hls>Toggle Highlightning of search term</toggle_hls>
 </l>
 

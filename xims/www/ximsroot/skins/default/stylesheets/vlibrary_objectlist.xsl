@@ -216,9 +216,11 @@
 
 <xsl:template match="title">
     <xsl:variable name="location" select="../location"/>
+    <xsl:variable name="hlsstring" select="concat('?hls=',$vls)"/>
+
     <div class="vltitle">
         <a  title="{$location}"
-            href="{$xims_box}{$goxims_content}{$absolute_path}/{$location}">
+            href="{$xims_box}{$goxims_content}{$absolute_path}/{$location}{$hlsstring}">
             <xsl:apply-templates/>
         </a>
     </div>

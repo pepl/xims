@@ -517,6 +517,7 @@ sub redirect_path {
     my $order = $self->param( "order" );
     my $m = $self->param( "m" );
     my $hd = $self->param( "hd" );
+    my $hls = $self->param( "hls" );
     my $params;
 
     # preserve some selected params
@@ -532,6 +533,10 @@ sub redirect_path {
     if ( defined $hd ) {
         $params .= ";" if length $params;
         $params .= "hd=$hd";
+    }
+    if ( defined $hls ) {
+        $params .= ";" if length $params;
+        $params .= "hls=$hls";
     }
 
     my $uri = Apache::URI->parse( $ctxt->apache() );

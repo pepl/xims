@@ -989,9 +989,9 @@ table.footer {
 	color:maroon;
 }
 
-.higlighted {
+.highlighted {
 	equivClass: Louds;
-	caption: Higlighted;
+	caption: Highlighted;
 	background-color: yellow;
 }
 
@@ -1032,25 +1032,24 @@ span.cboxitem {
 	font-size:9pt;
 }
 
-.examplecode {
-    visible: false;
-    background: #cccccc;
-    border: 1px solid #aaaaaa;
-    padding: 5px;
-    margin-bottom: 5px;
+#toggle_highlight {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 9px;
+	font-weight:bold;
+	border: 0px solid black;
 }
 
-.examplecode_of {
-    visible: false;
-    background: #cccccc;
-    border: 1px solid #aaaaaa;
-    padding: 5px;
-    margin-bottom: 5px;
-    position:relative;
-    width: 600px;
-    overflow: scroll;
+#toggle_highlight form {
+	margin: 0px;
 }
 
+#toggle_highlight input {
+	font-size:9pt;
+	background: #CED3D7;
+	border: 1px solid #A2A6AA;
+	color: #103852;
+}
 
 /* End: FORMATS (XIMS-SITES) */
 /**************************************************************************/

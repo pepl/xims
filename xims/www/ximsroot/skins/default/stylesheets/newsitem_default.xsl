@@ -14,7 +14,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body onLoad="stringHighlight(getParamValue('hls'))" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
             <!-- poor man's stylechooser -->
             <xsl:choose>
                 <xsl:when test="$printview != '0'">
@@ -24,7 +24,9 @@
                     <xsl:call-template name="header"/>
                 </xsl:otherwise>
             </xsl:choose>
+            <xsl:call-template name="toggle_hls"/>
             <h1 class="documenttitle"><xsl:value-of select="title"/></h1>
+            <span id="body">
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <xsl:choose>
                     <xsl:when test="string-length(image_id)">
@@ -86,6 +88,7 @@
                     </td>
                 </tr>
             </table>
+            </span>
             <table align="center" width="98.7%" class="footer">
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer">

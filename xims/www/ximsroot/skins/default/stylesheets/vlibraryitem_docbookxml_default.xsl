@@ -16,37 +16,39 @@
     <html>
         <xsl:call-template name="head_default"/>
         <base href="{$xims_box}{$goxims_content}{$absolute_path}/"/>
-        <body>
+        <body onLoad="stringHighlight(getParamValue('hls'))">
             <xsl:call-template name="header"/>
+            <xsl:call-template name="toggle_hls"/>
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
                     <td bgcolor="#ffffff">
-                        <div id="vlitemmeta">
-                            <ul>
-                                <li><xsl:apply-templates select="authorgroup"/></li>
-                                <li><xsl:apply-templates select="subjectset"/></li>
-                                <li><xsl:apply-templates select="keywordset"/></li>
-                                <li><xsl:apply-templates select="publicationset"/></li>
-                                <li>Mediatype: <xsl:apply-templates select="meta/mediatype"/></li>
-                                <li>Legalnotice: <xsl:apply-templates select="meta/legalnotice"/></li>
-                                <xsl:if test="meta/bibliosource != ''">
-                                    <li>Releaseinfo: <xsl:apply-templates select="meta/bibliosource"/></li>
-                                </xsl:if>
-                            </ul>
-                        </div>
-                        <h1><xsl:value-of select="title"/></h1>
-                        <xsl:choose>
-                            <xsl:when test="$section > 0 and $section-view='true'">
-                                <xsl:apply-templates select="$docbookroot" mode="section-view"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:apply-templates select="$docbookroot"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
+                        <span id="body">
+                            <div id="vlitemmeta">
+                                <ul>
+                                    <li><xsl:apply-templates select="authorgroup"/></li>
+                                    <li><xsl:apply-templates select="subjectset"/></li>
+                                    <li><xsl:apply-templates select="keywordset"/></li>
+                                    <li><xsl:apply-templates select="publicationset"/></li>
+                                    <li>Mediatype: <xsl:apply-templates select="meta/mediatype"/></li>
+                                    <li>Legalnotice: <xsl:apply-templates select="meta/legalnotice"/></li>
+                                    <xsl:if test="meta/bibliosource != ''">
+                                        <li>Releaseinfo: <xsl:apply-templates select="meta/bibliosource"/></li>
+                                    </xsl:if>
+                                </ul>
+                            </div>
+                            <h1><xsl:value-of select="title"/></h1>
+                            <xsl:choose>
+                                <xsl:when test="$section > 0 and $section-view='true'">
+                                    <xsl:apply-templates select="$docbookroot" mode="section-view"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:apply-templates select="$docbookroot"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </span>
                     </td><!-- end #ffffff -->
                 </tr>
             </table>
-
             <table align="center" width="98.7%" class="footer">
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer"/>
