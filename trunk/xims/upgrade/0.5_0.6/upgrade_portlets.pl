@@ -105,25 +105,24 @@ else {
 my $updated = 0;
 my $republished = 0;
 
-foreach my $object ( @objects ) {	
+foreach my $object ( @objects ) {
 
     my $location = $object->location();
     next if $location =~ /\.ptlt/;
 
     my $need_repub = 0;
 
-    if ( $object->published() ){ 
+    if ( $object->published() ) {
         print "Object '" . $object->location_path . "' is published, will be republished with the new name.\n";
-	$need_repub = 1;
-   
-	$exporter->unpublish();
+        $need_repub = 1;
+        $exporter->unpublish();
     }
 
     $location .= '.ptlt';
     $object->location( $location );
     if ( $object->update( User => $admin ) ) {
         $updated++;
-	warn $object->location_path . ".\n";
+        warn $object->location_path . ".\n";
     }
     else {
         warn "Could not update object '" . $object->location_path . "'.\n";
@@ -161,8 +160,8 @@ sub usage {
 sub warning {
     return qq*
 
-  $0 will update the 'Portlet' dataformat in your XIMS 
-  database. Furthermore, it will add the suffix 'ptlt' to existing and republish published portlets. 
+  $0 will update the 'Portlet' dataformat in your XIMS
+  database. Furthermore, it will add the suffix 'ptlt' to existing and republish published portlets.
 
 *;
 }
