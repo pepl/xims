@@ -16,19 +16,6 @@
      doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
      indent="no"/>
 
-
-    <xsl:param name="page" select="1" />
-    <xsl:param name="vls" />
-    <xsl:param name="subject"/>
-    <xsl:param name="subject_id"/>
-    <xsl:param name="subject_name"/>
-    <xsl:param name="author"/>
-    <xsl:param name="author_id"/>
-    <xsl:param name="author_name"/>
-    <xsl:param name="publication"/>
-    <xsl:param name="publication_id"/>
-    <xsl:param name="publication_name"/>
-
     <xsl:variable name="subjectID">
         <xsl:choose>
             <xsl:when test="$subject_name">
@@ -70,41 +57,13 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="objectitems_rowlimit" select="'5'"/>
 
+    <xsl:variable name="objectitems_rowlimit" select="'5'"/>
+    <xsl:variable name="totalpages" select="ceiling($objectitems_count div $objectitems_rowlimit)"/>
 
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <script type="text/javascript">
-        <xsl:comment>
-        function setBg(elid){
-            var els = document.getElementsByName(elid);
-            /*
-               This relies on the fact, that the second assigned stylesheet has
-               sane background-color values defined in the first two rules.
-            */
-
-            var color0;
-            var color1;
-
-            /* IE and the Gecko behaves differently */
-            if (document.all) {
-                color0 = document.styleSheets[1].rules.item(0).style.backgroundColor;
-                color1 = document.styleSheets[1].rules.item(1).style.backgroundColor;
-            }
-            else {
-                color0 = document.styleSheets[1].cssRules[0].style.backgroundColor
-                color1 = document.styleSheets[1].cssRules[1].style.backgroundColor
-            }
-
-            var i;
-            for(i = 0;i&lt;els.length;i++){
-                eval("els[i].style.backgroundColor = color"+(i%2));
-            }
-        }
-        //</xsl:comment>
-        </script>
         <body onLoad="setBg('vlchildrenlistitem');">
             <xsl:call-template name="header" />
             <h1 id="vlchildrenlisttitle">
@@ -112,8 +71,9 @@
                 <span style="font-size: small">
                     (<xsl:value-of select="$objectitems_count"/>
                     <xsl:text> </xsl:text>
-                    <xsl:call-template name="decide_plural"/>)
-                    <!--<xsl:value-of select="$i18n/l/items"/> -->
+                    <xsl:call-template name="decide_plural"/>,
+                    <xsl:value-of select="$i18n_vlib/l/Page"/>
+                    <xsl:text> </xsl:text><xsl:value-of select="$page"/>/<xsl:value-of select="$totalpages"/>)
                 </span>
             </h1>
 
@@ -139,10 +99,6 @@
                     </xsl:call-template>
                 </xsl:when>
             </xsl:choose>
-
-            <table align="center" width="98.7%" class="footer">
-                <xsl:call-template name="footer"/>
-            </table>
         </body>
     </html>
 </xsl:template>
@@ -157,34 +113,28 @@
     <xsl:param name="currentpage"/>
     <xsl:param name="url"/>
 
-    <xsl:variable name="totalpages" select="ceiling($totalitems div $itemsperpage)"/>
-
     <xsl:if test="$totalpages &gt; 1">
-        <table style="margin-left:5px; margin-right:10px; margin-top: 10px; width: 99%; padding: 3px; border: thin solid #C1C1C1; background: #F9F9F9 font-size: small;" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-                <td>
-                    <xsl:if test="$currentpage &gt; 1">
-                        <a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
-                    </xsl:if>
-                    <xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
-                        |
-                    </xsl:if>
-                    <xsl:if test="$currentpage &lt; $totalpages">
-                        <a href="{$url};page={number($currentpage)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
-                    </xsl:if>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <xsl:call-template name="pageslinks">
-                        <xsl:with-param name="page" select="1"/>
-                        <xsl:with-param name="current" select="$currentpage"/>
-                        <xsl:with-param name="total" select="$totalpages"/>
-                        <xsl:with-param name="url" select="$url"/>
-                    </xsl:call-template>
-                </td>
-            </tr>
-        </table>
+        <div id="pagenav">
+            <div>
+                <xsl:if test="$currentpage &gt; 1">
+                    <a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
+                </xsl:if>
+                <xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
+                    |
+                </xsl:if>
+                <xsl:if test="$currentpage &lt; $totalpages">
+                    <a href="{$url};page={number($currentpage)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
+                </xsl:if>
+            </div>
+            <div>
+                <xsl:call-template name="pageslinks">
+                    <xsl:with-param name="page" select="1"/>
+                    <xsl:with-param name="current" select="$currentpage"/>
+                    <xsl:with-param name="total" select="$totalpages"/>
+                    <xsl:with-param name="url" select="$url"/>
+                </xsl:call-template>
+            </div>
+        </div>
     </xsl:if>
 </xsl:template>
 

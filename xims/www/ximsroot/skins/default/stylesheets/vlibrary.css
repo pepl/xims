@@ -29,18 +29,68 @@
     border: dotted 1px #a0a0a0;
 }
 
+#vlbody {
+    position: relative;
+    left: 50%;
+    width: 600px;
+    margin-left: -300px;
+}
+
+#vlbody h1 {
+    margin-bottom: 5px;
+}
+
+#vlsearchswitch ul {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.vlsearchswitchcell {
+    padding-top: 10px;
+    border-left: dotted 1px #a0a0a0;
+    border-right: dotted 1px #a0a0a0;
+    border-top: dotted 1px #a0a0a0;
+}
+
+#vlpropertyinfo {
+    margin-top: 0px;
+}
+
+#vlpropertyinfo th {
+    background-color:#ced3d6;
+    margin-bottom: 15px;
+}
+
+#vlpropertyinfo td {
+    border-left: dotted 1px #a0a0a0;
+    border-right: dotted 1px #a0a0a0;
+}
+
 #vlchildrenlisttitle {
     position: relative;
     left: 50%;
     width: 600px;
     margin-left: -300px;
     margin-bottom: -10px;
-    padding: 5px 5px 5px 5px;
-    font: bold 2em helvetica, arial, sans-serif;
+    padding: 0px 5px 5px 0px;
+    font: bold 1.8em helvetica, arial, sans-serif;
 }
 
 #vlchildrenlist {
     margin-left: 5px;
+}
+
+#pagenav {
+    position: relative;
+    left: 50%;
+    width: 600px;
+    margin-left: -290px;
+    margin-top: 30px;
+    text-align: right;
+}
+.vlitemcreate {
+    margin-top: 20px;
+    border-top: 1px solid #a0a0a0;
 }
 
 .vltitle {

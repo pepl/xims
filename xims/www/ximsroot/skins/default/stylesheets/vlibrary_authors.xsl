@@ -16,20 +16,32 @@
                 indent="no"/>
 
     <xsl:variable name="authorcolumns" select="'3'"/>
-    
+
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body>
-            <xsl:call-template name="header" />
-            <xsl:apply-templates select="/document/context/vlauthorinfo"/>
-            <xsl:call-template name="switch_vlib_views_action">
-                <xsl:with-param name="mo" select="'author'"/>    
+        <body onLoad="setBg('vliteminfo');">
+            <xsl:call-template name="header" >
+                <xsl:with-param name="nooptions" select="true"/>
             </xsl:call-template>
-            <xsl:call-template name="vlib_create_action"/>
-            <table align="center" width="98.7%" class="footer">
-                <xsl:call-template name="footer"/>
-            </table>
+
+            <div id="vlbody">
+                <h1><xsl:value-of select="title"/></h1>
+                <div>
+                    <xsl:apply-templates select="abstract"/>
+                </div>
+                <xsl:call-template name="search_switch">
+                    <xsl:with-param name="mo" select="'author'"/>
+                </xsl:call-template>
+
+                <xsl:apply-templates select="/document/context/vlauthorinfo"/>
+
+                <xsl:if test="/document/context/object/user_privileges/create">
+                    <div class="vlitemcreate">
+                        <xsl:call-template name="vlib_create_action"/>
+                    </div>
+                </xsl:if>
+            </div>
         </body>
     </html>
 </xsl:template>
@@ -47,7 +59,7 @@
         </xsl:for-each>
     </xsl:variable>
 
-    <table width="600" align="center">
+    <table width="600" align="center" id="vlpropertyinfo">
         <tr>
             <th colspan="{$authorcolumns}">
                 <xsl:value-of select="$i18n_vlib/l/authors"/>
