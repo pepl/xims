@@ -71,11 +71,12 @@
 </xsl:template>
 
 <xsl:template name="departmentlinks">
-    <xsl:if test="ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
+    <xsl:param name="context" select="."/>
+    <xsl:if test="$context/ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
         <div id="departmentlinks">
             <h3>DepartmentLinks</h3>
             <ul>
-                 <xsl:apply-templates select="ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
+                 <xsl:apply-templates select="$context/ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
                     <xsl:sort select="position" data-type="number" order="ascending"/>
                  </xsl:apply-templates>
             </ul>
