@@ -1,9 +1,7 @@
 # Copyright (c) 2002-2004 The XIMS Project.
-
 # See the file "LICENSE" for information on usage and redistribution
-
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-
+# $Id$
 package XIMS::Names;
 
 use strict;
@@ -24,13 +22,22 @@ use XIMS;
                    'ObjectPriv',
                    'ObjectTypePriv',
                    'MimeType',
-                   'QuestionnaireResult'
+                   'QuestionnaireResult',
+                   'VLibAuthor',
+                   'VLibAuthorMap',
+                   'VLibKeyword',
+                   'VLibKeywordMap',
+                   'VLibSubject',
+                   'VLibSubjectMap',
+                   'VLibPublication',
+                   'VLibPublicationMap',
+                   'VLibMeta'
                     );
 
 # this is the master list of all
 # properties known.
 %Properties = (
-  Session => [
+    Session => [
                'session.id',
                'session.session_id',
                'session.user_id',
@@ -39,7 +46,7 @@ use XIMS;
                'session.last_access_timestamp',
                'session.salt'
              ],
-  User =>   [
+    User =>   [
               'user.password',
               'user.enabled',
               'user.admin',
@@ -53,7 +60,7 @@ use XIMS;
               'user.url',
               'user.object_type'
              ],
-  Content => [
+    Content => [
               'content.binfile',
               'content.last_modification_timestamp',
               'content.notes',
@@ -175,7 +182,68 @@ use XIMS;
               'questionnaireresult.answer',
               'questionnaireresult.answer_timestamp',
               'questionnaireresult.id'
-             ]
+             ],
+    VLibAuthor =>
+             [
+              'vlibauthor.id',
+              'vlibauthor.lastname',
+              'vlibauthor.middlename',
+              'vlibauthor.firstname',
+              'vlibauthor.object_type',
+             ],
+    VLibAuthorMap =>
+             [
+              'vlibauthormap.id',
+              'vlibauthormap.document_id',
+              'vlibauthormap.author_id',
+             ],
+    VLibKeyword =>
+             [
+              'vlibkeyword.id',
+              'vlibkeyword.name',
+              'vlibkeyword.description',
+             ],
+    VLibKeywordMap =>
+             [
+              'vlibkeywordmap.id',
+              'vlibkeywordmap.document_id',
+              'vlibkeywordmap.keyword_id',
+             ],
+    VLibSubject =>
+             [
+              'vlibsubject.id',
+              'vlibsubject.name',
+              'vlibsubject.description',
+             ],
+    VLibSubjectMap =>
+             [
+              'vlibsubjectmap.id',
+              'vlibsubjectmap.document_id',
+              'vlibsubjectmap.subject_id',
+             ],
+    VLibPublication =>
+             [
+              'vlibpublication.id',
+              'vlibpublication.name',
+              'vlibpublication.isbn',
+              'vlibpublication.issn',
+              'vlibpublication.volume',
+             ],
+    VLibPublicationMap =>
+             [
+              'vlibpublicationmap.id',
+              'vlibpublicationmap.document_id',
+              'vlibpublicationmap.publication_id',
+             ],
+    VLibMeta =>
+             [
+              'vlibmeta.id',
+              'vlibmeta.document_id',
+              'vlibmeta.legalnotice',
+              'vlibmeta.bibliosource',
+              'vlibmeta.mediatype',
+              'vlibmeta.subtitle',
+             ],
 );
 
 my @oprops = ( @{$Properties{Document}}, @{$Properties{Content}} );
