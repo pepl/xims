@@ -26,6 +26,7 @@
                             <xsl:value-of select="$i18n/l/Title"/>: <xsl:value-of select="title"/>
                         </td>
                     </tr>
+                    <xsl:call-template name="markednew"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>

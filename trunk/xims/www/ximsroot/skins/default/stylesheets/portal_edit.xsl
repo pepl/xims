@@ -20,10 +20,11 @@
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-stylesheet-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
+                    <xsl:call-template name="markednew"/>
                     <xsl:call-template name="grantowneronly"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
-                </form>
+            </form>
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
