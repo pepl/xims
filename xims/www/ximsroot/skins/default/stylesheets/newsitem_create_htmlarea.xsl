@@ -34,10 +34,9 @@
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>
-            </div>
-            <br />
-            <xsl:call-template name="cancelaction"/>
-        <xsl:call-template name="without-wysiwyg"/>
+        </div>
+        <br />
+        <xsl:call-template name="cancelaction"/>
     </body>
 </html>
 </xsl:template>
