@@ -489,9 +489,9 @@ sub find_object_id {
     # since we want to use limit and offset here, we have to include the basic
     # privilege check here, and not higher up in the chain
     my $user_id = delete $args{user_id};
-    my @role_ids = delete $args{role_ids};
-    if ( $user_id and scalar @role_ids > 0 ) {
-        $param{criteria} .= " AND ci_content.id = ci_object_privs_granted.content_id AND ci_object_privs_granted.grantee_id IN (" . join(',', ($user_id, @role_ids)) . ") AND ci_object_privs_granted.privilege_mask > 0 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = ci_content.id AND grantee_id = " . $user_id . " AND privilege_mask = 0) IS NULL ";
+    my $role_ids = delete $args{role_ids};
+    if ( $user_id and scalar @{$role_ids} > 0 ) {
+        $param{criteria} .= " AND ci_content.id = ci_object_privs_granted.content_id AND ci_object_privs_granted.grantee_id IN (" . join(',', ($user_id, @{$role_ids})) . ") AND ci_object_privs_granted.privilege_mask > 0 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = ci_content.id AND grantee_id = " . $user_id . " AND privilege_mask = 0) IS NULL ";
         $tables .= ', ci_object_privs_granted';
     }
 
