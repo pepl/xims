@@ -61,7 +61,7 @@ use XML::LibXSLT;
 use IO::File;
 
 use XIMS::Object; # just to be failsafe
-
+use Data::Dumper;
 ##
 #
 # SYNOPSIS
@@ -216,41 +216,46 @@ sub publish {
         if (scalar @{$handler->{Ancestors}} > 0) {
             my $last_path = '';
             foreach my $ancestor ( @{$handler->{Ancestors}} ) {
-                #
-                # in order to update the entire exported ancestors, we
-                # need to recreate them.
-                #
-                $added_path .= '/' . $ancestor->location;
-                XIMS::Debug( 4, "Creating ancestor container." );
 
-                my $package = $helper->classname($ancestor);
-                my $anc_handler;
-                eval {
-                    $anc_handler = $package->new(
-                                                 Provider   => $self->{Provider},
-                                                 Basedir    => $handler->{Basedir} . $last_path,
-                                                 User       => $self->{User},
-                                                 Object     => $ancestor,
-                                                 Options    => {norecurse => 1}
-                                                );
-                };
-                if ( $@ ) {
-                    eval "require $package;";
+                $added_path .= '/' . $ancestor->location;
+
+                # since we don't want autoindexes to be rewritten automatically,
+                # we create only unpublished ancestors
+                if ( $ancestor->published() != 1) {
+
+                    XIMS::Debug( 4, "Creating ancestor container." );
+
+                    my $package = $helper->classname($ancestor);
+                    my $anc_handler;
+                    eval {
+                        $anc_handler = $package->new(
+                                                     Provider   => $self->{Provider},
+                                                     Basedir    => $handler->{Basedir} . $last_path,
+                                                     User       => $self->{User},
+                                                     Object     => $ancestor,
+                                                     Options    => {norecurse => 1}
+                                                    );
+                    };
                     if ( $@ ) {
-                        XIMS::Debug(2, "ancestor class $package could not be instantiated: $@" );
-                        return undef;
+                        eval "require $package;";
+                        if ( $@ ) {
+                            XIMS::Debug(2, "ancestor class $package could not be instantiated: $@" );
+                            return undef;
+                        }
+                        $anc_handler = $package->new(
+                                                     Provider   => $self->{Provider},
+                                                     Basedir    => $handler->{Basedir} . $last_path,
+                                                     User       => $self->{User},
+                                                     Object     => $ancestor,
+                                                     Options    => {norecurse => 1}
+                                                    );
                     }
-                    $anc_handler = $package->new(
-                                                 Provider   => $self->{Provider},
-                                                 Basedir    => $handler->{Basedir} . $last_path,
-                                                 User       => $self->{User},
-                                                 Object     => $ancestor,
-                                                 Options    => {norecurse => 1}
-                                                );
-                }
-                $anc_handler->create();
+                    $anc_handler->create();
+		}   # end if ancestor not published
+
                 $last_path = $added_path;
-            }
+            }   # end foreach ancestor
+
         }
 
         # publish the object itself
@@ -735,7 +740,7 @@ sub update_references {
 
     my $dp     = $self->{Provider};
     my $object = $self->{Object};
-    my $attr   = $object->attribute( 'expandrefs' );
+    my $attr   = $object->attribute_by_key( 'expandrefs' );
 
     unless ( defined $attr and $attr == 1 ) {
         XIMS::Debug( 6, "do not expand references" );
@@ -969,7 +974,7 @@ sub update_parents {
             # object to be written twice during an export. it
             # might happen if the parent wasn't published before.
             if ( $parent->object_type->is_fs_container() ) {
-                if ( $parent->attribute( 'autoindex' ) == 1 ) {
+                if ( $parent->attribute_by_key( 'autoindex' ) == 1 ) {
                     XIMS::Debug( 4, "run auto indexer" );
                     my $idx_generator =  XIMS::Exporter::AutoIndexer->new(
                                                  Provider   => $self->{Provider},
@@ -1447,7 +1452,7 @@ sub create {
     # MUST come after any children were published above since
     # publishing states may have changed in this session.
 
-    if ( $self->{Object}->attribute( 'autoindex' ) == 1 ) {
+    if ( $self->{Object}->attribute_by_key( 'autoindex' ) == 1 ) {
         my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
                                                                Basedir    => $self->{Basedir},
                                                                User       => $self->{User},
