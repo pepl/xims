@@ -207,7 +207,7 @@ sub createObject {
 
     my $object_id = $self->{Driver}->create( properties => $properties, conditions => {} );
 
-    if ( $body_data and length( $body_data ) > 0 and defined( $object_id ) ) {
+    if ( defined $body_data and length( $body_data ) > 0 and defined( $object_id ) ) {
         $self->{Driver}->$update_body_method( $object_id, $body_data );
     }
 
