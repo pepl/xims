@@ -8,26 +8,24 @@ use strict;
 use vars qw( $VERSION );
 
 use XIMS::User;
+use IMAP::Admin;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
 sub new {
     my $class = shift;
-    my %params = @_;
+    my %param = @_;
     my $self = undef;
 
-    my $dp = $params{Provider};
-    delete $params{Provider} if exists $params{Provider};
-
-    if ( defined $dp and exists $params{'Server'} and exists $params{'Login'} ) {
-        if ( $class->_authenticate( %params ) ) {
-            XIMS::Debug(4, "IMAP authentication succesful");
-            my $cUser = XIMS::User->new( -NAME => $params{Login} );
-            if ( $dp->getUser( -user => $cUser ) ){
-                $self = bless {USER => $cUser}, $class;
+    if ( $param{Server} and $param{Login} and $param{Password} ) {
+        if ( $class->_authenticate( %param ) ) {
+            my $user = XIMS::User->new( name => $param{Login} );
+            if ( $user and $user->id ) ){
+                XIMS::Debug( 4, "user confirmed" );
+                $self = bless { User => $user}, $class;
             }
             else {
-                XIMS::Debug( 2, "user could not be found" );
+                XIMS::Debug( 2, "user could not be found in xims-db" );
             }
         }
         else {
@@ -43,11 +41,10 @@ sub new {
 
 sub _authenticate {
     my $self = shift;
-    my %params = @_;
+    my %param = @_;
     my $boolean = undef;
 
-    require IMAP::Admin;
-    my $imap = IMAP::Admin->new( %params );
+    my $imap = IMAP::Admin->new( %param );
     $imap->close;
 
     if ( $imap->error eq 'No Errors' ) {

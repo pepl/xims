@@ -17,18 +17,17 @@ sub new {
     my %param = @_;
     my $self = undef;
 
-    if ( exists $param{Provider} and exists $param{Server} and exists $param{Login} ) {
-        my $dp = $param{Provider};
-        my ( $user, $pwd ) = $param{Login};
+    if ( $param{Server} and $param{Login} and $param{Password} ) {
         # using hardcoded port atm
         if ( my $ldap = Net::LDAP->new( $param{Server}, port => 1389 ) ) {
             # using hardcoded base atm
-            my $dn = "uid=" . uc($user) . ",ou=people,o=Universitaet Innsbruck,c=AT";
+            my $dn = "uid=" . uc($param{Login}) . ",ou=people,o=Universitaet Innsbruck,c=AT";
             my $msg = $ldap->bind( $dn, password => $param{Password} );
             if ( $msg->code() == LDAP_SUCCESS ){
-                my $cUser = XIMS::User->new( -NAME => $user );
-                if ( $dp->getUser( -user => $cUser ) ){
-                    $self = bless {USER => $cUser}, $class;
+                my $user = XIMS::User->new( name => $param{Login} );
+                if ( $user and $user->id ) ){
+                    XIMS::Debug( 4, "user confirmed" );
+                    $self = bless { User => $user}, $class;
                 }
                 else {
                     XIMS::Debug( 2, "user could not be found in xims-db" );
@@ -46,6 +45,6 @@ sub new {
     return $self;
 }
 
-sub getUserInfo { return $_[0]->{USER}; }
+sub getUserInfo { return $_[0]->{User}; }
 
 1;
