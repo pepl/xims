@@ -21,7 +21,7 @@ use XIMS::Text;
 #    %args: recognized keys are the fields from ...
 #
 # RETURNS
-#    $tan_list: XIMS:: instance
+#    $tan_list: XIMS::TAN_List instance
 #
 # DESCRIPTION
 #    Constructor
@@ -32,8 +32,9 @@ sub new {
     my $class = ref($proto) || $proto;
     my %args = @_;
 
-    $args{object_type_id} = 23 unless defined( $args{object_type_id} );
-    $args{data_format_id} = 34 unless defined( $args{data_format_id} );
+    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'TAN_List' )->id() unless defined $args{data_format_id};
+    }
 
     return $class->SUPER::new( %args );
 }
@@ -50,7 +51,7 @@ sub new {
 #    Number of TANs in List
 #
 # DESCRIPTION
-#    
+#
 #
 sub number {
     my $self = shift;
@@ -81,11 +82,13 @@ sub number {
 #    coma seperated string of TANs
 #
 # DESCRIPTION
-#    
+#
 #
 sub create_TANs {
+    XIMS::Debug ( 5, "called" );
     my $self = shift;
     my $number = shift;
+
     my %tanlist;
     my $tanlist;
     my $key;
@@ -94,25 +97,26 @@ sub create_TANs {
     my $TAN;
     my $i;
     srand();
-    
+
     while ( $number ) {
         $TAN = '';
         for ($i = $TAN_length; $i > 0; $i--) {
             $TAN .= $TAN_charpool[ rand( @TAN_charpool ) ];
         }
-        redo if $tanlist{$TAN}; #if TAN already exists redo creation of TAN
+        redo if $tanlist{$TAN}; # if TAN already exists redo creation of TAN
         $tanlist{$TAN} = 1;
         $number--;
     }
-    
+
     foreach $key ( keys( %tanlist ) ) {
         if ( $tanlist ) {
             $tanlist .= ",$key";
         }
         else {
             $tanlist = $key;
-        }        
+        }
     }
+
     return $tanlist;
 }
 
@@ -129,11 +133,12 @@ sub create_TANs {
 #    false if TAN is not in the list
 #
 # DESCRIPTION
-#    
+#
 #
 sub verify {
     my $self = shift;
     my $TAN_to_verify = shift;
-    
+
 }
+
 1;
