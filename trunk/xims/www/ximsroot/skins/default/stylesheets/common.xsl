@@ -137,6 +137,7 @@
 </xsl:template>
 
 <xsl:template name="expandrefs">
+<!-- Temporarily disabled until implemented by the application class
     <tr>
         <td colspan="3">
         <xsl:value-of select="$i18n/l/Publish_ref_objects"/>:
@@ -154,6 +155,7 @@
         <a href="javascript:openDocWindow('expandrefs')" class="doclink">(?)</a>
         </td>
     </tr>
+-->
 </xsl:template>
 
 <xsl:template name="head-create">
@@ -590,7 +592,6 @@
                     name="edit{$id}"
                     width="32"
                     height="19"
-                    align="left"
                 />
             </a>
         </xsl:when>
@@ -612,7 +613,6 @@
                     name="copy{$id}"
                     width="32"
                     height="19"
-                    align="left"
                 />
             </a>
         </xsl:when>
@@ -638,7 +638,6 @@
                     name="move{$id}"
                     width="32"
                     height="19"
-                    align="left"
                 />
             </a>
         </xsl:when>
@@ -660,7 +659,6 @@
                 name="publish{$id}"
                 width="32"
                 height="19"
-                align="left"
             />
             </a>
         </xsl:when>
@@ -682,7 +680,6 @@
                     name="acl{$id}"
                     width="32"
                     height="19"
-                    align="left"
                 />
             </a>
         </xsl:when>
@@ -695,7 +692,6 @@
                     name="undelete{$id}"
                     width="32"
                     height="19"
-                    align="left"
                 />
             </a>
         </xsl:when>
@@ -711,7 +707,7 @@
         <xsl:when test="user_privileges/delete and marked_deleted = '1'">
             <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
             <!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
-            <form style="margin:0px;" name="delete"
+            <form style="margin:0px; display: inline;" name="delete"
                     method="GET"
                     action="{$xims_box}{$goxims_content}">
                 <input type="hidden" name="delete_prompt" value="1"/>
@@ -725,12 +721,11 @@
                     height="19"
                     alt="{$l_purge}"
                     title="{$l_purge}"
-                    align="left"
                 />
             </form>
         </xsl:when>
         <xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <form style="margin:0px;" name="trashcan"
+            <form style="margin:0px; display: inline;" name="trashcan"
                     method="GET"
                     action="{$xims_box}{$goxims_content}">
                 <input type="hidden" name="trashcan_prompt" value="1"/>
@@ -744,7 +739,6 @@
                     height="19"
                     alt="{$l_delete}"
                     title="{$l_delete}"
-                    align="left"
                 />
             </form>
         </xsl:when>
@@ -760,7 +754,6 @@
         height="19"
         border="0"
         alt=" "
-        align="left"
     />
 </xsl:template>
 
