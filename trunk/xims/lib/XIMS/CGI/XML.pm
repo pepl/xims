@@ -69,7 +69,7 @@ sub event_default {
     # the request method 'PUT' is only used by BXE to save XML-code
     if ( $self->request_method() eq 'PUT' ) {
         XIMS::Debug( 5, "BXE is putting XML-data for saving." );
-        if ( $self->save_PUT_data ($ctxt) ) {
+        if ( $self->save_PUT_data($ctxt) ) {
             print $self->header(-status => '204');
         }
         else {
@@ -91,14 +91,14 @@ sub event_edit {
     # expand the attributes to XML-nodes
     $self->expand_attributes( $ctxt );
 
-    # resolve document_ids to location_path after attributes have been expanded, 
+    # resolve document_ids to location_path after attributes have been expanded,
     # because bxeconfig_id is stored in the attributes
     $self->resolve_content( $ctxt, [ qw( STYLE_ID CSS_ID SCHEMA_ID BXECONFIG_ID ) ] );
 
     $self->SUPER::event_edit( $ctxt );
     return 0 if $ctxt->properties->application->style() eq 'error';
 
-    if ( XIMS::XMLEDITOR eq 'bxe' ) {
+    if ( XIMS::XMLEDITOR() eq 'bxe' ) {
         $self->param( -name=>"bxepresent", -value=>"1" );
     }
 
@@ -213,8 +213,22 @@ sub save_PUT_data {
     my $content_length = $ctxt->apache->header_in('Content-length');
     my $content;
     $ctxt->apache->read($content, $content_length);
-    # Store in database
+
+    if ( XIMS::DBENCODING() ) {
+        $content = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($content);
+    }
+
+    # we have to update the encoding attribute in the xml-decl to match
+    # the encoding, the body will be saved in the db. that can't be done
+    # parsing the body, doing a setEncoding() followed by a toString()
+    # because we have to deal with the case that the body itself gets
+    # send by the browser encoded in UTF-8 but still has different
+    # encoding attributes from the user's document.
+    #
+    $content = update_decl_encoding( $content );
+
     $ctxt->object->body( $content );
+    # Store in database
     if ( $ctxt->object->update() ) {
         return 1;
     }
@@ -223,13 +237,14 @@ sub save_PUT_data {
     }
 }
 
-
+# creates the config file for BXE
 sub event_bxeconfig {
-# creates the config file for the BXE
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
     # get body from config template
     my $config_template = XIMS::XML->new( id => $ctxt->object->attribute_by_key( 'bxeconfig_id' ));
+
     # replace placeholders
     my $config_body = $config_template->body();
     my $XML_File = "/goxims/content?id=".$ctxt->object->id().";plain=1";
@@ -245,7 +260,7 @@ sub event_bxeconfig {
     my $mime_type = $df->mime_type;
 
     my $charset;
-    if (! ($charset = XIMS::DBENCODING )) { $charset = "UTF-8"; }
+    if ( !($charset = XIMS::DBENCODING() )) { $charset = "UTF-8"; }
     print $self->header( -Content_type => $mime_type."; charset=".$charset );
     print $config_body;
     $self->skipSerialization(1);
