@@ -155,7 +155,7 @@ sub role_ids {
 
     my @current_ids = ();
     push @current_ids, $self->id();
-    my @id_list = @current_ids;
+    my %id_list;
 
     my $conditions = {};
     if ( defined $args{default_role} ) {
@@ -172,18 +172,15 @@ sub role_ids {
                                                          );
         if ( scalar( @{$id_data} ) > 0 ) {
             @current_ids = map { values %{$_} } @{$id_data};
-            push @id_list, @current_ids;
+            map { $id_list{$_} = 1 } @current_ids;
             last if defined $args{explicit_only};
-
         }
         else {
             last;
         }
     }
 
-    # snip off the the first role, as it will only contain the current user's id
-    shift @id_list;
-    return @id_list;
+    return keys %id_list;
 }
 
 sub roles_granted {
