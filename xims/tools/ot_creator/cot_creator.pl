@@ -153,7 +153,7 @@ my $objecttype = {
             data_format_id => $df->id(),
            };
 
-my $styledir = 'ximsroot/skins/skinname/stylesheets/language/';
+my $styledir = 'www/ximsroot/skins/skinname/stylesheets/language/';
 my %templates_outputpaths = (
     'templates/ObjectClass.xsl' => 'lib/XIMS/'. $objecttype->{object_type_name} . '.pm',
     'templates/ApplicationClass.xsl' => 'bin/'. lc($objecttype->{object_type_name}) . '.pm',
