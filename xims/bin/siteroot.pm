@@ -19,6 +19,11 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    # we do not want to touch the provided location and are trusting the admins who are creating siteroots to provide a
+    # valid DNS name here
+
+    $ctxt->properties->application->preservelocation( 1 );
+
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
 
