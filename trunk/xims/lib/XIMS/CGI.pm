@@ -1908,6 +1908,25 @@ sub event_sitemap {
     return 0;
 }
 
+
+sub encode {
+    my $self = shift;
+    my $string = shift;
+    return $string unless XIMS::DBENCODING();
+    my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
+    $string = $converter->convert($string) if defined $string;
+    return $string;
+}
+
+sub decode {
+    my $self = shift;
+    my $string = shift;
+    return $string unless XIMS::DBENCODING();
+    my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
+    $string = $converter->convert($string) if defined $string;
+    return $string;
+}
+
 1;
 
 package XIMS::CGI::ByeBye;
