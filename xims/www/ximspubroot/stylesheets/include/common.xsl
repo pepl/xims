@@ -22,7 +22,7 @@
 
 
 <xsl:template name="meta">
-      <xsl:param name="context_node" select="."/>  
+      <xsl:param name="context_node" select="."/>
       <link rel="schema.DC" href="http://purl.org/DC/elements/1.0/"/>
       <meta name="DC.Title" content="{$context_node/rdf:RDF/rdf:Description/dc:title}"/>
       <meta name="DC.Creator" content="{$context_node/rdf:RDF/rdf:Description/dc:creator}"/>
@@ -105,7 +105,7 @@
   </xsl:if>
 </xsl:template>
 
-<xsl:template match="portlet-item" mode="default">
+<xsl:template match="portlet-item">
     <xsl:param name="baselocation" />
     <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
