@@ -156,7 +156,7 @@
                             <xsl:call-template name="header.cttobject.createwidget"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <td width="180" background="{$skimages}options_bg.png" nowrap="nowrap">
+                            <td width="215" background="{$skimages}options_bg.png" nowrap="nowrap">
                                 <xsl:if test="$nooptions='false'">
                                     <xsl:call-template name="cttobject.options"/>
                                 </xsl:if>
