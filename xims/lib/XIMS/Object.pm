@@ -553,6 +553,8 @@ sub descendant_count {
     my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
 
     my @doc_ids  = @{$descendant_ids_lvls->[0]};
+    return ( 0,0 ) unless scalar( @doc_ids ) > 0;
+
     my @lvls = @{$descendant_ids_lvls->[1]};
 
     # sort to find floor and ceiling values
@@ -1268,10 +1270,11 @@ sub clone {
     }
 
     if ( $scope_subtree ) {
-        # clone all granted children
+        # clone all granted children except '.diff_to_second_last'
         my @children = $self->children_granted( User => $user );
         my $child;
         foreach $child ( @children ) {
+            next if $child->location() eq '.diff_to_second_last';
             return unless $child->clone( User => $user, scope_subtree => 1,
                                          _parent_id => $clone->document_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
         }
@@ -2017,8 +2020,8 @@ sub store_diff_to_second_last {
     # not i18n'd :-|
     # could be be filled with edit trail auditing information after that will be
     # implemented (http://sourceforge.net/tracker/index.php?func=detail&aid=824274&group_id=42250&atid=432508)
-    my %diffoptions = ( FILENAME_A  => $self->location() . " (" . $self->last_modifier->firstname . " " . $self->last_modifier->lastname . ", " . $self->last_modification_timestamp . ")",
-                        FILENAME_B  => $self->location() . " (" . $self->User->firstname . " " . $self->User->lastname . ", " . $self->data_provider->db_now . ")",
+    my %diffoptions = ( FILENAME_A  => $self->location() . " (" . ($self->last_modifier->firstname ? $self->last_modifier->firstname : '') . " " . $self->last_modifier->lastname . ", " . $self->last_modification_timestamp . ")",
+                        FILENAME_B  => $self->location() . " (" . ($self->User->firstname ? $self->User->firstname : '') . " " . $self->User->lastname . ", " . $self->data_provider->db_now . ")",
                       );
 
     my $diff = diff \$oldbody, \$newbody, \%diffoptions;
