@@ -7,7 +7,7 @@ XIMS Preliminary Installation Guide
    are installed and working.
    NOTE: you better build mod_perl with EVERYTHING=1, this is known 
          to work with XIMS, anything less is trial and error ;-)
-   Oracle(-client) or PostgreSQL(-client) are installed and working. 
+   Oracle(-client) (>=8.1.6) or PostgreSQL(-client) (>=7.2) are installed and working. 
    So are DBI, DBD::Oracle or DBD::Pg respectively. The use of Apache::DBI is highly recommended.
 
 1) Unpack the distribution to /usr/local:
@@ -96,10 +96,10 @@ NOTE: you'll need to provide dsn, user and pwd for a testaccess;
 
 6) Install the latest tidy binary
 
-       as /usr/local/bin/tidy
-
-       If you have to use a different path, change /usr/local/xims/lib/XIMS/Object.pm 
-       line 753 accordingly.
+       You can download the tidy binary from http://sourceforge.net/projects/tidy
+       
+       Install it at /usr/local/bin/tidy. If you install it to another location
+       change /usr/local/xims/lib/XIMS/Object.pm line 753 accordingly.
 
 7) Apply Perl module patches
 
