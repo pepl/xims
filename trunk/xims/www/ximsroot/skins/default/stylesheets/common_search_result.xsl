@@ -10,7 +10,12 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 
 <xsl:import href="container_common.xsl"/>
-<xsl:param name="page" select="0" />
+<xsl:param name="page" select="1" />
+
+<xsl:variable name="objectitems_count">
+    <xsl:value-of select="/document/context/session/searchresultcount"/>
+</xsl:variable>
+<xsl:variable name="totalpages" select="ceiling($objectitems_count div $searchresultrowlimit)"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -40,15 +45,13 @@
                 <table style="margin-left:5px; margin-right:10px; margin-top: 10px; margin-bottom: 10px; width: 99%; padding: 3px; border: thin solid #C1C1C1; background: #F9F9F9 font-size: small;" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
-                            <xsl:if test="number($page) &gt; 0">
-                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?s={$s};search=1;m={$m};page={number($page)-1};start_here={$start_here}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
-                            </xsl:if>
-                            <xsl:if test="number($page) &gt; 0 and /document/context/session/searchresultcount &gt;= $searchresultrowlimit">
-                                |
-                            </xsl:if>
-                            <xsl:if test="/document/context/session/searchresultcount &gt;= $searchresultrowlimit">
-                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?s={$s};search=1;m={$m};page={number($page)+1};start_here={$start_here}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
-                            </xsl:if>
+                            <xsl:call-template name="pagenav">
+                                <xsl:with-param name="totalitems" select="/document/context/session/searchresultcount"/>
+                                <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
+                                <xsl:with-param name="currentpage" select="$page"/>
+                                <xsl:with-param name="url"
+                                                select="concat($xims_box,$goxims_content,$absolute_path,'?s=',$s,';search=1;start_here=',$start_here,';m=',$m)"/>
+                            </xsl:call-template>
                         </td>
                     </tr>
                 </table>
@@ -56,6 +59,65 @@
         </body>
     </html>
 </xsl:template>
+
+<xsl:template name="pagenav">
+    <xsl:param name="totalitems"/>
+    <xsl:param name="itemsperpage"/>
+    <xsl:param name="currentpage"/>
+    <xsl:param name="url"/>
+
+    <xsl:if test="$totalpages &gt; 1">
+        <div id="pagenav">
+            <div>
+                <xsl:if test="$currentpage &gt; 1">
+                    <a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
+                </xsl:if>
+                <xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
+                    |
+                </xsl:if>
+                <xsl:if test="$currentpage &lt; $totalpages">
+                    <a href="{$url};page={number($currentpage)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
+                </xsl:if>
+            </div>
+            <div>
+                <xsl:call-template name="pageslinks">
+                    <xsl:with-param name="page" select="1"/>
+                    <xsl:with-param name="current" select="$currentpage"/>
+                    <xsl:with-param name="total" select="$totalpages"/>
+                    <xsl:with-param name="url" select="$url"/>
+                </xsl:call-template>
+            </div>
+        </div>
+    </xsl:if>
+</xsl:template>
+
+<xsl:template name="pageslinks">
+    <xsl:param name="page"/>
+    <xsl:param name="current"/>
+    <xsl:param name="total"/>
+    <xsl:param name="url"/>
+
+    <xsl:choose>
+        <xsl:when test="$page = $current">
+            <strong><a href="{$url};page={$page}"><xsl:value-of select="$page" /></a></strong>
+        </xsl:when>
+        <xsl:otherwise>
+            <a href="{$url};page={$page}"><xsl:value-of select="$page" /></a>
+        </xsl:otherwise>
+    </xsl:choose>
+
+    <xsl:text> </xsl:text>
+
+    <xsl:if test="$page &lt; $total">
+        <xsl:call-template name="pageslinks">
+            <xsl:with-param name="page" select="$page + 1" />
+            <xsl:with-param name="current" select="$current" />
+            <xsl:with-param name="total" select="$total" />
+            <xsl:with-param name="url" select="$url" />
+        </xsl:call-template>
+    </xsl:if>
+</xsl:template>
+
 
 <xsl:template name="tableheader">
     <tr>

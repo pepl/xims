@@ -1801,6 +1801,7 @@ sub event_search {
     my $user = $ctxt->session->user();
     my $search = $self->param('s');
     my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
     my $rowlimit = XIMS::SEARCHRESULTROWLIMIT();
     $offset = $offset * $rowlimit;
 
@@ -1864,8 +1865,16 @@ sub event_search {
                 $param{start_here} = $ctxt->object() if defined $self->param('start_here');
                 my $count = $ctxt->object->find_objects_granted_count( %param );
                 my $message = "Query returned $count objects.";
-                $message .= " Displaying objects " . ($offset+1) if $count >= $rowlimit;
-                $message .= " to " . ($offset+$rowlimit) if ( $offset+$rowlimit <= $count );
+                if ( $count ) {
+                    $message .= " Displaying objects " . ($offset+1);
+                    $message .= " to ";
+                    if ( ($offset+$rowlimit) > $count ) {
+                        $message .= $count;
+                    }
+                    else {
+                        $message .= $offset+$rowlimit;
+                    }
+                }
                 $ctxt->session->message( $message );
                 $ctxt->session->searchresultcount( $count );
             }
