@@ -34,7 +34,7 @@ create_users() {
 
 
 create_database() {
-   dropdb     -U $PG_SUPER_USER           $XIMS_DB_NAME  || gripe
+   dropdb     -U $PG_SUPER_USER           $XIMS_DB_NAME 
 
    createdb   -U $XIMS_DB_OWNER -E latin1 $XIMS_DB_NAME  || gripe
 
