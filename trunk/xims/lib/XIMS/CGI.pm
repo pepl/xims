@@ -149,7 +149,7 @@ sub event_edit {
     return $self->event_access_denied( $ctxt ) unless defined( $r_type );
 
     $ctxt->properties->application->style( "edit" ) ;
-    $ctxt->properties->content->dontescapestringprops( 1 );
+    #$ctxt->properties->content->dontescapestringprops( 1 );
 
     my $object = $ctxt->object();
 
