@@ -51,6 +51,9 @@ sub handler {
         if ( defined $sessioninfo->{cookie} and length $sessioninfo->{cookie} ) {
             $ctxt->cookie( $sessioninfo->{cookie} );
         }
+
+        return SERVER_ERROR unless ( $sessioninfo->{provider} and $ctxt->data_provider( $sessioninfo->{provider} ) );
+        return SERVER_ERROR unless ( $sessioninfo->{session} and $ctxt->session( $sessioninfo->{session} ) );
     }
     else {
         # using the ximsPublic role
