@@ -308,3 +308,34 @@ CREATE  INDEX doc_position_i
    )
 /
 
+CREATE  INDEX doc_lft_i
+ ON ci_documents
+  ( lft  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+CREATE  INDEX doc_rgt_i
+ ON ci_documents
+  ( rgt  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+
