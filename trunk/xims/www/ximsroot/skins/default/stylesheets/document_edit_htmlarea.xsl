@@ -20,7 +20,7 @@
 <html>
     <xsl:call-template name="head-edit_htmlarea"/>
     <body onLoad="initEditor(); ">
-        <p class="edit">
+        <div class="edit">
             <xsl:call-template name="table-edit_wepro"/>
             <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
                 <table border="0" width="98%">
@@ -33,7 +33,7 @@
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>
-        </p>
+        </div>
         <br />
         <xsl:call-template name="canceledit"/>
     </body>
@@ -42,18 +42,18 @@
 
 <xsl:template name="head-edit_htmlarea">
     <head>
-            <title><xsl:value-of select="$i18n/l/Edit"/> <xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS</title>
-            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <xsl:call-template name="htmlarea_scripts"/>
+        <title><xsl:value-of select="$i18n/l/Edit"/> <xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS</title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="htmlarea_scripts"/>
     </head>
 </xsl:template>
 
 <xsl:template name="tr-body-edit_htmlarea">
     <tr>
         <td colspan="3">
-            <xsl:value-of select="$i18n/l/Body"/>
+            Body
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
             <br/>

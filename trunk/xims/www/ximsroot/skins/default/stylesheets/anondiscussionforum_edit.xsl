@@ -15,7 +15,7 @@
 <html>
     <xsl:call-template name="head-edit"/>
     <body>
-        <p class="edit">
+        <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
                 <table border="0" width="98%">
@@ -27,7 +27,7 @@
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>
-            </p>
+            </div>
             <br />
             <xsl:call-template name="cancelaction"/>
     </body>

@@ -13,7 +13,7 @@
 <html>
     <xsl:call-template name="head-create_wepro"/>
     <body onLoad="document.eform.abstract.value='';">
-        <p class="edit">
+        <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
@@ -27,9 +27,9 @@
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>
-        </p>
-        <br />
-        <xsl:call-template name="cancelaction"/>
+            </div>
+            <br />
+            <xsl:call-template name="cancelaction"/>
         <xsl:call-template name="without-wysiwyg"/>
     </body>
 </html>

@@ -853,7 +853,7 @@ a.headerlink:hover {
 
 /* formating paragraphs */
 
-p.edit {
+div.edit {
 	visible:false;
 	background-color:#ced3d6;
 	border:1px solid;
