@@ -10,6 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="document_common.xsl"/>
+<xsl:variable name="parentid" select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
 
 <xsl:template name="tr-leadimage-create">
     <tr>
@@ -38,7 +39,7 @@
         <td colspan="2">
             <input type="text" name="imagefolder" size="40" class="text"/>
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?;id={@id};to={@id};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder')" class="doclink"><xsl:value-of select="$i18n/l/browse_target"/></a>
+            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};to={$parentid};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder')" class="doclink"><xsl:value-of select="$i18n/l/browse_target"/></a>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('NewsItemImage')" class="doclink">(?)</a>
         </td>
@@ -70,7 +71,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
+            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={$parentid};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
         </td>
     </tr>
 </xsl:template>
