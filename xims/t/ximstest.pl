@@ -21,7 +21,7 @@ my %prompts = (
                              "2 - run all acceptance tests.\n".
                              "3 - run both unit and acceptance tests.\n".
                              "4 - select tests individually.\n".
-                             "5 - edit/create the test suite config file.\n (For acceptance tests and alternate configs to XIMS::Config).\n",
+                             "5 - edit/create the test suite config file.\n    (For acceptance tests and alternate configs to XIMS::Config. Note for Pg users: Per default db user 'ximsrun' is configured in XIMS::Config. Because that user cannot manipulate data formats amongst other things, you should configure the db user 'xims' here not to let some basic unit tests fail.).\n",
                    var   => \$Args{test_type},
                    re    => '(1|2|3|4|5)',
                    error => 'You must select the numbers 1, 2, 3, 4, or 5',
