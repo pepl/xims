@@ -16,6 +16,8 @@ use XIMS;
 use XIMS::DataProvider;
 use XIMS::Auth;
 use XIMS::Session;
+use XIMS::Object;
+use XIMS::User;
 ##
 #
 # SYNOPSIS
@@ -38,9 +40,10 @@ sub handler {
     my %args = $r->args();
 
     my $dp = XIMS::DATAPROVIDER();
+    my $accessdoc = $r->dir_config('ximsAccessDocument');
+    $accessdoc ||= XIMS::PUBROOT_URL() . '/access.xsp'; # default hardcoded fallback value
 
-    # pepl: need a config directive for access.xsp here
-    my $url = XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.";
+    my $url = $accessdoc . "?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.";
     $r->custom_response(SERVER_ERROR, $url);
     return SERVER_ERROR unless $dp;
 
@@ -87,22 +90,29 @@ sub handler {
 
     if ( $cSession ) {
         #warn "session found" . Dumper( $cSession ) . "\n";
-
-        XIMS::Debug( 4, "session confirmed: storing to pnotes" );
+        my $browsepublished = $r->dir_config('ximsBrowsePublished');
         if ( not $login ) {
+            XIMS::Debug( 4, "session confirmed: storing to pnotes" );
             set_user_info( $r ,
                            $dp,
                            $cSession );
+            return view_privilege_handler( $r, $cSession ) if $browsepublished;
         }
         else {
+            XIMS::Debug( 4, "session confirmed: storing cookie" );
             set_session_cookie( $r, $cSession->session_id() );
-            redirToDefault( $r, $dp, $cSession->user_id() );
+            if ( $browsepublished ) {
+                return view_privilege_handler( $r, $cSession );
+            }
+            else {
+                redirToDefault( $r, $dp, $cSession->user_id() );
+            }
         }
         return OK;
     }
     else {
         XIMS::Debug( 3, "access denied for " . $r->connection->remote_ip() );
-        $url = XIMS::PUBROOT_URL() . "/access.xsp";
+        $url = $accessdoc;
         if ( $args{dologin} ) {
             $url .= "?reason=Access%20Denied.%20Please%20provide%20a%20valid%20username%20and%20password.";
         };
@@ -110,7 +120,6 @@ sub handler {
         return FORBIDDEN;
     }
 }
-
 
 ##
 #
@@ -247,7 +256,6 @@ sub set_user_info {
 
     $r->pnotes( ximsSession   => $session );
     $r->pnotes( ximsProvider  => $dp );
-    XIMS::Debug( 5, "done" );
 }
 
 
@@ -541,5 +549,30 @@ sub redirToDefault {
     }
     XIMS::Debug( 5, "done" );
 }
+
+sub view_privilege_handler {
+    my $r = shift;
+    my $session = shift;
+
+    $session ||= $r->pnotes('ximsSession');
+    return AUTH_REQUIRED unless $session and $session->isa('XIMS::Session');
+
+    my $pathbase = $r->dir_config('ximsPubPathBase');
+    my $siterootloc = $r->dir_config('ximsSiteRootLocation');
+    return FORBIDDEN unless $siterootloc;
+
+    my $uri = $r->uri();
+    $uri =~ s/$pathbase//;
+
+    my $object = XIMS::Object->new( path => $siterootloc . $uri );
+    return NOT_FOUND unless $object;
+
+    my $privmask = $session->user->object_privmask( $object );
+    #warn "privmask $privmask for user " . $session->user->name();
+
+    return FORBIDDEN unless $privmask & XIMS::Privileges::VIEW();
+    return OK;
+}
+
 
 1;
