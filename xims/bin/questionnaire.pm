@@ -7,7 +7,6 @@ package questionnaire;
 use strict;
 use vars qw( $VERSION @ISA @MSG);
 use XIMS::CGI;
-use XML::LibXML;
 use XIMS::QuestionnaireResult;
 use Text::Iconv;
 
@@ -90,27 +89,27 @@ sub _default_public {
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    # if called from editing the edit parameter is allways true 
+    # if called from editing the edit parameter is always true
     # because edit is a hidden field in the html-form.
     # So if the Save-button is clicked this event has to be handled manually.
     if ( $self->param('store') ) {
-	  $self->event_store( $ctxt );
-	  return 0;
-	}
+      $self->event_store( $ctxt );
+      return 0;
+    }
     my $object = $ctxt->object();
     $object->body( _encode( $object->body() ) ) if defined $object->body();
-	# a published questionnaire or a questionnaire which allready 
-	# has been answered must not be edited
-	if ( $object->has_answers() ) {
-	    XIMS::Debug( 5, "cannot edit answered questionnaire" );
-	    $self->sendError( $ctxt, 'Allready answered questionnaires cannot be edited! You can copy the questionnaire and edit the copy.' );
-	    return 0;	
-	}
-	if ( $object->published() ) {
-	    XIMS::Debug( 5, "cannot edit published questionnaire" );
-	    $self->sendError( $ctxt, 'Published Questionnaire cannot be edited! Unpublish first' );
-	    return 0;	
-	}
+    # a published questionnaire or a questionnaire which allready
+    # has been answered must not be edited
+    if ( $object->has_answers() ) {
+        XIMS::Debug( 5, "cannot edit answered questionnaire" );
+        $self->sendError( $ctxt, 'Allready answered questionnaires cannot be edited! You can copy the questionnaire and edit the copy.' );
+        return 0;
+    }
+    if ( $object->published() ) {
+        XIMS::Debug( 5, "cannot edit published questionnaire" );
+        $self->sendError( $ctxt, 'Published Questionnaire cannot be edited! Unpublish first' );
+        return 0;
+    }
     my $method = $self->param('edit');
     my $edit_id = $self->param('qid');
     my %params = $self->Vars;
@@ -144,14 +143,14 @@ sub event_store {
     return 0 unless $self->init_store_object( $ctxt ) and defined $ctxt->object();
     if ( $body =~ /questionnaire/ ) {
         #build xml from HTML-Form. This is done before init_store,
-	#because params have to be UTF-8, init_store converts all 
-	#parameters to XIMS::DBENCODING
-	my %params = $self->Vars;
-	my $parsed_object = $object->form_to_xml( %params );
-	$body = _decode( $parsed_object->documentElement()->toString() );
+    #because params have to be UTF-8, init_store converts all
+    #parameters to XIMS::DBENCODING
+    my %params = $self->Vars;
+    my $parsed_object = $object->form_to_xml( %params );
+    $body = _decode( $parsed_object->documentElement()->toString() );
     }
     else {
-	$ctxt->object()->body( "<questionnaire><title>".$self->param( 'questionnaire_title' )."</title><comment>".$self->param( 'questionnaire_comment' ). "</comment></questionnaire>" );
+    $ctxt->object()->body( "<questionnaire><title>".$self->param( 'questionnaire_title' )."</title><comment>".$self->param( 'questionnaire_comment' ). "</comment></questionnaire>" );
         $body = $ctxt->object()->body();
     }
       $object->body( $body , dontbalance => 1 );
@@ -189,7 +188,7 @@ sub event_answer {
         if (! $object->tan_ok( $tan ) ) {
             #if TAN does not match display message and restart questionnaire
             XIMS::Debug( 6, "Result: TAN does not match" );
-            
+
         }
     }
     # if question_id (top-level) and TAN are
@@ -221,7 +220,7 @@ sub event_download_results {
     my $questionnaire_id = $object->document_id();
     #get count of answers for each Question from the Questionnaire
     $object->body( _encode( $object->body() ) ) if defined $object->body();
-	$object->set_results();
+    $object->set_results();
     $object->body( _decode( $object->body() ) ) if defined $object->body();
     $ctxt->properties->application->style( 'download_results' );
     return 0;
