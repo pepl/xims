@@ -40,6 +40,7 @@ sub new {
                 [ "DBIx::XHTML_Table", '' ],
                 [ "XML::Generator::DBI", '' ],
                 [ "XML::LibXML::Iterator", '' ],
+                [ "Array::Iterator", '' ],
               );
 
     my @optional_mods = ();
