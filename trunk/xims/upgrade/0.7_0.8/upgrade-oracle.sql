@@ -1,3 +1,9 @@
+PROMPT Making parent_id on 'CI_DOCUMENTS' nullable
+ALTER TABLE ci_documents MODIFY (parent_id NULL);
+/
+UPDATE ci_documents SET parent_id = NULL WHERE id = 1
+/
+
 PROMPT Adding LOCATION_PATH column on 'CI_DOCUMENTS'
 ALTER TABLE CI_DOCUMENTS ADD (LOCATION_PATH VARCHAR2(4000))
 /
