@@ -555,6 +555,7 @@ sub redirect_path {
     my $hls = $self->param( "hls" );
     my $bodyonly = $self->param( "bodyonly" );
     my $plain = $self->param( "plain" );
+    my $page = $self->param( "page" );
     my $params;
 
     # preserve some selected params
@@ -584,7 +585,10 @@ sub redirect_path {
         $params .= ";" if length $params;
         $params .= "plain=$plain";
     }
-
+    if ( defined $page ) {
+        $params .= ";" if length $page;
+        $params .= "page=$page";
+    }
 
     my $uri = Apache::URI->parse( $ctxt->apache() );
     $uri->path( $ctxt->apache->parsed_uri->rpath() . $redirectpath );
@@ -1278,6 +1282,9 @@ sub event_copy {
         }
         else {
             XIMS::Debug( 4, "copy ok, redirecting to the parent");
+            # be sure to show the user the new copy at the first page
+            $self->param( 'sb', 'date' );
+            $self->param( 'order', 'desc' );
             $self->redirect( $self->redirect_path( $ctxt, $parent->id() ) );
             return 0;
         }
@@ -1713,6 +1720,13 @@ sub event_reposition {
             XIMS::Debug( 2, "repositioning failed" );
         }
     }
+
+    # be sure the users get's to see the newly positioned object
+    $self->param( 'sb', 'position' );
+    $self->param( 'order', 'asc' );
+    my $c = $new_position / XIMS::SEARCHRESULTROWLIMIT();
+    my $page = int($c) + (scalar split(/\./,$c) > 1 ? 1 : 0); # poor man's ceiling()
+    $self->param( 'page', $page );
 
     XIMS::Debug( 4, "redirecting to parent" );
     $self->redirect( $self->redirect_path( $ctxt, $object->parent->id() ) );
