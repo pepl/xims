@@ -134,15 +134,16 @@ sub import {
     $object->location( $self->check_location( $object->location() ) );
 
     # check if the same location already exists in the current container
-    my $parent = XIMS::Object->new( document_id => $object->parent_id() );
+    my $op = $object->parent;
+    my $parent = $op ? $op : $self->parent;
     if ( $parent->children( location => $object->location, marked_deleted => undef ) ) {
         XIMS::Debug( 2, "location already exists" );
         return undef;
     }
 
     $object->title( $object->location ) unless $object->title();
-    $object->parent_id( $self->parent->document_id() ) unless $object->parent_id();
-    $object->language_id( $self->parent->language_id() ) ;
+    $object->parent_id( $parent->document_id() );
+    $object->language_id( $parent->language_id() ) ;
     my $id = $object->create();
     $self->default_grants();
 
