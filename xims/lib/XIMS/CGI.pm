@@ -142,8 +142,8 @@ sub event_edit {
             XIMS::Debug( 3, "Attempt to edit locked object" );
             $self->sendError( $ctxt,
                               "This object is locked by " .
-                              $object->locker->first_name() .
-                              " " . $object->locker->last_name() .
+                              $object->locker->firstname() .
+                              " " . $object->locker->lastname() .
                               " since " . $object->locked_time() .
                               ". Please try again later." );
         }
