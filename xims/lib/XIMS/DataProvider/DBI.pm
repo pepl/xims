@@ -616,6 +616,7 @@ sub location_path {
 sub location_path_relative {
     my $self = shift;
     my $relative_path = $self->location_path( @_ );
+    return '' unless $relative_path;
     # snip off the site portion of the path ('/site/somepath')
     $relative_path =~ s/^\/[^\/]+//;
     return $relative_path;
