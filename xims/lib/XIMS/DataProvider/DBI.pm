@@ -310,7 +310,7 @@ sub update_content_binfile {
         $sth->bind_param( 1, $data, { ora_type => 113 } );
     }
     elsif ( $self->{RDBMSClass} eq 'Pg' ) {
-        $sth->bind_param( 1, $data, DBI::SQL_BINARY );
+        $sth->bind_param( 1, $data, { pg_type => 17 } );
     }
     # other special binds in 'elsif's here as needed
     # the following is the default
