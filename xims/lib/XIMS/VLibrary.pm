@@ -245,7 +245,7 @@ sub _vlitems_byproperty {
 
     if ( $filter_granted and not $self->User->admin() ) {
         my @candidate_data = $self->data_provider->getObject( document_id => \@ids,
-                                                              properties => [ 'document.id', 'content.id' ] );
+                                                              properties => [ 'document_id', 'id' ] );
         my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
         @ids = $self->__filter_granted_ids( candidate_ids => \@candidate_ids );
         return () unless scalar( @ids ) > 0;
