@@ -8,13 +8,15 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml"/>
+
 <xsl:template match="/document">
-  <xsl:apply-templates select="context/object/body/*"/>
+    <xsl:apply-templates select="context/object/body"/>
 </xsl:template>
-<xsl:template match="*">
-  <xsl:copy>
-    <xsl:copy-of select="@*"/>
-    <xsl:apply-templates/>
-  </xsl:copy>
+
+<xsl:template match="/document/context/object/body//*">
+    <xsl:copy>
+        <xsl:copy-of select="@*"/>
+        <xsl:apply-templates/>
+    </xsl:copy>
 </xsl:template>
 </xsl:stylesheet>

@@ -1,11 +1,12 @@
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id $
+
+# $Id$
 package xslstylesheet;
 
 use strict;
-use vars qw( $VERSION @ISA);
+use vars qw( $VERSION @ISA );
 use xml;
 
 # version string (for makemaker, so don't touch!)

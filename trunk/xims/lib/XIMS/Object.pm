@@ -1,9 +1,6 @@
 # Copyright (c) 2002-2003 The XIMS Project.
-
 # See the file "LICENSE" for information on usage and redistribution
-
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-
 # $Id$
 package XIMS::Object;
 
@@ -27,11 +24,11 @@ use Data::Dumper;
 sub resource_type {
     return 'Object';
 }
- 
+
 sub fields {
     return @Fields;
 }
- 
+
 BEGIN {
 
     # the binfile field is no longer available via the method interface, but is set
@@ -41,7 +38,7 @@ BEGIN {
     @Fields = grep { $_ ne 'binfile' } @{XIMS::Names::property_interface_names( resource_type() )};
     @Default_Properties = grep { $_ ne 'body' } @Fields;
 }
- 
+
 use Class::MethodMaker
         get_set       => \@Fields;
 
@@ -49,7 +46,7 @@ sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
     my %args = @_;
-    
+
     my $self = bless {}, $class;
     $self->{User} = defined( $args{User} ) ? delete $args{User} : undef;
     my $real_object;
@@ -88,7 +85,7 @@ sub new {
 }
 
 
-# specific override to the default set/get provided by Class::MethodMaker to 
+# specific override to the default set/get provided by Class::MethodMaker to
 # avoid the memory/performance hit of loading the content data
 # in cases where it is not explictly asked for.
 
@@ -99,13 +96,13 @@ sub body {
     my $content_field = $self->content_field(); # will be 'body' or 'binfile' for most objects
 
     if ( defined( $data ) ) {
-        # since department root's portlet info is stored in the body. we have to allow setting the body for 
+        # since department root's portlet info is stored in the body. we have to allow setting the body for
         # containers, or create a separate dataformat for department roots...
         #unless( defined( $content_field ) ) {
         #    XIMS::Debug( 3, "Attempt to set body on Container object. This action is not allowed." );
         #    return undef;
         #}
-        
+
         $self->{$content_field} = $data;
     }
     else {
@@ -124,7 +121,7 @@ sub content_length {
 }
 
 ##################################################################
-# Object selection methods based on axis relationships to the current 
+# Object selection methods based on axis relationships to the current
 # object (parent, children, descendents, etc.)
 ##################################################################
 
@@ -145,9 +142,9 @@ sub children_granted {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    
+
     return $self->children( %args ) if $user->admin();
-    
+
     # the following is a potential performance killer, we should spare some steps here...
     # do a join in __child_ids?
     # it does not have to be the Do-it-all-in-one-query-with-Oracle way ;-)
@@ -180,12 +177,12 @@ sub descendants {
 
     return () unless scalar( @doc_ids ) > 0;
 
-    my @descendants_data =  $self->data_provider->getObject( document_id => \@doc_ids, 
+    my @descendants_data =  $self->data_provider->getObject( document_id => \@doc_ids,
                                                              properties => \@Default_Properties );
 
     my @descendants = map { XIMS::Object->new->data( %{$_} ) } @descendants_data;
 
-    # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/... 
+    # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
     my @sorted_descendants;
     my $index;
     my $i;
@@ -222,7 +219,7 @@ sub descendants_granted {
     my @descendants = $self->__get_granted_objects( doc_ids => \@candidate_doc_ids, User => $user ) ;
     return () unless scalar( @descendants ) > 0;
 
-    # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/... 
+    # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
     my @sorted_descendants;
     my $index;
     my $i;
@@ -351,7 +348,7 @@ sub __find_ids {
 }
 
 # "static"-method
-# 
+#
 sub __decide_department_id {
     my %args = @_;
     my $object= XIMS::Object->new( id => $args{id} );
@@ -374,7 +371,7 @@ sub User {
 
 sub create {
     XIMS::Debug( 5, "called" );
-    my $self = shift; 
+    my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
     die "Creating an object requires an associated User" unless defined( $user );
@@ -385,7 +382,7 @@ sub create {
     $self->position( $max_position + 1 );
 
     $self->department_id( __decide_department_id( id => $self->parent_id() ) );
-   
+
     my $now = $self->data_provider->db_now();
 
     $self->last_modified_by_id( $user->id() );
@@ -473,12 +470,12 @@ sub move {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    
+
     # the old department this object's direct descendants belong to
     # this is either the department_id or major_id, depending on
     # whether this is a [Department|Site]Root.
     my $old_dept = __decide_department_id( id => $self->id() );
- 
+
     my $parent_id = delete $args{target};
     return undef unless $parent_id;
 
@@ -488,13 +485,13 @@ sub move {
 
     my @o =  $self->descendants();
     foreach( @o ) {
-        # only look at objects with the old_dept of the moved object. 
+        # only look at objects with the old_dept of the moved object.
         # descendants of a different dept. stay unchanged. (see comment above)
         if ($_->department_id == $old_dept) {
             $_->department_id( __decide_department_id( id => $_->parent_id() ) );
             $_->data_provider->updateObject( $_->data() );
         }
-    }       
+    }
 
    # warn Dumper(\@o);
 
@@ -573,7 +570,7 @@ sub grant_user_privileges {
     my $self = shift;
     my %args = @_;
     my $privilege_mask = $args{privmask} || $args{privilege_mask};
-    die "must have a grantor, a grantee and a privmask" 
+    die "must have a grantor, a grantee and a privmask"
         unless defined( $args{grantor} ) and defined( $args{grantee}) and defined( $privilege_mask );
 
     # these allow the User-based args to be either a User object or the id() of one.
@@ -824,7 +821,7 @@ sub balanced_string {
 #       recognized keys: keephtmlheader : per default, the html-header tidy generates is stripped of the return
 #                                         string and only the part between the "body" tag is returned
 #                                         in case of importing legacy html documents it may be useful to keep
-#                                         the meta information in the html header - the keephtmlheader flag is 
+#                                         the meta information in the html header - the keephtmlheader flag is
 #                                         your friend for that.
 #
 # RETURNS
@@ -928,6 +925,6 @@ sub content_field {
     # return undef if $df->name() eq 'Container';
     return 'binfile' if ( $df->mime_type =~ /^(application|image)\//i and $df->mime_type !~ /container/i );
     return 'body';
-} 
+}
 
 1;
