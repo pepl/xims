@@ -22,25 +22,61 @@
             <script type="text/javascript">
                 <xsl:comment>
                     <![CDATA[
-                        function disableIt(obj) {
-                            var autoexport = window.document.forms[1].elements['autoexport'];
-                            if (!autoexport) {
+                        function disableIt(obj,ename) {
+                            var objids = window.document.forms[1].elements[ename];
+                            if (!objids) {
                                 return;
                             }
-                            var i;
-                            if ( autoexport.length ) {
-                                for (i = 0; i < autoexport.length; i++) {
-                                    if ( !(autoexport[i].disabled) ) {
+                            if ( objids.length ) {
+                                var i;
+                                for (i = 0; i < objids.length; i++) {
+                                    if ( !(objids[i].disabled) ) {
                                         obj.disabled = false;
                                         return true;
                                     }
                                 }
                             }
-                            else if ( !(autoexport.disabled) ) {
+                            else if ( !(objids.disabled) ) {
                                 obj.disabled = false;
                                 return true;
                             }
                         }
+                        function switcher(selector,ename){
+                            var ids = window.document.forms[1].elements[ename];
+                            xstate = selector.checked ? 1 : 0;
+                            if ( ids.length ) {
+                                var i;
+                                for (i = 0; i < ids.length; i++) {
+                                    if ( !(ids[i].disabled) ) {
+                                        ids[i].checked = xstate;
+                                    }
+                                }
+                            }
+                            else {
+                                if ( !(ids.disabled) ) {
+                                    ids.checked = xstate;
+                                }
+                            }
+                            return xstate;
+                        }
+                        function isChecked(ename){
+                            var ids = window.document.forms[1].elements[ename];
+                            if ( ids.length ) {
+                                var i;
+                                for (i = 0; i < ids.length; i++) {
+                                    if (ids[i].checked ) {
+                                        return true;
+                                    }
+                                }
+                            }
+                            else {
+                                if (ids.checked ) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+
                     ]]>
                 </xsl:comment>
             </script>
