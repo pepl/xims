@@ -37,7 +37,15 @@
              <xsl:value-of select="$i18n/l/target"/>
          </td>
         <td colspan="2">
-            <input type="text" name="imagefolder" size="40" class="text"/>
+            <input type="text" name="imagefolder" size="40" class="text">
+                <!--  Provide an "educated-guess" default value -->
+                <xsl:attribute name="value">
+                    <xsl:for-each select="/document/context/object/parents/object[@document_id != 1 and @document_id != /document/context/object/@parent_id]">
+                        <xsl:text>/</xsl:text>
+                        <xsl:value-of select="location"/>
+                    </xsl:for-each><xsl:text>/images</xsl:text>
+                </xsl:attribute>
+            </input>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};to={$parentid};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder')" class="doclink"><xsl:value-of select="$i18n/l/browse_target"/></a>
             <xsl:text>&#160;</xsl:text>
