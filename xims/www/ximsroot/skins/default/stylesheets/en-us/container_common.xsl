@@ -890,7 +890,7 @@ select="location"/>, created by: <xsl:call-template name="creatorfullname"/>, ow
                                     />
                         </a>
                     </xsl:when>
-                    <xsl:when test="marked_deleted = 1">
+                    <xsl:when test="user_privileges/delete and marked_deleted = '1'">
                         <a href="{$goxims_content}?id={@id};undelete=1">
                             <img src="{$ximsroot}skins/{$currentskin}/images/option_undelete.png"
                                     border="0"
@@ -913,7 +913,7 @@ select="location"/>, created by: <xsl:call-template name="creatorfullname"/>, ow
                     </xsl:otherwise>
                 </xsl:choose>
                 <xsl:choose>
-                    <xsl:when test="user_privileges/delete and marked_deleted = 1">
+                    <xsl:when test="user_privileges/delete and marked_deleted = '1'">
                         <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
                         <!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
                         <form style="margin:0px;" name="delete"
