@@ -40,6 +40,7 @@ sub build {
     my @IMsearch;
     my @search;
     my $bol;
+    my $foundmacro = 0;
 
     my %retval;
 
@@ -66,6 +67,7 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp)";
             $retval{order} = "last_modification_timestamp DESC";
+            $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^m:(\d*)$/$1/ ) {
             # 'm:x'  was MODIFIED x days in the past AND is MARKED_NEW
@@ -73,6 +75,7 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp) AND ci_content.marked_new = 1";
             $retval{order} = "last_modification_timestamp DESC";
+            $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^N:(\d*)$/$1/ ) {
             # 'N:x'  was CREATED x days in the past
@@ -80,6 +83,7 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp)";
             $retval{order} = "creation_timestamp DESC";
+            $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^n:(\d*)$/$1/ ) {
             # 'n:x'  was CREATED x days in the past AND is MARKED_NEW
@@ -87,37 +91,45 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol .  $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp) AND ci_content.marked_new = 1";
             $retval{order} = "creation_timestamp DESC";
+            $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^i:(\d+)$/$1/ ) {
             # 'i:x' find object by ID
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "ci_content.id = " . $search->[$i];
+            $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^I:(\d+)$/$1/ ) {
             # 'i:x' find object by DOCUMENT_ID
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "ci_documents.id = " . $search->[$i];
+            $foundmacro++;
         }
-        elsif ( $search->[$i] =~ s/^o:([A-Za-z0-9öäüßÖÄÜß\-]+)$/$1/ ) {
+        # unfortunately, \w does not match the non-ascii-chars here on most setups - therefore
+        # we resort to allow some lower-cased non-ascii latin1 chars...
+        elsif ( $search->[$i] =~ s/^o:([-A-Za-z0-9öäüßàáâãåæèçéêëìíîïğñòóôõøùúûıÿ_]+)$/$1/ ) {
             # 'o:x' find object by OWNER
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
+            $foundmacro++;
         }
-        elsif ( $search->[$i] =~ s/^c:([A-Za-z0-9öäüßÖÄÜß\-]+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^c:([-A-Za-z0-9öäüßàáâãåæèçéêëìíîïğñòóôõøùúûıÿ_]+)$/$1/ ) {
             # 'c:x' find object by CREATOR
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "ci_content.created_by_id = " . $search->[$i];
+            $foundmacro++;
         }
-        elsif ( $search->[$i] =~ s/^u:([A-Za-z0-9öäüßÖÄÜß\-]+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^u:([-A-Za-z0-9öäüßàáâãåæèçéêëìíîïğñòóôõøùúûıÿ_]+)$/$1/ ) {
             # 'u:x' find object by CREATOR or MODIFIER
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "(ci_content.created_by_id = " . $search->[$i] . " OR ci_content.last_modified_by_id = " . $search->[$i] . ")";
+            $foundmacro++;
         }
         elsif ( $search->[$i] ne "AND" && $search->[$i] ne "OR" ) {
             $bol = $self->search_boolean( $search, $i );
@@ -129,7 +141,7 @@ sub build {
     }
 
     # hard work done, compose search-condition-string
-    if ( @IMsearch ) {
+    if ( scalar @IMsearch > 0 ) {
         $retval{criteria} = "( CONTAINS ( mci, \'( ( ( (" . join( ' ', @IMsearch ) . " ) within title ) * 2 )" .
                                                " OR ( ( (" . join( ' ', @IMsearch ) . " ) within author ) * 0.5 )" .
                                                " OR ( ( (" . join( ' ', @IMsearch ) . " ) within keywords ) * 0.5 )" .
@@ -141,12 +153,13 @@ sub build {
                              'marked_new', 'locked_by_id', 'locked_time', 'lob_length', 'score(1) s' ];
         $retval{order} = "score(1) DESC";
     }
-    else {
+    elsif ( $foundmacro > 0 or scalar @{$fieldstolookin} > 0 ) {
         $retval{criteria} = '(' . join(' ', @{$search}) . ')';
     }
+    else {
+        return undef;
+    }
 
-
-    XIMS::Debug( 5, 'done' );
     return \%retval;
 }
 
