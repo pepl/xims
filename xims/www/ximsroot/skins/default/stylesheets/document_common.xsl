@@ -13,12 +13,25 @@
 
 <xsl:param name="printview" select="'0'"/>
 
-<!-- gonna get deprecated with user settings -->
-<xsl:template name="table-edit_wepro">
+
+<xsl:template name="table-create">
     <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0">
         <tr>
             <td valign="top">
-                <xsl:value-of select="$i18n/l/edit"/> <xsl:value-of select="$objtype"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
+                <xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>&#160;<xsl:value-of select="$i18n/l/using"/>&#160;<xsl:call-template name="setdefaulteditor"/>
+            </td>
+            <td align="right" valign="top">
+                <xsl:call-template name="cancelcreateform"/>
+            </td>
+        </tr>
+    </table>
+</xsl:template>
+
+<xsl:template name="table-edit">
+    <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td valign="top">
+                <xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>&#160;<xsl:value-of select="$i18n/l/using"/>&#160;<xsl:call-template name="setdefaulteditor"/>
             </td>
             <td align="right" valign="top">
                 <xsl:call-template name="cancelform"/>
@@ -43,6 +56,55 @@
             <a href="javascript:openTestWFWindow()"><xsl:value-of select="$i18n/l/Test_body_xml"/></a>
         </td>
     </tr>
+</xsl:template>
+
+<xsl:template name="setdefaulteditor">
+    <script type="text/javascript">
+        function createCookie(name,value,days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                var expires = "; expires="+date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name+"="+value+expires+"; path=/";
+        }
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i &lt; ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        function setSel(selObj, toselect) {
+            country=toselect.toLowerCase();
+            var
+                opts=selObj.options,
+                i=opts.length;
+                while(i-->0) {
+                    if(opts[i].value.toLowerCase()==toselect) {
+                        selObj.selectedIndex=i;
+                        return true;
+                    }
+                }
+            return false;
+        }
+    </script>
+    <form name="editor_selector" id="editor_selector" style="display: inline; margin: 0px;">
+        <select style="font-size: 9px; padding: 0px; background-color: #eeeeee;" name="xims_wysiwygeditor" id="xims_wysiwygeditor" onChange="javascript:createCookie('xims_wysiwygeditor',this.value,90); location.reload()">
+            <option value="plain">Plain Textarea</option>
+            <option value="htmlarea">HTMLArea Editor</option>
+            <option value="wepro">eWebeditPro Editor</option>
+        </select>
+    </form>
+    <script type="text/javascript">
+        setSel(document.getElementById('xims_wysiwygeditor'), readCookie('xims_wysiwygeditor'));
+    </script>
 </xsl:template>
 
 <xsl:template match="children/object" mode="link">
