@@ -11,14 +11,14 @@
 
 <xsl:template name="htmlarea_scripts">
         <script src="{$ximsroot}htmlarea/htmlarea.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}htmlarea/htmlarea-lang-en.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}htmlarea/lang/en.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}htmlarea/dialog.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 
         <script src="{$ximsroot}htmlarea/popupwin.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 
 
         <script src="{$ximsroot}htmlarea/plugins/TableOperations/table-operations.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}htmlarea/plugins/TableOperations/table-operations-lang-en.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}htmlarea/plugins/TableOperations/lang/en.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 
         <style type="text/css">@import url(<xsl:value-of select="$ximsroot"/>htmlarea/htmlarea.css);</style>
         <script type="text/javascript">
