@@ -38,6 +38,43 @@
     </tr>
 </xsl:template>
 
+<xsl:template name="defaultsorting">
+    <tr>
+        <td colspan="3">
+            <xsl:value-of select="$i18n/l/Sort_children_default"/>
+            <select name="defaultsortby">
+                <option value="position">
+                    <xsl:value-of select="$i18n/l/Position"/>
+                </option>
+                <option value="title">
+                    <xsl:if test="attributes/defaultsortby = 'title'">
+                        <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="$i18n/l/Title"/>
+                </option>
+                <option value="date">
+                    <xsl:if test="attributes/defaultsortby = 'date'">
+                        <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="$i18n/l/Last_Modification_Date"/>
+                </option>
+            </select>
+            <input name="defaultsort" type="radio" value="asc">
+                <xsl:if test="not(attributes/defaultsort) or attributes/defaultsort != 'desc'">
+                    <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
+                </xsl:if>
+            </input><xsl:value-of select="$i18n/l/ascending"/>
+            <input name="defaultsort" type="radio" value="desc">
+                <xsl:if test="attributes/defaultsort = 'desc'">
+                    <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
+                </xsl:if>
+            </input><xsl:value-of select="$i18n/l/descending"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('defaultsorting')" class="doclink">(?)</a>
+        </td>
+    </tr>
+</xsl:template>
+
 <xsl:template name="childrentable">
     <xsl:choose>
         <xsl:when test="$sb='title'">
@@ -68,7 +105,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title&amp;order=desc;m={$m}">
+                                <a href="{location}?sb=title;order=desc;m={$m}">
                                     <img src="{$sklangimages}title_ascending.png"
                                             width="45"
                                             height="20"
@@ -94,13 +131,13 @@
                                         />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;m={$m}">
+                                <a href="{location}?sb=date;order=desc;m={$m}">
                                     <img src="{$sklangimages}last_modified.png"
                                             width="124"
                                             height="20"
                                             border="0"
-                                            alt="{$i18n/l/Sort_lm_asc}"
-                                            title="{$i18n/l/Sort_lm_asc}"
+                                            alt="{$i18n/l/Sort_lm_desc}"
+                                            title="{$i18n/l/Sort_lm_desc}"
                                             />
                                 </a>
                             </td>
@@ -175,13 +212,13 @@
                                 <img src="{$skimages}titlecolumn_rightcorner_bright.png" width="23" height="20" alt="" title="" />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;m={$m}">
+                                <a href="{location}?sb=date;order=desc;m={$m}">
                                     <img src="{$sklangimages}last_modified.png"
                                             width="124"
                                             height="20"
                                             border="0"
-                                            alt="{$i18n/l/Sort_lm_asc}"
-                                            title="{$i18n/l/Sort_lm_asc}"
+                                            alt="{$i18n/l/Sort_lm_desc}"
+                                            title="{$i18n/l/Sort_lm_desc}"
                                             />
                                 </a>
                             </td>
@@ -241,7 +278,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title;m={$m}">
+                                <a href="{location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title.png"
                                             width="45"
                                             height="20"
@@ -326,7 +363,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title;m={$m}">
+                                <a href="{location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title.png"
                                             width="45"
                                             height="20"
@@ -418,7 +455,7 @@
                                 </td>
                             </xsl:if>
                             <td width="42" height="20">
-                                <a href="{location}?sb=title;m={$m}">
+                                <a href="{location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title.png"
                                             width="45"
                                             height="20"
@@ -500,7 +537,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title;m={$m}">
+                                <a href="{location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title.png"
                                             width="45"
                                             height="20"
@@ -526,13 +563,13 @@
                                         />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;order=asc;m={$m}">
+                                <a href="{location}?sb=date;order=desc;m={$m}">
                                     <img src="{$sklangimages}last_modified.png"
                                             width="124"
                                             height="20"
                                             border="0"
-                                            alt="{$i18n/l/Sort_lm_asc}"
-                                            title="{$i18n/l/Sort_lm_asc}"
+                                            alt="{$i18n/l/Sort_lm_desc}"
+                                            title="{$i18n/l/Sort_lm_desc}"
                                             />
                                 </a>
                             </td>
@@ -650,14 +687,14 @@ select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template 
             <xsl:choose>
                 <xsl:when test="$dfmime='application/x-container'">
                     <xsl:attribute name="href">
-                        <xsl:value-of select="concat($goxims_content,$absolute_path,'/',location,'?sb=',$sb,';order=',$order,';m=',$m)"/>
+                        <xsl:value-of select="concat($goxims_content,$absolute_path,'/',location,'?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
                     </xsl:attribute>
                 </xsl:when>
                 <xsl:when test="$dfname='URL'">
                     <xsl:attribute name="href">
                         <xsl:choose>
                             <xsl:when test="symname_to_doc_id != ''">
-                                <xsl:value-of select="concat($goxims_content, symname_to_doc_id, '?sb=',$sb,';order=',$order,';m=',$m)"/>
+                                <xsl:value-of select="concat($goxims_content, symname_to_doc_id, '?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
                             </xsl:when>
                             <xsl:when test="starts-with(location,'/')"><!--  Treat links relative to '/' as relative to the current SiteRoot -->
                                 <xsl:value-of select="concat($goxims_content, '/', /document/context/object/parents/object[@parent_id=1]/location, location)"/>
@@ -697,14 +734,8 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
                     method="GET"
                     action="{$xims_box}{$goxims_content}">
                 <input type="hidden"
-                        name="sb"
-                        value="{$sb}"/>
-                <input type="hidden"
                         name="m"
                         value="{$m}"/>
-                <input type="hidden"
-                        name="order"
-                        value="{$order}"/>
                 <input type="hidden"
                         name="id"
                         value="{@id}"/>
@@ -714,6 +745,14 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
                 <input type="hidden"
                         name="new_position"
                         value="{$position}"/>
+                <xsl:if test="$defsorting != 1">
+                    <input type="hidden"
+                            name="sb"
+                            value="{$sb}"/>
+                    <input type="hidden"
+                            name="order"
+                            value="{$order}"/>
+                </xsl:if>
             </form>
         </xsl:when>
         <xsl:otherwise>

@@ -33,6 +33,7 @@
 
 <xsl:param name="sb" select="'position'"/>
 <xsl:param name="order" select="'asc'"/>
+<xsl:param name="defsorting">0</xsl:param>
 <xsl:param name="m" select="'e'"/>
 
 <xsl:param name="printview" select="'0'"/>
