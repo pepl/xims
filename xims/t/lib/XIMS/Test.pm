@@ -31,7 +31,7 @@ sub XIMS::Config::DBMS() { return $Conf{DBMS} }
 sub XIMS::Config::DBUser() { return $Conf{DBUser} }
 sub XIMS::Config::DBName() { return $Conf{DBName} }
 sub XIMS::Config::DBPassword() { return $Conf{DBPassword} }
- 
+
 ##################################
 # some helpful subs
 ##################################
@@ -50,7 +50,7 @@ sub login {
     my ( $user, $pass ) = @_;
     $user ||= $Conf{user_name};
     $pass ||= $Conf{password};
-    my $url = $Conf{http_host} . '/goxims/defaultbooknark';
+    my $url = $Conf{http_host} . '/goxims/defaultbookmark';
     my $req = HTTP::Request->new(POST => $url);
     $req->content_type('application/x-www-form-urlencoded');
     $req->content("userid=$user&password=$pass");
@@ -63,7 +63,7 @@ sub login {
     if ( length( $found_cookie )  > 0 ) {
         #print "user $user logged in\n";
         $self->{Cookie} = $cookie_parser;
-        $self->{session_id} = $found_cookie; 
+        $self->{session_id} = $found_cookie;
         $self->{logged_in} = 1;
         return $res;
     }
@@ -100,7 +100,7 @@ sub object_type_names {
    my @names = map { values( %{$_} ) } @{$data};
    return @names;
 }
-   
+
 sub data_provider {
    return XIMS::DataProvider->new();
 }
