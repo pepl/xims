@@ -5,7 +5,7 @@ use XIMS::Test;
 use XIMS::User;
 use XIMS::Object;
 use XIMS::Document;
-use Data::Dumper;
+#use Data::Dumper;
 
 BEGIN { 
     plan tests => 7;

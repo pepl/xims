@@ -7,7 +7,7 @@ use XIMS::DataProvider;
 use LWP::UserAgent;
 use HTTP::Cookies;
 use XML::Schematron::LibXSLT;
-use Data::Dumper;
+#use Data::Dumper;
 use Sys::Hostname;
 use Storable qw( retrieve store );
 

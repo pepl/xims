@@ -9,7 +9,7 @@ use vars qw(@ISA);
 # this package could be a subclass of XIMS::SAX::Generator::Content <- think of it
 @ISA = qw(XIMS::SAX::Generator XML::Generator::PerlData);
 
-use Data::Dumper;
+#use Data::Dumper;
 use XIMS::SAX::Generator;
 use XML::Generator::PerlData;
 use XIMS::DataProvider;

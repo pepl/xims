@@ -6,7 +6,7 @@ use XIMS::Test;
 use XIMS::Names;
 use XIMS::User;
 use XIMS::Object;
-use Data::Dumper;
+#use Data::Dumper;
 
 BEGIN { 
     plan tests => 23;

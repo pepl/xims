@@ -7,7 +7,7 @@ use XIMS::Object;
 use XIMS::User;
 use XIMS::Session;
 use XIMS::AppContext;
-use Data::Dumper;
+#use Data::Dumper;
 
 BEGIN { 
     plan tests => 17;

@@ -17,7 +17,7 @@ use XIMS::DataProvider;
 use XIMS::Object;
 use XIMS::User;
 use XIMS::Session;
-use Data::Dumper;
+#use Data::Dumper;
 use Time::Piece;
 ##
 #

@@ -10,7 +10,7 @@ use vars qw($VERSION @Fields @ISA);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = qw( XIMS::AbstractClass );
 
-use Data::Dumper;
+#use Data::Dumper;
 
 sub resource_type {
     return 'UserPriv';

@@ -12,7 +12,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 use XIMS;
 use XIMS::AbstractClass;
 @ISA = qw( XIMS::AbstractClass );
-use Data::Dumper;
+#use Data::Dumper;
 
 sub resource_type {
     return 'ObjectType';
