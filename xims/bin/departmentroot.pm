@@ -172,7 +172,8 @@ sub expand_bodydeptinfo {
     }
     my $filter = XIMS::SAX::Filter::DepartmentExpander->new( Object   => $ctxt->object(),
                                                              User     => $ctxt->session->user(), );
-    $ctxt->sax_filter( [$filter] );
+    $ctxt->sax_filter( [] ) unless defined $ctxt->sax_filter();
+    push @{$ctxt->sax_filter()}, $filter;
 }
 
 1;
