@@ -173,6 +173,8 @@ INSERT INTO ci_mime_type_aliases ( id, data_format_id, mime_type )
        VALUES ( nextval('ci_mime_type_aliases_id_seq'), 13, 'application/x-mspowerpoint' );
 INSERT INTO ci_mime_type_aliases ( id, data_format_id, mime_type )
        VALUES ( nextval('ci_mime_type_aliases_id_seq'), 15, 'image/x-png' );
+INSERT INTO ci_mime_type_aliases ( id, data_format_id, mime_type )
+       VALUES ( nextval('ci_mime_type_aliases_id_seq'), 14, 'application/x-msdos-program' );
 
 \echo inserting into ci_users_roles...
 \echo ...$password = Digest::MD5::md5_hex('xgu');
