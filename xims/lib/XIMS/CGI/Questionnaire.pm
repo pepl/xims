@@ -50,10 +50,10 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
-    my $user = $ctxt->session->user;
-    XIMS::Debug(6,"User logged in is: ".$user->name()." with id ".$user->id());
-    if ( $user->id() eq XIMS::PUBLICUSERID() ) {
-        XIMS::Debug (6, "Answering of Questionnaire started.");
+
+    # check if user is coming in via /gopublic (if ximsPublicUserName is configured)
+    if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+        XIMS::Debug(6, "Answering of Questionnaire started.");
         $self->_default_public( $ctxt );
     }
     else {
