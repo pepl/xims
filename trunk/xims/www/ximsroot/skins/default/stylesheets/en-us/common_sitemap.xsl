@@ -44,6 +44,9 @@
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
     <tr><td>
+        <xsl:if test="marked_deleted='1'">
+            <xsl:attribute name="style">background:#c6c6c6</xsl:attribute>
+        </xsl:if>
         <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{20*(number(@level)-ceiling(number(/document/objectlist/object/@level)))+1}" height="10"/>
         <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>
         <a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
