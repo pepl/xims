@@ -1,7 +1,7 @@
 # Copyright (c) 2002-2004 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id $
+# $Id$
 package XIMS::CGI::VLibraryItem;
 
 use strict;
@@ -17,7 +17,6 @@ use XIMS::VLibSubjectMap;
 use XIMS::VLibPublication;
 use XIMS::VLibPublicationMap;
 use XIMS::VLibMeta;
-use XIMS::Importer::Object::VLibraryItem;
 
 # version string (for makemaker, so don't touch!)
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
@@ -69,66 +68,13 @@ sub event_create {
 sub event_edit {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
-
+    $ctxt->properties->content->escapebody( 1);
     my $vlibrary = XIMS::VLibrary->new( document_id => $ctxt->object->parent_id() );
 
     $ctxt->object->vlkeywords( $vlibrary->vlkeywords() );
     $ctxt->object->vlsubjects( $vlibrary->vlsubjects() );
 
     return $self->SUPER::event_edit( $ctxt );
-}
-
-sub event_store {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    return 0 unless $self->init_store_object( $ctxt )
-                    and defined $ctxt->object();
-
-    my $body;
-    my $fh = $self->upload( 'file' );
-    if ( defined $fh ) {
-        my $buffer;
-        while ( read($fh, $buffer, 1024) ) {
-            $body .= $buffer;
-        }
-    }
-    else {
-        $body = $self->param( 'body' );
-        if ( defined $body and length $body ) {
-            if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-                $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
-            }
-        }
-    }
-
-    if ( defined $body and length $body ) {
-        if ( $ctxt->object->body( $body, dontbalance => 1 ) ) {
-            XIMS::Debug( 6, "body set, len: " . length($body) );
-        }
-        else {
-            XIMS::Debug( 2, "could not convert to a well balanced string" );
-            $self->sendError( $ctxt, "Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
-            return 0;
-        }
-    }
-
-    if ( $ctxt->parent() ) {
-        my $importer = XIMS::Importer::Object::VLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->parent() );
-        if ( $importer->import( $ctxt->object() ) ) {
-            XIMS::Debug( 4, "import of VLibraryItem successful, redirecting" );
-            $self->redirect( $self->redirect_path( $ctxt ) );
-            return 1;
-        }
-        else {
-            $self->sendError( $ctxt , "Could not import VLibraryItem" );
-            XIMS::Debug( 2, "Could not import VLibraryItem" );
-            return 0;
-        }
-    }
-    else {
-        return $self->SUPER::event_store( $ctxt );
-    }
 }
 
 sub event_remove_mapping {

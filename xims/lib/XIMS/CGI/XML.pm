@@ -89,12 +89,7 @@ sub event_store {
         # send by the browser encoded in UTF-8 but still has different
         # encoding attributes from the user's document.
         #
-        my ( $encoding ) = ( $body =~ /^<\?xml[^>]+encoding="([^"]*)"/ );
-        if ( $encoding ) {
-            my $newencoding = ( XIMS::DBENCODING() || 'UTF-8' );
-            XIMS::Debug( 6, "switching encoding attribute from '$encoding' to '$newencoding'");
-            $body =~ s/^(<\?xml[^>]+)encoding="[^"]*"/$1encoding="$newencoding"/;
-        }
+        $body = update_decl_encoding( $body );
 
         my $object = $ctxt->object();
         if ( $object->body( $body ) ) {
@@ -119,6 +114,20 @@ sub event_exit {
     return $self->SUPER::event_exit( $ctxt );
 }
 
+
+sub update_decl_encoding {
+    XIMS::Debug( 5, "called" );
+    my $body = shift;
+
+    my ( $encoding ) = ( $body =~ /^<\?xml[^>]+encoding="([^"]*)"/ );
+    if ( $encoding ) {
+        my $newencoding = ( XIMS::DBENCODING() || 'UTF-8' );
+        XIMS::Debug( 6, "switching encoding attribute from '$encoding' to '$newencoding'");
+        $body =~ s/^(<\?xml[^>]+)encoding="[^"]*"/$1encoding="$newencoding"/;
+    }
+
+    return $body;
+}
 
 1;
 
