@@ -68,7 +68,7 @@
                         <input name="submit" type="submit" value="Confirm" class="control"/>
                         <input name="id" type="hidden" value="{$id}"/>
                         <input type="hidden" name="forcetrash" value="1"/>
-                        <input type="hidden" name="del" value="1"/>
+                        <input type="hidden" name="trashcan" value="1"/>
                       </td>
                       <td>
                         <input name="default" type="button" value="Cancel" onClick="javascript:history.go(-2)"  class="control"/>
