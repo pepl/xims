@@ -651,11 +651,10 @@ sub lock {
     return $self->data_provider->updateObject( $self->data() );
 }
 
-# ubu: should this require a User to check the locked_by_id?
+# the application layer decides whether or not an object may be unlocked
 sub unlock {
     my $self = shift;
     my %args = @_;
-    my $user = delete $args{User} || $self->{User};
     $self->locked_by_id( undef );
     $self->locked_by_firstname( undef );
     $self->locked_by_middlename( undef );
