@@ -102,7 +102,7 @@ sub event_create_update {
         return $self->event_access_denied( $ctxt );
     }
 
-    my @required_fields = qw( name lastname admin enabled password object_type);
+    my @required_fields = qw( name lastname admin enabled object_type );
     my %udata = ();
 
     $udata{name}              = $self->param('name');
@@ -149,13 +149,15 @@ sub event_create_update {
     my $pass1 = $self->param('password1');
     my $pass2 = $self->param('password2');
 
-    if ($pass1 eq $pass2 and length( $pass1 ) > 0) {
-        $udata{password} = Digest::MD5::md5_hex( $pass1 );
-    }
-    else {
-        $ctxt->properties->application->style( 'create' );
-        $ctxt->session->warning_msg( "Error: Password mismatch." );
-        return 0;
+    if ( defined $pass1 and length $pass1 and defined $pass2 and length $pass2 ) {
+        if ( $pass1 eq $pass2 ) {
+            $udata{password} = Digest::MD5::md5_hex( $pass1 );
+        }
+        else {
+            $ctxt->properties->application->style( 'create' );
+            $ctxt->session->warning_msg( "Error: Password mismatch." );
+            return 0;
+        }
     }
 
     my @common = ();
