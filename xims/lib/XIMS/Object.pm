@@ -15,6 +15,7 @@ use XIMS;
 use XIMS::ObjectType;
 use XIMS::DataFormat;
 use XIMS::User;
+use XIMS::SiteRoot;
 use XIMS::AbstractClass;
 @ISA = qw( XIMS::AbstractClass );
 
@@ -322,13 +323,13 @@ sub child_count {
 ##
 #
 # SYNOPSIS
-#    my @ancestors = $object->ancestors();
+#    my $ancestors = $object->ancestors();
 #
 # PARAMETER
 #    none
 #
 # RETURNS
-#    @ancestors : Array of XIMS::Objects
+#    $ancestors : Reference to Array of XIMS::Objects
 #
 # DESCRIPTION
 #    Returns all ancestors.
@@ -722,6 +723,35 @@ sub __get_granted_objects {
     #warn "objects " . Dumper( \@objects ) . "\n";
     return @objects;
 }
+
+##
+#
+# SYNOPSIS
+#    my $siteroot = $object->siteroot();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $siteroot    : XIMS::SiteRoot instance
+#
+# DESCRIPTION
+#
+#    Returns the SiteRoot of the object.
+#
+sub siteroot {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    my $ancestors = $self->ancestors();
+    my $siteroot = $ancestors->[1];
+    return unless $siteroot;
+
+    bless $siteroot, 'XIMS::SiteRoot';
+
+    return $siteroot;
+}
+
 
 # internal.
 # shared by 'children', 'child_count'
