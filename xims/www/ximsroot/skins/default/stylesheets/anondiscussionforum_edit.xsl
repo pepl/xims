@@ -16,20 +16,19 @@
     <xsl:call-template name="head-edit"/>
     <body>
         <div class="edit">
-            <xsl:call-template name="table-create"/>
+            <xsl:call-template name="table-edit"/>
             <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-description-edit"/>
                     <xsl:call-template name="tr-keywords-edit"/>
                     <xsl:call-template name="markednew"/>
-                    <xsl:call-template name="grantowneronly"/>
                 </table>
-                <xsl:call-template name="saveaction"/>
+                <xsl:call-template name="saveedit"/>
             </form>
             </div>
             <br />
-            <xsl:call-template name="cancelaction"/>
+            <xsl:call-template name="canceledit"/>
     </body>
 </html>
 </xsl:template>
