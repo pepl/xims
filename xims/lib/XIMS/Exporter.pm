@@ -156,7 +156,7 @@ sub publish {
 
     #
     # XIMS defines a set of CORE exporters. the system will first try
-    # to instanciate the class as a CORE exporter.
+    # to instantiate the class as a CORE exporter.
     #
     eval {
         $handler = $class_lookup->new( Provider   => $self->{Provider},
@@ -237,7 +237,7 @@ sub publish {
                 if ( $@ ) {
                     eval "require $package;";
                     if ( $@ ) {
-                        XIMS::Debug(2, "ancestor class $package could not be instanciated: $@" );
+                        XIMS::Debug(2, "ancestor class $package could not be instantiated: $@" );
                         return undef;
                     }
                     $anc_handler = $package->new(
@@ -382,7 +382,7 @@ sub unpublish {
                 if ( $@ ) {
                     eval "require $package;";
                     if ( $@ ) {
-                        XIMS::Debug(2,"FATAL EXPORTER ERROR: Ancestor class cannot be instanciated" );
+                        XIMS::Debug(2,"FATAL EXPORTER ERROR: Ancestor class cannot be instantiated" );
                         return undef;
                     }
                     $anc_handler = $package->new(
@@ -795,7 +795,7 @@ sub update_references {
                             if ( $@ ) {
                                 eval "require $package;";
                                 if ( $@ ) {
-                                    XIMS::Debug(2,"FATAL EXPORTER ERROR: Ancestor class cannot be instanciated" );
+                                    XIMS::Debug(2,"FATAL EXPORTER ERROR: Ancestor class cannot be instantiated" );
                                     return undef;
                                 }
                                 $anc_handler = $package->new(
