@@ -25,7 +25,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@parent_id};contentbrowse=1;otfilter=Folder,DepartmentRoot,Journal;sbfield=eform.target')" class="doclink">
+                    <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;otfilter=Folder,DepartmentRoot,Journal;sbfield=eform.target')" class="doclink">
                         <xsl:value-of select="$i18n/l/browse_target"/>
                     </a>
                 </xsl:otherwise>
@@ -36,7 +36,7 @@
 
 <xsl:template name="tr-locationtitletarget-create">
     <xsl:call-template name="tr-locationtitle-create"/>
-    <xsl:call-template name="browse_target">  
+    <xsl:call-template name="browse_target">
         <xsl:with-param name="browse" select="'self'"/>
     </xsl:call-template>
 </xsl:template>
