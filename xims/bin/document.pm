@@ -69,12 +69,10 @@ sub event_edit {
     $self->SUPER::event_edit( $ctxt );
     return 0 if $ctxt->properties->application->style() eq 'error';
 
-    # ewebeditpro extension, uncomment to activate
-    # check if the OS is M\$ and the user wants the wysiwyg editor
-    #return 0 unless $ENV{HTTP_USER_AGENT} =~ /Windows/i
-    #                and not $self->param( 'plain' )
-    #                and $ENV{HTTP_USER_AGENT} =~ /IE|Mozilla\/(?:3|4|6\.2)/;
-    #$ctxt->properties->application->style( "edit_wepro" );
+    # check if a WYSIWYG Editor is configured
+    if ( not $self->param( 'plain' ) and length XIMS::WYSIWYGEDITOR() ) {
+        $ctxt->properties->application->style( "edit_" . lc( XIMS::WYSIWYGEDITOR() ) );
+    }
 
     return 0;
 }
@@ -87,11 +85,9 @@ sub event_create {
     $self->SUPER::event_create( $ctxt );
     return 0 if $ctxt->properties->application->style eq 'error';
 
-    # ewebeditpro extension, uncomment to activate
-    #return 0 unless $ENV{HTTP_USER_AGENT} =~ /Windows/i
-    #                and not $self->param( 'plain' )
-    #                and $ENV{HTTP_USER_AGENT} =~ /IE|Mozilla\/(?:3|4|6\.2)/;
-    #$ctxt->properties->application->style( "create_wepro" );
+    if ( not $self->param( 'plain' ) and length XIMS::WYSIWYGEDITOR() ) {
+        $ctxt->properties->application->style( "create_" . lc( XIMS::WYSIWYGEDITOR() ) );
+    }
 
     return 0;
 }
