@@ -1,3 +1,67 @@
+0.7 to 0.8
+-------------
+
+  * Unpack the contents of xims-0.8.tar.gz to your target installation
+    directory.
+
+    For example:
+    [root@host local]# cd /usr/local
+    [root@host local]# tar xzpvf xims-0.8.tar.gz
+
+
+  * Migrate Config.pm
+
+    Either copy the values manually from your old Config.pm, or let
+    "make config" do the trick.
+
+    For example:
+    [root@host local]# cd xims-0.8
+    [root@host xims-0.8]# XIMS_HOME='/usr/local/xims-0.8'; export XIMS_HOME
+      # sh-like shell (sh, ksh, bash, zsh)
+    [root@host xims-0.8]# setenv XIMS_HOME '/usr/local/xims-0.8'
+      # csh-like shell (csh, tcsh).
+    [root@host xims-0.8]# make config
+
+
+  * Update database (no existing content will be erased nor damaged)
+
+    Run the SQL scripts in the "upgrade/0.7_0.8" directory.
+
+    For example:
+
+    PostgreSQL:
+    [root@host 0.7_0.8]# psql -U xims xims -f upgrade-pg.sql
+    [root@host 0.7_0.8]# psql -U xims xims -f upgrade-common.sql
+
+    Oracle:
+    [root@host 0.7_0.8]# sqlplus user@db @upgrade-oracle.sql
+    [root@host 0.7_0.8]# sqlplus user@db @upgrade-common.sql
+
+
+  * Update module dependencies
+
+    For example:
+    [root@host local]# cd xims-0.8
+    [root@host xims-0.8]# XIMS_HOME='/usr/local/xims-0.8'; export XIMS_HOME
+      # sh-like shell (sh, ksh, bash, zsh)
+    [root@host xims-0.8]# setenv XIMS_HOME '/usr/local/xims-0.8'
+      # csh-like shell (csh, tcsh).
+    [root@host xims-0.8]# make cpan
+
+
+  * Move published content and activate xims-0.8
+
+    - Shutdown Apache or prevent XIMS logins
+    - Move everything under your old "ximspubroot" directory besides
+        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        to your new "ximspubroot" directory.
+    - Replace the link to xims-0.7 with a link to xims-0.8
+      For example:
+        [root@host local]# cd /usr/local
+        [root@host local]# rm xims && ln -s xims-0.8 xims
+    - (Re)Start Apache
+
+
 0.6 to 0.7
 -------------
 
@@ -7,6 +71,7 @@
     For example:
     [root@host local]# cd /usr/local
     [root@host local]# tar xzpvf xims-0.7.tar.gz
+
 
   * Migrate Config.pm
 
@@ -20,6 +85,7 @@
     [root@host xims-0.7]# setenv XIMS_HOME '/usr/local/xims-0.7'
       # csh-like shell (csh, tcsh).
     [root@host xims-0.7]# make config
+
 
   * Update module dependencies
 
@@ -59,6 +125,7 @@
   * Migrate Config.pm.
 
     Copy the values manually from your old Config.pm
+
 
   * Update database (no existing content will be erased nor damaged)
 
