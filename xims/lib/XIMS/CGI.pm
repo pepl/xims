@@ -1360,7 +1360,7 @@ sub event_obj_acllist {
                 # or more grants on the current obj.
                 my @granted_user_ids = map { $_->grantee_id() } @object_privs;
                 my @granted_users = map{ XIMS::User->new( id => $_ ) } @granted_user_ids;
-                warn "acluser" . Dumper( \@granted_users );
+                #warn "acluser" . Dumper( \@granted_users );
                 $ctxt->userlist( \@granted_users );
                 $ctxt->properties->application->style( 'obj_userlist' );
             }
