@@ -622,7 +622,15 @@ sub _get_descendant_sql {
         $maxlevel ||= 0;
         $orderby = "ORDER BY t.pos" unless defined $noorder;
         $levelproperty = 't.lvl,' if defined $getlevel;
-        return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', '". $parent_id . "', " . $maxlevel . ") AS t(id text, parent_id text, lvl int, pos int) WHERE t.id <> t.parent_id $orderby";
+        #
+        # PostgreSQL 7.3.x contrib-tablefunction connectby() does not support ordering of siblings :-|...
+        #
+        if ( DBD::Pg::pg_server_version( $self->dbh ) =~ '7.3' ) {
+            return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', '". $parent_id . "', " . $maxlevel . ") AS t(id text, parent_id text, lvl int) WHERE t.id <> t.parent_id";
+        }
+        else {
+            return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', '". $parent_id . "', " . $maxlevel . ") AS t(id text, parent_id text, lvl int, pos int) WHERE t.id <> t.parent_id $orderby";
+        }
     }
     elsif ( $self->{RDBMSClass} eq 'Oracle' ) {
         $levelproperty = 'level-1 lvl,' if defined $getlevel;
