@@ -386,10 +386,10 @@ sub get_value {
 #    $question_id: Id of the question the title should be returned
 #
 # RETURNS
-#    Title of all the Questions in the Question id - hirarchy
+#    Title of all the Questions in the Question id - hierarchy
 #
 # DESCRIPTION
-#    The titles of all question in the id-hirarchy are returned, 
+#    The titles of all question in the id-hierarchy are returned,
 #    seperated by ":"
 #
 sub get_full_question_title {
@@ -682,9 +682,10 @@ sub _create_children {
             }
             elsif ( $all_fields == 0) {
                 $new_element{'title'} = 0;
+                $new_element{'type'} = 0;
             }
         }
-        if ( $new_element{'title'} ) {
+        if ( $new_element{'title'} or $new_element{'type'} eq 'Textarea' or $new_element{'type'} eq 'Text' ) {
             $helper_node = _make_element(
                                        $new_element{'element'},
                                        $new_element{'id'},
@@ -698,7 +699,7 @@ sub _create_children {
         }
         $new_id++;
         $all_fields = 0;
-    } while ( $new_element{'title'} );
+    } while ( $new_element{'title'} or $new_element{'type'} eq 'Textarea' or $new_element{'type'} eq 'Text' );
     #  XIMS::Debug( 6, "Making a Party, no time for children." );
 
     return $node;
@@ -851,7 +852,7 @@ sub _last_question {
 sub set_results {
     XIMS::Debug( 5, "called");
     my ($self) = @_;
-    
+
     my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
     $questionnaire = $questionnaire->documentElement();
     my $result_object = XIMS::QuestionnaireResult->new();
