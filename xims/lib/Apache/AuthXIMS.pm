@@ -14,7 +14,6 @@ use XIMS;
 use XIMS::DataProvider;
 use XIMS::Session;
 use XIMS::User;
-use Data::Dumper;
 ##
 #
 # SYNOPSIS
@@ -34,11 +33,13 @@ sub handler {
     my $r = shift;
 
     my $retval = DECLINED;
+    my %args = $r->args();
 
     XIMS::Debug( 4, "creating dataprovider" );
     my $dp = XIMS::DataProvider->new();
     # pepl: need a config directive for access.xsp here
-    $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.");
+    my $url = XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.";
+    $r->custom_response(SERVER_ERROR, $url);
     return SERVER_ERROR unless $dp;
 
     XIMS::Debug( 4, "getting session cookie" );
@@ -84,7 +85,11 @@ sub handler {
     }
     else {
         XIMS::Debug( 3, "access denied for " . $r->connection->remote_ip() );
-        $r->custom_response(FORBIDDEN, XIMS::PUBROOT_URL() . "/access.xsp?reason=Access%20Denied.%20Please%20provide%20a%20valid%20username%20and%20password.");
+        $url = XIMS::PUBROOT_URL() . "/access.xsp";
+        if ( $args{dologin} ) {
+            $url .= "?reason=Access%20Denied.%20Please%20provide%20a%20valid%20username%20and%20password.";
+        };
+        $r->custom_response(FORBIDDEN, $url);
         return FORBIDDEN;
     }
 }
@@ -154,7 +159,7 @@ sub set_session_cookie {
     else {
         XIMS::Debug( 2, "cannot set empty session key" );
     }
-    
+
     XIMS::Debug( 5, "done" );
     return $retval ;
 }
