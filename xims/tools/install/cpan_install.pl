@@ -14,7 +14,6 @@ use lib ($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/lib",($ENV{'XIMS_PREFIX'} |
 
 use XIMS::Installer;
 
-use XIMS::Term;
 use Getopt::Std;
 
 eval { require Apache; };
@@ -23,10 +22,7 @@ if ( $@ || $Apache::VERSION < 1.25) {
 }
 
 my %args;
-getopts('hcd:m:', \%args);
-
-my $term = XIMS::Term->new( debuglevel => $args{d} );
-print $term->banner( "CPAN Module Installer" );
+getopts('hcm:', \%args);
 
 if ( $args{h} ) {
 print qq*
