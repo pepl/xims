@@ -117,7 +117,7 @@ sub DBEncoding()                  { 'ISO-8859-1' }           # used amongst othe
                                                              # en|decode from UTF-8 for libxml
 
 # Example settings for PostgreSQL
-sub DBdsn()                       { 'dbi:Pg:dbname=xims;host=localhost' }
+sub DBdsn()                       { 'dbi:Pg:dbname=xims' }
 sub DBSessionOpt()                { 'SET DateStyle TO German;SET Client_Encoding TO LATIN1;' }
 sub DBDOpt()                      { 'FetchHashKeyName=NAME_uc;' }
 
