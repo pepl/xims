@@ -9,11 +9,11 @@
     <div id="linkbox">
         <h3>xims.info</h3>
         <ul>
-            <li title="Home"><a href="/">Home</a></li>
-            <li title="About"><a href="">About</a></li>
-            <li title="Documentation"><a href="">Documentation</a></li>
-            <li title="Screenshots"><a href="">Screenshots</a></li>
-            <li title="Download"><a href="">Download</a></li>
+            <li title="Home"><a href="http://xims.info/">Home</a></li>
+            <li title="About"><a href="http://xims.info/about.html">About</a></li>
+            <li title="Documentation"><a href="http://xims.info/documentation/">Documentation</a></li>
+            <li title="Screenshots"><a href="http://xims.info/screenshots/">Screenshots</a></li>
+            <li title="Download"><a href="http://xims.info/download/">Download</a></li>
             <li title="Login"><a href="/goxims/user">Login</a></li>
         </ul>
     </div>
