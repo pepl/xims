@@ -47,6 +47,7 @@ XML::Schematron -
 Apache::DBI -
 CSS::Tiny -
 Term::ReadKey -
+Text::Diff;
 XML::LibXML::Iterator -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
