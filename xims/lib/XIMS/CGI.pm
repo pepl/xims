@@ -919,6 +919,7 @@ sub event_trashcan {
 
     my $force_trash = 1 if $self->param( 'forcetrash' );
     my @chldinfo = $object->descendant_count();
+    my $diffobject = XIMS::Object->new( location => '.diff_to_second_last', parent_id => $object->document_id() );
 
     if ( $force_trash == 1 ) {
         if ( $object->trashcan() ) {
@@ -930,10 +931,10 @@ sub event_trashcan {
             return 0;
         }
     }
-    elsif ( $chldinfo[0] > 0 ) {
-        # in case of the object is a container and has remaining children, we need a second stage
-        # of operation control
-        XIMS::Debug( 4, "container has got children, ask for confirmation for recursion" );
+    elsif ( (defined $diffobject and $chldinfo[0] > 1) or (not defined $diffobject and $chldinfo[0] > 0) ) {
+        # In case the object is a container and has remaining children besided an automatically created
+        # .diff_to_second_last object, we are asking for confirmation of recursion
+        XIMS::Debug( 4, "container has got children, ask for confirmation of recursion" );
         # pepl: should not DELETE_ALL be test for in case of deleting all the language version of an object?
         if ( $current_user_object_priv & XIMS::Privileges::DELETE_ALL() ) {
             $ctxt->session->warning_msg( "This Container has " . $chldinfo[0] . " child(ren) over " . $chldinfo[1] . " level(s) in the hierarchy ");
@@ -982,6 +983,7 @@ sub event_delete {
 
     my $force_delete = 1 if $self->param( 'forcedelete' );
     my @chldinfo = $object->descendant_count();
+    my $diffobject = XIMS::Object->new( location => '.diff_to_second_last', parent_id => $object->document_id() );
 
     if ( $force_delete == 1 ) {
         if ( $object->delete() ) {
@@ -993,10 +995,10 @@ sub event_delete {
             return 0;
         }
     }
-    elsif ( $chldinfo[0] > 0 ) {
-        # in case of the object is a container and has remaining children, we need a second stage
-        # of operation control
-        XIMS::Debug( 4, "container has got children, ask for confirmation for recursion" );
+    elsif ( (defined $diffobject and $chldinfo[0] > 1) or (not defined $diffobject and $chldinfo[0] > 0) ) {
+        # In case the object is a container and has remaining children besided an automatically created
+        # .diff_to_second_last object, we are asking for confirmation of recursion
+        XIMS::Debug( 4, "container has got children, ask for confirmation of recursion" );
         # pepl: should not DELETE_ALL be test for in case of deleting all the language version of an object?
         if ( $current_user_object_priv & XIMS::Privileges::DELETE_ALL() ) {
             $ctxt->session->warning_msg( "This Container has " . $chldinfo[0] . " child(ren) over " . $chldinfo[1] . " level(s) in the hierarchy ");
@@ -1126,7 +1128,7 @@ sub event_move {
         }
 
         my $target;
-        if ( not ($target = XIMS::Object->new( path => $to, User => $ctxt->session->user ) ) ) {
+        if ( not ($target = XIMS::Object->new( path => $to, User => $ctxt->session->user ) and $target->id()) ) {
             $ctxt->session->error_msg( "Invalid target path!" );
             return 0;
         }
