@@ -7,7 +7,7 @@ CREATE OR REPLACE
 PACKAGE ci_util IS
     FUNCTION insert_into_tree(id_in IN NUMBER, lft_out OUT NUMBER, rgt_out OUT NUMBER) RETURN BOOLEAN;
     FUNCTION move_tree(clft_in IN NUMBER, crgt_in IN NUMBER, parid_in IN NUMBER, clft_out OUT NUMBER, crgt_out OUT NUMBER) RETURN BOOLEAN;
-    FUNCTION close_gap(id_in IN NUMBER, lft_in IN NUMBER, rgt_in IN NUMBER) RETURN BOOLEAN;
+    FUNCTION close_gap(lft_in IN NUMBER, rgt_in IN NUMBER) RETURN BOOLEAN;
 END ci_util;
 /
 
@@ -61,7 +61,7 @@ PACKAGE BODY ci_util IS
           RETURN FALSE;
         END IF;
 
-        IF clft_in > parent_lft THEN 
+        IF clft_in > parent_lft THEN
             treeshift  := parent_lft - clft_in + 1;
             leftbound  := parent_lft + 1;
             rightbound := clft_in - 1;
@@ -104,18 +104,15 @@ PACKAGE BODY ci_util IS
         RETURN TRUE;
     END;
 
-    FUNCTION close_gap(id_in IN NUMBER, lft_in IN NUMBER, rgt_in IN NUMBER) RETURN BOOLEAN IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
+    FUNCTION close_gap(lft_in IN NUMBER, rgt_in IN NUMBER) RETURN BOOLEAN IS
     BEGIN
-        UPDATE ci_documents 
+        UPDATE ci_documents
           SET lft = CASE WHEN lft > lft_in
                          THEN lft - (rgt_in - lft_in + 1)
                          ELSE lft END,
               rgt = CASE WHEN rgt > rgt_in
                          THEN rgt - (rgt_in - lft_in + 1 )
-                         ELSE rgt END
-          WHERE lft <> lft_in;
-        COMMIT;
+                         ELSE rgt END;
         RETURN TRUE;
     END;
 
@@ -150,19 +147,40 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE TRIGGER ci_doc_lftrgt_del
+DROP TABLE ci_documents_del_tmp;
+CREATE GLOBAL TEMPORARY TABLE ci_documents_del_tmp (
+    lft    number,
+    rgt    number)
+ON COMMIT DELETE ROWS;
+/
+
+CREATE OR REPLACE TRIGGER ci_doc_lftrgt_before_del
 BEFORE DELETE
 ON ci_documents
 REFERENCING OLD AS OLD
 FOR EACH ROW
+BEGIN
+    INSERT INTO ci_documents_del_tmp (lft,rgt)
+    VALUES (:OLD.lft,:OLD.rgt);
+END;
+/
+
+CREATE OR REPLACE TRIGGER ci_doc_lftrgt_after_del
+AFTER DELETE
+ON ci_documents
 DECLARE
+    CURSOR tree_cur IS
+        SELECT min(lft) lft, max(rgt) rgt
+        FROM ci_documents_del_tmp;
+    tree_rec tree_cur%ROWTYPE;
     lv_return BOOLEAN;
 BEGIN
-    lv_return := ci_util.close_gap(
-                                   :OLD.id,
-                                   :OLD.lft,
-                                   :OLD.rgt
-                                  );
+    OPEN tree_cur;
+        FETCH tree_cur INTO tree_rec;
+        lv_return := ci_util.close_gap(tree_rec.lft,
+                                       tree_rec.rgt
+                                      );
+    CLOSE tree_cur;
 END;
 /
 
