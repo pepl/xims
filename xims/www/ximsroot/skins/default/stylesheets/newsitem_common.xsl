@@ -10,6 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="document_common.xsl"/>
+<xsl:variable name="i18n_news" select="document(concat($currentuilanguage,'/i18n_newsitem.xml'))" />
 <xsl:variable name="parentid" select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
 
 <xsl:template name="tr-leadimage-create">
@@ -19,7 +20,10 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
             <br />
-            <textarea tabindex="30" name="abstract" rows="5" cols="100" class="text"><xsl:text>&#160;</xsl:text></textarea>
+            <textarea tabindex="30" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)"><xsl:text>&#160;</xsl:text></textarea>
+            <script type="text/javascript">document.getElementsByName("abstract")[0].value = '';</script>
+            <xsl:text>&#160;</xsl:text><span id="charcount"><xsl:text>&#160;</xsl:text></span>
+            <xsl:call-template name="charcountcheck"/>
         </td>
     </tr>
     <tr>
@@ -60,16 +64,18 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
             <br />
-            <textarea tabindex="50" name="abstract" rows="5" cols="100" class="text">
+            <textarea tabindex="50" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)">
             <xsl:choose>
                 <xsl:when test="string-length(abstract) &gt; 0">
                     <xsl:apply-templates select="abstract"/>
                 </xsl:when>
-                        <xsl:otherwise>
-                                <xsl:text>&#160;</xsl:text>
-                 </xsl:otherwise>
+                <xsl:otherwise>
+                    <xsl:text>&#160;</xsl:text>
+                </xsl:otherwise>
             </xsl:choose>
             </textarea>
+            <xsl:text>&#160;</xsl:text><span id="charcount"><xsl:text>&#160;</xsl:text></span>
+            <xsl:call-template name="charcountcheck"/>
         </td>
     </tr>
     <tr>
@@ -82,6 +88,31 @@
             <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={$parentid};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
         </td>
     </tr>
+</xsl:template>
+
+<xsl:template name="charcountcheck">
+    <script type="text/javascript">
+        maxKeys = 390; // Should this be a config.xsl value?
+
+        function txtshow( txt2show ) {
+            var viewer = document.getElementById("charcount");
+            viewer.innerHTML=txt2show;
+        }
+
+        function keyup( what ) {
+            var str = new String( what.value );
+            var len = str.length;
+            var showstr = len + " <xsl:value-of select="$i18n_news/l/of"/> " + maxKeys + " <xsl:value-of select="$i18n_news/l/Characters_entered"/>";
+            if ( len &gt; maxKeys ) {
+                alert( "<xsl:value-of select="$i18n_news/l/Charlimit_reached"/>" );
+                what.value = what.value.substring(0,maxKeys);
+                return false;
+            }
+            txtshow( showstr );
+        }
+
+        keyup( document.getElementsByName("abstract")[0] );
+    </script>
 </xsl:template>
 
 </xsl:stylesheet>
