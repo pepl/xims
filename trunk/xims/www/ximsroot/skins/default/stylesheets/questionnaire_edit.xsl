@@ -27,7 +27,7 @@
         <script src="{$ximsroot}scripts/questionnaire.js" type="text/javascript"></script>
     </head>
 </xsl:template>
-  
+
 <xsl:template name="tr-questionnaire-edit">
     <tr>
         <td colspan="3">
@@ -35,13 +35,13 @@
         </td>
     </tr>
 </xsl:template>
-  
+
 <xsl:template name="questionnaire">
     <table>
         <xsl:call-template name="questionnaire_title_edit" />
         <xsl:call-template name="questionnaire_comment_edit" />
         <xsl:call-template name="questionnaire_intro_edit" />
-        <xsl:call-template name="questionnaire_exit_edit" />        
+        <xsl:call-template name="questionnaire_exit_edit" />
         <xsl:call-template name="questionnaire_tanlists" />
         <xsl:call-template name="questionnaire_actions" />
     </table>
@@ -54,7 +54,7 @@
         <xsl:if test="(@edit=1)">
             <script language="JavaScript">
               location.hash='<xsl:number level="multiple" count="answer | question" />';
-            </script>                
+            </script>
         </xsl:if>
     </xsl:for-each>
     <hr />
@@ -80,7 +80,7 @@
                 </tr>
                 <xsl:call-template name="question_comment">
                     <xsl:with-param name="edit" select="$edit"/>
-                </xsl:call-template>          
+                </xsl:call-template>
                 <xsl:if test="$edit">
                     <xsl:call-template name="question_actions" />
                 </xsl:if>
@@ -89,7 +89,7 @@
                     <td colspan="2">
                         <xsl:apply-templates select="child::question | child::answer" >
                             <xsl:with-param name="edit" select="$edit"/>
-                        </xsl:apply-templates>          
+                        </xsl:apply-templates>
                     </td>
                 </tr>
             </table>
@@ -97,13 +97,13 @@
         <xsl:otherwise>
             <xsl:call-template name="question_title" >
                 <xsl:with-param name="edit" select="false()"/>
-            </xsl:call-template>				
+            </xsl:call-template>
             <xsl:call-template name="question_comment">
                 <xsl:with-param name="edit" select="false()"/>
             </xsl:call-template>
             <xsl:apply-templates select="child::question | child::answer" >
                 <xsl:with-param name="edit" select="false()"/>
-            </xsl:apply-templates>          
+            </xsl:apply-templates>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
@@ -159,7 +159,7 @@
                                         title="{$i18n_qn/l/Edit_Question}"
                                         align="left"
                                         onclick="eform.edit.value='edit_question';eform.qid.value='{$position_long}';return true;"
-                                    />      
+                                    />
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <img src="{$ximsroot}images/spacer_white.gif" width="32"/>
@@ -177,8 +177,8 @@
                                     alt="Copy Question"
                                     title="Copy Question"
                                     align="left"
-            			    onclick="eform.edit.value='copy_question';eform.qid.value='{$position_long}';return true;"
-                                />      
+                                    onclick="eform.edit.value='copy_question';eform.qid.value='{$position_long}';return true;"
+                                />
                             </xsl:if>
                         </td>
                         <td>
@@ -225,24 +225,6 @@
                         <xsl:call-template name="tb_question_actions" />
                     </td>
                     <td>
-                        <xsl:value-of select="$i18n_qn/l/Answers"/>
-                    </td>
-                    <td>
-                        <select tabindex="10" name="answer_{$position_long}_select">
-                            <xsl:for-each select="title">
-                                <option><xsl:value-of select="." /></option>
-                            </xsl:for-each>
-                        </select>
-                        <input type="button" value="{$i18n_qn/l/Remove_from_selection}" onclick="removeSelection(answer_{$position_long}_select);" />
-                        <br />
-                        <input type="text" class="text" size="40" tabindex="10" name="answer_{$position_long}_add" value = "" />
-                        <input type="button" value="{$i18n_qn/l/Add_to_selection}" onclick="addSelection(answer_{$position_long}_add,answer_{$position_long}_select);" /><br />
-                        <input type="hidden" name="answer_{$position_long}_title" value="{$answer_list}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>&#160;</td>
-                    <td colspan="2">
                         <table>
                             <tr>
                                 <td>
@@ -261,20 +243,47 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <xsl:value-of select="$i18n_qn/l/Alignment"/><br />
-                                    <select tabindex="10" name="answer_{$position_long}_alignment">
-                                        <xsl:if test="@alignment = 'Horizontal'"><option selected="1">Horizontal</option></xsl:if>
-                                        <xsl:if test="@alignment != 'Horizontal'"><option>Horizontal</option></xsl:if>
-                                        <xsl:if test="@alignment = 'Vertical'"><option selected="1">Vertical</option></xsl:if>
-                                        <xsl:if test="@alignment != 'Vertical'"><option>Vertical</option></xsl:if>
-                                    </select>
-                                </td>
-                                <td>
                                     <xsl:value-of select="$i18n_qn/l/Comment"/><br />
                                     <input type="text" tabindex="10" name="answer_{$position_long}_comment" size="40" class="text" value="{comment}"/>
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &#xa0;
+                    </td>
+                    <td colspan="2" class="exampleanswers">
+                        <xsl:value-of select="$i18n_qn/l/Example_Answers"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &#xa0;
+                    </td>
+                    <td align="right" class="exampleanswers">
+                        <select tabindex="10" name="answer_{$position_long}_select">
+                            <xsl:for-each select="title">
+                                <option><xsl:value-of select="." /></option>
+                            </xsl:for-each>
+                        </select>
+                        <input type="button" value="{$i18n_qn/l/Remove_from_selection}" onclick="removeSelection(answer_{$position_long}_select);" />
+                        <br />
+                        <input type="text" class="text" size="40" tabindex="10" name="answer_{$position_long}_add" value = "" />
+                        <input type="button" value="{$i18n_qn/l/Add_to_selection}" onclick="addSelection(answer_{$position_long}_add,answer_{$position_long}_select);" /><br />
+                        <input type="hidden" name="answer_{$position_long}_title" value="{$answer_list}" />
+                    </td>
+                    <td class="exampleanswers" style="vertical-align: top; padding-left: 5px">
+                        <span class="answeralignement">
+                            <xsl:value-of select="$i18n_qn/l/Alignment"/><br />
+                            <select tabindex="10" name="answer_{$position_long}_alignment">
+                                <xsl:if test="@alignment = 'Horizontal'"><option selected="1">Horizontal</option></xsl:if>
+                                <xsl:if test="@alignment != 'Horizontal'"><option>Horizontal</option></xsl:if>
+                                <xsl:if test="@alignment = 'Vertical'"><option selected="1">Vertical</option></xsl:if>
+                                <xsl:if test="@alignment != 'Vertical'"><option>Vertical</option></xsl:if>
+                            </select>
+                        </span>
                     </td>
                 </tr>
             </table>
@@ -308,7 +317,7 @@
         <td>
             <textarea type="text" tabindex="10" name="questionnaire_intro" cols="50" rows="3" class="text">
                 <xsl:value-of select="body/questionnaire/intro"/>
-            </textarea> 
+            </textarea>
         </td>
     </tr>
 </xsl:template>
@@ -321,7 +330,7 @@
         <td>
             <textarea type="text" tabindex="10" name="questionnaire_exit" cols="50"  rows="3" class="text">
                 <xsl:value-of select="body/questionnaire/exit"/>
-            </textarea> 
+            </textarea>
         </td>
     </tr>
 </xsl:template>
@@ -373,12 +382,12 @@
                 <a name="{$position_long}"><span class="qn-edit-title"><xsl:value-of select="$i18n_qn/l/Question"/></span></a>
             </td>
             <td width="100%">
-                <textarea tabindex="10" name="question_{$position_long}_title" cols="50" rows="3" class="text"> 
+                <textarea tabindex="10" name="question_{$position_long}_title" cols="50" rows="3" class="text">
                     <xsl:value-of select="title" />
-                </textarea>      
+                </textarea>
                 <!-- some hidden attributes, later they will be editable -->
-                <input type="hidden" name="question_{$position_long}_type" value="None" /> 
-                <input type="hidden" name="question_{$position_long}_alignment" value="Top" /> 
+                <input type="hidden" name="question_{$position_long}_type" value="None" />
+                <input type="hidden" name="question_{$position_long}_alignment" value="Top" />
             </td>
         </xsl:when>
         <xsl:when test="$top and not($edit)">
@@ -386,13 +395,13 @@
                 <a href="#{$position_long}" name="{$position_long}" onclick="eform.edit.value='edit_question';eform.qid.value='{$position_long}';eform.submit();return true;"><xsl:value-of select="title" /></a>
                 <input type="hidden" name="question_{$position_long}_title" value="{title}" />
                 <input type="hidden" name="question_{$position_long}_type" value="None" />
-                <input type="hidden" name="question_{$position_long}_alignment" value="Top" /> 
+                <input type="hidden" name="question_{$position_long}_alignment" value="Top" />
             </td>
         </xsl:when>
         <xsl:otherwise>
             <input type="hidden" name="question_{$position_long}_title" value="{title}" />
-            <input type="hidden" name="question_{$position_long}_type" value="None" /> 
-            <input type="hidden" name="question_{$position_long}_alignment" value="Top" /> 
+            <input type="hidden" name="question_{$position_long}_type" value="None" />
+            <input type="hidden" name="question_{$position_long}_alignment" value="Top" />
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>

@@ -229,11 +229,19 @@
             </xsl:when>
             <xsl:when test="@type = 'Textarea'">
                 <td>
-                    <xsl:for-each select="title">
-                        <textarea name="{concat('answer_',../@id)}" cols="50" rows="6">
-                            <xsl:value-of select="." />
-                        </textarea>
-                    </xsl:for-each>
+                    <xsl:choose>
+                        <xsl:when test="count(title) > 0">
+                            <xsl:for-each select="title">
+                                <textarea name="{concat('answer_',../@id)}" cols="50" rows="6">
+                                    <xsl:value-of select="." />
+                                </textarea>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <textarea name="{concat('answer_',../@id)}" cols="50" rows="6">
+                            </textarea>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </td>
             </xsl:when>
             <xsl:otherwise>
