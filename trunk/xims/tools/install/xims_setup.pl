@@ -67,13 +67,13 @@ my %conf_prompts = (
                           error => 'You must enter the path to your Apache config file (httpd.conf).',
                           default => $conf_default,
                        },
-    b_db_username    => { text  => 'Database Username',
+    b_db_username    => { text  => 'Runtime Database Username',
                           var   => \$Conf{DBUser},
                           re    => '.+',
                           error => 'You must enter the database username for XIMS to access the database.',
                           default => $Conf{DBUser} || 'ximsrun',
                        },
-    c_db_password    => { text  => 'Database Password',
+    c_db_password    => { text  => 'Runtime Database Password',
                           var   => \$Conf{DBPassword},
                           re    => '.+',
                           error => "You must enter the database user's password for XIMS to access the database.",
@@ -125,6 +125,12 @@ else {
     foreach ( sort( keys( %conf_prompts )) ) {
         $installer->prompt( $conf_prompts{$_} );
     }
+
+    while ( not -x $Conf{TidyPath} ) {
+        warn "\n[WARNING] Tidy executable not found at specified location.\n\n";
+        $installer->prompt( $conf_prompts{f_tidy_path} );
+    }
+
     if ( $Conf{DBdsn} eq 'Pg' ) {
         $installer->prompt( { text => 'Database Host. Leave blank if you are connecting to localhost',
                               var   => \$Conf{DBhost},
@@ -142,8 +148,6 @@ else {
         }
     }
 }
-
-die( "\n" . $Conf{TidyPath} . " could not be found, exiting.\n\n") unless -x $Conf{TidyPath};
 
 $installer->httpd_conf( $Conf{ApacheHttpdConf} ); # set the value provided through %Conf
 
@@ -295,6 +299,7 @@ sub DBdsn {
     return 'Pg' if $conf->{DBdsn} =~ /^dbi:Pg/;
     return 'Oracle' if $conf->{DBdsn} =~ /^dbi:Oracle/;
     return 'Oracle' if $ENV{ORACLE_HOME};
+    return 'Pg';
 }
 
 sub DBhost {
