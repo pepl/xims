@@ -248,8 +248,15 @@ sub event_store {
         else {
             $owneronly = 0;
         }
+        my $defaultroles = $self->param( 'defaultroles' );
+        if ( defined $defaultroles and ( $defaultroles eq 'true' or  $defaultroles == 1 ) ) {
+            $defaultroles = 1;
+        }
+        else {
+            $defaultroles = 0;
+        }
 
-        if ( $self->default_grants( $ctxt, $owneronly ) ) {
+        if ( $self->default_grants( $ctxt, $owneronly, $defaultroles, ) ) {
             XIMS::Debug( 4, "updated user privileges" );
         }
         else {
@@ -756,10 +763,11 @@ sub default_grants {
     my $self           = shift;
     my $ctxt           = shift;
     my $grantowneronly = shift;
+    my $grantdefaultroles = shift;
 
     my $retval  = undef;
 
-    # grant the object to the current user (not yet implemented)
+    # grant the object to the current user
     if ( $ctxt->object->grant_user_privileges(
                                          grantee  => $ctxt->session->user(),
                                          grantor  => $ctxt->session->user(),
@@ -777,14 +785,26 @@ sub default_grants {
     # TODO: through the user-interface the user should be able to decide if all the roles he
     # is member of (and not only his default roles) should get read-access or not
     if ( defined $retval and $grantowneronly != 1) {
-        my @roles = $ctxt->session->user->roles_granted( default_role => 1 ); # get granted default roles
-        foreach my $role ( @roles ) {
+        # copy the grants of the parent
+        my @object_privs = map { XIMS::ObjectPriv->new->data( %{$_} ) } $ctxt->data_provider->getObjectPriv( content_id => $ctxt->parent->id() );
+        foreach my $priv ( @object_privs ) {
             $ctxt->object->grant_user_privileges(
-                                                 grantee  => $role,
-                                                 grantor => $ctxt->session->user(),
-                                                 privmask => XIMS::Privileges::VIEW
-                                                );
-            XIMS::Debug( 6, "granted role " . $role->name . " view privs on " . $ctxt->object->id()  );
+                                        grantee   => $priv->grantee_id(),
+                                        grantor   => $ctxt->session->user(),
+                                        privmask  => $priv->privilege_mask(),
+                                    )
+        }
+
+        if ( defined $grantdefaultroles and $grantdefaultroles == 1 ) {
+            my @roles = $ctxt->session->user->roles_granted( default_role => 1 ); # get granted default roles
+            foreach my $role ( @roles ) {
+                $ctxt->object->grant_user_privileges(
+                                                     grantee  => $role,
+                                                     grantor => $ctxt->session->user(),
+                                                     privmask => XIMS::Privileges::VIEW
+                                                    );
+                XIMS::Debug( 6, "granted role " . $role->name . " view privs on " . $ctxt->object->id()  );
+            }
         }
     }
 

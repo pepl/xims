@@ -37,12 +37,13 @@
 
 <xsl:template name="grantowneronly">
     <tr>
-        <td colspan="3">
-            Grant VIEW privilege to users of your default roles:
-            <input name="owneronly" type="radio" value="false" checked="checked"/>Yes
-            <input name="owneronly" type="radio" value="true" />No
+        <td valign="top" width="135">Privilege grant options:</td>
+        <td valign="top">
+            <input name="owneronly" type="radio" value="false" checked="checked"/>Copy privilege-grants of parent
+            <input name="owneronly" type="radio" value="true" onClick="document.eform.defaultroles.disabled = true;" onBlur="document.eform.defaultroles.disabled = false;"/>Grant to myself only
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('GrantVIEWprivilegetousersofyourdefaultroles')" class="doclink">(?)</a>
+            <a href="javascript:openDocWindow('PrivilegeGrantOptions')" class="doclink">(?)</a>
+            <div><xsl:text>&#160;&#160;</xsl:text>Additionally, grant view privileges to default roles: <input name="defaultroles" type="checkbox" value="true"/></div>
         </td>
     </tr>
 </xsl:template>
