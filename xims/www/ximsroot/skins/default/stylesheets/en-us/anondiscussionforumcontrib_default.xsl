@@ -192,36 +192,16 @@
     </form>
   </xsl:template>
 
-  <xsl:template name="path2topics">
+<xsl:template name="path2topics">
     <xsl:for-each select="parents/object[object_type_id != 14]">
-      <xsl:text>/</xsl:text><xsl:value-of select="location"/>
+        <xsl:text>/</xsl:text><xsl:value-of select="location"/>
     </xsl:for-each>
-  </xsl:template>
-
+</xsl:template>
 
 <xsl:template match="body">
     <xsl:call-template name="br-replace">
         <xsl:with-param name="word" select="."/>
     </xsl:call-template>
 </xsl:template>
-
-<xsl:template name="br-replace">
-    <xsl:param name="word"/>
-    <xsl:variable name="cr"><xsl:text>
-</xsl:text></xsl:variable>
-    <xsl:choose>
-        <xsl:when test="contains($word,$cr)">
-            <xsl:value-of select="substring-before($word,$cr)"/>
-            <br/>
-            <xsl:call-template name="br-replace">
-                <xsl:with-param name="word" select="substring-after($word,$cr)"/>
-            </xsl:call-template>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:value-of select="$word"/>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
-
 
 </xsl:stylesheet>
