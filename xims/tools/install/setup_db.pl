@@ -7,9 +7,9 @@
 use strict;
 use warnings;
 
-my $prefix = $ENV{'XIMS_PREFIX'} || '/usr/local';
-die "\nWhere am I?\n\nPlease set the XIMS_PREFIX environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$prefix/xims/Makefile";
-use lib ($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/lib",($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/tools/lib";
+my $xims_home = $ENV{'XIMS_HOME'} || '/usr/local/xims';
+die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$xims_home/Makefile";
+use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib",($ENV{'XIMS_HOME'} || '/usr/local/xims')."/tools/lib";
 
 use XIMS::Installer;
 
@@ -139,7 +139,7 @@ if ( $Conf{DBhost} and length $Conf{DBhost} ) {
 logfile( $Conf{log_file} ); # hook up log file filter to STDOUT
 
 if ( $Conf{DBdsn} eq 'Oracle' ) {
-    chdir "$prefix/xims/sql/Oracle";
+    chdir "$xims_home/sql/Oracle";
     system('sqlplus',$Conf{DBUser}.'/'.$Conf{DBPassword}.'@'.$Conf{DBName},'@ci_ddl.sql') == 0
         or die "Setting up DB failed: $?\n. Please check your config information or try manually setting up the DB.\b";
 }
@@ -157,7 +157,7 @@ elsif ( $Conf{DBdsn} eq 'Pg' ) {
         }
     }
 
-    chdir "$prefix/xims/sql/Pg";
+    chdir "$xims_home/sql/Pg";
 
     if ( $Conf{DBhost} and length $Conf{DBhost} ) {
         push(@args, '-h', $Conf{DBhost});

@@ -15,9 +15,9 @@
 
     For example:
     [root@host local]# cd xims-0.7
-    [root@host xims-0.7]# XIMS_PREFIX='/usr/local/xims-0.7'; export XIMS_PREFIX
+    [root@host xims-0.7]# XIMS_HOME='/usr/local/xims-0.7'; export XIMS_HOME
       # sh-like shell (sh, ksh, bash, zsh)
-    [root@host xims-0.7]# setenv XIMS_PREFIX '/usr/local/xims-0.7'
+    [root@host xims-0.7]# setenv XIMS_HOME '/usr/local/xims-0.7'
       # csh-like shell (csh, tcsh).
     [root@host xims-0.7]# make config
 
@@ -25,9 +25,9 @@
 
     For example:
     [root@host local]# cd xims-0.7
-    [root@host xims-0.7]# XIMS_PREFIX='/usr/local/xims-0.7'; export XIMS_PREFIX
+    [root@host xims-0.7]# XIMS_HOME='/usr/local/xims-0.7'; export XIMS_HOME
       # sh-like shell (sh, ksh, bash, zsh)
-    [root@host xims-0.7]# setenv XIMS_PREFIX '/usr/local/xims-0.7'
+    [root@host xims-0.7]# setenv XIMS_HOME '/usr/local/xims-0.7'
       # csh-like shell (csh, tcsh).
     [root@host xims-0.7]# make cpan
 
@@ -58,17 +58,7 @@
 
   * Migrate Config.pm.
 
-    Either copy the values manually from your old Config.pm, or let
-    "make config" do the trick.
-
-    For example:
-    [root@host local]# cd xims-0.6
-    [root@host xims-0.6]# XIMS_PREFIX='/usr/local/xims-0.6'; export XIMS_PREFIX
-      # sh-like shell (sh, ksh, bash, zsh)
-    [root@host xims-0.6]# setenv XIMS_PREFIX '/usr/local/xims-0.6'
-      # csh-like shell (csh, tcsh).
-    [root@host xims-0.6]# make config
-
+    Copy the values manually from your old Config.pm
 
   * Update database (no existing content will be erased nor damaged)
 
@@ -141,16 +131,7 @@
 
   * Migrate Config.pm.
 
-    Either copy the values manually from your old Config.pm, or let
-    "make config" do the trick.
-
-    For example:
-    [root@host local]# cd xims-0.5
-    [root@host xims-0.5]# XIMS_PREFIX='/usr/local/xims-0.5'; export XIMS_PREFIX
-      # sh-like shell (sh, ksh, bash, zsh)
-    [root@host xims-0.5]# setenv XIMS_PREFIX '/usr/local/xims-0.5'
-      # csh-like shell (csh, tcsh).
-    [root@host xims-0.5]# make config
+    Copy the values manually from your old Config.pm
 
     Two values from the default Config.pm in release 0.5 have changed from
     0.1.1:
@@ -208,16 +189,7 @@
 
   * Migrate Config.pm.
 
-    Either copy the values manually from your old Config.pm, or let
-    "make config" do the trick.
-
-    For example:
-    [root@host local]# cd xims-0.1.1
-    [root@host xims-0.1.1]# XIMS_PREFIX='/usr/local/xims-0.1.1'; export XIMS_PREFIX
-      # sh-like shell (sh, ksh, bash, zsh)
-    [root@host xims-0.1.1]# setenv XIMS_PREFIX '/usr/local/xims-0.1.1'
-      # csh-like shell (csh, tcsh).
-    [root@host xims-0.1.1]# make config
+    Copy the values manually from your old Config.pm
 
   * Update database (no existing content will be erased nor damaged)
 

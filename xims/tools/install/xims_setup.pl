@@ -7,9 +7,9 @@
 use strict;
 use warnings;
 
-my $prefix = $ENV{'XIMS_PREFIX'} || '/usr/local';
-die "\nWhere am I?\n\nPlease set the XIMS_PREFIX environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$prefix/xims/Makefile";
-use lib ($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/lib",($ENV{'XIMS_PREFIX'} || '/usr/local')."/xims/tools/lib";
+my $xims_home = $ENV{'XIMS_HOME'} || '/usr/local/xims';
+die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$xims_home/Makefile";
+use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib",($ENV{'XIMS_HOME'} || '/usr/local/xims')."/tools/lib";
 
 use XIMS::Installer;
 
@@ -49,12 +49,12 @@ if ( $args{h} ) {
 my @upd_fields = qw{ApacheDocumentRoot DBUser DBPassword DBName DBdsn DBDOpt DBSessionOpt TidyPath TidyOptions};
 my $installer = XIMS::Installer->new();
 
-my $configpm = "$prefix/xims/lib/XIMS/Config.pm";
+my $configpm = "$xims_home/lib/XIMS/Config.pm";
 my %Conf = parseConfigpm($configpm);
-my $publicroot = "$prefix/xims/www/" . $Conf{PublicRoot};
-my $ximsstartuppl = "$prefix/xims/conf/ximsstartup.pl";
+my $publicroot = "$xims_home/www/" . $Conf{PublicRoot};
+my $ximsstartuppl = "$xims_home/conf/ximsstartup.pl";
 my $tidypath_default = $Conf{'TidyPath'};
-$Conf{'TidyOptions'}= ' -config ' . $prefix . '/xims/conf/ximstidy.conf -quiet -f /dev/null';
+$Conf{'TidyOptions'}= ' -config ' . $xims_home . '/conf/ximstidy.conf -quiet -f /dev/null';
 my $dbdsn_default = DBdsn( \%Conf );
 my $db_host = DBhost( \%Conf );
 my $db_port = DBport( \%Conf );
@@ -167,12 +167,12 @@ if ( $> > 0 ) {
 if ( $Conf{DBdsn} eq 'Pg' ) {
     print "\n Checking for DBD::Pg...";
     eval{ require DBD::Pg;};
-    
+
     if ( $@ ) {
         print "\nCould not load DBD::Pg. Perhaps it is not installed.\n",
               "Press enter to let cpan_install.pl try installing it.\n";<STDIN>;
 
-        if ( system("$^X $prefix/xims/tools/cpan_install.pl","-m","DBD::Pg") != 0 ) {
+        if ( system("$^X $xims_home/tools/cpan_install.pl","-m","DBD::Pg") != 0 ) {
             die "Could not install DBD::Pg, you have to install it manually!\n\n";
         }
     }
@@ -187,7 +187,7 @@ elsif ( $Conf{DBdsn} eq 'Oracle' ) {
         print "\nCould not load DBD::Oracle. Perhaps it is not installed.\n",
               "Press enter to let cpan_install.pl try installing it.\n";<STDIN>;
 
-        if ( system("$^X $prefix/xims/tools/cpan_install.pl","-m","DBD::Oracle") != 0 ) {
+        if ( system("$^X $xims_home/tools/cpan_install.pl","-m","DBD::Oracle") != 0 ) {
             die "Could not install DBD::Oracle, you have to install it manually!\n\n";
         }
     }
@@ -211,8 +211,8 @@ print "\n[+] Successfully updated $configpm\n";
 exit if $args{c};
 
 # patch ximsstartup.pl
-$installer->inplace_edit($ximsstartuppl, "s!^\\s*use lib qw\\(\\s*\\S+/xims/lib\\s*\\);\\s*!use lib qw( $prefix/xims/lib );\n!");
-$installer->inplace_edit($ximsstartuppl, "s!^\\s*use lib qw\\(\\s*\\S+/xims/bin\\s*\\);\\s*!use lib qw( $prefix/xims/bin );\n!");
+$installer->inplace_edit($ximsstartuppl, "s!^\\s*use lib qw\\(\\s*\\S+/xims/lib\\s*\\);\\s*!use lib qw( $xims_home/lib );\n!");
+$installer->inplace_edit($ximsstartuppl, "s!^\\s*use lib qw\\(\\s*\\S+/xims/bin\\s*\\);\\s*!use lib qw( $xims_home/bin );\n!");
 
 print "\n[+] Successfully updated $ximsstartuppl\n";
 
@@ -220,7 +220,7 @@ print "\n[+] Successfully updated $ximsstartuppl\n";
 # adjust ORACLE_HOME in ximshttpd.conf if neccessary
 if ( $ENV{ORACLE_HOME} and -d $ENV{ORACLE_HOME} ) {
     print "[+] Set ORACLE_HOME to $ENV{ORACLE_HOME} in ximshttpd.conf.\n" if
-        $installer->inplace_edit("$prefix/xims/conf/ximshttpd.conf",
+        $installer->inplace_edit("$xims_home/conf/ximshttpd.conf",
                                  "s!#PerlSetEnv ORACLE_HOME path_to_your_oracle_home!PerlSetEnv ORACLE_HOME $ENV{ORACLE_HOME}!");
 
 }
@@ -230,7 +230,7 @@ unless ( $installer->xims_httpd_conf() and $installer->xims_startup_pl() ) {
     print "[+] Appending XIMS config to " . $installer->httpd_conf() . "\n";
     open(CONF, ">>".$installer->httpd_conf()) || die "Can't open $installer->httpd_conf(): $!";
     my $configline = "\n";
-    $configline .= "Include $prefix/xims/conf/ximshttpd.conf\n" unless $installer->xims_httpd_conf();
+    $configline .= "Include $xims_home/conf/ximshttpd.conf\n" unless $installer->xims_httpd_conf();
     $configline .= "PerlRequire $ximsstartuppl\n" unless $installer->xims_startup_pl();
     print CONF $configline;
     close(CONF);
@@ -258,7 +258,7 @@ print "[+] Successfully set up file access rights.\n";
 # create links if they not already exist
 unless ( -l $installer->apache_document_root() . '/ximsroot'
          and -l $installer->apache_document_root() . '/' . $Conf{PublicRoot} ) {
-    symlink( "$prefix/xims/www/ximsroot", $installer->apache_document_root() . '/ximsroot' );
+    symlink( "$xims_home/www/ximsroot", $installer->apache_document_root() . '/ximsroot' );
     symlink( $publicroot, $installer->apache_document_root() . '/' . $Conf{PublicRoot} );
     print "[+] Successfully set up symbolic links under " . $installer->apache_document_root()  . ".\n";
 }
