@@ -52,8 +52,8 @@ sub vlproperties_from_document {
       $self->_nodevalue($root->findnodes( "/article/articleinfo/title|/book/bookinfo/title|/book/title" ) )));
 
     #abstract
-    $object->abstract( ($root->getElementsByTagName("abstract"))[0]->firstChild->toString(0,1) )
-      if $root->getElementsByTagName("abstract");
+    my $abstract = $self->_clean( $self->_nodevalue($root->findnodes('/book/bookinfo/abstract/simpara|/article/articleinfo/abstract/simpara') ) );
+    $object->abstract( $abstract ) if defined $abstract;
 
     #vlauthors
     my @authorgroup = $root->findnodes( "/article/articleinfo/authorgroup|/book/bookinfo/authorgroup" );
@@ -321,7 +321,7 @@ sub _clean {
     return undef unless $string;
 
     $string = $self->_unquot( $self->_trim( $string ) );
-    
+
     return $string;
 }
 
