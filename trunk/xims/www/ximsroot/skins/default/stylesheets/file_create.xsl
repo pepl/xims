@@ -51,7 +51,7 @@
 </xsl:template>
 
 <xsl:template name="uploadaction">
-    <input type="hidden" name="parid" value="{@id}"/>
+    <input type="hidden" name="id" value="{/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id}"/>
     <input type="submit" name="store" value="{$i18n/l/upload}" class="control"/>
 </xsl:template>
 

@@ -19,9 +19,8 @@
             marginwidth="0"
             marginheight="0"
             background="{$skimages}body_bg.png">
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;" >
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="GET" style="margin-top:0px;" >
           <input type="hidden" name="objtype" value="{$objtype}"/>
-          <input type="hidden" name="parid" value="{@id}" />
           <table border="0" width="770" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
             <tr>
               <td valign="top" class="forumhead" colspan="2"><xsl:value-of select="$i18n/l/Create_topic"/></td>

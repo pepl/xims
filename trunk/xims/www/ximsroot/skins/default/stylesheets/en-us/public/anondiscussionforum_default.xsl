@@ -49,9 +49,9 @@
 
         <p>
             <xsl:if test="user_privileges/create">
-              <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" style="margin-bottom: 0;">
-                <input type="hidden" name="objtype" value="anondiscussionforumcontrib"/>
-                <input type="hidden" name="parid" value="{@document_id}" />
+              <form action="{$xims_box}{$goxims_content}" method="GET" style="margin-bottom: 0;">
+                <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
+                <input type="hidden" name="id" value="{@id}" />
                 <input type="submit" name="create" value="Create new topic" class="control" /><br /><br />
               </form>
             </xsl:if>
@@ -63,13 +63,13 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="618">
                                     <tr>
                                         <td width="240">
-                                             <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=desc">
+                                             <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=position&amp;order=desc">
                              <!-- <a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=desc"> -->
                                              <img src="{$ximsroot}images/forum/theme_act_up.gif" width="240" height="15" border="0" alt="absteigend sortieren"/>
                                             </a>
                                         </td>
                                         <td width="110">
-                                            <a href="{$goxims_content}{$absolute_path}?sb=date">
+                                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=date">
                                                 <img src="{$ximsroot}images/forum/created_norm.gif" width="110" height="15" border="0" alt="aufsteigend sortieren"/>
                                             </a>
                                         </td>
@@ -92,13 +92,13 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="618">
                                     <tr>
                                         <td width="240">
-                                            <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=asc">
+                                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=position&amp;order=asc">
                             <!-- <a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=asc"> -->
                                             <img src="{$ximsroot}images/forum/theme_act_down.gif" width="240" height="15" border="0" alt="aufsteigend sortieren"/>
                                             </a>
                                         </td>
                                         <td width="110">
-                                            <a href="{$goxims_content}{$absolute_path}?sb=date">
+                                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=date">
                                                 <img src="{$ximsroot}images/forum/created_norm.gif" width="110" height="15" border="0" alt="aufsteigend sortieren"/>
                                             </a>
                                         </td>
@@ -126,13 +126,13 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="618">
                                     <tr>
                                         <td width="240">
-                                                <a href="{$goxims_content}{$absolute_path}?sb=position">
+                                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=position">
                             <!-- <a href="{$goxims_content}{$absolute_path}?sb=name"> -->
                                                     <img src="{$ximsroot}images/forum/theme_norm.gif" width="240" height="15" border="0" alt="absteigend sortieren"/>
                                                 </a>
                                         </td>
                                         <td width="110">
-                                            <a href="{$goxims_content}{$absolute_path}?sb=date&amp;order=desc">
+                                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=date&amp;order=desc">
                                                  <img src="{$ximsroot}images/forum/created_act_down.gif" width="110" height="15" border="0" alt="aufsteigend sortieren"/>
                                             </a>
                                         </td>
@@ -155,13 +155,13 @@
                         <table border="0" cellpadding="0" cellspacing="0" width="618">
                                     <tr>
                                         <td width="240">
-                                                <a href="{$goxims_content}{$absolute_path}?sb=position">
+                                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=position">
                             <!-- <a href="{$goxims_content}{$absolute_path}?sb=name"> -->
                                                     <img src="{$ximsroot}images/forum/theme_norm.gif" width="240" height="15" border="0" alt="absteigend sortieren"/>
                                                 </a>
                                         </td>
                                         <td width="110">
-                                            <a href="{$goxims_content}{$absolute_path}?sb=date&amp;order=asc">
+                                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=date&amp;order=asc">
                                                <img src="{$ximsroot}images/forum/created_act_up.gif" width="110" height="15" border="0" alt="absteigend sortieren"/>
                                             </a>
                                         </td>
@@ -210,7 +210,7 @@
                 <td bgcolor="#ced3d6" valign="middle">
                     <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" border="0" alt="{/document/data_formats/data_format[@id=$dataformat]}"/>
                     <xsl:text> </xsl:text>
-                    <a href="{$goxims_content}{$absolute_path}/{location}">
+                    <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}">
                     <xsl:value-of select="title" />
                     </a>
                 </td>
@@ -223,7 +223,7 @@
                 <td valign="middle">
                     <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" border="0" alt="{/document/data_formats/data_format[@id=$dataformat]}"/>
                     <xsl:text> </xsl:text>
-                    <a href="{$goxims_content}{$absolute_path}/{location}">
+                    <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}">
                     <xsl:value-of select="title" />
                     </a>
                 </td>

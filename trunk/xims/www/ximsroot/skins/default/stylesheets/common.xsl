@@ -45,10 +45,8 @@
     <table border="0" align="center" width="98%">
         <tr>
             <td>
-                <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST">
-                    <input type="submit" name="cancel_create" value="{$i18n/l/cancel}" class="control"/>
-                </form>
-           </td>
+                <xsl:call-template name="cancelcreateform"/>
+            </td>
         </tr>
     </table>
 </xsl:template>
@@ -71,6 +69,12 @@
     </form>
 </xsl:template>
 
+<xsl:template name="cancelcreateform">
+    <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST">
+        <input type="submit" name="cancel_create" value="{$i18n/l/cancel}" class="control"/>
+    </form>
+</xsl:template>
+
 <xsl:template name="exitredirectform">
     <xsl:variable name="object_type_id" select="object_type_id"/>
     <xsl:variable name="parent_id" select="@parent_id"/>
@@ -90,7 +94,7 @@
 </xsl:template>
 
 <xsl:template name="saveaction">
-    <input type="hidden" name="parid" value="{@id}"/>
+    <input type="hidden" name="id" value="{/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id}"/>
     <input type="submit" name="store" value="{$i18n/l/save}" class="control"/>
 </xsl:template>
 
@@ -201,7 +205,7 @@
                 <xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>
             </td>
             <td align="right" valign="top">
-                <xsl:call-template name="cancelform"/>
+                <xsl:call-template name="cancelcreateform"/>
             </td>
         </tr>
     </table>
@@ -562,6 +566,15 @@
 </xsl:template>
 
 <xsl:template name="cttobject.options">
+    <xsl:call-template name="cttobject.options.edit"/>
+    <xsl:call-template name="cttobject.options.copy"/>
+    <xsl:call-template name="cttobject.options.move"/>
+    <xsl:call-template name="cttobject.options.publish"/>
+    <xsl:call-template name="cttobject.options.acl_or_undelete"/>
+    <xsl:call-template name="cttobject.options.purge_or_delete"/>
+</xsl:template>
+
+<xsl:template name="cttobject.options.edit">
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
@@ -582,15 +595,13 @@
             </a>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                width="32"
-                height="19"
-                border="0"
-                alt=" "
-                align="left"
-            />
+            <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
+</xsl:template>
+
+<xsl:template name="cttobject.options.copy">
+    <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/view and /document/context/object/user_privileges/create">
             <a href="{$goxims_content}?id={$id};copy=1">
@@ -606,15 +617,13 @@
             </a>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                width="32"
-                height="19"
-                border="0"
-                alt=" "
-                align="left"
-            />
+            <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
+</xsl:template>
+
+<xsl:template name="cttobject.options.move">
+    <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
             <a href="{$goxims_content}?id={$id};move_browse=1;to={$id}">
@@ -634,15 +643,13 @@
             </a>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                width="32"
-                height="19"
-                border="0"
-                alt=" "
-                align="left"
-            />
+            <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
+</xsl:template>
+
+<xsl:template name="cttobject.options.publish">
+    <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
             <a href="{$goxims_content}?id={$id};publish_prompt=1">
@@ -658,15 +665,13 @@
             </a>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                width="32"
-                height="19"
-                border="0"
-                alt=" "
-                align="left"
-            />
+            <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
+</xsl:template>
+
+<xsl:template name="cttobject.options.acl_or_undelete">
+    <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
             <a href="{$goxims_content}?id={$id};obj_acllist=1">
@@ -695,15 +700,13 @@
             </a>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                width="32"
-                height="19"
-                border="0"
-                alt=" "
-                align="left"
-            />
+            <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
+</xsl:template>
+
+<xsl:template name="cttobject.options.purge_or_delete">
+    <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="user_privileges/delete and marked_deleted = '1'">
             <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
@@ -746,15 +749,21 @@
             </form>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                width="37"
-                height="19"
-                border="0"
-                alt=" "
-                align="left"
-            />
+            <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
+
+<xsl:template name="cttobject.options.spacer">
+    <img src="{$ximsroot}images/spacer_white.gif"
+        width="32"
+        height="19"
+        border="0"
+        alt=" "
+        align="left"
+    />
+</xsl:template>
+
+
 
 </xsl:stylesheet>

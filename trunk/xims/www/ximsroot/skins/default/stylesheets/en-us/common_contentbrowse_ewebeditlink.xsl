@@ -22,16 +22,16 @@
                 <td>
                     <input type="text" name="httpLink" size="60">
                         <xsl:choose>
-                            <xsl:when test="$parid = '' and $target_path = $parent_path_nosite">
+                            <xsl:when test="$objtype = '' and $target_path = $parent_path_nosite">
                                 <xsl:attribute name="value"><xsl:value-of select="'.'"/></xsl:attribute>
                             </xsl:when>
-                            <xsl:when test="$parid != '' and $target_path = $absolute_path_nosite">
+                            <xsl:when test="$objtype != '' and $target_path = $absolute_path_nosite">
                                 <xsl:attribute name="value"><xsl:value-of select="'.'"/></xsl:attribute>
                             </xsl:when>
-                            <xsl:when test="$parid = '' and contains($target_path, concat($parent_path_nosite, '/'))">
+                            <xsl:when test="$objtype = '' and contains($target_path, concat($parent_path_nosite, '/'))">
                                 <xsl:attribute name="value"><xsl:value-of select="substring-after($target_path, concat($parent_path_nosite, '/'))"/></xsl:attribute>
                             </xsl:when>
-                            <xsl:when test="$parid != '' and contains($target_path, concat($absolute_path_nosite, '/'))">
+                            <xsl:when test="$objtype != '' and contains($target_path, concat($absolute_path_nosite, '/'))">
                                 <xsl:attribute name="value"><xsl:value-of select="substring-after($target_path, concat($parent_path_nosite, '/'))"/></xsl:attribute>
                             </xsl:when>
                             <xsl:otherwise>

@@ -13,6 +13,7 @@
 <xsl:import href="../../../../../stylesheets/anondiscussionforum_common.xsl"/>
 <xsl:output method="html" encoding="utf-8"/>
 <xsl:param name="request.uri"/>
+<xsl:param name="id"/>
 
 <xsl:template match="/document/context/object">
 <html>
@@ -59,9 +60,9 @@
              <td>
 
               <!-- Begin forum -->
-    <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="POST">
+    <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="GET">
         <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-        <input type="hidden" name="parid" value="{@id}" />
+        <input type="hidden" name="id" value="{$id}" />
         <table border="0" width="600" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
         <tr>
                     <td valign="top" class="forumhead" colspan="2">Create new Topic</td>

@@ -243,12 +243,11 @@
 </xsl:template>
 
 <xsl:template name="header.cttobject.createwidget">
-    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;">
+    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET">
         <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap">
             <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="objtype">
                 <xsl:apply-templates select="/document/object_types/object_type[can_create]"/>
             </select>
-            <input type="hidden" name="parid" value="{/document/context/object/@id}" />
         </td>
         <td width="80" background="{$skimages}subheader-generic_bg.png" style="padding-top: 4">
             <xsl:text>&#160;</xsl:text>
