@@ -19,6 +19,9 @@ BEGIN
 END;
 /
 
+PROMPT Adding VLibrary Tables
+@@../../sql/Oracle/cilib_library_ddl.sql
+
 PROMPT Adding PARENT_ID column on 'CI_OBJECT_TYPES'
 ALTER TABLE CI_OBJECT_TYPES ADD (PARENT_ID NUMBER)
 /

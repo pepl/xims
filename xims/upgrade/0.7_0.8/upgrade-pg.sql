@@ -13,6 +13,9 @@ ALTER TABLE ci_documents ADD COLUMN location_path TEXT;
 -- write location_path values to existing data in ci_documents
 SELECT sync_location_path();
 
+\echo Adding VLibrary Tables
+\i ../../sql/Pg/create_library.sql
+
 \echo Adding PARENT_ID column on 'CI_OBJECT_TYPES'
 ALTER TABLE ci_object_types ADD COLUMN parent_id INTEGER  REFERENCES ci_object_types ( id ) ON DELETE CASCADE;
 
