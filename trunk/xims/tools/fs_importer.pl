@@ -18,8 +18,9 @@ use XIMS::Term;
 use File::Basename;
 use Getopt::Std;
 
-# untaint path
+# untaint path and env
 $ENV{PATH} = '/bin'; # CWD.pm needs '/bin/pwd'
+$ENV{ENV} = '';
 
 my %args;
 getopts('hd:u:p:m:', \%args);
