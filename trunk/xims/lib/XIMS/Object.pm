@@ -574,7 +574,8 @@ sub move {
 #
 # DESCRIPTION
 #    creates a copy of the object ( clone has same parent as orginal ).
-#    the clone if named 'Copy_of_...' (location and title)
+#    the clone is named 'copy_of_...' (location and title)
+#    the clone is always unpublished
 #    if scope_subtree = 1, all granted descendants are copied, too.
 #
 sub clone {
@@ -601,14 +602,14 @@ sub clone {
     }
     else {
         # same parent, so we have to find a new location for it
-        my $newlocation = "Copy_of_" . $clonedata{ location };
+        my $newlocation = "copy_of_" . $clonedata{ location };
         my $newtitle = "Copy of " . $clonedata{ title };
         
-        my $parent = XIMS::Object->new( id => $self->parent_id );
+        my $parent = XIMS::Object->new( document_id => $self->parent_id );
         if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef ) ) {
             my $index = 1;
             do {
-                $newlocation = "Copy_(" . $index . ")_of_" . $clonedata{ location };
+                $newlocation = "copy_(" . $index . ")_of_" . $clonedata{ location };
                 $newtitle = "Copy (" . $index . ") of " . $clonedata{ title };
                 $index++;
             } while ( $parent->children( location => $newlocation, marked_deleted => undef ) );
@@ -633,11 +634,11 @@ sub clone {
     }
 
     # copy all object privileges
-    my @privs = $self->data_provider->getObjectPriv( content_id => $self->document_id() );
+    my @privs = $self->data_provider->getObjectPriv( content_id => $self->id() );
     my $priv;
     my $clonepriv;
     foreach $priv ( @privs ) {
-        $priv->{ content_id } = $clone->document_id();
+        $priv->{ content_id } = $clone->id();
         $clonepriv = XIMS::ObjectPriv->new->data( %{$priv} );
         $clonepriv->create();
     }
