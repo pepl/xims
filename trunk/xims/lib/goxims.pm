@@ -148,9 +148,13 @@ sub handler {
         $prefix =~ s/::/_/g;
         $ctxt->properties->application->styleprefix( $prefix );
     }# end 'content' case
-    else {
+    # think of XIMS::REGISTEREDINTERFACES() here
+    elsif ( $interface_type =~ /users?|bookmark|defaultbookmark/ ) {
         $app_class .= $interface_type;
         $ctxt->properties->application->styleprefix( $interface_type );
+    }
+    else {
+        return NOT_FOUND;
     }
 
     ##
