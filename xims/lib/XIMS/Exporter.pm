@@ -1573,6 +1573,7 @@ use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Document );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
+use XIMS::SAX::Filter::ContentObjectPropertyResolver;
 
 sub set_sax_filters {
     XIMS::Debug( 5, "called" );
@@ -1581,10 +1582,14 @@ sub set_sax_filters {
 
     push @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
                                                                  ResolveContent => [ qw(
-                                                                                        DEPARTMENT_ID
-                                                                                        IMAGE_ID
-                                                                                        SYMNAME_TO_DOC_ID
-                                                                                       ) ] );
+                                                                                        department_id
+                                                                                        symname_to_doc_id
+                                                                                       ) ]
+                                                                 ),
+                  XIMS::SAX::Filter::ContentObjectPropertyResolver->new( User           => $self->{User},
+                                                                         ResolveContent => [ qw( image_id ) ],
+                                                                         Properties     => [ qw( abstract ) ]
+                                                                         );
 
     $self->{Options}->{appendexportfilters} = 1;
 
