@@ -997,6 +997,16 @@ table.footer {
 	color: #dd6e6e;
 }
 
+.warning {
+        equivClass: Louds;
+        caption: Warning;
+        font-weight:bold;
+        color: black;
+        background-color: yellow;
+        padding: 10px;
+        margin: 10px;
+}
+
 /* used by access_denied.html for now only */
 .action {
 	visible: false;
