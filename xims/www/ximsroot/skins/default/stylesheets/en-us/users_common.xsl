@@ -86,7 +86,12 @@
               </xsl:choose>
             </td>
             <td background="{$ximsroot}images/dyn04_dark.jpg" width="250">
-              <img src="{$ximsroot}images/options.png" width="180" height="21" alt="options"/>
+                <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
+                        width="189"
+                        height="20"
+                        alt="Options"
+                        title="Options"
+                        />
             </td>
           </tr>
 
