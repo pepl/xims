@@ -24,7 +24,7 @@
         <newsitems>
             <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="{department_id}/ou.xml"/>
             <newsitem id="{@id}">
-                <xsl:attribute name="date"><xsl:apply-templates select="last_publication_timestamp" mode="ISO8601"/></xsl:attribute>
+                <xsl:attribute name="date"><xsl:apply-templates select="creation_timestamp" mode="ISO8601"/></xsl:attribute>
                 <!-- add user-metadata here? -->
                 <title>
                     <xsl:value-of select="title"/>
