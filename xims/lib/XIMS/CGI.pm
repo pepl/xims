@@ -129,42 +129,30 @@ sub event_edit {
 
     $ctxt->properties->application->style( "edit" ) ;
 
-    if ( $r_type eq 'object' ) {
-        my $object = $ctxt->object();
+    my $object = $ctxt->object();
 
-        # operation control section
-        unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
-            return $self->event_access_denied( $ctxt );
-        }
+    # operation control section
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
 
-        if ( $self->object_locked( $ctxt ) ) {
-            XIMS::Debug( 3, "Attempt to edit locked object" );
-            $self->sendError( $ctxt,
-                              "This object is locked by " .
-                              $object->locker->firstname() .
-                              " " . $object->locker->lastname() .
-                              " since " . $object->locked_time() .
-                              ". Please try again later." );
+    if ( $self->object_locked( $ctxt ) ) {
+        XIMS::Debug( 3, "Attempt to edit locked object" );
+        $self->sendError( $ctxt,
+                            "This object is locked by " .
+                            $object->locker->firstname() .
+                            " " . $object->locker->lastname() .
+                            " since " . $object->locked_time() .
+                            ". Please try again later." );
+    }
+    else {
+        if ( $object->lock() ) {
+            XIMS::Debug( 4, "lock set" );
+            $ctxt->session->message( "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!" );
         }
         else {
-            if ( $object->lock() ) {
-                XIMS::Debug( 4, "lock set" );
-                $ctxt->session->message( "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!" );
-            }
-            else {
-                XIMS::Debug( 3, "lock not set" );
-            }
+            XIMS::Debug( 3, "lock not set" );
         }
-    } # end object logic
-    else {
-        # we are editing a user
-
-        # operation control section
-        # still not sure this is right... pepl, thoughts?
-        unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::SET_STATUS() ) {
-            return $self->event_access_denied( $ctxt );
-        }
-
     }
 
     XIMS::Debug( 5, "done" );
@@ -176,32 +164,20 @@ sub event_create {
     my ( $self, $ctxt ) = @_;
 
     my $privmask;
-
     my $r_type = $self->resource_type( $ctxt );
     return $self->event_access_denied( $ctxt ) unless defined( $r_type );
 
     $ctxt->properties->application->style( "create") ;
     $ctxt->properties->application->styleprefix( lc($self->param("objtype")) );
 
-    if ( $r_type eq 'object' ) {
-        return $self->event_access_denied( $ctxt ) unless defined( $self->param('parid') );
+    return $self->event_access_denied( $ctxt ) unless defined( $self->param('parid') );
 
-        my $parent = XIMS::Object->new( id => $self->param('parid'), User => $ctxt->session->user() );
+    my $parent = XIMS::Object->new( id => $self->param('parid'), User => $ctxt->session->user() );
 
-        $ctxt->parent( $parent );
+    $ctxt->parent( $parent );
 
-        $privmask = $ctxt->session->user->object_privmask( $parent );
-        return $self->event_access_denied( $ctxt ) unless $privmask and $privmask & XIMS::Privileges::CREATE();
-    }
-    elsif ( $r_type eq 'user' ) {
-        $privmask = $ctxt->session->user->system_privs_mask();
-        unless ( ( $privmask & XIMS::Privileges::System::CREATE_ROLE() ) ||
-                 ( $privmask & XIMS::Privileges::System::CREATE_USER() ) ) {
-
-            return $self->event_access_denied( $ctxt );
-
-        }
-    }
+    $privmask = $ctxt->session->user->object_privmask( $parent );
+    return $self->event_access_denied( $ctxt ) unless $privmask and $privmask & XIMS::Privileges::CREATE();
 
     XIMS::Debug( 5, "done" );
     return 0;
@@ -211,6 +187,9 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my $self   = shift;
     my $ctxt   = shift;
+
+    my $r_type = $self->resource_type( $ctxt );
+    return $self->event_access_denied( $ctxt ) unless defined( $r_type );
 
     my $object = $ctxt->object();
 
@@ -399,6 +378,7 @@ sub sendError {
     my $msg  = shift;
 
     $ctxt->session->error_msg( $msg );
+    $ctxt->properties->application->styleprefix( 'common' );
     $ctxt->properties->application->style( "error" );
 }
 
@@ -816,7 +796,6 @@ sub event_undelete {
     my ( $self, $ctxt ) = @_;
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
@@ -862,7 +841,6 @@ sub event_trashcan {
     my ( $self, $ctxt ) = @_;
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
@@ -925,7 +903,6 @@ sub event_delete {
     my ( $self, $ctxt ) = @_;
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
@@ -1034,7 +1011,6 @@ sub event_move_browse {
     $ctxt->properties->application->style( "error" );
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::MOVE();
 
@@ -1070,7 +1046,6 @@ sub event_move {
     $ctxt->properties->application->style( "error" );
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::MOVE();
 
@@ -1141,7 +1116,6 @@ sub event_publish_prompt {
     my ( $self, $ctxt ) = @_;
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
@@ -1191,7 +1165,6 @@ sub event_publish {
     my ( $self, $ctxt ) = @_;
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
@@ -1252,7 +1225,6 @@ sub event_unpublish {
     my ( $self, $ctxt ) = @_;
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
@@ -1537,7 +1509,6 @@ sub event_reposition {
     my $object = $ctxt->object;
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
-
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::WRITE();
 
@@ -1705,6 +1676,9 @@ sub body_ref_objects {
 sub event_search {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    # if we are coming from a different interface (e.g. defaultboomark or user(s)) we have to check for that here
+    return $self->event_access_denied( $ctxt ) unless $ctxt->object();
 
     my $user = $ctxt->session->user();
     my $search = $self->param('s');
