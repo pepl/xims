@@ -206,26 +206,41 @@ INSERT INTO ci_bookmarks ( id, owner_id, content_id, stdhome)
 -- grants on object-types (for creation)
 -- Document
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 1, 2, 2 );
+       VALUES ( 3, 2, 2 );
 -- Folder
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 1, 2, 1 );
+       VALUES ( 3, 2, 1 );
 -- File
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 1, 2, 4 );
+       VALUES ( 3, 2, 4 );
 -- URLLink
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 1, 2, 11 );
+       VALUES ( 3, 2, 11 );
 -- Image
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 1, 2, 3 );
+       VALUES ( 3, 2, 3 );
 -- DocBooxXML
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 1, 2, 9 );
+       VALUES ( 3, 2, 9 );
+-- AxPointPresentation
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
+       VALUES ( 3, 2, 8 );
+-- XML
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
+       VALUES ( 3, 2, 5 );
+-- XSLStylesheet
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
+       VALUES ( 3, 2, 7 );
+-- SymbolicLink
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
+       VALUES ( 3, 2, 12 );
+-- AnonDiscussionForum
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
+       VALUES ( 3, 2, 13 );
 
 -- grants on the created folders should go here
 
 \echo inserting into ci_object_privs_granted...
 
 INSERT INTO ci_object_privs_granted ( privilege_mask, grantee_id, grantor_id, content_id )
-       VALUES ( 1, 1, 2, 2 );
+       VALUES ( 1, 3, 2, 2 );
