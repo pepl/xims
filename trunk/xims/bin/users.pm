@@ -176,8 +176,8 @@ sub event_create_update {
     my $user = XIMS::User->new->data( %udata );
     my $uid = $user->create();
     if ( $uid ) {
-        $ctxt->properties->application->style( 'update' );
-        $ctxt->session->message( "User '" . $user->name() . "' created successfully with ID '$uid'." );
+        $ctxt->userlist( [ $user ] ); # put it there, so that the stylesheet knows what kind of user we created
+        $ctxt->properties->application->style( 'create_update' );
     }
     else {
         $self->sendError( $ctxt, "Error creating user '" .
@@ -462,7 +462,9 @@ sub event_grant_role_update {
     my $role = XIMS::User->new( name => $rname );
 
     if ( $user and $role ) {
-        if ( $user->grant_role_privileges( grantor => $ctxt->session->user(), grantee => $user, role => $role ) ) {
+        my $default_role;
+        $default_role = 1 unless $user->roles_granted(); # grant the first role grant of a user/role as default_role
+        if ( $user->grant_role_privileges( grantor => $ctxt->session->user(), grantee => $user, role => $role, default_role => $default_role ) ) {
             $ctxt->session->message( "Role '$rname' successfully granted to user/role '$uname'." );
             $ctxt->properties->application->style( 'role_management_update' );
         }

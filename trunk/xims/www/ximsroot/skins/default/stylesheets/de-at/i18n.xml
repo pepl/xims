@@ -170,5 +170,20 @@
 <!-- Begin css_default -->
 <Validate_CSS>CSS Validieren</Validate_CSS>
 <!-- End css_default -->
+<!-- Begin users_common -->
+<Lastname>Nachname</Lastname>
+<System_privileges>System Privilegien</System_privileges>
+<Administrator>Administrator</Administrator>
+<Account_status>Account Status</Account_status>
+<Enabled>Aktiv</Enabled>
+<Disabled>Gesperrt</Disabled>
+<Managing>Verwalte</Managing>
+<created>erstellt</created>
+<User>BenutzerIn</User>
+<Role>Rolle</Role>
+<!-- End users_common -->
+<!-- Begin users_create_update -->
+<Grant_role>Rolle zuweisen</Grant_role>
+<!-- End users_create_update-->
 </l>
 
