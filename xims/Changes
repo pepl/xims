@@ -1,3 +1,19 @@
+0.9
+  - Fixed wrong entries in location_path columns when creating objects directly under /root (PostgreSQL)
+  - Fixed foreign key constraints going to the wrong table (Oracle)
+  - Implemented option to assign a stylesheet directory for /gopublic/-published objects instead of using public/*.xsl
+  - Got rid of hard-coded publishing preview style. It is customizable using/assigning document_publishing_preview.xsl now
+  - New 'is_objectroot' object type property for inheritation logic (Currently set for DepartmentRoot, 
+    SiteRoot, VLibrary, and Portal)
+  - New XIMS::Object methods: objectroot_ancestors(), stylesheet(), css(), image(), and script() using
+    ancestrial objectroot settings for cases where inheritation is wanted
+  - New JavaScript object type
+  - Search terms are highlighted in the search result now
+  - When uploading Files, content type 'application/octet-stream' is used as fallback value for unknown
+    content types instead of rejecting the File
+  - Fixed utf-8 encoded strings in XIMS::Importer::_clean_location()
+  - Various smaller fixes and updates
+
 0.8
   - Better Performance (children are fetched only if needed, updates for fewer DB hits and cached queries)
   - Users can select their favourite document editor (Plain, HTMLArea, eWebEditPro) during editing now
