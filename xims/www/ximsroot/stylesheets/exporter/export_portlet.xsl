@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -18,7 +18,7 @@
     </xsl:template>
 
     <xsl:template match="children/object">
-        <portlet-item id="{@id}" parent_id="{@parent_id}">
+        <portlet-item id="{@id}" parent_id="{@parent_id}" document_id="{@document_id}">
             <xsl:apply-templates/>
         </portlet-item>
     </xsl:template>
