@@ -419,7 +419,7 @@ sub create {
 
     $self->{User} ||= $user;
 
-    my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
+    my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() ) || 0;
     $self->position( $max_position + 1 );
 
     $self->department_id( __decide_department_id( id => $self->parent_id() ) );
