@@ -20,6 +20,19 @@
 
     <xsl:param name="mo" select="'subject'"/>
     <xsl:param name="colms" select="3"/>
+    <xsl:param name="vls"/>
+    <xsl:param name="publications"/>
+    <xsl:param name="authors"/>
+    <xsl:param name="page" select="1" />
+    <xsl:param name="subject"/>
+    <xsl:param name="subject_id"/>
+    <xsl:param name="subject_name"/>
+    <xsl:param name="author"/>
+    <xsl:param name="author_id"/>
+    <xsl:param name="author_name"/>
+    <xsl:param name="publication"/>
+    <xsl:param name="publication_id"/>
+    <xsl:param name="publication_name"/>
 
     <xsl:template name="head_default">
         <head>
@@ -28,6 +41,35 @@
             <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <script type="text/javascript">
+            <xsl:comment>
+            function setBg(elid){
+                var els = document.getElementsByName(elid);
+                /*
+                   This relies on the fact, that the second assigned stylesheet has
+                   sane background-color values defined in the first two rules.
+                */
+
+                var color0;
+                var color1;
+
+                /* IE and the Gecko behaves differently */
+                if (document.all) {
+                    color0 = document.styleSheets[1].rules.item(0).style.backgroundColor;
+                    color1 = document.styleSheets[1].rules.item(1).style.backgroundColor;
+                }
+                else {
+                    color0 = document.styleSheets[1].cssRules[0].style.backgroundColor
+                    color1 = document.styleSheets[1].cssRules[1].style.backgroundColor
+                }
+
+                var i;
+                for(i = 0;i&lt;els.length;i++){
+                    eval("els[i].style.backgroundColor = color"+(i%2));
+                }
+            }
+            //</xsl:comment>
+            </script>
         </head>
     </xsl:template>
 
@@ -49,7 +91,7 @@
     </xsl:template>
 
     <xsl:template name="item_div">
-        <div id="{$mo}">
+        <div class="vliteminfo" name="vliteminfo" align="center">
             <xsl:choose>
                 <xsl:when test="$mo = 'author'">
                     <div>
@@ -68,16 +110,15 @@
                     </div>
                 </xsl:when>
                 <xsl:otherwise>
-                    <div id="subject">
-                        <div>
-                            <xsl:call-template name="subject_link"/>
-                        </div>
-                        <div>
-                            <xsl:call-template name="decide_plural"/>
-                            <xsl:value-of select="$i18n_vlib/l/last_modified_at"/>
-                            <xsl:text> </xsl:text>
-                            <xsl:apply-templates select="last_modification_timestamp" mode="datetime" />
-                        </div>
+                    <div>
+                        <xsl:call-template name="subject_link"/>
+                    </div>
+                    <div>
+                        <xsl:call-template name="decide_plural"/>
+                        <xsl:text> </xsl:text>
+                        <xsl:value-of select="$i18n_vlib/l/last_modified_at"/>
+                        <br />
+                        <xsl:apply-templates select="last_modification_timestamp" mode="datetime" />
                     </div>
                 </xsl:otherwise>
             </xsl:choose>
@@ -98,36 +139,73 @@
     </xsl:template>
 
     <xsl:template name="switch_vlib_views_action">
-        <ul>
-            <xsl:if test="$mo != 'subject'">
-                <li>
-                    <a href="{$xims_box}{$goxims_content}{$absolute_path}">
-                        <xsl:value-of select="$i18n_vlib/l/subject_list"/>
-                    </a>
-                </li>
-            </xsl:if>
-            <xsl:if test="$mo != 'author'">
-                <li>
-                    <a href="{$xims_box}{$goxims_content}{$absolute_path}?authors=1">
-                        <xsl:value-of select="$i18n_vlib/l/author_list"/>
-                    </a>
-                </li>
-            </xsl:if>
-            <xsl:if test="$mo != 'publication'">
-                <li>
-                    <a href="{$xims_box}{$goxims_content}{$absolute_path}?publications=1">
-                        <xsl:value-of select="$i18n_vlib/l/publication_list"/>
-                    </a>
-                </li>
-            </xsl:if>
-        </ul>
+        <table cellpadding="0" cellspacing="0" style="margin: 0px;">
+            <tr>
+                <td valign="top">
+                    <strong>
+                        <xsl:value-of select="$i18n_vlib/l/Switch_to"/>
+                    </strong>
+                </td>
+                <td valign="top">
+                    <ul>
+                        <xsl:if test="$mo != 'subject'">
+                            <li>
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}">
+                                    <xsl:value-of select="$i18n_vlib/l/subject_list"/>
+                                </a>
+                            </li>
+                        </xsl:if>
+                        <xsl:if test="$mo != 'author'">
+                            <li>
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?authors=1">
+                                    <xsl:value-of select="$i18n_vlib/l/author_list"/>
+                                </a>
+                            </li>
+                        </xsl:if>
+                        <xsl:if test="$mo != 'publication'">
+                            <li>
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?publications=1">
+                                    <xsl:value-of select="$i18n_vlib/l/publication_list"/>
+                                </a>
+                            </li>
+                        </xsl:if>
+                    </ul>
+                </td>
+            </tr>
+        </table>
     </xsl:template>
 
 
     <xsl:template name="vlib_create_action">
-        <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::sDocBookXML">
+        - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::sDocBookXML">
         <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>
         </a>
+    </xsl:template>
+
+    <xsl:template name="vlib_search_action">
+        <xsl:variable name="Search" select="$i18n_vlib/l/Fulltext_search"/>
+        <form style="margin-bottom: 0;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_search">
+            <strong><xsl:value-of select="$Search"/></strong>
+            <xsl:text>&#160;</xsl:text>
+            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="vls" size="17" maxlength="200">
+            <xsl:if test="$vls != ''">
+                <xsl:attribute name="value"><xsl:value-of select="$vls"/></xsl:attribute>
+            </xsl:if>
+            </input>
+            <xsl:text>&#160;</xsl:text>
+            <input type="image"
+                    src="{$skimages}go.png"
+                    name="submit"
+                    width="25"
+                    height="14"
+                    alt="{$Search}"
+                    title="{$Search}"
+                    border="0"
+                    style="vertical-align: text-bottom;"
+            />
+            <input type="hidden" name="start_here" value="1"/>
+            <input type="hidden" name="vlsearch" value="1"/>
+        </form>
     </xsl:template>
 
     <xsl:template name="author_link">
@@ -147,6 +225,36 @@
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject=1;subject_id={id}">
             <xsl:value-of select="name"/>
         </a>
+    </xsl:template>
+
+    <xsl:template name="search_switch">
+        <xsl:param name="mo"/>
+        <table width="100%" border="0" style="margin: 0px;" id="vlsearchswitch">
+            <tr>
+                <td valign="top" width="50%" align="center" class="vlsearchswitchcell">
+                    <xsl:call-template name="vlib_search_action"/>
+                </td>
+                <td valign="top" width="50%" align="center" class="vlsearchswitchcell">
+                    <xsl:call-template name="switch_vlib_views_action">
+                        <xsl:with-param name="mo" select="$mo"/>
+                    </xsl:call-template>
+                </td>
+            </tr>
+        </table>
+    </xsl:template>
+
+    <xsl:template name="mode_switcher">
+        <xsl:variable name="vlqs" select="concat('publication=',$publication,';publication_id=',$publication_id,';author=',$author,';author_id=',$author_id,';subject=',$subject,';subject_id=',$subject_id,';publications=',$publications,';authors=',$authors,';page=',$page)"/>
+<!--        <xsl:variable name="vlqs" select="concat('"/>-->
+
+        <xsl:choose>
+            <xsl:when test="$m='e'">
+                <a href="{$goxims_content}{$absolute_path}?m=b;{$vlqs}"><xsl:value-of select="$i18n/l/switch_to_browse"/></a>
+            </xsl:when>
+            <xsl:otherwise>
+                <a href="{$goxims_content}{$absolute_path}?m=e;{$vlqs}"><xsl:value-of select="$i18n/l/switch_to_edit"/></a>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 </xsl:stylesheet>

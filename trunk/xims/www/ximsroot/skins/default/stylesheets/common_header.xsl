@@ -82,14 +82,7 @@
                         </xsl:when>
                         <xsl:otherwise>
                             /
-                            <xsl:choose>
-                                <xsl:when test="$m='e'">
-                                    <a href="{$goxims_content}{$absolute_path}?m=b;sb={$sb};order={$order}"><xsl:value-of select="$i18n/l/switch_to_browse"/></a>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <a href="{$goxims_content}{$absolute_path}?m=e;sb={$sb};order={$order}"><xsl:value-of select="$i18n/l/switch_to_edit"/></a>
-                                </xsl:otherwise>
-                            </xsl:choose>
+                            <xsl:call-template name="mode_switcher"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </font>
@@ -305,8 +298,21 @@
     </form>
 </xsl:template>
 
+<xsl:template name="mode_switcher">
+    <xsl:choose>
+        <xsl:when test="$m='e'">
+            <a href="{$goxims_content}{$absolute_path}?m=b;sb={$sb};order={$order}"><xsl:value-of select="$i18n/l/switch_to_browse"/></a>
+        </xsl:when>
+        <xsl:otherwise>
+            <a href="{$goxims_content}{$absolute_path}?m=e;sb={$sb};order={$order}"><xsl:value-of select="$i18n/l/switch_to_edit"/></a>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
 <xsl:template match="object_type">
     <option value="{name}"><xsl:value-of select="name"/></option>
 </xsl:template>
+
+
 
 </xsl:stylesheet>
