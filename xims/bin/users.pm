@@ -59,10 +59,10 @@ sub event_init {
     # test for system_privmask later; for now, just check for admin
 
     unless ( $ctxt->session->user->admin() ) {
-        # hmm...why is this needed...
-        $ctxt->properties->application->styleprefix( 'common' );
-    $self->sendEvent( 'access_denied' );
+        $self->sendEvent( 'access_denied' );
     }
+
+    $ctxt->sax_generator( 'XIMS::SAX::Generator::Users' );
 }
 
 # the 'list all users' screen
@@ -81,6 +81,12 @@ sub event_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    my $privmask = $ctxt->session->user->system_privs_mask();
+    unless ( ( $privmask & XIMS::Privileges::System::CREATE_ROLE() ) ||
+                ( $privmask & XIMS::Privileges::System::CREATE_USER() ) ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     $ctxt->properties->application->style( 'create' );
 }
 
@@ -88,6 +94,12 @@ sub event_create {
 sub event_create_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    my $privmask = $ctxt->session->user->system_privs_mask();
+    unless ( ( $privmask & XIMS::Privileges::System::CREATE_ROLE() ) ||
+                ( $privmask & XIMS::Privileges::System::CREATE_USER() ) ) {
+        return $self->event_access_denied( $ctxt );
+    }
 
     my @required_fields = qw( name lastname admin enabled password object_type);
     my %udata = ();
@@ -180,6 +192,12 @@ sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    my $privmask = $ctxt->session->user->system_privs_mask();
+    unless ( ( $privmask & XIMS::Privileges::System::CREATE_ROLE() ) ||
+                ( $privmask & XIMS::Privileges::System::CREATE_USER() ) ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     my $uname = $self->param('name');
     my $user = XIMS::User->new( name => $uname );
 
@@ -197,41 +215,63 @@ sub event_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    my $privmask = $ctxt->session->user->system_privs_mask();
     my $id = $self->param('id');
     my $user = XIMS::User->new( id => $id );
 
     if ( $user ) {
         my $name = $self->param('name');
-        $user->name($name ) if length $name > 0;
-        $user->lastname( $self->param('lastname') );
-        $user->middlename( $self->param('middlename') );
-        $user->firstname( $self->param('firstname') );
-        $user->email( $self->param('email') );
+        $user->name($name ) if length $name > 0
+            and ( ( $privmask & XIMS::Privileges::System::CHANGE_ROLE_NAME() ) ||
+                  ( $privmask & XIMS::Privileges::System::CHANGE_USER_NAME() )
+                );
+        if ( ( $privmask & XIMS::Privileges::System::CHANGE_ROLE_FULLNAME() ) ||
+                ( $privmask & XIMS::Privileges::System::CHANGE_USER_FULLNAME() )
+            ) {
+            $user->lastname( $self->param('lastname') );
+            $user->middlename( $self->param('middlename') );
+            $user->firstname( $self->param('firstname') );
+        }
+        $user->email( $self->param('email') ); # XIMS::Privileges::System::RESET_EMAIL() needed for that
 
-        # build system_privs_mask from parameters 'system_privs_XXX', each holding a single bit of the mask
-        my $system_privs_mask = 0;
-        foreach my $privname ( XIMS::Privileges::System::list() ) {
-            if( $self->param( 'system_privs_' . $privname ) ) {
-                $system_privs_mask |= XIMS::Privileges::System->$privname;
+        if ( $privmask & XIMS::Privileges::System::CHANGE_SYSPRIVS_MASK() ) {
+            # build system_privs_mask from parameters 'system_privs_XXX', each holding a single bit of the mask
+            my $system_privs_mask = 0;
+            foreach my $privname ( XIMS::Privileges::System::list() ) {
+                if( $self->param( 'system_privs_' . $privname ) ) {
+                    $system_privs_mask |= XIMS::Privileges::System->$privname;
+                }
+            }
+            $user->system_privs_mask( $system_privs_mask );
+        }
+
+        if ( $privmask & XIMS::Privileges::System::SET_ADMIN_EQU() ) {
+            # kinda weird to do it this way, but
+            # it avoids Perl's "0 is undef" madness
+            # as the data comes in through the form.
+            if ( $self->param('admin') eq 'true' ) {
+                $user->admin( '1' );
+
+                #
+                # grant to admins role here?
+                #
+            }
+            else {
+                $user->admin( '0' );
+
+                #
+                # revoke from admins role here?
+                #
             }
         }
-        $user->system_privs_mask( $system_privs_mask );
 
-        # kinda weird to do it this way, but
-        # it avoids Perl's "0 is undef" madness
-        # as the data comes in through the form.
-        if ( $self->param('admin') eq 'true' ) {
-            $user->admin( '1' );
-        }
-        else {
-            $user->admin( '0' );
-        }
-
-        if ( $self->param('enabled') eq 'true' ) {
-            $user->enabled( '1' );
-        }
-        else {
-            $user->enabled( '0' );
+        if ( $privmask & XIMS::Privileges::System::SET_STATUS() ) {
+            if ( $self->param('enabled') eq 'true' ) {
+                $user->enabled( '1' );
+            }
+            else {
+                $user->enabled( '0' );
+            }
         }
 
         if ( $user->update ) {
@@ -252,12 +292,20 @@ sub event_passwd {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::RESET_PASSWORD() ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     $ctxt->properties->application->style( 'passwd_edit' );
 }
 # the 'change password' confirmation and data handling screen
 sub event_passwd_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::RESET_PASSWORD() ) {
+        return $self->event_access_denied( $ctxt );
+    }
 
     my $uname = $self->param('name');
     my $pass1 = $self->param('password1');
@@ -295,6 +343,12 @@ sub event_remove {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    my $privmask = $ctxt->session->user->system_privs_mask();
+    unless ( ( $privmask & XIMS::Privileges::System::DELETE_ROLE() ) ||
+                ( $privmask & XIMS::Privileges::System::DELETE_USER() ) ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     $ctxt->properties->application->style( 'remove' );
 
     my $uname = $self->param('name');
@@ -305,6 +359,12 @@ sub event_remove {
 sub event_remove_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    my $privmask = $ctxt->session->user->system_privs_mask();
+    unless ( ( $privmask & XIMS::Privileges::System::DELETE_ROLE() ) ||
+                ( $privmask & XIMS::Privileges::System::DELETE_USER() ) ) {
+        return $self->event_access_denied( $ctxt );
+    }
 
     $ctxt->properties->application->style( 'remove' );
 
@@ -329,6 +389,10 @@ sub event_manage_roles {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GRANT_ROLE() ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     my $uname = $self->param('name');
     my $user = XIMS::User->new( name => $uname );
 
@@ -349,6 +413,10 @@ sub event_manage_roles {
 sub event_grant_role {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GRANT_ROLE() ) {
+        return $self->event_access_denied( $ctxt );
+    }
 
     my $uname = $self->param('name');
     my $user = XIMS::User->new( name => $uname );
@@ -383,6 +451,10 @@ sub event_grant_role_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GRANT_ROLE() ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     my $uname = $self->param('name');
     my $user = XIMS::User->new( name => $uname );
 
@@ -408,6 +480,10 @@ sub event_grant_role_update {
 sub event_revoke_role {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GRANT_ROLE() ) {
+        return $self->event_access_denied( $ctxt );
+    }
 
     my $uname = $self->param('name');
     my $user = XIMS::User->new( name => $uname );

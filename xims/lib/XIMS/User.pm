@@ -153,6 +153,16 @@ sub object_privileges {
 #
 #}
 
+sub system_privileges {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $mask = $self->system_privs_mask();
+    return undef unless $mask;
+    my $privs_hash = XIMS::Helpers::system_privmask_to_hash( $mask );
+    return %{$privs_hash} if ref( $privs_hash ) eq 'HASH' and keys( %{$privs_hash} ) > 0;
+    return undef;
+}
+
 # ubu: fixme
 sub default_bookmark {
     XIMS::Debug( 5, "called" );
