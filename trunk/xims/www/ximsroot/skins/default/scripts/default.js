@@ -8,7 +8,7 @@
 agent = navigator.userAgent
 browser = 0
 selected = ''
-if (agent.indexOf("a/3",1) == 6 || agent.indexOf("a/4",1) == 6) {browser = 1} else {browser = 0}
+if (agent.indexOf("a/3",1) == 6 || agent.indexOf("a/4",1) == 6 || agent.indexOf("a/5",1) == 6) {browser = 1} else {browser = 0}
 
 // Cache Image
 
