@@ -14,7 +14,7 @@ use XIMS::AbstractClass;
 @ISA = qw( XIMS::AbstractClass );
 
 use Digest::MD5 qw( md5_hex );
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN {
      @Fields = @{XIMS::Names::property_interface_names('User')};
@@ -163,7 +163,6 @@ sub system_privileges {
     return undef;
 }
 
-# ubu: fixme
 sub default_bookmark {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -178,6 +177,27 @@ sub default_bookmark {
             return $bmk;
         }
     }
+}
+
+sub bookmarks {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    my @userid = ( $self->id() );
+    my @roles_granted_ids = map { $_->id() } $self->roles_granted();
+    my $explicit_only = delete $args{explicit_only};
+    push @userid, @roles_granted_ids unless $explicit_only;
+
+    my %params;
+    $params{owner_id} = \@userid;
+    $params{stdhome} = $args{stdhome} if exists $args{stdhome};
+    $params{content_id} = $args{content_id} if exists $args{content_id};
+
+    my @bookmarks_data = $self->data_provider->getBookmark( %params );
+    my @bookmarks = map { XIMS::Bookmark->new->data( %{$_} ) } @bookmarks_data;
+    #warn "bookmarks" . Dumper( \@bookmarks);
+    return wantarray ? @bookmarks : $bookmarks[0];
 }
 
 # returns a list of all the roles that the

@@ -450,6 +450,28 @@ sub resolve_content {
          );
 }
 
+sub resolve_user {
+    my $self = shift;
+    my $ctxt = shift;
+    my $list = shift;
+
+    return unless defined $list and scalar @$list;
+
+    $ctxt->sax_filter( [] ) unless defined $ctxt->sax_filter();
+
+    eval "require XIMS::SAX::Filter::UserIDNameResolver;";
+    if ( $@ ) {
+        XIMS::Debug( 2, "could not load UserIDNameResolver: $@" );
+        return 0;
+    }
+
+    push ( @{$ctxt->sax_filter()},
+           XIMS::SAX::Filter::UserIDNameResolver->new( Provider => $ctxt->data_provider(),
+                                                       ResolveUser => $list,
+                                                     )
+         );
+}
+
 sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;
 

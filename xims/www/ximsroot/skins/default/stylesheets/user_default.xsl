@@ -60,6 +60,15 @@
 </xsl:template>
 
 <xsl:template name="cttobject.last_modified">
+    <xsl:choose>
+        <xsl:when test="marked_deleted=1">
+            <xsl:attribute name="bgcolor">#c6c6c6</xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
+        </xsl:otherwise>
+    </xsl:choose>
+
     <img src="{$ximsroot}images/spacer_white.gif" width="9" border="0" alt="" />
     <span><xsl:attribute name="title"><xsl:value-of select="$l_last_modified_by"/>: <xsl:call-template name="modifierfullname"/></xsl:attribute>
         <xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>

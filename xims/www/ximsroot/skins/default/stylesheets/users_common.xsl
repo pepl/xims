@@ -13,7 +13,7 @@
 
 <xsl:template name="head_default">
     <head>
-        <title><xsl:value-of select="$i18n/l/Managing"/> <xsl:value-of select="$i18n/l/Users"/>/<xsl:value-of select="$i18n/l/Roles"/> - XIMS</title>
+        <title><xsl:value-of select="$i18n/l/Managing"/>&#160;<xsl:value-of select="$i18n/l/Users"/>/<xsl:value-of select="$i18n/l/Roles"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
@@ -92,8 +92,8 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td background="{$ximsroot}images/dyn04_dark.jpg" width="250">
-              <img src="{$ximsroot}images/options.png" width="180" height="21" alt="options"/>
+            <td background="{$skimages}generic_tablebg_1x20.png" width="250">
+              <xsl:value-of select="$i18n/l/Options"/>
             </td>
           </tr>
 

@@ -41,6 +41,7 @@ sub registerEvents {
           grant_role
           grant_role_update
           revoke_role
+          bookmarks
           )
         );
 }
@@ -201,7 +202,7 @@ sub event_edit {
     my $uname = $self->param('name');
     my $user = XIMS::User->new( name => $uname );
 
-    if ( $user ) {
+    if ( $user and $user->id() ) {
         $ctxt->user( $user );
         $ctxt->properties->application->style( 'edit' );
     }
@@ -219,7 +220,7 @@ sub event_update {
     my $id = $self->param('id');
     my $user = XIMS::User->new( id => $id );
 
-    if ( $user ) {
+    if ( $user and $user->id() ) {
         my $name = $self->param('name');
         $user->name($name ) if length $name > 0
             and ( ( $privmask & XIMS::Privileges::System::CHANGE_ROLE_NAME() ) ||
@@ -316,7 +317,7 @@ sub event_passwd_update {
 
         $user->password( Digest::MD5::md5_hex( $pass1 ) );
 
-        if ( $user ) {
+        if ( $user and $user->id() ) {
             if ( $user->update() ) {
                 $ctxt->properties->application->style( 'update' );
                 $ctxt->session->message( "Password for user '" . $user->name . "' updated successfully." );
@@ -371,7 +372,7 @@ sub event_remove_update {
     my $uname = $self->param('name');
     my $user = XIMS::User->new( name => $uname );
 
-    if ( $user ) {
+    if ( $user and $user->id() ) {
         if ( $user->delete() ) {
             $ctxt->properties->application->style( 'update' );
             $ctxt->session->message( "User '$uname' deleted successfully." );
@@ -399,7 +400,7 @@ sub event_manage_roles {
     my %conditions;
     $conditions{explicit_only} = 1 if $self->param('explicit_only');
 
-    if ( $user ) {
+    if ( $user and $user->id() ) {
         $ctxt->user( $user );
         $ctxt->userlist( [ $user->roles_granted( %conditions ) ] );
         $ctxt->properties->application->style( 'manage_roles' );
@@ -421,7 +422,7 @@ sub event_grant_role {
     my $uname = $self->param('name');
     my $user = XIMS::User->new( name => $uname );
 
-    if ( $user ) {
+    if ( $user and $user->id() ) {
         my $dp = $ctxt->data_provider();
         my @big_user_data_list = $dp->getUser();
         my @users_list = map { XIMS::User->new( id => $_->{'user.id'} ) } @big_user_data_list;
@@ -461,7 +462,7 @@ sub event_grant_role_update {
     my $rname = $self->param('role');
     my $role = XIMS::User->new( name => $rname );
 
-    if ( $user and $role ) {
+    if ( $user and $user->id() and $role and $role->id() ) {
         my $default_role;
         $default_role = 1 unless $user->roles_granted(); # grant the first role grant of a user/role as default_role
         if ( $user->grant_role_privileges( grantor => $ctxt->session->user(), grantee => $user, role => $role, default_role => $default_role ) ) {
@@ -493,7 +494,7 @@ sub event_revoke_role {
     my $rname = $self->param('role');
     my $role = XIMS::User->new( name => $rname );
 
-    if ( $user and $role ) {
+    if ( $user and $user->id() and $role and $role->id() ) {
         my $privs_object = XIMS::UserPriv->new( grantee_id => $user->id(), id => $role->id() );
         if ( $privs_object and $privs_object->delete() ) {
             $ctxt->properties->application->style( 'role_management_update' );
@@ -510,6 +511,31 @@ sub event_revoke_role {
 
 }
 
+sub event_bookmarks {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    # fixme
+    #unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::XXX() ) {
+    #    return $self->event_access_denied( $ctxt );
+    #}
+
+    my $uname = $self->param('name');
+    my $user = XIMS::User->new( name => $uname );
+
+    if ( $user and $user->id() ) {
+        my @bookmarks = $user->bookmarks( explicit_only => 1 );
+        $ctxt->bookmarklist( \@bookmarks );
+        $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+        $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
+        $ctxt->properties->application->style( 'bookmarks' );
+    }
+    else {
+        XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
+        $self->sendError( $ctxt, "User '$uname' does not exist." );
+    }
+    return 0;
+}
 
 # END RUNTIME EVENTS
 # #############################################################################

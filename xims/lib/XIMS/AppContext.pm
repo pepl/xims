@@ -26,6 +26,7 @@ BEGIN {
                 'object', # used for content-object-management
                 'objectlist', # used for content-object-listings like search results or site maps
                 'userobjectlist', # used for content-object-listings with user context
+                'bookmarklist', # used for bookmarklisting during user/role-management
                 'parent', # needed during object creation
                 'session',
                 'cookie',

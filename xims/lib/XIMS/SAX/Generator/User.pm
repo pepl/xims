@@ -21,6 +21,10 @@ sub prepare {
         $doc_data->{userobjectlist}->{objectlist} = { object => $ctxt->userobjectlist() };
     }
 
+    # add the user's bookmarks.
+    my @bookmarks = $ctxt->session->user->bookmarks();
+    $doc_data->{context}->{session}->{user}->{bookmarks} = { bookmark => \@bookmarks };
+
     my @object_types = $ctxt->data_provider->object_types();
     my @data_formats = $ctxt->data_provider->data_formats();
     $doc_data->{object_types} = {object_type => \@object_types};

@@ -182,6 +182,10 @@
 <User>User</User>
 <Role>Role</Role>
 <!-- End users_common -->
+<!-- Begin users_default -->
+<Change_password>Change Password</Change_password>
+<Role_membership>Role Membership</Role_membership>
+<!-- End users_default -->
 <!-- Begin users_create_update -->
 <Grant_role>Grant Role</Grant_role>
 <!-- End users_create_update-->
