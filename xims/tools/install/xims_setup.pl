@@ -25,7 +25,7 @@ print $term->banner( "Setup Tool" );
 if ( $args{h} ) {
     print qq*
 
-  Usage: $0 [-h|-c|-a httpdconf -u user -p -pwd -n dbname -x path_to_tidy -t dbtype [-b host [-o port]]]
+  Usage: $0 [-h|-c|-a httpdconf -u user -p pwd -n dbname -x path_to_tidy -t dbtype [-b host [-o port]]]
         -a The path to your Apache's config file
         -u The name of your database user to connect to the XIMS
            database
