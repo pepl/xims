@@ -52,7 +52,7 @@ while ( my $object = $iterator->getNext() ) {
     # the second time meaning *_middlename. Fixing this here
     $count += $body =~ s/column name="created_by_lastname"/column name="created_by_middlename"/;
     $count += $body =~ s/column name="last_modified_by_lastname"/column name="last_modified_by_middlename"/;
-    $count += $body =~ s/column name="owned_by_lastname"/column name="owned_modified_by_middlename"/;
+    $count += $body =~ s/column name="owned_by_lastname"/column name="owned_by_middlename"/;
     if ( $count ) {
         $object->body( $body );
         if ( not $object->update( User => $user, no_modder => 1 ) ) {
