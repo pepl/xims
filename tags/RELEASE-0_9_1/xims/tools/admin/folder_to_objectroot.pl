@@ -1,0 +1,95 @@
+#!/usr/bin/perl -w
+# Copyright (c) 2002-2004 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+
+use strict;
+use warnings;
+
+my $xims_home = $ENV{'XIMS_HOME'} || '/usr/local/xims';
+die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$xims_home/Makefile";
+use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib",($ENV{'XIMS_HOME'} || '/usr/local/xims')."/tools/lib";
+
+use XIMS::Object;
+use XIMS::ObjectType;
+use XIMS::DataFormat;
+
+use XIMS::Term;
+use Getopt::Std;
+
+my %args;
+getopts('hd:u:p:s:', \%args);
+
+my $term = XIMS::Term->new( debuglevel => $args{d} );
+print $term->banner( "Folder to Site|Department-Root Converter" );
+my $path = $ARGV[0];
+
+if ( $args{h} ) {
+    print usage();
+    exit;
+}
+
+unless ( $path ) {
+    die usage();
+}
+
+my $user = $term->authenticate( %args );
+die "Could not authenticate user '".$args{u}."'.\n" unless $user and $user->id();
+
+my $object = XIMS::Object->new( User => $user, path => $path );
+die "Could not find object '$path'.\n" unless $object and $object->id();
+
+my $privmask = $user->object_privmask( $object );
+die "Access Denied. You do not have privileges to modify '$path'.\n" unless $privmask and ($privmask & XIMS::Privileges::MODIFY());
+
+my $folder_ot = XIMS::ObjectType->new( name => 'Folder' );
+die "Object '$path' is not a Folder.\n" unless $object->object_type_id() == $folder_ot->id();
+
+my $objroot_name = $args{s} ? 'SiteRoot' : 'DepartmentRoot';
+my $objroot_ot = XIMS::ObjectType->new( name => $objroot_name );
+die "Could not resolve object type for ObjectRoot (should not happen).\n" unless $objroot_ot;
+my $objroot_df = XIMS::DataFormat->new( name => $objroot_name );
+die "Could not resolve data format for ObjectRoot (should not happen).\n" unless $objroot_df;
+
+# Convert the folder
+$object->object_type_id( $objroot_ot->id() );
+$object->data_format_id( $objroot_df->id() );
+$object->title( $args{s} ) if $args{s};
+die "Could not convert '$path'.\n" unless $object->update( User => $user );
+print "'$path' converted to $objroot_name";
+print ", SiteRoot URL set" if $args{s};
+print ".\n";
+
+# Update the department_id of descendants
+foreach my $descendant ( $object->descendants( department_id => $object->department_id() ) ) {
+    $descendant->department_id( $object->document_id() );
+    if ( $descendant->update( User => $user ) ) {
+        print "Updated department_id of '" . $descendant->title . "'.\n";
+    }
+    else {
+        warn "Could not update department_id of '" . $descendant->location_path . "'.\n";
+    }
+}
+
+exit 0;
+
+sub usage {
+    return qq*
+
+  Usage: $0 [-h][-d][-u username -p password] [-s SiteRootURL] xims-path-to-folder
+        -s If given, the folder will be converted to a SiteRoot instead of
+           a DepartmentRoot and the SiteRootURL will be set.
+
+        -u The username to connect to XIMS. If not specified,
+           you will be asked for it interactively.
+        -p The password of the XIMS user. If not specified,
+           you will be asked for it interactively.
+        -d For more verbose output, specify the XIMS debug level; default is '1'
+        -h prints this screen
+
+*;
+}
+
+
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+# Copyright (c) 2002-2004 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+-->
+<xsp:page xmlns:xsp="http://apache.org/xsp/core/v1"
+          xmlns:web="http://axkit.org/NS/xsp/webutils/v1"
+          xmlns:if-param="http://axkit.org/NS/xsp/if-param/v1"
+          xmlns:param="http://axkit.org/NS/xsp/param/v1">
+          
+<page>
+    <rdf:RDF    xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                xmlns:dc  = "http://purl.org/dc/elements/1.1/"
+                xmlns:dcq = "http://purl.org/dc/qualifiers/1.0/">
+        <rdf:Description about="">
+            <dc:title>403 Forbidden</dc:title>
+            <dc:creator>ZID Universität Innsbruck</dc:creator>
+            <dc:subject>403</dc:subject>
+            <dc:description></dc:description>
+            <dc:publisher>Universität Innsbruck, Innsbruck, Österreich</dc:publisher>
+            <dc:contributor>Michael Kröll</dc:contributor>
+            <dc:date>
+                <dcq:created>
+                    <rdf:Description>
+                        <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
+                        <rdf:value></rdf:value>
+                    </rdf:Description>
+                </dcq:created>
+                <dcq:modified>
+                    <rdf:Description>
+                        <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
+                        <rdf:value>13.6.2002</rdf:value>
+                    </rdf:Description>
+                </dcq:modified>
+            </dc:date>
+            <dc:format>text/html</dc:format>
+            <dc:language>de-at</dc:language>
+        </rdf:Description>
+    </rdf:RDF>
+    <body>
+    <xsp:logic>
+    if (!<web:is_initial_req/>) {
+    </xsp:logic>
+    <h1>Object not found</h1>
+
+    <p>
+        '<web:request_prev_uri/>' was not found.
+    </p>
+
+    <xsp:logic>
+    }
+    </xsp:logic>
+</body>
+</page>
+</xsp:page>
