@@ -334,23 +334,25 @@ sub selectStylesheet {
         $self->param( 'request.uri', $ctxt->object->location_path_relative() );
 
         my $stylesheet = $ctxt->object->stylesheet();
+
+        my $pubstylepath;
         if ( defined $stylesheet and $stylesheet->published() ) {
             # check here if the stylesheet is not a directory but a single XSLStylesheet?
             #
-            XIMS::Debug( 4, "using public-user-stylesheet from assigned directory" );
-            $stylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/' . $ctxt->session->uilanguage . '/';
+            XIMS::Debug( 4, "trying public-user-stylesheet from assigned directory" );
+            $pubstylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/' . $ctxt->session->uilanguage . '/';
         }
         else {
-            my $pubstylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/' . $ctxt->session->uilanguage() . '/';
-            my $filepath = $pubstylepath . $stylefilename;
-            # my $filepath = $stylepath . "public/" . $stylefilename;
-            if ( -f $filepath and -r $filepath ) {
-                XIMS::Debug( 4, "using fallback public-user-stylesheet" );
-                $stylepath = $pubstylepath;
-            }
-            else {
-                XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
-            }
+            XIMS::Debug( 4, "trying fallback public-user-stylesheet" );
+            $pubstylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/' . $ctxt->session->uilanguage() . '/';
+        }
+
+        my $filepath = $pubstylepath . $stylefilename;
+        if ( -f $filepath and -r $filepath ) {
+            $stylepath = $pubstylepath;
+        }
+        else {
+            XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
         }
     }
 
