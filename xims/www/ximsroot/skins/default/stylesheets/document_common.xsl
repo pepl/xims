@@ -82,8 +82,7 @@
         }
 
         function setSel(selObj, toselect) {
-            country=toselect.toLowerCase();
-            var
+            toselect = toselect.toLowerCase();
                 opts=selObj.options,
                 i=opts.length;
                 while(i-->0) {
