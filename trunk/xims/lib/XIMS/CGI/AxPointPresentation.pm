@@ -13,4 +13,27 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 @ISA = qw( XIMS::CGI::Document );
 
+sub event_edit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
+
+    $ctxt->properties->content->escapebody( 1 );
+
+    # event edit in SUPER implements operation control
+    $self->SUPER::event_edit( $ctxt );
+    return 0 if $ctxt->properties->application->style() eq 'error';
+
+    $ctxt->properties->application->style( "edit" );
+    return 0;
+}
+
+sub event_exit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    $ctxt->properties->content->escapebody( 1 );
+
+    return $self->SUPER::event_exit( $ctxt );
+}
+
 1;
