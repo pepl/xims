@@ -99,7 +99,7 @@ sub handle_data {
         my $direct_filter = $self->get_direct_filter();
         my $method = 'children_granted';
         my $depth = $self->get_depth();
-        if ( defined $depth and $depth > 1 ) {
+        if ( defined $depth and length $depth and $depth > 1 ) {
             $method = 'descendants_granted';
             $childrenargs{maxlevel} = $depth;
         }
