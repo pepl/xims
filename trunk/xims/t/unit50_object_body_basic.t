@@ -5,10 +5,9 @@ use XIMS::Test;
 use XIMS::User;
 use XIMS::Object;
 use XIMS::Document;
-#use Data::Dumper;
 use XIMS::Image;
 
-BEGIN { 
+BEGIN {
     plan tests => 8;
 }
 
@@ -23,7 +22,7 @@ my %doc_hash = ( language_id => 1,
                  location => 'testdoc.xml',
                  title    => 'my test document',
                  parent_id => 2,
-                 department_id => 1,
+                 department_id => 2,
                  body => $body,
                );
 
@@ -57,7 +56,8 @@ my %img_hash = ( language_id => 1,
                  location => 'ubu_small.png',
                  title    => 'fezzes rule!',
                  parent_id => 2,
-                 department_id => 1,
+                 department_id => 2,
+                 data_format_id => 15,
                  body => $img_data,
                );
 
@@ -65,18 +65,17 @@ my $img = XIMS::Image->new->data( %img_hash );
 
 my $i_id = $img->create( User => $user );
 ok( $i_id and $i_id > 1 );
+
 # now fetch it back and check the body;
-
 $img = undef;
- 
 $img = XIMS::Object->new( id => $i_id, User => $user );
-
 ok( length( $img->body() ) == length( $img_data ) );
 
 # now clean up
 $img->delete();
+
 # and make sure...
-$img = undef;  
+$img = undef;
 $img = XIMS::Object->new( id => $o_id );
 ok( $img == undef );
 
