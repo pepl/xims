@@ -263,13 +263,13 @@ sub CREATE()          { return 0x00000200; } # create new child
 #
 sub MOVE()            { return 0x00000400; } # move document to another location
 #
-sub COPY()            { return 0x00000600; } # copy object to another location
-#
 sub LINK()            { return 0x00000800; } # create a symlink on document
 #
 sub PUBLISH_ALL()     { return 0x00001000; } # publish all content
 #
 sub ATTRIBUTES_ALL()  { return 0x00002000; } # change attributes for document
+#
+sub COPY()            { return 0x00004000; } # copy object to another location
 #
 # CATEGORY c) 0x10000 - 0x80000: administrative subtree privileges
 # the DELETE_ALL flag is not granted by default to the owner!
@@ -302,7 +302,7 @@ sub OWNER()         { return 0x40000000; } # user owns document
 # creation for example
 # MODIFY could be changed to be more restrictive in the future
 #
-sub MODIFY()        { return 0x43013517; } # user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE, COPY, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER privilege on object
+sub MODIFY()        { return 0x43016F17; } # user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE, COPY, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER privilege on object
 
 #
 # the master flag shows, that the user is the master of the entire
