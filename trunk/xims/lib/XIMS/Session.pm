@@ -18,7 +18,7 @@ use Digest::MD5;
 
 BEGIN {
     @Fields = @{XIMS::Names::property_interface_names('Session')};
-    push( @Fields, qw( error_msg warning_msg message verbose_msg date serverurl skin uilanguage ) );
+    push( @Fields, qw( error_msg warning_msg message verbose_msg date serverurl skin uilanguage searchresultcount ) );
 }
 
 use Class::MethodMaker
@@ -38,13 +38,13 @@ sub new {
 
     # ubu: debugging, don't delete
     my ($package, $filename, $line) = caller(1);
-    #warn "Session init called. arguments: " . Dumper( \%args ) . "\ncalled by: $package line $line\n"; 
+    #warn "Session init called. arguments: " . Dumper( \%args ) . "\ncalled by: $package line $line\n";
 
     if ( scalar( keys( %args ) ) > 0 ) {
         if ( defined( $args{session_id} ) ) {
             XIMS::Debug( 5, "fetching session by id." );
             $real_session = $self->data_provider->getSession( %args );
-            
+
             # return undef if they explicitly asked for a
             # for an existing session and it wasn't found
             return undef unless $real_session;
@@ -130,6 +130,5 @@ sub user {
     $self->{User} = $user;
     return $user;
 }
-
 
 1;
