@@ -113,7 +113,9 @@ sub add_departmentlinks {
 
     # create and assign portlet if neccessary
     if ( not $deptlinksportlet ) {
-        $deptlinksportlet = XIMS::Portlet->new( User => $self->User, location => $dplp_location );
+        my $dplp_location_nosuffix = $dplp_location;
+        $dplp_location_nosuffix =~ s/\.[^\.]+$//;
+        $deptlinksportlet = XIMS::Portlet->new( User => $self->User, location => $dplp_location, title => $dplp_location_nosuffix );
         $deptlinksportlet->target( $deptlinksfolder );
         # *do not look at the following lines, hack-attack!*
         # see portlet::generate_body why this hack is here.
