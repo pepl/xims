@@ -1158,7 +1158,7 @@ sub clone {
         my $child;
         foreach $child ( @children ) {
             return unless $child->clone( User => $user, scope_subtree => 1,
-                                         _parent_id => $clone_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
+                                         _parent_id => $clone->document_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
         }
 
         # check if we are back at top level of recursion
