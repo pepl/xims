@@ -265,7 +265,7 @@
     <xsl:template name="header.cttobject.options">
         <form style="margin:0px;" name="delete" id="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}">
             <xsl:choose>
-                <xsl:when test="/document/context/object/user_privileges/write and /document/context/object/locked_time = '' or /document/context/object/locked_by = /document/context/session/user/@id">
+                <xsl:when test="/document/context/object/user_privileges/write and /document/context/object/locked_time = '' or /document/context/object/locked_by_id = /document/context/session/user/@id">
                     <a href="{$goxims_content}?id={/document/context/object/@id};edit=1">
                       <img src="{$ximsroot}skins/{$currentskin}/images/option_edit.png"
                            alt="Edit"
@@ -291,7 +291,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:choose>
-                <xsl:when test="/document/context/object/user_privileges/move and published != '1'  and (locked_time = '' or locked_by = /document/context/session/user/@id)">
+                <xsl:when test="/document/context/object/user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                     <a href="{$goxims_content}?id={/document/context/object/@id};move_browse=1;to={/document/context/object/@id}">
                       <img src="{$ximsroot}skins/{$currentskin}/images/option_move.png"
                            alt="Move"
@@ -317,7 +317,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:choose>
-                <xsl:when test="(/document/context/object/user_privileges/publish|/document/context/object/user_privileges/publish_all)  and (locked_time = '' or locked_by = /document/context/session/user/@id) ">
+                <xsl:when test="(/document/context/object/user_privileges/publish|/document/context/object/user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
                   <a href="{$goxims_content}?id={/document/context/object/@id};publish_prompt=1">
                     <img src="{$ximsroot}skins/{$currentskin}/images/option_pub.png"
                          border="0"
@@ -339,7 +339,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:choose>
-                <xsl:when test="(/document/context/object/user_privileges/grant|/document/context/object/user_privileges/grant_all)  and (locked_time = '' or locked_by = /document/context/session/user/@id)">
+                <xsl:when test="(/document/context/object/user_privileges/grant|/document/context/object/user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                     <a href="{$goxims_content}?id={/document/context/object/@id};obj_acllist=1">
                       <img src="{$ximsroot}skins/{$currentskin}/images/option_acl.png"
                            border="0"
@@ -360,7 +360,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:choose>
-                <xsl:when test="/document/context/object/user_privileges/delete and published != '1'  and (locked_time = '' or locked_by = /document/context/session/user/@id)">
+                <xsl:when test="/document/context/object/user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                     <input type="hidden" name="del_prompt" value="1"/>
                     <input type="hidden" name="id" value="{/document/context/object/@id}"/>
                     <input type="image" src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" border="0" width="37" height="19" name="delete" alt="delete" title="delete"/>
@@ -443,7 +443,7 @@
         </xsl:choose>
 
         <xsl:choose>
-            <xsl:when test="locked_by != '' and locked_time != '' and locked_by = /document/context/session/user/@id">
+            <xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
                 <a href="{$goxims_content}?id={@id};cancel=1;r={/document/context/object/@id}">
                     <img src="{$ximsroot}skins/{$currentskin}/images/status_locked.png"
                          width="26"
@@ -454,7 +454,7 @@
                     />
                 </a>
             </xsl:when>
-            <xsl:when test="locked_by != '' and locked_time != ''">
+            <xsl:when test="locked_by_id != '' and locked_time != ''">
                 <img src="{$ximsroot}skins/{$currentskin}/images/status_locked.png"
                      width="26"
                      height="19"
