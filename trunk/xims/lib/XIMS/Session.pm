@@ -59,7 +59,9 @@ sub new {
             $host =~ /^([0-9]{1,3}\.[0-9]{1,3})/;
             my $hostnet = $1;
 
-            my $salt = time() . int(rand(100));
+            my $salt = time();
+            substr($salt,0,1,'');
+            substr($salt,0,3,sprintf("%03d", int(rand(999))));
             my $session_id = Digest::MD5::md5_hex( $args{user_id} . $salt . $hostnet );
             $args{session_id} = $session_id;
             $args{salt} = $salt;
