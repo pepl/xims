@@ -6,6 +6,6 @@ use strict;
 use XIMS::Test;
 
 my $t = XIMS::Test->new();
-my $res = $t->login( 'admin', '_adm1nXP' );
+my $res = $t->login();
 ok( $res );
 ok( defined( $t->{Cookie} ) );
