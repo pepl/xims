@@ -53,6 +53,7 @@ CREATE TABLE ci_object_types
  ,publish_gopublic SMALLINT DEFAULT 0
  ,parent_id        INTEGER  REFERENCES ci_object_types ( id )
                             ON DELETE CASCADE
+ ,is_objectroot    SMALLINT DEFAULT 0
  )
 ;
 
