@@ -371,7 +371,7 @@ sub delete_answer {
   $node = $node->parentNode->removeChild( $node );
   $questionnaire = _set_top_question_edit ($questionnaire, $node_id);
   my $xml_string = $questionnaire->toString();
-  $xml_string =~ s/^<body>(.*|\n*)<\/body>/\1/i;
+#  $xml_string =~ s/^<body>(.*|\n*)<\/body>/\1/i;
   $self->body( $xml_string );
 }
 
@@ -421,19 +421,17 @@ sub get_value {
 #    xml-questionnaire-document.
 #
 sub form_to_xml {
-  my ($self, %params ) = @_;
-  XIMS::Debug ( 5, "called" );
-  my $questionnaire_document = XML::LibXML::Document->new();
-  my $questionnaire = XML::LibXML::Element->new( "questionnaire" );
-  $questionnaire->appendTextChild( "title", $params{'questionnaire_title'}  );
-  $questionnaire->appendTextChild( "comment",  $params{'questionnaire_comment'}  );
-  # recursively create childnodes
-#  XIMS::Debug ( 6, "Begin creating Questionnaire.");
-  $questionnaire = _create_tanlists( $questionnaire, %params );
-  $questionnaire = _create_children( $questionnaire, %params );
-#  XIMS::Debug ( 6, "XML ".XIMS::DBENCODING.": ". $questionnaire->toString() );
-  $questionnaire_document->setDocumentElement( $questionnaire );
-  return $questionnaire_document;
+    my ($self, %params ) = @_;
+    XIMS::Debug ( 5, "called" );
+    my $questionnaire_document = XML::LibXML::Document->new();
+    my $questionnaire = XML::LibXML::Element->new( "questionnaire" );
+    $questionnaire->appendTextChild( "title", $params{'questionnaire_title'}  );
+    $questionnaire->appendTextChild( "comment",  $params{'questionnaire_comment'}  );
+    # recursively create childnodes
+    $questionnaire = _create_tanlists( $questionnaire, %params );
+    $questionnaire = _create_children( $questionnaire, %params );
+    $questionnaire_document->setDocumentElement( $questionnaire );
+    return $questionnaire_document;
 }
 
 ##
@@ -503,9 +501,12 @@ sub tan_ok() {
     # get TAN-Lists from Questionnaire
     my @nodes = $questionnaire->findnodes( "/questionnaire/tanlist" );
     # look if TAN is in one of the TAN-Lists
-    #for each TAN-List look if given TAN is in it
-    foreach my $tan_list ( @nodes ) {
-        my $TAN_List = "," . XIMS::TAN_List->new( document_id => $tan_list->getAttribute("id") )->body() . ",";
+    # for each TAN-List look if given TAN is in it
+    my $tan_list;
+    my $TAN_List;
+    foreach $tan_list ( @nodes ) {
+        warn (">>>>".Dumper(XIMS::TAN_List->new( document_id => $tan_list->getAttribute("id") )));
+        $TAN_List = "," . XIMS::TAN_List->new( document_id => $tan_list->getAttribute("id") )->body() . ",";
         last if $tan_ok = ($TAN_List =~ /,$tan,/ );
     }
     # Return result
@@ -540,18 +541,18 @@ sub store_result {
 }
 
 sub _create_tanlists {
-  XIMS::Debug( 6, "Creating TAN-List-nodes" );
-  my ( $node, %params ) = @_;
-  foreach my $param ( keys( %params ) ) {
-	if ( $param =~ /^tanlist/ ) {
-	  my ( $element, $tanlist_id ) = split( /_/, $param );
-	  my $new_node = XML::LibXML::Element->new( $element );
-	  $new_node->setAttribute( 'id', $tanlist_id );
-	  $new_node->appendText(  $params{$param} );
-	  $node->appendChild( $new_node );
-	}
-  }
-  return $node;
+    XIMS::Debug( 5, "called" );
+    my ( $node, %params ) = @_;
+    foreach my $param ( keys( %params ) ) {
+        if ( $param =~ /^tanlist/ ) {
+            my ( $element, $tanlist_id ) = split( /_/, $param );
+            my $new_node = XML::LibXML::Element->new( $element );
+            $new_node->setAttribute( 'id', $tanlist_id );
+            $new_node->appendText(  $params{$param} );
+            $node->appendChild( $new_node );
+        }
+    }
+    return $node;
 }
 
 
@@ -617,7 +618,8 @@ sub _make_element {
   XIMS::Debug ( 6, "Making Element with values: $element, $id, $comment, $alignment, $type, $titles");
   my $element = XML::LibXML::Element->new( $element );
   my @titles = split (/####/, $titles);
-  foreach my $title ( @titles ) {
+  my $title;
+  foreach $title ( @titles ) {
 	$element->appendTextChild ("title", $title );	
   }
   $element->appendTextChild ("comment",  $comment );
@@ -653,12 +655,11 @@ sub _set_top_question_edit {
 sub add_tanlist {
   my ($self, $tanlist_id, $questionnaire) = @_;
   XIMS::Debug ( 5, "called" );
-#  XIMS::Debug( 6 , "Adding TAN-List $tanlist_id to Questionnaire.");
   #get TAN-List Object
-  my $TAN_List = XIMS::TAN_List->new( id => $tanlist_id );
+  my $TAN_List = XIMS::TAN_List->new( path => $tanlist_id );
   $questionnaire = $questionnaire->documentElement();
   my $new_node = XML::LibXML::Element->new( "tanlist" );
-  $new_node->setAttribute( "id" , $tanlist_id );
+  $new_node->setAttribute( "id" , $TAN_List->document_id() );
   $new_node->appendText( $TAN_List->title()." (".$TAN_List->number().")"  );
   $questionnaire->appendChild( $new_node );
   $self->body( $questionnaire->toString() );
@@ -786,12 +787,12 @@ sub set_results {
             my $default = 0;
             # don't add default answers
             foreach ( @default_answers ) {
-                $default = ( $_ eq ${$answer_text}{'ANSWER'} );
+                $default = ( $_ eq ${$answer_text}{'answer'} );
             }
             if ( ! $default ) {
                 my $new_title = XML::LibXML::Element->new( "title" );
-                $new_title->setAttribute( "count" , ${$answer_text}{'COUNT'} );
-                $new_title->appendText(  ${$answer_text}{'ANSWER'} );
+                $new_title->setAttribute( "count" , ${$answer_text}{'count'} );
+                $new_title->appendText(  ${$answer_text}{'answer'} );
                 $answer_node->appendChild( $new_title );
             }
         }
