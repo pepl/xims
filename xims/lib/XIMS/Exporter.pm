@@ -556,7 +556,7 @@ sub new {
             return undef;
         }
     }
-    else {
+    elsif ( defined $bdir and not -d $bdir ) {
         XIMS::Debug( 2, "export directory does not exist -> " . $bdir );
         return undef;
     }
@@ -574,7 +574,7 @@ sub new {
     # publish only non-fs-container children here
     my @non_fscont_types = map { $_->id() } grep { !$_->is_fs_container() } $self->{Provider}->object_types();
     $self->{Children} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
-    # 
+    #
     # Make children_selection available via UI and publish_promt event
     # $self->{Children} = $self->{Object}->children_granted( User => $self->{User}, id => \@selected_ids, object_type_id => \@non_fscont_types );
     #
@@ -1495,7 +1495,7 @@ sub create {
         return undef;
     }
 
-    #if (scalar @{$self->{Children}} ) {
+    #if (defined $self->{Children} and scalar $self->{Children} ) {
     #    # publish selected children....
     #    foreach my $kind ( $self->{Children} ) {
     #        my $helper = XIMS::Exporter::Helper->new();
@@ -1551,19 +1551,20 @@ sub remove {
 
     my $kill_path = $self->{Basedir} . "/" . $self->{Object}->location();
 
-    # first, kill the object's children....
-    foreach my $kind ( $self->{Children} ) {
-        my $helper = XIMS::Exporter::Helper->new();
-        my $kid_class = $helper->classname( $kind );
+    if ( defined $self->{Children} and scalar $self->{Children} ) {
+        foreach my $kind ( $self->{Children} ) {
+            my $helper = XIMS::Exporter::Helper->new();
+            my $kid_class = $helper->classname( $kind );
 
-        my $reaper = $kid_class->new( Provider   => $self->{Provider},
-                                      Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
-                                      User       => $self->{User},
-                                      Object     => $kind
-                                    );
-        $reaper->remove();
+            my $reaper = $kid_class->new( Provider   => $self->{Provider},
+                                          Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
+                                          User       => $self->{User},
+                                          Object     => $kind
+                                        );
+            $reaper->remove();
+        }
     }
-    
+
     # kill the meta file
     unlink $kill_path . '/' . $self->{Object}->location . ".container.xml";
 
@@ -1616,43 +1617,6 @@ use XIMS::SAX::Filter::SymTitle;
 ##
 #
 # SYNOPSIS
-#    $self->create( $param );
-#
-# PARAMETER
-#
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
-#
-sub create {
-    XIMS::Debug( 5, "called" );
-    my ( $self, %param ) = @_;
-
-    return unless $self->SUPER::create();
-
-    #foreach my $kind ( $self->{Children} ) {
-    #    next unless $kind->object_type->name eq 'URLLink'; #we only want to publish document-links for now
-    #    my $helper = XIMS::Exporter::Helper->new();
-    #    my $kid_class = $helper->classname( $kind );
-    #
-    #    my $reaper = $kid_class->new( Provider   => $self->{Provider},
-    #                                  Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
-    #                                  User       => $self->{User},
-    #                                  Object     => $kind
-    #                                );
-    #    $reaper->create();
-    #}
-
-    return 1;
-}
-
-##
-#
-# SYNOPSIS
 #    $self->remove();
 #
 # PARAMETER
@@ -1667,17 +1631,19 @@ sub remove {
     XIMS::Debug( 5, "called" );
     my ( $self, $param ) = @_;
 
-    foreach my $kind ( $self->{Children} ) {
-        next unless $kind->object_type->name eq 'URLLink'; 
-        my $helper = XIMS::Exporter::Helper->new();
-        my $kid_class = $helper->classname( $kind );
+    # unpublish all document links
+    if ( defined $self->{Children} and scalar $self->{Children} ) {
+        foreach my $kind ( $self->{Children} ) {
+            next unless $kind->object_type->name eq 'URLLink';
+            my $helper = XIMS::Exporter::Helper->new();
+            my $kid_class = $helper->classname( $kind );
 
-        my $reaper = $kid_class->new( Provider   => $self->{Provider},
-                                      Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
-                                      User       => $self->{User},
-                                      Object     => $kind
-                                    );
-        $reaper->remove();
+            my $reaper = $kid_class->new( Provider   => $self->{Provider},
+                                          User       => $self->{User},
+                                          Object     => $kind
+                                        );
+            $reaper->remove();
+        }
     }
 
     return $self->SUPER::remove();
@@ -1761,7 +1727,7 @@ sub generate_dom {
     my $dom = $self->SUPER::generate_dom( @_ );
 
     return unless $dom;
-    
+
     # after a second thought, i guess it would be better to convert
     # the DOM with an exporter stylesheet instead of letting a
     # stylesheet called from AxKit do the work. why? because of having
