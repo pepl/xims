@@ -7,7 +7,7 @@
 
 function confirmDelete() {
     if (confirm("Are you sure?")) {
-         return true
+        return true
     }
     else {
         return false
@@ -23,6 +23,6 @@ function previewWindow(url) {
 }
 
 function openDocWindow(topic) {
-    docWindow = window.open( "/goxims/content/xims/xims-doku/users-reference.dkb#" + escape(topic), "displayWindow","resizable=yes,scrollbars=yes,width=800,height=480,screenX=100,screenY=300" );
+    docWindow = window.open( "http://xims.info/documentation/users/xims-user_s-reference.sdbk#" + escape(topic), "displayWindow","resizable=yes,scrollbars=yes,width=800,height=480,screenX=100,screenY=300" );
 }
 
