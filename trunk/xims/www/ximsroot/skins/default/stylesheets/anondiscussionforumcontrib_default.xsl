@@ -33,10 +33,15 @@
 
 <xsl:template name="forum">
     <p class="10left">
-        <a href="{concat($xims_box,$goxims_content,$parent_path)}"><xsl:value-of select="$i18n/l/Up"/></a>
-        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
-        |
-        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
+        <xsl:if test="parents/object[@document_id=/document/context/object/@parent_id]/object_type_id = object_type_id">
+            <xsl:value-of select="$i18n/l/In_reply_to"/>
+            '<a href="{concat($xims_box,$goxims_content,$parent_path)}">
+                <xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/title"/>
+            </a>'
+            <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
+            |
+            <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
+        </xsl:if>
         <a>
             <xsl:attribute name="href">
                 <xsl:value-of select="concat($xims_box,$goxims_content)"/>
