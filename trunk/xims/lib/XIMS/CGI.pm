@@ -737,8 +737,8 @@ sub init_store_object {
 
         # check if the same location already exists in the current container (and its a different object)
         if ( defined $parent ) {
-            my $child = $parent->children( location => $location, marked_deleted => undef );
-            if ( ( $object->id() and $child and $child->id() != $self->param( 'id' ) ) or ( not $object->id() and defined $child ) ) {
+            my @children = $parent->children( location => $location, marked_deleted => undef );
+            if ( ( $object->id() and scalar @children == 1 and $children[0] and $children[0]->id() != $self->param( 'id' ) ) or ( not $object->id() and defined $children[0] ) ) {
                 XIMS::Debug( 2, "location already exists" );
                 $self->sendError( $ctxt, "Location '$location' already exists in container." );
                 return 0;

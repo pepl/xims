@@ -1158,13 +1158,13 @@ sub clone {
         my $newtitle = "Copy of " . $clonedata{ title };
 
         my $parent = $self->parent();
-        if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef ) ) {
+        if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef )->getLength() ) {
             my $index = 1;
             do {
                 $newlocation = "copy_(" . $index . ")_of_" . $clonedata{ location };
                 $newtitle = "Copy (" . $index . ") of " . $clonedata{ title };
                 $index++;
-            } while ( $parent->children( location => $newlocation, marked_deleted => undef ) );
+            } while ( $parent->children( location => $newlocation, marked_deleted => undef )->getLength() );
         }
         $clonedata{ location } = $newlocation;
         $clonedata{ title } = $newtitle;
@@ -1974,7 +1974,8 @@ sub store_diff_to_second_last {
     my $diff = diff \$oldbody, \$newbody, \%diffoptions;
 
     # check for ".diff_to_second_last"
-    my $diffobject = $self->children( location => $diffobject_location );
+    my @children = $self->children( location => $diffobject_location );
+    my $diffobject = $children[0];
     if ( $diffobject and $diffobject->id() ) {
         $diffobject->body( XIMS::xml_escape( $diff ) );
         return $diffobject->update( User => $self->User );
