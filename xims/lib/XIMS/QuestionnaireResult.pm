@@ -65,7 +65,7 @@ sub get_result_count {
     my $last_question = shift; # number of the last question that has to be answered (= total number of questions)
     my $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id GROUP BY tan )AS sub1";
     my $total_count = $self->data_provider->{Driver}->{dbh}->fetch_one_value( sql => $sql );
-    my $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = $last_question GROUP BY tan) AS sub1";
+    $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = $last_question GROUP BY tan) AS sub1";
     my $valid_count = $self->data_provider->{Driver}->{dbh}->fetch_one_value( sql => $sql );
     #  XIMS::Debug (6, "#### ".Dumper( $valid_count ) );
     return ($total_count, $valid_count, $total_count - $valid_count);
