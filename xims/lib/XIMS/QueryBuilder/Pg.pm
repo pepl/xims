@@ -1,6 +1,7 @@
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+
 #$Id$
 package XIMS::QueryBuilder::Pg;
 
@@ -11,6 +12,7 @@ use vars qw($VERSION @ISA);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 use XIMS::QueryBuilder;
+use XIMS::User;
 
 ##
 #
@@ -24,6 +26,7 @@ use XIMS::QueryBuilder;
 #
 # RETURNS
 #    hash-ref containing the following keys:
+
 #    criteria => search criteria to be ANDed to a WHERE-clause:
 #
 # DESCRIPTION
@@ -35,7 +38,6 @@ sub build {
     my $fieldstolookin = shift;
 
     my $search = $self->{search};
-
     my %retval;
 
     my $bol;
@@ -61,7 +63,7 @@ sub build {
             # 'm:x'  was MODIFIED x days in the past AND is MARKED_NEW
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
-            $search->[$i] = $bol . "date(now()) - date(last_modification_timestamp) < " . $search->[$i] . "+1" 
+            $search->[$i] = $bol . "date(now()) - date(last_modification_timestamp) < " . $search->[$i] . "+1"
                                  . " AND ci_content.marked_new = 1";
         }
         elsif ( $search->[$i] =~ s/^N:(\d*)$/$1/ ) {
@@ -87,22 +89,33 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . "ci_documents.id = " . $search->[$i];
         }
-
-#  leave that out for now
-#  got to find a sane way to lookup user_id per shortname
-#
-#        elsif ( $search->[$i] =~ s/^o:(\d*)$/$1/ ) {
-#          # 'o:x' find object by OWNER 
-#          $search->[$i] ||= '0';
-#          $bol = $self->search_boolean( $search, $i );
-#          $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
-#        }
-#        elsif ( $search->[$i] =~ s/^c:(\d*)$/$1/ ) {
-#          # 'c:x' find object by CREATOR
-#          $search->[$i] ||= '0';
-#          $bol = $self->search_boolean( $search, $i );
-#          $search->[$i] = $bol . "ci_content.created_by_id = " . $search->[$i];
-#        }
+        elsif ( $search->[$i] =~ s/^o:(\w+|\d+)$/$1/ ) {
+            # 'o:x' find object by OWNER
+            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]+$/ ) {
+                my $user = XIMS::User->new( name => $search->[$i] );
+                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
+            }
+            $bol = $self->search_boolean( $search, $i );
+            $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
+        }
+        elsif ( $search->[$i] =~ s/^c:(\w+|\d+)$/$1/ ) {
+            # 'c:x' find object by CREATOR
+            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]+$/ ) {
+                my $user = XIMS::User->new( name => $search->[$i] );
+                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
+            }
+            $bol = $self->search_boolean( $search, $i );
+            $search->[$i] = $bol . "ci_content.created_by_id = " . $search->[$i];
+        }
+        elsif ( $search->[$i] =~ s/^u:(\w+|\d+)$/$1/ ) {
+            # 'u:x' find object by CREATOR or MODIFIER
+            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]+$/ ) {
+                my $user = XIMS::User->new( name => $search->[$i] );
+                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
+            }
+            $bol = $self->search_boolean( $search, $i );
+            $search->[$i] = $bol . "(ci_content.created_by_id = " . $search->[$i] . " OR ci_content.last_modified_by_id = " . $search->[$i] . ")";
+        }
 
         elsif ( $search->[$i] ne "AND" && $search->[$i] ne "OR" ) {
             $bol = $self->search_boolean( $search, $i );
@@ -122,9 +135,6 @@ sub build {
 
     # hard work done, compose search-condition-string
     $retval{criteria} = '(' . join(' ', @{$search}) . ')';
-
-
-    $retval{order} = "last_modification_timestamp DESC";
 
     XIMS::Debug( 5, 'done' );
     return \%retval;
