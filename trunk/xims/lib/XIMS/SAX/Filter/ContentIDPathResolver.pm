@@ -20,7 +20,9 @@ sub new {
     my $class = shift;
     my $self = $class->SUPER::new(@_);
 
-    $self->{RelToSite} = XIMS::RESOLVERELTOSITEROOTS() unless exists $self->{RelToSite};
+    if ( not exists $self->{RelToSite} ) {
+        $self->{RelToSite} = XIMS::RESOLVERELTOSITEROOTS() eq '1' ? 1 : 0;
+    }
 
     return $self;
 }

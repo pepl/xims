@@ -2,12 +2,9 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-
 package XIMS::SAX::Filter::PortletCollector;
-
 use warnings;
 use strict;
-
 #
 # This is a SAX Filter. this allows to send a datastring
 # with some conditions in it. this filter will expand these conditions
@@ -15,16 +12,13 @@ use strict;
 #
 use XML::LibXML;
 use XIMS::SAX::Filter::DataCollector;
-
 @XIMS::SAX::Filter::PortletCollector::ISA = qw(XIMS::SAX::Filter::DataCollector);
-
 use DBIx::SQLEngine::Criteria;
 use DBIx::SQLEngine::Criteria::Or;
 use DBIx::SQLEngine::Criteria::And;
 # use DBIx::SQLEngine::Criteria::Not;
 use DBIx::SQLEngine::Criteria::LiteralSQL;
 use DBIx::SQLEngine::Criteria::StringEquality;
-
 
 ##
 #
@@ -43,12 +37,9 @@ use DBIx::SQLEngine::Criteria::StringEquality;
 sub new {
     my $class = shift;
     my $self = $class->SUPER::new(@_);
-
     $self->set_tagname( "children" );
-
     return $self;
 }
-
 
 ##
 #
@@ -68,14 +59,11 @@ sub handle_data {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $cols = $self->{Columns};
-
     if ( defined $cols and ref $cols  ) {
         XIMS::Debug( 6, "get " . join( "," , @$cols ));
     }
-
     return unless defined $self->{Object}
                   and $self->{Object}->symname_to_doc_id() > 0;
-
     # fetch the objects
     # get the real object to filter:
 
@@ -105,23 +93,20 @@ sub handle_data {
         #push @$cols, qw(MAJOR_ID MINOR_ID PARENT_ID LOCATION TITLE
         #                DATA_FORMAT_ID SYMNAME_TO_DOC_ID LANGUAGE_ID
         #                OBJECT_TYPE_ID LOB_LENGTH POSITION);
-
         #$param{-columns} = $cols;
-
         #my $direct_filter= $self->get_direct_filter();
         #if ( defined $direct_filter ) {
         #    $param{-sql_extra} = $direct_filter;
         #}
-
         my @children = $object->children_granted( %childrenargs );
         if ( @children  and scalar( @children ) ) {
             XIMS::Debug( 6, "found n = " . scalar( @children ) . " child objects" );
-
             my $location_path;
             foreach my $o ( @children ) {
                 if ( $self->{Export} ) {
-                    XIMS::RESOLVERELTOSITEROOTS() ? $location_path = $o->location_path_relative() 
-                                                  : $location_path = XIMS::PUBROOT_URL() . $o->location_path_relative() ;
+                    XIMS::RESOLVERELTOSITEROOTS() eq '1' ? $location_path = $o->location_path_relative()
+                                                         : $location_path = XIMS::PUBROOT_URL()
+                                                           . $o->location_path_relative();
                 }
                 else {
                     $location_path = $o->location_path();
@@ -137,7 +122,6 @@ sub handle_data {
             XIMS::Debug( 6, "no objects found" );
         }
     }
-
     $self->SUPER::handle_data();
 }
 
@@ -175,37 +159,29 @@ sub get_level {
     else {
         ($depth) = grep {$_->nodeName eq "depth" } $fragment->childNodes;
     }
-
     if ( defined $depth ) {
         XIMS::Debug( 6, "have depth level" );
         my $level = $depth->getAttribute( "level" );
         $level ||= 1; # ignore invalid results
         return $level;
     }
-
     return 0;
 }
-
 sub get_direct_filter {
     my $self = shift;
     my $fragment = $self->get_data_fragment;
-
     my $retval;
-
     my ( $filter ) = grep {$_->nodeName eq "filter" } $fragment->childNodes;
     if ( $filter ) {
         my @cnodes = $filter->childNodes;
-
         # PHISH NOTE:
         # as soon the new data provider will get applied to the new
         # system the the $cond will be returned and passed directly to
         # the DataProvider.
-
         my $cond  = $self->build_or_filter( @cnodes );
         $retval = $cond;
         # ( $retval ) = $cond->sql_where if defined $cond;
     }
-
     return $retval;
 }
 sub build_or_filter {
@@ -213,12 +189,10 @@ sub build_or_filter {
     my @tags =@_;
     my $retval = undef;
     my @conds = ();
-
     if ( scalar @tags ) {
         foreach my $tag ( @tags ) {
             next unless $tag->nodeType == XML_ELEMENT_NODE;
             my $tv = undef;
-
 
             if ( $tag->nodeName eq "child-object" ) {
                 XIMS::Debug( 6, "NOT SUPPORTED YET\n" );
@@ -232,7 +206,6 @@ sub build_or_filter {
                 my @acn = $tag->childNodes;
                 $tv = $self->build_not_filter( @acn );
             }
-
             if ( $tag->nodeName eq "last-modification-time"
                  or $tag->nodeName eq "creation-time"
                  or $tag->nodeName eq "published-time" ) {
@@ -251,33 +224,27 @@ sub build_or_filter {
     return undef unless scalar @conds;
     return DBIx::SQLEngine::Criteria::Or->new( @conds );
 }
-
 sub build_not_filter {
     my $self = shift;
     my @tags =@_;
     my $retval = undef;
-
     if ( scalar @tags ) {
         $retval = $self->build_or_filter(@tags);
         if ( defined $retval ) {
             $retval = DBIx::SQLEngine::Criteria::Not->new( $retval );
         }
     }
-
     return $retval;
 }
-
 sub build_and_filter {
     my $self = shift;
     my @tags =@_;
     my $retval = undef;
-
     my @conds = ();
     if ( scalar @tags ) {
         foreach my $tag ( @tags ) {
             next unless $tag->nodeType == XML_ELEMENT_NODE;
             my $tv = undef;
-
             if ( $tag->nodeName eq "child-object" ) {
                 XIMS::Debug( 6, "NOT SUPPORTED YET\n" );
                 next;
@@ -290,7 +257,6 @@ sub build_and_filter {
                 my @acn = $tag->childNodes;
                 $tv = $self->build_not_filter( @acn );
             }
-
             if ( $tag->nodeName eq "last-modification-time"
                  or $tag->nodeName eq "creation-time"
                  or $tag->nodeName eq "published-time" ) {
@@ -306,22 +272,16 @@ sub build_and_filter {
             }
         }
     }
-
     return undef unless scalar @conds;
-
     return DBIx::SQLEngine::Criteria::Or->new( @conds );
 }
-
 ##
-
 # this function should be aware about requests like "two days ago
 # 'till now" or "last month content" the filter is aware about
 # different conditions, so it is possible to filter against the
 # various date fields we have.
-
 # the current version of this g'damn builder version is very close to
 # Oracle SQL it may not work with other systems.
-
 sub build_date_filter {
     my $self = shift;
     my $BOOLOP = shift;
@@ -329,15 +289,12 @@ sub build_date_filter {
     my $retval;
     my ( $leftwrap, $rightwrap ) = ( "", "" );
     $retval = "" if scalar @tags;
-
     foreach my $t ( @tags ) {
         my @childnodes = $t->childNodes;
         my $name = "";
         next unless scalar @childnodes;
 
-
         $retval .= " $BOOLOP " if length $retval;
-
         if ( $t->nodeName eq "last-modification-time" ) {
             $name .= "last_modification_timestamp ";
         }
@@ -347,7 +304,6 @@ sub build_date_filter {
         elsif ( $t->nodeName eq "published-time" ) {
             $name .= "last_publication_timestamp";
         }
-
         my @tcn = $t->getChildrenByTagName( "value" );
         if ( scalar @tcn <= 0 ) {
             # complex date functions
@@ -428,13 +384,10 @@ sub build_date_filter {
                 XIMS::Debug( 6, "Value tag contained no data" );
             }
         }
-
     }
-
     return undef unless defined $retval and length $retval;
     XIMS::Debug( 6, "use date literal $retval" );
     return DBIx::SQLEngine::Criteria::LiteralSQL->new ( $retval );
 }
-
 
 1;
