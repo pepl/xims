@@ -116,7 +116,7 @@ sub validate_xml {
 
 sub object_type_names {
    my $dp = data_provider();
-   my $data = $dp->{Driver}->{dbh}->fetch_select( sql => 'select name from ci_object_types' );
+   my $data = $dp->{Driver}->{dbh}->fetch_select( sql => 'select name from ci_object_types where parent_id IS NULL' );
    my @names = map { values( %{$_} ) } @{$data};
    return @names;
 }

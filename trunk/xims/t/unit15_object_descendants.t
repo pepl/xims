@@ -1,4 +1,4 @@
-use Test::More tests => 17;
+use Test::More tests => 19;
 use strict;
 use lib "../lib", "lib";
 use XIMS;
@@ -24,6 +24,12 @@ my $user_foo = XIMS::User->new();
 isa_ok( $user, 'XIMS::User', 'user' );
 isa_ok( $admin, 'XIMS::User', 'admin' );
 isa_ok( $user_foo, 'XIMS::User', 'user_foo' );
+
+$user_foo->name( 'object_descendants_Foo' );
+$user_foo->lastname( 'object_descendants_Foo' );
+$user_foo->object_type( 0 );
+$user_foo-> system_privs_mask( 1 );
+ok( $user_foo->create(), 'create user Foo' );
 
 my $testsite = XIMS::SiteRoot->new(
                                     User => $user,
@@ -66,7 +72,7 @@ my @d_foo_granted = $testsite->descendants_granted( User => $user_foo );
 is ( scalar( @d_foo_granted ), 0, 'descendants_granted as user foo (list context)' );
 
 ok( $testsite->delete(), 'delete testsite' );
-
+ok( $user_foo->delete(), 'delete user Foo' );
 
 
 # helpers
