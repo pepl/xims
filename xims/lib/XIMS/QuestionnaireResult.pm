@@ -64,7 +64,7 @@ sub get_answer_count {
     my $question_id = shift;
     my $answer = shift;
 
-    my $sql = "SELECT count(*) FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$question_id' AND answer='$answer' ";
+    my $sql = "SELECT count(*) AS answercount FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$question_id' AND answer='$answer' ";
     my $answer_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
 
     #  XIMS::Debug (6, "#### ".Dumper( $answer_count ) );
