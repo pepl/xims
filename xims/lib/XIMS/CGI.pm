@@ -1862,6 +1862,7 @@ sub event_search {
                 $message .= " Displaying objects " . ($offset+1) if $count >= $rowlimit;
                 $message .= " to " . ($offset+$rowlimit) if ( $offset+$rowlimit <= $count );
                 $ctxt->session->message( $message );
+                $ctxt->session->searchresultcount( $count );
             }
 
             # superfluos db hits!

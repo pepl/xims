@@ -36,18 +36,17 @@
 
             </table>
 
-            <xsl:if test="number($page) &gt; 0 or count(/document/objectlist/object) &gt;= $searchresultrowlimit">
+            <xsl:if test="number($page) &gt; 0 or /document/context/session/searchresultcount &gt;= $searchresultrowlimit">
                 <table style="margin-left:5px; margin-right:10px; margin-top: 10px; width: 99%; padding: 3px; border: thin solid #C1C1C1; background: #F9F9F9 font-size: small;" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
                             <xsl:if test="number($page) &gt; 0">
                                 <a href="{$xims_box}{$goxims_content}{$absolute_path}?s={$s};search=1;m={$m};page={number($page)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
                             </xsl:if>
-                            <xsl:if test="number($page) &gt; 0 and count(/document/objectlist/object) &gt;= $searchresultrowlimit">
+                            <xsl:if test="number($page) &gt; 0 and /document/context/session/searchresultcount &gt;= $searchresultrowlimit">
                                 |
                             </xsl:if>
-                            <!-- sth like /document/context/session/searchresultcount is needed instead of count(/document/objectlist/object) here to avoid a next link if hit count == rowlimit-->
-                            <xsl:if test="count(/document/objectlist/object) &gt;= $searchresultrowlimit">
+                            <xsl:if test="/document/context/session/searchresultcount &gt;= $searchresultrowlimit">
                                 <a href="{$xims_box}{$goxims_content}{$absolute_path}?s={$s};search=1;m={$m};page={number($page)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
                             </xsl:if>
                         </td>
@@ -257,6 +256,7 @@
 <!-- size -->
         <td align="right">
             <xsl:call-template name="cttobject.content_length"/>
+            <img src="{$ximsroot}images/spacer_white.gif" width="9" border="0" alt=" " />
         </td>
     </tr>
 </xsl:template>
