@@ -152,6 +152,14 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        Abhängigkeiten aktualisieren (verwandte Portlets, Auto-Indices, ...)
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="update_dependencies" value="1" checked="checked" />
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td align="center">
 
                                         <!-- begin buttons table -->

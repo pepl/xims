@@ -51,7 +51,7 @@
                                     </td>
                                 </tr>
 
-                                <!-- warn about ungranded children -->
+                                <!-- warn about ungraned children -->
                                 <xsl:if test="message">
                                     <tr>
                                         <td>
@@ -149,6 +149,14 @@
                                             </table>
                                         </xsl:if>
                                         <!-- end link table -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Update dependencies (related Portlets, Auto-Indices, ...)
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="update_dependencies" value="1" checked="checked" />
                                     </td>
                                 </tr>
                                 <tr>
