@@ -108,6 +108,13 @@ sub event_store {
         }
 
         my $object = $ctxt->object();
+
+        # The HTMLArea WYSIWG-editor in combination with MSIE translates relative paths in 'href' and 'src' attributes
+        # to their '/goxims/content'-absolute path counterparts. Since we do not want '/goxims/content' references. which will
+        # very likely breaks after the content has been published, we have to mangle with the 'href' and 'src' attributes.
+        my $absolute_path = defined $object->id() ? $object->location_path() : ($ctxt->parent->location_path() . '/' . $object->location());
+        $body = $self->_absrel_urlmangle( $ctxt, $body, '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE(), $absolute_path );
+
         if ( $trytobalance eq 'true' and $object->body( $body ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
         }
@@ -213,6 +220,34 @@ sub _set_wysiwyg_editor {
     my $ed = '';
     $ed = "_" . $editor if defined $editor;
     return $ed;
+}
+
+sub _absrel_urlmangle {
+    my $self = shift;
+    my $ctxt = shift;
+    my $body = shift;
+    my $goximscontent = shift;
+    my $absolute_path = shift;
+    
+
+
+    my $doclevels = split('/', $absolute_path) - 1;
+    my $docrepstring = '../'x($doclevels-1);
+    while ( $body =~ /(src|href)=("|')$goximscontent([^("|')]+)/g ) {
+        my $dir = $3;
+        $dir =~ s#[^/]+$##;
+    warn "gotabs, dir: $absolute_path, $dir";
+        if ( $absolute_path =~ $dir ) {
+            my $levels = split('/', $dir) - 1;
+            my $repstring = '../'x($doclevels-$levels-1);
+            $body =~ s/(src|href)=("|')$goximscontent$dir/$1=$2$repstring/;
+        }
+        else {
+            $body =~ s#(src|href)=("|')$goximscontent/#$1=$2$docrepstring#;
+        }
+    }
+
+    return $body;
 }
 
 1;
