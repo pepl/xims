@@ -21,7 +21,7 @@ sub handle_data {
         keywords   => "//*[local-name() = 'subject']|/html/head/meta[\@name='keywords']/\@content",
         title      => "//*[local-name() = 'title']",
         body       => "*[local-name() = 'body']",
-        abstract   => "//*[local-name() = 'description']/*[local-name() = 'description']|/html/head/meta[\@name='description']/\@content"
+        abstract   => '//*[local-name() = "description"]/*[local-name() = "description"]|/html/head/meta[@name="description"]/@content'
                     );
 
     foreach my $field ( keys %importmap ) {
@@ -30,6 +30,9 @@ sub handle_data {
             $value = "";
             if ( $n->hasChildNodes() ) {
                 map { $value .= $_->toString(0,1) } $n->childNodes;
+            }
+            else {
+                $value = $n->textContent();
             }
             if ( length $value ) {
                 $object->$field( XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value );
