@@ -1,14 +1,14 @@
-use Test::More tests => 10;
+use Test::More tests => 11;
 use lib "../lib";
 use strict;
 use XIMS;
-use XIMS::Names;
 
-BEGIN { use_ok( 'XIMS::Names' ); }
+BEGIN { use_ok( 'XIMS::Names' ); use_ok( 'XIMS::Config::Names' ); }
 
 
 my @r_types = XIMS::Names::resource_types();
-is_deeply( \@XIMS::Names::ResourceTypes, \@r_types , 'resource_types' );
+my @config_r_types = XIMS::Config::Names::ResourceTypes();
+is_deeply( \@config_r_types, \@r_types , 'resource_types' );
 
 my %props_hash = XIMS::Names::property_list();
 is_deeply( \%XIMS::Names::Properties, \%props_hash, 'property_list' );
@@ -16,7 +16,7 @@ is_deeply( \%XIMS::Names::Properties, \%props_hash, 'property_list' );
 cmp_ok( scalar( XIMS::Names::property_list('Session') ), '>', 0, 'property_list');
 is( scalar( XIMS::Names::property_list('Foo') ), undef, 'property_list' );
 
-is( scalar( keys(%props_hash) ), scalar( @r_types ) );
+is( scalar( keys(%props_hash) ), scalar( @r_types ), 'keys of props_hash are r_types' );
 
 is( XIMS::Names::valid_property('User', 'user.id' ), 1, 'valid_property');
 isnt( XIMS::Names::valid_property('Foo'), 1, 'valid_property' );
