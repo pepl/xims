@@ -8,6 +8,9 @@ use strict;
 use vars qw( $VERSION @ISA @MSG);
 use XIMS::CGI;
 use XIMS::QuestionnaireResult;
+use File::Spec;
+use File::Temp qw/ tempfile unlink0 /;
+use Archive::Zip qw/ :ERROR_CODES :CONSTANTS /;
 use Text::Iconv;
 
 # version string (for makemaker, so don't touch!)
@@ -32,6 +35,7 @@ sub registerEvents {
             answer
             download_results
             download_all_results
+            download_raw_results
             )
         );
 }
@@ -190,7 +194,7 @@ sub event_answer {
         }
     }
     # if question_id (top-level) and TAN are
-    # allready in the questionnaire check if all needed answers are given
+    # already in the questionnaire, check if all needed answers are given
     # if not all answers are stored, display the question
     # if all answers are stored redirect to next question
 
@@ -214,13 +218,16 @@ sub event_answer {
 sub event_download_results {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
     my $object = $ctxt->object();
     my $questionnaire_id = $object->document_id();
-    #get count of answers for each Question from the Questionnaire
-    $object->set_results();
-    if ($self->param('download_results') eq 'html') {
+
+    # get count of answers for each Question from the Questionnaire
+    $object->set_results( full_text_answers => $self->param('full_text_answers') );
+    if ( $self->param('download_results') eq 'html' ) {
         $ctxt->properties->application->style( 'download_results_html' );
-    } elsif ($self->param('download_results') eq 'excel') {
+    }
+    elsif ($self->param('download_results') eq 'excel') {
         # download in excel only in Latin1 encoding
         my $converter = Text::Iconv->new(XIMS::DBENCODING, "ISO-8859-1");
         $object->body( $converter->convert($object->body() ));
@@ -230,27 +237,33 @@ sub event_download_results {
 }
 
 sub event_download_all_results {
-  XIMS::Debug( 5, "called" );
+    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
     my $object = $ctxt->object();
     my $questionnaire_id = $object->document_id();
     my $body = "";
     my $converter_to_Latin1 = Text::Iconv->new("UTF-8", "ISO-8859-1");
-    #set filename and mime type of the file to download
+
+    # set filename and mime type of the file to download
     my $filename = $object->location;
+    $filename =~ s/\.[^\.]*$//;
+
     my $type = $self->param('download_all_results');
     my $encoding = $self->param('encoding');
-    $filename =~ s/\.[^\.]*$//;
+
     my $df = XIMS::DataFormat->new( name=> $type );
     $filename .= "." . $df->suffix;
     my $mime_type = $df->mime_type;
+
     # get a list with all answers to the questionnaire
     my $sql = "SELECT tan, question_id, answer, answer_timestamp FROM ci_questionnaire_results WHERE answer <> 'ANSWERED' AND document_id = ?";
     my $answers = $object->data_provider->driver->dbh->fetch_select( sql => [ $sql, $questionnaire_id] );
+
     # build all answers depending on the type
     my %question_titles = $object->get_full_question_titles();
     if ( $type =~ /xls/i ) {
-        XIMS::Debug(5,"Type is Excel");
+        XIMS::Debug(4,"Type is Excel");
         foreach my $answer (@{$answers}) {
             my $answer_text = ${$answer}{'answer'};
             $answer_text =~ s/\n//;
@@ -259,21 +272,27 @@ sub event_download_all_results {
             # The "A" in the Answer-id field is neccessary because Excel interprets eg 1.1.1 as a date
             $body .= ${$answer}{'tan'} . "\t" . $question_titles{ ${$answer}{'question_id'} } . "\tA " . ${$answer}{'question_id'} .  "\t" . $answer_text ."\n";
         }
+
         if ( $encoding =~ /latin1/i ) {
-            XIMS::Debug(5,"Encoding is Latin1");
+            XIMS::Debug(6,"Encoding is Latin1");
             $body = XIMS::decode( $body );
             $encoding = 'ISO-8859-1';
         }
         else {
             $encoding = 'UTF-8';
         }
-    } elsif ( $type =~ /html/i ) {
-        XIMS::Debug(5, "Type is HTML" );
+    }
+    elsif ( $type =~ /html/i ) {
+        XIMS::Debug(4, "Type is HTML" );
+
+        # For compatibility with Mac-Browsers we have to cheat a bit with the mime-type
+        $mime_type = 'text/html';
+
         # Why not use DBIx::XHTML_Table here?
         $body = '<html><head><title>'.$filename.'</title></head><body><table border="1">';
         $body .= "<tr><td>Q ID</td><td>Q</td><td>A ID</td><td>A</td><td>Timestamp</td></tr>";
         foreach my $answer (@{$answers}) {
-          XIMS::Debug(5,"Question:". $question_titles{ ${$answer}{'question_id'} } ."Answer:" . $converter_to_Latin1->convert(${$answer}{'answer'}));
+            XIMS::Debug(6,"Question:". $question_titles{ ${$answer}{'question_id'} } ."Answer:" . $converter_to_Latin1->convert(${$answer}{'answer'}));
             $body .= "<tr><td>" . ${$answer}{'tan'} . "</td><td>" . $converter_to_Latin1->convert( $question_titles{ ${$answer}{'question_id'} } ) . "</td><td>" . ${$answer}{'question_id'} . "</td><td>" . ${$answer}{'answer'} .  "</td><td>" . ${$answer}{'answer_timestamp'}."</td></tr>";
         }
         $body .= "</table></body></html>";
@@ -287,6 +306,70 @@ sub event_download_all_results {
 
     return 0;
 }
+
+sub event_download_raw_results {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+    my ($tmpfh, $tmpfilename) = tempfile();
+
+    # write header row
+    my @columns = qw( id tan question_id answer answer_timestamp );
+    print $tmpfh join("\t",@columns); print $tmpfh "\r\n";
+
+    # write data rows
+    # visit_select_rows() croaks for some reason here. so, we can't do join("\t",@_) :-/
+    $object->data_provider->driver->dbh->visit_select(
+        sub { my $r = shift;
+              print $tmpfh "$r->{id}\t$r->{tan}\t$r->{question_id}\t$r->{answer}\t$r->{answer_timestamp}";
+              print $tmpfh "\r\n";
+            },
+        table => 'ci_questionnaire_results',
+        columns => \@columns,
+        criteria => { 'document_id' => $object->document_id() }
+    );
+
+    # create zip file
+    my $zip = Archive::Zip->new();
+    my $zipfilename = 'rawresults_' . $object->location();
+
+    seek($tmpfh, 0, 0 ); # make sure we read from the start of the file
+    my $member = $zip->addFile( $tmpfilename, $zipfilename . '.txt');
+
+    # write zip to temporary file
+    my $zipfilefh = IO::File->new_tmpfile();
+    if ( $zipfilefh ) {
+        if ( $zip->writeToFileHandle( $zipfilefh ) != AZ_OK ) {
+            XIMS::Debug( 2, "Could not create temporary ZIP file." . $!);
+            $self->sendError( $ctxt, "Could not create temporary ZIP file" );
+            return 0;
+        }
+        if ( not unlink0($tmpfh, $tmpfilename) ) {
+            XIMS::Debug( 2, "Could not unlink temporary file." . $!);
+        }
+    }
+    else {
+        XIMS::Debug( 2, "Could not write temporary ZIP file." . $!);
+        $self->sendError( $ctxt, "Could not write temporary ZIP file" );
+        return 0;
+    }
+
+    my $charset = XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8';
+    my $mime_type = XIMS::DataFormat->new( suffix => 'zip' )->mime_type();
+    print $self->header('-charset' => $charset, -type => $mime_type, '-Content-disposition' => "attachment; filename=$zipfilename.zip" );
+
+    # stream zip file to browser
+    my $buffer;
+    seek($zipfilefh, 0, 0);
+    while ( read($zipfilefh, $buffer, 1024) ) {
+        print $buffer;
+    }
+
+    $self->skipSerialization(1);
+    return 0;
+}
+
 
 sub event_publish {
     XIMS::Debug( 5, "called" );

@@ -99,7 +99,7 @@ sub get_answer_count {
 ##
 #
 # SYNOPSIS
-#    XIMS::QuestionnaireResult->get_answers( $questionnaire_id, $question_id )
+#    XIMS::QuestionnaireResult->get_answers( $questionnaire_id, $question_id, $answered )
 #
 # PARAMETER
 #    $questionnaire_id: Document-ID of the questionnaire
@@ -117,8 +117,8 @@ sub get_answers {
     my $questionnaire_id = shift;
     my $question_id = shift;
     my $answered = shift;
-    
-    if ( defined $answered ) {
+
+    if ( defined $answered and $answered == 1 ) {
         $answered = "AND answer = 'ANSWERED'";
     }
     else {

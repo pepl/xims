@@ -11,6 +11,8 @@
     <Alignment>Alignment (Radio, Checkbox)</Alignment>
     <Type>Type</Type>
     <results>results</results>
+    <Results>Results</Results>
+    <Overview>Overview</Overview>
     <close_window>Close window</close_window>
     <next>Next</next>
     <start>Begin</start>
@@ -35,8 +37,9 @@
     <Remove_from_selection>Remove from selection</Remove_from_selection>
     <show_questions>Show questions</show_questions>
     <hide_questions>Hide questions</hide_questions>
-    <download_all_results>Download answered questionnaires</download_all_results>
-    <download_results>Download results</download_results>
+    <All_results>All answered questionnaires</All_results>
+    <Raw_results>Raw result data (tab-separated)</Raw_results>
+    <with_text_answers>including detailed 'Text'- and 'Textarea'-type answers</with_text_answers>
     <Default_Thank_You>Thank you for answering the questions!</Default_Thank_You>
     <!-- End Questionnaire -->
 </l>

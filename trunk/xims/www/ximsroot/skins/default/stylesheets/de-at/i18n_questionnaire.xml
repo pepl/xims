@@ -11,6 +11,8 @@
     <Alignment>Ausrichtung (Radio, Checkbox)</Alignment>
     <Type>Typ</Type>
     <results>Ergebnisse</results>
+    <Results>Ergebnisse</Results>
+    <Overview>Übersicht</Overview>
     <close_window>Fenster schließen</close_window>
     <next>Weiter</next>
     <start>Start</start>
@@ -35,8 +37,9 @@
     <Remove_from_selection>Von Auswahl entfernen</Remove_from_selection>
     <show_questions>Fragen anzeigen</show_questions>
     <hide_questions>Fragen ausblenden</hide_questions>
-    <download_all_results>Ausgefüllte Fragebögen herunterladen</download_all_results>
-    <download_results>Ergebnisse herunterladen</download_results>
+    <All_results>Alle Fragebögen herunterladen</All_results>
+    <Raw_results>Rohdaten (Tab-separiert)</Raw_results>
+    <with_text_answers>mit Anworten des Typs 'Text'- und 'Textarea' im Detail</with_text_answers>
     <Default_Thank_You>Vielen Dank für die Beantwortung der Fragen!</Default_Thank_You>
     <!-- End Questionnaire -->
 </l>
