@@ -23,7 +23,11 @@
 @@ci_ddl_bookmarks.ind
 @@ci_ddl_bookmarks.con
 @@ci_ddl_bookmarks.sqs
-
+@@ci_ddl_eval.tab
+@@ci_ddl_eval.ind
+@@ci_ddl_eval.con
+@@ci_ddl_eval.sqs
+/
 -- columns there should be moved to ci_ddl.tab
 @@ci_ddl_content_denormalization.sql
 
