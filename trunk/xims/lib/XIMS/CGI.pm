@@ -49,7 +49,7 @@ sub event_init {
     my $ctxt = shift;
     $self->SUPER::event_init( $ctxt );
 
-    $self->sendEvent( 'access_denied' ) unless $ctxt->session->user();
+    return $self->event_access_denied( $ctxt ) unless $ctxt->session->user();
     return unless $ctxt->object(); # no object-ACL-check needed if we do not have a content object
 
     # ACL check inlined here.
@@ -74,10 +74,10 @@ sub event_init {
     }
 
     if ( $do_create == 1 ) {
-        $self->sendEvent( 'access_denied' ) unless $privmask & XIMS::Privileges::CREATE();
+        return $self->event_access_denied( $ctxt ) unless $privmask & XIMS::Privileges::CREATE();
     }
     else {
-        $self->sendEvent( 'access_denied' ) unless $privmask & XIMS::Privileges::VIEW();
+        return $self->event_access_denied( $ctxt ) unless $privmask & XIMS::Privileges::VIEW();
     }
 }
 
@@ -815,6 +815,11 @@ sub event_undelete {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
+
+    return $self->event_access_denied( $ctxt )
+           unless $current_user_object_priv & XIMS::Privileges::DELETE();
+
     my $object = $ctxt->object();
 
     # test for a non deleted object in the current container with the same location
@@ -858,7 +863,7 @@ sub event_trashcan {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied()
+    return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
@@ -921,7 +926,7 @@ sub event_delete {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied()
+    return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
@@ -1030,7 +1035,7 @@ sub event_move_browse {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied()
+    return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::MOVE();
 
     if ( not $ctxt->object->published() ) {
@@ -1066,7 +1071,7 @@ sub event_move {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
 
-    return $self->event_access_denied()
+    return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::MOVE();
 
     if ( not $object->published() ) {
@@ -1137,7 +1142,7 @@ sub event_publish_prompt {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied()
+    return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     # check for body references in (X)HTML and XML documents
@@ -1187,7 +1192,7 @@ sub event_publish {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied()
+    return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     require XIMS::Exporter;
@@ -1248,7 +1253,7 @@ sub event_unpublish {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
 
-    return $self->event_access_denied()
+    return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     require XIMS::Exporter;
@@ -1533,7 +1538,7 @@ sub event_reposition {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
 
-    return $self->event_access_denied()
+    return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::WRITE();
 
     my $new_position = $self->param( "new_position" );
