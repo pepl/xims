@@ -1,5 +1,10 @@
---- WebUtils.pm	Mon Nov  5 12:57:03 2001
-+++ WebUtils.pm	Sat Jun 15 17:40:36 2002
+Index: WebUtils.pm
+===================================================================
+RCS file: /home/cvs/AxKit-XSP-WebUtils/WebUtils.pm,v
+retrieving revision 1.8
+diff -u -r1.8 WebUtils.pm
+--- WebUtils.pm	2003/06/17 19:49:25	1.8
++++ WebUtils.pm	2003/06/19 18:09:55
 @@ -11,6 +11,8 @@
  use Apache;
  use Apache::Constants qw(OK);
@@ -27,135 +32,29 @@
  );
  
  @ISA = qw(Apache::AxKit::Language::XSP);
-@@ -45,31 +58,34 @@
- }
- 
- sub path_info () {
--    my $Request = AxKit::Apache->request;
--    return $Request->path_info;
-+    my $r = AxKit::Apache->request;
-+    return $r->path_info;
- }
- 
- sub query_string () {
--    my $Request = AxKit::Apache->request;
--    return $Request->query_string;
-+    my $r = AxKit::Apache->request;
-+    return $r->query_string;
- }
- 
- sub request_uri () {
--    my $Request = AxKit::Apache->request;
--    return $Request->uri;
-+    my $r = AxKit::Apache->request;
-+    return $r->uri;
- }
- 
- sub server_root () {
--    my $Request = AxKit::Apache->request;
--    return $Request->document_root;
-+    my $r = AxKit::Apache->request;
-+    return $r->document_root;
- }
- 
- sub request_host () {
--    my $hostname = Apache->header_in('Via');
-+    my $r = AxKit::Apache->request;
-+
-+    my $hostname = $r->header_in('Via');
-     $hostname =~ s/^[0-9.]+ //g;
-     $hostname =~ s/ .*//g;
--    $hostname ||= $ENV{HTTP_HOST};
--    $hostname ||= Apache->header_in('Host');
-+
-+    $hostname ||= $r->hostname; # use the host set by full URI or 'Host'-header if there is no 'Via'-header
-+
-     return $hostname;
- }
- 
-@@ -81,14 +97,14 @@
-     
-     my $myhost = $host;
- 
--    my $Request = AxKit::Apache->request;
-+    my $r = AxKit::Apache->request;
- 
-     if ($uri !~ m|^https?://|oi) {
-         if ($uri !~ m#^/#) {
+@@ -90,14 +103,14 @@
              $uri = "./$uri" if $uri =~ /^\./;
  
              # relative path, so let's resolve the path ourselves
--            my $base = $Request->uri;
-+            my $base = $r->uri;
-             $base =~ s#/[^/]+$#/#;
-             $uri = "$base$uri";
-             $uri =~ s#/./#/#g;             # embedded ./
-@@ -98,11 +114,11 @@
-         }
+-	    my $base = $Request->uri;
++        my $base = $Request->uri;
+             $base =~ s{[^/]*$}{};
+-	    $uri = "$base$uri";
+-	    $uri =~ s{//+}{/}g;
+-	    $uri =~ s{/.(/|$)}{/}g;                     # embedded ./
+-	    1 while ($uri =~ s{[^/]+/\.\.(/|$)}{}g);   # embedded ../
+-	    $uri =~ s{^(/\.\.)+(/|$)}{/}g;              # ../ off of "root"
+-	}
++        $uri = "$base$uri";
++        $uri =~ s{//+}{/}g;
++        $uri =~ s{/.(/|$)}{/}g;                     # embedded ./
++        1 while ($uri =~ s{[^/]+/\.\.(/|$)}{}g);   # embedded ../
++        $uri =~ s{^(/\.\.)+(/|$)}{/}g;              # ../ off of "root"
++    }
  
          if (not defined $host) {
--            $myhost = $Request->header_in("Host");
-+            $myhost = $r->header_in("Host");
- 
-             # if we're going through a proxy, the virtual host is rewritten; yuck
-             if ($myhost !~ /[a-zA-Z]/) {
--                my $Server = $Request->server;
-+                my $Server = $r->server;
-                 $myhost = $Server->server_hostname;
-                 my $port = $Server->port;
-                 $myhost .= ":$port" if $port != 80;
-@@ -111,25 +127,25 @@
-         
-         my $scheme = 'http';
-         $scheme = 'https' if $secure; # Hmm, might break if $port was set above...
--        $Request->header_out("Location" => "${scheme}://${myhost}${uri}");
--        $Request->status(302);
-+        $r->header_out("Location" => "${scheme}://${myhost}${uri}");
-+        $r->status(302);
-     }
-     else {
--        $Request->header_out("Location" => "$uri");
--        $Request->status(302);
-+        $r->header_out("Location" => "$uri");
-+        $r->status(302);
-     }
-     
--    $Request->send_http_header;
-+    $r->send_http_header;
-     
-     Apache::exit();
- }
- 
- sub header ($;$) {
--    my $name = shift;
-+    my ($name, $value) = @_;
-     my $r = AxKit::Apache->request;
--    
--    if (@_) {
--        return $r->header_out($name, $_[0]);
-+
-+    if ($value) {
-+        return $r->header_out($name, $value);
-     }
-     else {
-         return $r->header_in($name);
-@@ -146,12 +162,11 @@
- 
- sub return_code ($) {
-     my $code = shift;
-+    my $r = AxKit::Apache->request;
- 
--    my $Request = AxKit::Apache->request;
--
--    $Request->status($code);
-+    $r->status($code);
-     
--    $Request->send_http_header;
-+    $r->send_http_header;
-     
-     Apache::exit();
- }
-@@ -172,6 +187,93 @@
+             $myhost = $Request->header_in("Host");
+@@ -188,6 +201,94 @@
      return;
  }
  
@@ -231,7 +130,7 @@
 +
 +    $variant_list =~ s/([^:>])\n/$1<\/li>\n/g; # tidy up single li-tags because 
 +                                               # mod_negotiation's list is not
-+                                               # well-balanced up to Apache 1.3.24
++                                               # well-balanced up to Apache 1.3.28
 +
 +    return $variant_list;
 +}
@@ -246,10 +145,11 @@
 +    return $r->server->server_admin;
 +}
 +
++
  1;
  
  __END__
-@@ -234,7 +336,7 @@
+@@ -250,7 +351,7 @@
  
  =head2 C<<web:request_uri/>>
  
@@ -258,12 +158,10 @@
  
  =head2 C<<web:request_host/>>
  
-@@ -314,6 +416,176 @@
-   <p>
+@@ -331,6 +432,175 @@
    Your browser is: <web:header name="HTTP_USER_AGENT"/>
    </p>
-+
-+
+ 
 +=head2 C<<web:return_code/>>
 +
 +This tag allows you to set the reply status for the client request.
@@ -432,6 +330,12 @@
 +    <p>Error Details:<br/>
 +        <web:error_notes/>
 +    </p>
- 
++
  =head1 AUTHOR
  
+ Matt Sergeant, matt@axkit.com
+@@ -343,3 +613,4 @@
+ 
+ You may use or redistribute this software under the terms of either the
+ Perl Artistic License, or the GPL version 2.0 or higher.
++
