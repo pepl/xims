@@ -319,7 +319,7 @@ sub recurse_ancestor {
     my $object = shift;
     my @ancestors = @_;
     #warn "testing id " . $object->document_id() . " (title: ". $object->title() . ") against " . $object->parent_id() . "\n";
-    if ( $object->document_id() != $object->parent_id() ) {
+    if ( $object->document_id() != 1 ) {
         my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $object->User() );
         push @ancestors, $parent;
         $self->recurse_ancestor( $parent, @ancestors );

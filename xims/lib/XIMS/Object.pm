@@ -106,7 +106,7 @@ sub new {
     # otherwise just use the args to load the unserialized (new) object.
     else {
         if ( $class ne 'XIMS::Object' ) {
-            my $otname = $class;	
+            my $otname = $class;
             $otname =~ s/XIMS:://;
             if ( not $args{object_type_id} ) {
                 my $ot = XIMS::ObjectType->new( name => $otname );
@@ -628,10 +628,29 @@ sub __get_granted_objects {
                                                           properties => [ 'document.id', 'content.id' ] );
     my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
 
-    my @priv_data = $self->data_provider->getObjectPriv( content_id => \@candidate_ids,
-                                                         grantee_id => \@role_ids,
-                                                         properties => [ 'content_id' ] );
+    my @ids = $self->__filter_granted_ids( User => $user, candidate_ids => \@candidate_ids );
+    return () unless scalar( @ids ) > 0;
 
+    my @data = $self->data_provider->getObject( id  => \@ids,
+                                                %args,
+                                                properties => \@Default_Properties );
+
+    my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
+
+    #warn "objects " . Dumper( \@objects ) . "\n";
+    return @objects;
+}
+
+sub __filter_granted_ids {
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+    my $candidate_ids = delete $args{candidate_ids};
+    my @role_ids = ( $user->role_ids(), $user->id() );
+
+    my @priv_data = $self->data_provider->getObjectPriv( content_id => $candidate_ids,
+                                                         grantee_id => \@role_ids,
+                                                         properties => [ 'content_id', 'grantee_id', 'privilege_mask' ] );
     return () unless scalar( @priv_data ) > 0;
 
     my @ids;
@@ -643,15 +662,9 @@ sub __get_granted_objects {
             push (@ids, $_->{'objectpriv.content_id'});
         }
     };
-    my @data = $self->data_provider->getObject( id  => \@ids,
-                                                %args,
-                                                properties => \@Default_Properties );
-
-    my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
-
-    #warn "objects " . Dumper( \@objects ) . "\n";
-    return @objects;
+    return @ids;
 }
+
 
 ##
 #
@@ -687,10 +700,7 @@ sub siteroot {
 sub __child_ids {
     my $self = shift;
     my %args = @_;
-    my @child_ids = $self->data_provider->get_object_id( %args, parent_id => $self->document_id() );
-    # cover the special case for 'root' where parent_id == id
-    @child_ids = grep { $_ != $self->document_id() } @child_ids;
-    return @child_ids;
+    return $self->data_provider->get_object_id( %args, parent_id => $self->document_id() );
 }
 
 sub __find_ids {

@@ -152,8 +152,7 @@ CREATE TABLE ci_documents
  (location          VARCHAR(256)
  ,status            VARCHAR(100)
  ,id                SERIAL       PRIMARY KEY
- ,parent_id         INTEGER      NOT NULL
-                                 REFERENCES ci_documents ( id )
+ ,parent_id         INTEGER      REFERENCES ci_documents ( id )
                                  ON DELETE CASCADE
  ,object_type_id    INTEGER      NOT NULL
                                  REFERENCES ci_object_types ( id )
