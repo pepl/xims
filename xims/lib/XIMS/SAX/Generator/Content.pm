@@ -213,7 +213,7 @@ sub _set_children {
     if ( scalar( @children ) > 0 ) {
         foreach my $child ( @children ) {
             if ( $ctxt->properties->content->getchildren->addinfo() ) {
-                my @info =  $ctxt->data_provider->get_descendant_infos( parent_id =>$child->id() );
+                my @info =  $ctxt->data_provider->get_descendant_infos( parent_id => $child->document_id() );
                 $child->{descendant_count}         = $info[0];
                 $child->{descendant_last_modified} = $info[1];
             }
