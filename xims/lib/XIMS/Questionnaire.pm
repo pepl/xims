@@ -431,10 +431,15 @@ sub set_answer_data {
     my ($self, %params) = @_;
 
     my $questionnaire = $self->_parser->parse_string( $self->body() );
-#  XIMS::Debug(6, $self->body() );
+    my $question_id = $params{'q'};
+    my $tan = $params{'tan'};
+    if ( $question_id ) {
+      $question_id = XIMS::QuestionnaireResult->get_last_answer($self->document_id, $tan) + 1;
+    }
+    XIMS::Debug(6, ">>>".$question_id );
     $questionnaire = $questionnaire->documentElement();
-    $questionnaire->appendTextChild( 'current_question', $params{'q'} );
-    $questionnaire->appendTextChild( 'tan', $params{'tan'} );
+    $questionnaire->appendTextChild( 'current_question', $question_id );
+    $questionnaire->appendTextChild( 'tan', $tan );
     $self->body( $questionnaire->toString() );
 
     return 1

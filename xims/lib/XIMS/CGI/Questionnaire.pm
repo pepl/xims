@@ -50,6 +50,7 @@ sub event_default {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     my $user = $ctxt->session->user;
+    XIMS::Debug(5,"User logged in is: ".$user->name()." with id ".$user->id());
     if ( $user->id() eq XIMS::PUBLICUSERID() ) {
         $self->_default_public( $ctxt );
     }
@@ -62,6 +63,7 @@ sub event_default {
 }
 
 sub _default_public {
+    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     my $user = $ctxt->session->user;

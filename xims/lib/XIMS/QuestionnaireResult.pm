@@ -29,6 +29,7 @@ use Class::MethodMaker
 
 
 sub store {
+    XIMS::Debug ( 5, "called" );
     my $self = shift;
 
     $self->answer_timestamp( $self->data_provider->db_now() );
@@ -40,25 +41,53 @@ sub store {
     return $id;
 }
 
-# if called in a list context it returns:
-#    count of all answered questionnaires
-#    count of valid answered questionnaires
-#    count of invalid answered questionnaires
+##
+#
+# SYNOPSIS
+#    XIMS::QuestionnaireResult->get_result_count( $questionnaire_id, $last_question )
+#
+# PARAMETER
+#    $questionnaire_id: Document-ID of the questionnaire
+#    $last_question   : number of the last question that has 
+#                       to be answered (= total number of questions)
+#
+# RETURNS
+#    $total_count: number of all answered questionnaires
+#    $valid_count: number of valid answered questionnaires (all questions answered)
+#    $total_count-$valid_count: number of invalid answered questionnaires
+#
+# DESCRIPTION
+#   
 sub get_result_count {
+    XIMS::Debug ( 5, "called" );
     my $self = shift;
     my $questionnaire_id = shift;
-    my $last_question = shift; # number of the last question that has to be answered (= total number of questions)
-
+    my $last_question = shift;
     my $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id GROUP BY tan ) sub1";
     my $total_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
     $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$last_question' GROUP BY tan) sub1";
     my $valid_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
 
-    #  XIMS::Debug (6, "#### ".Dumper( $valid_count ) );
     return ($total_count, $valid_count, $total_count - $valid_count);
 }
 
+##
+#
+# SYNOPSIS
+#    XIMS::QuestionnaireResult->get_answer_count( $questionnaire_id, $question_id, $answer )
+#
+# PARAMETER
+#    $questionnaire_id: Document-ID of the questionnaire
+#    $question_id     : ID of the question of which the number of answers should be returned
+#    $answer          : text of the answer
+#
+# RETURNS
+#    $answer_count: how many times was the specific answer given to the question
+#
+# DESCRIPTION
+#
 sub get_answer_count {
+    XIMS::Debug ( 5, "called" );
     my $self = shift;
     my $questionnaire_id = shift;
     my $question_id = shift;
@@ -67,11 +96,26 @@ sub get_answer_count {
     my $sql = "SELECT count(*) AS answercount FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$question_id' AND answer='$answer' ";
     my $answer_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
 
-    #  XIMS::Debug (6, "#### ".Dumper( $answer_count ) );
     return $answer_count;
 }
 
+##
+#
+# SYNOPSIS
+#    XIMS::QuestionnaireResult->get_answers( $questionnaire_id, $question_id )
+#
+# PARAMETER
+#    $questionnaire_id: Document-ID of the questionnaire
+#    $question_id     : ID of the question of which the answers should be returned
+#
+#
+# RETURNS
+#    $answers: reference to an array with all answers to the question and how often each answer was given
+#
+# DESCRIPTION
+#
 sub get_answers {
+    XIMS::Debug ( 5, "called" );
     my $self = shift;
     my $questionnaire_id = shift;
     my $question_id = shift;
@@ -84,6 +128,40 @@ sub get_answers {
 
     return $answers;
 }
+
+##
+#
+# SYNOPSIS
+#    XIMS::QuestionnaireResult->get_last_answer ( $questionnaire_id, $tan )
+#
+# PARAMETER
+#    $questionnaire_id: Document-ID of the questionnaire
+#    $tan             : TAN of questionnaire that should be checked
+#
+# RETURNS
+#    $question_id: ID of the last answered question of the questionnaire
+#
+# DESCRIPTION
+#    Before a question can be answered we check if the question has not been answered before
+#    This function returns the ID of the last question the TAN has answered. 
+#    The answering of the questionnaire continues at the next question.
+#    See XIMS::Questionnaire::set_answer_data()
+#
+sub get_last_answer {
+    XIMS::Debug ( 5, "called" );
+    my $self = shift;
+    my $questionnaire_id = shift;
+    my $tan = shift;
+
+    my $sql = "select max(to_number(question_id,'999999')) AS last_id FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND tan='$tan' AND answer = 'ANSWERED';";
+XIMS::Debug(5,">>>> ".$sql);
+    my $last_answered_question = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
+    if ( !( $last_answered_question) ) {
+        $last_answered_question = 0;
+    }
+    return $last_answered_question;
+}
+
 
 sub _encode {
     my $string = shift;
