@@ -5,7 +5,10 @@
 
 \echo creating nested set functions, triggers and rule...
 
-CREATE OR REPLACE FUNCTION insert_into_tree() RETURNS TRIGGER AS '
+--          -
+--  INSERT  -
+--          -
+CREATE OR REPLACE FUNCTION  ci_doc_lftrgt_bi() RETURNS TRIGGER AS '
 DECLARE
      parent_rgt INTEGER;
 BEGIN
@@ -31,29 +34,14 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE TRIGGER ci_doc_lftrgt_ins BEFORE INSERT ON ci_documents
-    FOR EACH ROW EXECUTE PROCEDURE insert_into_tree();
+CREATE TRIGGER ci_doc_lftrgt_bi BEFORE INSERT ON ci_documents
+       FOR EACH ROW EXECUTE PROCEDURE ci_doc_lftrgt_bi();
 
-CREATE OR REPLACE FUNCTION close_gap() RETURNS TRIGGER AS '
-DECLARE
-    maxrgt INTEGER;
-BEGIN
-    SELECT INTO maxrgt max(rgt)+2 FROM ci_documents;
-    UPDATE ci_documents 
-      SET lft = CASE WHEN lft > OLD.lft
-                     THEN lft - (OLD.rgt - OLD.lft + 1) + maxrgt
-                     ELSE lft END,
-          rgt = CASE WHEN rgt > OLD.rgt
-                     THEN rgt - (OLD.rgt - OLD.lft + 1 )
-                     ELSE rgt END;
-    RETURN OLD;
-END;
-' LANGUAGE 'plpgsql';
 
-CREATE TRIGGER ci_doc_lftrgt_del AFTER DELETE ON ci_documents
-    FOR EACH ROW EXECUTE PROCEDURE close_gap();
-
-CREATE OR REPLACE FUNCTION move_tree(INTEGER, INTEGER, INTEGER) RETURNS BOOLEAN AS '
+--          -
+--  UPDATE  -
+--          -
+CREATE OR REPLACE FUNCTION ci_doc_move_tree(INTEGER, INTEGER, INTEGER) RETURNS BOOLEAN AS '
 DECLARE
     clft  ALIAS FOR $1;
     crgt  ALIAS FOR $2;
@@ -96,10 +84,48 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE RULE move_rule AS  
-  ON UPDATE TO ci_documents
-     WHERE old.parent_id <> new.parent_id
-  DO
-( SELECT move_tree(old.lft, old.rgt, new.parent_id);
-);
+--'
+CREATE OR REPLACE RULE move_rule AS
+       ON UPDATE TO ci_documents
+       WHERE old.parent_id <> new.parent_id
+       DO ( 
+            SELECT ci_doc_move_tree(old.lft, old.rgt, new.parent_id); 
+          );
+
+
+--          -
+--  DELETE  -
+--          -
+CREATE OR REPLACE FUNCTION ci_del_tree(INTEGER) RETURNS BOOLEAN AS '
+DECLARE
+    cid  ALIAS FOR $1;
+    clft  INTEGER;
+    crgt  INTEGER;
+    gap   INTEGER;
+BEGIN
+    IF cid IS NULL THEN
+        RAISE EXCEPTION ''id cannot be NULL value'';
+    END IF;
+
+    SELECT INTO clft lft FROM ci_documents WHERE id = cid;
+    SELECT INTO crgt rgt FROM ci_documents WHERE id = cid;
+
+    -- in case select fails (i.e. id nonexistant)
+    IF clft IS NULL OR crgt IS NULL THEN
+        RAISE EXCEPTION ''id cannot be NULL value'';
+    END IF;
+
+    DELETE FROM ci_documents WHERE lft BETWEEN clft AND crgt;
+    
+    gap := (crgt - clft + 1);
+    UPDATE ci_documents
+      SET lft = CASE WHEN lft > clft
+                     THEN lft - gap 
+                     ELSE lft END,
+          rgt = CASE WHEN rgt > crgt
+                     THEN rgt - gap
+                     ELSE rgt END;
+    RETURN FOUND;
+END;
+' LANGUAGE 'plpgsql';
 
