@@ -139,7 +139,14 @@ if ( $@ ) {
 print "\nObject type '" . $ot->name() . "' has been sucessfully created in the database.\n\n";
 print "Going to create the template modules and stylesheets.\n";
 
-my $a_isa = $o_isa eq 'XIMS::Object' ? 'XIMS::CGI' : lc($o_isa);
+my $a_isa;
+if ( $o_isa eq 'XIMS::Object' ) {
+    $a_isa = 'XIMS::CGI';
+}
+else {
+    ($a_isa) = $o_isa =~ /XIMS::(\w+)/;
+    $a_isa = lc($a_isa);
+}
 my $e_isa = $o_isa;
 $e_isa =~ s/XIMS::/XIMS::Exporter::/;
 $e_isa = $e_isa eq 'XIMS::Exporter::Object' ? 'XIMS::Exporter::XML' : $e_isa;
