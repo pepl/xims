@@ -9,10 +9,8 @@
           xmlns:web="http://axkit.org/NS/xsp/webutils/v1"
           xmlns:if-param="http://axkit.org/NS/xsp/if-param/v1"
           xmlns:param="http://axkit.org/NS/xsp/param/v1">
-          
 
 <page>
-
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcq="http://purl.org/dc/qualifiers/1.0/">
     <rdf:Description about="">
         <dc:title>
@@ -20,7 +18,7 @@
                 <param:reason/>
             </if-param:reason>
         </dc:title>
-        <dc:creator>Michael Kröll</dc:creator>
+        <dc:creator>Michael Kroell</dc:creator>
         <dc:subject>XIMS</dc:subject>
         <dc:description></dc:description>
         <dc:publisher></dc:publisher>
@@ -52,35 +50,27 @@
     </p>
 </if-param:reason>
 
-<xsp:logic>
-if (!<web:match_useragent name="MSIE|Gecko|Lynx|Opera"/>) {
-</xsp:logic>
-<h1>Sorry, your Web browser is not supported.</h1>
-<p>
-The XIMS User interface is designed for Mozilla, MS Internet Explorer Version 5 or newer. It is known to work with Lynx and Opera too.
-</p>
-<xsp:logic>
-}
-else {
-</xsp:logic>
-    <form method="post" name="login">
+<form method="post" name="login">
     <xsp:logic>
     if (<web:request_prev_parsed_uri omit="query"/> eq <web:request_parsed_uri omit="query"/>) {
     </xsp:logic>
         <xsp:attribute name="action">
-            <web:request_parsed_uri omit="path"/>/goxims/defaultbookmark
+            <web:request_parsed_uri omit="path"/>/goxims/defaultbookmark?dologin=1
         </xsp:attribute>
     <xsp:logic>
     }
     else {
     </xsp:logic>
         <xsp:attribute name="action">
-            <web:request_prev_parsed_uri omit="query"/>
+            <web:request_prev_parsed_uri omit="query"/>?dologin=1
         </xsp:attribute>
     <xsp:logic>
     }
     </xsp:logic>
-    <table align="center" border="0" cellpadding="2" cellspacing="0" class="action">
+
+    <input type="hidden" name="dologin" id="dologin" value="1"/>
+
+    <table align="left" border="0" cellpadding="2" cellspacing="0" class="action">
         <tr><td style="background-color:maroon; color:white; border:1px solid;" colspan="2">Login</td></tr>
         <tr>
             <td>Username:</td>
@@ -110,11 +100,8 @@ else {
         <xsp:logic>
         }
         </xsp:logic>
-     </table>
-    </form>
-<xsp:logic>
-}
-</xsp:logic>
+    </table>
+</form>
 </body>
 
 </page>
