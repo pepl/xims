@@ -2,6 +2,8 @@
 # The following commands will convert an existing PostgreSQL database with
 # latin1 encoding to a new database with unicode encoding.
 #
+# You should execute them as the postgresql user (postgres, pgsql)
+#
 # Read carefully, think, and use them at your own risk!
 #
 
