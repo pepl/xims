@@ -22,7 +22,7 @@ PERL = /usr/bin/perl
 all		: check check_done
 
 check		:
-	$(PERL) tools/cpan_install.pl -c
+	$(PERL) tools/install/cpan_install.pl -c
 
 check_done		: check
 
@@ -42,7 +42,7 @@ done		: setup
 	@echo
 	@echo ===========================================================
 	@echo
-	@echo Initial XIMS setup complete. 
+	@echo Initial XIMS setup complete.
 	@echo Please \(re\)start apache and check for errors.
 	@echo You may then proceed with \"make test\" to run the
 	@echo test suite
@@ -56,23 +56,23 @@ done		: setup
 ##########################
 
 config		:
-	$(PERL) tools/xims_setup.pl -c
+	$(PERL) tools/install/xims_setup.pl -c
 
 ##########################
 # installation rules     #
 ##########################
 
 cpan 		:
-	$(PERL) tools/cpan_install.pl
+	$(PERL) tools/install/cpan_install.pl
 
 patch_modules 		:
-	$(PERL) tools/patch_modules.pl
+	$(PERL) tools/install/patch_modules.pl
 
 db		:
-	$(PERL) tools/setup_db.pl
+	$(PERL) tools/install/setup_db.pl
 
 setup 		:
-	$(PERL) tools/xims_setup.pl
+	$(PERL) tools/install/xims_setup.pl
 
 
 ##########################
