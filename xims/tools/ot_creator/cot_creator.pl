@@ -9,7 +9,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use lib qw(/usr/local/xims/lib);
+use lib qw(lib ../lib ../../lib /usr/local/xims/lib);
 use Getopt::Std;
 use XIMS;
 use XIMS::ObjectType;

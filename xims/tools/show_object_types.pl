@@ -11,7 +11,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use lib qw(/usr/local/xims/lib);
+use lib qw(lib ../lib /usr/local/xims/lib);
 use XIMS::ObjectType;
 
 my $ot = XIMS::ObjectType->new();
