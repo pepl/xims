@@ -1,3 +1,27 @@
+0.8
+  - Better Performance (children are fetched only if needed, updates for fewer DB hits and cached queries)
+  - Users can select their favourite document editor (Plain, HTMLArea, eWebEditPro) during editing now
+  - Initial version of VLibrary modules. This virtual library object type will support storing and management
+    of documents, links and other media with separate management of metadata. The modules are neither document nor
+    finished yet, this will come with the next XIMS releases. For now, only the import of valid DocBookXML
+    documents (XIMS::VLibraryItem::DocBookXML) is supported. 
+  - Fixes for the XIMS setup process (Amongst other things: Support for installing to remote
+    PostgreSQL databases and PostgreSQL databases with password or md5 authentification)
+  - Searching can be limited specific branches of the hierarchy using the "start from here" option
+  - XML object type objects (XML, XSLStylesheet, XSPScript) are handled as full XML documents and
+    no longer as document fragments now
+  - Updated DBIx::SQLEngine module dependancy to 0.017 (fetch_select_rows)
+  - Moved application classes to XIMS::CGI::*
+  - Reactivated cot_creator.pl for creating module templates of new object types
+  - Better path handling during image/link selection using the eWebEditPro WYSIWYG editor
+  - Fixes for Oracle support of the Questionnaire module
+  - Added o:, c:, and u: search macros to enable explicit searches for creators,
+    owners, and modifiers of objects
+  - Updated search result pagination
+  - Support for hierarchical object types
+  - Deleted objects are not shown during object browsing any longer
+  - A lot of smaller fixes and updates
+
 0.7
   - The user interface language is chosen based on 'Accept-Language' headers now
   - XSP object type supports an attribute whether or not to process the XSP at event default
