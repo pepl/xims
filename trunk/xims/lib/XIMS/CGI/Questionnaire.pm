@@ -322,6 +322,7 @@ sub event_download_raw_results {
     # visit_select_rows() croaks for some reason here. so, we can't do join("\t",@_) :-/
     $object->data_provider->driver->dbh->visit_select(
         sub { my $r = shift;
+              $r->{answer} =~ s/\015?\012/ /g; # replace newlines with spaces
               print $tmpfh "$r->{id}\t$r->{tan}\t$r->{question_id}\t$r->{answer}\t$r->{answer_timestamp}";
               print $tmpfh "\r\n";
             },
