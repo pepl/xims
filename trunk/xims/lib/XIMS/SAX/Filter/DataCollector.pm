@@ -37,7 +37,7 @@ sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
 
-    $self->{Colunms}      ||= [];
+    $self->{Columns}      ||= [];
     $self->{PreserveData} ||= 0;
 
     return $self;
@@ -240,7 +240,7 @@ sub handle_data {
 sub _handle_columns {
     my $self = shift;
 
-    unless ( defined $self->{Columns} ) {
+    unless ( scalar @{$self->{Columns}} ) {
         my $fragment = $self->get_data_fragment();
         return unless defined $fragment;
         $self->{Fragment} = $fragment;
@@ -251,12 +251,12 @@ sub _handle_columns {
             my $filter = grep { $_->nodeName() eq "filter" } $fragment->childNodes();
             unless ( defined $filter ) {
                 my @cols = grep { $_->nodeName() eq "column" } $fragment->childNodes();
-                $self->{Columns} = [map {uc($_->getAttribute("name"))} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
+                $self->{Columns} = [map {$_->getAttribute("name")} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
             }
         }
         else {
             my @cols = $cols->getChildrenByTagName("column");
-            $self->{Columns} = [map {uc($_->getAttribute("name"))} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
+            $self->{Columns} = [map {$_->getAttribute("name")} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
             XIMS::Debug( 6, join("," , @{$self->{Columns}}));
         }
     }

@@ -195,14 +195,13 @@ sub generate_body {
     foreach my $p ( qw( created_by_fullname creation_timestamp
                         last_modified_by_fullname
                         owned_by_fullname last_modification_timestamp
-                        last_publication_timestamp owned_by_fullname
-                        minor_status attributes marked_new abstract image_id
-                        body ) ) {
+                        last_publication_timestamp status attributes
+                        marked_new abstract image_id body ) ) {
         if ( defined $self->param( 'col_' . $p ) ) {
             if ( $p =~ /(.+)fullname/ ) {
                 my ( $p1, $p2, $p3 ) = map { $1 . $_ } qw(firstname middlename lastname);
                 $body .= qq{<column name="$p1"/>};
-                $body .= qq{<column name="$p3"/>};
+                $body .= qq{<column name="$p2"/>};
                 $body .= qq{<column name="$p3"/>};
             }
             else {

@@ -60,9 +60,7 @@ sub handle_data {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $cols = $self->{Columns};
-    if ( defined $cols and ref $cols  ) {
-        XIMS::Debug( 6, "get " . join( "," , @$cols ));
-    }
+
     return unless defined $self->{Object}
                   and $self->{Object}->symname_to_doc_id() and $self->{Object}->symname_to_doc_id() > 0;
     # fetch the objects
@@ -87,15 +85,14 @@ sub handle_data {
         }
         $childrenargs{object_type_id} = \@object_type_ids;
 
-        #$cols ||= [];
-        # why use not the default columns here?
-        # because more columns are default, than a filter may contain.
-        # this information here is the core document information that is
-        # required to locate an object.
-        #push @$cols, qw(MAJOR_ID MINOR_ID PARENT_ID LOCATION TITLE
-        #                DATA_FORMAT_ID SYMNAME_TO_DOC_ID LANGUAGE_ID
-        #                OBJECT_TYPE_ID LOB_LENGTH POSITION);
-        #$param{-columns} = $cols;
+        if ( defined $cols and ref $cols and scalar @{$cols} ) {
+            XIMS::Debug( 6, "getting custom properties: " . join( "," , @$cols ));
+            # add a list of base properties
+            push( @{$cols}, qw( id document_id parent_id object_type_id
+                                data_format_id symname_to_doc_id location title) );
+            $childrenargs{properties} = $cols;
+
+        }
         my $direct_filter = $self->get_direct_filter();
         my $method = 'children_granted';
         my $depth = $self->get_depth();
@@ -130,9 +127,10 @@ sub handle_data {
                 else {
                     $location_path = $o->location_path();
                 }
-                # hmmmm, not good use $o->data() to be stored in $self->{Children} then things like adding LOCATION_PATH should be clean
-                $o->body() if grep { lc($_) eq 'body' } @{$cols};
-                $o = {$o->data()};
+
+                $o->{body} = $o->body() if grep { $_ eq 'body' } @{$cols};
+                $o->{content_length} = $o->content_length if grep { $_ eq 'content_length' } @{$cols};
+
                 $o->{location} = XIMS::xml_escape($o->{location});
                 $o->{title} = XIMS::xml_escape($o->{title});
                 $o->{location_path} = XIMS::xml_escape($location_path);
