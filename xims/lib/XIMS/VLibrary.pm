@@ -116,8 +116,8 @@ sub _vlobjects {
     my $self = shift;
     my $type = shift;
 
-    my $sql = 'select m.'.$type.'_id AS ID from cilib_'.$type.'map m, ci_documents d where d.id = m.document_id and d.parent_id = ' . $self->document_id();
-    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
+    my $sql = 'select DISTINCT m.'.$type.'_id AS ID from cilib_'.$type.'map m, ci_documents d where d.id = m.document_id and d.parent_id = ?';
+    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() ] );
     my @ids = map { $_->{id} } @{$iddata};
     return () unless scalar @ids;
 
@@ -139,7 +139,7 @@ sub _vlitems_byproperty {
     return undef unless $propertyid;
 
     # think of fetching the whole object data here for performance
-    my $sql = 'SELECT d.id AS id FROM cilib_'.$property.'map m, cilib_'.$property.'s p, ci_documents d WHERE d.ID = m.document_id AND m.'.$property.'_id = p.ID AND p.id = ? AND d.parent_id = ?';
+    my $sql = 'SELECT d.id AS id FROM cilib_'.$property.'map m, cilib_'.$property.'s p, ci_documents d, ci_content c WHERE d.ID = m.document_id AND d.ID = c.document_id AND m.'.$property.'_id = p.ID AND p.id = ? AND d.parent_id = ?';
     my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $propertyid, $self->document_id() ], %args );
 
     my @ids = map { $_->{id} } @{$iddata};
