@@ -199,19 +199,20 @@ CREATE TABLE ci_content
  ,status                        VARCHAR(100)
  ,creation_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now() NOT NULL
  ,attributes                    VARCHAR(256)
- ,locked_by_id                  INTEGER       REFERENCES ci_users_roles ( id )
- ,style_id                      INTEGER       REFERENCES ci_documents   ( id )
- ,script_id                     INTEGER       REFERENCES ci_documents   ( id )
- ,language_id                   INTEGER       REFERENCES ci_languages   ( id )
+ ,locked_by_id                  INTEGER       REFERENCES ci_users_roles( id )
+ ,style_id                      INTEGER       REFERENCES ci_content( id )
+ ,script_id                     INTEGER       REFERENCES ci_content( id )
+ ,schema_id                     INTEGER       REFERENCES ci_content( id )
+ ,language_id                   INTEGER       REFERENCES ci_content( id )
  ,last_modified_by_id           INTEGER       NOT NULL REFERENCES ci_users_roles( id )
- ,owned_by_id                   INTEGER       NOT NULL REFERENCES ci_users_roles ( id )
- ,created_by_id                 INTEGER       NOT NULL REFERENCES ci_users_roles ( id )
- ,css_id                        INTEGER       REFERENCES ci_documents(id)
- ,image_id                      INTEGER       REFERENCES ci_documents(id)
+ ,owned_by_id                   INTEGER       NOT NULL REFERENCES ci_users_roles( id )
+ ,created_by_id                 INTEGER       NOT NULL REFERENCES ci_users_roles( id )
+ ,css_id                        INTEGER       REFERENCES ci_content( id )
+ ,image_id                      INTEGER       REFERENCES ci_content( id )
  ,document_id                   INTEGER       NOT NULL REFERENCES ci_documents(id) ON DELETE CASCADE
  ,published                     SMALLINT
  ,last_publication_timestamp    TIMESTAMP(0)  WITHOUT TIME ZONE
- ,last_published_by_id          INTEGER       REFERENCES ci_users_roles ( id )
+ ,last_published_by_id          INTEGER       REFERENCES ci_users_roles( id )
  ,marked_deleted                SMALLINT
  ,locked_by_lastname            VARCHAR(30)
  ,locked_by_middlename          VARCHAR(30)

@@ -133,6 +133,22 @@ CREATE  INDEX ctt_doc_style_fk_i
    )
 /
 
+CREATE  INDEX ctt_doc_schema_fk_i
+ ON ci_content
+  ( schema_id  )
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+ STORAGE (
+   INITIAL     102400
+   NEXT        102400
+   PCTINCREASE 0
+   MINEXTENTS  1
+   MAXEXTENTS  121
+   )
+/
+
+
 CREATE  INDEX ctt_lng_fk_i
  ON ci_content
   ( language_id  )
