@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+# Copyright (c) 2002-2003 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+-->
+<xsp:page xmlns:xsp="http://apache.org/xsp/core/v1"
+          xmlns:web="http://axkit.org/NS/xsp/webutils/v1"
+          xmlns:if-param="http://axkit.org/NS/xsp/if-param/v1"
+          xmlns:param="http://axkit.org/NS/xsp/param/v1">
+          
+
+<page>
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcq="http://purl.org/dc/qualifiers/1.0/">
+    <rdf:Description about="">
+        <dc:title>
+            <if-param:reason>
+                <param:reason/>
+            </if-param:reason>
+        </dc:title>
+        <dc:creator>Michael Kröll</dc:creator>
+        <dc:subject>XIMS</dc:subject>
+        <dc:description></dc:description>
+        <dc:publisher></dc:publisher>
+        <dc:contributor/>
+        <dc:date>
+            <dcq:created>
+                <rdf:Description>
+                    <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
+                    <rdf:value></rdf:value>
+                </rdf:Description>
+            </dcq:created>
+            <dcq:modified>
+                <rdf:Description>
+                    <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
+                    <rdf:value></rdf:value>
+                </rdf:Description>
+            </dcq:modified>
+        </dc:date>
+        <dc:format>text/xhtml</dc:format>
+        <dc:language>en-us</dc:language>
+    </rdf:Description>
+</rdf:RDF>
+
+<body onLoad="document.forms['login'].userid.focus()">
+
+<if-param:reason>
+    <p style="color: maroon; border: 1px solid grey; padding: 2px; background: #eeeeee">
+        <param:reason/>
+    </p>
+</if-param:reason>
+
+<xsp:logic>
+if (!<web:match_useragent name="MSIE|Gecko|Lynx|Opera"/>) {
+</xsp:logic>
+<h1>Sorry, your Web browser is not supported.</h1>
+<p>
+The XIMS User interface is designed for Mozilla, MS Internet Explorer Version 5 or newer. It is known to work with Lynx and Opera too.
+</p>
+<xsp:logic>
+}
+else {
+</xsp:logic>
+    <form method="post" name="login">
+    <xsp:logic>
+    if (<web:request_prev_parsed_uri omit="query"/> eq <web:request_parsed_uri omit="query"/>) {
+    </xsp:logic>
+        <xsp:attribute name="action">
+            <web:request_parsed_uri omit="path"/>/goxims/defaultbookmark
+        </xsp:attribute>
+    <xsp:logic>
+    }
+    else {
+    </xsp:logic>
+        <xsp:attribute name="action">
+            <web:request_prev_parsed_uri omit="query"/>
+        </xsp:attribute>
+    <xsp:logic>
+    }
+    </xsp:logic>
+    <table align="center" border="0" cellpadding="2" cellspacing="0" class="action">
+        <tr><td class="messagewarning" colspan="2">Login</td></tr>
+        <tr>
+            <td>Username:</td>
+            <td>
+                <input tabindex="1" type="text" name="userid" id="userid" class="text">
+                    <xsp:attribute name="value">
+                        <web:request_prev_param name="userid"/>
+                    </xsp:attribute>
+                </input>
+            </td>
+        </tr>
+        <tr><td>Password:</td><td><input tabindex="2" type="password" name="password" class="text"/></td></tr>
+        <tr><td colspan="2" align="center"><input tabindex="3" type="submit" name="login" value="Login" class="control"/></td></tr>
+        <xsp:logic>
+        if (!<web:is_https/>) {
+        </xsp:logic>
+            <tr>
+            <td colspan="2" align="center">
+                <a>
+                    <xsp:attribute name="href">
+                    https://<web:request_host/><web:request_prev_uri/>
+                    </xsp:attribute>
+                    use secure connection
+                </a>
+            </td>
+            </tr>
+        <xsp:logic>
+        }
+        </xsp:logic>
+     </table>
+    </form>
+<xsp:logic>
+}
+</xsp:logic>
+</body>
+
+</page>
+</xsp:page>
