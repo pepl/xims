@@ -18,6 +18,7 @@
                 Editing User Information - XIMS
             </title> 
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+            <style type="text/css">span.cboxitem { width:180px;}</style>
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
@@ -51,23 +52,216 @@
               </tr>
               <tr>
                 <td>Username:</td>
-                <td><input name="name" type="text" value="{name}"/></td>
+                <td><input size="30" maxlength="30" name="name" type="text" value="{name}"/></td>
               </tr>
               <tr>
                 <td>Lastname:</td>
-                <td><input name="lastname" type="text" value="{lastname}"/></td>
+                <td><input size="30" maxlength="30" name="lastname" type="text" value="{lastname}"/></td>
               </tr>
               <tr>
                 <td>Middlename:</td>
-                <td><input name="middlename" type="text" value="{middlename}"/></td>
+                <td><input size="30" maxlength="30" name="middlename" type="text" value="{middlename}"/></td>
               </tr>
               <tr>
                 <td>Firstname:</td>
-                <td><input name="firstname" type="text" value="{firstname}"/></td>
+                <td><input size="30" maxlength="30" name="firstname" type="text" value="{firstname}"/></td>
+              </tr>
+              <tr>
+                <td>e-Mail:</td>
+                <td><input size="30" maxlength="80" name="email" type="text" value="{email}"/></td>
               </tr>
               <tr>
                 <td>Privileges Mask:</td>
-                <td><input name="system_privs_mask" type="text" value="{system_privs_mask}"/></td>
+              </tr>
+              <tr>
+                <td>
+                    <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+                    User self-management:
+                </td>
+                <td>
+                  <!-- begin user self management sys privs table -->
+                  <table cellpadding="2" cellspacing="0" border="0">
+                    <tr>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_CHANGE_PASSWORD">
+                                    <xsl:if test="( floor(system_privs_mask div 1) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Change Password
+                            </span>
+                        </td>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_GRANT_ROLE">
+                                    <xsl:if test="( floor(system_privs_mask div 2) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Grant Role
+                            </span>
+                        </td>
+                    </tr>
+                  </table>
+                  <!-- end user self management sys privs table -->
+                </td>
+              </tr>
+              <tr>
+                <td valign="top">
+                    <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+                    Helpdesk related:
+                </td>
+                <td>
+                  <!-- begin helpdesk management sys privs table -->
+                  <table cellpadding="2" cellspacing="0" border="0">
+                    <tr>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_RESET_PASSWORD">
+                                    <xsl:if test="( floor(system_privs_mask div 4096) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Reset Password
+                            </span>
+                        </td>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_SET_STATUS">
+                                    <xsl:if test="( floor(system_privs_mask div 8192) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Set Status
+                            </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_CREATE_ROLE">
+                                    <xsl:if test="( floor(system_privs_mask div 16384) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Create Role
+                            </span>
+                        </td>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_DELETE_ROLE">
+                                    <xsl:if test="( floor(system_privs_mask div 32768) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Delete Role
+                            </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_CHANGE_ROLE_FULLNAME">
+                                    <xsl:if test="( floor(system_privs_mask div 65536) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Change Role Fullname
+                            </span>
+                        </td>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_CHANGE_USER_FULLNAME">
+                                    <xsl:if test="( floor(system_privs_mask div 131072) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Change User Fullname
+                            </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_CHANGE_ROLE_NAME">
+                                    <xsl:if test="( floor(system_privs_mask div 262144) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Change Role Name
+                            </span>
+                        </td>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_CHANGE_USER_NAME">
+                                    <xsl:if test="( floor(system_privs_mask div 524288) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Change User Name
+                            </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_CREATE_USER">
+                                    <xsl:if test="( floor(system_privs_mask div 1048576) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Create User
+                            </span>
+                        </td>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_DELETE_USER">
+                                    <xsl:if test="( floor(system_privs_mask div 2097152) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Delete User
+                            </span>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- end helpdesk management sys privs table -->
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+                    System management:
+                </td>
+                <td>
+                  <!-- begin system management sys privs table -->
+                  <table cellpadding="2" cellspacing="0" border="0">
+                    <tr>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_CHANGE_SYSPRIVS_MASK">
+                                    <xsl:if test="( floor(system_privs_mask div 268435456) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Change Sysprivs Mask
+                            </span>
+                        </td>
+                        <td>
+                           <span class="cboxitem">
+                                <input type="checkbox" name="system_privs_SET_ADMIN_EQU">
+                                    <xsl:if test="( floor(system_privs_mask div 536870912) mod 2) &gt; 0">
+                                      <xsl:attribute name="checked" select="checked"/>
+                                    </xsl:if>
+                                </input>
+                                Set Admin EQU
+                            </span>
+                        </td>
+                    </tr>
+                  </table>
+                  <!-- end system management sys privs table -->
+                </td>
               </tr>
               <tr>
                 <td>User is Administrator:</td>
