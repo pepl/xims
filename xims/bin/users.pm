@@ -89,14 +89,23 @@ sub event_create_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my @required_fields = qw( name lastname system_privs_mask admin enabled password object_type);
+    my @required_fields = qw( name lastname admin enabled password object_type);
     my %udata = ();
 
     $udata{name}              = $self->param('name');
     $udata{lastname}          = $self->param('lastname');
     $udata{middlename}        = $self->param('middlename');
     $udata{firstname}         = $self->param('firstname');
-    $udata{system_privs_mask} = $self->param('system_privs_mask');
+    $udata{email}             = $self->param('email');
+
+    # build system_privs_mask from parameters 'system_privs_XXX', each holding a single bit of the mask
+    my $system_privs_mask = 0;
+    foreach my $privname ( XIMS::Privileges::System::list() ) {
+        if( $self->param( 'system_privs_' . $privname ) ) {
+            $system_privs_mask |= XIMS::Privileges::System->$privname;
+        }
+    }
+    $udata{system_privs_mask} = $system_privs_mask;
 
     if ( $self->param('admin') eq 'true' ) {
         $udata{admin} = '1';
@@ -197,7 +206,16 @@ sub event_update {
         $user->lastname( $self->param('lastname') );
         $user->middlename( $self->param('middlename') );
         $user->firstname( $self->param('firstname') );
-        $user->system_privs_mask( $self->param('system_privs_mask') );
+        $user->email( $self->param('email') );
+
+        # build system_privs_mask from parameters 'system_privs_XXX', each holding a single bit of the mask
+        my $system_privs_mask = 0;
+        foreach my $privname ( XIMS::Privileges::System::list() ) {
+            if( $self->param( 'system_privs_' . $privname ) ) {
+                $system_privs_mask |= XIMS::Privileges::System->$privname;
+            }
+        }
+        $user->system_privs_mask( $system_privs_mask );
 
         # kinda weird to do it this way, but
         # it avoids Perl's "0 is undef" madness
