@@ -17,18 +17,14 @@
 
 <xsl:template match="/document/context/object">
 <html>
-   <head>
-    <title><xsl:value-of select="title"/> - Anonymous Discussion Forum - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
-   </head>
-   <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
-      <xsl:call-template name="header">
-          <!-- we need a more flexible header-template; for now, there is no nocreatewidget-param -->
+    <xsl:call-template name="head_default"/>
+    <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+        <xsl:call-template name="header">
+        <!-- we need a more flexible header-template; for now, there is no nocreatewidget-param -->
           <xsl:with-param name="nocreatewidget">true</xsl:with-param>
-      </xsl:call-template>
-      <h1 class="documenttitle"><xsl:value-of select="title" /></h1>
-      <h3 style="margin-left:8px;">
+        </xsl:call-template>
+        <h1 class="documenttitle"><xsl:value-of select="title" /></h1>
+        <h3 style="margin-left:8px;">
             <xsl:apply-templates select="abstract"/>
         </h3>
         <br />
@@ -36,7 +32,7 @@
         <input type="hidden" name="objtype" value="anondiscussionforumcontrib"/>
             <input type="hidden" name="parid" value="{@document_id}" />
             <xsl:if test="user_privileges/create">
-                    <input type="submit" name="create" value="Create new topic" class="control" /><br /><br />
+                <input type="submit" name="create" value="Create new topic" class="control" /><br /><br />
             </xsl:if>
         </form>
    
@@ -48,16 +44,16 @@
                     <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                         <tr>
                             <td class="lightblue">
-                                   <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=desc">
-                                    <!--<a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=desc">-->
+                                <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=desc">
+                                <!--<a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=desc">-->
                                     Topic
                                     <img src="{$ximsroot}skins/{$currentskin}/images/arrow_ascending.gif" width="10" height="10" border="0" alt="sort descending"/>
-                                    </a>
+                                </a>
                             </td>
                             <td class="lightblue" width="120" nowrap="nowrap">
-                                    <a href="?sb=date">
+                                <a href="?sb=date">
                                     Created
-                                    </a>
+                                </a>
                             </td>
                             <td class="lightblue" width="134">Author</td>
                             <td class="lightblue" width="50">Replies</td>
@@ -65,7 +61,7 @@
                             <td></td>
                         </tr>
                         <xsl:apply-templates select="children/object">
-                                <xsl:sort select="title" order="ascending" case-order="lower-first"/>
+                            <xsl:sort select="title" order="ascending" case-order="lower-first"/>
                         </xsl:apply-templates>
                     </table>
                 </xsl:when>
@@ -73,27 +69,27 @@
                     <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                         <tr> 
                             <td class="lightblue">
-                                    <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=asc">
+                                <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=asc">
                                     <!--<a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=asc">-->
                                     Topic
                                     <img src="{$ximsroot}skins/{$currentskin}/images/arrow_descending.gif" width="10" height="10" border="0" alt="sort ascending"/>
-                                    </a>
+                                </a>
                             </td>
                             <td class="lightblue" width="120" nowrap="nowrap">
-                                    <a href="?sb=date">
+                                <a href="?sb=date">
                                     Created
-                                    </a>
+                                </a>
                             </td>
                             <td class="lightblue" width="134">Author</td>
                             <td class="lightblue" width="50">Replies</td>
                             <td class="lightblue" width="134">Last Reply</td>
                         </tr>
                         <xsl:apply-templates select="children/object">
-                                <xsl:sort select="title" order="descending"/>
+                            <xsl:sort select="title" order="descending"/>
                         </xsl:apply-templates>
                     </table>
-               </xsl:when>
-           </xsl:choose>
+                </xsl:when>
+            </xsl:choose>
         </xsl:when>
         <xsl:when test="$sb='date'">
             <xsl:choose>
@@ -102,12 +98,12 @@
                     <tr> 
                         <td class="lightblue">
                             <a href="?sb=position">
-                            <!--<a href="?sb=name">-->
-                            Topic
+                                <!--<a href="?sb=name">-->
+                                Topic
                             </a>
                         </td>
                         <td class="lightblue" width="120" nowrap="nowrap">
-                                <a href="?sb=date&amp;order=desc">
+                            <a href="?sb=date&amp;order=desc">
                                 Created
                                 <img src="{$ximsroot}skins/{$currentskin}/images/arrow_ascending.gif" width="10" height="10" border="0" alt="sort descending"/>
                             </a>
@@ -115,33 +111,33 @@
                         <td class="lightblue" width="134">Author</td>
                         <td class="lightblue" width="50">Replies</td>
                         <td class="lightblue" width="134">Last Reply</td>
-                  </tr>
+                    </tr>
                     <xsl:apply-templates select="children/object">
-                            <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute)" order="ascending"/>
+                        <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute)" order="ascending"/>
                     </xsl:apply-templates>
-               </table>
-               </xsl:when>
+                </table>
+                </xsl:when>
                 <xsl:when test="$order='desc'">
                 <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                     <tr> 
                         <td class="lightblue">
                             <a href="?sb=position">
-                            <!--<a href="?sb=name">-->
-                            Topic
+                                <!--<a href="?sb=name">-->
+                                Topic
                             </a>
                         </td>
                         <td class="lightblue" width="120">
                             <a href="?sb=date&amp;order=asc">
-                            Created
-                            <img src="{$ximsroot}skins/{$currentskin}/images/arrow_descending.gif" width="10" height="10" border="0" alt="sort ascending"/>
-                               </a>
+                                Created
+                                <img src="{$ximsroot}skins/{$currentskin}/images/arrow_descending.gif" width="10" height="10" border="0" alt="sort ascending"/>
+                            </a>
                         </td>
                         <td class="lightblue" width="134">Author</td>
                         <td class="lightblue" width="50">Replies</td>
                         <td class="lightblue" width="134">Last Reply</td>
-                  </tr>
+                    </tr>
                     <xsl:apply-templates select="children/object">
-                            <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute)" order="descending"/>
+                        <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute)" order="descending"/>
                     </xsl:apply-templates>
                 </table>
                 </xsl:when>
@@ -160,13 +156,14 @@
 
     <tr height="25">
         <xsl:choose>
-           <xsl:when test="$sb='position'">
+            <xsl:when test="$sb='position'">
             <!--<xsl:when test="$sb='name'">-->
                 <td bgcolor="#eeeeee" valign="bottom">
                     <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" border="0" alt="{/document/data_formats/data_format[@id=$dataformat]}"/>
                     <xsl:text> </xsl:text>
                     <a href="{$goxims_content}{$absolute_path}/{location}">
-                    <xsl:value-of select="title" /></a>
+                        <xsl:value-of select="title" />
+                    </a>
                 </td>
                 <td nowrap="nowrap" valign="middle" align="center">
                     <xsl:apply-templates select="creation_time" mode="datetime"/>
@@ -190,7 +187,7 @@
                 <xsl:value-of select="attributes/author"/>
             </a>
             <xsl:choose>
-                  <xsl:when test="attributes/coemail">, 
+                <xsl:when test="attributes/coemail">, 
                     <a>
                         <xsl:attribute name="href">mailto:<xsl:value-of select="attributes/coemail"/>?subject=RE: <xsl:value-of select="title"/></xsl:attribute>
                         <xsl:value-of select="attributes/coauthor"/>

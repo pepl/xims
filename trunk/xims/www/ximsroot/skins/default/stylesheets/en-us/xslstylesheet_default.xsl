@@ -8,6 +8,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
+
 <xsl:import href="common.xsl"/>
 <xsl:output method="html" encoding="ISO-8859-1"/>
     
@@ -17,11 +18,7 @@
 
 <xsl:template match="/document/context/object">
 <html>
-  <head>
-    <title><xsl:value-of select="title"/> - XSL-Stylesheet - XIMS</title>
-    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
-  </head>
+    <xsl:call-template name="head_default"/>
     <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
     <xsl:call-template name="header"/>
     <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">

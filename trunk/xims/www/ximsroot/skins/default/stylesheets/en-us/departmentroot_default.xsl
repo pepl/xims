@@ -5,9 +5,8 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/TR/xhtml1/strict">
+
 <xsl:import href="common.xsl"/>
 <xsl:import href="container_common.xsl"/>
 
@@ -21,11 +20,7 @@
 
 <xsl:template match="/document/context/object">
     <html>
-        <head>
-            <title><xsl:value-of select="title" />- DepartmentRoot - XIMS</title> 
-            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        </head>
+        <xsl:call-template name="head_default"/>
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
             <xsl:call-template name="header">
                 <xsl:with-param name="createwidget">true</xsl:with-param>
@@ -36,14 +31,18 @@
             <table align="center" width="98.7%" class="footer">
                 <xsl:choose>
                     <xsl:when test="$hd=0">
-                        <tr><td>
-                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb={$sb};order={$order};m={$m};hd=1">Hide deleted objects</a>
-                        </td></tr>
+                        <tr>
+                            <td>
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb={$sb};order={$order};m={$m};hd=1">Hide deleted objects</a>
+                            </td>
+                        </tr>
                     </xsl:when>
                     <xsl:when test="$deleted_children > 0">
-                        <tr><td>
-                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb={$sb};order={$order};m={$m};hd=0">Show the <xsl:value-of select="$deleted_children"/> deleted object(s) in this container</a>
-                        </td></tr>
+                        <tr>
+                            <td>
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb={$sb};order={$order};m={$m};hd=0">Show the <xsl:value-of select="$deleted_children"/> deleted object(s) in this container</a>
+                            </td>
+                        </tr>
                     </xsl:when>
                     <xsl:otherwise>
                     </xsl:otherwise>
@@ -53,6 +52,7 @@
             </table>
         </body>
     </html>
+
 </xsl:template>
 
 </xsl:stylesheet>

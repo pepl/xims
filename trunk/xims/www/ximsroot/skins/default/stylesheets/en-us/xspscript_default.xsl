@@ -18,22 +18,17 @@
 
 <xsl:template match="/document/context/object">
 <html>
-  <head>
-    <title><xsl:value-of select="title"/> - XSP-Script - XIMS</title>
-    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <link rel="stylesheet" href="/suche/stylesheets/suche.css" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
-  </head>
+    <xsl:call-template name="head_default"/>
     <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
     <xsl:call-template name="header"/>
     <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-      <tr>
-        <td bgcolor="#ffffff" colspan="2">
-          <pre>
-            <xsl:apply-templates select="body"/>
-          </pre>
-        </td>
-      </tr>
+        <tr>
+            <td bgcolor="#ffffff" colspan="2">
+                <pre>
+                    <xsl:apply-templates select="body"/>
+                /pre>
+            </td>
+        </tr>
     </table>
 
     <table align="center" width="98.7%" class="footer">
@@ -42,5 +37,7 @@
     </table>
   </body>
 </html>
+
 </xsl:template>
+
 </xsl:stylesheet>

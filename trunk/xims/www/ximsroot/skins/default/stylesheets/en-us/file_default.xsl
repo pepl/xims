@@ -5,9 +5,7 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
     <xsl:output method="html" encoding="ISO-8859-1"/>
     
@@ -17,11 +15,7 @@
 
     <xsl:template match="/document/context/object">
         <html>
-            <head>
-                <title><xsl:value-of select="title"/> - File - XIMS</title>
-                <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            </head>
+            <xsl:call-template name="head_default"/>
             <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">                <xsl:call-template name="header"/>
                 <xsl:call-template name="object-metadata"/>
                 <p>

@@ -5,13 +5,17 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
 
     <!-- firstlevel folders are considered to be 'sites' -->
-    <xsl:variable name="site_location"><xsl:choose><xsl:when test="$resolvereltositeroots = 1">/<xsl:value-of select="/document/context/object/parents/object[@parent_id = '1' and @id != '1']/location"/></xsl:when><xsl:otherwise>/</xsl:otherwise></xsl:choose></xsl:variable>
+    <xsl:variable name="site_location">
+        <xsl:choose>
+            <xsl:when test="$resolvereltositeroots = 1">/<xsl:value-of select="/document/context/object/parents/object[@parent_id = '1' and @id != '1']/location"/>
+            </xsl:when>
+            <xsl:otherwise>/</xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
 
     <xsl:output method="html" encoding="UTF-8"/>
 
@@ -21,11 +25,7 @@
 
     <xsl:template match="/document/context/object">
         <html>
-            <head>
-                <title><xsl:value-of select="title"/> - Document - XIMS</title>
-                <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            </head>
+            <xsl:call-template name="head_default"/>
             <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
                 <!-- poor man's stylechooser -->
                 <xsl:choose>
@@ -44,16 +44,16 @@
                     </tr>
                     <tr>
                         <td valign="top" width="50%" style="border:1px solid;">
-                           <table width="100%" border="0">
+                            <table width="100%" border="0">
                                 <tr>
                                     <td width="60%" colspan="2"><strong>Document Links</strong></td>
                                     <xsl:if test="$m='e' and user_privileges/create">
-                                    <td width="40%" align="right">
+                                        <td width="40%" align="right">
                                             <a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=URLLink">add link</a>
                                             <xsl:text>&#160;&#160;</xsl:text>
-                                    </td>
+                                        </td>
                                     </xsl:if>
-                               </tr>
+                                </tr>
                                <xsl:apply-templates select="children/object" mode="link"/>
                             </table>
                         </td>
@@ -69,7 +69,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                      <td colspan="3"><xsl:text>&#160;</xsl:text></td>
+                                    <td colspan="3"><xsl:text>&#160;</xsl:text></td>
                                 </tr>
                                 <xsl:apply-templates select="children/object" mode="comment"/>
                             </table>
