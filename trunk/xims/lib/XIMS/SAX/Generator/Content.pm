@@ -26,7 +26,7 @@ use XML::Filter::CharacterChunk;
 #    $doc_data : hash ref to be given to be mangled by XML::Generator::PerlData
 #
 # DESCRIPTION
-#    
+#
 #
 sub prepare {
     XIMS::Debug( 5, "called" );
@@ -82,7 +82,7 @@ sub prepare {
         $doc_data->{context}->{object}->{user_privileges} = {$ctxt->session->user->object_privileges( $ctxt->object() )};
         # ubu
         #warn "privs in SAX: " . Dumper( $doc_data->{context}->{object}->{user_privileges} );
-        
+
         $self->_set_formats_and_types( $ctxt, $doc_data, \%object_types, \%data_formats);
     }
     # end content-object joy
@@ -247,12 +247,9 @@ sub _set_children {
     if ( scalar( @children ) > 0 ) {
         foreach my $child ( @children ) {
             if ( $ctxt->properties->content->getchildren->addinfo() ) {
-                #my $chldinfo = $ctxt->data_provider->getChildObjectsInfo(
-                #                                                       -majorid    => $child->id(),
-                #                                                       -languageid => $child->language_id(),
-                #                                                      );
-                #$child->{children_count}      = $chldinfo->[0];
-                #$child->{child_last_modified} = $chldinfo->[1];
+                my @info =  $ctxt->data_provider->get_descendant_infos( parent_id =>$child->id() );
+                $child->{descendant_count}         = $info[0];
+                $child->{descendant_last_modified} = $info[1];
             }
 
             # remember the seen objecttypes
@@ -261,7 +258,7 @@ sub _set_children {
 
             # got another possible db-hit here per child :-/
             #
-            # looks like the whole getting children process needs change because currently 
+            # looks like the whole getting children process needs change because currently
             # normal users get children back they have no grants on
             #
             # delete children with privmask 0 here? hacky, i guess not
