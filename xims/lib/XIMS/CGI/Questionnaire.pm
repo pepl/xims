@@ -37,6 +37,7 @@ sub registerEvents {
             cancel
             answer
             download_results
+            download_all_results
             )
         );
 }
@@ -50,8 +51,9 @@ sub event_default {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     my $user = $ctxt->session->user;
-    XIMS::Debug(5,"User logged in is: ".$user->name()." with id ".$user->id());
+    XIMS::Debug(6,"User logged in is: ".$user->name()." with id ".$user->id());
     if ( $user->id() eq XIMS::PUBLICUSERID() ) {
+        XIMS::Debug (6, "Answering of Questionnaire started.");
         $self->_default_public( $ctxt );
     }
     else {
@@ -224,7 +226,74 @@ sub event_download_results {
     $object->body( XIMS::encode( $object->body() ) ) if defined $object->body();
     $object->set_results();
     $object->body( XIMS::decode( $object->body() ) ) if defined $object->body();
-    $ctxt->properties->application->style( 'download_results' );
+    if ($self->param('download_results') eq 'html') {
+        $ctxt->properties->application->style( 'download_results_html' );
+    } elsif ($self->param('download_results') eq 'excel') {
+        # download in excel only in Latin1 encoding
+        my $converter = Text::Iconv->new(XIMS::DBENCODING, "ISO-8859-1");
+        $object->body( $converter->convert($object->body() ));
+        $ctxt->properties->application->style( 'download_results_excel' );
+    }
+    return 0;
+}
+
+sub event_download_all_results {
+  XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    my $object = $ctxt->object();
+    my $questionnaire_id = $object->document_id();
+    my $body = "";
+    my $converter_to_UTF8 = Text::Iconv->new(XIMS::DBENCODING, "UTF-8");
+    my $converter_to_Latin1 = Text::Iconv->new("UTF-8", "ISO-8859-1");
+    #set filename and mime type of the file to download
+    my $filename = $object->location;
+    my $type = $self->param('download_all_results');
+    my $encoding = $self->param('encoding');
+    $filename =~ s/\.[^\.]*$//;
+    my $df = XIMS::DataFormat->new( name=> $type );
+    $filename .= "." . $df->suffix;
+    my $mime_type = $df->mime_type;
+    # get a list with all answers to the questionnaire
+    my $sql = "SELECT tan, question_id, answer, answer_timestamp FROM ci_questionnaire_results WHERE answer <> 'ANSWERED' AND document_id = ?";
+    my $answers = $object->data_provider->driver->dbh->fetch_select( sql => [ $sql, $questionnaire_id] );
+    # build all answers depending on the type
+    my %question_titles = $object->get_full_question_titles();
+    if ( $type =~ /xls/i ) {
+        XIMS::Debug(5,"Type is Excel");
+        foreach my $answer (@{$answers}) {
+            # The ANSWER text is double UTF-8 encoded. WHY?? 
+            # Before something else is done, it is decoded to Latin1
+            my $answer_text = $converter_to_Latin1->convert(${$answer}{'answer'});
+            $answer_text =~ s/\n//;
+            $answer_text =~ s/\t/    /;
+            $answer_text =~s/\r//;
+            # The "A" in the Answer-id field is neccessary because Excel interprets eg 1.1.1 as a date
+            $body .= ${$answer}{'tan'} . "\t" . $question_titles{ ${$answer}{'question_id'} } . "\tA " . ${$answer}{'question_id'} .  "\t" . $answer_text ."\n";
+        }
+        if ( $encoding =~ /latin1/i ) {
+            XIMS::Debug(5,"Encoding is Latin1");
+            my $converter = Text::Iconv->new(XIMS::DBENCODING, "ISO-8859-1");
+XIMS::Debug(5,"1>>>".$body);
+            $body = $converter_to_Latin1->convert($body);
+XIMS::Debug(5,"2>>>".$body);
+        }
+    } elsif ( $type =~ /html/i ) {
+        XIMS::Debug(5, "Type is HTML" );
+        $body = '<html><head><title>'.$filename.'</title></head><body><table border="1">';
+        $body .= "<tr><td>Q ID</td><td>Q</td><td>A ID</td><td>A</td><td>Timestamp</td></tr>";
+        foreach my $answer (@{$answers}) {
+          XIMS::Debug(5,"Question:". $question_titles{ ${$answer}{'question_id'} } ."Answer:" . $converter_to_Latin1->convert(${$answer}{'answer'}));
+            $body .= "<tr><td>" . ${$answer}{'tan'} . "</td><td>" . $question_titles{ ${$answer}{'question_id'} } . "</td><td>" . ${$answer}{'question_id'} . "</td><td>" . $converter_to_Latin1->convert(${$answer}{'answer'}) .  "</td><td>" . ${$answer}{'answer_timestamp'}."</td></tr>";
+        }
+        $body .= "</table></body></html>";
+    }
+    # older browsers use the suffix of the URL for content-type sniffing,
+    # so we have to supply a content-disposition header
+    return 0 unless $body;
+    print $self->header('-charset' => 'UTF-8',   -type => $mime_type, '-Content-disposition' => "attachment; filename=$filename" );
+    print $body;
+    $self->skipSerialization(1);
+
     return 0;
 }
 

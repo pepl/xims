@@ -33,5 +33,9 @@
 	<Delete_Answer>Delete Answer</Delete_Answer>
 	<Add_to_selection>Add to selection</Add_to_selection>
 	<Remove_from_selection>Remove from selection</Remove_from_selection>
+    <show_questions>Show questions</show_questions>
+    <hide_questions>Hide questions</hide_questions>
+    <download_all_results>Download answered questionnaires</download_all_results>
+    <download_results>Download results</download_results>
 	<!-- End Questionnaire -->
 </l>
