@@ -42,7 +42,7 @@
             <xsl:text>&#160;</xsl:text>
                     <a href="javascript:openDocWindow('DepartmentImage')" class="doclink">(?)</a>
                     <xsl:text>&#160;</xsl:text>
-                 <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Image;sbfield=eform.image')" class="doclink">Nach einem Bild durchsuchen</a>
+                 <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
             </td>
     </tr>
 </xsl:template>
@@ -59,7 +59,7 @@
                     <td valign="top"><xsl:value-of select="$i18n/l/create_portlet"/>:</td>
                     <td>
                         <input type="text" name="portlet" size="40" class="text" value="{portlet_id}"/> <xsl:text>&#160;</xsl:text>
-                        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Portlet;sbfield=eform.portlet')" class="doclink">Nach Portlet durchsuchen</a>
+                        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Portlet;sbfield=eform.portlet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_for"/></a>
                     </td>
                 </tr>
                 <tr>
