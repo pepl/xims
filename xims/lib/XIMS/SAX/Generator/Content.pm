@@ -231,17 +231,16 @@ sub _set_children {
         my $properties = 'distinct c.id, d.document_status, d.position, c.lob_length AS content_length, d.parent_id, object_type_id, creation_timestamp, symname_to_doc_id, last_modified_by_middlename, last_modified_by_firstname, language_id, last_publication_timestamp, last_published_by_lastname, css_id, created_by_firstname, data_format_id, keywords, last_modification_timestamp, last_modified_by_id, title, document_id, location, created_by_lastname, attributes, last_modified_by_lastname, image_id, created_by_id, owned_by_firstname, marked_deleted, last_published_by_id, notes, style_id, owned_by_lastname, owned_by_middlename, abstract, published, locked_by_lastname, locked_by_id, last_published_by_firstname, script_id, owned_by_id, created_by_middlename, data_format_name, locked_by_middlename, last_published_by_middlename, marked_new, locked_time, department_id, locked_by_firstname ';
         my $tables = 'ci_content_loblength c, ci_documents d';
         my $conditions = 'c.document_id = d.id AND d.parent_id = ?';
-        my @values = ();
+        my @values = ( $object->document_id() );
         if ( not $ctxt->session->user->admin() ) {
             $tables .= ', ci_object_privs_granted p';
             $conditions .= ' AND p.content_id = c.id AND p.privilege_mask >= 1';
         }
         if ( scalar @object_type_ids > 0 ) {
             $tables .= ', ci_object_types ot';
-            $conditions .= " AND ot.id = d.object_type_id AND ot.id IN (". join( ",", @object_type_ids ) . ")";
+            $conditions .= " AND ot.id = d.object_type_id AND ot.id IN (". join(',', map { '?' } @object_type_ids) . ")";
+            push @values, @object_type_ids;
         }
-
-        push( @values, $object->document_id() );
 
         my $countsql = "SELECT count(distinct c.id) AS cid FROM $tables WHERE $conditions";
         my $countdata = $object->data_provider->driver->dbh->fetch_select( sql => [ $countsql, @values ] );
