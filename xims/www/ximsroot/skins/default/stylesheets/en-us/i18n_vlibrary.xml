@@ -7,6 +7,7 @@
     <author>Author</author>
     <authors>Authors</authors>
     <publications>Publications</publications>
+    <publication_volume>Volume</publication_volume>
     <item>Item</item>
     <items>Items</items>
     <create_new_vlibraryitem>Create new VLibraryItem</create_new_vlibraryitem>>
@@ -15,4 +16,6 @@
     <Switch_to>Switch to</Switch_to>
     <Page>page</Page>
     <Latest_entries>Latest Entries</Latest_entries>
+    <numbers_and_symbols>Numbers &amp; Symbols</numbers_and_symbols>
+    <back_to_top>Back to Top</back_to_top>
 </l>

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <l>
-    <subject_list>Themenliste</subject_list>
-    <author_list>Autorenliste</author_list>
-    <publication_list>Publikationsliste</publication_list>
+    <subject_list>Themenbereiche</subject_list>
+    <author_list>Autorenindex</author_list>
+    <publication_list>Zeitschriften</publication_list>
     <subjects>Themen</subjects>
     <author>Autor</author>
     <authors>Autoren</authors>
     <publications>Publikationen</publications>
+    <publication_volume>Ausgabe</publication_volume>
     <item>Eintrag</item>
     <items>Einträge</items>
     <create_new_vlibraryitem>Neues VLibraryItem erstellen</create_new_vlibraryitem>>
@@ -15,4 +16,6 @@
     <Switch_to>Wechsle zu</Switch_to>
     <Page>Seite</Page>
     <Latest_entries>Die neuesten Einträge</Latest_entries>
+    <numbers_and_symbols>Zahlen &amp; Symbole</numbers_and_symbols>
+    <back_to_top>Zum Seitenanfang</back_to_top>
 </l>
