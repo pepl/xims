@@ -47,8 +47,8 @@
             <base href="{$xims_box}{$goxims_content}{$parent_path}/" />
             <script type="text/javascript">
                 function setEWProperties(sEditorName) {
-                eWebEditPro.instances[sEditorName].editor.setProperty(&apos;BaseURL&apos;, &apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>&apos;);
-                eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty(&apos;TransferMethod&apos;,&apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>?contentbrowse=1;style=ewebeditimage;otfilter=Image&apos;);
+                eWebEditPro.instances[sEditorName].editor.setProperty(&apos;BaseURL&apos;, &apos;<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')"/>&apos;);
+                eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty(&apos;TransferMethod&apos;,&apos;<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')"/>?contentbrowse=1;style=ewebeditimage;otfilter=Image&apos;);
                 }
             </script>
         </head>
