@@ -10,7 +10,7 @@
 
 <xsl:variable name="stdhome">
     <xsl:choose>
-        <xsl:when test="/document/context/sessions/user/bookmarks/bookmark[stdhome=1]/content_id"><xsl:value-of select="/document/context/sessions/user/bookmarks/bookmark[stdhome=1]/content_id"/></xsl:when>
+        <xsl:when test="/document/context/session/user/bookmarks/bookmark[stdhome=1]/content_id"><xsl:value-of select="/document/context/session/user/bookmarks/bookmark[stdhome=1]/content_id"/></xsl:when>
         <xsl:otherwise>/xims</xsl:otherwise><!-- fallback if there is no defaultbookmark -->
     </xsl:choose>
 </xsl:variable>
