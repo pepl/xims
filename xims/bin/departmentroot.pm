@@ -8,8 +8,6 @@ use strict;
 use vars qw( $VERSION @params @ISA);
 
 use folder;
-use XIMS::Object;
-use XML::LibXML;
 
 # #############################################################################
 # GLOBAL SETTINGS
@@ -115,73 +113,22 @@ sub event_add_portlet {
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
-    my $body   = $object->body();
 
     unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
         return $self->event_access_denied( $ctxt );
     }
 
-    my $id = 0;
     my $path = $self->param( "portlet" );
-
     if ( defined $path ) {
-        my $pobject = XIMS::Object->new( language_id => $object->language_id(), path => $path );
-        if ( $pobject ) {
-            $id = $pobject->id;
-            XIMS::Debug( "found portlet id = $id ");
-            if ( defined $body ) {
-                my $parser = XML::LibXML->new();
-                my $fragment;
-                if ( length $body ) {
-                    XIMS::Debug( 4, "got existing department info" );
-                    eval {
-                        $fragment = $parser->parse_xml_chunk( $body );
-                    };
-                }
-                else {
-                    XIMS::Debug( 4, "got new department info " );
-                    $fragment = XML::LibXML::DocumentFragment->new();
-                }
-
-                if ( $@ ) {
-                    XIMS::Debug( 2, "problem with the stored data ($@)"  );
-                }
-                else {
-                    # 2. step: check if id is already there
-                    my ( $node ) = grep {$_->string_value() == $id} $fragment->childNodes;
-                    if ( defined $node ) {
-                        XIMS::Debug( 3, "portlet ($id) already exists here" );
-                    }
-                    else {
-                        XIMS::Debug( 4, "3. step: insert the entry" );
-                        $node = XML::LibXML::Element->new("portlet");
-                        $node->appendText( $id );
-                        $fragment->appendChild( $node );
-
-                        XIMS::Debug( 4, "4. step: store body back." );
-                        $object->body( $fragment->toString());
-                        if ( not $object->update() ) {
-                            XIMS::Debug( 2, "update failed" );
-                            $self->sendError( $ctxt, "Update of object failed." );
-                            return 0;
-                        }
-                    }
-                }
-            }
-            else {
-                $object->body( "<portlet>$id</portlet>" );
-                if ( not $object->update() ) {
-                    XIMS::Debug( 2, "update failed" );
-                    $self->sendError( $ctxt, "Update of object failed." );
-                    return 0;
-                }
-            }
-        }
-        else {
-            XIMS::Debug( "portlet not found for $path!");
+        if ( not ($object->add_portlet( $path ) and $object->update() ) ) {
+            $self->sendError( $ctxt, "Could not add portlet." );
+            return 0;
         }
     }
-
+    else {
+        $self->sendError( $ctxt, "Path to portlet-target needed." );
+        return 0;
+    }
 
     return $self->event_edit( $ctxt );
 }
@@ -191,46 +138,21 @@ sub event_rem_portlet {
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
-    my $body   = $object->body();
 
     unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
         return $self->event_access_denied( $ctxt );
     }
 
-    if ( defined $body ) {
-        my $parser = XML::LibXML->new();
-
-        my $id = $self->param( "portlet_id" );
-        if ( defined $id and $id > 0 ) {
-            # 2. step: check if id is there
-            my $fragment;
-            eval {
-                $fragment = $parser->parse_xml_chunk( $body );
-            };
-
-            if ( $@ ) {
-                XIMS::Debug( 6, "serious problem with the stored data ($@)"  );
-            }
-            else {
-                # 3. step: remove the entry
-                my ( $node ) = grep {$_->string_value() == $id} $fragment->childNodes;
-                if ( defined $node ) {
-                    XIMS::Debug( 6, "found node" );
-                    $node->unbindNode; # remove node from its context.
-
-                    # 4. step: store the body back.
-                    $object->body( $fragment->toString() );
-                    if ( not $object->update() ) {
-                        XIMS::Debug( 2, "update failed" );
-                        $self->sendError( $ctxt, "Update of object failed." );
-                        return 0;
-                    }
-                }
-            }
+    my $portlet_id = $self->param( "portlet_id" );
+    if ( defined $portlet_id and $portlet_id > 0 ) {
+        if ( not ( $object->remove_portlet( $portlet_id ) and $object->update() ) ) {
+            $self->sendError( $ctxt, "Could not remove portlet." );
+            return 0;
         }
-        else {
-            XIMS::Debug( 2, "no such id" );
-        }
+    }
+    else {
+        $self->sendError( $ctxt, "Which portlet should be removed?" );
+        return 0;
     }
 
     return $self->event_edit( $ctxt );
