@@ -35,7 +35,7 @@
                 </h1>
             </td>
             <td align="right" valign="top">
-                <a href="http://xims.uibk.ac.at/"><img src="{$ximsroot}images/xims_logo.png"/></a>
+                <a href="http://xims.info/"><img src="{$ximsroot}images/xims_logo.png"/></a>
             </td>
         </tr>
     </table>
@@ -71,7 +71,7 @@
                     <xsl:value-of select="/document/context/session/date/day"/>. <xsl:value-of select="/document/context/session/date/month"/>. <xsl:value-of select="/document/context/session/date/year"/>
                     <xsl:choose>
                         <xsl:when test="/document/context/session/user/name != $publicuser">
-                            / <xsl:value-of select="/document/context/session/user/name" /> / <a href="{$goxims_content}{$absolute_path}?reason=logout" class="logout"><xsl:value-of select="$i18n/l/logout"/></a>
+                            / <a href="{$xims_box}{$goxims}/user"><xsl:value-of select="/document/context/session/user/name" /></a> / <a href="{$goxims_content}{$absolute_path}?reason=logout" class="logout"><xsl:value-of select="$i18n/l/logout"/></a>
                         </xsl:when>
                         <xsl:otherwise>
                             / <a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}" class="logout"><xsl:value-of select="$i18n/l/login"/></a>
