@@ -610,12 +610,14 @@ sub init_store_object {
     my $keywords   = $self->param( 'keywords' );
     my $image      = $self->param( 'image' );
 
+    my $existing_flag = 0;
+    
     if ( $object and length $self->param( 'id' ) ) {
         unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
             return $self->event_access_denied( $ctxt );
         }
         XIMS::Debug( 4, "storing existing object" );
-        
+        $existing_flag = 1;
         $parent = XIMS::Object->new( document_id => $object->parent_id );
     }
     elsif ( defined $ctxt->parent() and length $objtype and length $parid ) {
@@ -677,11 +679,14 @@ sub init_store_object {
             return 0;
         }
 
-        # check if the same location already exists in the current container
-        if ( defined $parent and $parent->children( location => $location, marked_deleted => undef ) ) {
-            XIMS::Debug( 2, "location already exists" );
-            $self->sendError( $ctxt, "Location '$location' already exists in container." );
-            return 0;
+        # check if the same location already exists in the current container (and its a different object)
+        if ( defined $parent ) {
+            my $child = $parent->children( location => $location, marked_deleted => undef );
+            if ( ( $existing_flag and $child and $child->document_id != $self->param( 'id' ) ) or ( not $existing_flag and defined $child ) ) {
+                XIMS::Debug( 2, "location already exists" );
+                $self->sendError( $ctxt, "Location '$location' already exists in container." );
+                return 0;
+            }
         }
 
         XIMS::Debug (6, "got location: $location ");
