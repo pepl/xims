@@ -1,7 +1,7 @@
 package Bundle::XIMS;
 # $Id$
 
-our $VERSION = '0.1.1';
+our $VERSION = '0.9';
 
 1;
 __END__
