@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -63,6 +63,7 @@
                       <td>
                         <input class="control" name="trashcan" type="submit" value="Confirm"/>
                         <input name="id" type="hidden" value="{$id}"/>
+                        <xsl:call-template name="rbacknav"/>
                       </td>
                       <td>
                         <input class="control"
