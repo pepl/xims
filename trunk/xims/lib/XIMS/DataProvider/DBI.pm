@@ -399,22 +399,24 @@ sub reposition {
     }
 
     # hmmmm, did not find a cleaner way to do that with SQLEngine :-/
-    my $data = $self->{dbh}->do_update( sql => qq{UPDATE ci_documents
-                                                  SET
-                                                    position = position $udop 1
-                                                  WHERE
-                                                    position $upperop $old_position
-                                                    AND position $lowerop $new_position
-                                                    AND parent_id = $parent_id
-                                                  }
+    my $data = $self->{dbh}->do_update( sql => [ qq{UPDATE ci_documents
+                                                    SET
+                                                      position = position $udop 1
+                                                    WHERE
+                                                      position $upperop ?
+                                                      AND position $lowerop ?
+                                                      AND parent_id = ?
+                                                    }
+                                                  , $old_position
+                                                  , $new_position
+                                                  , $parent_id
+                                               ]
                                        );
-
     #warn "Repositioning Siblings. Driver returned: " . Dumper( $data ) . "\n";
 
     $data = $self->{dbh}->do_update( table    => 'ci_documents',
                                      values   => { 'position' => $new_position },
-                                     criteria => "id = $document_id AND position = $old_position" );
-
+                                     criteria => { id => $document_id } );
     #warn "Repositioning Object. Driver returned: " . Dumper( $data ) . "\n";
 
     return $data;
@@ -427,10 +429,30 @@ sub max_position {
 
     return undef unless exists $args{parent_id};
 
-    my $query = 'SELECT max(position) AS position FROM ci_documents WHERE parent_id = ' . $args{parent_id};
-    my $data = $self->{dbh}->fetch_select( sql => $query );
+    my $query = 'SELECT max(position) AS position FROM ci_documents WHERE parent_id = ?';
+    my $data = $self->{dbh}->fetch_select( sql => [ $query, $args{parent_id} ] );
 
     return $data->[0]->{'position'};
+}
+
+sub close_position_gap {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    return undef unless (defined $args{parent_id}
+                         and defined $args{position});
+
+    return $self->{dbh}->do_update( sql => [ qq{UPDATE ci_documents
+                                                  SET
+                                                    position = position - 1
+                                                  WHERE
+                                                    position > ?
+                                                    AND parent_id = ?}
+                                                , $args{position}
+                                                , $args{parent_id}
+                                           ]
+                                  );
 }
 
 sub db_now {
@@ -698,7 +720,6 @@ sub _get_descendant_sql {
     }
 }
 
-
 ##
 #
 # SYNOPSIS
@@ -708,60 +729,61 @@ sub _get_descendant_sql {
 #    $param{path}
 #
 # RETURNS
-#    $retval: majorid on success, undef otherwise
+#    $retval: document_id on success, undef otherwise
 #
 # DESCRIPTION
-#    none yet NOTE: $param{path} FIXME!!!!!!!!!
+#    Fetches document_id corresponding to $param{path} using an recursing algorithm.
 #
 sub get_object_id_by_path {
     XIMS::Debug( 5, "called" );
-
     my $self = shift;
     my %param = @_;
-
     my $retval = undef; # return value
 
-    XIMS::Debug( 6, "parameters: " . @_ );
+    if ( exists $param{path} and length $param{path} ) {
+        return 1 if $param{path} eq '/root' or $param{path} eq '/'; # special case for 'root' since it does not have got a parent_id
+        my @path = split("/", $param{path});
+        my $count = scalar( @path );
+        my $id = 1; # start with objects in the first level of the hierarchy
+        my $symid;
 
-    my $dbh = $self->{dbh};
-    if ( $dbh ) {
-        if ( exists $param{path} and length $param{path} ) {
-            return 1 if $param{path} eq '/root' or $param{path} eq '/'; # special case for 'root' since it does not have got a parent_id
-            my @path = split("/", $param{path});
-            my $count = scalar( @path );
-            my $id = 1; # start with objects in the first level of the hierarchy
-            my $symid = $id;
-
-            if ( not length $path[0] ) {
-                shift @path; # remove the root
-            }
-
-            # this is rather inefficient, but there seems to be no better way
-            foreach my $loc ( @path ) {
-                my $sqlstr = "SELECT d.id,symname_to_doc_id FROM ci_documents d, ci_content c WHERE c.document_id=d.id AND ".
-	                        " c.marked_deleted IS NULL AND location = '" . $loc . "' AND parent_id IN ( ". join( ",", grep { defined $_ } ( $id, $symid )) ." )";
-
-                XIMS::Debug( 6, "SQL: $sqlstr");
-                if ( ($id, $symid) = $dbh->selectrow_array( $sqlstr ) ) {
-                    XIMS::Debug( 6, "new id: $id ($symid)") if defined $id and defined $symid;
-                }
-                else {
-                    XIMS::Debug( 3, "empty result set" );
-                    last;
-                }
-            }
-            $retval = $id;
-            XIMS::Debug( 6, "retval is '$retval'" ) if defined $retval;
+        if ( not length $path[0] ) {
+            shift @path; # remove the root
         }
-        else {
-            XIMS::Debug( 3, "need path to fetch the majorid by path" );
+
+        # this is rather inefficient, but there seems to be no better way
+        foreach my $location ( @path ) {
+            my @ids = ();
+            map { defined $_ and push(@ids, $_) } ( $id, $symid );
+            my $sqlstr = "SELECT d.id,symname_to_doc_id
+                          FROM ci_documents d, ci_content c
+                          WHERE c.document_id=d.id
+                          AND c.marked_deleted IS NULL
+                          AND location = ?
+                          AND parent_id IN (" .  join(',', map { '?' } @ids ) . ") ";
+
+            if ( my $row = $self->{dbh}->fetch_select_rows(
+                                                    sql => [ $sqlstr,
+                                                             $location,
+                                                             @ids
+                                                           ]
+                                                                ) ) {
+                $id = $row->[0]->[0];
+                $symid = $row->[0]->[1];
+                XIMS::Debug( 6, "new id: '$id' (symid '$symid')");
+            }
+            else {
+                XIMS::Debug( 3, "empty result set" );
+                last;
+            }
         }
+        $retval = $id;
+        XIMS::Debug( 6, "retval is '$retval'" );
     }
     else {
-        XIMS::Debug( 1, "no database handler found" );
+        XIMS::Debug( 2, "need path to fetch the document_id by path" );
     }
 
-    XIMS::Debug( 5, "done" );
     return $retval;
 }
 

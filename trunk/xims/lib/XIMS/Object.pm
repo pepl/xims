@@ -957,9 +957,15 @@ sub trashcan {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
     $self->marked_deleted( 1 );
-    $self->position( undef );
 
-    return $self->data_provider->updateObject( $self->data() );
+    if ( $self->data_provider->close_position_gap( parent_id => $self->parent_id(), position => $self->position() ) ) {
+        $self->position( undef );
+        return $self->data_provider->updateObject( $self->data() );
+    }
+    else {
+        XIMS::Debug( 2, "Could not close position gap" );
+        return undef;
+    }
 }
 
 ##
