@@ -143,8 +143,7 @@ sub _create_mapping_from_name {
     my $propertyname = shift;
     my $propertyvalue = shift;
 
-    XIMS::DBENCODING() ? XML::LibXML::encodeToUTF8( XIMS::DBENCODING(), $propertyvalue ) : $propertyvalue;
-    my @vlpropvalues = split(",", $self->_trim( $propertyvalue ) );
+    my @vlpropvalues = split(",", $self->_trim( XIMS::decode( $propertyvalue ) ) );
     foreach my $value ( @vlpropvalues ) {
         my $propclass = "XIMS::VLib" . $propertyname;
         my $propobject = $propclass->new( name => $value );
