@@ -10,11 +10,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="sdocbookxml_default.xsl"/>
-<xsl:output method="xml" encoding="utf-8"
-    media-type="text/html"
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-    indent="no"/>
+<xsl:import href="vlibrary_common.xsl"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -25,17 +21,19 @@
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
                     <td bgcolor="#ffffff">
-                        <ul style="padding: 5px; background:#cccccc; border: 1px solid">
-                            <li><xsl:apply-templates select="authorgroup"/></li>
-                            <li><xsl:apply-templates select="subjectset"/></li>
-                            <li><xsl:apply-templates select="keywordset"/></li>
-                            <li><xsl:apply-templates select="publicationset"/></li>
-                            <li>Mediatype: <xsl:apply-templates select="meta/mediatype"/></li>
-                            <li>Legalnotice: <xsl:apply-templates select="meta/legalnotice"/></li>
-                            <xsl:if test="meta/bibliosource != ''">
-                                <li>Releaseinfo: <xsl:apply-templates select="meta/bibliosource"/></li>
-                            </xsl:if>
-                        </ul>
+                        <div id="vlitemmeta">
+                            <ul>
+                                <li><xsl:apply-templates select="authorgroup"/></li>
+                                <li><xsl:apply-templates select="subjectset"/></li>
+                                <li><xsl:apply-templates select="keywordset"/></li>
+                                <li><xsl:apply-templates select="publicationset"/></li>
+                                <li>Mediatype: <xsl:apply-templates select="meta/mediatype"/></li>
+                                <li>Legalnotice: <xsl:apply-templates select="meta/legalnotice"/></li>
+                                <xsl:if test="meta/bibliosource != ''">
+                                    <li>Releaseinfo: <xsl:apply-templates select="meta/bibliosource"/></li>
+                                </xsl:if>
+                            </ul>
+                        </div>
                         <h1><xsl:value-of select="title"/></h1>
                         <xsl:choose>
                             <xsl:when test="$section > 0 and $section-view='true'">
@@ -73,8 +71,11 @@
         <xsl:apply-templates select="publication[name != '']"/>
 </xsl:template>
 
+<xsl:template match="keyword">
+    <xsl:value-of select="name"/><xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
+</xsl:template>
 
-<xsl:template match="keyword|subject">
+<xsl:template match="subject">
     <a href="{$xims_box}{$goxims_content}{$parent_path}?subject=1;subject_id={id}"><xsl:value-of select="name"/></a><xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
 </xsl:template>
 
@@ -84,11 +85,11 @@
 </xsl:template>
 
 <xsl:template match="author">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?author=1;author_id={id}"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></a><xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?author=1;author_id={id};author_name={firstname} {middlename} {lastname}"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></a><xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
 </xsl:template>
 
 <xsl:template match="publication">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?publication=1;publication_id={id}"><xsl:value-of select="name"/><xsl:text> (</xsl:text><xsl:value-of select="volume"/>)</a>
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?publication=1;publication_id={id};publication_name={name} ({volume})"><xsl:value-of select="name"/><xsl:text> (</xsl:text><xsl:value-of select="volume"/>)</a>
     <xsl:if test="isbn != ''">
         ISBN: <xsl:value-of select="isbn"/>
     </xsl:if>
