@@ -1682,7 +1682,9 @@ sub event_search {
 
     my $user = $ctxt->session->user();
     my $search = $self->param('s');
-    my $maxresults = 30;
+    my $offset = $self->param('page');
+    my $rowlimit = XIMS::SEARCHRESULTROWLIMIT();
+    $offset = $offset * $rowlimit;
 
     $ctxt->properties->application->style( 'error' );
 
@@ -1725,7 +1727,8 @@ sub event_search {
         my $qbr = $qb->build( [qw(title abstract keywords body)] );
         if ( defined $qbr->{criteria} and length $qbr->{criteria} ) {
             my @objects = $ctxt->object->find_objects_granted( criteria => $qbr->{criteria},
-                                                               rowlimit => $maxresults,
+                                                               rowlimit => $rowlimit,
+                                                               offset => $offset,
                                                                properties => $qbr->{properties}, # not used currently
                                                                order => $qbr->{order}, # not used currently
                                                              );
@@ -1733,9 +1736,18 @@ sub event_search {
             if ( not @objects ) {
                  $ctxt->session->warning_msg( "Query returned no objects!" );
             }
-            elsif ( scalar(@objects) == $maxresults ) {
-                 $ctxt->session->warning_msg( "Query result exceeds limit. Only the first $maxresults are shown!" );
+            else {
+                my $count = $ctxt->object->find_objects_granted_count( criteria => $qbr->{criteria} );
+                my $message = "Query returned $count objects.";
+                $message .= " Displaying objects " . ($offset+1) if $count >= $rowlimit;
+                $message .= " to " . ($offset+$rowlimit) if ( $offset+$rowlimit <= $count );
+                $ctxt->session->message( $message );
             }
+
+            # superfluos db hits!
+            # every look up takes 0.008s to 0.009s at c102-bruce after init
+            # this has to be changed!!!
+            map { $_->{content_length} = $_->content_length() } @objects;
 
             $ctxt->objectlist( \@objects );
             $ctxt->properties->content->getformatsandtypes( 1 ); # to resolve the result

@@ -273,6 +273,13 @@ sub find_objects {
     return @objects;
 }
 
+sub find_objects_count {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    return $self->__find_ids_count( %args );
+}
+
 sub find_objects_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -288,6 +295,32 @@ sub find_objects_granted {
 
     #warn "found" . Dumper( \@found ) . "\n";
     return wantarray ? @found : $found[0];
+}
+
+sub find_objects_granted_count {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+    my @role_ids = ( $user->role_ids(), $user->id() );
+
+    return $self->find_objects_count( %args ) if $user->admin();
+
+    delete $args{rowlimit} if exists $args{rowlimit}; # we have to get the ids of *all* matching objects
+    my @found_candidate_doc_ids = $self->__find_ids( %args );
+    return unless scalar( @found_candidate_doc_ids ) > 0 ;
+
+    my @priv_data = $self->data_provider->getObjectPriv( content_id => \@found_candidate_doc_ids,
+                                                         grantee_id => \@role_ids,
+                                                         properties => [ 'content_id' ] );
+
+    # extract and remove duplicate content ids
+    my @ids = map{ $_->{'objectpriv.content_id'} } @priv_data;
+    my %seen = ();
+    my $count;
+    grep { !$seen{$_}++ and $count++} @ids;
+
+    return $count;
 }
 
 sub ancestors {
@@ -348,6 +381,12 @@ sub __find_ids {
     my $self = shift;
     my %args = @_;
     return $self->data_provider->find_object_id( %args );
+}
+
+sub __find_ids_count {
+    my $self = shift;
+    my %args = @_;
+    return $self->data_provider->find_object_id_count( %args );
 }
 
 # "static"-method

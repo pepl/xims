@@ -58,12 +58,15 @@ sub XIMSRoot()                    { 'ximsroot' }    # Path to ximsroot,relative 
                                                     # Do not change unless you know what you are doing!
 
 sub PublicRoot()                  { 'ximspubroot'}  # Path to the export directory relative to ApacheDocumentRoot()
+                                                    # Must be in sync with the corresponding value in config.xsl
                                                     # Do not change unless you know what you are doing!
 
 sub goxims()                      { 'goxims' }      # Name of the main XIMS PerlHandler module
+                                                    # Must be in sync with the corresponding value in config.xsl
                                                     # Do not change unless you know what you are doing!
 
 sub ContentInterface()            { 'content' }     # Name of the content interface
+                                                    # Must be in sync with the corresponding value in config.xsl
                                                     # Do not change unless you know what you are doing!
 
 sub DefaultSkin()                 { 'default' }     # Name of the skin used per default. Relative path under XIMSRoot()/skins/
@@ -73,6 +76,9 @@ sub ResolveRelToSiteRoots()       { '0' }           # <'0'|'1'>
                                                     # Set this to '1' if you want to symlink OU's directly under
                                                     # ApacheDocumentRoot()
                                                     # Do not change unless you know what you are doing!
+
+sub SearchResultRowLimit()        { '20' }          # Number of found objects displayed per page at event_search
+                                                    # Must be in sync with the corresponding value in config.xsl
 
 
 # some names for "special" files

@@ -77,7 +77,7 @@ sub get {
     my ($tables, $columns) = $self->tables_and_columns_get( $args{properties} );
     my $crit = $self->crit_get( $args{conditions} );
     my @columns = keys( %{$columns} );
-    my $data = $self->{dbh}->fetch_select( tables   => $tables, 
+    my $data = $self->{dbh}->fetch_select( tables   => $tables,
                                            columns  => \@columns,
                                            criteria => $crit );
 
@@ -113,17 +113,17 @@ sub create {
                 $id_col_name = $column;
                 delete $column_map->{$column};
             }
-            elsif ( ( not defined( $column_map->{$column})) || 
+            elsif ( ( not defined( $column_map->{$column})) ||
                     ( $column_map->{$column} eq '' ) ||
                     ( $column =~ /time/gi ) ||
                     ( defined( $PropertyAttributes{"$reverse_lookup"})) ) {
                 delete $column_map->{$column};
-            }  
+            }
             else {
                push @select_crits, DBIx::SQLEngine::Criteria->auto( { $column => $column_map->{$column} } );
             }
         }
-        
+
         my $select_crits = DBIx::SQLEngine::Criteria::And->new( @select_crits );
         my $id_list = $self->{dbh}->fetch_select( table    => $table->[0],
                                                   columns  => [ $id_col_name ],
@@ -149,16 +149,15 @@ sub delete {
     my ($table, $columns) = $self->tables_and_columns( $args{properties} );
 
     if ( ($table->[0]  eq "ci_documents") and ($self->{RDBMSClass} eq 'Pg') ) {
-        # this is the ugly workaround for object deletion on Pg :-\    
-	if ( defined $args{conditions}->{'document.id'}
+        # this is the ugly workaround for object deletion on Pg :-\
+        if ( defined $args{conditions}->{'document.id'}
              and     $args{conditions}->{'document.id'} > 1 ) {
-             my $query = 'SELECT ci_del_tree(' . $args{conditions}->{'document.id'}
-                                               . ');';
-             return $self->{dbh}->fetch_select( sql => $query );
-         }
-         else {
-           return undef;
-         }
+            my $query = 'SELECT ci_del_tree(' . $args{conditions}->{'document.id'} . ');';
+            return $self->{dbh}->fetch_select( sql => $query );
+        }
+        else {
+            return undef;
+        }
     }
     else {
         # "generic" deletion
@@ -257,17 +256,17 @@ sub crit {
     my %out = ();
     my @outie = ();
     foreach my $key ( keys( %{$conds} )) {
-        #warn "in Crit $key = " . $conds->{$key} . "\n"; 
+        #warn "in Crit $key = " . $conds->{$key} . "\n";
         if ( $key =~ /adhoc/ ) {
             push @outie, DBIx::SQLEngine::Criteria->auto( $conds->{$key} );
         }
-        else { 
+        else {
             my ($table, $column) = @{$self->resolve_resource( $key )};
             my ( $r_type, $prop_name ) = split /\./, $column;
             push @outie, DBIx::SQLEngine::Criteria->auto( { $prop_name => $conds->{$key} } );
         }
     }
-  
+
     my $cond_object = DBIx::SQLEngine::Criteria::And->new( @outie );
     return $cond_object;
 }
@@ -277,17 +276,17 @@ sub crit_get {
     my %out = ();
     my @outie = ();
     foreach my $key ( keys( %{$conds} )) {
-        #warn "in Crit $key = " . Dumper($conds->{$key}) . "\n"; 
+        #warn "in Crit $key = " . Dumper($conds->{$key}) . "\n";
         if ( $key =~ /adhoc/ ) {
             push @outie, DBIx::SQLEngine::Criteria->auto( $conds->{$key} );
         }
-        else { 
+        else {
             my ($table, $column) = @{$self->resolve_resource( $key )};
             $out{"$column"} = $conds->{$key};
             push @outie, DBIx::SQLEngine::Criteria->auto( { $column => $conds->{$key} } );
         }
     }
-  
+
     my $cond_object = DBIx::SQLEngine::Criteria::And->new( @outie );
     return $cond_object;
 }
@@ -297,14 +296,14 @@ sub property_relationships {
     # that the app classes will be ignorant of.
     my $self = shift;
     my ($r_type, $method_type ) = @_;
-    
+
     if ( defined ($PropertyRelations{$r_type}) ) {
         return $PropertyRelations{$r_type};
     }
     return undef;
-} 
+}
 
-    
+
 ##################################################################################
 # Binary File Support
 ##################################################################################
@@ -322,7 +321,7 @@ sub update_content_binfile {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my ( $content_id, $data ) = @_;
-    
+
     my $sth = $self->{dbh}->get_dbh->prepare("UPDATE ci_content set binfile = ? where id = ?");
 
     if ( $self->{RDBMSClass} eq 'Oracle' ) {
@@ -349,7 +348,7 @@ sub update_content_body {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my ( $content_id, $data ) = @_;
-    
+
     my $sth = $self->{dbh}->get_dbh->prepare("UPDATE ci_content set body = ? where id = ?");
 
     if ( $self->{RDBMSClass} eq 'Oracle' ) {
@@ -373,7 +372,7 @@ sub update_content_body {
 #############################################################
 # One-offs
 #
-# These are the DP methods that do not easliy fit into the 
+# These are the DP methods that do not easliy fit into the
 # cleaner abstraction model for one reason or another or
 # need to be revisitied.
 #############################################################
@@ -383,7 +382,7 @@ sub reposition {
     my $self = shift;
     my %args = @_;
 
-    return undef unless (defined $args{document_id} 
+    return undef unless (defined $args{document_id}
                          and defined $args{parent_id}
                          and defined $args{new_position}
                          and defined $args{position});
@@ -411,8 +410,8 @@ sub reposition {
     my $data = $self->{dbh}->do_update( sql => qq{UPDATE ci_documents
                                                   SET
                                                     position = position $udop 1
-                                                  WHERE 
-                                                    position $upperop $old_position 
+                                                  WHERE
+                                                    position $upperop $old_position
                                                     AND position $lowerop $new_position
                                                     AND parent_id = $parent_id
                                                   }
@@ -481,11 +480,12 @@ sub find_object_id {
 
     my $query = "SELECT ci_documents.id FROM ci_documents, ci_content WHERE ci_content.document_id = ci_documents.id AND $criteria";
     if ( exists $args{rowlimit} and $args{rowlimit} > 0 ) {
+        $args{offset} ||= '0';
         if ( $self->{RDBMSClass} eq 'Oracle' ) {
-            $query = "SELECT * FROM (" . $query . ") WHERE ROWNUM <= " . $args{rowlimit};
+            $query = "SELECT * FROM (" . $query . ") WHERE ROWNUM > " . $args{offset} . " AND ROWNUM <= " . $args{offset} + $args{rowlimit};
         }
         elsif ( $self->{RDBMSClass} eq 'Pg' ) {
-            $query = $query . " LIMIT " . $args{rowlimit};
+            $query = $query . " LIMIT " . $args{rowlimit} . " OFFSET " . $args{offset};
         }
         # other special binds in 'elsif's here as needed
     }
@@ -496,6 +496,19 @@ sub find_object_id {
         push @ids, $row->{ID};
     }
     return \@ids;
+}
+
+sub find_object_id_count {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $criteria = $args{criteria};
+    return unless length $criteria;
+
+    my $data = $self->{dbh}->fetch_select( table   =>  'ci_documents, ci_content',
+                                           columns =>  'count(ci_documents.id) AS COUNT',
+                                           criteria => 'ci_content.document_id = ci_documents.id AND ' . $criteria );
+    return $data->[0]->{COUNT};
 }
 
 sub content_length {
@@ -650,12 +663,12 @@ sub new {
             return;
         }
         else {
-            
+
             # for use later w/ the binary helpers
             if ( $args{dbdsn} =~ /^dbi:(.+?):/ ) {
                 $self->{RDBMSClass} = $1;
             }
-            
+
             foreach ( split (";", $args{dbdopt}) ) {
                 $_ =~ /(.+)=(.+)/;
                 $dbh->get_dbh->{$1} = "$2";
