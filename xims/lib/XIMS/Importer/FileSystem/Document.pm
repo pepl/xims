@@ -34,14 +34,15 @@ sub handle_data {
         my ($n) = $root->findnodes( $importmap{$field} );
         if ( defined $n ) {
             $value = "";
-            if ( $n->hasChildNodes() ) {
+            my @cnodes = $n->childNodes;
+            if ( scalar @cnodes > 1 ) {
                 map { $value .= $_->toString(0,1) } $n->childNodes;
             }
             else {
                 $value = $n->textContent();
             }
             if ( length $value ) {
-               $object->$field( $value );
+                $object->$field( XIMS::Entities::decode($value) );
             }
         }
     }
@@ -83,6 +84,7 @@ sub get_rootelement {
                             $_[0], $_[0]->attributes;
                         } );
 
+    $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
     return $doc->documentElement();
 }
 
