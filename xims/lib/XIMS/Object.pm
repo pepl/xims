@@ -1099,7 +1099,10 @@ sub balanced_string {
             }
         }
         else {
-            my $encoding = $args{encoding} || XIMS::DBENCODING();
+            my $encoding;
+            $encoding = $args{encoding} if defined $args{encoding};
+            $encoding ||= XIMS::DBENCODING() if defined XIMS::DBENCODING();
+            $encoding ||= 'UTF-8';
             my $doc; # as long as parse_xml_chunk does not fill $@ on error, we have to use $doc to test for success :/
             eval { $doc = $parser->parse_xml_chunk( $CDATAstring, $encoding ) };
             if ( !$doc or $@ ) {

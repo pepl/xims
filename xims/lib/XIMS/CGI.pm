@@ -11,11 +11,18 @@ use XIMS;
 use XIMS::DataFormat;
 use XIMS::SAX;
 use XIMS::ObjectPriv;
-use CGI::XMLApplication 1.1.2; # sub-sub-version is not recoginzed here :-/
+use CGI::XMLApplication 1.1.2; # sub-sub-version is not recognized here :-/
 use XML::LibXML::SAX::Builder;
 use Apache::URI;
-#use Data::Dumper;
+# <pepl> The LibXML utf8(de|en-)coding functions won't convert strings coming from
+# $self->param() even if they are utf-8. Possibly because the high-bit is not
+# set. (Which I cannot check for in Perl 5.6.1).
+# The behaviour may be different with other XML::LibXML versions besides 1.56.
+# The behaviour may also be different with other Perl versions besides 5.6.1
+# Text::Iconv seems to be the most compatible module, so we are using it here.
+use Text::Iconv;
 
+#use Data::Dumper;
 ############################################################################
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 ############################################################################
@@ -344,9 +351,12 @@ sub getDOM {
     my $self    = shift;
     my $ctxt    = shift;
 
+    my %handlerargs;
+
     my $generator = defined $ctxt->sax_generator() ? $ctxt->sax_generator() : undef;
     my $filter    = defined $ctxt->sax_filter()    ? $ctxt->sax_filter()    : [];
-    my $handler   = XML::LibXML::SAX::Builder->new( Encoding => "ISO-8859-1" );
+    my $handler   = XML::LibXML::SAX::Builder->new();
+    $handler->{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
     my $controller = XIMS::SAX->new( Handler => $handler,
                                      Generator => $generator,
                                      FilterList => $filter,
@@ -581,7 +591,6 @@ sub clean_location {
                    ';'  =>  '',
                    ':'  =>  ''
                   );
-
     my $badchars = join "", keys %escapes;
     $location =~ s/
                     ([$badchars])     # more flexible :)
@@ -609,6 +618,15 @@ sub init_store_object {
     my $markednew  = $self->param( 'markednew' );
     my $keywords   = $self->param( 'keywords' );
     my $image      = $self->param( 'image' );
+
+    my $converter = Text::Iconv->new("UTF-8", "ISO-8859-1");
+    # will be undef if string can not be converted to iso-8859-1;
+    $location = $converter->convert($location) if defined $location;
+    if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+        $converter = Text::Iconv->new("UTF-8", XIMS::DBENCODING());
+        $title = $converter->convert($title) if defined $title;
+        $keywords = $converter->convert($keywords) if defined $keywords;
+    }
 
     my $existing_flag = 0;
 
@@ -719,6 +737,9 @@ sub init_store_object {
 
     my $abstract = $self->param( 'abstract' );
     if ( defined $abstract and length $abstract and $abstract !~ /^\s+$/ ) {
+        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+            $abstract = $converter->convert($abstract);
+        }
         if ( $object->abstract( $abstract ) ) {
             XIMS::Debug( 6, "abstract set, len: " . length($abstract) );
         }
@@ -1693,9 +1714,7 @@ sub body_ref_objects {
     my $parser = XML::LibXML->new();
     my $chunk;
     eval {
-        my $data = ( length XIMS::DBENCODING() and XIMS::DBENCODING() !~ /UTF-?8/i )
-                 ? XML::LibXML::encodeToUTF8( XIMS::DBENCODING(), $body )
-                 : $body;
+        my $data = XIMS::DBENCODING() ? XML::LibXML::encodeToUTF8( XIMS::DBENCODING(), $body ) : $body;
         $chunk = $parser->parse_xml_chunk( $data );
     };
     if ( $@ ) {
