@@ -3,9 +3,9 @@
 -- Add two new object types: Questionnaire and TAN_List
 \echo inserting into ci_object_types...
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Questionnaire', 1, 1, 0, 0 );
+       VALUES ( nextval('ci_object_types_id_seq'), 'Questionnaire', 0, 0, 1, 1 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'TAN_List', 1, 1, 0, 0 );
+       VALUES ( nextval('ci_object_types_id_seq'), 'TAN_List', 0, 0, 1, 0 );
 
 -- Add two new data formats: Questionnaire and TAN_List
 \echo inserting into ci_data_formats...
