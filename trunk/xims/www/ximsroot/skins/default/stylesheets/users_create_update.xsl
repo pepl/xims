@@ -13,9 +13,9 @@
 <html>
     <xsl:call-template name="head_default"/>
     <body>
-        <xsl:call-template name="header">
-            <xsl:with-param name="noncontent">true</xsl:with-param>
-        </xsl:call-template>
+    <xsl:call-template name="header">
+        <xsl:with-param name="noncontent">true</xsl:with-param>
+    </xsl:call-template>
 
     <form name="userConfirm" action="{$xims_box}{$goxims_users}" method="GET">
     <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">

@@ -9,6 +9,7 @@ use vars qw( $VERSION @ISA);
 
 use XIMS::CGI;
 use XIMS::User;
+use XIMS::Bookmark;
 
 use Digest::MD5 qw( md5_hex );
 #use Data::Dumper;
@@ -26,7 +27,6 @@ sub registerEvents {
           prefs
           prefs_update
           bookmarks
-          bookmarks_update
           )
         );
 }
@@ -134,6 +134,19 @@ sub event_passwd_update {
     }
 }
 
+sub event_bookmarks {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    $ctxt->properties->application->style( 'bookmarks' );
+
+    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+    $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
+
+    return 0;
+}
+
 # END RUNTIME EVENTS
 # #############################################################################
+
 1;
