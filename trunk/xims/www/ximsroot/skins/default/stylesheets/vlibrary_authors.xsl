@@ -21,9 +21,7 @@
     <html>
         <xsl:call-template name="head_default"/>
         <body onLoad="setBg('vliteminfo');">
-            <xsl:call-template name="header" >
-                <xsl:with-param name="nooptions" select="true"/>
-            </xsl:call-template>
+            <xsl:call-template name="header" />
 
             <div id="vlbody">
                 <h1><xsl:value-of select="title"/></h1>
@@ -81,5 +79,7 @@
         <xsl:with-param name="colms" select="$authorcolumns"/>
     </xsl:call-template>
 </xsl:template>
+
+<xsl:template name="cttobject.options.copy"/>
 
 </xsl:stylesheet>
