@@ -105,7 +105,9 @@ sub handle_data {
             XIMS::Debug( 6, "found n = " . scalar( @children ) . " objects" );
             my $location_path;
             foreach my $o ( @children ) {
-                if ( $o->data_format->name() eq 'URL' ) {
+                my $cacheddfname = "_cached_data_format_id".$o->data_format_id();
+                $self->{$cacheddfname} ||= $o->data_format->name();
+                if ( $self->{$cacheddfname} eq 'URL' ) {
                     $location_path = $o->location();
                 }
                 elsif ( $self->{Export} ) {
