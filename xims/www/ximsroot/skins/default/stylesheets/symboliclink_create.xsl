@@ -42,7 +42,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('PortletTarget')" class="doclink">(?)</a>
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;otfilter=Folder,DepartmentRoot,Journal;sbfield=eform.target')" class="doclink"><xsl:value-of select="$i18n/l/browse_target"/></a>
+            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;otfilter=Folder,DepartmentRoot,SiteRoot;sbfield=eform.target')" class="doclink"><xsl:value-of select="$i18n/l/browse_target"/></a>
         </td>
     </tr>
 </xsl:template>
