@@ -21,24 +21,24 @@ sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
         qw(
-          default
-          create
-          edit
-          store
-          trashcan
-          trashcan_prompt
-          delete
-          delete_prompt
-          obj_acllist
-          obj_aclgrant
-          obj_aclrevoke
-          publish
-          publish_prompt
-          unpublish
-          cancel
-          answer
-          download_results
-          )
+            default
+            create
+            edit
+            store
+            trashcan
+            trashcan_prompt
+            delete
+            delete_prompt
+            obj_acllist
+            obj_aclgrant
+            obj_aclrevoke
+            publish
+            publish_prompt
+            unpublish
+            cancel
+            answer
+            download_results
+            )
         );
 }
 
@@ -102,20 +102,22 @@ sub event_edit {
 	# a published questionnaire or a questionnaire which allready 
 	# has been answered must not be edited
 	if ( $object->has_answers() ) {
-	  XIMS::Debug( 5, "cannot edit answered questionnaire" );
-	  $self->sendError( $ctxt, 'Allready answered questionnaires cannot be edited! You can copy the questionnaire and edit the copy.' );
-	  return 0;	
+	    XIMS::Debug( 5, "cannot edit answered questionnaire" );
+	    $self->sendError( $ctxt, 'Allready answered questionnaires cannot be edited! You can copy the questionnaire and edit the copy.' );
+	    return 0;	
 	}
 	if ( $object->published() ) {
-	  XIMS::Debug( 5, "cannot edit published questionnaire" );
-	  $self->sendError( $ctxt, 'Published Questionnaire cannot be edited! Unpublish first' );
-	  return 0;	
+	    XIMS::Debug( 5, "cannot edit published questionnaire" );
+	    $self->sendError( $ctxt, 'Published Questionnaire cannot be edited! Unpublish first' );
+	    return 0;	
 	}
     my $method = $self->param('edit');
     my $edit_id = $self->param('qid');
     my %params = $self->Vars;
     my $parsed_object = $object->form_to_xml( %params );
-    $edit_id =~ s/x/\./g;
+    # replace x between ids with ., except a tanlist is added
+    # tanlists are added by path not id
+    $edit_id =~ s/x/\./g unless $method eq 'add_tanlist';
     # after the form has been processed to xml we don't need the
     # form-params anymore, to avoid problems with later serialization
     foreach ( $self->param() ) {
@@ -324,19 +326,19 @@ sub event_exit {
 }
 
 sub _encode {
-  my $string = shift;
-  return $string unless XIMS::DBENCODING();
-  my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
-  $string = $converter->convert($string) if defined $string;
-  return $string;
+    my $string = shift;
+    return $string unless XIMS::DBENCODING();
+    my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
+    $string = $converter->convert($string) if defined $string;
+    return $string;
 }
 
 sub _decode {
-  my $string = shift;
-  return $string unless XIMS::DBENCODING();
-  my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
-  $string = $converter->convert($string) if defined $string;
-  return $string;
+    my $string = shift;
+    return $string unless XIMS::DBENCODING();
+    my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
+    $string = $converter->convert($string) if defined $string;
+    return $string;
 }
 
 1;
