@@ -41,6 +41,8 @@ sub prepare {
     if ( $ctxt->session() ) {
         $doc_data->{context}->{session} = {$ctxt->session->data()};
         $doc_data->{context}->{session}->{user} = {$ctxt->session->user->data()};
+        my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
+        $doc_data->{context}->{session}->{public_user} = 1 if defined $publicusername;
     }
 
     # fun with content objects
