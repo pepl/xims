@@ -37,3 +37,5 @@ sub new {
 
     return $class->SUPER::new( %args );
 }
+
+1;
