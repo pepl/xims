@@ -32,7 +32,7 @@
             <xsl:when test="$sb='title'">
                 <xsl:choose>
                     <xsl:when test="$order='asc'">
-                        <table border="0" cellpadding="0" cellspacing="0">
+                        <table style="margin-left:5px; margin-right:5px" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <xsl:if test="$m='e'">
                                     <td width="86">
@@ -101,9 +101,9 @@
                                          />
                                 </td>
                                 <xsl:if test="$m='e'">
-                                    <td width="134" style="padding-right: 6;">
+                                    <td width="134">
                                         <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
-                                             width="180"
+                                             width="189"
                                              height="20"
                                              alt="Options"
                                              title="Options"
@@ -121,7 +121,7 @@
                         </table>
                     </xsl:when>
                     <xsl:when test="$order='desc'">
-                        <table border="0" cellpadding="0" cellspacing="0">
+                        <table style="margin-left:5px; margin-right:5px" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <xsl:if test="$m='e'">
                                     <td width="86">
@@ -185,7 +185,7 @@
                                 <xsl:if test="$m='e'">
                                     <td width="134">
                                         <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
-                                             width="183"
+                                             width="189"
                                              height="20"
                                              alt="Options"
                                              title="Options"
@@ -204,7 +204,7 @@
             <xsl:when test="$sb='date'">
                 <xsl:choose>
                     <xsl:when test="$order='asc'">
-                        <table border="0" cellpadding="0" cellspacing="0">
+                        <table style="margin-left:5px; margin-right:5px" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <xsl:if test="$m='e'">
                                     <td width="86">
@@ -275,7 +275,7 @@
                                 <xsl:if test="$m='e'">
                                     <td width="134">
                                         <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
-                                             width="183"
+                                             width="189"
                                              height="20"
                                              alt="Options"
                                              title="Options"
@@ -289,7 +289,7 @@
                         </table>
                     </xsl:when>
                     <xsl:when test="$order='desc'">
-                        <table border="0" cellpadding="0" cellspacing="0">
+                        <table style="margin-left:5px; margin-right:5px" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <xsl:if test="$m='e'">
                                     <td width="86">
@@ -362,7 +362,7 @@
                                 <xsl:if test="$m='e'">
                                     <td width="134">
                                         <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
-                                             width="183"
+                                             width="189"
                                              height="20"
                                              alt="Options"
                                              title="Options"
@@ -381,7 +381,7 @@
             <xsl:when test="$sb='position'">
                 <xsl:choose>
                     <xsl:when test="$order='asc'">
-                        <table border="0" cellpadding="0" cellspacing="0">
+                        <table style="margin-left:5px; margin-right:5px" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <xsl:if test="$m='e'">
                                     <td width="86">
@@ -449,7 +449,7 @@
                                 <xsl:if test="$m='e'">
                                     <td width="134">
                                         <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
-                                             width="183"
+                                             width="189"
                                              height="20"
                                              alt="Options"
                                              title="Options"
@@ -463,7 +463,7 @@
                         </table>
                     </xsl:when>
                     <xsl:when test="$order='desc'">
-                        <table border="0" cellpadding="0" cellspacing="0">
+                        <table style="margin-left:5px; margin-right:5px" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <xsl:if test="$m='e'">
                                     <td width="86">
@@ -536,7 +536,7 @@
                                 <xsl:if test="$m='e'">
                                     <td width="134">
                                         <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
-                                             width="183"
+                                             width="189"
                                              height="20"
                                              alt="Options"
                                              title="Options"
@@ -570,7 +570,7 @@
                     <img src="{$ximsroot}images/spacer_white.gif" width="6" height="20" border="0" alt=" " />
                     <xsl:choose>
                         <xsl:when test="marked_new= '1'">
-                            <img src="{$ximsroot}images/{$currentuilanguage}/status_markednew.png"
+                            <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/status_markednew.png"
                                  border="0"
                                  width="26"
                                  height="19"
@@ -620,7 +620,7 @@
                     <xsl:choose>
                         <xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
                             <a href="{$goxims_content}?id={@document_id};cancel=1;r={/document/context/object/@document_id}">
-                                <img src="{$ximsroot}images/status_locked.png"
+                                <img src="{$ximsroot}skins/{$currentskin}/images/status_locked.png"
                                      width="26"
                                      height="19"
                                      border="0"
@@ -630,7 +630,7 @@
                             </a>
                         </xsl:when>
                         <xsl:when test="locked_by_id != '' and locked_time != ''">
-                            <img src="{$ximsroot}images/status_locked.png"
+                            <img src="{$ximsroot}skins/{$currentskin}/images/status_locked.png"
                                  width="26"
                                  height="19"
                                  border="0"
