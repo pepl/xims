@@ -23,7 +23,7 @@
     <xsl:value-of select="$i18n/l/Treeview_from"/> <xsl:value-of select="$absolute_path"/>
     </h1>
     <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-        <xsl:apply-templates select="/document/objectlist/object"/>
+        <xsl:apply-templates select="/document/objectlist/object[location != '.diff_to_second_last']"/>
     </table>
   </body>
 
