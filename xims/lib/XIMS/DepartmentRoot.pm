@@ -53,7 +53,7 @@ sub new {
 #    @objects    : Array of content objects to be used as departmentlinks
 #
 # RETURNS
-#    $boolean : True or False for storing back body to object
+#    $boolean : True or False on success or failure
 #
 # DESCRIPTION
 #    Checks for an already assigned departmentlinks portlet and adds additional departmentlinks
