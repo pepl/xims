@@ -441,6 +441,7 @@ sub resolve_content {
     my $self = shift;
     my $ctxt = shift;
     my $list = shift;
+    my $reltosite = shift;
 
     return unless defined $list and scalar @$list;
 
@@ -452,12 +453,13 @@ sub resolve_content {
         return 0;
     }
 
-    push ( @{$ctxt->sax_filter()},
-           XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $ctxt->data_provider(),
-                                                          ResolveContent => $list,
-                                                          NonExport => 1,
-                                                        )
-         );
+    my %args = ( Provider => $ctxt->data_provider(),
+                 ResolveContent => $list,
+                 NonExport => 1,
+               );
+    $args{RelToSite} = $reltosite if defined $reltosite;
+
+    push ( @{$ctxt->sax_filter()}, XIMS::SAX::Filter::ContentIDPathResolver->new( %args ) );
 }
 
 sub resolve_user {

@@ -140,7 +140,7 @@ sub event_bookmarks {
 
     $ctxt->properties->application->style( 'bookmarks' );
 
-    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ], '0' );
     $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
 
     return 0;
