@@ -38,6 +38,8 @@ sub DEFAULT_SKIN()              { $_CONFIG_->DefaultSkin() }
 sub DOC_FSEXPORTSTYLESHEET()    { $_CONFIG_->DocFSExportStylesheet() }
 sub DEFAULT_PATH()              { $_CONFIG_->DefaultStartingPath() }
 sub WYSIWYGEDITOR()             { $_CONFIG_->WYSIWYGEditor() }
+sub TIDYPATH()                  { $_CONFIG_->TidyPath() }
+sub TIDYOPTIONS()               { $_CONFIG_->TidyOptions() }
 sub XIMSROOT_URL()              { "/" . $_CONFIG_->XIMSRoot() }
 sub XIMSROOT()                  { $_CONFIG_->ApacheDocumentRoot() . "/" . $_CONFIG_->XIMSRoot() }
 sub AUTHSTYLE()                 { $_CONFIG_->AuthStyle() }

@@ -881,10 +881,8 @@ sub balance_string {
 
     # as long as there is no libtidy and no XS based HTML::Tidy, it looks like we have to
     # deal with the forking and temorary file handling...:/
-    # because we assume that sth like HTML::Tidy will be available soon, the following paths
-    # remain hardcoded
-    my $tidy        = "/usr/local/bin/tidy";
-    my $tidyOptions = " -config /usr/local/xims/conf/ximstidy.conf -quiet -f /dev/null";
+    my $tidy        = XIMS::TIDYPATH();
+    my $tidyOptions = XIMS::TIDYOPTIONS();
     my $tmppath = "/tmp/";
     my $tmpfile = 'formwell' . $$ * int(rand 42) . '.tmp';
     my $tmp = $tmppath . $tmpfile;
