@@ -1,7 +1,16 @@
-use lib "lib";
+#!/usr/bin/perl -w
+
+# Copyright (c) 2002-2003 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+
 use strict;
-use Data::Dumper;
+
+use lib "../lib";
+use lib "lib";
 use Test::Harness;
+use Sys::Hostname;
 use Storable qw( store retrieve );
 my %Args = ();
 my %Conf = ();
@@ -12,10 +21,10 @@ my %prompts = (
                              "2 - run all acceptance tests.\n".
                              "3 - run both unit and acceptance tests.\n".
                              "4 - select tests individually.\n".
-                             "5 - edit/create the test suite config file.\n",
+                             "5 - edit/create the test suite config file.\n (For acceptance tests and alternate configs to XIMS::Config).\n",
                    var   => \$Args{test_type},
                    re    => '(1|2|3|4|5)',
-                   error => 'You must select the numbers 1, 2, 3, 4, or 5.',
+                   error => 'You must select the numbers 1, 2, 3, 4, or 5',
                    default => 3,
                  },
     log       => { text  => "Enter a log file name\n",
@@ -46,7 +55,7 @@ my %conf_prompts = (
                           var   => \$Conf{http_host},
                           re    => '^http://(.+?)',
                           error => 'Just a simple host name, including scheme and port, please.',
-                          default =>  $Conf{http_host} || 'http://localhost',
+                          default =>  $Conf{http_host} || 'http://' . hostname(),
                  },
     b_xims_username  => { text  => 'XIMS User Name',
                           var   => \$Conf{user_name},
@@ -58,19 +67,19 @@ my %conf_prompts = (
                           var   => \$Conf{password},
                           re    => '\w+',
                           error => 'You must enter a password.',
-                          default => $Conf{password},
+                          default => $Conf{password} || 'xgu',
                         },
-    d_db_username    => { text  => 'Database Username',
+    d_db_username    => { text  => 'Database Username (This user has to have privileges to create languages, object types, etc.)',
                           var   => \$Conf{DBUser},
                           re    => '\w+',
                           error => 'You must enter the database username for XIMS to access the database.',
-                          default => $Conf{DBUser} || 'ximsadm',
+                          default => $Conf{DBUser} || 'xims',
                        },
     e_db_password    => { text  => 'Database Password',
                           var   => \$Conf{DBPassword},
                           re    => '\w+',
                           error => "You must enter the database user's password for XIMS to access the database.",
-                          default => $Conf{DBPassword},
+                          default => $Conf{DBPassword} || 'xims',
                         },
     f_db_dbname      => { text  => 'Database Name',
                           var   => \$Conf{DBName},
@@ -78,21 +87,21 @@ my %conf_prompts = (
                           error => 'You must enter the database name.',
                           default => $Conf{DBName} || 'xims',
                         },
-    g_db_driver      => { text  => 'Database Driver',
-                          var   => \$Conf{DBMS},
+    g_db_driver      => { text  => 'RDBMS',
+                          var   => \$Conf{RDBMS},
                           re    => '\w+',
-                          error => 'You must enter the database driver (Pg, Oracle, etc.)',
-                          default => $Conf{DBMS} || 'DBI',
+                          error => 'You must enter the RDBMS Type (Pg or Oracle)',
+                          default => $Conf{RDBMS} || 'Pg',
                         },
 );
 
 
 print q*
-  __  _____ __  __ ____  
-  \ \/ /_ _|  \/  / ___| 
-   \  / | || |\/| \___ \ 
+  __  _____ __  __ ____
+  \ \/ /_ _|  \/  / ___|
+   \  / | || |\/| \___ \
    /  \ | || |  | |___) |
-  /_/\_\___|_|  |_|____/ 
+  /_/\_\___|_|  |_|____/
 
   Interactive Testing Tool
 
@@ -102,13 +111,14 @@ print q*
 
 my @selected_tests = select_tests();
 
-if ( $prompt_config == 1 ) {
-    warn "You must set up the config before running the tests.\n";
-    $Args{ask_config} = 'y'
+if ( $prompt_config and $prompt_config == 1 ) {
+    print "\nNo test suite config file found, trying to use XIMS::Config.\n";
+    eval { require XIMS::Config; };
+    die "Could not load XIMS::Config (possibly due to access rights).\n" if $@;
+    print "\n\033[1mNote: Per default, the database user configured in XIMS::Config, e.g. 'ximsrun' if you have used the config defaults, does not have sufficient database object privileges to sucessfully run the unit tests. You may consider to set up a test suite config file for that.\033[m\n\n";
 }
-
-if ( $Args{ask_config} eq 'y' ) {
-    do_config();
+else {
+    print "Using config information from lib/XIMS/.ximstest.conf\n";
 }
 
 prompt( $prompts{log} );
@@ -125,7 +135,7 @@ open(STDERR, ">$Args{log_file}") || die "Failed to open $Args{log_file} - $!";
 test_loop( @selected_tests );
 
 close(STDERR);
-open(STDERR, ">&SAVEERR"); 
+open(STDERR, ">&SAVEERR");
 
 # end main
 #########################################
@@ -136,12 +146,12 @@ sub do_config {
     }
     store( \%Conf, 'lib/XIMS/.ximstest.conf' ) || die "Could not write conf file, aborting\n";
     print "Config file written.\n";
-    $Args{ask_config} = 'n'; 
+    $Args{ask_config} = 'n';
 }
 
 sub test_loop {
     my @tests = @_;
-    
+
     if ( scalar( @tests ) > 0 ) {
         eval {
         runtests(@tests);
@@ -180,10 +190,10 @@ sub test_loop {
     }
 }
 
-        
+
 sub prompt {
     my $def = shift;
-    #warn Dumper( $def);    
+    #warn Dumper( $def);
     print $def->{text} . "\n";
     if ( $def->{default} ) {
         print '[' . $def->{default} . ']';
@@ -202,7 +212,7 @@ sub prompt {
       }
       else {
           print $def->{error} . "\n";
-          prompt( $def ) & last;
+          prompt( $def ) && last;
       }
    }
 }
@@ -221,7 +231,7 @@ sub select_tests {
        @test_files = <*.t>;
     }
 
-    if ( $Args{test_type} == 4 ) { 
+    if ( $Args{test_type} == 4 ) {
         my $choose_string ="\n\n";
         my $i;
         for( $i = 0; $i <= $#test_files; $i++ ) {
@@ -242,6 +252,7 @@ sub select_tests {
     }
     elsif ( $Args{test_type} == 5 ) {
          $Args{ask_config} = 'y';
+         do_config();
          return ();
     }
     $Args{ask_config} = 'n';
