@@ -115,8 +115,8 @@
                             <a href="{$goxims_content}?id={@id};publish_prompt=1">
                                 <img src="{$skimages}option_pub.png"
                                      border="0"
-                                     alt="Optionen zum Veröffentlichen"
-                                     title="Optionen zum Veröffentlichen"
+                                     alt="{$i18n/l/Publishing_options}"
+                                     title="{$i18n/l/Publishing_options}"
                                      name="publish{@document_id}"
                                      width="32"
                                      height="19"
@@ -136,11 +136,11 @@
                     </xsl:choose>
                     <xsl:choose>
                         <xsl:when test="user_privileges/grant|user_privileges/grant_all">
-                            <a href="{$goxims_content}?id={@document_id};obj_acllist=1">
+                            <a href="{$goxims_content}?id={@id};obj_acllist=1">
                                 <img src="{$skimages}option_acl.png"
                                      border="0"
-                                     alt="Zugangskontrolle"
-                                     title="Zugangskontrolle"
+                                     alt="{$i18n/l/Access_control}"
+                                     title="{$i18n/l/Access_control}"
                                      align="left"
                                      width="32"
                                      height="19"
@@ -171,8 +171,8 @@
                                        border="0"
                                        width="37"
                                        height="19"
-                                       alt="Endgültig löschen"
-                                       title="Dieses Objekt endgültig löschen"
+                                       alt="{$i18n/l/purge}"
+                                       title="{$i18n/l/purge}"
                                        />
                             </form>
                         </xsl:when>
@@ -216,7 +216,7 @@
                 <td width="2%">
                     <xsl:choose>
                         <xsl:when test="/document/context/object/user_privileges/write and locked_time = '' or locked_by = /document/session/user/@id">
-                            <a href="{$goxims_content}?id={@document_id};edit=1">
+                            <a href="{$goxims_content}?id={@id};edit=1">
                                 <img src="{$skimages}option_edit.png"
                                      border="0"
                                      alt="Bearbeiten"
@@ -257,8 +257,8 @@
                                        border="0"
                                        width="37"
                                        height="19"
-                                       alt="Endgültig löschen"
-                                       title="Dieses Objekt endgültig löschen"
+                                       alt="{$i18n/l/purge}"
+                                       title="{$i18n/l/purge}"
                                        />
                             </form>
                         </xsl:when>
