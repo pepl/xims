@@ -21,6 +21,9 @@
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
     <article>
+        <xsl:if test="body/article/@lang != ''">
+            <xsl:attribute name="lang"><xsl:value-of select="body/article/@lang"/></xsl:attribute>
+        </xsl:if>
         <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="{department_id}/ou.xml"/>
         <rdf:RDF xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                  xmlns:dc  = "http://purl.org/dc/elements/1.1/"
