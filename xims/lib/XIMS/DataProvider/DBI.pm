@@ -482,7 +482,7 @@ sub find_object_id {
     if ( exists $args{rowlimit} and $args{rowlimit} > 0 ) {
         $args{offset} ||= '0';
         if ( $self->{RDBMSClass} eq 'Oracle' ) {
-            $query = "SELECT * FROM (" . $query . ") WHERE ROWNUM > " . $args{offset} . " AND ROWNUM <= " . $args{offset} + $args{rowlimit};
+            $query = "SELECT * FROM (" . $query . ") WHERE ROWNUM > " . $args{offset} . " AND ROWNUM <= " . ( $args{offset} + $args{rowlimit} );
         }
         elsif ( $self->{RDBMSClass} eq 'Pg' ) {
             $query = $query . " LIMIT " . $args{rowlimit} . " OFFSET " . $args{offset};
