@@ -565,11 +565,10 @@ sub update { return undef; }
 #
 sub remove {
     XIMS::Debug( 5, "called" );
-
     my ( $self, %param ) = @_;
     my $object = $param{Object};
 
-    my $dead_file = $self->{Basedir} . '/' . $self->{Object}->location;
+    my $dead_file = $self->{Exportfile} || $self->{Basedir} . '/' . $self->{Object}->location;
 
     unless ( -w $dead_file ) {
         XIMS::Debug( 2, "Cannot remove filesystem object '$dead_file'. File does not exist." );
@@ -1307,7 +1306,7 @@ sub create {
     }
     else {
         # create new folder.
-        XIMS::Debug( 4, "creating directory '$new_path'" );
+        XIMS::Debug( 4, "Creating directory '$new_path'" );
 
         eval {
             mkdir( $new_path, 0755 ) ||  die $!;
