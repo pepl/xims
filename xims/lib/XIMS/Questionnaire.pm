@@ -602,7 +602,7 @@ sub store_result {
     my $docid = $params{'docid'};
     my $tan = $params{'tan'};
     my $question = $params{'q'} - 1;
-    # Check if question allready has been answered
+    # Check if question already has been answered
     # ToDo: Questionnaire-setting if answer update is allowed.
     return 0 if (XIMS::QuestionnaireResult->getResult( $docid, $tan, $question) eq "ANSWERED");
     # Store every parameter containing answer and a id as a result
@@ -611,6 +611,9 @@ sub store_result {
         my @answer_id = split( /_/, $_);
         next unless ( $answer_id[1] );
         foreach my $answer (split( /\0/,$params{$_} ) ) {
+            # since we dump the raw result data tab-separated, we do not
+            # want to store tab characters here
+            $answer =~ s/\t/    /g;
             $result = XIMS::QuestionnaireResult->new() ;
             $result->document_id( $docid );
             $result->tan( $tan );
@@ -852,7 +855,10 @@ sub _last_question {
 #
 sub set_results {
     XIMS::Debug( 5, "called");
-    my ($self) = @_;
+    my $self = shift;
+    my %args = @_;
+    my $answered = 1;
+    $answered = 0 if defined $args{full_text_answers} and $args{full_text_answers} == 1;
 
     my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
     $questionnaire = $questionnaire->documentElement();
@@ -880,7 +886,13 @@ sub set_results {
 
         # get all default answers and delete them from the body
         map { $answer_node->removeChild( $_ ) } $title_nodes->get_nodelist();
-        my $all_answers = $result_object->get_answers( $self->document_id(), $answer_node->parentNode->findvalue( '@id' ), 1 );
+        my $all_answers;
+        if ( $answered ) {
+            $all_answers = $result_object->get_answers( $self->document_id(), $answer_node->parentNode->findvalue( '@id' ), $answered );
+        }
+        else {
+            $all_answers = $result_object->get_answers( $self->document_id(), $answer_node->findvalue( '@id' ), $answered );
+        }
         foreach my $answer_text ( @{$all_answers} ) {
             my $new_title = XML::LibXML::Element->new( "title" );
             $new_title->setAttribute( "count" , ${$answer_text}{'count'} );

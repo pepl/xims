@@ -34,23 +34,21 @@
 </xsl:template>
 
 <xsl:template match="questionnaire">
-    <form action="">
-        <xsl:call-template name="questionnaire_title" />
-        <xsl:call-template name="questionnaire_info" />
-        <xsl:call-template name="questionnaire_statistics" />
-        <xsl:call-template name="questionnaire_download" />
-        <div style="margin-top: 10px">
-        <xsl:choose>
-            <xsl:when test="$show_questions =  'none'">
-                <a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
-            </xsl:when>
-            <xsl:when test="$show_questions =  'top'">
-                <a href="?show_questions=none" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
-                <xsl:call-template name="top_question" />
-            </xsl:when>
-        </xsl:choose>
-        </div>
-    </form>
+    <xsl:call-template name="questionnaire_title" />
+    <xsl:call-template name="questionnaire_info" />
+    <xsl:call-template name="questionnaire_statistics" />
+    <xsl:call-template name="questionnaire_download" />
+    <h2 style="margin-bottom: 5px">
+    <xsl:choose>
+        <xsl:when test="$show_questions =  'none'">
+            <a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
+        </xsl:when>
+        <xsl:when test="$show_questions =  'top'">
+            <a href="?show_questions=none" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
+            <xsl:call-template name="top_question" />
+        </xsl:when>
+    </xsl:choose>
+    </h2>
 </xsl:template>
 
 <xsl:template name="questionnaire_info">
@@ -74,22 +72,50 @@
 
 <xsl:template name="questionnaire_download">
     <xsl:if test="@total_answered > 0">
-        <p>
-            <br/>
-            <xsl:value-of select="$i18n_qn/l/download_results" />&#160;
-            <a class="text" type="submit" target="_blank" href="?download_results=html">HTML</a>,
-            <a class="text" type="submit" target="_self" href="?download_results=excel">Excel</a>
-        </p><p>
-            <xsl:value-of select="$i18n_qn/l/download_all_results" />&#160;
-            <a class="text" type="submit" href="?download_all_results=HTML">HTML</a>,
-            Excel (<a class="text" type="submit" href="?download_all_results=XLS;encoding=Latin1">Latin1</a>,
-            <a class="text" type="submit" href="?download_all_results=XLS;encoding=UTF8">UTF-8</a>)
-        </p>
+        <h2 style="margin-bottom: 5px"><xsl:value-of select="$i18n_qn/l/Results" /></h2>
+        <table>
+            <tr>
+                <td>
+                    <xsl:value-of select="$i18n_qn/l/Overview" />
+                </td>
+                <td>
+                    <a class="text" type="submit" target="_blank" href="?download_results=html">HTML</a>,
+                    <a class="text" type="submit" target="_self" href="?download_results=excel">Excel</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <xsl:value-of select="$i18n_qn/l/Overview" />&#160;(<xsl:value-of select="$i18n_qn/l/with_text_answers" />)
+                </td>
+                <td>
+                    <a class="text" type="submit" target="_blank" href="?download_results=html;full_text_answers=1">HTML</a>,
+                    <a class="text" type="submit" target="_self" href="?download_results=excel;full_text_answers=1">Excel</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <xsl:value-of select="$i18n_qn/l/All_results" />
+                </td>
+                <td>
+                    <a class="text" type="submit" href="?download_all_results=HTML">HTML</a>,
+                    Excel (<a class="text" type="submit" target="_self" href="?download_all_results=XLS;encoding=Latin1">Latin1</a>,
+                    <a class="text" type="submit" href="?download_all_results=XLS;encoding=UTF8">UTF-8</a>)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <xsl:value-of select="$i18n_qn/l/Raw_results" />
+                </td>
+                <td>
+                    <a class="text" type="submit" href="?download_raw_results=1">ZIP</a>
+                </td>
+            </tr>
+        </table>
     </xsl:if>
 </xsl:template>
 
 <xsl:template name="questionnaire_title">
-    <h1><xsl:value-of select="title" /></h1>
+    <h1>Questionnaire '<xsl:value-of select="title" />'</h1>
 </xsl:template>
 
 <xsl:template name="questionnaire_comment">
