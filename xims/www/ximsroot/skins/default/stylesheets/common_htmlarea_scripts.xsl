@@ -5,7 +5,9 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/TR/xhtml1/strict">
 
 <xsl:template name="htmlarea_scripts">
         <script src="{$ximsroot}htmlarea/htmlarea.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
