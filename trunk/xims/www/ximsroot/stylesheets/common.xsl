@@ -42,6 +42,7 @@
 <xsl:param name="create.x"/>
 <xsl:param name="create"/>
 <xsl:param name="s"/>
+<xsl:param name="start_here"/>
 
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
