@@ -1,4 +1,4 @@
-This is XIMS, version 0.5.
+This is XIMS, version 0.6.
 
 Overview
 --------
@@ -7,7 +7,7 @@ content management system. It provides features such as a flexible
 recursive role and ACL system for securing content, the possibility
 to "skin" the management interface and content using XSL stylesheets,
 extensibility through user-defined object types.
-For more information visit http://xims.uibk.ac.at/xims-info/.
+For more information visit http://xims.info/
 
 XIMS operates in an Apache/CGI::XMLApplication/AxKit environment, and
 uses the PostgreSQL or Oracle RDBMS for its data repository.
@@ -15,7 +15,7 @@ uses the PostgreSQL or Oracle RDBMS for its data repository.
 
 License
 -------
-XIMS is copyrighted 2002-2003 by The XIMS Project. See the file "LICENSE"
+XIMS is copyrighted 2002-2004 by The XIMS Project. See the file "LICENSE"
 for information on usage and redistribution, and for a DISCLAIMER OF
 ALL WARRANTIES.
 
@@ -26,23 +26,31 @@ For installation, please follow the instructions in the file
 "INSTALL".
 
 
+Upgrading
+------------
+For upgrading from an older version of XIMS, please follow the instructions
+in the file "UPGRADING".
+
+
 Documentation
 -------------
-At $ximsdir/documentation and http://xims.uibk.ac.at/xims-doku/ you will find
+At $ximsdir/documentation and http://xims.info/documentation/ you will find
 XIMS documentation for users, developers, and system administrators.
-Note: Documentation is currently quite rudimentary :-/.
 
 
 Release Notes
 -------------
-This version of XIMS is successfully running in production environments.
-That fact, together with the new filesystem importer, the command line tools for
-automated administration, the object cloning feature and all the other
-changes that are covered in more detail in the Changes file should explain
-the major leap version leap from 0.1.1 to 0.5.
+This release includes first versions of "Questionnaire" objects for
+creating online evaluations, surveys and polls. The removal of the nested
+set implementation and the use of hierarchical queries requires an update
+to 7.3 or 7.4 for PostgreSQL 7.2 users, but is a major boost for performance
+and scalability of XIMS. With XIMS 0.6 also comes basic documentation of the
+content object class API and a list of minor updates and fixes including
+restructured and cleaned up documentation and updates for the user interface.
+For a detailed list of changes review the "Changes" file.
 
-For the next packages we are planning to address the
-following issues:
+For the next packages we are planning to add a "Virtual Library" module and
+to address the following issues:
 
 * Add/Update documentation!
 * Add HTMLArea-Editor customizations (object browser for links and images, table plugin, ...)
