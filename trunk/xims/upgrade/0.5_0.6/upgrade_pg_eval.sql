@@ -42,3 +42,12 @@ CREATE FUNCTION ci_questionnaire_results_id_seq_nval() RETURNS INTEGER
         END;'
     LANGUAGE 'plpgsql'
 ;
+
+-- ximsrun is the user XIMS connects as at runtime,
+-- least possible privileges here.
+GRANT SELECT, UPDATE
+   ON
+      ci_questionnaire_results_id_seq
+   TO ximsrun
+;
+
