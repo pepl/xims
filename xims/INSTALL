@@ -47,13 +47,13 @@ XIMS Installation Guide
         [root@host webapps]# tar xzpvf xims-X.Y.Z.tar.gz
         [root@host webapps]# ln -s xims-X.Y.Z xims
 
-        Set the environment variable XIMS_PREFIX to "/opt/webapps":
+        Set the environment variable XIMS_HOME to "/opt/webapps/xims":
 
-        [root@host local]# XIMS_PREFIX='/opt/webapps';export XIMS_PREFIX
+        [root@host local]# XIMS_HOME='/opt/webapps/xims';export XIMS_HOME
 
         if you have a sh-like shell (sh, ksh, bash, zsh) or
 
-        [root@host local]# setenv XIMS_PREFIX '/opt/webapps'
+        [root@host local]# setenv XIMS_HOME '/opt/webapps/xims'
 
         on a csh-like shell (csh, tcsh).
 
