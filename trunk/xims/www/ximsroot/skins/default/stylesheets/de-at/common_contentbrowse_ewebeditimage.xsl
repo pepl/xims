@@ -40,7 +40,8 @@
                 <td colspan="2">
                     Oder durchsuchen Sie den XIMS Objektbaum nach einem Bild:
                     <br/>
-                    <xsl:apply-templates select="targetparents/object"/>
+                    <xsl:apply-templates select="targetparents/object[@id !='1']"/>
+                    <xsl:apply-templates select="target/object"/>
                     <table>
                         <xsl:apply-templates select="targetchildren/object">
                             <xsl:sort select="title" order="ascending" case-order="lower-first"/>

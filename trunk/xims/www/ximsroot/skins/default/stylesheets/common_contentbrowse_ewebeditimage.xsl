@@ -64,7 +64,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="$otfilter = '' or /document/object_types/object_type[@id=$objecttype]/name = $otfilter">
-                (<xsl:value-of select="$i18n/l/Click"/> <a href="#" onClick="storeBack('{$target_path}/{location}');"><xsl:value-of select="$i18n/l/here"/></a> <xsl:value-of select="$i18n/l/to_store_back"/>)
+                (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onClick="storeBack('{$goxims_content}{$target_path}/{location}','{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
             </xsl:if>
     </td></tr>
 </xsl:template>
