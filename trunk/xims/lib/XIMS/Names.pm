@@ -1,6 +1,9 @@
 # Copyright (c) 2002-2003 The XIMS Project.
+
 # See the file "LICENSE" for information on usage and redistribution
+
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+
 package XIMS::Names;
 
 use strict;
@@ -8,11 +11,11 @@ use strict;
 use vars qw( @ResourceTypes %Properties);
 use XIMS;
 
-@ResourceTypes = ( 'Session', 
-                   'User', 
-                   'Document', 
-                   'Content', 
-                   'Object', 
+@ResourceTypes = ( 'Session',
+                   'User',
+                   'Document',
+                   'Content',
+                   'Object',
                    'ObjectType',
                    'UserPriv',
                    'Bookmark',
@@ -25,28 +28,28 @@ use XIMS;
 
 # this is the master list of all
 # properties known.
-%Properties = ( 
-  Session => [ 
-               'session.id', 
-               'session.session_id', 
-               'session.user_id', 
-               'session.attributes', 
-               'session.host', 
-               'session.last_access_timestamp', 
-               'session.salt' 
+%Properties = (
+  Session => [
+               'session.id',
+               'session.session_id',
+               'session.user_id',
+               'session.attributes',
+               'session.host',
+               'session.last_access_timestamp',
+               'session.salt'
              ],
   User =>   [
-              'user.password', 
-              'user.enabled', 
-              'user.admin', 
-              'user.id', 
-              'user.system_privs_mask', 
-              'user.name', 
-              'user.lastname', 
-              'user.middlename', 
-              'user.firstname', 
-              'user.email', 
-              'user.url', 
+              'user.password',
+              'user.enabled',
+              'user.admin',
+              'user.id',
+              'user.system_privs_mask',
+              'user.name',
+              'user.lastname',
+              'user.middlename',
+              'user.firstname',
+              'user.email',
+              'user.url',
               'user.object_type'
              ],
   Content => [
@@ -91,7 +94,7 @@ use XIMS;
               'content.created_by_firstname',
               'content.last_published_by_lastname',
               'content.last_published_by_middlename',
-              'content.last_published_by_firstname', 
+              'content.last_published_by_firstname',
               'content.data_format_name'
              ],
     Document =>
@@ -112,7 +115,8 @@ use XIMS;
               'objecttype.name',
               'objecttype.is_fs_container',
               'objecttype.is_xims_data',
-              'objecttype.redir_to_self'
+              'objecttype.redir_to_self',
+              'objecttype.publish_gopublic'
              ],
     Bookmark =>
              [
@@ -159,12 +163,13 @@ use XIMS;
     MimeType =>
              [
               'mimetype.id',
+
               'mimetype.data_format_id',
               'mimetype.mime_type'
              ],
 );
 
-my @oprops = ( @{$Properties{Document}}, @{$Properties{Content}} ); 
+my @oprops = ( @{$Properties{Document}}, @{$Properties{Content}} );
 $Properties{Object} = \@oprops;
 
 sub get_URI {

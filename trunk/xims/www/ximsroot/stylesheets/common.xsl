@@ -20,6 +20,17 @@
 <xsl:variable name="parent_path"><xsl:call-template name="pathinfoparent" /></xsl:variable>
 <xsl:variable name="parent_path_nosite"><xsl:call-template name="pathinfoparent_nosite" /></xsl:variable>
 
+<xsl:variable name="publishingroot">
+    <xsl:choose>
+        <xsl:when test="/document/context/object/parents/object[@parent_id = '1' and @document_id != '1']/title">
+            <xsl:value-of select="/document/context/object/parents/object[@parent_id = '1' and @document_id != '1']/title"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="/document/context/object/title"/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+
 <xsl:param name="sb" select="'position'"/>
 <xsl:param name="order" select="'asc'"/>
 <xsl:param name="m" select="'e'"/>
@@ -45,7 +56,7 @@
 <xsl:template name="pathinfoinit_nosite">
     <xsl:for-each select="/document/context/object/parents/object[@parent_id != 1 and @document_id != 1]">
         <xsl:text>/</xsl:text><xsl:value-of select="location"/>
-    </xsl:for-each>/<xsl:value-of select="/document/context/object/location"/>
+    </xsl:for-each><xsl:if test="/document/context/object[@parent_id != 1 and @document_id != 1]">/<xsl:value-of select="/document/context/object/location"/></xsl:if>
 </xsl:template>
 
 <xsl:template name="pathinfoparent">
