@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2004 The XIMS Project.
+-- Copyright (c) 2002-2005 The XIMS Project.
 -- See the file "LICENSE" for information on usage and redistribution
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -76,9 +76,9 @@ CREATE TABLE ci_users_roles
  ,id                  SERIAL        PRIMARY KEY
  ,system_privs_mask   NUMERIC(32,0) NOT NULL
  ,name                VARCHAR(30)   UNIQUE NOT NULL
- ,lastname            VARCHAR(30)   NOT NULL
+ ,lastname            VARCHAR(90)   NOT NULL
  ,middlename          VARCHAR(30)
- ,firstname           VARCHAR(30)
+ ,firstname           VARCHAR(90)
  ,email               VARCHAR(80)
  ,url                 VARCHAR(250)
  ,object_type         SMALLINT      NOT NULL
@@ -194,7 +194,7 @@ CREATE TABLE ci_content
  ,locked_time                   TIMESTAMP(0)  WITHOUT TIME ZONE     -- should be locked_timestamp !!!
  ,abstract                      VARCHAR(2000)
  ,body                          TEXT
- ,title                         VARCHAR(200)  NOT NULL
+ ,title                         VARCHAR(400)  NOT NULL
  ,keywords                      VARCHAR(200)
  ,status                        VARCHAR(100)
  ,creation_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now() NOT NULL
@@ -214,21 +214,21 @@ CREATE TABLE ci_content
  ,last_publication_timestamp    TIMESTAMP(0)  WITHOUT TIME ZONE
  ,last_published_by_id          INTEGER       REFERENCES ci_users_roles( id )
  ,marked_deleted                SMALLINT
- ,locked_by_lastname            VARCHAR(30)
+ ,locked_by_lastname            VARCHAR(90)
  ,locked_by_middlename          VARCHAR(30)
- ,locked_by_firstname           VARCHAR(30)
- ,last_modified_by_lastname     VARCHAR(30)
+ ,locked_by_firstname           VARCHAR(90)
+ ,last_modified_by_lastname     VARCHAR(90)
  ,last_modified_by_middlename   VARCHAR(30)
- ,last_modified_by_firstname    VARCHAR(30)
- ,owned_by_lastname             VARCHAR(30)
+ ,last_modified_by_firstname    VARCHAR(90)
+ ,owned_by_lastname             VARCHAR(90)
  ,owned_by_middlename           VARCHAR(30)
- ,owned_by_firstname            VARCHAR(30)
- ,created_by_lastname           VARCHAR(30)
+ ,owned_by_firstname            VARCHAR(90)
+ ,created_by_lastname           VARCHAR(90)
  ,created_by_middlename         VARCHAR(30)
- ,created_by_firstname          VARCHAR(30)
- ,last_published_by_lastname    VARCHAR(30)
+ ,created_by_firstname          VARCHAR(90)
+ ,last_published_by_lastname    VARCHAR(90)
  ,last_published_by_middlename  VARCHAR(30)
- ,last_published_by_firstname   VARCHAR(30)
+ ,last_published_by_firstname   VARCHAR(90)
  ,data_format_name              VARCHAR(40)
  )
 ;
