@@ -3,7 +3,7 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 
 # $Id $
-package docbookxml;
+package sdocbookxml;
 
 use strict;
 use vars qw( $VERSION @ISA);

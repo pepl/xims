@@ -2,7 +2,7 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package XIMS::Importer::FileSystem::DocBookXML;
+package XIMS::Importer::FileSystem::sDocBookXML;
 
 use XIMS::Importer::FileSystem::XML;
 use vars qw( @ISA );

@@ -9,7 +9,7 @@
 
         <para>As the name suggests, content object types are different types of content objects. After installing XIMS, there are different groups of content
         object types available, ranging from container object types like <literal>Folder</literal> and <literal>DepartmentRoot</literal> to XML object types
-        like <literal>Document</literal> and <literal>DocBookXML</literal>, to binary object types like <literal>File</literal> and <literal>Image</literal>.
+        like <literal>Document</literal> and <literal>sDocBookXML</literal>, to binary object types like <literal>File</literal> and <literal>Image</literal>.
         All content object types share the same data storage property structure. In case of the DBI <literal>DataProvider</literal> that properties are
         available through the <literal>ci_documents</literal> and <literal>ci_content</literal> tables. Content objects are stored in two tables to separate
         language-dependant from language-independant data and to enable content versioning. Using that data model, it is possible to create content in several

@@ -37,7 +37,7 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'AxPointPresentation', 0, 0, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 0, 1, 0 );
+       VALUES ( nextval('ci_object_types_id_seq'), 'sDocBookXML', 0, 0, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'XSPScript', 0, 0, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
@@ -107,7 +107,7 @@ INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'AXPML', 'text/xml', 'axp' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
-       VALUES ( nextval('ci_data_formats_id_seq'), 'DocBookXML', 'text/xml', 'dkb' );
+       VALUES ( nextval('ci_data_formats_id_seq'), 'sDocBookXML', 'text/xml', 'sdbk' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'URL', 'text/plain', 'url' );
 INSERT INTO ci_data_formats ( id, name, mime_type )
