@@ -149,7 +149,7 @@ INSERT INTO ci_mime_type_aliases ( id, data_format_id, mime_type )
 \echo inserting into ci_users_roles...
 \echo ...$password = Digest::MD5::md5_hex('xgu');
 INSERT INTO ci_users_roles ( id, name, lastname, object_type, system_privs_mask, password, enabled, admin)
-       VALUES ( nextval('ci_users_roles_id_seq'), 'xgu', 'XIMS Test User', 0, 1, '43a008171c3de746fde9c6e724ee1001', 1, 0);
+       VALUES ( nextval('ci_users_roles_id_seq'), 'xgu', 'XIMS Test User', 0, 0, '43a008171c3de746fde9c6e724ee1001', 1, 0);
 \echo ...$password = Digest::MD5::md5_hex('_adm1nXP');
 INSERT INTO ci_users_roles ( id, name, lastname, object_type, system_privs_mask, password, enabled, admin)
        VALUES ( nextval('ci_users_roles_id_seq'), 'admin', 'admin', 0, 4294967296, 'f6d399e7dc811d185234a5d45f2b3caa', 1, 1);
@@ -208,39 +208,47 @@ INSERT INTO ci_bookmarks ( id, owner_id, content_id, stdhome)
 \echo inserting into ci_object_type_privs...
 
 -- grants on object-types (for creation)
+
+-- for role everyone
 -- Document
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 2 );
+       VALUES ( 5, 2, 2 );
 -- Folder
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 1 );
+       VALUES ( 5, 2, 1 );
 -- File
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 4 );
+       VALUES ( 5, 2, 4 );
 -- URLLink
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 11 );
+       VALUES ( 5, 2, 11 );
 -- Image
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 3 );
+       VALUES ( 5, 2, 3 );
 -- DocBooxXML
 INSERT INTO ci_object_type_privs ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 9 );
+       VALUES ( 5, 2, 9 );
 -- AxPointPresentation
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 8 );
+       VALUES ( 5, 2, 8 );
 -- XML
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 5 );
+       VALUES ( 5, 2, 5 );
 -- XSLStylesheet
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 7 );
+       VALUES ( 5, 2, 7 );
 -- SymbolicLink
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 12 );
+       VALUES ( 5, 2, 12 );
 -- AnonDiscussionForum
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 3, 2, 13 );
+       VALUES ( 5, 2, 13 );
+-- Text
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
+       VALUES ( 5, 2, 20 );
+-- CSS
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
+       VALUES ( 5, 2, 21 );
 
 -- grants on the created folders should go here
 
