@@ -196,20 +196,19 @@ sub _set_wysiwyg_editor {
 
     my $cookiename = 'xims_wysiwygeditor';
     my $editor = $self->cookie($cookiename);
-    if ( not $self->param( 'plain' ) and (length $editor or length XIMS::WYSIWYGEDITOR() ) ) {
-        if ( not defined $editor ) {
-            $editor = lc( XIMS::WYSIWYGEDITOR() );
-            if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
-                $editor = 'htmlarea';
-            }
-            my $cookie = $self->cookie( -name    => $cookiename,
-                                        -value   => $editor,
-                                        -expires => "+2160h"); # 90 days
-            $ctxt->properties->application->cookie( $cookie );
+    my $plain = $self->param( 'plain' );
+    if ( $plain or defined $editor and $editor eq 'plain' ) {
+        $editor = undef;
+    }
+    elsif ( not(length $editor) and length XIMS::WYSIWYGEDITOR() ) {
+        $editor = lc( XIMS::WYSIWYGEDITOR() );
+        if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
+             $editor = 'htmlarea';
         }
-        else {
-            $editor = undef if $editor eq 'plain';
-        }
+        my $cookie = $self->cookie( -name    => $cookiename,
+                                    -value   => $editor,
+                                    -expires => "+2160h"); # 90 days
+        $ctxt->properties->application->cookie( $cookie );
     }
     my $ed = '';
     $ed = "_" . $editor if defined $editor;
