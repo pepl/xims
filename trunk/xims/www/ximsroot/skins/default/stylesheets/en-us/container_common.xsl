@@ -13,14 +13,14 @@
 
 <xsl:template name="deleted_objects">
         <xsl:choose>
-            <xsl:when test="$hd=0">
+            <xsl:when test="$hd=0 and $deleted_children > 0">
                 <tr><td>
-                    <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb={$sb};order={$order};m={$m};hd=1">Hide deleted Objects</a>
+                    <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb={$sb};order={$order};m={$m};page={$page};hd=1">Hide deleted Objects</a>
                 </td></tr>
             </xsl:when>
             <xsl:when test="$deleted_children > 0">
                 <tr><td>
-                    <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb={$sb};order={$order};m={$m};hd=0">Show the  <xsl:value-of select="$deleted_children"/> deleted Object(s) in this Container</a>
+                    <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb={$sb};order={$order};m={$m};page={$page};hd=0">Show the  <xsl:value-of select="$deleted_children"/> deleted Object(s) in this Container</a>
                 </td></tr>
             </xsl:when>
             <xsl:otherwise>
