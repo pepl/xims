@@ -96,13 +96,16 @@ sub new {
 package GetChildren;
 use Class::MethodMaker
     new     => 'new',
-    get_set => [qw( objectid objecttypes level addinfo columns )];
+    get_set => [qw( objectid objecttypes level limit offset order addinfo columns )];
                     # objectid    to get targetchildren for contentbrowsing
                     # objecttypes to filter specific objecttypes (useful for browsing for special objecttypes)
                     # level       to get more flexible containerviews or sitemaps
+                    # limit       to limit the number of children (used for pagination)
+                    # offset      to start at a certain offset at the children list (used for pagination)
+                    # order       to order the children list (used for pagination)
                     # addinfo     to get info on levels of hierarchy of chidlren,
                     #             timestamp of last modified child, and total count of
                     #             children
-                    # columns     to select columns other than the default ones (do we want this?)
+                    # properties  to select properties other than the default ones (currently not used)
 
 1;
