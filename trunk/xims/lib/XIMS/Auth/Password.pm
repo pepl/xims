@@ -23,7 +23,7 @@ sub new {
         $self = bless { User => $user}, $class;
     }
     else {
-        XIMS::Debug( 2, "could not authenticate" );
+        XIMS::Debug( 3, "could not authenticate" );
     }
     return $self ;
 }
