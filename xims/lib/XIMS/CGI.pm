@@ -1721,7 +1721,7 @@ sub event_search {
             return 0;
         }
 
-        my $qb = $qbdriver->new( { search => $search, allowed => q{\!a-zA-Z0-9цдья÷ƒ№%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} } );
+        my $qb = $qbdriver->new( { search => $search, allowed => q{\!a-zA-Z0-9цдья÷ƒ№я%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} } );
 
         #'# just for emacs' font-lock...
         my $qbr = $qb->build( [qw(title abstract keywords body)] );
@@ -1730,7 +1730,7 @@ sub event_search {
                                                                rowlimit => $rowlimit,
                                                                offset => $offset,
                                                                properties => $qbr->{properties}, # not used currently
-                                                               order => $qbr->{order}, # not used currently
+                                                               order => $qbr->{order},
                                                              );
 
             if ( not @objects ) {
