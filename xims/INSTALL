@@ -16,16 +16,21 @@ XIMS Installation Guide
       fix this.
 
     * XIMS currently supports either
-      Oracle (>=8.1.6) or PostgreSQL (>=7.2)
+      Oracle (>=8.1.6) or PostgreSQL (>=7.3)
       as RDBMS backend. You need access to either one and have the
-      respective client installed on your XIMS box. If you are using a
-      PostgreSQL 7.2 database it has to be compiled with multi-byte
-      support and you have to patch the XIMS database setup
-      scripts to reflect the syntax changes between version 7.2 and 7.3.
-      To do this, issue the following command after having unpacked the
-      XIMS sources to /usr/local/xims:
+      respective client installed on your XIMS box.
 
-      cd /usr/local/xims/patches/Pg7.2 && sh patch_to_7.2.sh
+      If you are using PostgreSQL, you have to have the tablefunctions in
+      contrib/tablefunc installed.
+
+      You can install them for your source build PostgreSQL version using
+      a command like the following:
+
+      [root@host tablefunc]# psql -u postgres <tablefunc.sql
+
+      If you are using a packaged version of PostgreSQL, you will very likely
+      find a postgresql-contrib package for your distribution which you
+      can install using your favourite package manager.
 
     * For database access using perl, you'll need either
       DBD::Oracle or DBD::Pg installed.
