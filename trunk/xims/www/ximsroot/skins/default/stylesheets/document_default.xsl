@@ -19,7 +19,10 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body onLoad="stringHighlight(getParamValue('hls'))" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+            <xsl:if test="substring($hls,2,1) != ':'">
+                <xsl:attribute name="onLoad">stringHighlight(getParamValue('hls'))</xsl:attribute>
+            </xsl:if>
             <!-- poor man's stylechooser -->
             <xsl:choose>
                 <xsl:when test="$printview != '0'">
@@ -29,7 +32,9 @@
                     <xsl:call-template name="header"/>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:call-template name="toggle_hls"/>
+            <xsl:if test="substring($hls,2,1) != ':'">
+                <xsl:call-template name="toggle_hls"/>
+            </xsl:if>
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px; background: #ffffff">
                 <tr>
                     <td colspan="2">
