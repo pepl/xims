@@ -11,7 +11,7 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="container_common.xsl"/>
     <xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-    
+
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
 </xsl:template>
@@ -26,16 +26,8 @@
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
-                    <tr>
-                        <td colspan="3">
-                            <xsl:call-template name="markednew"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <xsl:call-template name="autoindex"/>
-                        </td>
-                    </tr>
+                    <xsl:call-template name="markednew"/>
+                    <xsl:call-template name="autoindex"/>
                     <xsl:call-template name="grantowneronly"/>
                 </table>
                 <xsl:call-template name="saveaction"/>

@@ -6,7 +6,7 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
     <xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
@@ -18,19 +18,25 @@
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-create"/>
-    <body onLoad="document.eform.abstract.value=''">
+    <body onLoad="document.eform.abstract.value=''; document.eform.file.focus();">
         <p class="edit">
             <xsl:call-template name="table-create"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" method="POST" enctype="multipart/form-data" name="eform">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;" enctype="multipart/form-data">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
+                    <tr>
+                        <td colspan="3" align="right" valign="top">
+                            <xsl:call-template name="marked_mandatory"/>
+                        </td>
+                    </tr>
                     <xsl:call-template name="tr-title-create"/>
                     <xsl:call-template name="tr-file-create"/>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-abstract-create"/>
+                    <xsl:call-template name="markednew"/>
                     <xsl:call-template name="grantowneronly"/>
-                            </table>
-                            <xsl:call-template name="uploadaction"/>
+                </table>
+                <xsl:call-template name="uploadaction"/>
             </form>
         </p>
         <br />

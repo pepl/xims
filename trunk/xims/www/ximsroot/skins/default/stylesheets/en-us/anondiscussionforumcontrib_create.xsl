@@ -6,7 +6,7 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
     <xsl:import href="../anondiscussionforum_common.xsl"/>
@@ -19,8 +19,8 @@
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-create_discussionforum"/>
-    <body onLoad="document.eform.body.value='';document.eform.name.focus()" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" method="POST">
+    <body onLoad="document.eform.abstract.value='';document.eform.name.focus()" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST">
             <table border="0" width="770" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
                 <tr>
                     <td valign="top" class="forumhead" colspan="2">Create new topic</td>
@@ -57,7 +57,7 @@
             <br />
             <p style="margin-left:380px;">
                 <input type="submit" name="submit" value=" Save " class="control"/>
-            </p>   
+            </p>
           </form>
           <xsl:call-template name="cancelaction"/>
     </body>
