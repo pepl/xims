@@ -76,6 +76,8 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 0, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'JavaScript', 0, 1, 1, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_gopublic )
+       VALUES ( nextval('ci_object_types_id_seq'), 'SQLReport', 0, 1, 1 );
 
 \echo inserting into ci_data_formats...
 
