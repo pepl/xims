@@ -36,6 +36,7 @@ sub new {
                 [ "Apache::DBI", '' ],
                 [ "CSS::Tiny", '' ],
                 [ "Term::ReadKey", '' ],
+                [ "XML::LibXML::Iterator", '' ],
               );
 
     my @optional_mods = ();
