@@ -203,7 +203,7 @@ CREATE TABLE ci_content
  ,style_id                      INTEGER       REFERENCES ci_content( id )
  ,script_id                     INTEGER       REFERENCES ci_content( id )
  ,schema_id                     INTEGER       REFERENCES ci_content( id )
- ,language_id                   INTEGER       REFERENCES ci_content( id )
+ ,language_id                   INTEGER       REFERENCES ci_languages( id )
  ,last_modified_by_id           INTEGER       NOT NULL REFERENCES ci_users_roles( id )
  ,owned_by_id                   INTEGER       NOT NULL REFERENCES ci_users_roles( id )
  ,created_by_id                 INTEGER       NOT NULL REFERENCES ci_users_roles( id )
