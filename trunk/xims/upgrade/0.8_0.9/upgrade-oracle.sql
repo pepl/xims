@@ -6,6 +6,9 @@ PROMPT Inserting new object type JavaScript
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'JavaScript', 0, 1, 1, 0 )
 /
 
+INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_SEQ.NEXTVAL, 16, 'application/zip' )
+/
+
 PROMPT Dropping Foreign Key 'CTT_DOC_STYLE_FK'
 ALTER TABLE CI_CONTENT DROP CONSTRAINT
  CTT_DOC_STYLE_FK
