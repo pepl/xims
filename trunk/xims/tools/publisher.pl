@@ -18,6 +18,9 @@ use XIMS::Exporter;
 use XIMS::Term;
 use Getopt::Std;
 
+# untaint path
+$ENV{PATH} = '/bin'; # CWD.pm needs '/bin/pwd'
+
 my %args;
 getopts('hd:u:p:m:r', \%args);
 
@@ -76,6 +79,11 @@ my $gid = (stat XIMS::PUBROOT())[5]; # after install, XIMS::PUBROOT is writable 
 # because additional files like meta-data files or autoindices are created
 # by the exporter, we have to recursively chgrp and 755 the file to the apache-user's group
 foreach my $file ( $term->findfiles( XIMS::PUBROOT() . $object->location_path ) ) {
+    # untaint the file
+    unless ($file =~ m#^([\w.-/\\]+)$#) {
+        die "filename '$file' has invalid characters.\n";
+    }
+    $file = $1;
     chown( $<, $gid, $file );
     chmod( 0775, $file );
 }
