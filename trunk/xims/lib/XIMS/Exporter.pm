@@ -1485,7 +1485,6 @@ use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
-use XIMS::SAX::Filter::SymTitle;
 
 ##
 #
@@ -1532,19 +1531,12 @@ sub remove {
 # DESCRIPTION
 # internally called.
 #
-# the document exporter will export not only the document itself, but
-# also symbolic links and URLLinks as so called "Document
-# Links". things are easy with URLLinks, but symbolic links do not
-# contain any uri information about their real location
-# themself. therefore the exporter must resolve the URI of the
-# symboliclinks, so the path is available for the stylesheet.
 #
 sub set_sax_filters {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my @retval = ();
 
-    push @retval, XIMS::SAX::Filter::SymTitle->new();
     push @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
                                                                  ResolveContent => [ qw( DEPARTMENT_ID
                                                                                          SYMNAME_TO_DOC_ID ) ] );
