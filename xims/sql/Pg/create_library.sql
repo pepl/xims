@@ -186,7 +186,7 @@ CREATE OR REPLACE FUNCTION cilib_publications_id_seq_nval() RETURNS INTEGER
        LANGUAGE 'plpgsql'
 ;
 
-CREATE OR REPLACE FUNCTION cilib_publicationmap_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cilib_publmap_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
             RETURN nextval(\'cilib_publicationmap_id_seq\');
            END;'
