@@ -70,10 +70,9 @@ sub event_edit {
     $self->SUPER::event_edit( $ctxt );
     return 0 if $ctxt->properties->application->style() eq 'error';
 
-    # check if a WYSIWYG Editor is configured
-    if ( not $self->param( 'plain' ) and length XIMS::WYSIWYGEDITOR() ) {
-        $ctxt->properties->application->style( "edit_" . lc( XIMS::WYSIWYGEDITOR() ) );
-    }
+    # check if a WYSIWYG Editor is to be used based on cookie or config
+    my $ed = $self->_set_wysiwyg_editor( $ctxt );
+    $ctxt->properties->application->style( "edit" . $ed );
 
     return 0;
 }
@@ -86,9 +85,9 @@ sub event_create {
     $self->SUPER::event_create( $ctxt );
     return 0 if $ctxt->properties->application->style eq 'error';
 
-    if ( not $self->param( 'plain' ) and length XIMS::WYSIWYGEDITOR() ) {
-        $ctxt->properties->application->style( "create_" . lc( XIMS::WYSIWYGEDITOR() ) );
-    }
+    # check if a WYSIWYG Editor is to be used based on cookie or config
+    my $ed = $self->_set_wysiwyg_editor( $ctxt );
+    $ctxt->properties->application->style( "create" . $ed );
 
     return 0;
 }
@@ -190,6 +189,31 @@ sub resolve_annotations {
     push ( @{$ctxt->sax_filter()},
            XIMS::SAX::Filter::AnnotationCollector->new( Object => $ctxt->object() )
          );
+}
+
+sub _set_wysiwyg_editor {
+    my ( $self, $ctxt ) = @_;
+
+    my $cookiename = 'xims_wysiwygeditor';
+    my $editor = $self->cookie($cookiename);
+    if ( not $self->param( 'plain' ) and (length $editor or length XIMS::WYSIWYGEDITOR() ) ) {
+        if ( not defined $editor ) {
+            $editor = lc( XIMS::WYSIWYGEDITOR() );
+            if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
+                $editor = 'htmlarea';
+            }
+            my $cookie = $self->cookie( -name    => $cookiename,
+                                        -value   => $editor,
+                                        -expires => "+2160h"); # 90 days
+            $ctxt->properties->application->cookie( $cookie );
+        }
+        else {
+            $editor = undef if $editor eq 'plain';
+        }
+    }
+    my $ed = '';
+    $ed = "_" . $editor if defined $editor;
+    return $ed;
 }
 
 1;
