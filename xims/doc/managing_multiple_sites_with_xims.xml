@@ -86,7 +86,7 @@
     <section>
         <title>SiteRoots and AxKit Config</title>
 
-        <para>SiteRoots are <ulink url="http://xims.uibk.ac.at/xims-doku/xims-department_root-howto.dkb">DepartmentRoot</ulink>-like containers where properties
+        <para>SiteRoots are <ulink url="http://xims.uibk.ac.at/xims-doku/xims-department_root-howto.dkb">DepartmentRoot</ulink>-like containers there properties
         for a published web-site can be set in future releases of XIMS. Currently, only SiteRoot-Stylesheet, -Image, and -Portlets can be set and only the
         SiteRoot-Image and -Portlets are exported during publishing. In the future, SiteRoots will support being configured as virtual root in the
         user-interface (i.e. users will see /siteroot/ as root container for the path navigation) as well as support other side-wide settings to be inherited by
@@ -96,7 +96,7 @@
         can be achieved by using different XSL-stylesheets associated with different Apache AxKit configuration settings for the various sites. Let us assume
         that we have got two SiteRoots <filename>/foo</filename> and <filename>/bar</filename> in our XIMS installation with XSL-stylesheets located in
         <filename>/foo/stylesheets/</filename> and <filename>/bar/stylesheets/</filename> and we want to associate them with two different servers
-        <literal>foo.tld</literal> and <literal>bar.tld</literal>. The servers are configured using Apache&#39;s mod_vhost_alias similar as seen in the
+        <literal>foo.tld</literal> and <literal>bar.tld</literal>. The servers are configured using Apache&#39;s virtual hosts capability similar to the
         following example:</para>
 
         <programlisting>NameVirtualHost *
@@ -115,19 +115,15 @@
         <para>Using Apache AxKit&#39;s configuration mechanisms we couple different stylesheets with the two sites. An example <filename>foo.tld.axkit-conf</filename>
         <emphasis>could</emphasis> look like the following:</para>
 
-        <programlisting>PerlRequire /usr/local/apache/conf/startup.pl
-PerlModule AxKit
-
-AxCacheDir /axkit_cache/foo.tld
-
-&#60;Files .html&#62;
+        <programlisting>&#60;Files *.html&#62;
     SetHandler axkit
 
     AxAddStyleMap text/xsl Apache::AxKit::Language::LibXSLT
     AxErrorStylesheet text/xsl /stylesheets/error.xsl
 
     AxAddPlugin Apache::AxKit::Plugin::Passthru
-    AxAddPlugin Apache::AxKit::StyleChooser::QS_UA
+    AxAddPlugin Apache::AxKit::StyleChooser::UserAgent
+    AxAddPlugin Apache::AxKit::StyleChooser::QueryString
 
     AxAddPlugin Apache::AxKit::Plugin::AddXSLParams::Request
     PerlSetVar AxAddXSLParamGroups &#34;Request-Common HTTPHeaders VerboseURI&#34;
