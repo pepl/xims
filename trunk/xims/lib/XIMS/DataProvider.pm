@@ -14,13 +14,13 @@ use XIMS::ObjectType;
 use vars qw/$AUTOLOAD/;
 
 # The idea here is to create a generic bridge between the data store and the
-# top-level XIMS Object classes. We try to lighten the Object classes that rely 
-# the DP by deciding here how to organise the arguments passed in from those clases. 
+# top-level XIMS Object classes. We try to lighten the Object classes that rely
+# the DP by deciding here how to organise the arguments passed in from those clases.
 #
 # Peer-level methods (those implemented by this class) can use this factory to prepare
 # the %conditions and %properties of non-Object related methods, but its probably
-# better if they just set those argument and call the Driver directly. 
-# 
+# better if they just set those argument and call the Driver directly.
+#
 
 sub request_factory {
     my $self = shift;
@@ -68,10 +68,8 @@ sub request_factory {
         if ( $method_type eq 'update' ) {
             #warn  "UPDATE properties: " . Dumper( \%properties ) . "\nconditions: ". Dumper( \%conditions );
         }
- 
     }
     else {
-
         foreach my $k ( keys( %request_params )) {
             my $outname = XIMS::Names::get_URI( $r_type, $k );
             $conditions{$outname} = $request_params{$k} if XIMS::Names::valid_property( $r_type, $outname );
@@ -102,7 +100,7 @@ sub request_factory {
     return ( \%properties, \%conditions );
 }
 
-sub new { 
+sub new {
     XIMS::Debug( 5, "called" );
     my $class  = shift;
     my $drvnme = shift || 'DBI';
@@ -124,6 +122,7 @@ sub new {
         $args->{dbdopt}       = XIMS::DBDOPT()       unless defined $args->{dbdopt};
 
         $driver = $drvcls->new( %{$args} );
+
         if ( $driver ) {
             $self = bless {} , $class;
             $self->{Driver} = $driver;
@@ -136,13 +135,12 @@ sub new {
     XIMS::Debug( 5, "done" );
     return $self;
 }
-    
+
 sub AUTOLOAD {
-    my $self = shift; 
-    my $called_sub = $AUTOLOAD;
-    $called_sub =~ s/.+:://; # snip pkg name...
+    my $self = shift;
+    my (undef, $called_sub) = ($AUTOLOAD =~ /(.*)::(.*)/);
     return if $called_sub eq 'DESTROY';
-    
+
     my $method;
     my $data;
     if ( $called_sub =~ /(get|create|delete|update)(.+?)$/ ) {
@@ -150,8 +148,8 @@ sub AUTOLOAD {
        my $r_type = $2;
 
        # ubu: debugging here, don't delete.
-       my ($package, $filename, $line) = caller;
-       #warn "DP AUTOLOAD called.\naction: $action\nresource type: $r_type\narguments: " . 
+       # my ($package, $filename, $line) = caller;
+       #warn "DP AUTOLOAD called.\naction: $action\nresource type: $r_type\narguments: " .
        #      Dumper( \@_ ) . "\ncalled by: $package line $line\n";
 
        # allow Drivers to override $dp->getFoo() methods
@@ -191,7 +189,7 @@ sub createObject {
     my $update_body_method;
 
     my ( $properties, $conditions ) = $self->request_factory( 'Object', 'create', @_ );
-    
+
     my @doc_keys = grep { (split /\./, $_)[0] eq 'document' } keys %{$properties};
     @doc_properties{@doc_keys} = delete @{$properties}{@doc_keys};
 
@@ -261,10 +259,10 @@ sub updateObject {
     my %doc_conditions = ();
     my $body_data;
     my $update_body_method;
-    
+
     my @ret;
     my ( $properties, $conditions ) = $self->request_factory( 'Object', 'update', @_ );
-    
+
     my @doc_prop_keys = grep { (split /\./, $_)[0] eq 'document' } keys %{$properties};
     @doc_properties{@doc_prop_keys} = delete @{$properties}{@doc_prop_keys};
 
@@ -284,7 +282,7 @@ sub updateObject {
     }
 
     push @ret, $self->{Driver}->update( properties => $properties, conditions => $conditions );
-    
+
     if ( length( $body_data ) > 0 and defined( $conditions->{'content.id'} ) ) {
         $self->{Driver}->$update_body_method( $conditions->{'content.id'}, $body_data );
     }
@@ -295,12 +293,12 @@ sub updateObject {
 sub deleteObject {
     my $self = shift;
     my %args = @_;
-    
-    $self->{Driver}->delete( properties => { 'document.id' => 1 }, 
+
+    $self->{Driver}->delete( properties => { 'document.id' => 1 },
                              conditions => { 'document.id' => $args{document_id} }
                            );
 
-    $self->{Driver}->delete( properties => { 'content.id' => 1 }, 
+    $self->{Driver}->delete( properties => { 'content.id' => 1 },
                              conditions => { 'content.id' => $args{id} }
                            );
     return 1;
