@@ -26,21 +26,23 @@
                 <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
                 <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
                 <script type="text/javascript">
-                    <![CDATA[
-                        function disableIt(obj) {
-                            var autoexport = window.document.forms[1].elements['autoexport'];
-                            if (!autoexport) {
-                                return;
-                            }
-                            var i;
-                            for (i = 0; i < autoexport.length; i++) {
-                                if ( autoexport[i].disabled == false ) {
-                                    obj.disabled = false;
-                                    return true;
+                    <xsl:comment>
+                        <![CDATA[
+                            function disableIt(obj) {
+                                var autoexport = window.document.forms[1].elements['autoexport'];
+                                if (!autoexport) {
+                                    return;
+                                }
+                                var i;
+                                for (i = 0; i < autoexport.length; i++) {
+                                    if ( !(autoexport[i].disabled) ) {
+                                        obj.disabled = false;
+                                        return true;
+                                    }
                                 }
                             }
-                        }
-                    ]]>
+                        ]]>
+                    </xsl:comment>
                 </script>
             </head>
             <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png" onLoad="disableIt(document.forms[1].autopublishlinks);">
