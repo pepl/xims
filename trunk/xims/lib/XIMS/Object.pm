@@ -5,6 +5,9 @@
 package XIMS::Object;
 
 use strict;
+use warnings;
+no warnings 'redefine';
+
 use vars qw($VERSION @ISA @Fields @Default_Properties);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
