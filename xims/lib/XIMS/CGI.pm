@@ -1337,7 +1337,7 @@ sub event_publish_prompt {
             my @locations_ungranted;
             my @role_ids = ( $user->role_ids(), $user->id() );
             foreach my $object ( @objects ) {
-                next unless $object->id(); # skip unresolved references
+                next unless ( defined $object and $object->id() ); # skip unresolved references
                 my $objectpriv = XIMS::ObjectPriv->new( content_id => $object->id(), grantee_id => \@role_ids );
                 push (@locations_ungranted, $object->location) unless $objectpriv && ($objectpriv->privilege_mask() & XIMS::Privileges::PUBLISH());
             }
