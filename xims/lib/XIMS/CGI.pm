@@ -1301,7 +1301,7 @@ sub event_publish_prompt {
     my @objects;
     # check for body references in (X)HTML and XML documents
     my $dfmime_type = $ctxt->object->data_format->mime_type();
-    if ( $dfmime_type eq 'text/xhtml' or $dfmime_type eq 'text/xml' ) {
+    if ( $dfmime_type eq 'text/html' or $dfmime_type eq 'text/xml' ) {
         XIMS::Debug( 4, "checking body refs" );
         @objects = $self->body_ref_objects($ctxt);
     }
