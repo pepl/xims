@@ -82,7 +82,7 @@ sub new {
             if ( not $args{object_type_id} ) {
                 my $ot = XIMS::ObjectType->new( name => $otname );
                 if ( $ot ) {
-                    $args{object_type_id} = $ot->id();
+                    $self->object_type_id( $ot->id() );
                 }
                 else {
                     XIMS::Debug( 1, "could not resolve object type $otname" );
@@ -92,15 +92,14 @@ sub new {
             if ( not $args{data_format_id} ) {
                 my $df = XIMS::DataFormat->new( name => $otname );
                 if ( $df ) {
-                    $args{data_format_id} = $df->id();
+                    $self->data_format_id( $df->id() );
                 }
                 else {
                     XIMS::Debug( 4, "using 'Binary' as data format fallback" );
-                    $args{data_format_id} = XIMS::DataFormat->new( name => 'Binary' )->id();
+                    $self->data_format_id( XIMS::DataFormat->new( name => 'Binary' )->id() );
                 }
             }
         }
-        $self->data( %args );
     }
 
     return $self;
@@ -154,7 +153,7 @@ sub children {
     my @child_ids = $self->__child_ids( $self->document_id() );
     return () unless scalar( @child_ids ) > 0 ;
     my @children_data = $self->data_provider->getObject( document_id => \@child_ids, %args, properties => \@Default_Properties );
-    my @children = map { XIMS::Object->new->data( %{$_} ) } @children_data;
+    my @children = map { XIMS::Object->new( User => $self->User )->data( %{$_} ) } @children_data;
     #warn "children" . Dumper( \@children ) . "\n";
     return wantarray ? @children : $children[0];
 }
@@ -174,7 +173,7 @@ sub children_granted {
     my @child_candidate_docids = $self->__child_ids( $self->document_id() );
     return () unless scalar( @child_candidate_docids ) > 0;
 
-    my @children = $self->__get_granted_objects( doc_ids => \@child_candidate_docids, User => $user ) ;
+    my @children = $self->__get_granted_objects( doc_ids => \@child_candidate_docids, User => $user, %args ) ;
 
     #warn "Granted children" . Dumper( \@children ) . "\n";
     return wantarray ? @children : $children[0];
@@ -200,9 +199,11 @@ sub descendants {
     return () unless scalar( @doc_ids ) > 0;
 
     my @descendants_data =  $self->data_provider->getObject( document_id => \@doc_ids,
-                                                             properties => \@Default_Properties );
+                                                             %args,
+                                                             properties => \@Default_Properties,
+                                                            );
 
-    my @descendants = map { XIMS::Object->new->data( %{$_} ) } @descendants_data;
+    my @descendants = map { XIMS::Object->new( User => $self->User )->data( %{$_} ) } @descendants_data;
 
     # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
     my @sorted_descendants;
@@ -238,7 +239,7 @@ sub descendants_granted {
 
     return () unless scalar( @candidate_doc_ids ) > 0;
 
-    my @descendants = $self->__get_granted_objects( doc_ids => \@candidate_doc_ids, User => $user ) ;
+    my @descendants = $self->__get_granted_objects( doc_ids => \@candidate_doc_ids, User => $user, %args ) ;
     return () unless scalar( @descendants ) > 0;
 
     # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
@@ -286,7 +287,7 @@ sub find_objects {
     my @found_ids = $self->__find_ids( %args );
     return () unless scalar( @found_ids ) > 0 ;
     my @object_data = $self->data_provider->getObject( document_id => \@found_ids, properties => \@Default_Properties );
-    my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
+    my @objects = map { XIMS::Object->new( User => $self->User )->data( %{$_} ) } @object_data;
 
     #warn "objects found" . Dumper( \@objects ) . "\n";
     return @objects;
@@ -376,7 +377,7 @@ sub __get_granted_objects {
                                                 %args,
                                                 properties => \@Default_Properties );
 
-    my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
+    my @objects = map { XIMS::Object->new( User => $self->User )->data( %{$_} ) } @data;
 
     #warn "objects " . Dumper( \@objects ) . "\n";
     return @objects;
@@ -413,7 +414,7 @@ sub __find_ids_count {
 sub __fix_clone_reference {
     my $self = shift;
     my %args = @_;
-    
+
     my $user = delete $args{User} || $self->{User};
     my $id_map = delete $args{ _id_map };
     my $ref_object_ids = delete $args{ _ref_object_ids };
@@ -443,7 +444,7 @@ sub __fix_clone_reference {
                 }
             }
         }
-        
+
         # fix body of departmentroots and siteroots, their body contains portlet ids
         $objecttype = $clone->object_type;
         if ( $objecttype->name() eq "DepartmentRoot" or $objecttype->name() eq "SiteRoot" ) {
@@ -673,7 +674,7 @@ sub clone {
 
     # create a copy of object data
     my %clonedata = $self->data();
-    
+
     # id and document_id will be created new, path is not used
     delete $clonedata{ id };
     delete $clonedata{ document_id };
@@ -686,7 +687,7 @@ sub clone {
         # same parent, so we have to find a new location for it
         my $newlocation = "copy_of_" . $clonedata{ location };
         my $newtitle = "Copy of " . $clonedata{ title };
-        
+
         my $parent = XIMS::Object->new( document_id => $self->parent_id );
         if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef ) ) {
             my $index = 1;
@@ -699,7 +700,7 @@ sub clone {
         $clonedata{ location } = $newlocation;
         $clonedata{ title } = $newtitle;
     }
-    
+
     # create the clone and expressly assign its body data (may be binfile)
     #warn("clone: about to create clone with data: " . Dumper( \%clonedata ) );
     my $clone = XIMS::Object->new( %clonedata );
@@ -707,10 +708,10 @@ sub clone {
     $clone->body( $self->body() );
     my $clone_id = $clone->create( User => $user );
     return unless defined $clone_id;
-    
+
     # remember old vs. new id
     $id_map->{ $self->document_id } = $clone->document_id;
-    
+
     # check if this object need later fixup of referenced object ids
     my $objecttype = $clone->object_type;
     if ( $objecttype->name() eq "DepartmentRoot" or $objecttype->name() eq "SiteRoot" ) {
@@ -741,12 +742,12 @@ sub clone {
         $clonepriv = XIMS::ObjectPriv->new->data( %{$priv} );
         $clonepriv->create();
     }
-    
+
     if ( $clone->published() ) {
         # set clone to unpublished
         $clone->unpublish();
     }
-    
+
     if ( $clone->locked() ) {
         # unlock clone
         $clone->unlock();
@@ -760,14 +761,14 @@ sub clone {
             return unless $child->clone( User => $user, scope_subtree => 1,
                                          _parent_id => $clone_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
         }
-        
+
         # check if we are back at top level of recursion
         if( not defined $parent_id ) {
             # fixup referenced object ids in all cloned objects that have reference ids
             $self->__fix_clone_reference( User => $user, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
         }
     }
-    
+
     return 1;
 }
 
