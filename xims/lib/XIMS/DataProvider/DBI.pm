@@ -779,11 +779,11 @@ sub get_object_id_by_path {
                   and $row->[0]->[0] ) {
                 $id = $row->[0]->[0];
                 $symid = $row->[0]->[1];
-                XIMS::Debug( 6, "new id: '$id' (symid '$symid')");
+                XIMS::Debug( 6, "new id: '$id' (symid '" . defined $symid ? $symid : '' . "')" );
             }
             else {
-                XIMS::Debug( 3, "empty result set" );
-                last;
+                XIMS::Debug( 3, "empty result set, 404" );
+                return undef;
             }
         }
         $retval = $id;
