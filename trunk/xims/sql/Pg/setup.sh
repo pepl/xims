@@ -5,6 +5,7 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 
+
 decide() {
     while true 
         do
@@ -18,6 +19,14 @@ decide() {
         done
 }
 
+gripe() { 
+    echo
+    echo "Something unexpected has happened." 
+    echo "Please check the output above and decide..."
+    echo
+    decide "Continue?" || exit 1
+}
+
 # create users, temporarly
 create_users() {
     psql      -U $PG_SUPER_USER           template1     < $BASE/users.sql
@@ -25,13 +34,13 @@ create_users() {
 
 
 create_database() {
-   dropdb     -U $PG_SUPER_USER           $XIMS_DB_NAME
+   dropdb     -U $PG_SUPER_USER           $XIMS_DB_NAME  || gripe
 
-   createdb   -U $XIMS_DB_OWNER -E latin1 $XIMS_DB_NAME
+   createdb   -U $XIMS_DB_OWNER -E latin1 $XIMS_DB_NAME  || gripe
 
-   createlang -U $PG_SUPER_USER plpgsql   $XIMS_DB_NAME 
+   createlang -U $PG_SUPER_USER plpgsql   $XIMS_DB_NAME  || gripe
 
-   psql       -U $XIMS_DB_OWNER           $XIMS_DB_NAME < $BASE/create.sql
+   psql       -U $XIMS_DB_OWNER           $XIMS_DB_NAME < $BASE/create.sql || gripe
 }
 
 # set some variables
@@ -166,9 +175,9 @@ cat << SCREEN5
                      :   ::   :     :      :    :: : :    
     
 
-      Now change the passwords on the dbusers: xims, ximsrun, ximsadm!
+             Don't forget to change the passwords for the dbusers: 
 
-                          You'd be a fool not to. 
+                          xims, ximsrun, ximsadm!
 
 
 Thank you, that would be it.
