@@ -21,7 +21,7 @@
         <head>
             <title>
                 <xsl:value-of select="title" /> - XIMS
-            </title> 
+            </title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
@@ -34,7 +34,7 @@
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee" >
           <tr>
             <td align="center">
-            
+
             <br />
             <!-- begin widget table -->
             <table width="300" cellpadding="2" cellspacing="0" border="0">
