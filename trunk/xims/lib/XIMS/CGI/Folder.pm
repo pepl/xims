@@ -66,6 +66,23 @@ sub event_default {
                                          # pass 'sb' and 'order' params
                                          # when linking to children
     }
+    # The params override attribute and default values
+    else {
+        $defaultsortby = $self->param('sb');
+        $defaultsort = $self->param('order');
+    }
+
+    my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+    my $rowlimit = XIMS::SEARCHRESULTROWLIMIT(); # Create XIMS::CHILDRENROWLIMIT for that?
+    $offset = $offset * $rowlimit;
+
+    my %sortbymap = ( date => 'last_modification_timestamp', position => 'position', title => 'title' );
+    my $order = $sortbymap{$defaultsortby} . ' ' . $defaultsort;
+
+    $ctxt->properties->content->getchildren->limit( $rowlimit );
+    $ctxt->properties->content->getchildren->offset( $offset );
+    $ctxt->properties->content->getchildren->order( $order );
 
     return 0;
 }

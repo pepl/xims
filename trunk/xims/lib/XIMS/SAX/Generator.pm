@@ -78,6 +78,7 @@ sub get_config {
                             data_format => 'id',
                             user        => 'id',
                             session     => 'id',
+                            children    => 'totalobjects',
                             object_type => 'id' },
                 skipelements => ['username', 'salt', 'objtype', 'properties', 'password', 'Provider','User'],
                );

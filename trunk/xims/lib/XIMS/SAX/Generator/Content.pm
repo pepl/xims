@@ -215,12 +215,21 @@ sub _set_children {
         $childrenargs{object_type_id} = \@object_type_ids;
     }
 
+    my $child_count;
     my @children;
     if ( $level == 1 ) {
+        $child_count = $object->child_count_granted( %childrenargs );
+        $childrenargs{limit} = $ctxt->properties->content->getchildren->limit();
+        $childrenargs{offset} = $ctxt->properties->content->getchildren->offset();
+        $childrenargs{order} = $ctxt->properties->content->getchildren->order();
         @children = $object->children_granted( %childrenargs );
     }
     else {
         $childrenargs{maxlevel} = $level;
+        $child_count = $object->descendant_count_granted( %childrenargs );
+        $childrenargs{limit} = $ctxt->properties->content->getchildren->limit();
+        $childrenargs{offset} = $ctxt->properties->content->getchildren->offset();
+        $childrenargs{order} = $ctxt->properties->content->getchildren->order();
         @children = $object->descendants_granted( %childrenargs );
     }
 
@@ -262,6 +271,8 @@ sub _set_children {
     }
 
     $doc_data->{context}->{object}->{$tagname} = {object => \@children};
+    $doc_data->{context}->{object}->{$tagname}->{totalobjects} = $child_count;
+
 }
 
 # helper function to fetch the used dataformats and object types
