@@ -28,7 +28,7 @@ For installation, please follow the instructions in the file
 
 Documentation
 -------------
-At $ximsdir/doc and http://xims.uibk.ac.at/xims-doku/ you will find
+At $ximsdir/documentation and http://xims.uibk.ac.at/xims-doku/ you will find
 XIMS documentation for users, developers, and system administrators.
 Note: Documentation is currently quite rudimentary :-/.
 
