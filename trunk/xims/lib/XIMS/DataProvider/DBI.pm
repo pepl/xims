@@ -27,7 +27,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r;
     'objecttype.id'                       => \'ci_object_types_id_seq_nval()',
     'dataformat.id'                       => \'ci_data_formats_id_seq_nval()',
     'mimetype.id'                         => \'ci_mime_aliases_id_seq_nval()',
-    'questionnaireresult.id'              => \'ci_quest_results_id_seq_nval()'
+    'questionnaireresult.id'              => \'ci_quest_results_id_seq_nval()',
 );
 
 # move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
@@ -49,7 +49,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r;
             language       => 'ci_languages',
             mimetype       => 'ci_mime_type_aliases',
             bookmark       => 'ci_bookmarks',
-            questionnaireresult => 'ci_questionnaire_results'
+            questionnaireresult => 'ci_questionnaire_results',
           );
 
 
@@ -177,12 +177,11 @@ sub update {
 ##################################################################################
 
 sub name_fixer {
-    #warn "FIXER CALLED " . Dumper( @_ ) . "\n";
     my $row = shift;
     my %out_row = ();
     foreach ( keys( %{$row} ) ) {
         my $out_name;
-        my ($token, $idx) =  split /__/, lc( $_ );
+        my ($token, $idx) =  split(/__/, $_);
         if ( defined( $idx )) {
             $out_name = $AllProps[$idx];
         }
@@ -718,6 +717,7 @@ sub new {
                 $_ =~ /(.+)=(.+)/;
                 $dbh->get_dbh->{$1} = "$2";
             }
+            $dbh->get_dbh->{FetchHashKeyName} = 'NAME_lc';
 
             foreach ( split (";", $args{dbsessionopt}) ) {
                 $dbh->do("$_");
