@@ -78,12 +78,10 @@ sub redirToDefault {
 
     my $contentinterface = XIMS::CONTENTINTERFACE();
     if ( $path =~ 'defaultbookmark' or $path !~ /\Q$contentinterface\E/ ) {
-        my $bookmarkid = $ctxt->session->user->default_bookmark->content_id();
-        my $bookmark =  XIMS::Object->new( id => $bookmarkid )->location_path();
-        XIMS::Debug( 6, "bookmarked path: $bookmark" );
-
-        if ( length $bookmark and $bookmark ne '/') {
-            XIMS::Debug( 4, "user will be redirected to default bookmark" );
+        my $bookmark = $ctxt->session->user->default_bookmark();
+        if ( $ctxt->session->user->default_bookmark ) {
+            XIMS::Debug( 6, "bookmarked path: $bookmark" );
+            $bookmark =  XIMS::Object->new( id => $bookmark->content_id() )->location_path();
         }
         else {
             # use fallback default path if user has got no bookmark set

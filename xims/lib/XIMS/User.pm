@@ -171,6 +171,13 @@ sub default_bookmark {
     if ( $bmk ) {
         return $bmk;
     }
+    else {
+        my $default_role = $self->roles_granted( default_role => 1 );
+        $bmk = XIMS::Bookmark->new( owner_id => $default_role->id(), stdhome => 1 );
+        if ( $bmk ) {
+            return $bmk;
+        }
+    }
 }
 
 # returns a list of all the roles that the
