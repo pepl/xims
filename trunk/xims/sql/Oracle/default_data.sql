@@ -77,7 +77,7 @@ INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask,
 -- creation of basic roles should go here
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'guests', 'XIMS guests', 1, 0, 1);
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'admins', 'XIMS admins', 1, 4294967296, 1);
-INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'everyone', 'XIMS everyone', 1, 0);
+INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'everyone', 'XIMS everyone', 1, 0, 1);
 
 -- add public user
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'public', 'public', 1, 1, 1);
