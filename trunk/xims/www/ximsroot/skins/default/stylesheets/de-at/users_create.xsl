@@ -67,15 +67,13 @@
               </tr>
               <tr>
                 <td>
-                    <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                    <span class="compulsory">Password:</span>
+                    <span>Passwort:</span>
                 </td>
                 <td><input size="30" maxlength="32" name="password1" type="password" value=""/></td>
               </tr>
               <tr>
                 <td>
-                    <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                    <span class="compulsory">Passwort bestätigen:</span>
+                    <span>Passwort bestätigen:</span>
                 </td>
                 <td><input size="30" maxlength="32" name="password2" type="password" value=""/></td>
               </tr>
