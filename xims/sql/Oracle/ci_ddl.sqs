@@ -2,7 +2,7 @@
 -- See the file "LICENSE" for information on usage and redistribution
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
- 
+
 PROMPT Creating Sequence 'DOC_SEQ'
 DROP SEQUENCE DOC_SEQ;
 CREATE SEQUENCE DOC_SEQ
