@@ -1,6 +1,7 @@
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+
 #$Id$
 package XIMS::QueryBuilder::Oracle;
 
@@ -24,6 +25,7 @@ use XIMS::QueryBuilder;
 #
 # RETURNS
 #    hash-ref containing the following keys:
+
 #    criteria => search criteria to be ANDed to a WHERE-clause:
 #
 # DESCRIPTION
@@ -35,7 +37,6 @@ sub build {
     my $fieldstolookin = shift;
 
     my $search = $self->{search};
-
     my %retval;
 
     my $bol;
@@ -95,7 +96,7 @@ sub build {
 #  got to find a sane way to lookup user_id per shortname
 #
 #        elsif ( $search->[$i] =~ s/^o:(\d*)$/$1/ ) {
-#          # 'o:x' find object by OWNER 
+#          # 'o:x' find object by OWNER
 #          $search->[$i] ||= '0';
 #          $bol = $self->search_boolean( $search, $i );
 #          $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
@@ -112,7 +113,7 @@ sub build {
             if ( $search->[$i] ne "(" && $search->[$i] ne ")" ) {
                 # $search->[$i] = $bol . "( (" . $search->[$i] . " within title) * 10 OR (" . $search->[$i] . " within author) * 2 OR (" . $search->[$i]  . " within keywords) * 6 OR (" . $search->[$i] . " * 0.1) )";
                 my @temp;
-                for ( @{$fieldstolookin} ) {
+                foreach my $field ( @{$fieldstolookin} ) {
                     next if lc($field) eq 'body'; # no LIKE statements with CLOBS...
                     push (@temp, "LOWER($_) LIKE '%" . lc($search->[$i]) . "%'");
                 }
@@ -126,8 +127,6 @@ sub build {
 
     # hard work done, compose search-condition-string
     $retval{criteria} = '(' . join(' ', @{$search}) . ')';
-
-
     $retval{order} = "last_modification_timestamp DESC";
 
     XIMS::Debug( 5, 'done' );
