@@ -392,7 +392,7 @@ sub descendants {
             }
         }
         $descendant->{level} = $lvls[$index];
-        $sorted_descendants[$index] = $descendant;
+        push( @sorted_descendants, $descendant );
     }
 
     #warn "descendants" . Dumper( \@sorted_descendants ) . "\n";
@@ -450,11 +450,8 @@ sub descendants_granted {
             }
         }
         $descendant->{level} = $candidate_lvls[$index];
-        $sorted_descendants[$index] = $descendant;
+        push( @sorted_descendants, $descendant );
     }
-
-    # remove the empty array slots left from the sort
-    @sorted_descendants = grep { defined $_ } @sorted_descendants;
 
     #warn "descendants" . Dumper( \@sorted_descendants ) . "\n";
     return wantarray ? @sorted_descendants : $sorted_descendants[0];
@@ -1743,7 +1740,7 @@ sub location_path_relative {
 #
 # PARAMETER
 #    $CDATAstring : input string
-#    @args        :  hash
+#    %args        :  hash
 #       recognized keys: nochunk     : if set, $CDATAstring is assumed to be a document with a root-element
 #                                      and will be parsed with parse_string() instead of the default parse_xml_chunk()
 #                                      useful for importing
@@ -1751,8 +1748,8 @@ sub location_path_relative {
 #                        encoding    : can be optionally given if a chunk is to be parsed; defaults to 'UTF-8'
 #
 # RETURN
-#    $doc : XML::LibXML::Document instance if string is well-formed and 'nochunk' is not given
-#           XML::LibXML::DocumentFragment instance if string is well-balanced and 'nochunk' is given
+#    $doc : XML::LibXML::Document instance if string is well-formed and 'nochunk' is given
+#           XML::LibXML::DocumentFragment instance if string is well-balanced
 #           undef if string is not given and 'verbose_msg' is ommitted
 #           error string if string is well-formed and 'nochunk' is given
 #
