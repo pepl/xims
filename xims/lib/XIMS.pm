@@ -242,12 +242,39 @@ sub decode {
 #    Compares the given IP-Adress to the configured known proxyservers.
 #    Returns 1 on success, undef otherwise.
 #
-sub is_a_known_proxy($) {
+sub is_known_proxy($) {
     my $remote_host = shift;
 
     map {return 1 if defined $_ and $remote_host eq $_} PROXYIP();
 
     return undef;
+}
+
+##
+#
+# SYNOPSIS
+#    XIMS::via_proxy_test( $r )
+#
+# PARAMETER
+#    $r: Apache::Request object
+#
+# RETURNS
+#    nothing
+#
+# DESCRIPTION
+#    If the Request appears to come from a known proxy, replace
+#    the IP-adress with the one from the X-Forwarded-For header,
+#    and flag the request in pnotes.
+#
+sub via_proxy_test($){
+    my $r = shift;
+
+    if ( my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/
+         and is_known_proxy($r->connection->remote_ip()) ) {
+        $r->connection->remote_ip($ip);
+        XIMS::Debug(6, "Remote IP taken from X-Forwarded-For-header\n");
+    }
+    $r->pnotes('PROXY_TEST' => 1);
 }
 
 
