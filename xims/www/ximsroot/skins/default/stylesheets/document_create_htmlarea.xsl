@@ -9,6 +9,8 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/TR/xhtml1/strict">
 
+<xsl:import href="common_htmlarea_scripts.xsl"/>
+
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-create_htmlarea"/>
