@@ -129,6 +129,7 @@ sub handler {
         else {
             $app_pm = lc( $ctxt->object->object_type->name() );
         }
+        $ctxt->properties->application->styleprefix( $app_pm );
     }# end 'content' case
     else {
         $app_pm = $interface_type;
