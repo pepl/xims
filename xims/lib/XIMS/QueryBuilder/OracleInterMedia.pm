@@ -145,7 +145,7 @@ sub build {
         $retval{properties} = [ 'document_id', 'id', 'location', 'title', 'object_type_id', 'data_format_id', 'attributes',
                              'abstract', 'last_modification_timestamp', 'creation_timestamp', 'last_publication_timestamp', 'language_id', 'published',
                              'marked_new', 'locked_by_id', 'locked_time', 'lob_length', 'score(1) s' ];
-        $retval{order} = "s DESC";
+        $retval{order} = "score(1) DESC";
     }
     else {
         $retval{criteria} = '(' . join(' ', @{$search}) . ')';
