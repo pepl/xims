@@ -263,12 +263,11 @@ sub event_download_all_results {
     # build all answers depending on the type
     my %question_titles = $object->get_full_question_titles();
     if ( $type =~ /xls/i ) {
-        XIMS::Debug(4,"Type is Excel");
+        XIMS::Debug( 4,"Type is Excel");
         foreach my $answer (@{$answers}) {
             my $answer_text = ${$answer}{'answer'};
-            $answer_text =~ s/\n//;
-            $answer_text =~ s/\t/    /;
-            $answer_text =~s/\r//;
+            $answer_text =~ s/\015?\012/ /g; # replace newlines with spaces
+            $answer_text =~ s/\t/ /g; # although tabs are filtered during storing, you never know
             # The "A" in the Answer-id field is neccessary because Excel interprets eg 1.1.1 as a date
             $body .= ${$answer}{'tan'} . "\t" . $question_titles{ ${$answer}{'question_id'} } . "\tA " . ${$answer}{'question_id'} .  "\t" . $answer_text ."\n";
         }
@@ -283,7 +282,7 @@ sub event_download_all_results {
         }
     }
     elsif ( $type =~ /html/i ) {
-        XIMS::Debug(4, "Type is HTML" );
+        XIMS::Debug( 4, "Type is HTML" );
 
         # For compatibility with Mac-Browsers we have to cheat a bit with the mime-type
         $mime_type = 'text/html';
@@ -292,7 +291,6 @@ sub event_download_all_results {
         $body = '<html><head><title>'.$filename.'</title></head><body><table border="1">';
         $body .= "<tr><td>Q ID</td><td>Q</td><td>A ID</td><td>A</td><td>Timestamp</td></tr>";
         foreach my $answer (@{$answers}) {
-            XIMS::Debug(6,"Question:". $question_titles{ ${$answer}{'question_id'} } ."Answer:" . $converter_to_Latin1->convert(${$answer}{'answer'}));
             $body .= "<tr><td>" . ${$answer}{'tan'} . "</td><td>" . $converter_to_Latin1->convert( $question_titles{ ${$answer}{'question_id'} } ) . "</td><td>" . ${$answer}{'question_id'} . "</td><td>" . ${$answer}{'answer'} .  "</td><td>" . ${$answer}{'answer_timestamp'}."</td></tr>";
         }
         $body .= "</table></body></html>";
@@ -323,6 +321,7 @@ sub event_download_raw_results {
     $object->data_provider->driver->dbh->visit_select(
         sub { my $r = shift;
               $r->{answer} =~ s/\015?\012/ /g; # replace newlines with spaces
+              $r->{answer} =~ s/\t/ /g; # although tabs are filtered during storing, you never know
               print $tmpfh "$r->{id}\t$r->{tan}\t$r->{question_id}\t$r->{answer}\t$r->{answer_timestamp}";
               print $tmpfh "\r\n";
             },
