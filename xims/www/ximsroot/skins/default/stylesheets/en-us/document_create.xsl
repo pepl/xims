@@ -26,14 +26,9 @@
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
                     <xsl:call-template name="tr-body-create"/>
-                    <tr>
-                        <td colspan="3">
-                            Try to form body well. (If body is not well-balanced an error message will be displayed.)
-                            <input name="trytobalance" type="radio" value="true" checked="checked"/>Yes
-                            <input name="trytobalance" type="radio" value="false" />No
-                        </td>
-                    </tr>
-                    <xsl:call-template name="tr-keywordsabstract-create"/>
+                    <xsl:call-template name="trytobalance"/>
+                    <xsl:call-template name="tr-keywords-create"/>
+                    <xsl:call-template name="tr-abstract-create"/>
                     <tr>
                         <td colspan="3">
                             <xsl:call-template name="markednew"/>
