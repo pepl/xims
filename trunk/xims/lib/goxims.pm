@@ -272,7 +272,7 @@ sub getObject {
 
     if ( $r and $user ) {
         my %id_or_path = ( language => 2 ); # de-at ... hardcode == nogood
-        my $pathinfo = $r->path_info();
+        my $pathinfo = $r->path_info() || '/';
         my %args = $r->args();
         my $id = $args{id};
         if ( defined $id and $id > 0 ) {
