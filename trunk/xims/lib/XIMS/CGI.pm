@@ -37,7 +37,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 # first we register the events we handle
 sub registerEvents {
     my $self = shift;
-    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', @_ );
+    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', @_ );
 }
 
 ############################################################################
@@ -745,6 +745,9 @@ sub init_store_object {
             XIMS::Debug( 3, "could not set image_id" );
         }
     }
+    else {
+        $object->image_id( undef );
+    }
 
     my $stylesheet = $self->param( 'stylesheet' );
     if ( defined $stylesheet and length $stylesheet ) {
@@ -763,7 +766,10 @@ sub init_store_object {
             XIMS::Debug( 3, "could not set style_id" );
         }
     }
-
+    else {
+        $object->style_id( undef );
+    }
+    
     return 1;
 }
 
@@ -1138,6 +1144,35 @@ sub event_move {
 
     XIMS::Debug( 5, "done" );
     return 0;
+}
+
+sub event_copy {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    my $object = $ctxt->object();
+
+    $ctxt->properties->application->styleprefix( "common" );
+    $ctxt->properties->application->style( "error" );
+
+    my $parent = XIMS::Object->new( id => $object->parent_id, User => $ctxt->session->user() );
+    my $parent_user_object_priv = $ctxt->session->user->object_privmask( $parent );
+    return $self->event_access_denied( $ctxt )
+           unless $parent_user_object_priv & XIMS::Privileges::CREATE();
+
+    my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
+    return $self->event_access_denied( $ctxt )
+           unless $current_user_object_priv & XIMS::Privileges::VIEW();
+
+    if ( not $object->clone( scope_subtree => 1 ) ) {
+        $ctxt->session->error_msg( "copy failed!" );
+        return 0;
+    }
+    else {
+        XIMS::Debug( 4, "copy ok, redirecting to the parent");
+
+        $self->redirect( $self->redirect_path( $ctxt, $object->parent_id() ) );
+        return 0;
+    }
 }
 
 sub event_publish_prompt {
