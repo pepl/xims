@@ -22,7 +22,7 @@ sub registerEvents {
           create
           edit
           store
-          trahscan
+          trashcan
           trashcan_prompt
           delete
           delete_prompt
