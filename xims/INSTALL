@@ -33,7 +33,7 @@ XIMS Installation Guide
       can install using your favourite package manager.
 
     * For database access using perl, you'll need either
-      DBD::Oracle or DBD::Pg installed.
+      DBD::Oracle or DBD::Pg (>= 1.31) installed.
 
 1) Unpack the distribution to /usr/local:
 
