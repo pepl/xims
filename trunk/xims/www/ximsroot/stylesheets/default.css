@@ -445,8 +445,8 @@ input.qsfield {
 
 /* docbook */
 div.toc {
-        background-color:white;
-        border: 0;
+        background-color:#efefef;
+        border: 1px solid #cccccc;
         margin: 1px 0px 1px 0px;
         padding: 2px 0px 3px 20px;
 }
@@ -464,17 +464,27 @@ div.toc-item {
 }
 
 div.programlisting {
-        color:#123853;
-       /* background-color:#eeeeee;
+        color: black;
+        padding: 1em;
+        background-color:#eeeeee;
         border-color: white;
         border-width: 2px 2px 2px 2px;
-        border-style: solid; */
-        width: 90%;
+        border-style: solid;
 }
 
 div.section {
-	 padding-left:6px;
+    padding-left:6px;
 }
+
+div.footer-nav {
+    border-top: 1px solid #cccccc;
+}
+
+div.legal {
+    float: right;
+}
+
+
 /* uni-footer */
 
 div.footer {
