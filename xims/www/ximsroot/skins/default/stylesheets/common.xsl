@@ -456,6 +456,7 @@
 </xsl:template>
 
 <xsl:template name="tr-stylesheet-create">
+<xsl:variable name="parentid" select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
 <tr>
     <td valign="top"><xsl:value-of select="$i18n/l/Stylesheet"/></td>
     <td colspan="2">
@@ -463,7 +464,7 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_stylesheet"/></a>
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_stylesheet"/></a>
     </td>
 </tr>
 </xsl:template>
