@@ -21,9 +21,7 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    # not yet reimplemented
-    #$ctxt->properties->content->children->addinfo( 1 );
-
+    $ctxt->properties->content->getchildren->addinfo( 1 );
     $self->expand_attributes( $ctxt );
 
     return $self->SUPER::event_default( $ctxt );
