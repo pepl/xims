@@ -59,14 +59,6 @@ sub event_store {
             return 0;
         }
 
-        # siteroots have their document_id as department_id
-        $object->department_id( $object->document_id() );
-        if ( not $object->update() ) {
-            XIMS::Debug( 2, "setting of deptid failed" );
-            $self->sendError( $ctxt, "Setting of DepartmentID failed." );
-            return 0;
-        }
-
         XIMS::Debug( 4, "granting privileges" );
 
         my $owneronly = $self->param( 'owneronly' );
