@@ -758,7 +758,7 @@ sub add_tanlist {
         $questionnaire = $questionnaire->documentElement();
         my $new_node = XML::LibXML::Element->new( "tanlist" );
         $new_node->setAttribute( "id" , $TAN_List->document_id() );
-        $new_node->appendText( $TAN_List->title()." (".$TAN_List->number().")"  );
+        $new_node->appendText( XIMS::encode( $TAN_List->title() ) ." (".$TAN_List->number().")"  );
         $questionnaire->appendChild( $new_node );
     }
     $self->body( XIMS::decode( $questionnaire->toString() ) );
