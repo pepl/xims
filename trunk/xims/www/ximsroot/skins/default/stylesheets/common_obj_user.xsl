@@ -11,10 +11,6 @@
     <xsl:param name="userid"/>
     <xsl:param name="newgrant"/>
 
-    <xsl:template match="/document">
-        <xsl:apply-templates select="context/object"/>
-    </xsl:template>
-
     <xsl:template match="/document/context/object">
         <html>
             <head>

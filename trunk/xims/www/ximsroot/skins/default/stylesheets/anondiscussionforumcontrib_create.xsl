@@ -10,10 +10,6 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
   <xsl:import href="../../../stylesheets/anondiscussionforum_common.xsl"/>
 
-  <xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-  </xsl:template>
-
   <xsl:template match="/document/context/object">
     <html>
       <xsl:call-template name="head-create_discussionforum"/>

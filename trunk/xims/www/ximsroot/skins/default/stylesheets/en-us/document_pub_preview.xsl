@@ -18,10 +18,6 @@
 
 <xsl:output method="html" encoding="ISO-8859-1"/>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
     <head>

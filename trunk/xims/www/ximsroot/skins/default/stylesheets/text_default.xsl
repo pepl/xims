@@ -12,10 +12,6 @@
 <xsl:import href="common.xsl"/>
 <xsl:import href="../../../stylesheets/text_common.xsl"/>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>

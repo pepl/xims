@@ -10,10 +10,6 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:variable name="target_path"><xsl:call-template name="targetpath"/></xsl:variable>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
 <html>
   <head>

@@ -14,10 +14,6 @@
 <xsl:param name="style"/>
 <xsl:param name="editorname"/> <!-- damn ewebedit - one time editorName (hyperlinkselection), the next time editorname -->
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
 <html>
   <head>

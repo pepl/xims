@@ -11,10 +11,6 @@
 <xsl:output method="html" encoding="ISO-8859-1"/>
 <xsl:param name="request.uri"/>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
 <html>
   <head>

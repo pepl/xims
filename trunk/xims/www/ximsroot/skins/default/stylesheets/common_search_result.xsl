@@ -12,10 +12,6 @@
 <xsl:import href="container_common.xsl"/>
 <xsl:param name="page" select="0" />
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
     <html>
         <head>

@@ -13,10 +13,6 @@
 <xsl:param name="notfilter"/>
 <xsl:param name="sbfield"/>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
 <html>
   <head>

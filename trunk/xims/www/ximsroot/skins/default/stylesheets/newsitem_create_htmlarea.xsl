@@ -11,10 +11,6 @@
 
 <xsl:import href="document_create_htmlarea.xsl"/>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-create_htmlarea"/>
