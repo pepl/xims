@@ -20,7 +20,6 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 @ISA = qw( XIMS::CGI );
 
-
 # Credentials in whichs context the SQLReport query will be executed.
 # This user needs to have SELECT grants on the database objects refered to in the SQLReport query.
 $AGENTUSER = 'ximsrun';
@@ -361,8 +360,17 @@ sub _build_crits_from_skeys {
         $skey = "sqlrep.$skey";
         my $value = $self->param( lc $skey );
         next unless defined $value and length $value;
-        $value =~ s/%+/%/;
-        $criteria{ $origkey } = XIMS::decode( $value );
+        $value = XIMS::decode( $value );
+
+        # allow * asterisk lookups
+        $value =~ s/\*+/%/g;
+
+        # play safe and do not allow multiple wildcards
+        $value =~ s/%+/%/g;
+        $value =~ s/\?+/?/g;
+
+        # be case insensitive
+        $criteria{ "lower($origkey)" } = lc $value;
     }
 
     return \%criteria;
