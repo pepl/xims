@@ -77,9 +77,11 @@ sub handler {
     my $uri = Apache::URI->parse( $r );
     $ctxt->session->serverurl( $uri->scheme . '://' . $uri->hostinfo() );
 
-    # for now there is no user/browser based skin or ui-language selection. the default values are used.
+    # for now there is no user/browser based skin selection. the default values are used.
     $ctxt->session->skin( XIMS::DEFAULT_SKIN() );
-    $ctxt->session->uilanguage( XIMS::UIFALLBACKLANG() );
+
+    # set UILanguage
+    $ctxt->session->uilanguage( getLanguagePref($r) );
 
     # getting interface
     my $interface_type = getInterface( $r );
@@ -279,5 +281,46 @@ sub getObject {
 
     return $retval;
 }
+
+
+##
+#
+# SYNOPSIS
+#    getLanguage($r)
+#
+# PARAMETERS
+#    $r:    request-object      (mandatory)
+#
+# RETURN VALUES
+#    $retval: interface language (string)
+#
+# DESCRIPTION
+#    loose implementation of what is described in:
+#    http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
+#
+sub getLanguagePref {
+    my $r = shift;
+    my $langrex = qr/(\w{1,8}(?:-\w{1,8})?)(?:;q=([0|1](?:\.\d{1,3})?))?/;
+    my %langprefs;
+    my %havelangs = XIMS::UILANGUAGES();
+
+    # parse Header
+    foreach my $pref_field (split(/,/, $r->header_in( "Accept-Language" ))) {
+        my $qvalue;
+        $pref_field =~ $langrex;
+        $qvalue = $2 or $qvalue = "1";
+        push @{$langprefs{$qvalue}}, $1;
+    }
+
+    # compare
+    foreach my $wantlang (reverse sort keys(%langprefs)) {
+        foreach my $langpref ( keys %havelangs ) {
+            map { $_=~$havelangs{$langpref}?return $langpref:next;} @{$langprefs{$wantlang}};
+        }
+    }
+
+    return XIMS::UIFALLBACKLANG();
+}
+
 
 1;
