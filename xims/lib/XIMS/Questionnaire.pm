@@ -35,7 +35,6 @@ sub new {
     my $proto = shift;
     my $class = ref($proto) || $proto;
     my %args = @_;
-    my $q;
 
     if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
         $args{data_format_id} = XIMS::DataFormat->new( name => 'Questionnaire' )->id() unless defined $args{data_format_id};
@@ -403,7 +402,7 @@ sub form_to_xml {
     $questionnaire->appendTextChild( "title", $params{'questionnaire_title'}  );
     $questionnaire->appendTextChild( "comment",  $params{'questionnaire_comment'}  );
     $questionnaire->appendTextChild( "intro",  $params{'questionnaire_intro'}  );
-    $questionnaire->appendTextChild( "exit",  $params{'questionnaire_exit'}  );    
+    $questionnaire->appendTextChild( "exit",  $params{'questionnaire_exit'}  );
     # recursively create childnodes
     $questionnaire = _create_tanlists( $questionnaire, %params );
     $questionnaire = _create_children( $questionnaire, %params );
