@@ -458,7 +458,7 @@
         <td colspan="2">
             <input tabindex="30" type="file" name="file" size="49" class="text"/>
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('file')" class="doclink">(?)</a>
+            <a href="javascript:openDocWindow('File')" class="doclink">(?)</a>
         </td>
     </tr>
 </xsl:template>
@@ -470,7 +470,7 @@
         <td colspan="2">
             <input tabindex="30" type="file" name="file" size="49" class="text"/>
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('file')" class="doclink">(?)</a>
+            <a href="javascript:openDocWindow('File')" class="doclink">(?)</a>
         </td>
     </tr>   
 </xsl:template>
@@ -480,7 +480,7 @@
     <tr>
         <td valign="top"><span class="compulsory">Image</span></td>
         <td colspan="2">
-            <input tabindex="30" type="file" name="image" size="49" class="text"/>
+            <input tabindex="30" type="file" name="file" size="49" class="text"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
         </td>
@@ -492,9 +492,9 @@
     <tr>
         <td valign="top">Replace image</td>
         <td colspan="2">
-            <input tabindex="30" type="file" name="image" size="49" class="text"/>
+            <input tabindex="30" type="file" name="file" size="49" class="text"/>
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('file')" class="doclink">(?)</a>
+            <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
         </td>
     </tr>
 </xsl:template>
@@ -506,7 +506,7 @@
             <td>
                 <input tabindex="30" type="text" name="image" size="40" value="" class="text"/>
                 <xsl:text>&#160;</xsl:text>
-                <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
+                <a href="javascript:openDocWindow('DepartmentImage')" class="doclink">(?)</a>
                 <xsl:text>&#160;</xsl:text>
                 <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Image;sbfield=eform.image')" class="doclink">Browse for an image</a>
             </td>
