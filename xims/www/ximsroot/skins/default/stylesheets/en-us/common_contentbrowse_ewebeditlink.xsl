@@ -25,7 +25,7 @@
 <xsl:template match="/document/context/object">
 <html>
   <head>
-    <title>Browse for 
+    <title>Browse for
       <xsl:choose>
         <xsl:when test="$otfilter != ''">
           '<xsl:value-of select="$otfilter"/>'
@@ -36,7 +36,7 @@
       </xsl:choose>
     - XIMS</title>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
+    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     <script type="text/javascript">
       <![CDATA[
         var objQuery = new Object();
@@ -221,7 +221,7 @@
                     <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};editorName={$editorName}"><xsl:value-of select="title"/></a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="title"/> 
+                    <xsl:value-of select="title"/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="$otfilter = '' or /document/object_types/object_type[@id=$objecttype]/name = $otfilter">

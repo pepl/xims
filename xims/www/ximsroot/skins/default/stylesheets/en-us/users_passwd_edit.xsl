@@ -17,7 +17,7 @@
         <head>
             <title>
                 Password Change - XIMS
-            </title> 
+            </title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
@@ -27,7 +27,7 @@
         </xsl:call-template>
 
        <!-- begin main content -->
-        <form name="userEdit" action="{/document/session/serverurl}{$goxims_users}" method="POST">
+        <form name="userEdit" action="{$xims_box}{$goxims_users}" method="POST">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
           <tr background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
             <td>&#160;</td>
@@ -74,7 +74,7 @@
               </tr>
               <tr>
                 <td colspan="2" align="center">
-                  
+
                   <!-- begin buttons table -->
                   <table cellpadding="2" cellspacing="0" border="0">
                     <tr align="center">

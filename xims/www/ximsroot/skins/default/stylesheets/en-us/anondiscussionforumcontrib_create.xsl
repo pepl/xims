@@ -30,10 +30,8 @@
             marginwidth="0"
             marginheight="0"
             background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="POST">
-          <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-          <input type="hidden" name="parid" value="{@id}" />
-
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;" >
+          <input type="hidden" name="objtype" value="{$objtype}"/>          <input type="hidden" name="parid" value="{@id}" />
           <table border="0" width="770" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
             <tr>
               <td valign="top" class="forumhead" colspan="2">Create new topic</td>

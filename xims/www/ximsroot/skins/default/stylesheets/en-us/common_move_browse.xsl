@@ -21,7 +21,7 @@
   <head>
     <title><xsl:value-of select="location"/> - Move object - XIMS</title>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
+    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
   </head>
   <body>
     <xsl:call-template name="header"/>
@@ -41,7 +41,7 @@
             <br/>&#xa0;
             <xsl:apply-templates select="targetparents/object[@document_id !=1]"/>
             <xsl:apply-templates select="target/object"/>
-            
+
             <table>
                 <xsl:apply-templates select="targetchildren/object[@id != /document/context/object/@id]">
                     <xsl:sort select="title" order="ascending" case-order="lower-first"/>

@@ -16,7 +16,7 @@
   <head>
       <title>Error: <xsl:value-of select="/document/context/session/error_msg"/></title>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
+    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
   </head>
   <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
     <xsl:call-template name="header">

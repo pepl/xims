@@ -21,19 +21,17 @@
       <head>
         <title><xsl:value-of select="title"/> - Anonymous Discussion Forum - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script type="text/javascript">
-          <![CDATA[
-          function checkFields() {
-          if (document.replyform.title.value.length > 0 && document.replyform.author.value.length > 0 && document.replyform.body.value.length > 0) {
-          return true
-          }
-          else {
-          alert ('Please fill out Title, Author and Text!');
-          return false
-          }
-          }
-          ]]>
+        function checkFields() {
+            if (document.replyform.title.value.length &gt; 0 &amp;&amp; document.replyform.author.value.length &gt; 0 &amp;&amp; document.replyform.body.value.length &gt; 0) {
+                return true
+            }
+            else {
+                alert (&apos;Please fill out Title, Author and Text!&apos;);
+                return false
+            }
+        }
         </script>
       </head>
       <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
@@ -154,16 +152,16 @@
 
   <xsl:template name="replyform">
     <a name="reply"/>
-    <form name="replyform" 
-          action="{/document/session/serverurl}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" 
-          method="POST" 
+    <form name="replyform"
+          action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib"
+          method="POST"
           onSubmit="return checkFields()">
       <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
       <input type="hidden" name="parid" value="{@id}" />
-      
-      <table border="0" width="770" 
-             style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" 
-             cellpadding="3" 
+
+      <table border="0" width="770"
+             style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px"
+             cellpadding="3"
              cellspacing="0">
         <tr>
           <td valign="top" class="forumhead" colspan="2">Reply</td>
@@ -199,6 +197,31 @@
       <xsl:text>/</xsl:text><xsl:value-of select="location"/>
     </xsl:for-each>
   </xsl:template>
+
+
+<xsl:template match="body">
+    <xsl:call-template name="br-replace">
+        <xsl:with-param name="word" select="."/>
+    </xsl:call-template>
+</xsl:template>
+
+<xsl:template name="br-replace">
+    <xsl:param name="word"/>
+    <xsl:variable name="cr"><xsl:text>
+</xsl:text></xsl:variable>
+    <xsl:choose>
+        <xsl:when test="contains($word,$cr)">
+            <xsl:value-of select="substring-before($word,$cr)"/>
+            <br/>
+            <xsl:call-template name="br-replace">
+                <xsl:with-param name="word" select="substring-after($word,$cr)"/>
+            </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="$word"/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
 
 
 </xsl:stylesheet>
