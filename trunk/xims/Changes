@@ -34,6 +34,7 @@
   - Added folder_to_objectroot.pl command line tool to convert imported
     folders to SiteRoots or DepartmentRoots.
   - Added set_user_metadata.pl command line tool for managing user metadata
+  - Added support for HTMLArea 3.0
   - Links to published objects open in a new window now
   - Added an example homepage "simple.examplesite.tld" under examples
   - No more hardcoded object type IDs in the object classes
