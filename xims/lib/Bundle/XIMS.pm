@@ -46,6 +46,7 @@ Time::Piece -
 XML::Schematron -
 Apache::DBI -
 CSS::Tiny -
+Term::ReadKey -
 
 # DBD::Pg - PostgreSQL database driver for the DBI module
 # Net::LDAP -

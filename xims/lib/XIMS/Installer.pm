@@ -35,6 +35,7 @@ sub new {
                 [ "XML::Schematron", '' ],
                 [ "Apache::DBI", '' ],
                 [ "CSS::Tiny", '' ],
+                [ "Term::ReadKey", '' ],
               );
 
     my @optional_mods = ();
