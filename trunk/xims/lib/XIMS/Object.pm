@@ -346,6 +346,29 @@ sub ancestors {
 ##
 #
 # SYNOPSIS
+#    my $or_ancestors = $object->objectroot_ancestors();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $or_ancestors : Reference to Array of XIMS::Objects
+#
+# DESCRIPTION
+#    Returns all ObjectRoot ancestors from which ObjectRoot-wide
+#    settings may be inherited
+#
+sub objectroot_ancestors {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my @or_ancestors = $self->data_provider->recurse_ancestor( $self, 1 );
+    #warn "parents " . Dumper( \@ancestors ) . "\n";
+    return \@or_ancestors;
+}
+
+##
+#
+# SYNOPSIS
 #    my @descendants = $object->descendants( [ %args ] );
 #
 # PARAMETER
@@ -792,7 +815,7 @@ sub __fix_clone_reference {
 sub __decide_department_id {
     my %args = @_;
     my $object= XIMS::Object->new( document_id => $args{document_id} );
-    if ( ($object->object_type->name() eq 'DepartmentRoot') or ($object->object_type->name() eq 'SiteRoot') ) {
+    if ( $object->object_type->is_objectroot() ) {
             return $object->document_id();
     }
     else {
@@ -1117,7 +1140,7 @@ sub clone {
 
     # check if this object need later fixup of referenced object ids
     my $objecttype = $clone->object_type;
-    if ( $objecttype->name() eq "DepartmentRoot" or $objecttype->name() eq "SiteRoot" ) {
+    if ( $objecttype->is_objectroot() ) {
         push @$ref_object_ids, $clone->document_id;
     }
     else {
@@ -1543,6 +1566,137 @@ sub language {
 ##
 #
 # SYNOPSIS
+#    my $stylesheet = $object->stylesheet();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $stylesheet : XIMS::Object instance (Objecttype 'XSLStylesheet' or 'Folder')
+#
+# DESCRIPTION
+#    Returns stylesheet(-directory) assigned to the object. If a
+#    stylesheet(-directory) is not assigned directly, inherited
+#    ones from the objectroot objects up the hierarchy are looked for.
+#
+sub stylesheet {
+    my $self = shift;
+    return $self->{Stylesheet} if defined $self->{Stylesheet};
+    my $style_id = $self->style_id();
+    if ( not defined $style_id ) {
+        # look for style_id in ancestrial objectroot objects
+        foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            last if $style_id = $oroot->style_id();
+        }
+        return undef unless defined $style_id;
+    }
+    my $stylesheet = XIMS::Object->new( id => $style_id );
+    $self->{Stylesheet} = $stylesheet;
+    return $stylesheet;
+}
+
+##
+#
+# SYNOPSIS
+#    my $css = $object->css();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $css : XIMS::Object instance
+#
+# DESCRIPTION
+#    Returns a CSS stylesheet assigned to the object. If a
+#    CSS stylesheet is not assigned directly, an inherited
+#    one from the objectroot objects up the hierarchy is looked for.
+#
+sub css {
+    my $self = shift;
+    return $self->{CSS} if defined $self->{CSS};
+    my $css_id = $self->css_id();
+    if ( not defined $css_id ) {
+        # look for css_id in ancestrial objectroot objects
+        foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            last if $css_id = $oroot->css_id();
+        }
+        return undef unless defined $css_id;
+    }
+    # think of XIMS::CSS here
+    my $css = XIMS::Object->new( id => $css_id );
+    $self->{CSS} = $css;
+    return $css;
+}
+
+##
+#
+# SYNOPSIS
+#    my $image = $object->image();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $image : XIMS::Object instance
+#
+# DESCRIPTION
+#    Returns an Image assigned to the object. If an
+#    Image is not assigned directly, an inherited
+#    one from the objectroot objects up the hierarchy is looked for.
+#
+sub image {
+    my $self = shift;
+    return $self->{Image} if defined $self->{Image};
+    my $image_id = $self->image_id();
+    if ( not defined $image_id ) {
+        # look for image_id in ancestrial objectroot objects
+        foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            last if $image_id = $oroot->image_id();
+        }
+        return undef unless defined $image_id;
+    }
+    # think of XIMS::Image here
+    my $image = XIMS::Object->new( id => $image_id );
+    $self->{Image} = $image;
+    return $image;
+}
+
+##
+#
+# SYNOPSIS
+#    my $script = $object->script();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $script : XIMS::Object instance
+#
+# DESCRIPTION
+#    Returns a Script assigned to the object. If a
+#    Script is not assigned directly, an inherited
+#    one from the objectroot objects up the hierarchy is looked for.
+#
+sub script {
+    my $self = shift;
+    return $self->{Script} if defined $self->{Script};
+    my $script_id = $self->script_id();
+    if ( not defined $script_id ) {
+        # look for script_id in ancestrial objectroot objects
+        foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            last if $script_id = $oroot->script_id();
+        }
+        return undef unless defined $script_id;
+    }
+    # think of XIMS::JavaScript here
+    my $script = XIMS::Object->new( id => $script_id );
+    $self->{Script} = $script;
+    return $script;
+}
+
+##
+#
+# SYNOPSIS
 #    my $creator = $object->creator( [ $user ] );
 #
 # PARAMETER
@@ -1912,7 +2066,7 @@ sub content_field {
        $df = $self->{DataFormat};
     }
     else {
-        my $df_id = $self->{data_format_id} || $self->{'content.data_format_id'};
+        my $df_id = $self->{data_format_id} || $self->{'document.data_format_id'};
         $df = XIMS::DataFormat->new( id => $df_id );
         $self->{DataFormat} = $df;
     }
