@@ -224,7 +224,7 @@
 <!-- title -->
         <td colspan="2" bgcolor="#eeeeee" background="{$skimages}containerlist_bg.gif">
             <span>
-                <xsl:attribute name="title">docid: <xsl:value-of select="@document_id"/>, <xsl:value-of select="$i18n/l/location"/>: <xsl:value-of
+                <xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:value-of select="$i18n/l/location"/>: <xsl:value-of
         select="location"/>, <xsl:value-of select="$i18n/l/created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$i18n/l/owned_by"/> <xsl:call-template name="ownerfullname"/></xsl:attribute>
                 <a>
                 <xsl:choose>
