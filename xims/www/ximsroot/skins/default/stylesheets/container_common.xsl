@@ -659,6 +659,9 @@ select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template 
                             <xsl:when test="symname_to_doc_id != ''">
                                 <xsl:value-of select="concat($goxims_content, symname_to_doc_id, '?sb=',$sb,';order=',$order,';m=',$m)"/>
                             </xsl:when>
+                            <xsl:when test="starts-with(location,'/')"><!--  Treat links relative to '/' as relative to the current SiteRoot -->
+                                <xsl:value-of select="concat($goxims_content, '/', /document/context/object/parents/object[@parent_id=1]/location, location)"/>
+                            </xsl:when>
                             <xsl:otherwise>
                                 <xsl:value-of select="location"/>
                             </xsl:otherwise>
