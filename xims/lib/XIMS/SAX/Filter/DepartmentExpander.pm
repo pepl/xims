@@ -28,7 +28,7 @@ sub end_element {
     my $self = shift;
     my $data = shift;
     $self->SUPER::end_element( $data );
-    if ( $data->{Name} eq "context" ) {
+    if ( defined $data->{LocalName} and $data->{LocalName} eq "context" ) {
         my $ol = {LocalName => "objectlist" };
         $ol->{NamespaceURI} = $data->{NamespaceURI};
         $ol->{Prefix} = $data->{Prefix};
@@ -70,7 +70,7 @@ sub handle_data {
         $frag = $parser->parse_xml_chunk( $fragment );
     };
     unless ( defined $frag ) {
-        XIMS::Debug( 2, "no fragment found!!!! " . $@ );
+        XIMS::Debug( 3, "no valid body fragment found" );
         return ;
     }
     my $generator = XML::Generator::PerlData->new( Handler => $self->{Handler} );
