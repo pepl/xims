@@ -138,13 +138,13 @@ sub parse_httpd_conf {
     my $self = shift;
     open(CONF, $self->httpd_conf()) || die "Can't open " . $self->httpd_conf() . ": $!";
     while (<CONF>) {
-        if ( /^\s*DocumentRoot\s+["|']?([a-zA-Z\/]+)["|']?/) {
+        if ( /^\s*DocumentRoot\s+["|']?([\w\/.-_]+)["|']?/) {
             $self->{ApacheDocumentRoot} = $1;
         }
-        if ( /^\s*User\s+["|']?([a-zA-Z\/]+)["|']?/) {
+        if ( /^\s*User\s+["|']?([\w.!@#$%^&*()+=-]+)["|']?/) {
             $self->{ApacheUser} = $1;
         }
-        if ( /^\s*Group\s+["|']?([a-zA-Z\/]+)["|']?/) {
+        if ( /^\s*Group\s+["|']?([\w.!@#$%^&*()+=-]+)["|']?/) {
             $self->{ApacheGroup} = $1;
         }
         if ( /^\s*Include\s+["|']?\/usr\/local\/xims\/conf\/ximshttpd.conf["|']?/) {
