@@ -719,14 +719,16 @@ sub __filter_granted_ids {
     return () unless scalar( @priv_data ) > 0;
 
     my @ids;
+    my %seen = ();
     for ( @priv_data ) {
         # check for explicit lockout of a user, where he is denied access to
         # objects where he would have privileges from a role grant but is
         # denied because of a grant with privilege_mask '0'
         if ( not ($_->{'objectpriv.grantee_id'} == $user->id() and not defined $_->{'objectpriv.privilege_mask'}) ) {
-            push (@ids, $_->{'objectpriv.content_id'});
+            push (@ids, $_->{'objectpriv.content_id'}) unless $seen{$_->{'objectpriv.content_id'}}++;
         }
     };
+
     return @ids;
 }
 
