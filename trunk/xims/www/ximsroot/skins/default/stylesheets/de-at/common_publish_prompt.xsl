@@ -45,8 +45,8 @@
                                             veröffentlicht
                                         </strong>
                                         <xsl:if test="published/text()='1'">
-                                            unter <br/><a href="{$publishingroot}{$absolute_path}" target="_new">
-                                                <xsl:value-of select="concat($publishingroot,$absolute_path)"/></a>
+                                            unter <br/><a href="{$published_path}" target="_new">
+                                                <xsl:value-of select="$published_path"/></a>
                                         </xsl:if>
                                     </td>
                                 </tr>

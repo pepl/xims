@@ -11,6 +11,37 @@
     <!-- $Id$ -->
 <xsl:param name="id"/>
 
+<xsl:variable name="objecttype">
+    <xsl:value-of select="/document/context/object/object_type_id"/>
+</xsl:variable>
+<xsl:variable name="publish_gopublic">
+    <xsl:value-of select="/document/object_types/object_type[@id=$objecttype]/publish_gopublic"/>
+</xsl:variable>
+<xsl:variable name="published_path_base">
+    <xsl:choose>
+        <xsl:when test="$resolvereltositeroots = 1 and $publish_gopublic = 0">
+            <xsl:value-of select="$absolute_path_nosite"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="$absolute_path"/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+<xsl:variable name="object_path">
+    <xsl:value-of select="$published_path_base"/>
+</xsl:variable>
+<xsl:variable name="published_path">
+    <xsl:choose>
+        <xsl:when test="$publish_gopublic = 0">
+            <xsl:value-of select="concat($publishingroot,$object_path)"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="concat($gopublic_content,$object_path)"/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
+
+
 <xsl:template name="head">
         <head>
             <title>
