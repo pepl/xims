@@ -167,11 +167,6 @@ CREATE TABLE ci_documents
  ,symname_to_doc_id INTEGER      REFERENCES ci_documents( id )
                                  ON DELETE cascade
  ,position          INTEGER
- ,lft               INTEGER      NOT NULL
-                                 CONSTRAINT ci_doc_lft_chk CHECK(lft > 0)
- ,rgt               INTEGER      NOT NULL
-                                 CONSTRAINT ci_doc_rgt_chk CHECK(rgt > 1)
-                                 CONSTRAINT ci_doc_lftrgt_chk CHECK(rgt > lft)
  )
 ;
 
@@ -187,13 +182,6 @@ COMMENT ON COLUMN ci_documents.position
 CREATE INDEX ci_documents_par_id_idx
        ON ci_documents ( parent_id )
 ;
-CREATE INDEX ci_documents_lft_idx
-       ON ci_documents ( lft )
-;
-CREATE INDEX ci_documents_rgt_idx
-       ON ci_documents ( rgt )
-;
-
 
 \echo creating table 'ci_content'
 CREATE TABLE ci_content
@@ -540,9 +528,6 @@ GRANT INSERT, UPDATE, DELETE
 
 -- add default data (object types, data formats, languages, root folder, ...)
 \i defaultdata.sql
-
--- add the nested set triggers, functions and rule for inserts, deletes and updates
-\i nested_set_triggers_and_functions.sql
 
 -- commit
 END WORK;
