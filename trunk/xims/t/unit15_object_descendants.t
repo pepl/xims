@@ -1,23 +1,29 @@
-use Test;
+use Test::More tests => 17;
 use strict;
 use lib "../lib", "lib";
+use XIMS;
 use XIMS::Test;
 use XIMS::User;
-use XIMS::Object;
 use XIMS::SiteRoot;
 use XIMS::Folder;
 #use Data::Dumper;
 
 BEGIN {
-    plan tests => 7;
+    use_ok('XIMS::Object');;
 }
 
 # fetch the 'root' container
 my $root = XIMS::Object->new( id => 1 );
 
-ok( $root );
+isa_ok( $root, 'XIMS::Object' );
 
 my $user = XIMS::User->new( id => 1 );
+my $admin = XIMS::User->new( id => 2 );
+my $user_foo = XIMS::User->new();
+
+isa_ok( $user, 'XIMS::User', 'user' );
+isa_ok( $admin, 'XIMS::User', 'admin' );
+isa_ok( $user_foo, 'XIMS::User', 'user_foo' );
 
 my $testsite = XIMS::SiteRoot->new(
                                     User => $user,
@@ -27,24 +33,43 @@ my $testsite = XIMS::SiteRoot->new(
                                     title => 'testsite',
                                   );
 
-$testsite->create();
-ok ( $testsite->update() );
+isa_ok( $testsite, 'XIMS::SiteRoot' );
+
+ok ( $testsite->create(), 'create testsite') ;
+
+ok ( $testsite->update(), 'update testsite');
 
 my $depth = 5;
-ok ( _create_folder_hierarchy( $testsite, $depth ) );
+
+ok ( _create_folder_hierarchy( $testsite, $depth ), 'create folder-hierarchy' );
 
 my @all_descendants = $testsite->descendants();
+is( scalar( @all_descendants ), $depth, 'descendants' );
 
-ok ( scalar( @all_descendants ) == $depth );
 
 my ($d_count, $levels) = $testsite->descendant_count;
+is( $d_count, scalar( @all_descendants ), 'descendant_count -- count' );
+is( $levels, $depth, 'descendant_count -- levels' );
 
-ok( $d_count == scalar( @all_descendants ) );
+my @d_adm_granted = $testsite->descendants_granted(User => $admin);
 
-ok( $levels == $depth);
+is ( scalar( @d_adm_granted ), $depth, 'descendants_granted as admin (list context)' );
+isa_ok ($testsite->descendants_granted(User => $admin)
+       , 'XIMS::Object'
+       , 'descendants_granted as admin (scalar context)'
+       ); 
 
-ok( $testsite->delete() );
+my @d_granted     = $testsite->descendants_granted( User => $user );
+is ( scalar( @d_granted ), $depth, 'descendants_granted as user (list context)' );
 
+my @d_foo_granted = $testsite->descendants_granted( User => $user_foo );
+is ( scalar( @d_foo_granted ), 0, 'descendants_granted as user foo (list context)' );
+
+ok( $testsite->delete(), 'delete testsite' );
+
+
+
+# helpers
 sub _create_folder_hierarchy {
     my $start_object = shift;
     my $depth = shift;
@@ -61,6 +86,10 @@ sub _create_folder_hierarchy {
                                             department_id => $start_object->document_id(),
                                           );
         $testfolder->create();
+        $testfolder->grant_user_privileges( grantee => $user
+                                          , grantor => $admin
+                                          , privmask => XIMS::Privileges::MODIFY() 
+                                          );
         $parent_id = $testfolder->document_id();
         $current_id = $testfolder->id();
     }
