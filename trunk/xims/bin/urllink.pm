@@ -5,7 +5,7 @@
 package urllink;
 
 use strict;
-use vars qw( $VERSION @params );
+use vars qw( $VERSION @ISA );
 
 use XIMS::CGI;
 
@@ -16,7 +16,7 @@ use XIMS::CGI;
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 # inheritation information
-@urllink::ISA = qw( XIMS::CGI );
+@ISA = qw( XIMS::CGI );
 
 # the names of pushbuttons in forms or symbolic internal handler
 # each application should register the events required, even if they are
@@ -31,8 +31,8 @@ sub registerEvents {
                                     create
                                     edit
                                     store
-                                    del
-                                    del_prompt
+                                    delete
+                                    delete_prompt
                                     publish
                                     publish_prompt
                                     unpublish
@@ -43,9 +43,6 @@ sub registerEvents {
                                    )
                                 );
 }
-
-# parameters recognized by the script
-@params = qw( id parid name title depid symid delforce del);
 
 # END GLOBAL SETTINGS
 # #############################################################################

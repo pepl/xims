@@ -23,12 +23,12 @@ sub registerEvents {
           create
           edit
           store
-          del
-          del_prompt
+          delete
+          delete_prompt
           obj_acllist
           obj_aclgrant
           obj_aclrevoke
-          publish 
+          publish
           publish_prompt
           unpublish
           )
@@ -42,12 +42,14 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
 
+    return 0 if $self->SUPER::event_default( $ctxt );
+
     # not yet reimplemented
     #$ctxt->properties->content->children->level( undef );
 
     $self->expand_attributes( $ctxt );
 
-    return $self->SUPER::event_default( $ctxt );
+    return 0;
 }
 
 sub event_store {
