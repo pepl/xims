@@ -23,7 +23,8 @@ use XIMS;
                    'Language',
                    'ObjectPriv',
                    'ObjectTypePriv',
-                   'MimeType'
+                   'MimeType',
+                   'QuestionnaireResult'
                     );
 
 # this is the master list of all
@@ -163,10 +164,18 @@ use XIMS;
     MimeType =>
              [
               'mimetype.id',
-
               'mimetype.data_format_id',
               'mimetype.mime_type'
              ],
+    QuestionnaireResult =>
+             [
+              'questionnaireresult.document_id',
+              'questionnaireresult.tan',
+              'questionnaireresult.question_id',
+              'questionnaireresult.answer',
+              'questionnaireresult.answer_timestamp',
+              'questionnaireresult.id'
+             ]
 );
 
 my @oprops = ( @{$Properties{Document}}, @{$Properties{Content}} );
