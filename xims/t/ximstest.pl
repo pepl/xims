@@ -64,7 +64,7 @@ my %conf_prompts = (
                           var   => \$Conf{DBUser},
                           re    => '\w+',
                           error => 'You must enter the database username for XIMS to access the database.',
-                          default => $Conf{DBUser} || 'ximsrun',
+                          default => $Conf{DBUser} || 'ximsadm',
                        },
     e_db_password    => { text  => 'Database Password',
                           var   => \$Conf{DBPassword},
@@ -183,7 +183,7 @@ sub test_loop {
         
 sub prompt {
     my $def = shift;
-    #warn Dumper( $def);	
+    #warn Dumper( $def);    
     print $def->{text} . "\n";
     if ( $def->{default} ) {
         print '[' . $def->{default} . ']';
