@@ -1633,7 +1633,9 @@ sub body_ref_objects {
     my $parser = XML::LibXML->new();
     my $chunk;
     eval {
-        my $data = XML::LibXML::encodeToUTF8( XIMS::DBENCODING(), $body );
+        my $data = ( length XIMS::DBENCODING() and XIMS::DBENCODING() !~ /UTF-?8/i )
+                 ? XML::LibXML::encodeToUTF8( XIMS::DBENCODING(), $body )
+                 : $body;
         $chunk = $parser->parse_xml_chunk( $data );
     };
     if ( $@ ) {
