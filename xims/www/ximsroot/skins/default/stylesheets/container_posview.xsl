@@ -12,17 +12,7 @@
 
 <xsl:template match="/document/context/object">
     <html>
-        <head>
-            <title><xsl:value-of select="$i18n/l/Position_object"/> '<xsl:value-of select="parents/object[@id=/document/context/object/@parent_id]/title"/>' - XIMS</title>
-            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-            <script type="text/javascript">
-                function storeBack(value) {
-                    window.opener.document.<xsl:value-of select="$sbfield"/>.value=value;
-                    window.opener.document.<xsl:value-of select="substring-before($sbfield, '.')"/>.submit();
-                    window.close();
-                }
-            </script>
-        </head>
+        <xsl:call-template name="head_default"/>
         <body>
             <p align="right"><a href="javascript:window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
             <p>
@@ -64,6 +54,22 @@
             <xsl:with-param name="iter" select="$iter + 1"/>
         </xsl:call-template>
     </xsl:if>
+</xsl:template>
+
+<xsl:template name="head_default">
+    <head>
+        <title><xsl:value-of select="$i18n/l/Position_object"/> '<xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/title"/>' - XIMS</title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script type="text/javascript">
+            function storeBack(value) {
+                window.opener.document.<xsl:value-of select="$sbfield"/>.value=value;
+                window.opener.document.<xsl:value-of select="substring-before($sbfield, '.')"/>.submit();
+                window.close();
+            }
+        </script>
+    </head>
 </xsl:template>
 
 </xsl:stylesheet>

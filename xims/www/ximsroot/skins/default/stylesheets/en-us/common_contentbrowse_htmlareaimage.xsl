@@ -20,7 +20,8 @@
                     Type in a path to an image
                 </td>
                 <td>
-                   <input type="text" name="imgpath" size="60">
+                    <input type="text" name="imgpath" size="60">
+<!--
                         <xsl:choose>
                             <xsl:when test="$save_path = $absolute_path_nosite">
                                 <xsl:attribute name="value"></xsl:attribute>
@@ -32,6 +33,8 @@
                                 <xsl:attribute name="value"><xsl:value-of select="concat('..',$save_path)"/></xsl:attribute>
                             </xsl:otherwise>
                         </xsl:choose>
+-->
+
                     </input>
                 </td>
             </tr>

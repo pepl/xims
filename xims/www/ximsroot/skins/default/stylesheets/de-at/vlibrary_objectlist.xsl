@@ -11,7 +11,7 @@
     <xsl:import href="container_common.xsl"/>
     <xsl:import href="../vlibrary_common.xsl"/>
     <xsl:import href="../vlibrary_objectlist.xsl"/>
-    <xsl:output method="xml"
+    <xsl:output method="html"
                 encoding="utf-8"
                 media-type="text/html"
                 doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
