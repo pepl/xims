@@ -476,9 +476,11 @@ sub find_object_id {
     my %args = @_;
     my @ids;
     my $criteria = $args{criteria};
-    return unless length $criteria;
+    $args{orderby} ||= 'ci_content.last_modification_timestamp DESC';
 
-    my $query = "SELECT ci_documents.id FROM ci_documents, ci_content WHERE ci_content.document_id = ci_documents.id AND $criteria";
+    my $query = "SELECT ci_documents.id FROM ci_documents, ci_content WHERE ci_content.document_id = ci_documents.id";
+    $query .= " AND $criteria" if (defined $criteria and length $criteria);
+    $query .= " ORDER BY " . $args{orderby} . " ";
     if ( exists $args{rowlimit} and $args{rowlimit} > 0 ) {
         $args{offset} ||= '0';
         if ( $self->{RDBMSClass} eq 'Oracle' ) {
