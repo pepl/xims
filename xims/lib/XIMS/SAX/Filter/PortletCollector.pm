@@ -97,9 +97,15 @@ sub handle_data {
         #                OBJECT_TYPE_ID LOB_LENGTH POSITION);
         #$param{-columns} = $cols;
         my $direct_filter = $self->get_direct_filter();
-        @children = $object->children_granted( %childrenargs, %{$direct_filter}, marked_deleted => undef, limit => $self->get_latest(), order => 'last_modification_timestamp DESC' );
+        my $method = 'children_granted';
+        my $depth = $self->get_depth();
+        if ( defined $depth and $depth > 1 ) {
+            $method = 'descendants_granted';
+            $childrenargs{maxlevel} = $depth;
+        }
+        @children = $object->$method( %childrenargs, %{$direct_filter}, marked_deleted => undef, limit => $self->get_latest(), order => 'last_modification_timestamp DESC' );
         if ( @children  and scalar( @children ) ) {
-            XIMS::Debug( 6, "found n = " . scalar( @children ) . " child objects" );
+            XIMS::Debug( 6, "found n = " . scalar( @children ) . " objects" );
             my $location_path;
             foreach my $o ( @children ) {
                 if ( $o->data_format->name() eq 'URL' ) {
@@ -193,28 +199,23 @@ sub get_latest {
     return undef;
 }
 
-
-# not yet rewritten code and thus currently unused code ahead
-
-sub get_level {
+sub get_depth {
     my $self = shift;
     my $fragment = $self->get_data_fragment;
     my $depth;
     my ($content) = grep {$_->nodeName eq "content" } $fragment->childNodes;
     if ( $content ) {
-        ($depth) = $content->getChildrenByTagName( "depth" );
+        $depth = $content->getChildrenByTagName( "depth" )->string_value();
     }
-    else {
-        ($depth) = grep {$_->nodeName eq "depth" } $fragment->childNodes;
+    if ( defined $depth and $depth ne '0' ) {
+        XIMS::Debug( 6, "got depth $depth" );
+        return $depth;
     }
-    if ( defined $depth ) {
-        XIMS::Debug( 6, "have depth level" );
-        my $level = $depth->getAttribute( "level" );
-        $level ||= 1; # ignore invalid results
-        return $level;
-    }
-    return 0;
+    return undef;
 }
+
+# not yet rewritten code and thus currently unused code ahead
+
 sub build_or_filter {
     my $self = shift;
     my @tags = @_;
