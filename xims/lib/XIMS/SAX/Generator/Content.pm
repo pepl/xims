@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -48,20 +48,24 @@ sub prepare {
 
     # fun with content objects
     if ( $ctxt->object() ) {
+        $doc_data->{context}->{object} = {$ctxt->object->data()};
         # PHISH NOTE:
         # the escape body thing cannot be resolved otherwise, since
         # the default should be the filter set(!), we need a flag to
         # remove that filter.
         my %encargs;
         $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
-        if ( not defined $ctxt->properties->content->escapebody()
-             or $ctxt->properties->content->escapebody() == 0 ) {
+        if ( not $ctxt->properties->content->escapebody() ) {
                  push ( @{$self->{FilterList}},
                   XML::Filter::CharacterChunk->new(%encargs,
                                                    TagName=>[qw(body abstract)]) );
         }
 
-        $doc_data->{context}->{object} = {$ctxt->object->data()};
+        # hmmm, does this depend on the libxml version? not needed at bruce, but at stomper...
+        #if ( not $ctxt->properties->content->dontescapestringprops() ) {
+        #    $doc_data->{context}->{object}->{title} = XIMS::xml_escape( $doc_data->{context}->{object}->{title} );
+        #    $doc_data->{context}->{object}->{keywords} = XIMS::xml_escape( $doc_data->{context}->{object}->{keywords} );
+        #}
 
         $self->_set_parents( $ctxt, $doc_data, \%object_types, \%data_formats );
 
@@ -237,8 +241,10 @@ sub _set_children {
         my $conditions = 'c.document_id = d.id AND d.parent_id = ?';
         my @values = ( $object->document_id() );
         if ( not $ctxt->session->user->admin() ) {
+            my @userids = ( $userid, $ctxt->session->user->role_ids());
             $tables .= ', ci_object_privs_granted p';
-            $conditions .= ' AND p.content_id = c.id AND p.privilege_mask >= 1';
+            $conditions .= ' AND p.content_id = c.id AND p.privilege_mask >= 1 AND p.grantee_id IN (' . join(',', map { '?' } @userids) . ')';
+            push @values, @userids;
         }
         if ( scalar @object_type_ids > 0 ) {
             $tables .= ', ci_object_types ot';
@@ -266,8 +272,7 @@ sub _set_children {
         }
 
         if ( not $ctxt->session->user->admin() ) {
-            my @uid_list = $userid;
-            push( @uid_list, $ctxt->session->user->role_ids() );
+            my @uid_list = ($userid, $ctxt->session->user->role_ids());
             my @priv_data = $object->data_provider->getObjectPriv( content_id => \@childids,
                                                              grantee_id => \@uid_list,
                                                              properties => [ 'privilege_mask', 'content_id' ] );
