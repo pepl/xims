@@ -59,31 +59,17 @@ sub event_init {
     return $self->event_access_denied( $ctxt ) unless $ctxt->session->user();
     return unless $ctxt->object(); # no object-ACL-check needed if we do not have a content object
 
-    # ACL check inlined here.
-    my $do_create = 0;
-    my $privmask;
-
+    # ACL check
     if ( length $self->checkPush('create')
          || ( length $self->checkPush('store')
               and length $self->param('parid') ) ) {
 
-
-         my $parent = XIMS::Object->new( id => $self->param('parid'), User => $ctxt->session->user() );
-
-         # still needed?
-         $ctxt->parent( $parent );
-
-         $privmask = $ctxt->session->user->object_privmask( $parent );
-         $do_create = 1;
-    }
-    else {
-        $privmask = $ctxt->session->user->object_privmask( $ctxt->object() );
-    }
-
-    if ( $do_create == 1 ) {
+        $ctxt->parent( $ctxt->object() ); # store for serialization
+        my $privmask = $ctxt->session->user->object_privmask( $ctxt->object() );
         return $self->event_access_denied( $ctxt ) unless $privmask & XIMS::Privileges::CREATE();
     }
     else {
+        my $privmask = $ctxt->session->user->object_privmask( $ctxt->object() );
         return $self->event_access_denied( $ctxt ) unless $privmask & XIMS::Privileges::VIEW();
     }
 }
@@ -170,23 +156,13 @@ sub event_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $privmask;
+    # check for CREATE privilege is done in event_init
+
     my $r_type = $self->resource_type( $ctxt );
     return $self->event_access_denied( $ctxt ) unless defined( $r_type );
 
     $ctxt->properties->application->style( "create") ;
-    $ctxt->properties->application->styleprefix( lc($self->param("objtype")) );
 
-    return $self->event_access_denied( $ctxt ) unless defined( $self->param('parid') );
-
-    my $parent = XIMS::Object->new( id => $self->param('parid'), User => $ctxt->session->user() );
-
-    $ctxt->parent( $parent );
-
-    $privmask = $ctxt->session->user->object_privmask( $parent );
-    return $self->event_access_denied( $ctxt ) unless $privmask and $privmask & XIMS::Privileges::CREATE();
-
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -200,11 +176,7 @@ sub event_store {
 
     my $object = $ctxt->object();
 
-    my $creating;
-    my $objtype = $self->param( 'objtype' );
-
-    $creating = 1 if ($self->param( 'parid' ) and $objtype);
-    if ( not defined $creating ) {
+    if ( not $ctxt->parent() ) {
         XIMS::Debug( 6, "unlocking object" );
         $object->unlock();
         XIMS::Debug( 4, "updating existing object" );
@@ -329,6 +301,10 @@ sub selectStylesheet {
     my $stylefilename = $styleprefix . '_' . $stylesuffix . '.xsl';
 
     if ( $ctxt->session->user->id() eq XIMS::PUBLICUSERID() ) {
+        #
+        # check for $ctxt->style_id as path to published
+        # stylesheet directory here before using public/
+        #
         my $filepath = $stylepath . "public/" . $stylefilename;
         if ( -f $filepath and -r $filepath ) {
             XIMS::Debug( 4, "using public-user-stylesheet" );
@@ -611,7 +587,6 @@ sub init_store_object {
     my $object = $ctxt->object();
     my $parent;
 
-    my $parid      = $self->param( 'parid' );
     my $objtype    = $self->param( 'objtype' );
     my $location   = $self->param( 'name' );
     my $title      = $self->param( 'title' );
@@ -638,7 +613,7 @@ sub init_store_object {
         $existing_flag = 1;
         $parent = XIMS::Object->new( document_id => $object->parent_id );
     }
-    elsif ( defined $ctxt->parent() and length $objtype and length $parid ) {
+    elsif ( defined $ctxt->parent() and length $objtype ) {
         XIMS::Debug( 4, "storing new object" );
 
         $parent = $ctxt->parent();
@@ -1872,6 +1847,8 @@ sub event_search {
         }
 
         my $qb = $qbdriver->new( { search => $search, allowed => q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} } );
+
+        # refactor! build() should not be needed and only $qb should be passed
 
         #'# just for emacs' font-lock...
         my $qbr = $qb->build( [qw(title abstract keywords body)] );
