@@ -72,9 +72,9 @@ sub ContentInterface()            { 'content' }     # Name of the content interf
 sub DefaultSkin()                 { 'default' }     # Name of the skin used per default. Relative path under XIMSRoot()/skins/
                                                     # Do not change unless you know what you are doing!
 
-sub ResolveRelToSiteRoots()       { '0' }           # <'0'|'1'>
+sub ResolveRelToSiteRoots()       { '1' }           # <'0'|'1'>
                                                     # Set this to '1' if you want to symlink OU's directly under
-                                                    # ApacheDocumentRoot()
+                                                    # ApacheDocumentRoot() or use virtual hosts
                                                     # Do not change unless you know what you are doing!
 
 sub SearchResultRowLimit()        { '20' }          # Number of found objects displayed per page at event_search

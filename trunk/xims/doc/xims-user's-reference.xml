@@ -223,6 +223,21 @@
                     <para>the <acronym>HTML</acronym> -document-title your browser presents</para>
                 </listitem>
             </itemizedlist>
+
+            <section>
+                <title>SiteRoot URL/Path</title>
+
+                <para>The value of the <literal>SiteRoot URL</literal> should be the location where the published content inside the SiteRoot will be available
+                after its publication. It will be used by the user interface for linking to the location of the published objects. For example, let us assume we
+                have an object with the XIMS path <filename>/xims/documentation/xims-user&#39;s-reference.xml</filename>. If the Siteroot with the location
+                <filename>/xims</filename> has a <literal>SiteRoot URL</literal> of <literal>http://xims.info</literal>, users will be directed to
+                <literal>http://xims.info/documentation/xims-user&#39;s-reference.xml</literal> if <literal><varname>$resolvereltositeroots</varname></literal>
+                in <filename>www/ximsroot/stylesheets/config.xsl</filename> is &#39;1&#39;, to <literal>http://xims.info<filename>/xims</filename>/documentation/xims-user&#39;s-reference.xml</literal>
+                if it is &#39;0&#39;. The <literal>SiteRoot URL</literal> can also be a relative URI, like <literal>/ximspubroot</literal> for example. Most
+                users who use absolute <literal>SiteRoot URLs</literal> and do virtual hosts will want <varname>$resolvereltositeroots</varname> to be
+                &#39;1&#39;. During site development they can use a relative <application><literal>SiteRoot URL</literal></application> like <literal>/ximspubroot/xims</literal>
+                for example and later change it to the absolute one with going online. <literal>SiteRoot URLs</literal> must not have a trailing slash.</para>
+            </section>
         </section>
 
         <section>
@@ -443,13 +458,37 @@
             </section>
 
             <section>
+                <title>XML</title>
+
+                <para></para>
+            </section>
+
+            <section>
                 <title>sDocBookXML</title>
 
                 <para></para>
             </section>
 
             <section>
-                <title>XSL-Stylesheets</title>
+                <title>AxPointPresentation</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>XSL-Stylesheet</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>Text</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>CSS</title>
 
                 <para></para>
             </section>
@@ -474,6 +513,12 @@
 
             <section>
                 <title>DepartmentRoot</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>SiteRoot</title>
 
                 <para></para>
             </section>
