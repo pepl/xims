@@ -12,8 +12,7 @@ XIMS Installation Guide
       and Expat (http://sourceforge.net/projects/expat/) C libraries
 
       Note: Some parts of XML::LibXML (<= 1.56) break with libxml2 >= 2.6.0.
-      We recommend to use libxml 2.5.11. Hopefully, XML::LibXML 1.57 will
-      fix this.
+      XML::LibXML 1.57 fixes this.
 
     * XIMS currently supports either
       Oracle (>=8.1.6) or PostgreSQL (>=7.3)
