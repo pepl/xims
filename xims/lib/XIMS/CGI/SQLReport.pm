@@ -55,6 +55,168 @@ sub event_default {
     my ( $self, $ctxt ) = @_;
 
     return 0 if $self->SUPER::event_default( $ctxt );
+    return $self->_generate_body_from_sql( $ctxt);
+}
+
+sub event_edit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    $self->expand_attributes( $ctxt );
+    $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
+
+    return $self->SUPER::event_edit( $ctxt );
+}
+
+sub event_store {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    return 0 unless $self->init_store_object( $ctxt )
+                    and defined $ctxt->object();
+
+    my $body = $self->param( 'body' );
+    if ( defined $body and length $body ) {
+        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+            $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
+        }
+        my $object = $ctxt->object();
+        $body = XIMS::xml_escape( $body );
+        $body =~ /FROM\s(.*?)($|\sWHERE\s)/i;
+        if ( $TESTGRANTEDSCHEMAS == 1 ) {
+            return 0 unless $self->_test_granted_schemata( $ctxt, $1 );
+        }
+        $ctxt->object->body( $body );
+    }
+
+    my $skeys  = $self->param( 'skeys' );
+    if ( defined $skeys ) {
+        $skeys =~ s/\s+//g;
+        $ctxt->object->attribute( skeys => $skeys );
+    }
+
+    return $self->SUPER::event_store( $ctxt );
+}
+
+
+sub event_plain {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    return 0 if $self->_generate_body_from_sql( $ctxt);
+
+    my $df = XIMS::DataFormat->new( id => $ctxt->object->data_format_id() );
+    my $mime_type = $df->mime_type;
+
+    my $charset;
+    if (! ($charset = XIMS::DBENCODING )) { $charset = "UTF-8"; }
+    print $self->header( -Content_type => $mime_type."; charset=".$charset );
+    print $ctxt->object->body();
+    $self->skipSerialization(1);
+
+    return 0;
+}
+
+sub event_publish_prompt {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
+    return $self->event_access_denied( $ctxt )
+           unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
+
+    $ctxt->properties->application->styleprefix('common_publish');
+    $ctxt->properties->application->style('prompt');
+
+    return 0;
+}
+
+sub event_publish {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user = $ctxt->session->user();
+    my $object = $ctxt->object();
+    my $objprivs = $user->object_privmask( $object );
+
+    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
+        if ( not $object->publish() ) {
+            XIMS::Debug( 2, "publishing object '" . $object->title() . "' failed" );
+            $self->sendError( $ctxt, "Publishing object '" . $object->title() . "' failed." );
+            return 0;
+        }
+
+        $object->grant_user_privileges (  grantee         => XIMS::PUBLICUSERID(),
+                                          privilege_mask  => ( XIMS::Privileges::VIEW ),
+                                          grantor         => $user->id() );
+    }
+    else {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    $self->redirect( $self->redirect_path( $ctxt ) );
+    return 1;
+}
+
+sub event_unpublish {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user = $ctxt->session->user();
+    my $object = $ctxt->object();
+    my $objprivs = $user->object_privmask( $object );
+
+    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
+        if ( not $object->unpublish() ) {
+            XIMS::Debug( 2, "unpublishing object '" . $object->title() . "' failed" );
+            $self->sendError( $ctxt, "Unpublishing object '" . $object->title() . "' failed." );
+            return 0;
+        }
+
+        my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
+        $privs_object->delete();
+    }
+    else {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    $self->redirect( $self->redirect_path( $ctxt ) );
+    return 1;
+}
+
+sub _build_form_from_skeys {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my @skeys = @_;
+
+    return undef unless scalar @skeys > 0;
+
+    my $form = $self->start_form( -method => 'GET', -class => 'sform' );
+    my $origkey;
+    foreach my $skey ( @skeys ) {
+        # rename query params to avoid name clash with already used XIMS params
+        $origkey = $skey;
+        $skey = "sqlrep.$skey";
+        $form .= $self->div($self->strong( $origkey ),
+                            $self->textfield( -name => lc $skey,
+                                              -default => XIMS::decode( $self->param( lc $skey ) ),
+                                              -force => 1,
+                                              -size => 50,
+                                            )
+                           );
+    }
+
+    $form .= $self->submit(-name => 's',
+                           -value => 'Submit');
+    $form .= $self->endform();
+
+    return $form;
+}
+
+sub _generate_body_from_sql {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $ctxt = shift;
 
     # check for an SQL query in the body, return if none is found
     my $sql = XIMS::xml_unescape( $ctxt->object->body() );
@@ -213,142 +375,6 @@ sub event_default {
     }
 
     return 0;
-}
-
-sub event_edit {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    $self->expand_attributes( $ctxt );
-    $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
-
-    return $self->SUPER::event_edit( $ctxt );
-}
-
-sub event_store {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    return 0 unless $self->init_store_object( $ctxt )
-                    and defined $ctxt->object();
-
-    my $body = $self->param( 'body' );
-    if ( defined $body and length $body ) {
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
-        }
-        my $object = $ctxt->object();
-        $body = XIMS::xml_escape( $body );
-        $body =~ /FROM\s(.*?)($|\sWHERE\s)/i;
-        if ( $TESTGRANTEDSCHEMAS == 1 ) {
-            return 0 unless $self->_test_granted_schemata( $ctxt, $1 );
-        }
-        $ctxt->object->body( $body );
-    }
-
-    my $skeys  = $self->param( 'skeys' );
-    if ( defined $skeys ) {
-        $skeys =~ s/\s+//g;
-        $ctxt->object->attribute( skeys => $skeys );
-    }
-
-    return $self->SUPER::event_store( $ctxt );
-}
-
-sub event_publish_prompt {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
-    return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
-
-    $ctxt->properties->application->styleprefix('common_publish');
-    $ctxt->properties->application->style('prompt');
-
-    return 0;
-}
-
-sub event_publish {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $user = $ctxt->session->user();
-    my $object = $ctxt->object();
-    my $objprivs = $user->object_privmask( $object );
-
-    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
-        if ( not $object->publish() ) {
-            XIMS::Debug( 2, "publishing object '" . $object->title() . "' failed" );
-            $self->sendError( $ctxt, "Publishing object '" . $object->title() . "' failed." );
-            return 0;
-        }
-
-        $object->grant_user_privileges (  grantee         => XIMS::PUBLICUSERID(),
-                                          privilege_mask  => ( XIMS::Privileges::VIEW ),
-                                          grantor         => $user->id() );
-    }
-    else {
-        return $self->event_access_denied( $ctxt );
-    }
-
-    $self->redirect( $self->redirect_path( $ctxt ) );
-    return 1;
-}
-
-sub event_unpublish {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $user = $ctxt->session->user();
-    my $object = $ctxt->object();
-    my $objprivs = $user->object_privmask( $object );
-
-    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
-        if ( not $object->unpublish() ) {
-            XIMS::Debug( 2, "unpublishing object '" . $object->title() . "' failed" );
-            $self->sendError( $ctxt, "Unpublishing object '" . $object->title() . "' failed." );
-            return 0;
-        }
-
-        my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
-        $privs_object->delete();
-    }
-    else {
-        return $self->event_access_denied( $ctxt );
-    }
-
-    $self->redirect( $self->redirect_path( $ctxt ) );
-    return 1;
-}
-
-sub _build_form_from_skeys {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my @skeys = @_;
-
-    return undef unless scalar @skeys > 0;
-
-    my $form = $self->start_form( -method => 'GET', -class => 'sform' );
-    my $origkey;
-    foreach my $skey ( @skeys ) {
-        # rename query params to avoid name clash with already used XIMS params
-        $origkey = $skey;
-        $skey = "sqlrep.$skey";
-        $form .= $self->div($self->strong( $origkey ),
-                            $self->textfield( -name => lc $skey,
-                                              -default => XIMS::decode( $self->param( lc $skey ) ),
-                                              -force => 1,
-                                              -size => 50,
-                                            )
-                           );
-    }
-
-    $form .= $self->submit(-name => 's',
-                           -value => 'Submit');
-    $form .= $self->endform();
-
-    return $form;
 }
 
 sub _build_crits_from_skeys {
