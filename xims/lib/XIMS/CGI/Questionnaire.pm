@@ -157,7 +157,7 @@ sub event_store {
     }
       $object->body( $body , dontbalance => 1 );
     XIMS::Debug( 6, "body set, len: " . length($body) );
-    $ctxt->object()->title( $self->param( 'questionnaire_title' ) );
+    $ctxt->object()->title( $self->decode( $self->param( 'questionnaire_title' ) ) );
     return $self->SUPER::event_store( $ctxt );
 }
 
