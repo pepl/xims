@@ -350,7 +350,6 @@ sub getDOM {
     XIMS::Debug( 5, "called" );
     my $self    = shift;
     my $ctxt    = shift;
-
     my %handlerargs;
 
     my $generator = defined $ctxt->sax_generator() ? $ctxt->sax_generator() : undef;
@@ -364,7 +363,6 @@ sub getDOM {
 
     XIMS::Debug( 3, "NO SAX" ) unless $controller;
     my $dom = $controller->parse( $ctxt );
-
     XIMS::Debug( 5, "done" );
     return $dom;
 }
@@ -860,7 +858,7 @@ sub event_undelete {
     my $object = $ctxt->object();
 
     # test for a non deleted object in the current container with the same location
-    my $parent = XIMS::Object->new( id => $object->parent_id(), User => $ctxt->session->user() );
+    my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $ctxt->session->user() );
     my @children = $parent->children( location => $object->location() );
     my $gotactive;
     foreach my $child ( @children ) {
@@ -966,8 +964,7 @@ sub event_delete {
            unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
-    my $parentid = $object->parent_id(); # needed for redirection after deletion
-
+    my $parent_content_id = XIMS::Object->new( document_id => $object->parent_id() )->id(); # needed for redirection after deletion
     if ( $object->published() ) {
         XIMS::Debug( 3, "attempt to delete pub'd object" );
         $self->sendError( $ctxt, "Can't delete a published object, please unpublish first" );
@@ -1016,7 +1013,7 @@ sub event_delete {
     }
 
     XIMS::Debug( 4, "redirecting to the parent");
-    $self->redirect( $self->redirect_path( $ctxt, $parentid ) );
+    $self->redirect( $self->redirect_path( $ctxt, $parent_content_id ) );
     return 0;
 }
 
