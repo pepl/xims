@@ -116,7 +116,7 @@
                             <xsl:if test="$m='e'">
                                 <td width="134">
                                     <img src="{$sklangimages}options.png"
-                                            width="189"
+                                            width="221"
                                             height="20"
                                             alt="{$i18n/l/Options}"
                                             title="{$i18n/l/Options}"
@@ -197,7 +197,7 @@
                             <xsl:if test="$m='e'">
                                 <td width="134">
                                     <img src="{$sklangimages}options.png"
-                                            width="189"
+                                            width="221"
                                             height="20"
                                             alt="{$i18n/l/Options}"
                                             title="{$i18n/l/Options}"
@@ -287,7 +287,7 @@
                             <xsl:if test="$m='e'">
                                 <td width="134">
                                     <img src="{$sklangimages}options.png"
-                                            width="189"
+                                            width="221"
                                             height="20"
                                             alt="{$i18n/l/Options}"
                                             title="{$i18n/l/Options}"
@@ -374,7 +374,7 @@
                             <xsl:if test="$m='e'">
                                 <td width="134">
                                     <img src="{$sklangimages}options.png"
-                                            width="189"
+                                            width="221"
                                             height="20"
                                             alt="{$i18n/l/Options}"
                                             title="{$i18n/l/Options}"
@@ -461,7 +461,7 @@
                             <xsl:if test="$m='e'">
                                 <td width="134">
                                     <img src="{$sklangimages}options.png"
-                                            width="189"
+                                            width="221"
                                             height="20"
                                             alt="{$i18n/l/Options}"
                                             title="{$i18n/l/Options}"
@@ -548,7 +548,7 @@
                             <xsl:if test="$m='e'">
                                 <td width="134">
                                     <img src="{$sklangimages}options.png"
-                                            width="189"
+                                            width="221"
                                             height="20"
                                             alt="{$i18n/l/Options}"
                                             title="{$i18n/l/Options}"
