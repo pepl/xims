@@ -15,7 +15,8 @@ package XIMS;
 
     use XIMS::Config;
 
-    $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+#    $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+    $VERSION = 1.1;
 
     # test if this is a local script or if we are running under mod_perl
     $_MODPERL_ = $ENV{MOD_PERL} ? 1 : 0 ;
@@ -42,7 +43,7 @@ sub AUTHSTYLE()                 { $_CONFIG_->AuthStyle() }
 sub AUTHSERVER()                { $_CONFIG_->AuthServer() }
 sub CONTENTINTERFACE()          { "/" . $_CONFIG_->ContentInterface() }
 sub DBMS()                      { $_CONFIG_->DBMS() }
-sub DBMS_OPTION()               { $_CONFIG_->DBMS_OPTION() }
+sub QBDRIVER()                  { $_CONFIG_->QBDriver() }
 sub DBUSER()                    { $_CONFIG_->DBUser() }
 sub DBNAME()                    { $_CONFIG_->DBName() }
 sub DBPWD()                     { $_CONFIG_->DBPassword() }
@@ -55,7 +56,7 @@ sub ADMINROLEID()               { $_CONFIG_->AdminRoleID() }
 sub PUBLICUSERID()              { $_CONFIG_->PublicUserID() }
 sub AUTOINDEXFILENAME()         { $_CONFIG_->AutoIndexFilename() }
 sub AUTOINDEXEXPORTSTYLESHEET() { $_CONFIG_->AutoindexExportStylesheet() }
-sub RESOLVERELTOSITEROOTS()     { $_CONFIG_->ResolveRelToSiteRoots() } 
+sub RESOLVERELTOSITEROOTS()     { $_CONFIG_->ResolveRelToSiteRoots() }
 
 #  Utility methods
 
@@ -80,7 +81,7 @@ sub Debug {
     if ($level <= XIMS::DEBUGLEVEL() ) {
         if ( defined @_ and scalar(@_) == 1 ) {
             my @debug = @_;
-            $debug[-1] =~ s/\n|\s+/ /g; 
+            $debug[-1] =~ s/\n|\s+/ /g;
             my ( $module, $method ) ;
             ($module, undef, undef, $method) = caller(1);
             if ( $_MODPERL_ ) {
@@ -146,7 +147,7 @@ sub list {
     #  }
     #}
     #
-    return qw(DENIED VIEW WRITE DELETE PUBLISH ATTRIBUTES TRANSLATE CREATE MOVE LINK PUBLISH_ALL ATTRIBUTES_ALL 
+    return qw(DENIED VIEW WRITE DELETE PUBLISH ATTRIBUTES TRANSLATE CREATE MOVE LINK PUBLISH_ALL ATTRIBUTES_ALL
               DELETE_ALL GRANT GRANT_ALL OWNER MASTER);
 }
 
@@ -244,13 +245,13 @@ sub list {
                CREATE_USER DELETE_USER CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU );
 }
 
-# 
+#
 # 0x01 - 0x80: user-self-management
 #
 sub CHANGE_PASSWORD()           { return 0x00000001; } # user can change his password
 sub GRANT_ROLE()                { return 0x00000002; } # if users are role-masters of a role, they can grant/revoke other user/roles to/from his role
 
-# 
+#
 # 0x1000 - 0x800000: helpdesk-related user/role-management
 #
 sub RESET_PASSWORD()            { return 0x00001000; }
@@ -268,7 +269,7 @@ sub CHANGE_USER_NAME()          { return 0x00008000; }
 sub CREATE_USER()               { return 0x00009000; }
 sub DELETE_USER()               { return 0x0000a000; }
 
-# 
+#
 # 0x10000000 - 0x80000000: system-management related
 #
 sub CHANGE_SYSPRIVS_MASK()      { return 0x10000000; }
