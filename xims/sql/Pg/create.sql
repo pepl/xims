@@ -45,11 +45,12 @@ COMMENT ON COLUMN ci_languages.code
 
 \echo creating table 'ci_object_types'
 CREATE TABLE ci_object_types
- (id              SERIAL      PRIMARY KEY
- ,name            VARCHAR(40) NOT NULL
- ,is_fs_container SMALLINT DEFAULT 0
- ,is_xims_data    SMALLINT DEFAULT 0
- ,redir_to_self   SMALLINT DEFAULT 1
+ (id               SERIAL      PRIMARY KEY
+ ,name             VARCHAR(40) NOT NULL
+ ,is_fs_container  SMALLINT DEFAULT 0
+ ,is_xims_data     SMALLINT DEFAULT 0
+ ,redir_to_self    SMALLINT DEFAULT 1
+ ,publish_gopublic SMALLINT DEFAULT 0
  )
 ;
 

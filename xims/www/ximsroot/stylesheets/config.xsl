@@ -21,7 +21,6 @@
   <xsl:variable name="goxims_users">/goxims/users</xsl:variable>
   <xsl:variable name="xims_box"><xsl:value-of select="/document/context/session/serverurl"/></xsl:variable>
   <xsl:variable name="ximsroot"><xsl:value-of select="$xims_box"/>/ximsroot/</xsl:variable>
-  <xsl:variable name="publishingroot"><xsl:value-of select="/document/context/object/parents/object[@parent_id = '1' and @document_id != '1']/title"/></xsl:variable>
   <xsl:variable name="currentskin"><xsl:value-of select="/document/context/session/skin"/></xsl:variable>
   <xsl:variable name="defaultcss">skins/<xsl:value-of select="$currentskin"/>/stylesheets/default.css</xsl:variable>
   <xsl:variable name="resolvereltositeroots">1</xsl:variable>
