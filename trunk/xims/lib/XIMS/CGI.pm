@@ -313,7 +313,8 @@ sub selectStylesheet {
     my $styleprefix = $ctxt->properties->application->styleprefix();
     if ( not defined $styleprefix ) {
         if ( $stylesuffix ne 'error' ) {
-            $styleprefix = lc( $ctxt->object->object_type->name() );
+            $styleprefix = lc( $ctxt->object->object_type->fullname() );
+            $styleprefix =~ s/::/_/g;
         }
     }
     $styleprefix ||= 'common';
@@ -323,7 +324,7 @@ sub selectStylesheet {
 
     if ( $ctxt->session->user->id() eq XIMS::PUBLICUSERID() ) {
         #
-        # check for $ctxt->style_id as path to published
+        # check for $ctxt->object->style_id as path to published
         # stylesheet directory here before using public/
         #
         my $filepath = $stylepath . "public/" . $stylefilename;
@@ -1842,12 +1843,15 @@ sub event_search {
         #'# just for emacs' font-lock...
         my $qbr = $qb->build( [qw(title abstract keywords body)] );
         if ( defined $qbr->{criteria} and length $qbr->{criteria} ) {
-            my @objects = $ctxt->object->find_objects_granted( criteria => $qbr->{criteria},
-                                                               limit => $rowlimit,
-                                                               offset => $offset,
-                                                               properties => $qbr->{properties}, # not used currently
-                                                               order => $qbr->{order},
-                                                             );
+            my %param = (
+                        criteria => $qbr->{criteria},
+                        limit => $rowlimit,
+                        offset => $offset,
+                        order => $qbr->{order},
+                        );
+            $param{start_here} = $ctxt->object->document_id() if defined $self->param('start_here');
+
+            my @objects = $ctxt->object->find_objects_granted( %param );
 
             if ( not @objects ) {
                  $ctxt->session->warning_msg( "Query returned no objects!" );
