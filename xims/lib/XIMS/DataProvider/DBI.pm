@@ -565,11 +565,11 @@ sub get_descendant_infos {
     my %args = @_;
     return undef unless exists $args{parent_id};
 
-    my $desc_subquery = $self->_get_descendant_sql( $args{parent_id} );
+    my $desc_subquery = $self->_get_descendant_sql( $args{parent_id}, undef, undef, 1 );
     my $query = 'SELECT count(last_modification_timestamp), max(last_modification_timestamp) FROM ci_content WHERE document_id IN ( ' . $desc_subquery . ')';
     my $data = $self->{dbh}->fetch_select( sql => $query );
-    my @rv = ( @{$data}[0]->{COUNT} - 1, @{$data}[0]->{MAX} ); # NOTE: assumes that there is one content_child per document;
-                                                               #       may have to be changed in future!
+    my @rv = ( @{$data}[0]->{COUNT}, @{$data}[0]->{MAX} ); # NOTE: assumes that there is one content_child per document;
+                                                           #       may have to be changed in future!
     return  \@rv ;
 }
 
@@ -597,17 +597,22 @@ sub _get_descendant_sql {
     my $parent_id = shift;
     my $maxlevel = shift;
     my $getlevel = shift;
+    my $noorder = shift;
 
     my $levelproperty;
+    my $orderby;
     if ( $self->{RDBMSClass} eq 'Pg' ) {
+        $maxlevel ||= 0;
+        $orderby = "ORDER BY t.pos" unless defined $noorder;
         $levelproperty = 't.lvl,' if defined $getlevel;
-        return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', '". $parent_id . "', " . $maxlevel . ") AS t(id text, parent_id text, lvl int, pos int) WHERE t.id <> t.parent_id ORDER BY t.pos";
+        return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', '". $parent_id . "', " . $maxlevel . ") AS t(id text, parent_id text, lvl int, pos int) WHERE t.id <> t.parent_id $orderby";
     }
     elsif ( $self->{RDBMSClass} eq 'Oracle' ) {
         $levelproperty = 'level-1 lvl,' if defined $getlevel;
         my $levelcond = '';
         $levelcond = "AND level <= " . ($maxlevel + 1) if defined $maxlevel and $maxlevel > 0;
-        return "SELECT $levelproperty id FROM ci_documents WHERE id <> " . $parent_id . " $levelcond START WITH id = " . $parent_id . " CONNECT BY PRIOR id = parent_id ORDER SIBLINGS BY position";
+        $orderby = "ORDER SIBLINGS BY position" unless defined $noorder;
+        return "SELECT $levelproperty id FROM ci_documents WHERE id <> " . $parent_id . " $levelcond START WITH id = " . $parent_id . " CONNECT BY PRIOR id = parent_id $orderby";
     }
     else {
         XIMS::Debug( 1, "Unsupported RDBMSClass!" );
