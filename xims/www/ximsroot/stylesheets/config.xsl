@@ -27,4 +27,5 @@
   <xsl:variable name="defaultcss">skins/<xsl:value-of select="$currentskin"/>/stylesheets/default.css</xsl:variable>
   <xsl:variable name="resolvereltositeroots">0</xsl:variable>
   <xsl:variable name="organisation">The XIMS Project</xsl:variable>
+  <xsl:variable name="searchresultrowlimit">15</xsl:variable>
 </xsl:stylesheet>

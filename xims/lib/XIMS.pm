@@ -58,6 +58,7 @@ sub PUBLICUSERID()              { $_CONFIG_->PublicUserID() }
 sub AUTOINDEXFILENAME()         { $_CONFIG_->AutoIndexFilename() }
 sub AUTOINDEXEXPORTSTYLESHEET() { $_CONFIG_->AutoindexExportStylesheet() }
 sub RESOLVERELTOSITEROOTS()     { $_CONFIG_->ResolveRelToSiteRoots() }
+sub SEARCHRESULTROWLIMIT()      { $_CONFIG_->SearchResultRowLimit() }
 
 #  Utility methods
 
