@@ -8,8 +8,8 @@ __END__
 
 =head1 NAME
 
-Bundle::XIMS - Modules required to run XIMS content management
-system.
+Bundle::XIMS - Modules required to run the XIMS Web-Content Management
+System.
 
 =head1 SYNOPSIS
 
@@ -21,7 +21,7 @@ The bundle provides an easy way to install all of the modules required by
 XIMS.
 
 B<Note:> This bundle does not contain the modules that are optional in
-XIMS. No DB modules
+XIMS. No DBD::* modules for example.
 
 =head1 CONTENTS
 
@@ -52,6 +52,8 @@ DBIx::XHTML_Table -
 XML::Generator::DBI -
 XML::LibXML::Iterator -
 Array::Iterator -
+Archive::Zip -
+Text::Template -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
 # Net::LDAP -
