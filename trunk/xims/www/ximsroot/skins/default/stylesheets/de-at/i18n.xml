@@ -207,4 +207,14 @@
 <using>mit</using>
 <you_searched_for>Sie suchten nach</you_searched_for>
 <toggle_hls>Suchbegriff (nicht) hervorheben</toggle_hls>
+<!-- Begin BXE Add ons -->
+<Schema>Schema</Schema>
+<BXEConfig>BXE Config</BXEConfig>
+<CSS>CSS</CSS>
+<Browse_schema>Nach Validierungsschema Suchen</Browse_schema>
+<Browse_css>Nach CSS suchen</Browse_css>
+<Browse_BXEconfig>Nach BXE-Config Vorlage suchen</Browse_BXEconfig>
+<BXE_XPath>XPath zum Bearbeiten</BXE_XPath>
+<edit_with_BXE>Mit BXE editieren</edit_with_BXE>
+<!-- End BXE Add ons -->
 </l>
