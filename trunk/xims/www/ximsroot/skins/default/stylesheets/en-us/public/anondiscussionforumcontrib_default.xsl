@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 
 <xsl:import href="common.xsl"/>
-<xsl:import href="../../../../../anondiscussionforum_common.xsl"/>
+<xsl:import href="../../../../../stylesheets/anondiscussionforum_common.xsl"/>
 <xsl:output method="html" encoding="utf-8"/>
 <xsl:param name="request.uri"/>
 
