@@ -8,6 +8,8 @@ use strict;
 use vars qw( $VERSION @ISA );
 use text;
 
+use XIMS::DataFormat;
+
 # version string (for makemaker, so don't touch!)
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
@@ -32,7 +34,7 @@ sub registerEvents {
           publish_prompt
           unpublish
           cancel
-	  download
+          download
           )
         );
 }
@@ -55,7 +57,27 @@ sub event_download {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $type = $self->param('download');
-    $ctxt->properties->application->style( 'download_'.$type );
+
+    my $body = $ctxt->object->body();
+    my $filename = $ctxt->object->location;
+    $filename =~ s/\.[^\.]*$//;
+    my $mime_type = "text/". lc $type;
+    if ( $type =~ /Excel/i ) {
+        $body = join("\t",split(",",$ctxt->object->body()));
+        my $df = XIMS::DataFormat->new( name => 'XLS' );
+        $filename .= '.' . $df->suffix;
+        $mime_type = $df->mime_type;
+    }
+    else {
+        $filename .= '.' . lc $type;
+    }
+
+    # older browsers use the suffix of the URL for content-type sniffing,
+    # so we have to supply a content-disposition header
+    print $self->header( -type => $mime_type, '-Content-disposition' => "attachment; filename=$filename" );
+    print $body;
+    $self->skipSerialization(1);
+
     return 0;
 }
 
@@ -64,7 +86,7 @@ sub event_store {
     my ( $self, $ctxt ) = @_;
 
     my $number = $self->param( 'number' );
-    
+
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
 
@@ -80,7 +102,7 @@ sub event_store {
         $self->sendError( $ctxt, "Number of TANs not set!" );
         return 0;
     }
-    
+
     my $body = $object->create_TANs( $number );
 
     if ( length $body ) {
