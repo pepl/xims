@@ -21,15 +21,10 @@ XIMS Installation Guide
       respective client installed on your XIMS box.
 
       If you are using PostgreSQL, you have to have the tablefunctions in
-      contrib/tablefunc installed.
+      'contrib/tablefunc' installed.
 
-      You can install them for your source build PostgreSQL version using
-      a command like the following:
-
-      [root@host tablefunc]# make
-      [root@host tablefunc]# make install
-      [root@host tablefunc]# psql -U postgres xims <tablefunc.sql
-
+      You can build and install them for your source build PostgreSQL version using
+      'make' and 'make install' in your 'contrib/tablefunc' directory.
       If you are using a packaged version of PostgreSQL, you will very likely
       find a postgresql-contrib package for your distribution which you
       can install using your favourite package manager.
@@ -105,6 +100,15 @@ XIMS Installation Guide
         /usr/local/xims/lib/XIMS/Config.pm for further config
         customizations after finishing "make install". For example,
         you could activate a WYSIWYG-Editor for editing documents there.
+
+        If you are using PostgreSQL, you have to install the
+        table functions into the xims database now. You can do this
+        using a command like the following:
+
+        [root@host tablefunc]# psql -U postgres xims </usr/share/postgresql/contrib/tablefunc.sql
+
+        You may have to adjust the path to your copy of 'tablefunc.sql'
+
 
     3.4) (Re)start the apache server. Check if it prints warnings or errors.
 
