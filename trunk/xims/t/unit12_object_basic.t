@@ -3,8 +3,7 @@ use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::User;
-use XIMS::Object;
-use Data::Dumper;
+#use Data::Dumper;
 
 BEGIN { 
    use_ok( 'XIMS::Object' );
