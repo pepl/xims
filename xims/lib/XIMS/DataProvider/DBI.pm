@@ -543,7 +543,7 @@ sub get_descendant_id_level {
     $param{offset} = delete $args{offset};
     $param{order} = $order; # pass into
 
-    my $noorder = 0;
+    my $noorder;
     $noorder = 1 if (defined $order or scalar keys %args > 0);
 
     my $query = $self->_get_descendant_sql( $parent_id, $maxlevel, 1, $noorder );
