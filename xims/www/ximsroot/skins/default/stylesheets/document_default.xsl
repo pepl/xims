@@ -77,7 +77,7 @@
                     <xsl:with-param name="link_pub_preview">true</xsl:with-param>
                 </xsl:call-template>
             </table>
-            <xsl:call-template name="without-wysiwyg"/>
+            <xsl:call-template name="edit-without-wysiwyg"/>
         </body>
     </html>
 </xsl:template>

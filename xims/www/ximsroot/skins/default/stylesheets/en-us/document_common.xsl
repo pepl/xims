@@ -15,4 +15,8 @@
     <a style="margin-left:18px;" href="{$goxims_content}{$absolute_path}?create=1;plain=1;objtype=Document;parid={@id}">Create without WYSIWYG-Editor</a>
 </xsl:template>
 
+<xsl:template name="edit-without-wysiwyg">
+    <a style="margin-left:18px;" href="{$goxims_content}{$absolute_path}?edit=1;plain=1">Edit without WYSIWYG-Editor</a>
+</xsl:template>
+
 </xsl:stylesheet>
