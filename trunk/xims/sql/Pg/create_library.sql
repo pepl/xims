@@ -38,11 +38,11 @@ BEGIN WORK;
 \echo creating table 'cilib_authors'
 CREATE TABLE cilib_authors
  (
- id                 SERIAL        	PRIMARY KEY
- ,lastname          VARCHAR(128)   	NOT NULL
- ,middlename        VARCHAR(48)    	DEFAULT ''
- ,firstname         VARCHAR(48)    	DEFAULT ''
- ,object_type       SMALLINT      	DEFAULT 0
+ id                 SERIAL            PRIMARY KEY
+ ,lastname          VARCHAR(128)       NOT NULL
+ ,middlename        VARCHAR(48)        DEFAULT ''
+ ,firstname         VARCHAR(48)        DEFAULT ''
+ ,object_type       SMALLINT          DEFAULT 0
  )
 ;
 
@@ -53,9 +53,9 @@ COMMENT ON COLUMN cilib_authors.object_type
 \echo creating table 'cilib_authormap'
 CREATE TABLE cilib_authormap
  (
- id                  SERIAL        	PRIMARY KEY
- ,document_id        INTEGER 		NOT NULL REFERENCES ci_documents  ( id ) ON DELETE CASCADE
- ,author_id          INTEGER 		NOT NULL REFERENCES cilib_authors ( id )
+ id                  SERIAL            PRIMARY KEY
+ ,document_id        INTEGER         NOT NULL REFERENCES ci_documents  ( id ) ON DELETE CASCADE
+ ,author_id          INTEGER         NOT NULL REFERENCES cilib_authors ( id )
  ,UNIQUE (document_id ,author_id)
  )
 ;
@@ -63,8 +63,8 @@ CREATE TABLE cilib_authormap
 \echo creating table 'cilib_keywords'
 CREATE TABLE cilib_keywords
  (
- id                 SERIAL        	PRIMARY KEY
- ,name              VARCHAR(64)   	UNIQUE NOT NULL
+ id                 SERIAL            PRIMARY KEY
+ ,name              VARCHAR(64)       UNIQUE NOT NULL
  ,description       VARCHAR(256)
  )
 ;
@@ -72,9 +72,9 @@ CREATE TABLE cilib_keywords
 \echo creating table 'cilib_keywordmap'
 CREATE TABLE cilib_keywordmap
  (
- id                 SERIAL        	PRIMARY KEY
- ,document_id        INTEGER 		NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
- ,keyword_id        INTEGER 		NOT NULL REFERENCES cilib_keywords (id)
+ id                 SERIAL            PRIMARY KEY
+ ,document_id        INTEGER         NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
+ ,keyword_id        INTEGER         NOT NULL REFERENCES cilib_keywords (id)
  ,UNIQUE (document_id, keyword_id)
  )
 ;
@@ -82,8 +82,8 @@ CREATE TABLE cilib_keywordmap
 \echo creating table 'cilib_subjects'
 CREATE TABLE cilib_subjects
  (
- id                 SERIAL		PRIMARY KEY
- ,name              VARCHAR(128) 	UNIQUE NOT NULL
+ id                 SERIAL        PRIMARY KEY
+ ,name              VARCHAR(128)     UNIQUE NOT NULL
  ,description       VARCHAR(256)
   )
 ;
@@ -91,9 +91,9 @@ CREATE TABLE cilib_subjects
 \echo creating table 'cilib_subjectmap'
 CREATE TABLE cilib_subjectmap
  (
- id                 SERIAL		PRIMARY KEY
- ,document_id       INTEGER 		NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
- ,subject_id        INTEGER 		NOT NULL REFERENCES cilib_subjects (id)
+ id                 SERIAL        PRIMARY KEY
+ ,document_id       INTEGER         NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
+ ,subject_id        INTEGER         NOT NULL REFERENCES cilib_subjects (id)
  ,UNIQUE(document_id, subject_id)
  )
 ;
@@ -101,8 +101,8 @@ CREATE TABLE cilib_subjectmap
 \echo creating table 'cilib_publications'
 CREATE TABLE cilib_publications
  (
- id                 SERIAL        	PRIMARY KEY
- ,name              VARCHAR(256)  	NOT NULL
+ id                 SERIAL            PRIMARY KEY
+ ,name              VARCHAR(256)      NOT NULL
  ,isbn              VARCHAR(30)         UNIQUE
  ,issn              varchar(30)         UNIQUE
  ,volume            varchar(30)
@@ -113,9 +113,9 @@ CREATE TABLE cilib_publications
 \echo creating table 'cilib_publicationmap'
 CREATE TABLE cilib_publicationmap
  (
- id                 SERIAL		PRIMARY KEY
- ,document_id       INTEGER 		NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
- ,publication_id    INTEGER 		NOT NULL REFERENCES cilib_publications (id)
+ id                 SERIAL        PRIMARY KEY
+ ,document_id       INTEGER         NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
+ ,publication_id    INTEGER         NOT NULL REFERENCES cilib_publications (id)
  ,UNIQUE(document_id, publication_id)
  )
 ;
@@ -124,8 +124,8 @@ CREATE TABLE cilib_publicationmap
 \echo creating table 'cilib_meta'
 CREATE TABLE cilib_meta
  (
- id                 SERIAL		PRIMARY KEY
- ,document_id       INTEGER 		NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
+ id                 SERIAL        PRIMARY KEY
+ ,document_id       INTEGER         NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
  ,subtitle          VARCHAR(128)
  ,legalnotice       VARCHAR(128)
  ,bibliosource      VARCHAR(2048)
@@ -202,70 +202,70 @@ CREATE OR REPLACE FUNCTION cilib_meta_id_seq_nval() RETURNS INTEGER
 
 
 REVOKE ALL
-	ON  	 cilib_authors
-		,cilib_authors_id_seq
-		,cilib_authormap
-		,cilib_authormap_id_seq
-		,cilib_keywords
-		,cilib_keywords_id_seq
-		,cilib_keywordmap
-		,cilib_keywordmap_id_seq
-		,cilib_subjects
-		,cilib_subjects_id_seq
-		,cilib_subjectmap
-		,cilib_subjectmap_id_seq
-		,cilib_publications
-		,cilib_publications_id_seq
-		,cilib_publicationmap
-		,cilib_publicationmap_id_seq
-		,cilib_meta
-		,cilib_meta_id_seq
-	FROM PUBLIC;
+    ON       cilib_authors
+        ,cilib_authors_id_seq
+        ,cilib_authormap
+        ,cilib_authormap_id_seq
+        ,cilib_keywords
+        ,cilib_keywords_id_seq
+        ,cilib_keywordmap
+        ,cilib_keywordmap_id_seq
+        ,cilib_subjects
+        ,cilib_subjects_id_seq
+        ,cilib_subjectmap
+        ,cilib_subjectmap_id_seq
+        ,cilib_publications
+        ,cilib_publications_id_seq
+        ,cilib_publicationmap
+        ,cilib_publicationmap_id_seq
+        ,cilib_meta
+        ,cilib_meta_id_seq
+    FROM PUBLIC;
 
 GRANT ALL
-	ON  	 cilib_authors
-		,cilib_authors_id_seq
-		,cilib_authormap
-		,cilib_authormap_id_seq
-		,cilib_keywords
-		,cilib_keywords_id_seq
-		,cilib_keywordmap
-		,cilib_keywordmap_id_seq
-		,cilib_subjects
-		,cilib_subjects_id_seq
-		,cilib_subjectmap
-		,cilib_subjectmap_id_seq
-		,cilib_publications
-		,cilib_publications_id_seq
-		,cilib_publicationmap
-		,cilib_publicationmap_id_seq
-		,cilib_meta
-		,cilib_meta_id_seq
-	TO xims;
+    ON       cilib_authors
+        ,cilib_authors_id_seq
+        ,cilib_authormap
+        ,cilib_authormap_id_seq
+        ,cilib_keywords
+        ,cilib_keywords_id_seq
+        ,cilib_keywordmap
+        ,cilib_keywordmap_id_seq
+        ,cilib_subjects
+        ,cilib_subjects_id_seq
+        ,cilib_subjectmap
+        ,cilib_subjectmap_id_seq
+        ,cilib_publications
+        ,cilib_publications_id_seq
+        ,cilib_publicationmap
+        ,cilib_publicationmap_id_seq
+        ,cilib_meta
+        ,cilib_meta_id_seq
+    TO xims;
 
 GRANT INSERT, SELECT, UPDATE, DELETE
-	ON  	 cilib_authors
-		,cilib_authormap
-		,cilib_keywords
-		,cilib_keywordmap
-		,cilib_subjects
-		,cilib_subjectmap
-		,cilib_publications
-		,cilib_publicationmap
-		,cilib_meta
-        TO ximsrun;
+    ON       cilib_authors
+        ,cilib_authormap
+        ,cilib_keywords
+        ,cilib_keywordmap
+        ,cilib_subjects
+        ,cilib_subjectmap
+        ,cilib_publications
+        ,cilib_publicationmap
+        ,cilib_meta
+    TO ximsrun;
 
 GRANT SELECT, UPDATE
-	ON      cilib_authors_id_seq
-		,cilib_authormap_id_seq
-		,cilib_keywords_id_seq
-		,cilib_keywordmap_id_seq
-		,cilib_subjects_id_seq
-		,cilib_subjectmap_id_seq
-		,cilib_publications_id_seq
-		,cilib_publicationmap_id_seq
-		,cilib_meta_id_seq
-        TO ximsrun;
+    ON      cilib_authors_id_seq
+        ,cilib_authormap_id_seq
+        ,cilib_keywords_id_seq
+        ,cilib_keywordmap_id_seq
+        ,cilib_subjects_id_seq
+        ,cilib_subjectmap_id_seq
+        ,cilib_publications_id_seq
+        ,cilib_publicationmap_id_seq
+        ,cilib_meta_id_seq
+    TO ximsrun;
 
 
 
