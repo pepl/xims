@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -54,7 +54,8 @@ sub prepare {
     }
 
     if ( $ctxt->user() ) {
-        $doc_data->{context}->{user} = $ctxt->user() ;
+        $doc_data->{context}->{user} = $ctxt->user();
+        $doc_data->{context}->{user}->{system_privileges} = {$ctxt->user->system_privileges()} if $ctxt->user->system_privs_mask() > 0;
     }
 
     return $doc_data;
