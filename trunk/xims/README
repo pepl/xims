@@ -1,4 +1,4 @@
-This is XIMS, version 0.1.1.
+This is XIMS, version 0.5.
 
 Overview
 --------
@@ -35,23 +35,25 @@ Note: Documentation is currently quite rudimentary :-/.
 
 Release Notes
 -------------
-Keep it mind that this is an early XIMS package.
-For the next packages we are planning to address at least the
+This version of XIMS is successfully running in production environments.
+That fact, together with the new filesystem importer, the command line tools for
+automated administration, the object cloning feature and all the other
+changes that are covered in more detail in the Changes file should explain
+the major leap version leap from 0.1.1 to 0.5.
+
+For the next packages we are planning to address the
 following issues:
 
-* Finish the UI and Homepage redesign
 * Add/Update documentation!
 * Add HTMLArea-Editor customizations (object browser for links and images, table plugin, ...)
-* Add Bitflux-Editor integration
 * Update acceptance tests for the test suite
 * Start with user preferences (skin, ui-language, editor-preference, ...)
 
 Other issues to be adressed include the following:
 
-* Importer for filesystem objects
+* Start with multilanguage content user interface and versioning
 * SQL queries and data retrieval in general is not performance but
-  genericity optimized - Work on that.
-* Start with bigger things like Versioning and Multilanguage Content UI
+  genericity optimized - work on that.
 
 More issues can be found at the TODO at
 https://sourceforge.net/tracker/?atid=432919&group_id=42250&func=browse
