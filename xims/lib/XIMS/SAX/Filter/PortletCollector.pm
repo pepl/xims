@@ -64,7 +64,7 @@ sub handle_data {
         XIMS::Debug( 6, "get " . join( "," , @$cols ));
     }
     return unless defined $self->{Object}
-                  and $self->{Object}->symname_to_doc_id() > 0;
+                  and $self->{Object}->symname_to_doc_id() and $self->{Object}->symname_to_doc_id() > 0;
     # fetch the objects
     # get the real object to filter:
 
@@ -72,6 +72,7 @@ sub handle_data {
     my $object = XIMS::Object->new( document_id => $self->{Object}->symname_to_doc_id(), language_id => $self->{Object}->language_id() );
 
     if ( $object ) {
+        my @children;
         my %childrenargs = ( User => $self->{User} );
 
         if ( $self->{Export} ) {
@@ -96,7 +97,13 @@ sub handle_data {
         #                OBJECT_TYPE_ID LOB_LENGTH POSITION);
         #$param{-columns} = $cols;
         my $direct_filter = $self->get_direct_filter();
-        my @children = $object->children_granted( %childrenargs, %{$direct_filter}, marked_deleted => undef );
+        my $latest = $self->get_latest();
+        if ( $latest ) {
+            @children = $object->children_latest_granted( %childrenargs, %{$direct_filter}, marked_deleted => undef, rowlimit => $latest );
+        }
+        else {
+            @children = $object->children_granted( %childrenargs, %{$direct_filter}, marked_deleted => undef );
+        }
         if ( @children  and scalar( @children ) ) {
             XIMS::Debug( 6, "found n = " . scalar( @children ) . " child objects" );
             my $location_path;
@@ -144,6 +151,39 @@ sub get_objecttypes {
     return @ots;
 }
 
+sub get_direct_filter {
+    my $self = shift;
+    my $fragment = $self->get_data_fragment;
+    my %retval;
+    my @fields = XIMS::Object::fields();
+    my ( $filter ) = grep {$_->nodeName eq "filter" } $fragment->childNodes;
+    if ( $filter ) {
+        my @cnodes = $filter->childNodes;
+        foreach my $node ( @cnodes) {
+            next unless $node->nodeType == XML_ELEMENT_NODE;
+            next unless grep { $node->nodeName() eq $_ } @fields;
+            $retval{$node->nodeName()} = $node->string_value();
+        }
+    }
+    return \%retval;
+}
+
+sub get_latest {
+    my $self = shift;
+    my $fragment = $self->get_data_fragment;
+    my $latest;
+    my ($content) = grep {$_->nodeName eq "content" } $fragment->childNodes;
+    if ( $content ) {
+        $latest = $content->getChildrenByTagName( "latest" )->string_value();
+    }
+    if ( defined $latest and $latest ne '0' ) {
+        XIMS::Debug( 6, "got latest $latest" );
+        return $latest;
+    }
+    return undef;
+}
+
+
 # not yet rewritten code and thus currently unused code ahead
 
 sub get_level {
@@ -164,22 +204,6 @@ sub get_level {
         return $level;
     }
     return 0;
-}
-sub get_direct_filter {
-    my $self = shift;
-    my $fragment = $self->get_data_fragment;
-    my %retval;
-    my @fields = XIMS::Object::fields();
-    my ( $filter ) = grep {$_->nodeName eq "filter" } $fragment->childNodes;
-    if ( $filter ) {
-        my @cnodes = $filter->childNodes;
-        foreach my $node ( @cnodes) {
-            next unless $node->nodeType == XML_ELEMENT_NODE;
-            next unless grep { $node->nodeName() eq $_ } @fields;
-            $retval{$node->nodeName()} = $node->string_value();
-        }
-    }
-    return \%retval;
 }
 sub build_or_filter {
     my $self = shift;

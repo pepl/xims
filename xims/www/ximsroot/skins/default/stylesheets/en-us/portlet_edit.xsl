@@ -26,8 +26,16 @@
                             Title: <xsl:value-of select="title"/>
                         </td>
                     </tr>
-                    <xsl:call-template name="contentcolumns"/>
-                    <xsl:call-template name="contentfilter"/>
+                    <tr>
+                        <td colspan="3">
+                            <xsl:call-template name="contentcolumns"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <xsl:call-template name="contentfilter"/>
+                        </td>
+                    </tr>
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>
@@ -43,6 +51,7 @@
     don't list common stuff like language, major/ minor ids, OTs ...
     such information is loaded everytime and is not selectable
     -->
+    <table>
     <tr>
         <td colspan="2">
             Besides some basic default columns, you can choose
@@ -150,6 +159,7 @@
             </table>
         </td>
     </tr>
+<!--
     <tr>
         <td>
             How deep should the tree get traversed?
@@ -169,56 +179,82 @@
             </select><xsl:text> Level</xsl:text>
         </td>
     </tr>
+-->
+    <tr>
+        <td width="250">
+            Filter out the latest
+            <select name="latest">
+                <option value="1"><xsl:if test="body/content[latest =1]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>1</option>
+                <option value="2"><xsl:if test="body/content[latest =2]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>2</option>
+                <option value="3"><xsl:if test="body/content[latest =3]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>3</option>
+                <option value="4"><xsl:if test="body/content[latest =4]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>4</option>
+                <option value="5"><xsl:if test="body/content[latest =5]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>5</option>
+                <option value="6"><xsl:if test="body/content[latest =6]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>6</option>
+                <option value="7"><xsl:if test="body/content[latest =7]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>7</option>
+                <option value="8"><xsl:if test="body/content[latest =8]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>8</option>
+                <option value="9"><xsl:if test="body/content[latest =9]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>9</option>
+                <option value="10"><xsl:if test="body/content[latest =10]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>10</option>
+            </select>
+            objects.
+        </td>
+        <td>
+            <input name="f_latest" type="radio" value="true">
+              <xsl:if test="body/content/latest != ''">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input><xsl:value-of select="$i18n/l/Yes"/>
+            <input name="f_latest" type="radio" value="false">
+              <xsl:if test="body/content/latest = ''">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input><xsl:value-of select="$i18n/l/No"/>
+        </td>
+    </tr>
+    </table>
 </xsl:template>
 
 <xsl:template name="contentfilter">
     <!-- filters are different than the columns themself. the
     tagged item here may not appear in the columns -->
+    <table cellspacing="5">
     <tr>
-        <td colspan="2">
-            Filters
+        <td>
+            Filter Objects that are marked new:
+        </td>
+        <td>
+            <input type="checkbox" name="filternews"><xsl:if test="body/filter[new=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input><br/>
         </td>
     </tr>
     <tr>
-        <td colspan="2">
-            <table border="0" cellspacing="0" cellpadding="1" width="100%">
-                <tr>
-                    <td width="20%">
-                        Only Objects that are marked new:<br/>
-                        Only Objects that are published:
-                    </td>
-                    <td valign="top" width="20%">
-                        <input type="checkbox" name="filternews"><xsl:if test="body/filter[new=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input><br/>
-                        <input type="checkbox" name="filterpublished"><xsl:if test="body/filter[published=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
-                    </td>
-                    <td valign="top" width="20%"><xsl:text>Filter Object Types </xsl:text></td>
-                    <td valign="top" width="20%"><xsl:text> </xsl:text></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Extra filters:</td>
-                    <td rowspan="2">
-                        <xsl:apply-templates select="/document/object_types/object_type[name!='Portlet' and name!='Portal' and name!='Annotation' and name!='AnonDiscussionForumContrib' and name!='AnonDiscussionForum']"/>
-                    </td>
-                    <td><xsl:text> </xsl:text></td>
-                </tr>
-                <tr>
-                    <td colspan="2" valign="top">
-                        <textarea name="extra_filters" rows="30" cols="45">
-                            <xsl:choose>
-                                <xsl:when test="body/filter/*[not(name() = 'new') and not(name() = 'published')]">
-                                    <xsl:apply-templates select="body/filter/*[not(name() = 'new') and not(name() = 'published')]" mode="filter"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:text> </xsl:text>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </textarea>
-                    </td>
-                    <td><xsl:text> </xsl:text></td>
-                </tr>
-            </table>
+        <td>
+            Filter Objects that are published:
+        </td>
+        <td>
+            <input type="checkbox" name="filterpublished"><xsl:if test="body/filter[published=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
         </td>
     </tr>
+    <tr>
+        <td>Extra filters:</td>
+        <td>Filter Object Types</td>
+    </tr>
+    <tr>
+        <td>
+            <textarea name="extra_filters" rows="30" cols="45">
+                <xsl:choose>
+                    <xsl:when test="body/filter/*[not(name() = 'new') and not(name() = 'published')]">
+                        <xsl:apply-templates select="body/filter/*[not(name() = 'new') and not(name() = 'published')]" mode="filter"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text> </xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </textarea>
+        </td>
+        <td valign="top">
+            <xsl:apply-templates select="/document/object_types/object_type[name!='Portlet' and name!='Portal' and name!='Annotation' and name!='AnonDiscussionForumContrib' and name!='AnonDiscussionForum']"/>
+        </td>
+    </tr>
+    </table>
 </xsl:template>
 
 <xsl:template match="object_types/object_type">
