@@ -166,7 +166,7 @@
 
 
     <xsl:template name="vlib_create_action">
-        - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::sDocBookXML">
+        - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::DocBookXML">
         <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>
         </a>
     </xsl:template>
