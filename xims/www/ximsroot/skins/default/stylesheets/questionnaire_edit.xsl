@@ -42,6 +42,7 @@
         <xsl:call-template name="questionnaire_comment_edit" />
         <xsl:call-template name="questionnaire_intro_edit" />
         <xsl:call-template name="questionnaire_exit_edit" />
+        <xsl:call-template name="markednew"/>
         <xsl:call-template name="questionnaire_tanlists" />
         <xsl:call-template name="questionnaire_actions" />
     </table>
@@ -479,7 +480,7 @@
                 <input type="hidden" name="tanlist_{@id}_title" value="{.}" />&#xa0;
                 <input type="image"
                        src="{$skimages}option_delete.png"
-                       style="vertical-align: bottom" 
+                       style="vertical-align: bottom"
                        border="0"
                        width="37"
                        height="19"

@@ -22,7 +22,9 @@
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-stylesheet-edit"/>
                     <xsl:call-template name="tr-imagedepartmentroot-edit"/>
+                    <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>
+                    <!--<xsl:call-template name="defaultprivmask-edit"/>-->
                     <xsl:call-template name="tr-deptportlets-edit"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
@@ -32,6 +34,17 @@
         <xsl:call-template name="canceledit"/>
     </body>
 </html>
+</xsl:template>
+
+<xsl:template name="defaultprivmask-edit">
+    <tr>
+        <td valign="top">Default Privilege Mask</td>
+           <td>
+            <input tabindex="30" type="text" name="defaultprivmask" size="40" value="{attributes/defaultprivmask}" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+                <a href="javascript:openDocWindow('defaultprivmask')" class="doclink">(?)</a>
+            </td>
+    </tr>
 </xsl:template>
 
 <xsl:template name="tr-imagedepartmentroot-edit">

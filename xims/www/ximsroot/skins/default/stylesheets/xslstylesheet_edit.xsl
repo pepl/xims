@@ -21,6 +21,7 @@
                     <xsl:call-template name="tr-body-edit"/>
                     <xsl:call-template name="tr-keywords-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
+                    <xsl:call-template name="markednew"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>
