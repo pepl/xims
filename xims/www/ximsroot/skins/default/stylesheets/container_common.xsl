@@ -683,7 +683,7 @@ select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template 
     <xsl:choose>
         <xsl:when test="$m='e' and /document/context/object/user_privileges/write=1">
             <a
-href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@document_id};posview=yes;sbfield=reposition{@id}.new_position')"
+href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=yes;sbfield=reposition{@id}.new_position')"
                 title="{$l_position_object}"
             >
                 <xsl:value-of select="$position"/>
