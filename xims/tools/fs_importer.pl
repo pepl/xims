@@ -19,7 +19,7 @@ use File::Basename;
 use Getopt::Std;
 
 # untaint path and env
-$ENV{PATH} = '/bin'; # CWD.pm needs '/bin/pwd'
+$ENV{PATH} = '/bin:/usr/bin'; # older versions of CWD.pm need 'pwd'
 $ENV{ENV} = '';
 
 my %args;
@@ -52,24 +52,25 @@ die "Cannot import from symlink directory '$path'\n" if -l $path and -d $path;
 # untaint the path
 $path = $1 if $path =~ /^(.*)$/;
 
-my @files = $term->findfiles( $path );
-die "No files found, nothing to do.\n" unless scalar(@files);
-
 my $importer = XIMS::Importer::FileSystem->new( User => $user, Parent => $parent );
 
 my $successful = 0;
 my $failed = 0;
-$path = dirname $path;
-if ( $path eq "." ) {
-    $path = '';
+my $dirname = dirname $path;
+if ( $dirname eq "." ) {
+    $dirname = '';
 }
 else {
-    chdir $path;
+    chdir $dirname;
 }
+
+my @files = $term->findfiles( $path );
+die "No files found, nothing to do.\n" unless scalar(@files);
+
 foreach my $file ( @files ) {
-    $file =~ s/$path\/// if length $path;
+    $file =~ s/$dirname\/// if length $dirname;
     if ( $importer->import( $file, $args{f} ) ) {
-        print "'$path/$file' imported successfully.\n";
+        print "'$dirname/$file' imported successfully.\n";
         $successful++;
     }
     else {
