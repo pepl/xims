@@ -90,14 +90,12 @@
             <xsl:when test="$mode='print'">
                 <xsl:apply-templates select="ou/portlet[title = 'departmentlinks_portlet']/portlet-item" mode="print">
                      <xsl:sort select="position" data-type="number" order="ascending"/>
-                     <xsl:with-param name="baselocation" select="ou/portlet[title = 'departmentlinks_portlet']/baselocation" />
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:otherwise>
                 <div class="deptlinks">
                      <xsl:apply-templates select="ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
                         <xsl:sort select="position" data-type="number" order="ascending"/>
-                        <xsl:with-param name="baselocation" select="ou/portlet[title = 'departmentlinks_portlet']/baselocation" />
                      </xsl:apply-templates>
                 </div>
             </xsl:otherwise>
@@ -106,13 +104,9 @@
 </xsl:template>
 
 <xsl:template match="portlet-item">
-    <xsl:param name="baselocation" />
-    <xsl:variable name="dataformat">
-        <xsl:value-of select="data_format_id"/>
-    </xsl:variable>
-      <p class="deptlink">
+    <p class="deptlink">
         <a>
-            <xsl:attribute name="href"><xsl:if test="/document/data_formats/data_format[@id=$dataformat]/name != 'URLLink'"><xsl:value-of select="$baselocation"/>/</xsl:if><xsl:value-of select="location"/></xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="location"/></xsl:attribute>
             <xsl:attribute name="title"><xsl:value-of select="abstract"/></xsl:attribute>
             <xsl:value-of select="title"/>
         </a>
@@ -120,12 +114,8 @@
 </xsl:template>
 
 <xsl:template match="portlet-item" mode="print">
-    <xsl:param name="baselocation" />
-    <xsl:variable name="dataformat">
-        <xsl:value-of select="data_format_id"/>
-    </xsl:variable>
         <a>
-            <xsl:attribute name="href"><xsl:if test="/document/data_formats/data_format[@id=$dataformat]/name != 'URLLink'"><xsl:value-of select="$baselocation"/>/</xsl:if><xsl:value-of select="location"/><xsl:if test="$request.uri.query != ''">?<xsl:value-of select="$request.uri.query"/></xsl:if></xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="location"/><xsl:if test="$request.uri.query != ''">?<xsl:value-of select="$request.uri.query"/></xsl:if></xsl:attribute>
             <xsl:attribute name="title"><xsl:value-of select="abstract"/></xsl:attribute>
             <xsl:value-of select="title"/>
         </a>
