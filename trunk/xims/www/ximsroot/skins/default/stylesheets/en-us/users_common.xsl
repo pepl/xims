@@ -23,9 +23,9 @@
 <xsl:template match="userlist">
         <table width="99%" cellpadding="0" cellspacing="0" border="0">
           <!-- begin app sort order by nav -->
-          <tr background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
-            <td background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png" width="20">&#160;</td>
-            <td background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
+          <tr background="{$skimages}generic_tablebg_1x20.png">
+            <td background="{$skimages}generic_tablebg_1x20.png" width="20">&#160;</td>
+            <td background="{$skimages}generic_tablebg_1x20.png">
               <xsl:choose>
                 <xsl:when test="$sort-by='id'">
                   <a href="{$xims_box}{$goxims_users}?sort-by=id;order-by={$order-by-opposite}">ID</a>
@@ -35,7 +35,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
+            <td background="{$skimages}generic_tablebg_1x20.png">
               <xsl:choose>
                 <xsl:when test="$sort-by='name'">
                   <a href="{$xims_box}{$goxims_users}?sort-by=name;order-by={$order-by-opposite}">Username</a>
@@ -45,7 +45,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
+            <td background="{$skimages}generic_tablebg_1x20.png">
               <xsl:choose>
                 <xsl:when test="$sort-by='lastname'">
                   <a href="{$xims_box}{$goxims_users}?sort-by=lastname;order-by={$order-by-opposite}">Full Name</a>
@@ -55,7 +55,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
+            <td background="{$skimages}generic_tablebg_1x20.png">
               <xsl:choose>
                 <xsl:when test="$sort-by='system_privs_mask'">
                   <a href="{$xims_box}{$goxims_users}?sort-by=system_privs_mask;order-by={$order-by-opposite}">System Privs.</a>
@@ -65,7 +65,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
+            <td background="{$skimages}generic_tablebg_1x20.png">
               <xsl:choose>
                 <xsl:when test="$sort-by='admin'">
                   <a href="{$xims_box}{$goxims_users}?sort-by=admin;order-by={$order-by-opposite}">Administrator</a>
@@ -75,7 +75,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </td>
-            <td background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
+            <td background="{$skimages}generic_tablebg_1x20.png">
               <xsl:choose>
                 <xsl:when test="$sort-by='enabled'">          
                   <a href="{$xims_box}{$goxims_users}?sort-by=enabled;order-by={$order-by-opposite}">Account Status</a>          
@@ -86,12 +86,7 @@
               </xsl:choose>
             </td>
             <td background="{$ximsroot}images/dyn04_dark.jpg" width="250">
-                <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
-                        width="189"
-                        height="20"
-                        alt="Options"
-                        title="Options"
-                        />
+              <img src="{$ximsroot}images/options.png" width="180" height="21" alt="options"/>
             </td>
           </tr>
 

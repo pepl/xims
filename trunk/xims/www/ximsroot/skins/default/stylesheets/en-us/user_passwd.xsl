@@ -20,7 +20,7 @@
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
@@ -28,7 +28,7 @@
        <!-- begin main content -->
         <form name="userEdit" action="{$xims_box}{$goxims}/user" method="POST">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-          <tr background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
+          <tr background="{$skimages}generic_tablebg_1x20.png">
             <td>&#160;</td>
           </tr>
           <tr>
