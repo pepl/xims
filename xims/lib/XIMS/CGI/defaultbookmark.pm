@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -84,9 +84,9 @@ sub redirToDefault {
             $bookmark =  XIMS::Object->new( id => $bookmark->content_id() )->location_path();
         }
         else {
-            # use fallback default path if user has got no bookmark set
-            XIMS::Debug( 6, "using fallback default path" );
-            $bookmark = XIMS::DEFAULT_PATH();
+            # use fallback start path if user has got no bookmark set
+            XIMS::Debug( 6, "using fallback start path" );
+            $bookmark = XIMS::FALLBACKSTARTPATH();
         }
 
         $path = XIMS::GOXIMS() . $contentinterface . $bookmark;

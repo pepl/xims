@@ -286,8 +286,8 @@ sub _set_wysiwyg_editor {
     if ( $plain or defined $editor and $editor eq 'plain' ) {
         $editor = undef;
     }
-    elsif ( not(length $editor) and length XIMS::WYSIWYGEDITOR() ) {
-        $editor = lc( XIMS::WYSIWYGEDITOR() );
+    elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
+        $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
         if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
              $editor = 'htmlarea';
         }
