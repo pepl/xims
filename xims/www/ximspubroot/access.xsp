@@ -65,7 +65,7 @@
     </xsp:logic>
 
     <input type="hidden" name="dologin" id="dologin" value="1"/>
-    <table align="center" border="0" cellpadding="2" cellspacing="2" style="background: #C9EBA7; border: 1px solid #336633;">
+    <table align="center" border="0" cellpadding="2" cellspacing="2" style="background-color:#EEEEEE; border: 1px solid #BFBFBF;">
         <tr><td colspan="2" style="border-bottom: 1px solid #336633; color: black; font-weight: bold;">Login</td></tr>
         <tr>
             <td>Username:</td>
