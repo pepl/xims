@@ -389,8 +389,7 @@ sub get_logindata {
         %args = split /=|&/, $qstr ;
     }
 
-    XIMS::Debug( 5, "done" );
-    return ( $args{userid} , Apache::unescape_url_info($args{password}) ) ;
+    return ( Apache::unescape_url_info($args{userid}) , Apache::unescape_url_info($args{password}) ) ;
 }
 
 
