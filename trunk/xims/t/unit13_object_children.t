@@ -4,26 +4,42 @@ use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::User;
 use XIMS::Object;
+use XIMS::Folder;
 use Data::Dumper;
 
-BEGIN { 
-    plan tests => 4;
+BEGIN {
+    plan tests => 6;
 }
 
 # fetch the 'root' container
-my $o = XIMS::Object->new( id => 1 );
+my $root = XIMS::Object->new( id => 1 );
 
-ok( $o );
+ok( $root );
 
-my @kids = $o->children();
-
+my @kids = $root->children();
 
 ok ( scalar( @kids ) > 0 );
 
-ok ( $kids[0]->location() eq 'xims' );
+# get a specific child with the location 'xims'
+my $kid = $root->children( location => 'xims' );
 
-#now, check that 'xims' has no kids
+ok ( $kid->location() eq 'xims' );
 
-my @grandkids = $kids[0]->children();
+# create a child for 'xims'
+my $user = XIMS::User->new( id => 1 );
+my $testfolder = XIMS::Folder->new(
+                                    User => $user,
+                                    parent_id => $kid->document_id(),
+                                    language_id => $kid->language_id(),
+                                    location => "testfolder",
+                                    title => "testfolder",
+                                    department_id => $kid->document_id(),
+                                    );
+ok ( $testfolder->create() );
 
-ok( scalar( @grandkids ) == 0 ); 
+#now, check that ''testfolder has no kids
+
+my @grandkids = $testfolder->children();
+ok( scalar( @grandkids ) == 0 );
+
+ok( $testfolder->delete() );
