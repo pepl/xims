@@ -32,7 +32,7 @@
                     <dc:creator><xsl:call-template name="creatorfullname"/></dc:creator>
                     <dc:subject><xsl:value-of select="keywords"/></dc:subject>
                     <dc:description><xsl:value-of select="abstract"/></dc:description>
-                    <dc:publisher><xsl:call-template name="ownerfullname"/> - Universität Innsbruck</dc:publisher>
+                    <dc:publisher><xsl:call-template name="ownerfullname"/> - <xsl:value-of select="$organisation"/></dc:publisher>
                     <dc:contributor></dc:contributor>
                     <dc:date>
                         <dcq:created>
