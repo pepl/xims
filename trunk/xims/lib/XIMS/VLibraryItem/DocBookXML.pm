@@ -7,24 +7,24 @@ package XIMS::VLibraryItem::DocBookXML;
 use strict;
 use vars qw( $VERSION @ISA );
 use XIMS::VLibraryItem;
-use XIMS::sDocBookXML;
+use XIMS::DocBookXML;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = ('XIMS::VLibraryItem', 'XIMS::sDocBookXML');
+@ISA = ('XIMS::VLibraryItem', 'XIMS::DocBookXML');
 
 ##
 #
 # SYNOPSIS
-#    my $vlibitem = XIMS::VLibraryItem::sDocBookXML->new( [ %args ] )
+#    my $vlibitem = XIMS::VLibraryItem::DocBookXML->new( [ %args ] )
 #
 # PARAMETER
 #    %args                  (optional) :  Takes the same arguments as its super class XIMS::VLibrayItem
 #
 # RETURNS
-#    $vlibitem    : instance of XIMS::VLibraryItem::sDocBookXML
+#    $vlibitem    : instance of XIMS::VLibraryItem::DocBookXML
 #
 # DESCRIPTION
-#    Fetches existing objects or creates a new instance of XIMS::VLibraryItem::sDocBookXML for object creation.
+#    Fetches existing objects or creates a new instance of XIMS::VLibraryItem::DocBookXML for object creation.
 #
 sub new {
     my $proto = shift;
@@ -32,7 +32,7 @@ sub new {
     my %args = @_;
 
     if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
-        $args{data_format_id} = XIMS::DataFormat->new( name => 'sDocBookXML' )->id() unless defined $args{data_format_id};
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'DocBookXML' )->id() unless defined $args{data_format_id};
     }
 
     return $class->SUPER::new( %args );
