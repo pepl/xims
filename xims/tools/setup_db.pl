@@ -7,7 +7,11 @@
 
 use strict;
 
-use lib qw(/usr/local/xims/lib);
+my $prefix = $ENV{'XIMS_PREFIX'} || '/usr/local';
+die "\nWhere am I?\n\nPlease set the XIMS_PREFIX environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$prefix/xims/Makefile";
+
+use lib qw(lib ../lib $prefix/xims/lib);
+
 use XIMS::Installer;
 use Getopt::Std;
 
@@ -132,12 +136,12 @@ if ( $Conf{DBhost} and length $Conf{DBhost} ) {
 logfile( $Conf{log_file} ); # hook up log file filter to STDOUT
 
 if ( $Conf{DBdsn} eq 'Oracle' ) {
-    chdir '/usr/local/xims/sql/Oracle';
+    chdir "$prefix/xims/sql/Oracle";
     system('sqlplus',$Conf{DBUser}.'/'.$Conf{DBPassword}.'@'.$Conf{DBName},'@ci_ddl.sql') == 0
         or die "Setting up DB failed: $?\n. Please check your config information or try manually setting up the DB.\b";
 }
 elsif ( $Conf{DBdsn} eq 'Pg' ) {
-    chdir '/usr/local/xims/sql/Pg';
+    chdir "$prefix/xims/sql/Pg";
     my @args = ('psql','-U',$Conf{DBUser},'-d',$Conf{DBName},'-f','setup.sql');
     if ( $Conf{DBhost} and length $Conf{DBhost} ) {
         push(@args, '-h', $Conf{DBhost});
