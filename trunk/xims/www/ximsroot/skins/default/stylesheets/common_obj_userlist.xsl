@@ -10,9 +10,8 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:param name="sort-by">id</xsl:param>
 <xsl:param name="order-by">ascending</xsl:param>
-<xsl:param name="usertype">0</xsl:param>
 <xsl:param name="userquery"/>
-<xsl:param name="usertype">role</xsl:param>
+<xsl:param name="usertype">user</xsl:param>
 <xsl:param name="id"/>
 
 <xsl:variable name="order-by-opposite">
