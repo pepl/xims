@@ -156,7 +156,9 @@ CREATE TABLE ci_documents
  ,id                SERIAL       PRIMARY KEY
  ,parent_id         INTEGER      NOT NULL 
                                  REFERENCES ci_documents ( id ) 
-                                 ON DELETE  CASCADE
+                                 ON DELETE NO ACTION
+                                 DEFERRABLE
+                                 INITIALLY DEFERRED
  ,object_type_id    INTEGER      NOT NULL 
                                  REFERENCES ci_object_types ( id ) 
  ,department_id     INTEGER      NOT NULL 
@@ -170,9 +172,10 @@ CREATE TABLE ci_documents
                                  ON DELETE cascade
  ,position          INTEGER
  ,lft               INTEGER      NOT NULL
-                                 CONSTRAINT ci_lft_chk CHECK(lft > 0)
+                                 CONSTRAINT ci_doc_lft_chk CHECK(lft > 0)
  ,rgt               INTEGER      NOT NULL
-                                 CONSTRAINT ci_rgt_chk CHECK(rgt > 1)
+                                 CONSTRAINT ci_doc_rgt_chk CHECK(rgt > 1)
+                                 CONSTRAINT ci_doc_lftrgt_chk CHECK(rgt > lft)
  )
 ;
 
