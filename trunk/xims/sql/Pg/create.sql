@@ -216,7 +216,7 @@ CREATE TABLE ci_content
  ,keywords                      VARCHAR(200)
  ,status                        VARCHAR(100)
  ,creation_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now() NOT NULL
- ,attributes                    VARCHAR(100)
+ ,attributes                    VARCHAR(256)
  ,locked_by_id                  INTEGER       REFERENCES ci_users_roles ( id )
  ,style_id                      INTEGER       REFERENCES ci_documents   ( id )
  ,script_id                     INTEGER       REFERENCES ci_documents   ( id )
