@@ -126,8 +126,8 @@ INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'ECMA', 'text/javascript','js' );
 INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( nextval('ci_data_formats_id_seq'), 'AnonDiscussionForum', 'application/x-container' );
-INSERT INTO ci_data_formats ( id, name, mime_type )
-       VALUES ( nextval('ci_data_formats_id_seq'), 'Portlet', 'text/xml' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'Portlet', 'text/xml', 'ptlt' );
 INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( nextval('ci_data_formats_id_seq'), 'DepartmentRoot', 'application/x-container' );
 INSERT INTO ci_data_formats ( id, name, mime_type )
