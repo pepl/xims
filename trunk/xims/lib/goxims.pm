@@ -57,7 +57,7 @@ sub handler {
     }
     else {
         # using the ximsPublic role
-        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instanciated.%20There%20may%20be%20a%20database%20connection%20problem.");
+        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.");
         return SERVER_ERROR unless $ctxt->data_provider();
 
         XIMS::Debug(6, "Setting user to $publicuser");
