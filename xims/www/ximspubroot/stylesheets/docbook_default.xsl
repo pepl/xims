@@ -27,10 +27,12 @@
     <xsl:template match="/">
         <html>
             <head>
-                 <xsl:call-template name="meta"/>
-                 <!--<title><xsl:value-of select="article/rdf:RDF/rdf:Description/dc:title/text()"/></title>-->
-                 <link rel="stylesheet" href="/ximsroot/stylesheets/default.css" type="text/css" />
-                 <link rel="stylesheet" href="/ximspubroot/stylesheets/default.css" type="text/css" />
+                <title><xsl:value-of select="article/rdf:RDF/rdf:Description/dc:title/text()"/></title>
+                <xsl:call-template name="meta">
+                  <xsl:with-param name="context_node" select="article"/>
+                </xsl:call-template>
+                <link rel="stylesheet" href="/ximsroot/stylesheets/default.css" type="text/css" />
+                <link rel="stylesheet" href="/ximspubroot/stylesheets/default.css" type="text/css" />
             </head>
 
             <body bgcolor="#ffffff" text="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
