@@ -83,6 +83,8 @@ INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_
 INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_SEQ.NEXTVAL, 13, 'application/x-msexcel' );
 INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_SEQ.NEXTVAL, 13, 'application/x-mspowerpoint' );
 INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_SEQ.NEXTVAL, 15, 'image/x-png' );
+INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_SEQ.NEXTVAL, 14, 'application/x-msdos-program' );
+
 
 -- $password = Digest::MD5::md5_hex('xgu');
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, password, enabled, admin) VALUES ( USR_SEQ.NEXTVAL, 'xgu', 'XIMS Test User', 0, 0, '43a008171c3de746fde9c6e724ee1001', 1, 0);

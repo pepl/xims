@@ -32,4 +32,9 @@ INSERT INTO ci_data_formats ( id, name, mime_type )
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'DocBookXML', 'text/xml', 'dbk' );
 
+\echo Inserting new mime type aliases
+INSERT INTO ci_mime_type_aliases ( id, data_format_id, mime_type )
+       VALUES ( nextval('ci_mime_type_aliases_id_seq'), 14, 'application/x-msdos-program' );
+
+
 COMMIT;

@@ -50,3 +50,7 @@ INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'V
 /
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'DocBookXML', 'text/xml', 'dbk' )
 /
+
+PROMPT Inserting new mime type aliases
+INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_SEQ.NEXTVAL, 14, 'application/x-msdos-program' )
+/
