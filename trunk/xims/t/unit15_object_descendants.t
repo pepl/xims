@@ -27,7 +27,7 @@ isa_ok( $user_foo, 'XIMS::User', 'user_foo' );
 
 my $testsite = XIMS::SiteRoot->new(
                                     User => $user,
-                                    parent_id => $root->id(),
+                                    parent_id => $root->document_id(),
                                     language_id => $root->language_id(),
                                     location => 'testsite',
                                     title => 'testsite',
@@ -57,7 +57,7 @@ is ( scalar( @d_adm_granted ), $depth, 'descendants_granted as admin (list conte
 isa_ok ($testsite->descendants_granted(User => $admin)
        , 'XIMS::Object'
        , 'descendants_granted as admin (scalar context)'
-       ); 
+       );
 
 my @d_granted     = $testsite->descendants_granted( User => $user );
 is ( scalar( @d_granted ), $depth, 'descendants_granted as user (list context)' );
@@ -88,7 +88,7 @@ sub _create_folder_hierarchy {
         $testfolder->create();
         $testfolder->grant_user_privileges( grantee => $user
                                           , grantor => $admin
-                                          , privmask => XIMS::Privileges::MODIFY() 
+                                          , privmask => XIMS::Privileges::MODIFY()
                                           );
         $parent_id = $testfolder->document_id();
         $current_id = $testfolder->id();

@@ -6,7 +6,6 @@ use XIMS::User;
 use XIMS::Object;
 use XIMS::SiteRoot;
 use XIMS::Folder;
-#use Data::Dumper;
 
 BEGIN {
     plan tests => 14;
@@ -28,27 +27,27 @@ ok ( $root );
 my $user = XIMS::User->new( id => 1 );
 my $testsite = XIMS::SiteRoot->new(
                                     User => $user,
-                                    parent_id => $root->id(),
+                                    parent_id => $root->document_id(),
                                     language_id => $root->language_id(),
                                     location => 'testsite',
                                     title => 'testsite',
                                   );
 $testsite->create();
-my $orig_testsite = _get_object_values( $testsite->id );
+my $orig_testsite = _get_object_values( $testsite->document_id );
 #2
 ok ( $testsite->update() );
 my $depth = 5;
 #3
 ok ( my $inner_folder = _create_folder_hierarchy( $testsite, $depth ) );
-my $inner_folder_id = $inner_folder->{id};
+my $inner_folder_id = $inner_folder->document_id();
 my $orig_inner = _get_object_values( $inner_folder_id );
 
 # phase 2; move most inner folder into 'xims'
 #4
 ok ( $inner_folder->move( User=>$user, target=>2 ) );
 my $new_inner = _get_object_values( $inner_folder_id );
-#5 
-ok ( $new_inner->{PARENT_ID} == 2); 
+#5
+ok ( $new_inner->{PARENT_ID} == 2);
 #6
 ok ( $new_inner->{DEPARTMENT_ID} == 2);
 my $new_root = _get_object_values( 1 );
@@ -65,7 +64,7 @@ ok (     $new_xims->{RGT} == ($orig_xims->{RGT} + 2)   );
 # phase 3; move siteroot into the previously moved folder
 # 9
 ok ( $testsite->move(User=>$user, target=>$inner_folder_id) );
-my $new_testsite = _get_object_values( $testsite->id );
+my $new_testsite = _get_object_values( $testsite->document_id );
 
 $new_root = _get_object_values( 1 );
 $new_xims = _get_object_values( 2 );
@@ -79,7 +78,7 @@ ok ( $new_root->{LFT} == $orig_root->{LFT}           and
      $new_testsite->{RGT} == ($new_inner->{RGT} - 1)
    );
 #12
-ok (  $new_testsite->{DEPARTMENT_ID} == 2);
+ok ( $new_testsite->{DEPARTMENT_ID} == 2);
 
 # phase 4; clean up
 #13
@@ -93,7 +92,7 @@ $new_xims = _get_object_values( 2 );
 ok ( $new_root->{LFT} == $orig_root->{LFT} and
      $new_root->{RGT} == $orig_root->{RGT} and
      $new_xims->{LFT} == $orig_xims->{LFT} and
-     $new_xims->{RGT} == $orig_xims->{RGT} ); 
+     $new_xims->{RGT} == $orig_xims->{RGT} );
 
 
 # helpers...
@@ -115,11 +114,11 @@ sub _create_folder_hierarchy {
         $parent_id = $testfolder->document_id();
         $current_id = $testfolder->id();
     }
- 
+
     my $deepest_child = XIMS::Folder->new( id => $current_id );
 
     return undef unless $deepest_child->location() eq "testfolder$depth";
-    return $deepest_child; 
+    return $deepest_child;
 }
 
 
