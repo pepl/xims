@@ -172,11 +172,11 @@ sub redirect_path {
 
     my $uri = Apache::URI->parse( $ctxt->apache() );
     if ( $uri->query() =~ /name=(\w+)/ ) {
-        $uri->path( '/goxims/users' );
+        $uri->path( XIMS::Config::goxims() . '/users' );
         $uri->query( "name=$1;bookmarks=1" );
     }
     else {
-        $uri->path( '/goxims/user' );
+        $uri->path( XIMS::Config::goxims() . '/user' );
         $uri->query( 'bookmarks=1' );
     }
 
