@@ -721,30 +721,6 @@ sub find_objects_granted_count {
     return $self->find_objects_count( %args );
 }
 
-# internal helper to filter out granted objects, accepts a hash as parameters, mandatory key: doc_ids => @doc_ids
-# shared by children_granted and descendants_granted
-# returns a list of XIMS::Objects
-sub __get_granted_objects {
-    my $self = shift;
-    my %args = @_;
-
-    my $properties = delete $args{properties};
-    unless ( $properties and ref $properties and scalar @{$properties} ) {
-        $properties = \@Default_Properties;
-    }
-
-    my @ids = $self->__get_granted_ids( %args );
-    return () unless scalar( @ids ) > 0;
-
-    my @data = $self->data_provider->getObject( id  => \@ids,
-                                                properties => $properties );
-
-    my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
-
-    #warn "objects " . Dumper( \@objects ) . "\n";
-    return @objects;
-}
-
 ##
 #
 # SYNOPSIS
@@ -867,6 +843,29 @@ sub referenced_by_granted {
     return $self->__get_granted_objects( doc_ids => \@candidate_docids, User => $user, %args );
 }
 
+# internal helper to filter out granted objects, accepts a hash as parameters, mandatory key: doc_ids => @doc_ids
+# shared by children_granted and descendants_granted
+# returns a list of XIMS::Objects
+sub __get_granted_objects {
+    my $self = shift;
+    my %args = @_;
+
+    my $properties = delete $args{properties};
+    unless ( $properties and ref $properties and scalar @{$properties} ) {
+        $properties = \@Default_Properties;
+    }
+
+    my @ids = $self->__get_granted_ids( %args );
+    return () unless scalar( @ids ) > 0;
+
+    my @data = $self->data_provider->getObject( id  => \@ids,
+                                                properties => $properties );
+
+    my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
+
+    #warn "objects " . Dumper( \@objects ) . "\n";
+    return @objects;
+}
 
 sub __get_granted_ids {
     my $self = shift;
@@ -876,7 +875,7 @@ sub __get_granted_ids {
     return () unless scalar( @{$doc_ids} ) > 0;
 
     my @candidate_data = $self->data_provider->getObject( document_id => $doc_ids,
-                                                          properties => [ 'document.id', 'content.id' ],
+                                                          properties => [ 'id' ],
                                                           %args );
     my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
 
