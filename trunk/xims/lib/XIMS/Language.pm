@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2003 The XIMS Project.
+# Copyright (c) 2002-2004 The XIMS Project.
 
 # See the file "LICENSE" for information on usage and redistribution
 
