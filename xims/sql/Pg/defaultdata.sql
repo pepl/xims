@@ -70,7 +70,6 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
 
 \echo inserting into ci_data_formats...
 
-
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'Text', 'text/plain', 'txt' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
@@ -139,6 +138,14 @@ INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( nextval('ci_data_formats_id_seq'), 'Questionnaire', 'text/xml' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'TAN_List', 'text/plain', 'tls' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'Icon', 'image/x-icon', 'ico' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'PPZ', 'application/vnd.ms-powerpoint', 'ppz' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'POT', 'application/vnd.ms-powerpoint', 'pot' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'PPS', 'application/vnd.ms-powerpoint', 'pps' );
 
 
 \echo inserting into ci_mime_type_aliases...

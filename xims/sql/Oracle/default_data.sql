@@ -65,8 +65,10 @@ INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'D
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'SiteRoot', 'application/x-container' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'Postscript', 'application/postscript', 'ps' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'Questionnaire', 'text/xml' );
-INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'TAN_List', 'text/plain', 'tls' );
-
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'Icon', 'image/x-icon', 'ico' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'PPZ', 'application/vnd.ms-powerpoint', 'ppz' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'POT', 'application/vnd.ms-powerpoint', 'pot' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'PPS', 'application/vnd.ms-powerpoint', 'pps' );
 
 INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_SEQ.NEXTVAL, 11, 'application/msword' );
 INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_SEQ.NEXTVAL, 12, 'application/ppt' );
