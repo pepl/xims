@@ -44,48 +44,18 @@
         </revhistory>
 
         <legalnotice>
-            <para>Copyright © 2003</para>
+            <para>Copyright © 2004</para>
         </legalnotice>
     </articleinfo>
 
     <section>
         <title>Overview</title>
 
-        <abstract>
-            <para>(write me)</para>
-        </abstract>
-
-        <section>
-            <title>History</title>
-
-            <para>XIMS is a flexible web based content management and information system, built to especially suit the needs of academic and educational
-            infrastructures. The XIMS project initially started out as a side project of the reorganization and redesign of the website of the University of
-            Innsbruck, to create a small and simple content management system to manage the University&#39;s public web pages. Inspired by an existing
-            information system that was created and used by the Department of Computing Services and an evaluation of the needs of the University of Innsbruck,
-            that intent of pure web content management shifted to the creation of a more generic content management system, which also should be used as an
-            information and communication system.</para>
-        </section>
-
         <section>
             <title>Introduction</title>
 
-            <para>(write me)</para>
-
-            <section>
-                <title>Publishing Subsystem</title>
-
-                <para></para>
-
-                <figure>
-                    <title>Publishing Architecture</title>
-
-                    <mediaobject>
-                        <imageobject>
-                            <imagedata align="center" fileref="../xims-publishing-architecture.png" format="PNG" scalefit="" />
-                        </imageobject>
-                    </mediaobject>
-                </figure>
-            </section>
+            <para>XIMS is an Open Source Information/Content Management System that primarily provides facilities to create and manage web sites. For a
+            project-description, -history and features of XIMS consult <ulink url="???">http://xims.info/about.html</ulink></para>
         </section>
     </section>
 
@@ -150,7 +120,7 @@
         <title>Field Reference</title>
 
         <abstract>
-            <para>The following will provide brief descriptions of the fields you will encounter in XIMS.</para>
+            <para>The following will provide brief descriptions of the most common fields you will encounter in XIMS.</para>
         </abstract>
 
         <section>
@@ -159,7 +129,8 @@
             <para>Roughly spoken, the <literal>location</literal> is the filename for your object. Once it gets published, expect it to show up in the
             <acronym>URL</acronym> for your Object, so choose a telling and rememberable name for it.</para>
 
-            <para>However, depending on wich kind of object you are working on, XIMS handles the <literal>location</literal> a bit differently.</para>
+            <para>However, depending on which kind of object you are working on, XIMS handles the <literal>location</literal> differently. This will be
+            discussed below.</para>
 
             <para>Giving a <literal>location</literal> is always mandatory.</para>
 
@@ -168,15 +139,15 @@
 
                 <itemizedlist>
                     <listitem>
-                        <para><acronym>XHTML</acronym> -documents</para>
+                        <para>Document (XHTML documents)</para>
                     </listitem>
 
                     <listitem>
-                        <para>simple DocBook- <acronym>XML</acronym></para>
+                        <para>XML, XSLStylesheet, sDocBookXML, AxPointPresentation (XML documents)</para>
                     </listitem>
 
                     <listitem>
-                        <para><acronym>XSL</acronym> -Stylesheets</para>
+                        <para>Text, CSS, JavaScript (Text documents)</para>
                     </listitem>
                 </itemizedlist>
 
@@ -185,7 +156,7 @@
                 <example>
                     <title>Example:</title>
 
-                    <para>If you are in folder <filename>/xims/foo/</filename> , give your brand new <acronym>XHTML</acronym> -document a <literal>location</literal>
+                    <para>If you are in folder <filename>/xims/foo/</filename>, give your brand new <emphasis>Document</emphasis> the <literal>location</literal>
                     &#39; <userinput>bar</userinput> &#39; to get <filename>/xims/foo/bar.html</filename> .</para>
                 </example>
             </section>
@@ -202,8 +173,9 @@
             <section>
                 <title><literal>Location</literal> for URLLink objects</title>
 
-                <para>URLLinks are different kind of animal: they don&#39;t get published; Since they serve for the internal view of XIMS only, again the
-                location behaves a bit differently: It is the <emphasis>target</emphasis> . Any valid <acronym>URL</acronym> is valid, be it local or external.</para>
+                <para>URLLinks are different kind of animal: they don&#39;t get published into the filesystem. The location behaves a bit differently with
+                URLLinks: The location is used as the <emphasis>target</emphasis> of the link. Any valid <acronym>URL</acronym> is valid, be it local or
+                external.</para>
             </section>
         </section>
 
@@ -233,10 +205,11 @@
                 <filename>/xims</filename> has a <literal>SiteRoot URL</literal> of <literal>http://xims.info</literal>, users will be directed to
                 <literal>http://xims.info/documentation/xims-user&#39;s-reference.xml</literal> if <literal><varname>$resolvereltositeroots</varname></literal>
                 in <filename>www/ximsroot/stylesheets/config.xsl</filename> is &#39;1&#39;, to <literal>http://xims.info<filename>/xims</filename>/documentation/xims-user&#39;s-reference.xml</literal>
-                if it is &#39;0&#39;. The <literal>SiteRoot URL</literal> can also be a relative URI, like <literal>/ximspubroot</literal> for example. Most
-                users who use absolute <literal>SiteRoot URLs</literal> and do virtual hosts will want <varname>$resolvereltositeroots</varname> to be
-                &#39;1&#39;. During site development they can use a relative <application><literal>SiteRoot URL</literal></application> like <literal>/ximspubroot/xims</literal>
-                for example and later change it to the absolute one with going online. <literal>SiteRoot URLs</literal> must not have a trailing slash.</para>
+                if it is &#39;0&#39;. Note that per default, <varname>$resolvereltositeroots</varname> is set to &#39;1&#39;. The <literal>SiteRoot URL</literal>
+                can also be a relative URI, like <literal>/ximspubroot</literal> for example. Most users who use absolute <literal>SiteRoot URLs</literal> and
+                do virtual hosts will want <varname>$resolvereltositeroots</varname> to be &#39;1&#39;. During site development they can use a relative
+                <application><literal>SiteRoot URL</literal></application> like <literal>/ximspubroot/xims</literal> for example and later change it to the
+                absolute one with going online. <literal>SiteRoot URLs</literal> must not have a trailing slash.</para>
             </section>
         </section>
 
@@ -246,31 +219,33 @@
             <para>Appears in document-related input masks only - and contains their actual &#39;content&#39;.</para>
 
             <section>
-                <title><literal>Body</literal> in <acronym>XHTML</acronym> - Documents</title>
+                <title><literal>Body</literal> in Document objects</title>
 
-                <para>Depending on your XIMS configuration platform, you will get one of two possible views: (in the future, this will be a user-preference too)</para>
+                <para>Depending on your XIMS configuration platform, your browser and a configuration cookie, you will be presented a selection of of body
+                editor interfaces:</para>
 
                 <itemizedlist>
                     <listitem>
                         <para>WYSIWYG-Editing using <ulink url="http://sourceforge.net/projects/itools-htmlarea/">HTMLArea</ulink></para>
                     </listitem>
+
                     <listitem>
                         <para>WYSIWYG-Editing using <ulink url="http://www.ektron.com/ewebeditpro.aspx">eWebeditPro</ulink></para>
                     </listitem>
 
                     <listitem>
-                        <para>Using other browsers on other platforms, you&#39;re currently tied to using a plain textfield for content input. You are expected
-                        to enter your content as well-formed <ulink url="http://www.w3.org/TR/xhtml1/"> <acronym>XHTML</acronym> (strict)</ulink> ! That means,
-                        that you have to convert your existing <acronym>HTML</acronym> -files into <acronym>XHTML</acronym> (strict). If you are typing or
-                        pasting non-well-formed HTML-content, xims uses <ulink url="http://www.w3.org/People/Raggett/tidy/"> tidy</ulink> to &#34;form&#34; your
-                        your input &#34;well&#34;, which should be succesful in most cases. In case you recieve a failure notice, you will have to
-                        &#34;form&#34; your content &#34;well&#34; manually. Note that tidy will change the whitespace in the content body!</para>
+                        <para>Using other browsers on other platforms, you are currently tied to using a plain textfield for content input. You are expected to
+                        enter your content as a well-balanced <ulink url="http://www.w3.org/TR/xhtml1/"> <acronym>X(HT)ML</acronym> (strict)</ulink> document
+                        fragment! That means, that you have to convert your existing <acronym>HTML</acronym> -files into <acronym>XHTML</acronym>. If you are
+                        typing or pasting non-well-balanced HTML-content, XIMS uses <ulink url="http://www.w3.org/People/Raggett/tidy/"> tidy</ulink> to
+                        &#34;form&#34; your your input &#34;well&#34;, which should be succesful in most cases. In case you receive a failure notice, you will
+                        have to &#34;form&#34; your content &#34;well&#34; manually. Note that tidy will change the whitespace in the content body!</para>
                     </listitem>
                 </itemizedlist>
             </section>
 
             <section>
-                <title><literal>Body</literal> in simpleDocBook-XML Articles</title>
+                <title><literal>Body</literal> in simpleDocBookXML and AxPointPresentation objects</title>
 
                 <para>Same as above, but you can&#39;t use the <acronym>WYSYWIG</acronym> editor in either case. You might want to write your article in an
                 external editor, like xmlmind.com&#39;s <ulink url="http://www.xmlmind.com/xmleditor">XXE</ulink> for example, and paste it in.</para>
@@ -290,9 +265,10 @@
             </section>
 
             <section>
-                <title>Body in XSL-Stylesheets Documents</title>
+                <title>Body in XML- and XSLStylesheets objects</title>
 
-                <para>(write me!)</para>
+                <para>The full XML file should be entered into the body field. Note that the encoding of the document must the compatible to the XIMS database
+                encoding. If you get error messages, ask your system administrator about the correct database encoding to use.</para>
             </section>
         </section>
 
@@ -300,13 +276,13 @@
             <title><literal>Keywords</literal></title>
 
             <para>Give a &#39;;&#39;-separated list of <literal>keywords</literal> . These will appear as meta-information of the published document (META-tags)
-            and can be specifically searched for with XIMS-search.</para>
+            and can be explicitly searched for using the XIMS search engine.</para>
         </section>
 
         <section>
             <title><literal>Abstract</literal></title>
 
-            <para>A short summary describing your object&#39;s content.</para>
+            <para>A short summary describing your object&#39;s content. XHTML-Tags can be used, the content must be well-balanced however.</para>
         </section>
 
         <section>
@@ -321,11 +297,12 @@
         <section>
             <title>Create <literal>autoindex</literal> for this <literal>container</literal> during <literal>publishing</literal></title>
 
-            <para>XIMS is able to generate a simple indexdocument for you. (That practically means: if the public webserver gets a request for the folder you
+            <para>If set, XIMS generates a simple index document for you. (That practically means: if the public webserver gets a request for the folder you
             published, it will serve a short summary of the published objects in this folder)</para>
 
             <para>This index is generated during the publishing-process of the container. So be aware that adding or removing objects from the public system
-            requires not only the publishing/unpublishing of the objects in question, <emphasis>but also repuplishing of the container to regenerate the index</emphasis>.</para>
+            requires not only the publishing/unpublishing of the objects in question, <emphasis>but also republishing of the container to regenerate the index</emphasis>.
+            Automatic updates of the index will be added in future versions of XIMS.</para>
 
             <para>This option is currently presented on folder creation and folder editing and defaults to <literal>yes</literal>.</para>
         </section>
@@ -333,16 +310,14 @@
         <section>
             <title>Mark object as new</title>
 
-            <para>Sets a flag to mark Objects as new to emphase changes made. If set, a <literal>NEW!</literal> icon is shown in the folderlistings. The
+            <para>Sets a flag to mark objects as new to emphase changes made. If set, a <literal>NEW!</literal> icon is shown in the folderlistings. The
             <command>N:xx</command> search command lists objects flagged as new only.</para>
         </section>
 
         <section>
             <title><literal>Publish</literal> / <literal>Republish</literal> / <literal>Unpublish</literal></title>
 
-            <para>Publishing-mechanisms will be changed soon! With it, this section!</para>
-
-            <para>Per default, your objects solely exist in the xims&#39; database. (The filesystem-like view presented to you is only virtual.)</para>
+            <para>Per default, your objects exist in the XIMS database only. The filesystem-like view presented to you is only virtual.</para>
 
             <para>If you &#34;(Re)Publish&#34; an object it will copied to the web server&#39;s filesystem for public delivery.</para>
         </section>
@@ -350,19 +325,7 @@
         <section>
             <title><literal>Search</literal> Field</title>
 
-            <para>The <literal>Search</literal> field takes search queries and some special short commands.</para>
-
-            <para>Constraints:</para>
-
-            <itemizedlist>
-                <listitem>
-                    <para>A query can have up to 55 characters.</para>
-                </listitem>
-
-                <listitem>
-                    <para>Results are limited to the 30 best matches.</para>
-                </listitem>
-            </itemizedlist>
+            <para>The <literal>Search</literal> field takes search queries and some special search macros. The query term is limited to maximum 55 characters.</para>
 
             <section>
                 <title>Keyword Search</title>
@@ -392,17 +355,17 @@
             <section>
                 <title>M:&#60;days&#62;</title>
 
-                <para>Returns objects that have been modyfied in the last &#60;days&#62;.</para>
+                <para>Returns objects that have been modified in the last &#60;days&#62;.</para>
 
-                <para>If the Number of days is ommited, 1 is assumed.</para>
+                <para>If the number of days is ommited, 1 is assumed.</para>
             </section>
 
             <section>
                 <title>m:&#60;days&#62;</title>
 
-                <para>Returns objects marked new that have been modyfied in the last &#60;days&#62;.</para>
+                <para>Returns objects marked new that have been modified in the last &#60;days&#62;.</para>
 
-                <para>If the Number of days is ommited, 1 is assumed.</para>
+                <para>If the number of days is ommited, 1 is assumed.</para>
             </section>
 
             <section>
@@ -410,7 +373,7 @@
 
                 <para>Lookup objects by creation time.</para>
 
-                <para>If the Number of days is ommited, 1 is assumed.</para>
+                <para>If the number of days is ommited, 1 is assumed.</para>
             </section>
 
             <section>
@@ -418,7 +381,7 @@
 
                 <para>Lookup objects marked new by creation time.</para>
 
-                <para>If the Number of days is ommited, 1 is assumed.</para>
+                <para>If the number of days is ommited, 1 is assumed.</para>
             </section>
 
             <section>
@@ -444,17 +407,19 @@
     <section>
         <title>Objecttypes Reference</title>
 
-        <abstract>
-            <para>This will be a short summary of the various Objecttypes supported in XIMS.</para>
-        </abstract>
-
         <section>
             <title>Document-likes</title>
 
             <para></para>
 
             <section>
-                <title>XHTML-Document</title>
+                <title>Document</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>NewsItem</title>
 
                 <para></para>
             </section>
@@ -474,11 +439,12 @@
             <section>
                 <title>AxPointPresentation</title>
 
-                <para></para>
+                <para>See the <ulink url="http://xims.info/documentation/users/howtos/axpointpresentation-howto.sdbk">AxPointPresentation Howto</ulink> for an
+                example usage.</para>
             </section>
 
             <section>
-                <title>XSL-Stylesheet</title>
+                <title>XSLStylesheet</title>
 
                 <para></para>
             </section>
@@ -491,6 +457,12 @@
 
             <section>
                 <title>CSS</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>JavaScript</title>
 
                 <para></para>
             </section>
@@ -508,15 +480,10 @@
             </section>
 
             <section>
-                <title>AnonDiscussionForum</title>
-
-                <para></para>
-            </section>
-
-            <section>
                 <title>DepartmentRoot</title>
 
-                <para></para>
+                <para>See the <ulink url="http://xims.info/documentation/users/howtos/departmentroot-howto.sdbk">DepartmentRoot Howto</ulink> for an example
+                usage.</para>
             </section>
 
             <section>
@@ -545,9 +512,34 @@
         </section>
 
         <section>
-            <title></title>
+            <title>Dynamic content</title>
 
             <para></para>
+
+            <section>
+                <title>AnonDiscussionForum</title>
+
+                <para>See the <ulink url="http://xims.info/documentation/users/howtos/anondiscussionforum-howto.sdbk">Anonymous Discussion Forum HowTo</ulink>
+                for an example usage.</para>
+            </section>
+
+            <section>
+                <title>Questionnaire</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>VLibrary</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>SQLReport</title>
+
+                <para></para>
+            </section>
         </section>
     </section>
 
@@ -555,26 +547,6 @@
         <title>ACL-Reference</title>
 
         <para></para>
-
-        <para>starts with a simple &#39;read&#39; access privilege</para>
-
-        <section>
-            <title>XIMS-Objects</title>
-
-            <para></para>
-        </section>
-
-        <section>
-            <title>Roles</title>
-
-            <para></para>
-        </section>
-
-        <section>
-            <title>Users</title>
-
-            <para></para>
-        </section>
 
         <section>
             <title>Privileges</title>
@@ -584,13 +556,19 @@
             <section>
                 <title>Basic Privileges</title>
 
-                <para>Filesystem-like Privileges:</para>
+                <para></para>
 
                 <itemizedlist>
                     <listitem>
                         <para>View</para>
 
                         <para>A user or role may view the object.</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Copy</para>
+
+                        <para>A user or role may copy the object.</para>
                     </listitem>
 
                     <listitem>
@@ -617,14 +595,12 @@
                         <para>A user or Role has the right to move the object into another container.</para>
                     </listitem>
                 </itemizedlist>
-
-                <para>bla.</para>
             </section>
 
             <section>
                 <title>Publishing Privileges</title>
 
-                <para>Right to publish</para>
+                <para></para>
 
                 <itemizedlist>
                     <listitem>
@@ -638,13 +614,13 @@
             <section>
                 <title>Grant Rights</title>
 
-                <para>give the right to grant privileges on this object</para>
+                <para></para>
 
                 <itemizedlist>
                     <listitem>
                         <para>Grant</para>
 
-                        <para>A User or role has the right to grant another user or role rights on this object.</para>
+                        <para>A user or role has the right to grant another user or role rights on this object.</para>
                     </listitem>
                 </itemizedlist>
             </section>
@@ -675,6 +651,12 @@
                                 <entry><mediaobject><imageobject><imagedata fileref="images/option_edit.png" format="PNG" /></imageobject></mediaobject></entry>
 
                                 <entry>Edit</entry>
+                            </row>
+
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/option_copy.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Copy</entry>
                             </row>
 
                             <row>
@@ -743,11 +725,12 @@
         <title>A mini-glossary</title>
 
         <para id="site">site - In XIMS installations first level containers (where the parent is the root folder <literal>/</literal> ) are referred to as
-        <literal>site</literal> . For example the object with the path <literal>/uniweb/zid/index.html</literal> would be located in the site <quote>uniweb</quote>
+        <literal>site</literal> . For example, the object with the path <literal>/uniweb/zid/index.html</literal> would be located in the site <quote>uniweb</quote>
         .</para>
 
-        <para id="minorid">ID - ID of the language-dependend part of the XIMS object. This ID can be seen in the URL while editing objects for example.</para>
+        <para id="minorid">ID - ID of the language-dependent part of the XIMS object. This ID may be used for unlocking an object using the <command>!U:ID</command>
+        search macro. The ID can also be seen in the URL while editing objects for example.</para>
 
-        <para id="majorid">Document ID - ID of the language-independend part of the XIMS object.</para>
+        <para id="majorid">Document ID - ID of the language-independent part of the XIMS object.</para>
     </appendix>
 </article>
