@@ -39,13 +39,14 @@ function getParamValue( param ) {
     var aryQuery2 = strQuery.split("&");
     var pair = [];
     var pair2 = [];
-    for (var i = 0; i < aryQuery.length; i++) {
+    var i;
+    for (i = 0; i < aryQuery.length; i++) {
         pair = aryQuery[i].split("=");
         if (pair.length == 2) {
             objQuery[unescape(pair[0])] = unescape(pair[1]);
         }
     }
-    for (var i = 0; i < aryQuery2.length; i++) {
+    for (i = 0; i < aryQuery2.length; i++) {
         pair2 = aryQuery2[i].split("=");
         if (pair2.length == 2) {
             objQuery2[unescape(pair2[0])] = unescape(pair2[1]);
@@ -63,15 +64,38 @@ function stringHighlight( mystring ) {
     }
     re = /\s+/;
     var splitted = mystring.split(re);
+    var highlightStart = '<span name="highlighted" style="background: yellow">';
+    var highlightEnd = '</span>';
+
     for (var i in splitted) {
-        /* should not match inside <>. browser's regex implementations are
-           quite different so it matches currently. better solution pending
-        */
-        splittedRE = new RegExp('('+splitted[i]+')', 'gi');
         var body = document.getElementById("body");
-        content = body.innerHTML;
-        content = content.replace(splittedRE, '<span name="highlighted" style="background: yellow">$1</span>');
-        body.innerHTML = content;
+        var content = body.innerHTML;
+        var lcContent = content.toLowerCase();
+        var newContent = '';
+        var searchTerm = splitted[i];
+        var j = -1;
+        var lcSearchTerm = searchTerm.toLowerCase();
+
+        while ( content.length > 0 ) {
+            j = lcContent.indexOf(lcSearchTerm, j+1);
+            if (j < 0) {
+                newContent += content;
+                content = '';
+            }
+            else {
+                // skip anything inside a tag
+                if (content.lastIndexOf(">", j) >= content.lastIndexOf("<", j)) {
+                    // skip anything inside scripts
+                    if ( lcContent.lastIndexOf("/script>", j) >= lcContent.lastIndexOf("<script", j) ) {
+                        newContent += content.substring(0, j) + highlightStart + content.substr(j, searchTerm.length) + highlightEnd;
+                        content = content.substr(j + searchTerm.length);
+                        lcContent = content.toLowerCase();
+                        j = -1;
+                    }
+                }
+            }
+        }
+        body.innerHTML = newContent;
     }
 
     highlighted = true
@@ -88,9 +112,10 @@ function toggleHighlight( hls ) {
         highlighted = false;
     }
 
+    var els;
+    var i;
     if ( document.all ) {
-        var els = document.getElementsByTagName("span");
-        var i;
+        els = document.getElementsByTagName("span");
         for(i = 0;i<els.length;i++){
             if ( els[i].name == 'highlighted' ) {
                 els[i].style.cssText = cssText;
@@ -98,7 +123,7 @@ function toggleHighlight( hls ) {
         }
     }
     else {
-        var els = document.getElementsByName('highlighted');
+        els = document.getElementsByName('highlighted');
         for(i = 0;i<els.length;i++){
             els[i].style.cssText = cssText;
         }
