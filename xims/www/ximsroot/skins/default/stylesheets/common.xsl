@@ -20,6 +20,7 @@
 <!-- cttobject.options -->
 <xsl:variable name="l_Edit" select="$i18n/l/Edit"/>
 <xsl:variable name="l_Move" select="$i18n/l/Move"/>
+<xsl:variable name="l_Copy" select="$i18n/l/Copy"/>
 <xsl:variable name="l_Publishing_options" select="$i18n/l/Publishing_options"/>
 <xsl:variable name="l_Access_control" select="$i18n/l/Access_control"/>
 <xsl:variable name="l_Undelete" select="$i18n/l/Undelete"/>
@@ -574,6 +575,30 @@
                     onmousedown="pass('edit{$id}','edit','s'); return true;"
                     onmouseup="pass('edit{$id}','edit','s'); return true;"
                     name="edit{$id}"
+                    width="32"
+                    height="19"
+                    align="left"
+                />
+            </a>
+        </xsl:when>
+        <xsl:otherwise>
+            <img src="{$ximsroot}images/spacer_white.gif"
+                width="32"
+                height="19"
+                border="0"
+                alt=" "
+                align="left"
+            />
+        </xsl:otherwise>
+    </xsl:choose>
+    <xsl:choose>
+        <xsl:when test="marked_deleted != '1' and user_privileges/view">
+            <a href="{$goxims_content}?id={$id};copy=1">
+                <img src="{$skimages}option_copy.png"
+                    alt="{$l_Copy}"
+                    title="{$l_Copy}"
+                    border="0"
+                    name="copy{$id}"
                     width="32"
                     height="19"
                     align="left"
