@@ -98,7 +98,11 @@ sub new {
     if ( defined($args{id}) or defined($args{document_id}) ) {
         XIMS::Debug( 6, "fetching object by id: $args{id}." ) if defined($args{id});
         XIMS::Debug( 6, "fetching object by document_id: $args{document_id}." ) if defined($args{document_id});
-        $real_object = $self->data_provider->getObject( %args, properties => \@Default_Properties );
+        my $properties = delete $args{properties};
+        unless ( $properties and ref $properties and scalar @{$properties} ) {
+            $properties = \@Default_Properties;
+        }
+        $real_object = $self->data_provider->getObject( %args, properties => $properties );
         if ( defined( $real_object )) {
             delete $real_object->{'document.id'};
             $self->data( %{$real_object} );
@@ -259,11 +263,17 @@ sub children {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
+
+    my $properties = delete $args{properties};
+    unless ( $properties and ref $properties and scalar @{$properties} ) {
+        $properties = \@Default_Properties;
+    }
+
     my @child_ids = $self->__child_ids( %args );
     return () unless scalar( @child_ids ) > 0 ;
     return XIMS::Iterator::Object->new( \@child_ids ) unless wantarray;
 
-    my @children_data = $self->data_provider->getObject( document_id => \@child_ids, %args, properties => \@Default_Properties );
+    my @children_data = $self->data_provider->getObject( document_id => \@child_ids, %args, properties => $properties );
     my @children = map { XIMS::Object->new->data( %{$_} ) } @children_data;
     #warn "children" . Dumper( \@children ) . "\n";
     return @children;
@@ -299,6 +309,8 @@ sub children_granted {
 
     return $self->children( %args ) if $user->admin();
 
+    my $properties = delete $args{properties}; # save them back for the call to __get_granted_objects
+
     # the following is a potential performance killer, we should spare some steps here...
     # do a join in __child_ids?
     # it does not have to be the Do-it-all-in-one-query-with-Oracle way ;-)
@@ -310,6 +322,7 @@ sub children_granted {
         return XIMS::Iterator::Object->new( \@ids, 1 );
     }
 
+    $args{properties} = $properties; # pass the properties
     my @children = $self->__get_granted_objects( doc_ids => \@child_candidate_docids, User => $user, %args ) ;
 
     #warn "Granted children" . Dumper( \@children ) . "\n";
@@ -408,6 +421,11 @@ sub descendants {
     my $self = shift;
     my %args = @_;
 
+    my $properties = delete $args{properties};
+    unless ( $properties and ref $properties and scalar @{$properties} ) {
+        $properties = \@Default_Properties;
+    }
+
     delete $args{parent_id};
     my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id(), %args );
 
@@ -419,7 +437,7 @@ sub descendants {
 
     my @descendants_data =  $self->data_provider->getObject( document_id => \@doc_ids,
                                                              %args,
-                                                             properties => \@Default_Properties,
+                                                             properties => $properties,
                                                             );
 
     my @descendants = map { XIMS::Object->new->data( %{$_} ) } @descendants_data;
@@ -474,6 +492,8 @@ sub descendants_granted {
 
     return $self->descendants( %args ) if $user->admin();
 
+    my $properties = delete $args{properties}; # save them back for the call to __get_granted_objects
+
     delete $args{parent_id};
     my $descendant_candidate_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id(), %args );
 
@@ -486,6 +506,7 @@ sub descendants_granted {
         return XIMS::Iterator::Object->new( \@ids, 1 );
     }
 
+    $args{properties} = $properties; # pass the properties
     my @descendants = $self->__get_granted_objects( doc_ids => \@candidate_doc_ids, User => $user, %args );
     return () unless scalar( @descendants ) > 0;
 
@@ -563,11 +584,17 @@ sub find_objects {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
+
+    my $properties = delete $args{properties};
+    unless ( $properties and ref $properties and scalar @{$properties} ) {
+        $properties = \@Default_Properties;
+    }
+
     my @found_ids = $self->__find_ids( %args );
     return () unless scalar( @found_ids ) > 0 ;
     return XIMS::Iterator::Object->new( \@found_ids, 1 ) unless wantarray;
 
-    my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => \@Default_Properties );
+    my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => $properties );
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
 
     #warn "objects found" . Dumper( \@objects ) . "\n";
@@ -625,6 +652,11 @@ sub find_objects_granted {
 
     return $self->find_objects( %args ) if $user->admin();
 
+    my $properties = delete $args{properties};
+    unless ( $properties and ref $properties and scalar @{$properties} ) {
+        $properties = \@Default_Properties;
+    }
+
     $args{user_id} = $user->id();
     my @role_ids = $user->role_ids();
     $args{role_ids} = \@role_ids;
@@ -633,7 +665,7 @@ sub find_objects_granted {
     return () unless scalar( @found_ids ) > 0 ;
     return XIMS::Iterator::Object->new( \@found_ids, 1 ) unless wantarray;
 
-    my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => \@Default_Properties );
+    my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => $properties );
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
 
     #warn "objects found" . Dumper( \@objects ) . "\n";
@@ -675,11 +707,17 @@ sub find_objects_granted_count {
 sub __get_granted_objects {
     my $self = shift;
     my %args = @_;
+
+    my $properties = delete $args{properties};
+    unless ( $properties and ref $properties and scalar @{$properties} ) {
+        $properties = \@Default_Properties;
+    }
+
     my @ids = $self->__get_granted_ids( %args );
     return () unless scalar( @ids ) > 0;
 
     my @data = $self->data_provider->getObject( id  => \@ids,
-                                                properties => \@Default_Properties );
+                                                properties => $properties );
 
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
 
