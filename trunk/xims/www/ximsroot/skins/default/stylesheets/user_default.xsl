@@ -103,7 +103,7 @@
         </xsl:otherwise>
     </xsl:choose>
     <span>
-        <xsl:attribute name="title">docid: <xsl:value-of select="@document_id"/>, <xsl:value-of select="$l_location"/>: <xsl:value-of
+        <xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:value-of select="$l_location"/>: <xsl:value-of
 select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/> <xsl:call-template name="ownerfullname"/></xsl:attribute>
         <a>
             <xsl:choose>
