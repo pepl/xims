@@ -11,6 +11,7 @@
 
 <xsl:import href="container_common.xsl"/>
 <xsl:param name="page" select="1" />
+<xsl:variable name="pagesperpagenav" select="10" />
 
 <xsl:variable name="objectitems_count">
     <xsl:value-of select="/document/context/session/searchresultcount"/>
@@ -41,7 +42,7 @@
 
             </table>
 
-            <xsl:if test="number($page) &gt; 0 or /document/context/session/searchresultcount &gt;= $searchresultrowlimit">
+            <xsl:if test="$totalpages &gt; 1">
                 <table style="margin-left:5px; margin-right:10px; margin-top: 10px; margin-bottom: 10px; width: 99%; padding: 3px; border: thin solid #C1C1C1; background: #F9F9F9 font-size: small;" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
@@ -108,7 +109,7 @@
 
     <xsl:text> </xsl:text>
 
-    <xsl:if test="$page &lt; $total">
+    <xsl:if test="$page &lt; $total and $page &lt; ($current + $pagesperpagenav)">
         <xsl:call-template name="pageslinks">
             <xsl:with-param name="page" select="$page + 1" />
             <xsl:with-param name="current" select="$current" />
@@ -116,6 +117,11 @@
             <xsl:with-param name="url" select="$url" />
         </xsl:call-template>
     </xsl:if>
+
+    <xsl:if test="$page = ($current + $pagesperpagenav)">
+    ...
+    </xsl:if>
+
 </xsl:template>
 
 
