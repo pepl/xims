@@ -17,7 +17,6 @@ use XIMS::SAX::Filter::Date;
 $DefaultSAXHandler ||= 'XML::LibXML::SAX::Builder';
 $DefaultSAXGenerator ||= 'XIMS::SAX::Generator::Content';
 
-
 ##
 #
 # SYNOPSIS
@@ -105,7 +104,7 @@ sub parse {
     # it, if needed.
     $ctxt = $self->{Generator}->prepare( $ctxt );
 
-    # look for "appendexportfilters" in Exporter.pm to read about the 
+    # look for "appendexportfilters" in Exporter.pm to read about the
     # consequences and reasons of the $prependgeneratorfilters flag.
     if ( $prependgeneratorfilters ) {
         unshift( @filterlist, $self->{Generator}->get_filters );
@@ -118,6 +117,7 @@ sub parse {
 
     # build the filter machine, setting the last stage to the passed
     # Handler
+
     my $machine = Pipeline( $self->{Generator},
                             @filterlist,
                             $self->{Handler} );
@@ -193,7 +193,7 @@ sub set_generator {
         if ( ! ref( $generator ) ) {
             my $generator_class =  $generator;
             eval "use $generator_class";
-            $self->{Generator} = $generator_class->new(); 
+            $self->{Generator} = $generator_class->new();
         }
         else {
             $self->{Generator} = $generator;
