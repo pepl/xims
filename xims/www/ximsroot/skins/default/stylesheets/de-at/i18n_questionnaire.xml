@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Joachim Kargl (Kargl.cc) -->
+<l>
+	<!-- Begin Questionnaire -->
+	<Question>Frage</Question>
+	<Answer>Antwort</Answer>
+	<Answers>Antworten</Answers>
+	<Comment>Kommentar</Comment>
+	<Alignment>Ausrichtung</Alignment>
+	<Alignement>Ausrichtung</Alignement>
+	<Type>Typ</Type>
+	<results>Ergebnisse</results>
+	<close_window>Fenster schließen</close_window>
+	<next>Weiter</next>
+	<start>Start</start>
+	<TAN_number>Anzahl TANs in Liste</TAN_number>
+	<TAN_lists_assigned>Zugeordnete TAN-Listen</TAN_lists_assigned>
+	<Question_number>Anzahl Fragen</Question_number>
+	<Questionnaires_answered_number>Anzahl beantworteter Fragebögen</Questionnaires_answered_number>
+	<Questionnaires_valid_number>Anzahl gültig beantorteter Fragebögen</Questionnaires_valid_number>
+	<Questionnaire_thank_you>Danke für die Beantwortung des Fragebogens</Questionnaire_thank_you>
+	<!-- End Questionnaire -->
+</l>
