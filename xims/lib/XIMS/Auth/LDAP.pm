@@ -23,9 +23,9 @@ sub new {
             # using hardcoded base atm
             my $dn = "uid=" . uc($param{Login}) . ",ou=people,o=Universitaet Innsbruck,c=AT";
             my $msg = $ldap->bind( $dn, password => $param{Password} );
-            if ( $msg->code() == LDAP_SUCCESS ){
+            if ( $msg->code() == LDAP_SUCCESS ) {
                 my $user = XIMS::User->new( name => $param{Login} );
-                if ( $user and $user->id ) ){
+                if ( $user and $user->id ){
                     XIMS::Debug( 4, "user confirmed" );
                     $self = bless { User => $user}, $class;
                 }
