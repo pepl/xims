@@ -2,17 +2,14 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package anondiscussionforum;
+package XIMS::CGI::AnonDiscussionForum;
 
 use strict;
-
 use vars qw($VERSION @ISA);
-
-use folder;
-use XIMS::CGI;
+use XIMS::CGI::Folder;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = qw( folder );
+@ISA = qw( XIMS::CGI::Folder );
 
 # #############################################################################
 # RUNTIME EVENTS

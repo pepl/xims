@@ -2,20 +2,19 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id $
-package bookmark;
+package XIMS::CGI::bookmark;
 
 use strict;
 use vars qw( $VERSION @ISA);
 
-use defaultbookmark;
-use XIMS::CGI;
+use XIMS::CGI::defaultbookmark;
 use XIMS::User;
 use XIMS::Bookmark;
 
 #use Data::Dumper;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = qw( XIMS::CGI defaultbookmark );
+@ISA = qw( XIMS::CGI::defaultbookmark );
 
 sub registerEvents {
     XIMS::Debug( 5, "called" );

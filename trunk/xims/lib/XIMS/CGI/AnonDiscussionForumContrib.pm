@@ -2,7 +2,7 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package anondiscussionforumcontrib;
+package XIMS::CGI::AnonDiscussionForumContrib;
 
 use strict;
 use warnings;
