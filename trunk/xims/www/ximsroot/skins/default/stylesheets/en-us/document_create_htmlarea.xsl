@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -9,5 +9,5 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="document_common.xsl"/>
     <xsl:import href="../document_create_htmlarea.xsl"/>
-    <xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+    <xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 </xsl:stylesheet>

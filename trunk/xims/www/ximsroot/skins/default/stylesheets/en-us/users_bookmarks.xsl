@@ -10,5 +10,5 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="users_common.xsl"/>
     <xsl:import href="../users_bookmarks.xsl"/>
-    <xsl:output method="html" encoding="ISO-8859-1"/>
+    <xsl:output method="html" encoding="utf-8"/>
 </xsl:stylesheet>

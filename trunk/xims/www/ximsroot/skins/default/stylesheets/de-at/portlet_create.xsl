@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -11,7 +11,7 @@
 <xsl:import href="common.xsl"/>
 <xsl:import href="../link_common.xsl"/>
 <xsl:import href="../portlet_create.xsl"/>
-<xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template name="contentcolumns">
         <!--
@@ -20,8 +20,8 @@
         -->
         <tr>
             <td colspan="3">
-                Neben den Standardspalten können Sie hier
-                <b>zusätzliche</b> Informationen einbringen, die das Portlet
+                Neben den Standardspalten kÃ¶nnen Sie hier
+                <b>zusÃ¤tzliche</b> Informationen einbringen, die das Portlet
                 enthalten soll. (Hinweis: Diese Informationen
                 sind nur einbringbar, wenn das Objekt eine solche
                 Information besitzt!)
@@ -46,13 +46,13 @@
                     </tr>
                     <tr>
                         <td>
-                            zuletzt geändert von
+                            zuletzt geÃ¤ndert von
                         </td>
                         <td valign="top">
                             <input type="checkbox" name="col_last_modified_by_fullname" checked="checked" />
                         </td>
                         <td>
-                            zuletzt geändert um
+                            zuletzt geÃ¤ndert um
                         </td>
                         <td valign="top">
                             <input type="checkbox" name="col_last_modification_timestamp" checked="checked" />
@@ -78,7 +78,7 @@
                             <input type="checkbox" name="col_minor_status" checked="checked" />
                         </td>
                         <td>
-                            zusätzliche Attribute
+                            zusÃ¤tzliche Attribute
                         </td>
                         <td valign="top">
                             <input type="checkbox" name="col_attributes"/>

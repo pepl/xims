@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -9,7 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common.xsl"/>
-<xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 <xsl:param name="name"/>
 
 <xsl:template match="/document">
@@ -38,19 +38,19 @@
             <!-- begin widget table -->
             <table width="300" cellpadding="2" cellspacing="0" border="0">
               <tr>
-                <td class="bluebg">User Löschung bestätigen</td>
+                <td class="bluebg">User LÃ¶schung bestÃ¤tigen</td>
               </tr>
               <tr>
                 <td>&#160;</td>
               </tr>
               <tr>
                 <td>
-                  Sie befinden sich beim Löschen des Users '<xsl:value-of select="$name"/>' aus Ihrem System.
+                  Sie befinden sich beim LÃ¶schen des Users '<xsl:value-of select="$name"/>' aus Ihrem System.
                   <br />
-                  <b>Dies ist eine endgültige Aktion und kann niacht rückgängig gemacht werden!</b>
+                  <b>Dies ist eine endgÃ¼ltige Aktion und kann niacht rÃ¼ckgÃ¤ngig gemacht werden!</b>
                   <br />
                   <br />
-                  Klicken Sie auf 'Bestätigen' um fortzufahren, oder 'Abbrechen' um zur vorigen Seite zu gelangen.
+                  Klicken Sie auf 'BestÃ¤tigen' um fortzufahren, oder 'Abbrechen' um zur vorigen Seite zu gelangen.
                 </td>
               </tr>
               <tr>
@@ -63,7 +63,7 @@
                   <table cellpadding="2" cellspacing="0" border="0">
                     <tr align="center">
                       <td>
-                        <input class="control" name="remove_update" type="submit" value="Bestätigen"/>
+                        <input class="control" name="remove_update" type="submit" value="BestÃ¤tigen"/>
                         <input name="name" type="hidden" value="{$name}"/>
                       </td>
                       <td>

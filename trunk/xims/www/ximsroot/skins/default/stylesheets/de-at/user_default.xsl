@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -12,7 +12,7 @@
 <xsl:import href="common.xsl"/>
 <xsl:import href="user_common.xsl"/>
 <xsl:import href="../user_default.xsl"/>
-<xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document/context/session/user">
     <html>
@@ -34,8 +34,8 @@
 
                 <table>
                     <tr>
-                        <th>Ihre <xsl:value-of select="count(/document/userobjectlist/objectlist/object)"/> letzten erstellten oder geänderten Objekte</th>
-                        <th>Die <xsl:value-of select="count(/document/objectlist/object)"/> zuletzt geänderten Objekte</th>
+                        <th>Ihre <xsl:value-of select="count(/document/userobjectlist/objectlist/object)"/> letzten erstellten oder geÃ¤nderten Objekte</th>
+                        <th>Die <xsl:value-of select="count(/document/objectlist/object)"/> zuletzt geÃ¤nderten Objekte</th>
                     </tr>
                     <tr>
                         <td>
@@ -72,7 +72,7 @@
                         <td>
                             <xsl:if test="system_privileges/change_password = '1'">
                                 <p>
-                                    <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;<a href="{$xims_box}{$goxims}/user?passwd=1">Passwort ändern</a>
+                                    <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;<a href="{$xims_box}{$goxims}/user?passwd=1">Passwort Ã¤ndern</a>
                                 </p>
                             </xsl:if>
                         </td>
@@ -80,7 +80,7 @@
                     <tr>
                         <td>
                             <p>
-                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;Persönliche Einstellungen verwalten
+                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;PersÃ¶nliche Einstellungen verwalten
                             </p>
                         </td>
                         <td>

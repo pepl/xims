@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -9,7 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common.xsl"/>
-<xsl:output method="html" encoding="ISO-8859-1"/>
+<xsl:output method="html" encoding="utf-8"/>
 <xsl:param name="id"/>
 
 <xsl:template match="/document/context/object">
@@ -45,10 +45,10 @@
                 <td>
                     <p>
                         <xsl:value-of select="/document/context/session/warning_msg"/>
-                        dies wird auch gelöscht.
+                        dies wird auch gelÃ¶scht.
                     </p>
                     <p>
-                        Klicken Sie 'Bestätigen' um fortzufahren, oder 'Abbrechen' um diese Aktion abzubrechen.
+                        Klicken Sie 'BestÃ¤tigen' um fortzufahren, oder 'Abbrechen' um diese Aktion abzubrechen.
                     </p>
                 </td>
               </tr>
@@ -62,7 +62,7 @@
                   <table cellpadding="2" cellspacing="0" border="0">
                     <tr align="center">
                       <td>
-                        <input name="submit" type="submit" value="Bestätigen" class="control"/>
+                        <input name="submit" type="submit" value="BestÃ¤tigen" class="control"/>
                         <input name="id" type="hidden" value="{$id}"/>
                         <input type="hidden" name="forcetrash" value="1"/>
                         <input type="hidden" name="trashcan" value="1"/>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -9,14 +9,14 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common.xsl"/>
-<xsl:output method="html" encoding="ISO-8859-1"/>
+<xsl:output method="html" encoding="utf-8"/>
 <xsl:param name="id"/>
 
 <xsl:template match="/document/context/object">
     <html>
         <head>
             <title>
-                Löschen des Objekts bestätigen - XIMS
+                LÃ¶schen des Objekts bestÃ¤tigen - XIMS
             </title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript">0</script>
@@ -36,7 +36,7 @@
             <!-- begin widget table -->
             <table width="300" cellpadding="2" cellspacing="0" border="0">
               <tr>
-                <td class="bluebg">Löschen des Objekts bestätigen</td>
+                <td class="bluebg">LÃ¶schen des Objekts bestÃ¤tigen</td>
               </tr>
               <tr>
                 <td>&#160;</td>
@@ -44,10 +44,10 @@
               <tr>
                 <td>
                     <p>
-                        Sie sind dabei das Objekt '<xsl:value-of select="title"/>' zu löschen.
+                        Sie sind dabei das Objekt '<xsl:value-of select="title"/>' zu lÃ¶schen.
                     </p>
                     <p>
-                        Klicken Sie auf 'Bestätigen' um fortzufahren, oder 'Abbrechen' um zur vorigen Seite zu gelangen.
+                        Klicken Sie auf 'BestÃ¤tigen' um fortzufahren, oder 'Abbrechen' um zur vorigen Seite zu gelangen.
                     </p>
                 </td>
               </tr>
@@ -61,7 +61,7 @@
                   <table cellpadding="2" cellspacing="0" border="0">
                     <tr align="center">
                       <td>
-                        <input class="control" name="trashcan" type="submit" value="Bestätigen"/>
+                        <input class="control" name="trashcan" type="submit" value="BestÃ¤tigen"/>
                         <input name="id" type="hidden" value="{$id}"/>
                       </td>
                       <td>
