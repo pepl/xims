@@ -34,7 +34,8 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'TAN_List', 0, 0, 1, 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'VLibrary', 1, 1, 1, 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'VLibraryItem', 0, 1, 1, 0 );
-INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id ) VALUES ( OBT_SEQ.NEXTVAL, 'sDocBookXML', 0, 1, 1, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id ) VALUES ( OBT_SEQ.NEXTVAL, 'DocBookXML', 0, 1, 1, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
+
 
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'Text', 'text/plain', 'txt' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'HTML', 'text/xhtml', 'html' );
@@ -105,9 +106,8 @@ INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id ) VALUES ( 5, 2, 6 );
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id ) VALUES ( 5, 2, 3 );
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id, role_master ) VALUES ( 5, 2, 4, 1 );
 
-
 -- add root folder
-INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, department_id, location, position, location_path ) VALUES ( DOC_SEQ.NEXTVAL, 1, 6, 18, 1, 'root', 1, '/root' );
+INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, department_id, location, position, location_path ) VALUES ( DOC_SEQ.NEXTVAL, NULL, 6, 18, 1, 'root', 1, '/root' );
 INSERT INTO CI_CONTENT ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id ) VALUES ( CTT_SEQ.NEXTVAL, 1, 'root', 2, 2, 2, 2);
 
 -- add SiteRoot "xims" with SiteRoot URL '/ximspubroot/xims'

@@ -71,8 +71,7 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'VLibraryItem', 0, 1, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
-       VALUES ( nextval('ci_object_types_id_seq'), 'sDocBookXML', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
-
+       VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
 
 \echo inserting into ci_data_formats...
 
@@ -212,7 +211,7 @@ INSERT INTO ci_roles_granted ( id, grantor_id, grantee_id, role_master )
 
 -- add root folder
 INSERT INTO ci_documents ( id, parent_id, object_type_id, data_format_id, department_id, location, position )
-       VALUES ( nextval('ci_documents_id_seq'), 1, 6, 18, 1, 'root',1 );
+       VALUES ( nextval('ci_documents_id_seq'), NULL, 6, 18, 1, 'root',1 );
 INSERT INTO ci_content ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id )
        VALUES ( nextval('ci_content_id_seq'), 1, 'root', 2, 2, 2, 2);
 
