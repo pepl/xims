@@ -147,7 +147,7 @@ sub DBSessionOpt()                { '' }                # RDBMS specific DBD ses
 #sub DBName()                      { 'xims' }    # Default value from defaultdata.sql
 #sub DBPassword()                  { 'ximsrun' } # Default value from defaultdata.sql
 #sub DBdsn()                       { 'dbi:Pg:dbname=xims' }
-#sub DBSessionOpt()                { 'SET DateStyle TO German;SET Client_Encoding TO LATIN1;' }
+#sub DBSessionOpt()                { 'SET DateStyle TO German;SET Client_Encoding TO UNICODE;' }
 #sub DBDOpt()                      { 'FetchHashKeyName=NAME_uc;' }
 
 # Examples settings for Oracle
@@ -155,7 +155,7 @@ sub DBSessionOpt()                { '' }                # RDBMS specific DBD ses
 #sub DBSessionOpt()                { 'ALTER SESSION SET NLS_DATE_FORMAT=\'DD.MM.YYYY HH24:MI:SS\';' }
 #sub DBDOpt()                      { 'LongReadLen=10485760;LongTruncOk=1'};
 
-sub DBEncoding()                  { 'ISO-8859-1' }         # Set this to your dabase encoding if the database is not encoded in UTF-8
+sub DBEncoding()                  { '' }                   # Set this to your dabase encoding if the database is not encoded in UTF-8
 sub QBDriver()                    { '' }                   # Used for special DBI specific QueryBuilder Driver.
                                                            # 'InterMedia' for example will load XIMS::QueryBuilder::OracleInterMedia
                                                            # for Oracle.
