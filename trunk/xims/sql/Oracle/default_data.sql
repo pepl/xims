@@ -110,7 +110,7 @@ INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id ) VALUES ( 5, 2, 3 );
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id, role_master ) VALUES ( 5, 2, 4, 1 );
 
 -- add root folder
-INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, department_id, location, position, location_path ) VALUES ( DOC_SEQ.NEXTVAL, NULL, 6, 18, 1, 'root', 1, '/root' );
+INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, department_id, location, position) VALUES ( DOC_SEQ.NEXTVAL, NULL, 6, 18, 1, 'root', 1 );
 INSERT INTO CI_CONTENT ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id ) VALUES ( CTT_SEQ.NEXTVAL, 1, 'root', 2, 2, 2, 2);
 
 -- add SiteRoot "xims" with SiteRoot URL '/ximspubroot/xims'
