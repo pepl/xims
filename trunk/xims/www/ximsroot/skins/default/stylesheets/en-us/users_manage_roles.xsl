@@ -19,7 +19,7 @@
         <head>
             <title>
                 <xsl:value-of select="title" /> - XIMS
-            </title> 
+            </title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
@@ -36,6 +36,11 @@
           <tr>
             <td>
                 <a href="{$xims_box}{$goxims_users}?name={$name};grant_role=1">Grant new Role</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <a href="{$xims_box}{$goxims_users}">Back to User/Role Management</a>
             </td>
           </tr>
         </table>
