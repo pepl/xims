@@ -1988,7 +1988,7 @@ sub event_search {
                  $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
-                %param = ( criteria => $qbr->{criteria} );
+                %param = ( criteria => $qbr->{criteria} . " AND title <> '.diff_to_second_last'" );
                 $param{start_here} = $ctxt->object() if $self->param('start_here');
                 my $count = $ctxt->object->find_objects_granted_count( %param );
                 my $message = "Query returned $count objects.";
