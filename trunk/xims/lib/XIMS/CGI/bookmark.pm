@@ -31,7 +31,6 @@ sub registerEvents {
 sub event_init {
     my $self = shift;
     my $ctxt = shift;
-    $self->SUPER::event_init( $ctxt );
 
     # sanity check
     return $self->event_access_denied( $ctxt ) unless $ctxt->session->user();
@@ -104,8 +103,8 @@ sub event_create {
     my $bookmark = $ctxt->object();
     my $user = $ctxt->session->user();
 
-    if ( $user->admin() ) {
-        my $uname = $self->param('name');
+    my $uname = $self->param('name');
+    if ( $user->admin() and $uname ) {
         $user = XIMS::User->new( name => $uname );
         if ( not ($user and $user->id()) ) {
             XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
