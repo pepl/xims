@@ -2,27 +2,25 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-
 package XIMS;
-#
-# the main package defines general method accessable in all modules.
-#
 
-# note: we should _probably_ get rid of globals and begin-block and make this more OO :-|
-#BEGIN {
-    use strict;
-    use vars qw( $VERSION $_MODPERL_ $_CONFIG_ );
+use strict;
+use vars qw( $VERSION $_MODPERL_ $_CONFIG_ $_DATAPROVIDER_ );
 
-    use XIMS::Config;
+use XIMS::Config;
+use XIMS::DataProvider;
 
-    $VERSION = 0.1;
+$VERSION = 0.1;
 
-    # test if this is a local script or if we are running under mod_perl
-    $_MODPERL_ = $ENV{MOD_PERL} ? 1 : 0 ;
+# test if this is a local script or if we are running under mod_perl
+$_MODPERL_ = $ENV{MOD_PERL} ? 1 : 0 ;
 
-    $_CONFIG_ = XIMS::Config->new();
+$_CONFIG_ = XIMS::Config->new();
 
-#}
+sub DATAPROVIDER {
+    $_DATAPROVIDER_ ||= XIMS::DataProvider->new();
+    return $_DATAPROVIDER_;
+}
 
 #
 # XIMS::Config wrappers
@@ -87,7 +85,7 @@ sub Debug {
             $debug[-1] =~ s/\n|\s+/ /g;
             my ( $module, $method ) ;
             ($module, undef, undef, $method) = caller(1);
-            if ( $_MODPERL_ ) {
+            if ( $_MODPERL_ and Apache->request ) {
                 my $log = Apache->request->log();
                 $log->warn("[$module, $method] " . join('', @debug));
             }

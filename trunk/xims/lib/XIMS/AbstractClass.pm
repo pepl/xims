@@ -3,7 +3,6 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 package XIMS::AbstractClass;
 use strict;
-use XIMS::DataProvider;
 #use Data::Dumper;
 
 sub data {
@@ -21,7 +20,7 @@ sub data {
         # for automated creation.
         return $self;
     }
-     
+
     # otherwise, spin the public fields out to a hash and return it
     my %data = ();
 
@@ -40,14 +39,7 @@ sub data {
     }
     return %data;
 }
-    
-sub data_provider {
-    my $self = shift;
-    my $dp = shift;
-    return $self->{Provider} if defined $self->{Provider};
-    $dp = XIMS::DataProvider->new() unless( defined $dp and ref($dp) and $dp->isa('XIMS::DataProvider') );
-    $self->{Provider} = $dp;
-    return $dp;
-}
+
+sub data_provider { XIMS::DATAPROVIDER() }
 
 1;
