@@ -11,7 +11,6 @@
 <xsl:import href="common.xsl"/>
 <xsl:output method="html" encoding="ISO-8859-1"/>
 
-    
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
 </xsl:template>
@@ -26,7 +25,7 @@
             <td bgcolor="#ffffff" colspan="2">
                 <pre>
                     <xsl:apply-templates select="body"/>
-                /pre>
+                </pre>
             </td>
         </tr>
     </table>
@@ -37,7 +36,6 @@
     </table>
   </body>
 </html>
-
 </xsl:template>
 
 </xsl:stylesheet>
