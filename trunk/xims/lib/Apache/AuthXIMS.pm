@@ -14,8 +14,8 @@ use URI::Escape;
 
 use XIMS;
 use XIMS::DataProvider;
+use XIMS::Auth;
 use XIMS::Session;
-use XIMS::User;
 ##
 #
 # SYNOPSIS
@@ -278,7 +278,7 @@ sub test_session {
     my $cSession = undef;
 
     eval {
-        $cSession  =  XIMS::Session->new( session_id => $sessionstring );
+        $cSession = XIMS::Session->new( session_id => $sessionstring );
     };
     if ( $@ ) {
         XIMS::Debug( 2, "no session found!" . $@ );
@@ -401,55 +401,25 @@ sub login_user {
     XIMS::Debug( 5, "called" );
     my $r  = shift;
     my $dp = shift;
-
-    my $cSession = undef;
-    my ( $user, $pwd )  = get_logindata( $r );
+    my $session;
+    my ( $username, $password ) = get_logindata( $r );
 
     # first we test if the parameter are ok
-    if ( $dp and length $user and length $pwd ) {
-        # schweet
-        my $cUser = undef;
-        XIMS::Debug( 4, "parameters ok, check the AuthStyle" );
-        my @authmods = split(',', XIMS::AUTHSTYLE());
-
-        foreach my $authmod ( @authmods ) {
-            XIMS::Debug( 6, "trying authstyle: $authmod" );
-
-            eval "require $authmod;";
-            if ( $@ ) {
-                XIMS::Debug( 2, "authStyle not available! reason: $@" );
-            }
-            else {
-                my $server = XIMS::AUTHSERVER();
-                my $login = $authmod->new(  Provider => $dp,
-                                            Server   => $server,
-                                            Login    => $user,
-                                            Password => $pwd );
-                if ( $login ) {
-                    XIMS::Debug( 4, "login ok" );
-                    $cUser = $login->getUserInfo();
-                    last;
-                }
-                else {
-                    XIMS::Debug( 2, "login failed!" );
-                }
-            }
-        }
-
-        if ( $cUser ) {
+    if ( $dp and $username and length $username and $password and length $password ) {
+        my $user = XIMS::Auth->new( Username => $username, Password => $password )->authenticate();
+        if ( $user and $user->id() ) {
             XIMS::Debug( 4, "user found after login; creating session" );
-            $cSession = create_session_id( $r, $dp, $cUser );
+            $session = create_session_id( $r, $dp, $user );
         }
         else {
-            XIMS::Debug( 1, "no userinformation found!" );
+            XIMS::Debug( 3, "no userinformation found!" );
         }
     }
     else {
         XIMS::Debug( 3, "incomplete parameter list" );
     }
 
-    XIMS::Debug( 5, "done" );
-    return $cSession;
+    return $session;
 }
 
 
