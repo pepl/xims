@@ -9,8 +9,6 @@ use XIMS::Exporter;
 use XIMS::ObjectType;
 use XIMS::SAX::Generator::VLibraryItem;
 
-use Data::Dumper;
-
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::sDocBookXML );
 
@@ -20,9 +18,8 @@ sub create {
 
     return unless $self->SUPER::create( %param );
 
-    # publish all image children
-    my $image_ot_id = XIMS::ObjectType->new( name => 'Image' )->id();
-    my @children = $self->{Object}->children_granted( User => $self->{User}, object_type_id => $image_ot_id );
+    # publish the children to the same directory as the object itself
+    my @children = $self->{Object}->children_granted( User => $self->{User} );
     if ( @children and scalar @children ) {
         my $helper = XIMS::Exporter::Helper->new();
         my $location;
@@ -49,9 +46,8 @@ sub remove {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
 
-    # unpublish all published image children
-    my $image_ot_id = XIMS::ObjectType->new( name => 'Image' )->id();
-    my @children = $self->{Object}->children_granted( User => $self->{User}, object_type_id => $image_ot_id, published => 1 );
+    # unpublish published children
+    my @children = $self->{Object}->children_granted( User => $self->{User}, published => 1 );
     if ( @children and scalar @children ) {
         my $helper = XIMS::Exporter::Helper->new();
         my $location;
