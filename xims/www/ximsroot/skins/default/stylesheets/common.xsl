@@ -192,7 +192,7 @@
             testwfwindow.document.writeln(&apos;&lt;html&gt;&lt;head&gt;&apos;);
             testwfwindow.document.writeln(&apos;&lt;link rel=&quot;stylesheet&quot; href=&quot;<xsl:value-of select="concat($ximsroot,'stylesheets/',$defaultcss)"/>&quot; type=&quot;text/css&quot; />&apos;);
             testwfwindow.document.writeln(&apos;&lt;/head&gt;&lt;body onLoad=&quot;document.the_form.submit()&quot;&gt;&apos;);
-            testwfwindow.document.writeln(&apos;&lt;form name=&quot;the_form&quot; action=&quot;<xsl:value-of select="concat($goxims_content,$absolute_path)"/>&quot; method=&quot;post&quot;&gt;&apos;);
+            testwfwindow.document.writeln(&apos;&lt;form name=&quot;the_form&quot; action=&quot;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>&quot; method=&quot;post&quot;&gt;&apos;);
             testwfwindow.document.writeln(&apos;&lt;input type=&quot;submit&quot; name=&quot;test_wellformedness&quot; value=&quot;Go!&quot; size=&quot;1&quot; class=&quot;control&quot; /&gt;&apos;);
             testwfwindow.document.writeln(&apos;&lt;textarea name=&quot;body&quot; cols=&quot;1&quot; rows=&quot;1&quot; readonly=&quot;readonly&quot; style=&quot;visibility:hidden;&quot;&gt;&apos; + body + &apos;&lt;/textarea&gt;&apos;);
             testwfwindow.document.writeln(&apos;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;&apos;);
@@ -757,6 +757,15 @@
     />
 </xsl:template>
 
-
+<xsl:template name="toggle_hls">
+    <xsl:if test="$hls != ''">
+        <div id="toggle_highlight">
+            <form>
+                <xsl:value-of select="$i18n/l/you_searched_for"/> '<xsl:value-of select="$hls"/>'.
+                <input type="button" value="{$i18n/l/toggle_hls}" onClick="toggleHighlight(getParamValue('hls'))"/>
+            </form>
+        </div>
+    </xsl:if>
+</xsl:template>
 
 </xsl:stylesheet>
