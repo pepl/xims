@@ -124,7 +124,8 @@ use XIMS;
               'objecttype.is_fs_container',
               'objecttype.is_xims_data',
               'objecttype.redir_to_self',
-              'objecttype.publish_gopublic'
+              'objecttype.publish_gopublic',
+              'objecttype.parent_id'
              ],
     Bookmark =>
              [
