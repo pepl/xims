@@ -50,21 +50,29 @@ sub end_element {
             $id = 'id';
         }
         my $path;
-        if ( exists $self->{NonExport} ) {
-            # Used for resolving document_ids in the management interface, like DepartmentRoot event edit for example
-            $path = $self->{Provider}->location_path( $id => $self->{document_id} );
+        my $cachekey = "_cached".$id.$self->{document_id};
+        if ( defined $self->{$cachekey} ) {
+            $path = $self->{$cachekey};
         }
         else {
-            # Used to resolve the document_ids during exports
-            my $object = XIMS::Object->new( $id => $self->{document_id} );
-            if ( $object and $object->id() ) {
-                if ( XIMS::RESOLVERELTOSITEROOTS() ) {
-                    $path = $object->location_path_relative();
-                }
-                else {
-                    $path = XIMS::PUBROOT_URL() . $object->location_path();
+            if ( exists $self->{NonExport} ) {
+                # Used for resolving document_ids in the management interface, like DepartmentRoot event edit for example
+                $path = $self->{Provider}->location_path( $id => $self->{document_id} );
+            }
+            else {
+                # Used to resolve the document_ids during exports
+                $path = $self->{Provider}->location_path( $id => $self->{document_id} );
+                if ( defined $path ) {
+                    if ( XIMS::RESOLVERELTOSITEROOTS() ) {
+                        # snip off the site portion of the path ('/site/somepath')
+                        $path =~ s/^\/[^\/]+//;
+                    }
+                    else {
+                        $path = XIMS::PUBROOT_URL() . $path;
+                    }
                 }
             }
+            $self->{$cachekey} = $path;
         }
         $self->SUPER::characters( { Data => $path } );
         $self->{document_id} = undef;
