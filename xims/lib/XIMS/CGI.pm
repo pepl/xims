@@ -541,7 +541,7 @@ sub redirect_path {
             $redirectpath = $dp->location_path( document_id => $object->parent_id() );
         }
         else {
-            $redirectpath = $dp->location_path( id => $object->id() );
+            $redirectpath = $dp->location_path( document_id => $object->document_id() );
         }
     }
 
