@@ -804,9 +804,6 @@ sub init_store_object {
             XIMS::Debug( 3, "could not set image_id" );
         }
     }
-    else {
-        $object->image_id( undef );
-    }
 
     my $stylesheet = $self->param( 'stylesheet' );
     if ( defined $stylesheet and length $stylesheet ) {
@@ -829,9 +826,6 @@ sub init_store_object {
             XIMS::Debug( 3, "could not set style_id" );
         }
     }
-    else {
-        $object->style_id( undef );
-    }
 
     my $schema = $self->param( 'schema' );
     if ( defined $schema and length $schema ) {
@@ -852,9 +846,6 @@ sub init_store_object {
             XIMS::Debug( 3, "could not set schema_id" );
         }
     }
-    else {
-        $object->style_id( undef );
-    }
 
     my $css = $self->param( 'css' );
     if ( defined $css and length $css ) {
@@ -871,13 +862,11 @@ sub init_store_object {
         {
             $object->css_id( $cssobj->id() );
         }
-            else {
+        else {
                 XIMS::Debug( 3, "could not set css_id" );
-                }
         }
-    else {
-      $object->css_id( undef );
     }
+
 
     return 1;
 }
