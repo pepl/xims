@@ -144,6 +144,19 @@ sub _trim {
 }
 
 
+sub _unquot {
+    my $self = shift;
+    my $string = shift;
+
+    return undef unless $string;
+
+    $string =~ s/&apos;/'/g;
+    $string =~ s/&quot;/"/g;
+
+    return $string;
+}
+
+
 sub _escapewildcard {
     my $self = shift;
     my $string = shift;
@@ -164,9 +177,9 @@ sub authors_from_node {
     return () unless $authorset;
 
     foreach my $author ( $authorset->getChildrenByTagName("author") ) {
-        my $lastname = $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("surname") ) );
-        my $middlename = $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("othername") ) );
-        my $firstname = $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("firstname") ) );
+        my $lastname = $self->_unquot( $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("surname") ) ) );
+        my $middlename = $self->_unquot( $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("othername") ) ) );
+        my $firstname = $self->_unquot( $self->_trim( $self->_nodevalue( $author->getChildrenByTagName("firstname") ) ) );
         $middlename ||= '';
         $firstname ||= '';
         my $vlibauthor = XIMS::VLibAuthor->new( lastname => $self->_escapewildcard( $lastname ),
@@ -186,7 +199,7 @@ sub authors_from_node {
     }
 
     foreach my $author ( $authorset->getChildrenByTagName("corpauthor") ) {
-        my $lastname = $self->_trim( $self->_nodevalue( $author ) );
+        my $lastname = $self->_unquot( $self->_trim( $self->_nodevalue( $author ) ) );
         my $vlibauthor = XIMS::VLibAuthor->new( lastname => $self->_escapewildcard( $lastname ),
                                                 object_type => '1' );
         if ( not (defined $vlibauthor and $vlibauthor->id) ) {
