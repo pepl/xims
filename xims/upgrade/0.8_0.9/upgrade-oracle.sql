@@ -1,3 +1,11 @@
+PROMPT Adding IS_OBJECTROOT column on 'CI_OBJECT_TYPES'
+ALTER TABLE ci_object_types ADD (IS_OBJECTROOT NUMBER(1,0) DEFAULT 0)
+/
+
+PROMPT Inserting new object type JavaScript
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'JavaScript', 0, 1, 1, 0 )
+/
+
 PROMPT Dropping Foreign Key 'CTT_DOC_STYLE_FK'
 ALTER TABLE CI_CONTENT DROP CONSTRAINT
  CTT_DOC_STYLE_FK
