@@ -62,7 +62,8 @@ print ", SiteRoot URL set" if $args{s};
 print ".\n";
 
 # Update the department_id of descendants
-foreach my $descendant ( $object->descendants( department_id => $object->department_id() ) ) {
+my $iterator = $object->descendants( department_id => $object->department_id() );
+while ( my $descendant = $iterator->getNext() ) {
     $descendant->department_id( $object->document_id() );
     if ( $descendant->update( User => $user ) ) {
         print "Updated department_id of '" . $descendant->title . "'.\n";

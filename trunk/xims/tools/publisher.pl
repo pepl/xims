@@ -149,7 +149,8 @@ sub recurse_children {
     my $path;
     my %args = (User => $user, marked_deleted => undef );
     $args{published} = 1 if defined $republishonly;
-    foreach my $child ( $object->children_granted( %args ) ) {
+    my $iterator = $object->children_granted( %args );
+    while ( my $child = $iterator->getNext() ) {
         $child = rebless( $child );
         $privmask = $user->object_privmask( $child );
         $path = $child->location_path();

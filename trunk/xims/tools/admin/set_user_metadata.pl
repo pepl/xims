@@ -70,7 +70,8 @@ else {
 $total++;
 
 if ( $args{r} ) {
-    foreach my $desc ( $object->descendants( User => $user, marked_deleted => undef ) ) {
+    my $iterator = $object->descendants( User => $user, marked_deleted => undef );
+    while ( my $desc = $iterator->getNext() ) {
         $path = $desc->location_path();
         $desc->owner( $owner ) if $args{o};
         $desc->creator( $creator ) if $args{c};
