@@ -241,7 +241,7 @@
     </xsl:template>
 
     <xsl:template name="header.cttobject.createwidget">
-        <form action="{/document/context/session/serverurl}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;">
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;">
             <td width="126" background="{$ximsroot}skins/{$currentskin}/images/options_bg.png" nowrap="nowrap">
                 <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="objtype">
                     <xsl:apply-templates select="/document/object_types/object_type[can_create]"/>
@@ -263,7 +263,7 @@
     </xsl:template>
 
     <xsl:template name="header.cttobject.options">
-        <form style="margin:0px;" name="delete" id="delete" method="POST" action="{/document/context/session/serverurl}{$goxims_content}{$absolute_path}">
+        <form style="margin:0px;" name="delete" id="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}">
             <xsl:choose>
                 <xsl:when test="/document/context/object/user_privileges/write and /document/context/object/locked_time = '' or /document/context/object/locked_by = /document/context/session/user/@id">
                     <a href="{$goxims_content}?id={/document/context/object/@id};edit=1">
@@ -400,13 +400,25 @@
 
         <xsl:choose>
             <xsl:when test="published = '1'">
-                <a href="{$publishingroot}{$absolute_path}">
+                <a>
+                    <xsl:choose>
+                        <xsl:when test="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name='AnonDiscussionForum'">
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="concat($gopublic_content,$absolute_path,'/')"/>
+                            </xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="concat($publishingroot,$absolute_path,'/')"/>
+                            </xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <img
-             border="0"
-             width="26"
-             height="19"
-             alt="Published"
-             >
+                        border="0"
+                        width="26"
+                        height="19"
+                        alt="Published"
+                    >
                         <xsl:choose>
                             <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                                 <xsl:attribute name="title">This object has last been published at <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/> by <xsl:call-template name="lastpublisherfullname"/> at <xsl:value-of select="concat($publishingroot,$absolute_path)"/></xsl:attribute>
@@ -464,7 +476,7 @@
     </xsl:template>
 
     <xsl:template name="header.cttobject.search">
-        <form style="margin-bottom: 0;" action="{/document/context/session/serverurl}{$goxims_content}{$absolute_path}" method="GET" name="quicksearch">
+        <form style="margin-bottom: 0;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="quicksearch">
             <td width="182" align="right">
                 <table width="100%" border="0" height="42" background="{$ximsroot}skins/{$currentskin}/images/subheader-generic_bg.png" cellpadding="0" cellspacing="0">
                     <tr>

@@ -35,9 +35,9 @@
                 <input type="submit" name="create" value="Create new topic" class="control" /><br /><br />
             </xsl:if>
         </form>
-   
+
         <xsl:choose>
-<!-- begin sort by position --> 
+<!-- begin sort by position -->
         <xsl:when test="$sb='position'">
         <!--<xsl:when test="$sb='name'">-->
             <xsl:choose>
@@ -68,7 +68,7 @@
                 </xsl:when>
                 <xsl:when test="$order='desc'">
                     <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
-                        <tr> 
+                        <tr>
                             <td class="lightblue">
                                 <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=asc">
                                     <!--<a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=asc">-->
@@ -99,7 +99,7 @@
 <!-- begin sort by date asc -->
                 <xsl:when test="$order='asc'">
                 <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
-                    <tr> 
+                    <tr>
                         <td class="lightblue">
                             <a href="?sb=position">
                                 <!--<a href="?sb=name">-->
@@ -125,7 +125,7 @@
 <!-- begin sort by date desc -->
                 <xsl:when test="$order='desc'">
                 <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
-                    <tr> 
+                    <tr>
                         <td class="lightblue">
                             <a href="?sb=position">
                                 <!--<a href="?sb=name">-->
@@ -150,7 +150,7 @@
 <!-- end sort by desc -->
             </xsl:choose>
         </xsl:when>
-<!-- end sort by date --> 
+<!-- end sort by date -->
     </xsl:choose>
     </body>
 </html>
@@ -199,7 +199,7 @@
                 <xsl:value-of select="attributes/author"/>
             </a>
             <xsl:choose>
-                <xsl:when test="attributes/coemail">, 
+                <xsl:when test="attributes/coemail">,
                     <a>
                         <xsl:attribute name="href">mailto:<xsl:value-of select="attributes/coemail"/>?subject=RE: <xsl:value-of select="title"/></xsl:attribute>
                         <xsl:value-of select="attributes/coauthor"/>
@@ -217,14 +217,14 @@
         </td>
         <td valign="bottom">
         <xsl:if test="user_privileges/delete">
-            <form style="margin:0px;" name="delete" method="GET" action="{/document/session/serverurl}{$goxims_content}">
-                <input type="hidden" name="del_prompt" value="1"/>
+            <form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
+                <input type="hidden" name="delete_prompt" value="1"/>
                 <input type="hidden" name="id" value="{@id}"/>
                 <input type="image" src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" border="0" width="37" height="19" title="delete" alt="delete"/>
             </form>
         </xsl:if>
         </td>
-    </tr>    
+    </tr>
 </xsl:template>
 
 </xsl:stylesheet>

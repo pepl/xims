@@ -104,7 +104,7 @@ sub AuthServer()                  { '' }                       # FQDN of the Ser
 #
 # ****************************************
 
-sub PublicUserID()                { '5' }                  # Default value comes from default_data.sql
+sub PublicUserID()                { '6' }                  # Default value comes from default_data.sql
                                                            # Do not change unless you know what you are doing!
 sub AdminRoleID()                 { '4' }                  # Default value comes from default_data.sql
                                                            # Do not change unless you know what you are doing!

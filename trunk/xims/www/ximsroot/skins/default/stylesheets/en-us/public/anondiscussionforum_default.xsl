@@ -8,12 +8,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/TR/xhtml1/strict">
 
 <xsl:import href="common.xsl"/>
-<xsl:import href="default_header.xsl"/>
-<xsl:import href="../../../../../stylesheets/config.xsl"/>
-<xsl:import href="../../../../../anondiscussionforum_common.xsl"/>
 <xsl:output method="html" encoding="ISO-8859-1"/>
 <xsl:param name="request.uri"/>
-
 
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
@@ -26,7 +22,7 @@
      <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
     <script src="/scripts/default.js" type="text/javascript" />
   </head>
-  
+
   <body margintop="0" marginleft="0" marginwidth="0" marginheight="0">
     <table border="0" cellpadding="0" cellspacing="0" width="790">
             <xsl:call-template name="header">
@@ -34,39 +30,33 @@
                 <xsl:with-param name="nocreatewidget">true</xsl:with-param>
             </xsl:call-template>
             <tr>
-                  <td class="links" colspan="5">
-             
-               <!-- Begin Search -->
-                <xsl:call-template name="search"/>
-               <!-- End Search -->
-             
-              <!-- Begin Standard Links -->
-                <xsl:call-template name="stdlinks"/>
-              <!-- End Standard Links -->
+                <td class="links">
+                    <!-- Begin Standard Links -->
+                    <xsl:call-template name="stdlinks"/>
+                    <!-- End Standard Links -->
 
-              <!-- Begin Department Links -->
-                <xsl:call-template name="deptlinks"/>
-              <!-- End Department Links -->
+                    <!-- Begin Department Links -->
+                    <xsl:call-template name="deptlinks"/>
+                    <!-- End Department Links -->
 
-              <!-- Begin Document Links -->
-              <!-- End Document Links -->
+                    <!-- Begin Document Links -->
+                    <!-- End Document Links -->
+                </td>
+             <td>
 
-             </td>           
-             <td class="content" colspan="16">
-               
               <!-- Begin forum -->
-              
-            <h1><xsl:value-of select="title" /></h1>
-            <p class="content">
-                <xsl:apply-templates select="abstract"/>
-            </p>
 
-        <p class="0left">
+                <h1><xsl:value-of select="title" /></h1>
+                <p class="content">
+                    <xsl:apply-templates select="abstract"/>
+                </p>
+
+        <p>
             <xsl:if test="user_privileges/create">
               <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" style="margin-bottom: 0;">
                 <input type="hidden" name="objtype" value="anondiscussionforumcontrib"/>
                 <input type="hidden" name="parid" value="{@document_id}" />
-                <input type="submit" name="create" value="Neues Thema erstellen" class="control" /><br /><br />
+                <input type="submit" name="create" value="Create new topic" class="control" /><br /><br />
               </form>
             </xsl:if>
         </p>
@@ -104,7 +94,7 @@
                             </xsl:when>
                             <xsl:when test="$order='desc'">
                                 <table border="0" cellpadding="0" cellspacing="0" width="618">
-                                    <tr> 
+                                    <tr>
                                         <td width="240">
                                             <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=asc">
                             <!-- <a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=asc"> -->
@@ -133,12 +123,12 @@
                             </xsl:when>
                         </xsl:choose>
                 </xsl:when>
-                
+
                 <xsl:when test="$sb='date'">
                     <xsl:choose>
                             <xsl:when test="$order='asc'">
                                 <table border="0" cellpadding="0" cellspacing="0" width="618">
-                                    <tr> 
+                                    <tr>
                                         <td width="240">
                                                 <a href="{$goxims_content}{$absolute_path}?sb=position">
                             <!-- <a href="{$goxims_content}{$absolute_path}?sb=name"> -->
@@ -165,9 +155,9 @@
                                     </xsl:apply-templates>
                                 </table>
                             </xsl:when>
-                         <xsl:when test="$order='desc'">
+                        <xsl:when test="$order='desc'">
                         <table border="0" cellpadding="0" cellspacing="0" width="618">
-                                    <tr> 
+                                    <tr>
                                         <td width="240">
                                                 <a href="{$goxims_content}{$absolute_path}?sb=position">
                             <!-- <a href="{$goxims_content}{$absolute_path}?sb=name"> -->
@@ -197,29 +187,27 @@
                         </xsl:choose>
             </xsl:when>
             </xsl:choose>
-              
-              <!-- End forum -->    
-                    
+
+              <!-- End forum -->
+
               <!-- Begin footer -->
-                  <br /><br />
+                    <br /><br />
                     <xsl:call-template name="copyfooter"/>
-           <!-- End footer -->
-                               
+              <!-- End footer -->
+
                 </td>
            </tr>
 
-  </table>
-   
+    </table>
     </body>
 </html>
 </xsl:template>
-
 
 <xsl:template match="children/object">
     <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
-    
+
     <tr height="30">
         <xsl:choose>
             <xsl:when test="$sb='name'">
@@ -232,7 +220,7 @@
                 </td>
                 <td valign="middle" nowrap="nowrap">
                     <xsl:text>&#160;</xsl:text>
-                    <xsl:apply-templates select="creation_time" mode="datetime"/>
+                    <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                 </td>
             </xsl:when>
             <xsl:when test="$sb='date'">
@@ -245,7 +233,7 @@
                 </td>
                 <td bgcolor="#ced3d6" valign="middle" nowrap="nowrap">
                      <xsl:text>&#160;</xsl:text>
-                     <xsl:apply-templates select="creation_time" mode="datetime"/>
+                     <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                 </td>
             </xsl:when>
         </xsl:choose>
@@ -258,7 +246,7 @@
             <xsl:choose>
                 <xsl:when test="attributes/coemail">,
                     <br />
-            <a>
+                    <a>
                         <xsl:attribute name="href">mailto:<xsl:value-of select="attributes/coemail"/>?subject=RE: <xsl:value-of select="title"/></xsl:attribute>
                         <xsl:value-of select="attributes/coauthor"/>
                     </a>
@@ -269,15 +257,14 @@
         </td>
         <td valign="middle">
             <xsl:text>&#160;&#160;&#160;&#160;&#160;</xsl:text>
-             <xsl:value-of select="children_count"/>
+             <xsl:value-of select="descendant_count"/>
         </td>
         <td valign="middle" nowrap="nowrap">
             <xsl:text>&#160;</xsl:text>
-             <xsl:value-of select="substring(child_last_modified, 1, 16)"/>
-             <!--<xsl:value-of select="child_last_modified"/>-->
+             <xsl:value-of select="substring(descendant_last_modified, 1, 16)"/>
         </td>
    </tr>
-    
+
 </xsl:template>
 
 </xsl:stylesheet>

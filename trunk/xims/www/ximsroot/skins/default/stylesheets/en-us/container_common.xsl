@@ -593,11 +593,24 @@
                 </xsl:choose>
                 <xsl:choose>
                     <xsl:when test="published = '1'">
-                        <a href="{$publishingroot}{$absolute_path}/{location}">
-                            <img border="0"
-                                    width="26"
-                                    height="19"
-                                    alt="Published"
+                        <a>
+                            <xsl:choose>
+                                <xsl:when test="/document/object_types/object_type[@id=$objecttype]/name='AnonDiscussionForum'">
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of select="concat($gopublic_content,$absolute_path,'/')"/>
+                                    </xsl:attribute>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="href">
+                                        <xsl:value-of select="concat($publishingroot,$absolute_path,'/')"/>
+                                    </xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            <img
+                                border="0"
+                                width="26"
+                                height="19"
+                                alt="Published"
                             >
                                 <xsl:choose>
                                     <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
