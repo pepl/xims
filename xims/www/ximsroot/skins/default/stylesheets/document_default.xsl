@@ -47,7 +47,9 @@
                                     </td>
                                 </xsl:if>
                             </tr>
-                           <xsl:apply-templates select="children/object" mode="link"/>
+                           <xsl:apply-templates select="children/object" mode="link">
+                                <xsl:sort select="position" data-type="number"/>
+                           </xsl:apply-templates>
                         </table>
                     </td>
                     <td valign="top" width="50%" style="border:1px solid;">
