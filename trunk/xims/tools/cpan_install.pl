@@ -7,7 +7,10 @@
 
 use strict;
 
-use lib qw(/usr/local/xims/lib);
+my  $prefix = $ENV{'XIMS_PREFIX'} || '/usr/local';
+die "\nWhere am I?\n\nPlease set the XIMS_PREFIX environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$prefix/xims/Makefile";
+
+use lib qw(lib ../lib $prefix/xims/lib);
 use XIMS::Installer;
 use Getopt::Std;
 
