@@ -56,7 +56,7 @@ sub event_init {
     my $ctxt = shift;
     $self->SUPER::event_init( $ctxt );
 
-    return $self->event_access_denied( $ctxt ) unless $ctxt->session->user();
+    return $self->sendEvent( 'access_denied' ) unless $ctxt->session->user();
     return unless $ctxt->object(); # no object-ACL-check needed if we do not have a content object
 
     # ACL check
@@ -91,13 +91,13 @@ sub event_init {
     }
     else {
         my $privmask = $ctxt->session->user->object_privmask( $ctxt->object() );
-        return $self->event_access_denied( $ctxt ) unless $privmask & XIMS::Privileges::VIEW();
+        return $self->sendEvent( 'access_denied' ) unless $privmask & XIMS::Privileges::VIEW();
     }
 }
 
 sub event_dbhpanic {
     my $self = shift;
-    $self->setPanicMsg( "DATABASE SERVER IS DOWN, CONTACT YOUR ADMINSTRATOR IMMEDIATELY." );
+    $self->setPanicMsg( "Can not connect to database server." );
     return -4
 }
 
