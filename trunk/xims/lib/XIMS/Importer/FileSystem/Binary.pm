@@ -17,6 +17,7 @@ sub handle_data {
 
     my $data = $self->get_binref( $location );
     $object->body( $$data );
+    undef $data;
 
     return $object;
 }
@@ -27,6 +28,7 @@ sub get_binref {
     open(FILE, $file) || die "could not open $file: $!";
     # switch off perls auto encoding
     binmode(FILE);
+    my $contents;
     while (read(FILE, my $buff, 16 * 2**10)) {
       $contents .= $buff;
     }

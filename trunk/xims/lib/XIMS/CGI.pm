@@ -621,7 +621,7 @@ sub init_store_object {
 
         $parent = $ctxt->parent();
 
-        my %obj = ( parent_id           => $parent->id(),
+        my %obj = ( parent_id           => $parent->document_id(),
                     language_id         => $parent->language_id(),
                   );
 
@@ -675,7 +675,7 @@ sub init_store_object {
             return 0;
         }
 
-        # check if the same location already exists in the current container (during object creation)
+        # check if the same location already exists in the current container
         if ( defined $parent and $parent->children( location => $location, marked_deleted => undef ) ) {
             XIMS::Debug( 2, "location already exists" );
             $self->sendError( $ctxt, "Location '$location' already exists in container." );
