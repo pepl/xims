@@ -15,7 +15,7 @@ use XIMS::ObjectPriv;
 use CGI::XMLApplication 1.1.2; # sub-sub-version is not recoginzed here :-/
 use XML::LibXML::SAX::Builder;
 use Apache::URI;
-use Data::Dumper;
+#use Data::Dumper;
 
 ############################################################################
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };

@@ -4,7 +4,7 @@
 package XIMS::AbstractClass;
 use strict;
 use XIMS::DataProvider;
-use Data::Dumper;
+#use Data::Dumper;
 
 sub data {
     my $self = shift;

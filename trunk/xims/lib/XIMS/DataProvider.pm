@@ -6,7 +6,7 @@ package XIMS::DataProvider;
 
 use strict;
 use XIMS;
-use Data::Dumper;
+#use Data::Dumper;
 use XIMS::Names;
 
 # following uses are for the classed we bless into

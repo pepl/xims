@@ -9,7 +9,7 @@ use XIMS::Names;
 use DBIx::SQLEngine 0.008;
 use XIMS::DataProvider;
 use vars qw( %ResourceMap %Tables %Names %InsertAutoFields %PropertyAttributes %PropertyRelations $VERSION);
-use Data::Dumper;
+#use Data::Dumper;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 

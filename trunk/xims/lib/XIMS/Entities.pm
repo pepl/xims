@@ -25,7 +25,7 @@ package XIMS::Entities;
 use strict;
 use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION);
 use vars qw(%entity2char);
-use Data::Dumper;
+#use Data::Dumper;
 
 require 5.004;
 require Exporter;

@@ -9,7 +9,7 @@ use vars qw($VERSION @ISA @Fields);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
 use XIMS::AbstractClass;
-use Data::Dumper;
+#use Data::Dumper;
 
 @ISA = qw( XIMS::AbstractClass );
 

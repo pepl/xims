@@ -19,7 +19,7 @@ use HTML::Entities qw(decode_entities); # for abstract()
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 use XIMS::User;
-use Data::Dumper;
+#use Data::Dumper;
 
 sub resource_type {
     return 'Object';
