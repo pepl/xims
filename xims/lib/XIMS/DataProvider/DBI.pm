@@ -28,6 +28,15 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r;
     'dataformat.id'                       => \'ci_data_formats_id_seq_nval()',
     'mimetype.id'                         => \'ci_mime_aliases_id_seq_nval()',
     'questionnaireresult.id'              => \'ci_quest_results_id_seq_nval()',
+    'vlibauthor.id'                       => \'cilib_authors_id_seq_nval()',
+    'vlibauthormap.id'                    => \'cilib_authormap_id_seq_nval()',
+    'vlibkeyword.id'                      => \'cilib_keywords_id_seq_nval()',
+    'vlibkeywordmap.id'                   => \'cilib_keywordmap_id_seq_nval()',
+    'vlibsubject.id'                      => \'cilib_subjects_id_seq_nval()',
+    'vlibsubjectmap.id'                   => \'cilib_subjectmap_id_seq_nval()',
+    'vlibpublication.id'                  => \'cilib_publications_id_seq_nval()',
+    'vlibpublicationmap.id'               => \'cilib_publmap_id_seq_nval()',
+    'vlibmeta.id'                         => \'cilib_meta_id_seq_nval()',
 );
 
 # move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
@@ -50,6 +59,15 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r;
             mimetype       => 'ci_mime_type_aliases',
             bookmark       => 'ci_bookmarks',
             questionnaireresult => 'ci_questionnaire_results',
+            vlibauthor          => 'cilib_authors',
+            vlibauthormap       => 'cilib_authormap',
+            vlibkeyword         => 'cilib_keywords',
+            vlibkeywordmap      => 'cilib_keywordmap',
+            vlibsubject         => 'cilib_subjects',
+            vlibsubjectmap      => 'cilib_subjectmap',
+            vlibpublication     => 'cilib_publications',
+            vlibpublicationmap  => 'cilib_publicationmap',
+            vlibmeta            => 'cilib_meta',
           );
 
 
@@ -137,8 +155,8 @@ sub create {
         #warn "IDS in Table " . $table->[0] . " : " . Dumper( $id_list );
         return undef unless scalar( @{$id_list} ) > 0 ;
         #warn "we got here because: ", scalar( @{$id_list} );
-        #warn "we will return: ", $id_list->[-1]->{ID};
-        return $id_list->[-1]->{ID};
+        #warn "we will return: ", $id_list->[-1]->{id};
+        return $id_list->[-1]->{id};
     }
     else {
         return undef;
@@ -425,7 +443,7 @@ sub max_position {
     my $query = 'SELECT max(position) AS position FROM ci_documents WHERE parent_id = ' . $args{parent_id};
     my $data = $self->{dbh}->fetch_select( sql => $query );
 
-    return $data->[0]->{'POSITION'};
+    return $data->[0]->{'position'};
 }
 
 sub db_now {
@@ -435,7 +453,7 @@ sub db_now {
     $query .= ' from dual' if $self->{RDBMSClass} eq 'Oracle';
     my $data = $self->{dbh}->fetch_select( sql => $query );
 
-    return defined ( $data->[0]->{'NOW'} ) ? $data->[0]->{'NOW'} : $data->[0]->{'NOW()'};
+    return defined ( $data->[0]->{'now'} ) ? $data->[0]->{'now'} : $data->[0]->{'now()'};
 }
 
 sub get_object_id {
@@ -450,7 +468,7 @@ sub get_object_id {
                                            columns =>  'ci_documents.id',
                                            criteria => $criteria );
     foreach my $row ( @{$data} ) {
-        push @ids, $row->{ID};
+        push @ids, $row->{id};
     }
     return \@ids;
 }
@@ -484,7 +502,7 @@ sub find_object_id {
     #warn "query: $query";
     my $data = $self->{dbh}->fetch_select( sql => $query );
     foreach my $row ( @{$data} ) {
-        push @ids, $row->{ID};
+        push @ids, $row->{id};
     }
     return \@ids;
 }
@@ -499,7 +517,7 @@ sub find_object_id_count {
     my $data = $self->{dbh}->fetch_select( table   =>  'ci_documents, ci_content',
                                            columns =>  'count(ci_documents.id) AS COUNT',
                                            criteria => 'ci_content.document_id = ci_documents.id AND ' . $criteria );
-    return $data->[0]->{COUNT};
+    return $data->[0]->{count};
 }
 
 sub content_length {
@@ -534,8 +552,8 @@ sub get_descendant_id_level {
     my @ids;
     my @lvls;
     foreach my $row ( @{$data} ) {
-        push @ids, $row->{ID};
-        push @lvls, $row->{LVL};
+        push @ids, $row->{id};
+        push @lvls, $row->{lvl};
     }
 
     return [[ \@ids, \@lvls ]];
@@ -565,9 +583,9 @@ sub get_descendant_infos {
     return undef unless exists $args{parent_id};
 
     my $desc_subquery = $self->_get_descendant_sql( $args{parent_id}, undef, undef, 1 );
-    my $query = 'SELECT count(last_modification_timestamp) AS COUNT, max(last_modification_timestamp) AS MAX FROM ci_content WHERE document_id IN ( ' . $desc_subquery . ')';
+    my $query = 'SELECT count(last_modification_timestamp) AS count, max(last_modification_timestamp) AS max FROM ci_content WHERE document_id IN ( ' . $desc_subquery . ')';
     my $data = $self->{dbh}->fetch_select( sql => $query );
-    my @rv = ( @{$data}[0]->{COUNT}, @{$data}[0]->{MAX} ); # NOTE: assumes that there is one content_child per document;
+    my @rv = ( @{$data}[0]->{count}, @{$data}[0]->{max} ); # NOTE: assumes that there is one content_child per document;
                                                            #       may have to be changed in future!
     return  \@rv ;
 }
