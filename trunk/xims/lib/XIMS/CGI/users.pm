@@ -528,7 +528,7 @@ sub event_bookmarks {
     if ( $user and $user->id() ) {
         my @bookmarks = $user->bookmarks( explicit_only => 1 );
         $ctxt->bookmarklist( \@bookmarks );
-        $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ], '0' );
+        $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
         $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
         $ctxt->properties->application->style( 'bookmarks' );
     }

@@ -454,7 +454,6 @@ sub resolve_content {
                  ResolveContent => $list,
                  NonExport => 1,
                );
-    $args{RelToSite} = $reltosite if defined $reltosite;
 
     push ( @{$ctxt->sax_filter()}, XIMS::SAX::Filter::ContentIDPathResolver->new( %args ) );
 }
