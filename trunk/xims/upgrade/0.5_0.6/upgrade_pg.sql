@@ -10,4 +10,7 @@ DROP FUNCTION ci_del_tree(INTEGER);
 \echo If you have PostgreSQL 7.2 please update to >= 7.3
 ALTER TABLE ci_documents DROP COLUMN lft;
 ALTER TABLE ci_documents DROP COLUMN rgt;
-
+ALTER TABLE ci_documents DROP CONSTRAINT "$1";
+ALTER TABLE ci_documents ADD  CONSTRAINT "$1" 
+      FOREIGN KEY (parent_id) REFERENCES ci_documents (id) ON DELETE CASCADE;
+	
