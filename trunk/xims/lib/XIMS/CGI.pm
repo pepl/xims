@@ -1775,10 +1775,9 @@ sub autopublish {
     my $published;
     foreach my $id ( @{$objids} ) {
         next unless defined $id;
-        my $objectpriv = XIMS::ObjectPriv->new( content_id => $id, grantee_id => $ctxt->session->user->id() );
-        if ( $objectpriv && ($objectpriv->privilege_mask() & XIMS::Privileges::PUBLISH()) ) {
-            my $object = XIMS::Object->new( id => $id, User => $ctxt->session->user() );
-            if ( $object ) {
+        my $object = XIMS::Object->new( id => $id, User => $ctxt->session->user() );
+        if ( $object ) {
+            if ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::PUBLISH() ) {
                 if ( $exporter->$method( Object => $object ) ) {
                     XIMS::Debug( 4, $method."ed object with id $id" );
                     $published++;
@@ -1789,12 +1788,12 @@ sub autopublish {
                 }
             }
             else {
-                XIMS::Debug( 3, "could not find an object with id $id" );
+                XIMS::Debug( 3, "no privileges to $method object with id $id" );
                 next;
             }
         }
         else {
-            XIMS::Debug( 4, "no privileges to $method object with id $id" );
+            XIMS::Debug( 3, "could not find an object with id $id" );
             next;
         }
     }
