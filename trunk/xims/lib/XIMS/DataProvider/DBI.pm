@@ -707,7 +707,7 @@ sub _get_descendant_sql {
             return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', ?, ?) AS t(id int, parent_id int, lvl int) WHERE t.id <> t.parent_id", [$parent_id, 12], $maxlevel]; # 12 => bind as 'Text'
         }
         else {
-            return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', ?, ?) AS t(id int, parent_id int, lvl int, pos int) WHERE t.id <> t.parent_id $orderby", [$parent_id, 12], $maxlevel]; # 12 => bind as 'Text'
+            return ["SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', 'position', ?, ?) AS t(id int, parent_id int, lvl int, pos int) WHERE t.id <> t.parent_id $orderby", [$parent_id, 12], [$maxlevel, 4]]; # 12 => bind as 'Text', 4 => bind as 'Integer'
         }
     }
     elsif ( $self->{RDBMSClass} eq 'Oracle' ) {
