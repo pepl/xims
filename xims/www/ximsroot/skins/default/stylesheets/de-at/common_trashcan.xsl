@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -9,7 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
-    <xsl:output method="html" encoding="ISO-8859-1"/>
+    <xsl:output method="html" encoding="utf-8"/>
 
     <xsl:template match="/document/context/object">
         <html>
@@ -59,8 +59,8 @@
                              width="124"
                              height="20"
                              border="0"
-                             alt="Zuletzt geändert"
-                             title="Zuletzt geändert"
+                             alt="Zuletzt geÃ¤ndert"
+                             title="Zuletzt geÃ¤ndert"
                         />
                     </td>
 <!-- size -->
@@ -69,8 +69,8 @@
                              width="80"
                              height="20"
                              border="0"
-                             alt="Größe"
-                             title="Größe in kB"
+                             alt="GrÃ¶ÃŸe"
+                             title="GrÃ¶ÃŸe in kB"
                         />
                     </td>
 <!-- options-->
@@ -168,8 +168,8 @@
 -->                        <a href="{$goxims_content}?id={@id};undelete=1">
                             <img src="{$skimages}option_undelete.png"
                                  border="0"
-                                 alt="Löschen rückgängig machen"
-                                 title="Löschen rückgängig machen"
+                                 alt="LÃ¶schen rÃ¼ckgÃ¤ngig machen"
+                                 title="LÃ¶schen rÃ¼ckgÃ¤ngig machen"
                                  width="32"
                                  height="19"
                                  align="left"

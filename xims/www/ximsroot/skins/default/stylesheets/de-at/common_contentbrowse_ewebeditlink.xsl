@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common.xsl"/>
 <xsl:import href="../common_contentbrowse_ewebeditlink.xsl"/>
-<xsl:output method="html" encoding="ISO-8859-1"/>
+<xsl:output method="html" encoding="utf-8"/>
 
 <xsl:template name="selectform">
     <form action="{$xims_box}{$goxims_content}" method="POST" name="selectform">
@@ -57,7 +57,7 @@
             </tr>
             <tr>
                 <td>
-                    Wählen Sie optional das Zielfenster des Links aus:
+                    WÃ¤hlen Sie optional das Zielfenster des Links aus:
                 </td>
                 <td>
                     <select name="Target">

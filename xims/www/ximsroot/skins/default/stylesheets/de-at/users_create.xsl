@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -9,7 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common.xsl"/>
-<xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 <xsl:param name="name"/>
 <xsl:param name="lastname"/>
 <xsl:param name="middlename"/>
@@ -75,7 +75,7 @@
               <tr>
                 <td>
                     <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                    <span class="compulsory">Passwort bestätigen:</span>
+                    <span class="compulsory">Passwort bestÃ¤tigen:</span>
                 </td>
                 <td><input size="30" maxlength="32" name="password2" type="password" value=""/></td>
               </tr>
@@ -125,7 +125,7 @@
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Passwort ändern
+                                Passwort Ã¤ndern
                             </span>
                         </td>
                         <td>
@@ -159,7 +159,7 @@
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Passwort zurückstellen
+                                Passwort zurÃ¼ckstellen
                             </span>
                         </td>
                         <td>
@@ -191,7 +191,7 @@
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Role löschen
+                                Role lÃ¶schen
                             </span>
                         </td>
                       </tr>
@@ -203,7 +203,7 @@
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Role ganzen Namen ändern
+                                Role ganzen Namen Ã¤ndern
                             </span>
                         </td>
                         <td>
@@ -213,7 +213,7 @@
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                User ganzen Namen ändern
+                                User ganzen Namen Ã¤ndern
                             </span>
                         </td>
                       </tr>
@@ -225,7 +225,7 @@
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                Role ganzen Namen ändern
+                                Role ganzen Namen Ã¤ndern
                             </span>
                         </td>
                         <td>
@@ -235,7 +235,7 @@
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                User ganzen Namen ändern
+                                User ganzen Namen Ã¤ndern
                             </span>
                         </td>
                       </tr>
@@ -257,7 +257,7 @@
                                       <xsl:attribute name="checked" select="checked"/>
                                     </xsl:if>
                                 </input>
-                                User löschen
+                                User lÃ¶schen
                             </span>
                         </td>
                       </tr>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -115,8 +115,8 @@
                             <a href="{$goxims_content}?id={@id};publish_prompt=1">
                                 <img src="{$skimages}option_pub.png"
                                      border="0"
-                                     alt="Optionen zum Veröffentlichen"
-                                     title="Optionen zum Veröffentlichen"
+                                     alt="Optionen zum VerÃ¶ffentlichen"
+                                     title="Optionen zum VerÃ¶ffentlichen"
                                      name="publish{@document_id}"
                                      width="32"
                                      height="19"
@@ -171,8 +171,8 @@
                                        border="0"
                                        width="37"
                                        height="19"
-                                       alt="Endgültig löschen"
-                                       title="Dieses Objekt endgültig löschen"
+                                       alt="EndgÃ¼ltig lÃ¶schen"
+                                       title="Dieses Objekt endgÃ¼ltig lÃ¶schen"
                                        />
                             </form>
                         </xsl:when>
@@ -257,8 +257,8 @@
                                        border="0"
                                        width="37"
                                        height="19"
-                                       alt="Endgültig löschen"
-                                       title="Dieses Objekt endgültig löschen"
+                                       alt="EndgÃ¼ltig lÃ¶schen"
+                                       title="Dieses Objekt endgÃ¼ltig lÃ¶schen"
                                        />
                             </form>
                         </xsl:when>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -10,7 +10,7 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="../container_posview.xsl"/>
     <xsl:output method="xml"
-                encoding="iso-8859-1"
+                encoding="utf-8"
                 media-type="text/html"
                 omit-xml-declaration="yes"
                 doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"

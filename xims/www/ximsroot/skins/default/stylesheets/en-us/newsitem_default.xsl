@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -9,5 +9,5 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="document_common.xsl"/>
     <xsl:import href="../newsitem_default.xsl"/>
-    <xsl:output method="html" encoding="UTF-8"/>
+    <xsl:output method="html" encoding="utf-8"/>
 </xsl:stylesheet>

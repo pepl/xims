@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -17,7 +17,7 @@
     <xsl:variable name="dataformat">
         <xsl:value-of select="/document/context/object/data_format"/>
     </xsl:variable>
-    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link rel="schema.DC" href="http://purl.org/DC/elements/1.0/"/>
     <meta name="DC.Title" content="{title}"/>
     <meta name="DC.Creator">
@@ -102,7 +102,7 @@
 
 <xsl:template name="copyfooter">
     <p class="copy">
-          © 2000 - 2012 Example Org. - All rights reserved <br /><a href="http://www.foo.bar/">Help</a> | <a href="mailto:webmaster@doesnot.exist">Mail to the webmaster</a>
+          Â© 2000 - 2012 Example Org. - All rights reserved <br /><a href="http://www.foo.bar/">Help</a> | <a href="mailto:webmaster@doesnot.exist">Mail to the webmaster</a>
     </p>
 </xsl:template>
 

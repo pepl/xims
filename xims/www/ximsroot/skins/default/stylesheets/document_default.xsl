@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -58,7 +58,7 @@
                                 <td width="60%"><strong>Annotation</strong></td>
                                 <td width="40%" colspan="2" align="right">
                                     <xsl:if test="$m='e' and user_privileges/create">
-                                        <!--<a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=Annotation">-->Annotation hinzufügen<!--</a>-->
+                                        <!--<a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=Annotation">-->Annotation hinzufÃ¼gen<!--</a>-->
                                         <xsl:text>&#160;&#160;</xsl:text>
                                     </xsl:if>
                                 </td>

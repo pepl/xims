@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -9,13 +9,13 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common.xsl"/>
-<xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document">
     <html>
         <head>
             <title>
-                Passwort ändern - XIMS
+                Passwort Ã¤ndern - XIMS
             </title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
@@ -45,7 +45,7 @@
             <tr><td><br/></td></tr>
               <tr>
                 <td align="center" class="bluebg" colspan="2">
-                  Passwort für User '<xsl:value-of select="/document/context/session/user/name"/>' updaten
+                  Passwort fÃ¼r User '<xsl:value-of select="/document/context/session/user/name"/>' updaten
                 </td>
               </tr>
 
@@ -69,7 +69,7 @@
               <tr>
                 <td>
                     <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                    <span class="compulsory">Passwort bestätigen:</span>
+                    <span class="compulsory">Passwort bestÃ¤tigen:</span>
                 </td>
                 <td><input name="password2" type="password" value=""/></td>
               </tr>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -11,7 +11,7 @@
 <!-- $Id$ -->
 <xsl:import href="common.xsl"/>
 <xsl:import href="../common_publish_prompt.xsl"/>
-<xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -30,7 +30,7 @@
                             <!-- begin widget table -->
                             <table width="400" cellpadding="2" cellspacing="2" border="0">
                                 <tr>
-                                    <td class="bluebg">Optionen zum Veröffentlichen für das Objekt '<xsl:value-of select="title"/>'</td>
+                                    <td class="bluebg">Optionen zum VerÃ¶ffentlichen fÃ¼r das Objekt '<xsl:value-of select="title"/>'</td>
                                 </tr>
                                 <tr>
                                     <td>&#160;</td>
@@ -42,7 +42,7 @@
                                             <xsl:if test="published/text()!='1'">
                                                 <xsl:text> NICHT </xsl:text>
                                             </xsl:if>
-                                            veröffentlicht
+                                            verÃ¶ffentlicht
                                         </strong>
                                         <xsl:if test="published/text()='1'">
                                             unter <br/><a href="{$publishingroot}{$absolute_path}" target="_new">
@@ -55,12 +55,12 @@
                                 <xsl:if test="message">
                                     <tr>
                                         <td>
-                                            Warnung: Das Objekt '<xsl:value-of select="title"/>' hat folgenden Abhängigkeiten
-                                            und Sie haben daher nicht die erforderlichen Rechte zum Veröffentlichen des Objekts:
+                                            Warnung: Das Objekt '<xsl:value-of select="title"/>' hat folgenden AbhÃ¤ngigkeiten
+                                            und Sie haben daher nicht die erforderlichen Rechte zum VerÃ¶ffentlichen des Objekts:
                                             <xsl:call-template name="csv2ul">
                                                 <xsl:with-param name="list" select="message"/>
                                             </xsl:call-template>
-                                            Diese Objekte werden während des Veröffentlichens übersprungen.
+                                            Diese Objekte werden wÃ¤hrend des VerÃ¶ffentlichens Ã¼bersprungen.
                                         </td>
                                     </tr>
                                 </xsl:if>
@@ -70,13 +70,13 @@
                                 <xsl:if test="contains( attributes/text(), 'autoindex=1' )">
                                     <tr>
                                         <td>
-                                            <strong>Hinweis: Die Autoindexoption ist für diesen Container gesetzt.</strong>
+                                            <strong>Hinweis: Die Autoindexoption ist fÃ¼r diesen Container gesetzt.</strong>
                                             <xsl:choose>
                                                 <xsl:when test="published/text()='1'">
-                                                    Wenn Sie 'Wiederveröffentlichen' auswählen wird eine Index Datei erstellt.
+                                                    Wenn Sie 'WiederverÃ¶ffentlichen' auswÃ¤hlen wird eine Index Datei erstellt.
                                                 </xsl:when>
                                                 <xsl:otherwise>
-                                                    Wenn Sie 'Veröffentlichen' auswählen wird eine Index Datei erstellt.
+                                                    Wenn Sie 'VerÃ¶ffentlichen' auswÃ¤hlen wird eine Index Datei erstellt.
                                                 </xsl:otherwise>
                                             </xsl:choose>
                                         </td>
@@ -89,15 +89,15 @@
                                         Klicken Sie
                                         <xsl:choose>
                                             <xsl:when test="published/text()='1'">
-                                                'Wiederveröffentlichen'
+                                                'WiederverÃ¶ffentlichen'
                                             </xsl:when>
                                             <xsl:otherwise>
-                                                'Veröffentlichen'
+                                                'VerÃ¶ffentlichen'
                                             </xsl:otherwise>
                                         </xsl:choose>
                                         um das aktuelle Objekt zu exportieren,
                                         <xsl:if test="published/text()='1'">
-                                            'Veröffentlichen rückgängig machen' um das Objekt vom Live Server zu entfernen,
+                                            'VerÃ¶ffentlichen rÃ¼ckgÃ¤ngig machen' um das Objekt vom Live Server zu entfernen,
                                         </xsl:if>
                                         'Abbrechen' um zur vorigen Seite zu gelangen.
                                     </td>
@@ -122,7 +122,7 @@
                                                                 <xsl:when test="/document/objectlist/object[location != '']">
                                                                     <tr>
                                                                         <td>
-                                                                            Alle Aus/Abwählen
+                                                                            Alle Aus/AbwÃ¤hlen
                                                                         </td>
                                                                         <td>
                                                                             <input type="checkbox" name="selector" value="1" onClick="switcher(this,'objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0;"/>
@@ -130,7 +130,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>
-                                                                            Ausgewählte Objekte automatisch (wieder)veröffentlichen?
+                                                                            AusgewÃ¤hlte Objekte automatisch (wieder)verÃ¶ffentlichen?
                                                                         </td>
                                                                         <td>
                                                                             <input type="checkbox" name="autopublish" value="1" disabled="true"/>
@@ -139,7 +139,7 @@
                                                                 </xsl:when>
                                                                 <xsl:otherwise>
                                                                     <tr>
-                                                                        <td colspan="2">Es wurden keine verwandten Objekte (Kinder, Links) zum (Wieder)Veröffentlichen gefunden.</td>
+                                                                        <td colspan="2">Es wurden keine verwandten Objekte (Kinder, Links) zum (Wieder)VerÃ¶ffentlichen gefunden.</td>
                                                                     </tr>
                                                                 </xsl:otherwise>
                                                             </xsl:choose>
@@ -161,10 +161,10 @@
                                                     <input name="publish" type="submit" class="control">
                                                         <xsl:choose>
                                                             <xsl:when test="published/text()='1'">
-                                                                <xsl:attribute name="value">Wiederveröffentlichen</xsl:attribute>
+                                                                <xsl:attribute name="value">WiederverÃ¶ffentlichen</xsl:attribute>
                                                             </xsl:when>
                                                             <xsl:otherwise>
-                                                                <xsl:attribute name="value">Veröffentlichen</xsl:attribute>
+                                                                <xsl:attribute name="value">VerÃ¶ffentlichen</xsl:attribute>
                                                             </xsl:otherwise>
                                                         </xsl:choose>
                                                     </input>
@@ -172,7 +172,7 @@
                                                 </td>
                                                 <xsl:if test="published/text()='1'">
                                                     <td>
-                                                        <input name="unpublish" type="submit" value="Veröffentlichen rückgängig machen" class="control"/>
+                                                        <input name="unpublish" type="submit" value="VerÃ¶ffentlichen rÃ¼ckgÃ¤ngig machen" class="control"/>
                                                     </td>
                                                 </xsl:if>
                                                 <td>
@@ -239,16 +239,16 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
             <div style="margin-top: 3px; margin-bottom: 8px;">
             <xsl:choose>
                 <xsl:when test="string-length(location) &lt;= 0">
-                    <xsl:text>Dies ist kein XIMS Objekt oder konnte nicht aufgelöst werden.</xsl:text>
+                    <xsl:text>Dies ist kein XIMS Objekt oder konnte nicht aufgelÃ¶st werden.</xsl:text>
                 </xsl:when>
                 <xsl:when test="published/text() != '1'">
-                    <xsl:text>Dieses Objekt ist zur Zeit nicht veröffentlicht.</xsl:text>
+                    <xsl:text>Dieses Objekt ist zur Zeit nicht verÃ¶ffentlicht.</xsl:text>
                 </xsl:when>
                 <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-                    <xsl:text>Dieses Objekt wurde zuletzt um </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/><xsl:text> veröffentlicht und seither nicht mehr verändert.</xsl:text>
+                    <xsl:text>Dieses Objekt wurde zuletzt um </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/><xsl:text> verÃ¶ffentlicht und seither nicht mehr verÃ¤ndert.</xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:text>Dieses Objekt wurde seit seiner letzten Veröffentlichung um </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/> geändert
+                    <xsl:text>Dieses Objekt wurde seit seiner letzten VerÃ¶ffentlichung um </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/> geÃ¤ndert
                 </xsl:otherwise>
             </xsl:choose>
             </div>
