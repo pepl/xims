@@ -762,12 +762,14 @@ sub get_object_id_by_path {
                           AND location = ?
                           AND parent_id IN (" .  join(',', map { '?' } @ids ) . ") ";
 
-            if ( my $row = $self->{dbh}->fetch_select_rows(
+            my $row;
+            if ( $row = $self->{dbh}->fetch_select_rows(
                                                     sql => [ $sqlstr,
                                                              $location,
                                                              @ids
                                                            ]
-                                                                ) ) {
+                                                       )
+                  and $row->[0]->[0] ) {
                 $id = $row->[0]->[0];
                 $symid = $row->[0]->[1];
                 XIMS::Debug( 6, "new id: '$id' (symid '$symid')");
