@@ -39,12 +39,12 @@
                                     <td>
                                         <strong>
                                             Status: This object is
-                                            <xsl:if test="published/text()!='1'">
+                                            <xsl:if test="published!='1'">
                                                 <xsl:text> NOT </xsl:text>
                                             </xsl:if>
                                             currently published
                                         </strong>
-                                        <xsl:if test="published/text()='1'">
+                                        <xsl:if test="published='1'">
                                             at <br/><a href="{$published_path}" target="_new">
                                                 <xsl:value-of select="$published_path"/></a>
                                         </xsl:if>
@@ -72,7 +72,7 @@
                                         <td>
                                             <strong>Note: The autoindex-option is set for this container.</strong>
                                             <xsl:choose>
-                                                <xsl:when test="published/text()='1'">
+                                                <xsl:when test="published='1'">
                                                     An index file will be regenerated if you choose 'Republish'.
                                                 </xsl:when>
                                                 <xsl:otherwise>
@@ -88,7 +88,7 @@
                                     <td>
                                         Click
                                         <xsl:choose>
-                                            <xsl:when test="published/text()='1'">
+                                            <xsl:when test="published='1'">
                                                 'Republish'
                                             </xsl:when>
                                             <xsl:otherwise>
@@ -96,7 +96,7 @@
                                             </xsl:otherwise>
                                         </xsl:choose>
                                         to export the current object,
-                                        <xsl:if test="published/text()='1'">
+                                        <xsl:if test="published='1'">
                                             'Unpublish' to remove the object from the live server,
                                         </xsl:if>
                                         or 'Cancel' to return to the previous screen.
@@ -160,7 +160,7 @@
                                                 <td>
                                                     <input name="publish" type="submit" class="control">
                                                         <xsl:choose>
-                                                            <xsl:when test="published/text()='1'">
+                                                            <xsl:when test="published='1'">
                                                                 <xsl:attribute name="value">Republish</xsl:attribute>
                                                             </xsl:when>
                                                             <xsl:otherwise>
@@ -170,7 +170,7 @@
                                                     </input>
                                                     <input name="id" type="hidden" value="{$id}"/>
                                                 </td>
-                                                <xsl:if test="published/text()='1'">
+                                                <xsl:if test="published='1'">
                                                     <td>
                                                         <input name="unpublish" type="submit" value="Unpublish" class="control"/>
                                                     </td>
@@ -204,15 +204,15 @@
                     <xsl:when test="string-length(location) &lt;= 0">
                         <xsl:attribute name="disabled">true</xsl:attribute>
                     </xsl:when>
-                    <xsl:when test="published/text() = '1' and
+                    <xsl:when test="published = '1' and
 concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &gt; concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                         <xsl:attribute name="checked">true</xsl:attribute>
                     </xsl:when>
-                    <xsl:when test="published/text() = '1' and
+                    <xsl:when test="published = '1' and
 concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                         <xsl:attribute name="disabled">true</xsl:attribute>
                     </xsl:when>
-                    <xsl:when test="published/text() != '1'">
+                    <xsl:when test="published != '1'">
                         <xsl:attribute name="onClick">isChecked('objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0</xsl:attribute>
                     </xsl:when>
                 </xsl:choose>
@@ -242,7 +242,7 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
                 <xsl:when test="string-length(location) &lt;= 0">
                     <xsl:text> is not a XIMS object or could not be resolved.</xsl:text>
                 </xsl:when>
-                <xsl:when test="published/text() != '1'">
+                <xsl:when test="published != '1'">
                     <xsl:text> object is not currently published.</xsl:text>
                 </xsl:when>
                 <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
