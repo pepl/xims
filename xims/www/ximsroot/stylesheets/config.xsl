@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -24,5 +24,5 @@
   <xsl:variable name="defaultcss">skins/<xsl:value-of select="$currentskin"/>/stylesheets/default.css</xsl:variable>
   <xsl:variable name="resolvereltositeroots">1</xsl:variable>
   <xsl:variable name="organisation">The XIMS Project</xsl:variable>
-  <xsl:variable name="searchresultrowlimit">15</xsl:variable>
+  <xsl:variable name="searchresultrowlimit">30</xsl:variable>
 </xsl:stylesheet>
