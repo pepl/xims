@@ -12,7 +12,7 @@ use XIMS::Names;
 # following uses are for the classed we bless into
 use XIMS::ObjectType;
 use XIMS::Iterator::Object;
-use vars qw/$AUTOLOAD/;
+use vars qw/$AUTOLOAD $cached_URIs/;
 
 # The idea here is to create a generic bridge between the data store and the
 # top-level XIMS Object classes. We try to lighten the Object classes that rely
@@ -22,6 +22,14 @@ use vars qw/$AUTOLOAD/;
 # the %conditions and %properties of non-Object related methods, but its probably
 # better if they just set those argument and call the Driver directly.
 #
+BEGIN {
+    $cached_URIs = {};
+    foreach my $rtype ( XIMS::Names::resource_types() ) {
+        foreach my $property ( @{XIMS::Names::property_interface_names( $rtype )} ) {
+            $cached_URIs->{$rtype}->{$property} = XIMS::Names::get_URI( $rtype, $property );
+        }
+    }
+}
 
 sub request_factory {
     my $self = shift;
@@ -47,8 +55,8 @@ sub request_factory {
 
     if ( $method_type eq 'create' or $method_type eq 'update') {
         foreach my $k ( keys( %request_params )) {
-            my $outname = XIMS::Names::get_URI( $r_type, $k );
-            $properties{$outname} = $request_params{$k} if XIMS::Names::valid_property( $r_type, $outname );
+            my $outname = $cached_URIs->{$r_type}->{$k};
+            $properties{$outname} = $request_params{$k} if (defined $outname and XIMS::Names::valid_property( $r_type, $outname ));
             # ubu: refactor
             if ( ( $k eq 'id' and $method_type eq 'update') ||
                  ( ( $k eq 'grantee_id' or $k eq 'content_id') and $method_type eq 'update' and $r_type eq 'ObjectPriv' )
@@ -65,15 +73,13 @@ sub request_factory {
             next if defined( $properties{$prop} or $prop =~ /\.id$/);
             $properties{$prop} = undef;
         }
-
-        #if ( $method_type eq 'update' ) {
-            #warn  "UPDATE properties: " . Dumper( \%properties ) . "\nconditions: ". Dumper( \%conditions );
-        #}
     }
     else {
+        my $properties = delete $args{properties};
+
         foreach my $k ( keys( %request_params )) {
-            my $outname = XIMS::Names::get_URI( $r_type, $k );
-            $conditions{$outname} = $request_params{$k} if XIMS::Names::valid_property( $r_type, $outname );
+            my $outname = $cached_URIs->{$r_type}->{$k};
+            $conditions{$outname} = $request_params{$k} if (defined $outname and XIMS::Names::valid_property( $r_type, $outname ));
         }
 
         # additional properties from the Driver to cover data-centric conditions (relational
@@ -86,14 +92,14 @@ sub request_factory {
         }
 
         # let classes ask for only the data they want for get() (for special cases only!!)
-        if ( defined( $args{properties} and $method_type eq 'get') ) {
-           my @prop_names = map{ XIMS::Names::get_URI( $r_type, $_) } @{$args{properties}};
+        if ( defined( $properties and $method_type eq 'get') ) {
+           my @prop_names = map{ $cached_URIs->{$r_type}->{$_} } @{$properties};
            %properties = map { $_, 1 } @prop_names;
         }
     }
 
     unless ( scalar( keys ( %properties ) ) > 0 ) {
-        my @prop_names = map{ XIMS::Names::get_URI( $r_type, $_) } @{XIMS::Names::property_list( $r_type )};
+        my @prop_names = values %{$cached_URIs->{$r_type}};
         %properties = map { $_, 1 } @prop_names;
     }
 
@@ -132,6 +138,7 @@ sub new {
             XIMS::Debug( 1, "driver class $drvcls did not initialize!" );
         }
     }
+
     return $self;
 }
 
