@@ -50,7 +50,7 @@ sub DBPWD()                     { $_CONFIG_->DBPassword() }
 sub DBSESSIONOPT()              { $_CONFIG_->DBSessionOpt() }
 sub DBDOPT()                    { $_CONFIG_->DBDOpt() }
 sub DBDSN()                     { $_CONFIG_->DBdsn() }
-sub DBENCODING()                { $_CONFIG_->DBEncoding() }
+sub DBENCODING()                { (length $_CONFIG_->DBEncoding() and $_CONFIG_->DBEncoding() !~ /UTF-?8/i) ? return $_CONFIG_->DBEncoding() : return undef }
 sub UIFALLBACKLANG()            { $_CONFIG_->UIFallbackLang() }
 sub ADMINROLEID()               { $_CONFIG_->AdminRoleID() }
 sub PUBLICUSERID()              { $_CONFIG_->PublicUserID() }

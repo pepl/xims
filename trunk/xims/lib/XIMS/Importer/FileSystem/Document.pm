@@ -31,8 +31,9 @@ sub handle_data {
             if ( $n->hasChildNodes() ) {
                 map { $value .= $_->toString(0,1) } $n->childNodes;
             }
-            #$value = decodeFromUTF8('ISO-8859-1', $value) if $value;
-            $object->$field( $value );
+            if ( length $value ) {
+                $object->$field( XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value );
+            }
         }
     }
 

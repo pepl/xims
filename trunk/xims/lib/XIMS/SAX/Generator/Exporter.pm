@@ -9,7 +9,6 @@ use vars qw(@ISA);
 # this package could be a subclass of XIMS::SAX::Generator::Content <- think of it
 @ISA = qw(XIMS::SAX::Generator XML::Generator::PerlData);
 
-#use Data::Dumper;
 use XIMS::SAX::Generator;
 use XML::Generator::PerlData;
 use XIMS::DataProvider;
@@ -36,7 +35,9 @@ sub prepare {
     my %object_types = ();
     my %data_formats = ();
 
-    $self->{FilterList} = [ XML::Filter::CharacterChunk->new(Encoding => "ISO-8859-1", TagName=>[qw(body abstract)]) ];
+    my %encargs;
+    $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
+    $self->{FilterList} = [ XML::Filter::CharacterChunk->new(%encargs, TagName=>[qw(body abstract)]) ];
 
     my $doc_data = { context => {} };
 
@@ -79,9 +80,7 @@ sub parse {
     my $ctxt = shift;
     my %opts = (@_, $self->get_config);
     $self->parse_start( %opts );
-
     $self->parse_chunk( $ctxt );
-
     return $self->parse_end;
 }
 
@@ -119,7 +118,7 @@ sub _set_children {
 
     my $object = $ctxt->object();
 
-    my %childrenargs = ( published => 1 ); # only get published children
+    my %childrenargs = ( published => 1, User => $ctxt->user ); # only get published children
     my @object_type_ids;
     if ( $ctxt->properties->content->getchildren->objecttypes and scalar @{$ctxt->properties->content->getchildren->objecttypes} > 0 ) {
         my $ot;
