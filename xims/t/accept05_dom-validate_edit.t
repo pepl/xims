@@ -10,14 +10,14 @@ my $res = $t->login();
 ok( $res );
 ok( defined( $t->{Cookie} ) );
 $res = undef;
-$res = $t->get('/content/?id=2;edit=1;passthru=1');
+$res = $t->get('/content/xims?edit=1&passthru=1');
 ok( $res );
 
 my $xml;
 # Check the outcome of the response
 if ($res->is_success) {
     $xml = $res->content;
-} 
+}
 else {
    warn "request failed: " . $res->message . ".\n";
 }

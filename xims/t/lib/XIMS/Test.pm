@@ -53,7 +53,12 @@ my $found_cookie;
 
 sub new {
     my $class = shift;
-    my %self = ( UA => LWP::UserAgent->new() );
+    my %self = ( UA =>
+                    LWP::UserAgent->new(
+                        requests_redirectable => ['GET','POST'],
+                        cookie_jar => HTTP::Cookies->new(),
+                    )
+                );
     $self{UA}->agent("XIMSTester/0.1 ");
     return bless \%self, $class;
 }
@@ -63,16 +68,17 @@ sub login {
     my ( $user, $pass ) = @_;
     $user ||= $Conf{user_name};
     $pass ||= $Conf{password};
-    my $url = $Conf{http_host} . '/goxims/defaultbookmark';
+    my $url = $Conf{http_host} . '/goxims/user';
     # warn "using: " . $user . ' ' . $pass . ' ' . $url;
     my $req = HTTP::Request->new(POST => $url);
     $req->content_type('application/x-www-form-urlencoded');
-    $req->content("userid=$user&password=$pass");
+    $req->content("dologin=1&userid=$user&password=$pass");
 
     # Pass request to the user agent and get a response back
     my $res = $self->{UA}->request($req);
-    my $cookie_parser = HTTP::Cookies->new();
-    $cookie_parser->extract_cookies( $res );
+    $res = $self->{UA}->request($req);
+    my $cookie_parser = $self->{UA}->cookie_jar();
+    $cookie_parser->extract_cookies();
     $cookie_parser->scan( \&cookie_scan );
     if ( length( $found_cookie )  > 0 ) {
         #print "user $user logged in\n";
@@ -88,7 +94,7 @@ sub get {
     my $self = shift;
     my $uri = $_[0];
     $uri = $Conf{http_host} . '/goxims' . $uri;
-    warn "getting $uri \n";
+    #warn "getting $uri \n";
     my $req = HTTP::Request->new(GET => $uri);
     $self->{Cookie}->add_cookie_header( $req );
     my $res = $self->{UA}->request( $req );
