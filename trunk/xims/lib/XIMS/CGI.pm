@@ -408,7 +408,13 @@ sub setHttpHeader {
     my $ctxt = shift;
     my %my_headers = ();
     $my_headers{-cookie} = $ctxt->properties->application->cookie() if defined $ctxt->properties->application->cookie();
-    $my_headers{-nocache} = 1 if defined $ctxt->properties->application->nocache();
+
+    if ( defined $ctxt->properties->application->nocache() ) {
+        %my_headers = ('-expires'       => 'now',
+                       '-Pragma'        => 'no-cache',
+                       '-Cache-Control' => 'no-cache')
+    }
+
     return %my_headers;
 }
 
