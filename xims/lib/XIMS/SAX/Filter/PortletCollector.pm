@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -85,6 +85,15 @@ sub handle_data {
         }
         $childrenargs{object_type_id} = \@object_type_ids;
 
+        my @doclinks_object_type_ids;
+        if ( $self->get_documentlinks() ) {
+            my $ot;
+            foreach my $name ( qw( URLLink SymbolicLink ) ) {
+                $ot = XIMS::ObjectType->new( name => $name );
+                push(@doclinks_object_type_ids, $ot->id()) if defined $ot;
+            }
+        }
+
         if ( defined $cols and ref $cols and scalar @{$cols} ) {
             XIMS::Debug( 6, "getting custom properties: " . join( "," , @$cols ));
             # add a list of base properties
@@ -136,6 +145,16 @@ sub handle_data {
                 $o->{location} = XIMS::xml_escape($o->{location});
                 $o->{title} = XIMS::xml_escape($o->{title});
                 $o->{location_path} = XIMS::xml_escape($location_path);
+
+                # check if documentlink objects should be added
+                if ( $self->get_documentlinks() ) {
+                    XIMS::Debug( 4, "looking for documentlinks" );
+                    my %cargs = %childrenargs;
+                    $cargs{object_type_id} = \@doclinks_object_type_ids;
+                    delete $cargs{maxlevel};
+                    my @links = $o->children_granted( %cargs );
+                    push( @children, @links) if scalar @links;
+                }
             }
             $self->push_listobject( @children );
         }
@@ -152,8 +171,8 @@ sub get_objecttypes {
 
     my @ots  = ();
     my @tags = ();
-    my ($content) = grep {$_->nodeName eq "content" } $fragment->childNodes;
-    if ( $content ) {
+    my $content = $self->get_content();
+    if ( defined $content ) {
         @tags = $content->getChildrenByTagName( "object-type" );
     }
     else {
@@ -186,10 +205,9 @@ sub get_direct_filter {
 
 sub get_latest {
     my $self = shift;
-    my $fragment = $self->get_data_fragment;
     my $latest;
-    my ($content) = grep {$_->nodeName eq "content" } $fragment->childNodes;
-    if ( $content ) {
+    my $content = $self->get_content();
+    if ( defined $content ) {
         $latest = $content->getChildrenByTagName( "latest" )->string_value();
     }
     if ( defined $latest and $latest ne '0' ) {
@@ -201,15 +219,28 @@ sub get_latest {
 
 sub get_depth {
     my $self = shift;
-    my $fragment = $self->get_data_fragment;
     my $depth;
-    my ($content) = grep {$_->nodeName eq "content" } $fragment->childNodes;
-    if ( $content ) {
+    my $content = $self->get_content();
+    if ( defined $content ) {
         $depth = $content->getChildrenByTagName( "depth" )->string_value();
     }
     if ( defined $depth and $depth ne '0' ) {
         XIMS::Debug( 6, "got depth $depth" );
         return $depth;
+    }
+    return undef;
+}
+
+
+sub get_documentlinks {
+    my $self = shift;
+    my $documentlinks;
+    my $content = $self->get_content();
+    if ( defined $content ) {
+        $documentlinks = $content->getChildrenByTagName( "documentlinks" )->string_value();
+    }
+    if ( defined $documentlinks and $documentlinks eq '1' ) {
+        return 1;
     }
     return undef;
 }

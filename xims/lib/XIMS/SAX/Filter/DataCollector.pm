@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -103,6 +103,28 @@ sub get_data_fragment {
     return $self->{Fragment};
 }
 
+##
+#
+# SYNOPSIS
+#    $filter->get_content()
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $self->{Content}
+#
+# DESCRIPTION
+#    Accessor for the "content" node.
+#
+sub get_content {
+    my $self = shift;
+    unless ( defined $self->{Content} ) {
+        my ($content) = grep {$_->nodeName eq "content" } $self->get_data_fragment->childNodes;
+        $self->{Content} = $content;
+    }
+    return $self->{Content};
+}
 
 ##
 #
