@@ -11,7 +11,7 @@
 
 <xsl:import href="../common.xsl"/>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp" mode="date">
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp" mode="date">
     <xsl:value-of select="./month"/>
     <xsl:text>/</xsl:text>
     <xsl:value-of select="./day"/>
@@ -19,7 +19,7 @@
     <xsl:value-of select="./year"/>
 </xsl:template>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp" mode="datetime">
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp" mode="datetime">
     <xsl:value-of select="./month"/>
     <xsl:text>/</xsl:text>
     <xsl:value-of select="./day"/>

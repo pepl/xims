@@ -16,11 +16,15 @@
         <xsl:call-template name="header">
           <xsl:with-param name="nocreatewidget">true</xsl:with-param>
         </xsl:call-template>
+
         <h1 class="documenttitle"><xsl:value-of select="title" /></h1>
+
         <h3 style="margin-left:8px;">
             <xsl:apply-templates select="abstract"/>
         </h3>
+
         <br />
+
         <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" style="margin-left:5px; margin-bottom: 0px;">
         <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
             <xsl:if test="user_privileges/create">
@@ -28,7 +32,14 @@
             </xsl:if>
         </form>
 
-        <xsl:choose>
+        <xsl:call-template name="forumtable"/>
+    </body>
+</html>
+</xsl:template>
+
+
+<xsl:template name="forumtable">
+    <xsl:choose>
 <!-- begin sort by name -->
         <xsl:when test="$sb='name'">
             <xsl:choose>
@@ -36,7 +47,7 @@
                     <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                         <tr>
                             <td class="lightblue">
-                                <a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=desc">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=name&amp;order=desc">
                                     <xsl:value-of select="$i18n/l/Topic"/>
                                     <img src="{$skimages}arrow_ascending.gif" width="10" height="10" border="0" alt="sort descending"/>
                                 </a>
@@ -60,7 +71,7 @@
                     <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                         <tr>
                             <td class="lightblue">
-                                <a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=asc">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?sb=name&amp;order=asc">
                                     <xsl:value-of select="$i18n/l/Topic"/>
                                     <img src="{$skimages}arrow_descending.gif" width="10" height="10" border="0" alt="sort ascending"/>
                                 </a>
@@ -139,10 +150,7 @@
         </xsl:when>
 <!-- end sort by date -->
     </xsl:choose>
-    </body>
-</html>
 </xsl:template>
-
 
 <xsl:template match="children/object">
     <xsl:variable name="dataformat">
@@ -156,7 +164,7 @@
                 <td bgcolor="#eeeeee" valign="bottom">
                     <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" border="0" alt="{/document/data_formats/data_format[@id=$dataformat]}"/>
                     <xsl:text> </xsl:text>
-                    <a href="{$goxims_content}{$absolute_path}/{location}">
+                    <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}">
                         <xsl:value-of select="title" />
                     </a>
                 </td>
@@ -170,7 +178,7 @@
                 <td valign="middle">
                     <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" border="0" alt="{/document/data_formats/data_format[@id=$dataformat]}"/>
                     <xsl:text> </xsl:text>
-                    <a href="{$goxims_content}{$absolute_path}/{location}">
+                    <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}">
                     <xsl:value-of select="title" /></a>
                 </td>
                 <td nowrap="nowrap" bgcolor="#eeeeee" valign="middle" align="center">
@@ -199,7 +207,9 @@
             <xsl:value-of select="descendant_count"/>
         </td>
         <td nowrap="nowrap" valign="middle" align="center">
-            <xsl:value-of select="descendant_last_modified"/>
+            <xsl:if test="descendant_count != '0'">
+                <xsl:apply-templates select="descendant_last_modification_timestamp" mode="datetime"/>
+            </xsl:if>
         </td>
         <td valign="bottom">
         <xsl:if test="user_privileges/delete">

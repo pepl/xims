@@ -13,6 +13,26 @@
 
 <xsl:param name="show_questions" select="'none'" />
 
+<xsl:template match="/document/context/object">
+    <html>
+        <xsl:call-template name="head_default"/>
+        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+            <xsl:call-template name="header"/>
+            <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
+                <tr>
+                    <td colspan="2">
+                      <xsl:apply-templates select="body"/>
+                    </td>
+                </tr>
+            </table>
+            <table align="center" width="98.7%" class="footer">
+                <xsl:call-template name="user-metadata"/>
+                <xsl:call-template name="footer"/>
+            </table>
+        </body>
+    </html>
+</xsl:template>
+
 <xsl:template match="questionnaire">
     <form action="">
         <xsl:call-template name="questionnaire_title" />
