@@ -69,7 +69,7 @@
     </td></tr>
 </xsl:template>
 
-<xsl:template name="scripts>
+<xsl:template name="scripts">
     <script type="text/javascript">
       <![CDATA[
         function insertfile() {
