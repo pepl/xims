@@ -29,4 +29,66 @@ BEGIN {
 use Class::MethodMaker
         get_set       => \@Fields;
 
+
+##
+#
+# SYNOPSIS
+#    my $fullname = $objecttype->fullname();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $fullname : '::'-separated fullname of the objectype including
+#                the names of its ancestors
+#
+# DESCRIPTION
+#    Returns the fullname of the object type, separated by '::' including
+#    the names of the object type's ancestors.
+#
+sub fullname {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    my @ancestors = @{$self->ancestors()};
+    if ( scalar @ancestors ) {
+        @ancestors = map { $_->name } @ancestors;
+        return join('::', @ancestors) . '::' . $self->name();
+    }
+    else {
+        return $self->name();
+    }
+}
+
+
+##
+#
+# SYNOPSIS
+#    my $ancestors = $objecttype->ancestors();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $ancestors : Reference to Array of XIMS::ObjectTypes
+#
+# DESCRIPTION
+#    Returns ancestor object types.
+#
+sub ancestors {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $objecttype = (shift || $self);
+    my @ancestors = @_;
+    if ( $objecttype->parent_id() and $objecttype->id() != $objecttype->parent_id() ) {
+        my $parent = XIMS::ObjectType->new( id => $objecttype->parent_id() );
+        push @ancestors, $parent;
+        $self->ancestors( $parent, @ancestors );
+    }
+    else {
+        return [reverse @ancestors];
+    }
+}
+
+
 1;

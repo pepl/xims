@@ -51,6 +51,8 @@ CREATE TABLE ci_object_types
  ,is_xims_data     SMALLINT DEFAULT 0
  ,redir_to_self    SMALLINT DEFAULT 1
  ,publish_gopublic SMALLINT DEFAULT 0
+ ,parent_id        INTEGER  REFERENCES ci_object_types ( id )
+                            ON DELETE CASCADE
  )
 ;
 
