@@ -559,6 +559,107 @@ sub move {
     return $self->data_provider->updateObject( $self->data() );
 }
 
+##
+# SYNOPSIS
+#    $self->clone( %args );
+#
+# PARAMETER
+#    $args{ User } ............ User ( used to find granted children )
+#    $args{ scope_subtree } ... flag, 0 ... shallow copy ( only object, not its descendants )
+#                                     1 ... full subtree copy ( object and all granted descendants )
+#    $args{ parent_id } ....... id of parent object ( should be undef, only used in recursive call )
+#
+# RETURNS
+#    undef on error, 1 on success
+#
+# DESCRIPTION
+#    creates a copy of the object ( clone has same parent as orginal ).
+#    the clone if named 'Copy_of_...' (location and title)
+#    if scope_subtree = 1, all granted descendants are copied, too.
+#
+sub clone {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    my $user = delete $args{User} || $self->{User};
+    die "cloning an object requires an associated User" unless defined( $user );
+
+    my $parent_id = delete $args{ parent_id };
+    my $scope_subtree = delete $args{ scope_subtree };
+
+    # create a copy of object data
+    my %clonedata = $self->data();
+    
+    # id and document_id will be created new, path is not used
+    delete $clonedata{ id };
+    delete $clonedata{ document_id };
+    delete $clonedata{ path };
+
+    if( defined $parent_id ) {
+        $clonedata{ parent_id } = $parent_id;
+    }
+    else {
+        # same parent, so we have to find a new location for it
+        my $newlocation = "Copy_of_" . $clonedata{ location };
+        my $newtitle = "Copy of " . $clonedata{ title };
+        
+        my $parent = XIMS::Object->new( id => $self->parent_id );
+        if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef ) ) {
+            my $index = 1;
+            do {
+                $newlocation = "Copy_(" . $index . ")_of_" . $clonedata{ location };
+                $newtitle = "Copy (" . $index . ") of " . $clonedata{ title };
+                $index++;
+            } while ( $parent->children( location => $newlocation, marked_deleted => undef ) );
+        }
+        # warn("clone: newlocation = $newlocation, newtitle = $newtitle");
+        $clonedata{ location } = $newlocation;
+        $clonedata{ title } = $newtitle;
+    }
+    
+    # create the clone and expressly assign its body data (may be binfile)
+    # warn("clone: about to create clone with data: " . Dumper( \%clonedata ) );
+    my $clone = XIMS::Object->new( %clonedata );
+    return unless defined $clone;
+    $clone->body( $self->body() );
+    my $clone_id = $clone->create( User => $user );
+    return unless defined $clone_id;
+
+    if( defined $parent_id ) {
+        # all subelements should keep their position, but they have got new ones by create(), so change this back!
+        $clone->position( $self->position() );
+        $clone->update();
+    }
+
+    # copy all object privileges
+    my @privs = $self->data_provider->getObjectPriv( content_id => $self->document_id() );
+    my $priv;
+    my $clonepriv;
+    foreach $priv ( @privs ) {
+        $priv->{ content_id } = $clone->document_id();
+        $clonepriv = XIMS::ObjectPriv->new->data( %{$priv} );
+        $clonepriv->create();
+    }
+    
+    if ( $clone->published() ) {
+        # set clone to unpublished
+        $clone->unpublish();
+    }
+
+    if ( $scope_subtree ) {
+        # clone all granted children
+        my @children = $self->children_granted( User => $user );
+        my $child;
+        foreach $child ( @children ) {
+            # warn("clone: about to clone child with id " . $child->id() );
+            return unless $child->clone( User => $user, parent_id => $clone_id, scope_subtree => 1 );
+        }
+    }
+    
+    return 1;
+}
+
 sub reposition {
     my $self = shift;
     my %args = @_;
@@ -991,7 +1092,7 @@ sub content_field {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $df;
-    if ( defined( $self->{DataFormat} ) ) {
+    if ( defined( $self->{DataFormat} ) and defined( $self->{DataFormat}->id ) ) {
        $df = $self->{DataFormat};
     }
     else {
