@@ -1666,9 +1666,9 @@ sub body_ref_objects {
 
     # lets see if the objects do exist in our system.
     foreach my $p ( @paths ) {
-        XIMS::Debug( 4, "preresolve path $p " );
         $p =~ s/\?.*$//; # strip attributes
         next unless length $p;
+        next if defined $retval{$p};
         if (
             $p =~ m|^https?://|
             or $p =~ m|^#|
@@ -1677,12 +1677,13 @@ sub body_ref_objects {
             XIMS::Debug( 4, "real URI or anchor" );
             next;
         }
-        if ( defined $retval{$p} ) {
-            XIMS::Debug( 4, "path already resolved" );
-            next;
-        }
         my $exp = $p;
-        if ( $p !~ m|^/| ) {
+        if ( $p =~ m|^\./| ) {
+            XIMS::Debug( 4, "relative reference" );
+            $p =~ s/^\.\///;
+            $exp = "$parent_path/$p";
+        }
+        elsif ( $p !~ m|^/| ) {
             XIMS::Debug( 4, "relative reference" );
             $exp = "$parent_path/$p";
         }
