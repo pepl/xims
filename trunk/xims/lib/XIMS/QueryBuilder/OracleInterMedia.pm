@@ -66,82 +66,73 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp)";
             $retval{order} = "last_modification_timestamp DESC";
-
-            next;
         }
-
-        if ( $search->[$i] =~ s/^m:(\d*)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^m:(\d*)$/$1/ ) {
             # 'm:x'  was MODIFIED x days in the past AND is MARKED_NEW
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp) AND ci_content.marked_new = 1";
             $retval{order} = "last_modification_timestamp DESC";
-
-            next;
         }
-
-        if ( $search->[$i] =~ s/^N:(\d*)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^N:(\d*)$/$1/ ) {
             # 'N:x'  was CREATED x days in the past
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp)";
             $retval{order} = "creation_timestamp DESC";
-
-            next;
         }
-
-        if ( $search->[$i] =~ s/^n:(\d*)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^n:(\d*)$/$1/ ) {
             # 'n:x'  was CREATED x days in the past AND is MARKED_NEW
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol .  $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp) AND ci_content.marked_new = 1";
             $retval{order} = "creation_timestamp DESC";
-
-            next;
         }
-
-        if ( $search->[$i] =~ s/^i:(\d+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^i:(\d+)$/$1/ ) {
             # 'i:x' find object by ID
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol . "ci_content.id = " . $search->[$i];
-            next;
         }
-
-        if ( $search->[$i] =~ s/^I:(\d+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^I:(\d+)$/$1/ ) {
             # 'i:x' find object by DOCUMENT_ID
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol . "ci_documents.id = " . $search->[$i];
-            next;
         }
-
-        #  leave that out for now
-        #  got to find a sane way to lookup user_id per shortname
-        #
-        #        elsif ( $search->[$i] =~ s/^o:(\d*)$/$1/ ) {
-        #          # 'o:x' find object by OWNER
-        #          $search->[$i] ||= '0';
-        #          $bol = $self->search_boolean( $search, $i );
-        #          $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
-        #        }
-        #        elsif ( $search->[$i] =~ s/^c:(\d*)$/$1/ ) {
-        #          # 'c:x' find object by CREATOR
-        #          $search->[$i] ||= '0';
-        #          $bol = $self->search_boolean( $search, $i );
-        #          $search->[$i] = $bol . "ci_content.created_by_id = " . $search->[$i];
-        #        }
-
-        unless ( $search->[$i+1] =~ /^[@{$fieldstolookin}]:/  ||  $search->[$i+1] =~ /^[MmNnIn]:(\d*)$/ ) {
-
-            if ( $search->[$i] ne "AND" && $search->[$i] ne "OR" ) {
-                $bol = $self->search_boolean( $search, $i );
-                push @IMsearch, ( $bol, ( '{' . $search->[$i] . '}' ) );
+        elsif ( $search->[$i] =~ s/^o:(\w+|\d+)$/$1/ ) {
+            # 'o:x' find object by OWNER
+            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]$/ ) {
+                my $user = XIMS::User->new( name => $search->[$i] );
+                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
             }
-            else {
-                push @IMsearch, ( $search->[$i] );
+            $bol = $self->search_boolean( $search, $i );
+            $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
+        }
+        elsif ( $search->[$i] =~ s/^c:(\w+|\d+)$/$1/ ) {
+            # 'c:x' find object by CREATOR
+            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]$/ ) {
+                my $user = XIMS::User->new( name => $search->[$i] );
+                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
             }
+            $bol = $self->search_boolean( $search, $i );
+            $search->[$i] = $bol . "ci_content.created_by_id = " . $search->[$i];
+        }
+        elsif ( $search->[$i] =~ s/^u:(\w+|\d+)$/$1/ ) {
+            # 'u:x' find object by CREATOR or MODIFIER
+            if ( $search->[$i] =~ /^[a-zA-ZöäüßÖÄÜß]$/ ) {
+                my $user = XIMS::User->new( name => $search->[$i] );
+                $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
+            }
+            $bol = $self->search_boolean( $search, $i );
+            $search->[$i] = $bol . "(ci_content.created_by_id = " . $search->[$i] . " OR ci_content.last_modified_by_id = " . $search->[$i] . ")";
+        }
+        elsif ( $search->[$i] ne "AND" && $search->[$i] ne "OR" ) {
+            $bol = $self->search_boolean( $search, $i );
+            push @IMsearch, ( $bol, ( '{' . $search->[$i] . '}' ) );
+        }
+        else {
+            push @IMsearch, ( $search->[$i] );
         }
     }
-
 
     # hard work done, compose search-condition-string
     if ( @IMsearch ) {
@@ -156,9 +147,8 @@ sub build {
                              'marked_new', 'locked_by_id', 'locked_time', 'lob_length', 'score(1) s' ];
         $retval{order} = "s DESC";
     }
-
-    if ( @search and not @IMsearch ) {
-        $retval{criteria} .=  join(' ', @search );
+    else {
+        $retval{criteria} = '(' . join(' ', @{$search}) . ')';
     }
 
 
