@@ -133,6 +133,9 @@ sub httpd_conf {
     elsif ( -f '/etc/httpd.conf' ) {
         $self->{ApacheHttpdConf} = '/etc/httpd.conf';
     }
+    elsif ( -f '/etc/apache/httpd.conf' ) {                            # Debian
+        $self->{ApacheHttpdConf} = '/etc/apache/httpd.conf';
+    }
     elsif ( -f '/usr/local/etc/apache/httpd.conf' ) {                  # FreeBSD-Port www/apache
         $self->{ApacheHttpdConf} = '/usr/local/etc/apache/httpd.conf';
     }

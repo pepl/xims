@@ -25,7 +25,7 @@ print $term->banner( "Database Setup Tool" );
 if ( $args{h} ) {
     print qq*
 
-  Usage: $0 [-h|-u user -p -pwd -n dbname -t dbtype [-b host [-o port]]]
+  Usage: $0 [-h|-u user -p -pwd -n dbname -t dbtype [-b host [-o port] -f path] ]
         -u The name of your database user to connect to the XIMS
            database
         -p The password of your database user to connect to the XIMS
@@ -34,14 +34,15 @@ if ( $args{h} ) {
         -t The type of RDBMS of your XIMS database. Currently, either
            'Pg' or 'Oracle' are supported
         -b The name of the database host if you connect to a remote machine (optional for Pg)
-        -o The port number of the database listener at the remote machine, omit for default (Pg)
+        -o The port number of the database listener at the remote machine, omit for default (Pg if -b is needed)
+        -f Path to your copy of 'tablefunc.sql' (Pg only)
         -h prints this screen
 
 *;
     exit;
 }
 
-print "\n\033[1m[WARNING] This script will recreate your XIMS database, existing data will be lost! [WARNING]\033[m\n\n";
+print "\n\033[1m[WARNING] This script will (re)create your XIMS database, existing data will be lost! [WARNING]\033[m\n\n";
 
 
 my $installer = XIMS::Installer->new();
@@ -55,7 +56,7 @@ my %conf_prompts = (
                           error => 'You must enter the database username for XIMS to access the database.',
                           default => $ENV{ORACLE_HOME} ? '' : PgUser(),
                        },
-    b_db_password    => { text  => 'Database Password (For Pg, pg_hba.conf should have set trust to local and this password should remain blank.',
+    b_db_password    => { text  => 'Database Password (For Pg, this is only needed if your Pg installation is configured to use "password" as authentication method. If that is not the case or you are unsure, leave it blank.',
                           var   => \$Conf{DBPassword},
                           re    => '.*',
                           error => "You must enter the database user's password for XIMS to access the database.",
@@ -88,6 +89,7 @@ if ( $args{u}
     $Conf{DBdsn} = $args{t};
     $Conf{DBhost} = $args{b};
     $Conf{DBport} = $args{o};
+    $Conf{DBPgtablefunc} = $args{f};
 }
 else {
     # interactive mode
@@ -110,6 +112,13 @@ else {
                                   default => '',
                                 } );
         }
+        $installer->prompt( { text => 'Path to tablefunc.sql',
+                              var   => \$Conf{DBPgtablefunc},
+                              re    => '.+',
+                              error => 'Please specify a path to your copy of "tablefunc.sql"',
+                              default => PgFindTableFunc(),
+                            } );
+
     }
 }
 
@@ -134,16 +143,49 @@ if ( $Conf{DBdsn} eq 'Oracle' ) {
         or die "Setting up DB failed: $?\n. Please check your config information or try manually setting up the DB.\b";
 }
 elsif ( $Conf{DBdsn} eq 'Pg' ) {
-    chdir "$prefix/xims/sql/Pg";
     my @args = ('psql','-U',$Conf{DBUser},'-d',$Conf{DBName},'-f','setup.sql');
+    my $current_user = getpwuid($>);
+    if ( $current_user ne $Conf{DBUser} ) {
+        if ( $> == 0 ) {
+            @args = ('su', $Conf{DBUser}, join(' ', @args));
+        }
+        else {
+            warn "\n\n[WARNING] You are neither logged in as root nor the database user you specified.\n",
+            "The database setup process is relying on the fact that in your PostgreSQL",
+            " 'pg_hba.conf' local access is set to 'trust' now!\n\n";
+        }
+    }
+
+    chdir "$prefix/xims/sql/Pg";
+
     if ( $Conf{DBhost} and length $Conf{DBhost} ) {
         push(@args, '-h', $Conf{DBhost});
         if ( $Conf{DBport} and length $Conf{DBport} ) {
             push(@args, '-p', $Conf{DBport});
         }
     }
+
     system(@args) == 0
-        or die "Setting up DB failed: $?\n. Please check your config information or try manually setting up the DB.\b";
+        or die "\n\033[1mSetting up DB failed! Error: $?.\nPlease check your config information or try manually setting up the DB.\033[m\n\n";
+
+    # tablefunctions
+    my $tablefunc = $Conf{DBPgtablefunc};
+    if ( $> == 0 ) {
+        $args[-1] =~ s/setup.sql/$tablefunc/;
+        $args[-1] =~ s/$Conf{DBName}/xims/;
+    }
+    else {
+        $args[-1] = $tablefunc;
+        $args[4] = 'xims';
+    }
+
+    die "\n\033[1m'tablefunc.sql' could not be found at " . $tablefunc . ". Please run\n\n",
+    join(" ", @args), "\n\n manually with the correct path to your copy of 'tablefunc.sql'\033[m\n\n"
+        unless -f $tablefunc;
+
+    system(@args) == 0
+        or die "\n\033[1mSetting up table functions failed! Error: $?.\nPlease check your config information or try manually setting up the table functions into the XIMS database.\033[m\n\n";
+
 }
 
 close STDOUT; # forks, we're done
@@ -164,6 +206,33 @@ sub PgUser {
         return $pgsuperuser if defined $pgsuperuser;
     }
     return 'postgres';
+}
+
+sub PgFindTableFunc {
+    my @guesses = ('/usr/share/postgresql/contrib/tablefunc.sql');
+    my $pgversion = _PgVersion();
+    if ( $pgversion ) {
+        push(@guesses,"/usr/local/pgsql-$pgversion/share/contrib/tablefunc.sql","/usr/pgsql-$pgversion/share/contrib/tablefunc.sql");
+    }
+    foreach ( @guesses ) {
+        return $_ if -f $_;
+    }
+    my $tablefunc;
+    eval {
+        $tablefunc = `locate -r contrib/tablefunc.sql\$`
+    };
+    return $tablefunc;
+}
+
+sub _PgVersion {
+    my $version;
+    eval {
+        $version = `psql -V | grep PostgreSQL`
+    };
+    return unless $version;
+    chomp $version;
+    $version =~ s/.*\s(.+)$/$1/;
+    return $version;
 }
 
 sub logfile {
