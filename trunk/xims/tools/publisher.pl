@@ -83,7 +83,7 @@ my $gid = (stat XIMS::PUBROOT())[5]; # after install, XIMS::PUBROOT is writable 
 # by the exporter, we have to recursively chgrp and 755 the file to the apache-user's group
 foreach my $file ( $term->findfiles( XIMS::PUBROOT() . $object->location_path ) ) {
     # untaint the file
-    unless ($file =~ m#^([\w.-/\\_]+)$#) {
+    unless ($file =~ m#^([\w.\-/\\_]+)$#) {
         die "filename '$file' has invalid characters.\n";
     }
     $file = $1;
