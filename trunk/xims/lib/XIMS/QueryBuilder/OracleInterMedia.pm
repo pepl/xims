@@ -64,39 +64,39 @@ sub build {
             # 'M:x'  was MODIFIED x days in the past
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
-            $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp)";
+            $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp)";
             $retval{order} = "last_modification_timestamp DESC";
         }
         elsif ( $search->[$i] =~ s/^m:(\d*)$/$1/ ) {
             # 'm:x'  was MODIFIED x days in the past AND is MARKED_NEW
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
-            $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp) AND ci_content.marked_new = 1";
+            $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp) AND ci_content.marked_new = 1";
             $retval{order} = "last_modification_timestamp DESC";
         }
         elsif ( $search->[$i] =~ s/^N:(\d*)$/$1/ ) {
             # 'N:x'  was CREATED x days in the past
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
-            $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp)";
+            $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp)";
             $retval{order} = "creation_timestamp DESC";
         }
         elsif ( $search->[$i] =~ s/^n:(\d*)$/$1/ ) {
             # 'n:x'  was CREATED x days in the past AND is MARKED_NEW
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
-            $search[$i] = $bol .  $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp) AND ci_content.marked_new = 1";
+            $search->[$i] = $bol .  $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp) AND ci_content.marked_new = 1";
             $retval{order} = "creation_timestamp DESC";
         }
         elsif ( $search->[$i] =~ s/^i:(\d+)$/$1/ ) {
             # 'i:x' find object by ID
             $bol = $self->search_boolean( $search, $i );
-            $search[$i] = $bol . "ci_content.id = " . $search->[$i];
+            $search->[$i] = $bol . "ci_content.id = " . $search->[$i];
         }
         elsif ( $search->[$i] =~ s/^I:(\d+)$/$1/ ) {
             # 'i:x' find object by DOCUMENT_ID
             $bol = $self->search_boolean( $search, $i );
-            $search[$i] = $bol . "ci_documents.id = " . $search->[$i];
+            $search->[$i] = $bol . "ci_documents.id = " . $search->[$i];
         }
         elsif ( $search->[$i] =~ s/^o:(\w+|\d+)$/$1/ ) {
             # 'o:x' find object by OWNER
