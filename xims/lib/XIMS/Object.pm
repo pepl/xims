@@ -890,6 +890,8 @@ sub attribute_by_key {
         my %attributes = ( $text =~ /([^;\=]+)\=([^\;]+)/g );
         return $attributes{$key};
     }
+
+    return undef;
 }
 
 ##################################################################
