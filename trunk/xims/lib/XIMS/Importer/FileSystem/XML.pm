@@ -5,13 +5,9 @@
 package XIMS::Importer::FileSystem::XML;
 
 use XIMS::Importer::FileSystem;
+use XIMS::Importer::Object::XML;
 use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::FileSystem);
-
-use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implementation changed from 1.52 to 1.54.
-                      # With 1.52, node iteration is handled differently and we would call
-                      # $doc->getDocumentElement() instead of $doc->documentElement() for example...
-use XML::LibXML::Iterator;
+@ISA = qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XML);
 
 sub handle_data {
     XIMS::Debug( 5, "called" );
@@ -22,7 +18,7 @@ sub handle_data {
     my $object = $self->SUPER::handle_data( $location );
 
     unless ( $dontbody ) {
-        my $root = $self->get_rootelement( $location, $object, 1 );
+        my $root = $self->get_rootelement( $location, nochunk => 1 );
         return undef unless $root;
         $object->body( XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$root->toString()) : $root->toString() );
     }
@@ -34,43 +30,10 @@ sub get_rootelement {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $location = shift;
-    my $object = shift;
-    my $nochunk = shift;
+    my %args = @_;
 
-    my %param = ();
-    $param{nochunk} = 1 if $nochunk;
-
-    my $data = $self->get_strref( $location );
-    my $wbdata;
-    if ( $object and not $object->balanced_string( $$data, %param ) ) {
-        $wbdata = $object->balance_string( $$data, keephtmlheader => 1 );
-    }
-    else {
-        $wbdata = $$data;
-    }
-
-    my $parser = XML::LibXML->new();
-    my $doc;
-    eval {
-        $doc = $parser->parse_string( $wbdata );
-    };
-    if ( $@ ) {
-        XIMS::Debug( 3, "Could not parse: $location" );
-        return undef;
-    }
-
-    # lowercase element and attribute names
-    my $iter = XML::LibXML::Iterator->new( $doc );
-    $iter->iterate( sub {
-                        shift;
-                        $_[0]->nodeType == XML_ELEMENT_NODE &&
-                            map {
-                                    $_->nodeType != XML_NAMESPACE_DECL &&
-                                    $_->setNodeName( lc $_->nodeName )
-                                }
-                            $_[0], $_[0]->attributes;
-                        } );
-    return $doc->documentElement();
+    my $strref = $self->get_strref( $location );
+    return $self->SUPER::get_rootelement( $strref, @_ );
 }
 
 sub get_strref {
