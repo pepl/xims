@@ -55,7 +55,7 @@
     if (<web:request_prev_parsed_uri omit="query"/> eq <web:request_parsed_uri omit="query"/>) {
     </xsp:logic>
         <xsp:attribute name="action">
-            <web:request_parsed_uri omit="path"/>/goxims/defaultbookmark?dologin=1
+            <web:request_parsed_uri omit="path"/>/goxims/user?dologin=1
         </xsp:attribute>
     <xsp:logic>
     }

@@ -6,7 +6,6 @@
 <xsl:param name="request.uri.query"/>
 <xsl:param name="request.uri"/>
 
-
 <xsl:template match="abbr|acronym|address|b|bdo|big|blockquote|br|cite|code|div|del|dfn|em|hr|h1|h2|h3|h4|h5|h6|i|ins|kbd|p|pre|q|samp|small|span|strong|sub|sup|tt|var|
         dl|dt|dd|li|ol|ul|
         a|
@@ -19,7 +18,6 @@
       <xsl:apply-templates/>
   </xsl:copy>
 </xsl:template>
-
 
 <xsl:template name="meta">
       <xsl:param name="context_node" select="."/>
@@ -74,12 +72,12 @@
 <xsl:template name="stdlinks">
     <div class="stdlinks">
         <p><a href="/">Index</a></p>
-        <p><a href="/xims-info/about.html">About the Project</a></p>
-        <p><a href="/xims-doku/">Documentation</a></p>
-        <p><a href="/xims-screenshots/">Screenshots</a></p>
-        <p><a href="/xims-src/download.html">Download</a></p>
+        <p><a href="http://xims.uibk.ac.at/xims-info/about.html">About the Project</a></p>
+        <p><a href="http://xims.uibk.ac.at/xims-doku/">Documentation</a></p>
+        <p><a href="http://xims.uibk.ac.at/xims-screenshots/">Screenshots</a></p>
+        <p><a href="http://xims.uibk.ac.at/xims-src/download.html">Download</a></p>
         <p><a href="https://sourceforge.net/projects/xims/">XIMS at Sourceforge</a></p>
-        <p><a href="/goxims/defaultbookmark">Login</a></p>
+        <p><a href="/goxims/user">Login</a></p>
     </div>
 </xsl:template>
 

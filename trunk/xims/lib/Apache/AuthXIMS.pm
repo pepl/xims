@@ -31,7 +31,7 @@ use XIMS::User;
 #    none yet
 #
 sub handler {
-    XIMS::Debug( 5, "called" ) ;
+    XIMS::Debug( 5, "called" );
     my $r = shift;
 
     my $retval = DECLINED;
@@ -66,18 +66,18 @@ sub handler {
         unless ( $cSession ) {
             my $askedpath = $r->path_info();
             my $askedquery = Apache::URI->parse( $r )->query();
-            
+
             if ( $askedquery !~ m/dologin/ ) {
                 XIMS::Debug( 6, "setting client cookie 'askedquery' to value '$askedquery'" );
                 Apache::Cookie->new($r,
-                                    -name    =>  'askedquery', 
-                                    -value   =>  uri_escape( $askedquery ), 
+                                    -name    =>  'askedquery',
+                                    -value   =>  uri_escape( $askedquery ),
                                     -path    =>  '/'
                                    )->bake();
                 XIMS::Debug( 6, "setting client cookie 'askedpath' to value '$askedpath'" );
                 Apache::Cookie->new($r,
-                                    -name    =>  'askedpath', 
-                                    -value   =>  $askedpath, 
+                                    -name    =>  'askedpath',
+                                    -value   =>  $askedpath,
                                     -path    =>  '/'
                                    )->bake();
             }
@@ -172,14 +172,14 @@ sub set_session_cookie {
     if ( length $session ) {
         XIMS::Debug( 4, "session string found: $session" );
         my $cookiename = "session"; # should this get from the config
-        
+
         XIMS::Debug( 6, "setting client cookie '$cookiename' to value '$session'" );
         # need expires? if it not set, the cookie gets lost after browser shutdown
         Apache::Cookie->new($r,
-                            -name    =>  $cookiename, 
-                            -value   =>  $session, 
+                            -name    =>  $cookiename,
+                            -value   =>  $session,
                             -path    =>  '/'
-                           )->bake();       
+                           )->bake();
         $retval = 1;
     }
     else {
@@ -516,7 +516,7 @@ sub redirToDefault {
         XIMS::Debug( 4, "redirecting user " );
         my $pathinfo;
         # here we should find the root path for the user (the department for example)
-        
+
         # check for previous (before login) path and query stored in cookie
         my %cookies = Apache::Cookie->fetch();
         my $cookie;
@@ -540,8 +540,8 @@ sub redirToDefault {
             $askedquery = uri_unescape( $cookie->value() ) if $cookie;
             if ( length $askedquery ) {
                 XIMS::Debug( 5, "user previously requested with query parameters $askedquery" );
-                
-                # remove query paramters (by setting expire time in the past) 
+
+                # remove query paramters (by setting expire time in the past)
                 $cookies{ askedquery }->expires("-1Y");
                 $cookies{ askedquery }->bake();
             }
@@ -551,8 +551,8 @@ sub redirToDefault {
         }
         else {
             # check the default bookmark for the current user:
-            $pathinfo = "/defaultbookmark";
-            XIMS::Debug( 5, "user did not previously request a path, so using defaultbookmark $pathinfo" );
+            $pathinfo = "/user";
+            XIMS::Debug( 5, "user did not previously request a path, so we use /user" );
         }
 
         my $uri = Apache::URI->parse( $r );
@@ -562,7 +562,7 @@ sub redirToDefault {
         $uri->path( XIMS::GOXIMS() . $pathinfo );
         # add possible paramters of query before login
         $uri->query($askedquery) if $askedquery;
-        
+
         XIMS::Debug( 6, "redirecting to " . $uri->unparse() );
 
         $r->status_line( "302 Found" );
