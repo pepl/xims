@@ -2,35 +2,48 @@ package XIMS::Test;
 use lib "../../../lib";
 use strict;
 use XIMS;
-use XIMS::DataProvider;
 use XIMS::Config;
+use XIMS::DataProvider;
 use LWP::UserAgent;
 use HTTP::Cookies;
 use XML::Schematron::LibXSLT;
 use Data::Dumper;
+use Sys::Hostname;
 use Storable qw( retrieve store );
 
 use vars qw( %Conf );
 
 BEGIN {
-   my $app_config = {};
-   eval {
+    my $app_config = {};
+    eval {
        $app_config = retrieve('lib/XIMS/.ximstest.conf');
-   };
+    };
 
-   if ( $@ ) {
-       die "No config file found. use the ximstest.pl tool to create one.\n"
-   }
-   else {
-      %Conf = %{$app_config};
-   }
+    # warn "No config file found. Trying XIMS::Config.\n" if $@;
+    %Conf = %{$app_config} unless $@;
 }
 
-# fake the config
-sub XIMS::Config::DBMS() { return $Conf{DBMS} }
-sub XIMS::Config::DBUser() { return $Conf{DBUser} }
-sub XIMS::Config::DBName() { return $Conf{DBName} }
-sub XIMS::Config::DBPassword() { return $Conf{DBPassword} }
+# fake the config if config file exists
+sub XIMS::Config::DBdsn() {
+    if ( $Conf{RDBMS} and $Conf{RDBMS} eq 'Pg' ) {
+        return 'dbi:Pg:dbname=' . $Conf{DBName};
+    }
+    elsif ( $Conf{RDBMS} and $Conf{RDBMS} eq 'Oracle' ) {
+        return 'dbi:Oracle:' . $Conf{DBName};
+    }
+    else {
+        return XIMS::Config::DBdsn();
+    }
+}
+sub XIMS::Config::DBUser() { return ($Conf{DBUser} || XIMS::Config::DBUser()) }
+sub XIMS::Config::DBName() { return ($Conf{DBName} || XIMS::Config::DBName())}
+sub XIMS::Config::DBPassword() { return ($Conf{DBPassword}|| XIMS::Config::DBPassword()) }
+
+
+# provide some default values if we do not have a config file
+$Conf{user_name} ||= 'xgu';
+$Conf{password}  ||= 'xgu';
+$Conf{http_host} ||= 'http://' . hostname();
 
 ##################################
 # some helpful subs
@@ -51,6 +64,7 @@ sub login {
     $user ||= $Conf{user_name};
     $pass ||= $Conf{password};
     my $url = $Conf{http_host} . '/goxims/defaultbookmark';
+    # warn "using: " . $user . ' ' . $pass . ' ' . $url;
     my $req = HTTP::Request->new(POST => $url);
     $req->content_type('application/x-www-form-urlencoded');
     $req->content("userid=$user&password=$pass");
