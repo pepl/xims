@@ -18,7 +18,7 @@
     </xsl:for-each>
 </xsl:template>
 
-<xsl:template name="scripts>
+<xsl:template name="scripts">
     <script type="text/javascript">
       <![CDATA[
         var objQuery = new Object();
