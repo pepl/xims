@@ -124,7 +124,6 @@ sub object_from_object_type {
 }
 
 sub import {
-    XIMS::Debug( 5, "called" );
     my $self = shift;
     my $object = shift;
 
