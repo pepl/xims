@@ -1725,8 +1725,7 @@ sub event_search {
             return 0;
         }
 
-        # XIMS::DBMS_OPTION() has been used for Intermedia querybuilding, we should rename that config directive
-        $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::DBMS_OPTION();
+        $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
 
         eval "require $qbdriver"; #
 
