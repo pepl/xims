@@ -443,6 +443,17 @@
     <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
+    <xsl:variable name="published_path">
+        <xsl:choose>
+            <xsl:when test="local-name(..) = 'children'">
+                <xsl:value-of select="concat($absolute_path,'/',location)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$absolute_path"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
     <xsl:choose>
         <xsl:when test="marked_new= '1'">
             <img src="{$sklangimages}status_markednew.png"
@@ -468,12 +479,12 @@
                 <xsl:choose>
                     <xsl:when test="/document/object_types/object_type[@id=$objecttype]/name='AnonDiscussionForum'">
                         <xsl:attribute name="href">
-                            <xsl:value-of select="concat($gopublic_content,$absolute_path,'/')"/>
+                            <xsl:value-of select="concat($gopublic_content,$published_path)"/>
                         </xsl:attribute>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:attribute name="href">
-                            <xsl:value-of select="concat($publishingroot,$absolute_path,'/')"/>
+                            <xsl:value-of select="concat($publishingroot,$published_path)"/>
                         </xsl:attribute>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -485,7 +496,7 @@
                 >
                     <xsl:choose>
                         <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-                            <xsl:attribute name="title"><xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="concat($publishingroot,$absolute_path)"/></xsl:attribute>
+                            <xsl:attribute name="title"><xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="concat($publishingroot,$published_path)"/></xsl:attribute>
                             <xsl:attribute name="src"><xsl:value-of select="$skimages"/>status_pub.png</xsl:attribute>
                         </xsl:when>
                         <xsl:otherwise>
