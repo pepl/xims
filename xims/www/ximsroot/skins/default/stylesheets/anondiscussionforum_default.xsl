@@ -83,7 +83,7 @@
         </xsl:when>
 <!-- end sort by name -->
 <!-- begin sort by date -->
-        <xsl:when test="$sb='date'">
+        <xsl:when test="$sb='date' or $sb='position'">
             <xsl:choose>
 <!-- begin sort by date asc -->
                 <xsl:when test="$order='asc'">
