@@ -43,9 +43,11 @@ sub handler {
     my $accessdoc = $r->dir_config('ximsAccessDocument');
     $accessdoc ||= XIMS::PUBROOT_URL() . '/access.xsp'; # default hardcoded fallback value
 
-    my $url = $accessdoc . "?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.";
-    $r->custom_response(SERVER_ERROR, $url);
-    return SERVER_ERROR unless $dp;
+    unless ( $dp ) {
+        my $url = XIMS::PUBROOT_URL() . "/500.xsp?reason=A%20database%20connection%20problem%20occured.";
+        $r->custom_response(SERVER_ERROR, $url);
+        return SERVER_ERROR;
+    }
 
     XIMS::Debug( 4, "getting session cookie" );
     my $cSession = undef;
@@ -117,7 +119,7 @@ sub handler {
     }
     else {
         XIMS::Debug( 3, "access denied for " . $r->connection->remote_ip() );
-        $url = $accessdoc;
+        my $url = $accessdoc;
         if ( $args{dologin} ) {
             $url .= "?reason=Access%20Denied.%20Please%20provide%20a%20valid%20username%20and%20password.";
         };
@@ -306,7 +308,6 @@ sub test_session {
         $cSession = undef;
     }
 
-    XIMS::Debug( 5, "done" );
     return $cSession; # return session class
 }
 
