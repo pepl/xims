@@ -55,11 +55,8 @@ sub end_element {
             # Used to resolve the document_ids during exports
             my $object = XIMS::Object->new( $id => $self->{document_id} );
             if ( $object and $object->id() ) {
-                my $siteroot = $object->siteroot();
-                my $siteroot_url;
-                $siteroot_url = $object->siteroot->url() if $siteroot;
-                if ( $siteroot_url =~ m#/# ) {
-                    $path = $siteroot_url . $object->location_path_relative();
+                if ( XIMS::RESOLVERELTOSITEROOTS() ) {
+                    $path = $object->location_path_relative();
                 }
                 else {
                     $path = XIMS::PUBROOT_URL() . $object->location_path();
