@@ -40,7 +40,7 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'SQLReport', 0, 1, 1 );
 
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'Text', 'text/plain', 'txt' );
-INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'HTML', 'text/xhtml', 'html' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'HTML', 'text/html', 'html' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'XSLT', 'text/xml', 'xsl' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'XML', 'text/xml', 'xml' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'CSS', 'text/css', 'css' );
