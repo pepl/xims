@@ -23,7 +23,7 @@ $ENV{PATH} = '/bin'; # CWD.pm needs '/bin/pwd'
 $ENV{ENV} = '';
 
 my %args;
-getopts('hd:u:p:m:', \%args);
+getopts('hfd:u:p:m:', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "File System Importer Tool" );
@@ -68,7 +68,7 @@ else {
 }
 foreach my $file ( @files ) {
     $file =~ s/$path\/// if length $path;
-    if ( $importer->import( $file ) ) {
+    if ( $importer->import( $file, $args{f} ) ) {
         print "'$path/$file' imported successfully.\n";
         $successful++;
     }
@@ -92,13 +92,15 @@ exit 0;
 sub usage {
     return qq*
 
-  Usage: $0 [-h][-d][-u username -p password] -m xims-mount-path path-to-import
+  Usage: $0 [-h][-d][-f][-u username -p password] -m xims-mount-path path-to-import
         -m The XIMS path to import to.
 
         -u The username to connect to XIMS. If not specified,
            you will be asked for it interactively.
         -p The password of the XIMS user. If not specified,
            you will be asked for it interactively.
+        -f Update existing objects. If not set, the importer will skip objects
+           that already exist with the same location in a container.
         -d For more verbose output, specify the XIMS debug level; default is '1'
         -h prints this screen
 

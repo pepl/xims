@@ -126,21 +126,38 @@ sub object_from_object_type {
 sub import {
     my $self = shift;
     my $object = shift;
+    my $updateexisting = shift;
 
     $self->object( $object ) if $object;
 
+    return $object->id() if ($object and $object->id());
+
     return undef unless ($object and $object->location());
     $object->location( $self->check_location( $object->location() ) );
+    $object->title( $object->location ) unless $object->title();
 
     # check if the same location already exists in the current container
     my $op = $object->parent;
     my $parent = $op ? $op : $self->parent;
     if ( $parent->children( location => $object->location, marked_deleted => undef ) ) {
-        XIMS::Debug( 2, "location already exists" );
-        return undef;
+        # overwrite the existing document, if we are told to do so
+        if ( $updateexisting ) {
+            my $oldobject = XIMS::Object->new( path => $parent->location_path() . '/' . $object->location() );
+            my %olddata = $oldobject->data();
+            my %newdata = $object->data();
+            foreach my $key ( keys %olddata ) {
+                $newdata{$key} = $olddata{$key} unless defined $newdata{$key};
+            }
+            my $nobject = XIMS::Object->new->data( %newdata );
+            $nobject->update( User => $self->user() );
+            return $nobject->id();
+        }
+        else {
+            XIMS::Debug( 2, "location already exists" );
+            return undef;
+        }
     }
 
-    $object->title( $object->location ) unless $object->title();
     $object->parent_id( $parent->document_id() );
     $object->language_id( $parent->language_id() ) ;
     my $id = $object->create();
@@ -193,7 +210,7 @@ sub resolve_suffix {
         my %dataformatmap = ();
         foreach my $object_type ( $self->data_provider->object_types() ) {
             my $object = $self->object_from_object_type( $object_type );
-            return undef unless $object;
+            next unless $object;
             $dataformatmap{$object->data_format_id()} = $object_type if $object->data_format_id();
         }
         # !<its_a_hack_alarm>!
