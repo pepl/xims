@@ -373,7 +373,6 @@ sub _clean_location {
                   /
                     $escapes{$1}
                   /segx;              # *coff*
-    $location =~ s/_+/_/g;
     return lc($location);
 }
 
