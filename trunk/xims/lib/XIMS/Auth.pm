@@ -43,15 +43,17 @@ sub authenticate {
                                         Login    => $username,
                                         Password => $password );
             if ( $login ) {
-                XIMS::Debug( 4, "login ok" );
+                XIMS::Debug( 4, "login with authstyle $authmod ok" );
                 return $login->getUserInfo();
             }
             else {
-                XIMS::Debug( 3, "login failed!" );
-                return undef;
+                XIMS::Debug( 4, "login with authstyle $authmod failed" );
             }
         }
     }
+    XIMS::Debug( 3, "login failed!" );
+    return undef;
+
 }
 
 1;
