@@ -9,7 +9,12 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:param name="hd">1</xsl:param>
+<xsl:param name="hd">
+    <xsl:choose>
+        <xsl:when test="count(/document/context/object/children/object[marked_deleted != '1'])=0">0</xsl:when>
+        <xsl:otherwise>1</xsl:otherwise>
+    </xsl:choose>
+</xsl:param>
 <xsl:param name="page" select="1" />
 <xsl:variable name="pagesperpagenav" select="10" />
 <xsl:variable name="totalpages" select="ceiling(/document/context/object/children/@totalobjects div $searchresultrowlimit)"/>
