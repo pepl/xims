@@ -21,6 +21,8 @@
 
             <xsl:call-template name="childrentable"/>
 
+            <xsl:call-template name="pagenavtable"/>
+
             <table align="center" width="98.7%" class="footer">
                 <xsl:call-template name="deleted_objects"/>
                 <xsl:call-template name="footer"/>
