@@ -566,7 +566,7 @@ sub get_descendant_infos {
     return undef unless exists $args{parent_id};
 
     my $desc_subquery = $self->_get_descendant_sql( $args{parent_id}, undef, undef, 1 );
-    my $query = 'SELECT count(last_modification_timestamp), max(last_modification_timestamp) FROM ci_content WHERE document_id IN ( ' . $desc_subquery . ')';
+    my $query = 'SELECT count(last_modification_timestamp) AS COUNT, max(last_modification_timestamp) AS MAX FROM ci_content WHERE document_id IN ( ' . $desc_subquery . ')';
     my $data = $self->{dbh}->fetch_select( sql => $query );
     my @rv = ( @{$data}[0]->{COUNT}, @{$data}[0]->{MAX} ); # NOTE: assumes that there is one content_child per document;
                                                            #       may have to be changed in future!
