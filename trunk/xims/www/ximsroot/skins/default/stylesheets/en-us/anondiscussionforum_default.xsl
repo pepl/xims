@@ -37,6 +37,7 @@
         </form>
    
         <xsl:choose>
+<!-- begin sort by position --> 
         <xsl:when test="$sb='position'">
         <!--<xsl:when test="$sb='name'">-->
             <xsl:choose>
@@ -84,15 +85,18 @@
                             <td class="lightblue" width="50">Replies</td>
                             <td class="lightblue" width="134">Last Reply</td>
                         </tr>
-                        <xsl:apply-templates select="children/object">
+                        <xsl:apply-templates select="../../ojectlist/object">
                             <xsl:sort select="title" order="descending"/>
                         </xsl:apply-templates>
                     </table>
                 </xsl:when>
             </xsl:choose>
         </xsl:when>
+<!-- end sort by position -->
+<!-- begin sort by date -->
         <xsl:when test="$sb='date'">
             <xsl:choose>
+<!-- begin sort by date asc -->
                 <xsl:when test="$order='asc'">
                 <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                     <tr> 
@@ -117,6 +121,8 @@
                     </xsl:apply-templates>
                 </table>
                 </xsl:when>
+<!-- end sort by date asc-->
+<!-- begin sort by date desc -->
                 <xsl:when test="$order='desc'">
                 <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                     <tr> 
@@ -141,8 +147,10 @@
                     </xsl:apply-templates>
                 </table>
                 </xsl:when>
+<!-- end sort by desc -->
             </xsl:choose>
         </xsl:when>
+<!-- end sort by date --> 
     </xsl:choose>
     </body>
 </html>
@@ -156,6 +164,7 @@
 
     <tr height="25">
         <xsl:choose>
+<!-- begin sort by position -->
             <xsl:when test="$sb='position'">
             <!--<xsl:when test="$sb='name'">-->
                 <td bgcolor="#eeeeee" valign="bottom">
@@ -166,9 +175,11 @@
                     </a>
                 </td>
                 <td nowrap="nowrap" valign="middle" align="center">
-                    <xsl:apply-templates select="creation_time" mode="datetime"/>
+                    <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                 </td>
             </xsl:when>
+<!-- end sort by position -->
+<!-- begin sort by date -->
             <xsl:when test="$sb='date'">
                 <td valign="middle">
                     <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" border="0" alt="{/document/data_formats/data_format[@id=$dataformat]}"/>
@@ -177,9 +188,10 @@
                     <xsl:value-of select="title" /></a>
                 </td>
                 <td nowrap="nowrap" bgcolor="#eeeeee" valign="middle" align="center">
-                    <xsl:apply-templates select="creation_time" mode="datetime"/>
+                    <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                 </td>
             </xsl:when>
+<!-- end sort by date -->
         </xsl:choose>
         <td align="left" valign="middle">
             <a>
@@ -198,10 +210,10 @@
             </xsl:choose>
         </td>
         <td valign="middle" align="center">
-            <xsl:value-of select="children_count"/>
+            <xsl:value-of select="descendant_count"/>
         </td>
         <td nowrap="nowrap" valign="middle" align="center">
-            <xsl:value-of select="child_last_modified"/>
+            <xsl:value-of select="descendant_last_modified"/>
         </td>
         <td valign="bottom">
         <xsl:if test="user_privileges/delete">
