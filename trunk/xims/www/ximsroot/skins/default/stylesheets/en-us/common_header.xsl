@@ -22,7 +22,16 @@
         <table width="100%" style="margin-top: 2px;" bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="0" vspace="0" hspace="0" nowrap="nowrap">
             <tr>
                 <td valign="bottom">
-                    <h1 style="font-size: 14pt; color:#004080; margin-bottom: 2px"><xsl:value-of select="title"/></h1>
+                    <h1 style="font-size: 14pt; color:#004080; margin-bottom: 2px">
+                        <xsl:choose>
+                            <xsl:when test="title != ''">
+                                <xsl:value-of select="title"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="/document/context/session/user/name"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </h1>
                 </td>
                 <td align="right" valign="top">
                     <a href="http://xims.uibk.ac.at/"><img src="{$ximsroot}images/xims_logo.png"/></a>
@@ -35,7 +44,7 @@
         <table border="0" cellpadding="2" cellspacing="0" width="100%" height="20">
             <tr>
                 <td width="59%" bgcolor="#ffffff" background="{$ximsroot}skins/{$currentskin}/images/tablebg_2nd_row.png" nowrap="nowrap">
-                    <xsl:if test="$nopath='false'">
+                    <xsl:if test="$nopath='false' and $noncontent ='false'">
                         <font face="Arial, Helvetica, sans-serif" size="1" color="#004080">
                         <xsl:choose>
                             <xsl:when test="$containerpath='false'">
@@ -67,11 +76,11 @@
                                 / <a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}" class="logout">login</a>
                             </xsl:otherwise>
                         </xsl:choose>
-                        /
                         <xsl:choose>
-                            <xsl:when test="$no_navigation_at_all='true'">
+                            <xsl:when test="$no_navigation_at_all='true' or $noncontent = 'true'">
                             </xsl:when>
                             <xsl:otherwise>
+                                /
                                 <xsl:choose>
                                     <xsl:when test="$m='e'">
                                         <a href="{$goxims_content}{$absolute_path}?m=b;sb={$sb};order={$order}">switch to browse-mode</a>
