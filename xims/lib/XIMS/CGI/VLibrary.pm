@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+﻿# Copyright (c) 2002-2004 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -30,6 +30,8 @@ sub registerEvents {
           unpublish
           cancel
           subject
+          keywords
+          keyword
           authors
           author
           publications
@@ -96,6 +98,51 @@ sub event_subject {
     return 0;
 }
 
+sub event_keywords {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    $ctxt->properties->application->style( "keywords" );
+
+    return 0;
+}
+
+sub event_keyword {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $keywordid = $self->param('keyword_id');
+    unless ( $keywordid ) {
+        my $keywordname = $self->decode( $self->param('keyword_name') );
+        if ( defined $keywordname ) {
+            my $keyword = XIMS::VLibKeyword->new( name => $keywordname );
+            #use Data::Dumper; XIMS::Debug( 1, Dumper( $keyword ) );
+            if ( $keyword and $keyword->id() ) {
+                $keywordid = $keyword->id();
+            }
+            else { return 0; }
+        } 
+        else { return 0; }
+    }
+
+    $ctxt->properties->content->getformatsandtypes( 1 );
+
+    my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+    my $rowlimit = 5;
+    $offset = $offset * $rowlimit;
+
+    my @objects = $ctxt->object->vlitems_bykeyword_granted( keyword_id => $keywordid,
+                                                    limit => $rowlimit,
+                                                    offset => $offset,
+                                                    order => 'title'
+                                                  );
+    $ctxt->objectlist( \@objects );
+    $ctxt->properties->application->style( "objectlist" ) ;
+
+    return 0;
+}
+
 sub event_authors {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -114,6 +161,7 @@ sub event_author {
         my $authorfirstname  = $self->decode( $self->param('author_firstname') );
         my $authormiddlename = $self->decode( $self->param('author_middlename') );
         my $authorlastname   = $self->decode( $self->param('author_lastname') );
+        #XIMS::Debug( 1, "authorfirstname: $authorfirstname authormiddlename: $authormiddlename authorlastname: $authorlastname");
         
         my $author;
         my $author_type;
