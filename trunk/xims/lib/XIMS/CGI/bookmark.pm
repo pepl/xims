@@ -169,7 +169,7 @@ sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;
 
     my $uri = Apache::URI->parse( $ctxt->apache() );
-    if ( $uri->query() =~ /name=(\w+)/ ) {
+    if ( $uri->query() =~ /name=([^(;|&)]+)/ ) {
         $uri->path( XIMS::Config::goxims() . '/users' );
         $uri->query( "name=$1;bookmarks=1" );
     }
