@@ -33,7 +33,7 @@ XML::LibXSLT 1.49 -
 AxKit 1.51 -
 AxKit::XSP::Param -
 AxKit::XSP::IfParam -
-AxKit::XSP::WebUtils 1.5 -
+AxKit::XSP::WebUtils 1.6 -
 Apache::AxKit::Plugin::AddXSLParams::Request -
 XML::Parser::PerlSAX -
 XML::SAX::Machines -
