@@ -36,7 +36,7 @@ use Time::Piece;
 #
 sub handler {
     my $r = shift;
-    XIMS::Debug( 1, "goxims called from " . $r->get_remote_host );
+    XIMS::Debug( 5, "goxims called from " . $r->get_remote_host );
 
     #my $apr = Apache::Request->new($r);
     my $ctxt = XIMS::AppContext->new( apache => $r );
@@ -106,7 +106,7 @@ sub handler {
     if ( $interface_type eq 'content' ) {
         # now we know, that we have to get the content-object
         $ctxt->object( getObject( $r, $ctxt->session->user() ) );
-        if ( not $ctxt->object->id() ) {
+        if ( not ($ctxt->object() and $ctxt->object->id()) ) {
             # in this case we should pass the user to a more informative
             # page, where one can select the defaultbookmark!!
             XIMS::Debug( 2, "unable to get object from request" );
