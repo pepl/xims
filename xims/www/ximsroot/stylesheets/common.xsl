@@ -109,6 +109,21 @@
     <xsl:value-of select="./minute"/>
 </xsl:template>
 
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp" mode="ISO8601">
+    <xsl:value-of select="./year"/>
+    <xsl:text>-</xsl:text>
+    <xsl:value-of select="./month"/>
+    <xsl:text>-</xsl:text>
+    <xsl:value-of select="./day"/>
+    <xsl:text>T</xsl:text>
+    <xsl:value-of select="./hour"/>
+    <xsl:text>:</xsl:text>
+    <xsl:value-of select="./minute"/>
+    <xsl:text>:</xsl:text>
+    <xsl:value-of select="./second"/>
+    <!--<xsl:value-of select="./tzd"/>-->
+</xsl:template>
+
 <xsl:template name="userfullname">
     <xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/>
 </xsl:template>
