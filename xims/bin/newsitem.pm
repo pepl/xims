@@ -28,4 +28,13 @@ sub event_default {
     return $self->SUPER::event_default( $ctxt );
 }
 
+sub event_edit {
+    my ( $self, $ctxt) = @_;
+    XIMS::Debug( 5, "called" );
+
+    $self->resolve_content( $ctxt, [ qw( IMAGE_ID ) ] );
+
+    return $self->SUPER::event_edit( $ctxt );
+}
+
 1;
