@@ -123,11 +123,7 @@ sub event_store {
         }
     }
 
-    my $creating;
-    my $objtype = $self->param( 'objtype' );
-
-    $creating = 1 if ($self->param( 'parid' ) and $objtype);
-    if ( not defined $creating ) {
+    if ( not $ctxt->parent() ) {
         XIMS::Debug( 6, "unlocking object" );
         $object->unlock();
         XIMS::Debug( 4, "updating existing object" );
