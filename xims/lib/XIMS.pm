@@ -291,17 +291,17 @@ sub GRANT_ROLE()                { return 0x00000002; } # if users are role-maste
 sub RESET_PASSWORD()            { return 0x00001000; }
 sub SET_STATUS()                { return 0x00002000; } # (un)lock users
 
-sub CREATE_ROLE()               { return 0x00003000; } # with this privilege, users can add role-members without being role-masters of the role
-sub DELETE_ROLE()               { return 0x00004000; }
+sub CREATE_ROLE()               { return 0x00004000; } # with this privilege, users can add role-members without being role-masters of the role
+sub DELETE_ROLE()               { return 0x00008000; }
 
-sub CHANGE_ROLE_FULLNAME()      { return 0x00005000; }
-sub CHANGE_USER_FULLNAME()      { return 0x00006000; }
+sub CHANGE_ROLE_FULLNAME()      { return 0x00010000; }
+sub CHANGE_USER_FULLNAME()      { return 0x00020000; }
 
-sub CHANGE_ROLE_NAME()          { return 0x00007000; }
-sub CHANGE_USER_NAME()          { return 0x00008000; }
+sub CHANGE_ROLE_NAME()          { return 0x00040000; }
+sub CHANGE_USER_NAME()          { return 0x00080000; }
 
-sub CREATE_USER()               { return 0x00009000; }
-sub DELETE_USER()               { return 0x0000a000; }
+sub CREATE_USER()               { return 0x00100000; }
+sub DELETE_USER()               { return 0x00200000; }
 
 #
 # 0x10000000 - 0x80000000: system-management related
