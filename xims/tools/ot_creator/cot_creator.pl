@@ -161,7 +161,7 @@ my %templates_outputpaths = (
     'templates/event_create.xsl' => $styledir . lc($objecttype->{object_type_name}) . '_create.xsl',
     'templates/event_default.xsl' => $styledir . lc($objecttype->{object_type_name}) . '_default.xsl',
     'templates/event_edit.xsl' => $styledir . lc($objecttype->{object_type_name}) . '_edit.xsl',
-    'templates/exporter.xsl' => 'ximsroot/stylesheets/exporter/export_' . lc($objecttype->{object_type_name}) . '.xsl',
+    'templates/exporter.xsl' => 'www/ximsroot/stylesheets/exporter/export_' . lc($objecttype->{object_type_name}) . '.xsl',
     );
 
 my $xml_dom = dom_from_data($objecttype);
