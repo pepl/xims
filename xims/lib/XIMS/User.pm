@@ -17,7 +17,7 @@ use Digest::MD5 qw( md5_hex );
 #use Data::Dumper;
 
 BEGIN {
-     @Fields = @{XIMS::Names::property_interface_names('User')};
+    @Fields = @{XIMS::Names::property_interface_names('User')};
 }
 
 use Class::MethodMaker
@@ -168,10 +168,11 @@ sub default_bookmark {
     my $self = shift;
     my $bmk = XIMS::Bookmark->new( owner_id => $self->id(), stdhome => 1 );
     if ( $bmk ) {
-        return $bmk;
+         return $bmk;
     }
     else {
         my $default_role = $self->roles_granted( default_role => 1 );
+        return undef unless $default_role;
         $bmk = XIMS::Bookmark->new( owner_id => $default_role->id(), stdhome => 1 );
         if ( $bmk ) {
             return $bmk;
@@ -262,10 +263,10 @@ sub objecttype_privileges {
     my $privs;
 
     if ( $self->admin() ) {
-       foreach my $type ( @all_types ) {
-           $type->{can_create} = 1;
-       }
-       return @all_types;
+        foreach my $type ( @all_types ) {
+            $type->{can_create} = 1;
+        }
+        return @all_types;
     }
     else {
         my @id_list = ( $self->role_ids(), $self->id() );
