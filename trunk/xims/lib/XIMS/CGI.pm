@@ -1926,7 +1926,7 @@ sub event_search {
     return $self->event_access_denied( $ctxt ) unless $ctxt->object();
 
     my $user = $ctxt->session->user();
-    my $search = $self->param('s');
+    my $search = XIMS::decode($self->param('s'));
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
     my $rowlimit = XIMS::SEARCHRESULTROWLIMIT();
