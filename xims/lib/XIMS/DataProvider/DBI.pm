@@ -460,19 +460,19 @@ sub find_object_id {
     my $criteria = $args{criteria};
     return unless length $criteria;
 
-    my $sql = "SELECT ci_documents.id FROM ci_documents, ci_content WHERE ci_content.document_id = ci_documents.id AND $criteria";
+    my $query = "SELECT ci_documents.id FROM ci_documents, ci_content WHERE ci_content.document_id = ci_documents.id AND $criteria";
     if ( exists $args{rowlimit} and $args{rowlimit} > 0 ) {
         if ( $self->{RDBMSClass} eq 'Oracle' ) {
-            $sql = "SELECT * FROM (" . $sql . ") WHERE ROWNUM <= " . $args{rowlimit};
+            $query = "SELECT * FROM (" . $query . ") WHERE ROWNUM <= " . $args{rowlimit};
         }
         elsif ( $self->{RDBMSClass} eq 'Pg' ) {
-            $sql = $sql . " LIMIT " . $args{rowlimit};
+            $query = $query . " LIMIT " . $args{rowlimit};
         }
         # other special binds in 'elsif's here as needed
     }
 
-    #warn "sql: $sql";
-    my $data = $self->{dbh}->fetch_select( sql => $sql );
+    #warn "query: $query";
+    my $data = $self->{dbh}->fetch_select( sql => $query );
     foreach my $row ( @{$data} ) {
         push @ids, $row->{ID};
     }
@@ -499,7 +499,8 @@ sub get_descendant_id_level {
 
     return undef unless exists $args{parent_id};
 
-    my $query = 'SELECT COUNT(d2.id) AS lvl, d1.id FROM ci_documents d1, ci_documents d2 WHERE d1.lft BETWEEN d2.lft AND d2.rgt AND d1.parent_id >= ' . $args{parent_id} . ' GROUP BY d1.id, d1.lft ORDER BY d1.lft';
+    my $query = 'SELECT COUNT(d2.id) AS lvl, d1.id FROM ci_documents d1, ci_documents d2 WHERE d1.lft BETWEEN d2.lft AND d2.rgt AND d1.lft BETWEEN (SELECT lft FROM ci_documents WHERE id=' . $args{parent_id} . ') AND (SELECT rgt FROM ci_documents WHERE id=' . $args{parent_id} . ') AND d1.id <> ' . $args{parent_id} . ' GROUP BY d1.id, d1.lft ORDER BY d1.lft';
+    #warn "query: $query";
     my $data = $self->{dbh}->fetch_select( sql => $query );
 
     my @ids;
