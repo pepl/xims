@@ -212,8 +212,8 @@ sub generate_body {
 
     }
 
-    if ( $self->param( "levels" ) ) {
-        $body .= '<depth level="'. $self->param( "levels" ) . '"/>';
+    if ( $self->param( "f_depth" ) eq 'true'  and $self->param( "depth" ) ) {
+        $body .= '<depth>' . $self->param( "depth" ) . '</depth>';
     }
 
     if ( $self->param( "f_latest" ) eq 'true'  and $self->param( "latest" ) ) {
