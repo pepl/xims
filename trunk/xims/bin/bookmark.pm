@@ -180,7 +180,7 @@ sub redirect_path {
         $uri->query( 'bookmarks=1' );
     }
 
-    warn "redirecting to ". $uri->unparse();
+    #warn "redirecting to ". $uri->unparse();
     return $uri->unparse();
 }
 

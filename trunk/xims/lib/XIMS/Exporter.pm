@@ -61,7 +61,7 @@ use XML::LibXSLT;
 use IO::File;
 
 use XIMS::Object; # just to be failsafe
-use Data::Dumper;
+#use Data::Dumper;
 ##
 #
 # SYNOPSIS
