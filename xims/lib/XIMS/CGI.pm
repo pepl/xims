@@ -616,7 +616,7 @@ sub init_store_object {
         }
         XIMS::Debug( 4, "storing existing object" );
         
-        $parent = XIMS::Object->new( id => $object->parent_id );
+        $parent = XIMS::Object->new( document_id => $object->parent_id );
     }
     elsif ( defined $ctxt->parent() and length $objtype and length $parid ) {
         XIMS::Debug( 4, "storing new object" );
