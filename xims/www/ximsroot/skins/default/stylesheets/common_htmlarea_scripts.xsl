@@ -80,6 +80,7 @@
 
           // load the stylesheet used by our CSS plugin configuration
           editor.config.pageStyle = &apos;@import url(<xsl:value-of select="concat($ximsroot,$defaultcss)"/>);&apos;;
+          editor.config.baseURL = &apos;<xsl:choose><xsl:when test="$edit = '1'"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/></xsl:otherwise></xsl:choose>&apos;
           editor.generate();
         }
     </script>
