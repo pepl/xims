@@ -115,6 +115,7 @@ sub event_default {
     XIMS::Debug( 5, "called");
     my ( $self, $ctxt ) = @_;
 
+
     # redirect to full path in case object is called via id
     if ( $self->path_info() eq XIMS::CONTENTINTERFACE()
          and not $ctxt->object->marked_deleted() ) {
@@ -302,6 +303,24 @@ sub event_cancel {
 
     return 0;
 }
+
+sub event_plain {
+    # give back only and really only the body of the object with its content-type and the DB-Encoding
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $body = $ctxt->object->body();
+    my $df = XIMS::DataFormat->new( id => $ctxt->object->data_format_id() );
+    my $mime_type = $df->mime_type;
+
+    my $charset;
+    if (! ($charset = XIMS::DBENCODING )) { $charset = "UTF-8"; }
+    print $self->header( -Content_type => $mime_type."; charset=".$charset );
+    print $body;
+    $self->skipSerialization(1);
+
+    return 0;
+  }
 
 
 #*#
@@ -534,6 +553,8 @@ sub redirect_path {
     my $m = $self->param( "m" );
     my $hd = $self->param( "hd" );
     my $hls = $self->param( "hls" );
+    my $bodyonly = $self->param( "bodyonly" );
+    my $plain = $self->param( "plain" );
     my $params;
 
     # preserve some selected params
@@ -554,6 +575,16 @@ sub redirect_path {
         $params .= ";" if length $params;
         $params .= "hls=$hls";
     }
+
+    if ( defined $bodyonly ) {
+        $params .= ";" if length $params;
+        $params .= "bodyonly=$bodyonly";
+    }
+    if ( defined $plain ) {
+        $params .= ";" if length $params;
+        $params .= "plain=$plain";
+    }
+
 
     my $uri = Apache::URI->parse( $ctxt->apache() );
     $uri->path( $ctxt->apache->parsed_uri->rpath() . $redirectpath );
@@ -800,6 +831,52 @@ sub init_store_object {
     }
     else {
         $object->style_id( undef );
+    }
+
+    my $schema = $self->param( 'schema' );
+    if ( defined $schema and length $schema ) {
+        XIMS::Debug( 6, "schema: $schema" );
+        my $schemaobj;
+        if ( $schema =~ /^\d+$/
+             and $schemaobj = XIMS::Object->new( id => $schema )
+             and ( $schemaobj->object_type->name() eq 'XML' ) )
+        {
+            $object->schema_id( $schemaobj->id() );
+        }
+        elsif ( $schemaobj = XIMS::Object->new( path => $schema )
+             and ( $schemaobj->object_type->name() eq 'XML' ) )
+        {
+            $object->schema_id( $schemaobj->id() );
+        }
+        else {
+            XIMS::Debug( 3, "could not set schema_id" );
+        }
+    }
+    else {
+        $object->style_id( undef );
+    }
+
+    my $css = $self->param( 'css' );
+    if ( defined $css and length $css ) {
+        XIMS::Debug( 6, "css: $css" );
+        my $cssobj;
+        if ( $css =~ /^\d+$/
+             and $cssobj = XIMS::Object->new( id => $css )
+             and ( $cssobj->object_type->name() eq 'CSS' ) )
+        {
+            $object->css_id( $cssobj->id() );
+        }
+        elsif ( $cssobj = XIMS::Object->new( path => $css )
+                and ( $cssobj->object_type->name() eq 'CSS' ) )
+        {
+            $object->css_id( $cssobj->id() );
+        }
+            else {
+                XIMS::Debug( 3, "could not set css_id" );
+                }
+        }
+    else {
+      $object->css_id( undef );
     }
 
     return 1;
