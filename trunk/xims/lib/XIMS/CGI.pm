@@ -1264,7 +1264,7 @@ sub event_copy {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::VIEW();
+           unless $current_user_object_priv & XIMS::Privileges::COPY();
 
     my $recursivecopy = 1 if $self->param( 'recursivecopy' );
     my $confirmcopy = 1 if $self->param( 'confirmcopy' );
