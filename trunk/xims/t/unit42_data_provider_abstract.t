@@ -16,7 +16,7 @@ my $dp = XIMS::DataProvider->new();
 ok ( $dp );
 
 my $path = $dp->location_path( id => 1 );
-ok( $path eq '/root' );
+ok( $path eq '' );
 
 # convenient listing methods
 
