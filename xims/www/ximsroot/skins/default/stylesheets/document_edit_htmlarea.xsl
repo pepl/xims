@@ -15,10 +15,6 @@
     <xsl:call-template name="body"/>
 </xsl:variable>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-edit_htmlarea"/>

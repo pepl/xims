@@ -32,6 +32,10 @@
 <xsl:param name="create"/>
 <xsl:param name="s"/>
 
+<xsl:template match="/document">
+    <xsl:apply-templates select="context/object"/>
+</xsl:template>
+
 <xsl:template name="pathinfoinit">
     <xsl:for-each select="/document/context/object/parents/object[@document_id != 1]">
         <xsl:text>/</xsl:text><xsl:value-of select="location"/>

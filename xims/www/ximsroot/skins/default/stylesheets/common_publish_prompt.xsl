@@ -11,10 +11,6 @@
     <!-- $Id$ -->
 <xsl:param name="id"/>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template name="head">
         <head>
             <title>

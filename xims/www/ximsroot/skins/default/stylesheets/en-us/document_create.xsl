@@ -7,6 +7,7 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="common.xsl"/>
+    <xsl:import href="document_common.xsl"/>
     <xsl:import href="../document_create.xsl"/>
     <xsl:output method="html" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 <!-- xls:output method html needed for to let jsopenwfwindow generate js/html code-->

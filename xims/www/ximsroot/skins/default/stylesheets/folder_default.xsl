@@ -11,10 +11,6 @@
 
 <xsl:variable name="deleted_children"><xsl:value-of select="count(/document/context/object/children/object[marked_deleted=1])" /></xsl:variable>
 
-<xsl:template match="/document">
-    <xsl:apply-templates select="context/object"/>
-</xsl:template>
-
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
