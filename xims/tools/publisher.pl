@@ -23,7 +23,7 @@ $ENV{PATH} = '/bin'; # CWD.pm needs '/bin/pwd'
 $ENV{ENV} = '';
 
 my %args;
-getopts('hd:u:p:m:ra', \%args);
+getopts('hd:u:p:m:ran', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "Object Publisher" );
@@ -59,12 +59,15 @@ my $exporter = XIMS::Exporter->new( Basedir  => XIMS::PUBROOT(),
 my $method = $args{m};
 $method = 'publish';
 
+my %options;
+$options{no_dependencies_update} = 1 if $args{n};
+
 $total = 0;
 $successful = 0;
 $failed = 0;
 $ungranted = 0;
 
-if ( $exporter->$method( Object => $object, User => $user ) ) {
+if ( $exporter->$method( Object => $object, User => $user, %options ) ) {
     print "Object '" . $object->title . "' ".$method."ed successfully.\n";
     $total++;
     $successful++;
@@ -77,7 +80,7 @@ else {
 
 if ( $successful and $args{r} ) {
     my $republishonly = 1 if $args{a};
-    recurse_children( $object, $user, $exporter, $method, $republishonly );
+    recurse_children( $object, $user, $exporter, $method, $republishonly, \%options );
 }
 
 my $gid = (stat XIMS::PUBROOT())[5]; # after install, XIMS::PUBROOT is writable by the
@@ -112,6 +115,7 @@ sub usage {
         -m Currently, only 'publish' is implemented.
         -r Recursively publish descendants.
         -a If specified, published objects will be republished only
+        -n If specified, publishing dependencies of the object will not be updated
 
         -u The username to connect to XIMS. If not specified,
            you will be asked for it interactively.
@@ -144,6 +148,7 @@ sub recurse_children {
     my $exporter = shift;
     my $method = shift;
     my $republishonly = shift;
+    my $options = shift;
 
     my $privmask;
     my $path;
@@ -156,11 +161,11 @@ sub recurse_children {
         $privmask = $user->object_privmask( $child );
         $path = $child->location_path();
         if ( $privmask & XIMS::Privileges::PUBLISH() ) {
-            if ( $exporter->$method( Object => $child, User => $user ) ) {
+            if ( $exporter->$method( Object => $child, User => $user, %{$options} ) ) {
                 print "Object '$path' ".$method."ed successfully.\n";
                 $total++;
                 $successful++;
-                recurse_children( $child, $user, $exporter, $method, $republishonly );
+                recurse_children( $child, $user, $exporter, $method, $republishonly, $options );
             }
             else {
                 print "could not $method object '$path'.\n";
