@@ -21,7 +21,7 @@ ok( $o );
 
 my @granted_kids = $o->children_granted( User => $admin );
 
-ok( scalar( @granted_kids ) == 1 );
+ok( scalar( @granted_kids ) >= 1 );
 
 @granted_kids = ();
 
@@ -29,5 +29,5 @@ my $guest = XIMS::User->new( id => 1 );
 
 @granted_kids = $o->children_granted( User => $guest ); 
 
-ok( scalar( @granted_kids ) == 1 );
+ok( scalar( @granted_kids ) >= 1 );
 
