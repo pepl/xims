@@ -22,8 +22,8 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 # Credentials in whichs context the SQLReport query will be executed.
 # This user needs to have SELECT grants on the database objects refered to in the SQLReport query.
-$AGENTUSER = '';
-$AGENTPASSWORD = '';
+$AGENTUSER = 'ximsagent';
+$AGENTPASSWORD = 'ofruba62';
 
 # If defined, all refered database objects need to exists in a database schema and have to be
 # referenced explicitly with the schema name (select foo from schemaname.tablename). In addition,
@@ -64,7 +64,7 @@ sub event_default {
     my $dbh = $self->_agentdbh( $ctxt );
     return 0 unless defined $dbh;
 
-    if ( defined $TESTGRANTEDSCHEMAS ) {
+    if ( $TESTGRANTEDSCHEMAS == 1 ) {
         # check for granted schema privileges
         my ($tables) = ($sql =~ /FROM\s(.*?)($|\sWHERE\s)/i);
         return 0 unless $self->_test_granted_schemata( $ctxt, $tables );
@@ -104,10 +104,10 @@ sub event_default {
 
     # order by and group by clauses have to be removed not to clash
     # with the SQLEngine generated where clause
-    my ($orderby) = ( $sql =~ /\s+order\s+by\s+(\w+(\s+\w+)?)\s*$/i );
+    my ($orderby) = ( $sql =~ /\s+order\s+by\s+(.+)\s*$/i );
     my ($groupby) = ( $sql =~ /\s+group\s+by\s+(\w+)/i );
     $sql =~ s/\s+group\s+by\s+\w+//i;
-    $sql =~ s/\s+order\s+by\s+\w+(\s+\w+)?\s*$//i;
+    $sql =~ s/\s+order\s+by\s+(.+)\s*$//i;
 
     my $countsql = $sql;
     my ($properties) = ($countsql =~ /^\s*SELECT\s(.*?)\sFROM/i);
@@ -240,7 +240,9 @@ sub event_store {
         my $object = $ctxt->object();
         $body = XIMS::xml_escape( $body );
         $body =~ /FROM\s(.*?)($|\sWHERE\s)/i;
-        return 0 unless $self->_test_granted_schemata( $ctxt, $1 );
+        if ( $TESTGRANTEDSCHEMAS == 1 ) {
+            return 0 unless $self->_test_granted_schemata( $ctxt, $1 );
+        }
         $ctxt->object->body( $body );
     }
 
