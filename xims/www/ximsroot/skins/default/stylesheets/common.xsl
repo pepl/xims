@@ -428,7 +428,7 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet;sbfield=eform.stylesheet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_stylesheet"/></a>
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_stylesheet"/></a>
     </td>
 </tr>
 </xsl:template>
@@ -441,7 +441,7 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet;sbfield=eform.stylesheet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_stylesheet"/></a>
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_stylesheet"/></a>
     </td>
 </tr>
 </xsl:template>
