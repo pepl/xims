@@ -76,7 +76,7 @@ sub handle_data {
       $frag->childNodes;
     foreach my $p ( @portlets ) {
         my $oid = $p->string_value();
-        next unless $oid > 0;
+        next unless (defined $oid and $oid > 0);
         my $object = XIMS::Object->new( id  => $oid, User => $self->{User} );
 
         if ( $self->{Export} ) {
