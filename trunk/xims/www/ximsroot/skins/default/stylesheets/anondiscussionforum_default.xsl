@@ -29,16 +29,14 @@
         </form>
 
         <xsl:choose>
-<!-- begin sort by position -->
-        <xsl:when test="$sb='position'">
-        <!--<xsl:when test="$sb='name'">-->
+<!-- begin sort by name -->
+        <xsl:when test="$sb='name'">
             <xsl:choose>
                 <xsl:when test="$order='asc'">
                     <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                         <tr>
                             <td class="lightblue">
-                                <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=desc">
-                                <!--<a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=desc">-->
+                                <a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=desc">
                                     <xsl:value-of select="$i18n/l/Topic"/>
                                     <img src="{$skimages}arrow_ascending.gif" width="10" height="10" border="0" alt="sort descending"/>
                                 </a>
@@ -62,8 +60,7 @@
                     <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                         <tr>
                             <td class="lightblue">
-                                <a href="{$goxims_content}{$absolute_path}?sb=position&amp;order=asc">
-                                    <!--<a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=asc">-->
+                                <a href="{$goxims_content}{$absolute_path}?sb=name&amp;order=asc">
                                     <xsl:value-of select="$i18n/l/Topic"/>
                                     <img src="{$skimages}arrow_descending.gif" width="10" height="10" border="0" alt="sort ascending"/>
                                 </a>
@@ -77,14 +74,14 @@
                             <td class="lightblue" width="50"><xsl:value-of select="$i18n/l/Replies"/></td>
                             <td class="lightblue" width="134"><xsl:value-of select="$i18n/l/Last_reply"/></td>
                         </tr>
-                        <xsl:apply-templates select="../../ojectlist/object">
+                        <xsl:apply-templates select="children/object">
                             <xsl:sort select="title" order="descending"/>
                         </xsl:apply-templates>
                     </table>
                 </xsl:when>
             </xsl:choose>
         </xsl:when>
-<!-- end sort by position -->
+<!-- end sort by name -->
 <!-- begin sort by date -->
         <xsl:when test="$sb='date'">
             <xsl:choose>
@@ -93,8 +90,7 @@
                 <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                     <tr>
                         <td class="lightblue">
-                            <a href="?sb=position">
-                                <!--<a href="?sb=name">-->
+                            <a href="?sb=name">
                                 <xsl:value-of select="$i18n/l/Topic"/>
                             </a>
                         </td>
@@ -119,8 +115,7 @@
                 <table class="10left" border="0" cellpadding="3" cellspacing="0" width="800">
                     <tr>
                         <td class="lightblue">
-                            <a href="?sb=position">
-                                <!--<a href="?sb=name">-->
+                            <a href="?sb=name">
                                 <xsl:value-of select="$i18n/l/Topic"/>
                             </a>
                         </td>
@@ -156,9 +151,8 @@
 
     <tr height="25">
         <xsl:choose>
-<!-- begin sort by position -->
-            <xsl:when test="$sb='position'">
-            <!--<xsl:when test="$sb='name'">-->
+<!-- begin sort by name -->
+            <xsl:when test="$sb='name'">
                 <td bgcolor="#eeeeee" valign="bottom">
                     <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" border="0" alt="{/document/data_formats/data_format[@id=$dataformat]}"/>
                     <xsl:text> </xsl:text>
@@ -170,7 +164,7 @@
                     <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                 </td>
             </xsl:when>
-<!-- end sort by position -->
+<!-- end sort by name -->
 <!-- begin sort by date -->
             <xsl:when test="$sb='date'">
                 <td valign="middle">
