@@ -150,10 +150,7 @@ sub recurse_children {
     my %args = (User => $user, marked_deleted => undef );
     $args{published} = 1 if defined $republishonly;
     my $iterator = $object->children_granted( %args );
-    if ( not defined $iterator ) {
-        warn "\n\nArgument '-r' given, but no children have been found.\n\n";
-        return;
-    }
+    return unless defined $iterator;
     while ( my $child = $iterator->getNext() ) {
         $child = rebless( $child );
         $privmask = $user->object_privmask( $child );
