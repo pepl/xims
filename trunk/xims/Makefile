@@ -42,8 +42,10 @@ done		: setup
 	@echo
 	@echo ===========================================================
 	@echo
-	@echo Initial XIMS setup complete. You may now proceed to
-	@echo \"make test\" to run the test suite
+	@echo Initial XIMS setup complete. 
+	@echo Please \(re\)start apache and check for errors.
+	@echo You may then proceed with \"make test\" to run the
+	@echo test suite
 	@echo
 	@echo ===========================================================
 	@echo
