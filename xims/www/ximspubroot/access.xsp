@@ -37,7 +37,7 @@
                 </rdf:Description>
             </dcq:modified>
         </dc:date>
-        <dc:format>text/xhtml</dc:format>
+        <dc:format>text/html</dc:format>
         <dc:language>en-us</dc:language>
     </rdf:Description>
 </rdf:RDF>
