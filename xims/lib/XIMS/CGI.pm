@@ -1206,7 +1206,7 @@ sub event_publish_prompt {
     elsif ( $dfmime_type eq 'application/x-container' ) {
         my @non_container_ot = $ctxt->data_provider->object_types( is_fs_container => '0' );
         my @ids = map { $_->id() } @non_container_ot;
-        @objects = $ctxt->object->children_granted( object_type_id => \@ids ); # get non-container objects only
+        @objects = $ctxt->object->children_granted( object_type_id => \@ids, marked_deleted => undef ); # get non-container objects only
         for ( @objects ) {
             $_->{location_path} = $_->location_path();
         }
