@@ -290,7 +290,7 @@ sub updateObject {
 
     push @ret, $self->{Driver}->update( properties => $properties, conditions => $conditions );
 
-    if ( length( $body_data ) > 0 and defined( $conditions->{'content.id'} ) ) {
+    if ( $body_data and length( $body_data ) > 0 and defined( $conditions->{'content.id'} ) ) {
         $self->{Driver}->$update_body_method( $conditions->{'content.id'}, $body_data );
     }
 
