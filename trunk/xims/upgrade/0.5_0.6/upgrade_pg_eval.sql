@@ -36,7 +36,7 @@ GRANT ALL ON TABLE ci_questionnaire_results TO xims;
 GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE ci_questionnaire_results TO ximsrun;
 
 --functions as compatability-wrappers for Oracles vs. PostgreSQL
-CREATE FUNCTION ci_questionnaire_results_id_seq_nval() RETURNS INTEGER
+CREATE FUNCTION ci_quest_results_id_seq_nval() RETURNS INTEGER
     AS 'BEGIN
           RETURN nextval(\'ci_questionnaire_results_id_seq\');
         END;'
