@@ -10,7 +10,6 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 
     <xsl:template name="footer">
-        <xsl:param name="link_pub_preview">false</xsl:param>
         <xsl:variable name="dataformat">
             <xsl:value-of select="data_format_id"/>
         </xsl:variable>
@@ -25,21 +24,9 @@
                         <xsl:choose>
                             <xsl:when test="$printview != '0'">
                                 <a href="{$goxims_content}{$absolute_path}?m={$m}"><xsl:value-of select="$i18n/l/Defaultview"/></a>
-                                <xsl:if test="$link_pub_preview='true'">
-                                    &#160;
-                                    <a href="javascript:previewWindow('{$xims_box}{$goxims_content}{$absolute_path}?pub_preview=1')">
-                                        <xsl:value-of select="$i18n/l/Publishingpreview"/>
-                                    </a>
-                                </xsl:if>
                             </xsl:when>
                             <xsl:otherwise>
                                 <a href="{$goxims_content}{$absolute_path}?m={$m};printview=1"><xsl:value-of select="$i18n/l/Printview"/></a>
-                                <xsl:if test="$link_pub_preview='true'">
-                                    &#160;
-                                    <a href="javascript:previewWindow('{$xims_box}{$goxims_content}{$absolute_path}?pub_preview=1')">
-                                        <xsl:value-of select="$i18n/l/Publishingpreview"/>
-                                    </a>
-                                </xsl:if>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:otherwise>

@@ -115,11 +115,18 @@ sub event_store {
         my $absolute_path = defined $object->id() ? $object->location_path() : ($ctxt->parent->location_path() . '/' . $object->location());
         $body = $self->_absrel_urlmangle( $ctxt, $body, '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE(), $absolute_path );
 
+        my $oldbody = $object->body();
         if ( $trytobalance eq 'true' and $object->body( $body ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
+            if ( $object->store_diff_to_second_last( $oldbody, $body ) ) {
+                XIMS::Debug( 4, "diff stored" );
+            }
         }
         elsif ( $object->body( $body, dontbalance => 1 ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
+            if ( $object->store_diff_to_second_last( $oldbody, $body ) ) {
+                XIMS::Debug( 4, "diff stored" );
+            }
         }
         else {
             XIMS::Debug( 2, "could not convert to a well balanced string" );
@@ -161,7 +168,7 @@ sub event_default {
 
     # the following still has to be implemented with the new system
 
-    $ctxt->properties->content->getchildren->objecttypes( [ qw( URLLink SymbolicLink ) ] );
+    $ctxt->properties->content->getchildren->objecttypes( [ qw( Text URLLink SymbolicLink ) ] );
 
     # temporarily deactivated until privilege inheritation of annotations is dicussed and clear
     #$self->resolve_annotations( $ctxt );
@@ -175,7 +182,6 @@ sub event_pub_preview {
     return 0 if $self->SUPER::event_default( $ctxt );
 
     # Emulate request.uri CGI param, set by Apache::AxKit::Plugin::AddXSLParams::Request
-    # ($request.uri is used by default document_publishing_preview.xsl)
     $self->param( 'request.uri', $ctxt->object->location_path_relative() );
 
     $ctxt->properties->application->style("pub_preview");
@@ -317,7 +323,7 @@ sub _absrel_urlmangle {
     while ( $body =~ /(src|href)=("|')$goximscontent([^("|')]+)/g ) {
         my $dir = $3;
         $dir =~ s#[^/]+$##;
-    warn "gotabs, dir: $absolute_path, $dir";
+    #warn "gotabs, dir: $absolute_path, $dir";
         if ( $absolute_path =~ $dir ) {
             my $levels = split('/', $dir) - 1;
             my $repstring = '../'x($doclevels-$levels-1);
