@@ -40,7 +40,7 @@ sub XIMSROOT_URL()              { "/" . $_CONFIG_->XIMSRoot() }
 sub XIMSROOT()                  { $_CONFIG_->ApacheDocumentRoot() . "/" . $_CONFIG_->XIMSRoot() }
 sub AUTHSTYLE()                 { $_CONFIG_->AuthStyle() }
 sub AUTHSERVER()                { $_CONFIG_->AuthServer() }
-sub PROXYSERVERS()              { $_CONFIG_->ProxyServers() }
+sub PROXYIP()                   { $_CONFIG_->ProxyIP() }
 sub CONTENTINTERFACE()          { "/" . $_CONFIG_->ContentInterface() }
 sub DBMS()                      { $_CONFIG_->DBMS() }
 sub QBDRIVER()                  { $_CONFIG_->QBDriver() }
@@ -180,6 +180,7 @@ sub xml_unescape {
     return $text;
 }
 
+
 ##
 #
 # SYNOPSIS
@@ -202,6 +203,7 @@ sub encode {
     return $string;
 }
 
+
 ##
 #
 # SYNOPSIS
@@ -223,6 +225,31 @@ sub decode {
     $string = $converter->convert($string) if defined $string;
     return $string;
 }
+
+
+##
+#
+# SYNOPSIS
+#    XIMS::is_known_proxy( $remote_host )
+#
+# PARAMETER
+#    $remote_host: IP-Adress
+#
+# RETURNS
+#    1 or undef
+#
+# DESCRIPTION
+#    Compares the given IP-Adress to the configured known proxyservers.
+#    Returns 1 on success, undef otherwise.
+#
+sub is_a_known_proxy($) {
+    my $remote_host = shift;
+
+    map {return 1 if defined $_ and $remote_host eq $_} PROXYIP();
+
+    return undef;
+}
+
 
 # ##########################################################################
 # Package XIMS::Privileges

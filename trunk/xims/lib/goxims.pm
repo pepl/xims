@@ -36,7 +36,16 @@ use Time::Piece;
 #
 sub handler {
     my $r = shift;
-    XIMS::Debug( 5, "goxims called from " . $r->get_remote_host );
+
+    if ( $r->header_in('X-Forwarded-For') and XIMS::is_a_known_proxy( $r->connection->remote_ip() ) ) {
+        # Select last value in the chain -- original client's IP
+        if (my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/) {
+            $r->connection->remote_ip($ip);
+            XIMS::Debug(6, "Remote IP taken from X-Forwarded-For-header\n");
+        }
+    }
+    
+    XIMS::Debug( 5, "goxims called from " .  $r->connection->remote_ip() );
 
     #my $apr = Apache::Request->new($r);
     my $ctxt = XIMS::AppContext->new( apache => $r );
@@ -79,7 +88,7 @@ sub handler {
         }
         else {
             $session = XIMS::Session->new( 'user_id' => $public->id(),
-                                           'host'    => $r->get_remote_host() );
+                                           'host'    => $r->connection->remote_ip() );
             XIMS::Debug( 4, "setting session cookie for $publicuser" );
             Apache::AuthXIMS::set_session_cookie( $r, $session->session_id() );
         }
@@ -343,7 +352,7 @@ sub getLanguagePref {
     # compare
     foreach my $wantlang (reverse sort keys(%langprefs)) {
         foreach my $langpref ( keys %havelangs ) {
-            map { $_=~$havelangs{$langpref}?return $langpref:next;} @{$langprefs{$wantlang}};
+            map { $_ =~ $havelangs{$langpref} ? return $langpref : next;} @{$langprefs{$wantlang}};
         }
     }
 
