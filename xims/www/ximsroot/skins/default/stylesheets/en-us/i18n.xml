@@ -97,6 +97,7 @@
 <Publish_ref_objects>Automaticly export Objects refered by this object</Publish_ref_objects>
 <Preview_image>Preview Image</Preview_image>
 <Browse_image>Browse for Images</Browse_image>
+<Browse_stylesheet>Browse for Stylesheet</Browse_stylesheet>
 <Document_links>Document Links</Document_links>
 <Add_link>Add Link</Add_link>
 <Annotation>Annotation</Annotation>

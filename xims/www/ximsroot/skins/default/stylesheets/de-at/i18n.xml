@@ -97,6 +97,7 @@
 <Publish_ref_objects>Von diesem Objekt verlinkte XIMS-Objekte automatisch mitveröffentlichen</Publish_ref_objects>
 <Preview_image>Bildvorschau</Preview_image>
 <Browse_image>Nach Bild durchsuchen</Browse_image>
+<Browse_stylesheet>Nach Stylesheet durchsuchen</Browse_stylesheet>
 <Document_links>Links zum Dokument</Document_links>
 <Add_link>Link hinzufügen</Add_link>
 <Annotation>Annotation</Annotation>
