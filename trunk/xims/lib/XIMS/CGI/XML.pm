@@ -82,6 +82,20 @@ sub event_store {
             $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
         }
 
+        # we have to update the encoding attribute in the xml-decl to match
+        # the encoding, the body will be saved in the db. that can't be done
+        # parsing the body, doing a setEncoding() followed by a toString()
+        # because we have to deal with the case that the body itself gets
+        # send by the browser encoded in UTF-8 but still has different
+        # encoding attributes from the user's document.
+        #
+        my ( $encoding ) = ( $body =~ /^<\?xml[^>]+encoding="([^"]*)"/ );
+        if ( $encoding ) {
+            my $newencoding = ( XIMS::DBENCODING() || 'UTF-8' );
+            XIMS::Debug( 6, "switching encoding attribute from '$encoding' to '$newencoding'");
+            $body =~ s/^(<\?xml[^>]+)encoding="[^"]*"/$1encoding="$newencoding"/;
+        }
+
         my $object = $ctxt->object();
         if ( $object->body( $body ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );

@@ -4,8 +4,8 @@
 # $Id$
 package XIMS::Importer::FileSystem::sDocBookXML;
 
-use XIMS::Importer::FileSystem::XML;
+use XIMS::Importer::FileSystem::XMLChunk;
 use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::FileSystem::XML);
+@ISA = qw(XIMS::Importer::FileSystem::XMLChunk);
 
 1;

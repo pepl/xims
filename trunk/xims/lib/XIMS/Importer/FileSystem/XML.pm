@@ -5,9 +5,10 @@
 package XIMS::Importer::FileSystem::XML;
 
 use XIMS::Importer::FileSystem;
-use XIMS::Importer::Object::XML;
+use XML::LibXML;
+
 use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XML);
+@ISA = qw(XIMS::Importer::FileSystem);
 
 sub handle_data {
     XIMS::Debug( 5, "called" );
@@ -18,30 +19,19 @@ sub handle_data {
     my $object = $self->SUPER::handle_data( $location );
 
     unless ( $dontbody ) {
-        my $root = $self->get_rootelement( $location, nochunk => 1 );
-        return undef unless $root;
-        $object->body( XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$root->toString()) : $root->toString() );
+        my $parser = XML::LibXML->new();
+        my $doc;
+        my $strref = $self->get_strref( $location );
+        eval {
+            $doc = $parser->parse_string( $$strref );
+        };
+        if ( $@ ) {
+            XIMS::Debug( 3, "Could not parse: $location" );
+            return undef;
+        }
+        $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+        $object->body( $doc->toString() );
     }
 
     return $object;
-}
-
-sub get_rootelement {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $location = shift;
-    my %args = @_;
-
-    my $strref = $self->get_strref( $location );
-    return $self->SUPER::get_rootelement( $strref, @_ );
-}
-
-sub get_strref {
-    my $self = shift;
-    my $file = shift;
-    local $/;
-    open (INPUT, $file) || die "could not open $file: $!";
-    my $contents = <INPUT>;
-    close INPUT;
-    return \$contents;
 }
