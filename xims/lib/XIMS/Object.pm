@@ -100,6 +100,12 @@ sub new {
                 }
             }
         }
+        if ( scalar( keys( %args ) ) > 0 ) {
+            foreach my $field ( keys ( %args ) ) {
+                $field = 'body' if $field eq 'binfile';
+                $self->$field( $args{$field} ) if $self->can( $field );
+            }
+        }
     }
 
     return $self;
@@ -143,8 +149,16 @@ sub content_length {
 
 ##################################################################
 # Object selection methods based on axis relationships to the current
-# object (parent, children, descendents, etc.)
+# object (parent, children, descendants, etc.)
 ##################################################################
+
+sub parent {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    return undef unless $self->parent_id;
+    return XIMS::Object->new( document_id => $self->parent_id );
+}
 
 sub children {
     XIMS::Debug( 5, "called" );
@@ -153,7 +167,7 @@ sub children {
     my @child_ids = $self->__child_ids( $self->document_id() );
     return () unless scalar( @child_ids ) > 0 ;
     my @children_data = $self->data_provider->getObject( document_id => \@child_ids, %args, properties => \@Default_Properties );
-    my @children = map { XIMS::Object->new( User => $self->User )->data( %{$_} ) } @children_data;
+    my @children = map { XIMS::Object->new->data( %{$_} ) } @children_data;
     #warn "children" . Dumper( \@children ) . "\n";
     return wantarray ? @children : $children[0];
 }
@@ -203,7 +217,7 @@ sub descendants {
                                                              properties => \@Default_Properties,
                                                             );
 
-    my @descendants = map { XIMS::Object->new( User => $self->User )->data( %{$_} ) } @descendants_data;
+    my @descendants = map { XIMS::Object->new->data( %{$_} ) } @descendants_data;
 
     # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
     my @sorted_descendants;
@@ -287,7 +301,7 @@ sub find_objects {
     my @found_ids = $self->__find_ids( %args );
     return () unless scalar( @found_ids ) > 0 ;
     my @object_data = $self->data_provider->getObject( document_id => \@found_ids, properties => \@Default_Properties );
-    my @objects = map { XIMS::Object->new( User => $self->User )->data( %{$_} ) } @object_data;
+    my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
 
     #warn "objects found" . Dumper( \@objects ) . "\n";
     return @objects;
@@ -377,7 +391,7 @@ sub __get_granted_objects {
                                                 %args,
                                                 properties => \@Default_Properties );
 
-    my @objects = map { XIMS::Object->new( User => $self->User )->data( %{$_} ) } @data;
+    my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
 
     #warn "objects " . Dumper( \@objects ) . "\n";
     return @objects;
@@ -688,7 +702,7 @@ sub clone {
         my $newlocation = "copy_of_" . $clonedata{ location };
         my $newtitle = "Copy of " . $clonedata{ title };
 
-        my $parent = XIMS::Object->new( document_id => $self->parent_id );
+        my $parent = $self->parent();
         if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef ) ) {
             my $index = 1;
             do {
