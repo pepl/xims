@@ -48,7 +48,7 @@
         <title><xsl:value-of select="title"/> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
         <link rel="stylesheet" href="/ximspubroot/stylesheets/default.css" type="text/css"/>
-        <link style="text/css" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" />
+        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" style="text/css"/>
     </head>
 </xsl:template>
 

@@ -355,12 +355,17 @@
 <xsl:template name="questionnaire_actions">
     <tr>
         <td valign="top" colspan="2">
-            <input type="submit" value="{$i18n_qn/l/Add_TAN_List}" onclick="eform.edit.value='add_tanlist';eform.qid.value=eform.TAN_List.value;return true;" />
-            <input type="text" name="TAN_List" size="40" class="text" />
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;otfilter=TAN_List;sbfield=eform.TAN_List')" class="doclink"><xsl:value-of select="$i18n_qn/l/browse_TAN_List"/></a>
-            <input type="hidden" name="edit" />
-            <input type="hidden" name="qid" /><br/>
-            <input type="submit" value="{$i18n_qn/l/Add_Question}" onclick="eform.edit.value='add_question';eform.qid.value='';return true;" />
+            <div>
+                <input type="submit" value="{$i18n_qn/l/Add_TAN_List}" onclick="eform.edit.value='add_tanlist';eform.qid.value=eform.TAN_List.value;return true;" />&#xa0;
+                <input type="text" name="TAN_List" size="40" class="text" />&#xa0;
+                <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;otfilter=TAN_List;sbfield=eform.TAN_List')" class="doclink"><xsl:value-of select="$i18n_qn/l/browse_TAN_List"/></a>
+            </div>
+            <div style="margin-top: 5px">
+                <hr />
+                <input type="hidden" name="edit" />
+                <input type="hidden" name="qid" />
+                <input type="submit" value="{$i18n_qn/l/Add_Question}" onclick="eform.edit.value='add_question';eform.qid.value='';return true;" />
+            </div>
         </td>
     </tr>
 </xsl:template>
@@ -465,13 +470,26 @@
 <xsl:template name="questionnaire_tanlists">
     <tr>
         <td valign="top" colspan="2">
-            TAN-Lists:<br />
+            <hr/>
+            TAN-Lists:
+            <ul style="margin-top: 0px;">
             <xsl:for-each select="body/questionnaire/tanlist">
+                <li>
                 <xsl:value-of select="." />
-                <input type="hidden" name="tanlist_{@id}_title" value="{.}" />
-                <input type="submit" value="{$i18n_qn/l/Remove_TAN_List}" onclick="eform.edit.value='remove_tanlist';eform.qid.value={@id};return true;" />
-                <br />
+                <input type="hidden" name="tanlist_{@id}_title" value="{.}" />&#xa0;
+                <input type="image"
+                       src="{$skimages}option_delete.png"
+                       style="vertical-align: bottom" 
+                       border="0"
+                       width="37"
+                       height="19"
+                       alt="{$i18n_qn/l/Remove_TAN_List}"
+                       title="{$i18n_qn/l/Remove_TAN_List}"
+                       value="{$i18n_qn/l/Remove_TAN_List}"
+                       onclick="eform.edit.value='remove_tanlist';eform.qid.value={@id};return true;" />
+                </li>
             </xsl:for-each>
+            </ul>
         </td>
     </tr>
 </xsl:template>

@@ -39,6 +39,7 @@
         <xsl:call-template name="questionnaire_info" />
         <xsl:call-template name="questionnaire_statistics" />
         <xsl:call-template name="questionnaire_download" />
+        <div style="margin-top: 10px">
         <xsl:choose>
             <xsl:when test="$show_questions =  'none'">
                 <a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
@@ -48,22 +49,25 @@
                 <xsl:call-template name="top_question" />
             </xsl:when>
         </xsl:choose>
+        </div>
     </form>
 </xsl:template>
 
 <xsl:template name="questionnaire_info">
     <div style="border: solid 1 black">
         <xsl:value-of select="$i18n_qn/l/Question_number" />: <xsl:value-of select="count(question)" /><br />
-        <b><xsl:value-of select="$i18n_qn/l/TAN_lists_assigned" />:</b><br />
-        <xsl:for-each select="tanlist">
-            <xsl:value-of select="." /><br />
-        </xsl:for-each>
+        <xsl:if test="count(tanlist) &gt; 0">
+            <strong><xsl:value-of select="$i18n_qn/l/TAN_lists_assigned" />:</strong><br />
+            <xsl:for-each select="tanlist">
+                <xsl:value-of select="." /><br />
+            </xsl:for-each>
+        </xsl:if>
     </div>
 </xsl:template>
 
 <xsl:template name="questionnaire_statistics">
     <div style="border: solid 1 black">
-        <xsl:value-of select="$i18n_qn/l/Questionnaires_answered_number" />: <xsl:value-of select="@total_answered" /><br />
+        <xsl:value-of select="$i18n_qn/l/Questionnaires_answered_number" />: <xsl:value-of select="@total_answered" /><br/>
         <xsl:value-of select="$i18n_qn/l/Questionnaires_valid_number" />: <xsl:value-of select="@valid_answered" />
     </div>
 </xsl:template>
@@ -163,7 +167,12 @@
     <xsl:variable name="position_long_point">
         <xsl:number level="multiple" count="question | answer" />
     </xsl:variable>
-        <b><xsl:value-of select="$position_long_point" />.) <xsl:value-of select="title" /></b>
+        <strong>
+            <xsl:if test="name()='question'">
+                <xsl:value-of select="$position_long_point" />.)
+            </xsl:if>
+            <xsl:value-of select="title" />
+        </strong>
 </xsl:template>
 
 <xsl:template name="question_left">
@@ -218,14 +227,23 @@
     <tr>
         <xsl:choose>
             <xsl:when test="@type = 'Text'">
-                <xsl:for-each select="title">
-                    <td>
-                        <xsl:value-of select="." />
-                    </td>
-                    <td>
-                        <input type="{../@type}" name="{concat('answer_',../@id)}" />
-                    </td>
-                </xsl:for-each>
+                <xsl:choose>
+                    <xsl:when test="count(title) > 0">
+                        <xsl:for-each select="title">
+                            <td>
+                                <xsl:value-of select="." />
+                            </td>
+                            <td>
+                                <input type="{../@type}" name="{concat('answer_',../@id)}" />
+                            </td>
+                        </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <td colspan="2">
+                            <input type="{../@type}" name="{concat('answer_',../@id)}" />
+                        </td>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
             <xsl:when test="@type = 'Textarea'">
                 <td>
