@@ -52,7 +52,7 @@ sub DebugLevel()                { '6' }
 # ****************************************
 
 # apache document_root
-sub ApacheDocumentRoot() { '/usr/local/www/data' }            # Absolute path to the Apache document root
+sub ApacheDocumentRoot()          { '' }            # Absolute path to the Apache document root
 
 sub XIMSRoot()                    { 'ximsroot' }    # Path to ximsroot,relative to ApacheDocumentRoot()
                                                     # Do not change unless you know what you are doing!
@@ -91,7 +91,7 @@ sub AutoindexExportStylesheet()   { 'export_auto_index.xsl' }
 sub DefaultStartingPath()         { '/xims' }   # If users have no defaultbookmark set, they will be redirected to /$goxims/$contentinterface/$defaultstartingpath
                                                 # Value must be the path to an existing XIMS content object
 
-sub WYSIWYGEditor()               { 'htmlarea' }        # Currently, 'htmlarea' and 'wepro' are implemented.
+sub WYSIWYGEditor()               { '' }        # Currently, 'htmlarea' and 'wepro' are implemented.
                                                 # If you configure WYSIWYGEditor(), you have to install the corresponding editor files to XIMSRoot(). For example, download HTMLArea 3 CVS from
                                                 # http://sourceforge.net/projects/itools-htmlarea/ and extract it to XIMSRoot() so that htmlarea.js is available at $XimsRoot()/htmlarea/htmlarea.js.
                                                 # The files for 'wepro' are available at http://www.ektron.com/ewebeditpro.cfm?doc_id=1989
@@ -99,7 +99,7 @@ sub WYSIWYGEditor()               { 'htmlarea' }        # Currently, 'htmlarea' 
                                                 #
                                                 # WYSIWYGEditor() should be considered as a system wide default an fall back value. Users should be able to set their preference via the /user/ interface (to be developed)
 
-sub XMLEditor()                   { 'bxe' }     # Currently 'bxe' version 0.9.5 is implemented
+sub XMLEditor()                   { '' }        # Currently 'bxe' version 0.9.5 is implemented
                                                 # You can download it from http://www.bitfluxeditor.org.
                                                 # Unpack the files into XIMSRoot()/bxe/
 
@@ -139,13 +139,13 @@ sub AdminRoleID()                 { '4' }                  # Default value comes
 # ****************************************
 
 sub DBMS()                        { 'DBI' }
-sub DBUser() { 'ximsrun' }
-sub DBName() { 'xims_unicode' }
-sub DBPassword() { 'ximsrun' }
+sub DBUser()                      { '' }
+sub DBName()                      { '' }
+sub DBPassword()                  { '' }
 
-sub DBdsn() { 'dbi:Pg:dbname=xims_unicode' }                # DBI dsn string
-sub DBDOpt() { 'FetchHashKeyName=NAME_uc;' }                # RDBMS specific DBD connect options
-sub DBSessionOpt() { 'SET DateStyle TO German;SET Client_Encoding TO UNICODE;' }                # RDBMS specific DBD session options
+sub DBdsn()                       { '' }                # DBI dsn string
+sub DBDOpt()                      { '' }                # RDBMS specific DBD connect options
+sub DBSessionOpt()                { '' }                # RDBMS specific DBD session options
 
 # Example settings for PostgreSQL
 #sub DBUser()                      { 'ximsrun' } # Default value from defaultdata.sql
@@ -172,7 +172,7 @@ sub QBDriver()                    { '' }                   # Used for special DB
 #
 # ****************************************
 
-sub DefaultLanguage()             { 'de-at' }                # (default)language set on object creation
+sub DefaultLanguage()             { 'en-us' }                # (default)language set on object creation
                                                              # while objects with (even multiple) non-default
                                                              # language content(s) are in the datastructures,
                                                              # there's no usable implemetation for it UI-wise yet;
