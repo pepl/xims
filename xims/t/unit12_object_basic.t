@@ -20,7 +20,6 @@ $o->language_id( 1 );
 $o->location( 'testdir' );  
 $o->parent_id( 2 );
 $o->object_type_id( 1 );
-$o->department_id( 1 );
 $o->data_format_id( 18 );
 
 # we need a User object to fill in the right data
@@ -46,7 +45,7 @@ ok( $o->created_by_id() == $user->id() );
 ok( $o->location() eq 'testdir' );
 ok( $o->parent_id() == 2 );
 ok( $o->object_type_id() == 1 );
-ok( $o->department_id() == 1 );
+ok( $o->department_id() == 2 );
 ok( $o->data_format_id() == 18 );
 ok( $o->symname_to_doc_id() == undef );
 
@@ -66,7 +65,6 @@ ok( $o->last_modified_by_id() == $user->id() );
 
 # now, delete the object (still not sure if we do this or
 # just set 'marked_deleted' on the object;
-
 ok ( $o->delete() );
 
 # now try to get the deleted record.
