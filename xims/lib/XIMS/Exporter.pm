@@ -155,51 +155,16 @@ sub publish {
     $self->{Stylesheet} ||= $helper->stylesheet( $object );
 
     # build the object processor based on the object_type
-    my $class_lookup = $helper->classname( $object );
-    my $handler;
-
-    #
-    # XIMS defines a set of CORE exporters. the system will first try
-    # to instantiate the class as a CORE exporter.
-    #
-    eval {
-        $handler = $class_lookup->new( Provider   => $self->{Provider},
+    my $handler = $helper->exporterclass(
+                                       Provider   => $self->{Provider},
                                        Basedir    => $self->{Basedir},
                                        Stylesheet => $self->{Stylesheet},
                                        User       => $self->{User},
                                        Object     => $object,
                                        Options    => \%options,
-                                     );
-    };
-
-    if ( $@ ) {
-        XIMS::Debug( 6, "fschked. it's not a core exporter..." );
-        #
-        # if the class is not a core exporter, XIMS::Exporter will try
-        # to load the exporter module
-        #
-        eval "require $class_lookup;";
-        if ( $@ ) {
-            XIMS::Debug( 3, "Object must not be exported! : $@" );
-            #
-            # only if no package is available, the object must not be created!
-            #
-            return undef;
-        }
-
-        # don't know if i should eval here as well ...
-        $handler = $class_lookup->new( Provider   => $self->{Provider},
-                                       Basedir    => $self->{Basedir},
-                                       Stylesheet => $self->{Stylesheet},
-                                       User       => $self->{User},
-                                       Object     => $object,
-                                       Options    => \%options,
-                                     );
-    }
-
+                                       );
 
     # handle any ancestors, create folders where needed.
-
     #
     # first the exporter has to approve which object we have to deal with.
     # this is very important for nested data structures:
@@ -226,37 +191,18 @@ sub publish {
                 # since we don't want autoindexes to be rewritten automatically,
                 # we create only unpublished ancestors
                 if ( $ancestor->published() != 1) {
-
                     XIMS::Debug( 4, "Creating ancestor container." );
+                    my $anc_handler = $helper->exporterclass(
+                                                     Provider   => $self->{Provider},
+                                                     Basedir    => $handler->{Basedir} . $last_path,
+                                                     User       => $self->{User},
+                                                     Object     => $ancestor,
+                                                     Options    => {norecurse => 1}
+                                                    );
+                    return undef unless $anc_handler;
 
-                    my $package = $helper->classname($ancestor);
-                    my $anc_handler;
-                    eval {
-                        $anc_handler = $package->new(
-                                                     Provider   => $self->{Provider},
-                                                     Basedir    => $handler->{Basedir} . $last_path,
-                                                     User       => $self->{User},
-                                                     Object     => $ancestor,
-                                                     Options    => {norecurse => 1}
-                                                    );
-                    };
-                    if ( $@ ) {
-                        eval "require $package;";
-                        if ( $@ ) {
-                            XIMS::Debug(2, "ancestor class $package could not be instantiated: $@" );
-                            return undef;
-                        }
-                        $anc_handler = $package->new(
-                                                     Provider   => $self->{Provider},
-                                                     Basedir    => $handler->{Basedir} . $last_path,
-                                                     User       => $self->{User},
-                                                     Object     => $ancestor,
-                                                     Options    => {norecurse => 1}
-                                                    );
-                    }
                     $anc_handler->create();
-		}   # end if ancestor not published
-
+                }   # end if ancestor not published
                 $last_path = $added_path;
             }   # end foreach ancestor
 
@@ -315,46 +261,17 @@ sub unpublish {
         return undef;
     }
 
-    my $helper = XIMS::Exporter::Helper->new();
-
-
     # build the object processor based on the object_type
-    my $handler;
-    my $class_lookup = $helper->classname( $object );
-    eval {
-        $handler = $class_lookup->new( Provider   => $self->{Provider},
+    my $helper = XIMS::Exporter::Helper->new();
+    my $handler = $helper->exporterclass(
+                                       Provider   => $self->{Provider},
                                        Basedir    => $self->{Basedir},
                                        Stylesheet => $self->{Stylesheet},
                                        User       => $self->{User},
                                        Object     => $object,
                                        Options    => \%options,
-                                     );
-    };
-
-    if ( $@ ) {
-        XIMS::Debug( 6, "fschked. it's not a core exporter..." );
-        #
-        # if the class is not a core exporter, XIMS::Exporter will try
-        # to load the exporter module
-        #
-        eval "require $class_lookup;";
-        if ( $@ ) {
-            XIMS::Debug( 3, "Object must not be exported! : $@" );
-            #
-            # only if no package is available, the object must not be created!
-            #
-            return undef;
-        }
-
-        # don't know if i should eval here as well ...
-        $handler = $class_lookup->new( Provider   => $self->{Provider},
-                                       Basedir    => $self->{Basedir},
-                                       Stylesheet => $self->{Stylesheet},
-                                       User       => $self->{User},
-                                       Object     => $object,
-                                       Options    => \%options,
-                                     );
-    }
+                                       );
+    return undef unless $handler;
 
     #
     # the unpublish function will remove only real objects from the
@@ -376,32 +293,14 @@ sub unpublish {
                 next; # remove this line if all ancestors will be recreated
 
                 XIMS::Debug( 4, "reCreating ancestor container." );
-
-                my $package = $helper->classname($ancestor);
-                my $anc_handler;
-                eval {
-                    $anc_handler = $package->new(
-                                                 Provider   => $self->{Provider},
-                                                 Basedir    => $handler->{Basedir} . $last_path,
-                                                 User       => $self->{User},
-                                                 Object     => $ancestor,
-                                                 Options    => {norecurse => 1}
-                                                );
-                };
-                if ( $@ ) {
-                    eval "require $package;";
-                    if ( $@ ) {
-                        XIMS::Debug(2,"FATAL EXPORTER ERROR: Ancestor class cannot be instantiated" );
-                        return undef;
-                    }
-                    $anc_handler = $package->new(
-                                                 Provider   => $self->{Provider},
-                                                 Basedir    => $handler->{Basedir} . $last_path,
-                                                 User       => $self->{User},
-                                                 Object     => $ancestor,
-                                                 Options    => {norecurse => 1}
-                                                );
-                }
+                my $anc_handler = $helper->exporterclass(
+                                             Provider   => $self->{Provider},
+                                             Basedir    => $handler->{Basedir} . $last_path,
+                                             User       => $self->{User},
+                                             Object     => $ancestor,
+                                             Options    => {norecurse => 1}
+                                            );
+                return undef unless $anc_handler;
 
                 $anc_handler->create(); # should stop here on error ... !?
                 $last_path = $added_path;
@@ -500,9 +399,33 @@ sub stylesheet {
 
 sub classname {
     my ($self, $object) = @_;
-    my $class_name = 'XIMS::Exporter::' . $object->object_type->name();
+    my $classname = 'XIMS::Exporter::' . $object->object_type->name();
 
-    return $class_name;
+    return $classname;
+}
+
+sub exporterclass {
+    my $self = shift;
+    my %args = @_;
+
+    my $object = $args{Object};
+    return undef unless $object;
+
+    my $exporter_class = $self->classname( $object );
+    my $exporter;
+    eval {
+        $exporter = $exporter_class->new( %args );
+    };
+    if ( $@ ) {
+        eval "require $exporter_class;";
+        if ( $@ ) {
+            XIMS::Debug( 3, "could not not load exporter class: $@" );
+            return undef;
+        }
+        $exporter = $exporter_class->new( %args );
+    }
+
+    return $exporter;
 }
 
 1;
@@ -512,6 +435,7 @@ package XIMS::Exporter::Handler;
 # this package is the base class for folder and object!!!
 #############################################################################################
 use XIMS::AppContext;
+
 ##
 #
 # SYNOPSIS
@@ -582,7 +506,7 @@ sub new {
 
     # publish only non-fs-container children here
     my @non_fscont_types = map { $_->id() } grep { !$_->is_fs_container() } $self->{Provider}->object_types();
-    $self->{Children} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
+    @{$self->{Children}} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
     #
     # Make children_selection available via UI and publish_promt event
     # $self->{Children} = $self->{Object}->children_granted( User => $self->{User}, id => \@selected_ids, object_type_id => \@non_fscont_types );
@@ -739,6 +663,11 @@ sub test_ancestors {
 # '1'.
 #
 sub update_references {
+    #
+    # dead code, to be rewritten!!!
+    #
+    return undef;
+
     XIMS::Debug( 5, "called" );
     my ( $self, %params ) = @_;
 
@@ -769,12 +698,13 @@ sub update_references {
             # do here.
             unless ( $obj->published() ) {
                 my $base = XIMS::PUBROOT() . $obj->location_path();
-                my $dep_class = $helper->classname( $obj );
-                my $dep_handler =  $dep_class->new( provider       => $self->{Provider},
+                my $dep_handler = $helper->exporterclass(
+                                                    Provider       => $self->{Provider},
                                                     exportfilename => $base,
-                                                    user           => $self->{User},
-                                                    object         => $obj,
+                                                    User           => $self->{User},
+                                                    Object         => $obj,
                                                   );
+                return undef unless $dep_handler;
                 # check if the objects parents are published!
                 if ( $dep_handler->test_ancestors() ) {
                     #
@@ -790,33 +720,14 @@ sub update_references {
                             my $anc_base = XIMS::PUBROOT() . $ancestor->location_path();
 
                             XIMS::Debug( 4, "Creating ancestor container." );
-                            my $package = $helper->classname($ancestor);
-                            my $anc_handler;
-                            eval {
-                                $anc_handler = $package->new(
-                                                             provider       => $dp,
+                            my $anc_handler = $helper->exporterclass(
+                                                             Provider       => $self->{Provider},
                                                              exportfilename => $anc_base,
-                                                             user           => $self->{User},
-                                                             object         => $ancestor,
-                                                             options        => {norecurse => 1}
+                                                             User           => $self->{User},
+                                                             Object         => $ancestor,
+                                                             Options        => {norecurse => 1}
                                                             );
-                            };
-                            if ( $@ ) {
-                                eval "require $package;";
-                                if ( $@ ) {
-                                    XIMS::Debug(2,"FATAL EXPORTER ERROR: Ancestor class cannot be instantiated" );
-                                    return undef;
-                                }
-                                $anc_handler = $package->new(
-                                                             provider       => $dp,
-                                                             exportfilename => $anc_base,
-                                                             user           => $self->{User},
-                                                             object         => $ancestor,
-                                                             options        => {norecurse => 1}
-                                                            );
-                            }
-                            XIMS::Debug( 5, "export $anc_base" );
-                            $anc_handler->create();
+                            return undef unless ($anc_handler and $anc_handler->create());
                         }
                     }
                 }
@@ -865,6 +776,12 @@ sub update_references {
 # symlinks has to be handled differently.
 #
 sub update_referrer {
+    #
+    # dead code, to be rewritten!!!
+    #
+    return undef;
+
+
     XIMS::Debug( 5, "called" );
     my ( $self ) = @_;
 
@@ -888,13 +805,13 @@ sub update_referrer {
             if ( $obj->isPublished() ) {
                 # init the objects full exporter
                 my $base = XIMS::PUBROOT() . $obj->location_path();
-                my $dep_class = $helper->classname( $obj );
-                XIMS::Debug( 6, "use $dep_class as exporter class!" );
-                my $dep_handler =  $dep_class->new( provider       => $self->{Provider},
+                my $dep_handler =  $helper->exporterclass(
+                                                    Provider       => $self->{Provider},
                                                     exportfilename => $base,
-                                                    user           => $self->{User},
-                                                    object         => $obj,
+                                                    User           => $self->{User},
+                                                    Object         => $obj,
                                                   );
+                return unless $dep_handler;
 
                 # rewrite the referrer, but not its ancestors or
                 # referrers
@@ -930,6 +847,11 @@ sub update_referrer {
 # particular object.
 #
 sub update_parents {
+    #
+    # dead code, to be rewritten!!!
+    #
+    return undef;
+
     XIMS::Debug( 5, "called" );
     my ( $self ) = @_;
 
@@ -965,12 +887,13 @@ sub update_parents {
 
             XIMS::Debug( 6, "run the exporter for " . $parent->location );
             # init the objects full exporter
-            my $dep_class   = $helper->classname( $parent );
-            my $dep_handler =  $dep_class->new( Provider   => $self->{Provider},
+            my $dep_handler =  $helper->exporterclass(
+                                                Provider   => $self->{Provider},
                                                 User       => $self->{User},
                                                 Basedir    => $self->{Basedir} . $last_path,
                                                 Object     => $parent,
                                               );
+            return undef unless $dep_handler;
 
             $last_path .= '/'. $parent->location;
 
@@ -1437,21 +1360,6 @@ sub create {
         return undef;
     }
 
-    #if (defined $self->{Children} and scalar $self->{Children} ) {
-    #    # publish selected children....
-    #    foreach my $kind ( $self->{Children} ) {
-    #        my $helper = XIMS::Exporter::Helper->new();
-    #        my $kid_class = $helper->classname( $kind );
-    #
-    #        my $reaper = $kid_class->new( Provider   => $self->{Provider},
-    #                                      Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
-    #                                      User       => $self->{User},
-    #                                      Object     => $kind
-    #                                    );
-    #        $reaper->create();
-    #    }
-    #}
-
     # auto-indexing
     # MUST come after any children were published above since
     # publishing states may have changed in this session.
@@ -1493,17 +1401,16 @@ sub remove {
 
     my $kill_path = $self->{Basedir} . "/" . $self->{Object}->location();
 
-    if ( defined $self->{Children} and scalar $self->{Children} ) {
-        foreach my $kind ( $self->{Children} ) {
-            my $helper = XIMS::Exporter::Helper->new();
-            my $kid_class = $helper->classname( $kind );
-
-            my $reaper = $kid_class->new( Provider   => $self->{Provider},
-                                          Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
-                                          User       => $self->{User},
-                                          Object     => $kind
-                                        );
-            $reaper->remove();
+    if ( defined $self->{Children} and scalar @{$self->{Children}} ) {
+        my $helper = XIMS::Exporter::Helper->new();
+        foreach my $kind ( @{$self->{Children}} ) {
+            my $reaper = $helper->exporterclass(
+                         Provider   => $self->{Provider},
+                         Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
+                         User       => $self->{User},
+                         Object     => $kind
+                        );
+            return undef unless ($reaper and $reaper->remove());
         }
     }
 
@@ -1574,17 +1481,16 @@ sub remove {
     my ( $self, $param ) = @_;
 
     # unpublish all document links
-    if ( defined $self->{Children} and scalar $self->{Children} ) {
-        foreach my $kind ( $self->{Children} ) {
+    if ( defined $self->{Children} and scalar @{$self->{Children}} ) {
+        my $helper = XIMS::Exporter::Helper->new();
+        foreach my $kind ( @{$self->{Children}} ) {
             next unless $kind->object_type->name eq 'URLLink';
-            my $helper = XIMS::Exporter::Helper->new();
-            my $kid_class = $helper->classname( $kind );
-
-            my $reaper = $kid_class->new( Provider   => $self->{Provider},
+            my $reaper = $helper->exporterclass(
+                                          Provider   => $self->{Provider},
                                           User       => $self->{User},
                                           Object     => $kind
                                         );
-            $reaper->remove();
+            return undef unless ($reaper and $reaper->remove());
         }
     }
 

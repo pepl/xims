@@ -1149,8 +1149,8 @@ sub event_publish_prompt {
         @objects = $self->body_ref_objects($ctxt);
     }
     elsif ( $dfmime_type eq 'application/x-container' ) {
-        my @container_ot = $ctxt->data_provider->object_types( is_fs_container => '0' );
-        my @ids = map { $_->id() } @container_ot;
+        my @non_container_ot = $ctxt->data_provider->object_types( is_fs_container => '0' );
+        my @ids = map { $_->id() } @non_container_ot;
         @objects = $ctxt->object->children_granted( object_type_id => \@ids ); # get non-container objects only
         for ( @objects ) {
             $_->{location_path} = $_->location_path();
@@ -1216,32 +1216,10 @@ sub event_publish {
 
     if ( defined $self->param( "autopublish" )
          and $self->param( "autopublish" ) == 1 ) {
-        XIMS::Debug( 4, "goint to publish references" );
+        XIMS::Debug( 4, "going to publish references" );
         my @objids = $self->param( "objids" );
-        foreach my $id ( @objids ) {
-            next unless defined $id;
-            my $objectpriv = XIMS::ObjectPriv->new( content_id => $id, grantee_id => $ctxt->session->user->id() );
-            if ( $objectpriv && ($objectpriv->privilege_mask() & XIMS::Privileges::PUBLISH()) ) {
-                my $object = XIMS::Object->new( id => $id, User => $ctxt->session->user() );
-                if ( $object ) {
-                    if ( $exporter->publish( Object => $object ) ) {
-                        XIMS::Debug( 4, "published object with id $id" );
-                    }
-                    else {
-                        XIMS::Debug( 3, "could not publish object with id $id" );
-                        next;
-                    }
-                }
-                else {
-                    XIMS::Debug( 3, "could not find an object with id $id" );
-                    next;
-                }
-            }
-            else {
-                XIMS::Debug( 4, "no privileges to publish object with id $id" );
-                next;
-            }
-        }
+        my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objids);
+        $ctxt->session->message("Object '" .  $ctxt->object->title() . "' together with $published related objects published.");
     }
 
     return 0;
@@ -1254,6 +1232,18 @@ sub event_unpublish {
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
+
+    if ( $ctxt->object->data_format->mime_type() eq 'application/x-container' ) {
+        my @container_ot = $ctxt->data_provider->object_types( is_fs_container => '1' );
+        my @ids = map { $_->id() } @container_ot;
+        my @objects = $ctxt->object->children( object_type_id => \@ids, published => '1' ); # get published container objects
+        if ( scalar @objects ) {
+            $ctxt->session->error_msg( "Object '" . $ctxt->object->title() . "' contains published container objects. Please unpublish those first.");
+            $ctxt->properties->application->styleprefix('common');
+            $ctxt->properties->application->style('error');
+            return 0;
+        }
+    }
 
     require XIMS::Exporter;
     my $exporter = XIMS::Exporter->new( Provider => $ctxt->data_provider,
@@ -1274,7 +1264,6 @@ sub event_unpublish {
         $ctxt->properties->application->style('error');
     }
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -1712,6 +1701,45 @@ sub body_ref_objects {
     }
 
     return @objects;
+}
+
+
+sub autopublish {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $ctxt = shift;
+    my $exporter = shift;
+    my $method = shift;
+    my $objids = shift;
+
+    my $published;
+    foreach my $id ( @{$objids} ) {
+        next unless defined $id;
+        my $objectpriv = XIMS::ObjectPriv->new( content_id => $id, grantee_id => $ctxt->session->user->id() );
+        if ( $objectpriv && ($objectpriv->privilege_mask() & XIMS::Privileges::PUBLISH()) ) {
+            my $object = XIMS::Object->new( id => $id, User => $ctxt->session->user() );
+            if ( $object ) {
+                if ( $exporter->$method( Object => $object ) ) {
+                    XIMS::Debug( 4, $method."ed object with id $id" );
+                    $published++;
+                }
+                else {
+                    XIMS::Debug( 3, "could not $method object with id $id" );
+                    next;
+                }
+            }
+            else {
+                XIMS::Debug( 3, "could not find an object with id $id" );
+                next;
+            }
+        }
+        else {
+            XIMS::Debug( 4, "no privileges to $method object with id $id" );
+            next;
+        }
+    }
+
+    return $published;
 }
 
 sub event_search {
