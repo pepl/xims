@@ -37,14 +37,15 @@ use Time::Piece;
 sub handler {
     my $r = shift;
 
-    if ( $r->header_in('X-Forwarded-For') and XIMS::is_a_known_proxy( $r->connection->remote_ip() ) ) {
-        # Select last value in the chain -- original client's IP
-        if (my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/) {
+    if ( not defined $r->pnotes('ORIGINAL_REMOTE_IP')) {
+        $r->pnotes('ORIGINAL_REMOTE_IP' => $r->connection->remote_ip());
+        if ( my $ip = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/
+             and XIMS::is_a_known_proxy( $r->connection->remote_ip())) {
             $r->connection->remote_ip($ip);
             XIMS::Debug(6, "Remote IP taken from X-Forwarded-For-header\n");
         }
     }
-    
+
     XIMS::Debug( 5, "goxims called from " .  $r->connection->remote_ip() );
 
     #my $apr = Apache::Request->new($r);
@@ -102,8 +103,12 @@ sub handler {
     # set some session information
     my $tp = localtime;
     $ctxt->session->date( $tp->dmy('.') . ' ' . $tp->hms );
+
+    # test if we are called through a proxy, set serverurl accordingly
     my $uri = Apache::URI->parse( $r );
-    $ctxt->session->serverurl( $uri->scheme . '://' . $uri->hostinfo() );
+    my $hostname = ($r->pnotes('ORIGINAL_REMOTE_IP') ne $r->connection->remote_ip())
+      ? $r->headers_in->{'X-Forwarded-Host'} : $uri->hostinfo();
+    $ctxt->session->serverurl( $uri->scheme . '://' . $hostname);
 
     # for now there is no user/browser based skin selection. the default values are used.
     $ctxt->session->skin( XIMS::DEFAULT_SKIN() );
