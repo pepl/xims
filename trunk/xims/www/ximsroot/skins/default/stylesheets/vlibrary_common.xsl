@@ -42,35 +42,7 @@
             <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script type="text/javascript">
-            <xsl:comment>
-            function setBg(elid){
-                var els = document.getElementsByName(elid);
-                /*
-                   This relies on the fact, that the second assigned stylesheet has
-                   sane background-color values defined in the first two rules.
-                */
-
-                var color0;
-                var color1;
-
-                /* IE and the Gecko behaves differently */
-                if (document.all) {
-                    color0 = document.styleSheets[1].rules.item(0).style.backgroundColor;
-                    color1 = document.styleSheets[1].rules.item(1).style.backgroundColor;
-                }
-                else {
-                    color0 = document.styleSheets[1].cssRules[0].style.backgroundColor
-                    color1 = document.styleSheets[1].cssRules[1].style.backgroundColor
-                }
-
-                var i;
-                for(i = 0;i&lt;els.length;i++){
-                    eval("els[i].style.backgroundColor = color"+(i%2));
-                }
-            }
-            //</xsl:comment>
-            </script>
+            <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
     </xsl:template>
 
