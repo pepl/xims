@@ -592,7 +592,7 @@
         </xsl:otherwise>
     </xsl:choose>
     <xsl:choose>
-        <xsl:when test="marked_deleted != '1' and user_privileges/view">
+        <xsl:when test="marked_deleted != '1' and user_privileges/view and /document/context/object/user_privileges/create">
             <a href="{$goxims_content}?id={$id};copy=1">
                 <img src="{$skimages}option_copy.png"
                     alt="{$l_Copy}"
