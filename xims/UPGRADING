@@ -57,16 +57,6 @@
     Depending on your PostgreSQL installation 'tablefunc.sql' may be located at another path.
 
 
-  * Rename DocBookXML to sDocBookXML using dkb_to_sdbk.pl
-
-    [root@host 0.5_0.6]# perl dkb_to_sdbk.pl
-
-
-  * Update Portlet dataformat and add suffix to Portlets
-
-    [root@host 0.5_0.6]# perl upgrade_portlets.pl
-
-
   * Move published content and activate xims-0.6
 
     - Shutdown Apache or prevent XIMS logins
@@ -77,7 +67,19 @@
       For example:
         [root@host local]# cd /usr/local
         [root@host local]# rm xims && ln -s xims-0.6 xims
-    - (Re)Start Apache
+
+
+  * Rename DocBookXML to sDocBookXML using dkb_to_sdbk.pl
+
+    [root@host 0.5_0.6]# perl dkb_to_sdbk.pl
+
+
+  * Update Portlet dataformat and add suffix to Portlets
+
+    [root@host 0.5_0.6]# perl upgrade_portlets.pl
+
+
+  * (Re)Start Apache
 
 
 0.1.1 to 0.5
