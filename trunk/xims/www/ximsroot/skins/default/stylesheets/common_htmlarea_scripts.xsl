@@ -11,8 +11,8 @@
 
 <xsl:template name="htmlarea_scripts">
     <script type="text/javascript">
-      _editor_url = "<xsl:value-of select="concat($ximsroot,'htmlarea/')"/>";
-      _editor_lang = "<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)"/>";
+      _editor_url = &apos;<xsl:value-of select="concat($ximsroot,'htmlarea/')"/>&apos;;
+      _editor_lang = &apos;<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)"/>&apos;;
     </script>
     <script type="text/javascript" src="{$ximsroot}htmlarea/htmlarea.js"><xsl:text>&#160;</xsl:text></script>
     <script type="text/javascript">
@@ -28,9 +28,9 @@
           // If this lang file is not found the plugin will fail to
           // load correctly and nothing will work.
 
-          HTMLArea.loadPlugin("TableOperations");
-          // HTMLArea.loadPlugin("SpellChecker");
-          HTMLArea.loadPlugin("CSS");
+          HTMLArea.loadPlugin(&apos;TableOperations&apos;);
+          // HTMLArea.loadPlugin(&apos;SpellChecker&apos;);
+          HTMLArea.loadPlugin(&apos;CSS&apos;);
     </script>
 
     <style type="text/css">@import url(<xsl:value-of select="$ximsroot"/>htmlarea/htmlarea.css);</style>
@@ -38,7 +38,7 @@
         var editor = null;
         function initEditor() {
           // create an editor for the "body" textbox
-          editor = new HTMLArea("body");
+          editor = new HTMLArea(&apos;body&apos;);
 
           // register the TableOperations plugin
           editor.registerPlugin(TableOperations);
@@ -49,37 +49,37 @@
           // register the CSS plugin
           editor.registerPlugin(CSS, {
             combos : [
-              { label: "List:",
+              { label: &apos;List:&apos;,
                            // menu text       // CSS class
-                options: { "None"           : "",
-                           "Folder"         : "folderlist",
-                           "Document"       : "documentlist",
-                           "PDF"            : "pdflist",
-                           "Image"          : "imagelist",
-                           "Email"          : "emaillist",
-                           "External Link"  : "externallinklist",
-                           "Word"           : "wordlist",
-                           "Excel"          : "excellist",
-                           "Powerpoint"     : "pptlist",
-                           "Docbook"        : "docbooklist",
-                           "Link"           : "linklist",
-                           "Bullet"         : "bulletlist"
+                options: { &apos;None&apos;           : &apos;&apos;,
+                           &apos;Folder&apos;         : &apos;folderlist&apos;,
+                           &apos;Document&apos;       : &apos;documentlist&apos;,
+                           &apos;PDF&apos;            : &apos;pdflist&apos;,
+                           &apos;Image&apos;          : &apos;imagelist&apos;,
+                           &apos;Email&apos;          : &apos;emaillist&apos;,
+                           &apos;External Link&apos;  : &apos;externallinklist&apos;,
+                           &apos;Word&apos;           : &apos;wordlist&apos;,
+                           &apos;Excel&apos;          : &apos;excellist&apos;,
+                           &apos;Powerpoint&apos;     : &apos;pptlist&apos;,
+                           &apos;Docbook&apos;        : &apos;docbooklist&apos;,
+                           &apos;Link&apos;           : &apos;linklist&apos;,
+                           &apos;Bullet&apos;         : &apos;bulletlist&apos;
                          },
-                context: "li",
+                context: &apos;li&apos;,
                 updatecontextclass: 1
               },
-              { label: "Info:",
-                options: { "None"           : "",
-                           "Quote"          : "quote",
-                           "Highlight"      : "highlighted",
-                           "Important"      : "important"
+              { label: &apos;Info:&apos;,
+                options: { &apos;None&apos;           : &apos;&apos;,
+                           &apos;Quote&apos;          : &apos;quote&apos;,
+                           &apos;Highlight&apos;      : &apos;highlighted&apos;,
+                           &apos;Important&apos;      : &apos;important&apos;
                          }
               }
             ]
           });
 
           // load the stylesheet used by our CSS plugin configuration
-          editor.config.pageStyle = "@import url(<xsl:value-of select="concat($ximsroot,$defaultcss)"/>);";
+          editor.config.pageStyle = &apos;@import url(<xsl:value-of select="concat($ximsroot,$defaultcss)"/>);&apos;;
           editor.generate();
         }
     </script>
