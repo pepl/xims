@@ -28,7 +28,7 @@ XIMS. No DB modules
 DBI - Database independent interface for Perl
 Digest::MD5 -
 Storable -
-XML::LibXML 1.52 -
+XML::LibXML 1.54 -
 XML::LibXSLT 1.49 -
 AxKit 1.51 -
 AxKit::XSP::Param -
@@ -39,9 +39,9 @@ XML::Parser::PerlSAX -
 XML::SAX::Machines -
 XML::Generator::PerlData -
 XML::Filter::GenericChunk -
-CGI::XMLApplication 1.1.2 -
+CGI::XMLApplication 1.1.3 -
 Class::MethodMaker -
-DBIx::SQLEngine 0.0.8 -
+DBIx::SQLEngine 0.014 -
 Time::Piece -
 XML::Schematron -
 Apache::DBI -
