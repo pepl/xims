@@ -135,6 +135,7 @@ sub body {
     else {
         return unless defined( $content_field );
         return $self->{$content_field} if defined( $self->{$content_field} );
+        return undef unless defined $self->id();
         my $selected_data = $self->data_provider->getObject( id => $self->id(), properties => [$content_field] );
         my $actual_data = ( values( %{$selected_data} ) )[0];
         $self->{$content_field} = $actual_data;
@@ -501,7 +502,7 @@ sub __decide_department_id {
     my %args = @_;
     my $object= XIMS::Object->new( document_id => $args{document_id} );
     if ( ($object->object_type->name() eq 'DepartmentRoot') or ($object->object_type->name() eq 'SiteRoot') ) {
-            return $object->id();
+            return $object->document_id();
     }
     else {
             return $object->department_id();
