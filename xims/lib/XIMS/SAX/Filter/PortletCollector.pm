@@ -127,7 +127,9 @@ sub handle_data {
                 # hmmmm, not good use $o->data() to be stored in $self->{Children} then things like adding LOCATION_PATH should be clean
                 $o->body() if grep { lc($_) eq 'body' } @{$cols};
                 $o = {$o->data()};
-                $o->{location_path} = $location_path;
+                $o->{location} = XIMS::xml_escape($o->{location});
+                $o->{title} = XIMS::xml_escape($o->{title});
+                $o->{location_path} = XIMS::xml_escape($location_path);
             }
             $self->push_listobject( @children );
         }
