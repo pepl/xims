@@ -18,11 +18,11 @@
                 <param:reason/>
             </if-param:reason>
         </dc:title>
-        <dc:creator>Michael Kroell</dc:creator>
+        <dc:creator>The XIMS Project</dc:creator>
         <dc:subject>XIMS</dc:subject>
         <dc:description></dc:description>
-        <dc:publisher></dc:publisher>
-        <dc:contributor/>
+        <dc:publisher>The XIMS Project</dc:publisher>
+        <dc:contributor>$Author$</dc:contributor>
         <dc:date>
             <dcq:created>
                 <rdf:Description>
