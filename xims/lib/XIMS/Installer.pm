@@ -41,6 +41,8 @@ sub new {
                 [ "XML::Generator::DBI", '' ],
                 [ "XML::LibXML::Iterator", '' ],
                 [ "Array::Iterator", '' ],
+                [ "Archive::Zip", '' ],
+                [ "Text::Template", '' ],
               );
 
     my @optional_mods = ();
