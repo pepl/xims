@@ -139,7 +139,7 @@
 
 <xsl:template name="copyfooter">
     <p style="color: #a9a9a9; font-size: 8pt; margin-left:3px;">
-        © 2002 The XIMS Project,<br/> University of Innsbruck
+        © 2002-2003 The XIMS Project,<br/> University of Innsbruck
     </p>
 </xsl:template>
 
