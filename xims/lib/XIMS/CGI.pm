@@ -323,7 +323,8 @@ sub selectStylesheet {
     my $stylepath =  $self->getStylesheetDir() . '/';
     my $stylefilename = $styleprefix . '_' . $stylesuffix . '.xsl';
 
-    if ( $ctxt->session->user->id() eq XIMS::PUBLICUSERID() ) {
+    my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
+    if ( defined $publicusername ) {
         #
         # check for $ctxt->object->style_id as path to published
         # stylesheet directory here before using public/
