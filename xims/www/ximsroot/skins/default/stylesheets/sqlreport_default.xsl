@@ -19,6 +19,13 @@
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
             <xsl:call-template name="header"/>
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
+                <xsl:if test="abstract/text() != ''">
+                    <tr>
+                        <td colspan="2">
+                            <strong><xsl:apply-templates select="abstract"/></strong>
+                        </td>
+                    </tr>
+                </xsl:if>
                 <tr>
                     <td colspan="2">
                         <xsl:apply-templates select="body"/>
