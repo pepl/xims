@@ -74,7 +74,7 @@
                     <xsl:apply-templates select="targetparents/object[@id !='1']"/>
                     <xsl:apply-templates select="target/object"/>
                     <table>
-                        <xsl:apply-templates select="targetchildren/object">
+                        <xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
                             <xsl:sort select="title" order="ascending" case-order="lower-first"/>
                         </xsl:apply-templates>
                     </table>
