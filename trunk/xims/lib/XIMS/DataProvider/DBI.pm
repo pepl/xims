@@ -469,6 +469,7 @@ sub get_object_id {
 }
 # '
 # Unfortunately, Oracle needs that strange ROWNUM subquery mechanism to limit the number of rows returned.
+# and with Oracle, conditions testing for ROWNUM values greater than a positive integer are always false!
 # Therefore we cannot use the abstract model of $self->get_object_id() but have to build the SQL on our own :-/
 sub find_object_id {
     XIMS::Debug( 5, "called" );
@@ -484,7 +485,8 @@ sub find_object_id {
     if ( exists $args{rowlimit} and $args{rowlimit} > 0 ) {
         $args{offset} ||= '0';
         if ( $self->{RDBMSClass} eq 'Oracle' ) {
-            $query = "SELECT * FROM (" . $query . ") WHERE ROWNUM > " . $args{offset} . " AND ROWNUM <= " . ( $args{offset} + $args{rowlimit} );
+            $query = "SELECT id FROM ( SELECT id, ROWNUM AS position FROM (" . $query . ")) WHERE position > " . $args{offset} . " AND position <= " . ( $args{offset} + $args{rowlimit} );
+
         }
         elsif ( $self->{RDBMSClass} eq 'Pg' ) {
             $query = $query . " LIMIT " . $args{rowlimit} . " OFFSET " . $args{offset};
