@@ -1,0 +1,48 @@
+0.1b to 0.1.1
+-------------
+
+  * Unpack the contents of xims-0.1.1.tar.gz to your target installation
+    directory.
+
+    For example:
+    [root@host local]# cd /usr/local
+    [root@host local]# tar xzpvf xims-0.1.1.tar.gz
+
+  * Migrate Config.pm.
+
+    Either copy the values manually from your old Config.pm, or let
+    "make config" do the trick.
+
+    For example:
+    [root@host local]# cd xims-0.1.1
+    [root@host xims-0.1.1]# XIMS_PREFIX='/usr/local/xims-0.1.1'; export XIMS_PREFIX
+      # sh-like shell (sh, ksh, bash, zsh)
+    [root@host xims-0.1.1]# setenv XIMS_PREFIX '/usr/local/xims-0.1.1'
+      # csh-like shell (csh, tcsh).
+    [root@host xims-0.1.1]# make config
+
+  * Update database (no existing content will be erased nor damaged)
+
+    Run the SQL scripts in the "upgrade/0.1b_0.1" directory.
+
+    For example:
+    PostgreSQL:
+    [root@host 0.1b_0.1]# psql -U xims -f upgrade-common.sql
+    [root@host 0.1b_0.1]# psql -U xims -f upgrade-pg.sql
+    Oracle:
+    [root@host 0.1b_0.1]# sqlplus user@db @upgrade-common.sql
+    [root@host 0.1b_0.1]# sqlplus user@db @upgrade-oracle.sql
+
+  * Move published content and activate xims-0.1.1
+
+    - Shutdown Apache or prevent XIMS logins
+    - Move everything under your old "ximspubroot" directory besides
+        "images", "stylesheet", "access.xsp", "500.xsp", and "400.xsp"
+        to your new "ximspubroot" directory.
+    - Replace the link to xims-0.1 with a link to xims-0.1.1
+      For example:
+        [root@host local]# cd /usr/local
+        [root@host local]# rm xims
+        [root@host local]# ln -s xims-0.1.1 xims
+    - (Re)Start Apache
+
