@@ -1158,13 +1158,13 @@ sub clone {
         my $newtitle = "Copy of " . $clonedata{ title };
 
         my $parent = $self->parent();
-        if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef )->getLength() ) {
+        if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef ) ) {
             my $index = 1;
             do {
                 $newlocation = "copy_(" . $index . ")_of_" . $clonedata{ location };
                 $newtitle = "Copy (" . $index . ") of " . $clonedata{ title };
                 $index++;
-            } while ( $parent->children( location => $newlocation, marked_deleted => undef )->getLength() );
+            } while ( $parent->children( location => $newlocation, marked_deleted => undef ) );
         }
         $clonedata{ location } = $newlocation;
         $clonedata{ title } = $newtitle;
