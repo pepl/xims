@@ -9,6 +9,10 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/TR/xhtml1/strict">
 
+<xsl:variable name="bodycontent">
+    <xsl:call-template name="body"/>
+</xsl:variable>
+
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-edit_wepro"/>
@@ -39,7 +43,7 @@
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}ewebedit/ewebeditpro.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}wepro/ewebeditpro.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <base href="{$xims_box}{$goxims_content}{$parent_path}/" />
             <script type="text/javascript">
             function setEWProperties(sEditorName) {
