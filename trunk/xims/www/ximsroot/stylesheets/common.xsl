@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -35,6 +35,8 @@
 <xsl:param name="order" select="'asc'"/>
 <xsl:param name="defsorting">0</xsl:param>
 <xsl:param name="m" select="'e'"/>
+<xsl:param name="r"/>
+<xsl:param name="page" select="1" />
 
 <xsl:param name="printview" select="'0'"/>
 <xsl:param name="default"/>
@@ -214,6 +216,21 @@
 
 <xsl:template name="body">
     <xsl:apply-templates select="/document/context/object/body"/>
+</xsl:template>
+
+<xsl:template name="rbacknav">
+    <xsl:if test="$r != ''">
+        <input name="r" type="hidden" value="{$r}"/>
+        <input name="page" type="hidden" value="{$page}"/>
+        <input name="sb" type="hidden" value="{$sb}"/>
+        <input name="order" type="hidden" value="{$order}"/>
+    </xsl:if>
+</xsl:template>
+
+<xsl:template name="rbacknav_qs">
+    <xsl:if test="$r != ''">
+        <xsl:value-of select="concat(';sb=', $sb, ';order=', $order, ';page=', $page, ';r=', $r)"/>
+    </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

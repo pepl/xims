@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -44,6 +44,8 @@
             </table>
         <input type="hidden" name="id" value="{@id}"/>
         <input type="hidden" name="move" value="1"/>
+        <input type="hidden" name="sb" value="position"/>
+        <input type="hidden" name="order" value="desc"/>
     </form>
     <br/>
     <xsl:call-template name="canceledit"/>
@@ -55,13 +57,26 @@
 
 
 <xsl:template match="targetparents/object|target/object">
-      / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};move_browse=1;to={@id}"><xsl:value-of select="location"/></a>
+      / <a class="">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';move_browse=1;to=',@id)"/>
+              <xsl:call-template name="rbacknav_qs"/>
+            </xsl:attribute>
+            <xsl:value-of select="location"/>
+        </a>
 </xsl:template>
 
 <xsl:template match="targetchildren/object">
     <tr><td>
         <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{10*@level}" height="10"/>
-        <img src="{$ximsroot}images/icons/list_Container.gif" alt="Container" width="20" height="18"/><a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};move_browse=1;to={@id}"><xsl:value-of select="title"/></a>
+        <img src="{$ximsroot}images/icons/list_Container.gif" alt="Container" width="20" height="18"/>
+        <a>
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';move_browse=1;to=',@id)"/>
+              <xsl:call-template name="rbacknav_qs"/>
+            </xsl:attribute>
+            <xsl:value-of select="title"/>
+        </a>
     </td></tr>
 </xsl:template>
 

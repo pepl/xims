@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -228,6 +228,7 @@
                         <input class="control" name="obj_aclgrant" type="submit" value="{$i18n/l/save}"/>
                         <input name="userid" type="hidden" value="{$userid}"/>
                         <input name="id" type="hidden" value="{/document/context/object/@id}"/>
+                        <xsl:call-template name="rbacknav"/>
                       </td>
                       <td>
                         <input class="control" name="cancel" type="submit" value="{$i18n/l/cancel}"/>
