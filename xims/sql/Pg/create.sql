@@ -18,7 +18,10 @@
 -- CREATE DATABASE XIMS WITH ENCODING = 'UNICODE';
 
 -- connect to the newly created ximsdb
+
 \connect xims;
+
+SET SESSION AUTHORIZATION 'xims';
 
 -- begin transaction
 BEGIN WORK;

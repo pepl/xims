@@ -3,6 +3,8 @@
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
 
+SET SESSION AUTHORIZATION 'xims';
+
 \echo creating nested set functions, triggers and rule...
 
 --          -

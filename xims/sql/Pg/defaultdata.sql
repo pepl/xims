@@ -6,6 +6,8 @@
 -- assume that this data is LATIN1 encoded
 -- ans let psql translate it to whatever the database itself is set to
 -- (which should be UNICODE)
+
+SET SESSION AUTHORIZATION 'xims';
 SET CLIENT_ENCODING TO 'LATIN1';
 
 \echo inserting into ci_languages...
