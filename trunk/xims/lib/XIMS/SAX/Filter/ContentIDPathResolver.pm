@@ -22,7 +22,6 @@ sub new {
 
     if ( not exists $self->{RelToSite} ) {
         $self->{RelToSite} = XIMS::RESOLVERELTOSITEROOTS() eq '1' ? 1 : 0;
-        $self->{RelToSite} = XIMS::RESOLVERELTOSITEROOTS() eq '1' ? 1 : 0;
     }
 
     return $self;
@@ -40,23 +39,30 @@ sub start_element {
 }
 
 sub end_element {
-    my $self = shift;
+    my ($self, $element) = @_;
 
     if ( defined $self->{got_to_resolve} and defined $self->{document_id} and $self->{document_id} =~ /^[0-9]+$/ ) {
         # replace the document_id contained in the current element with the corresponding path
+        my $id;
+        if ( $element->{LocalName} eq 'id' or $element->{LocalName} eq 'content_id' ) {
+            $id = 'id';
+        }
+        else {
+            $id = 'document_id';
+        }
         my $path;
         if ( $self->{RelToSite} ) {
             # If you have symlinks from Apache's docroot to the corresponding objects below XIMS::PUBROOT_URL()
             # see Config.pm for more info
-            $path .= $self->{Provider}->location_path_relative( document_id => $self->{document_id} );
+            $path = $self->{Provider}->location_path_relative( $id => $self->{document_id} );
         }
         elsif ( exists $self->{NonExport} ) {
             # Used for resolving document_ids in the management interface, like DepartmentRoot event edit for example
-            $path .= $self->{Provider}->location_path( document_id => $self->{document_id} );
+            $path = $self->{Provider}->location_path( $id => $self->{document_id} );
         }
         else {
             # Used to resolve the document_ids during exports
-            $path .= XIMS::PUBROOT_URL() . $self->{Provider}->location_path( document_id => $self->{document_id} );
+            $path = XIMS::PUBROOT_URL() . $self->{Provider}->location_path( $id => $self->{document_id} );
         }
         $self->SUPER::characters( { Data => $path } );
         $self->{document_id} = undef;
