@@ -29,28 +29,28 @@ XIMS Installation Guide
 1) Unpack the distribution to /usr/local:
 
     [root@host local]# cd /usr/local
-    [root@host local]# tar xzpvf xims-X.Y.tar.gz
-    [root@host local]# ln -s xims-X.Y xims
+    [root@host local]# tar xzpvf xims-X.Y.Z.tar.gz
+    [root@host local]# ln -s xims-X.Y.Z xims
 
     X and Y represent the major and minor version numbers of your
     XIMS package.
-   
+
     In case you are forced to install under a different path, say
     "/opt/webapps/" do the following:
 
-    [root@host local]# cd /opt/webapps
-    [root@host webapps]# tar xzpvf xims-X.Y.tar.gz
-    [root@host webapps]# ln -s xims-X.Y xims
+        [root@host local]# cd /opt/webapps
+        [root@host webapps]# tar xzpvf xims-X.Y.Z.tar.gz
+        [root@host webapps]# ln -s xims-X.Y.Z xims
 
-    Set the environment variable XIMS_PREFIX to "/opt/webapps": 
+        Set the environment variable XIMS_PREFIX to "/opt/webapps":
 
-    [root@host local]# XIMS_PREFIX='/opt/webapps';export XIMS_PREFIX
-   
-    if you have a sh-like shell (sh, ksh, bash, zsh) or
+        [root@host local]# XIMS_PREFIX='/opt/webapps';export XIMS_PREFIX
 
-    [root@host local]# setenv XIMS_PREFIX '/opt/webapps'
+        if you have a sh-like shell (sh, ksh, bash, zsh) or
 
-    on a csh-like shell (csh, tcsh).
+        [root@host local]# setenv XIMS_PREFIX '/opt/webapps'
+
+        on a csh-like shell (csh, tcsh).
 
 2) Install the latest tidy binary (http://sourceforge.net/projects/tidy)
 
@@ -95,7 +95,7 @@ XIMS Installation Guide
         customizations after finishing "make install". For example,
         you could activate a WYSIWYG-Editor for editing documents there.
 
-    3.4) (Re)start the apache server. Check if it prints warnings or errors.  
+    3.4) (Re)start the apache server. Check if it prints warnings or errors.
 
     3.5) Run the test suite
 
@@ -105,8 +105,9 @@ XIMS Installation Guide
         the debug.log. If that does not help, feel free to contact us at
         the addresses quoted at the end of this document.
 
-4) If the installation went fine so far, login to XIMS at 
-   http://host/goxims/defaultbookmark as user 'xgu' or user 'admin'
+4) If the installation went fine so far, login to XIMS at
+   http://host/goxims/defaultbookmark as user 'xgu' (pw: xgu) or user
+   'admin' (pw: _adm1nXP).
 
 Please actually read the file README.
 
