@@ -72,6 +72,8 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'VLibraryItem', 0, 1, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
        VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
+       VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 0, 1, 0 );
 
 \echo inserting into ci_data_formats...
 
@@ -153,6 +155,9 @@ INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'PPS', 'application/vnd.ms-powerpoint', 'pps' );
 INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( nextval('ci_data_formats_id_seq'), 'VLibrary', 'application/x-container' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'DocBookXML', 'text/xml', 'dbk' );
+
 
 \echo inserting into ci_mime_type_aliases...
 
