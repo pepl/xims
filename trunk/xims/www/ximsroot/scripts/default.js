@@ -21,8 +21,8 @@ function genericWindow(url) {
 function previewWindow(url) {
     newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=800,height=600,screenX=10,screenY=10" );
 }
+
 function openDocWindow(topic) {
     docWindow = window.open( "/goxims/content/xims/xims-doku/users-reference.dkb#" + escape(topic), "displayWindow","resizable=yes,scrollbars=yes,width=800,height=480,screenX=100,screenY=300" );
 }
-
 
