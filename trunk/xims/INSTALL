@@ -26,7 +26,9 @@ XIMS Installation Guide
       You can install them for your source build PostgreSQL version using
       a command like the following:
 
-      [root@host tablefunc]# psql -u postgres <tablefunc.sql
+      [root@host tablefunc]# make
+      [root@host tablefunc]# make install
+      [root@host tablefunc]# psql -U postgres xims <tablefunc.sql
 
       If you are using a packaged version of PostgreSQL, you will very likely
       find a postgresql-contrib package for your distribution which you
@@ -76,11 +78,11 @@ XIMS Installation Guide
 
         [root@host local] cd xims && perl Makefile.PL
 
-    3.2) Run make to check for Perl module dependencies
+    3.2) Run 'make' to check for Perl module dependencies
 
         [root@host xims] make
 
-    3.3) Run make install to start XIMS installation
+    3.3) Run 'make install' to start XIMS installation
 
         [root@host xims] make install
 
