@@ -69,7 +69,8 @@ XIMS Installation Guide
         that this will update the the most essential XIMS config options
         only. It is recommended to take a look at
         /usr/local/xims/lib/XIMS/Config.pm for further config
-        customizations after finishing "make install".
+        customizations after finishing "make install". For example,
+        you could activate a WYSIWYG-Editor for editing documents there.
 
     3.4) Run the test suite
 
@@ -80,7 +81,8 @@ XIMS Installation Guide
         of this document.
 
 4) If the installation went fine so far, you now can fire up Apache and
-    login to XIMS at http://host/goxims/defaultbookmark
+    login to XIMS at http://host/goxims/defaultbookmark as user 'xgu' or
+    user 'admin'
 
 Please actually read the file README.
 
