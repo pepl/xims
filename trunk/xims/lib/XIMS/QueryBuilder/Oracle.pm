@@ -115,7 +115,7 @@ sub build {
                 my @temp;
                 foreach my $field ( @{$fieldstolookin} ) {
                     next if lc($field) eq 'body'; # no LIKE statements with CLOBS...
-                    push (@temp, "LOWER($_) LIKE '%" . lc($search->[$i]) . "%'");
+                    push (@temp, "LOWER($field) LIKE '%" . lc($search->[$i]) . "%'");
                 }
                 $search->[$i] = $bol . "(" . join(" OR ", @temp) . ")";
             }
