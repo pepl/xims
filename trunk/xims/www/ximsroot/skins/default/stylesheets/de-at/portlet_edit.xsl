@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 # Copyright (c) 2002-2004 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -10,7 +10,7 @@
         xmlns="http://www.w3.org/1999/xhtml">
     <xsl:import href="common.xsl"/>
     <xsl:import href="../link_common.xsl"/>
-    <xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+    <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document/context/object">
 <html>
@@ -160,27 +160,31 @@
             </table>
         </td>
     </tr>
-<!--
     <tr>
-        <td>
-            Wie tief soll der Baum aufgegliedert werden?
+        <td width="250">
+            Wie tief soll der Baum durchsucht werden? (Standardmäßig 1 Ebene)
         </td>
         <td>
-            <select name="levels">
-                <option value="1"><xsl:if test="body/content/depth[@level =1]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>1</option>
-                <option value="2"><xsl:if test="body/content/depth[@level =2]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>2</option>
-                <option value="3"><xsl:if test="body/content/depth[@level =3]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>3</option>
-                <option value="4"><xsl:if test="body/content/depth[@level =4]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>4</option>
-                <option value="5"><xsl:if test="body/content/depth[@level =5]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>5</option>
-                <option value="6"><xsl:if test="body/content/depth[@level =6]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>6</option>
-                <option value="7"><xsl:if test="body/content/depth[@level =7]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>7</option>
-                <option value="8"><xsl:if test="body/content/depth[@level =8]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>8</option>
-                <option value="9"><xsl:if test="body/content/depth[@level =9]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>9</option>
-                <option value="10"><xsl:if test="body/content/depth[@level =10]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>10</option>
-            </select><xsl:text> Level</xsl:text>
+            <select name="depth">
+                <option value="2"><xsl:if test="body/content[depth =2]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>2</option>
+                <option value="3"><xsl:if test="body/content[depth =3]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>3</option>
+                <option value="4"><xsl:if test="body/content[depth =4]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>4</option>
+                <option value="5"><xsl:if test="body/content[depth =5]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>5</option>
+            </select><xsl:text> Ebenen</xsl:text>
+        </td>
+        <td>
+            <input name="f_depth" type="radio" value="true">
+              <xsl:if test="body/content/depth != ''">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input><xsl:value-of select="$i18n/l/Yes"/>
+            <input name="f_depth" type="radio" value="false">
+              <xsl:if test="body/content/depth = ''">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input><xsl:value-of select="$i18n/l/No"/>
         </td>
     </tr>
--->
     <tr>
         <td width="250">
             Filtere die neuesten

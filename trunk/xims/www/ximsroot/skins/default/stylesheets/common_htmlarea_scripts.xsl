@@ -35,6 +35,7 @@
 
     <style type="text/css">@import url(<xsl:value-of select="$ximsroot"/>htmlarea/htmlarea.css);</style>
     <script type="text/javascript">
+        var origbody = null;
         var editor = null;
         function initEditor() {
           // create an editor for the "body" textbox
@@ -81,6 +82,10 @@
           // load the stylesheet used by our CSS plugin configuration
           editor.config.pageStyle = &apos;@import url(<xsl:value-of select="concat($ximsroot,$defaultcss)"/>);&apos;;
           editor.config.baseURL = &apos;<xsl:choose><xsl:when test="$edit = '1'"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/></xsl:otherwise></xsl:choose>&apos;
+          editor.config.imgPrevURL = &apos;<xsl:value-of select="concat($xims_box,$goxims_content,'/')"/>;&apos;
+          editor.config.imageURL = &apos;<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;style=htmlareaimage;otfilter=Image&apos;
+          editor.config.linkURL = &apos;<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;style=htmlarealink&apos;
+          editor.config.hideSomeButtons( " fontname fontsize ");
           editor.generate();
         }
     </script>

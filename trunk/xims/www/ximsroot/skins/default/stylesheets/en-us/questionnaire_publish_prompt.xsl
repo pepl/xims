@@ -4,7 +4,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
     <!-- $Id$ -->
     <xsl:import href="common.xsl"/>
-    <xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+    <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
     <xsl:param name="id"/>
 
     <xsl:template match="/document/context/object">
