@@ -17,29 +17,25 @@
 </xsl:template>
 
 <xsl:template match="/document/context/object">
-<html>
-  <head>
-    <title><xsl:value-of select="title"/> - XML - XIMS</title>
-    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-  </head>
-  <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
-    <xsl:call-template name="header"/>
-    <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-      <tr>
-        <td bgcolor="#ffffff" colspan="2">
-          <pre>
-            <xsl:apply-templates select="body"/>
-          </pre>
-        </td>
-      </tr>
-    </table>
-    <table align="center" width="98.7%" class="footer">
-        <xsl:call-template name="user-metadata"/>
-        <xsl:call-template name="footer"/>
-    </table>
-  </body>
-</html>
+    <html>
+        <xsl:call-template name="head_default"/>
+        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+            <xsl:call-template name="header"/>
+            <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
+                <tr>
+                    <td bgcolor="#ffffff" colspan="2">
+                        <pre>
+                            <xsl:apply-templates select="body"/>
+                        </pre>
+                    </td>
+                </tr>
+            </table>
+            <table align="center" width="98.7%" class="footer">
+                <xsl:call-template name="user-metadata"/>
+                <xsl:call-template name="footer"/>
+            </table>
+        </body>
+    </html>
 </xsl:template>
 
 </xsl:stylesheet>

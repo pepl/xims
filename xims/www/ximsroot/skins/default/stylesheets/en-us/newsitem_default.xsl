@@ -22,11 +22,7 @@
     
     <xsl:template match="/document/context/object">
         <html>
-            <head>
-                <title><xsl:value-of select="title"/> - NewsItem - XIMS</title>
-                <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
-            </head>
+            <xsl:call-template name="head_default"/>
             <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">                <!-- poor man's stylechooser -->
                 <xsl:choose>
                     <xsl:when test="$printview != '0'">
@@ -51,13 +47,13 @@
                             </tr>
                         </xsl:when>
                         <xsl:otherwise>
-                     <tr>
-                        <td bgcolor="#dddddd" colspan="2">
-                            <!-- should be class newslead! -->
-                            <xsl:apply-templates select="abstract"/>
-                        </td>
-                    </tr>
-                       </xsl:otherwise>
+                            <tr>
+                                <td bgcolor="#dddddd" colspan="2">
+                                    <!-- should be class newslead! -->
+                                    <xsl:apply-templates select="abstract"/>
+                                </td>
+                            </tr>
+                        </xsl:otherwise>
                     </xsl:choose>
                     <tr>
                         <td bgcolor="#ffffff" colspan="2">
@@ -66,7 +62,8 @@
                     </tr>
                     <tr>
                         <td valign="top" width="40%" style="border:1px solid;">
-                            <p><b>Document Links</b></p>                            <table>
+                            <p><b>Document Links</b></p>                            
+                            <table>
                                 <xsl:if test="$m='e' and user_privileges/create">
                                     <tr>
                                         <td colspan="2">
@@ -190,8 +187,7 @@
                                 <form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
                                     <input type="hidden" name="del_prompt" value="1"/>
                                     <input type="hidden" name="id" value="{@id}"/>
-                                    <input
-                                           type="image" 
+                                    <input type="image" 
                                            name="del{@id}" 
                                            src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" 
                                            border="0" 
@@ -273,8 +269,7 @@
                                 <form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
                                     <input type="hidden" name="del_prompt" value="1"/>
                                     <input type="hidden" name="id" value="{@id}"/>
-                                    <input
-                                           type="image" 
+                                    <input type="image" 
                                            name="del{@id}" 
                                            src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" 
                                            border="0" 

@@ -5,18 +5,16 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/TR/xhtml1/strict">
 
     <xsl:import href="common.xsl"/>
-    <xsl:output method="xml" 
-                encoding="iso-8859-1" 
-                media-type="text/html" 
-                doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
-                doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
-                indent="no"
-    />
+    <xsl:output method="xml" encoding="iso-8859-1" 
+        media-type="text/html" 
+        doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" 
+        doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
+        indent="no"/>
+    
     <xsl:param name="section">0</xsl:param>
     <xsl:param name="section-view">false</xsl:param>
     <xsl:param name="_uri" select="concat($goxims_content,$absolute_path)"/>
@@ -29,12 +27,7 @@
 
     <xsl:template match="/document/context/object">
         <html>
-            <head>
-                <title><xsl:value-of select="title"/> - simple DocBook XML - XIMS</title>
-                <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-                <base href="{$xims_box}{$goxims_content}{$absolute_path}" />
-            </head>
+            <xsl:call-template name="head_default"/>
             <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
                 <xsl:call-template name="header"/>
                 <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
@@ -264,7 +257,8 @@
                         <td align="right">
                             <xsl:choose>
                                 <xsl:when test="$docbookroot/article/section[$section +1]">
-                                Next: <a href="{$_uri}?section={$section +1};section-view=true;">
+                                    Next: 
+                                    <a href="{$_uri}?section={$section +1};section-view=true;">
                                         <xsl:value-of select="$docbookroot/article/section[$section +1]/title"/>
                                     </a>
                                 </xsl:when>
@@ -272,7 +266,8 @@
                                     &#160;
                                 </xsl:otherwise>
                             </xsl:choose>
-                        </td></tr>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </xsl:if>
@@ -330,9 +325,9 @@
 
     <!-- seems correct for sdocbook --> 
     <xsl:template match="email">
-      <a href="mailto:{.}">
+        <a href="mailto:{.}">
             <xsl:value-of select="."/>
-      </a>
+        </a>
     </xsl:template>
 
     <xsl:template match="programlisting">
@@ -411,25 +406,24 @@
     
     <xsl:template match="tgroup">
         <table>
-        <xsl:if test="../@pgwide=1">
-            <xsl:attribute name="width">100%</xsl:attribute>
-        </xsl:if>
-        <xsl:attribute name="border">0</xsl:attribute>
+            <xsl:if test="../@pgwide=1">
+                <xsl:attribute name="width">100%</xsl:attribute>
+            </xsl:if>
+            <xsl:attribute name="border">0</xsl:attribute>
 
-        <xsl:apply-templates select="thead"/>
-        <xsl:apply-templates select="tbody"/>
-        <xsl:apply-templates select="tfoot"/>
+            <xsl:apply-templates select="thead"/>
+            <xsl:apply-templates select="tbody"/>
+            <xsl:apply-templates select="tfoot"/>
 
-        <xsl:if test=".//footnote">
-            <tbody class="footnotes">
-                <tr>
-                    <td colspan="{@cols}">
-                        <xsl:apply-templates select=".//footnote" 
-                                             mode="table.footnote.mode"/>
-                    </td>
-                </tr>
-            </tbody>
-        </xsl:if>
+            <xsl:if test=".//footnote">
+                <tbody class="footnotes">
+                    <tr>
+                        <td colspan="{@cols}">
+                            <xsl:apply-templates select=".//footnote" mode="table.footnote.mode"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </xsl:if>
         </table>
     </xsl:template>
 
@@ -553,7 +547,6 @@
                     <xsl:otherwise>0</xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
-
         </xsl:if>
 
         <xsl:element name="{$cellgi}">
@@ -605,16 +598,14 @@
         <xsl:choose>
             <xsl:when test="$entry/@colname">
                 <xsl:variable name="colname" select="$entry/@colname"/>
-                <xsl:variable name="colspec"
-                              select="$entry/ancestor::tgroup/colspec[@colname=$colname]"/>
+                <xsl:variable name="colspec" select="$entry/ancestor::tgroup/colspec[@colname=$colname]"/>
                 <xsl:call-template name="colspec.colnum">
                     <xsl:with-param name="colspec" select="$colspec"/>
                 </xsl:call-template>
             </xsl:when>
             <xsl:when test="$entry/@namest">
                 <xsl:variable name="namest" select="$entry/@namest"/>
-                <xsl:variable name="colspec"
-                              select="$entry/ancestor::tgroup/colspec[@colname=$namest]"/>
+                <xsl:variable name="colspec" select="$entry/ancestor::tgroup/colspec[@colname=$namest]"/>
                 <xsl:call-template name="colspec.colnum">
                     <xsl:with-param name="colspec" select="$colspec"/>
                 </xsl:call-template>
@@ -623,8 +614,7 @@
             <xsl:otherwise>
                 <xsl:variable name="pcol">
                     <xsl:call-template name="entry.ending.colnum">
-                        <xsl:with-param name="entry"
-                                        select="$entry/preceding-sibling::*[1]"/>
+                        <xsl:with-param name="entry" select="$entry/preceding-sibling::*[1]"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of select="$pcol + 1"/>
@@ -638,16 +628,14 @@
         <xsl:choose>
             <xsl:when test="$entry/@colname">
                 <xsl:variable name="colname" select="$entry/@colname"/>
-                <xsl:variable name="colspec"
-                              select="$entry/ancestor::tgroup/colspec[@colname=$colname]"/>
+                <xsl:variable name="colspec" select="$entry/ancestor::tgroup/colspec[@colname=$colname]"/>
                 <xsl:call-template name="colspec.colnum">
                     <xsl:with-param name="colspec" select="$colspec"/>
                 </xsl:call-template>
             </xsl:when>
             <xsl:when test="$entry/@nameend">
                 <xsl:variable name="nameend" select="$entry/@nameend"/>
-                <xsl:variable name="colspec"
-                              select="$entry/ancestor::tgroup/colspec[@colname=$nameend]"/>
+                <xsl:variable name="colspec" select="$entry/ancestor::tgroup/colspec[@colname=$nameend]"/>
                 <xsl:call-template name="colspec.colnum">
                     <xsl:with-param name="colspec" select="$colspec"/>
                 </xsl:call-template>
@@ -656,8 +644,7 @@
             <xsl:otherwise>
                 <xsl:variable name="pcol">
                     <xsl:call-template name="entry.ending.colnum">
-                        <xsl:with-param name="entry"
-                                        select="$entry/preceding-sibling::*[1]"/>
+                        <xsl:with-param name="entry" select="$entry/preceding-sibling::*[1]"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of select="$pcol + 1"/>
@@ -674,8 +661,7 @@
             <xsl:when test="$colspec/preceding-sibling::colspec">
                 <xsl:variable name="prec.colspec.colnum">
                     <xsl:call-template name="colspec.colnum">
-                        <xsl:with-param name="colspec"
-                                        select="$colspec/preceding-sibling::colspec[1]"/>
+                        <xsl:with-param name="colspec" select="$colspec/preceding-sibling::colspec[1]"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of select="$prec.colspec.colnum + 1"/>
@@ -691,14 +677,12 @@
 
         <xsl:variable name="scol">
             <xsl:call-template name="colspec.colnum">
-                <xsl:with-param name="colspec"
-                                select="$entry/ancestor::tgroup/colspec[@colname=$namest]"/>
+                <xsl:with-param name="colspec" select="$entry/ancestor::tgroup/colspec[@colname=$namest]"/>
             </xsl:call-template>
         </xsl:variable>
         <xsl:variable name="ecol">
             <xsl:call-template name="colspec.colnum">
-                <xsl:with-param name="colspec"
-                                select="$entry/ancestor::tgroup/colspec[@colname=$nameend]"/>
+                <xsl:with-param name="colspec" select="$entry/ancestor::tgroup/colspec[@colname=$nameend]"/>
             </xsl:call-template>
         </xsl:variable>
         <xsl:value-of select="$ecol - $scol + 1"/>
@@ -815,8 +799,7 @@
             <sup>
                 <xsl:text>[</xsl:text>
                 <a name="{$name}" href="{$href}">
-                    <xsl:apply-templates select="ancestor::footnote"
-                                         mode="footnote.number"/>
+                    <xsl:apply-templates select="ancestor::footnote" mode="footnote.number"/>
                 </a>
                 <xsl:text>] </xsl:text>
             </sup>
@@ -828,8 +811,7 @@
 
     <xsl:template name="process.footnotes">
         <xsl:variable name="footnotes" select=".//footnote"/>
-        <xsl:variable name="table.footnotes"
-                      select=".//table//footnote|.//informaltable//footnote"/>
+        <xsl:variable name="table.footnotes" select=".//table//footnote|.//informaltable//footnote"/>
 
         <!-- Only bother to do this if there's at least one non-table footnote -->
         <xsl:if test="count($footnotes)>count($table.footnotes)">
@@ -850,8 +832,7 @@
         </div>
     </xsl:template>
 
-    <xsl:template match="informaltable//footnote|table//footnote" 
-                  mode="process.footnote.mode">
+    <xsl:template match="informaltable//footnote|table//footnote" mode="process.footnote.mode">
     </xsl:template>
 
     <xsl:template match="footnote" mode="table.footnote.mode">
