@@ -1,32 +1,36 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN"
 "http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
 <article>
     <title>Managing Multiple Sites with XIMS</title>
 
-  <articleinfo>
-      <author>
-        <firstname>Michael</firstname>
-        <surname>Kröll</surname>
-        <affiliation>
-          <orgname>University of Innsbruck</orgname>
-        </affiliation>
-        <authorblurb>
-          <para>
-          <email>michael.kroell@uibk.ac.at</email>
-          </para>
-        </authorblurb>
-      </author>
-    <revhistory>
-      <revision>
-        <revnumber>$Revision$</revnumber>
-        <date>$Date$</date>
-      </revision>
-    </revhistory>
-    <legalnotice>
-      <para>Copyright © 2003</para>
-    </legalnotice>
-  </articleinfo>
+    <articleinfo>
+        <author>
+            <firstname>Michael</firstname>
+
+            <surname>Kröll</surname>
+
+            <affiliation>
+                <orgname>University of Innsbruck</orgname>
+            </affiliation>
+
+            <authorblurb>
+                <para><email>michael.kroell@uibk.ac.at</email></para>
+            </authorblurb>
+        </author>
+
+        <revhistory>
+            <revision>
+                <revnumber>$Revision$</revnumber>
+
+                <date>$Date$</date>
+            </revision>
+        </revhistory>
+
+        <legalnotice>
+            <para>Copyright © 2003</para>
+        </legalnotice>
+    </articleinfo>
 
     <section>
         <title>XIMS Publishing Architecture</title>
@@ -144,5 +148,9 @@ AxCacheDir /axkit_cache/foo.tld
 &#60;/Files&#62;</programlisting>
 
         <para>By editing and publishing <filename>/foo/stylesheets/default.xsl</filename> and the other stylesheets, the two sites can be skinned differently.</para>
+
+        <para>Do not forget to set the <literal>SiteRoot URL</literal> to the respective URL of the sites and the value of <literal>XIMS::Config::ResolveRelToSiteRoots()</literal>
+        in <filename>Config.pm</filename> and <filename>$resolvereltositeroots in www/ximsroot/stylesheets/config.xsl</filename> to &#39;1&#39; if you are
+        serving different XIMS sites using virtual hosting like shown in this example.</para>
     </section>
 </article>

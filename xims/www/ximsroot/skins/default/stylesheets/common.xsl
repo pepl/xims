@@ -443,13 +443,23 @@
     <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
-    <xsl:variable name="published_path">
+    <xsl:variable name="published_path_base">
         <xsl:choose>
-            <xsl:when test="local-name(..) = 'children'">
-                <xsl:value-of select="concat($absolute_path,'/',location)"/>
+            <xsl:when test="$resolvereltositeroots = 1">
+                <xsl:value-of select="$absolute_path_nosite"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$absolute_path"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="published_path">
+        <xsl:choose>
+            <xsl:when test="local-name(..) = 'children'">
+                <xsl:value-of select="concat($published_path_base,'/',location)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$published_path_base"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
