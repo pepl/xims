@@ -9,6 +9,8 @@ use strict;
 use Apache;
 use Apache::URI;
 use Apache::Constants qw(:common);
+use Apache::Cookie;
+use URI::Escape;
 
 use XIMS;
 use XIMS::DataProvider;
@@ -62,8 +64,23 @@ sub handler {
         XIMS::Debug( 3, "no session cookie found " );
         $cSession = login_user( $r, $dp );
         unless ( $cSession ) {
-            my $pathinfo = $r->path_info();
-            $r->err_header_out('Set-Cookie', "askpath=$pathinfo; path=/" );
+            my $askedpath = $r->path_info();
+            my $askedquery = Apache::URI->parse( $r )->query();
+            
+            if ( $askedquery !~ m/dologin/ ) {
+                XIMS::Debug( 6, "setting client cookie 'askedquery' to value '$askedquery'" );
+                Apache::Cookie->new($r,
+                                    -name    =>  'askedquery', 
+                                    -value   =>  uri_escape( $askedquery ), 
+                                    -path    =>  '/'
+                                   )->bake();
+                XIMS::Debug( 6, "setting client cookie 'askedpath' to value '$askedpath'" );
+                Apache::Cookie->new($r,
+                                    -name    =>  'askedpath', 
+                                    -value   =>  $askedpath, 
+                                    -path    =>  '/'
+                                   )->bake();
+            }
         }
         $login = 1;
     }
@@ -115,8 +132,13 @@ sub get_session_cookie {
     my $r = shift;
 
     my $cookiename = "session"; # should this get from the config
-    my $session = ( ( $r->header_in("Cookie") || "" ) =~ /$cookiename=([^\;]+)/ )[0];
-    XIMS::Debug( 6, "found session '$session'" );
+    my $session;
+    my %cookies = Apache::Cookie->fetch();
+    my $cookie = $cookies{ $cookiename } if %cookies;
+    if( $cookie ) {
+        $session = $cookie->value();
+        XIMS::Debug( 6, "found session '$session' in client cookie '$cookiename'" );
+    }
 
     XIMS::Debug( 5, "done" );
     return $session || "";
@@ -150,10 +172,14 @@ sub set_session_cookie {
     if ( length $session ) {
         XIMS::Debug( 4, "session string found: $session" );
         my $cookiename = "session"; # should this get from the config
+        
+        XIMS::Debug( 6, "setting client cookie '$cookiename' to value '$session'" );
         # need expires? if it not set, the cookie gets lost after browser shutdown
-        my $cookiestring = "$cookiename=$session; path=/";
-        XIMS::Debug( 6, "sending cookie string to client: " . $cookiestring );
-        $r->err_header_out( "Set-Cookie", $cookiestring );
+        Apache::Cookie->new($r,
+                            -name    =>  $cookiename, 
+                            -value   =>  $session, 
+                            -path    =>  '/'
+                           )->bake();       
         $retval = 1;
     }
     else {
@@ -184,11 +210,11 @@ sub unset_session_cookie {
     my $r = shift;
     my $cookiename = "session"; # should this get from the config
 
-    # need expires? if it not set, the cookie gets lost after browser shutdown
-    my $cookiestring = "$cookiename= ; path=/";
-    XIMS::Debug( 6, "sending cookie string to client: " . $cookiestring );
-    $r->pnotes( "ximsCookie", $cookiestring );
-    $r->err_header_out( "Set-Cookie" => $cookiestring );
+    # not needed anymore? no other references to 'ximsCookie' found!
+    # $r->pnotes( "ximsCookie", "$cookiename= ; path=/" );
+
+    XIMS::Debug( 6, "removing client cookie '$cookiename'" );
+    Apache::Cookie->new($r, -name =>  $cookiename, -path => '/', -expires => '-1Y', )->bake();
 
     XIMS::Debug( 5, "done" );
     return 1;
@@ -466,13 +492,12 @@ sub test_for_logout {
 ##
 #
 # SYNOPSIS
-#    redirToDefault($r, $dp, $userid, $cookie)
+#    redirToDefault($r, $dp, $userid)
 #
 # PARAMETERS
 #    $r: request-object
 #    $dp: dataprovider
 #    $userid
-#    $cookie
 #
 # RETURNVALUES
 #    none
@@ -485,25 +510,49 @@ sub redirToDefault {
     my $r = shift;
     my $dp = shift;
     my $userid = shift;
-    my $cookie = shift;
 
     #warn "r: $r dp: $dp uid: $userid ";
     if ( $r and $dp and $userid ) {
         XIMS::Debug( 4, "redirecting user " );
         my $pathinfo;
         # here we should find the root path for the user (the department for example)
-        my $askpath = ( ($r->header_in("Cookie") || "" ) =~ /askpath=([^\;]+)/ )[0];
-        if ( length $askpath and $askpath ne "/") {
-            XIMS::Debug( 6, "user previously requested path ", $askpath );
-            # user requested an explicit path
-            $pathinfo = $askpath;
-            # and let the client forget about the requested path
+        
+        # check for previous (before login) path and query stored in cookie
+        my %cookies = Apache::Cookie->fetch();
+        my $cookie;
+        my $askedpath;
+        my $askedquery;
 
-            # $r->err_header_out( "Set-Cookie","askpath=; path=/" );
+        # check if a path was asked before login prompt
+        $cookie = $cookies{ askedpath } if %cookies;
+        $askedpath = $cookie->value() if $cookie;
+        if ( length $askedpath and $askedpath ne "/") {
+            XIMS::Debug( 5, "user previously requested path $askedpath");
+            # user requested an explicit path
+            $pathinfo = $askedpath;
+
+            # let the client forget about the requested path (by setting expire time in the past)
+            $cookies{ askedpath }->expires("-1Y");
+            $cookies{ askedpath }->bake();
+
+            # check for queryparameter in query before login prompt
+            $cookie = $cookies{ askedquery } if %cookies;
+            $askedquery = uri_unescape( $cookie->value() ) if $cookie;
+            if ( length $askedquery ) {
+                XIMS::Debug( 5, "user previously requested with query parameters $askedquery" );
+                
+                # remove query paramters (by setting expire time in the past) 
+                $cookies{ askedquery }->expires("-1Y");
+                $cookies{ askedquery }->bake();
+            }
+            else {
+                $askedquery = undef;
+            }
         }
         else {
             # check the default bookmark for the current user:
             $pathinfo = "/defaultbookmark";
+            XIMS::Debug( 5, "user did not previously request a path, so using defaultbookmark $pathinfo" );
         }
 
         my $uri = Apache::URI->parse( $r );
@@ -511,14 +560,15 @@ sub redirToDefault {
         $uri->query(undef);
 
         $uri->path( XIMS::GOXIMS() . $pathinfo );
+        # add possible paramters of query before login
+        $uri->query($askedquery) if $askedquery;
+        
         XIMS::Debug( 6, "redirecting to " . $uri->unparse() );
 
         $r->status_line( "302 Found" );
-        # $r->header_out( "Set-Cookie", $cookie ) if length $cookie;
         $r->header_out( Location => $uri->unparse );
         $r->send_http_header( "text/html" );
     }
-
     XIMS::Debug( 5, "done" );
 }
 
