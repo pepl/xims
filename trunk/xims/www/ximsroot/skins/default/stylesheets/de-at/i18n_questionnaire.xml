@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Joachim Kargl (Kargl.cc) -->
 <l>
 	<!-- Begin Questionnaire -->
 	<Question>Frage</Question>
 	<Answer>Antwort</Answer>
 	<Answers>Antworten</Answers>
 	<Comment>Kommentar</Comment>
+	<Intro>Einleitung</Intro>
+	<Exit>Endnachricht</Exit>
 	<Alignment>Ausrichtung</Alignment>
 	<Alignement>Ausrichtung</Alignement>
 	<Type>Typ</Type>
