@@ -34,10 +34,10 @@ sub new {
     my $class = ref( $proto ) || $proto;
     my %args = @_;
 
-    my $self = bless {}, $class; 
+    my $self = bless {}, $class;
 
     if ( scalar( keys(%args)) > 0 ) {
-        if ( defined( $args{id} ) or defined( $args{mime_type} ) or defined( $args{name} ) ) {
+        if ( defined( $args{id} ) or defined( $args{mime_type} ) or defined( $args{name} ) or defined( $args{suffix} ) ) {
             my $real_dt = $self->data_provider->getDataFormat( %args );
             if ( defined( $real_dt )) {
                $self->data( %{$real_dt} );
@@ -64,7 +64,7 @@ sub new {
 }
 
 sub create {
-    my $self = shift; 
+    my $self = shift;
     my $id = $self->data_provider->createDataFormat( $self->data());
     $self->id( $id );
     return $id;
@@ -81,8 +81,8 @@ sub delete {
        return undef;
     }
 }
-            
-sub update {	
+
+sub update {
     my $self = shift;
     return $self->data_provider->updateDataFormat( $self->data() );
 }
