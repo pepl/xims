@@ -1843,7 +1843,7 @@ sub event_search {
         my $qbr = $qb->build( [qw(title abstract keywords body)] );
         if ( defined $qbr->{criteria} and length $qbr->{criteria} ) {
             my @objects = $ctxt->object->find_objects_granted( criteria => $qbr->{criteria},
-                                                               rowlimit => $rowlimit,
+                                                               limit => $rowlimit,
                                                                offset => $offset,
                                                                properties => $qbr->{properties}, # not used currently
                                                                order => $qbr->{order},

@@ -52,7 +52,7 @@ sub event_default {
 
     # fill $ctxt->objectlist with the 5 last modified objects readable by the user
     my $object = XIMS::Object->new( User => $ctxt->session->user() );
-    my @lmobjects = $object->find_objects_granted( rowlimit => 5 );
+    my @lmobjects = $object->find_objects_granted( limit => 5 );
     $ctxt->objectlist( \@lmobjects );
 
     # fill $ctxt->userobjectlist with the 5 objects most recently created or modified by the user
@@ -78,7 +78,7 @@ sub event_default {
     my $qb = $qbdriver->new( { search => "u:".$ctxt->session->user->id(), allowed => q{u:\w\döäüßÖÄÜß} } );
     my $qbr = $qb->build();
     my @lmuobjects = $object->find_objects_granted( criteria => $qbr->{criteria},
-                                                    rowlimit => 5,
+                                                    limit => 5,
                                                   );
     $ctxt->userobjectlist( \@lmuobjects );
 }

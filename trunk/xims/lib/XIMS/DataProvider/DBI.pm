@@ -6,7 +6,7 @@ package XIMS::DataProvider::DBI;
 use strict;
 use XIMS;
 use XIMS::Names;
-use DBIx::SQLEngine 0.008;
+use DBIx::SQLEngine 0.014;
 use XIMS::DataProvider;
 use vars qw( %Tables %Names %PropertyAttributes %PropertyRelations $VERSION);
 #use Data::Dumper;
@@ -461,46 +461,50 @@ sub get_object_id {
     my $self = shift;
     my %args = @_;
     my @ids;
+    my %param;
+    $param{limit} = delete $args{limit};
+    $param{offset} = delete $args{offset};
+    $param{order} = delete $args{order};
+
     my $criteria = \%args;
     $criteria->{'ci_content.document_id'} = \'ci_documents.id';
 
     my $data = $self->{dbh}->fetch_select( table   =>  'ci_documents, ci_content',
                                            columns =>  'ci_documents.id',
-                                           criteria => $criteria );
+                                           criteria => $criteria,
+                                           %param);
     foreach my $row ( @{$data} ) {
         push @ids, $row->{id};
     }
     return \@ids;
 }
-# '
-# Unfortunately, Oracle needs that strange ROWNUM subquery mechanism to limit the number of rows returned.
-# and with Oracle, conditions testing for ROWNUM values greater than a positive integer are always false!
-# Therefore we cannot use the abstract model of $self->get_object_id() but have to build the SQL on our own :-/
+
 sub find_object_id {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    my @ids;
-    my $criteria = $args{criteria};
-    $args{orderby} ||= 'ci_content.last_modification_timestamp DESC';
+    return unless (defined $args{criteria} and length $args{criteria});
 
-    my $query = "SELECT ci_documents.id FROM ci_documents, ci_content WHERE ci_content.document_id = ci_documents.id";
-    $query .= " AND $criteria" if (defined $criteria and length $criteria);
-    $query .= " ORDER BY " . $args{orderby} . " ";
-    if ( exists $args{rowlimit} and $args{rowlimit} > 0 ) {
-        $args{offset} ||= '0';
-        if ( $self->{RDBMSClass} eq 'Oracle' ) {
-            $query = "SELECT id FROM ( SELECT id, ROWNUM AS position FROM (" . $query . ")) WHERE position > " . $args{offset} . " AND position <= " . ( $args{offset} + $args{rowlimit} );
+    my %param;
+    $param{order} = delete $args{order};
+    $param{order} ||= 'ci_content.last_modification_timestamp DESC';
 
-        }
-        elsif ( $self->{RDBMSClass} eq 'Pg' ) {
-            $query = $query . " LIMIT " . $args{rowlimit} . " OFFSET " . $args{offset};
-        }
-        # other special binds in 'elsif's here as needed
+    $param{criteria} = delete $args{criteria};
+    $param{criteria} = 'ci_content.document_id = ci_documents.id AND ' . $param{criteria};
+
+    $param{limit} = delete $args{limit};
+    $param{offset} = delete $args{offset};
+
+    if ( scalar keys %args > 0 ) {
+        my ( $sql, @params ) = $self->_sqlwhere_from_hashgroup( %args );
+        $param{criteria} = [ $param{criteria} . ' AND ' . $sql, @params ];
     }
 
-    #warn "query: $query";
-    my $data = $self->{dbh}->fetch_select( sql => $query );
+    my $data = $self->{dbh}->fetch_select( table   => 'ci_documents, ci_content',
+                                           columns => 'ci_documents.id',
+                                           %param );
+
+    my @ids;
     foreach my $row ( @{$data} ) {
         push @ids, $row->{id};
     }
@@ -511,12 +515,24 @@ sub find_object_id_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    my $criteria = $args{criteria};
-    return unless length $criteria;
+    return unless (defined $args{criteria} and length $args{criteria});
+
+    my %param;
+    $param{criteria} = delete $args{criteria};
+    $param{criteria} = 'ci_content.document_id = ci_documents.id AND ' . $param{criteria};
+
+    delete $args{order};
+    delete $args{limit};
+    delete $args{offset};
+
+    if ( scalar keys %args > 0 ) {
+        my ( $sql, @params ) = $self->_sqlwhere_from_hashgroup( %args );
+        $param{criteria} = [ $param{criteria} . ' AND ' . $sql, @params ];
+    }
 
     my $data = $self->{dbh}->fetch_select( table   =>  'ci_documents, ci_content',
                                            columns =>  'count(ci_documents.id) AS COUNT',
-                                           criteria => 'ci_content.document_id = ci_documents.id AND ' . $criteria );
+                                           %param );
     return $data->[0]->{count};
 }
 
@@ -588,6 +604,22 @@ sub get_descendant_infos {
     my @rv = ( @{$data}[0]->{count}, @{$data}[0]->{max} ); # NOTE: assumes that there is one content_child per document;
                                                            #       may have to be changed in future!
     return  \@rv ;
+}
+
+
+# mini request factory to allow compatibility of 'property => value' conditions
+# currently used by find_object_ids and find_object_id_count
+sub _sqlwhere_from_hashgroup {
+    my $self = shift;
+    my %args = @_;
+
+    my %conditions;
+    foreach my $k ( keys %args ) {
+        $conditions{XIMS::Names::get_URI( 'Object', $k )} = $args{$k};
+    }
+    my $crit = $self->crit_get( \%conditions );
+
+    return $crit->sql_where();
 }
 
 ##
