@@ -10,6 +10,9 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:param name="hd">1</xsl:param>
+<xsl:param name="page" select="1" />
+<xsl:variable name="pagesperpagenav" select="10" />
+<xsl:variable name="totalpages" select="ceiling(/document/context/object/children/@totalobjects div $searchresultrowlimit)"/>
 
 <!-- save those strings in variables as they are called per object in object/children -->
 <xsl:variable name="l_location" select="$i18n/l/location"/>
@@ -73,6 +76,87 @@
             <a href="javascript:openDocWindow('defaultsorting')" class="doclink">(?)</a>
         </td>
     </tr>
+</xsl:template>
+
+<xsl:template name="pagenav">
+    <xsl:param name="totalitems"/>
+    <xsl:param name="itemsperpage"/>
+    <xsl:param name="currentpage"/>
+    <xsl:param name="url"/>
+
+    <xsl:if test="$totalpages &gt; 1">
+        <div id="pagenav">
+            <div>
+                <xsl:if test="$currentpage &gt; 1">
+                    <a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
+                </xsl:if>
+                <xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
+                    |
+                </xsl:if>
+                <xsl:if test="$currentpage &lt; $totalpages">
+                    <a href="{$url};page={number($currentpage)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
+                </xsl:if>
+            </div>
+            <div>
+                <xsl:call-template name="pageslinks">
+                    <xsl:with-param name="page" select="1"/>
+                    <xsl:with-param name="current" select="$currentpage"/>
+                    <xsl:with-param name="total" select="$totalpages"/>
+                    <xsl:with-param name="url" select="$url"/>
+                </xsl:call-template>
+            </div>
+        </div>
+    </xsl:if>
+</xsl:template>
+
+<xsl:template name="pageslinks">
+    <xsl:param name="page"/>
+    <xsl:param name="current"/>
+    <xsl:param name="total"/>
+    <xsl:param name="url"/>
+
+    <xsl:choose>
+        <xsl:when test="$page = $current">
+            <strong><a href="{$url};page={$page}"><xsl:value-of select="$page" /></a></strong>
+        </xsl:when>
+        <xsl:otherwise>
+            <a href="{$url};page={$page}"><xsl:value-of select="$page" /></a>
+        </xsl:otherwise>
+    </xsl:choose>
+
+    <xsl:text> </xsl:text>
+
+    <xsl:if test="$page &lt; $total and $page &lt; ($current + $pagesperpagenav)">
+        <xsl:call-template name="pageslinks">
+            <xsl:with-param name="page" select="$page + 1" />
+            <xsl:with-param name="current" select="$current" />
+            <xsl:with-param name="total" select="$total" />
+            <xsl:with-param name="url" select="$url" />
+        </xsl:call-template>
+    </xsl:if>
+
+    <xsl:if test="$page = ($current + $pagesperpagenav)">
+    ...
+    </xsl:if>
+
+</xsl:template>
+
+<xsl:template name="pagenavtable">
+    <xsl:variable name="navurl"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:variable>
+    <xsl:if test="$totalpages &gt; 1">
+        <table style="margin-left:5px; margin-right:10px; margin-top: 10px; margin-bottom: 0px; width: 99%; padding: 3px; border: thin solid #C1C1C1; background: #F9F9F9 font-size: small;" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <xsl:call-template name="pagenav">
+                        <xsl:with-param name="totalitems" select="/document/context/object/children/@totalobjects"/>
+                        <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
+                        <xsl:with-param name="currentpage" select="$page"/>
+                        <xsl:with-param name="url" select="$navurl"/>
+                    </xsl:call-template>
+                </td>
+            </tr>
+        </table>
+    </xsl:if>
 </xsl:template>
 
 <xsl:template name="childrentable">
