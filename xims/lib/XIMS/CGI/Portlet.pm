@@ -234,7 +234,7 @@ sub generate_body {
     $body .= "</content>\n";
     $body .= "<filter>\n";
     if ( $self->param( "filternews" ) ) {
-        $body .= qq{<new>1</new>\n};
+        $body .= qq{<marked_new>1</marked_new>\n};
     }
     if ( $self->param( "filterpublished" ) ) {
         $body .= qq{<published>1</published>\n};
