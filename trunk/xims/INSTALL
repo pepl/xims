@@ -57,7 +57,7 @@ XIMS Installation Guide
 
         on a csh-like shell (csh, tcsh).
 
-2) Install the latest tidy binary (http://sourceforge.net/projects/tidy)
+2) Install the latest tidy binary (http://tidy.sourceforge.net/)
 
    Install it to /usr/local/bin/tidy. If you install it to another
    location, change the tidy settings during the installation process
