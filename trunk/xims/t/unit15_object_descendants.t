@@ -28,8 +28,6 @@ my $testsite = XIMS::SiteRoot->new(
                                   );
 
 $testsite->create();
-# siteroots have their document_id as department_id
-$testsite->department_id( $testsite->document_id() );
 ok ( $testsite->update() );
 
 my $depth = 5;
