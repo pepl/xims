@@ -2,7 +2,7 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 package XIMS::XML;
-# $Id$ 
+# $Id$
 
 use vars qw( $VERSION @ISA );
 use strict;
@@ -39,4 +39,3 @@ sub new {
 
 
 1;
-
