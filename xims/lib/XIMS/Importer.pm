@@ -142,7 +142,16 @@ sub import {
     if ( $parent->children( location => $object->location, marked_deleted => undef ) ) {
         # overwrite the existing document, if we are told to do so
         if ( $updateexisting ) {
-            my $oldobject = XIMS::Object->new( path => $parent->location_path() . '/' . $object->location() );
+            my $oldobject = XIMS::Object->new( path => $parent->location_path() . '/' . $object->location(), marked_deleted => undef );
+
+            # check for update priv
+            my $privmask = $self->user->object_privmask( $oldobject );
+            if ( not ($privmask and $privmask & XIMS::Privileges::WRITE()) ) {
+                XIMS::Debug( 3, "missing update privileges for object '" . $oldobject->location_path() . "'" );
+                return undef
+            }
+
+            # copy content data
             my %olddata = $oldobject->data();
             my %newdata = $object->data();
             foreach my $key ( keys %olddata ) {
