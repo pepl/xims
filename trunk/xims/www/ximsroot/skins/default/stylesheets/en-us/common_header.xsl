@@ -19,10 +19,10 @@
         <xsl:param name="no_navigation_at_all">false</xsl:param>
 
         <!-- start 'app graphic' table -->
-        <table width="100%" border="0" background="{$ximsroot}skins/{$currentskin}/images/tablebg_1st_row.png" bgcolor="#eeeeee" cellpadding="3" cellspacing="0" vspace="0" hspace="0" nowrap="nowrap">
+        <table width="100%" style="margin-top: 2px;" bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="0" vspace="0" hspace="0" nowrap="nowrap">
             <tr>
-                <td>
-                    <h1 style="font-size: 14pt; color:#004080; margin-bottom: 5px"><xsl:value-of select="title"/></h1>
+                <td valign="bottom">
+                    <h1 style="font-size: 14pt; color:#004080; margin-bottom: 2px"><xsl:value-of select="title"/></h1>
                 </td>
                 <td align="right" valign="top">
                     <a href="http://xims.uibk.ac.at/"><img src="{$ximsroot}images/xims_logo.png"/></a>
@@ -117,7 +117,7 @@
     </xsl:template>
 
     <xsl:template name="subheader_noncontent">
-        <table border="0" cellspacing="0" cellpadding="0" width="100%" style="margin-left: 5px;">
+        <table border="0" cellspacing="0" cellpadding="0" width="100%" style="margin-left: 5px; padding-right: 5px;">
             <tr>
                 <td align="center" width="758" background="{$ximsroot}skins/{$currentskin}/images/subheader-generic_bg.png">
                     <!--<xsl:call-template name="message"/>-->
@@ -128,7 +128,7 @@
     </xsl:template>
 
     <xsl:template name="subheader_nonavigation">
-        <table border="0" cellspacing="0" cellpadding="5" width="100%" style="margin-left: 5px;">
+        <table border="0" cellspacing="0" cellpadding="5" width="100%" style="margin-left: 5px; padding-right: 5px;">
             <tr>
                 <td align="center" background="{$ximsroot}skins/{$currentskin}/images/subheader-generic_bg.png">
                     <xsl:call-template name="message"/>
@@ -144,7 +144,7 @@
         <xsl:param name="nooptions">false</xsl:param>
         <xsl:param name="nostatus">false</xsl:param>
 
-        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+        <table border="0" cellspacing="0" cellpadding="0" width="100%" style="padding-right: 5px;">
             <tr>
                 <xsl:call-template name="header.arrownavigation"/>
                 <xsl:choose>
