@@ -91,7 +91,7 @@
         </xsl:copy>
     </xsl:template>
 
-   
+
   <xsl:template name="exitredirectform">
         <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="GET">
             <input class="control" name="exit" type="submit" value="Done"/>
@@ -185,6 +185,14 @@
                 <xsl:text>&#160;</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="head_default">
+        <head>
+            <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
+            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        </head>
     </xsl:template>
 
 </xsl:stylesheet>
