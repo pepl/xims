@@ -68,10 +68,10 @@ if ( $args{n} ) {
 }
 
 if ( $object->add_departmentlinks( @children ) ) {
-    print "Sucessfully added departmentlinks to '$path'.\n";
+    print "Successfully added Departmentlinks to '$path'.\n";
 }
 else {
-    die "Could not add departmentlinks.\n";
+    die "Could not add Departmentlinks.\n";
 }
 
 exit 0;
