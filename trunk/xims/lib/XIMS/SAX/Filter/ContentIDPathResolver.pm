@@ -40,11 +40,14 @@ sub end_element {
     if ( defined $self->{got_to_resolve} and defined $self->{document_id} and $self->{document_id} =~ /^[0-9]+$/ ) {
         # replace the document_id contained in the current element with the corresponding path
         my $id;
-        if ( $element->{LocalName} eq 'id' or $element->{LocalName} eq 'content_id' ) {
-            $id = 'id';
+        if ( $element->{LocalName} eq 'document_id'
+             or $element->{LocalName} eq 'department_id'
+             or $element->{LocalName} eq 'parent_id'
+             or $element->{LocalName} eq 'symname_to_doc_id' ) {
+            $id = 'document_id';
         }
         else {
-            $id = 'document_id';
+            $id = 'id';
         }
         my $path;
         if ( exists $self->{NonExport} ) {
