@@ -82,8 +82,19 @@ sub DocFSExportStylesheet()       { 'document_export.xsl' }
 sub AutoindexExportStylesheet()   { 'export_auto_index.xsl' }
 
 # fallback in the absence of defaultbookmark
-sub DefaultStartingPath()         { '/xims' }                  # If users have no defaultbookmark set, they will be redirected to /$goxims/$contentinterface/$defaultstartingpath
-                                                               # Value must be the path to an existing XIMS content object
+sub DefaultStartingPath()         { '/xims' }   # If users have no defaultbookmark set, they will be redirected to /$goxims/$contentinterface/$defaultstartingpath
+                                                # Value must be the path to an existing XIMS content object
+
+sub WYSIWYGEditor()               { '' }        # Currently, 'htmlarea' and 'wepro' are implemented.
+                                                # If you configure WYSIWYGEditor(), you have to install the corresponding editor files to XIMSRoot(). For example, download HTMLArea 3 CVS from
+                                                # http://sourceforge.net/projects/itools-htmlarea/ and extract it to XIMSRoot() so that htmlarea.js is available at $XimsRoot()/htmlarea/htmlarea.js.
+                                                # The files for 'wepro' are available at http://www.ektron.com/ewebeditpro.cfm?doc_id=1989
+                                                # Unpack them to XIMSRoot()/ewebedit/
+                                                #
+                                                # WYSIWYGEditor() should be considered as a system wide default an fall back value. Users should be able to set their preference via the /user/ interface (to be developed)
+
+
+
 
 
 # ****************************************
