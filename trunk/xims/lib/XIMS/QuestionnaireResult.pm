@@ -89,8 +89,7 @@ sub get_answer_count {
     my $self = shift;
     my $questionnaire_id = shift;
     my $question_id = shift;
-    my $answer = XIMS::decode(shift);
-    
+    my $answer = XIMS::decode( shift );
     my $sql = "SELECT count(*) AS answercount FROM ci_questionnaire_results WHERE document_id = ? AND question_id = ? AND answer= ? ";
     my $answer_count = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id, $question_id, $answer ] );
 
@@ -117,8 +116,16 @@ sub get_answers {
     my $self = shift;
     my $questionnaire_id = shift;
     my $question_id = shift;
+    my $answered = shift;
+    
+    if ( defined $answered ) {
+        $answered = "AND answer = 'ANSWERED'";
+    }
+    else {
+        $answered = '';
+    }
 
-    my $sql = "SELECT answer, count(answer) AS count FROM ci_questionnaire_results WHERE document_id = ? AND question_id = ? GROUP BY answer";
+    my $sql = "SELECT answer, count(answer) AS count FROM ci_questionnaire_results WHERE document_id = ? AND question_id = ? $answered GROUP BY answer";
     my $answers = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $questionnaire_id, $question_id] );
     foreach my $answer_text ( @{$answers} ) {
         ${$answer_text}{'answer'} = XIMS::encode( ${$answer_text}{'answer'} );
@@ -151,11 +158,8 @@ sub get_last_answer {
     my $questionnaire_id = shift;
     my $tan = shift;
 
-    my $sql = "SELECT max(to_number(question_id,'999999')) AS lid FROM ci_questionnaire_results WHERE document_id = ? AND tan = ? AND answer = 'ANSWERED'";
+    my $sql = "SELECT coalesce(max(to_number(question_id,'999999')),0) AS lid FROM ci_questionnaire_results WHERE document_id = ? AND tan = ? AND answer = 'ANSWERED'";
     my $last_answered_question = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id, $tan ] );
-    if ( !( $last_answered_question) ) {
-        $last_answered_question = 0;
-    }
     return $last_answered_question;
 }
 
