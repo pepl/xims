@@ -141,14 +141,33 @@ sub create {
     }
 }
 
+
 sub delete {
     my ($self, %args) = @_;
-    #warn "delete called " . Dumper( $args{properties} ) . "\n";
+    #warn "delete called " . Dumper( $args{properties} ) . "\n"
+    #                      . Dumper( $args{conditions} ) . "\n";
     my ($table, $columns) = $self->tables_and_columns( $args{properties} );
-    my $crit = $self->crit( $args{conditions} );
-    return $self->{dbh}->do_delete( table     => $table->[0],
-                                    criteria  => $crit);
+
+    if ( ($table->[0]  eq "ci_documents") and ($self->{RDBMSClass} eq 'Pg') ) {
+        # this is the ugly workaround for object deletion on Pg :-\    
+	if ( defined $args{conditions}->{'document.id'}
+             and     $args{conditions}->{'document.id'} > 1 ) {
+             my $query = 'SELECT ci_del_tree(' . $args{conditions}->{'document.id'}
+                                               . ');';
+             return $self->{dbh}->fetch_select( sql => $query );
+         }
+         else {
+           return undef;
+         }
+    }
+    else {
+        # "generic" deletion
+        my $crit = $self->crit( $args{conditions} );
+        return $self->{dbh}->do_delete( table     => $table->[0],
+                                        criteria  => $crit );
+    }
 }
+
 
 sub update {
     my ($self, %args) = @_;
