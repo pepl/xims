@@ -391,9 +391,11 @@ sub new {
 
 sub stylesheet {
     my ($self, $object) = @_;
+    my $stylename = lc( $object->object_type->fullname() );
+    $stylename =~ s/::/_/;
     my $stylesheet = XIMS::XIMSROOT()
                      . '/stylesheets/exporter/export_'
-                     . lc( $object->object_type->name() )
+                     . $stylename
                      . '.xsl';
 
     return $stylesheet;
@@ -401,7 +403,7 @@ sub stylesheet {
 
 sub classname {
     my ($self, $object) = @_;
-    my $classname = 'XIMS::Exporter::' . $object->object_type->name();
+    my $classname = 'XIMS::Exporter::' . $object->object_type->fullname();
 
     return $classname;
 }
@@ -1091,7 +1093,7 @@ sub generate_dom {
 
 
         XIMS::Debug( 2, "no SAX controller!" ) unless $controller; # should never happen.
-        my $generator = XIMS::SAX::Generator::Exporter->new();
+        my $generator = $self->set_sax_generator();
         $controller->set_generator( $generator );
 
         my $ctxt = $self->{AppContext};
@@ -1121,6 +1123,28 @@ sub generate_dom {
     }
 
     return $dom;
+}
+
+
+##
+#
+# SYNOPSIS
+#    $self->set_sax_generator();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $retval : instance of XIMS::SAX::Generator::Exporter
+#
+# DESCRIPTION
+#    Allows Exporter subclasses to use other SAX Generators than the default XIMS::SAX::Generator::Exporter
+#
+sub set_sax_generator {
+    XIMS::Debug( 5, "called" );
+    my $self  = shift;
+
+    return XIMS::SAX::Generator::Exporter->new();
 }
 
 
