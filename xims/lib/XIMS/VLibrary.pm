@@ -72,11 +72,39 @@ sub vlsubjectinfo {
     return $sidata;
 }
 
+sub vlsubjectinfo_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+
+    return $self->vlsubjectinfo() if $user->admin();
+
+    my $sql = 'SELECT s.name, s.id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY s.name, s.id';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
+
+    return $sidata;
+}
+
 sub vlauthorinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
     my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(c.id) AS object_count FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . ' GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
+
+    return $sidata;
+}
+
+sub vlauthorinfo_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+
+    return $self->vlauthorinfo() if $user->admin();
+
+    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(c.id) AS object_count FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type';
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
 
     return $sidata;
@@ -92,6 +120,20 @@ sub vlpublicationinfo {
     return $sidata;
 }
 
+sub vlpublicationinfo_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+
+    return $self->vlpublicationinfo() if $user->admin();
+
+    my $sql = 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, count(c.id) AS object_count FROM cilib_publicationmap m, cilib_publications p, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.publication_id = p.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY p.id, p.name, p.volume, p.isbn, p.issn';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
+
+    return $sidata;
+}
+
 sub vlitems_bysubject {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -102,13 +144,30 @@ sub vlitems_byauthor {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vlitems_byproperty( 'author', @_ );
-
 }
 
 sub vlitems_bypublication {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vlitems_byproperty( 'publication', @_ );
+}
+
+sub vlitems_bysubject_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->_vlitems_byproperty( 'subject', filter_granted => 1, @_ );
+}
+
+sub vlitems_byauthor_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->_vlitems_byproperty( 'author', filter_granted => 1, @_ );
+}
+
+sub vlitems_bypublication_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->_vlitems_byproperty( 'publication', filter_granted => 1, @_ );
 }
 
 sub _vlobjects {
@@ -134,6 +193,8 @@ sub _vlitems_byproperty {
     my $self = shift;
     my $property = shift;
     my %args = @_;
+    my $key = 'document_id';
+    my $filter_granted = delete $args{filter_granted};
 
     my $propertyid = delete $args{$property."_id"};
     return undef unless $propertyid;
@@ -145,13 +206,30 @@ sub _vlitems_byproperty {
     my @ids = map { $_->{id} } @{$iddata};
     return () unless scalar @ids;
 
+    if ( $filter_granted and not $self->User->admin() ) {
+        my @candidate_data = $self->data_provider->getObject( document_id => \@ids,
+                                                              properties => [ 'document.id', 'content.id' ] );
+        my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
+        @ids = $self->__filter_granted_ids( candidate_ids => \@candidate_ids );
+        return () unless scalar( @ids ) > 0;
+        $key = 'id';
+    }
+
     # should be grepped from event/resource type specific list in XIMS::Names
     my @default_properties = grep { $_ ne 'body' and $_ ne 'binfile' }  @{XIMS::Names::property_interface_names( 'Object' )};
 
-    my @data = $self->data_provider->getObject( document_id => \@ids, properties => \@default_properties );
+    my @data = $self->data_provider->getObject( $key => \@ids, properties => \@default_properties );
     my @objects = map { XIMS::VLibraryItem->new->data( %{$_} ) } @data;
 
     return @objects;
+}
+
+sub _userpriv_where_clause {
+    my $self = shift;
+    my $user = shift;
+    my @role_ids = ( $user->role_ids(), $user->id() );
+
+    return " AND c.id = o.content_id AND o.grantee_id IN (" . join(',', @role_ids) . ") AND o.privilege_mask > 0 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = c.id AND grantee_id = " . $user->id . " AND privilege_mask = 0) IS NULL";
 }
 
 1;
