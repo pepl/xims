@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
     <xsl:output method="html" encoding="ISO-8859-1"/>
-    
+
     <xsl:template match="/document">
         <xsl:apply-templates select="context/object"/>
     </xsl:template>
@@ -23,14 +23,14 @@
                     <xsl:with-param name="createwidget">false</xsl:with-param>
                 </xsl:call-template>
 
-                <!-- here the portlet description should be shown -->
+                <!-- he portlet description should be shown here -->
 
                 <xsl:choose>
                     <xsl:when test="children/object/level">
-                        <xsl:call-template name="leveledchildrentable"/>            
+                        <xsl:call-template name="leveledchildrentable"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:call-template name="childrentable"/>            
+                        <xsl:call-template name="childrentable"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 <table align="center" width="98.7%" class="footer">
@@ -64,7 +64,7 @@
                     <xsl:apply-templates select="abstract"/>
                     <xsl:apply-templates select="body"/>
                 </table>
-                
+
                 </td>
             </tr>
     </xsl:template>
@@ -76,20 +76,23 @@
     </xsl:template>
 
     <xsl:template name="infos">
+        <xsl:variable name="data_format_id">
+            <xsl:value-of select="data_format_id"/>
+        </xsl:variable>
         <tr>
             <td width="33%">
-                <b>Location</b>
+                <strong>Location</strong>
             </td>
             <td width="33%">
                 <xsl:choose>
                     <xsl:when test="owned_by_fullname">
-                        <b>Owner Name</b>
+                        <strong>Owner Name</strong>
                     </xsl:when>
                     <xsl:when test="last_modified_by_fullname">
-                        <b>Last Modifier Name</b>
+                        <strong>Last Modifier Name</strong>
                     </xsl:when>
                     <xsl:when test="created_by_fullname">
-                        <b>Creator Name</b>
+                        <strong>Creator Name</strong>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:text> </xsl:text>
@@ -99,10 +102,10 @@
             <td width="33%">
                 <xsl:choose>
                     <xsl:when test="last_modification_timestamp">
-                        <b>Last Modification Time</b>
+                        <strong>Last Modification Time</strong>
                     </xsl:when>
                     <xsl:when test="creation_time">
-                        <b>Creation Time</b>
+                        <strong>Creation Time</strong>
                     </xsl:when>
 
                     <xsl:otherwise>
@@ -115,7 +118,7 @@
             <td>
                 <xsl:choose>
                     <!-- this should test against the object type name -->
-                    <xsl:when test="object_type = 13">
+                    <xsl:when test="/document/data_formats/data_format[@id=$data_format_id]/name ='URL'">
                         <a href="{location}"><xsl:apply-templates select="location"/></a>
                     </xsl:when>
                     <xsl:otherwise>
@@ -176,21 +179,3 @@
     </xsl:template>
 </xsl:stylesheet>
 
-
-<!-- Keep this comment at the end of the file
-Local variables:
-mode: xml
-sgml-omittag:nil
-sgml-shorttag:nil
-sgml-namecase-general:nil
-sgml-general-insert-case:lower
-sgml-minimize-attributes:nil
-sgml-always-quote-attributes:t
-sgml-indent-step:4
-sgml-indent-data:t
-sgml-parent-document:nil
-sgml-exposed-tags:nil
-sgml-local-catalogs:nil
-sgml-local-ecat-files:nil
-End:
--->

@@ -61,6 +61,7 @@ sub event_default {
     return 0 if $self->SUPER::event_default( $ctxt );
 
     $self->expand_portletinfo( $ctxt );
+    $ctxt->properties->content->getformatsandtypes( 1 );
 
     return 0;
 }
