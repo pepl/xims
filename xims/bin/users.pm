@@ -3,8 +3,10 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package users;
+
 use strict;
 use vars qw( $VERSION @params @ISA);
+
 use XIMS::CGI;
 use XIMS::User;
 use XIMS::UserPriv;
