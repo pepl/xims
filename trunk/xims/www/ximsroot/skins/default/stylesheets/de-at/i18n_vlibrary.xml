@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l>
+    <subject_list>Themenliste</subject_list>
+    <author_list>Autorenliste</author_list>
+    <publication_list>Publikationsliste</publication_list>
+    <subjects>Themen</subjects>
+    <author>Autor</author>
+    <authors>Autoren</authors>
+    <publications>Publikationen</publications>
+    <item>Eintrag</item>
+    <items>Einträge</items>
+    <create_new_vlibraryitem>Neues VLibraryItem erstellen</create_new_vlibraryitem>>
+    <last_modified_at>zuletzt geändert am</last_modified_at>
+</l>
