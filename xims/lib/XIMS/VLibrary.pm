@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2003 The XIMS Project.
+# Copyright (c) 2002-2004 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -14,8 +14,6 @@ use XIMS::VLibSubject;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Folder');
-
-use Data::Dumper;
 
 ##
 #
@@ -64,25 +62,6 @@ sub vlpublications {
     return $self->_vlobjects( 'Publication' );
 }
 
-sub _vlobjects {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $type = shift;
-
-    my $sql = 'select m.'.$type.'_id AS ID from cilib_'.$type.'map m, ci_documents d where d.id = m.document_id and d.parent_id = ' . $self->document_id();
-    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
-    my @ids = map { $_->{id} } @{$iddata};
-    return () unless scalar @ids;
-
-    my $method = "getVLib$type";
-    my @data = $self->data_provider->$method( id => \@ids );
-    my $class = "XIMS::VLib$type";
-    my @objects = map { $class->new->data( %{$_} ) } @data;
-
-    return @objects;
-}
-
-
 sub vlsubjectinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -116,63 +95,55 @@ sub vlpublicationinfo {
 sub vlitems_bysubject {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-    my %args = @_;
-
-    my $subjectid = delete $args{subject_id};
-    return undef unless $subjectid;
-
-    # think of fetching the whole object data here for performance
-
-    my $sql = 'SELECT d.id AS id FROM cilib_subjectmap m, cilib_subjects s, ci_documents d WHERE d.ID = m.document_id AND m.subject_id = s.ID AND s.id = ?';
-    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $subjectid ], %args );
-
-    my @ids = map { $_->{id} } @{$iddata};
-    return () unless scalar @ids;
-
-    # should be grepped from event/resource type specific list in XIMS::Names
-    my @default_properties = grep { $_ ne 'body' and $_ ne 'binfile' }  @{XIMS::Names::property_interface_names( 'Object' )};
-
-    my @data = $self->data_provider->getObject( document_id => \@ids, properties => \@default_properties );
-    my @objects = map { XIMS::VLibraryItem->new->data( %{$_} ) } @data;
-
-    return @objects;
+    return $self->_vlitems_byproperty( 'subject', @_ );
 }
 
 sub vlitems_byauthor {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-    my $authorid = shift;
+    return $self->_vlitems_byproperty( 'author', @_ );
 
-    return undef unless $authorid;
-
-    # think of fetching the whole object data here for performance
-
-    my $sql = 'SELECT d.id AS id FROM cilib_authormap m, cilib_authors a, ci_documents d WHERE d.ID = m.document_id AND m.author_id = a.ID AND a.id = ?';
-    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $authorid ] );
-
-    my @ids = map { $_->{id} } @{$iddata};
-
-    # should be grepped from event/resource type specific list in XIMS::Names
-    my @default_properties = grep { $_ ne 'body' and $_ ne 'binfile' }  @{XIMS::Names::property_interface_names( 'Object' )};
-
-    my @data = $self->data_provider->getObject( document_id => \@ids, properties => \@default_properties );
-    my @objects = map { XIMS::VLibraryItem->new->data( %{$_} ) } @data;
-
-    return @objects;
 }
-
 
 sub vlitems_bypublication {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-    my $publicationid = shift;
+    return $self->_vlitems_byproperty( 'publication', @_ );
+}
 
-    return undef unless $publicationid;
+sub _vlobjects {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $type = shift;
 
-    my $sql = 'SELECT d.id AS id FROM cilib_publicationmap m, cilib_publications a, ci_documents d WHERE d.ID = m.document_id AND m.publication_id = a.ID AND a.id = ?';
-    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $publicationid ] );
+    my $sql = 'select m.'.$type.'_id AS ID from cilib_'.$type.'map m, ci_documents d where d.id = m.document_id and d.parent_id = ' . $self->document_id();
+    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
+    my @ids = map { $_->{id} } @{$iddata};
+    return () unless scalar @ids;
+
+    my $method = "getVLib$type";
+    my @data = $self->data_provider->$method( id => \@ids );
+    my $class = "XIMS::VLib$type";
+    my @objects = map { $class->new->data( %{$_} ) } @data;
+
+    return @objects;
+}
+
+sub _vlitems_byproperty {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $property = shift;
+    my %args = @_;
+
+    my $propertyid = delete $args{$property."_id"};
+    return undef unless $propertyid;
+
+    # think of fetching the whole object data here for performance
+    my $sql = 'SELECT d.id AS id FROM cilib_'.$property.'map m, cilib_'.$property.'s p, ci_documents d WHERE d.ID = m.document_id AND m.'.$property.'_id = p.ID AND p.id = ? AND d.parent_id = ?';
+    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $propertyid, $self->document_id() ], %args );
 
     my @ids = map { $_->{id} } @{$iddata};
+    return () unless scalar @ids;
 
     # should be grepped from event/resource type specific list in XIMS::Names
     my @default_properties = grep { $_ ne 'body' and $_ ne 'binfile' }  @{XIMS::Names::property_interface_names( 'Object' )};
