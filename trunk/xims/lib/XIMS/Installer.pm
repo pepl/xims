@@ -158,11 +158,11 @@ sub parse_httpd_conf {
         }
 
         # ZEYA: room for improvement here:
-        #       if the XIMS_PREFIX changes, the installer wont update these two...
-        if ( /^\s*Include\s+["|']?\/\S+\/xims\/conf\/ximshttpd.conf["|']?/) {
+        #       if XIMS_HOME changes, the installer won't update these two...
+        if ( /^\s*Include\s+["|']?\/\S+\/conf\/ximshttpd.conf["|']?/) {
             $self->{ximshttpdconf} = 1;
         }
-        if ( /^\s*PerlRequire\s+["|']?\/\S+\/xims\/conf\/ximsstartup.pl["|']?/) {
+        if ( /^\s*PerlRequire\s+["|']?\/\S+\/conf\/ximsstartup.pl["|']?/) {
             $self->{ximsstartuppl} = 1;
         }
 
