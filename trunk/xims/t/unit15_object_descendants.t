@@ -1,4 +1,4 @@
-use Test::More tests => 19;
+use Test::More tests => 27;
 use strict;
 use lib "../lib", "lib";
 use XIMS;
@@ -28,7 +28,7 @@ isa_ok( $user_foo, 'XIMS::User', 'user_foo' );
 $user_foo->name( 'object_descendants_Foo' );
 $user_foo->lastname( 'object_descendants_Foo' );
 $user_foo->object_type( 0 );
-$user_foo-> system_privs_mask( 1 );
+$user_foo->system_privs_mask( 1 );
 ok( $user_foo->create(), 'create user Foo' );
 
 my $testsite = XIMS::SiteRoot->new(
@@ -41,17 +41,20 @@ my $testsite = XIMS::SiteRoot->new(
 
 isa_ok( $testsite, 'XIMS::SiteRoot' );
 
-ok ( $testsite->create(), 'create testsite') ;
+ok( $testsite->create(), 'create testsite') ;
 
-ok ( $testsite->update(), 'update testsite');
+ok( $testsite->update(), 'update testsite');
 
 my $depth = 5;
 
-ok ( _create_folder_hierarchy( $testsite, $depth ), 'create folder-hierarchy' );
+ok( _create_folder_hierarchy( $testsite, $depth ), 'create folder-hierarchy' );
 
 my @all_descendants = $testsite->descendants();
 is( scalar( @all_descendants ), $depth, 'descendants' );
 
+my $descendants_iterator = $testsite->descendants();
+is( $descendants_iterator->getLength(), $depth, 'descendants (scalar context, iterator interface)' );
+is( scalar( @all_descendants ), $descendants_iterator->getLength(), 'sanity check array-iterator interface' );
 
 my ($d_count, $levels) = $testsite->descendant_count;
 is( $d_count, scalar( @all_descendants ), 'descendant_count -- count' );
@@ -59,17 +62,23 @@ is( $levels, $depth, 'descendant_count -- levels' );
 
 my @d_adm_granted = $testsite->descendants_granted(User => $admin);
 
-is ( scalar( @d_adm_granted ), $depth, 'descendants_granted as admin (list context)' );
-isa_ok ($testsite->descendants_granted(User => $admin)
-       , 'XIMS::Object'
-       , 'descendants_granted as admin (scalar context)'
-       );
+is( scalar( @d_adm_granted ), $depth, 'descendants_granted as admin (list context)' );
+is( $testsite->descendants_granted(User => $admin)->getLength, $depth, 'descendants_granted as admin (scalar context, iterator interface)' );
 
-my @d_granted     = $testsite->descendants_granted( User => $user );
-is ( scalar( @d_granted ), $depth, 'descendants_granted as user (list context)' );
+my @d_granted          = $testsite->descendants_granted( User => $user );
+my $d_granted_iterator = $testsite->descendants_granted( User => $user );
+is( scalar( @d_granted ), $depth, 'descendants_granted as user (list context)' );
+is( $d_granted_iterator->getLength(), $depth, 'descendants_granted as user (scalar context, iterator interface)' );
+is( scalar( @d_granted ), $d_granted_iterator->getLength(), 'sanity check array-iterator interface' );
+
+is( $d_granted[0]->location(), 'testfolder1', 'first descendant granted as user is testfolder1 (array interface)' );
+is( $d_granted_iterator->getNext->location(), 'testfolder1', 'first descendant granted as user is testfolder1 (iterator interface)' );
 
 my @d_foo_granted = $testsite->descendants_granted( User => $user_foo );
-is ( scalar( @d_foo_granted ), 0, 'descendants_granted as user foo (list context)' );
+my $d_foo_granted_iterator = $testsite->descendants_granted( User => $user_foo );
+is( scalar( @d_foo_granted ), 0, 'descendants_granted as user foo (list context)' );
+is( $d_foo_granted_iterator->getLength(), 0, 'descendants_granted as user foo (scalar context, iterator interface)' );
+is( scalar( @d_foo_granted ), $d_foo_granted_iterator->getLength(), 'sanity check array-iterator interface' );
 
 ok( $testsite->delete(), 'delete testsite' );
 ok( $user_foo->delete(), 'delete user Foo' );

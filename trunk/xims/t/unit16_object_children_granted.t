@@ -1,11 +1,11 @@
-use Test::More tests => 6;
+use Test::More tests => 10;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::User;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     use_ok('XIMS::Object');
 }
 
@@ -17,12 +17,20 @@ my $o = XIMS::Object->new( id => 1 );
 isa_ok( $o, 'XIMS::Object' );
 
 my @granted_kids = $o->children_granted( User => $admin );
+my $granted_kids_iterator = $o->children_granted( User => $admin );
 cmp_ok( scalar( @granted_kids ), '>=',  1, 'found granted kids for admin' );
+cmp_ok( $granted_kids_iterator->getLength(), '>=',  1, 'found granted kids for admin (iterator interface)' );
+is( scalar( @granted_kids ), $granted_kids_iterator->getLength(), 'sanity check array-iterator interface' );
 
 @granted_kids = ();
 
 my $guest = XIMS::User->new( id => 1 );
 isa_ok( $guest, 'XIMS::User' );
 
-@granted_kids = $o->children_granted( User => $guest ); 
+@granted_kids = $o->children_granted( User => $guest );
+$granted_kids_iterator = $o->children_granted( User => $guest );
+
 cmp_ok( scalar( @granted_kids ), '>=',  1, 'found granted kids for guest' );
+cmp_ok( $granted_kids_iterator->getLength(), '>=',  1, 'found granted kids for guest (iterator interface)' );
+is( scalar( @granted_kids ), $granted_kids_iterator->getLength(), 'sanity check array-iterator interface' );
+

@@ -17,6 +17,7 @@ use XIMS::DataFormat;
 use XIMS::User;
 use XIMS::SiteRoot;
 use XIMS::Importer::Object;
+use XIMS::Iterator::Object;
 use XIMS::Text;
 use Text::Diff;
 use XIMS::AbstractClass;
@@ -239,6 +240,7 @@ sub parent {
 #
 # SYNOPSIS
 #    my @children = $object->children( [ %args ] );
+#    my $iterator = $object->children( [ %args ] );
 #
 # PARAMETER
 #    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
@@ -246,10 +248,12 @@ sub parent {
 #                                            $object->children( title => 'Welcome' )
 #
 # RETURNS
-#    @objects    : Array of XIMS::Objects
+#    @objects    : Array of XIMS::Objects (list context)
+#    $iterator   : Instance of XIMS::Iterator::Object created with the children ids (scalar context)
 #
 # DESCRIPTION
-#    Returns all children unless they are filtered by a specific object property.
+#    Returns all children of an object unless they are filtered by a specific object property.
+#    In list context an array is returned, in scalar context an iterator.
 #
 sub children {
     XIMS::Debug( 5, "called" );
@@ -257,16 +261,19 @@ sub children {
     my %args = @_;
     my @child_ids = $self->__child_ids( %args );
     return () unless scalar( @child_ids ) > 0 ;
+    return XIMS::Iterator::Object->new( \@child_ids ) unless wantarray;
+
     my @children_data = $self->data_provider->getObject( document_id => \@child_ids, %args, properties => \@Default_Properties );
     my @children = map { XIMS::Object->new->data( %{$_} ) } @children_data;
     #warn "children" . Dumper( \@children ) . "\n";
-    return wantarray ? @children : $children[0];
+    return @children;
 }
 
 ##
 #
 # SYNOPSIS
 #    my @children = $object->children_granted( [ %args ] );
+#    my $iterator = $object->children_granted( [ %args ] );
 #
 # PARAMETER
 #    $args{ User }             (optional) :  XIMS::User instance if you want to override the user already stored in $object
@@ -276,11 +283,13 @@ sub children {
 #                                            $object->children_granted( title => 'Welcome' )
 #
 # RETURNS
-#    @objects    : Array of XIMS::Objects
+#    @objects    : Array of XIMS::Objects (list context)
+#    $iterator   : Instance of XIMS::Iterator::Object created with the granted children ids (scalar context)
 #
 # DESCRIPTION
 #    Returns children granted to $args{User}. If that is not given, $object->User() will be used.
-#    Children can be filtered using object property values.
+#    Children can be filtered using object property values. In list context an array is returned,
+#    in scalar context an iterator.
 #
 sub children_granted {
     XIMS::Debug( 5, "called" );
@@ -296,6 +305,10 @@ sub children_granted {
     # SELECT d.id,c.id,location,title,object_type_id,data_format_id,privilege_mask,depth FROM ci_content c,(SELECT ci_documents.*, level depth FROM ci_documents START WITH id IN ( SELECT document_id FROM ci_content WHERE id = ?) CONNECT BY PRIOR id = parent_id AND level <= ? AND id != parent_id ORDER BY level) d,ci_object_privs_granted p,(SELECT id, level FROM ci_roles_granted START WITH grantee_id = ? CONNECT BY PRIOR id = grantee_id ORDER BY level) r WHERE c.document_id = d.id AND depth > 1 AND p.content_id = c.id AND p.content_id = c.id AND (p.grantee_id = ? OR p.grantee_id = r.id ) AND p.privilege_mask >= 1 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = c.id AND grantee_id = ? AND privilege_mask = 0) IS NULL AND marked_deleted IS NULL ORDER BY d.position
     my @child_candidate_docids = $self->__child_ids( %args );
     return () unless scalar( @child_candidate_docids ) > 0;
+    if ( not wantarray ) {
+        my @ids = $self->__get_granted_ids( doc_ids => \@child_candidate_docids, User => $user, %args );
+        return XIMS::Iterator::Object->new( \@ids, 1 );
+    }
 
     my @children = $self->__get_granted_objects( doc_ids => \@child_candidate_docids, User => $user, %args ) ;
 
@@ -373,6 +386,7 @@ sub objectroot_ancestors {
 #
 # SYNOPSIS
 #    my @descendants = $object->descendants( [ %args ] );
+#    my $iterator    = $object->descendants( [ %args ] );
 #
 # PARAMETER
 #    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
@@ -381,10 +395,13 @@ sub objectroot_ancestors {
 #    $args{ maxlevel }         (optional) :  Maxlevel of recursion, if unspecified or 0 results in no recursion limit
 #
 # RETURNS
-#    @descendants : Array of XIMS::Objects
+#    @descendants : Array of XIMS::Objects including "level" pseudo-property (list context)
+#    $iterator    : Instance of XIMS::Iterator::Object created with the descendants ids (scalar context)
 #
 # DESCRIPTION
 #    Returns all descendants unless they are filtered by a specific object property.
+#    In list context an array of the objects including a "level" pseudo-property is returned,
+#    in scalar context an iterator is returned. The objects fetched using this iterator will NOT contain that pseudo-property!
 #
 sub descendants {
     XIMS::Debug( 5, "called" );
@@ -395,9 +412,10 @@ sub descendants {
     my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id(), %args );
 
     my @doc_ids  = @{$descendant_ids_lvls->[0]};
-    my @lvls = @{$descendant_ids_lvls->[1]};
-
     return () unless scalar( @doc_ids ) > 0;
+    return XIMS::Iterator::Object->new( \@doc_ids ) unless wantarray;
+
+    my @lvls = @{$descendant_ids_lvls->[1]};
 
     my @descendants_data =  $self->data_provider->getObject( document_id => \@doc_ids,
                                                              %args,
@@ -429,6 +447,7 @@ sub descendants {
 #
 # SYNOPSIS
 #    my @descendants = $object->descendants_granted( [ %args ] );
+#    my @iterator = $object->descendants_granted( [ %args ] );
 #
 # PARAMETER
 #    $args{ User }             (optional) :  XIMS::User instance if you want to override the user already stored in $object
@@ -439,11 +458,14 @@ sub descendants {
 #    $args{ maxlevel }         (optional) :  Maxlevel of recursion, if unspecified or 0 results in no recursion limit
 #
 # RETURNS
-#    @descendants    : Array of XIMS::Objects
+#    @descendants : Array of XIMS::Objects including "level" pseudo-property (list context)
+#    $iterator    : Instance of XIMS::Iterator::Object created with the granted descendants ids (scalar context)
 #
 # DESCRIPTION
 #    Returns descendants granted to $args{User}. If that is not given, $object->User() will be used.
-#    Descendants can be filtered using object property values.
+#    Descendants can be filtered using object property values. In list context an array of the objects
+#    including a "level" pseudo-property is returned, in scalar context an iterator is returned.
+#    The objects fetched using this iterator will NOT contain that pseudo-property!
 #
 sub descendants_granted {
     XIMS::Debug( 5, "called" );
@@ -460,8 +482,12 @@ sub descendants_granted {
     my @candidate_lvls = @{$descendant_candidate_ids_lvls->[1]};
 
     return () unless scalar( @candidate_doc_ids ) > 0;
+    if ( not wantarray ) {
+        my @ids = $self->__get_granted_ids( doc_ids => \@candidate_doc_ids, User => $user, %args );
+        return XIMS::Iterator::Object->new( \@ids, 1 );
+    }
 
-    my @descendants = $self->__get_granted_objects( doc_ids => \@candidate_doc_ids, User => $user, %args ) ;
+    my @descendants = $self->__get_granted_objects( doc_ids => \@candidate_doc_ids, User => $user, %args );
     return () unless scalar( @descendants ) > 0;
 
     # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
@@ -518,6 +544,7 @@ sub descendant_count {
 #
 # SYNOPSIS
 #    my @objects = $object->find_objects( %args );
+#    my $iterator = $object->find_objects( %args );
 #
 # PARAMETER
 #    refactor!
@@ -528,7 +555,8 @@ sub descendant_count {
 #    $args{ start_from } :
 #
 # RETURNS
-#    @objects    : Array of XIMS::Objects
+#    @objects     : Array of XIMS::Objects (list context)
+#    $iterator    : Instance of XIMS::Iterator::Object created with the found ids (scalar context)
 #
 # DESCRIPTION
 #    Returns .
@@ -539,6 +567,8 @@ sub find_objects {
     my %args = @_;
     my @found_ids = $self->__find_ids( %args );
     return () unless scalar( @found_ids ) > 0 ;
+    return XIMS::Iterator::Object->new( \@found_ids, 1 ) unless wantarray;
+
     my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => \@Default_Properties );
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
 
@@ -572,6 +602,7 @@ sub find_objects_count {
 #
 # SYNOPSIS
 #    my @objects = $object->find_objects_granted( %args );
+#    my $iterator = $object->find_objects_granted( %args );
 #
 # PARAMETER
 #    refactor!
@@ -582,7 +613,8 @@ sub find_objects_count {
 #    $args{ start_from } :
 #
 # RETURNS
-#    @objects    : Array of XIMS::Objects
+#    @objects     : Array of XIMS::Objects (list context)
+#    $iterator    : Instance of XIMS::Iterator::Object created with the granted found ids (scalar context)
 #
 # DESCRIPTION
 #    Returns .
@@ -601,6 +633,7 @@ sub find_objects_granted {
 
     my @found_ids = $self->__find_ids( %args );
     return () unless scalar( @found_ids ) > 0 ;
+    return XIMS::Iterator::Object->new( \@found_ids, 1 ) unless wantarray;
 
     my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => \@Default_Properties );
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
@@ -644,26 +677,33 @@ sub find_objects_granted_count {
 sub __get_granted_objects {
     my $self = shift;
     my %args = @_;
-    my $user = delete $args{User} || $self->{User};
-    my @role_ids = ( $user->role_ids(), $user->id() );
-    my $doc_ids = delete $args{doc_ids};
-    return () unless scalar( @{$doc_ids} ) > 0;
-
-    my @candidate_data = $self->data_provider->getObject( document_id => $doc_ids,
-                                                          properties => [ 'document.id', 'content.id' ] );
-    my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
-
-    my @ids = $self->__filter_granted_ids( User => $user, candidate_ids => \@candidate_ids );
+    my @ids = $self->__get_granted_ids( %args );
     return () unless scalar( @ids ) > 0;
 
     my @data = $self->data_provider->getObject( id  => \@ids,
-                                                %args,
                                                 properties => \@Default_Properties );
 
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
 
     #warn "objects " . Dumper( \@objects ) . "\n";
     return @objects;
+}
+
+sub __get_granted_ids {
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+    my $doc_ids = delete $args{doc_ids};
+    return () unless scalar( @{$doc_ids} ) > 0;
+
+    my @candidate_data = $self->data_provider->getObject( document_id => $doc_ids,
+                                                          properties => [ 'document.id', 'content.id' ],
+                                                          %args );
+    my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
+
+    my @ids = $self->__filter_granted_ids( User => $user, candidate_ids => \@candidate_ids );
+    return () unless scalar( @ids ) > 0;
+    return @ids;
 }
 
 sub __filter_granted_ids {
@@ -1993,7 +2033,7 @@ sub balanced_string {
 
     my $retval      = undef; # return value
 
-    if ( length $CDATAstring ) {
+    if ( $CDATAstring and length $CDATAstring ) {
         my $parser = XML::LibXML->new();
         if ( exists $args{nochunk} ) {
             eval { $doc = $parser->parse_string( $CDATAstring ) };

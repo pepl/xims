@@ -1,4 +1,4 @@
-use Test::More tests => 8;
+use Test::More tests => 9;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
@@ -20,8 +20,11 @@ my @kids = $root->children();
 cmp_ok ( scalar( @kids ), '>', '0', 'rootfolder has children' );
 
 # get a specific child with the location 'xims'
-my $kid = $root->children( location => 'xims' );
-is( $kid->location(), 'xims', 'able to get the child with location \'xims\''  );
+my @kids = $root->children( location => 'xims' );
+is( $kids[0]->location(), 'xims', 'could get the child with location \'xims\' using the array interface' );
+my $kid_iterator = $root->children( location => 'xims' );
+my $kid =  $kid_iterator->getNext();
+is( $kid->location(), 'xims', 'could get the child with location \'xims\' using the iterator interface' );
 
 # create a child for 'xims'
 my $user = XIMS::User->new( id => 1 );
