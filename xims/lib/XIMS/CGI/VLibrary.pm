@@ -35,6 +35,7 @@ sub registerEvents {
           publications
           publication
           vlsearch
+          most_recent
           )
         );
 }
@@ -78,12 +79,6 @@ sub event_subject {
                                                     offset => $offset,
                                                     order => 'title'
                                                   );
-
-    #hmmm, not sure about that
-    for ( @objects ) {
-        $_->{authorgroup} = { author => [$_->vleauthors()] };
-    }
-
     $ctxt->objectlist( \@objects );
     $ctxt->properties->application->style( "objectlist" ) ;
 
@@ -111,12 +106,6 @@ sub event_author {
     my @objects = $ctxt->object->vlitems_byauthor(  author_id => $authorid,
                                                     order => 'title'
                                                  );
-
-    #hmmm, not sure about that
-    for ( @objects ) {
-        $_->{authorgroup} = { author => [$_->vleauthors()] };
-    }
-
     $ctxt->objectlist( \@objects );
     $ctxt->properties->application->style( "objectlist" ) ;
 
@@ -145,12 +134,6 @@ sub event_publication {
     my @objects = $ctxt->object->vlitems_bypublication(  publication_id => $publicationid,
                                                          order => 'title'
                                                       );
-
-    #hmmm, not sure about that
-    for ( @objects ) {
-        $_->{authorgroup} = { author => [$_->vleauthors()] };
-    }
-
     $ctxt->objectlist( \@objects );
     $ctxt->properties->application->style( "objectlist" ) ;
 
@@ -228,11 +211,6 @@ sub event_vlsearch {
                 $ctxt->session->searchresultcount( $count );
             }
 
-            for ( @objects ) {
-                bless $_, "XIMS::VLibraryItem";
-                $_->{authorgroup} = { author => [$_->vleauthors()] };
-            }
-
             $ctxt->objectlist( \@objects );
             $ctxt->properties->application->style( "objectlist" ) ;
         }
@@ -245,6 +223,17 @@ sub event_vlsearch {
         XIMS::Debug( 3, "catched improper query length" );
         $self->sendError( $ctxt, "Please keep your queries between 2 and 30 characters!" );
     }
+
+    return 0;
+}
+
+sub event_most_recent {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @objects = $ctxt->object->children_granted( limit => 5, order => 'last_modification_timestamp DESC' );
+    $ctxt->objectlist( \@objects );
+    $ctxt->properties->application->style( "objectlist" ) ;
 
     return 0;
 }

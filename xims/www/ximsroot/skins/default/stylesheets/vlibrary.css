@@ -17,13 +17,20 @@
     background-color: #fcfcff;
 }
 
+#vlchildrenlisttitle {
+    margin-bottom: -10px;
+    padding: 0px 5px 5px 0px;
+    font: bold 1.8em helvetica, arial, sans-serif;
+}
+
+#vlchildrenlist {
+    margin-top: -10px;
+}
+
 .vlchildrenlistitem {
-    position: relative;
-    left: 50%;
-    width: 600px;
-    /* Set margin to half the values of width */
-    margin-left: -300px;
     margin-top: 15px;
+    margin-left: 2px;
+    margin-right: 2px;
     padding: 5px 5px 5px 5px;
     line-height: 135%;
     border: dotted 1px #a0a0a0;
@@ -66,25 +73,7 @@
     border-right: dotted 1px #a0a0a0;
 }
 
-#vlchildrenlisttitle {
-    position: relative;
-    left: 50%;
-    width: 600px;
-    margin-left: -300px;
-    margin-bottom: -10px;
-    padding: 0px 5px 5px 0px;
-    font: bold 1.8em helvetica, arial, sans-serif;
-}
-
-#vlchildrenlist {
-    margin-left: 5px;
-}
-
 #pagenav {
-    position: relative;
-    left: 50%;
-    width: 600px;
-    margin-left: -290px;
     margin-top: 30px;
     text-align: right;
 }

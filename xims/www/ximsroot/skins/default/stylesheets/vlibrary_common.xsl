@@ -18,7 +18,7 @@
 
     <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 
-    <xsl:param name="mo" select="'subject'"/>
+    <xsl:param name="mo" />
     <xsl:param name="colms" select="3"/>
     <xsl:param name="vls"/>
     <xsl:param name="publications"/>
@@ -33,6 +33,7 @@
     <xsl:param name="publication"/>
     <xsl:param name="publication_id"/>
     <xsl:param name="publication_name"/>
+    <xsl:param name="most_recent"/>
 
     <xsl:template name="head_default">
         <head>
@@ -150,22 +151,29 @@
                     <ul>
                         <xsl:if test="$mo != 'subject'">
                             <li>
-                                <a href="{$xims_box}{$goxims_content}{$absolute_path}">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?m={$m}">
                                     <xsl:value-of select="$i18n_vlib/l/subject_list"/>
                                 </a>
                             </li>
                         </xsl:if>
                         <xsl:if test="$mo != 'author'">
                             <li>
-                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?authors=1">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?authors=1;m={$m}">
                                     <xsl:value-of select="$i18n_vlib/l/author_list"/>
                                 </a>
                             </li>
                         </xsl:if>
                         <xsl:if test="$mo != 'publication'">
                             <li>
-                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?publications=1">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?publications=1;m={$m}">
                                     <xsl:value-of select="$i18n_vlib/l/publication_list"/>
+                                </a>
+                            </li>
+                        </xsl:if>
+                        <xsl:if test="$most_recent != '1'">
+                            <li>
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?most_recent=1;m={$m}">
+                                    <xsl:value-of select="$i18n_vlib/l/Latest_entries"/>
                                 </a>
                             </li>
                         </xsl:if>
@@ -184,7 +192,7 @@
 
     <xsl:template name="vlib_search_action">
         <xsl:variable name="Search" select="$i18n_vlib/l/Fulltext_search"/>
-        <form style="margin-bottom: 0;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_search">
+        <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_search">
             <strong><xsl:value-of select="$Search"/></strong>
             <xsl:text>&#160;</xsl:text>
             <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="vls" size="17" maxlength="200">
@@ -244,9 +252,7 @@
     </xsl:template>
 
     <xsl:template name="mode_switcher">
-        <xsl:variable name="vlqs" select="concat('publication=',$publication,';publication_id=',$publication_id,';author=',$author,';author_id=',$author_id,';subject=',$subject,';subject_id=',$subject_id,';publications=',$publications,';authors=',$authors,';page=',$page)"/>
-<!--        <xsl:variable name="vlqs" select="concat('"/>-->
-
+        <xsl:variable name="vlqs" select="concat('publication=',$publication,';publication_id=',$publication_id,';author=',$author,';author_id=',$author_id,';subject=',$subject,';subject_id=',$subject_id,';publications=',$publications,';authors=',$authors,';page=',$page,';most_recent=',$most_recent)"/>
         <xsl:choose>
             <xsl:when test="$m='e'">
                 <a href="{$goxims_content}{$absolute_path}?m=b;{$vlqs}"><xsl:value-of select="$i18n/l/switch_to_browse"/></a>
