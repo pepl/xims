@@ -62,6 +62,33 @@ sub event_default {
     return 0 if $self->SUPER::event_default( $ctxt );
 }
 
+sub event_edit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
+
+    $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
+
+    return $self->SUPER::event_edit( $ctxt );
+}
+
+sub event_copy {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    return $self->sendError( $ctxt, "Copying VLibraries is not implemented." );
+}
+
+sub event_delete {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
+}
+
+sub event_delete_prompt {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
+}
+
 sub event_subject {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -254,15 +281,56 @@ sub event_publish_prompt {
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
-    # check for body references in (X)HTML and XML documents
-    my $dfmime_type = $ctxt->object->data_format->mime_type();
-
     $ctxt->properties->application->styleprefix('common_publish');
     $ctxt->properties->application->style('prompt');
 
     return 0;
 }
 
+sub event_publish {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user = $ctxt->session->user();
+    my $object = $ctxt->object();
+    my $objprivs = $user->object_privmask( $object );
+
+    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
+        $self->SUPER::event_publish( $ctxt );
+        return 0 if $ctxt->properties->application->style() eq 'error';
+
+        $object->grant_user_privileges (  grantee         => XIMS::PUBLICUSERID(),
+                                          privilege_mask  => ( XIMS::Privileges::VIEW ),
+                                          grantor         => $user->id() );
+    }
+    else {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    return 0;
+}
+
+sub event_unpublish {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user = $ctxt->session->user();
+    my $object = $ctxt->object();
+    my $objprivs = $user->object_privmask( $object );
+
+    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
+        $self->SUPER::event_unpublish( $ctxt );
+        return 0 if $ctxt->properties->application->style() eq 'error';
+
+        my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
+        $privs_object->delete();
+    }
+    else {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    return 0;
+}
 
 sub event_vlsearch {
     XIMS::Debug( 5, "called" );
