@@ -2,7 +2,7 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package XIMS::DocBookXML;
+package XIMS::sDocBookXML;
 
 use vars qw( $VERSION @ISA );
 use strict;
@@ -15,13 +15,13 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 ##
 #
 # SYNOPSIS
-#    XIMS::DocBookXML->new( %args )
+#    XIMS::sDocBookXML->new( %args )
 #
 # PARAMETER
 #    %args: recognized keys are the fields from ...
 #
 # RETURNS
-#    $docbookxml: XIMS::DocBookXML instance
+#    $docbookxml: XIMS::sDocBookXML instance
 #
 # DESCRIPTION
 #    Constructor
@@ -33,7 +33,7 @@ sub new {
     my %args = @_;
 
     if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
-        $args{data_format_id} = XIMS::DataFormat->new( name => 'DocBookXML' )->id() unless defined $args{data_format_id};
+        $args{data_format_id} = XIMS::DataFormat->new( name => 'sDocBookXML' )->id() unless defined $args{data_format_id};
     }
 
     return $class->SUPER::new( %args );

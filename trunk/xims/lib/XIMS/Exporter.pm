@@ -1922,9 +1922,9 @@ use vars qw( @ISA );
 1;
 
 ###############################################################################################
-package XIMS::Exporter::DocBookXML;
+package XIMS::Exporter::sDocBookXML;
 #
-# lowlevel class for DocBookXML objs.
+# lowlevel class for sDocBookXML objs.
 ###############################################################################################
 
 use vars qw( @ISA );
