@@ -5,7 +5,7 @@ use XIMS::Test;
 use XIMS::DataProvider;
 use XIMS::Object;
 
-BEGIN { 
+BEGIN {
     plan tests => 12;
 }
 
@@ -17,14 +17,14 @@ my $odata = $dp->getObject( id => 2, properties => ['title', 'id'] );
 
 ok( $odata );
 ok( scalar( keys( %{$odata} ) ) == 2 );
-ok( $odata->{'content.title'} eq 'xims' );
+ok( $odata->{'content.title'} eq '/ximspubroot/xims' );
 ok( $odata->{'content.id'} == 2 );
 
 # now lets do the same via the Object interface
 my $o = XIMS::Object->new( id => 2, properties => ['title', 'id'] );
 
 ok( $o );
-ok( $o->title() eq 'xims' );
+ok( $o->title() eq '/ximspubroot/xims' );
 ok( $o->id() == 2 );
 ok( $o->location() == undef );
 
