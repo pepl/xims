@@ -272,7 +272,7 @@
     </xsl:template>
 
     <xsl:template name="header.cttobject.options">
-        <form style="margin:0px;" name="delete" id="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}">
+        <form style="margin:0px;" name="trashcan_prompt" id="trashcan_prompt" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}">
             <xsl:choose>
                 <xsl:when test="/document/context/object/user_privileges/write and /document/context/object/locked_time = '' or /document/context/object/locked_by_id = /document/context/session/user/@id">
                     <a href="{$goxims_content}?id={/document/context/object/@id};edit=1">
@@ -370,7 +370,7 @@
             </xsl:choose>
             <xsl:choose>
                 <xsl:when test="/document/context/object/user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-                    <input type="hidden" name="del_prompt" value="1"/>
+                    <input type="hidden" name="trashcan_prompt" value="1"/>
                     <input type="hidden" name="id" value="{/document/context/object/@id}"/>
                     <input type="image" src="{$ximsroot}skins/{$currentskin}/images/option_delete.png" border="0" width="37" height="19" name="delete" alt="delete" title="delete"/>
                 </xsl:when>
