@@ -108,8 +108,6 @@ sub event_store {
             $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
         }
 
-warn "got body: " . $body;
-
         my $object = $ctxt->object();
         if ( $trytobalance eq 'true' and $object->body( $body ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
