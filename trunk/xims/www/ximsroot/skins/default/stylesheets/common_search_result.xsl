@@ -297,17 +297,17 @@
                 <xsl:choose>
                     <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='Container'">
                         <xsl:attribute name="href">
-                            <xsl:value-of select="concat($goxims_content,'?id=',@id,';sb=',$sb,';order=',$order,';m=',$m)"/>
+                            <xsl:value-of select="concat($goxims_content,'?id=',@id,';sb=',$sb,';order=',$order,';m=',$m,';hls=',$s)"/>
                         </xsl:attribute>
                     </xsl:when>
                     <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='URL'">
                         <xsl:attribute name="href">
-                            <xsl:value-of select="concat(location,'?sb=',$sb,';order=',$order,';m=',$m)"/>
+                            <xsl:value-of select="concat(location,'?sb=',$sb,';order=',$order,';m=',$m,';hls=',$s)"/>
                         </xsl:attribute>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:attribute name="href">
-                            <xsl:value-of select="concat($goxims_content,'?id=',@id,';m=',$m)"/>
+                            <xsl:value-of select="concat($goxims_content,'?id=',@id,';m=',$m,';hls=',$s)"/>
                         </xsl:attribute>
                     </xsl:otherwise>
                 </xsl:choose>

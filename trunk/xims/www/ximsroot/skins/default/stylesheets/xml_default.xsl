@@ -8,18 +8,21 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
-   
+
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body onLoad="stringHighlight(getParamValue('hls'))" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
             <xsl:call-template name="header"/>
+            <xsl:call-template name="toggle_hls"/>
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
                     <td bgcolor="#ffffff" colspan="2">
-                        <pre>
-                            <xsl:apply-templates select="body"/>
-                        </pre>
+                        <span id="body">
+                            <pre>
+                                <xsl:apply-templates select="body"/>
+                            </pre>
+                        </span>
                     </td>
                 </tr>
             </table>
