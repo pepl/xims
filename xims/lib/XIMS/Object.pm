@@ -102,7 +102,9 @@ sub new {
         unless ( $properties and ref $properties and scalar @{$properties} ) {
             $properties = \@Default_Properties;
         }
-        $real_object = $self->data_provider->getObject( %args, properties => $properties );
+        my @data = $self->data_provider->getObject( %args, properties => $properties );
+        return undef unless scalar @data;
+        $real_object = $data[0];
         if ( defined( $real_object )) {
             delete $real_object->{'document.id'};
             $self->data( %{$real_object} );
@@ -187,8 +189,8 @@ sub body {
         return unless defined( $content_field );
         return $self->{$content_field} if defined( $self->{$content_field} );
         return undef unless defined $self->id();
-        my $selected_data = $self->data_provider->getObject( id => $self->id(), properties => [$content_field] );
-        my $actual_data = ( values( %{$selected_data} ) )[0];
+        my @selected_data = $self->data_provider->getObject( id => $self->id(), properties => [$content_field] );
+        my $actual_data = ( values( %{$selected_data[0]} ) )[0];
         $self->{$content_field} = $actual_data;
         return $actual_data;
     }
