@@ -1004,6 +1004,7 @@
                 <a href="{$goxims_content}{$absolute_path}?id={@document_id};view=1;m={$m}">
                     <xsl:value-of select="title"/>
                 </a>
+                by <xsl:call-template name="creatorfullname"/>
             </td>
         </tr>
         <tr>
