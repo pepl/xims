@@ -152,9 +152,7 @@ CREATE TABLE ci_documents
  ,id                SERIAL       PRIMARY KEY
  ,parent_id         INTEGER      NOT NULL
                                  REFERENCES ci_documents ( id )
-                                 ON DELETE NO ACTION
-                                 DEFERRABLE
-                                 INITIALLY DEFERRED
+                                 ON DELETE CASCADE
  ,object_type_id    INTEGER      NOT NULL
                                  REFERENCES ci_object_types ( id )
  ,department_id     INTEGER      NOT NULL
