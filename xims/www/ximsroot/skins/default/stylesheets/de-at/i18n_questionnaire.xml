@@ -4,11 +4,11 @@
     <Question>Frage</Question>
     <Answer>Antwort</Answer>
     <Answers>Antworten</Answers>
+    <Example_Answers>(Beispiels-)Antworten</Example_Answers>
     <Comment>Kommentar</Comment>
     <Intro>Einleitung</Intro>
     <Exit>Endnachricht</Exit>
-    <Alignment>Ausrichtung</Alignment>
-    <Alignement>Ausrichtung</Alignement>
+    <Alignment>Ausrichtung (Radio, Checkbox)</Alignment>
     <Type>Typ</Type>
     <results>Ergebnisse</results>
     <close_window>Fenster schließen</close_window>
