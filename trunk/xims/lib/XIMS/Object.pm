@@ -369,9 +369,17 @@ sub child_count {
 sub ancestors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
+    if ( defined $self->{Ancestors} and $self->{_cached_parent_id} == $self->{parent_id} ) {
+        return $self->{Ancestors};
+    }
     my @ancestors = $self->data_provider->recurse_ancestor( $self );
     #warn "parents " . Dumper( \@ancestors ) . "\n";
-    return \@ancestors;
+
+    # cache ancestors
+    $self->{Ancestors} = \@ancestors;
+    $self->{_cached_parent_id} = $self->{parent_id};
+
+    return $self->{Ancestors};
 }
 
 ##
@@ -392,9 +400,17 @@ sub ancestors {
 sub objectroot_ancestors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
+    if ( defined $self->{ORootAncestors} and $self->{_cached_parent_id} == $self->{parent_id} ) {
+        return $self->{ORootAncestors};
+    }
     my @or_ancestors = $self->data_provider->recurse_ancestor( $self, 1 );
     #warn "parents " . Dumper( \@ancestors ) . "\n";
-    return \@or_ancestors;
+
+    # cache ancestors
+    $self->{ORootAncestors} = \@or_ancestors;
+    $self->{_cached_parent_id} = $self->{parent_id};
+
+    return $self->{ORootAncestors};
 }
 
 ##
@@ -728,6 +744,129 @@ sub __get_granted_objects {
     #warn "objects " . Dumper( \@objects ) . "\n";
     return @objects;
 }
+
+##
+#
+# SYNOPSIS
+#    my @referenced_by = $object->referenced_by( [ %args ] );
+#    my $iterator      = $object->referenced_by( [ %args ] );
+#
+# PARAMETER
+#    $args{ $object_property } (optional)  :  Object property like 'location', 'department_id', or 'title'
+#                                             Multiple object properties can be specified in the %args hash. For example,
+#                                             $object->referenced_by( published => 1 )
+#    $args{ include_ancestors } (optional) :  If given, not only the objects referenced by symname_to_doc_id of the
+#                                             current object, but also the ones of its ancestors will be returned.
+#
+# RETURNS
+#    @objects    : Array of XIMS::Objects (list context)
+#    $iterator   : Instance of XIMS::Iterator::Object created with the referenced by object ids (scalar context)
+#
+# DESCRIPTION
+#    Returns all objects referenced by symname_to_doc_id. The current implementation does not check whether a
+#    ancestrial Portlet high up in the hierarchy actually really includes the current object; the Portlet's "level"
+#    attribute is not checked.
+#    In list context an array is returned, in scalar context an iterator.
+#
+sub referenced_by {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    my $properties = delete $args{properties};
+    if ( wantarray ) {
+        unless ( $properties and ref $properties and scalar @{$properties} ) {
+            $properties = \@Default_Properties;
+        }
+    }
+    else {
+        $properties = [ qw( object_type_id document_id ) ];
+    }
+
+    my $include_ancestors = delete $args{include_ancestors};
+    if ( defined $include_ancestors ) {
+        my @ancestor_docids = map { $_->{document_id} } @{$self->ancestors()};
+        $args{symname_to_doc_id} = [ (@ancestor_docids, $self->document_id()) ];
+    }
+    else {
+        $args{symname_to_doc_id} = $self->document_id();
+    }
+
+    my @referenced_by_data = $self->data_provider->getObject( %args, properties => $properties );
+    return () unless scalar( @referenced_by_data ) > 0;
+
+    if ( wantarray ) {
+        my @referenced_by = map { XIMS::Object->new->data( %{$_} ) } @referenced_by_data;
+        #warn "referenced_by" . Dumper( \@referenced_by ) . "\n";
+        return @referenced_by;
+    }
+    else {
+        my @docids = map { $_->{document_id} } @referenced_by_data;
+        return XIMS::Iterator::Object->new( \@docids ) unless wantarray;
+    }
+}
+
+##
+#
+# SYNOPSIS
+#    my @referenced_by = $object->referenced_by_granted( [ %args ] );
+#    my $iterator      = $object->referenced_by_granted( [ %args ] );
+#
+# PARAMETER
+#    $args{ User }             (optional)  :  XIMS::User instance if you want to override the user already stored in $object
+#                                             or if there is no $object->User yet.
+#    $args{ $object_property } (optional)  :  Object property like 'location', 'department_id', or 'title'
+#                                             Multiple object properties can be specified in the %args hash. For example,
+#                                             $object->referenced_by_granted( published => 1 )
+#    $args{ include_ancestors } (optional) :  If given, not only the objects referenced by symname_to_doc_id of the
+#                                             current object, but also the ones of its ancestors will be returned.
+#
+# RETURNS
+#    @objects    : Array of XIMS::Objects (list context)
+#    $iterator   : Instance of XIMS::Iterator::Object created with the granted children ids (scalar context)
+#
+# DESCRIPTION
+#    Returns all objects referenced by symname_to_doc_id granted to $args{User}. If that is not given,
+#    $object->User() will be used.The current implementation does not check whether a ancestrial Portlet high
+#    up in the hierarchy actually really includes the current object; the Portlet's "level" attribute is not checked.
+#    In list context an array is returned, in scalar context an iterator.
+#
+sub referenced_by_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+
+    return $self->referenced_by( %args ) if $user->admin();
+
+
+    my $properties = delete $args{properties};
+    unless ( $properties and ref $properties and scalar @{$properties} ) {
+        $properties = \@Default_Properties;
+    }
+
+    my $include_ancestors = delete $args{include_ancestors};
+    if ( defined $include_ancestors ) {
+        my @ancestor_docids = map { $_->{document_id} } @{$self->ancestors()};
+        $args{symname_to_doc_id} = [ (@ancestor_docids, $self->document_id()) ];
+    }
+    else {
+        $args{symname_to_doc_id} = $self->document_id();
+    }
+
+    my @candidate_data = $self->data_provider->getObject( %args, properties => [ qw( object_type_id document_id ) ] );
+    my @candidate_docids = map { $_->{'content.document_id'} } @candidate_data;
+    return () unless scalar( @candidate_docids ) > 0;
+
+    if ( not wantarray ) {
+        my @ids = $self->__get_granted_ids( doc_ids => \@candidate_docids, User => $user, %args );
+        return XIMS::Iterator::Object->new( \@ids, 1 );
+    }
+
+    $args{properties} = $properties; # pass the properties
+    return $self->__get_granted_objects( doc_ids => \@candidate_docids, User => $user, %args );
+}
+
 
 sub __get_granted_ids {
     my $self = shift;
