@@ -33,9 +33,10 @@
         <head>
             <title>
                 Managing User/Role Access for Object '<xsl:value-of select="object/title"/>' - XIMS
-            </title> 
+            </title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript">0</script>
+            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
         <xsl:call-template name="header"/>
@@ -68,7 +69,7 @@
               </tr>
               <tr>
                 <td>
-                  To look for roles or users to give new grants to, use the following input-field: 
+                  To look for roles or users to give new grants to, use the following input-field:
                 </td>
                 <td>
                   <input name="userquery" type="text" value="{$userquery}"/>
@@ -102,7 +103,7 @@
                 </td>
               </tr>
               </form>
-              </table>          
+              </table>
           <!-- end filter widget table -->
           </td>
         </tr>
@@ -122,8 +123,8 @@
                     <xsl:when test="$sort-by='id'">
                       <a>
                         <xsl:attribute name="href">
-                          <xsl:value-of select="concat($goxims_content, 
-                                                       $absolute_path, 
+                          <xsl:value-of select="concat($goxims_content,
+                                                       $absolute_path,
                                                        '?',
                                                        'obj_acllist=1;',
                                                        'sort-by=id;',
@@ -138,8 +139,8 @@
                     <xsl:otherwise>
                       <a>
                         <xsl:attribute name="href">
-                          <xsl:value-of select="concat($goxims_content, 
-                                                       $absolute_path, 
+                          <xsl:value-of select="concat($goxims_content,
+                                                       $absolute_path,
                                                        '?',
                                                        'obj_acllist=1;',
                                                        'sort-by=id;',
@@ -158,8 +159,8 @@
                     <xsl:when test="$sort-by='name'">
                       <a>
                         <xsl:attribute name="href">
-                          <xsl:value-of select="concat($goxims_content, 
-                                                       $absolute_path, 
+                          <xsl:value-of select="concat($goxims_content,
+                                                       $absolute_path,
                                                        '?',
                                                        'obj_acllist=1;',
                                                        'sort-by=name;',
@@ -171,11 +172,11 @@
                         Username
                       </a>
                     </xsl:when>
-                    <xsl:otherwise>  
+                    <xsl:otherwise>
                       <a>
                         <xsl:attribute name="href">
-                          <xsl:value-of select="concat($goxims_content, 
-                                                       $absolute_path, 
+                          <xsl:value-of select="concat($goxims_content,
+                                                       $absolute_path,
                                                        '?',
                                                        'obj_acllist=1;',
                                                        'sort-by=name;',
@@ -199,7 +200,7 @@
                                                        '?',
                                                        'obj_acllist=1;',
                                                        'sort-by=fullname;',
-                                                       'order-by=', $order-by-opposite, ';',         
+                                                       'order-by=', $order-by-opposite, ';',
                                                        'userquery=', $userquery, ';',
                                                        'usertype=', $usertype
                                                       )"/>
@@ -215,7 +216,7 @@
                                                        '?',
                                                        'obj_acllist=1;',
                                                        'sort-by=fullname;',
-                                                       'order-by=', $order-by, ';',         
+                                                       'order-by=', $order-by, ';',
                                                        'userquery=', $userquery, ';',
                                                        'usertype=', $usertype
                                                       )"/>
@@ -227,7 +228,7 @@
                 </td>
                 <td background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
                   <xsl:choose>
-                    <xsl:when test="$sort-by='enabled'">          
+                    <xsl:when test="$sort-by='enabled'">
                       <a>
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
@@ -235,13 +236,13 @@
                                                        '?',
                                                        'obj_acllist=1;',
                                                        'sort-by=enabled;',
-                                                       'order-by=', $order-by-opposite, ';',         
+                                                       'order-by=', $order-by-opposite, ';',
                                                        'userquery=', $userquery, ';',
                                                        'usertype=', $usertype
                                                       )"/>
                         </xsl:attribute>
                         Account Status
-                      </a>          
+                      </a>
                     </xsl:when>
                     <xsl:otherwise>
                       <a>
@@ -251,13 +252,13 @@
                                                        '?',
                                                        'obj_acllist=1;',
                                                        'sort-by=enabled;',
-                                                       'order-by=', $order-by, ';',         
+                                                       'order-by=', $order-by, ';',
                                                        'userquery=', $userquery, ';',
                                                        'usertype=', $usertype
                                                       )"/>
                         </xsl:attribute>
                         Account Status
-                      </a>          
+                      </a>
                     </xsl:otherwise>
                   </xsl:choose>
                 </td>
@@ -273,7 +274,7 @@
                     <xsl:when test="$order-by='ascending'">
                       <xsl:for-each select="granteelist/user|/document/userlist/user">
                         <xsl:sort select="@id"
-                                  order="ascending" 
+                                  order="ascending"
                                   data-type="number"/>
                         <xsl:apply-templates select="."/>
                       </xsl:for-each>
@@ -281,11 +282,11 @@
                     <xsl:otherwise>
                       <xsl:for-each select="granteelist/user|/document/userlist/user">
                         <xsl:sort select="@id"
-                                  order="descending" 
-                                  data-type="number"/> 
+                                  order="descending"
+                                  data-type="number"/>
                         <xsl:apply-templates select="."/>
                       </xsl:for-each>
-                    </xsl:otherwise>  
+                    </xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$sort-by='name'">
@@ -303,7 +304,7 @@
                                   order="descending"/>
                         <xsl:apply-templates select="."/>
                       </xsl:for-each>
-                    </xsl:otherwise>  
+                    </xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$sort-by='fullname'">
@@ -321,7 +322,7 @@
                                   order="descending"/>
                         <xsl:apply-templates select="."/>
                       </xsl:for-each>
-                    </xsl:otherwise>  
+                    </xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$sort-by='enabled'">
@@ -339,7 +340,7 @@
                                   order="descending"/>
                         <xsl:apply-templates select="."/>
                       </xsl:for-each>
-                    </xsl:otherwise>  
+                    </xsl:otherwise>
                   </xsl:choose>
                 </xsl:when>
               </xsl:choose>
@@ -352,7 +353,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </table>
-        
+
         </td>
         </tr>
         </table>
@@ -373,7 +374,7 @@
    <xsl:apply-templates select="name"/>
    <td><xsl:call-template name="userfullname"/></td>
    <xsl:apply-templates select="enabled"/>
-    
+
    <!-- begin options bar -->
    <td align="right">
    <table width="100" cellpadding="0" cellspacing="2" border="0">
@@ -417,7 +418,7 @@
      </xsl:when>
      <xsl:otherwise>
        <xsl:text>disabled</xsl:text>
-     </xsl:otherwise> 
+     </xsl:otherwise>
    </xsl:choose>
   </td>
 </xsl:template>

@@ -25,6 +25,7 @@
                 </title>
                 <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
                 <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+                <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
                 <script type="text/javascript">
                     <xsl:comment>
                         <![CDATA[
