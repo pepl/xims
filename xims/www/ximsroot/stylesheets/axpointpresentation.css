@@ -9,7 +9,7 @@
 
 }
 
-.title, .metadata, .speaker, .email, .organisation, .link {
+.metadata, .speaker, .email, .organisation, .link, .background {
     margin-left: 15px;
 }
 
@@ -30,13 +30,13 @@ slidetitle, .title {
     margin-top: 10px;
 }
 
-slideshow>slidetitle {
+slideshow>slidetitle, .slideshow>.title {
     font-size: 200%;
     margin-top: 0px;
     margin-bottom: 0px;
 }
 
-slideset>slidetitle {
+slideset>slidetitle, .slideset>.title {
     font-size: 175%;
     border-bottom: 1px dotted black;
     margin-top: 20px;
@@ -104,6 +104,15 @@ background:before, .background:before {
 
 }
 
+.image[*|href] {
+    -moz-binding:url('/ximsroot/stylesheets/axpoint-bindings.xml#imagehref');
+}
+
+.image[*|href]:before {
+    content: '';
+    border: 0px;
+}
+
 .image {
     -moz-binding:url('/ximsroot/stylesheets/axpoint-bindings.xml#image');
 }
@@ -134,7 +143,7 @@ source-code, .source-code, source_code, .source_code {
 
 }
 
-color, .color colour, .colour {
+color, .color, colour, .colour {
     border-bottom: dotted 1px red;
 }
 
