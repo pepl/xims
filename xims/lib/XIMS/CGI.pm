@@ -44,7 +44,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 # first we register the events we handle
 sub registerEvents {
     my $self = shift;
-    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', @_ );
+    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', @_ );
 }
 
 ############################################################################
