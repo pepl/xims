@@ -129,13 +129,17 @@ sub publish {
         XIMS::Debug( 3, "No object to publish!" );
         return undef;
     }
+    my $object          = delete $param{Object};
 
     # allow developer-friendly method invocation...
     $self->{Provider}   = delete $param{Provider}   if defined $param{Provider};
     $self->{Basedir}    = delete $param{Basedir}    if defined $param{Basedir};
-    $self->{Stylesheet} = delete $param{Stylesheet} if defined $param{Stylesheet};
     $self->{User}       = delete $param{User}       if defined $param{User};
-    my $object          = delete $param{Object};
+
+    # since it is likely that one Exporter instance should publish objects of different
+    # object type we have to let the helper select the appropiate stylesheet
+    # for each single object unless it is overridden with $param{Stylesheet};
+    $self->{Stylesheet} = defined $param{Stylesheet} ? delete $param{Stylesheet} : undef;
 
     # anything left in the %param hash is considered an option to be forwarded
     # from the outside to the handler...

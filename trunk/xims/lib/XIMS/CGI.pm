@@ -1141,19 +1141,24 @@ sub event_publish_prompt {
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
+    my @objects;
     # check for body references in (X)HTML and XML documents
     my $dfmime_type = $ctxt->object->data_format->mime_type();
     if ( $dfmime_type eq 'text/xhtml' or $dfmime_type eq 'text/xml' ) {
         XIMS::Debug( 4, "checking body refs" );
-        my %int_refs = $self->body_ref_objects($ctxt);
-
-        my $objects = [];
-        foreach my $p ( keys %int_refs ) {
-            push @{$objects}, $int_refs{$p};
-            $int_refs{$p}->{location_path} = $p;
+        @objects = $self->body_ref_objects($ctxt);
+    }
+    elsif ( $dfmime_type eq 'application/x-container' ) {
+        my @container_ot = $ctxt->data_provider->object_types( is_fs_container => '0' );
+        my @ids = map { $_->id() } @container_ot;
+        @objects = $ctxt->object->children_granted( object_type_id => \@ids ); # get non-container objects only
+        for ( @objects ) {
+            $_->{location_path} = $_->location_path();
         }
+    }
 
-        $ctxt->objectlist( $objects );
+    if ( scalar @objects ) {
+        $ctxt->objectlist( \@objects );
 
         # check for publish privileges on referenced objects
         my $user = $ctxt->session->user;
@@ -1163,7 +1168,7 @@ sub event_publish_prompt {
         else {
             my @locations_ungranted;
             my @role_ids = ( $user->role_ids(), $user->id() );
-            foreach my $object ( @{$objects} ) {
+            foreach my $object ( @objects ) {
                 next unless $object->id(); # skip unresolved references
                 my $objectpriv = XIMS::ObjectPriv->new( content_id => $object->id(), grantee_id => \@role_ids );
                 push (@locations_ungranted, $object->location) unless $objectpriv && ($objectpriv->privilege_mask() & XIMS::Privileges::PUBLISH());
@@ -1209,10 +1214,10 @@ sub event_publish {
         $ctxt->properties->application->style('error');
     }
 
-    if ( defined $self->param( "autopublishlinks" )
-         and $self->param( "autopublishlinks" ) == 1 ) {
+    if ( defined $self->param( "autopublish" )
+         and $self->param( "autopublish" ) == 1 ) {
         XIMS::Debug( 4, "goint to publish references" );
-        my @objids = $self->param( "autoexport" );
+        my @objids = $self->param( "objids" );
         foreach my $id ( @objids ) {
             next unless defined $id;
             my $objectpriv = XIMS::ObjectPriv->new( content_id => $id, grantee_id => $ctxt->session->user->id() );
@@ -1626,7 +1631,7 @@ sub body_ref_objects {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my %retval = ();
+    my @objects;
     my $object = $ctxt->object();
 
     # load the objects body
@@ -1663,12 +1668,14 @@ sub body_ref_objects {
     # resolve path for relative references
     my $parent = XIMS::Object->new( document_id => $object->parent_id(), language_id => $object->language_id);
     my $parent_path = $parent->location_path();
+    my $ancestors;
 
-    # lets see if the objects do exist in our system.
+    # lets see if the objects exist in our system.
+    my %paths_seen;
     foreach my $p ( @paths ) {
-        $p =~ s/\?.*$//; # strip attributes
+        $p =~ s/\?.*$//; # strip querystring
         next unless length $p;
-        next if defined $retval{$p};
+        next if $paths_seen{$p};
         if (
             $p =~ m|^https?://|
             or $p =~ m|^#|
@@ -1678,22 +1685,33 @@ sub body_ref_objects {
             next;
         }
         my $exp = $p;
-        if ( $p =~ m|^\./| ) {
-            XIMS::Debug( 4, "relative reference" );
-            $p =~ s/^\.\///;
-            $exp = "$parent_path/$p";
+        if ( $exp =~ m|^\.\./| ) {
+            my $anclevel = ( $exp =~ tr|../|../| );
+            $anclevel = ($anclevel - 1) / 3;
+            $ancestors ||= $object->ancestors();
+            my $i = scalar @{$ancestors} - 1 - $anclevel; # ancestors include self
+            my $relparent = ${@{$ancestors}}[$i];
+            next unless $relparent;
+            $exp =~ s|\.\./||g;
+            $exp = $relparent->location_path() . "/" . $exp;
         }
-        elsif ( $p !~ m|^/| ) {
-            XIMS::Debug( 4, "relative reference" );
-            $exp = "$parent_path/$p";
+        elsif ( $exp =~ m|^\./| ) {
+            $exp =~ s/^\.\///;
+            $exp = "$parent_path/$exp";
+        }
+        elsif ( $exp !~ m|^/| ) {
+            $exp = "$parent_path/$exp";
         }
 
         XIMS::Debug( 6, "resolve path $p ($exp)" );
-        $retval{$p} = XIMS::Object->new( path => $exp, language_id => $object->language_id() ) ;
+        my $object = XIMS::Object->new( path => $exp, language_id => $object->language_id() );
+        $paths_seen{$p}++;
+        next unless $object;
+        $object->{location_path} = $p; # we want to preserve the original link for the users
+        push @objects, $object;
     }
 
-    XIMS::Debug( 5, "done" );
-    return %retval;
+    return @objects;
 }
 
 sub event_search {

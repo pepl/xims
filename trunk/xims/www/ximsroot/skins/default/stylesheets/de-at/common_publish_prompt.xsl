@@ -16,7 +16,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png" onLoad="disableIt(document.forms[1].autopublishlinks);">
+        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png" onLoad="disableIt(document.forms[1].autopublish,'objids');">
             <xsl:call-template name="header">
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
@@ -28,7 +28,7 @@
 
                             <br />
                             <!-- begin widget table -->
-                            <table width="350" cellpadding="2" cellspacing="2" border="0">
+                            <table width="400" cellpadding="2" cellspacing="2" border="0">
                                 <tr>
                                     <td class="bluebg">Optionen zum Veröffentlichen für das Objekt '<xsl:value-of select="title"/>'</td>
                                 </tr>
@@ -111,41 +111,38 @@
                                             <table cellpadding="2" cellspacing="0" border="0">
                                                 <tr>
                                                     <td colspan="3">
-                                                        Die folgenden Referenzen wurden im Objekt gefunden
+                                                        <div style="margin-bottom: 3px;">Die folgenden <strong>verwandten Objekte</strong> (Kinder, Links) wurden gefunden:</div>
                                                     </td>
                                                 </tr>
                                                 <xsl:apply-templates select="/document/objectlist/object"/>
                                                 <tr>
                                                     <td colspan="3">
-                                                        <xsl:text> </xsl:text>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="3">
-                                                        <table>
-                                                            <tr>
-                                                                <xsl:choose>
-                                                                    <xsl:when test="/document/objectlist/object[location != '']">
+                                                        <table style="margin-top: 15px;">
+                                                            <xsl:choose>
+                                                                <xsl:when test="/document/objectlist/object[location != '']">
+                                                                    <tr>
                                                                         <td>
-                                                                            Automatisch (wieder)veröffentlichen der ausgewählten Links?
+                                                                            Alle Aus/Abwählen
                                                                         </td>
                                                                         <td>
-                                                                            <input type="checkbox" name="autopublishlinks" value="1" disabled="true"/>
+                                                                            <input type="checkbox" name="selector" value="1" onClick="switcher(this,'objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0;"/>
                                                                         </td>
-                                                                    </xsl:when>
-                                                                    <xsl:otherwise>
-                                                                            <td colspan="2">Es wurden keine Referenzen, (wieder)veröffentlicht werden könnten, zu diesem Objekt gefunden.</td>
-                                                                    </xsl:otherwise>
-                                                                </xsl:choose>
-                                                                <!--
-                                                                <td>
-                                                                    remove unpublished links
-                                                                </td>
-                                                                <td>
-                                                                    <input type="checkbox" name="removelinks" value="1"/>
-                                                                </td>
-                                                                -->
-                                                            </tr>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            Ausgewählte Objekte automatisch (wieder)veröffentlichen?
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="checkbox" name="autopublish" value="1" disabled="true"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </xsl:when>
+                                                                <xsl:otherwise>
+                                                                    <tr>
+                                                                        <td colspan="2">Es wurden keine verwandten Objekte (Kinder, Links) zum (Wieder)Veröffentlichen gefunden.</td>
+                                                                    </tr>
+                                                                </xsl:otherwise>
+                                                            </xsl:choose>
                                                         </table>
                                                     </td>
                                                 </tr>
@@ -201,8 +198,8 @@
 
 <xsl:template match="/document/objectlist/object">
     <tr>
-        <td>
-            <input type="checkbox" name="autoexport" value="{@id}">
+        <td valign="top">
+            <input type="checkbox" name="objids" value="{@id}">
                 <xsl:choose>
                     <xsl:when test="string-length(location) &lt;= 0">
                         <xsl:attribute name="disabled">true</xsl:attribute>
@@ -216,12 +213,12 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
                         <xsl:attribute name="disabled">true</xsl:attribute>
                     </xsl:when>
                     <xsl:when test="published/text() != '1'">
-                        <xsl:attribute name="onClick">document.forms[1].autopublishlinks.checked = 1</xsl:attribute>
+                        <xsl:attribute name="onClick">isChecked('objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0</xsl:attribute>
                     </xsl:when>
                 </xsl:choose>
             </input>
         </td>
-        <td>
+        <td valign="top">
             <a>
                 <xsl:attribute name="href">
                     <xsl:choose>
@@ -238,7 +235,8 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
                 </xsl:attribute>
                 <xsl:value-of select="location_path"/>
             </a>
-            <br/>
+
+            <div style="margin-top: 3px; margin-bottom: 8px;">
             <xsl:choose>
                 <xsl:when test="string-length(location) &lt;= 0">
                     <xsl:text>Dies ist kein XIMS Objekt oder konnte nicht aufgelöst werden.</xsl:text>
@@ -253,6 +251,7 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
                     <xsl:text>Dieses Objekt wurde seit seiner letzten Veröffentlichung um </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/> geändert
                 </xsl:otherwise>
             </xsl:choose>
+            </div>
         </td>
     </tr>
 </xsl:template>

@@ -372,14 +372,16 @@ sub recurse_ancestor {
 # list all object types, data_formats, etc.
 sub object_types {
     my $self = shift;
-    my @data = $self->getObjectType();
+    my %args = @_;
+    my @data = $self->getObjectType( %args );
     my @out = map { XIMS::ObjectType->new->data( %{$_} ) } @data;
     return @out;
 }
 
 sub data_formats {
     my $self = shift;
-    my @data = $self->getDataFormat();
+    my %args = @_;
+    my @data = $self->getDataFormat( %args );
     my @out = map { XIMS::DataFormat->new->data( %{$_} ) } @data;
     return @out;
 }
