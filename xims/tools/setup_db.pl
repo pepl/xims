@@ -28,7 +28,7 @@ print q*
 if ( $args{h} ) {
     print qq*
 
-  Usage: $0 [-h|-u user -p -pwd -n dbname -t dbtype]
+  Usage: $0 [-h|-u user -p -pwd -n dbname -t dbtype [-b host [-o port]]]
         -u The name of your database user to connect to the XIMS
            database
         -p The password of your database user to connect to the XIMS
@@ -36,6 +36,8 @@ if ( $args{h} ) {
         -n The name of the XIMS database to connect to
         -t The type of RDBMS of your XIMS database. Currently, either
            'Pg' or 'Oracle' are supported
+        -b The name of the database host if you connect to a remote machine (optional for Pg)
+        -o The port number of the database listener at the remote machine, omit for default (Pg)
         -h prints this screen
 
 *;
@@ -87,12 +89,30 @@ if ( $args{u}
     $Conf{DBPassword} = $args{p};
     $Conf{DBName} = $args{n};
     $Conf{DBdsn} = $args{t};
+    $Conf{DBhost} = $args{b};
+    $Conf{DBport} = $args{o};
 }
 else {
     # interactive mode
     print "Interactive mode. Please provide the following essential config values:\n\n";
     foreach ( sort( keys( %conf_prompts )) ) {
         $installer->prompt( $conf_prompts{$_} );
+    }
+    if ( $Conf{DBdsn} eq 'Pg' ) {
+        $installer->prompt( { text => 'Database Host. Leave blank if you are connecting to localhost',
+                              var   => \$Conf{DBhost},
+                              re    => '.*',
+                              error => '',
+                              default => '',
+                            } );
+        if ( $Conf{DBhost} and length $Conf{DBhost} ) {
+            $installer->prompt( { text => 'Database Port. Leave blank for the default PostgreSQL port.',
+                                  var   => \$Conf{DBport},
+                                  re    => '.*',
+                                  error => '',
+                                  default => '',
+                                } );
+        }
     }
 }
 
@@ -104,6 +124,11 @@ $installer->prompt( { text  => "Enter a log file name\n",
                     }
                   );
 
+if ( $Conf{DBhost} and length $Conf{DBhost} ) {
+    print "\nYou specified a database host. The postmaster on that host\n".
+    "needs to be started with the \"-i\" option (TCP/IP sockets).\n\n";
+}
+
 logfile( $Conf{log_file} ); # hook up log file filter to STDOUT
 
 if ( $Conf{DBdsn} eq 'Oracle' ) {
@@ -113,9 +138,15 @@ if ( $Conf{DBdsn} eq 'Oracle' ) {
 }
 elsif ( $Conf{DBdsn} eq 'Pg' ) {
     chdir '/usr/local/xims/sql/Pg';
-    system('psql','-U',$Conf{DBUser},'-d',$Conf{DBName},'-f','setup.sql') == 0
+    my @args = ('psql','-U',$Conf{DBUser},'-d',$Conf{DBName},'-f','setup.sql');
+    if ( $Conf{DBhost} and length $Conf{DBhost} ) {
+        push(@args, '-h', $Conf{DBhost});
+        if ( $Conf{DBport} and length $Conf{DBport} ) {
+            push(@args, '-p', $Conf{DBport});
+        }
+    }
+    system(@args) == 0
         or die "Setting up DB failed: $?\n. Please check your config information or try manually setting up the DB.\b";
-
 }
 
 close STDOUT; # forks, we're done
