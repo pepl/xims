@@ -517,7 +517,8 @@ li.externallinklist, ul.externallinklist {
 	caption:External Link List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_external_link.gif");
+	list-style-image:url("/ximsroot/images/icons/list_URL.gif");
+
 	text-indent:-5px;
 }
 
