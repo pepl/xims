@@ -3,13 +3,16 @@ use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::AnonDiscussionForumContrib;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN { 
-    plan tests => 6;
+    plan tests => 17;
 }
 
 # make a simple one, test that the objecttype and data_formats are set by the constructor
+
+ok( XIMS::AnonDiscussionForumContrib::__limit_string_length('   1234567890    ', 5 ) eq '12345' );
+
 
 my $o = XIMS::AnonDiscussionForumContrib->new();
 
@@ -23,4 +26,16 @@ ok( $ot );
 ok( $df );
 ok( $ot->name() eq 'AnonDiscussionForumContrib' );
 ok( $df->name() eq 'HTML' );
+
+ok( $o->author('Arthure de Author') );
+ok( $o->email('arthure@exemple.org')  );
+ok( $o->coauthor('Gutave de Author Gutave de Author Gutave de Author') );
+ok( $o->coemail('gustave@exemple.org') );
+ok( $o->senderip('199.555.555.555') );
+
+ok( $o->author() eq 'Arthure de Author' );
+ok( $o->email() eq 'arthure@exemple.org'  );
+ok( $o->coauthor() eq 'Gutave de Author Gutave de Aut' );
+ok( $o->coemail() eq 'gustave@exemple.org' );
+ok( $o->senderip() eq '199.555.555.555' );
 
