@@ -190,6 +190,12 @@ sub event_pub_preview {
     #*XIMS::CGI::Document::getDOM = *XIMS::CGI::Document::getPubPreviewDOM;
     #*XIMS::CGI::Document::selectStylesheet = *XIMS::CGI::Document::selectPubPreviewStylesheet;
     # ...therefore we are overriding getDom() and selectStylesheet() below...
+
+    # $self->process_xinclude( 1 );
+
+    # hmmm, we are guessing there... :-|
+    # print $self->header('-charset' => 'ISO-8859-1' );
+
     return 0;
 }
 
@@ -224,7 +230,7 @@ sub selectPubPreviewStylesheet {
     my $self = shift;
     my $ctxt = shift;
 
-    my $stylepath = $self->getStylesheetDir() . '/public/';
+    my $stylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/' . $ctxt->session->uilanguage() . '/';
     my $filename = 'document_publishing_preview.xsl';
     my $style;
 
