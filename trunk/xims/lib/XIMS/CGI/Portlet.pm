@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -217,6 +217,10 @@ sub generate_body {
 
     if ( $self->param( "f_latest" ) eq 'true'  and $self->param( "latest" ) ) {
         $body .= '<latest>' . $self->param( "latest" ) . '</latest>';
+    }
+
+    if ( $self->param( "documentlinks" ) ) {
+        $body .= '<documentlinks>1</documentlinks>';
     }
 
     foreach my $type ( map { $_->name() } $ctxt->data_provider->object_types() ) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -114,6 +114,11 @@
     </table>
 </xsl:template>
 
+<xsl:template name="contentoptions">
+    <xsl:call-template name="tree_depth"/>
+    <xsl:call-template name="add_documentlinks"/>
+</xsl:template>
+
 <xsl:template name="tree_depth">
     <table>
         <tr>
@@ -135,10 +140,23 @@
                   </xsl:if>
                 </input><xsl:value-of select="$i18n/l/Yes"/>
                 <input name="f_depth" type="radio" value="false">
-                  <xsl:if test="body/content/depth = ''">
+                  <xsl:if test="not(body/content/depth) or body/content/depth = ''">
                     <xsl:attribute name="checked">checked</xsl:attribute>
                   </xsl:if>
                 </input><xsl:value-of select="$i18n/l/No"/>
+            </td>
+        </tr>
+    </table>
+</xsl:template>
+
+<xsl:template name="add_documentlinks">
+    <table>
+        <tr>
+            <td>
+                <xsl:value-of select="$i18n_portlet/l/Add_documentlinks"/>
+            </td>
+            <td>
+                <input type="checkbox" name="documentlinks"><xsl:if test="body/content[documentlinks=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
             </td>
         </tr>
     </table>
@@ -168,7 +186,7 @@
               </xsl:if>
             </input><xsl:value-of select="$i18n/l/Yes"/>
             <input name="f_latest" type="radio" value="false">
-              <xsl:if test="body/content/latest = ''">
+              <xsl:if test="not(body/content/latest) or body/content/latest = ''">
                 <xsl:attribute name="checked">checked</xsl:attribute>
               </xsl:if>
             </input><xsl:value-of select="$i18n/l/No"/>

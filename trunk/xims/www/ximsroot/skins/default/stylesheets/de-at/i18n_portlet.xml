@@ -14,6 +14,7 @@
     <Marked_new>Als neu Markiert</Marked_new>
     <Attributes>Attribute</Attributes>
     <How_deep>Wie tief soll die Hierarchie dursucht werden? (Standarmäßig eine Ebene)</How_deep>
+    <Add_documentlinks>Sollen die Links zum Dokument jedes Objekts hinzugefügt werden?</Add_documentlinks>
     <Filter_latest>Die letzten 'X' Objekte filtern</Filter_latest>
     <Filter_marked_new>Als neu markierte Objekte filtern</Filter_marked_new>
     <Filter_published>Veröffentlichte Objekte filtern</Filter_published>

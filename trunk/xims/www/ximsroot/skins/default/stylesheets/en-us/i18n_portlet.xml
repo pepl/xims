@@ -14,6 +14,7 @@
     <Marked_new>Marked-New Flag</Marked_new>
     <Attributes>Attributes</Attributes>
     <How_deep>How deep should the tree get traversed? (One level per default)</How_deep>
+    <Add_documentlinks>Should Document Links be included for every object?</Add_documentlinks>
     <Filter_latest>Filter out the latest 'X' objects</Filter_latest>
     <Filter_marked_new>Filter Objects that are marked as new</Filter_marked_new>
     <Filter_published>Filter Objects that are published</Filter_published>
