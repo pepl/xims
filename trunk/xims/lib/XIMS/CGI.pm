@@ -633,14 +633,6 @@ sub init_store_object {
 
         $object = $class->new( %obj, User => $ctxt->session->user );
 
-        # the new object inherits the department-id
-        if ( $parent->object_type->name() eq 'DepartmentRoot' ) {
-            $object->department_id( $parent->id() );
-        }
-        else {
-            $object->department_id( $parent->department_id() );
-        }
-
         $ctxt->object( $object );
     }
     else {
@@ -724,7 +716,7 @@ sub init_store_object {
         }
     }
 
-    if ( defined $image ) {
+    if ( defined $image and length $image ) {
         XIMS::Debug( 6, "image: $image" );
         my $imageobj;
         if ( $image =~ /^\d+$/
