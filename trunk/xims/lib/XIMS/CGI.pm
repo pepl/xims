@@ -128,9 +128,13 @@ sub event_default {
         return 1;
     }
 
+    if ( $self->param( 'bodyonly' ) ) {
+        $ctxt->properties->application->styleprefix( 'common' );
+        $ctxt->properties->application->style( 'bodyonly' ) ;
+    }
+
     $ctxt->properties->content->getchildren->level( 1 );
 
-    XIMS::Debug( 5, "done");
     return 0;
 }
 
@@ -325,6 +329,10 @@ sub selectStylesheet {
 
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
     if ( defined $publicusername ) {
+        # Emulate request.uri CGI param, set by Apache::AxKit::Plugin::AddXSLParams::Request
+        # ($request.uri is used by public/*.xsl stylesheets)
+        $self->param( 'request.uri', $ctxt->object->location_path_relative() );
+
         my $stylesheet = $ctxt->object->stylesheet();
         if ( defined $stylesheet and $stylesheet->published() ) {
             # check here if the stylesheet is not a directory but a single XSLStylesheet?
