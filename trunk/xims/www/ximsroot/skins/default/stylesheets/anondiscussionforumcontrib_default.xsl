@@ -149,7 +149,7 @@
     <a name="reply"/>
     <form name="replyform"
           action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib"
-          method="GET"
+          method="POST"
           onSubmit="return checkFields()">
       <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
       <table border="0" width="770"
@@ -186,7 +186,7 @@
   </xsl:template>
 
 <xsl:template name="path2topics">
-    <xsl:for-each select="parents/object[object_type_id != 14]">
+    <xsl:for-each select="parents/object[object_type_id != 14 and @id != 1]">
         <xsl:text>/</xsl:text><xsl:value-of select="location"/>
     </xsl:for-each>
 </xsl:template>
