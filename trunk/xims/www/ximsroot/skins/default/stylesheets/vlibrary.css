@@ -1,0 +1,88 @@
+/*
+# Copyright (c) 2002-2004 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+*/
+
+/*
+   Those two have to stay here as the first two rules to let the the setBg()
+   function play its magic
+*/
+.vlchildrenlistitem_even {
+    background-color: #f6f0f0;
+}
+
+.vlchildrenlistitem_odd {
+    background-color: #fcfcff;
+}
+
+.vlchildrenlistitem {
+    position: relative;
+    left: 50%;
+    width: 600px;
+    /* Set margin to half the values of width */
+    margin-left: -300px;
+    margin-top: 15px;
+    padding: 5px 5px 5px 5px;
+    line-height: 135%;
+    border: dotted 1px #a0a0a0;
+}
+
+#vlchildrenlisttitle {
+    position: relative;
+    left: 50%;
+    width: 600px;
+    margin-left: -300px;
+    margin-bottom: -10px;
+    padding: 5px 5px 5px 5px;
+    font: bold 2em helvetica, arial, sans-serif;
+}
+
+#vlchildrenlist {
+    margin-left: 5px;
+}
+
+.vltitle {
+    font: bold 1.2em helvetica, arial, sans-serif;
+    margin-bottom: 5px;
+}
+
+.vlauthorgroup {
+
+}
+
+.vlabstract {
+
+}
+
+.vllastmodified {
+
+}
+
+.vlsize {
+
+}
+
+#vlstatus_options {
+    margin-left: 30px;
+
+}
+
+#vlstatus_options img {
+    vertical-align: text-bottom;
+}
+
+#vlstatus_options input {
+    vertical-align: text-bottom;
+}
+
+
+.vlstatus {
+
+}
+
+.vloptions {
+
+}
+
