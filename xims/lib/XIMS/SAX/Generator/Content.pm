@@ -264,7 +264,10 @@ sub _set_children {
             # delete children with privmask 0 here? hacky, i guess not
             # $ctxt->session->user->children( $object )?
             #
-            $child->{user_privileges} = {$ctxt->session->user->object_privileges( $child )};
+
+            # added the users object privileges if he got one
+            my %uprivs = $ctxt->session->user->object_privileges( $child );
+            $child->{user_privileges} = {%uprivs} if ( grep { defined $_ } values %uprivs );
 
             # yet another superfluos db hit! this has to be changed!!!
             $child->{content_length} = $child->content_length();
