@@ -40,6 +40,8 @@
     <table>
         <xsl:call-template name="questionnaire_title_edit" />
         <xsl:call-template name="questionnaire_comment_edit" />
+        <xsl:call-template name="questionnaire_intro_edit" />
+        <xsl:call-template name="questionnaire_exit_edit" />        
         <xsl:call-template name="questionnaire_tanlists" />
         <xsl:call-template name="questionnaire_actions" />
     </table>
@@ -298,16 +300,42 @@
     </tr>
 </xsl:template>
 
+<xsl:template name="questionnaire_intro_edit">
+    <tr>
+        <td valign="top">
+            <span><xsl:value-of select="$i18n_qn/l/Intro"/></span>
+        </td>
+        <td>
+            <textarea type="text" tabindex="10" name="questionnaire_intro" cols="50" rows="3" class="text">
+                <xsl:value-of select="body/questionnaire/intro"/>
+            </textarea> 
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="questionnaire_exit_edit">
+    <tr>
+        <td valign="top">
+            <span><xsl:value-of select="$i18n_qn/l/Exit"/></span>
+        </td>
+        <td>
+            <textarea type="text" tabindex="10" name="questionnaire_exit" cols="50"  rows="3" class="text">
+                <xsl:value-of select="body/questionnaire/exit"/>
+            </textarea> 
+        </td>
+    </tr>
+</xsl:template>
+
 <xsl:template name="questionnaire_comment_edit">
-    <xsl:variable name="position_long_point">
+<!--    <xsl:variable name="position_long_point">
         <xsl:number level="multiple" count="question | answer" />
     </xsl:variable>
     <xsl:variable name="position_long">
         <xsl:value-of select="translate($position_long_point,'.','x')" />
-    </xsl:variable>
+    </xsl:variable>-->
     <tr>
         <td valign="top">
-            <span class="qu-edit-comment"><xsl:value-of select="$i18n_qn/l/Comment"/></span>
+            <span><xsl:value-of select="$i18n_qn/l/Comment"/></span>
         </td>
         <td>
             <input type="text" tabindex="10" name="questionnaire_comment" size="40" class="text" value="{ body/questionnaire/comment}"/>

@@ -224,7 +224,9 @@ sub delete_node {
     $questionnaire = $questionnaire->documentElement();
 
     my $node = $self->_qnode( $node_id, $questionnaire);
-    $node = $node->parentNode->removeChild( $node );
+    if ( $node != $questionnaire ) {
+        $node = $node->parentNode->removeChild( $node );
+    }
     $questionnaire = _set_top_question_edit ($questionnaire, $node_id);
     my $xml_string = $questionnaire->toString();
     $self->body( $xml_string );
@@ -400,6 +402,8 @@ sub form_to_xml {
     my $questionnaire = XML::LibXML::Element->new( "questionnaire" );
     $questionnaire->appendTextChild( "title", $params{'questionnaire_title'}  );
     $questionnaire->appendTextChild( "comment",  $params{'questionnaire_comment'}  );
+    $questionnaire->appendTextChild( "intro",  $params{'questionnaire_intro'}  );
+    $questionnaire->appendTextChild( "exit",  $params{'questionnaire_exit'}  );    
     # recursively create childnodes
     $questionnaire = _create_tanlists( $questionnaire, %params );
     $questionnaire = _create_children( $questionnaire, %params );
@@ -641,14 +645,16 @@ sub _set_top_question_edit {
 sub add_tanlist {
     XIMS::Debug ( 5, "called" );
     my ($self, $tanlist_id, $questionnaire) = @_;
-
     #get TAN-List Object
     my $TAN_List = XIMS::TAN_List->new( path => $tanlist_id );
-    $questionnaire = $questionnaire->documentElement();
-    my $new_node = XML::LibXML::Element->new( "tanlist" );
-    $new_node->setAttribute( "id" , $TAN_List->document_id() );
-    $new_node->appendText( $TAN_List->title()." (".$TAN_List->number().")"  );
-    $questionnaire->appendChild( $new_node );
+    if ( $TAN_List->number() ) {
+        XIMS::Debug(5,"adding TAN-List: $TAN_List");
+        $questionnaire = $questionnaire->documentElement();
+        my $new_node = XML::LibXML::Element->new( "tanlist" );
+        $new_node->setAttribute( "id" , $TAN_List->document_id() );
+        $new_node->appendText( $TAN_List->title()." (".$TAN_List->number().")"  );
+        $questionnaire->appendChild( $new_node );
+    }
     $self->body( $questionnaire->toString() );
 }
 
@@ -827,6 +833,7 @@ sub _parser {
 }
 
 sub _qnode {
+    XIMS::Debug( 5, "called" );
     my $self = shift;
     my $node_id = shift;
     my $questionnaire = shift;
@@ -839,7 +846,6 @@ sub _qnode {
     else {
         $node = $questionnaire;
     }
-
     return $node;
 }
 
