@@ -231,8 +231,8 @@ sub _set_children {
         foreach my $child ( @children ) {
             if ( $ctxt->properties->content->getchildren->addinfo() ) {
                 my @info = $ctxt->data_provider->get_descendant_infos( parent_id => $child->document_id() );
-                $child->{descendant_count}         = $info[0];
-                $child->{descendant_last_modified} = $info[1];
+                $child->{descendant_count}                       = $info[0];
+                $child->{descendant_last_modification_timestamp} = $info[1];
             }
 
             # remember the seen objecttypes
