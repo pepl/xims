@@ -81,9 +81,8 @@ sub prepare {
         $data_formats{$ctxt->object->data_format_id()} = 1;
 
         # add the user's privs.
-        $doc_data->{context}->{object}->{user_privileges} = {$ctxt->session->user->object_privileges( $ctxt->object() )};
-        # ubu
-        #warn "privs in SAX: " . Dumper( $doc_data->{context}->{object}->{user_privileges} );
+        my %userprivs = $ctxt->session->user->object_privileges( $ctxt->object() );
+        $doc_data->{context}->{object}->{user_privileges} = {%userprivs} if ( grep { defined $_ } values %userprivs );
 
         $self->_set_formats_and_types( $ctxt, $doc_data, \%object_types, \%data_formats);
     }
