@@ -31,14 +31,14 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 # These are messages all app-scripts should use. [0-6]
 @XIMS::CGI::MSG  = (  "No object id found!",
-           "Object id is not valid!",
-           "No location set!",
-           "Database synchronization failed!",
-           "Access Denied! Sorry.",
-           "Location already exists in container!",
-           "Delete failed!",
-           "Document could not be formed well. Please consult the User's Reference for information on well-formed document bodies.",
-                 );
+                      "Object id is not valid!",
+                      "No location set!",
+                      "Database synchronization failed!",
+                      "Access Denied! Sorry.",
+                      "Location already exists in container!",
+                      "Delete failed!",
+                      "Document could not be formed well. Please consult the User's Reference for information on well-formed document bodies.",
+                   );
 
 # some callbacks we need to the the thing run
 # first we register the events we handle
@@ -155,11 +155,11 @@ sub event_edit {
     if ( $self->object_locked( $ctxt ) ) {
         XIMS::Debug( 3, "Attempt to edit locked object" );
         $self->sendError( $ctxt,
-                            "This object is locked by " .
-                            $object->locker->firstname() .
-                            " " . $object->locker->lastname() .
-                            " since " . $object->locked_time() .
-                            ". Please try again later." );
+                          "This object is locked by " .
+                          $object->locker->firstname() .
+                          " " . $object->locker->lastname() .
+                          " since " . $object->locked_time() .
+                          ". Please try again later." );
     }
     else {
         if ( $object->lock() ) {
@@ -336,7 +336,7 @@ sub selectStylesheet {
         }
         else {
             XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
-       }
+        }
     }
 
     $retval = $stylepath . $stylefilename;
@@ -595,8 +595,8 @@ sub clean_location {
     $location =~ s/
                     ([$badchars])     # more flexible :)
                   /
-                    $escapes{$1}
-                  /segx;              # *coff*
+                      $escapes{$1}
+                          /segx; # *coff*
     $location =~ s/_+/_/g;
 
     XIMS::Debug( 5, "done" );
@@ -645,7 +645,8 @@ sub init_store_object {
                                                                     # don't want filesuffixes to be overridden by our
                                                                     # data format's default value
                 my $suffix = $object->data_format->suffix();
-                if ( defined $suffix and length $suffix ) {
+                if ( defined $suffix and length $suffix and not ($suffix eq 'html'
+                                                                 and $location =~ /.*\.html\.(de|en|es|it|fr|html)$/) ) {
                     XIMS::Debug( 6, "exchanging suffix with $suffix ($location)" );
                     $location =~ s/\.[^\.]+$//;
                     $location .= "." . $suffix;
@@ -726,7 +727,7 @@ sub init_store_object {
             $object->image_id( $imageobj->id() );
         }
         elsif ( $imageobj = XIMS::Object->new( path => $image )
-             and $imageobj->object_type->name() eq 'Image' ) {
+                and $imageobj->object_type->name() eq 'Image' ) {
             $object->image_id( $imageobj->id() );
         }
         else {
@@ -747,7 +748,7 @@ sub init_store_object {
             $object->style_id( $styleobj->id() );
         }
         elsif ( $styleobj = XIMS::Object->new( path => $stylesheet )
-             and $styleobj->object_type->name() eq 'XSLStylesheet') {
+                and $styleobj->object_type->name() eq 'XSLStylesheet') {
             $object->style_id( $styleobj->id() );
         }
         else {
@@ -772,10 +773,10 @@ sub default_grants {
 
     # grant the object to the current user
     if ( $ctxt->object->grant_user_privileges(
-                                         grantee  => $ctxt->session->user(),
-                                         grantor  => $ctxt->session->user(),
-                                         privmask => XIMS::Privileges::MODIFY|XIMS::Privileges::PUBLISH
-                                       )
+                                              grantee  => $ctxt->session->user(),
+                                              grantor  => $ctxt->session->user(),
+                                              privmask => XIMS::Privileges::MODIFY|XIMS::Privileges::PUBLISH
+                                             )
        ) {
         XIMS::Debug( 6, "granted user " . $ctxt->session->user->name . " default privs on " . $ctxt->object->id() );
         $retval = 1;
@@ -792,10 +793,10 @@ sub default_grants {
         my @object_privs = map { XIMS::ObjectPriv->new->data( %{$_} ) } $ctxt->data_provider->getObjectPriv( content_id => $ctxt->parent->id() );
         foreach my $priv ( @object_privs ) {
             $ctxt->object->grant_user_privileges(
-                                        grantee   => $priv->grantee_id(),
-                                        grantor   => $ctxt->session->user(),
-                                        privmask  => $priv->privilege_mask(),
-                                    )
+                                                 grantee   => $priv->grantee_id(),
+                                                 grantor   => $ctxt->session->user(),
+                                                 privmask  => $priv->privilege_mask(),
+                                                )
         }
 
         if ( defined $grantdefaultroles and $grantdefaultroles == 1 ) {
@@ -820,7 +821,7 @@ sub event_undelete {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::DELETE();
+        unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
 
@@ -839,8 +840,8 @@ sub event_undelete {
         # for the undeleted object.
         #
         $self->sendError( $ctxt, "An object with the location '" .
-                                  $object->location() .
-                                 "' already exists in container. Please rename or move that object before undeleting this one." );
+                          $object->location() .
+                          "' already exists in container. Please rename or move that object before undeleting this one." );
 
         return 0;
     }
@@ -865,7 +866,7 @@ sub event_trashcan {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::DELETE();
+        unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
 
@@ -928,7 +929,7 @@ sub event_delete {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::DELETE();
+        unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
     my $parent_content_id = XIMS::Object->new( document_id => $object->parent_id() )->id(); # needed for redirection after deletion
@@ -1037,7 +1038,7 @@ sub event_move_browse {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::MOVE();
+        unless $current_user_object_priv & XIMS::Privileges::MOVE();
 
     if ( not $ctxt->object->published() ) {
         my $to = $self->param( "to" );
@@ -1073,7 +1074,7 @@ sub event_move {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::MOVE();
+        unless $current_user_object_priv & XIMS::Privileges::MOVE();
 
     if ( not $object->published() ) {
         my $to = $self->param( "to" );
@@ -1148,11 +1149,11 @@ sub event_copy {
     my $parent = XIMS::Object->new( document_id => $object->parent_id, User => $ctxt->session->user() );
     my $parent_user_object_priv = $ctxt->session->user->object_privmask( $parent );
     return $self->event_access_denied( $ctxt )
-           unless $parent_user_object_priv & XIMS::Privileges::CREATE();
+        unless $parent_user_object_priv & XIMS::Privileges::CREATE();
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::VIEW();
+        unless $current_user_object_priv & XIMS::Privileges::VIEW();
 
     my $recursivecopy = 1 if $self->param( 'recursivecopy' );
     my $confirmcopy = 1 if $self->param( 'confirmcopy' );
@@ -1184,7 +1185,7 @@ sub event_publish_prompt {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
+        unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     my @objects;
     # check for body references in (X)HTML and XML documents
@@ -1222,7 +1223,7 @@ sub event_publish_prompt {
             if ( scalar(@locations_ungranted) > 0 ) {
                 $ctxt->session->message( join ",", @locations_ungranted );
             }
-         }
+        }
     }
 
     $ctxt->properties->application->styleprefix('common_publish');
@@ -1238,7 +1239,7 @@ sub event_publish {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
+        unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     require XIMS::Exporter;
     my $exporter = XIMS::Exporter->new( Provider => $ctxt->data_provider,
@@ -1283,7 +1284,7 @@ sub event_unpublish {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
+        unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     if ( $ctxt->object->data_format->mime_type() eq 'application/x-container' ) {
         my @container_ot = $ctxt->data_provider->object_types( is_fs_container => '1' );
@@ -1361,12 +1362,12 @@ sub event_obj_acllist {
         #
         if ( $objprivs & XIMS::Privileges::GRANT()
              || $objprivs & XIMS::Privileges::GRANT_ALL() ) {
-              XIMS::Debug( 6, "ACL check passed (" . $user->name() . ")" );
+            XIMS::Debug( 6, "ACL check passed (" . $user->name() . ")" );
 
             # get the existing grants on the object
             my @object_privs = map { XIMS::ObjectPriv->new->data( %{$_} ) } $dp->getObjectPriv( content_id => $object->id() );
 
-            if ( my $user_id = $self->param( "userid" ) ){
+            if ( my $user_id = $self->param( "userid" ) ) {
                 if ( my $context_user = XIMS::User->new( id => $user_id ) ) {
                     # second parameter to object_privileges forces check for explicit grants to user only
                     my %oprivs = $context_user->object_privileges( $object, 1 );
@@ -1418,9 +1419,9 @@ sub event_obj_acllist {
         else {
             XIMS::Debug( 2, "user " . $user->name() . " denied to list privileges on object" );
             $self->sendError( $ctxt,
-                               "user " .
-                               $user->name() .
-                               " denied to list privileges on object" );
+                              "user " .
+                              $user->name() .
+                              " denied to list privileges on object" );
         }
     }
     else {
@@ -1537,7 +1538,7 @@ sub event_obj_aclrevoke {
                 $ctxt->properties->application->style( 'obj_user_update' );
                 my $revoked = XIMS::User->new( id => $uid );
                 $ctxt->session->message( "Privileges successfully revoked for user/role '" .
-                                          $revoked->name() . "'.");
+                                         $revoked->name() . "'.");
             }
             else {
                 XIMS::Debug( 2, "ACL grant failure on " . $object->document_id . " for " . $user->name() );
@@ -1578,7 +1579,7 @@ sub event_reposition {
 
     my $current_user_object_priv = $ctxt->session->user->object_privmask( $object );
     return $self->event_access_denied( $ctxt )
-           unless $current_user_object_priv & XIMS::Privileges::WRITE();
+        unless $current_user_object_priv & XIMS::Privileges::WRITE();
 
     my $new_position = $self->param( "new_position" );
 
@@ -1712,7 +1713,7 @@ sub body_ref_objects {
     # lets see if the objects exist in our system.
     my %paths_seen;
     foreach my $p ( @paths ) {
-        $p =~ s/\?.*$//; # strip querystring
+        $p =~ s/\?.*$//;        # strip querystring
         next unless length $p;
         next if $paths_seen{$p};
         if (
@@ -1849,17 +1850,17 @@ sub event_search {
         my $qbr = $qb->build( [qw(title abstract keywords body)] );
         if ( defined $qbr->{criteria} and length $qbr->{criteria} ) {
             my %param = (
-                        criteria => $qbr->{criteria},
-                        limit => $rowlimit,
-                        offset => $offset,
-                        order => $qbr->{order},
+                         criteria => $qbr->{criteria},
+                         limit => $rowlimit,
+                         offset => $offset,
+                         order => $qbr->{order},
                         );
             $param{start_here} = $ctxt->object() if $self->param('start_here');
 
             my @objects = $ctxt->object->find_objects_granted( %param );
 
             if ( not @objects ) {
-                 $ctxt->session->warning_msg( "Query returned no objects!" );
+                $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
                 %param = ( criteria => $qbr->{criteria} );
@@ -1965,12 +1966,12 @@ sub event_trashcan_content {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $maxresults = 50; # hardcoded atm
+    my $maxresults = 50;        # hardcoded atm
     # sth like findObjects not yet available again
     $ctxt->objectlist( $ctxt->{-PROVIDER}->findObjects( -user => $ctxt->session->user,
                                                         -conditionstr => "marked_deleted = 1",
                                                         -rowlimit     => $maxresults,
-                                                       )
+                                                      )
                      );
 
     $ctxt->session->error_msg = "Use the options to undelete or purge objects.";
