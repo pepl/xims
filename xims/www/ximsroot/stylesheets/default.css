@@ -244,12 +244,16 @@ td.darkgrey {
 	background-color:#999999;
 }
 
-td.orange {
-	background-color:#feebda;
+td.orange, td.orange1 {
+        background-color:#feebda;
 }
 
-td.darkorange {
-	background-color:#f98516;
+td.lightorange, td.orange2{
+        background-color:#fff6ee;
+}
+
+td.darkorange, td.orange3 {
+        background-color:#f98516;
 }
 
 td.blue {
@@ -1026,6 +1030,25 @@ span.cboxitem {
 	float:left;
 	font-family:helvetica, arial, sans-serif;
 	font-size:9pt;
+}
+
+.examplecode {
+    visible: false;
+    background: #cccccc;
+    border: 1px solid #aaaaaa;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.examplecode_of {
+    visible: false;
+    background: #cccccc;
+    border: 1px solid #aaaaaa;
+    padding: 5px;
+    margin-bottom: 5px;
+    position:relative;
+    width: 600px;
+    overflow: scroll;
 }
 
 
