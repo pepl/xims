@@ -7,7 +7,7 @@ use XIMS::Object;
 #use Data::Dumper;
 
 BEGIN {
-    plan tests => 14;
+    plan tests => 26;
 }
 
 # fetch the 'xims' container
@@ -27,7 +27,7 @@ ok( $user->name() eq 'admin' );
 my %c1_hash = ( title => 'Child One Dir',
                 language_id => 1,
                 location => 'child1',
-                parent_id => 2,
+                parent_id => $o->document_id(),
                 object_type_id => 1,
                 department_id => 1,
                 data_format_id => 18,
@@ -67,17 +67,39 @@ ok( $child3_id and $child3_id > $child2_id );
 
 # now for the real tests:
 
+# check location_paths
 ok( $o->location_path() eq '/xims' );
 ok( $child1->location_path() eq '/xims/child1' );
 ok( $child2->location_path() eq '/xims/child1/child2' );
 ok( $child3->location_path() eq '/xims/child1/child2/child3' );
 
+# check ancestor count
+ok( scalar @{$o->ancestors()} == 1 );
+ok( scalar @{$child1->ancestors()} == 2 );
+ok( scalar @{$child2->ancestors()} == 3 );
+ok( scalar @{$child3->ancestors()} == 4 );
+
+# rename and recheck location_path
+$child3->location( 'child3_renamed' );
+ok( $child3->update() );
+ok( $child3->location_path() eq '/xims/child1/child2/child3_renamed' );
+
+# rename with descendants and recheck location_path
+$child1->location( 'child1_renamed' );
+ok( $child1->update() );
+ok( $child3->location_path() eq '/xims/child1_renamed/child2/child3_renamed' );
+
+# move with descendants and recheck location_path
+$child2->parent_id( $o->document_id() );
+ok( $child2->update() );
+ok( $child1->location_path() eq '/xims/child1_renamed' );
+ok( $child2->location_path() eq '/xims/child2' );
+ok( $child3->location_path() eq '/xims/child2/child3_renamed' );
 
 # now clean up
 $child3->delete();
 $child2->delete();
 $child1->delete();
-
 
 # make sure.
 
