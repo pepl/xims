@@ -115,7 +115,7 @@ NOTE: you'll need to provide dsn, user and pwd for a testaccess;
  
         [root@host /www ]# ln -s /usr/local/xims/www/ximsroot /www/ximsroot
         [root@host /www ]# ln -s /usr/local/xims/www/ximspubroot /www/ximspubroot 
-        [root@host /www ]# chgrp nobody /www/ximspubroot; chmod g+w /www/ximspubroot
+        [root@host /www ]# chgrp nobody /usr/local/xims/www/ximspubroot; chmod g+w /usr/local/xims/www/ximspubroot
         
         Where /www would be your Apache document root and "nobody" the group under which 
         the Apache HTTPD runs.
