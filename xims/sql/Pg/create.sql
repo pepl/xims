@@ -1,6 +1,6 @@
 -- Copyright (c) 2002-2003 The XIMS Project.
 -- See the file "LICENSE" for information on usage and redistribution
--- of this file, and for a DISCLAIMER OF ALL WARRANTIES. 
+-- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
 
 \set ECHO          queries
@@ -10,8 +10,8 @@
 \set ON_ERROR_STOP yes
 
 -- start over with a clean new db, set it's encoding to UNICODE
--- the clientlib will be set up to LATIN1, it will translate on the fly as we are 
--- currently using this encoding in xims it is said that Pg will get UNICODE as 
+-- the clientlib will be set up to LATIN1, it will translate on the fly as we are
+-- currently using this encoding in xims it is said that Pg will get UNICODE as
 -- default in upcoming versions and IIRC we have the LATIN1 thing in XIMS just because
 -- of a limitation with Oracle8
 -- i just think this is the 'save' option here ATM
@@ -46,7 +46,7 @@ CREATE TABLE ci_languages
 ;
 
 
-COMMENT ON COLUMN ci_languages.code 
+COMMENT ON COLUMN ci_languages.code
         IS 'values: iana-codes'
 ;
 
@@ -55,9 +55,9 @@ COMMENT ON COLUMN ci_languages.code
 CREATE TABLE ci_object_types
  (id              SERIAL      PRIMARY KEY
  ,name            VARCHAR(40) NOT NULL
- ,is_fs_container SMALLINT 
- ,is_xims_data    SMALLINT
- ,redir_to_self   SMALLINT
+ ,is_fs_container SMALLINT DEFAULT 0
+ ,is_xims_data    SMALLINT DEFAULT 0
+ ,redir_to_self   SMALLINT DEFAULT 1
  )
 ;
 
@@ -90,7 +90,7 @@ CREATE TABLE ci_users_roles
 ;
 
 
-COMMENT ON COLUMN ci_users_roles.object_type 
+COMMENT ON COLUMN ci_users_roles.object_type
         IS '0 => user, 1 => role'
 ;
 
@@ -99,7 +99,7 @@ COMMENT ON COLUMN ci_users_roles.object_type
 CREATE TABLE ci_roles_granted
  (id           INTEGER          REFERENCES ci_users_roles ( id )
  ,grantor_id   INTEGER NOT NULL REFERENCES ci_users_roles ( id )
- ,grantee_id   INTEGER NOT NULL REFERENCES ci_users_roles ( id ) 
+ ,grantee_id   INTEGER NOT NULL REFERENCES ci_users_roles ( id )
  ,role_master  SMALLINT DEFAULT 0
  ,default_role SMALLINT DEFAULT 0
  )
@@ -112,11 +112,11 @@ CREATE INDEX ci_roles_granted_grantee_idx
        USING HASH ( grantee_id )
 ;
 
-COMMENT ON COLUMN ci_roles_granted.role_master 
+COMMENT ON COLUMN ci_roles_granted.role_master
         IS 'if 1, grantee has the right to manage role-membership of this role'
 ;
 
-COMMENT ON COLUMN ci_roles_granted.default_role 
+COMMENT ON COLUMN ci_roles_granted.default_role
         IS 'will be used to specify the roles granted which are granted view priv in setdefaultgrants'
 ;
 
@@ -125,7 +125,7 @@ COMMENT ON COLUMN ci_roles_granted.default_role
 CREATE TABLE ci_object_type_privs
  (grantee_id     INTEGER NOT NULL REFERENCES ci_users_roles ( id )
  ,grantor_id     INTEGER NOT NULL REFERENCES ci_users_roles ( id )
- ,object_type_id INTEGER NOT NULL REFERENCES ci_object_types( id ) 
+ ,object_type_id INTEGER NOT NULL REFERENCES ci_object_types( id )
                                   ON DELETE CASCADE
  ,userselection  SMALLINT
  )
@@ -134,8 +134,8 @@ CREATE TABLE ci_object_type_privs
 
 \echo creating index ci_obj_type_privs_grantee_idx...
 -- seen only '=' clauses, HASH seems best alg.
-CREATE INDEX ci_obj_type_privs_grantee_idx 
-       ON ci_object_type_privs 
+CREATE INDEX ci_obj_type_privs_grantee_idx
+       ON ci_object_type_privs
        USING HASH ( grantee_id )
 ;
 
@@ -157,21 +157,21 @@ CREATE TABLE ci_documents
  (location          VARCHAR(256)
  ,status            VARCHAR(100)
  ,id                SERIAL       PRIMARY KEY
- ,parent_id         INTEGER      NOT NULL 
-                                 REFERENCES ci_documents ( id ) 
+ ,parent_id         INTEGER      NOT NULL
+                                 REFERENCES ci_documents ( id )
                                  ON DELETE NO ACTION
                                  DEFERRABLE
                                  INITIALLY DEFERRED
- ,object_type_id    INTEGER      NOT NULL 
-                                 REFERENCES ci_object_types ( id ) 
- ,department_id     INTEGER      NOT NULL 
-                                 REFERENCES ci_documents( id ) 
-                                 ON DELETE NO ACTION 
-                                 DEFERRABLE 
+ ,object_type_id    INTEGER      NOT NULL
+                                 REFERENCES ci_object_types ( id )
+ ,department_id     INTEGER      NOT NULL
+                                 REFERENCES ci_documents( id )
+                                 ON DELETE NO ACTION
+                                 DEFERRABLE
                                  INITIALLY DEFERRED
- ,data_format_id    INTEGER      NOT NULL 
+ ,data_format_id    INTEGER      NOT NULL
                                  REFERENCES ci_data_formats ( id )
- ,symname_to_doc_id INTEGER      REFERENCES ci_documents( id ) 
+ ,symname_to_doc_id INTEGER      REFERENCES ci_documents( id )
                                  ON DELETE cascade
  ,position          INTEGER
  ,lft               INTEGER      NOT NULL
@@ -183,21 +183,21 @@ CREATE TABLE ci_documents
 ;
 
 
-COMMENT ON COLUMN ci_documents.position 
+COMMENT ON COLUMN ci_documents.position
         IS 'for positioning in the parent_id container-context'
 ;
 
 
 \echo creating indices on ci_documents
 -- found some queries with 'in( parent_id,  )' conditions
--- thence default btree 
-CREATE INDEX ci_documents_par_id_idx 
+-- thence default btree
+CREATE INDEX ci_documents_par_id_idx
        ON ci_documents ( parent_id )
 ;
-CREATE INDEX ci_documents_lft_idx 
+CREATE INDEX ci_documents_lft_idx
        ON ci_documents ( lft )
 ;
-CREATE INDEX ci_documents_rgt_idx 
+CREATE INDEX ci_documents_rgt_idx
        ON ci_documents ( rgt )
 ;
 
@@ -220,17 +220,17 @@ CREATE TABLE ci_content
  ,locked_by_id                  INTEGER       REFERENCES ci_users_roles ( id )
  ,style_id                      INTEGER       REFERENCES ci_documents   ( id )
  ,script_id                     INTEGER       REFERENCES ci_documents   ( id )
- ,language_id                   INTEGER       REFERENCES ci_languages   ( id ) 
+ ,language_id                   INTEGER       REFERENCES ci_languages   ( id )
  ,last_modified_by_id           INTEGER       NOT NULL REFERENCES ci_users_roles( id )
  ,owned_by_id                   INTEGER       NOT NULL REFERENCES ci_users_roles ( id )
  ,created_by_id                 INTEGER       NOT NULL REFERENCES ci_users_roles ( id )
- ,css_id                        INTEGER       REFERENCES ci_documents(id) 
+ ,css_id                        INTEGER       REFERENCES ci_documents(id)
  ,image_id                      INTEGER       REFERENCES ci_documents(id)
  ,document_id                   INTEGER       NOT NULL REFERENCES ci_documents(id) ON DELETE CASCADE
  ,published                     SMALLINT
  ,last_publication_timestamp    TIMESTAMP(0)  WITHOUT TIME ZONE
  ,last_published_by_id          INTEGER       REFERENCES ci_users_roles ( id )
- ,marked_deleted                SMALLINT 
+ ,marked_deleted                SMALLINT
  ,locked_by_lastname            VARCHAR(30)
  ,locked_by_middlename          VARCHAR(30)
  ,locked_by_firstname           VARCHAR(30)
@@ -251,24 +251,24 @@ CREATE TABLE ci_content
 ;
 
 
-COMMENT ON COLUMN ci_content.keywords 
+COMMENT ON COLUMN ci_content.keywords
         IS 'values ";"-separated'
 ;
 
 
 -- found only '=' conditions, thence HASH
 \echo creating index on ci_content...
-CREATE INDEX ci_content_doc_id_idx 
+CREATE INDEX ci_content_doc_id_idx
        ON ci_content USING HASH ( document_id )
 ;
 
 
 \echo creating table 'ci_bookmarks'
-CREATE TABLE ci_bookmarks 
+CREATE TABLE ci_bookmarks
  (id         SERIAL PRIMARY KEY
  ,content_id INTEGER NOT NULL REFERENCES ci_content(id)     ON DELETE CASCADE
  ,owner_id   INTEGER NOT NULL REFERENCES ci_users_roles(id) ON DELETE CASCADE
- ,stdhome    SMALLINT DEFAULT 0 
+ ,stdhome    SMALLINT DEFAULT 0
  )
 ;
 
@@ -276,19 +276,19 @@ CREATE TABLE ci_bookmarks
 \echo creating table ci_mime_type_aliases
 CREATE TABLE ci_mime_type_aliases
  (id             SERIAL PRIMARY KEY
- ,data_format_id INTEGER     REFERENCES ci_data_formats ( id ) 
+ ,data_format_id INTEGER     REFERENCES ci_data_formats ( id )
                              ON DELETE CASCADE
- ,mime_type      VARCHAR(40) NOT NULL UNIQUE 
+ ,mime_type      VARCHAR(40) NOT NULL UNIQUE
  )
 ;
 
 
-COMMENT ON COLUMN ci_object_types.is_fs_container 
+COMMENT ON COLUMN ci_object_types.is_fs_container
         IS 'is_fs_container indicates whether this object-type should be exported as folder to te filesystem'
 ;
 
 
-COMMENT ON column ci_object_types.redir_to_self 
+COMMENT ON column ci_object_types.redir_to_self
         IS 'redir_to_self indicates whether redirection after editing should go to the object self or to the parent object'
 ;
 
@@ -378,7 +378,7 @@ SELECT  c.binfile
        ,c.created_by_middlename
        ,c.created_by_firstname
        ,c.data_format_name
-       ,COALESCE( octet_length(c.body), octet_length(c.binfile), 0 ) 
+       ,COALESCE( octet_length(c.body), octet_length(c.binfile), 0 )
        AS lob_length
        ,c.last_publication_timestamp
        ,c.last_published_by_id
@@ -393,78 +393,78 @@ SELECT  c.binfile
 --functions as compatability-wrappers for Oracles vs. PostgreSQL
 --one for each sequence :-/
 \echo creat functions....
-CREATE FUNCTION ci_bookmarks_id_seq_nval() RETURNS INTEGER 
-       AS 'BEGIN 
-            RETURN nextval(\'ci_bookmarks_id_seq\'); 
-           END;' 
+CREATE FUNCTION ci_bookmarks_id_seq_nval() RETURNS INTEGER
+       AS 'BEGIN
+            RETURN nextval(\'ci_bookmarks_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
 
-CREATE FUNCTION ci_content_id_seq_nval() RETURNS INTEGER 
-       AS 'BEGIN 
-            RETURN nextval(\'ci_content_id_seq\'); 
-           END;' 
+CREATE FUNCTION ci_content_id_seq_nval() RETURNS INTEGER
+       AS 'BEGIN
+            RETURN nextval(\'ci_content_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
 
-CREATE FUNCTION ci_data_formats_id_seq_nval() RETURNS INTEGER 
-       AS 'BEGIN 
-            RETURN nextval(\'ci_data_formats_id_seq\'); 
-           END;' 
+CREATE FUNCTION ci_data_formats_id_seq_nval() RETURNS INTEGER
+       AS 'BEGIN
+            RETURN nextval(\'ci_data_formats_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
 
-CREATE FUNCTION ci_documents_id_seq_nval() RETURNS INTEGER 
-       AS 'BEGIN 
-            RETURN nextval(\'ci_documents_id_seq\'); 
-           END;' 
+CREATE FUNCTION ci_documents_id_seq_nval() RETURNS INTEGER
+       AS 'BEGIN
+            RETURN nextval(\'ci_documents_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
 
 CREATE FUNCTION ci_languages_id_seq_nval() RETURNS INTEGER
-       AS 'BEGIN 
-            RETURN nextval(\'ci_languages_id_seq\'); 
-           END;' 
+       AS 'BEGIN
+            RETURN nextval(\'ci_languages_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
 
-CREATE FUNCTION ci_object_types_id_seq_nval() RETURNS INTEGER 
-       AS 'BEGIN 
-            RETURN nextval(\'ci_object_types_id_seq\'); 
-           END;' 
+CREATE FUNCTION ci_object_types_id_seq_nval() RETURNS INTEGER
+       AS 'BEGIN
+            RETURN nextval(\'ci_object_types_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
 
-CREATE FUNCTION ci_sessions_id_seq_nval() RETURNS INTEGER 
-       AS 'BEGIN 
-            RETURN nextval(\'ci_sessions_id_seq\'); 
-           END;' 
+CREATE FUNCTION ci_sessions_id_seq_nval() RETURNS INTEGER
+       AS 'BEGIN
+            RETURN nextval(\'ci_sessions_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
 
-CREATE FUNCTION ci_users_roles_id_seq_nval() RETURNS INTEGER 
-       AS 'BEGIN 
-            RETURN nextval(\'ci_users_roles_id_seq\'); 
-           END;' 
+CREATE FUNCTION ci_users_roles_id_seq_nval() RETURNS INTEGER
+       AS 'BEGIN
+            RETURN nextval(\'ci_users_roles_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
-CREATE FUNCTION ci_mime_aliases_id_seq_nval() RETURNS INTEGER 
-       AS 'BEGIN 
-            RETURN nextval(\'ci_mime_type_aliases_id_seq\'); 
-           END;' 
+CREATE FUNCTION ci_mime_aliases_id_seq_nval() RETURNS INTEGER
+       AS 'BEGIN
+            RETURN nextval(\'ci_mime_type_aliases_id_seq\');
+           END;'
        LANGUAGE 'plpgsql'
 ;
 
 -- we have a user 'xims' who OWNS the db and its
--- objects, having full control over them. 
+-- objects, having full control over them.
 -- ximsrun is the user XIMS connects as at runtime,
 -- least possible privileges here.
 GRANT SELECT
@@ -491,7 +491,7 @@ GRANT SELECT
       ,ci_users_roles_id_seq
       ,ci_content_loblength
    TO ximsrun
-;   
+;
 
 
 GRANT UPDATE
@@ -515,7 +515,7 @@ GRANT INSERT, UPDATE, DELETE
       ,ci_sessions
       ,ci_users_roles
    TO ximsrun
-;  
+;
 
 -- add default data (object types, data formats, languages, root folder, ...)
 \i defaultdata.sql
