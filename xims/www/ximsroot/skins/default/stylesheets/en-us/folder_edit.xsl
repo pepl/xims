@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -15,27 +15,18 @@
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
 </xsl:template>
-    
+
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-edit"/>
     <body>
-       <!-- onUnLoad="document.forms['cform'].submit() -->
         <p class="edit">
             <xsl:call-template name="table-edit"/>
-                    <form action="{$xims_box}{$goxims_content}{$absolute_path}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}" name="eform" method="POST">
                 <table border="0" width="98%">
-                    <xsl:call-template name="tr-locationtitle-edit"/>               
-                    <tr>
-                                        <td colspan="3">
-                                            <xsl:call-template name="markednew"/>
-                                        </td>
-                                </tr>
-                                <tr>
-                                        <td colspan="3">
-                                            <xsl:call-template name="autoindex"/>
-                                        </td>
-                                </tr>
+                    <xsl:call-template name="tr-locationtitle-edit"/>
+                    <xsl:call-template name="markednew"/>
+                    <xsl:call-template name="autoindex"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>

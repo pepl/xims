@@ -22,12 +22,14 @@
     <body onLoad="document.eform.abstract.value=''; document.eform.name.focus()">
         <p class="edit">
             <xsl:call-template name="table-create"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
                     <xsl:call-template name="tr-description-create"/>
                     <xsl:call-template name="tr-keywords-create"/>
+                    <xsl:call-template name="markednew"/>
+                    <xsl:call-template name="grantowneronly"/>
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>
@@ -36,5 +38,5 @@
             <xsl:call-template name="cancelaction"/>
     </body>
 </html>
- </xsl:template>
+</xsl:template>
 </xsl:stylesheet>

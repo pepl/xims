@@ -6,7 +6,7 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/TR/xhtml1/strict">
         <xsl:import href="common.xsl"/>
         <xsl:import href="container_common.xsl"/>
@@ -15,27 +15,19 @@
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
 </xsl:template>
-    
+
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-create"/>
     <body onLoad="document.eform.name.focus()">
         <p class="edit">
             <xsl:call-template name="table-create"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
-                    <tr>
-                        <td colspan="3">
-                            <xsl:call-template name="markednew"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <xsl:call-template name="autoindex"/>
-                        </td>
-                    </tr>
+                    <xsl:call-template name="markednew"/>
+                    <xsl:call-template name="autoindex"/>
                     <xsl:call-template name="grantowneronly"/>
                     <xsl:call-template name="tr-portlets-create"/>
                 </table>
