@@ -143,17 +143,12 @@
             <td>
                 <xsl:choose>
                     <xsl:when test="last_modification_timestamp">
-                        <xsl:apply-templates select="last_modification_timestamp" mode="date"/>
+                        <xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
                     </xsl:when>
                     <xsl:when test="creation_time">
-                        <xsl:apply-templates select="creation_time" mode="date"/>
+                        <xsl:apply-templates select="creation_time" mode="datetime"/>
                     </xsl:when>
-
-                    <xsl:otherwise>
-                        <xsl:text> </xsl:text>
-                    </xsl:otherwise>
                 </xsl:choose>
-                <xsl:apply-templates select="last_modification_timestamp" mode="date"/>
             </td>
         </tr>
     </xsl:template>
