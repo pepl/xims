@@ -159,4 +159,14 @@ sub get_last_answer {
     return $last_answered_question;
 }
 
+sub getResult {
+    XIMS::Debug ( 5, "called" );
+    my $self = shift;
+    my ($questionnaire_id, $tan, $question) = @_;
+    my $sql = "SELECT answer FROM ci_questionnaire_results WHERE document_id = ? AND tan = ? AND question_id = ?";
+    my $result = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id, $tan, $question] );
+    return $result;
+}
+
 1;
+
