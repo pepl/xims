@@ -625,7 +625,7 @@ sub _get_descendant_sql {
         #
         # PostgreSQL 7.3.x contrib-tablefunction connectby() does not support ordering of siblings :-|...
         #
-        if ( DBD::Pg::pg_server_version( $self->dbh ) =~ '7.3' ) {
+        if ( DBD::Pg::_pg_server_version( $self->dbh ) =~ '7.3' ) {
             return "SELECT $levelproperty t.id AS id FROM connectby('ci_documents', 'id', 'parent_id', '". $parent_id . "', " . $maxlevel . ") AS t(id text, parent_id text, lvl int) WHERE t.id <> t.parent_id";
         }
         else {
