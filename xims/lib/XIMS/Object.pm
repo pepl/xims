@@ -824,7 +824,7 @@ sub attribute {
     my %attr = @_;
     my $text = $self->attributes();
 
-    if ( $text and length $text ) {
+    if ( defined $text and length $text ) {
         my %attributes = ( $text =~ /([^;\=]+)\=([^\;]+)/g );
         foreach my $key ( keys %attr ) {
             $attributes{$key} = $attr{$key};
@@ -843,7 +843,7 @@ sub attribute_by_key {
     my $key  = shift;
     my $text = $self->attributes();
 
-    if ( length $text ) {
+    if ( defined $text and length $text ) {
         my %attributes = ( $text =~ /([^;\=]+)\=([^\;]+)/g );
         return $attributes{$key};
     }
@@ -1099,7 +1099,7 @@ sub balanced_string {
             }
         }
         else {
-            my $encoding = $args{encoding} || 'ISO-8859-1'; # hardcoded default encoding
+            my $encoding = $args{encoding} || XIMS::DBENCODING();
             my $doc; # as long as parse_xml_chunk does not fill $@ on error, we have to use $doc to test for success :/
             eval { $doc = $parser->parse_xml_chunk( $CDATAstring, $encoding ) };
             if ( !$doc or $@ ) {
@@ -1187,7 +1187,7 @@ sub balance_string {
         # adding ctxt->charset = XML_CHAR_ENCODING_UTF8; before returning at
         # htmlCreateDocParserCtxt() in htmlParser.c
         # gives a workaround fallback encoding setting
-        $CDATAstring = XML::LibXML::encodeToUTF8('ISO-8859-1', $CDATAstring );
+        $CDATAstring = XIMS::DBENCODING() ? XML::LibXML::encodeToUTF8(XIMS::DBENCODING(), $CDATAstring) : $CDATAstring;
         my $doc;
         eval {
             $doc = $parser->parse_html_string( $CDATAstring );
@@ -1197,7 +1197,7 @@ sub balance_string {
             return undef;
         }
         else {
-            $wbCDATAstring = XML::LibXML::decodeFromUTF8('ISO-8859-1', $doc->toString());
+            $wbCDATAstring = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(), $doc->toString()) : $doc->toString();
         }
     }
 

@@ -96,6 +96,7 @@ sub new {
     my %data;
 
     $data{Provider}   = $param{Provider}   if defined $param{Provider};
+    $data{Provider} ||= XIMS::DATAPROVIDER();
     $data{Basedir}    = $param{Basedir}    if defined $param{Basedir};
     $data{Stylesheet} = $param{Stylesheet} if defined $param{Stylesheet};
     $data{User}       = $param{User}       if defined $param{User};
@@ -146,8 +147,8 @@ sub publish {
     my %options = %param;
 
     # ...but do a sanity-check
-    unless ( defined $self->{Provider} and defined $self->{Basedir}) {
-        XIMS::Debug( 3, "Insufficient parameters for publishing, aborting!" );
+    unless ( defined $self->{Provider} and defined $self->{Basedir} ) {
+        XIMS::Debug( 2, "Insufficient parameters for publishing, Basedir needed!" );
         return undef;
     }
 
@@ -163,6 +164,7 @@ sub publish {
                                        Object     => $object,
                                        Options    => \%options,
                                        );
+    return undef unless $handler;
 
     # handle any ancestors, create folders where needed.
     #
@@ -256,8 +258,8 @@ sub unpublish {
     my %options = %param;
 
     # ...but do a sanity-check
-    unless ( defined $self->{Provider} and defined $self->{Basedir}) {
-        XIMS::Debug( 3, "Insufficient parameters for publishing, aborting!" );
+    unless ( defined $self->{Provider} and defined $self->{Basedir} ) {
+        XIMS::Debug( 2, "Insufficient parameters for publishing, Basedir needed!" );
         return undef;
     }
 
@@ -412,6 +414,7 @@ sub exporterclass {
     return undef unless $object;
 
     my $exporter_class = $self->classname( $object );
+
     my $exporter;
     eval {
         $exporter = $exporter_class->new( %args );
@@ -458,8 +461,6 @@ use XIMS::AppContext;
 #
 #    ubu-note: every handler is now atomic in the sense that each handler
 #              gets its own object.
-
-
 sub new {
     XIMS::Debug( 5, "called" );
     my $class = shift;
@@ -475,7 +476,6 @@ sub new {
     $self->{Options}     = $param{Options} || {};
     $self->{AppContext}  = XIMS::AppContext->new();
     my $bdir             = $param{Basedir}        if defined $param{Basedir};
-
 
     if ( defined $bdir and -d $bdir ) {
         XIMS::Debug( 4, "export directory '$bdir' exists" );
@@ -503,7 +503,6 @@ sub new {
     # remove /root
     shift @{$ancestors};
     $self->{Ancestors} = $ancestors;
-
     # publish only non-fs-container children here
     my @non_fscont_types = map { $_->id() } grep { !$_->is_fs_container() } $self->{Provider}->object_types();
     @{$self->{Children}} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
@@ -1010,7 +1009,6 @@ sub create {
 
     # THEN we have to do the transformation of the DOM, as the output
     # should contain using XSL.
-
     my $transd_dom = $self->transform_dom( $raw_dom );
 
     unless ( defined $transd_dom ) {
@@ -1076,7 +1074,7 @@ sub generate_dom {
 
     if ( defined $object ) {
         my $handler = XML::LibXML::SAX::Builder->new();
-        $handler->{Encoding} = 'ISO-8859-1' ;
+        $handler->{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
 
         my $controller   = undef;
         my @sax_filters = $self->set_sax_filters();
@@ -1099,6 +1097,7 @@ sub generate_dom {
 
         my $ctxt = $self->{AppContext};
         $ctxt->object( $object );
+        $ctxt->user( $self->{User} );
 
         # Using $self->{Options}->{appendexportfilters}, child
         # classes can influence the ordering of the SAX-Filter list

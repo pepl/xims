@@ -31,8 +31,10 @@ sub event_default {
 
     # two things: (1) having to encode here sucks
     #             (2) fetchlob here sucks
-    $r->pnotes( 'xml_string',
-                XML::LibXML::encodeToUTF8( 'iso-8859-1', $object->body ) );
+    my $body =  ( XIMS::DBENCODING() ? XML::LibXML::encodeToUTF8( XIMS::DBENCODING(), $object->body )
+                : $object->body;
+
+    $r->pnotes( 'xml_string', $body );
 
     my $dom_tree;
 
@@ -48,7 +50,8 @@ sub event_default {
     # The XSP handler store its result in pnotes
     my $dom_tree = $r->pnotes('dom_tree');
 
-    $dom_tree->setEncoding('ISO-8859-1');
+    $dom_tree->setEncoding(XIMS::DBENCODING()) if XIMS::DBENCODING();
+
     my $newbody = $dom_tree->toString();
 
     # :/

@@ -24,12 +24,7 @@ sub handle_data {
     unless ( $dontbody ) {
         my $root = $self->get_rootelement( $location, $object, 1 );
         return undef unless $root;
-        # uncomment the following depending on your XML::LibXML/libxml set up
-        # and are experiencing double UTF-8 encoded values in your imported
-        # data
-        #
-        #$object->body( XML::LibXML::decodeFromUTF8('ISO-8859-1',$root->toString()) );
-        $object->body( $root->toString() );
+        $object->body( XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$root->toString()) : $root->toString() );
     }
 
     return $object;
