@@ -263,7 +263,7 @@
             <table width="100%" border="0" height="42" background="{$skimages}subheader-generic_bg.png" cellpadding="0" cellspacing="0">
                 <tr>
                     <td nowrap="nowrap">
-                        From here
+                        <xsl:value-of select="$i18n/l/From_here"/>
                         <input type="checkbox" name="start_here" value="1">
                             <xsl:if test="$start_here != ''">
                                 <xsl:attribute name="checked">true</xsl:attribute>
