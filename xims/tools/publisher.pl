@@ -43,6 +43,9 @@ die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => undef, User => $user );
 die "Could not find object '".$ARGV[0]."'\n" unless $object and $object->id;
 
+# rebless to the object-type's class
+$object = rebless( $object );
+
 my $privmask = $user->object_privmask( $object );
 die "Access Denied. You do not have privileges to publish '".$ARGV[0]."'\n" unless $privmask and ($privmask & XIMS::Privileges::PUBLISH());
 
@@ -118,6 +121,21 @@ sub usage {
         -h prints this screen
 
 *;
+}
+
+sub rebless {
+    my $object = shift;
+    my $otclass = "XIMS::" . $object->object_type->name();
+
+    # load the object class
+    eval "require $otclass;" if $otclass;
+    if ( $@ ) {
+        die "could not load object class $otclass: $@\n";
+    }
+
+    # rebless the object
+    bless $object, $otclass;
+    return $object;
 }
 
 sub recurse_children {
