@@ -970,7 +970,7 @@ sub remove {
 1;
 
 ###############################################################################################
-package XIMS::Exporter::XML;
+package XIMS::Exporter::XMLChunk;
 #
 # abstract class that covers all objects that need to
 # write/remove XML files to disk.
@@ -1297,7 +1297,7 @@ package XIMS::Exporter::Folder;
 # lowlevel class for folder objs.
 ###############################################################################################
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 use File::Path;
 use strict;
 
@@ -1482,7 +1482,7 @@ package XIMS::Exporter::Document;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
 use XIMS::SAX::Filter::SymTitle;
@@ -1527,7 +1527,7 @@ sub remove {
 #    $self->set_sax_filters(@parameter)
 #
 # PARAMETER
-#    @parameter: same parameterlist as XIMS::Exporter::XML uses
+#    @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
 #
 # DESCRIPTION
 # internally called.
@@ -1562,7 +1562,7 @@ sub set_sax_filters {
 #    $self->generate_dom(@parameter)
 #
 # PARAMETER
-#    @parameter: same parameterlist as XIMS::Exporter::XML uses
+#    @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
 #
 # DESCRIPTION
 # internally called.
@@ -1586,7 +1586,7 @@ package XIMS::Exporter::AutoIndexer;
 # Internal class for creating the auto index.
 ###############################################################################################
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
 
@@ -1634,7 +1634,7 @@ package XIMS::Exporter::Portlet;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::PortletCollector;
 
@@ -1716,7 +1716,7 @@ package XIMS::Exporter::OUIndexer;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::DepartmentExpander;
 use XIMS::SAX::Filter::ContentIDPathResolver;
@@ -1815,6 +1815,18 @@ use vars qw( @ISA );
 1;
 
 ###############################################################################################
+package XIMS::Exporter::XML;
+#
+# lowlevel class for XSLStylesheet objs.
+###############################################################################################
+
+use vars qw( @ISA );
+@ISA = qw( XIMS::Exporter::Binary );
+
+
+1;
+
+###############################################################################################
 package XIMS::Exporter::XSLStylesheet;
 #
 # lowlevel class for XSLStylesheet objs.
@@ -1825,6 +1837,18 @@ use vars qw( @ISA );
 
 
 1;
+
+###############################################################################################
+package XIMS::Exporter::XSPScript;
+#
+# lowlevel class for XSPScript objs. ALERT! this is just a dummy!
+###############################################################################################
+
+use vars qw( @ISA );
+@ISA = qw( XIMS::Exporter::XML );
+
+1;
+
 
 ###############################################################################################
 package XIMS::Exporter::URLLink;
@@ -1903,7 +1927,7 @@ package XIMS::Exporter::AnonDiscussionForum;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 
 
 1;
@@ -1915,7 +1939,7 @@ package XIMS::Exporter::AnonDiscussionForumContrib;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 
 
 1;
@@ -1927,7 +1951,7 @@ package XIMS::Exporter::AxPointPresentation;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 
 
 1;
@@ -1953,7 +1977,7 @@ package XIMS::Exporter::sDocBookXML;
 use vars qw( @ISA );
 use XIMS::SAX::Filter::ContentIDPathResolver;
 
-@ISA = qw( XIMS::Exporter::XML );
+@ISA = qw( XIMS::Exporter::XMLChunk );
 
 sub set_sax_filters {
     my $self = shift;
@@ -1969,36 +1993,13 @@ sub set_sax_filters {
 1;
 
 ###############################################################################################
-package XIMS::Exporter::XSPScript;
-#
-# lowlevel class for XSPScript objs. ALERT! this is just a dummy!
-###############################################################################################
-
-use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
-
-use XIMS::SAX::Filter::ContentIDPathResolver;
-
-sub set_sax_filters {
-    XIMS::Debug( 5, "called" );
-    my $self  = shift;
-
-    my $filter = XIMS::SAX::Filter::ContentIDPathResolver->new( Provider       => $self->{Provider},
-                                                                ResolveContent => [ qw( STYLE_ID SYMNAME_TO_DOC_ID DEPARTMENT_ID ) ]  );
-
-    return ($filter);
-}
-
-1;
-
-###############################################################################################
 package XIMS::Exporter::Portal;
 #
 # Portal Exporter class
 ###############################################################################################
 
 use vars qw(@ISA);
-@ISA=qw( XIMS::Exporter::XML );
+@ISA=qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
 
