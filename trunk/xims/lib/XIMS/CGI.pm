@@ -2026,7 +2026,6 @@ sub event_search {
         XIMS::Debug( 3, "catched improper query length" );
         $ctxt->session->error_msg( "Please keep your queries between 2 and 30 characters!" );
     }
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -2037,7 +2036,9 @@ sub event_sitemap {
     # $ctxt->properties->application->style() = "error";
 
     my $object = $ctxt->object();
-    my @descendants = $object->descendants_granted();
+    my $maxlevel = 3; # create XIMS::SITEMAPMAXLEVEL for that
+
+    my @descendants = $object->descendants_granted( maxlevel => $maxlevel );
 
     $ctxt->objectlist( \@descendants );
 
@@ -2045,7 +2046,6 @@ sub event_sitemap {
     $ctxt->properties->application->styleprefix( 'common' );
     $ctxt->properties->application->style( 'sitemap' );
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
