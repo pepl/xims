@@ -22,7 +22,7 @@
 <xsl:template match="/document/context/object">
 <html>
   <head>
-    <title>Browse for 
+    <title>Browse for
       <xsl:choose>
         <xsl:when test="$otfilter != ''">
           '<xsl:value-of select="$otfilter"/>'
@@ -33,12 +33,14 @@
       </xsl:choose>
     - XIMS</title>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     <script type="text/javascript">
     function storeBack(target) {
         window.opener.document.<xsl:value-of select="$sbfield"/>.value=target;
         window.close();
     }
-    
+
     </script>
   </head>
   <body>
@@ -84,7 +86,7 @@
                     <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield}"><xsl:value-of select="title"/></a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="title"/> 
+                    <xsl:value-of select="title"/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="$otfilter = '' or contains( $otfilter ,/document/object_types/object_type[@id=$objecttype]/name )">

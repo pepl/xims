@@ -22,6 +22,7 @@
     <title><xsl:value-of select="location"/> - Move object - XIMS</title>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
     <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
   </head>
   <body>
     <xsl:call-template name="header"/>

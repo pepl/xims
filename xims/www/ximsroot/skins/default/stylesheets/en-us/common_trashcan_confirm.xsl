@@ -21,9 +21,10 @@
         <head>
             <title>
                 Confirm Object Deletion - XIMS
-            </title> 
+            </title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript">0</script>
+            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
         <xsl:call-template name="header">
@@ -34,7 +35,7 @@
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
           <tr>
             <td align="center">
-            
+
             <br />
             <!-- begin widget table -->
             <table width="300" cellpadding="2" cellspacing="0" border="0">
@@ -68,10 +69,10 @@
                         <input name="id" type="hidden" value="{$id}"/>
                       </td>
                       <td>
-                        <input class="control" 
-                               name="default" 
-                               type="button" 
-                               value="Cancel" 
+                        <input class="control"
+                               name="default"
+                               type="button"
+                               value="Cancel"
                                onClick="javascript:history.go(-1)"
                         />
                       </td>
