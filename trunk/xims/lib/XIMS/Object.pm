@@ -1086,6 +1086,11 @@ sub move {
     my $parent_id = delete $args{target};
     return undef unless $parent_id;
 
+    if ( not $self->data_provider->close_position_gap( parent_id => $self->parent_id(), position => $self->position() ) ) {
+        XIMS::Debug( 2, "Could not close position gap" );
+        return undef;
+    }
+
     $self->parent_id( $parent_id );
 
     $self->department_id( __decide_department_id( document_id => $self->parent_id() ) );
