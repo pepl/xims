@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -14,6 +14,7 @@ use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib",($ENV{'XIMS_HOME'} || '/
 use XIMS::Installer;
 
 use XIMS::Term;
+use XML::LibXML;
 use Getopt::Std;
 
 my %args;
@@ -46,14 +47,14 @@ if ( $args{h} ) {
 
 #' just for syntax-highlighting
 
-my @upd_fields = qw{ApacheDocumentRoot DBUser DBPassword DBName DBdsn DBDOpt DBSessionOpt TidyPath TidyOptions};
+my @upd_fields = qw{ApacheDocumentRoot DBUser DBPassword DBdsn DBDOpt DBSessionOpt TidyPath TidyOptions};
 my $installer = XIMS::Installer->new();
 
-my $configpm = "$xims_home/lib/XIMS/Config.pm";
-my %Conf = parseConfigpm($configpm);
+my $configfile = "$xims_home/conf/ximsconfig.xml";
+my %Conf = %{XIMS::CONFIG->general};
 my $publicroot = "$xims_home/www/" . $Conf{PublicRoot};
 my $ximsstartuppl = "$xims_home/conf/ximsstartup.pl";
-my $tidypath_default = $Conf{'TidyPath'};
+my $tidypath_default = $Conf{'TidyPath'} || TidyPath();
 $Conf{'TidyOptions'}= ' -config ' . $xims_home . '/conf/ximstidy.conf -quiet -f /dev/null';
 my $dbdsn_default = DBdsn( \%Conf );
 my $db_host = DBhost( \%Conf );
@@ -154,16 +155,16 @@ $installer->httpd_conf( $Conf{ApacheHttpdConf} ); # set the value provided throu
 die( "\n" . $installer->httpd_conf() . " could not be found, exiting.\n\n") unless -f $installer->httpd_conf();
 if ( $> > 0 ) {
     die "Access check failed. Make sure you have write access to "
-        . $configpm . ", "
+        . $configfile . ", "
         . $installer->httpd_conf() . ", and "
         . $installer->apache_document_root() . "\n"
-        unless -w $configpm
+        unless -w $configfile
             and -w $installer->httpd_conf()
             and -w $installer->apache_document_root();
     die "Access check failed. Make sure you are owner of "
-        . $configpm . " and "
+        . $configfile . " and "
         . $publicroot . "\n"
-        unless  -o $configpm
+        unless  -o $configfile
             and -o $publicroot;
 }
 
@@ -202,15 +203,30 @@ elsif ( $Conf{DBdsn} eq 'Oracle' ) {
 
 fixupDBConfig( \%Conf ); # set config options depending on RDMBS type
 
-# writing back to Config.pm
+# writing back to config file
 # to keep things friendly and to avoid a second loop, we put ApacheDocumentRoot inside %Conf
 $Conf{ApacheDocumentRoot} = $installer->apache_document_root();
-foreach my $directive ( @upd_fields ) {
-    $installer->inplace_edit($configpm,
-                             "s!^\\s*sub $directive\\(\\)\\s+{s*.+\\s*}!sub $directive() { '$Conf{$directive}' }!");
-}
+my $doc;
+eval {
+    $doc = XML::LibXML->new()->parse_file( $configfile )
+};
+die "Could not parse file '$configfile': $@\n" if $@;
 
-print "\n[+] Successfully updated $configpm\n";
+foreach my $directive ( @upd_fields ) {
+    my $ndirective = XML::LibXML::Element->new( $directive );
+    $ndirective->appendText( $Conf{$directive} );
+    my $nl = $doc->getElementsByTagName( $directive );
+    $nl->get_node(1)->replaceNode( $ndirective );
+}
+my $configfile_fh = IO::File->new( $configfile, 'w' );
+if ( defined $configfile_fh ) {
+    print $configfile_fh $doc->toString();
+    $configfile_fh->close;
+    print "\n[+] Successfully updated $configfile\n";
+}
+else {
+    die "\nCould not write to $configfile: $!\n";
+}
 
 exit if $args{c};
 
@@ -252,10 +268,10 @@ my $uid = (stat $publicroot)[4];
 chown( $uid, $apache_gid, $publicroot );
 chmod( 0775, $publicroot );
 
-# Config.pm
-$uid = (stat $configpm)[4];
-chown( $uid, $apache_gid, $configpm );
-chmod( 0440, $configpm );
+# ximsconfig.xml
+$uid = (stat $configfile)[4];
+chown( $uid, $apache_gid, $configfile );
+chmod( 0440, $configfile );
 
 print "[+] Successfully set up file access rights.\n";
 
@@ -274,7 +290,7 @@ print qq*
 Initial XIMS setup finished.
 
 $0 only updates the most essential XIMS config options. It is
-recommended to take a look at XIMS::Config ($configpm)
+recommended to take a look at $configfile
 for further config customizations.
 
 *;
@@ -314,22 +330,9 @@ sub DBport {
     return $1;
 }
 
-
-sub parseConfigpm {
-    my $conf = shift;
-    my %Config;
-
-    open(CONF, $conf) || die "Can't open $conf: $!";
-    while (<CONF>) {
-        if ( /^\s*sub (\w+)\(\)\s+{s*(.+)\s*}/) {
-            my $key = $1;
-            my $value = $2;
-            $value =~ s/^\s+|'|"|\s+$//g;
-            $Config{$key} = $value;
-        }
-    }
-    close(CONF);
-
-    return %Config;
+sub TidyPath {
+    my $path = `which tidy`;
+    return $path unless defined $path;
+    return '/usr/local/bin/tidy' if -f '/usr/local/bin/tidy';
+    return '/usr/bin/tidy' if -f '/usr/bin/tidy';
 }
-
