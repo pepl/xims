@@ -709,12 +709,11 @@ sub remove_tanlist {
 sub set_statistics {
     XIMS::Debug( 5, "called");
     my ($self) = @_;
-
     my $questionnaire = $self->_parser->parse_string( $self->body() );
     $questionnaire = $questionnaire->documentElement();
     # get statistic from database-table
     my $result_object = XIMS::QuestionnaireResult->new();
-    my ($total, $valid, $invalid) = $result_object->get_result_count( $self->id(), _last_question($questionnaire) );
+    my ($total, $valid, $invalid) = $result_object->get_result_count( $self->document_id(), _last_question($questionnaire) );
     # add statistics to xml-structure
     $questionnaire->setAttribute( 'total_answered', $total );
     $questionnaire->setAttribute( 'valid_answered', $valid );
@@ -746,7 +745,7 @@ sub _last_question {
 sub set_results {
     XIMS::Debug( 5, "called");
     my ($self) = @_;
-
+    
     my $questionnaire = $self->_parser->parse_string( $self->body() );
     $questionnaire = $questionnaire->documentElement();
     my $result_object = XIMS::QuestionnaireResult->new();
@@ -764,7 +763,7 @@ sub set_results {
     if (! ( $answer_type =~ /^Text/ ) ) {
         foreach $title_node ( $title_nodes->get_nodelist() ) {
             my $answer = $title_node->textContent();
-            my $answer_count = $result_object->get_answer_count( $self->id(), $question_id, $answer);
+            my $answer_count = $result_object->get_answer_count( $self->document_id(), $question_id, $answer);
             $title_node->setAttribute( 'count', $answer_count );
         }
     }
@@ -776,7 +775,7 @@ sub set_results {
             $title_node = $answer_node->removeChild( $title_node );
         }
         # if answer type is "Text" or "Textarea" get each answer from the database
-        my $all_answers = $result_object->get_answers( $self->id(), $question_id );
+        my $all_answers = $result_object->get_answers( $self->document_id(), $question_id );
         foreach my $answer_text ( @{$all_answers} ) {
             #XIMS::Debug( 6, "### $question_id: ".Dumper( $answer_text) );
             my $default = 0;
@@ -818,7 +817,7 @@ sub has_answers {
     $questionnaire = $questionnaire->documentElement();
     # get statistic from database-table
     my $result_object = XIMS::QuestionnaireResult->new();
-    my ($total, $valid, $invalid) = $result_object->get_result_count( $self->id(), _last_question($questionnaire) );
+    my ($total, $valid, $invalid) = $result_object->get_result_count( $self->document_id(), _last_question($questionnaire) );
     return $total
 }
 
