@@ -3,8 +3,6 @@
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
 
-SPOOL ci_ddl.lst
-
 @@ci_ddl.tab
 @@ci_ddl.ind
 @@ci_ddl.con
@@ -43,7 +41,7 @@ SPOOL ci_ddl.lst
 @@nested_set_triggers_and_functions.sql
 
 -- commit;
-PROMPT Changes have not been commited yet. Type commit; to do so!
+-- PROMPT Changes have not been commited yet. Type commit; to do so!
+commit;
 
-
-SPOOL OFF
+exit;
