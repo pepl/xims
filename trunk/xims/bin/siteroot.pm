@@ -5,10 +5,10 @@
 package siteroot;
 
 use strict;
-
 use vars qw($VERSION @ISA);
 
 use departmentroot;
+
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = qw( departmentroot );
 
@@ -86,5 +86,4 @@ sub event_store {
 
 # END RUNTIME EVENTS
 # #############################################################################
-
 1;
