@@ -127,7 +127,10 @@
 
                 var is_changed;
                 if ( window.eWebEditPro ) {
-                    return eWebEditPro.instances['body'].isChanged();
+                    // Unfortunately, isChanged() is documented well
+                    // but does NOT work...
+                    // return eWebEditPro.instances['body'].isChanged();
+                    return false;
                 }
                 else if ( currentbody &amp;&amp; origbody &amp;&amp; currentbody != origbody ) {
                     return true;
