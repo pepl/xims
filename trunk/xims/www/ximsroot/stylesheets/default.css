@@ -331,7 +331,6 @@ tt {
 
 td.pathbg {
 	visible:false;
-	background-image:url("/ximspubroot/images/icons/header_19.gif");
 	padding-left:20px;
 	font-family:helvetica, arial, sans-serif;
 	font-size:10pt;
@@ -509,7 +508,7 @@ li.linklist, ul.linklist {
 	caption:Link List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_internal_link.gif");
+	list-style-image:url("/ximsroot/images/icons/list_SymbolicLink.gif");
 	text-indent:-5px;
 }
 
@@ -518,7 +517,7 @@ li.externallinklist, ul.externallinklist {
 	caption:External Link List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_external_link.gif");
+	list-style-image:url("/ximsroot/images/icons/list_external_link.gif");
 	text-indent:-5px;
 }
 
@@ -527,7 +526,7 @@ li.documentlist, ul.documentlist {
 	caption:Document List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_document_generic.gif");
+	list-style-image:url("/ximsroot/images/icons/list_HTML.gif");
 	text-indent:-5px;
 }
 
@@ -537,7 +536,7 @@ li.list_HTML {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_document_generic.gif");
+	list-style-image:url("/ximsroot/images/icons/list_HTML.gif");
 	text-indent:-5px;
 }
 
@@ -547,7 +546,7 @@ li.pdflist, ul.pdflist {
 	caption:PDF List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image: url("/ximspubroot/images/icons/list_pdf.gif");
+	list-style-image: url("/ximsroot/images/icons/list_PDF.gif");
 	text-indent:-5px;
 }
 
@@ -556,7 +555,7 @@ li.list_PDF {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image: url("/ximspubroot/images/icons/list_pdf.gif");
+	list-style-image: url("/ximsroot/images/icons/list_PDF.gif");
 	text-indent:-5px;
 }
 
@@ -566,7 +565,7 @@ li.wordlist, ul.wordlist {
 	caption:MS-Word List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_word.gif");
+	list-style-image:url("/ximsroot/images/icons/list_DOC.gif");
 	text-indent:-5px;
 }
 
@@ -575,7 +574,7 @@ li.wordlist, li.list_DOC, ul.wordlist {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_word.gif");
+	list-style-image:url("/ximsroot/images/icons/list_DOC.gif");
 	text-indent:-5px;
 }
 
@@ -584,7 +583,7 @@ li.excellist, ul.excellist {
 	caption:MS-Excel List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_excel.gif");
+	list-style-image:url("/ximsroot/images/icons/list_XLS.gif");
 	text-indent:-5px;
 }
 
@@ -593,7 +592,7 @@ li.list_XLS {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_excel.gif");
+	list-style-image:url("/ximsroot/images/icons/list_XLS.gif");
 	text-indent:-5px;
 }
 
@@ -602,7 +601,7 @@ li.pptlist, ul.pptlist {
 	caption:MS-Powerpoint List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_ppt.gif");
+	list-style-image:url("/ximsroot/images/icons/list_PPT.gif");
 	text-indent:-5px;
 }
 
@@ -611,7 +610,7 @@ li.list_PPT {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_ppt.gif");
+	list-style-image:url("/ximsroot/images/icons/list_PPT.gif");
 	text-indent:-5px;
 }
 
@@ -620,7 +619,7 @@ li.folderlist, ul.folderlist {
 	caption:Folder List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_folder.gif");
+	list-style-image:url("/ximsroot/images/icons/list_Container.gif");
 	text-indent:-5px;
 }
 
@@ -629,7 +628,7 @@ li.list_Container {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_folder.gif");
+	list-style-image:url("/ximsroot/images/icons/list_Container.gif");
 	text-indent:-5px;
 }
 
@@ -638,7 +637,7 @@ li.bulletlist, ul.bulletlist {
 	caption:Bullet List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_bullet.gif");
+	list-style-image:url("/ximsroot/images/icons/list_bullet.gif");
 	text-indent:-5px;
 }
 
@@ -647,7 +646,7 @@ li.imagelist, ul.imagelist {
 	caption:Image List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_PNG.gif");
+	list-style-image:url("/ximsroot/images/icons/list_PNG.gif");
 	text-indent:-5px;
 }
 
@@ -656,7 +655,7 @@ li.list_GIF, li.list_PNG, li.list_JPG, li.list_TIFF {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_PNG.gif");
+	list-style-image:url("/ximsroot/images/icons/list_PNG.gif");
 	text-indent:-5px;
 }
 
@@ -666,7 +665,7 @@ li.docbooklist, ul.docbooklist {
 	caption:DocBook List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_DocBookXML.gif");
+	list-style-image:url("/ximsroot/images/icons/list_DocBookXML.gif");
 	text-indent:-5px;
 }
 
@@ -675,7 +674,7 @@ li.list_DocBookXML {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_DocBookXML.gif");
+	list-style-image:url("/ximsroot/images/icons/list_DocBookXML.gif");
 	text-indent:-5px;
 }
 
@@ -684,7 +683,7 @@ li.list_AXPML {
        visible:false;
        padding-left:8px;
        line-height:150%;
-       list-style-image:url("/ximspubroot/images/icons/list_AXPML.gif");
+       list-style-image:url("/ximsroot/images/icons/list_AXPML.gif");
        text-indent:-5px;
 }
 
@@ -693,7 +692,7 @@ li.emaillist, ul.emaillist {
 	caption:Email List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximspubroot/images/icons/list_Email.gif");
+	list-style-image:url("/ximsroot/images/icons/list_Email.gif");
 	text-indent:-5px;
 }
 
