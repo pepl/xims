@@ -509,6 +509,7 @@ GRANT SELECT
       ,ci_users_roles
       ,ci_users_roles_id_seq
       ,ci_content_loblength
+      ,ci_questionnaire_results_id_seq
    TO ximsrun
 ;
 
@@ -519,6 +520,7 @@ GRANT UPDATE
       ,ci_documents_id_seq
       ,ci_sessions_id_seq
       ,ci_users_roles_id_seq
+      ,ci_questionnaire_results_id_seq
    TO ximsrun
 ;
 
