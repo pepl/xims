@@ -1533,6 +1533,7 @@ sub locked {
 #
 # PARAMETER
 #    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+#    $args{ no_pubber }   (optional) :  If set, last publisher and last publication timestamp properties will not be set.
 #
 # RETURNS
 #    $boolean : True or False for publishing the object
@@ -1545,11 +1546,15 @@ sub publish {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
     $self->published( 1 );
-    $self->last_published_by_id( $user->id() );
-    $self->last_published_by_firstname( $user->firstname() );
-    $self->last_published_by_middlename( $user->middlename() );
-    $self->last_published_by_lastname( $user->lastname() );
-    $self->last_publication_timestamp( $self->data_provider->db_now() );
+
+    unless ( exists $args{no_pubber} ) {
+        $self->last_published_by_id( $user->id() );
+        $self->last_published_by_firstname( $user->firstname() );
+        $self->last_published_by_middlename( $user->middlename() );
+        $self->last_published_by_lastname( $user->lastname() );
+        $self->last_publication_timestamp( $self->data_provider->db_now() );
+    }
+
     return $self->data_provider->updateObject( $self->data() );
 }
 

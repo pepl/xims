@@ -544,7 +544,12 @@ sub toggle_publish_state {
         return $self->{Object}->unpublish( User => $self->{User} );
     }
     else {
-        return $self->{Object}->publish( User => $self->{User} );
+        if ( $self->{Options} and ref $self->{Options} and exists $self->{Options}->{no_pubber} ) {
+            return $self->{Object}->publish( User => $self->{User}, no_pubber => 1 );
+        }
+        else {
+            return $self->{Object}->publish( User => $self->{User} );
+        }
     }
 }
 
