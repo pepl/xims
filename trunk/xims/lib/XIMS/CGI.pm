@@ -1163,16 +1163,29 @@ sub event_copy {
     return $self->event_access_denied( $ctxt )
            unless $current_user_object_priv & XIMS::Privileges::VIEW();
 
-    if ( not $object->clone( scope_subtree => 1 ) ) {
-        $ctxt->session->error_msg( "copy failed!" );
-        return 0;
+    my $recursivecopy = 1 if $self->param( 'recursivecopy' );
+    my $confirmcopy = 1 if $self->param( 'confirmcopy' );
+    my @chldinfo = $object->descendant_count();
+
+    if ( $confirmcopy == 1 or $chldinfo[0] == 0 ) {
+        if ( not $object->clone( scope_subtree => $recursivecopy ) ) {
+            $ctxt->session->error_msg( "copy failed!" );
+            return 0;
+        }
+        else {
+            XIMS::Debug( 4, "copy ok, redirecting to the parent");
+    
+            $self->redirect( $self->redirect_path( $ctxt, $object->parent_id() ) );
+            return 0;
+        }
     }
     else {
-        XIMS::Debug( 4, "copy ok, redirecting to the parent");
-
-        $self->redirect( $self->redirect_path( $ctxt, $object->parent_id() ) );
+        $ctxt->session->warning_msg( "This Container has " . $chldinfo[0] . " child(ren) over " . $chldinfo[1] . " level(s) in the hierarchy ");
+        $ctxt->properties->application->styleprefix( "common" );
+        $ctxt->properties->application->style( "recursive_copy_confirm" );
         return 0;
     }
+
 }
 
 sub event_publish_prompt {
