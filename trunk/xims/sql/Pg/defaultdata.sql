@@ -191,11 +191,12 @@ INSERT INTO ci_documents ( id, parent_id, object_type_id, data_format_id, depart
        VALUES ( nextval('ci_documents_id_seq'), 1, 6, 18, 1, 'root',1, 1, 4);
 INSERT INTO ci_content ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id )
        VALUES ( nextval('ci_content_id_seq'), 1, 'root', 2, 2, 2, 2);
--- add siteroot "xims"
+
+-- add SiteRoot "xims" with SiteRoot URL '/ximspubroot/xims'
 INSERT INTO ci_documents ( id, parent_id, object_type_id, data_format_id, department_id, location, position, lft, rgt )
        VALUES (nextval('ci_documents_id_seq'), 1, 19, 31, 2, 'xims', 1, 2, 3);
 INSERT INTO ci_content ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id )
-       VALUES (nextval('ci_content_id_seq') , 2, 'xims', 2, 2, 2, 2);
+       VALUES (nextval('ci_content_id_seq') , 2, '/ximspubroot/xims', 2, 2, 2, 2);
 
 
 \echo inserting into ci_bookmarks...
