@@ -10,11 +10,10 @@
 
   <xsl:variable name="goxims">/goxims</xsl:variable>
   <xsl:variable name="contentinterface">/content</xsl:variable>
-  <xsl:variable name="publicuser">public</xsl:variable>
   <xsl:variable name="goxims_content">
     <xsl:choose>
-        <xsl:when test="/document/context/session/user/name != $publicuser">/goxims/content</xsl:when>
-        <xsl:otherwise>/gopublic/content</xsl:otherwise>
+        <xsl:when test="/document/context/session/public_user = '1'">/gopublic/content</xsl:when>
+        <xsl:otherwise>/goxims/content</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
   <xsl:variable name="gopublic_content">/gopublic/content</xsl:variable>
