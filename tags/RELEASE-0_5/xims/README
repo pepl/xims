@@ -1,0 +1,103 @@
+This is XIMS, version 0.5.
+
+Overview
+--------
+XIMS (eXtensible Information Management System) is a web-based
+content management system. It provides features such as a flexible
+recursive role and ACL system for securing content, the possibility
+to "skin" the management interface and content using XSL stylesheets,
+extensibility through user-defined object types.
+For more information visit http://xims.uibk.ac.at/xims-info/.
+
+XIMS operates in an Apache/CGI::XMLApplication/AxKit environment, and
+uses the PostgreSQL or Oracle RDBMS for its data repository.
+
+
+License
+-------
+XIMS is copyrighted 2002-2003 by The XIMS Project. See the file "LICENSE"
+for information on usage and redistribution, and for a DISCLAIMER OF
+ALL WARRANTIES.
+
+
+Installation
+------------
+For installation, please follow the instructions in the file
+"INSTALL".
+
+
+Documentation
+-------------
+At $ximsdir/doc and http://xims.uibk.ac.at/xims-doku/ you will find
+XIMS documentation for users, developers, and system administrators.
+Note: Documentation is currently quite rudimentary :-/.
+
+
+Release Notes
+-------------
+This version of XIMS is successfully running in production environments.
+That fact, together with the new filesystem importer, the command line tools for
+automated administration, the object cloning feature and all the other
+changes that are covered in more detail in the Changes file should explain
+the major leap version leap from 0.1.1 to 0.5.
+
+For the next packages we are planning to address the
+following issues:
+
+* Add/Update documentation!
+* Add HTMLArea-Editor customizations (object browser for links and images, table plugin, ...)
+* Update acceptance tests for the test suite
+* Start with user preferences (skin, ui-language, editor-preference, ...)
+
+Other issues to be adressed include the following:
+
+* Start with multilanguage content user interface and versioning
+* SQL queries and data retrieval in general is not performance but
+  genericity optimized - work on that.
+
+More issues can be found at the TODO at
+https://sourceforge.net/tracker/?atid=432919&group_id=42250&func=browse
+
+
+Changes
+-------
+See the file "Changes"
+
+
+Known Issues
+------------
+
+
+
+Bug Reporting
+-------------
+Please report bugs via
+https://sourceforge.net/tracker/?group_id=42250&atid=432505
+
+
+Credits
+-------
+
+XIMS was originally developed by:
+Michael Kröll <michael.kroell@uibk.ac.at>
+Hansjörg Pehofer <haensel@catbull.com>
+Kip Hampton <khampton@totalcinema.com>
+Christian Glahn <christian.glahn@uibk.ac.at>
+
+XIMS is currently developed and maintained by:
+Michael Kröll <michael.kroell@uibk.ac.at>
+Hansjörg Pehofer <haensel@catbull.com>
+Jochen Frühwirth <jochen.fruehwirth@mci.edu>
+
+Contributors:
+Volker Hess <volker.hess@mz.uni-siegen.de>
+Joachim Kargl <joachim.kargl@uibk.ac.at>
+Martina Kinzl <martina.kinzl@uibk.ac.at>
+Britta Tautermann <britta.tautermann@uibk.ac.at>
+
+The user interface has originally been designed by:
+Georg Schönwiese <csab2314@uibk.ac.at>
+(This UI is not part of this distribution but currently still used at
+xims.uibk.ac.at)
+
+Additionally, we would like to thank everyone who supplied valuable feedback!

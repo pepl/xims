@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l>
+<create>Create</create>
+<edit>Edit</edit>
+<in>in</in>
+<cancel>Cancel</cancel>
+<save>Save</save>
+<upload>Upload</upload>
+<target>Target</target>
+<browse_target>Browse for Target</browse_target>
+<Location>Location</Location>
+<location>location</location>
+<Title>Title</Title>
+<File>File</File>
+<Image>Image</Image>
+<Lead>Lead</Lead>
+<replace>replace</replace>
+<bodyfromfile_create>Create body from file</bodyfromfile_create>
+<bodyfromfile_edit>Update body from file</bodyfromfile_edit>
+<add_portlet>Add Portlet</add_portlet>
+<create_portlet>Create Portlet</create_portlet>
+<delete>Delete</delete>
+<purge>Purge</purge>
+<Keywords>Keywords</Keywords>
+<Abstract>Abstract</Abstract>
+<Description>Description</Description>
+<Stylesheet>Stylesheet</Stylesheet>
+<logout>logout</logout>
+<login>login</login>
+<switch_to_browse>switch to Browse Mode</switch_to_browse>
+<switch_to_edit>switch to Edit Mode</switch_to_edit>
+<Back>Back</Back>
+<Forward>Forward</Forward>
+<Up>Up</Up>
+<Create>Create</Create>
+<Edit>Edit</Edit>
+<Move>Move</Move>
+<Copy>Copy</Copy>
+<Publishing_options>Publishing Options</Publishing_options>
+<Access_control>Access Control</Access_control>
+<New>New</New>
+<Published>Published</Published>
+<published>published</published>
+<Object_marked_new>Object has been marked as new</Object_marked_new>
+<Object_last_published>Last published at</Object_last_published>
+<Object_modified>Object has been modified since last publication by</Object_modified>
+<Object_locked>Object locked at</Object_locked>
+<changed>changed</changed>
+<by>by</by>
+<at_place>under</at_place>
+<at_time>at</at_time>
+<Locked>Locked</Locked>
+<locked>locked</locked>
+<Unlock>unlock</Unlock>
+<Release_lock>Click to unlock</Release_lock>
+<Search>Search</Search>
+<Treeview>Treeview</Treeview>
+<Defaultview>Defaultview</Defaultview>
+<Publishingpreview>Publishing Preview</Publishingpreview>
+<Printview>Printview</Printview>
+<Metadata>Metadata for</Metadata>
+<Dataformat>Dataformat</Dataformat>
+<Size>Size</Size>
+<Owned_by>Owned by:</Owned_by>
+<owned_by>owned by:</owned_by>
+<Created_by>Created by</Created_by>
+<created_by>created by</created_by>
+<Last_modified_by>Last modified by</Last_modified_by>
+<last_modified_by>Last modified by</last_modified_by>
+<Last_published_by>Last published by</Last_published_by>
+<Confirm_publishing>Confirm publishing</Confirm_publishing>
+<Publishing_success>Publishing successful</Publishing_success>
+<position_object>Position Object</position_object>
+<Position_object>Position Object in</Position_object>
+<Choose_position>Choose a new position for</Choose_position>
+<close_window>close window</close_window>
+<selected>selected</selected>
+<Create_autoindex>Create Autoindex during publishing:</Create_autoindex>
+<Yes>Yes</Yes>
+<No>No</No>
+<Status>Status</Status>
+<Sort_pos_asc>Click to sort by position ascending</Sort_pos_asc>
+<Sort_title_asc>Click to sort by title ascending</Sort_title_asc>
+<Sort_lm_asc>Click to sort by modification dates ascending</Sort_lm_asc>
+<Sort_pos_desc>Click to sort by position descending</Sort_pos_desc>
+<Sort_title_desc>Click to sort by title descending</Sort_title_desc>
+<Sort_lm_desc>Click to sort by modification dates descending</Sort_lm_desc>
+<Options>Options</Options>
+<Undelete>Undelete</Undelete>
+<Priv_grant_options>Privilege Grant Options</Priv_grant_options>
+<Copy_parent_privs>Copy privilege-grants from parent</Copy_parent_privs>
+<Grant_myself_only>Grant to myself only</Grant_myself_only>
+<Grant_default_roles>Additionally, grant view privileges to default roles</Grant_default_roles>
+<Mark_new>Mark object as new:</Mark_new>
+<Try_to_well-balance>Try to form body well. (If body is not well-balanced an error message will be displayed otherwise.)</Try_to_well-balance>
+<Test_body_xml>Test body's XML</Test_body_xml>
+<Publish_ref_objects>Automaticly export Objects refered by this object</Publish_ref_objects>
+<Preview_image>Preview Image</Preview_image>
+<Browse_image>Browse for Images</Browse_image>
+<Document_links>Document Links</Document_links>
+<Add_link>Add Link</Add_link>
+<Annotation>Annotation</Annotation>
+<Add_annotation>Add Annotation</Add_annotation>
+<!-- Begin common_obj_user* -->
+<Manage_objectprivs>Manage Object Privileges</Manage_objectprivs>
+<Manage_privs>Manage Privileges</Manage_privs>
+<Grant_newprivs>Grant Privileges</Grant_newprivs>
+<Currently_showing_privs>Currently showing existing privileges.</Currently_showing_privs>
+<Click>Click</Click>
+<here>here</here>
+<lookup>Lookup</lookup>
+<to_show_existing_privs>to show existing privileges</to_show_existing_privs>
+<Privgrant_usr_lookup_mask>To look for roles or users to give new grants to, use the following input-field</Privgrant_usr_lookup_mask>
+<Users>Users</Users>
+<Roles>Roles</Roles>
+<Username>Username</Username>
+<Name>Name</Name>
+<Account_status>Account Status</Account_status>
+<No_user_found>No user/role found</No_user_found>
+<enabled>enabled</enabled>
+<disabled>disabled</disabled>
+<Privs_updated>Privileges updated</Privs_updated>
+<Choose_another_user>Choose another user/role</Choose_another_user>
+<For_user_role>for user/role</For_user_role>
+<Basicprivs>Basic privileges</Basicprivs>
+<Publishingprivs>Publishing privileges</Publishingprivs>
+<Grantprivs>Grant privileges</Grantprivs>
+<Revoke_objectgrants>Revoke all privileges on Object</Revoke_objectgrants>
+<Revoke_grants>Revoke grants</Revoke_grants>
+<!-- End common_obj_user* -->
+<!-- Begin common_contentbrowse* -->
+<Browse_for>Browse for</Browse_for>
+<Browse_to>Browse to</Browse_to>
+<Object>Object</Object>
+<to_store_back>to store back</to_store_back>
+<!-- End common_contentbrowse* -->
+<!-- Begin common_search_result -->
+<Search_for>Search for</Search_for>
+<Previous_page>Previous page</Previous_page>
+<Next_page>Next page</Next_page>
+<Last_modified>Last modified</Last_modified>
+<!-- End common_search_result -->
+<!-- Begin common_error -->
+<Error>Error</Error>
+<!-- End common_error -->
+<!-- Begin common_sitemap -->
+<Treeview_from>Treeview from</Treeview_from>
+<!-- End common_sitemap -->
+<!-- Begin common_move_browse -->
+<Move_object>Move Object</Move_object>
+<from>from</from>
+<to>to</to>
+<!-- End  common_move_browse -->
+<!-- Begin anondiscussionforum* -->
+<Create_topic>Create topic</Create_topic>
+<Topic>Topic</Topic>
+<Created>Created</Created>
+<Author>Author</Author>
+<Coauthor>Co-Author</Coauthor>
+<Replies>Replies</Replies>
+<Last_reply>Last Reply</Last_reply>
+<Topic_overview>Overview of Topics</Topic_overview>
+<reply>reply</reply>
+<Previous_replies>Previous Replies</Previous_replies>
+<Email>Email</Email>
+<Text>Text</Text>
+<!-- End anondiscussionforum* -->
+<!-- Begin file|image_default -->
+<View_download>View / Download</View_download>
+<!-- End file|image_default -->
+<!-- Begin css_default -->
+<Validate_CSS>Validate CSS</Validate_CSS>
+<!-- End css_default -->
+<!-- Begin users_common -->
+<Lastname>Lastname</Lastname>
+<System_privileges>System Privs.</System_privileges>
+<Administrator>Administrator</Administrator>
+<Account_status>Account Status</Account_status>
+<Enabled>Enabled</Enabled>
+<Disabled>Disabled</Disabled>
+<Managing>Managing</Managing>
+<created>created</created>
+<User>User</User>
+<Role>Role</Role>
+<!-- End users_common -->
+<!-- Begin users_default -->
+<Change_password>Change Password</Change_password>
+<Role_membership>Role Membership</Role_membership>
+<!-- End users_default -->
+<!-- Begin users_create_update -->
+<Grant_role>Grant Role</Grant_role>
+<!-- End users_create_update-->
+<!-- Begin user_bookmarks -->
+<Path>Path</Path>
+<Bookmarks>Bookmarks</Bookmarks>
+<Bookmark>Bookmark</Bookmark>
+<default_bookmark>default bookmark</default_bookmark>
+<Set_as>Set as</Set_as>
+<set_as>set as</set_as>
+<!-- End user_bookmarks-->
+</l>
+

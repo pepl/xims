@@ -1,0 +1,57 @@
+body, html, div {
+	margin: 0 0 0 0;
+	padding: 0;
+}
+
+#content h1, h2, h3, h4, h5, h6 {
+	border-bottom: 1px solid #eeeeee;
+	text-align: justify;
+}
+
+#content h1 {
+	font: bolder 16pt/16pt helvetica, arial, sans-serif;
+	margin-top:10px;
+	margin-bottom:8px;
+}
+
+#content h2 {
+	font: bold 13pt/13pt helvetica, arial, sans-serif;
+	margin-bottom:6px;
+}
+
+#content h3 {
+	font: bold 11pt/11pt helvetica, arial, sans-serif;
+	margin-bottom:6px;
+}
+
+#content {
+	font: 10pt/16pt helvetica, arial, sans-serif;
+	margin-left:5px;
+	margin-right:5px;
+}
+
+#content table {
+	padding: 0;
+	margin: 0;
+}
+
+#content td {
+	padding: 0;
+	margin: 0;
+}
+
+#content img {
+	vertical-align: bottom;
+}
+
+#content p.back {
+	font: 10pt/10pt helvetica, arial, sans-serif;
+	margin-top: 20px;
+}
+
+hr {
+	left: auto;
+	color: #eeeeee;
+	height: 1px;
+	shade: no-shade;
+}
