@@ -51,6 +51,7 @@ sub build {
         my $is_field;
         foreach my $field ( @{$fieldstolookin} ) {
             next if lc($field) eq 'body'; # no LIKE statements with CLOBS...
+
             if ( $search->[$i] =~ s/^$field://i ) {
                 $bol = $self->search_boolean( $search, $i );
                 $search[$i] = $bol . "LOWER($field) LIKE '%". lc($search->[$i]) . "%'" ;
@@ -65,6 +66,7 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp)";
             $retval{order} = "last_modification_timestamp DESC";
+
             next;
         }
 
@@ -74,6 +76,7 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp) AND ci_content.marked_new = 1";
             $retval{order} = "last_modification_timestamp DESC";
+
             next;
         }
 
@@ -83,6 +86,7 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp)";
             $retval{order} = "creation_timestamp DESC";
+
             next;
         }
 
@@ -92,6 +96,7 @@ sub build {
             $bol = $self->search_boolean( $search, $i );
             $search[$i] = $bol .  $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp) AND ci_content.marked_new = 1";
             $retval{order} = "creation_timestamp DESC";
+
             next;
         }
 
@@ -113,7 +118,7 @@ sub build {
         #  got to find a sane way to lookup user_id per shortname
         #
         #        elsif ( $search->[$i] =~ s/^o:(\d*)$/$1/ ) {
-        #          # 'o:x' find object by OWNER 
+        #          # 'o:x' find object by OWNER
         #          $search->[$i] ||= '0';
         #          $bol = $self->search_boolean( $search, $i );
         #          $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
@@ -149,12 +154,13 @@ sub build {
         $retval{properties} = [ 'document_id', 'id', 'location', 'title', 'object_type_id', 'data_format_id', 'attributes',
                              'abstract', 'last_modification_timestamp', 'creation_timestamp', 'last_publication_timestamp', 'language_id', 'published',
                              'marked_new', 'locked_by_id', 'locked_time', 'lob_length', 'score(1) s' ];
+        $retval{order} = "s DESC";
     }
 
     if ( @search and not @IMsearch ) {
         $retval{criteria} .=  join(' ', @search );
-        $retval{order} = "s DESC";
     }
+
 
     XIMS::Debug( 5, 'done' );
     return \%retval;
