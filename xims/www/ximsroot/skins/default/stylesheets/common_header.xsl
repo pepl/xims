@@ -191,18 +191,22 @@
     <td width="41" bgcolor="#ffffff" background="{$skimages}navigate_bg.png" align="left" nowrap="nowrap">
         <xsl:choose>
             <xsl:when test="$parent_path != ''">
-                <a href="{concat($goxims_content,$parent_path)}?sb={$sb}&amp;order={$order};m={$m}"
-                        onmouseover="pass('up','up','h'); return true;"
-                        onmouseout="pass('up','up','c'); return true;"
-                        onmousedown="pass('up','up','s'); return true;"
-                        onmouseup="pass('up','up','s'); return true;">
-                <img src="{$skimages}navigate-up.png"
-                        width="28"
-                        height="28"
-                        border="0"
-                        alt="{$i18n/l/Up}"
-                        title="{$i18n/l/Up}"
-                        name="up"/>
+                <a
+                    onmouseover="pass('up','up','h'); return true;"
+                    onmouseout="pass('up','up','c'); return true;"
+                    onmousedown="pass('up','up','s'); return true;"
+                    onmouseup="pass('up','up','s'); return true;">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="concat($goxims_content,$parent_path,'?m=',$m)"/>
+                        <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                    </xsl:attribute>
+                    <img src="{$skimages}navigate-up.png"
+                            width="28"
+                            height="28"
+                            border="0"
+                            alt="{$i18n/l/Up}"
+                            title="{$i18n/l/Up}"
+                            name="up"/>
                 </a>
             </xsl:when>
             <xsl:otherwise>
@@ -301,10 +305,22 @@
 <xsl:template name="mode_switcher">
     <xsl:choose>
         <xsl:when test="$m='e'">
-            <a href="{$goxims_content}{$absolute_path}?m=b;sb={$sb};order={$order}"><xsl:value-of select="$i18n/l/switch_to_browse"/></a>
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,$absolute_path,'?m=b')"/>
+                    <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                </xsl:attribute>
+                <xsl:value-of select="$i18n/l/switch_to_browse"/>
+            </a>
         </xsl:when>
         <xsl:otherwise>
-            <a href="{$goxims_content}{$absolute_path}?m=e;sb={$sb};order={$order}"><xsl:value-of select="$i18n/l/switch_to_edit"/></a>
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,$absolute_path,'?m=e')"/>
+                    <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                </xsl:attribute>
+                <xsl:value-of select="$i18n/l/switch_to_edit"/>
+            </a>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>

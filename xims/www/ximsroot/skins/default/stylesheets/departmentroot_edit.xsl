@@ -24,6 +24,7 @@
                     <xsl:call-template name="tr-imagedepartmentroot-edit"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>
+                    <xsl:call-template name="defaultsorting"/>
                     <!--<xsl:call-template name="defaultprivmask-edit"/>-->
                     <xsl:call-template name="tr-deptportlets-edit"/>
                 </table>

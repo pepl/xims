@@ -88,6 +88,11 @@
 <Sort_pos_desc>Nach Position in absteigender Reihenfolge sortieren</Sort_pos_desc>
 <Sort_title_desc>Nach Titel in absteigender Reihenfolge sortieren</Sort_title_desc>
 <Sort_lm_desc>Nach Änderungsdatum in absteigender Reihenfolge sortieren</Sort_lm_desc>
+<Position>Position</Position>
+<Last_Modification_Date>Datum der letzten Änderung</Last_Modification_Date>
+<ascending>aufsteigend</ascending>
+<descending>absteigend</descending>
+<Sort_children_default>Kriterien für die standardmäßige Sortierung der Kindobjekte dieses Containers:</Sort_children_default>
 <Options>Optionen</Options>
 <Undelete>Löschen rückgängig machen</Undelete>
 <Priv_grant_options>Zugriffsrechte erteilen</Priv_grant_options>

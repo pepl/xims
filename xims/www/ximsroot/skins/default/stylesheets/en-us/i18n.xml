@@ -88,6 +88,11 @@
 <Sort_pos_desc>Click to sort by position descending</Sort_pos_desc>
 <Sort_title_desc>Click to sort by title descending</Sort_title_desc>
 <Sort_lm_desc>Click to sort by modification dates descending</Sort_lm_desc>
+<Position>Position</Position>
+<Last_Modification_Date>Last Modification Date</Last_Modification_Date>
+<ascending>ascending</ascending>
+<descending>descending</descending>
+<Sort_children_default>Per default, sort children of this container by </Sort_children_default>
 <Options>Options</Options>
 <Undelete>Undelete</Undelete>
 <Priv_grant_options>Privilege Grant Options</Priv_grant_options>

@@ -16,6 +16,8 @@
 
 <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
+<xsl:variable name="currobjmime" select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/mime_type"/>
+
 <!-- save those strings in variables as they are called per object in object/children -->
 <!-- cttobject.options -->
 <xsl:variable name="l_Edit" select="$i18n/l/Edit"/>
@@ -572,7 +574,11 @@
     </xsl:choose>
     <xsl:choose>
         <xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
-            <a href="{$goxims_content}?id={@id};cancel=1;r={/document/context/object/@id}">
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/>
+                    <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                </xsl:attribute>
                 <img src="{$skimages}status_locked.png"
                         width="26"
                         height="19"
@@ -641,7 +647,11 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
-            <a href="{$goxims_content}?id={$id};copy=1">
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="concat($goxims_content,'?id=',@id,';copy=1')"/>
+                    <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                </xsl:attribute>
                 <img src="{$skimages}option_copy.png"
                     alt="{$l_Copy}"
                     title="{$l_Copy}"
