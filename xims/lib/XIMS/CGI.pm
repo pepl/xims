@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -149,6 +149,7 @@ sub event_edit {
     return $self->event_access_denied( $ctxt ) unless defined( $r_type );
 
     $ctxt->properties->application->style( "edit" ) ;
+    $ctxt->properties->content->dontescapestringprops( 1 );
 
     my $object = $ctxt->object();
 
@@ -673,7 +674,7 @@ sub init_store_object {
 
     my $object = $ctxt->object();
     my $parent;
-    my $location   = $self->param( 'name' );
+    my $location   = $self->param( 'name' ); # is somehow xml-escaped magically by libxml2 (???)
     my $title      = $self->param( 'title' );
     my $markednew  = $self->param( 'markednew' );
     my $keywords   = $self->param( 'keywords' );
