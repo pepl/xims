@@ -6,7 +6,7 @@ use XIMS::User;
 use XIMS::Object;
 use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 14;
 }
 
@@ -49,7 +49,7 @@ my %c2_hash = ( title => 'Child Two Dir',
 
 my $child2 = XIMS::Object->new->data( %c2_hash );
 my $child2_id = $child2->create( User => $user );
-ok( $child2_id and $child2_id > $child1_id ); 
+ok( $child2_id and $child2_id > $child1_id );
 
 my %c3_hash = ( title => 'Child Three Dir',
                 language_id => 1,
@@ -92,16 +92,3 @@ ok( $child2 == undef );
 $child1 = undef;
 $child1 = XIMS::Object->new( id => $child1_id );
 ok( $child1 == undef );
-
-exit;
-my @all_kids = $o->descendants();
-
-ok ( scalar( @all_kids) > 0 );
-
-#now test that the descendant_count convenience works too.
-
-my ($d_count, $levels) = $o->descendant_count;
-
-ok( $d_count == scalar( @all_kids) );
-
-ok( $levels == 1);
