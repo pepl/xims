@@ -25,10 +25,19 @@
                 <xsl:value-of select="/document/context/vlsubjectinfo/subject[id=$subjectID]/name"/>
             </xsl:when>
             <xsl:when test="$author">
-                <xsl:value-of select="$author_name"/>
+                <xsl:value-of select="$author_firstname"/>
+                <xsl:text> </xsl:text>
+                <xsl:if test="string-length($author_middlename) &gt; 0">
+                    <xsl:value-of select="$author_middlename"/>
+                    <xsl:text> </xsl:text>
+                </xsl:if>
+                <xsl:value-of select="$author_lastname"/>
             </xsl:when>
             <xsl:when test="$publication">
                 <xsl:value-of select="$publication_name"/>
+                <xsl:text> (</xsl:text>
+                <xsl:value-of select="$publication_volume"/>
+                <xsl:text>)</xsl:text>
             </xsl:when>
             <xsl:when test="$vls">
                 <xsl:value-of select="$i18n/l/Search_for"/> '<xsl:value-of select="$vls"/>'
@@ -66,11 +75,7 @@
                 <h1 id="vlchildrenlisttitle">
                     <xsl:value-of select="$objectname"/>
                     <span style="font-size: small">
-                        (<xsl:value-of select="$objectitems_count"/>
-                        <xsl:text> </xsl:text>
-                        <xsl:call-template name="decide_plural"/>,
-                        <xsl:value-of select="$i18n_vlib/l/Page"/>
-                        <xsl:text> </xsl:text><xsl:value-of select="$page"/>/<xsl:value-of select="$totalpages"/>)
+                        <xsl:call-template name="items_page_info"/>
                     </span>
                 </h1>
 
@@ -163,6 +168,18 @@
             <xsl:with-param name="url" select="$url" />
         </xsl:call-template>
     </xsl:if>
+</xsl:template>
+
+<xsl:template name="items_page_info">
+    (<xsl:value-of select="$objectitems_count"/>
+    <xsl:text> </xsl:text>
+    <xsl:call-template name="decide_plural"/>
+    <xsl:if test="$subject">
+        <xsl:text>, </xsl:text>
+        <xsl:value-of select="$i18n_vlib/l/Page"/>
+        <xsl:text> </xsl:text><xsl:value-of select="$page"/>/<xsl:value-of select="$totalpages"/>
+    </xsl:if>
+    <xsl:text>)</xsl:text>
 </xsl:template>
 
 <xsl:template name="childrenlist">
