@@ -1201,9 +1201,22 @@ sub event_publish {
                                         User     => $ctxt->session->user
                                       );
 
+    my $published = 0;
+    if ( defined $self->param( "autopublish" )
+         and $self->param( "autopublish" ) == 1 ) {
+        XIMS::Debug( 4, "going to publish references" );
+        my @objids = $self->param( "objids" );
+        $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objids);
+    }
+    
     if ( $exporter->publish( Object => $ctxt->object ) ) {
         XIMS::Debug( 6, "object published!" );
-        $ctxt->session->message("Object '" .  $ctxt->object->title() . "' published.");
+        if ( $published > 0 ) {
+            $ctxt->session->message("Object '" .  $ctxt->object->title() . "' together with $published related objects published.");
+        }
+        else {
+            $ctxt->session->message("Object '" .  $ctxt->object->title() . "' published.");
+        }
         $ctxt->properties->application->styleprefix('common_publish');
         $ctxt->properties->application->style('update');
     }
@@ -1214,13 +1227,7 @@ sub event_publish {
         $ctxt->properties->application->style('error');
     }
 
-    if ( defined $self->param( "autopublish" )
-         and $self->param( "autopublish" ) == 1 ) {
-        XIMS::Debug( 4, "going to publish references" );
-        my @objids = $self->param( "objids" );
-        my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objids);
-        $ctxt->session->message("Object '" .  $ctxt->object->title() . "' together with $published related objects published.");
-    }
+
 
     return 0;
 }
