@@ -21,7 +21,7 @@ use XIMS::AbstractClass;
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 
-use Data::Dumper;
+#use Data::Dumper;
 
 sub resource_type {
     return 'Object';
@@ -418,8 +418,8 @@ sub __fix_clone_reference {
     my $id_map = delete $args{ _id_map };
     my $ref_object_ids = delete $args{ _ref_object_ids };
 
-    warn("fixing ref ids on objects : " . Dumper( $ref_object_ids ) );
-    warn("fixing ref ids with id map: " . Dumper( $id_map ) );
+    #warn("fixing ref ids on objects : " . Dumper( $ref_object_ids ) );
+    #warn("fixing ref ids with id map: " . Dumper( $id_map ) );
 
     my $clone;
     my $id_name;
@@ -447,29 +447,25 @@ sub __fix_clone_reference {
         # fix body of departmentroots and siteroots, their body contains portlet ids
         $objecttype = $clone->object_type;
         if ( $objecttype->name() eq "DepartmentRoot" or $objecttype->name() eq "SiteRoot" ) {
-            warn("about to fix portlet in " . Dumper( $clone ) );
+            #warn("about to fix portlet in " . Dumper( $clone ) );
             my $body = $clone->body();
             if ( defined $body and length $body ) {
-                warn("portlet = $body");
                 my $parser = XML::LibXML->new();
                 my $fragment;
                 eval {
                     $fragment = $parser->parse_xml_chunk( $body );
                 };
                 if ( $@ ) {
-                    XIMS::Debug( 2, "problem with the stored data ($@)"  );
+                    XIMS::Debug( 2, "problem with the stored portlet data ($@)"  );
                 }
                 else {
                     my @nodes = $fragment->childNodes;
                     my $node;
                     my $update_body_flag = 0;
                     foreach $node ( @nodes ) {
-                        warn("node string value = " . $node->string_value() ); 
                         $newid = $id_map->{ $node->string_value() };
                         if ( defined $newid ) {
-                            warn("setting portlet id to $newid");
                             $node->firstChild->setData( $newid );
-                            warn("new node string value = " . $node->string_value() ); 
                             $update_body_flag = 1;
                         }
                     }
@@ -700,20 +696,19 @@ sub clone {
                 $index++;
             } while ( $parent->children( location => $newlocation, marked_deleted => undef ) );
         }
-        warn("clone: newlocation = $newlocation, newtitle = $newtitle");
         $clonedata{ location } = $newlocation;
         $clonedata{ title } = $newtitle;
     }
     
     # create the clone and expressly assign its body data (may be binfile)
-    warn("clone: about to create clone with data: " . Dumper( \%clonedata ) );
+    #warn("clone: about to create clone with data: " . Dumper( \%clonedata ) );
     my $clone = XIMS::Object->new( %clonedata );
     return unless defined $clone;
     $clone->body( $self->body() );
     my $clone_id = $clone->create( User => $user );
     return unless defined $clone_id;
     
-    # remeber old vs. new id
+    # remember old vs. new id
     $id_map->{ $self->document_id } = $clone->document_id;
     
     # check if this object need later fixup of referenced object ids
@@ -762,7 +757,6 @@ sub clone {
         my @children = $self->children_granted( User => $user );
         my $child;
         foreach $child ( @children ) {
-            warn("clone: about to clone child with id " . $child->id() );
             return unless $child->clone( User => $user, scope_subtree => 1,
                                          _parent_id => $clone_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
         }
