@@ -1,7 +1,6 @@
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-
 # $Id$
 package XIMS::CGI;
 
@@ -1324,7 +1323,12 @@ sub event_obj_acllist {
 
             if ( my $user_id = $self->param( "userid" ) ){
                 if ( my $context_user = XIMS::User->new( id => $user_id ) ) {
-                    $context_user->{object_privileges} = {$context_user->object_privileges( $object )};
+                    # second parameter to object_privileges forces check for explicit grants to user only
+                    my %oprivs = $context_user->object_privileges( $object, 1 );
+                    # xml serialization does not like undefined values
+                    if ( grep { defined $_ } values %oprivs ) {
+                        $context_user->{object_privileges} = {%oprivs};
+                    }
                     $ctxt->user( $context_user );
                     $ctxt->properties->application->style( 'obj_user' );
                 }
@@ -1346,9 +1350,9 @@ sub event_obj_acllist {
                 my @granted_user_ids = map { $_->grantee_id() } @object_privs;
                 my @user_data_list = ();
                 foreach my $record ( @big_user_data_list ) {
-                     next if grep { $_ == $record->{'user.id'} } @granted_user_ids;
-                     next unless $record->{'user.name'} =~ /$userquery/ig;
-                     push @user_data_list, $record;
+                    next if grep { $_ == $record->{'user.id'} } @granted_user_ids;
+                    next unless $record->{'user.name'} =~ /$userquery/ig;
+                    push @user_data_list, $record;
                 }
                 my @user_list = map{ XIMS::User->new( id => $_->{'user.id'} ) } @user_data_list;
                 $ctxt->userlist( \@user_list );

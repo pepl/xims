@@ -104,10 +104,13 @@ sub object_privmask {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $object = shift;
+    my $explicit = shift;
+    my $privmask = 0;
 
     return 0xffffffff if $self->admin();
 
-    my @id_list = ( $self->role_ids(), $self->id() );
+    my @id_list = $self->id();
+    push( @id_list, $self->role_ids() ) unless $explicit;
     #warn "IDS: " . Dumper( \@id_list );
 
     my @priv_data = $self->data_provider->getObjectPriv( content_id => $object->id(),
@@ -115,20 +118,25 @@ sub object_privmask {
                                                          properties => [ 'privilege_mask' ] );
 
     #warn "privs returned: " . Dumper( @priv_data );
-    return undef unless scalar( @priv_data ) > 0;
-    return undef if $priv_data[0]->{'objectpriv.privilege_mask'} == 0;
-
-    # ubu: need to get smarter here... what do we do
-    # if there are more than one priv mask based on roles granted to the
-    # current user?
-    return $priv_data[0]->{'objectpriv.privilege_mask'};
+    if ( scalar( @priv_data ) > 0 ) {
+        foreach my $priv ( @priv_data ) {
+            return undef if $priv->{'objectpriv.privilege_mask'} == 0; # return undef if we got a specific lockout
+            $privmask = $privmask | $priv->{'objectpriv.privilege_mask'};
+        }
+        #warn "returning privmask: $privmask";
+        return $privmask;
+    }
+    else {
+        return undef;
+    }
 }
 
 sub object_privileges {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $object = shift;
-    my $mask = $self->object_privmask( $object );
+    my $explicit = shift;
+    my $mask = $self->object_privmask( $object, $explicit );
     return undef unless $mask;
     my $privs_hash = XIMS::Helpers::privmask_to_hash( $mask );
     return %{$privs_hash} if ref( $privs_hash ) eq 'HASH' and keys( %{$privs_hash} ) > 0;
@@ -240,7 +248,6 @@ sub objecttype_privileges {
 
 # use XIMS::UserPriv here?
 sub grant_role_privileges {
-
     my $self = shift;
     my %args = @_;
 
