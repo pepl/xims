@@ -92,7 +92,7 @@
     <assert test="count(enabled)=1">Element 'user' must contain one 'enabled' element.</assert>
     <assert test="count(name)=1">Element 'user' must contain one 'name' element.</assert>
     <assert test="count(admin)=1">Element 'user' must contain one 'admin' element.</assert>
-    <assert test="count(email)=1">Element 'user' must contain one 'aemail' element.</assert>
+    <assert test="count(email)=1">Element 'user' must contain one 'email' element.</assert>
     <assert test="count(object_type)=1">Element 'user' must contain one 'object_type' element.</assert>
     <assert test="count(url)=1">Element 'user' must contain one 'url' element.</assert>
     <assert test="count(system_privs_mask)=1">Element 'user' must contain one 'system_privs_mask' element.</assert>
