@@ -73,7 +73,7 @@ sub event_default {
         return 0;
     }
 
-    my $qb = $qbdriver->new( { search => "u:".$ctxt->session->user->id(), allowed => q{u:\w\döäüßÖÄÜß} } );
+    my $qb = $qbdriver->new( { search => "u:".$ctxt->session->user->name(), allowed => q{u:\w\döäüßÖÄÜß} } );
     my $qbr = $qb->build();
     my @lmuobjects = $object->find_objects_granted( criteria => $qbr->{criteria},
                                                     limit => 5,
