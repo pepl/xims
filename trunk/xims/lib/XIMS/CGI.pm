@@ -626,10 +626,10 @@ sub init_store_object {
     my $converter = Text::Iconv->new("UTF-8", "ISO-8859-1");
     # will be undef if string can not be converted to iso-8859-1;
     $location = $converter->convert($location) if defined $location;
+
     if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-        $converter = Text::Iconv->new("UTF-8", XIMS::DBENCODING());
-        $title = $converter->convert($title) if defined $title;
-        $keywords = $converter->convert($keywords) if defined $keywords;
+        $title = XIMS::decode($title) if defined $title;
+        $keywords = XIMS::decode($keywords) if defined $keywords;
     }
 
     if ( $object and $object->id() and length $self->param( 'id' ) ) {
@@ -715,7 +715,7 @@ sub init_store_object {
     my $abstract = $self->param( 'abstract' );
     if ( defined $abstract and length $abstract and $abstract !~ /^\s+$/ ) {
         if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $abstract = $converter->convert($abstract);
+            $abstract = XIMS::decode($abstract);
         }
         if ( $object->abstract( $abstract ) ) {
             XIMS::Debug( 6, "abstract set, len: " . length($abstract) );
@@ -1930,25 +1930,6 @@ sub event_sitemap {
 
     XIMS::Debug( 5, "done" );
     return 0;
-}
-
-
-sub encode {
-    my $self = shift;
-    my $string = shift;
-    return $string unless XIMS::DBENCODING();
-    my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
-    $string = $converter->convert($string) if defined $string;
-    return $string;
-}
-
-sub decode {
-    my $self = shift;
-    my $string = shift;
-    return $string unless XIMS::DBENCODING();
-    my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
-    $string = $converter->convert($string) if defined $string;
-    return $string;
 }
 
 1;

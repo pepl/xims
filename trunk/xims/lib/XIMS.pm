@@ -9,6 +9,7 @@ use vars qw( $VERSION $_MODPERL_ $_CONFIG_ $_DATAPROVIDER_ );
 
 use XIMS::Config;
 use XIMS::DataProvider;
+use Text::Iconv;
 
 $VERSION = 0.1;
 
@@ -171,6 +172,49 @@ sub xml_unescape {
     return $text;
 }
 
+##
+#
+# SYNOPSIS
+#    my $encoded = XIMS::encode( $to_encode )
+#
+# PARAMETER
+#    $to_encode: string
+#
+# RETURNS
+#    $encoded: string encoded from XIMS::DBENCODING to UTF-8
+#
+# DESCRIPTION
+#    Encodes a string from XIMS::DBENCODING to UTF-8
+#
+sub encode {
+    my $string = shift;
+    return $string unless XIMS::DBENCODING();
+    my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
+    $string = $converter->convert($string) if defined $string;
+    return $string;
+}
+
+##
+#
+# SYNOPSIS
+#    my $decoded = XIMS::decode( $to_decode )
+#
+# PARAMETER
+#    $to_decode: string
+#
+# RETURNS
+#    $decoded: string encoded from UTF-8 to XIMS::DBENCODING
+#
+# DESCRIPTION
+#    Decodes a string from UTF-8 to XIMS::DBENCODING
+#
+sub decode {
+    my $string = shift;
+    return $string unless XIMS::DBENCODING();
+    my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
+    $string = $converter->convert($string) if defined $string;
+    return $string;
+}
 
 # ##########################################################################
 # Package XIMS::Privileges
@@ -219,6 +263,8 @@ sub CREATE()          { return 0x00000200; } # create new child
 #
 sub MOVE()            { return 0x00000400; } # move document to another location
 #
+sub COPY()            { return 0x00000600; } # copy object to another location
+#
 sub LINK()            { return 0x00000800; } # create a symlink on document
 #
 sub PUBLISH_ALL()     { return 0x00001000; } # publish all content
@@ -256,7 +302,7 @@ sub OWNER()         { return 0x40000000; } # user owns document
 # creation for example
 # MODIFY could be changed to be more restrictive in the future
 #
-sub MODIFY()        { return 0x43012F17; } # user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER privilege on object
+sub MODIFY()        { return 0x43013517; } # user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE, COPY, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER privilege on object
 
 #
 # the master flag shows, that the user is the master of the entire
