@@ -240,8 +240,22 @@ sub getObject {
         $properties = { 'content.id' => 1, 'document.id' => 1 };
     }
 
-    # remove the 'join' if we are only selecting data from one table or the other.
-    if ( $span_tables == 0 and ref( $conditions->{'document.id'} ) ) {
+    my $doc_cond_count;
+    for ( keys %{$conditions} ) {
+        $doc_cond_count++ if (split /\./, $_)[0] eq 'document';
+    }
+
+    # look for custom conditions where a join with the document table would be needed
+    # if $conditions->{'document.id'} is the only document condition and holds a scalar reference
+    # this is recognized as a default condition and no custom document conditions will be detected
+    if ( $doc_cond_count > 0 and not ($doc_cond_count == 1 and ref( $conditions->{'document.id'} ) eq 'SCALAR' ) ) {
+        $span_tables++;
+        $properties->{'document.id'} = 1; # make sure DP::DBI::table_columns_get does the right thing :-|
+    }
+
+    # if we do not have custom document conditions or document properties, joining the content
+    # and document tables is not needed and we can remove the default $conditions->{'document.id'} condition
+    if ( $span_tables == 0 ) {
         delete $conditions->{'document.id'};
     }
 
