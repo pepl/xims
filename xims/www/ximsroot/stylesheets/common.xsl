@@ -84,7 +84,7 @@
         img|map|area|
         caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|
         button|fieldset|form|label|legend|input|option|optgroup|select|textarea|
-        applet|object|param">
+        applet|object|param|embed|script">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates/>
