@@ -1852,7 +1852,7 @@ sub event_search {
                         offset => $offset,
                         order => $qbr->{order},
                         );
-            $param{start_here} = $ctxt->object() if defined $self->param('start_here');
+            $param{start_here} = $ctxt->object() if $self->param('start_here');
 
             my @objects = $ctxt->object->find_objects_granted( %param );
 
@@ -1861,7 +1861,7 @@ sub event_search {
             }
             else {
                 %param = ( criteria => $qbr->{criteria} );
-                $param{start_here} = $ctxt->object() if defined $self->param('start_here');
+                $param{start_here} = $ctxt->object() if $self->param('start_here');
                 my $count = $ctxt->object->find_objects_granted_count( %param );
                 my $message = "Query returned $count objects.";
                 if ( $count ) {
