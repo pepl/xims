@@ -75,9 +75,6 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    return 0 unless $self->init_store_object( $ctxt )
-                    and defined $ctxt->object();
-
     my $processxsp  = $self->param( 'processxsp' );
     if ( defined $processxsp ) {
         XIMS::Debug( 6, "processxsp: $processxsp" );
@@ -89,7 +86,7 @@ sub event_store {
         }
     }
 
-    return $self->SUPER::event_store( $ctxt, 1 );
+    return $self->SUPER::event_store( $ctxt );
 }
 
 sub event_process_xsp {
