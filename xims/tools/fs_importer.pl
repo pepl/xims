@@ -79,9 +79,14 @@ my $importer = XIMS::Importer::FileSystem->new( User => $user, Parent => $parent
 my $successful = 0;
 my $failed = 0;
 $path = dirname $path;
-chdir $path;
+if ( $path eq "." ) {
+    $path = '';
+}
+else {
+    chdir $path;
+}
 foreach my $file ( @files ) {
-    $file =~ s/$path.//;
+    $file =~ s/$path\/// if length $path;
     if ( $importer->import( $file ) ) {
         print "'$path/$file' imported successfully.\n";
         $successful++;

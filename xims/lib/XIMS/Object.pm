@@ -392,7 +392,7 @@ sub __find_ids_count {
 #
 sub __decide_department_id {
     my %args = @_;
-    my $object= XIMS::Object->new( id => $args{id} );
+    my $object= XIMS::Object->new( document_id => $args{document_id} );
     if ( ($object->object_type->name() eq 'DepartmentRoot') or ($object->object_type->name() eq 'SiteRoot') ) {
             return $object->id();
     }
@@ -422,7 +422,7 @@ sub create {
     my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() ) || 0;
     $self->position( $max_position + 1 );
 
-    $self->department_id( __decide_department_id( id => $self->parent_id() ) );
+    $self->department_id( __decide_department_id( document_id => $self->parent_id() ) );
 
     my $now = $self->data_provider->db_now();
 
@@ -515,21 +515,21 @@ sub move {
     # the old department this object's direct descendants belong to
     # this is either the department_id or major_id, depending on
     # whether this is a [Department|Site]Root.
-    my $old_dept = __decide_department_id( id => $self->id() );
+    my $old_dept = __decide_department_id( document_id => $self->document_id() );
 
     my $parent_id = delete $args{target};
     return undef unless $parent_id;
 
     $self->parent_id( $parent_id );
 
-    $self->department_id( __decide_department_id( id => $self->parent_id() ) );
+    $self->department_id( __decide_department_id( document_id => $self->parent_id() ) );
 
     my @o =  $self->descendants();
     foreach( @o ) {
         # only look at objects with the old_dept of the moved object.
         # descendants of a different dept. stay unchanged. (see comment above)
         if ($_->department_id == $old_dept) {
-            $_->department_id( __decide_department_id( id => $_->parent_id() ) );
+            $_->department_id( __decide_department_id( document_id => $_->parent_id() ) );
             $_->data_provider->updateObject( $_->data() );
         }
     }

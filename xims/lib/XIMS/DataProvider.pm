@@ -209,7 +209,7 @@ sub createObject {
 
     my $object_id = $self->{Driver}->create( properties => $properties, conditions => {} );
 
-    if ( length( $body_data ) > 0 and defined( $object_id ) ) {
+    if ( $body_data and length( $body_data ) > 0 and defined( $object_id ) ) {
         $self->{Driver}->$update_body_method( $object_id, $body_data );
     }
 
@@ -355,9 +355,9 @@ sub recurse_ancestor {
     my $self = shift;
     my $object = shift;
     my @ancestors = @_;
-    #warn "testing id " . $object->id() . " (title: ". $object->title() . ") against " . $object->parent_id() . "\n";
-    if ( $object->id() != $object->parent_id() ) {
-        my $parent = XIMS::Object->new( id => $object->parent_id(), User => $object->User() );
+    #warn "testing id " . $object->document_id() . " (title: ". $object->title() . ") against " . $object->parent_id() . "\n";
+    if ( $object->document_id() != $object->parent_id() ) {
+        my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $object->User() );
         push @ancestors, $parent;
         $self->recurse_ancestor( $parent, @ancestors );
     }

@@ -88,19 +88,6 @@ sub object {
     }
 }
 
-sub parent {
-    my $self = shift;
-    my $parent = shift;
-
-    if ( $parent ) {
-        $self->{Parent} = $parent;
-        return 1;
-    }
-    else {
-        return $self->{Parent};
-    }
-}
-
 sub object_type {
     my $self = shift;
     my $object_type = shift;
@@ -128,6 +115,7 @@ sub data_format {
 }
 
 sub user { return shift->{User} }
+sub parent { return shift->{Parent} }
 
 sub object_from_object_type {
     my $self = shift;
@@ -156,7 +144,8 @@ sub import {
     $object->location( $self->check_location( $object->location() ) );
 
     # check if the same location already exists in the current container
-    if ( $self->parent->children( location => $object->location, marked_deleted => undef ) ) {
+    my $parent = XIMS::Object->new( document_id => $object->parent_id() );
+    if ( $parent->children( location => $object->location, marked_deleted => undef ) ) {
         XIMS::Debug( 2, "location already exists" );
         return undef;
     }
@@ -242,7 +231,7 @@ sub resolve_suffix {
 
     my $suffixmap = $self->{suffixmap};
     my $dataformatmap = $self->{dataformatmap};
-    my $data_format = $suffixmap->{$suffix};
+    my $data_format = $suffixmap->{$suffix} if $suffix;
     my $object_type = $data_format ? $dataformatmap->{$data_format->id()} : undef;
 
     return ( $object_type, $data_format );

@@ -34,7 +34,7 @@ sub handle_data {
 
     my $object = $self->object();
     $object->location( $location );
-    $object->parent_id( $self->parent_by_location( $location )->id() );
+    $object->parent_id( $self->parent_by_location( $location )->document_id() );
     $object->data_format_id( $self->data_format->id() );
 
     return $object;
@@ -45,7 +45,9 @@ sub parent_by_location {
     my $self = shift;
     my $location = shift;
 
-    my $plocation = $self->parent->location() . dirname($location);
+    my $dirname = dirname($location);
+    my $plocation = $self->parent->location_path();
+    $plocation .= '/' . $dirname if ( length $dirname and $dirname ne '.' );
 
     return XIMS::Folder->new( path => $plocation );
 }
