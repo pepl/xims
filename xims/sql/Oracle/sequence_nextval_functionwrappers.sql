@@ -82,3 +82,10 @@ newid ci_mime_type_aliases.id%TYPE;
  END;
 /
 
+CREATE OR REPLACE FUNCTION ci_quest_results_id_seq_nval RETURN INTEGER IS
+newid ci_questionnaire_results.id%TYPE;
+ BEGIN
+  SELECT qur_seq.nextval INTO newid FROM dual;
+ RETURN newid;
+ END;
+/

@@ -475,7 +475,7 @@ CREATE FUNCTION ci_mime_aliases_id_seq_nval() RETURNS INTEGER
        LANGUAGE 'plpgsql'
 ;
 
-CREATE FUNCTION ci_questionnaire_results_id_seq_nval() RETURNS INTEGER
+CREATE FUNCTION ci_quest_results_id_seq_nval() RETURNS INTEGER
     AS 'BEGIN
           RETURN nextval(\'ci_questionnaire_results_id_seq\');
         END;'

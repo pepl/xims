@@ -28,7 +28,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r;
     'objecttype.id'                       => \'ci_object_types_id_seq_nval()',
     'dataformat.id'                       => \'ci_data_formats_id_seq_nval()',
     'mimetype.id'                         => \'ci_mime_aliases_id_seq_nval()',
-    'questionnaireresult.id'              => \'ci_questionnaire_results_id_seq_nval()'
+    'questionnaireresult.id'              => \'ci_quest_results_id_seq_nval()'
 );
 
 # move to Config.pm, pull in via XIMS.pm or XIMS::DataProvider::DBI::Names...
