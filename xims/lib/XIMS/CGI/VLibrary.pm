@@ -1,4 +1,4 @@
-﻿# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2004 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -347,7 +347,7 @@ sub event_vlsearch {
     if (( length($search) >= 2 ) && ( length($search) <= 30 )) {
         my $qbdriver = XIMS::DBDSN();
         $qbdriver = ( split(':',$qbdriver))[1];
-        $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . 'InterMedia'; # XIMS::QBDRIVER()
+        $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
 
         eval "require $qbdriver"; #
         if ( $@ ) {
