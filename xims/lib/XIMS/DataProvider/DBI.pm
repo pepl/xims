@@ -491,7 +491,27 @@ sub content_length {
     return undef unless ref( $data ) and scalar( @{$data} > 0);
     return $data->[0]->{LOB_LENGTH};
 }
- 
+
+sub get_descendant_id_level {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    return undef unless exists $args{parent_id};
+
+    my $query = 'SELECT COUNT(d2.id) AS lvl, d1.id FROM ci_documents d1, ci_documents d2 WHERE d1.lft BETWEEN d2.lft AND d2.rgt AND d1.parent_id >= ' . $args{parent_id} . ' GROUP BY d1.id, d1.lft ORDER BY d1.lft';
+    my $data = $self->{dbh}->fetch_select( sql => $query );
+
+    my @ids;
+    my @lvls;
+    foreach my $row ( @{$data} ) {
+        push @ids, $row->{ID};
+        push @lvls, $row->{LVL};
+    }
+
+    return [[ \@ids, \@lvls ]];
+}
+
 ##
 #
 # SYNOPSIS
