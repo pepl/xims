@@ -9,6 +9,7 @@ use vars qw( @ISA $VERSION );
 
 use XIMS;
 use XIMS::CGI;
+use XIMS::Object;
 
 use Apache::URI();
 
@@ -77,7 +78,8 @@ sub redirToDefault {
 
     my $contentinterface = XIMS::CONTENTINTERFACE();
     if ( $path =~ 'defaultbookmark' or $path !~ /\Q$contentinterface\E/ ) {
-        my $bookmark = $ctxt->session->user->default_bookmark();
+        my $bookmarkid = $ctxt->session->user->default_bookmark->content_id();
+        my $bookmark =  XIMS::Object->new( id => $bookmarkid )->location_path();
         XIMS::Debug( 6, "bookmarked path: $bookmark" );
 
         if ( length $bookmark and $bookmark ne '/') {
