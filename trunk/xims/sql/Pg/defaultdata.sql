@@ -29,7 +29,7 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self )
        VALUES ( nextval('ci_object_types_id_seq'), 'File', 0, 0, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self )
-       VALUES ( nextval('ci_object_types_id_seq'), 'XML', 0, 0, 0 );
+       VALUES ( nextval('ci_object_types_id_seq'), 'XML', 0, 1, 1 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self )
        VALUES ( nextval('ci_object_types_id_seq'), 'DepartmentRoot', 1, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self )
@@ -58,6 +58,10 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'Portal', 0, 0, 1 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self )
        VALUES ( nextval('ci_object_types_id_seq'), 'SiteRoot', 1, 1, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Text', 0, 1, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self )
+       VALUES ( nextval('ci_object_types_id_seq'), 'CSS', 0, 1, 1 );
 
 
 \echo inserting into ci_data_formats...

@@ -45,6 +45,7 @@ DBIx::SQLEngine 0.0.8 -
 Time::Piece -
 XML::Schematron -
 Apache::DBI -
+CSS::Tiny -
 
 # DBD::Pg - PostgreSQL database driver for the DBI module
 # Net::LDAP -

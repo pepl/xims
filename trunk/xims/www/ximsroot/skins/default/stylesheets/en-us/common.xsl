@@ -465,7 +465,6 @@
     </tr>
 </xsl:template>
 
-
 <xsl:template name="tr-image-create">
     <tr>
         <td valign="top"><span class="compulsory">Image</span></td>
@@ -485,6 +484,28 @@
             <input tabindex="30" type="file" name="file" size="49" class="text"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-bodyfromfile-create">
+    <tr>
+        <td valign="top">Create body from file</td>
+        <td colspan="2">
+            <input tabindex="30" type="file" name="file" size="49" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('BodyFile')" class="doclink">(?)</a>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-bodyfromfile-edit">
+    <tr>
+        <td valign="top">Update body from file</td>
+        <td colspan="2">
+            <input tabindex="30" type="file" name="file" size="49" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('BodyFile')" class="doclink">(?)</a>
         </td>
     </tr>
 </xsl:template>
