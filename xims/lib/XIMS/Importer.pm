@@ -12,7 +12,7 @@ use XIMS::User;
 use XIMS::Folder;
 use XIMS::DataFormat;
 use XIMS::ObjectType;
-
+#use Data::Dumper;
 ##
 #
 # SYNOPSIS
@@ -114,7 +114,7 @@ sub object_from_object_type {
     $object_type ||= $self->object_type();
     return undef unless $object_type->isa('XIMS::ObjectType');
 
-    my $objclass = "XIMS::". $object_type->name();
+    my $objclass = "XIMS::". $object_type->fullname();
     eval "require $objclass;";
     if ( $@ ) {
         XIMS::Debug( 3, "Could not load object class: $@" );
@@ -148,7 +148,7 @@ sub import {
             my $privmask = $self->user->object_privmask( $oldobject );
             if ( not ($privmask and $privmask & XIMS::Privileges::WRITE()) ) {
                 XIMS::Debug( 3, "missing update privileges for object '" . $oldobject->location_path() . "'" );
-                return undef
+                return undef;
             }
 
             # copy content data
@@ -204,7 +204,7 @@ sub resolve_filename {
 
     unless ( $object_type and $object_type->name() and $data_format and $data_format->name() ) {
         # fallback value in case we could not resolve by suffix
-        return ( XIMS::ObjectType->new( name => 'File' ), XIMS::DataFormat->new( name => 'Binary' ) );
+        return ( XIMS::ObjectType->new( fullname => 'File' ), XIMS::DataFormat->new( name => 'Binary' ) );
     }
 
     return ( $object_type, $data_format );
@@ -220,11 +220,16 @@ sub resolve_suffix {
         foreach my $object_type ( $self->data_provider->object_types() ) {
             my $object = $self->object_from_object_type( $object_type );
             next unless $object;
+
             $dataformatmap{$object->data_format_id()} = $object_type if $object->data_format_id();
         }
         # !<its_a_hack_alarm>!
         my $htmldf = XIMS::DataFormat->new( name => 'HTML' );
-        $dataformatmap{$htmldf->id()} = XIMS::ObjectType->new( name => 'Document' );
+        $dataformatmap{$htmldf->id()} = XIMS::ObjectType->new( fullname => 'Document' );
+        my $xmldf = XIMS::DataFormat->new( name => 'XML' );
+        $dataformatmap{$xmldf->id()} = XIMS::ObjectType->new( fullname => 'XML' );
+        #my $vlibitemdf = XIMS::DataFormat->new( name => 'VLibraryItem::DocBookXML' );
+        #$dataformatmap{$vlibitemdf->id()} = XIMS::ObjectType->new( fullname => 'VLibraryItem::DocBookXML' );
         # !</its_a_hack_alarm>
         my $image_ot = XIMS::ObjectType->new( name => 'Image' ); # preload to avoid redundant instantiation in the loop
         my $file_ot  = XIMS::ObjectType->new( name => 'File' );
