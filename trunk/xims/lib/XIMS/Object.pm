@@ -1943,7 +1943,7 @@ sub content_field {
     }
     # pepl: departmentroot portlet info is stored in its body
     # return undef if $df->name() eq 'Container';
-    return 'binfile' if ( $df->mime_type and $df->mime_type =~ /^(application|image)\//i and $df->mime_type !~ /container/i );
+    return 'binfile' if ( $df->mime_type and $df->mime_type =~ /^(application|image)\//i and $df->mime_type !~ /container|xsp/i );
     return 'body';
 }
 
