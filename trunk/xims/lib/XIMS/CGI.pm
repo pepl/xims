@@ -1325,12 +1325,12 @@ sub event_test_wellformedness {
     my $body = $self->param('body');
 
     my $test = $ctxt->object->balanced_string( $body, verbose_msg => 1 );
-    if ( $test != 1 ) {
-        $ctxt->session->error_msg( "Parse failure" );
-        $ctxt->session->verbose_msg( $test || "Cowardly refusing to fill an errorstring" );
+    if ( $test->isa('XML::LibXML::DocumentFragment') ) {
+        $ctxt->session->message( "Parse ok" );
     }
     else {
-        $ctxt->session->message( "Parse ok" );
+        $ctxt->session->error_msg( "Parse failure" );
+        $ctxt->session->verbose_msg( $test || "Cowardly refusing to fill an errorstring" );
     }
 
     $ctxt->properties->application->styleprefix( "common" );
