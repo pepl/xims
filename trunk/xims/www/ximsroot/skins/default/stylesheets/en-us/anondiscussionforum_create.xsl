@@ -6,80 +6,35 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
     <xsl:import href="../../../anondiscussionforum_common.xsl"/>
     <xsl:output method="xml" encoding="iso-8859-1" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
-    <xsl:template match="/document">
-        <xsl:apply-templates select="context/object"/>
-    </xsl:template>
+<xsl:template match="/document">
+    <xsl:apply-templates select="context/object"/>
+</xsl:template>
 
-    <xsl:template match="/document/context/object">
-        <html>
-            <head>
-                <title>Create new anonymous discussion forum in <xsl:value-of select="$absolute_path"/> - XIMS</title>
-                <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            </head>
-            <body onLoad="document.eform.abstract.value=''; document.eform.name.focus()">
-                <xsl:call-template name="header">
-                     <xsl:with-param name="no_navigation_at_all">true</xsl:with-param>
-                </xsl:call-template>
-                <p class="edit">
-                    <table border="0" align="center" width="98%">
-                        <tr>
-                            <td>Create new anonymous discussion forum in <xsl:value-of select="$absolute_path"/></td>
-                            <td align="right">Fields <span style="color:maroon">marked<img src="{$ximsroot}images/spacer_white.gif" alt="with *"/></span> are mandatory!</td>
-                        </tr>
-                    </table>
-                    <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForum" name="eform" method="POST">
-                        <input type="hidden" name="objtype" value="AnonDiscussionForum"/>
-                        <table border="0" width="95%">
-                            <tr>
-                                <td valign="top">
-                                    <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                                    <span class="compulsory">Location</span>
-                                </td>
-                                <td>
-                                    <input tabindex="1" type="text" name="name" size="40" value="" class="text"/>  
-                                    <xsl:text>&#160;</xsl:text>
-                                    <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td valign="top">Title</td>
-                                <td>
-                                    <input tabindex="2" type="text" name="title" size="60" value="" class="text"/>
-                                    <xsl:text>&#160;</xsl:text>
-                                    <a href="javascript:openDocWindow('titel')" class="doclink">(?)</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td valign="top" colspan="2">
-                                    Description
-                                    <xsl:text>&#160;</xsl:text>
-                                    <a href="javascript:openDocWindow('adf_description')" class="doclink">(?)</a>
-                                    <br/>
-                                    <textarea tabindex="4" name="abstract" rows="5" cols="100" class="text"><xsl:text>&#160;</xsl:text></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td valign="top">Keywords</td>
-                                <td>
-                                    <input tabindex="5" type="text" name="keywords" size="60" class="text"/>                                 
-                                    <xsl:text>&#160;</xsl:text>
-                                    <a href="javascript:openDocWindow('Keywords')" class="doclink">(?)</a>
-                                </td>
-                            </tr>
-                        </table>
-                        <xsl:call-template name="saveaction"/>
-                    </form>
-                </p>
-                <br/>
-                <xsl:call-template name="cancelaction"/>
-            </body>
-        </html>
-    </xsl:template>
+<xsl:template match="/document/context/object">
+<html>
+    <xsl:call-template name="head-create"/>
+    <body onLoad="document.eform.abstract.value=''; document.eform.name.focus()">
+        <p class="edit">
+            <xsl:call-template name="table-create"/>
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST">
+                <input type="hidden" name="objtype" value="{$objtype}"/>
+                <table border="0" width="98%">
+                    <xsl:call-template name="tr-locationtitle-create"/>
+                    <xsl:call-template name="tr-description-create"/>
+                    <xsl:call-template name="tr-keywords-create"/>
+                </table>
+                <xsl:call-template name="saveaction"/>
+            </form>
+            </p>
+            <br />
+            <xsl:call-template name="cancelaction"/>
+    </body>
+</html>
+ </xsl:template>
 </xsl:stylesheet>
