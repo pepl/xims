@@ -33,15 +33,12 @@ sub registerEvents {
           create
           edit
           store
-          delete
-          delete_prompt
           obj_acllist
           obj_aclgrant
           obj_aclrevoke
           publish
           publish_prompt
           unpublish
-          cancel
           remove_mapping
           create_mapping
           )

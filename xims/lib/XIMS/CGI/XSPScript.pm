@@ -19,24 +19,22 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 @ISA = qw( XIMS::CGI::XML );
 
 sub registerEvents {
-    return
-    qw(
-      default
-      create
-      edit
-      store
-      del
-      del_prompt
-      obj_acllist
-      obj_aclgrant
-      obj_aclrevoke
-      publish
-      publish_prompt
-      unpublish
-      cancel
-      test_wellformedness
-      process_xsp
-      );
+    XIMS::Debug( 5, "called");
+    $_[0]->SUPER::registerEvents(
+        qw(
+          create
+          edit
+          store
+          obj_acllist
+          obj_aclgrant
+          obj_aclrevoke
+          publish
+          publish_prompt
+          unpublish
+          test_wellformedness
+          process_xsp
+          )
+        );
 }
 
 sub event_default {

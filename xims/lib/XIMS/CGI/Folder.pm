@@ -17,12 +17,6 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 @ISA = qw( XIMS::CGI );
 
-# the names of pushbuttons in forms or symbolic internal handler
-# each application should register the events required, even if they are
-# defined in XIMS::CGI. This should be, so a programmer has the chance to
-# deny certain events for his script.
-#
-# only dbhpanic and access_denied are set by XIMS::CGI itself.
 sub registerEvents {
     XIMS::Debug( 5, "called");
     $_[0]->SUPER::registerEvents(
@@ -30,15 +24,12 @@ sub registerEvents {
           create
           edit
           store
-          delete
-          delete_prompt
           obj_acllist
           obj_aclgrant
           obj_aclrevoke
           publish
           publish_prompt
           unpublish
-          cancel
           test_wellformedness
           )
         );

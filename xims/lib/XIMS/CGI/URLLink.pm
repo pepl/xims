@@ -31,15 +31,12 @@ sub registerEvents {
                                     create
                                     edit
                                     store
-                                    delete
-                                    delete_prompt
                                     publish
                                     publish_prompt
                                     unpublish
                                     obj_acllist
                                     obj_aclgrant
                                     obj_aclrevoke
-                                    cancel
                                    )
                                 );
 }

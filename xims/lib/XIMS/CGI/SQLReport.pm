@@ -22,7 +22,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 # Credentials in whichs context the SQLReport query will be executed.
 # This user needs to have SELECT grants on the database objects refered to in the SQLReport query.
-$AGENTUSER = 'ximsrun';
+$AGENTUSER = '';
 $AGENTPASSWORD = '';
 
 # If defined, all refered database objects need to exists in a database schema and have to be
@@ -36,21 +36,15 @@ sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
         qw(
-          default
           create
           edit
           store
-          trashcan
-          trashcan_prompt
-          delete
-          delete_prompt
           obj_acllist
           obj_aclgrant
           obj_aclrevoke
           publish
           publish_prompt
           unpublish
-          cancel
           )
         );
 }
