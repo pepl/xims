@@ -38,7 +38,7 @@
             <xsl:apply-templates select="target/object"/>
 
             <table>
-                <xsl:apply-templates select="targetchildren/object[@id != /document/context/object/@id]">
+                <xsl:apply-templates select="targetchildren/object[@id != /document/context/object/@id and marked_deleted !='1']">
                     <xsl:sort select="title" order="ascending" case-order="lower-first"/>
                 </xsl:apply-templates>
             </table>
