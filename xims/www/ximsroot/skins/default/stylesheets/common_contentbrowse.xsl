@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2004 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -44,7 +44,7 @@
         <p>
             <xsl:value-of select="$i18n/l/Browse_to"/>:
             <br/>&#xa0;
-            <xsl:apply-templates select="targetparents/object[@document_id !=1]"/>
+            <xsl:apply-templates select="targetparents/object[@id !='1']"/>
             <xsl:apply-templates select="target/object"/>
 
             <table>

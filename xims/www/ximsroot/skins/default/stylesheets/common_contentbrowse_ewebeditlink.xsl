@@ -10,7 +10,6 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common_contentbrowse_ewebeditimage.xsl"/>
 <xsl:param name="id"/>
-<xsl:param name="parid"/>
 
 <xsl:template name="targetpath">
     <xsl:for-each select="/document/context/object/targetparents/object[@parent_id != 1]">
@@ -78,7 +77,7 @@
         }
         function storeBack(target, linktext) {
       ]]>
-            re = new RegExp("<xsl:choose><xsl:when test="$parid=''"><xsl:value-of select="$parent_path_nosite"/></xsl:when><xsl:otherwise><xsl:value-of select="$absolute_path_nosite"/></xsl:otherwise></xsl:choose>/");
+            re = new RegExp("<xsl:choose><xsl:when test="$objtype=''"><xsl:value-of select="$parent_path_nosite"/></xsl:when><xsl:otherwise><xsl:value-of select="$absolute_path_nosite"/></xsl:otherwise></xsl:choose>/");
       <![CDATA[
             re.test(target);
             if (RegExp.rightContext.length > 0) {

@@ -41,8 +41,8 @@
 </html>
 </xsl:template>
 
-<xsl:template match="targetparents/object">
-  / <xsl:choose><xsl:when test="position()!=last()"><a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};editorname={$editorname}"><xsl:value-of select="location"/></a></xsl:when><xsl:otherwise><xsl:value-of select="location"/></xsl:otherwise></xsl:choose>
+<xsl:template match="targetparents/object|target/object">
+  / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};editorname={$editorname}"><xsl:value-of select="location"/></a>
 </xsl:template>
 
 <xsl:template match="targetchildren/object">

@@ -61,8 +61,8 @@
                     <xsl:apply-templates select="body"/>
                 </table>
 
-                </td>
-            </tr>
+            </td>
+        </tr>
     </xsl:template>
 
     <xsl:template match="title">

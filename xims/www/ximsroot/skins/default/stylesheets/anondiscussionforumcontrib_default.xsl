@@ -37,13 +37,13 @@
         </xsl:call-template>
         <br />
         <p class="10left">
-          <a href="{concat($goxims_content,$parent_path)}"><xsl:value-of select="$i18n/l/Up"/></a>
+          <a href="{concat($xims_box,$goxims_content,$parent_path)}"><xsl:value-of select="$i18n/l/Up"/></a>
           <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
           |
           <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
           <a>
             <xsl:attribute name="href">
-              <xsl:value-of select="$goxims_content"/>
+              <xsl:value-of select="concat($xims_box,$goxims_content)"/>
               <xsl:call-template name="path2topics"/>
             </xsl:attribute><xsl:value-of select="$i18n/l/Topic_overview"/>
           </a>
@@ -149,11 +149,9 @@
     <a name="reply"/>
     <form name="replyform"
           action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib"
-          method="POST"
+          method="GET"
           onSubmit="return checkFields()">
       <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-      <input type="hidden" name="parid" value="{@id}" />
-
       <table border="0" width="770"
              style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px"
              cellpadding="3"
