@@ -350,6 +350,18 @@ sub __find_ids {
     return $self->data_provider->find_object_id( %args );
 }
 
+sub __decide_department_id {
+    my $self = shift;
+    my $object= XIMS::Object->new( id => $self->parent_id() );
+warn Dumper(\$object);
+    if ( ($object->object_type->name() eq 'DepartmentRoot') or ($object->object_type->name() eq 'SiteRoot') ) {
+            return $object->id();
+    }
+    else {
+            return $object->department_id();
+    }
+}
+
 sub User {
     my $self = shift;
     return $self->{User};
@@ -371,15 +383,8 @@ sub create {
     my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
     $self->position( $max_position + 1 );
 
-    my $parent= XIMS::Object->new( id=>$self->parent_id() );
-
-    if ( ($parent->object_type->name() eq 'DepartmentRoot') or ($parent->object_type->name() eq 'SiteRoot') ) {
-            $self->department_id( $parent->id() );
-    }
-    else {
-            $self->department_id( $parent->department_id() );
-    }
-
+    $self->department_id( $self->__decide_department_id() );
+   
     my $now = $self->data_provider->db_now();
 
     $self->last_modified_by_id( $user->id() );
@@ -471,18 +476,20 @@ sub move {
     return undef unless $parent_id;
     $self->parent_id( $parent_id );
 
-    my $dpt_id  = XIMS::Object->new( id=>$parent_id )->department_id(); 
+    $self->department_id( $self->__decide_department_id() );
 
-    $self->department_id( $dpt_id );
-
-    my @o = $self->descendants();
-
+    # this is a bit stupid, as we loop through all
+    # descendants, regardless whether they are
+    # below another department or siteroot.
+    # FIXME!
+    my @o =  $self->descendants();
     foreach( @o ) {
-       $_->department_id( $dpt_id );
+       $_->department_id( $_->__decide_department_id() );
        $_->data_provider->updateObject( $_->data() );
     }       
 
-    warn Dumper(\@o);
+   # warn Dumper(\@o);
+
     my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
     $self->position( $max_position + 1 );
     return $self->data_provider->updateObject( $self->data() );
