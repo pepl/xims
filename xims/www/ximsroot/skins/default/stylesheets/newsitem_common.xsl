@@ -24,15 +24,26 @@
     <tr>
         <td valign="top"><xsl:value-of select="$i18n/l/Image"/></td>
         <td colspan="2">
-            <input tabindex="30" type="text" name="image" size="40" class="text"/>
+            <input tabindex="30" type="file" name="imagefile" size="40" class="text"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
+      </td>
+    </tr>
+    <tr>
+         <td valign="top">
+             <xsl:value-of select="$i18n/l/Image"/>
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
+             <xsl:value-of select="$i18n/l/target"/>
+         </td>
+        <td colspan="2">
+            <input type="text" name="imagefolder" size="40" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?;id={@id};to={@id};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder')" class="doclink"><xsl:value-of select="$i18n/l/browse_target"/></a>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('NewsItemImage')" class="doclink">(?)</a>
         </td>
     </tr>
 </xsl:template>
-
 <xsl:template name="tr-leadimage-edit">
     <tr>
         <td valign="top" colspan="3">
