@@ -1,29 +1,27 @@
-use Test;
+use Test::More tests => 8;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::User;
-use XIMS::Object;
 use XIMS::Folder;
 #use Data::Dumper;
 
 BEGIN {
-    plan tests => 6;
+    use_ok('XIMS::Object');
 }
 
 # fetch the 'root' container
 my $root = XIMS::Object->new( id => 1 );
 
-ok( $root );
+isa_ok( $root, 'XIMS::Object' );
 
 my @kids = $root->children();
 
-ok ( scalar( @kids ) > 0 );
+cmp_ok ( scalar( @kids ), '>', '0', 'rootfolder has children' );
 
 # get a specific child with the location 'xims'
 my $kid = $root->children( location => 'xims' );
-
-ok ( $kid->location() eq 'xims' );
+is( $kid->location(), 'xims', 'able to get the child with location \'xims\''  );
 
 # create a child for 'xims'
 my $user = XIMS::User->new( id => 1 );
@@ -35,11 +33,10 @@ my $testfolder = XIMS::Folder->new(
                                     title => "testfolder",
                                     department_id => $kid->document_id(),
                                     );
-ok ( $testfolder->create() );
-
-#now, check that ''testfolder has no kids
+ok ( $testfolder->create(), 'create a testfolder' );
 
 my @grandkids = $testfolder->children();
-ok( scalar( @grandkids ) == 0 );
+is( scalar( @grandkids ), 0, 'testfolder has no children...' );
+is( $testfolder->child_count, 0, '...thence child_count() returns zero');
 
-ok( $testfolder->delete() );
+ok( $testfolder->delete(), 'delete testfolder');
