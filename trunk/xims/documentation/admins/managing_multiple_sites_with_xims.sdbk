@@ -42,7 +42,7 @@
 
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="xims-publishing-architecture.png" />
+                    <imagedata fileref="../xims-publishing-architecture.png" />
                 </imageobject>
             </mediaobject>
         </figure>
@@ -55,7 +55,7 @@
 
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="publishing_details.png" />
+                    <imagedata fileref="images/publishing_details.png" />
                 </imageobject>
             </mediaobject>
         </figure>
@@ -64,7 +64,7 @@
         special SAX filters for resolving content IDs to paths, resolving links, or including dependent objects. Before the final object serialization to disk,
         it is possible to transform XML based objects using special export stylesheets. Those stylesheets are located in <filename>XIMS::XIMSROOT() .
         &#39;/stylesheets/exporter/&#39;</filename>. Through modifying or adding stylesheets there you can control the format of the exported XML files. The
-        stylesheet should expect its input in the <ulink url="xims-documentschema.png">XIMS document schema</ulink>. To get a more concrete idea using a
+        stylesheet should expect its input in the <ulink url="../xims-documentschema.png">XIMS document schema</ulink>. To get a more concrete idea using a
         specific example get the untransformed object during a default event by adding the querystring parameter &#34;passthru=1&#34; to the URL.</para>
 
         <example>
@@ -86,7 +86,7 @@
     <section>
         <title>SiteRoots and AxKit Config</title>
 
-        <para>SiteRoots are <ulink url="http://xims.uibk.ac.at/xims-doku/xims-department_root-howto.dkb">DepartmentRoot</ulink>-like containers there properties
+        <para>SiteRoots are <ulink url="../users/howtos/departmentroot-howto.sdbk">DepartmentRoot</ulink>-like containers there properties
         for a published web-site can be set in future releases of XIMS. Currently, only SiteRoot-Stylesheet, -Image, and -Portlets can be set and only the
         SiteRoot-Image and -Portlets are exported during publishing. In the future, SiteRoots will support being configured as virtual root in the
         user-interface (i.e. users will see /siteroot/ as root container for the path navigation) as well as support other side-wide settings to be inherited by

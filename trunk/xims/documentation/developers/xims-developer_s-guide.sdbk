@@ -168,7 +168,7 @@ sub author {
         <section>
             <title>Implementing the Application Class</title>
 
-            <para>Currently, the application-classes are implemented using <ulink url="">CGI::XMLApplication</ulink>. Similar to the creation of the
+            <para>Currently, the application-classes are implemented using <ulink url="http://search.cpan.org/~phish/CGI-XMLApplication-1.1.2/XMLApplication.pm">CGI::XMLApplication</ulink>. Similar to the creation of the
             object-classes we can start out with a copy of a similar class and adjust the naming. anondiscussionforum.pm is a subclass of folder.pm; only
             event_default and the publishing events need to be overwritten, since our discussionforums shall not be exported. anondiscussionforumcontrib.pm and
             document.pm look more different from each other. For example, anondiscussionforumcontrib::event_store() has to handle &#34;author&#34;,
