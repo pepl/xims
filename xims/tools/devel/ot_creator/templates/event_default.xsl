@@ -28,10 +28,6 @@
 &lt;xsl:import href=&quot;common.xsl&quot;/&gt;
 &lt;xsl:output method=&quot;html&quot; encoding=&quot;utf-8&quot;/&gt;
 
-&lt;xsl:template match=&quot;/document&quot;&gt;
-    &lt;xsl:apply-templates select=&quot;context/object&quot;/&gt;
-&lt;/xsl:template&gt;
-
 &lt;xsl:template match=&quot;/document/context/object&quot;&gt;
     &lt;html&gt;
         &lt;xsl:call-template name=&quot;head_default&quot;/&gt;
