@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>    
+<?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
 # Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -12,6 +12,7 @@
                 xmlns:dcq="http://purl.org/dc/qualifiers/1.0/"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 
+<xsl:import href="../../../../stylesheets/config.xsl"/>
 <xsl:import href="public/common.xsl"/>
 <xsl:param name="request.uri"/>
 
@@ -35,13 +36,13 @@
                <xsl:call-template name="header">
                     <xsl:with-param name="no_navigation_at_all">true</xsl:with-param>
                </xsl:call-template>
-               
+
               <tr>
-                  <td class="links"> 
+                  <td class="links">
                     <!-- Begin Search -->
-                    <!--<xsl:call-template name="search"/>--> 
+                    <!--<xsl:call-template name="search"/>-->
                     <!-- End Search -->
-                    
+
                     <!-- Begin Standard Links -->
                     <!--<xsl:call-template name="stdlinks"/>-->
                     <!-- End Standard Links -->
@@ -49,13 +50,13 @@
                     <!-- Begin Department Links -->
                     <xsl:call-template name="deptlinks"/>
                     <!-- End Department Links -->
-                    
+
                     <!-- Begin Document Links -->
                     <xsl:call-template name="documentlinks"/>
                     <!-- End Document Links -->
                 </td>
                 <td class="content" >
-                  
+
                       <!-- Begin content -->
                       <xsl:apply-templates select="body"/><br />
                       <!-- End content -->
@@ -78,7 +79,6 @@
 </html>
 </xsl:template>
 
-
 <xsl:template name="search">
         <form class="qsearch">
         <table cellpadding="0" cellspacing="0" border="0" width="128" >
@@ -94,14 +94,13 @@
     </form>
 </xsl:template>
 
-
 <xsl:template name="deptlinks">
         <p class="deptlinks" style="color:#123853; text-decoration:underline;">
         Foo<br />
         Bar<br />
         Bogo<br />
         </p>
-      
+
 </xsl:template>
 
 <xsl:template name="documentlinks">
@@ -113,7 +112,6 @@
         </p>
     </xsl:if>
 </xsl:template>
-
 
 <xsl:template match="a">
     <span class="pseudolink"><xsl:value-of select="text()"/></span>
@@ -141,7 +139,7 @@
 <xsl:template name="copyfooter">
     <p class="copy">
           © 2000 - 2012 Example Org. - All rights reserved<br />
-          <span class="pseudolink">Help</span> | <span class="pseudolink">Mail to webmaster</span>    
+          <span class="pseudolink">Help</span> | <span class="pseudolink">Mail to webmaster</span>
    </p>
 </xsl:template>
 
