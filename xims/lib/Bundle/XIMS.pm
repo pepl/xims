@@ -47,10 +47,11 @@ XML::Schematron -
 Apache::DBI -
 CSS::Tiny -
 Term::ReadKey -
-Text::Diff - 
-DBIx::XHTML_Table - 
+Text::Diff -
+DBIx::XHTML_Table -
 XML::Generator::DBI -
 XML::LibXML::Iterator -
+Array::Iterator -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
 # Net::LDAP -
