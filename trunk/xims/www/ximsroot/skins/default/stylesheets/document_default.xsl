@@ -42,7 +42,7 @@
                                 <td width="60%" colspan="3"><strong><xsl:value-of select="$i18n/l/Document_links"/></strong></td>
                                 <xsl:if test="$m='e' and user_privileges/create">
                                     <td width="40%" align="right">
-                                        <a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=URLLink"><xsl:value-of select="$i18n/l/Add_link"/></a>
+                                        <a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink"><xsl:value-of select="$i18n/l/Add_link"/></a>
                                         <xsl:text>&#160;&#160;</xsl:text>
                                     </td>
                                 </xsl:if>
@@ -58,7 +58,7 @@
                                 <td width="60%"><strong>Annotation</strong></td>
                                 <td width="40%" colspan="2" align="right">
                                     <xsl:if test="$m='e' and user_privileges/create">
-                                        <!--<a href="{$goxims_content}{$absolute_path}?create=1;parid={@document_id};objtype=Annotation">-->Annotation hinzufügen<!--</a>-->
+                                        <!--<a href="{$goxims_content}{$absolute_path}?create=1;objtype=Annotation">-->Annotation hinzufügen<!--</a>-->
                                         <xsl:text>&#160;&#160;</xsl:text>
                                     </xsl:if>
                                 </td>
