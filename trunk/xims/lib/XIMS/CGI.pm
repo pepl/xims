@@ -611,7 +611,7 @@ sub init_store_object {
     my $image      = $self->param( 'image' );
 
     my $existing_flag = 0;
-    
+
     if ( $object and length $self->param( 'id' ) ) {
         unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
             return $self->event_access_denied( $ctxt );
@@ -682,7 +682,7 @@ sub init_store_object {
         # check if the same location already exists in the current container (and its a different object)
         if ( defined $parent ) {
             my $child = $parent->children( location => $location, marked_deleted => undef );
-            if ( ( $existing_flag and $child and $child->document_id != $self->param( 'id' ) ) or ( not $existing_flag and defined $child ) ) {
+            if ( ( $existing_flag and $child and $child->id != $self->param( 'id' ) ) or ( not $existing_flag and defined $child ) ) {
                 XIMS::Debug( 2, "location already exists" );
                 $self->sendError( $ctxt, "Location '$location' already exists in container." );
                 return 0;
@@ -769,7 +769,7 @@ sub init_store_object {
     else {
         $object->style_id( undef );
     }
-    
+
     return 1;
 }
 
@@ -1174,7 +1174,7 @@ sub event_copy {
         }
         else {
             XIMS::Debug( 4, "copy ok, redirecting to the parent");
-    
+
             $self->redirect( $self->redirect_path( $ctxt, $object->parent_id() ) );
             return 0;
         }
@@ -1263,7 +1263,7 @@ sub event_publish {
         my @objids = $self->param( "objids" );
         $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objids);
     }
-    
+
     if ( $exporter->publish( Object => $ctxt->object ) ) {
         XIMS::Debug( 6, "object published!" );
         if ( $published > 0 ) {
