@@ -276,7 +276,7 @@ sub fixupDBConfig {
         $conf->{DBdsn} .= ';host=' . $conf->{DBhost} if $conf->{DBhost} and length $conf->{DBhost};
         $conf->{DBdsn} .= ';port=' . $conf->{DBport} if $conf->{DBport} and length $conf->{DBport};
         $conf->{DBDOpt} = 'FetchHashKeyName=NAME_uc;' unless $conf->{DBDOpt} =~ /FetchHashKeyName/;
-        $conf->{DBSessionOpt} = 'SET DateStyle TO German;SET Client_Encoding TO LATIN1;' unless $conf->{DBSessionOpt} =~ /SET Client_Encoding/;
+        $conf->{DBSessionOpt} = 'SET DateStyle TO German;SET Client_Encoding TO UNICODE;' unless $conf->{DBSessionOpt} =~ /SET Client_Encoding/;
     }
     elsif ( $conf->{DBdsn} eq 'Oracle' ) {
         $conf->{DBdsn} = 'dbi:Oracle:' . $conf->{DBName};
