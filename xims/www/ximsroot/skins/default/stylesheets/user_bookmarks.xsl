@@ -64,7 +64,7 @@
         <td valign="top">
             <xsl:choose>
                 <xsl:when test="stdhome != '1'">
-                    <a href="/goxims/bookmark?id={id};setdefault=1"><xsl:value-of select="$i18n/l/set_as"/>&#160;<xsl:value-of select="$i18n/l/default_bookmark"/></a>
+                    <a href="{$xims_box}{$goxims}/bookmark?id={id};setdefault=1"><xsl:value-of select="$i18n/l/set_as"/>&#160;<xsl:value-of select="$i18n/l/default_bookmark"/></a>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="$i18n/l/default_bookmark"/>
@@ -73,7 +73,7 @@
         </td>
         <td>
             &#160;
-            <a href="/goxims/bookmark?id={id};delete=1">
+            <a href="{$xims_box}{$goxims}/bookmark?id={id};delete=1">
                 <img
                     src="{$skimages}option_purge.png"
                     border="0"
