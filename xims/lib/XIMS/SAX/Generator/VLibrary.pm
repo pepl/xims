@@ -47,12 +47,12 @@ sub prepare {
     $doc_data->{context}->{object}->{user_privileges} = {%userprivs} if ( grep { defined $_ } values %userprivs );
 
     if ( not $ctxt->parent() ) {
-        $doc_data->{context}->{vlsubjectinfo} = { subject => $ctxt->object->vlsubjectinfo() };
+        $doc_data->{context}->{vlsubjectinfo} = { subject => $ctxt->object->vlsubjectinfo_granted() };
         if ( $ctxt->properties->application->style() eq "authors" ) {
-            $doc_data->{context}->{vlauthorinfo} = { author => $ctxt->object->vlauthorinfo() };
+            $doc_data->{context}->{vlauthorinfo} = { author => $ctxt->object->vlauthorinfo_granted() };
         }
         if ( $ctxt->properties->application->style() eq "publications" ) {
-            $doc_data->{context}->{vlpublicationinfo} = { publication => $ctxt->object->vlpublicationinfo() };
+            $doc_data->{context}->{vlpublicationinfo} = { publication => $ctxt->object->vlpublicationinfo_granted() };
         }
     }
 
