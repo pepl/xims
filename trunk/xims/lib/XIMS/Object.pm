@@ -8,7 +8,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use vars qw($VERSION @ISA @Fields @Default_Properties);
+use vars qw($VERSION @ISA @Fields @Default_Properties @Reference_Id_Names );
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
 use XIMS;
@@ -21,7 +21,7 @@ use XIMS::AbstractClass;
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 
-#use Data::Dumper;
+use Data::Dumper;
 
 sub resource_type {
     return 'Object';
@@ -30,6 +30,8 @@ sub resource_type {
 sub fields {
     return @Fields;
 }
+
+@Reference_Id_Names = qw( symname_to_doc_id style_id script_id css_id image_id );
 
 BEGIN {
     # the binfile field is no longer available via the method interface, but is set
@@ -406,6 +408,82 @@ sub __find_ids_count {
     return $self->data_provider->find_object_id_count( %args );
 }
 
+# internal, used by clone()
+# fixup referenced object ids in all cloned objects that have reference ids
+sub __fix_clone_reference {
+    my $self = shift;
+    my %args = @_;
+    
+    my $user = delete $args{User} || $self->{User};
+    my $id_map = delete $args{ _id_map };
+    my $ref_object_ids = delete $args{ _ref_object_ids };
+
+    warn("fixing ref ids on objects : " . Dumper( $ref_object_ids ) );
+    warn("fixing ref ids with id map: " . Dumper( $id_map ) );
+
+    my $clone;
+    my $id_name;
+    my $document_id;
+    my $newid;
+    my $update_flag;
+    my $objecttype;
+
+    # check all copied objects that have referenced to other objects
+    foreach $document_id ( @$ref_object_ids ) {
+        $clone = XIMS::Object->new( document_id => $document_id );
+        # warn("clone to fix: " . Dumper( $clone ) );
+        $update_flag = 0;
+        foreach $id_name ( @Reference_Id_Names ) {
+            if( defined $clone->{ $id_name } ) {
+                $newid = $id_map->{ $clone->{ $id_name } };
+                if ( defined $newid ) {
+                    # the referenced object has also been copied, so change the reference to the copy
+                    $clone->{ $id_name } = $newid;
+                    $update_flag = 1; # update of clone is needed
+                }
+            }
+        }
+        
+        # fix body of departmentroots and siteroots, their body contains portlet ids
+        $objecttype = $clone->object_type;
+        if ( $objecttype->name() eq "DepartmentRoot" or $objecttype->name() eq "SiteRoot" ) {
+            warn("about to fix portlet in " . Dumper( $clone ) );
+            my $body = $clone->body();
+            if ( defined $body and length $body ) {
+                warn("portlet = $body");
+                my $parser = XML::LibXML->new();
+                my $fragment;
+                eval {
+                    $fragment = $parser->parse_xml_chunk( $body );
+                };
+                if ( $@ ) {
+                    XIMS::Debug( 2, "problem with the stored data ($@)"  );
+                }
+                else {
+                    my @nodes = $fragment->childNodes;
+                    my $node;
+                    my $update_body_flag = 0;
+                    foreach $node ( @nodes ) {
+                        warn("node string value = " . $node->string_value() ); 
+                        $newid = $id_map->{ $node->string_value() };
+                        if ( defined $newid ) {
+                            warn("setting portlet id to $newid");
+                            $node->firstChild->setData( $newid );
+                            warn("new node string value = " . $node->string_value() ); 
+                            $update_body_flag = 1;
+                        }
+                    }
+                    if ( $update_body_flag ) {
+                        $clone->body( $fragment->toString());
+                        $update_flag = 1; # update of clone is needed
+                    }
+                }
+            }
+        }
+        $clone->update( User => $user ) if $update_flag;
+    }
+}
+
 # "static"-method
 #
 sub __decide_department_id {
@@ -564,10 +642,14 @@ sub move {
 #    $self->clone( %args );
 #
 # PARAMETER
-#    $args{ User } ............ User ( used to find granted children )
-#    $args{ scope_subtree } ... flag, 0 ... shallow copy ( only object, not its descendants )
-#                                     1 ... full subtree copy ( object and all granted descendants )
-#    $args{ parent_id } ....... id of parent object ( should be undef, only used in recursive call )
+#    $args{ User } ............. User ( used to find granted children )
+#    $args{ scope_subtree } .... flag, 0 ... shallow copy ( only object, not its descendants )
+#                                      1 ... full subtree copy ( object and all granted descendants )
+#    $args{ _parent_id } ....... id of parent object ( should be undef, only used in recursive call )
+#    $args{ _id_map } .......... hash ref with key=old object id, value=new object id
+#                                ( should be undef, only used in recursive call )
+#    $args{ _ref_object_ids }... array ref with all cloned objects that have references to other objects
+#                                ( should be undef, only used in recursive call )
 #
 # RETURNS
 #    undef on error, 1 on success
@@ -575,7 +657,8 @@ sub move {
 # DESCRIPTION
 #    creates a copy of the object ( clone has same parent as orginal ).
 #    the clone is named 'copy_of_...' (location and title)
-#    the clone is always unpublished
+#    the clone is always unpublished and unlocked
+#    references to other copied objects are updated, as are references to portlets in body of department- and siteroot
 #    if scope_subtree = 1, all granted descendants are copied, too.
 #
 sub clone {
@@ -586,8 +669,11 @@ sub clone {
     my $user = delete $args{User} || $self->{User};
     die "cloning an object requires an associated User" unless defined( $user );
 
-    my $parent_id = delete $args{ parent_id };
     my $scope_subtree = delete $args{ scope_subtree };
+
+    my $parent_id = delete $args{ _parent_id };
+    my $id_map = delete $args{ _id_map } || {};
+    my $ref_object_ids = delete $args{ _ref_object_ids } || [];
 
     # create a copy of object data
     my %clonedata = $self->data();
@@ -614,18 +700,36 @@ sub clone {
                 $index++;
             } while ( $parent->children( location => $newlocation, marked_deleted => undef ) );
         }
-        # warn("clone: newlocation = $newlocation, newtitle = $newtitle");
+        warn("clone: newlocation = $newlocation, newtitle = $newtitle");
         $clonedata{ location } = $newlocation;
         $clonedata{ title } = $newtitle;
     }
     
     # create the clone and expressly assign its body data (may be binfile)
-    # warn("clone: about to create clone with data: " . Dumper( \%clonedata ) );
+    warn("clone: about to create clone with data: " . Dumper( \%clonedata ) );
     my $clone = XIMS::Object->new( %clonedata );
     return unless defined $clone;
     $clone->body( $self->body() );
     my $clone_id = $clone->create( User => $user );
     return unless defined $clone_id;
+    
+    # remeber old vs. new id
+    $id_map->{ $self->document_id } = $clone->document_id;
+    
+    # check if this object need later fixup of referenced object ids
+    my $objecttype = $clone->object_type;
+    if ( $objecttype->name() eq "DepartmentRoot" or $objecttype->name() eq "SiteRoot" ) {
+        push @$ref_object_ids, $clone->document_id;
+    }
+    else {
+        my $id_name;
+        foreach $id_name ( @Reference_Id_Names ) {
+            if( defined $clone->{ $id_name } ) {
+                push @$ref_object_ids, $clone->document_id;
+                last;
+            }
+        }
+    }
 
     if( defined $parent_id ) {
         # all subelements should keep their position, but they have got new ones by create(), so change this back!
@@ -647,14 +751,26 @@ sub clone {
         # set clone to unpublished
         $clone->unpublish();
     }
+    
+    if ( $clone->locked() ) {
+        # unlock clone
+        $clone->unlock();
+    }
 
     if ( $scope_subtree ) {
         # clone all granted children
         my @children = $self->children_granted( User => $user );
         my $child;
         foreach $child ( @children ) {
-            # warn("clone: about to clone child with id " . $child->id() );
-            return unless $child->clone( User => $user, parent_id => $clone_id, scope_subtree => 1 );
+            warn("clone: about to clone child with id " . $child->id() );
+            return unless $child->clone( User => $user, scope_subtree => 1,
+                                         _parent_id => $clone_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
+        }
+        
+        # check if we are back at top level of recursion
+        if( not defined $parent_id ) {
+            # fixup referenced object ids in all cloned objects that have reference ids
+            $self->__fix_clone_reference( User => $user, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
         }
     }
     
