@@ -54,7 +54,7 @@ function getParamValue( param ) {
 
 var highlighted = false;
 function stringHighlight( mystring ) {
-    if (highlighted) {
+    if (highlighted or mysstring.length == 0 ) {
         return;
     }
     re = /\s+/;
