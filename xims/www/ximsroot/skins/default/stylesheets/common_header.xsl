@@ -150,7 +150,9 @@
             <xsl:choose>
                 <xsl:when test="$m='e'">
                     <xsl:choose>
-                        <xsl:when test="/document/context/object/user_privileges/create and $createwidget = 'true'">
+                        <xsl:when test="/document/context/object/user_privileges/create
+                                       and $createwidget = 'true'
+                                       and /document/object_types/object_type[can_create]">
                             <xsl:call-template name="header.cttobject.createwidget"/>
                         </xsl:when>
                         <xsl:otherwise>
