@@ -373,8 +373,7 @@ sub event_bxeconfig {
         return 0;
     }
 
-    # Your webserver probably needs sth like "AddType text/xml .rng"
-    my %vars = ( validationfile  => XIMS::XIMSROOT_URL() . '/schemata/' . $otname . '.rng',
+    my %vars = ( validationfile  => XIMS::XIMSROOT_URL() . '/schemata/' . $otname . '.xml',
                  css             => XIMS::XIMSROOT_URL() . '/stylesheets/' . $otname . '.css',
                  exitdestination => '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE() . '?id=' . $object->id() . ';edit=1',
                  xmlfile         => '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE() . '?id=' . $object->id() . ';plain=1' );
