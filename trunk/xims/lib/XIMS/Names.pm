@@ -5,13 +5,14 @@
 package XIMS::Names;
 
 use strict;
-use vars qw( %Properties $VERSION );
+use vars qw( @ResourceTypes %Properties $VERSION );
 
 use XIMS::Config::Names;
 
 $VERSION = do { my @r=(q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 %Properties = XIMS::Config::Names::Properties();
+@ResourceTypes = XIMS::Config::Names::ResourceTypes();
 
 # think about moving the following two lines to XIMS::Config::Names::Properties...
 my @oprops = ( @{$Properties{Document}}, @{$Properties{Content}} );
@@ -19,7 +20,7 @@ $Properties{Object} = \@oprops;
 
 sub get_URI {
     my ($r_type, $property_name) = @_;
-    XIMS::Debug( 1, "Unknown resource type '$r_type'!" ) unless grep { $_ eq $r_type} resource_types();
+    XIMS::Debug( 1, "Unknown resource type '$r_type'!" ) unless grep { $_ eq $r_type} @ResourceTypes;
     if ( $r_type eq 'Object' ) {
         my ( $p, $t ) = reverse ( split /\./, $property_name );
         if ( $t ) {
@@ -53,7 +54,7 @@ sub property_interface_names {
 }
 
 sub resource_types {
-    return XIMS::Config::Names::ResourceTypes();
+    return @ResourceTypes;
 }
 
 sub properties {
