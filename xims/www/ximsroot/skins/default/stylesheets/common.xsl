@@ -324,6 +324,9 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         </td>
+        <td align="right" valign="top">
+            <xsl:call-template name="marked_mandatory"/>
+        </td>
     </tr>
     <xsl:call-template name="tr-title-edit"/>
 </xsl:template>
@@ -350,26 +353,37 @@
     </tr>
 </xsl:template>
 
-<xsl:template name="tr-body-create">
-<tr>
-    <td colspan="3">
-            Body
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
-            <br/>
-            <textarea tabindex="30" name="body" rows="15" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333 solid 1px;">&#160;</textarea>
-    </td>
-</tr>
+<xsl:template name="jsorigbody">
+    <script type="text/javascript">
+        var origbody = document.getElementById('body').value;
+    </script>
 </xsl:template>
 
-<xsl:template name="tr-body-edit">
+<xsl:template name="tr-body-create">
+    <xsl:param name="with_origbody" select="'no'"/>
     <tr>
         <td colspan="3">
             Body
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
             <br/>
-            <textarea tabindex="30" name="body" rows="15" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333 solid 1px;">
+            <textarea tabindex="30" name="body" id="body" rows="15" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333 solid 1px;">&#160;</textarea>
+            <xsl:if test="$with_origbody = 'yes'">
+                <xsl:call-template name="jsorigbody"/>
+            </xsl:if>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-body-edit">
+    <xsl:param name="with_origbody" select="'no'"/>
+    <tr>
+        <td colspan="3">
+            Body
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
+            <br/>
+            <textarea tabindex="30" name="body" id="body" rows="15" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333 solid 1px;">
                 <xsl:choose>
                     <xsl:when test="string-length(body) &gt; 0">
                         <xsl:apply-templates select="body"/>
@@ -379,6 +393,9 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </textarea>
+            <xsl:if test="$with_origbody = 'yes'">
+                <xsl:call-template name="jsorigbody"/>
+            </xsl:if>
         </td>
     </tr>
 </xsl:template>

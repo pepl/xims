@@ -58,7 +58,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
             <br/>
-            <input tabindex="30" type="hidden" name="body" value="" width="100%"/>
+            <input tabindex="30" type="hidden" name="body" id="body" value="" width="100%"/>
             <script language="JavaScript1.2">
             <!-- for ewebedit: pull parent_id into a JavaScript variable -->
             var parentID=&apos;<xsl:apply-templates select="@parent_id"/>&apos;;

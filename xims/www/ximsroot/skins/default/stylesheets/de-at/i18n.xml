@@ -96,6 +96,7 @@
 <Grant_default_roles>Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen</Grant_default_roles>
 <Mark_new>Objekt als neu markieren</Mark_new>
 <Try_to_well-balance>Versuchen, einen wohlgeformten Body herzustellen. (Bei nicht wohlgeformtem Body erscheint eine Fehlermeldung.)</Try_to_well-balance>
+<Body_content_changed>Der Inhalt von 'Body' wurde geändert.\nBitte benutzen Sie 'Speichern' oder 'Abbrechenn' um diese Seite zu verlassen.</Body_content_changed>
 <Test_body_xml>XML von Body testen</Test_body_xml>
 <Publish_ref_objects>Von diesem Objekt verlinkte XIMS-Objekte automatisch mitveröffentlichen</Publish_ref_objects>
 <Preview_image>Bildvorschau</Preview_image>

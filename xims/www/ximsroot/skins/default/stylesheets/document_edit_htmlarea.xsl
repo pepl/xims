@@ -19,7 +19,7 @@
     <xsl:template match="/document/context/object">
         <html>
             <xsl:call-template name="head-edit_htmlarea"/>
-            <body onLoad="initEditor(); ">
+            <body onLoad="initEditor();">
                 <div class="edit">
                     <xsl:call-template name="table-edit"/>
                     <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
@@ -57,11 +57,24 @@
                 <xsl:text>&#160;</xsl:text>
                 <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
                 <br/>
-                <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32">
+                <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;">
                     <xsl:value-of select="$bodycontent"/>
                 </textarea>
+                <xsl:call-template name="jsorigbody"/>
             </td>
         </tr>
+    </xsl:template>
+
+    <xsl:template name="jsorigbody">
+        <script type="text/javascript">
+            if (document.readyState != 'complete') {
+                var f = function() { origbody = window.editor.getHTML(); }
+                setTimeout(f, 2700); // MSIE needs that hight timeout value
+            }
+            else {
+                origbody = window.editor.getHTML();
+            }
+        </script>
     </xsl:template>
 
 </xsl:stylesheet>
