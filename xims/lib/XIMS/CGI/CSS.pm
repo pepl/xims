@@ -34,6 +34,7 @@ sub registerEvents {
           unpublish
           cancel
           parse_css
+          plain
           );
 }
 
