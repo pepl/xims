@@ -125,7 +125,7 @@ sub usage {
 
 sub rebless {
     my $object = shift;
-    my $otclass = "XIMS::" . $object->object_type->name();
+    my $otclass = "XIMS::" . $object->object_type->fullname();
 
     # load the object class
     eval "require $otclass;" if $otclass;
@@ -150,6 +150,7 @@ sub recurse_children {
     my %args = (User => $user, marked_deleted => undef );
     $args{published} = 1 if defined $republishonly;
     foreach my $child ( $object->children_granted( %args ) ) {
+        $child = rebless( $child );
         $privmask = $user->object_privmask( $child );
         $path = $child->location_path();
         if ( $privmask & XIMS::Privileges::PUBLISH() ) {
