@@ -1,0 +1,20 @@
+--- nested_set_triggers_and_functions.sql7.3	Sat Jun 21 00:55:23 2003
++++ nested_set_triggers_and_functions.sql	Sat Jun 21 01:00:17 2003
+@@ -10,7 +10,7 @@
+ --          -
+ --  INSERT  -
+ --          -
+-CREATE OR REPLACE FUNCTION  ci_doc_lftrgt_bi() RETURNS TRIGGER AS '
++CREATE OR REPLACE FUNCTION  ci_doc_lftrgt_bi() RETURNS OPAQUE AS '
+ DECLARE
+      parent_rgt INTEGER;
+ BEGIN
+@@ -87,7 +87,7 @@
+ ' LANGUAGE 'plpgsql';
+ 
+ --'
+-CREATE OR REPLACE RULE move_rule AS
++CREATE RULE move_rule AS
+        ON UPDATE TO ci_documents
+        WHERE old.parent_id <> new.parent_id
+        DO ( 

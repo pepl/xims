@@ -1,0 +1,26 @@
+use Test::More tests => 10;
+use lib "../lib";
+use strict;
+use XIMS::Names;
+
+BEGIN { use_ok( 'XIMS::Names' ); }
+
+
+my @r_types = XIMS::Names::resource_types();
+is_deeply( \@XIMS::Names::ResourceTypes, \@r_types , 'resource_types' );
+
+my %props_hash = XIMS::Names::property_list();
+is_deeply( \%XIMS::Names::Properties, \%props_hash, 'property_list' );
+
+cmp_ok( scalar( XIMS::Names::property_list('Session') ), '>', 0, 'property_list');
+is( scalar( XIMS::Names::property_list('Foo') ), undef, 'property_list' );
+
+is( scalar( keys(%props_hash) ), scalar( @r_types ) );
+
+is( XIMS::Names::valid_property('User', 'user.id' ), 1, 'valid_property');
+isnt( XIMS::Names::valid_property('Foo'), 1, 'valid_property' );
+
+cmp_ok( scalar( XIMS::Names::property_interface_names('Session') ), '>', 0, 'property_interface_names');
+
+diag("an ErrorMSG expected from the next one");
+is(  XIMS::Names::get_URI('Foo', 'Bar'), 'foo.Bar' , 'getURI' );
