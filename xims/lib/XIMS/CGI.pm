@@ -320,29 +320,33 @@ sub selectStylesheet {
     }
     $styleprefix ||= 'common';
 
-    my $stylepath =  $self->getStylesheetDir() . '/';
+    my $stylepath = $self->getStylesheetDir() . '/';
     my $stylefilename = $styleprefix . '_' . $stylesuffix . '.xsl';
 
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
     if ( defined $publicusername ) {
-        #
-        # check for $ctxt->object->style_id as path to published
-        # stylesheet directory here before using public/
-        #
-        my $filepath = $stylepath . "public/" . $stylefilename;
-        if ( -f $filepath and -r $filepath ) {
-            XIMS::Debug( 4, "using public-user-stylesheet" );
-            $stylepath .= "public/";
+        my $stylesheet = $ctxt->object->stylesheet();
+        if ( defined $stylesheet and $stylesheet->published() ) {
+            # check here if the stylesheet is not a directory but a single XSLStylesheet?
+            #
+            XIMS::Debug( 4, "using public-user-stylesheet from assigned directory" );
+            $stylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/' . $ctxt->session->uilanguage . '/';
         }
         else {
-            XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
-       }
+            my $filepath = $stylepath . "public/" . $stylefilename;
+            if ( -f $filepath and -r $filepath ) {
+                XIMS::Debug( 4, "using fallback public-user-stylesheet" );
+                $stylepath .= "public/";
+            }
+            else {
+                XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
+            }
+        }
     }
 
     $retval = $stylepath . $stylefilename;
     XIMS::Debug( 6, "stylesheet is '$retval'\n" );
 
-    XIMS::Debug( 5, "done" );
     return $retval;
 }
 
@@ -758,11 +762,15 @@ sub init_store_object {
         my $styleobj;
         if ( $stylesheet =~ /^\d+$/
              and $styleobj = XIMS::Object->new( id => $stylesheet )
-             and $styleobj->object_type->name() eq 'XSLStylesheet' ) {
+             and ( $styleobj->object_type->name() eq 'XSLStylesheet'
+                   or $styleobj->object_type->name() eq 'Folder' )
+                 ) {
             $object->style_id( $styleobj->id() );
         }
         elsif ( $styleobj = XIMS::Object->new( path => $stylesheet )
-             and $styleobj->object_type->name() eq 'XSLStylesheet') {
+             and ( $styleobj->object_type->name() eq 'XSLStylesheet'
+                   or $styleobj->object_type->name() eq 'Folder' )
+                 ) {
             $object->style_id( $styleobj->id() );
         }
         else {
@@ -1286,8 +1294,6 @@ sub event_publish {
         $ctxt->properties->application->styleprefix('common');
         $ctxt->properties->application->style('error');
     }
-
-
 
     return 0;
 }

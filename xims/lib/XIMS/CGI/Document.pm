@@ -174,8 +174,16 @@ sub event_pub_preview {
 
     return 0 if $self->SUPER::event_default( $ctxt );
 
+    # Emulate request.uri CGI param, set by Apache::AxKit::Plugin::AddXSLParams::Request
+    # ($request.uri is used by default document_publishing_preview.xsl)
+    $self->param( 'request.uri', $ctxt->object->location_path_relative() );
+
     $ctxt->properties->application->style("pub_preview");
 
+    # not mod_perl safe...
+    #*XIMS::CGI::Document::getDOM = *XIMS::CGI::Document::getPubPreviewDOM;
+    #*XIMS::CGI::Document::selectStylesheet = *XIMS::CGI::Document::selectPubPreviewStylesheet;
+    # ...therefore we are overriding getDom() and selectStylesheet() below...
     return 0;
 }
 
@@ -185,6 +193,79 @@ sub event_pub_preview {
 
 # #############################################################################
 # Local Helper functions
+
+sub getPubPreviewDOM {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $ctxt = shift;
+
+    require XIMS::Exporter;
+    my $handler = XIMS::Exporter::Document->new(
+                                       Provider   => $ctxt->data_provider,
+                                       Basedir    => XIMS::PUBROOT(),
+                                       Stylesheet => XIMS::XIMSROOT().'/stylesheets/exporter/export_document.xsl',
+                                       User       => $ctxt->session->user,
+                                       Object     => $ctxt->object,
+                                       );
+    my $raw_dom = $handler->generate_dom();
+    my $transd_dom = $handler->transform_dom( $raw_dom );
+    return undef unless defined $transd_dom;
+    return $transd_dom;
+}
+
+sub selectPubPreviewStylesheet {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $ctxt = shift;
+
+    my $stylepath = $self->getStylesheetDir() . '/public/';
+    my $filename = 'document_publishing_preview.xsl';
+    my $style;
+
+    my $stylesheet = $ctxt->object->stylesheet();
+    if ( defined $stylesheet and $stylesheet->published() ) {
+        if ( $stylesheet->object_type->name() eq 'XSLStylesheet' ) {
+            XIMS::Debug( 4, "using assigned pub-preview-stylesheet" );
+            $style = XIMS::PUBROOT() . $stylesheet->location_path();
+        }
+        else {
+            XIMS::Debug( 4, "using pub-preview-stylesheet from assigned directory" );
+            $stylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/' . $ctxt->session->uilanguage . '/';
+        }
+    }
+    else {
+        XIMS::Debug( 4, "using default pub-preview stylesheet" );
+    }
+
+    $style ||= $stylepath . $filename;
+    return $style;
+}
+
+sub selectStylesheet {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $ctxt = shift;
+
+    if ( $ctxt->properties->application->style eq 'pub_preview' ) {
+        return $self->selectPubPreviewStylesheet( $ctxt );
+    }
+    else {
+        return $self->SUPER::selectStylesheet( $ctxt );
+    }
+}
+
+sub getDOM {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $ctxt = shift;
+
+    if ( $ctxt->properties->application->style eq 'pub_preview' ) {
+        return $self->getPubPreviewDOM( $ctxt );
+    }
+    else {
+        return $self->SUPER::getDOM( $ctxt );
+    }
+}
 
 sub resolve_annotations {
     XIMS::Debug( 5, "called" );
@@ -228,7 +309,7 @@ sub _absrel_urlmangle {
     my $body = shift;
     my $goximscontent = shift;
     my $absolute_path = shift;
-    
+
 
 
     my $doclevels = split('/', $absolute_path) - 1;
