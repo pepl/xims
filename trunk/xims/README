@@ -39,11 +39,11 @@ Keep it mind that this is an early XIMS package, it is BETA.
 For the next beta releases we are planning to adress at least the
 following issues:
 
-* Finish the UI redesign
+* Finish the UI and Homepage redesign
 * Add/Update documentation!
+* Add HTMLArea-Editor customizations (object browser for links and images, table plugin, ...)
+* Add Bitflux-Editor integration
 * Update acceptance tests for the test suite
-* stylesheets for published docbook-objects
-* Take care of XIMS Logo
 
 Other issues to be adressed include the following:
 
