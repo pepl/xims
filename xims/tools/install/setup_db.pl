@@ -220,7 +220,7 @@ sub PgFindTableFunc {
     }
     my $tablefunc;
     eval {
-        $tablefunc = `locate -r contrib/tablefunc.sql\$`
+        $tablefunc = `locate contrib/tablefunc.sql`
     };
     return $tablefunc;
 }
