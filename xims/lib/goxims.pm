@@ -39,7 +39,7 @@ sub handler {
 
     #my $apr = Apache::Request->new($r);
     my $ctxt = XIMS::AppContext->new( apache => $r );
-    
+
     $ctxt->properties->application->nocache( 1 );
 
     my $publicuser = $r->dir_config('ximsPublicUserName');
@@ -58,6 +58,7 @@ sub handler {
     else {
         # using the ximsPublic role
         $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instantiated.%20There%20may%20be%20a%20database%20connection%20problem.");
+
         return SERVER_ERROR unless $ctxt->data_provider();
 
         XIMS::Debug(6, "Setting user to $publicuser");
@@ -66,6 +67,7 @@ sub handler {
                                           'host'    => $r->get_remote_host() );
 
         $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20create%20session.");
+
         return SERVER_ERROR unless ( $session and $ctxt->session( $session ) );
     }
 
@@ -106,6 +108,7 @@ sub handler {
         if (  $@ ) {
             XIMS::Debug( 2, "could not load object class $cms_pm: $@" );
             $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20object%20class%20$cms_pm.");
+
             return SERVER_ERROR;
         }
 
@@ -115,7 +118,7 @@ sub handler {
 
         # find out if we want to create an object!
         # if goxims finds an 'objtype'-param it assumes that it
-        # is called to create a new object. 
+        # is called to create a new object.
         my %args = $r->args();
         my $objtype = $args{objtype};
         # my $objtype = $apr->param('objtype');
@@ -140,6 +143,7 @@ sub handler {
     if ( $@ ) {
         XIMS::Debug( 2, "could not load application-class $app_pm: $@" );
         $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20application%20class%20$app_pm.");
+
         return SERVER_ERROR;
     }
 
@@ -203,7 +207,7 @@ sub readNotes {
 #    $r:    request-object      (mandatory)
 #
 # RETURN VALUES
-#    $retval: $interface_type 
+#    $retval: $interface_type
 #
 # DESCRIPTION
 #    Snip the context (first level URI path step) from the request string to determine
@@ -214,10 +218,9 @@ sub getInterface {
     # check to see if we are editing managed content or seeking
     # one of the meta or admin interfaces
     my $interface_type;
-
     my $pathinfo = $r->path_info();
 
-    if ($pathinfo =~ s/^(\/)(content|users?|defaultbookmark)//) {
+    if ($pathinfo =~ s/^(\/)(\w*)//) {
         $interface_type = $2;
         XIMS::Debug(6, "Using interface type: " . $interface_type )
     }
@@ -232,7 +235,7 @@ sub getInterface {
         # this should not happen, if one types in the interface name but
         # leaves a required path empty.
         #
-        $interface_type = "defaultbookmark";
+        $interface_type = "user";
     }
 
     $r->path_info($pathinfo);
@@ -240,7 +243,7 @@ sub getInterface {
 }
 
 ##
-# 
+#
 # SYNOPSIS
 #    getObject($r)
 #
