@@ -19,29 +19,22 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 # inheritation information
 @ISA = qw( XIMS::CGI );
 
-# the names of pushbuttons in forms or symbolic internal handler
-# each application should register the events required, even if they are
-# defined in XIMS::CGI. This is for having a chance to
-# deny certain events for the script.
-#
-# only dbhpanic and access_denied are set by XIMS::CGI itself.
 sub registerEvents {
-    XIMS::Debug( 5, "called" );
-    $_[0]->SUPER::registerEvents(
-        qw(
-          create
-          edit
-          store
-          obj_acllist
-          obj_aclgrant
-          obj_aclrevoke
-          publish
-          publish_prompt
-          unpublish
-          test_wellformedness
-          pub_preview
-          )
-        );
+    my $self = shift;
+    $self->SUPER::registerEvents(
+                                'create',
+                                'edit',
+                                'store',
+                                'publish',
+                                'publish_prompt',
+                                'unpublish',
+                                'obj_acllist',
+                                'obj_aclgrant',
+                                'obj_aclrevoke',
+                                'test_wellformedness',
+                                'pub_preview',
+                                @_
+                                );
 }
 
 # error messages
