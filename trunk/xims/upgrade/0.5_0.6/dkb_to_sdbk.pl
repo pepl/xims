@@ -64,6 +64,16 @@ print "Press enter to start.\n";<STDIN>;
 
 my $admin = XIMS::User->new( name => 'admin' );
 
+my $exporter;
+eval {
+   require XIMS::Exporter;
+   $exporter = XIMS::Exporter->new( Provider => $dp,
+                                    Basedir  => XIMS::PUBROOT(),
+                                    User     => $admin
+                                  );
+     };
+die "Could not instantiate Exporter\n" unless $exporter;
+
 # update object-type and data-format names
 my $df = XIMS::DataFormat->new( name => 'DocBookXML' );
 die "Could not find dataformat 'DocBookXML'. Perhaps the update has already been run?!\n" unless $df;
@@ -87,35 +97,52 @@ else {
 }
 
 # rename existing objects with the old location
-my @objects = $dp->objects( location => '%.dkb' );
+my @objects = $dp->objects( object_type_id => $ot->id() );
 
 my $total;
 if ( defined @objects and scalar @objects > 0 ) {
     $total = scalar @objects;
-    print "\nFound '" . $total . "' objects with the old .dkb suffix.\n";
+    print "\nFound '" . $total . "' sDocBookXML objects.\n";
 }
 else {
-    print "\nNo objects with the old .dkb suffix found.\n";
+    print "\nNo sDocBookXML objects found.\n";
     exit 0;
 }
 
 my $updated;
+my $republished;
 foreach my $object ( @objects ) {
     my $location = $object->location();
+    next if $location !~ /\.dkb$/;
+
+    my $need_repub = 0;
+    if ( $object->published() ) {
+        print "Object '" . $object->location_path . "' is published and will be republished with the new name.\n";
+        $need_repub = 1;
+        $exporter->unpublish();
+    }
+
     $location =~ s/\.dkb$/.sdbk/;
     $object->location( $location );
     if ( $object->update( User => $admin ) ) {
         $updated++;
+        warn "Updated '" . $object->location_path . "'.\n";
     }
     else {
         warn "Could not update object '" . $object->location_path . "'.\n";
+    }
+
+    if ( $need_repub ) {
+        $exporter->publish();
+        $republished++;
     }
 }
 
 print qq*
     Object update report:
-        Total .dkb objects   $total
-        Updated to .sdbk     $updated
+        Total sDocBookXML objects   $total
+        Updated to .sdbk            $updated
+        Republished                 $republished
 
 *;
 
