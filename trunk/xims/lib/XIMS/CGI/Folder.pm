@@ -52,6 +52,21 @@ sub event_default {
 
     $ctxt->properties->content->getformatsandtypes( 1 );
 
+    my $defaultsortby = $ctxt->object->attribute_by_key( 'defaultsortby' );
+    my $defaultsort = $ctxt->object->attribute_by_key( 'defaultsort' );
+
+    # maybe put that into config values
+    $defaultsortby ||= 'position';
+    $defaultsort ||= 'asc';
+
+    unless ( $self->param('sb') and $self->param('order') ) {
+        $self->param( 'sb', $defaultsortby );
+        $self->param( 'order', $defaultsort );
+        $self->param( 'defsorting', 1 ); # tell stylesheets not to
+                                         # pass 'sb' and 'order' params
+                                         # when linking to children
+    }
+
     return 0;
 }
 
@@ -80,6 +95,24 @@ sub event_store {
         }
         elsif ( $autoindex eq 'false' ) {
             $object->attribute( autoindex => '0' );
+        }
+    }
+
+    my $defaultsortby = $self->param( 'defaultsortby' );
+    if ( defined $defaultsortby ) {
+        XIMS::Debug( 6, "defaultsortby: $defaultsortby" );
+        my $currentvalue = $object->attribute_by_key( 'defaultsortby' );
+        if ( $defaultsortby ne 'position' or defined $currentvalue ) {
+            $object->attribute( defaultsortby => $defaultsortby );
+        }
+    }
+
+    my $defaultsort = $self->param( 'defaultsort' );
+    if ( defined $defaultsort ) {
+        XIMS::Debug( 6, "defaultsort: $defaultsort" );
+        my $currentvalue = $object->attribute_by_key( 'defaultsort' );
+        if ( $defaultsort ne 'asc' or defined $currentvalue ) {
+            $object->attribute( defaultsort => $defaultsort );
         }
     }
 
