@@ -36,6 +36,7 @@ sub new {
                 [ "Apache::DBI", '' ],
                 [ "CSS::Tiny", '' ],
                 [ "Term::ReadKey", '' ],
+                [ "Text::Diff", '' ],
                 [ "XML::LibXML::Iterator", '' ],
               );
 
