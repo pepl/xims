@@ -20,7 +20,9 @@
                     <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
                         <table border="0" width="98%">
                             <xsl:call-template name="tr-locationtitle-edit_doc"/>
-                            <xsl:call-template name="tr-body-edit"/>
+                            <xsl:call-template name="tr-body-edit">
+                                <xsl:with-param name="with_origbody" select="'yes'"/>
+                            </xsl:call-template>
                             <xsl:call-template name="testbodysxml"/>
                             <xsl:call-template name="trytobalance"/>
                             <xsl:call-template name="tr-keywords-edit"/>

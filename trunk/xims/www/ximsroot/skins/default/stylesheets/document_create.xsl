@@ -21,7 +21,9 @@
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
-                    <xsl:call-template name="tr-body-create"/>
+                    <xsl:call-template name="tr-body-create">
+                        <xsl:with-param name="with_origbody" select="'yes'"/>
+                    </xsl:call-template>
                     <xsl:call-template name="trytobalance"/>
                     <xsl:call-template name="testbodysxml"/>
                     <xsl:call-template name="tr-keywords-create"/>
@@ -35,7 +37,7 @@
             <br />
             <xsl:call-template name="cancelaction"/>
     </body>
-    </html>
+</html>
 </xsl:template>
 
 </xsl:stylesheet>

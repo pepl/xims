@@ -96,8 +96,9 @@
 <Grant_default_roles>Additionally, grant view privileges to default roles</Grant_default_roles>
 <Mark_new>Mark object as new:</Mark_new>
 <Try_to_well-balance>Try to form body well. (If body is not well-balanced an error message will be displayed otherwise.)</Try_to_well-balance>
+<Body_content_changed>The content of the body has been changed.\nPlease use 'Save' or 'Cancel' to exit this page.</Body_content_changed>
 <Test_body_xml>Test body's XML</Test_body_xml>
-<Publish_ref_objects>Automaticly export Objects refered by this object</Publish_ref_objects>
+<Publish_ref_objects>Automaticly export objects refered by this object</Publish_ref_objects>
 <Preview_image>Preview Image</Preview_image>
 <Browse_image>Browse for Images</Browse_image>
 <Browse_stylesheet>Browse for Stylesheet</Browse_stylesheet>

@@ -13,7 +13,6 @@
 
     <xsl:param name="printview" select="'0'"/>
 
-
     <xsl:template name="table-create">
         <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0">
             <tr>
@@ -65,41 +64,80 @@
     <xsl:template name="setdefaulteditor">
         <script type="text/javascript">
             function createCookie(name,value,days) {
-            if (days) {
-            var date = new Date();
-            date.setTime(date.getTime()+(days*24*60*60*1000));
-            var expires = "; expires="+date.toGMTString();
-            }
-            else var expires = "";
-            document.cookie = name+"="+value+expires+"; path=/";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime()+(days*24*60*60*1000));
+                    var expires = "; expires="+date.toGMTString();
+                }
+                else var expires = "";
+                document.cookie = name+"="+value+expires+"; path=/";
             }
 
             function readCookie(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for(var i=0;i &lt; ca.length;i++) {
-            var c = ca[i];
-            while (c.charAt(0)==' ') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-            }
-            return null;
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for (var i=0;i &lt; ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
             }
 
             function setSel(selObj, toselect) {
-            toselect = toselect.toLowerCase();
-            opts=selObj.options,
-            i=opts.length;
-            while(i-->0) {
-            if(opts[i].value.toLowerCase()==toselect) {
-            selObj.selectedIndex=i;
-            return true;
+                toselect = toselect.toLowerCase();
+                opts=selObj.options,
+                i=opts.length;
+                while (i-->0) {
+                    if(opts[i].value.toLowerCase()==toselect) {
+                        selObj.selectedIndex=i;
+                        return true;
+                    }
+                }
+                return false;
             }
+
+            function checkBodyFromSel (selection) {
+                if ( hasBodyChanged() ) {
+                    document.getElementById('xims_wysiwygeditor').disabled = true;
+                    alert("<xsl:value-of select="$i18n/l/Body_content_changed"/>");
+                    return false;
+                }
+
+                createCookie('xims_wysiwygeditor',selection,90);
+                location.reload();
+
+                return true;
             }
-            return false;
+
+            function hasBodyChanged () {
+                var currentbody;
+                if ( window.editor ) {
+                    currentbody = window.editor.getHTML();
+                }
+                else {
+                    var body = document.getElementById('body');
+                    if ( body &amp;&amp; body.value ) {
+                        currentbody = body.value;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+
+                var is_changed;
+                if ( window.eWebEditPro ) {
+                    return eWebEditPro.instances['body'].isChanged();
+                }
+                else if ( currentbody &amp;&amp; origbody &amp;&amp; currentbody != origbody ) {
+                    return true;
+                }
+                return false;
             }
+
         </script>
         <form name="editor_selector" id="editor_selector" style="display: inline; margin: 0px;">
-            <select style="font-size: 9px; padding: 0px; background-color: #eeeeee;" name="xims_wysiwygeditor" id="xims_wysiwygeditor" onChange="javascript:createCookie('xims_wysiwygeditor',this.value,90); location.reload()">
+            <select style="font-size: 9px; padding: 0px; background-color: #eeeeee;" name="xims_wysiwygeditor" id="xims_wysiwygeditor" onChange="return checkBodyFromSel(this.value);">
                 <option value="plain">Plain Textarea</option>
                 <option value="htmlarea">HTMLArea Editor</option>
                 <option value="wepro">eWebeditPro Editor</option>
@@ -373,6 +411,9 @@
                 </xsl:choose>
                 <xsl:text>&#160;</xsl:text>
                 <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
+            </td>
+            <td align="right" valign="top">
+                <xsl:call-template name="marked_mandatory"/>
             </td>
         </tr>
         <xsl:call-template name="tr-title-edit"/>
