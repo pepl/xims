@@ -71,37 +71,22 @@ sub event_store {
 
     return 0 unless $self->init_store_object( $ctxt );
 
-    # ad: mimetypes
-    #
-    # in a longterm: don't rely on the UA, make some internal
-    # sanity-test drawbacks are: probably costly, nor bulletproof,
-    #
-    # i think we need a default-type x-unknown/x-unknown or something
-    # similar - saves us from locking out anything unknown. so the
-    # lookup would be data_formats -> mime_type aliases if that fails
-    # set x-unknown/x-unknown on file upload. maybe do the same in
-    # image-create, and set the object-type to 'File' the idea behind
-    # that is basically, we do not have to reject a lot and don't make
-    # promises to the user on lookup or d/l. anything else is going to
-    # be support-hell, IMHO.
-
+    # if the mimetype provided by the UA is unknown, 
+    # fall back to 'application/octet-stream'  
     if ( length $fh ) {
         my $type = $self->uploadInfo($fh)->{'Content-Type'};
-        # my $type = $self->upload('file')->info("Content-type");
-
-        if ( my $df = XIMS::DataFormat->new( mime_type => $type ) ) {
+        my $df;
+        if ( $df = XIMS::DataFormat->new( mime_type => $type ) ) {
             XIMS::Debug( 6, "xims mime type: ". $df->mime_type() );
             XIMS::Debug( 6, "UA   mime type: ". $type );
-            $ctxt->object->data_format_id( $df->id() );
         }
         else {
-            XIMS::Debug( 3, "$type is not a valid mime-type" );
-            $self->sendError( $ctxt,
-                              "The mimetype of the file you supplied ( " .
-                              $type .
-                              ") is unsupported and therefore rejected. Sorry." );
-            return 0;
+            $df = XIMS::DataFormat->new( mime_type => 'application/octet-stream' );
+            XIMS::Debug( 6, "xims mime type: forced to 'application/octet-stream'" );
+            XIMS::Debug( 6, "UA   mime type: ". $type );
+
         }
+        $ctxt->object->data_format_id( $df->id() );
 
         XIMS::Debug(5, "reading from filehandle");
         my ($buffer, $body);
