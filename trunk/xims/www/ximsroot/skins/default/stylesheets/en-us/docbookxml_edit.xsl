@@ -15,15 +15,8 @@
     
     <xsl:template match="/document/context/object">
         <html>
-            <head>
-                <title>Edit sDocBookXML '<xsl:value-of select="title"/>' in <xsl:value-of select="$parent_path"/> - XIMS</title>
-                <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            </head>
+            <xsl:call-template name="head-edit"/>
             <body>
-                <xsl:call-template name="header">
-                    <xsl:with-param name="no_navigation_at_all">true</xsl:with-param>
-                </xsl:call-template>
                 <p class="edit">
                     <table border="0" align="center" width="98%">
                         <tr>

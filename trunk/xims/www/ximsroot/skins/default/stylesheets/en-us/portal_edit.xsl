@@ -22,15 +22,15 @@
     <body>
         <p class="edit">
             <xsl:call-template name="table-edit"/>
-                    <form action="{$goxims_content}{$absolute_path}?objtype=portal" name="eform" method="POST">
+                <form action="{$goxims_content}{$absolute_path}?objtype=portal" name="eform" method="POST">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-stylesheet-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
-                                <xsl:call-template name="grantowneronly"/>
-                            </table>
-                            <xsl:call-template name="saveedit"/>
-            </form>
+                    <xsl:call-template name="grantowneronly"/>
+                </table>
+                <xsl:call-template name="saveedit"/>
+                </form>
         </p>
         <br />
         <xsl:call-template name="canceledit"/>

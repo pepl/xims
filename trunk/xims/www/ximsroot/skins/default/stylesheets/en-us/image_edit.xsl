@@ -17,19 +17,19 @@
     
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-edit"/>
+    <xsl:call-template name="head-edit_withscript"/>
     <body>
         <p class="edit">
             <xsl:call-template name="table-edit"/>
-                    <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=image" method="POST" enctype="multipart/form-data">
-                 <table border="0" width="98%">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=image" method="POST" enctype="multipart/form-data">
+                <table border="0" width="98%">
                     <xsl:call-template name="tr-title-edit"/>
                     <xsl:call-template name="tr-image-edit"/>
                     <xsl:call-template name="tr-keywords-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
-                            </table>
-                            <xsl:call-template name="saveedit"/>
-                    </form>
+                </table>
+                <xsl:call-template name="saveedit"/>
+            </form>
         </p>
         <br />
         <xsl:call-template name="canceledit"/>
