@@ -661,21 +661,21 @@ li.list_GIF, li.list_PNG, li.list_JPG, li.list_TIFF {
 }
 
 
-li.docbooklist, ul.docbooklist {
+li.sdocbooklist, ul.sdocbooklist {
 	equivClass: DFLists;
-	caption:DocBook List;
+	caption:sDocBook List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_DocBookXML.gif");
+	list-style-image:url("/ximsroot/images/icons/list_sDocBookXML.gif");
 	text-indent:-5px;
 }
 
-li.list_DocBookXML {
+li.list_sDocBookXML {
 	equivClass: DFLists;
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_DocBookXML.gif");
+	list-style-image:url("/ximsroot/images/icons/list_sDocBookXML.gif");
 	text-indent:-5px;
 }
 
