@@ -5,6 +5,12 @@
 package XIMS::Importer::FileSystem::Document;
 
 use XIMS::Importer::FileSystem::XMLChunk;
+use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implementation changed from 1.52 to 1.54.
+                      # With 1.52, node iteration is handled differently and we would call
+                      # $doc->getDocumentElement() instead of $doc->documentElement() for example...
+use XML::LibXML::Iterator;
+use XIMS::Object;
+
 use vars qw( @ISA );
 @ISA = qw(XIMS::Importer::FileSystem::XMLChunk);
 
@@ -35,12 +41,49 @@ sub handle_data {
                 $value = $n->textContent();
             }
             if ( length $value ) {
-                $object->$field( XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value );
+               $object->$field( $value );
             }
         }
     }
 
     return $object;
+}
+
+sub get_rootelement {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $location = shift;
+    my %args = @_;
+
+    my $strref = $self->get_strref( $location );
+    my $wbdata;
+    my $object = XIMS::Object->new();
+    my $doc;
+    if ( not $doc = $object->balanced_string( $$strref, %args ) ) {
+        $wbdata = $object->balance_string( $$strref, keephtmlheader => 1 );
+        my $parser = XML::LibXML->new();
+        eval {
+            $doc = $parser->parse_string( $wbdata );
+        };
+        if ( $@ ) {
+            XIMS::Debug( 3, "Could not parse: $@" );
+            return undef;
+        }
+    }
+
+    # lowercase element and attribute names
+    my $iter = XML::LibXML::Iterator->new( $doc );
+    $iter->iterate( sub {
+                        shift;
+                        $_[0]->nodeType == XML_ELEMENT_NODE &&
+                            map {
+                                    $_->nodeType != XML_NAMESPACE_DECL &&
+                                    $_->setNodeName( lc $_->nodeName )
+                                }
+                            $_[0], $_[0]->attributes;
+                        } );
+
+    return $doc->documentElement();
 }
 
 1;
