@@ -1,6 +1,7 @@
 # Copyright (c) 2002-2004 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
 package XIMS::DataProvider::DBI;
 
 use strict;
@@ -146,7 +147,7 @@ sub name_fixer {
     foreach ( keys( %{$row} ) ) {
         my $out_name;
         my ($token, $idx) =  split(/__/, $_);
-        if ( defined( $idx )) {
+        if ( defined( $idx ) and length( $idx ) ) {
             $out_name = $AllProps[$idx];
         }
         else {
@@ -665,7 +666,7 @@ sub _get_descendant_sql {
     my $properties = shift;
 
     my $levelproperty;
-    my $orderby;
+    my $orderby = '';
     if ( $self->{RDBMSClass} eq 'Pg' ) {
         $maxlevel ||= 0;
         $orderby = "ORDER BY t.pos" unless defined $noorder;
@@ -752,7 +753,7 @@ sub get_object_id_by_path {
                   and $row->[0]->[0] ) {
                 $id = $row->[0]->[0];
                 $symid = $row->[0]->[1];
-                XIMS::Debug( 6, "new id: '$id' (symid '" . defined $symid ? $symid : '' . "')" );
+                XIMS::Debug( 6, "new id: '$id' (symid '" . (defined $symid ? $symid : '') . "')" );
             }
             else {
                 XIMS::Debug( 3, "empty result set, 404" );
