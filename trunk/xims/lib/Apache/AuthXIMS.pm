@@ -36,6 +36,17 @@ sub handler {
     XIMS::Debug( 5, "called" );
     my $r = shift;
 
+    # we store the original remote ip in pnotes;
+    # goxims.pm will test for this to see whether it should test for a known proxy itself.
+    $r->pnotes('ORIGINAL_REMOTE_IP' => $r->connection->remote_ip());
+    if ( $r->header_in('X-Forwarded-For') and XIMS::is_a_known_proxy( $r->connection->remote_ip() ) ) {
+        # Select last value in the chain -- original client's IP
+        if (my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/) {
+            $r->connection->remote_ip($ip);
+            XIMS::Debug(6, "Remote IP taken from X-Forwarded-For-header\n");
+        }
+    }
+
     my $retval = DECLINED;
     my %args = $r->args();
 
