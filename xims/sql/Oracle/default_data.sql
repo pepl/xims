@@ -106,20 +106,29 @@ INSERT INTO CI_BOOKMARKS ( id, owner_id, content_id, stdhome) VALUES ( BMK_SEQ.N
 
 -- grants on object-types (for creation)
 -- Document
-INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 1, 2, 2 );
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 2 );
 -- Folder
-INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 1, 2, 1 );
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 1 );
 -- File
-INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 1, 2, 4 );
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 4 );
 -- URLLink
-INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 1, 2, 11 );
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 11 );
 -- Image
-INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 1, 2, 3 );
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 3 );
 -- DocBooxXML
-INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 1, 2, 9 );
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 9 );
+-- AxPointPresentation
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 8 );
+-- XML
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 5 );
+-- XSLStylesheet
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 7 );
+-- SymbolicLink
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 12 );
+-- AnonDiscussionForum
+INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 3, 2, 13 );
 
 
 -- grants on the created folders should go here
-
-INSERT INTO CI_OBJECT_PRIVS_GRANTED ( privilege_mask, grantee_id, grantor_id, content_id ) VALUES ( 1, 1, 2, 2 );
+INSERT INTO CI_OBJECT_PRIVS_GRANTED ( privilege_mask, grantee_id, grantor_id, content_id ) VALUES ( 1, 3, 2, 2 );
 
