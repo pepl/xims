@@ -14,7 +14,7 @@
     <assert test="count(host)=1">The 'session' element must contain a 'host' element.</assert>
     <assert test="count(user)=1">The 'session' element must contain a 'user' element.</assert>
     <assert test="count(date)=1">The 'session' element must contain a 'date' element.</assert>
-    <assert test="count(last_access_timestamp|host|user|user_id|date|error_msg|warning_msg|message|verbose_msg|skin|uilanguage|session_id|attributes|serverurl)=count(./*)">
+    <assert test="count(last_access_timestamp|host|user|user_id|date|error_msg|warning_msg|message|verbose_msg|skin|uilanguage|session_id|attributes|serverurl|searchresultcount)=count(./*)">
       Foreign element child <name path="."/> in element 'session'.
     </assert>
   </rule>
