@@ -270,6 +270,12 @@
             <table width="100%" border="0" height="42" background="{$skimages}subheader-generic_bg.png" cellpadding="0" cellspacing="0">
                 <tr>
                     <td nowrap="nowrap">
+                        From here
+                        <input type="checkbox" name="start_here" value="1">
+                            <xsl:if test="$start_here != ''">
+                                <xsl:attribute name="checked">true</xsl:attribute>
+                            </xsl:if>
+                        </input>
                         <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="s" size="17" maxlength="200">
                         <xsl:choose>
                             <xsl:when test="$s != ''">
