@@ -5,6 +5,7 @@
 # $Id$
 
 use strict;
+use vars qw( @files @links );
 use warnings;
 no warnings 'redefine';
 
@@ -65,13 +66,14 @@ die "Could not find object '".$args{m}."'\n" unless $parent and $parent->id();
 my $privmask = $user->object_privmask( $parent );
 die "Access Denied. You do not have privileges to create objects under '".$args{m}."'\n" unless $privmask & XIMS::Privileges::CREATE();
 
-my @files;
 my $path = $ARGV[0];
 die "Could not read '$path'\n" unless -f $path or -d $path;
+die "Cannot import from symlink directory '$path'\n" if -l $path and -d $path;
 # untaint the path
 $path = $1 if $path =~ /^(.*)$/;
 
-File::Find::find({wanted => sub {push @files, $File::Find::name}, untaint => 1}, $path);
+File::Find::find({wanted => \&process, untaint => 1}, $path);
+push (@files, @links); # add the processed links to the files
 die "No files found, nothing to do.\n" unless scalar(@files);
 
 my $importer = XIMS::Importer::FileSystem->new( User => $user, Parent => $parent );
@@ -121,6 +123,17 @@ sub usage {
         -h prints this screen
 
 *;
+}
+
+sub process {
+    if ( not -l $File::Find::dir ) {
+        if ( not -l $File::Find::name ) {
+            push (@files, $File::Find::name);
+        }
+        else {
+            push (@links, $File::Find::name);
+        }
+    }
 }
 
 sub XIMS::DEBUGLEVEL () { $args{d} || 1 }
