@@ -83,9 +83,10 @@ sub end_element {
         my %attribs = ( $self->{attributes} =~ /([^;\=]+)\=([^\;]+)/g );
         foreach ( keys %attribs ) {
             $self->SUPER::start_element( { Name => $_, LocalName => $_, Prefix => "", NamespaceURI => undef, Attributes => {} } );
-            $self->SUPER::characters( { Data => $attribs{$_}, } );
+            $self->SUPER::characters( { Data => $attribs{$_} } );
             $self->SUPER::end_element();
         }
+
         $self->{attributes} = undef;
     }
 
