@@ -468,7 +468,7 @@ sub get_object_id {
     }
     return \@ids;
 }
-
+# '
 # Unfortunately, Oracle needs that strange ROWNUM subquery mechanism to limit the number of rows returned.
 # Therefore we cannot use the abstract model of $self->get_object_id() but have to build the SQL on our own :-/
 sub find_object_id {
@@ -502,7 +502,7 @@ sub content_length {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    
+
     my $data = $self->{dbh}->fetch_select( table   =>  'ci_content_loblength',
                                            columns =>  'lob_length',
                                            criteria => { id => $args{id} } );
@@ -531,6 +531,37 @@ sub get_descendant_id_level {
 
     return [[ \@ids, \@lvls ]];
 }
+
+
+##
+#
+# SYNOPSIS
+#    $dp->get_descendant_infos( %param );
+#
+# PARAMETER
+#    $param{parent_id}
+#
+# RETURNS
+#    \@rv : [ number of descendants, the newest modification timestamp found ]
+#
+# DESCRIPTION
+#    takes a document_id as argument; returns the count of its descendants and
+#    the newest last_modification_timestamp of all descendants and the object
+#    itself.
+#
+sub get_descendant_infos {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    return undef unless exists $args{parent_id};
+
+    my $query = 'SELECT count(last_modification_timestamp), max(last_modification_timestamp) FROM ci_content WHERE document_id IN ( SELECT id FROM ci_documents WHERE lft BETWEEN ( SELECT lft FROM ci_documents WHERE id = ' . $args{parent_id} . ') AND ( SELECT rgt FROM ci_documents WHERE id = ' . $args{parent_id} . '))';
+    my $data = $self->{dbh}->fetch_select( sql => $query );
+    my @rv = ( @{$data}[0]->{COUNT} - 1, @{$data}[0]->{MAX} ); # NOTE: assumes that there is one content_child per document;
+                                                               #       may have to be changed in future!
+    return  \@rv ;
+}
+
 
 ##
 #
