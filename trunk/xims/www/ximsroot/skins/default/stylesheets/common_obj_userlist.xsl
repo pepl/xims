@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+                xmlns="http://www.w3.org/1999/xhtml">
 <xsl:param name="sort-by">id</xsl:param>
 <xsl:param name="order-by">ascending</xsl:param>
 <xsl:param name="userquery"/>

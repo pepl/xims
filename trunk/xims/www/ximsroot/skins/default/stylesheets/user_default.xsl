@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <!-- save those strings in variables as they are called per object in object/children -->
 <xsl:variable name="l_location" select="$i18n/l/location"/>
