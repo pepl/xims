@@ -80,7 +80,7 @@ sub vlsubjectinfo_granted {
 
     return $self->vlsubjectinfo() if $user->admin();
 
-    my $sql = 'SELECT s.name, s.id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY s.name, s.id';
+    my $sql = 'SELECT s.name, s.id, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY s.name, s.id';
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
 
     return $sidata;
@@ -104,7 +104,7 @@ sub vlkeywordinfo_granted {
 
     return $self->vlkeywordinfo() if $user->admin();
 
-    my $sql = 'SELECT s.name, s.id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_keywordmap m, cilib_keywords s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.keyword_id = s.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY s.name, s.id';
+    my $sql = 'SELECT s.name, s.id, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_keywordmap m, cilib_keywords s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.keyword_id = s.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY s.name, s.id';
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
 
     return $sidata;
@@ -128,7 +128,7 @@ sub vlauthorinfo_granted {
 
     return $self->vlauthorinfo() if $user->admin();
 
-    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(c.id) AS object_count FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type';
+    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(DISTINCT c.id) AS object_count FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type';
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
 
     return $sidata;
@@ -152,7 +152,7 @@ sub vlpublicationinfo_granted {
 
     return $self->vlpublicationinfo() if $user->admin();
 
-    my $sql = 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, count(c.id) AS object_count FROM cilib_publicationmap m, cilib_publications p, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.publication_id = p.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY p.id, p.name, p.volume, p.isbn, p.issn';
+    my $sql = 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, count(DISTINCT c.id) AS object_count FROM cilib_publicationmap m, cilib_publications p, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.publication_id = p.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY p.id, p.name, p.volume, p.isbn, p.issn';
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
 
     return $sidata;
