@@ -21,19 +21,19 @@
     <body>
         <p class="edit">
             <xsl:call-template name="table-edit"/>
-                    <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="eform">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="eform">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitletarget-edit"/>
                     <tr>
-                                        <td colspan="3">
-                                            Title: <xsl:value-of select="title"/>
-                                        </td>
-                                </tr>
-                                <xsl:call-template name="contentcolumns"/>
-                                <xsl:call-template name="contentfilter"/>
-                            </table>
-                            <xsl:call-template name="saveedit"/>
-                    </form>
+                        <td colspan="3">
+                            Title: <xsl:value-of select="title"/>
+                        </td>
+                    </tr>
+                    <xsl:call-template name="contentcolumns"/>
+                    <xsl:call-template name="contentfilter"/>
+                </table>
+                <xsl:call-template name="saveedit"/>
+            </form>
         </p>
         <br />
         <xsl:call-template name="canceledit"/>
@@ -198,7 +198,7 @@
                     <tr>
                         <td colspan="2">Extra filters:</td>
                         <td rowspan="2">
-                    <xsl:apply-templates select="/document/object_types/object_type[name!='Portlet' and name!='Portal' and name!='Annotation' and name!='AnonDiscussionForumContrib' and name!='AnonDiscussionForum']"/>
+                            <xsl:apply-templates select="/document/object_types/object_type[name!='Portlet' and name!='Portal' and name!='Annotation' and name!='AnonDiscussionForumContrib' and name!='AnonDiscussionForum']"/>
                         </td>
                         <td><xsl:text> </xsl:text></td>
                     </tr>

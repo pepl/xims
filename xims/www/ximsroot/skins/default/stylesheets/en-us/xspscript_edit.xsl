@@ -21,15 +21,15 @@
     <body>
         <p class="edit">
             <xsl:call-template name="table-edit"/>
-                    <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST" name="eform">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST" name="eform">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit_xml"/>
                     <xsl:call-template name="tr-body-edit"/>
                     <xsl:call-template name="tr-stylesheet-edit"/>
                     <xsl:call-template name="tr-keywords-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
-                            </table>
-                            <xsl:call-template name="saveedit"/>
+                </table>
+                <xsl:call-template name="saveedit"/>
             </form>
         </p>
         <br />

@@ -17,15 +17,8 @@
 
     <xsl:template match="/document/context/object">
         <html>
-            <head>
-                <title>Edit AxPointPresentation '<xsl:value-of select="title"/>' in <xsl:value-of select="$parent_path"/> - XIMS</title>
-                <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            </head>
+            <xsl:call-template name="head-edit"/>
             <body>
-                <xsl:call-template name="header">
-                     <xsl:with-param name="no_navigation_at_all">true</xsl:with-param>
-                </xsl:call-template>
                 <p class="edit">
                     <table border="0" align="center" width="98%">
                         <tr>
@@ -42,8 +35,8 @@
                                 </td>
                                 <td>
                                     <input tabindex="1" type="text" class="text" name="name" size="40" 
-                                           value="{substring-before(location, concat('.', /document/data_formats/data_format
-                                           [@id = /document/data_formats/data_format]/suffix))}"/>
+                                        value="{substring-before(location, concat('.', /document/data_formats/data_format
+                                        [@id = /document/data_formats/data_format]/suffix))}"/>
                                     <xsl:text>&#160;</xsl:text>
                                     <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>   
                                 </td>
