@@ -1,7 +1,7 @@
 # Copyright (c) 2002-2004 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-
+#$Id$
 package XIMS::SAX::Generator;
 
 use strict;
@@ -46,7 +46,7 @@ sub prepare {
 #    the date filter is always there!
 #
 sub get_filters {
-    XIMS::Debug( 4, "called" );
+    XIMS::Debug( 5, "called" );
     XIMS::Debug( 6, "will return 'XIMS::SAX::Filter::Date'" );
     return ( "XIMS::SAX::Filter::Date" );
 }
