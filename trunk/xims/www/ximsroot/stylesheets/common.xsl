@@ -208,4 +208,8 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template name="body">
+        <xsl:apply-templates select="/document/context/object/body"/>
+    </xsl:template>
+
 </xsl:stylesheet>
