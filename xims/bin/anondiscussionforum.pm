@@ -8,6 +8,7 @@ use strict;
 
 use vars qw($VERSION @ISA);
 
+use folder;
 use XIMS::CGI;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
