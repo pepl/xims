@@ -11,6 +11,20 @@ use XIMS::Object;
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = ('XIMS::Object');
 
+
+##
+# SYNOPSIS
+#    my $target = $symlink->target( [ $object ] );
+#
+# PARAMETER
+#    $object    (optional) :  XIMS::Object instance of new target
+#
+# RETURNS
+#    $target : XIMS::Object where "symname_to_doc_id" property points to
+#
+# DESCRIPTION
+#    Sets/Gets target of symbolic link
+#
 sub target {
     my $self = shift;
     my $target = shift;

@@ -47,13 +47,13 @@ sub new {
 
 ##
 # SYNOPSIS
-#    $self->add_departmentlinks( @objects );
+#    my $boolean = $deptroot->add_departmentlinks( @objects );
 #
 # PARAMETER
-#    @objects    ... Array of content objects to be used as departmentlinks
+#    @objects    : Array of content objects to be used as departmentlinks
 #
 # RETURNS
-#    undef on error, 1 on success
+#    $boolean : True or False for storing back body to object
 #
 # DESCRIPTION
 #    Checks for an already assigned departmentlinks portlet and adds additional departmentlinks
@@ -134,6 +134,19 @@ sub add_departmentlinks {
     return 1;
 }
 
+##
+# SYNOPSIS
+#    my @portlet_ids = $deproot->get_portlet_ids();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    @portlet_ids : Array of content ids of portlets stored in the body's XML-Fragment
+#
+# DESCRIPTION
+#    Returns a list of content ids of the portlets stored in the body's XML-Fragment. In scalar context it returns the first entry.
+#
 sub get_portlet_ids {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -156,13 +169,13 @@ sub get_portlet_ids {
 
 ##
 # SYNOPSIS
-#    $self->add_portlet( $target );
+#    my $boolean = $deproot->add_portlet( $target );
 #
 # PARAMETER
-#    $target ... XIMS::Object instance or location_path to one
+#    $target   :  XIMS::Object instance or location_path to one
 #
 # RETURNS
-#    undef on error, 1 on success
+#    $boolean : True or False on success or failure
 #
 # DESCRIPTION
 #    Adds a portlet entry to the body in form of an XML-Fragment.
@@ -215,6 +228,19 @@ sub add_portlet {
     return 1;
 }
 
+##
+# SYNOPSIS
+#    my $boolean = $deproot->remove_portlet( $portlet_id );
+#
+# PARAMETER
+#    $portlet_id   :  Content id of portlet to be removed
+#
+# RETURNS
+#    $boolean : True or False on success or failure
+#
+# DESCRIPTION
+#    Removes a portlet entry from the body's XML-Fragment.
+#
 sub remove_portlet {
     XIMS::Debug( 5, "called" );
     my $self = shift;
