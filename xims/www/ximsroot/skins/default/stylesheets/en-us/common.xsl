@@ -191,12 +191,10 @@
             <script src="{$ximsroot}ewebedit/ewebeditpro.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <base href="{$xims_box}{$goxims_content}{$parent_path}/" />
                 <script type="text/javascript">
-                <![CDATA[
                 function setEWProperties(sEditorName) {
-                    eWebEditPro.instances[sEditorName].editor.setProperty("BaseURL", "]]><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/><![CDATA[");
-                    eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty("TransferMethod","]]><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/><![CDATA[?contentbrowse=1;style=ewebeditimage;otfilter=Image");
+                    eWebEditPro.instances[sEditorName].editor.setProperty(&apos;BaseURL&apos;, &apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>&apos;);
+                    eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty(&apos;TransferMethod&apos;,&apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>?contentbrowse=1;style=ewebeditimage;otfilter=Image&apos;);
                 }
-                ]]>
             </script>
     </head>
 </xsl:template>
@@ -221,12 +219,10 @@
         <script src="{$ximsroot}ewebedit/ewebeditpro.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <base href="{$xims_box}{$goxims_content}{$parent_path}/" />
             <script type="text/javascript">
-            <![CDATA[
             function setEWProperties(sEditorName) {
-                eWebEditPro.instances[sEditorName].editor.setProperty("BaseURL", "]]><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/><![CDATA[");
-                eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty("TransferMethod","]]><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/><![CDATA[?contentbrowse=1;style=ewebeditimage;otfilter=Image");
+                eWebEditPro.instances[sEditorName].editor.setProperty(&apos;BaseURL&apos;, &apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>&apos;);
+                eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty(&apos;TransferMethod&apos;,&apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>?contentbrowse=1;style=ewebeditimage;otfilter=Image&apos;);
             }
-            ]]>
         </script>
     </head>
 </xsl:template>
@@ -617,15 +613,11 @@
             <input tabindex="30" type="hidden" name="body" value="" width="100%"/>
             <script language="JavaScript1.2">
             <!-- for ewebedit: pull parent_id into a JavaScript variable -->
-            <![CDATA[ var parentID="]]>
-            <xsl:apply-templates select="@parent_id"/><![CDATA[";]]>
-            <![CDATA[ var documentID="]]>
-            <xsl:apply-templates select="@id"/> <![CDATA[";]]>
-            <![CDATA[
-                var sEditorName = "body";
-                eWebEditPro.create(sEditorName, "99.5%", "450");
-                eWebEditPro.onready = "setEWProperties(sEditorName)";
-            ]]>
+            var parentID=&apos;<xsl:apply-templates select="@parent_id"/>&apos;;
+            var documentID=&apos;<xsl:apply-templates select="@id"/>&apos;;
+            var sEditorName = &apos;body&apos;;
+            eWebEditPro.create(sEditorName, &apos;99.5%&apos;, &apos;450&apos;);
+            eWebEditPro.onready = &apos;setEWProperties(sEditorName)&apos;;
             </script>
         </td>
     </tr>
@@ -664,15 +656,11 @@
             <input tabindex="30" type="hidden" name="body" value="{$bodycontent}" width="100%"/>
             <script language="JavaScript1.2">
             <!-- for ewebedit: pull parent_id into a JavaScript variable -->
-            <![CDATA[ var parentID="]]>
-            <xsl:apply-templates select="@parent_id"/><![CDATA[";]]>
-            <![CDATA[ var documentID="]]>
-            <xsl:apply-templates select="@id"/> <![CDATA[";]]>
-            <![CDATA[
-                var sEditorName = "body";
-                eWebEditPro.create(sEditorName, "99.5%", "450");
-                eWebEditPro.onready = "setEWProperties(sEditorName)";
-            ]]>
+            var parentID=&apos;<xsl:apply-templates select="@parent_id"/>&apos;;
+            var documentID=&apos;<xsl:apply-templates select="@id"/>&apos;;
+            var sEditorName = &apos;body&apos;;
+            eWebEditPro.create(sEditorName, &apos;99.5%&apos;, &apos;450&apos;);
+            eWebEditPro.onready = &apos;setEWProperties(sEditorName)&apos;;
             </script>
         </td>
     </tr>
@@ -1143,6 +1131,10 @@
         </tr>
         <!-- <tr><td colspan="4"><xsl:apply-templates select="body/*"/></td> -->
     </xsl:if>
+</xsl:template>
+
+<xsl:template name="body">
+    <xsl:apply-templates select="/document/context/object/body"/>
 </xsl:template>
 
 </xsl:stylesheet>
