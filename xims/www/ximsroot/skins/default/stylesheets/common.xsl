@@ -72,7 +72,7 @@
 
 <xsl:template name="exitredirectform">
     <xsl:variable name="object_type_id" select="object_type_id"/>
-    <xsl:variable name="parent_id" select="parent_id"/>
+    <xsl:variable name="parent_id" select="@parent_id"/>
     <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="GET">
         <input class="control" name="exit" type="submit" value="Done"/>
         <input name="id" type="hidden">
