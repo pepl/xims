@@ -23,7 +23,7 @@
 --&gt;
 &lt;xsl:stylesheet version=&quot;1.0&quot;
                 xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;
-                xmlns=&quot;http://www.w3.org/TR/xhtml1/strict&quot;&gt;
+                xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
 
 &lt;xsl:import href=&quot;common.xsl&quot;/&gt;
 &lt;xsl:output method=&quot;html&quot; encoding=&quot;utf-8&quot;/&gt;
