@@ -85,6 +85,14 @@
                         <xsl:call-template name="item_count"/>
                     </div>
                 </xsl:when>
+                <xsl:when test="$mo = 'keyword'">
+                    <div>
+                        <xsl:call-template name="keyword_link"/>
+                    </div>
+                    <div>
+                        <xsl:call-template name="item_count"/>
+                    </div>
+                </xsl:when>
                 <xsl:otherwise>
                     <div>
                         <xsl:call-template name="subject_link"/>
@@ -218,6 +226,12 @@
 
     <xsl:template name="subject_link">
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject=1;subject_id={id}">
+            <xsl:value-of select="name"/>
+        </a>
+    </xsl:template>
+
+    <xsl:template name="keyword_link">
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?keyword=1;keyword_id={id}">
             <xsl:value-of select="name"/>
         </a>
     </xsl:template>

@@ -54,6 +54,9 @@ sub prepare {
         if ( $ctxt->properties->application->style() eq "publications" ) {
             $doc_data->{context}->{vlpublicationinfo} = { publication => $ctxt->object->vlpublicationinfo_granted() };
         }
+        if ( $ctxt->properties->application->style() eq "keywords" ) {
+            $doc_data->{context}->{vlkeywordinfo} = { keyword => $ctxt->object->vlkeywordinfo_granted() };
+        }
     }
 
     if ( $ctxt->objectlist() ) {

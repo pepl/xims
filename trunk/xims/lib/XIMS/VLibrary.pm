@@ -86,6 +86,30 @@ sub vlsubjectinfo_granted {
     return $sidata;
 }
 
+sub vlkeywordinfo {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    my $sql = 'SELECT s.name, s.id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_keywordmap m, cilib_keywords s, ci_documents d, ci_content c WHERE d.ID = m.document_id AND m.keyword_id = s.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . ' GROUP BY s.name, s.id';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
+
+    return $sidata;
+}
+
+sub vlkeywordinfo_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+
+    return $self->vlkeywordinfo() if $user->admin();
+
+    my $sql = 'SELECT s.name, s.id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_keywordmap m, cilib_keywords s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.keyword_id = s.ID AND d.id = c.document_id AND d.parent_id = ' . $self->document_id() . $self->_userpriv_where_clause( $user ) . ' GROUP BY s.name, s.id';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => $sql );
+
+    return $sidata;
+}
+
 sub vlauthorinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -140,6 +164,12 @@ sub vlitems_bysubject {
     return $self->_vlitems_byproperty( 'subject', @_ );
 }
 
+sub vlitems_bykeyword {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->_vlitems_byproperty( 'keyword', @_ );
+}
+
 sub vlitems_byauthor {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -157,6 +187,13 @@ sub vlitems_bysubject_granted {
     my $self = shift;
     return $self->_vlitems_byproperty( 'subject', filter_granted => 1, @_ );
 }
+
+sub vlitems_bykeyword_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->_vlitems_byproperty( 'keyword', filter_granted => 1, @_ );
+}
+
 
 sub vlitems_byauthor_granted {
     XIMS::Debug( 5, "called" );
@@ -229,7 +266,7 @@ sub _userpriv_where_clause {
     my $user = shift;
     my @role_ids = ( $user->role_ids(), $user->id() );
 
-    return " AND c.id = o.content_id AND o.grantee_id IN (" . join(',', @role_ids) . ") AND o.privilege_mask > 0 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = c.id AND grantee_id = " . $user->id . " AND privilege_mask = 0) IS NULL";
+    return " AND c.id = o.content_id AND o.grantee_id IN (" . join(',', @role_ids, $user->id) . ") AND o.privilege_mask > 0";
 }
 
 1;
