@@ -127,7 +127,7 @@
         <tr>
             <xsl:call-template name="question_type" />
             <td>
-                <table >
+                <table>
                     <xsl:choose>
                         <xsl:when test="@alignment='Left'">
                             <xsl:call-template name="question_left" />
@@ -137,7 +137,6 @@
                             <xsl:call-template name="question_top" />
                         </xsl:otherwise>
                     </xsl:choose>
-                    <xsl:call-template name="question_comment" />
                 </table>
             </td>
         </tr>
@@ -168,11 +167,6 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </table>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <xsl:call-template name="answer_comment" />
             </td>
         </tr>
     </table>
@@ -216,6 +210,7 @@
     <tr>
         <td>
             <xsl:call-template name="question_title" />
+            <xsl:call-template name="answer_comment" />
         </td>
     </tr>
     <tr>
