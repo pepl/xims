@@ -2,7 +2,6 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-
 package XIMS::SAX::Filter::DataCollector;
 
 #

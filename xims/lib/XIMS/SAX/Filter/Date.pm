@@ -23,8 +23,10 @@ sub new {
 sub start_element {
     my ($self, $element) = @_;
 
+
     # how am i happy when we got the naming cleaned up...
     if ( $element->{LocalName} =~ /\_time$/i
+
          || $element->{LocalName} =~ /\_timestamp$/i
          || $element->{LocalName} eq "date"
          || $element->{LocalName} eq "lastaccess" ) {
@@ -61,9 +63,11 @@ sub end_element {
         $self->SUPER::characters( {Data => $min} );
         $self->SUPER::end_element();
 
+
         $self->SUPER::start_element( {Name => "second", LocalName => "second", Prefix => "", NamespaceURI => undef, Attributes => {}} );
         $self->SUPER::characters( {Data => $sec} );
         $self->SUPER::end_element();
+
 
 
         $self->{date} = undef;
