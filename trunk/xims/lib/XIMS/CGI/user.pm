@@ -47,9 +47,9 @@ sub event_default {
     my ( $self, $ctxt ) = @_;
 
     # fill $ctxt->objectlist with the 5 last modified objects readable by the user
-    # 'criteria' is a mandatory argument, so we add a dummy criteria here...
+    # we do not want to see the auto-generated .diff_to_second_last here
     my $object = XIMS::Object->new( User => $ctxt->session->user() );
-    my @lmobjects = $object->find_objects_granted( criteria => '1 = 1',
+    my @lmobjects = $object->find_objects_granted( criteria => "title <> '.diff_to_second_last'",
                                                    limit => 5 );
     $ctxt->objectlist( \@lmobjects );
 
@@ -75,7 +75,7 @@ sub event_default {
 
     my $qb = $qbdriver->new( { search => "u:".$ctxt->session->user->name(), allowed => q{u:\w\döäüßÖÄÜß} } );
     my $qbr = $qb->build();
-    my @lmuobjects = $object->find_objects_granted( criteria => $qbr->{criteria},
+    my @lmuobjects = $object->find_objects_granted( criteria => $qbr->{criteria} . " AND title <> '.diff_to_second_last'",
                                                     limit => 5,
                                                   );
     $ctxt->userobjectlist( \@lmuobjects );
