@@ -438,6 +438,7 @@ sub get_full_question_titles {
             $full_id .= $split_id;
             $question_title = $questionnaire->findvalue( '//question[@id="' . $full_id . '"]/title' );
             if ($question_title) {
+                $question_titles{$full_id} = $question_title unless length $full_question_title > 0;
                 $full_question_title .= " - " if $full_question_title;
                 $full_question_title .= $question_title;
                 $full_id .= "." if $full_id;
@@ -875,27 +876,16 @@ sub set_results {
         }
     }
     else {
-        # get all default answersand delete them from the body
-        my @default_answers;
-        foreach $title_node ( $title_nodes->get_nodelist() ) {
-            push @default_answers, $title_node->textContent();
-            $title_node = $answer_node->removeChild( $title_node );
-        }
         # if answer type is "Text" or "Textarea" get each answer from the database
-        my $all_answers = $result_object->get_answers( $self->document_id(), $question_id );
+
+        # get all default answers and delete them from the body
+        map { $answer_node->removeChild( $_ ) } $title_nodes->get_nodelist();
+        my $all_answers = $result_object->get_answers( $self->document_id(), $answer_node->parentNode->findvalue( '@id' ), 1 );
         foreach my $answer_text ( @{$all_answers} ) {
-            #XIMS::Debug( 6, "### $question_id: ".Dumper( $answer_text) );
-            my $default = 0;
-            # don't add default answers
-            foreach ( @default_answers ) {
-                $default = ( $_ eq ${$answer_text}{'answer'} );
-            }
-            if ( ! $default ) {
-                my $new_title = XML::LibXML::Element->new( "title" );
-                $new_title->setAttribute( "count" , ${$answer_text}{'count'} );
-                $new_title->appendText(  ${$answer_text}{'answer'} );
-                $answer_node->appendChild( $new_title );
-            }
+            my $new_title = XML::LibXML::Element->new( "title" );
+            $new_title->setAttribute( "count" , ${$answer_text}{'count'} );
+            $new_title->appendText(  ${$answer_text}{'answer'} );
+            $answer_node->appendChild( $new_title );
         }
     }
     }
