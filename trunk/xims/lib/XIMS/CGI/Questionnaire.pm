@@ -50,7 +50,7 @@ sub event_default {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     my $user = $ctxt->session->user;
-    if ($user->name eq 'public') {
+    if ( $user->id() eq XIMS::PUBLICUSERID() ) {
         $self->_default_public( $ctxt );
     }
     else {
