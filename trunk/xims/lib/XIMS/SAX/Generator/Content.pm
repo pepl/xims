@@ -182,6 +182,10 @@ sub _set_children {
     my $self = shift;
     my ( $ctxt, $doc_data, $object_types, $data_formats ) = @_;
 
+    # do not fetch children unless we are told to do so...
+    my $level = $ctxt->properties->content->getchildren->level();
+    return undef unless $level;
+
     my $object = $ctxt->object();
     my $gotsymlink = 1 if defined $ctxt->object()->symname_to_doc_id();
     my $tagname = 'children';
@@ -209,7 +213,15 @@ sub _set_children {
         $childrenargs{object_type_id} = \@object_type_ids;
     }
 
-    my @children = $object->children_granted( %childrenargs );
+    my @children;
+    if ( $level == 1 ) {
+        @children = $object->children_granted( %childrenargs );
+    }
+    else {
+        $childrenargs{maxlevel} = $level;
+        @children = $object->descendants_granted( %childrenargs );
+    }
+
     if ( scalar( @children ) > 0 ) {
         foreach my $child ( @children ) {
             if ( $ctxt->properties->content->getchildren->addinfo() ) {

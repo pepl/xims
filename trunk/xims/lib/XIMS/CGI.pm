@@ -128,6 +128,8 @@ sub event_default {
         return 1;
     }
 
+    $ctxt->properties->content->getchildren->level( 1 );
+
     XIMS::Debug( 5, "done");
     return 0;
 }
@@ -993,6 +995,8 @@ sub event_contentbrowse {
     $ctxt->properties->application->styleprefix( "common" );
     $ctxt->properties->application->style( "error" );
 
+    $ctxt->properties->content->getchildren->level( 1 );
+
     $to = $ctxt->object->id() unless $to =~ /^\d+$/;
     $ctxt->properties->content->getchildren->objectid( $to );
 
@@ -1042,6 +1046,7 @@ sub event_move_browse {
             return 0;
         }
 
+        $ctxt->properties->content->getchildren->level( 1 );
         $ctxt->properties->content->getchildren->objecttypes( [qw(Folder DepartmentRoot)] );
         $ctxt->properties->content->getchildren->objectid( $to );
         $ctxt->properties->application->style( "move_browse" );
