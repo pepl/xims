@@ -413,7 +413,7 @@ sub admins {
 # list all objects
 sub objects {
     my $self = shift;
-    my @data = $self->getObject();
+    my @data = $self->getObject( @_ );
     my @out = map { XIMS::Object->new->data( %{$_} ) } @data;
     return @out;
 }
@@ -421,7 +421,9 @@ sub objects {
 # the global dump site
 sub trashcan {
     my $self = shift;
-    my @data = $self->getObject( marked_deleted => 1 );
+    my %args = @_;
+    $args{marked_deleted} = 1;
+    my @data = $self->getObject( %args );
     my @out = map { XIMS::Object->new->data( %{$_} ) } @data;
     return @out;
 }
