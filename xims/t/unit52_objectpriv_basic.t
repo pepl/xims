@@ -15,7 +15,7 @@ my $p = XIMS::ObjectPriv->new();
 
 ok( $p );
 
-$p->privilege_mask( 0x43012F17 );
+$p->privilege_mask( 0x43013517 );
 $p->grantor_id( 2 );
 $p->grantee_id( 1 );
 $p->content_id( 2 );
@@ -31,7 +31,7 @@ $p = undef;
 my %hash = ( grantor_id   => 2,
              grantee_id   => 1,
              content_id   => 2,
-             privilege_mask => 0x43012F17
+             privilege_mask => 0x43013517
            );
 
 $p = XIMS::ObjectPriv->new->data( %hash );
@@ -82,7 +82,7 @@ $p = undef;
 my %newhash = ( grantor_id   => 2,
                 grantee_id   => 1,
                 content_id   => 1,
-                privilege_mask => 0x43012F17
+                privilege_mask => 0x43013517
               );
 
 $p = XIMS::ObjectPriv->new->data( %newhash );

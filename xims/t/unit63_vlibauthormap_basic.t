@@ -1,4 +1,4 @@
-use Test::More tests => 19;
+use Test::More tests => 17;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
