@@ -8,17 +8,17 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
-   
+
     <xsl:template name="footer">
         <xsl:param name="link_pub_preview">false</xsl:param>
         <xsl:variable name="dataformat">
-            <xsl:value-of select="/document/context/object/data_format"/>
+            <xsl:value-of select="data_format_id"/>
         </xsl:variable>
-        
+
         <tr>
             <td colspan="2">
                 <xsl:choose>
-                    <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='Container'">
+                    <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type='application/x-container'">
                         <a href="{$xims_box}{$goxims_content}{$absolute_path}?sitemap=1">Tree view</a>
                     </xsl:when>
                     <xsl:otherwise>
@@ -50,5 +50,5 @@
             </td>
         </tr>
     </xsl:template>
-    
+
 </xsl:stylesheet>
