@@ -29,14 +29,14 @@
     Treeview starting from <xsl:value-of select="$absolute_path"/>
     </h1>
     <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-        <xsl:apply-templates select="children/object"/>
+        <xsl:apply-templates select="/document/objectlist/object"/>
     </table>
   </body>
 
 </html>
 </xsl:template>
 
-<xsl:template match="object[@level &gt; '0']">
+<xsl:template match="/document/objectlist/object">
     <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
@@ -44,7 +44,7 @@
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
     <tr><td>
-        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{20*(number(@level)-1)}" height="10"/>
+        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{20*(number(@level)-ceiling(number(/document/objectlist/object/@level)))+1}" height="10"/>
         <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>
         <a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
     </td></tr>

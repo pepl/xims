@@ -83,7 +83,6 @@ sub event_init {
     else {
         $self->sendEvent( 'access_denied' ) unless $privmask & XIMS::Privileges::VIEW();
     }
-
 }
 
 sub event_dbhpanic {
@@ -1749,6 +1748,25 @@ sub event_search {
     return 0;
 }
 
+sub event_sitemap {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    # $ctxt->properties->application->style() = "error";
+
+    my $object = $ctxt->object();
+    my @descendants = $object->descendants_granted();
+
+    $ctxt->objectlist( \@descendants );
+
+    $ctxt->properties->content->getformatsandtypes( 1 ); # to resolve the result
+    $ctxt->properties->application->styleprefix( 'common' );
+    $ctxt->properties->application->style( 'sitemap' );
+
+    XIMS::Debug( 5, "done" );
+    return 0;
+}
+
 1;
 
 package XIMS::CGI::ByeBye;
@@ -1783,35 +1801,6 @@ sub event_trashcan_content {
     $ctxt->session->error_msg = "Use the options to undelete or purge objects.";
     $ctxt->properties->application->styleprefix( 'common' );
     $ctxt->properties->application->style( 'trashcan' );
-
-    XIMS::Debug( 5, "done" );
-    return 0;
-}
-
-##
-#
-# SYNOPSIS
-#    $self->event_sitemap( $ctxt );
-#
-# PARAMETER
-#    $ctxt: application context
-#
-# RETURNS
-# 0 ;)
-#
-# DESCRIPTION
-#    none
-#
-#
-sub event_sitemap {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    # $ctxt->properties->application->style() = "error";
-
-    $ctxt->{Properties}->{Content}->{getchildren} = { -level => undef, -orderby => undef }; # we do not want to have the default sorting here
-    $ctxt->properties->application->styleprefix( 'common' );
-    $ctxt->properties->application->style( 'sitemap' );
 
     XIMS::Debug( 5, "done" );
     return 0;

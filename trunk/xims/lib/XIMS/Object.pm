@@ -146,33 +146,17 @@ sub children_granted {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
     
-    return $self->children(%args) if $user->admin();
+    return $self->children( %args ) if $user->admin();
     
     # the following is a potential performance killer, we should spare some steps here...
     # do a join in __child_ids?
     # it does not have to be the Do-it-all-in-one-query-with-Oracle way ;-)
     # SELECT d.id,c.id,location,title,object_type_id,data_format_id,privilege_mask,depth FROM ci_content c,(SELECT ci_documents.*, level depth FROM ci_documents START WITH id IN ( SELECT document_id FROM ci_content WHERE id = ?) CONNECT BY PRIOR id = parent_id AND level <= ? AND id != parent_id ORDER BY level) d,ci_object_privs_granted p,(SELECT id, level FROM ci_roles_granted START WITH grantee_id = ? CONNECT BY PRIOR id = grantee_id ORDER BY level) r WHERE c.document_id = d.id AND depth > 1 AND p.content_id = c.id AND p.content_id = c.id AND (p.grantee_id = ? OR p.grantee_id = r.id ) AND p.privilege_mask >= 1 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = c.id AND grantee_id = ? AND privilege_mask = 0) IS NULL AND marked_deleted IS NULL ORDER BY d.position
-    my @role_ids = ( $user->role_ids(), $user->id() );
     my @child_candidate_docids = $self->__child_ids( $self->document_id() );
     return () unless scalar( @child_candidate_docids ) > 0;
-    
-    my @child_candidate_data = $self->data_provider->getObject( document_id => \@child_candidate_docids,
-                                                                properties => [ 'document.id', 'content.id' ] );
-    my @child_candidate_ids = map{ $_->{'content.id'} } @child_candidate_data;
 
-    my @priv_data = $self->data_provider->getObjectPriv( content_id => \@child_candidate_ids,
-                                                         grantee_id => \@role_ids,
-                                                         properties => [ 'content_id' ] );
-    
-    return () unless scalar( @priv_data ) > 0;
-    #warn " priv goodness " . Dumper( \@priv_data ); 
-    my @granted_child_ids = map{ $_->{'objectpriv.content_id'} } @priv_data;
-    
-    my @children_data = $self->data_provider->getObject( id => \@granted_child_ids,
-                                                         %args,
-                                                         properties => \@Default_Properties );
-    
-    my @children = map { XIMS::Object->new->data( %{$_} ) } @children_data;
+    my @children = $self->__get_granted_objects( doc_ids => \@child_candidate_docids, User => $user ) ;
+
     #warn "Granted children" . Dumper( \@children ) . "\n";
     return wantarray ? @children : $children[0];
 }
@@ -184,39 +168,40 @@ sub child_count {
     return scalar ( @child_ids );
 }
 
-# small note to avoid future confusion:
-# unlike children() that returns a flat list of Objects, descendants()
-# and descendants_granted() give back a list of lists; one list of objects per level of descent.
-#
-# Think of it this way:
-#
-# @descendants = ( [ object, object, object ],
-#                  [ object, object, object ],
-#                  [ object, object, object ] );
-#
-# This allows for level-based operations in the higher, application
-# classes that would be much harder to do with a simple flat @list.
-# If you *really* need all the descendents in a flat list (iterating all 
-# objects, for example) just do:
-# my @flat = map { @{$_} } $o->descendants();
- 
 sub descendants {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    my @descendant_ids = $self->__recurse_child_ids( [ $self->document_id() ] );
 
-    my @descendants;
-    foreach my $current_level_object_ids ( @descendant_ids ) {
-       my @sibling_data =  $self->data_provider->getObject( document_id => $current_level_object_ids, 
-                                                            properties => \@Default_Properties );
+    my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
 
-       my @siblings = map { XIMS::Object->new->data( %{$_} ) } @sibling_data;
-       push @descendants, \@siblings;
-    } 
+    my @doc_ids  = @{$descendant_ids_lvls->[0]};
+    my @lvls = @{$descendant_ids_lvls->[1]};
 
-    #warn "descendants" . Dumper( \@descendants ) . "\n";
-    return @descendants;
+    return () unless scalar( @doc_ids ) > 0;
+
+    my @descendants_data =  $self->data_provider->getObject( document_id => \@doc_ids, 
+                                                             properties => \@Default_Properties );
+
+    my @descendants = map { XIMS::Object->new->data( %{$_} ) } @descendants_data;
+
+    # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/... 
+    my @sorted_descendants;
+    my $index;
+    my $i;
+    foreach my $descendant ( @descendants ) {
+        for ( $i=0; $i < @doc_ids; $i++ ) {
+            if ( $doc_ids[$i] == $descendant->document_id() ) {
+                $index = $i;
+                last;
+            }
+        }
+        $descendant->{level} = $lvls[$index];
+        $sorted_descendants[$index] = $descendant;
+    }
+
+    #warn "descendants" . Dumper( \@sorted_descendants ) . "\n";
+    return wantarray ? @sorted_descendants : $sorted_descendants[0];
 }
 
 sub descendants_granted {
@@ -225,37 +210,38 @@ sub descendants_granted {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
 
-    return $self->descendants() if $user->admin();
+    return $self->descendants( %args ) if $user->admin();
 
-    my @role_ids = ( $user->role_ids(), $user->id() );
-    my @descendant_candidate_docids = $self->__recurse_child_ids( [ $self->document_id() ] );
-    return () unless scalar( @descendant_candidate_docids ) > 0;
-    
-    my @descendant_candidate_data = $self->data_provider->getObject( document_id => \@descendant_candidate_docids,
-                                                                     properties => [ 'document.id', 'content.id' ] );
-    my @descendant_candidate_ids = map{ $_->{'content.id'} } @descendant_candidate_data;
+    my $descendant_candidate_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
 
-    my @descendant_ids = ();
-    foreach my $level_of_ids ( @descendant_candidate_ids ) {
-        my @priv_data = $self->data_provider->getObjectPriv( content_id => $level_of_ids,
-                                                             grantee_id => \@role_ids,
-                                                             properties => [ 'content_id' ] );
-    
-        my @granted_ids = map{ $_->{'objectpriv.content_id'} } @priv_data;
-        push @descendant_ids, \@granted_ids;
+    my @candidate_doc_ids  = @{$descendant_candidate_ids_lvls->[0]};
+    my @candidate_lvls = @{$descendant_candidate_ids_lvls->[1]};
+
+    return () unless scalar( @candidate_doc_ids ) > 0;
+
+    my @descendants = $self->__get_granted_objects( doc_ids => \@candidate_doc_ids, User => $user ) ;
+    return () unless scalar( @descendants ) > 0;
+
+    # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/... 
+    my @sorted_descendants;
+    my $index;
+    my $i;
+    foreach my $descendant ( @descendants ) {
+        for ( $i=0; $i < @candidate_doc_ids; $i++ ) {
+            if ( $candidate_doc_ids[$i] == $descendant->document_id() ) {
+                $index = $i;
+                last;
+            }
+        }
+        $descendant->{level} = $candidate_lvls[$index];
+        $sorted_descendants[$index] = $descendant;
     }
-        
-    my @granted_descendants;
-    foreach my $current_level_object_ids ( @descendant_ids ) {
-       my @sibling_data =  $self->data_provider->getObject( document_id => $current_level_object_ids, 
-                                                            properties => \@Default_Properties );
 
-       my @siblings = map { XIMS::Object->new->data( %{$_} ) } @sibling_data;
-       push @granted_descendants, \@siblings;
-    } 
+    # remove the empty array slots left from the sort
+    @sorted_descendants = grep { defined $_ } @sorted_descendants;
 
-    #warn "granted descendents" . Dumper( \@granted_descendants ) . "\n";
-    return @granted_descendants;
+    #warn "descendants" . Dumper( \@sorted_descendants ) . "\n";
+    return wantarray ? @sorted_descendants : $sorted_descendants[0];
 }
 
 # returns a 2 element list: ($total_descendants, $levels)
@@ -263,9 +249,15 @@ sub descendant_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $descendant_count = 0;
-    my @descendant_ids = $self->__recurse_child_ids( [ $self->document_id() ] );
-    map { $descendant_count += scalar(@{$_}) } @descendant_ids;
-    return ( $descendant_count, scalar( @descendant_ids ) );
+    my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
+
+    my @doc_ids  = @{$descendant_ids_lvls->[0]};
+    my @lvls = @{$descendant_ids_lvls->[1]};
+
+    # sort to find floor and ceiling values
+    @lvls = sort { $a <=> $b } @lvls;
+
+    return ( scalar( @doc_ids ), $lvls[-1] - $lvls[0] + 1 );
 }
 
 sub find_objects {
@@ -276,6 +268,7 @@ sub find_objects {
     return () unless scalar( @found_ids ) > 0 ;
     my @object_data = $self->data_provider->getObject( document_id => \@found_ids, properties => \@Default_Properties );
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
+
     #warn "objects found" . Dumper( \@objects ) . "\n";
     return @objects;
 }
@@ -284,14 +277,17 @@ sub find_objects_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-
     my $user = delete $args{User} || $self->{User};
 
-#    return $self->find_objects() if $user->admin();
-    return $self->find_objects( %args );
+    return $self->find_objects( %args ) if $user->admin();
 
-    # todo
+    my @found_candidate_doc_ids = $self->__find_ids( %args );
+    return () unless scalar( @found_candidate_doc_ids ) > 0 ;
 
+    my @found = $self->__get_granted_objects( doc_ids => \@found_candidate_doc_ids, User => $user ) ;
+
+    #warn "found" . Dumper( \@found ) . "\n";
+    return wantarray ? @found : $found[0];
 }
 
 sub ancestors {
@@ -302,26 +298,40 @@ sub ancestors {
     return \@ancestors;
 }
 
-
-# internal helper for 'descendants' and 'descendant_count'
-sub __recurse_child_ids {
+# internal helper to filter out granted objects, accepts a hash as parameters, mandatory key: doc_ids => @doc_ids
+# shared by children_granted, descendants_granted, and find_objects_granted
+# returns a list of XIMS::Objects
+sub __get_granted_objects {
     my $self = shift;
-    my @accumulated_ids = @_;
-    my @child_ids = $self->__child_ids( @{$accumulated_ids[-1]} );
-    if ( scalar( @child_ids ) > 0 ) {
-        push @accumulated_ids, \@child_ids;
-        $self->__recurse_child_ids( @accumulated_ids );
-    }
-    else {
-        # snip off the first record, which will always only contain the current
-        # container id that we descended from.
-        shift @accumulated_ids;
-        return @accumulated_ids
-    }
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+    my @role_ids = ( $user->role_ids(), $user->id() );
+    my $doc_ids = delete $args{doc_ids};
+    return () unless scalar( @{$doc_ids} ) > 0;
+
+    my @candidate_data = $self->data_provider->getObject( document_id => $doc_ids,
+                                                          properties => [ 'document.id', 'content.id' ] );
+    my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
+
+    my @priv_data = $self->data_provider->getObjectPriv( content_id => \@candidate_ids,
+                                                         grantee_id => \@role_ids,
+                                                         properties => [ 'content_id' ] );
+
+    return () unless scalar( @priv_data ) > 0;
+
+    my @ids = map{ $_->{'objectpriv.content_id'} } @priv_data;
+    my @data = $self->data_provider->getObject( id  => \@ids,
+                                                %args,
+                                                properties => \@Default_Properties );
+
+    my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
+
+    #warn "objects " . Dumper( \@objects ) . "\n";
+    return @objects;
 }
 
 # internal.
-# shared by 'children', 'child_count', 'descendants' and 'descendant_count' etc.
+# shared by 'children', 'child_count'
 sub __child_ids {
     my $self = shift;
     my @ids = @_;
