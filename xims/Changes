@@ -1,3 +1,16 @@
+0.7
+  - The user interface language is chosen based on 'Accept-Language' headers now
+  - XSP object type supports an attribute whether or not to process the XSP at event default
+  - Updated module dependencies to XML::LibXML::Iterator, CGI::XMLApplication 1.1.3, and DBIx::SQLEngine 0.016
+  - Added "-f" option for fs_import.pl to update existing objects
+  - Intro and Exit text feature for Questionnaires
+  - TAN lists of Questionnaires can be exported in MS Excel and Text format now
+  - Added "-l" option for specifying a setup_db.pl logfile
+  - Show 'id' instead of 'document_id' in object tooltip (container_common.xsl)
+  - Added new $object->siteroot() and $object->siteroot->url convenience methods
+  - removed children_latest() and children_latest_granted() (functionality now provided by $object->children_granted)
+  - Various smaller fixes and updates
+
 0.6
   - Added Questionnaire objects for creating online evaluations, surveys and polls
   - Removed nested set implementation and replaced it with hierarchical queries.
