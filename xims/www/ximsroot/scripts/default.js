@@ -22,6 +22,10 @@ function previewWindow(url) {
     newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=800,height=600,screenX=10,screenY=10" );
 }
 
+function diffWindow(url) {
+    newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=750,height=450,screenX=30,screenY=30" );
+}
+
 function openDocWindow(topic) {
     docWindow = window.open( "http://xims.info/documentation/users/xims-user_s-reference.sdbk#" + escape(topic), "displayWindow","resizable=yes,scrollbars=yes,width=800,height=480,screenX=100,screenY=300" );
 }
