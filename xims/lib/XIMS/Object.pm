@@ -707,7 +707,7 @@ sub move {
 #                                ( should be undef, only used in recursive call )
 #
 # RETURNS
-#    undef on error, 1 on success
+#    undef on error, reference to clone on success
 #
 # DESCRIPTION
 #    creates a copy of the object ( clone has same parent as orginal ).
@@ -827,7 +827,7 @@ sub clone {
         }
     }
 
-    return 1;
+    return $clone;
 }
 
 sub reposition {
