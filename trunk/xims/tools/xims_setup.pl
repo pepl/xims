@@ -11,8 +11,10 @@ use lib qw(/usr/local/xims/lib);
 use XIMS::Installer;
 use Getopt::Std;
 
+use Data::Dumper;
+
 my %args;
-getopts('hcr:u:p:n:t:', \%args);
+getopts('hca:u:p:n:t:b:o:', \%args);
 
 print q*
   __  _____ __  __ ____
@@ -28,8 +30,8 @@ print q*
 if ( $args{h} ) {
     print qq*
 
-  Usage: $0 [-h|-c|-h httpdconf -r docroot -u user -p -pwd -n dbname -t dbtype]
-        -h The path to your Apache's config file
+  Usage: $0 [-h|-c|-a httpdconf -u user -p -pwd -n dbname -t dbtype [-b host [-o port]]]
+        -a The path to your Apache's config file
         -u The name of your database user to connect to the XIMS
            database
         -p The password of your database user to connect to the XIMS
@@ -37,6 +39,8 @@ if ( $args{h} ) {
         -n The name of the XIMS database to connect to
         -t The type of RDBMS of your XIMS database. Currently, either
            'Pg' or 'Oracle' are supported
+        -b The name of the database host if you connect to a remote machine (optional for Pg)
+        -o The port number of the database listener at the remote machine, omit for default (Pg)
         -c Update XIMS::Config only
         -h prints this screen
 
@@ -53,6 +57,8 @@ my %Conf = parseConfigpm($configpm);
 my $publicroot = '/usr/local/xims/www/' . $Conf{PublicRoot};
 
 my $dbdsn_default = DBdsn( \%Conf );
+my $db_host = DBhost( \%Conf );
+my $db_port = DBport( \%Conf );
 my $conf_default = $installer->httpd_conf();
 
 my %conf_prompts = (
@@ -77,7 +83,7 @@ my %conf_prompts = (
     d_db_dbname      => { text  => 'Database Name',
                           var   => \$Conf{DBName},
                           re    => '.+',
-                          error => 'You must enter the database name.',
+                          error => 'You must enter the database name. In case you are using Pg and you want to connect to another host you have add the host\'s address and perhaps a port number in the following format here:\ndbname;host=hostname;port=portnumber',
                           default => $Conf{DBName} || 'xims',
                         },
     e_db_dbdsn       => { text  => 'Database Type (Pg or Oracle)',
@@ -89,19 +95,20 @@ my %conf_prompts = (
 
 );
 
-if ( $args{h}
+if ( $args{a}
         and $args{u}
         and $args{p}
         and $args{n}
         and $args{t} ) {
     # command line mode
     print "Using command line arguments to write config.\n";
-    $Conf{ApacheHttpdConf} = $args{h};
+    $Conf{ApacheHttpdConf} = $args{a};
     $Conf{DBUser} = $args{u};
     $Conf{DBPassword} = $args{p};
     $Conf{DBName} = $args{n};
     $Conf{DBdsn} = $args{t};
-
+    $Conf{DBhost} = $args{b};
+    $Conf{DBport} = $args{o};
 }
 else {
     # interactive mode
@@ -109,6 +116,22 @@ else {
 
     foreach ( sort( keys( %conf_prompts )) ) {
         $installer->prompt( $conf_prompts{$_} );
+    }
+    if ( $Conf{DBdsn} eq 'Pg' ) {
+        $installer->prompt( { text => 'Database Host. Leave blank if you are connecting to localhost',
+                              var   => \$Conf{DBhost},
+                              re    => '.*',
+                              error => '',
+                              default => '',
+                            } );
+        if ( $Conf{DBhost} and length $Conf{DBhost} ) {
+            $installer->prompt( { text => 'Database Port. Leave blank for the default PostgreSQL port.',
+                                  var   => \$Conf{DBport},
+                                  re    => '^[0-9]*$',
+                                  error => 'Please specify a decimal number.',
+                                  default => '',
+                                } );
+        }
     }
 }
 
@@ -225,6 +248,8 @@ sub fixupDBConfig {
     my $conf = shift;
     if ( $conf->{DBdsn} eq 'Pg' ) {
         $conf->{DBdsn} = 'dbi:Pg:dbname=' . $conf->{DBName};
+        $conf->{DBdsn} .= ';host=' . $conf->{DBhost} if $conf->{DBhost} and length $conf->{DBhost};
+        $conf->{DBdsn} .= ';port=' . $conf->{DBport} if $conf->{DBport} and length $conf->{DBport};
         $conf->{DBDOpt} = 'FetchHashKeyName=NAME_uc;' unless $conf->{DBDOpt} =~ /FetchHashKeyName/;
         $conf->{DBSessionOpt} = 'SET DateStyle TO German;SET Client_Encoding TO LATIN1;' unless $conf->{DBSessionOpt} =~ /SET Client_Encoding/;
     }
@@ -241,6 +266,19 @@ sub DBdsn {
     return 'Oracle' if $conf->{DBdsn} =~ /^dbi:Oracle/;
     return 'Oracle' if $ENV{ORACLE_HOME};
 }
+
+sub DBhost {
+    my $conf = shift;
+    $conf->{DBdsn} =~ /host=([^;]+)/;
+    return $1;
+}
+
+sub DBport {
+    my $conf = shift;
+    $conf->{DBdsn} =~ /port=([^;]+)/;
+    return $1;
+}
+
 
 sub parseConfigpm {
     my $conf = shift;
