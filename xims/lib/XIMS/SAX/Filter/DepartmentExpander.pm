@@ -3,36 +3,27 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SAX::Filter::DepartmentExpander;
-
 # departments usually contain more information than dump
 # folders. Since this information is stored within the departments
 # body, this has to be expanded, before it can be published.
-
 use warnings;
 use strict;
-
 use vars qw( @ISA );
 
-use Data::Dumper;
 use XIMS::Object;
 
 use XML::LibXML;
 use XML::Generator::PerlData;
-
 use XML::SAX::Base;
 @ISA = qw(XML::SAX::Base);
-
 sub new {
     my $class = shift;
     my $self = $class->SUPER::new(@_);
-
     return $self;
 }
-
 sub end_element {
     my $self = shift;
     my $data = shift;
-
     $self->SUPER::end_element( $data );
     if ( $data->{Name} eq "context" ) {
         my $ol = {LocalName => "objectlist" };
@@ -44,13 +35,11 @@ sub end_element {
         else {
             $ol->{Name} = $ol->{LocalName};
         }
-
         $self->SUPER::start_element( $ol );
         $self->handle_data;
         $self->SUPER::end_element( $ol );
     }
 }
-
 ##
 #
 # SYNOPSIS
@@ -69,33 +58,25 @@ sub end_element {
 #
 sub handle_data {
     XIMS::Debug( 5, "called" );
-
     my $self = shift;
     my %keys = ();
-
     my $fragment = $self->{Object}->body();
     my $parser = XML::LibXML->new;
-
     my $frag ;
     eval {
         $frag = $parser->parse_xml_chunk( $fragment );
     };
-
     unless ( defined $frag ) {
         XIMS::Debug( 2, "no fragment found!!!! " . $@ );
         return ;
     }
-
     my $generator = XML::Generator::PerlData->new( Handler => $self->{Handler} );
-
     my @portlets = grep { $_->nodeType == XML_ELEMENT_NODE
                           and $_->nodeName eq "portlet" }
       $frag->childNodes;
-
     foreach my $p ( @portlets ) {
         my $oid = $p->string_value();
         next unless $oid > 0;
-
         my $object = XIMS::Object->new( id  => $oid, User => $self->{User} );
 
         if ( $self->{Export} ) {
@@ -104,7 +85,7 @@ sub handle_data {
 
         # expand the object's path
         my $path;
-        if ( XIMS::RESOLVERELTOSITEROOTS() ) {
+        if ( XIMS::RESOLVERELTOSITEROOTS() eq '1' ) {
             $path = $object->location_path_relative();
         }
         else {
@@ -116,5 +97,4 @@ sub handle_data {
         $generator->parse_chunk( {object => $object } );
     }
 }
-
 1;
