@@ -26,8 +26,8 @@
                 xmlns=&quot;http://www.w3.org/TR/xhtml1/strict&quot;&gt;
 
 &lt;xsl:import href=&quot;common.xsl&quot;/&gt;
-&lt;xsl:output method=&quot;html&quot; encoding=&quot;ISO-8859-1&quot;/&gt;
-    
+&lt;xsl:output method=&quot;html&quot; encoding=&quot;utf-8&quot;/&gt;
+
 &lt;xsl:template match=&quot;/document&quot;&gt;
     &lt;xsl:apply-templates select=&quot;context/object&quot;/&gt;
 &lt;/xsl:template&gt;
