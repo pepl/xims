@@ -1,41 +1,38 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS;
 
 use strict;
-use vars qw( $VERSION $_MODPERL_ $_CONFIG_ $_DATAPROVIDER_ );
+use vars qw( $AUTOLOAD $VERSION $_CONFIG_ $_DATAPROVIDER_ );
 
 use XIMS::Config;
-use XIMS::DataProvider;
 use Text::Iconv;
 
 $VERSION = 0.1;
 
 # test if this is a local script or if we are running under mod_perl
-$_MODPERL_ = $ENV{MOD_PERL} ? 1 : 0 ;
-
 $_CONFIG_ = XIMS::Config->new();
 
+require XIMS::DataProvider;
 sub DATAPROVIDER {
     $_DATAPROVIDER_ ||= XIMS::DataProvider->new();
     return $_DATAPROVIDER_;
 }
 
-#
+sub HOME {
+    $ENV{'XIMS_HOME'} || '/usr/local/xims'
+}
+
 # XIMS::Config wrappers
-# note: did not change the nameing yet, because i want to do it when we are getting to a 'real' config(reader)-concept
-#
 sub GOXIMS()                    { $_CONFIG_->goxims() }
-sub DEBUGLEVEL()                { $_CONFIG_->DebugLevel() }
+sub DEBUGLEVEL()                { $ENV{XIMSDEBUGLEVEL} || $_CONFIG_->DebugLevel() }
 sub PUBROOT_URL()               { "/" . $_CONFIG_->PublicRoot() }
 sub PUBROOT()                   { $_CONFIG_->ApacheDocumentRoot() . "/" . $_CONFIG_->PublicRoot()  }
-sub DEFAULT_LANGUAGE()          { $_CONFIG_->DefaultLanguage() }
 sub DEFAULT_SKIN()              { $_CONFIG_->DefaultSkin() }
-sub DOC_FSEXPORTSTYLESHEET()    { $_CONFIG_->DocFSExportStylesheet() }
-sub DEFAULT_PATH()              { $_CONFIG_->DefaultStartingPath() }
-sub WYSIWYGEDITOR()             { $_CONFIG_->WYSIWYGEditor() }
+sub FALLBACKSTARTPATH()         { $_CONFIG_->FallbackStartPath() }
+sub DEFAULTXHTMLEDITOR()        { $_CONFIG_->DefaultXHTMLEditor() }
 sub XMLEDITOR()                 { $_CONFIG_->XMLEditor() }
 sub TIDYPATH()                  { $_CONFIG_->TidyPath() }
 sub TIDYOPTIONS()               { $_CONFIG_->TidyOptions() }
@@ -43,18 +40,17 @@ sub XIMSROOT_URL()              { "/" . $_CONFIG_->XIMSRoot() }
 sub XIMSROOT()                  { $_CONFIG_->ApacheDocumentRoot() . "/" . $_CONFIG_->XIMSRoot() }
 sub AUTHSTYLE()                 { $_CONFIG_->AuthStyle() }
 sub AUTHSERVER()                { $_CONFIG_->AuthServer() }
+sub PROXYSERVERS()              { $_CONFIG_->ProxyServers() }
 sub CONTENTINTERFACE()          { "/" . $_CONFIG_->ContentInterface() }
 sub DBMS()                      { $_CONFIG_->DBMS() }
 sub QBDRIVER()                  { $_CONFIG_->QBDriver() }
 sub DBUSER()                    { $_CONFIG_->DBUser() }
-sub DBNAME()                    { $_CONFIG_->DBName() }
 sub DBPWD()                     { $_CONFIG_->DBPassword() }
 sub DBSESSIONOPT()              { $_CONFIG_->DBSessionOpt() }
 sub DBDOPT()                    { $_CONFIG_->DBDOpt() }
 sub DBDSN()                     { $_CONFIG_->DBdsn() }
-sub DBENCODING()                { (length $_CONFIG_->DBEncoding() and $_CONFIG_->DBEncoding() !~ /UTF-?8/i) ? return $_CONFIG_->DBEncoding() : return undef }
+sub DBENCODING()                { (defined $_CONFIG_->DBEncoding() and length $_CONFIG_->DBEncoding() and $_CONFIG_->DBEncoding() !~ /UTF-?8/i) ? return $_CONFIG_->DBEncoding() : return undef }
 sub UIFALLBACKLANG()            { $_CONFIG_->UIFallbackLang() }
-sub ADMINROLEID()               { $_CONFIG_->AdminRoleID() }
 sub PUBLICUSERID()              { $_CONFIG_->PublicUserID() }
 sub AUTOINDEXFILENAME()         { $_CONFIG_->AutoIndexFilename() }
 sub AUTOINDEXEXPORTSTYLESHEET() { $_CONFIG_->AutoindexExportStylesheet() }
@@ -63,11 +59,22 @@ sub SEARCHRESULTROWLIMIT()      { $_CONFIG_->SearchResultRowLimit() }
 sub UILANGUAGES() {
     my %rv;
     foreach ( $_CONFIG_->UILanguages() ) {
-        my $rex = $_;
-        $rex =~ s/^(\w{1,8})(?:-\w+)/\^$1\.\*/;
-        $rv{$_}=$rex;
+        /^(\w{1,8})(?:-\w+)/;
+        $rv{$_} = "\^$1\.\*";
     }
     return %rv;
+}
+
+# Provide access to custom config values using the XIMS::ConfigValueName interface
+sub AUTOLOAD {
+    my (undef, $called_sub) = ($AUTOLOAD =~ /(.*)::(.*)/);
+    return if $called_sub eq 'DESTROY';
+    return $_CONFIG_->$called_sub if $_CONFIG_->can($called_sub);
+}
+
+# Provide access to the config itself
+sub CONFIG {
+    return $_CONFIG_;
 }
 
 #  Utility methods
@@ -96,7 +103,7 @@ sub Debug {
             $debug[-1] =~ s/\n|\s+/ /g;
             my ( $module, $method ) ;
             ($module, undef, undef, $method) = caller(1);
-            if ( $_MODPERL_ and Apache->request ) {
+            if ( $ENV{MOD_PERL} and Apache->request ) {
                 my $log = Apache->request->log();
                 $log->warn("[$module, $method] " . join('', @debug));
             }
