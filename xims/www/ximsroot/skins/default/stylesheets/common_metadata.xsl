@@ -56,8 +56,7 @@
                 <xsl:value-of select="$i18n/l/Last_modified_by"/> <xsl:call-template name="modifierfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
                 <br/>
                 <xsl:if test="published=1">
-                    <xsl:value-of select="$i18n/l/Last_published_by"/> <xsl:call-template name="lastpublisherfullname"/>
-                    <xsl:value-of select="$i18n/l/at_time"/> <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
+                    <xsl:value-of select="$i18n/l/Last_published_by"/> <xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
                 </xsl:if>
             </td>
         </tr>
