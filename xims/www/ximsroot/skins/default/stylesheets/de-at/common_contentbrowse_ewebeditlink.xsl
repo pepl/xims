@@ -22,16 +22,13 @@
                 <td>
                     <input type="text" name="httpLink" size="60">
                         <xsl:choose>
-                            <xsl:when test="$objtype = '' and $target_path = $parent_path_nosite">
-                                <xsl:attribute name="value"><xsl:value-of select="'.'"/></xsl:attribute>
+                            <xsl:when test="$target_path = $absolute_path_nosite">
+                                <xsl:attribute name="value"></xsl:attribute>
                             </xsl:when>
-                            <xsl:when test="$objtype != '' and $target_path = $absolute_path_nosite">
-                                <xsl:attribute name="value"><xsl:value-of select="'.'"/></xsl:attribute>
-                            </xsl:when>
-                            <xsl:when test="$objtype = '' and contains($target_path, concat($parent_path_nosite, '/'))">
+                            <xsl:when test="contains($target_path, concat($parent_path_nosite, '/'))">
                                 <xsl:attribute name="value"><xsl:value-of select="substring-after($target_path, concat($parent_path_nosite, '/'))"/></xsl:attribute>
                             </xsl:when>
-                            <xsl:when test="$objtype != '' and contains($target_path, concat($absolute_path_nosite, '/'))">
+                            <xsl:when test="contains($target_path, concat($absolute_path_nosite, '/'))">
                                 <xsl:attribute name="value"><xsl:value-of select="substring-after($target_path, concat($parent_path_nosite, '/'))"/></xsl:attribute>
                             </xsl:when>
                             <xsl:otherwise>
@@ -48,8 +45,8 @@
                 <td>
                     <input type="text" name="linktext" size="60">
                         <xsl:choose>
-                            <xsl:when test="/document/context/object/targetparents/object[position()=last()]/title != title">
-                                <xsl:attribute name="value"><xsl:value-of select="/document/context/object/targetparents/object[position()=last()]/title"/></xsl:attribute>
+                            <xsl:when test="@id != /document/context/object/target/object/@id">
+                                <xsl:attribute name="value"><xsl:value-of select="/document/context/object/target/object/title"/></xsl:attribute>
                             </xsl:when>
                         </xsl:choose>
                     </input>
@@ -74,7 +71,8 @@
                 <td colspan="2">
                     Oder durchsuchen Sie den XIMS Objektbaum:
                     <br/>
-                    <xsl:apply-templates select="targetparents/object"/>
+                    <xsl:apply-templates select="targetparents/object[@id !='1']"/>
+                    <xsl:apply-templates select="target/object"/>
                     <table>
                         <xsl:apply-templates select="targetchildren/object">
                             <xsl:sort select="title" order="ascending" case-order="lower-first"/>

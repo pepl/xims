@@ -10,11 +10,40 @@
                 xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common_contentbrowse_ewebeditimage.xsl"/>
 <xsl:param name="id"/>
+<xsl:param name="editorName"/> 
 
 <xsl:template name="targetpath">
-    <xsl:for-each select="/document/context/object/targetparents/object[@parent_id != 1]">
+    <xsl:for-each select="/document/context/object/targetparents/object[@document_id != 1 and @parent_id != 1]">
         <xsl:text>/</xsl:text><xsl:value-of select="location"/>
-    </xsl:for-each>
+    </xsl:for-each><xsl:if test="/document/context/object/target/object/@parent_id != 1">/<xsl:value-of select="/document/context/object/target/object/location"/></xsl:if>
+</xsl:template>
+
+<xsl:template match="targetparents/object|target/object">
+  / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};editorName={$editorName}"><xsl:value-of select="location"/></a>
+</xsl:template>
+
+<xsl:template match="targetchildren/object">
+    <xsl:variable name="dataformat">
+        <xsl:value-of select="data_format_id"/>
+    </xsl:variable>
+    <xsl:variable name="objecttype">
+        <xsl:value-of select="object_type_id"/>
+    </xsl:variable>
+    <tr><td>
+        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{10*@level}" height="10"/>
+        <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>
+        <xsl:choose>
+            <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name = 'Container'">
+                <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};editorName={$editorName}"><xsl:value-of select="title"/></a>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="title"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="$otfilter = '' or /document/object_types/object_type[@id=$objecttype]/name = $otfilter">
+            (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onClick="storeBack('{$target_path}/{location}', '{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
+        </xsl:if>
+    </td></tr>
 </xsl:template>
 
 <xsl:template name="scripts">
@@ -69,15 +98,16 @@
                 else {
                     targetvaluepaste = "target=" + targetvalue;
                 }
+
                 hyperlinkvalue = document.selectform.httpLink.value
-                pastevalue = '<A HREF="' + hyperlinkvalue + '" ' + targetvaluepaste +'>' + document.selectform.linktext.value + '</a>';
+                pastevalue = '<a href="' + hyperlinkvalue + '" ' + targetvaluepaste +'>' + document.selectform.linktext.value + '</a>';
                 window.opener.eWebEditPro[objQuery["editorName"]].pasteHTML(pastevalue);
                 window.close();
             }
         }
         function storeBack(target, linktext) {
       ]]>
-            re = new RegExp("<xsl:choose><xsl:when test="$objtype=''"><xsl:value-of select="$parent_path_nosite"/></xsl:when><xsl:otherwise><xsl:value-of select="$absolute_path_nosite"/></xsl:otherwise></xsl:choose>/");
+            re = new RegExp("<xsl:value-of select="$parent_path_nosite"/>/");
       <![CDATA[
             re.test(target);
             if (RegExp.rightContext.length > 0) {
