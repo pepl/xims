@@ -103,7 +103,8 @@ sub Properties() { (
               'content.last_published_by_lastname',
               'content.last_published_by_middlename',
               'content.last_published_by_firstname',
-              'content.data_format_name'
+              'content.data_format_name',
+              'content.schema_id'
              ],
     Document =>
              [

@@ -36,6 +36,7 @@ sub DEFAULT_SKIN()              { $_CONFIG_->DefaultSkin() }
 sub DOC_FSEXPORTSTYLESHEET()    { $_CONFIG_->DocFSExportStylesheet() }
 sub DEFAULT_PATH()              { $_CONFIG_->DefaultStartingPath() }
 sub WYSIWYGEDITOR()             { $_CONFIG_->WYSIWYGEditor() }
+sub XMLEDITOR()                 { $_CONFIG_->XMLEditor() }
 sub TIDYPATH()                  { $_CONFIG_->TidyPath() }
 sub TIDYOPTIONS()               { $_CONFIG_->TidyOptions() }
 sub XIMSROOT_URL()              { "/" . $_CONFIG_->XIMSRoot() }
