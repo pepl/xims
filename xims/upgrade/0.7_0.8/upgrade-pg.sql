@@ -1,4 +1,18 @@
 BEGIN WORK;
+
+\echo Making parent_id on 'CI_DOCUMENTS' nullable
+ALTER TABLE ci_documents ALTER COLUMN parent_id DROP NOT NULL;
+UPDATE ci_documents SET parent_id = NULL WHERE id = 1;
+
+\echo Adding LOCATION_PATH column on 'CI_DOCUMENTS'
+ALTER TABLE ci_documents ADD COLUMN location_path TEXT;
+
+-- Functions and triggers for location_path denormalization
+\i ../../sql/Pg/location_path.sql
+
+-- write location_path values to existing data in ci_documents
+SELECT sync_location_path();
+
 \echo Adding PARENT_ID column on 'CI_OBJECT_TYPES'
 ALTER TABLE ci_object_types ADD COLUMN parent_id INTEGER  REFERENCES ci_object_types ( id ) ON DELETE CASCADE;
 
