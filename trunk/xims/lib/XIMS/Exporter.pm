@@ -645,7 +645,7 @@ sub update_related {
     my $css        = $object->css();
     my $image      = $object->image();
 
-    my @referenced_by = $object->referenced_by_granted( include_ancestors => 1, published => 1 );
+    my @referenced_by = $object->referenced_by_granted( User => $self->{User}, include_ancestors => 1, published => 1 );
     foreach my $obj ( @referenced_by, $image, $css, $stylesheet ) {
         next unless defined $obj;
         my $base = XIMS::PUBROOT() . $obj->location_path();
