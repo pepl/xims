@@ -7,7 +7,7 @@ package XIMS::Importer::FileSystem;
 use XIMS::Importer;
 use XIMS::DataFormat;
 use XIMS::ObjectType;
-use XIMS::Folder;
+use XIMS::Object;
 use File::Basename;
 
 use vars qw( @ISA );
@@ -49,7 +49,7 @@ sub parent_by_location {
     my $plocation = $self->parent->location_path();
     $plocation .= '/' . $dirname if ( length $dirname and $dirname ne '.' );
 
-    return XIMS::Folder->new( path => $plocation );
+    return XIMS::Object->new( path => $plocation );
 }
 
 sub resolve_location {
