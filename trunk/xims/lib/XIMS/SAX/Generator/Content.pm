@@ -43,11 +43,6 @@ sub prepare {
         $doc_data->{context}->{session}->{user} = {$ctxt->session->user->data()};
     }
 
-    # shove parent into object if we are creating things
-    if ( $ctxt->parent() ) {
-        $ctxt->object( $ctxt->parent() );
-    }
-
     # fun with content objects
     if ( $ctxt->object() ) {
         # PHISH NOTE:
@@ -132,6 +127,7 @@ sub parse {
     $self->parse_start( %opts );
 
     #warn "about to process: " . Dumper( $ctxt );
+    # cases we need to parse a full document and not -chunk ?
     $self->parse_chunk( $ctxt );
 
     return $self->parse_end;
