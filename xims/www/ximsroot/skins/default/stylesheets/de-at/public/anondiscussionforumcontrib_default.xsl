@@ -163,7 +163,7 @@
 
 <xsl:template name="replyform">
     <a name="reply"/>
-    <form name="replyform" action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="GET" onSubmit="return checkFields()">
+    <form name="replyform" action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib" method="POST" onSubmit="return checkFields()">
         <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
         <table width="608" style="border: 1px solid #888888; margin-bottom: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
             <tr>
