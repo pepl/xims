@@ -51,7 +51,7 @@ sub get_result_count {
 
     my $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id GROUP BY tan ) sub1";
     my $total_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
-    $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = $last_question GROUP BY tan) sub1";
+    $sql = "SELECT count(*) AS c1 FROM (SELECT tan FROM ci_questionnaire_results WHERE document_id = $questionnaire_id AND question_id = '$last_question' GROUP BY tan) sub1";
     my $valid_count = $self->data_provider->driver->dbh->fetch_one_value( sql => $sql );
 
     #  XIMS::Debug (6, "#### ".Dumper( $valid_count ) );
