@@ -109,7 +109,7 @@ sub new {
             my $otname = $class;
             $otname =~ s/XIMS:://;
             if ( not $args{object_type_id} ) {
-                my $ot = XIMS::ObjectType->new( name => $otname );
+                my $ot = XIMS::ObjectType->new( fullname => $otname );
                 if ( $ot ) {
                     $self->object_type_id( $ot->id() );
                 }
@@ -1736,7 +1736,7 @@ sub location_path_relative {
 ##
 #
 # SYNOPSIS
-#    my $boolean = $object->balanced_string( $CDATAstring, [$params] );
+#    my $doc = $object->balanced_string( $CDATAstring, [$params] );
 #
 # PARAMETER
 #    $CDATAstring : input string
@@ -1745,9 +1745,13 @@ sub location_path_relative {
 #                                      and will be parsed with parse_string() instead of the default parse_xml_chunk()
 #                                      useful for importing
 #                        verbose_msg : if set, XML::LibXML'S error string instead of undef is returned on parse-error
+#                        encoding    : can be optionally given if a chunk is to be parsed; defaults to 'UTF-8'
 #
 # RETURN
-#    $retval : 1 if wellformed, undef or error string otherwise
+#    $doc : XML::LibXML::Document instance if string is well-formed and 'nochunk' is not given
+#           XML::LibXML::DocumentFragment instance if string is well-balanced and 'nochunk' is given
+#           undef if string is not given and 'verbose_msg' is ommitted
+#           error string if string is well-formed and 'nochunk' is given
 #
 # DESCRIPTION
 #    tests if input string is wellbalanced
@@ -1758,38 +1762,37 @@ sub balanced_string {
     my $self        = shift;
     my $CDATAstring = shift;
     my %args        = @_;
+    my $doc;
 
     my $retval      = undef; # return value
 
     if ( length $CDATAstring ) {
         my $parser = XML::LibXML->new();
         if ( exists $args{nochunk} ) {
-            eval { $parser->parse_string( $CDATAstring ) };
+            eval { $doc = $parser->parse_string( $CDATAstring ) };
             if ( $@ ) {
-                XIMS::Debug( 2, "string not wellformed" );
+                XIMS::Debug( 2, "string not well-formed" );
                 XIMS::Debug( 6, "LibXML returned $@" );
                 $@ =~ s/at \/.*$//;
                 $retval = $@ if exists $args{verbose_msg};
             }
             else {
-                $retval = 1;
+                $retval = $doc;
             }
         }
         else {
             my $encoding;
             $encoding = $args{encoding} if defined $args{encoding};
-            $encoding ||= XIMS::DBENCODING() if defined XIMS::DBENCODING();
-            $encoding ||= 'UTF-8';
-            my $doc; # as long as parse_xml_chunk does not fill $@ on error, we have to use $doc to test for success :/
+            $encoding ||= ( XIMS::DBENCODING() || 'UTF-8' );
             eval { $doc = $parser->parse_xml_chunk( $CDATAstring, $encoding ) };
             if ( !$doc or $@ ) {
-                XIMS::Debug( 2, "string not wellbalanced" );
+                XIMS::Debug( 2, "string not well-balanced" );
                 XIMS::Debug( 6, "LibXML returned $@" );
                 $@ =~ s/at \/.*$//;
                 $retval = $@  if exists $args{verbose_msg};
             }
             else {
-                $retval = 1;
+                $retval = $doc;
             }
         }
     }
