@@ -99,9 +99,9 @@ sub WYSIWYGEditor()               { '' }        # Currently, 'htmlarea' and 'wep
                                                 #
                                                 # WYSIWYGEditor() should be considered as a system wide default an fall back value. Users should be able to set their preference via the /user/ interface (to be developed)
 
-
-
-
+# path and options for tidy
+sub TidyPath()                    {'/usr/local/bin/tidy'};                                              # path to tidy binary
+sub TidyOptions()                 {' -config /usr/local/xims/conf/ximstidy.conf -quiet -f /dev/null'};  # options for tidy
 
 # ****************************************
 #

@@ -38,7 +38,8 @@ XIMS Installation Guide
 2) Install the latest tidy binary (http://sourceforge.net/projects/tidy)
 
    Install it to /usr/local/bin/tidy. If you install it to another
-   location, change /usr/local/xims/lib/XIMS/Object.pm line 845
+   location, change the tidy settings in 
+   /usr/local/xims/lib/XIMS/Config.pm line 103 and 104
    accordingly.
 
 3) Check for module dependencies, set up database and
