@@ -1,6 +1,9 @@
 # Copyright (c) 2002-2003 The XIMS Project.
+
 # See the file "LICENSE" for information on usage and redistribution
+
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+
 # $Id$
 package XIMS::Language;
 
@@ -49,30 +52,6 @@ sub new {
         }
     }
     return $self;
-}
-
-sub create {
-    my $self = shift;
-    my $id = $self->data_provider->createLanguage( $self->data());
-    $self->id( $id );
-    return $id;
-}
-
-sub delete {
-    my $self = shift;
-    my $retval = $self->data_provider->deleteLanguage( $self->data() );
-    if ( $retval ) {
-        map { $self->$_( undef ) } $self->fields();
-        return 1;
-    }
-    else {
-       return undef;
-    }
-}
-
-sub update {
-    my $self = shift;
-    return $self->data_provider->updateLanguage( $self->data() );
 }
 
 1;

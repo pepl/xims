@@ -51,28 +51,4 @@ sub new {
     return $self;
 }
 
-sub create {
-    my $self = shift;
-    my $id = $self->data_provider->createMimeType( $self->data());
-    $self->data_format_id( $id );
-    return $id;
-}
-
-sub delete {
-    my $self = shift;
-    my $retval = $self->data_provider->deleteMimeType( $self->data() );
-    if ( $retval ) {
-        map { $self->$_( undef ) } $self->fields();
-        return 1;
-    }
-    else {
-       return undef;
-    }
-}
-
-sub update {
-    my $self = shift;
-    return $self->data_provider->updateMimeType( $self->data() );
-}
-
 1;
