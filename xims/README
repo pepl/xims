@@ -1,4 +1,4 @@
-This is XIMS, version 0.01 (alpha).
+This is XIMS, version 0.1 (beta).
 
 Overview
 --------
@@ -35,12 +35,11 @@ Note: Documentation is currently quite rudimentary :-/.
 
 Release Notes
 -------------
-Keep it mind that this is the first ever XIMS package, it is alpha.
-For the first beta release we are planning to
-adress at least the following issues:
+Keep it mind that this is an early XIMS package, it is BETA.
+For the next beta releases we are planning to adress at least the
+following issues:
 
-* Automation and simplification of the installation process
-* UI consistency issues (finish the redesign, finish the stylesheet updates begun with folder|document_create.xsl)
+* Finish the UI redesign
 * Add/Update documentation!
 * Update acceptance tests for the test suite
 * stylesheets for published docbook-objects
@@ -49,19 +48,8 @@ adress at least the following issues:
 Other issues to be adressed include the following:
 
 * Importer for filesystem objects
-* SQL queries and data retrieval in general is not performance but genericity
-  optimized.
-* Recursive application logic is used to retrieve hierarchical
-  content data. To avoid that, it is planned to implement a concept
-  similar to the "Nested Set Model of Trees in SQL" as described in
-  Chapter 29 of Joe Celko's "SQL for Smarties" (a brief description
-  of this concept can be found at
-  http://www.dbmsmag.com/9603d06.html).
-  Until that has not been implemented, the extra information used for
-  discussion forum object types, like the timestamp of the child
-  which has been last modified most recently for example, won't be
-  made available.
-* Rewrite XIMS::XSP
+* SQL queries and data retrieval in general is not performance but
+  genericity optimized - Work on that.
 * Start with user preferences (skin, ui-language, editor-preference, ...)
 * Start with bigger things like Versioning and Multilanguage Content UI
 
@@ -74,10 +62,10 @@ https://sourceforge.net/tracker/?atid=432919&group_id=42250&func=browse
 This is an early development version of XIMS.
 Production use is NOT recommended!
 
-(If you can't wait to use XIMS for your site in a production environment 
-and are interested in the old Oracle-tied version of XIMS which has been running
-in an production environment at the University of Innsbruck since April 2002 without 
-any troubles, please contact us.)
+(If you can't wait to use XIMS for your site in a production environment
+and are interested in the old Oracle-tied version of XIMS which has been
+running in an production environment at the University of Innsbruck
+since April 2002 without any troubles, please contact us.)
 
 
 Changes
@@ -109,4 +97,5 @@ Christian Glahn <christian.glahn@uibk.ac.at>
 The user interface has originally been designed by:
 
 Georg Schönwiese <csab2314@uibk.ac.at>
-(This UI is not part of this distribution but currently still used at xims.uibk.ac.at)
+(This UI is not part of this distribution but currently still used at
+xims.uibk.ac.at)
