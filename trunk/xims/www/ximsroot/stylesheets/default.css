@@ -415,7 +415,7 @@ input.qsfield {
 	border:1px solid #999999;
 	font-family:helvetica, arial, sans-serif;
 	font-size:10pt;
-	line-height:150%;
+	line-height:100%;
 }
 
 .deptlinks {
@@ -428,7 +428,7 @@ input.qsfield {
 	border:1px solid #123853;
 	font-family:helvetica, arial, sans-serif;
 	font-size:10pt;
-	line-height:120%;
+	line-height:100%;
 }
 
 .documentlinks {
@@ -441,7 +441,7 @@ input.qsfield {
 	border:1px solid #123853;
 	font-family: helvetica, arial, sans-serif;
 	font-size:10pt;
-	line-height:120%;
+	line-height:100%;
 }
 
 /* docbook */

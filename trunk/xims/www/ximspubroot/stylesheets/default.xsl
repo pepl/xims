@@ -25,33 +25,35 @@
         <!--UdmComment-->
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
 
-	<!-- Begin header -->
-	<tr>
-       	<td bgcolor="#123853" width="75%">
-			<span style="color:#ffffff; font-size:14pt;">The eXtensible Information Management System</span>
-		</td>
-        	<td bgcolor="#123853" align="right" width="25%">
-			<xsl:text>&#160;</xsl:text>
-		</td>
-    	</tr>
-    	<tr>
-        	<td class="pathinfo">
-            		<xsl:call-template name="pathinfo"/>
-        	</td>
-	        <td class="pathinfo" align="right">
-	             <a href="{$request.uri}?style=print">[printversion]</a>
-	             <!-- there is no textonly version needed at the moment, but it exists one -->
-		     	<!--<xsl:text>&#160;&#160;</xsl:text>
-		     	<a href="{$request.uri}?style=textonly">[textonly]</a>-->
-	        </td>
-    	 </tr>
-	<!-- End header -->
-	</table>
-	
-	<table width="100%" border="0" style="margin-top: 20px; margin-left: 0px; padding-left: 0px">
+    <!-- Begin header -->
+    <tr>
+        <td bgcolor="#123853" width="75%">
+            <span style="color:#ffffff; font-size:14pt;">The eXtensible Information Management System</span>
+        </td>
+            <td bgcolor="#123853" align="right" width="25%">
+            <xsl:text>&#160;</xsl:text>
+        </td>
+        </tr>
+        <tr>
+            <td class="pathinfo">
+                    <xsl:call-template name="pathinfo"/>
+            </td>
+            <td class="pathinfo" align="right">
+                 <a href="{$request.uri}?style=print">[printversion]</a>
+                 <!-- there is no textonly version needed at the moment, but it exists one -->
+                <!--<xsl:text>&#160;&#160;</xsl:text>
+                <a href="{$request.uri}?style=textonly">[textonly]</a>-->
+            </td>
+         </tr>
+    <!-- End header -->
+    </table>
+    
+    <table width="100%" border="0" style="margin-top: 20px; margin-left: 0px; padding-left: 0px">
        <tr>
             <td valign="top" class="links">
                 <xsl:call-template name="stdlinks"/>
+                <xsl:call-template name="deptlinks"/>
+                <xsl:call-template name="documentlinks"/>
             </td>
             <td valign="top" align="left" class="content">
                 <!--/UdmComment-->

@@ -130,7 +130,6 @@ sub publish {
         return undef;
     }
 
-
     # allow developer-friendly method invocation...
     $self->{Provider}   = delete $param{Provider}   if defined $param{Provider};
     $self->{Basedir}    = delete $param{Basedir}    if defined $param{Basedir};
@@ -198,7 +197,7 @@ sub publish {
     # handle any ancestors, create folders where needed.
 
     #
-    # first the exporter has to appove which object we have to deal with.
+    # first the exporter has to approve which object we have to deal with.
     # this is very important for nested data structures:
     #
     # if an object has not a parentlist containing only fs_container,
@@ -527,6 +526,7 @@ use XIMS::AppContext;
 #    ubu-note: every handler is now atomic in the sense that each handler
 #              gets its own object.
 
+
 sub new {
     XIMS::Debug( 5, "called" );
     my $class = shift;
@@ -573,8 +573,11 @@ sub new {
 
     # publish only non-fs-container children here
     my @non_fscont_types = map { $_->id() } grep { !$_->is_fs_container() } $self->{Provider}->object_types();
-
     $self->{Children} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
+    # 
+    # Make children_selection available via UI and publish_promt event
+    # $self->{Children} = $self->{Object}->children_granted( User => $self->{User}, id => \@selected_ids, object_type_id => \@non_fscont_types );
+    #
 
     return $self;
 }
@@ -1045,6 +1048,7 @@ use vars qw( @ISA );
 use XIMS::SAX::Generator::Exporter;
 use XIMS::SAX::Filter::ContentIDPathResolver;
 
+
 @ISA = qw( XIMS::Exporter::Handler );
 
 ##
@@ -1408,6 +1412,7 @@ use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XML );
 use File::Path;
 use strict;
+
 ##
 #
 # SYNOPSIS
@@ -1490,11 +1495,25 @@ sub create {
         return undef;
     }
 
+    #if (scalar @{$self->{Children}} ) {
+    #    # publish selected children....
+    #    foreach my $kind ( $self->{Children} ) {
+    #        my $helper = XIMS::Exporter::Helper->new();
+    #        my $kid_class = $helper->classname( $kind );
+    #
+    #        my $reaper = $kid_class->new( Provider   => $self->{Provider},
+    #                                      Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
+    #                                      User       => $self->{User},
+    #                                      Object     => $kind
+    #                                    );
+    #        $reaper->create();
+    #    }
+    #}
+
     # auto-indexing
     # MUST come after any children were published above since
     # publishing states may have changed in this session.
 
-    # temorarily disabled
     if ( $self->{Object}->attribute( 'autoindex' ) == 1 ) {
         my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
                                                                Basedir    => $self->{Basedir},
@@ -1528,12 +1547,11 @@ sub create {
 #
 sub remove {
     XIMS::Debug( 5, "called" );
-
     my ( $self, $param ) = @_;
 
     my $kill_path = $self->{Basedir} . "/" . $self->{Object}->location();
 
-    # first, kill the object children....
+    # first, kill the object's children....
     foreach my $kind ( $self->{Children} ) {
         my $helper = XIMS::Exporter::Helper->new();
         my $kid_class = $helper->classname( $kind );
@@ -1543,9 +1561,9 @@ sub remove {
                                       User       => $self->{User},
                                       Object     => $kind
                                     );
-        $reaper->remove(); # if $reaper->{PUBLISHED} == 1;
+        $reaper->remove();
     }
-
+    
     # kill the meta file
     unlink $kill_path . '/' . $self->{Object}->location . ".container.xml";
 
@@ -1572,6 +1590,7 @@ sub remove {
     # mark the folder as not published.
     XIMS::Debug( 4, "marking folder as unpublished again :)" );
     $self->toggle_publish_state( '0' );
+
     return 1;
 }
 
@@ -1593,6 +1612,76 @@ use vars qw( @ISA );
 use XIMS::SAX::Filter::ContentIDPathResolver;
 use XIMS::SAX::Filter::ContentLinkResolver;
 use XIMS::SAX::Filter::SymTitle;
+
+##
+#
+# SYNOPSIS
+#    $self->create( $param );
+#
+# PARAMETER
+#
+#
+# RETURNS
+#    $retval : undef on error
+#
+# DESCRIPTION
+#    none yet
+#
+#
+sub create {
+    XIMS::Debug( 5, "called" );
+    my ( $self, %param ) = @_;
+
+    return unless $self->SUPER::create();
+
+    #foreach my $kind ( $self->{Children} ) {
+    #    next unless $kind->object_type->name eq 'URLLink'; #we only want to publish document-links for now
+    #    my $helper = XIMS::Exporter::Helper->new();
+    #    my $kid_class = $helper->classname( $kind );
+    #
+    #    my $reaper = $kid_class->new( Provider   => $self->{Provider},
+    #                                  Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
+    #                                  User       => $self->{User},
+    #                                  Object     => $kind
+    #                                );
+    #    $reaper->create();
+    #}
+
+    return 1;
+}
+
+##
+#
+# SYNOPSIS
+#    $self->remove();
+#
+# PARAMETER
+#
+# RETURNS
+#    $retval : undef on error
+#
+# DESCRIPTION
+#    none yet
+#
+sub remove {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $param ) = @_;
+
+    foreach my $kind ( $self->{Children} ) {
+        next unless $kind->object_type->name eq 'URLLink'; 
+        my $helper = XIMS::Exporter::Helper->new();
+        my $kid_class = $helper->classname( $kind );
+
+        my $reaper = $kid_class->new( Provider   => $self->{Provider},
+                                      Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
+                                      User       => $self->{User},
+                                      Object     => $kind
+                                    );
+        $reaper->remove();
+    }
+
+    return $self->SUPER::remove();
+}
 
 ##
 #

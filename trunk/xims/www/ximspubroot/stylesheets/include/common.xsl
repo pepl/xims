@@ -71,36 +71,36 @@
 </xsl:template>
 
 <xsl:template name="stdlinks">
-    <p class="stdlinks">
-        <a href="/">Index</a><br />
-        <a href="/xims-info/about.html">About the Project</a><br />
-        <a href="/xims-doku/">Documentation</a><br />
-        <a href="/xims-screenshots/">Screenshots</a><br />
-        Download<br />
-        <a href="https://sourceforge.net/projects/xims/">XIMS at Sourceforge</a><br />
-        <a href="/goxims/defaultbookmark">Login</a><br />
-    </p>
+    <div class="stdlinks">
+        <p><a href="/">Index</a></p>
+        <p><a href="/xims-info/about.html">About the Project</a></p>
+        <p><a href="/xims-doku/">Documentation</a></p>
+        <p><a href="/xims-screenshots/">Screenshots</a></p>
+        <p><a href="/xims-src/download.html">Download</a></p>
+        <p><a href="https://sourceforge.net/projects/xims/">XIMS at Sourceforge</a></p>
+        <p><a href="/goxims/defaultbookmark">Login</a></p>
+    </div>
 </xsl:template>
 
 <xsl:template name="deptlinks">
-  <xsl:param name="mode" select="default"/>
-     <xsl:if test="ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
-    <xsl:choose>
-        <xsl:when test="$mode='print'">
-            <xsl:apply-templates select="ou/portlet[title = 'departmentlinks_portlet']/portlet-item" mode="print">
-                 <xsl:sort select="position" data-type="number" order="ascending"/>
-                 <xsl:with-param name="baselocation" select="ou/portlet[title = 'departmentlinks_portlet']/baselocation" />
-                 </xsl:apply-templates>
-        </xsl:when>
-        <xsl:otherwise>
-            <div class="deptlinks">
-                 <xsl:apply-templates select="ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
-                 <xsl:sort select="position" data-type="number" order="ascending"/>
-                  <xsl:with-param name="baselocation" select="ou/portlet[title = 'departmentlinks_portlet']/baselocation" />
-                  </xsl:apply-templates>
+    <xsl:param name="mode" select="default"/>
+    <xsl:if test="ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
+        <xsl:choose>
+            <xsl:when test="$mode='print'">
+                <xsl:apply-templates select="ou/portlet[title = 'departmentlinks_portlet']/portlet-item" mode="print">
+                     <xsl:sort select="position" data-type="number" order="ascending"/>
+                     <xsl:with-param name="baselocation" select="ou/portlet[title = 'departmentlinks_portlet']/baselocation" />
+                </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+                <div class="deptlinks">
+                     <xsl:apply-templates select="ou/portlet[title = 'departmentlinks_portlet']/portlet-item">
+                        <xsl:sort select="position" data-type="number" order="ascending"/>
+                        <xsl:with-param name="baselocation" select="ou/portlet[title = 'departmentlinks_portlet']/baselocation" />
+                     </xsl:apply-templates>
                 </div>
-        </xsl:otherwise>
-    </xsl:choose>
+            </xsl:otherwise>
+        </xsl:choose>
   </xsl:if>
 </xsl:template>
 
@@ -129,6 +129,22 @@
             <xsl:value-of select="title"/>
         </a>
         <xsl:text>&#160;&#160;&#160;</xsl:text>
+</xsl:template>
+
+<xsl:template name="documentlinks">
+  <xsl:param name="mode" select="default"/>
+    <xsl:if test="links/link">
+    <xsl:choose>
+        <xsl:when test="$mode='print'">
+            <xsl:apply-templates select="links"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <div class="documentlinks">
+                <xsl:apply-templates select="links"/>
+            </div>
+        </xsl:otherwise>
+    </xsl:choose>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="link">
