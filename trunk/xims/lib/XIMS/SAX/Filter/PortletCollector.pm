@@ -112,9 +112,20 @@ sub handle_data {
                     $location_path = $o->location();
                 }
                 elsif ( $self->{Export} ) {
-                    XIMS::RESOLVERELTOSITEROOTS() eq '1' ? $location_path = $o->location_path_relative()
-                                                         : $location_path = XIMS::PUBROOT_URL()
-                                                           . $o->location_path_relative();
+                    if ( XIMS::RESOLVERELTOSITEROOTS() eq '1' ) {
+                        $location_path = $o->location_path_relative();
+                    }
+                    else {
+                        my $siteroot = $o->siteroot();
+                        my $siteroot_url;
+                        $siteroot_url = $o->siteroot->url() if $siteroot;
+                        if ( $siteroot_url =~ m#/# ) {
+                            $location_path = $siteroot_url . $o->location_path_relative();
+                        }
+                        else {
+                            $location_path = XIMS::PUBROOT_URL() . $o->location_path();
+                        }
+                    }
                 }
                 else {
                     $location_path = $o->location_path();

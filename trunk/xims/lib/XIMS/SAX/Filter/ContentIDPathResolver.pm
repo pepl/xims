@@ -5,14 +5,16 @@
 package XIMS::SAX::Filter::ContentIDPathResolver;
 
 ##
-# DESCRIPTION:
-# This SAX Filter expands a content-id (major_id) to its corresponding path-string.
+#
+# GENERAL
+# This SAX Filter expands an id or document_id to its corresponding location_path string.
 # Note: This version does not touch the element name and therefore we got path-string in *_id elements!
 
 use warnings;
 use strict;
 
 use XML::SAX::Base;
+use XIMS::Object;
 
 @XIMS::SAX::Filter::ContentIDPathResolver::ISA = qw(XML::SAX::Base);
 
@@ -62,7 +64,18 @@ sub end_element {
         }
         else {
             # Used to resolve the document_ids during exports
-            $path = XIMS::PUBROOT_URL() . $self->{Provider}->location_path( $id => $self->{document_id} );
+            my $object = XIMS::Object->new( $id => $self->{document_id} );
+            if ( $object and $object->id() ) {
+                my $siteroot = $object->siteroot();
+                my $siteroot_url;
+                $siteroot_url = $object->siteroot->url() if $siteroot;
+                if ( $siteroot_url =~ m#/# ) {
+                    $path = $siteroot_url . $object->location_path_relative();
+                }
+                else {
+                    $path = XIMS::PUBROOT_URL() . $object->location_path();
+                }
+            }
         }
         $self->SUPER::characters( { Data => $path } );
         $self->{document_id} = undef;
