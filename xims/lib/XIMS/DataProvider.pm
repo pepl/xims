@@ -126,13 +126,11 @@ sub new {
         if ( $driver ) {
             $self = bless {} , $class;
             $self->{Driver} = $driver;
-            XIMS::Debug( 4, "init complete" );
         }
         else {
             XIMS::Debug( 1, "driver class $drvcls did not initialize!" );
         }
     }
-    XIMS::Debug( 5, "done" );
     return $self;
 }
 
@@ -312,6 +310,8 @@ sub deleteObject {
                            );
     return 1;
 }
+
+sub driver { $_[0]->{Driver} }
 
 sub location_path {
     my $self = shift;

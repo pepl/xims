@@ -368,13 +368,14 @@ sub update_content_body {
     return $ret;
 }
 
+sub dbh { $_[0]->{dbh} }
 
 #############################################################
 # One-offs
 #
 # These are the DP methods that do not easliy fit into the
 # cleaner abstraction model for one reason or another or
-# need to be revisitied.
+# need to be revisited.
 #############################################################
 
 sub reposition {
@@ -691,7 +692,6 @@ sub new {
         XIMS::Debug( 2, "wrong parameters!" );
     }
 
-    XIMS::Debug( 5, "done" );
     return bless $self, $class;
 }
 
