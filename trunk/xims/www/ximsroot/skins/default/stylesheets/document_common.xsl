@@ -21,7 +21,9 @@
                     <xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>&#160;<xsl:value-of select="$i18n/l/using"/>&#160;<xsl:call-template name="setdefaulteditor"/>
                 </td>
                 <td align="right" valign="top">
-                    <xsl:call-template name="cancelcreateform"/>
+                    <xsl:call-template name="cancelcreateform">
+                        <xsl:with-param name="with_save">yes</xsl:with-param>
+                    </xsl:call-template>
                 </td>
             </tr>
         </table>
@@ -34,7 +36,9 @@
                     <xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>&#160;<xsl:value-of select="$i18n/l/using"/>&#160;<xsl:call-template name="setdefaulteditor"/>
                 </td>
                 <td align="right" valign="top">
-                    <xsl:call-template name="cancelform"/>
+                    <xsl:call-template name="cancelform">
+                        <xsl:with-param name="with_save">yes</xsl:with-param>
+                    </xsl:call-template>
                 </td>
             </tr>
         </table>
