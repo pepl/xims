@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/TR/xhtml1/strict">
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:variable name="object_type_id">
     <xsl:value-of select="/document/context/object/object_type_id"/>
