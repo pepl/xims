@@ -65,7 +65,18 @@ sub event_subject {
     my ( $self, $ctxt ) = @_;
 
     my $subjectid = $self->param('subject_id');
-    return 0 unless $subjectid;
+    unless ( $subjectid ) {
+        my $subjectname = $self->decode( $self->param('subject_name') );
+        if ( defined $subjectname ) {
+            my $subject = XIMS::VLibSubject->new( name => $subjectname );
+            #use Data::Dumper; XIMS::Debug( 1, Dumper( $subject ) );
+            if ( $subject and $subject->id() ) {
+                $subjectid = $subject->id();
+            }
+            else { return 0; }
+        } 
+        else { return 0; }
+    }
 
     $ctxt->properties->content->getformatsandtypes( 1 );
 
@@ -99,7 +110,41 @@ sub event_author {
     my ( $self, $ctxt ) = @_;
 
     my $authorid = $self->param('author_id');
-    return 0 unless $authorid;
+    unless ( $authorid ) {
+        my $authorfirstname  = $self->decode( $self->param('author_firstname') );
+        my $authormiddlename = $self->decode( $self->param('author_middlename') );
+        my $authorlastname   = $self->decode( $self->param('author_lastname') );
+        
+        my $author;
+        my $author_type;
+        if ( $authorlastname and $authorfirstname ) {
+            #XIMS::Debug( 1, "high chance for personal author" );
+            $author = XIMS::VLibAuthor->new( firstname  => $authorfirstname,
+                                             middlename => $authormiddlename,
+                                             lastname   => $authorlastname );
+            if ( $author and $author->id() ) {
+                $author_type = "personal";
+            }
+        }
+        
+        unless ( $author_type ) { 
+            if ( $authorlastname ) {
+                #XIMS::Debug( 1, "high chance for corporate author" );
+                $author = XIMS::VLibAuthor->new( lastname    => $authorlastname, 
+                                                 object_type => 1 );
+                if ( $author and $author->id() ) {
+                    $author_type = "corporate";
+                }
+            } 
+            else { return 0; }
+        }
+        
+        if ( $author_type ) {
+            $authorid = $author->id();
+            #XIMS::Debug( 1, "secondary lookup on authorid returned: $authorid" );
+        }
+        else { return 0; }
+    }
 
     $ctxt->properties->content->getformatsandtypes( 1 );
 
@@ -111,6 +156,7 @@ sub event_author {
 
     return 0;
 }
+
 
 sub event_publications {
     XIMS::Debug( 5, "called" );
@@ -127,7 +173,23 @@ sub event_publication {
     my ( $self, $ctxt ) = @_;
 
     my $publicationid = $self->param('publication_id');
-    return 0 unless $publicationid;
+    unless ( $publicationid ) {
+        my $publicationname   = $self->decode( $self->param('publication_name') );
+        my $publicationvolume = $self->decode( $self->param('publication_volume') );
+        #XIMS::Debug( 1, "publicationname: $publicationname publicationvolume: $publicationvolume" ); 
+        if ( $publicationname and $publicationvolume ) {
+            my $publication = XIMS::VLibPublication->new( name   => $publicationname,
+                                                          volume => $publicationvolume );
+            #use Data::Dumper; XIMS::Debug( 1, Dumper( $publication ) );
+            if ( $publication and $publication->id() ) {
+                $publicationid = $publication->id();
+                #XIMS::Debug( 1, "secondary lookup on publicationid returned: $publicationid" );
+            }
+            else { return 0; }
+        } 
+        else { return 0; }
+    }
+
 
     $ctxt->properties->content->getformatsandtypes( 1 );
 
