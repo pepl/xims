@@ -33,6 +33,59 @@ use Class::MethodMaker
 ##
 #
 # SYNOPSIS
+#    XIMS::ObjectType->new( %args );
+#
+# PARAMETER
+#    %args: If $args{id} or $args{name} or $args{fullname} is given, a lookup of an already
+#           existing object will be tried. Otherwise, an object blessed
+#           into the caller's object class with the specific resource
+#           type properties given in %args will be returned.
+#
+# RETURNS
+#    $object: XIMS::ObjectType instance
+#
+# DESCRIPTION
+#    Constructor for XIMS object types which may be looked up
+#    by 'id', 'name', or 'fullname'. If 'name' is given as look up key and two object types
+#    with the same 'name' but a different 'fullname' exist, undef is returned. You will have
+#    to use 'fullname' in such cases.
+#
+sub new {
+    my $proto = shift;
+    my $class = ref( $proto ) || $proto;
+    my %args = @_;
+
+    my $self = bless {}, $class;
+
+    if ( scalar( keys(%args)) > 0 ) {
+        if ( defined( $args{id} ) or defined( $args{name} ) or defined( $args{fullname} ) ) {
+            $args{name} = ( split /::/, $args{fullname} )[-1] if defined( $args{fullname} );
+            my @real_ot = $self->data_provider->getObjectType( %args );
+            if ( scalar @real_ot == 1 ) {
+               $self->data( %{$real_ot[0]} );
+            }
+            elsif ( defined( $args{fullname} ) ) {
+                my @ids = map { $_->{'objecttype.id'} } @real_ot;
+                my @ots = $self->data_provider->object_types( id => \@ids );
+                foreach my $ot ( @ots ) {
+                    return $ot if $ot->fullname() eq $args{fullname};
+                }
+            }
+            else {
+                XIMS::Debug( 2, "ambigous object type lookup. try looking up using 'fullname'" );
+                return undef;
+            }
+        }
+        else {
+            $self->data( %args );
+        }
+    }
+    return $self;
+}
+
+##
+#
+# SYNOPSIS
 #    my $fullname = $objecttype->fullname();
 #
 # PARAMETER
