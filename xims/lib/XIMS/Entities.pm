@@ -105,7 +105,7 @@ sub Version { $VERSION; }
  # Some extra Latin 1 chars that are listed in the HTML3.2 draft (21-May-96)
  copy   => '©',  # copyright sign
  reg    => '®',  # registered sign
- nbsp   => "\240", # non breaking space
+ nbsp   => "&#160;", # non breaking space
 
  # Additional ISO-8859/1 entities listed in rfc1866 (section 14)
  iexcl  => '¡',
@@ -309,11 +309,12 @@ sub decode
     # i know this is ugly, show me a better solution... :-(
     for (@$array) {
 	s/(&\#(\d+);?)/( $2 <255 and $2 != 34  and $2 != 38 and $2 != 39
-                         and $2 != 60 and $2 != 62
+                         and $2 != 60 and $2 != 62 and $2 != 160
                        ) ? chr($2) : $1/eg;
 	s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2); ( $c <255 and $c != 34
                                                     and $c != 38 and $c != 39
                                                     and $c != 60 and $c != 62
+                                                    and $c != 160
                                                   ) ? chr($c) : $1/eg;
 	s/(&(\w+);?)/$entity2char{$2} || $1/eg;
     }
