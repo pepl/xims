@@ -63,10 +63,16 @@ sub event_download {
     $filename =~ s/\.[^\.]*$//;
     my $mime_type = "text/". lc $type;
     if ( $type =~ /Excel/i ) {
-        $body = join("\t",split(",",$ctxt->object->body()));
+        # export each tan in a single row, therefore \n
+        $body = join("\n",split(",",$ctxt->object->body()));
         my $df = XIMS::DataFormat->new( name => 'XLS' );
         $filename .= '.' . $df->suffix;
         $mime_type = $df->mime_type;
+    }
+    elsif ( $type =~ /TXT/i ) {
+        # export each tan in a single row, therefore \n
+        $body = join("\r\n",split(",",$ctxt->object->body()));
+        $filename .= '.' . lc $type;
     }
     else {
         $filename .= '.' . lc $type;
