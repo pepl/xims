@@ -21,7 +21,7 @@
             <xsl:apply-templates select="abstract"/>
         </h3>
         <br />
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST" style="margin-left:5px; margin-bottom: 0px;">
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" style="margin-left:5px; margin-bottom: 0px;">
         <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
             <xsl:if test="user_privileges/create">
                 <input type="submit" name="create" value="{$i18n/l/Create_topic}" class="control" /><br /><br />

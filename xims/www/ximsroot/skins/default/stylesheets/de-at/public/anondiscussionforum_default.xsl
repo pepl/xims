@@ -49,7 +49,7 @@
 
         <p>
             <xsl:if test="user_privileges/create">
-              <form action="{$xims_box}{$goxims_content}" method="POST" style="margin-bottom: 0;">
+              <form action="{$xims_box}{$goxims_content}" method="GET" style="margin-bottom: 0;">
                 <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
                 <input type="hidden" name="id" value="{@id}" />
                 <input type="submit" name="create" value="Create new topic" class="control" /><br /><br />
