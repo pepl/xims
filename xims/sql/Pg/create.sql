@@ -285,6 +285,25 @@ COMMENT ON column ci_object_types.redir_to_self
         IS 'redir_to_self indicates whether redirection after editing should go to the object self or to the parent object'
 ;
 
+-- Add table for the questionnaire results
+\echo creating table 'ci_questionnaire_results'
+CREATE TABLE ci_questionnaire_results
+  (document_id      INTEGER      NOT NULL
+                                 REFERENCES ci_documents ( id )
+                                 ON DELETE RESTRICT
+                                 ON UPDATE RESTRICT
+                                 NOT DEFERRABLE
+                                 INITIALLY IMMEDIATE
+
+  ,tan              VARCHAR(50)  NOT NULL
+  ,question_id      VARCHAR(50)  NOT NULL
+  ,answer           TEXT
+  ,answer_timestamp TIMESTAMP    DEFAULT now()    NOT NULL
+  ,id               SERIAL       PRIMARY KEY
+);
+REVOKE ALL ON TABLE ci_questionnaire_results FROM PUBLIC;
+GRANT ALL ON TABLE ci_questionnaire_results TO xims;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE ci_questionnaire_results TO ximsrun;
 
 \echo creating view ci_content_loblength...
 CREATE VIEW ci_content_loblength (
@@ -385,7 +404,7 @@ SELECT  c.binfile
 
 --functions as compatability-wrappers for Oracles vs. PostgreSQL
 --one for each sequence :-/
-\echo creat functions....
+\echo creating functions....
 CREATE FUNCTION ci_bookmarks_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
             RETURN nextval(\'ci_bookmarks_id_seq\');
@@ -454,6 +473,13 @@ CREATE FUNCTION ci_mime_aliases_id_seq_nval() RETURNS INTEGER
             RETURN nextval(\'ci_mime_type_aliases_id_seq\');
            END;'
        LANGUAGE 'plpgsql'
+;
+
+CREATE FUNCTION ci_questionnaire_results_id_seq_nval() RETURNS INTEGER
+    AS 'BEGIN
+          RETURN nextval(\'ci_questionnaire_results_id_seq\');
+        END;'
+    LANGUAGE 'plpgsql'
 ;
 
 -- we have a user 'xims' who OWNS the db and its
