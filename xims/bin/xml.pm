@@ -71,10 +71,14 @@ sub event_edit {
 
 sub event_store {
     XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
+    my ( $self, $ctxt, $initstorealreadyrun ) = @_;
 
-    return 0 unless $self->init_store_object( $ctxt )
-                    and defined $ctxt->object();
+    # hack not to run init_store_object() twice. with the second run
+    # attributes are erased...still have to check for reason
+    unless ( $initstorealreadyrun ) {
+        return 0 unless $self->init_store_object( $ctxt )
+                        and defined $ctxt->object();
+    }
 
     my $body = $self->param( 'body' );
     if ( defined $body and length $body ) {
