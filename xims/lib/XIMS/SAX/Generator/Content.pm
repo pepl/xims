@@ -38,10 +38,13 @@ sub prepare {
     $self->{FilterList} = [];
 
     my $doc_data = { context => {} };
-    $doc_data->{context}->{session} = {$ctxt->session->data()};
-    $doc_data->{context}->{session}->{user} = {$ctxt->session->user->data()};
-    my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
-    $doc_data->{context}->{session}->{public_user} = 1 if defined $publicusername;
+
+    if ( $ctxt->session() ) {
+        $doc_data->{context}->{session} = {$ctxt->session->data()};
+        $doc_data->{context}->{session}->{user} = {$ctxt->session->user->data()} if defined $ctxt->session->user;
+        my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
+        $doc_data->{context}->{session}->{public_user} = 1 if defined $publicusername;
+    }
 
     # fun with content objects
     if ( $ctxt->object() ) {
@@ -77,10 +80,11 @@ sub prepare {
         $object_types{$ctxt->object->object_type_id()} = 1;
         $data_formats{$ctxt->object->data_format_id()} = 1;
 
-        # add the user's privs.
-        my %userprivs = $ctxt->session->user->object_privileges( $ctxt->object() );
-        $doc_data->{context}->{object}->{user_privileges} = {%userprivs} if ( grep { defined $_ } values %userprivs );
-
+        if ( $ctxt->session() ) {
+            # add the user's privs.
+            my %userprivs = $ctxt->session->user->object_privileges( $ctxt->object() );
+            $doc_data->{context}->{object}->{user_privileges} = {%userprivs} if ( grep { defined $_ } values %userprivs );
+        }
         $self->_set_formats_and_types( $ctxt, $doc_data, \%object_types, \%data_formats);
     }
     # end content-object joy
