@@ -48,20 +48,24 @@
 </xsl:template>
 
 <xsl:template name="markednew">
-    <!-- the default should be reverted to be 'true' later with a new content-base -->
-    Mark object as new:
-    <input name="markednew" type="radio" value="true">
-      <xsl:if test="marked_new = '1'">
-        <xsl:attribute name="checked">checked</xsl:attribute>
-      </xsl:if>
-    </input>Yes
-    <input name="markednew" type="radio" value="false">
-      <xsl:if test="marked_new != '1'">
-        <xsl:attribute name="checked">checked</xsl:attribute>
-      </xsl:if>
-    </input>No
-    <xsl:text>&#160;</xsl:text>
-    <a href="javascript:openDocWindow('markednew')" class="doclink">(?)</a>
+    <tr>
+        <td colspan="3">
+            <!-- the default should be reverted to be 'true' later with a new content-base -->
+            Mark object as new:
+            <input name="markednew" type="radio" value="true">
+              <xsl:if test="marked_new = '1'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>Yes
+            <input name="markednew" type="radio" value="false">
+              <xsl:if test="marked_new != '1'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input>No
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('markednew')" class="doclink">(?)</a>
+        </td>
+    </tr>
 </xsl:template>
 
 <xsl:template name="trytobalance">
@@ -83,20 +87,24 @@
 </xsl:template>
 
 <xsl:template name="expandrefs">
-    <!-- the default should be reverted to be 'true' later with a new content-base -->
-    Automaticly export Objects refered by this object:
-    <input name="expandrefs" type="radio" value="true">
-      <xsl:if test="attributes/expandrefs = '1'">
-        <xsl:attribute name="checked">checked</xsl:attribute>
-      </xsl:if>
-    </input>Yes
-    <input name="expandrefs" type="radio" value="false">
-      <xsl:if test="attributes/expandrefs != '1'">
-        <xsl:attribute name="checked">checked</xsl:attribute>
-      </xsl:if>
-    </input>No
-    <xsl:text>&#160;</xsl:text>
-    <a href="javascript:openDocWindow('expandrefs')" class="doclink">(?)</a>
+    <tr>
+        <td colspan="3">
+        <!-- the default should be reverted to be 'true' later with a new content-base -->
+        Automaticly export Objects refered by this object:
+        <input name="expandrefs" type="radio" value="true">
+          <xsl:if test="attributes/expandrefs = '1'">
+            <xsl:attribute name="checked">checked</xsl:attribute>
+          </xsl:if>
+        </input>Yes
+        <input name="expandrefs" type="radio" value="false">
+          <xsl:if test="attributes/expandrefs != '1'">
+            <xsl:attribute name="checked">checked</xsl:attribute>
+          </xsl:if>
+        </input>No
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('expandrefs')" class="doclink">(?)</a>
+        </td>
+    </tr>
 </xsl:template>
 
 <xsl:template name="cancelaction">
@@ -151,14 +159,17 @@
 </xsl:template>
 
 <xsl:template name="head-create">
+    <xsl:param name="with_wfcheck" select="'no'"/>
     <head>
         <title>Create new <xsl:value-of select="$objtype"/> in <xsl:value-of select="$absolute_path"/> - XIMS</title>
-           <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-           <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-           <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <xsl:if test="$with_wfcheck = 'yes'">
+                <xsl:call-template name="jsopenwfwindow"/>
+            </xsl:if>
     </head>
 </xsl:template>
-
 
 <xsl:template name="head-create_discussionforum">
     <head>
@@ -224,29 +235,11 @@
     <head>
         <title>Edit <xsl:value-of select="$objtype"/> '<xsl:value-of select="title"/>' in <xsl:value-of select="$parent_path"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript">
-            <xsl:text>&#160;</xsl:text>
-        </script>
-        <script type="text/javascript">
-            <![CDATA[
-            function openTestWFWindow() {
-                var testwfwindow = window.open('','windowName',"resizable=yes,scrollbars=yes,width=550,height=400,screenX=50,screenY=200");
-                var body = document.forms['eform'].body.value;
-                testwfwindow.document.writeln('<html><head>');
-                testwfwindow.document.writeln('<link rel="stylesheet" href="]]><xsl:value-of select="concat($ximsroot,'stylesheets/',$defaultcss)"/><![CDATA[" type="text/css" />');
-                testwfwindow.document.writeln('<\/head><body onLoad="document.the_form.submit()">');
-                testwfwindow.document.writeln('<form name="the_form" action="]]><xsl:value-of select="concat($goxims_content,$absolute_path)"/><![CDATA[" method="post">');
-                testwfwindow.document.writeln('<input type="submit" name="test_wellformedness" value="Go!" size="1" class="control" \/>');
-                testwfwindow.document.writeln('<textarea name="body" cols="1" rows="1" readonly="readonly" style="visibility:hidden;">' + body + '<\/textarea>');
-                testwfwindow.document.writeln("<\/form><\/body><\/html>");
-                // testwfwindow.document.the_form.submit();
-            }
-            ]]>
-        </script>
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="jsopenwfwindow"/>
         <base href="{$xims_box}{$goxims_content}{$parent_path}/"/>
     </head>
 </xsl:template>
-
 
 <xsl:template name="table-create">
     <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0">
@@ -358,7 +351,7 @@
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         </td>
         <td align="right" valign="top">
-            Fields <span style="color:maroon">marked<img src="{$ximsroot}images/spacer_white.gif" alt="with *"/></span> are mandatory!
+            <xsl:call-template name="marked_mandatory"/>
         </td>
     </tr>
 </xsl:template>
@@ -376,7 +369,7 @@
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         </td>
         <td align="right" valign="top">
-            Fields <span style="color:maroon">marked<img src="{$ximsroot}images/spacer_white.gif" alt="with *"/></span> are mandatory!
+            <xsl:call-template name="marked_mandatory"/>
         </td>
     </tr>
 </xsl:template>
@@ -427,7 +420,7 @@
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         </td>
         <td align="right" valign="top">
-            Fields <span style="color:maroon">marked<img src="{$ximsroot}images/spacer_white.gif" alt="with *"/></span> are mandatory!
+            <xsl:call-template name="marked_mandatory"/>
         </td>
     </tr>
     <xsl:call-template name="tr-title-edit"/>
@@ -867,11 +860,29 @@
     </tr>
 </xsl:template>
 
+<xsl:template name="marked_mandatory">
+    Fields <span style="color:maroon">marked<img src="{$ximsroot}images/spacer_white.gif" alt="with *"/></span> are mandatory!
+</xsl:template>
 
 <xsl:template name="without-wysiwyg">
     <a style="margin-left:18px;" href="{$goxims_content}{$absolute_path}?create=1;plain=1;objtype=Document;parid={@id}">Create without WYSIWYG-Editor</a>
 </xsl:template>
 
+<xsl:template name="jsopenwfwindow">
+    <script type="text/javascript">
+        function openTestWFWindow() {
+            var testwfwindow = window.open(&apos;&apos;,&apos;windowName&apos;,&apos;resizable=yes,scrollbars=yes,width=550,height=400,screenX=50,screenY=200&apos;);
+            var body = document.forms[&apos;eform&apos;].body.value;
+            testwfwindow.document.writeln(&apos;&lt;html&gt;&lt;head&gt;&apos;);
+            testwfwindow.document.writeln(&apos;&lt;link rel=&quot;stylesheet&quot; href=&quot;<xsl:value-of select="concat($ximsroot,'stylesheets/',$defaultcss)"/>&quot; type=&quot;text/css&quot; />&apos;);
+            testwfwindow.document.writeln(&apos;&lt;/head&gt;&lt;body onLoad=&quot;document.the_form.submit()&quot;&gt;&apos;);
+            testwfwindow.document.writeln(&apos;&lt;form name=&quot;the_form&quot; action=&quot;<xsl:value-of select="concat($goxims_content,$absolute_path)"/>&quot; method=&quot;post&quot;&gt;&apos;);
+            testwfwindow.document.writeln(&apos;&lt;input type=&quot;submit&quot; name=&quot;test_wellformedness&quot; value=&quot;Go!&quot; size=&quot;1&quot; class=&quot;control&quot; /&gt;&apos;);
+            testwfwindow.document.writeln(&apos;&lt;textarea name=&quot;body&quot; cols=&quot;1&quot; rows=&quot;1&quot; readonly=&quot;readonly&quot; style=&quot;visibility:hidden;&quot;&gt;&apos; + body + &apos;&lt;/textarea&gt;&apos;);
+            testwfwindow.document.writeln(&apos;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;&apos;);
+        }
+    </script>
+</xsl:template>
 
 <xsl:template name="preview-image">
     <p style="padding-left:20px;">
