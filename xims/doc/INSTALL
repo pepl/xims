@@ -123,9 +123,19 @@ NOTE: you'll need to provide dsn, user and pwd for a testaccess;
 NOTE:   Documents get published under /www/ximspubroot, so that directory must be writable
         for the Apache user; /www/ximsroot should be read-only for Apache.
 
-9) Edit /usr/local/xims/lib/XIMS/Config.pm to suit your needs.
+9) Edit /usr/local/xims/lib/XIMS/Config.pm to suit your needs and adjust access rights.
 
         DBUser, DBName, DBPasswd, DBEncoding
+        
+        Config.pm should only be readable for the Apache user. In the case of "nobody" being
+        the Apache user this could be achieved with the following two commands:
+
+        chown nobody.nobody /usr/local/xims/lib/XIMS/Config.pm
+        chmod 400 /usr/local/xims/lib/XIMS/Config.pm
+
+NOTE:   The syntax is plattform dependant. For example you need to use
+        chown nobody:nobody /usr/local/xims/lib/XIMS/Config.pm
+        on a Solaris system.
 
 10) Edit and activate /usr/local/xims/conf/ximshttpd.conf
 
