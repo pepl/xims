@@ -38,13 +38,13 @@
                         <dcq:created>
                             <rdf:Description>
                                 <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
-                                <rdf:value><xsl:apply-templates select="creation_time" mode="datetime"/></rdf:value>
+                                <rdf:value><xsl:apply-templates select="creation_time" mode="ISO8601"/></rdf:value>
                             </rdf:Description>
                         </dcq:created>
                         <dcq:modified>
                             <rdf:Description>
                                 <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
-                                <rdf:value><xsl:apply-templates select="last_modification_timestamp" mode="datetime"/></rdf:value>
+                                <rdf:value><xsl:apply-templates select="last_modification_timestamp" mode="ISO8601"/></rdf:value>
                             </rdf:Description>
                         </dcq:modified>
                     </dc:date>

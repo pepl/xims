@@ -24,7 +24,7 @@
         <newsitems>
             <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="{department_id}/ou.xml"/>
             <newsitem id="">
-                <xsl:attribute name="date"><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/></xsl:attribute>
+                <xsl:attribute name="date"><xsl:apply-templates select="last_publication_timestamp" mode="ISO8601"/></xsl:attribute>
                 <title>
                     <xsl:value-of select="title"/>
                 </title>
@@ -36,7 +36,7 @@
                 </story>
 
                 <!--
-                the image is stored as a id and will be resolved as a path not a object. 
+                the image is stored as a id and will be resolved as a path not a object.
                 to get the title information for the image is therefore quite difficult
                 -->
                 <image url="{image_id}" alt="..." />
