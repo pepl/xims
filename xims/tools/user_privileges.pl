@@ -100,7 +100,8 @@ else {
 
 if ( $successful and $args{r} ) {
     my $desc_privmask;
-    foreach my $desc ( $object->descendants_granted( User => $user, marked_deleted => undef ) ) {
+    my $iterator = $object->descendants_granted( User => $user, marked_deleted => undef );
+    while ( my $desc = $iterator->getNext() ) {
         $desc_privmask = $user->object_privmask( $desc );
         $path = $desc->location_path();
         if ( $desc_privmask & XIMS::Privileges::GRANT() ) {
