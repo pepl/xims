@@ -14,7 +14,7 @@ use XIMS::AbstractClass;
 @ISA = qw( XIMS::AbstractClass );
 
 use Digest::MD5 qw( md5_hex );
-use Data::Dumper;
+#use Data::Dumper;
 
 BEGIN {
      @Fields = @{XIMS::Names::property_interface_names('User')};

@@ -3,16 +3,15 @@ use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::AnonDiscussionForumContrib;
-use Data::Dumper;
+#use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 17;
 }
 
 # make a simple one, test that the objecttype and data_formats are set by the constructor
 
 ok( XIMS::AnonDiscussionForumContrib::__limit_string_length('   1234567890    ', 5 ) eq '12345' );
-
 
 my $o = XIMS::AnonDiscussionForumContrib->new();
 
