@@ -8,6 +8,6 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="common.xsl"/>
-    <xsl:import href="../vlibraryitem_sdocbookxml_default.xsl"/>
+    <xsl:import href="../vlibraryitem_docbookxml_default.xsl"/>
     <xsl:output method="html" encoding="utf-8"/>
 </xsl:stylesheet>
