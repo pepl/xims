@@ -1,3 +1,66 @@
+0.5 to 0.6
+-------------
+
+  * Unpack the contents of xims-0.6.tar.gz to your target installation
+    directory.
+
+    For example:
+    [root@host local]# cd /usr/local
+    [root@host local]# tar xzpvf xims-0.6.tar.gz
+
+
+  * Migrate Config.pm.
+
+    Either copy the values manually from your old Config.pm, or let
+    "make config" do the trick.
+
+    For example:
+    [root@host local]# cd xims-0.6
+    [root@host xims-0.5]# XIMS_PREFIX='/usr/local/xims-0.6'; export XIMS_PREFIX
+      # sh-like shell (sh, ksh, bash, zsh)
+    [root@host xims-0.5]# setenv XIMS_PREFIX '/usr/local/xims-0.6'
+      # csh-like shell (csh, tcsh).
+    [root@host xims-0.5]# make config
+
+
+  * Update database (no existing content will be erased nor damaged)
+
+    Run the SQL scripts in the "upgrade/0.5_0.6" directory.
+
+    For example:
+
+    PostgreSQL:
+    [root@host 0.5_0.6]# psql -U xims -f upgrade-pg.sql
+    [root@host 0.5_0.6]# psql -U xims -f upgrade-pg_eval.sql
+
+    Oracle:
+    [root@host 0.5_0.6]# sqlplus user@db @upgrade-oracle.sql
+    [root@host 0.5_0.6]# sqlplus user@db @upgrade-ora_eval.sql
+
+
+  * Rename DocBookXML to sDocBookXML using dkb_to_sdbk.pl
+
+    [root@host 0.5_0.6]# perl dkb_to_sdbk.pl
+
+
+  * Update Portlet dataformat and add suffix to Portlets
+
+    [root@host 0.5_0.6]# perl upgrade_portlets.pl
+
+
+  * Move published content and activate xims-0.6
+
+    - Shutdown Apache or prevent XIMS logins
+    - Move everything under your old "ximspubroot" directory besides
+        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        to your new "ximspubroot" directory.
+    - Replace the link to xims-0.5 with a link to xims-0.6
+      For example:
+        [root@host local]# cd /usr/local
+        [root@host local]# rm xims && ln -s xims-0.6 xims
+    - (Re)Start Apache
+
+
 0.1.1 to 0.5
 -------------
 
