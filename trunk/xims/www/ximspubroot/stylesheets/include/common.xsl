@@ -20,7 +20,7 @@
 </xsl:template>
 
 <xsl:template name="copyfooter">
-    © 2002-2003 <a href="http://xims.info/">The XIMS Project</a>,<br/> <a href="http://www.uibk.ac.at/">University of Innsbruck</a>
+    © 2002-2004 <a href="http://xims.info/">The XIMS Project</a>,<br/> <a href="http://www.uibk.ac.at/">University of Innsbruck</a>
 </xsl:template>
 
 <xsl:template name="powerdbyfooter">
