@@ -152,6 +152,9 @@ sub role_ids {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
+    my @role_ids;
+
+    return @{$self->{role_ids}} if exists $self->{role_ids};
 
     my @current_ids = ();
     push @current_ids, $self->id();
@@ -180,7 +183,11 @@ sub role_ids {
         }
     }
 
-    return keys %id_list;
+    @role_ids = keys %id_list;
+    # cache role ids
+    $self->{role_ids} = \@role_ids;
+
+    return @role_ids;
 }
 
 sub roles_granted {
