@@ -21,18 +21,8 @@ sub registerEvents {
     XIMS::Debug( 5, "called");
     $_[0]->SUPER::registerEvents(
         qw(
-          create
-          edit
-          store
-          obj_acllist
-          obj_aclgrant
-          obj_aclrevoke
-          publish
-          publish_prompt
-          unpublish
           add_portlet
           rem_portlet
-          test_wellformedness
           )
         );
 }

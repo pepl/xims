@@ -19,18 +19,20 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 
 sub registerEvents {
     XIMS::Debug( 5, "called");
-    $_[0]->SUPER::registerEvents(
-        qw(
-          create
-          edit
-          store
-          obj_acllist
-          obj_aclgrant
-          obj_aclrevoke
-          publish
-          publish_prompt
-          unpublish
-          test_wellformedness
+    my $self = shift;
+    return $self->SUPER::registerEvents(
+        (
+          'create',
+          'edit',
+          'store',
+          'obj_acllist',
+          'obj_aclgrant',
+          'obj_aclrevoke',
+          'publish',
+          'publish_prompt',
+          'unpublish',
+          'test_wellformedness',
+          @_
           )
         );
 }
