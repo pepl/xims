@@ -595,19 +595,32 @@ sub get_descendant_infos {
 
 sub location_path {
     my $self = shift;
-    my $obj;
+    my $document_id;
 
     if ( scalar( @_ ) == 1 and ref( $_[0] ) ) {
-        $obj = shift;
+        my $obj = shift;
+        $document_id = $obj->document_id();
     }
     else {
-        $obj = XIMS::Object->new( @_ );
-        return undef unless $obj and $obj->id;
+        my %args = @_;
+        if ( defined $args{document_id} ) {
+            $document_id = $args{document_id};
+        }
+        elsif ( defined $args{id} ) {
+            my $data = $self->{dbh}->fetch_select( table => 'ci_content',
+                                                   columns => 'document_id',
+                                                   criteria => { id => $args{id} } );
+            return undef unless ref( $data ) and scalar( @{$data} > 0);
+            $document_id = $data->[0]->{document_id};
+        }
+        else {
+            return undef;
+        }
     }
 
     my $data = $self->{dbh}->fetch_select( table   =>  'ci_documents',
                                            columns =>  'location_path',
-                                           criteria => { id => $obj->document_id() } );
+                                           criteria => { id => $document_id } );
 
     return undef unless ref( $data ) and scalar( @{$data} > 0);
     return $data->[0]->{location_path};
