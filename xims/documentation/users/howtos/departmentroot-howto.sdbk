@@ -37,7 +37,7 @@
     <section>
         <title>What is a Department Root?</title>
 
-        <para>A Department Root is a special kind of folder which allows a <ulink url="/xims-doku/xims-user&#39;s-reference.dkb#site">site</ulink> to be
+        <para>A Department Root is a special kind of folder which allows a <ulink url="../xims-user_s-reference.sdbk#site">site</ulink> to be
         hierarchically organized into several content domains for organizational units. Department Roots hold several properties which are inherited to their
         child objects. Such properties include the department&#39;s portlets, a department-specific image or -stylesheet to be used for displaying the published
         objects.</para>
