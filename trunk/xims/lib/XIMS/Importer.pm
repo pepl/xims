@@ -6,7 +6,6 @@ package XIMS::Importer;
 
 use strict;
 use XIMS;
-use XIMS::DataProvider;
 use XIMS::Object; # just to be failsafe
 use XIMS::ObjectPriv;
 use XIMS::User;
@@ -42,7 +41,6 @@ sub new {
     $data{User}       = $param{User}       if defined $param{User};
 
     # optional parameters
-    $data{Provider}   = $param{Provider}   if defined $param{Provider};
     $data{ObjectType} = $param{ObjectType} if defined $param{ObjectType};
     $data{DataFormat} = $param{DataFormat} if defined $param{DataFormat};
 
@@ -59,15 +57,7 @@ sub new {
     return $self;
 }
 
-sub data_provider {
-    my $self = shift;
-    my $dp = shift;
-
-    return $self->{Provider} if defined $self->{Provider};
-    $dp = XIMS::DataProvider->new() unless( defined $dp and ref($dp) and $dp->isa('XIMS::DataProvider') );
-    $self->{Provider} = $dp;
-    return $dp;
-}
+sub data_provider { XIMS::DATAPROVIDER() }
 
 sub object {
     my $self = shift;
@@ -114,8 +104,8 @@ sub data_format {
     }
 }
 
-sub user { return shift->{User} }
 sub parent { return shift->{Parent} }
+sub user { return shift->{User} }
 
 sub object_from_object_type {
     my $self = shift;
