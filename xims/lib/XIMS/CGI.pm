@@ -1367,7 +1367,13 @@ sub event_publish {
         $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objids);
     }
 
-    if ( $exporter->publish( Object => $ctxt->object ) ) {
+    my $no_dependencies_update = 1;
+    if ( defined $self->param( "update_dependencies" )
+        and $self->param( "update_dependencies" ) == 1 ) {
+        $no_dependencies_update = undef;
+    }
+
+    if ( $exporter->publish( Object => $ctxt->object, no_dependencies_update => $no_dependencies_update ) ) {
         XIMS::Debug( 6, "object published!" );
         if ( $published > 0 ) {
             $ctxt->session->message("Object '" .  $ctxt->object->title() . "' together with $published related objects published.");
@@ -1414,7 +1420,13 @@ sub event_unpublish {
                                         User     => $ctxt->session->user
                                       );
 
-    if ( $exporter->unpublish( Object => $ctxt->object ) ) {
+    my $no_dependencies_update = 1;
+    if ( defined $self->param( "update_dependencies" )
+        and $self->param( "update_dependencies" ) == 1 ) {
+        $no_dependencies_update = undef;
+    }
+
+    if ( $exporter->unpublish( Object => $ctxt->object, no_dependencies_update => $no_dependencies_update ) ) {
         XIMS::Debug( 6, "object unpublished!" );
         $ctxt->session->message("Object '" .  $ctxt->object->title() . "' unpublished.");
         $ctxt->properties->application->styleprefix('common_publish');
