@@ -167,14 +167,17 @@ if ( $> > 0 ) {
 if ( $Conf{DBdsn} eq 'Pg' ) {
     print "\n Checking for DBD::Pg...";
     eval{ require DBD::Pg;};
+    
     if ( $@ ) {
         print "\nCould not load DBD::Pg. Perhaps it is not installed.\n",
               "Press enter to let cpan_install.pl try installing it.\n";<STDIN>;
-        die "Could not install DBD::Pg, you have to install it manually!\n\n"
-            unless system("$prefix/xims/tools/cpan_install.pl","-m","DBD::Pg") == 0;
+
+        if ( system("$^X $prefix/xims/tools/cpan_install.pl","-m","DBD::Pg") != 0 ) {
+            die "Could not install DBD::Pg, you have to install it manually!\n\n";
+        }
     }
     else {
-     print "  ok\n"
+        print "  ok\n";
     }
 }
 elsif ( $Conf{DBdsn} eq 'Oracle' ) {
@@ -183,11 +186,13 @@ elsif ( $Conf{DBdsn} eq 'Oracle' ) {
     if ( $@ ) {
         print "\nCould not load DBD::Oracle. Perhaps it is not installed.\n",
               "Press enter to let cpan_install.pl try installing it.\n";<STDIN>;
-        die "Could not install DBD::Oracle, you have to install it manually!\n\n"
-            unless system("$prefix/xims/tools/cpan_install.pl","-m","DBD::Oracle") == 0;
+
+        if ( system("$^X $prefix/xims/tools/cpan_install.pl","-m","DBD::Oracle") != 0 ) {
+            die "Could not install DBD::Oracle, you have to install it manually!\n\n";
+        }
     }
     else {
-        print "  ok\n"
+        print "  ok\n";
     }
 }
 
