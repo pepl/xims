@@ -60,13 +60,13 @@ PACKAGE BODY ci_util IS
     BEGIN
 
       UPDATE ci_documents
-          SET location_path = '/root'
+          SET location_path = ''
       WHERE id = 1;
 
       FOR tree_rec IN tree_cur LOOP
           IF tree_rec.id != 1 THEN
               UPDATE ci_documents
-                  SET location_path = (SELECT REPLACE(location_path,'/root','')||'/'||tree_rec.location FROM ci_documents WHERE id = tree_rec.parent_id)
+                  SET location_path = (SELECT location_path||'/'||tree_rec.location FROM ci_documents WHERE id = tree_rec.parent_id)
               WHERE id = tree_rec.id;
           END IF;
       END LOOP;
