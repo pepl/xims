@@ -132,7 +132,9 @@ sub httpd_conf {
     elsif ( -f '/etc/httpd.conf' ) {
         $self->{ApacheHttpdConf} = '/etc/httpd.conf';
     }
-
+    elsif ( -f '/usr/local/etc/apache/httpd.conf' ) {                  # FreeBSD-Port www/apache
+        $self->{ApacheHttpdConf} = '/usr/local/etc/apache/httpd.conf';
+    }
     return $self->{ApacheHttpdConf};
 }
 
@@ -149,10 +151,13 @@ sub parse_httpd_conf {
         if ( /^\s*Group\s+["|']?([\w.!@#$%^&*()+=-]+)["|']?/) {
             $self->{ApacheGroup} = $1;
         }
-        if ( /^\s*Include\s+["|']?\/usr\/local\/xims\/conf\/ximshttpd.conf["|']?/) {
+
+        # ZEYA: room for improvement here:
+        #       if the XIMS_PREFIX changes, the installer wont update these two...
+        if ( /^\s*Include\s+["|']?\/\S+\/xims\/conf\/ximshttpd.conf["|']?/) {
             $self->{ximshttpdconf} = 1;
         }
-        if ( /^\s*PerlRequire\s+["|']?\/usr\/local\/xims\/conf\/ximsstartup.pl["|']?/) {
+        if ( /^\s*PerlRequire\s+["|']?\/\S+\/xims\/conf\/ximsstartup.pl["|']?/) {
             $self->{ximsstartuppl} = 1;
         }
 
