@@ -495,17 +495,10 @@ sub find_object_id {
         $tables .= ', ci_object_privs_granted';
     }
 
-    #my $sh = delete $args{start_here};
-    #my $descendant_ids_lvls;
-    #if ( defined $sh ) {
-    #    # an alternative, better scaling implementation instead of fetching
-    #    # the descendant ids would be the following:
-    #    #   - create a 'location_path' column in ci_documents
-    #    #   - fill it on updates and inserts by a trigger on 'location' and 'parent_id'
-    #    #   - add a condition like "AND location_path LIKE '".$start_from->location_path."%'
-    #    $descendant_ids_lvls = $self->get_descendant_id_level( parent_id => $sh );
-    #    $args{document_id} = $descendant_ids_lvls->[0]->[0];
-    #}
+    my $start_here = delete $args{start_here};
+    if ( defined $start_here and ref $start_here and $start_here->id() ) {
+        $param{criteria} .= "AND location_path LIKE '". $start_here->location_path() . "%'";
+    }
 
     if ( scalar keys %args > 0 ) {
         my ( $sql, @params ) = $self->_sqlwhere_from_hashgroup( %args );

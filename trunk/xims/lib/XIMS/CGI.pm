@@ -1847,7 +1847,7 @@ sub event_search {
                         offset => $offset,
                         order => $qbr->{order},
                         );
-            $param{start_here} = $ctxt->object->document_id() if defined $self->param('start_here');
+            $param{start_here} = $ctxt->object() if defined $self->param('start_here');
 
             my @objects = $ctxt->object->find_objects_granted( %param );
 
@@ -1855,7 +1855,9 @@ sub event_search {
                  $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
-                my $count = $ctxt->object->find_objects_granted_count( criteria => $qbr->{criteria} );
+                %param = ( criteria => $qbr->{criteria} );
+                $param{start_here} = $ctxt->object() if defined $self->param('start_here');
+                my $count = $ctxt->object->find_objects_granted_count( %param );
                 my $message = "Query returned $count objects.";
                 $message .= " Displaying objects " . ($offset+1) if $count >= $rowlimit;
                 $message .= " to " . ($offset+$rowlimit) if ( $offset+$rowlimit <= $count );
