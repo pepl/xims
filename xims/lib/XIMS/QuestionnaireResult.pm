@@ -89,8 +89,8 @@ sub get_answer_count {
     my $self = shift;
     my $questionnaire_id = shift;
     my $question_id = shift;
-    my $answer = shift;
-
+    my $answer = XIMS::decode(shift);
+    
     my $sql = "SELECT count(*) AS answercount FROM ci_questionnaire_results WHERE document_id = ? AND question_id = ? AND answer= ? ";
     my $answer_count = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id, $question_id, $answer ] );
 
