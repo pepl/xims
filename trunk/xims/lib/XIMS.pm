@@ -336,5 +336,26 @@ sub privmask_to_hash {
     return \%privs;
 }
 
+##
+#
+# SYNOPSIS
+#    system_privmask_to_hash( $privmask )
+#
+# PARAMETER
+#    $privmask: integer bitmask
+#
+# RETURNS
+#    Returns a hash-reference with the corresponding XIMS::Privileges::System to $privmask as keys set to 1
+#
+# DESCRIPTION
+#    Used to get a more readable representation of the integer bitmask
+#
+sub system_privmask_to_hash {
+    my $privmask = shift;
+    no strict 'refs';
+    my %privs = map { (lc($_), 1) } grep { $privmask & &{"XIMS::Privileges::System::$_"} } XIMS::Privileges::System::list();
+    return \%privs;
+}
+
 
 1;
