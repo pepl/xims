@@ -410,11 +410,11 @@
                         <xsl:choose>
                             <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
                                 <xsl:attribute name="title">This object has last been published at <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/> by <xsl:call-template name="lastpublisherfullname"/> at <xsl:value-of select="concat($publishingroot,$absolute_path)"/></xsl:attribute>
-                                <xsl:attribute name="src"><xsl:value-of select="$ximsroot"/>images/skins/<xsl:value-of select="$currentskin"/>/status_pub.png</xsl:attribute>
+                                <xsl:attribute name="src"><xsl:value-of select="$ximsroot"/>skins/<xsl:value-of select="$currentskin"/>/images/status_pub.png</xsl:attribute>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:attribute name="title">This object has been modified since the last publication by <xsl:call-template name="lastpublisherfullname"/> at <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>.</xsl:attribute>
-                                <xsl:attribute name="src"><xsl:value-of select="$ximsroot"/>images/skins/<xsl:value-of select="$currentskin"/>/status_pub_async.png</xsl:attribute>
+                                <xsl:attribute name="src"><xsl:value-of select="$ximsroot"/>skins/<xsl:value-of select="$currentskin"/>/images/status_pub_async.png</xsl:attribute>
                             </xsl:otherwise>
                         </xsl:choose>
                     </img>
