@@ -586,11 +586,13 @@ sub update {
     my $user = delete $args{User} || $self->{User};
     die "Updating an object requires an associated User" unless defined( $user );
 
-    $self->last_modified_by_id( $user->id() );
-    $self->last_modified_by_firstname( $user->firstname() );
-    $self->last_modified_by_middlename( $user->middlename() );
-    $self->last_modified_by_lastname( $user->lastname() );
-    $self->last_modification_timestamp( $self->data_provider->db_now() );
+    unless ( exists $args{no_modder} ) {
+        $self->last_modified_by_id( $user->id() );
+        $self->last_modified_by_firstname( $user->firstname() );
+        $self->last_modified_by_middlename( $user->middlename() );
+        $self->last_modified_by_lastname( $user->lastname() );
+        $self->last_modification_timestamp( $self->data_provider->db_now() );
+    }
 
     return $self->data_provider->updateObject( $self->data() );
 }
@@ -994,36 +996,76 @@ sub language {
 
 sub creator {
     my $self = shift;
-    return $self->{Creator} if defined $self->{Creator};
-    return undef unless $self->created_by_id();
-    my $creator = XIMS::User->new( id => $self->created_by_id );
+    my $creator = shift;
+
+    if ( $creator ) {
+        $self->created_by_id( $creator->id() );
+        $self->created_by_firstname( $creator->firstname() );
+        $self->created_by_middlename( $creator->middlename() );
+        $self->created_by_lastname( $creator->lastname() );
+    }
+    else {
+        return $self->{Creator} if defined $self->{Creator};
+        return undef unless $self->created_by_id();
+        $creator = XIMS::User->new( id => $self->created_by_id );
+    }
     $self->{Creator} = $creator;
     return $creator;
 }
 
 sub owner {
     my $self = shift;
-    return $self->{Owner} if defined $self->{Owner};
-    return undef unless $self->owned_by_id();
-    my $owner = XIMS::User->new( id => $self->owned_by_id );
+    my $owner = shift;
+
+    if ( $owner ) {
+        $self->owned_by_id( $owner->id() );
+        $self->owned_by_firstname( $owner->firstname() );
+        $self->owned_by_middlename( $owner->middlename() );
+        $self->owned_by_lastname( $owner->lastname() );
+    }
+    else {
+        return $self->{Owner} if defined $self->{Owner};
+        return undef unless $self->owned_by_id();
+        $owner = XIMS::User->new( id => $self->owned_by_id );
+    }
     $self->{Owner} = $owner;
     return $owner;
 }
 
 sub last_modifier {
     my $self = shift;
-    return $self->{LastModifier} if defined $self->{LastModifier};
-    return undef unless $self->last_modified_by_id();
-    my $modder = XIMS::User->new( id => $self->last_modified_by_id );
+    my $modder = shift;
+
+    if ( $modder ) {
+        $self->last_modified_by_id( $modder->id() );
+        $self->last_modified_by_firstname( $modder->firstname() );
+        $self->last_modified_by_middlename( $modder->middlename() );
+        $self->last_modified_by_lastname( $modder->lastname() );
+    }
+    else {
+        return $self->{LastModifier} if defined $self->{LastModifier};
+        return undef unless $self->last_modified_by_id();
+        $modder = XIMS::User->new( id => $self->last_modified_by_id );
+    }
     $self->{LastModifier} = $modder;
     return $modder;
 }
 
 sub last_publisher {
     my $self = shift;
-    return $self->{LastPublisher} if defined $self->{LastPublisher};
-    return undef unless $self->last_published_by_id();
-    my $pubber = XIMS::User->new( id => $self->last_published_by_id );
+    my $pubber = shift;
+
+    if ( $pubber ) {
+        $self->last_published_by_id( $pubber->id() );
+        $self->last_published_by_firstname( $pubber->firstname() );
+        $self->last_published_by_middlename( $pubber->middlename() );
+        $self->last_published_by_lastname( $pubber->lastname() );
+    }
+    else {
+        return $self->{LastPublisher} if defined $self->{LastPublisher};
+        return undef unless $self->last_published_by_id();
+        $pubber = XIMS::User->new( id => $self->last_published_by_id );
+    }
     $self->{LastPublisher} = $pubber;
     return $pubber;
 }
