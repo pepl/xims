@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Joachim Kargl (Kargl.cc) -->
 <l>
-    <!-- Begin Questionnaire -->
-    <Question>Question</Question>
-    <Answer>Answer</Answer>
-    <Answers>Answers</Answers>
-    <Comment>Comment</Comment>
-    <Alignment>Alignment</Alignment>
-    <Alignement>Alignment</Alignement>
-    <Type>Type</Type>
-    <results>results</results>
-    <close_window>Close window</close_window>
-    <next>Next</next>
-    <start>Begin</start>
-    <TAN_number>Number of TANs in list</TAN_number>
-    <TAN_lists_assigned>Assigned TAN-Lists</TAN_lists_assigned>
-    <Question_number>Number of Questions</Question_number>
-    <Questionnaires_answered_number>Total number of answered questionnaires</Questionnaires_answered_number>
-    <Questionnaires_valid_number>Number of valid answered questionnaires</Questionnaires_valid_number>
-    <Questionnaire_thank_you>Thank you for answering the questions.</Questionnaire_thank_you>
-    <Download>Download</Download>
-    <!-- End Questionnaire -->
+	<!-- Begin Questionnaire -->
+	<Question>Question</Question>
+	<Answer>Answer</Answer>
+	<Answers>Answers</Answers>
+	<Comment>Comment</Comment>
+	<Alignment>Alignment</Alignment>
+	<Alignement>Alignment</Alignement>
+	<Type>Type</Type>
+	<results>results</results>
+	<close_window>Close window</close_window>
+	<next>Next</next>
+	<start>Begin</start>
+	<TAN_number>Number of TANs in list</TAN_number>
+	<TAN_lists_assigned>Assigned TAN-Lists</TAN_lists_assigned>
+	<Question_number>Number of Questions</Question_number>
+	<Questionnaires_answered_number>Total number of answered questionnaires</Questionnaires_answered_number>
+	<Questionnaires_valid_number>Number of valid answered questionnaires</Questionnaires_valid_number>
+	<Questionnaire_thank_you>Thank you for answering the questions.</Questionnaire_thank_you>
+	<Download>Download</Download>
+	<Add_TAN_List>Add TAN-List</Add_TAN_List>
+	<Remove_TAN_List>Remove TAN-List</Remove_TAN_List>
+	<browse_TAN_List>Browse for TAN-List</browse_TAN_List>
+	<Add_Question>Add Question</Add_Question>
+	<Edit_Question>Edit Question</Edit_Question>
+	<Copy_question>Copy question</Copy_question>
+	<Delete_Question>Delete Question</Delete_Question>
+	<Add_Subquestion>Add Subquestion</Add_Subquestion>
+	<Add_Answer>Add Answer</Add_Answer>
+	<Delete_Answer>Delete Answer</Delete_Answer>
+	<Add_to_selection>Add to selection</Add_to_selection>
+	<Remove_from_selection>Remove from selection</Remove_from_selection>
+	<!-- End Questionnaire -->
 </l>
