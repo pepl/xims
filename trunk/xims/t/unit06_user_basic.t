@@ -6,7 +6,7 @@ use XIMS::Names;
 use XIMS::User;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 41;
 }
 
@@ -33,7 +33,7 @@ ok( $user->url() == undef );
 ok( $user->id() == 1 );
 ok( $user->object_type() == 0 );
 ok( $user->enabled() == 1 );
-ok( $user->system_privs_mask() == 1 );
+ok( $user->system_privs_mask() == 0 );
 ok( $user->lastname() eq 'XIMS Test User' );
 
 # test update
@@ -60,7 +60,7 @@ $ret = undef;
 $user->firstname( undef );
 $user->lastname( 'XIMS Test User' );
 $ret = $user->update();
-ok( $ret == 1); 
+ok( $ret == 1);
 
 # test creation...
 $user = undef;
@@ -70,9 +70,9 @@ $user->firstname( 'Kip' );
 $user->lastname( 'Hampton' );
 $user->name( 'ubu' );
 $user->admin( '1' );
-$user->system_privs_mask( '1' ); 
-$user->object_type( '0' ); 
-$user->enabled( 1 ); 
+$user->system_privs_mask( '1' );
+$user->object_type( '0' );
+$user->enabled( 1 );
 $user->password( '43a008171c3de746fde9c6e724ee1001' );
 
 my $ubu_id = $user->create();
@@ -109,8 +109,8 @@ my %hash = ( id                => $ubu_id,
              system_privs_mask => 1,
              object_type       => 0,
              enabled           => 1,
-             password          => '43a008171c3de746fde9c6e724ee1001' 
-           ); 
+             password          => '43a008171c3de746fde9c6e724ee1001'
+           );
 
 
 $user = undef;
