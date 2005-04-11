@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -9,6 +9,8 @@ use vars qw( $VERSION @ISA );
 
 use XIMS::CGI::Document;
 use XIMS::Image;
+use XIMS::Portlet;
+use XIMS::ObjectType;
 use Data::Dumper;
 
 # #############################################################################
@@ -116,4 +118,80 @@ sub event_store {
         return 1;
     }
 }
+
+sub event_publish {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    return 0 if $self->SUPER::event_publish( $ctxt );
+
+    $self->publish_portlets( $ctxt );
+
+    return 0;
+}
+
+sub event_unpublish {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    return 0 if $self->SUPER::event_unpublish( $ctxt );
+
+    $self->publish_portlets( $ctxt );
+
+    return 0;
+}
+
+#
+# publish_portlet() publishes all Portlet objects in the ancestrial containers.
+# It silently assumes that the main category and portal navigation happens using those
+# Portlets. For the LFU-Portal 'iPoint', we are using a structure
+# like the following:
+#
+# PortalFolder
+#     |
+#     *- CategoryFolder
+#                      |
+#                      *- NewsItem
+#                      *- NewsItem
+#                      *- CategoryIndexPortlet
+#     *- CategoryFolder
+#                      |
+#                      *- NewsItem
+#                      *- NewsItem
+#                      *- CategoryIndexPortlet
+#     *- CategoryOverviewPortlet
+#     *- MostRecentNewsPerCategoryPortlet
+#     *- OverallMostRecentNewsPortlet (Filtering out latest X NewsItems over the Categories
+#
+# For a generic Portal solution we should think of either moving publish_portlets()
+# elsewhere, or automate (Wizard?) the creation of an object hierarchy that will
+# work with publish_portlets()
+sub publish_portlets {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    require XIMS::Exporter;
+    my $exporter = XIMS::Exporter->new( Provider => $ctxt->data_provider,
+                                        Basedir  => XIMS::PUBROOT(),
+                                        User     => $ctxt->session->user
+                                      );
+
+    my $portlet_ot = XIMS::ObjectType->new( name => 'Portlet' );
+    foreach my $ancestor ( @{$ctxt->object->ancestors()} ) {
+        my @portlets = $ancestor->children_granted( object_type_id => $portlet_ot->id() );
+        foreach my $portlet ( @portlets ) {
+            my $current_user_object_priv = $ctxt->session->user->object_privmask( $portlet );
+            next unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
+            if ( $exporter->publish( Object => $portlet ) ) {
+                XIMS::Debug( 4, "Published Portlet " . $portlet->title() );
+            }
+            else {
+                XIMS::Debug( 2, "Could not publish Portlet " . $portlet->title() );
+            }
+        }
+    }
+
+    return 1;
+}
+
 1;
