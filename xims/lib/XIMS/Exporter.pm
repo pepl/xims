@@ -475,7 +475,15 @@ sub new {
     # ancestors
     if ( not defined $self->{Ancestors} ) {
         # >> do we really need to load all the full ancestor object data? <<
-        my $ancestors = $self->{Object}->ancestors();
+        my $cachekey = '_cachedancs' .  $self->{Object}->parent_id();
+        my $ancestors;
+        if ( defined $self->{Provider}->{$cachekey} ) {
+            $ancestors = $self->{Provider}->{$cachekey};
+        }
+        else {
+            $ancestors = $self->{Object}->ancestors();
+            $self->{Provider}->{$cachekey} = $ancestors;
+        }
         # remove /root
         shift @{$ancestors};
         $self->{Ancestors} = $ancestors;
@@ -641,9 +649,9 @@ sub update_related {
     my $object = $self->{Object};
     my $helper = XIMS::Exporter::Helper->new();
 
-    my $stylesheet = $object->stylesheet();
-    my $css        = $object->css();
-    my $image      = $object->image();
+    my $stylesheet = $object->stylesheet( explicit => 1 );
+    my $css        = $object->css( explicit => 1 );
+    my $image      = $object->image( explicit => 1 );
 
     my @referenced_by = $object->referenced_by_granted( User => $self->{User}, include_ancestors => 1, published => 1 );
     foreach my $obj ( @referenced_by, $image, $css, $stylesheet ) {
@@ -689,9 +697,10 @@ sub update_related {
 
         if ( $obj_handler->create( ) ) {
             XIMS::Debug( 4, "Related object published" );
+            XIMS::Debug( 6, "Related object was " . $obj->location_path() );
         }
         else {
-            XIMS::Debug( 3, "Related object could not be published" );
+            XIMS::Debug( 3, "Related object '" . $obj->location_path() . "' could not be published" );
         }
     }
     return 1;

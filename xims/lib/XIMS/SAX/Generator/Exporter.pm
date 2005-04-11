@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -87,6 +87,31 @@ sub _set_children {
     }
 
     $doc_data->{context}->{object}->{children} = {object => \@children};
+}
+
+sub _set_parents {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my ( $ctxt, $doc_data, $object_types, $data_formats ) = @_;
+
+    my $cachekey = '_cachedancs' . $ctxt->object->parent_id();
+    my $ancestors;
+    if ( defined $ctxt->object->data_provider->{$cachekey} ) {
+        $ancestors = $ctxt->object->data_provider->{$cachekey};
+    }
+    else {
+        $ancestors = $ctxt->object->ancestors();
+        $ctxt->object->data_provider->{$cachekey} = $ancestors;
+    }
+
+    if ( defined $ancestors && scalar( @{$ancestors} ) > 0 ) {
+        foreach my $parent ( @{$ancestors} ) {
+            $object_types->{$parent->object_type_id} = 1;
+            $data_formats->{$parent->data_format_id} = 1;
+
+        }
+        $doc_data->{context}->{object}->{parents} = {object => $ancestors};
+    }
 }
 
 1;
