@@ -602,9 +602,11 @@ sub location_path {
     if ( scalar( @_ ) == 1 and ref( $_[0] ) ) {
         my $obj = shift;
         $document_id = $obj->document_id();
+        return '' if $document_id == 1; # root has no location_path
     }
     else {
         my %args = @_;
+        return '' if $args{document_id} == 1 or $args{id} == 1;
         if ( defined $args{document_id} ) {
             $document_id = $args{document_id};
         }
