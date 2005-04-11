@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -370,16 +370,26 @@ sub recurse_ancestor {
 sub object_types {
     my $self = shift;
     my %args = @_;
+    my $cache = 1 unless scalar keys %args > 0;
+    if ( defined $self->{'_cachedots'} ) {
+        return @{$self->{'_cachedots'}};
+    }
     my @data = $self->getObjectType( %args );
     my @out = map { XIMS::ObjectType->new->data( %{$_} ) } @data;
+    $self->{'_cachedots'} = \@out if defined $cache;
     return @out;
 }
 
 sub data_formats {
     my $self = shift;
     my %args = @_;
+    my $cache = 1 unless scalar keys %args > 0;
+    if ( defined $self->{'_cacheddfs'} ) {
+        return @{$self->{'_cacheddfs'}};
+    }
     my @data = $self->getDataFormat( %args );
     my @out = map { XIMS::DataFormat->new->data( %{$_} ) } @data;
+    $self->{'_cacheddfs'} = \@out if defined $cache;
     return @out;
 }
 
