@@ -1391,7 +1391,7 @@ sub clone {
     delete $clonedata{ document_id };
     delete $clonedata{ path };
 
-    if( defined $parent_id ) {
+    if ( defined $parent_id ) {
         $clonedata{ parent_id } = $parent_id;
     }
     else {
@@ -1857,10 +1857,12 @@ sub language {
 ##
 #
 # SYNOPSIS
-#    my $stylesheet = $object->stylesheet();
+#    my $stylesheet = $object->stylesheet( [ explicit => 1 ] );
 #
 # PARAMETER
-#    none
+#    %args        (optional) : hash
+#       recognized key: 'explicit': If given, only explicitly assigned stylesheet objects or directories
+#                                   will be returned neglecting inherited ones.
 #
 # RETURNS
 #    $stylesheet : XIMS::Object instance (Objecttype 'XSLStylesheet' or 'Folder')
@@ -1868,18 +1870,26 @@ sub language {
 # DESCRIPTION
 #    Returns stylesheet(-directory) assigned to the object. If a
 #    stylesheet(-directory) is not assigned directly, inherited
-#    ones from the objectroot objects up the hierarchy are looked for.
+#    ones from the objectroot objects up the hierarchy are looked for
+#    unless "explicit" argument has been given.
 #
 sub stylesheet {
     my $self = shift;
+    my %args = @_;
+
     return $self->{Stylesheet} if defined $self->{Stylesheet};
     my $style_id = $self->style_id();
     if ( not defined $style_id ) {
-        # look for style_id in ancestrial objectroot objects
-        foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
-            last if $style_id = $oroot->style_id();
+        if ( not defined $args{explicit} ) {
+            # look for style_id in ancestrial objectroot objects
+            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+                last if $style_id = $oroot->style_id();
+            }
+            return undef unless defined $style_id;
         }
-        return undef unless defined $style_id;
+        else {
+            return undef;
+        }
     }
     my $stylesheet = XIMS::Object->new( id => $style_id );
     $self->{Stylesheet} = $stylesheet;
@@ -1889,10 +1899,12 @@ sub stylesheet {
 ##
 #
 # SYNOPSIS
-#    my $css = $object->css();
+#    my $css = $object->css( [ explicit => 1 ] );
 #
 # PARAMETER
-#    none
+#    %args        (optional) : hash
+#       recognized key: 'explicit': If given, only explicitly assigned stylesheet objects or directories
+#                                   will be returned neglecting inherited ones.
 #
 # RETURNS
 #    $css : XIMS::Object instance
@@ -1900,18 +1912,26 @@ sub stylesheet {
 # DESCRIPTION
 #    Returns a CSS stylesheet assigned to the object. If a
 #    CSS stylesheet is not assigned directly, an inherited
-#    one from the objectroot objects up the hierarchy is looked for.
+#    one from the objectroot objects up the hierarchy is looked for
+#    unless "explicit" argument has been given.
 #
 sub css {
     my $self = shift;
+    my %args = @_;
+
     return $self->{CSS} if defined $self->{CSS};
     my $css_id = $self->css_id();
     if ( not defined $css_id ) {
-        # look for css_id in ancestrial objectroot objects
-        foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
-            last if $css_id = $oroot->css_id();
+        if ( not defined $args{explicit} ) {
+            # look for css_id in ancestrial objectroot objects
+            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+                last if $css_id = $oroot->css_id();
+            }
+            return undef unless defined $css_id;
         }
-        return undef unless defined $css_id;
+        else {
+            return undef;
+        }
     }
     # think of XIMS::CSS here
     my $css = XIMS::Object->new( id => $css_id );
@@ -1922,10 +1942,12 @@ sub css {
 ##
 #
 # SYNOPSIS
-#    my $image = $object->image();
+#    my $image = $object->image( [ explicit => 1 ] );
 #
 # PARAMETER
-#    none
+#    %args        (optional) : hash
+#       recognized key: 'explicit': If given, only explicitly assigned image objects
+#                                   will be returned neglecting inherited ones.
 #
 # RETURNS
 #    $image : XIMS::Object instance
@@ -1933,18 +1955,26 @@ sub css {
 # DESCRIPTION
 #    Returns an Image assigned to the object. If an
 #    Image is not assigned directly, an inherited
-#    one from the objectroot objects up the hierarchy is looked for.
+#    one from the objectroot objects up the hierarchy is looked for
+#    unless "explicit" argument has been given.
 #
 sub image {
     my $self = shift;
+    my %args = @_;
+
     return $self->{Image} if defined $self->{Image};
     my $image_id = $self->image_id();
     if ( not defined $image_id ) {
-        # look for image_id in ancestrial objectroot objects
-        foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
-            last if $image_id = $oroot->image_id();
+        if ( not defined $args{explicit} ) {
+            # look for image_id in ancestrial objectroot objects
+            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+                last if $image_id = $oroot->image_id();
+            }
+            return undef unless defined $image_id;
         }
-        return undef unless defined $image_id;
+        else {
+            return undef;
+        }
     }
     # think of XIMS::Image here
     my $image = XIMS::Object->new( id => $image_id );
@@ -1955,10 +1985,12 @@ sub image {
 ##
 #
 # SYNOPSIS
-#    my $script = $object->script();
+#    my $script = $object->script( [ explicit => 1 ] );
 #
 # PARAMETER
-#    none
+#    %args        (optional) : hash
+#       recognized key: 'explicit': If given, only explicitly assigned script objects
+#                                   will be returned neglecting inherited ones.
 #
 # RETURNS
 #    $script : XIMS::Object instance
@@ -1966,18 +1998,26 @@ sub image {
 # DESCRIPTION
 #    Returns a Script assigned to the object. If a
 #    Script is not assigned directly, an inherited
-#    one from the objectroot objects up the hierarchy is looked for.
+#    one from the objectroot objects up the hierarchy is looked for
+#    unless "explicit" argument has been given.
 #
 sub script {
     my $self = shift;
+    my %args = @_;
+
     return $self->{Script} if defined $self->{Script};
     my $script_id = $self->script_id();
     if ( not defined $script_id ) {
-        # look for script_id in ancestrial objectroot objects
-        foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
-            last if $script_id = $oroot->script_id();
+        if ( not defined $args{explicit} ) {
+            # look for script_id in ancestrial objectroot objects
+            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+                last if $script_id = $oroot->script_id();
+            }
+            return undef unless defined $script_id;
         }
-        return undef unless defined $script_id;
+        else {
+            return undef;
+        }
     }
     # think of XIMS::JavaScript here
     my $script = XIMS::Object->new( id => $script_id );
