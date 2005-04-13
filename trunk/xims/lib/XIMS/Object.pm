@@ -239,7 +239,7 @@ sub parent {
     my $self = shift;
 
     return undef unless $self->parent_id;
-    return XIMS::Object->new( document_id => $self->parent_id );
+    return XIMS::Object->new( User => $self->User, document_id => $self->parent_id );
 }
 
 ##
