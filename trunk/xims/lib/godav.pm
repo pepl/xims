@@ -14,10 +14,9 @@ use warnings;
 #       http://host/godav/xims/
 #
 # TODO
-#    * Add BasicAuth handler (client compatibility :-/)
 #    * Implement lock() and unlock()
-#    * Add ACL checks
 #    * Work on M$ web folder compatibility
+#    * Add acceptance tests (HTTP::DAV)
 #    * Add documentation
 #    * Clean up (Store $object in a package variable?, ...)
 #    * Things I forgot
@@ -45,11 +44,12 @@ sub handler {
     my $method = $r->method;
     my $path    = uri_unescape($r->uri);
 
-    my $user = XIMS::User->new( name => 'admin' );
+    my $user =  $r->pnotes( 'ximsBasicAuthUser' );
+    return (403) unless defined $user;
 
-    use Data::Dumper;
-    my %h = $r->headers_in();
-    warn Dumper \%h;
+    #use Data::Dumper;
+    #my %h = $r->headers_in();
+    #warn Dumper \%h;
 
     $r->header_out( 'X-Server', 'XIMS::DAVServer ' . $VERSION );
     $r->header_out( 'MS-Author-Via', 'DAV' );
@@ -66,6 +66,9 @@ sub handler {
         $r->header_out( 'Content-Length', length($content) );
         $r->send_http_header();
         $r->print( $content );
+        #%h = $r->headers_out();
+        #warn Dumper \%h;
+        #warn $content;
     }
     else {
         $r->send_http_header();
@@ -95,6 +98,9 @@ sub get {
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
     my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+
+    my $privmask = $user->object_privmask( $object );
+    return (403) unless $privmask & XIMS::Privileges::VIEW;
 
     if ( defined $object and defined $object->id() ) {
         if ( $object->object_type->is_fs_container() ) {
@@ -141,12 +147,14 @@ sub put {
     $path ||= '/';
     my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
 
-    my $object_class;
-
     my $body;
     $r->read( $body, $r->header_in( 'Content-Length') );
 
+    my $object_class;
     if ( defined $object and $object->id() ) {
+        my $privmask = $user->object_privmask( $object );
+        return (403) unless $privmask & XIMS::Privileges::WRITE;
+
         # now that should be moved to run()....
         my $ot_fullname = $object->object_type->fullname();
         $object_class .= 'XIMS::' . $ot_fullname;
@@ -177,6 +185,10 @@ sub put {
         $parentpath =~ s#[^/]+$##;
         my $parent = XIMS::Object->new( User => $user, path => $parentpath, marked_deleted => undef );
         return (409) unless defined $parent and defined $parent->id();
+
+        my $privmask = $user->object_privmask( $parent );
+        return (403) unless $privmask & XIMS::Privileges::CREATE;
+
         my $importer = XIMS::Importer::Object->new( User => $user, Parent => $parent );
         my ($object_type, undef) = $importer->resolve_filename( $path );
 
@@ -214,6 +226,9 @@ sub delete {
     $path ||= '/';
     my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
 
+    my $privmask = $user->object_privmask( $object );
+    return (403) unless $privmask & XIMS::Privileges::DELETE;
+
     if ( defined $object and defined $object->id() ) {
         # test if object is locked and return 207 here in case
         #
@@ -242,6 +257,12 @@ sub copy {
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
     my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+
+    my $parent_priv = $user->object_privmask( $object->parent );
+    return (403) unless $parent_priv & XIMS::Privileges::CREATE;
+
+    my $privmask = $user->object_privmask( $object );
+    return (403) unless $privmask & XIMS::Privileges::COPY;
 
     my $destination = $r->header_in( 'Destination' );
     $destination = $r->lookup_uri( $destination )->path_info(); # or do a s/$godav//; ?
@@ -280,6 +301,10 @@ sub mkcol {
         my ($parentpath) = ( $path =~ m|^(.*)/[^/]+$| );
         my $parent = XIMS::Object->new( User => $user, path => $parentpath, marked_deleted => undef );
         return (409) unless (defined $parent and defined $parent->id());
+
+        my $privmask = $user->object_privmask( $parent );
+        return (403) unless $privmask & XIMS::Privileges::CREATE;
+
         my $importer = XIMS::Importer::Object->new( User => $user, Parent => $parent );
         my ($location) = ( $path =~ m|([^/]+)$| );
         my $folder = XIMS::Folder->new( User => $user, location => $location );
@@ -302,8 +327,10 @@ sub propfind {
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
     my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
-
     return (404, undef) unless defined $object and defined $object->id();
+
+    my $privmask = $user->object_privmask( $object );
+    return (403) unless $privmask & XIMS::Privileges::VIEW;
 
     if ( $r->header_in('Content-Length') ) {
         $r->read( $content, $r->header_in( 'Content-Length') );
@@ -370,11 +397,13 @@ sub propfind {
         $t = Time::Piece->strptime( $o->creation_timestamp(), "%d.%m.%Y %H:%M:%S" );
         my $creationdate = $dom->createElement("D:creationdate");
         $creationdate->appendText($t->strftime());
+        #$creationdate->appendText($t->datetime());
         $prop->addChild($creationdate);
 
         $t = Time::Piece->strptime( $o->last_modification_timestamp(), "%d.%m.%Y %H:%M:%S" );
         my $getlastmodified = $dom->createElement("D:getlastmodified");
         $getlastmodified->appendText($t->strftime());
+        #$getlastmodified->appendText($t->datetime());
         $prop->addChild($getlastmodified);
 
         my $size = $o->content_length();
@@ -407,7 +436,6 @@ sub propfind {
         else {
             $getcontenttype->appendText($o->data_format->mime_type);
         }
-
         $propstat->addChild($getcontenttype);
     }
 
