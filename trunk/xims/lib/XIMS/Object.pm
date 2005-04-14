@@ -1354,13 +1354,15 @@ sub move {
 #
 # PARAMETER
 #    $args{ User }            (optional) : XIMS::User instance. Used to find granted children. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+#    $args{ target_id }       (optional) : document_id of parent if it should not be $self->parent_id
+#    $args{ target_location } (optional) : location of clone object; per default "copy_of_location" will be used
 #    $args{ scope_subtree }   (optional) : flag, 0 ... shallow copy ( only object, not its descendants ), 1 ... full subtree copy ( object and all granted descendants )
-#    $args{ _parent_id }      (private)  : id of parent object ( should be undef, only used in recursive call )
+#    $args{ _parent_id }      (private)  : document_id of parent object ( should be undef, only used in recursive call )
 #    $args{ _id_map }         (private)  : hash ref with key=old object id, value=new object id ( should be undef, only used in recursive call )
 #    $args{ _ref_object_ids } (private)  : array ref with all cloned objects that have references to other objects ( should be undef, only used in recursive call )
 #
 # RETURNS
-#    undef on error, reference to clone on success
+#    undef on error, reference to cloned object on success
 #
 # DESCRIPTION
 #    creates a copy of the object in the database ( clone has same parent as orginal ).
@@ -1379,6 +1381,8 @@ sub clone {
 
     my $scope_subtree = delete $args{ scope_subtree };
 
+    my $target_location = delete $args{ target_location };
+    my $target_id = delete $args{ target_id };
     my $parent_id = delete $args{ _parent_id };
     my $id_map = delete $args{ _id_map } || {};
     my $ref_object_ids = delete $args{ _ref_object_ids } || [];
@@ -1391,8 +1395,32 @@ sub clone {
     delete $clonedata{ document_id };
     delete $clonedata{ path };
 
-    if ( defined $parent_id ) {
-        $clonedata{ parent_id } = $parent_id;
+    if ( defined $parent_id or defined $target_id ) {
+        if ( defined $parent_id ) {
+            $clonedata{ parent_id } = $parent_id;
+        }
+        elsif ( defined $target_id ) {
+            $clonedata{ parent_id } = $target_id;
+            my $parent = XIMS::Object->new( User => $self->User, document_id => $target_id );
+            if ( defined $parent and defined $parent->id ) {
+                if ( defined $target_location ) {
+                    $target_location = XIMS::Importer::_clean_location( 1, $target_location ); # *cough*
+                    my ($oldsuffix) = ($clonedata{ location } =~ /\.([^\.]+)$/);
+                    my ($newsuffix) = ($target_location =~ /\.([^\.]+)$/);
+                    if ( length $target_location and $oldsuffix eq $newsuffix ) {
+                        $clonedata{ location } = $target_location;
+                    }
+                }
+                if ( $parent->children( location => $clonedata{ location }, marked_deleted => undef ) ) {
+                    XIMS::Debug( 2, "Cannot clone. Object with same location already exists in target container." );
+                    return undef;
+                }
+            }
+            else {
+                XIMS::Debug( 2, "Could not resolve clone target." );
+                return undef;
+            }
+        }
     }
     else {
         # same parent, so we have to find a new location for it
@@ -1431,14 +1459,14 @@ sub clone {
     else {
         my $id_name;
         foreach $id_name ( @Reference_Id_Names ) {
-            if( defined $clone->{ $id_name } ) {
+            if ( defined $clone->{ $id_name } ) {
                 push @$ref_object_ids, $clone->document_id;
                 last;
             }
         }
     }
 
-    if( defined $parent_id ) {
+    if ( defined $parent_id ) {
         # all subelements should keep their position, but they have got new ones by create(), so change this back!
         $clone->position( $self->position() );
         $clone->update();
@@ -1475,14 +1503,61 @@ sub clone {
         }
 
         # check if we are back at top level of recursion
-        if( not defined $parent_id ) {
+        if ( not defined $parent_id ) {
             # fixup referenced object ids in all cloned objects that have reference ids
             $self->__fix_clone_reference( User => $user, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
         }
     }
 
+    # reload the member data in case __fix_clone_references has updated it
+    # in the meantime
+    $clone = XIMS::Object->new( id => $clone->id() );
+
+    # bless the instance into the correct class
+    bless $clone, "XIMS::".$clone->object_type->fullname();
+
     return $clone;
 }
+
+##
+#
+# SYNOPSIS
+#    my $copy = $object->copy( %args );
+#
+# PARAMETER
+#    $args{ User }            (optional) : XIMS::User instance. Used to find granted children. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+#    $args{ target_id }                  : document_id of container where the object should be copied to
+#    $args{ target_location } (optional) : location of the copy; per default "copy_of_location" will be used
+#
+# RETURNS
+#    undef on error, reference to copied object on success
+#
+# DESCRIPTION
+#    Creates a copy of the object in the database in the container specified by 'target_id.
+#    Per default, the copy will be named 'copy_of_...' (location). Instead of this,
+#    a 'target_location' can be specified. If an object with the 'target_location' already exists in the
+#    target container, copy() will return undef.
+#    The copy is always unpublished and unlocked.
+#    References to other copied objects are updated, as are references to portlets in body of department- and siteroot
+#    copy() produces a deep copy.
+#
+sub copy {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    my $user = delete $args{User} || $self->{User};
+    die "Copying an object requires an associated User" unless defined( $user );
+
+    my $target_id = delete $args{target_id};
+    return undef unless defined $target_id;
+
+    return $self->clone( User => $user,
+                        scope_subtree => 1,
+                        target_id => $target_id,
+                        target_location => $args{target_location} );
+}
+
 
 ##
 #
