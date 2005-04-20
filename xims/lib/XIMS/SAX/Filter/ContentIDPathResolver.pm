@@ -50,7 +50,8 @@ sub end_element {
             $id = 'id';
         }
         my $path;
-        my $cachekey = "_cached".$id.$self->{document_id};
+        my $export = exists $self->{NonExport} ? '0' : '1';
+        my $cachekey = "_cached".$export.$id.$self->{document_id};
         if ( defined $self->{Provider}->{$cachekey} ) {
             $path = $self->{Provider}->{$cachekey};
         }
