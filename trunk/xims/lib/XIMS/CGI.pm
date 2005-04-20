@@ -1373,18 +1373,18 @@ sub event_publish {
                                         User     => $ctxt->session->user
                                       );
 
+    my $no_dependencies_update = 1;
+    if ( defined $self->param( "update_dependencies" )
+        and $self->param( "update_dependencies" ) == 1 ) {
+        $no_dependencies_update = undef;
+    }
+
     my $published = 0;
     if ( defined $self->param( "autopublish" )
          and $self->param( "autopublish" ) == 1 ) {
         XIMS::Debug( 4, "going to publish references" );
         my @objids = $self->param( "objids" );
-        $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objids);
-    }
-
-    my $no_dependencies_update = 1;
-    if ( defined $self->param( "update_dependencies" )
-        and $self->param( "update_dependencies" ) == 1 ) {
-        $no_dependencies_update = undef;
+        $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objids, $no_dependencies_update );
     }
 
     if ( $exporter->publish( Object => $ctxt->object, no_dependencies_update => $no_dependencies_update ) ) {
@@ -1938,6 +1938,7 @@ sub autopublish {
     my $exporter = shift;
     my $method = shift;
     my $objids = shift;
+    my $no_dependencies_update = shift;
 
     my $published;
     foreach my $id ( @{$objids} ) {
@@ -1945,7 +1946,7 @@ sub autopublish {
         my $object = XIMS::Object->new( id => $id, User => $ctxt->session->user() );
         if ( $object ) {
             if ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::PUBLISH() ) {
-                if ( $exporter->$method( Object => $object ) ) {
+                if ( $exporter->$method( Object => $object, no_dependencies_update => $no_dependencies_update ) ) {
                     XIMS::Debug( 4, $method."ed object with id $id" );
                     $published++;
                 }
