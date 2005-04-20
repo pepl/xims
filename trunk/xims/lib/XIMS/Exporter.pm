@@ -482,10 +482,10 @@ sub new {
         }
         else {
             $ancestors = $self->{Object}->ancestors();
+            # remove /root
+            shift @{$ancestors};
             $self->{Provider}->{$cachekey} = $ancestors;
         }
-        # remove /root
-        shift @{$ancestors};
         $self->{Ancestors} = $ancestors;
     }
 
