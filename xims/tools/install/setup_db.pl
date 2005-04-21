@@ -162,7 +162,7 @@ elsif ( $Conf{DBdsn} eq 'Pg' ) {
         my $current_user = getpwuid($>);
         if ( $current_user ne $Conf{DBUser} ) {
             if ( $> == 0 ) {
-                @args = ('su', $Conf{DBUser}, '-c', join(' ', @args));
+                @args = ('su', $Conf{DBUser}, '-c', '"'. join(' ', @args) . '"');
             }
             else {
                 warn "\n\n[WARNING] You are neither logged in as root nor the database user you specified.\n",
@@ -235,7 +235,8 @@ sub PgFindTableFunc {
     }
     my $tablefunc;
     eval {
-        $tablefunc = `locate contrib/tablefunc.sql`
+        $tablefunc = `locate contrib/tablefunc.sql`;
+        chomp $tablefunc;
     };
     return $tablefunc;
 }
