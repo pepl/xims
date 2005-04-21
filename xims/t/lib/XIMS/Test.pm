@@ -6,6 +6,7 @@ package XIMS::Test;
 
 use lib "../../../lib";
 use strict;
+no warnings 'redefine';
 use XIMS;
 use XIMS::DataProvider;
 use LWP::UserAgent;
@@ -15,7 +16,7 @@ use XML::Schematron::LibXSLT;
 use Sys::Hostname;
 use Storable qw( retrieve store );
 
-use vars qw( %Conf );
+our %Conf;
 
 BEGIN {
     my $app_config = {};
@@ -23,26 +24,18 @@ BEGIN {
        $app_config = retrieve('lib/XIMS/.ximstest.conf');
     };
 
-    # warn "No config file found. Trying XIMS::Config.\n" if $@;
+    warn "No config file found. Trying values from 'ximsconfig.xml'.\n" if $@;
     %Conf = %{$app_config} unless $@;
+    $Conf{DBUser}     ||= XIMS::Config::DBUser();
+    $Conf{DBPassword} ||= XIMS::Config::DBPassword();
+    $Conf{DBdsn}      ||= XIMS::Config::DBdsn();
+
 }
 
 # fake the config if config file exists
-sub XIMS::Config::DBdsn() {
-    if ( $Conf{RDBMS} and $Conf{RDBMS} eq 'Pg' ) {
-        return 'dbi:Pg:dbname=' . $Conf{DBName};
-    }
-    elsif ( $Conf{RDBMS} and $Conf{RDBMS} eq 'Oracle' ) {
-        return 'dbi:Oracle:' . $Conf{DBName};
-    }
-    else {
-        return XIMS::Config::DBdsn();
-    }
-}
-sub XIMS::Config::DBUser() { return ($Conf{DBUser} || XIMS::Config::DBUser()) }
-sub XIMS::Config::DBName() { return ($Conf{DBName} || XIMS::Config::DBName())}
-sub XIMS::Config::DBPassword() { return ($Conf{DBPassword}|| XIMS::Config::DBPassword()) }
-
+sub XIMS::Config::DBdsn { return $Conf{DBdsn} }
+sub XIMS::Config::DBUser { return $Conf{DBUser} }
+sub XIMS::Config::DBPassword { return $Conf{DBPassword} }
 
 # provide some default values if we do not have a config file
 $Conf{user_name} ||= 'xgu';
