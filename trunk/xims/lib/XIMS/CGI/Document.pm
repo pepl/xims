@@ -65,6 +65,11 @@ sub event_edit {
     my $ed = $self->_set_wysiwyg_editor( $ctxt );
     $ctxt->properties->application->style( "edit" . $ed );
 
+    # look for inherited CSS assignments
+    $ctxt->object->css_id( $ctxt->object->css->id ) unless defined $ctxt->object->css_id;
+
+    $self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
+
     return 0;
 }
 
