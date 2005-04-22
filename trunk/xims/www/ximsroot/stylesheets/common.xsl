@@ -91,7 +91,7 @@
 <xsl:template name="targetpath_nosite">
     <xsl:for-each select="/document/context/object/targetparents/object[@parent_id &gt; 1]">
         <xsl:text>/</xsl:text><xsl:value-of select="location"/>
-    </xsl:for-each>/<xsl:value-of select="/document/context/object/target/object/location"/>
+    </xsl:for-each><xsl:if test="/document/context/object/target/object[@parent_id &gt; 1]">/<xsl:value-of select="/document/context/object/target/object/location"/></xsl:if>
 </xsl:template>
 
 <xsl:template match="/document/context/object/parents/object">
