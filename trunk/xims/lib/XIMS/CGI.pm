@@ -44,7 +44,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 # first we register the events we handle
 sub registerEvents {
     my $self = shift;
-    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', 'prettyprint', @_ );
+    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', 'prettyprint', 'htmltidy', @_ );
 }
 
 ############################################################################
@@ -1502,6 +1502,45 @@ sub event_prettyprint {
     }
     return 0;
 }
+
+sub event_htmltidy {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $body = XIMS::decode( $self->param('body') );
+
+    # if we got no body param, use $object->body
+    my $string = defined $body ? $body : $ctxt->object->body();
+
+    my $tidiedstring = $ctxt->object->balance_string( $string );
+
+    # set back to body if tidy was unsuccessful
+    $tidiedstring = defined $tidiedstring ? $tidiedstring : $body;
+
+    # and if we did not get a body, set to $object->body()
+    $tidiedstring = defined $tidiedstring ? $tidiedstring : $string;
+
+    # deindent one level
+    $tidiedstring =~ s/^[ ]{4}//mg;
+
+    print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
+    $self->skipSerialization(1);
+    
+    if ( $self->param('hti' ) ) {
+        my $jsstring;
+        foreach my $line ( split '\n', $tidiedstring ) {
+            $line =~ s/'/\\'/g;
+            $jsstring .= "ns += '$line\\n';\n";
+        }
+        print "var ns='';$jsstring editor.setHTML(ns);";
+    }
+    else {
+        print $tidiedstring;
+    }
+    
+    return 0;
+}
+
 
 sub event_obj_acllist {
     XIMS::Debug( 5, "called" );
