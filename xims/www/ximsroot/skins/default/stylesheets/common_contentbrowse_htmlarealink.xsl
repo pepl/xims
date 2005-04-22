@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2003 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -68,7 +68,7 @@
             var sel = window.opener.editor._getSelection();
             var range = window.opener.editor._createRange(sel);
             var selectedText = range.text;
-            if ( selectedText.length > 0 ) {
+            if ( typeof selectedText != "undefined" && selectedText.length > 0 ) {
                 document.selectform.linktext.value = selectedText;
             }
         }

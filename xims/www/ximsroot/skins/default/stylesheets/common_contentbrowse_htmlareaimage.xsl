@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2003 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -95,7 +95,8 @@
             }
             else {
       ]]>
-                document.selectform.imgpath.value=target;
+                <!-- /goxims/content/siteroot will be converted to a relative path during saving -->
+                document.selectform.imgpath.value='<xsl:value-of select="concat($goxims_content,'/',/document/context/object/parents/object[@parent_id=1]/location)"/>'+target;
       <![CDATA[
             }
             document.selectform.imgtext.value=imgtext;
