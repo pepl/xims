@@ -16,7 +16,7 @@
          createLinkX() and createImageX() functions have been created by Britta Tautermann.
          After the development of Xinha has stabilized, we will work on plugin-based versions
          of our customizations (ImageManager, LinkBrowser, CSS, HtmlTidy, ContextMenus modules).
-     --->
+     -->
 
 
     <script type="text/javascript">
