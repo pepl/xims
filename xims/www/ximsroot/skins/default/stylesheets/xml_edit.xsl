@@ -54,19 +54,6 @@
 </tr>
 </xsl:template>
 
-<xsl:template name="tr-css-edit">
-<tr>
-    <td valign="top"><xsl:value-of select="$i18n/l/CSS"/></td>
-    <td colspan="2">
-        <input tabindex="30" type="text" name="css" size="40" value="{./css_id}" class="text"/>
-        <xsl:text>&#160;</xsl:text>
-<!--        <a href="javascript:openDocWindow('CSS')" class="doclink">(?)</a>-->
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./css_id};otfilter=CSS;sbfield=eform.css')" class="doclink"><xsl:value-of select="$i18n/l/Browse_css"/></a>
-    </td>
-</tr>
-</xsl:template>
-
 <xsl:template name="tr-bxeconfig-edit">
 <tr>
     <td valign="top"><xsl:value-of select="$i18n/l/BXEConfig"/></td>

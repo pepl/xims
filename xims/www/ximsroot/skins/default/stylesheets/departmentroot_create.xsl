@@ -23,6 +23,7 @@
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
                     <xsl:call-template name="tr-stylesheet-create"/>
+                    <xsl:call-template name="tr-css-create"/>
                     <xsl:call-template name="tr-imagedepartmentroot-create"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>
