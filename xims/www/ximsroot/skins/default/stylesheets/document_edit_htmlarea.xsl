@@ -73,7 +73,7 @@
                     setTimeout(f, 3700); // MSIE needs that high timeout value
                 } 
                 else {
-                    setTimeout(f, 1000);
+                    setTimeout(f, 3000);
                 }
             }
             else {
