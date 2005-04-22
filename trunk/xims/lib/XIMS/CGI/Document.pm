@@ -66,7 +66,10 @@ sub event_edit {
     $ctxt->properties->application->style( "edit" . $ed );
 
     # look for inherited CSS assignments
-    $ctxt->object->css_id( $ctxt->object->css->id ) unless defined $ctxt->object->css_id;
+    if ( not defined $ctxt->object->css_id() ) {
+        my $css = $ctxt->object->css;
+        $ctxt->object->css_id( $css->id ) if defined $css;
+    }
 
     $self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
 
