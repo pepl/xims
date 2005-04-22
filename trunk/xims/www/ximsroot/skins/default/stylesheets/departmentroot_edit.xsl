@@ -21,6 +21,7 @@
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-stylesheet-edit"/>
+                    <xsl:call-template name="tr-css-edit"/>
                     <xsl:call-template name="tr-imagedepartmentroot-edit"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>

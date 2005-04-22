@@ -504,6 +504,33 @@
 </tr>
 </xsl:template>
 
+<xsl:template name="tr-css-create">
+<xsl:variable name="parentid" select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
+<tr>
+    <td valign="top"><xsl:value-of select="$i18n/l/CSS"/></td>
+    <td colspan="2">
+        <input tabindex="30" type="text" name="css" size="40" value="" class="text"/>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('CSS')" class="doclink">(?)</a>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=CSS;sbfield=eform.css')" class="doclink"><xsl:value-of select="$i18n/l/Browse_css"/></a>
+    </td>
+</tr>
+</xsl:template>
+
+<xsl:template name="tr-css-edit">
+<tr>
+    <td valign="top"><xsl:value-of select="$i18n/l/CSS"/></td>
+    <td colspan="2">
+        <input tabindex="30" type="text" name="css" size="40" value="{css_id}" class="text"/>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('CSS')" class="doclink">(?)</a>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=CSS;sbfield=eform.css')" class="doclink"><xsl:value-of select="$i18n/l/Browse_css"/></a>
+    </td>
+</tr>
+</xsl:template>
+
 <xsl:template name="cttobject.status">
     <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
