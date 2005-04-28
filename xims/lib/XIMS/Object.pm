@@ -2470,7 +2470,7 @@ sub balance_string {
 
     my $tmp_fh = IO::File->new( $tmp, 'w' );
     if ( defined $tmp_fh ) {
-        print $tmp_fh $CDATAstring;
+        print $tmp_fh XIMS::encode($CDATAstring);
         $tmp_fh->close;
         XIMS::Debug( 4, "Temporary file written" );
     }
@@ -2489,6 +2489,9 @@ sub balance_string {
 
     unlink $tmp;
 
+    # tidy returns utf-8, so we may have to decode...
+    $wbCDATAstring = XIMS::decode( $wbCDATAstring );
+
     if ( not $self->balanced_string( $wbCDATAstring, nochunk => 1 ) ) {
         # tidy cleans better, but we want the following as fallback
         XIMS::Debug( 3, "tidy did not return a wellformed string, using LibXML" );
@@ -2501,7 +2504,7 @@ sub balance_string {
         # adding ctxt->charset = XML_CHAR_ENCODING_UTF8; before returning at
         # htmlCreateDocParserCtxt() in htmlParser.c
         # gives a workaround fallback encoding setting
-        $CDATAstring = XIMS::DBENCODING() ? XML::LibXML::encodeToUTF8(XIMS::DBENCODING(), $CDATAstring) : $CDATAstring;
+        $CDATAstring = XIMS::encode( $CDATAstring );
         my $doc;
         eval {
             $doc = $parser->parse_html_string( $CDATAstring );
@@ -2511,9 +2514,12 @@ sub balance_string {
             return undef;
         }
         else {
-            $wbCDATAstring = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(), $doc->toString()) : $doc->toString();
+            my $encoding = XIMS::DBEncoding() ? XIMS::DBEncoding() : 'UTF-8';
+            $doc->setEncoding( $encoding ); # needed. otherwise, toString() produces one-byte numeric entities or double-byte chars !?
+            $wbCDATAstring = XIMS::decode( $doc->toString() );
         }
     }
+
 
     if ( not exists $args{keephtmlheader} ) {
         # strip everything before <BODY> and after </BODY>
