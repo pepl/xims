@@ -12,6 +12,16 @@
 
 <xsl:variable name="i18n_portlet" select="document(concat($currentuilanguage,'/i18n_portlet.xml'))"/>
 
+<!-- think of an object-type property "independent" instead of filtering object_types by name -->
+<xsl:variable name="filtered_ots">
+    <xsl:for-each select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'AnonDiscussionForumContrib' and name != 'Annotation' and name != 'VlibraryItem' and name != 'DocBookXML']">
+        <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
+        <xsl:copy>
+            <xsl:copy-of select="@*|*"/>
+        </xsl:copy>
+    </xsl:for-each>
+</xsl:variable>
+
 <xsl:template name="extra_properties">
     <table>
         <tr>
@@ -236,10 +246,14 @@
         -->
         <td colspan="2" valign="top">
             <table>
-                <!-- think of an object-type property "independent" -->
-                <xsl:apply-templates select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'AnonDiscussionForumContrib' and name != 'Annotation' and name != 'VlibraryItem' and name != 'DocBookXML' and (position()-1) mod 2 = 0]">
-                    <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
-                </xsl:apply-templates>
+                <tr>
+                    <td valign="top">
+                        <xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[position() mod 2 != 0]"/>
+                    </td>
+                    <td valign="top">
+                        <xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[position() mod 2 = 0]"/>
+                    </td>
+                </tr>
             </table>
         </td>
     </tr>
@@ -247,14 +261,16 @@
 </xsl:template>
 
 <xsl:template match="object_type">
-    <tr>
-        <td width="25">
-            <xsl:value-of select="name"/>
-        </td>
-        <td>
-            <input type="checkbox" name="ot_{name}"><xsl:if test="/document/context/object/body/content/object-type/@name = name"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
-        </td>
-    </tr>
+    <table width="100%">
+        <tr>
+            <td width="40">
+                <xsl:value-of select="name"/>
+            </td>
+            <td align="right">
+                <input type="checkbox" name="ot_{name}"><xsl:if test="/document/context/object/body/content/object-type/@name = name"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
+            </td>
+        </tr>
+    </table>
 </xsl:template>
 
 <xsl:template match="*" mode="filter">
