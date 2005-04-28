@@ -1522,6 +1522,9 @@ sub event_htmltidy {
 
     # deindent one level
     $tidiedstring =~ s/^[ ]{4}//mg;
+    
+    # encode back to utf-8 in case
+    $tidiedstring = XIMS::encode( $tidiedstring );
 
     print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
     $self->skipSerialization(1);
