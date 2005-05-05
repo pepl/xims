@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -57,15 +57,52 @@ my $exporter = XIMS::Exporter->new( Basedir  => XIMS::PUBROOT(),
                                   );
 
 my $method = $args{m};
-$method = 'publish';
+$method ||= 'publish'; # default action is to publish
 
 my %options;
-$options{no_dependencies_update} = 1 if $args{n};
 
 $total = 0;
 $successful = 0;
 $failed = 0;
 $ungranted = 0;
+
+if ( $args{r} or $method eq 'unpublish' ) {
+    my %param = (User => $user, marked_deleted => undef );
+    $param{published} = 1 if ( $args{a} or $method eq 'unpublish' );
+
+    # process the tree depth first, needed for unpublishing and handy for publishing since things like
+    # auto-indices and portlets are correctly published in a single step
+    my @descendants = reverse sort { $a->{level} <=> $b->{level} } $object->descendants_granted( %param );
+    $options{no_dependencies_update} = 1 if scalar @descendants > 0;
+
+    my $path;
+    foreach my $child ( @descendants ) {
+        next if $child->location() eq '.diff_to_second_last'; # an -exception- :-|
+        $child = rebless( $child );
+        $privmask = $user->object_privmask( $child );
+        $path = $child->location_path();
+        if ( $privmask & XIMS::Privileges::PUBLISH() ) {
+            if ( $exporter->$method( Object => $child, User => $user, %options ) ) {
+                print "Object '$path' ".$method."ed successfully.\n";
+                $total++;
+                $successful++;
+            }
+            else {
+                print "could not $method object '$path'.\n";
+                $total++;
+                $failed++;
+            }
+        }
+        else {
+            print "no privileges to $method object '$path'.\n";
+            $total++;
+            $ungranted++;
+        }
+    }
+}
+
+# (re)set no_dependecies_update
+$args{n} ? $options{no_dependencies_update} = 1 : delete $options{no_dependencies_update};
 
 if ( $exporter->$method( Object => $object, User => $user, %options ) ) {
     print "Object '" . $object->title . "' ".$method."ed successfully.\n";
@@ -78,18 +115,13 @@ else {
     $failed++;
 }
 
-if ( $successful and $args{r} ) {
-    my $republishonly = 1 if $args{a};
-    recurse_children( $object, $user, $exporter, $method, $republishonly, \%options );
-}
-
 my $gid = (stat XIMS::PUBROOT())[5]; # after install, XIMS::PUBROOT is writable by the
                                      # apache-user's group
 # because additional files like meta-data files or autoindices are created
 # by the exporter, we have to recursively chgrp and 755 the file to the apache-user's group
 foreach my $file ( $term->findfiles( XIMS::PUBROOT() . $object->location_path ) ) {
     # untaint the file
-    unless ($file =~ m#^([\w.\-/\\_]+)$#) {
+    unless ($file =~ m#^([\w.\-/\\_\(\)]+)$#) {
         die "filename '$file' has invalid characters.\n";
     }
     $file = $1;
@@ -112,10 +144,11 @@ sub usage {
     return qq*
 
   Usage: $0 [-h][-d][-u username -p password] [-a] [-m method -r] path-to-publish
-        -m Currently, only 'publish' is implemented.
+        -m Either 'unpublish' or 'publish'; the latter is the default.
         -r Recursively publish descendants.
         -a If specified, published objects will be republished only
         -n If specified, publishing dependencies of the object will not be updated
+           Will have no effect for publishing trees recursively.
 
         -u The username to connect to XIMS. If not specified,
            you will be asked for it interactively.
@@ -134,51 +167,12 @@ sub rebless {
     # load the object class
     eval "require $otclass;" if $otclass;
     if ( $@ ) {
-        die "could not load object class $otclass: $@\n";
+        die "Could not load object class $otclass: $@\n";
     }
 
     # rebless the object
     bless $object, $otclass;
     return $object;
-}
-
-sub recurse_children {
-    my $object = shift;
-    my $user = shift;
-    my $exporter = shift;
-    my $method = shift;
-    my $republishonly = shift;
-    my $options = shift;
-
-    my $privmask;
-    my $path;
-    my %args = (User => $user, marked_deleted => undef );
-    $args{published} = 1 if defined $republishonly;
-    my $iterator = $object->children_granted( %args );
-    return unless defined $iterator;
-    while ( my $child = $iterator->getNext() ) {
-        $child = rebless( $child );
-        $privmask = $user->object_privmask( $child );
-        $path = $child->location_path();
-        if ( $privmask & XIMS::Privileges::PUBLISH() ) {
-            if ( $exporter->$method( Object => $child, User => $user, %{$options} ) ) {
-                print "Object '$path' ".$method."ed successfully.\n";
-                $total++;
-                $successful++;
-                recurse_children( $child, $user, $exporter, $method, $republishonly, $options );
-            }
-            else {
-                print "could not $method object '$path'.\n";
-                $total++;
-                $failed++;
-            }
-        }
-        else {
-            print "no privileges to $method object '$path'.\n";
-            $total++;
-            $ungranted++;
-        }
-    }
 }
 
 
