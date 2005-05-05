@@ -606,7 +606,7 @@ sub location_path {
     }
     else {
         my %args = @_;
-        return '' if $args{document_id} == 1 or $args{id} == 1;
+        return '' if ( defined $args{document_id} and $args{document_id} == 1 or defined $args{id} and $args{id} == 1);
         if ( defined $args{document_id} ) {
             $document_id = $args{document_id};
         }
@@ -693,7 +693,12 @@ sub _get_descendant_sql {
         #
         # PostgreSQL 7.3.x contrib-tablefunction connectby() does not support ordering of siblings :-|...
         #
-        if ( DBD::Pg::_pg_server_version( $self->dbh ) =~ '7.3' ) {
+        my $server_version = $self->dbh->get_dbh->{pg_server_version}; # DBD::Pg >= 1.41
+        if ( not defined $server_version ) {
+            eval { $server_version = DBD::Pg::_pg_server_version( $self->dbh ); };
+        }
+        # DBD:Pg < 1.40 returns a dotted version, DBD::Pg == 1.40 returns the integer variant
+        if ( defined $server_version and ($server_version =~ '703' or $server_version =~ /7\.3/) ) {
             return ["SELECT $properties FROM ci_content c, connectby('ci_documents', 'id', 'parent_id', ?, ?) AS t(id int, parent_id int, lvl int), ci_documents d  WHERE t.id <> t.parent_id AND c.document_id = t.id AND t.id = d.id", [$parent_id, 12], $maxlevel]; # 12 => bind as 'Text'
         }
         else {
