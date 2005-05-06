@@ -8,7 +8,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use vars qw($VERSION @ISA @Fields @Default_Properties @Reference_Id_Names );
+use vars qw($VERSION @ISA @Fields @Default_Properties @Reference_Id_Names @Reference_DocId_Names );
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
 use XIMS;
@@ -36,7 +36,8 @@ sub fields {
     return @Fields;
 }
 
-@Reference_Id_Names = qw( symname_to_doc_id style_id script_id css_id image_id schema_id);
+@Reference_DocId_Names = qw( symname_to_doc_id );
+@Reference_Id_Names = qw( style_id script_id css_id image_id schema_id);
 
 BEGIN {
     # the binfile field is no longer available via the method interface, but is set
@@ -328,7 +329,7 @@ sub children_granted {
     my @children = $self->__get_granted_objects( doc_ids => \@child_candidate_docids, User => $user, %args ) ;
 
     #warn "Granted children" . Dumper( \@children ) . "\n";
-    return wantarray ? @children : $children[0];
+    return @children;
 }
 
 ##
@@ -503,7 +504,7 @@ sub descendants {
     }
 
     #warn "descendants" . Dumper( \@sorted_descendants ) . "\n";
-    return wantarray ? @sorted_descendants : $sorted_descendants[0];
+    return @sorted_descendants;
 }
 
 ##
@@ -571,7 +572,7 @@ sub descendants_granted {
     }
 
     #warn "descendants" . Dumper( \@sorted_descendants ) . "\n";
-    return wantarray ? @sorted_descendants : $sorted_descendants[0];
+    return @sorted_descendants;
 }
 
 ##
@@ -1027,25 +1028,40 @@ sub __fix_clone_reference {
     my $user = delete $args{User} || $self->{User};
     my $id_map = delete $args{ _id_map };
     my $ref_object_ids = delete $args{ _ref_object_ids };
+    my $docid_map = delete $args{ _docid_map };
+    my $ref_object_docids = delete $args{ _ref_object_docids };
 
     #warn("fixing ref ids on objects : " . Dumper( $ref_object_ids ) );
     #warn("fixing ref ids with id map: " . Dumper( $id_map ) );
+    #warn("fixing ref docids on objects : " . Dumper( $ref_object_docids ) );
+    #warn("fixing ref docids with docid map: " . Dumper( $docid_map ) );
 
-    my $clone;
-    my $id_name;
-    my $document_id;
-    my $newid;
-    my $update_flag;
-    my $objecttype;
+    my $update_flag = 0;
 
     # check all copied objects that have referenced to other objects
-    foreach $document_id ( @$ref_object_ids ) {
-        $clone = XIMS::Object->new( document_id => $document_id );
-        # warn("clone to fix: " . Dumper( $clone ) );
-        $update_flag = 0;
-        foreach $id_name ( @Reference_Id_Names ) {
-            if( defined $clone->{ $id_name } ) {
-                $newid = $id_map->{ $clone->{ $id_name } };
+    foreach my $document_id ( @$ref_object_docids ) {
+        my $clone = XIMS::Object->new( document_id => $document_id );
+        #warn("clone to fix: " . Dumper( $clone ) );
+        foreach my $docid_name ( @Reference_DocId_Names ) {
+            if ( defined $clone->{ $docid_name } ) {
+                my $newid = $docid_map->{ $clone->{ $docid_name } };
+                if ( defined $newid ) {
+                    # the referenced object has also been copied, so change the reference to the copy
+                    $clone->{ $docid_name } = $newid;
+                    $update_flag = 1; # update of clone is needed
+                }
+            }
+        }
+        $clone->update( User => $user ) if $update_flag;
+    }
+
+    $update_flag = 0;
+    foreach my $id ( @$ref_object_ids ) {
+        my $clone = XIMS::Object->new( id => $id );
+        #warn("clone to fix: " . Dumper( $clone ) );
+        foreach my $id_name ( @Reference_Id_Names ) {
+            if ( defined $clone->{ $id_name } ) {
+                my $newid = $id_map->{ $clone->{ $id_name } };
                 if ( defined $newid ) {
                     # the referenced object has also been copied, so change the reference to the copy
                     $clone->{ $id_name } = $newid;
@@ -1054,9 +1070,8 @@ sub __fix_clone_reference {
             }
         }
 
-        # fix body of departmentroots and siteroots, their body contains portlet ids
-        $objecttype = $clone->object_type;
-        if ( $objecttype->name() eq "DepartmentRoot" or $objecttype->name() eq "SiteRoot" ) {
+        # fix body of objectroots (departmentroots and siteroots) because their body may contain portlet ids
+        if ( $clone->object_type->is_objectroot() ) {
             #warn("about to fix portlet in " . Dumper( $clone ) );
             my $body = $clone->body();
             if ( defined $body and length $body ) {
@@ -1073,14 +1088,14 @@ sub __fix_clone_reference {
                     my $node;
                     my $update_body_flag = 0;
                     foreach $node ( @nodes ) {
-                        $newid = $id_map->{ $node->string_value() };
+                        my $newid = $id_map->{ $node->string_value() };
                         if ( defined $newid ) {
                             $node->firstChild->setData( $newid );
                             $update_body_flag = 1;
                         }
                     }
                     if ( $update_body_flag ) {
-                        $clone->body( $fragment->toString());
+                        $clone->body( $fragment->toString() );
                         $update_flag = 1; # update of clone is needed
                     }
                 }
@@ -1386,6 +1401,8 @@ sub clone {
     my $parent_id = delete $args{ _parent_id };
     my $id_map = delete $args{ _id_map } || {};
     my $ref_object_ids = delete $args{ _ref_object_ids } || [];
+    my $docid_map = delete $args{ _docid_map } || {};
+    my $ref_object_docids = delete $args{ _ref_object_docids } || [];
 
     # create a copy of object data
     my %clonedata = $self->data();
@@ -1449,19 +1466,24 @@ sub clone {
     return unless defined $clone_id;
 
     # remember old vs. new id
-    $id_map->{ $self->document_id } = $clone->document_id;
+    $id_map->{ $self->id } = $clone->id;
+    $docid_map->{ $self->document_id } = $clone->document_id;
 
     # check if this object need later fixup of referenced object ids
     my $objecttype = $clone->object_type;
     if ( $objecttype->is_objectroot() ) {
-        push @$ref_object_ids, $clone->document_id;
+        push @$ref_object_ids, $clone->id;
+        push @$ref_object_docids, $clone->document_id;
     }
     else {
-        my $id_name;
-        foreach $id_name ( @Reference_Id_Names ) {
+        foreach my $id_name ( @Reference_Id_Names ) {
             if ( defined $clone->{ $id_name } ) {
-                push @$ref_object_ids, $clone->document_id;
-                last;
+                push @$ref_object_ids, $clone->id;
+            }
+        }
+        foreach my $docid_name ( @Reference_DocId_Names ) {
+            if ( defined $clone->{ $docid_name } ) {
+                push @$ref_object_docids, $clone->document_id;
             }
         }
     }
@@ -1499,13 +1521,13 @@ sub clone {
         foreach $child ( @children ) {
             next if $child->location() eq '.diff_to_second_last';
             return unless $child->clone( User => $user, scope_subtree => 1,
-                                         _parent_id => $clone->document_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
+                                         _parent_id => $clone->document_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids, _docid_map => $docid_map, _ref_object_docids => $ref_object_docids );
         }
 
         # check if we are back at top level of recursion
         if ( not defined $parent_id ) {
             # fixup referenced object ids in all cloned objects that have reference ids
-            $self->__fix_clone_reference( User => $user, _id_map => $id_map, _ref_object_ids => $ref_object_ids );
+            $self->__fix_clone_reference( User => $user, _id_map => $id_map, _ref_object_ids => $ref_object_ids, _docid_map => $docid_map, _ref_object_docids => $ref_object_docids );
         }
     }
 
