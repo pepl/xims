@@ -88,6 +88,14 @@ sub event_create {
     my $ed = $self->_set_wysiwyg_editor( $ctxt );
     $ctxt->properties->application->style( "create" . $ed );
 
+    # look for inherited CSS assignments
+    if ( not defined $ctxt->object->css_id() ) {
+        my $css = $ctxt->object->css;
+        $ctxt->object->css_id( $css->id ) if defined $css;
+    }
+
+    $self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
+
     return 0;
 }
 
@@ -113,6 +121,9 @@ sub event_store {
         # very likely breaks after the content has been published, we have to mangle with the 'href' and 'src' attributes.
         my $absolute_path = defined $object->id() ? $object->location_path() : ($ctxt->parent->location_path() . '/' . $object->location());
         $body = $self->_absrel_urlmangle( $ctxt, $body, '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE(), $absolute_path );
+
+        # kill xml:lang attributes until we make correct use of them
+	$body =~ s/ xml:lang="[^"]+"//g;
 
         my $oldbody = $object->body();
         if ( $trytobalance eq 'true' and $object->body( $body ) ) {
