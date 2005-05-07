@@ -30,6 +30,7 @@
           HTMLArea.loadPlugin(&apos;ContextMenu&apos;);
           HTMLArea.loadPlugin(&apos;HtmlTidy&apos;);
           HTMLArea.loadPlugin(&apos;ImageProperties&apos;);
+	  HTMLArea.loadPlugin(&apos;EnterParagraphs&apos;);
     </script>
 
     <style type="text/css">@import url(<xsl:value-of select="$ximsroot"/>htmlarea/htmlarea.css);</style>
@@ -47,6 +48,7 @@
           editor.registerPlugin(ContextMenu);
           editor.registerPlugin(HtmlTidy);
           editor.registerPlugin(ImageProperties);
+          editor.registerPlugin(EnterParagraphs);
 
           // register the CSS plugin
           editor.registerPlugin(CSS, {
@@ -87,11 +89,11 @@
           </xsl:if>
 
           editor.config.baseURL = &apos;<xsl:choose><xsl:when test="$edit = '1'"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/></xsl:otherwise></xsl:choose>&apos;;
-          editor.config.imageURL = &apos;<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;style=htmlareaimage;otfilter=Image&apos;
-          editor.config.linkURL = &apos;<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;style=htmlarealink&apos;
+          editor.config.imageURL = &apos;<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;style=htmlareaimage;otfilter=Image&apos;;
+          editor.config.linkURL = &apos;<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;style=htmlarealink&apos;;
           editor.config.hideSomeButtons( " fontname fontsize ");
           // used by ContextMenu plugin
-          editor.config.siterootPath = &apos;<xsl:value-of select="concat($xims_box,$goxims_content,'/',/document/context/object/parents/object[@parent_id=1]/location)"/>&apos;
+          editor.config.siterootPath = &apos;<xsl:value-of select="concat($xims_box,$goxims_content,'/',/document/context/object/parents/object[@parent_id=1]/location)"/>&apos;;
           editor.generate();
         }
     </script>

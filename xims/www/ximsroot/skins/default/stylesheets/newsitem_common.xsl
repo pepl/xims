@@ -44,7 +44,7 @@
             <input type="text" name="imagefolder" size="40" class="text">
                 <!--  Provide an "educated-guess" default value -->
                 <xsl:attribute name="value">
-                    <xsl:for-each select="/document/context/object/parents/object[@document_id != 1 and @document_id != /document/context/object/@parent_id]">
+                    <xsl:for-each select="/document/context/object/parents/object[@document_id != 1]">
                         <xsl:text>/</xsl:text>
                         <xsl:value-of select="location"/>
                     </xsl:for-each><xsl:text>/images</xsl:text>
