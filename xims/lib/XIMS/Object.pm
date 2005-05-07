@@ -2511,9 +2511,6 @@ sub balance_string {
 
     unlink $tmp;
 
-    # tidy returns utf-8, so we may have to decode...
-    $wbCDATAstring = XIMS::decode( $wbCDATAstring );
-
     if ( not $self->balanced_string( $wbCDATAstring, nochunk => 1 ) ) {
         # tidy cleans better, but we want the following as fallback
         XIMS::Debug( 3, "tidy did not return a wellformed string, using LibXML" );
@@ -2541,7 +2538,10 @@ sub balance_string {
             $wbCDATAstring = XIMS::decode( $doc->toString() );
         }
     }
-
+    else {
+        # tidy returns utf-8, so we may have to decode...
+        $wbCDATAstring = XIMS::decode( $wbCDATAstring );
+    }
 
     if ( not exists $args{keephtmlheader} ) {
         # strip everything before <BODY> and after </BODY>
