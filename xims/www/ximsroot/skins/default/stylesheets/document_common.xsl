@@ -146,6 +146,8 @@
             }
 
             function setSel(selObj, toselect) {
+                if ( !toselect )
+                    toselect = 'htmlarea';
                 toselect = toselect.toLowerCase();
                 opts=selObj.options,
                 i=opts.length;
