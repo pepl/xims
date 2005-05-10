@@ -118,9 +118,12 @@ sub event_store {
 
         # The HTMLArea WYSIWG-editor in combination with MSIE translates relative paths in 'href' and 'src' attributes
         # to their '/goxims/content'-absolute path counterparts. Since we do not want '/goxims/content' references. which will
-        # very likely breaks after the content has been published, we have to mangle with the 'href' and 'src' attributes.
-        my $absolute_path = defined $object->id() ? $object->location_path() : ($ctxt->parent->location_path() . '/' . $object->location());
-        $body = $self->_absrel_urlmangle( $ctxt, $body, '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE(), $absolute_path );
+        # very likely break after the content has been published, we have to mangle with the 'href' and 'src' attributes.
+        my $absolute_path_nosite = defined $object->id() ? $object->location_path_relative() : ($ctxt->parent->location_path_relative() . '/' . $object->location());
+        $body = $self->_absrel_urlmangle( $ctxt, $body, '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE(), $absolute_path_nosite );
+
+        # kill xml:lang attributes until we make correct use of them
+        $body =~ s/ xml:lang="[^"]+"//g; #"
 
         # kill xml:lang attributes until we make correct use of them
 	$body =~ s/ xml:lang="[^"]+"//g;
@@ -325,23 +328,22 @@ sub _absrel_urlmangle {
     my $ctxt = shift;
     my $body = shift;
     my $goximscontent = shift;
-    my $absolute_path = shift;
+    my $absolute_path_nosite = shift;
 
-
-
-    my $doclevels = split('/', $absolute_path) - 1;
+    my $doclevels = split('/', $absolute_path_nosite) - 1;
     my $docrepstring = '../'x($doclevels-1);
-    while ( $body =~ /(src|href)=("|')$goximscontent([^("|')]+)/g ) {
-        my $dir = $3;
+    while ( $body =~ /(src|href)=("|')$goximscontent(\/[^\/]+)(\/[^("|')]+)/g ) {
+        my $site = $3;
+        my $dir = $4;
         $dir =~ s#[^/]+$##;
-    #warn "gotabs, dir: $absolute_path, $dir";
-        if ( $absolute_path =~ $dir ) {
+        #warn "gotabs, site: $site, dir: $absolute_path_nosite, $dir";
+        if ( $absolute_path_nosite =~ $dir ) {
             my $levels = split('/', $dir) - 1;
             my $repstring = '../'x($doclevels-$levels-1);
-            $body =~ s/(src|href)=("|')$goximscontent$dir/$1=$2$repstring/;
+            $body =~ s/(src|href)=("|')$goximscontent$site$dir/$1=$2$repstring/;
         }
         else {
-            $body =~ s#(src|href)=("|')$goximscontent/#$1=$2$docrepstring#;
+            $body =~ s#(src|href)=("|')$goximscontent$site/#$1=$2$docrepstring#;
         }
     }
 
