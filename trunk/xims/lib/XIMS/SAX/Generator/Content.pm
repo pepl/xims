@@ -256,28 +256,30 @@ sub _set_children {
         my $countdata = $object->data_provider->driver->dbh->fetch_select( sql => [ $countsql, @values ] );
         $child_count = $countdata->[0]->{cid};
 
-        my $sql = "SELECT $properties FROM $tables WHERE $conditions";
-        my $data = $object->data_provider->driver->dbh->fetch_select(
-                                                                     sql => [ $sql, @values ],
-                                                                     limit => $ctxt->properties->content->getchildren->limit(),
-                                                                     offset => $ctxt->properties->content->getchildren->offset(),
-                                                                     order => $ctxt->properties->content->getchildren->order()
-                                                                     );
+        if ( defined $child_count and $child_count > 0 ) {
+            my $sql = "SELECT $properties FROM $tables WHERE $conditions";
+            my $data = $object->data_provider->driver->dbh->fetch_select(
+                                                                         sql => [ $sql, @values ],
+                                                                         limit => $ctxt->properties->content->getchildren->limit(),
+                                                                         offset => $ctxt->properties->content->getchildren->offset(),
+                                                                         order => $ctxt->properties->content->getchildren->order()
+                                                                         );
 
-        my @childids;
-        foreach my $kiddo ( @{$data} ) {
-            push( @children, (bless $kiddo, 'XIMS::Object') );
-            push( @childids, $kiddo->{id} );
-            $privmask{$kiddo->{id}} = 0xffffffff if $ctxt->session->user->admin();
-        }
+            my @childids;
+            foreach my $kiddo ( @{$data} ) {
+                push( @children, (bless $kiddo, 'XIMS::Object') );
+                push( @childids, $kiddo->{id} );
+                $privmask{$kiddo->{id}} = 0xffffffff if $ctxt->session->user->admin();
+            }
 
-        if ( not $ctxt->session->user->admin() ) {
-            my @uid_list = ($userid, $ctxt->session->user->role_ids());
-            my @priv_data = $object->data_provider->getObjectPriv( content_id => \@childids,
-                                                             grantee_id => \@uid_list,
-                                                             properties => [ 'privilege_mask', 'content_id' ] );
-            foreach my $priv ( @priv_data ) {
-                $privmask{$priv->{'objectpriv.content_id'}} |= int($priv->{'objectpriv.privilege_mask'});
+            if ( not $ctxt->session->user->admin() ) {
+                my @uid_list = ($userid, $ctxt->session->user->role_ids());
+                my @priv_data = $object->data_provider->getObjectPriv( content_id => \@childids,
+                                                                 grantee_id => \@uid_list,
+                                                                 properties => [ 'privilege_mask', 'content_id' ] );
+                foreach my $priv ( @priv_data ) {
+                    $privmask{$priv->{'objectpriv.content_id'}} |= int($priv->{'objectpriv.privilege_mask'});
+                }
             }
         }
     }
