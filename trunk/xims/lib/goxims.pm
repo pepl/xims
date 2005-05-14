@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -18,8 +18,20 @@ use XIMS::Object;
 use XIMS::User;
 use XIMS::Session;
 use Apache::AuthXIMS;
-#use Data::Dumper;
 use Time::Piece;
+
+# preload commonly used and publish_gopublic objecttypes
+use XIMS::CGI::SiteRoot;
+use XIMS::CGI::DepartmentRoot;
+use XIMS::CGI::Document;
+use XIMS::CGI::Portlet;
+use XIMS::CGI::Questionnaire;
+use XIMS::CGI::AnonDiscussionForum;
+use XIMS::CGI::AnonDiscussionForumContrib;
+
+#use Data::Dumper;
+#use Time::HiRes;
+
 ##
 #
 # SYNOPSIS
@@ -36,6 +48,8 @@ use Time::Piece;
 #
 sub handler {
     my $r = shift;
+
+    #$XIMS::T0 = [Time::HiRes::gettimeofday()];
 
     XIMS::via_proxy_test($r) unless $r->pnotes('PROXY_TEST');
     XIMS::Debug( 5, "goxims called from " .  $r->connection->remote_ip() );
@@ -185,13 +199,11 @@ sub handler {
         return SERVER_ERROR;
     }
 
-    #instance the application class
-    #if ( my $appclass = $app_class->new( $r ) ) {
     if ( my $appclass = $app_class->new() ) {
         XIMS::Debug( 4, "application-class $app_class initiated." );
         $appclass->setStylesheetDir( XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/' . $ctxt->session->uilanguage() );
         my $rv = $appclass->run( $ctxt );
-        XIMS::Debug( 4, "application-class $app_class sucessfully run") if $rv;
+        XIMS::Debug( 4, "application-class $app_class successfully run") if $rv;
         return OK;
     }
 
