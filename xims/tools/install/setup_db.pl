@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -162,7 +162,7 @@ elsif ( $Conf{DBdsn} eq 'Pg' ) {
         my $current_user = getpwuid($>);
         if ( $current_user ne $Conf{DBUser} ) {
             if ( $> == 0 ) {
-                @args = ('su', $Conf{DBUser}, '-c', '"'. join(' ', @args) . '"');
+                @args = ('su', '-', $Conf{DBUser}, '-c', "cd $xims_home/sql/Pg; " . join(' ', @args));
             }
             else {
                 warn "\n\n[WARNING] You are neither logged in as root nor the database user you specified.\n",
@@ -180,8 +180,10 @@ elsif ( $Conf{DBdsn} eq 'Pg' ) {
 
     chdir "$xims_home/sql/Pg";
 
-    system(@args) == 0
-        or die "\n\033[1mSetting up DB failed! Error: $?.\nDo you have psql in your?\nPlease check your config information or try manually setting up the DB.\033[m\n\n";
+    unless ( system(@args) == 0 ) {
+        $args[-1] = '"' . $args[-1] . '"';
+        die "\n\033[1mSetting up DB failed! Error: $?.\nDo you have psql in your path?\nPlease check your config information or try manually setting up the DB using\n\n" . join(' ',@args) . "\n\nfirst and after that with '-f $Conf{DBPgtablefunc}' instead of setup.sql\033[m\n\n";
+    }
 
     if ( not ($Conf{DBhost} and length $Conf{DBhost}) ) {
         # tablefunctions
