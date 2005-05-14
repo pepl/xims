@@ -9,6 +9,7 @@ use vars qw( $VERSION @ISA );
 
 use XIMS;
 use XIMS::DataFormat;
+use XIMS::ObjectType;
 use XIMS::SAX;
 use XIMS::ObjectPriv;
 use CGI::XMLApplication 1.1.3; # sub-sub-version is not recognized here :-/
@@ -1311,11 +1312,18 @@ sub event_publish_prompt {
            unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     my @objects;
-    # check for body references in (X)HTML documents
     my $dfmime_type = $ctxt->object->data_format->mime_type();
     if ( $dfmime_type eq 'text/html' ) {
+        # check for body references in (X)HTML documents
         XIMS::Debug( 4, "checking body refs" );
         @objects = $self->body_ref_objects($ctxt);
+
+        # look for document links
+        my $urllinkid = XIMS::ObjectType->new( name => 'URLLink' )->id();
+        @objects = $ctxt->object->children_granted( object_type_id => $urllinkid, marked_deleted => undef );
+        for ( @objects ) {
+            $_->{location_path} = $_->location();
+        }
     }
     elsif ( $dfmime_type eq 'application/x-container' ) {
         my @non_container_ot = $ctxt->data_provider->object_types( is_fs_container => '0' );
