@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -85,6 +85,9 @@ sub event_default {
     $ctxt->properties->content->getchildren->limit( $rowlimit );
     $ctxt->properties->content->getchildren->offset( $offset );
     $ctxt->properties->content->getchildren->order( $order );
+
+    # This prevents the loading of XML::Filter::CharacterChunk and thus saving some ms...
+    $ctxt->properties->content->escapebody( 1 );
 
     return 0;
 }
