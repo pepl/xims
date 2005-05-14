@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -146,13 +146,31 @@ sub httpd_conf {
     elsif ( -f '/usr/local/etc/apache/httpd.conf' ) {                  # FreeBSD-Port www/apache
         $self->{ApacheHttpdConf} = '/usr/local/etc/apache/httpd.conf';
     }
+    elsif ( -f '/etc/apache/conf/apache.conf' ) {                      # Gentoo
+        $self->{ApacheHttpdConf} = '/etc/apache/conf/apache.conf';
+    }
     return $self->{ApacheHttpdConf};
 }
 
 sub parse_httpd_conf {
     my $self = shift;
-    open(CONF, $self->httpd_conf()) || die "Can't open " . $self->httpd_conf() . ": $!";
-    while (<CONF>) {
+
+    $self->_parse_apconfig_file( $self->httpd_conf() );
+    $self->{parsedhttpdconf} = 1;
+}
+
+sub _parse_apconfig_file {
+    my $self = shift;
+    my $filename = shift;
+
+    $self->{SeenApacheConfs}->{$filename}++;
+
+    my $fh = IO::File->new( $filename );
+    defined $fh || die "Can't open $filename: $!";
+    while (<$fh>) {
+        if ( /^\s*ServerRoot\s+["|']?([\w\/.-_]+)["|']?/) {
+            $self->{ApacheServerRoot} = $1;
+        }
         if ( /^\s*DocumentRoot\s+["|']?([\w\/.-_]+)["|']?/) {
             $self->{ApacheDocumentRoot} = $1;
         }
@@ -172,15 +190,24 @@ sub parse_httpd_conf {
             $self->{ximsstartuppl} = 1;
         }
 
-        last if ( $self->{ApacheDocumentRoot}
-                  and $self->{ApacheUser}
-                  and $self->{Group}
-                  and $self->{ximshttpdconf}
-                  and $self->{ximsstartuppl} );
+        if ( /^\s*Include\s+["|']?([\w\/.-_]+)["|']?/) {
+            my $includefile = $1;
+            # Ignore some known include files
+            if ( $includefile !~ /modules\.conf/ and $includefile !~ /ximshttpd\.conf/ and $includefile !~ /ximsstartup\.pl/ ) {
+                if ( not -f $includefile and defined $Apache::MyConfig::Setup{APACHE_PREFIX} and length $Apache::MyConfig::Setup{APACHE_PREFIX} ) {
+                    $includefile = $Apache::MyConfig::Setup{APACHE_PREFIX} . "/$includefile";
+                }
+                if ( not -f $includefile and defined $self->{ApacheServerRoot} ) {
+                    $includefile = $self->{ApacheServerRoot} . "/$includefile";
+                }
+                if ( -f $includefile and not exists $self->{SeenApacheConfs}->{$includefile} ) {
+                    $self->{SeenApacheConfs}->{$includefile}++;
+                    $self->_parse_apconfig_file( $includefile );
+                }
+            }
+        }
     }
-    close(CONF);
-    $self->{parsedhttpdconf} = 1;
-
+    $fh->close;
 }
 
 sub parsed_httpd_conf { return shift->{parsedhttpdconf} };
