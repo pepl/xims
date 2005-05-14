@@ -12,19 +12,6 @@
         <!-- Absolute path to the Apache document root -->
         <ApacheDocumentRoot></ApacheDocumentRoot>
 
-        <!-- 
-             IP-address(es) of legitimate proxyserver(s).
-             Requests coming from these will have the clients address set
-             according to the X-Forwarded-For Header.             
-        -->
-        <ProxyIP>
-            <!--
-                <item>1.2.3.4</item>
-                <item>1.2.3.5</item>
-            -->
-        </ProxyIP>
-
-
         <!-- Database connection information -->
         <DBUser></DBUser>
         <DBPassword></DBPassword>
@@ -115,6 +102,18 @@
         # FQDN of the Server used for LDAP or IMAP authentification
         -->
         <AuthServer></AuthServer>
+
+        <!--
+             IP-address(es) of legitimate proxyserver(s).
+             Requests coming from these will have the clients address set
+             according to the X-Forwarded-For Header.
+        -->
+        <ProxyIP>
+            <!--
+                <item>1.2.3.4</item>
+                <item>1.2.3.5</item>
+            -->
+        </ProxyIP>
 
         <!--
         # Path to an existing XIMS content object users will be redirected after login, if no specific
