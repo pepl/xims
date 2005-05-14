@@ -260,20 +260,33 @@ else {
 }
 
 # setup rights
-my $apache_uid = (getpwnam($installer->apache_user()))[2] or die "$installer->apache_user() not in passwd file.\n";
-my $apache_gid = (getgrnam($installer->apache_group()))[2] or die "$installer->apache_group() is an invalid group.\n";
+if ( $installer->apache_user() and $installer->apache_group() ) {
+    my $apache_uid = (getpwnam($installer->apache_user()))[2] or die "$installer->apache_user() not in passwd file.\n";
+    my $apache_gid = (getgrnam($installer->apache_group()))[2] or die "$installer->apache_group() is an invalid group.\n";
 
-# publicroot
-my $uid = (stat $publicroot)[4];
-chown( $uid, $apache_gid, $publicroot );
-chmod( 0775, $publicroot );
+    # publicroot
+    my $uid = (stat $publicroot)[4];
+    chown( $uid, $apache_gid, $publicroot );
+    chmod( 0775, $publicroot );
 
-# ximsconfig.xml
-$uid = (stat $configfile)[4];
-chown( $uid, $apache_gid, $configfile );
-chmod( 0440, $configfile );
+    # ximsconfig.xml
+    $uid = (stat $configfile)[4];
+    chown( $uid, $apache_gid, $configfile );
+    chmod( 0440, $configfile );
 
-print "[+] Successfully set up file access rights.\n";
+    print "[+] Successfully set up file access rights.\n";
+}
+else {
+    print "\n[WARNING] Apache group could not be determined from Apache config.\n";
+    print "    Please run
+
+    chgrp \$apache_group $publicroot
+    chmod 775 $publicroot
+    chgrp \$apache_group $configfile
+    chmod 440 $configfile
+
+    manually.\n\n";
+}
 
 # create links if they not already exist
 unless ( -l $installer->apache_document_root() . '/ximsroot'
