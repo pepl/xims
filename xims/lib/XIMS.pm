@@ -105,6 +105,7 @@ sub Debug {
             ($module, undef, undef, $method) = caller(1);
             if ( $ENV{MOD_PERL} and Apache->request ) {
                 my $log = Apache->request->log();
+                #$log->warn( "[Timed Interval] : " . int(1000 * Time::HiRes::tv_interval($XIMS::T0)) . "ms" );
                 $log->warn("[$module, $method] " . join('', @debug));
             }
             else {
