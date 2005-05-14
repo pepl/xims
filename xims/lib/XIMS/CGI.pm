@@ -14,12 +14,6 @@ use XIMS::ObjectPriv;
 use CGI::XMLApplication 1.1.3; # sub-sub-version is not recognized here :-/
 use XML::LibXML::SAX::Builder;
 use Apache::URI;
-# <pepl> The LibXML utf8(de|en-)coding functions won't convert strings coming from
-# $self->param() even if they are utf-8. Possibly because the high-bit is not
-# set. (Which I cannot check for in Perl 5.6.1).
-# The behaviour may be different with other XML::LibXML versions besides 1.56.
-# The behaviour may also be different with other Perl versions besides 5.6.1
-# Text::Iconv seems to be the most compatible module, so we are using it here.
 use Text::Iconv;
 
 #use Data::Dumper;
@@ -686,8 +680,11 @@ sub init_store_object {
     my $keywords   = $self->param( 'keywords' );
     my $image      = $self->param( 'image' );
 
+    # $location will be part of the URI, converting to iso-8859-1 is
+    # a first step before clean_location() to ensure browser compatibility
     my $converter = Text::Iconv->new("UTF-8", "ISO-8859-1");
-    # will be undef if string can not be converted to iso-8859-1;
+
+    # will be undef if string can not be converted to iso-8859-1
     $location = $converter->convert($location) if defined $location;
 
     if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
@@ -761,7 +758,7 @@ sub init_store_object {
     }
     else {
         XIMS::Debug( 3, "no location" );
-        $self->sendError( $ctxt, "Please supply a location!" );
+        $self->sendError( $ctxt, "Please supply a valid location!" );
         return 0;
     }
 
@@ -1522,13 +1519,13 @@ sub event_htmltidy {
 
     # deindent one level
     $tidiedstring =~ s/^[ ]{4}//mg;
-    
+
     # encode back to utf-8 in case
     $tidiedstring = XIMS::encode( $tidiedstring );
 
     print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
     $self->skipSerialization(1);
-    
+
     if ( $self->param('hti' ) ) {
         my $jsstring;
         foreach my $line ( split '\n', $tidiedstring ) {
@@ -1540,7 +1537,7 @@ sub event_htmltidy {
     else {
         print $tidiedstring;
     }
-    
+
     return 0;
 }
 
@@ -2060,7 +2057,8 @@ sub event_search {
             return 0;
         }
 
-        my $qb = $qbdriver->new( { search => $search, allowed => q{\!a-zA-Z0-9цдья÷ƒ№я%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} } );
+        my $allowed = XIMS::Encode( q{\!a-zA-Z0-9цдья÷ƒ№я%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} );
+        my $qb = $qbdriver->new( { search => $search, allowed => $allowed } );
 
         # refactor! build() should not be needed and only $qb should be passed
 
