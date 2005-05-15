@@ -108,7 +108,7 @@ sub handler {
 
     # set some session information
     my $tp = localtime;
-    $ctxt->session->date( $tp->dmy('.') . ' ' . $tp->hms );
+    $ctxt->session->date( $tp->ymd() . ' ' . $tp->hms() );
 
     # test if we are called through a proxy, set serverurl accordingly
     my $uri = Apache::URI->parse( $r );

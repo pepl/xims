@@ -314,12 +314,12 @@ sub fixupDBConfig {
         $conf->{DBdsn} .= ';host=' . $conf->{DBhost} if $conf->{DBhost} and length $conf->{DBhost};
         $conf->{DBdsn} .= ';port=' . $conf->{DBport} if $conf->{DBport} and length $conf->{DBport};
         $conf->{DBDOpt} = 'FetchHashKeyName=NAME_uc;' unless $conf->{DBDOpt} =~ /FetchHashKeyName/;
-        $conf->{DBSessionOpt} = 'SET DateStyle TO German;SET Client_Encoding TO UNICODE;' unless $conf->{DBSessionOpt} =~ /SET Client_Encoding/;
+        $conf->{DBSessionOpt} = 'SET DateStyle TO ISO;SET Client_Encoding TO UNICODE;' unless $conf->{DBSessionOpt} =~ /SET Client_Encoding/;
     }
     elsif ( $conf->{DBdsn} eq 'Oracle' ) {
         $conf->{DBdsn} = 'dbi:Oracle:' . $conf->{DBName};
-        $conf->{DBDOpt} = 'LongReadLen=10485760;LongTruncOk=1' unless $conf->{DBDOpt} =~ /LongReadLen/;
-        $conf->{DBSessionOpt} = "ALTER SESSION SET NLS_DATE_FORMAT='DD.MM.YYYY HH24:MI:SS';" unless $conf->{DBSessionOpt} =~ /ALTER SESSION SET NLS_DATE_FORMAT=/;
+        $conf->{DBDOpt} = 'LongReadLen=67108864;LongTruncOk=1' unless $conf->{DBDOpt} =~ /LongReadLen/;
+        $conf->{DBSessionOpt} = "ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS';" unless $conf->{DBSessionOpt} =~ /ALTER SESSION SET NLS_DATE_FORMAT=/;
     }
 }
 
