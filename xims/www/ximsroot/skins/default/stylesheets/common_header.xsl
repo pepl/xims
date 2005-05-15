@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <!--
 # Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -46,7 +46,7 @@
         <tr>
             <td width="59%" bgcolor="#ffffff" background="{$skimages}tablebg_2nd_row.png" nowrap="nowrap">
                 <xsl:if test="$nopath='false' and $noncontent ='false'">
-                    <font face="Arial, Helvetica, sans-serif" size="1" color="#004080">
+                    <span style="color: #004080; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                     <xsl:choose>
                         <xsl:when test="$containerpath='false'">
                             <xsl:apply-templates select="/document/context/object/parents/object[@document_id != 1]">
@@ -63,12 +63,12 @@
                             <xsl:text>&#160;</xsl:text>
                         </xsl:otherwise>
                     </xsl:choose>
-                    </font>
+                    </span>
                 </xsl:if>
             </td>
             <td background="{$skimages}tablebg_2nd_row.png" nowrap="nowrap" align="right">
-                <font face="Arial, Helvetica, sans-serif" size="1" color="#004080">
-                    <xsl:value-of select="/document/context/session/date/day"/>. <xsl:value-of select="/document/context/session/date/month"/>. <xsl:value-of select="/document/context/session/date/year"/>
+                <span style="color: #004080; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+                    <xsl:apply-templates select="/document/context/session/date" mode="date"/>
                     <xsl:choose>
                         <xsl:when test="/document/context/session/public_user = '1'">
                             / <a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}" class="logout"><xsl:value-of select="$i18n/l/login"/></a>
@@ -85,7 +85,7 @@
                             <xsl:call-template name="mode_switcher"/>
                         </xsl:otherwise>
                     </xsl:choose>
-                </font>
+                </span>
             </td>
         </tr>
     </table>
