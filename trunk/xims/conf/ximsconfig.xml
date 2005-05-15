@@ -28,14 +28,14 @@
         <DBUser>ximsrun</DBUser>           # Default value from defaultdata.sql
         <DBPassword>ximsrun</DBPassword>   # Default value from defaultdata.sql
         <DBdsn>dbi:Pg:dbname=xims</DBdsn>  # Default value from defaultdata.sql
-        <DBSessionOpt>SET DateStyle TO German;SET Client_Encoding TO UNICODE;</DBSessionOpt>
+        <DBSessionOpt>SET DateStyle TO ISO;SET Client_Encoding TO UNICODE;</DBSessionOpt>
         <DBDOpt>FetchHashKeyName=NAME_uc;</DBDOpt>
         -->
         <!--
         # Example settings for Oracle
         <DBdsn>dbi:Oracle:test</DBdsn>
-        <DBSessionOpt>ALTER SESSION SET NLS_DATE_FORMAT='DD.MM.YYYY HH24:MI:SS';</DBSessionOpt>
-        <DBDOpt>LongReadLen=10485760;LongTruncOk=1</DBDOpt>
+        <DBSessionOpt>ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS';</DBSessionOpt>
+        <DBDOpt>LongReadLen=67108864;LongTruncOk=1</DBDOpt>
         -->
 
         <!-- Set this to your dabase encoding if the database is not encoded in UTF-8 -->
