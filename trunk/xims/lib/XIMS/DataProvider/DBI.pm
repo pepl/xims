@@ -73,6 +73,7 @@ sub create {
     }
     my ($table, $column_map) = $self->tables_and_columns( $args{properties} );
     # warn "and after " . Dumper( $column_map ) . "\n";
+
     my $test = $self->{dbh}->do_insert( table    => $table->[0],
                                         values   => $column_map );
 
@@ -406,11 +407,18 @@ sub close_position_gap {
 sub db_now {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-    my $query = 'select now()';
-    $query .= ' from dual' if $self->{RDBMSClass} eq 'Oracle';
+    my $query;
+    if ( $self->{RDBMSClass} eq 'Oracle' ) {
+        $query = 'select now() as now from dual';
+    }
+    else {
+        # PostgreSQL's now() returns a timestamp with timezone. We want one
+        # without timezone and with a precision to seconds
+        $query = 'select LOCALTIMESTAMP(0) as now';
+    }
     my $data = $self->{dbh}->fetch_select( sql => $query );
 
-    return defined ( $data->[0]->{'now'} ) ? $data->[0]->{'now'} : $data->[0]->{'now()'};
+    return $data->[0]->{'now'};
 }
 
 sub get_object_id {
