@@ -24,6 +24,11 @@
 <Keywords>Keywords</Keywords>
 <Abstract>Abstract</Abstract>
 <Description>Description</Description>
+<Valid_from>Valid from</Valid_from>
+<Valid_to>Valid to</Valid_to>
+<Valid_from_default>Not set. Will default to creation date at saving if it remains unset.</Valid_from_default>
+<NamedDateFormat>%a, %B %d %Y %H:%M</NamedDateFormat>
+<Date_selector>Date selector</Date_selector>
 <Stylesheet>Stylesheet</Stylesheet>
 <logout>logout</logout>
 <login>login</login>
