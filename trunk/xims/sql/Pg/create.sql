@@ -198,6 +198,8 @@ CREATE TABLE ci_content
  ,keywords                      VARCHAR(200)
  ,status                        VARCHAR(100)
  ,creation_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now() NOT NULL
+ ,valid_from_timestamp          TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now()
+ ,valid_to_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE
  ,attributes                    VARCHAR(256)
  ,locked_by_id                  INTEGER       REFERENCES ci_users_roles( id )
  ,style_id                      INTEGER       REFERENCES ci_content( id )

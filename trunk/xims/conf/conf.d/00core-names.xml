@@ -86,6 +86,8 @@
                 <item>content.last_published_by_firstname</item>
                 <item>content.data_format_name</item>
                 <item>content.schema_id</item>
+                <item>content.valid_from_timestamp</item>
+                <item>content.valid_to_timestamp</item>
             </Content>
             <Document>
                 <item>document.location</item>
@@ -143,6 +145,8 @@
                 <item>content.last_published_by_firstname</item>
                 <item>content.data_format_name</item>
                 <item>content.schema_id</item>
+                <item>content.valid_from_timestamp</item>
+                <item>content.valid_to_timestamp</item>
                 <item>document.location</item>
                 <item>document.document_status</item>
                 <item>document.parent_id</item>
