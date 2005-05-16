@@ -130,7 +130,7 @@
     <xsl:value-of select="./minute"/>
 </xsl:template>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp" mode="ISO8601">
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|valid_from_timestamp|valid_to_timestamp" mode="ISO8601">
     <xsl:value-of select="./year"/>
     <xsl:text>-</xsl:text>
     <xsl:value-of select="./month"/>
@@ -143,6 +143,18 @@
     <xsl:text>:</xsl:text>
     <xsl:value-of select="./second"/>
     <!--<xsl:value-of select="./tzd"/>-->
+</xsl:template>
+
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|valid_from_timestamp|valid_to_timestamp" mode="ISO8601-MinNoT">
+    <xsl:value-of select="./year"/>
+    <xsl:text>-</xsl:text>
+    <xsl:value-of select="./month"/>
+    <xsl:text>-</xsl:text>
+    <xsl:value-of select="./day"/>
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="./hour"/>
+    <xsl:text>:</xsl:text>
+    <xsl:value-of select="./minute"/>
 </xsl:template>
 
 <xsl:template name="userfullname">
