@@ -24,6 +24,11 @@
 <Keywords>Schlagworte</Keywords>
 <Abstract>Zusammenfassung</Abstract>
 <Description>Beschreibung</Description>
+<Valid_from>Gültig ab</Valid_from><!--Gültig von -->
+<Valid_to>Gültig bis</Valid_to>
+<Valid_from_default>Wenn das Datum nicht hier gesetzt wird, wird beim Speichern das Erstelldatum für 'gültig ab' verwendet.</Valid_from_default>
+<NamedDateFormat>%a., %d. %B %Y, %H:%M</NamedDateFormat>
+<Date_selector>Datumsauswahl</Date_selector>
 <Stylesheet>Stylesheet</Stylesheet>
 <logout>abmelden</logout>
 <login>anmelden</login>
