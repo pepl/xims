@@ -10,6 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="document_default.xsl"/>
+<xsl:import href="common_jscalendar_scripts.xsl"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -38,9 +39,11 @@
                                             <img src="{$goxims_content}{image_id}" width="170" height="130" alt="{image_id}" title="{image_id}"/>
                                         </td>
                                         <td valign="top">
-                                            <div class="newsdate">
-                                                <!-- should be valid_from_timestamp -->
-                                                <xsl:apply-templates select="creation_timestamp" mode="date"/>
+                                            <div class="newsdate" id="newsdate">
+                                                <script type="text/javascript">
+                                                    current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
+                                                    document.getElementById("newsdate").innerHTML = current_date;
+                                                </script>
                                             </div>
                                             <div class="newslead">
                                                 <xsl:apply-templates select="abstract"/>
@@ -51,9 +54,11 @@
                                 <xsl:otherwise>
                                     <tr>
                                         <td valign="top" colspan="2">
-                                            <div class="newsdate">
-                                                <!-- should be valid_from_timestamp -->
-                                                <xsl:apply-templates select="creation_timestamp" mode="date"/>
+                                            <div class="newsdate" id="newsdate">
+                                                <script type="text/javascript">
+                                                    current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
+                                                    document.getElementById("newsdate").innerHTML = current_date;
+                                                </script>
                                             </div>
                                             <div class="newslead">
                                                 <xsl:apply-templates select="abstract"/>
@@ -112,6 +117,16 @@
             </table>
         </body>
     </html>
+</xsl:template>
+
+<xsl:template name="head_default">
+    <head>
+        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="jscalendar_scripts"/>
+    </head>
 </xsl:template>
 
 </xsl:stylesheet>
