@@ -5,6 +5,12 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_
 \echo Adding SCHEMA_ID column to CI_CONTENT
 ALTER TABLE ci_content ADD COLUMN schema_id INTEGER REFERENCES ci_content ( id );
 
+\echo Adding valid_from_timestamp and valid_to_timestamp;
+ALTER TABLE ci_content ADD COLUMN valid_from_timestamp TIMESTAMP(0)  WITHOUT TIME ZONE;
+ALTER TABLE ci_content ALTER COLUMN valid_from_timestamp SET DEFAULT now();
+ALTER TABLE ci_content ADD COLUMN valid_to_timestamp TIMESTAMP(0)  WITHOUT TIME ZONE;
+UPDATE ci_content set valid_from_timestamp = creation_timestamp;
+
 \echo Dropping Foreign Key 'STYLE_ID'
 ALTER TABLE CI_CONTENT DROP CONSTRAINT "$2";
 
@@ -31,7 +37,6 @@ ALTER TABLE CI_CONTENT ADD CONSTRAINT CTT_CTT_SCRIPT_FK FOREIGN KEY (SCRIPT_ID) 
 
 \echo Renaming ci_documents.status to ci_documents.document_status
 ALTER TABLE ci_documents RENAME COLUMN status TO document_status;
-
 
 BEGIN;
 \echo Dropping view ci_content_loblength
