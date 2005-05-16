@@ -16,6 +16,7 @@ use CGI::XMLApplication 1.1.3; # sub-sub-version is not recognized here :-/
 use XML::LibXML::SAX::Builder;
 use Apache::URI;
 use Text::Iconv;
+use Time::Piece;
 
 #use Data::Dumper;
 ############################################################################
@@ -842,13 +843,11 @@ sub init_store_object {
         my $schemaobj;
         if ( $schema =~ /^\d+$/
              and $schemaobj = XIMS::Object->new( id => $schema )
-             and ( $schemaobj->object_type->name() eq 'XML' ) )
-        {
+             and ( $schemaobj->object_type->name() eq 'XML' ) ) {
             $object->schema_id( $schemaobj->id() );
         }
         elsif ( $schemaobj = XIMS::Object->new( path => $schema )
-             and ( $schemaobj->object_type->name() eq 'XML' ) )
-        {
+             and ( $schemaobj->object_type->name() eq 'XML' ) ) {
             $object->schema_id( $schemaobj->id() );
         }
         else {
@@ -862,20 +861,43 @@ sub init_store_object {
         my $cssobj;
         if ( $css =~ /^\d+$/
              and $cssobj = XIMS::Object->new( id => $css )
-             and ( $cssobj->object_type->name() eq 'CSS' ) )
-        {
+             and ( $cssobj->object_type->name() eq 'CSS' ) ) {
             $object->css_id( $cssobj->id() );
         }
         elsif ( $cssobj = XIMS::Object->new( path => $css )
-                and ( $cssobj->object_type->name() eq 'CSS' ) )
-        {
+                and ( $cssobj->object_type->name() eq 'CSS' ) ) {
             $object->css_id( $cssobj->id() );
         }
         else {
-                XIMS::Debug( 3, "could not set css_id" );
+            XIMS::Debug( 3, "Could not set css_id" );
         }
     }
 
+    my $valid_from = $self->param( 'valid_from_timestamp' );
+    if ( defined $valid_from and length $valid_from ) {
+        eval { $valid_from = Time::Piece->strptime( $valid_from, "%Y-%m-%d %H:%M" ); };
+        if ( not $@ ) {
+            $valid_from = $valid_from->ymd() . ' ' . $valid_from->hms();
+            XIMS::Debug( 6, "valid_from: $valid_from" );
+            $object->valid_from_timestamp( $valid_from );
+        }
+        else {
+            XIMS::Debug( 3, "Invalid timestamp for valid_from '$valid_from', need a ISO8601 string" );
+        }
+    }
+
+    my $valid_to = $self->param( 'valid_to_timestamp' );
+    if ( defined $valid_to and length $valid_to ) {
+        eval { $valid_to = Time::Piece->strptime( $valid_from, "%Y-%m-%d %H:%M" ); };
+        if ( not $@ ) {
+            $valid_to = $valid_to->ymd() . ' ' . $valid_to->hms();
+            XIMS::Debug( 6, "valid_to: $valid_to" );
+            $object->valid_to_timestamp( $valid_to );
+        }
+        else {
+            XIMS::Debug( 3, "Invalid timestamp for valid_to '$valid_to', need a ISO8601 string" );
+        }
+    }
 
     return 1;
 }
