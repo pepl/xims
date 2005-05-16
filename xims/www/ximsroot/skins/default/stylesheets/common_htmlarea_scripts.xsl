@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:template name="htmlarea_scripts">
-    <!-- 
+    <!--
          The following HTMLArea integration depends on a customized version of HTMLArea3 RC1
          available from http://xims.info/download/.
          createLinkX() and createImageX() functions have been created by Britta Tautermann.
@@ -30,7 +30,6 @@
           HTMLArea.loadPlugin(&apos;ContextMenu&apos;);
           HTMLArea.loadPlugin(&apos;HtmlTidy&apos;);
           HTMLArea.loadPlugin(&apos;ImageProperties&apos;);
-	  HTMLArea.loadPlugin(&apos;EnterParagraphs&apos;);
     </script>
 
     <style type="text/css">@import url(<xsl:value-of select="$ximsroot"/>htmlarea/htmlarea.css);</style>
@@ -48,7 +47,6 @@
           editor.registerPlugin(ContextMenu);
           editor.registerPlugin(HtmlTidy);
           editor.registerPlugin(ImageProperties);
-          editor.registerPlugin(EnterParagraphs);
 
           // register the CSS plugin
           editor.registerPlugin(CSS, {
