@@ -1,11 +1,11 @@
-use Test::More tests => 32;
+use Test::More tests => 35;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::User;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
    use_ok( 'XIMS::Object' );
 }
 
@@ -15,7 +15,7 @@ isa_ok( $o, 'XIMS::Object' );
 
 $o->title( 'My Test Dir' );
 $o->language_id( 1 );
-$o->location( 'testdir' );  
+$o->location( 'testdir' );
 $o->parent_id( 2 );
 $o->object_type_id( 1 );
 $o->data_format_id( 18 );
@@ -28,7 +28,7 @@ cmp_ok( $id, '>', 1, 'User has a sane ID' );
 
 # now, fetch it back...
 $o = undef;
-$o = XIMS::Object->new( id => $id, User => $user );
+$o = XIMS::Object->new( id => $id, User => $user, marked_deleted => undef );
 isa_ok( $o, 'XIMS::Object', 're-fetched our object, ' );
 
 is( $o->title(), 'My Test Dir', 'testobject has correct title' );
@@ -47,7 +47,7 @@ ok( $o->update(), 'update title' );
 
 # now, fetch it back again
 $o = undef;
-$o = XIMS::Object->new( id => $id, User => $user );
+$o = XIMS::Object->new( id => $id, User => $user, marked_deleted => undef );
 is( $o->title(), 'Renamed Test Dir', 'title correctly altered' );
 is( $o->last_modified_by_id(), $user->id(), 'testobject has correct last_modified_by_id' );
 
@@ -67,6 +67,19 @@ is ($o->position, undef, 'testobject has undefined position' );
 ok ( $o->undelete(), 'undelete testobject' );
 is ($o->marked_deleted, undef, 'testobject is not marked_deleted' );
 cmp_ok($o->position, '>', 0, 'testobject has a defined position' );
+
+# valid_from, valid_to
+my $valid_from = '2002-02-02 02:02:02';
+my $valid_to = '2003-03-03 03:03:03';
+$o->valid_from_timestamp( $valid_from );
+$o->valid_to_timestamp( $valid_to );
+ok( $o->update(), 'update valid_from and valid_to' );
+
+# now, fetch it back again
+$o = undef;
+$o = XIMS::Object->new( id => $id, User => $user, marked_deleted => undef );
+is($o->valid_from_timestamp(), $valid_from, 'valid_from_timestamp has correct value');
+is($o->valid_to_timestamp(), $valid_to, 'valid_to_timestamp has correct value');
 
 # now, delete the object (still not sure if we do this or
 # just set 'marked_deleted' on the object;
