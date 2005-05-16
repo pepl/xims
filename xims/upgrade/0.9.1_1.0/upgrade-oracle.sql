@@ -6,6 +6,14 @@ PROMPT Adding SCHEMA_ID column on 'CI_CONTENT'
 ALTER TABLE ci_content ADD (SCHEMA_ID NUMBER)
 /
 
+PROMPT Adding VALID_FROM_TIMESTAMP and VALID_TO_TIMESTAMP columns on 'CI_CONTENT'
+ALTER TABLE ci_content ADD (VALID_FROM_TIMESTAMP DATE DEFAULT SYSDATE)
+/
+ALTER TABLE ci_content ADD (VALID_TO_TIMESTAMP DATE)
+/
+UPDATE ci_content SET valid_from_timestamp = creation_timestamp
+/
+
 PROMPT Creating Foreign Key on 'CI_CONTENT'
 ALTER TABLE CI_CONTENT ADD (CONSTRAINT
  CTT_CTT_SCHEMA_FK FOREIGN KEY
@@ -13,7 +21,7 @@ ALTER TABLE CI_CONTENT ADD (CONSTRAINT
   (ID))
 /
 
-PROMPT Renaming ci_documents.status to ci_documents.document_status 
+PROMPT Renaming ci_documents.status to ci_documents.document_status
 ALTER TABLE ci_documents RENAME COLUMN status TO document_status
 /
 
