@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -25,6 +25,7 @@
                     <xsl:call-template name="tr-leadimage-create"/>
                     <xsl:call-template name="tr-body-create_wepro"/>
                     <xsl:call-template name="tr-keywords-create"/>
+                    <xsl:call-template name="tr-valid_from"/>
                     <tr>
                         <td colspan="3">
                             <xsl:call-template name="markednew"/>
@@ -40,4 +41,23 @@
     </body>
 </html>
 </xsl:template>
+
+<xsl:template name="head-create_wepro">
+    <head>
+        <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS</title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}wepro/ewebeditpro.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <base href="{$xims_box}{$goxims_content}{$parent_path}/" />
+            <script type="text/javascript">
+            function setEWProperties(sEditorName) {
+                eWebEditPro.instances[sEditorName].editor.setProperty(&apos;BaseURL&apos;, &apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>&apos;);
+                eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty(&apos;TransferMethod&apos;,&apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>?contentbrowse=1;style=ewebeditimage;otfilter=Image&apos;);
+            }
+        </script>
+        <xsl:call-template name="jscalendar_scripts"/>
+    </head>
+</xsl:template>
+
 </xsl:stylesheet>
