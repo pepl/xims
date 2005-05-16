@@ -531,6 +531,77 @@
 </tr>
 </xsl:template>
 
+<xsl:template name="tr-valid_from">
+    <xsl:variable name="valid_from_timestamp_tmp">
+        <xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>
+    </xsl:variable>
+    <xsl:variable name="valid_from_timestamp">
+        <xsl:if test="$valid_from_timestamp_tmp != '-- :'">
+            <xsl:value-of select="$valid_from_timestamp_tmp"/>
+        </xsl:if>
+    </xsl:variable>
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n/l/Valid_from"/></td>
+        <td colspan="2">
+            <input tabindex="40" type="hidden" name="valid_from_timestamp" id="valid_from_timestamp">
+                <xsl:attribute name="value">
+                    <xsl:value-of select="$valid_from_timestamp"/>
+                </xsl:attribute>
+            </input>
+            <span id="show_vft"><xsl:value-of select="$valid_from_timestamp"/></span>
+            <xsl:text>&#160;</xsl:text>
+            <img
+              src="{$skimages}calendar.gif"
+              id="f_trigger_vft"
+              style="cursor: pointer;"
+              alt="{$i18n/l/Date_selector}"
+              title="{$i18n/l/Date_selector}"
+              onmouseover="this.style.background='red';"
+              onmouseout="this.style.background=''"
+            />
+            <script type="text/javascript">
+                var current_datestring = "<xsl:value-of select="$valid_from_timestamp"/>";
+                var current_date;
+                if ( current_datestring.length > 0 ) {
+                    current_date = Date.parseDate(current_datestring, "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
+                    document.getElementById("show_vft").innerHTML = current_date;
+                }
+                else {
+                    document.getElementById("show_vft").innerHTML = "<xsl:value-of select="$i18n/l/Valid_from_default"/>"
+                }
+                Calendar.setup({
+                    inputField     :    "valid_from_timestamp",
+                    ifFormat       :    "%Y-%m-%d %H:%M",
+                    displayArea    :    "show_vft",
+                    daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
+                    button         :    "f_trigger_vft",
+                    align          :    "Tl",
+                    singleClick    :    true,
+                    showsTime      :    true,
+                    timeFormat     :    "24"
+                });
+            </script>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('Valid_from')" class="doclink">(?)</a>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-valid_to">
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n/l/Valid_to"/></td>
+        <td colspan="2">
+            <input tabindex="40" type="text" name="valid_to_timestamp" size="20" class="text">
+                <xsl:attribute name="value">
+                    <xsl:apply-templates select="valid_to_timestamp" mode="ISO8601-MinNoT"/>
+                </xsl:attribute>
+            </input>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('Valid_to')" class="doclink">(?)</a>
+        </td>
+    </tr>
+</xsl:template>
+
 <xsl:template name="cttobject.status">
     <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
