@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -35,16 +35,16 @@ unless ( $path ) {
 }
 
 my $user = $term->authenticate( %args );
-die "Could not authenticate user '".$args{u}."'.\n" unless $user and $user->id();
+die "Could not authenticate user '".$args{u}."'.\n" unless ($user and $user->id());
 
 my $object = XIMS::Object->new( User => $user, path => $path );
-die "Could not find object '$path'.\n" unless $object and $object->id();
+die "Could not find object '$path'.\n" unless ($object and $object->id());
 
 my $privmask = $user->object_privmask( $object );
-die "Access Denied. You do not have privileges to modify '$path'.\n" unless $privmask and ($privmask & XIMS::Privileges::MODIFY());
+die "Access Denied. You do not have privileges to modify '$path'.\n" unless ($privmask and ($privmask & XIMS::Privileges::MODIFY()));
 
 my $folder_ot = XIMS::ObjectType->new( name => 'Folder' );
-die "Object '$path' is not a Folder.\n" unless $object->object_type_id() == $folder_ot->id();
+die "Object '$path' is not a Folder.\n" unless ($object->object_type_id() == $folder_ot->id());
 
 my $objroot_name = $args{s} ? 'SiteRoot' : 'DepartmentRoot';
 my $objroot_ot = XIMS::ObjectType->new( name => $objroot_name );
@@ -63,6 +63,10 @@ print ".\n";
 
 # Update the department_id of descendants
 my $iterator = $object->descendants( department_id => $object->department_id() );
+
+# Exit if no descendant has to be updated
+exit 0 unless defined $iterator;
+
 while ( my $descendant = $iterator->getNext() ) {
     $descendant->department_id( $object->document_id() );
     if ( $descendant->update( User => $user ) ) {
