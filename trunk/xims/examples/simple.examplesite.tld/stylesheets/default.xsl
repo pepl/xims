@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcq="http://purl.org/dc/qualifiers/1.0/" xmlns="http://www.w3.org/TR/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcq="http://purl.org/dc/qualifiers/1.0/" xmlns="http://www.w3.org/TR/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" version="1.0">
 
 <xsl:output doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" method="html"/>
 
@@ -10,7 +10,8 @@
     <html>
     <head>
         <title><xsl:value-of select="rdf:RDF/rdf:Description/dc:title/text()"/></title>
-        <link type="text/css" rel="stylesheet" href="/stylesheets/default.css"/>
+        <!-- We have to use an absolute URI here so that the CSS stylesheet will also be found during publishing preview and other goxims-served events -->
+        <link type="text/css" rel="stylesheet" href="http://simple.examplesite.tld/stylesheets/default.css"/>
     </head>
     <body>
         <xsl:comment>UdmComment</xsl:comment>
@@ -33,7 +34,7 @@
         </div>
         <div id="footer">
             <span class="left">
-                &#xA9; 2003 Grey Dahut Preservation Initiative<br/> simple.examplesite.tld
+                &#xA9; 2003-<xsl:value-of select="date:year()"/> Grey Dahut Preservation Initiative<br/> simple.examplesite.tld
             </span>
             <span class="right">
                 Powered by
