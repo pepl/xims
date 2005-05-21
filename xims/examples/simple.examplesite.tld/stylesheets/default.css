@@ -45,6 +45,11 @@ a:hover {
     color: #333399;
 }
 
+.pseudolink {
+    color: #333399;
+    text-decoration:underline;
+}
+
 .left {
     float: left;
 }
