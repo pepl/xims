@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -27,6 +27,8 @@ use strict;
 use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION);
 use vars qw(%entity2char %decodemap);
 #use Data::Dumper;
+
+use Encode;
 
 require 5.004;
 require Exporter;
@@ -422,7 +424,7 @@ sub decode {
     my $c;
 
     # this assumes that if XIMS::DBENCODING() is set, it refers to a one byte
-    # encoding and that users needing multi-byte encodings use utf-8
+    # encoding and that users who need multi-byte encodings will use utf-8
     if ( XIMS::DBENCODING() ) {
         for (@$array) {
             s/(&\#(\d+);?)/($2 < 256 and exists $decodemap{$2}) ? chr($2) : $1/eg;
@@ -432,6 +434,10 @@ sub decode {
     }
     else {
         for (@$array) {
+            # if XIMS::DBENCODING is not set, the database and input/output are expected to be
+            # encoded in utf-8
+            #utf8::decode($_);
+            $_ = Encode::decode_utf8($_); # convert the octets and turn utf-8 flag on
             s/(&\#(\d+);?)/exists $decodemap{$2} ? chr($2) : $1/eg;
             s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2);exists $decodemap{$c} ? chr($c) : $1/eg;
             s/(&(\w+);?)/$entity2char{$2} || $1/eg;
