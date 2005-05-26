@@ -10,6 +10,8 @@
     <Last_modification_timestamp>Datum der letzten Änderung</Last_modification_timestamp>
     <Last_publisher>Wer das Objekt zuletzt veröffentlicht hat</Last_publisher>
     <Publication_timestamp>Datum der letzten Veröffentlichung</Publication_timestamp>
+    <Valid_from_timestamp>Anlaufdatum</Valid_from_timestamp>
+    <Valid_to_timestamp>Ablaufdatum</Valid_to_timestamp>
     <Owner>Wer für das Objekt verantworlich ist</Owner>
     <Marked_new>Als neu Markiert</Marked_new>
     <Attributes>Attribute</Attributes>

@@ -195,6 +195,7 @@ sub generate_body {
     foreach my $p ( qw( created_by_fullname creation_timestamp
                         last_modified_by_fullname
                         owned_by_fullname last_modification_timestamp
+                        valid_from_timestamp valid_to_timestamp
                         last_publication_timestamp status attributes
                         marked_new abstract image_id body ) ) {
         if ( defined $self->param( 'col_' . $p ) ) {

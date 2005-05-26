@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0"?>
 <!--
 # Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
@@ -71,7 +71,20 @@
                 <input type="checkbox" name="col_last_publication_timestamp"><xsl:if test="body/content/column[@name = 'last_publication_timestamp']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
             </td>
         </tr>
-
+        <tr>
+            <td>
+                <xsl:value-of select="$i18n_portlet/l/Valid_from_timestamp"/>
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="col_valid_from_timestamp"><xsl:if test="body/content/column[@name = 'valid_from_timestamp']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
+            </td>
+            <td>
+                <xsl:value-of select="$i18n_portlet/l/Valid_to_timestamp"/>
+            </td>
+            <td valign="top">
+                <input type="checkbox" name="col_valid_to_timestamp"><xsl:if test="body/content/column[@name = 'valid_to_timestamp']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
+            </td>
+        </tr>
         <tr>
             <td>
                 <xsl:value-of select="$i18n_portlet/l/Owner"/>
@@ -187,6 +200,10 @@
                 <option value="8"><xsl:if test="body/content[latest =8]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>8</option>
                 <option value="9"><xsl:if test="body/content[latest =9]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>9</option>
                 <option value="10"><xsl:if test="body/content[latest =10]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>10</option>
+                <option value="15"><xsl:if test="body/content[latest =15]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>15</option>
+                <option value="20"><xsl:if test="body/content[latest =20]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>20</option>
+                <option value="25"><xsl:if test="body/content[latest =25]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>25</option>
+                <option value="30"><xsl:if test="body/content[latest =30]"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>30</option>
             </select>
         </td>
         <td>
@@ -255,6 +272,21 @@
                     </td>
                 </tr>
             </table>
+            <!-- Nodes outside the node-set cannot be checked, therefore we have to check the filtered object-types via JavaScript -->
+            <xsl:apply-templates select="body/content/object-type"/>
+            <script type="text/javascript">
+                var inputs = document.getElementsByTagName("input");
+                var re = new RegExp("filter_ot_");
+                var el;
+                for (var i = inputs.length - 1; i > 0; --i ) {
+                    re.test(inputs[i].name);
+                    if (RegExp.rightContext.length > 0) {
+                        el = document.getElementById("ot_" + RegExp.rightContext)
+                        if ( el )
+                            el.checked = 1;
+                    }
+                }
+            </script>
         </td>
     </tr>
     </table>
@@ -267,10 +299,14 @@
                 <xsl:value-of select="name"/>
             </td>
             <td align="right">
-                <input type="checkbox" name="ot_{name}"><xsl:if test="/document/context/object/body/content/object-type/@name = name"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
+                <input type="checkbox" name="ot_{name}" id="ot_{name}"/>
             </td>
         </tr>
     </table>
+</xsl:template>
+
+<xsl:template match="object-type">
+    <input type="hidden" name="filter_ot_{@name}"/>
 </xsl:template>
 
 <xsl:template match="*" mode="filter">

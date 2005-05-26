@@ -10,6 +10,8 @@
     <Last_modification_timestamp>Last modification timestamp</Last_modification_timestamp>
     <Last_publisher>Last publisher</Last_publisher>
     <Publication_timestamp>Publication timestamp</Publication_timestamp>
+    <Valid_from_timestamp>Valid-From timestamp</Valid_from_timestamp>
+    <Valid_to_timestamp>Valid-To timestamp</Valid_to_timestamp>
     <Owner>Owner</Owner>
     <Marked_new>Marked-New Flag</Marked_new>
     <Attributes>Attributes</Attributes>
