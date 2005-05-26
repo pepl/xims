@@ -116,7 +116,7 @@ sub handle_data {
             foreach my $o ( @children ) {
                 my $cacheddfname = "_cached_data_format_id".$o->data_format_id();
                 $self->{$cacheddfname} ||= $o->data_format->name();
-                if ( $self->{$cacheddfname} eq 'URL' ) {
+                if ( defined $self->{$cacheddfname} and $self->{$cacheddfname} eq 'URL' ) {
                     $location_path = $o->location();
                 }
                 elsif ( $self->{Export} ) {
