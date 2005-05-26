@@ -1178,6 +1178,7 @@ sub create {
     $self->owned_by_firstname( $user->firstname() );
     $self->owned_by_middlename( $user->middlename() );
     $self->owned_by_lastname( $user->lastname() );
+    $self->valid_from_timestamp( $now ) unless defined $self->valid_from_timestamp();
 
     my ($id, $document_id) = $self->data_provider->createObject( $self->data() );
     $self->id( $id );
