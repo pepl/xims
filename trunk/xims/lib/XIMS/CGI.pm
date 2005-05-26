@@ -12,7 +12,7 @@ use XIMS::DataFormat;
 use XIMS::ObjectType;
 use XIMS::SAX;
 use XIMS::ObjectPriv;
-use CGI::XMLApplication 1.1.3; # sub-sub-version is not recognized here :-/
+use CGI::XMLApplication; # 1.1.3; # sub-sub-version is not recognized here and only gives a warning :-/
 use XML::LibXML::SAX::Builder;
 use Apache::URI;
 use Text::Iconv;
@@ -1828,7 +1828,8 @@ sub event_reposition {
     $self->param( 'sb', 'position' );
     $self->param( 'order', 'asc' );
     my $c = $new_position / XIMS::SEARCHRESULTROWLIMIT();
-    my $page = int($c) + (scalar split(/\./,$c) > 1 ? 1 : 0); # poor man's ceiling()
+    my @size = split(/\./,$c);
+    my $page = int($c) + (scalar(@size) > 1 ? 1 : 0); # poor man's ceiling()
     $self->param( 'page', $page );
 
     XIMS::Debug( 4, "redirecting to parent" );
@@ -1966,7 +1967,8 @@ sub body_ref_objects {
         }
         my $exp = $p;
         if ( $exp =~ m|^\.\./| ) {
-            my $anclevel = split('\.\./', $exp) - 1;
+            my @size = split('\.\./', $exp);
+            my $anclevel = scalar(@size) - 1;
             my $i = scalar @ancestors - 1 - $anclevel; # ancestors include root
             my $relparent;
             $relparent = $ancestors[$i] if $i >= 0;

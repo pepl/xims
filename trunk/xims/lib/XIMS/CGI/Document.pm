@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -124,9 +124,6 @@ sub event_store {
 
         # kill xml:lang attributes until we make correct use of them
         $body =~ s/ xml:lang="[^"]+"//g; #"
-
-        # kill xml:lang attributes until we make correct use of them
-	$body =~ s/ xml:lang="[^"]+"//g;
 
         my $oldbody = $object->body();
         if ( $trytobalance eq 'true' and $object->body( $body ) ) {
@@ -330,7 +327,8 @@ sub _absrel_urlmangle {
     my $goximscontent = shift;
     my $absolute_path_nosite = shift;
 
-    my $doclevels = split('/', $absolute_path_nosite) - 1;
+    my @size = split('/', $absolute_path_nosite);
+    my $doclevels = scalar(@size) - 1;
     my $docrepstring = '../'x($doclevels-1);
     while ( $body =~ /(src|href)=("|')$goximscontent(\/[^\/]+)(\/[^("|')]+)/g ) {
         my $site = $3;
@@ -338,7 +336,8 @@ sub _absrel_urlmangle {
         $dir =~ s#[^/]+$##;
         #warn "gotabs, site: $site, dir: $absolute_path_nosite, $dir";
         if ( $absolute_path_nosite =~ $dir ) {
-            my $levels = split('/', $dir) - 1;
+            my @size = split('/', $dir);
+            my $levels = scalar(@size) - 1;
             my $repstring = '../'x($doclevels-$levels-1);
             $body =~ s/(src|href)=("|')$goximscontent$site$dir/$1=$2$repstring/;
         }
