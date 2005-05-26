@@ -24,18 +24,12 @@
 package XIMS::Entities;
 
 use strict;
-use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION);
-use vars qw(%entity2char %decodemap);
+use vars qw(@ISA %entity2char %decodemap $VERSION);
 #use Data::Dumper;
 
-use Encode;
-
-require 5.004;
-require Exporter;
-@ISA = qw(Exporter);
-
-@EXPORT = qw(decode);
-@EXPORT_OK = qw(%entity2char);
+# require instead of use here because we do not want Encode::decode to be
+# exported and trigger a "method decode redefined" warning
+require Encode;
 
 $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 sub Version { $VERSION; }
@@ -437,10 +431,14 @@ sub decode {
             # if XIMS::DBENCODING is not set, the database and input/output are expected to be
             # encoded in utf-8
             #utf8::decode($_);
-            $_ = Encode::decode_utf8($_); # convert the octets and turn utf-8 flag on
+            $_ = Encode::decode_utf8($_); # convert the octets and turn utf-8 flag on.
+                                          # otherwise lines containing chars chr(127)+, will
+                                          # be incorrectly utf-8 encoded :-/
             s/(&\#(\d+);?)/exists $decodemap{$2} ? chr($2) : $1/eg;
             s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2);exists $decodemap{$c} ? chr($c) : $1/eg;
             s/(&(\w+);?)/$entity2char{$2} || $1/eg;
+            $_ = Encode::encode_utf8($_); # convert back and turn utf-8 flag off. otherwise XML::LibXML
+                                          # will get confused and will not parse the string :-/
         }
     }
     wantarray ? @$array : $array->[0];
