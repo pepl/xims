@@ -110,10 +110,16 @@ sub get_values {
         my @items = $node->findnodes( 'item' );
         if ( scalar @items ) {
             my @values = map { $_->textContent() } @items;
+            # untaint the values for running with setuid - if you have
+            # less trust in your configfile, adapt the regex.
+            @values = map { $_ = $1 if /^(.*)$/ } @values;
             $rv{$node->localname()} = \@values;
         }
         else {
-            $rv{$node->localname()} = $node->textContent();
+            my $value = $node->textContent();
+            # untaint the values for running with setuid
+            $value = $1 if $value =~ /^(.*)$/;
+            $rv{$node->localname()} = $value;
         }
     }
     return \%rv;
