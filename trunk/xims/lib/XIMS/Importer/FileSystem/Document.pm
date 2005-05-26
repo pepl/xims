@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -10,6 +10,8 @@ use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implemen
                       # $doc->getDocumentElement() instead of $doc->documentElement() for example...
 use XML::LibXML::Iterator;
 use XIMS::Object;
+
+use Encode;
 
 use vars qw( @ISA );
 @ISA = qw(XIMS::Importer::FileSystem::XMLChunk);
@@ -42,7 +44,10 @@ sub handle_data {
                 $value = $n->textContent();
             }
             if ( length $value ) {
-                $object->$field( XIMS::Entities::decode($value) );
+                # $doc->setEncoding() does not work depending on the libxml version :-/
+                # Using encode_utf8() here to make sure we get utf-8
+                $value = Encode::encode_utf8( $value ) unless XIMS::DBENCODING;
+                $object->$field( XIMS::Entities::decode( $value ) );
             }
         }
     }
@@ -57,11 +62,16 @@ sub get_rootelement {
     my %args = @_;
 
     my $strref = $self->get_strref( $location );
+
+    # Most users will not have their legacy HTML documents encoded
+    # in UTF-8. Therefore, we try to encode the documents to UTF-8 for them.
+    my $data = utf8_sanitize( $$strref );
+
     my $wbdata;
     my $object = XIMS::Object->new();
     my $doc;
-    if ( not $doc = $object->balanced_string( $$strref, %args ) ) {
-        $wbdata = $object->balance_string( $$strref, keephtmlheader => 1 );
+    if ( not $doc = $object->balanced_string( $data, %args ) ) {
+        $wbdata = $object->balance_string( $data, keephtmlheader => 1 );
         my $parser = XML::LibXML->new();
         eval {
             $doc = $parser->parse_string( $wbdata );
@@ -87,5 +97,30 @@ sub get_rootelement {
     $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
     return $doc->documentElement();
 }
+
+sub utf8_sanitize {
+    my $string = shift;
+    if ( is_notutf8( $string ) ) {
+        return Encode::encode_utf8($string);
+    }
+    else {
+        return $string;
+    }
+}
+
+# poor man's check
+sub is_notutf8 {
+    # <yarg/>
+    if ( $] == 5.008004 ) {
+        eval { Encode::decode_utf8(Encode::decode_utf8(shift)); };
+        return 1 if $@;
+        return 0;
+    }
+    else {
+        return 0 if defined Encode::decode_utf8(shift);
+        return 1;
+    }
+}
+
 
 1;
