@@ -71,6 +71,21 @@ sub event_store {
             }
             $img_obj->data_format_id( $df->id() );
 
+            my $image_description = $self->param('imagedescription');
+            if ( defined $image_description and length $image_description and $image_description !~ /^\s+$/ ) {
+                if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+                    $image_description = XIMS::decode($image_description);
+                }
+                if ( $img_obj->abstract( $image_description ) ) {
+                    XIMS::Debug( 6, "image description set, len: " . length($image_description) );
+                }
+                else {
+                    XIMS::Debug( 2, "could not form well" );
+                    $self->sendError( $ctxt, "Image description could not be well-balanced" );
+                    return 0;
+                }
+            }
+
             XIMS::Debug( 4, "reading from filehandle");
             my ($buffer, $body);
             while ( read($img_fh, $buffer, 1024) ) {
