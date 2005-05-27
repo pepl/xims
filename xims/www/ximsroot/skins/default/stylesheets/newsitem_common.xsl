@@ -36,10 +36,22 @@
       </td>
     </tr>
     <tr>
-         <td valign="top">
-             <xsl:value-of select="$i18n/l/Image"/>
+        <td valign="top" colspan="3">
+            <xsl:value-of select="$i18n/l/Image"/>
             <xsl:text>&#160;</xsl:text>
-             <xsl:value-of select="$i18n/l/target"/>
+            <xsl:value-of select="$i18n/l/Description"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('ImageDescription')" class="doclink">(?)</a>
+            <br/>
+            <textarea tabindex="30" name="imagedescription" rows="2" cols="100" class="text"><xsl:text>&#160;</xsl:text></textarea>
+            <script type="text/javascript">document.getElementsByName("imagedescription")[0].value = '';</script>
+      </td>
+    </tr>
+    <tr>
+         <td valign="top">
+            <xsl:value-of select="$i18n/l/Image"/>
+            <xsl:text>&#160;</xsl:text>
+            <xsl:value-of select="$i18n/l/target"/>
          </td>
         <td colspan="2">
             <input type="text" name="imagefolder" size="40" class="text">
