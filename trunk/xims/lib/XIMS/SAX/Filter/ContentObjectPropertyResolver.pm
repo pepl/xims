@@ -74,7 +74,9 @@ sub end_element {
             push( @{$self->{Properties}},
                      qw( id document_id parent_id object_type_id
                          data_format_id symname_to_doc_id location title )
-                );
+                ) unless exists $self->{PushedDefaultProperties};
+            $self->{PushedDefaultProperties}++;
+
             $object = XIMS::Object->new( User => $self->{User}, $id => $self->{document_id}, properties => $self->{Properties} );
             $object->{location_path} = $object->location_path();
             if ( defined $object->{location_path} and not exists $self->{NonExport} ) {
