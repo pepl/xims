@@ -54,7 +54,8 @@
     </xsl:template>
 
     <xsl:template name="testbodysxml">
-        <a href="javascript:openTestWFWindow()">
+        <xsl:call-template name="wfcheckjs"/>
+        <a href="javascript:void()" onclick="return wfcheck();">
             <img src="{$skimages}option_wfcheck.png"
                  border="0"
                  alt="{$i18n/l/Test_body_xml}"
@@ -80,31 +81,63 @@
         </a>
     </xsl:template>
 
+    <xsl:template name="xmlhttpjs">
+        var xmlhttp=false;
+        /*@cc_on @*/
+        /*@if (@_jscript_version &gt;= 5)
+        // JScript gives us Conditional compilation, we can cope with old IE versions.
+        // and security blocked creation of the objects.
+        try {
+            xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+        }
+        catch (e) {
+            try {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch (E) {
+                xmlhttp = false;
+            }
+        }
+        @end @*/
+        if (!xmlhttp &amp;&amp; typeof XMLHttpRequest!='undefined') {
+          xmlhttp = new XMLHttpRequest();
+        }
+    </xsl:template>
+
+    <xsl:template name="wfcheckjs">
+        <script type="text/javascript">
+            <xsl:call-template name="xmlhttpjs"/>
+
+            function wfcheck() {
+                var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?test_wellformedness=1')"/>";
+                xmlhttp.open("POST",url,true);
+                xmlhttp.onreadystatechange=function() {
+                    if (xmlhttp.readyState==4) {
+                        if (xmlhttp.status!=200) {
+                            alert("Parse Failure. Could not check well-formedness.")
+                        }
+                        else {
+                            alert(xmlhttp.responseText + '\n');
+                        }
+                    }
+                }
+                xmlhttp.setRequestHeader
+                (
+                    'Content-Type',
+                    'application/x-www-form-urlencoded; charset=UTF-8'
+                );
+                xmlhttp.send('test_wellformedness=1&amp;body='+encodeURIComponent(document.eform.body.value));
+                return false;
+            }
+        </script>
+    </xsl:template>
+
     <xsl:template name="prettyprintjs">
         <script type="text/javascript">
-            var xmlhttp=false;
-            /*@cc_on @*/
-            /*@if (@_jscript_version &gt;= 5)
-            // JScript gives us Conditional compilation, we can cope with old IE versions.
-            // and security blocked creation of the objects.
-            try {
-                xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-            }
-            catch (e) {
-                try {
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                catch (E) {
-                    xmlhttp = false;
-                }
-            }
-            @end @*/
-            if (!xmlhttp &amp;&amp; typeof XMLHttpRequest!='undefined') {
-              xmlhttp = new XMLHttpRequest();
-            }
+            <xsl:call-template name="xmlhttpjs"/>
 
             function prettyprint() {
-                var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>";
+                var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?htmltidy=1')"/>";
                 xmlhttp.open("POST",url,true);
                 xmlhttp.onreadystatechange=function() {
                     if (xmlhttp.readyState==4) {
@@ -116,7 +149,12 @@
                         }
                     }
                 }
-                xmlhttp.send('prettyprint=1&amp;body='+encodeURIComponent(document.eform.body.value));
+                xmlhttp.setRequestHeader
+                (
+                    'Content-Type',
+                    'application/x-www-form-urlencoded; charset=UTF-8'
+                );
+                xmlhttp.send('htmltidy=1&amp;body='+encodeURIComponent(document.eform.body.value));
                 return false;
             }
         </script>
