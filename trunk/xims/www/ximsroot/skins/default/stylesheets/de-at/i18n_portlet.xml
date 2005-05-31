@@ -18,6 +18,7 @@
     <How_deep>Wie tief soll die Hierarchie dursucht werden? (Standarmäßig eine Ebene)</How_deep>
     <Add_documentlinks>Sollen die Links zum Dokument jedes Objekts hinzugefügt werden?</Add_documentlinks>
     <Filter_latest>Die letzten 'X' Objekte filtern</Filter_latest>
+    <Filter_latest_sortkey>Sortiere die letzten 'X' Objekte nach</Filter_latest_sortkey>
     <Filter_marked_new>Als neu markierte Objekte filtern</Filter_marked_new>
     <Filter_published>Veröffentlichte Objekte filtern</Filter_published>
     <Filter_object_types>Objekte anhand des Objekt-Typs filtern</Filter_object_types>
