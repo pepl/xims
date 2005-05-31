@@ -489,6 +489,12 @@ sub new {
         $self->{Ancestors} = $ancestors;
     }
 
+    # hmmm
+    # remove /root
+    #if ( defined $self->{Ancestors} and defined $self->{Ancestors}->[0] and $self->{Ancestors}->[0]->id == 1 ) {
+    #    shift @{$self->{Ancestors}};
+    #}
+
     # publish only non-fs-container children here
     my @non_fscont_types = map { $_->id() } $self->{Provider}->object_types( is_fs_container => 0 );
     @{$self->{Children}} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
@@ -1447,14 +1453,19 @@ use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::PortletCollector;
+use XIMS::SAX::Filter::ContentIDPathResolver;
+use XIMS::SAX::Filter::ContentObjectPropertyResolver;
 
 sub set_sax_filters {
     XIMS::Debug( 5, "called" );
     my $self  = shift;
     my @retval;
     unshift @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
-                                                                    ResolveContent => [ qw( DEPARTMENT_ID IMAGE_ID) ] );
-
+                                                                    ResolveContent => [ qw( DEPARTMENT_ID ) ] ),
+                     XIMS::SAX::Filter::ContentObjectPropertyResolver->new( User           => $self->{User},
+                                                                            ResolveContent => [ qw( image_id ) ],
+                                                                            Properties     => [ qw( abstract ) ]
+                                                                          );
 
     my $filter = XIMS::SAX::Filter::PortletCollector->new( Provider => $self->{Provider},
                                                            Object   => $self->{Object},
