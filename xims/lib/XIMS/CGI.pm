@@ -40,7 +40,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 # first we register the events we handle
 sub registerEvents {
     my $self = shift;
-    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', 'prettyprint', 'htmltidy', @_ );
+    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', 'htmltidy', @_ );
 }
 
 ############################################################################
@@ -1342,7 +1342,9 @@ sub event_publish_prompt {
 
         # look for document links
         my $urllinkid = XIMS::ObjectType->new( name => 'URLLink' )->id();
-        @objects = $ctxt->object->children_granted( object_type_id => $urllinkid, marked_deleted => undef );
+        my @doclinks = $ctxt->object->children_granted( object_type_id => $urllinkid, marked_deleted => undef );
+        push( @objects, @doclinks ) if scalar @doclinks > 0;
+
         for ( @objects ) {
             $_->{location_path} = $_->location();
         }
@@ -1487,46 +1489,25 @@ sub event_test_wellformedness {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $body = $self->param('body');
-
-    my $test = $ctxt->object->balanced_string( $body, verbose_msg => 1 );
-    if ( $test->isa('XML::LibXML::DocumentFragment') ) {
-        $ctxt->session->message( "Parse ok" );
-    }
-    else {
-        $ctxt->session->error_msg( "Parse failure" );
-        $ctxt->session->verbose_msg( $test || "Cowardly refusing to fill an errorstring" );
-    }
-
-    $ctxt->properties->application->styleprefix( "common" );
-    $ctxt->properties->application->style( "message_window_plain" );
-    return 0;
-}
-
-sub event_prettyprint {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
     my $body = XIMS::decode( $self->param('body') );
-    $body ||= $ctxt->object->body();
 
-    print $self->header( -type => 'text/plain', -charset => (XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8') );
+    # if we got no body param, use $object->body
+    my $string = defined $body ? $body : $ctxt->object->body();
+
+    print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
     $self->skipSerialization(1);
 
-    my $doc = $ctxt->object->balanced_string( $body );
-    if ( defined $doc and $doc->isa('XML::LibXML::DocumentFragment') ) {
-        # $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' ); does not work
-        # correctly for whatever reasons - we have to manually decode again then.
-        # Format 2 deals better with the one-line fragment produced by
-        # HTMLArea's serializer with Gecko
-        my $pprinted = XIMS::Entities::decode( XIMS::decode( $doc->toString(2) ) );
-        $pprinted =~ s/\n\s*\n/\n/g; # remove duplicate linebreaks added by toString(2)
-        print $pprinted;
+    my $test = $ctxt->object->balanced_string( $string, verbose_msg => 1 );
+
+    if ( $test->isa('XML::LibXML::DocumentFragment') ) {
+        print "Parse ok";
     }
     else {
-        $self->setPanicMsg( "Parse Failure. Could not prettyprint." );
-        return -4;
+        $test = XIMS::encode( $test );
+        $test ||= "Cowardly refusing to fill an errorstring";
+        print $test;
     }
+
     return 0;
 }
 
