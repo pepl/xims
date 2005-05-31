@@ -371,7 +371,7 @@ sub object_types {
     my $self = shift;
     my %args = @_;
     my $cache = 1 unless scalar keys %args > 0;
-    if ( defined $self->{'_cachedots'} ) {
+    if ( defined $cache and defined $self->{'_cachedots'} ) {
         return @{$self->{'_cachedots'}};
     }
     my @data = $self->getObjectType( %args );
@@ -384,7 +384,7 @@ sub data_formats {
     my $self = shift;
     my %args = @_;
     my $cache = 1 unless scalar keys %args > 0;
-    if ( defined $self->{'_cacheddfs'} ) {
+    if ( defined $cache and defined $self->{'_cacheddfs'} ) {
         return @{$self->{'_cacheddfs'}};
     }
     my @data = $self->getDataFormat( %args );
