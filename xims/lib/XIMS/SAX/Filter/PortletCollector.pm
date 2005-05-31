@@ -109,7 +109,12 @@ sub handle_data {
             $method = 'descendants_granted';
             $childrenargs{maxlevel} = $depth;
         }
-        @children = $object->$method( %childrenargs, %{$direct_filter}, marked_deleted => undef, limit => $self->get_latest(), order => 'last_modification_timestamp DESC' );
+        my $latest_sortkey = $self->get_latest_sortkey();
+        my $order = 'last_modification_timestamp';
+        if ( defined $latest_sortkey and length $latest_sortkey and $latest_sortkey eq 'valid_from_timestamp' ) {
+            $order = $latest_sortkey;
+        }
+        @children = $object->$method( %childrenargs, %{$direct_filter}, marked_deleted => undef, limit => $self->get_latest(), order => "$order DESC" );
         if ( @children  and scalar( @children ) ) {
             XIMS::Debug( 6, "found n = " . scalar( @children ) . " objects" );
             my $location_path;
@@ -213,6 +218,20 @@ sub get_latest {
     if ( defined $latest and $latest ne '0' ) {
         XIMS::Debug( 6, "got latest $latest" );
         return $latest;
+    }
+    return undef;
+}
+
+sub get_latest_sortkey {
+    my $self = shift;
+    my $latest_sortkey;
+    my $content = $self->get_content();
+    if ( defined $content ) {
+        $latest = $content->getChildrenByTagName( "latest_sortkey" )->string_value();
+    }
+    if ( defined $latest_sortkey and ( $latest_sortkey eq 'last_modification_timestamp' or $latest_sortkey eq 'valid_from_timestamp' ) ) {
+        XIMS::Debug( 6, "got latest_sortkey $latest_sortkey" );
+        return $latest_sortkey;
     }
     return undef;
 }

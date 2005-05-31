@@ -220,6 +220,14 @@ sub generate_body {
         $body .= '<latest>' . $self->param( "latest" ) . '</latest>';
     }
 
+    my $latest_sortkey = $self->param( 'f_latest_sortkey' );
+    if ( defined $latest_sortkey ) {
+        XIMS::Debug( 6, "latest_sortkey: $latest_sortkey" );
+        if ( $latest_sortkey ne 'last_modification_timestamp' ) { # default value
+            $body .= '<latest_sortkey>' . $latest_sortkey . '</latest_sortkey>';
+        }
+    }
+
     if ( $self->param( "documentlinks" ) ) {
         $body .= '<documentlinks>1</documentlinks>';
     }

@@ -219,6 +219,24 @@
             </input><xsl:value-of select="$i18n/l/No"/>
         </td>
     </tr>
+    <tr>
+        <td colspan="2">
+            <xsl:value-of select="$i18n_portlet/l/Filter_latest_sortkey"/>:
+            <select name="f_latest_sortkey">
+                <option value="last_modification_timestamp">
+                    <xsl:value-of select="$i18n_portlet/l/Last_modification_timestamp"/>
+                </option>
+                <option value="valid_from_timestamp">
+                    <xsl:if test="body/content/latest_sortkey != '' and body/content/latest_sortkey = 'valid_from_timestamp'">
+                        <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="$i18n_portlet/l/Valid_from_timestamp"/>
+                </option>
+            </select>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('filter_latest_sortkey')" class="doclink">(?)</a>
+        </td>
+    </tr>
 </xsl:template>
 
 <xsl:template name="contentfilters">
