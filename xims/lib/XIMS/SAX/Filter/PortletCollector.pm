@@ -227,7 +227,7 @@ sub get_latest_sortkey {
     my $latest_sortkey;
     my $content = $self->get_content();
     if ( defined $content ) {
-        $latest = $content->getChildrenByTagName( "latest_sortkey" )->string_value();
+        $latest_sortkey = $content->getChildrenByTagName( "latest_sortkey" )->string_value();
     }
     if ( defined $latest_sortkey and ( $latest_sortkey eq 'last_modification_timestamp' or $latest_sortkey eq 'valid_from_timestamp' ) ) {
         XIMS::Debug( 6, "got latest_sortkey $latest_sortkey" );
