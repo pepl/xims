@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -36,10 +36,6 @@ sub new {
     my $self = bless {}, $class;
     my $real_session;
 
-    # ubu: debugging, don't delete
-    my ($package, $filename, $line) = caller(1);
-    #warn "Session init called. arguments: " . Dumper( \%args ) . "\ncalled by: $package line $line\n";
-
     if ( scalar( keys( %args ) ) > 0 ) {
         if ( defined( $args{session_id} ) ) {
             XIMS::Debug( 5, "fetching session by id." );
@@ -47,7 +43,7 @@ sub new {
 
             # return undef if they explicitly asked for a
             # for an existing session and it wasn't found
-            return undef unless $real_session;
+            return undef unless (defined $real_session and defined $real_session->id);
         }
         elsif ( defined( $args{user_id} ) ) {
             XIMS::Debug( 5, "attempting to create new user session." );
