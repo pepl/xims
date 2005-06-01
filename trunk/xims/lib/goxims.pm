@@ -86,14 +86,17 @@ sub handler {
         my $sessionid  = Apache::AuthXIMS::get_session_cookie( $r );
         my $session;
         my $public = XIMS::User->new( name => $publicuser );
-        if ( $sessionid and length $sessionid ) {
-            XIMS::Debug( 4, "found existing session cookie, user already logged in" );
+        if ( defined $sessionid and length $sessionid ) {
             $session = XIMS::Session->new( session_id => $sessionid );
-            # fake session user's id to public user's id, so that actions happen in the context of the
-            # public user and the currently logged-in user does not need to logout while coming in via /gopublic/
-            $session->user_id( $public->id() );
+            if ( defined $session ) {
+                XIMS::Debug( 4, "found existing session cookie, user already logged in" );
+                # fake session user's id to public user's id, so that actions happen in the context of the
+                # public user and the currently logged-in user does not need to logout while coming in via /gopublic/
+                $session->user_id( $public->id() );
+            }
         }
-        else {
+
+        if ( not defined $session ) {
             $session = XIMS::Session->new( 'user_id' => $public->id(),
                                            'host'    => $r->connection->remote_ip() );
             XIMS::Debug( 4, "setting session cookie for $publicuser" );
