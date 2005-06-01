@@ -43,7 +43,7 @@ sub new {
 
             # return undef if they explicitly asked for a
             # for an existing session and it wasn't found
-            return undef unless (defined $real_session and defined $real_session->id);
+            return undef unless $real_session;
         }
         elsif ( defined( $args{user_id} ) ) {
             XIMS::Debug( 5, "attempting to create new user session." );
@@ -67,13 +67,14 @@ sub new {
             $real_session = $self->data_provider->getSession( id => $id );
         }
 
-        if ( defined( $real_session )) {
+        if ( $real_session ) {
             $self->data( %{$real_session} );
         }
         else {
             $self->data( %args );
         }
     }
+
     return $self;
 }
 
