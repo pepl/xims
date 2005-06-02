@@ -106,7 +106,7 @@ sub new {
         my @data = $self->data_provider->getObject( %args, properties => $properties );
         return undef unless scalar @data;
         $real_object = $data[0];
-        if ( defined( $real_object )) {
+        if ( defined( $real_object ) ) {
             delete $real_object->{'document.id'};
             $self->data( %{$real_object} );
         }
@@ -1638,10 +1638,10 @@ sub attribute {
         foreach my $key ( keys %attr ) {
             $attributes{$key} = $attr{$key};
         }
-        $text = join( ';', map { $_ . "=" . $attributes{$_} } keys(%attributes) );
+        $text = join( ';', map { $_ . "=" . (defined $attributes{$_} ? $attributes{$_} : '') } keys(%attributes) );
     }
     else {
-        $text = join( ';', map { $_ . "=" . $attr{$_} } keys(%attr) );
+        $text = join( ';', map { $_ . "=" . (defined $attr{$_} ? $attr{$_} : '') } keys(%attr) );
     }
     return 1 if $self->attributes( $text );
 }
@@ -1700,7 +1700,8 @@ sub attribute_by_key {
 sub grant_user_privileges {
     my $self = shift;
     my %args = @_;
-    my $privilege_mask = $args{privmask} || $args{privilege_mask};
+    my $privilege_mask = defined $args{privmask} ? $args{privmask} : $args{privilege_mask};
+
     die "must have a grantor, a grantee and a privmask"
         unless defined( $args{grantor} ) and defined( $args{grantee}) and defined( $privilege_mask );
 
@@ -2480,6 +2481,8 @@ sub balance_string {
     my $self        = shift;
     my $CDATAstring = shift;
     my %args        = @_;
+
+    return undef unless defined $CDATAstring;
 
     my $wbCDATAstring = undef; # return value
 
