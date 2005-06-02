@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -24,7 +24,7 @@
         <newsitems>
             <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="{department_id}/ou.xml"/>
             <newsitem id="{@id}">
-                <xsl:attribute name="date"><xsl:apply-templates select="creation_timestamp" mode="ISO8601"/></xsl:attribute>
+                <xsl:attribute name="date"><xsl:apply-templates select="valid_from_timestamp" mode="ISO8601"/></xsl:attribute>
                 <!-- add user-metadata here? -->
                 <title>
                     <xsl:value-of select="title"/>
@@ -35,8 +35,13 @@
                 <story>
                     <xsl:apply-templates select="body"/>
                 </story>
-
                 <image url="{image_id/location_path}" alt="{image_id/title}" longdesc="{image_id/abstract}"/>
+                <created_by_firstname><xsl:apply-templates select="created_by_firstname"/></created_by_firstname>
+                <created_by_middlename><xsl:apply-templates select="created_by_middlename"/></created_by_middlename>
+                <created_by_lastname><xsl:apply-templates select="created_by_lastname"/></created_by_lastname>
+                <owned_by_firstname><xsl:apply-templates select="owned_by_firstname"/></owned_by_firstname>
+                <owned_by_middlename><xsl:apply-templates select="owned_by_middlename"/></owned_by_middlename>
+                <owned_by_lastname><xsl:apply-templates select="owned_by_lastname"/></owned_by_lastname>
                 <links>
                     <xsl:apply-templates select="children/object"/>
                 </links>
