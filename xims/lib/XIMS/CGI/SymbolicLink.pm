@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -104,19 +104,26 @@ sub event_store {
     my $object = $ctxt->object();
     my $target = $self->param( 'target' );
 
-    if ( defined $target ) {
+    if ( defined $target and length $target ) {
         XIMS::Debug( 6, "target: $target" );
         my $targetobj;
-        if ( $target =~ /^\d+$/
+        if ( $target =~ /^\d+$/ and $target ne '1'
                 and $targetobj = XIMS::Object->new( document_id => $target, language => $object->language_id ) ) {
             $object->symname_to_doc_id( $targetobj->document_id() );
         }
-        elsif ( $targetobj = XIMS::Object->new( path => $target, language => $object->language_id ) ) {
+        elsif ( $target ne '/' and $target ne '/root'
+               and $targetobj = XIMS::Object->new( path => $target, language => $object->language_id ) ) {
             $object->symname_to_doc_id( $targetobj->document_id() );
         }
         else {
             XIMS::Debug( 2, "Could not find or set target (SYMNAME_TO_DOC_ID)" );
             $self->sendError( $ctxt, "Could not find or set target" );
+            return 0;
+        }
+
+        if ( $object->document_id and $object->document_id == $object->symname_to_doc_id ) {
+            XIMS::Debug( 2, "Will not store a self-referencing link" );
+            $self->sendError( $ctxt, "Will not store a self-referencing link" );
             return 0;
         }
     }
