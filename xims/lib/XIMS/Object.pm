@@ -91,7 +91,12 @@ sub new {
 
         # this is bad... fix me later
         my $document_id = $self->data_provider->get_object_id_by_path( path => $args{path} );
-        $args{document_id} = $document_id;
+        if ( defined $document_id ) {
+            $args{document_id} = $document_id;
+        }
+        else {
+            return undef;
+        }
     }
 
     # check to see if we are using the constructor
