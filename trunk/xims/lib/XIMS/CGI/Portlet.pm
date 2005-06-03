@@ -95,19 +95,26 @@ sub event_store {
     my $object = $ctxt->object();
     my $target = $self->param( 'target' );
 
-    if ( defined $target ) {
+    if ( defined $target and length $target ) {
         XIMS::Debug( 6, "target: $target" );
         my $targetobj;
-        if ( $target =~ /^\d+$/
+        if ( $target =~ /^\d+$/ and $target ne '1'
                 and $targetobj = XIMS::Object->new( document_id => $target, language => $object->language_id ) ) {
             $object->symname_to_doc_id( $targetobj->document_id() );
         }
-        elsif ( $targetobj = XIMS::Object->new( path => $target, language => $object->language_id ) ) {
+        elsif ( $target ne '/' and $target ne '/root'
+               and $targetobj = XIMS::Object->new( path => $target, language => $object->language_id ) ) {
             $object->symname_to_doc_id( $targetobj->document_id() );
         }
         else {
             XIMS::Debug( 2, "Could not find or set target (SYMNAME_TO_DOC_ID)" );
             $self->sendError( $ctxt, "Could not find or set target" );
+            return 0;
+        }
+
+        if ( $object->document_id and $object->document_id == $object->symname_to_doc_id ) {
+            XIMS::Debug( 2, "Will not store a self-referencing link" );
+            $self->sendError( $ctxt, "Will not store a self-referencing link" );
             return 0;
         }
     }
@@ -116,6 +123,7 @@ sub event_store {
         $self->sendError( $ctxt, "No target specified!" );
         return 0;
     }
+
 
     my $body = $self->generate_body( $ctxt );
     $ctxt->object->body( $body );
