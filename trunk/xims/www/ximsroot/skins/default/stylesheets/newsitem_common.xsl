@@ -21,7 +21,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
             <br />
-            <textarea tabindex="30" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)"><xsl:text>&#160;</xsl:text></textarea>
+            <textarea tabindex="25" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)"><xsl:text>&#160;</xsl:text></textarea>
             <script type="text/javascript">document.getElementsByName("abstract")[0].value = '';</script>
             <xsl:text>&#160;</xsl:text><span id="charcount"><xsl:text>&#160;</xsl:text></span>
             <xsl:call-template name="charcountcheck"/>
@@ -30,9 +30,21 @@
     <tr>
         <td valign="top"><xsl:value-of select="$i18n/l/Image"/></td>
         <td colspan="2">
-            <input tabindex="30" type="file" name="imagefile" size="40" class="text"/>
+            <input tabindex="26" type="file" name="imagefile" size="40" class="text"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
+      </td>
+    </tr>
+    <tr>
+        <td valign="top">
+            <xsl:value-of select="$i18n/l/Image"/>
+            <xsl:text>&#160;</xsl:text>
+            <xsl:value-of select="$i18n/l/Title"/>
+        </td>
+        <td colspan="2">
+            <input tabindex="27" type="text" name="imagetitle" size="40" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('ImageTitle')" class="doclink">(?)</a>
       </td>
     </tr>
     <tr>
@@ -43,7 +55,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('ImageDescription')" class="doclink">(?)</a>
             <br/>
-            <textarea tabindex="30" name="imagedescription" rows="2" cols="100" class="text"><xsl:text>&#160;</xsl:text></textarea>
+            <textarea tabindex="28" name="imagedescription" rows="2" cols="100" class="text"><xsl:text>&#160;</xsl:text></textarea>
             <script type="text/javascript">document.getElementsByName("imagedescription")[0].value = '';</script>
       </td>
     </tr>
@@ -54,7 +66,7 @@
             <xsl:value-of select="$i18n/l/target"/>
          </td>
         <td colspan="2">
-            <input type="text" name="imagefolder" size="40" class="text">
+            <input tabindex="29" type="text" name="imagefolder" size="40" class="text">
                 <!--  Provide an "educated-guess" default value -->
                 <xsl:attribute name="value">
                     <xsl:for-each select="/document/context/object/parents/object[@document_id != 1]">
@@ -77,7 +89,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
             <br />
-            <textarea tabindex="50" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)">
+            <textarea tabindex="25" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)">
             <xsl:choose>
                 <xsl:when test="string-length(abstract) &gt; 0">
                     <xsl:apply-templates select="abstract"/>
@@ -94,7 +106,7 @@
     <tr>
         <td valign="top"><xsl:value-of select="$i18n/l/Image"/></td>
         <td colspan="2">
-            <input tabindex="60" type="text" name="image" size="40" value="{image_id}" class="text"/>
+            <input tabindex="26" type="text" name="image" size="40" value="{image_id}" class="text"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
             <xsl:text>&#160;</xsl:text>

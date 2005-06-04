@@ -11,7 +11,9 @@ use XIMS::CGI::Document;
 use XIMS::Image;
 use XIMS::Portlet;
 use XIMS::ObjectType;
-use Data::Dumper;
+use Text::Iconv;
+
+#use Data::Dumper;
 
 # #############################################################################
 # GLOBAL SETTINGS
@@ -56,7 +58,13 @@ sub event_store {
             XIMS::Debug( 4, "Creating Image object for new NewsItem" );
             my $img_obj = XIMS::Image->new( User => $ctxt->session->user() );
             $img_obj->parent_id( $img_target->document_id() );
-            $img_obj->location( $self->param('imagefile') );
+
+            # $location will be part of the URI, converting to iso-8859-1 is
+            # a first step before clean_location() to ensure browser compatibility
+            my $converter = Text::Iconv->new("UTF-8", "ISO-8859-1");
+            # will be undef if string can not be converted to iso-8859-1
+            $img_obj->location( $converter->convert( $self->param('imagefile') ) );
+
             my $type = $self->uploadInfo($img_fh)->{'Content-Type'};
             my $df;
             if ( $df = XIMS::DataFormat->new( mime_type => $type ) ) {
@@ -70,6 +78,14 @@ sub event_store {
 
             }
             $img_obj->data_format_id( $df->id() );
+
+            my $image_title = $self->param('imagetitle');
+            if ( defined $image_title and length $image_title and $image_title !~ /^\s+$/ ) {
+                if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+                    $image_title = XIMS::decode($image_title);
+                }
+                $img_obj->title( $image_title );
+            }
 
             my $image_description = $self->param('imagedescription');
             if ( defined $image_description and length $image_description and $image_description !~ /^\s+$/ ) {
@@ -193,6 +209,7 @@ sub publish_portlets {
 
     my $portlet_ot = XIMS::ObjectType->new( name => 'Portlet' );
     foreach my $ancestor ( @{$ctxt->object->ancestors()} ) {
+        next if $ancestor->id == 1; # skip /root
         my @portlets = $ancestor->children_granted( object_type_id => $portlet_ot->id() );
         foreach my $portlet ( @portlets ) {
             my $current_user_object_priv = $ctxt->session->user->object_privmask( $portlet );
