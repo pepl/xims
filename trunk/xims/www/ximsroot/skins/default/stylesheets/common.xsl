@@ -195,45 +195,21 @@
 </xsl:template>
 
 <xsl:template name="head-create">
-    <xsl:param name="with_wfcheck" select="'no'"/>
     <head>
         <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <xsl:if test="$with_wfcheck = 'yes'">
-            <xsl:call-template name="jsopenwfwindow"/>
-        </xsl:if>
     </head>
 </xsl:template>
 
 <xsl:template name="head-edit">
-    <xsl:param name="with_wfcheck" select="'no'"/>
     <head>
         <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <xsl:if test="$with_wfcheck = 'yes'">
-            <xsl:call-template name="jsopenwfwindow"/>
-        </xsl:if>
     </head>
-</xsl:template>
-
-<xsl:template name="jsopenwfwindow">
-    <script type="text/javascript">
-        function openTestWFWindow() {
-            var testwfwindow = window.open(&apos;&apos;,&apos;windowName&apos;,&apos;resizable=yes,scrollbars=yes,width=550,height=400,screenX=50,screenY=200&apos;);
-            var body = document.forms[&apos;eform&apos;].body.value;
-            testwfwindow.document.writeln(&apos;&lt;html&gt;&lt;head&gt;&apos;);
-            testwfwindow.document.writeln(&apos;&lt;link rel=&quot;stylesheet&quot; href=&quot;<xsl:value-of select="concat($ximsroot,'stylesheets/',$defaultcss)"/>&quot; type=&quot;text/css&quot; />&apos;);
-            testwfwindow.document.writeln(&apos;&lt;/head&gt;&lt;body onLoad=&quot;document.the_form.submit()&quot;&gt;&apos;);
-            testwfwindow.document.writeln(&apos;&lt;form name=&quot;the_form&quot; action=&quot;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>&quot; method=&quot;post&quot;&gt;&apos;);
-            testwfwindow.document.writeln(&apos;&lt;input type=&quot;submit&quot; name=&quot;test_wellformedness&quot; value=&quot;Go!&quot; size=&quot;1&quot; class=&quot;control&quot; /&gt;&apos;);
-            testwfwindow.document.writeln(&apos;&lt;textarea name=&quot;body&quot; cols=&quot;1&quot; rows=&quot;1&quot; readonly=&quot;readonly&quot; style=&quot;visibility:hidden;&quot;&gt;&apos; + body + &apos;&lt;/textarea&gt;&apos;);
-            testwfwindow.document.writeln(&apos;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;&apos;);
-        }
-    </script>
 </xsl:template>
 
 <xsl:template name="table-create">
