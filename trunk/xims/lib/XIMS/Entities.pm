@@ -431,14 +431,20 @@ sub decode {
             # if XIMS::DBENCODING is not set, the database and input/output are expected to be
             # encoded in utf-8
             #utf8::decode($_);
-            $_ = Encode::decode_utf8($_); # convert the octets and turn utf-8 flag on.
-                                          # otherwise lines containing chars chr(127)+, will
-                                          # be incorrectly utf-8 encoded :-/
+
+            # convert the octets and turn utf-8 flag on.
+            # otherwise lines containing chars chr(127)+, will
+            # be incorrectly utf-8 encoded :-/
+            $_ = Encode::decode_utf8($_) unless Encode::is_utf8($_);
+
             s/(&\#(\d+);?)/exists $decodemap{$2} ? chr($2) : $1/eg;
             s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2);exists $decodemap{$c} ? chr($c) : $1/eg;
             s/(&(\w+);?)/$entity2char{$2} || $1/eg;
-            $_ = Encode::encode_utf8($_); # convert back and turn utf-8 flag off. otherwise XML::LibXML
-                                          # will get confused and will not parse the string :-/
+
+            # convert back and turn utf-8 flag off. otherwise XML::LibXML
+            # will get confused and will not parse the string :-/
+            $_ = Encode::encode_utf8($_);
+
         }
     }
     wantarray ? @$array : $array->[0];
