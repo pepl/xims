@@ -13,9 +13,7 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-edit">
-        <xsl:with-param name="with_wfcheck" select="'yes'"/>
-    </xsl:call-template>
+    <xsl:call-template name="head-edit"/>
     <body>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
@@ -46,15 +44,11 @@
 </xsl:template>
 
 <xsl:template name="head-edit">
-    <xsl:param name="with_wfcheck" select="'no'"/>
     <head>
         <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <xsl:if test="$with_wfcheck = 'yes'">
-            <xsl:call-template name="jsopenwfwindow"/>
-        </xsl:if>
         <xsl:call-template name="jscalendar_scripts"/>
     </head>
 </xsl:template>

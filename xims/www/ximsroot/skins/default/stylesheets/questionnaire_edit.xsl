@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -35,7 +35,6 @@
 </xsl:template>
 
 <xsl:template name="questionnaire-head-edit">
-    <xsl:param name="with_wfcheck" select="'no'"/>
     <head>
         <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
@@ -44,9 +43,6 @@
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript">
             <xsl:text>&#160;</xsl:text>
         </script>
-        <xsl:if test="$with_wfcheck = 'yes'">
-            <xsl:call-template name="jsopenwfwindow"/>
-        </xsl:if>
         <script src="{$ximsroot}scripts/questionnaire.js" type="text/javascript"></script>
     </head>
 </xsl:template>

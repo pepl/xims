@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -11,9 +11,7 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-create">
-        <xsl:with-param name="with_wfcheck" select="'yes'"/>
-    </xsl:call-template>
+    <xsl:call-template name="head-create"/>
     <body onLoad="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.name.focus();">
         <div class="edit">
             <xsl:call-template name="table-create"/>
