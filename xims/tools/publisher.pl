@@ -23,7 +23,7 @@ $ENV{PATH} = '/bin'; # CWD.pm needs '/bin/pwd'
 $ENV{ENV} = '';
 
 my %args;
-getopts('hd:u:p:m:ran', \%args);
+getopts('hd:u:p:m:ranf', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "Object Publisher" );
@@ -76,14 +76,27 @@ if ( $args{r} or $method eq 'unpublish' ) {
     $options{no_dependencies_update} = 1 if scalar @descendants > 0;
 
     my $path;
+    my %seencontainers;
+    my $lastdir;
     foreach my $child ( @descendants ) {
         next if $child->location() eq '.diff_to_second_last'; # an -exception- :-|
         $child = rebless( $child );
         $privmask = $user->object_privmask( $child );
         $path = $child->location_path();
+
+        my ($dir) = ($path =~ m#(.*)/[^/]+$#);
+        if ( $method eq 'publish' and $args{f} and not exists $seencontainers{$dir} ) {
+            $options{force_ancestor_publish} = 1;
+        }
+        else {
+            delete $options{force_ancestor_publish};
+        }
+
         if ( $privmask & XIMS::Privileges::PUBLISH() ) {
             if ( $exporter->$method( Object => $child, User => $user, %options ) ) {
                 print "Object '$path' ".$method."ed successfully.\n";
+
+                $seencontainers{$dir}++;
                 $total++;
                 $successful++;
             }
