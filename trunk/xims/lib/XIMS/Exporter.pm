@@ -137,6 +137,8 @@ sub publish {
     $self->{Basedir}    = delete $param{Basedir}    if defined $param{Basedir};
     $self->{User}       = delete $param{User}       if defined $param{User};
 
+    my $forceancestorpublish = delete $param{force_ancestor_publish} if defined $param{force_ancestor_publish};
+
     # since it is likely that one Exporter instance should publish objects of different
     # object type we have to let the helper select the appropiate stylesheet
     # for each single object unless it is overridden with $param{Stylesheet};
@@ -192,7 +194,7 @@ sub publish {
 
                 # since we don't want autoindexes to be rewritten automatically,
                 # we create only unpublished ancestors
-                if ( not $ancestor->published() ) {
+                if ( not($ancestor->published()) or defined $forceancestorpublish and $ancestor->published() ) {
                     XIMS::Debug( 4, "Creating ancestor container." );
                     my $anc_handler = $helper->exporterclass(
                                                      Provider   => $self->{Provider},
@@ -203,7 +205,10 @@ sub publish {
                                                     );
                     return undef unless $anc_handler;
 
-                    $anc_handler->create();
+                    my %options;
+                    $options{mkdironly} = 1 if defined $forceancestorpublish;
+
+                    $anc_handler->create( %options );
                 }   # end if ancestor not published
                 $last_path = $added_path;
             }   # end foreach ancestor
@@ -488,12 +493,6 @@ sub new {
         }
         $self->{Ancestors} = $ancestors;
     }
-
-    # hmmm
-    # remove /root
-    #if ( defined $self->{Ancestors} and defined $self->{Ancestors}->[0] and $self->{Ancestors}->[0]->id == 1 ) {
-    #    shift @{$self->{Ancestors}};
-    #}
 
     # publish only non-fs-container children here
     my @non_fscont_types = map { $_->id() } $self->{Provider}->object_types( is_fs_container => 0 );
@@ -1166,61 +1165,63 @@ sub create {
         }
     }
 
-    #
-    # generate metadata
-    #
+    if ( not exists $param{mkdironly} ) {
+        #
+        # generate metadata
+        #
 
-    # first, the object DOM
-    #
-    my $raw_dom = $self->generate_dom();
+        # first, the object DOM
+        #
+        my $raw_dom = $self->generate_dom();
 
-    unless ( $raw_dom ) {
-        XIMS::Debug( 2, "metadata cannot be generated" );
-        return undef;
-    }
+        unless ( $raw_dom ) {
+            XIMS::Debug( 2, "metadata cannot be generated" );
+            return undef;
+        }
 
-    # then, transform it...
+        # then, transform it...
 
-    my $transd_dom = $self->transform_dom( $raw_dom );
+        my $transd_dom = $self->transform_dom( $raw_dom );
 
-    unless ( $transd_dom ) {
-        XIMS::Debug( 2, "transformation failed" );
-        return undef;
-    }
+        unless ( $transd_dom ) {
+            XIMS::Debug( 2, "transformation failed" );
+            return undef;
+        }
 
-    # build the path
+        # build the path
 
-    my $meta_path = $new_path . '/' . $self->{Object}->location() . '.container.xml';
-    XIMS::Debug( 4, "metadata file is $meta_path" );
+        my $meta_path = $new_path . '/' . $self->{Object}->location() . '.container.xml';
+        XIMS::Debug( 4, "metadata file is $meta_path" );
 
-    # write the file...
-    my $meta_fh = IO::File->new( $meta_path, 'w' );
+        # write the file...
+        my $meta_fh = IO::File->new( $meta_path, 'w' );
 
-    if ( defined $meta_fh ) {
-        print $meta_fh $transd_dom->toString();
-        $meta_fh->close;
-        XIMS::Debug( 4, "metadata-dom written" );
-    }
-    else {
-        XIMS::Debug( 2, "Error writing file '$meta_path': $!" );
-        return undef;
-    }
+        if ( defined $meta_fh ) {
+            print $meta_fh $transd_dom->toString();
+            $meta_fh->close;
+            XIMS::Debug( 4, "metadata-dom written" );
+        }
+        else {
+            XIMS::Debug( 2, "Error writing file '$meta_path': $!" );
+            return undef;
+        }
 
-    # auto-indexing
-    # MUST come after any children were published above since
-    # publishing states may have changed in this session.
+        # auto-indexing
+        # MUST come after any children were published above since
+        # publishing states may have changed in this session.
 
-    my $autoindex = $self->{Object}->attribute_by_key( 'autoindex' );
-    # if attribute is not explictly set to 0, we do autoindexing
-    if ( not defined $autoindex or $autoindex == 1 ) {
-        my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
-                                                               Basedir    => $self->{Basedir},
-                                                               User       => $self->{User},
-                                                               Object     => $self->{Object},
-                                                               Options    => {norecurse => 1},
-                                                               Ancestors  => $self->{Ancestors},
-                                                           );
-        $idx_generator->create();
+        my $autoindex = $self->{Object}->attribute_by_key( 'autoindex' );
+        # if attribute is not explictly set to 0, we do autoindexing
+        if ( not defined $autoindex or $autoindex == 1 ) {
+            my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
+                                                                   Basedir    => $self->{Basedir},
+                                                                   User       => $self->{User},
+                                                                   Object     => $self->{Object},
+                                                                   Options    => {norecurse => 1},
+                                                                   Ancestors  => $self->{Ancestors},
+                                                               );
+            $idx_generator->create();
+        }
     }
 
     # mark the folder as published
