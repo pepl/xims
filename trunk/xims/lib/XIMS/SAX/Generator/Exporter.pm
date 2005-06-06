@@ -101,6 +101,8 @@ sub _set_parents {
     }
     else {
         $ancestors = $ctxt->object->ancestors();
+        # remove /root
+        shift @{$ancestors};
         $ctxt->object->data_provider->{$cachekey} = $ancestors;
     }
 
