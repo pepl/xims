@@ -22,7 +22,9 @@
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-title-create"/>
                     <xsl:call-template name="tr-leadimage-create"/>
-                    <xsl:call-template name="tr-body-create"/>
+                    <xsl:call-template name="tr-body-create">
+                        <xsl:with-param name="with_origbody" select="'yes'"/>
+                    </xsl:call-template>
                     <tr>
                         <td colspan="3">
                             <xsl:call-template name="testbodysxml"/>

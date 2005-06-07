@@ -21,7 +21,9 @@
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-title-edit"/>
                     <xsl:call-template name="tr-leadimage-edit"/>
-                    <xsl:call-template name="tr-body-edit"/>
+                    <xsl:call-template name="tr-body-edit">
+                        <xsl:with-param name="with_origbody" select="'yes'"/>
+                    </xsl:call-template>
                     <tr>
                         <td colspan="3">
                             <xsl:call-template name="testbodysxml"/>
