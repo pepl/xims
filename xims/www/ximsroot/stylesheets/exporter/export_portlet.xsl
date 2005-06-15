@@ -11,25 +11,40 @@
                 xmlns:date="http://exslt.org/dates-and-times"
                 extension-element-prefixes="exslt date"
                 >
+
+    <xsl:import href="../common.xsl"/>
+
     <xsl:output method="xml" indent="yes"/>
 
-    <xsl:template match="/document">
+    <xsl:template match="/">
+        <xsl:apply-templates select="/document/context/object"/>
+    </xsl:template>
+
+    <xsl:template match="/document/context/object">
         <xsl:variable name="sortedobjects">
-            <xsl:for-each select="/document/context/object/children/object">
-            <xsl:sort select="concat(valid_from_timestamp/year,valid_from_timestamp/month,valid_from_timestamp/day,valid_from_timestamp/hour,valid_from_timestamp/minute,valid_from_timestamp/second)" order="descending"/>
-            <xsl:sort select="concat(creation_timestamp/year,creation_timestamp/month,creation_timestamp/day,creation_timestamp/hour,creation_timestamp/minute,creation_timestamp/second)" order="descending"/>
-            <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="descending"/>
-            <xsl:sort select="position" order="ascending"/>
+            <xsl:for-each select="children/object">
+                <xsl:sort select="concat(valid_from_timestamp/year,valid_from_timestamp/month,valid_from_timestamp/day,valid_from_timestamp/hour,valid_from_timestamp/minute,valid_from_timestamp/second)" order="descending"/>
+                <xsl:sort select="concat(creation_timestamp/year,creation_timestamp/month,creation_timestamp/day,creation_timestamp/hour,creation_timestamp/minute,creation_timestamp/second)" order="descending"/>
+                <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="descending"/>
+                <xsl:sort select="position" order="ascending"/>
                 <xsl:copy>
                     <xsl:copy-of select="@*|*"/>
                 </xsl:copy>
             </xsl:for-each>
         </xsl:variable>
 
-        <portlet id="{context/object/@id}">
-            <title><xsl:value-of select="context/object/title"/></title>
-            <baselocation><xsl:value-of select="context/object/location_path"/></baselocation>
-            <!--<xsl:apply-templates select="context/object/children/object"/>-->
+        <portlet id="{@id}">
+            <baselocation><xsl:value-of select="location_path"/></baselocation>
+            <title><xsl:value-of select="title"/></title>
+            <abstract><xsl:apply-templates select="abstract"/></abstract>
+            <valid_from_timestamp><xsl:apply-templates select="valid_from_timestamp"/></valid_from_timestamp>
+            <last_publication_timestamp><xsl:apply-templates select="last_publication_timestamp"/></last_publication_timestamp>
+            <created_by_firstname><xsl:apply-templates select="created_by_firstname"/></created_by_firstname>
+            <created_by_middlename><xsl:apply-templates select="created_by_middlename"/></created_by_middlename>
+            <created_by_lastname><xsl:apply-templates select="created_by_lastname"/></created_by_lastname>
+            <owned_by_firstname><xsl:apply-templates select="owned_by_firstname"/></owned_by_firstname>
+            <owned_by_middlename><xsl:apply-templates select="owned_by_middlename"/></owned_by_middlename>
+            <owned_by_lastname><xsl:apply-templates select="owned_by_lastname"/></owned_by_lastname>
             <xsl:apply-templates select="exslt:node-set($sortedobjects)/object"/>
         </portlet>
     </xsl:template>
@@ -47,6 +62,13 @@
                 <xsl:apply-templates/>
             </xsl:copy>
         </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="valid_from_timestamp/*|last_publication_timestamp/*">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates/>
+        </xsl:copy>
     </xsl:template>
 
 </xsl:stylesheet>
