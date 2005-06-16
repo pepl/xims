@@ -89,7 +89,7 @@
             <td>
                 <xsl:value-of select="$i18n_portlet/l/Owner"/>
             </td>
-            <td><input type="checkbox" name="col_owned_by_firstname"><xsl:if test="body/content/column[@name = 'owned_by_firstname']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input></td>
+            <td><input type="checkbox" name="col_owned_by_fullname"><xsl:if test="body/content/column[@name = 'owned_by_firstname']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input></td>
             <td>
                 <xsl:value-of select="$i18n_portlet/l/Marked_new"/>
             </td>
