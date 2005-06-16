@@ -48,6 +48,7 @@ sub parent_by_location {
     my $dirname = dirname($location);
     my $plocation = $self->parent->location_path();
     $plocation .= '/' . $dirname if ( length $dirname and $dirname ne '.' );
+    $plocation = '/root' unless (defined $plocation and $plocation);
 
     return XIMS::Object->new( path => lc($plocation) );
 }
