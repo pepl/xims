@@ -365,7 +365,25 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
             <br/>
-            <textarea tabindex="30" name="body" id="body" rows="15" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333 solid 1px;">&#160;</textarea>
+
+            <xsl:call-template name="textarearesize_js_css"/>
+            <div id="bodymain">
+                <div id="bodycon">
+                    <textarea tabindex="30" name="body" id="body" rows="15" cols="90">&#160;</textarea>
+                    <!-- TOP DRAG BAR -->
+                    <div id="T" class="brd"></div>
+                    <!-- LEFT DRAG BAR -->
+                    <div id="L" class="brd"></div>
+                    <!-- BOTTOM DRAG BAR -->
+                    <div id="B" class="brd edg h" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                    <div id="BR" class="brd edg h" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                    <!-- RIGHT DRAG BAR -->
+                    <!-- When ID "R" is used here, MSIE won't scale the right drag bar correctly, using "U" therefore -->
+                    <div id="U" class="brd edg v" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                    <div id="UB" class="brd edg nw" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                </div>
+            </div>
+
             <xsl:if test="$with_origbody = 'yes'">
                 <xsl:call-template name="jsorigbody"/>
             </xsl:if>
@@ -381,16 +399,34 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
             <br/>
-            <textarea tabindex="30" name="body" id="body" rows="15" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333 solid 1px;">
-                <xsl:choose>
-                    <xsl:when test="string-length(body) &gt; 0">
-                        <xsl:apply-templates select="body"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>&#160;</xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </textarea>
+
+            <xsl:call-template name="textarearesize_js_css"/>
+            <div id="bodymain">
+                <div id="bodycon">
+                    <textarea tabindex="30" name="body" id="body" rows="15" cols="90" >
+                        <xsl:choose>
+                            <xsl:when test="string-length(body) &gt; 0">
+                                <xsl:apply-templates select="body"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>&#160;</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </textarea>
+                    <!-- TOP DRAG BAR -->
+                    <div id="T" class="brd"></div>
+                    <!-- LEFT DRAG BAR -->
+                    <div id="L" class="brd"></div>
+                    <!-- BOTTOM DRAG BAR -->
+                    <div id="B" class="brd edg h" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                    <div id="BR" class="brd edg h" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                    <!-- RIGHT DRAG BAR -->
+                    <!-- When ID "R" is used here, MSIE won't scale the right drag bar correctly, using "U" therefore -->
+                    <div id="U" class="brd edg v" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                    <div id="UB" class="brd edg nw" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                </div>
+            </div>
+
             <xsl:if test="$with_origbody = 'yes'">
                 <xsl:call-template name="jsorigbody"/>
             </xsl:if>
@@ -950,6 +986,187 @@
             </form>
         </div>
     </xsl:if>
+</xsl:template>
+
+<xsl:template name="textarearesize_js_css">
+    <script type="text/javascript">
+    /*
+     * The following code is based on the discussion thread available at
+     * http://www.webdeveloper.com/forum/showthread.php?t=64005
+     *
+    */
+
+    var l=0;
+    var t=0;
+    var w=748;
+    var h=260;
+    var minw=w;
+    var minh=h;
+
+    var dragon=false;
+    var dragsrc=null;
+    var ox=0;
+    var oy=0;
+    var dx=0;
+    var dy=0;
+
+    var nw=0;
+    var nh=0;
+    var nt=0;
+    var nl=0;
+
+    function repositionAll() {
+      nl=l;
+      nt=t;
+      nw=w;
+      nh=h;
+      if(dragsrc.id.indexOf("U")&gt;=0) {
+        //move the right
+        if((nw+dx)&gt;minw) nw+=dx;
+        else nw=minw;
+      }
+      if(dragsrc.id.indexOf("B")&gt;=0) {
+        //move the bottom
+        if((nh+dy)&gt;minh) nh+=dy;
+        else nh=minh;
+      }
+      if(nw&lt;minw) { nl=l+w-minw; nw=minw; }
+      if(nh&lt;minh) { nt=t+h-minh; nh=minh; }
+      window.status="("+(nl)+", "+(nt)+") ["+(nw)+"X"+(nh)+"]";
+      document.getElementById("bodycon").style.width=nw+"px";
+      document.getElementById("bodycon").style.height=nh+"px";
+
+      document.getElementById("L").style.height=(nh-40)+"px";
+      document.getElementById("T").style.width=(nw-40)+"px";
+      document.getElementById("U").style.height=(nh-40)+"px";
+      document.getElementById("B").style.width=(nw-40)+"px";
+
+
+      document.getElementById("body").style.width=(nw-8)+"px";
+      document.getElementById("body").style.height=(nh-8)+"px";
+    }
+
+    function MD(event, src) {
+      if(event==null) event=window.event;
+      dragon=true;
+      dragsrc=src;
+      ox=parseInt(event.clientX);
+      oy=parseInt(event.clientY);
+    }
+
+    function MM(event) {
+      if(!dragon) return;
+      if(event==null) event=window.event;
+      dx=parseInt(event.clientX)-ox;
+      dy=parseInt(event.clientY)-oy;
+      repositionAll();
+      return false;
+    }
+
+    function MU(event, src) {
+      w=nw;
+      h=nh;
+      t=nt;
+      l=nl;
+      if(event==null) event=window.event;
+      dragon=false;
+      dragsrc=null;
+      window.status="";
+    }
+
+    document.onmousemove=MM;
+    document.onmouseup=MU;
+    document.ondrag=function() { return false; }
+    </script>
+    <style type="text/css">
+    #bodymain {
+      position:relative;
+      display:block;
+    }
+
+    #bodycon {
+      position:relative;
+      top:0px;
+      left:0px;
+      width:748px;
+      height:260px;
+    }
+    /* *** TOP DRAG BAR *** */
+    #T {
+      top:0px;
+      left:20px;
+      width:728px;
+      height:4px;
+    }
+    /* *** LEFT DRAG BAR *** */
+    #L {
+      top:20px;
+      left:0px;
+      width:4px;
+      height:240px;
+    }
+    /* *** BOTTOM DRAG BAR *** */
+    #B {
+      bottom:0px;
+      left:20px;
+      width:728px;
+      height:4px;
+    }
+    #BR {
+      bottom:0px;
+      right:0px;
+      width:20px;
+      height:4px;
+    }
+    /* *** RIGHT DRAG BAR *** */
+    #U {
+      top:20px;
+      right:0px;
+      width:4px;
+      height:240px;
+    }
+    #UB {
+      bottom:0px;
+      right:0px;
+      width:4px;
+      height:20px;
+    }
+
+    .brd {
+      position:absolute;
+      font-size: 1px; /* for MSIE */
+    }
+
+    .edg {
+      background-color:#aaaaaa;
+    }
+
+    .v {
+      cursor:w-resize;
+    }
+
+    .h {
+      cursor:n-resize;
+    }
+
+    .nw {
+      cursor:nw-resize;
+    }
+
+    #body {
+      position:relative;
+      top:0px;
+      left:0px;
+      margin:4px;
+      width:740px;
+      height:252px;
+      border: 1px solid black;
+      background-color:#ffffff;
+      overflow:auto;
+      font-family: 'Courier New','Verdana';
+      font-size: 10pt;
+    }
+    </style>
 </xsl:template>
 
 </xsl:stylesheet>
