@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2004 The XIMS Project.
+-- Copyright (c) 2002-2005 The XIMS Project.
 -- See the file "LICENSE" for information on usage and redistribution
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -39,10 +39,14 @@ BEGIN WORK;
 CREATE TABLE cilib_authors
  (
  id                 SERIAL            PRIMARY KEY
- ,lastname          VARCHAR(128)       NOT NULL
- ,middlename        VARCHAR(48)        DEFAULT ''
- ,firstname         VARCHAR(48)        DEFAULT ''
+ ,lastname          VARCHAR(128)      NOT NULL
+ ,middlename        VARCHAR(48)       DEFAULT ''
+ ,firstname         VARCHAR(48)       DEFAULT ''
  ,object_type       SMALLINT          DEFAULT 0
+ ,suffix            VARCHAR2(24)      DEFAULT ''
+ ,email             VARCHAR2(80)      DEFAULT ''
+ ,url               VARCHAR2(250)     DEFAULT ''
+
  )
 ;
 
