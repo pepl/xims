@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2004 The XIMS Project.
+-- Copyright (c) 2002-2005 The XIMS Project.
 -- See the file "LICENSE" for information on usage and redistribution
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -24,6 +24,9 @@ CREATE TABLE CILIB_AUTHORS (
  ,MIDDLENAME        VARCHAR2(48)    DEFAULT ''
  ,FIRSTNAME         VARCHAR2(48)    DEFAULT ''
  ,OBJECT_TYPE       NUMBER(1,0)     DEFAULT 0
+ ,SUFFIX            VARCHAR2(24)    DEFAULT ''
+ ,EMAIL             VARCHAR2(80)    DEFAULT ''
+ ,URL               VARCHAR2(250)   DEFAULT ''
 )
 /
 
@@ -107,7 +110,7 @@ CREATE TABLE CILIB_META (
  ,PUBLISHER         VARCHAR2(256)
  ,AUDIENCE          VARCHAR2(256)
  ,DC_DATE           DATE
-  )
+ )
 /
 
 ----
