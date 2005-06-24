@@ -6,11 +6,11 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_
 ALTER TABLE ci_content ADD COLUMN schema_id INTEGER REFERENCES ci_content ( id );
 
 \echo Adding SUFFIX,EMAIL,URL columns to CILIB_AUTHORS
-ALTER TABLE cilib_authors ADD COLUMN suffix VARCHAR2(24);
+ALTER TABLE cilib_authors ADD COLUMN suffix VARCHAR(24);
 ALTER TABLE cilib_authors ALTER COLUMN suffix SET DEFAULT '';
-ALTER TABLE cilib_authors ADD COLUMN email VARCHAR2(80);
+ALTER TABLE cilib_authors ADD COLUMN email VARCHAR(80);
 ALTER TABLE cilib_authors ALTER COLUMN email SET DEFAULT '';
-ALTER TABLE cilib_authors ADD COLUMN url VARCHAR2(250);
+ALTER TABLE cilib_authors ADD COLUMN url VARCHAR(250);
 ALTER TABLE cilib_authors ALTER COLUMN url SET DEFAULT '';
 
 \echo Adding valid_from_timestamp and valid_to_timestamp;
