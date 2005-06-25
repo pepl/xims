@@ -37,7 +37,7 @@
                         <dcq:created>
                             <rdf:Description>
                                 <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
-                                <rdf:value><xsl:apply-templates select="creation_time" mode="ISO8601"/></rdf:value>
+                                <rdf:value><xsl:apply-templates select="creation_timestamp" mode="ISO8601"/></rdf:value>
                             </rdf:Description>
                         </dcq:created>
                         <dcq:modified>
@@ -47,10 +47,9 @@
                             </rdf:Description>
                         </dcq:modified>
                     </dc:date>
-                    <!-- should be mime-type here -->
-                    <dc:format><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/name"/></dc:format>
+                    <dc:format><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/mime_type"/></dc:format>
                     <!-- still to come -->
-                    <dc:language></dc:language>
+                    <dc:language>en</dc:language>
                 </rdf:Description>
             </rdf:RDF>
             <body>
