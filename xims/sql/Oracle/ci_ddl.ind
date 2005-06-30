@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2004 The XIMS Project.
+-- Copyright (c) 2002-2003 The XIMS Project.
 -- See the file "LICENSE" for information on usage and redistribution
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -25,11 +25,6 @@ CREATE INDEX DOC_OBT_FK_I ON CI_DOCUMENTS
 
 PROMPT Creating Index 'DOC_DOC_PARENT_FK_I'
 CREATE INDEX DOC_DOC_PARENT_FK_I ON CI_DOCUMENTS
- (PARENT_ID)
-/
-
-PROMPT Creating Index 'OBT_OBT_PARENT_FK_I'
-CREATE INDEX OBT_OBT_PARENT_FK_I ON CI_OBJECT_TYPES
  (PARENT_ID)
 /
 
@@ -132,22 +127,6 @@ CREATE  INDEX ctt_doc_style_fk_i
    MAXEXTENTS  121
    )
 /
-
-CREATE  INDEX ctt_doc_schema_fk_i
- ON ci_content
-  ( schema_id  )
-  PCTFREE    10
-  INITRANS   2
-  MAXTRANS   255
- STORAGE (
-   INITIAL     102400
-   NEXT        102400
-   PCTINCREASE 0
-   MINEXTENTS  1
-   MAXEXTENTS  121
-   )
-/
-
 
 CREATE  INDEX ctt_lng_fk_i
  ON ci_content

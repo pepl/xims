@@ -5,28 +5,17 @@ use XIMS;
 use XIMS::Test;
 use XIMS::Names;
 use XIMS::ObjectPriv;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN { 
-    plan tests => 42;
+    plan tests => 24;
 }
 
 my $p = XIMS::ObjectPriv->new();
-my $modify = (XIMS::Privileges::VIEW | XIMS::Privileges::WRITE | XIMS::Privileges::DELETE | XIMS::Privileges::ATTRIBUTES | XIMS::Privileges::TRANSLATE | XIMS::Privileges::CREATE | XIMS::Privileges::MOVE | XIMS::Privileges::COPY | XIMS::Privileges::LINK | XIMS::Privileges::ATTRIBUTES_ALL | XIMS::Privileges::DELETE_ALL | XIMS::Privileges::GRANT | XIMS::Privileges::GRANT_ALL | XIMS::Privileges::OWNER);
 
 ok( $p );
 
-no strict 'refs';
-foreach my $privname (XIMS::Privileges::list()) {
-    if ( $privname eq 'PUBLISH' or $privname eq 'PUBLISH_ALL' or $privname eq 'DENIED' or $privname eq 'MASTER' ) {
-        ok( (&{"XIMS::Privileges::$privname"} & XIMS::Privileges::MODIFY()) == 0 );
-    }
-    else {
-        ok( (&{"XIMS::Privileges::$privname"} & XIMS::Privileges::MODIFY()) == &{"XIMS::Privileges::$privname"} );
-    }
-}
-
-$p->privilege_mask( $modify );
+$p->privilege_mask( 0x43012F17 );
 $p->grantor_id( 2 );
 $p->grantee_id( 1 );
 $p->content_id( 2 );
@@ -42,7 +31,7 @@ $p = undef;
 my %hash = ( grantor_id   => 2,
              grantee_id   => 1,
              content_id   => 2,
-             privilege_mask => $modify
+             privilege_mask => 0x43012F17
            );
 
 $p = XIMS::ObjectPriv->new->data( %hash );
@@ -93,7 +82,7 @@ $p = undef;
 my %newhash = ( grantor_id   => 2,
                 grantee_id   => 1,
                 content_id   => 1,
-                privilege_mask => $modify
+                privilege_mask => 0x43012F17
               );
 
 $p = XIMS::ObjectPriv->new->data( %newhash );

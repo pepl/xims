@@ -4,17 +4,17 @@
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:dcq="http://purl.org/dc/qualifiers/1.0/"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/TR/xhtml1/strict">
 <!--$Id$-->
 
 <xsl:import href="include/common.xsl"/>
 <xsl:param name="request.headers.host"/>
 <xsl:param name="links"/>
 
-<xsl:output method="html" encoding="utf-8"/>
+<xsl:output method="html" encoding="ISO-8859-1"/>
 
 <xsl:template match="/page">
-    <html>
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de">
     <head>
       <xsl:call-template name="meta"/>
       <title><xsl:value-of select="rdf:RDF/rdf:Description/dc:title/text()"/></title>
@@ -34,22 +34,22 @@
      	<br /><br />
 	<xsl:choose>
             	<xsl:when test="$links='1'">
-                	<a href="{$request.uri}?style=print">fade out linklist</a> |
+                	<a href="{$request.uri}?style=print">fade out linklist</a> | 
              	</xsl:when>
              	<xsl:otherwise>
-                    <a href="{$request.uri}?style=print;links=1">show linklist</a> |
-            	</xsl:otherwise>
+                    <a href="{$request.uri}?style=print;links=1">show linklist</a> | 
+            	</xsl:otherwise>    
    	</xsl:choose>
       	<a href="javascript:print()">print document</a> |
       	<a href="{$request.uri}">back to htmlversion</a>
     	</p>
        <hr />
-
+    
       	<!-- Begin content -->
 	<table>
 	   	<tr>
 	            <td class="printzitatContent">
-	                <xsl:apply-templates select="body"/>
+	                <xsl:apply-templates select="body"/>     
 	            </td>
 	        </tr>
 	</table>
@@ -60,14 +60,14 @@
             <tr>
                 <th style="background-color:#ffffff; text-align:left;">Documentlinks</th>
             </tr>
-
+            
              <xsl:choose>
                     <xsl:when test="//a">
                         <xsl:for-each select="//a" >
                         <tr>
                             <td>[<xsl:number level="any"/>] <xsl:value-of select="@href" /></td>
                         </tr>
-                      </xsl:for-each>
+                      </xsl:for-each> 
                     </xsl:when>
                     <xsl:otherwise>
                             <tr>
@@ -95,8 +95,8 @@
                <xsl:copy-of select="@*"/>
                <xsl:apply-templates/>
         </xsl:copy>
-     </xsl:otherwise>
+     </xsl:otherwise>    
    </xsl:choose>
-</xsl:template>
+</xsl:template>     
 
 </xsl:stylesheet>

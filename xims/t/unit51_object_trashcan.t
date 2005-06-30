@@ -5,10 +5,10 @@ use XIMS::Test;
 use XIMS::User;
 use XIMS::Object;
 use XIMS::DataProvider;
-#use Data::Dumper;
+use Data::Dumper;
 
-BEGIN {
-    plan tests => 9;
+BEGIN { 
+    plan tests => 7;
 }
 
 # we need a User object to fill in the right data
@@ -21,7 +21,8 @@ my $o = XIMS::Object->new( id => 2, User => $user );
 ok( $o );
 
 # now put the folder in the trash
-ok( $o->trashcan() );
+
+$o->trashcan();
 
 # now fetch it back and test;
 
@@ -36,15 +37,17 @@ my $dp = XIMS::DataProvider->new();
 
 my @trashed_objects = $dp->trashcan();
 
-ok( scalar( @trashed_objects ) > 0 );
-ok( grep { $_->id() == $o->id() } @trashed_objects );
+ok( scalar( @trashed_objects ) == 1 );
+ok( $trashed_objects[0]->id() == $o->id() );
 
 # now, clean up...
 
-ok( $o->undelete() );
+$o->marked_deleted( undef );
+
+$o->update();
 
 $o = undef;
 
-$o = XIMS::Object->new( id => 2 );
+$o = XIMS::Object->new( id => 2 );    
 
 ok( $o->marked_deleted() == undef );

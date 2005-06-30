@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -10,7 +10,7 @@ use vars qw($VERSION @Fields @ISA);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = qw( XIMS::AbstractClass );
 
-#use Data::Dumper;
+use Data::Dumper;
 
 sub resource_type {
     return 'MimeType';
@@ -49,6 +49,30 @@ sub new {
         }
     }
     return $self;
+}
+
+sub create {
+    my $self = shift;
+    my $id = $self->data_provider->createMimeType( $self->data());
+    $self->data_format_id( $id );
+    return $id;
+}
+
+sub delete {
+    my $self = shift;
+    my $retval = $self->data_provider->deleteMimeType( $self->data() );
+    if ( $retval ) {
+        map { $self->$_( undef ) } $self->fields();
+        return 1;
+    }
+    else {
+       return undef;
+    }
+}
+
+sub update {
+    my $self = shift;
+    return $self->data_provider->updateMimeType( $self->data() );
 }
 
 1;

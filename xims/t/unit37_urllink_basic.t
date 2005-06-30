@@ -3,7 +3,7 @@ use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::URLLink;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN { 
     plan tests => 6;

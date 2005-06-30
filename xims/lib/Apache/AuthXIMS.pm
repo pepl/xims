@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -9,15 +9,12 @@ use strict;
 use Apache;
 use Apache::URI;
 use Apache::Constants qw(:common);
-use Apache::Cookie;
-use URI::Escape;
 
 use XIMS;
 use XIMS::DataProvider;
-use XIMS::Auth;
 use XIMS::Session;
-use XIMS::Object;
 use XIMS::User;
+use Data::Dumper;
 ##
 #
 # SYNOPSIS
@@ -33,23 +30,16 @@ use XIMS::User;
 #    none yet
 #
 sub handler {
+    XIMS::Debug( 5, "called" ) ;
     my $r = shift;
 
-    XIMS::via_proxy_test($r) unless $r->pnotes('PROXY_TEST');
-    XIMS::Debug( 5, "called from " . $r->connection->remote_ip());
-
     my $retval = DECLINED;
-    my %args = $r->args();
 
-    my $dp = XIMS::DATAPROVIDER();
-    my $accessdoc = $r->dir_config('ximsAccessDocument');
-    $accessdoc ||= XIMS::PUBROOT_URL() . '/access.xsp'; # default hardcoded fallback value
-
-    unless ( $dp ) {
-        my $url = XIMS::PUBROOT_URL() . "/500.xsp?reason=A%20database%20connection%20problem%20occured.";
-        $r->custom_response(SERVER_ERROR, $url);
-        return SERVER_ERROR;
-    }
+    XIMS::Debug( 4, "creating dataprovider" );
+    my $dp = XIMS::DataProvider->new();
+    # pepl: need a config directive for access.xsp here
+    $r->custom_response(DECLINED, XIMS::PUBROOT_URL() . "/access.xsp?reason=DataProvider%20could%20not%20be%20instanciated.%20There%20may%20be%20a%20database%20connection%20problem.");
+    return DECLINED unless $dp;
 
     XIMS::Debug( 4, "getting session cookie" );
     my $cSession = undef;
@@ -71,64 +61,34 @@ sub handler {
         XIMS::Debug( 3, "no session cookie found " );
         $cSession = login_user( $r, $dp );
         unless ( $cSession ) {
-            my $askedpath = $r->path_info();
-            my $askedquery = Apache::URI->parse( $r )->query();
-
-            if ( $askedquery !~ m/dologin/ ) {
-                XIMS::Debug( 6, "setting client cookie 'askedquery' to value '$askedquery'" );
-                Apache::Cookie->new($r,
-                                    -name    =>  'askedquery',
-                                    -value   =>  uri_escape( $askedquery ),
-                                    -path    =>  '/'
-                                   )->bake();
-                XIMS::Debug( 6, "setting client cookie 'askedpath' to value '$askedpath'" );
-                Apache::Cookie->new($r,
-                                    -name    =>  'askedpath',
-                                    -value   =>  $askedpath,
-                                    -path    =>  '/'
-                                   )->bake();
-            }
+            my $pathinfo = $r->path_info();
+            $r->err_header_out('Set-Cookie', "askpath=$pathinfo; path=/" );
         }
         $login = 1;
     }
 
     if ( $cSession ) {
         #warn "session found" . Dumper( $cSession ) . "\n";
-        my $browsepublished = $r->dir_config('ximsBrowsePublished');
+
+        XIMS::Debug( 4, "session confirmed: storing to pnotes" );
         if ( not $login ) {
-            XIMS::Debug( 4, "session confirmed: storing to pnotes" );
             set_user_info( $r ,
                            $dp,
                            $cSession );
-            return view_privilege_handler( $r, $cSession ) if $browsepublished;
         }
         else {
-            XIMS::Debug( 4, "session confirmed: storing cookie" );
             set_session_cookie( $r, $cSession->session_id() );
-            if ( $browsepublished ) {
-                my $rv = view_privilege_handler( $r, $cSession );
-                return FORBIDDEN if $rv == FORBIDDEN;
-                $r->status_line( "302 Found" );
-                $r->header_out( Location => $r->uri );
-                $r->send_http_header( "text/html" );
-                return OK;
-            }
-            else {
-                redirToDefault( $r, $dp, $cSession->user_id() );
-            }
+            redirToDefault( $r, $dp, $cSession->user_id() );
         }
         return OK;
     }
     else {
         XIMS::Debug( 3, "access denied for " . $r->connection->remote_ip() );
-        my $url = $accessdoc;
-        if ( $args{dologin} ) {
-            $url .= "?reason=Access%20Denied.%20Please%20provide%20a%20valid%20username%20and%20password.";
-        };
-        $r->custom_response(FORBIDDEN, $url);
+        $r->custom_response(FORBIDDEN, XIMS::PUBROOT_URL() . "/access.xsp?reason=Access%20Denied.%20Please%20provide%20a%20valid%20username%20and%20password.");
         return FORBIDDEN;
     }
 }
+
 
 ##
 #
@@ -150,13 +110,8 @@ sub get_session_cookie {
     my $r = shift;
 
     my $cookiename = "session"; # should this get from the config
-    my $session;
-    my %cookies = Apache::Cookie->fetch();
-    my $cookie = $cookies{ $cookiename } if %cookies;
-    if( $cookie ) {
-        $session = $cookie->value();
-        XIMS::Debug( 6, "found session '$session' in client cookie '$cookiename'" );
-    }
+    my $session = ( ( $r->header_in("Cookie") || "" ) =~ /$cookiename=([^\;]+)/ )[0];
+    XIMS::Debug( 6, "found session '$session'" );
 
     XIMS::Debug( 5, "done" );
     return $session || "";
@@ -190,20 +145,16 @@ sub set_session_cookie {
     if ( length $session ) {
         XIMS::Debug( 4, "session string found: $session" );
         my $cookiename = "session"; # should this get from the config
-
-        XIMS::Debug( 6, "setting client cookie '$cookiename' to value '$session'" );
         # need expires? if it not set, the cookie gets lost after browser shutdown
-        Apache::Cookie->new($r,
-                            -name    =>  $cookiename,
-                            -value   =>  $session,
-                            -path    =>  '/'
-                           )->bake();
+        my $cookiestring = "$cookiename=$session; path=/";
+        XIMS::Debug( 6, "sending cookie string to client: " . $cookiestring );
+        $r->err_header_out( "Set-Cookie", $cookiestring );
         $retval = 1;
     }
     else {
         XIMS::Debug( 2, "cannot set empty session key" );
     }
-
+    
     XIMS::Debug( 5, "done" );
     return $retval ;
 }
@@ -228,11 +179,11 @@ sub unset_session_cookie {
     my $r = shift;
     my $cookiename = "session"; # should this get from the config
 
-    # not needed anymore? no other references to 'ximsCookie' found!
-    # $r->pnotes( "ximsCookie", "$cookiename= ; path=/" );
-
-    XIMS::Debug( 6, "removing client cookie '$cookiename'" );
-    Apache::Cookie->new($r, -name =>  $cookiename, -path => '/', -expires => '-1Y', )->bake();
+    # need expires? if it not set, the cookie gets lost after browser shutdown
+    my $cookiestring = "$cookiename= ; path=/";
+    XIMS::Debug( 6, "sending cookie string to client: " . $cookiestring );
+    $r->pnotes( "ximsCookie", $cookiestring );
+    $r->err_header_out( "Set-Cookie" => $cookiestring );
 
     XIMS::Debug( 5, "done" );
     return 1;
@@ -265,6 +216,7 @@ sub set_user_info {
 
     $r->pnotes( ximsSession   => $session );
     $r->pnotes( ximsProvider  => $dp );
+    XIMS::Debug( 5, "done" );
 }
 
 
@@ -295,7 +247,7 @@ sub test_session {
     my $cSession = undef;
 
     eval {
-        $cSession = XIMS::Session->new( session_id => $sessionstring );
+        $cSession  =  XIMS::Session->new( session_id => $sessionstring );
     };
     if ( $@ ) {
         XIMS::Debug( 2, "no session found!" . $@ );
@@ -310,6 +262,7 @@ sub test_session {
         $cSession = undef;
     }
 
+    XIMS::Debug( 5, "done" );
     return $cSession; # return session class
 }
 
@@ -341,10 +294,9 @@ sub create_session_id {
 
     if ( $dp and $r and $cUser) {
         XIMS::Debug( 4, "completing dataset for cookie creation" );
-
         $cSession =  XIMS::Session->new( 'user_id'   => $cUser->id(),
                                          'user_name' => $cUser->name(),
-                                         'host'      => $r->connection->remote_ip() );
+                                         'host'      => $r->connection->remote_ip());
         unless ( $cSession ) {
             XIMS::Debug( 2, "session cannot be created in system database" );
             $cSession = undef;
@@ -393,7 +345,8 @@ sub get_logindata {
         %args = split /=|&/, $qstr ;
     }
 
-    return ( Apache::unescape_url_info($args{userid}) , Apache::unescape_url_info($args{password}) ) ;
+    XIMS::Debug( 5, "done" );
+    return ( $args{userid} , Apache::unescape_url_info($args{password}) ) ;
 }
 
 
@@ -417,25 +370,55 @@ sub login_user {
     XIMS::Debug( 5, "called" );
     my $r  = shift;
     my $dp = shift;
-    my $session;
-    my ( $username, $password ) = get_logindata( $r );
+
+    my $cSession = undef;
+    my ( $user, $pwd )  = get_logindata( $r );
 
     # first we test if the parameter are ok
-    if ( $dp and $username and length $username and $password and length $password ) {
-        my $user = XIMS::Auth->new( Username => $username, Password => $password )->authenticate();
-        if ( $user and $user->id() ) {
+    if ( $dp and length $user and length $pwd ) {
+        # schweet
+        my $cUser = undef;
+        XIMS::Debug( 4, "parameters ok, check the AuthStyle" );
+        my @authmods = split(',', XIMS::AUTHSTYLE());
+
+        foreach my $authmod ( @authmods ) {
+            XIMS::Debug( 6, "trying authstyle: $authmod" );
+
+            eval "require $authmod;";
+            if ( $@ ) {
+                XIMS::Debug( 2, "authStyle not available! reason: $@" );
+            }
+            else {
+                my $server = XIMS::AUTHSERVER();
+                my $login = $authmod->new(  Provider => $dp,
+                                            Server   => $server,
+                                            Login    => $user,
+                                            Password => $pwd );
+                if ( $login ) {
+                    XIMS::Debug( 4, "login ok" );
+                    $cUser = $login->getUserInfo();
+                    last;
+                }
+                else {
+                    XIMS::Debug( 2, "login failed!" );
+                }
+            }
+        }
+
+        if ( $cUser ) {
             XIMS::Debug( 4, "user found after login; creating session" );
-            $session = create_session_id( $r, $dp, $user );
+            $cSession = create_session_id( $r, $dp, $cUser );
         }
         else {
-            XIMS::Debug( 3, "no userinformation found!" );
+            XIMS::Debug( 1, "no userinformation found!" );
         }
     }
     else {
         XIMS::Debug( 3, "incomplete parameter list" );
     }
 
-    return $session;
+    XIMS::Debug( 5, "done" );
+    return $cSession;
 }
 
 
@@ -478,12 +461,13 @@ sub test_for_logout {
 ##
 #
 # SYNOPSIS
-#    redirToDefault($r, $dp, $userid)
+#    redirToDefault($r, $dp, $userid, $cookie)
 #
 # PARAMETERS
 #    $r: request-object
 #    $dp: dataprovider
 #    $userid
+#    $cookie
 #
 # RETURNVALUES
 #    none
@@ -496,49 +480,25 @@ sub redirToDefault {
     my $r = shift;
     my $dp = shift;
     my $userid = shift;
+    my $cookie = shift;
 
     #warn "r: $r dp: $dp uid: $userid ";
     if ( $r and $dp and $userid ) {
         XIMS::Debug( 4, "redirecting user " );
         my $pathinfo;
         # here we should find the root path for the user (the department for example)
-
-        # check for previous (before login) path and query stored in cookie
-        my %cookies = Apache::Cookie->fetch();
-        my $cookie;
-        my $askedpath;
-        my $askedquery;
-
-        # check if a path was asked before login prompt
-        $cookie = $cookies{ askedpath } if %cookies;
-        $askedpath = $cookie->value() if $cookie;
-        if ( length $askedpath and $askedpath ne "/") {
-            XIMS::Debug( 5, "user previously requested path $askedpath");
+        my $askpath = ( ($r->header_in("Cookie") || "" ) =~ /askpath=([^\;]+)/ )[0];
+        if ( length $askpath and $askpath ne "/") {
+            XIMS::Debug( 6, "user previously requested path ", $askpath );
             # user requested an explicit path
-            $pathinfo = $askedpath;
+            $pathinfo = $askpath;
+            # and let the client forget about the requested path
 
-            # let the client forget about the requested path (by setting expire time in the past)
-            $cookies{ askedpath }->expires("-1Y");
-            $cookies{ askedpath }->bake();
-
-            # check for queryparameter in query before login prompt
-            $cookie = $cookies{ askedquery } if %cookies;
-            $askedquery = uri_unescape( $cookie->value() ) if $cookie;
-            if ( length $askedquery ) {
-                XIMS::Debug( 5, "user previously requested with query parameters $askedquery" );
-
-                # remove query paramters (by setting expire time in the past)
-                $cookies{ askedquery }->expires("-1Y");
-                $cookies{ askedquery }->bake();
-            }
-            else {
-                $askedquery = undef;
-            }
+            # $r->err_header_out( "Set-Cookie","askpath=; path=/" );
         }
         else {
             # check the default bookmark for the current user:
-            $pathinfo = "/user";
-            XIMS::Debug( 5, "user did not previously request a path, so we use /user" );
+            $pathinfo = "/defaultbookmark";
         }
 
         my $uri = Apache::URI->parse( $r );
@@ -546,41 +506,15 @@ sub redirToDefault {
         $uri->query(undef);
 
         $uri->path( XIMS::GOXIMS() . $pathinfo );
-        # add possible paramters of query before login
-        $uri->query($askedquery) if $askedquery;
-
         XIMS::Debug( 6, "redirecting to " . $uri->unparse() );
 
         $r->status_line( "302 Found" );
+        # $r->header_out( "Set-Cookie", $cookie ) if length $cookie;
         $r->header_out( Location => $uri->unparse );
         $r->send_http_header( "text/html" );
     }
+
     XIMS::Debug( 5, "done" );
 }
-
-sub view_privilege_handler {
-    my $r = shift;
-    my $session = shift;
-
-    $session ||= $r->pnotes('ximsSession');
-    return AUTH_REQUIRED unless $session and $session->isa('XIMS::Session');
-
-    my $pathbase = $r->dir_config('ximsPubPathBase');
-    my $siterootloc = $r->dir_config('ximsSiteRootLocation');
-    return FORBIDDEN unless $siterootloc;
-
-    my $uri = $r->uri();
-    $uri =~ s/$pathbase//;
-
-    my $object = XIMS::Object->new( path => $siterootloc . $uri );
-    return NOT_FOUND unless $object;
-
-    my $privmask = $session->user->object_privmask( $object );
-    #warn "privmask $privmask for user " . $session->user->name();
-
-    return FORBIDDEN unless $privmask & XIMS::Privileges::VIEW();
-    return OK;
-}
-
 
 1;

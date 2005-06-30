@@ -14,7 +14,7 @@
     <assert test="count(host)=1">The 'session' element must contain a 'host' element.</assert>
     <assert test="count(user)=1">The 'session' element must contain a 'user' element.</assert>
     <assert test="count(date)=1">The 'session' element must contain a 'date' element.</assert>
-    <assert test="count(last_access_timestamp|host|user|user_id|date|error_msg|warning_msg|message|verbose_msg|skin|uilanguage|session_id|attributes|serverurl|searchresultcount)=count(./*)">
+    <assert test="count(last_access_timestamp|host|user|user_id|date|error_msg|warning_msg|message|verbose_msg|skin|uilanguage|session_id|attributes|serverurl)=count(./*)">
       Foreign element child <name path="."/> in element 'session'.
     </assert>
   </rule>
@@ -56,7 +56,7 @@
     <assert test="count(./location)=1">Element 'object' must contain one 'location' element.</assert>
   </rule>
   <rule context="object[name(..) = 'context']">
-    <assert test="count(parents|body|data_format_id|last_published_by_id|last_published_by_firstname|script_id|status|owned_by_middlename|published|abstract|object_type_id|owned_by_id|image_id|location|last_publication_timestamp|title|last_modified_by_middlename|last_modification_timestamp|style_id|created_by_id|last_modified_by_id|user_privileges|created_by_firstname|locked_by_middlename|marked_new|last_modified_by_lastname|marked_deleted|css_id|last_published_by_lastname|owned_by_lastname|creation_timestamp|last_modified_by_firstname|language_id|attributes|keywords|notes|symname_to_doc_id|locked_time|data_format_name|locked_by_lastname|owned_by_firstname|created_by_middlename|last_published_by_middlename|locked_by_firstname|created_by_lastname|department_id|children|position|locked_by_id|schema_id|document_status)=count(*)">
+    <assert test="count(parents|body|data_format_id|last_published_by_id|last_published_by_firstname|script_id|status|owned_by_middlename|published|abstract|object_type_id|owned_by_id|image_id|location|last_publication_timestamp|title|last_modified_by_middlename|last_modification_timestamp|style_id|created_by_id|last_modified_by_id|user_privileges|created_by_firstname|locked_by_middlename|marked_new|last_modified_by_lastname|marked_deleted|css_id|last_published_by_lastname|owned_by_lastname|creation_timestamp|last_modified_by_firstname|language_id|attributes|keywords|notes|symname_to_doc_id|locked_time|data_format_name|locked_by_lastname|owned_by_firstname|created_by_middlename|last_published_by_middlename|locked_by_firstname|created_by_lastname|department_id|children|position|locked_by_id)=count(*)">
       Foreign element child <name/> in element 'object'.
     </assert>
   </rule>
@@ -92,7 +92,7 @@
     <assert test="count(enabled)=1">Element 'user' must contain one 'enabled' element.</assert>
     <assert test="count(name)=1">Element 'user' must contain one 'name' element.</assert>
     <assert test="count(admin)=1">Element 'user' must contain one 'admin' element.</assert>
-    <assert test="count(email)=1">Element 'user' must contain one 'email' element.</assert>
+    <assert test="count(email)=1">Element 'user' must contain one 'aemail' element.</assert>
     <assert test="count(object_type)=1">Element 'user' must contain one 'object_type' element.</assert>
     <assert test="count(url)=1">Element 'user' must contain one 'url' element.</assert>
     <assert test="count(system_privs_mask)=1">Element 'user' must contain one 'system_privs_mask' element.</assert>

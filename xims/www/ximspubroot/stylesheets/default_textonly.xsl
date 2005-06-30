@@ -4,7 +4,7 @@
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:dcq="http://purl.org/dc/qualifiers/1.0/"
-                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns="http://www.w3.org/TR/xhtml1/strict"
                 >
 <!--$Id$-->
 

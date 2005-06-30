@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -9,8 +9,10 @@
           xmlns:web="http://axkit.org/NS/xsp/webutils/v1"
           xmlns:if-param="http://axkit.org/NS/xsp/if-param/v1"
           xmlns:param="http://axkit.org/NS/xsp/param/v1">
+          
 
 <page>
+
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcq="http://purl.org/dc/qualifiers/1.0/">
     <rdf:Description about="">
         <dc:title>
@@ -18,11 +20,11 @@
                 <param:reason/>
             </if-param:reason>
         </dc:title>
-        <dc:creator>The XIMS Project</dc:creator>
+        <dc:creator>Michael Kröll</dc:creator>
         <dc:subject>XIMS</dc:subject>
         <dc:description></dc:description>
-        <dc:publisher>The XIMS Project</dc:publisher>
-        <dc:contributor>$Author$</dc:contributor>
+        <dc:publisher></dc:publisher>
+        <dc:contributor/>
         <dc:date>
             <dcq:created>
                 <rdf:Description>
@@ -37,36 +39,49 @@
                 </rdf:Description>
             </dcq:modified>
         </dc:date>
-        <dc:format>text/html</dc:format>
+        <dc:format>text/xhtml</dc:format>
         <dc:language>en-us</dc:language>
     </rdf:Description>
 </rdf:RDF>
 
 <body onLoad="document.forms['login'].userid.focus()">
 
-<h1>Login to XIMS</h1>
+<if-param:reason>
+    <p style="color: maroon; border: 1px solid grey; padding: 2px; background: #eeeeee">
+        <param:reason/>
+    </p>
+</if-param:reason>
 
-<form method="post" name="login">
+<xsp:logic>
+if (!<web:match_useragent name="MSIE|Gecko|Lynx|Opera"/>) {
+</xsp:logic>
+<h1>Sorry, your Web browser is not supported.</h1>
+<p>
+The XIMS User interface is designed for Mozilla, MS Internet Explorer Version 5 or newer. It is known to work with Lynx and Opera too.
+</p>
+<xsp:logic>
+}
+else {
+</xsp:logic>
+    <form method="post" name="login">
     <xsp:logic>
     if (<web:request_prev_parsed_uri omit="query"/> eq <web:request_parsed_uri omit="query"/>) {
     </xsp:logic>
         <xsp:attribute name="action">
-            /goxims/user?dologin=1
+            <web:request_parsed_uri omit="path"/>/goxims/defaultbookmark
         </xsp:attribute>
     <xsp:logic>
     }
     else {
     </xsp:logic>
         <xsp:attribute name="action">
-            <web:request_prev_uri/>?dologin=1
+            <web:request_prev_parsed_uri omit="query"/>
         </xsp:attribute>
     <xsp:logic>
     }
     </xsp:logic>
-
-    <input type="hidden" name="dologin" id="dologin" value="1"/>
-    <table align="center" border="0" cellpadding="2" cellspacing="2" style="background-color:#EEEEEE; border: 1px solid #BFBFBF;">
-        <tr><td colspan="2" style="border-bottom: 1px solid #336633; color: black; font-weight: bold;">Login</td></tr>
+    <table align="center" border="0" cellpadding="2" cellspacing="0" class="action">
+        <tr><td class="messagewarning" colspan="2">Login</td></tr>
         <tr>
             <td>Username:</td>
             <td>
@@ -79,8 +94,6 @@
         </tr>
         <tr><td>Password:</td><td><input tabindex="2" type="password" name="password" class="text"/></td></tr>
         <tr><td colspan="2" align="center"><input tabindex="3" type="submit" name="login" value="Login" class="control"/></td></tr>
-        <!-- you may want to reactivate the following section if you do offer https --> 
-        <!--
         <xsp:logic>
         if (!<web:is_https/>) {
         </xsp:logic>
@@ -97,17 +110,11 @@
         <xsp:logic>
         }
         </xsp:logic>
-        -->
-        <!-- end section -->
-    </table>
-</form>
-
-<if-param:reason>
-    <div align="center">
-        <span style="color: #DF7900; font-weight: bold"><param:reason/></span>
-    </div>
-</if-param:reason>
-
+     </table>
+    </form>
+<xsp:logic>
+}
+</xsp:logic>
 </body>
 
 </page>

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>    
+<?xml version="1.0" encoding="iso-8859-1" ?>    
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -10,12 +10,16 @@
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:dcq="http://purl.org/dc/qualifiers/1.0/"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/TR/xhtml1/strict">
    
 <xsl:import href="public/common.xsl"/>
 <xsl:param name="request.uri"/>
 
-<xsl:output method="html" encoding="utf-8"/>
+<xsl:output method="html" encoding="ISO-8859-1"/>
+
+<xsl:template match="/document">
+    <xsl:apply-templates select="context/object"/>
+</xsl:template>
 
 <xsl:template match="/document/context/object">
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
@@ -174,7 +178,7 @@
 
 <xsl:template name="copyfooter">
     <p class="copy">
-          Â© 2000 - 2002 UniversitÃ¤t Innsbruck - Alle Rechte vorbehalten <br />
+          © 2000 - 2002 Universität Innsbruck - Alle Rechte vorbehalten <br />
           <span class="pseudolink">Hilfe</span> | <span class="pseudolink">Mail an Webmaster</span>    
    </p>
 </xsl:template>

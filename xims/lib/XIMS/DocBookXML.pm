@@ -1,101 +1,41 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
 package XIMS::DocBookXML;
+# $Id$
 
 use vars qw( $VERSION @ISA );
 use strict;
-use XIMS::Document;
-use XIMS::DataFormat;
-use XML::LibXML;
 
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = ('XIMS::Document');
+@ISA = ('XIMS::XML');
+
+use XIMS::XML;
 
 ##
 #
 # SYNOPSIS
-#    my $docbookxml = XIMS::DocBookXML->new( [ %args ] )
+#    XIMS::DocBookXML->new( %args )
 #
 # PARAMETER
-#    %args        (optional) :  Takes the same arguments as its super class XIMS::Document
+#    %args: recognized keys are the fields from ...
 #
 # RETURNS
-#    $docbookxml    : instance of XIMS::DocBookXML
+#    $docbookxml: XIMS::DocBookXML instance
 #
 # DESCRIPTION
-#    Fetches existing objects or creates a new instance of XIMS::DocBookXML for object creation.
+#    Constructor
 #
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
     my %args = @_;
 
-    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
-        $args{data_format_id} = XIMS::DataFormat->new( name => 'DocBookXML' )->id() unless defined $args{data_format_id};
-    }
+    $args{object_type_id} = 9 unless defined $args{object_type_id};
+    $args{data_format_id} = 21 unless defined $args{data_format_id};
 
     return $class->SUPER::new( %args );
-}
-
-##
-#
-# SYNOPSIS
-#    my $docbookxml = $docbookxml->validate( [ %args ] );
-#
-# PARAMETER
-#    %args    (optional)
-#       recognized keys: public (optional) : Used to set a custom PUBLIC identifier for a
-#                                            DocBook DTD. If not set, "-//OASIS//DTD DocBook XML V4.3//EN"
-#                                            will be used.
-#                        system (optional) : Used to set a custom SYSTEM identifier for a
-#                                            DocBook DTD. If not set, "http://www.docbook.org/xml/4.3/docbookx.dtd"
-#                                            will be used.
-#                        string (optional) : An XML string to be validated. If not set $self->body() will be used for
-#                                            validation
-# RETURNS
-#    True or false
-#
-# DESCRIPTION
-#    Validates the XIMS::DocBookXML object against a DocBook DTD
-#
-sub validate {
-    XIMS::Debug( 5, "called" );
-    my $self        = shift;
-    my %args        = @_;
-
-    my $public = $args{public} || "-//OASIS//DTD DocBook XML V4.3//EN";
-    my $system = $args{system} || "http://www.docbook.org/xml/4.3/docbookx.dtd";
-    my $string = $args{string} || $self->body();
-
-    # Because XIMS::DocBookXML object bodies are stored as chunk without an
-    # XML declaration, we have to manually add an XML declaration with an
-    # encoding attribute if XIMS::DBEncoding() is set.
-    if ( XIMS::DBENCODING() and not $string =~ /^<\?xml/ ) {
-        $string = '<?xml version="1.0" encoding="' . XIMS::DBENCODING() . '"?>' . $string;
-    }
-
-    my $dtd = XML::LibXML::Dtd->new( $public, $system );
-    my $doc;
-    eval {
-        $doc = XML::LibXML->new->parse_string( $string );
-    };
-    if ( $@ ) {
-        XIMS::Debug( 2, "string is not well-formed" );
-        return undef;
-    }
-
-    eval {
-        $doc->validate( $dtd )
-    };
-    if ( $@ ) {
-        XIMS::Debug( 3, "string is not valid: $@" );
-        return undef;
-    }
-    else {
-        return 1;
-    }
 }
 
 1;

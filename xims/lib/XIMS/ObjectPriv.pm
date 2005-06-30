@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -10,7 +10,7 @@ use vars qw($VERSION @Fields @ISA);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = qw( XIMS::AbstractClass );
 
-#use Data::Dumper;
+use Data::Dumper;
 
 sub resource_type {
     return 'ObjectPriv';

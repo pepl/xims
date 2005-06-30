@@ -1,15 +1,19 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/TR/xhtml1/strict">
     <xsl:import href="common.xsl"/>
-    <xsl:output method="html" encoding="utf-8"/>
+    <xsl:output method="html" encoding="ISO-8859-1"/>
+
+    <xsl:template match="/document">
+        <xsl:apply-templates select="context/object"/>
+    </xsl:template>
 
     <xsl:template match="/document/context/object">
         <html>
@@ -18,10 +22,9 @@
                     Trashcan - XIMS
                 </title>
                 <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-                <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-                <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             </head>
-            <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
                 <xsl:call-template name="header">
                     <xsl:with-param name="nooptions">true</xsl:with-param>
                     <xsl:with-param name="nostatus">true</xsl:with-param>
@@ -30,7 +33,7 @@
                     <tr>
 <!-- title -->
                         <td width="51">
-                                <img src="{$sklangimages}title.png"
+                                <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/title.png"
                                      width="45"
                                      height="20"
                                      border="0"
@@ -38,7 +41,7 @@
                                      title="Title"
                                      />
                         </td>
-                        <td width="100%" background="{$skimages}generic_tablebg_1x20.png">
+                        <td width="100%" background="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png">
                             <img src="{$ximsroot}images/spacer_white.gif"
                                  width="50"
                                  height="1"
@@ -47,7 +50,7 @@
                                  />
                         </td>
                         <td width="23">
-                            <img src="{$skimages}generic_tablebg_1x20.png"
+                            <img src="{$ximsroot}skins/{$currentskin}/images/generic_tablebg_1x20.png"
                                  width="23"
                                  height="20"
                                  alt=""
@@ -55,7 +58,7 @@
                         </td>
 <!-- modified -->
                     <td width="124">
-                        <img src="{$sklangimages}last_modified.png"
+                        <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/last_modified.png"
                              width="124"
                              height="20"
                              border="0"
@@ -65,7 +68,7 @@
                     </td>
 <!-- size -->
                     <td width="80">
-                        <img src="{$sklangimages}size.png"
+                        <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/size.png"
                              width="80"
                              height="20"
                              border="0"
@@ -75,7 +78,7 @@
                     </td>
 <!-- options-->
                     <td width="134">
-                        <img src="{$sklangimages}options.png"
+                        <img src="{$ximsroot}skins/{$currentskin}/images/{$currentuilanguage}/options.png"
                              width="183"
                              height="20"
                              alt="Options"
@@ -117,7 +120,7 @@
             </td>
 
 <!-- title -->
-            <td colspan="2" bgcolor="#eeeeee" background="{$skimages}containerlist_bg.gif">
+            <td colspan="2" bgcolor="#eeeeee" background="{$ximsroot}skins/{$currentskin}/images/containerlist_bg.gif">
                 <a>
                     <xsl:choose>
                         <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='Container'">
@@ -166,7 +169,7 @@
 <!--                <xsl:choose>
                     <xsl:when test="user_privileges/delete">
 -->                        <a href="{$goxims_content}?id={@id};undelete=1">
-                            <img src="{$skimages}option_undelete.png"
+                            <img src="{$ximsroot}skins/{$currentskin}/images/option_undelete.png"
                                  border="0"
                                  alt="Undelete"
                                  title="Undelete"
@@ -198,7 +201,7 @@
                             <input
                                    type="image"
                                    name="del{@id}"
-                                   src="{$skimages}option_purge.png"
+                                   src="{$ximsroot}skins/{$currentskin}/images/option_purge.png"
                                    border="0"
                                    width="37"
                                    height="19"

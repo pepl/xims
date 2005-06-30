@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -17,9 +17,6 @@ use XML::SAX::Base;
 sub new {
     my $class = shift;
     my $self = $class->SUPER::new(@_);
-
-    # this has to be adapted to the current format we get the datetime in
-    $self->{timestamp_regex} = qr/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
     return $self;
 }
 
@@ -41,7 +38,8 @@ sub end_element {
     my $self = shift;
 
     if ( defined $self->{got_date} and defined $self->{date} ) {
-        my ( $year, $month, $day, $hour, $min, $sec ) = ( $self->{date} =~ $self->{timestamp_regex} );
+        # this has to be adapted to the current format we get the datetime in
+        my ( $day, $month, $year, $hour, $min, $sec ) = ( $self->{date} =~ /^(\d\d).(\d\d)\.(\d\d\d\d)\s(\d\d)\:(\d\d):(\d\d)/ );
 
         $self->SUPER::start_element( {Name => "day", LocalName => "day", Prefix => "", NamespaceURI => undef, Attributes => {}} );
         $self->SUPER::characters( {Data => $day} );
@@ -66,6 +64,7 @@ sub end_element {
         $self->SUPER::start_element( {Name => "second", LocalName => "second", Prefix => "", NamespaceURI => undef, Attributes => {}} );
         $self->SUPER::characters( {Data => $sec} );
         $self->SUPER::end_element();
+
 
         $self->{date} = undef;
     }

@@ -1,0 +1,437 @@
+--- WebUtils.pm	Mon Nov  5 12:57:03 2001
++++ WebUtils.pm	Sat Jun 15 17:40:36 2002
+@@ -11,6 +11,8 @@
+ use Apache;
+ use Apache::Constants qw(OK);
+ use Apache::Util;
++use Apache::Request;
++use Apache::URI;
+ use Apache::AxKit::Language::XSP::TaglibHelper;
+ sub parse_char  { Apache::AxKit::Language::XSP::TaglibHelper::parse_char(@_); }
+ sub parse_start { Apache::AxKit::Language::XSP::TaglibHelper::parse_start(@_); }
+@@ -32,6 +34,17 @@
+   'return_code($code)',
+   'username()',
+   'password()',
++  'request_parsed_uri(;$omit)',
++  'request_prev_parsed_uri(;$omit)',
++  'request_prev_uri()',
++  'request_prev_query_string()',
++  'request_prev_param($name)',
++  'match_useragent($name)',
++  'is_https()',
++  'is_initial_req()',
++  'variant_list():as_xml=true',
++  'error_notes()',
++  'server_admin()',
+ );
+ 
+ @ISA = qw(Apache::AxKit::Language::XSP);
+@@ -45,31 +58,34 @@
+ }
+ 
+ sub path_info () {
+-    my $Request = AxKit::Apache->request;
+-    return $Request->path_info;
++    my $r = AxKit::Apache->request;
++    return $r->path_info;
+ }
+ 
+ sub query_string () {
+-    my $Request = AxKit::Apache->request;
+-    return $Request->query_string;
++    my $r = AxKit::Apache->request;
++    return $r->query_string;
+ }
+ 
+ sub request_uri () {
+-    my $Request = AxKit::Apache->request;
+-    return $Request->uri;
++    my $r = AxKit::Apache->request;
++    return $r->uri;
+ }
+ 
+ sub server_root () {
+-    my $Request = AxKit::Apache->request;
+-    return $Request->document_root;
++    my $r = AxKit::Apache->request;
++    return $r->document_root;
+ }
+ 
+ sub request_host () {
+-    my $hostname = Apache->header_in('Via');
++    my $r = AxKit::Apache->request;
++
++    my $hostname = $r->header_in('Via');
+     $hostname =~ s/^[0-9.]+ //g;
+     $hostname =~ s/ .*//g;
+-    $hostname ||= $ENV{HTTP_HOST};
+-    $hostname ||= Apache->header_in('Host');
++
++    $hostname ||= $r->hostname; # use the host set by full URI or 'Host'-header if there is no 'Via'-header
++
+     return $hostname;
+ }
+ 
+@@ -81,14 +97,14 @@
+     
+     my $myhost = $host;
+ 
+-    my $Request = AxKit::Apache->request;
++    my $r = AxKit::Apache->request;
+ 
+     if ($uri !~ m|^https?://|oi) {
+         if ($uri !~ m#^/#) {
+             $uri = "./$uri" if $uri =~ /^\./;
+ 
+             # relative path, so let's resolve the path ourselves
+-            my $base = $Request->uri;
++            my $base = $r->uri;
+             $base =~ s#/[^/]+$#/#;
+             $uri = "$base$uri";
+             $uri =~ s#/./#/#g;             # embedded ./
+@@ -98,11 +114,11 @@
+         }
+ 
+         if (not defined $host) {
+-            $myhost = $Request->header_in("Host");
++            $myhost = $r->header_in("Host");
+ 
+             # if we're going through a proxy, the virtual host is rewritten; yuck
+             if ($myhost !~ /[a-zA-Z]/) {
+-                my $Server = $Request->server;
++                my $Server = $r->server;
+                 $myhost = $Server->server_hostname;
+                 my $port = $Server->port;
+                 $myhost .= ":$port" if $port != 80;
+@@ -111,25 +127,25 @@
+         
+         my $scheme = 'http';
+         $scheme = 'https' if $secure; # Hmm, might break if $port was set above...
+-        $Request->header_out("Location" => "${scheme}://${myhost}${uri}");
+-        $Request->status(302);
++        $r->header_out("Location" => "${scheme}://${myhost}${uri}");
++        $r->status(302);
+     }
+     else {
+-        $Request->header_out("Location" => "$uri");
+-        $Request->status(302);
++        $r->header_out("Location" => "$uri");
++        $r->status(302);
+     }
+     
+-    $Request->send_http_header;
++    $r->send_http_header;
+     
+     Apache::exit();
+ }
+ 
+ sub header ($;$) {
+-    my $name = shift;
++    my ($name, $value) = @_;
+     my $r = AxKit::Apache->request;
+-    
+-    if (@_) {
+-        return $r->header_out($name, $_[0]);
++
++    if ($value) {
++        return $r->header_out($name, $value);
+     }
+     else {
+         return $r->header_in($name);
+@@ -146,12 +162,11 @@
+ 
+ sub return_code ($) {
+     my $code = shift;
++    my $r = AxKit::Apache->request;
+ 
+-    my $Request = AxKit::Apache->request;
+-
+-    $Request->status($code);
++    $r->status($code);
+     
+-    $Request->send_http_header;
++    $r->send_http_header;
+     
+     Apache::exit();
+ }
+@@ -172,6 +187,93 @@
+     return;
+ }
+ 
++sub request_parsed_uri ($) {
++    my $omit = shift;
++    my $r = AxKit::Apache->request;
++    my $uri = Apache::URI->parse($r);
++
++    if ($omit eq 'path') {
++        $uri->path(undef);
++        $uri->query(undef); # we don't want a query without a path
++    }
++    elsif ($omit eq 'path_info' or $omit eq 'query') {
++        $uri->$omit(undef);
++    }
++
++    return $uri->unparse;
++}
++
++sub request_prev_parsed_uri ($) {
++    my $omit = shift;
++    my $r = AxKit::Apache->request;
++    my $uri = Apache::URI->parse($r->prev||$r);
++
++    if ($omit eq 'path') {
++        $uri->path(undef);
++        $uri->query(undef); # we don't want a query without a path
++    }
++    elsif ($omit eq 'path_info' or $omit eq 'query') {
++        $uri->$omit(undef);
++    }
++
++    return $uri->unparse;
++}
++
++sub request_prev_uri () {
++    my $r = AxKit::Apache->request;
++    return ($r->prev||$r)->uri;
++}
++
++sub request_prev_query_string () {
++    my $r = AxKit::Apache->request;
++    return ($r->prev||$r)->query_string;
++}
++
++sub request_prev_param ($) {
++    my $name = shift;
++    my $apr = Apache::Request->instance((AxKit::Apache->request->prev||AxKit::Apache->request));
++
++    return $apr->param($name);
++}
++
++sub match_useragent ($) {
++    my $name = shift;
++    my $r = AxKit::Apache->request;
++
++    return $r->header_in('User-Agent') =~ $name;
++}
++
++sub is_https () {
++    my $r = AxKit::Apache->request;
++    return 1 if $r->subprocess_env('https');
++}
++
++sub is_initial_req () {
++    my $r = AxKit::Apache->request;
++    return $r->is_initial_req;
++}
++
++sub variant_list () {
++    my $r = AxKit::Apache->request;
++    my $variant_list = ($r->prev||$r)->notes('variant-list');
++
++    $variant_list =~ s/([^:>])\n/$1<\/li>\n/g; # tidy up single li-tags because 
++                                               # mod_negotiation's list is not
++                                               # well-balanced up to Apache 1.3.24
++
++    return $variant_list;
++}
++
++sub error_notes () {
++    my $r = AxKit::Apache->request;
++    return ($r->prev||$r)->notes('error-notes');
++}
++
++sub server_admin () {
++    my $r = AxKit::Apache->request;
++    return $r->server->server_admin;
++}
++
+ 1;
+ 
+ __END__
+@@ -234,7 +336,7 @@
+ 
+ =head2 C<<web:request_uri/>>
+ 
+-Returns the full URI of the current request
++Returns the requested URI minus optional query string
+ 
+ =head2 C<<web:request_host/>>
+ 
+@@ -314,6 +416,176 @@
+   <p>
+   Your browser is: <web:header name="HTTP_USER_AGENT"/>
+   </p>
++
++
++=head2 C<<web:return_code/>>
++
++This tag allows you to set the reply status for the client request.
++
++Parameters:
++
++=over 4
++
++=item code (required)
++
++The integer value of a valid HTTP status code.
++
++=back
++
++=head2 C<<web:username/>>
++
++Returns the name of the authenticated user.
++
++=head2 C<<web:password/>>
++
++If the current request is protected by Basic authentication, this tag
++will return the decoded password sent by the client.
++
++=head2 C<<web:request_parsed_uri>>
++
++This tag allows you to get the fully parsed URI for the current request.
++In contrast to <web:request_uri/> the parsed URI will always include things like
++scheme, hostname, or the querystring.
++
++Parameters:
++
++=over 4
++
++=item omit (optional)
++
++Valid values: B<path>, B<path_info>, and B<query>.
++If specified, the corresponding URL components will be ommited for the return value.
++
++=back
++
++=head2 C<<web:request_prev_parsed_uri>>
++
++This tag allows you to get the fully parsed URI for the previous request. This can be useful
++in 403 error documents where it is required to post login information back to the originally
++requested URI.
++
++Parameters:
++
++=over 4
++
++=item omit (optional)
++
++Valid values: B<path>, B<path_info>, and B<query>.
++If specified, the corresponding URL components will be ommited for the return value.
++
++=back
++
++Example:
++
++  <p>Access Denied. Please login</p>
++  <form method="post" name="login">
++      <xsp:attribute name="action">
++          <web:request_prev_parsed_uri omit="query"/>
++      </xsp:attribute>
++      ...
++
++=head2 C<<web:request_prev_uri/>>
++
++Returns the URI of the previous request minus optional query string
++
++=head2 C<<web:request_prev_query_string/>>
++
++Returns the query string of the previous request.
++
++=head2 C<<web:request_prev_param name="...">>
++
++Returns the value of the requested CGI parameter of the previous request.
++
++Parameters:
++
++=over 4
++
++=item name (required)
++
++The name of the parameter to be retrieved.
++
++=back
++
++=head2 C<<web:match_useragent name="...">>
++
++Returns true if the User Agent pattern in B<name> matches the current User Agent.
++
++Parameters:
++
++=over 4
++
++=item name (required)
++
++A User Agent pattern string to be matched.
++
++=back
++
++Example:
++
++  <xsp:logic>
++  if (!<web:match_useragent name="MSIE|Gecko|Lynx|Opera"/>) {
++  </xsp:logic>
++      <h1>Sorry, your Web browser is not supported.</h1>
++  <xsp:logic>
++  }
++  else {
++  </xsp:logic>
++  ...
++
++=head2 C<<web:is_https/>>
++
++Returns true if the current request comes in via SSL.
++
++Example:
++
++  <xsp:logic>
++  if (!<web:is_https/>) {
++  </xsp:logic>
++    <a>
++      <xsp:attribute name="href">
++        https://<web:request_host/><web:request_uri/>
++      </xsp:attribute>
++      use secure connection
++    </a>
++  <xsp:logic>
++  }
++  </xsp:logic>
++
++=head2 C<<web:is_initial_req/>>
++
++Returns true if the current request is the first internal request, returns
++false if the request is a sub-request or an internal redirect.
++
++=head2 C<<web:variant_list/>>
++
++Returns the list of variants returned by mod_negotation in case of a 406 HTTP status code.
++Useful for 406 error documents.
++
++Example:
++
++  <h1>406 Not Acceptable</h1>
++  <p>
++    An appropriate representation of the requested resource <web:request_prev_uri/>
++    could not be found on this server.
++  </p>
++  <web:variant_list/>
++
++=head2 C<<web:server_admin/>>
++
++Returns the value of the Apache "ServerAdmin" config directive.
++
++=head2 C<<web:error_notes/>>
++
++Returns the last 'error-notes' entry set by Apache. Useful for verbose 500 error documents.
++
++Example:
++
++    <h1>Server Error</h1>
++
++    <p>An error occured. If the problem persists, please contact <web:server_admin/>.</p>
++    <p>Error Details:<br/>
++        <web:error_notes/>
++    </p>
+ 
+ =head1 AUTHOR
+ 

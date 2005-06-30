@@ -1,26 +1,46 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:import href="common.xsl"/>
-    <xsl:import href="../xspscript_default.xsl"/>
-    <xsl:output method="html" encoding="utf-8"/>
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/TR/xhtml1/strict">
+<xsl:import href="common.xsl"/>
+<xsl:output method="html" encoding="ISO-8859-1"/>
 
-    <xsl:param name="process_xsp" select="'0'"/>
-    <xsl:template name="processxsp_switcher">
-        <xsl:choose>
-            <xsl:when test="$process_xsp = '0'">
-                <a href="{$xims_box}{$goxims_content}{$absolute_path}?process_xsp=1;m={$m}">Show body XSP processed</a>
-            </xsl:when>
-            <xsl:otherwise>
-                <a href="{$xims_box}{$goxims_content}{$absolute_path}?do_not_process_xsp=1;m={$m}">Do not XSP process body</a>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+    
+<xsl:template match="/document">
+    <xsl:apply-templates select="context/object"/>
+</xsl:template>
 
+<xsl:template match="/document/context/object">
+<html>
+  <head>
+    <title><xsl:value-of select="title"/> - XSP-Script - XIMS</title>
+    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+    <link rel="stylesheet" href="/suche/stylesheets/suche.css" type="text/css" />
+    <script src="{$ximsroot}scripts/default.js" type="text/javascript" />
+  </head>
+    <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+    <xsl:call-template name="header"/>
+    <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
+      <tr>
+        <td bgcolor="#ffffff" colspan="2">
+          <pre>
+            <xsl:apply-templates select="body"/>
+          </pre>
+        </td>
+      </tr>
+    </table>
+
+    <table align="center" width="98.7%" class="footer">
+        <xsl:call-template name="user-metadata"/>
+        <xsl:call-template name="footer"/>
+    </table>
+  </body>
+</html>
+</xsl:template>
 </xsl:stylesheet>

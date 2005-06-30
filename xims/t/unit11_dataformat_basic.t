@@ -4,7 +4,7 @@ use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::Names;
 use XIMS::DataFormat;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN { 
     plan tests => 34;

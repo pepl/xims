@@ -4,19 +4,12 @@ use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::DataProvider;
 
-BEGIN {
-    plan tests => 27;
+BEGIN { 
+    plan tests => 26;
 }
 
-my $dp;
-eval {
-    $dp = XIMS::DataProvider->new();
-};
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+my $dp = XIMS::DataProvider->new();
+
 ok( $dp );
 
 # test the AUTOLOAD stuff
@@ -27,81 +20,53 @@ my $return;
 eval {
     $return = $dp->getSession();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 $return = undef;
 
 eval {
-     $return = $dp->getUser( id => 1 );
+     $return = $dp->getUser();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getDocument( id => 1 );
+     $return = $dp->getDocument();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getObject( id => 1 );
+     $return = $dp->getObject();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getObjectType( id => 1 );
+     $return = $dp->getObjectType();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getContent( id => 1 );
+     $return = $dp->getContent();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getUserPriv( grantor_id => 2 );
+     $return = $dp->getUserPriv();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
-ok( $return );
+unless ( $@ ) { ok( 1 ); }
+ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getBookmark( id => 1 );
+     $return = $dp->getBookmark();
 };
 unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
@@ -109,57 +74,37 @@ $return = undef;
 
 
 eval {
-     $return = $dp->getDataFormat( id => 1 );
+     $return = $dp->getDataFormat();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getLanguage( id => 1 );
+     $return = $dp->getLanguage();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getObjectPriv( grantor_id => 2 );
+     $return = $dp->getObjectPriv();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
-ok( $return );
-$return = undef;
-
-eval {
-     $return = $dp->getObjectTypePriv( object_type_id => 1 );
-};
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
 ok( $return and scalar ($return) > 0 );
 $return = undef;
 
 eval {
-     $return = $dp->getMimeType( id => 1 );
+     $return = $dp->getObjectTypePriv();
 };
-unless ( $@ ) {
-    ok( 1 );
-} else {
-    ok(0,1);
-}
+unless ( $@ ) { ok( 1 ); }
+ok( $return and scalar ($return) > 0 );
+$return = undef;
+
+eval {
+     $return = $dp->getMimeType();
+};
+unless ( $@ ) { ok( 1 ); }
 ok( $return );
 $return = undef;
 

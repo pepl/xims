@@ -4,10 +4,10 @@ use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::Names;
 use XIMS::ObjectType;
-#use Data::Dumper;
+use Data::Dumper;
 
-BEGIN {
-    plan tests => 35;
+BEGIN { 
+    plan tests => 34;
 }
 
 my $ot = XIMS::ObjectType->new();
@@ -104,16 +104,5 @@ $ot = undef;
 $ot = XIMS::ObjectType->new( id => $id );
 
 ok( $ot == undef );
-
-# test hierarchic object types
-$ot = XIMS::ObjectType->new( fullname => 'VLibraryItem::DocBookXML' );
-ok( $ot->id() );
-
-# temporarily disabled until we go a DocBookXML object type and class...
-#warn "You should see a warning about an ambigous object type lookup following.\n";
-#$ot = XIMS::ObjectType->new( name => 'DocBookXML' );
-#ok( $ot == undef );
-
-
 
 

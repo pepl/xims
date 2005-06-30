@@ -1,5 +1,5 @@
 /*
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -208,20 +208,6 @@ img {
 	border: 0px;
 }
 
-/* nathalie sequeira */
-img.rightfloat {
-    caption:Float Right;
-    float:right;
-    padding:10px;
-    padding-right:0;
-}
-img.leftfloat {
-    caption:Float Left;
-    float:left;
-    padding:10px;
-    padding-left:0;
-}
-
 /* Table elements */
 /* für col, colgroup, tbody und tr wurden keine Styles definiert. */
 
@@ -258,16 +244,12 @@ td.darkgrey {
 	background-color:#999999;
 }
 
-td.orange, td.orange1 {
-        background-color:#feebda;
+td.orange {
+	background-color:#feebda;
 }
 
-td.lightorange, td.orange2{
-        background-color:#fff6ee;
-}
-
-td.darkorange, td.orange3 {
-        background-color:#f98516;
+td.darkorange {
+	background-color:#f98516;
 }
 
 td.blue {
@@ -349,6 +331,7 @@ tt {
 
 td.pathbg {
 	visible:false;
+	background-image:url("/ximspubroot/images/icons/header_19.gif");
 	padding-left:20px;
 	font-family:helvetica, arial, sans-serif;
 	font-size:10pt;
@@ -432,7 +415,7 @@ input.qsfield {
 	border:1px solid #999999;
 	font-family:helvetica, arial, sans-serif;
 	font-size:10pt;
-	line-height:100%;
+	line-height:150%;
 }
 
 .deptlinks {
@@ -445,7 +428,7 @@ input.qsfield {
 	border:1px solid #123853;
 	font-family:helvetica, arial, sans-serif;
 	font-size:10pt;
-	line-height:100%;
+	line-height:120%;
 }
 
 .documentlinks {
@@ -458,13 +441,13 @@ input.qsfield {
 	border:1px solid #123853;
 	font-family: helvetica, arial, sans-serif;
 	font-size:10pt;
-	line-height:100%;
+	line-height:120%;
 }
 
 /* docbook */
 div.toc {
-        background-color:#efefef;
-        border: 1px solid #cccccc;
+        background-color:white;
+        border: 0;
         margin: 1px 0px 1px 0px;
         padding: 2px 0px 3px 20px;
 }
@@ -482,27 +465,17 @@ div.toc-item {
 }
 
 div.programlisting {
-        color: black;
-        padding: 1em;
-        background-color:#eeeeee;
+        color:#123853;
+       /* background-color:#eeeeee;
         border-color: white;
         border-width: 2px 2px 2px 2px;
-        border-style: solid;
+        border-style: solid; */
+        width: 90%;
 }
 
 div.section {
-    padding-left:6px;
+	 padding-left:6px;
 }
-
-div.footer-nav {
-    border-top: 1px solid #cccccc;
-}
-
-div.legal {
-    float: right;
-}
-
-
 /* uni-footer */
 
 div.footer {
@@ -536,7 +509,7 @@ li.linklist, ul.linklist {
 	caption:Link List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_SymbolicLink.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_internal_link.gif");
 	text-indent:-5px;
 }
 
@@ -545,8 +518,7 @@ li.externallinklist, ul.externallinklist {
 	caption:External Link List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_URL.gif");
-
+	list-style-image:url("/ximspubroot/images/icons/list_external_link.gif");
 	text-indent:-5px;
 }
 
@@ -555,7 +527,7 @@ li.documentlist, ul.documentlist {
 	caption:Document List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_HTML.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_document_generic.gif");
 	text-indent:-5px;
 }
 
@@ -565,7 +537,7 @@ li.list_HTML {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_HTML.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_document_generic.gif");
 	text-indent:-5px;
 }
 
@@ -575,7 +547,7 @@ li.pdflist, ul.pdflist {
 	caption:PDF List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image: url("/ximsroot/images/icons/list_PDF.gif");
+	list-style-image: url("/ximspubroot/images/icons/list_pdf.gif");
 	text-indent:-5px;
 }
 
@@ -584,7 +556,7 @@ li.list_PDF {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image: url("/ximsroot/images/icons/list_PDF.gif");
+	list-style-image: url("/ximspubroot/images/icons/list_pdf.gif");
 	text-indent:-5px;
 }
 
@@ -594,7 +566,7 @@ li.wordlist, ul.wordlist {
 	caption:MS-Word List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_DOC.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_word.gif");
 	text-indent:-5px;
 }
 
@@ -603,7 +575,7 @@ li.wordlist, li.list_DOC, ul.wordlist {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_DOC.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_word.gif");
 	text-indent:-5px;
 }
 
@@ -612,7 +584,7 @@ li.excellist, ul.excellist {
 	caption:MS-Excel List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_XLS.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_excel.gif");
 	text-indent:-5px;
 }
 
@@ -621,7 +593,7 @@ li.list_XLS {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_XLS.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_excel.gif");
 	text-indent:-5px;
 }
 
@@ -630,7 +602,7 @@ li.pptlist, ul.pptlist {
 	caption:MS-Powerpoint List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_PPT.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_ppt.gif");
 	text-indent:-5px;
 }
 
@@ -639,7 +611,7 @@ li.list_PPT {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_PPT.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_ppt.gif");
 	text-indent:-5px;
 }
 
@@ -648,7 +620,7 @@ li.folderlist, ul.folderlist {
 	caption:Folder List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_Container.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_folder.gif");
 	text-indent:-5px;
 }
 
@@ -657,7 +629,7 @@ li.list_Container {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_Container.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_folder.gif");
 	text-indent:-5px;
 }
 
@@ -666,16 +638,7 @@ li.bulletlist, ul.bulletlist {
 	caption:Bullet List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_bullet.gif");
-	text-indent:-5px;
-}
-
-li.arrowlist, ul.arrowlist {
-	equivClass: DFLists;
-	caption:Arrow List;
-	padding-left:8px;
-	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_arrow.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_bullet.gif");
 	text-indent:-5px;
 }
 
@@ -684,7 +647,7 @@ li.imagelist, ul.imagelist {
 	caption:Image List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_PNG.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_PNG.gif");
 	text-indent:-5px;
 }
 
@@ -693,26 +656,26 @@ li.list_GIF, li.list_PNG, li.list_JPG, li.list_TIFF {
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_PNG.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_PNG.gif");
 	text-indent:-5px;
 }
 
 
-li.sdocbooklist, ul.sdocbooklist {
+li.docbooklist, ul.docbooklist {
 	equivClass: DFLists;
-	caption:sDocBook List;
+	caption:DocBook List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_sDocBookXML.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_DocBookXML.gif");
 	text-indent:-5px;
 }
 
-li.list_sDocBookXML {
+li.list_DocBookXML {
 	equivClass: DFLists;
 	visible:false;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_sDocBookXML.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_DocBookXML.gif");
 	text-indent:-5px;
 }
 
@@ -721,7 +684,7 @@ li.list_AXPML {
        visible:false;
        padding-left:8px;
        line-height:150%;
-       list-style-image:url("/ximsroot/images/icons/list_AXPML.gif");
+       list-style-image:url("/ximspubroot/images/icons/list_AXPML.gif");
        text-indent:-5px;
 }
 
@@ -730,7 +693,7 @@ li.emaillist, ul.emaillist {
 	caption:Email List;
 	padding-left:8px;
 	line-height:150%;
-	list-style-image:url("/ximsroot/images/icons/list_Email.gif");
+	list-style-image:url("/ximspubroot/images/icons/list_Email.gif");
 	text-indent:-5px;
 }
 
@@ -800,14 +763,6 @@ li.emaillist, ul.emaillist {
 	line-height:120%;
 	font-family:helvetica, arial, sans-serif;
 	border:1px solid #c0c0c0;
-}
-
-.newstitle {
-    margin-bottom: 5px;
-}
-
-.newslead {
-    font-weight: bold;
 }
 
 /* formating margins */
@@ -898,7 +853,7 @@ a.headerlink:hover {
 
 /* formating paragraphs */
 
-div.edit {
+p.edit {
 	visible:false;
 	background-color:#ced3d6;
 	border:1px solid;
@@ -1020,9 +975,9 @@ table.footer {
 	color:maroon;
 }
 
-.highlighted {
+.higlighted {
 	equivClass: Louds;
-	caption: Highlighted;
+	caption: Higlighted;
 	background-color: yellow;
 }
 
@@ -1030,16 +985,6 @@ table.footer {
 	equivClass: Louds;
 	caption: Important;
 	color: #dd6e6e;
-}
-
-.warning {
-        equivClass: Louds;
-        caption: Warning;
-        font-weight:bold;
-        color: black;
-        background-color: yellow;
-        padding: 10px;
-        margin: 10px;
 }
 
 /* used by access_denied.html for now only */
@@ -1063,24 +1008,6 @@ span.cboxitem {
 	font-size:9pt;
 }
 
-#toggle_highlight {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	margin-left: 9px;
-	font-weight:bold;
-	border: 0px solid black;
-}
-
-#toggle_highlight form {
-	margin: 0px;
-}
-
-#toggle_highlight input {
-	font-size:9pt;
-	background: #CED3D7;
-	border: 1px solid #A2A6AA;
-	color: #103852;
-}
 
 /* End: FORMATS (XIMS-SITES) */
 /**************************************************************************/

@@ -1,7 +1,7 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+#$Id$
 package XIMS::QueryBuilder;
 
 use strict;
@@ -33,22 +33,12 @@ sub new {
 
     my $self;
     if ( ref $args and exists $args->{search} ) {
-        my $search;
-        if ( defined $args->{allowed} ) {
-            $search = _search_arrayref( _clean_search_string( $args->{search}, qr/$args->{allowed}/ ) );
-        }
-        else {
-            $search = _search_arrayref( _clean_search_string( $args->{search} ) );
-        }
+        my $search = _search_arrayref( _clean_search_string( $args->{search}, qr/$args->{allowed}/ ) );
         $self = bless { search => $search, }, $class;
     }
 
     return $self;
 }
-
-sub criteria { $_[0]->{criteria} }
-sub properties { $_[0]->{properties} }
-sub order { $_[0]->{order} }
 
 ##
 #
@@ -73,7 +63,7 @@ sub search_boolean {
 
     my $retval; #return value
 
-    if ( $i > 0
+    if ( $i > 0 
             && $search->[$i-1] ne "("
             && $search->[$i-1] ne "AND"
             && $search->[$i-1] ne "OR"
@@ -111,7 +101,7 @@ sub _search_arrayref {
 
     # deal with quotes
     my $in_quote = 0;
-    for my $part ( @blocks ) {
+    for my $part ( @blocks ) { 
         if ( $in_quote == 0 ) {
             push(@{$retval}, split(' ', $part)) if $part;
         }
@@ -145,7 +135,7 @@ sub _clean_search_string {
     XIMS::Debug( 5, 'called');
     my $retval = shift;
     my $allowed = shift;
-
+    
     $retval =~ s/[^$allowed ]//g if defined $allowed;
     $retval =~ s/^\s+//;
     $retval =~ s/\s+$//;

@@ -1,81 +1,61 @@
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
+
 package XIMS;
+#
+# the main package defines general method accessable in all modules.
+#
 
-use strict;
-use vars qw( $AUTOLOAD $VERSION $_CONFIG_ $_DATAPROVIDER_ );
+# note: we should _probably_ get rid of globals and begin-block and make this more OO :-|
+#BEGIN {
+    use strict;
+    use vars qw( $VERSION $_MODPERL_ $_CONFIG_ );
 
-use XIMS::Config;
-use Text::Iconv;
+    use XIMS::Config;
 
-$VERSION = 0.1;
+    $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
-# test if this is a local script or if we are running under mod_perl
-$_CONFIG_ = XIMS::Config->new();
+    # test if this is a local script or if we are running under mod_perl
+    $_MODPERL_ = $ENV{MOD_PERL} ? 1 : 0 ;
 
-require XIMS::DataProvider;
-sub DATAPROVIDER {
-    $_DATAPROVIDER_ ||= XIMS::DataProvider->new();
-    return $_DATAPROVIDER_;
-}
+    $_CONFIG_ = XIMS::Config->new();
 
-sub HOME {
-    $ENV{'XIMS_HOME'} || '/usr/local/xims'
-}
+#}
 
+#
 # XIMS::Config wrappers
+# note: did not change the nameing yet, because i want to do it when we are getting to a 'real' config(reader)-concept
+#
 sub GOXIMS()                    { $_CONFIG_->goxims() }
-sub DEBUGLEVEL()                { $ENV{XIMSDEBUGLEVEL} || $_CONFIG_->DebugLevel() }
+sub DEBUGLEVEL()                { $_CONFIG_->DebugLevel() }
 sub PUBROOT_URL()               { "/" . $_CONFIG_->PublicRoot() }
 sub PUBROOT()                   { $_CONFIG_->ApacheDocumentRoot() . "/" . $_CONFIG_->PublicRoot()  }
+sub DEFAULT_LANGUAGE()          { $_CONFIG_->DefaultLanguage() }
 sub DEFAULT_SKIN()              { $_CONFIG_->DefaultSkin() }
-sub FALLBACKSTARTPATH()         { $_CONFIG_->FallbackStartPath() }
-sub DEFAULTXHTMLEDITOR()        { $_CONFIG_->DefaultXHTMLEditor() }
-sub XMLEDITOR()                 { $_CONFIG_->XMLEditor() }
-sub TIDYPATH()                  { $_CONFIG_->TidyPath() }
-sub TIDYOPTIONS()               { $_CONFIG_->TidyOptions() }
+sub DOC_FSEXPORTSTYLESHEET()    { $_CONFIG_->DocFSExportStylesheet() }
+sub DEFAULT_PATH()              { $_CONFIG_->DefaultStartingPath() }
 sub XIMSROOT_URL()              { "/" . $_CONFIG_->XIMSRoot() }
 sub XIMSROOT()                  { $_CONFIG_->ApacheDocumentRoot() . "/" . $_CONFIG_->XIMSRoot() }
 sub AUTHSTYLE()                 { $_CONFIG_->AuthStyle() }
 sub AUTHSERVER()                { $_CONFIG_->AuthServer() }
-sub PROXYIP()                   { $_CONFIG_->ProxyIP() }
 sub CONTENTINTERFACE()          { "/" . $_CONFIG_->ContentInterface() }
 sub DBMS()                      { $_CONFIG_->DBMS() }
-sub QBDRIVER()                  { $_CONFIG_->QBDriver() }
+sub DBMS_OPTION()               { $_CONFIG_->DBMS_OPTION() }
 sub DBUSER()                    { $_CONFIG_->DBUser() }
+sub DBNAME()                    { $_CONFIG_->DBName() }
 sub DBPWD()                     { $_CONFIG_->DBPassword() }
 sub DBSESSIONOPT()              { $_CONFIG_->DBSessionOpt() }
 sub DBDOPT()                    { $_CONFIG_->DBDOpt() }
 sub DBDSN()                     { $_CONFIG_->DBdsn() }
-sub DBENCODING()                { (defined $_CONFIG_->DBEncoding() and length $_CONFIG_->DBEncoding() and $_CONFIG_->DBEncoding() !~ /UTF-?8/i) ? return $_CONFIG_->DBEncoding() : return undef }
+sub DBENCODING()                { $_CONFIG_->DBEncoding() }
 sub UIFALLBACKLANG()            { $_CONFIG_->UIFallbackLang() }
+sub ADMINROLEID()               { $_CONFIG_->AdminRoleID() }
 sub PUBLICUSERID()              { $_CONFIG_->PublicUserID() }
 sub AUTOINDEXFILENAME()         { $_CONFIG_->AutoIndexFilename() }
 sub AUTOINDEXEXPORTSTYLESHEET() { $_CONFIG_->AutoindexExportStylesheet() }
-sub RESOLVERELTOSITEROOTS()     { $_CONFIG_->ResolveRelToSiteRoots() }
-sub SEARCHRESULTROWLIMIT()      { $_CONFIG_->SearchResultRowLimit() }
-sub UILANGUAGES() {
-    my %rv;
-    foreach ( $_CONFIG_->UILanguages() ) {
-        /^(\w{1,8})(?:-\w+)/;
-        $rv{$_} = "\^$1\.\*";
-    }
-    return %rv;
-}
-
-# Provide access to custom config values using the XIMS::ConfigValueName interface
-sub AUTOLOAD {
-    my (undef, $called_sub) = ($AUTOLOAD =~ /(.*)::(.*)/);
-    return if $called_sub eq 'DESTROY';
-    return $_CONFIG_->$called_sub if $_CONFIG_->can($called_sub);
-}
-
-# Provide access to the config itself
-sub CONFIG {
-    return $_CONFIG_;
-}
+sub RESOLVERELTOSITEROOTS()     { $_CONFIG_->ResolveRelToSiteRoots() } 
 
 #  Utility methods
 
@@ -100,12 +80,11 @@ sub Debug {
     if ($level <= XIMS::DEBUGLEVEL() ) {
         if ( defined @_ and scalar(@_) == 1 ) {
             my @debug = @_;
-            $debug[-1] =~ s/\n|\s+/ /g;
+            $debug[-1] =~ s/\n|\s+/ /g; 
             my ( $module, $method ) ;
             ($module, undef, undef, $method) = caller(1);
-            if ( $ENV{MOD_PERL} and Apache->request ) {
+            if ( $_MODPERL_ ) {
                 my $log = Apache->request->log();
-                #$log->warn( "[Timed Interval] : " . int(1000 * Time::HiRes::tv_interval($XIMS::T0)) . "ms" );
                 $log->warn("[$module, $method] " . join('', @debug));
             }
             else {
@@ -127,9 +106,10 @@ sub Debug {
 #    $text: escaped string
 #
 # DESCRIPTION
-#    xml-escape string
+#    escape 'dangerous' characters to xml-entities
 #
 sub xml_escape {
+    # phish: is this obsolete ?
     my $text = shift;
 
     my %escapes = (
@@ -147,137 +127,6 @@ sub xml_escape {
 
     return $text;
 }
-
-##
-#
-# SYNOPSIS
-#    XIMS::xml_unescape( $text )
-#
-# PARAMETER
-#    $text: string
-#
-# RETURNS
-#    $text: unescaped string
-#
-# DESCRIPTION
-#    xml-unescape string
-#
-sub xml_unescape {
-    my $text = shift;
-
-    my %escapes = (
-                   '&lt;' => '<',
-                   '&gt;' => '>',
-                   '&apos;' => '\'',
-                   '&amp;' => '&',
-                   '&quot;' => '"',
-                  );
-
-    $text =~ s/(&lt;|&gt;|&apos;|&amp;|&quot;)
-        /
-        $escapes{$1}
-        /egsx;
-
-    return $text;
-}
-
-
-##
-#
-# SYNOPSIS
-#    my $encoded = XIMS::encode( $to_encode )
-#
-# PARAMETER
-#    $to_encode: string
-#
-# RETURNS
-#    $encoded: string encoded from XIMS::DBENCODING to UTF-8
-#
-# DESCRIPTION
-#    Encodes a string from XIMS::DBENCODING to UTF-8
-#
-sub encode {
-    my $string = shift;
-    return $string unless XIMS::DBENCODING();
-    my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
-    $string = $converter->convert($string) if defined $string;
-    return $string;
-}
-
-
-##
-#
-# SYNOPSIS
-#    my $decoded = XIMS::decode( $to_decode )
-#
-# PARAMETER
-#    $to_decode: string
-#
-# RETURNS
-#    $decoded: string encoded from UTF-8 to XIMS::DBENCODING
-#
-# DESCRIPTION
-#    Decodes a string from UTF-8 to XIMS::DBENCODING
-#
-sub decode {
-    my $string = shift;
-    return $string unless XIMS::DBENCODING();
-    my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
-    $string = $converter->convert($string) if defined $string;
-    return $string;
-}
-
-
-##
-#
-# SYNOPSIS
-#    XIMS::is_known_proxy( $remote_host )
-#
-# PARAMETER
-#    $remote_host: IP-Adress
-#
-# RETURNS
-#    1 or undef
-#
-# DESCRIPTION
-#    Compares the given IP-Adress to the configured known proxyservers.
-#    Returns 1 on success, undef otherwise.
-#
-sub is_known_proxy($) {
-    my $remote_host = shift;
-
-    map {return 1 if defined $_ and $remote_host eq $_} PROXYIP();
-
-    return undef;
-}
-
-##
-#
-# SYNOPSIS
-#    XIMS::via_proxy_test( $r )
-#
-# PARAMETER
-#    $r: Apache::Request object
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    If the Request appears to come from a known proxy, replace
-#    the IP-adress with the one from the X-Forwarded-For header,
-#    and flag the request in pnotes.
-#
-sub via_proxy_test($){
-    my $r = shift;
-
-    if ( my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/
-         and is_known_proxy($r->connection->remote_ip()) ) {
-        $r->connection->remote_ip($ip);
-        XIMS::Debug(6, "Remote IP taken from X-Forwarded-For-header\n");
-    }
-    $r->pnotes('PROXY_TEST' => 1);
-}
-
 
 # ##########################################################################
 # Package XIMS::Privileges
@@ -297,7 +146,7 @@ sub list {
     #  }
     #}
     #
-    return qw(DENIED VIEW WRITE DELETE PUBLISH ATTRIBUTES TRANSLATE CREATE MOVE COPY LINK PUBLISH_ALL ATTRIBUTES_ALL
+    return qw(DENIED VIEW WRITE DELETE PUBLISH ATTRIBUTES TRANSLATE CREATE MOVE LINK PUBLISH_ALL ATTRIBUTES_ALL 
               DELETE_ALL GRANT GRANT_ALL OWNER MASTER);
 }
 
@@ -332,8 +181,6 @@ sub PUBLISH_ALL()     { return 0x00001000; } # publish all content
 #
 sub ATTRIBUTES_ALL()  { return 0x00002000; } # change attributes for document
 #
-sub COPY()            { return 0x00004000; } # copy object to another location
-#
 # CATEGORY c) 0x10000 - 0x80000: administrative subtree privileges
 # the DELETE_ALL flag is not granted by default to the owner!
 #
@@ -365,7 +212,7 @@ sub OWNER()         { return 0x40000000; } # user owns document
 # creation for example
 # MODIFY could be changed to be more restrictive in the future
 #
-sub MODIFY()        { return 0x43016F17; } # user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE, COPY, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER privilege on object
+sub MODIFY()        { return 0x43012F17; } # user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER privilege on object
 
 #
 # the master flag shows, that the user is the master of the entire
@@ -397,31 +244,31 @@ sub list {
                CREATE_USER DELETE_USER CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU );
 }
 
-#
+# 
 # 0x01 - 0x80: user-self-management
 #
 sub CHANGE_PASSWORD()           { return 0x00000001; } # user can change his password
 sub GRANT_ROLE()                { return 0x00000002; } # if users are role-masters of a role, they can grant/revoke other user/roles to/from his role
 
-#
+# 
 # 0x1000 - 0x800000: helpdesk-related user/role-management
 #
 sub RESET_PASSWORD()            { return 0x00001000; }
 sub SET_STATUS()                { return 0x00002000; } # (un)lock users
 
-sub CREATE_ROLE()               { return 0x00004000; } # with this privilege, users can add role-members without being role-masters of the role
-sub DELETE_ROLE()               { return 0x00008000; }
+sub CREATE_ROLE()               { return 0x00003000; } # with this privilege, users can add role-members without being role-masters of the role
+sub DELETE_ROLE()               { return 0x00004000; }
 
-sub CHANGE_ROLE_FULLNAME()      { return 0x00010000; }
-sub CHANGE_USER_FULLNAME()      { return 0x00020000; }
+sub CHANGE_ROLE_FULLNAME()      { return 0x00005000; }
+sub CHANGE_USER_FULLNAME()      { return 0x00006000; }
 
-sub CHANGE_ROLE_NAME()          { return 0x00040000; }
-sub CHANGE_USER_NAME()          { return 0x00080000; }
+sub CHANGE_ROLE_NAME()          { return 0x00007000; }
+sub CHANGE_USER_NAME()          { return 0x00008000; }
 
-sub CREATE_USER()               { return 0x00100000; }
-sub DELETE_USER()               { return 0x00200000; }
+sub CREATE_USER()               { return 0x00009000; }
+sub DELETE_USER()               { return 0x0000a000; }
 
-#
+# 
 # 0x10000000 - 0x80000000: system-management related
 #
 sub CHANGE_SYSPRIVS_MASK()      { return 0x10000000; }
@@ -451,27 +298,6 @@ sub privmask_to_hash {
     my $privmask = shift;
     no strict 'refs';
     my %privs = map { (lc($_), 1) } grep { $privmask & &{"XIMS::Privileges::$_"} } XIMS::Privileges::list();
-    return \%privs;
-}
-
-##
-#
-# SYNOPSIS
-#    system_privmask_to_hash( $privmask )
-#
-# PARAMETER
-#    $privmask: integer bitmask
-#
-# RETURNS
-#    Returns a hash-reference with the corresponding XIMS::Privileges::System to $privmask as keys set to 1
-#
-# DESCRIPTION
-#    Used to get a more readable representation of the integer bitmask
-#
-sub system_privmask_to_hash {
-    my $privmask = shift;
-    no strict 'refs';
-    my %privs = map { (lc($_), 1) } grep { $privmask & &{"XIMS::Privileges::System::$_"} } XIMS::Privileges::System::list();
     return \%privs;
 }
 

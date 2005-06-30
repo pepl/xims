@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -11,7 +11,7 @@
 
     <xsl:import href="../common.xsl"/>
 
-    <xsl:output method="xml" indent="yes"/>
+    <xsl:output method="xml" encoding="ISO-8859-1" indent="yes"/>
 
     <xsl:template match="/document">
         <ou>
@@ -20,16 +20,7 @@
                 <image url="{context/object/image_id}"/>
             </xsl:if>
             <stylesheet><xsl:apply-templates select="context/object/style_id"/></stylesheet>
-            <path>
-                <xsl:choose>
-                    <xsl:when test="$resolvereltositeroots = 1">
-                        <xsl:value-of select="$absolute_path_nosite"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$absolute_path"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </path>
+            <path><xsl:value-of select="$absolute_path"/></path>
             <xsl:apply-templates select="/document/objectlist/object"/>
         </ou>
     </xsl:template>

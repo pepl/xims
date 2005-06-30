@@ -6,7 +6,7 @@ use XIMS::Test;
 use XIMS::Names;
 use XIMS::User;
 use XIMS::Object;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN { 
     plan tests => 23;
@@ -16,7 +16,7 @@ BEGIN {
 # Basic tests for user role membership.
 ##
 
-my $user = XIMS::User->new( id => 1  );
+my $user = XIMS::User->new( id => 1	 );
 my $o = XIMS::Object->new( id => 2 );
 
 ok( $user );
@@ -37,7 +37,7 @@ $user = XIMS::User->new( id => 2 );
 ok( $user );
 ok( $user->name() eq 'admin' );
 
-ok( scalar( keys( %priv_hash ) ) == 17 );
+ok( scalar( keys( %priv_hash ) ) == 16 );
 ok( defined( $priv_hash{view} ) );
 ok( defined( $priv_hash{delete} ) );
 ok( defined( $priv_hash{create} ) );

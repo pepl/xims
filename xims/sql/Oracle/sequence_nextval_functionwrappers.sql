@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2004 The XIMS Project.
+-- Copyright (c) 2002-2003 The XIMS Project.
 -- See the file "LICENSE" for information on usage and redistribution
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -82,10 +82,3 @@ newid ci_mime_type_aliases.id%TYPE;
  END;
 /
 
-CREATE OR REPLACE FUNCTION ci_quest_results_id_seq_nval RETURN INTEGER IS
-newid ci_questionnaire_results.id%TYPE;
- BEGIN
-  SELECT qur_seq.nextval INTO newid FROM dual;
- RETURN newid;
- END;
-/

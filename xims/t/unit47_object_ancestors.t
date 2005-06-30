@@ -4,10 +4,10 @@ use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::User;
 use XIMS::Object;
-#use Data::Dumper;
+use Data::Dumper;
 
-BEGIN {
-    plan tests => 26;
+BEGIN { 
+    plan tests => 14;
 }
 
 # fetch the 'xims' container
@@ -27,7 +27,7 @@ ok( $user->name() eq 'admin' );
 my %c1_hash = ( title => 'Child One Dir',
                 language_id => 1,
                 location => 'child1',
-                parent_id => $o->document_id(),
+                parent_id => 2,
                 object_type_id => 1,
                 department_id => 1,
                 data_format_id => 18,
@@ -40,7 +40,7 @@ ok( $child1_id and $child1_id > 1 );
 my %c2_hash = ( title => 'Child Two Dir',
                 language_id => 1,
                 location => 'child2',
-                parent_id => $child1->document_id(),
+                parent_id => $child1_id,
                 object_type_id => 1,
                 department_id => 1,
                 data_format_id => 18,
@@ -49,12 +49,12 @@ my %c2_hash = ( title => 'Child Two Dir',
 
 my $child2 = XIMS::Object->new->data( %c2_hash );
 my $child2_id = $child2->create( User => $user );
-ok( $child2_id and $child2_id > $child1_id );
+ok( $child2_id and $child2_id > $child1_id ); 
 
 my %c3_hash = ( title => 'Child Three Dir',
                 language_id => 1,
                 location => 'child3',
-                parent_id => $child2->document_id(),
+                parent_id => $child2_id,
                 object_type_id => 1,
                 department_id => 1,
                 data_format_id => 18,
@@ -67,39 +67,17 @@ ok( $child3_id and $child3_id > $child2_id );
 
 # now for the real tests:
 
-# check location_paths
 ok( $o->location_path() eq '/xims' );
 ok( $child1->location_path() eq '/xims/child1' );
 ok( $child2->location_path() eq '/xims/child1/child2' );
 ok( $child3->location_path() eq '/xims/child1/child2/child3' );
 
-# check ancestor count
-ok( scalar @{$o->ancestors()} == 1 );
-ok( scalar @{$child1->ancestors()} == 2 );
-ok( scalar @{$child2->ancestors()} == 3 );
-ok( scalar @{$child3->ancestors()} == 4 );
-
-# rename and recheck location_path
-$child3->location( 'child3_renamed' );
-ok( $child3->update() );
-ok( $child3->location_path() eq '/xims/child1/child2/child3_renamed' );
-
-# rename with descendants and recheck location_path
-$child1->location( 'child1_renamed' );
-ok( $child1->update() );
-ok( $child3->location_path() eq '/xims/child1_renamed/child2/child3_renamed' );
-
-# move with descendants and recheck location_path
-$child2->parent_id( $o->document_id() );
-ok( $child2->update() );
-ok( $child1->location_path() eq '/xims/child1_renamed' );
-ok( $child2->location_path() eq '/xims/child2' );
-ok( $child3->location_path() eq '/xims/child2/child3_renamed' );
 
 # now clean up
 $child3->delete();
 $child2->delete();
 $child1->delete();
+
 
 # make sure.
 
@@ -114,3 +92,16 @@ ok( $child2 == undef );
 $child1 = undef;
 $child1 = XIMS::Object->new( id => $child1_id );
 ok( $child1 == undef );
+
+exit;
+my @all_kids = $o->descendants();
+
+ok ( scalar( @all_kids) > 0 );
+
+#now test that the descendant_count convenience works too.
+
+my ($d_count, $levels) = $o->descendant_count;
+
+ok( $d_count == scalar( @all_kids) );
+
+ok( $levels == 1);

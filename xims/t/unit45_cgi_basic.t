@@ -8,7 +8,7 @@ use XIMS::User;
 use XIMS::Session;
 use XIMS::AppContext;
 use XIMS::CGI;
-#use Data::Dumper;
+use Data::Dumper;
 use Apache::FakeRequest;
 
 BEGIN { 

@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -14,11 +14,11 @@ use XIMS::AbstractClass;
 @ISA = qw( XIMS::AbstractClass );
 
 use Digest::MD5;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN {
     @Fields = @{XIMS::Names::property_interface_names('Session')};
-    push( @Fields, qw( error_msg warning_msg message verbose_msg date serverurl skin uilanguage searchresultcount ) );
+    push( @Fields, qw( error_msg warning_msg message verbose_msg date serverurl skin uilanguage ) );
 }
 
 use Class::MethodMaker
@@ -36,11 +36,15 @@ sub new {
     my $self = bless {}, $class;
     my $real_session;
 
+    # ubu: debugging, don't delete
+    my ($package, $filename, $line) = caller(1);
+    #warn "Session init called. arguments: " . Dumper( \%args ) . "\ncalled by: $package line $line\n"; 
+
     if ( scalar( keys( %args ) ) > 0 ) {
         if ( defined( $args{session_id} ) ) {
             XIMS::Debug( 5, "fetching session by id." );
             $real_session = $self->data_provider->getSession( %args );
-
+            
             # return undef if they explicitly asked for a
             # for an existing session and it wasn't found
             return undef unless $real_session;
@@ -55,26 +59,23 @@ sub new {
             $host =~ /^([0-9]{1,3}\.[0-9]{1,3})/;
             my $hostnet = $1;
 
-            my $salt = time();
-            substr($salt,0,1,'');
-            substr($salt,0,3,sprintf("%03d", int(rand(999))));
-            my $session_id = Digest::MD5::md5_hex( $args{user_id} . $salt . $hostnet );
+            my $time = time();
+            my $session_id = Digest::MD5::md5_hex( $args{user_id} . $time . $hostnet );
             $args{session_id} = $session_id;
-            $args{salt} = $salt;
+            $args{salt} = $time;
             $args{host} = $host;
             $args{id} = 1;
             my $id = $self->data_provider->createSession( %args );
             $real_session = $self->data_provider->getSession( id => $id );
         }
 
-        if ( $real_session ) {
+        if ( defined( $real_session )) {
             $self->data( %{$real_session} );
         }
         else {
             $self->data( %args );
         }
     }
-
     return $self;
 }
 
@@ -129,5 +130,6 @@ sub user {
     $self->{User} = $user;
     return $user;
 }
+
 
 1;

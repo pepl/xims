@@ -3,7 +3,7 @@ use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::DepartmentRoot;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN { 
     plan tests => 6;

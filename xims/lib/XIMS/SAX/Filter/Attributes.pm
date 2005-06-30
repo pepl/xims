@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -83,10 +83,9 @@ sub end_element {
         my %attribs = ( $self->{attributes} =~ /([^;\=]+)\=([^\;]+)/g );
         foreach ( keys %attribs ) {
             $self->SUPER::start_element( { Name => $_, LocalName => $_, Prefix => "", NamespaceURI => undef, Attributes => {} } );
-            $self->SUPER::characters( { Data => $attribs{$_} } );
+            $self->SUPER::characters( { Data => $attribs{$_}, } );
             $self->SUPER::end_element();
         }
-
         $self->{attributes} = undef;
     }
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -6,12 +6,11 @@
 # This is is a modified version of Gisle Aas' HTML::Entities module.
 # It was stripped down to what we need and pulled into the XIMS namespace,
 # to avoid messing up the original Module (and potentially rendering it useless
-# for purposes other than ours)
+# for puposes other than ours)
 #
 # The "decode_entity_old" function was renamed to "decode";
-# Some changes where made to avoid decoding entities
-# of "'",'"',"&","<" and ">". %decodemap was introduced
-# to allow decoding numeric entities known from %entity2char.
+# Some changes where made to avoid decoding entities 
+# of "'",'"',"&","<" and ">".
 #
 # Original Copyright:
 #
@@ -24,129 +23,19 @@
 package XIMS::Entities;
 
 use strict;
-use vars qw(@ISA %entity2char %decodemap $VERSION);
-#use Data::Dumper;
+use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION);
+use vars qw(%entity2char);
+use Data::Dumper;
 
-# require instead of use here because we do not want Encode::decode to be
-# exported and trigger a "method decode redefined" warning
-require Encode;
+require 5.004;
+require Exporter;
+@ISA = qw(Exporter);
+
+@EXPORT = qw(decode);
+@EXPORT_OK = qw(%entity2char);
 
 $VERSION = sprintf("%d.%02d", q$Revision$ =~ /(\d+)\.(\d+)/);
 sub Version { $VERSION; }
-
-BEGIN {
-    for ( 1..33,
-            35..37,
-            40..59,
-            61,
-            63..159,
-            161..255,
-            338,
-            339,
-            352,
-            353,
-            376,
-            402,
-            710,
-            732,
-            913..929,
-            931..937,
-            945..969,
-            977,
-            978,
-            982,
-            8194,
-            8195,
-            8201,
-            8204..8207,
-            8211,
-            8212,
-            8216,
-            8217,
-            8218,
-            8220,
-            8221,
-            8222,
-            8224,
-            8225,
-            8226,
-            8230,
-            8240,
-            8242,
-            8243,
-            8249,
-            8250,
-            8254,
-            8260,
-            8364,
-            8465,
-            8472,
-            8476,
-            8482,
-            8501,
-            8592,
-            8593,
-            8594,
-            8595,
-            8596,
-            8629,
-            8656,
-            8657,
-            8658,
-            8659,
-            8660,
-            8704,
-            8706,
-            8707,
-            8709,
-            8711,
-            8712,
-            8713,
-            8715,
-            8719,
-            8721,
-            8722,
-            8727,
-            8730,
-            8733,
-            8734,
-            8736,
-            8743,
-            8744,
-            8745,
-            8746,
-            8747,
-            8756,
-            8764,
-            8773,
-            8776,
-            8800,
-            8801,
-            8804,
-            8805,
-            8834,
-            8835,
-            8836,
-            8838,
-            8839,
-            8853,
-            8855,
-            8869,
-            8901,
-            8968,
-            8969,
-            8970,
-            8971,
-            9001,
-            9002,
-            9674,
-            9824,
-            9827,
-            9829,
-            9830 ) {
-        $decodemap{$_}++
-    }
-}
 
 %entity2char = (
  # PUBLIC ISO 8879-1986//ENTITIES Added Latin 1//EN//HTML
@@ -216,7 +105,7 @@ BEGIN {
  # Some extra Latin 1 chars that are listed in the HTML3.2 draft (21-May-96)
  copy   => '©',  # copyright sign
  reg    => '®',  # registered sign
- nbsp   => "&#160;", # non breaking space
+ nbsp   => "\240", # non breaking space
 
  # Additional ISO-8859/1 entities listed in rfc1866 (section 14)
  iexcl  => '¡',
@@ -408,44 +297,25 @@ BEGIN {
 );
 
 
-sub decode {
+sub decode
+{
     my $array;
     if (defined wantarray) {
-        $array = [@_]; # copy
+	$array = [@_]; # copy
     } else {
-        $array = \@_;  # modify in-place
+	$array = \@_;  # modify in-place
     }
     my $c;
-
-    # this assumes that if XIMS::DBENCODING() is set, it refers to a one byte
-    # encoding and that users who need multi-byte encodings will use utf-8
-    if ( XIMS::DBENCODING() ) {
-        for (@$array) {
-            s/(&\#(\d+);?)/($2 < 256 and exists $decodemap{$2}) ? chr($2) : $1/eg;
-            s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2);($c < 256 and exists $decodemap{$c}) ? chr($c) : $1/eg;
-            s/(&(\w+);?)/$entity2char{$2} || $1/eg;
-        }
-    }
-    else {
-        for (@$array) {
-            # if XIMS::DBENCODING is not set, the database and input/output are expected to be
-            # encoded in utf-8
-            #utf8::decode($_);
-
-            # convert the octets and turn utf-8 flag on.
-            # otherwise lines containing chars chr(127)+, will
-            # be incorrectly utf-8 encoded :-/
-            $_ = Encode::decode_utf8($_) unless Encode::is_utf8($_);
-
-            s/(&\#(\d+);?)/exists $decodemap{$2} ? chr($2) : $1/eg;
-            s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2);exists $decodemap{$c} ? chr($c) : $1/eg;
-            s/(&(\w+);?)/$entity2char{$2} || $1/eg;
-
-            # convert back and turn utf-8 flag off. otherwise XML::LibXML
-            # will get confused and will not parse the string :-/
-            $_ = Encode::encode_utf8($_);
-
-        }
+    # i know this is ugly, show me a better solution... :-(
+    for (@$array) {
+	s/(&\#(\d+);?)/( $2 <255 and $2 != 34  and $2 != 38 and $2 != 39
+                         and $2 != 60 and $2 != 62
+                       ) ? chr($2) : $1/eg;
+	s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2); ( $c <255 and $c != 34
+                                                    and $c != 38 and $c != 39
+                                                    and $c != 60 and $c != 62
+                                                  ) ? chr($c) : $1/eg;
+	s/(&(\w+);?)/$entity2char{$2} || $1/eg;
     }
     wantarray ? @$array : $array->[0];
 }

@@ -3,7 +3,7 @@ use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::SAX::Generator::Content;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN { 
     plan tests => 1;

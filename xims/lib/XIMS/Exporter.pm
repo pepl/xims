@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -61,7 +61,7 @@ use XML::LibXSLT;
 use IO::File;
 
 use XIMS::Object; # just to be failsafe
-#use Data::Dumper;
+
 ##
 #
 # SYNOPSIS
@@ -96,7 +96,6 @@ sub new {
     my %data;
 
     $data{Provider}   = $param{Provider}   if defined $param{Provider};
-    $data{Provider} ||= XIMS::DATAPROVIDER();
     $data{Basedir}    = $param{Basedir}    if defined $param{Basedir};
     $data{Stylesheet} = $param{Stylesheet} if defined $param{Stylesheet};
     $data{User}       = $param{User}       if defined $param{User};
@@ -130,27 +129,22 @@ sub publish {
         XIMS::Debug( 3, "No object to publish!" );
         return undef;
     }
-    my $object          = delete $param{Object};
+
 
     # allow developer-friendly method invocation...
     $self->{Provider}   = delete $param{Provider}   if defined $param{Provider};
     $self->{Basedir}    = delete $param{Basedir}    if defined $param{Basedir};
+    $self->{Stylesheet} = delete $param{Stylesheet} if defined $param{Stylesheet};
     $self->{User}       = delete $param{User}       if defined $param{User};
-
-    my $forceancestorpublish = delete $param{force_ancestor_publish} if defined $param{force_ancestor_publish};
-
-    # since it is likely that one Exporter instance should publish objects of different
-    # object type we have to let the helper select the appropiate stylesheet
-    # for each single object unless it is overridden with $param{Stylesheet};
-    $self->{Stylesheet} = defined $param{Stylesheet} ? delete $param{Stylesheet} : undef;
+    my $object          = delete $param{Object};
 
     # anything left in the %param hash is considered an option to be forwarded
     # from the outside to the handler...
     my %options = %param;
 
     # ...but do a sanity-check
-    unless ( defined $self->{Provider} and defined $self->{Basedir} ) {
-        XIMS::Debug( 2, "Insufficient parameters for publishing, Basedir needed!" );
+    unless ( defined $self->{Provider} and defined $self->{Basedir}) {
+        XIMS::Debug( 3, "Insufficient parameters for publishing, aborting!" );
         return undef;
     }
 
@@ -158,19 +152,53 @@ sub publish {
     $self->{Stylesheet} ||= $helper->stylesheet( $object );
 
     # build the object processor based on the object_type
-    my $handler = $helper->exporterclass(
-                                       Provider   => $self->{Provider},
+    my $class_lookup = $helper->classname( $object );
+    my $handler;
+
+    #
+    # XIMS defines a set of CORE exporters. the system will first try
+    # to instanciate the class as a CORE exporter.
+    #
+    eval {
+        $handler = $class_lookup->new( Provider   => $self->{Provider},
                                        Basedir    => $self->{Basedir},
                                        Stylesheet => $self->{Stylesheet},
                                        User       => $self->{User},
                                        Object     => $object,
                                        Options    => \%options,
-                                       );
-    return undef unless $handler;
+                                     );
+    };
+
+    if ( $@ ) {
+        XIMS::Debug( 6, "fschked. it's not a core exporter..." );
+        #
+        # if the class is not a core exporter, XIMS::Exporter will try
+        # to load the exporter module
+        #
+        eval "require $class_lookup;";
+        if ( $@ ) {
+            XIMS::Debug( 3, "Object must not be exported! : $@" );
+            #
+            # only if no package is available, the object must not be created!
+            #
+            return undef;
+        }
+
+        # don't know if i should eval here as well ...
+        $handler = $class_lookup->new( Provider   => $self->{Provider},
+                                       Basedir    => $self->{Basedir},
+                                       Stylesheet => $self->{Stylesheet},
+                                       User       => $self->{User},
+                                       Object     => $object,
+                                       Options    => \%options,
+                                     );
+    }
+
 
     # handle any ancestors, create folders where needed.
+
     #
-    # first the exporter has to approve which object we have to deal with.
+    # first the exporter has to appove which object we have to deal with.
     # this is very important for nested data structures:
     #
     # if an object has not a parentlist containing only fs_container,
@@ -189,30 +217,41 @@ sub publish {
         if (scalar @{$handler->{Ancestors}} > 0) {
             my $last_path = '';
             foreach my $ancestor ( @{$handler->{Ancestors}} ) {
-
+                #
+                # in order to update the entire exported ancestors, we
+                # need to recreate them.
+                #
                 $added_path .= '/' . $ancestor->location;
+                XIMS::Debug( 4, "Creating ancestor container." );
 
-                # since we don't want autoindexes to be rewritten automatically,
-                # we create only unpublished ancestors
-                if ( not($ancestor->published()) or defined $forceancestorpublish and $ancestor->published() ) {
-                    XIMS::Debug( 4, "Creating ancestor container." );
-                    my $anc_handler = $helper->exporterclass(
-                                                     Provider   => $self->{Provider},
-                                                     Basedir    => $handler->{Basedir} . $last_path,
-                                                     User       => $self->{User},
-                                                     Object     => $ancestor,
-                                                     Options    => {norecurse => 1}
-                                                    );
-                    return undef unless $anc_handler;
-
-                    my %options;
-                    $options{mkdironly} = 1 if defined $forceancestorpublish;
-
-                    $anc_handler->create( %options );
-                }   # end if ancestor not published
+                my $package = $helper->classname($ancestor);
+                my $anc_handler;
+                eval {
+                    $anc_handler = $package->new(
+                                                 Provider   => $self->{Provider},
+                                                 Basedir    => $handler->{Basedir} . $last_path,
+                                                 User       => $self->{User},
+                                                 Object     => $ancestor,
+                                                 Options    => {norecurse => 1}
+                                                );
+                };
+                if ( $@ ) {
+                    eval "require $package;";
+                    if ( $@ ) {
+                        XIMS::Debug(2, "ancestor class $package could not be instanciated: $@" );
+                        return undef;
+                    }
+                    $anc_handler = $package->new(
+                                                 Provider   => $self->{Provider},
+                                                 Basedir    => $handler->{Basedir} . $last_path,
+                                                 User       => $self->{User},
+                                                 Object     => $ancestor,
+                                                 Options    => {norecurse => 1}
+                                                );
+                }
+                $anc_handler->create();
                 $last_path = $added_path;
-            }   # end foreach ancestor
-
+            }
         }
 
         # publish the object itself
@@ -220,8 +259,10 @@ sub publish {
     }
 
     my $retval = $handler->create();
-    if ( $retval and not defined $param{no_dependencies_update} ) {
-        $self->update_dependencies( handler => $handler );
+    if ( $retval ) {
+        $self->update_dependencies( state => "create",
+                                    handler => $handler,
+                                    object => $object,);
     }
 
     return $retval;
@@ -261,22 +302,51 @@ sub unpublish {
     my %options = %param;
 
     # ...but do a sanity-check
-    unless ( defined $self->{Provider} and defined $self->{Basedir} ) {
-        XIMS::Debug( 2, "Insufficient parameters for publishing, Basedir needed!" );
+    unless ( defined $self->{Provider} and defined $self->{Basedir}) {
+        XIMS::Debug( 3, "Insufficient parameters for publishing, aborting!" );
         return undef;
     }
 
-    # build the object processor based on the object_type
     my $helper = XIMS::Exporter::Helper->new();
-    my $handler = $helper->exporterclass(
-                                       Provider   => $self->{Provider},
+
+
+    # build the object processor based on the object_type
+    my $handler;
+    my $class_lookup = $helper->classname( $object );
+    eval {
+        $handler = $class_lookup->new( Provider   => $self->{Provider},
                                        Basedir    => $self->{Basedir},
                                        Stylesheet => $self->{Stylesheet},
                                        User       => $self->{User},
                                        Object     => $object,
                                        Options    => \%options,
-                                       );
-    return undef unless $handler;
+                                     );
+    };
+
+    if ( $@ ) {
+        XIMS::Debug( 6, "fschked. it's not a core exporter..." );
+        #
+        # if the class is not a core exporter, XIMS::Exporter will try
+        # to load the exporter module
+        #
+        eval "require $class_lookup;";
+        if ( $@ ) {
+            XIMS::Debug( 3, "Object must not be exported! : $@" );
+            #
+            # only if no package is available, the object must not be created!
+            #
+            return undef;
+        }
+
+        # don't know if i should eval here as well ...
+        $handler = $class_lookup->new( Provider   => $self->{Provider},
+                                       Basedir    => $self->{Basedir},
+                                       Stylesheet => $self->{Stylesheet},
+                                       User       => $self->{User},
+                                       Object     => $object,
+                                       Options    => \%options,
+                                     );
+    }
 
     #
     # the unpublish function will remove only real objects from the
@@ -298,14 +368,32 @@ sub unpublish {
                 next; # remove this line if all ancestors will be recreated
 
                 XIMS::Debug( 4, "reCreating ancestor container." );
-                my $anc_handler = $helper->exporterclass(
-                                             Provider   => $self->{Provider},
-                                             Basedir    => $handler->{Basedir} . $last_path,
-                                             User       => $self->{User},
-                                             Object     => $ancestor,
-                                             Options    => {norecurse => 1}
-                                            );
-                return undef unless $anc_handler;
+
+                my $package = $helper->classname($ancestor);
+                my $anc_handler;
+                eval {
+                    $anc_handler = $package->new(
+                                                 Provider   => $self->{Provider},
+                                                 Basedir    => $handler->{Basedir} . $last_path,
+                                                 User       => $self->{User},
+                                                 Object     => $ancestor,
+                                                 Options    => {norecurse => 1}
+                                                );
+                };
+                if ( $@ ) {
+                    eval "require $package;";
+                    if ( $@ ) {
+                        XIMS::Debug(2,"FATAL EXPORTER ERROR: Ancestor class cannot be instanciated" );
+                        return undef;
+                    }
+                    $anc_handler = $package->new(
+                                                 Provider   => $self->{Provider},
+                                                 Basedir    => $handler->{Basedir} . $last_path,
+                                                 User       => $self->{User},
+                                                 Object     => $ancestor,
+                                                 Options    => {norecurse => 1}
+                                                );
+                }
 
                 $anc_handler->create(); # should stop here on error ... !?
                 $last_path = $added_path;
@@ -315,8 +403,10 @@ sub unpublish {
     }
 
     my $retval = $handler->remove();
-    if ( $retval and not defined $param{no_dependencies_update} ) {
-        $self->update_dependencies( handler => $handler );
+    if ( $retval ) {
+        $self->update_dependencies( state => "remove",
+                                    object => $object,
+                                    handler => $handler );
     }
     return $retval;
 }
@@ -327,30 +417,55 @@ sub unpublish {
 #   $exporter->update_dependencies( %params );
 #
 # PARAMETER
-#   $params{handler}    : The exporter handler instance.
+#   object: the currently published object
+#   state: either "create" or "remove".
 #
 # DESCRIPTION
 #
-# This method (un)publishes related and/or depending objects. For this
-# it calls
-#   * update_related()
-#         - (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
-#           are not published yet, they will be published.
-#         - Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
-#           of the object or its ancestors
-#   * update_parent_autoindex()
-#         updates autoindex of parent unless its 'autoindex' attribute is set to '0'
+# This function automaticly updates any portlet where the object may
+# occour. also it should check if there are any published symlink
+# objects, that have to be updated. also the objects department root
+# has to be updated. later we have to check any department, where
+# the object may have included)
 #
+# there are three types of dependencies
+# a) references such as directly linked images
+# b) parent objects
+# c) referrer
+#
+# while a) + b) are somewhat trivial c) requires some extra
+# information:
+#
+# a referrer is an object that (directly or inderectly) points to
+# the object. Such objects are symbolic links, URL links or
+# portlets. while the first point directly to the object by their
+# SYMNAME_TO_DOC_ID, the latter may points to one of the objects parents.
+#
+# to satisfy these three types the Exporter::Handler has to
+# implement three functions:
+# * update_references
+# * update_parents
+# * update_referrer
+#
+# the split into these three functions is required, because in
+# case of dependency updates we may not want to update all
+# information of an object.
 #
 sub update_dependencies {
-    XIMS::Debug( 5, "called" );
     my $self = shift;
-    my %params = @_;
+    my %param = @_;
 
-    my $handler = $params{handler};
+    my $handler = $param{handler};
 
-    $handler->update_related();
-    $handler->update_parent_autoindex();
+    unless ( defined $handler ) {
+        XIMS::Debug( 3, "no handler defined for dep-update???" );
+        return;
+    }
+
+    # temporarily deactivated until reimplementation
+    #$handler->update_references( state => $param{state} );
+    #$handler->update_referrer(   state => $param{state} ); # updates the referrer per object
+    #$handler->update_parents(    state => $param{state} );
 }
 
 1;
@@ -367,11 +482,9 @@ sub new {
 
 sub stylesheet {
     my ($self, $object) = @_;
-    my $stylename = lc( $object->object_type->fullname() );
-    $stylename =~ s/::/_/;
     my $stylesheet = XIMS::XIMSROOT()
                      . '/stylesheets/exporter/export_'
-                     . $stylename
+                     . lc( $object->object_type->name() )
                      . '.xsl';
 
     return $stylesheet;
@@ -379,34 +492,9 @@ sub stylesheet {
 
 sub classname {
     my ($self, $object) = @_;
-    my $classname = 'XIMS::Exporter::' . $object->object_type->fullname();
+    my $class_name = 'XIMS::Exporter::' . $object->object_type->name();
 
-    return $classname;
-}
-
-sub exporterclass {
-    my $self = shift;
-    my %args = @_;
-
-    my $object = $args{Object};
-    return undef unless $object;
-
-    my $exporter_class = $self->classname( $object );
-
-    my $exporter;
-    eval {
-        $exporter = $exporter_class->new( %args );
-    };
-    if ( $@ ) {
-        eval "require $exporter_class;";
-        if ( $@ ) {
-            XIMS::Debug( 3, "could not not load exporter class: $@" );
-            return undef;
-        }
-        $exporter = $exporter_class->new( %args );
-    }
-
-    return $exporter;
+    return $class_name;
 }
 
 1;
@@ -416,7 +504,6 @@ package XIMS::Exporter::Handler;
 # this package is the base class for folder and object!!!
 #############################################################################################
 use XIMS::AppContext;
-
 ##
 #
 # SYNOPSIS
@@ -439,6 +526,7 @@ use XIMS::AppContext;
 #
 #    ubu-note: every handler is now atomic in the sense that each handler
 #              gets its own object.
+
 sub new {
     XIMS::Debug( 5, "called" );
     my $class = shift;
@@ -454,7 +542,7 @@ sub new {
     $self->{Options}     = $param{Options} || {};
     $self->{AppContext}  = XIMS::AppContext->new();
     my $bdir             = $param{Basedir}        if defined $param{Basedir};
-    $self->{Ancestors}   = $param{Ancestors}      if defined $param{Ancestors};
+
 
     if ( defined $bdir and -d $bdir ) {
         XIMS::Debug( 4, "export directory '$bdir' exists" );
@@ -468,7 +556,7 @@ sub new {
             return undef;
         }
     }
-    elsif ( defined $bdir and not -d $bdir ) {
+    else {
         XIMS::Debug( 2, "export directory does not exist -> " . $bdir );
         return undef;
     }
@@ -478,25 +566,15 @@ sub new {
     $self->{Stylesheet} ||= $helper->stylesheet( $self->{Object} );
 
     # ancestors
-    if ( not defined $self->{Ancestors} ) {
-        # >> do we really need to load all the full ancestor object data? <<
-        my $cachekey = '_cachedancs' .  $self->{Object}->parent_id();
-        my $ancestors;
-        if ( defined $self->{Provider}->{$cachekey} ) {
-            $ancestors = $self->{Provider}->{$cachekey};
-        }
-        else {
-            $ancestors = $self->{Object}->ancestors();
-            # remove /root
-            shift @{$ancestors};
-            $self->{Provider}->{$cachekey} = $ancestors;
-        }
-        $self->{Ancestors} = $ancestors;
-    }
+    my $ancestors = $self->{Object}->ancestors();
+    # remove /root
+    shift @{$ancestors};
+    $self->{Ancestors} = $ancestors;
 
     # publish only non-fs-container children here
-    my @non_fscont_types = map { $_->id() } $self->{Provider}->object_types( is_fs_container => 0 );
-    @{$self->{Children}} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
+    my @non_fscont_types = map { $_->id() } grep { !$_->is_fs_container() } $self->{Provider}->object_types();
+
+    $self->{Children} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
 
     return $self;
 }
@@ -529,12 +607,7 @@ sub toggle_publish_state {
         return $self->{Object}->unpublish( User => $self->{User} );
     }
     else {
-        if ( $self->{Options} and ref $self->{Options} and exists $self->{Options}->{no_pubber} ) {
-            return $self->{Object}->publish( User => $self->{User}, no_pubber => 1 );
-        }
-        else {
-            return $self->{Object}->publish( User => $self->{User} );
-        }
+        return $self->{Object}->publish( User => $self->{User} );
     }
 }
 
@@ -557,10 +630,11 @@ sub update { return undef; }
 #
 sub remove {
     XIMS::Debug( 5, "called" );
+
     my ( $self, %param ) = @_;
     my $object = $param{Object};
 
-    my $dead_file = $self->{Exportfile} || $self->{Basedir} . '/' . $self->{Object}->location;
+    my $dead_file = $self->{Basedir} . '/' . $self->{Object}->location;
 
     unless ( -w $dead_file ) {
         XIMS::Debug( 2, "Cannot remove filesystem object '$dead_file'. File does not exist." );
@@ -615,11 +689,13 @@ sub test_ancestors {
     my $self = shift;
     my $retval = undef;
 
-    # is this really needed?
     if ( defined $self->{Ancestors} and scalar @{ $self->{Ancestors} } ) {
         # the following line is safe since we have at least two OTs by default
-        my %types = map { $_->id() => 1 } $self->{Provider}->object_types( is_fs_container => 1, properties => [qw(id)] );
-        my @ancestors  = grep { exists $types{$_->object_type_id} } @{$self->{Ancestors}};
+        my %types      = map { $_->id() => $_->is_fs_container()} $self->{Provider}->object_types();
+
+        # what is this?
+        my @ancestors  = grep { $types{$_->object_type_id} == 1 } @{$self->{Ancestors}};
+
         if ( scalar( @ancestors ) == scalar(  @{ $self->{Ancestors} } ) ) {
             #
             # the function returns TRUE only if all ancestors are FS container
@@ -633,119 +709,285 @@ sub test_ancestors {
 
 ##
 # SYNOPSIS
-#    my $boolean = $self->update_related();
+#    $self->update_references( %params );
 #
 # PARAMETER
-#    none
+#    state: the state of the current operation
 #
 # RETURNS
-#    $boolean : True or False for updating related objects
+#    Nothing
 #
 # DESCRIPTION
-#    - (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
-#      are not published yet, they will be published.
-#    - Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
-#      of the object or its ancestors
 #
-sub update_related {
+# This exports all refered objects, that are not published yet.  the
+# user must have the privileges to export the data. also this function
+# has to be forced explicitly by a property switch.
+#
+# The method will fail unless the attribute 'expandrefs' is set to
+# '1'.
+#
+sub update_references {
     XIMS::Debug( 5, "called" );
     my ( $self, %params ) = @_;
 
+    my $dp     = $self->{Provider};
     my $object = $self->{Object};
+    my $attr   = $object->attribute( 'expandrefs' );
+
+    unless ( defined $attr and $attr == 1 ) {
+        XIMS::Debug( 6, "do not expand references" );
+        return;
+    }
+
+    my $language = $object->language_id();
+    my $xslsheet = $object->style_id();
+    my $csssheet = $object->css_id();
+    my $image    = $object->image_id();
+
     my $helper = XIMS::Exporter::Helper->new();
 
-    my $stylesheet = $object->stylesheet( explicit => 1 );
-    my $css        = $object->css( explicit => 1 );
-    my $image      = $object->image( explicit => 1 );
+    my $xobj = XIMS::Object->new( document_id => $xslsheet, language_id  => $language );
+    my $cobj = XIMS::Object->new( document_id => $csssheet, language_id  => $language );
+    my $iobj = XIMS::Object->new( document_id => $image,    language_id  => $language );
 
-    my @referenced_by = $object->referenced_by_granted( User => $self->{User}, include_ancestors => 1, published => 1 );
-    foreach my $obj ( @referenced_by, $image, $css, $stylesheet ) {
+    foreach my $obj ( $xobj, $cobj, $iobj ) {
         next unless defined $obj;
-        my $base = XIMS::PUBROOT() . $obj->location_path();
-        my $basedir = $base;
-        $basedir =~ s#/[^/]+$##;
-        my $obj_handler = $helper->exporterclass(
-                                            Provider       => $self->{Provider},
-                                            exportfilename => $base,
-                                            User           => $self->{User},
-                                            Object         => $obj,
-                                            Basedir        => $basedir,
-                                          );
-        return undef unless $obj_handler;
+        if ( $params{state} eq "create" ) {
+            # if the object is already published, there is nothing to
+            # do here.
+            unless ( $obj->published() ) {
+                my $base = XIMS::PUBROOT() . $obj->location_path();
+                my $dep_class = $helper->classname( $obj );
+                my $dep_handler =  $dep_class->new( provider       => $self->{Provider},
+                                                    exportfilename => $base,
+                                                    user           => $self->{User},
+                                                    object         => $obj,
+                                                  );
+                # check if the objects parents are published!
+                if ( $dep_handler->test_ancestors() ) {
+                    #
+                    # after it is ashured that the object resides in the system as
+                    # a separate object, the exporter can export the object.
+                    #
+                    if (scalar @{$dep_handler->{Ancestors}} > 0) {
+                        foreach my $ancestor ( @{$dep_handler->{Ancestors}} ) {
+                            #
+                            # in order to update the entire exported ancestors, we
+                            # need to recreate them.
+                            #
+                            my $anc_base = XIMS::PUBROOT() . $ancestor->location_path();
 
-        # check if the object's ancestors are published
-        if ( $obj_handler->test_ancestors() ) {
-            foreach my $ancestor ( reverse @{$obj_handler->{Ancestors}} ) {
-                last if $ancestor->published();
-                XIMS::Debug( 4, "Creating ancestor container" );
-                my $anc_filename = XIMS::PUBROOT() . $ancestor->location_path();
-                my $anc_dir = $anc_filename;
-                $anc_dir =~ s#/[^/]+$##;
+                            XIMS::Debug( 4, "Creating ancestor container." );
+                            my $package = $helper->classname($ancestor);
+                            my $anc_handler;
+                            eval {
+                                $anc_handler = $package->new(
+                                                             provider       => $dp,
+                                                             exportfilename => $anc_base,
+                                                             user           => $self->{User},
+                                                             object         => $ancestor,
+                                                             options        => {norecurse => 1}
+                                                            );
+                            };
+                            if ( $@ ) {
+                                eval "require $package;";
+                                if ( $@ ) {
+                                    XIMS::Debug(2,"FATAL EXPORTER ERROR: Ancestor class cannot be instanciated" );
+                                    return undef;
+                                }
+                                $anc_handler = $package->new(
+                                                             provider       => $dp,
+                                                             exportfilename => $anc_base,
+                                                             user           => $self->{User},
+                                                             object         => $ancestor,
+                                                             options        => {norecurse => 1}
+                                                            );
+                            }
+                            XIMS::Debug( 5, "export $anc_base" );
+                            $anc_handler->create();
+                        }
+                    }
+                }
+                XIMS::Debug( 5, "dependent ancestors exported" );
 
-                # pop and pass ancestors so that they do not get looked up again
-                pop @{$obj_handler->{Ancestors}};
-                my $anc_handler = $helper->exporterclass(
-                                                 Provider       => $self->{Provider},
-                                                 exportfilename => $anc_filename,
-                                                 User           => $self->{User},
-                                                 Object         => $ancestor,
-                                                 Basedir        => $anc_dir,
-                                                 Options        => {norecurse => 1},
-                                                 Ancestors      => $obj_handler->{Ancestors}
-                                                );
-                unless ( $anc_handler and $anc_handler->create() ) {
-                    XIMS::Debug( 2, "Ancestor of '" . $object->title() .  "' could not be published!" );
-                    last;
+                # init the objects full exporter
+
+                if ( $dep_handler->create( ) ) {
+                    XIMS::Debug( 6, "reference successfully pubished" );
+                }
+                else {
+                    XIMS::Debug( 3, "reference was not published" );
                 }
             }
         }
-
-        if ( $obj_handler->create( ) ) {
-            XIMS::Debug( 4, "Related object published" );
-            XIMS::Debug( 6, "Related object was " . $obj->location_path() );
-        }
-        else {
-            XIMS::Debug( 3, "Related object '" . $obj->location_path() . "' could not be published" );
-        }
     }
-    return 1;
+
+    # note for pepl.
+    #
+    # additionally it should be possible to write out all internal
+    # object refered by the current object. since there may be objects
+    # that are not stored in XIMS. I assume it would be useful to
+    # keep these informations in a database and do some more
+    # sophisticated logic, so we are able to strip internal links from
+    # documents, too.
+    #
 }
 
 ##
 # SYNOPSIS
-#    my $boolean = $self->update_parent_autoindex();
+#    $self->update_referrer( %params );
 #
 # PARAMETER
-#    none
+#    state: the state of the current operation
 #
 # RETURNS
-#    $boolean : True or False for updating the parent's autoindex
+#    Nothing
 #
 # DESCRIPTION
-#    Updates the autoindex of the parent object unless its 'autoindex' attribute is set to '0'
 #
-sub update_parent_autoindex {
+# This updates the direct referrer of a particular object.  this
+# commonly means that these objects are re-exported, while the
+# referrer's export handler's update_dependencies() is not called!
+#
+# This can be used to update portlets and similar items. Note that
+# symlinks has to be handled differently.
+#
+sub update_referrer {
     XIMS::Debug( 5, "called" );
-    my ( $self, %params ) = @_;
+    my ( $self ) = @_;
 
+
+    my $dp     = $self->{Provider};
     my $object = $self->{Object};
-    my $parent = $object->parent();
+    my $language = $object->language_id();
 
-    my $autoindex = $parent->attribute_by_key( 'autoindex' );
-    if ( not defined $autoindex or $autoindex == 1 ) {
-        my @ancestors = @{$self->{Ancestors}};
-        pop @ancestors; # remove the parent folder of the current object
+    my $helper = XIMS::Exporter::Helper->new();
 
-        XIMS::Debug( 4, "autoindex attribute of parent is set, updating the autoindex" );
-        my $idx_generator =  XIMS::Exporter::AutoIndexer->new(
-                                     Provider   => $self->{Provider},
-                                     User       => $self->{User},
-                                     Object     => $parent,
-                                     Options    => {norecurse => 1},
-                                     Ancestors  => \@ancestors
-                                                             );
-        $idx_generator->create();
-        return 1;
+    my $referrer = undef; # yet to be reimplemented
+    #my $referrer = $dp->findReferrer( object => $object, published => 1  );
+
+
+    if ( defined $referrer and  scalar @{$referrer} ) {
+        XIMS::Debug( 6, "update exported referrer" );
+        foreach my $obj ( @{$referrer} ) {
+            unless ( defined $obj ) {
+                next;
+            }
+            if ( $obj->isPublished() ) {
+                # init the objects full exporter
+                my $base = XIMS::PUBROOT() . $obj->location_path();
+                my $dep_class = $helper->classname( $obj );
+                XIMS::Debug( 6, "use $dep_class as exporter class!" );
+                my $dep_handler =  $dep_class->new( provider       => $self->{Provider},
+                                                    exportfilename => $base,
+                                                    user           => $self->{User},
+                                                    object         => $obj,
+                                                  );
+
+                # rewrite the referrer, but not its ancestors or
+                # referrers
+                #
+                # phish108 NOTE: this may is done by a separate
+                # update() function, so each obejct that is able to
+                # act as a referrer may has it's own special logic
+                # (e.g. symlinks will have to run the full exporter)
+                $dep_handler->create();
+            }
+        }
+    }
+    else {
+        XIMS::Debug( 3, "no referrer found" );
+    }
+}
+
+##
+# SYNOPSIS
+#    $self->update_parents( %params );
+#
+# PARAMETER
+#    state: the state of the current operation
+#
+# RETURNS
+#    Nothing
+#
+# DESCRIPTION
+#
+# To ensure all parents and their related portlets are updated, this
+# has to be called! the function will test if an object requires an
+# (partial) reexport and will call update_referrer() for the
+# particular object.
+#
+sub update_parents {
+    XIMS::Debug( 5, "called" );
+    my ( $self ) = @_;
+
+    my $dp     = $self->{Provider};
+    my $object = $self->{Object};
+    my $language = $object->language_id();
+
+    my $helper = XIMS::Exporter::Helper->new();
+
+    my $parents = undef; # yet to be reimplemented
+                         # current $object->ancestors does not accept sth like published => 1 as argument
+
+#    my $cols = [qw(majorid minorid location object_type_id parent_id
+#                   department_id image_id title alevel attributes)];
+
+#    my $parents = $dp->getAncestor( object => $object,
+#                                    published => 1,
+#                                    -columns => $cols, );
+
+    if ( defined $parents and scalar @{$parents} ) {
+        XIMS::Debug( 6, "update parents (" . scalar( @{$parents} ) ." )" );
+        my $last_path = '';
+        foreach my $parent ( @{$parents} ) {
+            next unless defined $parent;
+            if ( $object->id == $parent->id ) {
+                XIMS::Debug( 3, "will not handle object itself!" );
+                next;
+            }
+            unless ( defined $parent->language_id() and $parent->language_id() > 0 ) {
+                XIMS::Debug( 6, "use original language id!" );
+                $parent->language_id( $object->language_id() );
+            }
+
+            XIMS::Debug( 6, "run the exporter for " . $parent->location );
+            # init the objects full exporter
+            my $dep_class   = $helper->classname( $parent );
+            my $dep_handler =  $dep_class->new( Provider   => $self->{Provider},
+                                                User       => $self->{User},
+                                                Basedir    => $self->{Basedir} . $last_path,
+                                                Object     => $parent,
+                                              );
+
+            $last_path .= '/'. $parent->location;
+
+            # rewrite the parent object. this may causes a parent
+            # object to be written twice during an export. it
+            # might happen if the parent wasn't published before.
+            if ( $parent->object_type->is_fs_container() ) {
+                if ( $parent->attribute( 'autoindex' ) == 1 ) {
+                    XIMS::Debug( 4, "run auto indexer" );
+                    my $idx_generator =  XIMS::Exporter::AutoIndexer->new(
+                                                 Provider   => $self->{Provider},
+                                                 User       => $self->{User},
+                                                 Object     => $parent,
+                                                 Options    => {norecurse => 1},
+                                                                         );
+                    $idx_generator->create();
+                }
+            }
+            else {
+                XIMS::Debug( 5, $parent->location ." is not a autoindexer, run default exporter!" );
+                $dep_handler->create();
+            }
+
+            # restore the parents referrer
+            $dep_handler->update_referrer();
+        }
+    }
+    else {
+        XIMS::Debug( 3, "no parents found" );
     }
 }
 
@@ -792,7 +1034,7 @@ sub remove {
 1;
 
 ###############################################################################################
-package XIMS::Exporter::XMLChunk;
+package XIMS::Exporter::XML;
 #
 # abstract class that covers all objects that need to
 # write/remove XML files to disk.
@@ -832,6 +1074,7 @@ sub create {
 
     # THEN we have to do the transformation of the DOM, as the output
     # should contain using XSL.
+
     my $transd_dom = $self->transform_dom( $raw_dom );
 
     unless ( defined $transd_dom ) {
@@ -897,7 +1140,7 @@ sub generate_dom {
 
     if ( defined $object ) {
         my $handler = XML::LibXML::SAX::Builder->new();
-        $handler->{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
+        $handler->{Encoding} = 'ISO-8859-1' ;
 
         my $controller   = undef;
         my @sax_filters = $self->set_sax_filters();
@@ -915,12 +1158,11 @@ sub generate_dom {
 
 
         XIMS::Debug( 2, "no SAX controller!" ) unless $controller; # should never happen.
-        my $generator = $self->set_sax_generator();
+        my $generator = XIMS::SAX::Generator::Exporter->new();
         $controller->set_generator( $generator );
 
         my $ctxt = $self->{AppContext};
         $ctxt->object( $object );
-        $ctxt->user( $self->{User} );
 
         # Using $self->{Options}->{appendexportfilters}, child
         # classes can influence the ordering of the SAX-Filter list
@@ -935,7 +1177,6 @@ sub generate_dom {
         # filter chain to have its expanded content to be parsed as a
         # chunk, the other ones need to be after it to be able to work
         # with the SAX events generated by it.
-
         $dom = $controller->parse( $ctxt, $self->{Options}->{appendexportfilters} );
 
         XIMS::Debug( 2, "something went wrong" ) unless $dom;
@@ -945,28 +1186,6 @@ sub generate_dom {
     }
 
     return $dom;
-}
-
-
-##
-#
-# SYNOPSIS
-#    $self->set_sax_generator();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $retval : instance of XIMS::SAX::Generator::Exporter
-#
-# DESCRIPTION
-#    Allows Exporter subclasses to use other SAX Generators than the default XIMS::SAX::Generator::Exporter
-#
-sub set_sax_generator {
-    XIMS::Debug( 5, "called" );
-    my $self  = shift;
-
-    return XIMS::SAX::Generator::Exporter->new();
 }
 
 
@@ -1114,15 +1333,81 @@ sub create {
 1;
 
 ###############################################################################################
+package XIMS::Exporter::PlainText;
+#
+# abstract class that covers all objects that need to
+# write/remove plain files to disk.
+#
+# actually this is a special form of Binary data.
+#
+# phish note: i am not shure if this class is really required as a
+# fully implemented class, since it is non XML processed data which is
+# infact the same constraint as for binary data. The only difference
+# for plain text data is, that has only the body column as Data source
+#
+###############################################################################################
+
+use strict;
+use vars qw( @ISA );
+@ISA = qw( XIMS::Exporter::Handler );
+# @ISA = qw( XIMS::Exporter::Binary );
+
+##
+#
+# SYNOPSIS
+#    $self->create( %param );
+#
+# PARAMETER
+#    $param{-location} : (mandatory)
+#    $param{Object}   : (mandatory)
+#
+# RETURNS
+#    $retval : undef on error
+#
+# DESCRIPTION
+#    none yet
+#
+sub create {
+    XIMS::Debug( 5, "called" );
+    my ( $self, %param ) = @_;
+
+    my $document_path = $self->{Basedir} . '/' . $self->{Object}->location;
+
+    XIMS::Debug( 4, "trying to write the object to $document_path" );
+
+    # create the item on disk
+
+    my $document_fh = IO::File->new( $document_path, 'w' );
+
+    if ( defined $document_fh ) {
+        print $document_fh $self->{Object}->body;
+        $document_fh->close;
+        XIMS::Debug( 4, "document written" );
+    }
+    else {
+        XIMS::Debug( 2, "Error writing file '$document_path': $!" );
+        return undef;
+    }
+
+
+    # mark the document as published
+    XIMS::Debug( 4, "toggling publish state of the object" );
+    $self->toggle_publish_state( '1' );
+
+    return 1;
+}
+
+1;
+
+###############################################################################################
 package XIMS::Exporter::Folder;
 #
 # lowlevel class for folder objs.
 ###############################################################################################
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 use File::Path;
 use strict;
-
 ##
 #
 # SYNOPSIS
@@ -1152,7 +1437,7 @@ sub create {
     }
     else {
         # create new folder.
-        XIMS::Debug( 4, "Creating directory '$new_path'" );
+        XIMS::Debug( 4, "creating directory '$new_path'" );
 
         eval {
             mkdir( $new_path, 0755 ) ||  die $!;
@@ -1165,63 +1450,59 @@ sub create {
         }
     }
 
-    if ( not exists $param{mkdironly} ) {
-        #
-        # generate metadata
-        #
+    #
+    # generate metadata
+    #
 
-        # first, the object DOM
-        #
-        my $raw_dom = $self->generate_dom();
+    # first, the object DOM
+    #
+    my $raw_dom = $self->generate_dom();
 
-        unless ( $raw_dom ) {
-            XIMS::Debug( 2, "metadata cannot be generated" );
-            return undef;
-        }
+    unless ( $raw_dom ) {
+        XIMS::Debug( 2, "metadata cannot be generated" );
+        return undef;
+    }
 
-        # then, transform it...
+    # then, transform it...
 
-        my $transd_dom = $self->transform_dom( $raw_dom );
+    my $transd_dom = $self->transform_dom( $raw_dom );
 
-        unless ( $transd_dom ) {
-            XIMS::Debug( 2, "transformation failed" );
-            return undef;
-        }
+    unless ( $transd_dom ) {
+        XIMS::Debug( 2, "transformation failed" );
+        return undef;
+    }
 
-        # build the path
+    # build the path
 
-        my $meta_path = $new_path . '/' . $self->{Object}->location() . '.container.xml';
-        XIMS::Debug( 4, "metadata file is $meta_path" );
+    my $meta_path = $new_path . '/' . $self->{Object}->location() . '.container.xml';
+    XIMS::Debug( 4, "metadata file is $meta_path" );
 
-        # write the file...
-        my $meta_fh = IO::File->new( $meta_path, 'w' );
+    # write the file...
+    my $meta_fh = IO::File->new( $meta_path, 'w' );
 
-        if ( defined $meta_fh ) {
-            print $meta_fh $transd_dom->toString();
-            $meta_fh->close;
-            XIMS::Debug( 4, "metadata-dom written" );
-        }
-        else {
-            XIMS::Debug( 2, "Error writing file '$meta_path': $!" );
-            return undef;
-        }
+    if ( defined $meta_fh ) {
+        print $meta_fh $transd_dom->toString();
+        $meta_fh->close;
+        XIMS::Debug( 4, "metadata-dom written" );
+    }
+    else {
+        XIMS::Debug( 2, "Error writing file '$meta_path': $!" );
+        return undef;
+    }
 
-        # auto-indexing
-        # MUST come after any children were published above since
-        # publishing states may have changed in this session.
+    # auto-indexing
+    # MUST come after any children were published above since
+    # publishing states may have changed in this session.
 
-        my $autoindex = $self->{Object}->attribute_by_key( 'autoindex' );
-        # if attribute is not explictly set to 0, we do autoindexing
-        if ( not defined $autoindex or $autoindex == 1 ) {
-            my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
-                                                                   Basedir    => $self->{Basedir},
-                                                                   User       => $self->{User},
-                                                                   Object     => $self->{Object},
-                                                                   Options    => {norecurse => 1},
-                                                                   Ancestors  => $self->{Ancestors},
-                                                               );
-            $idx_generator->create();
-        }
+    # temorarily disabled
+    if ( $self->{Object}->attribute( 'autoindex' ) == 1 ) {
+        my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
+                                                               Basedir    => $self->{Basedir},
+                                                               User       => $self->{User},
+                                                               Object     => $self->{Object},
+                                                               Options    => {norecurse => 1}
+                                                           );
+        $idx_generator->create();
     }
 
     # mark the folder as published
@@ -1247,21 +1528,22 @@ sub create {
 #
 sub remove {
     XIMS::Debug( 5, "called" );
+
     my ( $self, $param ) = @_;
 
     my $kill_path = $self->{Basedir} . "/" . $self->{Object}->location();
 
-    if ( defined $self->{Children} and scalar @{$self->{Children}} ) {
+    # first, kill the object children....
+    foreach my $kind ( $self->{Children} ) {
         my $helper = XIMS::Exporter::Helper->new();
-        foreach my $kind ( @{$self->{Children}} ) {
-            my $reaper = $helper->exporterclass(
-                         Provider   => $self->{Provider},
-                         Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
-                         User       => $self->{User},
-                         Object     => $kind
-                        );
-            return undef unless ($reaper and $reaper->remove());
-        }
+        my $kid_class = $helper->classname( $kind );
+
+        my $reaper = $kid_class->new( Provider   => $self->{Provider},
+                                      Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
+                                      User       => $self->{User},
+                                      Object     => $kind
+                                    );
+        $reaper->remove(); # if $reaper->{PUBLISHED} == 1;
     }
 
     # kill the meta file
@@ -1290,7 +1572,6 @@ sub remove {
     # mark the folder as not published.
     XIMS::Debug( 4, "marking folder as unpublished again :)" );
     $self->toggle_publish_state( '0' );
-
     return 1;
 }
 
@@ -1307,43 +1588,11 @@ package XIMS::Exporter::Document;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
-
-##
-#
-# SYNOPSIS
-#    $self->remove();
-#
-# PARAMETER
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
-sub remove {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $param ) = @_;
-
-    # unpublish all document links
-    if ( defined $self->{Children} and scalar @{$self->{Children}} ) {
-        my $helper = XIMS::Exporter::Helper->new();
-        foreach my $kind ( @{$self->{Children}} ) {
-            next unless $kind->object_type->name eq 'URLLink';
-            my $reaper = $helper->exporterclass(
-                                          Provider   => $self->{Provider},
-                                          User       => $self->{User},
-                                          Object     => $kind
-                                        );
-            return undef unless ($reaper and $reaper->remove());
-        }
-    }
-
-    return $self->SUPER::remove();
-}
+use XIMS::SAX::Filter::ContentLinkResolver;
+use XIMS::SAX::Filter::SymTitle;
 
 ##
 #
@@ -1351,25 +1600,34 @@ sub remove {
 #    $self->set_sax_filters(@parameter)
 #
 # PARAMETER
-#    @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
+#    @parameter: same parameterlist as XIMS::Exporter::XML uses
 #
 # DESCRIPTION
 # internally called.
 #
+# the document exporter will export not only the document itself, but
+# also symbolic links and URLLinks as so called "Document
+# Links". things are easy with URLLinks, but symbolic links do not
+# contain any uri information about their real location
+# themself. therefore the exporter must resolve the URI of the
+# symboliclinks, so the path is available for the stylesheet.
 #
 sub set_sax_filters {
-    XIMS::Debug( 5, "called" );
     my $self = shift;
     my @retval = ();
+    XIMS::Debug( 5, "called" );
 
+    push @retval, XIMS::SAX::Filter::SymTitle->new();
     push @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
                                                                  ResolveContent => [ qw( DEPARTMENT_ID
                                                                                          SYMNAME_TO_DOC_ID ) ] );
+    push @retval, XIMS::SAX::Filter::ContentLinkResolver->new();
 
     # the following is needed to give the ContentLinkResolver SAXy events from the body
     # (i.e. have XIMS::SAX::Filter::ContentLinkResolver AFTER XIMS::SAX::Filter::CharacterChunk in the filter list)
     $self->{Options}->{appendexportfilters} = 1;
 
+    XIMS::Debug( 5, "done" );
     return @retval;
 }
 
@@ -1379,7 +1637,7 @@ sub set_sax_filters {
 #    $self->generate_dom(@parameter)
 #
 # PARAMETER
-#    @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
+#    @parameter: same parameterlist as XIMS::Exporter::XML uses
 #
 # DESCRIPTION
 # internally called.
@@ -1403,7 +1661,7 @@ package XIMS::Exporter::AutoIndexer;
 # Internal class for creating the auto index.
 ###############################################################################################
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
 
@@ -1414,7 +1672,7 @@ sub generate_dom {
     my $dom = $self->SUPER::generate_dom( @_ );
 
     return unless $dom;
-
+    
     # after a second thought, i guess it would be better to convert
     # the DOM with an exporter stylesheet instead of letting a
     # stylesheet called from AxKit do the work. why? because of having
@@ -1424,7 +1682,7 @@ sub generate_dom {
     # exporter_document.xsl
 
     $self->{Stylesheet} = XIMS::XIMSROOT() . '/stylesheets/exporter/' . XIMS::AUTOINDEXEXPORTSTYLESHEET();
-    $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/' . XIMS::AUTOINDEXFILENAME();
+    $self->{Exportfile} = XIMS::PUBROOT() . '/' . $self->{Object}->location_path() . '/' . XIMS::AUTOINDEXFILENAME();
 
     return $dom;
 }
@@ -1451,22 +1709,17 @@ package XIMS::Exporter::Portlet;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 
 use XIMS::SAX::Filter::PortletCollector;
-use XIMS::SAX::Filter::ContentIDPathResolver;
-use XIMS::SAX::Filter::ContentObjectPropertyResolver;
 
 sub set_sax_filters {
     XIMS::Debug( 5, "called" );
     my $self  = shift;
-    my @retval;
+    my @retval = $self->SUPER::set_sax_filters();
     unshift @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
-                                                                    ResolveContent => [ qw( DEPARTMENT_ID ) ] ),
-                     XIMS::SAX::Filter::ContentObjectPropertyResolver->new( User           => $self->{User},
-                                                                            ResolveContent => [ qw( image_id ) ],
-                                                                            Properties     => [ qw( abstract ) ]
-                                                                          );
+                                                                    ResolveContent => [ qw( DEPARTMENT_ID IMAGE_ID) ] );
+
 
     my $filter = XIMS::SAX::Filter::PortletCollector->new( Provider => $self->{Provider},
                                                            Object   => $self->{Object},
@@ -1538,7 +1791,7 @@ package XIMS::Exporter::OUIndexer;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 
 use XIMS::SAX::Filter::DepartmentExpander;
 use XIMS::SAX::Filter::ContentIDPathResolver;
@@ -1600,30 +1853,25 @@ use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Document );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
-use XIMS::SAX::Filter::ContentObjectPropertyResolver;
 
 sub set_sax_filters {
     XIMS::Debug( 5, "called" );
+
     my $self = shift;
-    my @retval = ();
+    my @retval = $self->SUPER::set_sax_filters();
 
-    push @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
-                                                                 ResolveContent => [ qw(
-                                                                                        department_id
-                                                                                        symname_to_doc_id
-                                                                                       ) ]
-                                                                 ),
-                  XIMS::SAX::Filter::ContentObjectPropertyResolver->new( User           => $self->{User},
-                                                                         ResolveContent => [ qw( image_id ) ],
-                                                                         Properties     => [ qw( abstract ) ]
-                                                                         );
+    unshift @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
+                                                                    ResolveContent => [ qw(
+                                                                                        IMAGE_ID
+                                                                                        SYMNAME_TO_DOC_ID
+                                                                                       ) ] );
 
-    $self->{Options}->{appendexportfilters} = 1;
 
     if ( $self->{Object} ) {
         $self->{Object}->attributes( "expandrefs" => 1 );
     }
 
+    XIMS::Debug( 5, "done" );
     return @retval;
 }
 
@@ -1633,18 +1881,6 @@ sub set_sax_filters {
 package XIMS::Exporter::File;
 #
 # lowlevel class for File objs.
-###############################################################################################
-
-use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::Binary );
-
-
-1;
-
-###############################################################################################
-package XIMS::Exporter::XML;
-#
-# lowlevel class for XSLStylesheet objs.
 ###############################################################################################
 
 use vars qw( @ISA );
@@ -1664,18 +1900,6 @@ use vars qw( @ISA );
 
 
 1;
-
-###############################################################################################
-package XIMS::Exporter::XSPScript;
-#
-# lowlevel class for XSPScript objs. ALERT! this is just a dummy!
-###############################################################################################
-
-use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XML );
-
-1;
-
 
 ###############################################################################################
 package XIMS::Exporter::URLLink;
@@ -1754,7 +1978,7 @@ package XIMS::Exporter::AnonDiscussionForum;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 
 
 1;
@@ -1766,7 +1990,7 @@ package XIMS::Exporter::AnonDiscussionForumContrib;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 
 
 1;
@@ -1778,7 +2002,7 @@ package XIMS::Exporter::AxPointPresentation;
 ###############################################################################################
 
 use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 
 
 1;
@@ -1796,15 +2020,15 @@ use vars qw( @ISA );
 1;
 
 ###############################################################################################
-package XIMS::Exporter::sDocBookXML;
+package XIMS::Exporter::DocBookXML;
 #
-# lowlevel class for sDocBookXML objs.
+# lowlevel class for DocBookXML objs.
 ###############################################################################################
 
 use vars qw( @ISA );
 use XIMS::SAX::Filter::ContentIDPathResolver;
 
-@ISA = qw( XIMS::Exporter::XMLChunk );
+@ISA = qw( XIMS::Exporter::XML );
 
 sub set_sax_filters {
     my $self = shift;
@@ -1820,13 +2044,36 @@ sub set_sax_filters {
 1;
 
 ###############################################################################################
+package XIMS::Exporter::XSPScript;
+#
+# lowlevel class for XSPScript objs. ALERT! this is just a dummy!
+###############################################################################################
+
+use vars qw( @ISA );
+@ISA = qw( XIMS::Exporter::XML );
+
+use XIMS::SAX::Filter::ContentIDPathResolver;
+
+sub set_sax_filters {
+    XIMS::Debug( 5, "called" );
+    my $self  = shift;
+
+    my $filter = XIMS::SAX::Filter::ContentIDPathResolver->new( Provider       => $self->{Provider},
+                                                                ResolveContent => [ qw( STYLE_ID SYMNAME_TO_DOC_ID DEPARTMENT_ID ) ]  );
+
+    return ($filter);
+}
+
+1;
+
+###############################################################################################
 package XIMS::Exporter::Portal;
 #
 # Portal Exporter class
 ###############################################################################################
 
 use vars qw(@ISA);
-@ISA=qw( XIMS::Exporter::XMLChunk );
+@ISA=qw( XIMS::Exporter::XML );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
 

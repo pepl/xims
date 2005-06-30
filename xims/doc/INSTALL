@@ -1,0 +1,157 @@
+$Id$
+
+XIMS Preliminary Installation Guide
+-----------------------------------
+
+0) Apache 1.3.x, mod_perl 1.x, and Axkit >=1.5 (with XML::LibXML (>= 1.52, != 1.53) and XML::LibXSLT)
+   are installed and working.
+   NOTE: you better build mod_perl with EVERYTHING=1, this is known 
+         to work with XIMS, anything less is trial and error ;-)
+   Oracle(-client) or PostgreSQL(-client) are installed and working. 
+   So are DBI, DBD::Oracle or DBD::Pg respectively. The use of Apache::DBI is highly recommended.
+
+1) Unpack the distribution to /usr/local:
+
+        [root@host local]# cd /usr/local
+        [root@host local]# tar xzpvf xims-pkg.tar.gz
+
+2) Install AxKit module dependencies
+
+        Needed for the XIMS public stylesheets, access- and
+        error-handlers.
+
+        perl -MCPAN -eshell
+    
+        cpan> install AxKit::XSP::Param
+        cpan> install AxKit::XSP::IfParam
+        cpan> install AxKit::XSP::WebUtils
+        cpan> install Apache::AxKit::Plugin::AddXSLParams::Request
+
+3) Install XIMS Perl module dependencies
+
+        cpan> install Digest::MD5
+        cpan> install Storable
+        cpan> install Net::LDAP             # used for LDAP authentification only
+        cpan> install XML::SAX::Machines
+        cpan> force install XML::Parser::PerlSAX
+          NOTE: XML::Parser::PerlSAX has XML::Parser as dependency,
+                XML::Parser will fail at the tests unless you have expat installed.
+                there is a known bug in one of libxml-perl-0.07's tests:
+                (http://rt.cpan.org/NoAuth/Bug.html?id=135)
+                therefore "force install" has to be used for that.
+               
+        cpan> install XML::Generator::PerlData
+        cpan> install XML::Filter::GenericChunk
+        cpan> install CGI::XMLApplication (Version 1.1.2 is needed)
+        cpan> install DBIx::SQLEngine (Version 0.008 is needed)
+
+NOTE: you'll need to provide dsn, user and pwd for a testaccess; 
+      if you set up Pg as discussed above, the following should work:
+      ...
+      Please enter or accept the following parameters (or pre-set in your ENV):
+      DBI_DSN (or accept default 'dbi:AnyData:'): dbi:Pg:dbname=xims;host=localhost
+      DBI_USER (or accept default ''): xims
+      DBI_PASS (or accept default ''): xims
+      ...
+
+        cpan> install Class::MethodMaker
+        cpan> install Time::Piece
+        cpan> install XML::Schematron       # for testscripts
+
+      Try missing.pl to test for missing modules
+      [root@host local]# perl xims/missing.pl
+
+4) Initialize the database tables and related database objects; add
+   default data:
+
+   Oracle:  
+        [root@host local]# cd xims/sql/Oracle/
+        ..
+        sqlplus user@db
+        @ci_ddl.sql
+
+        You should see some error messages related to dropping non-
+        existing objects.
+
+   Pg:  If you have a fresh install of Pg, you can use the setup-script locally 
+        on the dbhost. PLEASE, be CAREFUL if you have data in an existing
+        installation, you rather should setup it manually using the *.sql files
+        in the same dirs. (look what they do first!).
+        The setup-script expects local connections beeing set to 'trust' in 
+        pg_hba.conf, this should be the case, if you did not change the 
+        file yourself.
+               
+        [root@host local]# cd xims/sql/Pg
+        sh setup.sh 
+        ...
+        You should see some error messages related to dropping non-
+        existing objects.
+
+5) Install QS_UA
+
+       You mave have to adjust the target path according to your Perl installation.
+
+       [root@host local]# cp /usr/local/xims/patches/QS_UA.pm /usr/lib/perl5/site_perl/5.6.1/i386-linux/Apache/AxKit/StyleChooser/
+
+
+6) Install the latest tidy binary
+
+       as /usr/local/bin/tidy
+
+       If you have to use a different path, change /usr/local/xims/lib/XIMS/Object.pm 
+       line 753 accordingly.
+
+7) Apply Perl module patches
+
+     a) Patch AxKit::XSP::WebUtils
+
+        The patch adds some functionality used in the access- and error-handlers
+        You mave have to adjust the following path according to your Perl installation.
+        
+        [root@host patches]# cd /usr/lib/perl5/site_perl/5.6.1/AxKit/XSP/
+        [root@host XSP]# patch -p0 < /usr/local/xims/patches/webutils_1.4.patch 
+
+8) Link the XIMS WWW tree and the XIMS export root directory.
+ 
+        [root@host /www ]# ln -s /usr/local/xims/www/ximsroot /www/ximsroot
+        [root@host /www ]# ln -s /usr/local/xims/www/ximspubroot /www/ximspubroot 
+        [root@host /www ]# chgrp nobody /www/ximspubroot; chmod g+w /www/ximspubroot
+        
+        Where /www would be your Apache document root and "nobody" the group under which 
+        the Apache HTTPD runs.
+
+NOTE:   Documents get published under /www/ximspubroot, so that directory must be writable
+        for the Apache user; /www/ximsroot should be read-only for Apache.
+
+9) Edit /usr/local/xims/lib/XIMS/Config.pm to suit your needs.
+
+        DBUser, DBName, DBPasswd, DBEncoding
+
+10) Edit and activate /usr/local/xims/conf/ximshttpd.conf
+
+        Oracle:
+            Make sure ORACLE_HOME is set correctly!
+
+        Include /usr/local/xims/conf/ximshttpd.conf in Apache's httpd.conf
+
+11) Edit your mod_perl startup.pl
+
+        use lib qw( /usr/local/xims/lib );
+        use lib qw( /usr/local/xims/bin );
+        use goxims ();
+
+        If you do not have a startup.pl file, consult 
+        http://perl.apache.org/docs/1.0/guide/config.html#The_Startup_File for documentation
+        on how to set one up.
+
+12) Initialize and run the testsuite
+
+        Create the test suite config file and run all acceptance and unit tests.
+        
+        [root@host /usr/local/xims/t ]# perl ximstest.pl
+
+13) If installation went fine so far, you now can fire up Apache and login to XIMS at
+    http://host/goxims/defaultbookmark
+
+If you have problems, feel free to contact us at irc://irc.rhizomatic.net/xims or 
+xims-devel@lists.sourceforge.net for support.

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -12,7 +12,7 @@
 
     <xsl:import href="../common.xsl"/>
 
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" encoding="ISO-8859-1"/>
 
     <xsl:template match="/document">
         <xsl:apply-templates select="context/object"/>
@@ -32,19 +32,19 @@
                     <dc:creator><xsl:call-template name="creatorfullname"/></dc:creator>
                     <dc:subject><xsl:value-of select="keywords"/></dc:subject>
                     <dc:description><xsl:value-of select="abstract"/></dc:description>
-                    <dc:publisher><xsl:call-template name="ownerfullname"/></dc:publisher>
-                    <dc:contributor><xsl:call-template name="modifierfullname"/></dc:contributor>
+                    <dc:publisher><xsl:call-template name="ownerfullname"/> - Universität Innsbruck</dc:publisher>
+                    <dc:contributor></dc:contributor>
                     <dc:date>
                         <dcq:created>
                             <rdf:Description>
                                 <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
-                                <rdf:value><xsl:apply-templates select="creation_time" mode="ISO8601"/></rdf:value>
+                                <rdf:value><xsl:apply-templates select="creation_time" mode="datetime"/></rdf:value>
                             </rdf:Description>
                         </dcq:created>
                         <dcq:modified>
                             <rdf:Description>
                                 <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
-                                <rdf:value><xsl:apply-templates select="last_modification_timestamp" mode="ISO8601"/></rdf:value>
+                                <rdf:value><xsl:apply-templates select="last_modification_timestamp" mode="datetime"/></rdf:value>
                             </rdf:Description>
                         </dcq:modified>
                     </dc:date>
@@ -57,7 +57,7 @@
             <body>
                 <h1><xsl:value-of select="title"/></h1>
                 <ul>
-                    <xsl:apply-templates select="children/object[published=1]">
+                    <xsl:apply-templates select="children/object">
                         <xsl:sort select="position"
                         order="ascending"
                         data-type="number"/>

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -11,7 +11,7 @@
 
     <xsl:import href="../common.xsl"/>
 
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" encoding="ISO-8859-1"/>
 
     <xsl:template match="/document">
         <xsl:apply-templates select="context/object"/>
@@ -23,9 +23,8 @@
         </xsl:variable>
         <newsitems>
             <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="{department_id}/ou.xml"/>
-            <newsitem id="{@id}">
-                <xsl:attribute name="date"><xsl:apply-templates select="valid_from_timestamp" mode="ISO8601"/></xsl:attribute>
-                <!-- add user-metadata here? -->
+            <newsitem id="">
+                <xsl:attribute name="date"><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/></xsl:attribute>
                 <title>
                     <xsl:value-of select="title"/>
                 </title>
@@ -35,13 +34,12 @@
                 <story>
                     <xsl:apply-templates select="body"/>
                 </story>
-                <image url="{image_id/location_path}" alt="{image_id/title}" longdesc="{image_id/abstract}"/>
-                <created_by_firstname><xsl:apply-templates select="created_by_firstname"/></created_by_firstname>
-                <created_by_middlename><xsl:apply-templates select="created_by_middlename"/></created_by_middlename>
-                <created_by_lastname><xsl:apply-templates select="created_by_lastname"/></created_by_lastname>
-                <owned_by_firstname><xsl:apply-templates select="owned_by_firstname"/></owned_by_firstname>
-                <owned_by_middlename><xsl:apply-templates select="owned_by_middlename"/></owned_by_middlename>
-                <owned_by_lastname><xsl:apply-templates select="owned_by_lastname"/></owned_by_lastname>
+
+                <!--
+                the image is stored as a id and will be resolved as a path not a object. 
+                to get the title information for the image is therefore quite difficult
+                -->
+                <image url="{image_id}" alt="..." />
                 <links>
                     <xsl:apply-templates select="children/object"/>
                 </links>

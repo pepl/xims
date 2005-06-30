@@ -5,7 +5,7 @@ use XIMS::Test;
 use XIMS::ObjectType;
 use XIMS::DataFormat;
 use XIMS::XML;
-#use Data::Dumper;
+use Data::Dumper;
 
 BEGIN { 
     plan tests => 6;

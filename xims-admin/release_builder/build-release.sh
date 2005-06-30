@@ -20,8 +20,6 @@ find . -regex ".*xims-$2.lib.*\.pm" -exec sh _build-apidoc.sh {} xims-$2/documen
 
 find . -regex ".*xims-$2.documentation.*\.sdbk" -exec sh _build-doc.sh {} \;
 
-find . -type d -name "originals" | xargs rm -rf
-
 cp README.html xims-$2/documentation/api
 
 GZIP=-9 tar zcvf xims-$2.tar.gz xims-$2

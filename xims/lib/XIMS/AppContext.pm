@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -9,14 +9,14 @@ use vars qw($VERSION @ISA @Fields);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
 use XIMS::AbstractClass;
-#use Data::Dumper;
+use Data::Dumper;
 
 @ISA = qw( XIMS::AbstractClass );
 
 sub fields {
     return @Fields;
 }
-
+ 
 BEGIN {
     @Fields = (
                 'properties',
@@ -25,8 +25,6 @@ BEGIN {
                 'userlist', # used for privilege managment
                 'object', # used for content-object-management
                 'objectlist', # used for content-object-listings like search results or site maps
-                'userobjectlist', # used for content-object-listings with user context
-                'bookmarklist', # used for bookmarklisting during user/role-management
                 'parent', # needed during object creation
                 'session',
                 'cookie',
@@ -43,7 +41,7 @@ sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
     my %args = @_;
-
+    
     my $self = bless {}, $class;
 
     if ( scalar( keys(%args)) > 0 ) {
@@ -72,7 +70,7 @@ sub new {
 package Application;
 use Class::MethodMaker
     new     => 'new',
-    get_set => [qw( nocache cookie style styleprefix preservelocation keepsuffix )];
+    get_set => [qw( nocache style styleprefix preservelocation keepsuffix )];
 1;
 
 package Filter;
@@ -96,16 +94,13 @@ sub new {
 package GetChildren;
 use Class::MethodMaker
     new     => 'new',
-    get_set => [qw( objectid objecttypes level limit offset order addinfo columns )];
+    get_set => [qw( objectid objecttypes level addinfo columns )];
                     # objectid    to get targetchildren for contentbrowsing
                     # objecttypes to filter specific objecttypes (useful for browsing for special objecttypes)
                     # level       to get more flexible containerviews or sitemaps
-                    # limit       to limit the number of children (used for pagination)
-                    # offset      to start at a certain offset at the children list (used for pagination)
-                    # order       to order the children list (used for pagination)
-                    # addinfo     to get info on levels of hierarchy of chidlren,
-                    #             timestamp of last modified child, and total count of
+                    # addinfo     to get info on levels of hierarchy of chidlren, 
+                    #             timestamp of last modified child, and total count of 
                     #             children
-                    # properties  to select properties other than the default ones (currently not used)
+                    # columns     to select columns other than the default ones (do we want this?)
 
 1;

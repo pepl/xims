@@ -1,28 +1,31 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/TR/xhtml1/strict">
 <xsl:import href="common.xsl"/>
-<xsl:output method="html" encoding="utf-8"/>
+<xsl:output method="html" encoding="ISO-8859-1"/>
 <xsl:param name="id"/>
+
+<xsl:template match="/document">
+    <xsl:apply-templates select="context/object"/>
+</xsl:template>
 
 <xsl:template match="/document/context/object">
     <html>
         <head>
             <title>
                 Confirm Object Deletion - XIMS
-            </title>
+            </title> 
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript">0</script>
-            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
@@ -31,7 +34,7 @@
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
           <tr>
             <td align="center">
-
+            
             <br />
             <!-- begin widget table -->
             <table width="300" cellpadding="2" cellspacing="0" border="0">
@@ -63,13 +66,12 @@
                       <td>
                         <input class="control" name="trashcan" type="submit" value="Confirm"/>
                         <input name="id" type="hidden" value="{$id}"/>
-                        <xsl:call-template name="rbacknav"/>
                       </td>
                       <td>
-                        <input class="control"
-                               name="default"
-                               type="button"
-                               value="Cancel"
+                        <input class="control" 
+                               name="default" 
+                               type="button" 
+                               value="Cancel" 
                                onClick="javascript:history.go(-1)"
                         />
                       </td>

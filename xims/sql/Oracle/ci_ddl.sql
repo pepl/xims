@@ -1,7 +1,9 @@
--- Copyright (c) 2002-2004 The XIMS Project.
+-- Copyright (c) 2002-2003 The XIMS Project.
 -- See the file "LICENSE" for information on usage and redistribution
 -- of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
+
+SPOOL ci_ddl.lst
 
 @@ci_ddl.tab
 @@ci_ddl.ind
@@ -23,11 +25,7 @@
 @@ci_ddl_bookmarks.ind
 @@ci_ddl_bookmarks.con
 @@ci_ddl_bookmarks.sqs
-@@ci_ddl_eval.tab
-@@ci_ddl_eval.ind
-@@ci_ddl_eval.con
-@@ci_ddl_eval.sqs
-/
+
 -- columns there should be moved to ci_ddl.tab
 @@ci_ddl_content_denormalization.sql
 
@@ -41,14 +39,8 @@
 
 @@default_data.sql
 
--- Functions and triggers for location_path denormalization
-@@ci_util_location_path.sql
-
--- VLibrary tables
-@@cilib_library_ddl.sql
-
 -- commit;
--- PROMPT Changes have not been commited yet. Type commit; to do so!
-commit;
+PROMPT Changes have not been commited yet. Type commit; to do so!
 
-exit;
+
+SPOOL OFF

@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -11,7 +11,7 @@ use vars qw($VERSION @Fields @ISA);
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 @ISA = qw( XIMS::AbstractClass );
 
-#use Data::Dumper;
+use Data::Dumper;
 
 sub resource_type {
     return 'DataFormat';
@@ -34,10 +34,10 @@ sub new {
     my $class = ref( $proto ) || $proto;
     my %args = @_;
 
-    my $self = bless {}, $class;
+    my $self = bless {}, $class; 
 
     if ( scalar( keys(%args)) > 0 ) {
-        if ( defined( $args{id} ) or defined( $args{mime_type} ) or defined( $args{name} ) or defined( $args{suffix} ) ) {
+        if ( defined( $args{id} ) or defined( $args{mime_type} ) or defined( $args{name} ) ) {
             my $real_dt = $self->data_provider->getDataFormat( %args );
             if ( defined( $real_dt )) {
                $self->data( %{$real_dt} );
@@ -61,6 +61,30 @@ sub new {
         }
     }
     return $self;
+}
+
+sub create {
+    my $self = shift; 
+    my $id = $self->data_provider->createDataFormat( $self->data());
+    $self->id( $id );
+    return $id;
+}
+
+sub delete {
+    my $self = shift;
+    my $retval = $self->data_provider->deleteDataFormat( $self->data() );
+    if ( $retval ) {
+        map { $self->$_( undef ) } $self->fields();
+        return 1;
+    }
+    else {
+       return undef;
+    }
+}
+            
+sub update {	
+    my $self = shift;
+    return $self->data_provider->updateDataFormat( $self->data() );
 }
 
 1;

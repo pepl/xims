@@ -1,7 +1,8 @@
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2003 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
+
 package XIMS::SAX::Filter::DataCollector;
 
 #
@@ -37,7 +38,7 @@ sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
 
-    $self->{Columns}      ||= [];
+    $self->{Colunms}      ||= [];
     $self->{PreserveData} ||= 0;
 
     return $self;
@@ -103,28 +104,6 @@ sub get_data_fragment {
     return $self->{Fragment};
 }
 
-##
-#
-# SYNOPSIS
-#    $filter->get_content()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $self->{Content}
-#
-# DESCRIPTION
-#    Accessor for the "content" node.
-#
-sub get_content {
-    my $self = shift;
-    unless ( defined $self->{Content} ) {
-        my ($content) = grep {$_->nodeName eq "content" } $self->get_data_fragment->childNodes;
-        $self->{Content} = $content;
-    }
-    return $self->{Content};
-}
 
 ##
 #
@@ -262,7 +241,7 @@ sub handle_data {
 sub _handle_columns {
     my $self = shift;
 
-    unless ( scalar @{$self->{Columns}} ) {
+    unless ( defined $self->{Columns} ) {
         my $fragment = $self->get_data_fragment();
         return unless defined $fragment;
         $self->{Fragment} = $fragment;
@@ -273,12 +252,12 @@ sub _handle_columns {
             my $filter = grep { $_->nodeName() eq "filter" } $fragment->childNodes();
             unless ( defined $filter ) {
                 my @cols = grep { $_->nodeName() eq "column" } $fragment->childNodes();
-                $self->{Columns} = [map {$_->getAttribute("name")} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
+                $self->{Columns} = [map {uc($_->getAttribute("name"))} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
             }
         }
         else {
             my @cols = $cols->getChildrenByTagName("column");
-            $self->{Columns} = [map {$_->getAttribute("name")} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
+            $self->{Columns} = [map {uc($_->getAttribute("name"))} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
             XIMS::Debug( 6, join("," , @{$self->{Columns}}));
         }
     }
