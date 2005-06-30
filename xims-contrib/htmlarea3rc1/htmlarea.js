@@ -2855,16 +2855,17 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 					// unless we get them using nodeValue()
 					if (typeof root[a.nodeName] != "undefined" && name != "href" && name != "src") {
 						//value = root[a.nodeName];
-						value = a.textContent;
+						value = a.nodeValue;
+						value = HTMLArea.htmlEncode(value);
 					} else {
-						//value = a.nodeValue;
-						value = a.textContent;
+						value = a.nodeValue;
 						// IE seems not willing to return the original values - it converts to absolute
 						// links using a.nodeValue, a.value, a.stringValue, root.getAttribute("href")
 						// So we have to strip the baseurl manually -/
 						if (HTMLArea.is_ie && (name == "href" || name == "src")) {
 							value = editor.stripBaseURL(value);
 						}
+						value = HTMLArea.htmlEncode(value);
 					}
 				} else { // IE fails to put style in attributes list
 					// FIXME: cssText reported by IE is UPPERCASE
@@ -2875,7 +2876,7 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 					// here; we don't need them.
 					continue;
 				}
-				html += " " + name + '="' + HTMLArea.htmlEncode(value) + '"';
+				html += " " + name + '="' + value + '"';
 			}
 			html += closed ? " />" : ">";
 		}
