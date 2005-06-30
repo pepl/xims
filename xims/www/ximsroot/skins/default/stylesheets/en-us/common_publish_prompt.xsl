@@ -255,7 +255,7 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
                     <xsl:text> object is not currently published.</xsl:text>
                 </xsl:when>
                 <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-                    <xsl:text> object has last been published at </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/><xsl:text> and not modified since then.</xsl:text>
+                    <xsl:text> object was last published at </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/><xsl:text> and has not been modified since then.</xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:text> object has been modified since the last publication at </xsl:text><xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
