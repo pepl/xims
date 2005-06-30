@@ -1,0 +1,107 @@
+This is XIMS, version 0.01 (alpha).
+
+Overview
+--------
+XIMS (eXtensible Information Management System) is a web-based
+content management system. It provides features such as a flexible
+recursive role and ACL system for securing content, the possibility
+to "skin" the management interface and content using XSL stylesheets,
+extensibility through user-defined object types.
+For more information visit http://xims.uibk.ac.at/xims-info/.
+
+XIMS operates in an Apache/CGI::XMLApplication/AxKit environment, and
+uses the PostgreSQL or Oracle RDBMS for its data repository.
+
+
+License
+-------
+XIMS is copyrighted 2002-2003 by The XIMS Project. See the file "LICENSE"
+for information on usage and redistribution, and for a DISCLAIMER OF
+ALL WARRANTIES.
+
+
+Installation
+------------
+For installation, please follow the instructions in the file
+"INSTALL".
+
+
+Documentation
+-------------
+At $ximsdir/doc and http://xims.uibk.ac.at/xims-doku/ you will find
+XIMS documentation for users, developers, and system administrators.
+Note: Documentation is currently quite rudimentary :-/.
+
+
+Release Notes
+-------------
+Keep it mind that this is the first ever XIMS package, it is alpha.
+For the first beta release we are planning to
+adress at least the following issues:
+
+* Automation and simplification of the installation process
+* UI consistency issues (finish the redesign, finish the stylesheet updates begun with folder|document_create.xsl)
+* Add/Update documentation!
+* Update acceptance tests for the test suite
+* stylesheets for published docbook-objects
+* Take care of XIMS Logo
+
+Other issues to be adressed include the following:
+
+* Importer for filesystem objects
+* SQL queries and data retrieval in general is not performance but genericity
+  optimized.
+* Recursive application logic is used to retrieve hierarchical
+  content data. To avoid that, it is planned to implement a concept
+  similar to the "Nested Set Model of Trees in SQL" as described in
+  Chapter 29 of Joe Celko's "SQL for Smarties" (a brief description
+  of this concept can be found at
+  http://www.dbmsmag.com/9603d06.html).
+  Until that has not been implemented, the extra information used for
+  discussion forum object types, like the timestamp of the child
+  which has been last modified most recently for example, won't be
+  made available.
+* Rewrite XIMS::XSP
+* Start with user preferences (skin, ui-language, editor-preference, ...)
+* Start with bigger things like Versioning and Multilanguage Content UI
+
+Until user-start-pages are implemented, admins have to know the URL
+for the user management interface. It is http://yourbox/goxims/users
+
+More issues can be found at the TODO at
+https://sourceforge.net/tracker/?atid=432919&group_id=42250&func=browse
+
+This is an early development version of XIMS.
+Production use is NOT recommended!
+
+
+Changes
+-------
+See the file "Changes"
+
+
+Known Issues
+------------
+
+
+
+Bug Reporting
+-------------
+Please report bugs via
+https://sourceforge.net/tracker/?group_id=42250&atid=432505
+
+
+Credits
+-------
+
+XIMS is developed and maintained by:
+
+Michael Kröll <michael.kroell@uibk.ac.at>
+Hansjörg Pehofer <haensel@catbull.com>
+Kip Hampton <khampton@totalcinema.com>
+Christian Glahn <christian.glahn@uibk.ac.at>
+
+The user interface has originally been designed by:
+
+Georg Schönwiese <csab2314@uibk.ac.at>
+(This UI is not part of this distribution but currently still used at xims.uibk.ac.at)

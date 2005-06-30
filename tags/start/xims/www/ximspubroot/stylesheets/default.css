@@ -1,0 +1,13 @@
+.content {
+	visible: false;
+	padding-top: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+	vertical-align: top;
+	font-family: helvetica, arial, sans-serif;
+	text-align: left;
+}
+
+p.copy {
+	text-align: left;
+}
