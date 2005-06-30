@@ -25,4 +25,6 @@
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 CVSROOT $CVSROOT/CVSROOT/syncmail -u %{sVv} pepl@users.sourceforge.net
+xims-admin $CVSROOT/CVSROOT/syncmail -u %{sVv} pepl@users.sourceforge.net
+xims-contrib $CVSROOT/CVSROOT/syncmail -u %{sVv} pepl@users.sourceforge.net
 xims $CVSROOT/CVSROOT/syncmail -u %{sVv} xims-devel@lists.sourceforge.net
