@@ -227,6 +227,9 @@ sub objecttype_privileges {
             if ( grep { $_->{'objecttypepriv.object_type_id'} == $type->{id} } @privs ) {
                 $type->{can_create} = 1;
             }
+            else {
+                delete $type->{can_create};
+            }
         }
     }
     #warn "returning alltypes " . Dumper( \@all_types );
