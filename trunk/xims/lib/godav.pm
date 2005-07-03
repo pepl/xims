@@ -8,18 +8,35 @@ use strict;
 use warnings;
 
 #
-# Note: This module has PROOF OF CONCEPT status. Use at your own risk!
-#       This module has been tested with cadaver, konqueror and Webdrive
-#       and Novell's Netdrive DAV client software
+# Note: This module has beta status. All Litmus tests besides some of the
+#       props tests pass.
+#
+#       This DAV handler has been tested with cadaver, konqueror, Webdrive,
+#       Novell's Netdrive DAV client software and MS WebFolders
+#       There are some issues with Webfolders depending on versions of
+#       Windows, Service Pack level and version of installed Office Suite.
+#       Due to the behaviour of Word and Excel writing out temporary files
+#       with filenames changed by XIMS's clean_location users may experience
+#       error messages when directly editing from the DAV share. So better
+#       edit a local copy and upload when ready.
+#
+#       Body-less or dynamic object types like URLLink or Questionnaire are filtered
+#       out.
+#
+#       It is not possible to rename/move or delete published objects.
+#
+#       Under Windows: Do not create objects with Explorer using the right mouse button.
+#                      "New Text Document.txt" will be created as "new_text_document.txt"
+#                      and not found again right away...
+#
 #       http://host/godav/xims/
 #
 # TODO
-#    * Implement lock() and unlock()
-#    * Work on M$ web folder compatibility
 #    * Add acceptance tests (HTTP::DAV)
-#    * Add documentation
+#    * Add documentation with nice screenshots
 #    * Clean up (Store $object in a package variable?, ...)
 #    * Things I forgot
+#
 #
 
 use XIMS::Object;
@@ -30,11 +47,13 @@ use XIMS::Importer::Object;
 
 use Apache;
 use Apache::Constants qw(:common :response);
-#use Apache::File ();
-#use Apache::Request;
+use Apache::File ();
 use Apache::URI;
 use URI::Escape;
 use XML::LibXML;
+#use Data::UUID;
+use Digest::MD5;
+
 our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };;
 
 sub handler {
@@ -47,14 +66,11 @@ sub handler {
     my $user =  $r->pnotes( 'ximsBasicAuthUser' );
     return (403) unless defined $user;
 
-    #use Data::Dumper;
-    #my %h = $r->headers_in();
-    #warn Dumper \%h;
-
     $r->header_out( 'X-Server', 'XIMS::DAVServer ' . $VERSION );
     $r->header_out( 'MS-Author-Via', 'DAV' );
 
     $method = lc $method;
+
     no strict 'refs';
     my ($status_code, $content) = &{$method}( $r, $user );
     use strict 'refs';
@@ -62,13 +78,12 @@ sub handler {
     #$r->header_out( 'Status', $status_code );
     $r->status( $status_code );
     if ( defined $content ) {
-        #$r->set_content_length( length($content) );
-        $r->header_out( 'Content-Length', length($content) );
+        my $bytes;
+        do { use bytes; $bytes = length($content) };
+        #$r->set_content_length( $bytes );
+        $r->header_out( 'Content-Length', $bytes );
         $r->send_http_header();
         $r->print( $content );
-        #%h = $r->headers_out();
-        #warn Dumper \%h;
-        #warn $content;
     }
     else {
         $r->send_http_header();
@@ -82,8 +97,8 @@ sub options {
     my $user = shift;
     my $status_code;
 
-    $r->header_out( 'DAV', 1 );
-    $r->header_out( 'Allow', 'OPTIONS, GET, HEAD, POST, DELETE, TRACE, PROPFIND, PROPPATCH'); #, COPY, MOVE, LOCK, UNLOCK' );
+    $r->header_out( 'DAV', '1, 2, <http://apache.org/dav/propset/fs/1>' ); # 2 is needed here if WebFolder connections should work
+    $r->header_out( 'Allow', 'OPTIONS, GET, HEAD, POST, DELETE, TRACE, PROPFIND, LOCK, UNLOCK, MOVE');
     return (200, undef);
 }
 
@@ -102,7 +117,7 @@ sub get {
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::VIEW;
 
-    if ( defined $object and defined $object->id() ) {
+    if ( defined $object ) {
         if ( $object->object_type->is_fs_container() ) {
             my @children = $object->children_granted( properties => [ 'location', 'id', 'object_type_id' ], marked_deleted => undef );
             my $body;
@@ -122,10 +137,12 @@ sub get {
             $status_code = 200;
         }
         else {
-            $r->content_type( $object->data_format->mime_type() );
+            my $charset;
+            if (! ($charset = XIMS::DBENCODING )) { $charset = "UTF-8"; }
+            $r->content_type( $object->data_format->mime_type() . "; charset=$charset" );
             $content = $object->body();
-            my $t = Time::Piece->strptime( $object->last_modification_timestamp(), "%d.%m.%Y %H:%M:%S" );
-            #$r->set_last_modified( $t->epoch() );
+            my $t = Time::Piece->strptime( $object->last_modification_timestamp(), "%Y-%m-%d %H:%M:%S" );
+            $r->set_last_modified( $t->epoch );
             $status_code = 200;
         }
     }
@@ -137,6 +154,7 @@ sub get {
 }
 
 sub post { get( @_ ) }
+sub head { get( @_ ) } # TODO
 
 sub put {
     my $r = shift;
@@ -151,7 +169,7 @@ sub put {
     $r->read( $body, $r->header_in( 'Content-Length') );
 
     my $object_class;
-    if ( defined $object and $object->id() ) {
+    if ( defined $object ) {
         my $privmask = $user->object_privmask( $object );
         return (403) unless $privmask & XIMS::Privileges::WRITE;
 
@@ -190,7 +208,7 @@ sub put {
         return (403) unless $privmask & XIMS::Privileges::CREATE;
 
         my $importer = XIMS::Importer::Object->new( User => $user, Parent => $parent );
-        my ($object_type, undef) = $importer->resolve_filename( $path );
+        my ($object_type, $data_format) = $importer->resolve_filename( $path );
 
         # now that should be moved somewhere else....
         $object_class .= 'XIMS::' . $object_type->fullname;
@@ -202,8 +220,9 @@ sub put {
         }
         my ( $location ) = ( $path =~ m|([^/]+)$| );
         $object = $object_class->new( User => $user, location => $location );
+        $object->data_format_id( $data_format->id() ) if defined $data_format;
         $object->body( $body );
-        my $id = $importer->import( $object );
+        my $id = $importer->import( $object ); # , undef, 1 ); # do not check location here?...(dangerous!)
         if ( defined $id ) {
             $status_code = 201;
         }
@@ -229,9 +248,37 @@ sub delete {
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::DELETE;
 
-    if ( defined $object and defined $object->id() ) {
-        # test if object is locked and return 207 here in case
-        #
+    if ( defined $object ) {
+        if ( $object->published() ) {
+            $r->content_type( 'text/xml; charset="UTF-8"' );
+            my $uri = $r->uri;
+            my $response =<<EOS;
+<?xml version="1.0" encoding="UTF-8"?>
+<D:multistatus xmlns:D="DAV:">
+    <D:response>
+        <D:href>$uri</D:href>
+        <D:status>HTTP/1.1 412 Precondition Failed</D:status>
+        <D:responsedescription>Can not delete a published object.</D:responsedescription>
+    </D:response>
+</D:multistatus>
+EOS
+            return (424, $response);
+        }
+
+        if ( $object->locked() ) {
+            $r->content_type( 'text/xml; charset="UTF-8"' );
+            my $uri = $r->uri;
+            my $response =<<EOS;
+<?xml version="1.0" encoding="UTF-8" ?>
+<d:multistatus xmlns:D="DAV:">
+    <D:response>
+        <D:href>$uri</D:href>
+        <D:status>HTTP/1.1 423 Locked</D:status>
+    </D:response>
+</D:multistatus>
+EOS
+            return (207, $response);
+        }
 
         # honor Depth header here?
 
@@ -252,38 +299,13 @@ sub delete {
 sub copy {
     my $r = shift;
     my $user = shift;
-    my $status_code;
-
-    my $path = uri_unescape( $r->path_info() );
-    $path ||= '/';
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
-
-    my $parent_priv = $user->object_privmask( $object->parent );
-    return (403) unless $parent_priv & XIMS::Privileges::CREATE;
-
-    my $privmask = $user->object_privmask( $object );
-    return (403) unless $privmask & XIMS::Privileges::COPY;
-
-    my $destination = $r->header_in( 'Destination' );
-    $destination = $r->lookup_uri( $destination )->path_info(); # or do a s/$godav//; ?
-    my $depth = $r->header_in( 'Depth' );
-    my $overwrite = $r->header_in( 'Overwrite' );
-
-    # copy here, adjust XIMS::Object::clone to support parent_id (Destination) parameter
-
-    return (501);
+    return copymove( $r, $user, 'COPY' );
 }
 
 sub move {
     my $r = shift;
     my $user = shift;
-    my $status_code;
-
-    return (501);
-
-    ($status_code, undef) = &copy( $r, $user );
-    ($status_code, undef) = &delete( $r, $user ) if $status_code == 200;
-    return (501);
+    return copymove( $r, $user, 'MOVE' );
 }
 
 sub mkcol {
@@ -297,7 +319,7 @@ sub mkcol {
     if ( $r->header_in( 'Content-Length') ) {
         return (415);
     }
-    elsif ( not defined $object->id() ) {
+    elsif ( not defined $object ) {
         my ($parentpath) = ( $path =~ m|^(.*)/[^/]+$| );
         my $parent = XIMS::Object->new( User => $user, path => $parentpath, marked_deleted => undef );
         return (409) unless (defined $parent and defined $parent->id());
@@ -327,7 +349,7 @@ sub propfind {
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
     my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
-    return (404, undef) unless defined $object and defined $object->id();
+    return (404, undef) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::VIEW;
@@ -337,7 +359,7 @@ sub propfind {
         my $p = XML::LibXML->new;
         eval {
             my $doc = $p->parse_string($content);
-            warn "xml-in" . $content;
+            #warn "xml-in" . $content;
         };
         if ($@) {
             return (400, undef);
@@ -347,11 +369,14 @@ sub propfind {
     # TODO: $doc is currently not checked, "allprop" is assumed
 
     $status_code = 207;
-    $r->content_type( 'text/xml; charset="utf-8"' );
+    $r->content_type( 'text/xml; charset="UTF-8"' );
 
     my $dom = XML::LibXML::Document->new("1.0", "utf-8");
     my $multistatus = $dom->createElement("D:multistatus");
     $multistatus->setAttribute("xmlns:D", "DAV:");
+
+    # For MS WebFolder compatibility
+    $multistatus->setAttribute("xmlns:b", "urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/");
 
     $dom->setDocumentElement($multistatus);
 
@@ -364,12 +389,9 @@ sub propfind {
         $depth = 0;
     }
     if ( $depth == 1 and $object->object_type->is_fs_container() ) {
-        #my $p = $path;
-        #$p .= '/' unless $p =~ m{/$};
-
         # filter out "special"-non-GETable object types like URLLink, Questionnaire, ...
-
-        @objects = $object->children_granted( marked_deleted => undef );
+        # TODO: filter by object type name
+        @objects = $object->children_granted( marked_deleted => undef, object_type_id => [1,2,3,4,5,6,7,8,9,15,19,20,21,28] );
         push @objects, $object;
     }
     else {
@@ -394,26 +416,30 @@ sub propfind {
         my $prop = $dom->createElement("D:prop");
         $propstat->addChild($prop);
 
-        $t = Time::Piece->strptime( $o->creation_timestamp(), "%d.%m.%Y %H:%M:%S" );
+        $t = Time::Piece->strptime( $o->creation_timestamp(), "%Y-%m-%d %H:%M:%S" );
         my $creationdate = $dom->createElement("D:creationdate");
-        $creationdate->appendText($t->strftime());
+        $creationdate->setAttribute("b:dt", "dateTime.tz");
         #$creationdate->appendText($t->datetime());
+        $creationdate->appendText($t->strftime("%Y-%m-%dT%T -0000")); # be IS8601 compliant
         $prop->addChild($creationdate);
 
-        $t = Time::Piece->strptime( $o->last_modification_timestamp(), "%d.%m.%Y %H:%M:%S" );
+        $t = Time::Piece->strptime( $o->last_modification_timestamp(), "%Y-%m-%d %H:%M:%S" );
         my $getlastmodified = $dom->createElement("D:getlastmodified");
-        $getlastmodified->appendText($t->strftime());
-        #$getlastmodified->appendText($t->datetime());
+        $getlastmodified->setAttribute("b:dt", "dateTime.rfc1123");
+        $getlastmodified->appendText($t->strftime("%a, %d %b %Y %T -0000")); # be RFC(2)822 compliant
         $prop->addChild($getlastmodified);
 
         my $size = $o->content_length();
         $size = "" if (defined $size and $size == 0);
         my $getcontentlength = $dom->createElement("D:getcontentlength");
+        $getcontentlength->setAttribute("b:dt", "int");
         $getcontentlength->appendText($size);
         $prop->addChild($getcontentlength);
 
         my $ndisplayname = $dom->createElement("D:displayname");
-        $ndisplayname->appendText(XIMS::encode($o->title()));
+        my $displayname = XIMS::encode($o->title());
+        #$displayname =~ s#/#_#g;
+        $ndisplayname->appendText($displayname);
         $prop->addChild($ndisplayname);
 
         my $resourcetype = $dom->createElement("D:resourcetype");
@@ -422,6 +448,47 @@ sub propfind {
             $resourcetype->addChild($collection);
         }
         $prop->addChild($resourcetype);
+
+        if ( $o->locked ) {
+            my $lockdiscovery = $dom->createElement("D:lockdiscovery");
+            $prop->addChild($lockdiscovery);
+
+            my $activelock = $dom->createElement("D:activelock");
+            $lockdiscovery->addChild($activelock);
+
+            my $locktype = $dom->createElement("D:locktype");
+            $activelock->addChild($locktype);
+
+            my $write = $dom->createElement("D:write");
+            $locktype->addChild($write);
+
+            my $lockscope = $dom->createElement("D:lockscope");
+            $activelock->addChild($lockscope);
+
+            my $exclusive = $dom->createElement("D:exclusive");
+            $lockscope->addChild($exclusive);
+
+            my $depth = $dom->createElement("D:depth");
+            $depth->appendText('0');
+            $activelock->addChild($depth);
+
+            my $owner = $dom->createElement("D:owner");
+            $owner->appendText($o->locker->name);
+            $activelock->addChild($owner);
+
+            my $timeout = $dom->createElement("D:timeout");
+            $timeout->appendText('Infinite');
+            $activelock->addChild($timeout);
+
+            my $locktoken = $dom->createElement("D:locktoken");
+            $activelock->addChild($locktoken);
+
+            my $lthref = $dom->createElement("D:href");
+
+            my $opaqelocktoken = 'opaquelocktoken:' . pseudo_uuid( $user ); #Data::UUID->new->create_str();
+            $lthref->appendText($opaqelocktoken);
+            $locktoken->addChild($lthref);
+        }
 
         # additional XIMS specific properties here?
 
@@ -442,13 +509,204 @@ sub propfind {
     return ($status_code, $dom->toString(1));
 }
 
-#sub lock {
-#
-#}
-#
-#sub unlock {
-#
-#}
+sub lock {
+    my $r = shift;
+    my $user = shift;
+    my $status_code;
+    my $content;
+
+    my $path = uri_unescape( $r->path_info() );
+    $path ||= '/';
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    return (404, undef) unless defined $object;
+
+    my $privmask = $user->object_privmask( $object );
+    return (403) unless $privmask & XIMS::Privileges::WRITE;
+
+    # We do not support a Depth header here...
+    my $depth = $r->header_in('Depth');
+    if ( defined $depth and $depth eq 'infinity' ) {
+        return (412, undef);
+    }
+
+    if ( not $object->lock() ) {
+        XIMS::Debug( 2, "could not set lock" );
+        return (412, undef);
+    }
+
+    $status_code = 200;
+    $r->content_type( 'text/xml; charset="UTF-8"' );
+
+    my $username = $user->name;
+
+    my $locktoken = 'opaquelocktoken:' . pseudo_uuid( $user ); # Data::UUID->new->create_str();
+
+    # Much less typing than creating the response string using DOM calls
+    my $response =<<EOS;
+<?xml version="1.0" encoding="UTF-8" ?>
+   <D:prop xmlns:D="DAV:">
+     <D:lockdiscovery>
+          <D:activelock>
+               <D:locktype><D:write/></D:locktype>
+               <D:lockscope><D:exclusive/></D:lockscope>
+               <D:depth>0</D:depth>
+               <D:owner>$username</D:owner>
+               <D:timeout>Infinite</D:timeout>
+               <D:locktoken>
+                    <D:href>$locktoken</D:href>
+               </D:locktoken>
+          </D:activelock>
+     </D:lockdiscovery>
+   </D:prop>
+EOS
+
+    $r->header_out( 'Lock-Token', $locktoken );
+
+    return ($status_code, $response);
+}
+
+sub unlock {
+    my $r = shift;
+    my $user = shift;
+    my $status_code;
+    my $content;
+
+    my $path = uri_unescape( $r->path_info() );
+    $path ||= '/';
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    return (404, undef) unless defined $object;
+
+    my $privmask = $user->object_privmask( $object );
+    return (403) unless $privmask & XIMS::Privileges::WRITE;
+
+    # Check if there is a lock and the lock has been set by the same user
+    if ( $object->locked() and
+         $object->locked_by_id() eq $user->id() ) {
+        if ( not $object->unlock() ) {
+            XIMS::Debug( 2, "could not set lock" );
+            return (412, undef);
+        }
+        else {
+            return (204, undef);
+        }
+    }
+    else {
+        return (412, undef);
+    }
+}
+
+sub copymove {
+    my $r = shift;
+    my $user = shift;
+    my $method = shift;
+
+    my $path = uri_unescape( $r->path_info() );
+    $path ||= '/';
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    return (404) unless defined $object;
+
+    my $privmask = $user->object_privmask( $object );
+    no strict 'refs';
+    return (403) unless $privmask & &{"XIMS::Privileges::$method"};
+    use strict 'refs';
+    $method = lc $method;
+
+    if ( $method eq 'move' and $object->published() ) {
+        # Do not rename or move published objects
+        return (412);
+    }
+
+    my $destination_path = $r->header_in( 'Destination' );
+    $destination_path =~ s/^.*?\/godav//; # the cheap and pragmatic way to get the location_path
+    $destination_path =~ s#/$##; # the cheap and pragmatic way to get the location_path
+
+    my $depth = $r->header_in( 'Depth' );
+    my $overwrite = $r->header_in( 'Overwrite' );
+
+    my $origlocation = $object->location;
+    my $destination = XIMS::Object->new( path => $destination_path, marked_deleted => undef, User => $user );
+    if ( defined $destination ) {
+        XIMS::Debug( 4, "Destination $destination_path exists" );
+
+        # Cannot copy or move source to itself
+        return (403) if ($object->id eq $destination->id);
+
+        # Do not copy or move locked objects
+        return (423) if $destination->locked();
+
+        # If the overwrite header is set to true, we overwrite the existing object
+        if ( defined $overwrite and $overwrite eq 'T' ) {
+            $privmask = $user->object_privmask( $destination );
+            return (403) unless $privmask and ($privmask & XIMS::Privileges::DELETE());
+            if ( $destination->location ne $object->location ) {
+                $privmask = $user->object_privmask( $object );
+                return (403) unless $privmask and ($privmask & XIMS::Privileges::WRITE());
+            }
+            my $privmask = $user->object_privmask( $destination->parent );
+            return (403) unless $privmask & XIMS::Privileges::CREATE;
+
+            $object->location( $destination->location() );
+            if ( $destination->trashcan() and $object->$method( target => $destination->parent->document_id() ) ) {
+                return (204);
+            }
+            else {
+                XIMS::Debug( 3, "$method failed, renaming source back to original location" );
+                # Rename back
+                $object->location( $origlocation );
+                $object->update( User => $user, no_modder => 1 );
+                return (412);
+            }
+        }
+        else {
+            return (412);
+        }
+    }
+    else {
+        XIMS::Debug( 4, "Destination $destination_path does not exist yet" );
+        my ($destination_parentpath, $destination_location) = ($destination_path =~ m#(.*)/(.*)#);
+        my $destination = XIMS::Object->new( path => $destination_parentpath, marked_deleted => undef, User => $user );
+        return (404) unless defined $destination;
+        return (423) if $destination->locked();
+
+        my $privmask = $user->object_privmask( $destination );
+        return (403) unless $privmask and ($privmask & XIMS::Privileges::CREATE());
+
+        if ( $destination_location ne $object->location ) {
+            $privmask = $user->object_privmask( $object );
+            return (403) unless $privmask and ($privmask & XIMS::Privileges::WRITE());
+            if ( $method eq 'move' ) {
+                $object->location( $destination_location );
+                if ( not scalar $object->update( User => $user, no_modder => 1 ) ) {
+                    XIMS::Debug( 3, "Could not rename to $destination_location" );
+                    return (412);
+                }
+            }
+        }
+        my %args;
+        if ( $method eq 'copy' ) {
+            $args{target_location} = $destination_location;
+        }
+
+        if ( $object->$method( target => $destination->document_id(), %args ) ) {
+            return (201);
+        }
+        else {
+            XIMS::Debug( 3, "$method failed, renaming source back to original location" );
+            # Rename back
+            $object->location( $origlocation );
+            $object->update( User => $user, no_modder => 1 );
+            return (412);
+        }
+    }
+}
+
+sub pseudo_uuid {
+    my $user = shift;
+    # Instead of generating and storing a real Data::UUID per lock we
+    # walk the poor man's path here..
+    my $string = Digest::MD5::md5_hex( $user->id() );
+    return substr($string,0,8).'-'.substr($string,9,4).'-'.substr($string,14,4).'-'.substr($string,18,4).'-'.substr($string,22,10).substr($string,13,2);
+}
 
 1;
 
