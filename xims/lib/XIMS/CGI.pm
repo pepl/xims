@@ -532,8 +532,14 @@ sub redirect_path {
 
     my $redirectpath;
     my $r = $self->param('r');
+    my $uri;
     if ( defined $r ) {
-        $redirectpath = $dp->location_path( id => $r );
+        if ( $r =~ /^\d+$/ ) {
+            $redirectpath = $dp->location_path( id => $r );
+        }
+        else {
+            $uri = Apache::URI->parse( $ctxt->apache(), $r );
+        }
     }
     elsif ( defined $id ) {
         $redirectpath = $dp->location_path( id => $id );
@@ -593,9 +599,11 @@ sub redirect_path {
         $params .= "page=$page";
     }
 
-    my $uri = Apache::URI->parse( $ctxt->apache() );
-    $uri->path( $ctxt->apache->parsed_uri->rpath() . $redirectpath );
-    $uri->query( $params );
+    if ( not defined $uri ) {
+        $uri = Apache::URI->parse( $ctxt->apache() );
+        $uri->path( $ctxt->apache->parsed_uri->rpath() . $redirectpath );
+        $uri->query( $params );
+    }
 
     # warn "redirecting to ". $uri->unparse();
     return $uri->unparse();
