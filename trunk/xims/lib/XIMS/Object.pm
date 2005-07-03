@@ -1554,7 +1554,7 @@ sub clone {
 #
 # PARAMETER
 #    $args{ User }            (optional) : XIMS::User instance. Used to find granted children. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
-#    $args{ target_id }                  : document_id of container where the object should be copied to
+#    $args{ target }                     : document_id of container where the object should be copied to
 #    $args{ target_location } (optional) : location of the copy; per default "copy_of_location" will be used
 #
 # RETURNS
@@ -1577,7 +1577,7 @@ sub copy {
     my $user = delete $args{User} || $self->{User};
     die "Copying an object requires an associated User" unless defined( $user );
 
-    my $target_id = delete $args{target_id};
+    my $target_id = delete $args{target};
     return undef unless defined $target_id;
 
     return $self->clone( User => $user,
