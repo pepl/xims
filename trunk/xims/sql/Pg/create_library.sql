@@ -43,9 +43,9 @@ CREATE TABLE cilib_authors
  ,middlename        VARCHAR(48)       DEFAULT ''
  ,firstname         VARCHAR(48)       DEFAULT ''
  ,object_type       SMALLINT          DEFAULT 0
- ,suffix            VARCHAR2(24)      DEFAULT ''
- ,email             VARCHAR2(80)      DEFAULT ''
- ,url               VARCHAR2(250)     DEFAULT ''
+ ,suffix            VARCHAR(24)      DEFAULT ''
+ ,email             VARCHAR(80)      DEFAULT ''
+ ,url               VARCHAR(250)     DEFAULT ''
 
  )
 ;
