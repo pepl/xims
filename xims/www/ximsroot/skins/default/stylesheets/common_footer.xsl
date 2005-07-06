@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -15,7 +15,7 @@
         </xsl:variable>
 
         <tr>
-            <td colspan="2">
+            <td>
                 <xsl:choose>
                     <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type='application/x-container'">
                         <a href="{$xims_box}{$goxims_content}{$absolute_path}?sitemap=1"><xsl:value-of select="$i18n/l/Treeview"/></a>
@@ -31,6 +31,11 @@
                         </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
+            </td>
+            <td align="center">
+                <span id="department_title">
+                    <xsl:call-template name="department_title"/>
+                </span>
             </td>
             <td align="right">
                 <a href="http://xims.info/documentation/" target="_blank">Systeminfo</a>
