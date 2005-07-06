@@ -1907,7 +1907,7 @@ sub body_ref_objects {
 
     # load the objects body
     my $body = $object->body();
-    return undef unless defined $body;
+    return () unless defined $body;
 
     my $parser = XML::LibXML->new();
     my $chunk;
