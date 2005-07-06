@@ -117,14 +117,14 @@
 
 <xsl:template name="head_default">
     <head>
-        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
+        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - <xsl:call-template name="department_title"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     </head>
 </xsl:template>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp" mode="time">
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|valid_from_timestamp|valid_to_timestamp" mode="time">
     <xsl:value-of select="./hour"/>
     <xsl:text>:</xsl:text>
     <xsl:value-of select="./minute"/>
@@ -243,6 +243,17 @@
     <xsl:if test="$r != ''">
         <xsl:value-of select="concat(';sb=', $sb, ';order=', $order, ';page=', $page, ';r=', $r)"/>
     </xsl:if>
+</xsl:template>
+
+<xsl:template name="department_title">
+    <xsl:choose>
+        <xsl:when test="/document/object_types/object_type[@id=/document/context/object/object_type_id]/is_objectroot = '1'">
+            <xsl:value-of select="/document/context/object/title"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/department_id]/title"/>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>
