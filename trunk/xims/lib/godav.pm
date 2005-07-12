@@ -9,16 +9,10 @@ use warnings;
 
 #
 # Note: This module has beta status. All Litmus tests besides some of the
-#       props tests pass.
+#       props tests do pass.
 #
 #       This DAV handler has been tested with cadaver, konqueror, Webdrive,
 #       Novell's Netdrive DAV client software and MS WebFolders
-#       There are some issues with Webfolders depending on versions of
-#       Windows, Service Pack level and version of installed Office Suite.
-#       Due to the behaviour of Word and Excel writing out temporary files
-#       with filenames changed by XIMS's clean_location users may experience
-#       error messages when directly editing from the DAV share. So better
-#       edit a local copy and upload when ready.
 #
 #       Body-less or dynamic object types like URLLink or Questionnaire are filtered
 #       out.
@@ -34,7 +28,6 @@ use warnings;
 # TODO
 #    * Add acceptance tests (HTTP::DAV)
 #    * Add documentation with nice screenshots
-#    * Clean up (Store $object in a package variable?, ...)
 #    * Things I forgot
 #
 #
@@ -69,6 +62,11 @@ sub handler {
     $r->header_out( 'X-Server', 'XIMS::DAVServer ' . $VERSION );
     $r->header_out( 'MS-Author-Via', 'DAV' );
 
+    #use Data::Dumper;
+    #my %h = $r->headers_in();
+    #warn Dumper \%h;
+    #warn "This is a $method request";
+
     $method = lc $method;
 
     no strict 'refs';
@@ -82,6 +80,13 @@ sub handler {
         do { use bytes; $bytes = length($content) };
         #$r->set_content_length( $bytes );
         $r->header_out( 'Content-Length', $bytes );
+
+        #$r->header_out( 'Content-Type', $r->content_type()); # hmmm
+        #my %h = $r->headers_out();
+        #use Data::Dumper;
+        #warn Dumper \%h;
+        #warn "$content" unless $method eq 'get';
+
         $r->send_http_header();
         $r->print( $content );
     }
@@ -389,9 +394,15 @@ sub propfind {
         $depth = 0;
     }
     if ( $depth == 1 and $object->object_type->is_fs_container() ) {
-        # filter out "special"-non-GETable object types like URLLink, Questionnaire, ...
+        # Filter out Documents and NewsItems, most Users and their editors would have problems with
+        # handling the correct encoding of the XML Document Fragments...
+        # 2, 15
+        #
+        # Filter out "special"-non-GETable object types like URLLink, Questionnaire, ...
         # TODO: filter by object type name
-        @objects = $object->children_granted( marked_deleted => undef, object_type_id => [1,2,3,4,5,6,7,8,9,15,19,20,21,28] );
+        my @object_type_ids = (1,3,4,5,6,7,8,9,10,19,20,21);
+        #push(@object_type_ids, (2,15)) if $user->admin;
+        @objects = $object->children_granted( marked_deleted => undef, object_type_id => \@object_type_ids );
         push @objects, $object;
     }
     else {
@@ -439,6 +450,7 @@ sub propfind {
         my $ndisplayname = $dom->createElement("D:displayname");
         my $displayname = XIMS::encode($o->title());
         #$displayname =~ s#/#_#g;
+        #my $displayname = $o->location();
         $ndisplayname->appendText($displayname);
         $prop->addChild($ndisplayname);
 
@@ -523,6 +535,19 @@ sub lock {
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::WRITE;
 
+    # Slurp in the XML request...
+    if ( $r->header_in('Content-Length') ) {
+        $r->read( $content, $r->header_in( 'Content-Length') );
+        my $p = XML::LibXML->new;
+        eval {
+            my $doc = $p->parse_string($content);
+            #warn "xml-in" . $content;
+        };
+        if ($@) {
+            return (400, undef);
+        }
+    }
+
     # We do not support a Depth header here...
     my $depth = $r->header_in('Depth');
     if ( defined $depth and $depth eq 'infinity' ) {
@@ -543,7 +568,7 @@ sub lock {
 
     # Much less typing than creating the response string using DOM calls
     my $response =<<EOS;
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
    <D:prop xmlns:D="DAV:">
      <D:lockdiscovery>
           <D:activelock>
@@ -551,7 +576,7 @@ sub lock {
                <D:lockscope><D:exclusive/></D:lockscope>
                <D:depth>0</D:depth>
                <D:owner>$username</D:owner>
-               <D:timeout>Infinite</D:timeout>
+               <D:timeout>Second-604800</D:timeout>
                <D:locktoken>
                     <D:href>$locktoken</D:href>
                </D:locktoken>
@@ -560,7 +585,8 @@ sub lock {
    </D:prop>
 EOS
 
-    $r->header_out( 'Lock-Token', $locktoken );
+# MS-Office apps do not like a <D:timeout> value of 'Infinite', therefore we pass
+# a reasonable high timeout in seconds...
 
     return ($status_code, $response);
 }
