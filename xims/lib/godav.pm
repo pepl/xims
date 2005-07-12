@@ -28,6 +28,7 @@ use warnings;
 # TODO
 #    * Add acceptance tests (HTTP::DAV)
 #    * Add documentation with nice screenshots
+#    * PROPPATCH?
 #    * Things I forgot
 #
 #
@@ -107,7 +108,15 @@ sub options {
     return (200, undef);
 }
 
-sub proppatch { (403) }
+sub proppatch {
+    my $r = shift;
+    # Read in the content to avoid an extra 400
+    my $content;
+    if ( $r->header_in('Content-Length') ) {
+        $r->read( $content, $r->header_in( 'Content-Length') );
+    }
+    (403);
+}
 
 sub get {
     my $r = shift;
@@ -227,7 +236,8 @@ sub put {
         $object = $object_class->new( User => $user, location => $location );
         $object->data_format_id( $data_format->id() ) if defined $data_format;
         $object->body( $body );
-        my $id = $importer->import( $object ); # , undef, 1 ); # do not check location here?...(dangerous!)
+        # Ignore location for temporary file creation of some not-quite-DAV-aware applications
+        my $id = $importer->import( $object, undef, _tmpsafe($location) );
         if ( defined $id ) {
             $status_code = 201;
         }
@@ -497,7 +507,7 @@ sub propfind {
 
             my $lthref = $dom->createElement("D:href");
 
-            my $opaqelocktoken = 'opaquelocktoken:' . pseudo_uuid( $user ); #Data::UUID->new->create_str();
+            my $opaqelocktoken = 'opaquelocktoken:' . _pseudo_uuid( $user ); #Data::UUID->new->create_str();
             $lthref->appendText($opaqelocktoken);
             $locktoken->addChild($lthref);
         }
@@ -564,7 +574,7 @@ sub lock {
 
     my $username = $user->name;
 
-    my $locktoken = 'opaquelocktoken:' . pseudo_uuid( $user ); # Data::UUID->new->create_str();
+    my $locktoken = 'opaquelocktoken:' . _pseudo_uuid( $user ); # Data::UUID->new->create_str();
 
     # Much less typing than creating the response string using DOM calls
     my $response =<<EOS;
@@ -703,6 +713,9 @@ sub copymove {
             $privmask = $user->object_privmask( $object );
             return (403) unless $privmask and ($privmask & XIMS::Privileges::WRITE());
             if ( $method eq 'move' ) {
+                unless ( _tmpsafe($destination_location) ) {
+                    $destination_location = XIMS::Importer::_clean_location( 1, $destination_location );
+                }
                 $object->location( $destination_location );
                 if ( not scalar $object->update( User => $user, no_modder => 1 ) ) {
                     XIMS::Debug( 3, "Could not rename to $destination_location" );
@@ -713,6 +726,8 @@ sub copymove {
         my %args;
         if ( $method eq 'copy' ) {
             $args{target_location} = $destination_location;
+            # Ignore location for temporary file creation of some not-quite-DAV-aware applications
+            $args{dontcleanlocation} = _tmpsafe($destination_location);
         }
 
         if ( $object->$method( target => $destination->document_id(), %args ) ) {
@@ -728,12 +743,31 @@ sub copymove {
     }
 }
 
-sub pseudo_uuid {
+sub _pseudo_uuid {
     my $user = shift;
     # Instead of generating and storing a real Data::UUID per lock we
     # walk the poor man's path here..
     my $string = Digest::MD5::md5_hex( $user->id() );
     return substr($string,0,8).'-'.substr($string,9,4).'-'.substr($string,14,4).'-'.substr($string,18,4).'-'.substr($string,22,10).substr($string,13,2);
+}
+
+sub _tmpsafe {
+    my $location = shift;
+    my $matched;
+    my @tmpregexes = ( qr/%7e$/,  # eldav does a "COPY $source $source%7e"
+                                  # when editing existing files
+                       qr/^~\$/,  # MS-Office-Apps if not in DAV-mode
+                                  # (eg using a NetDrive letter)
+                                  # A .tmp and an error message still will remain
+                                  # when saving, so please open the files
+                                  # via http://host/godav/path
+                       qr/^TMP\d+\.tmp$/ # Textpad
+                    );
+    # qr/~$/
+    for ( @tmpregexes ) {
+        $matched++ if $location =~ $_;
+    }
+    return $matched;
 }
 
 1;

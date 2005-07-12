@@ -129,13 +129,14 @@ sub import {
     my $self = shift;
     my $object = shift;
     my $updateexisting = shift;
+    my $donotchecklocation = shift;
 
     $self->object( $object ) if $object;
 
     return $object->id() if ($object and $object->id());
 
     return undef unless ($object and $object->location());
-    $object->location( $self->check_location( $object->location() ) );
+    $object->location( $self->check_location( $object->location(), $donotchecklocation ) ) ;
     $object->title( $object->location ) unless $object->title();
 
     # check if the same location already exists in the current container
@@ -182,9 +183,10 @@ sub check_location {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $location = shift;
+    my $donotchecklocation = shift;
 
     $location = ( split /[\\|\/]/, $location )[-1];
-    $location = $self->_clean_location( $location );
+    $location = $self->_clean_location( $location ) unless $donotchecklocation;
 
     #my $suffix = $self->object->data_format->suffix();
     #if ( defined $suffix and length $suffix ) {
