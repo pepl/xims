@@ -584,9 +584,11 @@ sub lock {
      </D:lockdiscovery>
    </D:prop>
 EOS
+    # MS-Office apps do not like a <D:timeout> value of 'Infinite', therefore we pass
+    # a reasonable high timeout in seconds...
 
-# MS-Office apps do not like a <D:timeout> value of 'Infinite', therefore we pass
-# a reasonable high timeout in seconds...
+    # Cadaver wants a Lock-Token header...
+    $r->header_out( 'Lock-Token', "<$locktoken>" );
 
     return ($status_code, $response);
 }
