@@ -1403,6 +1403,7 @@ sub clone {
     my $scope_subtree = delete $args{ scope_subtree };
 
     my $target_location = delete $args{ target_location };
+    my $dontcleanlocation = delete $args{ dontcleanlocation };
     my $target_id = delete $args{ target_id };
     my $parent_id = delete $args{ _parent_id };
     my $id_map = delete $args{ _id_map } || {};
@@ -1427,10 +1428,10 @@ sub clone {
             my $parent = XIMS::Object->new( User => $self->User, document_id => $target_id );
             if ( defined $parent and defined $parent->id ) {
                 if ( defined $target_location ) {
-                    $target_location = XIMS::Importer::_clean_location( 1, $target_location ); # *cough*
+                    $target_location = XIMS::Importer::_clean_location( 1, $target_location ) unless $dontcleanlocation; # *cough*
                     my ($oldsuffix) = ($clonedata{ location } =~ /\.([^\.]+)$/);
                     my ($newsuffix) = ($target_location =~ /\.([^\.]+)$/);
-                    if ( length $target_location and $oldsuffix eq $newsuffix ) {
+                    if ( length $target_location and ($dontcleanlocation or $oldsuffix eq $newsuffix) ) {
                         $clonedata{ location } = $target_location;
                     }
                 }
@@ -1583,7 +1584,8 @@ sub copy {
     return $self->clone( User => $user,
                         scope_subtree => 1,
                         target_id => $target_id,
-                        target_location => $args{target_location} );
+                        target_location => $args{target_location},
+                        dontcleanlocation => $args{dontcleanlocation} );
 }
 
 
