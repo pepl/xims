@@ -127,41 +127,37 @@ sub get {
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
     my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    return (404, undef) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::VIEW;
 
-    if ( defined $object ) {
-        if ( $object->object_type->is_fs_container() ) {
-            my @children = $object->children_granted( properties => [ 'location', 'id', 'object_type_id' ], marked_deleted => undef );
-            my $body;
-            my $location;
-            foreach my $child ( @children ) {
-                $location = $child->location();
-                if ( $child->object_type->is_fs_container() ) {
-                    $body .= qq|<a href="./$location/">$location/</a><br>\n|;
-                }
-                else {
-                    $location =~ s{/$}{};
-                    $body .= qq|<a href="./$location">$location</a><br>\n|;
-                }
+    if ( $object->object_type->is_fs_container() ) {
+        my @children = $object->children_granted( properties => [ 'location', 'id', 'object_type_id' ], marked_deleted => undef );
+        my $body;
+        my $location;
+        foreach my $child ( @children ) {
+            $location = $child->location();
+            if ( $child->object_type->is_fs_container() ) {
+                $body .= qq|<a href="./$location/">$location/</a><br>\n|;
             }
-            $r->content_type( 'text/html' );
-            $content = $body;
-            $status_code = 200;
+            else {
+                $location =~ s{/$}{};
+                $body .= qq|<a href="./$location">$location</a><br>\n|;
+            }
         }
-        else {
-            my $charset;
-            if (! ($charset = XIMS::DBENCODING )) { $charset = "UTF-8"; }
-            $r->content_type( $object->data_format->mime_type() . "; charset=$charset" );
-            $content = $object->body();
-            my $t = Time::Piece->strptime( $object->last_modification_timestamp(), "%Y-%m-%d %H:%M:%S" );
-            $r->set_last_modified( $t->epoch );
-            $status_code = 200;
-        }
+        $r->content_type( 'text/html' );
+        $content = $body;
+        $status_code = 200;
     }
     else {
-        $status_code = 404;
+        my $charset;
+        if (! ($charset = XIMS::DBENCODING )) { $charset = "UTF-8"; }
+        $r->content_type( $object->data_format->mime_type() . "; charset=$charset" );
+        $content = $object->body();
+        my $t = Time::Piece->strptime( $object->last_modification_timestamp(), "%Y-%m-%d %H:%M:%S" );
+        $r->set_last_modified( $t->epoch );
+        $status_code = 200;
     }
 
     return ($status_code, $content);
