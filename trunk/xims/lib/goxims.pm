@@ -128,6 +128,10 @@ sub handler {
     # getting interface
     my $interface_type = getInterface( $r );
     return NOT_FOUND unless $interface_type;
+    # The public user should not have the interface 'user'
+    if ( $interface_type eq 'user' and $publicuser ) {
+        return NOT_FOUND;
+    }
 
     #
     # Big fork here
