@@ -70,6 +70,22 @@ sub handler {
 
     $method = lc $method;
 
+    unless ( $method eq 'put' or $method eq 'mkcol' ) {
+        # Slurp in XML body of request (and ignore it for now...)
+        my $ctt;
+        if ( $r->header_in('Content-Length') ) {
+            $r->read( $ctt, $r->header_in( 'Content-Length') );
+            my $p = XML::LibXML->new;
+            eval {
+                my $doc = $p->parse_string($ctt);
+                #warn "xml-in" . $ctt;
+            };
+            if ($@) {
+                return (400, undef);
+            }
+        }
+    }
+
     no strict 'refs';
     my ($status_code, $content) = &{$method}( $r, $user );
     use strict 'refs';
@@ -109,12 +125,6 @@ sub options {
 }
 
 sub proppatch {
-    my $r = shift;
-    # Read in the content to avoid an extra 400
-    my $content;
-    if ( $r->header_in('Content-Length') ) {
-        $r->read( $content, $r->header_in( 'Content-Length') );
-    }
     (403);
 }
 
@@ -355,7 +365,6 @@ sub propfind {
     my $r = shift;
     my $user = shift;
     my $status_code;
-    my $content;
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
@@ -365,19 +374,7 @@ sub propfind {
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::VIEW;
 
-    if ( $r->header_in('Content-Length') ) {
-        $r->read( $content, $r->header_in( 'Content-Length') );
-        my $p = XML::LibXML->new;
-        eval {
-            my $doc = $p->parse_string($content);
-            #warn "xml-in" . $content;
-        };
-        if ($@) {
-            return (400, undef);
-        }
-    }
-
-    # TODO: $doc is currently not checked, "allprop" is assumed
+    # TODO: xml in $doc is currently not checked, "allprop" is assumed
 
     $status_code = 207;
     $r->content_type( 'text/xml; charset="UTF-8"' );
@@ -407,9 +404,9 @@ sub propfind {
         # Filter out "special"-non-GETable object types like URLLink, Questionnaire, ...
         # TODO: filter by object type name
         my @object_type_ids = (1,3,4,5,6,7,8,9,10,19,20,21);
-        #push(@object_type_ids, (2,15)) if $user->admin;
+        push(@object_type_ids, (2,15)) if $user->admin;
         @objects = $object->children_granted( marked_deleted => undef, object_type_id => \@object_type_ids );
-        push @objects, $object;
+        #push @objects, $object;
     }
     else {
         @objects = ($object);
@@ -454,9 +451,9 @@ sub propfind {
         $prop->addChild($getcontentlength);
 
         my $ndisplayname = $dom->createElement("D:displayname");
-        my $displayname = XIMS::encode($o->title());
-        #$displayname =~ s#/#_#g;
-        #my $displayname = $o->location();
+        #my $displayname = XIMS::encode($o->title());
+        my $displayname = $o->location();
+        $displayname =~ s#/#_#g;
         $ndisplayname->appendText($displayname);
         $prop->addChild($ndisplayname);
 
@@ -531,7 +528,6 @@ sub lock {
     my $r = shift;
     my $user = shift;
     my $status_code;
-    my $content;
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
@@ -540,19 +536,6 @@ sub lock {
 
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::WRITE;
-
-    # Slurp in the XML request...
-    if ( $r->header_in('Content-Length') ) {
-        $r->read( $content, $r->header_in( 'Content-Length') );
-        my $p = XML::LibXML->new;
-        eval {
-            my $doc = $p->parse_string($content);
-            #warn "xml-in" . $content;
-        };
-        if ($@) {
-            return (400, undef);
-        }
-    }
 
     # We do not support a Depth header here...
     my $depth = $r->header_in('Depth');
@@ -603,7 +586,6 @@ sub unlock {
     my $r = shift;
     my $user = shift;
     my $status_code;
-    my $content;
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
@@ -757,7 +739,8 @@ sub _tmpsafe {
                                   # A .tmp and an error message still will remain
                                   # when saving, so please open the files
                                   # via http://host/godav/path
-                       qr/^TMP\d+\.tmp$/ # Textpad
+                       qr/^TMP\d+\.tmp$/, # Textpad
+                       qr/^\.*\.swp$/, # vi using DAVFS
                     );
     # qr/~$/
     for ( @tmpregexes ) {
