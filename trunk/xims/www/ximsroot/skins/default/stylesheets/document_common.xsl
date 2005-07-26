@@ -497,22 +497,32 @@
                 <span class="compulsory"><xsl:value-of select="$i18n/l/Location"/></span>
             </td>
             <td>
-                <xsl:choose>
-                    <xsl:when test="substring-after(location, '.html') = '.de' or
-                                    substring-after(location, '.html') = '.en' or
-                                    substring-after(location, '.html') = '.es' or
-                                    substring-after(location, '.html') = '.fr' or
-                                    substring-after(location, '.html') = '.it' or
-                                    substring-after(location, '.html') = '.html'">
-                        <input tabindex="10" type="text" class="text" name="name" size="40" value="{location}"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <!-- strip the suffix -->
-                        <input tabindex="10" type="text" class="text" name="name" size="40"
-                               value="{substring-before(location, concat('.', /document/data_formats/data_format
-                               [@id=/document/context/object/data_format_id]/suffix))}"/>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <!-- strip the suffix -->
+                <input tabindex="10" type="text" name="name" size="40">
+                    <xsl:choose>
+                        <xsl:when test="published = '1'">
+                            <xsl:attribute name="readonly">readonly</xsl:attribute>
+                            <xsl:attribute name="class">readonlytext</xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="class">text</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="substring-after(location, '.html') = '.de' or
+                                        substring-after(location, '.html') = '.en' or
+                                        substring-after(location, '.html') = '.es' or
+                                        substring-after(location, '.html') = '.fr' or
+                                        substring-after(location, '.html') = '.it' or
+                                        substring-after(location, '.html') = '.html'">
+                            <xsl:attribute name="value"><xsl:value-of select="location"/></xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="value"><xsl:value-of select="substring-before(location, concat('.', /document/data_formats/data_format
+                       [@id=/document/context/object/data_format_id]/suffix))"/></xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </input>
                 <xsl:text>&#160;</xsl:text>
                 <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
             </td>

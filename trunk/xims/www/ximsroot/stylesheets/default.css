@@ -936,7 +936,7 @@ p.footertext {
 
 /* formating forms */
 
-input.text {
+input.text, input.readonlytext {
 	visible:false;
 	border-top:#333333 solid 1px;
 	border-bottom:#333333 solid 1px;
@@ -944,6 +944,10 @@ input.text {
 	border-left:#333333 solid 1px;
 	font-size:10pt;
 	font-family:verdana, helvetica, sans-serif;
+}
+
+input.readonlytext {
+	background-color: #cccccc;
 }
 
 textarea.text {

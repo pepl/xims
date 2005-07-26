@@ -270,13 +270,29 @@
 </xsl:template>
 
 <xsl:template name="tr-location-edit">
+    <xsl:variable name="objecttype">
+        <xsl:value-of select="object_type_id"/>
+    </xsl:variable>
+    <xsl:variable name="publish_gopublic">
+        <xsl:value-of select="/document/object_types/object_type[@id=$objecttype]/publish_gopublic"/>
+    </xsl:variable>
     <tr>
         <td valign="top">
             <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
             <span class="compulsory"><xsl:value-of select="$i18n/l/Location"/></span>
         </td>
         <td>
-            <input tabindex="10" type="text" name="name" size="40" value="{location}" class="text"/>
+            <input tabindex="10" type="text" name="name" size="40" value="{location}">
+                <xsl:choose>
+                    <xsl:when test="$publish_gopublic = '0' and published = '1'">
+                        <xsl:attribute name="readonly">readonly</xsl:attribute>
+                        <xsl:attribute name="class">readonlytext</xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="class">text</xsl:attribute>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </input>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         </td>
