@@ -48,13 +48,11 @@ sub event_store {
     XIMS::Debug( 5, "called" );
 
     my $img_fh = $self->upload( 'imagefile' );
-
-
     if ( length $img_fh ) {
         my $target_location = $self->param('imagefolder');
         my $img_target = XIMS::Object->new( path => $target_location );
 
-        if ( defined( $img_target )) {
+        if ( defined $img_target ) {
             XIMS::Debug( 4, "Creating Image object for new NewsItem" );
             my $img_obj = XIMS::Image->new( User => $ctxt->session->user() );
             $img_obj->parent_id( $img_target->document_id() );
@@ -87,19 +85,14 @@ sub event_store {
                 $img_obj->title( $image_title );
             }
 
-            my $image_description = $self->param('imagedescription');
-            if ( defined $image_description and length $image_description and $image_description !~ /^\s+$/ ) {
-                if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+            my $image_description = $self->param( 'imagedescription' );
+            # check if a valid image_description is given
+            if ( defined $image_description and (length $image_description and $image_description !~ /^\s+$/ or not length $image_description) ) {
+                if ( length $image_description and XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
                     $image_description = XIMS::decode($image_description);
                 }
-                if ( $img_obj->abstract( $image_description ) ) {
-                    XIMS::Debug( 6, "image description set, len: " . length($image_description) );
-                }
-                else {
-                    XIMS::Debug( 2, "could not form well" );
-                    $self->sendError( $ctxt, "Image description could not be well-balanced" );
-                    return 0;
-                }
+                XIMS::Debug( 6, "image_description, len: " . length($image_description) );
+                $img_obj->abstract( $image_description );
             }
 
             XIMS::Debug( 4, "reading from filehandle");

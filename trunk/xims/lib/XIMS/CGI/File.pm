@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -56,13 +56,7 @@ sub event_store {
     $ctxt->properties->application->keepsuffix( 1 );
 
     # set the location parameter, so init_store_object sets the right location
-    # do not override existing locations
-    # the following code prevents changing location of existing files. this should
-    # possible for unpublished files.
-    if ( not defined $ctxt->parent() ) {
-        $self->param( name => $ctxt->object->location() );
-    }
-    else {
+    if ( defined $ctxt->parent() ) {
         $self->param( name => $self->param( 'file' ) );
     }
 

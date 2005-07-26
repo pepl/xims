@@ -685,10 +685,6 @@ sub init_store_object {
     my $object = $ctxt->object();
     my $parent;
     my $location   = $self->param( 'name' ); # is somehow xml-escaped magically by libxml2 (???)
-    my $title      = $self->param( 'title' );
-    my $markednew  = $self->param( 'markednew' );
-    my $keywords   = $self->param( 'keywords' );
-    my $image      = $self->param( 'image' );
 
     # $location will be part of the URI, converting to iso-8859-1 is
     # a first step before clean_location() to ensure browser compatibility
@@ -697,9 +693,14 @@ sub init_store_object {
     # will be undef if string can not be converted to iso-8859-1
     $location = $converter->convert($location) if defined $location;
 
+    my $title    = $self->param( 'title' );
+    my $keywords = $self->param( 'keywords' );
+    my $abstract = $self->param( 'abstract' );
+
     if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-        $title = XIMS::decode($title) if defined $title;
-        $keywords = XIMS::decode($keywords) if defined $keywords;
+        $title = XIMS::decode($title) if (defined $title and length $title);
+        $keywords = XIMS::decode($keywords) if (defined $keywords and length $keywords);
+        $abstract = XIMS::decode($abstract) if (defined $abstract and length $abstract);
     }
 
     if ( $object and $object->id() and length $self->param( 'id' ) ) {
@@ -776,6 +777,7 @@ sub init_store_object {
     $location_nosuffix =~ s/\.[^\.]+$// unless $ctxt->properties->application->preservelocation();
     $object->title( $title || $location_nosuffix );
 
+    my $markednew  = $self->param( 'markednew' );
     if ( defined $markednew ) {
         XIMS::Debug( 6, "markednew: $markednew" );
         if ( $markednew eq 'true' ) {
@@ -786,124 +788,146 @@ sub init_store_object {
         }
     }
 
-    if ( defined $keywords and length $keywords > 0 and $keywords !~ /^\s+$/ ) {
+    if ( defined $keywords ) {
         XIMS::Debug( 6, "keywords: $keywords" );
         $object->keywords( $keywords );
     }
 
-    my $abstract = $self->param( 'abstract' );
-    if ( defined $abstract and length $abstract and $abstract !~ /^\s+$/ ) {
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $abstract = XIMS::decode($abstract);
-        }
-        if ( $object->abstract( $abstract ) ) {
-            XIMS::Debug( 6, "abstract set, len: " . length($abstract) );
-        }
-        else {
-            XIMS::Debug( 2, "could not form well" );
-            $self->sendError( $ctxt, $XIMS::CGI::MSG[7] );
-            return 0;
-        }
+    # check if a valid abstract is given
+    if ( defined $abstract and (length $abstract and $abstract !~ /^\s+$/ or not length $abstract) ) {
+        XIMS::Debug( 6, "abstract, len: " . length($abstract) );
+        $object->abstract( $abstract );
     }
 
-    if ( defined $image and length $image ) {
+    my $image = $self->param( 'image' );
+    if ( defined $image ) {
         XIMS::Debug( 6, "image: $image" );
-        my $imageobj;
-        if ( $image =~ /^\d+$/
-             and $imageobj = XIMS::Object->new( id => $image )
-             and $imageobj->object_type->name() eq 'Image' ) {
-            $object->image_id( $imageobj->id() );
-        }
-        elsif ( $imageobj = XIMS::Object->new( path => $image )
-             and $imageobj->object_type->name() eq 'Image' ) {
-            $object->image_id( $imageobj->id() );
+        if ( length $image ) {
+            my $imageobj;
+            if ( $image =~ /^\d+$/
+                 and $imageobj = XIMS::Object->new( id => $image )
+                 and $imageobj->object_type->name() eq 'Image' ) {
+                $object->image_id( $imageobj->id() );
+            }
+            elsif ( $imageobj = XIMS::Object->new( path => $image )
+                 and $imageobj->object_type->name() eq 'Image' ) {
+                $object->image_id( $imageobj->id() );
+            }
+            else {
+                XIMS::Debug( 3, "could not set image_id" );
+            }
         }
         else {
-            XIMS::Debug( 3, "could not set image_id" );
+            $object->image_id( undef );
         }
     }
 
     my $stylesheet = $self->param( 'stylesheet' );
-    if ( defined $stylesheet and length $stylesheet ) {
+    if ( defined $stylesheet ) {
         XIMS::Debug( 6, "stylesheet: $stylesheet" );
-        my $styleobj;
-        if ( $stylesheet =~ /^\d+$/
-             and $styleobj = XIMS::Object->new( id => $stylesheet )
-             and ( $styleobj->object_type->name() eq 'XSLStylesheet'
-                   or $styleobj->object_type->name() eq 'Folder' )
-                 ) {
-            $object->style_id( $styleobj->id() );
-        }
-        elsif ( $styleobj = XIMS::Object->new( path => $stylesheet )
-             and ( $styleobj->object_type->name() eq 'XSLStylesheet'
-                   or $styleobj->object_type->name() eq 'Folder' )
-                 ) {
-            $object->style_id( $styleobj->id() );
+        if ( length $stylesheet ) {
+            my $styleobj;
+            if ( $stylesheet =~ /^\d+$/
+                 and $styleobj = XIMS::Object->new( id => $stylesheet )
+                 and ( $styleobj->object_type->name() eq 'XSLStylesheet'
+                       or $styleobj->object_type->name() eq 'Folder' )
+                     ) {
+                $object->style_id( $styleobj->id() );
+            }
+            elsif ( $styleobj = XIMS::Object->new( path => $stylesheet )
+                 and ( $styleobj->object_type->name() eq 'XSLStylesheet'
+                       or $styleobj->object_type->name() eq 'Folder' )
+                     ) {
+                $object->style_id( $styleobj->id() );
+            }
+            else {
+                XIMS::Debug( 3, "could not set style_id" );
+            }
         }
         else {
-            XIMS::Debug( 3, "could not set style_id" );
+            $object->style_id( undef );
         }
     }
 
     my $schema = $self->param( 'schema' );
-    if ( defined $schema and length $schema ) {
+    if ( defined $schema ) {
         XIMS::Debug( 6, "schema: $schema" );
-        my $schemaobj;
-        if ( $schema =~ /^\d+$/
-             and $schemaobj = XIMS::Object->new( id => $schema )
-             and ( $schemaobj->object_type->name() eq 'XML' ) ) {
-            $object->schema_id( $schemaobj->id() );
-        }
-        elsif ( $schemaobj = XIMS::Object->new( path => $schema )
-             and ( $schemaobj->object_type->name() eq 'XML' ) ) {
-            $object->schema_id( $schemaobj->id() );
+        if ( length $schema ) {
+            my $schemaobj;
+            if ( $schema =~ /^\d+$/
+                 and $schemaobj = XIMS::Object->new( id => $schema )
+                 and ( $schemaobj->object_type->name() eq 'XML' ) ) {
+                $object->schema_id( $schemaobj->id() );
+            }
+            elsif ( $schemaobj = XIMS::Object->new( path => $schema )
+                 and ( $schemaobj->object_type->name() eq 'XML' ) ) {
+                $object->schema_id( $schemaobj->id() );
+            }
+            else {
+                XIMS::Debug( 3, "could not set schema_id" );
+            }
         }
         else {
-            XIMS::Debug( 3, "could not set schema_id" );
+            $object->schema_id( undef );
         }
     }
 
     my $css = $self->param( 'css' );
-    if ( defined $css and length $css ) {
+    if ( defined $css ) {
         XIMS::Debug( 6, "css: $css" );
-        my $cssobj;
-        if ( $css =~ /^\d+$/
-             and $cssobj = XIMS::Object->new( id => $css )
-             and ( $cssobj->object_type->name() eq 'CSS' ) ) {
-            $object->css_id( $cssobj->id() );
-        }
-        elsif ( $cssobj = XIMS::Object->new( path => $css )
-                and ( $cssobj->object_type->name() eq 'CSS' ) ) {
-            $object->css_id( $cssobj->id() );
+        if ( length $css ) {
+            my $cssobj;
+            if ( $css =~ /^\d+$/
+                 and $cssobj = XIMS::Object->new( id => $css )
+                 and ( $cssobj->object_type->name() eq 'CSS' ) ) {
+                $object->css_id( $cssobj->id() );
+            }
+            elsif ( $cssobj = XIMS::Object->new( path => $css )
+                    and ( $cssobj->object_type->name() eq 'CSS' ) ) {
+                $object->css_id( $cssobj->id() );
+            }
+            else {
+                XIMS::Debug( 3, "Could not set css_id" );
+            }
         }
         else {
-            XIMS::Debug( 3, "Could not set css_id" );
+            $object->css_id( undef );
         }
     }
 
     my $valid_from = $self->param( 'valid_from_timestamp' );
-    if ( defined $valid_from and length $valid_from ) {
-        eval { $valid_from = Time::Piece->strptime( $valid_from, "%Y-%m-%d %H:%M" ); };
-        if ( not $@ ) {
-            $valid_from = $valid_from->ymd() . ' ' . $valid_from->hms();
-            XIMS::Debug( 6, "valid_from: $valid_from" );
-            $object->valid_from_timestamp( $valid_from );
+    if ( defined $valid_from ) {
+        XIMS::Debug( 6, "valid_from: $valid_from" );
+        if ( length $valid_from ) {
+            eval { $valid_from = Time::Piece->strptime( $valid_from, "%Y-%m-%d %H:%M" ); };
+            if ( not $@ ) {
+                $valid_from = $valid_from->ymd() . ' ' . $valid_from->hms();
+                $object->valid_from_timestamp( $valid_from );
+            }
+            else {
+                XIMS::Debug( 3, "Invalid timestamp for valid_from '$valid_from', need a ISO8601 string" );
+            }
         }
         else {
-            XIMS::Debug( 3, "Invalid timestamp for valid_from '$valid_from', need a ISO8601 string" );
+            $object->valid_from_timestamp( undef );
         }
     }
 
     my $valid_to = $self->param( 'valid_to_timestamp' );
-    if ( defined $valid_to and length $valid_to ) {
-        eval { $valid_to = Time::Piece->strptime( $valid_from, "%Y-%m-%d %H:%M" ); };
-        if ( not $@ ) {
-            $valid_to = $valid_to->ymd() . ' ' . $valid_to->hms();
-            XIMS::Debug( 6, "valid_to: $valid_to" );
-            $object->valid_to_timestamp( $valid_to );
+    if ( defined $valid_to ) {
+        XIMS::Debug( 6, "valid_to: $valid_to" );
+        if ( length $valid_to ) {
+            eval { $valid_to = Time::Piece->strptime( $valid_from, "%Y-%m-%d %H:%M" ); };
+            if ( not $@ ) {
+                $valid_to = $valid_to->ymd() . ' ' . $valid_to->hms();
+                $object->valid_to_timestamp( $valid_to );
+            }
+            else {
+                XIMS::Debug( 3, "Invalid timestamp for valid_to '$valid_to', need a ISO8601 string" );
+            }
         }
         else {
-            XIMS::Debug( 3, "Invalid timestamp for valid_to '$valid_to', need a ISO8601 string" );
+            $object->valid_to_timestamp( undef );
         }
     }
 
