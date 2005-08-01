@@ -185,7 +185,7 @@
 
             function setSel(selObj, toselect) {
                 if ( !toselect )
-                    toselect = 'htmlarea';
+                    toselect = 'plain';
                 toselect = toselect.toLowerCase();
                 opts=selObj.options,
                 i=opts.length;
