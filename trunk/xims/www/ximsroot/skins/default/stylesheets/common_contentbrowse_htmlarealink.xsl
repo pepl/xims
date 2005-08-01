@@ -48,28 +48,38 @@
 <xsl:template name="scripts">
     <script type="text/javascript">
         <![CDATA[
+        var agt = navigator.userAgent.toLowerCase();
+        var is_ie = ((agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1));
+        var gotselection;
+
         var objQuery = new Object();
         var selectedText;
         var selectedHTML;
         var strQuery = location.search.substring(1);
         var aryQuery = strQuery.split(";");
         var pair = [];
-        for (var i = 0; i < aryQuery.length; i++) {
+        for ( var i = 0; i < aryQuery.length; i++ ) {
             pair = aryQuery[i].split("=");
-            if (pair.length == 2)
-            {
+            if ( pair.length == 2 ) {
                 objQuery[unescape(pair[0])] = unescape(pair[1]);
             }
-
         }
 
         function loadselectedtext() {
-            //var selectedText = window.opener.editor.getSelectedHTML();
             var sel = window.opener.editor._getSelection();
             var range = window.opener.editor._createRange(sel);
-            var selectedText = range.text;
-            if ( typeof selectedText != "undefined" && selectedText.length > 0 ) {
-                document.selectform.linktext.value = selectedText;
+            if ( is_ie ) {
+                var selectedText = range.text;
+                if ( typeof selectedText != "undefined" && selectedText.length > 0 ) {
+                    document.selectform.linktext.value = selectedText;
+                }
+            }
+            else {
+                document.selectform.linktext.value = range;
+            }
+
+            if ( document.selectform.linktext.value.length > 0 ) {
+                gotselection = true;
             }
         }
 
@@ -80,7 +90,7 @@
             else if (document.selectform.linktext.value == '') {
                 alert("Your hyperlink text is blank and would create an empty link.");
             }
-            else{
+            else {
                 var hyperlinkvalue;
                 var pastevalue;
                 var targetvalue;
@@ -112,7 +122,9 @@
       ]]>
                 document.selectform.httpLink.value=target;
             }
-            document.selectform.linktext.value=linktext;
+            if ( !gotselection ) {
+                document.selectform.linktext.value=linktext;
+            }
         }
         function createThumbs() {}
     </script>
