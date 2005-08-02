@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -336,6 +336,7 @@ sub event_vlsearch {
     my $user = $ctxt->session->user();
     my $search = $self->param('vls');
     my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
     my $rowlimit = 5;
     $offset = $offset * $rowlimit;
 
@@ -353,18 +354,17 @@ sub event_vlsearch {
             return 0;
         }
 
-        my $qb = $qbdriver->new( { search => $search, allowed => q{\!a-zA-Z0-9Ã¶Ã¤Ã¼ÃŸÃ–Ã„ÃœÃŸ%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} } );
-
-        # refactor! build() should not be needed and only $qb should be passed
+        use encoding "latin-1";
+        my $allowed = XIMS::decode( q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} );
+        my $qb = $qbdriver->new( { search => $search, allowed => $allowed, fieldstolookin => [qw(title abstract body)] } );
 
         #'# just for emacs' font-lock...
-        my $qbr = $qb->build( [qw(title abstract body)] );
-        if ( defined $qbr->{criteria} and length $qbr->{criteria} ) {
+        if ( defined $qb ) {
             my %param = (
-                        criteria => $qbr->{criteria},
+                        criteria => $qb->criteria,
                         limit => $rowlimit,
                         offset => $offset,
-                        order => $qbr->{order},
+                        order => $qb->order,
                         start_here => $ctxt->object(),
                         );
             my @objects = $ctxt->object->find_objects_granted( %param );
@@ -373,7 +373,7 @@ sub event_vlsearch {
                 $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
-                %param = ( criteria => $qbr->{criteria}, start_here => $ctxt->object() );
+                %param = ( criteria => $qb->criteria, start_here => $ctxt->object() );
                 my $count = $ctxt->object->find_objects_granted_count( %param );
                 my $message = "Query returned $count objects.";
                 $message .= " Displaying objects " . ($offset+1) if $count >= $rowlimit;
@@ -402,9 +402,12 @@ sub event_most_recent {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my %param = ( limit => 5, order => 'last_modification_timestamp DESC' );
+    my %param = ( order => 'last_modification_timestamp DESC' );
     if ( $self->param('mn') ) {
         $param{marked_new} = 1;
+    }
+    else {
+        $param{limit} = 5;
     }
 
     my @objects = $ctxt->object->children_granted( %param );

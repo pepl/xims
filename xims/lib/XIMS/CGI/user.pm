@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id $
@@ -73,10 +73,17 @@ sub event_default {
         return 0;
     }
 
-    my $qb = $qbdriver->new( { search => "u:".$ctxt->session->user->name() } );
-    my $qbr = $qb->build();
-    if ( defined $qbr ) {
-        my @lmuobjects = $object->find_objects_granted( criteria => $qbr->{criteria} . " AND title <> '.diff_to_second_last'",
+    my $search = "u:".$ctxt->session->user->name();
+
+    # Make sure the utf8 flag is turned on, since it may not depending on the DBD driver version
+    if ( not XIMS::DBENCODING() ) {
+        require Encode;
+        Encode::_utf8_on($search);
+    }
+
+    my $qb = $qbdriver->new( { search => $search } );
+    if ( defined $qb ) {
+        my @lmuobjects = $object->find_objects_granted( criteria => $qb->criteria . " AND title <> '.diff_to_second_last'",
                                                         limit => 5,
                                                       );
         $ctxt->userobjectlist( \@lmuobjects );

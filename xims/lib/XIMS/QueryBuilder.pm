@@ -1,30 +1,35 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::QueryBuilder;
 
 use strict;
-use vars qw($VERSION);
+use warnings;
 
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 ##
 #
 # SYNOPSIS
-#    $qb = XIMS::QueryBuilder->new( { search => $search, [ allowed => $to_be_qr-compiled_string_of_allowed_chars] );
+#    $qb = XIMS::QueryBuilder->new( { search => $search,
+#                                   [ allowed => $to_be_qr-compiled_string_of_allowed_chars,]
+#                                   [ fieldstolookin => [qw(title abstract body)] ] } );
 #
 # PARAMETERS
-#    search: the search string
-#    allowed: string of allowed chars that are filtered; chars like '/','(','-',... have to be escaped
-#    because this string is to be compiled with qr// and used in a /[^$allowed ]/ regex construct
+#    search                    : The search string
+#    allowed        (optional  : String of allowed chars that are filtered; chars like '/','(','-',... have to be escaped
+#                                because this string is compiled with qr// and used in a /[^$allowed ]/ regex construct
+#    fieldstolookin (optional) : Array-ref of SQL-field names to be explicitly looked in (e.g. field:value) resulting
+#                                in a SQL-condition similar to 'AND field LIKE '%value%'
+#
 #
 # RETURNS
-#    returns the query-builder-instance
+#    An instance of XIMS::QueryBuilder with a 'criteria' property on success, undef on failure
 #
 # DESCRIPTION
 #
-#
+# Builds SQL search criteria out of a search string. Search syntax and search macros are described in the XIMS User's Reference
 #
 sub new {
     XIMS::Debug( 5, 'called');
@@ -40,7 +45,8 @@ sub new {
         else {
             $search = _search_arrayref( _clean_search_string( $args->{search} ) );
         }
-        $self = bless { search => $search, }, $class;
+        $self = bless { search => $search, fieldstolookin => $args->{fieldstolookin} }, $class;
+        $self->_build() ? return $self : return undef;
     }
 
     return $self;

@@ -2057,8 +2057,12 @@ sub event_search {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    # if we are coming from a different interface (e.g. defaultboomark or user(s)) we have to check for that here
-    return $self->event_access_denied( $ctxt ) unless $ctxt->object();
+    # if we are coming from a different interface (e.g. user(s)) we have to check for that here
+    if ( not $ctxt->object() ) {
+        # reuse code
+        require XIMS::CGI::defaultbookmark;
+        return XIMS::CGI::defaultbookmark::redirToDefault( $self, $ctxt );
+    }
 
     my $user = $ctxt->session->user();
     my $search = XIMS::decode($self->param('s'));
@@ -2102,19 +2106,23 @@ sub event_search {
             return 0;
         }
 
-        my $allowed = XIMS::Encode( q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} );
-        my $qb = $qbdriver->new( { search => $search, allowed => $allowed } );
+        # Make sure the utf8 flag is turned on for handling the allowed chars regex
+        if ( not XIMS::DBENCODING() ) {
+            require Encode;
+            Encode::_utf8_on($search);
+        }
 
-        # refactor! build() should not be needed and only $qb should be passed
+        use encoding "latin-1";
+        my $allowed = XIMS::decode( q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} );
+        my $qb = $qbdriver->new( { search => $search, allowed => $allowed, fieldstolookin => [qw(title abstract keywords body)] } );
 
         #'# just for emacs' font-lock...
-        my $qbr = $qb->build( [qw(title abstract keywords body)] );
-        if ( defined $qbr->{criteria} and length $qbr->{criteria} ) {
+        if ( defined $qb ) {
             my %param = (
-                        criteria => $qbr->{criteria} . " AND title <> '.diff_to_second_last'",
+                        criteria => $qb->criteria . " AND title <> '.diff_to_second_last'",
                         limit => $rowlimit,
                         offset => $offset,
-                        order => $qbr->{order},
+                        order => $qb->order,
                         );
             $param{start_here} = $ctxt->object() if $self->param('start_here');
 
@@ -2124,7 +2132,7 @@ sub event_search {
                  $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
-                %param = ( criteria => $qbr->{criteria} . " AND title <> '.diff_to_second_last'" );
+                %param = ( criteria => $qb->criteria . " AND title <> '.diff_to_second_last'" );
                 $param{start_here} = $ctxt->object() if $self->param('start_here');
                 my $count = $ctxt->object->find_objects_granted_count( %param );
                 my $message = "Query returned $count objects.";

@@ -1,51 +1,46 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #$Id$
-
 package XIMS::QueryBuilder::OracleInterMedia;
 
 use strict;
-use vars qw($VERSION @ISA);
+use warnings;
 
-@ISA = ('XIMS::QueryBuilder');
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
-use XIMS::QueryBuilder;
+use base 'XIMS::QueryBuilder';
+use XIMS::User;
 
 ##
 #
 # SYNOPSIS
-#    $qb->build( $fieldstolookin );
+#    $qb->_build();
 #
 # PARAMETER
-#    $fieldstolookin : array-ref of SQL-field names to be explicitly be able to look in
-#                      like field:value for example, which will results in an SQL-condition
-#                      similar to 'AND field LIKE '%value%'
+#    none
 #
 # RETURNS
-#    hash-ref containing the following keys:
-#    properties => list of content object properties to be retrieved
-#    criteria => search criteria to be ANDed to a WHERE-clause:
+#    1 on success, undef on failure
 #
 # DESCRIPTION
 #
+# Helper method that fills up $self->{criteria}, $self->{properties}, and $self->{order} on success
 #
-sub build {
+#
+sub _build {
     XIMS::Debug( 5, "called" );
-
     my $self = shift;
-    my $fieldstolookin = shift;
+    my $fieldstolookin = $self->{fieldstolookin};
     my $search = $self->{search};
+
     my @IMsearch;
-    my @search;
+
     my $bol;
     my $foundmacro = 0;
 
-    my %retval;
-
-    # avoid too complex queries
-    return unless ( scalar(@{$search}) < 10 );
+    use encoding "latin-1";
+    my $allowedusernamechars = XIMS::decode( '-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_' );
 
     for ( my $i = 0; $i <= scalar(@{$search})-1; $i++ ) {
         # handle fieldbased-searches first
@@ -106,8 +101,8 @@ sub build {
             $foundmacro++;
         }
         # unfortunately, \w does not match the non-ascii-chars here on most setups - therefore
-        # we resort to allow some lower-cased non-ascii latin1 chars...
-        elsif ( $search->[$i] =~ s/^o:([-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_]+)$/$1/ ) {
+        # we resort to allow some lower-cased non-ascii chars...
+        elsif ( $search->[$i] =~ s/^o:([$allowedusernamechars ]+)$/$1/ ) {
             # 'o:x' find object by OWNER
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
@@ -115,7 +110,7 @@ sub build {
             $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
             $foundmacro++;
         }
-        elsif ( $search->[$i] =~ s/^c:([-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_]+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^c:([$allowedusernamechars ]+)$/$1/ ) {
             # 'c:x' find object by CREATOR
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
@@ -123,7 +118,7 @@ sub build {
             $search->[$i] = $bol . "ci_content.created_by_id = " . $search->[$i];
             $foundmacro++;
         }
-        elsif ( $search->[$i] =~ s/^u:([-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_]+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^u:([$allowedusernamechars ]+)$/$1/ ) {
             # 'u:x' find object by CREATOR or MODIFIER
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
@@ -142,25 +137,30 @@ sub build {
 
     # hard work done, compose search-condition-string
     if ( scalar @IMsearch > 0 ) {
-        $retval{criteria} = "( CONTAINS ( mci, \'( ( ( (" . join( ' ', @IMsearch ) . " ) within title ) * 2 )" .
-                                               " OR ( ( (" . join( ' ', @IMsearch ) . " ) within author ) * 0.5 )" .
-                                               " OR ( ( (" . join( ' ', @IMsearch ) . " ) within keywords ) * 0.5 )" .
-                                               " OR ( ( (" . join( ' ', @IMsearch ) . " ) within body ) * 0.1 )" .
-                                               " OR ( ("   . join( ' ', @IMsearch ) . " )  * 0.1) )\', 1 ) > 0 )";
+        # The following query relies on a Oracle Text Index and a basic section group to be configured for ci_content.
+        # Instructions on how to that can be found at $xims_home/sql/Oracle/OracleInterMedia.txt
+        #
+        $self->{criteria} = "( CONTAINS ( mci, \'( ( ( (" . join( ' ', @IMsearch ) . " ) within title ) * 6 )" .
+                                               " OR ( ( (" . join( ' ', @IMsearch ) . " ) within keywords ) * 4 )" .
+                                               " OR ( ( (" . join( ' ', @IMsearch ) . " ) within abstract ) * 3 )" .
+                                               " OR ( ( (" . join( ' ', @IMsearch ) . " ) within author ) * 2 )" .
+                                               " OR ( ( " . join( ' ', @IMsearch ) . " ) within body )" .
+                                               " OR ( "   . join( ' ', @IMsearch ) . " ) )\', 1 ) > 0 )";
 
-        $retval{properties} = [ 'document_id', 'id', 'location', 'title', 'object_type_id', 'data_format_id', 'attributes',
+        $self->{properties} = [ 'document_id', 'id', 'location', 'title', 'object_type_id', 'data_format_id', 'attributes',
                              'abstract', 'last_modification_timestamp', 'creation_timestamp', 'last_publication_timestamp', 'language_id', 'published',
                              'marked_new', 'locked_by_id', 'locked_time', 'lob_length', 'score(1) s' ];
-        $retval{order} = "score(1) DESC";
+        $self->{order} = "score(1) DESC";
+
+        return 1;
     }
     elsif ( $foundmacro > 0 or scalar @{$fieldstolookin} > 0 ) {
-        $retval{criteria} = '(' . join(' ', @{$search}) . ')';
+        $self->{criteria} = '(' . join(' ', @{$search}) . ')';
+        return 1;
     }
     else {
         return undef;
     }
-
-    return \%retval;
 }
 
 1;
