@@ -1,47 +1,45 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-
 #$Id$
 package XIMS::QueryBuilder::Oracle;
 
 use strict;
-use vars qw($VERSION @ISA);
+use warnings;
 
-@ISA = ('XIMS::QueryBuilder');
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
-use XIMS::QueryBuilder;
+use base 'XIMS::QueryBuilder';
 use XIMS::User;
 
 ##
 #
 # SYNOPSIS
-#    $qb->build( $fieldstolookin );
+#    $qb->_build();
 #
 # PARAMETER
-#    $fieldstolookin : array-ref of SQL-field names to be explicitly be able to look in
-#                      like field:value for example, which will results in an SQL-condition
-#                      similar to 'AND field LIKE '%value%'
+#    none
 #
 # RETURNS
-#    hash-ref containing the following keys:
-
-#    criteria => search criteria to be ANDed to a WHERE-clause:
+#    1 on success, undef on failure
 #
 # DESCRIPTION
 #
+# Helper method that fills up $self->{criteria}, $self->{properties}, and $self->{order} on success
 #
-sub build {
+#
+sub _build {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-    my $fieldstolookin = shift;
-
+    my $fieldstolookin = $self->{fieldstolookin};
     my $search = $self->{search};
-    my %retval;
 
     my $bol;
     my $foundmacro = 0;
+
+    use encoding "latin-1";
+    my $allowedusernamechars = XIMS::decode( '-A-Za-z0-9צהü‗אבגדוזטחיךכלםמןנסעףפץרשתû‎ÿ_' );
+
     for ( my $i = 0; $i <= scalar(@{$search})-1; $i++ ) {
         # handle fieldbased-searches first
         my $is_field;
@@ -101,7 +99,7 @@ sub build {
         }
         # unfortunately, \w does not match the non-ascii-chars here on most setups - therefore
         # we resort to allow some lower-cased non-ascii latin1 chars...
-        elsif ( $search->[$i] =~ s/^o:([-A-Za-z0-9צהü‗אבגדוזטחיךכלםמןנסעףפץרשתû‎ÿ_]+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^o:([$allowedusernamechars ]+)$/$1/ ) {
             # 'o:x' find object by OWNER
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
@@ -109,7 +107,7 @@ sub build {
             $search->[$i] = $bol . "ci_content.owned_by_id = " . $search->[$i];
             $foundmacro++;
         }
-        elsif ( $search->[$i] =~ s/^c:([-A-Za-z0-9צהü‗אבגדוזטחיךכלםמןנסעףפץרשתû‎ÿ_]+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^c:([$allowedusernamechars ]+)$/$1/ ) {
             # 'c:x' find object by CREATOR
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
@@ -117,7 +115,7 @@ sub build {
             $search->[$i] = $bol . "ci_content.created_by_id = " . $search->[$i];
             $foundmacro++;
         }
-        elsif ( $search->[$i] =~ s/^u:([-A-Za-z0-9צהü‗אבגדוזטחיךכלםמןנסעףפץרשתû‎ÿ_]+)$/$1/ ) {
+        elsif ( $search->[$i] =~ s/^u:([$allowedusernamechars ]+)$/$1/ ) {
             # 'u:x' find object by CREATOR or MODIFIER
             my $user = XIMS::User->new( name => $search->[$i] );
             $search->[$i] = $user ? $user->id() : -1; # if we cannot resolve the username use an invalid id
@@ -145,13 +143,12 @@ sub build {
 
     # hard work done, compose search-condition-string
     if ( $foundmacro > 0 or scalar @{$fieldstolookin} > 0 ) {
-        $retval{criteria} = '(' . join(' ', @{$search}) . ')';
+        $self->{criteria} = '(' . join(' ', @{$search}) . ')';
+        return 1;
     }
     else {
         return undef;
     }
-
-    return \%retval;
 }
 
 1;
