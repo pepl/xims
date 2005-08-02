@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -38,7 +38,7 @@
                         <th>Die <xsl:value-of select="count(/document/objectlist/object)"/> zuletzt geänderten Objekte</th>
                     </tr>
                     <tr>
-                        <td>
+                        <td valign="top">
                             <xsl:choose>
                                 <xsl:when test="/document/userobjectlist/objectlist/object">
                                     <xsl:apply-templates select="/document/userobjectlist/objectlist"/>
@@ -48,7 +48,7 @@
                                 </xsl:otherwise>
                             </xsl:choose>
                         </td>
-                        <td>
+                        <td valign="top">
                             <xsl:choose>
                                 <xsl:when test="/document/objectlist/object">
                                     <xsl:apply-templates select="/document/objectlist"/>

@@ -268,7 +268,17 @@
 
 <xsl:template name="header.cttobject.search">
     <xsl:variable name="Search" select="$i18n/l/Search"/>
-    <form style="margin-bottom: 0;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="quicksearch">
+    <form style="margin-bottom: 0;" method="GET" name="quicksearch">
+        <xsl:attribute name="action">
+            <xsl:choose>
+                <xsl:when test="$absolute_path != ''">
+                    <xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="concat($xims_box,$goxims,'/user')"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:attribute>
         <td width="182" align="right">
             <table width="100%" border="0" height="42" background="{$skimages}subheader-generic_bg.png" cellpadding="0" cellspacing="0">
                 <tr>
