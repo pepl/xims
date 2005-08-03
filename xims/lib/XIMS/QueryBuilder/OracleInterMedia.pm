@@ -50,7 +50,7 @@ sub _build {
 
             if ( $search->[$i] =~ s/^$field://i ) {
                 $bol = $self->search_boolean( $search, $i );
-                $search[$i] = $bol . "LOWER($field) LIKE '%". lc($search->[$i]) . "%'" ;
+                $search->[$i] = $bol . "LOWER($field) LIKE '%". lc($search->[$i]) . "%'" ;
                 $is_field++;
             }
         }
@@ -61,7 +61,7 @@ sub _build {
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp)";
-            $retval{order} = "last_modification_timestamp DESC";
+            $self->{order} = "last_modification_timestamp DESC";
             $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^m:(\d*)$/$1/ ) {
@@ -69,7 +69,7 @@ sub _build {
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(last_modification_timestamp) AND ci_content.marked_new = 1";
-            $retval{order} = "last_modification_timestamp DESC";
+            $self->{order} = "last_modification_timestamp DESC";
             $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^N:(\d*)$/$1/ ) {
@@ -77,7 +77,7 @@ sub _build {
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol . $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp)";
-            $retval{order} = "creation_timestamp DESC";
+            $self->{order} = "creation_timestamp DESC";
             $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^n:(\d*)$/$1/ ) {
@@ -85,7 +85,7 @@ sub _build {
             $search->[$i] ||= '0';
             $bol = $self->search_boolean( $search, $i );
             $search->[$i] = $bol .  $search->[$i] + 1 . " > TRUNC(SYSDATE) - TRUNC(creation_timestamp) AND ci_content.marked_new = 1";
-            $retval{order} = "creation_timestamp DESC";
+            $self->{order} = "creation_timestamp DESC";
             $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^i:(\d+)$/$1/ ) {
