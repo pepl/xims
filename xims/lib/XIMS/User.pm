@@ -206,6 +206,7 @@ sub roles_granted {
 sub objecttype_privileges {
     XIMS::Debug( 5, "called" );
     my $self = shift;
+    my %args = @_;
 
     my @all_types = $self->data_provider->object_types();
     my @granted_types;
@@ -223,12 +224,28 @@ sub objecttype_privileges {
         my @privs = $self->data_provider->getObjectTypePriv( grantee_id => \@id_list );
         #warn "privs returned: " . Dumper( \@privs );
 
+        my %oprivs = map { $_->{'objecttypepriv.object_type_id'} => [ $_->{'objecttypepriv.grantee_id'}, $_->{'objecttypepriv.grantor_id'} ] } @privs;
+
+        if ( exists $args{add_oprivdata} ) {
+            # make sure explicit object type grants have precedence (two loops are faster than sorting the array...)
+            my $userid = $self->id();
+            for ( @privs ) {
+                $oprivs{'objecttypepriv.object_type_id'} = [ $_->{'objecttypepriv.grantee_id'}, $_->{'objecttypepriv.grantor_id'} ] if $_->{'objecttypepriv.grantee_id'} == $userid;
+            }
+        }
+
         foreach my $type ( @all_types ) {
-            if ( grep { $_->{'objecttypepriv.object_type_id'} == $type->{id} } @privs ) {
+            if ( exists $oprivs{$type->{id}} ) {
                 $type->{can_create} = 1;
+                if ( exists $args{add_oprivdata} ) {
+                    $type->{grantee_id} = $oprivs{$type->{id}}->[0];
+                    $type->{grantor_id} = $oprivs{$type->{id}}->[1];
+                }
             }
             else {
                 delete $type->{can_create};
+                delete $type->{grantee_id};
+                delete $type->{grantor_id};
             }
         }
     }

@@ -83,6 +83,7 @@ sub create {
         # of the data we just inserted.
 
         return $test if $table->[0] eq 'ci_object_privs_granted'; # no data that the app class doesn't already know about.
+        return $test if $table->[0] eq 'ci_object_type_privs'; # no data that the app class doesn't already know about.
 
         my $r_type = $Names{$table->[0]};
         my $id_col_name;

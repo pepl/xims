@@ -2,7 +2,7 @@
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
-package XIMS::ObjectPriv;
+package XIMS::ObjectTypePriv;
 
 use strict;
 use XIMS;
@@ -14,7 +14,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 #use Data::Dumper;
 
 sub resource_type {
-    return 'ObjectPriv';
+    return 'ObjectTypePriv';
 }
 
 sub fields {
@@ -36,7 +36,7 @@ sub new {
     my $self = bless {}, $class;
 
     if ( scalar( keys( %args ) ) > 0 ) {
-        my $real_privs = $self->data_provider->getObjectPriv( %args );
+        my $real_privs = $self->data_provider->getObjectTypePriv( %args );
         if ( defined( $real_privs )) {
            $self->data( %{$real_privs} );
         }
@@ -44,19 +44,18 @@ sub new {
             return undef;
         }
     }
-
     return $self;
 }
 
 sub create {
     my $self = shift;
-    my $ret = $self->data_provider->createObjectPriv( $self->data());
+    my $ret = $self->data_provider->createObjectTypePriv( $self->data());
     return $ret;
 }
 
 sub delete {
     my $self = shift;
-    my $retval = $self->data_provider->deleteObjectPriv( $self->data() );
+    my $retval = $self->data_provider->deleteObjectTypePriv( $self->data() );
     if ( $retval ) {
         map { $self->$_( undef ) } $self->fields();
         return 1;
@@ -68,7 +67,7 @@ sub delete {
 
 sub update {
     my $self = shift;
-    return $self->data_provider->updateObjectPriv( $self->data() );
+    return $self->data_provider->updateObjectTypePriv( $self->data() );
 }
 
 1;
