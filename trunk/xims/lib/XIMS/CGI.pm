@@ -427,6 +427,7 @@ sub sendError {
     $ctxt->session->error_msg( $msg );
     $ctxt->properties->application->styleprefix( 'common' );
     $ctxt->properties->application->style( "error" );
+    return 0;
 }
 
 sub event_error {
@@ -675,6 +676,21 @@ sub clean_location {
 
     XIMS::Debug( 5, "done" );
     return lc($location);
+}
+
+sub clean_userquery {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $userquery = shift;
+
+    # convert wildcard, clean up a bit
+    $userquery =~ s/\*+/%/g;
+    $userquery =~ s/%+/%/g;
+    $userquery =~ s/^\s+//;
+    $userquery =~ s/\s+$//;
+    $userquery =~ s/[ ;,<>`´|?]+//g;
+
+    return $userquery;
 }
 
 sub init_store_object {
@@ -1629,23 +1645,23 @@ sub event_obj_acllist {
                 }
             }
             elsif ( my $userquery = $self->param('userquery') ) {
-                my %args = ();
+                my %args;
                 if ( $self->param('usertype') eq 'user' ) {
                     $args{object_type} = 0;
                 }
                 else {
                     $args{object_type} = 1;
                 }
-                # this bites, but how do we do 'LIKE' in the current model? :-(
-                my @big_user_data_list = $dp->getUser( %args, properties => ['id', 'name'] );
+                $userquery = $self->clean_userquery( $userquery );
+                $args{name} = $userquery if (defined $userquery and length $userquery);
+                my @big_user_data_list = $dp->getUser( %args );
                 my @granted_user_ids = map { $_->grantee_id() } @object_privs;
                 my @user_data_list = ();
                 foreach my $record ( @big_user_data_list ) {
                     next if grep { $_ == $record->{'user.id'} } @granted_user_ids;
-                    next unless $record->{'user.name'} =~ /$userquery/ig;
                     push @user_data_list, $record;
                 }
-                my @user_list = map{ XIMS::User->new( id => $_->{'user.id'} ) } @user_data_list;
+                my @user_list = map { XIMS::User->new->data( %{$_} ) } @user_data_list;
                 $ctxt->userlist( \@user_list );
                 $ctxt->properties->application->style( 'obj_userlist' );
                 XIMS::Debug( 6, "Search for user/role returned  @user_list" );
@@ -1654,7 +1670,7 @@ sub event_obj_acllist {
                 # this will fetch only the users that have one
                 # or more grants on the current obj.
                 my @granted_user_ids = map { $_->grantee_id() } @object_privs;
-                my @granted_users = map{ XIMS::User->new( id => $_ ) } @granted_user_ids;
+                my @granted_users = map { XIMS::User->new( id => $_ ) } @granted_user_ids;
                 #warn "acluser" . Dumper( \@granted_users );
                 $ctxt->userlist( \@granted_users );
                 $ctxt->properties->application->style( 'obj_userlist' );
@@ -2109,6 +2125,7 @@ sub event_search {
         # Make sure the utf8 flag is turned on for handling the allowed chars regex
         if ( not XIMS::DBENCODING() ) {
             require Encode;
+            no warnings 'prototype';
             Encode::_utf8_on($search);
         }
 

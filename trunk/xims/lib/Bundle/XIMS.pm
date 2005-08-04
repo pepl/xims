@@ -1,7 +1,7 @@
 package Bundle::XIMS;
 # $Id$
 
-our $VERSION = '0.9';
+our $VERSION = '1.0';
 
 1;
 __END__
@@ -68,7 +68,7 @@ The XIMS home page, at L<http://xims.info/>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2004 The XIMS Project.
+Copyright (c) 2002-2005 The XIMS Project.
 See the file L<http://xims.info/LICENSE> for information on usage and redistribution
 of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 

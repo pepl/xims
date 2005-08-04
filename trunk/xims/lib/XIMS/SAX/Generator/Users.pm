@@ -48,6 +48,10 @@ sub prepare {
         $doc_data->{bookmarklist} = { bookmark => $ctxt->bookmarklist() };
     }
 
+    if ( $ctxt->objecttypelist() ) {
+        $doc_data->{objecttypelist} = { object_type => $ctxt->objecttypelist() };
+    }
+
     if ( $ctxt->userlist() ) {
         # my @user_list = map{ $_->data() ) } @{$ctxt->userlist()};
         $doc_data->{userlist} = { user => $ctxt->userlist() };

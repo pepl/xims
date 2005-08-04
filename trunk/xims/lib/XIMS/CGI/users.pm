@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -10,6 +10,8 @@ use vars qw( $VERSION @params @ISA);
 use XIMS::CGI;
 use XIMS::User;
 use XIMS::UserPriv;
+use XIMS::ObjectType;
+use XIMS::ObjectTypePriv;
 
 use Digest::MD5 qw( md5_hex );
 
@@ -42,6 +44,7 @@ sub registerEvents {
           grant_role_update
           revoke_role
           bookmarks
+          objecttypeprivs
           )
         );
 }
@@ -71,10 +74,17 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $dp = $ctxt->data_provider();
-    my @big_user_data_list = $dp->getUser();
-    my @users_list = map{ XIMS::User->new( id => $_->{'user.id'} ) } @big_user_data_list;
-    $ctxt->userlist( \@users_list );
+    if ( my $userquery = $self->param( 'userquery' ) ) {
+        $userquery = $self->clean_userquery( $userquery );
+        if ( defined $userquery and length $userquery ) {
+            my %param;
+            $param{name} = $userquery;
+            my $dp = $ctxt->data_provider();
+            my @big_user_data_list = $dp->getUser( %param );
+            my @user_list = map { XIMS::User->new->data( %{$_} ) } @big_user_data_list;
+            $ctxt->userlist( \@user_list );
+        }
+    }
 }
 
 # the 'create user' data entry screen
@@ -539,6 +549,83 @@ sub event_bookmarks {
     return 0;
 }
 
+sub event_objecttypeprivs {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    # fixme
+    #unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::XXX() ) {
+    #    return $self->event_access_denied( $ctxt );
+    #}
+
+    my $uname = $self->param('name');
+    my $user = XIMS::User->new( name => $uname );
+
+    if ( $user and $user->id() ) {
+        if ( ( $self->param( 'addpriv' ) or $self->param( 'addpriv.x' ) ) and my $objtype = $self->param('objtype' ) ) {
+            my $object_type = XIMS::ObjectType->new( fullname => $objtype );
+            return $self->sendError( $ctxt, "Could not resolve object type name" ) unless defined $object_type;
+
+            my %data = (grantee_id => $user->id(), object_type_id => $object_type->id(), grantor_id => $ctxt->session->user->id());
+            my $otpriv = XIMS::ObjectTypePriv->new( %data );
+            return $self->sendError( $ctxt, "Objecttype privilege already exists" ) if defined $otpriv;
+
+            $otpriv = XIMS::ObjectTypePriv->new();
+            $otpriv->data( %data );
+            if ( $otpriv->create() ) {
+                $self->redirect( $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                return 0;
+            }
+            else {
+                return $self->sendError( $ctxt, "Could not create Objecttype privilege." );
+            }
+        }
+        elsif ( $self->param( 'delpriv' )
+                and my $grantor_id = $self->param('grantor_id' )
+                and my $object_type_id = $self->param('object_type_id' )
+                ) {
+            my $otpriv = XIMS::ObjectTypePriv->new( grantee_id => $user->id(), grantor_id => $grantor_id, object_type_id => $object_type_id );
+            return $self->sendError( $ctxt, "Objecttype privilege not found" ) unless defined $otpriv;
+
+            if ( $otpriv->delete() ) {
+                $self->redirect( $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                return 0;
+            }
+            else {
+                return $self->sendError( $ctxt, "Could not delete Objecttype privilege." );
+            }
+        }
+
+        my @object_types = $user->objecttype_privileges( add_oprivdata => 1 );
+        $ctxt->objecttypelist( \@object_types );
+        $self->resolve_user( $ctxt, [ qw( GRANTEE_ID ) ] );
+        $ctxt->properties->application->style( 'objecttypeprivs' );
+    }
+    else {
+        XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
+        $self->sendError( $ctxt, "User '$uname' does not exist." );
+    }
+    return 0;
+}
+
 # END RUNTIME EVENTS
 # #############################################################################
+
+sub redirect_path {
+    my ( $self, $ctxt, $event ) = @_;
+
+    my $uri = Apache::URI->parse( $ctxt->apache() );
+    $uri->path( XIMS::GOXIMS() . '/users' );
+    $uri->query( "name=" . $self->param('name') .
+                 ";$event=1" .
+                 ";sort-by=" . $self->param('sort-by') .
+                 ";order-by=" . $self->param('order-by') .
+                 ";userquery=" . $self->param('userquery')
+                 );
+
+    #warn "redirecting to ". $uri->unparse();
+    return $uri->unparse();
+}
+
+
 1;
