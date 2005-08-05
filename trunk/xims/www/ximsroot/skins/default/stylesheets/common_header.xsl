@@ -342,7 +342,18 @@
 </xsl:template>
 
 <xsl:template match="object_type">
-    <option value="{name}"><xsl:value-of select="name"/></option>
+    <xsl:variable name="parent_id" select="parent_id"/>
+    <xsl:variable name="fullname">
+        <xsl:choose>
+            <xsl:when test="$parent_id != ''">
+                <xsl:value-of select="/document/object_types/object_type[@id=$parent_id]/name"/>::<xsl:value-of select="name"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="name"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <option value="{$fullname}"><xsl:value-of select="$fullname"/></option>
 </xsl:template>
 
 
