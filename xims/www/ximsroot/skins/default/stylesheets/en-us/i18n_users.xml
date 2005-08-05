@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l>
+<Lastname>Lastname</Lastname>
+<System_privileges>System Privs.</System_privileges>
+<Administrator>Administrator</Administrator>
+<Enabled>Enabled</Enabled>
+<Disabled>Disabled</Disabled>
+<Managing>Managing</Managing>
+<Change_password>Change Password</Change_password>
+<Role_membership>Role Membership</Role_membership>
+<Grant_role>Grant Role</Grant_role>
+<Create_account>Create an account</Create_account>
+<update_existing_account>update an existing account</update_existing_account>
+<Objecttypeprivs>Objecttype Privileges</Objecttypeprivs>
+<Add_objecttypepriv>Add an Objecttype Privilege</Add_objecttypepriv>
+</l>
