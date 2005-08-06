@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id $
@@ -169,13 +169,18 @@ sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;
 
     my $uri = Apache::URI->parse( $ctxt->apache() );
-    if ( $uri->query() =~ /name=([^(;|&)]+)/ ) {
+    my $query = $uri->query();
+
+    # get rid of event identifiers
+    $query =~ s/(delete|create|setdefault)=([^(;|&)]+)//g;
+
+    if ( $query =~ /name=([^(;|&)]+)/ ) {
         $uri->path( XIMS::GOXIMS() . '/users' );
-        $uri->query( "name=$1;bookmarks=1" );
+        $uri->query( "name=$1;bookmarks=1;$query" );
     }
     else {
         $uri->path( XIMS::GOXIMS() . '/user' );
-        $uri->query( 'bookmarks=1' );
+        $uri->query( 'bookmarks=1;$query' );
     }
 
     #warn "redirecting to ". $uri->unparse();

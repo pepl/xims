@@ -120,6 +120,7 @@ sub event_create_update {
     $udata{middlename}        = $self->param('middlename');
     $udata{firstname}         = $self->param('firstname');
     $udata{email}             = $self->param('email');
+    $udata{url}               = $self->param('url');
 
     # build system_privs_mask from parameters 'system_privs_XXX', each holding a single bit of the mask
     my $system_privs_mask = 0;
@@ -159,7 +160,12 @@ sub event_create_update {
     my $pass1 = $self->param('password1');
     my $pass2 = $self->param('password2');
 
-    if ( defined $pass1 and length $pass1 and defined $pass2 and length $pass2 ) {
+    if ( defined $pass1 and length $pass1 ) {
+        if ( not ( defined $pass2 and length $pass2 ) ) {
+            $ctxt->properties->application->style( 'create' );
+            $ctxt->session->warning_msg( "Error: Forgot password confirmation." );
+            return 0;
+        }
         if ( $pass1 eq $pass2 ) {
             $udata{password} = Digest::MD5::md5_hex( $pass1 );
         }
@@ -168,6 +174,13 @@ sub event_create_update {
             $ctxt->session->warning_msg( "Error: Password mismatch." );
             return 0;
         }
+    }
+
+    my $existing_user = XIMS::User->new( name => $udata{name} );
+    if ( defined $existing_user ) {
+        $ctxt->properties->application->style( 'create' );
+        $ctxt->session->warning_msg( "Error: An account with that name already exists." );
+        return 0;
     }
 
     my @common = ();
@@ -185,7 +198,6 @@ sub event_create_update {
     # end reality checks. if we are here, the
     # passed data is okay and we can create
     # the user.
-
     my $user = XIMS::User->new->data( %udata );
     my $uid = $user->create();
     if ( $uid ) {
@@ -246,6 +258,7 @@ sub event_update {
             $user->firstname( $self->param('firstname') );
         }
         $user->email( $self->param('email') ); # XIMS::Privileges::System::RESET_EMAIL() needed for that
+        $user->url( $self->param('url') );
 
         if ( $privmask & XIMS::Privileges::System::CHANGE_SYSPRIVS_MASK() ) {
             # build system_privs_mask from parameters 'system_privs_XXX', each holding a single bit of the mask
@@ -324,31 +337,37 @@ sub event_passwd_update {
     my $pass1 = $self->param('password1');
     my $pass2 = $self->param('password2');
     # check for user error first
-    if ($pass1 eq $pass2 and length ($pass1) > 0) {
-        my $user = XIMS::User->new( name => $uname );
+    if ( defined $pass1 and length ($pass1) > 0 ) {
+        if ( defined $pass2 and $pass1 eq $pass2 ) {
+            my $user = XIMS::User->new( name => $uname );
 
-        $user->password( Digest::MD5::md5_hex( $pass1 ) );
+            $user->password( Digest::MD5::md5_hex( $pass1 ) );
 
-        if ( $user and $user->id() ) {
-            if ( $user->update() ) {
-                $ctxt->properties->application->style( 'update' );
-                $ctxt->session->message( "Password for user '" . $user->name . "' updated successfully." );
+            if ( $user and $user->id() ) {
+                if ( $user->update() ) {
+                    $ctxt->properties->application->style( 'update' );
+                    $ctxt->session->message( "Password for user '" . $user->name . "' updated successfully." );
+                }
+                else {
+                    $self->sendError( $ctxt,"Password update failed for user '" .
+                                              $user->name .
+                                             "'. Please check with your system adminstrator.");
+                }
             }
             else {
-                $self->sendError( $ctxt,"Password update failed for user '" .
-                                          $user->name .
-                                         "'. Please check with your system adminstrator.");
+                $self->sendError( $ctxt, "Could not find user. Please check with your system adminstrator." );
             }
         }
+        # otherwise, entered passwds were not the same, kick
+        # 'em back to the prompt.
         else {
-            $self->sendError( $ctxt, "Error removing user '$uname'. Please check with your system adminstrator." );
+            $ctxt->properties->application->style( 'passwd_edit' );
+            $ctxt->session->warning_msg( "Passwords did not match." );
         }
     }
-    # otherwise, entered passwds were not the same, kick
-    # 'em back to the prompt.
     else {
         $ctxt->properties->application->style( 'passwd_edit' );
-        $ctxt->session->warning_msg( "Passwords did not match." );
+        $ctxt->session->warning_msg( "Please specify a new password." );
     }
 }
 # the 'remove user' "are you *really* sure" screen
