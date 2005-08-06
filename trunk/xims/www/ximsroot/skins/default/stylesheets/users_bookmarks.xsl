@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-200% The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -35,7 +35,7 @@
             <xsl:call-template name="create_bookmark"/>
 
             <p class="back">
-                <a href="{$xims_box}{$goxims}/users"><xsl:value-of select="$i18n/l/Back"/></a>
+                <a href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Back"/></a>
             </p>
 
             </div>
@@ -59,6 +59,9 @@
             <xsl:text>&#160;</xsl:text>
             <br/>
             <input type="hidden" name="name" value="{$name}"/>
+            <input name="sort-by" type="hidden" value="{$sort-by}"/>
+            <input name="order-by" type="hidden" value="{$order-by}"/>
+            <input name="userquery" type="hidden" value="{$userquery}"/>
             <input type="submit" class="control" name="create" value="{$i18n/l/create}"/>
         </form>
     </p>
@@ -83,7 +86,7 @@
         <td valign="top">
             <xsl:choose>
                 <xsl:when test="stdhome != '1'">
-                    <a href="{$xims_box}{$goxims}/bookmark?id={id};setdefault=1;name={$name}"><xsl:value-of select="$i18n/l/set_as"/>&#160;<xsl:value-of select="$i18n/l/default_bookmark"/></a>
+                    <a href="{$xims_box}{$goxims}/bookmark?id={id};setdefault=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/set_as"/>&#160;<xsl:value-of select="$i18n/l/default_bookmark"/></a>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="$i18n/l/default_bookmark"/>
@@ -92,7 +95,7 @@
         </td>
         <td>
             &#160;
-            <a href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name}">
+            <a href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
                 <img
                     src="{$skimages}option_purge.png"
                     border="0"

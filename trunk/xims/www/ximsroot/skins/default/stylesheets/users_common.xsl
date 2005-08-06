@@ -8,11 +8,20 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
+
+<xsl:param name="name"/>
 <xsl:param name="sort-by">id</xsl:param>
 <xsl:param name="order-by">ascending</xsl:param>
 <xsl:param name="userquery"/>
 
+<xsl:param name="lastname"/>
+<xsl:param name="admin">false</xsl:param>
+<xsl:param name="enabled">true</xsl:param>
+<xsl:param name="object_type">user</xsl:param>
+
 <xsl:variable name="i18n_users" select="document(concat($currentuilanguage,'/i18n_users.xml'))"/>
+
+<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template name="head_default">
     <head>
@@ -274,7 +283,7 @@
         <td align="center">
             <div>
                 <form name="userfilter" style="margin: 0">
-                    <a href="{$xims_box}{$goxims_users}?create=1"><xsl:value-of select="$i18n_users/l/Create_account"/></a>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n_users/l/update_existing_account"/>:
+                    <a href="{$xims_box}{$goxims_users}?create=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Create_account"/></a>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n_users/l/update_existing_account"/>:
                     <input name="userquery" type="text">
                         <xsl:attribute name="value">
                             <xsl:choose>
@@ -291,6 +300,316 @@
             </div>
         </td>
     </tr>
+</xsl:template>
+
+<xsl:template name="system_privileges">
+    <tr>
+      <td><xsl:value-of select="$i18n_users/l/System_Privileges"/>:</td>
+    </tr>
+    <tr>
+      <td>
+          <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+          <xsl:value-of select="$i18n_users/l/User_self-management"/>:
+      </td>
+      <td>
+        <!-- begin user self management sys privs table -->
+        <table cellpadding="2" cellspacing="0" border="0">
+          <tr>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_CHANGE_PASSWORD">
+                          <xsl:if test="system_privileges/change_password = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Change_Password"/>
+                  </span>
+              </td>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_GRANT_ROLE">
+                          <xsl:if test="system_privileges/grant_role = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Grant_Role"/>
+                  </span>
+              </td>
+          </tr>
+        </table>
+        <!-- end user self management sys privs table -->
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+          <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+          <xsl:value-of select="$i18n_users/l/Helpdesk_related"/>:
+      </td>
+      <td>
+        <!-- begin helpdesk management sys privs table -->
+        <table cellpadding="2" cellspacing="0" border="0">
+          <tr>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_RESET_PASSWORD">
+                          <xsl:if test="system_privileges/reset_password = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Reset_Password"/>
+                  </span>
+              </td>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_SET_STATUS">
+                          <xsl:if test="system_privileges/set_status = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Set_Status"/>
+                  </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_CREATE_ROLE">
+                          <xsl:if test="system_privileges/create_role = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Create_Role"/>
+                  </span>
+              </td>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_DELETE_ROLE">
+                          <xsl:if test="system_privileges/delete_role = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Delete_Role"/>
+                  </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_CHANGE_ROLE_FULLNAME">
+                          <xsl:if test="system_privileges/change_role_fullname = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Change_Role_Fullname"/>
+                  </span>
+              </td>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_CHANGE_USER_FULLNAME">
+                          <xsl:if test="system_privileges/change_user_fullname = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Change_User_Fullname"/>
+                  </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_CHANGE_ROLE_NAME">
+                          <xsl:if test="system_privileges/change_role_name = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Change_Rolename"/>
+                  </span>
+              </td>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_CHANGE_USER_NAME">
+                          <xsl:if test="system_privileges/change_user_name = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Change_Username"/>
+                  </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_CREATE_USER">
+                          <xsl:if test="system_privileges/create_user = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Create_User"/>
+                  </span>
+              </td>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_DELETE_USER">
+                          <xsl:if test="system_privileges/delete_user = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Delete_User"/>
+                  </span>
+              </td>
+            </tr>
+          </table>
+          <!-- end helpdesk management sys privs table -->
+      </td>
+    </tr>
+    <tr>
+      <td>
+          <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+          <xsl:value-of select="$i18n_users/l/System_management"/>:
+      </td>
+      <td>
+        <!-- begin system management sys privs table -->
+        <table cellpadding="2" cellspacing="0" border="0">
+          <tr>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_CHANGE_SYSPRIVS_MASK">
+                          <xsl:if test="system_privileges/change_sysprivs_mask = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Change_Sysprivs_Mask"/>
+                  </span>
+              </td>
+              <td>
+                 <span class="cboxitem">
+                      <input type="checkbox" name="system_privs_SET_ADMIN_EQU">
+                          <xsl:if test="system_privileges/set_admin_equ = 1">
+                            <xsl:attribute name="checked" select="checked"/>
+                          </xsl:if>
+                      </input>
+                      <xsl:value-of select="$i18n_users/l/Set_Admin_EQU"/>
+                  </span>
+              </td>
+          </tr>
+        </table>
+        <!-- end system management sys privs table -->
+      </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="usermeta">
+    <tr>
+        <td>
+            <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+            <span class="compulsory">
+                <xsl:value-of select="$i18n_users/l/Lastname"/>:
+            </span>
+        </td>
+        <td>
+            <input size="30" maxlength="30" name="lastname" type="text" value="{lastname}"/>
+        </td>
+    </tr>
+    <tr>
+      <td><xsl:value-of select="$i18n_users/l/Middlename"/>:</td>
+      <td><input size="30" maxlength="30" name="middlename" type="text" value="{middlename}"/></td>
+    </tr>
+    <tr>
+      <td><xsl:value-of select="$i18n_users/l/Firstname"/>:</td>
+      <td><input size="30" maxlength="30" name="firstname" type="text" value="{firstname}"/></td>
+    </tr>
+    <tr>
+      <td><xsl:value-of select="$i18n_users/l/E-Mail"/>:</td>
+      <td><input size="30" maxlength="80" name="email" type="text" value="{email}"/></td>
+    </tr>
+    <tr>
+      <td>URL:</td>
+      <td><input size="30" maxlength="80" name="url" type="text" value="{url}"/></td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="user_isadmin">
+    <tr>
+      <td><xsl:value-of select="$i18n_users/l/User_is_Administrator"/>:</td>
+      <td>
+          <input name="admin" type="radio" value="true">
+            <xsl:if test="admin = '1'">
+              <xsl:attribute name="checked" select="checked"/>
+            </xsl:if>
+          </input><xsl:value-of select="$i18n/l/Yes"/>
+          <input name="admin" type="radio" value="false">
+            <xsl:if test="admin != '1' or (not(admin) and $admin = 'false')">
+              <xsl:attribute name="checked" select="checked"/>
+            </xsl:if>
+          </input><xsl:value-of select="$i18n/l/No"/>
+      </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="account_enabled">
+    <tr>
+      <td><xsl:value-of select="$i18n_users/l/Account_is_Enabled"/>:</td>
+      <td>
+          <input name="enabled" type="radio" value="true">
+            <xsl:if test="enabled = '1' or $enabled = 'true'">
+              <xsl:attribute name="checked" select="checked"/>
+            </xsl:if>
+          </input><xsl:value-of select="$i18n/l/Yes"/>
+          <input name="enabled" type="radio" value="false">
+            <xsl:if test="enabled != '1'">
+              <xsl:attribute name="checked" select="checked"/>
+            </xsl:if>
+          </input><xsl:value-of select="$i18n/l/No"/>
+      </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="exitform">
+    <xsl:param name="action"/>
+    <xsl:param name="save">Save</xsl:param>
+    <tr>
+        <td colspan="2" align="center">
+          &#160;
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">
+
+        <!-- begin buttons table -->
+        <table cellpadding="2" cellspacing="0" border="0">
+            <tr align="center">
+                <td>
+                    <input name="{$action}" type="submit" value="{$save}" class="control"/>
+                    <xsl:choose>
+                        <xsl:when test="@id != ''">
+                            <input name="id" type="hidden" value="{@id}"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:if test="$name != ''">
+                                <input name="name" type="hidden" value="{$name}"/>
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <input name="sort-by" type="hidden" value="{$sort-by}"/>
+                    <input name="order-by" type="hidden" value="{$order-by}"/>
+                    <input name="userquery" type="hidden" value="{$userquery}"/>
+                </td>
+                <td>
+                    <input class="control" name="c" type="submit" value="Cancel" onClick="javascript:history.go(-1)"/>
+                </td>
+            </tr>
+        </table>
+        <!-- end buttons table -->
+
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="doneform">
+    <input name="sort-by" type="hidden" value="{$sort-by}"/>
+    <input name="order-by" type="hidden" value="{$order-by}"/>
+    <input name="userquery" type="hidden" value="{$userquery}"/>
+    <input class="control" name="c" type="submit" value="Done"/>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -190,24 +190,11 @@
 <Validate_CSS>Validate CSS</Validate_CSS>
 <!-- End css_default -->
 <!-- Begin users_common -->
-<Lastname>Lastname</Lastname>
-<System_privileges>System Privs.</System_privileges>
-<Administrator>Administrator</Administrator>
 <Account_status>Account Status</Account_status>
-<Enabled>Enabled</Enabled>
-<Disabled>Disabled</Disabled>
-<Managing>Managing</Managing>
 <created>created</created>
 <User>User</User>
 <Role>Role</Role>
 <!-- End users_common -->
-<!-- Begin users_default -->
-<Change_password>Change Password</Change_password>
-<Role_membership>Role Membership</Role_membership>
-<!-- End users_default -->
-<!-- Begin users_create_update -->
-<Grant_role>Grant Role</Grant_role>
-<!-- End users_create_update-->
 <!-- Begin user_bookmarks -->
 <Path>Path</Path>
 <Bookmarks>Bookmarks</Bookmarks>
@@ -233,4 +220,5 @@
 <Download_PDF>Download as PDF</Download_PDF>
 <print_version>print version</print_version>
 <!-- End AxPoint -->
+<or>or</or>
 </l>
