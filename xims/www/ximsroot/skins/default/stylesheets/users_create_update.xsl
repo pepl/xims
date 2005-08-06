@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -29,7 +29,7 @@
         <!-- begin widget table -->
         <table width="200" cellpadding="2" cellspacing="0" border="0">
             <tr>
-            <td class="bluebg"><xsl:value-of select="$i18n/l/Managing"/>&#160;<xsl:value-of select="$i18n/l/Users"/>/<xsl:value-of select="$i18n/l/Roles"/></td>
+            <td class="bluebg"><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of select="$i18n/l/Users"/>/<xsl:value-of select="$i18n/l/Roles"/></td>
             </tr>
             <tr>
             <td>&#160;</td>
@@ -55,8 +55,8 @@
             <tr>
             <td align="center">
                 <input name="name" type="hidden" value="{/document/userlist/user/name}"/>
-                <input class="control" name="grant_role" type="submit" value="{$i18n/l/Grant_role}"/>
-                <input class="control" name="exit" type="submit" value="{$i18n/l/cancel}"/>
+                <input class="control" name="grant_role" type="submit" value="{$i18n_users/l/Grant_Role}"/>
+                <xsl:call-template name="doneform"/>
             </td>
             </tr>
         </table>
