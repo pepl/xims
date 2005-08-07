@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2004 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -242,9 +242,7 @@
         </script>
         <form name="editor_selector" id="editor_selector" style="display: inline; margin: 0px;">
             <select style="font-size: 9px; padding: 0px; background-color: #eeeeee;" name="xims_wysiwygeditor" id="xims_wysiwygeditor" onChange="return checkBodyFromSel(this.value);">
-                <option value="plain">Plain Textarea</option>
-                <option value="htmlarea">HTMLArea Editor</option>
-                <option value="wepro">eWebeditPro Editor</option>
+                <xsl:copy-of select="$editoroptions" />
             </select>
         </form>
         <script type="text/javascript">

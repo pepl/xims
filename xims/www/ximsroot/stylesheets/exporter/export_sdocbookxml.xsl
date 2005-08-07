@@ -33,7 +33,7 @@
                 <dc:creator><xsl:call-template name="ownerfullname"/></dc:creator>
                 <dc:subject><xsl:value-of select="keywords"/></dc:subject>
                 <dc:description><xsl:value-of select="abstract"/></dc:description>
-                <dc:publisher><xsl:call-template name="ownerfullname"/> - <xsl:value-of select="$organisation"/></dc:publisher>
+                <dc:publisher><xsl:call-template name="ownerfullname"/></dc:publisher>
                 <dc:contributor><xsl:call-template name="modifierfullname"/></dc:contributor>
                 <dc:date>
                     <dcq:created>
