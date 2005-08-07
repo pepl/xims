@@ -77,7 +77,7 @@ sub search_boolean {
     my $search = shift;
     my $i = shift;
 
-    my $retval; #return value
+    my $retval = ''; #return value
 
     if ( $i > 0
             && $search->[$i-1] ne "("
