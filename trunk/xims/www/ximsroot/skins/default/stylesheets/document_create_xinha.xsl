@@ -9,12 +9,12 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common_htmlarea_scripts.xsl"/>
+<xsl:import href="common_xinha_scripts.xsl"/>
 
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-create_htmlarea"/>
-    <body onLoad=" document.eform['abstract'].value=''; initEditor(); document.eform.name.focus()">
+    <body onLoad=" document.eform['abstract'].value=''; document.eform.name.focus()">
         <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
@@ -42,7 +42,7 @@
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <xsl:call-template name="htmlarea_scripts"/>
+        <xsl:call-template name="xinha_scripts"/>
     </head>
 </xsl:template>
 

@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <xsl:import href="document_common.xsl"/>
-    <xsl:import href="common_htmlarea_scripts.xsl"/>
+    <xsl:import href="common_xinha_scripts.xsl"/>
 
     <xsl:variable name="bodycontent">
         <xsl:call-template name="body"/>
@@ -19,7 +19,7 @@
     <xsl:template match="/document/context/object">
         <html>
             <xsl:call-template name="head-edit_htmlarea"/>
-            <body onLoad="initEditor();">
+            <body>
                 <div class="edit">
                     <xsl:call-template name="table-edit"/>
                     <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
@@ -46,7 +46,7 @@
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <xsl:call-template name="htmlarea_scripts"/>
+            <xsl:call-template name="xinha_scripts"/>
         </head>
     </xsl:template>
 
