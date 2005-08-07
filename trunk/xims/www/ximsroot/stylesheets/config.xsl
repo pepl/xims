@@ -6,7 +6,14 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+  <xsl:variable name="editoroptions">
+    <option value="plain">Plain Textarea</option>
+    <option value="htmlarea">HTMLArea Editor</option>
+  </xsl:variable>
+  <xsl:variable name="searchresultrowlimit">30</xsl:variable>
 
   <xsl:variable name="goxims">/goxims</xsl:variable>
   <xsl:variable name="contentinterface">/content</xsl:variable>
@@ -23,6 +30,4 @@
   <xsl:variable name="currentskin"><xsl:value-of select="/document/context/session/skin"/></xsl:variable>
   <xsl:variable name="defaultcss">skins/<xsl:value-of select="$currentskin"/>/stylesheets/default.css</xsl:variable>
   <xsl:variable name="resolvereltositeroots">1</xsl:variable>
-  <xsl:variable name="organisation">The XIMS Project</xsl:variable>
-  <xsl:variable name="searchresultrowlimit">30</xsl:variable>
 </xsl:stylesheet>
