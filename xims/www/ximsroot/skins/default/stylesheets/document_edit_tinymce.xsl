@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <xsl:import href="document_common.xsl"/>
-    <xsl:import href="common_htmlarea_scripts.xsl"/>
+    <xsl:import href="common_tinymce_scripts.xsl"/>
 
     <xsl:variable name="bodycontent">
         <xsl:call-template name="body"/>
@@ -18,8 +18,8 @@
 
     <xsl:template match="/document/context/object">
         <html>
-            <xsl:call-template name="head-edit_htmlarea"/>
-            <body onLoad="initEditor();">
+            <xsl:call-template name="head-edit_tinymce"/>
+            <body>
                 <div class="edit">
                     <xsl:call-template name="table-edit"/>
                     <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
@@ -40,13 +40,13 @@
         </html>
     </xsl:template>
 
-    <xsl:template name="head-edit_htmlarea">
+    <xsl:template name="head-edit_tinymce">
         <head>
             <title><xsl:value-of select="$i18n/l/Edit"/> <xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS</title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <xsl:call-template name="htmlarea_scripts"/>
+            <xsl:call-template name="tinymce_scripts"/>
         </head>
     </xsl:template>
 
@@ -57,10 +57,10 @@
                 <xsl:text>&#160;</xsl:text>
                 <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
                 <br/>
-                <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;">
+                <!--<textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;">-->
+                <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32">
                     <xsl:value-of select="$bodycontent"/>
                 </textarea>
-                <xsl:call-template name="jsorigbody"/>
             </td>
         </tr>
     </xsl:template>

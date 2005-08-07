@@ -96,4 +96,22 @@
         }
     </script>
 </xsl:template>
+
+<xsl:template name="jsorigbody">
+    <script type="text/javascript">
+        if (document.readyState != 'complete') {
+            var f = function() { origbody = window.editor.getHTML(); }
+            if ( navigator.userAgent.indexOf("MSIE") != -1 ) {
+                setTimeout(f, 3700); // MSIE needs that high timeout value
+            }
+            else {
+                setTimeout(f, 3000);
+            }
+        }
+        else {
+            origbody = window.editor.getHTML();
+        }
+    </script>
+</xsl:template>
+
 </xsl:stylesheet>
