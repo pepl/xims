@@ -2801,11 +2801,14 @@ HTMLArea.getHTML = function(root, outputRoot, editor){
     }
     catch(e){
         alert('Your Document is not well formed. Check JavaScript console for details.');
-        return editor._iframe.contentWindow.document.body.innerHTML;
+        return editor._doc.body.innerHTML;
     }
 }
 
 HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
+        if ( root == null ) {
+            return "";
+        }
 	var html = "";
 	switch (root.nodeType) {
 	    case 1: // Node.ELEMENT_NODE
