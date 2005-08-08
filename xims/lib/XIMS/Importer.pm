@@ -205,7 +205,7 @@ sub resolve_filename {
     my $filename = shift;
 
     my ( $location, $suffix ) = ( $filename =~ m|(.*)\.(.*)$| );
-    my ( $object_type, $data_format ) = $self->resolve_suffix( $suffix );
+    my ( $object_type, $data_format ) = $self->resolve_suffix( lc $suffix );
 
     unless ( $object_type and $object_type->name() and $data_format and $data_format->name() ) {
         # fallback value in case we could not resolve by suffix
