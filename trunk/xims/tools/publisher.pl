@@ -84,7 +84,7 @@ if ( $args{r} or $method eq 'unpublish' ) {
         $privmask = $user->object_privmask( $child );
         $path = $child->location_path();
 
-        my ($dir) = ($path =~ m#(.*)/[^/]+$#);
+        my ($dir) = ($path =~ m#(.*)/(.*)$#);
         if ( $method eq 'publish' and $args{f} and not exists $seencontainers{$dir} ) {
             $options{force_ancestor_publish} = 1;
         }
@@ -128,19 +128,13 @@ else {
     $failed++;
 }
 
-my $gid = (stat XIMS::PUBROOT())[5]; # after install, XIMS::PUBROOT is writable by the
-                                     # apache-user's group
+my @pubrootstat = stat XIMS::PUBROOT();
+my $uid = $pubrootstat[4]; # after install, XIMS::PUBROOT is owned by the apache-user 
+my $gid = $pubrootstat[5]; 
 # because additional files like meta-data files or autoindices are created
-# by the exporter, we have to recursively chgrp and 755 the file to the apache-user's group
-foreach my $file ( $term->findfiles( XIMS::PUBROOT() . $object->location_path ) ) {
-    # untaint the file
-    unless ($file =~ m#^([\w.\-/\\_\(\)]+)$#) {
-        die "filename '$file' has invalid characters.\n";
-    }
-    $file = $1;
-    chown( $<, $gid, $file );
-    chmod( 0775, $file );
-}
+# by the exporter, we have to recursively chown and chmod 755 the file to the apache-user
+system('chown','-R',$uid.':'.$gid,XIMS::PUBROOT().$object->location_path()) == 0
+    or warn "Could not chown ".XIMS::PUBROOT() . $object->location_path.".\n";
 
 print qq*
     Publish Report:

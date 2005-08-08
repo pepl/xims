@@ -40,7 +40,7 @@ my $user = $term->authenticate( %args );
 die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 
 my $object = XIMS::Object->new( path => $args{f}, marked_deleted => undef, User => $user );
-die "Could not find object '".$args{f}."'\n" unless $object and $object->id;
+die "Could not find object '".$args{f}."'\n" unless defined $object;
 
 my $oldpath = $object->location_path_relative();
 
@@ -48,22 +48,57 @@ if ( $object->published() ) {
     die "No write access to '" . XIMS::PUBROOT() . "'.\n"  unless -d XIMS::PUBROOT() and -w XIMS::PUBROOT();
 }
 
-my $target = XIMS::Object->new( path => $args{t}, marked_deleted => undef, User => $user );
-die "Could not find object '".$args{t}."'\n" unless $target and $target->id;
+if ( $args{f} eq $args{t} ) {
+    die "Target and source are the same, aborting.\n";
+}
 
-die "Target and Parent are the same, aborting\n" if $object->parent_id() == $target->document_id();
+my $target = XIMS::Object->new( path => $args{t}, marked_deleted => undef, User => $user );
+if ( defined $target ) {
+    die "Something already exists at the target location, aborting.\n";
+}
 
 # rebless to the object-type's class
 $object = rebless( $object );
 
 my $privmask = $user->object_privmask( $object );
-die "Access Denied. You do not have privileges to move '".$args{f}."'\n" unless $privmask and ($privmask & XIMS::Privileges::MOVE());
 
-$privmask = $user->object_privmask( $target );
-die "Access Denied. You do not have privileges to move '".$args{f}."' to '".$args{t}."'\n" unless $privmask and ($privmask & XIMS::Privileges::CREATE());
+my ($targetparentpath, $targetlocation) = ($args{t} =~ m#(.*)/(.*)#);
 
-die "Could not move object.\n" unless scalar $object->move( target => $target->document_id() );
-print "Object moved.\n";
+if ( $targetparentpath eq $object->parent->location_path ) {
+    # we are renaming only
+    die "Access Denied. You do not have privileges to rename '".$args{f}."'\n" unless $privmask and ($privmask & XIMS::Privileges::WRITE());
+    if ( rename_object( $object, $targetlocation, $user ) ) {
+        print "Object renamed.\n";
+    }
+    else {
+        die "Could not rename '".$object->location_path()."'\n";
+    }
+}
+else {
+    # we are moving
+    die "Access Denied. You do not have privileges to move '".$args{f}."'\n" unless $privmask and ($privmask & XIMS::Privileges::MOVE());
+
+    my $target = XIMS::Object->new( path => $targetparentpath, marked_deleted => undef, User => $user );
+    die "Could not find target container '$targetparentpath'.\n" unless defined $target;
+
+    $privmask = $user->object_privmask( $target );
+    die "Access Denied. You do not have privileges to move '".$args{f}."' to '".$args{t}."'\n" unless $privmask and ($privmask & XIMS::Privileges::CREATE());
+
+    if ( $targetlocation ne $object->location ) {
+        # and renaming
+        $privmask = $user->object_privmask( $object );
+        die "Access Denied. You do not have privileges to rename '".$args{f}."'\n" unless $privmask and ($privmask & XIMS::Privileges::WRITE());
+        if ( rename_object( $object, $targetlocation, $user ) ) {
+
+        }
+        else {
+            die "Could not rename '".$object->location_path()."'\n";
+        }
+    }
+
+    die "Could not move object.\n" unless scalar $object->move( target => $target->document_id() );
+    print "Object moved.\n";
+}
 
 my $newpath = $object->location_path_relative();
 
@@ -112,7 +147,7 @@ if ( $object->published() ) {
     unless ( $args{a} ) {
         print "Republishing '" . $object->location_path() . "'\n";
         system("$xims_home/tools/publisher.pl",'-u',$args{u},'-a','-f','-r',$object->location_path()) == 0
-            or die "Could not republish '".$object->location_path()."': $?\n.";
+            or warn "Could not republish '".$object->location_path()."': $!\n.";
     }
     else {
         print "Unpublishing object and descendants.\n";
@@ -136,9 +171,10 @@ exit 0;
 sub usage {
     return qq*
 
-  Usage: $0 [-h][-d][-u username -p password] [-a] -f path_to_object_to_move -t move_target
+  Usage: $0 [-h][-d][-u username -p password] [-a] -f path_to_object_to_move -t move_target_path
         -f Path to object to be moved
-        -t Path to target container
+        -t Path to target, if target parent and source parent are identical, object will
+           be renamed only
         -a If given, object and possible descendants will be be unpublished after moving
 
         -u The username to connect to XIMS. If not specified,
@@ -166,4 +202,16 @@ sub rebless {
     return $object;
 }
 
+sub rename_object {
+    my $object = shift;
+    my $targetlocation = shift;
+    my $user = shift;
 
+    $object->location( $targetlocation );
+    if ( scalar $object->update( User => $user, no_modder => 1 ) ) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
