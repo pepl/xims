@@ -772,34 +772,33 @@
         <xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:value-of select="$l_location"/>: <xsl:value-of
 select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/> <xsl:call-template name="ownerfullname"/></xsl:attribute>
         <a>
+          <xsl:attribute name="href">
             <xsl:choose>
                 <xsl:when test="$dfmime='application/x-container'">
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="concat($goxims_content,$absolute_path,'/',location,'?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
-                    </xsl:attribute>
+                    <xsl:value-of select="concat($goxims_content,$absolute_path,'/',location,'?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
                 </xsl:when>
                 <xsl:when test="$dfname='URL'">
-                    <xsl:attribute name="href">
-                        <xsl:choose>
-                            <xsl:when test="symname_to_doc_id != ''">
-                                <xsl:value-of select="concat($goxims_content, symname_to_doc_id, '?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
-                            </xsl:when>
-                            <xsl:when test="starts-with(location,'/')"><!--  Treat links relative to '/' as relative to the current SiteRoot -->
-                                <xsl:value-of select="concat($goxims_content, '/', /document/context/object/parents/object[@parent_id=1]/location, location)"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="location"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:attribute>
+                    <xsl:choose>
+                        <xsl:when test="symname_to_doc_id != ''">
+                            <xsl:value-of select="concat($goxims_content, symname_to_doc_id, '?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                        </xsl:when>
+                        <xsl:when test="starts-with(location,'/')"><!--  Treat links relative to '/' as relative to the current SiteRoot -->
+                            <xsl:value-of select="concat($goxims_content, '/', /document/context/object/parents/object[@parent_id=1]/location, location)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="location"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:when test="marked_deleted=1">
+                    <xsl:value-of select="concat($goxims_content,'?id=',@id,';m=',$m)"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:attribute name="href">
-                        <xsl:value-of select="concat($goxims_content,$absolute_path,'/',location,'?m=',$m)"/>
-                    </xsl:attribute>
+                    <xsl:value-of select="concat($goxims_content,$absolute_path,'/',location,'?m=',$m)"/>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:value-of select="title" />
+          </xsl:attribute>
+          <xsl:value-of select="title" />
         </a>
     </span>
 </xsl:template>
