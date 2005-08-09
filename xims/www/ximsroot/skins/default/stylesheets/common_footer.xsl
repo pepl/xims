@@ -7,6 +7,8 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:str="http://exslt.org/strings"
+                extension-element-prefixes="str"
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <xsl:template name="footer">
@@ -18,9 +20,11 @@
             <td>
                 <xsl:choose>
                     <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type='application/x-container'">
+                        <xsl:call-template name="please_read"/>&#160;
                         <a href="{$xims_box}{$goxims_content}{$absolute_path}?sitemap=1"><xsl:value-of select="$i18n/l/Treeview"/></a>
                     </xsl:when>
                     <xsl:otherwise>
+                        <xsl:call-template name="please_read"/>&#160;
                         <xsl:choose>
                             <xsl:when test="$printview != '0'">
                                 <a href="{$goxims_content}{$absolute_path}?m={$m}"><xsl:value-of select="$i18n/l/Defaultview"/></a>
@@ -41,6 +45,12 @@
                 <a href="http://xims.info/documentation/" target="_blank">Systeminfo</a>
             </td>
         </tr>
+    </xsl:template>
+
+
+    <xsl:template name="please_read">
+        <xsl:variable name="encoded_title" select="str:encode-uri(title,false())"/>
+        <a href="mailto:?subject=[XIMS]%20{$encoded_title}&amp;body={str:encode-uri($i18n/l/Please_read_object,false())}:%0A%0A%22{$encoded_title}%22%0A{$xims_box}{$goxims_content}?id={@id}%0A"><xsl:value-of select="$i18n/l/Email"/></a>
     </xsl:template>
 
 </xsl:stylesheet>

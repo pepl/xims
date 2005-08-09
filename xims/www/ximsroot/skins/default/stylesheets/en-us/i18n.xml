@@ -178,7 +178,7 @@
 <Topic_overview>Overview of Topics</Topic_overview>
 <reply>reply</reply>
 <Previous_replies>Previous Replies</Previous_replies>
-<Email>Email</Email>
+<Email>e-mail</Email>
 <Text>Text</Text>
 <Discussionforum>Discussion Forum</Discussionforum>
 <In_reply_to>In reply to</In_reply_to>
@@ -221,4 +221,5 @@
 <print_version>print version</print_version>
 <!-- End AxPoint -->
 <or>or</or>
+<Please_read_object>Please attend to the following XIMS object</Please_read_object>
 </l>
