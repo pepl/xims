@@ -14,7 +14,6 @@
 <Add_objecttypepriv>Add an Objecttype Privilege</Add_objecttypepriv>
 <Middlename>Middlename</Middlename>
 <Firstname>Firstname</Firstname>
-<E-Mail>E-Mail</E-Mail>
 <Privilege_Mask>Privilege Mask</Privilege_Mask>
 <User_self-management>User self-management</User_self-management>
 <Change_Password>Change Password</Change_Password>

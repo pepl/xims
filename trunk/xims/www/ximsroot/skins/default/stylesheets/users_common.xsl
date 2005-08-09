@@ -519,7 +519,7 @@
       <td><input size="30" maxlength="30" name="firstname" type="text" value="{firstname}"/></td>
     </tr>
     <tr>
-      <td><xsl:value-of select="$i18n_users/l/E-Mail"/>:</td>
+      <td><xsl:value-of select="$i18n/l/Email"/>:</td>
       <td><input size="30" maxlength="80" name="email" type="text" value="{email}"/></td>
     </tr>
     <tr>
