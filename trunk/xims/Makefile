@@ -56,7 +56,7 @@ done		: setup
 ##########################
 
 config		:
-	$(PERL) tools/install/xims_setup.pl -c
+	$(PERL) sbin/xims_setup.pl -c
 
 ##########################
 # installation rules     #
@@ -72,7 +72,7 @@ db		:
 	$(PERL) tools/install/setup_db.pl
 
 setup 		:
-	$(PERL) tools/install/xims_setup.pl
+	$(PERL) sbin/xims_setup.pl
 
 
 ##########################
