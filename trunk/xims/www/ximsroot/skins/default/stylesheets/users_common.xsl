@@ -304,7 +304,7 @@
 
 <xsl:template name="system_privileges">
     <tr>
-      <td><xsl:value-of select="$i18n_users/l/System_Privileges"/>:</td>
+      <td><xsl:value-of select="$i18n_users/l/System_privileges"/>:</td>
     </tr>
     <tr>
       <td>
