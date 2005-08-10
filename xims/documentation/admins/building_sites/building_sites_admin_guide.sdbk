@@ -28,7 +28,7 @@
         </revhistory>
 
         <legalnotice>
-            <para>Copyright © 2003</para>
+            <para>Copyright © 2003-2005</para>
         </legalnotice>
     </articleinfo>
 
@@ -62,7 +62,7 @@
 
             <listitem>
                 <para>Add <literal>DepartmentLinks</literal> for <filename>index.html</filename>,<filename>about.html</filename>,<filename>team.html</filename>,
-                and <filename>contact.html</filename> using <filename>add_departmentlinks.pl</filename></para>
+                and <filename>contact.html</filename> using <filename>$xims_home/xims_add_departmentlinks.pl</filename></para>
             </listitem>
         </orderedlist>
 
@@ -132,23 +132,23 @@
         <para>Because we have imported the contens of <literal>simple.examplesite.tld</literal> as <literal>admin</literal>, all the user medata of the objects
         points to the wrong person, as long as the <literal>admin</literal> is not the original author of course. In the case of the <acronym>GDPI</acronym>
         homepage president Bender himself is the author of the content. So, we want to update the imported <acronym>XIMS</acronym> objects accordingly, using
-        the <filename>set_user_metada.pl</filename> tool in the <filename>admin</filename> subdir of the <filename>tools</filename> directory. After cd&#39;ing
+        the <filename>xims_set_user_metada.pl</filename> tool in the <filename>$xims_home/sbin</filename> subdirectory. After cd&#39;ing
         to it, issue the following command:</para>
 
-        <programlisting>[user@host admin]# ./set_user_metadata.pl -u admin -r -o bender -c bender -l bender /simple.examplesite.tld</programlisting>
+        <programlisting>[user@host sbin]# ./xims_set_user_metadata.pl -u admin -r -o bender -c bender -l bender /simple.examplesite.tld</programlisting>
 
         <para>This will set the owner, creator and last modifier of all 16 objects at <filename>/simple.examplesite.tld</filename> to the user
-        <literal>bender</literal>. Note that <filename>set_user_metadata.pl</filename> requires <acronym>XIMS</acronym> admin privileges to run.</para>
+        <literal>bender</literal>. Note that <filename>xims_set_user_metadata.pl</filename> requires <acronym>XIMS</acronym> admin privileges to run.</para>
     </section>
 
     <section>
         <title>Assign Privileges</title>
 
         <para>Now, as <literal>bender</literal> is the owner of the content, we may want to give him privileges to actually manage it. We could do that through
-        the web user interface, however doing it recursively using the <filename>user_privileges.pl</filename> tool in the <filename>tools</filename> directory
+        the web user interface, however doing it recursively using the <filename>xims_user_privileges.pl</filename> tool in the <filename>$xims_home/bin</filename> directory
         is less painful for your mouse finger:</para>
 
-        <programlisting>[user@host tools]$ ./user_privileges.pl -u admin -r -l MODIFY,PUBLISH -g bender /simple.examplesite.tld</programlisting>
+        <programlisting>[user@host bin]$ ./xims_user_privileges.pl -u admin -r -l MODIFY,PUBLISH -g bender /simple.examplesite.tld</programlisting>
 
         <para>Note: MODIFY is a shortcut for the VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL,
         and OWNER privileges.</para>
@@ -156,7 +156,7 @@
         <para>After granting to the user <literal>bender</literal>, we want to grant VIEW privileges to the <literal>GDPI</literal> role, to let other possible
         future grantees of <literal>GDPI</literal> see the content.</para>
 
-        <programlisting>[user@host tools]$ ./user_privileges.pl -u admin -r -g GDPI /simple.examplesite.tld </programlisting>
+        <programlisting>[user@host bin]$ ./xims_user_privileges.pl -u admin -r -g GDPI /simple.examplesite.tld </programlisting>
 
         <para>Later, Bender can manually grant other privileges besides VIEW to members of <literal>GDPI</literal>.</para>
     </section>
@@ -247,17 +247,17 @@
             <title>Publish Objects</title>
 
             <para>Now, as <acronym>URL</acronym>s, Apache, and AxKit are configured, you can start to publish your content objects. You can do that either by
-            using the web interface or by publishing all at once using the <filename>publisher.pl</filename> tool in the <filename>tools</filename> directory:</para>
+            using the web interface or by publishing all at once using the <filename>xims_publisher.pl</filename> tool in the <filename>$xims_home/bin</filename> directory:</para>
 
-            <para>Warning: If <filename>publisher.pl</filename> does not have the setuid flag set, you can only use <filename>publisher.pl</filename> as
+            <para>Warning: If <filename>xims_publisher.pl</filename> does not have the setuid flag set, you can only use <filename>xims_publisher.pl</filename> as
             superuser or as an user with write access to the <filename>ximspubroot</filename> directory respectively!</para>
 
-            <programlisting>[user@host tools]$ ./publisher.pl -u admin -r /simple.examplesite.tld</programlisting>
+            <programlisting>[user@host bin]$ ./xims_publisher.pl -u admin -r /simple.examplesite.tld</programlisting>
 
             <para>To have the expected results regarding the use of the <literal>DepartmentLinks</literal> portlet, we have to republish the <literal>SiteRoot</literal>.
             This will add the link to the - by now published - portlet in <filename>ou.xml</filename>:</para>
 
-            <programlisting>[user@host tools]$ ./publisher.pl -u admin /simple.examplesite.tld</programlisting>
+            <programlisting>[user@host bin]$ ./xims_publisher.pl -u admin /simple.examplesite.tld</programlisting>
 
             <para>If you followed the example config so far and everything has worked, you will see the following index page:</para>
 

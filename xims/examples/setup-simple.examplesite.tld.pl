@@ -9,7 +9,7 @@ use warnings;
 
 my $xims_home = $ENV{'XIMS_HOME'} || '/usr/local/xims';
 die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$xims_home/Makefile";
-use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib",($ENV{'XIMS_HOME'} || '/usr/local/xims')."/tools/lib";
+use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib";
 
 use XIMS::User;
 use XIMS::Term;
@@ -38,10 +38,10 @@ if ( defined $object and defined $object->id() ) {
     getc;
 }
 
-system("$xims_home/tools/fs_importer.pl -u admin -p $adminpwd -f -m /root $xims_home/examples/$importdir") == 0 || die "Could not import $importdir\n";
-system("$xims_home/tools/admin/folder_to_objectroot.pl -u admin -p $adminpwd -s $siterooturl /$importdir") == 0 || die "Could not convert $importdir to SiteRoot\n";
-system("$xims_home/tools/add_departmentlinks.pl -u admin -p $adminpwd -l $deptlinks /$importdir") == 0 || die "Could not add DepartmentLinks to $importdir\n";
-system("$xims_home/tools/publisher.pl -u admin -p $adminpwd -r /$importdir") == 0 || die "Could not publish $importdir\n";
+system("$xims_home/bin/xims_importer.pl -u admin -p $adminpwd -f -m /root $xims_home/examples/$importdir") == 0 || die "Could not import $importdir\n";
+system("$xims_home/sbin/xims_folder_to_objectroot.pl -u admin -p $adminpwd -s $siterooturl /$importdir") == 0 || die "Could not convert $importdir to SiteRoot\n";
+system("$xims_home/bin/xims_add_departmentlinks.pl -u admin -p $adminpwd -l $deptlinks /$importdir") == 0 || die "Could not add DepartmentLinks to $importdir\n";
+system("$xims_home/bin/xims_publisher.pl -u admin -p $adminpwd -r /$importdir") == 0 || die "Could not publish $importdir\n";
 
 $object = XIMS::SiteRoot->new( User => $user, path => "/$importdir", marked_deleted => undef );
 if ( defined $object and defined $object->id() ) {
