@@ -94,7 +94,7 @@ isnt( $testdept3->get_portlet_ids, $testdept3clone->get_portlet_ids, 'portlet id
 my $deptportlet = XIMS::Portlet->new( id => $testdept3clone->get_portlet_ids );
 is( $deptportlet->location_path(), '/testsite/testdept1/copy_of_testdept3/departmentlinks_portlet.ptlt', 'portlet id points to the correct portlet' );
 
-my $testdept3copy = $testdept3->copy( target_id => $testdept2->document_id(), target_location => 'testdept3copy' );
+my $testdept3copy = $testdept3->copy( target => $testdept2->document_id(), target_location => 'testdept3copy' );
 ok( $testdept3copy, 'copied testdept3 to testdept2/testdept3copy' );
 
 is( $testdept3copy->location_path(), '/testsite/testdept2/testdept3copy', 'testdept3copy has correct location_path' );
