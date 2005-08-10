@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <l>
 <Lastname>Lastname</Lastname>
-<System_privileges>System Privs.</System_privileges>
+<System_privileges>System Privileges</System_privileges>
 <Administrator>Administrator</Administrator>
 <Enabled>Enabled</Enabled>
 <Disabled>Disabled</Disabled>
