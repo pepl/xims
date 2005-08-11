@@ -1,3 +1,55 @@
+0.9.1 to 1.0
+-------------
+
+  * Unpack the contents of xims-1.0.tar.gz to your target installation
+    directory.
+
+    For example:
+    [root@host local]# cd /usr/local
+    [root@host local]# tar xzpvf xims-1.0.tar.gz
+
+  * Update database (no existing content will be erased nor damaged)
+
+    Run the SQL scripts in the "upgrade/0.9.1_1.0" directory.
+
+    For example:
+
+    PostgreSQL:
+    [root@host 0.9.1_1.0]# psql -U xims xims -f upgrade-common.sql
+    [root@host 0.9.1_1.0]# psql -U xims xims -f upgrade-pg.sql
+
+    Oracle:
+    [root@host 0.9.1_1.0]# sqlplus user@db @upgrade-common.sql
+    [root@host 0.9.1_1.0]# sqlplus user@db @upgrade-oracle.sql
+
+  * Move published content
+
+    - Shutdown Apache or prevent XIMS logins
+    - Move everything under your old "ximspubroot" directory besides
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
+        to your new "ximspubroot" directory.
+
+  * Replace the link to xims-0.9.1 with a link to xims-1.0
+
+    For example:
+    [root@host local]# cd /usr/local && rm xims && ln -s xims-1.0 xims
+
+  * Configure XIMS (ximsconfig.xml) using xims_setup.pl
+
+    For example:
+    [root@host local]# cd xims && sbin/xims_setup.pl -c
+
+  * Fix title of published documents (may take some time)
+
+    [root@host xims]# cd upgrade/0.9.1_1.0 && perl fixup_publisheddocumentstitle.pl
+
+  * Fix portlet columns
+
+    [root@host 0.9.1_1.0]# perl fixup_portletcolumns.pl
+
+  * (Re)Start Apache
+
+
 0.9 to 0.9.1
 -------------
 
@@ -31,7 +83,7 @@
 
     - Shutdown Apache or prevent XIMS logins
     - Move everything under your old "ximspubroot" directory besides
-        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
         to your new "ximspubroot" directory.
     - Replace the link to xims-0.9 with a link to xims-0.9.1
       For example:
@@ -81,7 +133,7 @@
 
     - Shutdown Apache or prevent XIMS logins
     - Move everything under your old "ximspubroot" directory besides
-        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
         to your new "ximspubroot" directory.
     - Replace the link to xims-0.8 with a link to xims-0.9
       For example:
@@ -145,7 +197,7 @@
 
     - Shutdown Apache or prevent XIMS logins
     - Move everything under your old "ximspubroot" directory besides
-        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
         to your new "ximspubroot" directory.
     - Replace the link to xims-0.7 with a link to xims-0.8
       For example:
@@ -194,7 +246,7 @@
 
     - Shutdown Apache or prevent XIMS logins
     - Move everything under your old "ximspubroot" directory besides
-        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
         to your new "ximspubroot" directory.
     - Replace the link to xims-0.6 with a link to xims-0.7
       For example:
@@ -257,7 +309,7 @@
 
     - Shutdown Apache or prevent XIMS logins
     - Move everything under your old "ximspubroot" directory besides
-        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
         to your new "ximspubroot" directory.
     - Replace the link to xims-0.5 with a link to xims-0.6
       For example:
@@ -327,7 +379,7 @@
 
     - Shutdown Apache or prevent XIMS logins
     - Move everything under your old "ximspubroot" directory besides
-        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
         to your new "ximspubroot" directory.
     - Replace the link to xims-0.1.1 with a link to xims-0.5
       For example:
@@ -366,7 +418,7 @@
 
     - Shutdown Apache or prevent XIMS logins
     - Move everything under your old "ximspubroot" directory besides
-        "images", "stylesheets", "access.xsp", "500.xsp", and "400.xsp"
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
         to your new "ximspubroot" directory.
     - Replace the link to xims-0.1 with a link to xims-0.1.1
       For example:
