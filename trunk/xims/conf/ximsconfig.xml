@@ -7,7 +7,7 @@
         # http://xims.info/documentation/developers/xims-developer_s-guide.sdbk#DebuglevelReference
         # for the "Debuglevel Reference"
         -->
-        <DebugLevel>6</DebugLevel>
+        <DebugLevel>2</DebugLevel>
 
         <!-- Absolute path to the Apache document root -->
         <ApacheDocumentRoot></ApacheDocumentRoot>
@@ -57,17 +57,20 @@
         <TidyOptions>-config /usr/local/xims/conf/ximstidy.conf -quiet -f /dev/null</TidyOptions>
 
         <!--
-        # After you either or both installed HTMLArea 3 or eWebeditPro WYSIWYG-editors, add
-        # 'htmlarea' or 'wepro' as the default editor, users will get at for the first time before
-        # their selection will be stored in a cookie.
-        # HTMLArea 3 can be grabbed from http://sourceforge.net/projects/itools-htmlarea/
+        # After you installed one of HTMLArea, eWebeditPro,
+        # Xinha, or TinyMCE WYSIWYG-editors, add 'htmlarea', 'wepro', 'xinha', or 'tinymce'
+        # respectively as the default editor which users will get at their first time edit action.
+        # XIMS comes with a customized version of HTMLArea3RC1. The original version can be
+        # grabbed from http://sourceforge.net/projects/itools-htmlarea/
         # and should be installed to $ximsroot/htmlarea. eWebeditProp can be downloaded from
-        # http://www.ektron.com/ewebeditpro.aspx and should be unpacked to $ximsroot/wepro/
+        # http://www.ektron.com/ewebeditpro.aspx and should be unpacked to $ximsroot/wepro
+        # Xinha is available at xinha.org and should be unpacked to $ximsroot/xinha, TinyMCE
+        # is available at http://tinymce.moxiecode.com/ and should be unpacked to $ximsroot/tinymce
         #
         # Note: 'htmlarea' will be used even if DefaultXHTMLEditor is set to 'wepro' when editing
         # a Document on non-Windows browsers.
         -->
-        <DefaultXHTMLEditor></DefaultXHTMLEditor>
+        <DefaultXHTMLEditor>htmlarea</DefaultXHTMLEditor>
 
         <!--
         # Currently 'bxe' is the only implemented XML editor which can be activated
