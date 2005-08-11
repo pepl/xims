@@ -12,7 +12,9 @@ XIMS Installation Guide
       and Expat (http://sourceforge.net/projects/expat/) C libraries
 
       Note: Some parts of XML::LibXML (<= 1.56) break with libxml2 >= 2.6.0.
-      Using XML::LibXML 1.57 and XML::LibXSLT 1.57 fixes this.
+      Using XML::LibXML 1.58 and XML::LibXSLT 1.58 fixes this.
+
+    * Tidy (http://tidy.sourceforge.net/)
 
     * XIMS currently supports either
       Oracle (>=8.1.6) or PostgreSQL (>=7.3)
@@ -57,26 +59,19 @@ XIMS Installation Guide
 
         on a csh-like shell (csh, tcsh).
 
-2) Install the latest tidy binary (http://tidy.sourceforge.net/)
-
-   Install it to /usr/local/bin/tidy. If you install it to another
-   location, change the tidy settings during the installation process
-   or afterwards in /usr/local/xims/lib/XIMS/Config.pm line 103 and 104
-   accordingly.
-
-3) Check for module dependencies, set up database and
+2) Check for module dependencies, set up database and
    basic configuration options, run the test suite.
 
-    3.1) Update the location of the Perl binary in the Makefile if
+    2.1) Update the location of the Perl binary in the Makefile if
          necessary
 
         [root@host local] cd xims && perl Makefile.PL
 
-    3.2) Run 'make' to check for Perl module dependencies
+    2.2) Run 'make' to check for Perl module dependencies
 
         [root@host xims] make
 
-    3.3) Run 'make install' to start XIMS installation
+    2.3) Run 'make install' to start XIMS installation
 
         [root@host xims] make install
 
@@ -87,22 +82,21 @@ XIMS Installation Guide
         times since missing dependencies from the first run may be
         satisfied by then. If that also fails, you have to install the
         missing modules manually.
-        After all module dependecies are satisified, XIMS module patches
+        After all module dependencies have been satisified, XIMS module patches
         will be applied, followed by the XIMS database setup process.
-        During that, you will be prompted for database connection
+        During that process, you will be prompted for database connection
         information.
         Having successfully set up the XIMS database, the setup process
         will continue with the basic XIMS configuration, where you will
-        be prompted to provide configuration information again. Note,
+        be prompted to provide configuration information again. Note
         that this will update the the most essential XIMS config options
         only. It is recommended to take a look at
-        /usr/local/xims/lib/XIMS/Config.pm for further config
-        customizations after finishing "make install". For example,
-        you could activate a WYSIWYG-Editor for editing documents there.
+        /usr/local/xims/conf/ximsconfig.xml for further config
+        customizations after finishing "make install".
 
-    3.4) (Re)start the apache server. Check if it prints warnings or errors.
+    2.4) (Re)start the apache server. Check if it prints warnings or errors.
 
-    3.5) Run the test suite
+    2.5) Run the test suite
 
         [root@host xims] make test
 
@@ -110,11 +104,11 @@ XIMS Installation Guide
         the debug.log. If that does not help, feel free to contact us at
         the addresses quoted at the end of this document.
 
-4) If the installation went fine so far, login to XIMS at
+3) If the installation went fine so far, login to XIMS at
    http://host/goxims/user as user 'xgu' (pw: xgu) or user
    'admin' (pw: _adm1nXP).
 
-5) Consult the documentation documents, e.g. "Building Sites with XIMS (Admin Guide)",
+4) Consult the documentation documents, e.g. "Building Sites with XIMS (Admin Guide)",
    for the next steps.
 
 Please actually read the file README.

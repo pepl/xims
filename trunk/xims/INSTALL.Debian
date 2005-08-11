@@ -1,0 +1,23 @@
+$Id$
+
+Debian Sarge specific notes for installing XIMS
+-----------------------------------------------
+
+Installing the following packages will cover the needed
+prequisites mentioned at step (0) by the INSTALL file.
+You should be able to install them by copy-and-pasting
+the following two lines:
+
+aptitude install gcc postgresql apache postgresql-contrib libxml2 libxslt1 libxml2-utils libxml2-dev xml-core make tidy
+
+aptitude install libterm-readline-perl-perl libxml-libxml-perl libxml-libxslt-perl axkit axkit-xsp-webutils libclass-methodmaker-perl libcgi-xmlapplication-perl libtime-piece-perl libapache-dbi-perl libterm-readkey-perl libtext-diff-perl libarchive-zip-perl libtext-template-perl
+(Perl modules)
+
+If you are using Debian's postgresql package as database back-end
+you can install the Perl binding DBD::Pg by installing
+the 'libdbd-pg-perl' package. In case of Oracle, you have to install DBD::Oracle
+manually via CPAN.
+
+After having successfully installed those packages,
+proceed with step (1) of the INSTALL file.
+
