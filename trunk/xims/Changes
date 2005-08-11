@@ -15,7 +15,7 @@ General:
     resolved during import now
   - The goxims and Apache::AuthXIMS handlers are reverse proxy aware now (They honor X-Forwarded-For headers)
   - Added RNG Schemata for UI and published documents
-  - Optional content audit table and triggers for recoding creation and
+  - Optional content audit table and triggers for recording creation and
     updates of objects
   - Object dependencies (e.g. like related Portlets, assigned stylesheets, ...)
     are handled by the Exporter now
@@ -90,7 +90,7 @@ Questionnaire:
   - Made answer-editing more straight forward
 
 Stylesheets:
-  - Moved document editor options (Plain Textare, HTMLArea, ...) to config.xsl
+  - Moved document editor options (Plain Textarea, HTMLArea, ...) to config.xsl
   - Removed 'organisation' from config.xsl
   - Updated the default namespace from the old proposed-recommendation of
     XHTML to the current official one (http://www.w3.org/1999/xhtml)
