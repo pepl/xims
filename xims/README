@@ -1,4 +1,4 @@
-This is XIMS, version 0.9.1.
+This is XIMS, version 1.0.
 
 Overview
 --------
@@ -15,7 +15,7 @@ uses the PostgreSQL or Oracle RDBMS for its data repository.
 
 License
 -------
-XIMS is copyrighted 2002-2004 by The XIMS Project. See the file "LICENSE"
+XIMS is copyrighted 2002-2005 by The XIMS Project. See the file "LICENSE"
 for information on usage and redistribution, and for a DISCLAIMER OF
 ALL WARRANTIES.
 
@@ -40,12 +40,16 @@ XIMS documentation for users, developers, and system administrators.
 
 Release Notes
 -------------
-This is a bug fix release correcting wrong object privileges introduced with release 0.8, which
-resulted into users not having CREATE privileges where they have been given grants using the
-pseudo privilege MODIFY.
+This is a new feature release. Since the last XIMS release, the list of
+changes has grown considerably. Therefore, and so as to include the new
+bug fixes, we strongly recommend to upgrade existing installations to this
+best ever XIMS release!
 
-It is recommended to update to this release 0.9.1 to fix the privileges on existing objects
-and take advantage of the new COPY privilege.
+New features include WebDAV support, integration with a new customized version
+of HTMLArea, support for other WYSIWYG-Editors like BXE, TinyMCE, and Xinha, new
+object types, better support for web portal management, user interface updates and
+user management updates.
+For a detailed list of changes, please review the "Changes" file.
 
 
 Changes
@@ -85,10 +89,6 @@ Joachim Kargl <joachim.kargl@uibk.ac.at>
 Martina Kinzl <martina.kinzl@uibk.ac.at>
 Gregor Retti <gregor.retti@uibk.ac.at>
 Britta Tautermann <britta.tautermann@uibk.ac.at>
-
-The user interface has originally been designed by:
 Georg Schönwiese <csab2314@uibk.ac.at>
-(This UI is not part of this distribution but currently still used at
-xims.uibk.ac.at)
 
 Additionally, we would like to thank everyone who supplied valuable feedback!
