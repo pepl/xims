@@ -116,7 +116,7 @@ if ( $args{r} or $method eq 'unpublish' ) {
     }
 }
 
-# (re)set no_dependecies_update
+# (re)set no_dependencies_update
 $args{n} ? $options{no_dependencies_update} = 1 : delete $options{no_dependencies_update};
 
 if ( $exporter->$method( Object => $object, User => $user, %options ) ) {
@@ -138,6 +138,8 @@ if ( $method eq 'publish' ) {
     # by the exporter, we have to recursively chown and chmod 755 the file to the apache-user
     system('chown','-R',$uid.':'.$gid,XIMS::PUBROOT().$object->location_path()) == 0
         or warn "Could not chown ".XIMS::PUBROOT() . $object->location_path.".\n";
+    system('chmod','-R','g+w',XIMS::PUBROOT().$object->location_path()) == 0
+           or warn "Could not chown ".XIMS::PUBROOT() . $object->location_path.".\n";
 }
 
 print qq*

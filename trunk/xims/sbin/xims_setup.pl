@@ -264,8 +264,8 @@ if ( $installer->apache_user() and $installer->apache_group() ) {
 
     # publicroot
     my $uid = (stat $publicroot)[4];
-    chown( $uid, $apache_gid, $publicroot );
-    chmod( 0775, $publicroot );
+    chown( $apache_uid, $apache_gid, $publicroot );
+    chmod( 06775, $publicroot );
 
     # ximsconfig.xml
     $uid = (stat $configfile)[4];
@@ -278,8 +278,8 @@ else {
     print "\n[WARNING] Apache group could not be determined from Apache config.\n";
     print "    Please run
 
-    chgrp \$apache_group $publicroot
-    chmod 775 $publicroot
+    chown \$apache_user:\$apache_group $publicroot
+    chmod 6775 $publicroot
     chgrp \$apache_group $configfile
     chmod 440 $configfile
 
