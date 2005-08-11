@@ -62,6 +62,10 @@ if ( $dirname eq "." ) {
 else {
     chdir $dirname;
 }
+my $displaydir = $dirname;
+if ( length $displaydir ) {
+    $displaydir .= '/' unless $displaydir =~ /\/$/;
+}
 
 my @files = $term->findfiles( $path );
 die "No files found, nothing to do.\n" unless scalar(@files);
@@ -69,13 +73,11 @@ die "No files found, nothing to do.\n" unless scalar(@files);
 foreach my $file ( @files ) {
     $file =~ s/$dirname\/// if length $dirname;
     if ( $importer->import( $file, $args{f} ) ) {
-        $dirname .= '/' if length $dirname;
-        print "'$dirname$file' imported successfully.\n";
+        print "'$displaydir$file' imported successfully.\n";
         $successful++;
     }
     else {
-        $dirname .= '/' if length $dirname;
-        print "Import of '$dirname$file' failed.\n";
+        print "Import of '$displaydir$file' failed.\n";
         $failed++;
     }
 }
