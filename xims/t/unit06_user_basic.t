@@ -24,12 +24,12 @@ $user = undef;
 $user = XIMS::User->new( id => 1 );
 ok( $user );
 ok( $user->name() eq 'xgu' );
-ok( $user->middlename() == undef );
+ok( not defined $user->middlename() );
 ok( $user->admin() == 0 );
 ok( $user->password() eq '43a008171c3de746fde9c6e724ee1001' );
-ok( $user->email() == undef );
-ok( $user->firstname() == undef );
-ok( $user->url() == undef );
+ok( not defined $user->email() );
+ok( not defined $user->firstname() );
+ok( not defined $user->url() );
 ok( $user->id() == 1 );
 ok( $user->object_type() == 0 );
 ok( $user->enabled() == 1 );
@@ -97,7 +97,7 @@ $user->delete();
 
 $user = undef;
 $user = XIMS::User->new( id => $ubu_id );
-ok( $user == undef );
+ok( not defined $user );
 
 # now, test loading the object via the data() method.
 

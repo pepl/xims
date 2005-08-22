@@ -7,7 +7,7 @@ use XIMS::Names;
 use XIMS::ObjectPriv;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 42;
 }
 
@@ -32,7 +32,7 @@ $p->grantee_id( 1 );
 $p->content_id( 2 );
 
 ok( $p->privilege_mask() == XIMS::Privileges::MODIFY() );
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->content_id() == 2 );
 
@@ -48,7 +48,7 @@ my %hash = ( grantor_id   => 2,
 $p = XIMS::ObjectPriv->new->data( %hash );
 
 ok( $p->privilege_mask() == XIMS::Privileges::MODIFY() );
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->content_id() == 2 );
 
@@ -58,7 +58,7 @@ $p = undef;
 $p = XIMS::ObjectPriv->new( grantee_id => 1, content_id => 2 );
 
 ok( $p->privilege_mask() == 1 );
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->content_id() == 2 );
 
@@ -68,7 +68,7 @@ $p->update();
 
 
 ok( $p->privilege_mask() == XIMS::Privileges::MODIFY() );
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->content_id() == 2 );
 
@@ -81,7 +81,7 @@ $p = undef;
 $p = XIMS::ObjectPriv->new( grantee_id => 1, content_id => 2 );
 
 ok( $p->privilege_mask() == 1 );
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->content_id() == 2 );
 
@@ -111,4 +111,4 @@ $p->delete();
 
 $p = undef;
 $p = XIMS::ObjectPriv->new(  grantee_id => 1, content_id => 1 );
-ok( $p == undef );
+ok( not defined $p );

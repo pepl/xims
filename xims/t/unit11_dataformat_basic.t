@@ -6,7 +6,7 @@ use XIMS::Names;
 use XIMS::DataFormat;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 34;
 }
 
@@ -28,8 +28,8 @@ $df = undef;
 
 my %hash = ( id   => 1,
              mime_type => 'application/ubu',
-             name => 'UbuApp', 
-             suffix => 'ubu', 
+             name => 'UbuApp',
+             suffix => 'ubu',
            );
 
 $df = XIMS::DataFormat->new->data( %hash );
@@ -41,9 +41,9 @@ ok( $df->suffix() eq 'ubu' );
 
 # now create one
 $df = undef;
-$df = XIMS::DataFormat->new(); 
+$df = XIMS::DataFormat->new();
 
-ok( $df ); 
+ok( $df );
 $df->mime_type( 'application/ubu' );
 $df->name( 'UbuApp' );
 $df->suffix( 'ubu' );
@@ -86,7 +86,7 @@ ok( $df->delete() );
 
 $df = undef;
 $df = XIMS::DataFormat->new( id => $id );
-ok( $df == undef );
+ok( not defined $df );
 
 # now try getting an existing one by name instead of ID
 $df = undef;

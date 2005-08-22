@@ -6,7 +6,7 @@ use XIMS::Names;
 use XIMS::Session;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 9;
 }
 
@@ -19,10 +19,10 @@ $sess = undef;
 $sess = XIMS::Session->new( user_id => 1 );
 ok( $sess );
 ok( $sess->user_id() == 1 );
-ok( defined( $sess->id() ) );      
+ok( defined( $sess->id() ) );
 ok( defined( $sess->salt() ) );
 ok( defined( $sess->session_id() ) );
 ok( defined( $sess->last_access_timestamp() ) );
 ok( defined($sess->host() ) );
-ok( $sess->attributes() == undef );
+ok( not defined $sess->attributes() );
 

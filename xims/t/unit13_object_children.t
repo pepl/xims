@@ -20,7 +20,7 @@ my @kids = $root->children();
 cmp_ok ( scalar( @kids ), '>', '0', 'rootfolder has children' );
 
 # get a specific child with the location 'xims'
-my @kids = $root->children( location => 'xims' );
+@kids = $root->children( location => 'xims' );
 is( $kids[0]->location(), 'xims', 'could get the child with location \'xims\' using the array interface' );
 my $kid_iterator = $root->children( location => 'xims' );
 my $kid =  $kid_iterator->getNext();

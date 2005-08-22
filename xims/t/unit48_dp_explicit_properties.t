@@ -26,7 +26,7 @@ my $o = XIMS::Object->new( id => 2, properties => ['title', 'id'] );
 ok( $o );
 ok( $o->title() eq '/ximspubroot/xims' );
 ok( $o->id() == 2 );
-ok( $o->location() == undef );
+ok( not defined $o->location() );
 
 # just for fun, lets try another resource type
 

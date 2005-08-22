@@ -154,7 +154,11 @@ sub role_ids {
     my %args = @_;
     my @role_ids;
 
-    return @{$self->{role_ids}} if exists $self->{role_ids};
+    # return cached role_ids if no args are given
+    if ( keys %args == 0 and exists $self->{role_ids} ) {
+        #warn "returning cached role_ids";
+        return @{$self->{role_ids}};
+    }
 
     my @current_ids = ();
     push @current_ids, $self->id();
@@ -184,8 +188,8 @@ sub role_ids {
     }
 
     @role_ids = keys %id_list;
-    # cache role ids
-    $self->{role_ids} = \@role_ids;
+    # cache role ids if no args are given
+    $self->{role_ids} = \@role_ids if keys %args == 0;
 
     return @role_ids;
 }

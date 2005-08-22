@@ -43,7 +43,7 @@ $o->delete();
 # and make sure...
 $o = undef;
 $o = XIMS::Object->new( id => $o_id );
-ok( $o == undef );
+ok( not defined $o );
 
 
 # now test binary object goodness.
@@ -77,5 +77,5 @@ $img->delete();
 # and make sure...
 $img = undef;
 $img = XIMS::Object->new( id => $o_id );
-ok( $img == undef );
+ok( not defined $img );
 

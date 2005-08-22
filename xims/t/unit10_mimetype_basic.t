@@ -6,7 +6,7 @@ use XIMS::Names;
 use XIMS::MimeType;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 13;
 }
 
@@ -33,9 +33,9 @@ ok( $mt->data_format_id() == 1 );
 
 # now create one
 $mt = undef;
-$mt = XIMS::MimeType->new(); 
+$mt = XIMS::MimeType->new();
 
-ok( $mt ); 
+ok( $mt );
 $mt->mime_type( 'application/ubu' );
 $mt->data_format_id( 1 );
 
@@ -60,4 +60,4 @@ ok( $mt->delete() );
 # and make sure
 $mt = undef;
 $mt = XIMS::MimeType->new( mime_type => 'application/ubu' );
-ok( $mt == undef );
+ok( not defined $mt );
