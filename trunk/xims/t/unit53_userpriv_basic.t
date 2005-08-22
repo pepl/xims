@@ -6,7 +6,7 @@ use XIMS::Test;
 use XIMS::UserPriv;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 25;
 }
 
@@ -19,7 +19,7 @@ $p->grantee_id( 1 );
 $p->id( 3 );
 $p->default_role( 1 );
 
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->id() == 3 );
 ok( $p->default_role() == 1 );
@@ -36,7 +36,7 @@ my %hash = ( grantor_id   => 2,
 
 $p = XIMS::UserPriv->new->data( %hash );
 
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->id() == 3 );
 ok( $p->default_role() == 1 );
@@ -46,34 +46,34 @@ $p = undef;
 
 $p = XIMS::UserPriv->new( grantee_id => 1, id => 3 );
 
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->id() == 3 );
 ok( $p->default_role() == 1 );
-ok( $p->role_master() == undef );
+ok( $p->role_master() == 0 );
 
 # test updating
 $p->role_master( 1 );
 $p->update();
 
 
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->id() == 3 );
 ok( $p->role_master() == 1 );
 
 # now put it back and check
-$p->role_master( undef );
+$p->role_master( 0 );
 $p->update();
 
 $p = undef;
 
 $p = XIMS::UserPriv->new( grantee_id => 1, id => 3 );
 
-ok( $p->grantor_id() == 2 ); 
+ok( $p->grantor_id() == 2 );
 ok( $p->grantee_id() == 1 );
 ok( $p->id() == 3 );
-ok( $p->role_master() == undef );
+ok( $p->role_master() == 0 );
 
 
 # now create a new one
@@ -100,4 +100,4 @@ $p->delete();
 
 $p = undef;
 $p = XIMS::UserPriv->new(  grantee_id => 2, id => 3 );
-ok( $p == undef );
+ok( not defined $p );

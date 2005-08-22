@@ -7,7 +7,7 @@ use XIMS::Object;
 use XIMS::Document;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 7;
 }
 
@@ -33,7 +33,7 @@ my %doc_hash = ( language_id => 1,
                  body => $body,
                );
 
-my $o = XIMS::Document->new->data( %doc_hash );
+$o = XIMS::Document->new->data( %doc_hash );
 my $o_id = $o->create( User => $user );
 ok( $o_id and $o_id > 1 );
 
@@ -50,5 +50,5 @@ $o->delete();
 # and make sure...
 $o = undef;
 $o = XIMS::Object->new( id => $o_id );
-ok( $o == undef );
+ok( not defined $o );
 

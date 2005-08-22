@@ -6,7 +6,7 @@ use XIMS::Names;
 use XIMS::Bookmark;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 24;
 }
 
@@ -29,8 +29,8 @@ $bmk = undef;
 
 my %hash = ( id   => 1,
              content_id => 2,
-             owner_id => 1, 
-             stdhome => 1, 
+             owner_id => 1,
+             stdhome => 1,
            );
 
 $bmk = XIMS::Bookmark->new->data( %hash );
@@ -41,11 +41,10 @@ ok( $bmk->owner_id() == 1 );
 ok( $bmk->stdhome() == 1 );
 
 # now create one
+$bmk = XIMS::Bookmark->new();
 
-my $bmk = XIMS::Bookmark->new(); 
-
-ok( $bmk ); 
-$bmk->content_id( 2 ); 
+ok( $bmk );
+$bmk->content_id( 2 );
 $bmk->owner_id( 1 );
 $bmk->stdhome( 1 );
 
@@ -87,4 +86,4 @@ ok( $bmk->delete() );
 
 $bmk = undef;
 $bmk = XIMS::Bookmark->new( id => $id );
-ok( $bmk == undef );
+ok( not defined $bmk );

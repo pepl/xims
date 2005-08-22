@@ -105,12 +105,12 @@ $child1->delete();
 
 $child3 = undef;
 $child3 = XIMS::Object->new( id => $child3_id );
-ok( $child3 == undef );
+ok( not defined $child3 );
 
 $child2 = undef;
 $child2 = XIMS::Object->new( id => $child2_id );
-ok( $child2 == undef );
+ok( not defined $child2 );
 
 $child1 = undef;
 $child1 = XIMS::Object->new( id => $child1_id );
-ok( $child1 == undef );
+ok( not defined $child1 );

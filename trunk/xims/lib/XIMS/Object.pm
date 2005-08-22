@@ -1312,6 +1312,7 @@ sub undelete {
     my $user = delete $args{User} || $self->{User};
     $self->marked_deleted( undef );
     my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
+    $max_position ||= 0;
     $self->position( $max_position + 1 );
     return $self->data_provider->updateObject( $self->data() );
 }

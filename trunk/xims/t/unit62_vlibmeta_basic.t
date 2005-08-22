@@ -36,7 +36,7 @@ $meta->bibliosource( 'Gonkulators in the Nu Millienium Today Conference' );
 $meta->mediatype( 'Conference Talk' );
 $meta->subtitle( 'A Position-Fixing' );
 
-my $id = $meta->create();
+$id = $meta->create();
 cmp_ok( $id, '>', 0, "Meta created with id $id" );
 
 # fetch it back...

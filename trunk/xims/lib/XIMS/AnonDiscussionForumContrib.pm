@@ -16,7 +16,7 @@ sub author {
     my $author = shift;
     my $retval;
 
-    if ( length $author ) {
+    if ( defined $author and length $author ) {
         $self->attribute( author => __limit_string_length( $author ) );
         $retval = 1;
     }
@@ -33,7 +33,7 @@ sub email {
     my $dontcheck = shift;
     my $retval;
 
-    if ( length $email ) {
+    if ( defined $email and length $email ) {
         $self->attribute( email =>  __limit_string_length( $email ) );
         $retval = 1;
     }
@@ -49,7 +49,7 @@ sub coauthor {
     my $author = shift;
     my $retval;
 
-    if ( length $author ) {
+    if ( defined $author and length $author ) {
         $self->attribute( coauthor =>  __limit_string_length( $author ) );
         $retval = 1;
     }
@@ -66,7 +66,7 @@ sub coemail {
     my $dontcheck = shift;
     my $retval;
 
-    if ( length $email ) {
+    if ( defined $email and length $email ) {
         $self->attribute( coemail =>  __limit_string_length( $email ) );
         $retval = 1;
     }
@@ -82,7 +82,7 @@ sub senderip {
     my $ip = shift;
     my $retval;
 
-    if ( length $ip ) {
+    if ( defined $ip and length $ip ) {
         $self->attribute( senderip => $ip );
         $retval = 1;
     }

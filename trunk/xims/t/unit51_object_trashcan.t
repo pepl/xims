@@ -47,4 +47,4 @@ $o = undef;
 
 $o = XIMS::Object->new( id => 2 );
 
-ok( $o->marked_deleted() == undef );
+ok( not defined $o->marked_deleted() );

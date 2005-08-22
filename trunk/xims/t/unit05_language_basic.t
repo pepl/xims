@@ -6,7 +6,7 @@ use XIMS::Names;
 use XIMS::Language;
 #use Data::Dumper;
 
-BEGIN { 
+BEGIN {
     plan tests => 26;
 }
 
@@ -27,7 +27,7 @@ $lang = undef;
 
 my %hash = ( id   => 1,
              code => 'en-us',
-             fullname => 'English (US)' 
+             fullname => 'English (US)'
            );
 
 $lang = XIMS::Language->new->data( %hash );
@@ -95,4 +95,4 @@ ok( $lang->fullname(), undef );
 
 $lang = undef;
 $lang = XIMS::Language->new( id => $id );
-ok( $lang == undef );
+ok( not defined $lang );
