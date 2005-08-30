@@ -1017,6 +1017,7 @@ table.footer {
 	border:0px solid;
 	padding:5px 1px 1px 1px;
 	margin-top:0px;
+	line-height:160%;
 }
 
 .compulsory {
