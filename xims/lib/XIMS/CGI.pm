@@ -302,22 +302,26 @@ sub event_cancel {
 }
 
 sub event_plain {
-    # give back only and really only the body of the object with its content-type and the DB-Encoding
+    # Give back only and really only the body of the object with its content-type and the DB-Encoding
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my $body = $ctxt->object->body();
     my $df = XIMS::DataFormat->new( id => $ctxt->object->data_format_id() );
-    my $mime_type = $df->mime_type;
+
+    # Since the body of Text and CSS objects is stored XML escaped, we want to unescape it here again
+    if ( $df->name() eq 'Text' or $df->name() eq 'CSS' ) {
+        $body = XIMS::xml_unescape( $body );
+    }
 
     my $charset;
     if (! ($charset = XIMS::DBENCODING )) { $charset = "UTF-8"; }
-    print $self->header( -Content_type => $mime_type."; charset=".$charset );
+    print $self->header( -Content_type => $df->mime_type."; charset=".$charset );
     print $body;
     $self->skipSerialization(1);
 
     return 0;
-  }
+}
 
 
 #*#
