@@ -23,6 +23,8 @@
                 <image url="{context/object/image_id}"/>
             </xsl:if>
             <stylesheet><xsl:apply-templates select="context/object/style_id"/></stylesheet>
+            <css><xsl:apply-templates select="context/object/css_id"/></css>
+            <script><xsl:apply-templates select="context/object/script_id"/></script>
             <path>
                 <xsl:choose>
                     <xsl:when test="$resolvereltositeroots = 1">
