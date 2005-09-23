@@ -248,10 +248,11 @@ sub event_bxeconfig {
     my $RNG_File = "/goxims/content?id=".$ctxt->object->schema_id().";plain=1";
     my $CSS_File = "/goxims/content?id=".$ctxt->object->css_id().";plain=1";
     my $Exit_dest = "/goxims/content?id=".$ctxt->object->id().";edit=1";
-    $config_body =~ s/\[XML_FILE_BODY\]/$XML_File/;
-    $config_body =~ s/\[RNG_FILE_BODY\]/$RNG_File/;
-    $config_body =~ s/\[CSS_FILE_BODY\]/$CSS_File/;
-    $config_body =~ s/\[XML_FILE_EDIT\]/$Exit_dest/;
+    $config_body =~ s/\{\$xmlfile\}/$XML_File/;
+    $config_body =~ s/\{\$validationfile\}/$RNG_File/;
+    $config_body =~ s/\{\$css\}/$CSS_File/;
+    $config_body =~ s/\{\$exitdestination\}/$Exit_dest/;
+
     # return xml
     my $df = XIMS::DataFormat->new( id => $config_template->data_format_id() );
     my $mime_type = $df->mime_type;
