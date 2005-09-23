@@ -1553,7 +1553,7 @@ sub set_sax_filters {
                                                               Export   => 1,
                                                             );
     push @filter, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
-                                                                 ResolveContent => [ qw( STYLE_ID IMAGE_ID ) ],
+                                                                 ResolveContent => [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID ) ],
                                                                );
 
     XIMS::Debug( 5, "done" );
