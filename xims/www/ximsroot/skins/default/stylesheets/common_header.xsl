@@ -243,7 +243,10 @@
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET">
         <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap">
             <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="objtype">
-                <xsl:apply-templates select="/document/object_types/object_type[can_create]"/>
+                <!-- Do not display object types that either are not fully implemented or that are not meant to be created directly.
+                     We may consider adding an object type property for the latter types.
+                -->
+                <xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and name != 'VLibraryItem']"/>
             </select>
         </td>
         <td width="80" background="{$skimages}subheader-generic_bg.png" style="padding-top: 4">
