@@ -1398,7 +1398,7 @@ sub event_publish_prompt {
         push( @objects, @doclinks ) if scalar @doclinks > 0;
 
         for ( @objects ) {
-            $_->{location_path} = $_->location();
+            $_->{location_path} = $_->object_type_id == $urllinkid ? $_->location() : $_->location_path();
         }
     }
     elsif ( $dfmime_type eq 'application/x-container' ) {
