@@ -38,6 +38,8 @@ sub handler {
     XIMS::via_proxy_test($r) unless $r->pnotes('PROXY_TEST');
     XIMS::Debug( 5, "called from " . $r->connection->remote_ip());
 
+    $r->no_cache( 1 );
+
     my $retval = DECLINED;
     my %args = $r->args();
 

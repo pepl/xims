@@ -409,12 +409,6 @@ sub setHttpHeader {
     my %my_headers = ();
     $my_headers{-cookie} = $ctxt->properties->application->cookie() if defined $ctxt->properties->application->cookie();
 
-    if ( defined $ctxt->properties->application->nocache() ) {
-        %my_headers = ('-expires'       => 'now',
-                       '-Pragma'        => 'no-cache',
-                       '-Cache-Control' => 'no-cache')
-    }
-
     return %my_headers;
 }
 
@@ -1829,7 +1823,7 @@ sub event_posview {
     my $object = $ctxt->object();
     my $parent = XIMS::Object->new( document_id => $object->parent_id, language_id => $object->language_id );
 
-    $ctxt->properties->content->siblingscount( $parent->child_count() );
+    $ctxt->properties->content->siblingscount( $parent->child_count( marked_deleted => undef ) );
     $ctxt->properties->application->styleprefix( "container" );
     $ctxt->properties->application->style( "posview" );
 
