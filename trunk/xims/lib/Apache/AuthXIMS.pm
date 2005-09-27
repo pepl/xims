@@ -565,12 +565,17 @@ sub view_privilege_handler {
     $session ||= $r->pnotes('ximsSession');
     return AUTH_REQUIRED unless $session and $session->isa('XIMS::Session');
 
-    my $pathbase = $r->dir_config('ximsPubPathBase');
     my $siterootloc = $r->dir_config('ximsSiteRootLocation');
     return FORBIDDEN unless $siterootloc;
 
     my $uri = $r->uri();
+
+    my $pathbase = $r->dir_config('ximsPubPathBase');
     $uri =~ s/$pathbase//;
+
+    # If we have been directed to an autoindex, use the folder's privileges for testing
+    my $autoindex = '/' . XIMS::AUTOINDEXFILENAME() . '$';
+    $uri =~ s/$autoindex//;
 
     my $object = XIMS::Object->new( path => $siterootloc . $uri );
     return NOT_FOUND unless $object;
