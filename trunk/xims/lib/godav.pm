@@ -372,7 +372,7 @@ sub propfind {
     return (404, undef) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
-    return (403) unless $privmask & XIMS::Privileges::VIEW;
+    return (403) unless defined $privmask and ($privmask & XIMS::Privileges::VIEW);
 
     # TODO: xml in $doc is currently not checked, "allprop" is assumed
 
