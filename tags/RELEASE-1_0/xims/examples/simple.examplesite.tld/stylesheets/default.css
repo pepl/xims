@@ -1,0 +1,143 @@
+body, html, div {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: 10pt/16pt helvetica, arial, sans-serif;
+    width:790px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    border-bottom: 1px solid #eeeeee;
+    text-align: justify;
+    color: #006600;
+}
+
+h1 {
+    font: bolder 16pt/16pt helvetica, arial, sans-serif;
+}
+
+h2 {
+    font: bolder 14pt/14pt verdana, geneva, arial, sans serif;
+}
+
+h3 {
+    font: bolder 12pt/12pt verdana, geneva, arial, sans serif;
+}
+
+p {
+    font: 10pt/14pt helvetica, arial, sans-serif;
+    text-align: justify;
+    margin-bottom: 8pt;
+    margin-top: 8pt;
+}
+
+a:link {
+    color: #333399;
+}
+
+a:visited {
+    color: #000033;
+}
+
+a:hover {
+    color: #333399;
+}
+
+.pseudolink {
+    color: #333399;
+    text-decoration:underline;
+}
+
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+
+#header {
+    background:#fff;
+    border-top:1px;
+    border-right:1px;
+    border-left:1px;
+    voice-family: "\"}\"";
+    voice-family: inherit;
+}
+
+#banner {
+    background: #99CC99;
+    font: bold 16pt/16pt helvetica, arial, sans-serif;
+    padding: 0px 0px 0px 10px;
+    color: #669966;
+}
+
+#logo {
+    text-align: right;
+}
+
+#pathnavigation {
+    position: absolute;
+    left:10px;
+    color: #000000;
+    font: 10pt/16pt helvetica, arial, sans-serif;
+}
+
+#pathnavigation a {
+    color: #000000;
+    text-decoration:none;
+}
+
+#content {
+    padding: 10px 0px 0px 10px;
+    width:770px;
+}
+
+#footer {
+    font: 7pt/7pt helvetica, arial, sans-serif;
+    color: #a9a9a9;
+    margin-top: 50px;
+    padding: 0px 0px 0px 10px;
+}
+
+#footer a {
+    text-decoration: none;
+}
+
+#departmentlinks {
+    background: #F5F7F4;
+    padding: 0px 0px 0px 10px;
+}
+
+#departmentlinks ul {
+    margin: 0;
+    padding: 0;
+}
+
+#departmentlinks li {
+    display:inline;
+    padding: 0px 5px 0px 0px;
+    margin: 0;
+    border: 1px solid #eeeeee;
+    border-top-color: #99CC99;
+}
+
+#departmentlinks a {
+    text-decoration:none;
+    padding: 0px 0px 0px 0px;
+}
+
+#departmentlinks a:link {
+    color: #333399;
+}
+
+#departmentlinks a:visited {
+    color: #000033;
+}
+
+#departmentlinks a:hover {
+    background: #EFF7EB;
+    color: #699364;
+}
+

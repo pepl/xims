@@ -1,0 +1,16 @@
+/*
+# Copyright (c) 2002-2005 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+*/
+
+@import url(../../../stylesheets/default.css);
+
+#department_title {
+	font-family:helvetica, arial, sans-serif;
+	font-size:10pt;
+	color: #A0A0A0;
+}
+
+
