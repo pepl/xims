@@ -91,6 +91,7 @@ Questionnaire:
 
 Stylesheets:
   - Moved document editor options (Plain Textarea, HTMLArea, ...) to config.xsl
+  - Copy body elements into HTML namespace to produce validating output
   - Removed 'organisation' from config.xsl
   - Updated the default namespace from the old proposed-recommendation of
     XHTML to the current official one (http://www.w3.org/1999/xhtml)
