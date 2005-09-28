@@ -73,7 +73,7 @@ sub new {
 package Application;
 use Class::MethodMaker
     new     => 'new',
-    get_set => [qw( cookie style styleprefix preservelocation keepsuffix )];
+    get_set => [qw( nocache cookie style styleprefix preservelocation keepsuffix )];
 1;
 
 package Filter;

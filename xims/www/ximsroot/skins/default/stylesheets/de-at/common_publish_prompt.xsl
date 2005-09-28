@@ -38,7 +38,7 @@
                                 <tr>
                                     <td>
                                         <strong>
-                                            Status: Dieses Objekt ist zur Zeit
+                                            Status: Diese Objekt ist zur Zeit
                                             <xsl:if test="published!='1'">
                                                 <xsl:text> NICHT </xsl:text>
                                             </xsl:if>

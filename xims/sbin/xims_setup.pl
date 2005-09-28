@@ -235,14 +235,6 @@ $installer->inplace_edit($ximsstartuppl, "s!^\\s*use lib qw\\(\\s*\\S+/xims/lib\
 print "\n[+] Successfully updated $ximsstartuppl\n";
 
 
-# adjust XIMS_HOME in ximshttpd.conf if neccessary
-if ( $ENV{XIMS_HOME} and -d $ENV{XIMS_HOME} ) {
-    print "[+] Set XIMS_HOME to $ENV{XIMS_HOME} in ximshttpd.conf.\n" if
-        $installer->inplace_edit("$xims_home/conf/ximshttpd.conf",
-                                 "s!#PerlSetEnv XIMS_HOME path_to_your_xims_home!PerlSetEnv XIMS_HOME $ENV{XIMS_HOME}!");
-
-}
-
 # adjust ORACLE_HOME in ximshttpd.conf if neccessary
 if ( $ENV{ORACLE_HOME} and -d $ENV{ORACLE_HOME} ) {
     print "[+] Set ORACLE_HOME to $ENV{ORACLE_HOME} in ximshttpd.conf.\n" if

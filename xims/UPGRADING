@@ -39,13 +39,13 @@
     For example:
     [root@host local]# cd xims && sbin/xims_setup.pl -c
 
-  * Fix portlet columns
-
-    [root@host xims]# cd upgrade/0.9.1_1.0 && perl fixup_portletcolumns.pl
-
   * Fix title of published documents (may take some time)
 
-    [root@host 0.9.1_1.0]# perl fixup_publisheddocumentstitle.pl
+    [root@host xims]# cd upgrade/0.9.1_1.0 && perl fixup_publisheddocumentstitle.pl
+
+  * Fix portlet columns
+
+    [root@host 0.9.1_1.0]# perl fixup_portletcolumns.pl
 
   * (Re)Start Apache
 

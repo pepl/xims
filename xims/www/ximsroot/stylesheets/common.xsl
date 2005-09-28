@@ -109,14 +109,10 @@
     caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|
     button|fieldset|form|label|legend|input|option|optgroup|select|textarea|
     applet|object|param|embed|script">
-    <xsl:element name="{name(.)}" namespace="http://www.w3.org/1999/xhtml">
-        <xsl:for-each select="@*">
-            <xsl:attribute name="{name(.)}">
-                <xsl:value-of select="."/>
-            </xsl:attribute>
-        </xsl:for-each>
+    <xsl:copy>
+        <xsl:copy-of select="@*"/>
         <xsl:apply-templates/>
-    </xsl:element>
+    </xsl:copy>
 </xsl:template>
 
 <xsl:template name="head_default">

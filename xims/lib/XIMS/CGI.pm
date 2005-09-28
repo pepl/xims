@@ -409,6 +409,12 @@ sub setHttpHeader {
     my %my_headers = ();
     $my_headers{-cookie} = $ctxt->properties->application->cookie() if defined $ctxt->properties->application->cookie();
 
+    if ( defined $ctxt->properties->application->nocache() ) {
+        %my_headers = ('-expires'       => 'now',
+                       '-Pragma'        => 'no-cache',
+                       '-Cache-Control' => 'no-cache')
+    }
+
     return %my_headers;
 }
 
@@ -1392,7 +1398,7 @@ sub event_publish_prompt {
         push( @objects, @doclinks ) if scalar @doclinks > 0;
 
         for ( @objects ) {
-            $_->{location_path} = $_->object_type_id == $urllinkid ? $_->location() : $_->location_path();
+            $_->{location_path} = $_->location();
         }
     }
     elsif ( $dfmime_type eq 'application/x-container' ) {
@@ -1823,7 +1829,7 @@ sub event_posview {
     my $object = $ctxt->object();
     my $parent = XIMS::Object->new( document_id => $object->parent_id, language_id => $object->language_id );
 
-    $ctxt->properties->content->siblingscount( $parent->child_count( marked_deleted => undef ) );
+    $ctxt->properties->content->siblingscount( $parent->child_count() );
     $ctxt->properties->application->styleprefix( "container" );
     $ctxt->properties->application->style( "posview" );
 

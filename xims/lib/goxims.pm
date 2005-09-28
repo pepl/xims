@@ -57,6 +57,8 @@ sub handler {
     #my $apr = Apache::Request->new($r);
     my $ctxt = XIMS::AppContext->new( apache => $r );
 
+    $ctxt->properties->application->nocache( 1 );
+
     # set default 500 error document
     $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp");
 
