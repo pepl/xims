@@ -77,7 +77,7 @@
         # here after installation to $ximsroot/bxe
         # You can download BXE from http://www.bitfluxeditor.org.
         -->
-        <XMLEditor></XMLEditor>
+        <XMLEditor>bxe</XMLEditor>
 
         <!--
         # Array of language-tags of XIMS-known user interface stylesheet directories.
