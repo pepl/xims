@@ -184,8 +184,14 @@
             }
 
             function setSel(selObj, toselect) {
-                if ( !toselect )
-                    toselect = 'plain';
+                if ( !toselect ) {
+                    if ( window.editor ) {
+                        toselect = 'htmlarea';
+                    }
+                    else {
+                        toselect = 'plain';
+                    }
+                }
                 toselect = toselect.toLowerCase();
                 opts=selObj.options,
                 i=opts.length;
