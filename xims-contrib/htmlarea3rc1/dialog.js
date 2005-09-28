@@ -22,11 +22,12 @@ function Dialog(url, action, init) {
 };
 
 Dialog._parentEvent = function(ev) {
+	setTimeout( function() { if (Dialog._modal && !Dialog._modal.closed) { Dialog._modal.focus() } }, 50);
 	if (Dialog._modal && !Dialog._modal.closed) {
-		Dialog._modal.focus();
 		HTMLArea._stopEvent(ev);
 	}
 };
+
 
 // should be a function, the return handler of the currently opened dialog.
 Dialog._return = null;
@@ -38,19 +39,19 @@ Dialog._modal = null;
 Dialog._arguments = null;
 
 Dialog._geckoOpenModal = function(url, action, init) {
-    var dlg;
-    if (action == '0')
-    {
-        dlg = window.open(url, "hadialog",
-			      "toolbar=no,menubar=no,personalbar=no,width=600,height=400," +
-			      "scrollbars=yes,resizable=yes");
-    }
-    else
-    {
-	    dlg = window.open(url, "hadialog",
-			      "toolbar=no,menubar=no,personalbar=no,width=10,height=10," +
-			      "scrollbars=no,resizable=yes");
-    }
+	var dlg;
+	if (action == '0')
+	{
+		dlg = window.open(url, "hadialog",
+							   "toolbar=no,menubar=no,personalbar=no,width=600,height=400," +
+							   "scrollbars=yes,resizable=yes,modal=yes,dependable=yes");
+	}
+	else
+	{
+		dlg = window.open(url, "hadialog",
+							   "toolbar=no,menubar=no,personalbar=no,width=10,height=10," +
+							   "scrollbars=no,resizable=yes,modal=yes,dependable=yes");
+	}
 	Dialog._modal = dlg;
 	Dialog._arguments = init;
 
@@ -67,8 +68,10 @@ Dialog._geckoOpenModal = function(url, action, init) {
 		HTMLArea._removeEvent(w, "focus", Dialog._parentEvent);
 	};
 	capwin(window);
-	// capture other frames
-	for (var i = 0; i < window.frames.length; capwin(window.frames[i++]));
+	// capture other frames, note the exception trapping, this is because
+  // we are not permitted to add events to frames outside of the current
+  // window's domain.
+	for (var i = 0; i < window.frames.length; i++) {try { capwin(window.frames[i]); } catch(e) { } };
 	// make up a function to be called when the Dialog ends.
 	Dialog._return = function (val) {
 		if (val && action) {
@@ -76,7 +79,8 @@ Dialog._geckoOpenModal = function(url, action, init) {
 		}
 		relwin(window);
 		// capture other frames
-		for (var i = 0; i < window.frames.length; relwin(window.frames[i++]));
+		for (var i = 0; i < window.frames.length; i++) { try { relwin(window.frames[i]); } catch(e) { } };
 		Dialog._modal = null;
 	};
+  Dialog._modal.focus();
 };
