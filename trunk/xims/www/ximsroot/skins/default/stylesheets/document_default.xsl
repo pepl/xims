@@ -193,5 +193,13 @@
     </img>
 </xsl:template>
 
+<xsl:template match="script">
+    <script xmlns="http://browser.wont.parse.cdata.sections.so.we.workaround.here/">
+        <xsl:if test="@src != ''"><xsl:attribute name="src"><xsl:value-of select="@src"/></xsl:attribute></xsl:if>
+        <xsl:if test="@type != ''"><xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+        <xsl:value-of select="text()"/>
+    </script>
+</xsl:template>
+
 </xsl:stylesheet>
 
