@@ -52,13 +52,16 @@ sub resolve_resource {
 
 sub get {
     my ($self, %args) = @_;
-    my @qualified_names = keys( %{$args{properties}} );
-    my ($tables, $columns) = $self->tables_and_columns_get( $args{properties} );
-    my $crit = $self->crit_get( $args{conditions} );
+    my $properties = delete $args{properties};
+    my $conditions = delete $args{conditions};
+    my @qualified_names = keys( %{$properties} );
+    my ($tables, $columns) = $self->tables_and_columns_get( $properties );
+    my $crit = $self->crit_get( $conditions );
     my @columns = keys( %{$columns} );
     my $data = $self->{dbh}->fetch_select( tables   => $tables,
                                            columns  => \@columns,
-                                           criteria => $crit );
+                                           criteria => $crit,
+                                           %args);
 
     my @out = map { name_fixer( $_ ) } @{$data};
     #warn "Driver returned: " . Dumper( \@out ) . "\n";

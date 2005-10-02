@@ -163,8 +163,16 @@ sub AUTOLOAD {
            $data = $method->( $self->{Driver}, @_ );
        }
        elsif ( grep { $_ eq $r_type } XIMS::Names::resource_types() ) {
-           my ( $properties, $conditions ) = $self->request_factory($r_type, $action, @_);
-           $data = $self->{Driver}->$action( properties => $properties, conditions => $conditions );
+            my %args = @_;
+            my %param;
+            # pass on limit, offset, and order parameters that may have been given
+            $param{limit} = delete $args{limit};
+            $param{offset} = delete $args{offset};
+            my $order = delete $args{order};
+            $param{order} = $order if (defined $order and length $order);
+
+            my ( $properties, $conditions ) = $self->request_factory($r_type, $action, %args);
+            $data = $self->{Driver}->$action( properties => $properties, conditions => $conditions, %param );
        }
     }
     # short circuit for free access to low-level Driver methods.
