@@ -126,7 +126,7 @@ sub new {
             $otname =~ s/XIMS:://;
             if ( not $args{object_type_id} ) {
                 my $ot = XIMS::ObjectType->new( fullname => $otname );
-                if ( $ot ) {
+                if ( defined $ot ) {
                     $self->object_type_id( $ot->id() );
                 }
                 else {
