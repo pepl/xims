@@ -227,6 +227,134 @@ sub decode {
     return $string;
 }
 
+##
+#
+# SYNOPSIS
+#    my $value = XIMS::nodevalue( $node )
+#
+# PARAMETER
+#    $node: XML::LibXML::Node instance
+#
+# RETURNS
+#    $value: String value of node. If the node has child nodes, toString is called on them
+#
+# DESCRIPTION
+#    Returns a string value of a XML::LibXML::Node including potential child nodes
+#
+sub nodevalue {
+    my $node = shift;
+
+    if ( defined $node ) {
+        my $value = "";
+        if ( $node->hasChildNodes() ) {
+            map { $value .= $_->toString(0,1) } $node->childNodes;
+        }
+        else {
+            $value = $node->textContent();
+        }
+        if ( length $value ) {
+#            $value = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value;
+            return $value;
+        }
+    }
+}
+
+##
+#
+# SYNOPSIS
+#    my $trimmed = XIMS::trim( $string )
+#
+# PARAMETER
+#    $string: string
+#
+# RETURNS
+#    $trimmed: String with stripped leading and trailing whitespace
+#
+# DESCRIPTION
+#    Trims leading and trailing whitespace from a string
+#
+sub trim {
+    my $string = shift;
+
+    return undef unless $string;
+
+    $string =~ s/^\s+//;
+    $string =~ s/\s+$//;
+
+    return $string;
+}
+
+##
+#
+# SYNOPSIS
+#    my $unquotted = XIMS::unquot( $string )
+#
+# PARAMETER
+#    $string: string
+#
+# RETURNS
+#    $unquotted: String with literal quotes
+#
+# DESCRIPTION
+#    Converts apos and quot entities to its string literal values inside a string
+#
+sub unquot {
+    my $string = shift;
+
+    return undef unless $string;
+
+    $string =~ s/&apos;/'/g;
+    $string =~ s/&quot;/"/g;
+
+    return $string;
+}
+
+##
+#
+# SYNOPSIS
+#    my $clean = XIMS::clean( $string )
+#
+# PARAMETER
+#    $string: string
+#
+# RETURNS
+#    $clean: Unquoted and trimmed string
+#
+# DESCRIPTION
+#    Unquots and trims a string
+#
+sub clean {
+    my $string = shift;
+
+    return undef unless $string;
+
+    $string = XIMS::unquot( XIMS::trim( $string ) );
+
+    return $string;
+}
+
+##
+#
+# SYNOPSIS
+#    my $escaped = XIMS::escapewildcard( $string )
+#
+# PARAMETER
+#    $string: string
+#
+# RETURNS
+#    $escaped: String with SQL-escaped '%' strings
+#
+# DESCRIPTION
+#    SQL-escapes '%' inside a string by replacing them with '%%'
+#
+sub escapewildcard {
+    my $string = shift;
+
+    return undef unless $string;
+    $string =~ s/%/%%/g;
+
+    return $string;
+}
 
 ##
 #
