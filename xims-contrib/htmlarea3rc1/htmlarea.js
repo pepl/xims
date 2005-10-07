@@ -2856,9 +2856,15 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 					//
 					// Using Gecko the values of href and src are converted to absolute links
 					// unless we get them using nodeValue()
-					if (typeof root[a.nodeName] != "undefined" && name != "href" && name != "src") {
-						value = root[a.nodeName]; // IE does not like a.textContent and htmlEncode called on a zero-length string
-						if (value.length > 0) value = HTMLArea.htmlEncode(value);
+					if (typeof a.nodeValue != "undefined" && name != "href" && name != "src" ) {
+						//value = root[a.nodeName];
+						var tval = a.nodeValue;
+						if ( tval.length == 0 ) {
+							continue;
+						}
+						else {
+							value = HTMLArea.htmlEncode(tval);
+						}
 					} else {
 						value = a.nodeValue;
 						// IE seems not willing to return the original values - it converts to absolute
