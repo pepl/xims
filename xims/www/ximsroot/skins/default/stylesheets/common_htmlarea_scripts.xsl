@@ -30,6 +30,7 @@
           HTMLArea.loadPlugin(&apos;ContextMenu&apos;);
           HTMLArea.loadPlugin(&apos;HtmlTidy&apos;);
           HTMLArea.loadPlugin(&apos;ImageProperties&apos;);
+          HTMLArea.loadPlugin(&apos;CharacterMap&apos;);
     </script>
 
     <style type="text/css">@import url(<xsl:value-of select="$ximsroot"/>htmlarea/htmlarea.css);</style>
@@ -47,6 +48,7 @@
           editor.registerPlugin(ContextMenu);
           editor.registerPlugin(HtmlTidy);
           editor.registerPlugin(ImageProperties);
+          editor.registerPlugin(CharacterMap);
 
           // register the CSS plugin
           editor.registerPlugin(CSS, {
