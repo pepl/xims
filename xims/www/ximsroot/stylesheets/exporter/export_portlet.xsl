@@ -35,7 +35,7 @@
 
         <portlet id="{@id}">
             <departmentinfo><xsl:value-of select="department_id"/>/ou.xml</departmentinfo>
-            <baselocation><xsl:value-of select="location_path"/></baselocation>
+            <location_path><xsl:value-of select="$absolute_path_nosite"/></location_path>
             <title><xsl:value-of select="title"/></title>
             <abstract><xsl:apply-templates select="abstract"/></abstract>
             <valid_from_timestamp><xsl:apply-templates select="valid_from_timestamp"/></valid_from_timestamp>
