@@ -102,10 +102,8 @@ CREATE TABLE ci_roles_granted
 ;
 
 \echo creating index ci_roles_granted_grantee_idx...
--- seen only '=' conditions, HASH seems best alg.
 CREATE INDEX ci_roles_granted_grantee_idx
-       ON ci_roles_granted
-       USING HASH ( grantee_id )
+       ON ci_roles_granted ( grantee_id )
 ;
 
 COMMENT ON COLUMN ci_roles_granted.role_master
@@ -129,10 +127,8 @@ CREATE TABLE ci_object_type_privs
 
 
 \echo creating index ci_obj_type_privs_grantee_idx...
--- seen only '=' clauses, HASH seems best alg.
 CREATE INDEX ci_obj_type_privs_grantee_idx
-       ON ci_object_type_privs
-       USING HASH ( grantee_id )
+       ON ci_object_type_privs ( grantee_id )
 ;
 
 \echo creating table 'ci_sessions'
@@ -241,10 +237,9 @@ COMMENT ON COLUMN ci_content.keywords
 ;
 
 
--- found only '=' conditions, thence HASH
 \echo creating index on ci_content...
 CREATE INDEX ci_content_doc_id_idx
-       ON ci_content USING HASH ( document_id )
+       ON ci_content ( document_id )
 ;
 
 
