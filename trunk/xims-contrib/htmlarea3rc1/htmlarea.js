@@ -2862,8 +2862,11 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 						if ( tval.length == 0 ) {
 							continue;
 						}
-						else {
+						else if ( typeof tval == "string" ) {
 							value = HTMLArea.htmlEncode(tval);
+						}
+						else {
+							value = tval;
 						}
 					} else {
 						value = a.nodeValue;
