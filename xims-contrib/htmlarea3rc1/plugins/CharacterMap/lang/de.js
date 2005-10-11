@@ -9,8 +9,8 @@
 // This notice MUST stay intact for use (see license.txt).
 
 CharacterMap.I18N = {
-	"CharacterMapTooltip"       : "Sonderzeichen einfügen",
-	"Insert special character"  : "Sonderzeichen einfügen",
-	"HTML value:"               : "HTML Wert:",
-	"Cancel"                    : "Abbrechen"
+        "CharacterMapTooltip"       : "Sonderzeichen einfÃ¼gen",
+        "Insert special character"  : "Sonderzeichen einfÃ¼gen",
+        "HTML value:"               : "HTML Wert:",
+        "Cancel"                    : "Abbrechen"
 };
