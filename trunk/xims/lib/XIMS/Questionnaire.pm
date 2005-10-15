@@ -41,7 +41,7 @@ sub new {
     }
 
     my $q = $class->SUPER::new( %args );
-    $q->{Parser} = XML::LibXML->new();
+    $q->{Parser} = XML::LibXML->new() if defined $q;
     return $q;
 }
 
