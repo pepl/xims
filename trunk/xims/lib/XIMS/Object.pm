@@ -340,13 +340,15 @@ sub children_granted {
 ##
 #
 # SYNOPSIS
-#    my $count = $object->child_count();
+#    my $count = $object->child_count( [ %args ] );
 #
 # PARAMETER
-#    none
+#    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
+#                                            Multiple object properties can be specified in the %args hash. For example,
+#                                            $object->child_count( marked_deleted => undef )
 #
 # RETURNS
-#    $count    : Number of children in the content hierarchy
+#    $count    : Number of children of the object
 #
 # DESCRIPTION
 #
@@ -354,7 +356,7 @@ sub children_granted {
 sub child_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-    my @child_ids = $self->__child_ids();
+    my @child_ids = $self->__child_ids( @_ );
     return scalar ( @child_ids );
 }
 
