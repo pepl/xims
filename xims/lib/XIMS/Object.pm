@@ -2137,6 +2137,48 @@ sub script {
 ##
 #
 # SYNOPSIS
+#    my $schema = $object->schema( [ explicit => 1 ] );
+#
+# PARAMETER
+#    %args        (optional) : hash
+#       recognized key: 'explicit': If given, only explicitly assigned schema objects
+#                                   will be returned neglecting inherited ones.
+#
+# RETURNS
+#    $schema : XIMS::Object instance
+#
+# DESCRIPTION
+#    Returns a Schema assigned to the object. If a
+#    Schema is not assigned directly, an inherited
+#    one from the objectroot objects up the hierarchy is looked for
+#    unless "explicit" argument has been given.
+#
+sub schema {
+    my $self = shift;
+    my %args = @_;
+
+    return $self->{Schema} if defined $self->{Schema};
+    my $schema_id = $self->schema_id();
+    if ( not defined $schema_id ) {
+        if ( not defined $args{explicit} ) {
+            # look for schema_id in ancestrial objectroot objects
+            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+                last if $schema_id = $oroot->schema_id();
+            }
+            return undef unless defined $schema_id;
+        }
+        else {
+            return undef;
+        }
+    }
+    my $schema = XIMS::Object->new( id => $schema_id );
+    $self->{Schema} = $schema;
+    return $schema;
+}
+
+##
+#
+# SYNOPSIS
 #    my $creator = $object->creator( [ $user ] );
 #
 # PARAMETER
