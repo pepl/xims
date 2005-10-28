@@ -20,6 +20,14 @@
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
                     <xsl:call-template name="tr-body-create"/>
+                    <tr>
+                        <td colspan="3">
+                            <xsl:call-template name="testbodysxml"/>
+                            <xsl:call-template name="prettyprint">
+                                <xsl:with-param name="ppmethod">prettyprintxml</xsl:with-param>
+                            </xsl:call-template>
+                        </td>
+                    </tr>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-abstract-create"/>
                     <xsl:call-template name="markednew"/>

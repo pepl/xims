@@ -6,6 +6,8 @@
     <subjects>Subjects</subjects>
     <author>Author</author>
     <authors>Authors</authors>
+    <editor>Editor</editor>
+    <editors>Editors</editors>
     <publications>Publications</publications>
     <publication_volume>Volume</publication_volume>
     <item>Item</item>
@@ -22,4 +24,6 @@
     <Create_mapping>Create Mapping</Create_mapping>
     <Currently_mapped>Currently mapped</Currently_mapped>
     <Assign_new>Assign new</Assign_new>
+    <Serial>Serial/Journal</Serial>
+    <Import>Import</Import>
 </l>

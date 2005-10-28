@@ -206,16 +206,9 @@
 <using>using</using>
 <you_searched_for>You searched for</you_searched_for>
 <toggle_hls>Toggle Highlightning of search term</toggle_hls>
-<!-- Begin BXE Add ons -->
 <Schema>Schema</Schema>
 <CSS>CSS</CSS>
-<BXEConfig>BXE Config</BXEConfig>
-<Browse_schema>Browse for Schema</Browse_schema>
 <Browse_css>Browse for CSS</Browse_css>
-<Browse_BXEconfig>Browse for BXE-Config Template</Browse_BXEconfig>
-<BXE_XPath>Node to edit (XPath)</BXE_XPath>
-<edit_with_BXE>Edit with BXE</edit_with_BXE>
-<!-- End BXE Add ons -->
 <!-- Begin AxPoint -->
 <Download_PDF>Download as PDF</Download_PDF>
 <print_version>print version</print_version>
