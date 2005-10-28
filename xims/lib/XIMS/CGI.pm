@@ -40,7 +40,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 # first we register the events we handle
 sub registerEvents {
     my $self = shift;
-    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', 'htmltidy', @_ );
+    return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', 'prettyprintxml', 'htmltidy', @_ );
 }
 
 ############################################################################
@@ -1598,6 +1598,37 @@ sub event_htmltidy {
     return 0;
 }
 
+sub event_prettyprintxml {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $body = XIMS::decode( $self->param('body') );
+
+    # if we got no body param, use $object->body
+    my $string = defined $body ? $body : $ctxt->object->body();
+
+    print $self->header( -type => 'text/plain', -charset => (XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8') );
+    $self->skipSerialization(1);
+
+    my $doc = $ctxt->object->balanced_string( $string );
+    if ( defined $doc and $doc->isa('XML::LibXML::DocumentFragment') ) {
+        # $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' ); does not work
+        # correctly for whatever reasons - we have to manually decode again then.
+
+        # Format 1 does not work as documented :-/
+        # Format 2 deals better with the one-line fragment produced by
+        # HTMLArea's serializer with Gecko
+        my $pprinted = XIMS::Entities::decode( XIMS::decode( $doc->toString(2) ) );
+        $pprinted =~ s/\n\s*\n/\n/g; # remove duplicate linebreaks added by toString(2)
+        print $pprinted;
+    }
+    else {
+        # set back to body if parsing was unsuccessful
+        print $body;
+        $ctxt->session->message( "Parse Failure. Could not prettyprint." );
+    }
+    return 0;
+}
 
 sub event_obj_acllist {
     XIMS::Debug( 5, "called" );
