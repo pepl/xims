@@ -41,6 +41,7 @@ sub registerEvents {
           test_wellformedness
           pub_preview
           bxeconfig
+          simpleformedit
           )
         );
 }
@@ -75,6 +76,7 @@ sub event_default {
     }
     else {
         $self->SUPER::event_default( $ctxt );
+        $ctxt->properties->content->escapebody( 1 );
     }
 }
 
@@ -100,6 +102,8 @@ sub event_edit {
     if ( $self->param( "edit" ) eq "bxe" ) {
         $ctxt->properties->application->style( "edit_bxe" );
     }
+
+    $ctxt->properties->content->escapebody( 1 );
     return 0;
 }
 
@@ -119,19 +123,17 @@ sub event_store {
         my $bxeconfigobj;
         if ( $bxeconfig =~ /^\d+$/
              and $bxeconfigobj = XIMS::Object->new( id => $bxeconfig )
-             and ( $bxeconfigobj->object_type->name() eq 'XML' ) )
-        {
+             and ( $bxeconfigobj->object_type->name() eq 'XML' ) ) {
             $object->attribute( bxeconfig_id => $bxeconfigobj->id() );
         }
         elsif ( $bxeconfigobj = XIMS::Object->new( path => $bxeconfig )
-                and ( $bxeconfigobj->object_type->name() eq 'XML' ) )
-        {
+                and ( $bxeconfigobj->object_type->name() eq 'XML' ) ) {
             $object->attribute( bxeconfig_id => $bxeconfigobj->id() );
         }
-            else {
-                XIMS::Debug( 3, "could not set attribute bxeconfig_id" );
-              }
+        else {
+            XIMS::Debug( 3, "could not set attribute bxeconfig_id" );
         }
+    }
     else {
         $object->attribute( bxeconfig_id => undef );
     }
@@ -144,6 +146,17 @@ sub event_store {
         }
     else {
         $object->attribute( bxexpath => undef );
+    }
+
+    my $sfe  = $self->param( 'sfe' );
+    if ( defined $sfe ) {
+        XIMS::Debug( 6, "sfe: $sfe" );
+        if ( $sfe eq 'true' ) {
+            $object->attribute( sfe => '1' );
+        }
+        elsif ( $sfe eq 'false' ) {
+            $object->attribute( sfe => '0' );
+        }
     }
 
     my $body = $self->param( 'body' );
@@ -175,16 +188,6 @@ sub event_store {
 
     return $self->SUPER::event_store( $ctxt );
 }
-
-sub event_exit {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    $ctxt->properties->content->escapebody( 1 );
-
-    return $self->SUPER::event_exit( $ctxt );
-}
-
 
 sub update_decl_encoding {
     XIMS::Debug( 5, "called" );
@@ -265,6 +268,218 @@ sub event_bxeconfig {
 
     return 0;
 
+}
+
+
+# If a simple RelaxNG schema with a specific structure has been assigned to the XML object, event simpleformedit
+# can be used to edit the text values of the XML files elements via HTML form input controls.
+# Note that the XML Document must not have an XML-Declaration!
+#<grammar ns="" xmlns="http://relaxng.org/ns/structure/1.0" xmlns:s="http://xims.info/ns/xmlsimpleformedit"
+#  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+#  <start>
+#    <element name="events">
+#      <oneOrMore>
+#        <element name="event">
+#            <attribute name="id"/>
+#            <element name="date">
+#                <s:description show="1">Date</s:description>
+#                <s:datatype>datetime</s:datatype>
+#                <text/>
+#            </element>
+#            <element name="location">
+#                <s:description>Location</s:description>
+#                <text/>
+#            </element>
+#            <element name="description">
+#                <s:description show="1">Description</s:description>
+#                <text/>
+#            </element>
+#        </element>
+#      </oneOrMore>
+#    </element>
+#  </start>
+#</grammar>
+sub event_simpleformedit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
+
+    # expand the attributes to XML-nodes
+    $self->expand_attributes( $ctxt );
+
+    # resolve document_ids to location_path after attributes have been expanded,
+    $self->resolve_content( $ctxt, [ qw( STYLE_ID CSS_ID SCHEMA_ID ) ] );
+
+    $self->SUPER::event_edit( $ctxt );
+    return 0 if $ctxt->properties->application->style() eq 'error';
+
+    $ctxt->properties->application->style( "simpleformedit" );
+    $ctxt->properties->content->escapebody( 0 ); # do not escape the body
+
+    my $schema = $ctxt->object->schema( explicit => 1 );
+    my $schemaroot;
+    if ( not defined $schema ) {
+        XIMS::Debug( 3, "A schema is needed for simple form editing" );
+        $self->sendError( $ctxt, "A schema is needed for simple form editing" );
+        return 0;
+    }
+    elsif ( defined $schema and not $schema->published() ) {
+        XIMS::Debug( 3, "The schema needs to be published." );
+        $self->sendError( $ctxt, "The schema needs to be published. Please publish it." );
+        return 0;
+    }
+
+    # Parse and test the assigned schema
+    my $parser = XML::LibXML->new();
+    my $sdoc;
+    eval {
+        $sdoc = $parser->parse_string( $schema->body() );
+    };
+    if ( $@ ) {
+        XIMS::Debug( 3, "Could not parse: $@" );
+        $self->sendError( $ctxt, "Could not parse schema." );
+        return 0;
+    }
+    $sdoc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+
+    $schemaroot = $sdoc->documentElement();
+    $schemaroot->setNamespace('http://relaxng.org/ns/structure/1.0','r',0);
+
+    # Test the schema structure
+    my %validation_checks = (
+        'count(r:start/r:element/r:oneOrMore/r:element)' => '1',
+        'count(r:start/r:element/r:oneOrMore/r:element/r:element/r:element)' => '0',
+        'r:start/r:element/r:oneOrMore/r:element/r:attribute/@name' => 'id',
+        'count(r:start/r:element/*)' => '1',
+        'name(r:start/r:element/*)' => 'oneOrMore',
+                            );
+    while ( my ($xpath, $result) = each %validation_checks ) {
+        if ( $schemaroot->findvalue($xpath) ne $result ) {
+            XIMS::Debug( 3, "The schema does  not meet the simpleformedit validation checks." );
+            $self->sendError( $ctxt, "The schema does not meet the simpleformedit validation checks. Please update the schema as described in the documentation." );
+            return 0;
+        }
+    }
+
+    # Parse the body
+    my $doc;
+    eval {
+        $doc = $parser->parse_string( $ctxt->object->body() );
+    };
+    if ( $@ ) {
+        XIMS::Debug( 3, "Could not parse: $@" );
+        $self->sendError( $ctxt, "Could not parse body." );
+        return 0;
+    }
+    $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
+    my $root = $doc->documentElement();
+
+    #
+    # TODO: Check if object's body is valid according to the schema here
+    #
+
+    # Check which kind of action should happen
+    my $elementid = $self->param( 'eid' );
+    my $action = $self->param( 'seid' );
+    if ( $action ) {
+        my $rootelementname = $schemaroot->findvalue("r:start/r:element/\@name");
+        my $elementname = $schemaroot->findvalue("r:start/r:element/r:oneOrMore/r:element/\@name");
+
+        my $eid;
+        my $oldelement;
+
+        # Check if we are updating or deleting an existing entry
+        if ( defined $elementid ) {
+            $eid = $elementid;
+            $oldelement = $root->findnodes('//'.$elementname.'[@id=\''.$elementid."']")->[0];
+            if ( not defined $oldelement or not $oldelement->isa('XML::LibXML::Element') ) {
+                XIMS::Debug( 2, "Could not find element to update" );
+                $self->sendError( $ctxt, "Could not find element to update." );
+                return 0;
+            }
+        }
+        else {
+            $eid = $root->findvalue("count(//$elementname)")+1 || 1;
+        }
+
+        if ( $action eq 'delete' ) {
+            $root->removeChild( $oldelement );
+            $self->_updateIDs( $root, $elementname );
+        }
+        elsif ( $action eq 'moveup' ) {
+            my $parent = $oldelement->parentNode();
+            my $previous = $oldelement->previousSibling();
+            return 0 unless defined $previous;
+            $oldelement->unbindNode();
+            $parent->insertBefore( $oldelement, $previous );
+            $self->_updateIDs( $root, $elementname );
+        }
+        elsif ( $action eq 'movedown' ) {
+            my $parent = $oldelement->parentNode();
+            my $next = $oldelement->nextSibling();
+            return 0 unless defined $next;
+            $oldelement->unbindNode();
+            $parent->insertAfter( $oldelement, $next );
+            $self->_updateIDs( $root, $elementname );
+        }
+        else {
+            my $entryelement = XML::LibXML::Element->new( $elementname );
+            $entryelement->setAttribute( 'id', $eid );
+            foreach my $element ( $schemaroot->findnodes("r:start/r:element/r:oneOrMore/r:element/r:element/\@name") ) {
+                my $value = XIMS::clean( XIMS::decode( $self->param( "sfe_" . $element->value ) ) );
+                $entryelement->appendTextChild( $element->value, $value );
+            }
+            if ( defined $elementid ) {
+                $root->replaceChild( $entryelement, $oldelement );
+            }
+            else {
+                $root->insertBefore( $entryelement, $root->firstChild );
+            }
+        }
+
+        # After having done the work, prepare a message and/or redirect 
+        if ( $ctxt->object->body( $root->toString() ) and $ctxt->object->update( User => $ctxt->session->user ) ) {
+            my $message;
+            if ( $action eq 'delete' ) {
+                $self->redirect( $self->redirect_path( $ctxt ) . '?simpleformedit=1;message=Entry%20deleted' );
+                return 1;
+            }
+            elsif ( $action =~ /^move/ ) {
+                $self->redirect( $self->redirect_path( $ctxt ) . '?simpleformedit=1;message=Entry%20moved.' );
+                return 1;
+            }
+            elsif ( $elementid ) {
+                $message = "Changes saved";
+            }
+            else {
+                $message = "Entry created";
+            }
+            $ctxt->session->message( $message );
+            XIMS::Debug( 4, "Body updated" );
+        }
+        else {
+            XIMS::Debug( 2, "Could not update body" );
+            $self->sendError( $ctxt, "Could not update body." );
+            return 0;
+        }
+    }
+    else {
+        # We do not want to see the default "Obtained Lock..." message here, so set it to the empty string
+        $ctxt->session->message( '' );
+    }
+
+    return 0;
+}
+
+sub _updateIDs {
+    my $self = shift;
+    my $root = shift;
+    my $elementname = shift;
+
+    # First element in the Document gets the highest ID
+    my $maxid = $root->findvalue("count(//$elementname)");
+    foreach my $e ( $root->findnodes("//$elementname") ) {
+        $e->setAttribute( 'id', $maxid-- );
+    }
 }
 
 
