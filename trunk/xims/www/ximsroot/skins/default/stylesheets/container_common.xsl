@@ -229,24 +229,9 @@
                                             />
                                 </a>
                             </td>
-                            <td width="80">
-                                <img src="{$sklangimages}size.png"
-                                        width="80"
-                                        height="20"
-                                        border="0"
-                                        alt="{$i18n/l/Size}"
-                                        title="{$i18n/l/Size} {$i18n/l/in} kB"
-                                        />
-                            </td>
+                            <xsl:call-template name="th-size"/>
                             <xsl:if test="$m='e'">
-                                <td width="134">
-                                    <img src="{$sklangimages}options.png"
-                                            width="221"
-                                            height="20"
-                                            alt="{$i18n/l/Options}"
-                                            title="{$i18n/l/Options}"
-                                            />
-                                </td>
+                                <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
 
@@ -310,24 +295,9 @@
                                             />
                                 </a>
                             </td>
-                            <td width="80">
-                                <img src="{$sklangimages}size.png"
-                                        width="80"
-                                        height="20"
-                                        border="0"
-                                        alt="{$i18n/l/Size}"
-                                        title="{$i18n/l/Size} {$i18n/l/in} kB"
-                                        />
-                            </td>
+                            <xsl:call-template name="th-size"/>
                             <xsl:if test="$m='e'">
-                                <td width="134">
-                                    <img src="{$sklangimages}options.png"
-                                            width="221"
-                                            height="20"
-                                            alt="{$i18n/l/Options}"
-                                            title="{$i18n/l/Options}"
-                                            />
-                                </td>
+                                <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
                         <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
@@ -400,24 +370,9 @@
                                             />
                                 </a>
                             </td>
-                            <td width="80">
-                                <img src="{$sklangimages}size.png"
-                                        width="80"
-                                        height="20"
-                                        border="0"
-                                        alt="{$i18n/l/Size}"
-                                        title="{$i18n/l/Size} {$i18n/l/in} kB"
-                                        />
-                            </td>
+                            <xsl:call-template name="th-size"/>
                             <xsl:if test="$m='e'">
-                                <td width="134">
-                                    <img src="{$sklangimages}options.png"
-                                            width="221"
-                                            height="20"
-                                            alt="{$i18n/l/Options}"
-                                            title="{$i18n/l/Options}"
-                                            />
-                                </td>
+                                <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
                         <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
@@ -487,24 +442,9 @@
                                             />
                                 </a>
                             </td>
-                            <td width="80">
-                                <img src="{$sklangimages}size.png"
-                                        width="80"
-                                        height="20"
-                                        border="0"
-                                        alt="{$i18n/l/Size}"
-                                        title="{$i18n/l/Size} {$i18n/l/in} kB"
-                                        />
-                            </td>
+                            <xsl:call-template name="th-size"/>
                             <xsl:if test="$m='e'">
-                                <td width="134">
-                                    <img src="{$sklangimages}options.png"
-                                            width="221"
-                                            height="20"
-                                            alt="{$i18n/l/Options}"
-                                            title="{$i18n/l/Options}"
-                                            />
-                                </td>
+                                <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
                         <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
@@ -574,24 +514,9 @@
                                             />
                                 </a>
                             </td>
-                            <td width="80">
-                                <img src="{$sklangimages}size.png"
-                                        width="80"
-                                        height="20"
-                                        border="0"
-                                        alt="{$i18n/l/Size}"
-                                        title="{$i18n/l/Size} {$i18n/l/in} kB"
-                                        />
-                            </td>
+                            <xsl:call-template name="th-size"/>
                             <xsl:if test="$m='e'">
-                                <td width="134">
-                                    <img src="{$sklangimages}options.png"
-                                            width="221"
-                                            height="20"
-                                            alt="{$i18n/l/Options}"
-                                            title="{$i18n/l/Options}"
-                                            />
-                                </td>
+                                <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
                         <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
@@ -661,24 +586,9 @@
                                             />
                                 </a>
                             </td>
-                            <td width="80">
-                                <img src="{$sklangimages}size.png"
-                                        width="80"
-                                        height="20"
-                                        border="0"
-                                        alt="{$i18n/l/Size}"
-                                        title="{$i18n/l/Size} {$i18n/l/in} kB"
-                                        />
-                            </td>
+                            <xsl:call-template name="th-size"/>
                             <xsl:if test="$m='e'">
-                                <td width="134">
-                                    <img src="{$sklangimages}options.png"
-                                            width="221"
-                                            height="20"
-                                            alt="{$i18n/l/Options}"
-                                            title="{$i18n/l/Options}"
-                                            />
-                                </td>
+                                <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
                         <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
@@ -689,6 +599,29 @@
             </xsl:choose>
         </xsl:when>
     </xsl:choose>
+</xsl:template>
+
+<xsl:template name="th-size">
+    <td width="80">
+        <img src="{$sklangimages}size.png"
+                width="80"
+                height="20"
+                border="0"
+                alt="{$i18n/l/Size}"
+                title="{$i18n/l/Size} {$i18n/l/in} kB"
+                />
+    </td>
+</xsl:template>
+
+<xsl:template name="th-options">
+    <td width="134">
+        <img src="{$sklangimages}options.png"
+                width="221"
+                height="20"
+                alt="{$i18n/l/Options}"
+                title="{$i18n/l/Options}"
+                />
+    </td>
 </xsl:template>
 
 <xsl:template match="children/object">

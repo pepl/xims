@@ -9,6 +9,15 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:variable name="sfe"><xsl:if test="/document/context/object/schema_id != '' and contains(/document/context/object/attributes, 'sfe=1')">1</xsl:if></xsl:variable>
+
+<xsl:variable name="bxe"><xsl:if test="/document/context/object/schema_id != '' and /document/context/object/css_id != '' 
+                                       and contains(/document/context/object/attributes, 'bxeconfig_id')
+                                       and contains(/document/context/object/attributes, 'bxexpath')
+                                       and contains(/document/context/object/attributes, 'sfe=1')">1</xsl:if></xsl:variable>
+
+<xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
+
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
@@ -27,6 +36,24 @@
                 </tr>
             </table>
             <table align="center" width="98.7%" class="footer">
+                <xsl:if test="$sfe = '1' or $bxe = '1'">
+                    <tr>
+                        <td colspan="2">
+                            <xsl:if test="$sfe = '1'">
+                                <a href="{$xims_box}{$goxims_content}?id={@id};simpleformedit=1">
+                                    <xsl:value-of select="$i18n_xml/l/Edit_with_SFE"/>
+                                </a>
+                                <xsl:text> </xsl:text>
+                            </xsl:if>
+
+                            <xsl:if test="$bxe = '1'">
+                                <a href="{$xims_box}{$goxims_content}?id={@id};edit=bxe">
+                                    <xsl:value-of select="$i18n_xml/l/edit_with_BXE"/>
+                                </a>
+                            </xsl:if>
+                        </td>
+                    </tr>
+                </xsl:if>
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer"/>
             </table>

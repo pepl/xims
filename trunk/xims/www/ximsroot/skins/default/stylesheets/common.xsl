@@ -205,7 +205,7 @@
 
 <xsl:template name="head-edit">
     <head>
-        <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
+        <title><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
@@ -231,7 +231,7 @@
     <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0">
         <tr>
             <td valign="top">
-                <xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
+                <xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
             </td>
             <td align="right" valign="top">
                 <xsl:call-template name="cancelform">
@@ -559,6 +559,50 @@
 </tr>
 </xsl:template>
 
+<xsl:template name="jscalendar-selector">
+    <xsl:param name="timestamp_string"/>
+    <xsl:param name="formfield_id"/>
+
+    <input tabindex="40" type="hidden" name="{$formfield_id}" id="{$formfield_id}">
+        <xsl:attribute name="value">
+            <xsl:value-of select="$timestamp_string"/>
+        </xsl:attribute>
+    </input>
+    <span id="show_vft"><xsl:value-of select="$timestamp_string"/></span>
+    <xsl:text>&#160;</xsl:text>
+    <img
+      src="{$skimages}calendar.gif"
+      id="f_trigger_vft"
+      style="cursor: pointer;"
+      alt="{$i18n/l/Date_selector}"
+      title="{$i18n/l/Date_selector}"
+      onmouseover="this.style.background='red';"
+      onmouseout="this.style.background=''"
+    />
+    <script type="text/javascript">
+        var current_datestring = "<xsl:value-of select="$timestamp_string"/>";
+        var current_date;
+        if ( current_datestring.length > 0 ) {
+            current_date = Date.parseDate(current_datestring, "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
+            document.getElementById("show_vft").innerHTML = current_date;
+        }
+        else {
+            document.getElementById("show_vft").innerHTML = "<xsl:value-of select="$i18n/l/Valid_from_default"/>"
+        }
+        Calendar.setup({
+            inputField     :    "<xsl:value-of select="$formfield_id"/>",
+            ifFormat       :    "%Y-%m-%d %H:%M",
+            displayArea    :    "show_vft",
+            daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
+            button         :    "f_trigger_vft",
+            align          :    "Tl",
+            singleClick    :    true,
+            showsTime      :    true,
+            timeFormat     :    "24"
+        });
+    </script>
+</xsl:template>
+
 <xsl:template name="tr-valid_from">
     <xsl:variable name="valid_from_timestamp_tmp">
         <xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>
@@ -571,44 +615,10 @@
     <tr>
         <td valign="top"><xsl:value-of select="$i18n/l/Valid_from"/></td>
         <td colspan="2">
-            <input tabindex="40" type="hidden" name="valid_from_timestamp" id="valid_from_timestamp">
-                <xsl:attribute name="value">
-                    <xsl:value-of select="$valid_from_timestamp"/>
-                </xsl:attribute>
-            </input>
-            <span id="show_vft"><xsl:value-of select="$valid_from_timestamp"/></span>
-            <xsl:text>&#160;</xsl:text>
-            <img
-              src="{$skimages}calendar.gif"
-              id="f_trigger_vft"
-              style="cursor: pointer;"
-              alt="{$i18n/l/Date_selector}"
-              title="{$i18n/l/Date_selector}"
-              onmouseover="this.style.background='red';"
-              onmouseout="this.style.background=''"
-            />
-            <script type="text/javascript">
-                var current_datestring = "<xsl:value-of select="$valid_from_timestamp"/>";
-                var current_date;
-                if ( current_datestring.length > 0 ) {
-                    current_date = Date.parseDate(current_datestring, "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-                    document.getElementById("show_vft").innerHTML = current_date;
-                }
-                else {
-                    document.getElementById("show_vft").innerHTML = "<xsl:value-of select="$i18n/l/Valid_from_default"/>"
-                }
-                Calendar.setup({
-                    inputField     :    "valid_from_timestamp",
-                    ifFormat       :    "%Y-%m-%d %H:%M",
-                    displayArea    :    "show_vft",
-                    daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-                    button         :    "f_trigger_vft",
-                    align          :    "Tl",
-                    singleClick    :    true,
-                    showsTime      :    true,
-                    timeFormat     :    "24"
-                });
-            </script>
+            <xsl:call-template name="jscalendar-selector">
+                <xsl:with-param name="timestamp_string" select="$valid_from_timestamp"/>
+                <xsl:with-param name="formfield_id" select="'valid_from_timestamp'"/>
+            </xsl:call-template>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Valid_from')" class="doclink">(?)</a>
         </td>
@@ -1183,6 +1193,120 @@
       font-size: 10pt;
     }
     </style>
+</xsl:template>
+
+<xsl:template name="testbodysxml">
+    <xsl:call-template name="wfcheckjs"/>
+    <a href="javascript:void()" onclick="return wfcheck();">
+        <img src="{$skimages}option_wfcheck.png"
+             border="0"
+             alt="{$i18n/l/Test_body_xml}"
+             title="{$i18n/l/Test_body_xml}"
+             align="left"
+             width="32"
+             height="19"
+        />
+    </a>
+</xsl:template>
+
+<xsl:template name="prettyprint">
+    <xsl:param name="ppmethod" select="'htmltidy'"/>
+
+    <xsl:call-template name="prettyprintjs">
+        <xsl:with-param name="ppmethod" select="$ppmethod"/>
+    </xsl:call-template>
+
+    <a href="javascript:void()" onclick="return prettyprint();">
+        <img src="{$skimages}option_prettyprint.png"
+             border="0"
+             alt="{$i18n/l/Prettyprint}"
+             title="{$i18n/l/Prettyprint}"
+             align="left"
+             width="32"
+             height="19"
+        />
+    </a>
+</xsl:template>
+
+<xsl:template name="xmlhttpjs">
+    var xmlhttp=false;
+    /*@cc_on @*/
+    /*@if (@_jscript_version &gt;= 5)
+    // JScript gives us Conditional compilation, we can cope with old IE versions.
+    // and security blocked creation of the objects.
+    try {
+        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e) {
+        try {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch (E) {
+            xmlhttp = false;
+        }
+    }
+    @end @*/
+    if (!xmlhttp &amp;&amp; typeof XMLHttpRequest!='undefined') {
+      xmlhttp = new XMLHttpRequest();
+    }
+</xsl:template>
+
+<xsl:template name="wfcheckjs">
+    <script type="text/javascript">
+        <xsl:call-template name="xmlhttpjs"/>
+
+        function wfcheck() {
+            var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?test_wellformedness=1')"/>";
+            xmlhttp.open("POST",url,true);
+            xmlhttp.onreadystatechange=function() {
+                if (xmlhttp.readyState==4) {
+                    if (xmlhttp.status!=200) {
+                        alert("Parse Failure. Could not check well-formedness.")
+                    }
+                    else {
+                        alert(xmlhttp.responseText + '\n');
+                    }
+                }
+            }
+            xmlhttp.setRequestHeader
+            (
+                'Content-Type',
+                'application/x-www-form-urlencoded; charset=UTF-8'
+            );
+            xmlhttp.send('test_wellformedness=1&amp;body='+encodeURIComponent(document.eform.body.value));
+            return false;
+        }
+    </script>
+</xsl:template>
+
+<xsl:template name="prettyprintjs">
+    <xsl:param name="ppmethod" select="'htmltidy'"/>
+
+    <script type="text/javascript">
+        <xsl:call-template name="xmlhttpjs"/>
+
+        function prettyprint() {
+            var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?', $ppmethod, '=1')"/>";
+            xmlhttp.open("POST",url,true);
+            xmlhttp.onreadystatechange=function() {
+                if (xmlhttp.readyState==4) {
+                    if (xmlhttp.status!=200) {
+                        alert("Parse Failure. Could not pretty print.")
+                    }
+                    else {
+                        document.eform.body.value=xmlhttp.responseText;
+                    }
+                }
+            }
+            xmlhttp.setRequestHeader
+            (
+                'Content-Type',
+                'application/x-www-form-urlencoded; charset=UTF-8'
+            );
+            xmlhttp.send('<xsl:value-of select="$ppmethod"/>=1&amp;body='+encodeURIComponent(document.eform.body.value));
+            return false;
+        }
+    </script>
 </xsl:template>
 
 </xsl:stylesheet>

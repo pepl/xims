@@ -11,6 +11,8 @@
 
 <xsl:param name="bxepresent"/>
 
+<xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
+
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-edit"/>
@@ -40,7 +42,7 @@
 <xsl:template name="bxe-edit">
     <tr>
         <td colspan="3">
-            <a href="?id={@id};edit=bxe"><xsl:value-of select="$i18n/l/edit_with_BXE"/></a>
+            <a href="?id={@id};edit=bxe"><xsl:value-of select="$i18n_xml/l/edit_with_BXE"/></a>
         </td>
     </tr>
 </xsl:template>
