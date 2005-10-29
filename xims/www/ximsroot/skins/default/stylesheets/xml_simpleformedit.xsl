@@ -260,7 +260,7 @@
             <xsl:choose>
                 <xsl:when test="s:datatype = 'datetime'">
                     <xsl:call-template name="jscalendar-selector">
-                        <xsl:with-param name="timestamp_string" select="dyn:evaluate($xpath)"/>
+                        <xsl:with-param name="timestamp_string" select="normalize-space(dyn:evaluate($xpath))"/>
                         <xsl:with-param name="formfield_id" select="concat('sfe_',@name)"/>
                     </xsl:call-template>
                 </xsl:when>
