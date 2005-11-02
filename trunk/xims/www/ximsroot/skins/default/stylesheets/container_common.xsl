@@ -703,7 +703,7 @@
     </xsl:choose>
     <span>
         <xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:value-of select="$l_location"/>: <xsl:value-of
-select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/> <xsl:call-template name="ownerfullname"/></xsl:attribute>
+select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/>: <xsl:call-template name="ownerfullname"/></xsl:attribute>
         <a>
           <xsl:attribute name="href">
             <xsl:choose>
