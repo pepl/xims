@@ -41,7 +41,7 @@
 <xsl:param name="printview" select="'0'"/>
 <xsl:param name="default"/>
 <xsl:param name="edit"/>
-<xsl:param name="objtype"/>
+<xsl:param name="objtype"><xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/></xsl:param>
 <xsl:param name="create.x"/>
 <xsl:param name="create"/>
 <xsl:param name="s"/>
@@ -240,6 +240,9 @@
         <input name="page" type="hidden" value="{$page}"/>
         <input name="sb" type="hidden" value="{$sb}"/>
         <input name="order" type="hidden" value="{$order}"/>
+        <xsl:if test="$hd = '0'">
+            <input name="hd" type="hidden" value="{$hd}"/>
+        </xsl:if>
     </xsl:if>
 </xsl:template>
 

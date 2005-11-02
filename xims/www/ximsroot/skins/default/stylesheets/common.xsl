@@ -917,7 +917,7 @@
             <a>
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/>
-                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
                 <img src="{$skimages}option_undelete.png"
                     border="0"
@@ -950,6 +950,7 @@
                     <input name="sb" type="hidden" value="{$sb}"/>
                     <input name="page" type="hidden" value="{$page}"/>
                     <input name="order" type="hidden" value="{$order}"/>
+                    <input name="hd" type="hidden" value="{$hd}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
                 <input
@@ -974,6 +975,7 @@
                     <input name="sb" type="hidden" value="{$sb}"/>
                     <input name="page" type="hidden" value="{$page}"/>
                     <input name="order" type="hidden" value="{$order}"/>
+                    <input name="hd" type="hidden" value="{$hd}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
                 <input
