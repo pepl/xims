@@ -36,6 +36,12 @@
 <xsl:param name="defsorting">0</xsl:param>
 <xsl:param name="m" select="'e'"/>
 <xsl:param name="r"/>
+<xsl:param name="hd">
+    <xsl:choose>
+        <xsl:when test="count(/document/context/object/children/object[marked_deleted != '1'])=0">0</xsl:when>
+        <xsl:otherwise>1</xsl:otherwise>
+    </xsl:choose>
+</xsl:param>
 <xsl:param name="page" select="1" />
 
 <xsl:param name="printview" select="'0'"/>
