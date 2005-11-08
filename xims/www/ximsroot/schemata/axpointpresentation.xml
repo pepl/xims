@@ -5,53 +5,56 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
-<grammar ns="" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+<grammar ns="" xmlns="http://relaxng.org/ns/structure/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
     <start>
         <element name="slideshow">
-            <ref name="title"/>
-            <optional>
-                <element name="subtitle">
-                    <text/>
-                </element>
-            </optional>
-            <element name="metadata">
-                <element name="speaker">
-                    <text/>
-                </element>
-                <element name="email">
-                    <text/>
-                </element>
+            <interleave>
+                <ref name="title"/>
                 <optional>
-                    <element name="organisation">
+                    <element name="subtitle">
                         <text/>
                     </element>
                 </optional>
-                <optional>
-                    <element name="link">
-                        <data type="anyURI"/>
-                    </element>
-                </optional>
-                <optional>
-                    <element name="background">
+                <element name="metadata">
+                    <element name="speaker">
                         <text/>
                     </element>
-                </optional>
-                <optional>
-                    <element name="logo">
-                        <optional>
-                            <attribute name="scale">
-                                <data type="anyURI"/>
-                            </attribute>
-                        </optional>
+                    <element name="email">
+                        <text/>
                     </element>
-                </optional>
-            </element>
-            <oneOrMore>
-                <choice>
-                    <ref name="slide"/>
-                    <ref name="slideset"/>
-                </choice>
-            </oneOrMore>
+                    <optional>
+                        <element name="organisation">
+                            <text/>
+                        </element>
+                    </optional>
+                    <optional>
+                        <element name="link">
+                            <data type="anyURI"/>
+                        </element>
+                    </optional>
+                    <optional>
+                        <element name="background">
+                            <text/>
+                        </element>
+                    </optional>
+                    <optional>
+                        <element name="logo">
+                            <optional>
+                                <attribute name="scale">
+                                    <data type="anyURI"/>
+                                </attribute>
+                            </optional>
+                        </element>
+                    </optional>
+                </element>
+                <oneOrMore>
+                    <choice>
+                        <ref name="slide"/>
+                        <ref name="slideset"/>
+                    </choice>
+                </oneOrMore>
+            </interleave>
         </element>
     </start>
     <define name="title">
