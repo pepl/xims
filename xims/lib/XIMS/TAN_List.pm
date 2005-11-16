@@ -58,7 +58,7 @@ sub number {
     my $number = shift;
     my $retval;
 
-    if ( length $number ) {
+    if ( defined $number and length $number ) {
         $self->attribute( number => $number );
         $retval = 1;
     }
