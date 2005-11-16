@@ -740,30 +740,35 @@ sub _set_top_question_edit {
 ##
 #
 # SYNOPSIS
-#    XIMS::Questionnaire->add_tanlist( tanlist_id, questionnaire )
+#    XIMS::Questionnaire->add_tanlist( tanlist_path, questionnaire )
 #
 # PARAMETER
-#    tanlist_id: id of the TAN_List to be added to the Questionnaire
+#    tanlist_path: location_path of the TAN_List to be added to the Questionnaire
 #    questionnaire: XML-Document representing the Questionnaire
 #
 # RETURNS
-#
+#    Updated body of the Questionnaire on success
+#    Undef on failure
 #
 # DESCRIPTION
 #    Adds a TAN-List to the Questionnaire
 #
 sub add_tanlist {
     XIMS::Debug ( 5, "called" );
-    my ($self, $tanlist_id, $questionnaire) = @_;
+    my ($self, $tanlist_path, $questionnaire) = @_;
     #get TAN-List Object
-    my $TAN_List = XIMS::TAN_List->new( path => $tanlist_id );
-    if ( $TAN_List->number() ) {
-        XIMS::Debug(5,"adding TAN-List: $TAN_List");
+    my $TAN_List = XIMS::TAN_List->new( path => $tanlist_path );
+    if ( defined $TAN_List and $TAN_List->number() ) {
+        XIMS::Debug( 4, "adding TAN-List: $TAN_List");
         $questionnaire = $questionnaire->documentElement();
         my $new_node = XML::LibXML::Element->new( "tanlist" );
-        $new_node->setAttribute( "id" , $TAN_List->document_id() );
+        $new_node->setAttribute( "id", $TAN_List->document_id() );
         $new_node->appendText( XIMS::encode( $TAN_List->title() ) ." (".$TAN_List->number().")"  );
         $questionnaire->appendChild( $new_node );
+    }
+    else {
+        XIMS::Debug( 4, "Could not find TAN_List using path '$tanlist_path'" );
+        return undef;
     }
     $self->body( XIMS::decode( $questionnaire->toString() ) );
 }
