@@ -133,7 +133,7 @@ sub event_create {
     my $path = $self->param('path');
     my $object = XIMS::Object->new( path => $path );
 
-    if ( not $object->id() ) {
+    if ( not defined $object ) {
         XIMS::Debug( 3, "could not find object with path '$path'!" );
         $self->sendError( $ctxt, "Could not find object with path '$path'!" );
         return 0;
