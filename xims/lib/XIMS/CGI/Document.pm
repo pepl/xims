@@ -9,6 +9,7 @@ use vars qw( $VERSION @ISA @MSG @params );
 
 use XIMS::CGI;
 use Text::Iconv;
+use Encode;
 use Text::Template;
 
 # #############################################################################
@@ -125,16 +126,25 @@ sub event_store {
         # kill xml:lang attributes until we make correct use of them
         $body =~ s/ xml:lang="[^"]+"//g; #"
 
+        # Depending on the DBD::Pg and DBD::Oracle versions, $oldbody will have the utf8 flag set.
+        # To not double-utf8-encode the result of store_diff_to_second_last by passing in a non-utf8
+        # flagged, but utf8 encoded string together with a utf8-encoded and -flagged string, we
+        # check here, if the two strings have the flag set and set it in case.
         my $oldbody = $object->body();
+        my $newbody = $body;
+        if ( Encode::is_utf8($oldbody) and not XIMS::DBENCODING() and not Encode::is_utf8($newbody) ) {
+            $newbody = Encode::decode_utf8($newbody);
+        }
+
         if ( $trytobalance eq 'true' and $object->body( $body ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
-            if ( $object->store_diff_to_second_last( $oldbody, $body ) ) {
+            if ( $object->store_diff_to_second_last( $oldbody, $newbody ) ) {
                 XIMS::Debug( 4, "diff stored" );
             }
         }
         elsif ( $object->body( $body, dontbalance => 1 ) ) {
             XIMS::Debug( 6, "body set, len: " . length($body) );
-            if ( $object->store_diff_to_second_last( $oldbody, $body ) ) {
+            if ( $object->store_diff_to_second_last( $oldbody, $newbody ) ) {
                 XIMS::Debug( 4, "diff stored" );
             }
         }
