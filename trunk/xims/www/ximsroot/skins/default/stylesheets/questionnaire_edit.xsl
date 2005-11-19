@@ -61,6 +61,7 @@
         <xsl:call-template name="questionnaire_comment_edit" />
         <xsl:call-template name="questionnaire_intro_edit" />
         <xsl:call-template name="questionnaire_exit_edit" />
+        <xsl:call-template name="questionnaire_options_edit" />
         <xsl:call-template name="markednew"/>
         <xsl:call-template name="questionnaire_tanlists" />
         <xsl:call-template name="questionnaire_actions" />
@@ -78,6 +79,14 @@
         </xsl:if>
     </xsl:for-each>
     <hr />
+</xsl:template>
+
+<xsl:template name="questionnaire_options_edit">
+    <tr>
+        <td valign="top" colspan="2"><strong><xsl:value-of select="$i18n_qn/l/Questionnaire_Options"/></strong>:</td>
+    </tr>
+    <xsl:call-template name="questionnaire_opt_kioskmode"/>
+    <!-- Uncomment when implemented <xsl:call-template name="questionnaire_opt_mandatoryanswers"/>-->
 </xsl:template>
 
 <!-- Question template -->
@@ -351,6 +360,46 @@
             <textarea type="text" tabindex="10" name="questionnaire_exit" cols="50"  rows="3" class="text">
                 <xsl:value-of select="body/questionnaire/exit"/>
             </textarea>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="questionnaire_opt_kioskmode">
+    <tr>
+        <td colspan="3">
+            <xsl:value-of select="$i18n_qn/l/Kioskmode"/>
+            <input name="questionnaire_opt_kioskmode" type="radio" value="true">
+              <xsl:if test="body/questionnaire/options/kioskmode = '1'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input><xsl:value-of select="$i18n/l/Yes"/>
+            <input name="questionnaire_opt_kioskmode" type="radio" value="false">
+              <xsl:if test="not(body/questionnaire/options/kioskmode) or body/questionnaire/options/kioskmode != '1'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input><xsl:value-of select="$i18n/l/No"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('kioskmode')" class="doclink">(?)</a>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="questionnaire_opt_mandatoryanswers">
+    <tr>
+        <td colspan="3">
+            <xsl:value-of select="$i18n_qn/l/Mandatory_Answers"/>
+            <input name="questionnaire_opt_mandatoryanswers" type="radio" value="true">
+              <xsl:if test="body/questionnaire/options/mandatoryanswers = '1'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input><xsl:value-of select="$i18n/l/Yes"/>
+            <input name="questionnaire_opt_mandatoryanswers" type="radio" value="false">
+              <xsl:if test="not(body/questionnaire/options/kioskmode) or body/questionnaire/options/mandatoryanswers != '1'">
+                <xsl:attribute name="checked">checked</xsl:attribute>
+              </xsl:if>
+            </input><xsl:value-of select="$i18n/l/No"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('mandatoryanswers')" class="doclink">(?)</a>
         </td>
     </tr>
 </xsl:template>

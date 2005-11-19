@@ -41,5 +41,8 @@
     <Raw_results>Raw result data (tab-separated)</Raw_results>
     <with_text_answers>including detailed 'Text'- and 'Textarea'-type answers</with_text_answers>
     <Default_Thank_You>Thank you for answering the questions!</Default_Thank_You>
+    <Mandatory_Answers>Every question of the Questionnaire has to be answered</Mandatory_Answers>
+    <Kioskmode>Kioskmode (Questionnaire can be answered multiple times using the same browser instance)</Kioskmode>
+    <Questionnaire_Options>Questionnaire Options</Questionnaire_Options>
     <!-- End Questionnaire -->
 </l>
