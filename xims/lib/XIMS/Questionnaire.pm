@@ -1,14 +1,15 @@
-## copyrightino (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Questionnaire;
 
 use strict;
-use vars qw( $VERSION @ISA );
+use warnings;
 
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = ('XIMS::Document');
+our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+our @ISA = ('XIMS::Document');
+our $AUTOLOAD;
 
 use XIMS::Document;
 use XIMS::TAN_List;
@@ -380,6 +381,32 @@ sub get_value {
 ##
 #
 # SYNOPSIS
+#    XIMS::Questionnaire->get_option( $optionname )
+#
+# PARAMETER
+#    $optionname: Name of the option stored in /questionnaire/options
+#
+# RETURNS
+#    1 if option is set, undef if not.
+#
+# DESCRIPTION
+#    Checks if a Questionnaire option is set
+#
+sub get_option {
+    my $self = shift;
+    my $optionname = shift;
+    my $option = $self->get_value( "options/$optionname" );
+    if ( defined $option and $option eq '1' ) {
+        return 1;
+    }
+    else {
+        return undef;
+    }
+}
+
+##
+#
+# SYNOPSIS
 #    XIMS::Questionnaire->get_full_question_title( $question_id )
 #
 # PARAMETER
@@ -499,6 +526,35 @@ sub form_to_xml {
     $questionnaire->appendTextChild( "comment",  $params{'questionnaire_comment'}  );
     $questionnaire->appendTextChild( "intro",  $params{'questionnaire_intro'}  );
     $questionnaire->appendTextChild( "exit",  $params{'questionnaire_exit'}  );
+
+    # Deal with options
+    my $options = XML::LibXML::Element->new( "options" );
+    my $kioskmode = $params{'questionnaire_opt_kioskmode'};
+    if ( defined $kioskmode ) {
+        XIMS::Debug( 6, "kioskmode: $kioskmode" );
+        if ( $kioskmode eq 'true' ) {
+            $kioskmode = 1;
+        }
+        elsif ( $kioskmode eq 'false' ) {
+            $kioskmode = 0;
+        }
+    }
+    $options->appendTextChild( "kioskmode", $kioskmode );
+
+    my $mandatoryanswers = $params{'questionnaire_opt_mandatoryanswers'};
+    if ( defined $mandatoryanswers ) {
+        XIMS::Debug( 6, "mandatoryanswers: $mandatoryanswers" );
+        if ( $mandatoryanswers eq 'true' ) {
+            $mandatoryanswers = 1;
+        }
+        elsif ( $mandatoryanswers eq 'false' ) {
+            $mandatoryanswers = 0;
+        }
+    }
+    $options->appendTextChild( "mandatoryanswers", $mandatoryanswers );
+
+    $questionnaire->appendChild( $options );
+
     # recursively create childnodes
     $questionnaire = _create_tanlists( $questionnaire, %params );
     $questionnaire = _create_children( $questionnaire, %params );
@@ -552,6 +608,20 @@ sub set_answer_error {
     $self->body( XIMS::decode( $questionnaire->toString() ) );
 
     return 1
+}
+
+sub kioskmode () {
+    XIMS::Debug( 5, "called");
+    my $self = shift;
+
+    return $self->get_option( 'kioskmode' );
+}
+
+sub mandatoryanswers () {
+    XIMS::Debug( 5, "called");
+    my $self = shift;
+
+    return $self->get_option( 'mandatoryanswers' );
 }
 
 sub tan_needed () {
@@ -964,7 +1034,8 @@ sub _qnode {
 
 sub AUTOLOAD {
     my $self = shift;
-    XIMS::Debug (6, "Questionnaire-Method not implemented!");
+    my (undef, $called_sub) = ($AUTOLOAD =~ /(.*)::(.*)/);
+    XIMS::Debug (6, "Questionnaire-Method $called_sub not implemented!");
     return 1;
 }
 

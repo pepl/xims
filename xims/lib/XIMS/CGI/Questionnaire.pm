@@ -80,9 +80,18 @@ sub _default_public {
         # Set current_question back
         $params{'q'} = 0;
     }
-    # if no TAN is submitted set session id as TAN (unique value for
-    # identifying answers
-    $tan = $ctxt->session->id() unless $tan;
+
+    # If no TAN is submitted either use a random number as TAN (kioskmode),
+    # or use the session id as TAN (unique value for identifying answers)
+    unless ( $tan ) {
+        if ( $object->kioskmode() ) {
+            $tan = int(rand(1000)).time();
+        }
+        else {
+            $tan = $ctxt->session->id();
+        }
+    }
+
     $params{'tan'} = $tan;
     $object->set_answer_data( %params );
     $object->body( XIMS::decode( $object->body() ) );
@@ -190,7 +199,6 @@ sub event_answer {
         if (! $object->tan_ok( $tan ) ) {
             #if TAN does not match display message and restart questionnaire
             XIMS::Debug( 6, "Result: TAN does not match" );
-
         }
     }
     # if question_id (top-level) and TAN are
@@ -198,12 +206,12 @@ sub event_answer {
     # if not all answers are stored, display the question
     # if all answers are stored redirect to next question
 
-    # Check if all necessary answers are given (to do)
+    # Check if all necessary answers are given if the "mandatoryanswers" option is set (TODO)
 
     # Store answer in Database
     my %params = $self->Vars;
     $params{'tan'} = $tan;
-    $object->store_result ( %params );
+    $object->store_result( %params );
     $object->set_answer_data( %params );
 
     # after the form has been processed to xml we don't need the
