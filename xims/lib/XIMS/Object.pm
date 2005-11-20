@@ -1276,22 +1276,42 @@ sub update {
 #    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
 #
 # DESCRIPTION
-#    Moves object to the trashcan, updates object in database.
+#    Moves object including descendants to the trashcan, updates object in database.
 #
 sub trashcan {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
+    my @retval;
     $self->marked_deleted( 1 );
 
     if ( $self->data_provider->close_position_gap( parent_id => $self->parent_id(), position => $self->position() ) ) {
         $self->position( undef );
-        return $self->data_provider->updateObject( $self->data() );
+        @retval = $self->data_provider->updateObject( $self->data() );
     }
     else {
         XIMS::Debug( 2, "Could not close position gap" );
         return undef;
     }
+
+    # 2 tables should have been updated
+    if ( scalar @retval == 2 and defined $retval[1]  ) {
+        # Set marked_deleted to '1' for all descendants
+        my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
+        my @doc_ids  = @{$descendant_ids_lvls->[0]};
+        if ( scalar( @doc_ids ) > 0 ) {
+            @retval = $self->data_provider->driver->update( properties => { 'content.marked_deleted' => 1 }, conditions => { 'content.document_id' => \@doc_ids } );
+            # 1 table should have been updated
+            if ( scalar @retval == 1 and defined $retval[0] ) {
+                @retval = (1, $retval[0]); # Set number of updated ci_content rows for @retval
+            }
+        }
+        else {
+            @retval = (1, 1);
+        }
+    }
+
+    return @retval;
 }
 
 ##
@@ -1306,17 +1326,36 @@ sub trashcan {
 #    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
 #
 # DESCRIPTION
-#    Moves object out of the trashcan, updates object in database.
+#    Moves object including descendants out of the trashcan, updates object in database.
 #
 sub undelete {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
+    my @retval;
     $self->marked_deleted( undef );
+
     my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
     $max_position ||= 0;
     $self->position( $max_position + 1 );
-    return $self->data_provider->updateObject( $self->data() );
+    @retval = $self->data_provider->updateObject( $self->data() );
+
+    # 2 tables should have been updated
+    if ( scalar @retval == 2 and defined $retval[1]  ) {
+        # Set marked_deleted to 'undef' for all descendants
+        my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
+        my @doc_ids  = @{$descendant_ids_lvls->[0]};
+        if ( scalar( @doc_ids ) > 0 ) {
+            @retval = $self->data_provider->driver->update( properties => { 'content.marked_deleted' => undef }, conditions => { 'content.document_id' => \@doc_ids } );
+            # 1 table should have been updated
+            if ( scalar @retval == 1 and defined $retval[0] ) {
+                @retval = (1, $retval[0]); # Set number of updated ci_content rows for @retval
+            }
+        }
+        else {
+            @retval = (1, 1);
+        }
+    }
 }
 
 ##
