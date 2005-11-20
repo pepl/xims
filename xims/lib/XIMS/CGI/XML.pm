@@ -42,6 +42,7 @@ sub registerEvents {
           pub_preview
           bxeconfig
           simpleformedit
+          unescapebody
           )
         );
 }
@@ -80,6 +81,14 @@ sub event_default {
     }
 }
 
+sub event_unescapebody {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
+
+    $self->SUPER::event_default( $ctxt );
+    $ctxt->properties->content->escapebody( 0 );
+    return 0;
+}
 
 sub event_edit {
     XIMS::Debug( 5, "called" );
@@ -280,7 +289,11 @@ sub event_bxeconfig {
 #    <element name="events">
 #      <oneOrMore>
 #        <element name="event">
+#            <s:last_modified_attr>1</s:last_modified_attr>
 #            <attribute name="id"/>
+#            <optional>
+#                <attribute name="last_modified"/>
+#            </optional>
 #            <element name="date">
 #                <s:description show="1">Date</s:description>
 #                <s:datatype>datetime</s:datatype>
@@ -343,6 +356,7 @@ sub event_simpleformedit {
 
     $schemaroot = $sdoc->documentElement();
     $schemaroot->setNamespace('http://relaxng.org/ns/structure/1.0','r',0);
+    $schemaroot->setNamespace('http://xims.info/ns/xmlsimpleformedit','s',0);
 
     # Test the schema structure
     my %validation_checks = (
@@ -424,6 +438,10 @@ sub event_simpleformedit {
         else {
             my $entryelement = XML::LibXML::Element->new( $elementname );
             $entryelement->setAttribute( 'id', $eid );
+            my $last_modified_attr = $schemaroot->findvalue("r:start/r:element/r:oneOrMore/r:element/s:last_modified_attr");
+            if ( $last_modified_attr eq '1' ) {
+                $entryelement->setAttribute( 'last_modified', $ctxt->object->data_provider->db_now() );
+            }
             foreach my $element ( $schemaroot->findnodes("r:start/r:element/r:oneOrMore/r:element/r:element/\@name") ) {
                 my $value = XIMS::clean( XIMS::decode( $self->param( "sfe_" . $element->value ) ) );
                 $entryelement->appendTextChild( $element->value, $value );
@@ -436,7 +454,7 @@ sub event_simpleformedit {
             }
         }
 
-        # After having done the work, prepare a message and/or redirect 
+        # After having done the work, prepare a message and/or redirect
         if ( $ctxt->object->body( $root->toString() ) and $ctxt->object->update( User => $ctxt->session->user ) ) {
             my $message;
             if ( $action eq 'delete' ) {
