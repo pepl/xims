@@ -26,7 +26,8 @@
 <Description>Beschreibung</Description>
 <Valid_from>Gültig ab</Valid_from><!--Gültig von -->
 <Valid_to>Gültig bis</Valid_to>
-<Valid_from_default>Wenn das Datum nicht hier gesetzt wird, wird beim Speichern das Erstelldatum für 'gültig ab' verwendet.</Valid_from_default>
+<Valid_from_default>Nicht gesetzt.</Valid_from_default>
+<Valid_from_default_creation_timestamp>Wenn das Datum nicht hier gesetzt wird, wird beim Speichern das Erstelldatum für 'gültig ab' verwendet.</Valid_from_default_creation_timestamp>
 <NamedDateFormat>%a., %d. %B %Y, %H:%M</NamedDateFormat>
 <Date_selector>Datumsauswahl</Date_selector>
 <Stylesheet>Stylesheet</Stylesheet>
@@ -154,6 +155,7 @@
 <Search_for>Suche nach</Search_for>
 <Previous_page>Vorige Seite</Previous_page>
 <Next_page>Nächste Seite</Next_page>
+<Page>Seite</Page>
 <Last_modified>Zuletzt geändert</Last_modified>
 <!-- End common_search_result -->
 <!-- Begin common_error -->

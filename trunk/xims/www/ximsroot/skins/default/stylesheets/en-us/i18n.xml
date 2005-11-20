@@ -26,7 +26,8 @@
 <Description>Description</Description>
 <Valid_from>Valid from</Valid_from>
 <Valid_to>Valid to</Valid_to>
-<Valid_from_default>Not set. Will default to creation date at saving if it remains unset.</Valid_from_default>
+<Valid_from_default>Not set.</Valid_from_default>
+<Valid_from_default_creation_timestamp>Not set. Will default to creation date at saving if it remains unset.</Valid_from_default_creation_timestamp>
 <NamedDateFormat>%a, %B %d %Y %H:%M</NamedDateFormat>
 <Date_selector>Date selector</Date_selector>
 <Stylesheet>Stylesheet</Stylesheet>
@@ -154,6 +155,7 @@
 <Search_for>Search for</Search_for>
 <Previous_page>Previous page</Previous_page>
 <Next_page>Next page</Next_page>
+<Page>Page</Page>
 <Last_modified>Last modified</Last_modified>
 <!-- End common_search_result -->
 <!-- Begin common_error -->
