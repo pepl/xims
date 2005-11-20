@@ -562,17 +562,18 @@
 <xsl:template name="jscalendar-selector">
     <xsl:param name="timestamp_string"/>
     <xsl:param name="formfield_id"/>
+    <xsl:param name="default_value" select="'creation_timestamp'"/>
 
     <input tabindex="40" type="hidden" name="{$formfield_id}" id="{$formfield_id}">
         <xsl:attribute name="value">
             <xsl:value-of select="$timestamp_string"/>
         </xsl:attribute>
     </input>
-    <span id="show_vft"><xsl:value-of select="$timestamp_string"/></span>
+    <span id="show_vft{$formfield_id}"><xsl:value-of select="$timestamp_string"/></span>
     <xsl:text>&#160;</xsl:text>
     <img
       src="{$skimages}calendar.gif"
-      id="f_trigger_vft"
+      id="f_trigger_vft{$formfield_id}"
       style="cursor: pointer;"
       alt="{$i18n/l/Date_selector}"
       title="{$i18n/l/Date_selector}"
@@ -584,17 +585,17 @@
         var current_date;
         if ( current_datestring.length > 0 ) {
             current_date = Date.parseDate(current_datestring, "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-            document.getElementById("show_vft").innerHTML = current_date;
+            document.getElementById("show_vft<xsl:value-of select="$formfield_id"/>").innerHTML = current_date;
         }
         else {
-            document.getElementById("show_vft").innerHTML = "<xsl:value-of select="$i18n/l/Valid_from_default"/>"
+            document.getElementById("show_vft<xsl:value-of select="$formfield_id"/>").innerHTML = "<xsl:choose><xsl:when test="default_value='creation_timestamp'"><xsl:value-of select="$i18n/l/Valid_from_default_creation_timestamp"/></xsl:when><xsl:otherwise><xsl:value-of select="$i18n/l/Valid_from_default"/></xsl:otherwise></xsl:choose>"
         }
         Calendar.setup({
             inputField     :    "<xsl:value-of select="$formfield_id"/>",
             ifFormat       :    "%Y-%m-%d %H:%M",
-            displayArea    :    "show_vft",
+            displayArea    :    "show_vft<xsl:value-of select="$formfield_id"/>",
             daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-            button         :    "f_trigger_vft",
+            button         :    "f_trigger_vft<xsl:value-of select="$formfield_id"/>",
             align          :    "Tl",
             singleClick    :    true,
             showsTime      :    true,
