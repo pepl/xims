@@ -202,6 +202,11 @@ sub event_store {
     my $object = $ctxt->object();
 
     if ( not $ctxt->parent() ) {
+        # Make sure to catch potential manually constructed requests...
+        unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+            return $self->event_access_denied( $ctxt );
+        }
+
         XIMS::Debug( 6, "unlocking object" );
         $object->unlock();
         XIMS::Debug( 4, "updating existing object" );
