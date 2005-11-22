@@ -191,14 +191,15 @@ sub _set_children {
     return undef unless $level;
 
     my $object = $ctxt->object();
-    my $gotsymlink = 1 if defined $ctxt->object()->symname_to_doc_id();
+    my $ots = $ctxt->properties->content->getchildren->objecttypes();
     my $tagname = 'children';
     my %childrenargs;
 
     # look if we should fetch children of another object
     if ( $ctxt->properties->content->getchildren->objectid() ) {
         $object = XIMS::Object->new( id => $ctxt->properties->content->getchildren->objectid(), User => $ctxt->session->user );
-        unless ( $gotsymlink ) {
+        # set by event_move_browse...talking about assumptions...
+        if ( $ctxt->properties->application->style() eq "move_browse" ) {
             $doc_data->{context}->{object}->{target} = { object => $object };
             $tagname = 'targetchildren';
             # since we don't fetch the children of the context-object,
@@ -208,9 +209,9 @@ sub _set_children {
     }
 
     my @object_type_ids;
-    if ( $ctxt->properties->content->getchildren->objecttypes and scalar @{$ctxt->properties->content->getchildren->objecttypes} > 0 ) {
+    if ( $ots and scalar @{$ots} > 0 ) {
         my $ot;
-        foreach my $name ( @{$ctxt->properties->content->getchildren->objecttypes} ) {
+        foreach my $name ( @{$ots} ) {
             $ot = XIMS::ObjectType->new( name => $name );
             push(@object_type_ids, $ot->id()) if defined $ot;
         }
