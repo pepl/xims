@@ -95,8 +95,10 @@ sub handle_data {
             # as children of the respective object.
             # From this, that table could also be called 'ci_deptroot_portlets'...
             #
-            $p->unbindNode();
-            $self->{Object}->body( $p->toString() );
+            $frag->removeChild( $p );
+            my $newbody = $frag->toString();
+            $newbody ||= ' '; # needs length > 0 (maybe change that in DP?)
+            $self->{Object}->body( $newbody );
             $self->{Object}->update( User => $self->{User}, no_modder => 1 );
             next;
         }
