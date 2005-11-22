@@ -11,7 +11,7 @@ use warnings;
 use strict;
 use vars qw( @ISA );
 
-use XIMS::Object;
+use XIMS::Portlet;
 
 use XML::LibXML;
 use XML::Generator::PerlData;
@@ -77,10 +77,29 @@ sub handle_data {
     my @portlets = grep { $_->nodeType == XML_ELEMENT_NODE
                           and $_->nodeName eq "portlet" }
       $frag->childNodes;
+
     foreach my $p ( @portlets ) {
         my $oid = $p->string_value();
         next unless (defined $oid and $oid > 0);
-        my $object = XIMS::Object->new( id  => $oid, User => $self->{User} );
+        my $object = XIMS::Portlet->new( id => $oid, User => $self->{User}, marked_deleted => undef );
+
+        if ( not defined $object ) {
+            XIMS::Debug( 4, "portlet id could not be resolved, deleting" );
+            # We workaround the portlet_ids not being in a relational structure here
+            #
+            # Instead of being stored in the body, the portlet assignments should probably
+            # be stored in a table like
+            # ci_object_relations ( id (pk), from (fk ci_documents.id), to (fk ci_documents.id) )
+            #
+            # Objects "related" to non-containers (like Documents for example) could still be stored
+            # as children of the respective object.
+            # From this, that table could also be called 'ci_deptroot_portlets'...
+            #
+            $p->unbindNode();
+            $self->{Object}->body( $p->toString() );
+            $self->{Object}->update( User => $self->{User}, no_modder => 1 );
+            next;
+        }
 
         if ( $self->{Export} ) {
             next unless $object->published();
