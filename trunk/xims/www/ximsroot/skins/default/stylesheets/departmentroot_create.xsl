@@ -28,7 +28,6 @@
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>
                     <xsl:call-template name="grantowneronly"/>
-                    <xsl:call-template name="tr-deptportlets-create"/>
                  </table>
                  <xsl:call-template name="saveaction"/>
             </form>
@@ -42,37 +41,12 @@
 <xsl:template name="tr-imagedepartmentroot-create">
     <tr>
         <td valign="top"><xsl:value-of select="$i18n/l/Image"/></td>
-            <td>
-                <input tabindex="30" type="text" name="image" size="40" value="" class="text"/>
-                <xsl:text>&#160;</xsl:text>
-                <a href="javascript:openDocWindow('DepartmentImage')" class="doclink">(?)</a>
-                <xsl:text>&#160;</xsl:text>
-                <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?contentbrowse=1;to={$parentid};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
-            </td>
-    </tr>
-</xsl:template>
-
-<xsl:template name="tr-deptportlets-create">
-    <tr>
-        <td colspan="3">
-            <table style="margin-bottom:20px; margin-top:5px; border: 1px solid; border-color: black">
-                <tr>
-                    <td valign="top" colspan="2">DepartmentRoot Portlets</td>
-                </tr>
-                <xsl:apply-templates select="/document/objectlist"/>
-                <tr>
-                    <td valign="top"><xsl:value-of select="$i18n/l/create_portlet"/>:</td>
-                    <td>
-                        <input type="text" name="portlet" size="40" class="text"/> <xsl:text>&#160;</xsl:text>
-                        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?contentbrowse=1;to={$parentid};otfilter=Portlet;sbfield=eform.portlet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_for"/></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="submit" name="add_portlet" value="{$i18n/l/add_portlet}" class="control"/>
-                    </td>
-                </tr>
-            </table>
+        <td>
+            <input tabindex="30" type="text" name="image" size="40" value="" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('DepartmentImage')" class="doclink">(?)</a>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?contentbrowse=1;to={$parentid};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
         </td>
     </tr>
 </xsl:template>
