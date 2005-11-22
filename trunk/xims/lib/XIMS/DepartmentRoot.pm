@@ -193,12 +193,12 @@ sub add_portlet {
     return undef unless $target;
 
     my $pobject = $target if (ref $target and $target->isa('XIMS::Object'));
-    $pobject ||= XIMS::Object->new( path => $target );
+    $pobject ||= XIMS::Portlet->new( User => $self->User, path => $target, marked_deleted => undef );
     if ( $pobject ) {
         my $id = $pobject->id;
-        XIMS::Debug( 4, "got portlet with id = $id ");
-        if ( defined $self->body and length $self->body ) {
-            XIMS::Debug( 4, "got existing department info" );
+        XIMS::Debug( 4, "got portlet with id=$id for $target");
+        if ( defined $self->body() and length $self->body() > 1 ) {
+            XIMS::Debug( 4, "found an existing portlet assignment" );
 
             my $fragment = $self->_getbodyfragment();
             return undef unless $fragment;
@@ -206,16 +206,16 @@ sub add_portlet {
             # check if id is already there
             my ( $node ) = grep {$_->string_value() eq $id} $fragment->childNodes;
             if ( defined $node ) {
-                XIMS::Debug( 3, "portlet ($id) already exists here" );
-                return 1;
+                XIMS::Debug( 3, "portlet ($id) already assigned" );
+                return 0;
             }
             else {
-                XIMS::Debug( 4, "3. step: insert the entry" );
+                XIMS::Debug( 4, "inserting the entry" );
                 $node = XML::LibXML::Element->new("portlet");
                 $node->appendText( $id );
                 $fragment->appendChild( $node );
 
-                XIMS::Debug( 4, "4. step: store body back." );
+                XIMS::Debug( 4, "storing body back. " );
                 $self->body( $fragment->toString() );
             }
         }
