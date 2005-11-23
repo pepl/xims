@@ -303,5 +303,6 @@
 </xsl:template>
 
 <xsl:template match="s:last_modified_attr"/>
+<xsl:template match="s:last_modified_attr" mode="eid"/>
 
 </xsl:stylesheet>
