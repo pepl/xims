@@ -302,4 +302,6 @@
     </head>
 </xsl:template>
 
+<xsl:template match="s:last_modified_attr"/>
+
 </xsl:stylesheet>
