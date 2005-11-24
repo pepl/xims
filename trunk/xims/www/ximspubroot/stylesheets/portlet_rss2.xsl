@@ -69,11 +69,11 @@
         <xsl:value-of select="./second"/>
         <!--<xsl:value-of select="./tzd"/>-->
     </xsl:variable>
-    <xsl:value-of select="substring(date:day-name($datetime),1,3)"/>,
-    <xsl:text> </xsl:text>
+    <xsl:value-of select="substring(date:day-name($datetime),1,3)"/>
+    <xsl:text>, </xsl:text>
     <xsl:value-of select="./day"/>
     <xsl:text> </xsl:text>
-    <xsl:value-of select="date:month-name($datetime)"/>
+    <xsl:value-of select="date:month-abbreviation($datetime)"/>
     <xsl:text> </xsl:text>
     <xsl:value-of select="./year"/>
     <xsl:text> </xsl:text>
@@ -82,7 +82,6 @@
     <xsl:value-of select="./minute"/>
     <xsl:text>:</xsl:text>
     <xsl:value-of select="./second"/>
-    <xsl:text> </xsl:text>
-    +0200</xsl:template>
+    <xsl:text> GMT+1</xsl:text></xsl:template>
 
 </xsl:stylesheet>
