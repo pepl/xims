@@ -59,7 +59,14 @@ sub handler {
     if ( $username and length $username and $password and length $password ) {
         my $user = XIMS::Auth->new( Username => $username, Password => $password )->authenticate();
         if ( $user and $user->id() ) {
+            # Set note for godav
             $r->pnotes( ximsBasicAuthUser => $user );
+
+            # Set notes for goxims
+            my $session = XIMS::Session->new();
+            $session->user_id( $user->id() );
+            $r->pnotes( ximsSession   => $session );
+            $r->pnotes( ximsProvider  => $user->data_provider() );
             return OK;
         }
         else {
