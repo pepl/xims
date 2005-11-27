@@ -26,4 +26,5 @@
     <Assign_new>Zuweisung neuer</Assign_new>
     <Serial>Reihe/Journal</Serial>
     <Import>Importieren</Import>
+    <Split_by_semicolon>Mehrere Einträge durch ein Semikolon (;) trennen</Split_by_semicolon>
 </l>
