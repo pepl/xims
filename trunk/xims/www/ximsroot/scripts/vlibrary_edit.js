@@ -10,9 +10,9 @@ function addVLProperty( property ) {
     selector = eval( "document.eform.svl" + property );
     newvalue = selector.options[selector.selectedIndex].text;
     if ( original.value.length > 0 ) {
-        values = original.value.split(',');
+        values = original.value.split(';');
         values.push(newvalue);
-        original.value = values.join(',');
+        original.value = values.join(';');
     }
     else {
         original.value = newvalue;

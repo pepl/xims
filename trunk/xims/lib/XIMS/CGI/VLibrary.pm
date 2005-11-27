@@ -217,8 +217,8 @@ sub event_author {
     $ctxt->properties->content->getformatsandtypes( 1 );
 
     my @objects = $ctxt->object->vlitems_byauthor_granted(  author_id => $authorid,
-                                                    order => 'title'
-                                                 );
+                                                            order => 'title'
+                                                         );
     $ctxt->objectlist( \@objects );
     $ctxt->properties->application->style( "objectlist" ) ;
 

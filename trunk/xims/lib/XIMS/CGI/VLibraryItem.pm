@@ -140,7 +140,7 @@ sub _create_mapping_from_name {
     my $propertyname = shift;
     my $propertyvalue = shift;
 
-    my @vlpropvalues = split(",", $self->_trim( XIMS::decode( $propertyvalue ) ) );
+    my @vlpropvalues = split(";", XIMS::trim( XIMS::decode( $propertyvalue ) ) );
     foreach my $value ( @vlpropvalues ) {
         my $propclass = "XIMS::VLib" . $propertyname;
         my $propobject = $propclass->new( name => $value );
@@ -166,18 +166,6 @@ sub _create_mapping_from_name {
             XIMS::Debug( 4, "mapping for '$value' already exists" );
         }
     }
-}
-
-sub _trim {
-    my $self = shift;
-    my $string = shift;
-
-    return undef unless $string;
-
-    $string =~ s/^\s+//;
-    $string =~ s/\s+$//;
-
-    return $string;
 }
 
 1;
