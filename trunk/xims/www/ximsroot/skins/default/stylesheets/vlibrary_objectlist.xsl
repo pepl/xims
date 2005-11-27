@@ -6,7 +6,8 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
     <xsl:variable name="subjectID">
         <xsl:choose>
@@ -110,64 +111,6 @@
 
 <xsl:template name="cttobject.content_length">
     <xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>
-</xsl:template>
-
-<xsl:template name="pagenav">
-    <xsl:param name="totalitems"/>
-    <xsl:param name="itemsperpage"/>
-    <xsl:param name="currentpage"/>
-    <xsl:param name="url"/>
-
-    <xsl:if test="$totalpages &gt; 1">
-        <div id="pagenav">
-            <div>
-                <xsl:if test="$currentpage &gt; 1">
-                    <a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
-                </xsl:if>
-                <xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
-                    |
-                </xsl:if>
-                <xsl:if test="$currentpage &lt; $totalpages">
-                    <a href="{$url};page={number($currentpage)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
-                </xsl:if>
-            </div>
-            <div>
-                <xsl:call-template name="pageslinks">
-                    <xsl:with-param name="page" select="1"/>
-                    <xsl:with-param name="current" select="$currentpage"/>
-                    <xsl:with-param name="total" select="$totalpages"/>
-                    <xsl:with-param name="url" select="$url"/>
-                </xsl:call-template>
-            </div>
-        </div>
-    </xsl:if>
-</xsl:template>
-
-<xsl:template name="pageslinks">
-    <xsl:param name="page"/>
-    <xsl:param name="current"/>
-    <xsl:param name="total"/>
-    <xsl:param name="url"/>
-
-    <xsl:choose>
-        <xsl:when test="$page = $current">
-            <strong><a href="{$url};page={$page}"><xsl:value-of select="$page" /></a></strong>
-        </xsl:when>
-        <xsl:otherwise>
-            <a href="{$url};page={$page}"><xsl:value-of select="$page" /></a>
-        </xsl:otherwise>
-    </xsl:choose>
-
-    <xsl:text> </xsl:text>
-
-    <xsl:if test="$page &lt; $total">
-        <xsl:call-template name="pageslinks">
-            <xsl:with-param name="page" select="$page + 1" />
-            <xsl:with-param name="current" select="$current" />
-            <xsl:with-param name="total" select="$total" />
-            <xsl:with-param name="url" select="$url" />
-        </xsl:call-template>
-    </xsl:if>
 </xsl:template>
 
 <xsl:template name="items_page_info">
