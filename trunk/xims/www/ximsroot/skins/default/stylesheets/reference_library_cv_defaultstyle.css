@@ -1,0 +1,32 @@
+#reflib_citebody {
+
+}
+
+#reflib_citelist {
+    line-height: 1.3em;
+}
+
+.reflib_citation {
+
+}
+
+.reflib_authors {
+
+}
+
+.reflib_author {
+
+}
+
+.reflib_title {
+    font-style: italic;
+}
+
+.reflib_serial {
+
+}
+
+.reflib_abstract {
+    margin: 5px 5px 15px 5px;
+    border: 1px dotted #eeeeee;
+}

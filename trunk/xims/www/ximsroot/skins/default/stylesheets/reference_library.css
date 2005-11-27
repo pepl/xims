@@ -1,0 +1,48 @@
+/*
+# Copyright (c) 2002-2005 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+*/
+
+
+.reflib_authortitle {
+    font: bold 1.1em helvetica, arial, sans-serif;
+}
+
+.vlitemcreate {
+    margin: auto;
+    border-top: none;
+}
+
+.vloptions {
+    margin-left: 130px;
+}
+
+.reflib_filter {
+    font-style: italic;
+}
+
+#reflib_authorsearch td {
+    vertical-align: top;
+}
+
+#reflib_authorsearch table {
+    width: 100%;
+}
+
+#reflib_authorsearch form {
+    margin-top: 0px;
+}
+
+#reflib_authorsearch input {
+    background: #eeeeee; font-face: helvetica; font-size: 10pt
+}
+
+#pagenav {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-align: right;
+    padding: 5px;
+    border: 2px solid #aaaaaa;
+}
