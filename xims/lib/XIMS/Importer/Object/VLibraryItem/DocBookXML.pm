@@ -48,11 +48,11 @@ sub vlproperties_from_document {
     my $object = shift;
 
     #title
-    $object->title( $self->_clean(
-      $self->_nodevalue($root->findnodes( "/article/articleinfo/title|/book/bookinfo/title|/book/title" ) )));
+    $object->title( XIMS::clean(
+      XIMS::nodevalue($root->findnodes( "/article/articleinfo/title|/book/bookinfo/title|/book/title" ) )));
 
     #abstract
-    my $abstract = $self->_clean( $self->_nodevalue($root->findnodes('/book/bookinfo/abstract/simpara|/article/articleinfo/abstract/simpara') ) );
+    my $abstract = XIMS::clean( XIMS::nodevalue($root->findnodes('/book/bookinfo/abstract/simpara|/article/articleinfo/abstract/simpara') ) );
     $object->abstract( $abstract ) if defined $abstract;
 
     #vlauthors
@@ -77,8 +77,8 @@ sub vlproperties_from_document {
     my @metaset = $root->findnodes( "/book/bookinfo|/article/articleinfo" );
 
     my $meta = $self->meta_from_node( $metaset[0] );
-    $meta->subtitle( $self->_clean(
-           $self->_nodevalue($root->findnodes( '/book/bookinfo/subtitle|/article/articleinfo/subtitle' ))));
+    $meta->subtitle( XIMS::clean(
+           XIMS::nodevalue($root->findnodes( '/book/bookinfo/subtitle|/article/articleinfo/subtitle' ))));
 
     $object->vlemeta( $meta );
 
@@ -86,10 +86,10 @@ sub vlproperties_from_document {
     my @issuenumnode = $root->findnodes( "/article/articleinfo/biblioset|/book/bookinfo/biblioset");
     if ( @issuenumnode ) {
         my ($journal, $volume);
-        if ( $journal = $self->_clean( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("title") ) ) ) {
-            $volume = $self->_clean( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("issuenum") ) );
-            #$isbn = $self->_trim( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("isbn") ) ) or "";
-            #$issn = $self->_trim( $self->_nodevalue( $issuenumnode[0]->getChildrenByTagName("issn") ) ) or "";
+        if ( $journal = XIMS::clean( XIMS::nodevalue( $issuenumnode[0]->getChildrenByTagName("title") ) ) ) {
+            $volume = XIMS::clean( XIMS::nodevalue( $issuenumnode[0]->getChildrenByTagName("issuenum") ) );
+            #$isbn = $self->_trim( XIMS::nodevalue( $issuenumnode[0]->getChildrenByTagName("isbn") ) ) or "";
+            #$issn = $self->_trim( XIMS::nodevalue( $issuenumnode[0]->getChildrenByTagName("issn") ) ) or "";
 
             if ( $journal ) {
                 my $vlpublication = $self->vlpublication( $journal, $volume );
@@ -120,12 +120,12 @@ sub authors_from_node {
     return () unless $authorset;
 
     foreach my $author ( $authorset->getChildrenByTagName("author") ) {
-        my $lastname = $self->_clean( $self->_nodevalue( $author->getChildrenByTagName("surname") ) );
-        my $middlename = $self->_clean( $self->_nodevalue( $author->getChildrenByTagName("othername") ) );
-        my $firstname = $self->_clean( $self->_nodevalue( $author->getChildrenByTagName("firstname") ) );
+        my $lastname = XIMS::clean( XIMS::nodevalue( $author->getChildrenByTagName("surname") ) );
+        my $middlename = XIMS::clean( XIMS::nodevalue( $author->getChildrenByTagName("othername") ) );
+        my $firstname = XIMS::clean( XIMS::nodevalue( $author->getChildrenByTagName("firstname") ) );
         $middlename ||= '';
         $firstname ||= '';
-        my $vlibauthor = XIMS::VLibAuthor->new( lastname => $self->_escapewildcard( $lastname ),
+        my $vlibauthor = XIMS::VLibAuthor->new( lastname => XIMS::escapewildcard( $lastname ),
                                                 middlename => $middlename,
                                                 firstname => $firstname);
         if ( not (defined $vlibauthor and $vlibauthor->id) ) {
@@ -142,8 +142,8 @@ sub authors_from_node {
     }
 
     foreach my $author ( $authorset->getChildrenByTagName("corpauthor") ) {
-        my $lastname = $self->_clean( $self->_nodevalue( $author ) );
-        my $vlibauthor = XIMS::VLibAuthor->new( lastname => $self->_escapewildcard( $lastname ),
+        my $lastname = XIMS::clean( XIMS::nodevalue( $author ) );
+        my $vlibauthor = XIMS::VLibAuthor->new( lastname => XIMS::escapewildcard( $lastname ),
                                                 object_type => '1' );
         if ( not (defined $vlibauthor and $vlibauthor->id) ) {
             $vlibauthor = XIMS::VLibAuthor->new();
@@ -170,7 +170,7 @@ sub keywords_from_node {
     return () unless $keywordset;
 
     foreach my $keyword ( $keywordset->getChildrenByTagName("keyword") ) {
-        $keywordvalue = $self->_clean( $self->_nodevalue( $keyword ) );
+        $keywordvalue = XIMS::clean( XIMS::nodevalue( $keyword ) );
         my $vlibkeyword = XIMS::VLibKeyword->new( name => $keywordvalue );
         if ( not (defined $vlibkeyword and $vlibkeyword->id) ) {
             $vlibkeyword = XIMS::VLibKeyword->new();
@@ -196,7 +196,7 @@ sub subjects_from_node {
     return () unless $subjectset;
 
     foreach my $subject ( $subjectset->findnodes("subject/subjectterm") ) {
-        $subjectvalue = $self->_clean( $self->_nodevalue( $subject ) );
+        $subjectvalue = XIMS::clean( XIMS::nodevalue( $subject ) );
         my $vlibsubject = XIMS::VLibSubject->new( name => $subjectvalue );
         if ( not (defined $vlibsubject and $vlibsubject->id) ) {
             $vlibsubject = XIMS::VLibSubject->new();
@@ -222,20 +222,20 @@ sub meta_from_node {
     return undef unless $metaset;
 
     # legalnotice
-    my $legalnotice = $self->_clean(
-      $self->_nodevalue( $metaset->findnodes('//legalnotice/simpara|//legalnotice/para')));
+    my $legalnotice = XIMS::clean(
+      XIMS::nodevalue( $metaset->findnodes('//legalnotice/simpara|//legalnotice/para')));
     $meta->legalnotice( $legalnotice ) if length( $legalnotice );
 
     # mediatype
-    $meta->mediatype( $self->_clean( $self->_nodevalue( $metaset->findnodes('biblioset/@relation'))));
+    $meta->mediatype( XIMS::clean( XIMS::nodevalue( $metaset->findnodes('biblioset/@relation'))));
 
     # bibliosource
     my @bibliosourceset = $metaset->getChildrenByTagName("biblioset");
     my $bibliosource;
     if ( $bibliosourceset[0] ) {
-        map { $bibliosource .= $self->_nodevalue($_) }
+        map { $bibliosource .= XIMS::nodevalue($_) }
           ($bibliosourceset[0]->getChildrenByTagName('bibliosource'));
-        $meta->bibliosource( $self->_clean( $bibliosource ) );
+        $meta->bibliosource( XIMS::clean( $bibliosource ) );
     }
 
     return $meta;
@@ -265,75 +265,6 @@ sub vlpublication {
     }
 
     return $vlpublication;
-}
-
-
-sub _nodevalue {
-    my $self = shift;
-    my $node = shift;
-
-    if ( defined $node ) {
-        my $value = "";
-        if ( $node->hasChildNodes() ) {
-            map { $value .= $_->toString(0,1) } $node->childNodes;
-        }
-        else {
-            $value = $node->textContent();
-        }
-        if ( length $value ) {
-#            $value = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value;
-            return $value;
-        }
-    }
-}
-
-
-sub _trim {
-    my $self = shift;
-    my $string = shift;
-
-    return undef unless $string;
-
-    $string =~ s/^\s+//;
-    $string =~ s/\s+$//;
-
-    return $string;
-}
-
-
-sub _unquot {
-    my $self = shift;
-    my $string = shift;
-
-    return undef unless $string;
-
-    $string =~ s/&apos;/'/g;
-    $string =~ s/&quot;/"/g;
-
-    return $string;
-}
-
-
-sub _clean {
-    my $self = shift;
-    my $string = shift;
-
-    return undef unless $string;
-
-    $string = $self->_unquot( $self->_trim( $string ) );
-
-    return $string;
-}
-
-
-sub _escapewildcard {
-    my $self = shift;
-    my $string = shift;
-
-    return undef unless $string;
-    $string =~ s/%/%%/g;
-
-    return $string;
 }
 
 

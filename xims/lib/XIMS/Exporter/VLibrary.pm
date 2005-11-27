@@ -10,9 +10,6 @@ use XIMS::Exporter;
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Folder );
 
-
-
-
 sub create {
     XIMS::Debug( 5, "called" );
     my $self = shift;
