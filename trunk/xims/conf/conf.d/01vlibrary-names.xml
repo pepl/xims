@@ -18,6 +18,7 @@
                 <item>vlibauthor.lastname</item>
                 <item>vlibauthor.middlename</item>
                 <item>vlibauthor.firstname</item>
+                <item>vlibauthor.suffix</item>
                 <item>vlibauthor.object_type</item>
             </VLibAuthor>
             <VLibAuthorMap>
