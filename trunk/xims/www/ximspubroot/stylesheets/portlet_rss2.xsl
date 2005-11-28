@@ -69,6 +69,15 @@
         <xsl:value-of select="./second"/>
         <!--<xsl:value-of select="./tzd"/>-->
     </xsl:variable>
+    <xsl:variable name="hour" select="hour"/>
+    <xsl:variable name="gmtdiff" select="'1'"/>
+    <xsl:variable name="gmthour">
+        <xsl:choose>
+            <xsl:when test="number($hour)-number($gmtdiff) &lt; 0"><xsl:value-of select="number($hour)-number($gmtdiff)+24"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="number($hour)-number($gmtdiff)"/></xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
     <xsl:value-of select="substring(date:day-name($datetime),1,3)"/>
     <xsl:text>, </xsl:text>
     <xsl:value-of select="./day"/>
@@ -77,11 +86,12 @@
     <xsl:text> </xsl:text>
     <xsl:value-of select="./year"/>
     <xsl:text> </xsl:text>
-    <xsl:value-of select="./hour"/>
+    <xsl:if test="string-length($gmthour)=1">0</xsl:if><xsl:value-of select="$gmthour"/>
     <xsl:text>:</xsl:text>
     <xsl:value-of select="./minute"/>
     <xsl:text>:</xsl:text>
     <xsl:value-of select="./second"/>
-    <xsl:text> GMT+1</xsl:text></xsl:template>
+    <xsl:text> GMT</xsl:text>
+</xsl:template>
 
 </xsl:stylesheet>
