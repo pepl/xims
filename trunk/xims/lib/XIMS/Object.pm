@@ -1400,7 +1400,7 @@ sub move {
         # only look at objects with the old_dept of the moved object.
         # descendants of a different dept. stay unchanged. (see comment above)
         if ($_->department_id == $old_dept) {
-            $_->department_id( __decide_department_id( document_id => $_->parent_id() ) );
+            $_->department_id( $self->department_id() );
             $_->data_provider->updateObject( $_->data() );
         }
     }
