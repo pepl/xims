@@ -10,7 +10,9 @@
 \i defaultdata.sql
 -- Functions and triggers for location_path denormalization
 \i location_path.sql
--- VLibrary tables
+-- VLibrary objects
 \i create_library.sql
+-- Reference Library objects
+\i create_referencelibrary.sql
 
 

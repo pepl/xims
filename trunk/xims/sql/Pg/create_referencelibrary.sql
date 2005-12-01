@@ -18,15 +18,15 @@ SET SESSION AUTHORIZATION 'xims';
 -- DROP TABLE cireflib_references CASCADE;
 -- DROP TABLE cireflib_authormap CASCADE;
 -- DROP TABLE cireflib_reference_properties CASCADE;
--- DROP TABLE cireflib_reference_propertyvalues CASCADE;
--- DROP TABLE cireflib_reference_type_propertymap CASCADE;
--- DROP FUNCTION cireflib_reference_types_id_seq_nval();
+-- DROP TABLE cireflib_ref_propertyvalues CASCADE;
+-- DROP TABLE cireflib_ref_type_propertymap CASCADE;
+-- DROP FUNCTION cireflib_reftypes_id_seq_nval();
 -- DROP FUNCTION cireflib_serials_id_seq_nval();
--- DROP FUNCTION cireflib_references_id_seq_nval();
+-- DROP FUNCTION cireflib_ref_id_seq_nval();
 -- DROP FUNCTION cireflib_authormap_id_seq_nval();
--- DROP FUNCTION cireflib_reference_properties_id_seq_nval();
--- DROP FUNCTION cireflib_reference_propertyvalues_id_seq_nval();
--- DROP FUNCTION cireflib_reference_type_propertymap_id_seq_nval();
+-- DROP FUNCTION cireflib_refprop_id_seq_nval();
+-- DROP FUNCTION cireflib_rpv_id_seq_nval();
+-- DROP FUNCTION cireflib_rtpm_id_seq_nval();
 
 -- begin transaction
 BEGIN WORK;
@@ -92,8 +92,8 @@ CREATE TABLE cireflib_reference_properties
   )
 ;
 
-\echo creating table 'cireflib_reference_propertyvalues'
-CREATE TABLE cireflib_reference_propertyvalues
+\echo creating table 'cireflib_ref_propertyvalues'
+CREATE TABLE cireflib_ref_propertyvalues
  (
  id                  SERIAL            PRIMARY KEY
  ,property_id        INTEGER           NOT NULL REFERENCES cireflib_reference_properties  ( id ) ON DELETE CASCADE
@@ -102,8 +102,8 @@ CREATE TABLE cireflib_reference_propertyvalues
  )
 ;
 
-\echo creating table 'cireflib_reference_type_propertymap'
-CREATE TABLE cireflib_reference_type_propertymap
+\echo creating table 'cireflib_ref_type_propertymap'
+CREATE TABLE cireflib_ref_type_propertymap
  (
  id                  SERIAL            PRIMARY KEY
  ,property_id        INTEGER           NOT NULL REFERENCES cireflib_reference_properties  ( id ) ON DELETE CASCADE
@@ -112,7 +112,7 @@ CREATE TABLE cireflib_reference_type_propertymap
  )
 ;
 
-CREATE OR REPLACE FUNCTION cireflib_reference_types_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cireflib_reftypes_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
             RETURN nextval(\'cireflib_reference_types_id_seq\');
            END;'
@@ -126,7 +126,7 @@ CREATE OR REPLACE FUNCTION cireflib_serials_id_seq_nval() RETURNS INTEGER
        LANGUAGE 'plpgsql'
 ;
 
-CREATE OR REPLACE FUNCTION cireflib_references_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cireflib_ref_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
             RETURN nextval(\'cireflib_references_id_seq\');
            END;'
@@ -140,23 +140,23 @@ CREATE OR REPLACE FUNCTION cireflib_authormap_id_seq_nval() RETURNS INTEGER
        LANGUAGE 'plpgsql'
 ;
 
-CREATE OR REPLACE FUNCTION cireflib_reference_properties_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cireflib_refprop_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
             RETURN nextval(\'cireflib_reference_properties_id_seq\');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
-CREATE OR REPLACE FUNCTION cireflib_reference_propertyvalues_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cireflib_rpv_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_reference_propertyvalues_id_seq\');
+            RETURN nextval(\'cireflib_ref_propertyvalues_id_seq\');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
-CREATE OR REPLACE FUNCTION cireflib_reference_type_propertymap_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cireflib_rtpm_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_reference_type_propertymap_id_seq\');
+            RETURN nextval(\'cireflib_ref_type_propertymap_id_seq\');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -168,15 +168,15 @@ REVOKE ALL
         ,cireflib_references
         ,cireflib_authormap
         ,cireflib_reference_properties
-        ,cireflib_reference_propertyvalues
-        ,cireflib_reference_type_propertymap
+        ,cireflib_ref_propertyvalues
+        ,cireflib_ref_type_propertymap
         ,cireflib_reference_types_id_seq
         ,cireflib_serials_id_seq
         ,cireflib_references_id_seq
         ,cireflib_authormap_id_seq
         ,cireflib_reference_properties_id_seq
-        ,cireflib_reference_propertyvalues_id_seq
-        ,cireflib_reference_type_propertymap_id_seq
+        ,cireflib_ref_propertyvalues_id_seq
+        ,cireflib_ref_type_propertymap_id_seq
     FROM PUBLIC;
 
 GRANT ALL
@@ -185,15 +185,15 @@ GRANT ALL
         ,cireflib_references
         ,cireflib_authormap
         ,cireflib_reference_properties
-        ,cireflib_reference_propertyvalues
-        ,cireflib_reference_type_propertymap
+        ,cireflib_ref_propertyvalues
+        ,cireflib_ref_type_propertymap
         ,cireflib_reference_types_id_seq
         ,cireflib_serials_id_seq
         ,cireflib_references_id_seq
         ,cireflib_authormap_id_seq
         ,cireflib_reference_properties_id_seq
-        ,cireflib_reference_propertyvalues_id_seq
-        ,cireflib_reference_type_propertymap_id_seq
+        ,cireflib_ref_propertyvalues_id_seq
+        ,cireflib_ref_type_propertymap_id_seq
     TO xims;
 
 GRANT INSERT, SELECT, UPDATE, DELETE
@@ -202,8 +202,8 @@ GRANT INSERT, SELECT, UPDATE, DELETE
         ,cireflib_references
         ,cireflib_authormap
         ,cireflib_reference_properties
-        ,cireflib_reference_propertyvalues
-        ,cireflib_reference_type_propertymap
+        ,cireflib_ref_propertyvalues
+        ,cireflib_ref_type_propertymap
     TO ximsrun;
 
 GRANT SELECT, UPDATE
@@ -212,8 +212,8 @@ GRANT SELECT, UPDATE
         ,cireflib_references_id_seq
         ,cireflib_authormap_id_seq
         ,cireflib_reference_properties_id_seq
-        ,cireflib_reference_propertyvalues_id_seq
-        ,cireflib_reference_type_propertymap_id_seq
+        ,cireflib_ref_propertyvalues_id_seq
+        ,cireflib_ref_type_propertymap_id_seq
     TO ximsrun;
 
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot )
