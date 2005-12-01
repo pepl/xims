@@ -181,6 +181,36 @@ sub xml_unescape {
     return $text;
 }
 
+##
+#
+# SYNOPSIS
+#    XIMS::xml_escape_noquot( $text )
+#
+# PARAMETER
+#    $text: string
+#
+# RETURNS
+#    $text: escaped string
+#
+# DESCRIPTION
+#    xml-escape string without escaping single- and doublequotes
+#
+sub xml_escape_noquot {
+    my $text = shift;
+
+    my %escapes = (
+                   '<' => '&lt;',
+                   '>' => '&gt;',
+                   '&' => '&amp;',
+                  );
+
+    $text =~ s/([<>&])
+        /
+        $escapes{$1}
+        /egsx;
+
+    return $text;
+}
 
 ##
 #

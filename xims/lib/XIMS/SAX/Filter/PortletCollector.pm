@@ -148,7 +148,7 @@ sub handle_data {
                 $o->{content_length} = $o->content_length if grep { $_ eq 'content_length' } @{$cols};
 
                 $o->{location} = XIMS::xml_escape($o->{location});
-                $o->{title} = XIMS::xml_escape($o->{title});
+                $o->{title} = XIMS::xml_escape_noquot($o->{title});
                 $o->{location_path} = XIMS::xml_escape($location_path);
 
                 # check if documentlink objects should be added
