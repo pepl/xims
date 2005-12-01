@@ -1298,8 +1298,13 @@ sub event_move {
             return 0;
         }
 
-        #my $old_parent = $object->getParentID();
-        #my $old_pos    = $object->getPosition();
+        
+        my @children = $target->children( location => $object->location(), marked_deleted => undef );
+        if ( scalar @children > 0 and defined $children[0] ) {
+            XIMS::Debug( 2, "object with same location already exists in the target container" );
+            $self->sendError( $ctxt, "Location '" . $object->location() . "' already exists in the target container." );
+            return 0;
+        }
 
         if ( not $object->move( target => $target->document_id ) ) {
             $ctxt->session->error_msg( "move failed!" );
@@ -1307,16 +1312,6 @@ sub event_move {
         }
         else {
             XIMS::Debug( 4, "move ok, redirecting to the parent");
-
-            # correct department of the object and its children
-            #$dp->reconciliateDepartment( -object => $object,
-            #                             -parent => $target );
-
-            # correct the positions in the source container
-            #$dp->reconciliatePosition( -parentid => $old_parent,
-            #                           -position  => $old_pos );
-
-
             $self->redirect( $self->redirect_path( $ctxt, $object->parent->id() ) );
             return 0;
         }
