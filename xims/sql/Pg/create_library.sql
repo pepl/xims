@@ -10,7 +10,10 @@
 
 SET SESSION AUTHORIZATION 'xims';
 
-
+-- DELETE FROM ci_object_types WHERE name = 'VLibrary';
+-- DELETE FROM ci_object_types WHERE name = 'VLibraryItem';
+-- DELETE FROM ci_object_types WHERE name = 'DocBookXML' and parent_id > 1;
+-- DELETE FROM ci_data_formats WHERE name = 'VLibrary';
 -- DROP TABLE cilib_authors CASCADE;
 -- DROP TABLE cilib_authormap CASCADE;
 -- DROP TABLE cilib_keywords CASCADE;
@@ -270,8 +273,6 @@ GRANT SELECT, UPDATE
         ,cilib_publicationmap_id_seq
         ,cilib_meta_id_seq
     TO ximsrun;
-
-
 
 
 COMMIT;

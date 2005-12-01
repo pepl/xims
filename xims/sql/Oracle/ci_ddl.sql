@@ -44,8 +44,14 @@
 -- Functions and triggers for location_path denormalization
 @@ci_util_location_path.sql
 
--- VLibrary tables
+-- VLibrary objects
 @@cilib_library_ddl.sql
+
+-- ReferenceLibrary objects
+@@cireflib_reference_library_ddl.sql
+
+-- ReferenceLibrary default data
+@@../referencelibrary_defaultdata.sql
 
 -- commit;
 -- PROMPT Changes have not been commited yet. Type commit; to do so!
