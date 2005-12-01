@@ -11,3 +11,9 @@ CREATE INDEX ci_roles_granted_grantee_idx ON ci_roles_granted ( grantee_id );
 
 DROP index ci_obj_type_privs_grantee_idx;
 CREATE INDEX ci_obj_type_privs_grantee_idx ON ci_object_type_privs ( grantee_id );
+
+\echo Adding ReferenceLibrary objects
+\i ../../sql/Pg/create_referencelibrary.sql
+
+\echo Adding ReferenceLibrary default data
+\i ../../sql/referencelibrary_defaultdata.sql
