@@ -86,7 +86,7 @@
         <td valign="top" colspan="2"><strong><xsl:value-of select="$i18n_qn/l/Questionnaire_Options"/></strong>:</td>
     </tr>
     <xsl:call-template name="questionnaire_opt_kioskmode"/>
-    <!-- Uncomment when implemented <xsl:call-template name="questionnaire_opt_mandatoryanswers"/>-->
+    <xsl:call-template name="questionnaire_opt_mandatoryanswers"/>
 </xsl:template>
 
 <!-- Question template -->
@@ -427,7 +427,7 @@
             <div>
                 <input type="submit" value="{$i18n_qn/l/Add_TAN_List}" onclick="eform.edit.value='add_tanlist';eform.qid.value=eform.TAN_List.value;return true;" />&#xa0;
                 <input type="text" name="TAN_List" size="40" class="text" />&#xa0;
-                <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;otfilter=TAN_List;sbfield=eform.TAN_List')" class="doclink"><xsl:value-of select="$i18n_qn/l/browse_TAN_List"/></a>
+                <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={parents/object[@document_id=current()/@parent_id]/@id};contentbrowse=1;otfilter=TAN_List;sbfield=eform.TAN_List')" class="doclink"><xsl:value-of select="$i18n_qn/l/browse_TAN_List"/></a>
             </div>
             <div style="margin-top: 5px">
                 <hr />

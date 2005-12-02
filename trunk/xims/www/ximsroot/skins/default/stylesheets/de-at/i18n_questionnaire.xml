@@ -41,7 +41,7 @@
     <Raw_results>Rohdaten (Tab-separiert)</Raw_results>
     <with_text_answers>mit Anworten des Typs 'Text'- und 'Textarea' im Detail</with_text_answers>
     <Default_Thank_You>Vielen Dank für die Beantwortung der Fragen!</Default_Thank_You>
-    <Mandatory_Answers>Jede Frage muss bei der Beantwortung des Fragebogens beantwortet werden</Mandatory_Answers>
+    <Mandatory_Answers>Jede Frage muss bei der Beantwortung dieses Fragebogens beantwortet werden</Mandatory_Answers>
     <Kioskmode>Kiosk-Modus (Mehrfachausfüllmöglichkeit mit gleicher Browser-Instanz)</Kioskmode>
     <Questionnaire_Options>Fragebogenoptionen</Questionnaire_Options>
     <!-- End Questionnaire -->

@@ -64,7 +64,7 @@
             <div align="center">
                 <xsl:call-template name="questionnaire_title" />
                 <xsl:call-template name="questionnaire_exit" /><br />
-                <input type="button" value="Close Window" onclick="window.close();" />
+                <!--<input type="button" value="{$i18n_qn/l/close_window}" onclick="window.close();" />-->
             </div>
         </xsl:when>
         <xsl:when test="$current_question >= 1">
@@ -74,8 +74,11 @@
                 <input type="hidden" name="q" value="{$current_question + 1}" />
                 <input type="hidden" name="docid" value="{/document/context/object/@document_id}" />
                 <xsl:apply-templates select="question[$current_question + 0]" />
-                <input type="submit" name="answer" value="Next >" />
+                <input type="submit" name="answer" value="{$i18n_qn/l/next} >" />
             </form>
+            <xsl:if test="/document/context/object/body/questionnaire/options/mandatoryanswers = '1'">
+                <p><xsl:value-of select="$i18n_qn/l/Mandatory_Answers"/>!</p>
+            </xsl:if>
         </xsl:when>
         <xsl:otherwise>
             <div align="center">
@@ -88,7 +91,7 @@
                         <xsl:if test="count(tanlist) > 0">
                             TAN:<input type="text" name="tan" /><br />
                         </xsl:if>
-                        <input type="submit" value="Begin"/>
+                        <input type="submit" value="{$i18n_qn/l/start}"/>
                     </form>
                 </p>
             </div>
