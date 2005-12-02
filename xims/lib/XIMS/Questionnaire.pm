@@ -375,7 +375,13 @@ sub get_value {
     $questionnaire = $questionnaire->documentElement();
     # replace 'questionnaire' in XPath, because it is the actual node
     $XPath =~ s/questionnaire/\./;
-    return $questionnaire->find( $XPath )->get_node( 1 )->textContent();
+    my $node = $questionnaire->find( $XPath )->get_node( 1 );
+    if ( defined $node ) {
+        return $node->textContent();
+    }
+    else {
+        return undef;
+    }
 }
 
 ##
@@ -438,6 +444,7 @@ sub get_full_question_title {
     return $full_question_title;
 }
 
+##
 #
 # SYNOPSIS
 #    XIMS::Questionnaire->get_full_question_titles( )
@@ -448,6 +455,7 @@ sub get_full_question_title {
 #    A hash with the question titles to all answers
 #
 # DESCRIPTION
+#
 #
 sub get_full_question_titles {
     my $self = shift;
@@ -475,6 +483,36 @@ sub get_full_question_titles {
         $full_id = ""; $full_question_title = "";
     }
     return %question_titles;
+}
+
+##
+#
+# SYNOPSIS
+#    XIMS::Questionnaire->get_answer_ids( [ $question_id ] )
+#
+# PARAMETER
+#
+# RETURNS
+#    Arrayref of answer ids
+#
+# DESCRIPTION
+#
+#
+sub get_answer_ids {
+    XIMS::Debug( 5, "Called" );
+    my $self = shift;
+    my $question_id = shift;
+    my @answer_ids;
+
+    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
+    $questionnaire = $questionnaire->documentElement();
+
+    my $question_xpath = '/questionnaire/question';
+    $question_xpath .= '[@id=' . $question_id . ']' if defined $question_id;
+    foreach my $attrib ( $questionnaire->findnodes( $question_xpath . "/answer[contains(\@id,'.')]/\@id" ) ) {
+        push( @answer_ids, $attrib->value() );
+    }
+    return \@answer_ids;
 }
 
 ##
@@ -522,10 +560,10 @@ sub form_to_xml {
 
     my $questionnaire_document = XML::LibXML::Document->new();
     my $questionnaire = XML::LibXML::Element->new( "questionnaire" );
-    $questionnaire->appendTextChild( "title", $params{'questionnaire_title'}  );
-    $questionnaire->appendTextChild( "comment",  $params{'questionnaire_comment'}  );
-    $questionnaire->appendTextChild( "intro",  $params{'questionnaire_intro'}  );
-    $questionnaire->appendTextChild( "exit",  $params{'questionnaire_exit'}  );
+    $questionnaire->appendTextChild( "title", $params{'questionnaire_title'} ) if $params{'questionnaire_title'};
+    $questionnaire->appendTextChild( "comment", $params{'questionnaire_comment'} ) if $params{'questionnaire_comment'};
+    $questionnaire->appendTextChild( "intro", $params{'questionnaire_intro'} ) if $params{'questionnaire_intro'};
+    $questionnaire->appendTextChild( "exit", $params{'questionnaire_exit'} ) if $params{'questionnaire_exit'};
 
     # Deal with options
     my $options = XML::LibXML::Element->new( "options" );
@@ -539,7 +577,7 @@ sub form_to_xml {
             $kioskmode = 0;
         }
     }
-    $options->appendTextChild( "kioskmode", $kioskmode );
+    $options->appendTextChild( "kioskmode", $kioskmode ) if $kioskmode;
 
     my $mandatoryanswers = $params{'questionnaire_opt_mandatoryanswers'};
     if ( defined $mandatoryanswers ) {
@@ -551,7 +589,7 @@ sub form_to_xml {
             $mandatoryanswers = 0;
         }
     }
-    $options->appendTextChild( "mandatoryanswers", $mandatoryanswers );
+    $options->appendTextChild( "mandatoryanswers", $mandatoryanswers ) if $mandatoryanswers;
 
     $questionnaire->appendChild( $options );
 
@@ -585,12 +623,12 @@ sub set_answer_data {
     my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
     my $question_id = $params{'q'};
     my $tan = $params{'tan'};
-    if ( $question_id ) {
-      $question_id = XIMS::QuestionnaireResult->get_last_answer($self->document_id, $tan) + 1;
-    }
-    XIMS::Debug(6, ">>>".$question_id );
     $questionnaire = $questionnaire->documentElement();
-    $questionnaire->appendTextChild( 'current_question', $question_id );
+    if ( $question_id ) {
+        $question_id = XIMS::QuestionnaireResult->get_last_answer($self->document_id, $tan) + 1;
+        XIMS::Debug(6, "question_id: $question_id") if defined $question_id;
+        $questionnaire->appendTextChild( 'current_question', $question_id );
+    }
     $questionnaire->appendTextChild( 'tan', $tan );
     $self->body( XIMS::decode( $questionnaire->toString() ) );
 
@@ -668,32 +706,48 @@ sub tan_ok() {
 sub store_result {
     XIMS::Debug( 5, "called" );
     my ($self, %params) = @_ ;
-    my $result;
     my $docid = $params{'docid'};
     my $tan = $params{'tan'};
     my $question = $params{'q'} - 1;
+    my @results;
+    my $answered = 0;
+    my $mandatoryanswers = $self->mandatoryanswers();
     # Check if question already has been answered
     # ToDo: Questionnaire-setting if answer update is allowed.
-    return 0 if (XIMS::QuestionnaireResult->getResult( $docid, $tan, $question) eq "ANSWERED");
-    # Store every parameter containing answer and a id as a result
-    foreach ( keys( %params ) ) {
-        next unless ( /^answer/ );
-        my @answer_id = split( /_/, $_);
-        next unless ( $answer_id[1] );
-        foreach my $answer (split( /\0/,$params{$_} ) ) {
+    my $rv = XIMS::QuestionnaireResult->getResult( $docid, $tan, $question);
+    return 0 if ( defined $rv and $rv eq "ANSWERED" );
+
+    # Walk through the answer_ids and check for answers
+    my @answer_ids = @{$self->get_answer_ids( $question )};
+    foreach my $answer_id ( @answer_ids ) {
+        my $paramval = $params{'answer_' . $answer_id};
+        next unless defined $paramval;
+        foreach my $answer (split( /\0/, $paramval ) ) {
+            if ( defined $mandatoryanswers and not defined $answer ) {
+                return 0;
+            }
             # since we dump the raw result data tab-separated, we do not
             # want to store tab characters here
             $answer =~ s/\t/    /g;
-            $result = XIMS::QuestionnaireResult->new() ;
+            my $result = XIMS::QuestionnaireResult->new() ;
             $result->document_id( $docid );
             $result->tan( $tan );
-            $result->question_id( $answer_id[1] );
+            $result->question_id( $answer_id );
             $result->answer( $answer );
-            $result->store();
+            push( @results, $result );
+            $answered++;
         }
     }
-    # Set question as answered
-    $result = XIMS::QuestionnaireResult->new() ;
+    if ( defined $mandatoryanswers and $answered != scalar @answer_ids ) {
+        return 0;
+    }
+
+    # Store the answers
+    for ( @results ) {
+        $_->store();
+    }
+    # Set the whole question as answered
+    my $result = XIMS::QuestionnaireResult->new() ;
     $result->document_id( $docid );
     $result->tan( $tan );
     $result->question_id( $question );
@@ -720,10 +774,10 @@ sub _create_tanlists {
 
 
 sub _create_children {
-# create one node after the other, change this!
+    # create one node after the other, change this!
     my ( $node, %params ) = @_;
 
-    XIMS::Debug (6, "Making Children of ".$node->nodeName." ".$node->getAttribute('id') );
+    XIMS::Debug( 6, "Creating children of ".$node->nodeName() );
     my $old_id = $node->getAttribute( 'id' );
     my $new_id = 1;
     my %new_element;
@@ -755,11 +809,11 @@ sub _create_children {
             #        last if ( $all_fields == 3 );
             }
             elsif ( $all_fields == 0) {
-                $new_element{'title'} = 0;
-                $new_element{'type'} = 0;
+                $new_element{'title'} = undef;
+                $new_element{'type'} = undef;
             }
         }
-        if ( $new_element{'title'} or $new_element{'type'} eq 'Textarea' or $new_element{'type'} eq 'Text' ) {
+        if ( defined $new_element{'title'} or defined $new_element{'type'} and $new_element{'type'} eq 'Textarea' or defined $new_element{'type'} and $new_element{'type'} eq 'Text' ) {
             $helper_node = _make_element(
                                        $new_element{'element'},
                                        $new_element{'id'},
@@ -773,7 +827,7 @@ sub _create_children {
         }
         $new_id++;
         $all_fields = 0;
-    } while ( $new_element{'title'} or $new_element{'type'} eq 'Textarea' or $new_element{'type'} eq 'Text' );
+    } while ( defined $new_element{'title'} or defined $new_element{'type'} and $new_element{'type'} eq 'Textarea' or defined $new_element{'type'} and $new_element{'type'} eq 'Text' );
     #  XIMS::Debug( 6, "Making a Party, no time for children." );
 
     return $node;
@@ -1035,7 +1089,7 @@ sub _qnode {
 sub AUTOLOAD {
     my $self = shift;
     my (undef, $called_sub) = ($AUTOLOAD =~ /(.*)::(.*)/);
-    XIMS::Debug (6, "Questionnaire-Method $called_sub not implemented!");
+    XIMS::Debug (6, "Questionnaire-Method $called_sub not implemented!") unless $called_sub eq 'DESTROY';
     return 1;
 }
 
