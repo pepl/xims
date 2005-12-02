@@ -198,8 +198,9 @@ sub _set_children {
     # look if we should fetch children of another object
     if ( $ctxt->properties->content->getchildren->objectid() ) {
         $object = XIMS::Object->new( id => $ctxt->properties->content->getchildren->objectid(), User => $ctxt->session->user );
-        # set by event_move_browse...talking about assumptions...
-        if ( $ctxt->properties->application->style() eq "move_browse" ) {
+        # set by event_move_browse or event_contentbrowse...talking about assumptions...
+        my $style = $ctxt->properties->application->style();
+        if ( $style =~ "browse" ) {
             $doc_data->{context}->{object}->{target} = { object => $object };
             $tagname = 'targetchildren';
             # since we don't fetch the children of the context-object,
