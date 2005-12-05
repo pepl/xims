@@ -357,7 +357,9 @@ sub recurse_ancestor {
     if ( $object->document_id() != 1 ) {
         my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $object->User() );
         if ( defined $filter_objectroots ) {
-            if ( $parent->object_type->is_objectroot() ) {
+            my @object_types = $self->object_types();
+            my @or_ots = grep { $_->is_objectroot == 1 } @object_types;
+            if ( grep { $parent->object_type_id() == $_->id } @or_ots ) {
                 push( @ancestors, $parent );
             }
         }

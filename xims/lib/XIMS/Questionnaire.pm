@@ -8,10 +8,10 @@ use strict;
 use warnings;
 
 our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-our @ISA = ('XIMS::Document');
+our @ISA = ('XIMS::Object');
 our $AUTOLOAD;
 
-use XIMS::Document;
+use XIMS::Object;
 use XIMS::TAN_List;
 use XIMS::QuestionnaireResult;
 
@@ -46,6 +46,71 @@ sub new {
     return $q;
 }
 
+##
+#
+# SYNOPSIS
+#    my $body = $object->body();
+#    my $boolean = $object->body( $body [, %args] );
+#
+# PARAMETER
+#    $body                  (optional) :  Body string to save
+#
+# RETURNS
+#    $body    : Body string from object
+#    $boolean : True or False for storing back body to object
+#
+# DESCRIPTION
+#    Overrides XIMS::Object::body().
+#
+sub body {
+    XIMS::Debug( 5, "called");
+    my $self = shift;
+    my $body = shift;
+
+    return $self->SUPER::body() unless $body;
+
+    $self->SUPER::body( $body );
+    $self->{_reparseQ} = 1;
+
+    return 1;
+}
+
+##
+#
+# SYNOPSIS
+#    my $q_dom = $questionnaire->questionnaire_dom();
+#
+# PARAMETER
+#    none
+#
+# RETURNS
+#    $q_dom   : XML::LibXML instance of Questionnaire (stored in body)
+#
+# DESCRIPTION
+#    Returns the XML::LibXML instance of the Questionnaire (stored in body). Helper method to avoid redundant parsing of body.
+#
+sub questionnaire_dom {
+    XIMS::Debug( 5, "called");
+    my $self = shift;
+
+    if ( not exists $self->{_reparseQ} or $self->{_reparseQ} == 0 ) {
+        return $self->{_qdom};
+    }
+    else {
+        my $q_dom;
+        eval { $q_dom = $self->_parser->parse_string( XIMS::encode( $self->body() ) ); };
+        if ( $@ ) {
+            XIMS::Debug( 2, "Could not parse body" );
+            return undef;
+        }
+        else {
+            $self->{_qdom} = $q_dom->documentElement();
+            $self->{_reparseQ} = 0;
+            return $self->{_qdom};
+        }
+    }
+}
+
 
 ##
 #
@@ -67,9 +132,6 @@ sub new {
 sub move_up {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
-
-    #make $questionnaire the node holding all questions and answers
-    $questionnaire = $questionnaire->documentElement();
 
     my $node = $self->_qnode( $node_id, $questionnaire);
     my $parent_node = $node->parentNode();
@@ -101,9 +163,6 @@ sub move_down {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
 
-    #make $questionnaire the node holding all questions and answers
-    $questionnaire = $questionnaire->documentElement();
-
     my $node = $self->_qnode( $node_id, $questionnaire);
     my $parent_node = $node->parentNode();
     my $next_node = $node->nextSibling();
@@ -133,9 +192,6 @@ sub add_question {
     my ($self, $node_id, $questionnaire) = @_;
     my $new_id;
     my $new_node;
-
-    #make $questionnaire the node holding all questions and answers
-    $questionnaire = $questionnaire->documentElement();
 
     my $node = $self->_qnode( $node_id, $questionnaire);
 
@@ -182,9 +238,6 @@ sub edit_question{
     my ($self, $node_id, $questionnaire) = @_;
     my $node;
 
-    #make $questionnaire the node holding all questions and answers
-    $questionnaire = $questionnaire->documentElement();
-
     my $nodes = $questionnaire->find( "//question[\@id='".$node_id."']"  );
     XIMS::Debug ( 6, "Found ".$nodes->size()." Nodes" );
     if ( defined( $nodes ) && ( $nodes->size() == 1 ) ) {
@@ -220,9 +273,6 @@ sub delete_node {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
 
-    #make $questionnaire the node holding all questions and answers
-    $questionnaire = $questionnaire->documentElement();
-
     my $node = $self->_qnode( $node_id, $questionnaire);
     if ( $node != $questionnaire ) {
         $node = $node->parentNode->removeChild( $node );
@@ -252,9 +302,6 @@ sub copy_question {
     my ($self, $node_id, $questionnaire) = @_;
     my $new_id;
     my $new_node;
-
-    #make $questionnaire the node holding all questions and answers
-    $questionnaire = $questionnaire->documentElement();
 
     my $node = $self->_qnode( $node_id, $questionnaire);
 
@@ -291,9 +338,6 @@ sub add_answer {
     my ($self, $node_id, $questionnaire) = @_;
     my $new_id;
     my $new_node;
-
-    #make $questionnaire the node holding all questions and answers
-    $questionnaire = $questionnaire->documentElement();
 
     my $node = $self->_qnode( $node_id, $questionnaire);
 
@@ -334,11 +378,6 @@ sub delete_answer {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
 
-    # not the body should be taken as questionnaire node, but the
-    # form should be parsed into XML-Structure
-    #make $questionnaire the node holding all questions and answers
-    $questionnaire = $questionnaire->documentElement();
-
     my $node = $self->_qnode( $node_id, $questionnaire);
 
     $node = $node->parentNode->removeChild( $node );
@@ -371,8 +410,7 @@ sub get_value {
     my $self = shift;
     my $XPath = shift;
     XIMS::Debug( 5, "Called" );
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     # replace 'questionnaire' in XPath, because it is the actual node
     $XPath =~ s/questionnaire/\./;
     my $node = $questionnaire->find( $XPath )->get_node( 1 );
@@ -461,8 +499,7 @@ sub get_full_question_titles {
     my $self = shift;
     my $question_id = shift;
     XIMS::Debug( 5, "Called" );
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     my $answer_nodes = $questionnaire->find( '//answer' );
     my $full_question_title = "";
     my $full_id = "";
@@ -504,8 +541,7 @@ sub get_answer_ids {
     my $question_id = shift;
     my @answer_ids;
 
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
 
     my $question_xpath = '/questionnaire/question';
     $question_xpath .= '[@id=' . $question_id . ']' if defined $question_id;
@@ -533,8 +569,7 @@ sub get_question_title {
     my $self = shift;
     my $question_id = shift;
     XIMS::Debug( 5, "Called" );
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     my $question_title = $questionnaire->findvalue( '//question[@id="' . $question_id. '"]/title' );
     return $question_title;
 }
@@ -598,7 +633,7 @@ sub form_to_xml {
     $questionnaire = _create_children( $questionnaire, %params );
     $questionnaire_document->setDocumentElement( $questionnaire );
 
-    return $questionnaire_document;
+    return $questionnaire_document->documentElement();
 }
 
 ##
@@ -620,10 +655,9 @@ sub set_answer_data {
     XIMS::Debug( 5, "called");
     my ($self, %params) = @_;
 
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
+    my $questionnaire = $self->questionnaire_dom();
     my $question_id = $params{'q'};
     my $tan = $params{'tan'};
-    $questionnaire = $questionnaire->documentElement();
     if ( $question_id ) {
         $question_id = XIMS::QuestionnaireResult->get_last_answer($self->document_id, $tan) + 1;
         XIMS::Debug(6, "question_id: $question_id") if defined $question_id;
@@ -639,9 +673,7 @@ sub set_answer_error {
     XIMS::Debug( 5, "called");
     my ($self, $error_message, $q) = @_;
 
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    #  XIMS::Debug(6, $self->body() );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     $questionnaire->appendTextChild( 'error_message', $error_message );
     $self->body( XIMS::decode( $questionnaire->toString() ) );
 
@@ -667,8 +699,7 @@ sub tan_needed () {
     my $self = shift;
 
     my $result;
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     my $nodes = $questionnaire->find( "/questionnaire/tanlist" );
     if ( defined( $nodes ) && ( $nodes->size() >= 1 ) ) {
       $result = 1;
@@ -685,8 +716,7 @@ sub tan_ok() {
     my ($self, $tan) = @_;
 
     my $tan_ok = 0;
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     # get TAN-Lists from Questionnaire
     my @nodes = $questionnaire->findnodes( "/questionnaire/tanlist" );
     # look if TAN is in one of the TAN-Lists
@@ -884,7 +914,6 @@ sub add_tanlist {
     my $TAN_List = XIMS::TAN_List->new( path => $tanlist_path );
     if ( defined $TAN_List and $TAN_List->number() ) {
         XIMS::Debug( 4, "adding TAN-List: $TAN_List");
-        $questionnaire = $questionnaire->documentElement();
         my $new_node = XML::LibXML::Element->new( "tanlist" );
         $new_node->setAttribute( "id", $TAN_List->document_id() );
         $new_node->appendText( XIMS::encode( $TAN_List->title() ) ." (".$TAN_List->number().")"  );
@@ -917,7 +946,6 @@ sub remove_tanlist {
     my ($self, $tanlist_id, $questionnaire) = @_;
 
     my $node;
-    $questionnaire = $questionnaire->documentElement();
     #  XIMS::Debug ( 6, "Removing TAN-List with ID $tanlist_id" );
     my $nodes = $questionnaire->find( "//tanlist[\@id='".$tanlist_id."']"  );
     if ( defined( $nodes ) && ( $nodes->size() == 1 ) ) {
@@ -949,8 +977,7 @@ sub remove_tanlist {
 sub set_statistics {
     XIMS::Debug( 5, "called");
     my ($self) = @_;
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     # get statistic from database-table
     my $result_object = XIMS::QuestionnaireResult->new();
     my ($total, $valid, $invalid) = $result_object->get_result_count( $self->document_id(), _last_question($questionnaire) );
@@ -989,8 +1016,7 @@ sub set_results {
     my $answered = 1;
     $answered = 0 if defined $args{full_text_answers} and $args{full_text_answers} == 1;
 
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     my $result_object = XIMS::QuestionnaireResult->new();
     my $answer_nodes;
     my $answer_node;
@@ -1051,8 +1077,7 @@ sub has_answers {
     XIMS::Debug( 5, "called");
     my ($self) = @_;
 
-    my $questionnaire = $self->_parser->parse_string( XIMS::encode( $self->body() ) );
-    $questionnaire = $questionnaire->documentElement();
+    my $questionnaire = $self->questionnaire_dom();
     # get statistic from database-table
     my $result_object = XIMS::QuestionnaireResult->new();
     my ($total, $valid, $invalid) = $result_object->get_result_count( $self->document_id(), _last_question($questionnaire) );

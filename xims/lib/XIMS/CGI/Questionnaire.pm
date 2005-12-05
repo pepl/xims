@@ -126,7 +126,7 @@ sub event_edit {
 
     my $edit_id = $self->param('qid');
     my %params = $self->Vars;
-    my $parsed_object = $object->form_to_xml( %params );
+    my $q_dom = $object->form_to_xml( %params );
     # replace x between ids with ., except a tanlist is added
     # tanlists are added by path not id
     $edit_id =~ s/x/\./g unless $method eq 'add_tanlist';
@@ -135,7 +135,7 @@ sub event_edit {
     foreach ( $self->param() ) {
         $self->delete( $_ ) if /^[question|answer]/ ;
     }
-    $object->$method( $edit_id, $parsed_object ) unless $method eq '1';
+    $object->$method( $edit_id, $q_dom ) unless $method eq '1';
     $object->body( XIMS::decode( $object->body() ) ) if defined $object->body();
     $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
     $self->SUPER::event_edit( $ctxt );
@@ -159,8 +159,8 @@ sub event_store {
         #because params have to be UTF-8, init_store converts all
         #parameters to XIMS::DBENCODING
         my %params = $self->Vars;
-        my $parsed_object = $object->form_to_xml( %params );
-        $body = XIMS::decode( $parsed_object->documentElement()->toString() );
+        my $q_dom = $object->form_to_xml( %params );
+        $body = XIMS::decode( $q_dom->toString() );
     }
     else {
         $ctxt->object()->body( "<questionnaire><title>" . XIMS::decode( $self->param( 'questionnaire_title' ) ) . "</title><comment>" . XIMS::decode( $self->param( 'questionnaire_comment' ) ) . "</comment></questionnaire>" );
