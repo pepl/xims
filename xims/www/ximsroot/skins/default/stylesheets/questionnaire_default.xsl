@@ -80,7 +80,8 @@
                 </td>
                 <td>
                     <a class="text" type="submit" target="_blank" href="?download_results=html">HTML</a>,
-                    <a class="text" type="submit" target="_self" href="?download_results=excel">Excel</a>
+                    <a class="text" type="submit" target="_self" href="?download_results=excel">Excel</a>,
+                    <a class="text" type="submit" href="?download_results_pdf=1">PDF</a>
                 </td>
             </tr>
             <tr>
@@ -89,7 +90,8 @@
                 </td>
                 <td>
                     <a class="text" type="submit" target="_blank" href="?download_results=html;full_text_answers=1">HTML</a>,
-                    <a class="text" type="submit" target="_self" href="?download_results=excel;full_text_answers=1">Excel</a>
+                    <a class="text" type="submit" target="_self" href="?download_results=excel;full_text_answers=1">Excel</a>,
+                    <a class="text" type="submit" href="?download_results_pdf=1;full_text_answers=1">PDF</a>
                 </td>
             </tr>
             <tr>

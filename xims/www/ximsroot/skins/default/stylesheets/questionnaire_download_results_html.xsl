@@ -10,13 +10,17 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:template match="/document/context/object">
+    <xsl:variable name="title">Questionnaire '<xsl:value-of select="./title" />' Result Data</xsl:variable>
     <html>
+        <head>
+            <title><xsl:value-of select="$title"/></title>
+        </head>
         <body>
             <table border="1">
                 <xsl:for-each select="body/questionnaire/question">
-                <xsl:call-template name="top_question"/>
-            </xsl:for-each>
-        </table>
+                    <xsl:call-template name="top_question"/>
+                </xsl:for-each>
+            </table>
         </body>
     </html>
 </xsl:template>
@@ -28,7 +32,7 @@
         </td>
         <td colspan="2">
             <strong><xsl:value-of select="./title" /></strong>
-        </td>       
+        </td>
     </tr>
     <xsl:apply-templates select="child::question | child::answer"/>
 </xsl:template>
@@ -41,7 +45,7 @@
             </td>
             <td>
                 <xsl:value-of select="." />
-            </td>       
+            </td>
             <td>
                 <xsl:value-of select="@count" />
             </td>
