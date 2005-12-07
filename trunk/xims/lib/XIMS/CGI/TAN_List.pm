@@ -54,32 +54,36 @@ sub event_download {
 
     my $type = $self->param('download');
 
-    my $body;
-    my $filename = $ctxt->object->location;
-    $filename =~ s/\.[^\.]*$//;
-    my $mime_type = "text/". lc $type;
-    if ( $type =~ /Excel/i ) {
-        # export each tan in a single row, therefore \n
-        $body = join("\n",split(",",$ctxt->object->body()));
-        my $df = XIMS::DataFormat->new( name => 'XLS' );
-        $filename .= '.' . $df->suffix;
-        $mime_type = $df->mime_type;
-    }
-    elsif ( $type =~ /TXT/i ) {
-        # export each tan in a single row, therefore \n
-        $body = join("\r\n",split(",",$ctxt->object->body()));
-        $filename .= '.' . lc $type;
+    if ( $type eq 'HTML' ) {
+        $ctxt->properties->application->style( 'download_html' );
     }
     else {
-        $filename .= '.' . lc $type;
+        my $body;
+        my $filename = $ctxt->object->location;
+        $filename =~ s/\.[^\.]*$//;
+        my $mime_type = "text/". lc $type;
+        if ( $type =~ /Excel/i ) {
+            # export each tan in a single row, therefore \n
+            $body = join("\n",split(",",$ctxt->object->body()));
+            my $df = XIMS::DataFormat->new( name => 'XLS' );
+            $filename .= '.' . $df->suffix;
+            $mime_type = $df->mime_type;
+        }
+        elsif ( $type =~ /TXT/i ) {
+            # export each tan in a single row, therefore \n
+            $body = join("\r\n",split(",",$ctxt->object->body()));
+            $filename .= '.' . lc $type;
+        }
+        else {
+            $filename .= '.' . lc $type;
+        }
+
+        # older browsers use the suffix of the URL for content-type sniffing,
+        # so we have to supply a content-disposition header
+        print $self->header( -type => $mime_type, '-Content-disposition' => "attachment; filename=$filename" );
+        print $body;
+        $self->skipSerialization(1);
     }
-
-    # older browsers use the suffix of the URL for content-type sniffing,
-    # so we have to supply a content-disposition header
-    print $self->header( -type => $mime_type, '-Content-disposition' => "attachment; filename=$filename" );
-    print $body;
-    $self->skipSerialization(1);
-
     return 0;
 }
 

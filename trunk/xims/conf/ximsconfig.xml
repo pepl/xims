@@ -57,6 +57,11 @@
         <TidyOptions>-config /usr/local/xims/conf/ximstidy.conf -quiet -f /dev/null</TidyOptions>
 
         <!--
+        # Path to the htmldoc binary
+        -->
+        <htmldocPath>/usr/bin/htmldoc</htmldocPath>
+
+        <!--
         # After you installed one of HTMLArea, eWebeditPro,
         # Xinha, or TinyMCE WYSIWYG-editors, add 'htmlarea', 'wepro', 'xinha', or 'tinymce'
         # respectively as the default editor which users will get at their first time edit action.

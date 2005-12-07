@@ -5,18 +5,16 @@
 package XIMS::CGI::Questionnaire;
 
 use strict;
-use vars qw( $VERSION @ISA @MSG);
-use XIMS::CGI;
+use warnings;
+
+our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+
+use base qw( XIMS::CGI );
 use XIMS::QuestionnaireResult;
 use File::Spec;
 use File::Temp qw/ tempfile unlink0 /;
 use Archive::Zip qw/ :ERROR_CODES :CONSTANTS /;
 use Text::Iconv;
-
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-@ISA = qw( XIMS::CGI );
 
 # (de)register events here
 sub registerEvents {
@@ -36,6 +34,7 @@ sub registerEvents {
             download_results
             download_all_results
             download_raw_results
+            download_results_pdf
             )
         );
 }
@@ -233,7 +232,9 @@ sub event_download_results {
     my $questionnaire_id = $object->document_id();
 
     # get count of answers for each Question from the Questionnaire
-    $object->set_results( full_text_answers => $self->param('full_text_answers') );
+    my $fta = $self->param('full_text_answers');
+    $fta ||= 0;
+    $object->set_results( full_text_answers => $fta );
     if ( $self->param('download_results') eq 'html' ) {
         $ctxt->properties->application->style( 'download_results_html' );
     }
@@ -380,6 +381,66 @@ sub event_download_raw_results {
     return 0;
 }
 
+sub event_download_results_pdf {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+    my $questionnaire_id = $object->document_id();
+
+    # get count of answers for each Question from the Questionnaire
+    my $fta = $self->param('full_text_answers');
+    $fta ||= 0;
+    $object->set_results( full_text_answers => $fta );
+
+    $ctxt->properties->application->style( 'download_results_html' );
+
+    my $xml_doc = $self->getDOM( $ctxt );
+    my $stylesheet = $self->selectStylesheet( $ctxt );
+
+    my ( $xsl_dom, $style, $res );
+    my $parser = XML::LibXML->new();
+    my $xslt   = XML::LibXSLT->new();
+
+    $xsl_dom  = $parser->parse_file( $stylesheet );
+    $style = $xslt->parse_stylesheet( $xsl_dom );
+    $res = $style->transform( $xml_doc );
+
+    my $out_string =  $style->output_string( $res );
+    # htmldoc wants an 8-bit character set.
+    $out_string = Text::Iconv->new("UTF-8", "ISO-8859-1")->convert($out_string);
+
+    my ($tmpfh, $tmpfilename) = tempfile();
+    $tmpfh->print( $out_string );
+
+    my $htmldoc = XIMS::Config::htmldocPath();
+    unless ( -e $htmldoc and -x $htmldoc ) {
+        XIMS::Debug( 2, "could not find/execute $htmldoc");
+        $self->sendError( $ctxt, "Could not find or execute htmldoc." );
+        return 0;
+    }
+
+    $ENV{HTMLDOC_NOCGI} = 1;
+    my $pdf = `$htmldoc -t pdf13 --size a4 --no-jpeg --quiet --no-strict --webpage --no-toc $tmpfilename`;
+
+    if ( not unlink0($tmpfh, $tmpfilename) ) {
+        XIMS::Debug( 2, "Could not unlink temporary file." . $!);
+    }
+
+    if( $pdf =~ m/^%PDF-1.3/ ) {
+        my $resultfile = $object->title() . '.pdf';
+        print $self->header( -type => "application/pdf", -attachment => $resultfile, -disposition => "attachment; filename=$resultfile;" );
+        print $pdf;
+
+        $self->skipSerialization(1);
+        return 0;
+    }
+    else {
+        XIMS::Debug( 2, "failed to create pdf: $pdf");
+        $self->sendError( $ctxt, "Could not create PDF file!" );
+        return 0;
+    }
+}
 
 sub event_publish {
     XIMS::Debug( 5, "called" );

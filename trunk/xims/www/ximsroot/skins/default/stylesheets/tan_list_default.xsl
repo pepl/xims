@@ -37,6 +37,9 @@
     <xsl:value-of select="$i18n_qn/l/Download" />:
     <ul>
         <li>
+            <a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id};download=HTML">HTML</a>
+        </li>
+        <li>
             <a href="{$xims_box}{$goxims_content}{$absolute_path}?id={@id};target=_blank;download=TXT">Text</a>
         </li>
         <li>
