@@ -7,10 +7,8 @@ package XIMS::SAX::Filter::ContentObjectPropertyResolver;
 use warnings;
 use strict;
 
-use XML::SAX::Base;
+use base qw(XML::SAX::Base);
 use XIMS::Object;
-
-@XIMS::SAX::Filter::ContentObjectPropertyResolver::ISA = qw(XML::SAX::Base);
 
 ##
 #
@@ -73,12 +71,11 @@ sub end_element {
             # add a list of base properties
             push( @{$self->{Properties}},
                      qw( id document_id parent_id object_type_id
-                         data_format_id symname_to_doc_id location title )
+                         data_format_id symname_to_doc_id location location_path title )
                 ) unless exists $self->{PushedDefaultProperties};
             $self->{PushedDefaultProperties}++;
 
             $object = XIMS::Object->new( User => $self->{User}, $id => $self->{document_id}, properties => $self->{Properties} );
-            $object->{location_path} = $object->location_path();
             if ( defined $object->{location_path} and not exists $self->{NonExport} ) {
                 if ( XIMS::RESOLVERELTOSITEROOTS() ) {
                     # snip off the site portion of the path ('/site/somepath')
@@ -92,7 +89,7 @@ sub end_element {
             $self->{$cachekey} = $object;
         }
 
-        foreach my $property (@{$self->{Properties}}, 'location_path') {
+        foreach my $property (@{$self->{Properties}}) {
             $self->SUPER::start_element( {Name => $property, LocalName => $property, Prefix => "", NamespaceURI => undef, Attributes => {}} );
             $self->SUPER::characters( {Data => $object->{$property} } );
             $self->SUPER::end_element();

@@ -70,8 +70,8 @@ ok ( $folderclone, 'cloned testfolder1' );
 
 my @folder_descs = $folder->descendants();
 my @clone_descs = $folderclone->descendants();
-map { $_->id(''); $_->document_id(''); $_->parent_id(''); $_->last_modification_timestamp(''); $_->creation_timestamp('');} @folder_descs;
-map { $_->id(''); $_->document_id(''); $_->parent_id(''); $_->last_modification_timestamp(''); $_->creation_timestamp('');} @clone_descs;
+map { $_->id(''); $_->{location_path}='';  $_->document_id(''); $_->parent_id(''); $_->last_modification_timestamp(''); $_->creation_timestamp('');} @folder_descs;
+map { $_->id(''); $_->{location_path}=''; $_->document_id(''); $_->parent_id(''); $_->last_modification_timestamp(''); $_->creation_timestamp('');} @clone_descs;
 is_deeply(\@folder_descs, \@clone_descs, 'folder and clone are the same');
 
 my $index = XIMS::Document->new(

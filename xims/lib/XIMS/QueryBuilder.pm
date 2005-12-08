@@ -17,11 +17,12 @@ our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r,
 #                                   [ fieldstolookin => [qw(title abstract body)] ] } );
 #
 # PARAMETERS
-#    search                    : The search string
-#    allowed        (optional  : String of allowed chars that are filtered; chars like '/','(','-',... have to be escaped
-#                                because this string is compiled with qr// and used in a /[^$allowed ]/ regex construct
-#    fieldstolookin (optional) : Array-ref of SQL-field names to be explicitly looked in (e.g. field:value) resulting
-#                                in a SQL-condition similar to 'AND field LIKE '%value%'
+#    search                     : The search string
+#    allowed        (optional   : String of allowed chars that are filtered; chars like '/','(','-',... have to be escaped
+#                                 because this string is compiled with qr// and used in a /[^$allowed ]/ regex construct
+#    fieldstolookin (optional)  : Array-ref of SQL-field names to be explicitly looked in (e.g. field:value) resulting
+#                                 in a SQL-condition similar to 'AND field LIKE '%value%'
+#    filterpublished (optional) : If true, filters published objects
 #
 #
 # RETURNS
@@ -45,7 +46,7 @@ sub new {
         else {
             $search = _search_arrayref( _clean_search_string( $args->{search} ) );
         }
-        $self = bless { search => $search, fieldstolookin => $args->{fieldstolookin} }, $class;
+        $self = bless { search => $search, fieldstolookin => $args->{fieldstolookin}, filterpublished => $args->{filterpublished} }, $class;
         $self->_build() ? return $self : return undef;
     }
 
@@ -55,6 +56,7 @@ sub new {
 sub criteria { $_[0]->{criteria} }
 sub properties { $_[0]->{properties} }
 sub order { $_[0]->{order} }
+sub filterpublished { $_[0]->{filterpublished} }
 
 ##
 #

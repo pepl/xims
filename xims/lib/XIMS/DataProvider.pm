@@ -5,14 +5,17 @@
 package XIMS::DataProvider;
 
 use strict;
-use XIMS;
-#use Data::Dumper;
-use XIMS::Names;
+use warnings;
 
+our $AUTOLOAD;
+our $cached_URIs;
+
+use XIMS;
+use XIMS::Names;
 # following uses are for the classed we bless into
 use XIMS::ObjectType;
 use XIMS::Iterator::Object;
-use vars qw/$AUTOLOAD $cached_URIs/;
+
 
 # The idea here is to create a generic bridge between the data store and the
 # top-level XIMS Object classes. We try to lighten the Object classes that rely
@@ -208,6 +211,8 @@ sub createObject {
     @doc_properties{@doc_keys} = delete @{$properties}{@doc_keys};
 
     $doc_properties{'document.id'} = 1;
+    delete $doc_properties{'document.location_path'}; # gets set by the corresponding trigger
+
     my $doc_id = $self->{Driver}->create( properties => \%doc_properties, conditions => {} );
     $properties->{'content.document_id'} = $doc_id;
 
@@ -291,6 +296,8 @@ sub updateObject {
 
     my @ret;
     my ( $properties, $conditions ) = $self->request_factory( 'Object', 'update', @_ );
+
+    delete $properties->{'document.location_path'}; # gets set by the corresponding trigger
 
     my @doc_prop_keys = grep { (split /\./, $_)[0] eq 'document' } keys %{$properties};
     @doc_properties{@doc_prop_keys} = delete @{$properties}{@doc_prop_keys};

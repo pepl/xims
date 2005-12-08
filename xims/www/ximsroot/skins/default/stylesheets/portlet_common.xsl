@@ -127,7 +127,7 @@
         </tr>
         <tr>
             <td>
-                <xsl:value-of select="$i18n/l/Body"/>
+                Body
             </td>
             <td valign="top">
                 <input type="checkbox" name="col_body"><xsl:if test="body/content/column[@name = 'body']"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>

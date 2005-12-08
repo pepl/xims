@@ -7,7 +7,7 @@ use XIMS::Object;
 #use Data::Dumper;
 
 BEGIN {
-    plan tests => 26;
+    plan tests => 27;
 }
 
 # fetch the 'xims' container
@@ -87,11 +87,23 @@ ok( $child3->location_path() eq '/xims/child1/child2/child3_renamed' );
 # rename with descendants and recheck location_path
 $child1->location( 'child1_renamed' );
 ok( $child1->update() );
+
+# refetch is needed, to reload current location_paths.
+# we want in memory caching of location_paths in the object instances
+# however we have no way to mark the cached location_paths as invalid if
+# they have been changed by moving of the parent object... :-|
+$child3 = XIMS::Object->new( User => $user, id => $child3_id );
+ok( defined $child3 );
 ok( $child3->location_path() eq '/xims/child1_renamed/child2/child3_renamed' );
 
-# move with descendants and recheck location_path
+# move with descendants, refetch children and recheck location_path
 $child2->parent_id( $o->document_id() );
 ok( $child2->update() );
+
+$child1 = XIMS::Object->new( User => $user, id => $child1_id );
+$child2 = XIMS::Object->new( User => $user, id => $child2_id );
+$child3 = XIMS::Object->new( User => $user, id => $child3_id );
+ok( defined $child1 and defined $child2 and defined $child3 );
 ok( $child1->location_path() eq '/xims/child1_renamed' );
 ok( $child2->location_path() eq '/xims/child2' );
 ok( $child3->location_path() eq '/xims/child2/child3_renamed' );

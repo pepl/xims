@@ -157,6 +157,10 @@
 <Next_page>Nächste Seite</Next_page>
 <Page>Seite</Page>
 <Last_modified>Zuletzt geändert</Last_modified>
+<No_results>Keine Treffer</No_results>
+<Results>Ergebnisse</Results>
+<of>von</of>
+<for>nach</for>
 <!-- End common_search_result -->
 <!-- Begin common_error -->
 <Error>Fehler</Error>

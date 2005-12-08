@@ -157,6 +157,10 @@
 <Next_page>Next page</Next_page>
 <Page>Page</Page>
 <Last_modified>Last modified</Last_modified>
+<No_results>No results</No_results>
+<Results>Results</Results>
+<of>of</of>
+<for>for</for>
 <!-- End common_search_result -->
 <!-- Begin common_error -->
 <Error>Error</Error>

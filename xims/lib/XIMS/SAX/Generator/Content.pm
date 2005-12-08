@@ -5,8 +5,9 @@
 package XIMS::SAX::Generator::Content;
 
 use strict;
-use vars qw(@ISA);
-@ISA = qw(XIMS::SAX::Generator XML::Generator::PerlData);
+use warnings;
+
+use base qw(XIMS::SAX::Generator XML::Generator::PerlData);
 
 #use Data::Dumper;
 use XIMS::SAX::Generator;

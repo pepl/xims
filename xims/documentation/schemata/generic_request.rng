@@ -84,7 +84,7 @@
                         <ref name="content.object"/>
                     </element>
                 </optional>
-                <optional><!-- e.g. during publish_prompt  -->
+                <optional>
                     <element name="location_path">
                         <text/>
                     </element>

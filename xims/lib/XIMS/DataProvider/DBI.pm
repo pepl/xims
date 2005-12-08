@@ -5,15 +5,22 @@
 package XIMS::DataProvider::DBI;
 
 use strict;
+use warnings;
+
+our %Tables;
+our %Names;
+our %PropertyAttributes;
+our %PropertyRelations;
+our $VERSION ;
+
+$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
+
 use XIMS;
 use XIMS::Config::DataProvider::DBI;
 use XIMS::Names;
 use DBIx::SQLEngine 0.017;
 use DBIx::SQLEngine::Criteria::And;
 use XIMS::DataProvider;
-use vars qw( %Tables %Names %PropertyAttributes %PropertyRelations $VERSION );
-#use Data::Dumper;
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
 %PropertyAttributes = XIMS::Config::DataProvider::DBI::PropertyAttributes();
 %PropertyRelations = XIMS::Config::DataProvider::DBI::PropertyRelations();
@@ -493,8 +500,11 @@ sub find_object_id {
     }
 
     my $start_here = delete $args{start_here};
-    if ( defined $start_here and ref $start_here and $start_here->id() ) {
-        $param{criteria} .= " AND location_path LIKE '". $start_here->location_path() . "%'";
+    if ( defined $start_here ) {
+        if ( ref $start_here and $start_here->isa('XIMS::Object') and defined $start_here->id() ) {
+            $start_here = $start_here->location_path();
+        }
+        $param{criteria} .= " AND location_path LIKE '". $start_here . "%'";
     }
 
     if ( scalar keys %args > 0 ) {
