@@ -32,7 +32,7 @@
                 <xsl:with-param name="nostatus">true</xsl:with-param>
             </xsl:call-template>
 
-            <table style="margin-left:5px; margin-right:5px" border="0" cellpadding="0" cellspacing="0">
+            <table id="searchresulttable" border="0" cellpadding="0" cellspacing="0">
                 <xsl:call-template name="tableheader"/>
                 <xsl:apply-templates select="/document/objectlist/object">
                     <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute)" order="descending"/>
@@ -130,7 +130,7 @@
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
 
-    <tr height="20">
+    <tr class="searchresultrow" height="20">
 <!-- status -->
         <td width="86">
             <img src="{$ximsroot}images/spacer_white.gif" width="6" height="20" border="0" alt="" />
@@ -219,11 +219,11 @@
         </td>
 -->
 <!-- dataformat icon -->
-        <td width="34">
+        <td width="34" valign="top">
             <xsl:call-template name="cttobject.dataformat"/>
         </td>
-<!-- title -->
-        <td colspan="2" bgcolor="#eeeeee" background="{$skimages}containerlist_bg.gif">
+<!-- title, location_path, abstract -->
+        <td class="title" colspan="2" valign="top">
             <span>
                 <xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:value-of select="$i18n/l/location"/>: <xsl:value-of
         select="location"/>, <xsl:value-of select="$i18n/l/created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$i18n/l/owned_by"/> <xsl:call-template name="ownerfullname"/></xsl:attribute>
@@ -248,8 +248,12 @@
                 <xsl:value-of select="title" />
             </a>
             </span>
-            <br/>
-            <xsl:value-of select="abstract"/>
+            <div class="location_path">
+                <xsl:value-of select="location_path"/>
+            </div>
+            <div class="abstract">
+                <xsl:value-of select="abstract"/>
+            </div>
         </td>
 <!-- last modification -->
         <td>

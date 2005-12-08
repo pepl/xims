@@ -8,9 +8,18 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use vars qw($VERSION @ISA @Fields @Default_Properties @Reference_Id_Names @Reference_DocId_Names );
+our $VERSION;
+our @Fields;
+our @Default_Properties;
+our @Reference_Id_Names;
+our @Reference_DocId_Names;
+
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
+@Reference_DocId_Names = qw( symname_to_doc_id );
+@Reference_Id_Names = qw( style_id script_id css_id image_id schema_id);
+
+use base qw( XIMS::AbstractClass );
 use XIMS;
 use XIMS::ObjectType;
 use XIMS::DataFormat;
@@ -20,9 +29,6 @@ use XIMS::Importer::Object;
 use XIMS::Iterator::Object;
 use XIMS::Text;
 use Text::Diff;
-use XIMS::AbstractClass;
-@ISA = qw( XIMS::AbstractClass );
-
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 
@@ -35,9 +41,6 @@ sub resource_type {
 sub fields {
     return @Fields;
 }
-
-@Reference_DocId_Names = qw( symname_to_doc_id );
-@Reference_Id_Names = qw( style_id script_id css_id image_id schema_id);
 
 BEGIN {
     # the binfile field is no longer available via the method interface, but is set
@@ -649,11 +652,11 @@ sub descendant_count_granted {
 #
 # PARAMETER
 #    refactor!
-#    $args{ criteria }  :
-#    $args{ limit }     :
-#    $args{ offset }    :
-#    $args{ order }     :
-#    $args{ start_from } :
+#    $args{ criteria }   :
+#    $args{ limit }      :
+#    $args{ offset }     :
+#    $args{ order }      :
+#    $args{ start_here } : location_path string or XIMS Object instance from where to start searching from
 #
 # RETURNS
 #    @objects     : Array of XIMS::Objects (list context)
@@ -713,11 +716,11 @@ sub find_objects_count {
 #
 # PARAMETER
 #    refactor!
-#    $args{ criteria }  :
-#    $args{ limit }     :
-#    $args{ offset }    :
-#    $args{ order }     :
-#    $args{ start_from } :
+#    $args{ criteria }   :
+#    $args{ limit }      :
+#    $args{ offset }     :
+#    $args{ order }      :
+#    $args{ start_here } : location_path string or XIMS Object instance from where to start searching from
 #
 # RETURNS
 #    @objects     : Array of XIMS::Objects (list context)
@@ -1118,10 +1121,10 @@ sub __decide_department_id {
     my %args = @_;
     my $object= XIMS::Object->new( document_id => $args{document_id} );
     if ( $object->object_type->is_objectroot() ) {
-            return $object->document_id();
+        return $object->document_id();
     }
     else {
-            return $object->department_id();
+        return $object->department_id();
     }
 }
 
@@ -1261,7 +1264,13 @@ sub update {
         $self->last_modification_timestamp( $self->data_provider->db_now() );
     }
 
-    return $self->data_provider->updateObject( $self->data() );
+    # Update in db
+    my @rowcount = $self->data_provider->updateObject( $self->data() );
+
+    # Invalidate cached location_path
+    $self->{location_path} = undef;
+
+    return @rowcount;
 }
 
 ##
@@ -2382,11 +2391,29 @@ sub locker {
 #    $location_path : Location path of object
 #
 # DESCRIPTION
-#    Returns location path of object. The location path is the virtual path of the object in the hierarchy without '/root'. An object with the location 'index.html' and the parent 'foo', which itself has the default 'xims' SiteRoot as parent, will have the location path '/xims/foo/index.html'.
+#    Returns location path of object. The location path is the virtual path of the object
+#    in the hierarchy without '/root'. An object with the location 'index.html' and the parent 'foo',
+#    which itself has the default 'xims' SiteRoot as parent, will have the location path '/xims/foo/index.html'.
+#
+#    Note that location_paths are set by a database trigger and are read-only for the application!
+#    Note that location_paths are stored in memory after object initialization and will not be updated
+#    if the location_path of a ancestor object has changed (e.g. by changing the location or parent_id of an ancestor
+#    For that cases, the object has to be reinitialized to get the correct value for the location_path!
 #
 sub location_path {
     my $self = shift;
-    return $self->data_provider->location_path( $self );
+    my $id = $self->{id};
+    if ( defined $id and $id != 1 ) { # root has no location_path
+        if ( defined $self->{location_path} ) {
+            return $self->{location_path};
+        }
+        else {
+            # If an object has just been created, we have to fetch the location_path from the dp
+            $self->{location_path} = $self->data_provider->location_path( id => $id );
+            return $self->{location_path};
+        }
+    }
+    return '';
 }
 
 ##
@@ -2405,7 +2432,13 @@ sub location_path {
 #
 sub location_path_relative {
     my $self = shift;
-    return $self->data_provider->location_path_relative( $self );
+    my $id = $self->{id};
+    if ( defined $id and $id != 1 ) { # root has no location_path
+        my $relative_path = $self->location_path();
+        $relative_path =~ s/^\/[^\/]+//;
+        return $relative_path;
+    }
+    return '';
 }
 
 ##

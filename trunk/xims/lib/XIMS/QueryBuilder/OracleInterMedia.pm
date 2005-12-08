@@ -156,6 +156,7 @@ sub _build {
     }
     elsif ( $foundmacro > 0 or scalar @{$fieldstolookin} > 0 ) {
         $self->{criteria} = '(' . join(' ', @{$search}) . ')';
+        $self->{criteria} .= ' AND ci_content.published = 1' if $self->{filterpublished};
         return 1;
     }
     else {

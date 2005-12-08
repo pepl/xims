@@ -13,4 +13,26 @@
 	color: #A0A0A0;
 }
 
+#searchresulttable {
+	margin-left:5px;
+	margin-right:5px;
+}
 
+#searchresulttable .searchresultrow td.title {
+	background: #eeeeee;
+	border-bottom: 1px solid #808080;
+	padding-top: 2px;
+	padding-bottom: 10px;
+}
+
+#searchresulttable .location_path {
+	font-size: 9pt;
+	color: #000000;
+	padding-left: 10px;
+}
+
+#searchresulttable .abstract {
+	font-size: 9pt;
+	color: #808080;
+	padding-left: 10px;
+}

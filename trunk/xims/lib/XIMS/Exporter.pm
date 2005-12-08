@@ -1411,6 +1411,10 @@ sub generate_dom {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
+    #
+    $self->{Object}->department_id( $self->{Object}->document_id() ) if $self->{Object}->object_type->is_objectroot();
+
+
     my $dom = $self->SUPER::generate_dom( @_ );
 
     return unless $dom;

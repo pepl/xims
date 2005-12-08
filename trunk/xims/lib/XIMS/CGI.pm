@@ -1298,7 +1298,7 @@ sub event_move {
             return 0;
         }
 
-        
+
         my @children = $target->children( location => $object->location(), marked_deleted => undef );
         if ( scalar @children > 0 and defined $children[0] ) {
             XIMS::Debug( 2, "object with same location already exists in the target container" );
@@ -1399,9 +1399,6 @@ sub event_publish_prompt {
         my @non_container_ot = $ctxt->data_provider->object_types( is_fs_container => '0' );
         my @ids = map { $_->id() } @non_container_ot;
         @objects = $ctxt->object->children_granted( object_type_id => \@ids, marked_deleted => undef ); # get non-container objects only
-        for ( @objects ) {
-            $_->{location_path} = $_->location_path();
-        }
     }
 
     if ( scalar @objects ) {
@@ -1565,6 +1562,9 @@ sub event_htmltidy {
 
     # if we got no body param, use $object->body
     my $string = defined $body ? $body : $ctxt->object->body();
+
+    # set the utf-8 bit unless the database is not UTF-8
+    $string = Encode::decode_utf8($string) unless XIMS::DBENCODING();
 
     my $tidiedstring = $ctxt->object->balance_string( $string );
 
@@ -2109,6 +2109,8 @@ sub event_search {
         return XIMS::CGI::defaultbookmark::redirToDefault( $self, $ctxt );
     }
 
+    my $filterpublished = $self->param('p');
+
     my $user = $ctxt->session->user();
     my $search = XIMS::decode($self->param('s'));
     my $offset = $self->param('page');
@@ -2160,7 +2162,7 @@ sub event_search {
 
         use encoding "latin-1";
         my $allowed = XIMS::decode( q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} );
-        my $qb = $qbdriver->new( { search => $search, allowed => $allowed, fieldstolookin => [qw(title abstract keywords body)] } );
+        my $qb = $qbdriver->new( { search => $search, allowed => $allowed, filterpublished => $filterpublished, fieldstolookin => [qw(title abstract keywords body)] } );
 
         #'# just for emacs' font-lock...
         if ( defined $qb ) {
@@ -2170,17 +2172,34 @@ sub event_search {
                         offset => $offset,
                         order => $qb->order,
                         );
-            $param{start_here} = $ctxt->object() if $self->param('start_here');
 
-            my @objects = $ctxt->object->find_objects_granted( %param );
+            my $method;
+            my $start_here;
+            if ( $filterpublished ) {
+                my $searchpath = $self->param('sp');
+                if ( defined $searchpath and length $searchpath > 2 ) {
+                    $start_here = $searchpath;
+                }
+                else {
+                    $start_here = $ctxt->object();
+                }
+                $method = 'find_objects';
+            }
+            else {
+                $start_here = $ctxt->object() if $self->param('start_here');
+                $method = 'find_objects_granted';
+            }
+            $param{start_here} = $start_here;
+            my @objects = $ctxt->object->$method( %param );
 
             if ( not @objects ) {
                  $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
                 %param = ( criteria => $qb->criteria . " AND title <> '.diff_to_second_last'" );
-                $param{start_here} = $ctxt->object() if $self->param('start_here');
-                my $count = $ctxt->object->find_objects_granted_count( %param );
+                $param{start_here} = $start_here;
+                $method .= "_count";
+                my $count = $ctxt->object->$method( %param );
                 my $message = "Query returned $count objects.";
                 if ( $count ) {
                     $message .= " Displaying objects " . ($offset+1);
@@ -2203,19 +2222,20 @@ sub event_search {
 
             $ctxt->objectlist( \@objects );
             $ctxt->properties->content->getformatsandtypes( 1 ); # to resolve the result
-            $ctxt->properties->application->styleprefix( 'common_search' );
-            $ctxt->properties->application->style( 'result' );
         }
         else {
             XIMS::Debug( 3, "please specify a valid query" );
             $ctxt->session->error_msg( "Please specify a valid query!" );
         }
-
     }
     else {
         XIMS::Debug( 3, "catched improper query length" );
         $ctxt->session->error_msg( "Please keep your queries between 2 and 30 characters!" );
     }
+
+    $ctxt->properties->application->styleprefix( 'common_search' );
+    $ctxt->properties->application->style( 'result' );
+
     return 0;
 }
 

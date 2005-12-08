@@ -283,3 +283,49 @@ a:hover {
     color: #000000;
 }
 
+#searchform {
+}
+
+#searchform input {
+    font-face: helvetica;
+    font-size: 10pt;
+}
+
+#searchform .inputtext {
+    background: #eeeeee;
+}
+
+#searchform .inputsubmit:hover {
+    background: #AAD372;
+    border: 1px dotted black;
+}
+
+#searchresults {
+}
+
+#searchresults .searchresultitem {
+    border-bottom: 1px solid #808080;
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+#searchresults .title {
+    padding-left: 4px;
+}
+
+#searchresults .location_path, .meta {
+    line-height: 12px;
+    margin: 0px;
+    font-size: 8pt;
+    color: #000000;
+    padding-left: 40px;
+}
+
+#searchresults .abstract {
+    font-size: 9pt;
+    color: #808080;
+    padding-left: 40px;
+}
+
+
+
