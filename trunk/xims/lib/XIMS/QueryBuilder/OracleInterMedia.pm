@@ -147,6 +147,8 @@ sub _build {
                                                " OR ( ( " . join( ' ', @IMsearch ) . " ) within body )" .
                                                " OR ( "   . join( ' ', @IMsearch ) . " ) )\', 1 ) > 0 )";
 
+        $self->{criteria} .= ' AND ci_content.published = 1' if $self->{filterpublished};
+
         $self->{properties} = [ 'document_id', 'id', 'location', 'title', 'object_type_id', 'data_format_id', 'attributes',
                              'abstract', 'last_modification_timestamp', 'creation_timestamp', 'last_publication_timestamp', 'language_id', 'published',
                              'marked_new', 'locked_by_id', 'locked_time', 'lob_length', 'score(1) s' ];

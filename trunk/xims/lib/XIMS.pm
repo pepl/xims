@@ -389,6 +389,50 @@ sub escapewildcard {
 ##
 #
 # SYNOPSIS
+#    my $utf8_string = XIMS::utf8_sanitize( $string )
+#
+# PARAMETER
+#    $string: string
+#
+# RETURNS
+#    $utf8_string: UTF-8 encoded string
+#
+# DESCRIPTION
+#    Tests, whether input string is utf-8 or iso-8859-1 encoded and will utf-8 encode in case
+#
+sub utf8_sanitize {
+    my $string = shift;
+    if ( defined XIMS::is_notutf8( $string ) ) {
+        return Encode::decode_utf8(Encode::encode_utf8($string));
+    }
+    else {
+        return $string;
+    }
+}
+
+##
+#
+# SYNOPSIS
+#    my $boolean = XIMS::is_notutf8( $string )
+#
+# PARAMETER
+#    $string: string
+#
+# RETURNS
+#    $boolean: True if string is not utf-8 and false if it is utf-8 encoded
+#
+# DESCRIPTION
+#    Tests whether a string is utf-8 encoded or not.
+#
+sub is_notutf8 {
+    eval { Encode::decode_utf8(shift,1); };
+    return $@ ? 1 : undef;
+}
+
+
+##
+#
+# SYNOPSIS
 #    XIMS::is_known_proxy( $remote_host )
 #
 # PARAMETER

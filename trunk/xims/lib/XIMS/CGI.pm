@@ -2110,9 +2110,17 @@ sub event_search {
     }
 
     my $filterpublished = $self->param('p');
-
     my $user = $ctxt->session->user();
-    my $search = XIMS::decode($self->param('s'));
+
+    # event_search may get the search string latin1-encoded if used by
+    # the public-search interface (?search=1;s=searchstring;p=1)
+    # Check for that eventuality here and encode to utf-8 in case.
+    my $search = XIMS::utf8_sanitize($self->param('s'));
+    if ( defined $search ) {
+        $self->param( 's', $search ); # update CGI param, so that stylesheets get the right one
+    }
+    $search ||= XIMS::decode($self->param('s')); # fallback
+
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
     my $rowlimit = XIMS::SEARCHRESULTROWLIMIT();
