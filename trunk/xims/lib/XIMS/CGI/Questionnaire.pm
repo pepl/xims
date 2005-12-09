@@ -15,6 +15,7 @@ use File::Spec;
 use File::Temp qw/ tempfile unlink0 /;
 use Archive::Zip qw/ :ERROR_CODES :CONSTANTS /;
 use Text::Iconv;
+use XML::LibXSLT;
 
 # (de)register events here
 sub registerEvents {
