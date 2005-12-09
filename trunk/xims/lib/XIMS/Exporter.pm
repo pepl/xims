@@ -646,6 +646,7 @@ sub test_ancestors {
 #      are not published yet, they will be published.
 #    - Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
 #      of the object or its ancestors
+#    - Republishes Documents if current object is a DocumentLink
 #
 sub update_related {
     XIMS::Debug( 5, "called" );
@@ -659,6 +660,15 @@ sub update_related {
     my $image      = $object->image( explicit => 1 );
 
     my @referenced_by = $object->referenced_by_granted( User => $self->{User}, include_ancestors => 1, published => 1 );
+
+    # Check for a DocumentLink and republish the corresponding Document (Parent)
+    if ( $object->object_type->name() eq 'URLLink' ) {
+        my $parent_mime_type = $object->parent->data_format->mime_type();
+        if ( $parent_mime_type ne 'application/x-container' ) {
+            push( @referenced_by, $object->parent() );
+        }
+    }
+
     foreach my $obj ( @referenced_by, $image, $css, $stylesheet ) {
         next unless defined $obj;
         my $base = XIMS::PUBROOT() . $obj->location_path();
@@ -730,6 +740,9 @@ sub update_parent_autoindex {
 
     my $object = $self->{Object};
     my $parent = $object->parent();
+
+    # check if we got a container object
+    return undef unless $parent->object_type->is_fs_container();
 
     my $autoindex = $parent->attribute_by_key( 'autoindex' );
     if ( not defined $autoindex or $autoindex == 1 ) {

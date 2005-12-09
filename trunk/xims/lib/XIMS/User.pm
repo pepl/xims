@@ -82,10 +82,10 @@ sub object_privileges {
     my $object = shift;
     my $explicit = shift;
     my $mask = $self->object_privmask( $object, $explicit );
-    return undef unless $mask;
+    return () unless $mask;
     my $privs_hash = XIMS::Helpers::privmask_to_hash( $mask );
     return %{$privs_hash} if ref( $privs_hash ) eq 'HASH' and keys( %{$privs_hash} ) > 0;
-    return undef;
+    return ();
 }
 
 #sub grant_object_privilege {
@@ -102,10 +102,10 @@ sub system_privileges {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $mask = $self->system_privs_mask();
-    return undef unless $mask;
+    return () unless $mask;
     my $privs_hash = XIMS::Helpers::system_privmask_to_hash( $mask );
     return %{$privs_hash} if ref( $privs_hash ) eq 'HASH' and keys( %{$privs_hash} ) > 0;
-    return undef;
+    return ();
 }
 
 sub default_bookmark {
