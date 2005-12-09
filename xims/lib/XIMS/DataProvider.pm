@@ -361,18 +361,20 @@ sub recurse_ancestor {
     my $filter_objectroots = shift;
     my @ancestors = @_;
     #warn "testing id " . $object->document_id() . " (title: ". $object->title() . ") against " . $object->parent_id() . "\n";
-    if ( $object->document_id() != 1 ) {
-        my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $object->User() );
-        if ( defined $filter_objectroots ) {
-            my @object_types = $self->object_types();
-            my @or_ots = grep { $_->is_objectroot == 1 } @object_types;
-            if ( grep { $parent->object_type_id() == $_->id } @or_ots ) {
-                push( @ancestors, $parent );
-            }
-        }
-        else {
+
+    my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $object->User() );
+    if ( defined $filter_objectroots ) {
+        my @object_types = $self->object_types();
+        my @or_ots = grep { $_->is_objectroot == 1 } @object_types;
+        if ( grep { $parent->object_type_id() == $_->id } @or_ots ) {
             push( @ancestors, $parent );
         }
+    }
+    else {
+        push( @ancestors, $parent );
+    }
+
+    if ( $parent->document_id() != 1 ) {
         $self->recurse_ancestor( $parent, $filter_objectroots, @ancestors );
     }
     else {
