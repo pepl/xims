@@ -224,7 +224,7 @@ sub add_portlet {
         }
     }
     else {
-        XIMS::Debug( "Portlet not found for $target!");
+        XIMS::Debug( 3, "Portlet not found for $target!");
         return undef;
     }
 
