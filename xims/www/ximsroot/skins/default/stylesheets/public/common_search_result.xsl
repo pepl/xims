@@ -128,6 +128,7 @@
                     <xsl:text>&#160;</xsl:text>
                     <input class="inputsubmit" type="submit" name="search" title="Go" value="Go" />
                     <input type="hidden" name="p" value="1"/>
+		    <input type="hidden" name="sp" value="{$sp}"/>
                     <!--<xsl:if test="$searchin != ''"> (<xsl:value-of select="concat($i18n/l/in, $searchin)"/>)</xsl:if>-->
                 </form>
             </td>
@@ -220,3 +221,4 @@
 </xsl:template>
 
 </xsl:stylesheet>
+
