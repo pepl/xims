@@ -80,6 +80,7 @@ sub property_list {
     return () unless $reference_type_id;
 
     my @property_data = $self->data_provider->getRefLibReferencePropertyMap( reference_type_id => $reference_type_id, properties => [ qw( property_id ) ] );
+    return () unless scalar(@property_data) > 0;
     my @property_ids = map { $_->{'reflibreferencepropertymap.property_id'} } @property_data;
     my @data = $self->data_provider->getRefLibReferenceProperty( id => \@property_ids );
     my @out = map { XIMS::RefLibReferenceProperty->new->data( %{$_} ) } @data;
