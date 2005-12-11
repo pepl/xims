@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+# Copyright (c) 2002-2005 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+-->
+<xsl:stylesheet version="1.0"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:str="http://exslt.org/strings"
+        extension-element-prefixes="str">
+
+<xsl:import href="common_jscalendar_scripts.xsl"/>
+
+<xsl:variable name="i18n_simpledb" select="document(concat($currentuilanguage,'/i18n_simpledb.xml'))"/>
+
+<xsl:output method="html"
+            encoding="utf-8"
+            media-type="text/html"
+            doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+            doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+            indent="no"/>
+
+<xsl:template name="cttobject.options.purge_or_delete">
+    <xsl:variable name="id" select="@id"/>
+    <xsl:choose>
+        <xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+            <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
+            <!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
+            <form style="margin:0px; display: inline;" name="delete"
+                    method="GET"
+                    action="{$xims_box}{$goxims_content}">
+                <input type="hidden" name="delete_prompt" value="1"/>
+                <input type="hidden" name="id" value="{$id}"/>
+                <xsl:if test="$currobjmime='application/x-container'">
+                    <input name="sb" type="hidden" value="{$sb}"/>
+                    <input name="page" type="hidden" value="{$page}"/>
+                    <input name="order" type="hidden" value="{$order}"/>
+                    <input name="r" type="hidden" value="{/document/context/object/@id}"/>
+                </xsl:if>
+                <input
+                    type="image"
+                    name="delete{$id}"
+                    src="{$skimages}option_purge.png"
+                    border="0"
+                    width="37"
+                    height="19"
+                    alt="{$l_purge}"
+                    title="{$l_purge}"
+                />
+            </form>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:call-template name="cttobject.options.spacer"/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
+
+<xsl:template match="member_property">
+    <xsl:variable name="propid" select="@id"/>
+    <xsl:variable name="propvalue" select="/document/context/object/member_values/member_value[property_id=$propid]/value"/>
+    <tr>
+        <td>
+            <span>
+                <xsl:attribute name="class">
+                    <xsl:choose>
+                        <xsl:when test="mandatory='1'">compulsory</xsl:when>
+                        <xsl:otherwise>text</xsl:otherwise>
+                    </xsl:choose>
+                </xsl:attribute>
+                <xsl:value-of select="name"/>:
+            </span>
+        </td>
+        <td>
+            <xsl:choose>
+                <xsl:when test="type = 'datetime'">
+                    <xsl:call-template name="jscalendar-selector">
+                        <xsl:with-param name="timestamp_string" select="$propvalue"/>
+                        <xsl:with-param name="formfield_id" select="concat('simpledb_',name)"/>
+                        <xsl:with-param name="default_value" select="'none'"/>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="type = 'stringoptions'">
+                    <select name="simpledb_{name}">
+                        <option value=""> </option>
+                        <xsl:for-each select="str:split(substring-before(substring-after(regex,'('),')'), '|')">
+                            <option value="{.}"><xsl:if test="$propvalue = ./text()"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="."/></option>
+                        </xsl:for-each>
+                    </select>
+                </xsl:when>
+                <xsl:when test="type = 'boolean'">
+                    <input name="simpledb_{name}" type="radio" value="1">
+                      <xsl:if test="$propvalue = '1'">
+                        <xsl:attribute name="checked">checked</xsl:attribute>
+                      </xsl:if>
+                    </input><xsl:value-of select="$i18n/l/Yes"/>
+                    <input name="simpledb_{name}" type="radio" value="0">
+                      <xsl:if test="$propvalue != '1'">
+                        <xsl:attribute name="checked">checked</xsl:attribute>
+                      </xsl:if><xsl:value-of select="$i18n/l/No"/>
+                    </input>
+                </xsl:when>
+                <xsl:otherwise>
+                    <input type="text"
+                           class="text"
+                           name="simpledb_{name}"
+                           size="40"
+                           tabindex="{position()+20}"
+                           value="{$propvalue}">
+                        <xsl:if test="regex != ''">
+                            <xsl:attribute name="onBlur">testValue('<xsl:value-of select="regex"/>',this,'<xsl:value-of select="$i18n_simpledb/l/Invalid_Data"/>');</xsl:attribute>
+                        </xsl:if>
+                    </input>
+                </xsl:otherwise>
+            </xsl:choose>
+        </td>
+        <td style="width: 100%">
+            <xsl:value-of select="description"/>
+            <!--
+            <xsl:call-template name="br-replace">
+                <xsl:with-param name="word" select="description"/>
+            </xsl:call-template>
+            -->
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="head-create">
+    <head>
+        <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="jscalendar_scripts"/>
+    </head>
+</xsl:template>
+
+<xsl:template name="head-edit">
+    <head>
+        <title><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="jscalendar_scripts"/>
+    </head>
+</xsl:template>
+
+<xsl:template name="th-size">
+    <td></td>
+</xsl:template>
+
+<xsl:template name="tr-abstract-edit">
+    <tr>
+        <td valign="top" colspan="3">
+            <xsl:value-of select="$i18n/l/Abstract"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('SimpleDB.Abstract')" class="doclink">(?)</a>
+            <br />
+            <textarea tabindex="50" name="abstract" rows="5" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333  solid 1px;">
+                 <xsl:choose>
+                    <xsl:when test="string-length(abstract) &gt; 0">
+                        <xsl:apply-templates select="abstract"/>
+                     </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>&#160;</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </textarea>
+        </td>
+    </tr>
+</xsl:template>
+
+
+<xsl:template name="cttobject.content_length"/>
+<xsl:template name="cttobject.options.copy"/>
+<xsl:template name="cttobject.options.move"/>
+
+</xsl:stylesheet>
