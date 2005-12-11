@@ -177,11 +177,9 @@ sub event_answer {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     $object->body( XIMS::encode( $object->body() ) ) if defined $object->body();
-    my $question_id = $self->param('qid');
     my $tan = $self->param( 'tan' );
     my $questionnaire_id = $object->document_id() ;
     my $tan_needed = $object->tan_needed();
-    $question_id =~ s/x/\./g;
     # if no TAN is submitted check if one is needed
     if (! $tan ) {
         XIMS::Debug(6, "Result: no TAN submitted");
