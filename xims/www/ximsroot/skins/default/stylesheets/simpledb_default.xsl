@@ -201,7 +201,7 @@
                             <xsl:value-of select="$i18n_simpledb/l/New_Item"/>&#160;<xsl:call-template name="member.createwidget"/>
                         </div>
                     </xsl:if>
-                    <xsl:if test="$m='e' and /document/context/object/user_privileges/write and not /document/member_properties/member_property[1]">
+                    <xsl:if test="$m='e' and /document/context/object/user_privileges/write and not(/document/member_properties/member_property[1])">
                         <div class="simpledb_map_item_properties">
                             <xsl:call-template name="map_item_properties"/>
                         </div>

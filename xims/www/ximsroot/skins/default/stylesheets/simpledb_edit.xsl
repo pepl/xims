@@ -90,6 +90,16 @@
 </xsl:template>
 
 <xsl:template name="tr-property_properties">
+    <xsl:variable name="maxposition">
+        <xsl:choose>
+            <xsl:when test="/document/member_properties/member_property[1]">
+                <xsl:value-of select="math:max(/document/member_properties/member_property/position)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="0"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
     <tr>
         <td valign="top"><xsl:value-of select="$i18n_simpledb/l/Name"/></td>
         <td>
@@ -187,7 +197,7 @@
                 <xsl:attribute name="value">
                     <xsl:choose>
                         <xsl:when test="$property_id = ''">
-                            <xsl:value-of select="math:max(/document/member_properties/member_property/position)+1"/>
+                            <xsl:value-of select="$maxposition+1"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="/document/member_properties/member_property[@id=$property_id]/position"/>

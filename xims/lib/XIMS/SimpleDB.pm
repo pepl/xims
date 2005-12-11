@@ -201,7 +201,7 @@ sub items_granted {
     }
 
     if ( defined $searchstring ) {
-        $tables .= ', cisimpledb_member_propertyvalues pv';
+        $tables .= ', cisimpledb_mempropertyvalues pv';
         $conditions .= " AND pv.member_id = m.id AND pv.property_id IN (SELECT id FROM cisimpledb_member_properties WHERE mandatory = 1) AND lower(pv.value) LIKE lower(?)";
         push @values, $searchstring;
     }
