@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<Config>
+    <DBI>
+        <PropertyAttributes>
+            <item name="simpledbmember.id" value="cisimpledb_members_id_seq_nval()"/>
+            <item name="simpledbmemberproperty.id" value="cisimpledb_member_properties_id_seq_nval()"/>
+            <item name="simpledbmemberpropertyvalue.id" value="cisimpledb_member_propertyvalues_id_seq_nval()"/>
+            <item name="simpledbmemberpropertymap.id" value="cisimpledb_member_propertymap_id_seq_nval()"/>
+        </PropertyAttributes>
+        <Tables>
+            <item name="simpledbmember" value="cisimpledb_members"/>
+            <item name="simpledbmemberproperty" value="cisimpledb_member_properties"/>
+            <item name="simpledbmemberpropertyvalue" value="cisimpledb_member_propertyvalues"/>
+            <item name="simpledbmemberpropertymap" value="cisimpledb_member_propertymap"/>
+        </Tables>
+    </DBI>
+</Config>
