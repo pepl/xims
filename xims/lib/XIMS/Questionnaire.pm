@@ -237,7 +237,7 @@ sub edit_question{
     my ($self, $node_id, $questionnaire) = @_;
     my $node;
 
-    my $nodes = $questionnaire->find( "/questionnaire/question[\@id='".$node_id."']"  );
+    my $nodes = $questionnaire->find( "//question[\@id='".$node_id."']"  );
     XIMS::Debug ( 6, "Found ".$nodes->size()." Nodes" );
     if ( defined( $nodes ) && ( $nodes->size() == 1 ) ) {
         $node = $nodes->get_node( 1 );
@@ -499,7 +499,7 @@ sub get_full_question_titles {
     my $question_id = shift;
     XIMS::Debug( 5, "Called" );
     my $questionnaire = $self->questionnaire_dom();
-    my $answer_nodes = $questionnaire->find( '/questionnaire/question/answer' );
+    my $answer_nodes = $questionnaire->find( '//answer' );
     my $full_question_title = "";
     my $full_id = "";
     my $question_title = "";
@@ -507,7 +507,7 @@ sub get_full_question_titles {
     foreach my $node ($answer_nodes->get_nodelist) {
         foreach my $split_id ( split(/\./, $node->getAttribute('id') ) ) {
             $full_id .= $split_id;
-            $question_title = $questionnaire->findvalue( '/questionnaire/question[@id="' . $full_id . '"]/title' );
+            $question_title = $questionnaire->findvalue( '//question[@id="' . $full_id . '"]/title' );
             if ($question_title) {
                 $question_titles{$full_id} = $question_title unless length $full_question_title > 0;
                 $full_question_title .= " - " if $full_question_title;
@@ -542,9 +542,9 @@ sub get_answer_ids {
 
     my $questionnaire = $self->questionnaire_dom();
 
-    my $question_xpath = '/questionnaire/question';
+    my $question_xpath = '//question';
     $question_xpath .= '[@id=' . $question_id . ']' if defined $question_id;
-    foreach my $attrib ( $questionnaire->findnodes( $question_xpath . "/answer[contains(\@id,'.')]/\@id" ) ) {
+    foreach my $attrib ( $questionnaire->findnodes( $question_xpath . "//answer[contains(\@id,'.')]/\@id" ) ) {
         push( @answer_ids, $attrib->value() );
     }
     return \@answer_ids;
@@ -569,7 +569,7 @@ sub get_question_title {
     my $question_id = shift;
     XIMS::Debug( 5, "Called" );
     my $questionnaire = $self->questionnaire_dom();
-    my $question_title = $questionnaire->findvalue( '/questionnaire/question[@id="' . $question_id. '"]/title' );
+    my $question_title = $questionnaire->findvalue( '//question[@id="' . $question_id. '"]/title' );
     return $question_title;
 }
 
@@ -884,7 +884,7 @@ sub _set_top_question_edit {
     my ($questionnaire, $node_id) = @_;
 
     my @top_id = split(/\./,$node_id);
-    my @top_node = $questionnaire->findnodes( "/questionnaire/question[\@id = \"${top_id[0]}\"]");
+    my @top_node = $questionnaire->findnodes( "//question[\@id = \"${top_id[0]}\"]");
     $top_node[0]->setAttribute("edit","1") if $top_node[0];
 
     return $questionnaire;
@@ -955,7 +955,7 @@ sub remove_tanlist {
     }
 
     $node = $node->parentNode->removeChild( $node );
-#  XIMS::Debug ( 6, "Deleted TAN_List: $tanlist_id" );
+    # XIMS::Debug ( 6, "Deleted TAN_List: $tanlist_id" );
     my $xml_string = $questionnaire->toString();
     $self->body( XIMS::decode( $xml_string ) );
 }
@@ -1021,7 +1021,7 @@ sub set_results {
     my $answer_node;
     my $title_nodes;
     my $title_node;
-    $answer_nodes = $questionnaire->find( '/questionnaire/question/answer' );
+    $answer_nodes = $questionnaire->find( '//answer' );
     #step through each answer
     foreach $answer_node ( $answer_nodes->get_nodelist() ) {
     # if answer type is "Checkbox", "Radio" or "Select" step through each title and get the answer count
@@ -1099,7 +1099,7 @@ sub _qnode {
     my $questionnaire = shift;
 
     my $node;
-    my $nodes = $questionnaire->find( "/questionnaire/question[\@id='".$node_id."'] | /questionnaire/question/answer[\@id='".$node_id."']"  );
+    my $nodes = $questionnaire->find( "//question[\@id='".$node_id."'] | //answer[\@id='".$node_id."']"  );
     if ( defined( $nodes ) && ( $nodes->size() == 1 ) ) {
         $node = $nodes->get_node( 1 );
     }
