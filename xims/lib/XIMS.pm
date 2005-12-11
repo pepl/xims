@@ -9,6 +9,7 @@ use vars qw( $AUTOLOAD $VERSION $_CONFIG_ $_DATAPROVIDER_ );
 
 use XIMS::Config;
 use Text::Iconv;
+use Encode ();
 
 $VERSION = 0.1;
 

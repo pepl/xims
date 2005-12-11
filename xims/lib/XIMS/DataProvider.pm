@@ -362,6 +362,9 @@ sub recurse_ancestor {
     my @ancestors = @_;
     #warn "testing id " . $object->document_id() . " (title: ". $object->title() . ") against " . $object->parent_id() . "\n";
 
+    # root has no ancestors
+    return () if $object->id() == 1;
+
     my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $object->User() );
     if ( defined $filter_objectroots ) {
         my @object_types = $self->object_types();
