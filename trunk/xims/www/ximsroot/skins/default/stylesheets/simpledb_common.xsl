@@ -83,7 +83,7 @@
                     </xsl:call-template>
                 </xsl:when>
                 <xsl:when test="type = 'stringoptions'">
-                    <select name="simpledb_{name}">
+                    <select tabindex="{position()+20}" name="simpledb_{name}">
                         <option value=""> </option>
                         <xsl:for-each select="str:split(substring-before(substring-after(regex,'('),')'), '|')">
                             <option value="{.}"><xsl:if test="$propvalue = ./text()"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="."/></option>
@@ -91,12 +91,12 @@
                     </select>
                 </xsl:when>
                 <xsl:when test="type = 'boolean'">
-                    <input name="simpledb_{name}" type="radio" value="1">
+                    <input tabindex="{position()+20}" name="simpledb_{name}" type="radio" value="1">
                       <xsl:if test="$propvalue = '1'">
                         <xsl:attribute name="checked">checked</xsl:attribute>
                       </xsl:if>
                     </input><xsl:value-of select="$i18n/l/Yes"/>
-                    <input name="simpledb_{name}" type="radio" value="0">
+                    <input tabindex="{position()+20}" name="simpledb_{name}" type="radio" value="0">
                       <xsl:if test="$propvalue != '1'">
                         <xsl:attribute name="checked">checked</xsl:attribute>
                       </xsl:if><xsl:value-of select="$i18n/l/No"/>

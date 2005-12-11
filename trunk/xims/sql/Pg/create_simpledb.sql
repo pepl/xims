@@ -15,12 +15,12 @@ SET SESSION AUTHORIZATION 'xims';
 -- DELETE FROM ci_data_formats WHERE name = 'SimpleDB';
 -- DROP TABLE cisimpledb_members CASCADE;
 -- DROP TABLE cisimpledb_member_properties CASCADE;
--- DROP TABLE cisimpledb_member_propertyvalues CASCADE;
--- DROP TABLE cisimpledb_member_propertymap CASCADE;
+-- DROP TABLE cisimpledb_mempropertyvalues CASCADE;
+-- DROP TABLE cisimpledb_mempropertymap CASCADE;
 -- DROP FUNCTION cisimpledb_members_id_seq_nval();
--- DROP FUNCTION cisimpledb_member_properties_id_seq_nval();
--- DROP FUNCTION cisimpledb_member_propertyvalues_id_seq_nval();
--- DROP FUNCTION cisimpledb_member_propertymap_id_seq_nval();
+-- DROP FUNCTION cisimpledb_memprop_id_seq_nval();
+-- DROP FUNCTION cisimpledb_mpropva_id_seq_nval();
+-- DROP FUNCTION cisimpledb_mpropma_id_seq_nval();
 
 -- begin transaction
 BEGIN WORK;
@@ -48,8 +48,8 @@ CREATE TABLE cisimpledb_member_properties
   )
 ;
 
-\echo creating table 'cisimpledb_member_propertyvalues'
-CREATE TABLE cisimpledb_member_propertyvalues
+\echo creating table 'cisimpledb_mempropertyvalues'
+CREATE TABLE cisimpledb_mempropertyvalues
  (
  id                  SERIAL            PRIMARY KEY
  ,property_id        INTEGER           NOT NULL REFERENCES cisimpledb_member_properties  ( id ) ON DELETE CASCADE
@@ -58,8 +58,8 @@ CREATE TABLE cisimpledb_member_propertyvalues
  )
 ;
 
-\echo creating table 'cisimpledb_member_propertymap'
-CREATE TABLE cisimpledb_member_propertymap
+\echo creating table 'cisimpledb_mempropertymap'
+CREATE TABLE cisimpledb_mempropertymap
  (
  id                  SERIAL            PRIMARY KEY
  ,property_id        INTEGER           NOT NULL REFERENCES cisimpledb_member_properties  ( id ) ON DELETE CASCADE
@@ -76,23 +76,23 @@ CREATE OR REPLACE FUNCTION cisimpledb_members_id_seq_nval() RETURNS INTEGER
        LANGUAGE 'plpgsql'
 ;
 
-CREATE OR REPLACE FUNCTION cisimpledb_member_properties_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cisimpledb_memprop_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
             RETURN nextval(\'cisimpledb_member_properties_id_seq\');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
-CREATE OR REPLACE FUNCTION cisimpledb_member_propertyvalues_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cisimpledb_mpropva_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cisimpledb_member_propertyvalues_id_seq\');
+            RETURN nextval(\'cisimpledb_mempropertyvalues_id_seq\');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
-CREATE OR REPLACE FUNCTION cisimpledb_member_propertymap_id_seq_nval() RETURNS INTEGER
+CREATE OR REPLACE FUNCTION cisimpledb_mpropma_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cisimpledb_member_propertymap_id_seq\');
+            RETURN nextval(\'cisimpledb_mempropertymap_id_seq\');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -101,35 +101,37 @@ CREATE OR REPLACE FUNCTION cisimpledb_member_propertymap_id_seq_nval() RETURNS I
 REVOKE ALL
     ON  cisimpledb_members
         ,cisimpledb_member_properties
-        ,cisimpledb_member_propertyvalues
-        ,cisimpledb_member_propertymap
+        ,cisimpledb_mempropertyvalues
+        ,cisimpledb_mempropertymap
         ,cisimpledb_members_id_seq
         ,cisimpledb_member_properties_id_seq
-        ,cisimpledb_member_propertyvalues_id_seq
+        ,cisimpledb_mempropertyvalues_id_seq
+        ,cisimpledb_mempropertymap_id_seq
     FROM PUBLIC;
 
 GRANT ALL
     ON  cisimpledb_members
         ,cisimpledb_member_properties
-        ,cisimpledb_member_propertyvalues
-        ,cisimpledb_member_propertymap
+        ,cisimpledb_mempropertyvalues
+        ,cisimpledb_mempropertymap
         ,cisimpledb_members_id_seq
         ,cisimpledb_member_properties_id_seq
-        ,cisimpledb_member_propertyvalues_id_seq
+        ,cisimpledb_mempropertyvalues_id_seq
+        ,cisimpledb_mempropertymap_id_seq
     TO xims;
 
 GRANT INSERT, SELECT, UPDATE, DELETE
     ON  cisimpledb_members
         ,cisimpledb_member_properties
-        ,cisimpledb_member_propertyvalues
-        ,cisimpledb_member_propertymap
+        ,cisimpledb_mempropertyvalues
+        ,cisimpledb_mempropertymap
     TO ximsrun;
 
 GRANT SELECT, UPDATE
     ON  cisimpledb_members_id_seq
         ,cisimpledb_member_properties_id_seq
-        ,cisimpledb_member_propertyvalues_id_seq
-        ,cisimpledb_member_propertymap_id_seq
+        ,cisimpledb_mempropertyvalues_id_seq
+        ,cisimpledb_mempropertymap_id_seq
     TO ximsrun;
 
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot )

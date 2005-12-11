@@ -407,8 +407,6 @@ sub ancestors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    return undef unless defined $self->id();
-
     if ( defined $self->{Ancestors} and $self->{_cached_parent_id} == $self->{parent_id} ) {
         my @ancs = @{$self->{Ancestors}};
         return \@ancs;
