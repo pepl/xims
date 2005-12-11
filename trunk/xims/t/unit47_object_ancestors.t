@@ -7,7 +7,7 @@ use XIMS::Object;
 #use Data::Dumper;
 
 BEGIN {
-    plan tests => 27;
+    plan tests => 28;
 }
 
 # fetch the 'xims' container
