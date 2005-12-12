@@ -135,8 +135,8 @@ ALTER TABLE cisimpledb_mempropertymap
 )
 /
 
-PROMPT Creating Foreign Key on 'cireflib_ref_type_propertymap'
-ALTER TABLE cireflib_ref_type_propertymap
+PROMPT Creating Foreign Key on 'cisimpledb_mempropertymap'
+ALTER TABLE cisimpledb_mempropertymap
  ADD (CONSTRAINT PRM_DOC_ID_FK FOREIGN KEY
        (document_id) REFERENCES ci_documents (ID) ON DELETE CASCADE
 )
