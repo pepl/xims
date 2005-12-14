@@ -208,7 +208,9 @@ sub update_properties {
 
         my $reflibpropval = XIMS::RefLibReferencePropertyValue->new( property_id => $property->id(), reference_id => $reference->id() );
         if ( defined $reflibpropval ) {
-            if ( $reflibpropval->value ne $value ) {
+            if ( defined $reflibpropval->value and defined $value and $reflibpropval->value ne $value
+                or defined $reflibpropval->value and not defined $value
+                or not defined $reflibpropval->value and defined $value ) {
                 $reflibpropval->value( $value );
                 if ( $reflibpropval->update() ) {
                     XIMS::Debug( 4, "Updated value of " . $property->name() );
