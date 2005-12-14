@@ -217,7 +217,7 @@
                 <ul style="margin-top: 0px">
                     <xsl:apply-templates select="/document/member_properties/member_property" mode="entry">
                         <xsl:sort select="position"
-                              order="ascending"/>
+                              order="ascending" data-type="number"/>
                         <xsl:sort select="name"
                               order="ascending"/>
                     </xsl:apply-templates>
