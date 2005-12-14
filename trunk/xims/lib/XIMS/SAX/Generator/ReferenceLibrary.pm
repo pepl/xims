@@ -78,8 +78,6 @@ sub prepare {
         $doc_data->{context}->{user} = $ctxt->user() ;
     }
 
-    my %object_types = ();
-    my %data_formats = ();
     $object_types{$ctxt->object->object_type_id()} = 1;
     $data_formats{$ctxt->object->data_format_id()} = 1;
 
