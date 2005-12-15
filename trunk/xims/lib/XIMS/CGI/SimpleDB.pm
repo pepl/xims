@@ -65,6 +65,7 @@ sub event_default {
     }
     else {
         $limit = 20;
+        $offset ||= 0;
         $offset = $offset * $limit;
     }
 
