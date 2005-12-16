@@ -5,8 +5,9 @@
 package XIMS::CGI::SQLReport;
 
 use strict;
-use vars qw( $VERSION @ISA $AGENTUSER $AGENTPASSWORD $TESTGRANTEDSCHEMAS);
-use XIMS::CGI;
+use warnings;
+
+use base qw(XIMS::CGI);
 use Text::Iconv;
 use DBIx::XHTML_Table;
 use XML::Generator::DBI;
@@ -16,20 +17,7 @@ use XML::LibXML::SAX::Builder;
 use XIMS::DataProvider;
 
 # version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-@ISA = qw( XIMS::CGI );
-
-# Credentials in whichs context the SQLReport query will be executed.
-# This user needs to have SELECT grants on the database objects refered to in the SQLReport query.
-$AGENTUSER = '';
-$AGENTPASSWORD = '';
-
-# If defined, all refered database objects need to exists in a database schema and have to be
-# referenced explicitly with the schema name (select foo from schemaname.tablename). In addition,
-# the currently logged in user has to be granted a role corresponding to the schema to execute
-# the SQLReport query. That role must be called 'XIMS:SQLReportSchema:Schemaname'.
-$TESTGRANTEDSCHEMAS = 0;
+our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
 # (de)register events here
 sub registerEvents {
@@ -55,7 +43,16 @@ sub event_default {
     my ( $self, $ctxt ) = @_;
 
     return 0 if $self->SUPER::event_default( $ctxt );
-    return $self->_generate_body_from_sql( $ctxt);
+    $self->_generate_body_from_sql( $ctxt);
+
+    # Since a connect string including a password is stored there, we do not want to display it for ?passthru=1
+    $ctxt->object->attributes( undef );
+
+    # Let XIMS::CGI::selectStylesheet do the right thing - choose from a stylesheet directory assigned to the 
+    # DepartmentRoot and not use the stylesheet explictly assigned for transforming the body
+    $ctxt->object->style_id( undef );
+
+    return 0;
 }
 
 sub event_edit {
@@ -83,7 +80,7 @@ sub event_store {
         my $object = $ctxt->object();
         $body = XIMS::xml_escape( $body );
         $body =~ /FROM\s(.*?)($|\sWHERE\s)/i;
-        if ( $TESTGRANTEDSCHEMAS == 1 ) {
+        if ( defined XIMS::Config::SQLReportTestGrantedSchemas() and XIMS::Config::SQLReportTestGrantedSchemas() == 1 ) {
             return 0 unless $self->_test_granted_schemata( $ctxt, $1 );
         }
         $ctxt->object->body( $body );
@@ -95,6 +92,30 @@ sub event_store {
         $ctxt->object->attribute( skeys => $skeys );
     }
 
+    my $pagesize  = $self->param( 'pagesize' );
+    if ( defined $pagesize ) {
+        $pagesize = XIMS::trim($pagesize);
+        $ctxt->object->attribute( pagesize => $pagesize ) if $pagesize =~ /^\d+$/;
+    }
+
+    my $dbdsn  = $self->param( 'dbdsn' );
+    if ( defined $dbdsn ) {
+        $dbdsn = XIMS::trim( $dbdsn );
+        $ctxt->object->attribute( dbdsn => $dbdsn );
+    }
+
+    my $dbuser  = $self->param( 'dbuser' );
+    if ( defined $dbuser ) {
+        $dbuser = XIMS::trim( $dbuser );
+        $ctxt->object->attribute( dbuser => $dbuser );
+    }
+
+    my $dbpwd  = $self->param( 'dbpwd' );
+    if ( defined $dbpwd ) {
+        $dbpwd = XIMS::trim( $dbpwd );
+        $ctxt->object->attribute( dbpwd => $dbpwd );
+    }
+
     return $self->SUPER::event_store( $ctxt );
 }
 
@@ -103,7 +124,7 @@ sub event_plain {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    return 0 if $self->_generate_body_from_sql( $ctxt);
+    return 0 if $self->_generate_body_from_sql( $ctxt );
 
     my $df = XIMS::DataFormat->new( id => $ctxt->object->data_format_id() );
     my $mime_type = $df->mime_type;
@@ -206,6 +227,8 @@ sub _build_form_from_skeys {
                            );
     }
 
+    $form .= $self->hidden(-name => 'onepage',
+                           -value => '1') if $self->param('onepage');
     $form .= $self->submit(-name => 's',
                            -value => 'Submit');
     $form .= $self->endform();
@@ -226,7 +249,7 @@ sub _generate_body_from_sql {
     my $dbh = $self->_agentdbh( $ctxt );
     return 0 unless defined $dbh;
 
-    if ( $TESTGRANTEDSCHEMAS == 1 ) {
+    if ( XIMS::Config::SQLReportTestGrantedSchemas() and XIMS::Config::SQLReportTestGrantedSchemas() == 1 ) {
         # check for granted schema privileges
         my ($tables) = ($sql =~ /FROM\s(.*?)($|\sWHERE\s)/i);
         return 0 unless $self->_test_granted_schemata( $ctxt, $tables );
@@ -234,32 +257,55 @@ sub _generate_body_from_sql {
 
     # check, whether we should build search conditions and a search form
     # based on the 'skeys' attribute
-    my @skeys = split( ',', $ctxt->object->attribute_by_key( 'skeys' ) );
-    my $body = '';
     my $criteria;
-    if ( scalar @skeys > 0 ) {
-        $body = $self->div( {-align=>'center'},
-                                        $self->h1( $ctxt->object->title ),
-                                        $self->_build_form_from_skeys( @skeys ),
-                                        );
-        if ( $self->param('s') ) {
-            $criteria = $self->_build_crits_from_skeys( @skeys );
-        }
-        else {
-            $ctxt->object->body( $body );
-            return 0;
+    my $body = '';
+    my $skeys = $ctxt->object->attribute_by_key( 'skeys' );
+    if ( defined $skeys ) {
+        my @skeys = split( ',', $skeys );
+        if ( scalar @skeys > 0 ) {
+            $body = $self->div( {-align=>'center'},
+                                            $self->h1( $ctxt->object->title ),
+                                            $self->_build_form_from_skeys( @skeys ),
+                                            );
+            if ( $self->param('s') ) {
+                $criteria = $self->_build_crits_from_skeys( @skeys );
+            }
+            else {
+                $ctxt->object->body( $body );
+                return 0;
+            }
         }
     }
 
-    # prepare pagination
+    # prepare pagination unless onepage is set
 
-    # calculate offset
-    my $offset = $self->param('page');
-    $offset = $offset - 1 if $offset;
-    my $rowlimit = 30;
-    $offset = $offset * $rowlimit;
+    my $offset;
+    my $rowlimit;
+
+    if ( not $self->param('onepage') ) {
+        # calculate offset
+        $offset = $self->param('page');
+        $offset = $offset - 1 if $offset;
+        $offset ||= 0;
+
+        # Check for object specific pagesize
+        my $pagesize = $ctxt->object->attribute_by_key( 'pagesize' );
+        if ( defined $pagesize ) {
+            $rowlimit = $pagesize;
+        }
+        else {
+            $rowlimit = XIMS::Config::SQLReportPagesize();
+        }
+
+        $self->param( 'pagesize', $rowlimit ); # Set it for the stylesheet and save a call to document()
+
+        $offset = $offset * $rowlimit;
+    }
 
     # create query for the search result count
+
+    # get rid of newlines, DBIx::SQLEngine does not like them...
+    $sql =~ s#\r\n# #g;
 
     # remove trailing semicolons
     $sql =~ s/\s*;\s*$//;
@@ -287,7 +333,12 @@ sub _generate_body_from_sql {
 
     $countsql =~ s/\Q$properties\E/$countproperty/;
 
-    my $data = $dbh->fetch_select( sql => $countsql, criteria => $criteria );
+    my $data;
+    eval { $data = $dbh->fetch_select( sql => $countsql, criteria => $criteria ); };
+    if ( $@ ) {
+        XIMS::Debug( 2, "SQL query failed " . $@ );
+        return $self->sendError( $ctxt, "$@");
+    }
     my $count = @{$data}[0]->{count};
 
     if ( $count eq '0' or not defined $count ) {
@@ -450,14 +501,38 @@ sub _agentdbh {
     my $self = shift;
     my $ctxt = shift;
 
-    my $dp = XIMS::DataProvider->new( 'DBI', { dbuser => $AGENTUSER, dbpasswd => $AGENTPASSWORD } );
-    if ( not $dp ) {
-        XIMS::Debug( 2, "could not create data provider with the ximsagent user");
-        $self->sendError( $ctxt, "Could not connect to database using the Agent User");
-        return 0;
+    my $dbh;
+
+    my $dbdsn = $ctxt->object->attribute_by_key( 'dbdsn' );
+
+    if ( defined $dbdsn ) {
+        XIMS::Debug( 4, "Trying configured DSN" );
+        my $dbuser = $ctxt->object->attribute_by_key( 'dbuser' );
+        my $dbpwd = $ctxt->object->attribute_by_key( 'dbpwd' );
+
+        eval {
+            $dbh = DBIx::SQLEngine->new( $dbdsn, $dbuser, $dbpwd );
+        };
+        if ( $@ ) {
+            XIMS::Debug( 2, "Could not connect to database: $@");
+            return $self->sendError( $ctxt, "Could not connect to database: $@");
+        }
+    }
+    else {
+        XIMS::Debug( 4, "Using default DSN with SQLReportAgentUser" );
+        my $dp;
+
+        eval {
+            $dp = XIMS::DataProvider->new( 'DBI', { dbuser => XIMS::Config::SQLReportAgentUser(), dbpasswd => XIMS::Config::SQLReportAgentUserPassword() } );
+        };
+        if ( $@ or not defined $dp ) {
+            XIMS::Debug( 2, "could not create data provider with the ximsagent user");
+            return $self->sendError( $ctxt, "Could not connect to database using the SQLReportAgentUser. Please check your sqlreportconfig.xml");
+        }
+        $dbh = $dp->driver->dbh();
     }
 
-    return $dp->driver->dbh();
+    return $dbh;
 }
 
 1;

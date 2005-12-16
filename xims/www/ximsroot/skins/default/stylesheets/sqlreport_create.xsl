@@ -25,6 +25,10 @@
                     <xsl:call-template name="tr-abstract-create"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="skeys"/>
+                    <xsl:call-template name="pagesize"/>
+                    <xsl:call-template name="dbdsn"/>
+                    <xsl:call-template name="dbuser"/>
+                    <xsl:call-template name="dbpwd"/>
                     <xsl:call-template name="grantowneronly"/>
                 </table>
                 <xsl:call-template name="saveaction"/>

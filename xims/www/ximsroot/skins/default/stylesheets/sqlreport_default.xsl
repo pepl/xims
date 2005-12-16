@@ -10,8 +10,12 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="common_search_result.xsl"/>
+
+<xsl:variable name="pagesize"><xsl:value-of select="document(concat($xims_home,'/conf/conf.d/sqlreportconfig.xml'))/Config/General/SQLReportPagesize"/></xsl:variable>
+
 <xsl:param name="navparam"/>
-<xsl:variable name="totalpages" select="ceiling($objectitems_count div 30)"/>
+<xsl:param name="onepage"/>
+<xsl:variable name="totalpages" select="ceiling($objectitems_count div $pagesize)"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -32,7 +36,7 @@
                     </td>
                 </tr>
             </table>
-            <xsl:if test="$totalpages &gt; 1">
+            <xsl:if test="$onepage = '' and $totalpages &gt; 1">
                 <table style="margin-left:5px; margin-right:10px; margin-top: 10px; margin-bottom: 10px; width: 99%; padding: 3px; border: thin solid #C1C1C1; background: #F9F9F9 font-size: small;" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
