@@ -9,7 +9,6 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
     <xsl:import href="sqlreport_common.xsl"/>
-    <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document/context/object">
 <html>
@@ -26,6 +25,10 @@
                     <xsl:call-template name="tr-stylesheet-edit"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="skeys"/>
+                    <xsl:call-template name="pagesize"/>
+                    <xsl:call-template name="dbdsn"/>
+                    <xsl:call-template name="dbuser"/>
+                    <xsl:call-template name="dbpwd"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>

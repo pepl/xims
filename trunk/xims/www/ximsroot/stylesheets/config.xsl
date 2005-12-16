@@ -9,6 +9,10 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+  <xsl:variable name="xims_home">/usr/local/xims</xsl:variable>
+
+  <!-- move parts of this to ximsconfig.xml -->
+
   <xsl:variable name="editoroptions">
     <option value="plain">Plain Textarea</option>
     <option value="htmlarea">HTMLArea Editor</option>
