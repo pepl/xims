@@ -80,8 +80,12 @@ sub event_default {
     my $author_id = $self->param('author_id');
     my $author_lname = $self->param('author_lname');
     my $serial_id = $self->param('serial_id');
+    my $workgroup_id = $self->param('workgroup_id');
     if ( defined $date and $date =~ /^\d+$/ ) {
         $childrenargs{date} = "%$date%";
+    }
+    if ( defined $workgroup_id and $workgroup_id =~ /^\d+$/ ) {
+        $childrenargs{workgroup_id } = $workgroup_id;
     }
     if ( defined $author_id and $author_id =~ /^\d+$/ ) {
         $childrenargs{author_id} = $author_id;
