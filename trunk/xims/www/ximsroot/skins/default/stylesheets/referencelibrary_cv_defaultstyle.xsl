@@ -11,6 +11,11 @@
 
 
 <xsl:import href="referencelibraryitem_common.xsl"/>
+
+<xsl:key name="year" match="/document/context/object/children/object/reference_values/reference_value[property_id=3]/value" use="."/>
+<xsl:key name="reftype_id" match="object/reference_type_id" use="."/>
+<!--<xsl:key name="reftype_id_by_date" match="children/object" use="concat(reference_type_id, '+', reference_values/reference_value[property_id=3]/value)" />-->
+
 <xsl:param name="css" select="concat($ximsroot,'skins/',$currentskin,'/stylesheets/reference_library_cv_defaultstyle.css')"/>
 
 <xsl:variable name="volumerefpropid" select="/document/reference_properties/reference_property[name='volume']/@id"/>
@@ -27,11 +32,35 @@
         <xsl:call-template name="head_default"/>
         <body>
             <div id="reflib_citebody">
-                <ul id="reflib_citelist">
-                    <xsl:apply-templates select="children/object" mode="divlist">
-                        <xsl:sort select="title" order="ascending"/>
-                    </xsl:apply-templates>
-                </ul>
+                <xsl:for-each select="children/object/reference_values/reference_value[property_id=3]/value[generate-id(.)=generate-id(key('year',.)[1])]">
+                    <!--<xsl:sort select="substring-before(., '-')" order="descending"/>-->
+                    <xsl:sort select="." order="descending"/>
+                    <xsl:variable name="date" select="."/>
+                    <h2>
+                        <xsl:value-of select="$date"/>
+                        (<xsl:value-of select="count(/document/context/object/children/object[reference_values/reference_value[property_id=3]/value=$date]/reference_type_id)"/>)
+                    </h2>
+                    <div class="reflib_citedivyear">
+                        <xsl:for-each select="/document/context/object/children/object
+                                      [generate-id(reference_type_id)=generate-id(key('reftype_id',reference_type_id)[1])]/reference_type_id">
+                            <!-- and reference_values/reference_value[property_id=3]/value=$date -->
+                            <xsl:sort select="/document/reference_types/reference_type[@id=current()]/name" order="ascending"/>
+                            <xsl:variable name="reference_type_id" select="."/>
+                            <!-- Hmm, there must be a better way instead of doing that xsl:if here... -->
+                            <xsl:if test="/document/context/object/children/object[reference_values/reference_value[property_id=3]/value=$date and reference_type_id = $reference_type_id]">
+                                <h3>
+                                    <xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s
+                                </h3>
+                                <ul class="reflib_citelist">
+                                    <xsl:for-each select="/document/context/object/children/object[reference_values/reference_value[property_id=3]/value=$date and reference_type_id = $reference_type_id]">
+                                        <xsl:sort select="title" order="ascending"/>
+                                        <xsl:apply-templates select="." mode="divlist"/>
+                                    </xsl:for-each>
+                                </ul>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </div>
+                </xsl:for-each>
             </div>
         </body>
     </html>
@@ -93,6 +122,10 @@
                 <xsl:when test="starts-with($identifier, 'oai:arXiv.org:')">
                     <a href="http://arXiv.org/abs/{substring-after($identifier,'oai:arXiv.org:')}"><xsl:value-of select="$identifier"/></a>
                 </xsl:when>
+                <xsl:when test="starts-with($identifier, 'doi:')">
+                    <a href="http://www.crossref.org/openurl?url_ver=Z39.88-2004&amp;rft_id=info:doi/{substring-after($identifier,'doi:')}"><xsl:value-of select="$identifier"/></a>
+                </xsl:when>
+                
                 <xsl:otherwise>
                     <xsl:value-of select="$identifier"/>
                 </xsl:otherwise>
