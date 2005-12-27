@@ -254,18 +254,39 @@
 
 <xsl:template match="r:element" mode="eid">
     <xsl:variable name="xpath">exslt:node-set($entry_set)//<xsl:value-of select="$entry_element"/>[@id='<xsl:value-of select="$eid"/>']/<xsl:value-of select="@name"/></xsl:variable>
+    <xsl:variable name="existing_value" select="normalize-space(dyn:evaluate($xpath))"/>
     <tr>
         <td valign="top"><xsl:value-of select="s:description"/></td>
         <td>
             <xsl:choose>
                 <xsl:when test="s:datatype = 'datetime'">
                     <xsl:call-template name="jscalendar-selector">
-                        <xsl:with-param name="timestamp_string" select="normalize-space(dyn:evaluate($xpath))"/>
+                        <xsl:with-param name="timestamp_string" select="$existing_value"/>
                         <xsl:with-param name="formfield_id" select="concat('sfe_',@name)"/>
                     </xsl:call-template>
                 </xsl:when>
+                <xsl:when test="s:datatype = 'stringoptions'">
+                    <select tabindex="{position()+20}" name="sfe_{@name}">
+                        <option value=""> </option>
+                        <xsl:for-each select="s:select/s:option">
+                            <option value="{.}"><xsl:if test="$existing_value = ./text()"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="."/></option>
+                        </xsl:for-each>
+                    </select>
+                </xsl:when>
+                <xsl:when test="s:datatype = 'boolean'">
+                    <input tabindex="{position()+20}" name="sfe_{@name}" type="radio" value="1">
+                      <xsl:if test="$existing_value = '1'">
+                        <xsl:attribute name="checked">checked</xsl:attribute>
+                      </xsl:if>
+                    </input><xsl:value-of select="$i18n/l/Yes"/>
+                    <input tabindex="{position()+20}" name="sfe_{@name}" type="radio" value="0">
+                      <xsl:if test="$existing_value != '1'">
+                        <xsl:attribute name="checked">checked</xsl:attribute>
+                      </xsl:if><xsl:value-of select="$i18n/l/No"/>
+                    </input>
+                </xsl:when>
                 <xsl:otherwise>
-                    <input tabindex="{position()+20}" type="text" name="sfe_{@name}" value="{dyn:evaluate($xpath)}" size="80" class="text"/>
+                    <input tabindex="{position()+20}" type="text" name="sfe_{@name}" value="{$existing_value}" size="80" class="text"/>
                 </xsl:otherwise>
             </xsl:choose>
         </td>
@@ -283,6 +304,18 @@
                         <xsl:with-param name="timestamp_string" select="$currentdatetime"/>
                         <xsl:with-param name="formfield_id" select="concat('sfe_',@name)"/>
                     </xsl:call-template>
+                </xsl:when>
+                <xsl:when test="s:datatype = 'stringoptions'">
+                    <select tabindex="{position()+20}" name="sfe_{@name}">
+                        <option value=""> </option>
+                        <xsl:for-each select="s:select/s:option">
+                            <option value="{.}"><xsl:value-of select="."/></option>
+                        </xsl:for-each>
+                    </select>
+                </xsl:when>
+                <xsl:when test="s:datatype = 'boolean'">
+                    <input tabindex="{position()+20}" name="sfe_{@name}" type="radio" value="1"/><xsl:value-of select="$i18n/l/Yes"/>
+                    <input tabindex="{position()+20}" name="sfe_{@name}" type="radio" value="0"/><xsl:value-of select="$i18n/l/No"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <input tabindex="{position()+20}" type="text" name="sfe_{@name}" size="80" class="text"/>
