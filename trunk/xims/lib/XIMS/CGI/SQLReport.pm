@@ -48,7 +48,7 @@ sub event_default {
     # Since a connect string including a password is stored there, we do not want to display it for ?passthru=1
     $ctxt->object->attributes( undef );
 
-    # Let XIMS::CGI::selectStylesheet do the right thing - choose from a stylesheet directory assigned to the 
+    # Let XIMS::CGI::selectStylesheet do the right thing - choose from a stylesheet directory assigned to the
     # DepartmentRoot and not use the stylesheet explictly assigned for transforming the body
     $ctxt->object->style_id( undef );
 
@@ -95,7 +95,9 @@ sub event_store {
     my $pagesize  = $self->param( 'pagesize' );
     if ( defined $pagesize ) {
         $pagesize = XIMS::trim($pagesize);
-        $ctxt->object->attribute( pagesize => $pagesize ) if $pagesize =~ /^\d+$/;
+        if ( not defined $pagesize or length $pagesize and $pagesize =~ /^\d+$/ ) {
+            $ctxt->object->attribute( pagesize => $pagesize );
+        }
     }
 
     my $dbdsn  = $self->param( 'dbdsn' );
@@ -247,7 +249,7 @@ sub _generate_body_from_sql {
 
     # connect to database using agent user
     my $dbh = $self->_agentdbh( $ctxt );
-    return 0 unless defined $dbh;
+    return 0 unless $dbh;
 
     if ( XIMS::Config::SQLReportTestGrantedSchemas() and XIMS::Config::SQLReportTestGrantedSchemas() == 1 ) {
         # check for granted schema privileges
@@ -513,7 +515,7 @@ sub _agentdbh {
         eval {
             $dbh = DBIx::SQLEngine->new( $dbdsn, $dbuser, $dbpwd );
         };
-        if ( $@ ) {
+        if ( $@ or not defined $dbh ) {
             XIMS::Debug( 2, "Could not connect to database: $@");
             return $self->sendError( $ctxt, "Could not connect to database: $@");
         }

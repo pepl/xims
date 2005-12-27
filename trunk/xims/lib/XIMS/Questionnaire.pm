@@ -720,12 +720,14 @@ sub tan_ok() {
     my @nodes = $questionnaire->findnodes( "/questionnaire/tanlist" );
     # look if TAN is in one of the TAN-Lists
     # for each TAN-List look if given TAN is in it
-    my $tan_list;
+    my $tan_listnode;
     my $TAN_List;
-    foreach $tan_list ( @nodes ) {
-        #warn (">>>>".Dumper(XIMS::TAN_List->new( document_id => $tan_list->getAttribute("id") )));
-        $TAN_List = "," . XIMS::TAN_List->new( document_id => $tan_list->getAttribute("id") )->body() . ",";
-        last if $tan_ok = ($TAN_List =~ /,$tan,/ );
+    my $a_single_tan;
+    foreach $tan_listnode ( @nodes ) {
+        my $TAN_List = XIMS::TAN_List->new( document_id => $tan_listnode->getAttribute("id"), marked_deleted => undef );
+        next unless defined $TAN_List;
+        $a_single_tan = "," . $TAN_List->body() . ",";
+        last if $tan_ok = ($a_single_tan =~ /,$tan,/ );
     }
 
     # Return result
