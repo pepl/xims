@@ -127,9 +127,13 @@ sub event_edit {
     my $edit_id = $self->param('qid');
     my %params = $self->Vars;
     my $q_dom = $object->form_to_xml( %params );
-    # replace x between ids with ., except a tanlist is added
-    # tanlists are added by path not id
-    $edit_id =~ s/x/\./g unless $method eq 'add_tanlist';
+
+    if ( defined $edit_id ) {
+        # replace x between ids with ., except a tanlist is added
+        # tanlists are added by path not id
+        $edit_id =~ s/x/\./g unless $method eq 'add_tanlist';
+    }
+
     # after the form has been processed to xml we don't need the
     # form-params anymore, to avoid problems with later serialization
     foreach ( $self->param() ) {
@@ -195,7 +199,7 @@ sub event_answer {
     }
     XIMS::Debug(6, "Result: TAN = $tan");
     # if TAN is submitted and TAN is needed check in TAN_List
-    if ( $tan_needed && $object->tan_ok( $tan ) ) {
+    if ( $tan_needed ) {
         if (! $object->tan_ok( $tan ) ) {
             #if TAN does not match display message and restart questionnaire
             XIMS::Debug( 6, "Result: TAN does not match" );

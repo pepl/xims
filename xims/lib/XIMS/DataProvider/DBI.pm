@@ -834,12 +834,12 @@ sub new {
 
     # XIMS::Debug( 6, "parameters: @_" );
 
-    if ( exists $args{dbdsn}  and exists $args{dbuser} and exists $args{dbpasswd} ) {
+    if ( exists $args{dbdsn} and exists $args{dbuser} and exists $args{dbpasswd} ) {
         XIMS::Debug( 4, "establishing database connection");
         my $dbh;
 
         eval {
-            $dbh = DBIx::SQLEngine->new( $args{dbdsn},  $args{dbuser}, $args{dbpasswd} );
+            $dbh = DBIx::SQLEngine->new( $args{dbdsn}, $args{dbuser}, $args{dbpasswd} );
         };
 
         if ( $@ ) {
