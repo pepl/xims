@@ -307,6 +307,20 @@ sub event_bxeconfig {
 #                <s:description show="1">Description</s:description>
 #                <text/>
 #            </element>
+#            <element name="public">
+#              <s:description>The event is public?</s:description>
+#              <s:datatype>boolean</s:datatype>
+#              <text/>
+#            </element>
+#            <element name="type">
+#              <s:description>Type of event</s:description>
+#              <s:datatype>stringoptions</s:datatype>
+#              <s:select>
+#                  <s:option>seminar</s:option>
+#                  <s:option>talk</s:option>
+#              </s:select>
+#              <text/>
+#            </element>
 #        </element>
 #      </oneOrMore>
 #    </element>
@@ -368,7 +382,7 @@ sub event_simpleformedit {
                             );
     while ( my ($xpath, $result) = each %validation_checks ) {
         if ( $schemaroot->findvalue($xpath) ne $result ) {
-            XIMS::Debug( 3, "The schema does  not meet the simpleformedit validation checks." );
+            XIMS::Debug( 3, "The schema does not meet the simpleformedit validation checks." );
             $self->sendError( $ctxt, "The schema does not meet the simpleformedit validation checks. Please update the schema as described in the documentation." );
             return 0;
         }
