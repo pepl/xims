@@ -46,6 +46,9 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    # to resolve the bookmark paths
+    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+
     # fill $ctxt->objectlist with the 5 last modified objects readable by the user
     # we do not want to see the auto-generated .diff_to_second_last here
     my $object = XIMS::Object->new( User => $ctxt->session->user() );

@@ -49,6 +49,22 @@ body, html, div {
 	margin-top: 20px;
 }
 
+
+#bookmarklist {
+	padding: 0;
+	margin: 0 0 5px 10px;
+	list-style-type: none;
+}
+
+#bookmarklist li {
+	background: url(/ximsroot/images/icons/list_SymbolicLink.gif);
+	background-repeat:no-repeat;
+	background-position:0 0;
+	vertical-align:top;
+	padding: 0 0 0 1.8em;
+	margin: 0;
+}
+
 hr {
 	left: auto;
 	color: #eeeeee;

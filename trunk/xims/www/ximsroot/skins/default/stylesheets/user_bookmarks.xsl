@@ -38,28 +38,28 @@
 
 
 <xsl:template match="bookmarks">
-            <h2><xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>
-            <table cellpadding="3">
-                <xsl:apply-templates select="bookmark[owner_id=/document/context/session/user/name]">
-                    <xsl:sort select="stdhome" order="descending"/>
-                    <xsl:sort select="content_id" order="ascending"/>
-                </xsl:apply-templates>
-            </table>
+    <h2><xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>
+    <table cellpadding="3">
+        <xsl:apply-templates select="bookmark[owner_id=/document/context/session/user/name]">
+            <xsl:sort select="stdhome" order="descending"/>
+            <xsl:sort select="content_id" order="ascending"/>
+        </xsl:apply-templates>
+    </table>
 
-            <h2><xsl:value-of select="$i18n/l/Role"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>
-            <table cellpadding="3">
-                <xsl:apply-templates select="bookmark[owner_id!=/document/context/session/user/name]">
-                    <xsl:sort select="stdhome" order="descending"/>
-                    <xsl:sort select="content_id" order="ascending"/>
-                </xsl:apply-templates>
-            </table>
+    <h2><xsl:value-of select="$i18n/l/Role"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>
+    <table cellpadding="3">
+        <xsl:apply-templates select="bookmark[owner_id!=/document/context/session/user/name]">
+            <xsl:sort select="stdhome" order="descending"/>
+            <xsl:sort select="content_id" order="ascending"/>
+        </xsl:apply-templates>
+    </table>
 </xsl:template>
 
 <xsl:template match="bookmark[owner_id=/document/context/session/user/name]">
     <tr>
         <td width="400" valign="top">
             <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="SymbolicLink" title="SymbolicLink"/>&#160;
-            <a href="{$xims_box}{$goxims_content}{content_id}"><xsl:value-of select="content_id"/></a>
+            <xsl:call-template name="bookmark_link"/>
         </td>
         <td valign="top">
             <xsl:choose>
@@ -91,7 +91,7 @@
     <tr>
         <td width="400" valign="top">
             <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="SymbolicLink" title="SymbolicLink"/>&#160;
-            <a href="{$xims_box}{$goxims_content}{content_id}"><xsl:value-of select="content_id"/></a>
+            <xsl:call-template name="bookmark_link"/>
         </td>
         <td valign="top">
             <xsl:if test="stdhome = '1'">
@@ -99,6 +99,17 @@
             </xsl:if>
         </td>
     </tr>
+</xsl:template>
+
+<xsl:template name="bookmark_link">
+    <xsl:choose>
+        <xsl:when test="content_id != ''">
+            <a href="{$xims_box}{$goxims_content}{content_id}"><xsl:value-of select="content_id"/></a>
+        </xsl:when>
+        <xsl:otherwise>
+            <a href="{$xims_box}{$goxims_content}/">/root</a>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>
