@@ -135,5 +135,27 @@ select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template 
     </span>
 </xsl:template>
 
+<xsl:template match="bookmark">
+    <li>
+        <xsl:choose>
+            <xsl:when test="content_id != ''">
+                <a href="{$xims_box}{$goxims_content}{content_id}"><xsl:value-of select="content_id"/></a>
+            </xsl:when>
+            <xsl:otherwise>
+                <a href="{$xims_box}{$goxims_content}/">/root</a>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:text> (</xsl:text>
+        <xsl:choose>
+            <xsl:when test="owner_id=/document/context/session/user/@id"><xsl:value-of select="$i18n/l/personal"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="$i18n/l/via_role"/></xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="stdhome = 1">
+            <xsl:text>, </xsl:text><xsl:value-of select="$i18n/l/default_bookmark"/>
+        </xsl:if>
+        <xsl:text>)</xsl:text>
+    </li>
+</xsl:template>
+
 </xsl:stylesheet>
 

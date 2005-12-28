@@ -28,9 +28,15 @@
             </h1>
 
             <h2>Manage content</h2>
-                <p>
-                    Proceed to your <a href="{$xims_box}{$goxims}/defaultbookmark">default bookmark</a>
-                </p>
+                <div>
+                    Your <xsl:value-of select="$i18n/l/Bookmarks"/>:
+                    <ul id="bookmarklist">
+                        <xsl:apply-templates select="bookmarks/bookmark">
+                            <xsl:sort select="stdhome" order="descending"/>
+                            <xsl:sort select="content_id" order="ascending"/>
+                        </xsl:apply-templates>
+                    </ul>
+                </div>
 
                 <table>
                     <tr>

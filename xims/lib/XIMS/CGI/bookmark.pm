@@ -180,7 +180,7 @@ sub redirect_path {
     }
     else {
         $uri->path( XIMS::GOXIMS() . '/user' );
-        $uri->query( 'bookmarks=1;$query' );
+        $uri->query( "bookmarks=1;$query" );
     }
 
     #warn "redirecting to ". $uri->unparse();
