@@ -49,6 +49,9 @@ sub event_default {
     # to resolve the bookmark paths
     $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
 
+    # to resolve the role names
+    $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
+
     # fill $ctxt->objectlist with the 5 last modified objects readable by the user
     # we do not want to see the auto-generated .diff_to_second_last here
     my $object = XIMS::Object->new( User => $ctxt->session->user() );

@@ -148,7 +148,7 @@ select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template 
         <xsl:text> (</xsl:text>
         <xsl:choose>
             <xsl:when test="owner_id=/document/context/session/user/@id"><xsl:value-of select="$i18n/l/personal"/></xsl:when>
-            <xsl:otherwise><xsl:value-of select="$i18n/l/via_role"/></xsl:otherwise>
+            <xsl:otherwise><xsl:value-of select="$i18n/l/via_role"/>&#xa0;<xsl:value-of select="owner_id"/></xsl:otherwise>
         </xsl:choose>
         <xsl:if test="stdhome = 1">
             <xsl:text>, </xsl:text><xsl:value-of select="$i18n/l/default_bookmark"/>
