@@ -147,7 +147,7 @@ select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template 
         </xsl:choose>
         <xsl:text> (</xsl:text>
         <xsl:choose>
-            <xsl:when test="owner_id=/document/context/session/user/@id"><xsl:value-of select="$i18n/l/personal"/></xsl:when>
+            <xsl:when test="owner_id=/document/context/session/user/name"><xsl:value-of select="$i18n/l/personal"/></xsl:when>
             <xsl:otherwise><xsl:value-of select="$i18n/l/via_role"/>&#xa0;<xsl:value-of select="owner_id"/></xsl:otherwise>
         </xsl:choose>
         <xsl:if test="stdhome = 1">
