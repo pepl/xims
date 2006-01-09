@@ -190,6 +190,11 @@
                 <xsl:value-of select="@class"/>
             </xsl:attribute>
         </xsl:if>
+        <xsl:if test="@style != ''">
+            <xsl:attribute name="style">
+                <xsl:value-of select="@style"/>
+            </xsl:attribute>
+        </xsl:if>
     </img>
 </xsl:template>
 
