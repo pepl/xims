@@ -69,7 +69,14 @@ sub event_default {
         $offset = $offset * $limit;
     }
 
-    my $order = 'title ASC';
+    my $order;
+    my @properties = $ctxt->object->mapped_member_properties( part_of_title => 1, limit => 1, offset => 0 );
+    if ( $properties[0]->type() eq 'datetime' ) {
+        $order = 'title DESC';
+    }
+    else {
+        $order = 'title ASC';
+    }
 
     my %childrenargs;
     my $searchstring = $self->param('searchstring');

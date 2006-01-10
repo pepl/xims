@@ -93,8 +93,16 @@ sub update {
     if ( defined $member ) {
         my @title_props = $self->property_list( part_of_title => 1 );
         my @property_ids = map { $_->id() } @title_props;
-        my @data = $self->data_provider->getSimpleDBMemberPropertyValue( member_id => $member->id(), property_id => \@property_ids, properties => [ qw( value ) ] );
-        $self->title( join(', ', map { values %{$_} } @data) );
+        my @unsorted_data = $self->data_provider->getSimpleDBMemberPropertyValue( member_id => $member->id(), property_id => \@property_ids, properties => [ qw( value property_id ) ] );
+
+        # Prepare to sort property values by property position
+        my %data = map { $_->{'simpledbmemberpropertyvalue.property_id'} => $_->{'simpledbmemberpropertyvalue.value'} } @unsorted_data;
+        my @sorted_values;
+        foreach my $prop ( sort { $a->position() <=> $b->position() } @title_props ) {
+            push (@sorted_values, $data{$prop->id()});
+        }
+        
+        $self->title( join(', ', @sorted_values) );
     }
 
     return $self->SUPER::update( @_ );
