@@ -68,6 +68,8 @@ sub mapped_member_properties {
     $params{part_of_title} = delete $args{part_of_title} if exists $args{part_of_title};
     $params{gopublic} = delete $args{gopublic} if exists $args{gopublic};
     $params{order} = 'position ASC';
+    $params{limit} = delete $args{limit} if exists $args{limit};
+    $params{offset} = delete $args{offset} if exists $args{offset};
 
     # Think of doing a join instead of the two queries here...
     my @property_data = $self->data_provider->getSimpleDBMemberPropertyMap( document_id => $self->document_id(), properties => [ qw( property_id ) ] );
