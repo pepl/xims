@@ -286,8 +286,9 @@ sub event_import {
     inst => [ "" ],
     advisor => [ "" ],
     degree => [ "" ],
-    identifier => [ "m:identifier[\@type!='citekey']" ],
-    status => [ "" ],
+    identifier => [ "m:identifier[\@type='oai' or \@type='doi']" ],
+    preprint_identifier => [ "m:relatedItem[\@type='otherVersion']/m:identifier[\@type='preprint']" ],
+    status => [ "m:status" ],
     conf_venue => [ "m:relatedItem[\@type='host']/m:location/m:physicalLocation|m:originInfo/m:place/m:placeTerm" ],
     conf_date => [ "m:relatedItem[\@type='host']/m:part/m:date" ],
     conf_title => [ "m:relatedItem[\@type='host']/m:titleInfo", $titlecallback ],
@@ -296,12 +297,14 @@ sub event_import {
     url => [ "m:location/m:url" ],
     access_timestamp => [ "" ],
     citekey => [ "m:identifier[\@type='citekey']" ],
+    workgroup => [ "m:workgroup" ],
                   );
 
     my %genremapping = ( periodical => 'Article',
                         book => 'Book',
                         "conference publication" => 'Proceeding',
-                        report => 'Report' );
+                        report => 'Report',
+                        eprint => 'Preprint', );
 
     my $modsimported = 0;
 
@@ -377,7 +380,12 @@ sub event_import {
             my $reference = XIMS::RefLibReference->new->data( reference_type_id => $reference_type->id() );
             $object->reference( $reference );
 
-            my $importer = XIMS::Importer::Object->new( User => $ctxt->session->user(), Parent => $ctxt->object() );
+            my $importer = XIMS::Importer::Object::ReferenceLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->object() );
+            my $identifier = XIMS::trim( XIMS::decode( $self->param( 'identifier' ) ) );
+            if ( not $importer->check_duplicate_identifier( $propertyvalues{identifier} ) ) {
+                XIMS::Debug( 3, "Reference with the same identifier already exists." );
+                next;
+            }
             $object->location( 'dummy.xml' );
             if ( $importer->import( $object ) ) {
                 XIMS::Debug( 4, "Import of ReferenceLibraryItem successful." );
