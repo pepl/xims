@@ -107,6 +107,12 @@ sub event_store {
             return 0
         }
         my $importer = XIMS::Importer::Object::ReferenceLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->parent() );
+        my $identifier = XIMS::trim( XIMS::decode( $self->param( 'identifier' ) ) );
+        if ( not $importer->check_duplicate_identifier( $identifier ) ) {
+            XIMS::Debug( 3, "Reference with the same identifier already exists." );
+            $self->sendError( $ctxt , "Reference with the same identifier already exists." );
+            return 0;
+        }
         $ctxt->object->location( 'dummy.xml' );
         if ( $importer->import( $ctxt->object() ) ) {
             XIMS::Debug( 4, "Import of ReferenceLibraryItem successful." );
