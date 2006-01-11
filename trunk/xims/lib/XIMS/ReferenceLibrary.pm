@@ -223,13 +223,13 @@ sub items_granted {
     }
 
     if ( defined $date ) {
-        $tables .= ', cireflib_reference_propertyvalues pv';
+        $tables .= ', cireflib_ref_propertyvalues pv';
         $conditions .= " AND pv.reference_id = r.id AND pv.property_id = (SELECT id FROM cireflib_reference_properties WHERE name = 'date') AND pv.value LIKE ?";
         push @values, $date;
     }
     if ( defined $workgroup_id ) {
         unless ( defined $date ) {
-            $tables .= ', cireflib_reference_propertyvalues pv';
+            $tables .= ', cireflib_ref_propertyvalues pv';
             $conditions .= ' AND pv.reference_id = r.id ';
         }
         $conditions .= " AND pv.property_id = (SELECT id FROM cireflib_reference_properties WHERE name = 'workgroup') AND pv.value LIKE ?";
