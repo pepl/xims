@@ -16,6 +16,7 @@ use XIMS::ReferenceLibraryItem;
 use XIMS::RefLibReferenceType;
 use XIMS::RefLibSerial;
 use XIMS::RefLibReferencePropertyValue;
+use XIMS::Importer::Object::ReferenceLibraryItem;
 use XML::LibXML;
 use File::Temp qw/ tempfile unlink0 /;
 
