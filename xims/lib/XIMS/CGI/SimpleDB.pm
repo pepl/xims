@@ -71,7 +71,7 @@ sub event_default {
 
     my $order;
     my @properties = $ctxt->object->mapped_member_properties( part_of_title => 1, limit => 1, offset => 0 );
-    if ( $properties[0]->type() eq 'datetime' ) {
+    if ( scalar @properties and $properties[0]->type() eq 'datetime' ) {
         $order = 'title DESC';
     }
     else {
