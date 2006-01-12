@@ -1,23 +1,20 @@
-# Copyright (c) 2002-2005 The XIMS Project.
+# Copyright (c) 2002-2006 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::SimpleDBItem;
 
 use strict;
-use vars qw( $VERSION @ISA );
-use XIMS::CGI;
+use warnings;
+
+our $VERSION;
+$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+
+use base qw(XIMS::CGI);
 use XIMS::SimpleDB;
 use XIMS::SimpleDBMember;
 use XIMS::SimpleDBMemberPropertyValue;
 use Encode;
-
-use Data::Dumper;
-
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-@ISA = qw( XIMS::CGI );
 
 #use Data::Dumper;
 
@@ -179,7 +176,9 @@ sub update_properties {
     my $member = $ctxt->object->member;
 
     foreach my $property ( $ctxt->object->property_list() ) {
-        my $value = $self->param( 'simpledb_' . $property->name() );
+        my $propertyname = $property->name();
+        $propertyname = Encode::encode_utf8( $propertyname ) if Encode::is_utf8( $propertyname );
+        my $value = $self->param( 'simpledb_' . $propertyname );
         next unless defined $value;
         $value = XIMS::trim( XIMS::decode( $value ) );
 
