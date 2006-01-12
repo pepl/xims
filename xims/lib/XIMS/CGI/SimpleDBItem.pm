@@ -188,7 +188,7 @@ sub update_properties {
 
         my $simpledbpropval = XIMS::SimpleDBMemberPropertyValue->new( property_id => $property->id(), member_id => $member->id() );
         if ( defined $simpledbpropval ) {
-            if ( $simpledbpropval->value ne $value ) {
+            if ( not defined $value or defined $value and $simpledbpropval->value ne $value ) {
                 $simpledbpropval->value( $value );
                 if ( $simpledbpropval->update() ) {
                     XIMS::Debug( 4, "Updated value of " . $property->name() );
