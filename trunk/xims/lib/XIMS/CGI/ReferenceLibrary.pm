@@ -383,7 +383,7 @@ sub event_import {
 
             my $importer = XIMS::Importer::Object::ReferenceLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->object() );
             my $identifier = XIMS::trim( XIMS::decode( $self->param( 'identifier' ) ) );
-            if ( not $importer->check_duplicate_identifier( $propertyvalues{identifier} ) ) {
+            if ( defined $identifier and defined $propertyvalues{identifier} and not $importer->check_duplicate_identifier( $propertyvalues{identifier} ) ) {
                 XIMS::Debug( 3, "Reference with the same identifier already exists." );
                 next;
             }
