@@ -14,7 +14,7 @@ use XIMS::SimpleDBItem;
 use XIMS::SimpleDBMemberPropertyValue;
 use XIMS::SimpleDBMemberProperty;
 
-use Data::Dumper;
+#use Data::Dumper;
 
 sub registerEvents {
     XIMS::Debug( 5, "called");
@@ -32,6 +32,7 @@ sub registerEvents {
           unpublish
           create_property_mapping
           update_property_mapping
+          delete_property_mapping
           )
         );
 }
@@ -172,6 +173,8 @@ sub event_update_property_mapping {
         return $self->sendError( $ctxt, "Valid property_id needed." );
     }
 
+    my $old_position = $property->position();
+
     my %values;
     foreach my $name ( $property->fields() ) {
         next if ( $name eq 'id' or $name eq 'type' ); # skip fields that cannot be updated
@@ -180,15 +183,65 @@ sub event_update_property_mapping {
         $property->$name( $value );
     }
 
-    if ( not $property->update() ) {
-        XIMS::Debug( 3, "Could not update property " . $property->name() . "." );
+    my $new_position = $property->position();
+
+    eval { $property->update(); };
+    if ( $@ ) {
+        XIMS::Debug( 3, "Could not update property " . $property->name() . ": $@." );
         return $self->sendError( $ctxt, "Could not update property " . $property->name() . "." );
+    }
+    else {
+        if ( $old_position != $new_position and not $ctxt->object->reposition_property( old_position => $old_position,
+                                                                                        new_position => $new_position,
+                                                                                        property_id => $property_id ) ) {
+            XIMS::Debug( 3, "Could not reposition property " . $property->name() . "." );
+        }
     }
 
     $self->redirect( $self->redirect_path( $ctxt ) . '?edit=1;property_id=' . $property_id . ';message=Property%20updated' );
     return 1;
 }
 
+sub event_delete_property_mapping {
+    my ( $self, $ctxt) = @_;
+    XIMS::Debug( 5, "called" );
+
+    # operation control section
+    unless ( $ctxt->session->user->object_privmask( $ctxt->object() ) & XIMS::Privileges::DELETE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    my $property_id = $self->param('property_id');
+    if ( not defined $property_id or $property_id !~ /^\d+$/ ) {
+        XIMS::Debug( 3, "Valid property_id needed" );
+        return $self->sendError( $ctxt, "Valid property_id needed." );
+    }
+
+    my $property = XIMS::SimpleDBMemberProperty->new( id => $property_id );
+    if ( not defined $property ) {
+        XIMS::Debug( 3, "Valid property_id needed" );
+        return $self->sendError( $ctxt, "Valid property_id needed." );
+    }
+
+    my $property_name = $property->name();
+
+    # Close the position gap resulting from the deletion
+    eval { $ctxt->object->close_property_position_gap( position => $property->position() ); };
+    if ( $@ ) {
+        XIMS::Debug( 3, "Could not close position gap " . $property_name . " $@." );
+        return $self->sendError( $ctxt, "Could not delete property " . $property_name . "." );
+    }
+
+    # Actually delete the property. This will cascade to the mapping and value tables!
+    eval { $property->delete(); };
+    if ( $@ ) {
+        XIMS::Debug( 3, "Could not delete property " . $property_name . " $@." );
+        return $self->sendError( $ctxt, "Could not delete property " . $property_name . "." );
+    }
+
+    $self->redirect( $self->redirect_path( $ctxt ) . '?edit=1;message=Property%20%22' . $property_name . '%22%20deleted' );
+    return 1;
+}
 
 sub event_copy {
     XIMS::Debug( 5, "called" );
