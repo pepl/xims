@@ -73,7 +73,7 @@ sub event_default {
     my $order;
     my %propargs;
     my %childrenargs;
-    if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+    if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
         $propargs{gopublic} = 1;
         $childrenargs{gopublic} = 1;
     }
