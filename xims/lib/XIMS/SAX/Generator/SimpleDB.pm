@@ -57,7 +57,7 @@ sub prepare {
     if ( $ctxt->object->isa('XIMS::SimpleDB') ) {
         my %args;
         # Filter out member properties with gopublic==1 if the user comes in through gopublic
-        $args{gopublic} = 1 if defined $ctxt->apache()->dir_config('ximsPublicUserName');
+        $args{gopublic} = 1 if (defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID());
         my @property_list = $ctxt->object->mapped_member_properties( %args );
         $doc_data->{member_properties} = { member_property => \@property_list };
     }
