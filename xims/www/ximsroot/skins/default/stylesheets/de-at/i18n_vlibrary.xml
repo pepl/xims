@@ -27,4 +27,5 @@
     <Serial>Reihe/Journal</Serial>
     <Import>Importieren</Import>
     <Split_by_semicolon>Mehrere Einträge durch ein Semikolon (;) trennen</Split_by_semicolon>
+    <AuthorStringFormat>Autoreneingabeformat: Vorname (opt: 2.Vorname) Nachname (opt:, Suffix)</AuthorStringFormat>
 </l>

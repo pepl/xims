@@ -88,7 +88,6 @@
     <tr>
         <td valign="top">
             <xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/>
-            <br/>(<xsl:value-of select="$i18n_vlib/l/Split_by_semicolon"/>.
         </td>
         <td colspan="2">
             <input tabindex="40" type="text" name="vlauthor" size="50" value="" class="text"/>
@@ -104,6 +103,9 @@
                 <xsl:text>&#160;</xsl:text>
                 <input type="submit" name="create_author_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
             </xsl:if>
+            <table style="position: absolute; display: inline; padding: 0px; margin: 0px 0px 0px 10px; line-height: 1em;"><tr><td>
+            <xsl:value-of select="$i18n_vlib/l/AuthorStringFormat"/>.<br/><xsl:value-of select="$i18n_vlib/l/Split_by_semicolon"/>.
+            </td></tr></table>
         </td>
     </tr>
 </xsl:template>
