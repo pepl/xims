@@ -266,11 +266,11 @@ sub event_import {
     chron => [ "" ],
     ssn => [ "" ],
     quarter => [ "" ],
-    volume => [ "//m:part/m:detail[\@type='volume']/m:number"],
-    part => [ "//m:part/m:detail[\@type='part']/m:title"],
-    issue => [ "//m:part/m:detail[\@type='issue']/m:number" ],
-    spage => [ "//m:part/m:extent[\@unit='page']/m:start|//m:part/m:detail[\@type='page']/m:number", sub { my $v = $_[0]->textContent(); $v =~ /^(\d+)\-?/; return $1 } ],
-    epage => [ "//m:part/m:extent[\@unit='page']/m:end|//m:part/m:detail[\@type='page']/m:number", sub { my $v = $_[0]->textContent(); $v =~ /\-?(\d+)$/; return $1 } ],
+    volume => [ "m:relatedItem[\@type='host']/m:part/m:detail[\@type='volume']/m:number|m:part/m:detail[\@type='volume']/m:number"],
+    part => [ "m:relatedItem[\@type='host']/m:part/m:detail[\@type='part']/m:title|m:part/m:detail[\@type='part']/m:title"],
+    issue => [ "m:relatedItem[\@type='host']/m:part/m:detail[\@type='issue']/m:number|m:part/m:detail[\@type='issue']/m:number" ],
+    spage => [ "m:relatedItem[\@type='host']/m:part/m:extent[\@unit='page']/m:start|m:relatedItem[\@type='host']/m:part/m:detail[\@type='page']/m:number|m:part/m:extent[\@unit='page']/m:start|m:part/m:detail[\@type='page']/m:number", sub { my $v = $_[0]->textContent(); $v =~ /^(\d+)\-?/; return $1 } ],
+    epage => [ "m:relatedItem[\@type='host']/m:part/m:extent[\@unit='page']/m:end|m:relatedItem[\@type='host']/m:part/m:detail[\@type='page']/m:number|m:part/m:extent[\@unit='page']/m:end|m:part/m:detail[\@type='page']/m:number", sub { my $v = $_[0]->textContent(); $v =~ /\-?(\d+)$/; return $1 } ],
     pages => [ "" ],
     artnum => [ "" ],
     isbn => [ "m:identifier[\@type='isbn']" ],
@@ -413,7 +413,7 @@ sub event_import {
 
         # Set abstract
         my $abstract = XIMS::clean( XIMS::nodevalue( $mods->findnodes( "m:abstract" ) ) );
-        $object->abstract( $abstract ) if ( defined $abstract and length $abstract );
+        $object->abstract( substr($abstract,0,2000) ) if ( defined $abstract and length $abstract );
 
         # Store the properties
         foreach my $property ( $object->property_list() ) {
