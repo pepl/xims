@@ -68,6 +68,7 @@
 
 
 <xsl:template match="children/object" mode="divlist">
+    <xsl:variable name="referencenumber"><xsl:number count="object" /></xsl:variable>
     <xsl:variable name="date" select="reference_values/reference_value[property_id=$daterefpropid]/value"/>
     <xsl:variable name="btitle" select="reference_values/reference_value[property_id=$btitlerefpropid]/value"/>
     <xsl:variable name="volume" select="reference_values/reference_value[property_id=$volumerefpropid]/value"/>
@@ -125,15 +126,15 @@
                 <xsl:when test="starts-with($identifier, 'doi:')">
                     <a href="http://www.crossref.org/openurl?url_ver=Z39.88-2004&amp;rft_id=info:doi/{substring-after($identifier,'doi:')}"><xsl:value-of select="$identifier"/></a>
                 </xsl:when>
-                
+
                 <xsl:otherwise>
                     <xsl:value-of select="$identifier"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
         <xsl:if test="abstract != ''">
-            &#xa0;<a href="#" onClick="blocking('abstract{position()}'); return false;">Toggle Abstract</a>
-            <div id="abstract{position()}" class="reflib_abstract" style="display: none"><xsl:apply-templates select="abstract"/></div>
+            &#xa0;<a href="#" onClick="blocking('abstract{$referencenumber}'); return false;">Toggle Abstract</a>
+            <div id="abstract{$referencenumber}" class="reflib_abstract" style="display: none"><xsl:apply-templates select="abstract"/></div>
         </xsl:if>
 <!--
         <xsl:if test="editorgroup/author">
