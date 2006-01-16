@@ -627,19 +627,27 @@
 </xsl:template>
 
 <xsl:template name="tr-valid_to">
+    <xsl:variable name="valid_to_timestamp_tmp">
+        <xsl:apply-templates select="valid_to_timestamp" mode="ISO8601-MinNoT"/>
+    </xsl:variable>
+    <xsl:variable name="valid_to_timestamp">
+        <xsl:if test="$valid_to_timestamp_tmp != '-- :'">
+            <xsl:value-of select="$valid_to_timestamp_tmp"/>
+        </xsl:if>
+    </xsl:variable>
     <tr>
         <td valign="top"><xsl:value-of select="$i18n/l/Valid_to"/></td>
         <td colspan="2">
-            <input tabindex="40" type="text" name="valid_to_timestamp" size="20" class="text">
-                <xsl:attribute name="value">
-                    <xsl:apply-templates select="valid_to_timestamp" mode="ISO8601-MinNoT"/>
-                </xsl:attribute>
-            </input>
+            <xsl:call-template name="jscalendar-selector">
+                <xsl:with-param name="timestamp_string" select="$valid_to_timestamp"/>
+                <xsl:with-param name="formfield_id" select="'valid_to_timestamp'"/>
+            </xsl:call-template>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Valid_to')" class="doclink">(?)</a>
         </td>
     </tr>
 </xsl:template>
+
 
 <xsl:template name="cttobject.status">
     <xsl:variable name="objecttype">

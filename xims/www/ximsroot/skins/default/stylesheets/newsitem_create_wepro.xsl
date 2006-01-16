@@ -26,6 +26,7 @@
                     <xsl:call-template name="tr-body-create_wepro"/>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-valid_from"/>
+                    <xsl:call-template name="tr-valid_to"/>
                     <tr>
                         <td colspan="3">
                             <xsl:call-template name="markednew"/>
