@@ -455,7 +455,7 @@ sub create_author_mapping_from_name {
         elsif ( scalar @namefrags == 2 ) {
             ($firstname, $lastname) = @namefrags;
         }
-        elsif ( scalar @namefrags > 3 ) {
+        else {
             XIMS::Debug( 3, "Invalid Name $value" );
             next;
         }
