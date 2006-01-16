@@ -70,7 +70,13 @@ sub event_default {
     }
 
     my $order;
-    my @properties = $ctxt->object->mapped_member_properties( part_of_title => 1, limit => 1, offset => 0 );
+    my %propargs;
+    my %childrenargs;
+    if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+        $propargs{gopublic} = 1;
+        $childrenargs{gopublic} = 1;
+    }
+    my @properties = $ctxt->object->mapped_member_properties( %propargs, part_of_title => 1, limit => 1, offset => 0 );
     if ( scalar @properties and $properties[0]->type() eq 'datetime' ) {
         $order = 'title DESC';
     }
@@ -78,7 +84,6 @@ sub event_default {
         $order = 'title ASC';
     }
 
-    my %childrenargs;
     my $searchstring = $self->param('searchstring');
     if ( defined $searchstring and length $searchstring ) {
         $childrenargs{searchstring} = "%$searchstring%";
