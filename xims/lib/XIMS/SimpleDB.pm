@@ -169,6 +169,7 @@ sub unmap_member_property {
 #
 #    $args{ searchstring } (optional) :  Filter items by searchstring; searchstring will be looked
 #                                        for in the mandatory member properties
+#    $args{ gopublic }     (optional) :  Filter properties where gopublic is set
 #
 # RETURNS
 #    $item_count:  Count of total items
@@ -186,6 +187,7 @@ sub items_granted {
     my %args = @_;
 
     my $searchstring = delete $args{searchstring};
+    my $gopublic = delete $args{gopublic};
 
     my $child_count;
     my @children;
@@ -221,6 +223,15 @@ sub items_granted {
                                                                      order => $args{order}
                                                                      );
 
+        my @gopublic_propids;
+        my %pv_param;
+        if ( $gopublic ) {
+            my @iddata = $self->data_provider->getSimpleDBMemberProperty( gopublic => 1,
+                                                                          properties => [ qw( id ) ] );
+            @gopublic_propids = map { values %{$_} } @iddata;
+            $pv_param{property_id} = \@gopublic_propids;
+        }
+
         my @childids;
         foreach my $kiddo ( @{$data} ) {
             push( @children, (bless $kiddo, 'XIMS::SimpleDBItem') );
@@ -228,7 +239,9 @@ sub items_granted {
             $privmask{$kiddo->{id}} = 0xffffffff if $self->User->admin();
 
             my @propdata = $self->data_provider->getSimpleDBMemberPropertyValue( member_id => $kiddo->{member_id},
-                                                                                properties => [ qw( property_id value ) ] );
+                                                                                 properties => [ qw( property_id value ) ],
+                                                                                 %pv_param,
+                                                                                 );
             my @propout = map { XIMS::SimpleDBMemberPropertyValue->new->data( %{$_} ) } @propdata;
             $kiddo->{member_values} = { member_value => \@propout };
         }
