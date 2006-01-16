@@ -2622,7 +2622,6 @@ sub balance_string {
 
     my $tmp_fh = IO::File->new( $tmp, 'w' );
     if ( defined $tmp_fh ) {
-        binmode $tmp_fh, ":utf8";
         print $tmp_fh XIMS::encode($CDATAstring);
         $tmp_fh->close;
         XIMS::Debug( 4, "Temporary file written" );
