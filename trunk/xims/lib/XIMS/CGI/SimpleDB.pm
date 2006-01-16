@@ -85,8 +85,14 @@ sub event_default {
         $order = 'title ASC';
     }
 
-    my $searchstring = $self->param('searchstring');
-    if ( defined $searchstring and length $searchstring ) {
+    # May come in as latin1 via gopublic
+    my $searchstring = XIMS::utf8_sanitize($self->param('searchstring'));
+    if ( defined $searchstring ) {
+        $self->param( 'searchstring', $searchstring ); # update CGI param, so that stylesheets get the right one
+    }
+    $searchstring ||= XIMS::decode($self->param('searchstring')); # fallback
+
+    if ( defined $searchstring and $searchstring =~ /^[^?_^`´%*]+/ ) {
         $childrenargs{searchstring} = "%$searchstring%";
     }
 
