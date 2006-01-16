@@ -58,7 +58,7 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $style = $self->param('cite_style');
+    my $style = $self->param('style');
     if ( defined $style ) {
         $ctxt->properties->application->style( $style );
     }
@@ -79,9 +79,16 @@ sub event_default {
     my %childrenargs;
     my $date = $self->param('date');
     my $author_id = $self->param('author_id');
-    my $author_lname = $self->param('author_lname');
     my $serial_id = $self->param('serial_id');
     my $workgroup_id = $self->param('workgroup_id');
+
+    # May come in as latin1 via gopublic
+    my $author_lname = XIMS::utf8_sanitize($self->param('author_lname'));
+    if ( defined $author_lname ) {
+        $self->param( 'author_lname', $author_lname ); # update CGI param, so that stylesheets get the right one
+    }
+    $author_lname ||= XIMS::decode($self->param('author_lname')); # fallback
+
     if ( defined $date and $date =~ /^\d+$/ ) {
         $childrenargs{date} = "%$date%";
     }
@@ -91,7 +98,7 @@ sub event_default {
     if ( defined $author_id and $author_id =~ /^\d+$/ ) {
         $childrenargs{author_id} = $author_id;
     }
-    elsif ( defined $author_lname and $author_lname =~ /^\w+\s*\w*$/ ) {
+    elsif ( defined $author_lname and $author_lname =~ /^[^()!?_^`´'"%*]+/ ) {
         $childrenargs{author_lname} = "%$author_lname%";
     }
     if ( defined $serial_id and $serial_id =~ /^\d+$/ ) {

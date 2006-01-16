@@ -331,7 +331,7 @@ z-index:100;
                 </td>
                 <td style="border: 1px dotted black;">
                     <div>
-                        Export<!--:<xsl:call-template name="reflib_exportwidget"/>-->
+                        Export MODS file <xsl:call-template name="reflib_exportwidget"/>
                     </div>
                 </td>
             </tr>
@@ -341,15 +341,11 @@ z-index:100;
 
 <xsl:template name="reflib_exportwidget">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="GET" id="export" name="export">
-        <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="exportformat" id="exportformat">
-            <option value="html">MODS</option>
-            <option value="bibtext">BiBTeX</option>
-        </select>
         <input type="hidden" name="author_lname" value="{$author_lname}"/>
         <input type="hidden" name="author_id" value="{$author_id}"/>
         <input type="hidden" name="serial_id" value="{$serial_id}"/>
         <input type="hidden" name="date" value="{$date}"/>
-        <input type="hidden" name="export" value="1"/>
+        <input type="hidden" name="style" value="export_mods"/>
         <input type="image"
                 name="export"
                 src="{$skimages}go.png"
@@ -364,7 +360,7 @@ z-index:100;
 
 <xsl:template name="reflib_citationview">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="GET" id="citation_view" name="citation_view">
-        <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="cite_style" id="cite_style">
+        <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="style" id="style">
             <option value="cv_defaultstyle">default style</option>
         </select>
         <input type="hidden" name="author_lname" value="{$author_lname}"/>
