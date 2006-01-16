@@ -193,18 +193,23 @@
     <tr>
         <td valign="top"><xsl:value-of select="$i18n_simpledb/l/Position"/></td>
         <td>
-            <input id="sdbp_position" tabindex="54" type="text" name="sdbp_position" size="4" class="text">
-                <xsl:attribute name="value">
-                    <xsl:choose>
-                        <xsl:when test="$property_id = ''">
-                            <xsl:value-of select="$maxposition+1"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="/document/member_properties/member_property[@id=$property_id]/position"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:attribute>
-            </input>
+            <xsl:choose>
+                <xsl:when test="$property_id = ''">
+                    <input id="sdbp_position" type="text" size="4" name="sdbp_position" readonly="readonly" class="readonlytext" value="{$maxposition+1}"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <select id="sdbp_position" tabindex="54" name="sdbp_position" class="text">
+                        <xsl:for-each select="/document/member_properties/member_property/position">
+                            <option>
+                                <xsl:if test=". = /document/member_properties/member_property[@id=$property_id]/position">
+                                    <xsl:attribute name="selected" select="'selected'"/>
+                                </xsl:if>
+                                <xsl:value-of select="."/>
+                            </option>
+                        </xsl:for-each>
+                    </select>
+                </xsl:otherwise>
+            </xsl:choose>
         </td>
     </tr>
 </xsl:template>
@@ -249,13 +254,10 @@
                             />
                         </a>
                     </td>
-<!-- Only delete if no Item exists with a mapping to that property
-     TODO
-
                     <td>
                         <xsl:if test="/document/context/object/user_privileges/delete">
                             <xsl:text> </xsl:text>
-                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1;property_id={@id};delete_property_mapping" onClick="javascript:return confirm('{$i18n_simpledb/l/Sure_to_delete}Sure to delete')">
+                            <a href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onClick="javascript:return confirm('{$i18n_simpledb/l/Sure_to_delete}')">
                                 <input
                                     type="image"
                                     name="property_delete{@id}"
@@ -269,7 +271,6 @@
                             </a>
                         </xsl:if>
                     </td>
--->
                 </tr>
             </table>
         </div>

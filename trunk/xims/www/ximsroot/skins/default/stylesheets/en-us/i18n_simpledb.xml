@@ -23,4 +23,5 @@
     <gopublic>Available through gopublic</gopublic>
     <String_options>Options</String_options>
     <Download_access_xmlimport>Download MS-Access XML-Import file</Download_access_xmlimport>
+    <Sure_to_delete>Are you sure to delete? Existing values of entries will also be deleted!</Sure_to_delete>
 </l>

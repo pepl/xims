@@ -156,6 +156,117 @@ sub unmap_member_property {
 ##
 #
 # SYNOPSIS
+#    my $boolean = $item->reposition_property( %args );
+#
+# PARAMETER
+#    $args{ old_position }    :  Old position
+#    $args{ new_position }    :  New position
+#    $args{ property_id }     :  Member property_id
+#
+# RETURNS
+#    $boolean : True or False for repositioning the property
+#
+# DESCRIPTION
+#    Updates position of the member property for a SimpleDB instance
+#
+sub reposition_property {
+    my $self = shift;
+    my %args = @_;
+
+    my $old_position = delete $args{old_position};
+    return undef unless $old_position;
+
+    my $new_position = delete $args{new_position};
+    return undef unless $new_position;
+
+    return undef if $old_position == $new_position;
+
+    my $property_id = delete $args{property_id};
+    return undef unless defined $property_id;
+
+    return undef unless $self->document_id();
+    my $position_diff = $old_position - $new_position;
+
+    my ( $udop, $upperop, $lowerop );
+    if ( $position_diff > 0 ) {
+        $udop    = "+";
+        $upperop = "<";
+        $lowerop = ">=";
+    }
+    else {
+        $udop    = "-";
+        $upperop = ">";
+        $lowerop = "<=";
+    }
+
+    my @iddata = $self->data_provider->getSimpleDBMemberPropertyMap( document_id => $self->document_id(),
+                                                                     properties => [ qw( id ) ] );
+    my @property_ids = map { values %{$_} } @iddata;
+    my $property_id_quotes = join(',', map { '?' } @property_ids);
+
+    my $data = $self->data_provider->dbh->do_update( sql => [ qq{UPDATE cisimpledb_member_properties
+                                                    SET
+                                                      position = position $udop 1
+                                                    WHERE
+                                                      position $upperop ?
+                                                      AND position $lowerop ?
+                                                      AND id IN ($property_id_quotes)
+                                                    }
+                                                  , $old_position
+                                                  , $new_position
+                                                  , @property_ids
+                                               ],
+                                       );
+
+    $data = $self->data_provider->dbh->do_update( table    => 'cisimpledb_member_properties',
+                                     values   => { 'position' => $new_position },
+                                     criteria => { id => $property_id } );
+
+    return $data;
+}
+
+##
+#
+# SYNOPSIS
+#    my $boolean = $item->close_property_position_gap( %args );
+#
+# PARAMETER
+#    $args{ position }        :  Position of property to be deleted
+#
+# RETURNS
+#    $boolean : True or False for closing the property position gap
+#
+# DESCRIPTION
+#    Closes the position gap resulting in the deletion of a member property of a SimpleDB instance
+#
+sub close_property_position_gap {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    return undef unless defined $args{position};
+    return undef unless $self->document_id();
+
+    my @iddata = $self->data_provider->getSimpleDBMemberPropertyMap( document_id => $self->document_id(),
+                                                                     properties => [ qw( id ) ] );
+    my @property_ids = map { values %{$_} } @iddata;
+    my $property_id_quotes = join(',', map { '?' } @property_ids);
+
+    return $self->data_provider->dbh->do_update( sql => [ qq{UPDATE cisimpledb_member_properties
+                                                  SET
+                                                    position = position - 1
+                                                  WHERE
+                                                    position > ?
+                                                    AND id IN ($property_id_quotes)}
+                                                , $args{position}
+                                                , @property_ids
+                                           ]
+                                  );
+}
+
+##
+#
+# SYNOPSIS
 #    my ($item_count, $items) = $simpledb->items_granted( [ %args ] )
 #
 # PARAMETER
