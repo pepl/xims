@@ -950,7 +950,7 @@ sub init_store_object {
         }
     }
 
-    # valid_to must not be before than valid_from
+    # valid_to must not be before valid_from
     if ( defined $object->valid_to_timestamp() && defined $object->valid_from_timestamp() &&
          Time::Piece->strptime($object->valid_to_timestamp(), "%Y-%m-%d %H:%M" )
          < Time::Piece->strptime($object->valid_from_timestamp(), "%Y-%m-%d %H:%M" )) {
