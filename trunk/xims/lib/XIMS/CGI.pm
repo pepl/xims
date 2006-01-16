@@ -936,7 +936,7 @@ sub init_store_object {
     if ( defined $valid_to ) {
         XIMS::Debug( 6, "valid_to: $valid_to" );
         if ( length $valid_to ) {
-            eval { $valid_to = Time::Piece->strptime( $valid_from, "%Y-%m-%d %H:%M" ); };
+            eval { $valid_to = Time::Piece->strptime( $valid_to, "%Y-%m-%d %H:%M" ); };
             if ( not $@ ) {
                 $valid_to = $valid_to->ymd() . ' ' . $valid_to->hms();
                 $object->valid_to_timestamp( $valid_to );
@@ -948,6 +948,13 @@ sub init_store_object {
         else {
             $object->valid_to_timestamp( undef );
         }
+    }
+
+    # valid_to must not be before than valid_from
+    if ( defined $object->valid_to_timestamp() && defined $object->valid_from_timestamp() &&
+         Time::Piece->strptime($object->valid_to_timestamp(), "%Y-%m-%d %H:%M" )
+         < Time::Piece->strptime($object->valid_from_timestamp(), "%Y-%m-%d %H:%M" )) {
+        $object->valid_to_timestamp($object->valid_from_timestamp());
     }
 
     return 1;

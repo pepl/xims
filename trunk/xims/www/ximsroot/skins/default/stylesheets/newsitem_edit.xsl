@@ -33,6 +33,7 @@
                     <xsl:call-template name="trytobalance"/>
                     <xsl:call-template name="tr-keywords-edit"/>
                     <xsl:call-template name="tr-valid_from"/>
+                    <xsl:call-template name="tr-valid_to"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="expandrefs"/>
                 </table>
