@@ -17,6 +17,7 @@
 <!--<xsl:key name="reftype_id_by_date" match="children/object" use="concat(reference_type_id, '+', reference_values/reference_value[property_id=3]/value)" />-->
 
 <xsl:param name="css" select="concat($ximsroot,'skins/',$currentskin,'/stylesheets/reference_library_cv_defaultstyle.css')"/>
+<xsl:param name="ptitle"/>
 
 <xsl:variable name="volumerefpropid" select="/document/reference_properties/reference_property[name='volume']/@id"/>
 <xsl:variable name="issuerefpropid" select="/document/reference_properties/reference_property[name='issue']/@id"/>
@@ -31,6 +32,9 @@
     <html>
         <xsl:call-template name="head_default"/>
         <body>
+            <xsl:if test="$ptitle != ''">
+                <h1 id="reflib_ptitle"><xsl:value-of select="$ptitle"/></h1>
+            </xsl:if>
             <div id="reflib_citebody">
                 <xsl:for-each select="children/object/reference_values/reference_value[property_id=3]/value[generate-id(.)=generate-id(key('year',.)[1])]">
                     <!--<xsl:sort select="substring-before(., '-')" order="descending"/>-->
