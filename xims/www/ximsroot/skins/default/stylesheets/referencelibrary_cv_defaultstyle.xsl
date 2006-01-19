@@ -89,7 +89,7 @@
             <xsl:choose>
                 <xsl:when test="authorgroup/author">
                     <xsl:apply-templates select="authorgroup/author">
-                        <xsl:sort select="position" order="ascending"/>
+                        <xsl:sort select="authorgroup/author/position" order="ascending"/>
                     </xsl:apply-templates>
                 </xsl:when>
                 <xsl:otherwise>
