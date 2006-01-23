@@ -122,7 +122,7 @@
     <xsl:choose>
         <xsl:when test="authorgroup/author">
             <xsl:apply-templates select="authorgroup/author">
-                <xsl:sort select="position" order="ascending"/>
+                <xsl:sort select="position" order="ascending" data-type="number"/>
             </xsl:apply-templates>
         </xsl:when>
         <xsl:otherwise>Anonymous</xsl:otherwise>
@@ -130,7 +130,7 @@
 
     <xsl:if test="editorgroup/author">
         <xsl:apply-templates select="editorgroup/author">
-            <xsl:sort select="position" order="ascending"/>
+            <xsl:sort select="position" order="ascending" data-type="number"/>
         </xsl:apply-templates>
     </xsl:if>
 
