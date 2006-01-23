@@ -28,6 +28,7 @@
 <xsl:variable name="identifierrefpropid" select="/document/reference_properties/reference_property[name='identifier']/@id"/>
 <xsl:variable name="urlrefpropid" select="/document/reference_properties/reference_property[name='url']/@id"/>
 <xsl:variable name="url2refpropid" select="/document/reference_properties/reference_property[name='url2']/@id"/>
+<xsl:variable name="artnumrefpropid" select="/document/reference_properties/reference_property[name='artnum']/@id"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -38,8 +39,8 @@
             </xsl:if>
             <div id="reflib_citebody">
                 <xsl:for-each select="children/object[count(. | key('year', substring(reference_values/reference_value[property_id=3]/value,1, 4))[1]) = 1]">
-                    <!--<xsl:sort select="substring-before(., '-')" order="descending"/>-->
-                    <xsl:sort select="." order="descending"/>
+                    <!--<xsl:sort select="substring(., 1,4)" order="descending"/>-->
+                    <xsl:sort select="substring(reference_values/reference_value[property_id=3]/value,1, 4)" order="descending"/>
                     <xsl:variable name="date" select="substring(reference_values/reference_value[property_id=3]/value,1, 4)"/>
                     <h2>
                         <xsl:value-of select="$date"/>
@@ -85,13 +86,14 @@
     <xsl:variable name="identifier" select="reference_values/reference_value[property_id=$identifierrefpropid]/value"/>
     <xsl:variable name="url" select="reference_values/reference_value[property_id=$urlrefpropid]/value"/>
     <xsl:variable name="url2" select="reference_values/reference_value[property_id=$url2refpropid]/value"/>
+    <xsl:variable name="artnum" select="reference_values/reference_value[property_id=$artnumrefpropid]/value"/>
     <xsl:variable name="serial_id" select="serial_id"/>
     <li class="reflib_citation" name="reflib_citation">
         <span class="reflib_authors">
             <xsl:choose>
                 <xsl:when test="authorgroup/author">
                     <xsl:apply-templates select="authorgroup/author">
-                        <xsl:sort select="authorgroup/author/position" order="ascending"/>
+                        <xsl:sort select="./position" order="ascending" data-type="number"/>
                     </xsl:apply-templates>
                 </xsl:when>
                 <xsl:otherwise>
@@ -121,7 +123,8 @@
                 <xsl:value-of select="$pages"/>
             </xsl:when>
         </xsl:choose>
-        <xsl:if test="$date != ''"> (<xsl:value-of select="substring($date,1,4)"/>)</xsl:if>
+        <xsl:if test="$artnum != ''">, <xsl:value-of select="$artnum"/></xsl:if>
+        <xsl:if test="$date != ''">&#xa0;(<xsl:value-of select="substring($date,1,4)"/>)</xsl:if>
         <xsl:if test="$url != ''">&#xa0;<a href="{$url}">URL</a></xsl:if>
         <xsl:if test="$url2 != ''">&#xa0;<a href="{$url2}">Alternative URL (local copy)</a></xsl:if>
         <xsl:if test="$identifier != ''">;
@@ -154,7 +157,7 @@
 
 <xsl:template match="authorgroup/author|editorgroup/author">
     <span class="reflib_author">
-        <xsl:if test="firstname != ''"><xsl:choose><xsl:when test="contains(firstname,'.')"><xsl:value-of select="firstname"/></xsl:when><xsl:otherwise><xsl:value-of select="substring(firstname, 1,1)"/>.</xsl:otherwise></xsl:choose> </xsl:if><xsl:value-of select="lastname"/>
+        <xsl:if test="firstname != ''"><xsl:choose><xsl:when test="contains(firstname,'.')"><xsl:value-of select="firstname"/></xsl:when><xsl:otherwise><xsl:value-of select="substring(firstname, 1,1)"/>.</xsl:otherwise></xsl:choose><xsl:text> </xsl:text></xsl:if><xsl:if test="middlename != ''"><xsl:choose><xsl:when test="contains(middlename,'.')"><xsl:value-of select="middlename"/></xsl:when><xsl:otherwise><xsl:value-of select="substring(middlename, 1,1)"/>.</xsl:otherwise></xsl:choose><xsl:text> </xsl:text></xsl:if><xsl:value-of select="lastname"/>
         <xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
     </span>
 </xsl:template>
@@ -189,3 +192,4 @@ function blocking(nr) {
 </xsl:template>
 
 </xsl:stylesheet>
+

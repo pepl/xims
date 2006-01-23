@@ -154,7 +154,7 @@ z-index:100;
             <xsl:choose>
                 <xsl:when test="authorgroup/author">
                     <xsl:apply-templates select="authorgroup/author">
-                        <xsl:sort select="position" order="ascending"/>
+                        <xsl:sort select="position" order="ascending" data-type="number"/>
                     </xsl:apply-templates>
                 </xsl:when>
                 <xsl:otherwise>
@@ -185,7 +185,7 @@ z-index:100;
             <div class="reflib_editors">
                 <strong>Editors</strong>:
                     <xsl:apply-templates select="editorgroup/author">
-                        <xsl:sort select="position" order="ascending"/>
+                        <xsl:sort select="position" order="ascending" data-type="number"/>
                     </xsl:apply-templates>
             </div>
         </xsl:if>
@@ -321,7 +321,7 @@ z-index:100;
             <tr>
                 <td style="border: 1px dotted black;">
                     <div>
-                        View citations:<xsl:call-template name="reflib_citationview"/>
+                        View citations <xsl:call-template name="reflib_citationview"/>
                     </div>
                 </td>
                 <td style="border: 1px dotted black;">

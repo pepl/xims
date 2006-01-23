@@ -30,7 +30,7 @@
                                         <div>
                                             <xsl:value-of select="$i18n_vlib/l/authors"/>:<br/>
                                             <xsl:apply-templates select="authorgroup/author">
-                                                <xsl:sort select="position" order="ascending"/>
+                                                <xsl:sort select="position" order="ascending" data-type="number"/>
                                             </xsl:apply-templates>
                                         </div>
                                     </td></tr>
@@ -39,7 +39,7 @@
                                         <div>
                                             <xsl:value-of select="$i18n_vlib/l/editors"/>:<br/>
                                             <xsl:apply-templates select="editorgroup/author">
-                                                <xsl:sort select="position" order="ascending"/>
+                                                <xsl:sort select="position" order="ascending" data-type="number"/>
                                             </xsl:apply-templates>
                                         </div>
                                     </td></tr>
