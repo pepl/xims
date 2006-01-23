@@ -79,8 +79,9 @@
             <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/></td>
             <td colspan="2">
                 <xsl:apply-templates select="authorgroup/author" mode="edit">
-                    <xsl:sort select="position"
-                              order="ascending"/>
+                    <xsl:sort select="./position"
+                              order="ascending"
+                              data-type="number"/>
                 </xsl:apply-templates>
             </td>
         </tr>
@@ -116,8 +117,9 @@
             <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/editors"/></td>
             <td colspan="2">
                 <xsl:apply-templates select="editorgroup/author" mode="edit">
-                    <xsl:sort select="position"
-                        order="ascending"/>
+                    <xsl:sort select="./position"
+                              order="ascending"
+                              data-type="number"/>
                 </xsl:apply-templates>
             </td>
         </tr>
