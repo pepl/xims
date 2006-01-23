@@ -89,7 +89,7 @@ sub event_default {
     }
     $author_lname ||= XIMS::decode($self->param('author_lname')); # fallback
 
-    if ( defined $date and $date =~ /^\d+$/ ) {
+    if ( defined $date and $date =~ /^[0-9-: T]+$/ ) { # allow ISO-8601 dates without timezone
         $childrenargs{date} = "%$date%";
     }
     if ( defined $workgroup_id and $workgroup_id =~ /^\d+$/ ) {
@@ -281,12 +281,12 @@ sub event_import {
     pages => [ "" ],
     artnum => [ "" ],
     isbn => [ "m:identifier[\@type='isbn']" ],
-    coden =>[ "" ],
+    coden =>[ "m:identifier[\@type='coden']" ],
     sici => [ "m:identifier[\@type='sici']" ],
     place => [ "m:originInfo/m:place/m:placeTerm" ],
     pub => [ "m:originInfo/m:publisher" ],
     edition => [ "m:originInfo/m:edition" ],
-    tpages => [ "" ],
+    tpages => [ "m:relatedItem[\@type='host']/m:part/m:extent[\@unit='page']/m:total|m:part/m:extent[\@unit='page']/m:total", sub { my $v = $_[0]->textContent(); $v =~ /\-?(\d+)$/; return $1 } ],
     series => [ "" ],
     issn => [ "m:identifier[\@type='issn']" ],
     bici => [ "m:identifier[\@type='bici']" ],
