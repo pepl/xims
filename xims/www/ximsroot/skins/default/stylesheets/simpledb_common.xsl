@@ -9,7 +9,7 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:str="http://exslt.org/strings"
-        extension-element-prefixes="str">
+        extension-element-prefixes="str" exclude-result-prefixes="str">
 
 <xsl:import href="common_jscalendar_scripts.xsl"/>
 
