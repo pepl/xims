@@ -8,7 +8,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="exslt">
 
     <xsl:import href="container_common.xsl"/>
     <xsl:import href="simpledb_common.xsl"/>
