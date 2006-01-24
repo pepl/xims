@@ -306,6 +306,7 @@ sub event_import {
     access_timestamp => [ "" ],
     citekey => [ "m:identifier[\@type='citekey']" ],
     workgroup => [ "m:workgroup" ],
+    project => [ "m:project" ],
                   );
 
     my %genremapping = ( periodical => 'Article',
