@@ -52,6 +52,7 @@
 <xsl:variable name="url2refpropid" select="/document/reference_properties/reference_property[name='url2']/@id"/>
 <xsl:variable name="workgrouprefpropid" select="/document/reference_properties/reference_property[name='workgroup']/@id"/>
 <xsl:variable name="preprint_identifierrefpropid" select="/document/reference_properties/reference_property[name='preprint_identifier']/@id"/>
+<xsl:variable name="projectrefpropid" select="/document/reference_properties/reference_property[name='project']/@id"/>
 
 <xsl:template match="/document/context/object">
     <modsCollection>
@@ -102,6 +103,7 @@
     <xsl:variable name="url2" select="reference_values/reference_value[property_id=$url2refpropid]/value"/>
     <xsl:variable name="workgroup" select="reference_values/reference_value[property_id=$workgrouprefpropid]/value"/>
     <xsl:variable name="preprint_identifier" select="reference_values/reference_value[property_id=$preprint_identifierrefpropid]/value"/>
+    <xsl:variable name="project" select="reference_values/reference_value[property_id=$projectrefpropid]/value"/>
 
     <xsl:variable name="serial_id" select="serial_id"/>
 
@@ -264,6 +266,9 @@
     </location>
     <xsl:if test="$workgroup != ''">
         <workgroup><xsl:value-of select="$workgroup"/></workgroup>
+    </xsl:if>
+    <xsl:if test="$project != ''">
+        <project><xsl:value-of select="$project"/></project>
     </xsl:if>
 </mods><xsl:text>
 
