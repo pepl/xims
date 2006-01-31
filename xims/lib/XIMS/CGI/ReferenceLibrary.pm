@@ -74,7 +74,7 @@ sub event_default {
         $offset ||= 0;
         $offset = $offset * $limit;
     }
-    my $order = 'title ASC';
+    my $order = 'last_modification_timestamp DESC';
 
     my %childrenargs;
     my $date = $self->param('date');
