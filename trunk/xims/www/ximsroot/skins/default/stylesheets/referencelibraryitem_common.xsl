@@ -293,7 +293,7 @@
     <xsl:param name="svlauthor" select="'svlauthor'"/>
     <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="{$svlauthor}">
         <xsl:apply-templates select="/document/context/vlauthors/author">
-            <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+            <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                       order="ascending"/>
         </xsl:apply-templates>
     </select>

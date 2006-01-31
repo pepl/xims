@@ -35,6 +35,9 @@
                     <h1>
                         <xsl:value-of select="title"/>
                     </h1>
+
+                    <xsl:call-template name="reflib.options"/>
+
                     <div id="reflib_resulttitle">
                         <table width="100%">
                             <tr>
@@ -71,8 +74,6 @@
                                         select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';m=',$m)"/>
                     </xsl:call-template>
 
-                    <xsl:call-template name="reflib.options"/>
-
                 </div>
                 <script src="{$ximsroot}skins/{$currentskin}/scripts/tooltip.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             </body>
@@ -83,7 +84,9 @@
     <xsl:apply-templates select="/document/reference_types/reference_type" mode="descriptions"/>
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET" id="reftype_creator" name="reftype_creator">
         <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="reftype" id="reftype">
-            <xsl:apply-templates select="/document/reference_types/reference_type" mode="selectoptions"/>
+            <xsl:apply-templates select="/document/reference_types/reference_type" mode="selectoptions">
+                <xsl:sort select="name" order="ascending"/>
+            </xsl:apply-templates>
         </select>
         (<a href="javascript:void(0);" style="text-decoration:none;" onmouseover="fixedtooltip(getRefTypeDescription(document.reftype_creator.reftype.options[document.reftype_creator.reftype.selectedIndex].value), this, event, '200px')" onMouseout="delayhidetip()">?</a>)
             <input type="image"
@@ -140,7 +143,7 @@ z-index:100;
 <xsl:template name="childrenlist">
     <div id="vlchildrenlist">
         <xsl:apply-templates select="children/object" mode="divlist">
-            <xsl:sort select="title" order="ascending"/>
+            <xsl:sort select="last_modification_timestamp" order="descending"/>
         </xsl:apply-templates>
     </div>
 </xsl:template>
