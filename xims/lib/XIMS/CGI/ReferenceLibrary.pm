@@ -93,7 +93,7 @@ sub event_default {
         $childrenargs{date} = "%$date%";
     }
     if ( defined $workgroup_id and $workgroup_id =~ /^\d+$/ ) {
-        $childrenargs{workgroup_id } = $workgroup_id;
+        $childrenargs{workgroup_id } = "%$workgroup_id%";
     }
     if ( defined $author_id and $author_id =~ /^\d+$/ ) {
         $childrenargs{author_id} = $author_id;
