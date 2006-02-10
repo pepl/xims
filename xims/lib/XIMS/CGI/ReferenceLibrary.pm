@@ -80,6 +80,7 @@ sub event_default {
     my $date = $self->param('date');
     my $author_id = $self->param('author_id');
     my $serial_id = $self->param('serial_id');
+    my $reference_type_id = $self->param('reference_type_id');
     my $workgroup_id = $self->param('workgroup_id');
 
     # May come in as latin1 via gopublic
@@ -91,6 +92,9 @@ sub event_default {
 
     if ( defined $date and $date =~ /^[0-9-: T]+$/ ) { # allow ISO-8601 dates without timezone
         $childrenargs{date} = "%$date%";
+    }
+    if ( defined $reference_type_id and $reference_type_id =~ /^\d+$/ ) {
+        $childrenargs{reference_type_id} = $reference_type_id;
     }
     if ( defined $workgroup_id and $workgroup_id =~ /^\d+$/ ) {
         $childrenargs{workgroup_id } = "%$workgroup_id%";
@@ -256,6 +260,8 @@ sub event_import {
 
     my $root = $doc->documentElement();
     $root->setNamespace('http://www.loc.gov/mods/v3','m',0);
+    $root->setNamespace('http://www.ndltd.org/standards/metadata/etdms/1.0/','etd',0);
+    $root->setNamespace('http://xims.info/ns/ReferenceLibrary','reflib',0);
 
     my $titlecallback = sub { my $v = $_[0]->findnodes('m:title')->[0]->textContent();
                               my $s = $_[0]->findnodes('m:subTitle');
@@ -293,7 +299,7 @@ sub event_import {
     co => [ "" ],
     inst => [ "" ],
     advisor => [ "" ],
-    degree => [ "" ],
+    degree => [ "etd:degree/etd:name" ],
     identifier => [ "m:identifier[\@type='oai' or \@type='doi']" ],
     preprint_identifier => [ "m:relatedItem[\@type='otherVersion']/m:identifier[\@type='preprint']" ],
     status => [ "m:status" ],
@@ -302,18 +308,21 @@ sub event_import {
     conf_title => [ "m:relatedItem[\@type='host']/m:titleInfo", $titlecallback ],
     conf_sponsor => [ "" ],
     conf_url => [ "" ],
-    url => [ "m:location/m:url" ],
+    url => [ 'm:location/m:url[@displayLabel !="Alternative Version"]' ],
+    url2 => [ 'm:location/m:url[@displayLabel="Alternative Version"]' ],
     access_timestamp => [ "" ],
     citekey => [ "m:identifier[\@type='citekey']" ],
-    workgroup => [ "m:workgroup" ],
-    project => [ "m:project" ],
+    workgroup => [ "reflib:workgroup" ],
+    project => [ "reflib:project" ],
+    thesis_inprocess => [ "reflib:thesis_inprocess" ],
                   );
 
     my %genremapping = ( periodical => 'Article',
                         book => 'Book',
                         "conference publication" => 'Proceeding',
                         report => 'Report',
-                        eprint => 'Preprint', );
+                        eprint => 'Preprint',
+                        theses => 'Dissertation' );
 
     my $modsimported = 0;
 
@@ -326,7 +335,9 @@ sub event_import {
         # Which Genre are we on?
         my $genre = XIMS::clean( XIMS::nodevalue( $mods->findnodes( "m:relatedItem[\@type='host']/m:genre[\@authority='marc']" ) ) );
         $genre ||= XIMS::clean( XIMS::nodevalue( $mods->findnodes( "m:genre" ) ) );
-        $genre = $genremapping{$genre};
+        if ( exists $genremapping{$genre} ) {
+            $genre = $genremapping{$genre};
+        }
         $genre ||= 'Document'; # Our fallback genre
         XIMS::Debug( 4, "Genre is $genre" );
 

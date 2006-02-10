@@ -7,52 +7,56 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.loc.gov/mods/v3" xmlns:etd="http://www.ndltd.org/standards/metadata/etdms/1.0/">
+                xmlns="http://www.loc.gov/mods/v3"
+                xmlns:etd="http://www.ndltd.org/standards/metadata/etdms/1.0/"
+                xmlns:reflib="http://xims.info/ns/ReferenceLibrary">
 
-<xsl:output method="xml"/>
-<xsl:param name="ptitle"/>
+    <xsl:output method="xml"/>
+    <xsl:param name="ptitle"/>
 
-<xsl:variable name="titlerefpropid" select="/document/reference_properties/reference_property[name='title']/@id"/>
-<xsl:variable name="btitlerefpropid" select="/document/reference_properties/reference_property[name='btitle']/@id"/>
-<xsl:variable name="daterefpropid" select="/document/reference_properties/reference_property[name='date']/@id"/>
-<xsl:variable name="chronrefpropid" select="/document/reference_properties/reference_property[name='chron']/@id"/>
-<xsl:variable name="ssnrefpropid" select="/document/reference_properties/reference_property[name='ssn']/@id"/>
-<xsl:variable name="quarterrefpropid" select="/document/reference_properties/reference_property[name='quarter']/@id"/>
-<xsl:variable name="volumerefpropid" select="/document/reference_properties/reference_property[name='volume']/@id"/>
-<xsl:variable name="partrefpropid" select="/document/reference_properties/reference_property[name='part']/@id"/>
-<xsl:variable name="issuerefpropid" select="/document/reference_properties/reference_property[name='issue']/@id"/>
-<xsl:variable name="spagerefpropid" select="/document/reference_properties/reference_property[name='spage']/@id"/>
-<xsl:variable name="epagerefpropid" select="/document/reference_properties/reference_property[name='epage']/@id"/>
-<xsl:variable name="pagesrefpropid" select="/document/reference_properties/reference_property[name='pages']/@id"/>
-<xsl:variable name="artnumrefpropid" select="/document/reference_properties/reference_property[name='artnum']/@id"/>
-<xsl:variable name="isbnrefpropid" select="/document/reference_properties/reference_property[name='isbn']/@id"/>
-<xsl:variable name="codenrefpropid" select="/document/reference_properties/reference_property[name='coden']/@id"/>
-<xsl:variable name="sicirefpropid" select="/document/reference_properties/reference_property[name='sici']/@id"/>
-<xsl:variable name="placerefpropid" select="/document/reference_properties/reference_property[name='place']/@id"/>
-<xsl:variable name="pubrefpropid" select="/document/reference_properties/reference_property[name='pub']/@id"/>
-<xsl:variable name="editionrefpropid" select="/document/reference_properties/reference_property[name='edition']/@id"/>
-<xsl:variable name="tpagesrefpropid" select="/document/reference_properties/reference_property[name='tpages']/@id"/>
-<xsl:variable name="seriesrefpropid" select="/document/reference_properties/reference_property[name='series']/@id"/>
-<xsl:variable name="issnrefpropid" select="/document/reference_properties/reference_property[name='issn']/@id"/>
-<xsl:variable name="bicirefpropid" select="/document/reference_properties/reference_property[name='bici']/@id"/>
-<xsl:variable name="corefpropid" select="/document/reference_properties/reference_property[name='co']/@id"/>
-<xsl:variable name="instrefpropid" select="/document/reference_properties/reference_property[name='inst']/@id"/>
-<xsl:variable name="advisorrefpropid" select="/document/reference_properties/reference_property[name='advisor']/@id"/>
-<xsl:variable name="degreerefpropid" select="/document/reference_properties/reference_property[name='degree']/@id"/>
-<xsl:variable name="identifierrefpropid" select="/document/reference_properties/reference_property[name='identifier']/@id"/>
-<xsl:variable name="statusrefpropid" select="/document/reference_properties/reference_property[name='status']/@id"/>
-<xsl:variable name="conf_venuerefpropid" select="/document/reference_properties/reference_property[name='conf_venue']/@id"/>
-<xsl:variable name="conf_daterefpropid" select="/document/reference_properties/reference_property[name='conf_date']/@id"/>
-<xsl:variable name="conf_titlerefpropid" select="/document/reference_properties/reference_property[name='conf_title']/@id"/>
-<xsl:variable name="conf_sponsorrefpropid" select="/document/reference_properties/reference_property[name='conf_sponsor']/@id"/>
-<xsl:variable name="conf_urlrefpropid" select="/document/reference_properties/reference_property[name='conf_url']/@id"/>
-<xsl:variable name="urlrefpropid" select="/document/reference_properties/reference_property[name='url']/@id"/>
-<xsl:variable name="access_timestamprefpropid" select="/document/reference_properties/reference_property[name='access_timestamp']/@id"/>
-<xsl:variable name="citekeyrefpropid" select="/document/reference_properties/reference_property[name='citekey']/@id"/>
-<xsl:variable name="url2refpropid" select="/document/reference_properties/reference_property[name='url2']/@id"/>
-<xsl:variable name="workgrouprefpropid" select="/document/reference_properties/reference_property[name='workgroup']/@id"/>
-<xsl:variable name="preprint_identifierrefpropid" select="/document/reference_properties/reference_property[name='preprint_identifier']/@id"/>
-<xsl:variable name="projectrefpropid" select="/document/reference_properties/reference_property[name='project']/@id"/>
+    <xsl:variable name="titlerefpropid" select="/document/reference_properties/reference_property[name='title']/@id"/>
+    <xsl:variable name="btitlerefpropid" select="/document/reference_properties/reference_property[name='btitle']/@id"/>
+    <xsl:variable name="daterefpropid" select="/document/reference_properties/reference_property[name='date']/@id"/>
+    <xsl:variable name="chronrefpropid" select="/document/reference_properties/reference_property[name='chron']/@id"/>
+    <xsl:variable name="ssnrefpropid" select="/document/reference_properties/reference_property[name='ssn']/@id"/>
+    <xsl:variable name="quarterrefpropid" select="/document/reference_properties/reference_property[name='quarter']/@id"/>
+    <xsl:variable name="volumerefpropid" select="/document/reference_properties/reference_property[name='volume']/@id"/>
+    <xsl:variable name="partrefpropid" select="/document/reference_properties/reference_property[name='part']/@id"/>
+    <xsl:variable name="issuerefpropid" select="/document/reference_properties/reference_property[name='issue']/@id"/>
+    <xsl:variable name="spagerefpropid" select="/document/reference_properties/reference_property[name='spage']/@id"/>
+    <xsl:variable name="epagerefpropid" select="/document/reference_properties/reference_property[name='epage']/@id"/>
+    <xsl:variable name="pagesrefpropid" select="/document/reference_properties/reference_property[name='pages']/@id"/>
+    <xsl:variable name="artnumrefpropid" select="/document/reference_properties/reference_property[name='artnum']/@id"/>
+    <xsl:variable name="isbnrefpropid" select="/document/reference_properties/reference_property[name='isbn']/@id"/>
+    <xsl:variable name="codenrefpropid" select="/document/reference_properties/reference_property[name='coden']/@id"/>
+    <xsl:variable name="sicirefpropid" select="/document/reference_properties/reference_property[name='sici']/@id"/>
+    <xsl:variable name="placerefpropid" select="/document/reference_properties/reference_property[name='place']/@id"/>
+    <xsl:variable name="pubrefpropid" select="/document/reference_properties/reference_property[name='pub']/@id"/>
+    <xsl:variable name="editionrefpropid" select="/document/reference_properties/reference_property[name='edition']/@id"/>
+    <xsl:variable name="tpagesrefpropid" select="/document/reference_properties/reference_property[name='tpages']/@id"/>
+    <xsl:variable name="seriesrefpropid" select="/document/reference_properties/reference_property[name='series']/@id"/>
+    <xsl:variable name="issnrefpropid" select="/document/reference_properties/reference_property[name='issn']/@id"/>
+    <xsl:variable name="bicirefpropid" select="/document/reference_properties/reference_property[name='bici']/@id"/>
+    <xsl:variable name="corefpropid" select="/document/reference_properties/reference_property[name='co']/@id"/>
+    <xsl:variable name="instrefpropid" select="/document/reference_properties/reference_property[name='inst']/@id"/>
+    <xsl:variable name="advisorrefpropid" select="/document/reference_properties/reference_property[name='advisor']/@id"/>
+    <xsl:variable name="degreerefpropid" select="/document/reference_properties/reference_property[name='degree']/@id"/>
+    <xsl:variable name="identifierrefpropid" select="/document/reference_properties/reference_property[name='identifier']/@id"/>
+    <xsl:variable name="statusrefpropid" select="/document/reference_properties/reference_property[name='status']/@id"/>
+    <xsl:variable name="conf_venuerefpropid" select="/document/reference_properties/reference_property[name='conf_venue']/@id"/>
+    <xsl:variable name="conf_daterefpropid" select="/document/reference_properties/reference_property[name='conf_date']/@id"/>
+    <xsl:variable name="conf_titlerefpropid" select="/document/reference_properties/reference_property[name='conf_title']/@id"/>
+    <xsl:variable name="conf_sponsorrefpropid" select="/document/reference_properties/reference_property[name='conf_sponsor']/@id"/>
+    <xsl:variable name="conf_urlrefpropid" select="/document/reference_properties/reference_property[name='conf_url']/@id"/>
+    <xsl:variable name="urlrefpropid" select="/document/reference_properties/reference_property[name='url']/@id"/>
+    <xsl:variable name="access_timestamprefpropid" select="/document/reference_properties/reference_property[name='access_timestamp']/@id"/>
+    <xsl:variable name="citekeyrefpropid" select="/document/reference_properties/reference_property[name='citekey']/@id"/>
+    <xsl:variable name="url2refpropid" select="/document/reference_properties/reference_property[name='url2']/@id"/>
+    <xsl:variable name="workgrouprefpropid" select="/document/reference_properties/reference_property[name='workgroup']/@id"/>
+    <xsl:variable name="preprint_identifierrefpropid" select="/document/reference_properties/reference_property[name='preprint_identifier']/@id"/>
+    <xsl:variable name="projectrefpropid" select="/document/reference_properties/reference_property[name='project']/@id"/>
+    <xsl:variable name="preprint_submitdaterefpropid" select="/document/reference_properties/reference_property[name='preprint_submitdate']/@id"/>
+    <xsl:variable name="thesis_inprocessrefpropid" select="/document/reference_properties/reference_property[name='thesis_inprocess']/@id"/>
 
 <xsl:template match="/document/context/object">
     <modsCollection>
@@ -104,7 +108,8 @@
     <xsl:variable name="workgroup" select="reference_values/reference_value[property_id=$workgrouprefpropid]/value"/>
     <xsl:variable name="preprint_identifier" select="reference_values/reference_value[property_id=$preprint_identifierrefpropid]/value"/>
     <xsl:variable name="project" select="reference_values/reference_value[property_id=$projectrefpropid]/value"/>
-
+    <xsl:variable name="preprint_submitdate" select="reference_values/reference_value[property_id=$preprint_submitdaterefpropid]/value"/>
+    <xsl:variable name="thesis_inprocess" select="reference_values/reference_value[property_id=$thesis_inprocessrefpropid]/value"/>
     <xsl:variable name="serial_id" select="serial_id"/>
 
 <mods ID="{$citekey}">
@@ -159,6 +164,10 @@
               <etd:name><xsl:value-of select="$degree"/></etd:name>
               <etd:level>Doctoral</etd:level>
         </etd:degree>
+    </xsl:if>
+
+    <xsl:if test="$thesis_inprocess = '1'">
+        <reflib:thesis_inprocess>1</reflib:thesis_inprocess>
     </xsl:if>
 
     <xsl:if test="$genre = 'Dissertation'">
@@ -265,10 +274,13 @@
         <xsl:if test="$url2 != ''"><url displayLabel="Alternative Version"><xsl:value-of select="$url2"/></url></xsl:if>
     </location>
     <xsl:if test="$workgroup != ''">
-        <workgroup><xsl:value-of select="$workgroup"/></workgroup>
+        <reflib:workgroup><xsl:value-of select="$workgroup"/></reflib:workgroup>
     </xsl:if>
     <xsl:if test="$project != ''">
-        <project><xsl:value-of select="$project"/></project>
+        <reflib:project><xsl:value-of select="$project"/></reflib:project>
+    </xsl:if>
+    <xsl:if test="$preprint_submitdate != ''">
+        <reflib:preprint_submitdate><xsl:value-of select="$preprint_submitdate"/></reflib:preprint_submitdate>
     </xsl:if>
 </mods><xsl:text>
 

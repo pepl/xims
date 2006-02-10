@@ -121,6 +121,8 @@ INSERT INTO cireflib_reference_properties ( id, name, description, position )
        VALUES ( cireflib_refprop_id_seq_nval(), 'project', 'Name(s) of associated project(s). Separate multiple values using a comma (,)', 2300 );
 INSERT INTO cireflib_reference_properties ( id, name, description, position )
        VALUES ( cireflib_refprop_id_seq_nval(), 'preprint_submitdate', 'Submittal date of the E-Print version of an article', 2250 );
+INSERT INTO cireflib_reference_properties ( id, name, description, position )
+       VALUES ( cireflib_refprop_id_seq_nval(), 'thesis_inprocess', 'Specify "1" if the thesis is currently being worked on and has not been finished yet, specify "0" or leave blank if the thesis has already been finished.', 1430 );
 
 
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
@@ -709,4 +711,6 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 41, 16 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 42, 9 );
-       
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 43, 12 );
+              

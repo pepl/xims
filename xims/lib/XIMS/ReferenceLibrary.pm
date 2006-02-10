@@ -171,18 +171,20 @@ sub vlserials {
 #    my ($item_count, $reflibitems) = $reflib->items_granted( [ %args ] )
 #
 # PARAMETER
-#    $args{ User }         (optional) :  XIMS::User instance
+#    $args{ User }              (optional) :  XIMS::User instance
 #
-#    $args{ limit }        (optional) :  Limit size of $reflibitems arrayref
-#                                        Usually used together with 'offset' for pagination
-#    $args{ offset }       (optional) :  Offset of returned items relative to total items
-#                                        Usually used together with 'limit' for pagination
-#    $args{ order }        (optional) :  Sort by object property
+#    $args{ limit }             (optional) :  Limit size of $reflibitems arrayref
+#                                             Usually used together with 'offset' for pagination
+#    $args{ offset }            (optional) :  Offset of returned items relative to total items
+#                                             Usually used together with 'limit' for pagination
+#    $args{ order }             (optional) :  Sort by object property
 #
-#    $args{ date }         (optional) :  Filter items by date ReflibReferenceProperty
-#    $args{ author_id }    (optional) :  Filter items by VLAuthor id
-#    $args{ author_lname } (optional) :  Filter items by VLAuthor lastname
-#    $args{ serial_id }    (optional) :  Filter items by ReflibSerial id
+#    $args{ date }              (optional) :  Filter items by date ReflibReferenceProperty
+#    $args{ author_id }         (optional) :  Filter items by VLAuthor id
+#    $args{ author_lname }      (optional) :  Filter items by VLAuthor lastname
+#    $args{ serial_id }         (optional) :  Filter items by ReflibSerial id
+#    $args{ reference_type_id } (optional) :  Filter items by reference_type_id
+#    $args{ workgroup_id }      (optional) :  Filter items by workgroup_id
 #
 # RETURNS
 #    $item_count:  Count of total items
@@ -205,6 +207,7 @@ sub items_granted {
     my $author_id = delete $args{author_id};
     my $author_lname = delete $args{author_lname};
     my $serial_id = delete $args{serial_id};
+    my $reference_type_id = delete $args{reference_type_id};
     my $workgroup_id = delete $args{workgroup_id};
 
     my $child_count;
@@ -222,6 +225,10 @@ sub items_granted {
         push @values, @userids;
     }
 
+    if ( defined $reference_type_id ) {
+        $conditions .= " AND r.reference_type_id = ?";
+        push @values, $reference_type_id;
+    }
     if ( defined $date ) {
         $tables .= ', cireflib_ref_propertyvalues pv';
         $conditions .= " AND pv.reference_id = r.id AND pv.property_id = (SELECT id FROM cireflib_reference_properties WHERE name = 'date') AND pv.value LIKE ?";
