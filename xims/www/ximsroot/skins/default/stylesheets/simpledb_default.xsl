@@ -17,7 +17,10 @@
     <xsl:param name="searchstring"/>
 
     <xsl:variable name="objectitems_count"><xsl:choose><xsl:when test="/document/context/object/children/@totalobjects"><xsl:value-of select="/document/context/object/children/@totalobjects"/></xsl:when><xsl:otherwise>0</xsl:otherwise></xsl:choose></xsl:variable>
-    <xsl:variable name="objectitems_rowlimit" select="'20'"/>
+    <xsl:variable name="objectitems_rowlimit"><xsl:choose>
+        <xsl:when test="/document/context/object/attributes/pagerowlimit != ''"><xsl:value-of select="/document/context/object/attributes/pagerowlimit"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="$searchresultrowlimit"/></xsl:otherwise>
+    </xsl:choose></xsl:variable>
     <xsl:variable name="totalpages" select="ceiling($objectitems_count div $objectitems_rowlimit)"/>
 
     <xsl:template match="/document/context/object">
@@ -85,7 +88,8 @@
 <xsl:template name="childrenlist">
     <div id="simpledb_childrenlist">
         <xsl:apply-templates select="children/object" mode="divlist">
-            <xsl:sort select="title" order="ascending"/>
+            <xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                order="ascending"/>
         </xsl:apply-templates>
     </div>
 </xsl:template>

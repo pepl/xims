@@ -53,6 +53,8 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    $self->expand_attributes( $ctxt );
+
     my $style = $self->param('style');
     if ( defined $style ) {
         $ctxt->properties->application->style( $style );
@@ -65,7 +67,8 @@ sub event_default {
         $limit = undef;
     }
     else {
-        $limit = 20;
+        my $limit = $ctxt->object->attribute_by_key( 'pagerowlimit' );
+        $limit ||= XIMS::SEARCHRESULTROWLIMIT();
         $offset ||= 0;
         $offset = $offset * $limit;
     }
@@ -109,6 +112,7 @@ sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
 
+    $self->expand_attributes( $ctxt );
     $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
 
     my $rv = $self->SUPER::event_edit( $ctxt );
@@ -117,6 +121,21 @@ sub event_edit {
     $ctxt->session->message( '' );
 
     return $rv;
+}
+
+sub event_store {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+    my $pagerowlimit = $self->param( 'pagerowlimit' );
+    if ( defined $pagerowlimit and (length $pagerowlimit and $pagerowlimit !~ /^\s+$/ or not length $pagerowlimit) ) {
+        XIMS::Debug( 6, "pagerowlimit: $pagerowlimit" );
+        my $currentvalue = $object->attribute_by_key( 'pagerowlimit' );
+        $object->attribute( pagerowlimit => $pagerowlimit );
+    }
+
+    return $self->SUPER::event_store( $ctxt );
 }
 
 sub event_create_property_mapping {

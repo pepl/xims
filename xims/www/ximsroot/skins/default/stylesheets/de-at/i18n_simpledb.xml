@@ -24,4 +24,5 @@
     <String_options>Auswahlfeld</String_options>
     <Download_access_xmlimport>MS-Access XML-Import Datei herunterladen</Download_access_xmlimport>
     <Sure_to_delete>Sind Sie sicher? Bestehende Werteinträge werden mitgelöscht!</Sure_to_delete>
+    <PageRowLimit>Anzahl der Einträge pro Seite</PageRowLimit>
 </l>
