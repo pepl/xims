@@ -18,6 +18,8 @@
     <xsl:param name="author_id"/>
     <xsl:param name="serial_id"/>
     <xsl:param name="author_lname"/>
+    <xsl:param name="reference_type_id"/>
+    <xsl:param name="workgroup_id"/>
 
     <xsl:variable name="objectitems_count"><xsl:choose><xsl:when test="/document/context/object/children/@totalobjects"><xsl:value-of select="/document/context/object/children/@totalobjects"/></xsl:when><xsl:otherwise>0</xsl:otherwise></xsl:choose></xsl:variable>
     <xsl:variable name="objectitems_rowlimit" select="'20'"/>
@@ -26,6 +28,7 @@
     <!--<xsl:variable name="subjectcolumns" select="'3'"/>-->
 
     <xsl:template match="/document/context/object">
+        <xsl:variable name="pagenavurl"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id,';m=',$m)"/></xsl:variable>
         <html>
             <xsl:call-template name="head_default"/>
             <body onLoad="setBg('vlchildrenlistitem');">
@@ -42,13 +45,15 @@
                         <table width="100%">
                             <tr>
                                 <td>
-                                    <xsl:if test="$date != '' or $author_id != '' or $serial_id != '' or $author_lname != ''">
+                                    <xsl:if test="$date != '' or $author_id != '' or $reference_type_id != '' or $serial_id != '' or $author_lname != ''">
                                         <strong>Filtered View</strong>:
                                         <xsl:if test="$date != ''">
                                             <span class="reflib_filter">Date '<xsl:value-of select="$date"/>'</span></xsl:if>
                                         <xsl:if test="$serial_id != ''"><xsl:if test="$date != ''">, </xsl:if>
                                             <span class="reflib_filter">Serial '<xsl:value-of select="/document/context/vlserials/serial[id=$serial_id]/title"/>'</span></xsl:if>
-                                        <xsl:if test="$author_id != ''"><xsl:if test="$date != '' or $serial_id != ''">, </xsl:if>
+                                        <xsl:if test="$reference_type_id != ''"><xsl:if test="$date != '' or $serial_id != ''">, </xsl:if>
+                                            <span class="reflib_filter">Reference Type '<xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>'</span></xsl:if>
+                                        <xsl:if test="$author_id != ''"><xsl:if test="$date != '' or $serial_id != '' or $reference_type_id != ''">, </xsl:if>
                                             <span class="reflib_filter">Author '<xsl:value-of select="concat(children/object/authorgroup/author[id=$author_id]/firstname, ' ', children/object/authorgroup/author[id=$author_id]/lastname)" />'</span></xsl:if>
                                         <xsl:if test="$author_lname != ''"><xsl:if test="$date != '' or $serial_id != '' or $author_id != ''">, </xsl:if>
                                             <span class="reflib_filter">Author lastname '<xsl:value-of select="$author_lname"/>'</span></xsl:if>.
@@ -65,15 +70,19 @@
                     </div>
 
                     <xsl:call-template name="reflib.authorsearch"/>
+                    <xsl:call-template name="pagenav">
+                        <xsl:with-param name="totalitems" select="$objectitems_count"/>
+                        <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
+                        <xsl:with-param name="currentpage" select="$page"/>
+                        <xsl:with-param name="url" select="$pagenavurl"/>
+                    </xsl:call-template>
                     <xsl:call-template name="childrenlist"/>
                     <xsl:call-template name="pagenav">
                         <xsl:with-param name="totalitems" select="$objectitems_count"/>
                         <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
                         <xsl:with-param name="currentpage" select="$page"/>
-                        <xsl:with-param name="url"
-                                        select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';m=',$m)"/>
+                        <xsl:with-param name="url" select="$pagenavurl"/>
                     </xsl:call-template>
-
                 </div>
                 <script src="{$ximsroot}skins/{$currentskin}/scripts/tooltip.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             </body>
@@ -164,6 +173,7 @@ z-index:100;
                     Anonymous</xsl:otherwise>
             </xsl:choose>:
             <xsl:call-template name="reftitle"/>
+            (<a href="{$xims_box}{$goxims_content}{$absolute_path}?reference_type_id={current()/reference_type_id}"><xsl:value-of select="/document/reference_types/reference_type[@id=current()/reference_type_id]/name"/></a>)
         </div>
         <div class="reflib_published">
             <strong>Published</strong>:
