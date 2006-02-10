@@ -90,6 +90,14 @@ sub event_default {
     }
     $author_lname ||= XIMS::decode($self->param('author_lname')); # fallback
 
+    # The following parameter can be used to specify a title for the citation listing
+    # Since it *may* come in as latin1 depending on the pubstylesheet encoding,
+    # we have to make sure that it will be utf8 encoded.
+    my $ptitle = XIMS::utf8_sanitize($self->param('ptitle'));
+    if ( defined $ptitle ) {
+        $self->param( 'ptitle', $ptitle );
+    }
+
     if ( defined $date and $date =~ /^[0-9-: T]+$/ ) { # allow ISO-8601 dates without timezone
         $childrenargs{date} = "%$date%";
     }
@@ -102,8 +110,10 @@ sub event_default {
     if ( defined $author_id and $author_id =~ /^\d+$/ ) {
         $childrenargs{author_id} = $author_id;
     }
-    elsif ( defined $author_lname and $author_lname =~ /^[^()!?_^`´'"%*]+/ ) {
-        $childrenargs{author_lname} = "%$author_lname%";
+    elsif ( defined $author_lname and $author_lname =~ /^[^()!?_^`´'"]{2,}/ ) {
+        $author_lname =~ s#\*#%#g;
+        $author_lname =~ s#%%#%#g;
+        $childrenargs{author_lname} = $author_lname;
     }
     if ( defined $serial_id and $serial_id =~ /^\d+$/ ) {
         $childrenargs{serial_id} = $serial_id;
