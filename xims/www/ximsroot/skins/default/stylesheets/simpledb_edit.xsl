@@ -294,7 +294,7 @@
 
 <xsl:template name="tr-pagerowlimit-edit">
     <tr>
-        <td valign="top"><xsl:value-of select="$i18n/l/PageRowLimit"/></td>
+        <td valign="top"><xsl:value-of select="$i18n_simpledb/l/PageRowLimit"/></td>
         <td colspan="2">
             <input tabindex="35" type="text" name="pagerowlimit" size="2" maxlength="2" value="{attributes/pagerowlimit}" class="text"/>
             <xsl:text>&#160;</xsl:text>
