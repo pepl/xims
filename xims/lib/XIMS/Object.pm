@@ -1389,9 +1389,9 @@ sub move {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
 
-    # the old department this object's direct descendants belong to
-    # this is either the department_id or major_id, depending on
-    # whether this is a [Department|Site]Root.
+    # store the old department_id for the later update of descendants.
+    # depending on the current object being an objectroot  or not,
+    # this may be the document_id or department_id of the current object.
     my $old_dept = __decide_department_id( document_id => $self->document_id() );
 
     my $parent_id = delete $args{target};
@@ -1403,22 +1403,26 @@ sub move {
     }
 
     $self->parent_id( $parent_id );
-
     $self->department_id( __decide_department_id( document_id => $self->parent_id() ) );
-
-    my @o =  $self->descendants();
-    foreach( @o ) {
-        # only look at objects with the old_dept of the moved object.
-        # descendants of a different dept. stay unchanged. (see comment above)
-        if ($_->department_id == $old_dept) {
-            $_->department_id( $self->department_id() );
-            $_->data_provider->updateObject( $_->data() );
-        }
-    }
-
     my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() ) || 0;
     $self->position( $max_position + 1 );
-    return $self->data_provider->updateObject( $self->data() );
+    my @rv = $self->data_provider->updateObject( $self->data() );
+
+    # delete old location_path from memory as it has been changed by the db trigger
+    delete $self->{location_path};
+
+    # unless the current object is a objectroot, update the department_id of
+    # non-objectroot descendants to the new one
+    unless ( $self->object_type->is_objectroot() ) {
+        my $data = $self->data_provider->update_descendant_department_id(
+                        old_department_id => $old_dept,
+                        new_department_id => $self->department_id(),
+                        parent_location_path => $self->location_path(),
+                   );
+        XIMS::Debug( 6, "department_id of $data descendants has been updated" );
+    }
+
+    return @rv;
 }
 
 ##

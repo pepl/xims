@@ -415,6 +415,21 @@ sub close_position_gap {
                                   );
 }
 
+sub update_descendant_department_id {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    return undef unless (defined $args{parent_location_path}
+                         and defined $args{old_department_id}
+                         and defined $args{new_department_id});
+
+    return $self->{dbh}->do_update( table    => 'ci_documents',
+                                    values   => { 'department_id' => $args{new_department_id} },
+                                    criteria => { 'department_id' => $args{old_department_id},
+                                                  'location_path' => $args{parent_location_path} . '/%' } );
+}
+
 sub db_now {
     XIMS::Debug( 5, "called" );
     my $self = shift;
