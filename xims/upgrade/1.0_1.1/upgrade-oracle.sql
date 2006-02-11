@@ -4,5 +4,8 @@ PROMPT Adding ReferenceLibrary objects
 PROMPT Adding ReferenceLibrary default data
 @@../../sql/referencelibrary_defaultdata.sql
 
+PROMPT Adding SimpleDB objects
+@@../../sql/Oracle/cisimpledb_ddl.sql
+
 commit;
 

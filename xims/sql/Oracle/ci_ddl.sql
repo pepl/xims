@@ -53,6 +53,10 @@
 -- ReferenceLibrary default data
 @@../referencelibrary_defaultdata.sql
 
+-- SimpleDB objects
+@@cisimpledb_ddl.sql
+
+
 -- commit;
 -- PROMPT Changes have not been commited yet. Type commit; to do so!
 commit;
