@@ -14,5 +14,7 @@
 \i create_library.sql
 -- Reference Library objects
 \i create_referencelibrary.sql
+-- SimpleDB objects
+\i create_simpledb.sql
 
 

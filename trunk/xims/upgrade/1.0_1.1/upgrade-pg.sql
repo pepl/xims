@@ -17,3 +17,6 @@ CREATE INDEX ci_obj_type_privs_grantee_idx ON ci_object_type_privs ( grantee_id 
 
 \echo Adding ReferenceLibrary default data
 \i ../../sql/referencelibrary_defaultdata.sql
+
+\echo Adding SimpleDB objects
+\i ../../sql/Pg/create_simpledb.sql
