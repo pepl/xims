@@ -23,17 +23,12 @@
 <xsl:template name="autoindex">
     <tr>
         <td colspan="3">
-            <xsl:value-of select="$i18n/l/Create_autoindex"/>
-            <input name="autoindex" type="radio" value="true">
-                <xsl:if test="attributes/autoindex != '0'">
-                    <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
-                </xsl:if>
-            </input><xsl:value-of select="$i18n/l/Yes"/>
-            <input name="autoindex" type="radio" value="false">
+            <xsl:value-of select="$i18n/l/Omit_autoindex"/>
+            <input name="autoindex" type="checkbox" value="false">
                 <xsl:if test="attributes/autoindex = '0'">
                     <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
                 </xsl:if>
-            </input><xsl:value-of select="$i18n/l/No"/>
+            </input>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('autoindex')" class="doclink">(?)</a>
         </td>
