@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2005 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -732,7 +732,7 @@ sub update_related {
 #    $boolean : True or False for updating the parent's autoindex
 #
 # DESCRIPTION
-#    Updates the autoindex of the parent object if its 'autoindex' attribute is set to '1'
+#    Updates the autoindex of the parent object unless its 'autoindex' attribute is set to '0'
 #
 sub update_parent_autoindex {
     XIMS::Debug( 5, "called" );
@@ -745,7 +745,7 @@ sub update_parent_autoindex {
     return undef unless $parent->object_type->is_fs_container();
 
     my $autoindex = $parent->attribute_by_key( 'autoindex' );
-    if ( defined $autoindex and $autoindex == 1 ) {
+    if ( not defined $autoindex or $autoindex == 1 ) {
         my @ancestors = @{$self->{Ancestors}};
         pop @ancestors; # remove the parent folder of the current object
 
@@ -1225,22 +1225,19 @@ sub create {
 
         my $autoindex = $self->{Object}->attribute_by_key( 'autoindex' );
         # if attribute is not explictly set to 0, we do autoindexing
-
-        if (defined $autoindex) {
-            if ( $autoindex == 1 ) {
-                my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
-                                                                       Basedir    => $self->{Basedir},
-                                                                       User       => $self->{User},
-                                                                       Object     => $self->{Object},
-                                                                       Options    => {norecurse => 1},
-                                                                       Ancestors  => $self->{Ancestors},
-                                                                     );
-                $idx_generator->create();
-            }
-            elsif ( $autoindex == 0 ) {
-                my $autoindex_file = $new_path . '/' . XIMS::AUTOINDEXFILENAME();
-                eval { unlink $autoindex_file } if -f $autoindex_file;
-            }
+        if ( not defined $autoindex or $autoindex == 1 ) {
+            my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
+                                                                   Basedir    => $self->{Basedir},
+                                                                   User       => $self->{User},
+                                                                   Object     => $self->{Object},
+                                                                   Options    => {norecurse => 1},
+                                                                   Ancestors  => $self->{Ancestors},
+                                                               );
+            $idx_generator->create();
+        }
+        elsif ( $autoindex == 0 ) {
+            my $autoindex_file = $new_path . '/' . XIMS::AUTOINDEXFILENAME();
+            eval { unlink $autoindex_file } if -f $autoindex_file;
         }
     }
 
