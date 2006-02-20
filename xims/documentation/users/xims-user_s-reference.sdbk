@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <article>
     <title>XIMS User&#39;s Reference</title>
 
@@ -28,7 +28,7 @@
                 </affiliation>
 
                 <authorblurb>
-                    <para><email>csab1777@uibk.ac.at</email></para>
+                    <para><email>hansjoerg.pehofer@uibk.ac.at</email></para>
                 </authorblurb>
             </author>
         </authorgroup>
@@ -44,7 +44,7 @@
         </revhistory>
 
         <legalnotice>
-            <para>Copyright © 2004</para>
+            <para>Copyright © 2004-2006</para>
         </legalnotice>
     </articleinfo>
 
@@ -295,16 +295,16 @@
         </section>
 
         <section>
-            <title>Create <literal>autoindex</literal> for this <literal>container</literal> during <literal>publishing</literal></title>
+            <title>Omit <literal>autoindex</literal> for this <literal>container</literal> during
+            <literal>publishing</literal></title>
 
-            <para>If set, XIMS generates a simple index document for you. (That practically means: if the public webserver gets a request for the folder you
-            published, it will serve a short summary of the published objects in this folder)</para>
+            <para>Per default, XIMS generates a simple index document for you. (That practically means: if the public
+            webserver gets a request for the container you published, it will serve a short summary of the published
+            objects in this folder) This index is generated during the publishing-process of the container.</para>
 
-            <para>This index is generated during the publishing-process of the container. So be aware that adding or removing objects from the public system
-            requires not only the publishing/unpublishing of the objects in question, <emphasis>but also republishing of the container to regenerate the index</emphasis>.
-            Automatic updates of the index will be added in future versions of XIMS.</para>
-
-            <para>This option is currently presented on folder creation and folder editing and defaults to <literal>yes</literal>.</para>
+            <para>In some cases (having hand-maintained, multilingual indexfiles in example) this is
+            <emphasis>not</emphasis> desirable. Check this option to avoid the creation, or to remove an existing
+            <literal>autoindex</literal>.</para>
         </section>
 
         <section>
