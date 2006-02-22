@@ -56,13 +56,15 @@
             </rdf:RDF>
             <body>
                 <h1><xsl:value-of select="title"/></h1>
-                <ul>
-                    <xsl:apply-templates select="children/object[published=1]">
-                        <xsl:sort select="position"
-                        order="ascending"
-                        data-type="number"/>
-                    </xsl:apply-templates>
-                </ul>
+                <xsl:if test="count(children/object[published=1])&gt;0">
+                    <ul>
+                        <xsl:apply-templates select="children/object[published=1]">
+                            <xsl:sort select="position"
+                                      order="ascending"
+                                      data-type="number"/>
+                        </xsl:apply-templates>
+                    </ul>
+                </xsl:if>
             </body>
         </page>
     </xsl:template>
