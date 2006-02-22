@@ -109,15 +109,14 @@ sub event_store {
                     and defined $ctxt->object();
 
     my $object = $ctxt->object();
+
     my $autoindex  = $self->param( 'autoindex' );
-    if ( defined $autoindex ) {
+    if ( defined $autoindex and $autoindex eq 'false') {
         XIMS::Debug( 6, "autoindex: $autoindex" );
-        if ( $autoindex eq 'true' ) {
-            $object->attribute( autoindex => '1' );
-        }
-        elsif ( $autoindex eq 'false' ) {
-            $object->attribute( autoindex => '0' );
-        }
+        $object->attribute( autoindex => '0' );
+    }
+    else {
+        $object->attribute( autoindex => '1' );
     }
 
     my $defaultsortby = $self->param( 'defaultsortby' );
