@@ -36,6 +36,8 @@
                     <xsl:apply-templates select="body"/>
                 </story>
                 <image url="{image_id/location_path}" alt="{image_id/title}" longdesc="{image_id/abstract}"/>
+                <last_publication_timestamp><xsl:apply-templates select="last_publication_timestamp"/></last_publication_timestamp>
+                <last_modification_timestamp><xsl:apply-templates select="last_modification_timestamp"/></last_modification_timestamp>
                 <created_by_firstname><xsl:apply-templates select="created_by_firstname"/></created_by_firstname>
                 <created_by_middlename><xsl:apply-templates select="created_by_middlename"/></created_by_middlename>
                 <created_by_lastname><xsl:apply-templates select="created_by_lastname"/></created_by_lastname>
