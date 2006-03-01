@@ -307,17 +307,17 @@ sub _generate_body_from_sql {
     # create query for the search result count
 
     # get rid of newlines, DBIx::SQLEngine does not like them...
-    $sql =~ s#\r\n# #g;
+    $sql =~ s/\r\n/ /g;
 
     # remove trailing semicolons
     $sql =~ s/\s*;\s*$//;
 
     # order by and group by clauses have to be removed not to clash
     # with the SQLEngine generated where clause
-    my ($orderby) = ( $sql =~ /\s+order\s+by\s+(.+)\s*$/i );
-    my ($groupby) = ( $sql =~ /\s+group\s+by\s+(\w+)/i );
-    $sql =~ s/\s+group\s+by\s+\w+//i;
-    $sql =~ s/\s+order\s+by\s+(.+)\s*$//i;
+    my ($orderby) = ( $sql =~ /\s+ORDER\s+BY\s+(.+)\s*$/i );
+    my ($groupby) = ( $sql =~ /\s+GROUP\s+BY\s+(\w+)/i );
+    $sql =~ s/\s+GROUP\s+BY\s+\w+//i;
+    $sql =~ s/\s+ORDER\s+BY\s+(.+)\s*$//i;
 
     my $countsql = $sql;
     my ($properties) = ($countsql =~ /^\s*SELECT\s(.*?)\sFROM/i);
