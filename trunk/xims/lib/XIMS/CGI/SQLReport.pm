@@ -328,20 +328,19 @@ sub _generate_body_from_sql {
         return 0;
     }
 
-    my $countproperty = 'count(*) as count';
+    my $countproperty = 'COUNT(*) AS count';
     if ( defined $groupby ) {
-        $countproperty = "count(distinct $groupby) as count";
+        $countproperty = "COUNT(DISTINCT $groupby) AS count";
     }
 
     $countsql =~ s/\Q$properties\E/$countproperty/;
 
-    my $data;
-    eval { $data = $dbh->fetch_select( sql => $countsql, criteria => $criteria ); };
+    my $count;
+    eval { $count = $dbh->fetch_one_value( sql => $countsql, criteria => $criteria ); };
     if ( $@ ) {
         XIMS::Debug( 2, "SQL query failed " . $@ );
         return $self->sendError( $ctxt, "$@");
     }
-    my $count = @{$data}[0]->{count};
 
     if ( $count eq '0' or not defined $count ) {
         $ctxt->object->body( $body . $self->strong( "Query did not return any results" ) );
