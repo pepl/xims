@@ -1570,9 +1570,6 @@ sub event_htmltidy {
     # if we got no body param, use $object->body
     my $string = defined $body ? $body : $ctxt->object->body();
 
-    # set the utf-8 bit unless the database is not UTF-8
-    $string = Encode::decode_utf8($string) unless XIMS::DBENCODING();
-
     my $tidiedstring = $ctxt->object->balance_string( $string );
 
     # set back to body if tidy was unsuccessful
