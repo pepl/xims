@@ -332,6 +332,7 @@ sub event_import {
                         "conference publication" => 'Proceeding',
                         report => 'Report',
                         eprint => 'Preprint',
+                        preprint => 'Preprint',
                         theses => 'Dissertation' );
 
     my $modsimported = 0;
