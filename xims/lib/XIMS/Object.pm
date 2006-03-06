@@ -5,7 +5,7 @@
 package XIMS::Object;
 
 use strict;
-use warnings;
+# use warnings;
 no warnings 'redefine';
 
 our $VERSION;

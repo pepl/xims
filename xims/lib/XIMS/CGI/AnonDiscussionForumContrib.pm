@@ -5,7 +5,7 @@
 package XIMS::CGI::AnonDiscussionForumContrib;
 
 use strict;
-use warnings;
+# use warnings;
 
 use vars qw( $VERSION @ISA @MSG );
 

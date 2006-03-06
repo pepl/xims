@@ -8,7 +8,7 @@ package XIMS::SAX::Filter::Date;
 # DESCRIPTION:
 # This SAX Filter expands a datetime string to a nodeset.
 
-use warnings;
+# use warnings;
 use strict;
 
 use XML::SAX::Base;

@@ -5,7 +5,7 @@
 package XIMS::Term;
 
 use strict;
-use warnings;
+# use warnings;
 no warnings 'redefine';
 
 our @files;

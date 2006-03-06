@@ -5,7 +5,7 @@
 package XIMS::Importer::Object::ReferenceLibraryItem;
 
 use strict;
-use warnings;
+# use warnings;
 
 use base qw( XIMS::Importer::Object );
 

@@ -5,7 +5,7 @@
 package XIMS::CGI::SQLReport;
 
 use strict;
-use warnings;
+# use warnings;
 
 use base qw(XIMS::CGI);
 use Text::Iconv;

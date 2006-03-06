@@ -5,7 +5,7 @@
 package XIMS::DataProvider::DBI;
 
 use strict;
-use warnings;
+# use warnings;
 
 our %Tables;
 our %Names;

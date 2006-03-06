@@ -4,7 +4,7 @@
 # $Id$
 package XIMS::SAX::Filter::ContentObjectPropertyResolver;
 
-use warnings;
+# use warnings;
 use strict;
 
 use base qw(XML::SAX::Base);

@@ -8,7 +8,7 @@ package XIMS::SAX::Filter::UserIDNameResolver;
 # DESCRIPTION:
 # This SAX Filter expands a user id to its corresponding name.
 
-use warnings;
+# use warnings;
 use strict;
 
 use XML::SAX::Base;

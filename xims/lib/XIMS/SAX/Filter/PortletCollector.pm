@@ -3,7 +3,7 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SAX::Filter::PortletCollector;
-use warnings;
+# use warnings;
 use strict;
 #
 # This is a SAX Filter. this allows to send a datastring

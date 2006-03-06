@@ -5,7 +5,7 @@
 package XIMS::ReferenceLibraryItem;
 
 use strict;
-use warnings;
+# use warnings;
 
 our $VERSION;
 

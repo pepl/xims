@@ -5,7 +5,7 @@
 package XIMS::SimpleDBItem;
 
 use strict;
-use warnings;
+# use warnings;
 
 our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };;
 

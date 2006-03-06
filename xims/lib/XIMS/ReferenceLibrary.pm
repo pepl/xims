@@ -5,7 +5,7 @@
 package XIMS::ReferenceLibrary;
 
 use strict;
-use warnings;
+# use warnings;
 
 our $VERSION;
 use base qw( XIMS::Folder );
