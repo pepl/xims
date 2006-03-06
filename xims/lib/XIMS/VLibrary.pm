@@ -215,6 +215,52 @@ sub vlitems_bypublication_granted {
     return $self->_vlitems_byproperty( 'publication', filter_granted => 1, @_ );
 }
 
+
+# for chronicle
+sub vlitems_bydate {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $date_from = shift;
+    my $date_to = shift;
+    my $key = 'document_id';
+    my %args = @_;
+    my $filter_granted = delete $args{filter_granted};
+    
+    # if date_from or date_to is not provided as parameter the timespan is from 0000-01-01 to 2100-01-01
+    # should be from the first available chronicle_item date to the last one, later to come
+    if (!$date_from) {$date_from='0000-01-01'}
+    if (!$date_to) {$date_to='2100-01-01'}
+    
+
+    # think of fetching the whole object data here for performance
+    my $sql = 'SELECT d.id AS id FROM cilib_meta m, ci_documents d, ci_content c WHERE d.ID = m.document_id AND d.ID = c.document_id AND d.parent_id = ? AND ';
+    $sql .= '( ( m.date_from_timestamp >= \''.$date_from.'\' AND m.date_to_timestamp <= \''.$date_to.'\' ) OR ';
+    $sql .= '( m.date_from_timestamp <= \''.$date_from.'\' AND m.date_to_timestamp >= \''.$date_from.'\' ) OR ';
+    $sql .= '( m.date_from_timestamp <= \''.$date_to.'\' AND m.date_to_timestamp >= \''.$date_to.'\' ) ) order by m.date_from_timestamp asc';
+    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() ]);
+
+    my @ids = map { $_->{id} } @{$iddata};
+    return () unless scalar @ids;
+
+    if ( $filter_granted and not $self->User->admin() ) {
+        my @candidate_data = $self->data_provider->getObject( document_id => \@ids,
+                                                              properties => [ 'document_id', 'id' ] );
+        my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
+        @ids = $self->__filter_granted_ids( candidate_ids => \@candidate_ids );
+        return () unless scalar( @ids ) > 0;
+        $key = 'id';
+    }
+
+    # should be grepped from event/resource type specific list in XIMS::Names
+    my @default_properties = grep { $_ ne 'body' and $_ ne 'binfile' }  @{XIMS::Names::property_interface_names( 'Object' )};
+
+    my @data = $self->data_provider->getObject( $key => \@ids, properties => \@default_properties );
+    my @objects = map { XIMS::VLibraryItem->new->data( %{$_} ) } @data;
+
+    return @objects;
+}
+
+
 sub _vlobjects {
     XIMS::Debug( 5, "called" );
     my $self = shift;

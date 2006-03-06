@@ -26,7 +26,7 @@ $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r 
 use Class::MethodMaker
         list       => [ qw(vlkeywords vlsubjects vlpublications) ];
 
-#use Data::Dumper;
+# use Data::Dumper;
 
 ##
 #
@@ -119,14 +119,14 @@ sub vlepublications {
 ##
 #
 # SYNOPSIS
-#    my $meta = $vlibitem->vlepublications();
-#    my $boolean = $vlibitem->vlepublications( $meta );
+#    my $meta = $vlibitem->vlemeta();
+#    my $boolean = $vlibitem->vlemeta( $meta );
 #
 # PARAMETER
-#    $meta                      (optional) : XIMS::VLibMeta object to be associated to the VLibraryItem
+#    $meta(optional) : XIMS::VLibMeta object to be associated to the VLibraryItem
 #
 # RETURNS
-#    $publication    : XIMS::VLibMeta object associated to the VLibraryItem
+#    $meta           : XIMS::VLibMeta object associated to the VLibraryItem
 #    $boolean        : True or False for associating $meta to the VLibraryItem
 #
 # DESCRIPTION
@@ -145,17 +145,31 @@ sub vlemeta {
     else {
         next unless (defined $meta and ref $meta and $meta->isa( 'XIMS::VLibMeta' ));
         $meta->document_id( $self->document_id() );
-        my $id = $meta->create();
-        if ( defined $id ) {
-            XIMS::Debug( 4, "successfully created meta with id $id" );
-            return $id;
+        my $id = $meta->id();
+        if (! $id ) {
+            $id = $meta->create();
+            if ( defined $id ) {
+                XIMS::Debug( 4, "successfully created meta with id $id" );
+                  return $id;
+            }
+            else {
+                XIMS::Debug( 2, "could not create associate meta" );
+                return undef;
+            }
         }
         else {
-            XIMS::Debug( 2, "could not create associate meta" );
-            return undef;
+            if ($meta->update()) {
+                XIMS::Debug( 4, "successfully updated meta with id $id" );
+                return $id;
+            }
+            else {
+                XIMS::Debug( 2, "could not update associate meta" );
+                return undef;
+            }
         }
     }
 }
+
 
 sub _vleproperties {
     XIMS::Debug( 5, "called" );
@@ -181,7 +195,6 @@ sub _vleproperties {
         $method = "getVLib".$property;
         my @objects_data = $self->data_provider->$method( id => \@object_ids );
         @objects = map { $class->new->data( %{$_} ) } @objects_data;
-        #warn "objects" . Dumper( \@objects ) . "\n";
         return wantarray ? @objects : $objects[0];
     }
     else {

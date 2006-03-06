@@ -80,8 +80,8 @@ CREATE TABLE cilib_keywords
 CREATE TABLE cilib_keywordmap
  (
  id                 SERIAL            PRIMARY KEY
- ,document_id        INTEGER         NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
- ,keyword_id        INTEGER         NOT NULL REFERENCES cilib_keywords (id)
+ ,document_id       INTEGER           NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
+ ,keyword_id        INTEGER           NOT NULL REFERENCES cilib_keywords (id)
  ,UNIQUE (document_id, keyword_id)
  )
 ;
@@ -141,6 +141,8 @@ CREATE TABLE cilib_meta
  ,publisher         VARCHAR(256)
  ,audience          VARCHAR(256)
  ,dc_date           TIMESTAMP(0) WITHOUT TIME ZONE
+ ,date_from_timestamp         TIMESTAMP(0)  WITHOUT TIME ZONE
+ ,date_to_timestamp           TIMESTAMP(0)  WITHOUT TIME ZONE
  )
 ;
 

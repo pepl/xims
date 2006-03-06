@@ -34,6 +34,7 @@ sub registerEvents {
           publications
           publication
           vlsearch
+          vlchronicle
           most_recent
           )
         );
@@ -107,7 +108,7 @@ sub event_subject {
 
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
-    my $rowlimit = 5;
+    my $rowlimit = 10;
     $offset = $offset * $rowlimit;
 
     my @objects = $ctxt->object->vlitems_bysubject_granted( subject_id => $subjectid,
@@ -151,7 +152,7 @@ sub event_keyword {
 
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
-    my $rowlimit = 5;
+    my $rowlimit = 10;
     $offset = $offset * $rowlimit;
 
     my @objects = $ctxt->object->vlitems_bykeyword_granted( keyword_id => $keywordid,
@@ -337,7 +338,7 @@ sub event_vlsearch {
     my $search = $self->param('vls');
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
-    my $rowlimit = 5;
+    my $rowlimit = 10;
     $offset = $offset * $rowlimit;
 
     XIMS::Debug( 6, "param $search");
@@ -355,10 +356,9 @@ sub event_vlsearch {
         }
 
         use encoding "latin-1";
-        my $allowed = XIMS::decode( q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} );
+        my $allowed = XIMS::decode( q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~} ); ## just for emacs' font-lock... ;-)
         my $qb = $qbdriver->new( { search => $search, allowed => $allowed, fieldstolookin => [qw(title abstract body)] } );
 
-        #'# just for emacs' font-lock...
         if ( defined $qb ) {
             my %param = (
                         criteria => $qb->criteria,
@@ -407,7 +407,7 @@ sub event_most_recent {
         $param{marked_new} = 1;
     }
     else {
-        $param{limit} = 5;
+        $param{limit} = 10;
     }
 
     my @objects = $ctxt->object->children_granted( %param );
@@ -416,6 +416,30 @@ sub event_most_recent {
 
     return 0;
 }
+
+
+sub event_vlchronicle {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    if (!$self->param('chronicle_from')) {$self->param( chronicle_from => '')}
+    if (!$self->param('chronicle_to')) {$self->param( chronicle_to => '' ) }
+    my $date_from = $self->param('chronicle_from');
+    my $date_to = $self->param('chronicle_to');
+
+    if (!$date_to) {$date_to = $date_from;}
+    XIMS::Debug(6, "Chronicle from $date_from to $date_to.");
+
+    $ctxt->properties->content->getformatsandtypes( 1 );
+
+    my @objects = $ctxt->object->vlitems_bydate( $date_from , $date_to );
+
+    $ctxt->objectlist( \@objects );
+    $ctxt->properties->application->style( "objectlist" ) ;
+
+    return 0;}
+
+
 
 # END RUNTIME EVENTS
 # #############################################################################

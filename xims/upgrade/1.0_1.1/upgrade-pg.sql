@@ -12,6 +12,10 @@ CREATE INDEX ci_roles_granted_grantee_idx ON ci_roles_granted ( grantee_id );
 DROP index ci_obj_type_privs_grantee_idx;
 CREATE INDEX ci_obj_type_privs_grantee_idx ON ci_object_type_privs ( grantee_id );
 
+\echo Adding Timestamps for Chronicle
+ALTER TABLE cilib_meta ADD COLUMN date_from_timestamp timestamp;
+ALTER TABLE cilib_meta ADD COLUMN date_to_timestamp timestamp;
+
 \echo Adding ReferenceLibrary objects
 \i ../../sql/Pg/create_referencelibrary.sql
 

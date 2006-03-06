@@ -81,6 +81,7 @@
                 </h1>
 
                 <xsl:call-template name="search_switch"/>
+                <xsl:call-template name="chronicle_switch" />
 
                 <xsl:call-template name="childrenlist"/>
 
