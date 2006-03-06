@@ -28,4 +28,6 @@
     <Import>Import</Import>
     <Split_by_semicolon>Split multiple entries by a semicolon (;)</Split_by_semicolon>
     <AuthorStringFormat>Author Format: Firstname (opt: Middlename) Lastname (opt:, Suffix)</AuthorStringFormat>
+    <chronicle_from>Chronicle from</chronicle_from>
+    <chronicle_to>Chronicle to</chronicle_to>
 </l>
