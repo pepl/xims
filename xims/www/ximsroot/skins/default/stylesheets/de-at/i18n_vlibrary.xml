@@ -28,4 +28,6 @@
     <Import>Importieren</Import>
     <Split_by_semicolon>Mehrere Einträge durch ein Semikolon (;) trennen</Split_by_semicolon>
     <AuthorStringFormat>Autoreneingabeformat: Vorname (opt: 2.Vorname) Nachname (opt:, Suffix)</AuthorStringFormat>
+    <chronicle_from>Chronik von</chronicle_from>
+    <chronicle_to>Chronik bis</chronicle_to>
 </l>
