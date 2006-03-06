@@ -67,7 +67,7 @@ sub event_default {
         $limit = undef;
     }
     else {
-        my $limit = $ctxt->object->attribute_by_key( 'pagerowlimit' );
+        $limit = $ctxt->object->attribute_by_key( 'pagerowlimit' );
         $limit ||= XIMS::SEARCHRESULTROWLIMIT();
         $offset ||= 0;
         $offset = $offset * $limit;
@@ -112,7 +112,6 @@ sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
 
-    $self->expand_attributes( $ctxt );
     $self->resolve_content( $ctxt, [ qw( STYLE_ID ) ] );
 
     my $rv = $self->SUPER::event_edit( $ctxt );
