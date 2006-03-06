@@ -231,7 +231,7 @@
                         <td>
                             <xsl:if test="/document/context/object/user_privileges/delete">
                                 <xsl:text> </xsl:text>
-                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete" onClick="javascript:return confirm('{$i18n_xml/l/Sure_to_delete}')">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete" onClick="javascript:rv=confirm('{$i18n_xml/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete'; return false">
                                     <input
                                         type="image"
                                         name="eidelete{@id}"
