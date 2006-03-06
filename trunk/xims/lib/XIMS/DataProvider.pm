@@ -5,7 +5,7 @@
 package XIMS::DataProvider;
 
 use strict;
-use warnings;
+# use warnings;
 
 our $AUTOLOAD;
 our $cached_URIs;

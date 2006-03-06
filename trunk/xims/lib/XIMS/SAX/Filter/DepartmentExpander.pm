@@ -7,7 +7,7 @@ package XIMS::SAX::Filter::DepartmentExpander;
 # departments usually contain more information than dumb
 # folders. Since this information is stored within the department's
 # body, it has to be expanded before it can be published.
-use warnings;
+# use warnings;
 use strict;
 use vars qw( @ISA );
 

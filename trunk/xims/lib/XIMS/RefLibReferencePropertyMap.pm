@@ -5,7 +5,7 @@
 package XIMS::RefLibReferencePropertyMap;
 
 use strict;
-use warnings;
+# use warnings;
 
 use base qw( XIMS::AbstractClass );
 

@@ -11,7 +11,7 @@ package XIMS::SAX::Filter::DataCollector;
 #
 
 use strict;
-use warnings;
+# use warnings;
 
 use XML::Filter::GenericChunk;
 use XML::Generator::PerlData;

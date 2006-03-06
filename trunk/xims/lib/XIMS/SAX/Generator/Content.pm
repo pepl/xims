@@ -5,7 +5,7 @@
 package XIMS::SAX::Generator::Content;
 
 use strict;
-use warnings;
+# use warnings;
 
 use base qw(XIMS::SAX::Generator XML::Generator::PerlData);
 

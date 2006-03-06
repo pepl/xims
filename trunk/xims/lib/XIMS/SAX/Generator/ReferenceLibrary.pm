@@ -5,7 +5,7 @@
 package XIMS::SAX::Generator::ReferenceLibrary;
 
 use strict;
-use warnings;
+# use warnings;
 
 our $VERSION;
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };

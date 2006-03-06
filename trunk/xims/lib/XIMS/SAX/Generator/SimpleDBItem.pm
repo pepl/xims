@@ -5,7 +5,7 @@
 package XIMS::SAX::Generator::SimpleDBItem;
 
 use strict;
-use warnings;
+# use warnings;
 
 #use Data::Dumper;
 use base qw( XIMS::SAX::Generator::Content );

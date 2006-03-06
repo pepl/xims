@@ -5,7 +5,7 @@
 package godav;
 
 use strict;
-use warnings;
+# use warnings;
 
 #
 # Note: This module has beta status. All Litmus tests besides some of the

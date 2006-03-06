@@ -8,7 +8,7 @@ package XIMS::SAX::Filter::Attributes;
 # This SAX Filter expands semicolon-separated key=value pairs to a nodeset.
 #
 
-use warnings;
+# use warnings;
 use strict;
 
 use XML::SAX::Base;

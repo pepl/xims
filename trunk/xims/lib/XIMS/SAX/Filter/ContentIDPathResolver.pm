@@ -10,7 +10,7 @@ package XIMS::SAX::Filter::ContentIDPathResolver;
 # This SAX Filter expands an id or document_id to its corresponding location_path string.
 # Note: This version does not touch the element name and therefore we got path-string in *_id elements!
 
-use warnings;
+# use warnings;
 use strict;
 
 use XML::SAX::Base;

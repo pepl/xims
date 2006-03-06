@@ -9,7 +9,7 @@ package XIMS::SAX::Filter::ContentLinkResolver;
 # This SAX Filter expands a content-id (major_id) to its corresponding path-string.
 # Note: This version does not touch the element name and therefore we got path-string in *_id elements!
 
-use warnings;
+# use warnings;
 use strict;
 
 use XML::SAX::Base;
