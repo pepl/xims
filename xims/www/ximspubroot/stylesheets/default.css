@@ -41,9 +41,14 @@ p {
     margin-right:15px;
 }
 
-.left {
+#footer .left {
     float: left;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    top: 23px;
 }
+
 .right {
     float: right;
 }
