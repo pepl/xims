@@ -1,4 +1,4 @@
-use Test::More tests => 35;
+use Test::More tests => 41;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
@@ -74,6 +74,17 @@ my $valid_to = '2003-03-03 03:03:03';
 $o->valid_from_timestamp( $valid_from );
 $o->valid_to_timestamp( $valid_to );
 ok( $o->update(), 'update valid_from and valid_to' );
+
+# attributes
+my $val1 = 'dbi:Pg:dbname=ddd;host=10.0.0.1;mx_id=gonk234';
+my $val2 = 'Bender is no "Dahut".';
+my $val3 = "As I sit; Something 'happens'.";
+ok( $o->attribute( key1 => $val1 ), "setting attribute --$val1--" );
+ok( $o->attribute( key2 => $val2 ), "setting attribute --$val2--" );
+ok( $o->attribute( key3 => $val3 ), "setting attribute --$val3--" );
+is( $o->attribute_by_key( 'key1' ), $val1, "attrib has correct value" );
+is( $o->attribute_by_key( 'key2' ), $val2, "attrib has correct value" );
+is( $o->attribute_by_key( 'key3' ), $val3, "attrib has correct value" );
 
 # now, fetch it back again
 $o = undef;

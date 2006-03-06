@@ -29,6 +29,7 @@ use XIMS::Importer::Object;
 use XIMS::Iterator::Object;
 use XIMS::Text;
 use Text::Diff;
+use Text::ParseWords (); # for _parse_attributes
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 
@@ -1681,10 +1682,10 @@ sub reposition {
 #    my $boolean = $object->attribute( %attrhash );
 #
 # PARAMETER
-#    %attrhash    : the attribute hash
+#    %attrhash    : The attribute hash with new key/value pairs
 #
 # RETURNS
-#    $args{  }    :  New position
+#    boolean      :  1 one success
 #
 # DESCRIPTION
 #    Attributes are stored in ";" separated key=value pairs in the attributes column
@@ -1698,17 +1699,19 @@ sub attribute {
     my $text = $self->attributes();
 
     if ( defined $text and length $text ) {
-        my %attributes = ( $text =~ /([^;\=]+)\=([^\;]+)/g );
+        my %attributes = $self->_parse_attributes( $text );
         foreach my $key ( keys %attr ) {
-            $attributes{$key} = $attr{$key};
+            $attributes{$key} = $self->_escapeattrib( $attr{$key} );
         }
         $text = join( ';', map { $_ . "=" . (defined $attributes{$_} ? $attributes{$_} : '') } keys(%attributes) );
     }
     else {
-        $text = join( ';', map { $_ . "=" . (defined $attr{$_} ? $attr{$_} : '') } keys(%attr) );
+        $text = join( ';', map { $_ . "=" . (defined $attr{$_} ? $self->_escapeattrib( $attr{$_} ) : '') } keys(%attr) );
     }
+
     return 1 if $self->attributes( $text );
 }
+
 
 ##
 #
@@ -1731,11 +1734,97 @@ sub attribute_by_key {
     my $text = $self->attributes();
 
     if ( defined $text and length $text ) {
-        my %attributes = ( $text =~ /([^;\=]+)\=([^\;]+)/g );
-        return $attributes{$key};
+        my %attributes = $self->_parse_attributes( $text );
+        return $self->_unescapeattrib( $attributes{$key} );
     }
 
     return undef;
+}
+
+##
+#
+# SYNOPSIS
+#    my %attributes = $object->_parse_attributes( $text );
+#
+# PARAMETER
+#    $text    : ';'-separated attribute string
+#
+# RETURNS
+#    %attributes : Key/Value attribute hash
+#
+# DESCRIPTION
+#    Parses the ';'-separated key/value pairs into a hash.
+#
+sub _parse_attributes {
+    my $self = shift;
+    my $text = shift;
+    my %attributes;
+
+    my @pieces = Text::ParseWords::parse_line( ';', 1, $text);
+    foreach my $piece ( @pieces ) {
+        my ($key,$value) = ( Text::ParseWords::parse_line( '=', 1, $piece) );
+        $attributes{$key} = $value;
+    }
+
+    return %attributes;
+}
+
+
+##
+#
+# SYNOPSIS
+#    my $attrib_escaped = $object->_escapeattrib( $text );
+#
+# PARAMETER
+#    $text    : Attrib string
+#
+# RETURNS
+#    $attrib_escaped : String where the special attrib chars have been escaped
+#
+# DESCRIPTION
+#    Escapes quotes, semicolons and equal signs with backslashes in a string
+#
+sub _escapeattrib {
+    my $self = shift;
+    my $text = shift;
+    
+    return undef unless $text;
+
+    $text =~ s/"/\\"/g;
+    $text =~ s/'/\\'/g;
+    $text =~ s/=/\\=/g;
+    $text =~ s/;/\\;/g;
+
+    return $text;
+}
+
+
+##
+#
+# SYNOPSIS
+#    my $attrib_unescaped = $object->_unescapeattrib( $text );
+#
+# PARAMETER
+#    $text    : Attrib string
+#
+# RETURNS
+#    $attrib_unescaped : String where the special attrib chars have been unescaped
+#
+# DESCRIPTION
+#    Unescapes quotes, semicolons and equal signs in a string
+#
+sub _unescapeattrib {
+    my $self = shift;
+    my $text = shift;
+    
+    return undef unless $text;
+
+    $text =~ s/\\"/"/g;
+    $text =~ s/\\'/'/g;
+    $text =~ s/\\=/=/g;
+    $text =~ s/\\;/;/g;
+
+    return $text;
 }
 
 ##################################################################
