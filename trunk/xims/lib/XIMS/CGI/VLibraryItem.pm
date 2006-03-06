@@ -117,11 +117,11 @@ sub event_remove_mapping {
 
 sub event_create_mapping {
     my ( $self, $ctxt) = @_;
+    my $object = $ctxt->object();
     XIMS::Debug( 5, "called" );
 
     my $vlsubject = $self->param('vlsubject');
     my $vlkeyword = $self->param('vlkeyword');
-
     if ( $vlsubject or $vlkeyword ) {
         $self->_create_mapping_from_name( $ctxt->object(), 'Subject', $vlsubject ) if $vlsubject;
         $self->_create_mapping_from_name( $ctxt->object(), 'Keyword', $vlkeyword ) if $vlkeyword;

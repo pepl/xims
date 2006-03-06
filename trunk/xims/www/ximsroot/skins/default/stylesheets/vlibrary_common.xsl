@@ -22,6 +22,8 @@
     <xsl:param name="mo" />
     <xsl:param name="colms" select="3"/>
     <xsl:param name="vls"/>
+    <xsl:param name="date_from" />
+    <xsl:param name="date_to" />
     <xsl:param name="publications"/>
     <xsl:param name="authors"/>
     <xsl:param name="page" select="1" />
@@ -38,6 +40,8 @@
     <xsl:param name="publication_name"/>
     <xsl:param name="publication_volume"/>
     <xsl:param name="most_recent"/>
+    <xsl:param name="chronicle_from" />
+    <xsl:param name="chronicle_to" />
 
     <xsl:template name="head_default">
         <head>
@@ -176,7 +180,15 @@
 
     <xsl:template name="vlib_create_action">
         - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::DocBookXML">
-        <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>
+        <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>: DocBookXML
+        </a>
+        <br/>
+        - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::URLLink">
+        <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>: URLLink
+        </a>
+        <br/>
+        - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::Document">
+        <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>: Document
         </a>
     </xsl:template>
 
@@ -251,6 +263,36 @@
                 </td>
             </tr>
         </table>
+    </xsl:template>
+
+    <xsl:template name="chronicle_switch">
+        <table width="100%" border="0" style="margin: 0px;" id="vlsearchswitch">
+            <tr>
+                <td valign="top" width="50%" align="center" class="vlsearchswitchcell">
+        <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_searc\
+h">
+            Chronik von
+            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="chronicle_from" size="10" maxlength="200" value="{$chronicle_from}" />
+            bis
+            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="chronicle_to" size="10" maxlength="200" value="{$chronicle_to}" />
+            <xsl:text>&#160;</xsl:text>
+            <input type="image"
+                    src="{$skimages}go.png"
+                    name="submit"
+                    width="25"
+                    height="14"
+                    alt=""
+                    title=""
+                    border="0"
+                    style="vertical-align: text-bottom;"
+            />
+            <input type="hidden" name="start_here" value="1"/>
+            <input type="hidden" name="vlchronicle" value="1"/>
+        </form>
+                </td>
+            </tr>
+        </table>
+
     </xsl:template>
 
     <xsl:template name="mode_switcher">
