@@ -15,5 +15,11 @@ ALTER TABLE CILIB_META ADD DC_DATE             DATE;
 ALTER TABLE CILIB_META ADD DATE_FROM_TIMESTAMP DATE;
 ALTER TABLE CILIB_META ADD DATE_TO_TIMESTAMP   DATE;
 
+PROMPT Adding new object types 
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id )
+  VALUES ( OBT_SEQ.NEXTVAL, 'URLLink',  0, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id )
+  VALUES ( OBT_SEQ.NEXTVAL, 'Document', 0, 1, 1, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
+
 COMMIT;
 
