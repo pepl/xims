@@ -46,7 +46,7 @@ sub new {
         else {
             $search = _search_arrayref( _clean_search_string( $args->{search} ) );
         }
-        $self = bless { search => $search, fieldstolookin => $args->{fieldstolookin}, filterpublished => $args->{filterpublished} }, $class;
+        $self = bless { search => $search, fieldstolookin => $args->{fieldstolookin}, filterpublished => $args->{filterpublished}, extraargs => $args->{extraargs} }, $class;
         $self->_build() ? return $self : return undef;
     }
 

@@ -17,6 +17,7 @@ use XIMS::RefLibReferenceType;
 use XIMS::RefLibSerial;
 use XIMS::RefLibReferencePropertyValue;
 use XIMS::Importer::Object::ReferenceLibraryItem;
+use XIMS::QueryBuilder::ReferenceLibrary;
 use XML::LibXML;
 use File::Temp qw/ tempfile unlink0 /;
 
@@ -38,6 +39,7 @@ sub registerEvents {
           unpublish
           import_prompt
           import
+          search
           )
         );
 }
@@ -120,6 +122,72 @@ sub event_default {
     }
 
     my ( $child_count, $children ) = $ctxt->object->items_granted( limit => $limit, offset => $offset, order => $order, %childrenargs );
+
+    $ctxt->objectlist( [ $child_count, $children ] );
+
+    # This prevents the loading of XML::Filter::CharacterChunk and thus saving some ms...
+    $ctxt->properties->content->escapebody( 1 );
+
+    return 0;
+}
+
+sub event_search {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $style = $self->param('style');
+    if ( defined $style ) {
+        $ctxt->properties->application->style( $style );
+    }
+    else {
+        $ctxt->properties->application->style( 'default' );
+    }
+
+    my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+    my $limit;
+    if ( defined $self->param('onepage') or defined $style ) {
+        $limit = undef;
+    }
+    else {
+        $limit = 20;
+        $offset ||= 0;
+        $offset = $offset * $limit;
+    }
+    my $order = 'last_modification_timestamp DESC';
+
+    my $search = XIMS::utf8_sanitize($self->param('search'));
+    if ( defined $search ) {
+        $self->param( 'search', $search ); # update CGI param, so that stylesheets get the right one
+    }
+    $search ||= XIMS::decode($self->param('search')); # fallback
+
+    # The following parameter can be used to specify a title for the citation listing
+    # Since it *may* come in as latin1 depending on the pubstylesheet encoding,
+    # we have to make sure that it will be utf8 encoded.
+    my $ptitle = XIMS::utf8_sanitize($self->param('ptitle'));
+    if ( defined $ptitle ) {
+        $self->param( 'ptitle', $ptitle );
+    }
+
+    unless ( defined $search and length($search) => 2 and length($search) <= 128 ) {
+        return $self->sendError( $ctxt, "A valid search string is needed." );
+    }
+
+    use encoding "latin-1";
+    my $allowed = q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
+    my $qb = XIMS::QueryBuilder::ReferenceLibrary->new( { search => $search,
+                                                          allowed => $allowed,
+                                                          extraargs => { reflib => $ctxt->object() } } );
+
+    if ( not defined $qb ) {
+        return $self->sendError( $ctxt, "Querybuilder could not be instantiated." );
+    }
+
+use Data::Dumper;
+warn Dumper $qb->criteria();
+
+    my ( $child_count, $children ) = $ctxt->object->items_granted( limit => $limit, offset => $offset, order => $order, criteria => $qb->criteria() );
 
     $ctxt->objectlist( [ $child_count, $children ] );
 

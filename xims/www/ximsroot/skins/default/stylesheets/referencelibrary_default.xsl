@@ -20,6 +20,7 @@
     <xsl:param name="author_lname"/>
     <xsl:param name="reference_type_id"/>
     <xsl:param name="workgroup_id"/>
+    <xsl:param name="search"/>
 
     <xsl:variable name="objectitems_count"><xsl:choose><xsl:when test="/document/context/object/children/@totalobjects"><xsl:value-of select="/document/context/object/children/@totalobjects"/></xsl:when><xsl:otherwise>0</xsl:otherwise></xsl:choose></xsl:variable>
     <xsl:variable name="objectitems_rowlimit" select="'20'"/>
@@ -28,7 +29,7 @@
     <!--<xsl:variable name="subjectcolumns" select="'3'"/>-->
 
     <xsl:template match="/document/context/object">
-        <xsl:variable name="pagenavurl"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id,';m=',$m)"/></xsl:variable>
+        <xsl:variable name="pagenavurl"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?search=',$search,';date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id,';m=',$m)"/></xsl:variable>
         <html>
             <xsl:call-template name="head_default"/>
             <body onLoad="setBg('vlchildrenlistitem');">
@@ -270,33 +271,18 @@ z-index:100;
             <tr>
                 <td>
                     <div>
-                        Search for author by lastname
-                        <xsl:if test="$date != '' or $serial_id != ''">
-                            with filter
-                            <xsl:if test="$date != ''">
-                                <span class="reflib_filter">Date '<xsl:value-of select="$date"/>'</span>
-                            </xsl:if>
-                            <xsl:if test="$serial_id != ''">
-                                <xsl:if test="$date != ''">, </xsl:if>
-                                <span class="reflib_filter">Serial '<xsl:value-of select="/document/context/vlserials/serial[id=$serial_id]/title"/>'</span>
-                            </xsl:if>
-                        </xsl:if>:
+                        Search <a href="javascript:openDocWindow('RefLibSearch')" class="doclink">(?)</a>:<br/>
+                        Example: <em>zoller serial:"Phys. Rev" date:2005</em>
                     </div>
                 </td>
                 <td align="right">
                     <form>
-                        <input type="text" name="author_lname" id="author_lname" size="17" maxlength="200">
-                        <xsl:if test="$author_lname != ''">
-                            <xsl:attribute name="value"><xsl:value-of select="$author_lname"/></xsl:attribute>
+                        <input type="text" name="search" id="search" size="42" maxlength="200">
+                            <xsl:if test="$search != ''">
+                                <xsl:attribute name="value"><xsl:value-of select="$search"/></xsl:attribute>
                         </xsl:if>
                         </input>
                         <xsl:text>&#160;</xsl:text>
-                        <xsl:if test="$date != ''">
-                            <input type="hidden" name="date" value="{$date}"/>
-                        </xsl:if>
-                        <xsl:if test="$serial_id != ''">
-                            <input type="hidden" name="serial_id" value="{$serial_id}"/>
-                        </xsl:if>
                         <input type="image"
                                 src="{$skimages}go.png"
                                 name="submit"
@@ -354,6 +340,7 @@ z-index:100;
 
 <xsl:template name="reflib_exportwidget">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="GET" id="export" name="export">
+        <input type="hidden" name="search" value="{$search}"/>
         <input type="hidden" name="author_lname" value="{$author_lname}"/>
         <input type="hidden" name="author_id" value="{$author_id}"/>
         <input type="hidden" name="serial_id" value="{$serial_id}"/>
@@ -376,6 +363,7 @@ z-index:100;
         <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="style" id="style">
             <option value="cv_defaultstyle">default style</option>
         </select>
+        <input type="hidden" name="search" value="{$search}"/>
         <input type="hidden" name="author_lname" value="{$author_lname}"/>
         <input type="hidden" name="author_id" value="{$author_id}"/>
         <input type="hidden" name="serial_id" value="{$serial_id}"/>

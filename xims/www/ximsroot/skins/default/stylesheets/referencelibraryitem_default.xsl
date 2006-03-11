@@ -20,7 +20,7 @@
                 <tr>
                     <td bgcolor="#ffffff">
                         <span id="body">
-                            <h1><xsl:value-of select="title"/> (<xsl:value-of select="/document/reference_types/reference_type/name"/>)</h1>
+                            <h1><xsl:value-of select="title"/> (<xsl:value-of select="/document/reference_types/reference_type[@id=/document/context/object/reference_type_id]/name"/>)</h1>
                                 <div id="abstract">
                                     <xsl:apply-templates select="abstract"/>
                                 </div>

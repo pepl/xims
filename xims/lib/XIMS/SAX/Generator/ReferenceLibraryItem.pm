@@ -35,7 +35,7 @@ sub prepare {
 
     my $reference_library = $ctxt->object->parent();
     bless $reference_library, 'XIMS::ReferenceLibrary'; # parent isa XIMS::Object
-    my @reference_types = $reference_library->reference_types( id => $ctxt->object->reference->reference_type_id );
+    my @reference_types = $reference_library->reference_types();
     $doc_data->{reference_types} = { reference_type => \@reference_types };
 
     my @property_list = $ctxt->object->property_list();
