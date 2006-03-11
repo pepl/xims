@@ -407,6 +407,7 @@ sub utf8_sanitize {
         return Encode::decode_utf8(Encode::encode_utf8($string));
     }
     else {
+        Encode::_utf8_on( $string );
         return $string;
     }
 }
