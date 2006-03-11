@@ -42,6 +42,7 @@ sub registerEvents {
           create_editor_mapping
           create_serial_mapping
           reposition_author
+          change_reference_type
           )
         );
 }
@@ -108,7 +109,7 @@ sub event_store {
         }
         my $importer = XIMS::Importer::Object::ReferenceLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->parent() );
         my $identifier = XIMS::trim( XIMS::decode( $self->param( 'identifier' ) ) );
-        if ( not $importer->check_duplicate_identifier( $identifier ) ) {
+        if ( defined $identifier and length $identifier and not $importer->check_duplicate_identifier( $identifier ) ) {
             XIMS::Debug( 3, "Reference with the same identifier already exists." );
             $self->sendError( $ctxt , "Reference with the same identifier already exists." );
             return 0;
@@ -404,6 +405,36 @@ sub event_reposition_author {
     else {
         $self->sendError( $ctxt, "Could not reposition author." );
         return 0;
+    }
+}
+
+sub event_change_reference_type {
+    my ( $self, $ctxt) = @_;
+    XIMS::Debug( 5, "called" );
+
+    unless ( $ctxt->session->user->object_privmask( $ctxt->object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    my $reference_type_id = $self->param('reference_type_id');
+    if ( not defined $reference_type_id ) {
+        return $self->sendError( $ctxt, "Need a new reference type id." );
+    }
+
+    my $reference_type = XIMS::RefLibReferenceType->new( id => $reference_type_id );
+    if ( defined $reference_type ) {
+        my $reference = $ctxt->object->reference();
+        $reference->reference_type_id( $reference_type_id );
+        if ( $reference->update() ) {
+            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+            return 1;
+        }
+        else {
+            return $self->sendError( $ctxt, "Reference Type could not be updated." );
+        }
+    }
+    else {
+        return $self->sendError( $ctxt, "Could not resolve reference type." );
     }
 }
 

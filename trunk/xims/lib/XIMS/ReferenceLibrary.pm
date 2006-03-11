@@ -209,6 +209,7 @@ sub items_granted {
     my $serial_id = delete $args{serial_id};
     my $reference_type_id = delete $args{reference_type_id};
     my $workgroup_id = delete $args{workgroup_id};
+    my $criteria = delete $args{criteria};
 
     my $child_count;
     my @children;
@@ -225,36 +226,42 @@ sub items_granted {
         push @values, @userids;
     }
 
-    if ( defined $reference_type_id ) {
-        $conditions .= " AND r.reference_type_id = ?";
-        push @values, $reference_type_id;
+    if ( defined $criteria ) {
+        $tables .= ', cireflib_authormap am';
+        $conditions .= " AND am.reference_id = r.id AND $criteria";
     }
-    if ( defined $date ) {
-        $tables .= ', cireflib_ref_propertyvalues pv';
-        $conditions .= " AND pv.reference_id = r.id AND pv.property_id = (SELECT id FROM cireflib_reference_properties WHERE name = 'date') AND pv.value LIKE ?";
-        push @values, $date;
-    }
-    if ( defined $workgroup_id ) {
-        unless ( defined $date ) {
-            $tables .= ', cireflib_ref_propertyvalues pv';
-            $conditions .= ' AND pv.reference_id = r.id ';
+    else {
+        if ( defined $reference_type_id ) {
+            $conditions .= " AND r.reference_type_id = ?";
+            push @values, $reference_type_id;
         }
-        $conditions .= " AND pv.property_id = (SELECT id FROM cireflib_reference_properties WHERE name = 'workgroup') AND pv.value LIKE ?";
-        push @values, $workgroup_id;
-    }
-    if ( defined $author_id ) {
-        $tables .= ', cireflib_authormap am';
-        $conditions .= " AND am.reference_id = r.id AND am.author_id = ?";
-        push @values, $author_id;
-    }
-    elsif ( defined $author_lname ) {
-        $tables .= ', cireflib_authormap am';
-        $conditions .= " AND am.reference_id = r.id AND am.author_id in (SELECT id FROM cilib_authors WHERE lower(lastname) LIKE ?)";
-        push @values, lc $author_lname;
-    }
-    if ( defined $serial_id ) {
-        $conditions .= " AND r.serial_id = ?";
-        push @values, $serial_id;
+        if ( defined $date ) {
+            $tables .= ', cireflib_ref_propertyvalues pv';
+            $conditions .= " AND pv.reference_id = r.id AND pv.property_id = (SELECT id FROM cireflib_reference_properties WHERE name = 'date') AND pv.value LIKE ?";
+            push @values, $date;
+        }
+        if ( defined $workgroup_id ) {
+            unless ( defined $date ) {
+                $tables .= ', cireflib_ref_propertyvalues pv';
+                $conditions .= ' AND pv.reference_id = r.id ';
+            }
+            $conditions .= " AND pv.property_id = (SELECT id FROM cireflib_reference_properties WHERE name = 'workgroup') AND pv.value LIKE ?";
+            push @values, $workgroup_id;
+        }
+        if ( defined $author_id ) {
+            $tables .= ', cireflib_authormap am';
+            $conditions .= " AND am.reference_id = r.id AND am.author_id = ?";
+            push @values, $author_id;
+        }
+        elsif ( defined $author_lname ) {
+            $tables .= ', cireflib_authormap am';
+            $conditions .= " AND am.reference_id = r.id AND am.author_id in (SELECT id FROM cilib_authors WHERE lower(lastname) LIKE ?)";
+            push @values, lc $author_lname;
+        }
+        if ( defined $serial_id ) {
+            $conditions .= " AND r.serial_id = ?";
+            push @values, $serial_id;
+        }
     }
 
     my $countsql = "SELECT count(distinct c.id) AS cid FROM $tables WHERE $conditions";

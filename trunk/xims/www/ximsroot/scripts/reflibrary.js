@@ -8,3 +8,9 @@
 function getRefTypeDescription( reftype_id ) {
     return document.getElementById( 'reftype' + reftype_id ).innerHTML;
 }
+
+function submitReferenceTypeUpdate( reftype ) {
+    document.reftypechangeform.reference_type_id.value = reftype;
+    document.reftypechangeform.submit();
+    return true;
+}
