@@ -102,6 +102,16 @@
                       </xsl:if><xsl:value-of select="$i18n/l/No"/>
                     </input>
                 </xsl:when>
+                <xsl:when test="type = 'textarea'">
+                    <textarea tabindex="{position()+20}" class="text" name="simpledb_{name}" rows="5" cols="38" wrap="virtual" onKeyUp="keyup(this)">
+                        <xsl:if test="$propvalue != ''">
+                            <xsl:value-of select="$propvalue"/>
+                        </xsl:if>
+                    </textarea>
+                    <script type="text/javascript">
+                        keyup( document.getElementsByName("<xsl:value-of select="concat('simpledb_',name)"/>")[0] );
+                    </script>
+                </xsl:when>
                 <xsl:otherwise>
                     <input type="text"
                            class="text"
@@ -135,6 +145,7 @@
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <xsl:call-template name="jscalendar_scripts"/>
+        <xsl:call-template name="jstextarea_keyupcheck"/>
     </head>
 </xsl:template>
 
@@ -146,6 +157,7 @@
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <xsl:call-template name="jscalendar_scripts"/>
+        <xsl:call-template name="jstextarea_keyupcheck"/>
     </head>
 </xsl:template>
 
@@ -174,6 +186,21 @@
     </tr>
 </xsl:template>
 
+<xsl:template name="jstextarea_keyupcheck">
+    <script type="text/javascript">
+        var maxKeys = 1999;
+        function keyup( what ) {
+            if ( typeof what == 'undefined' )
+                return false;
+            var str = new String( what.value );
+            if ( str.length &gt; maxKeys ) {
+                alert('Maximum number of chars reached.');
+                what.value = what.value.substring(0,maxKeys);
+                return false;
+            }
+        }
+    </script>
+</xsl:template>
 
 <xsl:template name="cttobject.content_length"/>
 <xsl:template name="cttobject.options.copy"/>

@@ -37,8 +37,8 @@ CREATE TABLE cisimpledb_members
 CREATE TABLE cisimpledb_member_properties
  (
  id                 SERIAL            PRIMARY KEY
- ,name              VARCHAR(128)      NOT NULL
- ,type              VARCHAR(128)      DEFAULT 'string' CHECK (type in ('string', 'stringoptions', 'boolean', 'integer', 'datetime', 'float'))
+ ,name				VARCHAR(128)      NOT NULL
+ ,type				VARCHAR(128)      DEFAULT 'string' CHECK (type in ('string', 'stringoptions', 'textarea', 'boolean', 'integer', 'datetime', 'float'))
  ,regex             VARCHAR(256)
  ,description       VARCHAR(4096)
  ,position          INTEGER
