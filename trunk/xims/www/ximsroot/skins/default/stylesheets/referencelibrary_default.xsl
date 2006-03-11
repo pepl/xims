@@ -271,7 +271,7 @@ z-index:100;
             <tr>
                 <td>
                     <div>
-                        Search <a href="javascript:openDocWindow('RefLibSearch')" class="doclink">(?)</a>:<br/>
+                        Search <a href="javascript:openDocWindow('SearchingReferenceLibraries')" class="doclink">(?)</a>:<br/>
                         Example: <em>zoller serial:"Phys. Rev" date:2005</em>
                     </div>
                 </td>

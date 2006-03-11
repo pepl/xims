@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
     <title>XIMS User&#39;s Reference</title>
 
@@ -10,7 +10,7 @@
                 <surname>Kröll</surname>
 
                 <affiliation>
-                    <orgname>University of Innsbruck</orgname>
+                    <orgname></orgname>
                 </affiliation>
 
                 <authorblurb>
@@ -295,16 +295,14 @@
         </section>
 
         <section>
-            <title>Omit <literal>autoindex</literal> for this <literal>container</literal> during
-            <literal>publishing</literal></title>
+            <title>Omit <literal>autoindex</literal> for this <literal>container</literal> during <literal>publishing</literal></title>
 
-            <para>Per default, XIMS generates a simple index document for you. (That practically means: if the public
-            webserver gets a request for the container you published, it will serve a short summary of the published
-            objects in this folder) This index is generated during the publishing-process of the container.</para>
+            <para>Per default, XIMS generates a simple index document for you. (That practically means: if the public webserver gets a request for the container
+            you published, it will serve a short summary of the published objects in this folder) This index is generated during the publishing-process of the
+            container.</para>
 
-            <para>In some cases (having hand-maintained, multilingual indexfiles in example) this is
-            <emphasis>not</emphasis> desirable. Check this option to avoid the creation, or to remove an existing
-            <literal>autoindex</literal>.</para>
+            <para>In some cases (having hand-maintained, multilingual indexfiles in example) this is <emphasis>not</emphasis> desirable. Check this option to
+            avoid the creation, or to remove an existing <literal>autoindex</literal>.</para>
         </section>
 
         <section>
@@ -428,6 +426,12 @@
                 <title>XML</title>
 
                 <para></para>
+
+                <section>
+                    <title>SimpleFormEdit</title>
+
+                    <para></para>
+                </section>
             </section>
 
             <section>
@@ -526,19 +530,46 @@
             <section>
                 <title>Questionnaire</title>
 
-                <para></para>
+                <para>There is <ulink url="http://xims.info/documentation/users/howtos/questionnaire-howto-ger.sdbk">Questionnaire-Howto</ulink> in German.</para>
             </section>
 
             <section>
                 <title>VLibrary</title>
 
-                <para></para>
+                <para>Vlibraries are basic Digital Library repositories.</para>
             </section>
 
             <section>
                 <title>SQLReport</title>
 
-                <para></para>
+                <para>SQLReports allow to integrate data from remote RDBMS into XIMS systems.</para>
+            </section>
+
+            <section>
+                <title>Reference Library</title>
+
+                <para>Reference Libraries store bibliographic data. Reference Library items can be imported and exported using <literal>BibTex</literal>,
+                <literal>MODS</literal>, <literal>Endnote</literal> and other formats.</para>
+
+                <section>
+                    <title id="RefLibSearch">Searching Reference Libraries</title>
+
+                    <para>Regular search terms will be used searched for in the <literal>lastname</literal> field of reference items. If you enter more than one
+                    term, the terms will be ANDed - returning reference entries from both authors. Using a <literal>field:value</literal> syntax, it is possible
+                    to look for content in Reference Library property fields. Boolean operators &#34;AND&#34; and &#34;OR&#34; as well as grouping expressions
+                    using parentheses can be used for complex queries.</para>
+
+                    <para><example><title>Reference Library Search examples</title><itemizedlist><listitem><para>workgroup:1234 (date:2005 OR
+                    preprint_submitdate:2005) project:googol</para></listitem><listitem><para>Zweistein serial:&#34;Phys. Rev. Letters&#34; date:1999</para></listitem></itemizedlist></example></para>
+                </section>
+            </section>
+
+            <section>
+                <title>SimpleDB</title>
+
+                <para>The SimpleDB object can be used to manage simple two-dimensional data structures. Using the web-interface, it is possible to set up a
+                simple database using &#34;String&#34;, &#34;String options&#34;, &#34;Textarea&#34;, &#34;Boolean&#34;, &#34;Integer&#34;, &#34;Float&#34;, and
+                &#34;Datetime&#34; datatypes.</para>
             </section>
         </section>
     </section>

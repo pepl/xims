@@ -304,7 +304,7 @@
         </a>
     </xsl:template>
 
-    <xsl:template match="xref">
+    <xsl:template match="xref|link">
         <a href="#{@linkend}">
             <xsl:apply-templates/>
         </a>
