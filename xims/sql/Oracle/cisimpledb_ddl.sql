@@ -145,7 +145,7 @@ ALTER TABLE cisimpledb_mempropertymap
 PROMPT Creating check constraint on 'cisimpledb_member_properties' 'type'
 ALTER TABLE cisimpledb_member_properties
  ADD (CONSTRAINT PRO_TYPE CHECK
-  (TYPE IN ('string', 'stringoptions', 'boolean', 'integer', 'datetime', 'float')))
+  (TYPE IN ('string', 'stringoptions', 'textarea', 'boolean', 'integer', 'datetime', 'float')))
 /
 
 

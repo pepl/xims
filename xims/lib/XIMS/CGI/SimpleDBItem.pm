@@ -178,9 +178,9 @@ sub update_properties {
     foreach my $property ( $ctxt->object->property_list() ) {
         my $propertyname = $property->name();
         $propertyname = Encode::encode_utf8( $propertyname ) if Encode::is_utf8( $propertyname );
-        my $value = $self->param( 'simpledb_' . $propertyname );
+        my $value = XIMS::utf8_sanitize( $self->param( 'simpledb_' . $propertyname ) );
         next unless defined $value;
-        $value = XIMS::trim( XIMS::decode( $value ) );
+        $value = substr(XIMS::trim( XIMS::decode( $value )),0,2000); # play safe with the DB field length
 
         # check for mandatory properties here
 

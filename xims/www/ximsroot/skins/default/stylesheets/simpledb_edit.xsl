@@ -118,6 +118,7 @@
                     <select id="sdbp_type" tabindex="51" name="sdbp_type" onChange="checkPropertyType(this)">
                         <option value="string">String</option>
                         <option value="stringoptions">String options</option>
+                        <option value="textarea">Textarea</option>
                         <option value="boolean">Boolean</option>
                         <option value="integer">Integer</option>
                         <option value="datetime">Datetime</option>
@@ -203,7 +204,7 @@
                         <xsl:for-each select="/document/member_properties/member_property/position">
                             <option>
                                 <xsl:if test=". = /document/member_properties/member_property[@id=$property_id]/position">
-                                    <xsl:attribute name="selected" select="'selected'"/>
+                                    <xsl:attribute name="selected">selected</xsl:attribute>
                                 </xsl:if>
                                 <xsl:value-of select="."/>
                             </option>
