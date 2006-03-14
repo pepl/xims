@@ -1,4 +1,4 @@
-use Test::More tests => 41;
+use Test::More tests => 47;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
@@ -79,12 +79,21 @@ ok( $o->update(), 'update valid_from and valid_to' );
 my $val1 = 'dbi:Pg:dbname=ddd;host=10.0.0.1;mx_id=gonk234';
 my $val2 = 'Bender is no "Dahut".';
 my $val3 = "As I sit; Something 'happens'.";
+my $val4 = 0;
+my $val5 = '';
+my $val6 = undef;
 ok( $o->attribute( key1 => $val1 ), "setting attribute --$val1--" );
 ok( $o->attribute( key2 => $val2 ), "setting attribute --$val2--" );
 ok( $o->attribute( key3 => $val3 ), "setting attribute --$val3--" );
+ok( $o->attribute( key4 => $val4 ), "setting attribute --$val4--" );
+ok( $o->attribute( key5 => $val5 ), "setting attribute --$val5--" );
+ok( $o->attribute( key6 => $val6 ), "setting attribute --$val6--" );
 is( $o->attribute_by_key( 'key1' ), $val1, "attrib has correct value" );
 is( $o->attribute_by_key( 'key2' ), $val2, "attrib has correct value" );
 is( $o->attribute_by_key( 'key3' ), $val3, "attrib has correct value" );
+is( $o->attribute_by_key( 'key4' ), $val4, "attrib has correct value" );
+is( $o->attribute_by_key( 'key5' ), undef, "attrib has correct value" );
+is( $o->attribute_by_key( 'key6' ), undef,    "attrib has correct value" );
 
 # now, fetch it back again
 $o = undef;
