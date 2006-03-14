@@ -259,7 +259,8 @@ sub remove_portlet {
     if ( defined $node ) {
         XIMS::Debug( 6, "found node" );
         $node->unbindNode; # remove node from its context.
-        $self->body( $fragment->toString() );
+        my $newbody = $fragment->toString()?$fragment->toString():' ';
+        $self->body( $newbody );
     }
     else {
         XIMS::Debug( 3, "no portlet with id '$portlet_id' found" );
