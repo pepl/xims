@@ -1788,7 +1788,7 @@ sub _escapeattrib {
     my $self = shift;
     my $text = shift;
     
-    return undef unless $text;
+    return undef unless defined $text;
 
     $text =~ s/"/\\"/g;
     $text =~ s/'/\\'/g;
@@ -1817,7 +1817,7 @@ sub _unescapeattrib {
     my $self = shift;
     my $text = shift;
     
-    return undef unless $text;
+    return undef unless defined $text;
 
     $text =~ s/\\"/"/g;
     $text =~ s/\\'/'/g;
