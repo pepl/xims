@@ -39,7 +39,7 @@ sub registerEvents {
           unpublish
           import_prompt
           import
-          search
+          reflibsearch
           )
         );
 }
@@ -52,7 +52,8 @@ sub event_init {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    $ctxt->sax_generator( 'XIMS::SAX::Generator::ReferenceLibrary' );
+    # let X:S:G:S handle all events beside search
+    $ctxt->sax_generator( 'XIMS::SAX::Generator::ReferenceLibrary' ) unless $self->testEvent($ctxt) eq 'search';
     return $self->SUPER::event_init( $ctxt );
 }
 
@@ -112,7 +113,7 @@ sub event_default {
     if ( defined $author_id and $author_id =~ /^\d+$/ ) {
         $childrenargs{author_id} = $author_id;
     }
-    elsif ( defined $author_lname and $author_lname =~ /^[^()!?_^`´'"]{2,}/ ) {
+    elsif ( defined $author_lname and $author_lname =~ /^[^()!?_^`´'"]{2,}/ ) { # '
         $author_lname =~ s#\*#%#g;
         $author_lname =~ s#%%#%#g;
         $childrenargs{author_lname} = $author_lname;
@@ -131,7 +132,7 @@ sub event_default {
     return 0;
 }
 
-sub event_search {
+sub event_reflibsearch {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
@@ -156,11 +157,11 @@ sub event_search {
     }
     my $order = 'last_modification_timestamp DESC';
 
-    my $search = XIMS::utf8_sanitize($self->param('search'));
+    my $search = XIMS::utf8_sanitize($self->param('reflibsearch'));
     if ( defined $search ) {
-        $self->param( 'search', $search ); # update CGI param, so that stylesheets get the right one
+        $self->param( 'reflibsearch', $search ); # update CGI param, so that stylesheets get the right one
     }
-    $search ||= XIMS::decode($self->param('search')); # fallback
+    $search ||= XIMS::decode($self->param('reflibsearch')); # fallback
 
     # The following parameter can be used to specify a title for the citation listing
     # Since it *may* come in as latin1 depending on the pubstylesheet encoding,
@@ -183,9 +184,6 @@ sub event_search {
     if ( not defined $qb ) {
         return $self->sendError( $ctxt, "Querybuilder could not be instantiated." );
     }
-
-use Data::Dumper;
-warn Dumper $qb->criteria();
 
     my ( $child_count, $children ) = $ctxt->object->items_granted( limit => $limit, offset => $offset, order => $order, criteria => $qb->criteria() );
 
