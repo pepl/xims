@@ -73,7 +73,7 @@
            <xsl:with-param name="top" select="true()" />
         </xsl:call-template>
         <xsl:if test="(@edit=1)">
-            <script language="JavaScript">
+            <script type="text/javascript">
               location.hash='<xsl:number level="multiple" count="answer | question" />';
             </script>
         </xsl:if>
