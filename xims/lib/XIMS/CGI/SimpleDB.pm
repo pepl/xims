@@ -45,7 +45,8 @@ sub event_init {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    $ctxt->sax_generator( 'XIMS::SAX::Generator::SimpleDB' );
+    # let X:S:G:S handle all events beside search
+    $ctxt->sax_generator( 'XIMS::SAX::Generator::SimpleDB' ) unless $self->testEvent($ctxt) eq 'search';
     return $self->SUPER::event_init( $ctxt );
 }
 
