@@ -214,7 +214,7 @@ sub _set_children {
     if ( $ots and scalar @{$ots} > 0 ) {
         my $ot;
         foreach my $name ( @{$ots} ) {
-            $ot = XIMS::ObjectType->new( name => $name );
+            $ot = XIMS::ObjectType->new( fullname => $name );
             push(@object_type_ids, $ot->id()) if defined $ot;
         }
         $childrenargs{object_type_id} = \@object_type_ids;
