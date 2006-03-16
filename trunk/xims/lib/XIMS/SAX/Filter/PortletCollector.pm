@@ -80,7 +80,7 @@ sub handle_data {
         my @object_type_ids;
         my $ot;
         foreach my $name ( $self->get_objecttypes() ) {
-            $ot = XIMS::ObjectType->new( name => $name );
+            $ot = XIMS::ObjectType->new( fullname => $name );
             push(@object_type_ids, $ot->id()) if defined $ot;
         }
         $childrenargs{object_type_id} = \@object_type_ids;
@@ -89,7 +89,7 @@ sub handle_data {
         if ( $self->get_documentlinks() ) {
             my $ot;
             foreach my $name ( qw( URLLink SymbolicLink ) ) {
-                $ot = XIMS::ObjectType->new( name => $name );
+                $ot = XIMS::ObjectType->new( fullname => $name );
                 push(@doclinks_object_type_ids, $ot->id()) if defined $ot;
             }
         }
