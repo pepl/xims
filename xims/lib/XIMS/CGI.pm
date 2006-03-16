@@ -693,7 +693,7 @@ sub clean_userquery {
     $userquery =~ s/\s+$//;
     $userquery =~ s/[ ;,<>`´|?]+//g;
 
-    return $userquery;
+    return uc($userquery);
 }
 
 sub init_store_object {
@@ -1394,7 +1394,7 @@ sub event_publish_prompt {
         @objects = $self->body_ref_objects($ctxt);
 
         # look for document links
-        my $urllinkid = XIMS::ObjectType->new( name => 'URLLink' )->id();
+        my $urllinkid = XIMS::ObjectType->new( fullname => 'URLLink' )->id();
         my @doclinks = $ctxt->object->children_granted( object_type_id => $urllinkid, marked_deleted => undef );
         push( @objects, @doclinks ) if scalar @doclinks > 0;
 
