@@ -171,12 +171,12 @@ sub event_reflibsearch {
         $self->param( 'ptitle', $ptitle );
     }
 
-    unless ( defined $search and length($search) => 2 and length($search) <= 128 ) {
+    unless ( defined $search and length($search) >= 2 and length($search) <= 128 ) {
         return $self->sendError( $ctxt, "A valid search string is needed." );
     }
 
     use encoding "latin-1";
-    my $allowed = q{\!a-zA-Z0-9צהü‗ÖÄÜ‗%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
+    my $allowed = q{\!a-zA-Z0-9ÀÁÂÃÅÆÇÈÉÊËÐÑÒÓÔÕØÙÚÛאבגדוזחטיךכלםמןנסעףפץרשתûü‎צהü‗ÖÄÜ‗%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
     my $qb = XIMS::QueryBuilder::ReferenceLibrary->new( { search => $search,
                                                           allowed => $allowed,
                                                           extraargs => { reflib => $ctxt->object() } } );
