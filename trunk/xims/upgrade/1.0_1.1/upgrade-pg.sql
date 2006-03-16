@@ -20,6 +20,12 @@ ALTER TABLE cilib_meta ADD COLUMN dc_date             TIMESTAMP(0) WITHOUT TIME 
 ALTER TABLE cilib_meta ADD COLUMN date_from_timestamp TIMESTAMP(0) WITHOUT TIME ZONE
 ALTER TABLE cilib_meta ADD COLUMN date_to_timestamp   TIMESTAMP(0) WITHOUT TIME ZONE
 
+\echo adding new VLibrary ObjectTypes
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
+       VALUES ( nextval('ci_object_types_id_seq'), 'URLLink', 0, 1, 0, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Document', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
+
 \echo Adding ReferenceLibrary objects
 \i ../../sql/Pg/create_referencelibrary.sql
 
