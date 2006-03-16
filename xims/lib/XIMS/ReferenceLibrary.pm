@@ -226,7 +226,7 @@ sub items_granted {
         push @values, @userids;
     }
 
-    if ( defined $criteria ) {
+    if ( defined $criteria and length $criteria ) {
         $tables .= ', cireflib_authormap am';
         $conditions .= " AND am.reference_id = r.id AND $criteria";
     }

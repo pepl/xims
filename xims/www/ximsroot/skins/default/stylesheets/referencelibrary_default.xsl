@@ -29,7 +29,7 @@
     <!--<xsl:variable name="subjectcolumns" select="'3'"/>-->
 
     <xsl:template match="/document/context/object">
-        <xsl:variable name="pagenavurl"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?reflibsearch=',$reflibsearch,';date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id,';m=',$m)"/></xsl:variable>
+        <xsl:variable name="pagenavurl"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id,';m=',$m)"/><xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch)"/></xsl:if></xsl:variable>
         <html>
             <xsl:call-template name="head_default"/>
             <body onLoad="setBg('vlchildrenlistitem');">
@@ -340,7 +340,9 @@ z-index:100;
 
 <xsl:template name="reflib_exportwidget">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="GET" id="export" name="export">
-        <input type="hidden" name="reflibsearch" value="{$reflibsearch}"/>
+        <xsl:if test="$reflibsearch != ''">
+            <input type="hidden" name="reflibsearch" value="{$reflibsearch}"/>
+        </xsl:if>
         <input type="hidden" name="author_lname" value="{$author_lname}"/>
         <input type="hidden" name="author_id" value="{$author_id}"/>
         <input type="hidden" name="serial_id" value="{$serial_id}"/>
@@ -363,7 +365,9 @@ z-index:100;
         <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="style" id="style">
             <option value="cv_defaultstyle">default style</option>
         </select>
-        <input type="hidden" name="reflibsearch" value="{$reflibsearch}"/>
+        <xsl:if test="$reflibsearch != ''">
+            <input type="hidden" name="reflibsearch" value="{$reflibsearch}"/>
+        </xsl:if>
         <input type="hidden" name="author_lname" value="{$author_lname}"/>
         <input type="hidden" name="author_id" value="{$author_id}"/>
         <input type="hidden" name="serial_id" value="{$serial_id}"/>
