@@ -113,7 +113,7 @@ sub handler {
 
     # test if we are called through a proxy, set serverurl accordingly
     my $uri = Apache::URI->parse( $r );
-    my $hostname = length $r->headers_in->{'X-Forwarded-Host'}?$r->headers_in->{'X-Forwarded-Host'}:$uri->hostinfo();
+    my $hostname = (defined $r->headers_in->{'X-Forwarded-Host'} and length $r->headers_in->{'X-Forwarded-Host'}) ? $r->headers_in->{'X-Forwarded-Host'} : $uri->hostinfo();
     XIMS::Debug( 6, "setting serverurl to $hostname" );
     $ctxt->session->serverurl( $uri->scheme . '://' . $hostname);
 

@@ -218,7 +218,6 @@ sub tables_and_columns_get {
 
 sub crit {
     my ($self, $conds) = @_;
-    my %out = ();
     my @outie = ();
     foreach my $key ( keys( %{$conds} )) {
         #warn "in Crit $key = " . $conds->{$key} . "\n";
@@ -238,7 +237,6 @@ sub crit {
 
 sub crit_get {
     my ($self, $conds) = @_;
-    my %out = ();
     my @outie = ();
     foreach my $key ( keys( %{$conds} )) {
         #warn "in Crit $key = " . Dumper($conds->{$key}) . "\n";
@@ -247,7 +245,6 @@ sub crit_get {
         }
         else {
             my ($table, $column) = @{$self->resolve_resource( $key )};
-            $out{"$column"} = $conds->{$key};
             push @outie, DBIx::SQLEngine::Criteria->auto( { $column => $conds->{$key} } );
         }
     }
