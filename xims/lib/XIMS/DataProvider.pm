@@ -352,6 +352,28 @@ sub deleteObject {
     return 1;
 }
 
+
+sub getUser {
+    my $self = shift;
+    my %args = @_;
+    my %param;
+
+    my ( $properties, $conditions ) = $self->request_factory( 'User', 'get', %args );
+
+    if ( my $username = delete $conditions->{'user.name'} ) {
+        $conditions->{"adhoc"} = { "lower(ci_users_roles.name)" => lc $username };
+    }
+
+    my $data = $self->{Driver}->get( properties => $properties, conditions => $conditions );
+
+    if ( ref( $data ) eq 'ARRAY' ) {
+        return wantarray() ? @{$data} : $data->[0];
+    }
+    else {
+        return $data;
+   }
+}
+
 sub driver { $_[0]->{Driver} }
 
 # to be replaced by hierarchical query...
