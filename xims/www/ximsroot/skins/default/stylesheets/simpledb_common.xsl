@@ -13,6 +13,7 @@
 
 <xsl:import href="common_jscalendar_scripts.xsl"/>
 
+<xsl:param name="error_msg"/>
 <xsl:variable name="i18n_simpledb" select="document(concat($currentuilanguage,'/i18n_simpledb.xml'))"/>
 
 <xsl:output method="html"
@@ -201,6 +202,15 @@
         }
     </script>
 </xsl:template>
+
+<xsl:template name="error_msg">
+    <xsl:if test="$error_msg != ''">
+        <p class="error_msg">
+            <xsl:value-of select="$error_msg"/>
+        </p>
+    </xsl:if>
+</xsl:template>
+    
 
 <xsl:template name="cttobject.content_length"/>
 <xsl:template name="cttobject.options.copy"/>

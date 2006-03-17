@@ -17,6 +17,7 @@
     <body>
         <div class="edit">
             <xsl:call-template name="table-create"/>
+            <xsl:call-template name="error_msg"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">

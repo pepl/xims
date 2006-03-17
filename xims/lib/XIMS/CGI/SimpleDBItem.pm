@@ -86,7 +86,25 @@ sub event_store {
         }
     }
 
-    $self->update_properties( $ctxt );
+    my $up = $self->update_properties( $ctxt );
+    unless ( $up ) {
+        # If there was an error during saving the properties, delete 
+        # new entries
+        if ( $ctxt->parent() ) {
+            if ( $ctxt->object->delete() ) {
+                XIMS::Debug( 4, "Deleted newly created item because of bad property values" );
+                my $uri = Apache::URI->parse( $ctxt->apache() );
+                $uri->path( $ctxt->apache->parsed_uri->rpath() . $ctxt->parent->location_path() );
+                $uri->query( $uri->query . ';create=1;objtype=SimpleDBItem;error_msg=' . $ctxt->session->error_msg() );
+                $self->redirect( $uri->unparse() );
+                return 1;
+            }
+            return 0;
+        }
+        else {
+            return $up;
+        }
+    };
 
     if ( not $ctxt->parent() ) {
         XIMS::Debug( 6, "unlocking object" );
@@ -182,9 +200,27 @@ sub update_properties {
         next unless defined $value;
         $value = substr(XIMS::trim( XIMS::decode( $value )),0,2000); # play safe with the DB field length
 
-        # check for mandatory properties here
+        # check for mandatory properties
+        #if ( $property->mandatory() and not (defined $value and length $value) ) {
+        #    XIMS::Debug( 2, "mandatory value missing" );
+        #    return $self->sendError( $ctxt, "'" . $property->name() . "' needs to be filled out." );
+        #}
+        
+        # check property regex
+        my $regex = $property->regex();
+        if ( defined $value and length $value and defined $regex and length $regex ) {
+            my $qregex;
+            eval { $qregex = qr/$regex/; };
+            if ( not $qregex ) {
+                XIMS::Debug( 2, "regex did not compile" );
+                return $self->sendError( $ctxt, "Test regex did not compile. Please update SimpleDB field definition." );
+            }
+            if ( not $value =~ $qregex ) {
+                XIMS::Debug( 2, "value does not match regex" );
+                return $self->sendError( $ctxt, "Value '$value' of '" . $property->name() . "' does not match input pattern '" . $regex . "'" );
+            }
+        }
 
-        # check property regex here
 
         my $simpledbpropval = XIMS::SimpleDBMemberPropertyValue->new( property_id => $property->id(), member_id => $member->id() );
         if ( defined $simpledbpropval ) {
