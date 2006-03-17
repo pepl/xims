@@ -59,6 +59,12 @@ sub _build {
             $search->[$i] = $bol . $serialsearchsubquery . " AND LOWER(sr.title) LIKE '%". lc($search->[$i]) . "%')";
             $is_field++;
         }
+        elsif ($search->[$i] =~ s/^type://i ) {
+            $bol = $self->search_boolean( $search, $i );
+            $search->[$i] = $bol . " r.reference_type_id IN (SELECT id FROM cireflib_reference_types WHERE LOWER(name) LIKE '%". lc($search->[$i]) . "%')";
+            $is_field++;
+        }
+
         next if $is_field;
 
         if ( $search->[$i] ne "AND" && $search->[$i] ne "OR" ) {
