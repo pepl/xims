@@ -237,7 +237,19 @@
 <xsl:template match="member_property" mode="entry">
     <li>
         <div style="white-space: nowrap">
-            <xsl:value-of select="position"/><xsl:text> </xsl:text><xsl:value-of select="name"/>
+            <xsl:value-of select="position"/>
+            <xsl:text> </xsl:text>
+            <xsl:choose>
+                <xsl:when test="mandatory = 1 and part_of_title=1">
+                    <strong><span class="compulsory"><xsl:value-of select="name"/></span></strong>
+                </xsl:when>
+                <xsl:when test="mandatory = 1">
+                    <span class="compulsory"><xsl:value-of select="name"/></span>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="name"/>
+                </xsl:otherwise>
+            </xsl:choose>
             <table style="display: inline; vertical-align: text-bottom">
                 <tr>
                     <td>

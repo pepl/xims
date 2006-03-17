@@ -161,6 +161,8 @@ sub event_create_property_mapping {
         return $self->sendError( $ctxt, "At least a name for the property is needed." );
     }
 
+    # TODO check property regex
+
     $property = XIMS::SimpleDBMemberProperty->new()->data( %values );
     if ( not $property->create() ) {
         XIMS::Debug( 3, "Could not create property " . $property->name() . "." );
@@ -205,6 +207,7 @@ sub event_update_property_mapping {
         next if ( $name eq 'id' or $name eq 'type' ); # skip fields that cannot be updated
         my $value = XIMS::clean( XIMS::decode( $self->param( "sdbp_" . $name ) ) );
         next if ( $name eq 'name' and not defined $value ); # name is mandatory
+        # TODO check property regex
         $property->$name( $value );
     }
 
