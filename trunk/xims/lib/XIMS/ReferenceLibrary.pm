@@ -179,6 +179,7 @@ sub vlserials {
 #                                             Usually used together with 'limit' for pagination
 #    $args{ order }             (optional) :  Sort by object property
 #
+#    $args{ criteria }          (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::ReferenceLibrary)
 #    $args{ date }              (optional) :  Filter items by date ReflibReferenceProperty
 #    $args{ author_id }         (optional) :  Filter items by VLAuthor id
 #    $args{ author_lname }      (optional) :  Filter items by VLAuthor lastname
