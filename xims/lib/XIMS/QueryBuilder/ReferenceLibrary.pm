@@ -34,11 +34,13 @@ sub _build {
     my $fieldstolookin = $self->{fieldstolookin};
     my $search = $self->{search};
     my $reflib = $self->{extraargs}->{reflib};
+    $self->{criteria} = [];
+    my @values;
 
     my @property_list = $reflib->reference_properties();
 
-    my $propsearchsubquery = ' c.id in (SELECT c.id FROM ci_content c, ci_documents d, cireflib_references r, cireflib_ref_propertyvalues pv WHERE c.document_id = d.id AND r.document_id = d.id AND d.parent_id ='. $reflib->document_id() . ' AND pv.reference_id = r.id ';
-    my $serialsearchsubquery = ' c.id in (SELECT c.id FROM ci_content c, ci_documents d, cireflib_references r, cireflib_serials sr WHERE c.document_id = d.id AND r.document_id = d.id AND d.parent_id ='. $reflib->document_id() . ' AND r.serial_id = sr.id ';
+    my $propsearchsubquery = ' c.id in (SELECT c.id FROM ci_content c, ci_documents d, cireflib_references r, cireflib_ref_propertyvalues pv WHERE c.document_id = d.id AND r.document_id = d.id AND d.parent_id = ? AND pv.reference_id = r.id ';
+    my $serialsearchsubquery = ' c.id in (SELECT c.id FROM ci_content c, ci_documents d, cireflib_references r, cireflib_serials sr WHERE c.document_id = d.id AND r.document_id = d.id AND d.parent_id = ? AND r.serial_id = sr.id ';
 
     my $bol;
     my $foundmacro = 0;
@@ -50,18 +52,21 @@ sub _build {
             my $propertyname = $property->name();
             if ( $search->[$i] =~ s/^$propertyname://i ) {
                 $bol = $self->search_boolean( $search, $i );
-                $search->[$i] = $bol . $propsearchsubquery . " AND pv.property_id = " . $property->id() . " AND LOWER(pv.value) LIKE '%". lc($search->[$i]) . "%')";
+                push( @values, $reflib->document_id(), $property->id(),  "%" . lc($search->[$i]) . "%");
+                $search->[$i] = $bol . $propsearchsubquery . " AND pv.property_id = ? AND LOWER(pv.value) LIKE ?)";
                 $is_field++;
             }
         }
         if ($search->[$i] =~ s/^serial://i ) {
             $bol = $self->search_boolean( $search, $i );
-            $search->[$i] = $bol . $serialsearchsubquery . " AND LOWER(sr.title) LIKE '%". lc($search->[$i]) . "%')";
+            push( @values, $reflib->document_id(), "%" . lc($search->[$i]) . "%");
+            $search->[$i] = $bol . $serialsearchsubquery . " AND LOWER(sr.title) LIKE ?)";
             $is_field++;
         }
         elsif ($search->[$i] =~ s/^type://i ) {
             $bol = $self->search_boolean( $search, $i );
-            $search->[$i] = $bol . " r.reference_type_id IN (SELECT id FROM cireflib_reference_types WHERE LOWER(name) LIKE '%". lc($search->[$i]) . "%')";
+            push( @values, "%" . lc($search->[$i]) . "%");
+            $search->[$i] = $bol . " r.reference_type_id IN (SELECT id FROM cireflib_reference_types WHERE LOWER(name) LIKE ?)";
             $is_field++;
         }
 
@@ -70,7 +75,8 @@ sub _build {
         if ( $search->[$i] ne "AND" && $search->[$i] ne "OR" ) {
             $bol = $self->search_boolean( $search, $i );
             if ( $search->[$i] ne "(" && $search->[$i] ne ")" ) {
-                $search->[$i] = $bol . "(am.author_id in (SELECT id FROM cilib_authors WHERE lower(lastname) LIKE '%". lc($search->[$i]) . "%'))";
+                push( @values, "%" . lc($search->[$i]) . "%");
+                $search->[$i] = $bol . "(am.author_id in (SELECT id FROM cilib_authors WHERE lower(lastname) LIKE ?))";
             }
             elsif ( $search->[$i] eq "(" || $search->[$i] eq ")" ) {
                $search->[$i] = $bol . $search->[$i];
@@ -79,8 +85,9 @@ sub _build {
     }
 
     # hard work done, compose search-condition-string
-    $self->{criteria} = '(' . join(' ', @{$search}) . ')';
-    $self->{criteria} .= ' AND ci_content.published = 1' if $self->{filterpublished};
+    $self->{criteria}->[0] = '(' . join(' ', @{$search}) . ')';
+    $self->{criteria}->[0] .= ' AND ci_content.published = 1' if $self->{filterpublished};
+    push( @{$self->{criteria}}, @values );
     
     return 1;
 }

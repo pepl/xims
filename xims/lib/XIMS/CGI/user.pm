@@ -89,7 +89,8 @@ sub event_default {
 
     my $qb = $qbdriver->new( { search => $search } );
     if ( defined $qb ) {
-        my @lmuobjects = $object->find_objects_granted( criteria => $qb->criteria . " AND title <> '.diff_to_second_last'",
+        my ($critstring, @critvals) = @{$qb->criteria()};
+        my @lmuobjects = $object->find_objects_granted( criteria => [ $critstring . " AND title <> '.diff_to_second_last'", @critvals ],
                                                         limit => 5,
                                                       );
         $ctxt->userobjectlist( \@lmuobjects );

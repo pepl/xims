@@ -654,19 +654,14 @@ sub descendant_count_granted {
 #    my $iterator = $object->find_objects( %args );
 #
 # PARAMETER
-#    refactor!
-#    $args{ criteria }   :
-#    $args{ limit }      :
-#    $args{ offset }     :
-#    $args{ order }      :
-#    $args{ start_here } : location_path string or XIMS Object instance from where to start searching from
+#    See $object->find_objects() documentation
 #
 # RETURNS
 #    @objects     : Array of XIMS::Objects (list context)
-#    $iterator    : Instance of XIMS::Iterator::Object created with the found ids (scalar context)
+#    $iterator    : Instance of XIMS::Iterator::Object created with the granted found ids (scalar context)
 #
 # DESCRIPTION
-#    Returns .
+#    Returns content objects to which search criteria apply.
 #
 sub find_objects {
     XIMS::Debug( 5, "called" );
@@ -718,19 +713,20 @@ sub find_objects_count {
 #    my $iterator = $object->find_objects_granted( %args );
 #
 # PARAMETER
-#    refactor!
-#    $args{ criteria }   :
-#    $args{ limit }      :
-#    $args{ offset }     :
-#    $args{ order }      :
-#    $args{ start_here } : location_path string or XIMS Object instance from where to start searching from
+#    $args{ criteria }               : Criteria string or Array-Ref [ $string_placeholders, @values ]
+#    $args{ columns }    (optional)  : Name of properties to be fetched (defaults to 'DISTINCT ci_content.ID, last_modification_timestamp as ts')
+#    $args{ limit }      (optional)  : Number of record to limit result to
+#    $args{ offset }     (optional)  : Start offset from the overall recordset to which 'limit' will be applied
+#    $args{ order }      (optional)  : Order by clause (E.g. 'title ASC', defaults to 'ci_content.last_modification_timestamp DESC')
+#    $args{ noorder }    (optional)  : Deactivates 'order' param and sorting by the database
+#    $args{ start_here } (optional)  : location_path string or XIMS Object instance from where to start searching from
 #
 # RETURNS
 #    @objects     : Array of XIMS::Objects (list context)
 #    $iterator    : Instance of XIMS::Iterator::Object created with the granted found ids (scalar context)
 #
 # DESCRIPTION
-#    Returns .
+#    Returns content objects to which search criteria apply.
 #
 sub find_objects_granted {
     XIMS::Debug( 5, "called" );
