@@ -471,7 +471,10 @@ sub find_object_id {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    return unless (defined $args{criteria} and length $args{criteria});
+    if ( not defined $args{criteria} or
+         defined $args{criteria} and not ref($args{criteria}) and not length $args{criteria} ) {
+        return;
+    }
 
     my $tables = 'ci_content';
     my $columns = delete $args{columns};
@@ -486,10 +489,24 @@ sub find_object_id {
     # hack alarm - fix this in Intermedia.pm (after refactoring QueryBuilder) and CGI.pm event_search!!!
     $columns .= ', score(1) as s' if ($param{order} and $param{order} eq 'score(1) DESC');
 
-    $param{criteria} = delete $args{criteria};
-    if ( exists $args{start_here} or $param{criteria} =~ /ci_documents|location_path|object_type_id|data_format_id/i ) {
+    my $critstring;
+    my @critvals;
+    my $criteria = delete $args{criteria};
+    # Allow both a literal string and a array ref [ $string, @vals ] to be passed 
+    if ( not ref $criteria and length $criteria ) {
+        $critstring = $criteria;
+    }
+    elsif ( ref $criteria eq 'ARRAY' ) {
+        ( $critstring, @critvals ) = @{$criteria};
+    }
+    else {
+        XIMS::Debug( 2, "Illegal parameters passed" );
+        return undef;
+    }
+
+    if ( exists $args{start_here} or $critstring =~ /ci_documents|location_path|object_type_id|data_format_id/i ) {
         $tables .= ',ci_documents ';
-        $param{criteria} = ' ci_documents.id=ci_content.document_id AND ' . $param{criteria};
+        $critstring = ' ci_documents.id=ci_content.document_id AND ' . $critstring;
     }
 
     $param{limit} = delete $args{limit};
@@ -499,12 +516,10 @@ sub find_object_id {
     # privilege check here, and not higher up in the chain
     my $user_id = delete $args{user_id};
     my $role_ids = delete $args{role_ids};
-    my @critparams;
     if ( $user_id and scalar @{$role_ids} > 0 ) {
         my @user_ids =( $user_id, @{$role_ids} );
-        @critparams = @user_ids;
-
-        $param{criteria} .= " AND ci_content.id = ci_object_privs_granted.content_id AND ci_object_privs_granted.grantee_id IN (" . join(',', map { '?' } @user_ids) . ") AND ci_object_privs_granted.privilege_mask > 0";
+        $critstring .= " AND ci_content.id = ci_object_privs_granted.content_id AND ci_object_privs_granted.grantee_id IN (" . join(',', map { '?' } @user_ids) . ") AND ci_object_privs_granted.privilege_mask > 0";
+        push( @critvals, @user_ids );
 
         $tables .= ', ci_object_privs_granted';
         # tell the Oracle optimizer to use the fk index - this speeds up the query by about 100%!
@@ -516,15 +531,16 @@ sub find_object_id {
         if ( ref $start_here and $start_here->isa('XIMS::Object') and defined $start_here->id() ) {
             $start_here = $start_here->location_path();
         }
-        $param{criteria} .= " AND location_path LIKE '". $start_here . "%'";
+        $critstring .= " AND location_path LIKE ?";
+        push( @critvals, "$start_here%" );
     }
 
     if ( scalar keys %args > 0 ) {
         my ( $sql, @params ) = $self->_sqlwhere_from_hashgroup( %args );
-        $param{criteria} = [ $param{criteria} . ' AND ' . $sql, @critparams, @params ];
+        $param{criteria} = [ $critstring . ' AND ' . $sql, @critvals, @params ];
     }
     else {
-        $param{criteria} = [ $param{criteria}, @critparams ];
+        $param{criteria} = [ $critstring, @critvals ];
     }
 
     my $data = $self->{dbh}->fetch_select( table   => $tables,

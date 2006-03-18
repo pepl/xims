@@ -5,12 +5,10 @@
 package XIMS::CGI::VLibrary;
 
 use strict;
-use vars qw($VERSION @ISA);
 
-use XIMS::CGI::Folder;
+our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = qw( XIMS::CGI::Folder );
+use base qw(XIMS::CGI::Folder);
 
 sub registerEvents {
     XIMS::Debug( 5, "called");
@@ -338,12 +336,13 @@ sub event_vlsearch {
     my $search = $self->param('vls');
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
+    $offset ||= 0;
     my $rowlimit = 10;
     $offset = $offset * $rowlimit;
 
     XIMS::Debug( 6, "param $search");
     # length within 2..30 chars
-    if (( length($search) >= 2 ) && ( length($search) <= 30 )) {
+    if ( defined $search and length($search) >= 2 and length($search) <= 30 ) {
         my $qbdriver = XIMS::DBDSN();
         $qbdriver = ( split(':',$qbdriver))[1];
         $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
@@ -361,10 +360,10 @@ sub event_vlsearch {
 
         if ( defined $qb ) {
             my %param = (
-                        criteria => $qb->criteria,
+                        criteria => $qb->criteria(),
                         limit => $rowlimit,
                         offset => $offset,
-                        order => $qb->order,
+                        order => $qb->order(),
                         start_here => $ctxt->object(),
                         );
             my @objects = $ctxt->object->find_objects_granted( %param );
@@ -373,7 +372,7 @@ sub event_vlsearch {
                 $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
-                %param = ( criteria => $qb->criteria, start_here => $ctxt->object() );
+                %param = ( criteria => $qb->criteria(), start_here => $ctxt->object() );
                 my $count = $ctxt->object->find_objects_granted_count( %param );
                 my $message = "Query returned $count objects.";
                 $message .= " Displaying objects " . ($offset+1) if $count >= $rowlimit;

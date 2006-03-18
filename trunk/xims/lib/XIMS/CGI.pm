@@ -5,14 +5,13 @@
 package XIMS::CGI;
 
 use strict;
-use vars qw( $VERSION @ISA );
 
+use base qw(CGI::XMLApplication); # 1.1.3; # sub-sub-version is not recognized here and only gives a warning :-/
 use XIMS;
 use XIMS::DataFormat;
 use XIMS::ObjectType;
 use XIMS::SAX;
 use XIMS::ObjectPriv;
-use CGI::XMLApplication; # 1.1.3; # sub-sub-version is not recognized here and only gives a warning :-/
 use XML::LibXML::SAX::Builder;
 use Apache::URI;
 use Text::Iconv;
@@ -20,21 +19,8 @@ use Time::Piece;
 
 #use Data::Dumper;
 ############################################################################
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
+our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
 ############################################################################
-
-@ISA = qw/CGI::XMLApplication/; # change the base class if necessary
-
-# These are messages all app-scripts should use. [0-6]
-@XIMS::CGI::MSG  = (  "No object id found!",
-           "Object id is not valid!",
-           "No location set!",
-           "Database synchronization failed!",
-           "Access Denied! Sorry.",
-           "Location already exists in container!",
-           "Delete failed!",
-           "Document could not be formed well. Please consult the User's Reference for information on well-formed document bodies.",
-                 );
 
 # some callbacks we need to the the thing run
 # first we register the events we handle
@@ -2127,6 +2113,7 @@ sub event_search {
 
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
+    $offset ||= 0;
     my $rowlimit = XIMS::SEARCHRESULTROWLIMIT();
     $offset = $offset * $rowlimit;
 
@@ -2178,11 +2165,12 @@ sub event_search {
 
         #'# just for emacs' font-lock...
         if ( defined $qb ) {
+            my ($critstring, @critvals) = @{$qb->criteria()};
             my %param = (
-                        criteria => $qb->criteria . " AND title <> '.diff_to_second_last'",
+                        criteria => [ $critstring . " AND title <> '.diff_to_second_last'", @critvals ],
                         limit => $rowlimit,
                         offset => $offset,
-                        order => $qb->order,
+                        order => $qb->order(),
                         );
 
             my $method;
@@ -2208,9 +2196,10 @@ sub event_search {
                  $ctxt->session->warning_msg( "Query returned no objects!" );
             }
             else {
-                %param = ( criteria => $qb->criteria . " AND title <> '.diff_to_second_last'" );
-                $param{start_here} = $start_here;
                 $method .= "_count";
+                delete $param{order};
+                delete $param{offset};
+                delete $param{limit};
                 my $count = $ctxt->object->$method( %param );
                 my $message = "Query returned $count objects.";
                 if ( $count ) {

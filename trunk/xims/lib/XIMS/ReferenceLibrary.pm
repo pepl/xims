@@ -227,9 +227,23 @@ sub items_granted {
         push @values, @userids;
     }
 
-    if ( defined $criteria and length $criteria ) {
+    if ( defined $criteria ) {
         $tables .= ', cireflib_authormap am';
-        $conditions .= " AND am.reference_id = r.id AND $criteria";
+        # Allow both a literal string and a array ref [ $string, @vals ] to be passed 
+        my $critstring;
+        my @critvals;
+        if ( not ref $criteria and length $criteria) {
+            $critstring = $criteria;
+        }
+        elsif ( ref $criteria eq 'ARRAY' ) {
+            ( $critstring, @critvals ) = @{$criteria};
+            push( @values, @critvals );
+        }
+        else {
+            XIMS::Debug( 2, "Illegal parameters passed" );
+            return ();
+        }
+        $conditions .= " AND am.reference_id = r.id AND $critstring";
     }
     else {
         if ( defined $reference_type_id ) {
