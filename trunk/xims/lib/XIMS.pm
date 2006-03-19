@@ -11,9 +11,8 @@ use XIMS::Config;
 use Text::Iconv;
 use Encode ();
 
-$VERSION = 0.1;
+$VERSION = 1.1;
 
-# test if this is a local script or if we are running under mod_perl
 $_CONFIG_ = XIMS::Config->new();
 
 require XIMS::DataProvider;

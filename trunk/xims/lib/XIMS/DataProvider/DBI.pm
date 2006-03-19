@@ -16,7 +16,6 @@ our $VERSION ;
 $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
 use XIMS;
-use XIMS::Config::DataProvider::DBI;
 use XIMS::Names;
 use DBIx::SQLEngine 0.017;
 use DBIx::SQLEngine::Criteria::And;
