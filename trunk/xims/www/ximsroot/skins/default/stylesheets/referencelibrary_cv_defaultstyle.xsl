@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
@@ -158,9 +158,9 @@
                     Anonymous</xsl:otherwise>
             </xsl:choose>
         </span>,
-        <span class="reflib_title">
+        <em><span class="reflib_title">
             <xsl:value-of select="reference_values/reference_value[property_id=$titlerefpropid]/value"/>
-        </span>
+        </span></em>
         <xsl:if test="$conf_title != ''">,
             <span class="reflib_conference_title">
                 <xsl:choose>
