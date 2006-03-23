@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
@@ -25,7 +25,9 @@
                                     <xsl:apply-templates select="abstract"/>
                                 </div>
                                 <table>
-                                    <xsl:apply-templates select="reference_values/reference_value"/>
+                                    <xsl:apply-templates select="reference_values/reference_value">
+                                        <xsl:sort select="/document/reference_properties/reference_property[@id=current()/property_id]/position" order="ascending" data-type="number"/>
+                                    </xsl:apply-templates>
                                     <tr><td colspan="2">
                                         <div>
                                             <xsl:value-of select="$i18n_vlib/l/authors"/>:<br/>
