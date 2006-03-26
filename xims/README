@@ -1,4 +1,4 @@
-This is XIMS, version 1.0.
+This is XIMS, version 1.1.
 
 Overview
 --------
@@ -15,9 +15,9 @@ uses the PostgreSQL or Oracle RDBMS for its data repository.
 
 License
 -------
-XIMS is copyrighted 2002-2005 by The XIMS Project. See the file "LICENSE"
-for information on usage and redistribution, and for a DISCLAIMER OF
-ALL WARRANTIES.
+XIMS is copyrighted 2002-2006 by The XIMS Project. See the file "LICENSE" for
+information and conditions for use, reproduction, and distribution of this work,
+and for a DISCLAIMER OF ALL WARRANTIES.
 
 
 Installation
@@ -73,13 +73,13 @@ Credits
 -------
 
 XIMS was originally developed by:
-Michael Kröll <michael.kroell@uibk.ac.at>
+Michael Kröll <mk@xims.info>
 Hansjörg Pehofer <haensel@catbull.com>
 Kip Hampton <khampton@totalcinema.com>
 Christian Glahn <christian.glahn@uibk.ac.at>
 
 XIMS is currently developed and maintained by:
-Michael Kröll <michael.kroell@uibk.ac.at>
+Michael Kröll <mk@xims.info>
 Hansjörg Pehofer <hansjoerg.pehofer@uibk.ac.at>
 Jochen Frühwirth <jochen.fruehwirth@mci.edu>
 
