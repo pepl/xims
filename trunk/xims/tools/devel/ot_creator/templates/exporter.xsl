@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
@@ -17,8 +17,8 @@
 
 <xsl:template match="/document"><xsl:text disable-output-escaping="yes">&lt;!--
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file &quot;LICENSE&quot; for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file &quot;LICENSE&quot; for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 --&gt;
 &lt;xsl:stylesheet version=&quot;1.0&quot;
