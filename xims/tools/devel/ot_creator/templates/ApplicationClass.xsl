@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
@@ -16,19 +16,15 @@
 </xsl:template>
 
 <xsl:template match="/document"># Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::<xsl:value-of select="object_type_name"/>;
 
 use strict;
-use vars qw( $VERSION @ISA );
-use <xsl:value-of select="a_isa"/>;
+use base qw( <xsl:value-of select="a_isa"/> );
 
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-@ISA = qw( <xsl:value-of select="a_isa"/> );
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # (de)register events here
 sub registerEvents {
