@@ -1,25 +1,26 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SAX::Filter::PortletCollector;
-# use warnings;
-use strict;
+
 #
 # This is a SAX Filter. this allows to send a datastring
 # with some conditions in it. this filter will expand these conditions
 # to real objects.
 #
+use strict;
+use base qw( XIMS::SAX::Filter::DataCollector );
 use XML::LibXML;
 use XIMS::Object;
-use XIMS::SAX::Filter::DataCollector;
-@XIMS::SAX::Filter::PortletCollector::ISA = qw(XIMS::SAX::Filter::DataCollector);
 use DBIx::SQLEngine::Criteria;
 use DBIx::SQLEngine::Criteria::Or;
 use DBIx::SQLEngine::Criteria::And;
 # use DBIx::SQLEngine::Criteria::Not;
 use DBIx::SQLEngine::Criteria::LiteralSQL;
 use DBIx::SQLEngine::Criteria::Equality;
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 ##
 #

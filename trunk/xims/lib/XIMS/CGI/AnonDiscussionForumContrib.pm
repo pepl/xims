@@ -1,21 +1,15 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::AnonDiscussionForumContrib;
 
 use strict;
-# use warnings;
-
-use vars qw( $VERSION @ISA @MSG );
-
-use XIMS::CGI;
+use base qw( XIMS::CGI );
 use Text::Iconv;
-
 use Digest::MD5 qw(md5_hex); # for location-setting (do we really need this?)
 
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = qw( XIMS::CGI );
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub registerEvents {
     XIMS::Debug( 5, "called" );
@@ -33,9 +27,6 @@ sub registerEvents {
           )
         );
 }
-
-# error messages
-@MSG = ( "Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
 
 # #############################################################################
 # RUNTIME EVENTS
@@ -121,7 +112,7 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "could not convert to a well balanced string" );
-            $self->sendError( $ctxt, $MSG[0] );
+            $self->sendError( $ctxt, "Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
             return 0;
         }
     }

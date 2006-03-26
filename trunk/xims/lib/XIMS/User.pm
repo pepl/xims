@@ -1,20 +1,16 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::User;
 
 use strict;
-use vars qw($VERSION @ISA @Fields);
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-use XIMS;
+use base qw( XIMS::AbstractClass );
 use XIMS::Bookmark;
-use XIMS::AbstractClass;
-@ISA = qw( XIMS::AbstractClass );
-
 use Digest::MD5 qw( md5_hex );
-#use Data::Dumper;
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+our @Fields;
 
 BEGIN {
     @Fields = @{XIMS::Names::property_interface_names('User')};

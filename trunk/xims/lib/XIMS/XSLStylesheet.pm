@@ -1,33 +1,32 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::XSLStylesheet;
 
 use strict;
-use vars qw($VERSION @ISA);
-use XIMS::XML;
+use base qw( XIMS::XML );
+use XIMS::DataFormat;
 
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = ('XIMS::XML');
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 ##
 #
 # SYNOPSIS
-#    XIMS::XSLStylesheet->new( %args )
+#    my $xslstylesheet = XIMS::XSLStylesheet->new( %args )
 #
 # PARAMETER
-#    %args: recognized keys are the fields from ...
+#    %args: recognized keys are the fields from XIMS::Object::new()
 #
 # RETURNS
-#    $xslstylesheet: XIMS::XSLStylesheet instance
+#    $xslstylesheet: instance of XIMS::XSLStylesheet
 #
 # DESCRIPTION
-#    Constructor
+#    Fetches existing objects or creates a new instance of XIMS::XSLStylesheet for object creation.
 #
 sub new {
     my $proto = shift;
-    my $class = ref( $proto ) || $proto;
+    my $class = ref($proto) || $proto;
     my %args = @_;
 
     if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {

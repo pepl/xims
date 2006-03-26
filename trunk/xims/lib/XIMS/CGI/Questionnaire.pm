@@ -1,14 +1,10 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::Questionnaire;
 
 use strict;
-# use warnings;
-
-our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
 use base qw( XIMS::CGI );
 use XIMS::QuestionnaireResult;
 use File::Spec;
@@ -16,6 +12,8 @@ use File::Temp qw/ tempfile unlink0 /;
 use Archive::Zip qw/ :ERROR_CODES :CONSTANTS /;
 use Text::Iconv;
 use XML::LibXSLT;
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # (de)register events here
 sub registerEvents {

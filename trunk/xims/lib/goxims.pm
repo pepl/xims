@@ -1,13 +1,11 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package goxims;
 
 use Apache::Constants qw(:common);
-
 use strict;
-
 use Apache;
 use Apache::Request;
 use Apache::URI;
@@ -28,6 +26,8 @@ use XIMS::CGI::Portlet;
 use XIMS::CGI::Questionnaire;
 use XIMS::CGI::AnonDiscussionForum;
 use XIMS::CGI::AnonDiscussionForumContrib;
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 #use Data::Dumper;
 #use Time::HiRes;

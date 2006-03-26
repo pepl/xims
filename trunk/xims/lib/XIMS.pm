@@ -1,19 +1,18 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS;
 
 use strict;
-use vars qw( $AUTOLOAD $VERSION $_CONFIG_ $_DATAPROVIDER_ );
-
 use XIMS::Config;
 use Text::Iconv;
 use Encode ();
 
-$VERSION = 1.1;
-
-$_CONFIG_ = XIMS::Config->new();
+our $AUTOLOAD;
+our $VERSION = 1.1;
+our $_CONFIG_ = XIMS::Config->new();
+our $_DATAPROVIDER_;
 
 require XIMS::DataProvider;
 sub DATAPROVIDER {

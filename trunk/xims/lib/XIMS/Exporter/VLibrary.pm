@@ -1,14 +1,14 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Exporter::VLibrary;
 
 use strict;
 use XIMS::Exporter;
+use base qw( XIMS::Exporter::Folder );
 
-use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::Folder );
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub create {
     XIMS::Debug( 5, "called" );

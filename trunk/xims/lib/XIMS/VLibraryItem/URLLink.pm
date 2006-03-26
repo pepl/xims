@@ -1,16 +1,13 @@
-# Copyright (c) 2002-2004 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# Copyright (c) 2002-2006 The XIMS Project.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::VLibraryItem::URLLink;
 
 use strict;
-use vars qw( $VERSION @ISA );
-use XIMS::VLibraryItem;
-use XIMS::URLLink;
+use base qw( XIMS::VLibraryItem XIMS::URLLink );
 
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = ('XIMS::VLibraryItem', 'XIMS::URLLink');
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 ##
 #

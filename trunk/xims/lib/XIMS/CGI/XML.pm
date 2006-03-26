@@ -1,30 +1,15 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::XML;
 
 use strict;
-use vars qw( $VERSION @ISA @MSG @params );
-
-use XIMS::CGI;
+use base qw( XIMS::CGI );
 use Text::Iconv;
 
-# #############################################################################
-# GLOBAL SETTINGS
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-# inheritation information
-@ISA = qw( XIMS::CGI );
-
-# the names of pushbuttons in forms or symbolic internal handler
-# each application should register the events required, even if they are
-# defined in XIMS::CGI. This is for having a chance to
-# deny certain events for the script.
-#
-# only dbhpanic and access_denied are set by XIMS::CGI itself.
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
@@ -46,15 +31,6 @@ sub registerEvents {
           )
         );
 }
-
-# error messages
-@MSG = ( "Document body is not well-formed. Please consult the User's Reference for information on well-formed document bodies." );
-
-# parameters recognized by the script
-@params = qw( id name title depid symid delforce del plain trytobalance);
-
-# END GLOBAL SETTINGS
-# #############################################################################
 
 # #############################################################################
 # RUNTIME EVENTS
@@ -190,7 +166,7 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "body is not well-formed" );
-            $self->sendError( $ctxt, $MSG[0] );
+            $self->sendError( $ctxt, "Document body is not well-formed. Please consult the User's Reference for information on well-formed document bodies." );
             return 0;
         }
     }

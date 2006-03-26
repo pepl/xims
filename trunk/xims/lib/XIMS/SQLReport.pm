@@ -1,17 +1,14 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SQLReport;
 
 use strict;
-use vars qw( $VERSION @ISA );
-
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = ('XIMS::Object');
-
+use base qw( XIMS::Object );
 use XIMS::DataFormat;
-use XIMS::Object;
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 ##
 #
@@ -32,7 +29,6 @@ use XIMS::Object;
 # DESCRIPTION
 #    Fetches existing objects or creates a new instance of XIMS::SQLReport for object creation.
 #
-
 sub new {
     my $proto = shift;
     my $class = ref($proto) || $proto;

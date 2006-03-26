@@ -1,12 +1,11 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::VLibraryItem;
 
 use strict;
-use vars qw( $VERSION @ISA );
-use XIMS::CGI;
+use base qw( XIMS::CGI );
 use XIMS::VLibrary;
 use XIMS::VLibAuthor;
 use XIMS::VLibAuthorMap;
@@ -18,12 +17,7 @@ use XIMS::VLibPublication;
 use XIMS::VLibPublicationMap;
 use XIMS::VLibMeta;
 
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-@ISA = qw( XIMS::CGI );
-
-#use Data::Dumper;
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub registerEvents {
     XIMS::Debug( 5, "called");

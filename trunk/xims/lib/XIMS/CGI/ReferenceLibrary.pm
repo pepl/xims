@@ -1,14 +1,10 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::ReferenceLibrary;
 
 use strict;
-# use warnings;
-
-our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
 use base qw(XIMS::CGI::Folder);
 use XIMS::VLibAuthor;
 use XIMS::ReferenceLibraryItem;
@@ -20,7 +16,7 @@ use XIMS::QueryBuilder::ReferenceLibrary;
 use XML::LibXML;
 use File::Temp qw/ tempfile unlink0 /;
 
-#use Data::Dumper;
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub registerEvents {
     XIMS::Debug( 5, "called");

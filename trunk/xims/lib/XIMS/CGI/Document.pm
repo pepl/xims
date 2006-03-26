@@ -1,25 +1,19 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::Document;
 
 use strict;
-use vars qw( $VERSION @ISA @MSG @params );
-
-use XIMS::CGI;
+use base qw( XIMS::CGI );
 use Text::Iconv;
 use Encode;
 use Text::Template;
 
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
 # #############################################################################
 # GLOBAL SETTINGS
-
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-# inheritation information
-@ISA = qw( XIMS::CGI );
 
 sub registerEvents {
     my $self = shift;
@@ -39,12 +33,6 @@ sub registerEvents {
                                 @_
                                 );
 }
-
-# error messages
-@MSG = ( "Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
-
-# parameters recognized by the script
-@params = qw( id name title depid symid delforce del plain trytobalance);
 
 # END GLOBAL SETTINGS
 # #############################################################################
@@ -150,7 +138,7 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "could not convert to a well balanced string" );
-            $self->sendError( $ctxt, $MSG[0] );
+            $self->sendError( $ctxt, "Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
             return 0;
         }
     }

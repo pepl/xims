@@ -1,20 +1,19 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Importer::FileSystem::Document;
 
-use XIMS::Importer::FileSystem::XMLChunk;
+use strict;
+use base qw( XIMS::Importer::FileSystem::XMLChunk );
 use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implementation changed from 1.52 to 1.54.
                       # With 1.52, node iteration is handled differently and we would call
                       # $doc->getDocumentElement() instead of $doc->documentElement() for example...
 use XML::LibXML::Iterator;
 use XIMS::Object;
-
 use Encode;
 
-use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::FileSystem::XMLChunk);
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub handle_data {
     XIMS::Debug( 5, "called" );
@@ -35,7 +34,7 @@ sub handle_data {
     foreach my $field ( keys %importmap ) {
         my ($n) = $root->findnodes( $importmap{$field} );
         if ( defined $n ) {
-            $value = "";
+            my $value = "";
             my @cnodes = $n->childNodes;
             if ( scalar @cnodes > 1 ) {
                 map { $value .= $_->toString(0,1) } $n->childNodes;
