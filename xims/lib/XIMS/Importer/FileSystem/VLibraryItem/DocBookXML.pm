@@ -1,16 +1,14 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Importer::FileSystem::VLibraryItem::DocBookXML;
 
-use XIMS::Importer::FileSystem;
-use XIMS::Importer::FileSystem::XML;
-use XIMS::Importer::Object::VLibraryItem::DocBookXML;
-use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::FileSystem::XML XIMS::Importer::Object::VLibraryItem::DocBookXML);
-
+use strict;
+use base qw(XIMS::Importer::FileSystem::XML XIMS::Importer::Object::VLibraryItem::DocBookXML);
 use File::Basename;
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub handle_data {
     XIMS::Debug( 5, "called" );

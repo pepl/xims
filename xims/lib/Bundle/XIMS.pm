@@ -1,7 +1,7 @@
 package Bundle::XIMS;
 # $Id$
 
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 
 1;
 __END__
@@ -60,7 +60,7 @@ Text::Template -
 
 =head1 AUTHOR
 
-Michael Kröll <michael.kroell@uibk.ac.at>
+Michael Kröll <mk@xims.info>
 
 =head1 SEE ALSO
 
@@ -69,7 +69,8 @@ The XIMS home page, at L<http://xims.info/>.
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (c) 2002-2006 The XIMS Project.
-See the file L<http://xims.info/LICENSE> for information on usage and redistribution
-of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+See the file L<http://xims.info/license/license-1.0.txt> for information and
+conditions for use, reproduction, and distribution of this work, 
+and for a DISCLAIMER OF ALL WARRANTIES.
 
 =cut

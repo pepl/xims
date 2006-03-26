@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SAX::Filter::ContentIDPathResolver;
 
@@ -10,13 +10,11 @@ package XIMS::SAX::Filter::ContentIDPathResolver;
 # This SAX Filter expands an id or document_id to its corresponding location_path string.
 # Note: This version does not touch the element name and therefore we got path-string in *_id elements!
 
-# use warnings;
 use strict;
-
-use XML::SAX::Base;
+use base qw( XML::SAX::Base );
 use XIMS::Object;
 
-@XIMS::SAX::Filter::ContentIDPathResolver::ISA = qw(XML::SAX::Base);
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub new {
     my $class = shift;

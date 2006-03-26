@@ -1,21 +1,20 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::DataProvider;
 
 use strict;
 # use warnings;
-
-our $AUTOLOAD;
-our $cached_URIs;
-
 use XIMS;
 use XIMS::Names;
 # following uses are for the classed we bless into
 use XIMS::ObjectType;
 use XIMS::Iterator::Object;
 
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+our $AUTOLOAD;
+our $cached_URIs;
 
 # The idea here is to create a generic bridge between the data store and the
 # top-level XIMS Object classes. We try to lighten the Object classes that rely

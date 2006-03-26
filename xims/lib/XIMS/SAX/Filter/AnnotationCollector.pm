@@ -1,15 +1,14 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SAX::Filter::AnnotationCollector;
 
-use XML::SAX::Base;
+use strict;
+use base qw( XML::SAX::Base );
 use XML::Generator::PerlData;
 
-use vars qw(@ISA);
-
-@ISA = qw( XML::SAX::Base );
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub end_element {
     my $self = shift;

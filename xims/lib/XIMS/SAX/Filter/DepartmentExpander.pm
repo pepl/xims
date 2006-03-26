@@ -1,22 +1,20 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SAX::Filter::DepartmentExpander;
 
 # departments usually contain more information than dumb
 # folders. Since this information is stored within the department's
 # body, it has to be expanded before it can be published.
-# use warnings;
+
 use strict;
-use vars qw( @ISA );
-
+use base qw( XML::SAX::Base );
 use XIMS::Portlet;
-
 use XML::LibXML;
 use XML::Generator::PerlData;
-use XML::SAX::Base;
-@ISA = qw(XML::SAX::Base);
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub new {
     my $class = shift;

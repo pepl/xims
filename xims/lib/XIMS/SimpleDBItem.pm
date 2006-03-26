@@ -1,19 +1,17 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SimpleDBItem;
 
 use strict;
-# use warnings;
-
-our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };;
-
 use base qw( XIMS::Object );
 use XIMS::DataFormat;
 use XIMS::SimpleDBMember;
 use XIMS::SimpleDBMemberProperty;
 use XIMS::SimpleDBMemberPropertyValue;
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 ##
 #

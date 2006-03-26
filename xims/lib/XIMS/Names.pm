@@ -1,16 +1,16 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Names;
 
+# This is a private class that cannot be used directly
+
 use strict;
-use vars qw( @ResourceTypes %Properties $VERSION );
 
-$VERSION = do { my @r=(q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-%Properties = XIMS::Config::Names::Properties();
-@ResourceTypes = XIMS::Config::Names::ResourceTypes();
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+our %Properties = XIMS::Config::Names::Properties();
+our @ResourceTypes = XIMS::Config::Names::ResourceTypes();
 
 sub get_URI {
     my ($r_type, $property_name) = @_;

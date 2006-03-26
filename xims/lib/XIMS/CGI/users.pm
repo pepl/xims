@@ -1,32 +1,19 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::users;
 
 use strict;
-use vars qw( $VERSION @params @ISA);
-
-use XIMS::CGI;
+use base qw( XIMS::CGI );
 use XIMS::User;
 use XIMS::UserPriv;
 use XIMS::ObjectType;
 use XIMS::ObjectTypePriv;
-
 use Digest::MD5 qw( md5_hex );
 
-# #############################################################################
-# GLOBAL SETTINGS
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-# inheritation information
-@ISA = qw( XIMS::CGI );
-# the names of pushbuttons in forms or symbolic internal handler
-# each application should register the events required, even if they are
-# defined in XIMS::CGI. This is for having a chance to
-# deny certain events for the script.
-#
-# only dbhpanic and access_denied are set by XIMS::CGI itself.
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
@@ -48,10 +35,7 @@ sub registerEvents {
           )
         );
 }
-# parameters recognized by the script
-@params = qw( sort-by order-by edit admin id name lastname password enabled system_privs_mask create update remove);
-# END GLOBAL SETTINGS
-# #############################################################################
+
 # #############################################################################
 # RUNTIME EVENTS
 

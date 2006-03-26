@@ -1,21 +1,16 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id $
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
 package XIMS::CGI::user;
 
 use strict;
-use vars qw( $VERSION @ISA);
-
-use XIMS::CGI;
+use base qw( XIMS::CGI );
 use XIMS::User;
 use XIMS::Bookmark;
-
 use Digest::MD5 qw( md5_hex );
-#use Data::Dumper;
 
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-@ISA = qw( XIMS::CGI );
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub registerEvents {
     XIMS::Debug( 5, "called" );

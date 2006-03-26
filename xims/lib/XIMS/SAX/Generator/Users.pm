@@ -1,16 +1,13 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::SAX::Generator::Users;
 
 use strict;
-use vars qw(@ISA);
-@ISA = qw(XIMS::SAX::Generator XML::Generator::PerlData);
+use base qw(XIMS::SAX::Generator XML::Generator::PerlData);
 
-#use Data::Dumper;
-use XIMS::SAX::Generator;
-use XML::Generator::PerlData;
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 ##
 #

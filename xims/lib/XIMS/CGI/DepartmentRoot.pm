@@ -1,21 +1,16 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::DepartmentRoot;
 
 use strict;
-use vars qw( $VERSION @params @ISA);
+use base qw( XIMS::CGI::Folder );
 
-use XIMS::CGI::Folder;
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # GLOBAL SETTINGS
-
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-@ISA = qw( XIMS::CGI::Folder );
 
 sub registerEvents {
     XIMS::Debug( 5, "called");
@@ -26,9 +21,6 @@ sub registerEvents {
           )
         );
 }
-
-# parameters recognized by the script
-@params = qw( id name title depid symid delforce del);
 
 # END GLOBAL SETTINGS
 # #############################################################################

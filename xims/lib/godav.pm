@@ -1,11 +1,26 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package godav;
 
 use strict;
-# use warnings;
+use XIMS::Object;
+use XIMS::Folder;
+use XIMS::User;
+use XIMS::Importer::Object;
+
+use Apache;
+use Apache::Constants qw(:common :response);
+use Apache::File ();
+use Apache::URI;
+use URI::Escape;
+use XML::LibXML;
+use Time::Piece;
+#use Data::UUID;
+use Digest::MD5;
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 #
 # Note: This module has beta status. All Litmus tests besides some of the
@@ -32,23 +47,6 @@ use strict;
 #    * Things I forgot
 #
 #
-
-use XIMS::Object;
-use XIMS::Folder;
-use XIMS::User;
-use Time::Piece;
-use XIMS::Importer::Object;
-
-use Apache;
-use Apache::Constants qw(:common :response);
-use Apache::File ();
-use Apache::URI;
-use URI::Escape;
-use XML::LibXML;
-#use Data::UUID;
-use Digest::MD5;
-
-our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };;
 
 sub handler {
     my $r = shift;

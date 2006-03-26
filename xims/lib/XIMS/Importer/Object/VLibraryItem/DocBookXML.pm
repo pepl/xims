@@ -1,19 +1,18 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Importer::Object::VLibraryItem::DocBookXML;
 
-#use Data::Dumper;
+use strict;
+use base qw(XIMS::Importer::Object::XML);
 use XIMS::VLibAuthor;
 use XIMS::VLibKeyword;
 use XIMS::VLibSubject;
 use XIMS::VLibPublication;
 use XIMS::VLibMeta;
 
-use XIMS::Importer::Object::XML;
-use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::Object::XML);
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub import {
     XIMS::Debug(5, "called");
@@ -170,7 +169,7 @@ sub keywords_from_node {
     return () unless $keywordset;
 
     foreach my $keyword ( $keywordset->getChildrenByTagName("keyword") ) {
-        $keywordvalue = XIMS::clean( XIMS::nodevalue( $keyword ) );
+        my $keywordvalue = XIMS::clean( XIMS::nodevalue( $keyword ) );
         my $vlibkeyword = XIMS::VLibKeyword->new( name => $keywordvalue );
         if ( not (defined $vlibkeyword and $vlibkeyword->id) ) {
             $vlibkeyword = XIMS::VLibKeyword->new();
@@ -196,7 +195,7 @@ sub subjects_from_node {
     return () unless $subjectset;
 
     foreach my $subject ( $subjectset->findnodes("subject/subjectterm") ) {
-        $subjectvalue = XIMS::clean( XIMS::nodevalue( $subject ) );
+        my $subjectvalue = XIMS::clean( XIMS::nodevalue( $subject ) );
         my $vlibsubject = XIMS::VLibSubject->new( name => $subjectvalue );
         if ( not (defined $vlibsubject and $vlibsubject->id) ) {
             $vlibsubject = XIMS::VLibSubject->new();

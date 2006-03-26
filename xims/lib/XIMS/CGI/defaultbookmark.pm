@@ -1,26 +1,18 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::defaultbookmark;
 
 use strict;
-use vars qw( @ISA $VERSION );
-
-use XIMS;
-use XIMS::CGI;
+use base qw( XIMS::CGI );
 use XIMS::Object;
-
 use Apache::URI();
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # GLOBAL SETTINGS
-
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-# inheritation information
-@ISA = qw( XIMS::CGI );
 
 sub selectStylesheet { return 1; };
 

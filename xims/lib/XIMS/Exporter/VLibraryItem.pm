@@ -1,18 +1,16 @@
-# Copyright (c) 2002-2003 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# Copyright (c) 2002-2006 The XIMS Project.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Exporter::VLibraryItem;
 
 use strict;
 use XIMS::Exporter;
+use base qw( XIMS::Exporter::XMLChunk );
 use XIMS::ObjectType;
 use XIMS::SAX::Generator::VLibraryItem;
 
-use Data::Dumper;
-
-use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub create {
     XIMS::Debug( 5, "called" );

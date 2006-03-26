@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Object;
 
@@ -8,19 +8,7 @@ use strict;
 # use warnings;
 no warnings 'redefine';
 
-our $VERSION;
-our @Fields;
-our @Default_Properties;
-our @Reference_Id_Names;
-our @Reference_DocId_Names;
-
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
-
-@Reference_DocId_Names = qw( symname_to_doc_id );
-@Reference_Id_Names = qw( style_id script_id css_id image_id schema_id);
-
 use base qw( XIMS::AbstractClass );
-use XIMS;
 use XIMS::ObjectType;
 use XIMS::DataFormat;
 use XIMS::User;
@@ -33,7 +21,11 @@ use Text::ParseWords (); # for _parse_attributes
 use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 
-#use Data::Dumper;
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+our @Fields;
+our @Default_Properties;
+our @Reference_Id_Names = qw( style_id script_id css_id image_id schema_id);
+our @Reference_DocId_Names = qw( symname_to_doc_id );;
 
 sub resource_type {
     return 'Object';

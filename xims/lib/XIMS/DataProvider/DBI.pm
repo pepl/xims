@@ -1,30 +1,21 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::DataProvider::DBI;
 
 use strict;
-# use warnings;
-
-our %Tables;
-our %Names;
-our %PropertyAttributes;
-our %PropertyRelations;
-our $VERSION ;
-
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
-
 use XIMS;
 use XIMS::Names;
 use DBIx::SQLEngine 0.017;
 use DBIx::SQLEngine::Criteria::And;
 use XIMS::DataProvider;
 
-%PropertyAttributes = XIMS::Config::DataProvider::DBI::PropertyAttributes();
-%PropertyRelations = XIMS::Config::DataProvider::DBI::PropertyRelations();
-%Tables = XIMS::Config::DataProvider::DBI::Tables();
-%Names =  reverse ( %Tables );
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+our %PropertyAttributes = XIMS::Config::DataProvider::DBI::PropertyAttributes();
+our %PropertyRelations = XIMS::Config::DataProvider::DBI::PropertyRelations();
+our %Tables = XIMS::Config::DataProvider::DBI::Tables();
+our %Names =  reverse ( %Tables );
 
 # build forward and reverse property indices
 my %PropIndex;

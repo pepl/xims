@@ -1,19 +1,15 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::CGI::VLibraryItem::DocBookXML;
 
 use strict;
-use vars qw( $VERSION @ISA );
-use XIMS::CGI::VLibraryItem;
+use base qw( XIMS::CGI::VLibraryItem );
 use XIMS::CGI::XML;
 use XIMS::Importer::Object::VLibraryItem::DocBookXML;
 
-# version string (for makemaker, so don't touch!)
-$VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r };
-
-@ISA = qw( XIMS::CGI::VLibraryItem );
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub event_store {
     XIMS::Debug( 5, "called" );

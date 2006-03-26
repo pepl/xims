@@ -1,11 +1,10 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 
 use strict;
-use warnings;
 
 my $xims_home = $ENV{'XIMS_HOME'} || '/usr/local/xims';
 die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$xims_home/Makefile";

@@ -5,8 +5,6 @@
 package XIMS::VLibSubject;
 
 use strict;
-
-use XIMS;
 use base qw( XIMS::AbstractClass );
 
 our @Fields;

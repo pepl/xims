@@ -1,16 +1,17 @@
 # Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information on usage and redistribution
-# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package XIMS::Importer::Object::XML;
 
-use XIMS::Importer::Object;
+use strict;
+use base qw( XIMS::Importer::Object );
 use XIMS::Object;
 use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implementation changed from 1.52 to 1.54.
                       # With 1.52, node iteration is handled differently and we would call
                       # $doc->getDocumentElement() instead of $doc->documentElement() for example...
-use vars qw( @ISA );
-@ISA = qw(XIMS::Importer::Object);
+
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub get_rootelement {
     XIMS::Debug( 5, "called" );
