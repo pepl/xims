@@ -80,7 +80,7 @@
                     <div class="reflib_citedivyear">
                         <xsl:if test="/document/context/object/children/object[reference_values/reference_value[property_id=3 and string-length(value)=0] and reference_type_id = $preprint_id]">
                             <h3>
-                                <xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s
+                                <xsl:value-of select="/document/reference_types/reference_type[@id=$preprint_id]/name"/>s
                             </h3>
                             <ul class="reflib_citelist">
                                 <xsl:for-each select="/document/context/object/children/object[reference_values/reference_value[property_id=3 and string-length(value)=0] and reference_type_id = $preprint_id]">
@@ -216,27 +216,45 @@
         </xsl:choose>
         <xsl:if test="$artnum != ''">, <xsl:value-of select="$artnum"/></xsl:if>
         <xsl:if test="$date != ''">&#xa0;(<xsl:value-of select="substring($date,1,4)"/>)</xsl:if>
-        <xsl:if test="$url != ''">&#xa0;<a href="{$url}">URL</a></xsl:if>
-        <xsl:if test="$url2 != ''">&#xa0;<a href="{$url2}">Alternative URL (local copy)</a></xsl:if>
-        <xsl:if test="$identifier != ''">;
-            <xsl:choose>
-                <xsl:when test="starts-with($identifier, 'oai:arXiv.org:')">
-                    <a href="http://arXiv.org/abs/{substring-after($identifier,'oai:arXiv.org:')}"><xsl:value-of select="$identifier"/></a>
-                </xsl:when>
-                <xsl:when test="starts-with($identifier, 'doi:')">
-                    <a href="http://www.crossref.org/openurl?url_ver=Z39.88-2004&amp;rft_id=info:doi/{substring-after($identifier,'doi:')}"><xsl:value-of select="$identifier"/></a>
-                </xsl:when>
-
-                <xsl:otherwise>
-                    <xsl:value-of select="$identifier"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:if>
-        <xsl:if test="abstract != ''">
-            &#xa0;<a href="#" onClick="blocking('abstract{$referencenumber}'); return false;">Toggle Abstract</a>
-            <div id="abstract{$referencenumber}" class="reflib_abstract" style="display: none"><xsl:apply-templates select="abstract"/></div>
-        </xsl:if>
+        <xsl:call-template name="url_identifier">
+            <xsl:with-param name="url" select="$url"/>
+            <xsl:with-param name="url2" select="$url2"/>
+            <xsl:with-param name="identifier" select="$identifier"/>
+        </xsl:call-template>
+        <xsl:call-template name="abstract">
+            <xsl:with-param name="referencenumber" select="$referencenumber"/>
+        </xsl:call-template>
     </li>
+</xsl:template>
+
+<xsl:template name="url_identifier">
+    <xsl:param name="url"/>
+    <xsl:param name="url2"/>
+    <xsl:param name="identifier"/>
+    <xsl:if test="$url != ''">&#xa0;<a href="{$url}">URL</a></xsl:if>
+    <xsl:if test="$url2 != ''">&#xa0;<a href="{$url2}">Alternative URL (local copy)</a></xsl:if>
+    <xsl:if test="$identifier != ''">;
+        <xsl:choose>
+            <xsl:when test="starts-with($identifier, 'oai:arXiv.org:')">
+                <a href="http://arXiv.org/abs/{substring-after($identifier,'oai:arXiv.org:')}"><xsl:value-of select="$identifier"/></a>
+            </xsl:when>
+            <xsl:when test="starts-with($identifier, 'doi:')">
+                <a href="http://www.crossref.org/openurl?url_ver=Z39.88-2004&amp;rft_id=info:doi/{substring-after($identifier,'doi:')}"><xsl:value-of select="$identifier"/></a>
+            </xsl:when>
+
+            <xsl:otherwise>
+                <xsl:value-of select="$identifier"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:if>
+</xsl:template>
+
+<xsl:template name="abstract">
+    <xsl:param name="referencenumber"/>
+    <xsl:if test="abstract != ''">
+        &#xa0;<a href="#" onClick="blocking('abstract{$referencenumber}'); return false;">Toggle Abstract</a>
+        <div id="abstract{$referencenumber}" class="reflib_abstract" style="display: none"><xsl:apply-templates select="abstract"/></div>
+    </xsl:if>
 </xsl:template>
 
 <xsl:template match="authorgroup/author|editorgroup/author">
