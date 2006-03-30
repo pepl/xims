@@ -679,7 +679,7 @@ sub clean_userquery {
     $userquery =~ s/\s+$//;
     $userquery =~ s/[ ;,<>`´|?]+//g;
 
-    return $userquery;
+    return uc($userquery);
 }
 
 sub init_store_object {
@@ -1079,7 +1079,9 @@ sub event_trashcan {
         # .diff_to_second_last object, we are asking for confirmation of recursion
         XIMS::Debug( 4, "container has got children, ask for confirmation of recursion" );
         # pepl: should not DELETE_ALL be test for in case of deleting all the language version of an object?
-        if ( $current_user_object_priv & XIMS::Privileges::DELETE_ALL() ) {
+        # zeya: DELETE_ALL() cannot be granted via the WebUI, thence check DELETE() for the moment.        
+        # if ( $current_user_object_priv & XIMS::Privileges::DELETE_ALL() ) {
+        if ( $current_user_object_priv & XIMS::Privileges::DELETE() ) {
             $ctxt->session->warning_msg( "This Container has " . $chldinfo[0] . " child(ren) over " . $chldinfo[1] . " level(s) in the hierarchy ");
             $ctxt->properties->application->styleprefix( "common" );
             $ctxt->properties->application->style( "recursive_trashcan_confirm" );
@@ -1143,7 +1145,9 @@ sub event_delete {
         # .diff_to_second_last object, we are asking for confirmation of recursion
         XIMS::Debug( 4, "container has got children, ask for confirmation of recursion" );
         # pepl: should not DELETE_ALL be test for in case of deleting all the language version of an object?
-        if ( $current_user_object_priv & XIMS::Privileges::DELETE_ALL() ) {
+        # zeya: DELETE_ALL() cannot be granted via the WebUI, thence check DELETE() for the moment.
+        # if ( $current_user_object_priv & XIMS::Privileges::DELETE_ALL() ) {
+        if ( $current_user_object_priv & XIMS::Privileges::DELETE() ) {
             $ctxt->session->warning_msg( "This Container has " . $chldinfo[0] . " child(ren) over " . $chldinfo[1] . " level(s) in the hierarchy ");
             $ctxt->properties->application->styleprefix( "common" );
             $ctxt->properties->application->style( "recursive_delete_confirm" );
