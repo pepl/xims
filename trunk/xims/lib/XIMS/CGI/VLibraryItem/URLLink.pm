@@ -69,6 +69,7 @@ sub event_store {
         }
     }
     $object->vlemeta( $meta );
+    if ( $error_message ) {
         $self->sendError( $ctxt, $error_message );
         return 0;
     }
