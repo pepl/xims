@@ -679,7 +679,7 @@ sub clean_userquery {
     $userquery =~ s/\s+$//;
     $userquery =~ s/[ ;,<>`´|?]+//g;
 
-    return uc($userquery);
+    return $userquery;
 }
 
 sub init_store_object {
