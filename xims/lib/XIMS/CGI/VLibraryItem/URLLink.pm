@@ -39,12 +39,10 @@ sub event_store {
         #Object must be created because a document_id() is needed to store subject, keyword and meta information
         my $content_id = $object->create();
         $meta = XIMS::VLibMeta->new();
-        XIMS::Debug(6, "jokar: Meta new URL: " . Dumper($meta));
     }
     else {
         $self->SUPER::event_store( $ctxt );
         $meta = XIMS::VLibMeta->new( document_id => $object->document_id());
-        XIMS::Debug(6, "jokar: Meta old URL: " . Dumper($meta));
     }
     $object->vlesubjects( subjects_from_param( $self->param('subject') ) );
     $object->vlekeywords( keywords_from_param( $self->param('keywords') ) );
@@ -71,7 +69,6 @@ sub event_store {
         }
     }
     $object->vlemeta( $meta );
-    XIMS::Debug(6, "jokar: Meta save URL: " . Dumper($meta));    if ( $error_message ) {
         $self->sendError( $ctxt, $error_message );
         return 0;
     }

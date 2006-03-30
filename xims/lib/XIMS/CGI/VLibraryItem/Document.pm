@@ -127,7 +127,6 @@ sub event_store {
         }
     }
     $object->vlemeta( $meta );
-    XIMS::Debug(6, "jokar: Meta save /n" . Dumper($meta));
 
     if ( $error_message ) {
         $self->sendError( $ctxt, $error_message );
