@@ -11,6 +11,7 @@
         xmlns:str="http://exslt.org/strings"
         extension-element-prefixes="str" exclude-result-prefixes="str">
 
+<xsl:import href="common.xsl"/>
 <xsl:import href="common_jscalendar_scripts.xsl"/>
 
 <xsl:param name="error_msg"/>

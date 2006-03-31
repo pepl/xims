@@ -27,15 +27,14 @@
 }
 
 #simpledb_childrenlist {
-    margin-top: -10px;
+    margin-top: -5px;
 }
 
 .simpledb_childrenlistitem {
-    margin-top: 15px;
+    margin-top: 10px;
     margin-left: 2px;
     margin-right: 2px;
     padding: 5px 5px 5px 5px;
-    line-height: 135%;
     border: dotted 1px #a0a0a0;
 }
 
@@ -64,7 +63,10 @@
 }
 
 .simpledbitem_options {
-    margin-left: 160px;
+/*    margin-left: 160px; */
+    position: relative;
+    float: right;
+    top: -22px;
 }
 
 .simpledb_filter {
