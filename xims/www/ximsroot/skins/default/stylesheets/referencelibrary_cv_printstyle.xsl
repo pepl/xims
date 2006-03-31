@@ -15,8 +15,8 @@
     <xsl:param name="url"/>
     <xsl:param name="identifier"/>
 
-    <xsl:if test="$url != ''">&#xa0;<a href="{$url}"><xsl:value-of select="$url"/></a></xsl:if>
-    <xsl:if test="$identifier != ''">; identifier:
+    <xsl:if test="$url != ''">&#xa0;<span class="reflib_url"><a href="{$url}"><xsl:value-of select="$url"/></a></span></xsl:if>
+    <xsl:if test="$identifier != ''"><span class="reflib_identifier">; identifier:
         <xsl:choose>
             <xsl:when test="starts-with($identifier, 'oai:arXiv.org:')">
                 <a href="http://arXiv.org/abs/{substring-after($identifier,'oai:arXiv.org:')}"><xsl:value-of select="$identifier"/></a>
@@ -28,7 +28,7 @@
             <xsl:otherwise>
                 <xsl:value-of select="$identifier"/>
             </xsl:otherwise>
-        </xsl:choose>
+        </xsl:choose></span>
     </xsl:if>
 </xsl:template>
 
