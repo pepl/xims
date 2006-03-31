@@ -95,9 +95,10 @@
 </xsl:template>
 
 <xsl:template match="children/object" mode="divlist">
+    <xsl:variable name="abstract" select="normalize-space(abstract)"/>
     <div class="simpledb_childrenlistitem" name="simpledbchildrenlistitem">
         <div class="simpledb_membertitle">
-            <xsl:call-template name="simpledbmembertitle"/>
+            <xsl:call-template name="simpledbmembertitle"/>&#xa0;<span style="font-size: 0.8em">(id: <xsl:value-of select="@document_id"/>)</span>
         </div>
         <xsl:call-template name="last_modified"/>
         <span id="simpledbitem_status_options">
@@ -108,9 +109,11 @@
                 </span>
             </xsl:if>
         </span>
-        <div class="simpledbabstract">
-            <xsl:apply-templates select="abstract"/>
-        </div>
+        <xsl:if test="$abstract != ''">
+            <div class="simpledbabstract">
+                --<xsl:value-of select="$abstract"/>--
+            </div>
+        </xsl:if>
     </div>
 </xsl:template>
 
