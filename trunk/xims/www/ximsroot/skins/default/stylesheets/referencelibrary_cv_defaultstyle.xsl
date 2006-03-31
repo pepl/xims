@@ -198,7 +198,7 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </span>
-        </xsl:if><xsl:if test="$volume != ''">&#xa0;<xsl:value-of select="$volume"/></xsl:if><xsl:if test="$issue != ''">&#xa0;<xsl:value-of select="$issue"/></xsl:if>
+        </xsl:if><xsl:if test="$volume != ''">&#xa0;<span class="reflib_volume"><xsl:value-of select="$volume"/></span></xsl:if><xsl:if test="$issue != ''">&#xa0;<span class="reflib_issue"><xsl:value-of select="$issue"/></span></xsl:if>
         <xsl:if test="editorgroup/author">
             <xsl:text> (</xsl:text>
             <span class="reflib_editors">Ed<xsl:if test="count(editorgroup/author) &gt; 1">s</xsl:if>.:
@@ -208,14 +208,14 @@
         </xsl:if>
         <xsl:choose>
             <xsl:when test="$spage != ''">,
-                <xsl:value-of select="$spage"/> <xsl:if test="$epage != ''">-<xsl:value-of select="$epage"/></xsl:if>
+                <span class="reflib_page"><xsl:value-of select="$spage"/> <xsl:if test="$epage != ''">-<xsl:value-of select="$epage"/></xsl:if></span>
             </xsl:when>
             <xsl:when test="$pages != ''">,
-                <xsl:value-of select="$pages"/>
+                <span class="reflib_page"><xsl:value-of select="$pages"/></span>
             </xsl:when>
         </xsl:choose>
-        <xsl:if test="$artnum != ''">, <xsl:value-of select="$artnum"/></xsl:if>
-        <xsl:if test="$date != ''">&#xa0;(<xsl:value-of select="substring($date,1,4)"/>)</xsl:if>
+        <xsl:if test="$artnum != ''">, <span class="reflib_artnum"><xsl:value-of select="$artnum"/></span></xsl:if>
+        <xsl:if test="$date != ''">&#xa0;<span class="reflib_date">(<xsl:value-of select="substring($date,1,4)"/>)</span></xsl:if>
         <xsl:call-template name="url_identifier">
             <xsl:with-param name="url" select="$url"/>
             <xsl:with-param name="url2" select="$url2"/>
@@ -231,9 +231,9 @@
     <xsl:param name="url"/>
     <xsl:param name="url2"/>
     <xsl:param name="identifier"/>
-    <xsl:if test="$url != ''">&#xa0;<a href="{$url}">URL</a></xsl:if>
-    <xsl:if test="$url2 != ''">&#xa0;<a href="{$url2}">Alternative URL (local copy)</a></xsl:if>
-    <xsl:if test="$identifier != ''">;
+    <xsl:if test="$url != ''">&#xa0;<span class="reflib_url"><a href="{$url}">URL</a></span></xsl:if>
+    <xsl:if test="$url2 != ''">&#xa0;<span class="reflib_url"><a href="{$url2}">Alternative URL (local copy)</a></span></xsl:if>
+    <xsl:if test="$identifier != ''"><span class="reflib_identifier">;
         <xsl:choose>
             <xsl:when test="starts-with($identifier, 'oai:arXiv.org:')">
                 <a href="http://arXiv.org/abs/{substring-after($identifier,'oai:arXiv.org:')}"><xsl:value-of select="$identifier"/></a>
@@ -245,7 +245,7 @@
             <xsl:otherwise>
                 <xsl:value-of select="$identifier"/>
             </xsl:otherwise>
-        </xsl:choose>
+        </xsl:choose></span>
     </xsl:if>
 </xsl:template>
 

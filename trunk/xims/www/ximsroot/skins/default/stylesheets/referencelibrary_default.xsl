@@ -363,7 +363,8 @@ z-index:100;
 <xsl:template name="reflib_citationview">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="GET" id="citation_view" name="citation_view">
         <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="style" id="style">
-            <option value="cv_defaultstyle">default style</option>
+            <option value="cv_defaultstyle" selected="selected">default style</option>
+            <option value="cv_printstyle">print style</option>
         </select>
         <xsl:if test="$reflibsearch != ''">
             <input type="hidden" name="reflibsearch" value="{$reflibsearch}"/>
