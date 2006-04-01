@@ -3,6 +3,7 @@
     <Items>items</Items>
     <Item>item</Item>
     <Looking_in>Looking in</Looking_in>
+    <or_by_field_value>or using a 'fieldname:value' syntax</or_by_field_value>
     <New_Item>New item</New_Item>
     <Map_Item_Properties>Map SimpleDB Item Properties</Map_Item_Properties>
     <Member_Properties>Properties</Member_Properties>

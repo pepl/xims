@@ -276,7 +276,7 @@ sub close_property_position_gap {
 #                                        Usually used together with 'limit' for pagination
 #    $args{ order }        (optional) :  Sort by object property
 #
-#    $args{ searchstring } (optional) :  Filter items by searchstring; searchstring will be looked
+#    $args{ criteria }     (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::SimpleDB)
 #                                        for in the mandatory member properties
 #    $args{ gopublic }     (optional) :  Filter properties where gopublic is set
 #
@@ -295,7 +295,7 @@ sub items_granted {
     my $self = shift;
     my %args = @_;
 
-    my $searchstring = delete $args{searchstring};
+    my $criteria = delete $args{criteria};
     my $gopublic = delete $args{gopublic};
 
     my $child_count;
@@ -313,10 +313,11 @@ sub items_granted {
         push @values, @userids;
     }
 
-    if ( defined $searchstring ) {
+    if ( defined $criteria ) {
         $tables .= ', cisimpledb_mempropertyvalues pv';
-        $conditions .= " AND pv.member_id = m.id AND pv.property_id IN (SELECT id FROM cisimpledb_member_properties WHERE mandatory = 1) AND lower(pv.value) LIKE lower(?)";
-        push @values, $searchstring;
+        my ( $critstring, @critvals ) = @{$criteria};
+        push( @values, @critvals );
+        $conditions .= " AND pv.member_id = m.id AND $critstring";
     }
 
     my $countsql = "SELECT count(distinct c.id) AS cid FROM $tables WHERE $conditions";

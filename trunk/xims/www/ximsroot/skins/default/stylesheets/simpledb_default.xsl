@@ -111,7 +111,7 @@
         </span>
         <xsl:if test="$abstract != ''">
             <div class="simpledbabstract">
-                --<xsl:value-of select="$abstract"/>--
+                <xsl:value-of select="$abstract"/>
             </div>
         </xsl:if>
     </div>
@@ -136,7 +136,9 @@
     <span class="simpledb_membertitle">
         <a  title="{location}"
             href="{$xims_box}{$goxims_content}{$absolute_path}/{location}">
-            <xsl:value-of select="title"/>
+            <xsl:apply-templates select="member_values/member_value[property_id=/document/member_properties/member_property[part_of_title=1]/@id]" mode="title">
+                <xsl:sort select="/document/member_properties/member_property[@id=current()/property_id]/position" order="ascending"/>
+            </xsl:apply-templates>
         </a>
     </span>
 </xsl:template>
@@ -170,7 +172,9 @@
             <tr>
                 <td>
                     <div>
-                        <xsl:value-of select="$i18n/l/Search_for"/>&#160;<xsl:value-of select="$i18n_simpledb/l/Items"/>&#160;(<xsl:value-of select="$i18n_simpledb/l/Looking_in"/> <xsl:apply-templates select="/document/member_properties/member_property[mandatory=1]" mode="namelist"/>):
+                        <xsl:value-of select="$i18n/l/Search_for"/>&#160;<xsl:value-of select="$i18n_simpledb/l/Items"/>&#160;(<xsl:value-of select="$i18n_simpledb/l/Looking_in"/> <xsl:apply-templates select="/document/member_properties/member_property[mandatory=1]" mode="namelist"/>)
+                        <br/>
+                        <xsl:value-of select="$i18n_simpledb/l/or_by_field_value"/>&#160;:
                     </div>
                 </td>
                 <td align="right">
@@ -274,6 +278,10 @@
 
 <xsl:template match="member_property" mode="namelist">
     '<xsl:value-of select="name"/>'<xsl:if test="position()!=last()">, </xsl:if>
+</xsl:template>
+
+<xsl:template match="member_value" mode="title">
+    <xsl:value-of select="value"/><xsl:if test="position()!=last()">, </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

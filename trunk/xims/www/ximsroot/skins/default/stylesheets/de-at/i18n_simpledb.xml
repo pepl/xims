@@ -3,12 +3,13 @@
     <Items>Einträge</Items>
     <Item>Eintrag</Item>
     <Looking_in>in den Feldern</Looking_in>
+    <or_by_field_value>oder nach der 'feldname:wert' Syntax</or_by_field_value>
     <New_Item>Neuer Eintrag</New_Item>
     <Map_Item_Properties>SimpleDB Eigenschaften zuweisen</Map_Item_Properties>
     <Member_Properties>Eigenschaften</Member_Properties>
     <Create_property>Neue Eigenschaft erstellen</Create_property>
-    <Edit_property>Eigenschaft Editieren</Edit_property>
-    <Stop_editing>Editieren Abbrechen</Stop_editing>
+    <Edit_property>Eigenschaft editieren</Edit_property>
+    <Stop_editing>Editieren abbrechen</Stop_editing>
     <Save_changes>Änderungen speichern</Save_changes>
     <Remove_selected>Von Auswahl entfernen</Remove_selected>
     <Add_to_selection>Zur Auswahl hinzufügen</Add_to_selection>
