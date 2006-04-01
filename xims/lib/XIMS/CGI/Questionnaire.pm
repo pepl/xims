@@ -230,6 +230,13 @@ sub event_download_results {
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
+
+    # Only allow access to users with WRITE privilege (Privilege could be replaced with a 
+    # specific VIEW_RESULTS privilege
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     my $questionnaire_id = $object->document_id();
 
     # get count of answers for each Question from the Questionnaire
@@ -253,6 +260,13 @@ sub event_download_all_results {
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
+
+    # Only allow access to users with WRITE privilege (Privilege could be replaced with a 
+    # specific VIEW_RESULTS privilege
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     my $questionnaire_id = $object->document_id();
     my $body = "";
     my $converter_to_Latin1 = Text::Iconv->new("UTF-8", "ISO-8859-1");
@@ -322,6 +336,13 @@ sub event_download_raw_results {
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
+
+    # Only allow access to users with WRITE privilege (Privilege could be replaced with a 
+    # specific VIEW_RESULTS privilege
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     my ($tmpfh, $tmpfilename) = tempfile();
 
     # write header row
@@ -387,6 +408,13 @@ sub event_download_results_pdf {
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
+
+    # Only allow access to users with WRITE privilege (Privilege could be replaced with a 
+    # specific VIEW_RESULTS privilege
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
     my $questionnaire_id = $object->document_id();
 
     # get count of answers for each Question from the Questionnaire
