@@ -5,25 +5,20 @@
 package XIMS::CGI;
 
 use strict;
-
 use base qw(CGI::XMLApplication); # 1.1.3; # sub-sub-version is not recognized here and only gives a warning :-/
 use XIMS;
 use XIMS::DataFormat;
 use XIMS::ObjectType;
 use XIMS::SAX;
 use XIMS::ObjectPriv;
+use XIMS::Importer;
 use XML::LibXML::SAX::Builder;
 use Apache::URI;
 use Text::Iconv;
 use Time::Piece;
 
-#use Data::Dumper;
-############################################################################
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-############################################################################
 
-# some callbacks we need to the the thing run
-# first we register the events we handle
 sub registerEvents {
     my $self = shift;
     return ( 'dbhpanic', 'access_denied', 'move_browse', 'move', 'copy', 'cancel', 'contentbrowse', 'search', 'sitemap', 'reposition', 'posview', 'plain', 'trashcan_prompt', 'trashcan', 'delete', 'delete_prompt', 'undelete', 'trashcan_content', 'error', 'prettyprintxml', 'htmltidy', @_ );
@@ -89,7 +84,6 @@ sub event_access_denied {
 
     $self->sendError( $ctxt, "Access Denied" );
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -159,7 +153,6 @@ sub event_edit {
         }
     }
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -248,7 +241,6 @@ sub event_exit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -335,8 +327,8 @@ sub selectStylesheet {
     }
     $styleprefix ||= 'common';
 
-    my $stylepath = $self->getStylesheetDir() . '/';
     my $stylefilename = $styleprefix . '_' . $stylesuffix . '.xsl';
+    my $stylepath;
 
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
     if ( defined $publicusername ) {
@@ -366,7 +358,16 @@ sub selectStylesheet {
             XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
         }
     }
-
+    else {
+        # Buy easier stylesheet maintenance at the cost of one additional stat call...
+        $stylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/';
+        my $stylepathuilang = $stylepath . $ctxt->session->uilanguage() . '/';
+        # Use a lang-specific stylesheet if there is one
+        if ( -r ($stylepathuilang . $stylefilename) ) {
+            $stylepath = $stylepathuilang;
+        }
+    }
+    
     $retval = $stylepath . $stylefilename;
     XIMS::Debug( 6, "stylesheet is '$retval'\n" );
 
@@ -388,10 +389,7 @@ sub getDOM {
                                      FilterList => $filter,
                                    );
     return undef unless $controller;
-
-    my $dom = $controller->parse( $ctxt );
-    XIMS::Debug( 5, "done" );
-    return $dom;
+    return $controller->parse( $ctxt );
 }
 
 sub setHttpHeader {
@@ -599,74 +597,6 @@ sub redirect_path {
     return $uri->unparse();
 }
 
-sub clean_location {
-    my $self = shift;
-    my $location = shift;
-    my %escapes = (
-                   ' '  =>  '_',
-                   'ö'  =>  'oe',
-                   'ø'  =>  'oe',
-                   'Ö'  =>  'Oe',
-                   'Ø'  =>  'Oe',
-                   'ä'  =>  'ae',
-                   'Ä'  =>  'Ae',
-                   'ü'  =>  'ue',
-                   'Ü'  =>  'Ue',
-                   'ß'  =>  'ss',
-                   'á'  =>  'a',
-                   'à'  =>  'a',
-                   'å'  =>  'a',
-                   'Á'  =>  'A',
-                   'À'  =>  'A',
-                   'Å'  =>  'A',
-                   'é'  =>  'e',
-                   'ê'  =>  'e',
-                   'è'  =>  'e',
-                   'É'  =>  'E',
-                   'Ê'  =>  'E',
-                   'È'  =>  'E',
-                   'ñ'  =>  'gn',
-                   'Ñ'  =>  'Gn',
-                   'ó'  =>  'o',
-                   'ò'  =>  'o',
-                   'ô'  =>  'o',
-                   'Ò'  =>  'O',
-                   'Ó'  =>  'O',
-                   'Ô'  =>  'O',
-                   '§'  =>  '_',
-                   "\$" =>  '_',
-                   "\%" =>  '_',
-                   '&'  =>  '_',
-                   '/'  =>  '_',
-                   '\\' =>  '_',
-                   '='  =>  '_',
-                   '?'  =>  '',
-                   '!'  =>  '',
-                   '`'  =>  '_',
-                   '´'  =>  '_',
-                   '*'  =>  '_',
-                   '+'  =>  '_',
-                   '~'  =>  '_',
-                   "'"  =>  '_',
-                   '#'  =>  '_',
-                   '|'  =>  '_',
-                   '°'  =>  '_',
-                   ','  =>  '',
-                   ';'  =>  '',
-                   ':'  =>  ''
-                  );
-    my $badchars = join "", keys %escapes;
-    $location =~ s/
-                    ([$badchars])     # more flexible :)
-                  /
-                    $escapes{$1}
-                  /segx;              # *coff*
-    $location =~ s/_+/_/g;
-
-    XIMS::Debug( 5, "done" );
-    return lc($location);
-}
-
 sub clean_userquery {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -723,7 +653,7 @@ sub init_store_object {
         if ( not $ctxt->properties->application->preservelocation ) { # some object types, like URLLink for example
                                                                       # need the location to be untouched
             $location = ( split /[\\|\/]/, $location )[-1]; # should always work
-            $location = $self->clean_location( $location );
+            $location = XIMS::Importer::clean_location( 1, $location );
             unless ( $ctxt->properties->application->keepsuffix ) { # some object type, like File or Image for example
                                                                     # don't want filesuffixes to be overridden by our
                                                                     # data format's default value
@@ -1215,7 +1145,6 @@ sub event_contentbrowse {
         $ctxt->properties->application->style( $ctxt->properties->application->style . "_" . $style );
     }
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -1249,7 +1178,6 @@ sub event_move_browse {
         return 0;
     }
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -1319,7 +1247,6 @@ sub event_move {
         return 0;
     }
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -1424,7 +1351,6 @@ sub event_publish_prompt {
     $ctxt->properties->application->styleprefix('common_publish');
     $ctxt->properties->application->style('prompt');
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -1712,8 +1638,6 @@ sub event_obj_acllist {
         XIMS::Debug( 3, "anonymous granting rejected" );
     }
 
-    XIMS::Debug( 5, "done" );
-
     return 0;
 }
 
@@ -1780,7 +1704,6 @@ sub event_obj_aclgrant {
     else {
         XIMS::Debug( 3, "anonymous granting rejected" );
     }
-    XIMS::Debug( 5, "done" );
 
     return 0;
 }
@@ -1837,7 +1760,6 @@ sub event_obj_aclrevoke {
         XIMS::Debug( 3, "anonymous granting rejected" );
     }
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 
@@ -2299,7 +2221,6 @@ sub event_trashcan_content {
     $ctxt->properties->application->styleprefix( 'common' );
     $ctxt->properties->application->style( 'trashcan' );
 
-    XIMS::Debug( 5, "done" );
     return 0;
 }
 

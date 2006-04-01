@@ -61,9 +61,25 @@ sub handler {
     $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp");
 
     my $publicuser = $r->dir_config('ximsPublicUserName');
+
+    # getting interface
+    my $interface_type = getInterface( $r );
+    return NOT_FOUND unless $interface_type;
+
+    # The public user should not have the interface 'user'
+    if ( $interface_type eq 'user' and $publicuser ) {
+        return NOT_FOUND;
+    }
+
     if ( not $publicuser ) {
-        # we have non-public authentification
+        # we are coming in via /goxims
         my $sessioninfo = readNotes( $r );
+
+        if ( $sessioninfo->{session}->user->id() == XIMS::Config::PublicUserID() ) {
+            # Drop session if the public user is not coming in via /gopublic...
+            $sessioninfo->{session}->delete();
+            return FORBIDDEN;
+        }
 
         # if we have a cookiestring, we'll set it to the context
         if ( defined $sessioninfo->{cookie} and length $sessioninfo->{cookie} ) {
@@ -122,14 +138,6 @@ sub handler {
 
     # set UILanguage
     $ctxt->session->uilanguage( getLanguagePref($r) );
-
-    # getting interface
-    my $interface_type = getInterface( $r );
-    return NOT_FOUND unless $interface_type;
-    # The public user should not have the interface 'user'
-    if ( $interface_type eq 'user' and $publicuser ) {
-        return NOT_FOUND;
-    }
 
     #
     # Big fork here

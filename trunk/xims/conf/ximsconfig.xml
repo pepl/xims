@@ -85,6 +85,11 @@
         <XMLEditor>bxe</XMLEditor>
 
         <!--
+        # If set to a non-zero value, locations of content objects will be lowercased during save
+        -->
+        <LowerCaseLocations>0</LowerCaseLocations>
+
+        <!--
         # Array of language-tags of XIMS-known user interface stylesheet directories.
         # Every item will be tested for preference in a RFC2616 style language negotiation
         # process following the user agent's language settings.

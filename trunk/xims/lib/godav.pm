@@ -690,7 +690,7 @@ sub copymove {
             return (403) unless $privmask and ($privmask & XIMS::Privileges::WRITE());
             if ( $method eq 'move' ) {
                 unless ( _tmpsafe($destination_location) ) {
-                    $destination_location = XIMS::Importer::_clean_location( 1, $destination_location );
+                    $destination_location = XIMS::Importer::clean_location( 1, $destination_location );
                 }
                 $object->location( $destination_location );
                 if ( not scalar $object->update( User => $user, no_modder => 1 ) ) {

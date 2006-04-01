@@ -1474,7 +1474,7 @@ sub clone {
             my $parent = XIMS::Object->new( User => $self->User, document_id => $target_id );
             if ( defined $parent and defined $parent->id ) {
                 if ( defined $target_location ) {
-                    $target_location = XIMS::Importer::_clean_location( 1, $target_location ) unless $dontcleanlocation; # *cough*
+                    $target_location = XIMS::Importer::clean_location( 1, $target_location ) unless $dontcleanlocation; # *cough*
                     my ($oldsuffix) = ($clonedata{ location } =~ /\.([^\.]+)$/);
                     my ($newsuffix) = ($target_location =~ /\.([^\.]+)$/);
                     if ( length $target_location and ($dontcleanlocation or $oldsuffix eq $newsuffix) ) {

@@ -187,7 +187,7 @@ sub check_location {
     my $donotchecklocation = shift;
 
     $location = ( split /[\\|\/]/, $location )[-1];
-    $location = $self->_clean_location( $location ) unless $donotchecklocation;
+    $location = $self->clean_location( $location ) unless $donotchecklocation;
 
     #my $suffix = $self->object->data_format->suffix();
     #if ( defined $suffix and length $suffix ) {
@@ -321,7 +321,7 @@ sub default_grants {
     return $retval;
 }
 
-sub _clean_location {
+sub clean_location {
     my $self = shift;
     my $location = shift;
     my %escapes = (
@@ -385,7 +385,7 @@ sub _clean_location {
                     $escapes{$1}
                   /segx;              # *coff*
     $location =~ s/_+/_/g;
-    return lc($location);
+    XIMS::Config::LowerCaseLocations() ? return lc($location) : return $location;
 }
 
 1;
