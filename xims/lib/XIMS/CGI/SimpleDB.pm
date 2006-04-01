@@ -9,6 +9,7 @@ use base qw(XIMS::CGI::Folder);
 use XIMS::SimpleDBItem;
 use XIMS::SimpleDBMemberPropertyValue;
 use XIMS::SimpleDBMemberProperty;
+use XIMS::QueryBuilder::SimpleDB;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -86,14 +87,20 @@ sub event_default {
     }
 
     # May come in as latin1 via gopublic
-    my $searchstring = XIMS::utf8_sanitize($self->param('searchstring'));
-    if ( defined $searchstring ) {
-        $self->param( 'searchstring', $searchstring ); # update CGI param, so that stylesheets get the right one
+    my $search = XIMS::utf8_sanitize($self->param('searchstring'));
+    if ( defined $search ) {
+        $self->param( 'searchstring', $search ); # update CGI param, so that stylesheets get the right one
     }
-    $searchstring ||= XIMS::decode($self->param('searchstring')); # fallback
+    $search ||= XIMS::decode($self->param('searchstring')); # fallback
 
-    if ( defined $searchstring and $searchstring =~ /^[^?_^`Â´%*]+/ ) {
-        $childrenargs{searchstring} = "%$searchstring%";
+    if ( defined $search and length($search) >= 2 and length($search) <= 128 ) {
+        use encoding "latin-1";
+        my $allowed = q{\!a-zA-Z0-9ÀÁÂÃÅÆÇÈÉÊËÐÑÒÓÔÕØÙÚÛàáâãåæçèéêëìíîïðñòóôõøùúûüýöäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
+        my $qb = XIMS::QueryBuilder::SimpleDB->new( { search => $search,
+                                                      allowed => $allowed,
+                                                      extraargs => { simpledb => $ctxt->object() } } );
+        return $self->sendError( $ctxt, "Querybuilder could not be instantiated." ) unless defined $qb;
+        $childrenargs{criteria} = $qb->criteria();
     }
 
     my ( $child_count, $children ) = $ctxt->object->items_granted( limit => $limit, offset => $offset, order => $order, %childrenargs );
