@@ -10,6 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 
+<xsl:import href="common.xsl"/>
 <xsl:import href="referencelibraryitem_common.xsl"/>
 
 <xsl:variable name="preprint_id" select="/document/reference_types/reference_type[name='Preprint']/@id"/>
