@@ -7,7 +7,6 @@ package XIMS::CGI::AnonDiscussionForumContrib;
 use strict;
 use base qw( XIMS::CGI );
 use Text::Iconv;
-use Digest::MD5 qw(md5_hex); # for location-setting (do we really need this?)
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -66,7 +65,7 @@ sub event_store {
     }
 
     if ( defined $title and length $title ) {
-        $self->param( name =>  md5_hex( $title .  $author . localtime() ) );
+        $self->param( name => localtime() );
     }
     else {
         $self->sendError( $ctxt, "No title set!" );
@@ -92,8 +91,8 @@ sub event_store {
         $object->coemail( $coemail, 1 );
     }
 
-    XIMS::Debug( 6, "ip " . $ENV{REMOTE_ADDR} );
-    $object->senderip( $ENV{REMOTE_ADDR} );
+    XIMS::Debug( 6, "ip " . $ctxt->apache->connection->remote_ip() );
+    $object->senderip( $ctxt->apache->connection->remote_ip() );
 
     my $trytobalance  = $self->param( 'trytobalance' );
     my $body = $self->param( 'body' );
@@ -135,6 +134,10 @@ sub event_store {
             XIMS::Debug( 2, "create failed" );
             $self->sendError( $ctxt, "Creation of object failed." );
             return 0;
+        }
+        else {
+            $object->location( $object->document_id() . '.' . $object->data_format->suffix());
+            $object->update( no_modder => 1 );
         }
 
         XIMS::Debug( 4, "copying privileges of parent" );
