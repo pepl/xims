@@ -13,6 +13,7 @@
 <xsl:import href="common_footer.xsl"/>
 <xsl:import href="common_header.xsl"/>
 <xsl:import href="common_metadata.xsl"/>
+<xsl:import href="common_localized.xsl"/>
 
 <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
