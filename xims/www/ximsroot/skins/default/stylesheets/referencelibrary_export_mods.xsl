@@ -11,6 +11,8 @@
                 xmlns:etd="http://www.ndltd.org/standards/metadata/etdms/1.0/"
                 xmlns:reflib="http://xims.info/ns/ReferenceLibrary">
 
+    <xsl:import href="common.xsl"/>
+
     <xsl:output method="xml"/>
     <xsl:param name="ptitle"/>
 
