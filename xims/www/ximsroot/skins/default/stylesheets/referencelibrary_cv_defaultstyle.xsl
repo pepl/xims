@@ -45,7 +45,7 @@
         <xsl:call-template name="head_default"/>
         <body>
             <xsl:if test="$ptitle != ''">
-                <h1 id="reflib_ptitle"><xsl:value-of select="$ptitle"/></h1>
+                <h1 id="reflib_ptitle"><span class="reflib_ptitle"><xsl:value-of select="$ptitle"/></span></h1>
             </xsl:if>
             <div id="reflib_citebody">
                 <xsl:for-each select="children/object[substring(reference_values/reference_value[property_id=3]/value,1, 4) != '' and count(. | key('year', substring(reference_values/reference_value[property_id=3]/value,1, 4))[1]) = 1]">
@@ -53,7 +53,7 @@
                     <xsl:sort select="substring(reference_values/reference_value[property_id=3]/value,1, 4)" order="descending"/>
                     <xsl:variable name="date" select="substring(reference_values/reference_value[property_id=3]/value,1, 4)"/>
                     <h2>
-                        <xsl:value-of select="$date"/>
+                        <span class="reflib_year"><xsl:value-of select="$date"/></span>
                         <!--(<xsl:value-of select="count(/document/context/object/children/object[reference_values/reference_value[property_id=3 and starts-with(value,$date)]]/reference_type_id)"/>)-->
                     </h2>
                     <div class="reflib_citedivyear">
@@ -76,8 +76,8 @@
 
                 <!-- Deal with entries without a year -->
 
-                <xsl:for-each select="children/object[string-length(reference_values/reference_value[property_id=3]/value)=0]">
-                    <h2>Without Year</h2>
+                <xsl:if test="children/object[string-length(reference_values/reference_value[property_id=3]/value)=0]">
+                    <h2><span class="reflib_year">Without Year</span></h2>
                     <div class="reflib_citedivyear">
                         <xsl:if test="/document/context/object/children/object[reference_values/reference_value[property_id=3 and string-length(value)=0] and reference_type_id = $preprint_id]">
                             <h3>
@@ -95,7 +95,7 @@
                             <xsl:sort select="/document/reference_types/reference_type[@id=current()]/name" order="ascending"/>
                             <xsl:variable name="reference_type_id" select="."/>
                             <h3>
-                                <xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s
+                                <span class="reflib_referencetype"><xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s</span>
                             </h3>
                             <ul class="reflib_citelist">
                                 <xsl:for-each select="/document/context/object/children/object[reference_values/reference_value[property_id=3 and string-length(value)=0] and reference_type_id = $reference_type_id]">
@@ -105,7 +105,7 @@
                             </ul>
                         </xsl:for-each>
                     </div>
-                </xsl:for-each>
+                </xsl:if>
             </div>
         </body>
     </html>
@@ -117,7 +117,7 @@
     <!-- Hmm, there must be a better way instead of doing that xsl:if here... -->
     <xsl:if test="/document/context/object/children/object[reference_values/reference_value[property_id=3 and starts-with(value,$date)] and reference_type_id = $reference_type_id]">
         <h3>
-            <xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s
+            <span class="reflib_referencetype"><xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s</span>
         </h3>
         <ul class="reflib_citelist">
             <xsl:for-each select="/document/context/object/children/object[reference_values/reference_value[property_id=3 and starts-with(value,$date)] and reference_type_id = $reference_type_id]">
@@ -148,84 +148,90 @@
     <xsl:variable name="conf_url" select="reference_values/reference_value[property_id=$confurlrefpropid]/value"/>
     <xsl:variable name="serial_id" select="serial_id"/>
     <li class="reflib_citation" name="reflib_citation">
-        <span class="reflib_authors">
-            <xsl:choose>
-                <xsl:when test="authorgroup/author">
-                    <xsl:apply-templates select="authorgroup/author">
-                        <xsl:sort select="./position" order="ascending" data-type="number"/>
-                    </xsl:apply-templates>
-                </xsl:when>
-                <xsl:otherwise>
-                    Anonymous</xsl:otherwise>
-            </xsl:choose>
-        </span>,
-        <em><span class="reflib_title">
-            <xsl:value-of select="reference_values/reference_value[property_id=$titlerefpropid]/value"/>
-        </span></em>
-        <xsl:if test="$conf_title != ''">,
-            <span class="reflib_conference_title">
+        <span class="reflib_citation">
+            <span class="reflib_authors">
                 <xsl:choose>
-                    <xsl:when test="$conf_url != ''">
-                        <a href="{$conf_url}">
-                            <xsl:value-of select="$conf_title"/>
-                        </a>
+                    <xsl:when test="authorgroup/author">
+                        <xsl:apply-templates select="authorgroup/author">
+                            <xsl:sort select="./position" order="ascending" data-type="number"/>
+                        </xsl:apply-templates>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:value-of select="$conf_title"/>
-                    </xsl:otherwise>
+                        Anonymous</xsl:otherwise>
                 </xsl:choose>
-            </span>
-            <xsl:if test="$conf_venue != ''">
-                <xsl:text> (</xsl:text>
-                <span class="reflib_conference_venue">
-                    <xsl:value-of select="$conf_venue"/>
+            </span>,
+            <em><span class="reflib_title">
+                <xsl:value-of select="reference_values/reference_value[property_id=$titlerefpropid]/value"/>
+            </span></em>
+            <xsl:if test="$conf_title != ''">,
+                <span class="reflib_conference_title">
+                    <xsl:choose>
+                        <xsl:when test="$conf_url != ''">
+                            <a href="{$conf_url}">
+                                <xsl:value-of select="$conf_title"/>
+                            </a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$conf_title"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </span>
-                <xsl:if test="$conf_date != ''">,
-                    <span class="reflib_conference_date">
-                        <xsl:value-of select="$conf_date"/>
+                <xsl:if test="$conf_venue != ''">
+                    <xsl:text> (</xsl:text>
+                    <span class="reflib_conference_venue">
+                        <xsl:value-of select="$conf_venue"/>
                     </span>
+                    <xsl:if test="$conf_date != ''">,
+                        <span class="reflib_conference_date">
+                            <xsl:value-of select="$conf_date"/>
+                        </span>
+                    </xsl:if>
+                    <xsl:text>)</xsl:text>
                 </xsl:if>
+            </xsl:if>
+            <xsl:if test="$serial_id != '' or $btitle != ''">,
+                <span class="reflib_serial">
+                    <xsl:choose>
+                        <xsl:when test="$serial_id != ''">
+                            <xsl:value-of select="/document/context/vlserials/serial[id=$serial_id]/title"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$btitle"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </span>
+            </xsl:if><xsl:if test="$volume != ''">&#xa0;<span class="reflib_volume"><xsl:value-of select="$volume"/></span></xsl:if><xsl:if test="$issue != ''">&#xa0;<span class="reflib_issue"><xsl:value-of select="$issue"/></span></xsl:if>
+            <xsl:if test="editorgroup/author">
+                <xsl:text> (</xsl:text>
+                <span class="reflib_editors">Ed<xsl:if test="count(editorgroup/author) &gt; 1">s</xsl:if>.:
+                    <xsl:apply-templates select="editorgroup"/>
+                </span>
                 <xsl:text>)</xsl:text>
             </xsl:if>
-        </xsl:if>
-        <xsl:if test="$serial_id != '' or $btitle != ''">,
-            <span class="reflib_serial">
-                <xsl:choose>
-                    <xsl:when test="$serial_id != ''">
-                        <xsl:value-of select="/document/context/vlserials/serial[id=$serial_id]/title"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$btitle"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </span>
-        </xsl:if><xsl:if test="$volume != ''">&#xa0;<span class="reflib_volume"><xsl:value-of select="$volume"/></span></xsl:if><xsl:if test="$issue != ''">&#xa0;<span class="reflib_issue"><xsl:value-of select="$issue"/></span></xsl:if>
-        <xsl:if test="editorgroup/author">
-            <xsl:text> (</xsl:text>
-            <span class="reflib_editors">Ed<xsl:if test="count(editorgroup/author) &gt; 1">s</xsl:if>.:
-                <xsl:apply-templates select="editorgroup"/>
-            </span>
-            <xsl:text>)</xsl:text>
-        </xsl:if>
-        <xsl:choose>
-            <xsl:when test="$spage != ''">,
-                <span class="reflib_page"><xsl:value-of select="$spage"/> <xsl:if test="$epage != ''">-<xsl:value-of select="$epage"/></xsl:if></span>
-            </xsl:when>
-            <xsl:when test="$pages != ''">,
-                <span class="reflib_page"><xsl:value-of select="$pages"/></span>
-            </xsl:when>
-        </xsl:choose>
-        <xsl:if test="$artnum != ''">, <span class="reflib_artnum"><xsl:value-of select="$artnum"/></span></xsl:if>
-        <xsl:if test="$date != ''">&#xa0;<span class="reflib_date">(<xsl:value-of select="substring($date,1,4)"/>)</span></xsl:if>
-        <xsl:call-template name="url_identifier">
-            <xsl:with-param name="url" select="$url"/>
-            <xsl:with-param name="url2" select="$url2"/>
-            <xsl:with-param name="identifier" select="$identifier"/>
-        </xsl:call-template>
-        <xsl:call-template name="abstract">
-            <xsl:with-param name="referencenumber" select="$referencenumber"/>
-        </xsl:call-template>
+            <xsl:choose>
+                <xsl:when test="$spage != ''">,
+                    <span class="reflib_page"><xsl:value-of select="$spage"/> <xsl:if test="$epage != ''">-<xsl:value-of select="$epage"/></xsl:if></span>
+                </xsl:when>
+                <xsl:when test="$pages != ''">,
+                    <span class="reflib_page"><xsl:value-of select="$pages"/></span>
+                </xsl:when>
+            </xsl:choose>
+            <xsl:if test="$artnum != ''">, <span class="reflib_artnum"><xsl:value-of select="$artnum"/></span></xsl:if>
+            <xsl:call-template name="date"/>
+            <xsl:call-template name="url_identifier">
+                <xsl:with-param name="url" select="$url"/>
+                <xsl:with-param name="url2" select="$url2"/>
+                <xsl:with-param name="identifier" select="$identifier"/>
+            </xsl:call-template>
+            <xsl:call-template name="abstract">
+                <xsl:with-param name="referencenumber" select="$referencenumber"/>
+            </xsl:call-template>
+        </span>
     </li>
+</xsl:template>
+
+<xsl:template name="date">
+    <xsl:if test="$date != ''">&#xa0;<span class="reflib_date">(<xsl:value-of select="substring($date,1,4)"/>)</span></xsl:if>
 </xsl:template>
 
 <xsl:template name="url_identifier">
