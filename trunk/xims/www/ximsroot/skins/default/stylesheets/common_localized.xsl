@@ -21,56 +21,50 @@
     </xsl:choose>
 </xsl:template>
 
-<xsl:template name="session.date">
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="date">
     <xsl:choose>
         <xsl:when test="$currentuilanguage = 'de-at'">
-            <xsl:apply-templates select="/document/context/session/date" mode="date.de-at"/>
+            <xsl:value-of select="./day"/>
+            <xsl:text>.</xsl:text>
+            <xsl:value-of select="./month"/>
+            <xsl:text>.</xsl:text>
+            <xsl:value-of select="./year"/>
         </xsl:when>
         <xsl:otherwise>
-            <xsl:apply-templates select="/document/context/session/date" mode="date.en-us"/>
+            <xsl:value-of select="./month"/>
+            <xsl:text>/</xsl:text>
+            <xsl:value-of select="./day"/>
+            <xsl:text>/</xsl:text>
+            <xsl:value-of select="./year"/>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
-    
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="date.de-at">
-    <xsl:value-of select="./day"/>
-    <xsl:text>.</xsl:text>
-    <xsl:value-of select="./month"/>
-    <xsl:text>.</xsl:text>
-    <xsl:value-of select="./year"/>
-</xsl:template>
-
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="datetime.de-at">
-    <xsl:value-of select="./day"/>
-    <xsl:text>.</xsl:text>
-    <xsl:value-of select="./month"/>
-    <xsl:text>.</xsl:text>
-    <xsl:value-of select="./year"/>
-    <xsl:text> </xsl:text>
-    <xsl:value-of select="./hour"/>
-    <xsl:text>:</xsl:text>
-    <xsl:value-of select="./minute"/>
-</xsl:template>
-
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="date.en-us">
-    <xsl:value-of select="./month"/>
-    <xsl:text>/</xsl:text>
-    <xsl:value-of select="./day"/>
-    <xsl:text>/</xsl:text>
-    <xsl:value-of select="./year"/>
-</xsl:template>
-
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="datetime.en-us">
-    <xsl:value-of select="./month"/>
-    <xsl:text>/</xsl:text>
-    <xsl:value-of select="./day"/>
-    <xsl:text>/</xsl:text>
-    <xsl:value-of select="./year"/>
-    <xsl:text> </xsl:text>
-    <xsl:value-of select="./hour"/>
-    <xsl:text>:</xsl:text>
-    <xsl:value-of select="./minute"/>
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="datetime">
+    <xsl:choose>
+        <xsl:when test="$currentuilanguage = 'de-at'">
+            <xsl:value-of select="./day"/>
+            <xsl:text>.</xsl:text>
+            <xsl:value-of select="./month"/>
+            <xsl:text>.</xsl:text>
+            <xsl:value-of select="./year"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="./hour"/>
+            <xsl:text>:</xsl:text>
+            <xsl:value-of select="./minute"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="./month"/>
+            <xsl:text>/</xsl:text>
+            <xsl:value-of select="./day"/>
+            <xsl:text>/</xsl:text>
+            <xsl:value-of select="./year"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="./hour"/>
+            <xsl:text>:</xsl:text>
+            <xsl:value-of select="./minute"/>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>
