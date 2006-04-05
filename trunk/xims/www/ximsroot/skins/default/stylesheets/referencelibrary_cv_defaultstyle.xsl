@@ -217,7 +217,9 @@
                 </xsl:when>
             </xsl:choose>
             <xsl:if test="$artnum != ''">, <span class="reflib_artnum"><xsl:value-of select="$artnum"/></span></xsl:if>
-            <xsl:call-template name="date"/>
+            <xsl:call-template name="date">
+                <xsl:with-param name="date" select="$date"/>
+            </xsl:call-template>
             <xsl:call-template name="url_identifier">
                 <xsl:with-param name="url" select="$url"/>
                 <xsl:with-param name="url2" select="$url2"/>
@@ -231,6 +233,7 @@
 </xsl:template>
 
 <xsl:template name="date">
+    <xsl:param name="date"/>
     <xsl:if test="$date != ''">&#xa0;<span class="reflib_date">(<xsl:value-of select="substring($date,1,4)"/>)</span></xsl:if>
 </xsl:template>
 
