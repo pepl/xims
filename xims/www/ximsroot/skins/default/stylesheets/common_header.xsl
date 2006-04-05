@@ -68,23 +68,23 @@
             </td>
             <td background="{$skimages}tablebg_2nd_row.png" nowrap="nowrap" align="right">
                 <span style="color: #004080; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
-                <xsl:call-template name="session.date"/>
-                  <xsl:choose>
-                        <xsl:when test="/document/context/session/public_user = '1'">
-                            / <a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}" class="logout"><xsl:value-of select="$i18n/l/login"/></a>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            / <a href="{$xims_box}{$goxims}/user"><xsl:value-of select="/document/context/session/user/name" /></a> / <a href="{$goxims_content}{$absolute_path}?reason=logout" class="logout"><xsl:value-of select="$i18n/l/logout"/></a>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <xsl:choose>
-                        <xsl:when test="$no_navigation_at_all='true' or $noncontent = 'true'">
-                        </xsl:when>
-                        <xsl:otherwise>
-                            /
-                            <xsl:call-template name="mode_switcher"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
+                <xsl:apply-templates select="/document/context/session/date" mode="date"/>
+                <xsl:choose>
+                    <xsl:when test="/document/context/session/public_user = '1'">
+                        / <a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}" class="logout"><xsl:value-of select="$i18n/l/login"/></a>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        / <a href="{$xims_box}{$goxims}/user"><xsl:value-of select="/document/context/session/user/name" /></a> / <a href="{$goxims_content}{$absolute_path}?reason=logout" class="logout"><xsl:value-of select="$i18n/l/logout"/></a>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="$no_navigation_at_all='true' or $noncontent = 'true'">
+                    </xsl:when>
+                    <xsl:otherwise>
+                        /
+                        <xsl:call-template name="mode_switcher"/>
+                    </xsl:otherwise>
+                </xsl:choose>
                 </span>
             </td>
         </tr>
