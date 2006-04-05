@@ -374,7 +374,7 @@ sub event_import {
     identifier => [ "m:identifier[\@type='oai' or \@type='doi']" ],
     preprint_identifier => [ "m:relatedItem[\@type='otherVersion']/m:identifier[\@type='preprint']" ],
     status => [ "m:status" ],
-    conf_venue => [ "m:relatedItem[\@type='host']/m:location/m:physicalLocation|m:originInfo/m:place/m:placeTerm" ],
+    conf_venue => [ "m:relatedItem[\@type='host']/m:location/m:physicalLocation|m:relatedItem[\@type='host']/m:originInfo/m:place/m:placeTerm|m:originInfo/m:place/m:placeTerm" ],
     conf_date => [ "m:relatedItem[\@type='host']/m:part/m:date" ],
     conf_title => [ "m:relatedItem[\@type='host']/m:titleInfo", $titlecallback ],
     conf_sponsor => [ "" ],
