@@ -328,7 +328,8 @@ sub selectStylesheet {
     $styleprefix ||= 'common';
 
     my $stylefilename = $styleprefix . '_' . $stylesuffix . '.xsl';
-    my $stylepath;
+    # Buy easier stylesheet maintenance at the cost of one additional stat call...
+    my $stylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/';
 
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
     if ( defined $publicusername ) {
@@ -343,11 +344,11 @@ sub selectStylesheet {
             # check here if the stylesheet is not a directory but a single XSLStylesheet?
             #
             XIMS::Debug( 4, "trying public-user-stylesheet from assigned directory" );
-            $pubstylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/' . $ctxt->session->uilanguage . '/';
+            $pubstylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/';
         }
         else {
             XIMS::Debug( 4, "trying fallback public-user-stylesheet" );
-            $pubstylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/' . $ctxt->session->uilanguage() . '/';
+            $pubstylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/';
         }
 
         my $filepath = $pubstylepath . $stylefilename;
@@ -358,16 +359,13 @@ sub selectStylesheet {
             XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
         }
     }
-    else {
-        # Buy easier stylesheet maintenance at the cost of one additional stat call...
-        $stylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/';
-        my $stylepathuilang = $stylepath . $ctxt->session->uilanguage() . '/';
-        # Use a lang-specific stylesheet if there is one
-        if ( -r ($stylepathuilang . $stylefilename) ) {
-            $stylepath = $stylepathuilang;
-        }
+
+    my $stylepathuilang = $stylepath . $ctxt->session->uilanguage() . '/';
+    # Use a lang-specific stylesheet if there is one
+    if ( -r ($stylepathuilang . $stylefilename) ) {
+        $stylepath = $stylepathuilang;
     }
-    
+
     $retval = $stylepath . $stylefilename;
     XIMS::Debug( 6, "stylesheet is '$retval'\n" );
 
