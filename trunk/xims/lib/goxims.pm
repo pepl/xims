@@ -75,7 +75,8 @@ sub handler {
         # we are coming in via /goxims
         my $sessioninfo = readNotes( $r );
 
-        if ( $sessioninfo->{session}->user->id() == XIMS::Config::PublicUserID() ) {
+        if ( defined $sessioninfo->{session} 
+                 and $sessioninfo->{session}->user->id() == XIMS::Config::PublicUserID() ) {
             # Drop session if the public user is not coming in via /gopublic...
             $sessioninfo->{session}->delete();
             return FORBIDDEN;
