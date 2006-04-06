@@ -331,6 +331,8 @@ sub selectStylesheet {
     # Buy easier stylesheet maintenance at the cost of one additional stat call...
     my $stylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/';
 
+    my $gotpubuilangstylesheet;
+    
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
     if ( defined $publicusername ) {
         # Emulate request.uri CGI param, set by Apache::AxKit::Plugin::AddXSLParams::Request
@@ -340,29 +342,47 @@ sub selectStylesheet {
         my $stylesheet = $ctxt->object->stylesheet();
 
         my $pubstylepath;
+        my $filepath;
+        my $filepathuilang;
+        my $foundstylesheet;
         if ( defined $stylesheet and $stylesheet->published() ) {
             # check here if the stylesheet is not a directory but a single XSLStylesheet?
             #
             XIMS::Debug( 4, "trying public-user-stylesheet from assigned directory" );
             $pubstylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/';
+            $filepath = $pubstylepath . $stylefilename;
+            $filepathuilang = $pubstylepath . $ctxt->session->uilanguage() . '/' . $stylefilename;
+            if ( -f $filepathuilang and -r $filepathuilang ) {
+                $stylepath = $pubstylepath;
+                $gotpubuilangstylesheet = 1;
+                $foundstylesheet = 1;
+            }        
+            elsif ( -f $filepath and -r $filepath ) {
+                $stylepath = $pubstylepath;
+                $foundstylesheet = 1;
+            }
         }
-        else {
+        unless ( $foundstylesheet ) {
             XIMS::Debug( 4, "trying fallback public-user-stylesheet" );
             $pubstylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/';
-        }
-
-        my $filepath = $pubstylepath . $stylefilename;
-        if ( -f $filepath and -r $filepath ) {
-            $stylepath = $pubstylepath;
-        }
-        else {
-            XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
+            $filepath = $pubstylepath . $stylefilename;
+            $filepathuilang = $pubstylepath . $ctxt->session->uilanguage() . '/' . $stylefilename;
+            if ( -f $filepathuilang and -r $filepathuilang ) {
+                $stylepath = $pubstylepath;
+                $gotpubuilangstylesheet = 1;
+            }        
+            elsif ( -f $filepath and -r $filepath ) {
+                $stylepath = $pubstylepath;
+            }
+            else {
+                XIMS::Debug( 4, "no public-user-stylesheet found, using default stylesheet" );
+            }
         }
     }
 
     my $stylepathuilang = $stylepath . $ctxt->session->uilanguage() . '/';
     # Use a lang-specific stylesheet if there is one
-    if ( -r ($stylepathuilang . $stylefilename) ) {
+    if ( -r ($stylepathuilang . $stylefilename) or $gotpubuilangstylesheet ) {
         $stylepath = $stylepathuilang;
     }
 
