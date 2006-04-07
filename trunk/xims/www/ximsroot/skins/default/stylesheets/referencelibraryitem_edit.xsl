@@ -33,7 +33,8 @@
                     </xsl:apply-templates>
 
                     <!-- Add Fulltext (->XIMS::File object as child ?) -->
-                    <xsl:call-template name="tr-abstract-edit"/>
+                    <xsl:call-template name="tr-abstract"/>
+                    <xsl:call-template name="tr-notes"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>

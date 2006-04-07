@@ -29,7 +29,8 @@
                     <xsl:apply-templates select="/document/reference_properties/reference_property">
                         <xsl:sort select="position" order="ascending" data-type="number"/>
                     </xsl:apply-templates>
-                    <xsl:call-template name="tr-abstract-edit"/>
+                    <xsl:call-template name="tr-abstract"/>
+                    <xsl:call-template name="tr-notes"/>
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>

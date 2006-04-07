@@ -649,11 +649,13 @@ sub init_store_object {
     my $title    = $self->param( 'title' );
     my $keywords = $self->param( 'keywords' );
     my $abstract = $self->param( 'abstract' );
+    my $notes    = $self->param( 'notes' );
 
     if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
         $title = XIMS::decode($title) if (defined $title and length $title);
         $keywords = XIMS::decode($keywords) if (defined $keywords and length $keywords);
         $abstract = XIMS::decode($abstract) if (defined $abstract and length $abstract);
+        $notes    = XIMS::decode($notes) if (defined $notes and length $notes);
     }
 
     if ( $object and $object->id() and length $self->param( 'id' ) ) {
@@ -750,6 +752,12 @@ sub init_store_object {
     if ( defined $abstract and (length $abstract and $abstract !~ /^\s+$/ or not length $abstract) ) {
         XIMS::Debug( 6, "abstract, len: " . length($abstract) );
         $object->abstract( $abstract );
+    }
+
+    # check if valid notes are given
+    if ( defined $notes and (length $notes and $notes !~ /^\s+$/ or not length $notes) ) {
+        XIMS::Debug( 6, "notes, len: " . length($notes) );
+        $object->notes( $notes );
     }
 
     my $image = $self->param( 'image' );

@@ -51,3 +51,32 @@
     padding: 3px;
     border: 1px solid #aaaaaa;
 }
+
+#abstract, #notes, #authors, #editors, #serials {
+    padding: 5px;
+}
+
+#abstract {
+    background: #F6F0F0;
+    color: black;
+    border: 1px solid black;
+}
+
+#notes {
+    background: #f0f0f0;
+    color: black;
+    border-bottom: 1px solid black;
+}
+
+#reference_values {
+   
+}
+
+#authors {
+    border-top: 1px solid black;
+}
+
+#authors, #editors, #serials {
+    background: #f0f0f0;
+    color: black;
+}

@@ -96,6 +96,14 @@ sub event_store {
         $ctxt->object->abstract( XIMS::xml_escape( $abstract ) );
     }
 
+    my $notes = $self->param( 'notes' );
+    # check if valid notes are given
+    if ( defined $notes and (length $notes and $notes !~ /^\s+$/ or not length $notes) ) {
+        XIMS::Debug( 6, "notes, len: " . length($notes) );
+        $ctxt->object->notes( $notes );
+    }
+
+
     if ( $ctxt->parent() ) {
         my $reference = $ctxt->object->reference();
         if ( not defined $reference ) {
