@@ -328,7 +328,7 @@
 </xsl:template>
 
 
-<xsl:template name="tr-abstract-edit">
+<xsl:template name="tr-abstract">
     <tr>
         <td valign="top" colspan="3">
             <xsl:value-of select="$i18n/l/Abstract"/>
@@ -336,19 +336,21 @@
             <a href="javascript:openDocWindow('Reflib.Abstract')" class="doclink">(?)</a>
             <br />
             <textarea tabindex="50" name="abstract" rows="5" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333  solid 1px;">
-                 <xsl:choose>
-                    <xsl:when test="string-length(abstract) &gt; 0">
-                        <xsl:apply-templates select="abstract"/>
-                     </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>&#160;</xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:apply-templates select="abstract"/>
             </textarea>
         </td>
     </tr>
 </xsl:template>
 
+<xsl:template name="head_default">
+    <head>
+        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - <xsl:call-template name="department_title"/> - XIMS</title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    </head>
+</xsl:template>
 
 <xsl:template name="cttobject.content_length"/>
 <xsl:template name="cttobject.options.copy"/>

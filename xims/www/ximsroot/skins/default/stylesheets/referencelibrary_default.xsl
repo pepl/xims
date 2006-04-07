@@ -153,7 +153,7 @@ z-index:100;
 <xsl:template name="childrenlist">
     <div id="vlchildrenlist">
         <xsl:apply-templates select="children/object" mode="divlist">
-            <xsl:sort select="last_modification_timestamp" order="descending"/>
+            <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="descending"/>
         </xsl:apply-templates>
     </div>
 </xsl:template>

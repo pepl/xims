@@ -473,16 +473,9 @@
     </tr>
 </xsl:template>
 
+<!-- Legacy -->
 <xsl:template name="tr-abstract-create">
-    <tr>
-        <td valign="top" colspan="3">
-            <xsl:value-of select="$i18n/l/Abstract"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
-            <br />
-            <textarea tabindex="50" name="abstract" rows="3" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333  solid 1px;">&#160;</textarea>
-        </td>
-    </tr>
+    <xsl:call-template name="tr-abstract-edit"/>
 </xsl:template>
 
 <xsl:template name="tr-abstract-edit">
@@ -493,14 +486,21 @@
             <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
             <br />
             <textarea tabindex="50" name="abstract" rows="3" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333  solid 1px;">
-                 <xsl:choose>
-                    <xsl:when test="string-length(abstract) &gt; 0">
-                        <xsl:apply-templates select="abstract"/>
-                     </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>&#160;</xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:apply-templates select="abstract"/>
+            </textarea>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-notes">
+    <tr>
+        <td valign="top" colspan="3">
+            <xsl:value-of select="$i18n/l/Notes"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('Notes')" class="doclink">(?)</a>
+            <br />
+            <textarea tabindex="50" name="notes" rows="3" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333  solid 1px;">
+                <xsl:apply-templates select="notes"/>
             </textarea>
         </td>
     </tr>
