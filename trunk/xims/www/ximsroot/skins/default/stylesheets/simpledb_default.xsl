@@ -34,6 +34,8 @@
                         <xsl:value-of select="title"/>
                     </h1>
 
+                    <xsl:call-template name="simpledb.options"/>
+
                     <xsl:if test="/document/member_properties/member_property[1]">
                         <div id="simpledb_resulttitle">
                             <table width="100%">
@@ -56,6 +58,13 @@
                         </div>
 
                         <xsl:call-template name="simpledb.itemsearch"/>
+                        <xsl:call-template name="pagenav">
+                            <xsl:with-param name="totalitems" select="$objectitems_count"/>
+                            <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
+                            <xsl:with-param name="currentpage" select="$page"/>
+                            <xsl:with-param name="url"
+                                select="concat($xims_box,$goxims_content,$absolute_path,'?searchstring=',$searchstring,';m=',$m)"/>
+                        </xsl:call-template>
                         <xsl:call-template name="childrenlist"/>
                         <xsl:call-template name="pagenav">
                             <xsl:with-param name="totalitems" select="$objectitems_count"/>
@@ -65,8 +74,6 @@
                                             select="concat($xims_box,$goxims_content,$absolute_path,'?searchstring=',$searchstring,';m=',$m)"/>
                         </xsl:call-template>
                     </xsl:if>
-
-                    <xsl:call-template name="simpledb.options"/>
                 </div>
             </body>
         </html>

@@ -90,13 +90,19 @@
 }
 
 #simpledb_itemsearch input {
-    background: #eeeeee; font-face: helvetica; font-size: 10pt
+    background: #eeeeee;
+    color: black;
+    font-family: Helvetica;
+    font-size: 10pt;
 }
 
+
 #pagenav {
-    margin-bottom: 15px;
-    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-right: 2px;
+    margin-left: 2px;
     text-align: right;
-    padding: 5px;
-    border: 2px solid #aaaaaa;
+    padding: 3px;
+    border: 1px solid #aaaaaa;
 }
