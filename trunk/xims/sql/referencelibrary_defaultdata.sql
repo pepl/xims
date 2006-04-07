@@ -35,6 +35,10 @@ INSERT INTO cireflib_reference_types ( id, name, description )
        VALUES ( cireflib_reftypes_id_seq_nval(), 'Seminar Talk', 'A given seminar talk without being published' );
 INSERT INTO cireflib_reference_types ( id, name, description )
        VALUES ( cireflib_reftypes_id_seq_nval(), 'Colloquium', 'A given colloqium talk without being published' );
+INSERT INTO cireflib_reference_types ( id, name, description )
+       VALUES ( cireflib_reftypes_id_seq_nval(), 'Diploma Thesis', 'A diploma thesis related to a course of study at an institution of higher education' );
+INSERT INTO cireflib_reference_types ( id, name, description )
+       VALUES ( cireflib_reftypes_id_seq_nval(), 'State Doctorate', 'Postdoctoral lecture qualification (Habilitation)' );
 
 -- Descriptions are based on ANSI/NISO Z39.88-2004
 INSERT INTO cireflib_reference_properties ( id, name, description, position )
@@ -158,6 +162,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 1, 16 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 1, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 1, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 2, 2 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 2, 4 );
@@ -195,6 +203,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 3, 15 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 3, 16 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 3, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 3, 18 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 4, 7 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
@@ -282,6 +294,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 14, 12 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 14, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 14, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 15, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 15, 2 );
@@ -316,6 +332,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 17, 12 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 17, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 17, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 18, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 18, 2 );
@@ -329,6 +349,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 18, 7 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 18, 12 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 18, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 18, 18 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 19, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
@@ -344,6 +368,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 19, 12 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 19, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 19, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 20, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 20, 2 );
@@ -357,6 +385,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 20, 7 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 20, 12 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 20, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 20, 18 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 21, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
@@ -372,6 +404,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 21, 12 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 21, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 21, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 22, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 22, 2 );
@@ -386,6 +422,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 22, 12 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 22, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 22, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 23, 2 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 23, 3 );
@@ -398,21 +438,41 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 23, 12 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 23, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 23, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 24, 7 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 24, 12 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 24, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 24, 18 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 25, 7 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 25, 12 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 25, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 25, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 26, 7 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 26, 12 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 26, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 26, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 27, 7 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 27, 12 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 27, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 27, 18 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 28, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
@@ -433,6 +493,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 28, 10 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 28, 12 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 28, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 28, 18 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 29, 7 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
@@ -550,6 +614,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 35, 16 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 35, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 35, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 36, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 36, 2 );
@@ -579,6 +647,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 36, 15 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 36, 16 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 36, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 36, 18 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 37, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
@@ -612,6 +684,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 37, 16 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 37, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 37, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 38, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 38, 2 );
@@ -644,6 +720,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 38, 16 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 38, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 38, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 39, 1 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 39, 2 );
@@ -675,6 +755,10 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 39, 15 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 39, 16 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 39, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 39, 18 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 40, 9 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
@@ -710,7 +794,15 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 41, 16 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 41, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 41, 18 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 42, 9 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), 43, 12 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 43, 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), 43, 18 );
               
