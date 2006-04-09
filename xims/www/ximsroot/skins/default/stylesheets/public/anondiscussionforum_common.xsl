@@ -9,9 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="../../../../stylesheets/anondiscussionforum_common.xsl"/>
 <xsl:import href="common.xsl"/>
-
+    
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head_default"/>

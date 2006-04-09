@@ -160,6 +160,14 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        Show verbose result of publishing process
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="verbose_result" value="1"/>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td align="center">
 
                                         <!-- begin buttons table -->

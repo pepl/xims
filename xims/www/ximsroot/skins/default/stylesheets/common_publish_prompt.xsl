@@ -36,7 +36,7 @@
             <xsl:value-of select="concat($publishingroot,$object_path)"/>
         </xsl:when>
         <xsl:otherwise>
-            <xsl:value-of select="concat($gopublic_content,$object_path)"/>
+            <xsl:value-of select="concat(/document/context/session/serverurl,$gopublic_content,$object_path)"/>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:variable>
