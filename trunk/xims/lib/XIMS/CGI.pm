@@ -1410,15 +1410,22 @@ sub event_publish {
 
     if ( $exporter->publish( Object => $ctxt->object, no_dependencies_update => $no_dependencies_update ) ) {
         XIMS::Debug( 6, "object published!" );
-        if ( $published > 0 ) {
-            $ctxt->session->message("Object '" .  $ctxt->object->title() . "' together with $published related objects published.");
+        if ( defined $self->param( "verbose_result" )
+             and $self->param( "verbose_result" ) == 1 ) {
+            if ( $published > 0 ) {
+                $ctxt->session->message("Object '" .  $ctxt->object->title() . "' together with $published related objects published.");
+            }
+            else {
+                $ctxt->session->message("Object '" .  $ctxt->object->title() . "' published.");
+            }
+            $ctxt->properties->application->styleprefix('common_publish');
+            $ctxt->properties->application->style('update');
         }
         else {
-            $ctxt->session->message("Object '" .  $ctxt->object->title() . "' published.");
+            $self->redirect( $self->redirect_path( $ctxt ) );
+            return 1;
         }
-        $ctxt->properties->application->styleprefix('common_publish');
-        $ctxt->properties->application->style('update');
-    }
+     }
     else {
         XIMS::Debug( 3, "object could not be published!" );
         $ctxt->session->error_msg( "Object '" . $ctxt->object->title() . "' not published");
@@ -1429,6 +1436,45 @@ sub event_publish {
     return 0;
 }
 
+sub publish_gopublic {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $ctxt = shift;
+    my $options = shift;
+    
+    $options->{PRIVILEGE_MASK} ||= XIMS::Privileges::VIEW;
+
+    my $user = $ctxt->session->user();
+    my $object = $ctxt->object();
+    my $objprivs = $user->object_privmask( $object );
+
+    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
+        if ( not $object->publish() ) {
+            XIMS::Debug( 2, "publishing object '" . $object->title() . "' failed" );
+            return $self->sendError( $ctxt, "Publishing object '" . $object->title() . "' failed." );
+        }
+        else {
+            if ( defined $self->param( "verbose_result" )
+                 and $self->param( "verbose_result" ) == 1 ) {
+                $ctxt->session->message("Object '" .  $object->title() . "' published.");
+                $ctxt->properties->application->styleprefix('common_publish');
+                $ctxt->properties->application->style('update');                     
+            }
+            else {
+                $self->redirect( $self->redirect_path( $ctxt ) );
+                return 1;
+            }
+        }
+
+        $object->grant_user_privileges( grantee         => XIMS::PUBLICUSERID(),
+                                        privilege_mask  => $options->{PRIVILEGE_MASK},
+                                        grantor         => $user->id() );
+    }
+    else {
+        return $self->event_access_denied( $ctxt );
+    }
+}
+   
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1463,9 +1509,16 @@ sub event_unpublish {
 
     if ( $exporter->unpublish( Object => $ctxt->object, no_dependencies_update => $no_dependencies_update ) ) {
         XIMS::Debug( 6, "object unpublished!" );
-        $ctxt->session->message("Object '" .  $ctxt->object->title() . "' unpublished.");
-        $ctxt->properties->application->styleprefix('common_publish');
-        $ctxt->properties->application->style('update');
+        if ( defined $self->param( "verbose_result" )
+             and $self->param( "verbose_result" ) == 1 ) {
+            $ctxt->session->message("Object '" .  $ctxt->object->title() . "' unpublished.");
+            $ctxt->properties->application->styleprefix('common_publish');
+            $ctxt->properties->application->style('update');
+        }
+        else {
+            $self->redirect( $self->redirect_path( $ctxt ) );
+            return 1;
+        }
     }
     else {
         XIMS::Debug( 3, "object could not be unpublished!" );
@@ -1475,6 +1528,40 @@ sub event_unpublish {
     }
 
     return 0;
+}
+
+sub unpublish_gopublic {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user = $ctxt->session->user();
+    my $object = $ctxt->object();
+    my $objprivs = $user->object_privmask( $object );
+
+    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
+        if ( not $object->unpublish() ) {
+            XIMS::Debug( 2, "unpublishing object '" . $object->title() . "' failed" );
+            return $self->sendError( $ctxt, "Unpublishing object '" . $object->title() . "' failed." );
+        }
+        else {
+            if ( defined $self->param( "verbose_result" )
+                 and $self->param( "verbose_result" ) == 1 ) {
+                $ctxt->session->message("Object '" .  $object->title() . "' unpublished.");
+                $ctxt->properties->application->styleprefix('common_publish');
+                $ctxt->properties->application->style('update');                     
+            }
+            else {
+                $self->redirect( $self->redirect_path( $ctxt ) );
+                return 1;
+            }
+        }
+
+        my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
+        $privs_object->delete();
+    }
+    else {
+        return $self->event_access_denied( $ctxt );
+    }
 }
 
 sub event_test_wellformedness {

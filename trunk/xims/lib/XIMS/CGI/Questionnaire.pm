@@ -473,82 +473,14 @@ sub event_download_results_pdf {
 
 sub event_publish {
     XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $user = $ctxt->session->user();
-    my $object = $ctxt->object();
-    my $objprivs = $user->object_privmask( $object );
-
-    $ctxt->properties->application->style( 'error' );
-
-    if ( $objprivs & XIMS::Privileges::PUBLISH()
-         || $objprivs & XIMS::Privileges::PUBLISH_ALL() ) {
-
-        if ( not $object->publish() ) {
-            XIMS::Debug( 2, "publishing object '" . $object->title() . "' failed" );
-            $self->sendError( $ctxt, "Publishing object '" . $object->title() . "' failed." );
-            return 0;
-        }
-
-        # The questionnaire is published through a grant to the public user
-        my $boolean = $object->grant_user_privileges (  grantee         => XIMS::PUBLICUSERID(),
-                                                        privilege_mask  => ( XIMS::Privileges::VIEW | XIMS::Privileges::CREATE ),
-                                                        grantor         => $user->id() );
-
-        if ( $boolean ) {
-            XIMS::Debug( 6, "questionnaire " . $object->title() . " published." );
-            $ctxt->properties->application->styleprefix( 'questionnaire_publish' );
-            $ctxt->properties->application->style( 'update' );
-            $ctxt->session->message( "Questionnaire '" . $object->title() . "' published." );
-        }
-        else {
-            XIMS::Debug( 2, "could not publish questionnaire " . $object->document_id() );
-        }
-    }
-    else {
-        XIMS::Debug( 3, "User has no publishing privileges on this object!" );
-    }
-
-    return 0;
+    my $self = shift;
+    return $self->publish_gopublic( @_ );
 }
 
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $user = $ctxt->session->user();
-    my $object = $ctxt->object();
-    my $objprivs = $user->object_privmask( $object );
-
-    $ctxt->properties->application->style( 'error' );
-
-    if ( $objprivs & XIMS::Privileges::PUBLISH()
-         || $objprivs & XIMS::Privileges::PUBLISH_ALL() ) {
-
-        if ( not $object->unpublish() ) {
-            XIMS::Debug( 2, "unpublishing object '" . $object->title() . "' failed" );
-            $self->sendError( $ctxt, "Unpublishing object '" . $object->title() . "' failed." );
-            return 0;
-        }
-
-        # revoke the privs
-        my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
-
-        if ( $privs_object and $privs_object->delete() ) {
-            XIMS::Debug( 6, "questionnaire " . $object->title() . " unpublished." );
-            $ctxt->properties->application->styleprefix( 'questionnaire_publish' );
-            $ctxt->properties->application->style( 'update' );
-            $ctxt->session->message( "Questionnaire '" . $object->title() . "' unpublished." );
-        }
-        else {
-            XIMS::Debug( 2, "could not unpublish questionnaire " . $object->document_id() );
-        }
-    }
-    else {
-        XIMS::Debug( 3, "User has no publishing privileges on this object!" );
-    }
-
-    return 0;
+    my $self = shift;
+    return $self->unpublish_gopublic( @_ );
 }
 
 sub event_exit {

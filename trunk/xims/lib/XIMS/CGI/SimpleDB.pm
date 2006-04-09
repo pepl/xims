@@ -308,55 +308,14 @@ sub event_publish_prompt {
 
 sub event_publish {
     XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $user = $ctxt->session->user();
-    my $object = $ctxt->object();
-    my $objprivs = $user->object_privmask( $object );
-
-    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
-        if ( not $object->publish() ) {
-            XIMS::Debug( 2, "publishing object '" . $object->title() . "' failed" );
-            $self->sendError( $ctxt, "Publishing object '" . $object->title() . "' failed." );
-            return 0;
-        }
-
-        $object->grant_user_privileges (  grantee         => XIMS::PUBLICUSERID(),
-                                          privilege_mask  => ( XIMS::Privileges::VIEW ),
-                                          grantor         => $user->id() );
-    }
-    else {
-        return $self->event_access_denied( $ctxt );
-    }
-
-    $self->redirect( $self->redirect_path( $ctxt ) );
-    return 1;
+    my $self = shift;
+    return $self->publish_gopublic( @_ );
 }
 
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $user = $ctxt->session->user();
-    my $object = $ctxt->object();
-    my $objprivs = $user->object_privmask( $object );
-
-    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
-        if ( not $object->unpublish() ) {
-            XIMS::Debug( 2, "unpublishing object '" . $object->title() . "' failed" );
-            $self->sendError( $ctxt, "Unpublishing object '" . $object->title() . "' failed." );
-            return 0;
-        }
-
-        my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
-        $privs_object->delete();
-    }
-    else {
-        return $self->event_access_denied( $ctxt );
-    }
-
-    $self->redirect( $self->redirect_path( $ctxt ) );
-    return 1;
+    my $self = shift;
+    return $self->unpublish_gopublic( @_ );
 }
 
 # END RUNTIME EVENTS
