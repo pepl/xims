@@ -37,6 +37,9 @@ sub new {
     return $self;
 }
 
+sub general { shift->{general} } 	 
+sub dpconfig { shift->{dpconfig} }
+
 sub process_file {
     my $self = shift;
     my $file = shift;
@@ -88,7 +91,7 @@ sub process_file {
 
     return 1;
 }
-
+	 
 sub process_dbi {
     my $self = shift;
     my $file = shift;

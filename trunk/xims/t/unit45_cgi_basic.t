@@ -62,11 +62,10 @@ $ctxt = XIMS::AppContext->new( user => $u,
 
 
 # we should test every case but... :-/ 
+$ctxt->session->skin( 'default' );
 $ret = $q->selectStylesheet( $ctxt );
-print "select is $ret \n";
-ok( $ret eq '/siteroot_default.xsl' ); # no skin- and language-selection with
-                                       # the fake request, just looking for the
-                                       # right stylesheet for that object-type
+#warn "select is $ret \n";
+ok( $ret eq XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/siteroot_default.xsl' );
 
 $ret = undef;
 
