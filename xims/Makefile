@@ -24,7 +24,7 @@ all		: check check_done
 check		:
 	$(PERL) tools/install/cpan_install.pl -c
 
-check_done		: check
+check_done		: 
 
 	@echo ===========================================================
 	@echo
@@ -35,9 +35,9 @@ check_done		: check
 	@echo ===========================================================
 	@echo
 
-install		: cpan patch_modules db setup done
+install		: cpan patch_modules db setup defaulttestconf done
 
-done		: setup
+done		: 
 
 	@echo
 	@echo ===========================================================
@@ -73,6 +73,9 @@ db		:
 
 setup 		:
 	$(PERL) sbin/xims_setup.pl
+
+defaulttestconf    :
+	$(PERL) t/ximstest.pl -c
 
 
 ##########################
