@@ -40,16 +40,14 @@ XIMS documentation for users, developers, and system administrators.
 
 Release Notes
 -------------
-This is a new feature release. Since the last XIMS release, the list of
-changes has grown considerably. Therefore, and so as to include the new
-bug fixes, we strongly recommend to upgrade existing installations to this
-best ever XIMS release!
-
-New features include WebDAV support, integration with a new customized version
-of HTMLArea, support for other WYSIWYG-Editors like BXE, TinyMCE, and Xinha, new
-object types, better support for web portal management, user interface updates and
-user management updates.
-For a detailed list of changes, please review the "Changes" file.
+This is a new feature release. New features include a "Reference Library" module
+to store bibliographic data and a "SimpleDB" module to store generic data in
+virtual two-dimensional tables. Updates to existing object types include an edit
+option for XML objects using HTML forms, additional answering and reporting
+options for Questionnaires, as well as updated configuration options for
+SQLReports. Besides further minor updates, this release also includes a number
+of minor bug fixes. For a detailed list of changes, please review the "Changes"
+file.
 
 
 Changes
@@ -62,6 +60,7 @@ Known Issues
 
 Using PostgreSQL 7.3.x, siblings will not be sorted by position in the
 treeview event as they should be. PostgreSQL >= 7.4 fixes this behaviour.
+
 
 Bug Reporting
 -------------
@@ -80,11 +79,12 @@ Christian Glahn <christian.glahn@uibk.ac.at>
 
 XIMS is currently developed and maintained by:
 Michael Kröll <mk@xims.info>
-Hansjörg Pehofer <hansjoerg.pehofer@uibk.ac.at>
-Jochen Frühwirth <jochen.fruehwirth@mci.edu>
+Hansjörg Pehofer <hansjoerg.pehofer@uibk.ac.at>>
 
-Contributors:
+Contributors (Sorted by most recent initial contribution):
+Simon Bailey <simon.bailey@uibk.ac.at>
 Volker Hess <volker.hess@mz.uni-siegen.de>
+Jochen Früwirth <jochen.fruehwirth@mci.edu>
 Joachim Kargl <joachim.kargl@uibk.ac.at>
 Martina Kinzl <martina.kinzl@uibk.ac.at>
 Gregor Retti <gregor.retti@uibk.ac.at>
@@ -92,3 +92,4 @@ Britta Tautermann <britta.tautermann@uibk.ac.at>
 Georg Schönwiese <csab2314@uibk.ac.at>
 
 Additionally, we would like to thank everyone who supplied valuable feedback!
+
