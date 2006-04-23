@@ -458,6 +458,19 @@
                   </span>
               </td>
             </tr>
+          <tr>
+            <td colspan="2">
+              <span class="cboxitem">
+                <input type="checkbox" name="system_privs_CHANGE_DAV_OTPRIVS_MASK">
+                  <xsl:if test="system_privileges/change_dav_otprivs_mask = 1">
+                    <xsl:attribute name="checked" select="checked"/>
+                  </xsl:if>
+                </input>
+                <xsl:value-of select="$i18n_users/l/Change_DAV_OTPrivs_Mask"/>
+              </span>
+            </td>
+          </tr>
+          
           </table>
           <!-- end helpdesk management sys privs table -->
       </td>
@@ -497,6 +510,7 @@
       </td>
     </tr>
 </xsl:template>
+ 
 
 <xsl:template name="usermeta">
     <tr>

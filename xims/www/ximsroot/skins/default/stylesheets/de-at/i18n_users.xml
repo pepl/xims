@@ -47,4 +47,11 @@
 <Show_explicitly_granted>Zeige ausschliesslich direkt gewährte Rollen</Show_explicitly_granted>
 <Revoke_Role_Grant>Rollenzuweisung entfernen</Revoke_Role_Grant>
 <Manage_Existing_Roles>Verwalte bestehende Rollen</Manage_Existing_Roles>
+<Objecttypeprivs_objectCreation>Objekttyp Privilegien zum Erstellen von Objekten</Objecttypeprivs_objectCreation>
+<DAV_OTPrivileges>WebDAV Objekttyp Privilegien</DAV_OTPrivileges>
+<DAV_Container_Binary>Container- und Binäre Typen</DAV_Container_Binary>
+<DAV_Text>Text Typen</DAV_Text>
+<DAV_XML>XML Typen</DAV_XML>
+<Change_DAV_OTPrivs_Mask>WebDAV Objekttyp Privilegien Maske verändern</Change_DAV_OTPrivs_Mask>
 </l>
+

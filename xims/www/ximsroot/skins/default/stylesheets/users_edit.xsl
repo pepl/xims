@@ -9,6 +9,9 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+<xsl:import href="users_common.xsl"/>
+
 <xsl:template match="/document">
     <html>
         <head>
@@ -49,18 +52,28 @@
                   <td>ID:</td>
                   <td><xsl:value-of select="@id"/></td>
                 </tr>
-                <tr>
-                  <td>
-                      <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                      <span class="compulsory"><xsl:value-of select="$i18n/l/Username"/></span>:</td>
-                  <td><input size="30" maxlength="30" name="name" type="text" value="{name}"/></td>
-                </tr>
 
-                <xsl:call-template name="usermeta"/>
-                <xsl:call-template name="system_privileges"/>
-                <xsl:call-template name="user_isadmin"/>
-                <xsl:call-template name="account_enabled"/>
+                  <xsl:if test="/document/context/session/user/system_privileges/change_user_name = 1">
+                      <tr>
+                          <td>
+                              <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+                              <span class="compulsory"><xsl:value-of select="$i18n/l/Username"/></span>:</td>
+                          <td><input size="30" maxlength="30" name="name" type="text" value="{name}"/></td>
+                      </tr>
+                  </xsl:if>
 
+                  <xsl:if test="/document/context/session/user/system_privileges/change_user_fullname = 1">
+                      <xsl:call-template name="usermeta"/>
+                  </xsl:if>
+                  <xsl:if test="/document/context/session/user/system_privileges/change_sysprivs_mask = 1">
+                      <xsl:call-template name="system_privileges"/>
+                  </xsl:if>
+                  <xsl:if test="/document/context/session/user/system_privileges/set_admin_equ = 1">
+                      <xsl:call-template name="user_isadmin"/>
+                  </xsl:if>
+                  <xsl:if test="/document/context/session/user/system_privileges/set_status = 1">
+                      <xsl:call-template name="account_enabled"/>
+                  </xsl:if>
                 <xsl:call-template name="exitform">
                     <xsl:with-param name="action" select="'update'"/>
                 </xsl:call-template>
