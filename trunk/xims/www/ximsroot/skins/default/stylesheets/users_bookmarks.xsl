@@ -8,6 +8,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<xsl:import href="common.xsl"/>
+<xsl:import href="users_common.xsl"/>
+
 <xsl:param name="name"/>
 
 <xsl:variable name="stdhome">
