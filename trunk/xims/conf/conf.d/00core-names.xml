@@ -40,6 +40,7 @@
                 <item>user.email</item>
                 <item>user.url</item>
                 <item>user.object_type</item>
+                <item>user.dav_otprivs_mask</item>
             </User>
             <Content>
                 <item>content.binfile</item>
@@ -167,6 +168,8 @@
                 <item>objecttype.publish_gopublic</item>
                 <item>objecttype.parent_id</item>
                 <item>objecttype.is_objectroot</item>
+                <item>objecttype.is_davgetable</item>
+                <item>objecttype.davprivval</item>
             </ObjectType>
             <Bookmark>
                 <item>bookmark.id</item>
