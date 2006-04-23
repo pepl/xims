@@ -248,7 +248,7 @@ sub event_update {
             # build system_privs_mask from parameters 'system_privs_XXX', each holding a single bit of the mask
             my $system_privs_mask = 0;
             foreach my $privname ( XIMS::Privileges::System::list() ) {
-                if( $self->param( 'system_privs_' . $privname ) ) {
+                if ( $self->param( 'system_privs_' . $privname ) ) {
                     $system_privs_mask |= XIMS::Privileges::System->$privname;
                 }
             }
@@ -556,8 +556,9 @@ sub event_objecttypeprivs {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    my $privmask = $ctxt->session->user->system_privs_mask();
     # fixme
-    #unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::XXX() ) {
+    #unless ( $privmask & XIMS::Privileges::System::XXX() ) {
     #    return $self->event_access_denied( $ctxt );
     #}
 
@@ -565,6 +566,7 @@ sub event_objecttypeprivs {
     my $user = XIMS::User->new( name => $uname );
 
     if ( $user and $user->id() ) {
+        $ctxt->user( $user );
         if ( ( $self->param( 'addpriv' ) or $self->param( 'addpriv.x' ) ) and my $objtype = $self->param('objtype' ) ) {
             my $object_type = XIMS::ObjectType->new( fullname => $objtype );
             return $self->sendError( $ctxt, "Could not resolve object type name" ) unless defined $object_type;
@@ -596,6 +598,26 @@ sub event_objecttypeprivs {
             }
             else {
                 return $self->sendError( $ctxt, "Could not delete Objecttype privilege." );
+            }
+        }
+        elsif ( $self->param( 'dav_otprivs_update' ) ) {
+            if ( $privmask & XIMS::Privileges::System::CHANGE_DAV_OTPRIVS_MASK() ) {
+                my $dav_otprivs_mask = 0;
+                foreach my $object_type ( $user->data_provider->object_types( is_davgetable => 1 ) ) {
+                    if ( $self->param( 'dav_otprivs_' . $object_type->name() ) ) {
+                        $dav_otprivs_mask |= $object_type->davprivval();
+                    }
+                }
+                $user->dav_otprivs_mask( $dav_otprivs_mask );
+
+                if ( $user->update ) {
+                    $ctxt->session->message( "User '" . $user->name() . "' updated successfully." );
+                    $self->redirect( $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                    return 0;
+                }
+                else {
+                    $self->sendError( $ctxt, "Update failed for user '" . $user->name() . "'. Please check with your system adminstrator." );
+                }
             }
         }
 

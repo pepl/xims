@@ -57,6 +57,9 @@ sub prepare {
     if ( $ctxt->user() ) {
         $doc_data->{context}->{user} = $ctxt->user();
         $doc_data->{context}->{user}->{system_privileges} = {$ctxt->user->system_privileges()} if $ctxt->user->system_privs_mask() > 0;
+        $doc_data->{context}->{user}->{dav_otprivileges} = {$ctxt->user->dav_otprivileges()} if $ctxt->user->dav_otprivs_mask() > 0;
+        my @object_types = $ctxt->data_provider->object_types();
+        $doc_data->{object_types} = { object_type => \@object_types };
     }
 
     return $doc_data;
