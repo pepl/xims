@@ -9,6 +9,7 @@ use XIMS::Object;
 use XIMS::Folder;
 use XIMS::User;
 use XIMS::Importer::Object;
+use Encode;
 
 use Apache;
 use Apache::Constants qw(:common :response);
@@ -92,7 +93,10 @@ sub handler {
     $r->status( $status_code );
     if ( defined $content ) {
         my $bytes;
-        do { use bytes; $bytes = length($content) };
+        #do { use bytes; $bytes = length($content) };
+        # make sure utf-8 flag is on
+        Encode::_utf8_on($content) unless XIMS::DBENCODING();
+        $bytes = length($content);
         #$r->set_content_length( $bytes );
         $r->header_out( 'Content-Length', $bytes );
 
@@ -185,6 +189,9 @@ sub put {
 
     my $body;
     $r->read( $body, $r->header_in( 'Content-Length') );
+    
+    # for those editors which did not get the encoding right...
+    $body = XIMS::utf8_sanitize( $body ) unless XIMS::DBENCODING();
 
     my $object_class;
     if ( defined $object ) {
@@ -394,23 +401,31 @@ sub propfind {
     elsif ( defined $depth and $depth eq '0' ) {
         $depth = 0;
     }
+
+    my %is_fs_container;
+    my %mime_types;
     if ( $depth == 1 and $object->object_type->is_fs_container() ) {
-        # Filter out Documents and NewsItems, most Users and their editors would have problems with
-        # handling the correct encoding of the XML Document Fragments...
-        # 2, 15
-        #
-        # Filter out "special"-non-GETable object types like URLLink, Questionnaire, ...
-        # TODO: filter by object type name
-        my @object_type_ids = (1,3,4,5,6,7,8,9,10,19,20,21);
-        push(@object_type_ids, (2,15)) if $user->admin;
+        # Build mime type lookup table
+        my @data_formats = $object->data_provider->data_formats();
+        for ( @data_formats ) {
+            $mime_types{$_->{id}} = $_->{mime_type};
+        }
+
+        my @object_types = $user->dav_object_types_granted();
+        my @object_type_ids;
+        for ( @object_types ) {
+            push (@object_type_ids, $_->{id});
+            $is_fs_container{$_->{id}} = $_->{is_fs_container};  # save db lookups later
+        }
+        
         @objects = $object->children_granted( marked_deleted => undef, object_type_id => \@object_type_ids );
-        #push @objects, $object;
     }
     else {
         @objects = ($object);
     }
 
     foreach my $o ( @objects ) {
+        my $is_fs_container = $is_fs_container{$o->object_type_id};
         my $status = "HTTP/1.1 200 OK";
         my $t;
 
@@ -456,7 +471,7 @@ sub propfind {
         $prop->addChild($ndisplayname);
 
         my $resourcetype = $dom->createElement("D:resourcetype");
-        if ( $o->object_type->is_fs_container() ) {
+        if ( $is_fs_container ) {
             my $collection = $dom->createElement("D:collection");
             $resourcetype->addChild($collection);
         }
@@ -510,11 +525,12 @@ sub propfind {
         $propstat->addChild($nstatus);
 
         my $getcontenttype = $dom->createElement("D:getcontenttype");
-        if ( $o->object_type->is_fs_container() ) {
+        if ( $is_fs_container ) {
             $getcontenttype->appendText("httpd/unix-directory");
         }
         else {
-            $getcontenttype->appendText($o->data_format->mime_type);
+            my $mime_type = exists $mime_types{$o->data_format_id} ? $mime_types{$o->data_format_id} : $o->data_format->mime_type;
+            $getcontenttype->appendText($mime_type);
         }
         $propstat->addChild($getcontenttype);
     }
