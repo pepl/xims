@@ -104,6 +104,17 @@ sub system_privileges {
     return ();
 }
 
+sub dav_otprivileges {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $mask = $self->dav_otprivs_mask();
+    return () unless $mask;
+    my @object_types = $self->data_provider->object_types( is_davgetable => 1 );
+    my $privs_hash = XIMS::Helpers::dav_otprivmask_to_hash( $mask, \@object_types );
+    return %{$privs_hash} if ref( $privs_hash ) eq 'HASH' and keys( %{$privs_hash} ) > 0;
+    return ();
+}
+
 sub default_bookmark {
     XIMS::Debug( 5, "called" );
     my $self = shift;

@@ -596,7 +596,7 @@ package XIMS::Privileges::System;
 sub list {
     return qw( CHANGE_PASSWORD GRANT_ROLE RESET_PASSWORD SET_STATUS CREATE_ROLE DELETE_ROLE
                CHANGE_ROLE_FULLNAME CHANGE_USER_FULLNAME CHANGE_ROLE_NAME CHANGE_USER_NAME
-               CREATE_USER DELETE_USER CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU );
+               CREATE_USER DELETE_USER CHANGE_DAV_OTPRIVS_MASK CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU );
 }
 
 #
@@ -622,6 +622,8 @@ sub CHANGE_USER_NAME()          { return 0x00080000; }
 
 sub CREATE_USER()               { return 0x00100000; }
 sub DELETE_USER()               { return 0x00200000; }
+
+sub CHANGE_DAV_OTPRIVS_MASK()   { return 0x00400000; }
 
 #
 # 0x10000000 - 0x80000000: system-management related
@@ -651,8 +653,11 @@ package XIMS::Helpers;
 #
 sub privmask_to_hash {
     my $privmask = shift;
+    my $privclass = shift;
+    $privclass ||= '';
     no strict 'refs';
-    my %privs = map { (lc($_), 1) } grep { $privmask & &{"XIMS::Privileges::$_"} } XIMS::Privileges::list();
+    my $listclass = "XIMS::Privileges::".$privclass."list";
+    my %privs = map { (lc($_), 1) } grep { $privmask & &{"XIMS::Privileges::$privclass$_"} } &{$listclass}();
     return \%privs;
 }
 
@@ -670,11 +675,32 @@ sub privmask_to_hash {
 # DESCRIPTION
 #    Used to get a more readable representation of the integer bitmask
 #
-sub system_privmask_to_hash {
+sub system_privmask_to_hash { privmask_to_hash( shift, 'System::' ) }
+
+##
+#
+# SYNOPSIS
+#    dav_otprivmask_to_hash( $privmask, $object_types )
+#
+# PARAMETER
+#    $privmask     : integer bitmask
+#    $object_types : Reference to array of XIMS::ObjectType instances
+#
+# RETURNS
+#    Returns a hash-reference with the corresponding DAV object type privileges as keys set to 1
+#
+# DESCRIPTION
+#    Used to get a more readable representation of the integer bitmask
+#
+sub dav_otprivmask_to_hash { 
     my $privmask = shift;
-    no strict 'refs';
-    my %privs = map { (lc($_), 1) } grep { $privmask & &{"XIMS::Privileges::System::$_"} } XIMS::Privileges::System::list();
-    return \%privs;
+    my $object_types = shift;
+
+    # cast $privmask to an integer, so that the bitwise operation will work as expected
+    1 if $privmask == 1;
+
+    my %privs = map { ($_->name(), 1) } grep { $privmask & $_->davprivval() } @{$object_types};
+    return \%privs;    
 }
 
 
