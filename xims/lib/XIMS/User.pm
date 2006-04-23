@@ -264,6 +264,35 @@ sub objecttype_privileges {
     return @all_types;
 }
 
+sub dav_object_types_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    my @object_types = $self->data_provider->object_types( is_davgetable => 1 );
+    return @object_types if $self->admin();
+    
+    my $privmask = $self->dav_otprivs_mask();
+    # cast $privmask to an integer, so that the bitwise operation will work as expected
+    1 if $privmask == 1;
+
+    # Add otprivs from granted roles
+    my @roles = $self->roles_granted();
+    foreach my $role ( @roles ) {
+        $privmask |= $role->dav_otprivs_mask();
+    }
+    # warn "Aggregated privmask: $privmask";
+
+    my @object_types_granted = ();
+    foreach my $object_type ( @object_types ) {
+        push ( @object_types_granted, $object_type ) if $privmask & $object_type->davprivval();
+    }
+
+    #warn "returning " . Dumper( \@object_types_granted );
+    return @object_types_granted;
+}
+
+
 # use XIMS::UserPriv here?
 sub grant_role_privileges {
     my $self = shift;
