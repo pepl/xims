@@ -18,6 +18,7 @@ CREATE TABLE CI_USERS_ROLES
  ,EMAIL VARCHAR2(80)
  ,URL VARCHAR2(250)
  ,OBJECT_TYPE NUMBER(1,0) NOT NULL
+ ,DAV_OTPRIVS_MASK NUMBER(32,0)
  )
 /
 
@@ -165,8 +166,11 @@ CREATE TABLE CI_OBJECT_TYPES
  ,PUBLISH_GOPUBLIC NUMBER(1,0) DEFAULT 0
  ,PARENT_ID NUMBER
  ,IS_OBJECTROOT NUMBER(1,0) DEFAULT 0
+ ,IS_DAVGETABLE NUMBER(1,0) DEFAULT 0
+ ,DAVPRIVVAL NUMBER(32,0)
  )
 /
 
 COMMENT ON COLUMN CI_OBJECT_TYPES.IS_FS_CONTAINER IS 'IS_FS_CONTAINER indicates whether this object-type should be exported as folder to te filesystem'
 COMMENT ON COLUMN CI_OBJECT_TYPES.REDIR_TO_SELF IS 'REDIR_TO_SELF indicates whether redirection after editing should go to the object self or to the parent object'
+COMMENT ON COLUMN CI_OBJECT_TYPES.DAVPRIVVAL IS 'DAVPRIVVAL is used to determine the dav object type privileges for users (dav_otprivs_mask)'

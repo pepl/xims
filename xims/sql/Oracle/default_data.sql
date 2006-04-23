@@ -94,11 +94,11 @@ INSERT INTO CI_MIME_TYPE_ALIASES ( id, data_format_id, mime_type ) VALUES ( MTA_
 -- $password = Digest::MD5::md5_hex('xgu');
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, password, enabled, admin) VALUES ( USR_SEQ.NEXTVAL, 'xgu', 'XIMS Test User', 0, 0, '43a008171c3de746fde9c6e724ee1001', 1, 0);
 -- $password = Digest::MD5::md5_hex('_adm1nXP');
-INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, password, enabled, admin) VALUES ( USR_SEQ.NEXTVAL, 'admin', 'admin', 0, 4294967296, 'f6d399e7dc811d185234a5d45f2b3caa', 1, 1);
+INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, password, enabled, admin) VALUES ( USR_SEQ.NEXTVAL, 'admin', 'admin', 0, 4294967295, 'f6d399e7dc811d185234a5d45f2b3caa', 1, 1);
 
 -- creation of basic roles should go here
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'guests', 'XIMS guests', 1, 0, 1);
-INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'admins', 'XIMS admins', 1, 4294967296, 1);
+INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'admins', 'XIMS admins', 1, 4294967295, 1);
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'everyone', 'XIMS everyone', 1, 0, 1);
 
 -- add public user
@@ -163,3 +163,28 @@ INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALU
 -- grants on the created folders should go here
 INSERT INTO CI_OBJECT_PRIVS_GRANTED ( privilege_mask, grantee_id, grantor_id, content_id ) VALUES ( 1, 3, 2, 2 );
 
+
+-- Setting is_ci_object_types.davgetable
+UPDATE ci_object_types SET is_davgetable = 0;
+UPDATE ci_object_types SET is_davgetable = 1 WHERE id IN (SELECT id from ci_object_types WHERE name IN ('Annotation', 'AxPointPresentation', 'CSS', 'DepartmentRoot', 'DocBookXML', 'Document', 'File', 'Folder', 'Image', 'JavaScript', 'NewsItem', 'Portal', 'Portlet', 'Questionnaire', 'SQLReport', 'SiteRoot', 'Text', 'XML', 'XSLStylesheet', 'XSPScript', 'sDocBookXML'));
+
+-- Setting ci_object_types.davprivval
+UPDATE ci_object_types SET davprivval = 0;
+-- Container and Binary types
+UPDATE ci_object_types SET davprivval = 1 WHERE name IN ('DepartmentRoot', 'File', 'Folder', 'Image', 'SiteRoot');
+-- Text based types
+UPDATE ci_object_types SET davprivval = 2 WHERE name IN ('CSS', 'JavaScript', 'Text');
+-- XML types
+UPDATE ci_object_types SET davprivval = 4 WHERE name IN ('AxPointPresentation', 'DocBookXML', 'XML', 'XSLStylesheet', 'XSPScript', 'sDocBookXML');
+
+UPDATE ci_object_types SET davprivval = 8 WHERE name = 'Document';
+UPDATE ci_object_types SET davprivval = 16 WHERE name = 'NewsItem';
+UPDATE ci_object_types SET davprivval = 32 WHERE name = 'Questionnaire';
+UPDATE ci_object_types SET davprivval = 64 WHERE name = 'SQLReport';
+UPDATE ci_object_types SET davprivval = 128 WHERE name = 'Portlet';
+
+-- Setting ci_users_roles.dav_otprivs_mask;
+-- Container, Binary, Text
+UPDATE ci_users_roles SET dav_otprivs_mask = 3;
+-- All types (0xFFFFFFFF bit bitmask) for admin
+UPDATE ci_users_roles SET dav_otprivs_mask = 4294967295 WHERE admin = 1;

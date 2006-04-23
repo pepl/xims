@@ -54,6 +54,8 @@ CREATE TABLE ci_object_types
  ,parent_id        INTEGER  REFERENCES ci_object_types ( id )
                             ON DELETE CASCADE
  ,is_objectroot    SMALLINT DEFAULT 0
+ ,is_davgetable    SMALLINT DEFAULT 0
+ ,davprivval       NUMERIC(32,0)
  )
 ;
 
@@ -82,6 +84,7 @@ CREATE TABLE ci_users_roles
  ,email               VARCHAR(80)
  ,url                 VARCHAR(250)
  ,object_type         SMALLINT      NOT NULL
+ ,dav_otprivs_mask    NUMERIC(32,0)
  )
 ;
 
@@ -245,9 +248,9 @@ CREATE INDEX ci_content_doc_id_idx
 
 \echo creating table 'ci_bookmarks'
 CREATE TABLE ci_bookmarks
- (id         SERIAL PRIMARY KEY
- ,content_id INTEGER NOT NULL REFERENCES ci_content(id)     ON DELETE CASCADE
- ,owner_id   INTEGER NOT NULL REFERENCES ci_users_roles(id) ON DELETE CASCADE
+ (id         SERIAL   PRIMARY KEY
+ ,content_id INTEGER  NOT NULL REFERENCES ci_content(id)     ON DELETE CASCADE
+ ,owner_id   INTEGER  NOT NULL REFERENCES ci_users_roles(id) ON DELETE CASCADE
  ,stdhome    SMALLINT DEFAULT 0
  )
 ;
@@ -270,6 +273,10 @@ COMMENT ON COLUMN ci_object_types.is_fs_container
 
 COMMENT ON column ci_object_types.redir_to_self
         IS 'redir_to_self indicates whether redirection after editing should go to the object self or to the parent object'
+;
+
+COMMENT ON COLUMN ci_object_types.davprivval
+        IS 'davprivval is used to determine the dav object type privileges for users (dav_otprivs_mask)'
 ;
 
 -- Add table for the questionnaire results
