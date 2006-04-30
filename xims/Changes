@@ -16,6 +16,10 @@ Updates:
   - (Re-)Publish Document when DocumentLinks are published
   - Introduced "LowerCaseLocations" config directive: If set to a non-zero value,
     locations of content objects will be lowercased during save. Per default, its value is set to zero.
+  - Introduced WebDAV object type privileges (object types can be granted on a per 
+    user/role basis)
+  - UTF-8 sanitize content sent to godav handler (more convenience for editor applications
+    not recognizing the correct encoding of documents)
   - SQLReport supports custom DSN connects now (e.g. fetch the data from a MySQL db)
   - Moved config for SQLReports to sqlreportconfig.xml
   - Added pagination size config for SQLReports and SimpleDB objects on a per object basis
