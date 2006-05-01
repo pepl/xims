@@ -61,7 +61,9 @@ sub process_file {
     if ( scalar @ngeneral ) {
         $general = $self->get_values( @ngeneral );
         $self->install_methods( $general );
-        $self->{general} = $general;
+        foreach my $key ( keys %{$general} ) {
+            $self->{general}->{$key} = $general->{$key};
+        }
     }
 
     no strict 'refs';
