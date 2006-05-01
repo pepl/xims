@@ -96,7 +96,8 @@
     <assert test="count(object_type)=1">Element 'user' must contain one 'object_type' element.</assert>
     <assert test="count(url)=1">Element 'user' must contain one 'url' element.</assert>
     <assert test="count(system_privs_mask)=1">Element 'user' must contain one 'system_privs_mask' element.</assert>
-    <assert test="count(lastname|middlename|firstname|enabled|name|admin|email|object_type|url|system_privs_mask)=count(*)">
+    <assert test="count(dav_otprivs_mask)=1">Element 'user' must contain one 'dav_otprivs_mask' element.</assert>
+    <assert test="count(lastname|middlename|firstname|enabled|name|admin|email|object_type|url|system_privs_mask|dav_otprivs_mask)=count(*)">
       Foreign element child in element 'user'.
     </assert>
   </rule>
