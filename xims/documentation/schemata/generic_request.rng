@@ -48,7 +48,8 @@
                 <data type="integer"/>
             </attribute>
             <attribute name="id">
-                <data type="integer"/>
+                <data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0"
+                    type="ID"/>
             </attribute>
             <interleave>
                 <optional>
@@ -326,7 +327,8 @@
     <define name="data_format">
         <element name="data_format">
             <attribute name="id">
-                <data type="integer"/>
+                <data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0"
+                    type="ID"/>
             </attribute>
             <element name="suffix">
                 <text/>
@@ -341,7 +343,8 @@
     <define name="object_type">
         <element name="object_type">
             <attribute name="id">
-                <data type="integer"/>
+                <data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0"
+                    type="ID"/>
             </attribute>
             <interleave>
                 <optional>
@@ -431,7 +434,8 @@
     <define name="user">
         <element name="user">
             <attribute name="id">
-                <data type="integer"/>
+                <data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0"
+                    type="ID"/>
             </attribute>
             <interleave>
                 <optional>
@@ -462,6 +466,9 @@
                 <element name="system_privs_mask">
                     <text/>
                 </element>
+                <element name="dav_otprivs_mask">
+                    <text/>
+                </element>
                 <element name="email">
                     <text/>
                 </element>
@@ -484,7 +491,7 @@
                      <text/>
                 </element>
                 <element name="id">
-                     <data type="integer"/>
+                    <data type="integer"/>
                 </element>
                 <element name="stdhome">
                      <ref name="uid"/>
@@ -504,7 +511,8 @@
     <define name="session">
         <element name="session">
             <attribute name="id">
-                <data type="integer"/>
+                <data datatypeLibrary="http://relaxng.org/ns/compatibility/datatypes/1.0"
+                    type="ID"/>
             </attribute>
             <interleave>
                 <element name="warning_msg">
