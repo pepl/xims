@@ -8,6 +8,7 @@
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<xsl:import href="common.xsl"/>
 <xsl:import href="common_jscalendar_scripts.xsl"/>
 
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
@@ -106,16 +107,74 @@
     </tr>
 </xsl:template>
 
-<xsl:template name="tr-publisher-create">
+<xsl:template name="tr-subtitle">
     <tr>
-        <td valign="top">Institution</td>
+        <td valign="top">Subtitle</td>
         <td colspan="2">
-            <input tabindex="20" type="text" name="publisher" size="60" class="text" maxlength="256"/>
+            <input tabindex="20" type="text" name="subtitle" size="60" class="text" maxlength="256" value="{meta/subtitle}"/>
             <xsl:text>&#160;</xsl:text>
 <!--            <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
         </td>
     </tr>
 </xsl:template>
+
+<xsl:template name="tr-mediatype">
+    <tr>
+        <td valign="top">Mediatype</td>
+        <td colspan="2">
+            <input tabindex="20" type="text" name="mediatype" size="60" class="text" maxlength="128" value="{meta/mediatype}"/>
+            <xsl:text>&#160;</xsl:text>
+<!--            <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-legalnotice">
+    <tr>
+        <td valign="top">Legalnotice</td>
+        <td colspan="2">
+            <input tabindex="20" type="text" name="legalnotice" size="60" class="text" maxlength="128" value="{meta/legalnotice}"/>
+            <xsl:text>&#160;</xsl:text>
+<!--            <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
+        </td>
+    </tr>
+</xsl:template>
+
+
+<xsl:template name="tr-coverage">
+    <tr>
+        <td valign="top">Coverage</td>
+        <td colspan="2">     
+            <input tabindex="20" type="text" name="coverage" size="60" class="text" maxlength="256" value="{meta/coverage}"/>
+            <xsl:text>&#160;</xsl:text>
+<!--            <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-audience">
+    <tr>
+        <td valign="top">Audience</td>
+        <td colspan="2">
+            <input tabindex="20" type="text" name="audience" size="60" class="text" maxlength="256" value="{meta/audience}"/>
+            <xsl:text>&#160;</xsl:text>
+<!--            <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-bibliosource">
+    <tr>
+        <td valign="top">Bibliosource</td>
+        <td colspan="2">
+            <textarea tabindex="20" name="bibliosource" cols="60" rows="5" length="2048" class="text"><xsl:value-of select="meta/bibliosource"/></textarea>
+            <xsl:text>&#160;</xsl:text>
+<!--            <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
+        </td>
+    </tr>
+</xsl:template>
+
+
 
 <xsl:template name="tr-date-create">
     <tr>
@@ -144,7 +203,7 @@
     </tr>
 </xsl:template>
 
-<xsl:template name="tr-publisher-edit">
+<xsl:template name="tr-publisher">
     <tr>
         <td valign="top">Institution</td>
         <td colspan="2">
