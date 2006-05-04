@@ -61,10 +61,16 @@
             <VLibMeta>
                 <item>vlibmeta.id</item>
                 <item>vlibmeta.document_id</item>
+                <item>vlibmeta.subtitle</item>
                 <item>vlibmeta.legalnotice</item>
                 <item>vlibmeta.bibliosource</item>
                 <item>vlibmeta.mediatype</item>
-                <item>vlibmeta.subtitle</item>
+                <item>vlibmeta.coverage</item>
+                <item>vlibmeta.publisher</item>
+                <item>vlibmeta.audience</item>
+                <item>vlibmeta.dc_date</item>
+                <item>vlibmeta.date_from_timestamp</item>
+                <item>vlibmeta.date_to_timestamp</item>
             </VLibMeta>
         </Properties>
     </Names>
