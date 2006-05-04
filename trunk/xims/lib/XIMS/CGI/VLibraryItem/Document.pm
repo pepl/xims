@@ -105,9 +105,10 @@ sub event_store {
     XIMS::Debug(6, "Jokar: Keywords - ".$self->param('keywords'));
     $object->vlekeywords( keywords_from_param( $self->param('keywords') ) );
     
-    # Store metadata (publisher, chronicle dates)
-
-    $meta->data( publisher => $self->param('publisher') );
+    # Store metadata (publisher, chronicle dates, etc)
+    map { $meta->data( $_=>$self->param($_) ) if defined $self->param($_) }
+          qw(publisher subtitle legalnotice bibliosource mediatype coverage audience);
+ 
     my $date_from = $self->param('chronicle_from_date');
     if ($date_from) {
         if ( isvaliddate( $date_from ) ) {
