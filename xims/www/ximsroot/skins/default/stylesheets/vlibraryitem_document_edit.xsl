@@ -9,6 +9,7 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/TR/xhtml1/strict">
 
+<xsl:import href="document_common.xsl"/>
 <xsl:import href="vlibraryitem_common.xsl"/>
 
 <xsl:template match="/document/context/object">
@@ -22,10 +23,26 @@
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit"/>
+                    <xsl:call-template name="tr-subtitle"/>
                     <xsl:call-template name="tr-vlsubjects-edit"/>
-                    <xsl:call-template name="tr-publisher-edit"/>
+                    <xsl:call-template name="tr-mediatype"/>
+                    <xsl:call-template name="tr-coverage"/>
+                    <xsl:call-template name="tr-audience"/>
+                    <xsl:call-template name="tr-publisher"/>
+                    <xsl:call-template name="tr-legalnotice"/>
+                    <xsl:call-template name="tr-bibliosource"/>
                     <xsl:call-template name="tr-chronicle_from"/>
                     <xsl:call-template name="tr-chronicle_to"/>
+                    <xsl:call-template name="tr-body-edit">
+                        <xsl:with-param name="with_origbody" select="'yes'"/>
+                    </xsl:call-template>
+                        <tr>
+                            <td colspan="3">
+                                <xsl:call-template name="testbodysxml"/>
+                                <xsl:call-template name="prettyprint"/>
+                            </td>
+                        </tr>
+                    <xsl:call-template name="trytobalance"/>
                     <xsl:call-template name="tr-vlkeywords-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
                     <xsl:call-template name="markednew"/>
@@ -37,17 +54,6 @@
             <xsl:call-template name="canceledit"/>
     </body>
 </html>
-</xsl:template>
-
-<xsl:template name="tr-publisher-edit">
-    <tr>
-        <td valign="top">Institution</td>
-        <td colspan="2">
-            <input tabindex="20" type="text" name="publisher" size="60" class="text" maxlength="256" value="{meta/publisher}" />
-            <xsl:text>&#160;</xsl:text>
-<!--            <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
-        </td>
-    </tr>
 </xsl:template>
 
 <xsl:template name="tr-date-edit">
