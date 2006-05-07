@@ -1449,11 +1449,15 @@ sub publish_gopublic {
     my $objprivs = $user->object_privmask( $object );
 
     if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
-        if ( not $object->publish() ) {
+        if ( not ( $object->publish() and $object->parent->publish() ) ) {
             XIMS::Debug( 2, "publishing object '" . $object->title() . "' failed" );
             return $self->sendError( $ctxt, "Publishing object '" . $object->title() . "' failed." );
         }
         else {
+            $object->grant_user_privileges( grantee         => XIMS::PUBLICUSERID(),
+                                            privilege_mask  => $options->{PRIVILEGE_MASK},
+                                            grantor         => $user->id() );
+
             if ( defined $self->param( "verbose_result" )
                  and $self->param( "verbose_result" ) == 1 ) {
                 $ctxt->session->message("Object '" .  $object->title() . "' published.");
@@ -1465,10 +1469,6 @@ sub publish_gopublic {
                 return 1;
             }
         }
-
-        $object->grant_user_privileges( grantee         => XIMS::PUBLICUSERID(),
-                                        privilege_mask  => $options->{PRIVILEGE_MASK},
-                                        grantor         => $user->id() );
     }
     else {
         return $self->event_access_denied( $ctxt );
@@ -1539,11 +1539,15 @@ sub unpublish_gopublic {
     my $objprivs = $user->object_privmask( $object );
 
     if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
-        if ( not $object->unpublish() ) {
+        # Republishing of the parent invalidates any caches
+        if ( not ( $object->unpublish() and $object->parent->publish() ) ) {
             XIMS::Debug( 2, "unpublishing object '" . $object->title() . "' failed" );
             return $self->sendError( $ctxt, "Unpublishing object '" . $object->title() . "' failed." );
         }
         else {
+            my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
+            $privs_object->delete();
+
             if ( defined $self->param( "verbose_result" )
                  and $self->param( "verbose_result" ) == 1 ) {
                 $ctxt->session->message("Object '" .  $object->title() . "' unpublished.");
@@ -1555,9 +1559,6 @@ sub unpublish_gopublic {
                 return 1;
             }
         }
-
-        my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
-        $privs_object->delete();
     }
     else {
         return $self->event_access_denied( $ctxt );
