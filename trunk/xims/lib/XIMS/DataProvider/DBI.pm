@@ -615,11 +615,11 @@ sub get_descendant_id_level {
 #    $param{parent_id}
 #
 # RETURNS
-#    \@rv : [ number of descendants, the newest modification timestamp found ]
+#    \@rv : [ number of descendants, the newest modification timestamp, latest publication timestamp found ]
 #
 # DESCRIPTION
 #    takes a document_id as argument; returns the count of its descendants and
-#    the newest last_modification_timestamp of all descendants and the object
+#    the newest last_modification_timestamp and last_publication_timestamp of all descendants and the object
 #    itself.
 #
 sub get_descendant_infos {
@@ -628,9 +628,9 @@ sub get_descendant_infos {
     my %args = @_;
     return undef unless exists $args{parent_id};
 
-    my $query = $self->_get_descendant_sql( $args{parent_id}, undef, undef, 1, 'count(last_modification_timestamp) AS count, max(last_modification_timestamp) AS max' );
+    my $query = $self->_get_descendant_sql( $args{parent_id}, undef, undef, 1, 'count(last_modification_timestamp) AS count, max(last_modification_timestamp) AS max, max(last_publication_timestamp) AS pubmax' );
     my $data = $self->{dbh}->fetch_select( sql => $query );
-    my @rv = ( @{$data}[0]->{count}, @{$data}[0]->{max} ); # NOTE: assumes that there is one content_child per document;
+    my @rv = ( @{$data}[0]->{count}, @{$data}[0]->{max}, @{$data}[0]->{pubmax} ); # NOTE: assumes that there is one content_child per document;
                                                            #       may have to be changed in future!
     return \@rv ;
 }
