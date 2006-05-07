@@ -77,6 +77,7 @@ sub event_default {
     if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
         $propargs{gopublic} = 1;
         $childrenargs{gopublic} = 1;
+        $childrenargs{published} = 1;
     }
     my @properties = $ctxt->object->mapped_member_properties( %propargs, part_of_title => 1, limit => 1, offset => 0 );
     if ( scalar @properties and $properties[0]->type() eq 'datetime' ) {
