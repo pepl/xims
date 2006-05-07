@@ -38,9 +38,9 @@ sub event_publish {
     XIMS::Debug( 4, "starting descendant-recursion public user grant" );
     my $granted = 0;
     foreach my $descendant ( @descendants ) {
-        my $boolean = $descendant->grant_user_privileges( grantee         => XIMS::PUBLICUSERID(),
+        my $boolean = ( $descendant->grant_user_privileges( grantee         => XIMS::PUBLICUSERID(),
                                                           privilege_mask  => $privmask,
-                                                          grantor         => $ctxt->session->user->id() );
+                                                          grantor         => $ctxt->session->user->id() ) and $descendant->publish( User => $ctxt->session->user ) );
         unless ( $boolean ) {
             XIMS::Debug( 3, "could not grant to descendant with doc_id " . $descendant->document_id() );
         }
@@ -66,8 +66,8 @@ sub event_unpublish {
     XIMS::Debug( 4, "starting descendant-recursion public user revoke" );
     foreach my $descendant ( @descendants ) {
         my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $descendant->id() );
-        unless ( $privs_object and $privs_object->delete() ) {
-            XIMS::Debug( 3, "could not revoke from descendant with doc_id " . $descendant->document_id() );
+        unless ( $privs_object and $privs_object->delete() and $descendant->unpublish( User => $ctxt->session->user ) ) {
+            XIMS::Debug( 3, "could not revoke/unpublish from descendant with doc_id " . $descendant->document_id() );
         }
     }
 }

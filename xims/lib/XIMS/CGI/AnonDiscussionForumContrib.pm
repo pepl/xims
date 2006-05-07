@@ -137,7 +137,7 @@ sub event_store {
         }
         else {
             $object->location( $object->document_id() . '.' . $object->data_format->suffix());
-            $object->update( no_modder => 1 );
+            $object->publish();
         }
 
         XIMS::Debug( 4, "copying privileges of parent" );
