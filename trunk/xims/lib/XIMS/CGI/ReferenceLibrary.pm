@@ -116,6 +116,9 @@ sub event_default {
     if ( defined $serial_id and $serial_id =~ /^\d+$/ ) {
         $childrenargs{serial_id} = $serial_id;
     }
+    if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
+        $childrenargs{published} = 1;
+    }
 
     my ( $child_count, $children ) = $ctxt->object->items_granted( limit => $limit, offset => $offset, order => $order, %childrenargs );
 

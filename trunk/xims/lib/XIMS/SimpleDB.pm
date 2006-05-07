@@ -278,6 +278,7 @@ sub close_property_position_gap {
 #
 #    $args{ criteria }     (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::SimpleDB)
 #                                        for in the mandatory member properties
+#    $args{ published }    (optional) :  Filter published items
 #    $args{ gopublic }     (optional) :  Filter properties where gopublic is set
 #
 # RETURNS
@@ -297,6 +298,7 @@ sub items_granted {
 
     my $criteria = delete $args{criteria};
     my $gopublic = delete $args{gopublic};
+    my $published = delete $args{published};
 
     my $child_count;
     my @children;
@@ -305,6 +307,7 @@ sub items_granted {
     my $properties = 'distinct c.id, m.id AS member_id, d.document_status, d.position, d.parent_id, object_type_id, creation_timestamp, symname_to_doc_id, last_modified_by_middlename, last_modified_by_firstname, language_id, last_publication_timestamp, last_published_by_lastname, css_id, created_by_firstname, data_format_id, keywords, last_modification_timestamp, last_modified_by_id, c.title, c.document_id, location, created_by_lastname, attributes, last_modified_by_lastname, image_id, created_by_id, owned_by_firstname, marked_deleted, last_published_by_id, notes, style_id, owned_by_lastname, owned_by_middlename, abstract, published, locked_by_lastname, locked_by_id, last_published_by_firstname, script_id, owned_by_id, created_by_middlename, data_format_name, locked_by_middlename, last_published_by_middlename, marked_new, locked_time, department_id, locked_by_firstname ';
     my $tables = 'ci_content c, ci_documents d, cisimpledb_members m';
     my $conditions = 'c.document_id = d.id AND m.document_id = d.id AND d.parent_id = ?';
+    $conditions .= ' AND c.published = 1' if $published;
     my @values = ( $self->document_id() );
     if ( not $self->User->admin() ) {
         my @userids = ( $userid, $self->User->role_ids());
