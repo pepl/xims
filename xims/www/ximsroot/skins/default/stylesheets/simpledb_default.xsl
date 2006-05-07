@@ -103,12 +103,12 @@
 
 <xsl:template match="children/object" mode="divlist">
     <xsl:variable name="abstract" select="normalize-space(abstract)"/>
-    <div class="simpledb_childrenlistitem" name="simpledbchildrenlistitem">
+    <div class="simpledb_childrenlistitem" name="simpledbchildrenlistitem" id="simpledbchildrenlistitem{position()}">
         <div class="simpledb_membertitle">
             <xsl:call-template name="simpledbmembertitle"/>&#xa0;<span style="font-size: 0.8em">(id: <xsl:value-of select="@document_id"/>)</span>
         </div>
         <xsl:call-template name="last_modified"/>
-        <span id="simpledbitem_status_options">
+        <span class="simpledbitem_status_options">
             <xsl:call-template name="status"/>
             <xsl:if test="$m='e'">
                 <span class="simpledbitem_options">

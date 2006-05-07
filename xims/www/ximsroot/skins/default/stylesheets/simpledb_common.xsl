@@ -17,7 +17,7 @@
 <xsl:param name="error_msg"/>
 <xsl:variable name="i18n_simpledb" select="document(concat($currentuilanguage,'/i18n_simpledb.xml'))"/>
 
-<xsl:output method="html"
+<xsl:output method="xml"
             encoding="utf-8"
             media-type="text/html"
             doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
