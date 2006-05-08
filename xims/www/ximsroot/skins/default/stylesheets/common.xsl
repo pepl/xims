@@ -14,6 +14,8 @@
 <xsl:import href="common_header.xsl"/>
 <xsl:import href="common_metadata.xsl"/>
 <xsl:import href="common_localized.xsl"/>
+<xsl:import href="common_jscalendar_scripts.xsl"/>
+<xsl:import href="common_htmlarea_scripts.xsl"/>
 
 <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
@@ -195,6 +197,33 @@
 -->
 </xsl:template>
 
+<xsl:template name="common-head">
+<!-- param mode to set the HTML title -->
+    <xsl:param name="mode">create</xsl:param>
+<!-- with the following parameters different options can be integratetd into the HTML HEAD 
+    currently available:
+        calendar: Integration of jscalendar (not included in xims, install seperately)
+        htmlarea: Integration of the WYSIWYG Editor Htmlarea included in xims-contrib
+-->
+    <xsl:param name="calendar" select="false()" />
+    <xsl:param name="htmlarea" select="false()" />
+    <head>
+        <title>
+        <xsl:if test="$mode='create'"><xsl:value-of select="$i18n/l/create"/></xsl:if>
+        <xsl:if test="$mode='edit'"><xsl:value-of select="$i18n/l/edit"/></xsl:if>        
+        &#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:if test="$calendar">
+            <xsl:call-template name="jscalendar_scripts" />
+        </xsl:if>
+        <xsl:if test="$htmlarea">
+            <xsl:call-template name="htmlarea_scripts"/>
+        </xsl:if>
+    </head>
+</xsl:template>
+
 <xsl:template name="head-create">
     <head>
         <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
@@ -212,6 +241,7 @@
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     </head>
 </xsl:template>
+
 
 <xsl:template name="table-create">
     <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0">
