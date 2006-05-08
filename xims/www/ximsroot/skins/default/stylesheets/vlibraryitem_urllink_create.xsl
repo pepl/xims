@@ -13,7 +13,10 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-create"/>
+    <xsl:call-template name="common-head">
+        <xsl:with-param name="mode">create</xsl:with-param>
+        <xsl:with-param name="calendar" select="true()" />
+    </xsl:call-template>
     <body onLoad="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.name.focus();">
         <div class="edit">
             <xsl:call-template name="table-create"/>
@@ -21,12 +24,18 @@
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
-                    <xsl:call-template name="tr-subject-create"/>
-                    <xsl:call-template name="tr-publisher-create"/>
+                    <xsl:call-template name="tr-subtitle"/>
+                    <xsl:call-template name="tr-vlsubjects-create"/>
+                    <xsl:call-template name="tr-publisher"/>
                     <xsl:call-template name="tr-chronicle_from"/>
                     <xsl:call-template name="tr-chronicle_to"/>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-abstract-create"/>
+                    <xsl:call-template name="tr-mediatype"/>
+                    <xsl:call-template name="tr-coverage"/>
+                    <xsl:call-template name="tr-audience"/>
+                    <xsl:call-template name="tr-legalnotice"/>
+                    <xsl:call-template name="tr-bibliosource"/>               
                     <xsl:call-template name="markednew"/>
                 </table>
                 <xsl:call-template name="saveaction"/>

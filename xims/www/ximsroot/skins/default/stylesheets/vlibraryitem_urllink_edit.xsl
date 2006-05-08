@@ -13,7 +13,10 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-edit"/>
+    <xsl:call-template name="common-head">
+        <xsl:with-param name="mode">edit</xsl:with-param>
+        <xsl:with-param name="calendar" select="true()" />
+    </xsl:call-template>
     <body>
         <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <div class="edit">
@@ -23,11 +26,16 @@
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-vlsubjects-edit"/>
-                    <xsl:call-template name="tr-publisher-edit"/>
+                    <xsl:call-template name="tr-publisher"/>
                     <xsl:call-template name="tr-chronicle_from"/>
                     <xsl:call-template name="tr-chronicle_to"/>
                     <xsl:call-template name="tr-vlkeywords-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
+                    <xsl:call-template name="tr-mediatype"/>
+                    <xsl:call-template name="tr-coverage"/>
+                    <xsl:call-template name="tr-audience"/>
+                    <xsl:call-template name="tr-legalnotice"/>
+                    <xsl:call-template name="tr-bibliosource"/>               
                     <xsl:call-template name="markednew"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
