@@ -127,6 +127,26 @@ sub event_create_mapping {
     return 0;
 }
 
+sub _isvaliddate {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $input = shift;
+    if ($input =~ m!^(\d\d\d\d)[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$!) {
+    # At this point, $1 holds the year, $2 the month and $3 the day of the date entered
+    if ($3 == 31 and ($2 == 4 or $2 == 6 or $2 == 9 or $2 == 11)) {
+        return 0; # 31st of a month with 30 days
+    } elsif ($3 >= 30 and $2 == 2) {
+        return 0; # February 30th or 31st
+    } elsif (($2 == 2) and ($3 == 29) and not ((($1 % 4) == 0) and ( (($1 % 100) != 0 ) or ( ($1 % 400) == 0 )))) {
+        return 0; # February 29th outside a leap year
+    } else {
+        return 1; # Valid date
+    } 
+    } else {
+        return 0; # Not a date
+    }
+}
+
 sub _create_mapping_from_name {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -139,8 +159,12 @@ sub _create_mapping_from_name {
         my $propclass = "XIMS::VLib" . $propertyname;
         my $propobject = $propclass->new( name => $value );
         if ( not (defined $propobject and $propobject->id() ) ) {
-            XIMS::Debug( 3, "could not resolve '$value', skipping" );
-            next;
+            $propobject = $propclass->new();
+            $propobject->name( $value );
+            if ( not $propobject->create() ) {
+                XIMS::Debug( 3, "could not create $propclass $value" );
+                next;
+            }
         }
         my $propmapclass = $propclass . "Map";
         my $propid = lc $propertyname . "_id";
