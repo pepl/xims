@@ -8,9 +8,6 @@
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:import href="common.xsl"/>
-<xsl:import href="common_jscalendar_scripts.xsl"/>
-
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 
 <xsl:template name="tr-vlkeywords-edit">
@@ -61,6 +58,36 @@
             <xsl:apply-templates select="/document/context/vlsubjects"/>
             <xsl:text>&#160;</xsl:text>
             <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-vlkeywords-create">
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n/l/Keywords"/></td>
+        <td colspan="2">
+            <input tabindex="40" type="text" name="vlkeyword" size="50" value="" class="text" title="VLKeyword"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>
+            <xsl:text>&#160;</xsl:text>
+            <input type="button" value="&lt;--" onClick="return addVLProperty( 'keyword' );"/>
+            <xsl:text>&#160;</xsl:text>
+            <xsl:apply-templates select="/document/context/vlkeywords"/>
+        </td>
+    </tr>
+</xsl:template>
+
+<xsl:template name="tr-vlsubjects-create">
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/subjects"/></td>
+        <td colspan="2">
+            <input tabindex="40" type="text" name="vlsubject" size="50" value="" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('VLSubject')" class="doclink">(?)</a>
+            <xsl:text>&#160;</xsl:text>
+            <input type="button" value="&lt;--" onClick="return addVLProperty( 'subject' );"/>
+            <xsl:text>&#160;</xsl:text>
+            <xsl:apply-templates select="/document/context/vlsubjects"/>
         </td>
     </tr>
 </xsl:template>
