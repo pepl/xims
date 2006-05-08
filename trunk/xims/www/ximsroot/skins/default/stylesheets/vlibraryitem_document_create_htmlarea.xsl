@@ -8,15 +8,17 @@
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="common_htmlarea_scripts.xsl"/>
+        
 <xsl:import href="vlibraryitem_common.xsl"/>
 
 <xsl:template match="/document/context/object">
 <html>
     <head>
-    <xsl:call-template name="head-create_htmlarea"/>
-    <xsl:call-template name="jscalendar_scripts"/>
+    <xsl:call-template name="common-head">
+        <xsl:with-param name="mode">create</xsl:with-param>
+        <xsl:with-param name="calendar" select="true()" />
+        <xsl:with-param name="htmlarea" select="true()" />
+    </xsl:call-template>
     </head>
     <body onLoad=" document.eform['abstract'].value=''; initEditor(); document.eform.name.focus()">
         <div class="edit">
@@ -25,14 +27,28 @@
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
-                    <xsl:call-template name="tr-subject-create"/>
+                    <xsl:call-template name="tr-subtitle"/>
+                    <xsl:call-template name="tr-vlsubjects-create"/>
+                    <xsl:call-template name="tr-publisher"/>
                     <xsl:call-template name="tr-chronicle_from"/>
                     <xsl:call-template name="tr-chronicle_to"/>
                     <xsl:call-template name="tr-abstract-create"/>
-                    <xsl:call-template name="tr-publisher-create"/>
-                    <xsl:call-template name="tr-keywords-create"/>
+                    <xsl:call-template name="tr-vlkeywords-create"/>
                     <xsl:call-template name="tr-body-create_htmlarea"/>
+                    <tr>
+                        <td colspan="3">
+                            <xsl:call-template name="testbodysxml"/>
+                            <xsl:call-template name="prettyprint"/>
+                        </td>
+                    </tr>
+                    <xsl:call-template name="trytobalance"/>
                     <xsl:call-template name="markednew"/>
+                    <xsl:call-template name="expandrefs"/>
+                    <xsl:call-template name="tr-mediatype"/>
+                    <xsl:call-template name="tr-coverage"/>
+                    <xsl:call-template name="tr-audience"/>
+                    <xsl:call-template name="tr-legalnotice"/>
+                    <xsl:call-template name="tr-bibliosource"/>               
                     <xsl:call-template name="grantowneronly"/>
                 </table>
                 <xsl:call-template name="saveaction"/>
@@ -42,14 +58,6 @@
         <xsl:call-template name="cancelaction"/>
     </body>
 </html>
-</xsl:template>
-
-<xsl:template name="head-create_htmlarea">
-    <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS</title>
-    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <xsl:call-template name="htmlarea_scripts"/>
 </xsl:template>
 
 <xsl:template name="tr-body-create_htmlarea">
