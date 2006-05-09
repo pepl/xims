@@ -44,7 +44,7 @@ sub get_dom {
     my $request = HTTP::Request->new( $r->method, $proxied_uri->unparse() );
     my (%headers_in) = $r->headers_in();
     while ( my ($key,$val) = each %headers_in ) {
-    	$request->header($key,$val);
+        $request->header($key,$val);
     }
 
     # Append to X-Forwarded and Via headers for in case
@@ -80,7 +80,7 @@ sub get_dom {
     }
 
     # Remove the Doctype declaration because XML::LibXML WILL validate despite validate set to 0
-    $string =~ s#<!DOCTYPE.+?>\r?\n##;
+    $string =~ s#<!DOCTYPE.+?>##;
 
     # Replace absolute links
     my $requesturi = Apache::URI->parse( $r );
@@ -158,9 +158,13 @@ sub process {
         $AxKit::Cache = Apache::AxKit::Cache->new($r, 'post', '', '', '');
     }
 
+    my $location = $r->location();
+    my $path_info = $r->path_info();
+    my ($pseudo_path_info) = ( $location =~ m#^/[^/]+(/.+)$# );
+    $path_info = substr($path_info,length($pseudo_path_info),length($path_info)) if defined $pseudo_path_info;
+    $r->path_info($path_info); # set the real one
 
     # Only look up containers or html, xml files -> no binaries
-    my $path_info = $r->path_info();
     unless ( $path_info !~ m#\.# or $path_info =~ m#(\.html|\.xml)$# ) {
         return 0;
     }        
@@ -278,14 +282,14 @@ has to be set to XML since the proxy expects well-formed XML!
     SetHandler axkit
     AxContentProvider Apache::AxKit::Provider::XIMSGoPublic
     AxIgnoreStylePI On
-	AxAddPlugin Apache::AxKit::Plugin::QueryStringCache
+    AxAddPlugin Apache::AxKit::Plugin::QueryStringCache
     AxGzipOutput On
     AxResetProcessors
     AxResetPlugins
     AxResetStyleMap
     AxResetOutputTransformers
     AxAddStyleMap text/xsl Apache::AxKit::Language::Passthru
-	PerlSetVar ProxyObject http://xims.acme.com/gopublic/content/acme.com/people/staff
+    PerlSetVar ProxyObject http://xims.acme.com/gopublic/content/acme.com/people/staff
 </Location>
 
 
