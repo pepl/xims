@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns="http://www.w3.org/TR/xhtml1/strict">
+        xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="vlibraryitem_common.xsl"/>
 
@@ -17,7 +17,7 @@
         <xsl:with-param name="mode">create</xsl:with-param>
         <xsl:with-param name="calendar" select="true()" />
     </xsl:call-template>
-    <body onLoad="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.name.focus();">
+    <body onLoad="document.eform['abstract'].value=''; document.eform.name.focus();">
         <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" enctype="multipart/form-data">

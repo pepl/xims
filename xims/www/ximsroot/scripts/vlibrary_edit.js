@@ -21,3 +21,13 @@ function addVLProperty( property ) {
     return true;
 }
 
+function submitOnValue ( field, text, selectfield ) {
+    if ( field.length > 0 ) {
+        return document.eform.submit();
+    }
+    else {
+        alert ( text );
+        selectfield.focus();
+        return false;
+    }
+}

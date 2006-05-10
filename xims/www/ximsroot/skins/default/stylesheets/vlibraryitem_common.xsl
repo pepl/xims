@@ -6,7 +6,11 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
+        xmlns="http://www.w3.org/1999/xhtml"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:import href="common.xsl"/>
+<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 
@@ -31,7 +35,7 @@
             <xsl:text>&#160;</xsl:text>
             <xsl:apply-templates select="/document/context/vlkeywords"/>
             <xsl:text>&#160;</xsl:text>
-            <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onClick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for', document.eform.svlkeyword);"/>
+            <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onClick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for \'{$i18n/l/Keywords}\'', document.eform.svlkeyword);"/>
         </td>
     </tr>
 </xsl:template>
@@ -57,7 +61,7 @@
             <xsl:text>&#160;</xsl:text>
             <xsl:apply-templates select="/document/context/vlsubjects"/>
             <xsl:text>&#160;</xsl:text>
-            <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
+            <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onClick="return submitOnValue(document.eform.vlsubject, 'Please fill in a value for \'{$i18n_vlib/l/subjects}\'', document.eform.svlsubject);"/>
         </td>
     </tr>
 </xsl:template>
