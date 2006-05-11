@@ -140,7 +140,7 @@
     <xsl:value-of select="./minute"/>
 </xsl:template>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|valid_from_timestamp|valid_to_timestamp" mode="ISO8601">
+<xsl:template match="date_from_timestamp|date_to_timestamp|dc_date|last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|valid_from_timestamp|valid_to_timestamp" mode="ISO8601">
     <xsl:value-of select="./year"/>
     <xsl:text>-</xsl:text>
     <xsl:value-of select="./month"/>
