@@ -39,6 +39,7 @@
 <xsl:variable name="spagerefpropid" select="/document/reference_properties/reference_property[name='spage']/@id"/>
 <xsl:variable name="epagerefpropid" select="/document/reference_properties/reference_property[name='epage']/@id"/>
 <xsl:variable name="identifierrefpropid" select="/document/reference_properties/reference_property[name='identifier']/@id"/>
+<xsl:variable name="pprintidentifierrefpropid" select="/document/reference_properties/reference_property[name='preprint_identifier']/@id"/>
 <xsl:variable name="urlrefpropid" select="/document/reference_properties/reference_property[name='url']/@id"/>
 <xsl:variable name="url2refpropid" select="/document/reference_properties/reference_property[name='url2']/@id"/>
 <xsl:variable name="artnumrefpropid" select="/document/reference_properties/reference_property[name='artnum']/@id"/>
@@ -146,6 +147,7 @@
     <xsl:variable name="spage" select="reference_values/reference_value[property_id=$spagerefpropid]/value"/>
     <xsl:variable name="epage" select="reference_values/reference_value[property_id=$epagerefpropid]/value"/>
     <xsl:variable name="identifier" select="reference_values/reference_value[property_id=$identifierrefpropid]/value"/>
+    <xsl:variable name="preprint_identifier" select="reference_values/reference_value[property_id=$pprintidentifierrefpropid]/value"/>
     <xsl:variable name="url" select="reference_values/reference_value[property_id=$urlrefpropid]/value"/>
     <xsl:variable name="url2" select="reference_values/reference_value[property_id=$url2refpropid]/value"/>
     <xsl:variable name="artnum" select="reference_values/reference_value[property_id=$artnumrefpropid]/value"/>
@@ -224,6 +226,7 @@
                 </xsl:when>
             </xsl:choose>
             <xsl:if test="$artnum != ''">, <span class="reflib_artnum"><xsl:value-of select="$artnum"/></span></xsl:if>
+            <xsl:if test="notes != ''">, <span class="reflib_notes"><xsl:value-of select="notes"/></span></xsl:if>
             <xsl:call-template name="date">
                 <xsl:with-param name="date" select="$date"/>
             </xsl:call-template>
@@ -231,6 +234,7 @@
                 <xsl:with-param name="url" select="$url"/>
                 <xsl:with-param name="url2" select="$url2"/>
                 <xsl:with-param name="identifier" select="$identifier"/>
+                <xsl:with-param name="preprint_identifier" select="$preprint_identifier"/>
             </xsl:call-template>
             <xsl:call-template name="abstract">
                 <xsl:with-param name="referencenumber" select="$referencenumber"/>
@@ -248,22 +252,37 @@
     <xsl:param name="url"/>
     <xsl:param name="url2"/>
     <xsl:param name="identifier"/>
+    <xsl:param name="preprint_identifier"/>
     <xsl:if test="$url != ''">&#xa0;<span class="reflib_url"><a href="{$url}">URL</a></span></xsl:if>
     <xsl:if test="$url2 != ''">&#xa0;<span class="reflib_url"><a href="{$url2}">Alternative URL (local copy)</a></span></xsl:if>
-    <xsl:if test="$identifier != ''"><span class="reflib_identifier">;
-        <xsl:choose>
-            <xsl:when test="starts-with($identifier, 'oai:arXiv.org:')">
-                <a href="http://arXiv.org/abs/{substring-after($identifier,'oai:arXiv.org:')}"><xsl:value-of select="$identifier"/></a>
-            </xsl:when>
-            <xsl:when test="starts-with($identifier, 'doi:')">
-                <a href="http://www.crossref.org/openurl?url_ver=Z39.88-2004&amp;rft_id=info:doi/{substring-after($identifier,'doi:')}"><xsl:value-of select="$identifier"/></a>
-            </xsl:when>
+    <xsl:if test="$preprint_identifier != ''"><span class="reflib_preprint_identifier">&#xa0;<xsl:call-template name="identifier_link"><xsl:with-param name="identifier" select="$preprint_identifier"></xsl:with-param><xsl:with-param name="linktext">Preprint Identifier</xsl:with-param></xsl:call-template></span></xsl:if>
+    <xsl:if test="$identifier != ''"><span class="reflib_identifier">; <xsl:call-template name="identifier_link"><xsl:with-param name="identifier" select="$identifier"></xsl:with-param></xsl:call-template></span></xsl:if>
+</xsl:template>
 
-            <xsl:otherwise>
-                <xsl:value-of select="$identifier"/>
-            </xsl:otherwise>
-        </xsl:choose></span>
-    </xsl:if>
+<xsl:template name="identifier_link">
+    <xsl:param name="identifier"/>
+    <xsl:param name="linktext"/>
+    <xsl:choose>
+        <xsl:when test="starts-with($identifier, 'oai:arXiv.org:')">
+            <a href="http://arXiv.org/abs/{substring-after($identifier,'oai:arXiv.org:')}">
+                <xsl:choose>
+                    <xsl:when test="$linktext != ''"><xsl:value-of select="$linktext"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$identifier"/></xsl:otherwise>
+                </xsl:choose>
+            </a>
+        </xsl:when>
+        <xsl:when test="starts-with($identifier, 'doi:')">
+            <a href="http://www.crossref.org/openurl?url_ver=Z39.88-2004&amp;rft_id=info:doi/{substring-after($identifier,'doi:')}">
+                <xsl:choose>
+                    <xsl:when test="$linktext != ''"><xsl:value-of select="$linktext"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="$identifier"/></xsl:otherwise>
+                </xsl:choose>
+            </a>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="$identifier"/>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 <xsl:template name="abstract">
