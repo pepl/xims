@@ -226,7 +226,7 @@
                 </xsl:when>
             </xsl:choose>
             <xsl:if test="$artnum != ''">, <span class="reflib_artnum"><xsl:value-of select="$artnum"/></span></xsl:if>
-            <xsl:if test="notes != ''">, <span class="reflib_notes"><xsl:value-of select="notes"/></span></xsl:if>
+            <xsl:if test="normalize-space(notes) != ''">, <span class="reflib_notes"><xsl:value-of select="notes"/></span></xsl:if>
             <xsl:call-template name="date">
                 <xsl:with-param name="date" select="$date"/>
             </xsl:call-template>
@@ -287,7 +287,7 @@
 
 <xsl:template name="abstract">
     <xsl:param name="referencenumber"/>
-    <xsl:if test="abstract != ''">
+    <xsl:if test="normalize-space(abstract) != ''">
         &#xa0;<a href="#" onClick="blocking('abstract{$referencenumber}'); return false;">Toggle Abstract</a>
         <div id="abstract{$referencenumber}" class="reflib_abstract" style="display: none"><xsl:apply-templates select="abstract"/></div>
     </xsl:if>
