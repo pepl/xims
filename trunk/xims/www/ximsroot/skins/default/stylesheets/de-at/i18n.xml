@@ -225,6 +225,8 @@
 <Schema>Schema</Schema>
 <CSS>CSS</CSS>
 <Browse_css>Nach CSS durchsuchen</Browse_css>
+<JavaScript>JavaScript</JavaScript>
+<Browse_script>Nach JavaScript durchsuchen</Browse_script>
 <!-- Begin AxPoint -->
 <Download_PDF>Als PDF herunterladen</Download_PDF>
 <print_version>Druckversion</print_version>

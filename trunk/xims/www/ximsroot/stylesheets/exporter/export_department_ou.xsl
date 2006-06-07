@@ -45,6 +45,7 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </department_path>
+            <abstract><xsl:value-of select="context/object/abstract"/></abstract>
             <xsl:apply-templates select="/document/objectlist/object"/>
         </ou>
     </xsl:template>

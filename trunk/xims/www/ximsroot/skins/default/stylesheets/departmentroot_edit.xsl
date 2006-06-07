@@ -22,7 +22,9 @@
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-stylesheet-edit"/>
                     <xsl:call-template name="tr-css-edit"/>
+                    <xsl:call-template name="tr-script-edit"/>
                     <xsl:call-template name="tr-imagedepartmentroot-edit"/>
+                    <xsl:call-template name="tr-abstract-edit"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>
                     <xsl:call-template name="defaultsorting"/>

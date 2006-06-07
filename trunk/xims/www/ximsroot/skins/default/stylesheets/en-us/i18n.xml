@@ -218,6 +218,8 @@
 <Schema>Schema</Schema>
 <CSS>CSS</CSS>
 <Browse_css>Browse for CSS</Browse_css>
+<JavaScript>JavaScript</JavaScript>
+<Browse_script>Browse for JavaScript</Browse_script>
 <!-- Begin AxPoint -->
 <Download_PDF>Download as PDF</Download_PDF>
 <print_version>print version</print_version>
