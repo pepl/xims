@@ -33,7 +33,7 @@ sub event_edit {
     my ( $self, $ctxt) = @_;
 
     $self->expand_bodydeptinfo( $ctxt );
-    $self->resolve_content( $ctxt, [ qw( STYLE_ID IMAGE_ID CSS_ID ) ] );
+    $self->resolve_content( $ctxt, [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID) ] );
 
     return $self->SUPER::event_edit( $ctxt );
 }

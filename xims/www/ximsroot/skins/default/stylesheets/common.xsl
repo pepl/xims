@@ -590,6 +590,34 @@
 </tr>
 </xsl:template>
 
+<xsl:template name="tr-script-create">
+<xsl:variable name="parentid" select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
+<tr>
+    <td valign="top"><xsl:value-of select="$i18n/l/JavaScript"/></td>
+    <td colspan="2">
+        <input tabindex="30" type="text" name="script" size="40" value="" class="text"/>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('JavaScript')" class="doclink">(?)</a>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=JavaScript;sbfield=eform.script')" class="doclink"><xsl:value-of select="$i18n/l/Browse_script"/></a>
+    </td>
+</tr>
+</xsl:template>
+
+<xsl:template name="tr-script-edit">
+<tr>
+    <td valign="top"><xsl:value-of select="$i18n/l/JavaScript"/></td>
+    <td colspan="2">
+        <input tabindex="30" type="text" name="script" size="40" value="{script_id}" class="text"/>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('JavaScript')" class="doclink">(?)</a>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=JavaScript;sbfield=eform.script')" class="doclink"><xsl:value-of select="$i18n/l/Browse_script"/></a>
+    </td>
+</tr>
+</xsl:template>
+
+
 <xsl:template name="jscalendar-selector">
     <xsl:param name="timestamp_string"/>
     <xsl:param name="formfield_id"/>

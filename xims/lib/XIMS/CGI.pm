@@ -352,6 +352,7 @@ sub selectStylesheet {
             $pubstylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/';
             $filepath = $pubstylepath . $stylefilename;
             $filepathuilang = $pubstylepath . $ctxt->session->uilanguage() . '/' . $stylefilename;
+            warn "$filepath : $filepathuilang";
             if ( -f $filepathuilang and -r $filepathuilang ) {
                 $stylepath = $pubstylepath;
                 $gotpubuilangstylesheet = 1;
@@ -855,6 +856,30 @@ sub init_store_object {
             $object->css_id( undef );
         }
     }
+
+    my $script = $self->param( 'script' );
+    if ( defined $script ) {
+        XIMS::Debug( 6, "script: $script" );
+        if ( length $script ) {
+            my $scriptobj;
+            if ( $script =~ /^\d+$/
+                 and $scriptobj = XIMS::Object->new( id => $script )
+                 and ( $scriptobj->object_type->name() eq 'JavaScript' ) ) {
+                $object->script_id( $scriptobj->id() );
+            }
+            elsif ( $scriptobj = XIMS::Object->new( path => $script )
+                    and ( $scriptobj->object_type->name() eq 'JavaScript' ) ) {
+                $object->script_id( $scriptobj->id() );
+            }
+            else {
+                XIMS::Debug( 3, "Could not set script_id" );
+            }
+        }
+        else {
+            $object->script_id( undef );
+        }
+    }
+
 
     my $valid_from = $self->param( 'valid_from_timestamp' );
     if ( defined $valid_from ) {
