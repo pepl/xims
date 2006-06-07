@@ -352,7 +352,6 @@ sub selectStylesheet {
             $pubstylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/';
             $filepath = $pubstylepath . $stylefilename;
             $filepathuilang = $pubstylepath . $ctxt->session->uilanguage() . '/' . $stylefilename;
-            warn "$filepath : $filepathuilang";
             if ( -f $filepathuilang and -r $filepathuilang ) {
                 $stylepath = $pubstylepath;
                 $gotpubuilangstylesheet = 1;
