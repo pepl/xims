@@ -67,7 +67,7 @@ sub get_dom {
     }
 
     my $ua = LWP::UserAgent->new();
-    $ua->timeout(10);
+    $ua->timeout( $r->dir_config('ProxyObjectTimeout') || 10 );
     push @{ $ua->requests_redirectable }, 'POST'; # anonforums do that - naughty
    
     my $response = $ua->request( $request );
@@ -85,6 +85,7 @@ sub get_dom {
     # Replace absolute links
     my $requesturi = Apache::URI->parse( $r );
     $requesturi->query( undef );
+    $requesturi->hostname( $r->header_in('X-Forwarded-Host') ) if length $r->header_in('X-Forwarded-Host');
     my $replacement = $requesturi->unparse();
     $replacement =~ s#/$##;
 
@@ -290,6 +291,8 @@ has to be set to XML since the proxy expects well-formed XML!
     AxResetOutputTransformers
     AxAddStyleMap text/xsl Apache::AxKit::Language::Passthru
     PerlSetVar ProxyObject http://xims.acme.com/gopublic/content/acme.com/people/staff
+    # Optional timeout on fetching the ProxyObject. Defaults to 10 seconds.
+    PerlSetVar ProxyObjectTimeout 20
 </Location>
 
 
