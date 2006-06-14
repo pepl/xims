@@ -73,7 +73,7 @@
                     <dc_date><xsl:apply-templates select="meta/dc_date" mode="ISO8601"/></dc_date>    
                     <xsl:copy-of select="meta/coverage|meta/audience|meta/legalnotice|meta/bibliosource|meta/subtitle|meta/mediatype|meta/id|meta/publisher"/>
                 </meta>
-                <xsl:copy-of select="vlsubjectset"/>
+                <xsl:copy-of select="subjectset"/>
                 <xsl:copy-of select="keywordset"/>
                 <xsl:copy-of select="authorgroup"/>
             </vlibrary>
