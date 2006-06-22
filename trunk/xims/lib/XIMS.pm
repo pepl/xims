@@ -10,7 +10,7 @@ use Text::Iconv;
 use Encode ();
 
 our $AUTOLOAD;
-our $VERSION = 1.1;
+our $VERSION = 1.2;
 our $_CONFIG_ = XIMS::Config->new();
 our $_DATAPROVIDER_;
 
@@ -276,7 +276,9 @@ sub nodevalue {
     if ( defined $node ) {
         my $value = "";
         if ( $node->hasChildNodes() ) {
-            map { $value .= $_->toString(0,1) } $node->childNodes;
+            foreach( $node->childNodes ) {
+                $value .= $_->toString(0,1);
+            }
         }
         else {
             $value = $node->textContent();
