@@ -63,7 +63,7 @@
         </xsl:choose>
     </xsl:variable>
 
-    <xsl:variable name="objectitems_rowlimit" select="'5'"/>
+    <xsl:variable name="objectitems_rowlimit" select="'10'"/>
     <xsl:variable name="totalpages" select="ceiling($objectitems_count div $objectitems_rowlimit)"/>
 
 <xsl:template match="/document/context/object">
