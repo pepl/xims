@@ -34,8 +34,7 @@ unless ( $args{m} and $args{t} and $args{o} and $args{r} and $args{l} ) {
     die usage();
 }
 
-#my $user = $term->authenticate( %args );
-my $user = XIMS::User->new( name => $args{u} );
+my $user = $term->authenticate( %args );
 die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 die "Access Denied. You need to be admin.\n" unless $user->admin();
 
