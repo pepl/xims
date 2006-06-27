@@ -157,6 +157,26 @@ sub event_store {
 }
 
 # override SUPER::events
+
+sub event_delete {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $current_user_object_priv = $ctxt->session->user->object_privmask( $ctxt->object );
+    return $self->event_access_denied( $ctxt )
+           unless $current_user_object_priv & XIMS::Privileges::DELETE();
+
+    my $object = $ctxt->object();
+    
+    # delete must fail otherwise...
+    $object->unpublish();
+    $self->SUPER::event_delete( $ctxt );
+  
+    return 0;
+}
+
+
+
 sub event_publish {
     my ( $self, $ctxt ) = @_;
     $self->sendError( $ctxt, "This object can not be published directly, please publish the related forum." );
