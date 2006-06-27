@@ -11,6 +11,7 @@ die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninst
 use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib";
 
 use XIMS::DataProvider;
+use XIMS::ObjectType;
 use XIMS::Term;
 use Getopt::Std;
 
@@ -32,6 +33,10 @@ die "Access Denied. You need to be admin.\n" unless $user->admin();
 my $dp = XIMS::DataProvider->new();
 my @ots  = $dp->object_types( publish_gopublic => 1 );
 my @ot_ids = map { $_->id() } @ots;
+
+my $anonforum_ot_id  = XIMS::ObjectType->new( name => 'AnonDiscussionForum' )->id();
+my $anonforumcontrib_ot_id  = XIMS::ObjectType->new( name => 'AnonDiscussionForumContrib' )->id();
+
 my $iterator = $dp->objects( object_type_id => \@ot_ids, published => 1 );
 my $objectcount;
 if ( defined $iterator and $objectcount = $iterator->getLength() ) {
@@ -44,8 +49,15 @@ else {
 
 my $updated = 0;
 while ( my $object = $iterator->getNext() ) {
+    my $privilege;
+    if ( $object->object_type_id() == $anonforum_ot_id or $object->object_type_id() == $anonforumcontrib_ot_id ) {
+        $privilege = XIMS::Privileges::VIEW() | XIMS::Privileges::CREATE();
+    }
+    else {
+        $privilege = XIMS::Privileges::VIEW();
+    }
     if ( not $object->grant_user_privileges( grantee         => XIMS::PUBLICUSERID(),
-                                             privilege_mask  => XIMS::Privileges::VIEW(),
+                                             privilege_mask  => $privilege,
                                              grantor         => $user->id() ) ) {
         warn "Could not update privileges for '".$object->location_path()."'\n";
     }
