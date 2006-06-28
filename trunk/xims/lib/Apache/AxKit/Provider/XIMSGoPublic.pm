@@ -79,7 +79,10 @@ sub get_dom {
         throw Apache::AxKit::Exception::Error( -text => "Request to backend server failed." );
     }
 
-    # Remove the Doctype declaration because XML::LibXML WILL validate despite validate set to 0
+    # Remove the Doctype declaration before parsing because XML::LibXML WILL validate despite validate set to 0
+    # Add it back later after parsing... :-|
+    my ( $rootnode, $public, $system ) = $string =~ /<!DOCTYPE\s+(\w+)\s+PUBLIC\s+"(.+)"\s+"(.+)">/;
+    # warn "$rootnode, $public, $system";
     $string =~ s#<!DOCTYPE.+?>##;
 
     # Replace absolute links
@@ -128,6 +131,12 @@ sub get_dom {
     };
     if ($@) {
         throw Apache::AxKit::Exception::Error( -text => "Input must be well-formed XML: $@" );
+    }
+
+    # Re-add the DTD line if there was one
+    if ( defined $rootnode and defined $public and defined $system ) {
+        my $dtd = $dom->createInternalSubset( $rootnode, $public, $system);
+        $dom->setInternalSubset($dtd);
     }
 
     # Pass through the response headers - now as we have a valid dom
