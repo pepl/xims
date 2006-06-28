@@ -1,3 +1,16 @@
+1.2
+  - New Apache::AxKit::Provider::XIMSGoPublic module that can be used to proxy and
+    cache XIMS objects that are published via gopublic. Using the gopublic-cache- 
+    config-generator tool it is possible to pregenerate the needed AxKit configuration
+    sections to make use of AxKit caching for gopublic-served objects like AnonDiscussionForums
+    or Questionnaires and to access them through better URLs not containing the XIMS
+    backend server nor the "/gopublic/content/siterootlocation" part.
+  - Published AnonDiscussionForumContribs can be deleted through the web-interface
+    again.
+  - Fixed a memory consumption bug when importing large documents
+  - Minor ReferenceLibrary and Vlibrary updates
+  - Various small fixes and updates
+
 1.1
 
 XIMS is now licensed the XIMS License, v1.0 (Apache License based).
