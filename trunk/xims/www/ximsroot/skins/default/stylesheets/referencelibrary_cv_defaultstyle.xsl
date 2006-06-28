@@ -310,22 +310,6 @@
         <link rel="stylesheet" href="{$css}" type="text/css"/>
         <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script type="text/javascript">
-function blocking(nr) {
-    if (document.layers) {
-        current = (document.layers[nr].display == 'none') ? 'block' : 'none';
-        document.layers[nr].display = current;
-    }
-    else if (document.all) {
-        current = (document.all[nr].style.display == 'none') ? 'block' : 'none';
-        document.all[nr].style.display = current;
-    }
-    else if (document.getElementById) {
-        vista = (document.getElementById(nr).style.display == 'none') ? 'block' : 'none';
-        document.getElementById(nr).style.display = vista;
-    }
-}
-        </script>
     </head>
 </xsl:template>
 
