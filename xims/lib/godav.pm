@@ -93,11 +93,9 @@ sub handler {
     $r->status( $status_code );
     if ( defined $content ) {
         my $bytes;
-        #do { use bytes; $bytes = length($content) };
-        # make sure utf-8 flag is on
-        Encode::_utf8_on($content) unless XIMS::DBENCODING();
-        $bytes = length($content);
+        do { use bytes; $bytes = length($content) };
         #$r->set_content_length( $bytes );
+        #warn "Content-Length is $bytes";
         $r->header_out( 'Content-Length', $bytes );
 
         #$r->header_out( 'Content-Type', $r->content_type()); # hmmm
@@ -189,9 +187,6 @@ sub put {
 
     my $body;
     $r->read( $body, $r->header_in( 'Content-Length') );
-    
-    # for those editors which did not get the encoding right...
-    $body = XIMS::utf8_sanitize( $body ) unless XIMS::DBENCODING();
 
     my $object_class;
     if ( defined $object ) {
@@ -208,6 +203,11 @@ sub put {
             $status_code = 500;
         }
         bless $object, $object_class;
+
+        if ( $object->data_format->mime_type =~ /^text/ ) {
+            # for those editors which did not get the encoding right...
+            $body = XIMS::utf8_sanitize( $body ) unless XIMS::DBENCODING();
+        }
 
         # update existing object
         if ( $object->body( $body ) ) {
@@ -246,6 +246,12 @@ sub put {
         my ( $location ) = ( $path =~ m|([^/]+)$| );
         $object = $object_class->new( User => $user, location => $location );
         $object->data_format_id( $data_format->id() ) if defined $data_format;
+
+        if ( $object->data_format->mime_type =~ /^text/ ) {
+            # for those editors which did not get the encoding right...
+            $body = XIMS::utf8_sanitize( $body ) unless XIMS::DBENCODING();
+        }
+
         $object->body( $body );
         # Ignore location for temporary file creation of some not-quite-DAV-aware applications
         my $id = $importer->import( $object, undef, _tmpsafe($location) );
@@ -417,7 +423,7 @@ sub propfind {
             push (@object_type_ids, $_->{id});
             $is_fs_container{$_->{id}} = $_->{is_fs_container};  # save db lookups later
         }
-        
+
         @objects = $object->children_granted( marked_deleted => undef, object_type_id => \@object_type_ids );
     }
     else {

@@ -7,6 +7,8 @@ package XIMS::AbstractClass;
 use strict;
 use XIMS;
 
+our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
 sub data {
     my $self = shift;
     my %args = @_;
