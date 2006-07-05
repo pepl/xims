@@ -16,6 +16,8 @@
     <xsl:param name="onepage"/>
     <xsl:param name="searchstring"/>
 
+    <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+
     <xsl:variable name="objectitems_count"><xsl:choose><xsl:when test="/document/context/object/children/@totalobjects"><xsl:value-of select="/document/context/object/children/@totalobjects"/></xsl:when><xsl:otherwise>0</xsl:otherwise></xsl:choose></xsl:variable>
     <xsl:variable name="objectitems_rowlimit"><xsl:choose>
         <xsl:when test="/document/context/object/attributes/pagerowlimit != ''"><xsl:value-of select="/document/context/object/attributes/pagerowlimit"/></xsl:when>
