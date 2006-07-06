@@ -1,4 +1,4 @@
-This is XIMS, version 1.1.
+This is XIMS, version 1.2.
 
 Overview
 --------
@@ -40,14 +40,13 @@ XIMS documentation for users, developers, and system administrators.
 
 Release Notes
 -------------
-This is a new feature release. New features include a "Reference Library" module
-to store bibliographic data and a "SimpleDB" module to store generic data in
-virtual two-dimensional tables. Updates to existing object types include an edit
-option for XML objects using HTML forms, additional answering and reporting
-options for Questionnaires, as well as updated configuration options for
-SQLReports. Besides further minor updates, this release also includes a number
-of minor bug fixes. For a detailed list of changes, please review the "Changes"
-file.
+This is a minor new feature and bug fix release. New features include an
+Apache::AxKit::Provider::XIMSGoPublic module that can be used to proxy and
+cache XIMS objects that are published via gopublic via AxKit and updates to the
+ReferenceLibrary and Vlibrary modules. Bug fixes include the re-enabling of the
+option to delete AnonDiscussionForumContribs through the web-interface and a
+memory consumption bug fix when importing large documents. For a detailed list of
+changes, please review the "Changes" file.
 
 
 Changes
@@ -79,7 +78,7 @@ Christian Glahn <christian.glahn@uibk.ac.at>
 
 XIMS is currently developed and maintained by:
 Michael Kröll <mk@xims.info>
-Hansjörg Pehofer <hansjoerg.pehofer@uibk.ac.at>>
+Hansjörg Pehofer <hansjoerg.pehofer@uibk.ac.at>
 
 Contributors (Sorted by most recent initial contribution):
 Simon Bailey <simon.bailey@uibk.ac.at>
