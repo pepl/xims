@@ -540,7 +540,7 @@ li.linklist, ul.linklist {
 	text-indent:-5px;
 }
 
-li.externallinklist, ul.externallinklist {
+li.externallinklist, ul.externallinklist, li.list_URL {
 	equivClass: DFLists;
 	caption:External Link List;
 	padding-left:8px;
