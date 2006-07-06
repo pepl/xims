@@ -1,3 +1,42 @@
+1.1 to 1.2
+-------------
+
+  * Unpack the contents of xims-1.2.tar.gz to your target installation
+    directory.
+
+    For example:
+    [root@host local]# cd /usr/local
+    [root@host local]# tar xzpvf xims-1.2.tar.gz
+
+  * Move published content
+
+    - Shutdown Apache or prevent XIMS logins
+    - Move everything under your old "ximspubroot" directory besides
+        "images", "stylesheets", "access.xsp", "500.xsp", and "404.xsp"
+        to your new "ximspubroot" directory.
+
+  * Replace the link to xims-1.1 with a link to xims-1.2
+
+    For example:
+    [root@host local]# cd /usr/local && rm xims && ln -s xims-1.2 xims
+
+  * Configure XIMS (ximsconfig.xml) using xims_setup.pl
+
+    For example:
+    [root@host local]# cd xims && sbin/xims_setup.pl -c
+
+  * Fix object privileges of gopublic objects
+
+    [root@host xims]# cd upgrade/1.1_1.2 && perl fix_published_gopublic_oprivs.pl
+
+  * (Re)publish AnonDiscussionForumContribs to adjust the new objectprivileges-logic for
+    publish_gopublic-objects.
+
+    [root@host 1.1_1.2]# perl publish_anondiscussionforumcontribs.pl
+
+  * (Re)Start Apache
+
+
 1.0 to 1.1
 -------------
 
