@@ -9,6 +9,11 @@
     again.
   - Fixed a memory consumption bug when importing large documents
   - Minor ReferenceLibrary and Vlibrary updates
+  - Work around a bug in XML::Filter::CharacterChunk where the 'TagName' parameter
+    does not work as expected and *all* elements are parsed as chunk.
+    This fixes the behaviour where titles of Portlet items were double-xml-escaped
+    during event default.
+  - Adjust xsl:output media-type for SimpleDB events to be compatible with MSIE
   - Various small fixes and updates
 
 1.1
