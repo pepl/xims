@@ -63,10 +63,10 @@
                     <td valign="top" width="50%" style="border:1px solid;">
                         <table width="100%" border="0">
                             <tr>
-                                <td width="60%"><strong><xsl:value-of select="$i18n/l/Annotation"/></strong></td>
+                                <td width="60%"><!--<strong><xsl:value-of select="$i18n/l/Annotation"/></strong>--></td>
                                 <td width="40%" colspan="2" align="right">
                                     <xsl:if test="$m='e' and user_privileges/create">
-                                        <!--<a href="{$goxims_content}{$absolute_path}?create=1;objtype=Annotation">--><xsl:value-of select="$i18n/l/Add_annotation"/><!--</a>-->
+                                        <!--<a href="{$goxims_content}{$absolute_path}?create=1;objtype=Annotation"><xsl:value-of select="$i18n/l/Add_annotation"/></a>-->
                                         <xsl:text>&#160;&#160;</xsl:text>
                                     </xsl:if>
                                 </td>
