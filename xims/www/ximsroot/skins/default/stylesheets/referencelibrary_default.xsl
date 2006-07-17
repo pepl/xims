@@ -276,7 +276,7 @@ z-index:100;
                     </div>
                 </td>
                 <td align="right">
-                    <form>
+                    <form action="{$xims_box}{$goxims_content}{$absolute_path}">
                         <input type="text" name="reflibsearch" id="reflibsearch" size="42" maxlength="200">
                             <xsl:if test="$reflibsearch != ''">
                                 <xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
