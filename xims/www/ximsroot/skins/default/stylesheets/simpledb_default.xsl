@@ -187,7 +187,7 @@
                     </div>
                 </td>
                 <td align="right">
-                    <form>
+                    <form action="{$xims_box}{$goxims_content}{$absolute_path}">
                         <input type="text" name="searchstring" id="searchstring" size="17" maxlength="200">
                         <xsl:if test="$searchstring != ''">
                             <xsl:attribute name="value"><xsl:value-of select="$searchstring"/></xsl:attribute>
