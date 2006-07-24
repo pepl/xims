@@ -680,7 +680,7 @@
                 <xsl:value-of select="concat($skimages,'containerlist_bg_deleted.gif')"/>
             </xsl:attribute>
         </xsl:when>
-        <xsl:when test="location='index.html'">
+        <xsl:when test="starts-with(location, 'index.')">
             <xsl:attribute name="background">
                 <xsl:value-of select="concat($skimages,'containerlist_bg_hl.gif')"/>
             </xsl:attribute>
