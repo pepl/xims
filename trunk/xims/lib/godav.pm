@@ -51,7 +51,9 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub handler {
     my $r = shift;
-    XIMS::Debug( 5, "godav called from " . $r->get_remote_host );
+
+    XIMS::via_proxy_test($r) unless $r->pnotes('PROXY_TEST');
+    XIMS::Debug( 5, "godav called from " .  $r->connection->remote_ip() );
 
     my $method = $r->method;
     my $path    = uri_unescape($r->uri);
