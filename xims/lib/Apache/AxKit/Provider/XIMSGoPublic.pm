@@ -23,9 +23,9 @@ sub get_dom {
 
     return $self->{dom} if defined $self->{dom};
 
-    my $r = $self->{apache};    
+    my $r = $self->{apache};
 
-    # 
+    #
     # TODO: subrequests for internal URIs
     #
     my $baseuri = $r->dir_config('ProxyObject');
@@ -53,7 +53,7 @@ sub get_dom {
     $forwarded_for .= $r->connection->remote_ip();
     #warn "Set X-Forwarded-For $forwarded_for";
     $request->header('X-Forwarded-For', $forwarded_for);
-    
+
     my $via = $r->headers_in->{'Via'};
     $via .= ', '  if defined $via;
     my ($proto_version) = ( $r->protocol =~ m#HTTP/(.*)$# );
@@ -69,7 +69,7 @@ sub get_dom {
     my $ua = LWP::UserAgent->new();
     $ua->timeout( $r->dir_config('ProxyObjectTimeout') || 10 );
     push @{ $ua->requests_redirectable }, 'POST'; # anonforums do that - naughty
-   
+
     my $response = $ua->request( $request );
     if ( $response->is_success() ) {
         $string = $response->content();
@@ -177,7 +177,7 @@ sub process {
     # Only look up containers or html, xml files -> no binaries
     unless ( $path_info !~ m#\.# or $path_info =~ m#(\.html|\.xml)$# ) {
         return 0;
-    }        
+    }
 
     # Look up the object to be proxied
     my $baseuri = $r->dir_config('ProxyObject');
@@ -191,11 +191,11 @@ sub process {
     return 0 unless defined $ximspath;
 
     # Fetch the object from the database
-    my $object = XIMS::Object->new( User => $publicuser, path => $ximspath ); 
+    my $object = XIMS::Object->new( User => $publicuser, path => $ximspath );
     return 0 unless defined $object and $object->published();
 
     $self->{object} = $object;
-    
+
     return 1;
 }
 
@@ -214,37 +214,31 @@ sub mtime {
     my $object = $self->{object};
     return $self->{mtime}->{$object->id()} if defined $self->{mtime}->{$object->id()};
 
-    # Get last publication timestamp of descendants, or from the current object if 
-    # that timestamp is more recent
-    my (undef, undef, $last_published) = $object->data_provider->get_descendant_infos( parent_id => $object->document_id() );
-    my $t;
-    if ( not defined $last_published ) {
-        $last_published ||= $object->last_publication_timestamp();
-        $t = Time::Piece->strptime( $last_published, "%Y-%m-%d %H:%M:%S" );
-    }
-    else {
-        my $t1 = Time::Piece->strptime( $last_published, "%Y-%m-%d %H:%M:%S" );        
-        my $t2 = Time::Piece->strptime( $object->last_publication_timestamp(), "%Y-%m-%d %H:%M:%S" );
-        if ( $t2 > $t1 ) {
-            $t = $t2;
-        }
-        else {
-            $t = $t1;
-        }
-    }
-    #warn "checking for " . $t->datetime;
+    # Get the most recent publication timestamp of the object, its descendants, or of the descendants of
+    # an assigned stylesheet directory
+    my (undef, undef, $last_published_desc) = $object->data_provider->get_descendant_infos( parent_id => $object->document_id() );
+    my $stylesheet = $object->stylesheet();
+    my (undef, undef, $last_published_style) = $object->data_provider->get_descendant_infos( parent_id => $stylesheet->document_id() ) if defined $stylesheet;
+
+    my @times = ( Time::Piece->strptime( $object->last_publication_timestamp(), "%Y-%m-%d %H:%M:%S" ) );
+    push( @times, Time::Piece->strptime( $last_published_desc, "%Y-%m-%d %H:%M:%S" ) ) if defined $last_published_desc;
+    push( @times, Time::Piece->strptime( $last_published_style, "%Y-%m-%d %H:%M:%S" ) ) if defined $last_published_style;
+
+    my @sorted_times = sort { $a <=> $b } @times;
+    my $latest = $sorted_times[-1];
+    #warn "checking for " . $latest->datetime;
 
     # Cache the timestamp since mtime() is called twice per request
-    $self->{mtime}->{$object->id()} = $t->epoch;
-    
-    return $t->epoch();
+    $self->{mtime}->{$object->id()} = $latest->epoch();
+
+    return $latest->epoch();
 }
 
 sub exists {
     return 1;
 }
 
-sub get_fh {    
+sub get_fh {
     throw Apache::AxKit::Exception::IO(
         -text => "not implemented"
    );
@@ -271,14 +265,14 @@ published via gopublic
 =head1 DESCRIPTION
 
 This module allows you to use proxy and cache XIMS objects through a XIMS server
-via HTTP. Thus, enabling better performance and visible URLs for the published 
+via HTTP. Thus, enabling better performance and visible URLs for the published
 versions of these object types.
 The AxKit Server acting as a proxy needs access to the XIMS database
 vi the XIMS object API. GET requests will be cached by AxKit, POST requests will
 not be cached.
 Use this module for objects that are published using the XIMS 'gopublic' interface.
 If you are configuring an object type, where it is not possible to determine the
-last publication timestamp, like 'SQLReport' for example, make sure to set 
+last publication timestamp, like 'SQLReport' for example, make sure to set
 the 'AxNoCache' directive to on.
 The 'ProxyObject' PerlVar needs to be set and point to the proxied XIMS object.
 In the example in the SYNOPSIS below, it will point to an imaginary SimpleDB object
@@ -305,5 +299,5 @@ has to be set to XML since the proxy expects well-formed XML!
 </Location>
 
 
-=cut    
+=cut
 
