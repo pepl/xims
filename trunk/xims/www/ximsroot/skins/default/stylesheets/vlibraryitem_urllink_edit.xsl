@@ -24,7 +24,7 @@
             <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
-                    <xsl:call-template name="tr-locationtitle-edit"/>
+                    <xsl:call-template name="tr-locationtitle-edit_urllink"/>
                     <xsl:call-template name="tr-vlsubjects-edit"/>
                     <xsl:call-template name="tr-publisher"/>
                     <xsl:call-template name="tr-chronicle_from"/>
@@ -45,6 +45,33 @@
             <xsl:call-template name="canceledit"/>
     </body>
 </html>
+</xsl:template>
+
+<xsl:template name="tr-locationtitle-edit_urllink">
+    <tr>
+        <td valign="top">
+            <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+            <span class="compulsory"><xsl:value-of select="$i18n/l/Location"/></span>
+        </td>
+        <td>
+            <input tabindex="10" type="text" class="text" name="name" size="40">
+                <xsl:choose>
+                    <xsl:when test="string-length(symname_to_doc_id) > 0 ">
+                        <xsl:attribute name="value"><xsl:value-of select="symname_to_doc_id"/></xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="value"><xsl:value-of select="location"/></xsl:attribute>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </input>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
+        </td>
+        <td align="right" valign="top">
+            <xsl:call-template name="marked_mandatory"/>
+        </td>
+    </tr>
+    <xsl:call-template name="tr-title-edit"/>
 </xsl:template>
 
 </xsl:stylesheet>

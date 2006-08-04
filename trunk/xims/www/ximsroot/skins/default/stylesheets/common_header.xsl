@@ -14,6 +14,7 @@
     <xsl:param name="nopath">false</xsl:param>
     <xsl:param name="containerpath">false</xsl:param>
     <xsl:param name="createwidget">false</xsl:param>
+    <xsl:param name="parent_id" />
     <xsl:param name="noarrownavigation">false</xsl:param>
     <xsl:param name="nooptions">false</xsl:param>
     <xsl:param name="nostatus">false</xsl:param>
@@ -101,6 +102,7 @@
         <xsl:otherwise>
         <xsl:call-template name="subheader">
             <xsl:with-param name="createwidget"><xsl:value-of select="$createwidget"/></xsl:with-param>
+            <xsl:with-param name="parent_id"><xsl:value-of select="$parent_id"/></xsl:with-param>
             <xsl:with-param name="noarrownavigation"><xsl:value-of select="$noarrownavigation"/></xsl:with-param>
             <xsl:with-param name="nooptions"><xsl:value-of select="$nooptions"/></xsl:with-param>
             <xsl:with-param name="nostatus"><xsl:value-of select="$nostatus"/></xsl:with-param>
@@ -133,6 +135,7 @@
 
 <xsl:template name="subheader">
     <xsl:param name="createwidget">false</xsl:param>
+    <xsl:param name="parent_id" />
     <xsl:param name="noarrownavigation">false</xsl:param>
     <xsl:param name="nooptions">false</xsl:param>
     <xsl:param name="nostatus">false</xsl:param>
@@ -146,7 +149,9 @@
                         <xsl:when test="/document/context/object/user_privileges/create
                                        and $createwidget = 'true'
                                        and /document/object_types/object_type[can_create]">
-                            <xsl:call-template name="header.cttobject.createwidget"/>
+                            <xsl:call-template name="header.cttobject.createwidget">
+                                <xsl:with-param name="parent_id"><xsl:value-of select="$parent_id"/></xsl:with-param>
+                            </xsl:call-template>
                         </xsl:when>
                         <xsl:otherwise>
                             <td width="215" background="{$skimages}options_bg.png" nowrap="nowrap">
@@ -240,13 +245,15 @@
 </xsl:template>
 
 <xsl:template name="header.cttobject.createwidget">
+    <xsl:param name="parent_id" />
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET">
         <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap">
             <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="objtype">
                 <!-- Do not display object types that either are not fully implemented or that are not meant to be created directly.
                      We may consider adding an object type property for the latter types.
+                     jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
                 -->
-                <xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and name != 'VLibraryItem']"/>
+                <xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and name != 'VLibraryItem' and parent_id = $parent_id]"/>
             </select>
         </td>
         <td width="80" background="{$skimages}subheader-generic_bg.png" style="padding-top: 4">

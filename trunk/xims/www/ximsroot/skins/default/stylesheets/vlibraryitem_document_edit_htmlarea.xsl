@@ -34,6 +34,7 @@
                             <xsl:call-template name="tr-locationtitle-edit"/>
                             <xsl:call-template name="tr-subtitle"/>
                             <xsl:call-template name="tr-vlsubjects-edit"/>
+                            <xsl:call-template name="tr-vlauthors-edit"/>
                             <xsl:call-template name="tr-publisher"/>
                             <xsl:call-template name="tr-chronicle_from"/>
                             <xsl:call-template name="tr-chronicle_to"/>

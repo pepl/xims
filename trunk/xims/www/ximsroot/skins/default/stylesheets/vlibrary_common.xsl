@@ -240,6 +240,9 @@
     <xsl:template name="subject_link">
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject=1;subject_id={id}">
             <xsl:value-of select="name"/>
+        </a>&#160;
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject=edit;subject_id={id}">
+            <img src="{$skimages}option_edit.png" alt="{$i18n_vlib/l/manage_subjects}" title="{$i18n_vlib/l/manage_subjects}" />
         </a>
     </xsl:template>
 

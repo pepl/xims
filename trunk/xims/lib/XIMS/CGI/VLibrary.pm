@@ -72,23 +72,26 @@ sub event_copy {
     return $self->sendError( $ctxt, "Copying VLibraries is not implemented." );
 }
 
-sub event_delete {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
-}
+# jokar: Enable deletion of Vlibraries. Metadata is not deleted (Authors, Keywords, Subjects, ...)
 
-sub event_delete_prompt {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
-}
+# sub event_delete {
+#    XIMS::Debug( 5, "called" );
+#    my ( $self, $ctxt ) = @_;
+#    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
+#}
+#
+#sub event_delete_prompt {
+#    XIMS::Debug( 5, "called" );
+#    my ( $self, $ctxt ) = @_;
+#    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
+#}
 
 sub event_subject {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my $subjectid = $self->param('subject_id');
+
     unless ( $subjectid ) {
         my $subjectname = XIMS::decode( $self->param('subject_name') );
         if ( defined $subjectname ) {
@@ -101,20 +104,51 @@ sub event_subject {
         else { return 0; }
     }
 
-    $ctxt->properties->content->getformatsandtypes( 1 );
+    my $task = $self->param('subject'); # get task that should be executed (additional to event)
+XIMS::Debug(6,"jokar: task = $task");
+    if ( $task eq 1 ) {
+    
+        $ctxt->properties->content->getformatsandtypes( 1 );
+    
+        my $offset = $self->param('page');
+        $offset = $offset - 1 if $offset;
+        my $rowlimit = 10;
+        $offset = $offset * $rowlimit;
 
-    my $offset = $self->param('page');
-    $offset = $offset - 1 if $offset;
-    my $rowlimit = 10;
-    $offset = $offset * $rowlimit;
-
-    my @objects = $ctxt->object->vlitems_bysubject_granted( subject_id => $subjectid,
-                                                    limit => $rowlimit,
-                                                    offset => $offset,
-                                                    order => 'title'
-                                                  );
-    $ctxt->objectlist( \@objects );
-    $ctxt->properties->application->style( "objectlist" ) ;
+        my @objects = $ctxt->object->vlitems_bysubject_granted( subject_id => $subjectid,
+                                                        limit => $rowlimit,
+                                                        offset => $offset,
+                                                        order => 'title'
+                                                    );
+        $ctxt->objectlist( \@objects );
+        $ctxt->properties->application->style( "objectlist" ) ;
+    } elsif ( $task eq "edit" ) {
+        # edit the subject name and description
+        # call the library with the param subject=edit
+        XIMS::Debug(5,"Editing subject");
+        $ctxt->properties->application->style( "edit_subject" ) ;
+    } elsif ( $task eq "store" ) {
+        # store edited subject name and description
+        # call the library with the param subject=store
+        XIMS::Debug(5,"Updating subject");
+        my $subject = XIMS::VLibSubject->new( id => $subjectid );
+        $subject->name( $self->param('name') );
+        $subject->description( $self->param('description') );
+        if ( !$subject->update() ) {
+            return $self->sendError( $ctxt, "Error updating Subject." );
+        }
+        XIMS::Debug(6,"Subject updated");
+        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
+    } elsif ( $task eq "view" ) {
+        # View kind of intro page for the selected subject. Just for public use. 
+        # call the library with the param subject=view
+        if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+            XIMS::Debug(5,"Viewing subject");
+            $ctxt->properties->application->style( "subject_view" ) ;            
+        } else {
+            $self->sendError( $ctxt, "Viewing of a subject is only available for public use." );
+        }
+    }
 
     return 0;
 }

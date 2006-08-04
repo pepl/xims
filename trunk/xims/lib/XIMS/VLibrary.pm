@@ -60,11 +60,18 @@ sub vlpublications {
     return $self->_vlobjects( 'Publication' );
 }
 
+sub vlauthors {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    return $self->_vlobjects( 'Author' );
+}
+
 sub vlsubjectinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    my $sql = 'SELECT s.name, s.id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = ? GROUP BY s.name, s.id';
+    my $sql = 'SELECT s.name, s.id, s.description, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = ? GROUP BY s.name, s.id, s.description';
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() ] );
 
     return $sidata;
@@ -80,7 +87,7 @@ sub vlsubjectinfo_granted {
 
     my ($userprivsql, @userprivids) = $self->_userpriv_where_clause( $user );
 
-    my $sql = 'SELECT s.name, s.id, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = ? ' . $userprivsql . ' GROUP BY s.name, s.id';
+    my $sql = 'SELECT s.name, s.id, s.description, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = ? ' . $userprivsql . ' GROUP BY s.name, s.id, s.description';
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id(), @userprivids ] );
 
     return $sidata;

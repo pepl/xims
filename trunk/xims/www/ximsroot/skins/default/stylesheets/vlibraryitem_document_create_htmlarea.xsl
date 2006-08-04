@@ -21,6 +21,7 @@
     </xsl:call-template>
     </head>
     <body onLoad=" document.eform['abstract'].value=''; initEditor(); document.eform.name.focus()">
+                <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
@@ -29,6 +30,7 @@
                     <xsl:call-template name="tr-locationtitle-create"/>
                     <xsl:call-template name="tr-subtitle"/>
                     <xsl:call-template name="tr-vlsubjects-create"/>
+                    <xsl:call-template name="tr-vlauthors-create"/>
                     <xsl:call-template name="tr-publisher"/>
                     <xsl:call-template name="tr-chronicle_from"/>
                     <xsl:call-template name="tr-chronicle_to"/>
