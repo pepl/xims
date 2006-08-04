@@ -5,6 +5,9 @@
 # $Id$
 */
 
+//Jokar: Maybe these functions should be moved to vlibrary_default.js
+//       because also the "create" stylesheets make use of them
+
 function addVLProperty( property ) {
     original = eval( "document.eform.vl" + property );
     selector = eval( "document.eform.svl" + property );
@@ -22,12 +25,12 @@ function addVLProperty( property ) {
 }
 
 function submitOnValue ( field, text, selectfield ) {
-    if ( field.length > 0 ) {
+    if ( field.value.replace(/\s+/g,"").length > 0 ) {
         return document.eform.submit();
     }
     else {
         alert ( text );
-        selectfield.focus();
-        return false;
+        if (selectfield) { selectfield.focus(); }
     }
+    return false;
 }
