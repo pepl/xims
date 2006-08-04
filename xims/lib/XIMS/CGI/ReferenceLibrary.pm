@@ -389,6 +389,7 @@ sub event_import {
     workgroup => [ "reflib:workgroup" ],
     project => [ "reflib:project" ],
     thesis_inprocess => [ "reflib:thesis_inprocess" ],
+    quality_criterion => [ "reflib:quality_criterion" ],
                   );
 
     my %genremapping = ( periodical => 'Article',

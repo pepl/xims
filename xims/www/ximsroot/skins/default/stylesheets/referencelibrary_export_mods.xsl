@@ -59,6 +59,8 @@
     <xsl:variable name="projectrefpropid" select="/document/reference_properties/reference_property[name='project']/@id"/>
     <xsl:variable name="preprint_submitdaterefpropid" select="/document/reference_properties/reference_property[name='preprint_submitdate']/@id"/>
     <xsl:variable name="thesis_inprocessrefpropid" select="/document/reference_properties/reference_property[name='thesis_inprocess']/@id"/>
+    <xsl:variable name="quality_criterionrefpropid" select="/document/reference_properties/reference_property[name='quality_criterion']/@id"/>
+
 
 <xsl:template match="/document/context/object">
     <modsCollection>
@@ -112,6 +114,7 @@
     <xsl:variable name="project" select="reference_values/reference_value[property_id=$projectrefpropid]/value"/>
     <xsl:variable name="preprint_submitdate" select="reference_values/reference_value[property_id=$preprint_submitdaterefpropid]/value"/>
     <xsl:variable name="thesis_inprocess" select="reference_values/reference_value[property_id=$thesis_inprocessrefpropid]/value"/>
+    <xsl:variable name="quality_criterion" select="reference_values/reference_value[property_id=$quality_criterionrefpropid]/value"/>
     <xsl:variable name="serial_id" select="serial_id"/>
 
 <mods ID="{$citekey}">
@@ -170,6 +173,10 @@
 
     <xsl:if test="$thesis_inprocess = '1'">
         <reflib:thesis_inprocess>1</reflib:thesis_inprocess>
+    </xsl:if>
+
+    <xsl:if test="$quality_criterion != ''">
+        <reflib:quality_criterion><xsl:value-of select="$quality_criterion"/></reflib:quality_criterion>
     </xsl:if>
 
     <xsl:if test="$genre = 'Dissertation'">
