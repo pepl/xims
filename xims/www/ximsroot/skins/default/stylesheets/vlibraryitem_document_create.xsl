@@ -14,7 +14,10 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-create"/>
+    <xsl:call-template name="common-head">
+        <xsl:with-param name="mode">create</xsl:with-param>
+        <xsl:with-param name="calendar" select="true()"/>
+    </xsl:call-template>
     <body onLoad="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.name.focus();">
         <div class="edit">
             <xsl:call-template name="table-create"/>

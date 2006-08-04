@@ -19,7 +19,7 @@ use XIMS::VLibPublicationMap;
 use XIMS::VLibMeta;
 
 use Class::MethodMaker
-        list       => [ qw(vlkeywords vlsubjects vlpublications) ];
+        list       => [ qw(vlkeywords vlsubjects vlpublications vlauthors) ];
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

@@ -66,6 +66,33 @@
     </tr>
 </xsl:template>
 
+<xsl:template name="tr-vlauthors-edit">
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/></td>
+        <td colspan="2">
+            <xsl:apply-templates select="authorgroup/author">
+                <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                    order="ascending"/>
+            </xsl:apply-templates>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/></td>
+        <td colspan="2">
+            <input tabindex="40" type="text" name="vlauthor" size="50" value="" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
+            <xsl:text>&#160;</xsl:text>
+            <input type="button" value="&lt;--" onClick="return addVLProperty( 'author' );"/>
+            <xsl:text>&#160;</xsl:text>
+            <xsl:apply-templates select="/document/context/vlauthors"/>
+            <xsl:text>&#160;</xsl:text>
+            <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onClick="return submitOnValue(document.eform.vlauthor, 'Please fill in a value for \'{$i18n_vlib/l/authors}\'', document.eform.svlauthor);"/>
+        </td>
+    </tr>
+</xsl:template>
+
+
 <xsl:template name="tr-vlkeywords-create">
     <tr>
         <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n/l/Keywords"/></td>
@@ -96,9 +123,32 @@
     </tr>
 </xsl:template>
 
+<xsl:template name="tr-vlauthors-create">
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n/l/Author"/></td>
+        <td colspan="2">
+            <input tabindex="40" type="text" name="vlauthor" size="50" value="" class="text" title="VLAuthor"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
+            <xsl:text>&#160;</xsl:text>
+            <input type="button" value="&lt;--" onClick="return addVLProperty( 'author' );"/>
+            <xsl:text>&#160;</xsl:text>
+            <xsl:apply-templates select="/document/context/vlauthors"/>
+        </td>
+    </tr>
+</xsl:template>
+
+
 
 <xsl:template match="keywordset/keyword|subjectset/subject">
     <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="Browse in a new window"><xsl:value-of select="name"/></a>
+    <xsl:text> </xsl:text>
+    <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}" title="Delete Mapping">(x)</a>
+    <xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
+</xsl:template>
+
+<xsl:template match="authorgroup/author">
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="Browse in a new window"><xsl:value-of select="lastname"/>&#160;<xsl:value-of select="firstname"/></a>
     <xsl:text> </xsl:text>
     <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}" title="Delete Mapping">(x)</a>
     <xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
@@ -122,10 +172,24 @@
     </select>
 </xsl:template>
 
+<xsl:template match="vlauthors">
+    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="svlauthor">
+        <xsl:apply-templates select="/document/context/vlauthors/author">
+            <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+              order="ascending"/>
+        </xsl:apply-templates>
+    </select>
+</xsl:template>
+
 
 <xsl:template match="vlsubjects/subject|vlkeywords/keyword">
     <option value="{name}"><xsl:value-of select="name"/></option>
 </xsl:template>
+
+<xsl:template match="vlauthors/author">
+    <option value="{id}"><xsl:value-of select="lastname"/>&#160;<xsl:value-of select="firstname"/></option>
+</xsl:template>
+
 
 <xsl:template name="tr-subject-create">
     <tr>

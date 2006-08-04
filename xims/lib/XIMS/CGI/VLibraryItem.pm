@@ -52,9 +52,15 @@ sub event_create {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
 
-    $ctxt->sax_generator( 'XIMS::SAX::Generator::VLibrary' );
+    $ctxt->sax_generator( 'XIMS::SAX::Generator::VLibraryItem' );
+
+    my $vlibrary = XIMS::VLibrary->new( document_id => $ctxt->object->parent_id() );
+    $ctxt->object->vlkeywords( $vlibrary->vlkeywords() );
+    $ctxt->object->vlsubjects( $vlibrary->vlsubjects() );
+    $ctxt->object->vlauthors( $vlibrary->vlauthors() );
+
     $self->SUPER::event_create( $ctxt );
-}
+    }
 
 sub event_edit {
     my ( $self, $ctxt) = @_;
@@ -64,6 +70,7 @@ sub event_edit {
 
     $ctxt->object->vlkeywords( $vlibrary->vlkeywords() );
     $ctxt->object->vlsubjects( $vlibrary->vlsubjects() );
+    $ctxt->object->vlauthors( $vlibrary->vlauthors() );
 
     return $self->SUPER::event_edit( $ctxt );
 }
@@ -116,9 +123,11 @@ sub event_create_mapping {
 
     my $vlsubject = $self->param('vlsubject');
     my $vlkeyword = $self->param('vlkeyword');
-    if ( $vlsubject or $vlkeyword ) {
+    my $vlauthor  = $self->param('vlauthor');
+    if ( $vlsubject or $vlkeyword or $vlauthor) {
         $self->_create_mapping_from_name( $ctxt->object(), 'Subject', $vlsubject ) if $vlsubject;
         $self->_create_mapping_from_name( $ctxt->object(), 'Keyword', $vlkeyword ) if $vlkeyword;
+        $self->_create_mapping_from_name( $ctxt->object(), 'Author', $vlauthor ) if $vlauthor;
         $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
         return 1;
         #$ctxt->properties->application->style( "edit" );
@@ -160,7 +169,15 @@ sub _create_mapping_from_name {
         my $propobject = $propclass->new( name => $value );
         if ( not (defined $propobject and $propobject->id() ) ) {
             $propobject = $propclass->new();
-            $propobject->name( $value );
+            if ($propertyname eq 'Author') { # Format: Firstname Lastname Middlename seperated by space
+                my @authornames = split (" ", XIMS::trim( $value ) );
+                $propobject->firstname( $authornames[0] );
+                $propobject->lastname( $authornames[1] );
+                $propobject->middlename( $authornames[2] );
+                }
+            else { 
+                $propobject->name( $value );
+            }
             if ( not $propobject->create() ) {
                 XIMS::Debug( 3, "could not create $propclass $value" );
                 next;

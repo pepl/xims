@@ -3,6 +3,7 @@
     <subject_list>Subject List</subject_list>
     <author_list>Author List</author_list>
     <publication_list>Publication List</publication_list>
+    <subject>Subject</subject>
     <subjects>Subjects</subjects>
     <author>Author</author>
     <authors>Authors</authors>
@@ -30,4 +31,5 @@
     <AuthorStringFormat>Author Format: Firstname (opt: Middlename) Lastname (opt:, Suffix)</AuthorStringFormat>
     <chronicle_from>Chronicle from</chronicle_from>
     <chronicle_to>Chronicle to</chronicle_to>
+    <manage_subjects>Manage subjects</manage_subjects>
 </l>

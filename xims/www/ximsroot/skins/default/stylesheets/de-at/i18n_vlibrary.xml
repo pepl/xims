@@ -3,6 +3,7 @@
     <subject_list>Themenbereiche</subject_list>
     <author_list>Autorenindex</author_list>
     <publication_list>Zeitschriften</publication_list>
+    <subject>Thema</subject>
     <subjects>Themen</subjects>
     <author>Autor</author>
     <authors>Autoren</authors>
@@ -30,4 +31,5 @@
     <AuthorStringFormat>Autoreneingabeformat: Vorname (opt: 2.Vorname) Nachname (opt:, Suffix)</AuthorStringFormat>
     <chronicle_from>Chronik von</chronicle_from>
     <chronicle_to>Chronik bis</chronicle_to>
+    <manage_subjects>Themen verwalten</manage_subjects>
 </l>

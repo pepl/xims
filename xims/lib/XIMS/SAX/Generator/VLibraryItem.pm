@@ -34,13 +34,13 @@ sub prepare {
     $doc_data->{context}->{object}->{body} =~ s/^<\?xml[^>]+>//;
 
     my @authors = $ctxt->object->vleauthors();
-    $doc_data->{context}->{object}->{authorgroup} = { author => \@authors };
+    $doc_data->{context}->{object}->{authorgroup} = { author => \@authors } if ( !($authors[0] eq undef ) );
 
     my @keywords = $ctxt->object->vlekeywords();
-    $doc_data->{context}->{object}->{keywordset} = { keyword => \@keywords };
+    $doc_data->{context}->{object}->{keywordset} = { keyword => \@keywords } if ( !($keywords[0] eq undef ) );
 
     my @subjects = $ctxt->object->vlesubjects();
-    $doc_data->{context}->{object}->{subjectset} = { subject => \@subjects };
+    $doc_data->{context}->{object}->{subjectset} = { subject => \@subjects } if ( !($subjects[0] eq undef ) );
 
     my @publications = $ctxt->object->vlepublications();
     $doc_data->{context}->{object}->{publicationset} = { publication => \@publications };
@@ -53,6 +53,10 @@ sub prepare {
 
     my @vlkeywords = $ctxt->object->vlkeywords();
     $doc_data->{context}->{vlkeywords} = { keyword => \@vlkeywords } if scalar @vlkeywords;
+    
+    my @vlauthors = $ctxt->object->vlauthors();
+    $doc_data->{context}->{vlauthors} = { author => \@vlauthors } if scalar @vlauthors;
+
 
     return $doc_data;
 }
