@@ -72,6 +72,8 @@ sub event_edit {
     $ctxt->object->vlsubjects( $vlibrary->vlsubjects() );
     $ctxt->object->vlauthors( $vlibrary->vlauthors() );
 
+    $self->expand_attributes( $ctxt );
+    
     return $self->SUPER::event_edit( $ctxt );
 }
 
@@ -128,9 +130,16 @@ sub event_create_mapping {
         $self->_create_mapping_from_name( $ctxt->object(), 'Subject', $vlsubject ) if $vlsubject;
         $self->_create_mapping_from_name( $ctxt->object(), 'Keyword', $vlkeyword ) if $vlkeyword;
         $self->_create_mapping_from_name( $ctxt->object(), 'Author', $vlauthor ) if $vlauthor;
-        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
-        return 1;
+        if( index (ref($object),'URLLink') > -1 ) {
+            # jokar: If the object is an URLLink the edit parameter has to be preceeded with a semikolon
+            #        Because the parameter string is not empty
+            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . ";edit=1" );
+        } else {
+            # jokar: else a questionmark is needed 
+            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+        }
         #$ctxt->properties->application->style( "edit" );
+        return 1;
     }
 
     return 0;
