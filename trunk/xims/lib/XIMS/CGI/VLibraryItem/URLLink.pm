@@ -24,6 +24,7 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $error_message = '';
+      
     # URLLink-Location must be unchanged
     $ctxt->properties->application->preservelocation( 1 );    
     
@@ -31,8 +32,13 @@ sub event_store {
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
 
-#    $self->SUPER::event_store( $ctxt );
     my $object = $ctxt->object();
+    
+    #check URL
+    if ( not( $object->check($self->param('location') ) ) ) {
+        $self->sendError( $ctxt, "The specified URL returns an Error. Please check the location." );
+        return 0;
+    }
 
     my $meta;
     if (! $object->document_id() ) {
@@ -74,6 +80,7 @@ sub event_store {
         }
     }
     $object->vlemeta( $meta );
+    $object->check();
     if ( $error_message ) {
         $self->sendError( $ctxt, $error_message );
         return 0;
