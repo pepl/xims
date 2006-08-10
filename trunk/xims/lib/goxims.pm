@@ -3,7 +3,6 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 package goxims;
-
 use Apache::Constants qw(:common);
 use strict;
 use Apache;
@@ -209,7 +208,7 @@ sub handler {
     eval "require $app_class";
     if ( $@ ) {
         XIMS::Debug( 2, "could not load application-class $app_class: $@" );
-        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/access.xsp?reason=Could%20not%20load%20application%20class%20$app_class.");
+        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp?reason=Could%20not%20load%20application%20class%20$app_class.");
         return SERVER_ERROR;
     }
 
