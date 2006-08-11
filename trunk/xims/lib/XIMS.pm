@@ -130,6 +130,7 @@ sub Debug {
 #
 sub xml_escape {
     my $text = shift;
+    return undef unless defined $text;
 
     my %escapes = (
                    '<' => '&lt;',
@@ -163,6 +164,7 @@ sub xml_escape {
 #
 sub xml_unescape {
     my $text = shift;
+    return undef unless defined $text;
 
     my %escapes = (
                    '&lt;' => '<',
@@ -196,6 +198,7 @@ sub xml_unescape {
 #
 sub xml_escape_noquot {
     my $text = shift;
+    return undef unless defined $text;
 
     my %escapes = (
                    '<' => '&lt;',
