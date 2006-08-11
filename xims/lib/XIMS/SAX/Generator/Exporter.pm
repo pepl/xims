@@ -33,7 +33,7 @@ sub prepare {
 
     my %encargs;
     $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
-    $self->{FilterList} = [ XML::Filter::CharacterChunk->new(%encargs, TagName=>[qw(body abstract)]) ];
+    $self->{FilterList} = [ XML::Filter::CharacterChunk->new(%encargs, TagName=>[qw(body)]) ];
 
     my $doc_data = { context => {} };
 

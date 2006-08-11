@@ -55,14 +55,8 @@ sub prepare {
         if ( not $ctxt->properties->content->escapebody() ) {
                  push ( @{$self->{FilterList}},
                   XML::Filter::CharacterChunk->new(%encargs,
-                                                   TagName=>[qw(body abstract)]) );
+                                                   TagName=>[qw(body)]) );
         }
-
-        # hmmm, does this depend on the libxml version? not needed at bruce, but at stomper...
-        #if ( not $ctxt->properties->content->dontescapestringprops() ) {
-        #    $doc_data->{context}->{object}->{title} = XIMS::xml_escape( $doc_data->{context}->{object}->{title} );
-        #    $doc_data->{context}->{object}->{keywords} = XIMS::xml_escape( $doc_data->{context}->{object}->{keywords} );
-        #}
 
         $self->_set_parents( $ctxt, $doc_data, \%object_types, \%data_formats );
 
