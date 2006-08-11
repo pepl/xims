@@ -144,6 +144,7 @@ sub handle_data {
                 else {
                     $location_path = $o->location_path();
                 }
+                $o->{location_path} = $location_path;
 
                 $o->{body} = $o->body() if grep { $_ eq 'body' } @{$cols};
                 $o->{content_length} = $o->content_length if grep { $_ eq 'content_length' } @{$cols};
