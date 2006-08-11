@@ -148,17 +148,6 @@ sub handle_data {
                 $o->{body} = $o->body() if grep { $_ eq 'body' } @{$cols};
                 $o->{content_length} = $o->content_length if grep { $_ eq 'content_length' } @{$cols};
 
-                $o->{abstract} = XIMS::xml_escape_noquot($o->{abstract});
-
-                if ( $self->{Export} ) {
-                    # Work around a bug/feature in XML::Filter::CharacterChunk
-                    # where the 'TagName' parameter does not work as expected and
-                    # *all* elements are parsed as chunk... # $#!<*><
-                    $o->{title} = XIMS::xml_escape_noquot($o->{title});
-                    $o->{location} = XIMS::xml_escape($o->{location});
-                    $o->{location_path} = XIMS::xml_escape($location_path);
-                }
-
                 # check if documentlink objects should be added
                 if ( $self->get_documentlinks() ) {
                     XIMS::Debug( 4, "looking for documentlinks" );

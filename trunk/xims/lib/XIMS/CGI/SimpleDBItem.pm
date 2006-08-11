@@ -48,7 +48,7 @@ sub event_store {
     # check if a valid abstract is given
     if ( defined $abstract and (length $abstract and $abstract !~ /^\s+$/ or not length $abstract) ) {
         XIMS::Debug( 6, "abstract, len: " . length($abstract) );
-        $ctxt->object->abstract( XIMS::xml_escape( $abstract ) );
+        $ctxt->object->abstract( $abstract );
     }
 
     if ( $ctxt->parent() ) {
