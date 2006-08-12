@@ -44,8 +44,9 @@ sub get_dom {
     my $request = HTTP::Request->new( $r->method, $proxied_uri->unparse() );
     my (%headers_in) = $r->headers_in();
     while ( my ($key,$val) = each %headers_in ) {
-        $request->header($key,$val);
+        $request->header($key,$val) unless $key eq 'Host';
     }
+    $request->header('Host',$proxied_uri->hostname()); # Update the Host header
 
     # Append to X-Forwarded and Via headers for in case
     my $forwarded_for = $r->headers_in->{'X-Forwarded-For'};
