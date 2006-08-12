@@ -5,23 +5,21 @@
 package XIMS::Session;
 
 use strict;
-use base qw( XIMS::AbstractClass );
+use base qw( XIMS::AbstractClass Class::Accessor );
 use Digest::MD5;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our @Fields;
-
-BEGIN {
-    @Fields = @{XIMS::Names::property_interface_names('Session')};
-    push( @Fields, qw( error_msg warning_msg message verbose_msg date serverurl skin uilanguage searchresultcount ) );
-}
-
-use Class::MethodMaker
-        get_set       => \@Fields;
+our @Fields = ( @{XIMS::Names::property_interface_names( resource_type() )}, qw( error_msg warning_msg message verbose_msg date serverurl skin uilanguage searchresultcount ) );
 
 sub fields {
     return @Fields;
 }
+
+sub resource_type {
+    return 'Session';
+}
+
+__PACKAGE__->mk_accessors( @Fields );
 
 sub new {
     my $proto = shift;

@@ -5,10 +5,14 @@
 package XIMS::SimpleDBMemberPropertyMap;
 
 use strict;
-use base qw( XIMS::AbstractClass );
+use base qw( XIMS::AbstractClass Class::Accessor );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our @Fields;
+our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
+
+sub fields {
+    return @Fields;
+}
 
 sub resource_type {
     my $rt = __PACKAGE__;
@@ -16,16 +20,7 @@ sub resource_type {
     return $rt;
 }
 
-sub fields {
-    return @Fields;
-}
-
-BEGIN {
-    @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
-}
-
-use Class::MethodMaker
-        get_set       => \@Fields;
+__PACKAGE__->mk_accessors( @Fields );
 
 ##
 #

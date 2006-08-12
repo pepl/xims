@@ -5,25 +5,24 @@
 package XIMS::User;
 
 use strict;
-use base qw( XIMS::AbstractClass );
+use base qw( XIMS::AbstractClass Class::Accessor );
 use XIMS::Bookmark;
 use Digest::MD5 qw( md5_hex );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our @Fields;
-
-BEGIN {
-    @Fields = @{XIMS::Names::property_interface_names('User')};
-}
-
-use Class::MethodMaker
-        get_set       => \@Fields;
-
+our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
 sub fields {
-    XIMS::Debug( 5, "called" );
     return @Fields;
 }
+
+sub resource_type {
+    my $rt = __PACKAGE__;
+    $rt =~ s/.*://;
+    return $rt;
+}
+
+__PACKAGE__->mk_accessors( @Fields );
 
 sub validate_password {
     XIMS::Debug( 5, "called" );
@@ -271,7 +270,7 @@ sub dav_object_types_granted {
 
     my @object_types = $self->data_provider->object_types( is_davgetable => 1 );
     return @object_types if $self->admin();
-    
+
     my $privmask = $self->dav_otprivs_mask();
     # cast $privmask to an integer, so that the bitwise operation will work as expected
     1 if $privmask == 1;

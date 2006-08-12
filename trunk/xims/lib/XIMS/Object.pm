@@ -8,7 +8,7 @@ use strict;
 # use warnings;
 no warnings 'redefine';
 
-use base qw( XIMS::AbstractClass );
+use base qw( XIMS::AbstractClass Class::Accessor );
 use XIMS::ObjectType;
 use XIMS::DataFormat;
 use XIMS::User;
@@ -22,35 +22,28 @@ use XML::LibXML; # for balanced_string(), balance_string()
 use IO::File; # for balanced_string()
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our @Fields;
-our @Default_Properties;
+# the binfile field is no longer available via the method interface, but is set
+# internally in the object's HASH to allow binary object types to alias body() to the binfile
+# field. This avoids madness during data serialization.
+our @Fields = grep { $_ ne 'binfile' } @{XIMS::Names::property_interface_names( resource_type() )};
+our @Default_Properties = grep { $_ ne 'body' } @Fields;
 our @Reference_Id_Names = qw( style_id script_id css_id image_id schema_id);
 our @Reference_DocId_Names = qw( symname_to_doc_id );;
-
-sub resource_type {
-    return 'Object';
-}
 
 sub fields {
     return @Fields;
 }
 
-BEGIN {
-    # the binfile field is no longer available via the method interface, but is set
-    # internally in the object's HASH to allow binary object types to alias body() to the binfile
-    # field. This avoids madness during data serialization.
-
-    @Fields = grep { $_ ne 'binfile' } @{XIMS::Names::property_interface_names( resource_type() )};
-    @Default_Properties = grep { $_ ne 'body' } @Fields;
+sub resource_type {
+    return 'Object';
 }
 
-use Class::MethodMaker
-        get_set       => \@Fields;
+__PACKAGE__->mk_accessors( @Fields );
 
 ##
 #
 # GENERAL
-#    Class::Methodmaker provides get/set accessor methods for all the content object properties specified in XIMS::Names.
+#    Class::Accessor provides get/set accessor methods for all the content object properties specified in XIMS::Names.
 #    For example uses of the XIMS::Object API see code in the unit tests t/unit??_object_*.t
 #
 
@@ -168,7 +161,7 @@ sub new {
 #    $boolean : True or False for storing back body to object
 #
 # DESCRIPTION
-#    Specific override for body() to the default get/set accessor methods provided by Class::MethodMaker to
+#    Specific override for body() to the default get/set accessor methods provided by Class::Accessor to
 #    avoid the memory/performance hit of loading the content body in cases where it is not explictly asked for.
 #
 sub body {
@@ -1775,7 +1768,7 @@ sub _parse_attributes {
 sub _escapeattrib {
     my $self = shift;
     my $text = shift;
-    
+
     return undef unless defined $text;
 
     $text =~ s/"/\\"/g;
@@ -1804,7 +1797,7 @@ sub _escapeattrib {
 sub _unescapeattrib {
     my $self = shift;
     my $text = shift;
-    
+
     return undef unless defined $text;
 
     $text =~ s/\\"/"/g;
