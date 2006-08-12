@@ -18,8 +18,7 @@ use XIMS::VLibPublication;
 use XIMS::VLibPublicationMap;
 use XIMS::VLibMeta;
 
-use Class::MethodMaker
-        list       => [ qw(vlkeywords vlsubjects vlpublications vlauthors) ];
+__PACKAGE__->mk_accessors( qw(vlkeywords vlsubjects vlpublications vlauthors) );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

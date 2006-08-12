@@ -1,7 +1,7 @@
 package Bundle::XIMS;
 # $Id$
 
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 1;
 __END__
@@ -38,9 +38,9 @@ Apache::AxKit::Plugin::AddXSLParams::Request -
 XML::Parser::PerlSAX -
 XML::SAX::Machines -
 XML::Generator::PerlData -
-XML::Filter::GenericChunk -
+XML::Filter::GenericChunk - 0.04
 CGI::XMLApplication 1.1.3 -
-Class::MethodMaker -
+Class::Accessor -
 DBIx::SQLEngine 0.017 -
 Time::Piece -
 XML::Schematron -
@@ -70,7 +70,7 @@ The XIMS home page, at L<http://xims.info/>.
 
 Copyright (c) 2002-2006 The XIMS Project.
 See the file L<http://xims.info/license/license-1.0.txt> for information and
-conditions for use, reproduction, and distribution of this work, 
+conditions for use, reproduction, and distribution of this work,
 and for a DISCLAIMER OF ALL WARRANTIES.
 
 =cut

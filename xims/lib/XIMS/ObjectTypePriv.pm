@@ -5,25 +5,20 @@
 package XIMS::ObjectTypePriv;
 
 use strict;
-use base qw( XIMS::AbstractClass );
+use base qw( XIMS::AbstractClass Class::Accessor );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our @Fields;
-
-sub resource_type {
-    return 'ObjectTypePriv';
-}
+our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
 sub fields {
     return @Fields;
 }
 
-BEGIN {
-    @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
+sub resource_type {
+    return 'ObjectTypePriv';
 }
 
-use Class::MethodMaker
-        get_set       => \@Fields;
+__PACKAGE__->mk_accessors( @Fields );
 
 sub new {
     my $proto = shift;

@@ -5,26 +5,20 @@
 package XIMS::QuestionnaireResult ;
 
 use strict;
-use base qw( XIMS::AbstractClass );
+use base qw( XIMS::AbstractClass Class::Accessor );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our @Fields;
-
-sub resource_type {
-    return 'QuestionnaireResult';
-}
+our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
 sub fields {
     return @Fields;
 }
 
-BEGIN {
-    @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
+sub resource_type {
+    return 'QuestionnaireResult';
 }
 
-use Class::MethodMaker
-        get_set       => \@Fields;
-
+__PACKAGE__->mk_accessors( @Fields );
 
 sub store {
     XIMS::Debug ( 5, "called" );

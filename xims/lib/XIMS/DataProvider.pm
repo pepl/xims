@@ -8,8 +8,6 @@ use strict;
 # use warnings;
 use XIMS;
 use XIMS::Names;
-# following uses are for the classed we bless into
-use XIMS::ObjectType;
 use XIMS::Iterator::Object;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
@@ -386,6 +384,7 @@ sub recurse_ancestor {
     # root has no ancestors
     return () if (defined $object->id() and $object->id() == 1);
 
+    require XIMS::Object;
     my $parent = XIMS::Object->new( document_id => $object->parent_id(), User => $object->User() );
     if ( defined $filter_objectroots ) {
         my @object_types = $self->object_types();
@@ -418,6 +417,7 @@ sub object_types {
         return @{$self->{'_cachedots'}};
     }
     my @data = $self->getObjectType( %args );
+    require XIMS::ObjectType;
     my @out = map { XIMS::ObjectType->new->data( %{$_} ) } @data;
     $self->{'_cachedots'} = \@out if defined $cache;
     return @out;
@@ -431,6 +431,7 @@ sub data_formats {
         return @{$self->{'_cacheddfs'}};
     }
     my @data = $self->getDataFormat( %args );
+    require XIMS::DataFormat;
     my @out = map { XIMS::DataFormat->new->data( %{$_} ) } @data;
     $self->{'_cacheddfs'} = \@out if defined $cache;
     return @out;
@@ -444,6 +445,7 @@ sub data_formats {
 sub users {
     my $self = shift;
     my @data = $self->getUser();
+    require XIMS::User;
     my @out = map { XIMS::User->new->data( %{$_} ) } @data;
     return @out;
 }
@@ -465,6 +467,7 @@ sub objects {
     my $self = shift;
     if ( wantarray() ) {
         my @data = $self->getObject( @_ );
+        require XIMS::Object;
         my @out = map { XIMS::Object->new->data( %{$_} ) } @data;
         return @out;
     }
@@ -480,6 +483,7 @@ sub trashcan {
     $args{marked_deleted} = 1;
     if ( wantarray() ) {
         my @data = $self->getObject( @_ );
+        require XIMS::Object;
         my @out = map { XIMS::Object->new->data( %{$_} ) } @data;
         return @out;
     }

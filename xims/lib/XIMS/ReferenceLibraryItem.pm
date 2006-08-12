@@ -17,9 +17,7 @@ use XIMS::VLibAuthor;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-use Class::MethodMaker
-        list       => [ qw(vlauthors) ];
-
+__PACKAGE__->mk_accessors( qw(vlauthors) );
 
 #use Data::Dumper;
 

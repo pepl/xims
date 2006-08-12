@@ -697,7 +697,7 @@ sub system_privmask_to_hash { privmask_to_hash( shift, 'System::' ) }
 # DESCRIPTION
 #    Used to get a more readable representation of the integer bitmask
 #
-sub dav_otprivmask_to_hash { 
+sub dav_otprivmask_to_hash {
     my $privmask = shift;
     my $object_types = shift;
 
@@ -705,7 +705,7 @@ sub dav_otprivmask_to_hash {
     1 if $privmask == 1;
 
     my %privs = map { ($_->name(), 1) } grep { $privmask & $_->davprivval() } @{$object_types};
-    return \%privs;    
+    return \%privs;
 }
 
 
