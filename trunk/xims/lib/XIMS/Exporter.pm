@@ -563,8 +563,8 @@ sub remove {
     my $object = $param{Object};
 
     my $dead_file = $self->{Exportfile} || $self->{Basedir} . '/' . $self->{Object}->location;
- 
-    # -w is false for broken symlinks 
+
+    # -w is false for broken symlinks
     unless ( -w $dead_file or -l $dead_file ) {
         XIMS::Debug( 2, "Cannot remove filesystem object '$dead_file'. File does not exist." );
 
@@ -1383,6 +1383,7 @@ sub set_sax_filters {
     my @retval = ();
 
     push @retval, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
+                                                                 PrependSiteRootURL => $self->{Options}->{PrependSiteRootURL},
                                                                  ResolveContent => [ qw( DEPARTMENT_ID
                                                                                          SYMNAME_TO_DOC_ID ) ] );
 

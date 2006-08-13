@@ -67,6 +67,9 @@ sub end_element {
                     if ( XIMS::RESOLVERELTOSITEROOTS() ) {
                         # snip off the site portion of the path ('/site/somepath')
                         $path =~ s/^\/[^\/]+//;
+                        if ( defined $self->{PrependSiteRootURL} ) {
+                            $path = $self->{PrependSiteRootURL} . $path;
+                        }
                     }
                     else {
                         $path = XIMS::PUBROOT_URL() . $path;

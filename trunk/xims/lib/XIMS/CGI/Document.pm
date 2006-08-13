@@ -194,8 +194,6 @@ sub event_pub_preview {
 
     $ctxt->properties->application->style("pub_preview");
 
-    # $self->process_xinclude( 1 );
-
     # hmmm, we are guessing there... :-|
     #print $self->header('-charset' => 'ISO-8859-1' );
 
@@ -221,10 +219,22 @@ sub getPubPreviewDOM {
                                        Stylesheet => XIMS::XIMSROOT().'/stylesheets/exporter/export_document.xsl',
                                        User       => $ctxt->session->user,
                                        Object     => $ctxt->object,
+                                       Options => { PrependSiteRootURL => $ctxt->object->siteroot->title() },
                                        );
     my $raw_dom = $handler->generate_dom();
     my $transd_dom = $handler->transform_dom( $raw_dom );
     return undef unless defined $transd_dom;
+
+    # This may fail
+    # For this to work with simple.examplesite.tld for example, 'simple.examplesite.tld' has to
+    # be entered in the server's /etc/hosts file :-( There should be a better way for
+    # creating a fully working example site!?
+    eval {
+        $transd_dom->process_xinclude( 1 );
+    };
+    XIMS::Debug( 3, "Process xinclude failed: $@" ) if $@;
+
+
     return $transd_dom;
 }
 
@@ -233,9 +243,9 @@ sub selectPubPreviewStylesheet {
     my $self = shift;
     my $ctxt = shift;
 
-    my $stylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/' . $ctxt->session->uilanguage() . '/';
+    my $stylepath;
     my $filename = 'document_publishing_preview.xsl';
-    my $style;
+    my $style = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/' . $ctxt->session->uilanguage() . '/' . $filename;
 
     my $stylesheet = $ctxt->object->stylesheet();
     if ( defined $stylesheet and $stylesheet->published() ) {
@@ -245,14 +255,21 @@ sub selectPubPreviewStylesheet {
         }
         else {
             XIMS::Debug( 4, "using pub-preview-stylesheet from assigned directory" );
-            $stylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/' . $ctxt->session->uilanguage . '/';
+            my $dir = XIMS::PUBROOT() . $stylesheet->location_path();
+            my $filepath = $dir . '/' . $filename;
+            my $filepathuilang = $dir . '/' . $ctxt->session->uilanguage() . '/' . $filename;
+            if ( -f $filepathuilang and -r $filepathuilang ) {
+                $style = $filepathuilang;
+            }
+            elsif ( -f $filepath and -r $filepath ) {
+                $style = $filepath;
+            }
         }
     }
     else {
         XIMS::Debug( 4, "using default pub-preview stylesheet" );
     }
 
-    $style ||= $stylepath . $filename;
     return $style;
 }
 
