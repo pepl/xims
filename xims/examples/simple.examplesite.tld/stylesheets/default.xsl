@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcq="http://purl.org/dc/qualifiers/1.0/" xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" exclude-result-prefixes="rdf dc dcq #default" version="1.0">
+<xsl:stylesheet xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:dcq="http://purl.org/dc/qualifiers/1.0/"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:date="http://exslt.org/dates-and-times"
+                extension-element-prefixes="date" exclude-result-prefixes="rdf dc dcq #default" version="1.0">
 
 <xsl:output method="xml" encoding="UTF-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
@@ -16,14 +22,7 @@
     <body>
         <xsl:comment>UdmComment</xsl:comment>
         <div id="header">
-            <div id="banner">
-                <div id="pathnavigation">
-                    <xsl:call-template name="pathnavigation"/>
-                </div>
-                <div id="logo">
-                    Grey Dahut Preservation Initiative
-                </div>
-            </div>
+            <xsl:call-template name="banner"/>
             <div id="departmentlinks">
                 <xsl:call-template name="departmentlinks"/>
             </div>
@@ -46,6 +45,17 @@
 
       </body>
     </html>
+</xsl:template>
+
+<xsl:template name="banner">
+    <div id="banner">
+        <div id="pathnavigation">
+            <xsl:call-template name="pathnavigation"/>
+        </div>
+        <div id="logo">
+            Grey Dahut Preservation Initiative
+        </div>
+    </div>
 </xsl:template>
 
 <xsl:template match="abbr|acronym|address|b|bdo|big|blockquote|br|cite|code|div|del|dfn|em|hr|h1|h2|h3|h4|h5|h6|i|ins|kbd|p|pre|q|samp|small|span|strong|sub|sup|tt|var|         dl|dt|dd|li|ol|ul|         a|         img|map|area|         caption|col|colgroup|table|tbody|td|tfoot|th|thead|tr|         button|fieldset|form|label|legend|input|option|optgroup|select|textarea|         applet|object|param|embed|script">

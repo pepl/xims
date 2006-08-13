@@ -332,7 +332,7 @@ sub selectStylesheet {
     my $stylepath = XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/';
 
     my $gotpubuilangstylesheet;
-    
+
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
     if ( defined $publicusername ) {
         # Emulate request.uri CGI param, set by Apache::AxKit::Plugin::AddXSLParams::Request
@@ -356,7 +356,7 @@ sub selectStylesheet {
                 $stylepath = $pubstylepath;
                 $gotpubuilangstylesheet = 1;
                 $foundstylesheet = 1;
-            }        
+            }
             elsif ( -f $filepath and -r $filepath ) {
                 $stylepath = $pubstylepath;
                 $foundstylesheet = 1;
@@ -370,7 +370,7 @@ sub selectStylesheet {
             if ( -f $filepathuilang and -r $filepathuilang ) {
                 $stylepath = $pubstylepath;
                 $gotpubuilangstylesheet = 1;
-            }        
+            }
             elsif ( -f $filepath and -r $filepath ) {
                 $stylepath = $pubstylepath;
             }
@@ -1059,7 +1059,7 @@ sub event_trashcan {
         # .diff_to_second_last object, we are asking for confirmation of recursion
         XIMS::Debug( 4, "container has got children, ask for confirmation of recursion" );
         # pepl: should not DELETE_ALL be test for in case of deleting all the language version of an object?
-        # zeya: DELETE_ALL() cannot be granted via the WebUI, thence check DELETE() for the moment.        
+        # zeya: DELETE_ALL() cannot be granted via the WebUI, thence check DELETE() for the moment.
         # if ( $current_user_object_priv & XIMS::Privileges::DELETE_ALL() ) {
         if ( $current_user_object_priv & XIMS::Privileges::DELETE() ) {
             $ctxt->session->warning_msg( "This Container has " . $chldinfo[0] . " child(ren) over " . $chldinfo[1] . " level(s) in the hierarchy ");
@@ -1465,7 +1465,7 @@ sub publish_gopublic {
     my $self = shift;
     my $ctxt = shift;
     my $options = shift;
-    
+
     $options->{PRIVILEGE_MASK} ||= XIMS::Privileges::VIEW;
 
     my $user = $ctxt->session->user();
@@ -1486,7 +1486,7 @@ sub publish_gopublic {
                  and $self->param( "verbose_result" ) == 1 ) {
                 $ctxt->session->message("Object '" .  $object->title() . "' published.");
                 $ctxt->properties->application->styleprefix('common_publish');
-                $ctxt->properties->application->style('update');                     
+                $ctxt->properties->application->style('update');
             }
             else {
                 $self->redirect( $self->redirect_path( $ctxt ) );
@@ -1498,7 +1498,7 @@ sub publish_gopublic {
         return $self->event_access_denied( $ctxt );
     }
 }
-   
+
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1576,7 +1576,7 @@ sub unpublish_gopublic {
                  and $self->param( "verbose_result" ) == 1 ) {
                 $ctxt->session->message("Object '" .  $object->title() . "' unpublished.");
                 $ctxt->properties->application->styleprefix('common_publish');
-                $ctxt->properties->application->style('update');                     
+                $ctxt->properties->application->style('update');
             }
             else {
                 $self->redirect( $self->redirect_path( $ctxt ) );
