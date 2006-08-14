@@ -1645,10 +1645,6 @@ sub set_sax_filters {
 
     $self->{Options}->{appendexportfilters} = 1;
 
-    if ( $self->{Object} ) {
-        $self->{Object}->attributes( "expandrefs" => 1 );
-    }
-
     return @retval;
 }
 
