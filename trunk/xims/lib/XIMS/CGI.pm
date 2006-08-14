@@ -2287,6 +2287,7 @@ sub event_search {
 
             $ctxt->objectlist( \@objects );
             $ctxt->properties->content->getformatsandtypes( 1 ); # to resolve the result
+            $ctxt->properties->content->resolveimage_id( 1 ) if $self->param( 'ri' );
         }
         else {
             XIMS::Debug( 3, "please specify a valid query" );

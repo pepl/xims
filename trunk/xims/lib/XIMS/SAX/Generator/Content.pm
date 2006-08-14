@@ -8,6 +8,7 @@ use strict;
 use base qw(XIMS::SAX::Generator XML::Generator::PerlData);
 use XIMS::DataProvider;
 use XML::Filter::CharacterChunk;
+use XIMS::SAX::Filter::ContentObjectPropertyResolver;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -56,6 +57,13 @@ sub prepare {
                  push ( @{$self->{FilterList}},
                   XML::Filter::CharacterChunk->new(%encargs,
                                                    TagName=>[qw(body)]) );
+        }
+        if ( $ctxt->properties->content->resolveimage_id() ) {
+            push ( @{$self->{FilterList}},
+                XIMS::SAX::Filter::ContentObjectPropertyResolver->new(  User           => $ctxt->session->user,
+                                                                        ResolveContent => [ qw( image_id ) ],
+                                                                        Properties     => [ qw( abstract ) ]
+                                                               ) );
         }
 
         $self->_set_parents( $ctxt, $doc_data, \%object_types, \%data_formats );
