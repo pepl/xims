@@ -320,9 +320,11 @@ else {
 
 # create links if they not already exist
 unless ( -l $installer->apache_document_root() . '/ximsroot'
-         and -l $installer->apache_document_root() . '/' . $Conf{PublicRoot} ) {
+         and -l $installer->apache_document_root() . '/' . $Conf{PublicRoot}
+         and -l $installer->apache_document_root() .  '/ou.xml' ) {
     symlink( "$xims_home/www/ximsroot", $installer->apache_document_root() . '/ximsroot' );
     symlink( $publicroot, $installer->apache_document_root() . '/' . $Conf{PublicRoot} );
+    symlink( $publicroot . '/xims/ou.xml', $installer->apache_document_root() . '/ou.xml' );
     print "[+] Successfully set up symbolic links under " . $installer->apache_document_root()  . ".\n";
 }
 else {
