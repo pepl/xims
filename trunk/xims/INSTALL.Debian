@@ -13,13 +13,14 @@ aptitude install apache libxml2 libxslt1 libxml2-utils libxml2-dev xml-core tidy
 If you are planning to use PostgreSQL as database back-end
 you may want to install the following packages:
 
-aptitude install postgresql postgresql-contrib libdbd-pg-perl 
+aptitude install postgresql postgresql-contrib libdbd-pg-perl
 
 Note that PostgreSQL is configured to use the "identd" authentication method
  for local connections per default. You might want to change that by allowing password-
-based authentication methods through adding a line like
-local   xims        all                                             md5
-to your pg_hba.conf. 
+based authentication methods through adding lines like
+local   xims        xims                                            md5
+local   xims        ximsrun                                         md5
+to your pg_hba.conf.
 
 For Oracle, you will have to install Oracle and DBD::Oracle manually.
 
