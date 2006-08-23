@@ -30,9 +30,6 @@ sub prepare {
 
     my $doc_data = $self->SUPER::prepare( $ctxt );
     
-    use Data::Dumper;
-    warn "XIMS::SAX::Generator::Exporter::VLibraryItem", Dumper($doc_data);
-    
     # The body won't be parsed by XML::Filter::CharacterChunk with the XML decl. Might be slightly hacky but its effective ;-)
     $doc_data->{context}->{object}->{body} =~ s/^<\?xml[^>]+>//;
 
