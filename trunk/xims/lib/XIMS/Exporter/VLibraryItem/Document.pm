@@ -8,7 +8,7 @@ use strict;
 use XIMS::Exporter;
 use base qw( XIMS::Exporter::Document );
 use XIMS::ObjectType;
-use XIMS::SAX::Generator::VLibraryItem;
+use XIMS::SAX::Generator::Exporter::VLibraryItem;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -74,7 +74,7 @@ sub set_sax_generator {
     XIMS::Debug( 5, "called" );
     my $self  = shift;
 
-    return XIMS::SAX::Generator::VLibraryItem->new();
+    return XIMS::SAX::Generator::Exporter::VLibraryItem->new();
 }
 
 sub update_related { return undef }

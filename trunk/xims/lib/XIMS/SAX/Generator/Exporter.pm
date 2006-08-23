@@ -62,7 +62,7 @@ sub _set_children {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my ( $ctxt, $doc_data, $object_types, $data_formats ) = @_;
-
+    
     my $object = $ctxt->object();
 
     my %childrenargs = ( published => 1, User => $ctxt->user ); # only get published children
