@@ -90,8 +90,10 @@ CREATE TABLE cilib_keywordmap
 CREATE TABLE cilib_subjects
  (
  id                 SERIAL        PRIMARY KEY
- ,name              VARCHAR(128)     UNIQUE NOT NULL
+ ,name              VARCHAR(128)
  ,description       VARCHAR(256)
+ ,document_id       INTEGER       NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
+ ,UNIQUE(document_id, name)
   )
 ;
 

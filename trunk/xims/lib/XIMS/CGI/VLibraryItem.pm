@@ -171,11 +171,16 @@ sub _create_mapping_from_name {
     my $object = shift;
     my $propertyname = shift;
     my $propertyvalue = shift;
-
+    my $propobject;
+    
     my @vlpropvalues = split(";", XIMS::trim( XIMS::decode( $propertyvalue ) ) );
     foreach my $value ( @vlpropvalues ) {
         my $propclass = "XIMS::VLib" . $propertyname;
-        my $propobject = $propclass->new( name => $value );
+        if ($propertyname eq 'Subject') { 
+            $propobject = $propclass->new( name => $value, document_id => $object->parent_id() );
+        } elsif ($propertyname eq 'Keyword') {
+            $propobject = $propclass->new( name => $value );
+        }
         if ( not (defined $propobject and $propobject->id() ) ) {
             $propobject = $propclass->new();
             if ($propertyname eq 'Author') { # Format: Firstname Lastname Middlename seperated by space
@@ -186,6 +191,10 @@ sub _create_mapping_from_name {
                 }
             else { 
                 $propobject->name( $value );
+                if ($propertyname eq 'Subject') {
+                    $propobject->document_id( $object->parent_id());
+XIMS::Debug(6,"Jokar: Subject " . $propobject->name( $value ) . " lib_id = " . $propobject->document_id( $object->parent_id()));
+                }
             }
             if ( not $propobject->create() ) {
                 XIMS::Debug( 3, "could not create $propclass $value" );
