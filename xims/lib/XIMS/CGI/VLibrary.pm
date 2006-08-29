@@ -24,6 +24,9 @@ sub registerEvents {
           publish_prompt
           unpublish
           subject
+          subject_store
+          subject_edit
+          subject_view
           keywords
           keyword
           authors
@@ -105,51 +108,107 @@ sub event_subject {
     }
 
     my $task = $self->param('subject'); # get task that should be executed (additional to event)
-XIMS::Debug(6,"jokar: task = $task");
-    if ( $task eq 1 ) {
-    
-        $ctxt->properties->content->getformatsandtypes( 1 );
-    
-        my $offset = $self->param('page');
-        $offset = $offset - 1 if $offset;
-        my $rowlimit = 10;
-        $offset = $offset * $rowlimit;
+    $ctxt->properties->content->getformatsandtypes( 1 );
+   
+    my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+    my $rowlimit = 10;
+    $offset = $offset * $rowlimit;
 
-        my @objects = $ctxt->object->vlitems_bysubject_granted( subject_id => $subjectid,
-                                                        limit => $rowlimit,
-                                                        offset => $offset,
-                                                        order => 'title'
-                                                    );
-        $ctxt->objectlist( \@objects );
-        $ctxt->properties->application->style( "objectlist" ) ;
-    } elsif ( $task eq "edit" ) {
-        # edit the subject name and description
-        # call the library with the param subject=edit
-        XIMS::Debug(5,"Editing subject");
-        $ctxt->properties->application->style( "edit_subject" ) ;
-    } elsif ( $task eq "store" ) {
-        # store edited subject name and description
-        # call the library with the param subject=store
-        XIMS::Debug(5,"Updating subject");
-        my $subject = XIMS::VLibSubject->new( id => $subjectid );
-        $subject->name( $self->param('name') );
-        $subject->description( $self->param('description') );
-        if ( !$subject->update() ) {
-            return $self->sendError( $ctxt, "Error updating Subject." );
+    my @objects = $ctxt->object->vlitems_bysubject_granted( subject_id => $subjectid,
+                                                            limit => $rowlimit,
+                                                            offset => $offset,
+                                                            order => 'title'
+                                                            );
+    $ctxt->objectlist( \@objects );
+    $ctxt->properties->application->style( "objectlist" ) ;
+
+    return 0;
+}
+
+sub event_subject_store {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $subjectid = $self->param('subject_id');
+
+    unless ( $subjectid ) {
+        my $subjectname = XIMS::decode( $self->param('subject_name') );
+        if ( defined $subjectname ) {
+            my $subject = XIMS::VLibSubject->new( name => $subjectname );
+            if ( $subject and $subject->id() ) {
+                $subjectid = $subject->id();
+            }
+            else { return 0; }
         }
-        XIMS::Debug(6,"Subject updated");
-        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
-    } elsif ( $task eq "view" ) {
-        # View kind of intro page for the selected subject. Just for public use. 
-        # call the library with the param subject=view
-        if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
-            XIMS::Debug(5,"Viewing subject");
-            $ctxt->properties->application->style( "subject_view" ) ;            
-        } else {
-            $self->sendError( $ctxt, "Viewing of a subject is only available for public use." );
-        }
+        else { return 0; }
     }
 
+    # store edited subject name and description
+    # call the library with the param subject=store
+    XIMS::Debug(5,"Updating subject");
+    my $subject = XIMS::VLibSubject->new( id => $subjectid );
+    $subject->name( $self->param('name') );
+    $subject->description( $self->param('description') );
+    if ( !$subject->update() ) {
+        return $self->sendError( $ctxt, "Error updating Subject." );
+    }
+    XIMS::Debug(6,"Subject updated");
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
+    return 0;
+}
+
+sub event_subject_view {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $subjectid = $self->param('subject_id');
+
+    unless ( $subjectid ) {
+        my $subjectname = XIMS::decode( $self->param('subject_name') );
+        if ( defined $subjectname ) {
+            my $subject = XIMS::VLibSubject->new( name => $subjectname );
+            if ( $subject and $subject->id() ) {
+                $subjectid = $subject->id();
+            }
+            else { return 0; }
+        }
+        else { return 0; }
+    }
+    # View kind of intro page for the selected subject. Just for public use. 
+    # call the library with the param subject=view
+    if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+        XIMS::Debug(5,"Viewing subject");
+        $ctxt->properties->content->escapebody(1);
+        $ctxt->properties->application->style( "subject_view" ) ;            
+    } else {
+        $self->sendError( $ctxt, "Viewing of a subject is only available for public use." );
+    }
+    return 0;
+}
+
+sub event_subject_edit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $subjectid = $self->param('subject_id');
+
+    unless ( $subjectid ) {
+        my $subjectname = XIMS::decode( $self->param('subject_name') );
+        if ( defined $subjectname ) {
+            my $subject = XIMS::VLibSubject->new( name => $subjectname );
+            if ( $subject and $subject->id() ) {
+                $subjectid = $subject->id();
+            }
+            else { return 0; }
+        }
+        else { return 0; }
+    }
+
+    # edit the subject name and description
+    # call the library with the param subject=edit
+    XIMS::Debug(5,"Editing subject");
+    $ctxt->properties->application->style( "subject_edit" ) ;
     return 0;
 }
 
