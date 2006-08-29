@@ -40,6 +40,7 @@
                 <item>vlibsubject.id</item>
                 <item>vlibsubject.name</item>
                 <item>vlibsubject.description</item>
+                <item>vlibsubject.document_id</item>                
             </VLibSubject>
             <VLibSubjectMap>
                 <item>vlibsubjectmap.id</item>
