@@ -148,7 +148,7 @@
 </xsl:template>
 
 <xsl:template match="authorgroup/author">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="Browse in a new window"><xsl:value-of select="lastname"/>&#160;<xsl:value-of select="firstname"/></a>
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="Browse in a new window"><xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/></a>
     <xsl:text> </xsl:text>
     <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}" title="Delete Mapping">(x)</a>
     <xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
@@ -187,7 +187,7 @@
 </xsl:template>
 
 <xsl:template match="vlauthors/author">
-    <option value="{id}"><xsl:value-of select="lastname"/>&#160;<xsl:value-of select="firstname"/></option>
+    <option value="{id}"><xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/></option>
 </xsl:template>
 
 
