@@ -13,10 +13,13 @@
 
 <xsl:template match="/document/context/object">
 <html>
+    <head>
     <xsl:call-template name="common-head">
         <xsl:with-param name="mode">create</xsl:with-param>
         <xsl:with-param name="calendar" select="true()" />
     </xsl:call-template>
+    <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript" ></script>
+    </head>
     <body onLoad="document.eform['abstract'].value=''; document.eform.name.focus();">
         <div class="edit">
             <xsl:call-template name="table-create"/>
@@ -29,7 +32,7 @@
                     <xsl:call-template name="tr-publisher"/>
                     <xsl:call-template name="tr-chronicle_from"/>
                     <xsl:call-template name="tr-chronicle_to"/>
-                    <xsl:call-template name="tr-keywords-create"/>
+                    <xsl:call-template name="tr-vlkeywords-create"/>
                     <xsl:call-template name="tr-abstract-create"/>
                     <xsl:call-template name="tr-mediatype"/>
                     <xsl:call-template name="tr-coverage"/>
