@@ -57,8 +57,8 @@ sub prepare {
   
     $self->_insert_vle_common($ctxt, $doc_data);
   
-    if ( $ctxt->properties->application->style() =~ /^edit/) { 
-    
+    if ( $ctxt->properties->application->style() =~ /^edit|^create/) { 
+
         my @vlsubjects = $ctxt->object->vlsubjects();
         $doc_data->{context}->{vlsubjects} = { subject => \@vlsubjects } if scalar @vlsubjects;
     
