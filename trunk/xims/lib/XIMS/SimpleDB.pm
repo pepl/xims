@@ -198,7 +198,7 @@ sub reposition_property {
     }
 
     my @iddata = $self->data_provider->getSimpleDBMemberPropertyMap( document_id => $self->document_id(),
-                                                                     properties => [ qw( id ) ] );
+                                                                     properties => [ qw( property_id ) ] );
     my @property_ids = map { values %{$_} } @iddata;
     my $property_id_quotes = join(',', map { '?' } @property_ids);
 
