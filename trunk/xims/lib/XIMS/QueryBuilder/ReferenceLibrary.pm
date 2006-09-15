@@ -67,6 +67,24 @@ sub _build {
             $search->[$i] = $bol . " r.reference_type_id IN (SELECT id FROM cireflib_reference_types WHERE LOWER(name) LIKE ?)";
             $is_field++;
         }
+        elsif ($search->[$i] =~ s/^lastname://i ) {
+            $bol = $self->search_boolean( $search, $i );
+            push( @values, lc $search->[$i] );
+            $search->[$i] = $bol . "(am.author_id in (SELECT id FROM cilib_authors WHERE lower(lastname) = ?))";
+            $is_field++;
+        }
+        elsif ($search->[$i] =~ s/^firstname://i ) {
+            $bol = $self->search_boolean( $search, $i );
+            push( @values, lc $search->[$i] );
+            $search->[$i] = $bol . "(am.author_id in (SELECT id FROM cilib_authors WHERE lower(firstname) = ?))";
+            $is_field++;
+        }
+        elsif ($search->[$i] =~ s/^author_id://i ) {
+            $bol = $self->search_boolean( $search, $i );
+            push( @values, $search->[$i] );
+            $search->[$i] = $bol . "(am.author_id = ?)";
+            $is_field++;
+        }
 
         next if $is_field;
 
@@ -86,7 +104,7 @@ sub _build {
     $self->{criteria}->[0] = '(' . join(' ', @{$search}) . ')';
     $self->{criteria}->[0] .= ' AND ci_content.published = 1' if $self->{filterpublished};
     push( @{$self->{criteria}}, @values );
-    
+
     return 1;
 }
 
