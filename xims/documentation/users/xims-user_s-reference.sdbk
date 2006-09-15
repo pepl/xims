@@ -557,7 +557,9 @@
                     <para>Regular search terms will be used searched for in the <literal>lastname</literal> field of reference items. If you enter more than one
                     term, the terms will be ANDed - returning reference entries from both authors. Using a <literal>field:value</literal> syntax, it is possible
                     to look for content in Reference Library property fields. Boolean operators &#34;AND&#34; and &#34;OR&#34; as well as grouping expressions
-                    using parentheses can be used for complex queries.</para>
+                    using parentheses can be used for complex queries. Per default, search terms will be used using an inexact match algorithms which can
+                    potentially lead to ambigous results for authors who share parts of their lastnames. To find authors using an exact match algorithm, use the
+                    <literal>lastname:value</literal>, <literal>firstname:value</literal>, and/or <literal>author_id:value</literal> lookup keys.</para>
 
                     <para><example><title>Reference Library Search examples</title><itemizedlist><listitem><para>workgroup:1234 (date:2005 OR
                     preprint_submitdate:2005) project:googol</para></listitem><listitem><para>Zweistein serial:&#34;Phys. Rev. Letters&#34; date:1999</para></listitem></itemizedlist></example></para>
