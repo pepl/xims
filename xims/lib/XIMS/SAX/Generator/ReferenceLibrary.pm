@@ -75,6 +75,11 @@ sub prepare {
         $doc_data->{context}->{user} = $ctxt->user() ;
     }
 
+    # Repositioning
+    if ( defined $ctxt->properties->content->siblingscount() ) {
+            $doc_data->{context}->{object}->{siblingscount} = $ctxt->properties->content->siblingscount();
+    }
+
     $object_types{$ctxt->object->object_type_id()} = 1;
     $data_formats{$ctxt->object->data_format_id()} = 1;
 
