@@ -436,10 +436,14 @@ sub event_download_results_pdf {
     $res = $style->transform( $xml_doc );
 
     my $out_string =  $style->output_string( $res );
+
     # htmldoc wants an 8-bit character set.
-    $out_string = Text::Iconv->new("UTF-8", "ISO-8859-1")->convert($out_string);
+    my $converter = Text::Iconv->new("UTF-8", "ISO-8859-15");
+    my $converted = $converter->convert( $out_string );
+    $out_string = $converted if defined $converted;
 
     my ($tmpfh, $tmpfilename) = tempfile();
+    binmode($tmpfh, 'ISO-8859-15');
     $tmpfh->print( $out_string );
 
     my $htmldoc = XIMS::Config::htmldocPath();
