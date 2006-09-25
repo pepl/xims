@@ -11,14 +11,34 @@ use Encode ();
 
 our $AUTOLOAD;
 our $VERSION = 1.2;
-our $_CONFIG_ = XIMS::Config->new();
+our $_CONFIG_;
 our $_DATAPROVIDER_;
+our $_OBJECT_TYPES_;
+our $_DATA_FORMATS_;
+
+BEGIN {
+    $_CONFIG_ = XIMS::Config->new();
+    require XIMS::DataProvider;
+    my $dp = XIMS::DataProvider->new();
+    $dp->driver->dbh->SQLLogging( 0 );
+    my @df = $dp->data_formats();
+    foreach my $df ( @df ) {
+        $_DATA_FORMATS_->{$df->id()} = $df;
+    }
+    my @ot = $dp->object_types();
+    foreach my $ot ( @ot ) {
+        $_OBJECT_TYPES_->{$ot->id()} = $ot;
+    }
+}
 
 require XIMS::DataProvider;
 sub DATAPROVIDER {
     $_DATAPROVIDER_ ||= XIMS::DataProvider->new();
     return $_DATAPROVIDER_;
 }
+
+sub OBJECT_TYPES { $_OBJECT_TYPES_ }
+sub DATA_FORMATS { $_DATA_FORMATS_ }
 
 sub HOME {
     $ENV{'XIMS_HOME'} || '/usr/local/xims'
@@ -43,10 +63,6 @@ sub PROXYIP()                   { $_CONFIG_->ProxyIP() }
 sub CONTENTINTERFACE()          { "/" . $_CONFIG_->ContentInterface() }
 sub DBMS()                      { $_CONFIG_->DBMS() }
 sub QBDRIVER()                  { $_CONFIG_->QBDriver() }
-sub DBUSER()                    { $_CONFIG_->DBUser() }
-sub DBPWD()                     { $_CONFIG_->DBPassword() }
-sub DBSESSIONOPT()              { $_CONFIG_->DBSessionOpt() }
-sub DBDOPT()                    { $_CONFIG_->DBDOpt() }
 sub DBDSN()                     { $_CONFIG_->DBdsn() }
 sub DBENCODING()                { (defined $_CONFIG_->DBEncoding() and length $_CONFIG_->DBEncoding() and $_CONFIG_->DBEncoding() !~ /UTF-?8/i) ? return $_CONFIG_->DBEncoding() : return undef }
 sub UIFALLBACKLANG()            { $_CONFIG_->UIFallbackLang() }

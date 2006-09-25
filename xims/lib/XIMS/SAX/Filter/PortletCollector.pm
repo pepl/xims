@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2006 The XIMS Project.
+#125 Copyright (c) 2002-2006 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -99,7 +99,7 @@ sub handle_data {
             XIMS::Debug( 6, "getting custom properties: " . join( "," , @$cols ));
             # add a list of base properties
             push( @{$cols}, qw( id document_id parent_id object_type_id
-                                data_format_id symname_to_doc_id location title position) );
+                                data_format_id symname_to_doc_id location location_path title position) );
             $childrenargs{properties} = $cols;
 
         }
@@ -119,10 +119,10 @@ sub handle_data {
         if ( @children  and scalar( @children ) ) {
             XIMS::Debug( 6, "found n = " . scalar( @children ) . " objects" );
             my $location_path;
+            my $dfs = XIMS::DATA_FORMATS();
             foreach my $o ( @children ) {
-                my $cacheddfname = "_cached_data_format_id".$o->data_format_id();
-                $self->{$cacheddfname} ||= $o->data_format->name();
-                if ( defined $self->{$cacheddfname} and $self->{$cacheddfname} eq 'URL' ) {
+                my $dfname = $dfs->{$o->data_format_id}->name();
+                if ( $dfname eq 'URL' ) {
                     $location_path = $o->location();
                 }
                 elsif ( $self->{Export} ) {

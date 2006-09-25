@@ -108,7 +108,6 @@ sub request_factory {
 }
 
 sub new {
-    XIMS::Debug( 5, "called" );
     my $class  = shift;
     my $drvnme = shift || 'DBI';
     my $self   = undef;
@@ -118,15 +117,15 @@ sub new {
 
     eval "require $drvcls"; # first load the driver class module
     if ( $@ ) {
-        XIMS::Debug( 2, "driver class not found! Reason: $@" );
+        die( "driver class not found! Reason: $@\n" );
     }
     else {
         my $args = shift || {};
-        $args->{dbuser}       = XIMS::DBUSER()       unless defined $args->{dbuser};
-        $args->{dbpasswd}     = XIMS::DBPWD()        unless defined $args->{dbpasswd};
-        $args->{dbdsn}        = XIMS::DBDSN()        unless defined $args->{dbdsn};
-        $args->{dbsessionopt} = XIMS::DBSESSIONOPT() unless defined $args->{dbsessionopt};
-        $args->{dbdopt}       = XIMS::DBDOPT()       unless defined $args->{dbdopt};
+        $args->{dbuser}       = XIMS::Config::DBUser()       unless defined $args->{dbuser};
+        $args->{dbpasswd}     = XIMS::Config::DBPassword()   unless defined $args->{dbpasswd};
+        $args->{dbdsn}        = XIMS::Config::DBdsn()        unless defined $args->{dbdsn};
+        $args->{dbsessionopt} = XIMS::Config::DBSessionOpt() unless defined $args->{dbsessionopt};
+        $args->{dbdopt}       = XIMS::Config::DBDOpt()       unless defined $args->{dbdopt};
 
         $driver = $drvcls->new( %{$args} );
 
@@ -135,7 +134,7 @@ sub new {
             $self->{Driver} = $driver;
         }
         else {
-            XIMS::Debug( 1, "driver class $drvcls did not initialize!" );
+            die( "driver class $drvcls did not initialize!" );
         }
     }
 
@@ -413,13 +412,13 @@ sub object_types {
     my $self = shift;
     my %args = @_;
     my $cache = 1 unless scalar keys %args > 0;
-    if ( defined $cache and defined $self->{'_cachedots'} ) {
-        return @{$self->{'_cachedots'}};
+    no strict 'refs';
+    if ( defined $cache and defined *{"XIMS::OBJECT_TYPES"}{CODE} ) {
+        return values %{XIMS::OBJECT_TYPES()};
     }
     my @data = $self->getObjectType( %args );
     require XIMS::ObjectType;
     my @out = map { XIMS::ObjectType->new->data( %{$_} ) } @data;
-    $self->{'_cachedots'} = \@out if defined $cache;
     return @out;
 }
 
@@ -427,13 +426,13 @@ sub data_formats {
     my $self = shift;
     my %args = @_;
     my $cache = 1 unless scalar keys %args > 0;
-    if ( defined $cache and defined $self->{'_cacheddfs'} ) {
-        return @{$self->{'_cacheddfs'}};
+    no strict 'refs';
+    if ( defined $cache and defined *{"XIMS::DATA_FORMATS"}{CODE} ) {
+        return values %{XIMS::DATA_FORMATS()};
     }
     my @data = $self->getDataFormat( %args );
     require XIMS::DataFormat;
     my @out = map { XIMS::DataFormat->new->data( %{$_} ) } @data;
-    $self->{'_cacheddfs'} = \@out if defined $cache;
     return @out;
 }
 

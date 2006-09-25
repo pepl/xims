@@ -9,6 +9,8 @@ use XML::LibXML;
 
 our $VERSION = do { my @r = (q$Revision$ =~ /\d+/g); sprintf "%d."."%02d" x $#r, @r; };
 
+our $XIMS_HOME = $ENV{'XIMS_HOME'} || '/usr/local/xims';
+
 ##
 #
 # SYNOPSIS
@@ -28,8 +30,8 @@ sub new {
     my $class = ref( $proto ) || $proto;
     my $self = bless {}, $class;
     my %args = @_;
-    my $general = ($args{file} || (XIMS::HOME() . "/conf/ximsconfig.xml") );
-    my $dbi = ($args{dbi} || (XIMS::HOME() . "/conf/ximsconfig-dbi.xml") );
+    my $general = ($args{file} || ($XIMS_HOME . "/conf/ximsconfig.xml") );
+    my $dbi = ($args{dbi} || ($XIMS_HOME . "/conf/ximsconfig-dbi.xml") );
 
     $self->process_file( $general );
     $self->process_dbi( $dbi );
@@ -37,7 +39,7 @@ sub new {
     return $self;
 }
 
-sub general { shift->{general} } 	 
+sub general { shift->{general} }
 sub dpconfig { shift->{dpconfig} }
 
 sub process_file {
@@ -93,7 +95,7 @@ sub process_file {
 
     return 1;
 }
-	 
+
 sub process_dbi {
     my $self = shift;
     my $file = shift;
@@ -219,7 +221,7 @@ sub process_includes {
 
     my @includes = map { $_->textContent() } $doc->findnodes( '/Config/Include' );
     foreach my $path ( @includes ) {
-        $path = XIMS::HOME() . "/conf/" . $path;
+        $path = $XIMS_HOME . "/conf/" . $path;
         if ( -d $path and -x $path ) {
             opendir(DIR, $path) || die "Could not open directory '$path': $!\n";
             my @files = grep { /\.xml$/ && -f "$path/$_" && -r "$path/$_" } readdir(DIR);
