@@ -445,7 +445,7 @@ sub get_object_id {
     $param{order} = delete $args{order};
 
     my $criteria = \%args;
-    $criteria->{'ci_content.document_id'} = \'ci_documents.id';
+    $criteria->{'ci_content.document_id'} = \'ci_documents.id'; #'
 
     my $data = $self->{dbh}->fetch_select( table   =>  'ci_documents, ci_content',
                                            columns =>  'ci_documents.id',
@@ -844,25 +844,20 @@ sub get_object_id_by_path {
 }
 
 sub new {
-    XIMS::Debug( 5, "called" );
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
     my %args = @_;
     my $self = {};
 
-    # XIMS::Debug( 6, "parameters: @_" );
-
     if ( exists $args{dbdsn} and exists $args{dbuser} and exists $args{dbpasswd} ) {
-        XIMS::Debug( 4, "establishing database connection");
+        warn "new db connect";
         my $dbh;
-
         eval {
             $dbh = DBIx::SQLEngine->new( $args{dbdsn}, $args{dbuser}, $args{dbpasswd} );
         };
 
         if ( $@ ) {
-            XIMS::Debug( 1, "could not connect to database" );
-            XIMS::Debug( 1, $@ );
+            die( "could not connect to database: $@\n" );
             return;
         }
         else {
@@ -882,13 +877,13 @@ sub new {
                 $dbh->do("$_");
             }
 
-            XIMS::DEBUGLEVEL() == 6 ? $dbh->SQLLogging( 1 ) : $dbh->SQLLogging( 0 );
+            XIMS::Config::DebugLevel() == 6 ? $dbh->SQLLogging( 1 ) : $dbh->SQLLogging( 0 );
 
             $self->{dbh} = $dbh;
         }
     }
     else {
-        XIMS::Debug( 2, "wrong parameters!" );
+        die( "wrong parameters!" );
     }
 
     return bless $self, $class;

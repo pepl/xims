@@ -26,7 +26,7 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 # internally in the object's HASH to allow binary object types to alias body() to the binfile
 # field. This avoids madness during data serialization.
 our @Fields = grep { $_ ne 'binfile' } @{XIMS::Names::property_interface_names( resource_type() )};
-our @Default_Properties = grep { $_ ne 'body' } @Fields;
+our @Default_Properties = grep { $_ ne 'body' } @Fields, 'location_path';
 our @Reference_Id_Names = qw( style_id script_id css_id image_id schema_id);
 our @Reference_DocId_Names = qw( symname_to_doc_id );;
 
@@ -823,6 +823,7 @@ sub referenced_by {
     if ( wantarray ) {
         my @referenced_by = map { XIMS::Object->new->data( %{$_} ) } @referenced_by_data;
         #warn "referenced_by" . Dumper( \@referenced_by ) . "\n";
+
         return @referenced_by;
     }
     else {
@@ -863,7 +864,6 @@ sub referenced_by_granted {
     my $user = delete $args{User} || $self->{User};
 
     return $self->referenced_by( %args ) if $user->admin();
-
 
     my $properties = delete $args{properties};
     unless ( $properties and ref $properties and scalar @{$properties} ) {
@@ -2036,7 +2036,8 @@ sub object_type {
     my $self = shift;
     return $self->{ObjectType} if defined $self->{ObjectType};
     return undef unless $self->object_type_id();
-    my $ot = XIMS::ObjectType->new( id => $self->object_type_id() );
+    my $ots = XIMS::OBJECT_TYPES();
+    my $ot = $ots->{$self->object_type_id()};
     $self->{ObjectType} = $ot;
     return $ot;
 }
@@ -2059,7 +2060,8 @@ sub data_format {
     my $self = shift;
     return $self->{DataFormat} if defined $self->{DataFormat};
     return undef unless $self->data_format_id() ;
-    my $df = XIMS::DataFormat->new( id => $self->data_format_id() );
+    my $dfs = XIMS::DATA_FORMATS();
+    my $df = $dfs->{$self->data_format_id()};
     $self->{DataFormat} = $df;
     return $df;
 }
@@ -2770,7 +2772,8 @@ sub content_field {
     }
     else {
         my $df_id = $self->{data_format_id} || $self->{'document.data_format_id'};
-        $df = XIMS::DataFormat->new( id => $df_id );
+        my $dfs = XIMS::DATA_FORMATS();
+        $df = $dfs->{$df_id};
         $self->{DataFormat} = $df;
     }
     # pepl: departmentroot portlet info is stored in its body
