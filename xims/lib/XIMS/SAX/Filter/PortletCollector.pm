@@ -1,4 +1,4 @@
-#125 Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2006 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -146,7 +146,7 @@ sub handle_data {
                 }
                 $o->{location_path} = $location_path;
 
-                $o->{body} = $o->body() if grep { $_ eq 'body' } @{$cols};
+                $o->{body} = $o->body() if ( $dfs->{$o->data_format_id}->mime_type() =~ /^text/ and grep { $_ eq 'body' } @{$cols} );
                 $o->{content_length} = $o->content_length if grep { $_ eq 'content_length' } @{$cols};
 
                 # check if documentlink objects should be added
