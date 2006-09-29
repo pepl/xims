@@ -435,23 +435,18 @@ sub create_author_mapping_from_name {
     $propertyvalue = Encode::decode_utf8($propertyvalue); # set the utf-8 bit to on, so that the regexes will work...
     my @vlpropvalues = split(";", XIMS::trim( XIMS::decode( $propertyvalue ) ) );
     foreach my $value ( @vlpropvalues ) {
-        my ($name, $suffix) = split(",", XIMS::trim($value));
-        #my ($firstname, $middlename, $lastname) = ( $name =~ /(\w+)\s*(\w+)?\s+(\w+)/ );
-        # splitting along white-space seems more reliable compared to using a regex when
-        # dealing with non-alpha name fragment chars
-        my ($firstname, $middlename, $lastname);
-        my @namefrags = split(/\s+/, $name);
-        if ( scalar @namefrags == 3 ) {
-            ($firstname, $middlename, $lastname) = @namefrags;
-        }
-        elsif ( scalar @namefrags == 2 ) {
-            ($firstname, $lastname) = @namefrags;
+        my $parsed_name = XIMS::VLibAuthor::parse_namestring( $value );
+        my ($firstname, $middlename, $lastname, $suffix);
+        if ( defined $parsed_name ) {
+            $firstname = $parsed_name->{firstname};
+            $lastname = $parsed_name->{lastname};
+            $middlename = $parsed_name->{middlename};
+            $suffix = $parsed_name->{suffix};
         }
         else {
-            XIMS::Debug( 3, "Invalid Name $value" );
             next;
         }
-        $middlename = '' unless defined $middlename;
+
         my $vlibauthor = XIMS::VLibAuthor->new( lastname => XIMS::escapewildcard( $lastname ),
                                                 middlename => $middlename,
                                                 firstname => $firstname,

@@ -73,7 +73,7 @@ sub event_edit {
     $ctxt->object->vlauthors( $vlibrary->vlauthors() );
 
     $self->expand_attributes( $ctxt );
-    
+
     return $self->SUPER::event_edit( $ctxt );
 }
 
@@ -135,7 +135,7 @@ sub event_create_mapping {
             #        Because the parameter string is not empty
             $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . ";edit=1" );
         } else {
-            # jokar: else a questionmark is needed 
+            # jokar: else a questionmark is needed
             $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
         }
         #$ctxt->properties->application->style( "edit" );
@@ -159,7 +159,7 @@ sub _isvaliddate {
         return 0; # February 29th outside a leap year
     } else {
         return 1; # Valid date
-    } 
+    }
     } else {
         return 0; # Not a date
     }
@@ -172,28 +172,34 @@ sub _create_mapping_from_name {
     my $propertyname = shift;
     my $propertyvalue = shift;
     my $propobject;
-    
+
     my @vlpropvalues = split(";", XIMS::trim( XIMS::decode( $propertyvalue ) ) );
     foreach my $value ( @vlpropvalues ) {
+        my $parsed_name;
         my $propclass = "XIMS::VLib" . $propertyname;
-        if ($propertyname eq 'Subject') { 
+        if ($propertyname eq 'Subject') {
             $propobject = $propclass->new( name => $value, document_id => $object->parent_id() );
-        } elsif ($propertyname eq 'Keyword') {
+        }
+        elsif ($propertyname eq 'Keyword') {
             $propobject = $propclass->new( name => $value );
+        }
+        elsif ( $propertyname eq 'Author' ) {
+            $parsed_name = XIMS::VLibAuthor::parse_namestring( $value );
+            $propobject = $propclassr->new( %parsed_name );
         }
         if ( not (defined $propobject and $propobject->id() ) ) {
             $propobject = $propclass->new();
-            if ($propertyname eq 'Author') { # Format: Firstname Lastname Middlename seperated by space
-                my @authornames = split (" ", XIMS::trim( $value ) );
-                $propobject->firstname( $authornames[0] );
-                $propobject->lastname( $authornames[1] );
-                $propobject->middlename( $authornames[2] );
-                }
-            else { 
+            if ( $propertyname eq 'Author' ) {
+                $propobject->lastname( $parsed_name->{lastname} );
+                $propobject->firstname( $parsed_name->{firstname} ) if ( defined $parsed_name->{firstname} and length $parsed_name->{firstname} );
+                $propobject->middlename( $parsed_name->{middlename} ) if ( defined $parsed_name->{middlename} and length $parsed_name->{middlename} );
+                $propobject->suffix( $parsed_name->{suffix} ) if ( defined $parsed_name->{suffix} and length $parsed_name->{suffix} );
+            }
+            else {
                 $propobject->name( $value );
                 if ($propertyname eq 'Subject') {
                     $propobject->document_id( $object->parent_id());
-XIMS::Debug(6,"Jokar: Subject " . $propobject->name( $value ) . " lib_id = " . $propobject->document_id( $object->parent_id()));
+                    XIMS::Debug( 6, "Subject " . $propobject->name( $value ) . " lib_id = " . $propobject->document_id( $object->parent_id()));
                 }
             }
             if ( not $propobject->create() ) {
