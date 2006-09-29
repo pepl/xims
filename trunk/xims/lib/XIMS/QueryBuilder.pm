@@ -41,10 +41,10 @@ sub new {
     if ( ref $args and exists $args->{search} ) {
         my $search;
         if ( defined $args->{allowed} ) {
-            $search = _search_arrayref( _clean_search_string( $args->{search}, qr/$args->{allowed}/ ) );
+            $search = XIMS::tokenize_string( _clean_search_string( $args->{search}, qr/$args->{allowed}/ ) );
         }
         else {
-            $search = _search_arrayref( _clean_search_string( $args->{search} ) );
+            $search = XIMS::tokenize_string( _clean_search_string( $args->{search} ) );
         }
         $self = bless { search => $search, fieldstolookin => $args->{fieldstolookin}, filterpublished => $args->{filterpublished}, extraargs => $args->{extraargs} }, $class;
         $self->_build() ? return $self : return undef;
@@ -93,45 +93,6 @@ sub search_boolean {
 
     return $retval;
 }
-
-##
-#
-# SYNOPSIS
-#    _search_arrayref( $searchstring );
-#
-# PARAMETER
-#    $searchstring:
-#
-# RETURNS
-#    $retval: array-ref of search-tokens
-#
-# DESCRIPTION
-#
-#
-#
-sub _search_arrayref {
-    XIMS::Debug( 5, 'called');
-    my $search = shift;
-
-    my $retval = [];
-
-    my @blocks = split(/ *\" */, $search);
-
-    # deal with quotes
-    my $in_quote = 0;
-    for my $part ( @blocks ) {
-        if ( $in_quote == 0 ) {
-            push(@{$retval}, split(' ', $part)) if $part;
-        }
-        else {
-            push(@{$retval}, $part) if $part;
-        }
-        $in_quote = ++$in_quote % 2;
-    }
-
-    return $retval;
-}
-
 
 ##
 #

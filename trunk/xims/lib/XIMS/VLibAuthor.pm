@@ -10,6 +10,28 @@ use base qw( XIMS::AbstractClass Class::Accessor );
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
+our @compound_lastnames = (
+    qr/Von (Der )?/i,        # Dutch or German
+    qr/Van (De(n|r)? )?/i,
+    qr/Den /i,
+    qr/Dell([a|e])? /i,      # Italian
+    qr/Dalle /i,
+    qr/D[a|e]ll'/i,          # '
+    qr/Dela /i,
+    qr/Del /i,
+    qr/De .+/i,
+    qr/D[a|i,|u] /i,
+    qr/L[a|e|o] /i,
+    qr/[D|L|O]'/i,           # 'italian, irish or French
+    qr/St\.? /i,             # abbreviation for Saint
+    qr/San /i,               # Spanish
+    qr/ y /i,                #
+    qr/[A|E]l /i,            # Arabic, Greek,
+    qr/Bin /i,               # Hebrew
+    qr/Ap /i,                # Welsh
+    qr/Ben /i,               # Hebrew
+);
+
 sub fields {
     return @Fields;
 }
@@ -70,5 +92,61 @@ sub new {
     }
     return $self;
 }
+
+sub parse_namestring {
+    my $name = shift;
+
+    my ($firstname, $middlename, $lastname, $suffix);
+    ($name, $suffix) = split(",", XIMS::trim($name));
+
+    # Split firstname and middlename initials
+    $name =~ s/^(\w)\.(\w)\./$1. $2./;
+
+    $name = escape_compound_lastnames( $name );
+
+    my $namefrags = XIMS::tokenize_string( $name );
+    if ( scalar @$namefrags == 3 ) {
+        ($firstname, $middlename, $lastname) = @$namefrags;
+    }
+    elsif ( scalar @$namefrags == 2 ) {
+        ($firstname, $lastname) = @$namefrags;
+    }
+    else {
+        XIMS::Debug( 3, "Could not parse name: $name" );
+        return undef;
+    }
+
+    $lastname = unescape_compound_lastnames( $lastname );
+    $middlename = '' unless defined $middlename;
+    if ( defined $lastname and length $lastname ) {
+        return { firstname => $firstname, middlename => $middlename, lastname => $lastname, suffix => $suffix };
+    }
+    else {
+        return undef;
+    }
+}
+
+sub escape_compound_lastnames {
+    my $name = shift;
+
+    foreach my $compound ( @compound_lastnames ) {
+        if ( $name =~ $compound ) {
+            #warn "$name matches $compound\n";
+            my $escaped_match = my $match = $&;
+            $escaped_match =~ s/ /__/g;
+            $name =~ s/$match/$escaped_match/e;
+            last;
+        }
+    }
+
+    return $name;
+}
+
+sub unescape_compound_lastnames {
+    my $name = shift;
+    $name =~ s/__/ /g;
+    return $name;
+}
+
 
 1;

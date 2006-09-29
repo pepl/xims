@@ -409,6 +409,39 @@ sub escapewildcard {
 ##
 #
 # SYNOPSIS
+#    my $blocks = XIMS::tokenize_string( $string )
+#
+# PARAMETER
+#    $string: string
+#
+# RETURNS
+#    $blocks: Array reference holding the string split spaces and honoring double quotes
+#
+# DESCRIPTION
+#    Tokenizes a string along spaces while honoring double quotes
+#
+sub tokenize_string {
+    my $search = shift;
+    my $retval = [];
+    my @blocks = split(/ *\" */, $search);
+    # deal with quotes
+    my $in_quote = 0;
+    for my $part ( @blocks ) {
+        if ( $in_quote == 0 ) {
+            push(@{$retval}, split(' ', $part)) if $part;
+        }
+        else {
+            push(@{$retval}, $part) if $part;
+        }
+        $in_quote = ++$in_quote % 2;
+    }
+    return $retval;
+}
+
+
+##
+#
+# SYNOPSIS
 #    my $utf8_string = XIMS::utf8_sanitize( $string )
 #
 # PARAMETER
