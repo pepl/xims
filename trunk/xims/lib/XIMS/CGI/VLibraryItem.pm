@@ -185,7 +185,7 @@ sub _create_mapping_from_name {
         }
         elsif ( $propertyname eq 'Author' ) {
             $parsed_name = XIMS::VLibAuthor::parse_namestring( $value );
-            $propobject = $propclassr->new( %parsed_name );
+            $propobject = $propclass->new( $parsed_name );
         }
         if ( not (defined $propobject and $propobject->id() ) ) {
             $propobject = $propclass->new();
