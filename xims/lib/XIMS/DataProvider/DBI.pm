@@ -850,7 +850,7 @@ sub new {
     my $self = {};
 
     if ( exists $args{dbdsn} and exists $args{dbuser} and exists $args{dbpasswd} ) {
-        warn "new db connect";
+        #warn "new db connect";
         my $dbh;
         eval {
             $dbh = DBIx::SQLEngine->new( $args{dbdsn}, $args{dbuser}, $args{dbpasswd} );
