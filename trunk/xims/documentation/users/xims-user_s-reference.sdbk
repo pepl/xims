@@ -55,7 +55,7 @@
             <title>Introduction</title>
 
             <para>XIMS is an Open Source Information/Content Management System that primarily provides facilities to create and manage web sites. For a
-            project-description, -history and features of XIMS consult <ulink url="???">http://xims.info/about.html</ulink></para>
+            project-description, -history and features of XIMS consult <ulink url="http://xims.info/about.html">http://xims.info/about.html</ulink></para>
         </section>
     </section>
 
@@ -425,12 +425,14 @@
             <section>
                 <title>XML</title>
 
-                <para></para>
+                <para>Use this object-type together with <em>XSLStylesheet</em>. Create first a schema as XML-object-type and publish it. Then create the XML-file and link it to the schema. The XML-file has to be linked to the XSLStylesheet by your local XIMS-Support.</para>
 
+                <para>The <ulink url="howtos/simpleformedit-howto.sdbk">SimpleFormEdit Howto</ulink> describes these steps. If you do not want to use XML together with SimpleFormEdit, you may omit the restrictions.</para>
+                
                 <section>
                     <title>SimpleFormEdit</title>
 
-                    <para></para>
+                    <para>See the <ulink url="howtos/simpleformedit-howto.sdbk">SimpleFormEdit Howto</ulink> for an example usage.</para>
                 </section>
             </section>
 
@@ -443,14 +445,19 @@
             <section>
                 <title>AxPointPresentation</title>
 
-                <para>See the <ulink url="http://xims.info/documentation/users/howtos/axpointpresentation-howto.sdbk">AxPointPresentation Howto</ulink> for an
+                <para>See the <ulink url="howtos/axpointpresentation-howto.sdbk">AxPointPresentation Howto</ulink> for an
                 example usage.</para>
             </section>
 
             <section>
                 <title>XSLStylesheet</title>
 
-                <para></para>
+                <para>There are different applications for this object-type:</para>
+                <itemizedlist>
+                    <listitem>Layout of the department.</listitem>
+                    <listitem>Layout of a published SimpleDB or ReferenceLibrary: See the <ulink url="howtos/simpledb-howto-ger.sdbk">SimpleDB Howto</ulink> for an example usage.</listitem>
+                    <listitem>Combined with the XML-object-type: See the <ulink url="howtos/simpleformedit-howto.sdbk">SimpleFormEdit Howto</ulink> for an example usage.</listitem>
+                </itemizedlist>
             </section>
 
             <section>
@@ -486,7 +493,7 @@
             <section>
                 <title>DepartmentRoot</title>
 
-                <para>See the <ulink url="http://xims.info/documentation/users/howtos/departmentroot-howto.sdbk">DepartmentRoot Howto</ulink> for an example
+                <para>See the <ulink url="howtos/departmentroot-howto.sdbk">DepartmentRoot Howto</ulink> for an example
                 usage.</para>
             </section>
 
@@ -523,14 +530,14 @@
             <section>
                 <title>AnonDiscussionForum</title>
 
-                <para>See the <ulink url="http://xims.info/documentation/users/howtos/anondiscussionforum-howto.sdbk">Anonymous Discussion Forum HowTo</ulink>
+                <para>See the <ulink url="howtos/anondiscussionforum-howto.sdbk">Anonymous Discussion Forum HowTo</ulink>
                 for an example usage.</para>
             </section>
 
             <section>
                 <title>Questionnaire</title>
 
-                <para>There is <ulink url="http://xims.info/documentation/users/howtos/questionnaire-howto-ger.sdbk">Questionnaire-Howto</ulink> in German.</para>
+                <para>There is <ulink url="howtos/questionnaire-howto-ger.sdbk">Questionnaire-Howto</ulink> in German.</para>
             </section>
 
             <section>
@@ -572,6 +579,8 @@
                 <para>The SimpleDB object can be used to manage simple two-dimensional data structures. Using the web-interface, it is possible to set up a
                 simple database using &#34;String&#34;, &#34;String options&#34;, &#34;Textarea&#34;, &#34;Boolean&#34;, &#34;Integer&#34;, &#34;Float&#34;, and
                 &#34;Datetime&#34; datatypes.</para>
+                
+                <para>See the <ulink url="howtos/simpledb-howto-ger.sdbk">SimpleDB Howto</ulink> for an example usage.</para>
             </section>
         </section>
     </section>
