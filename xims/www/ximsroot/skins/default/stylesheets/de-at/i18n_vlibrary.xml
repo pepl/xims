@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <l>
     <subject_list>Themenbereiche</subject_list>
-    <author_list>Autorenindex</author_list>
+    <author_list>AutorInnenindex</author_list>
     <publication_list>Zeitschriften</publication_list>
     <subject>Thema</subject>
     <subjects>Themen</subjects>
-    <author>Autor</author>
-    <authors>Autoren</authors>
+    <author>AutorIn</author>
+    <authors>AutorInnen</authors>
     <editor>Herausgeber</editor>
     <editors>Herausgeber</editors>
     <publications>Publikationen</publications>
