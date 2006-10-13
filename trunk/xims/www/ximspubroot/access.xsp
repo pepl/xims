@@ -8,10 +8,12 @@
 <xsp:page xmlns:xsp="http://apache.org/xsp/core/v1"
           xmlns:web="http://axkit.org/NS/xsp/webutils/v1"
           xmlns:if-param="http://axkit.org/NS/xsp/if-param/v1"
-          xmlns:param="http://axkit.org/NS/xsp/param/v1">
-
+          xmlns:param="http://axkit.org/NS/xsp/param/v1"
+          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+          xmlns:dc="http://purl.org/dc/elements/1.1/"
+          xmlns:dcq="http://purl.org/dc/qualifiers/1.0/">
 <page>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcq="http://purl.org/dc/qualifiers/1.0/">
+<rdf:RDF>
     <rdf:Description about="">
         <dc:title>
             <if-param:reason>
@@ -79,7 +81,7 @@
         </tr>
         <tr><td>Password:</td><td><input tabindex="2" type="password" name="password" class="text"/></td></tr>
         <tr><td colspan="2" align="center"><input tabindex="3" type="submit" name="login" value="Login" class="control"/></td></tr>
-        <!-- you may want to reactivate the following section if you do offer https --> 
+        <!-- you may want to reactivate the following section if you do offer https -->
         <!--
         <xsp:logic>
         if (!<web:is_https/>) {
