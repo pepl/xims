@@ -8,12 +8,13 @@
 <xsp:page xmlns:xsp="http://apache.org/xsp/core/v1"
           xmlns:web="http://axkit.org/NS/xsp/webutils/v1"
           xmlns:if-param="http://axkit.org/NS/xsp/if-param/v1"
-          xmlns:param="http://axkit.org/NS/xsp/param/v1">
+          xmlns:param="http://axkit.org/NS/xsp/param/v1"
+          xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+          xmlns:dc  = "http://purl.org/dc/elements/1.1/"
+          xmlns:dcq = "http://purl.org/dc/qualifiers/1.0/">
 
 <page>
-    <rdf:RDF    xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                xmlns:dc  = "http://purl.org/dc/elements/1.1/"
-                xmlns:dcq = "http://purl.org/dc/qualifiers/1.0/">
+    <rdf:RDF>
         <rdf:Description about="">
             <dc:title>404 Not Found</dc:title>
             <dc:creator>The XIMS Project</dc:creator>
