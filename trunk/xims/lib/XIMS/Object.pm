@@ -135,6 +135,9 @@ sub new {
             }
         }
         if ( scalar( keys( %args ) ) > 0 ) {
+            # make sure those two ids come first, since things like body() depend on them
+            $self->{data_format_id} = delete $args{data_format_id};
+            $self->{object_type_id} = delete $args{object_type_id};
             foreach my $field ( keys ( %args ) ) {
                 $field = 'body' if $field eq 'binfile';
                 $self->$field( $args{$field} ) if $self->can( $field );
