@@ -146,8 +146,8 @@
         <td valign="top"><xsl:value-of select="$i18n_simpledb/l/String_options"/></td>
         <td>
             <select id="sdbp_regex_select" name="sdbp_regex_select">
-                <xsl:for-each select="str:split(substring-before(substring-after(/document/member_properties/member_property[@id=$property_id]/regex,'('),')'), '|')">
-                    <option value="{.}"><xsl:value-of select="."/></option>
+                <xsl:for-each select="str:split(substring-before(substring-after(/document/member_properties/member_property[@id=$property_id]/regex,'^('),')$'), '|')">
+                    <option value="{.}"><xsl:value-of select="translate(.,'\','')"/></option>
                 </xsl:for-each>
             </select>
             <xsl:text> </xsl:text>
@@ -273,7 +273,7 @@
                     <td>
                         <xsl:if test="/document/context/object/user_privileges/delete">
                             <xsl:text> </xsl:text>
-			    <a href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onClick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
+                <a href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onClick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
                                 <input
                                     type="image"
                                     name="property_delete{@id}"

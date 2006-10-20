@@ -87,8 +87,8 @@
                 <xsl:when test="type = 'stringoptions'">
                     <select tabindex="{position()+20}" name="simpledb_{name}">
                         <option value=""> </option>
-                        <xsl:for-each select="str:split(substring-before(substring-after(regex,'('),')'), '|')">
-                            <option value="{.}"><xsl:if test="$propvalue = ./text()"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="."/></option>
+                        <xsl:for-each select="str:split(substring-before(substring-after(regex,'^('),')$'), '|')">
+                            <option value="{translate(.,'\','')}"><xsl:if test="$propvalue = translate(./text(),'\','')"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="translate(.,'\','')"/></option>
                         </xsl:for-each>
                     </select>
                 </xsl:when>
@@ -211,7 +211,7 @@
         </p>
     </xsl:if>
 </xsl:template>
-    
+
 
 <xsl:template name="cttobject.content_length"/>
 <xsl:template name="cttobject.options.copy"/>
