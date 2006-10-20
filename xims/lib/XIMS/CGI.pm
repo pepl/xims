@@ -1478,6 +1478,9 @@ sub publish_gopublic {
             return $self->sendError( $ctxt, "Publishing object '" . $object->title() . "' failed." );
         }
         else {
+            my $privs_object = XIMS::ObjectPriv->new( grantee_id => XIMS::PUBLICUSERID(), content_id => $object->id() );
+            # Add to existing privileges if there are any
+            $options->{PRIVILEGE_MASK} |= $privs_object->privilege_mask() if defined $privs_object;
             $object->grant_user_privileges( grantee         => XIMS::PUBLICUSERID(),
                                             privilege_mask  => $options->{PRIVILEGE_MASK},
                                             grantor         => $user->id() );
