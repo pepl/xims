@@ -30,7 +30,7 @@ function checkPropertyType ( select ) {
 
 function addSelection( from, to ) {
     if ( from.value == '' ) { return false; }
-    from.value = from.value.replace(/\|/, '_'); // check for the separator
+    from.value = from.value.replace(/\|/g, '_'); // check for the separator
 
     newSelection = new Option( from.value );
     if ( ( to.length == 0 ) || ( to.options[0].text == '' )  ) {
@@ -53,10 +53,14 @@ function storeSelections( from ) {
     to = document.eform.sdbp_regex;
     to.value = '';
     for ( index = 0; index < from.length; index++ ) {
-        to.value += from.options[index].text;
+        to.value += escapeRegex( from.options[index].text );
         if ( from.length > 1 && index != from.length - 1 ) {
             to.value += "|";
         }
     }
     to.value = '^(' + to.value + ')$';
+}
+
+function escapeRegex( s ) {
+    return s.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
 }
