@@ -393,8 +393,7 @@ sub propfind {
     $r->content_type( 'text/xml; charset="UTF-8"' );
 
     my $dom = XML::LibXML::Document->new("1.0", "utf-8");
-    my $multistatus = $dom->createElement("D:multistatus");
-    $multistatus->setAttribute("xmlns:D", "DAV:");
+    my $multistatus =  $dom->createElementNS( 'DAV:', 'D:multistatus' );
 
     # For MS WebFolder compatibility
     $multistatus->setAttribute("xmlns:b", "urn:uuid:c2f41010-65b3-11d1-a29f-00aa00c14882/");
@@ -430,6 +429,7 @@ sub propfind {
     }
     else {
         @objects = ($object);
+        $is_fs_container{$object->{object_type_id}} = $object->object_type->{is_fs_container};
     }
 
     foreach my $o ( @objects ) {
