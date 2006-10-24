@@ -39,7 +39,7 @@ CREATE TABLE cisimpledb_member_properties
  id                 SERIAL            PRIMARY KEY
  ,name				VARCHAR(128)      NOT NULL
  ,type				VARCHAR(128)      DEFAULT 'string' CHECK (type in ('string', 'stringoptions', 'textarea', 'boolean', 'integer', 'datetime', 'float'))
- ,regex             VARCHAR(256)
+ ,regex             VARCHAR(2048)
  ,description       VARCHAR(4096)
  ,position          INTEGER
  ,mandatory         SMALLINT          DEFAULT 0

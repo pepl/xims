@@ -34,7 +34,7 @@ CREATE TABLE cisimpledb_member_properties
  id                 NUMBER            NOT NULL
  ,name              VARCHAR2(128)     NOT NULL
  ,type              VARCHAR2(128)     DEFAULT 'string'
- ,regex             VARCHAR2(256)
+ ,regex             VARCHAR2(2048)
  ,description       VARCHAR2(4000)
  ,position          NUMBER
  ,mandatory         NUMBER(1,0)       DEFAULT 0
