@@ -1432,11 +1432,17 @@ sub generate_dom {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    #
-    $self->{Object}->department_id( $self->{Object}->document_id() ) if $self->{Object}->object_type->is_objectroot();
-
+    # temporarily set department id to document for object roots
+    # to trick the auto index to point to the correct ou.xml
+    my $department_id = $self->{Object}->department_id();
+    if ( $self->{Object}->object_type->is_objectroot() ) {
+        $self->{Object}->department_id( $self->{Object}->document_id() ) ;
+    }
 
     my $dom = $self->SUPER::generate_dom( @_ );
+
+    # set back
+    $self->{Object}->department_id( $department_id ) ;
 
     return unless $dom;
 
