@@ -292,12 +292,11 @@ sub _generate_body_from_sql {
     $countsql =~ s/\Q$properties\E/$countproperty/;
 
     my $count;
-    eval { $count = $dbh->fetch_one_value( sql => $countsql, criteria => $criteria ); };
+    eval { ($count) = $dbh->fetch_select( sql => $countsql, criteria => $criteria ); };
     if ( $@ ) {
         XIMS::Debug( 2, "SQL query failed " . $@ );
         return $self->sendError( $ctxt, "$@");
     }
-
     if ( $count eq '0' or not defined $count ) {
         $ctxt->object->body( $body . $self->strong( "Query did not return any results" ) );
         return 0;
@@ -323,7 +322,6 @@ sub _generate_body_from_sql {
                       order => $orderby,
                       group => $groupby
     );
-
 
     # check for style_id and if there is a parseable stylesheet to transform the body there
     if ( $ctxt->object->style_id() and not $self->param('plaintable') ) {
