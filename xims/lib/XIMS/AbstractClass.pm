@@ -16,8 +16,8 @@ sub data {
     # if we were passed data, load the object from it.
     if ( scalar( keys( %args ) ) > 0 ) {
         # make sure those two ids come first, since things like body() depend on them
-        $self->{data_format_id} = delete $args{data_format_id};
-        $self->{object_type_id} = delete $args{object_type_id};
+        $self->{data_format_id} = delete $args{data_format_id} if $args{data_format_id};
+        $self->{object_type_id} = delete $args{object_type_id} if $args{object_type_id};
         foreach my $field ( keys ( %args ) ) {
             my ( $field_method, $r_type ) = reverse ( split /\./, $field );
             $field_method = 'document_id' if $field_method eq 'id' and $r_type and $r_type eq 'document';
