@@ -84,7 +84,7 @@
         <!-- you may want to reactivate the following section if you do offer https -->
         <!--
         <xsp:logic>
-        if (!<web:is_https/>) {
+        if (<web:request_prev_parsed_uri/> !~ /https/) {
         </xsp:logic>
             <tr>
             <td colspan="2" align="center">
