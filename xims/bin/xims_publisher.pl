@@ -10,6 +10,7 @@ my $xims_home = $ENV{'XIMS_HOME'} || '/usr/local/xims';
 die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$xims_home/Makefile";
 use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib";
 
+use XIMS;
 use XIMS::Exporter;
 use XIMS::Term;
 use Getopt::Std;
