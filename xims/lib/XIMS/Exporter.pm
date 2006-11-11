@@ -183,10 +183,6 @@ sub publish {
     # only indicate an error.
     #
     if ( $handler->test_ancestors() ) {
-        #
-        # after it is ashured that the object resides in the system as
-        # a separate object, the exporter can export the object.
-        #
         my $added_path = '';
         if (scalar @{$handler->{Ancestors}} > 0) {
             my $last_path = '';
@@ -340,8 +336,8 @@ sub unpublish {
 #           are not published yet, they will be published.
 #         - Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
 #           of the object or its ancestors
-#   * update_parent_autoindex()
-#         updates autoindex of parent unless its 'autoindex' attribute is set to '0'
+#   * update_parent()
+#         updates autoindex, container.xml of parent
 #
 #
 sub update_dependencies {
@@ -352,7 +348,7 @@ sub update_dependencies {
     my $handler = $params{handler};
 
     $handler->update_related();
-    $handler->update_parent_autoindex();
+    $handler->update_parent();
 }
 
 1;
@@ -482,23 +478,31 @@ sub new {
     # ancestors
     if ( not defined $self->{Ancestors} ) {
         # >> do we really need to load all the full ancestor object data? <<
-        my $cachekey = '_cachedancs' .  $self->{Object}->parent_id();
+        my $cachekey = $self->{Object}->parent_id();
         my $ancestors;
-        if ( defined $self->{Provider}->{$cachekey} ) {
-            $ancestors = $self->{Provider}->{$cachekey};
+        if ( defined $self->{Provider}->{ocache}->{ancs}->{$cachekey} ) {
+            $ancestors = $self->{Provider}->{ocache}->{ancs}->{$cachekey};
         }
         else {
             $ancestors = $self->{Object}->ancestors();
             # remove /root
             shift @{$ancestors};
-            $self->{Provider}->{$cachekey} = $ancestors;
+            $self->{Provider}->{ocache}->{ancs}->{$cachekey} = $ancestors;
         }
         $self->{Ancestors} = $ancestors;
     }
 
-    # publish only non-fs-container children here
-    my @non_fscont_types = map { $_->id() } $self->{Provider}->object_types( is_fs_container => 0 );
-    @{$self->{Children}} = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
+    my @keys = ( $self->{Object}->id(), $self->{User}->id(), 'nfst' );
+    my $cachekey = join('.', @keys);
+    if ( defined $self->{Provider}->{ocache}->{kids}->{$cachekey} ) {
+        $self->{Children} = $self->{Provider}->{ocache}->{kids}->{$cachekey};
+    }
+    else {
+        # publish only non-fs-container children here
+        my @non_fscont_types = map { $_->id() } grep { $_->is_fs_container == 0 }  values %{ XIMS::OBJECT_TYPES() };
+        my @children = $self->{Object}->children_granted( User => $self->{User}, object_type_id => \@non_fscont_types, published => 1 );
+        $self->{Children} = $self->{Provider}->{ocache}->{kids}->{$cachekey} = \@children;
+    }
 
     return $self;
 }
@@ -724,45 +728,49 @@ sub update_related {
     return 1;
 }
 
+
 ##
 # SYNOPSIS
-#    my $boolean = $self->update_parent_autoindex();
+#    my $boolean = $self->update_parent();
 #
 # PARAMETER
 #    none
 #
 # RETURNS
-#    $boolean : True or False for updating the parent's autoindex
+#    $boolean : True or False for updating the parent
 #
 # DESCRIPTION
-#    Updates the autoindex of the parent object unless its 'autoindex' attribute is set to '0'
+#    Updates the autoindex and container.xml of the parent object
 #
-sub update_parent_autoindex {
+sub update_parent {
     XIMS::Debug( 5, "called" );
     my ( $self, %params ) = @_;
 
     my $object = $self->{Object};
-    my $parent = $object->parent();
+    my $parent = $self->{Ancestors}->[-1];
 
     # check if we got a container object
     return undef unless $parent->object_type->is_fs_container();
 
-    my $autoindex = $parent->attribute_by_key( 'autoindex' );
-    if ( not defined $autoindex or $autoindex == 1 ) {
-        my @ancestors = @{$self->{Ancestors}};
-        pop @ancestors; # remove the parent folder of the current object
-
-        XIMS::Debug( 4, "autoindex attribute of parent is set, updating the autoindex" );
-        my $idx_generator =  XIMS::Exporter::AutoIndexer->new(
-                                     Provider   => $self->{Provider},
-                                     User       => $self->{User},
-                                     Object     => $parent,
-                                     Options    => {norecurse => 1},
-                                     Ancestors  => \@ancestors
-                                                             );
-        $idx_generator->create();
-        return 1;
+    my $helper = XIMS::Exporter::Helper->new();
+    my $base = XIMS::PUBROOT() . $parent->location_path();
+    my $basedir = $base;
+    $basedir =~ s#/[^/]+$##;
+    my $handler = $helper->exporterclass(
+                                     Provider       => $self->{Provider},
+                                     User           => $self->{User},
+                                     Object         => $parent,
+                                     Options        => {norecurse => 1},
+                                     exportfilename => $base,
+                                     Basedir        => $basedir,
+                                     Ancestors      => $self->{Ancestors}
+                                    );
+    unless ( $handler and $handler->create() ) {
+        XIMS::Debug( 2, "Parent of '" . $object->title() .  "' could not be republished!" );
+        return undef;
     }
+
+    return 1;
 }
 
 1;
@@ -1185,6 +1193,9 @@ sub create {
         #
         # generate metadata
         #
+
+        # delete children cache so that autoindex and container.xml will be up-to-date
+        delete $self->{Provider}->{ocache}->{kids};
 
         # first, the object DOM
         #
