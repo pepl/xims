@@ -20,7 +20,7 @@ my %args;
 getopts('hd:u:p:', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
-print $term->banner( "xml_unescape ReferenceLibraryItem and SimpleDBItem abstracts" );
+print $term->banner( "Sync department_id of ObjectRoot objects" );
 
 if ( $args{h} ) {
     print usage();
@@ -32,33 +32,53 @@ die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 die "Access Denied. You need to be admin.\n" unless $user->admin();
 
 my $dp = XIMS::DataProvider->new();
-my $reflibitem_ot  = XIMS::ObjectType->new( name => 'ReferenceLibraryItem' );
-my $simpledbitem_ot  = XIMS::ObjectType->new( name => 'SimpleDBItem' );
-my $iterator = $dp->objects( object_type_id => [ $reflibitem_ot->id(), $simpledbitem_ot->id() ] );
+my @oroot_ots = $dp->object_types( is_objectroot => 1 );
+my @oroot_otids = map { $_->id } @oroot_ots;
+
+my $iterator = $dp->objects( object_type_id => \@oroot_otids );
 my $objectcount;
 if ( defined $iterator and $objectcount = $iterator->getLength() ) {
-    print "\nFound '" . $objectcount . "' ReferenceLibraryItem and SimpleDBItem.\n\n";
+    print "\nFound '" . $objectcount . "' ObjectRoot objects.\n\n";
 }
 else {
-    print "\nNo ReferenceLibraryItem or SimpleDBItem objects found.\n";
+    print "\nNo ObjectRoot objects found.\n";
     exit 0;
 }
 
 my $updated = 0;
+my $skipped = 0;
 while ( my $object = $iterator->getNext() ) {
-    $object->abstract( XIMS::xml_unescape( $object->abstract() ) );
-    if ( $object->update( User => $user, no_modder => 1 ) ) {
-        $updated++;
+    if ( $object->department_id() eq $object->document_id() and $object->id != 1 ) {
+        my $department_id;
+        if ( $object->parent_id() == 1 ) {
+            $department_id = 1;
+        }
+        else {
+            $department_id = $object->parent->department_id();
+        }
+        if ( not defined $department_id ) {
+            warn "Could not get department id from parent of '" . $object->location_path() . "'. Skipping...\n";
+            next;
+        }
+        $object->department_id( $department_id );
+        if ( $object->update( User => $user, no_modder => 1 ) ) {
+            $updated++;
+        }
+        else {
+            warn "\nCould not update" . $object->location_path()  .".\n";
+        }
     }
     else {
-        warn "\nCould not update" . $object->location_path()  .".\n";
+        $skipped++;
     }
+
 }
 
 print qq*
-    xml_unescape report:
-        Total ReferenceLibraryItem or SimpleDBItem objects    $objectcount
-        Updated objects                                       $updated
+    department_id sync report:
+        Total ObjectRoot objects                          $objectcount
+        Synced department_id                              $updated
+        Skipped objects, due to dept_id already in sync   $skipped
 
 *;
 
