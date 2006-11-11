@@ -482,7 +482,7 @@ sub find_object_id {
     my $critstring;
     my @critvals;
     my $criteria = delete $args{criteria};
-    # Allow both a literal string and a array ref [ $string, @vals ] to be passed 
+    # Allow both a literal string and a array ref [ $string, @vals ] to be passed
     if ( not ref $criteria and length $criteria ) {
         $critstring = $criteria;
     }
@@ -891,7 +891,10 @@ sub new {
 
 sub DESTROY {
     my $self = shift;
-    $self->{dbh}->disconnect() if defined $self->{dbh};
+    if ( defined $self->{dbh} ) {
+        my $dbh = $self->{dbh}->get_dbh();
+        $dbh->disconnect() if $dbh;
+    }
 }
 
 1;
