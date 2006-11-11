@@ -29,6 +29,27 @@ BEGIN {
     foreach my $ot ( @ot ) {
         $_OBJECT_TYPES_->{$ot->id()} = $ot;
     }
+    foreach my $ot ( values %$_OBJECT_TYPES_ ) {
+        $ot->{fullname} = _getOTFullName( $ot, $_OBJECT_TYPES_ );
+    }
+
+    # internal helper for building up fullname of entry of XIMS::OBJECT_TYPES
+    sub _getOTFullName {
+        my $ot = shift;
+        my $ots = shift;
+        my $fullname = shift;
+
+        $fullname ||= $ot->{name};
+
+        if ( defined $ot->{parent_id} ) {
+            my $parent = $ots->{$ot->{parent_id}};
+            $fullname = $parent->{name} . '::' . $fullname;
+            return _getOTFullName( $parent, $ots, $fullname );
+        }
+        else {
+            return $fullname;
+        }
+    }
 }
 
 require XIMS::DataProvider;

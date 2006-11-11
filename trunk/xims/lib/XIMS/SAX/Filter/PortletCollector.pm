@@ -12,6 +12,7 @@ package XIMS::SAX::Filter::PortletCollector;
 use strict;
 use base qw( XIMS::SAX::Filter::DataCollector );
 use XML::LibXML;
+use XIMS;
 use XIMS::Object;
 use DBIx::SQLEngine::Criteria;
 use DBIx::SQLEngine::Criteria::Or;
@@ -78,10 +79,15 @@ sub handle_data {
             $childrenargs{published} = 1;
         }
 
+        my $object_types_names;
+        foreach my $ot ( values %{ XIMS::OBJECT_TYPES() } ) {
+            $object_types_names->{$ot->{fullname}} = $ot;
+        }
+
         my @object_type_ids;
         my $ot;
         foreach my $name ( $self->get_objecttypes() ) {
-            $ot = XIMS::ObjectType->new( fullname => $name );
+            $ot = $object_types_names->{$name};
             push(@object_type_ids, $ot->id()) if defined $ot;
         }
         $childrenargs{object_type_id} = \@object_type_ids;
@@ -90,7 +96,7 @@ sub handle_data {
         if ( $self->get_documentlinks() ) {
             my $ot;
             foreach my $name ( qw( URLLink SymbolicLink ) ) {
-                $ot = XIMS::ObjectType->new( fullname => $name );
+                $ot = $object_types_names->{$name};
                 push(@doclinks_object_type_ids, $ot->id()) if defined $ot;
             }
         }
