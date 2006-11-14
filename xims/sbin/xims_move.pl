@@ -104,7 +104,7 @@ my $newpath = $object->location_path_relative();
 my @dfs = $object->data_provider->data_formats( mime_type => 'text/%' );
 my @ids = map { $_->id } @dfs;
 
-my $urllink_otid = XIMS::ObjectType->new( name => 'URLLink' )->id();
+my $urllink_otid = XIMS::ObjectType->new( fullname => 'URLLink' )->id();
 
 my $iter = $object->descendants( data_format_id => \@ids );
 if ( defined $iter and $iter->getLength > 0 ) {
