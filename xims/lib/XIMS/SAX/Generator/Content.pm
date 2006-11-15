@@ -278,8 +278,16 @@ sub _set_children {
                 my @priv_data = $object->data_provider->getObjectPriv( content_id => \@childids,
                                                                  grantee_id => \@uid_list,
                                                                  properties => [ 'privilege_mask', 'content_id' ] );
+                my %seen = ();
                 foreach my $priv ( @priv_data ) {
-                    $privmask{$priv->{'objectpriv.content_id'}} |= int($priv->{'objectpriv.privilege_mask'});
+                    next if exists $seen{$priv->{'objectpriv.content_id'}};
+                    if ( $priv->{'objectpriv.privilege_mask'} eq '0' ) {
+                        $privmask{$priv->{'objectpriv.content_id'}} = 0;
+                        $seen{$priv->{'objectpriv.content_id'}}++;
+                    }
+                    else {
+                        $privmask{$priv->{'objectpriv.content_id'}} |= int($priv->{'objectpriv.privilege_mask'});
+                    }
                 }
             }
         }
@@ -300,6 +308,11 @@ sub _set_children {
             map { $container_ids{$_->{'dataformat.id'}}++ } @container_id_data;
         }
         foreach my $child ( @children ) {
+            # Test for explicit lockout (privmask == 0)
+            if ( not $privmask{$child->{id}} ) {
+                $child = undef; # cheaper than splicing
+                next;
+            }
             if ( $ctxt->properties->content->getchildren->addinfo() ) {
                 my @info = $ctxt->data_provider->get_descendant_infos( parent_id => $child->document_id() );
                 $child->{descendant_count}                       = $info[0];
