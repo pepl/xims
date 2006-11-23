@@ -68,8 +68,19 @@ sub get {
 sub create {
     my ($self, %args) = @_;
     #warn "create called " . Dumper( $args{properties} ) . "\n";
-    foreach ( keys( %{$args{properties}} ) ) {
-       $args{properties}->{$_} = set_attributes( $_ ) || $args{properties}->{$_}
+    my $insert_id;
+    foreach my $property ( keys( %{$args{properties}} ) ) {
+        if ( exists $PropertyAttributes{$property} ) {
+            $insert_id = $self->function_val( ${$PropertyAttributes{$property}} );
+            if ( not defined $insert_id ) {
+                XIMS::Debug( 2, "Could not retrieve current value for primary key from sequence function" );
+                return;
+            }
+            $args{properties}->{$property} = $insert_id;
+        }
+        else {
+            $args{properties}->{$property} = $args{properties}->{$property};
+        }
     }
     my ($table, $column_map) = $self->tables_and_columns( $args{properties} );
     # warn "and after " . Dumper( $column_map ) . "\n";
@@ -85,40 +96,10 @@ sub create {
         return $test if $table->[0] eq 'ci_object_privs_granted'; # no data that the app class doesn't already know about.
         return $test if $table->[0] eq 'ci_object_type_privs'; # no data that the app class doesn't already know about.
 
-        my $r_type = $Names{$table->[0]};
-        my $id_col_name;
-        my @select_crits = ();
-        foreach my $column ( keys( %{$column_map} ) ) {
-            my $reverse_lookup = $r_type . '.' . $column;
-            if ( $column eq 'id' ) {
-                $id_col_name = $column;
-                delete $column_map->{$column};
-            }
-            elsif ( ( not defined( $column_map->{$column})) ||
-                    ( $column_map->{$column} eq '' ) ||
-                    ( $column =~ /time/gi ) ||
-                    ( defined( $PropertyAttributes{"$reverse_lookup"})) ) {
-                delete $column_map->{$column};
-            }
-            else {
-               push @select_crits, DBIx::SQLEngine::Criteria->auto( { $column => $column_map->{$column} } );
-            }
-        }
-
-        my $select_crits = DBIx::SQLEngine::Criteria::And->new( @select_crits );
-        my $id_list = $self->{dbh}->fetch_select( table    => $table->[0],
-                                                  columns  => [ $id_col_name ],
-                                                  criteria => $select_crits
-                                                 );
-
-        #warn "IDS in Table " . $table->[0] . " : " . Dumper( $id_list );
-        return undef unless scalar( @{$id_list} ) > 0 ;
-        #warn "we got here because: ", scalar( @{$id_list} );
-        #warn "we will return: ", $id_list->[-1]->{id};
-        return $id_list->[-1]->{id};
+        return $insert_id;
     }
     else {
-        return undef;
+        return;
     }
 }
 
@@ -168,12 +149,6 @@ sub name_fixer {
         $out_row{"$out_name"} = $row->{$_};
     }
     return \%out_row;
-}
-
-sub set_attributes {
-    my $prop_name = shift;
-    return undef unless defined( $PropertyAttributes{$prop_name} );
-    return $PropertyAttributes{$prop_name};
 }
 
 sub tables_and_columns {
@@ -415,6 +390,21 @@ sub update_descendant_department_id {
                                     values   => { 'department_id' => $args{new_department_id} },
                                     criteria => { 'department_id' => $args{old_department_id},
                                                   'location_path' => $args{parent_location_path} . '/%' } );
+}
+
+sub function_val {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $function = shift;
+    my $query;
+    if ( $self->{RDBMSClass} eq 'Oracle' ) {
+        $query = "select $function as val from dual";
+    }
+    else {
+        $query = "select $function as val";
+    }
+    my $data = $self->{dbh}->fetch_select( sql => $query );
+    return $data->[0]->{'val'};
 }
 
 sub db_now {
