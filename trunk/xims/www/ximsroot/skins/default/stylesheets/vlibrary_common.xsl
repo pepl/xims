@@ -18,6 +18,7 @@
                 indent="no"/>
 
     <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
+    <xsl:variable name="user_privileges" select="/document/context/object/user_privileges" />
 
     <xsl:param name="mo" />
     <xsl:param name="colms" select="3"/>
@@ -241,10 +242,13 @@
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject=1;subject_id={id}">
             <xsl:value-of select="name"/>
         </a>&#160;
-        <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject_edit=1;subject_id={id}">
-            <img src="{$skimages}option_edit.png" alt="{$i18n_vlib/l/manage_subjects}" title="{$i18n_vlib/l/manage_subjects}" />
-        </a>
-    </xsl:template>
+        <!-- only show Edit-icon if user has the privilege "write" on the VLibray -->
+        <xsl:if test="$user_privileges/write=1">
+            <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject_edit=1;subject_id={id}">
+                <img src="{$skimages}option_edit.png" alt="{$i18n_vlib/l/manage_subjects}" title="{$i18n_vlib/l/manage_subjects}" />
+            </a>
+        </xsl:if>
+        </xsl:template>
 
     <xsl:template name="keyword_link">
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?keyword=1;keyword_id={id}">

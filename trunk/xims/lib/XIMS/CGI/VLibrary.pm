@@ -107,7 +107,6 @@ sub event_subject {
         else { return 0; }
     }
 
-    my $task = $self->param('subject'); # get task that should be executed (additional to event)
     $ctxt->properties->content->getformatsandtypes( 1 );
    
     my $offset = $self->param('page');
@@ -126,9 +125,18 @@ sub event_subject {
     return 0;
 }
 
+# store edited subject name and description
+# call the library with the param subject_store=1
 sub event_subject_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+    my $object = $ctxt->object();
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    XIMS::Debug( 6, "unlocking object" );
+    $object->unlock();
 
     my $subjectid = $self->param('subject_id');
 
@@ -144,8 +152,6 @@ sub event_subject_store {
         else { return 0; }
     }
 
-    # store edited subject name and description
-    # call the library with the param subject=store
     XIMS::Debug(5,"Updating subject");
     my $subject = XIMS::VLibSubject->new( id => $subjectid );
     $subject->name( $self->param('name') );
@@ -176,10 +182,10 @@ sub event_subject_view {
         else { return 0; }
     }
     # View kind of intro page for the selected subject. Just for public use. 
-    # call the library with the param subject=view
+    # call the library with the param subject_view=1
     if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
         XIMS::Debug(5,"Viewing subject");
-        $ctxt->properties->content->escapebody(1);
+        #$ctxt->properties->content->escapebody(1);
         $ctxt->properties->application->style( "subject_view" ) ;            
     } else {
         $self->sendError( $ctxt, "Viewing of a subject is only available for public use." );
@@ -188,11 +194,40 @@ sub event_subject_view {
 }
 
 sub event_subject_edit {
+    # edit the subject name and description
+    # call the library with the param subject_edit=1
+
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $subjectid = $self->param('subject_id');
+    my $object = $ctxt->object();
 
+    # operation control section
+    # whole VLibrary is locked if subject is edited
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    if ( $self->object_locked( $ctxt ) ) {
+        XIMS::Debug( 3, "Attempt to edit locked object" );
+        $self->sendError( $ctxt,
+                            "This object is locked by " .
+                            $object->locker->firstname() .
+                            " " . $object->locker->lastname() .
+                            " since " . $object->locked_time() .
+                            ". Please try again later." );
+    }
+    else {
+        if ( $object->lock() ) {
+            XIMS::Debug( 4, "lock set" );
+            $ctxt->session->message( "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!" );
+        }
+        else {
+            XIMS::Debug( 3, "lock not set" );
+        }
+    }
+
+    my $subjectid = $self->param('subject_id');
     unless ( $subjectid ) {
         my $subjectname = XIMS::decode( $self->param('subject_name') );
         if ( defined $subjectname ) {
@@ -205,8 +240,6 @@ sub event_subject_edit {
         else { return 0; }
     }
 
-    # edit the subject name and description
-    # call the library with the param subject=edit
     XIMS::Debug(5,"Editing subject");
     $ctxt->properties->application->style( "subject_edit" ) ;
     return 0;
