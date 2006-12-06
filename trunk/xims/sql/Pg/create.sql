@@ -196,6 +196,7 @@ CREATE TABLE ci_content
  ,title                         VARCHAR(400)  NOT NULL
  ,keywords                      VARCHAR(200)
  ,status                        VARCHAR(100)
+ ,status_checked_timestamp      TIMESTAMP(0)  WITHOUT TIME ZONE  
  ,creation_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now() NOT NULL
  ,valid_from_timestamp          TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now()
  ,valid_to_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE

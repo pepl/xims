@@ -48,7 +48,8 @@ sub event_default {
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-
+    # check URL;
+    $ctxt->object->check();
     $ctxt->properties->application->preservelocation( 1 );
 
     return 0 unless $self->init_store_object( $ctxt )

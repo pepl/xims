@@ -9,6 +9,8 @@ use base qw( XIMS::Object );
 use XIMS::DataFormat;
 use LWP::UserAgent;
 
+use Data::Dumper;
+
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 ##
@@ -51,9 +53,9 @@ sub new {
 #
 # DESCRIPTION
 #    Checks the HTTP-Status of the URL-link and stores 
-#    the result in the database 
-#       * attribute 'HTTP_Status': status line (code and message)
-#       * attribute 'last_checked': date of last check
+#    the result in ci_content
+#       * status: status line (code and message)
+#       * status_checked_timestamp: date and time of last check
 #
 sub check {
     my $self = shift;
@@ -66,8 +68,8 @@ sub check {
     my $res = $ua->request( $req );
     #if object is already created store status as attributes
     if ($self->document_id()) {
-        $self->attribute( http_status => $res->status_line );
-        $self->attribute( last_checked => $self->data_provider->db_now() );
+        $self->status( $res->status_line );
+        $self->status_checked_timestamp( $self->data_provider->db_now() );
     }
     return 1 if ($res->code =~ (/^[23]/));
     return 0;
