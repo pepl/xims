@@ -54,6 +54,7 @@
                 <item>content.title</item>
                 <item>content.keywords</item>
                 <item>content.status</item>
+                <item>content.status_checked_timestamp</item>
                 <item>content.creation_timestamp</item>
                 <item>content.attributes</item>
                 <item>content.locked_by_id</item>
@@ -114,6 +115,7 @@
                 <item>content.title</item>
                 <item>content.keywords</item>
                 <item>content.status</item>
+                <item>content.status_checked_timestamp</item>                
                 <item>content.creation_timestamp</item>
                 <item>content.attributes</item>
                 <item>content.locked_by_id</item>
