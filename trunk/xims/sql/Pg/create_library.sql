@@ -91,7 +91,7 @@ CREATE TABLE cilib_subjects
  (
  id                 SERIAL        PRIMARY KEY
  ,name              VARCHAR(128)
- ,description       VARCHAR(256)
+ ,description       VARCHAR(4000)
  ,document_id       INTEGER       NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
  ,UNIQUE(document_id, name)
   )
