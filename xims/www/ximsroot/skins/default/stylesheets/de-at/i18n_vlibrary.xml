@@ -7,6 +7,11 @@
     <subjects>Themen</subjects>
     <author>AutorIn</author>
     <authors>AutorInnen</authors>
+    <firstname>Vorname</firstname>
+    <middlename>zweiter Vorname</middlename>
+    <lastname>Nachname</lastname>
+    <suffix>Suffix</suffix>
+    <orgauthor>ist Organisation</orgauthor>
     <editor>Herausgeber</editor>
     <editors>Herausgeber</editors>
     <publications>Publikationen</publications>
@@ -31,5 +36,7 @@
     <AuthorStringFormat>Autoreneingabeformat: Vorname (opt: 2.Vorname) Nachname (opt:, Suffix). Mehrere Nachnamen müssen durch Anführungszeichen zusammengefasst werden.</AuthorStringFormat>
     <chronicle_from>Chronik von</chronicle_from>
     <chronicle_to>Chronik bis</chronicle_to>
+    <fill_in>Auswahl einfüllen</fill_in>
     <manage_subjects>Themen verwalten</manage_subjects>
+    <manage_authors>AutorInnen verwalten</manage_authors>
 </l>
