@@ -3,6 +3,7 @@ ALTER TABLE CILIB_SUBJECTS MODIFY  (description  VARCHAR2(4000));
 
 -- Add the document_id of a VLibrary to the subject
 ALTER TABLE CILIB_SUBJECTS ADD     (document_id NUMBER);
+ALTER TABLE CILIB_AUTHORS ADD     (document_id NUMBER);
 
 -----------------------------------------------------------------
 --                                                             --
@@ -22,6 +23,13 @@ ALTER TABLE CILIB_SUBJECTS
        (DOCUMENT_ID) REFERENCES CI_DOCUMENTS (ID) ON DELETE CASCADE
 );
 
-ALTER TABLE CILIB_SUBJECTS MODIFY  (document_id  NOT NULL)
+ALTER TABLE CILIB_AUTHORS
+ ADD (CONSTRAINT AUT_DOC_ID_FK FOREIGN KEY
+       (DOCUMENT_ID) REFERENCES CI_DOCUMENTS (ID) ON DELETE CASCADE
+);
+
+ALTER TABLE CILIB_SUBJECTS MODIFY  (document_id  NOT NULL);
+
+ALTER TABLE CILIB_AUTHORS  MODIFY  (document_id  NOT NULL)
 /
 
