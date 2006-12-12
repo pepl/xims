@@ -115,7 +115,7 @@ sub authors_from_node {
     my $self = shift;
     my $authorset = shift;
     my @authors;
-
+ 
     return () unless $authorset;
 
     foreach my $author ( $authorset->getChildrenByTagName("author") ) {
@@ -126,12 +126,14 @@ sub authors_from_node {
         $firstname ||= '';
         my $vlibauthor = XIMS::VLibAuthor->new( lastname => XIMS::escapewildcard( $lastname ),
                                                 middlename => $middlename,
-                                                firstname => $firstname);
+                                                firstname => $firstname,
+                                                document_id => $self->{Parent}->document_id() );
         if ( not (defined $vlibauthor and $vlibauthor->id) ) {
             $vlibauthor = XIMS::VLibAuthor->new();
             $vlibauthor->lastname( $lastname );
             $vlibauthor->middlename( $middlename );
             $vlibauthor->firstname( $firstname );
+            $vlibauthor->document_id ( $self->{Parent}->document_id() );
             if ( not $vlibauthor->create() ) {
                 XIMS::Debug( 3, "could not create VLibauthor $lastname" );
                 next;
@@ -143,7 +145,8 @@ sub authors_from_node {
     foreach my $author ( $authorset->getChildrenByTagName("corpauthor") ) {
         my $lastname = XIMS::clean( XIMS::nodevalue( $author ) );
         my $vlibauthor = XIMS::VLibAuthor->new( lastname => XIMS::escapewildcard( $lastname ),
-                                                object_type => '1' );
+                                                object_type => '1',
+                                                document_id => $self->{Parent}->document_id() );
         if ( not (defined $vlibauthor and $vlibauthor->id) ) {
             $vlibauthor = XIMS::VLibAuthor->new();
             $vlibauthor->lastname( $lastname );
@@ -196,10 +199,11 @@ sub subjects_from_node {
 
     foreach my $subject ( $subjectset->findnodes("subject/subjectterm") ) {
         my $subjectvalue = XIMS::clean( XIMS::nodevalue( $subject ) );
-        my $vlibsubject = XIMS::VLibSubject->new( name => $subjectvalue );
+        my $vlibsubject = XIMS::VLibSubject->new( name => $subjectvalue, document_id => $self->{Parent}->document_id() );
         if ( not (defined $vlibsubject and $vlibsubject->id) ) {
             $vlibsubject = XIMS::VLibSubject->new();
             $vlibsubject->name( $subjectvalue );
+            $vlibsubject->document_id( $self->{Parent}->document_id() );
             if ( not $vlibsubject->create() ) {
                 XIMS::Debug( 3, "could not create VLibSubject $subjectvalue" );
                 next;
