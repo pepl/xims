@@ -3,6 +3,8 @@
 ALTER TABLE cilib_authors ADD COLUMN document_id integer;
 ALTER TABLE cilib_authors ALTER COLUMN document_id SET NOT NULL;
 ALTER TABLE cilib_authors ADD FOREIGN KEY (document_id) REFERENCES ci_documents (id) ON DELETE CASCADE;
+ALTER TABLE cilib_authors ADD CONSTRAINT cilib_authors_unique_key 
+      UNIQUE (lastname, middlename, firstname, object_type, suffix, email, url, document_id);
 
 -- Add the document_id of the respective VLibrary to the subject
 
