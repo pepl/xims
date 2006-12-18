@@ -50,6 +50,7 @@ CREATE TABLE cilib_authors
  ,email             VARCHAR(80)       DEFAULT ''
  ,url               VARCHAR(250)      DEFAULT ''
  ,document_id       INTEGER           NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
+ ,UNIQUE (lastname, middlename, firstname, object_type, suffix, email, url, document_id)
  )
 ;
 
