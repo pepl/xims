@@ -59,6 +59,8 @@ use XML::LibXML::SAX::Builder;
 use XML::LibXSLT;
 
 use IO::File;
+#use Data::Dumper;
+#use bytes;
 
 use XIMS::Object; # just to be failsafe
 
@@ -344,11 +346,11 @@ sub update_dependencies {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %params = @_;
-
+ 
     my $handler = $params{handler};
 
     $handler->update_related();
-    $handler->update_parent();
+    $handler->update_parent() unless $handler->{Object}{_cached_parent_id} == 1;
 }
 
 1;
