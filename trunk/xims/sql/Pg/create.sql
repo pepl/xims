@@ -63,12 +63,15 @@ CREATE TABLE ci_object_types
 \echo creating table 'ci_object_privs_granted'
 CREATE TABLE ci_object_privs_granted
  (privilege_mask NUMERIC(32,0) NOT NULL
- ,grantee_id     INTEGER       NOT NULL
- ,grantor_id     INTEGER       NOT NULL
- ,content_id     INTEGER       NOT NULL
+ ,grantee_id     INTEGER       NOT NULL REFERENCES ci_users_roles(id)     ON DELETE CASCADE
+ ,grantor_id     INTEGER       NOT NULL REFERENCES ci_users_roles(id)     ON DELETE CASCADE
+ ,content_id     INTEGER       NOT NULL REFERENCES ci_content(id)     ON DELETE CASCADE
  )
 ;
 
+\echo creating indices on 'ci_object_privs_granted'
+CREATE INDEX ci_obj_privs_grantee_idx ON ci_object_privs_granted ( grantee_id );
+CREATE INDEX ci_obj_privs_content_idx ON ci_object_privs_granted ( content_id );
 
 \echo creating table 'ci_users_roles'
 CREATE TABLE ci_users_roles
@@ -196,7 +199,7 @@ CREATE TABLE ci_content
  ,title                         VARCHAR(400)  NOT NULL
  ,keywords                      VARCHAR(200)
  ,status                        VARCHAR(100)
- ,status_checked_timestamp      TIMESTAMP(0)  WITHOUT TIME ZONE  
+ ,status_checked_timestamp      TIMESTAMP(0)  WITHOUT TIME ZONE
  ,creation_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now() NOT NULL
  ,valid_from_timestamp          TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now()
  ,valid_to_timestamp            TIMESTAMP(0)  WITHOUT TIME ZONE

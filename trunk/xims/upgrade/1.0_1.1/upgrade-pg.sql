@@ -36,7 +36,8 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
 \i ../../sql/Pg/create_simpledb.sql
 
 \echo Adding new attributes to CI_OBJECT_TYPES
-ALTER TABLE ci_object_types ADD COLUMN is_davgetable    SMALLINT DEFAULT 0;
+ALTER TABLE ci_object_types ADD COLUMN is_davgetable    SMALLINT;
+ALTER TABLE ci_object_types ALTER is_davgetable SET DEFAULT 0;
 ALTER TABLE ci_object_types ADD COLUMN davprivval       NUMERIC(32,0);
 
 \echo Adding new attribute to CI_USERS_ROLES
