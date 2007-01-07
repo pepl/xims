@@ -129,7 +129,7 @@ if ( defined $iter and $iter->getLength > 0 ) {
         my $body = $desc->body();
         next unless defined $body;
 
-        my $count = $body =~ s/$oldpath/$newpath/g;
+        my $count = $body =~ s/\Q$oldpath\E/$newpath/g;
         if ( $count ) {
             $desc->body( $body );
             if ( scalar $desc->update( User => $user, no_modder => 1 ) ) {
