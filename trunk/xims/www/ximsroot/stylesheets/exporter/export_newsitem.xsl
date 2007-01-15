@@ -35,6 +35,7 @@
                 <story>
                     <xsl:apply-templates select="body"/>
                 </story>
+                <keywords><xsl:value-of select="keywords"/></keywords>
                 <image url="{image_id/location_path}" alt="{image_id/title}" longdesc="{image_id/abstract}"/>
                 <last_publication_timestamp><xsl:apply-templates select="last_publication_timestamp"/></last_publication_timestamp>
                 <last_modification_timestamp><xsl:apply-templates select="last_modification_timestamp"/></last_modification_timestamp>
