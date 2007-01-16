@@ -1586,6 +1586,7 @@ use vars qw( @ISA );
 
 use XIMS::SAX::Filter::DepartmentExpander;
 use XIMS::SAX::Filter::ContentIDPathResolver;
+use XIMS::SAX::Filter::Attributes;
 
 sub set_sax_filters {
     XIMS::Debug( 5, "called" );
@@ -1600,6 +1601,7 @@ sub set_sax_filters {
                                                                  ResolveContent => [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID ) ],
                                                                );
 
+    push @filter, XIMS::SAX::Filter::Attributes->new();
     XIMS::Debug( 5, "done" );
     return @filter;
 }
