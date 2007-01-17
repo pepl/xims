@@ -156,7 +156,7 @@
         # <'0'|'1'>
         # Set this to '0' if you want to symlink object roots directly under
         # ApacheDocumentRoot() or to '1', if you are planning to serve multiple
-        # XIMS hosted sites using Apache's virtual hostsing features.
+        # XIMS hosted sites using Apache's virtual hosting features.
         # See http://xims.info/documentation/admins/managing_multiple_sites_with_xims.sdbk
         # for further information and examples.
         # Do not change unless you know what you are doing!
