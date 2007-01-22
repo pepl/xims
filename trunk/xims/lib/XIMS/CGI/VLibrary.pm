@@ -98,7 +98,7 @@ sub event_subject {
     unless ( $subjectid ) {
         my $subjectname = XIMS::decode( $self->param('subject_name') );
         if ( defined $subjectname ) {
-            my $subject = XIMS::VLibSubject->new( name => $subjectname );
+            my $subject = XIMS::VLibSubject->new( name => $subjectname, document_id => $ctxt->object()->document_id() );
             if ( $subject and $subject->id() ) {
                 $subjectid = $subject->id();
             }
@@ -143,7 +143,7 @@ sub event_subject_store {
     unless ( $subjectid ) {
         my $subjectname = XIMS::decode( $self->param('subject_name') );
         if ( defined $subjectname ) {
-            my $subject = XIMS::VLibSubject->new( name => $subjectname );
+            my $subject = XIMS::VLibSubject->new( name => $subjectname, document_id => $object->document_id() );
             if ( $subject and $subject->id() ) {
                 $subjectid = $subject->id();
             }
@@ -173,7 +173,7 @@ sub event_subject_view {
     unless ( $subjectid ) {
         my $subjectname = XIMS::decode( $self->param('subject_name') );
         if ( defined $subjectname ) {
-            my $subject = XIMS::VLibSubject->new( name => $subjectname );
+            my $subject = XIMS::VLibSubject->new( name => $subjectname, document_id => $ctxt->object()->document_id() );
             if ( $subject and $subject->id() ) {
                 $subjectid = $subject->id();
             }
@@ -231,7 +231,7 @@ sub event_subject_edit {
     unless ( $subjectid ) {
         my $subjectname = XIMS::decode( $self->param('subject_name') );
         if ( defined $subjectname ) {
-            my $subject = XIMS::VLibSubject->new( name => $subjectname );
+            my $subject = XIMS::VLibSubject->new( name => $subjectname, document_id => $object->document_id() );
             if ( $subject and $subject->id() ) {
                 $subjectid = $subject->id();
             }
