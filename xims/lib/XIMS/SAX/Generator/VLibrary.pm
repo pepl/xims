@@ -73,6 +73,7 @@ sub prepare {
                 # yet another superfluos db hit! this has to be changed!!!
                 $child->{content_length} = $child->content_length();
                 $child->{authorgroup} = { author => [$child->vleauthors()] };
+                $child->{meta} = [$child->vlemeta()];
             }
             $doc_data->{context}->{object}->{children} = { object => \@vlchildren };
         }
