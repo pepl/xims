@@ -88,16 +88,15 @@ sub event_store {
             return 0;
         }
     }
+    
     my $meta;
     if (! $object->document_id() ) {
-        #Object must be created because a document_id() is needed to store subject, keyword and meta information
-        #my $importer = XIMS::Importer::Object->new( User => $ctxt->session->user(), Parent => $ctxt->parent() );
-        #if ( $importer->import( $object ) ) {
-        my $content_id = $object->create();
+        $self->SUPER::event_store( $ctxt );    
+        $object = $ctxt->object();
         $meta = XIMS::VLibMeta->new();
     }
     else {
-        $self->SUPER::event_store( $ctxt );
+        $self->SUPER::event_store( $ctxt );    
         $meta = XIMS::VLibMeta->new( document_id => $object->document_id());
     }
     
