@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" encoding="UTF-8" doctype-public="-//OASIS//DTD DocBook XML V4.2//EN" doctype-system="http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" />
+
+<!-- Using encoding="UTF-8" here generates literal utf-8 characters, not using it, generates numeric code-point entities -->
+<xsl:output method="xml" doctype-public="-//OASIS//DTD DocBook XML V4.2//EN" doctype-system="http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" />
 
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
