@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -60,7 +60,6 @@ use XML::LibXSLT;
 
 use IO::File;
 #use Data::Dumper;
-#use bytes;
 
 use XIMS::Object; # just to be failsafe
 
@@ -346,7 +345,7 @@ sub update_dependencies {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %params = @_;
- 
+
     my $handler = $params{handler};
 
     $handler->update_related();
@@ -873,6 +872,10 @@ sub create {
     my $document_fh = IO::File->new( $document_path, 'w' );
 
     if ( defined $document_fh ) {
+        # Exporter stylesheets generate UTF-8 encoded documents. Make sure that
+        # they get written out as such
+        binmode( $document_fh, ':utf8' );
+
         print $document_fh $transd_dom->toString(1);
         # $transd_dom->toFH($document_fh,1);
         $document_fh->close;
@@ -1119,6 +1122,7 @@ sub create {
     my $document_fh = IO::File->new( $document_path, 'w' );
 
     if ( defined $document_fh ) {
+        binmode( $document_fh, ':raw' );
         print $document_fh $self->{Object}->body;
         $document_fh->close;
         XIMS::Debug( 4, "document written" );
@@ -1226,6 +1230,7 @@ sub create {
         my $meta_fh = IO::File->new( $meta_path, 'w' );
 
         if ( defined $meta_fh ) {
+            binmode( $meta_fh, ':utf8' );
             print $meta_fh $transd_dom->toString();
             $meta_fh->close;
             XIMS::Debug( 4, "metadata-dom written" );
