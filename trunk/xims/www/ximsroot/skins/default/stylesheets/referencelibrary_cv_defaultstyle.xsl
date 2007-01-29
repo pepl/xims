@@ -16,6 +16,7 @@
 <xsl:output method="xml"
     encoding="utf-8"
     media-type="text/html"
+    omit-xml-declaration="yes"
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
     indent="no"/>
@@ -121,7 +122,7 @@
 
 <xsl:template name="object_per_reftype">
     <xsl:param name="date"/>
-    <xsl:param name="reference_type_id"/>    
+    <xsl:param name="reference_type_id"/>
     <!-- Hmm, there must be a better way instead of doing that xsl:if here... -->
     <xsl:if test="/document/context/object/children/object[reference_values/reference_value[property_id=3 and starts-with(value,$date)] and reference_type_id = $reference_type_id]">
         <h3>
@@ -135,7 +136,7 @@
             </xsl:for-each>
         </ul>
     </xsl:if>
-</xsl:template>    
+</xsl:template>
 
 <xsl:template match="children/object" mode="divlist">
     <xsl:variable name="referencenumber"><xsl:number count="object" /></xsl:variable>
