@@ -47,7 +47,7 @@ sub handler {
         # HTTP/1.0 only defines the Pragma: no-cache, anything
         # else is a implementation dependent extension which might 
         # or might not be recognized.
-        unless($cache_control =~ /public/) {
+        unless($r->protocol eq 'HTTP/1.1' or $cache_control =~ /public/) {
             $r->header_out('Pragma', 'no-cache');
         }    
     }
