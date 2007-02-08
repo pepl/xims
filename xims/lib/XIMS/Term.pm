@@ -8,7 +8,6 @@ use strict;
 # use warnings;
 no warnings 'redefine';
 use Encode;
-use XIMS::Auth;
 use File::Find;
 use Term::ReadKey;
 
@@ -54,7 +53,16 @@ sub authenticate {
         $password = $args{p};
     }
 
-    return XIMS::Auth->new( Username => $username, Password => $password )->authenticate();
+    my $auth;
+    eval { require XIMS::Auth; };
+    if ( $@ ) {
+        die "Could not load XIMS::Auth $@\n";
+    }
+    else {
+        $auth = XIMS::Auth->new( Username => $username, Password => $password );
+    }
+
+    return $auth->authenticate();
 }
 
 sub banner {
