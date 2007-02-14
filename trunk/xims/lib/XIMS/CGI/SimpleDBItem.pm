@@ -162,6 +162,7 @@ sub update_properties {
         
         # check property regex
         my $regex = $property->regex();
+        Encode::_utf8_on( $regex );
         if ( defined $value and length $value and defined $regex and length $regex ) {
             my $qregex;
             eval { $qregex = qr/$regex/; };
