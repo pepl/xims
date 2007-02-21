@@ -430,13 +430,15 @@ sub event_import {
 
             my $vlibauthor = XIMS::VLibAuthor->new( lastname => XIMS::escapewildcard( $lastname ),
                                                     middlename => $middlename,
-                                                    firstname => $firstname
+                                                    firstname => $firstname,
+                                                    document_id => $ctxt->object->document_id,
                                                     );
             if ( not (defined $vlibauthor and $vlibauthor->id) ) {
                 $vlibauthor = XIMS::VLibAuthor->new();
                 $vlibauthor->lastname( $lastname );
                 $vlibauthor->middlename( $middlename ) if ( defined $middlename and length $middlename );
                 $vlibauthor->firstname( $firstname ) if ( defined $firstname and length $firstname );
+                $vlibauthor->document_id( $ctxt->object->document_id );
                 if ( not $vlibauthor->create() ) {
                     XIMS::Debug( 3, "Could not create VLibauthor $lastname" );
                     next;
