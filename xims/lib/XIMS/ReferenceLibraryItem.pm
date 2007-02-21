@@ -14,7 +14,6 @@ use XIMS::RefLibReferencePropertyValue;
 use XIMS::RefLibReference;
 use XIMS::RefLibAuthorMap;
 use XIMS::VLibAuthor;
-
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 __PACKAGE__->mk_accessors( qw(vlauthors) );
@@ -450,13 +449,16 @@ sub create_author_mapping_from_name {
         my $vlibauthor = XIMS::VLibAuthor->new( lastname => XIMS::escapewildcard( $lastname ),
                                                 middlename => $middlename,
                                                 firstname => $firstname,
-                                                suffix => $suffix);
+                                                suffix => $suffix,
+                                                document_id => $self->parent_id
+                                              );
         if ( not (defined $vlibauthor and $vlibauthor->id) ) {
             $vlibauthor = XIMS::VLibAuthor->new();
             $vlibauthor->lastname( $lastname );
             $vlibauthor->middlename( $middlename ) if ( defined $middlename and length $middlename );
             $vlibauthor->firstname( $firstname ) if ( defined $firstname and length $firstname );
             $vlibauthor->suffix( $suffix ) if ( defined $suffix and length $suffix );
+            $vlibauthor->document_id( $self->parent_id);
             if ( not $vlibauthor->create() ) {
                 XIMS::Debug( 3, "Could not create VLibauthor $lastname" );
                 next;
