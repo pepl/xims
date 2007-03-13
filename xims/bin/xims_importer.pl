@@ -46,7 +46,7 @@ my $privmask = $user->object_privmask( $parent );
 die "Access Denied. You do not have privileges to create objects under '".$args{m}."'\n" unless $privmask and ($privmask & XIMS::Privileges::CREATE());
 
 my $path = $ARGV[0];
-die "Could not read '$path'\n" unless -f $path or -d $path;
+die "Could not read '$path': $!\n" unless (-R $path && -f $path or -d $path);
 die "Cannot import from symlink directory '$path'\n" if -l $path and -d $path;
 # untaint the path
 $path = $1 if $path =~ /^(.*)$/;
