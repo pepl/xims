@@ -100,7 +100,7 @@ sub get_strref {
     my $self = shift;
     my $file = shift;
     local $/;
-    open (INPUT, $file) || die "could not open $file: $!";
+    die "could not open $file: $!" unless -R $file and open (INPUT, $file);
     my $contents = <INPUT>;
     close INPUT;
     return \$contents;
