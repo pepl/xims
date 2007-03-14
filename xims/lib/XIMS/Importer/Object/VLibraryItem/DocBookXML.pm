@@ -151,6 +151,7 @@ sub authors_from_node {
             $vlibauthor = XIMS::VLibAuthor->new();
             $vlibauthor->lastname( $lastname );
             $vlibauthor->object_type( '1' );
+            $vlibauthor->document_id ( $self->{Parent}->document_id() );
             if ( not $vlibauthor->create() ) {
                 XIMS::Debug( 3, "could not create VLibauthor $lastname" );
                 next;
