@@ -30,6 +30,10 @@ function openDocWindow(topic) {
     docWindow = window.open( "http://xims.info/documentation/users/xims-user_s-reference.sdbk#" + escape(topic), "displayWindow","resizable=yes,scrollbars=yes,width=800,height=480,screenX=100,screenY=300" );
 }
 
+function editAuthorWindow(url) {
+    newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=555,height=300,screenX=100,screenY=300" );
+}
+
 function getParamValue( param ) {
     var objQuery = new Object();
     var objQuery2 = new Object();
