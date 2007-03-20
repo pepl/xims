@@ -220,21 +220,21 @@
     </xsl:template>
 
     <xsl:template name="author_link">
-        <a href="{$xims_box}{$goxims_content}{$absolute_path}?author=1;author_id={id};author_firstname={firstname};author_middlename={middlename};author_lastname={lastname}">
+      <a href="{$xims_box}{$goxims_content}{$absolute_path}?author=1;author_id={id};author_firstname={firstname};author_middlename={middlename};author_lastname={lastname}">
         <xsl:value-of select="firstname"/>
         <xsl:text> </xsl:text>
         <xsl:if test="middlename">
-            <xsl:value-of select="middlename"/>
-            <xsl:text> </xsl:text>
+          <xsl:value-of select="middlename"/>
+          <xsl:text> </xsl:text>
         </xsl:if>
         <xsl:value-of select="lastname"/></a>&#160;
         <!-- only show Edit-icon if user has the privilege "write" on the VLibray -->
         <xsl:if test="$user_privileges/write=1">
-            <a href="{$xims_box}{$goxims_content}{$absolute_path}?author_edit=1;author_id={id}">
-                <img src="{$skimages}option_edit.png" 
-                     alt="{$i18n_vlib/l/manage_authors}" 
-                     title="{$i18n_vlib/l/manage_authors}" />
-            </a>
+          <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_edit=1;author_id={id}')">
+            <img src="{$skimages}option_edit.png" 
+                 alt="{$i18n_vlib/l/manage_authors}" 
+                 title="{$i18n_vlib/l/manage_authors}" />
+          </a>
         </xsl:if>
     </xsl:template>
 
