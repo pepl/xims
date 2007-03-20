@@ -31,6 +31,8 @@ sub registerEvents {
           keyword
           authors
           author
+          author_store
+          author_edit
           publications
           publication
           vlsearch
@@ -108,7 +110,7 @@ sub event_subject {
     }
 
     $ctxt->properties->content->getformatsandtypes( 1 );
-   
+
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
     my $rowlimit = 10;
@@ -181,12 +183,12 @@ sub event_subject_view {
         }
         else { return 0; }
     }
-    # View kind of intro page for the selected subject. Just for public use. 
+    # View kind of intro page for the selected subject. Just for public use.
     # call the library with the param subject_view=1
     if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
         XIMS::Debug(5,"Viewing subject");
         #$ctxt->properties->content->escapebody(1);
-        $ctxt->properties->application->style( "subject_view" ) ;            
+        $ctxt->properties->application->style( "subject_view" ) ;
     } else {
         $self->sendError( $ctxt, "Viewing of a subject is only available for public use." );
     }
@@ -207,6 +209,7 @@ sub event_subject_edit {
     unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
         return $self->event_access_denied( $ctxt );
     }
+    $ctxt->properties->application->style( "subject_edit" ) ;
 
     if ( $self->object_locked( $ctxt ) ) {
         XIMS::Debug( 3, "Attempt to edit locked object" );
@@ -241,7 +244,6 @@ sub event_subject_edit {
     }
 
     XIMS::Debug(5,"Editing subject");
-    $ctxt->properties->application->style( "subject_edit" ) ;
     return 0;
 }
 
@@ -349,6 +351,108 @@ sub event_author {
     return 0;
 }
 
+sub event_author_edit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+
+    # operation control section
+    # whole VLibrary is locked if subject is edited
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    $ctxt->properties->application->style( "author_edit" );
+
+    if ( $self->object_locked( $ctxt ) ) {
+        XIMS::Debug( 3, "Attempt to edit locked object" );
+        $self->sendError( $ctxt,
+                          "This object is locked by " .
+                          $object->locker->firstname() .
+                          " " . $object->locker->lastname() .
+                          " since " . $object->locked_time() .
+                          ". Please try again later." );
+    }
+    else {
+        if ( $object->lock() ) {
+            XIMS::Debug( 4, "lock set" );
+            $ctxt->session->message( "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!" );
+        }
+        else {
+            XIMS::Debug( 3, "lock not set" );
+        }
+    }
+
+
+    my $authorid = $self->param('author_id');
+    my $author;
+
+    if (defined $authorid and $authorid) {
+        $author = XIMS::VLibAuthor->new(id => $authorid);
+    }
+    else {
+         $author = XIMS::VLibAuthor->new();
+    }
+    $ctxt->objectlist( [$author] );
+    return 0;
+}
+
+sub event_author_store {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    XIMS::Debug( 6, "unlocking object" );
+    $object->unlock();
+
+
+    my $id = $self->param('vlauthor_id');
+    my $firstname = XIMS::clean($self->param('vlauthor_firstname')) || '';
+    my $middlename = XIMS::clean($self->param('vlauthor_middlename')) || '';
+    my $lastname = XIMS::clean($self->param('vlauthor_lastname')) || '';
+    my $suffix = XIMS::clean($self->param('vlauthor_suffix')) || '';
+    my $objecttype = XIMS::clean($self->param('vlauthor_object_type'));
+
+    my $vlibauthor;
+
+    if (defined $id and $id) {
+        if ($vlibauthor = XIMS::VLibAuthor->new( id => $id )) {
+            $vlibauthor->firstname( $firstname );
+            $vlibauthor->middlename( $middlename );
+            $vlibauthor->lastname( $lastname );
+            $vlibauthor->suffix( $suffix );
+            if (defined $objecttype and $objecttype ) {
+                $vlibauthor->object_type(1);
+            }
+            else {
+                $vlibauthor->object_type(0);
+            }
+
+            XIMS::Debug( 6, "unlocking object" );
+	    $ctxt->object->unlock();
+
+            if ($vlibauthor->update == 1) {
+                XIMS::Debug(6, "Author: Update record successful.");
+                $ctxt->properties->application->style( "objectlist" ) ;
+            }
+            else {
+                XIMS::Debug(3, "Author: Update record failed.");
+                return $self->sendError( $ctxt, "Author: Update record failed." );
+            }
+        }
+        else {
+            XIMS::Debug(3, "Bogus AuthorID: $id?");
+            return $self->sendError( $ctxt, "Bogus AuthorID: $id?" );
+        }
+    }
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
+    return 0;
+}
 
 sub event_publications {
     XIMS::Debug( 5, "called" );
