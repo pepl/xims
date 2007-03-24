@@ -660,11 +660,8 @@
 </xsl:template>
 
 <xsl:template name="cttobject.locationtitle">
-    <xsl:variable name="dataformat">
-        <xsl:value-of select="data_format_id"/>
-    </xsl:variable>
-    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
-    <xsl:param name="dfmime" select="/document/data_formats/data_format[@id=$dataformat]/mime_type"/>
+    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
+    <xsl:param name="dfmime" select="/document/data_formats/data_format[@id=current()/data_format_id]/mime_type"/>
 
     <xsl:choose>
         <xsl:when test="marked_deleted=1">
@@ -764,10 +761,10 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
 </xsl:template>
 
 <xsl:template name="cttobject.dataformat">
+    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
     <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
-    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
 
     <xsl:choose>
         <xsl:when test="marked_deleted=1">
@@ -797,11 +794,8 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
 </xsl:template>
 
 <xsl:template name="cttobject.content_length">
-    <xsl:variable name="dataformat">
-        <xsl:value-of select="data_format_id"/>
-    </xsl:variable>
-    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
-    <xsl:param name="dfmime" select="/document/data_formats/data_format[@id=$dataformat]/mime_type"/>
+    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
+    <xsl:param name="dfmime" select="/document/data_formats/data_format[@id=current()/data_format_id]/mime_type"/>
 
    <!-- find a better way to do this (OT property "hasloblength" for example) -->
     <xsl:if test="$dfmime !='application/x-container'
