@@ -52,6 +52,7 @@
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <xsl:call-template name="create_menu_jscss"/>
         </head>
     </xsl:template>
 
@@ -124,6 +125,7 @@
     </xsl:template>
 
     <xsl:template name="decide_plural">
+        <xsl:param name="objectitems_count"/>
         <xsl:choose>
             <xsl:when test="number($objectitems_count) = 1">
                 <xsl:value-of select="$i18n_vlib/l/item"/>
@@ -231,8 +233,8 @@
         <!-- only show Edit-icon if user has the privilege "write" on the VLibray -->
         <xsl:if test="$user_privileges/write=1">
           <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_edit=1;author_id={id}')">
-            <img src="{$skimages}option_edit.png" 
-                 alt="{$i18n_vlib/l/manage_authors}" 
+            <img src="{$skimages}option_edit.png"
+                 alt="{$i18n_vlib/l/manage_authors}"
                  title="{$i18n_vlib/l/manage_authors}" />
           </a>
         </xsl:if>
