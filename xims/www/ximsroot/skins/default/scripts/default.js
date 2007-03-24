@@ -5,12 +5,43 @@
 # $Id$
 */
 
-agent = navigator.userAgent
-browser = 0
-selected = ''
+agent = navigator.userAgent;
+browser = 0;
+selected = '';
 if (agent.indexOf("a/3",1) == 6 || agent.indexOf("a/4",1) == 6 || agent.indexOf("a/5",1) == 6) {browser = 1} else {browser = 0}
 
 // Cache Image
+
+/*
+var preloaded = new Array();
+function preload_images() {
+    for (var i = 0; i < arguments.length; i++){
+        preloaded[i] = document.createElement('img');
+        preloaded[i].setAttribute('src',arguments[i]);
+    };
+};
+
+preload_images(
+    '/ximsroot/skins/default/images/navigate-back.png',
+    '/ximsroot/skins/default/images/navigate-up.png',
+    '/ximsroot/skins/default/images/navigate-forward.png',
+    '/ximsroot/skins/default/images/option_move.png',
+    '/ximsroot/skins/default/images/option_move_over.png',
+    '/ximsroot/skins/default/images/option_move_click.png',
+    '/ximsroot/skins/default/images/option_edit.png',
+    '/ximsroot/skins/default/images/option_edit_over.png',
+    '/ximsroot/skins/default/images/option_edit_click.png',
+    '/ximsroot/skins/default/images/option_delete.png',
+    '/ximsroot/skins/default/images/option_delete_over.png',
+    '/ximsroot/skins/default/images/option_delete_click.png',
+    '/ximsroot/skins/default/images/option_copy.png',
+    '/ximsroot/skins/default/images/option_pub.png',
+    '/ximsroot/skins/default/images/option_acl.png',
+    '/ximsroot/skins/default/images/status_pub.png',
+    '/ximsroot/skins/default/images/status_locked.png',
+    '/ximsroot/images/spacer_white.gif'
+);
+*/
 
 if (browser == 1) {
     /* Back, Forward, Up Dir */
