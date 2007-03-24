@@ -272,6 +272,39 @@
             </li>
         </ul>
     </div>
+    <noscript>
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET">
+            <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap">
+                <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="objtype">
+                    <xsl:choose>
+                        <xsl:when test="/document/context/object/@id = 1">
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]" mode="form"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and not(contains(name,'Item')) and parent_id = $parent_id]" mode="form"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </select>
+            </td>
+            <td width="80" background="{$skimages}subheader-generic_bg.png" style="padding-top: 4">
+                <xsl:text>&#160;</xsl:text>
+                <input type="image"
+                    name="create"
+                    src="{$sklangimages}create.png"
+                    width="65"
+                    height="14"
+                    alt="{$i18n/l/Create}"
+                    title="{$i18n/l/Create}"
+                    border="0" />
+                <input name="page" type="hidden" value="{$page}"/>
+                <input name="r" type="hidden" value="{/document/context/object/@id}"/>
+                <xsl:if test="$defsorting != 1">
+                    <input name="sb" type="hidden" value="{$sb}"/>
+                    <input name="order" type="hidden" value="{$order}"/>
+                </xsl:if>
+            </td>
+        </form>
+    </noscript>
 </xsl:template>
 
 <xsl:template name="header.cttobject.search">
@@ -364,6 +397,21 @@
         </xsl:choose>
     </xsl:variable>
     <li><a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype={$fullname};page={$page};r={/document/context/object/@id}{$sorting}"><xsl:value-of select="$fullname"/></a></li>
+</xsl:template>
+
+<xsl:template match="object_type" mode="form">
+    <xsl:variable name="parent_id" select="parent_id"/>
+    <xsl:variable name="fullname">
+        <xsl:choose>
+            <xsl:when test="$parent_id != ''">
+                <xsl:value-of select="/document/object_types/object_type[@id=$parent_id]/name"/>::<xsl:value-of select="name"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="name"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <option value="{$fullname}"><xsl:value-of select="$fullname"/></option>
 </xsl:template>
 
 </xsl:stylesheet>
