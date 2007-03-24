@@ -145,27 +145,23 @@
             <xsl:call-template name="header.arrownavigation"/>
             <xsl:choose>
                 <xsl:when test="$m='e'">
-                    <xsl:choose>
-                        <xsl:when test="/document/context/object/user_privileges/create
-                                       and $createwidget = 'true'
-                                       and /document/object_types/object_type[can_create]">
+                    <td width="215" background="{$skimages}options_bg.png" nowrap="nowrap">
+                        <xsl:if test="$nooptions='false'">
+                            <xsl:call-template name="cttobject.options"/>
+                        </xsl:if>
+                    </td>
+                    <td width="80" background="{$skimages}subheader-generic_bg.png" nowrap="nowrap">
+                        <xsl:if test="$nostatus='false'">
+                            <xsl:call-template name="cttobject.status"/>
+                        </xsl:if>
+                        <xsl:if test="/document/context/object/user_privileges/create
+                            and $createwidget = 'true'
+                            and /document/object_types/object_type[can_create]">
                             <xsl:call-template name="header.cttobject.createwidget">
                                 <xsl:with-param name="parent_id"><xsl:value-of select="$parent_id"/></xsl:with-param>
                             </xsl:call-template>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <td width="215" background="{$skimages}options_bg.png" nowrap="nowrap">
-                                <xsl:if test="$nooptions='false'">
-                                    <xsl:call-template name="cttobject.options"/>
-                                </xsl:if>
-                            </td>
-                            <td width="80" background="{$skimages}subheader-generic_bg.png" nowrap="nowrap">
-                                <xsl:if test="$nostatus='false'">
-                                    <xsl:call-template name="cttobject.status"/>
-                                </xsl:if>
-                            </td>
-                        </xsl:otherwise>
-                    </xsl:choose>
+                        </xsl:if>
+                    </td>
                 </xsl:when>
                 <xsl:otherwise>
                     <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap"><xsl:text>&#160;</xsl:text></td>
@@ -245,35 +241,37 @@
 </xsl:template>
 
 <xsl:template name="header.cttobject.createwidget">
-    <xsl:param name="parent_id" />
-    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET">
-        <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap">
-            <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="objtype">
-                <!-- Do not display object types that either are not fully implemented or that are not meant to be created directly.
-                     We may consider adding an object type property for the latter types.
-                     jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
-                -->
-                <xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and name != 'VLibraryItem' and parent_id = $parent_id]"/>
-            </select>
-        </td>
-        <td width="80" background="{$skimages}subheader-generic_bg.png" style="padding-top: 4">
-            <xsl:text>&#160;</xsl:text>
-            <input type="image"
-                    name="create"
-                    src="{$sklangimages}create.png"
-                    width="65"
-                    height="14"
-                    alt="{$i18n/l/Create}"
-                    title="{$i18n/l/Create}"
-                    border="0" />
-            <input name="page" type="hidden" value="{$page}"/>
-            <input name="r" type="hidden" value="{/document/context/object/@id}"/>
-            <xsl:if test="$defsorting != 1">
-                <input name="sb" type="hidden" value="{$sb}"/>
-                <input name="order" type="hidden" value="{$order}"/>
-            </xsl:if>
-        </td>
-    </form>
+    <xsl:param name="parent_id"/>
+    <div id="MDME" style="display:none">
+        <ul>
+            <li><xsl:value-of select="$i18n/l/Create"/>
+                <ul>
+                    <xsl:choose>
+                        <xsl:when test="/document/context/object/@id = 1">
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <li><xsl:value-of select="$i18n/l/More"/>
+                                <ul>
+                                    <!-- Only show basic object types on first page: TODO Select from object type properties and not from OT names or IDs!
+                                        Do not display object types that either are not fully implemented or that are not meant to be created directly.
+                                        We may consider adding an object type property for the latter types.
+                                        jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
+                                    -->
+                                    <xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'AnonDiscussionForumContrib' or contains(name,'Item') or name = 'SiteRoot' or parent_id != $parent_id)]">
+                                        <xsl:sort select="name"/>
+                                    </xsl:apply-templates>
+                                </ul>
+                            </li>
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]">
+                                <xsl:sort select="name"/>
+                            </xsl:apply-templates>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </xsl:template>
 
 <xsl:template name="header.cttobject.search">
@@ -351,8 +349,10 @@
     </xsl:choose>
 </xsl:template>
 
+
 <xsl:template match="object_type">
     <xsl:variable name="parent_id" select="parent_id"/>
+    <xsl:variable name="sorting"><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:variable>
     <xsl:variable name="fullname">
         <xsl:choose>
             <xsl:when test="$parent_id != ''">
@@ -363,9 +363,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
-    <option value="{$fullname}"><xsl:value-of select="$fullname"/></option>
+    <li><a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype={$fullname};page={$page};r={/document/context/object/@id}{$sorting}"><xsl:value-of select="$fullname"/></a></li>
 </xsl:template>
-
-
 
 </xsl:stylesheet>
