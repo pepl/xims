@@ -200,7 +200,7 @@
 <xsl:template name="common-head">
 <!-- param mode to set the HTML title -->
     <xsl:param name="mode">create</xsl:param>
-<!-- with the following parameters different options can be integratetd into the HTML HEAD 
+<!-- with the following parameters different options can be integratetd into the HTML HEAD
     currently available:
         calendar: Integration of jscalendar (not included in xims, install seperately)
         htmlarea: Integration of the WYSIWYG Editor Htmlarea included in xims-contrib
@@ -210,7 +210,7 @@
     <head>
         <title>
         <xsl:if test="$mode='create'"><xsl:value-of select="$i18n/l/create"/></xsl:if>
-        <xsl:if test="$mode='edit'"><xsl:value-of select="$i18n/l/edit"/></xsl:if>        
+        <xsl:if test="$mode='edit'"><xsl:value-of select="$i18n/l/edit"/></xsl:if>
         &#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
@@ -1377,6 +1377,12 @@
             return false;
         }
     </script>
+</xsl:template>
+
+<xsl:template name="create_menu_jscss">
+    <script src="{$ximsroot}skins/{$currentskin}/scripts/create_menu_expander.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}skins/{$currentskin}/scripts/create_menu_setup.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/create_menu_style.css" type="text/css" />
 </xsl:template>
 
 </xsl:stylesheet>

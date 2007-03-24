@@ -250,6 +250,11 @@
                         <xsl:when test="/document/context/object/@id = 1">
                             <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"/>
                         </xsl:when>
+                        <xsl:when test="$parent_id != ''">
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]">
+                                <xsl:sort select="name"/>
+                            </xsl:apply-templates>
+                        </xsl:when>
                         <xsl:otherwise>
                             <li><xsl:value-of select="$i18n/l/More"/>
                                 <ul>

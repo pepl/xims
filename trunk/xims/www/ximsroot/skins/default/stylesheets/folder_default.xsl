@@ -38,9 +38,7 @@
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/create_menu_expander.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/create_menu_setup.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/create_menu_style.css" type="text/css" />
+        <xsl:call-template name="create_menu_jscss"/>
     </head>
 </xsl:template>
 
