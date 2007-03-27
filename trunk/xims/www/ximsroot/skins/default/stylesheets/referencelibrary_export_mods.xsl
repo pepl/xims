@@ -180,11 +180,11 @@
     </xsl:if>
 
     <xsl:if test="$genre = 'Dissertation'">
-        <genre authority="marcgt" reflib:retypeid="{reference_type_id}">theses</genre>
+        <genre authority="marcgt" reflib:reftype_id="{reference_type_id}">theses</genre>
     </xsl:if>
 
     <xsl:if test="$genre != 'Proceeding' and $genre != 'Article' and $genre != 'Dissertation'">
-        <genre reflib:retypeid="{reference_type_id}"><xsl:value-of select="translate($genre,'BCDRUIP','bcdruip')"/></genre>
+        <genre reflib:reftype_id="{reference_type_id}"><xsl:value-of select="translate($genre,'BCDRUIP','bcdruip')"/></genre>
     </xsl:if>
 
     <xsl:if test="$serial_id != '' or $btitle != '' or $conf_title != ''">
