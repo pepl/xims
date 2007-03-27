@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -117,7 +117,7 @@
     <xsl:variable name="quality_criterion" select="reference_values/reference_value[property_id=$quality_criterionrefpropid]/value"/>
     <xsl:variable name="serial_id" select="serial_id"/>
 
-<mods ID="{$citekey}">
+<mods ID="{$citekey}" reflib:id="{@document_id}">
     <titleInfo>
         <title><xsl:value-of select="$title"/></title>
     </titleInfo>
@@ -180,11 +180,11 @@
     </xsl:if>
 
     <xsl:if test="$genre = 'Dissertation'">
-        <genre authority="marcgt">theses</genre>
+        <genre authority="marcgt" reflib:retypeid="{reference_type_id}">theses</genre>
     </xsl:if>
 
     <xsl:if test="$genre != 'Proceeding' and $genre != 'Article' and $genre != 'Dissertation'">
-        <genre><xsl:value-of select="translate($genre,'BCDRUIP','bcdruip')"/></genre>
+        <genre reflib:retypeid="{reference_type_id}"><xsl:value-of select="translate($genre,'BCDRUIP','bcdruip')"/></genre>
     </xsl:if>
 
     <xsl:if test="$serial_id != '' or $btitle != '' or $conf_title != ''">
@@ -215,11 +215,11 @@
             <xsl:if test="$genre = 'Proceeding' or $genre = 'Article'">
                 <xsl:choose>
                     <xsl:when test="$genre = 'Proceeding'">
-                        <genre>conference publication</genre>
+                        <genre reflib:reftype_id="{reference_type_id}">conference publication</genre>
                     </xsl:when>
                     <xsl:when test="$genre = 'Article'">
                         <genre authority="marc">periodical</genre>
-                        <genre>academic journal</genre>
+                        <genre reflib:reftype_id="{reference_type_id}">academic journal</genre>
                     </xsl:when>
                 </xsl:choose>
             </xsl:if>
@@ -297,7 +297,7 @@
 </xsl:template>
 
 <xsl:template match="authorgroup/author|editorgroup/author">
-    <name type="personal">
+    <name type="personal" reflib:author_id="{id}">
         <xsl:if test="firstname != ''"><namePart type="given"><xsl:value-of select="firstname"/></namePart></xsl:if>
         <namePart type="family"><xsl:value-of select="lastname"/></namePart>
         <role>
