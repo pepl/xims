@@ -270,8 +270,15 @@ sub _vlobjects {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $type = shift;
+    my $sql;
 
-    my $sql = 'select DISTINCT m.'.$type.'_id AS ID from cilib_'.$type.'map m, ci_documents d where d.id = m.document_id and d.parent_id = ?';
+    if ($type eq 'Author') {
+        # currently unmapped authors needed as well...
+        $sql = 'SELECT DISTINCT id FROM cilib_'.$type.'s where document_id = ?';
+    }
+    else {
+        $sql = 'select DISTINCT m.'.$type.'_id AS ID from cilib_'.$type.'map m, ci_documents d where d.id = m.document_id and d.parent_id = ?';
+    }
     my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() ] );
     my @ids = map { $_->{id} } @{$iddata};
     return () unless scalar @ids;

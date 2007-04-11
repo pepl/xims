@@ -389,7 +389,7 @@ sub event_author_edit {
     my $author;
 
     if (defined $authorid and $authorid) {
-        $author = XIMS::VLibAuthor->new(id => $authorid);
+        $author = XIMS::VLibAuthor->new(id => $authorid, document_id => $object->document_id());
     }
     else {
          $author = XIMS::VLibAuthor->new();
@@ -417,25 +417,35 @@ sub event_author_store {
     my $lastname = XIMS::clean($self->param('vlauthor_lastname')) || '';
     my $suffix = XIMS::clean($self->param('vlauthor_suffix')) || '';
     my $objecttype = XIMS::clean($self->param('vlauthor_object_type'));
-
     my $vlibauthor;
-
+    
     if (defined $id and $id) {
-        if ($vlibauthor = XIMS::VLibAuthor->new( id => $id )) {
-            $vlibauthor->firstname( $firstname );
-            $vlibauthor->middlename( $middlename );
-            $vlibauthor->lastname( $lastname );
-            $vlibauthor->suffix( $suffix );
-            if (defined $objecttype and $objecttype ) {
-                $vlibauthor->object_type(1);
-            }
-            else {
-                $vlibauthor->object_type(0);
-            }
+        $vlibauthor = XIMS::VLibAuthor->new( id => $id, document_id => $object->document_id() );
+    }
+    else {
+        $vlibauthor = XIMS::VLibAuthor->new();
+        $vlibauthor->document_id( $object->parent_id() );
+    }
+    
+    if ( ref $vlibauthor ) {
+        $vlibauthor->firstname( $firstname );
+        $vlibauthor->middlename( $middlename );
+        $vlibauthor->lastname( $lastname );
+        $vlibauthor->suffix( $suffix );
 
-            XIMS::Debug( 6, "unlocking object" );
-	    $ctxt->object->unlock();
-
+        if (defined $objecttype and $objecttype ) {
+            $vlibauthor->object_type(1);
+        }
+        else {
+            $vlibauthor->object_type(0);
+        }
+        unless ( $vlibauthor->id() ) {
+            if ( not $vlibauthor->create() ) {
+                XIMS::Debug( 3, "could not create author" );
+                next;
+            }
+        }
+        else {
             if ($vlibauthor->update == 1) {
                 XIMS::Debug(6, "Author: Update record successful.");
                 $ctxt->properties->application->style( "objectlist" ) ;
@@ -445,11 +455,12 @@ sub event_author_store {
                 return $self->sendError( $ctxt, "Author: Update record failed." );
             }
         }
-        else {
-            XIMS::Debug(3, "Bogus AuthorID: $id?");
-            return $self->sendError( $ctxt, "Bogus AuthorID: $id?" );
-        }
     }
+    else {
+        XIMS::Debug(3, "Author: creation failed.");
+        return $self->sendError( $ctxt, "Author: creation failed." );
+    }
+
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
     return 0;
 }
