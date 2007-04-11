@@ -126,10 +126,11 @@ sub event_create_mapping {
     my $vlsubject = $self->param('vlsubject');
     my $vlkeyword = $self->param('vlkeyword');
     my $vlauthor  = $self->param('vlauthor');
+
     if ( $vlsubject or $vlkeyword or $vlauthor) {
         $self->_create_mapping_from_name( $ctxt->object(), 'Subject', $vlsubject ) if $vlsubject;
         $self->_create_mapping_from_name( $ctxt->object(), 'Keyword', $vlkeyword ) if $vlkeyword;
-        $self->_create_mapping_from_name( $ctxt->object(), 'Author', $vlauthor ) if $vlauthor;
+        $self->_create_mapping_from_id( $ctxt->object(), 'Author', $vlauthor ) if $vlauthor;
         if( index (ref($object),'URLLink') > -1 ) {
             # jokar: If the object is an URLLink the edit parameter has to be preceeded with a semikolon
             #        Because the parameter string is not empty
@@ -185,7 +186,7 @@ sub _create_mapping_from_name {
         }
         elsif ( $propertyname eq 'Author' ) {
             $parsed_name = XIMS::VLibAuthor::parse_namestring( $value );
-            $propobject = $propclass->new( %{$parsed_name} );
+            $propobject = $propclass->new( %{$parsed_name}, document_id => $object->parent_id() );
         }
         if ( not (defined $propobject and $propobject->id() ) ) {
             $propobject = $propclass->new();
@@ -194,10 +195,13 @@ sub _create_mapping_from_name {
                 $propobject->firstname( $parsed_name->{firstname} ) if ( defined $parsed_name->{firstname} and length $parsed_name->{firstname} );
                 $propobject->middlename( $parsed_name->{middlename} ) if ( defined $parsed_name->{middlename} and length $parsed_name->{middlename} );
                 $propobject->suffix( $parsed_name->{suffix} ) if ( defined $parsed_name->{suffix} and length $parsed_name->{suffix} );
+                # refers to the *VLibrary*, thence parent_id()
+                $propobject->document_id( $object->parent_id());
             }
             else {
                 $propobject->name( $value );
                 if ($propertyname eq 'Subject') {
+                    # refers to the *VLibrary*, thence parent_id()
                     $propobject->document_id( $object->parent_id());
                     XIMS::Debug( 6, "Subject " . $propobject->name( $value ) . " lib_id = " . $propobject->document_id( $object->parent_id()));
                 }
@@ -209,6 +213,7 @@ sub _create_mapping_from_name {
         }
         my $propmapclass = $propclass . "Map";
         my $propid = lc $propertyname . "_id";
+        # refers to the *VLibraryItem*, thence document_id()
         my $propmapobject = $propmapclass->new( document_id => $object->document_id(), $propid => $propobject->id() );
         if ( not (defined $propmapobject ) ) {
             $propmapobject = $propmapclass->new();
@@ -226,5 +231,47 @@ sub _create_mapping_from_name {
         }
     }
 }
+
+
+sub _create_mapping_from_id {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $object = shift;
+    my $propertyname = shift;
+    my $value = shift;
+    my $propobject;
+    my $propclass = "XIMS::VLib" . $propertyname;
+
+    if ($propertyname eq 'Author' or $propertyname eq 'Subject') {
+        $propobject = $propclass->new( id => $value, document_id => $object->parent_id() );
+    }
+    elsif ($propertyname eq 'Keyword') {
+        $propobject = $propclass->new( name => $value );
+    }
+    if ( not (defined $propobject and $propobject->id() ) ) {
+        XIMS::Debug( 3, "could not create $propclass $value" );
+        return undef;
+    }
+
+    my $propmapclass = $propclass . "Map";
+    my $propid = lc $propertyname . "_id";
+    # refers to the *VLibraryItem*, thence document_id()
+    my $propmapobject = $propmapclass->new( document_id => $object->document_id(), $propid => $propobject->id() );
+    if ( not (defined $propmapobject ) ) {
+        $propmapobject = $propmapclass->new();
+        $propmapobject->document_id( $object->document_id() );
+        $propmapobject->$propid( $propobject->id() );
+        if ( $propmapobject->create() ) {
+            XIMS::Debug( 6, "created mapping for '$value'" );
+        }
+        else {
+            XIMS::Debug( 2, "could not create mapping for '$value'" );
+        }
+    }
+    else {
+        XIMS::Debug( 4, "mapping for '$value' already exists" );
+    }
+}
+
 
 1;

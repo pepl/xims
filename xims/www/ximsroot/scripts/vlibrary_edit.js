@@ -34,3 +34,17 @@ function submitOnValue ( field, text, selectfield ) {
     }
     return false;
 }
+
+function submitOnId ( property, text ) {
+    var selectfield = eval("document.eform.svl"  + property);
+    var hiddenfield = eval("document.eform.vl" + property);
+    if ( selectfield.value > 0 ) {
+        hiddenfield.value = selectfield.value;
+        return document.eform.submit();
+    }
+    else {
+        alert ( text );
+        if (selectfield) { selectfield.focus(); }
+    }
+    return false;
+}      
