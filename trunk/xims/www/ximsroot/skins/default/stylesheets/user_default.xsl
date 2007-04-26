@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -37,7 +37,7 @@
     <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
-    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
+    <xsl:variable name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
 
     <xsl:choose>
         <xsl:when test="marked_deleted=1">
@@ -79,8 +79,8 @@
     <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
-    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
-    <xsl:param name="dfmime" select="/document/data_formats/data_format[@id=$dataformat]/mime_type"/>
+    <xsl:variable name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
+    <xsl:variable name="dfmime" select="/document/data_formats/data_format[@id=$dataformat]/mime_type"/>
 
     <xsl:choose>
         <xsl:when test="marked_deleted=1">

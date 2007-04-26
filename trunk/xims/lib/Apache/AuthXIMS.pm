@@ -40,19 +40,19 @@ sub handler {
 
     XIMS::via_proxy_test($r) unless $r->pnotes('PROXY_TEST');
     XIMS::Debug( 5, "called from " . $r->connection->remote_ip());
-    
+
     my $cache_control = $r->dir_config('ximsCacheControl');
     if (defined $cache_control and $cache_control) {
         $r->header_out('Cache-Control', $cache_control);
         # HTTP/1.0 only defines the Pragma: no-cache, anything
-        # else is a implementation dependent extension which might 
+        # else is a implementation dependent extension which might
         # or might not be recognized.
         unless($r->protocol eq 'HTTP/1.1' or $cache_control =~ /public/) {
             $r->header_out('Pragma', 'no-cache');
-        }    
+        }
     }
-    else {         
-	$r->no_cache( 1 );
+    else {
+        $r->no_cache( 1 );
     }
 
     my $retval = DECLINED;
