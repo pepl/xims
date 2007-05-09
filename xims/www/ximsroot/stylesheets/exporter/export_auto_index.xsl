@@ -56,6 +56,7 @@
             </rdf:RDF>
             <body>
                 <h1><xsl:value-of select="title"/></h1>
+                <p><xsl:value-of select="abstract"/></p>
                 <xsl:if test="count(children/object[published=1])&gt;0">
                     <ul>
                         <xsl:apply-templates select="children/object[published=1]">
@@ -81,6 +82,11 @@
                 </xsl:attribute>
                 <xsl:value-of select="title"/>
             </a>
+            <xsl:if test="string-length(abstract) &gt; 0">
+              <p>
+                <xsl:value-of select="abstract"/>
+              </p>
+            </xsl:if>
         </li>
     </xsl:template>
 
