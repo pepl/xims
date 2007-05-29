@@ -68,6 +68,7 @@ my $total = 0;
 my $successful = 0;
 my $failed = 0;
 my $ungranted = 0;
+my $iterate_anyway = 0;
 
 if ( $method eq 'grant' ) {
     if ( $object->grant_user_privileges(
@@ -93,11 +94,14 @@ else {
     else {
         print "Could not revoke grantee from '$path'.\n";
         $failed++;
+        # for recursive revocation of grants if the upmost object itself 
+        # lacks the acl-entry to be removed
+        $iterate_anyway = 1;
     }
     $total++;
 }
 
-if ( $successful and $args{r} ) {
+if ( ($successful or $iterate_anyway) and $args{r} ) {
     my $desc_privmask;
     my $iterator = $object->descendants_granted( User => $user, marked_deleted => undef );
     while ( my $desc = $iterator->getNext() ) {
