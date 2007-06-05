@@ -229,6 +229,9 @@ sub mtime {
     my $latest = $sorted_times[-1];
     #warn "checking for " . $latest->datetime;
 
+    # Time::Piece believes this to be UTC
+    $latest -= localtime->tzoffset;
+
     # Cache the timestamp since mtime() is called twice per request
     $self->{mtime}->{$object->id()} = $latest->epoch();
 
