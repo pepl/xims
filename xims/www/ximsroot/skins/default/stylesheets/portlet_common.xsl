@@ -247,7 +247,7 @@
             <xsl:value-of select="$i18n_portlet/l/Filter_marked_new"/>:
         </td>
         <td>
-            <input type="checkbox" name="filternews"><xsl:if test="body/filter[new=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input><br/>
+            <input type="checkbox" name="filternews"><xsl:if test="body/filter[marked_new=1]"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input><br/>
         </td>
     </tr>
     <tr>
