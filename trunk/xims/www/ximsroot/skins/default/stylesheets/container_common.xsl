@@ -154,6 +154,7 @@
 </xsl:template>
 
 <xsl:template name="childrentable">
+    <xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
     <xsl:choose>
         <xsl:when test="$sb='title'">
             <xsl:choose>
@@ -171,7 +172,7 @@
                                             />
                                 </td>
                                 <td>
-                                    <a href="{location}?sb=position;order=asc;m={$m}">
+                                    <a href="{$location}?sb=position;order=asc;m={$m}">
                                         <img src="{$sklangimages}position.png"
                                                 width="45"
                                                 height="20"
@@ -183,7 +184,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title;order=desc;m={$m}">
+                                <a href="{$location}?sb=title;order=desc;m={$m}">
                                     <img src="{$sklangimages}title_ascending.png"
                                             width="45"
                                             height="20"
@@ -209,7 +210,7 @@
                                         />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;order=desc;m={$m}">
+                                <a href="{$location}?sb=date;order=desc;m={$m}">
                                     <img src="{$sklangimages}last_modified.png"
                                             width="124"
                                             height="20"
@@ -246,7 +247,7 @@
                                             />
                                 </td>
                                 <td>
-                                    <a href="{location}?sb=position;order=asc;m={$m}">
+                                    <a href="{$location}?sb=position;order=asc;m={$m}">
                                         <img src="{$sklangimages}position.png"
                                                 width="45"
                                                 height="20"
@@ -258,7 +259,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title;order=asc;m={$m}">
+                                <a href="{$location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title_descending.png"
                                             width="45"
                                             height="20"
@@ -275,7 +276,7 @@
                                 <img src="{$skimages}titlecolumn_rightcorner_bright.png" width="23" height="20" alt="" title="" />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;order=desc;m={$m}">
+                                <a href="{$location}?sb=date;order=desc;m={$m}">
                                     <img src="{$sklangimages}last_modified.png"
                                             width="124"
                                             height="20"
@@ -314,7 +315,7 @@
                                             />
                                 </td>
                                 <td>
-                                    <a href="{location}?sb=position;order=asc;m={$m}">
+                                    <a href="{$location}?sb=position;order=asc;m={$m}">
                                         <img src="{$sklangimages}position.png"
                                                 width="45"
                                                 height="20"
@@ -326,7 +327,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title;order=asc;m={$m}">
+                                <a href="{$location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title.png"
                                             width="45"
                                             height="20"
@@ -350,7 +351,7 @@
                                         />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;order=desc;m={$m}">
+                                <a href="{$location}?sb=date;order=desc;m={$m}">
                                     <img src="{$sklangimages}last_modified_ascending.png"
                                             width="124"
                                             height="20"
@@ -384,7 +385,7 @@
                                             />
                                 </td>
                                 <td>
-                                    <a href="{location}?sb=position;order=asc;m={$m}">
+                                    <a href="{$location}?sb=position;order=asc;m={$m}">
                                         <img src="{$sklangimages}position.png"
                                                 width="45"
                                                 height="20"
@@ -396,7 +397,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title;order=asc;m={$m}">
+                                <a href="{$location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title.png"
                                             width="45"
                                             height="20"
@@ -422,7 +423,7 @@
                                         />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;order=asc;m={$m}">
+                                <a href="{$location}?sb=date;order=asc;m={$m}">
                                     <img src="{$sklangimages}last_modified_descending.png"
                                             width="124"
                                             height="20"
@@ -461,7 +462,7 @@
                                             />
                                 </td>
                                 <td nowrap="nowrap">
-                                    <a href="{location}?sb=position;order=desc;m={$m}">
+                                    <a href="{$location}?sb=position;order=desc;m={$m}">
                                         <img src="{$sklangimages}position_ascending.png"
                                                 width="45"
                                                 height="20"
@@ -473,7 +474,7 @@
                                 </td>
                             </xsl:if>
                             <td width="42" height="20">
-                                <a href="{location}?sb=title;order=asc;m={$m}">
+                                <a href="{$location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title.png"
                                             width="45"
                                             height="20"
@@ -494,7 +495,7 @@
                                         />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;order=desc;m={$m}">
+                                <a href="{$location}?sb=date;order=desc;m={$m}">
                                     <img src="{$sklangimages}last_modified.png"
                                             width="124"
                                             height="20"
@@ -528,7 +529,7 @@
                                             />
                                 </td>
                                 <td>
-                                    <a href="{location}?sb=position;order=asc;m={$m}">
+                                    <a href="{$location}?sb=position;order=asc;m={$m}">
                                         <img src="{$sklangimages}position_descending.png"
                                                 width="45"
                                                 height="20"
@@ -540,7 +541,7 @@
                                 </td>
                             </xsl:if>
                             <td width="51">
-                                <a href="{location}?sb=title;order=asc;m={$m}">
+                                <a href="{$location}?sb=title;order=asc;m={$m}">
                                     <img src="{$sklangimages}title.png"
                                             width="45"
                                             height="20"
@@ -566,7 +567,7 @@
                                         />
                             </td>
                             <td width="124">
-                                <a href="{location}?sb=date;order=desc;m={$m}">
+                                <a href="{$location}?sb=date;order=desc;m={$m}">
                                     <img src="{$sklangimages}last_modified.png"
                                             width="124"
                                             height="20"
