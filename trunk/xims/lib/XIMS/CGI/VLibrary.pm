@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -38,6 +38,7 @@ sub registerEvents {
           vlsearch
           vlchronicle
           most_recent
+          simile
           )
         );
 }
@@ -418,7 +419,7 @@ sub event_author_store {
     my $suffix = XIMS::clean($self->param('vlauthor_suffix')) || '';
     my $objecttype = XIMS::clean($self->param('vlauthor_object_type'));
     my $vlibauthor;
-    
+
     if (defined $id and $id) {
         $vlibauthor = XIMS::VLibAuthor->new( id => $id, document_id => $object->document_id() );
     }
@@ -426,7 +427,7 @@ sub event_author_store {
         $vlibauthor = XIMS::VLibAuthor->new();
         $vlibauthor->document_id( $object->parent_id() );
     }
-    
+
     if ( ref $vlibauthor ) {
         $vlibauthor->firstname( $firstname );
         $vlibauthor->middlename( $middlename );
@@ -674,11 +675,27 @@ sub event_vlchronicle {
     my @objects = $ctxt->object->vlitems_bydate( $date_from , $date_to );
 
     $ctxt->objectlist( \@objects );
-    $ctxt->properties->application->style( "objectlist" ) ;
 
-    return 0;}
+    my $style = $self->param('style');
+    if ( defined $style ) {
+        $ctxt->properties->application->style( $style );
+    }
+    else {
+        $ctxt->properties->application->style( "objectlist" ) ;
+    }
 
+    return 0;
+}
 
+sub event_simile {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    $ctxt->properties->content->getformatsandtypes( 1 );
+    $ctxt->properties->application->style( 'simile' );
+
+    return 0;
+}
 
 # END RUNTIME EVENTS
 # #############################################################################
