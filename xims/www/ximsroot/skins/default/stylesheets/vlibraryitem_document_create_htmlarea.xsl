@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -8,7 +8,9 @@
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
-        
+
+<xsl:import href="document_create_htmlarea.xsl"/>
+<xsl:import href="document_common.xsl"/>
 <xsl:import href="vlibraryitem_common.xsl"/>
 
 <xsl:template match="/document/context/object">
@@ -50,7 +52,7 @@
                     <xsl:call-template name="tr-coverage"/>
                     <xsl:call-template name="tr-audience"/>
                     <xsl:call-template name="tr-legalnotice"/>
-                    <xsl:call-template name="tr-bibliosource"/>               
+                    <xsl:call-template name="tr-bibliosource"/>
                     <xsl:call-template name="grantowneronly"/>
                 </table>
                 <xsl:call-template name="saveaction"/>
@@ -61,37 +63,5 @@
     </body>
 </html>
 </xsl:template>
-
-<xsl:template name="tr-body-create_htmlarea">
-    <tr>
-        <td colspan="3">
-            Body
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
-            <br/>
-            <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;">
-                <xsl:text>&#160;</xsl:text>
-            </textarea>
-            <xsl:call-template name="jsorigbody"/>
-        </td>
-    </tr>
-</xsl:template>
-
-    <xsl:template name="jsorigbody">
-        <script type="text/javascript">
-            if (document.readyState != 'complete') {
-                var f = function() { origbody = window.editor.getHTML(); }
-                if ( navigator.userAgent.indexOf("MSIE") != -1 ) {
-                    setTimeout(f, 3700); // MSIE needs that high timeout value
-                }
-                else {
-                    setTimeout(f, 2000); // Also Firefox needs a higher value than 1000
-                }
-            }
-            else {
-                origbody = window.editor.getHTML();
-            }
-        </script>
-    </xsl:template>
 
 </xsl:stylesheet>
