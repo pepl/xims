@@ -1,3 +1,4 @@
+ALTER SESSION SET PLSQL_WARNINGS='ENABLE:ALL';
 CREATE OR REPLACE PACKAGE tmp_update_xims_vlibrary IS
 --
 -- $Id:$
@@ -6,7 +7,7 @@ CREATE OR REPLACE PACKAGE tmp_update_xims_vlibrary IS
 PROCEDURE update_cilib_subjects;
 PROCEDURE update_cilib_authors;
 
-END tmp_update_xims_vlibrary; 
+END tmp_update_xims_vlibrary;
 /
 
 CREATE OR REPLACE
@@ -331,35 +332,43 @@ PACKAGE BODY tmp_update_xims_vlibrary IS
   END update_cilib_authors;
   
 END tmp_update_xims_vlibrary;
+/
 
+ALTER PACKAGE tmp_update_xims_vlibrary COMPILE
 /
 
 -- backup tables:
-CREATE TABLE bak$cilib_subjects AS SELECT * FROM cilib_subjects;
-CREATE TABLE bak$cilib_subjectmap AS SELECT * FROM cilib_subjectmap;
-CREATE TABLE bak$cilib_authors AS SELECT * FROM cilib_authors;
-CREATE TABLE bak$cilib_authormap AS SELECT * FROM cilib_authormap;
-CREATE TABLE bak$cireflib_authormap AS SELECT * FROM cireflib_authormap;
+CREATE TABLE bak$cilib_subjects AS SELECT * FROM cilib_subjects
+/
+CREATE TABLE bak$cilib_subjectmap AS SELECT * FROM cilib_subjectmap
+/
+CREATE TABLE bak$cilib_authors AS SELECT * FROM cilib_authors
+/
+CREATE TABLE bak$cilib_authormap AS SELECT * FROM cilib_authormap
+/
+CREATE TABLE bak$cireflib_authormap AS SELECT * FROM cireflib_authormap
 /
 
 -- Extend cilib_subjects.description
 ALTER TABLE cilib_subjects MODIFY  (description  VARCHAR2(4000));
 
 -- Add the document_id of a VLibrary to the subject
-ALTER TABLE cilib_subjects ADD     (document_id NUMBER);
-ALTER TABLE cilib_authors ADD     (document_id NUMBER);
+ALTER TABLE cilib_subjects ADD     (document_id NUMBER)
+/
+ALTER TABLE cilib_authors ADD     (document_id NUMBER)
+/
 
 -- Altering Unique Constraint to include document_id
 ALTER TABLE cilib_subjects DROP CONSTRAINT sub_nam_unq;
 ALTER TABLE cilib_subjects
  ADD (CONSTRAINT sub_nam_unq UNIQUE
   (document_id, name))
-;
+/
 
+ALTER TABLE cilib_authors DROP CONSTRAINT aut_nam_unq; 
 ALTER TABLE cilib_authors
  ADD (CONSTRAINT aut_nam_unq UNIQUE
   (lastname, middlename, firstname, object_type, suffix, email, url, document_id))
-;
 /
 
 BEGIN
