@@ -40,8 +40,7 @@ CREATE TABLE cisimpledb_member_properties
  ,mandatory         NUMBER(1,0)       DEFAULT 0
  ,part_of_title     NUMBER(1,0)       DEFAULT 0
  ,gopublic          NUMBER(1,0)       DEFAULT 1
-
-  )
+ )
 /
 
 PROMPT Creating table 'cisimpledb_mempropertyvalues'
