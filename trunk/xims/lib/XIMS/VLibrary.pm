@@ -220,49 +220,102 @@ sub vlitems_bypublication_granted {
     return $self->_vlitems_byproperty( 'publication', filter_granted => 1, @_ );
 }
 
+sub vlitems_bydate_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->vlitems_bydate( @_, filter_granted => 1 );
+}
 
 # for chronicle
 sub vlitems_bydate {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-    my $date_from = shift;
-    my $date_to = shift;
-    my $key = 'document_id';
     my %args = @_;
+    my $date_from = delete $args{from};
+    my $date_to = delete $args{to};
     my $filter_granted = delete $args{filter_granted};
-    
-    # if date_from or date_to is not provided as parameter the timespan is from 0000-01-01 to 2100-01-01
-    # should be from the first available chronicle_item date to the last one, later to come
-    if (!$date_from) {$date_from='0000-01-01'}
-    if (!$date_to) {$date_to='2100-01-01'}
-    
 
-    # think of fetching the whole object data here for performance
-    my $sql = 'SELECT d.id AS id FROM cilib_meta m, ci_documents d, ci_content c WHERE d.ID = m.document_id AND d.ID = c.document_id AND d.parent_id = ? AND ';
-    $sql .= '( ( m.date_from_timestamp >= \''.$date_from.'\' AND m.date_to_timestamp <= \''.$date_to.'\' ) OR ';
-    $sql .= '( m.date_from_timestamp <= \''.$date_from.'\' AND m.date_to_timestamp >= \''.$date_from.'\' ) OR ';
-    $sql .= '( m.date_from_timestamp <= \''.$date_to.'\' AND m.date_to_timestamp >= \''.$date_to.'\' ) ) order by m.date_from_timestamp asc';
-    my $iddata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() ]);
+    # TODO: parse and validate date here
 
-    my @ids = map { $_->{id} } @{$iddata};
-    return () unless scalar @ids;
+    my @items;
+    my %privmask;
 
-    if ( $filter_granted and not $self->User->admin() ) {
-        my @candidate_data = $self->data_provider->getObject( document_id => \@ids,
-                                                              properties => [ 'document_id', 'id' ] );
-        my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
-        @ids = $self->__filter_granted_ids( candidate_ids => \@candidate_ids );
-        return () unless scalar( @ids ) > 0;
-        $key = 'id';
+    my $properties = 'd.id AS id, c.document_id, c.abstract, c.title, c.last_modification_timestamp, m.date_from_timestamp, m.date_to_timestamp';
+    my $tables = 'cilib_meta m, ci_documents d, ci_content c';
+    my $conditions = 'd.ID = m.document_id AND d.ID = c.document_id AND d.parent_id = ? AND m.date_from_timestamp IS NOT NULL';
+    my @values = ( $self->document_id() );
+
+    if ( defined $date_from and length $date_from ) {
+        $conditions .= " AND m.date_from_timestamp >= ?";
+        push @values, $date_from;
+    }
+    if ( defined $date_to and length $date_to ) {
+        $conditions .= " AND m.date_to_timestamp <= ?";
+        push @values, $date_to;
     }
 
-    # should be grepped from event/resource type specific list in XIMS::Names
-    my @default_properties = grep { $_ ne 'body' and $_ ne 'binfile' }  @{XIMS::Names::property_interface_names( 'Object' )};
+    my $order =  'm.date_from_timestamp asc';
 
-    my @data = $self->data_provider->getObject( $key => \@ids, properties => \@default_properties );
-    my @objects = map { XIMS::VLibraryItem->new->data( %{$_} ) } @data;
+    if ( $filter_granted and not $self->User->admin() ) {
+        my @userids = ( $self->User->id(), $self->User->role_ids());
+        $tables .= ', ci_object_privs_granted p';
+        $conditions .= ' AND p.content_id = c.id AND p.privilege_mask >= 1 AND p.grantee_id IN (' . join(',', map { '?' } @userids) . ')';
+        push @values, @userids;
+    }
 
-    return @objects;
+    my $sql = "SELECT $properties FROM $tables WHERE $conditions";
+    my $data = $self->data_provider->driver->dbh->fetch_select(
+                                                             sql => [ $sql, @values ],
+#                                                             limit => $ctxt->properties->content->getchildren->limit(),
+#                                                             offset => $ctxt->properties->content->getchildren->offset(),
+                                                             order => $order
+                                                             );
+    return unless defined $data;
+
+    my @itemids;
+    foreach my $kiddo ( @{$data} ) {
+        # move meta info to meta key
+        $kiddo->{meta}->{date_from_timestamp} = delete $kiddo->{date_from_timestamp};
+        $kiddo->{meta}->{date_to_timestamp} = delete $kiddo->{date_to_timestamp};
+
+        push( @items, (bless $kiddo, 'XIMS::VLibraryItem') );
+        push( @itemids, $kiddo->{id} );
+        $privmask{$kiddo->{id}} = 0xffffffff if $self->User->admin();
+    }
+
+    if ( $filter_granted and not $self->User->admin() ) {
+        my @uid_list = ($self->User->id(), $self->User->role_ids());
+        my @priv_data = $self->data_provider->getObjectPriv( content_id => \@itemids,
+                                                         grantee_id => \@uid_list,
+                                                         properties => [ 'privilege_mask', 'content_id' ] );
+        my %seen = ();
+        foreach my $priv ( @priv_data ) {
+            next if exists $seen{$priv->{'objectpriv.content_id'}};
+            if ( $priv->{'objectpriv.privilege_mask'} eq '0' ) {
+                $privmask{$priv->{'objectpriv.content_id'}} = 0;
+                $seen{$priv->{'objectpriv.content_id'}}++;
+            }
+            else {
+                $privmask{$priv->{'objectpriv.content_id'}} |= int($priv->{'objectpriv.privilege_mask'});
+            }
+        }
+    }
+
+    if ( scalar( @items ) > 0 ) {
+        foreach my $item ( @items ) {
+            # Test for explicit lockout (privmask == 0)
+            if ( not $privmask{$item->{id}} ) {
+                $item = undef; # cheaper than splicing
+                next;
+            }
+            $item->{user_privileges} = XIMS::Helpers::privmask_to_hash( $privmask{$item->{id}} );
+        }
+    }
+
+    #use Data::Dumper;
+    #warn Dumper \@items;
+
+    return @items;
 }
 
 

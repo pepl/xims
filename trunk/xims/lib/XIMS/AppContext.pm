@@ -67,7 +67,7 @@ __PACKAGE__->mk_accessors(qw(cookie style styleprefix preservelocation keepsuffi
 
 package Content;
 use base qw(Class::Accessor);
-__PACKAGE__->mk_accessors(qw(getchildren getformatsandtypes escapebody childrenbybodyfilter siblingscount resolveimage_id));
+__PACKAGE__->mk_accessors(qw(getchildren getformatsandtypes escapebody childrenbybodyfilter siblingscount resolveimage_id objectlistpassthru));
                     # we have to check if childrenbybodyfilter is really needed
                     # currently it is used by portlet.pm only
 sub new {

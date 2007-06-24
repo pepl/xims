@@ -47,7 +47,8 @@ sub prepare {
     if ( not $ctxt->parent() ) {
         if ( $ctxt->properties->application->style() eq "edit_subject" ) {
             $doc_data->{context}->{vlsubjectinfo} = { subject => $ctxt->object->vlsubjectinfo_granted() };
-        } else {
+        }
+        else {
             $doc_data->{context}->{vlsubjectinfo} = { subject => $ctxt->object->vlsubjectinfo_granted() };
         }
         if ( $ctxt->properties->application->style() eq "authors" ) {
@@ -62,20 +63,21 @@ sub prepare {
     }
 
     if ( $ctxt->objectlist() ) {
-        my @vlchildren = @{$ctxt->objectlist()};
-        if ( scalar( @vlchildren ) > 0 ) {
-            foreach my $child ( @vlchildren ) {
-                bless $child, "XIMS::VLibraryItem";
-                # added the users object privileges if he got one
-                my %uprivs = $ctxt->session->user->object_privileges( $child );
-                $child->{user_privileges} = {%uprivs} if ( grep { defined $_ } values %uprivs );
+        if ( scalar( @{$ctxt->objectlist()} ) > 0 ) {
+            if ( $ctxt->properties->content->objectlistpassthru() != 1 ) {
+                foreach my $child ( @{$ctxt->objectlist()} ) {
+                    bless $child, "XIMS::VLibraryItem";
+                    # added the users object privileges if he got one
+                    my %uprivs = $ctxt->session->user->object_privileges( $child );
+                    $child->{user_privileges} = {%uprivs} if ( grep { defined $_ } values %uprivs );
 
-                # yet another superfluos db hit! this has to be changed!!!
-                $child->{content_length} = $child->content_length();
-                $child->{authorgroup} = { author => [$child->vleauthors()] };
-                $child->{meta} = [$child->vlemeta()];
+                    # yet another superfluos db hit! this has to be changed!!!
+                    $child->{content_length} = $child->content_length();
+                    $child->{authorgroup} = { author => [$child->vleauthors()] };
+                    $child->{meta} = [$child->vlemeta()];
+                }
             }
-            $doc_data->{context}->{object}->{children} = { object => \@vlchildren };
+            $doc_data->{context}->{object}->{children} = { object => $ctxt->objectlist() };
         }
     }
 
