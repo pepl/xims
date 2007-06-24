@@ -21,7 +21,7 @@
     </xsl:choose>
 </xsl:template>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="date">
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|date_from_timestamp|date_to_timestamp" mode="date">
     <xsl:choose>
         <xsl:when test="$currentuilanguage = 'de-at'">
             <xsl:value-of select="./day"/>
@@ -40,7 +40,7 @@
     </xsl:choose>
 </xsl:template>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="datetime">
+    <xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|date_from_timestamp|date_to_timestamp" mode="datetime">
     <xsl:choose>
         <xsl:when test="$currentuilanguage = 'de-at'">
             <xsl:value-of select="./day"/>
