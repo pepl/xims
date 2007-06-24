@@ -240,7 +240,7 @@ sub vlitems_bydate {
     my @items;
     my %privmask;
 
-    my $properties = 'd.id AS id, c.document_id, c.abstract, c.title, c.last_modification_timestamp, m.date_from_timestamp, m.date_to_timestamp';
+    my $properties = 'd.id AS id, d.parent_id, c.document_id, c.abstract, c.title, c.last_modification_timestamp, c.marked_deleted, c.locked_time, c.locked_by_id, c.published, m.date_from_timestamp, m.date_to_timestamp';
     my $tables = 'cilib_meta m, ci_documents d, ci_content c';
     my $conditions = 'd.ID = m.document_id AND d.ID = c.document_id AND d.parent_id = ? AND m.date_from_timestamp IS NOT NULL';
     my @values = ( $self->document_id() );

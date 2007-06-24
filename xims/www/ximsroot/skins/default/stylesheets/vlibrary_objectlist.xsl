@@ -145,7 +145,7 @@
     <div class="vlchildrenlistitem" name="vlchildrenlistitem">
         <xsl:apply-templates select="title"/>
         <xsl:apply-templates select="authorgroup"/>
-        <xsl:call-template name="last_modified"/>,
+        <xsl:call-template name="last_modified"/>
         <xsl:call-template name="size"/>
         <span id="vlstatus_options">
             <xsl:call-template name="status"/>
@@ -153,6 +153,7 @@
                 <xsl:call-template name="cttobject.options"/>
             </xsl:if>
         </span>
+        <xsl:call-template name="meta"/>
         <xsl:apply-templates select="abstract"/>
     </div>
 </xsl:template>
@@ -171,22 +172,24 @@
 </xsl:template>
 
 <xsl:template match="authorgroup">
-    <div class="vlauthorgroup">
-        <xsl:variable name="author_count" select="count(author)"/>
-        <strong>
-            <xsl:if test="$author_count = 1">
-                <xsl:value-of select="$i18n_vlib/l/author"/>
-            </xsl:if>
-            <xsl:if test="$author_count &gt; 1">
-                <xsl:value-of select="$i18n_vlib/l/authors"/>
-            </xsl:if>
-            <xsl:text>: </xsl:text>
-        </strong>
+    <xsl:variable name="author_count" select="count(author/lastname)"/>
+    <xsl:if test="$author_count &gt; 0">
+        <div class="vlauthorgroup">
+            <strong>
+                <xsl:if test="$author_count = 1">
+                    <xsl:value-of select="$i18n_vlib/l/author"/>
+                </xsl:if>
+                <xsl:if test="$author_count &gt; 1">
+                    <xsl:value-of select="$i18n_vlib/l/authors"/>
+                </xsl:if>
+                <xsl:text>: </xsl:text>
+            </strong>
 
-        <xsl:apply-templates select="author">
-            <xsl:sort select="lastname" order="ascending"/>
-        </xsl:apply-templates>
-    </div>
+            <xsl:apply-templates select="author">
+                <xsl:sort select="lastname" order="ascending"/>
+            </xsl:apply-templates>
+        </div>
+    </xsl:if>
 </xsl:template>
 
 <xsl:template match="author">
@@ -218,13 +221,13 @@
 </xsl:template>
 
 <xsl:template name="size">
-    <span class="vlsize">
-        <strong>
-            <xsl:value-of select="$i18n/l/Size"/>:
-        </strong>
-        <xsl:call-template name="cttobject.content_length"/>
-        kb
-    </span>
+    <xsl:if test="content_length">
+        <span class="vlsize">
+            <strong>, <xsl:value-of select="$i18n/l/Size"/>:</strong>
+            <xsl:call-template name="cttobject.content_length"/>
+            kb
+        </span>
+    </xsl:if>
 </xsl:template>
 
 <xsl:template name="status">
@@ -240,6 +243,13 @@
         <xsl:call-template name="cttobject.options.acl_or_undelete"/>
         <xsl:call-template name="cttobject.options.purge_or_delete"/>
     </span>
+</xsl:template>
+
+<xsl:template name="meta">
+    <div class="vlmeta">
+        <xsl:if test="meta/date_from_timestamp"><strong><xsl:value-of select="$i18n_vlib/l/chronicle_from"/>:</strong>&#xa0;<xsl:apply-templates select="meta/date_from_timestamp" mode="datetime"/></xsl:if>
+        &#xa0;<xsl:if test="meta/date_to_timestamp"><strong><xsl:value-of select="$i18n_vlib/l/chronicle_to"/>:</strong>&#xa0;<xsl:apply-templates select="meta/date_to_timestamp" mode="datetime"/></xsl:if>
+    </div>
 </xsl:template>
 
 </xsl:stylesheet>
