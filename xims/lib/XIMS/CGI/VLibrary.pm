@@ -662,19 +662,17 @@ sub event_vlchronicle {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    if (!$self->param('chronicle_from')) {$self->param( chronicle_from => '')}
-    if (!$self->param('chronicle_to')) {$self->param( chronicle_to => '' ) }
     my $date_from = $self->param('chronicle_from');
     my $date_to = $self->param('chronicle_to');
 
-    if (!$date_to) {$date_to = $date_from;}
     XIMS::Debug(6, "Chronicle from $date_from to $date_to.");
 
     $ctxt->properties->content->getformatsandtypes( 1 );
 
-    my @objects = $ctxt->object->vlitems_bydate( $date_from , $date_to );
+    my @objects = $ctxt->object->vlitems_bydate_granted( from => $date_from , to => $date_to );
 
     $ctxt->objectlist( \@objects );
+    $ctxt->properties->content->objectlistpassthru( 1 );
 
     my $style = $self->param('style');
     if ( defined $style ) {
