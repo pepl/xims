@@ -7,6 +7,8 @@ package XIMS::CGI::VLibrary;
 use strict;
 use base qw(XIMS::CGI::Folder);
 
+use Time::Piece;
+
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub registerEvents {
@@ -662,17 +664,36 @@ sub event_vlchronicle {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $date_from = $self->param('chronicle_from');
-    my $date_to = $self->param('chronicle_to');
+    my $date_from = $self->_heuristic_date_parser( $self->param('chronicle_from') );
+    my $date_to = $self->_heuristic_date_parser( $self->param('chronicle_to') );
 
-    XIMS::Debug(6, "Chronicle from $date_from to $date_to.");
+    XIMS::Debug( 6, "Chronicle from $date_from to $date_to.");
 
-    $ctxt->properties->content->getformatsandtypes( 1 );
+    my $onepage = $self->param('onepage');
+    my %param;
+    if ( not defined $onepage ) {
+        my $offset = $self->param('page');
+        $offset = $offset - 1 if $offset;
+        my $rowlimit = 10; # TODO: remove hardcoded setting
+        $offset = $offset * $rowlimit;
 
-    my @objects = $ctxt->object->vlitems_bydate_granted( from => $date_from , to => $date_to );
+        $param{limit} = $rowlimit;
+        $param{offset} = $offset;
+
+
+        my $count = $ctxt->object->vlitems_bydate_granted_count( from => $date_from , to => $date_to, %param );
+        my $message = "Query returned $count objects.";
+        $message .= " Displaying objects " . ($offset+1) if $count >= $rowlimit;
+        $message .= " to " . ($offset+$rowlimit) if ( $offset+$rowlimit <= $count );
+        $ctxt->session->message( $message );
+        $ctxt->session->searchresultcount( $count );
+    }
+
+    my @objects = $ctxt->object->vlitems_bydate_granted( from => $date_from , to => $date_to, %param );
 
     $ctxt->objectlist( \@objects );
     $ctxt->properties->content->objectlistpassthru( 1 );
+    $ctxt->properties->content->getformatsandtypes( 1 );
 
     my $style = $self->param('style');
     if ( defined $style ) {
@@ -689,10 +710,57 @@ sub event_simile {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    my $date_from = $self->_heuristic_date_parser( $self->param('chronicle_from') );
+    my $date_to = $self->_heuristic_date_parser( $self->param('chronicle_to') );
+
+    if ( not $date_from and not $date_to ) {
+        $ctxt->session->message( 'Loading all chronicle data may take a lot of time. Consider providing a filter time span!' );
+    }
+
+    # Get first chronicle entry for positioning the chronicle starting point
+    my @objects = $ctxt->object->vlitems_bydate_granted( from => $date_from, limit => 1 );
+    $ctxt->objectlist( \@objects );
+    $ctxt->properties->content->objectlistpassthru( 1 );
     $ctxt->properties->content->getformatsandtypes( 1 );
     $ctxt->properties->application->style( 'simile' );
 
     return 0;
+}
+
+# sub event_publish_simile ?!
+
+sub _heuristic_date_parser {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my $date = shift;
+
+    my @ts_formats = (
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d",
+        "%d.%m.%Y",
+        "%m/%d/%Y",
+        "%m/%d/%y",
+        "%m.%Y",
+        "%m.%y",
+        "%Y-%m",
+        "%Y",
+         );
+
+    my $timestamp;
+    foreach my $format ( @ts_formats ) {
+        eval { $timestamp = Time::Piece->strptime( $date, $format ); };
+        if ( not $@ and defined $timestamp ) {
+            last;
+        }
+    }
+
+    if ( defined $timestamp ) {
+        return $timestamp->strftime("%Y-%m-%d %H:%M:%S");
+    }
+    else {
+        # Let the DB date parser try its luck if the heuristics failed
+        return $date;
+    }
 }
 
 # END RUNTIME EVENTS

@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -226,6 +226,27 @@ sub vlitems_bydate_granted {
     return $self->vlitems_bydate( @_, filter_granted => 1 );
 }
 
+sub vlitems_bydate_granted_count {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->vlitems_bydate_count( @_, filter_granted => 1 );
+}
+
+sub vlitems_bydate_count {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $date_from = delete $args{from};
+    my $date_to = delete $args{to};
+    my $filter_granted = delete $args{filter_granted};
+
+    my ( $sql, $values ) = $self->_vlitems_by_date_sql( $date_from, $date_to, $filter_granted, 1 );
+    my $data = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, @{$values} ], );
+
+    return unless defined $data;
+    return @{$data}[0]->{count};
+}
+
 # for chronicle
 sub vlitems_bydate {
     XIMS::Debug( 5, "called" );
@@ -235,44 +256,26 @@ sub vlitems_bydate {
     my $date_to = delete $args{to};
     my $filter_granted = delete $args{filter_granted};
 
+    my $order = delete $args{order};
+    $order ||= 'm.date_from_timestamp asc';
+
+    my $limit = delete $args{limit};
+    my $offset = delete $args{offset};
+
     # TODO: parse and validate date here
 
-    my @items;
-    my %privmask;
-
-    my $properties = 'd.id AS id, d.parent_id, c.document_id, c.abstract, c.title, c.last_modification_timestamp, c.marked_deleted, c.locked_time, c.locked_by_id, c.published, m.date_from_timestamp, m.date_to_timestamp';
-    my $tables = 'cilib_meta m, ci_documents d, ci_content c';
-    my $conditions = 'd.ID = m.document_id AND d.ID = c.document_id AND d.parent_id = ? AND m.date_from_timestamp IS NOT NULL';
-    my @values = ( $self->document_id() );
-
-    if ( defined $date_from and length $date_from ) {
-        $conditions .= " AND m.date_from_timestamp >= ?";
-        push @values, $date_from;
-    }
-    if ( defined $date_to and length $date_to ) {
-        $conditions .= " AND m.date_to_timestamp <= ?";
-        push @values, $date_to;
-    }
-
-    my $order =  'm.date_from_timestamp asc';
-
-    if ( $filter_granted and not $self->User->admin() ) {
-        my @userids = ( $self->User->id(), $self->User->role_ids());
-        $tables .= ', ci_object_privs_granted p';
-        $conditions .= ' AND p.content_id = c.id AND p.privilege_mask >= 1 AND p.grantee_id IN (' . join(',', map { '?' } @userids) . ')';
-        push @values, @userids;
-    }
-
-    my $sql = "SELECT $properties FROM $tables WHERE $conditions";
+    my ( $sql, $values ) = $self->_vlitems_by_date_sql( $date_from, $date_to, $filter_granted );
     my $data = $self->data_provider->driver->dbh->fetch_select(
-                                                             sql => [ $sql, @values ],
-#                                                             limit => $ctxt->properties->content->getchildren->limit(),
-#                                                             offset => $ctxt->properties->content->getchildren->offset(),
+                                                             sql => [ $sql, @{$values} ],
+                                                             limit => $limit,
+                                                             offset => $offset,
                                                              order => $order
                                                              );
     return unless defined $data;
 
     my @itemids;
+    my @items;
+    my %privmask;
     foreach my $kiddo ( @{$data} ) {
         # move meta info to meta key
         $kiddo->{meta}->{date_from_timestamp} = delete $kiddo->{date_from_timestamp};
@@ -318,6 +321,44 @@ sub vlitems_bydate {
     return @items;
 }
 
+sub _vlitems_by_date_sql {
+    my $self = shift;
+    my $date_from = shift;
+    my $date_to = shift;
+    my $filter_granted = shift;
+    my $count = shift;
+
+    # TODO: filter by properties (subject, keyword, ...)
+
+    my $properties;
+    if ( defined $count ) {
+        $properties = 'count(d.id) AS count';
+    }
+    else {
+        $properties = 'd.id AS id, d.parent_id, d.location, c.document_id, c.abstract, c.title, c.last_modification_timestamp, c.marked_deleted, c.locked_time, c.locked_by_id, c.published, m.date_from_timestamp, m.date_to_timestamp';
+    }
+    my $tables = 'cilib_meta m, ci_documents d, ci_content c';
+    my $conditions = 'd.ID = m.document_id AND d.ID = c.document_id AND d.parent_id = ? AND m.date_from_timestamp IS NOT NULL';
+    my @values = ( $self->document_id() );
+
+    if ( defined $date_from and length $date_from ) {
+        $conditions .= " AND m.date_from_timestamp >= ?";
+        push @values, $date_from;
+    }
+    if ( defined $date_to and length $date_to ) {
+        $conditions .= " AND m.date_to_timestamp <= ?";
+        push @values, $date_to;
+    }
+
+    if ( $filter_granted and not $self->User->admin() ) {
+        my @userids = ( $self->User->id(), $self->User->role_ids());
+        $tables .= ', ci_object_privs_granted p';
+        $conditions .= ' AND p.content_id = c.id AND p.privilege_mask >= 1 AND p.grantee_id IN (' . join(',', map { '?' } @userids) . ')';
+        push @values, @userids;
+    }
+
+    return ( "SELECT $properties FROM $tables WHERE $conditions", \@values );
+}
 
 sub _vlobjects {
     XIMS::Debug( 5, "called" );

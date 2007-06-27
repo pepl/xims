@@ -7,12 +7,10 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:date="http://exslt.org/dates-and-times"
-                xmlns:exslt="http://exslt.org/common"
-                extension-element-prefixes="exslt date"
                 >
 
     <xsl:import href="common.xsl"/>
+    <xsl:import href="vlibrary_common.xsl"/>
 
     <xsl:output method="xml"/>
 
@@ -38,46 +36,6 @@
             <xsl:apply-templates select="abstract"/>
             <!--image="uri"-->
         </event>
-    </xsl:template>
-
-    <xsl:template match="date_from_timestamp|date_to_timestamp" mode="RFC822">
-        <xsl:variable name="datetime">
-            <xsl:value-of select="./year"/>
-            <xsl:text>-</xsl:text>
-            <xsl:value-of select="./month"/>
-            <xsl:text>-</xsl:text>
-            <xsl:value-of select="./day"/>
-            <xsl:text>T</xsl:text>
-            <xsl:value-of select="./hour"/>
-            <xsl:text>:</xsl:text>
-            <xsl:value-of select="./minute"/>
-            <xsl:text>:</xsl:text>
-            <xsl:value-of select="./second"/>
-            <!--<xsl:value-of select="./tzd"/>-->
-        </xsl:variable>
-        <xsl:variable name="hour" select="hour"/>
-        <xsl:variable name="gmtdiff" select="'1'"/>
-        <xsl:variable name="gmthour">
-            <xsl:choose>
-                <xsl:when test="number($hour)-number($gmtdiff) &lt; 0"><xsl:value-of select="number($hour)-number($gmtdiff)+24"/></xsl:when>
-                <xsl:otherwise><xsl:value-of select="number($hour)-number($gmtdiff)"/></xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-
-        <xsl:value-of select="substring(date:day-name($datetime),1,3)"/>
-        <xsl:text>, </xsl:text>
-        <xsl:value-of select="./day"/>
-        <xsl:text> </xsl:text>
-        <xsl:value-of select="date:month-abbreviation($datetime)"/>
-        <xsl:text> </xsl:text>
-        <xsl:value-of select="./year"/>
-        <xsl:text> </xsl:text>
-        <xsl:if test="string-length($gmthour)=1">0</xsl:if><xsl:value-of select="$gmthour"/>
-        <xsl:text>:</xsl:text>
-        <xsl:value-of select="./minute"/>
-        <xsl:text>:</xsl:text>
-        <xsl:value-of select="./second"/>
-        <xsl:text> GMT</xsl:text>
     </xsl:template>
 
 </xsl:stylesheet>
