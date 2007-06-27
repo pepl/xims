@@ -20,6 +20,11 @@
                 doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
                 indent="no"/>
 
+    <xsl:param name="chronicle_from"/>
+    <xsl:param name="chronicle_to"/>
+    <xsl:param name="submit.x"/>
+    <xsl:param name="submit"/>
+
     <xsl:template match="/document/context/object">
         <html>
             <xsl:call-template name="head_default"/>
@@ -37,7 +42,6 @@
                         <xsl:with-param name="mo" select="'subject'"/>
                     </xsl:call-template>
                     <xsl:call-template name="chronicle_switch" />
-                    <xsl:apply-templates select="/document/context/vlsubjectinfo"/>
                 </div>
                 <div id="tl1" style="height: 300px; border: 1px solid #aaa">
                 </div>
@@ -45,33 +49,6 @@
                 </div>
             </body>
         </html>
-    </xsl:template>
-
-    <xsl:template match="vlsubjectinfo">
-        <xsl:variable name="sortedsubjects">
-            <xsl:for-each select="/document/context/vlsubjectinfo/subject">
-                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                          order="ascending"/>
-                <xsl:copy>
-                    <xsl:copy-of select="*"/>
-                </xsl:copy>
-            </xsl:for-each>
-        </xsl:variable>
-
-        <table width="600" border="0" align="center" id="vlpropertyinfo">
-            <tr><th colspan="{$subjectcolumns}"><xsl:value-of select="$i18n_vlib/l/subjects"/></th></tr>
-            <xsl:apply-templates select="exslt:node-set($sortedsubjects)/subject[(position()-1) mod $subjectcolumns = 0]">
-                <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
-                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
-            </xsl:apply-templates>
-        </table>
-    </xsl:template>
-
-    <xsl:template match="subject">
-        <xsl:call-template name="item">
-            <xsl:with-param name="mo" select="'subject'"/>
-            <xsl:with-param name="colms" select="$subjectcolumns"/>
-        </xsl:call-template>
     </xsl:template>
 
 <xsl:template name="cttobject.options.copy"/>
@@ -93,11 +70,13 @@
                     var eventSource = new Timeline.DefaultEventSource();
                     var theme = Timeline.ClassicTheme.create();
 
+                    var startdate = "<xsl:apply-templates select="/document/context/object/children/object/meta/date_from_timestamp" mode="RFC822" />";
+
                     // TODO: get rid of hardcoded demo timespan
                     var bandInfos = [
                         Timeline.createBandInfo({
                             eventSource:    eventSource,
-                            date:           "Jan 1 1914 00:00:00 GMT",
+                            date:           startdate,
                             width:          "60%",
                             intervalUnit:   Timeline.DateTime.MONTH,
                             intervalPixels: 100
@@ -107,7 +86,7 @@
                             trackHeight:    0.5,
                             trackGap:       0.2,
                             eventSource:    eventSource,
-                            date:           "Jan 1 1914 00:00:00 GMT",
+                            date:           startdate,
                             width:          "20%",
                             intervalUnit:   Timeline.DateTime.YEAR,
                             intervalPixels: 200
@@ -117,7 +96,7 @@
                             trackHeight:    0.5,
                             trackGap:       0.2,
                             eventSource:    eventSource,
-                            date:           "Jan 1 1914 00:00:00 GMT",
+                            date:           startdate,
                             width:          "20%",
                             intervalUnit:   Timeline.DateTime.DECADE,
                             intervalPixels: 200
@@ -129,11 +108,13 @@
                     bandInfos[2].syncWith = 0;
                     bandInfos[2].highlight = true;
 
+                    <xsl:if test="$submit.x != '' or $submit != ''">
                     tl = Timeline.create(document.getElementById("tl1"), bandInfos);
                     // TODO: get rid of hardcoded demo timespan
-                    Timeline.loadXML("?vlchronicle=1;chronicle_from=1914-01-01;chronicle_to=1921-12-31;style=simile_timeline_src", function(xml, url) { eventSource.loadXML(xml, url); });
+                    Timeline.loadXML("?vlchronicle=1;onepage=1;style=simile_timeline_src;chronicle_from=<xsl:value-of select="$chronicle_from"/>;chronicle_to=<xsl:value-of select="$chronicle_to"/>", function(xml, url) { eventSource.loadXML(xml, url); });
 
                     setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
+                    </xsl:if>
                 }
 
                 var resizeTimerID = null;
@@ -147,6 +128,34 @@
                 }
             </script>
         </head>
+    </xsl:template>
+
+    <xsl:template name="chronicle_switch">
+        <table width="100%" border="0" style="margin: 0px;" id="vlsearchswitch">
+            <tr>
+                <td valign="top" width="50%" align="center" class="vlsearchswitchcell">
+                    <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_search">
+                        Chronik von
+                        <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="chronicle_from" size="10" maxlength="200" value="{$chronicle_from}" />
+                        bis
+                        <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="chronicle_to" size="10" maxlength="200" value="{$chronicle_to}" />
+                        <xsl:text>&#160;</xsl:text>
+                        <input type="image"
+                            src="{$skimages}go.png"
+                            name="submit"
+                            width="25"
+                            height="14"
+                            alt=""
+                            title=""
+                            border="0"
+                            style="vertical-align: text-bottom;"
+                        />
+                        <input type="hidden" name="simile" value="1"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
     </xsl:template>
 
 </xsl:stylesheet>
