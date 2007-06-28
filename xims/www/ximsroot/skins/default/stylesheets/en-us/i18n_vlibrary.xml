@@ -7,6 +7,8 @@
     <subjects>Subjects</subjects>
     <author>Author</author>
     <authors>Authors</authors>
+    <authors_unmapped>Authors currently not mapped</authors_unmapped>
+    <select_name>Please select a name!</select_name>
     <firstname>Forename</firstname>
     <middlename>Middle Name</middlename>
     <lastname>Surname</lastname>

@@ -35,6 +35,8 @@ sub registerEvents {
           author
           author_store
           author_edit
+          author_delete_prompt
+          author_delete
           publications
           publication
           vlsearch
@@ -471,6 +473,41 @@ sub event_author_store {
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
     return 0;
 }
+
+sub event_author_delete_prompt {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+
+    # operation control section
+    # whole VLibrary is locked if subject is edited
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    $ctxt->properties->application->styleprefix( 'common' );
+    $ctxt->properties->application->style( 'delete_confirm' );
+    return 0;
+}
+
+sub event_author_delete {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+
+    # operation control section
+    # whole VLibrary is locked if subject is edited
+    unless ( $ctxt->session->user->object_privmask( $object ) & XIMS::Privileges::WRITE ) {
+        return $self->event_access_denied( $ctxt );
+    }
+
+    $ctxt->properties->application->styleprefix( 'common' );
+    $ctxt->properties->application->style( 'delete_confirm' );
+
+
+    return 0;}
 
 sub event_publications {
     XIMS::Debug( 5, "called" );

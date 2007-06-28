@@ -123,8 +123,8 @@ sub vlauthorinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(c.id) AS object_count FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = a.document_id AND d.parent_id = ? GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type';
-    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() ] );
+    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(c.id) AS object_count FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = a.document_id AND d.parent_id = ? GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type UNION SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, 0 AS object_count FROM cilib_authors a WHERE a.document_id = ? AND NOT EXISTS (select 1 FROM cilib_authormap m where m.author_id = a.id )';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id(), $self->document_id() ] );
 
     return $sidata;
 }
@@ -139,9 +139,8 @@ sub vlauthorinfo_granted {
 
     my ($userprivsql, @userprivids) = $self->_userpriv_where_clause( $user );
 
-    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(DISTINCT c.id) AS object_count FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = a.document_id AND d.parent_id = ? ' . $userprivsql . ' GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type';
-    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id(), @userprivids ] );
-
+    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(DISTINCT c.id) AS object_count FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = a.document_id AND d.parent_id = ? ' . $userprivsql . ' GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type UNION SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, 0 AS object_count FROM cilib_authors a WHERE a.document_id = ? AND NOT EXISTS (select 1 FROM cilib_authormap m where m.author_id = a.id )';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id(), @userprivids, $self->document_id()] );
     return $sidata;
 }
 
