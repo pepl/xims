@@ -233,14 +233,31 @@
           <xsl:value-of select="middlename"/>
           <xsl:text> </xsl:text>
         </xsl:if>
-        <xsl:value-of select="lastname"/></a>&#160;
-        <!-- only show Edit-icon if user has the privilege "write" on the VLibray -->
-        <xsl:if test="$user_privileges/write=1">
+        <xsl:value-of select="lastname"/></a>
+        <!-- only show Edit-icon in authors-overview and if user has the privilege "write" on the VLibray -->
+        <xsl:if test="$user_privileges/write=1 and object_count">
+          &#160;
           <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_edit=1;author_id={id}')">
             <img src="{$skimages}option_edit.png"
                  alt="{$i18n_vlib/l/manage_authors}"
-                 title="{$i18n_vlib/l/manage_authors}" />
+                 title="{$i18n_vlib/l/manage_authors}"
+                 border="0"
+                 onmouseover="pass('edit{id}','edit','h'); return true;"
+                 onmouseout="pass('edit{id}','edit','c'); return true;"
+                 onmousedown="pass('edit{id}','edit','s'); return true;"
+                 onmouseup="pass('edit{id}','edit','s'); return true;"
+                 name="edit{id}"
+                 width="32"
+                 height="19"
+                />
           </a>
+          <xsl:if test="object_count = 0">
+            <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_prompt_delete=1;author_id={id}')">
+              <img src="{$skimages}option_delete.png"
+                   alt="{$i18n_vlib/l/delete_author}"
+                   title="{$i18n_vlib/l/delete_author}" />
+            </a>
+          </xsl:if>
         </xsl:if>
     </xsl:template>
 
@@ -259,7 +276,8 @@
         <!-- only show Edit-icon if user has the privilege "write" on the VLibray -->
         <xsl:if test="$user_privileges/write=1">
             <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject_edit=1;subject_id={id}">
-                <img src="{$skimages}option_edit.png" alt="{$i18n_vlib/l/manage_subjects}" title="{$i18n_vlib/l/manage_subjects}" />
+                <img src="{$skimages}option_edit.png" alt="{$i18n_vlib/l/manage_subjects}" title="{$i18n_vlib/l/manage_subjects}" /> 
+
             </a>
         </xsl:if>
         </xsl:template>

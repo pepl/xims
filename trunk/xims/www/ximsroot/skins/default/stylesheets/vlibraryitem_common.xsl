@@ -86,7 +86,7 @@
                name="create_mapping"
                value="{$i18n_vlib/l/Create_mapping}"
                class="control"
-               onClick="submitOnId('author', 'Nix gut! Du wählen Namen!')"/>
+               onClick="submitOnId('author', '{$i18n_vlib/l/select_name}')"/>
         <xsl:text>&#160;</xsl:text> 
         <a href="javascript:openDocWindow('VLAuthor')"
            class="doclink">(?)</a> 

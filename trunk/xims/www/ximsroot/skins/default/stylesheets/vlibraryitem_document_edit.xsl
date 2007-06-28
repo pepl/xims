@@ -9,7 +9,7 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="document_common.xsl"/>
+<!--<xsl:import href="document_common.xsl"/> -->
 <xsl:import href="vlibraryitem_common.xsl"/>
 
 <xsl:template match="/document/context/object">
@@ -36,13 +36,13 @@
                     <xsl:call-template name="tr-body-edit">
                         <xsl:with-param name="with_origbody" select="'yes'"/>
                     </xsl:call-template>
-                        <tr>
+                       <!-- <tr>
                             <td colspan="3">
                                 <xsl:call-template name="testbodysxml"/>
                                 <xsl:call-template name="prettyprint"/>
                             </td>
-                        </tr>
-                    <xsl:call-template name="trytobalance"/>
+                        </tr> 
+                    <xsl:call-template name="trytobalance"/> -->
                     <xsl:call-template name="tr-vlkeywords-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
                     <xsl:call-template name="markednew"/>
