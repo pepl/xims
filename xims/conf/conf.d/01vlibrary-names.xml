@@ -20,6 +20,8 @@
                 <item>vlibauthor.firstname</item>
                 <item>vlibauthor.suffix</item>
                 <item>vlibauthor.object_type</item>
+                <item>vlibauthor.url</item>
+                <item>vlibauthor.email</item>
                 <item>vlibauthor.document_id</item>
             </VLibAuthor>
             <VLibAuthorMap>

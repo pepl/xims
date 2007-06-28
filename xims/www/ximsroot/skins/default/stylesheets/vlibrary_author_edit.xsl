@@ -99,7 +99,37 @@
         </tr>
         <tr>
           <td>
-            <label for="vlauthor_Objecttype"><xsl:value-of select="$i18n_vlib/l/orgauthor"/></label>
+            <label for="vlauthor_email">E-Mail</label>
+          </td>
+          <td colspan="2">
+            <input tabindex="40"
+                   type="text" 
+                   id="vlauthor_email" 
+                   name="vlauthor_email"
+                   size="50"
+                   value="{email}"
+                   class="text"
+                   title="E-Mail"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vlauthor_url">URL</label>
+          </td>
+          <td colspan="2">
+            <input tabindex="40"
+                   type="text" 
+                   id="vlauthor_url" 
+                   name="vlauthor_url"
+                   size="50"
+                   value="{url}"
+                   class="text"
+                   title="URL"/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vlauthor_object_type"><xsl:value-of select="$i18n_vlib/l/orgauthor"/></label>
           </td>
           <td colspan="2">
             <input tabindex="40" 
