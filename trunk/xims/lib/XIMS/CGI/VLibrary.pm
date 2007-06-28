@@ -420,6 +420,8 @@ sub event_author_store {
     my $lastname = XIMS::clean($self->param('vlauthor_lastname')) || '';
     my $suffix = XIMS::clean($self->param('vlauthor_suffix')) || '';
     my $objecttype = XIMS::clean($self->param('vlauthor_object_type'));
+    my $url = XIMS::clean($self->param('vlauthor_url'));
+    my $email = XIMS::clean($self->param('vlauthor_email'));
     my $vlibauthor;
 
     if (defined $id and $id) {
@@ -435,6 +437,8 @@ sub event_author_store {
         $vlibauthor->middlename( $middlename );
         $vlibauthor->lastname( $lastname );
         $vlibauthor->suffix( $suffix );
+        $vlibauthor->email( $email );
+        $vlibauthor->url( $url );
 
         if (defined $objecttype and $objecttype ) {
             $vlibauthor->object_type(1);
