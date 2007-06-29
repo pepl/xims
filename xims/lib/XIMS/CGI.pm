@@ -680,9 +680,12 @@ sub init_store_object {
                 my $suffix = $object->data_format->suffix();
                 # temp. hack until multi-language support is implemented
                 # to allow simple content-negotiation using .lang suffixes
-                if ( defined $suffix and length $suffix and not ($suffix eq 'html'
-                                                                 and $location =~ /.*\.html\.(de|en|es|it|fr|html)$/) ) {
-                    XIMS::Debug( 6, "exchanging suffix with $suffix ($location)" );
+                if  ( defined $suffix and length $suffix and not (
+			( $suffix eq 'html' and $location =~ /.*\.html\.(de|en|es|it|fr|html)$/ )
+			or
+			( $suffix eq 'sdbk' and $location =~ /.*\.sdbk\.(de|en|es|it|fr|sdbk)$/ )
+								 )
+		    ) {
                     $location =~ s/\.[^\.]+$//;
                     $location .= "." . $suffix;
                     XIMS::Debug( 6, "exchange done, location is now $location" );
