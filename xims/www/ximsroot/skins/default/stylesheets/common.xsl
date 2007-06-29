@@ -362,10 +362,32 @@
             <span class="compulsory"><xsl:value-of select="$i18n/l/Location"/></span>
         </td>
         <td>
-            <!-- strip the suffix -->
-            <input tabindex="10" type="text" class="text" name="name" size="40"
-                        value="{substring-before(location, concat('.', /document/data_formats/data_format
-                         [@id=/document/context/object/data_format_id]/suffix))}"/>
+                <!-- strip suffix; leave it, if it's a sdbk with lang-extension -->
+                <input tabindex="10" type="text" name="name" size="40">
+                    <xsl:choose>
+                        <xsl:when test="published = '1'">
+                            <xsl:attribute name="readonly">readonly</xsl:attribute>
+                            <xsl:attribute name="class">readonlytext</xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="class">text</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="substring-after(location, '.sdbk') = '.de' or
+                                        substring-after(location, '.sdbk') = '.en' or
+                                        substring-after(location, '.sdbk') = '.es' or
+                                        substring-after(location, '.sdbk') = '.fr' or
+                                        substring-after(location, '.sdbk') = '.it' or
+                                        substring-after(location, '.sdbk') = '.sdbk'">
+                            <xsl:attribute name="value"><xsl:value-of select="location"/></xsl:attribute>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="value"><xsl:value-of select="substring-before(location, concat('.', /document/data_formats/data_format
+                       [@id=/document/context/object/data_format_id]/suffix))"/></xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </input>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         </td>
