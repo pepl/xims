@@ -59,20 +59,6 @@ CREATE TABLE ci_object_types
  )
 ;
 
-
-\echo creating table 'ci_object_privs_granted'
-CREATE TABLE ci_object_privs_granted
- (privilege_mask NUMERIC(32,0) NOT NULL
- ,grantee_id     INTEGER       NOT NULL REFERENCES ci_users_roles(id)     ON DELETE CASCADE
- ,grantor_id     INTEGER       NOT NULL REFERENCES ci_users_roles(id)     ON DELETE CASCADE
- ,content_id     INTEGER       NOT NULL REFERENCES ci_content(id)     ON DELETE CASCADE
- )
-;
-
-\echo creating indices on 'ci_object_privs_granted'
-CREATE INDEX ci_obj_privs_grantee_idx ON ci_object_privs_granted ( grantee_id );
-CREATE INDEX ci_obj_privs_content_idx ON ci_object_privs_granted ( content_id );
-
 \echo creating table 'ci_users_roles'
 CREATE TABLE ci_users_roles
  (password            VARCHAR(32)
@@ -248,6 +234,22 @@ COMMENT ON COLUMN ci_content.keywords
 CREATE INDEX ci_content_doc_id_idx
        ON ci_content ( document_id )
 ;
+
+\echo creating table 'ci_object_privs_granted'
+CREATE TABLE ci_object_privs_granted
+ (privilege_mask NUMERIC(32,0) NOT NULL
+ ,grantee_id     INTEGER       NOT NULL REFERENCES ci_users_roles(id)     ON DELETE CASCADE
+ ,grantor_id     INTEGER       NOT NULL REFERENCES ci_users_roles(id)     ON DELETE CASCADE
+ ,content_id     INTEGER       NOT NULL REFERENCES ci_content(id)     ON DELETE CASCADE
+ )
+;
+
+\echo creating indices on 'ci_object_privs_granted'
+CREATE INDEX ci_obj_privs_grantee_idx ON ci_object_privs_granted ( grantee_id );
+CREATE INDEX ci_obj_privs_content_idx ON ci_object_privs_granted ( content_id );
+
+
+
 
 
 \echo creating table 'ci_bookmarks'
