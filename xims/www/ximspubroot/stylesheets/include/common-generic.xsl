@@ -121,6 +121,15 @@
             </ul>
         </div>
   </xsl:if>
+  <xsl:if test="newsitem/links/link">
+        <div id="linkbox">
+            <h3>DocumentLinks</h3>
+            <ul>
+                <xsl:apply-templates select="newsitem/links"/>
+            </ul>
+        </div>
+  </xsl:if>
+
 </xsl:template>
 
 <xsl:template match="link">
