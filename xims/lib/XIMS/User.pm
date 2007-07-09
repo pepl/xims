@@ -6,6 +6,7 @@ package XIMS::User;
 
 use strict;
 use base qw( XIMS::AbstractClass Class::Accessor );
+use XIMS;
 use XIMS::Bookmark;
 use Digest::MD5 qw( md5_hex );
 
