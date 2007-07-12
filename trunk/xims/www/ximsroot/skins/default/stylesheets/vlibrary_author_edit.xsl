@@ -23,24 +23,26 @@
     <html>
       <head>
         <title><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/author)"/></title>
+        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
       </head>
       <body>
-        <form action="{$xims_box}{$goxims_content}?id={@id}"
+        <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
+        <form action="{$xims_box}{$goxims_content}"
               name="eform"
-              method="POST"
-              onSubmit="window.opener.document.location.reload(); self.close();">
+              method="GET"
+              onSubmit="window.opener.document.location.reload();self.close();">
+          <input type="hidden" name="id" id="id" value="{@id}"/>
           <xsl:apply-templates select="/document/context/object/children"/>
         </form>
+        </div>
       </body>
     </html>
   </xsl:template>
-
+  
   <xsl:template match="children/object">
     <fieldset>
       <legend>
         <xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/author)"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
       </legend>
       <table>
         <tr>
