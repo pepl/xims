@@ -82,18 +82,20 @@
         <xsl:sort select="translate(firstname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                   order="ascending"/>
       </xsl:apply-templates>
-       <tr>
-         <th colspan="{$authorcolumns}">
-           <xsl:value-of select="$i18n_vlib/l/authors_unmapped"/>
-         </th>
-       </tr>
-       <xsl:apply-templates select="exslt:node-set($unmappedauthors)/author[(position()-1) mod $authorcolumns = 0]">
-         <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
-         <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                   order="ascending"/>
-         <xsl:sort select="translate(firstname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                   order="ascending"/>
-       </xsl:apply-templates>
+      <xsl:if test="count(/document/context/vlauthorinfo/author[object_count = 0])&gt;0">
+        <tr>
+          <th colspan="{$authorcolumns}">
+            <xsl:value-of select="$i18n_vlib/l/authors_unmapped"/>
+          </th>
+        </tr>
+        <xsl:apply-templates select="exslt:node-set($unmappedauthors)/author[(position()-1) mod $authorcolumns = 0]">
+          <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
+          <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                    order="ascending"/>
+          <xsl:sort select="translate(firstname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                    order="ascending"/>
+        </xsl:apply-templates>
+      </xsl:if>
     </table>
  
 </xsl:template>
