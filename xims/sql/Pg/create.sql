@@ -205,6 +205,7 @@ CREATE TABLE ci_content
  ,last_publication_timestamp    TIMESTAMP(0)  WITHOUT TIME ZONE
  ,last_published_by_id          INTEGER       REFERENCES ci_users_roles( id )
  ,marked_deleted                SMALLINT
+ ,deletionmark_timestamp        TIMESTAMP(0)  WITHOUT TIME ZONE;
  ,locked_by_lastname            VARCHAR(90)
  ,locked_by_middlename          VARCHAR(30)
  ,locked_by_firstname           VARCHAR(90)

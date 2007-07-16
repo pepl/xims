@@ -5,6 +5,7 @@
 package XIMS::Object;
 
 use strict;
+
 # use warnings;
 no warnings 'redefine';
 
@@ -17,18 +18,20 @@ use XIMS::Importer::Object;
 use XIMS::Iterator::Object;
 use XIMS::Text;
 use Text::Diff;
-use Text::ParseWords (); # for _parse_attributes
-use XML::LibXML; # for balanced_string(), balance_string()
-use IO::File; # for balanced_string()
+use Text::ParseWords ();    # for _parse_attributes
+use XML::LibXML;            # for balanced_string(), balance_string()
+use IO::File;               # for balanced_string()
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
 # the binfile field is no longer available via the method interface, but is set
 # internally in the object's HASH to allow binary object types to alias body() to the binfile
 # field. This avoids madness during data serialization.
-our @Fields = grep { $_ ne 'binfile' } @{XIMS::Names::property_interface_names( resource_type() )};
+our @Fields = grep { $_ ne 'binfile' }
+    @{ XIMS::Names::property_interface_names( resource_type() ) };
 our @Default_Properties = grep { $_ ne 'body' } @Fields, 'location_path';
 our @Reference_Id_Names = qw( style_id script_id css_id image_id schema_id);
-our @Reference_DocId_Names = qw( symname_to_doc_id );;
+our @Reference_DocId_Names = qw( symname_to_doc_id );
 
 sub fields {
     return @Fields;
@@ -38,7 +41,7 @@ sub resource_type {
     return 'Object';
 }
 
-__PACKAGE__->mk_accessors( @Fields );
+__PACKAGE__->mk_accessors(@Fields);
 
 ##
 #
@@ -69,17 +72,18 @@ __PACKAGE__->mk_accessors( @Fields );
 #
 sub new {
     my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
+    my $class = ref($proto) || $proto;
+    my %args  = @_;
 
     my $self = bless {}, $class;
     $self->{User} = delete $args{User} if defined $args{User};
     my $real_object;
-    if ( defined( $args{path} )) {
+    if ( defined( $args{path} ) ) {
         XIMS::Debug( 5, "fetching object id from path $args{path}." );
 
         # this is bad... fix me later
-        my $document_id = $self->data_provider->get_object_id_by_path( path => $args{path} );
+        my $document_id = $self->data_provider->get_object_id_by_path(
+            path => $args{path} );
         if ( defined $document_id ) {
             $args{document_id} = $document_id;
         }
@@ -90,17 +94,21 @@ sub new {
 
     # check to see if we are using the constructor
     # to fetch an *existing* object by passing in it's ID
-    if ( defined($args{id}) or defined($args{document_id}) ) {
-        XIMS::Debug( 6, "fetching object by id: $args{id}." ) if defined($args{id});
-        XIMS::Debug( 6, "fetching object by document_id: $args{document_id}." ) if defined($args{document_id});
+    if ( defined( $args{id} ) or defined( $args{document_id} ) ) {
+        XIMS::Debug( 6, "fetching object by id: $args{id}." )
+            if defined( $args{id} );
+        XIMS::Debug( 6,
+            "fetching object by document_id: $args{document_id}." )
+            if defined( $args{document_id} );
         my $properties = delete $args{properties};
         unless ( $properties and ref $properties and scalar @{$properties} ) {
             $properties = \@Default_Properties;
         }
-        my @data = $self->data_provider->getObject( %args, properties => $properties );
+        my @data = $self->data_provider->getObject( %args,
+            properties => $properties );
         return undef unless scalar @data;
         $real_object = $data[0];
-        if ( defined( $real_object ) ) {
+        if ( defined($real_object) ) {
             delete $real_object->{'document.id'};
             $self->data( %{$real_object} );
         }
@@ -108,6 +116,7 @@ sub new {
             return undef;
         }
     }
+
     # otherwise just use the args to load the unserialized (new) object.
     else {
         if ( $class ne 'XIMS::Object' ) {
@@ -125,30 +134,33 @@ sub new {
             }
             if ( not $args{data_format_id} ) {
                 my $df = XIMS::DataFormat->new( name => $otname );
-                if ( $df ) {
+                if ($df) {
                     $self->data_format_id( $df->id() );
                 }
                 else {
-                    XIMS::Debug( 4, "using 'Binary' as data format fallback" );
-                    $self->data_format_id( XIMS::DataFormat->new( name => 'Binary' )->id() );
+                    XIMS::Debug( 4,
+                        "using 'Binary' as data format fallback" );
+                    $self->data_format_id(
+                        XIMS::DataFormat->new( name => 'Binary' )->id() );
                 }
             }
         }
-        if ( scalar( keys( %args ) ) > 0 ) {
-            # make sure those two ids come first, since things like body() depend on them
-            $self->{data_format_id} = delete $args{data_format_id} unless defined $self->data_format_id;
-            $self->{object_type_id} = delete $args{object_type_id} unless defined $self->object_type_id;
-            foreach my $field ( keys ( %args ) ) {
+        if ( scalar( keys(%args) ) > 0 ) {
+
+ # make sure those two ids come first, since things like body() depend on them
+            $self->{data_format_id} = delete $args{data_format_id}
+                unless defined $self->data_format_id;
+            $self->{object_type_id} = delete $args{object_type_id}
+                unless defined $self->object_type_id;
+            foreach my $field ( keys(%args) ) {
                 $field = 'body' if $field eq 'binfile';
-                $self->$field( $args{$field} ) if $self->can( $field );
+                $self->$field( $args{$field} ) if $self->can($field);
             }
         }
     }
 
     return $self;
 }
-
-
 
 ##
 #
@@ -169,26 +181,31 @@ sub new {
 #
 sub body {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $data = shift;
-    my $content_field = $self->content_field(); # will be 'body' or 'binfile' for most objects
+    my $self          = shift;
+    my $data          = shift;
+    my $content_field = $self->content_field()
+        ;    # will be 'body' or 'binfile' for most objects
 
-    if ( defined( $data ) ) {
-        # since department root's portlet info is stored in the body. we have to allow setting the body for
-        # containers, or create a separate dataformat for department roots...
-        #unless( defined( $content_field ) ) {
-        #    XIMS::Debug( 3, "Attempt to set body on Container object. This action is not allowed." );
-        #    return undef;
-        #}
+    if ( defined($data) ) {
+
+# since department root's portlet info is stored in the body. we have to allow setting the body for
+# containers, or create a separate dataformat for department roots...
+#unless( defined( $content_field ) ) {
+#    XIMS::Debug( 3, "Attempt to set body on Container object. This action is not allowed." );
+#    return undef;
+#}
 
         $self->{$content_field} = $data;
     }
     else {
-        return unless defined( $content_field );
+        return unless defined($content_field);
         return $self->{$content_field} if defined( $self->{$content_field} );
         return undef unless defined $self->id();
-        my @selected_data = $self->data_provider->getObject( id => $self->id(), properties => [$content_field] );
-        my $actual_data = ( values( %{$selected_data[0]} ) )[0];
+        my @selected_data = $self->data_provider->getObject(
+            id         => $self->id(),
+            properties => [$content_field]
+        );
+        my $actual_data = ( values( %{ $selected_data[0] } ) )[0];
         $self->{$content_field} = $actual_data;
         return $actual_data;
     }
@@ -237,7 +254,10 @@ sub parent {
     my $self = shift;
 
     return undef unless $self->parent_id;
-    return XIMS::Object->new( User => $self->User, document_id => $self->parent_id );
+    return XIMS::Object->new(
+        User        => $self->User,
+        document_id => $self->parent_id
+    );
 }
 
 ##
@@ -269,12 +289,16 @@ sub children {
         $properties = \@Default_Properties;
     }
 
-    my @child_ids = $self->__child_ids( %args );
-    return () unless scalar( @child_ids ) > 0 ;
+    my @child_ids = $self->__child_ids(%args);
+    return () unless scalar(@child_ids) > 0;
     return XIMS::Iterator::Object->new( \@child_ids ) unless wantarray;
 
-    my @children_data = $self->data_provider->getObject( document_id => \@child_ids, %args, properties => $properties );
+    my @children_data = $self->data_provider->getObject(
+        document_id => \@child_ids,
+        %args, properties => $properties
+    );
     my @children = map { XIMS::Object->new->data( %{$_} ) } @children_data;
+
     #warn "children" . Dumper( \@children ) . "\n";
     return @children;
 }
@@ -307,23 +331,32 @@ sub children_granted {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
 
-    return $self->children( %args ) if $user->admin();
+    return $self->children(%args) if $user->admin();
 
-    my $properties = delete $args{properties}; # save them back for the call to __get_granted_objects
+    my $properties = delete
+        $args{properties}; # save them back for the call to __get_granted_objects
 
-    # the following is a potential performance killer, we should spare some steps here...
-    # do a join in __child_ids?
-    # it does not have to be the Do-it-all-in-one-query-with-Oracle way ;-)
-    # SELECT d.id,c.id,location,title,object_type_id,data_format_id,privilege_mask,depth FROM ci_content c,(SELECT ci_documents.*, level depth FROM ci_documents START WITH id IN ( SELECT document_id FROM ci_content WHERE id = ?) CONNECT BY PRIOR id = parent_id AND level <= ? AND id != parent_id ORDER BY level) d,ci_object_privs_granted p,(SELECT id, level FROM ci_roles_granted START WITH grantee_id = ? CONNECT BY PRIOR id = grantee_id ORDER BY level) r WHERE c.document_id = d.id AND depth > 1 AND p.content_id = c.id AND p.content_id = c.id AND (p.grantee_id = ? OR p.grantee_id = r.id ) AND p.privilege_mask >= 1 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = c.id AND grantee_id = ? AND privilege_mask = 0) IS NULL AND marked_deleted IS NULL ORDER BY d.position
-    my @child_candidate_docids = $self->__child_ids( %args );
-    return () unless scalar( @child_candidate_docids ) > 0;
+# the following is a potential performance killer, we should spare some steps here...
+# do a join in __child_ids?
+# it does not have to be the Do-it-all-in-one-query-with-Oracle way ;-)
+# SELECT d.id,c.id,location,title,object_type_id,data_format_id,privilege_mask,depth FROM ci_content c,(SELECT ci_documents.*, level depth FROM ci_documents START WITH id IN ( SELECT document_id FROM ci_content WHERE id = ?) CONNECT BY PRIOR id = parent_id AND level <= ? AND id != parent_id ORDER BY level) d,ci_object_privs_granted p,(SELECT id, level FROM ci_roles_granted START WITH grantee_id = ? CONNECT BY PRIOR id = grantee_id ORDER BY level) r WHERE c.document_id = d.id AND depth > 1 AND p.content_id = c.id AND p.content_id = c.id AND (p.grantee_id = ? OR p.grantee_id = r.id ) AND p.privilege_mask >= 1 AND (SELECT privilege_mask FROM ci_object_privs_granted WHERE content_id = c.id AND grantee_id = ? AND privilege_mask = 0) IS NULL AND marked_deleted IS NULL ORDER BY d.position
+    my @child_candidate_docids = $self->__child_ids(%args);
+    return () unless scalar(@child_candidate_docids) > 0;
     if ( not wantarray ) {
-        my @ids = $self->__get_granted_ids( doc_ids => \@child_candidate_docids, User => $user, %args );
+        my @ids = $self->__get_granted_ids(
+            doc_ids => \@child_candidate_docids,
+            User    => $user,
+            %args
+        );
         return XIMS::Iterator::Object->new( \@ids, 1 );
     }
 
-    $args{properties} = $properties; # pass the properties
-    my @children = $self->__get_granted_objects( doc_ids => \@child_candidate_docids, User => $user, %args ) ;
+    $args{properties} = $properties;    # pass the properties
+    my @children = $self->__get_granted_objects(
+        doc_ids => \@child_candidate_docids,
+        User    => $user,
+        %args
+    );
 
     #warn "Granted children" . Dumper( \@children ) . "\n";
     return @children;
@@ -347,11 +380,10 @@ sub children_granted {
 #
 sub child_count {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my @child_ids = $self->__child_ids( @_ );
-    return scalar ( @child_ids );
+    my $self      = shift;
+    my @child_ids = $self->__child_ids(@_);
+    return scalar(@child_ids);
 }
-
 
 ##
 #
@@ -372,11 +404,10 @@ sub child_count_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    my $iterator = $self->children_granted( @_ );
+    my $iterator = $self->children_granted(@_);
     return undef unless defined $iterator;
     return $iterator->getLength();
 }
-
 
 ##
 #
@@ -396,15 +427,18 @@ sub ancestors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    if ( defined $self->{Ancestors} and $self->{_cached_parent_id} == $self->{parent_id} ) {
-        my @ancs = @{$self->{Ancestors}};
+    if ( defined $self->{Ancestors}
+        and $self->{_cached_parent_id} == $self->{parent_id} )
+    {
+        my @ancs = @{ $self->{Ancestors} };
         return \@ancs;
     }
-    my @ancestors = $self->data_provider->recurse_ancestor( $self );
+    my @ancestors = $self->data_provider->recurse_ancestor($self);
+
     #warn "parents " . Dumper( \@ancestors ) . "\n";
 
     # cache ancestors
-    $self->{Ancestors} = \@ancestors;
+    $self->{Ancestors}         = \@ancestors;
     $self->{_cached_parent_id} = $self->{parent_id};
 
     my @ancs = @ancestors;
@@ -430,14 +464,17 @@ sub objectroot_ancestors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    if ( defined $self->{ORootAncestors} and $self->{_cached_parent_id} == $self->{parent_id} ) {
+    if ( defined $self->{ORootAncestors}
+        and $self->{_cached_parent_id} == $self->{parent_id} )
+    {
         return $self->{ORootAncestors};
     }
     my @or_ancestors = $self->data_provider->recurse_ancestor( $self, 1 );
+
     #warn "parents " . Dumper( \@ancestors ) . "\n";
 
     # cache ancestors
-    $self->{ORootAncestors} = \@or_ancestors;
+    $self->{ORootAncestors}    = \@or_ancestors;
     $self->{_cached_parent_id} = $self->{parent_id};
 
     return $self->{ORootAncestors};
@@ -475,30 +512,35 @@ sub descendants {
     }
 
     delete $args{parent_id};
-    my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id(), %args );
+    my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level(
+        parent_id => $self->document_id(),
+        %args
+    );
 
-    my @doc_ids  = @{$descendant_ids_lvls->[0]};
-    return () unless scalar( @doc_ids ) > 0;
+    my @doc_ids = @{ $descendant_ids_lvls->[0] };
+    return () unless scalar(@doc_ids) > 0;
     return XIMS::Iterator::Object->new( \@doc_ids ) unless wantarray;
 
-    my @lvls = @{$descendant_ids_lvls->[1]};
+    my @lvls = @{ $descendant_ids_lvls->[1] };
 
-    my @descendants_data =  $self->data_provider->getObject( document_id => \@doc_ids,
-                                                             %args,
-                                                             properties => $properties,
-                                                            );
+    my @descendants_data = $self->data_provider->getObject(
+        document_id => \@doc_ids,
+        %args,
+        properties => $properties,
+    );
 
-    my @descendants = map { XIMS::Object->new->data( %{$_} ) } @descendants_data;
+    my @descendants
+        = map { XIMS::Object->new->data( %{$_} ) } @descendants_data;
 
-    # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
+# getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
     my @sorted_descendants;
-    my ($i, $j);
-    for ( $i=0; $i < @doc_ids; $i++ ) {
-        for ( $j=0; $j < @descendants; $j++ ) {
+    my ( $i, $j );
+    for ( $i = 0; $i < @doc_ids; $i++ ) {
+        for ( $j = 0; $j < @descendants; $j++ ) {
             if ( $doc_ids[$i] == $descendants[$j]->document_id() ) {
                 $descendants[$j]->{level} = $lvls[$i];
                 push( @sorted_descendants, $descendants[$j] );
-                splice( @descendants,$j,1 );
+                splice( @descendants, $j, 1 );
                 last;
             }
         }
@@ -538,35 +580,48 @@ sub descendants_granted {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
 
-    return $self->descendants( %args ) if $user->admin();
+    return $self->descendants(%args) if $user->admin();
 
-    my $properties = delete $args{properties}; # save them back for the call to __get_granted_objects
+    my $properties = delete
+        $args{properties}; # save them back for the call to __get_granted_objects
 
     delete $args{parent_id};
-    my $descendant_candidate_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id(), %args );
+    my $descendant_candidate_ids_lvls
+        = $self->data_provider->get_descendant_id_level(
+        parent_id => $self->document_id(),
+        %args
+        );
 
-    my @candidate_doc_ids  = @{$descendant_candidate_ids_lvls->[0]};
-    my @candidate_lvls = @{$descendant_candidate_ids_lvls->[1]};
+    my @candidate_doc_ids = @{ $descendant_candidate_ids_lvls->[0] };
+    my @candidate_lvls    = @{ $descendant_candidate_ids_lvls->[1] };
 
-    return () unless scalar( @candidate_doc_ids ) > 0;
+    return () unless scalar(@candidate_doc_ids) > 0;
     if ( not wantarray ) {
-        my @ids = $self->__get_granted_ids( doc_ids => \@candidate_doc_ids, User => $user, %args );
+        my @ids = $self->__get_granted_ids(
+            doc_ids => \@candidate_doc_ids,
+            User    => $user,
+            %args
+        );
         return XIMS::Iterator::Object->new( \@ids, 1 );
     }
 
-    $args{properties} = $properties; # pass the properties
-    my @descendants = $self->__get_granted_objects( doc_ids => \@candidate_doc_ids, User => $user, %args );
-    return () unless scalar( @descendants ) > 0;
+    $args{properties} = $properties;    # pass the properties
+    my @descendants = $self->__get_granted_objects(
+        doc_ids => \@candidate_doc_ids,
+        User    => $user,
+        %args
+    );
+    return () unless scalar(@descendants) > 0;
 
-    # getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
+# getObject() returns the objects in the default sorting order, so we have to remap levels and resort descendants :-/...
     my @sorted_descendants;
-    my ($i, $j);
-    for ( $i=0; $i < @candidate_doc_ids; $i++ ) {
-        for ( $j=0; $j < @descendants; $j++ ) {
+    my ( $i, $j );
+    for ( $i = 0; $i < @candidate_doc_ids; $i++ ) {
+        for ( $j = 0; $j < @descendants; $j++ ) {
             if ( $candidate_doc_ids[$i] == $descendants[$j]->document_id() ) {
                 $descendants[$j]->{level} = $candidate_lvls[$i];
                 push( @sorted_descendants, $descendants[$j] );
-                splice( @descendants,$j,1 );
+                splice( @descendants, $j, 1 );
                 last;
             }
         }
@@ -594,21 +649,21 @@ sub descendants_granted {
 #
 sub descendant_count {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $descendant_count = 0;
-    my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
+    my $self                = shift;
+    my $descendant_count    = 0;
+    my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level(
+        parent_id => $self->document_id() );
 
-    my @doc_ids  = @{$descendant_ids_lvls->[0]};
-    return ( 0,0 ) unless scalar( @doc_ids ) > 0;
+    my @doc_ids = @{ $descendant_ids_lvls->[0] };
+    return ( 0, 0 ) unless scalar(@doc_ids) > 0;
 
-    my @lvls = @{$descendant_ids_lvls->[1]};
+    my @lvls = @{ $descendant_ids_lvls->[1] };
 
     # sort to find floor and ceiling values
     @lvls = sort { $a <=> $b } @lvls;
 
-    return ( scalar( @doc_ids ), $lvls[-1] - $lvls[0] + 1 );
+    return ( scalar(@doc_ids), $lvls[-1] - $lvls[0] + 1 );
 }
-
 
 ##
 #
@@ -629,11 +684,10 @@ sub descendant_count_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    my $iterator = $self->descendants_granted( @_ );
+    my $iterator = $self->descendants_granted(@_);
     return undef unless defined $iterator;
     return $iterator->getLength();
 }
-
 
 ##
 #
@@ -661,11 +715,14 @@ sub find_objects {
         $properties = \@Default_Properties;
     }
 
-    my @found_ids = $self->__find_ids( %args );
-    return () unless scalar( @found_ids ) > 0 ;
+    my @found_ids = $self->__find_ids(%args);
+    return () unless scalar(@found_ids) > 0;
     return XIMS::Iterator::Object->new( \@found_ids, 1 ) unless wantarray;
 
-    my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => $properties );
+    my @object_data = $self->data_provider->getObject(
+        id         => \@found_ids,
+        properties => $properties
+    );
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
 
     #warn "objects found" . Dumper( \@objects ) . "\n";
@@ -690,8 +747,10 @@ sub find_objects_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    delete $args{limit} if exists $args{limit}; # we have to get the ids of *all* matching objects
-    return $self->__find_ids_count( %args );
+    delete $args{limit}
+        if exists
+        $args{limit};    # we have to get the ids of *all* matching objects
+    return $self->__find_ids_count(%args);
 }
 
 ##
@@ -722,7 +781,7 @@ sub find_objects_granted {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
 
-    return $self->find_objects( %args ) if $user->admin();
+    return $self->find_objects(%args) if $user->admin();
 
     my $properties = delete $args{properties};
     unless ( $properties and ref $properties and scalar @{$properties} ) {
@@ -733,11 +792,14 @@ sub find_objects_granted {
     my @role_ids = $user->role_ids();
     $args{role_ids} = \@role_ids;
 
-    my @found_ids = $self->__find_ids( %args );
-    return () unless scalar( @found_ids ) > 0 ;
+    my @found_ids = $self->__find_ids(%args);
+    return () unless scalar(@found_ids) > 0;
     return XIMS::Iterator::Object->new( \@found_ids, 1 ) unless wantarray;
 
-    my @object_data = $self->data_provider->getObject( id => \@found_ids, properties => $properties );
+    my @object_data = $self->data_provider->getObject(
+        id         => \@found_ids,
+        properties => $properties
+    );
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @object_data;
 
     #warn "objects found" . Dumper( \@objects ) . "\n";
@@ -770,7 +832,7 @@ sub find_objects_granted_count {
         $args{role_ids} = \@role_ids;
     }
 
-    return $self->find_objects_count( %args );
+    return $self->find_objects_count(%args);
 }
 
 ##
@@ -802,29 +864,34 @@ sub referenced_by {
     my %args = @_;
 
     my $properties = delete $args{properties};
-    if ( wantarray ) {
+    if (wantarray) {
         unless ( $properties and ref $properties and scalar @{$properties} ) {
             $properties = \@Default_Properties;
         }
     }
     else {
-        $properties = [ qw( object_type_id document_id ) ];
+        $properties = [qw( object_type_id document_id )];
     }
 
     my $include_ancestors = delete $args{include_ancestors};
     if ( defined $include_ancestors ) {
-        my @ancestor_docids = map { $_->{document_id} } @{$self->ancestors()};
-        $args{symname_to_doc_id} = [ (@ancestor_docids, $self->document_id()) ];
+        my @ancestor_docids
+            = map { $_->{document_id} } @{ $self->ancestors() };
+        $args{symname_to_doc_id}
+            = [ ( @ancestor_docids, $self->document_id() ) ];
     }
     else {
         $args{symname_to_doc_id} = $self->document_id();
     }
 
-    my @referenced_by_data = $self->data_provider->getObject( %args, properties => $properties );
-    return () unless scalar( @referenced_by_data ) > 0;
+    my @referenced_by_data
+        = $self->data_provider->getObject( %args, properties => $properties );
+    return () unless scalar(@referenced_by_data) > 0;
 
-    if ( wantarray ) {
-        my @referenced_by = map { XIMS::Object->new->data( %{$_} ) } @referenced_by_data;
+    if (wantarray) {
+        my @referenced_by
+            = map { XIMS::Object->new->data( %{$_} ) } @referenced_by_data;
+
         #warn "referenced_by" . Dumper( \@referenced_by ) . "\n";
 
         return @referenced_by;
@@ -866,7 +933,7 @@ sub referenced_by_granted {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
 
-    return $self->referenced_by( %args ) if $user->admin();
+    return $self->referenced_by(%args) if $user->admin();
 
     my $properties = delete $args{properties};
     unless ( $properties and ref $properties and scalar @{$properties} ) {
@@ -875,27 +942,39 @@ sub referenced_by_granted {
 
     my $include_ancestors = delete $args{include_ancestors};
     if ( defined $include_ancestors ) {
-        my @ancestor_docids = map { $_->{document_id} } @{$self->ancestors()};
-        $args{symname_to_doc_id} = [ (@ancestor_docids, $self->document_id()) ];
+        my @ancestor_docids
+            = map { $_->{document_id} } @{ $self->ancestors() };
+        $args{symname_to_doc_id}
+            = [ ( @ancestor_docids, $self->document_id() ) ];
     }
     else {
         $args{symname_to_doc_id} = $self->document_id();
     }
 
-    my @candidate_data = $self->data_provider->getObject( %args, properties => [ qw( object_type_id document_id ) ] );
-    my @candidate_docids = map { $_->{'content.document_id'} } @candidate_data;
-    return () unless scalar( @candidate_docids ) > 0;
+    my @candidate_data = $self->data_provider->getObject( %args,
+        properties => [qw( object_type_id document_id )] );
+    my @candidate_docids
+        = map { $_->{'content.document_id'} } @candidate_data;
+    return () unless scalar(@candidate_docids) > 0;
 
     # not needed anymore
     delete $args{symname_to_doc_id};
 
     if ( not wantarray ) {
-        my @ids = $self->__get_granted_ids( doc_ids => \@candidate_docids, User => $user, %args );
+        my @ids = $self->__get_granted_ids(
+            doc_ids => \@candidate_docids,
+            User    => $user,
+            %args
+        );
         return XIMS::Iterator::Object->new( \@ids, 1 );
     }
 
-    $args{properties} = $properties; # pass the properties
-    return $self->__get_granted_objects( doc_ids => \@candidate_docids, User => $user, %args );
+    $args{properties} = $properties;    # pass the properties
+    return $self->__get_granted_objects(
+        doc_ids => \@candidate_docids,
+        User    => $user,
+        %args
+    );
 }
 
 # internal helper to filter out granted objects, accepts a hash as parameters, mandatory key: doc_ids => @doc_ids
@@ -910,11 +989,13 @@ sub __get_granted_objects {
         $properties = \@Default_Properties;
     }
 
-    my @ids = $self->__get_granted_ids( %args );
-    return () unless scalar( @ids ) > 0;
+    my @ids = $self->__get_granted_ids(%args);
+    return () unless scalar(@ids) > 0;
 
-    my @data = $self->data_provider->getObject( id  => \@ids,
-                                                properties => $properties );
+    my @data = $self->data_provider->getObject(
+        id         => \@ids,
+        properties => $properties
+    );
 
     my @objects = map { XIMS::Object->new->data( %{$_} ) } @data;
 
@@ -923,48 +1004,59 @@ sub __get_granted_objects {
 }
 
 sub __get_granted_ids {
-    my $self = shift;
-    my %args = @_;
-    my $user = delete $args{User} || $self->{User};
+    my $self    = shift;
+    my %args    = @_;
+    my $user    = delete $args{User} || $self->{User};
     my $doc_ids = delete $args{doc_ids};
     return () unless scalar( @{$doc_ids} ) > 0;
 
-    my @candidate_data = $self->data_provider->getObject( document_id => $doc_ids,
-                                                          properties => [ 'id' ],
-                                                          %args );
-    my @candidate_ids = map{ $_->{'content.id'} } @candidate_data;
+    my @candidate_data = $self->data_provider->getObject(
+        document_id => $doc_ids,
+        properties  => ['id'],
+        %args
+    );
+    my @candidate_ids = map { $_->{'content.id'} } @candidate_data;
 
-    my @ids = $self->__filter_granted_ids( User => $user, candidate_ids => \@candidate_ids );
-    return () unless scalar( @ids ) > 0;
+    my @ids = $self->__filter_granted_ids(
+        User          => $user,
+        candidate_ids => \@candidate_ids
+    );
+    return () unless scalar(@ids) > 0;
     return @ids;
 }
 
 sub __filter_granted_ids {
-    my $self = shift;
-    my %args = @_;
-    my $user = delete $args{User} || $self->{User};
+    my $self          = shift;
+    my %args          = @_;
+    my $user          = delete $args{User} || $self->{User};
     my $candidate_ids = delete $args{candidate_ids};
-    my @role_ids = ( $user->role_ids(), $user->id() );
+    my @role_ids      = ( $user->role_ids(), $user->id() );
 
-    my @priv_data = $self->data_provider->getObjectPriv( content_id => $candidate_ids,
-                                                         grantee_id => \@role_ids,
-                                                         properties => [ 'content_id', 'grantee_id', 'privilege_mask' ] );
-    return () unless scalar( @priv_data ) > 0;
+    my @priv_data = $self->data_provider->getObjectPriv(
+        content_id => $candidate_ids,
+        grantee_id => \@role_ids,
+        properties => [ 'content_id', 'grantee_id', 'privilege_mask' ]
+    );
+    return () unless scalar(@priv_data) > 0;
 
     my @ids;
     my %seen = ();
-    for ( @priv_data ) {
+    for (@priv_data) {
+
         # check for explicit lockout of a user, where he is denied access to
         # objects where he would have privileges from a role grant but is
         # denied because of a grant with privilege_mask '0'
-        if ( not ($_->{'objectpriv.grantee_id'} == $user->id() and not defined $_->{'objectpriv.privilege_mask'}) ) {
-            push (@ids, $_->{'objectpriv.content_id'}) unless $seen{$_->{'objectpriv.content_id'}}++;
+        if (not( $_->{'objectpriv.grantee_id'} == $user->id()
+                and not defined $_->{'objectpriv.privilege_mask'} )
+            )
+        {
+            push( @ids, $_->{'objectpriv.content_id'} )
+                unless $seen{ $_->{'objectpriv.content_id'} }++;
         }
-    };
+    }
 
     return @ids;
 }
-
 
 ##
 #
@@ -995,25 +1087,25 @@ sub siteroot {
     return $siteroot;
 }
 
-
 # internal.
 # shared by 'children', 'child_count'
 sub __child_ids {
     my $self = shift;
     my %args = @_;
-    return $self->data_provider->get_object_id( %args, parent_id => $self->document_id() );
+    return $self->data_provider->get_object_id( %args,
+        parent_id => $self->document_id() );
 }
 
 sub __find_ids {
     my $self = shift;
     my %args = @_;
-    return $self->data_provider->find_object_id( %args );
+    return $self->data_provider->find_object_id(%args);
 }
 
 sub __find_ids_count {
     my $self = shift;
     my %args = @_;
-    return $self->data_provider->find_object_id_count( %args );
+    return $self->data_provider->find_object_id_count(%args);
 }
 
 # internal, used by clone()
@@ -1022,11 +1114,11 @@ sub __fix_clone_reference {
     my $self = shift;
     my %args = @_;
 
-    my $user = delete $args{User} || $self->{User};
-    my $id_map = delete $args{ _id_map };
-    my $ref_object_ids = delete $args{ _ref_object_ids };
-    my $docid_map = delete $args{ _docid_map };
-    my $ref_object_docids = delete $args{ _ref_object_docids };
+    my $user              = delete $args{User} || $self->{User};
+    my $id_map            = delete $args{_id_map};
+    my $ref_object_ids    = delete $args{_ref_object_ids};
+    my $docid_map         = delete $args{_docid_map};
+    my $ref_object_docids = delete $args{_ref_object_docids};
 
     #warn("fixing ref ids on objects : " . Dumper( $ref_object_ids ) );
     #warn("fixing ref ids with id map: " . Dumper( $id_map ) );
@@ -1036,16 +1128,18 @@ sub __fix_clone_reference {
     my $update_flag = 0;
 
     # check all copied objects that have referenced to other objects
-    foreach my $document_id ( @$ref_object_docids ) {
+    foreach my $document_id (@$ref_object_docids) {
         my $clone = XIMS::Object->new( document_id => $document_id );
+
         #warn("clone to fix: " . Dumper( $clone ) );
-        foreach my $docid_name ( @Reference_DocId_Names ) {
-            if ( defined $clone->{ $docid_name } ) {
-                my $newid = $docid_map->{ $clone->{ $docid_name } };
+        foreach my $docid_name (@Reference_DocId_Names) {
+            if ( defined $clone->{$docid_name} ) {
+                my $newid = $docid_map->{ $clone->{$docid_name} };
                 if ( defined $newid ) {
-                    # the referenced object has also been copied, so change the reference to the copy
-                    $clone->{ $docid_name } = $newid;
-                    $update_flag = 1; # update of clone is needed
+
+# the referenced object has also been copied, so change the reference to the copy
+                    $clone->{$docid_name} = $newid;
+                    $update_flag = 1;    # update of clone is needed
                 }
             }
         }
@@ -1053,47 +1147,49 @@ sub __fix_clone_reference {
     }
 
     $update_flag = 0;
-    foreach my $id ( @$ref_object_ids ) {
+    foreach my $id (@$ref_object_ids) {
         my $clone = XIMS::Object->new( id => $id );
+
         #warn("clone to fix: " . Dumper( $clone ) );
-        foreach my $id_name ( @Reference_Id_Names ) {
-            if ( defined $clone->{ $id_name } ) {
-                my $newid = $id_map->{ $clone->{ $id_name } };
+        foreach my $id_name (@Reference_Id_Names) {
+            if ( defined $clone->{$id_name} ) {
+                my $newid = $id_map->{ $clone->{$id_name} };
                 if ( defined $newid ) {
-                    # the referenced object has also been copied, so change the reference to the copy
-                    $clone->{ $id_name } = $newid;
-                    $update_flag = 1; # update of clone is needed
+
+# the referenced object has also been copied, so change the reference to the copy
+                    $clone->{$id_name} = $newid;
+                    $update_flag = 1;    # update of clone is needed
                 }
             }
         }
 
-        # fix body of objectroots (departmentroots and siteroots) because their body may contain portlet ids
+# fix body of objectroots (departmentroots and siteroots) because their body may contain portlet ids
         if ( $clone->object_type->is_objectroot() ) {
+
             #warn("about to fix portlet in " . Dumper( $clone ) );
             my $body = $clone->body();
             if ( defined $body and length $body ) {
                 my $parser = XML::LibXML->new();
                 my $fragment;
-                eval {
-                    $fragment = $parser->parse_xml_chunk( $body );
-                };
-                if ( $@ ) {
-                    XIMS::Debug( 2, "problem with the stored portlet data ($@)"  );
+                eval { $fragment = $parser->parse_xml_chunk($body); };
+                if ($@) {
+                    XIMS::Debug( 2,
+                        "problem with the stored portlet data ($@)" );
                 }
                 else {
                     my @nodes = $fragment->childNodes;
                     my $node;
                     my $update_body_flag = 0;
-                    foreach $node ( @nodes ) {
+                    foreach $node (@nodes) {
                         my $newid = $id_map->{ $node->string_value() };
                         if ( defined $newid ) {
-                            $node->firstChild->setData( $newid );
+                            $node->firstChild->setData($newid);
                             $update_body_flag = 1;
                         }
                     }
-                    if ( $update_body_flag ) {
+                    if ($update_body_flag) {
                         $clone->body( $fragment->toString() );
-                        $update_flag = 1; # update of clone is needed
+                        $update_flag = 1;    # update of clone is needed
                     }
                 }
             }
@@ -1106,7 +1202,7 @@ sub __fix_clone_reference {
 #
 sub __decide_department_id {
     my %args = @_;
-    my $object= XIMS::Object->new( document_id => $args{document_id} );
+    my $object = XIMS::Object->new( document_id => $args{document_id} );
     if ( $object->object_type->is_objectroot() ) {
         return $object->document_id();
     }
@@ -1150,14 +1246,18 @@ sub create {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    die "Creating an object requires an associated User" unless defined( $user );
+    die "Creating an object requires an associated User"
+        unless defined($user);
 
     $self->{User} ||= $user;
 
-    my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() ) || 0;
+    my $max_position = $self->data_provider->max_position(
+        parent_id => $self->parent_id() )
+        || 0;
     $self->position( $max_position + 1 );
 
-    $self->department_id( __decide_department_id( document_id => $self->parent_id() ) );
+    $self->department_id(
+        __decide_department_id( document_id => $self->parent_id() ) );
 
     my $now = $self->data_provider->db_now();
 
@@ -1165,21 +1265,23 @@ sub create {
     $self->last_modified_by_firstname( $user->firstname() );
     $self->last_modified_by_middlename( $user->middlename() );
     $self->last_modified_by_lastname( $user->lastname() );
-    $self->last_modification_timestamp( $now );
+    $self->last_modification_timestamp($now);
     $self->created_by_id( $user->id() );
     $self->created_by_firstname( $user->firstname() );
     $self->created_by_middlename( $user->middlename() );
     $self->created_by_lastname( $user->lastname() );
-    $self->creation_timestamp( $now );
+    $self->creation_timestamp($now);
     $self->owned_by_id( $user->id() );
     $self->owned_by_firstname( $user->firstname() );
     $self->owned_by_middlename( $user->middlename() );
     $self->owned_by_lastname( $user->lastname() );
-    $self->valid_from_timestamp( $now ) unless defined $self->valid_from_timestamp();
+    $self->valid_from_timestamp($now)
+        unless defined $self->valid_from_timestamp();
 
-    my ($id, $document_id) = $self->data_provider->createObject( $self->data() );
-    $self->id( $id );
-    $self->document_id( $document_id );
+    my ( $id, $document_id )
+        = $self->data_provider->createObject( $self->data() );
+    $self->id($id);
+    $self->document_id($document_id);
     return $id;
 }
 
@@ -1202,10 +1304,12 @@ sub delete {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    die "Deleting an object requires an associated User" unless defined( $user );
+    die "Deleting an object requires an associated User"
+        unless defined($user);
 
     my $retval = $self->data_provider->deleteObject( $self->data() );
-    if ( $retval ) {
+    if ($retval) {
+
         # TODO: reposition following siblings here
         # following sql called by a DP method?
         # $self->{Driver}->
@@ -1213,11 +1317,11 @@ sub delete {
         #           columns  => [ 'position' ],
         #           values   => [ "position - 1" ],
         #           criteria => "position > $pos AND parent_id = $parent" );
-        map { $self->$_( undef ) } $self->fields();
+        map { $self->$_(undef) } $self->fields();
         return 1;
     }
     else {
-       return undef;
+        return undef;
     }
 }
 
@@ -1241,7 +1345,8 @@ sub update {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    die "Updating an object requires an associated User" unless defined( $user );
+    die "Updating an object requires an associated User"
+        unless defined($user);
 
     unless ( exists $args{no_modder} ) {
         $self->last_modified_by_id( $user->id() );
@@ -1279,10 +1384,14 @@ sub trashcan {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
     my @retval;
-    $self->marked_deleted( 1 );
 
-    if ( $self->data_provider->close_position_gap( parent_id => $self->parent_id(), position => $self->position() ) ) {
-        $self->position( undef );
+    $self->marked_deleted(1);
+    $self->deletionmark_timestamp( $self->data_provider->db_now() );
+
+    if ( $self->data_provider->close_position_gap(
+            parent_id => $self->parent_id(),
+            position  => $self->position() ) ) {
+        $self->position(undef);
         @retval = $self->data_provider->updateObject( $self->data() );
     }
     else {
@@ -1291,19 +1400,31 @@ sub trashcan {
     }
 
     # 2 tables should have been updated
-    if ( scalar @retval == 2 and defined $retval[1]  ) {
+    if ( scalar @retval == 2 and defined $retval[1] ) {
+
         # Set marked_deleted to '1' for all descendants
-        my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
-        my @doc_ids  = @{$descendant_ids_lvls->[0]};
-        if ( scalar( @doc_ids ) > 0 ) {
-            @retval = $self->data_provider->driver->update( properties => { 'content.marked_deleted' => 1 }, conditions => { 'content.document_id' => \@doc_ids } );
+        my $descendant_ids_lvls
+            = $self->data_provider->get_descendant_id_level(
+            parent_id => $self->document_id() );
+        my @doc_ids = @{ $descendant_ids_lvls->[0] };
+        if ( scalar(@doc_ids) > 0 ) {
+            @retval = $self->data_provider->driver->update(
+                properties => {
+                    'content.marked_deleted' => 1,
+                    'content.deletionmark_timestamp' =>
+                        $self->data_provider->db_now(),
+                },
+                conditions => { 'content.document_id' => \@doc_ids }
+            );
+
             # 1 table should have been updated
             if ( scalar @retval == 1 and defined $retval[0] ) {
-                @retval = (1, $retval[0]); # Set number of updated ci_content rows for @retval
+                @retval = ( 1, $retval[0] )
+                    ;    # Set number of updated ci_content rows for @retval
             }
         }
         else {
-            @retval = (1, 1);
+            @retval = ( 1, 1 );
         }
     }
 
@@ -1329,27 +1450,36 @@ sub undelete {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
     my @retval;
-    $self->marked_deleted( undef );
+    $self->marked_deleted(undef);
 
-    my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() );
+    my $max_position = $self->data_provider->max_position(
+        parent_id => $self->parent_id() );
     $max_position ||= 0;
     $self->position( $max_position + 1 );
     @retval = $self->data_provider->updateObject( $self->data() );
 
     # 2 tables should have been updated
-    if ( scalar @retval == 2 and defined $retval[1]  ) {
+    if ( scalar @retval == 2 and defined $retval[1] ) {
+
         # Set marked_deleted to 'undef' for all descendants
-        my $descendant_ids_lvls = $self->data_provider->get_descendant_id_level( parent_id => $self->document_id() );
-        my @doc_ids  = @{$descendant_ids_lvls->[0]};
-        if ( scalar( @doc_ids ) > 0 ) {
-            @retval = $self->data_provider->driver->update( properties => { 'content.marked_deleted' => undef }, conditions => { 'content.document_id' => \@doc_ids } );
+        my $descendant_ids_lvls
+            = $self->data_provider->get_descendant_id_level(
+            parent_id => $self->document_id() );
+        my @doc_ids = @{ $descendant_ids_lvls->[0] };
+        if ( scalar(@doc_ids) > 0 ) {
+            @retval = $self->data_provider->driver->update(
+                properties => { 'content.marked_deleted' => undef },
+                conditions => { 'content.document_id'    => \@doc_ids }
+            );
+
             # 1 table should have been updated
             if ( scalar @retval == 1 and defined $retval[0] ) {
-                @retval = (1, $retval[0]); # Set number of updated ci_content rows for @retval
+                @retval = ( 1, $retval[0] )
+                    ;    # Set number of updated ci_content rows for @retval
             }
         }
         else {
-            @retval = (1, 1);
+            @retval = ( 1, 1 );
         }
     }
 }
@@ -1377,34 +1507,44 @@ sub move {
     # store the old department_id for the later update of descendants.
     # depending on the current object being an objectroot  or not,
     # this may be the document_id or department_id of the current object.
-    my $old_dept = __decide_department_id( document_id => $self->document_id() );
+    my $old_dept
+        = __decide_department_id( document_id => $self->document_id() );
 
     my $parent_id = delete $args{target};
     return undef unless $parent_id;
 
-    if ( not $self->data_provider->close_position_gap( parent_id => $self->parent_id(), position => $self->position() ) ) {
+    if (not $self->data_provider->close_position_gap(
+            parent_id => $self->parent_id(),
+            position  => $self->position()
+        )
+        )
+    {
         XIMS::Debug( 2, "Could not close position gap" );
         return undef;
     }
 
-    $self->parent_id( $parent_id );
-    $self->department_id( __decide_department_id( document_id => $self->parent_id() ) );
-    my $max_position = $self->data_provider->max_position( parent_id => $self->parent_id() ) || 0;
+    $self->parent_id($parent_id);
+    $self->department_id(
+        __decide_department_id( document_id => $self->parent_id() ) );
+    my $max_position = $self->data_provider->max_position(
+        parent_id => $self->parent_id() )
+        || 0;
     $self->position( $max_position + 1 );
     my @rv = $self->data_provider->updateObject( $self->data() );
 
-    # delete old location_path from memory as it has been changed by the db trigger
+# delete old location_path from memory as it has been changed by the db trigger
     delete $self->{location_path};
 
     # unless the current object is a objectroot, update the department_id of
     # non-objectroot descendants to the new one
     unless ( $self->object_type->is_objectroot() ) {
         my $data = $self->data_provider->update_descendant_department_id(
-                        old_department_id => $old_dept,
-                        new_department_id => $self->department_id(),
-                        parent_location_path => $self->location_path(),
-                   );
-        XIMS::Debug( 6, "department_id of $data descendants has been updated" );
+            old_department_id    => $old_dept,
+            new_department_id    => $self->department_id(),
+            parent_location_path => $self->location_path(),
+        );
+        XIMS::Debug( 6,
+            "department_id of $data descendants has been updated" );
     }
 
     return @rv;
@@ -1440,45 +1580,61 @@ sub clone {
     my %args = @_;
 
     my $user = delete $args{User} || $self->{User};
-    die "cloning an object requires an associated User" unless defined( $user );
+    die "cloning an object requires an associated User" unless defined($user);
 
-    my $scope_subtree = delete $args{ scope_subtree };
+    my $scope_subtree = delete $args{scope_subtree};
 
-    my $target_location = delete $args{ target_location };
-    my $dontcleanlocation = delete $args{ dontcleanlocation };
-    my $target_id = delete $args{ target_id };
-    my $parent_id = delete $args{ _parent_id };
-    my $id_map = delete $args{ _id_map } || {};
-    my $ref_object_ids = delete $args{ _ref_object_ids } || [];
-    my $docid_map = delete $args{ _docid_map } || {};
-    my $ref_object_docids = delete $args{ _ref_object_docids } || [];
+    my $target_location   = delete $args{target_location};
+    my $dontcleanlocation = delete $args{dontcleanlocation};
+    my $target_id         = delete $args{target_id};
+    my $parent_id         = delete $args{_parent_id};
+    my $id_map            = delete $args{_id_map} || {};
+    my $ref_object_ids    = delete $args{_ref_object_ids} || [];
+    my $docid_map         = delete $args{_docid_map} || {};
+    my $ref_object_docids = delete $args{_ref_object_docids} || [];
 
     # create a copy of object data
     my %clonedata = $self->data();
 
     # id and document_id will be created new, path is not used
-    delete $clonedata{ id };
-    delete $clonedata{ document_id };
-    delete $clonedata{ path };
+    delete $clonedata{id};
+    delete $clonedata{document_id};
+    delete $clonedata{path};
 
     if ( defined $parent_id or defined $target_id ) {
         if ( defined $parent_id ) {
-            $clonedata{ parent_id } = $parent_id;
+            $clonedata{parent_id} = $parent_id;
         }
         elsif ( defined $target_id ) {
-            $clonedata{ parent_id } = $target_id;
-            my $parent = XIMS::Object->new( User => $self->User, document_id => $target_id );
+            $clonedata{parent_id} = $target_id;
+            my $parent = XIMS::Object->new(
+                User        => $self->User,
+                document_id => $target_id
+            );
             if ( defined $parent and defined $parent->id ) {
                 if ( defined $target_location ) {
-                    $target_location = XIMS::Importer::clean_location( 1, $target_location ) unless $dontcleanlocation; # *cough*
-                    my ($oldsuffix) = ($clonedata{ location } =~ /\.([^\.]+)$/);
-                    my ($newsuffix) = ($target_location =~ /\.([^\.]+)$/);
-                    if ( length $target_location and ($dontcleanlocation or $oldsuffix eq $newsuffix) ) {
-                        $clonedata{ location } = $target_location;
+                    $target_location = XIMS::Importer::clean_location( 1,
+                        $target_location )
+                        unless $dontcleanlocation;    # *cough*
+                    my ($oldsuffix)
+                        = ( $clonedata{location} =~ /\.([^\.]+)$/ );
+                    my ($newsuffix) = ( $target_location =~ /\.([^\.]+)$/ );
+                    if ( length $target_location
+                        and ( $dontcleanlocation or $oldsuffix eq $newsuffix )
+                        )
+                    {
+                        $clonedata{location} = $target_location;
                     }
                 }
-                if ( $parent->children( location => $clonedata{ location }, marked_deleted => undef ) ) {
-                    XIMS::Debug( 2, "Cannot clone. Object with same location already exists in target container." );
+                if ($parent->children(
+                        location       => $clonedata{location},
+                        marked_deleted => undef
+                    )
+                    )
+                {
+                    XIMS::Debug( 2,
+                        "Cannot clone. Object with same location already exists in target container."
+                    );
                     return undef;
                 }
             }
@@ -1489,94 +1645,127 @@ sub clone {
         }
     }
     else {
+
         # same parent, so we have to find a new location for it
-        my $newlocation = "copy_of_" . $clonedata{ location };
-        my $newtitle = "Copy of " . $clonedata{ title };
+        my $newlocation = "copy_of_" . $clonedata{location};
+        my $newtitle    = "Copy of " . $clonedata{title};
 
         my $parent = $self->parent();
-        if ( defined $parent and $parent->children( location => $newlocation, marked_deleted => undef ) ) {
+        if (defined $parent
+            and $parent->children(
+                location       => $newlocation,
+                marked_deleted => undef
+            )
+            )
+        {
             my $index = 1;
             do {
-                $newlocation = "copy_(" . $index . ")_of_" . $clonedata{ location };
-                $newtitle = "Copy (" . $index . ") of " . $clonedata{ title };
+                $newlocation
+                    = "copy_(" . $index . ")_of_" . $clonedata{location};
+                $newtitle = "Copy (" . $index . ") of " . $clonedata{title};
                 $index++;
-            } while ( $parent->children( location => $newlocation, marked_deleted => undef ) );
+                } while (
+                $parent->children(
+                    location       => $newlocation,
+                    marked_deleted => undef
+                )
+                );
         }
-        $clonedata{ location } = $newlocation;
-        $clonedata{ title } = $newtitle;
+        $clonedata{location} = $newlocation;
+        $clonedata{title}    = $newtitle;
     }
 
-    # create the clone and expressly assign its body data (may be binfile)
-    #warn("clone: about to create clone with data: " . Dumper( \%clonedata ) );
-    my $clone = XIMS::Object->new( %clonedata );
+   # create the clone and expressly assign its body data (may be binfile)
+   #warn("clone: about to create clone with data: " . Dumper( \%clonedata ) );
+    my $clone = XIMS::Object->new(%clonedata);
     return unless defined $clone;
     $clone->body( $self->body() );
     my $clone_id = $clone->create( User => $user );
     return unless defined $clone_id;
 
     # remember old vs. new id
-    $id_map->{ $self->id } = $clone->id;
+    $id_map->{ $self->id }             = $clone->id;
     $docid_map->{ $self->document_id } = $clone->document_id;
 
     # check if this object need later fixup of referenced object ids
     my $objecttype = $clone->object_type;
     if ( $objecttype->is_objectroot() ) {
-        push @$ref_object_ids, $clone->id;
+        push @$ref_object_ids,    $clone->id;
         push @$ref_object_docids, $clone->document_id;
     }
     else {
-        foreach my $id_name ( @Reference_Id_Names ) {
-            if ( defined $clone->{ $id_name } ) {
+        foreach my $id_name (@Reference_Id_Names) {
+            if ( defined $clone->{$id_name} ) {
                 push @$ref_object_ids, $clone->id;
             }
         }
-        foreach my $docid_name ( @Reference_DocId_Names ) {
-            if ( defined $clone->{ $docid_name } ) {
+        foreach my $docid_name (@Reference_DocId_Names) {
+            if ( defined $clone->{$docid_name} ) {
                 push @$ref_object_docids, $clone->document_id;
             }
         }
     }
 
     if ( defined $parent_id ) {
-        # all subelements should keep their position, but they have got new ones by create(), so change this back!
+
+# all subelements should keep their position, but they have got new ones by create(), so change this back!
         $clone->position( $self->position() );
         $clone->update();
     }
 
     # copy all object privileges
-    my @privs = $self->data_provider->getObjectPriv( content_id => $self->id() );
+    my @privs
+        = $self->data_provider->getObjectPriv( content_id => $self->id() );
     my $priv;
     my $clonepriv;
-    foreach $priv ( @privs ) {
-        $priv->{ content_id } = $clone->id();
+    foreach $priv (@privs) {
+        $priv->{content_id} = $clone->id();
         $clonepriv = XIMS::ObjectPriv->new->data( %{$priv} );
         $clonepriv->create();
     }
 
     if ( $clone->published() ) {
+
         # set clone to unpublished
         $clone->unpublish();
     }
 
     if ( $clone->locked() ) {
+
         # unlock clone
         $clone->unlock();
     }
 
-    if ( $scope_subtree ) {
+    if ($scope_subtree) {
+
         # clone all granted children except '.diff_to_second_last'
         my @children = $self->children_granted( User => $user );
         my $child;
-        foreach $child ( @children ) {
+        foreach $child (@children) {
             next if $child->location() eq '.diff_to_second_last';
-            return unless $child->clone( User => $user, scope_subtree => 1,
-                                         _parent_id => $clone->document_id, _id_map => $id_map, _ref_object_ids => $ref_object_ids, _docid_map => $docid_map, _ref_object_docids => $ref_object_docids );
+            return
+                unless $child->clone(
+                User               => $user,
+                scope_subtree      => 1,
+                _parent_id         => $clone->document_id,
+                _id_map            => $id_map,
+                _ref_object_ids    => $ref_object_ids,
+                _docid_map         => $docid_map,
+                _ref_object_docids => $ref_object_docids
+                );
         }
 
         # check if we are back at top level of recursion
         if ( not defined $parent_id ) {
-            # fixup referenced object ids in all cloned objects that have reference ids
-            $self->__fix_clone_reference( User => $user, _id_map => $id_map, _ref_object_ids => $ref_object_ids, _docid_map => $docid_map, _ref_object_docids => $ref_object_docids );
+
+   # fixup referenced object ids in all cloned objects that have reference ids
+            $self->__fix_clone_reference(
+                User               => $user,
+                _id_map            => $id_map,
+                _ref_object_ids    => $ref_object_ids,
+                _docid_map         => $docid_map,
+                _ref_object_docids => $ref_object_docids
+            );
         }
     }
 
@@ -1585,7 +1774,7 @@ sub clone {
     $clone = XIMS::Object->new( id => $clone->id() );
 
     # bless the instance into the correct class
-    bless $clone, "XIMS::".$clone->object_type->fullname();
+    bless $clone, "XIMS::" . $clone->object_type->fullname();
 
     return $clone;
 }
@@ -1618,18 +1807,19 @@ sub copy {
     my %args = @_;
 
     my $user = delete $args{User} || $self->{User};
-    die "Copying an object requires an associated User" unless defined( $user );
+    die "Copying an object requires an associated User" unless defined($user);
 
     my $target_id = delete $args{target};
     return undef unless defined $target_id;
 
-    return $self->clone( User => $user,
-                        scope_subtree => 1,
-                        target_id => $target_id,
-                        target_location => $args{target_location},
-                        dontcleanlocation => $args{dontcleanlocation} );
+    return $self->clone(
+        User              => $user,
+        scope_subtree     => 1,
+        target_id         => $target_id,
+        target_location   => $args{target_location},
+        dontcleanlocation => $args{dontcleanlocation}
+    );
 }
-
 
 ##
 #
@@ -1652,13 +1842,13 @@ sub reposition {
     my $new_position = delete $args{position};
     return undef unless $new_position;
 
-    return $self->data_provider->reposition( parent_id => $self->parent_id,
-                                             document_id => $self->document_id,
-                                             position => $self->position,
-                                             new_position => $new_position
-                                           );
+    return $self->data_provider->reposition(
+        parent_id    => $self->parent_id,
+        document_id  => $self->document_id,
+        position     => $self->position,
+        new_position => $new_position
+    );
 }
-
 
 ##
 #
@@ -1683,19 +1873,34 @@ sub attribute {
     my $text = $self->attributes();
 
     if ( defined $text and length $text ) {
-        my %attributes = $self->_parse_attributes( $text );
+        my %attributes = $self->_parse_attributes($text);
         foreach my $key ( keys %attr ) {
             $attributes{$key} = $self->_escapeattrib( $attr{$key} );
         }
-        $text = join( ';', map { $_ . "=" . (defined $attributes{$_} ? $attributes{$_} : '') } keys(%attributes) );
+        $text = join(
+            ';',
+            map {
+                $_ . "="
+                    . ( defined $attributes{$_} ? $attributes{$_} : '' )
+                } keys(%attributes)
+        );
     }
     else {
-        $text = join( ';', map { $_ . "=" . (defined $attr{$_} ? $self->_escapeattrib( $attr{$_} ) : '') } keys(%attr) );
+        $text = join(
+            ';',
+            map {
+                $_ . "="
+                    . (
+                    defined $attr{$_}
+                    ? $self->_escapeattrib( $attr{$_} )
+                    : ''
+                    )
+                } keys(%attr)
+        );
     }
 
-    return 1 if $self->attributes( $text );
+    return 1 if $self->attributes($text);
 }
-
 
 ##
 #
@@ -1718,7 +1923,7 @@ sub attribute_by_key {
     my $text = $self->attributes();
 
     if ( defined $text and length $text ) {
-        my %attributes = $self->_parse_attributes( $text );
+        my %attributes = $self->_parse_attributes($text);
         return $self->_unescapeattrib( $attributes{$key} );
     }
 
@@ -1744,15 +1949,15 @@ sub _parse_attributes {
     my $text = shift;
     my %attributes;
 
-    my @pieces = Text::ParseWords::parse_line( ';', 1, $text);
-    foreach my $piece ( @pieces ) {
-        my ($key,$value) = ( Text::ParseWords::parse_line( '=', 1, $piece) );
+    my @pieces = Text::ParseWords::parse_line( ';', 1, $text );
+    foreach my $piece (@pieces) {
+        my ( $key, $value )
+            = ( Text::ParseWords::parse_line( '=', 1, $piece ) );
         $attributes{$key} = $value;
     }
 
     return %attributes;
 }
-
 
 ##
 #
@@ -1781,7 +1986,6 @@ sub _escapeattrib {
 
     return $text;
 }
-
 
 ##
 #
@@ -1837,31 +2041,45 @@ sub _unescapeattrib {
 sub grant_user_privileges {
     my $self = shift;
     my %args = @_;
-    my $privilege_mask = defined $args{privmask} ? $args{privmask} : $args{privilege_mask};
+    my $privilege_mask
+        = defined $args{privmask} ? $args{privmask} : $args{privilege_mask};
 
     die "must have a grantor, a grantee and a privmask"
-        unless defined( $args{grantor} ) and defined( $args{grantee}) and defined( $privilege_mask );
+        unless defined( $args{grantor} )
+        and defined( $args{grantee} )
+        and defined($privilege_mask);
 
-    # these allow the User-based args to be either a User object or the id() of one.
-    my $grantee_id = ( ref( $args{grantee} ) && $args{grantee}->isa('XIMS::User') ) ? $args{grantee}->id() : $args{grantee};
+# these allow the User-based args to be either a User object or the id() of one.
+    my $grantee_id =
+        ( ref( $args{grantee} ) && $args{grantee}->isa('XIMS::User') )
+        ? $args{grantee}->id()
+        : $args{grantee};
 
-    my $grantor_id = ( ref( $args{grantor} ) && $args{grantor}->isa('XIMS::User') ) ? $args{grantor}->id() : $args{grantor};
-
+    my $grantor_id =
+        ( ref( $args{grantor} ) && $args{grantor}->isa('XIMS::User') )
+        ? $args{grantor}->id()
+        : $args{grantor};
 
     my $serialization_method;
 
-    if ( $self->data_provider->getObjectPriv( grantee_id => $grantee_id, content_id => $self->id() ) ) {
+    if ($self->data_provider->getObjectPriv(
+            grantee_id => $grantee_id,
+            content_id => $self->id()
+        )
+        )
+    {
         $serialization_method = 'updateObjectPriv';
     }
     else {
         $serialization_method = 'createObjectPriv';
     }
 
-    return $self->data_provider->$serialization_method( privilege_mask => $privilege_mask,
-                                                        grantor_id => $grantor_id,
-                                                        grantee_id => $grantee_id,
-                                                        content_id => $self->id()
-                                                      );
+    return $self->data_provider->$serialization_method(
+        privilege_mask => $privilege_mask,
+        grantor_id     => $grantor_id,
+        grantee_id     => $grantee_id,
+        content_id     => $self->id()
+    );
 }
 
 ##
@@ -1912,11 +2130,11 @@ sub unlock {
     my $self = shift;
     my %args = @_;
 
-    $self->locked_by_id( undef );
-    $self->locked_by_firstname( undef );
-    $self->locked_by_middlename( undef );
-    $self->locked_by_lastname( undef );
-    $self->locked_time( undef );
+    $self->locked_by_id(undef);
+    $self->locked_by_firstname(undef);
+    $self->locked_by_middlename(undef);
+    $self->locked_by_lastname(undef);
+    $self->locked_time(undef);
 
     return $self->data_provider->updateObject( $self->_lock_data() );
 }
@@ -1932,7 +2150,10 @@ sub unlock {
 sub _lock_data {
     my $self = shift;
     my %data = ();
-    foreach ( qw/locked_by_id locked_by_firstname locked_by_middlename locked_by_lastname locked_time id/ ) {
+    foreach (
+        qw/locked_by_id locked_by_firstname locked_by_middlename locked_by_lastname locked_time id/
+        )
+    {
         $data{$_} = $self->$_;
     }
     return %data;
@@ -1953,11 +2174,11 @@ sub _lock_data {
 #    Check if object is locked or not.
 #
 sub locked {
-   my $self = shift;
-   if ( $self->locked_by_id() and $self->locked_time() ) {
-       return 1;
-   }
-   return undef;
+    my $self = shift;
+    if ( $self->locked_by_id() and $self->locked_time() ) {
+        return 1;
+    }
+    return undef;
 }
 
 ##
@@ -1979,7 +2200,7 @@ sub publish {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    $self->published( 1 );
+    $self->published(1);
 
     unless ( exists $args{no_pubber} ) {
         $self->last_published_by_id( $user->id() );
@@ -2010,11 +2231,11 @@ sub unpublish {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    $self->published( undef );
-    $self->last_published_by_id( undef );
-    $self->last_published_by_firstname( undef );
-    $self->last_published_by_middlename( undef );
-    $self->last_published_by_lastname( undef );
+    $self->published(undef);
+    $self->last_published_by_id(undef);
+    $self->last_published_by_firstname(undef);
+    $self->last_published_by_middlename(undef);
+    $self->last_published_by_lastname(undef);
     return $self->data_provider->updateObject( $self->data() );
 }
 
@@ -2040,7 +2261,7 @@ sub object_type {
     return $self->{ObjectType} if defined $self->{ObjectType};
     return undef unless $self->object_type_id();
     my $ots = XIMS::OBJECT_TYPES();
-    my $ot = $ots->{$self->object_type_id()};
+    my $ot  = $ots->{ $self->object_type_id() };
     $self->{ObjectType} = $ot;
     return $ot;
 }
@@ -2062,9 +2283,9 @@ sub object_type {
 sub data_format {
     my $self = shift;
     return $self->{DataFormat} if defined $self->{DataFormat};
-    return undef unless $self->data_format_id() ;
+    return undef unless $self->data_format_id();
     my $dfs = XIMS::DATA_FORMATS();
-    my $df = $dfs->{$self->data_format_id()};
+    my $df  = $dfs->{ $self->data_format_id() };
     $self->{DataFormat} = $df;
     return $df;
 }
@@ -2119,8 +2340,9 @@ sub stylesheet {
     my $style_id = $self->style_id();
     if ( not defined $style_id ) {
         if ( not defined $args{explicit} ) {
+
             # look for style_id in ancestrial objectroot objects
-            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $style_id = $oroot->style_id();
             }
             return undef unless defined $style_id;
@@ -2161,8 +2383,9 @@ sub css {
     my $css_id = $self->css_id();
     if ( not defined $css_id ) {
         if ( not defined $args{explicit} ) {
+
             # look for css_id in ancestrial objectroot objects
-            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $css_id = $oroot->css_id();
             }
             return undef unless defined $css_id;
@@ -2171,6 +2394,7 @@ sub css {
             return undef;
         }
     }
+
     # think of XIMS::CSS here
     my $css = XIMS::Object->new( id => $css_id );
     $self->{CSS} = $css;
@@ -2204,8 +2428,9 @@ sub image {
     my $image_id = $self->image_id();
     if ( not defined $image_id ) {
         if ( not defined $args{explicit} ) {
+
             # look for image_id in ancestrial objectroot objects
-            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $image_id = $oroot->image_id();
             }
             return undef unless defined $image_id;
@@ -2214,6 +2439,7 @@ sub image {
             return undef;
         }
     }
+
     # think of XIMS::Image here
     my $image = XIMS::Object->new( id => $image_id );
     $self->{Image} = $image;
@@ -2247,8 +2473,9 @@ sub script {
     my $script_id = $self->script_id();
     if ( not defined $script_id ) {
         if ( not defined $args{explicit} ) {
+
             # look for script_id in ancestrial objectroot objects
-            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $script_id = $oroot->script_id();
             }
             return undef unless defined $script_id;
@@ -2257,6 +2484,7 @@ sub script {
             return undef;
         }
     }
+
     # think of XIMS::JavaScript here
     my $script = XIMS::Object->new( id => $script_id );
     $self->{Script} = $script;
@@ -2290,8 +2518,9 @@ sub schema {
     my $schema_id = $self->schema_id();
     if ( not defined $schema_id ) {
         if ( not defined $args{explicit} ) {
+
             # look for schema_id in ancestrial objectroot objects
-            foreach my $oroot ( reverse @{$self->objectroot_ancestors} ) {
+            foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $schema_id = $oroot->schema_id();
             }
             return undef unless defined $schema_id;
@@ -2320,10 +2549,10 @@ sub schema {
 #    Returns creator of object. If $user is given as parameter, creator of object is updated.
 #
 sub creator {
-    my $self = shift;
+    my $self    = shift;
     my $creator = shift;
 
-    if ( $creator ) {
+    if ($creator) {
         $self->created_by_id( $creator->id() );
         $self->created_by_firstname( $creator->firstname() );
         $self->created_by_middlename( $creator->middlename() );
@@ -2353,10 +2582,10 @@ sub creator {
 #    Returns owner of object. If $user is given as parameter, owner of object is updated.
 #
 sub owner {
-    my $self = shift;
+    my $self  = shift;
     my $owner = shift;
 
-    if ( $owner ) {
+    if ($owner) {
         $self->owned_by_id( $owner->id() );
         $self->owned_by_firstname( $owner->firstname() );
         $self->owned_by_middlename( $owner->middlename() );
@@ -2386,10 +2615,10 @@ sub owner {
 #    Returns last modifier of object. If $user is given as parameter, last modifier of object is updated.
 #
 sub last_modifier {
-    my $self = shift;
+    my $self   = shift;
     my $modder = shift;
 
-    if ( $modder ) {
+    if ($modder) {
         $self->last_modified_by_id( $modder->id() );
         $self->last_modified_by_firstname( $modder->firstname() );
         $self->last_modified_by_middlename( $modder->middlename() );
@@ -2419,10 +2648,10 @@ sub last_modifier {
 #    Returns last publisher of object. If $user is given as parameter, last publisher of object is updated.
 #
 sub last_publisher {
-    my $self = shift;
+    my $self   = shift;
     my $pubber = shift;
 
-    if ( $pubber ) {
+    if ($pubber) {
         $self->last_published_by_id( $pubber->id() );
         $self->last_published_by_firstname( $pubber->firstname() );
         $self->last_published_by_middlename( $pubber->middlename() );
@@ -2483,14 +2712,16 @@ sub locker {
 #
 sub location_path {
     my $self = shift;
-    my $id = $self->{id};
-    if ( defined $id and $id != 1 ) { # root has no location_path
+    my $id   = $self->{id};
+    if ( defined $id and $id != 1 ) {    # root has no location_path
         if ( defined $self->{location_path} ) {
             return $self->{location_path};
         }
         else {
-            # If an object has just been created, we have to fetch the location_path from the dp
-            $self->{location_path} = $self->data_provider->location_path( id => $id );
+
+# If an object has just been created, we have to fetch the location_path from the dp
+            $self->{location_path}
+                = $self->data_provider->location_path( id => $id );
             return $self->{location_path};
         }
     }
@@ -2513,8 +2744,8 @@ sub location_path {
 #
 sub location_path_relative {
     my $self = shift;
-    my $id = $self->{id};
-    if ( defined $id and $id != 1 ) { # root has no location_path
+    my $id   = $self->{id};
+    if ( defined $id and $id != 1 ) {    # root has no location_path
         my $relative_path = $self->location_path();
         $relative_path =~ s/^\/[^\/]+//;
         return $relative_path;
@@ -2543,8 +2774,8 @@ sub location_path_relative {
 #    not only between the latest and second to last modification of objects.
 #
 sub store_diff_to_second_last {
-    XIMS::Debug( 5, "called");
-    my $self = shift;
+    XIMS::Debug( 5, "called" );
+    my $self    = shift;
     my $oldbody = shift;
     my $newbody = shift;
 
@@ -2552,16 +2783,29 @@ sub store_diff_to_second_last {
     return undef unless $self->id();
 
     # check for params
-    return undef unless (defined $oldbody and length $oldbody and defined $newbody);
+    return undef
+        unless ( defined $oldbody and length $oldbody and defined $newbody );
 
     my $diffobject_location = '.diff_to_second_last';
 
-    # not i18n'd :-|
-    # could be be filled with edit trail auditing information after that will be
-    # implemented (http://sourceforge.net/tracker/index.php?func=detail&aid=824274&group_id=42250&atid=432508)
-    my %diffoptions = ( FILENAME_A  => $self->location() . " (" . ($self->last_modifier->firstname ? $self->last_modifier->firstname : '') . " " . $self->last_modifier->lastname . ", " . $self->last_modification_timestamp . ")",
-                        FILENAME_B  => $self->location() . " (" . ($self->User->firstname ? $self->User->firstname : '') . " " . $self->User->lastname . ", " . $self->data_provider->db_now . ")",
-                      );
+# not i18n'd :-|
+# could be be filled with edit trail auditing information after that will be
+# implemented (http://sourceforge.net/tracker/index.php?func=detail&aid=824274&group_id=42250&atid=432508)
+    my %diffoptions = (
+        FILENAME_A => $self->location() . " ("
+            . (
+              $self->last_modifier->firstname
+            ? $self->last_modifier->firstname
+            : ''
+            )
+            . " "
+            . $self->last_modifier->lastname . ", "
+            . $self->last_modification_timestamp . ")",
+        FILENAME_B => $self->location() . " ("
+            . ( $self->User->firstname ? $self->User->firstname : '' ) . " "
+            . $self->User->lastname . ", "
+            . $self->data_provider->db_now . ")",
+    );
 
     my $diff = diff \$oldbody, \$newbody, \%diffoptions;
 
@@ -2569,15 +2813,22 @@ sub store_diff_to_second_last {
     my @children = $self->children( location => $diffobject_location );
     my $diffobject = $children[0];
     if ( $diffobject and $diffobject->id() ) {
-        $diffobject->body( XIMS::xml_escape( $diff ) );
+        $diffobject->body( XIMS::xml_escape($diff) );
         return $diffobject->update( User => $self->User );
     }
     else {
-        my $oimporter = XIMS::Importer::Object->new( User => $self->User, Parent => $self, IgnoreCreatePriv => 1 );
-        $diffobject = XIMS::Text->new( User => $self->User, location => $diffobject_location );
-        $diffobject->body( XIMS::xml_escape( $diff ) );
+        my $oimporter = XIMS::Importer::Object->new(
+            User             => $self->User,
+            Parent           => $self,
+            IgnoreCreatePriv => 1
+        );
+        $diffobject = XIMS::Text->new(
+            User     => $self->User,
+            location => $diffobject_location
+        );
+        $diffobject->body( XIMS::xml_escape($diff) );
 
-        my $id = $oimporter->import( $diffobject );
+        my $id = $oimporter->import($diffobject);
         if ( not $id ) {
             XIMS::Debug( 2, "could not create diff-object" );
             return undef;
@@ -2624,13 +2875,13 @@ sub balanced_string {
     my %args        = @_;
     my $doc;
 
-    my $retval      = undef; # return value
+    my $retval = undef;    # return value
 
     if ( $CDATAstring and length $CDATAstring ) {
         my $parser = XML::LibXML->new();
         if ( exists $args{nochunk} ) {
-            eval { $doc = $parser->parse_string( $CDATAstring ) };
-            if ( $@ ) {
+            eval { $doc = $parser->parse_string($CDATAstring) };
+            if ($@) {
                 XIMS::Debug( 2, "string not well-formed" );
                 XIMS::Debug( 6, "LibXML returned $@" );
                 $@ =~ s/at \/.*$//;
@@ -2644,12 +2895,14 @@ sub balanced_string {
             my $encoding;
             $encoding = $args{encoding} if defined $args{encoding};
             $encoding ||= ( XIMS::DBENCODING() || 'UTF-8' );
-            eval { $doc = $parser->parse_xml_chunk( $CDATAstring, $encoding ) };
+            eval {
+                $doc = $parser->parse_xml_chunk( $CDATAstring, $encoding );
+            };
             if ( !$doc or $@ ) {
                 XIMS::Debug( 2, "string not well-balanced" );
                 XIMS::Debug( 6, "LibXML returned $@" );
                 $@ =~ s/at \/.*$//;
-                $retval = $@  if exists $args{verbose_msg};
+                $retval = $@ if exists $args{verbose_msg};
             }
             else {
                 $retval = $doc;
@@ -2659,7 +2912,6 @@ sub balanced_string {
 
     return $retval;
 }
-
 
 ##
 #
@@ -2689,15 +2941,15 @@ sub balance_string {
 
     return undef unless defined $CDATAstring;
 
-    my $wbCDATAstring = undef; # return value
+    my $wbCDATAstring = undef;    # return value
 
-    # as long as there is no libtidy and no XS based HTML::Tidy, it looks like we have to
-    # deal with the forking and temorary file handling...:/
+# as long as there is no libtidy and no XS based HTML::Tidy, it looks like we have to
+# deal with the forking and temorary file handling...:/
     my $tidy        = XIMS::TIDYPATH();
     my $tidyOptions = XIMS::TIDYOPTIONS();
-    my $tmppath = "/tmp/";
-    my $tmpfile = 'formwell' . $$ * int(rand 42) . '.tmp';
-    my $tmp = $tmppath . $tmpfile;
+    my $tmppath     = "/tmp/";
+    my $tmpfile     = 'formwell' . $$ * int( rand 42 ) . '.tmp';
+    my $tmp         = $tmppath . $tmpfile;
 
     my $tmp_fh = IO::File->new( $tmp, 'w' );
     if ( defined $tmp_fh ) {
@@ -2710,10 +2962,8 @@ sub balance_string {
         return undef;
     }
 
-    eval {
-        $wbCDATAstring = `$tidy $tidyOptions $tmp`;
-    };
-    if ( $@ ) {
+    eval { $wbCDATAstring = `$tidy $tidyOptions $tmp`; };
+    if ($@) {
         XIMS::Debug( 2, "Could not execute '$tidy $tidyOptions $tmp': $@" );
         return undef;
     }
@@ -2721,38 +2971,42 @@ sub balance_string {
     unlink $tmp;
 
     if ( not $self->balanced_string( $wbCDATAstring, nochunk => 1 ) ) {
+
         # tidy cleans better, but we want the following as fallback
-        XIMS::Debug( 3, "tidy did not return a wellformed string, using LibXML" );
+        XIMS::Debug( 3,
+            "tidy did not return a wellformed string, using LibXML" );
 
         my $parser = XML::LibXML->new();
-        # pepl: todo - check if that is still current parse_html_string() behaviour
-        #
-        # parse_html_string() is broken: does not recognize encoding and has
-        # no fallback-encoding, so it croaks at the very first non-ascii-char
-        # adding ctxt->charset = XML_CHAR_ENCODING_UTF8; before returning at
-        # htmlCreateDocParserCtxt() in htmlParser.c
-        # gives a workaround fallback encoding setting
-        $CDATAstring = XIMS::encode( $CDATAstring );
+
+   # pepl: todo - check if that is still current parse_html_string() behaviour
+   #
+   # parse_html_string() is broken: does not recognize encoding and has
+   # no fallback-encoding, so it croaks at the very first non-ascii-char
+   # adding ctxt->charset = XML_CHAR_ENCODING_UTF8; before returning at
+   # htmlCreateDocParserCtxt() in htmlParser.c
+   # gives a workaround fallback encoding setting
+        $CDATAstring = XIMS::encode($CDATAstring);
         my $doc;
-        eval {
-            $doc = $parser->parse_html_string( $CDATAstring );
-        };
-        if ( $@ ) {
+        eval { $doc = $parser->parse_html_string($CDATAstring); };
+        if ($@) {
             XIMS::Debug( 2, "LibXML could not parse string either: $@" );
             return undef;
         }
         else {
             my $encoding = XIMS::DBEncoding() ? XIMS::DBEncoding() : 'UTF-8';
-            $doc->setEncoding( $encoding ); # needed. otherwise, toString() produces one-byte numeric entities or double-byte chars !?
+            $doc->setEncoding($encoding)
+                ; # needed. otherwise, toString() produces one-byte numeric entities or double-byte chars !?
             $wbCDATAstring = XIMS::decode( $doc->toString() );
         }
     }
     else {
+
         # tidy returns utf-8, so we may have to decode...
-        $wbCDATAstring = XIMS::decode( $wbCDATAstring );
+        $wbCDATAstring = XIMS::decode($wbCDATAstring);
     }
 
     if ( not exists $args{keephtmlheader} ) {
+
         # strip everything before <BODY> and after </BODY>
         $wbCDATAstring =~ s/^.*<body[^>]*>\n?//si;
         $wbCDATAstring =~ s\</body[^>]*>.*$\\si;
@@ -2770,36 +3024,49 @@ sub content_field {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $df;
-    if ( defined( $self->{DataFormat} ) and defined( $self->{DataFormat}->id ) ) {
-       $df = $self->{DataFormat};
+    if (    defined( $self->{DataFormat} )
+        and defined( $self->{DataFormat}->id ) )
+    {
+        $df = $self->{DataFormat};
     }
     else {
-        my $df_id = $self->{data_format_id} || $self->{'document.data_format_id'};
+        my $df_id = $self->{data_format_id}
+            || $self->{'document.data_format_id'};
         my $dfs = XIMS::DATA_FORMATS();
         $df = $dfs->{$df_id};
         $self->{DataFormat} = $df;
     }
+
     # pepl: departmentroot portlet info is stored in its body
     # return undef if $df->name() eq 'Container';
-    return 'binfile' if ( $df->mime_type and $df->mime_type =~ /^(application|image)\//i and $df->mime_type !~ /container|xsp/i );
+    return 'binfile'
+        if ($df->mime_type
+        and $df->mime_type =~ /^(application|image)\//i
+        and $df->mime_type !~ /container|xsp/i );
     return 'body';
 }
-
 
 #workflow implementation#
 sub forward {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    return $self->data_provider->updateObject( status => 'pending', id => $self->id() );
+    return $self->data_provider->updateObject(
+        status => 'pending',
+        id     => $self->id()
+    );
 }
 
 sub reject {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    return $self->data_provider->updateObject( status => 'rejected', id => $self->id() );
+    return $self->data_provider->updateObject(
+        status => 'rejected',
+        id     => $self->id()
+    );
 }
+
 #end workflow implementation#
 
 1;

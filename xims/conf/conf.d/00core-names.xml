@@ -71,6 +71,7 @@
                 <item>content.last_publication_timestamp</item>
                 <item>content.last_published_by_id</item>
                 <item>content.marked_deleted</item>
+                <item>content.deletionmark_timestamp</item>
                 <item>content.locked_by_lastname</item>
                 <item>content.locked_by_middlename</item>
                 <item>content.locked_by_firstname</item>
@@ -132,6 +133,7 @@
                 <item>content.last_publication_timestamp</item>
                 <item>content.last_published_by_id</item>
                 <item>content.marked_deleted</item>
+                <item>content.deletionmark_timestamp</item>
                 <item>content.locked_by_lastname</item>
                 <item>content.locked_by_middlename</item>
                 <item>content.locked_by_firstname</item>
