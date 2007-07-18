@@ -475,8 +475,9 @@ sub event_author_store {
         );
     }
     else {
+        # create new VLibAuthor
         $vlibauthor = XIMS::VLibAuthor->new();
-        $vlibauthor->document_id( $object->parent_id() );
+        $vlibauthor->document_id( $object->document_id() );
     }
 
     if ( ref $vlibauthor ) {
