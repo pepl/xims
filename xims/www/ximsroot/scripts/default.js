@@ -31,7 +31,7 @@ function openDocWindow(topic) {
 }
 
 function editAuthorWindow(url) {
-    newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=555,height=340,screenX=100,screenY=300" );
+    newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=620,height=305,screenX=100,screenY=300" );
 }
 
 function getParamValue( param ) {
