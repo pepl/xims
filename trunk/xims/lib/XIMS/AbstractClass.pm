@@ -23,7 +23,7 @@ sub data {
             $field_method = 'document_id' if $field_method eq 'id' and $r_type and $r_type eq 'document';
             $field_method = 'body' if $field_method eq 'binfile';
             # location_path is not really writable, to make data() still work, check for it here
-            if ( $r_type eq 'document' and $field_method eq 'location_path' ) {
+            if ( (defined $r_type and defined $field_method) and ($r_type eq 'document' and $field_method eq 'location_path') ) {
                 $self->{location_path} = $args{$field};
             }
             else {
