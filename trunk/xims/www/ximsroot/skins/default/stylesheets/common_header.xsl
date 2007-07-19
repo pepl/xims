@@ -262,8 +262,10 @@
                                         Do not display object types that either are not fully implemented or that are not meant to be created directly.
                                         We may consider adding an object type property for the latter types.
                                         jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
+                                        jerboaa, 2007-07-19: Do not show object types which contain "Item" in their name with the only exception
+					                     of "NewsItem"! 
                                     -->
-                                    <xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'AnonDiscussionForumContrib' or contains(name,'Item') or name = 'SiteRoot' or parent_id != $parent_id)]">
+                                    <xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'AnonDiscussionForumContrib' or ( contains(name,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]">
                                         <xsl:sort select="name"/>
                                     </xsl:apply-templates>
                                 </ul>
@@ -286,7 +288,10 @@
                             <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]" mode="form"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and not(contains(name,'Item')) and parent_id = $parent_id]" mode="form"/>
+			    <!-- Do not show object types which contain "Item" in their name with the only exception of "NewsItem"! -->
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and not(contains(name,'Item') and not(substring-before(name, 'Item')='News')) and parent_id = $parent_id]" mode="form">
+			        <xsl:sort select="name"/>
+			    </xsl:apply-templates>
                         </xsl:otherwise>
                     </xsl:choose>
                 </select>
