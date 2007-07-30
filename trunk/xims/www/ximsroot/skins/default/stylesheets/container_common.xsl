@@ -762,10 +762,7 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
 </xsl:template>
 
 <xsl:template name="cttobject.dataformat">
-    <xsl:variable name="dataformat">
-        <xsl:value-of select="data_format_id"/>
-    </xsl:variable>
-    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
+  <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
 
     <xsl:choose>
         <xsl:when test="marked_deleted=1">
