@@ -46,7 +46,7 @@
 <body>
 
 <xsp:logic>
-if (!<web:is_initial_req/>) {
+if (<web:request_uri/> ne '/ximspubroot/500.xsp') {
 </xsp:logic>
     <h1>Server Error</h1>
 
