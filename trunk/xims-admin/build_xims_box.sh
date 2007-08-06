@@ -85,7 +85,7 @@ function int_err_script() {
 }
 
 # provide a 'catch-all' for possible errors and SIGINTs
-trap 'int_err_script' SIGERR SIGINT
+trap 'int_err_script' ERR SIGINT
 
 # run interactively per default
 INTERACTIVE="yes"
