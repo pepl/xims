@@ -253,7 +253,7 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE TRIGGER location_path_insert AFTER DELETE ON ci_sessions
+CREATE TRIGGER remove_stale_locks AFTER DELETE ON ci_sessions
        EXECUTE PROCEDURE remove_stale_locks();
 
 \echo creating table 'ci_object_privs_granted'
