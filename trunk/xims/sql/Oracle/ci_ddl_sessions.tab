@@ -16,3 +16,23 @@ CREATE TABLE CI_SESSIONS
  )
 /
 
+PROMPT Adding Trigger on ci_sessions to remove stale locks
+CREATE OR REPLACE TRIGGER "CI00"."REMOVE_STALE_LOCKS"
+  AFTER
+    DELETE
+  ON ci_sessions
+BEGIN
+    UPDATE ci_content c
+    SET locked_by_id         = NULL
+       ,locked_by_lastname   = NULL
+       ,locked_by_middlename = NULL
+       ,locked_by_firstname  = NULL
+       ,locked_by_fullname   = NULL
+       ,locked_time          = NULL
+    WHERE locked_by_id  IS NOT NULL
+      AND NOT EXISTS (SELECT 1
+                      FROM ci_sessions s
+                      WHERE s.user_id = c.locked_by_id);
+END;
+/
+
