@@ -236,6 +236,26 @@ CREATE INDEX ci_content_doc_id_idx
        ON ci_content ( document_id )
 ;
 
+\echo creating trigger remove_stale_locks...
+CREATE OR REPLACE FUNCTION remove_stale_locks() RETURNS TRIGGER AS '
+BEGIN                                    
+    UPDATE ci_content 
+    SET locked_by_id         = NULL
+       ,locked_by_lastname   = NULL
+       ,locked_by_middlename = NULL
+       ,locked_by_firstname  = NULL
+       ,locked_time          = NULL
+    WHERE locked_by_id  IS NOT NULL      
+      AND NOT EXISTS (SELECT 1 
+                      FROM ci_sessions  
+                      WHERE user_id = locked_by_id);
+    RETURN NULL;
+END;
+' LANGUAGE 'plpgsql';
+
+CREATE TRIGGER location_path_insert AFTER DELETE ON ci_sessions
+       EXECUTE PROCEDURE remove_stale_locks();
+
 \echo creating table 'ci_object_privs_granted'
 CREATE TABLE ci_object_privs_granted
  (privilege_mask NUMERIC(32,0) NOT NULL
