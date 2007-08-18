@@ -48,6 +48,12 @@
         <SearchResultRowLimit>30</SearchResultRowLimit>
 
         <!--
+            # Session time out limit (in seconds)
+            # 86400 = ONE_DAY
+        -->
+        <SessionTimeout>86400</SessionTimeout>
+
+        <!--
         # Path to the tidy binary
         -->
         <TidyPath></TidyPath>
