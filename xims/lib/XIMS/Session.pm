@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -7,6 +7,7 @@ package XIMS::Session;
 use strict;
 use base qw( XIMS::AbstractClass Class::Accessor );
 use Digest::MD5;
+use Time::Piece;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = ( @{XIMS::Names::property_interface_names( resource_type() )}, qw( error_msg warning_msg message verbose_msg date serverurl skin uilanguage searchresultcount ) );
@@ -104,12 +105,30 @@ sub validate {
     XIMS::Debug( 6, "hostname is $host, hostnet is $hostnet" );
     if ( length $hostnet
              and $self->session_id() eq Digest::MD5::md5_hex( $self->user_id() . $self->salt() . $hostnet ) ) {
-         $retval = 1;
+
+        my $lat = Time::Piece->strptime( $self->last_access_timestamp(), "%Y-%m-%d %H:%M:%S" );
+        my $now = localtime();
+
+        # Time::Piece believes this to be UTC
+        $lat -= $now->tzoffset;
+
+        if ( ($now - $lat) < XIMS::Config::SessionTimeout() ) {
+            $self->last_access_timestamp( $now->strftime("%Y-%m-%d %H:%M:%S") );
+            if ( $self->update() ) {
+                $retval = 1;
+            }
+            else {
+                XIMS::Debug( 2, "last access timestamp of session could not be updated" );
+            }
+        }
+        else {
+            XIMS::Debug( 4, "session timed out" );
+        }
     }
 
-
-    XIMS::Debug( 6, "user: " . $self->user_id() . "session: " . $self->session_id() .
-                    " validation string: " . Digest::MD5::md5_hex( $self->user_id() . $self->salt() . $hostnet ) );
+    XIMS::Debug( 6, "user: " . $self->user_id() . " session: " . $self->session_id() .
+                    " validation string: " . Digest::MD5::md5_hex( $self->user_id() . $self->salt() . $hostnet .
+                    " last_access_timestamp: " . $self->last_access_timestamp() ) );
 
     return $retval;
 }
