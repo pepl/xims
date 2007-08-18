@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -318,9 +318,10 @@ sub test_session {
         XIMS::Debug( 2, "no session found!" . $@ );
     }
 
+    # TODO: Think of separately checking for session timeout and display a
+    # corresponding message to the user in case
     if ( $cSession and $cSession->validate( $r->connection->remote_ip() ) ) {
         XIMS::Debug( 4, "session cookie validated!" );
-        #$cSession->update(); # ubu: is this really needed?
     }
     else {
         XIMS::Debug( 2, "rejecting session cookie" );
