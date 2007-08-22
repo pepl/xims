@@ -25,6 +25,7 @@
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-abstract-create"/>
                     <xsl:call-template name="markednew"/>
+                    <xsl:call-template name="expandrefs"/>
                     <xsl:call-template name="grantowneronly"/>
                 </table>
                 <xsl:call-template name="saveaction"/>
@@ -56,6 +57,7 @@
             <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;">
                 <xsl:text>&#160;</xsl:text>
             </textarea>
+            <xsl:call-template name="jsorigbody"/>
         </td>
     </tr>
 </xsl:template>
