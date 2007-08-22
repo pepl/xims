@@ -25,7 +25,7 @@
                     <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
                         <table border="0" width="98%">
                             <xsl:call-template name="tr-locationtitle-edit_doc"/>
-                            <xsl:call-template name="tr-body-edit_htmlarea"/>
+                            <xsl:call-template name="tr-body-edit_tinymce"/>
                             <xsl:call-template name="tr-keywords-edit"/>
                             <xsl:call-template name="tr-abstract-edit"/>
                             <xsl:call-template name="markednew"/>
@@ -50,7 +50,7 @@
         </head>
     </xsl:template>
 
-    <xsl:template name="tr-body-edit_htmlarea">
+    <xsl:template name="tr-body-edit_tinymce">
         <tr>
             <td colspan="3">
                 Body
@@ -61,6 +61,7 @@
                 <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32">
                     <xsl:value-of select="$bodycontent"/>
                 </textarea>
+                <xsl:call-template name="jsorigbody"/>
             </td>
         </tr>
     </xsl:template>

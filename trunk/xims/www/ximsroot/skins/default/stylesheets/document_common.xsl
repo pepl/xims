@@ -115,6 +115,9 @@
                 if ( window.editor ) {
                     currentbody = window.editor.getHTML();
                 }
+                else if (window.tinyMCE){
+                    currentbody = window.tinyMCE.getContent();
+                }
                 else {
                     var body = document.getElementById('body');
                     if ( body &amp;&amp; body.value ) {
@@ -124,7 +127,6 @@
                         return false;
                     }
                 }
-
                 var is_changed;
                 if ( window.eWebEditPro ) {
                     // Unfortunately, isChanged() is documented well

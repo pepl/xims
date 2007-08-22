@@ -16,6 +16,7 @@
 <xsl:import href="common_localized.xsl"/>
 <xsl:import href="common_jscalendar_scripts.xsl"/>
 <xsl:import href="common_htmlarea_scripts.xsl"/>
+<xsl:import href="common_tinymce_scripts.xsl"/>
 
 <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
