@@ -481,9 +481,6 @@ sub event_grant_role_update {
         my $default_role;
         $default_role = 1 unless $user->roles_granted(); # grant the first role grant of a user/role as default_role
 
-        # dirty fix for some strange behaviour on postgres-based systems, when granting a role to a new user ?!
-        eval { $user->grant_role_privileges( grantor => $ctxt->session->user(), grantee => $user, role => $role, default_role => $default_role) };
-
         if ( $user->grant_role_privileges( grantor => $ctxt->session->user(), grantee => $user, role => $role, default_role => $default_role ) ) {
             $ctxt->session->message( "Role '$rname' successfully granted to user/role '$uname'." );
             $ctxt->properties->application->style( 'role_management_update' );

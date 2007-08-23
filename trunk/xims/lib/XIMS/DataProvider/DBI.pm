@@ -78,12 +78,9 @@ sub create {
             }
             $args{properties}->{$property} = $insert_id;
         }
-        else {
-            $args{properties}->{$property} = $args{properties}->{$property};
-        }
     }
     my ($table, $column_map) = $self->tables_and_columns( $args{properties} );
-    # warn "and after " . Dumper( $column_map ) . "\n";
+    #warn "and after " . Dumper( $column_map ) . "\n";
 
     my $test = $self->{dbh}->do_insert( table    => $table->[0],
                                         values   => $column_map );
@@ -91,12 +88,15 @@ sub create {
     if ( $test ) {
         # to make things friendlier for the object and app classes,
         # we'll select back the auto-generated id of the data we
-        # of the data we just inserted.
+        # of the data we just inserted if the have been inserting
+        # into a table with an auto-generated id
 
-        return $test if $table->[0] eq 'ci_object_privs_granted'; # no data that the app class doesn't already know about.
-        return $test if $table->[0] eq 'ci_object_type_privs'; # no data that the app class doesn't already know about.
-
-        return $insert_id;
+        if ( defined $insert_id ) {
+            return $insert_id;
+        }
+        else {
+            return $test;
+        }
     }
     else {
         return;
