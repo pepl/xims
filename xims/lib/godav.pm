@@ -151,11 +151,11 @@ sub get {
         foreach my $child ( @children ) {
             $location = $child->location();
             if ( $child->object_type->is_fs_container() ) {
-                $body .= qq|<a href="./$location/">$location/</a><br>\n|;
+                $body .= qq|<a href="/godav$path/$location/">$location/</a><br>\n|;
             }
             else {
                 $location =~ s{/$}{};
-                $body .= qq|<a href="./$location">$location</a><br>\n|;
+                $body .= qq|<a href="/godav$path/$location">$location</a><br>\n|;
             }
         }
         $r->content_type( 'text/html' );
@@ -284,7 +284,7 @@ sub delete {
 
     if ( defined $object ) {
         if ( $object->published() ) {
-            $r->content_type( 'text/xml; charset="UTF-8"' );
+            $r->content_type( 'application/xml; charset="UTF-8"' );
             my $uri = $r->uri;
             my $response =<<EOS;
 <?xml version="1.0" encoding="UTF-8"?>
@@ -300,7 +300,7 @@ EOS
         }
 
         if ( $object->locked() ) {
-            $r->content_type( 'text/xml; charset="UTF-8"' );
+            $r->content_type( 'application/xml; charset="UTF-8"' );
             my $uri = $r->uri;
             my $response =<<EOS;
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -390,7 +390,7 @@ sub propfind {
     # TODO: xml in $doc is currently not checked, "allprop" is assumed
 
     $status_code = 207;
-    $r->content_type( 'text/xml; charset="UTF-8"' );
+    $r->content_type( 'application/xml; charset="UTF-8"' );
 
     my $dom = XML::LibXML::Document->new("1.0", "utf-8");
     my $multistatus =  $dom->createElementNS( 'DAV:', 'D:multistatus' );
@@ -426,6 +426,8 @@ sub propfind {
         }
 
         @objects = $object->children_granted( marked_deleted => undef, object_type_id => \@object_type_ids );
+	# do also provide requested object itself within the 207 response (fixes gnomevfs/nautilus issue)
+        push (@objects, $object);
     }
     else {
         @objects = ($object);
@@ -442,10 +444,18 @@ sub propfind {
         $multistatus->addChild($nresponse);
 
         my $href = $dom->createElement("D:href");
-        $href->appendText(XIMS::encode('/godav' . $o->location_path()) || '/' );
+        my $href_value = ( XIMS::encode( '/godav' . $o->location_path()) ) || '/';
+        # append '/' for collections
+        if ( $is_fs_container && $href_value ne '/' ) {
+            $href->appendText($href_value . '/');
+        }
+        else {
+            $href->appendText($href_value);
+        }
         $nresponse->addChild($href);
 
         my $propstat = $dom->createElement("D:propstat");
+	# propstat expects only one single 'prop' and 'status' child element
         $nresponse->addChild($propstat);
 
         my $prop = $dom->createElement("D:prop");
@@ -458,18 +468,36 @@ sub propfind {
         $creationdate->appendText($t->strftime("%Y-%m-%dT%T -0000")); # be IS8601 compliant
         $prop->addChild($creationdate);
 
-        $t = Time::Piece->strptime( $o->last_modification_timestamp(), "%Y-%m-%d %H:%M:%S" );
-        my $getlastmodified = $dom->createElement("D:getlastmodified");
-        $getlastmodified->setAttribute("b:dt", "dateTime.rfc1123");
-        $getlastmodified->appendText($t->strftime("%a, %d %b %Y %T -0000")); # be RFC(2)822 compliant
-        $prop->addChild($getlastmodified);
+        # put get* properties only for non-collections, as GET is unsupported for collections
+        if ( not $is_fs_container ) {
+            my $getcontenttype = $dom->createElement("D:getcontenttype");
+            my $mime_type = exists $mime_types{$o->data_format_id} ? $mime_types{$o->data_format_id} : $o->data_format->mime_type;
+            $getcontenttype->appendText($mime_type);
+            $prop->addChild($getcontenttype);
 
-        my $size = $o->content_length();
-        $size = "" if (defined $size and $size == 0);
-        my $getcontentlength = $dom->createElement("D:getcontentlength");
-        $getcontentlength->setAttribute("b:dt", "int");
-        $getcontentlength->appendText($size);
-        $prop->addChild($getcontentlength);
+            $t = Time::Piece->strptime( $o->last_modification_timestamp(), "%Y-%m-%d %H:%M:%S" );
+            my $getlastmodified = $dom->createElement("D:getlastmodified");
+            $getlastmodified->setAttribute("b:dt", "dateTime.rfc1123");
+            $getlastmodified->appendText($t->strftime("%a, %d %b %Y %T -0000")); # be RFC(2)822 compliant
+            $prop->addChild($getlastmodified);
+
+            my $size = $o->content_length();
+            $size = "" if (defined $size and $size == 0);
+            my $getcontentlength = $dom->createElement("D:getcontentlength");
+            $getcontentlength->setAttribute("b:dt", "int");
+            $getcontentlength->appendText($size);
+            $prop->addChild($getcontentlength);
+        }
+        else {
+            ## we make our XIMS specific extension to 'prop'
+            # <x:collectiontype xmlns:x="http://xims.info/webdav/collectiontype"/>
+            # MS WebFolders get confused when adding our property to 'ressourcetype' property ;-(
+            # so we add it here
+            my $collection_type = $dom->createElement("x:collectiontype");
+            $collection_type->setAttribute("xmlns:x", "http://xims.info/webdav/collectiontype");
+            $collection_type->appendText("httpd/unix-directory");
+            $prop->addChild($collection_type);
+        }
 
         my $ndisplayname = $dom->createElement("D:displayname");
         #my $displayname = XIMS::encode($o->title());
@@ -526,21 +554,11 @@ sub propfind {
             $locktoken->addChild($lthref);
         }
 
-        # additional XIMS specific properties here?
-
         my $nstatus = $dom->createElement("D:status");
         $nstatus->appendText($status);
+	# propstat expects only one single 'prop' and 'status' child element
         $propstat->addChild($nstatus);
 
-        my $getcontenttype = $dom->createElement("D:getcontenttype");
-        if ( $is_fs_container ) {
-            $getcontenttype->appendText("httpd/unix-directory");
-        }
-        else {
-            my $mime_type = exists $mime_types{$o->data_format_id} ? $mime_types{$o->data_format_id} : $o->data_format->mime_type;
-            $getcontenttype->appendText($mime_type);
-        }
-        $propstat->addChild($getcontenttype);
     }
 
     return ($status_code, $dom->toString(1));
@@ -571,7 +589,7 @@ sub lock {
     }
 
     $status_code = 200;
-    $r->content_type( 'text/xml; charset="UTF-8"' );
+    $r->content_type( 'application/xml; charset="UTF-8"' );
 
     my $username = $user->name;
 
