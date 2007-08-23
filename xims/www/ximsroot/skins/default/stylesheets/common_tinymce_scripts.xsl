@@ -32,7 +32,7 @@
             <xsl:when test="css_id != ''"><xsl:value-of select="concat($xims_box,$goxims_content,css_id,'?plain=1')"/></xsl:when>
             <xsl:otherwise><xsl:value-of select="concat($ximsroot,$defaultcss)"/></xsl:otherwise>
           </xsl:choose>&apos;,
-        file_browser_callback : 'filebrowse',
+        file_browser_callback : 'filebrowse'
     });
     // auto_focus : 'body'
 
