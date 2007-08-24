@@ -340,10 +340,10 @@ mv $RPM_BUILD_ROOT/RPMS/i386/*.rpm $XIMS_BOX_DIR/rpms/xims-box/
 #### create the 2 'tar.gzs' ;-)
 # again, debs first
 cd $XIMS_BOX_DIR/debs
-tar --remove-files -czf $XIMS_BOX_BASE_NAME-debs.$XIMS_BOX_FEXTENSION xims-box >> /dev/null 2>&1
+tar -czf $XIMS_BOX_BASE_NAME-debs.$XIMS_BOX_FEXTENSION xims-box >> /dev/null 2>&1
 # now, the rpms
 cd $XIMS_BOX_DIR/rpms
-tar --remove-files -czf $XIMS_BOX_BASE_NAME-rpms.$XIMS_BOX_FEXTENSION xims-box >> /dev/null 2>&1
+tar -czf $XIMS_BOX_BASE_NAME-rpms.$XIMS_BOX_FEXTENSION xims-box >> /dev/null 2>&1
 
 # give feedback
 echo "Done!"
@@ -352,6 +352,8 @@ echo
 #### move files to BUILD_TARGET
 mv $XIMS_BOX_DIR/debs/*.$XIMS_BOX_FEXTENSION $BUILD_TARGET
 mv $XIMS_BOX_DIR/rpms/*.$XIMS_BOX_FEXTENSION $BUILD_TARGET
+# clean
+rm -rf $XIMS_BOX_DIR
 
 #### clean up, if said so
 if [ "$REMOVE_BUILD_DIR" == "yes" ]; then
