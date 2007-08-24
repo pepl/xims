@@ -168,7 +168,7 @@ XIMS_SVN_URI="http://xims.svn.sourceforge.net/svnroot/xims/trunk"
 XIMS_SVN_BRANCH="$XIMS_SVN_URI/xims"
 XIMS_CONTRIB_SVN_BRANCH="$XIMS_SVN_URI/xims-contrib"
 # we get the xims-build system from sf.net's files-section
-BUILD_SYSTEM_FILE="xims_box_build_system.tar.gz"
+BUILD_SYSTEM_FILE="xims_box_build_system_1.0.1.tar.gz"
 XIMS_BOX_BUILD_SYSTEM_URI="http://downloads.sourceforge.net/xims/$BUILD_SYSTEM_FILE"
 
 BUILD_DIR="/tmp/xims_box_build_system"
