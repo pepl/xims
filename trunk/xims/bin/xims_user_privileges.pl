@@ -219,7 +219,7 @@ sub usage {
         -e If specified, all privileges of the grantee will be revoked instead of granted.
         -l Comma-separated list of XIMS::Privileges to be granted, default is VIEW.
            Example: -l MODIFY,PUBLISH
-        -g Username of the grantee
+        -g Comma-separated list of grantee's usernames
 
         -u The username to connect to XIMS. If not specified,
            you will be asked for it interactively.
