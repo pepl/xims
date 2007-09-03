@@ -112,37 +112,39 @@
 
             function hasBodyChanged () {
                 var currentbody;
+                // check content of HTMLArea editor first
                 if ( window.editor ) {
                     currentbody = window.editor.getHTML();
                 }
+                // then check for TinyMCE editor content
                 else if (window.tinyMCE){
                     currentbody = window.tinyMCE.getContent();
                 }
+                // eWebEditPro
+                else if ( window.eWebEditPro ) {
+                    return eWebEditPro.isChanged();
+                }
+                // Plain Textarea
                 else {
                     var body = document.getElementById('body');
                     if ( body &amp;&amp; body.value ) {
                         currentbody = body.value;
                     }
-                    else {
-                        return false;
-                    }
                 }
-                var is_changed;
-                if ( window.eWebEditPro ) {
-                    // Unfortunately, isChanged() is documented well
-                    // but does NOT work...
-                    // return eWebEditPro.instances['body'].isChanged();
-                    return false;
-                }
-                else if ( currentbody &amp;&amp; origbody &amp;&amp; currentbody != origbody ) {
+
+                // now lets check if there are any changes ;-)
+                if ( currentbody &amp;&amp; currentbody != origbody ) {
                     return true;
                 }
-                return false;
+                // return false otherwise
+                else {
+                    return false;
+                }
             }
 
         </script>
         <form name="editor_selector" id="editor_selector" style="display: inline; margin: 0px;">
-            <select style="font-size: 9px; padding: 0px; background-color: #eeeeee;" name="xims_wysiwygeditor" id="xims_wysiwygeditor" onChange="return checkBodyFromSel(this.value);">
+            <select style="font-size: 9px; padding: 0px; background-color: #eeeeee;" name="xims_wysiwygeditor" id="xims_wysiwygeditor" onchange="javascript:return checkBodyFromSel(this.value);">
                 <xsl:copy-of select="$editoroptions" />
             </select>
         </form>
