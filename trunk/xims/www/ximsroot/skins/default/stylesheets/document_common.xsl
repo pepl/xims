@@ -99,8 +99,6 @@
 
             function checkBodyFromSel (selection) {
                 if ( hasBodyChanged() ) {
-                    alert("checkBodyFromSel() we're back!");
-                    return false;
                     document.getElementById('xims_wysiwygeditor').disabled = true;
                     alert("<xsl:value-of select="$i18n/l/Body_content_changed"/>");
                     return false;
