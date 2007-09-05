@@ -17,7 +17,7 @@
         elements : 'body',
         language : '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)"/>',
         document_base_url_old : '<xsl:choose><xsl:when test="$edit = '1'"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/></xsl:otherwise></xsl:choose>',
-        document_base_url : '<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>',
+        document_base_url : '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')"/>',
         auto_cleanup_word : true,
         entity_encoding : 'raw',
         plugins : 'table,contextmenu,advhr,searchreplace',
