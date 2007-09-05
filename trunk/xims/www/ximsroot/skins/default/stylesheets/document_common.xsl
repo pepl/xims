@@ -99,9 +99,27 @@
 
             function checkBodyFromSel (selection) {
                 if ( hasBodyChanged() ) {
+                    alert("checkBodyFromSel() we're back!");
+                    return false;
                     document.getElementById('xims_wysiwygeditor').disabled = true;
                     alert("<xsl:value-of select="$i18n/l/Body_content_changed"/>");
                     return false;
+                }
+
+                /* we do not allow ewebeditpro to be set as default editor
+                 * via cookie on unsupported platforms
+                 */
+                if ( selection == 'wepro' ) {
+                    var useragent = navigator.userAgent;
+                    if ( useragent.indexOf("Windows") != -1  ) {
+                        createCookie('xims_wysiwygeditor',selection,90);
+                        location.reload();
+                        return true;
+                    }
+                    else {
+                        alert("'eWebEditPro' is not available on your platform!\nPlease select another editor!");
+                        return false;
+                    }
                 }
 
                 createCookie('xims_wysiwygeditor',selection,90);
@@ -122,7 +140,18 @@
                 }
                 // eWebEditPro
                 else if ( window.eWebEditPro ) {
-                    return eWebEditPro.isChanged();
+                    /* although on unsupported platforms the wepro-cookie
+                     * should never be set (see 'checkBodyFromSel()' above), we
+                     * ckeck anyway to be on the save side ;-)
+                     */
+                    var useragent = navigator.userAgent;
+                    if ( useragent.indexOf("Windows") == -1 ) {
+                        alert("Uuups! eWebEditPro is unsupported on your platform!\n");
+                        return false;
+                    }
+                    else {
+                        return eWebEditPro.isChanged();
+                    }
                 }
                 // Plain Textarea
                 else {
