@@ -66,58 +66,32 @@
         }
 
         function loadselectedtext() {
-            var sel = window.opener.editor._getSelection();
-            var range = window.opener.editor._createRange(sel);
-            if ( is_ie ) {
-                var selectedText = range.text;
-                if ( typeof selectedText != "undefined" && selectedText.length > 0 ) {
-                    document.selectform.linktext.value = selectedText;
-                }
-            }
-            else {
-                document.selectform.linktext.value = range;
-            }
-
+            var control = tinyMCE.getInstanceById('body'); //returns TinyMCE_Control object
+            // get selected text
+            selectedText = control.selection.getSelectedText();
+            //alert(selectedText); //debug
+            // pass value on to corresponding input field
+            tinyMCE.setAttrib(document.selectform.linktext, 'value' ,selectedText, false);
+                
             if ( document.selectform.linktext.value.length > 0 ) {
                 gotselection = true;
             }
         }
 
-function inserthyperlink() {
-  var titel = document.selectform.linktext.value;
-  var win = tinyMCE.getWindowArg("window");
-  var hyperlinkvalue = document.selectform.httpLink.value;
-  win.document.getElementById("href").value = hyperlinkvalue;
-  win.document.getElementById("linktitle").value = titel;
-  if (win.getImageData) win.getImageData();
-  tinyMCEPopup.close();
-  }
-
-        function inserthyperlink_old(editor) {
-            if (window.opener.closed) {
-                alert("Your hyperlink could not be inserted because the editor page has been closed.");
+        function inserthyperlink() {
+            var title = document.selectform.linktext.value;
+            var win = tinyMCE.getWindowArg("window");
+            var hyperlinkvalue = document.selectform.httpLink.value;
+            var targetvalue = document.selectform.Target.value;
+            win.document.getElementById("href").value = hyperlinkvalue;
+            win.document.getElementById("linktitle").value = title;
+            win.document.getElementById("target").value = targetvalue;
+            if (win.getImageData) {
+                win.getImageData();
             }
-            else if (document.selectform.linktext.value == '') {
-                alert("Your hyperlink text is blank and would create an empty link.");
-            }
-            else {
-                var hyperlinkvalue;
-                var pastevalue;
-                var targetvalue;
-                var targetvaluepaste
-                targetvalue = document.selectform.Target.options[document.selectform.Target.selectedIndex].value;
-                if (targetvalue == "") {
-                    targetvaluepaste = "";
-                }
-                else {
-                    targetvaluepaste = "target=" + targetvalue;
-                }
-                hyperlinkvalue = document.selectform.httpLink.value;
-                pastevalue = '<a href="' + hyperlinkvalue + '" ' + targetvaluepaste +'>' + document.selectform.linktext.value + '</a>';
-                editor._createLinkX(pastevalue);
-                window.close();
-            }
+            tinyMCEPopup.close();
         }
+
         function storeBack(target, linktext) {
       ]]>
 
