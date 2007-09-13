@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2007 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -43,11 +43,13 @@
 <xsl:variable name="pprintidentifierrefpropid" select="/document/reference_properties/reference_property[name='preprint_identifier']/@id"/>
 <xsl:variable name="urlrefpropid" select="/document/reference_properties/reference_property[name='url']/@id"/>
 <xsl:variable name="url2refpropid" select="/document/reference_properties/reference_property[name='url2']/@id"/>
+<xsl:variable name="lrestrictedurlrefpropid" select="/document/reference_properties/reference_property[name='local_restricted_url']/@id"/>
 <xsl:variable name="artnumrefpropid" select="/document/reference_properties/reference_property[name='artnum']/@id"/>
 <xsl:variable name="conftitlerefpropid" select="/document/reference_properties/reference_property[name='conf_title']/@id"/>
 <xsl:variable name="confdaterefpropid" select="/document/reference_properties/reference_property[name='conf_date']/@id"/>
 <xsl:variable name="confvenuerefpropid" select="/document/reference_properties/reference_property[name='conf_venue']/@id"/>
 <xsl:variable name="confurlrefpropid" select="/document/reference_properties/reference_property[name='conf_url']/@id"/>
+<xsl:variable name="workgrouprefpropid" select="/document/reference_properties/reference_property[name='workgroup']/@id"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -151,11 +153,14 @@
     <xsl:variable name="preprint_identifier" select="reference_values/reference_value[property_id=$pprintidentifierrefpropid]/value"/>
     <xsl:variable name="url" select="reference_values/reference_value[property_id=$urlrefpropid]/value"/>
     <xsl:variable name="url2" select="reference_values/reference_value[property_id=$url2refpropid]/value"/>
+    <xsl:variable name="local_restricted_url" select="reference_values/reference_value[property_id=$lrestrictedurlrefpropid]/value"/>
     <xsl:variable name="artnum" select="reference_values/reference_value[property_id=$artnumrefpropid]/value"/>
     <xsl:variable name="conf_title" select="reference_values/reference_value[property_id=$conftitlerefpropid]/value"/>
     <xsl:variable name="conf_date" select="reference_values/reference_value[property_id=$confdaterefpropid]/value"/>
     <xsl:variable name="conf_venue" select="reference_values/reference_value[property_id=$confvenuerefpropid]/value"/>
     <xsl:variable name="conf_url" select="reference_values/reference_value[property_id=$confurlrefpropid]/value"/>
+    <xsl:variable name="workgroup" select="reference_values/reference_value[property_id=$workgrouprefpropid]/value"/>
+    <xsl:variable name="title" select="reference_values/reference_value[property_id=$titlerefpropid]/value"/>
     <xsl:variable name="serial_id" select="serial_id"/>
     <li class="reflib_citation" name="reflib_citation">
         <span class="reflib_citation">
@@ -171,7 +176,7 @@
                 </xsl:choose>
             </span>,
             <em><span class="reflib_title">
-                <xsl:value-of select="reference_values/reference_value[property_id=$titlerefpropid]/value"/>
+                <xsl:value-of select="$title"/>
             </span></em>
             <xsl:if test="$conf_title != ''">,
                 <span class="reflib_conference_title">
@@ -234,8 +239,13 @@
             <xsl:call-template name="url_identifier">
                 <xsl:with-param name="url" select="$url"/>
                 <xsl:with-param name="url2" select="$url2"/>
+                <xsl:with-param name="local_restricted_url" select="$local_restricted_url"/>
                 <xsl:with-param name="identifier" select="$identifier"/>
                 <xsl:with-param name="preprint_identifier" select="$preprint_identifier"/>
+                <xsl:with-param name="title" select="$title"/>
+                <xsl:with-param name="date" select="$date"/>
+                <xsl:with-param name="workgroup" select="$workgroup"/>
+                <xsl:with-param name="reflibid" select="@document_id"/>
             </xsl:call-template>
             <xsl:call-template name="abstract">
                 <xsl:with-param name="referencenumber" select="$referencenumber"/>
@@ -252,13 +262,50 @@
 <xsl:template name="url_identifier">
     <xsl:param name="url"/>
     <xsl:param name="url2"/>
+    <xsl:param name="local_restricted_url"/>
     <xsl:param name="identifier"/>
     <xsl:param name="preprint_identifier"/>
+    <xsl:param name="title"/>
+    <xsl:param name="date"/>
+    <xsl:param name="workgroup"/>
+    <xsl:param name="reflibid"/>
     <xsl:if test="$url != ''">&#xa0;<span class="reflib_url"><a href="{$url}">URL</a></span></xsl:if>
     <xsl:if test="$url2 != ''">&#xa0;<span class="reflib_url"><a href="{$url2}">Alternative URL (local copy)</a></span></xsl:if>
+    <xsl:if test="$local_restricted_url = 1">&#xa0;<span class="reflib_url">
+        <a>
+            <xsl:attribute name="href">
+            <xsl:call-template name="local_restricted_url_url_generator">
+                <xsl:with-param name="date" select="$date"/>
+                <xsl:with-param name="title" select="$title"/>
+                <xsl:with-param name="workgroup" select="$workgroup"/>
+                <xsl:with-param name="reflibid" select="$reflibid"/>
+            </xsl:call-template>
+            </xsl:attribute>Alternative URL (local restricted copy)
+        </a></span>
+    </xsl:if>
     <xsl:if test="$preprint_identifier != ''"><span class="reflib_preprint_identifier">&#xa0;<xsl:call-template name="identifier_link"><xsl:with-param name="identifier" select="$preprint_identifier"></xsl:with-param><xsl:with-param name="linktext">Preprint Identifier</xsl:with-param></xsl:call-template></span></xsl:if>
     <xsl:if test="$identifier != ''"><span class="reflib_identifier">; <xsl:call-template name="identifier_link"><xsl:with-param name="identifier" select="$identifier"></xsl:with-param></xsl:call-template></span></xsl:if>
 </xsl:template>
+
+<xsl:template name="local_restricted_url_url_generator">
+    <xsl:param name="title"/>
+    <xsl:param name="date"/>
+    <xsl:param name="workgroup"/>
+    <xsl:param name="reflibid"/>
+
+    <xsl:variable name="quot">"</xsl:variable>
+    <xsl:variable name="apos">'</xsl:variable>
+
+    <xsl:text>intranet/reflibdocs/</xsl:text>
+    <xsl:value-of select="concat(substring($date,1,4),'/')"/>
+    <xsl:if test="$workgroup != ''">
+        <xsl:value-of select="concat($workgroup,'/')"/>
+    </xsl:if>
+    <xsl:value-of select="concat($reflibid,'_')"/>
+    <!-- This is no good and will only catch some chars :-(  Think of removing the title from the path here -->
+    <xsl:value-of select="concat(translate(translate(translate($title,'ABCDEFGHIJKLMNOPQRSTUVWXYZöäüßÖÄÜ -()?*#,₁₂','abcdefghijklmnopqrstuvwxyz_________________'),$apos,'_'),$quot,'_'),'.pdf')"/>
+</xsl:template>
+
 
 <xsl:template name="identifier_link">
     <xsl:param name="identifier"/>

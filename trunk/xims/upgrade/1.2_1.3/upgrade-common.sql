@@ -37,3 +37,43 @@ INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'quality_criterion'), 17 );
 INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
        VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'quality_criterion'), 18 );
+
+INSERT INTO cireflib_reference_properties ( id, name, description, position )
+       VALUES ( cireflib_refprop_id_seq_nval(), 'local_restricted_url', 'Use "1" to specify that a local copy exists inside the intranet and a link to it will automatically be generated', 2150 );
+
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 1 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 2 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 3 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 4 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 5 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 6 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 7 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 8 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 9 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 10 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 11 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 12 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 13 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 14 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 15 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 16 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 17 );
+INSERT INTO cireflib_ref_type_propertymap ( id, property_id, reference_type_id )
+       VALUES ( cireflib_rtpm_id_seq_nval(), (select id from cireflib_reference_properties where name = 'local_restricted_url'), 18 );
