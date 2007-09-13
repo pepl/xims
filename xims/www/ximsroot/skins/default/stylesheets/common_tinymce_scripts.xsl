@@ -33,7 +33,11 @@
                     <xsl:otherwise><xsl:value-of select="concat($ximsroot,$defaultcss)"/></xsl:otherwise>
                   </xsl:choose>&apos;,
                 file_browser_callback : 'filebrowse',
-                urlconverter_callback : 'urltransformer'
+                urlconverter_callback : 'urltransformer',
+                remove_linebreaks : 'false',
+                cleanup : 'true',
+                cleanup_on_startup : 'false',
+                apply_source_formatting : 'true'
             });
 
             /*
