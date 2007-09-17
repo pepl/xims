@@ -19,7 +19,7 @@
     <xsl:template match="/document/context/object">
         <html>
             <xsl:call-template name="head-edit_tinymce"/>
-            <body>
+            <body onload="timeoutWYSIWYGChange(2);">
                 <div class="edit">
                     <xsl:call-template name="table-edit"/>
                     <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
