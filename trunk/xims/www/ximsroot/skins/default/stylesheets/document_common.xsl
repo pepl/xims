@@ -169,6 +169,16 @@
                 }
             }
 
+            <!--
+                Disable possibility of changing WYSIWYG editors for "timeout"
+                seconds. This prevents false-positive errors of "hasBodyChanged()"
+                due to switching to another editor too fast.
+            -->
+	    function timeoutWYSIWYGChange(timeout) {
+                document.getElementById('xims_wysiwygeditor').disabled = true;
+                window.setTimeout("document.getElementById('xims_wysiwygeditor').disabled = false;",timeout*1000);
+	    }
+
         </script>
         <form name="editor_selector" id="editor_selector" style="display: inline; margin: 0px;">
             <select style="font-size: 9px; padding: 0px; background-color: #eeeeee;" name="xims_wysiwygeditor" id="xims_wysiwygeditor" onchange="javascript:return checkBodyFromSel(this.value);">
