@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+# use '/bin/bash' here because ubuntu links '/bin/sh'
+# to '/bin/dash'
 # 
 # Build script for the XIMS-Box
 #
@@ -30,8 +32,8 @@
 # debug
 #set -xv
 
-function usage() {
-	cat <<MSG_USAGE
+function usage () {
+    cat <<MSG_USAGE
  
   USAGE
     interactive mode:
@@ -42,7 +44,7 @@ function usage() {
     
     -b BUILD_TARGET  Is the directory where the resulting
                      *.tar.gz files (one containing the rpms and one
-		     containing the debs) will be put into.
+                     containing the debs) will be put into.
 
     -n               Run in non interactive mode
  
@@ -50,38 +52,38 @@ function usage() {
                      XIMS-Box build system after the build. The
                      'keep' option keeps the build system in the
                      filesystem, usually in
-       	             '/tmp/xims_box_build_system'
+                     '/tmp/xims_box_build_system'
 
     -v VERSION       If called in non interactive mode, the 'xims'
                      rpm/deb packages will get the given
                      version string. If called in non interactive
-		     mode and the version is not provided it
-		     defaults to the 'inoffical' version of '0.007'.
-		     In interactive mode, the user will be prompted
-		     for a version number.
+                     mode and the version is not provided it
+                     defaults to the 'inoffical' version of '0.007'.
+                     In interactive mode, the user will be prompted
+                     for a version number.
 
 MSG_USAGE
-	exit 1
+    exit 1
 }
 
-function end_script() {
-	# print error and exit
-	echo -n "'$1'-build failed! Cleaning up and exiting ..."
-	rm -rf $BUILD_DIR $RPM_BUILD_ROOT >> /dev/null 2>&1
-	echo "Done! Bye, bye!"
-	exit 1
+function end_script () {
+    # print error and exit
+    echo -n "'$1'-build failed! Cleaning up and exiting ..."
+    rm -rf $BUILD_DIR $RPM_BUILD_ROOT >> /dev/null 2>&1
+    echo "Done! Bye, bye!"
+    exit 1
 }
 
-function int_err_script() {
-	echo
-	echo "**********************************************"
-	echo 
-	echo "Ups, caught SIGINT or an error has occurred!"
-	echo -n "Cleaning up and exiting ..."
-	rm -rf /tmp/$BUILD_SYSTEM_FILE $BUILD_DIR $RPM_BUILD_ROOT >> /dev/null 2>&1
-	echo "Done! Bye, bye!"
-	echo
-	exit 1
+function int_err_script () {
+    echo
+    echo "**********************************************"
+    echo 
+    echo "Ups, caught SIGINT or an error has occurred!"
+    echo -n "Cleaning up and exiting ..."
+    rm -rf /tmp/$BUILD_SYSTEM_FILE $BUILD_DIR $RPM_BUILD_ROOT >> /dev/null 2>&1
+    echo "Done! Bye, bye!"
+    echo
+    exit 1
 }
 
 # provide a 'catch-all' for possible errors and SIGINTs
@@ -94,58 +96,58 @@ INTERACTIVE="yes"
 OPTERR="0"
 # get options
 while getopts "b:no:v:*" options; do
-	case $options in
-		b)
-			if [ "$OPTARG" != "" ]; then
-				BUILD_TARGET=$OPTARG
-			else
-				usage
-			fi
-		;;
-		n)
-			INTERACTIVE="no"
-		;;
-		o)
-			case $OPTARG in
-				keep) REMOVE_BUILD_DIR="no" ;;
-				clean) REMOVE_BUILD_DIR="yes" ;;
-				*) usage ;;
-			esac
-		;;
-		v)	
-			if [ "$OPTARG" != "" ]; then
-				XIMS_VERSION=$OPTARG
-			else
-				usage
-			fi
-		;;
-		*)
-			usage
-		;;
-	esac
+    case $options in
+        b)
+            if [ "$OPTARG" != "" ]; then
+                BUILD_TARGET=$OPTARG
+            else
+                usage
+            fi
+        ;;
+        n)
+            INTERACTIVE="no"
+        ;;
+        o)
+            case $OPTARG in
+                keep) REMOVE_BUILD_DIR="no" ;;
+                clean) REMOVE_BUILD_DIR="yes" ;;
+                *) usage ;;
+            esac
+        ;;
+        v)  
+            if [ "$OPTARG" != "" ]; then
+                XIMS_VERSION=$OPTARG
+            else
+                usage
+            fi
+        ;;
+        *)
+            usage
+        ;;
+    esac
 done
 
 #### check options
 # If REMOVE_BUILD_DIR is not set, stop!
 if [ "$REMOVE_BUILD_DIR" != "no" -a "$REMOVE_BUILD_DIR" != "yes" ]; then
-	usage
+    usage
 fi
 
 # do we have an non-interactive call?
 if [ "$INTERACTIVE" == 'no' ]; then
-	# check options for a non-intactive call
-	if [ "$BUILD_TARGET" == '' ]; then
-		usage
-	fi
-	# when there is no XIMS_VERSION, we put a
-	# fiction-version of '0.007' ;-)
-	if [ "$XIMS_VERSION" == '' ]; then
-		XIMS_VERSION="0.007"
-	fi
+    # check options for a non-intactive call
+    if [ "$BUILD_TARGET" == '' ]; then
+        usage
+    fi
+    # when there is no XIMS_VERSION, we put a
+    # fiction-version of '0.007' ;-)
+    if [ "$XIMS_VERSION" == '' ]; then
+        XIMS_VERSION="0.007"
+    fi
 else
-	# if run interactively prompt for the required information
-	read -p 'Where should I place the resulting *.tar.gz files? ' BUILD_TARGET
-	read -p 'Which version should I use for the xims deb/rpm packages? ' XIMS_VERSION
+    # if run interactively prompt for the required information
+    read -p 'Where should I place the resulting *.tar.gz files? ' BUILD_TARGET
+    read -p 'Which version should I use for the xims deb/rpm packages? ' XIMS_VERSION
 fi
 
 #### to here, we should have all required information to get the script run
@@ -153,7 +155,7 @@ fi
 if [ "$BUILD_TARGET" == '' -o \
      "$REMOVE_BUILD_DIR" == '' -o \
      "$XIMS_VERSION" == '' ]; then
-	usage
+    usage
 fi
 
 ############################################################
@@ -168,7 +170,7 @@ XIMS_SVN_URI="http://xims.svn.sourceforge.net/svnroot/xims/trunk"
 XIMS_SVN_BRANCH="$XIMS_SVN_URI/xims"
 XIMS_CONTRIB_SVN_BRANCH="$XIMS_SVN_URI/xims-contrib"
 # we get the xims-build system from sf.net's files-section
-BUILD_SYSTEM_FILE="xims_box_build_system_1.0.1.tar.gz"
+BUILD_SYSTEM_FILE="xims_box_build_system_1.0.2.tar.gz"
 XIMS_BOX_BUILD_SYSTEM_URI="http://downloads.sourceforge.net/xims/$BUILD_SYSTEM_FILE"
 
 BUILD_DIR="/tmp/xims_box_build_system"
@@ -196,12 +198,12 @@ RPM_BUILD_ROOT="/usr/src/rpm"
 
 # clean up from previous builds
 if [ -e /tmp/$BUILD_SYSTEM_FILE ]; then
-	# remove, if there is another downloaded file
-	rm -rf /tmp/$BUILD_SYSTEM_FILE
+    # remove, if there is another downloaded file
+    rm -rf /tmp/$BUILD_SYSTEM_FILE
 fi
 if [ -e $BUILD_DIR ]; then
-	# remove, if build dir already exists
-	rm -rf $BUILD_DIR
+    # remove, if build dir already exists
+    rm -rf $BUILD_DIR
 fi
 
 #### get and prepare build system
@@ -224,9 +226,12 @@ svn checkout --quiet $XIMS_CONTRIB_SVN_BRANCH xims-contrib
 mv xims-contrib/* $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/
 # clean up
 rm -rf xims-contrib
-# make the htmlarea symlink
+# move tinymce install-files under ximsroot
+mv tinymce_2.1.2 $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/
+# create the htmlarea and tinymce symlinks
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/
 ln -s htmlarea3rc1 htmlarea
+ln -s tinymce_2.1.2 tinymce
 # put examplesite from the xims_box_build_system to ximspubroot
 mv $DEB_XIMS_DIR/examplesite $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximspubroot/
 # cd to xims-home
@@ -242,9 +247,12 @@ perl -pni -e 's/^--(\\i xims-box-defaultdata-content\.sql)/$1/' defaultdata.sql
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims
 # replace headers of perl files of the xims-distri to fit xims-box needs
 find ./ -name '*.pl' -print0 | xargs -0 perl -pni -e 's|^#!/usr/bin/perl( ?)|#!/opt/xims-package/ximsperl/bin/perl$1|'
-# replace ximsconfig.xml
-mv $DEB_XIMS_DIR/ximsconfig.xml $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/conf/
+# patch xims svn branch (adjust default wysiwyg and ximsconfig.xml)
+cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims
+echo "Apply XIMS-Box patch ..."
+patch -p1 -u < $DEB_XIMS_DIR/xims_box.patch
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/conf
+echo "done!"
 # adjust XIMS_HOME env-variable in ximshttpd.conf
 perl -pni -e 's|^#(PerlSetEnv\sXIMS_HOME\s).*$|$1/opt/xims-package/xims|' ximshttpd.conf
 # adjust ximsstartup.pl
@@ -264,25 +272,25 @@ cd $DEB_APACHE_DIR/deb
 dpkg-deb --build debian apache-xims_1.3.37-1_i386.deb
 # test if build succeeded
 if [ $? -ne 0 ]; then
-	end_script "apache_xims (deb)"
+    end_script "apache_xims (deb)"
 fi
 # build libxml2-xims
 cd $DEB_LIBXML2_DIR/deb
 dpkg-deb --build debian libxml2-xims_2.6.27-1_i386.deb
 if [ $? -ne 0 ]; then
-	end_script "libxml2_xims (deb)"
+    end_script "libxml2_xims (deb)"
 fi
 # build libxslt-xims
 cd $DEB_LIBXSLT_DIR/deb
 dpkg-deb --build debian libxslt-xims_1.1.19-1_i386.deb
 if [ $? -ne 0 ]; then
-	end_script "libxslt_xims (deb)"
+    end_script "libxslt_xims (deb)"
 fi
 # build perl-xims
 cd $DEB_PERL_DIR/deb
 dpkg-deb --build debian perl-xims_5.8.8-1_i386.deb
 if [ $? -ne 0 ]; then
-	end_script "perl_xims (deb)"
+    end_script "perl_xims (deb)"
 fi
 ## finally build xims
 # adjust version first (XIMS_VERSION)
@@ -291,7 +299,7 @@ perl -pni -e "s/^Version: [^-]+-1/Version: $XIMS_VERSION-1/" control
 cd $DEB_XIMS_DIR/deb
 dpkg-deb --build debian xims_$XIMS_VERSION-1_i386.deb
 if [ $? -ne 0 ]; then
-	end_script "xims (deb)"
+    end_script "xims (deb)"
 fi
 
 echo "Done!"
@@ -305,7 +313,7 @@ echo "Start building rpm packages ..."
 ## rpm-way :-O !
 # remove existent 'rpm' dir in '/usr/src' (as it is the Debian default name)
 if [ -e /usr/src/rpm ]; then
-	rm -rf /usr/src/rpm
+    rm -rf /usr/src/rpm
 fi
 # move xims-box provided rpm-build system to /usr/src (prepare rpm-build-root)
 mv $BUILD_DIR/redhat $RPM_BUILD_ROOT
@@ -321,7 +329,7 @@ perl -pni -e "s/^Version: .+$/Version: $XIMS_VERSION/" xims-1.spec
 find -name '??*' -print0 | xargs -0 rpmbuild --quiet -bb >> /dev/null 2>&1
 # end if unsuccessful
 if [ $? -ne 0 ]; then
-	end_script "RPM"
+    end_script "RPM"
 fi
 
 echo "Done!"
@@ -357,13 +365,13 @@ rm -rf $XIMS_BOX_DIR
 
 #### clean up, if said so
 if [ "$REMOVE_BUILD_DIR" == "yes" ]; then
-	rm -rf $BUILD_DIR
-	rm -rf $RPM_BUILD_ROOT/SPECS/*
-	rm -rf $RPM_BUILD_ROOT/RPMS/i386/*
-	rm -rf $RPM_BUILD_ROOT/BUILD/*
-	echo "Removed '$BUILD_DIR' as I have been told so!"
+    rm -rf $BUILD_DIR
+    rm -rf $RPM_BUILD_ROOT/SPECS/*
+    rm -rf $RPM_BUILD_ROOT/RPMS/i386/*
+    rm -rf $RPM_BUILD_ROOT/BUILD/*
+    echo "Removed '$BUILD_DIR' as I have been told so!"
 else
-	echo "Kept '$BUILD_DIR' as I have been told so!"
+    echo "Kept '$BUILD_DIR' as I have been told so!"
 fi
 echo
 
