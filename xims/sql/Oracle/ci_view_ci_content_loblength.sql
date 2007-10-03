@@ -5,7 +5,7 @@
 
 -- Drop the old instance of CI_CONTENT_LOBLENGTH
 
-DROP VIEW ci_content_loblength
+-- DROP VIEW ci_content_loblength
 /
 
 -- View CI_CONTENT_LOBLENGTH
