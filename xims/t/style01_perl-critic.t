@@ -13,4 +13,4 @@ if ( $EVAL_ERROR ) {
 
 my $rcfile = File::Spec->catfile( 'lib', 'XIMS', 'perlcriticrc' );
 Test::Perl::Critic->import( -profile => $rcfile );
-all_critic_ok( qw( ../bin ../sbin ../lib ../t) );
+all_critic_ok( qw( ../lib ) );
