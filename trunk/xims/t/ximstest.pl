@@ -16,7 +16,7 @@ use Storable qw( store retrieve );
 use constant CONFIGFILE => 'lib/XIMS/.ximstest.conf';
 
 my %args;
-getopts('hcuab', \%args);
+getopts('hcuabm', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "Testing Tool" );
@@ -24,12 +24,13 @@ print $term->banner( "Testing Tool" );
 if ( $args{h} ) {
     print qq*
 
-  Usage: $0 [-h|-c|-u|-a]
+  Usage: $0 [-h|-c|-u|-a|-m]
         -c Create test config file with default values
         -u Run all unit tests
         -a Run all acceptance tests
         -b Run both unit and acceptance tests
-        -h prints this screen
+        -m Maintainer mode
+        -h Prints this screen
 
 *;
     exit;
@@ -140,7 +141,7 @@ else {
     print "Using config information from " . CONFIGFILE . "\n\n";
 }
 
-if ( $args{u} or $args{a} ) {
+if ( $args{u} or $args{a} or $args{m} ) {
     if ( $args{u} ) {
         $Args{test_type} = 1;
     }
