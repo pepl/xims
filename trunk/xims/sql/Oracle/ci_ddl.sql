@@ -2,6 +2,7 @@
 -- See the file "LICENSE" for information and conditions for use, reproduction,
 -- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
+-- SET ECHO ON
 
 @@ci_ddl.tab
 @@ci_ddl.ind
@@ -27,7 +28,7 @@
 @@ci_ddl_eval.ind
 @@ci_ddl_eval.con
 @@ci_ddl_eval.sqs
-/
+
 -- columns there should be moved to ci_ddl.tab
 @@ci_ddl_content_denormalization.sql
 
