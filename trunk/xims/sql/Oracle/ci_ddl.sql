@@ -29,9 +29,6 @@
 @@ci_ddl_eval.con
 @@ci_ddl_eval.sqs
 
--- columns there should be moved to ci_ddl.tab
-@@ci_ddl_content_denormalization.sql
-
 @@ci_view_ci_content_loblength.sql
 
 -- SYSDATE wrapper
