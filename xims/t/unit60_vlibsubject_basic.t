@@ -1,4 +1,4 @@
-use Test::More tests => 11;
+use Test::More tests => 12;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
@@ -15,6 +15,11 @@ isa_ok( $subject, 'XIMS::VLibSubject' );
 
 $subject->name( 'TestSubjectName' );
 $subject->description( 'TestSubjectDescription' );
+
+eval { my $id = $subject->create(); };
+like( $@, qr/Query failed/, 'record insert w/o document_id must fail' );
+
+$subject->document_id(2);
 
 my $id = $subject->create();
 cmp_ok( $id, '>', 0, "Subject created with id $id" );
