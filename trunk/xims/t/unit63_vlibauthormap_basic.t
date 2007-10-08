@@ -1,3 +1,4 @@
+
 use Test::More tests => 17;
 use strict;
 use lib "../lib", "lib";
@@ -32,6 +33,7 @@ isa_ok( $author, 'XIMS::VLibAuthor' );
 $author->lastname( 'TestAuthorMapLastName' );
 $author->middlename( 'TestAuthorMapMiddleName' );
 $author->firstname( 'TestAuthorMapFirstName' );
+$author->document_id( 2 );
 $author->object_type( 0 );
 
 my $author_id = $author->create();
