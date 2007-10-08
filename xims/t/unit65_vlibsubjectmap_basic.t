@@ -1,4 +1,5 @@
 use Test::More tests => 17;
+
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
@@ -30,6 +31,7 @@ my $subject = XIMS::VLibSubject->new();
 isa_ok( $subject, 'XIMS::VLibSubject' );
 
 $subject->name( 'TestSubjectMapLastName' );
+$subject->document_id(2);
 
 my $subject_id = $subject->create();
 cmp_ok( $subject_id, '>', 0, "Subject created with id $subject_id" );
