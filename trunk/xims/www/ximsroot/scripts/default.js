@@ -34,6 +34,10 @@ function editAuthorWindow(url) {
     newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=620,height=305,screenX=100,screenY=300" );
 }
 
+function createFilterWindow(url) {
+    newWindow = window.open( url, "displayWindow", "resizable=no,scrollbars=no,width=660,height=575,screenX=10,screenY=10" );
+}
+
 function getParamValue( param ) {
     var objQuery = new Object();
     var objQuery2 = new Object();

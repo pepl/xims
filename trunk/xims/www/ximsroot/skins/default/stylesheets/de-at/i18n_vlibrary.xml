@@ -41,4 +41,11 @@
     <fill_in>Auswahl einfüllen</fill_in>
     <manage_subjects>Themen verwalten</manage_subjects>
     <manage_authors>AutorInnen verwalten</manage_authors>
+    <filter_create>VLibrary Filter erstellen</filter_create>
+    <available>verfügbar</available>
+    <selected>ausgewählt</selected>
+    <keywords>Schlagwörter</keywords>
+    <mediatype>Medientyp</mediatype>
+    <chronicle_filter>Datumsfilter</chronicle_filter>
+    <activate>Anwenden</activate>
 </l>
