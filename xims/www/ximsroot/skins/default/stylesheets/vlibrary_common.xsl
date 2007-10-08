@@ -215,7 +215,8 @@
             />
             <input type="hidden" name="start_here" value="1"/>
             <input type="hidden" name="vlsearch" value="1"/>
-        </form>
+        </form><br />
+        <a href="javascript:createFilterWindow('{$xims_box}{$goxims_content}{$absolute_path}?filter_create=1');"><xsl:value-of select="$i18n_vlib/l/filter_create"/></a>
     </xsl:template>
 
     <xsl:template name="author_link">

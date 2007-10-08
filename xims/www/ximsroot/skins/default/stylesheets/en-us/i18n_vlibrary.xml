@@ -41,4 +41,11 @@
     <fill_in>Fill in selection</fill_in>
     <manage_subjects>Manage subjects</manage_subjects>
     <manage_authors>Manage authors</manage_authors>
+    <filter_create>Create VLibrary filter</filter_create>
+    <available>available</available>
+    <selected>selected</selected>
+    <keywords>Keywords</keywords>
+    <mediatype>Mediatype</mediatype>
+    <chronicle_filter>Date filter</chronicle_filter>
+    <activate>Activate</activate>
 </l>

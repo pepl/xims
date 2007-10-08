@@ -57,8 +57,11 @@ sub prepare {
         if ( $ctxt->properties->application->style() eq "publications" ) {
             $doc_data->{context}->{vlpublicationinfo} = { publication => $ctxt->object->vlpublicationinfo_granted() };
         }
-        if ( $ctxt->properties->application->style() eq "keywords" ) {
+        if ( ( $ctxt->properties->application->style() eq "keywords" ) || $ctxt->properties->application->style() eq "filter_create" ) {
             $doc_data->{context}->{vlkeywordinfo} = { keyword => $ctxt->object->vlkeywordinfo_granted() };
+        }
+        if ( $ctxt->properties->application->style() eq "filter_create" ) {
+            $doc_data->{context}->{vlmediatypeinfo} = { mediatype => $ctxt->object->vlmediatypeinfo_granted() };
         }
     }
 

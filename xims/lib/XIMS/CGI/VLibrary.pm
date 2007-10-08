@@ -6,6 +6,7 @@ package XIMS::CGI::VLibrary;
 
 use strict;
 use base qw(XIMS::CGI::Folder);
+use Data::Dumper;
 
 use Time::Piece;
 
@@ -44,6 +45,8 @@ sub registerEvents {
             vlchronicle
             most_recent
             simile
+            filter
+            filter_create
             )
     );
 }
@@ -757,6 +760,7 @@ sub event_vlsearch {
                 order      => $qb->order(),
                 start_here => $ctxt->object(),
             );
+
             my @objects = $ctxt->object->find_objects_granted(%param);
 
             if ( not @objects ) {
@@ -793,6 +797,206 @@ sub event_vlsearch {
 
     return 0;
 }
+
+
+#
+# event filter_create
+#
+# opens a windows where the URL for a filtered objectlist 
+# is created
+#
+sub event_filter_create {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+
+    $ctxt->properties->application->style("filter_create");
+
+    return 0;
+}
+
+#
+# event filter
+#
+# The following criteria can be filtered:
+#     subjects (by subject_ids coma seperated)
+#     keywords (by keyword_id coma seperated)
+#     authors (by author_ids coma seperated)
+#     mediatype (as text, just one type possible)
+#     chronicle (chronicle_from - chronicle_to)
+#     fulltext (with querybuilder)
+#
+# this event could replace the events: subject, author, keyword, vlsearch, vlchronicle, keyword
+#
+# in the %criteria-hash are the SQL-Conditions as a string. 
+# Only date, fulltext and mediatype conditions are with parameters
+# in the %params-list are the values for parameters for the date 
+# and fulltext conditions
+#
+# still half-baked, would be nice to move the whole SQL into
+# Vlibrary-object and just call vlitems_byfilter_granted which does
+# the SQL-things. Quick and dirty, I know :-/
+#
+sub event_filter {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user   = $ctxt->session->user();
+
+    # Build filter criteria
+    my %criteria = ();
+    my %params = ();
+    
+    # subjects
+    my $subject_ids = $self->param('sid');
+    if ( defined $subject_ids ) {
+        XIMS::Debug( 6, "subject param '$subject_ids'" );
+        $criteria{subjects} = " sm.document_id = d.id AND sm.subject_id IN ( $subject_ids ) ";
+    }
+    # keywords
+    my $keyword_ids = $self->param('kid');
+    if ( defined $keyword_ids ) {
+        XIMS::Debug( 6, "keyword param '$keyword_ids'" );
+        $criteria{keywords} = " km.document_id = d.id AND km.keyword_id IN ( $keyword_ids ) ";
+    }
+    
+    # authors
+    # not implemented yet
+    
+    # mediatype
+    my $mediatype = $self->param('mt');
+    if ( defined $mediatype ) {
+        XIMS::Debug( 6, "mediatype param '$mediatype'" );
+        $criteria{mediatype} = " m.mediatype = ? ";
+        $params{mediatype} = $mediatype;
+    }
+
+    # chronicle dates
+    my $date_from = $self->_heuristic_date_parser( $self->param('cf') );
+    my $date_to = $self->_heuristic_date_parser( $self->param('ct') );
+    if ( defined $date_from ) {
+        XIMS::Debug( 6, "date_from param '$date_from'" );
+    }
+    if ( defined $date_to ) {
+        XIMS::Debug( 6, "date_to param '$date_to'" );
+    }
+    if ( ( defined $date_from ) or ( defined $date_to ) ) {
+        my %date_conditions_values = $ctxt->object->_date_conditions_values( $date_from, $date_to );
+        $criteria{chronicle} = $date_conditions_values{conditions};
+        $params{chronicle} = $date_conditions_values{values};
+    }
+
+    # fulltext search
+    my $text = $self->param('vls') ;
+
+    if ( defined $text ) {
+        XIMS::Debug( 6, "fulltext param $text" );
+        # length within 2..30 chars
+        if ( length($text) >= 2 and length($text) <= 30 )
+        {
+            my $qbdriver = XIMS::DBDSN();
+            $qbdriver = ( split( ':', $qbdriver ) )[1];
+            $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
+    
+            eval "require $qbdriver";    #
+            if ($@) {
+                XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
+                $ctxt->send_error("QueryBuilder-Driver could not be found!");
+                return 0;
+            }
+
+            use encoding "latin-1";
+            my $allowed = XIMS::decode(
+                q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~})
+                ;                        ## just for emacs' font-lock... ;-)
+            my $qb = $qbdriver->new(
+                {   search         => $text,
+                    allowed        => $allowed,
+                    fieldstolookin => [qw(title abstract body)]
+                }
+            );
+            if ( defined $qb ) {
+                my $textcriteria = $qb->criteria();
+                $criteria{text} = shift( @{$textcriteria} );
+                $params{text} = $textcriteria;
+            }
+            else {
+                XIMS::Debug( 3, "please specify a valid query" );
+                $self->sendError( $ctxt, "Please specify a valid query!" );
+                return 0;
+            }
+        }
+        else {
+            XIMS::Debug( 3, "catched improper query length" );
+            $self->sendError( $ctxt, "Please keep your queries between 2 and 30 characters!" );
+            return 0;
+        }
+    }
+    # end of building filter criteria
+
+    # parameters for diplaying result 
+    
+    # pagination
+    my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+    $offset ||= 0;
+    
+    my $rowlimit = $self->param('rowlimit');
+    # rowlimit = 0 means no limit (display all results)
+    if ( ( !defined $rowlimit ) or ( $rowlimit != 0 ) ) {
+        $rowlimit = 10;
+    }
+    $offset = $offset * $rowlimit;
+    
+    # order of the result 
+    #   chrono: chronicle date from
+    #   alpha: Title
+    #   create: creation date 
+    #   modify: modification date
+    my $order = $self->param('order');
+    if ( ( !defined $order ) or ( $order eq '' ) ) {
+        $order = 'alpha';
+    }
+
+    XIMS::Debug(6,"Filter criteria:" . Dumper(%criteria));
+    XIMS::Debug(6,"Filter params:" . Dumper(%params));
+    
+    #define parameters for query
+    my %param = (
+        criteria   => \%criteria,
+        params     => \%params,
+        limit      => $rowlimit,
+        offset     => $offset,
+        order      => $order,
+        start_here => $ctxt->object(),
+    );
+
+    my @objects = $ctxt->object->vlitems_byfilter_granted( %param );
+
+    if ( not @objects ) {
+        $ctxt->session->warning_msg("Query returned no objects!");
+    }
+    else {
+        %param = (
+            criteria   => \%criteria,
+            params     => \%params,
+            start_here => $ctxt->object()
+        );
+        my $count = $ctxt->object->vlitems_byfilter_granted_count( %param );
+        my $message = "Query returned $count objects.";
+        $message .= " Displaying objects " . ( $offset + 1 ) if $count >= $rowlimit;
+        $message .= " to " . ( $offset + $rowlimit ) if ( $offset + $rowlimit <= $count );
+        $ctxt->session->message($message);
+        $ctxt->session->searchresultcount($count);
+    }
+
+    $ctxt->objectlist( \@objects );
+    $ctxt->properties->application->style("objectlist");
+
+    return 0;
+}
+
 
 sub event_most_recent {
     XIMS::Debug( 5, "called" );

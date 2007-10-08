@@ -11,6 +11,8 @@ use XIMS::VLibraryItem;
 use XIMS::VLibKeyword;
 use XIMS::VLibSubject;
 
+use Data::Dumper;
+
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 ##
@@ -170,6 +172,32 @@ sub vlpublicationinfo_granted {
     return $sidata;
 }
 
+sub vlmediatypeinfo {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    my $sql = 'SELECT m.mediatype, count(c.id) AS object_count FROM cilib_meta m, ci_documents d, ci_content c WHERE d.ID = m.document_id AND d.id = c.document_id AND d.parent_id = ? GROUP BY m.mediatype';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() ] );
+
+    return $sidata;
+}
+
+sub vlmediatypeinfo_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $user = delete $args{User} || $self->{User};
+
+    return $self->vlmediatypeinfo() if $user->admin();
+
+    my ($userprivsql, @userprivids) = $self->_userpriv_where_clause( $user );
+
+    my $sql = 'SELECT m.mediatype, count(DISTINCT c.id) AS object_count FROM cilib_meta m, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND d.id = c.document_id AND d.parent_id = ? ' . $userprivsql . ' GROUP BY m.mediatype';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id(), @userprivids ] );
+
+    return $sidata;
+}
+
 sub vlitems_bysubject {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -229,6 +257,181 @@ sub vlitems_bydate_granted_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->vlitems_bydate_count( @_, filter_granted => 1 );
+}
+
+sub vlitems_byfilter_granted {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->vlitems_byfilter( @_, filter_granted => 1 );
+}
+
+sub vlitems_byfilter_granted_count {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    return $self->vlitems_byfilter_count( @_, filter_granted => 1 );
+}
+
+sub vlitems_byfilter {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $criteria = delete $args{criteria};
+    my $params = delete $args{params};
+    my $filter_granted = delete $args{filter_granted};
+
+    my $order = delete $args{order};
+    if ( $order eq "alpha" ) {
+        $order = "c.title ASC" ;
+    } elsif ( $order eq "chrono" ) {
+        $order = "m.date_from_timestamp ASC" ;
+    } elsif ( $order eq "create" ) {
+        $order = "c.creation_timestamp DESC" ;
+    } elsif ( $order eq "modify" ) {
+        $order = "c.last_modification_timestamp DESC" ;
+    }
+    
+    my $limit = delete $args{limit};
+    my $offset = delete $args{offset};
+
+    # TODO: parse and validate date here
+
+    my ( $sql, $values ) = $self->_vlitems_byfilter_sql( $criteria, $params, $filter_granted );
+    my $data = $self->data_provider->driver->dbh->fetch_select(
+                                                             sql => [ $sql, @{$values} ],
+                                                             limit => $limit,
+                                                             offset => $offset,
+                                                             order => $order
+                                                             );
+    return unless defined $data;
+
+    my @itemids;
+    my @items;
+    my %privmask;
+    foreach my $kiddo ( @{$data} ) {
+        # move meta info to meta key
+        $kiddo->{meta}->{date_from_timestamp} = delete $kiddo->{date_from_timestamp};
+        $kiddo->{meta}->{date_to_timestamp} = delete $kiddo->{date_to_timestamp};
+        $kiddo->{meta}->{mediatype} = delete $kiddo->{mediatype};
+        push( @items, (bless $kiddo, 'XIMS::VLibraryItem') );
+        push( @itemids, $kiddo->{id} );
+        $privmask{$kiddo->{id}} = 0xffffffff if $self->User->admin();
+    }
+
+    if ( $filter_granted and not $self->User->admin() ) {
+        my @uid_list = ($self->User->id(), $self->User->role_ids());
+        my @priv_data = $self->data_provider->getObjectPriv( content_id => \@itemids,
+                                                         grantee_id => \@uid_list,
+                                                         properties => [ 'privilege_mask', 'content_id' ] );
+        my %seen = ();
+        foreach my $priv ( @priv_data ) {
+            next if exists $seen{$priv->{'objectpriv.content_id'}};
+            if ( $priv->{'objectpriv.privilege_mask'} eq '0' ) {
+                $privmask{$priv->{'objectpriv.content_id'}} = 0;
+                $seen{$priv->{'objectpriv.content_id'}}++;
+            }
+            else {
+                $privmask{$priv->{'objectpriv.content_id'}} |= int($priv->{'objectpriv.privilege_mask'});
+            }
+        }
+    }
+
+    if ( scalar( @items ) > 0 ) {
+        foreach my $item ( @items ) {
+            # Test for explicit lockout (privmask == 0)
+            if ( not $privmask{$item->{id}} ) {
+                $item = undef; # cheaper than splicing
+                next;
+            }
+            $item->{user_privileges} = XIMS::Helpers::privmask_to_hash( $privmask{$item->{id}} );
+        }
+    }
+
+    return @items;
+
+}
+
+sub vlitems_byfilter_count {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+    my $criteria = delete $args{criteria};
+    my $params = delete $args{params};
+    my $filter_granted = delete $args{filter_granted};
+
+    my ( $sql, $values ) = $self->_vlitems_byfilter_sql( $criteria, $params, $filter_granted, 1 );
+    my $data = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, @{$values} ], );
+
+    return unless defined $data;
+    return @{$data}[0]->{count};
+}
+
+
+sub _vlitems_byfilter_sql {
+    my $self = shift;
+    my $criteria = shift;
+    my $params = shift;
+    my $filter_granted = shift;
+    my $count = shift;
+
+
+XIMS::Debug(6,"Kriterien: " . Dumper($criteria));
+my %criteria = %{$criteria};
+my %params = %{$params};
+
+    my $properties;
+    if ( defined $count ) {
+        $properties = 'count(d.id) AS count';
+    }
+    else {
+        $properties = 'd.id AS id, d.parent_id, d.location, c.document_id, c.abstract, c.title, c.last_modification_timestamp, c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
+    }
+    # Select Tables
+    # create conditions and values  
+    my $tables = 'ci_documents d, ci_content c';
+    my $conditions = 'd.ID = c.document_id AND d.parent_id = ? ';
+    my @values = ( $self->document_id() );
+    if ( $criteria{mediatype} ne '' || $criteria{chronicle} ne '' ) {
+        XIMS::Debug(6,"Mediatype or Chronicle filter");
+        $tables .= ', cilib_meta m ' ;
+        $conditions .= "AND d.ID = m.document_id ";
+    }
+    if ( $criteria{subjects} ne '' ) {
+        XIMS::Debug(6,"Subject filter");
+        $tables .= ', cilib_subjectmap sm ';
+        $conditions .= " AND " . $criteria{subjects};
+    }
+    if ( $criteria{keywords} ne '' ) {
+        XIMS::Debug(6,"Keyword filter");
+        $tables .= ', cilib_keywordmap km ';
+        $conditions .= " AND " . $criteria{keywords};
+    }
+    if ( $criteria{mediatype} ne '' ) {
+        XIMS::Debug(6,"Mediatype filter");
+        $properties .= ", m.mediatype" if (not defined $count);
+        $conditions .= " AND " . $criteria{mediatype};
+        push @values, $params{mediatype};
+    }
+    if ( $criteria{chronicle} ne '' ) {
+        XIMS::Debug(6,"Chronicle filter");
+        $properties .= ", m.date_from_timestamp, m.date_to_timestamp" if (not defined $count) ;
+        $conditions .= $criteria{chronicle};
+        push @values, @{$params{chronicle}};
+    }
+    if ( $criteria{text} ne '' ) {
+        XIMS::Debug(6,"Text filter");
+        $conditions .= " AND " . $criteria{text};
+        push @values, @{$params{text}};
+    }
+
+    if ( $filter_granted and not $self->User->admin() ) {
+        my @userids = ( $self->User->id(), $self->User->role_ids());
+        $tables .= ', ci_object_privs_granted p';
+        $conditions .= ' AND p.content_id = c.id AND p.privilege_mask >= 1 AND p.grantee_id IN (' . join(',', map { '?' } @userids) . ')';
+        push @values, @userids;
+    }
+    XIMS::Debug(6,"SQL Filter: \n SELECT $properties FROM $tables WHERE $conditions \n" . Dumper( \@values) );
+    return ( "SELECT $properties FROM $tables WHERE $conditions", \@values );
+
 }
 
 sub vlitems_bydate_count {
@@ -314,9 +517,6 @@ sub vlitems_bydate {
         }
     }
 
-    #use Data::Dumper;
-    #warn Dumper \@items;
-
     return @items;
 }
 
@@ -327,8 +527,6 @@ sub _vlitems_by_date_sql {
     my $filter_granted = shift;
     my $count = shift;
 
-    # TODO: filter by properties (subject, keyword, ...)
-
     my $properties;
     if ( defined $count ) {
         $properties = 'count(d.id) AS count';
@@ -337,25 +535,17 @@ sub _vlitems_by_date_sql {
         $properties = 'd.id AS id, d.parent_id, d.location, c.document_id, c.abstract, c.title, c.last_modification_timestamp, c.marked_deleted, c.locked_time, c.locked_by_id, c.published, m.date_from_timestamp, m.date_to_timestamp';
     }
     my $tables = 'cilib_meta m, ci_documents d, ci_content c';
-    my $conditions = 'd.ID = m.document_id AND d.ID = c.document_id AND d.parent_id = ? AND m.date_from_timestamp IS NOT NULL';
+    my $conditions = 'd.ID = m.document_id AND d.ID = c.document_id AND d.parent_id = ? ';
     my @values = ( $self->document_id() );
-
-    if ( defined $date_from and length $date_from ) {
-        $conditions .= " AND m.date_from_timestamp >= ?";
-        push @values, $date_from;
-    }
-    if ( defined $date_to and length $date_to ) {
-        $conditions .= " AND m.date_to_timestamp <= ?";
-        push @values, $date_to;
-    }
-
+    my %date_conditions_values = $self->_date_conditions_values( $date_from, $date_to );
+    $conditions .= $date_conditions_values{conditions};
+    push @values, @{$date_conditions_values{values}};
     if ( $filter_granted and not $self->User->admin() ) {
         my @userids = ( $self->User->id(), $self->User->role_ids());
         $tables .= ', ci_object_privs_granted p';
         $conditions .= ' AND p.content_id = c.id AND p.privilege_mask >= 1 AND p.grantee_id IN (' . join(',', map { '?' } @userids) . ')';
         push @values, @userids;
     }
-
     return ( "SELECT $properties FROM $tables WHERE $conditions", \@values );
 }
 
@@ -426,6 +616,41 @@ sub _userpriv_where_clause {
     my @role_ids = ( $user->role_ids(), $user->id() );
 
     return (" AND c.id = o.content_id AND o.grantee_id IN (" . join(',', map { '?' } @role_ids) . ") AND o.privilege_mask > 0", @role_ids);
+}
+
+sub _date_conditions_values {
+    my $self = shift;
+    my $date_from = shift;
+    my $date_to = shift;
+    my $df = ( defined $date_from and length $date_from );
+    my $dt = ( defined $date_to and length $date_to );
+    my $conditions = '';
+    my @values = ();
+    if ( $df or $dt ) {
+        my $df_null = ' OR m.date_from_timestamp is NULL ';
+        my $dt_null = ' OR m.date_to_timestamp is NULL ';
+        $conditions .= ' AND ( ';
+        if ( $df and $dt ) {
+            $conditions .= ' ( ( m.date_from_timestamp >= ? ) AND ( m.date_to_timestamp <= ? ) ) ';
+            push @values, ( $date_from , $date_to ) ;
+        } elsif ( !$dt ) {
+            $conditions .= ' ( m.date_from_timestamp >= ? ) ';
+            push @values, $date_from ;
+        } else {
+            $conditions .= ' ( m.date_to_timestamp <= ? ) ';
+            push @values, $date_to ;
+        }
+        if ( $df ) {
+            $conditions .= ' OR ( ( m.date_from_timestamp <= ? ' . $df_null . ' ) AND ( m.date_to_timestamp >= ? ' . $dt_null . ' ) ) ';
+            push @values, ( $date_from , $date_from );
+        }
+        if ( $dt ) {
+            $conditions .= ' OR ( ( m.date_from_timestamp <= ? ' . $df_null . ' ) AND ( m.date_to_timestamp >= ? ' . $dt_null . ' ) ) ';
+            push @values, ( $date_to , $date_to );
+        }
+        $conditions .= " ) ";
+    }
+    return ( conditions =>$conditions, values => \@values );
 }
 
 1;
