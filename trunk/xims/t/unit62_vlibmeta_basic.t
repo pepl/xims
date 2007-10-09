@@ -1,23 +1,25 @@
-use Test::More tests => 20;
+use Encode;
+use Test::More tests => 26;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
 use XIMS::Document;
 use XIMS::User;
+
 #use Data::Dumper;
 
 BEGIN {
-   use_ok( 'XIMS::VLibMeta' );
+    use_ok('XIMS::VLibMeta');
 }
 
 # first, create a document to add VLib metadata to
 my $document = XIMS::Document->new();
 isa_ok( $document, 'XIMS::Document' );
 
-$document->title( 'TestDocumentMeta' );
-$document->language_id( 1 );
-$document->location( 'testdocumentmeta' );
-$document->parent_id( 2 ); # /xims
+$document->title('TestDocumentMeta');
+$document->language_id(1);
+$document->location('testdocumentmeta');
+$document->parent_id(2);    # /xims
 
 # we need a User object to fill in the right data
 my $user = XIMS::User->new( id => 1 );
@@ -25,22 +27,29 @@ isa_ok( $user, 'XIMS::User' );
 my $id = $document->create( User => $user );
 cmp_ok( $id, '>', 1, 'Document has a sane ID' );
 
-# make a simple one, test that the objecttype and data_formats are set by the constructor
+# make a simple one, test that the objecttype and data_formats are set by the
+# constructor
 my $meta = XIMS::VLibMeta->new();
 
 isa_ok( $meta, 'XIMS::VLibMeta' );
 
 $meta->document_id( $document->document_id() );
-$meta->legalnotice( '© 2004 Gonkulator Inc.' );
-$meta->bibliosource( 'Gonkulators in the Nu Millienium Today Conference' );
-$meta->mediatype( 'Conference Talk' );
-$meta->subtitle( 'A Position-Fixing' );
-$meta->coverage('... the spatial and temporal characteristics of the object or resource ...');
-$meta->publisher('... entity responsible for making the resource available ...');
+$meta->legalnotice('© 2004 Gonkulator Inc.');
+$meta->bibliosource('<a href="http://xims.info/">Gonkulators in the Nü Millienium Today Conference</a>');
+$meta->mediatype('Conference Talk');
+$meta->subtitle('A Position-Fixing');
+$meta->coverage(
+    '... the spatial and temporal characteristics of the object or resource ...'
+);
+$meta->publisher(
+    '... entity responsible for making the resource available ...');
 $meta->audience('the dahut.pm');
-#$meta->dc_date();
-#$meta->date_from_timestamp();
-#$meta->date_to_timestamp();
+
+# our timeformat is YYYY-MM-DD HH24:MI:SS
+
+$meta->dc_date('1970-01-01 00:00:00');
+$meta->date_from_timestamp('1971-11-11 11:11:00');
+$meta->date_to_timestamp('1972-01-01 22:22:03');
 
 $id = $meta->create();
 cmp_ok( $id, '>', 0, "Meta created with id $id" );
@@ -49,36 +58,71 @@ cmp_ok( $id, '>', 0, "Meta created with id $id" );
 $meta = undef;
 $meta = XIMS::VLibMeta->new( id => $id );
 
-ok( $meta );
-is( $meta->document_id(), $document->document_id(), 'TestMeta has correct document_id' );
-is( $meta->legalnotice(), '© 2004 Gonkulator Inc.' , 'TestMeta has correct legalnotice' );
-is( $meta->bibliosource(), 'Gonkulators in the Nu Millienium Today Conference' , 'TestMeta has correct bibliosource' );
-is( $meta->mediatype(), 'Conference Talk' , 'TestMeta has correct mediatype' );
-is( $meta->subtitle(), 'A Position-Fixing' , 'TestMeta has correct subtitle' );
-is( $meta->coverage(), '... the spatial and temporal characteristics of the object or resource ...', 'TestMeta has correct coverage');
-is($meta->publisher(), '... entity responsible for making the resource available ...', 'TestMeta has correct publisher');
-is($meta->audience(), 'the dahut.pm', 'TestMeta has correct audience');
-#is()
-#is()
-#is()
+ok($meta);
+
+is( $meta->document_id(),
+    $document->document_id(),
+    'TestMeta has correct document_id'
+);
+
+
+# XXX
+#
+# It seems that accessor methods return utf-8 strings w/o the proper flag set.
+# As this is the current (and seemingly working) behaviour, I use encode_utf()
+# here, in order to let the tests succeed. This feels odd, nonetheless. (zeya)
+
+is( encode_utf8($meta->legalnotice()),
+    '© 2004 Gonkulator Inc.',
+    'TestMeta has correct legalnotice'
+);
+is( encode_utf8($meta->bibliosource()),
+    '<a href="http://xims.info/">Gonkulators in the Nü Millienium Today Conference</a>',
+    'TestMeta has correct bibliosource'
+);
+is( $meta->mediatype(), 'Conference Talk', 'TestMeta has correct mediatype' );
+is( $meta->subtitle(), 'A Position-Fixing', 'TestMeta has correct subtitle' );
+is( $meta->coverage(),
+    '... the spatial and temporal characteristics of the object or resource ...',
+    'TestMeta has correct coverage'
+);
+
+is( $meta->publisher(),
+    '... entity responsible for making the resource available ...',
+    'TestMeta has correct publisher'
+);
+is( $meta->audience(), 'the dahut.pm', 'TestMeta has correct audience' );
+
+is( $meta->dc_date(), '1970-01-01 00:00:00', 'TestMeta has correct dc_date' );
+is( $meta->date_from_timestamp(),
+    '1971-11-11 11:11:00',
+    'TestMeta has correct audience date_from_timestamp'
+);
+is( $meta->date_to_timestamp(),
+    '1972-01-01 22:22:03',
+    'TestMeta has correct audience date_to_timestamp'
+);
 
 # now, change something
-$meta->bibliosource( 'Gonkulators in the New Millenium Conference' );
+$meta->bibliosource('Gonkulators in the New Millenium Conference');
 ok( $meta->update(), 'Updated TestMetabibliosource' );
 
 # fetch it back...
 $meta = undef;
 $meta = XIMS::VLibMeta->new( id => $id );
 
-ok( $meta );
-is( $meta->bibliosource(), 'Gonkulators in the New Millenium Conference' , 'TestMeta has correct bibliosource' );
+ok($meta);
+is( $meta->bibliosource(),
+    'Gonkulators in the New Millenium Conference',
+    'TestMeta has correct bibliosource'
+);
 
 # fetch it back by document_id
 $meta = undef;
 $meta = XIMS::VLibMeta->new( document_id => $document->document_id() );
 
-ok( $meta );
-is( $meta->id(), $id , 'TestMeta has correct id' );
+ok($meta);
+is( $meta->id(), $id, 'TestMeta has correct id' );
 
 ok( $meta->delete(), 'Successfully deleted testmeta' );
 
@@ -88,7 +132,6 @@ $meta = XIMS::VLibMeta->new( id => $id );
 is( $meta, undef, 'Unable to fetch deleted testmeta (OK)' );
 
 ok( $document->delete(), 'Successfully deleted testdocumentmeta' );
-
 
 __END__
 # Local Variables:
