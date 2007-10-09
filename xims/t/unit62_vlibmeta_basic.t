@@ -35,6 +35,12 @@ $meta->legalnotice( '© 2004 Gonkulator Inc.' );
 $meta->bibliosource( 'Gonkulators in the Nu Millienium Today Conference' );
 $meta->mediatype( 'Conference Talk' );
 $meta->subtitle( 'A Position-Fixing' );
+$meta->coverage('... the spatial and temporal characteristics of the object or resource ...');
+$meta->publisher('... entity responsible for making the resource available ...');
+$meta->audience('the dahut.pm');
+#$meta->dc_date();
+#$meta->date_from_timestamp();
+#$meta->date_to_timestamp();
 
 $id = $meta->create();
 cmp_ok( $id, '>', 0, "Meta created with id $id" );
@@ -49,7 +55,12 @@ is( $meta->legalnotice(), '© 2004 Gonkulator Inc.' , 'TestMeta has correct legal
 is( $meta->bibliosource(), 'Gonkulators in the Nu Millienium Today Conference' , 'TestMeta has correct bibliosource' );
 is( $meta->mediatype(), 'Conference Talk' , 'TestMeta has correct mediatype' );
 is( $meta->subtitle(), 'A Position-Fixing' , 'TestMeta has correct subtitle' );
-
+is( $meta->coverage(), '... the spatial and temporal characteristics of the object or resource ...', 'TestMeta has correct coverage');
+is($meta->publisher(), '... entity responsible for making the resource available ...', 'TestMeta has correct publisher');
+is($meta->audience(), 'the dahut.pm', 'TestMeta has correct audience');
+#is()
+#is()
+#is()
 
 # now, change something
 $meta->bibliosource( 'Gonkulators in the New Millenium Conference' );
@@ -77,4 +88,20 @@ $meta = XIMS::VLibMeta->new( id => $id );
 is( $meta, undef, 'Unable to fetch deleted testmeta (OK)' );
 
 ok( $document->delete(), 'Successfully deleted testdocumentmeta' );
+
+
+__END__
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
 
