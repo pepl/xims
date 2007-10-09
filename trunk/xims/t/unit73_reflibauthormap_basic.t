@@ -1,4 +1,4 @@
-use Test::More tests => 23;
+use Test::More tests => 24;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
@@ -97,6 +97,7 @@ ok( $authmap->delete(),   'Successfully deleted Testauthormap' );
 ok( $reference->delete(), 'Successfully deleted Testreference' );
 ok( $object->delete(),    'Successfully deleted TestRefObject' );
 ok( $reftype->delete(),   'Successfully deleted TestRefType' );
+ok( $author->delete(),   'Successfully deleted test author' );
 
 # try to fetch it back
 $authmap = undef;
