@@ -72,8 +72,8 @@ $authmap = undef;
 $authmap = XIMS::VLibAuthorMap->new( id => $id );
 is( $authmap, undef, 'Unable to fetch deleted testauthmap (OK)' );
 
-ok( $document->delete(), 'Successfully deleted testdocumentauthmap' );
-ok( $author->delete(), 'Successfully deleted testauthorauthmap' );
+ok( $document->delete(), 'Successfully deleted test document' );
+ok( $author->delete(), 'Successfully deleted test author' );
 
 
 __END__
