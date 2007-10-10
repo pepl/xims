@@ -202,7 +202,7 @@
     }
     else {
         XIMS::Debug( 2, &#34;Error writing file &#39;$document_path&#39;: $!&#34; );
-        return undef;
+        return;
     }
 
     XIMS::Debug( 4, &#34;toggling publish state of the object&#34; );

@@ -90,7 +90,7 @@ sub XIMS::Questionnaire::copy {
     die "Copying an object requires an associated User" unless defined( $user );
 
     my $target_id = delete $args{target};
-    return undef unless defined $target_id;
+    return unless defined $target_id;
 
     my $clone = $self->clone( User => $user,
                         scope_subtree => 1,
