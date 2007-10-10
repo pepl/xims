@@ -45,53 +45,102 @@ sub resource_type {
 __PACKAGE__->mk_accessors( @Fields );
 
 
-##
-#
-# SYNOPSIS
-#    my $author = XIMS::VLibAuthor->new( [ %args ] );
-#
-# PARAMETER
-#    $args{ id }                  (optional) :  id of an existing author.
-#    $args{ lastname }            (optional) :  lastname of a VLibAuthor. To be used together with $args{middlename}, $args{firstname}, or, in combination with $args{object_type} in case of corpauthors to look up an existing author.
-#    $args{ middlename }          (optional) :  middlename of a VLibAuthor. To be used together with $args{lastname} and $args{firstname} to look up an existing author.
-#    $args{ firstname }           (optional) :  firstname of a VLibAuthor. To be used together with $args{lastname} and $args{middlename} to look up an existing author.
-#    $args{ object_type }         (optional) :  object_type of a VLibAuthor. To be used together with $args{lastname} to look up an existing author.
-#
-# RETURNS
-#    $author    : Instance of XIMS::VLibAuthor
-#
-# DESCRIPTION
-#    Fetches existing authors or creates a new instance of XIMS::VLibAuthor.
-#
+
+=head2    my $author = XIMS::VLibAuthor->new( [ %args ] );
+
+Parameter
+
+   C<$args{ id }>: an existing entry's id.
+
+   C<$args{ lastname }>: author's lastname or a organization's name.
+
+   C<$args{ middlename }>
+
+   C<$args{ firstname }>
+
+   C<$args{ object_type }>: object type; 1 := organisation,
+                             (0|undef|q{}) := person.
+
+   C<$args{document_id}>: document_id of the library this entry belongs
+                          to.
+
+   C<$args{suffix}>
+
+   C<$args{email}>
+
+   C<$args{url}>
+
+
+Returns
+
+   An instance of XIMS::VLibAuthor.
+
+Description
+
+   Fetches existing authors or creates a new instance of
+   XIMS::VLibAuthor.
+
+   Proper ways to call are:
+
+   - without parameters;
+
+   - with id;
+
+   - with document_id, lastname, object_type and optionally further
+     attributes;
+
+   - with document_id, lastname, middlename, firstname and optionally
+     further attributes;
+
+=cut
+
 sub new {
     my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
+    my $class = ref($proto) || $proto;
+    my %args  = @_;
 
     my $self = bless {}, $class;
 
-    if ( scalar( keys(%args)) > 0 ) {
-        if ( defined( $args{id} ) or ( defined( $args{lastname}) and defined( $args{middlename} ) and defined( $args{firstname} ) ) or ( defined( $args{lastname}) and defined( $args{object_type} ) ) ) {
-            # For the DB "'' IS NULL"
-            $args{middlename} = undef if (exists $args{middlename} and $args{middlename} eq '');
-            $args{firstname} = undef if (exists $args{firstname} and $args{firstname} eq '');
+    if ( scalar( keys(%args) ) > 0 ) {
+        if (defined( $args{id} )
+            or (    defined( $args{lastname} )
+                and defined( $args{middlename} )
+                and defined( $args{firstname} )
+                and defined( $args{document_id} ) )
+            or (    defined( $args{lastname} )
+                and defined( $args{object_type} )
+                and defined( $args{document_id} ) )
+            )
+        {
+            # Change the empty string to undef; In this cases, we want
+            # these attributes in the DB to be NULL; (i.e.: no middlename)
+            if ( ( exists $args{middlename} and $args{middlename} eq q{} ) ) {
+                $args{middlename} = undef;
+            }
+            if ( ( exists $args{firstname} and $args{firstname} eq q{} ) ) {
+                $args{firstname} = undef;
+            }
+
             my $rt = ref($self);
             $rt =~ s/.*://;
-            my $method = 'get'.$rt;
-            my $data = $self->data_provider->$method( %args );
-            if ( defined( $data )) {
-               $self->data( %{$data} );
+            my $method = 'get' . $rt;
+            my $data   = $self->data_provider->$method(%args);
+
+            if ( defined($data) ) {
+                $self->data( %{$data} );
             }
             else {
-                return undef;
+                return;
             }
+
         }
         else {
-            $self->data( %args );
+            $self->data(%args);
         }
     }
     return $self;
 }
+
 
 sub parse_namestring {
     my $name = shift;
@@ -113,7 +162,7 @@ sub parse_namestring {
     }
     else {
         XIMS::Debug( 3, "Could not parse name: $name" );
-        return undef;
+        return;
     }
 
     $lastname = unescape_compound_lastnames( $lastname );
@@ -122,7 +171,7 @@ sub parse_namestring {
         return { firstname => $firstname, middlename => $middlename, lastname => $lastname, suffix => $suffix };
     }
     else {
-        return undef;
+        return;
     }
 }
 
