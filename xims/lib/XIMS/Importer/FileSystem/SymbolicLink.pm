@@ -18,7 +18,7 @@ sub handle_data {
 
     my $object = $self->SUPER::handle_data( $location );
     my $targetlocation = readlink $location;
-    return undef unless $targetlocation;
+    return unless $targetlocation;
 
     my $parent_path = $self->parent->location_path();
     my $exp = $targetlocation;
@@ -50,7 +50,7 @@ sub handle_data {
     }
     else {
         XIMS::Debug( 3, "Could not resolve symlink $location, $targetlocation, $exp" );
-        return undef;
+        return;
     }
 
     return $object;

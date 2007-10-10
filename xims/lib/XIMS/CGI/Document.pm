@@ -223,7 +223,7 @@ sub getPubPreviewDOM {
                                        );
     my $raw_dom = $handler->generate_dom();
     my $transd_dom = $handler->transform_dom( $raw_dom );
-    return undef unless defined $transd_dom;
+    return unless defined $transd_dom;
 
     # This may fail
     # For this to work with simple.examplesite.tld for example, 'simple.examplesite.tld' has to

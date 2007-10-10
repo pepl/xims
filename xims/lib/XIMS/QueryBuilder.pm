@@ -47,7 +47,7 @@ sub new {
             $search = XIMS::tokenize_string( _clean_search_string( $args->{search} ) );
         }
         $self = bless { search => $search, fieldstolookin => $args->{fieldstolookin}, filterpublished => $args->{filterpublished}, extraargs => $args->{extraargs} }, $class;
-        $self->_build() ? return $self : return undef;
+        $self->_build() ? return $self : return;
     }
 
     return $self;

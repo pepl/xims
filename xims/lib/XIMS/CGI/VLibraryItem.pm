@@ -250,7 +250,7 @@ sub _create_mapping_from_id {
     }
     if ( not (defined $propobject and $propobject->id() ) ) {
         XIMS::Debug( 3, "could not create $propclass $value" );
-        return undef;
+        return;
     }
 
     my $propmapclass = $propclass . "Map";

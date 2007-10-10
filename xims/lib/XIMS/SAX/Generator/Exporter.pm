@@ -105,7 +105,7 @@ sub _set_parents {
     my $self = shift;
     my ( $ctxt, $doc_data, $object_types, $data_formats ) = @_;
 
-    return undef if $ctxt->object->id() == 1;
+    return if $ctxt->object->id() == 1;
     my $cachekey = $ctxt->object->parent_id();
     my $ancestors;
     if ( defined $ctxt->object->data_provider->{ocache}->{ancs}->{$cachekey} ) {

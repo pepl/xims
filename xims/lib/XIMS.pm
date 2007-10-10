@@ -85,7 +85,7 @@ sub CONTENTINTERFACE()          { "/" . $_CONFIG_->ContentInterface() }
 sub DBMS()                      { $_CONFIG_->DBMS() }
 sub QBDRIVER()                  { $_CONFIG_->QBDriver() }
 sub DBDSN()                     { $_CONFIG_->DBdsn() }
-sub DBENCODING()                { (defined $_CONFIG_->DBEncoding() and length $_CONFIG_->DBEncoding() and $_CONFIG_->DBEncoding() !~ /UTF-?8/i) ? return $_CONFIG_->DBEncoding() : return undef }
+sub DBENCODING()                { (defined $_CONFIG_->DBEncoding() and length $_CONFIG_->DBEncoding() and $_CONFIG_->DBEncoding() !~ /UTF-?8/i) ? return $_CONFIG_->DBEncoding() : return }
 sub UIFALLBACKLANG()            { $_CONFIG_->UIFallbackLang() }
 sub PUBLICUSERID()              { $_CONFIG_->PublicUserID() }
 sub AUTOINDEXFILENAME()         { $_CONFIG_->AutoIndexFilename() }
@@ -167,7 +167,7 @@ sub Debug {
 #
 sub xml_escape {
     my $text = shift;
-    return undef unless defined $text;
+    return unless defined $text;
 
     my %escapes = (
                    '<' => '&lt;',
@@ -201,7 +201,7 @@ sub xml_escape {
 #
 sub xml_unescape {
     my $text = shift;
-    return undef unless defined $text;
+    return unless defined $text;
 
     my %escapes = (
                    '&lt;' => '<',
@@ -235,7 +235,7 @@ sub xml_unescape {
 #
 sub xml_escape_noquot {
     my $text = shift;
-    return undef unless defined $text;
+    return unless defined $text;
 
     my %escapes = (
                    '<' => '&lt;',
@@ -347,7 +347,7 @@ sub nodevalue {
 sub trim {
     my $string = shift;
 
-    return undef unless $string;
+    return unless $string;
 
     $string =~ s/^\s+//;
     $string =~ s/\s+$//;
@@ -372,7 +372,7 @@ sub trim {
 sub unquot {
     my $string = shift;
 
-    return undef unless $string;
+    return unless $string;
 
     $string =~ s/&apos;/'/g;
     $string =~ s/&quot;/"/g;
@@ -397,7 +397,7 @@ sub unquot {
 sub clean {
     my $string = shift;
 
-    return undef unless $string;
+    return unless $string;
 
     $string = XIMS::unquot( XIMS::trim( $string ) );
 
@@ -421,7 +421,7 @@ sub clean {
 sub escapewildcard {
     my $string = shift;
 
-    return undef unless $string;
+    return unless $string;
     $string =~ s/%/%%/g;
 
     return $string;
@@ -525,7 +525,7 @@ sub is_known_proxy($) {
 
     map {return 1 if defined $_ and $remote_host eq $_} PROXYIP();
 
-    return undef;
+    return;
 }
 
 ##

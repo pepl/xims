@@ -133,7 +133,7 @@ sub vlemeta {
     my $self = shift;
     my $meta = shift;
 
-    return undef unless $self->document_id();
+    return unless $self->document_id();
 
     if ( not $meta ) {
         return XIMS::VLibMeta->new( document_id => $self->document_id() );
@@ -150,7 +150,7 @@ sub vlemeta {
             }
             else {
                 XIMS::Debug( 2, "could not create associate meta" );
-                return undef;
+                return;
             }
         }
         else {
@@ -160,7 +160,7 @@ sub vlemeta {
             }
             else {
                 XIMS::Debug( 2, "could not update associate meta" );
-                return undef;
+                return;
             }
         }
     }
@@ -173,9 +173,9 @@ sub _vleproperties {
     my $property = shift;
     my @objects = @_;
 
-    return undef unless $property;
+    return unless $property;
 
-    return undef unless $self->document_id();
+    return unless $self->document_id();
 
     my $class = "XIMS::VLib$property";
 
@@ -186,7 +186,7 @@ sub _vleproperties {
         my @object_ids = $self->data_provider->$method( document_id => $self->document_id(), properties => [($propertyid)] );
         my $key = lc ("vlib".$property."map.".$property."_id");
         @object_ids = map { $_->{$key} } @object_ids;
-        return undef unless scalar @object_ids;
+        return unless scalar @object_ids;
 
         $method = "getVLib".$property;
         my @objects_data = $self->data_provider->$method( id => \@object_ids );

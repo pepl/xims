@@ -81,7 +81,7 @@ sub validate {
     };
     if ( $@ ) {
         XIMS::Debug( 2, "string is not well-formed" );
-        return undef;
+        return;
     }
 
     eval {
@@ -89,7 +89,7 @@ sub validate {
     };
     if ( $@ ) {
         XIMS::Debug( 3, "string is not valid: $@" );
-        return undef;
+        return;
     }
     else {
         return 1;

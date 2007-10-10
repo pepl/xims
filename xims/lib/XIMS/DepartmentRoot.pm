@@ -62,7 +62,7 @@ sub add_departmentlinks {
     my $self = shift;
     my @objects = @_;
 
-    return undef unless @objects and scalar @objects > 0;
+    return unless @objects and scalar @objects > 0;
 
     my $oimporter = XIMS::Importer::Object->new( User => $self->User, Parent => $self );
 
@@ -88,14 +88,14 @@ sub add_departmentlinks {
             my $id = $oimporter->import( $deptlinksfolder );
             if ( not $id ) {
                 XIMS::Debug( 2, "could not create departmentlinks folder '$dpl_location'" );
-                return undef;
+                return;
             }
         }
     }
 
     # add links
     my $urlimporter = XIMS::Importer::Object::URLLink->new( User => $self->User, Parent => $deptlinksfolder );
-    return undef unless $urlimporter;
+    return unless $urlimporter;
     my $location_path;
     foreach my $object ( @objects ) {
         next if ($object->location eq $dpl_location or $object->location eq $dplp_location);
@@ -123,11 +123,11 @@ sub add_departmentlinks {
         my $id = $oimporter->import( $deptlinksportlet );
         if ( not $id ) {
             XIMS::Debug( 2, "could not create departmentlinks portlet '$dplp_location'" );
-            return undef;
+            return;
         }
         if ( not ($self->add_portlet( $deptlinksportlet ) and $self->update()) ) {
             XIMS::Debug( 2, "could not assign departmentlinks portlet '$dplp_location'" );
-            return undef;
+            return;
         }
     }
 
@@ -153,16 +153,16 @@ sub get_portlet_ids {
 
     my @portlet_ids;
 
-    return undef unless ($self->body and length $self->body);
+    return unless ($self->body and length $self->body);
 
     my $fragment = $self->_getbodyfragment();
-    return undef unless $fragment;
+    return unless $fragment;
 
     foreach my $node ( grep {$_->nodeName() eq 'portlet'} $fragment->childNodes ) {
         push @portlet_ids, $node->string_value();
     }
 
-    return undef unless (@portlet_ids and scalar @portlet_ids > 0);
+    return unless (@portlet_ids and scalar @portlet_ids > 0);
     return wantarray ? @portlet_ids : $portlet_ids[0];
 }
 
@@ -187,7 +187,7 @@ sub add_portlet {
     my $self = shift;
     my $target = shift;
 
-    return undef unless $target;
+    return unless $target;
 
     my $pobject = $target if (ref $target and $target->isa('XIMS::Object'));
     $pobject ||= XIMS::Portlet->new( User => $self->User, path => $target, marked_deleted => undef );
@@ -198,7 +198,7 @@ sub add_portlet {
             XIMS::Debug( 4, "found an existing portlet assignment" );
 
             my $fragment = $self->_getbodyfragment();
-            return undef unless $fragment;
+            return unless $fragment;
 
             # check if id is already there
             my ( $node ) = grep {$_->string_value() eq $id} $fragment->childNodes;
@@ -222,7 +222,7 @@ sub add_portlet {
     }
     else {
         XIMS::Debug( 3, "Portlet not found for $target!");
-        return undef;
+        return;
     }
 
     return 1;
@@ -246,11 +246,11 @@ sub remove_portlet {
     my $self = shift;
     my $portlet_id = shift;
 
-    return undef unless ($portlet_id and $portlet_id > 0);
-    return undef unless ($self->body and length $self->body);
+    return unless ($portlet_id and $portlet_id > 0);
+    return unless ($self->body and length $self->body);
 
     my $fragment = $self->_getbodyfragment();
-    return undef unless $fragment;
+    return unless $fragment;
 
     my ( $node ) = grep {$_->string_value() eq $portlet_id} $fragment->childNodes;
     if ( defined $node ) {
@@ -277,7 +277,7 @@ sub _getbodyfragment {
     };
     if ( $@ ) {
         XIMS::Debug( 2, "problem with the department body ($@)"  );
-        return undef;
+        return;
     }
 
     return $fragment;

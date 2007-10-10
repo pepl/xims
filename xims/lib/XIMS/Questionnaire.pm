@@ -97,7 +97,7 @@ sub questionnaire_dom {
         eval { $q_dom = $self->_parser->parse_string( XIMS::encode( $self->body() ) ); };
         if ( $@ ) {
             XIMS::Debug( 2, "Could not parse body" );
-            return undef;
+            return;
         }
         else {
             $self->{_qdom} = $q_dom->documentElement();
@@ -414,7 +414,7 @@ sub get_value {
         return $node->textContent();
     }
     else {
-        return undef;
+        return;
     }
 }
 
@@ -440,7 +440,7 @@ sub get_option {
         return 1;
     }
     else {
-        return undef;
+        return;
     }
 }
 
@@ -919,7 +919,7 @@ sub add_tanlist {
     }
     else {
         XIMS::Debug( 4, "Could not find TAN_List using path '$tanlist_path'" );
-        return undef;
+        return;
     }
     $self->body( XIMS::decode( $questionnaire->toString() ) );
 }

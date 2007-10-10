@@ -88,7 +88,7 @@ sub new {
             $args{document_id} = $document_id;
         }
         else {
-            return undef;
+            return;
         }
     }
 
@@ -106,14 +106,14 @@ sub new {
         }
         my @data = $self->data_provider->getObject( %args,
             properties => $properties );
-        return undef unless scalar @data;
+        return unless scalar @data;
         $real_object = $data[0];
         if ( defined($real_object) ) {
             delete $real_object->{'document.id'};
             $self->data( %{$real_object} );
         }
         else {
-            return undef;
+            return;
         }
     }
 
@@ -129,7 +129,7 @@ sub new {
                 }
                 else {
                     XIMS::Debug( 1, "could not resolve object type $otname" );
-                    return undef;
+                    return;
                 }
             }
             if ( not $args{data_format_id} ) {
@@ -192,7 +192,7 @@ sub body {
 # containers, or create a separate dataformat for department roots...
 #unless( defined( $content_field ) ) {
 #    XIMS::Debug( 3, "Attempt to set body on Container object. This action is not allowed." );
-#    return undef;
+#    return;
 #}
 
         $self->{$content_field} = $data;
@@ -200,7 +200,7 @@ sub body {
     else {
         return unless defined($content_field);
         return $self->{$content_field} if defined( $self->{$content_field} );
-        return undef unless defined $self->id();
+        return unless defined $self->id();
         my @selected_data = $self->data_provider->getObject(
             id         => $self->id(),
             properties => [$content_field]
@@ -253,7 +253,7 @@ sub parent {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    return undef unless $self->parent_id;
+    return unless $self->parent_id;
     return XIMS::Object->new(
         User        => $self->User,
         document_id => $self->parent_id
@@ -405,7 +405,7 @@ sub child_count_granted {
     my $self = shift;
 
     my $iterator = $self->children_granted(@_);
-    return undef unless defined $iterator;
+    return unless defined $iterator;
     return $iterator->getLength();
 }
 
@@ -685,7 +685,7 @@ sub descendant_count_granted {
     my $self = shift;
 
     my $iterator = $self->descendants_granted(@_);
-    return undef unless defined $iterator;
+    return unless defined $iterator;
     return $iterator->getLength();
 }
 
@@ -1321,7 +1321,7 @@ sub delete {
         return 1;
     }
     else {
-        return undef;
+        return;
     }
 }
 
@@ -1396,7 +1396,7 @@ sub trashcan {
     }
     else {
         XIMS::Debug( 2, "Could not close position gap" );
-        return undef;
+        return;
     }
 
     # 2 tables should have been updated
@@ -1511,7 +1511,7 @@ sub move {
         = __decide_department_id( document_id => $self->document_id() );
 
     my $parent_id = delete $args{target};
-    return undef unless $parent_id;
+    return unless $parent_id;
 
     if (not $self->data_provider->close_position_gap(
             parent_id => $self->parent_id(),
@@ -1520,7 +1520,7 @@ sub move {
         )
     {
         XIMS::Debug( 2, "Could not close position gap" );
-        return undef;
+        return;
     }
 
     $self->parent_id($parent_id);
@@ -1635,12 +1635,12 @@ sub clone {
                     XIMS::Debug( 2,
                         "Cannot clone. Object with same location already exists in target container."
                     );
-                    return undef;
+                    return;
                 }
             }
             else {
                 XIMS::Debug( 2, "Could not resolve clone target." );
-                return undef;
+                return;
             }
         }
     }
@@ -1796,7 +1796,7 @@ sub clone {
 #    Creates a copy of the object in the database in the container specified by 'target_id.
 #    Per default, the copy will be named 'copy_of_...' (location). Instead of this,
 #    a 'target_location' can be specified. If an object with the 'target_location' already exists in the
-#    target container, copy() will return undef.
+#    target container, copy() will return.
 #    The copy is always unpublished and unlocked.
 #    References to other copied objects are updated, as are references to portlets in body of department- and siteroot
 #    copy() produces a deep copy.
@@ -1810,7 +1810,7 @@ sub copy {
     die "Copying an object requires an associated User" unless defined($user);
 
     my $target_id = delete $args{target};
-    return undef unless defined $target_id;
+    return unless defined $target_id;
 
     return $self->clone(
         User              => $user,
@@ -1840,7 +1840,7 @@ sub reposition {
     my %args = @_;
 
     my $new_position = delete $args{position};
-    return undef unless $new_position;
+    return unless $new_position;
 
     return $self->data_provider->reposition(
         parent_id    => $self->parent_id,
@@ -1927,7 +1927,7 @@ sub attribute_by_key {
         return $self->_unescapeattrib( $attributes{$key} );
     }
 
-    return undef;
+    return;
 }
 
 ##
@@ -1977,7 +1977,7 @@ sub _escapeattrib {
     my $self = shift;
     my $text = shift;
 
-    return undef unless defined $text;
+    return unless defined $text;
 
     $text =~ s/"/\\"/g;
     $text =~ s/'/\\'/g;
@@ -2005,7 +2005,7 @@ sub _unescapeattrib {
     my $self = shift;
     my $text = shift;
 
-    return undef unless defined $text;
+    return unless defined $text;
 
     $text =~ s/\\"/"/g;
     $text =~ s/\\'/'/g;
@@ -2178,7 +2178,7 @@ sub locked {
     if ( $self->locked_by_id() and $self->locked_time() ) {
         return 1;
     }
-    return undef;
+    return;
 }
 
 ##
@@ -2259,7 +2259,7 @@ sub unpublish {
 sub object_type {
     my $self = shift;
     return $self->{ObjectType} if defined $self->{ObjectType};
-    return undef unless $self->object_type_id();
+    return unless $self->object_type_id();
     my $ots = XIMS::OBJECT_TYPES();
     my $ot  = $ots->{ $self->object_type_id() };
     $self->{ObjectType} = $ot;
@@ -2283,7 +2283,7 @@ sub object_type {
 sub data_format {
     my $self = shift;
     return $self->{DataFormat} if defined $self->{DataFormat};
-    return undef unless $self->data_format_id();
+    return unless $self->data_format_id();
     my $dfs = XIMS::DATA_FORMATS();
     my $df  = $dfs->{ $self->data_format_id() };
     $self->{DataFormat} = $df;
@@ -2307,7 +2307,7 @@ sub data_format {
 sub language {
     my $self = shift;
     return $self->{Language} if defined $self->{Language};
-    return undef unless $self->language_id();
+    return unless $self->language_id();
     my $lang = XIMS::Language->new( id => $self->language_id );
     $self->{Language} = $lang;
     return $lang;
@@ -2345,10 +2345,10 @@ sub stylesheet {
             foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $style_id = $oroot->style_id();
             }
-            return undef unless defined $style_id;
+            return unless defined $style_id;
         }
         else {
-            return undef;
+            return;
         }
     }
     my $stylesheet = XIMS::Object->new( id => $style_id );
@@ -2388,10 +2388,10 @@ sub css {
             foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $css_id = $oroot->css_id();
             }
-            return undef unless defined $css_id;
+            return unless defined $css_id;
         }
         else {
-            return undef;
+            return;
         }
     }
 
@@ -2433,10 +2433,10 @@ sub image {
             foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $image_id = $oroot->image_id();
             }
-            return undef unless defined $image_id;
+            return unless defined $image_id;
         }
         else {
-            return undef;
+            return;
         }
     }
 
@@ -2478,10 +2478,10 @@ sub script {
             foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $script_id = $oroot->script_id();
             }
-            return undef unless defined $script_id;
+            return unless defined $script_id;
         }
         else {
-            return undef;
+            return;
         }
     }
 
@@ -2523,10 +2523,10 @@ sub schema {
             foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
                 last if $schema_id = $oroot->schema_id();
             }
-            return undef unless defined $schema_id;
+            return unless defined $schema_id;
         }
         else {
-            return undef;
+            return;
         }
     }
     my $schema = XIMS::Object->new( id => $schema_id );
@@ -2560,7 +2560,7 @@ sub creator {
     }
     else {
         return $self->{Creator} if defined $self->{Creator};
-        return undef unless $self->created_by_id();
+        return unless $self->created_by_id();
         $creator = XIMS::User->new( id => $self->created_by_id );
     }
     $self->{Creator} = $creator;
@@ -2593,7 +2593,7 @@ sub owner {
     }
     else {
         return $self->{Owner} if defined $self->{Owner};
-        return undef unless $self->owned_by_id();
+        return unless $self->owned_by_id();
         $owner = XIMS::User->new( id => $self->owned_by_id );
     }
     $self->{Owner} = $owner;
@@ -2626,7 +2626,7 @@ sub last_modifier {
     }
     else {
         return $self->{LastModifier} if defined $self->{LastModifier};
-        return undef unless $self->last_modified_by_id();
+        return unless $self->last_modified_by_id();
         $modder = XIMS::User->new( id => $self->last_modified_by_id );
     }
     $self->{LastModifier} = $modder;
@@ -2659,7 +2659,7 @@ sub last_publisher {
     }
     else {
         return $self->{LastPublisher} if defined $self->{LastPublisher};
-        return undef unless $self->last_published_by_id();
+        return unless $self->last_published_by_id();
         $pubber = XIMS::User->new( id => $self->last_published_by_id );
     }
     $self->{LastPublisher} = $pubber;
@@ -2683,7 +2683,7 @@ sub last_publisher {
 sub locker {
     my $self = shift;
     return $self->{Locker} if defined $self->{Locker};
-    return undef unless $self->locked();
+    return unless $self->locked();
     my $locker = XIMS::User->new( id => $self->locked_by_id );
     $self->{Locker} = $locker;
     return $locker;
@@ -2780,10 +2780,10 @@ sub store_diff_to_second_last {
     my $newbody = shift;
 
     # do not store anything for objects that have not been created yet
-    return undef unless $self->id();
+    return unless $self->id();
 
     # check for params
-    return undef
+    return
         unless ( defined $oldbody and length $oldbody and defined $newbody );
 
     my $diffobject_location = '.diff_to_second_last';
@@ -2831,7 +2831,7 @@ sub store_diff_to_second_last {
         my $id = $oimporter->import($diffobject);
         if ( not $id ) {
             XIMS::Debug( 2, "could not create diff-object" );
-            return undef;
+            return;
         }
     }
 
@@ -2939,7 +2939,7 @@ sub balance_string {
     my $CDATAstring = shift;
     my %args        = @_;
 
-    return undef unless defined $CDATAstring;
+    return unless defined $CDATAstring;
 
     my $wbCDATAstring = undef;    # return value
 
@@ -2959,13 +2959,13 @@ sub balance_string {
     }
     else {
         XIMS::Debug( 2, "Error writing file '$tmp': $!" );
-        return undef;
+        return;
     }
 
     eval { $wbCDATAstring = `$tidy $tidyOptions $tmp`; };
     if ($@) {
         XIMS::Debug( 2, "Could not execute '$tidy $tidyOptions $tmp': $@" );
-        return undef;
+        return;
     }
 
     unlink $tmp;
@@ -2990,7 +2990,7 @@ sub balance_string {
         eval { $doc = $parser->parse_html_string($CDATAstring); };
         if ($@) {
             XIMS::Debug( 2, "LibXML could not parse string either: $@" );
-            return undef;
+            return;
         }
         else {
             my $encoding = XIMS::DBEncoding() ? XIMS::DBEncoding() : 'UTF-8';
@@ -3016,7 +3016,7 @@ sub balance_string {
         return $wbCDATAstring;
     }
     else {
-        return undef;
+        return;
     }
 }
 
@@ -3038,7 +3038,7 @@ sub content_field {
     }
 
     # pepl: departmentroot portlet info is stored in its body
-    # return undef if $df->name() eq 'Container';
+    # return if $df->name() eq 'Container';
     return 'binfile'
         if ($df->mime_type
         and $df->mime_type =~ /^(application|image)\//i

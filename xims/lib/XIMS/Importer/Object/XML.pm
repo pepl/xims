@@ -31,7 +31,7 @@ sub get_rootelement {
         };
         if ( $@ ) {
             XIMS::Debug( 3, "Could not parse: $@" );
-            return undef;
+            return;
         }
     }
 

@@ -35,9 +35,9 @@ sub new {
             XIMS::Debug( 5, "fetching session by id." );
             $real_session = $self->data_provider->getSession( %args );
 
-            # return undef if they explicitly asked for a
+            # return if they explicitly asked for a
             # for an existing session and it wasn't found
-            return undef unless $real_session;
+            return unless $real_session;
         }
         elsif ( defined( $args{user_id} ) ) {
             XIMS::Debug( 5, "attempting to create new user session." );
@@ -89,7 +89,7 @@ sub delete {
         return 1;
     }
     else {
-       return undef;
+       return;
     }
 }
 
@@ -136,7 +136,7 @@ sub validate {
 sub user {
     my $self = shift;
     return $self->{User} if defined $self->{User};
-    return undef unless $self->user_id();
+    return unless $self->user_id();
     my $user = XIMS::User->new( id => $self->user_id );
     $self->{User} = $user;
     return $user;

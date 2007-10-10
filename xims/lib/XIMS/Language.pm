@@ -34,7 +34,7 @@ sub new {
                $self->data( %{$real_lang} );
             }
             else {
-                return undef;
+                return;
             }
         }
         else {

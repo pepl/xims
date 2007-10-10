@@ -49,10 +49,10 @@ sub new {
         # check if parent and user exist and user has create privileges...
         if ( $data{Parent} and $data{Parent}->id() and $data{User} and $data{User}->id() ) {
             my $privmask = $data{User}->object_privmask( $data{Parent} );
-            return undef unless $privmask & XIMS::Privileges::CREATE();
+            return unless $privmask & XIMS::Privileges::CREATE();
         }
         else {
-            return undef;
+            return;
         }
     }
 
@@ -74,7 +74,7 @@ sub object {
         return $self->{Object};
     }
     else {
-        return undef unless $self->object_type();
+        return unless $self->object_type();
         $object = $self->object_from_object_type( $self->object_type() );
         $self->{Object} = $object;
         return $object;
@@ -115,13 +115,13 @@ sub object_from_object_type {
     my $object_type = shift;
 
     $object_type ||= $self->object_type();
-    return undef unless $object_type->isa('XIMS::ObjectType');
+    return unless $object_type->isa('XIMS::ObjectType');
 
     my $objclass = "XIMS::". $object_type->fullname();
     eval "require $objclass;";
     if ( $@ ) {
         XIMS::Debug( 3, "Could not load object class: $@" );
-        return undef;
+        return;
     }
     return $objclass->new( User => $self->user() );
 }
@@ -136,7 +136,7 @@ sub import {
 
     return $object->id() if ($object and $object->id());
 
-    return undef unless ($object and $object->location());
+    return unless ($object and $object->location());
     $object->location( $self->check_location( $object->location(), $donotchecklocation ) ) ;
     $object->title( $object->location ) unless $object->title();
 
@@ -152,7 +152,7 @@ sub import {
             my $privmask = $self->user->object_privmask( $oldobject );
             if ( not ($privmask and $privmask & XIMS::Privileges::WRITE()) ) {
                 XIMS::Debug( 3, "missing update privileges for object '" . $oldobject->location_path() . "'" );
-                return undef;
+                return;
             }
 
             # update content data
@@ -168,7 +168,7 @@ sub import {
         }
         else {
             XIMS::Debug( 2, "location already exists" );
-            return undef;
+            return;
         }
     }
 

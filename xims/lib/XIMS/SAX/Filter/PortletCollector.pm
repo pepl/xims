@@ -223,7 +223,7 @@ sub get_latest {
         XIMS::Debug( 6, "got latest $latest" );
         return $latest;
     }
-    return undef;
+    return;
 }
 
 sub get_latest_sortkey {
@@ -237,7 +237,7 @@ sub get_latest_sortkey {
         XIMS::Debug( 6, "got latest_sortkey $latest_sortkey" );
         return $latest_sortkey;
     }
-    return undef;
+    return;
 }
 
 sub get_depth {
@@ -251,7 +251,7 @@ sub get_depth {
         XIMS::Debug( 6, "got depth $depth" );
         return $depth;
     }
-    return undef;
+    return;
 }
 
 
@@ -265,7 +265,7 @@ sub get_documentlinks {
     if ( defined $documentlinks and $documentlinks eq '1' ) {
         return 1;
     }
-    return undef;
+    return;
 }
 
 # not yet rewritten code and thus currently unused code ahead
@@ -307,7 +307,7 @@ sub build_or_filter {
             }
         }
     }
-    return undef unless scalar @conds;
+    return unless scalar @conds;
     return DBIx::SQLEngine::Criteria::Or->new( @conds );
 }
 sub build_not_filter {
@@ -358,7 +358,7 @@ sub build_and_filter {
             }
         }
     }
-    return undef unless scalar @conds;
+    return unless scalar @conds;
     return DBIx::SQLEngine::Criteria::Or->new( @conds );
 }
 ##
@@ -471,7 +471,7 @@ sub build_date_filter {
             }
         }
     }
-    return undef unless defined $retval and length $retval;
+    return unless defined $retval and length $retval;
     XIMS::Debug( 6, "use date literal $retval" );
     return DBIx::SQLEngine::Criteria::LiteralSQL->new ( $retval );
 }

@@ -8,7 +8,7 @@ use strict;
 use base qw( XIMS::AbstractClass Class::Accessor );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
+our @Fields = @{ XIMS::Names::property_interface_names( resource_type() ) };
 
 sub fields {
     return @Fields;
@@ -20,7 +20,7 @@ sub resource_type {
     return $rt;
 }
 
-__PACKAGE__->mk_accessors( @Fields );
+__PACKAGE__->mk_accessors(@Fields);
 
 ##
 #
@@ -39,26 +39,26 @@ __PACKAGE__->mk_accessors( @Fields );
 #
 sub new {
     my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
+    my $class = ref($proto) || $proto;
+    my %args  = @_;
 
     my $self = bless {}, $class;
 
-    if ( scalar( keys(%args)) > 0 ) {
+    if ( scalar( keys(%args) ) > 0 ) {
         if ( defined( $args{id} ) or defined( $args{document_id} ) ) {
             my $rt = ref($self);
             $rt =~ s/.*://;
-            my $method = 'get'.$rt;
-            my $data = $self->data_provider->$method( %args );
-            if ( defined( $data )) {
-               $self->data( %{$data} );
+            my $method = 'get' . $rt;
+            my $data   = $self->data_provider->$method(%args);
+            if ( defined($data) ) {
+                $self->data( %{$data} );
             }
             else {
-                return undef;
+                return;
             }
         }
         else {
-            $self->data( %args );
+            $self->data(%args);
         }
     }
     return $self;

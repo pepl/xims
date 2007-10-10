@@ -40,13 +40,13 @@ sub new {
                 # lookup based on alias, is this really needed?
                 if ( defined( $args{mime_type} ) ) {
                     my $alias = XIMS::MimeType->new( mime_type => $args{mime_type} );
-                    return undef unless defined( $alias );
+                    return unless defined( $alias );
                     $real_dt = $self->data_provider->getDataFormat( id => $alias->data_format_id() );
-                    return undef unless defined( $real_dt );
+                    return unless defined( $real_dt );
                     $self->data( %{$real_dt} );
                 }
                 else {
-                    return undef;
+                    return;
                 }
             }
         }

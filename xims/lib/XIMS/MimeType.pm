@@ -34,7 +34,7 @@ sub new {
                $self->data( %{$real_mt} );
             }
             else {
-                return undef;
+                return;
             }
         }
         else {

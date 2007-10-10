@@ -34,7 +34,7 @@ sub new {
                $self->data( %{$real_bmk} );
             }
             else {
-                return undef;
+                return;
             }
         }
         else {

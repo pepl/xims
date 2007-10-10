@@ -17,7 +17,7 @@ sub handle_data {
 
     my $object = $self->SUPER::handle_data( $location, 1 );
     my $root = $self->get_rootelement( $location, nochunk => 1 );
-    return undef unless $root;
+    return unless $root;
 
     # hacky, tracky - there is no such thing as SUPER::SUPER :-|
     # the vl* methods need an already created object with a document_id to assign the foreign

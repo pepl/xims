@@ -27,7 +27,7 @@ sub authenticate {
 
     my $username = $args{Username} || $self->{Username};
     my $password = $args{Password} || $self->{Password};
-    return undef unless ( $username and $password );
+    return unless ( $username and $password );
 
     my @authmods = split(',', XIMS::AUTHSTYLE());
     foreach my $authmod ( @authmods ) {
@@ -50,7 +50,7 @@ sub authenticate {
         }
     }
     XIMS::Debug( 3, "login failed!" );
-    return undef;
+    return;
 }
 
 1;

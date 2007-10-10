@@ -227,7 +227,7 @@ sub property_relationships {
     if ( defined ($PropertyRelations{$r_type}) ) {
         return $PropertyRelations{$r_type};
     }
-    return undef;
+    return;
 }
 
 
@@ -296,7 +296,7 @@ sub reposition {
     my $self = shift;
     my %args = @_;
 
-    return undef unless (defined $args{document_id}
+    return unless (defined $args{document_id}
                          and defined $args{parent_id}
                          and defined $args{new_position}
                          and defined $args{position});
@@ -349,7 +349,7 @@ sub max_position {
     my $self = shift;
     my %args = @_;
 
-    return undef unless exists $args{parent_id};
+    return unless exists $args{parent_id};
 
     my $query = 'SELECT max(position) AS position FROM ci_documents WHERE parent_id = ?';
     my $data = $self->{dbh}->fetch_select( sql => [ $query, $args{parent_id} ] );
@@ -362,7 +362,7 @@ sub close_position_gap {
     my $self = shift;
     my %args = @_;
 
-    return undef unless (defined $args{parent_id}
+    return unless (defined $args{parent_id}
                          and defined $args{position});
 
     return $self->{dbh}->do_update( sql => [ qq{UPDATE ci_documents
@@ -382,7 +382,7 @@ sub update_descendant_department_id {
     my $self = shift;
     my %args = @_;
 
-    return undef unless (defined $args{parent_location_path}
+    return unless (defined $args{parent_location_path}
                          and defined $args{old_department_id}
                          and defined $args{new_department_id});
 
@@ -481,7 +481,7 @@ sub find_object_id {
     }
     else {
         XIMS::Debug( 2, "Illegal parameters passed" );
-        return undef;
+        return;
     }
 
     if ( exists $args{start_here} or $critstring =~ /ci_documents|location_path|object_type_id|data_format_id/i ) {
@@ -555,7 +555,7 @@ sub content_length {
                                            columns =>  'lob_length',
                                            criteria => { id => $args{id} } );
 
-    return undef unless ref( $data ) and scalar( @{$data} > 0);
+    return unless ref( $data ) and scalar( @{$data} > 0);
     return $data->[0]->{lob_length};
 }
 
@@ -566,7 +566,7 @@ sub get_descendant_id_level {
 
     my %param;
 
-    return undef unless exists $args{parent_id};
+    return unless exists $args{parent_id};
 
     my $maxlevel = delete $args{maxlevel};
     $maxlevel ||= 0;
@@ -580,7 +580,7 @@ sub get_descendant_id_level {
     $noorder = 1 if (defined $order or scalar keys %args > 0);
 
     my $query = $self->_get_descendant_sql( $parent_id, $maxlevel, 1, $noorder );
-    return undef unless $query;
+    return unless $query;
 
     #warn "query: $query";
     my $data = $self->{dbh}->fetch_select( sql => $query, %param, criteria => \%args );
@@ -616,7 +616,7 @@ sub get_descendant_infos {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    return undef unless exists $args{parent_id};
+    return unless exists $args{parent_id};
 
     my $query = $self->_get_descendant_sql( $args{parent_id}, undef, undef, 1, 'count(last_modification_timestamp) AS count, max(last_modification_timestamp) AS max, max(last_publication_timestamp) AS pubmax' );
     my $data = $self->{dbh}->fetch_select( sql => $query );
@@ -644,11 +644,11 @@ sub location_path {
             my $data = $self->{dbh}->fetch_select( table => 'ci_content',
                                                    columns => 'document_id',
                                                    criteria => { id => $args{id} } );
-            return undef unless ref( $data ) and scalar( @{$data} > 0);
+            return unless ref( $data ) and scalar( @{$data} > 0);
             $document_id = $data->[0]->{document_id};
         }
         else {
-            return undef;
+            return;
         }
     }
 
@@ -656,7 +656,7 @@ sub location_path {
                                            columns =>  'location_path',
                                            criteria => { id => $document_id } );
 
-    return undef unless ref( $data ) and scalar( @{$data} > 0);
+    return unless ref( $data ) and scalar( @{$data} > 0);
     return $data->[0]->{location_path};
 }
 
@@ -749,7 +749,7 @@ sub _get_descendant_sql {
     }
     else {
         XIMS::Debug( 1, "Unsupported RDBMSClass!" );
-        return undef;
+        return;
     }
 }
 
@@ -819,7 +819,7 @@ sub get_object_id_by_path {
                 }
                 else {
                     XIMS::Debug( 3, "could not resolve path, got 404" );
-                    return undef;
+                    return;
                 }
             }
             $retval = $id;

@@ -56,7 +56,7 @@ sub new {
 sub _getItem {
     my ($self, $iteratee, $index) = @_;
     my $id = $self->SUPER::_getItem( $iteratee, $index );
-    return undef unless defined $id;
+    return unless defined $id;
     my $o = XIMS::Object->new( $self->{lookup_key} => $id );
     defined $o ? $o : undef;
 }
