@@ -17,10 +17,10 @@ sub import {
     my $self = shift;
     my $location = shift;
     my $updateexisting = shift;
-    return undef unless $location;
+    return unless $location;
 
     my $importer = $self->resolve_importer( $location );
-    return undef unless $importer;
+    return unless $importer;
 
     my $object = $importer->handle_data( $location );
 
@@ -77,14 +77,14 @@ sub resolve_importer {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $location = shift;
-    return undef unless $location;
+    return unless $location;
 
     my ($object_type, $data_format) = $self->resolve_location( $location );
     my $impclass = "XIMS::Importer::FileSystem::" . $object_type->fullname();
     eval "require $impclass;";
     if ( $@ ) {
         XIMS::Debug( 3 , "Could not load importer class: $@" );
-        return undef;
+        return;
     }
     my $importer = $impclass->new( Provider => $self->data_provider(),
                                    Parent => $self->parent(),

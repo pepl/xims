@@ -27,7 +27,7 @@ sub create {
     }
     else {
         XIMS::Debug( 2, "Error writing file '$document_path': $!" );
-        return undef;
+        return;
     }
 
     # mark the document as published

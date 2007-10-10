@@ -94,7 +94,7 @@ sub get_data_fragment {
         };
         if ( $@ ) {
             XIMS::Debug( 6, "data is not a fragment" . $@ );
-            return undef;
+            return;
         }
         $self->{Fragment} = $fragment;
     }

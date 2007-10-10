@@ -131,7 +131,7 @@ sub publish {
 
     unless ( $param{Object} ) {
         XIMS::Debug( 3, "No object to publish!" );
-        return undef;
+        return;
     }
     my $object          = delete $param{Object};
 
@@ -154,7 +154,7 @@ sub publish {
     # ...but do a sanity-check
     unless ( defined $self->{Provider} and defined $self->{Basedir} ) {
         XIMS::Debug( 2, "Insufficient parameters for publishing, Basedir needed!" );
-        return undef;
+        return;
     }
 
     my $helper = XIMS::Exporter::Helper->new();
@@ -169,7 +169,7 @@ sub publish {
                                        Object     => $object,
                                        Options    => \%options,
                                        );
-    return undef unless $handler;
+    return unless $handler;
 
     # handle any ancestors, create folders where needed.
     #
@@ -202,7 +202,7 @@ sub publish {
                                                      Object     => $ancestor,
                                                      Options    => {norecurse => 1}
                                                     );
-                    return undef unless $anc_handler;
+                    return unless $anc_handler;
 
                     my %options;
                     $options{mkdironly} = 1 if defined $forceancestorpublish;
@@ -246,7 +246,7 @@ sub unpublish {
 
     unless ( $param{Object} ) {
         XIMS::Debug( 3, "No object to unpublish!" );
-        return undef;
+        return;
     }
 
     # allow developer-friendly method invocation...
@@ -262,7 +262,7 @@ sub unpublish {
     # ...but do a sanity-check
     unless ( defined $self->{Provider} and defined $self->{Basedir} ) {
         XIMS::Debug( 2, "Insufficient parameters for publishing, Basedir needed!" );
-        return undef;
+        return;
     }
 
     # build the object processor based on the object_type
@@ -275,7 +275,7 @@ sub unpublish {
                                        Object     => $object,
                                        Options    => \%options,
                                        );
-    return undef unless $handler;
+    return unless $handler;
 
     #
     # the unpublish function will remove only real objects from the
@@ -304,7 +304,7 @@ sub unpublish {
                                              Object     => $ancestor,
                                              Options    => {norecurse => 1}
                                             );
-                return undef unless $anc_handler;
+                return unless $anc_handler;
 
                 $anc_handler->create(); # should stop here on error ... !?
                 $last_path = $added_path;
@@ -388,7 +388,7 @@ sub exporterclass {
     my %args = @_;
 
     my $object = $args{Object};
-    return undef unless $object;
+    return unless $object;
 
     my $exporter_class = $self->classname( $object );
 
@@ -400,7 +400,7 @@ sub exporterclass {
         eval "require $exporter_class;";
         if ( $@ ) {
             XIMS::Debug( 3, "could not not load exporter class: $@" );
-            return undef;
+            return;
         }
         $exporter = $exporter_class->new( %args );
     }
@@ -464,12 +464,12 @@ sub new {
         }
         else {
             XIMS::Debug( 2, "access to export directory $bdir denied!" );
-            return undef;
+            return;
         }
     }
     elsif ( defined $bdir and not -d $bdir ) {
         XIMS::Debug( 2, "export directory does not exist -> " . $bdir );
-        return undef;
+        return;
     }
 
     # for recursion...
@@ -545,8 +545,8 @@ sub toggle_publish_state {
     }
 }
 
-sub create { return undef; }
-sub update { return undef; }
+sub create { return; }
+sub update { return; }
 
 ##
 #
@@ -577,7 +577,7 @@ sub remove {
         # unpublished here.
         $self->toggle_publish_state( '0' ) unless $self->test_ancestors();
 
-        return undef;
+        return;
     }
 
 
@@ -591,7 +591,7 @@ sub remove {
     if ( $@ ) {
         my $err = $@;
         XIMS::Debug( 2, "Cannot remove filesystem object '$dead_file': $err" );
-        return undef;
+        return;
     }
 
     # mark the document as published
@@ -689,7 +689,7 @@ sub update_related {
                                             Object         => $obj,
                                             Basedir        => $basedir,
                                           );
-        return undef unless $obj_handler;
+        return unless $obj_handler;
 
         # check if the object's ancestors are published
         if ( $obj_handler->test_ancestors() ) {
@@ -751,7 +751,7 @@ sub update_parent {
     my $parent = $self->{Ancestors}->[-1];
 
     # check if we got a container object
-    return undef unless $parent->object_type->is_fs_container();
+    return unless $parent->object_type->is_fs_container();
 
     my $helper = XIMS::Exporter::Helper->new();
     my $base = XIMS::PUBROOT() . $parent->location_path();
@@ -768,7 +768,7 @@ sub update_parent {
                                     );
     unless ( $handler and $handler->create() ) {
         XIMS::Debug( 2, "Parent of '" . $object->title() .  "' could not be republished!" );
-        return undef;
+        return;
     }
 
     return 1;
@@ -796,7 +796,7 @@ use vars qw( @ISA );
 # must return 'undef', to avoid any parent handling.
 #
 sub test_ancestors {
-    return undef;
+    return;
 }
 
 sub create {
@@ -852,7 +852,7 @@ sub create {
 
     unless ( $raw_dom ) {
         XIMS::Debug( 3, "no dom created" );
-        return undef;
+        return;
     }
 
     # THEN we have to do the transformation of the DOM, as the output
@@ -861,7 +861,7 @@ sub create {
 
     unless ( defined $transd_dom ) {
         XIMS::Debug( 3, "transformation failed" );
-        return undef;
+        return;
     }
 
     XIMS::Debug( 4, "transformation succeeded" );
@@ -883,7 +883,7 @@ sub create {
     }
     else {
         XIMS::Debug( 2, "Error writing file '$document_path': $!" );
-        return undef;
+        return;
     }
 
     # mark the document as published
@@ -1052,7 +1052,7 @@ sub transform_dom {
         };
         if( $@ ) {
             XIMS::Debug( 3, "Broken Transformation:\n". $@ ."\n" );
-            return undef;
+            return;
         }
         XIMS::Debug( 4, "transformation done" );
     }
@@ -1129,7 +1129,7 @@ sub create {
     }
     else {
         XIMS::Debug( 2, "Error writing file '$document_path': $!" );
-        return undef;
+        return;
     }
 
 
@@ -1191,7 +1191,7 @@ sub create {
         if ( $@ ) {
             my $err = $@;
             XIMS::Debug( 3, "Error creating directory '$new_path': $err" );
-            return undef;
+            return;
         }
     }
 
@@ -1209,7 +1209,7 @@ sub create {
 
         unless ( $raw_dom ) {
             XIMS::Debug( 2, "metadata cannot be generated" );
-            return undef;
+            return;
         }
 
         # then, transform it...
@@ -1218,7 +1218,7 @@ sub create {
 
         unless ( $transd_dom ) {
             XIMS::Debug( 2, "transformation failed" );
-            return undef;
+            return;
         }
 
         # build the path
@@ -1237,7 +1237,7 @@ sub create {
         }
         else {
             XIMS::Debug( 2, "Error writing file '$meta_path': $!" );
-            return undef;
+            return;
         }
 
         # auto-indexing
@@ -1298,7 +1298,7 @@ sub remove {
                          User       => $self->{User},
                          Object     => $kind
                         );
-            return undef unless ($reaper and $reaper->remove());
+            return unless ($reaper and $reaper->remove());
         }
     }
 
@@ -1322,7 +1322,7 @@ sub remove {
     }
 
     # finally, drop the dir.
-    rmdir( $kill_path ) || do { XIMS::Debug( 2, "can't remove directory '$kill_path' " . $! ); return undef; };
+    rmdir( $kill_path ) || do { XIMS::Debug( 2, "can't remove directory '$kill_path' " . $! ); return; };
 
 
     # mark the folder as not published.
@@ -1376,7 +1376,7 @@ sub remove {
                                           User       => $self->{User},
                                           Object     => $kind
                                         );
-            return undef unless ($reaper and $reaper->remove());
+            return unless ($reaper and $reaper->remove());
         }
     }
 
@@ -1772,7 +1772,7 @@ sub create {
 
     if ( -l $newfile ) {
         XIMS::Debug( 4, "link $newfile already exists - removing" );
-        return undef unless $self->remove();
+        return unless $self->remove();
     }
 
     eval {
@@ -1782,7 +1782,7 @@ sub create {
     if ( $@ ) {
         my $err = $@;
         XIMS::Debug( 2, "error creating symlink '$newfile': $err" );
-        return undef;
+        return;
     }
     else {
         XIMS::Debug( 4, "created symlink '$newfile'" );

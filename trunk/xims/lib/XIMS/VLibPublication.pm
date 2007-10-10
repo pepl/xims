@@ -57,7 +57,7 @@ sub new {
                $self->data( %{$data} );
             }
             else {
-                return undef;
+                return;
             }
         }
         else {

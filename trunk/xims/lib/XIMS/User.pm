@@ -32,7 +32,7 @@ sub validate_password {
     if ( defined( $raw_passwd ) and $self->password() eq Digest::MD5::md5_hex( $raw_passwd ) ) {
         return 1;
     }
-    return undef;
+    return;
 }
 
 sub creatable_object_types {
@@ -61,14 +61,14 @@ sub object_privmask {
     #warn "privs returned: " . Dumper( @priv_data );
     if ( scalar( @priv_data ) > 0 ) {
         foreach my $priv ( @priv_data ) {
-            return undef if $priv->{'objectpriv.privilege_mask'} == 0; # return undef if we got a specific lockout
+            return if $priv->{'objectpriv.privilege_mask'} == 0; # return if we got a specific lockout
             $privmask = $privmask | $priv->{'objectpriv.privilege_mask'};
         }
         #warn "returning privmask: $privmask";
         return $privmask;
     }
     else {
-        return undef;
+        return;
     }
 }
 
@@ -124,7 +124,7 @@ sub default_bookmark {
     }
     else {
         my $default_role = $self->roles_granted( default_role => 1 );
-        return undef unless $default_role;
+        return unless $default_role;
         $bmk = XIMS::Bookmark->new( owner_id => $default_role->id(), stdhome => 1 );
         if ( $bmk ) {
             return $bmk;

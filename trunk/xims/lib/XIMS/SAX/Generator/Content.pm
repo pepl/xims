@@ -187,7 +187,7 @@ sub _set_children {
 
     # do not fetch children unless we are told to do so...
     my $level = $ctxt->properties->content->getchildren->level();
-    return undef unless $level;
+    return unless $level;
 
     my $object = $ctxt->object();
     my $ots = $ctxt->properties->content->getchildren->objecttypes();

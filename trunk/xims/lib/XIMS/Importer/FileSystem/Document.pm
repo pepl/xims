@@ -22,7 +22,7 @@ sub handle_data {
 
     my $object = $self->SUPER::handle_data( $location, 1 );
     my $root = $self->get_rootelement( $location, nochunk => 1 );
-    return undef unless $root;
+    return unless $root;
 
     my %importmap = (
         keywords   => "//*[local-name() = 'subject']|/html/head/meta[\@name='keywords']/\@content",
@@ -77,7 +77,7 @@ sub get_rootelement {
         };
         if ( $@ ) {
             XIMS::Debug( 3, "Could not parse: $@" );
-            return undef;
+            return;
         }
     }
 

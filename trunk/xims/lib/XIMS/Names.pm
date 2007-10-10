@@ -58,7 +58,7 @@ sub properties {
 sub valid_property {
     my ( $r_type, $prop_name ) = @_;
     return 1 if grep { $_ eq $prop_name } @{$Properties{$r_type}};
-    return undef;
+    return;
 }
 
 1;

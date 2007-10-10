@@ -583,7 +583,7 @@ sub _vlitems_byproperty {
     my $filter_granted = delete $args{filter_granted};
 
     my $propertyid = delete $args{$property."_id"};
-    return undef unless $propertyid;
+    return unless $propertyid;
 
     # think of fetching the whole object data here for performance
     my $sql = 'SELECT d.id AS id FROM cilib_'.$property.'map m, cilib_'.$property.'s p, ci_documents d, ci_content c WHERE d.ID = m.document_id AND d.ID = c.document_id AND m.'.$property.'_id = p.ID AND p.id = ? AND d.parent_id = ?';

@@ -168,7 +168,7 @@ sub _build_form_from_skeys {
     my $self = shift;
     my @skeys = @_;
 
-    return undef unless scalar @skeys > 0;
+    return unless scalar @skeys > 0;
 
     my $form = $self->start_form( -method => 'GET', -class => 'sform' );
     my $origkey;
@@ -388,7 +388,7 @@ sub _build_crits_from_skeys {
     my $self = shift;
     my @skeys = @_;
 
-    return undef unless scalar @skeys > 0;
+    return unless scalar @skeys > 0;
 
     my %criteria;
     my $origkey;

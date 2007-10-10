@@ -77,8 +77,8 @@ sub set_sax_generator {
     return XIMS::SAX::Generator::Exporter::VLibraryItem->new();
 }
 
-sub update_related { return undef }
-sub update_parent_autoindex { return undef }
+sub update_related { return; }
+sub update_parent_autoindex { return; }
 
 1;
 

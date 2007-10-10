@@ -19,7 +19,7 @@ sub check_duplicate_identifier {
     my @data = $self->data_provider->getRefLibReferencePropertyValue( property_id => $identifier_property->id(), value => $identifier );
     if ( scalar @data ) {
         XIMS::Debug( 3, "ReferenceLibraryItem with same identifier already exists" );
-        return undef;
+        return;
     }
     else {
         return 1;

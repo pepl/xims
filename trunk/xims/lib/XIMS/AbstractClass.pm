@@ -92,7 +92,7 @@ sub new {
                $self->data( %{$data} );
             }
             else {
-                return undef;
+                return;
             }
         }
         else {
@@ -153,7 +153,7 @@ sub delete {
         return 1;
     }
     else {
-       return undef;
+       return;
     }
 }
 

@@ -20,13 +20,13 @@ sub import {
     my $self = shift;
     my $object = shift;
     my $updateexisting = shift;
-    return undef unless $object;
+    return unless $object;
 
     my $body = $object->body();
-    return undef unless $body;
+    return unless $body;
 
     my $root = $self->get_rootelement( \$body, nochunk => 1 );
-    return undef unless $root;
+    return unless $root;
 
     # hmmm, this is a rather subtle way to check and decode the body if it has not already been decoded upstream
     my $decbody = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$root->toString()) : $root->toString();
@@ -223,7 +223,7 @@ sub meta_from_node {
     my $self = shift;
     my $metaset = shift;
     my $meta = XIMS::VLibMeta->new();
-    return undef unless $metaset;
+    return unless $metaset;
 
     # legalnotice
     my $legalnotice = XIMS::clean(
@@ -254,7 +254,7 @@ sub vlpublication {
     #my $isbn = shift;
     #my $issn = shift;
 
-    return undef unless $name;
+    return unless $name;
 
     my $vlpublication = XIMS::VLibPublication->new( name => $name, volume => $volume );
     if ( not (defined $vlpublication and $vlpublication->id) ) {

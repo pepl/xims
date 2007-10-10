@@ -63,10 +63,10 @@ sub new {
             }
             elsif ( scalar @real_ot > 1 and exists $args{name} ) {
                 XIMS::Debug( 2, "ambigous object type lookup. try looking up using 'fullname'" );
-                return undef;
+                return;
             }
             else {
-                return undef;
+                return;
             }
         }
         else {

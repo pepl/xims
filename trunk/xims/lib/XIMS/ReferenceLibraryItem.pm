@@ -140,7 +140,7 @@ sub reference {
             return $reference;
         }
         else {
-            return undef;
+            return;
         }
     }
 }
@@ -210,15 +210,15 @@ sub vleserial {
     my $self = shift;
     my $serial = shift;
 
-    return undef unless $self->reference;
+    return unless $self->reference;
     my $reference_id = $self->reference->id();
-    return undef unless $reference_id;
+    return unless $reference_id;
 
     if ( defined $serial and $serial->id() ) {
         $self->reference->serial_id( $serial->id() );
         if ( not $self->reference->update() ) {
             XIMS::Debug( 3, "Setting serial association failed." );
-            return undef;
+            return;
         }
         else {
             return 1;
@@ -259,13 +259,13 @@ sub _vleauthors {
 
     if ( not defined $role and $role != 1 and $role != 0 ) {
         XIMS::Debug( 3, "Called with wrong arguments, need 0|1 (role) as initial argument" );
-        return undef;
+        return;
     }
 
-    return undef unless $self->document_id();
-    return undef unless $self->reference();
+    return unless $self->document_id();
+    return unless $self->reference();
     my $reference_id = $self->reference->id();
-    return undef unless $reference_id;
+    return unless $reference_id;
 
     my $class = "XIMS::VLib$property";
 
@@ -354,21 +354,21 @@ sub reposition_author {
     my %args = @_;
 
     my $old_position = delete $args{old_position};
-    return undef unless $old_position;
+    return unless $old_position;
 
     my $new_position = delete $args{new_position};
-    return undef unless $new_position;
+    return unless $new_position;
 
     my $author_id = delete $args{author_id};
-    return undef unless defined $author_id;
+    return unless defined $author_id;
 
     my $role = delete $args{role};
-    return undef unless defined $role;
+    return unless defined $role;
 
-    return undef unless $self->document_id();
-    return undef unless $self->reference;
+    return unless $self->document_id();
+    return unless $self->reference;
     my $reference_id = $self->reference->id();
-    return undef unless $reference_id;
+    return unless $reference_id;
 
     my $position_diff = $old_position - $new_position;
 

@@ -466,7 +466,7 @@ sub getDOM {
         Generator  => $generator,
         FilterList => $filter,
     );
-    return undef unless $controller;
+    return unless $controller;
     return $controller->parse($ctxt);
 }
 
@@ -512,7 +512,7 @@ sub object_locked {
     {
         return 1;
     }
-    return undef;
+    return;
 }
 
 sub redirect {
@@ -534,7 +534,7 @@ sub resource_type {
         return 'user';
     }
     else {
-        return undef;
+        return;
     }
 }
 
@@ -2359,7 +2359,7 @@ sub handle_bang_commands {
     else {
         XIMS::Debug( 2, "invalid command: $search" );
         $self->sendError( $ctxt, "$search is an invalid command!" );
-        return undef;
+        return;
     }
 
     if ( $object and $object->locked ) {

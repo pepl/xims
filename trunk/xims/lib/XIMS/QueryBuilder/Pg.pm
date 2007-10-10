@@ -158,7 +158,7 @@ sub _build {
         return 1;
     }
     else {
-        return undef;
+        return;
     }
 }
 

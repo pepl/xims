@@ -33,7 +33,7 @@ sub new {
            $self->data( %{$real_privs} );
         }
         else {
-            return undef;
+            return;
         }
     }
     return $self;
@@ -53,7 +53,7 @@ sub delete {
         return 1;
     }
     else {
-       return undef;
+       return;
     }
 }
 

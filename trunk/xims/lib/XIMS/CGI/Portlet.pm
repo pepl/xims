@@ -166,7 +166,7 @@ sub expand_portletinfo {
     eval "require XIMS::SAX::Filter::PortletCollector;";
     if ( $@ ) {
         XIMS::Debug( 3, "could not require portletcollector : $@" );
-        return undef;
+        return;
     }
 
     my $filter = XIMS::SAX::Filter::PortletCollector->new( Provider => $ctxt->data_provider(),

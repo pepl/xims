@@ -197,7 +197,7 @@ sub member {
             return $member;
         }
         else {
-            return undef;
+            return;
         }
     }
 }

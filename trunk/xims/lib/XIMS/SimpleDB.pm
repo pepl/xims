@@ -107,12 +107,12 @@ sub map_member_property {
         }
         else {
             XIMS::Debug( 3, "Mapping already exists." );
-            return undef;
+            return;
         }
     }
     else {
         XIMS::Debug( 3, "An existing XIMS::SimpleDBMemberProperty object is needed to map to a SimpleDB" );
-        return undef;
+        return;
     }
 }
 
@@ -142,12 +142,12 @@ sub unmap_member_property {
         }
         else {
             XIMS::Debug( 3, "Mapping does not exist and therefore cannot be deleted." );
-            return undef;
+            return;
         }
     }
     else {
         XIMS::Debug( 3, "An existing XIMS::SimpleDBMemberProperty object is needed to unmap from a SimpleDB" );
-        return undef;
+        return;
     }
 }
 
@@ -172,17 +172,17 @@ sub reposition_property {
     my %args = @_;
 
     my $old_position = delete $args{old_position};
-    return undef unless $old_position;
+    return unless $old_position;
 
     my $new_position = delete $args{new_position};
-    return undef unless $new_position;
+    return unless $new_position;
 
-    return undef if $old_position == $new_position;
+    return if $old_position == $new_position;
 
     my $property_id = delete $args{property_id};
-    return undef unless defined $property_id;
+    return unless defined $property_id;
 
-    return undef unless $self->document_id();
+    return unless $self->document_id();
     my $position_diff = $old_position - $new_position;
 
     my ( $udop, $upperop, $lowerop );
@@ -242,8 +242,8 @@ sub close_property_position_gap {
     my $self = shift;
     my %args = @_;
 
-    return undef unless defined $args{position};
-    return undef unless $self->document_id();
+    return unless defined $args{position};
+    return unless $self->document_id();
 
     my @iddata = $self->data_provider->getSimpleDBMemberPropertyMap( document_id => $self->document_id(),
                                                                      properties => [ qw( id ) ] );
