@@ -114,7 +114,7 @@ sub import_object {
         return $object;
     }
     else {
-        return undef;
+        return;
     }
 }
 

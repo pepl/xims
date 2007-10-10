@@ -84,7 +84,7 @@ sub login {
         $self->{logged_in} = 1;
         return $res;
     }
-    return undef;
+    return;
 }
 
 sub get {
