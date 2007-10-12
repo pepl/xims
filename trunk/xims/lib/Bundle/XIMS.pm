@@ -1,6 +1,6 @@
 package Bundle::XIMS;
 # $Id$
-
+## no critic (RequireUseStrict)
 our $VERSION = '1.3';
 
 1;
