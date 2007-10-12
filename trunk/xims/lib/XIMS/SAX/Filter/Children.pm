@@ -32,6 +32,8 @@ sub new {
     my $class = shift;
     my $self = $class->SUPER::new(@_);
     $self->set_tagname( "children" );
+
+    return;
 }
 
 
@@ -70,6 +72,8 @@ sub handle_data {
     $self->push_listobject( @{$objects} ) if defined $objects;
 
     $self->SUPER::handle_data();
+
+    return;
 }
 
 1;

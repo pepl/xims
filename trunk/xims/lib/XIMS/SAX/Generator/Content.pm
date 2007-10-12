@@ -177,6 +177,8 @@ sub _set_parents {
         }
         $doc_data->{context}->{object}->{parents} = {object => $parents};
     }
+
+    return;
 }
 
 # helper function to fetch the children.
@@ -344,6 +346,7 @@ sub _set_children {
     $doc_data->{context}->{object}->{$tagname} = {object => \@children};
     $doc_data->{context}->{object}->{$tagname}->{totalobjects} = $child_count;
 
+    return;
 }
 
 # helper function to fetch the used dataformats and object types
@@ -369,6 +372,8 @@ sub _set_formats_and_types {
 
     $doc_data->{object_types} = {object_type => $used_types};
     $doc_data->{data_formats} = {data_format => $used_formats};
+
+    return;
 }
 
 1;

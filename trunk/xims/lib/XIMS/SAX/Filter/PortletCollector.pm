@@ -40,7 +40,9 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 sub new {
     my $class = shift;
     my $self = $class->SUPER::new(@_);
+
     $self->set_tagname( "children" );
+
     return $self;
 }
 
@@ -172,6 +174,8 @@ sub handle_data {
         }
     }
     $self->SUPER::handle_data();
+
+    return;
 }
 
 sub get_objecttypes {

@@ -41,6 +41,8 @@ sub start_element {
     }
 
     $self->SUPER::start_element($element);
+
+    return;
 }
 
 sub end_element {
@@ -100,6 +102,8 @@ sub end_element {
 
     $self->{got_to_resolve} = undef;
     $self->SUPER::end_element(@_);
+
+    return;
 }
 
 sub characters {
@@ -113,6 +117,8 @@ sub characters {
     else {
         $self->SUPER::characters($string);
     }
+
+    return;
 }
 
 1;

@@ -40,6 +40,7 @@ sub end_element {
         $self->handle_data;
         $self->SUPER::end_element( $ol );
     }
+    return;
 }
 ##
 #
@@ -63,13 +64,13 @@ sub handle_data {
     my %keys = ();
     my $fragment = $self->{Object}->body();
     my $parser = XML::LibXML->new;
-    my $frag ;
+    my $frag;
     eval {
         $frag = $parser->parse_xml_chunk( $fragment );
     };
     unless ( defined $frag ) {
         XIMS::Debug( 3, "no valid body fragment found" );
-        return ;
+        return;
     }
     my $generator = XML::Generator::PerlData->new( Handler => $self->{Handler} );
     my @portlets = grep { $_->nodeType == XML_ELEMENT_NODE
@@ -126,5 +127,6 @@ sub handle_data {
         $object->{location_path} = $path;
         $generator->parse_chunk( {object => $object } );
     }
+    return;
 }
 1;

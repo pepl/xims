@@ -31,6 +31,8 @@ sub end_element {
     }
 
     $self->SUPER::end_element( $elem );
+
+    return;
 }
 
 1;

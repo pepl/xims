@@ -42,6 +42,8 @@ sub start_element {
     }
 
     $self->SUPER::start_element($element);
+
+    return;
 }
 
 1;
