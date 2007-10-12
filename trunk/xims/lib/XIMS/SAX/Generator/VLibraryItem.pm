@@ -57,7 +57,8 @@ sub prepare {
 
     my $doc_data = $self->SUPER::prepare($ctxt);
 
-# The body won't be parsed by XML::Filter::CharacterChunk with the XML decl. Might be slightly hacky but its effective ;-)
+    # The body won't be parsed by XML::Filter::CharacterChunk with the
+    # XML decl. Might be slightly hacky but its effective ;-)
     $doc_data->{context}->{object}->{body} =~ s/^<\?xml[^>]+>//;
 
     $self->_insert_vle_common( $ctxt, $doc_data );

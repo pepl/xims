@@ -35,7 +35,6 @@ sub new {
     return $self;
 }
 
-
 ##
 #
 # SYNOPSIS
@@ -51,9 +50,11 @@ sub new {
 #    none yet
 #
 sub start_element {
-    my ($self, $element) = @_;
+    my ( $self, $element ) = @_;
 
-    if ( defined $element->{LocalName} and $element->{LocalName} eq 'attributes' ) {
+    if ( defined $element->{LocalName}
+        and $element->{LocalName} eq 'attributes' )
+    {
         $self->{got_attributes} = 1;
     }
 
@@ -61,7 +62,6 @@ sub start_element {
 
     return;
 }
-
 
 ##
 #
@@ -83,7 +83,14 @@ sub end_element {
     if ( defined $self->{got_attributes} and defined $self->{attributes} ) {
         my %attribs = ( $self->{attributes} =~ /([^;\=]+)\=([^\;]+)/g );
         foreach ( keys %attribs ) {
-            $self->SUPER::start_element( { Name => $_, LocalName => $_, Prefix => "", NamespaceURI => undef, Attributes => {} } );
+            $self->SUPER::start_element(
+                {   Name         => $_,
+                    LocalName    => $_,
+                    Prefix       => "",
+                    NamespaceURI => undef,
+                    Attributes   => {}
+                }
+            );
             $self->SUPER::characters( { Data => $attribs{$_} } );
             $self->SUPER::end_element();
         }
@@ -96,7 +103,6 @@ sub end_element {
 
     return;
 }
-
 
 ##
 #

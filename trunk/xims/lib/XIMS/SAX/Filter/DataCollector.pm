@@ -41,7 +41,6 @@ sub new {
     return $self;
 }
 
-
 ##
 #
 # SYNOPSIS
@@ -67,7 +66,6 @@ sub preserve_data {
     return $self->{PreserveData};
 }
 
-
 ##
 #
 # SYNOPSIS
@@ -89,10 +87,8 @@ sub get_data_fragment {
     my $self = shift;
     unless ( defined $self->{Fragment} ) {
         my $fragment;
-        eval {
-            $fragment = $self->SUPER::get_data_fragment();
-        };
-        if ( $@ ) {
+        eval { $fragment = $self->SUPER::get_data_fragment(); };
+        if ($@) {
             XIMS::Debug( 6, "data is not a fragment" . $@ );
             return;
         }
@@ -118,7 +114,9 @@ sub get_data_fragment {
 sub get_content {
     my $self = shift;
     unless ( defined $self->{Content} ) {
-        my ($content) = grep {$_->nodeName eq "content" } $self->get_data_fragment->childNodes;
+        my ($content)
+            = grep { $_->nodeName eq "content" }
+            $self->get_data_fragment->childNodes;
         $self->{Content} = $content;
     }
     return $self->{Content};
@@ -141,13 +139,12 @@ sub get_content {
 #
 sub push_listobject {
     my $self = shift;
-    
+
     $self->{ObjectList} = [] unless defined $self->{ObjectList};
     push @{ $self->{ObjectList} }, @_;
 
     return;
 }
-
 
 ##
 #
@@ -172,8 +169,8 @@ sub end_element {
         if ( $self->preserve_data ) {
             XIMS::Debug( 6, "send data" );
             $self->{Handler}->characters( { Data => $self->get_data() } );
-            $self->SUPER::end_element( $data );
-            $self->start_element( $data );
+            $self->SUPER::end_element($data);
+            $self->start_element($data);
         }
         XIMS::Debug( 6, "found data: " . $self->get_data() );
         XIMS::Debug( 6, "handle columns" );
@@ -185,7 +182,7 @@ sub end_element {
         XIMS::Debug( 6, "end element" );
     }
 
-    $self->SUPER::end_element( $data );
+    $self->SUPER::end_element($data);
 
     return;
 }
@@ -209,7 +206,7 @@ sub characters {
     my $data = shift;
 
     if ( $self->is_tag() && defined $data->{Data} ) {
-        $self->add_data($data->{Data});
+        $self->add_data( $data->{Data} );
     }
     else {
         $self->SUPER::characters($data);
@@ -217,7 +214,6 @@ sub characters {
 
     return;
 }
-
 
 ##
 #
@@ -237,19 +233,21 @@ sub handle_data {
     my $self = shift;
 
     if ( defined $self->{ObjectList} ) {
-        my $generator = XML::Generator::PerlData->new( Handler => $self->{Handler} );
+        my $generator
+            = XML::Generator::PerlData->new( Handler => $self->{Handler} );
 
         my %keys = ();
-        map { $keys{$_} = lc($_) } keys %{$self->{ObjectList}->[0]};
+        map { $keys{$_} = lc($_) } keys %{ $self->{ObjectList}->[0] };
+
         # to be conform with the schema
         $generator->keymap( \%keys );
-        $generator->attrmap( {object => ['id', 'document_id', 'parent_id', 'level']} );
-        $generator->parse_chunk( {object => $self->{ObjectList}} );
+        $generator->attrmap(
+            { object => [ 'id', 'document_id', 'parent_id', 'level' ] } );
+        $generator->parse_chunk( { object => $self->{ObjectList} } );
     }
 
     return;
 }
-
 
 ##
 #
@@ -269,24 +267,30 @@ sub handle_data {
 sub _handle_columns {
     my $self = shift;
 
-    unless ( scalar @{$self->{Columns}} ) {
+    unless ( scalar @{ $self->{Columns} } ) {
         my $fragment = $self->get_data_fragment();
         return unless defined $fragment;
         $self->{Fragment} = $fragment;
+
         # filter the columns
-        my ( $cols ) = grep { $_->nodeName() eq "content" } $fragment->childNodes();
+        my ($cols)
+            = grep { $_->nodeName() eq "content" } $fragment->childNodes();
         if ( not defined $cols ) {
-            XIMS::Debug( 6, "content not defined");
-            my $filter = grep { $_->nodeName() eq "filter" } $fragment->childNodes();
+            XIMS::Debug( 6, "content not defined" );
+            my $filter
+                = grep { $_->nodeName() eq "filter" } $fragment->childNodes();
             unless ( defined $filter ) {
-                my @cols = grep { $_->nodeName() eq "column" } $fragment->childNodes();
-                $self->{Columns} = [map {$_->getAttribute("name")} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
+                my @cols = grep { $_->nodeName() eq "column" }
+                    $fragment->childNodes();
+                $self->{Columns} = [ map { $_->getAttribute("name") }
+                        grep { $_->nodeType == XML_ELEMENT_NODE } @cols ];
             }
         }
         else {
             my @cols = $cols->getChildrenByTagName("column");
-            $self->{Columns} = [map {$_->getAttribute("name")} grep {$_->nodeType == XML_ELEMENT_NODE } @cols];
-            XIMS::Debug( 6, join("," , @{$self->{Columns}}));
+            $self->{Columns} = [ map { $_->getAttribute("name") }
+                    grep { $_->nodeType == XML_ELEMENT_NODE } @cols ];
+            XIMS::Debug( 6, join( ",", @{ $self->{Columns} } ) );
         }
     }
 

@@ -30,12 +30,11 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 #
 sub new {
     my $class = shift;
-    my $self = $class->SUPER::new(@_);
-    $self->set_tagname( "children" );
+    my $self  = $class->SUPER::new(@_);
+    $self->set_tagname("children");
 
     return;
 }
-
 
 ##
 #
@@ -53,22 +52,22 @@ sub new {
 #
 sub handle_data {
     my $self = shift;
-    my $cols =  $self->get_columns();
+    my $cols = $self->get_columns();
 
     my $provider = $self->get_provider();
     return unless defined $provider and defined $self->{Object};
 
-
     # fetch the objects
     my %param = ( -object => $self->{Object} );
 
-    $param{-user}      = $self->get_user()    if defined $self->get_user();
-    $param{-published} = $self->export()      if defined $self->export();
+    $param{-user}      = $self->get_user() if defined $self->get_user();
+    $param{-published} = $self->export()   if defined $self->export();
 
-    $param{-level}     = $self->{Level}       if defined $self->{Level};
-    $param{-objecttypes} = $self->{ObjectTypes} if defined $self->{ObjectTypes};
+    $param{-level} = $self->{Level} if defined $self->{Level};
+    $param{-objecttypes} = $self->{ObjectTypes}
+        if defined $self->{ObjectTypes};
 
-    my $objects = $provider->getChildObjects( %param );
+    my $objects = $provider->getChildObjects(%param);
     $self->push_listobject( @{$objects} ) if defined $objects;
 
     $self->SUPER::handle_data();

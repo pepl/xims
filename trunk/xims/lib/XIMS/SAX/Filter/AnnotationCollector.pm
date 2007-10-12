@@ -16,21 +16,26 @@ sub end_element {
 
     if ( $elem->{LocalName} eq "children" ) {
         my $object  = $self->{Object};
-        my @objects = $object->descendants_granted( User => $object->User,
-                                                    object_type_id => [ XIMS::ObjectType->new( name => 'Annotation' )->id() ] );
+        my @objects = $object->descendants_granted(
+            User => $object->User,
+            object_type_id =>
+                [ XIMS::ObjectType->new( name => 'Annotation' )->id() ]
+        );
 
         if ( @objects and scalar @objects ) {
-            XIMS::Debug( 6, "found " . scalar( @objects ) );
-            my $generator = XML::Generator::PerlData->new( Handler => $self->{Handler} );
-            $generator->attrmap( {object => ['id', 'document_id', 'parent_id', 'level']} );
-            $generator->parse_chunk( {object => [@objects]} );
+            XIMS::Debug( 6, "found " . scalar(@objects) );
+            my $generator = XML::Generator::PerlData->new(
+                Handler => $self->{Handler} );
+            $generator->attrmap(
+                { object => [ 'id', 'document_id', 'parent_id', 'level' ] } );
+            $generator->parse_chunk( { object => [@objects] } );
         }
         else {
             XIMS::Debug( 4, "no annotations found" );
         }
     }
 
-    $self->SUPER::end_element( $elem );
+    $self->SUPER::end_element($elem);
 
     return;
 }

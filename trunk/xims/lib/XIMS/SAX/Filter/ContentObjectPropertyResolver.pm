@@ -33,10 +33,11 @@ sub new {
 }
 
 sub start_element {
-    my ($self, $element) = @_;
+    my ( $self, $element ) = @_;
 
     if ( defined $element->{LocalName}
-         and grep { /^$element->{LocalName}$/i } @{$self->{ResolveContent}} ) {
+        and grep {/^$element->{LocalName}$/i} @{ $self->{ResolveContent} } )
+    {
         $self->{got_to_resolve} = 1;
     }
 
@@ -46,17 +47,23 @@ sub start_element {
 }
 
 sub end_element {
-    my ($self, $element) = @_;
+    my ( $self, $element ) = @_;
 
-    if ( defined $self->{got_to_resolve} and defined $self->{document_id} and $self->{document_id} =~ /^[0-9]+$/ ) {
+    if (    defined $self->{got_to_resolve}
+        and defined $self->{document_id}
+        and $self->{document_id} =~ /^[0-9]+$/ )
+    {
         my $id;
 
-        # other filters may have fiddled with $element->{LocalName}, so we need to check again and use
-        # a fallback otherwise
-        if ( defined $element->{LocalName} and ($element->{LocalName} eq 'document_id'
-             or $element->{LocalName} eq 'department_id'
-             or $element->{LocalName} eq 'parent_id'
-             or $element->{LocalName} eq 'symname_to_doc_id') ) {
+        # other filters may have fiddled with $element->{LocalName}, so
+        # we need to check again and use a fallback otherwise
+        if (defined $element->{LocalName}
+            and (  $element->{LocalName} eq 'document_id'
+                or $element->{LocalName} eq 'department_id'
+                or $element->{LocalName} eq 'parent_id'
+                or $element->{LocalName} eq 'symname_to_doc_id' )
+            )
+        {
             $id = 'document_id';
         }
         else {
@@ -64,22 +71,31 @@ sub end_element {
         }
         my $object;
         my $path;
-        my $cachekey = "_copr_cached".$id.$self->{document_id};
+        my $cachekey = "_copr_cached" . $id . $self->{document_id};
         if ( defined $self->{$cachekey} ) {
             $object = $self->{$cachekey};
         }
         else {
             $self->{Properties} ||= [];
+
             # add a list of base properties
-            push( @{$self->{Properties}},
-                     qw( id document_id parent_id object_type_id
-                         data_format_id symname_to_doc_id location location_path title )
-                ) unless exists $self->{PushedDefaultProperties};
+            push(
+                @{ $self->{Properties} },
+                qw( id document_id parent_id object_type_id
+                    data_format_id symname_to_doc_id location location_path title )
+            ) unless exists $self->{PushedDefaultProperties};
             $self->{PushedDefaultProperties}++;
 
-            $object = XIMS::Object->new( User => $self->{User}, $id => $self->{document_id}, properties => $self->{Properties} );
-            if ( defined $object->{location_path} and not exists $self->{NonExport} ) {
+            $object = XIMS::Object->new(
+                User       => $self->{User},
+                $id        => $self->{document_id},
+                properties => $self->{Properties}
+            );
+            if ( defined $object->{location_path}
+                and not exists $self->{NonExport} )
+            {
                 if ( XIMS::RESOLVERELTOSITEROOTS() ) {
+
                     # snip off the site portion of the path ('/site/somepath')
                     $object->{location_path} =~ s/^\/[^\/]+//;
                 }
@@ -91,9 +107,16 @@ sub end_element {
             $self->{$cachekey} = $object;
         }
 
-        foreach my $property (@{$self->{Properties}}) {
-            $self->SUPER::start_element( {Name => $property, LocalName => $property, Prefix => "", NamespaceURI => undef, Attributes => {}} );
-            $self->SUPER::characters( {Data => $object->{$property} } );
+        foreach my $property ( @{ $self->{Properties} } ) {
+            $self->SUPER::start_element(
+                {   Name         => $property,
+                    LocalName    => $property,
+                    Prefix       => "",
+                    NamespaceURI => undef,
+                    Attributes   => {}
+                }
+            );
+            $self->SUPER::characters( { Data => $object->{$property} } );
             $self->SUPER::end_element();
         }
 
@@ -109,9 +132,10 @@ sub end_element {
 sub characters {
     my ( $self, $string ) = @_;
 
-    if ( defined $string->{Data}
-         and defined $self->{got_to_resolve}
-         and $self->{got_to_resolve} == 1 ) {
+    if (    defined $string->{Data}
+        and defined $self->{got_to_resolve}
+        and $self->{got_to_resolve} == 1 )
+    {
         $self->{document_id} .= $string->{Data};
     }
     else {

@@ -17,6 +17,7 @@ use XIMS::Object;
 use DBIx::SQLEngine::Criteria;
 use DBIx::SQLEngine::Criteria::Or;
 use DBIx::SQLEngine::Criteria::And;
+
 # use DBIx::SQLEngine::Criteria::Not;
 use DBIx::SQLEngine::Criteria::LiteralSQL;
 use DBIx::SQLEngine::Criteria::Equality;
@@ -39,9 +40,9 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 #
 sub new {
     my $class = shift;
-    my $self = $class->SUPER::new(@_);
+    my $self  = $class->SUPER::new(@_);
 
-    $self->set_tagname( "children" );
+    $self->set_tagname("children");
 
     return $self;
 }
@@ -65,15 +66,21 @@ sub handle_data {
     my $self = shift;
     my $cols = $self->{Columns};
 
-    return unless defined $self->{Object}
-                  and $self->{Object}->symname_to_doc_id() and $self->{Object}->symname_to_doc_id() > 0;
+    return
+        unless defined $self->{Object}
+        and $self->{Object}->symname_to_doc_id()
+        and $self->{Object}->symname_to_doc_id() > 0;
+
     # fetch the objects
     # get the real object to filter:
 
     # use $dp->getObject here to filter properties
-    my $object = XIMS::Object->new( document_id => $self->{Object}->symname_to_doc_id(), language_id => $self->{Object}->language_id() );
+    my $object = XIMS::Object->new(
+        document_id => $self->{Object}->symname_to_doc_id(),
+        language_id => $self->{Object}->language_id()
+    );
 
-    if ( $object ) {
+    if ($object) {
         my @children;
         my %childrenargs = ( User => $self->{User} );
 
@@ -83,53 +90,66 @@ sub handle_data {
 
         my $object_types_names;
         foreach my $ot ( values %{ XIMS::OBJECT_TYPES() } ) {
-            $object_types_names->{$ot->{fullname}} = $ot;
+            $object_types_names->{ $ot->{fullname} } = $ot;
         }
 
         my @object_type_ids;
         my $ot;
         foreach my $name ( $self->get_objecttypes() ) {
             $ot = $object_types_names->{$name};
-            push(@object_type_ids, $ot->id()) if defined $ot;
+            push( @object_type_ids, $ot->id() ) if defined $ot;
         }
         $childrenargs{object_type_id} = \@object_type_ids;
 
         my @doclinks_object_type_ids;
         if ( $self->get_documentlinks() ) {
             my $ot;
-            foreach my $name ( qw( URLLink SymbolicLink ) ) {
+            foreach my $name (qw( URLLink SymbolicLink )) {
                 $ot = $object_types_names->{$name};
-                push(@doclinks_object_type_ids, $ot->id()) if defined $ot;
+                push( @doclinks_object_type_ids, $ot->id() ) if defined $ot;
             }
         }
 
         if ( defined $cols and ref $cols and scalar @{$cols} ) {
-            XIMS::Debug( 6, "getting custom properties: " . join( "," , @$cols ));
+            XIMS::Debug( 6,
+                "getting custom properties: " . join( ",", @$cols ) );
+
             # add a list of base properties
-            push( @{$cols}, qw( id document_id parent_id object_type_id
-                                data_format_id symname_to_doc_id location location_path title position) );
+            push(
+                @{$cols}, qw( id document_id parent_id object_type_id
+                    data_format_id symname_to_doc_id location location_path
+                    title position)
+            );
             $childrenargs{properties} = $cols;
 
         }
         my $direct_filter = $self->get_direct_filter();
-        my $method = 'children_granted';
-        my $depth = $self->get_depth();
+        my $method        = 'children_granted';
+        my $depth         = $self->get_depth();
         if ( defined $depth and length $depth and $depth > 1 ) {
             $method = 'descendants_granted';
             $childrenargs{maxlevel} = $depth;
         }
         my $latest_sortkey = $self->get_latest_sortkey();
-        my $order = 'last_modification_timestamp';
-        if ( defined $latest_sortkey and length $latest_sortkey and $latest_sortkey eq 'valid_from_timestamp' ) {
+        my $order          = 'last_modification_timestamp';
+        if (    defined $latest_sortkey
+            and length $latest_sortkey
+            and $latest_sortkey eq 'valid_from_timestamp' )
+        {
             $order = $latest_sortkey;
         }
-        @children = $object->$method( %childrenargs, %{$direct_filter}, marked_deleted => undef, limit => $self->get_latest(), order => "$order DESC" );
-        if ( @children  and scalar( @children ) ) {
-            XIMS::Debug( 6, "found n = " . scalar( @children ) . " objects" );
+        @children = $object->$method(
+            %childrenargs, %{$direct_filter},
+            marked_deleted => undef,
+            limit          => $self->get_latest(),
+            order          => "$order DESC"
+        );
+        if ( @children and scalar(@children) ) {
+            XIMS::Debug( 6, "found n = " . scalar(@children) . " objects" );
             my $location_path;
             my $dfs = XIMS::DATA_FORMATS();
-            foreach my $o ( @children ) {
-                my $dfname = $dfs->{$o->data_format_id}->name();
+            foreach my $o (@children) {
+                my $dfname = $dfs->{ $o->data_format_id }->name();
                 if ( $dfname eq 'URL' ) {
                     $location_path = $o->location();
                 }
@@ -142,10 +162,12 @@ sub handle_data {
                         my $siteroot_url;
                         $siteroot_url = $o->siteroot->url() if $siteroot;
                         if ( $siteroot_url =~ m#/# ) {
-                            $location_path = $siteroot_url . $o->location_path_relative();
+                            $location_path = $siteroot_url
+                                . $o->location_path_relative();
                         }
                         else {
-                            $location_path = XIMS::PUBROOT_URL() . $o->location_path();
+                            $location_path
+                                = XIMS::PUBROOT_URL() . $o->location_path();
                         }
                     }
                 }
@@ -154,8 +176,11 @@ sub handle_data {
                 }
                 $o->{location_path} = $location_path;
 
-                $o->{body} = $o->body() if ( $dfs->{$o->data_format_id}->mime_type() =~ /^text/ and grep { $_ eq 'body' } @{$cols} );
-                $o->{content_length} = $o->content_length if grep { $_ eq 'content_length' } @{$cols};
+                $o->{body} = $o->body()
+                    if ( $dfs->{ $o->data_format_id }->mime_type() =~ /^text/
+                    and grep { $_ eq 'body' } @{$cols} );
+                $o->{content_length} = $o->content_length
+                    if grep { $_ eq 'content_length' } @{$cols};
 
                 # check if documentlink objects should be added
                 if ( $self->get_documentlinks() ) {
@@ -163,11 +188,11 @@ sub handle_data {
                     my %cargs = %childrenargs;
                     $cargs{object_type_id} = \@doclinks_object_type_ids;
                     delete $cargs{maxlevel};
-                    my @links = $o->children_granted( %cargs );
-                    push( @children, @links) if scalar @links;
+                    my @links = $o->children_granted(%cargs);
+                    push( @children, @links ) if scalar @links;
                 }
             }
-            $self->push_listobject( @children );
+            $self->push_listobject(@children);
         }
         else {
             XIMS::Debug( 6, "no objects found" );
@@ -179,38 +204,38 @@ sub handle_data {
 }
 
 sub get_objecttypes {
-    my $self = shift;
+    my $self     = shift;
     my $fragment = $self->get_data_fragment;
 
-    my @ots  = ();
-    my @tags = ();
+    my @ots     = ();
+    my @tags    = ();
     my $content = $self->get_content();
     if ( defined $content ) {
-        @tags = $content->getChildrenByTagName( "object-type" );
+        @tags = $content->getChildrenByTagName("object-type");
     }
     else {
-        @tags = grep {$_->nodeName eq "object-type" } $fragment->childNodes;
+        @tags = grep { $_->nodeName eq "object-type" } $fragment->childNodes;
     }
 
     if ( scalar @tags ) {
-        @ots = map { $_->getAttribute( "name" ) } @tags;
+        @ots = map { $_->getAttribute("name") } @tags;
     }
 
     return @ots;
 }
 
 sub get_direct_filter {
-    my $self = shift;
+    my $self     = shift;
     my $fragment = $self->get_data_fragment;
     my %retval;
     my @fields = XIMS::Object::fields();
-    my ( $filter ) = grep {$_->nodeName eq "filter" } $fragment->childNodes;
-    if ( $filter ) {
+    my ($filter) = grep { $_->nodeName eq "filter" } $fragment->childNodes;
+    if ($filter) {
         my @cnodes = $filter->childNodes;
-        foreach my $node ( @cnodes) {
+        foreach my $node (@cnodes) {
             next unless $node->nodeType == XML_ELEMENT_NODE;
             next unless grep { $node->nodeName() eq $_ } @fields;
-            $retval{$node->nodeName()} = $node->string_value();
+            $retval{ $node->nodeName() } = $node->string_value();
         }
     }
     return \%retval;
@@ -221,7 +246,7 @@ sub get_latest {
     my $latest;
     my $content = $self->get_content();
     if ( defined $content ) {
-        $latest = $content->getChildrenByTagName( "latest" )->string_value();
+        $latest = $content->getChildrenByTagName("latest")->string_value();
     }
     if ( defined $latest and $latest ne '0' ) {
         XIMS::Debug( 6, "got latest $latest" );
@@ -235,9 +260,14 @@ sub get_latest_sortkey {
     my $latest_sortkey;
     my $content = $self->get_content();
     if ( defined $content ) {
-        $latest_sortkey = $content->getChildrenByTagName( "latest_sortkey" )->string_value();
+        $latest_sortkey = $content->getChildrenByTagName("latest_sortkey")
+            ->string_value();
     }
-    if ( defined $latest_sortkey and ( $latest_sortkey eq 'last_modification_timestamp' or $latest_sortkey eq 'valid_from_timestamp' ) ) {
+    if (defined $latest_sortkey
+        and (  $latest_sortkey eq 'last_modification_timestamp'
+            or $latest_sortkey eq 'valid_from_timestamp' )
+        )
+    {
         XIMS::Debug( 6, "got latest_sortkey $latest_sortkey" );
         return $latest_sortkey;
     }
@@ -249,7 +279,7 @@ sub get_depth {
     my $depth;
     my $content = $self->get_content();
     if ( defined $content ) {
-        $depth = $content->getChildrenByTagName( "depth" )->string_value();
+        $depth = $content->getChildrenByTagName("depth")->string_value();
     }
     if ( defined $depth and $depth ne '0' ) {
         XIMS::Debug( 6, "got depth $depth" );
@@ -258,13 +288,13 @@ sub get_depth {
     return;
 }
 
-
 sub get_documentlinks {
     my $self = shift;
     my $documentlinks;
     my $content = $self->get_content();
     if ( defined $content ) {
-        $documentlinks = $content->getChildrenByTagName( "documentlinks" )->string_value();
+        $documentlinks
+            = $content->getChildrenByTagName("documentlinks")->string_value();
     }
     if ( defined $documentlinks and $documentlinks eq '1' ) {
         return 1;
@@ -275,12 +305,12 @@ sub get_documentlinks {
 # not yet rewritten code and thus currently unused code ahead
 
 sub build_or_filter {
-    my $self = shift;
-    my @tags = @_;
+    my $self   = shift;
+    my @tags   = @_;
     my $retval = undef;
-    my @conds = ();
+    my @conds  = ();
     if ( scalar @tags ) {
-        foreach my $tag ( @tags ) {
+        foreach my $tag (@tags) {
             next unless $tag->nodeType == XML_ELEMENT_NODE;
             my $tv = undef;
 
@@ -290,21 +320,23 @@ sub build_or_filter {
             }
             if ( $tag->nodeName eq "AND" ) {
                 my @acn = $tag->childNodes;
-                $tv = $self->build_and_filter( @acn );
+                $tv = $self->build_and_filter(@acn);
             }
             if ( $tag->nodeName eq "NOT" ) {
                 my @acn = $tag->childNodes;
-                $tv = $self->build_not_filter( @acn );
+                $tv = $self->build_not_filter(@acn);
             }
-            if ( $tag->nodeName eq "last-modification-time"
-                 or $tag->nodeName eq "creation-time"
-                 or $tag->nodeName eq "published-time" ) {
+            if (   $tag->nodeName eq "last-modification-time"
+                or $tag->nodeName eq "creation-time"
+                or $tag->nodeName eq "published-time" )
+            {
                 $tv = $self->build_date_filter( "OR", $tag );
             }
             if ( $tag->nodeName eq "new" ) {
                 my $v = $tag->string_value;
                 $v =~ s/\s+//g if defined $v;
-                $tv = DBIx::SQLEngine::Criteria::LiteralSQL->new( "marked_new=" . ( $v > 0 ? 1:0 ) );
+                $tv = DBIx::SQLEngine::Criteria::LiteralSQL->new(
+                    "marked_new=" . ( $v > 0 ? 1 : 0 ) );
             }
             if ( defined $tv ) {
                 push @conds, $tv;
@@ -312,27 +344,29 @@ sub build_or_filter {
         }
     }
     return unless scalar @conds;
-    return DBIx::SQLEngine::Criteria::Or->new( @conds );
+    return DBIx::SQLEngine::Criteria::Or->new(@conds);
 }
+
 sub build_not_filter {
-    my $self = shift;
-    my @tags =@_;
+    my $self   = shift;
+    my @tags   = @_;
     my $retval = undef;
     if ( scalar @tags ) {
         $retval = $self->build_or_filter(@tags);
         if ( defined $retval ) {
-            $retval = DBIx::SQLEngine::Criteria::Not->new( $retval );
+            $retval = DBIx::SQLEngine::Criteria::Not->new($retval);
         }
     }
     return $retval;
 }
+
 sub build_and_filter {
-    my $self = shift;
-    my @tags =@_;
+    my $self   = shift;
+    my @tags   = @_;
     my $retval = undef;
-    my @conds = ();
+    my @conds  = ();
     if ( scalar @tags ) {
-        foreach my $tag ( @tags ) {
+        foreach my $tag (@tags) {
             next unless $tag->nodeType == XML_ELEMENT_NODE;
             my $tv = undef;
             if ( $tag->nodeName eq "child-object" ) {
@@ -341,21 +375,23 @@ sub build_and_filter {
             }
             if ( $tag->nodeName eq "OR" ) {
                 my @acn = $tag->childNodes;
-                $tv = $self->build_or_filter( @acn );
+                $tv = $self->build_or_filter(@acn);
             }
             if ( $tag->nodeName eq "NOT" ) {
                 my @acn = $tag->childNodes;
-                $tv = $self->build_not_filter( @acn );
+                $tv = $self->build_not_filter(@acn);
             }
-            if ( $tag->nodeName eq "last-modification-time"
-                 or $tag->nodeName eq "creation-time"
-                 or $tag->nodeName eq "published-time" ) {
-                $tv = $self->build_date_filter( "AND" , $tag );
+            if (   $tag->nodeName eq "last-modification-time"
+                or $tag->nodeName eq "creation-time"
+                or $tag->nodeName eq "published-time" )
+            {
+                $tv = $self->build_date_filter( "AND", $tag );
             }
             if ( $tag->nodeName eq "new" ) {
                 my $v = $tag->string_value;
                 $v =~ s/\s+//g;
-                $tv = DBIx::SQLEngine::Criteria::LiteralSQL->new( "marked_new=" . ( $v > 0 ? 1:0 ) );
+                $tv = DBIx::SQLEngine::Criteria::LiteralSQL->new(
+                    "marked_new=" . ( $v > 0 ? 1 : 0 ) );
             }
             if ( defined $tv ) {
                 push @conds, $tv;
@@ -363,7 +399,7 @@ sub build_and_filter {
         }
     }
     return unless scalar @conds;
-    return DBIx::SQLEngine::Criteria::Or->new( @conds );
+    return DBIx::SQLEngine::Criteria::Or->new(@conds);
 }
 ##
 # this function should be aware about requests like "two days ago
@@ -373,46 +409,49 @@ sub build_and_filter {
 # the current version of this g'damn builder version is very close to
 # Oracle SQL it may not work with other systems.
 sub build_date_filter {
-    my $self = shift;
+    my $self   = shift;
     my $BOOLOP = shift;
-    my @tags = @_;
+    my @tags   = @_;
     my $retval;
     my ( $leftwrap, $rightwrap ) = ( "", "" );
     $retval = "" if scalar @tags;
-    foreach my $t ( @tags ) {
+    foreach my $t (@tags) {
         my @childnodes = $t->childNodes;
-        my $name = "";
+        my $name       = "";
         next unless scalar @childnodes;
 
         $retval .= " $BOOLOP " if length $retval;
         if ( $t->nodeName eq "last-modification-time" ) {
             $name .= "last_modification_timestamp ";
         }
-        elsif ( $t->nodeName eq  "creation-time" ) {
+        elsif ( $t->nodeName eq "creation-time" ) {
             $name .= "created_timestamp ";
         }
         elsif ( $t->nodeName eq "published-time" ) {
             $name .= "last_publication_timestamp";
         }
-        my @tcn = $t->getChildrenByTagName( "value" );
+        my @tcn = $t->getChildrenByTagName("value");
         if ( scalar @tcn <= 0 ) {
+
             # complex date functions
-            foreach my $cond ( @childnodes ) {
+            foreach my $cond (@childnodes) {
                 my $value = "";
-                my $last = 0 ;
-                if ( $cond->nodeName eq "between" ){
-                    $last = 0 ;
+                my $last  = 0;
+                if ( $cond->nodeName eq "between" ) {
+                    $last = 0;
                     foreach my $node ( $cond->childNodes ) {
                         $value = "";
                         if ( length $value ) {
-                            $value   .= " AND ";
-                            $last = 1 ;
+                            $value .= " AND ";
+                            $last = 1;
                         }
                         if ( $node->nodeName eq "value" ) {
-                            $value .= "TO_DATE('" . $node->string_value . "')";
+                            $value
+                                .= "TO_DATE('" . $node->string_value . "')";
                         }
                         elsif ( $node->nodeName eq "intevall" ) {
-                            $value .= "(SYSTDATE - ". $node->string_value . ")";
+                            $value
+                                .= "(SYSTDATE - " . $node->string_value . ")";
                         }
                         elsif ( $cond->nodeName eq "today" ) {
                             $retval .= "SYSDATE";
@@ -428,14 +467,16 @@ sub build_date_filter {
                     $retval .= " ( $name BETWEEN $value ) ";
                 }
                 elsif ( $cond->nodeName eq "after" ) {
-                    my ( $datenode ) = $cond->childNodes;
+                    my ($datenode) = $cond->childNodes;
                     if ( defined $datenode ) {
                         $value = $datenode->string_value;
                         if ( $datenode->nodeName eq "value" ) {
                             $retval .= "$name >= TO_DATE('$value')";
                         }
                         elsif ( $datenode->nodeName eq "interval"
-                                and  $value > 0) {
+                            and $value > 0 )
+                        {
+
                             # interval in dates on default
                             $retval .= "( $name >= SYSDATE - $value )";
                         }
@@ -459,11 +500,14 @@ sub build_date_filter {
             }
         }
         elsif ( scalar @tcn > 1 ) {
+
             # IN exact dates
-            my @values = map {"TO_DATE('".$_->string_value()."')"} grep { length $_->string_value() } @tcn;
-            $retval .= "$name IN ( " . join( ",", @values ) ." )";
+            my @values = map { "TO_DATE('" . $_->string_value() . "')" }
+                grep { length $_->string_value() } @tcn;
+            $retval .= "$name IN ( " . join( ",", @values ) . " )";
         }
         else {
+
             # only a single date
             # i think we should avoid this!
             my $value = $tcn[0]->string_value();
@@ -477,7 +521,7 @@ sub build_date_filter {
     }
     return unless defined $retval and length $retval;
     XIMS::Debug( 6, "use date literal $retval" );
-    return DBIx::SQLEngine::Criteria::LiteralSQL->new ( $retval );
+    return DBIx::SQLEngine::Criteria::LiteralSQL->new($retval);
 }
 
 1;
