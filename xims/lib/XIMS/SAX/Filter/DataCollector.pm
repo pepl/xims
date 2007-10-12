@@ -141,8 +141,11 @@ sub get_content {
 #
 sub push_listobject {
     my $self = shift;
+    
     $self->{ObjectList} = [] unless defined $self->{ObjectList};
     push @{ $self->{ObjectList} }, @_;
+
+    return;
 }
 
 
@@ -183,6 +186,8 @@ sub end_element {
     }
 
     $self->SUPER::end_element( $data );
+
+    return;
 }
 
 ##
@@ -209,6 +214,8 @@ sub characters {
     else {
         $self->SUPER::characters($data);
     }
+
+    return;
 }
 
 
@@ -239,6 +246,8 @@ sub handle_data {
         $generator->attrmap( {object => ['id', 'document_id', 'parent_id', 'level']} );
         $generator->parse_chunk( {object => $self->{ObjectList}} );
     }
+
+    return;
 }
 
 
@@ -280,6 +289,8 @@ sub _handle_columns {
             XIMS::Debug( 6, join("," , @{$self->{Columns}}));
         }
     }
+
+    return;
 }
 
 1;

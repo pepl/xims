@@ -29,7 +29,9 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 #
 sub new {
     my $class = shift;
+
     my $self = $class->SUPER::new(@_);
+
     return $self;
 }
 
@@ -56,6 +58,8 @@ sub start_element {
     }
 
     $self->SUPER::start_element($element);
+
+    return;
 }
 
 
@@ -89,6 +93,8 @@ sub end_element {
 
     $self->{got_attributes} = undef;
     $self->SUPER::end_element(@_);
+
+    return;
 }
 
 
@@ -115,6 +121,8 @@ sub characters {
     else {
         $self->SUPER::characters($string);
     }
+
+    return;
 }
 
 1;

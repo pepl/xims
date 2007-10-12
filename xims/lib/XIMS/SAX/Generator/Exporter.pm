@@ -98,6 +98,8 @@ sub _set_children {
     }
 
     $doc_data->{context}->{object}->{children} = {object => $children};
+
+    return;
 }
 
 sub _set_parents {
@@ -126,6 +128,8 @@ sub _set_parents {
         }
         $doc_data->{context}->{object}->{parents} = {object => $ancestors};
     }
+
+    return;
 }
 
 1;
