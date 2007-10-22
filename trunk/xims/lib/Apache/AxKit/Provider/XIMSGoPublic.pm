@@ -1,7 +1,53 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id: godav.pm 1483 2006-04-23 21:46:59Z pepl $
+
+=head1 NAME
+
+Apache::AxKit::Provider::XIMSGoPublic -- Proxy and cache XIMS objects that are
+published via gopublic
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+ <Location /people/staff>
+     SetHandler axkit
+     AxContentProvider Apache::AxKit::Provider::XIMSGoPublic
+     AxIgnoreStylePI On
+     AxAddPlugin Apache::AxKit::Plugin::QueryStringCache
+     AxGzipOutput On
+     AxResetProcessors
+     AxResetPlugins
+     AxResetStyleMap
+     AxResetOutputTransformers
+     AxAddStyleMap text/xsl Apache::AxKit::Language::Passthru
+     PerlSetVar ProxyObject http://xims.acme.com/gopublic/content/acme.com/people/staff
+     # Optional timeout on fetching the ProxyObject. Defaults to 10 seconds.
+     PerlSetVar ProxyObjectTimeout 20
+ </Location>
+
+=head1 DESCRIPTION
+
+This module allows you to use proxy and cache XIMS objects through a XIMS server
+via HTTP. Thus, enabling better performance and visible URLs for the published
+versions of these object types.
+The AxKit Server acting as a proxy needs access to the XIMS database
+via the XIMS object API. GET requests will be cached by AxKit, POST requests will
+not be cached. 
+Use this module for objects that are published using the XIMS 'gopublic' interface.
+If you are configuring an object type, where it is not possible to determine the
+last publication timestamp, like 'SQLReport' for example, make sure to set
+the 'AxNoCache' directive to 'on'.
+The 'ProxyObject' PerlVar needs to point and be set to the proxied XIMS object.
+In the example in the SYNOPSIS above, it will point to an imaginary SimpleDB object
+used as a simple staff data base.
+Note that for customized output stylesheets of the XIMS objects, the output
+method has to be set to XML since the proxy expects well-formed XML!
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package Apache::AxKit::Provider::XIMSGoPublic;
 
 use strict;
@@ -9,8 +55,7 @@ use base qw(Apache::AxKit::Provider);
 use Apache::URI;
 use Apache::AxKit::Cache;
 use LWP;
-use XML::LibXML;
-use Time::Piece;
+use XML::LibXML; use Time::Piece;
 use XIMS::Object;
 use XIMS::User;
 
@@ -261,47 +306,39 @@ sub get_styles {
 
 __END__
 
-=head1 NAME
+=head1 DIAGNOSTICS
 
-Apache::AxKit::Provider::XIMSGoPublic - Proxy and cache XIMS objects that are
-published via gopublic
+  see the error_log
 
-=head1 DESCRIPTION
+=head1 CONFIGURATION AND ENVIRONMENT
 
-This module allows you to use proxy and cache XIMS objects through a XIMS server
-via HTTP. Thus, enabling better performance and visible URLs for the published
-versions of these object types.
-The AxKit Server acting as a proxy needs access to the XIMS database
-vi the XIMS object API. GET requests will be cached by AxKit, POST requests will
-not be cached.
-Use this module for objects that are published using the XIMS 'gopublic' interface.
-If you are configuring an object type, where it is not possible to determine the
-last publication timestamp, like 'SQLReport' for example, make sure to set
-the 'AxNoCache' directive to on.
-The 'ProxyObject' PerlVar needs to be set and point to the proxied XIMS object.
-In the example in the SYNOPSIS below, it will point to an imaginary SimpleDB object
-used as a simple staff data base.
-Note that for customized output stylesheets of the XIMS objects, the output method
-has to be set to XML since the proxy expects well-formed XML!
+   httpd_conf, ximshttpd.conf, PerlSetVar
 
-=head1 SYNOPSIS
+=head1 BUGS AND LIMITATION
 
-<Location /people/staff>
-    SetHandler axkit
-    AxContentProvider Apache::AxKit::Provider::XIMSGoPublic
-    AxIgnoreStylePI On
-    AxAddPlugin Apache::AxKit::Plugin::QueryStringCache
-    AxGzipOutput On
-    AxResetProcessors
-    AxResetPlugins
-    AxResetStyleMap
-    AxResetOutputTransformers
-    AxAddStyleMap text/xsl Apache::AxKit::Language::Passthru
-    PerlSetVar ProxyObject http://xims.acme.com/gopublic/content/acme.com/people/staff
-    # Optional timeout on fetching the ProxyObject. Defaults to 10 seconds.
-    PerlSetVar ProxyObjectTimeout 20
-</Location>
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file "LICENSE" for information and conditions for use,
+reproduction, and distribution of this work, and for a DISCLAIMER OF ALL
+WARRANTIES.
 
 =cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
 
