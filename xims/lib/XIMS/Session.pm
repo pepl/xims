@@ -52,7 +52,14 @@ sub new {
             my $salt = time();
             substr($salt,0,1,'');
             substr($salt,0,3,sprintf("%03d", int(rand(999))));
-            my $session_id = Digest::MD5::md5_hex( $args{user_id} . $salt . $hostnet );
+
+            # $salt will stored and given back as number, thus leading
+	    # zeros in the string are lost. We take the easy way out and
+	    # just do int($salt) to avoid corrupt $session_ids.
+            my $session_id = Digest::MD5::md5_hex( $args{user_id}
+		                                 . int($salt)
+						 . $hostnet );
+
             $args{session_id} = $session_id;
             $args{salt} = $salt;
             $args{host} = $host;
