@@ -248,7 +248,7 @@ sub event_download_results {
     }
     elsif ($self->param('download_results') eq 'excel') {
         # download in excel only in Latin1 encoding
-        my $converter = Text::Iconv->new(XIMS::DBENCODING, "ISO-8859-1");
+        my $converter = Text::Iconv->new(XIMS::DBENCODING || "UTF-8", "ISO-8859-1");
         $object->body( $converter->convert($object->body() ));
         $ctxt->properties->application->style( 'download_results_excel' );
     }
