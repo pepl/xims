@@ -1,20 +1,21 @@
 
 =head1 NAME
 
-Apache::BasicAuthXIMS -- A module doing basic authentication for XIMS.
+Apache::BasicAuthXIMS -- HTTP basic authentication for XIMS.
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
-use Apache::BasicAuthXIMS;
+    PerlAuthenHandler Apache::BasicAuthXIMS;
+
+See example below.
 
 =head1 DESCRIPTION
 
-This module allows the use of HTTP Basic Authentication to restrict access by
-looking up users in the given providers.
+A simple HTTP Basic Authentication handler using XIMS::Auth Example.
 
 =head1 SUBROUTINES/METHODS
 
@@ -33,35 +34,15 @@ use XIMS::Auth;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-
-
-=head2    handler
+=head2 handler($r)
 
 =head3 Parameter
 
-    $r: request-object
+    $r: request object.
 
- RETURNVALUES
-    One of 'OK', 'AUTH_REQUIRED, 'SERVER_ERROR'
+=head3 Returns
 
-=head3 Description
-
-Simple Basic Authentication handler using XIMS::Auth
-Example Usage:
-
-  <Locationmatch "^/godav*">
-     #RewriteEngine On
-     #RewriteCond %{SERVER_PORT}!443
-     #RewriteRule ^(.*)$ https://host/godav/$1 [R,L]
-     SetHandler perl-script
-     PerlHandler goxims
-
-    # Authentication Realm and Type (only Basic supported)
-     AuthName "XIMS Authentication"
-     AuthType Basic
-     PerlAuthenHandler Apache::BasicAuthXIMS
-     #PerlSetEnv ORACLE_HOME /od4/oracle/product/9.2.0.1.0
-  </Locationmatch>
+    One of 'OK', 'AUTH_REQUIRED, 'SERVER_ERROR'.
 
 =cut
 
@@ -70,50 +51,73 @@ sub handler {
 
     return OK unless $r->is_initial_req;
 
-    XIMS::Debug( 5, "called from " . $r->connection->remote_ip());
+    XIMS::Debug( 5, "called from " . $r->connection->remote_ip() );
 
     my $dp = XIMS::DATAPROVIDER();
     return SERVER_ERROR unless defined $dp;
 
-    my ($res, $password) = $r->get_basic_auth_pw;
+    my ( $res, $password ) = $r->get_basic_auth_pw;
     return $res if $res;
 
     my $username = $r->connection->user;
     if ( $username and length $username and $password and length $password ) {
-        my $user = XIMS::Auth->new( Username => $username, Password => $password )->authenticate();
+        my $user
+            = XIMS::Auth->new( Username => $username, Password => $password )
+            ->authenticate();
         if ( $user and $user->id() ) {
+
             # Set note for godav
             $r->pnotes( ximsBasicAuthUser => $user );
 
             # Set notes for goxims
             my $session = XIMS::Session->new();
             $session->user_id( $user->id() );
-            $r->pnotes( ximsSession   => $session );
-            $r->pnotes( ximsProvider  => $user->data_provider() );
+            $r->pnotes( ximsSession  => $session );
+            $r->pnotes( ximsProvider => $user->data_provider() );
             return OK;
         }
         else {
             $r->note_basic_auth_failure;
-            XIMS::Debug( 3, "user $username could not be validated");
-            XIMS::Debug( 6, "user coming from " . $r->connection->remote_ip() . " for " . $r->uri );
+            XIMS::Debug( 3, "user $username could not be validated" );
+            XIMS::Debug( 6,
+                      "user coming from "
+                    . $r->connection->remote_ip() . " for "
+                    . $r->uri );
             return AUTH_REQUIRED;
         }
     }
     else {
         $r->note_basic_auth_failure;
-        $r->log_reason( "incomplete or invalid auth credentials", $r->uri);
+        $r->log_reason( "incomplete or invalid auth credentials", $r->uri );
         return AUTH_REQUIRED;
     }
 }
 
 1;
 
-
 __END__
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-   httpd_conf, ximshttpd.conf
+in F<httpd.conf>
+
+Example taken from F<ximshttpd.conf>:
+
+   <Locationmatch "^/gobaxims*">
+       SetHandler perl-script
+       PerlHandler goxims
+       PerlSetVar ximsgoxims /gobaxims
+
+       # Authentication Realm and Type (only Basic supported)
+       AuthName "XIMS Authentication"
+       AuthType Basic
+
+       PerlAuthenHandler Apache::BasicAuthXIMS
+       #PerlSetEnv ORACLE_HOME path_to_your_oracle_home
+
+       require valid-user
+   </Locationmatch>
+
 
 =head1 BUGS AND LIMITATION
 
@@ -123,9 +127,8 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 Copyright (c) 2002-2007 The XIMS Project.
 
-See the file "LICENSE" for information and conditions for use,
-reproduction, and distribution of this work, and for a DISCLAIMER OF ALL
-WARRANTIES.
+See the file "LICENSE" for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 
 =cut
 
