@@ -1,8 +1,8 @@
 
 =head1 NAME
 
-Apache::AxKit::Provider::XIMSGoPublic -- Proxy and cache XIMS objects that are
-published via gopublic
+Apache::AxKit::Provider::XIMSGoPublic -- Proxy and cache gopublic-published
+XIMS objects.
 
 =head1 VERSION
 
@@ -10,37 +10,18 @@ $Id:$
 
 =head1 SYNOPSIS
 
- <Location /people/staff>
-     SetHandler axkit
-     AxContentProvider Apache::AxKit::Provider::XIMSGoPublic
-     AxIgnoreStylePI On
-     AxAddPlugin Apache::AxKit::Plugin::QueryStringCache
-     AxGzipOutput On
-     AxResetProcessors
-     AxResetPlugins
-     AxResetStyleMap
-     AxResetOutputTransformers
-     AxAddStyleMap text/xsl Apache::AxKit::Language::Passthru
-     PerlSetVar ProxyObject http://xims.acme.com/gopublic/content/acme.com/people/staff
-     # Optional timeout on fetching the ProxyObject. Defaults to 10 seconds.
-     PerlSetVar ProxyObjectTimeout 20
- </Location>
+    AxContentProvider Apache::AxKit::Provider::XIMSGoPublic
 
 =head1 DESCRIPTION
 
-This module allows you to use proxy and cache XIMS objects through a XIMS server
-via HTTP. Thus, enabling better performance and visible URLs for the published
-versions of these object types.
-The AxKit Server acting as a proxy needs access to the XIMS database
-via the XIMS object API. GET requests will be cached by AxKit, POST requests will
-not be cached. 
-Use this module for objects that are published using the XIMS 'gopublic' interface.
-If you are configuring an object type, where it is not possible to determine the
-last publication timestamp, like 'SQLReport' for example, make sure to set
-the 'AxNoCache' directive to 'on'.
-The 'ProxyObject' PerlVar needs to point and be set to the proxied XIMS object.
-In the example in the SYNOPSIS above, it will point to an imaginary SimpleDB object
-used as a simple staff data base.
+This AxKit ContentProvider allows you to proxy and cache objects coming from
+XIMS' gopublic publishing mechanism; thus, enabling better performance and
+visible URLs for the published versions of these.
+
+The AxKit server acting as a proxy needs access to the XIMS database via the
+XIMS object API. GET requests will be cached by AxKit, POST requests will not
+be cached.
+
 Note that for customized output stylesheets of the XIMS objects, the output
 method has to be set to XML since the proxy expects well-formed XML!
 
@@ -55,7 +36,8 @@ use base qw(Apache::AxKit::Provider);
 use Apache::URI;
 use Apache::AxKit::Cache;
 use LWP;
-use XML::LibXML; use Time::Piece;
+use XML::LibXML;
+use Time::Piece;
 use XIMS::Object;
 use XIMS::User;
 
@@ -75,7 +57,8 @@ sub get_dom {
     #
     my $baseuri = $r->dir_config('ProxyObject');
     unless ( defined $baseuri ) {
-        throw Apache::AxKit::Exception::Error( -text => "ProxyObject has to be configured." );
+        throw Apache::AxKit::Exception::Error(
+            -text => "ProxyObject has to be configured." );
     }
 
     my $uri = $baseuri . $r->path_info();
@@ -83,29 +66,35 @@ sub get_dom {
 
     # Pass in the querystring
     my $args = $r->args();
-    $proxied_uri->query( $args );
+    $proxied_uri->query($args);
 
     # Prepare the request, pass in the request headers
     my $request = HTTP::Request->new( $r->method, $proxied_uri->unparse() );
     my (%headers_in) = $r->headers_in();
-    while ( my ($key,$val) = each %headers_in ) {
-        $request->header($key,$val) unless $key eq 'Host';
+    while ( my ( $key, $val ) = each %headers_in ) {
+        $request->header( $key, $val ) unless $key eq 'Host';
     }
-    $request->header('Host',$proxied_uri->hostname()); # Update the Host header
+    $request->header( 'Host', $proxied_uri->hostname() )
+        ;    # Update the Host header
 
     # Append to X-Forwarded and Via headers for in case
     my $forwarded_for = $r->headers_in->{'X-Forwarded-For'};
-    $forwarded_for .= ', '  if defined $forwarded_for;
+    $forwarded_for .= ', ' if defined $forwarded_for;
     $forwarded_for .= $r->connection->remote_ip();
+
     #warn "Set X-Forwarded-For $forwarded_for";
-    $request->header('X-Forwarded-For', $forwarded_for);
+    $request->header( 'X-Forwarded-For', $forwarded_for );
 
     my $via = $r->headers_in->{'Via'};
-    $via .= ', '  if defined $via;
+    $via .= ', ' if defined $via;
     my ($proto_version) = ( $r->protocol =~ m#HTTP/(.*)$# );
-    $via .= "$proto_version " . $r->server->server_hostname . ":" . $r->get_server_port . " (XIMSGoPublic)";
+    $via .= "$proto_version "
+        . $r->server->server_hostname . ":"
+        . $r->get_server_port
+        . " (XIMSGoPublic)";
+
     #warn "Set Via $via";
-    $request->header('Via', $via);
+    $request->header( 'Via', $via );
 
     # Pass through POST content in case
     if ( $r->method eq 'POST' ) {
@@ -114,74 +103,87 @@ sub get_dom {
 
     my $ua = LWP::UserAgent->new();
     $ua->timeout( $r->dir_config('ProxyObjectTimeout') || 10 );
-    push @{ $ua->requests_redirectable }, 'POST'; # anonforums do that - naughty
+    push @{ $ua->requests_redirectable },
+        'POST';    # anonforums do that - naughty
 
-    my $response = $ua->request( $request );
+    my $response = $ua->request($request);
     if ( $response->is_success() ) {
         $string = $response->content();
     }
     else {
         $r->status(502);
-        throw Apache::AxKit::Exception::Error( -text => "Request to backend server failed." );
+        throw Apache::AxKit::Exception::Error(
+            -text => "Request to backend server failed." );
     }
 
-    # Remove the Doctype declaration before parsing because XML::LibXML WILL validate despite validate set to 0
-    # Add it back later after parsing... :-|
-    my ( $rootnode, $public, $system ) = $string =~ /<!DOCTYPE\s+(\w+)\s+PUBLIC\s+"(.+)"\s+"(.+)">/;
+    # Remove the Doctype declaration before parsing because XML::LibXML WILL
+    # validate despite validate set to 0 Add it back later after parsing...
+    # :-|
+    my ( $rootnode, $public, $system )
+        = $string =~ /<!DOCTYPE\s+(\w+)\s+PUBLIC\s+"(.+)"\s+"(.+)">/;
+
     # warn "$rootnode, $public, $system";
     $string =~ s#<!DOCTYPE.+?>##;
 
     # Replace absolute links
-    my $requesturi = Apache::URI->parse( $r );
-    $requesturi->query( undef );
-    $requesturi->hostname( $r->header_in('X-Forwarded-Host') ) if length $r->header_in('X-Forwarded-Host');
+    my $requesturi = Apache::URI->parse($r);
+    $requesturi->query(undef);
+    if ( length $r->header_in('X-Forwarded-Host') ) {
+        $requesturi->hostname( $r->header_in('X-Forwarded-Host') );
+    }
     my $replacement = $requesturi->unparse();
     $replacement =~ s#/$##;
 
     my $tobereplaced = $baseuri;
     $tobereplaced =~ s#/$##;
+
     #warn "replacing $tobereplaced with $replacement inside href and action";
     $string =~ s/((href|action)=")$tobereplaced/$1 . $replacement/eg;
 
     # Replace relative links
-    $replacement = $requesturi->path();
-    $proxied_uri = Apache::URI->parse( $r, $baseuri );
+    $replacement  = $requesturi->path();
+    $proxied_uri  = Apache::URI->parse( $r, $baseuri );
     $tobereplaced = $proxied_uri->path();
+
     #warn "replacing $tobereplaced with $replacement inside href and action";
     $string =~ s/((href|action)=")$tobereplaced/$1 . $replacement/eg;
 
     # Replace relative links using content id redirect
     $replacement = $requesturi->path();
+
     #warn "replacing /gopublic/content?id= with $replacement";
-    $string =~ s#href="/gopublic/content\?id=(\d+)"#'href="' . $replacement . '?id=' . $1 . '"'#eg;
+    $string
+        =~ s#href="/gopublic/content\?id=(\d+)"#'href="' . $replacement . '?id=' . $1 . '"'#eg;
 
     # Replace form actions
-    $replacement = $requesturi->path();
+    $replacement  = $requesturi->path();
     $tobereplaced = $proxied_uri->scheme() . '://' . $proxied_uri->hostname();
-    $tobereplaced .= ':' . $proxied_uri->port() if defined $proxied_uri->port();
+    if ( defined $proxied_uri->port() ) {
+        $tobereplaced .= ':' . $proxied_uri->port();
+    }
     $tobereplaced .= '/gopublic/content';
+
     #warn "replacing $tobereplaced with $replacement inside action";
     $string =~ s#action="$tobereplaced"#'action="' . $replacement . '"'#eg;
 
-
     my $parser = XML::LibXML->new();
-    $parser->validation(0); # this does not work unfortunately with XML::LibXML 1.58
+    $parser->validation(0);    # this does not work with XML::LibXML 1.58
     $parser->load_ext_dtd(0);
     $parser->expand_xinclude(0);
+
     #$parser->expand_entities(0);
     #$parser->clean_namespaces( 1 ); only for libxml2.6.x
 
     my $dom;
-    eval {
-        $dom = $parser->parse_string($string);
-    };
+    eval { $dom = $parser->parse_string($string); };
     if ($@) {
-        throw Apache::AxKit::Exception::Error( -text => "Input must be well-formed XML: $@" );
+        throw Apache::AxKit::Exception::Error(
+            -text => "Input must be well-formed XML: $@" );
     }
 
     # Re-add the DTD line if there was one
     if ( defined $rootnode and defined $public and defined $system ) {
-        my $dtd = $dom->createInternalSubset( $rootnode, $public, $system);
+        my $dtd = $dom->createInternalSubset( $rootnode, $public, $system );
         $dom->setInternalSubset($dtd);
     }
 
@@ -190,35 +192,44 @@ sub get_dom {
     $r->status( $response->code() );
     $r->status_line( $response->status_line );
     my $table = $r->headers_out();
-    $response->scan( sub {$table->add(@_);} );
+    $response->scan( sub { $table->add(@_); } );
 
-    $self->{dom} = $dom; # save for later
+    $self->{dom} = $dom;    # save for later
     return $dom;
 }
 
 sub get_strref {
     my $self = shift;
-    my $dom = $self->get_dom();
-    return \ $dom->toString() if defined $dom;
+    my $dom  = $self->get_dom();
+    return \$dom->toString() if defined $dom;
 }
 
 sub process {
     my $self = shift;
-    my $r = $self->{apache};
+    my $r    = $self->{apache};
 
     # Since we are caching, only answer to GET, HEAD, and POST requests
-    return 0 unless ( $r->method() eq 'GET' or $r->method() eq 'HEAD' or $r->method() eq 'POST' );
-    # Do not cache POST requests
-    if ( $r->method() eq 'POST' ) {
-        $r->dir_config->set(AxNoCache => 1);
-        $AxKit::Cache = Apache::AxKit::Cache->new($r, 'post', '', '', '');
+    unless (   $r->method() eq 'GET'
+            or $r->method() eq 'HEAD'
+            or $r->method() eq 'POST'
+        ) {
+        return 0;
     }
 
-    my $location = $r->location();
+    # Do not cache POST requests
+    if ( $r->method() eq 'POST' ) {
+        $r->dir_config->set( AxNoCache => 1 );
+        $AxKit::Cache = Apache::AxKit::Cache->new( $r, 'post', '', '', '' );
+    }
+
+    my $location  = $r->location();
     my $path_info = $r->path_info();
     my ($pseudo_path_info) = ( $location =~ m#^/[^/]+(/.+)$# );
-    $path_info = substr($path_info,length($pseudo_path_info),length($path_info)) if defined $pseudo_path_info;
-    $r->path_info($path_info); # set the real one
+    if ( defined $pseudo_path_info ) {
+        $path_info = substr( $path_info, length($pseudo_path_info),
+            length($path_info) );
+    }
+    $r->path_info($path_info);    # set the real one
 
     # Only look up containers or html, xml files -> no binaries
     unless ( $path_info !~ m#\.# or $path_info =~ m#(\.html|\.xml)$# ) {
@@ -228,11 +239,13 @@ sub process {
     # Look up the object to be proxied
     my $baseuri = $r->dir_config('ProxyObject');
     unless ( defined $baseuri ) {
-        throw Apache::AxKit::Exception::Error( -text => "ProxyObject has to be configured." );
+        throw Apache::AxKit::Exception::Error(
+            -text => "ProxyObject has to be configured." );
     }
 
     my $uri = $baseuri . $path_info;
     my ($ximspath) = ( $uri =~ m#/gopublic/content(.+)$# );
+
     #warn "looking up object $ximspath";
     return 0 unless defined $ximspath;
 
@@ -258,27 +271,55 @@ sub mtime {
     return time() if $r->method() eq 'POST';
 
     my $object = $self->{object};
-    return $self->{mtime}->{$object->id()} if defined $self->{mtime}->{$object->id()};
+    return $self->{mtime}->{ $object->id() }
+        if defined $self->{mtime}->{ $object->id() };
 
-    # Get the most recent publication timestamp of the object, its descendants, or of the descendants of
-    # an assigned stylesheet directory
-    my (undef, undef, $last_published_desc) = $object->data_provider->get_descendant_infos( parent_id => $object->document_id() );
-    my $stylesheet = $object->stylesheet();
-    my (undef, undef, $last_published_style) = $object->data_provider->get_descendant_infos( parent_id => $stylesheet->document_id() ) if defined $stylesheet;
+    # Get the most recent publication timestamp of the object, its
+    # descendants, or of the descendants of an assigned stylesheet directory
+    my ( $last_published_desc, $last_published_style, $stylesheet );
+    ( undef, undef, $last_published_desc )
+        = $object->data_provider->get_descendant_infos(
+        parent_id => $object->document_id() );
+    $stylesheet = $object->stylesheet();
+    if ( defined $stylesheet ) {
+        ( undef, undef, $last_published_style )
+            = $object->data_provider->get_descendant_infos(
+            parent_id => $stylesheet->document_id() );
+    }
 
-    my @times = ( Time::Piece->strptime( $object->last_publication_timestamp(), "%Y-%m-%d %H:%M:%S" ) );
-    push( @times, Time::Piece->strptime( $last_published_desc, "%Y-%m-%d %H:%M:%S" ) ) if defined $last_published_desc;
-    push( @times, Time::Piece->strptime( $last_published_style, "%Y-%m-%d %H:%M:%S" ) ) if defined $last_published_style;
+    my @times = (
+        Time::Piece->strptime(
+            $object->last_publication_timestamp(),
+            "%Y-%m-%d %H:%M:%S"
+        )
+    );
+    if ( defined $last_published_desc ) {
+        push(
+            @times,
+            Time::Piece->strptime(
+                $last_published_desc, "%Y-%m-%d %H:%M:%S"
+            )
+        );
+    }
+    if ( defined $last_published_style ) {
+        push(
+            @times,
+            Time::Piece->strptime(
+                $last_published_style, "%Y-%m-%d %H:%M:%S"
+            )
+        );
+    }
 
     my @sorted_times = sort { $a <=> $b } @times;
     my $latest = $sorted_times[-1];
+
     #warn "checking for " . $latest->datetime;
 
     # Time::Piece believes this to be UTC
     $latest -= localtime->tzoffset;
 
     # Cache the timestamp since mtime() is called twice per request
-    $self->{mtime}->{$object->id()} = $latest->epoch();
+    $self->{mtime}->{ $object->id() } = $latest->epoch();
 
     return $latest->epoch();
 }
@@ -288,19 +329,15 @@ sub exists {
 }
 
 sub get_fh {
-    throw Apache::AxKit::Exception::IO(
-        -text => "not implemented"
-   );
+    throw Apache::AxKit::Exception::IO( -text => "not implemented" );
 }
 
 # Dummy
 sub get_styles {
-   my $self = shift;
-   my ($pref_media, $pref_style) = @_;
-   my @styles = (
-       { type => 'text/xsl', href => 'NULL' },
-   );
-   return \@styles;
+    my $self = shift;
+    my ( $pref_media, $pref_style ) = @_;
+    my @styles = ( { type => 'text/xsl', href => 'NULL' }, );
+    return \@styles;
 }
 1;
 
@@ -308,13 +345,42 @@ __END__
 
 =head1 DIAGNOSTICS
 
-  see the error_log
+See the F<error_log>.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-   httpd_conf, ximshttpd.conf, PerlSetVar
+Use this module for objects that are published using the XIMS `gopublic'
+interface. If you are configuring an object type, where it is not possible to
+determine the last publication timestamp, like `SQLReport' for example, make
+sure to set the `AxNoCache' directive to 'on'.
+
+The `ProxyObject' PerlVar needs to point and be set to the proxied XIMS
+object. In the example below, it will point to an imaginary SimpleDB object
+used as a simple staff data base.
+
+in F<httpd.conf> or F<ximshttpd.conf>:
+
+   <Location /people/staff>
+       SetHandler axkit
+       AxContentProvider Apache::AxKit::Provider::XIMSGoPublic
+       AxIgnoreStylePI On
+       AxAddPlugin Apache::AxKit::Plugin::QueryStringCache
+       AxGzipOutput On
+       AxResetProcessors
+       AxResetPlugins
+       AxResetStyleMap
+       AxResetOutputTransformers
+       AxAddStyleMap text/xsl Apache::AxKit::Language::Passthru
+       # Mandatory: the object to cache:
+       PerlSetVar ProxyObject http://xims.acme.com/gopublic/content/acme.com/people/staff
+       # Optional timeout on fetching the ProxyObject. Defaults to 10 seconds.
+       PerlSetVar ProxyObjectTimeout 20
+ </Location>
 
 =head1 BUGS AND LIMITATION
+
+The proxy expects well-formed XML and it doesn't fail exactly graceful on
+this.
 
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
@@ -322,9 +388,8 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 Copyright (c) 2002-2007 The XIMS Project.
 
-See the file "LICENSE" for information and conditions for use,
-reproduction, and distribution of this work, and for a DISCLAIMER OF ALL
-WARRANTIES.
+See the file "LICENSE" for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 
 =cut
 
