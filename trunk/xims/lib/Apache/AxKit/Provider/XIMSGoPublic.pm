@@ -27,6 +27,8 @@ method has to be set to XML since the proxy expects well-formed XML!
 
 =head1 SUBROUTINES/METHODS
 
+Implements methods as outlined in L<Apache::AxKit::Provider>.
+
 =cut
 
 package Apache::AxKit::Provider::XIMSGoPublic;
@@ -345,7 +347,7 @@ __END__
 
 =head1 DIAGNOSTICS
 
-See the F<error_log>.
+Look at the F<error_log> file for messages.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -377,6 +379,10 @@ in F<httpd.conf> or F<ximshttpd.conf>:
        PerlSetVar ProxyObjectTimeout 20
  </Location>
 
+=head1 DEPENDENCIES
+
+mod_perl, XIMS and AxKit, obviously.
+
 =head1 BUGS AND LIMITATION
 
 The proxy expects well-formed XML and it doesn't fail exactly graceful on
@@ -388,7 +394,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 Copyright (c) 2002-2007 The XIMS Project.
 
-See the file "LICENSE" for information and conditions for use, reproduction,
+See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 
 =cut
