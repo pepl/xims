@@ -18,7 +18,7 @@ sub new {
     if ( $param{Server} and $param{Login} and $param{Password} ) {
         if ( $class->_authenticate( %param ) ) {
             my $user = XIMS::User->new( name => $param{Login} );
-            if ( $user and $user->enabled() ne '0' and $user->id ) ){
+            if ( $user and $user->enabled() ne '0' and $user->id ) {
                 XIMS::Debug( 4, "user confirmed" );
                 $self = bless { User => $user}, $class;
             }
