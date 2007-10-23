@@ -1,5 +1,5 @@
 #! /usr/bin/perl -w
-# $Id:$
+# $Id: $
 #
 # SYNOPSIS
 #     prepare_pod Module.pm > Module.pm.new
@@ -50,7 +50,7 @@ while (<>) {
         $kill_indent = 0 if s/^#\s+SYNOPSIS.*\n/=head2/;
         $kill_indent = 0 if s/^#\s+PARAMETERS?/=head3 Parameter\n/;
         $kill_indent = 0
-            if s/^#\s+(?:RETURNS|RETURN VALUES)/=head3 Returns\n/;
+            if s/^#\s+(?:RETURNS|RETURN\s*VALUES)/=head3 Returns\n/;
         $kill_indent = 1 if s/^#\s+DESCRIPTION/=head3 Description\n/;
         $kill_indent = 1 if s/^#\s+EXAMPLE/=head3 Example\n/;
         $kill_indent = 1
@@ -73,11 +73,11 @@ while (<>) {
     $code_fixed .= "$_";
 }
 
-print << "EOPrefix";
+print << "EOPREFIX";
 
 =head1 NAME
 
-$package -- A module doing bla, bla, bla.
+$package -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
@@ -85,7 +85,7 @@ $package -- A module doing bla, bla, bla.
 
 =head1 SYNOPSIS
 
-use $package;
+    use $package;
 
 =head1 DESCRIPTION
 
@@ -95,38 +95,31 @@ This module bla bla
 
 =cut
 
-EOPrefix
+EOPREFIX
 
 print $code_fixed;
 
-print << "EOPostfix";
+print << "EOPOSTFIX";
 
 __END__
 
 =head1 DIAGNOSTICS
 
-  error_log; bla, bla...
-
-Optional section
+Look at the F<error_log> file for messages.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-   httpd_conf, ximshttpd.conf; yadda, yadda...
+in F<httpd.conf>: yadda, yadda...
 
-Optional section.
+Optional section , remove if bogus
 
 =head1 DEPENDENCIES
 
-bla, bla, bla
-
-Optional section.
-
+Optional section, remove if bogus.
 
 =head1 INCOMPATABILITIES
 
-None known.
-
-Optional section.
+Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
@@ -136,9 +129,8 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 Copyright (c) 2002-2007 The XIMS Project.
 
-See the file "LICENSE" for information and conditions for use,
-reproduction, and distribution of this work, and for a DISCLAIMER OF ALL
-WARRANTIES.
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 
 =cut
 
@@ -156,7 +148,7 @@ WARRANTIES.
 # End:
 # ex: set ts=4 sr sw=4 tw=78 ft=perl et :
 
-EOPostfix
+EOPOSTFIX
 
 __END__
 
