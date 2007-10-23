@@ -9,7 +9,7 @@ $Id$
 
 =head1 SYNOPSIS
 
-PerlAccessHandler Apache::AuthXIMS
+    PerlAccessHandler Apache::AuthXIMS
 
 =head1 DESCRIPTION
 
@@ -38,16 +38,15 @@ use XIMS::User;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-=head2 C<handler>
+=head2 handler($r)
 
-Parameters:
-  C<$r>: request-object.
+=head3 Parameters:
 
-Returns:
-  C<DECLINED>, C<OK> or C<FORBIDDEN>.
+    $r: request-object.
 
-Description:
-  none yet.
+=head3 Returns:
+
+    DECLINED, OK or FORBIDDEN.
 
 =cut
 
@@ -173,16 +172,15 @@ sub handler {
     }
 }
 
-=head2 C<get_session_cookie($r)>
+=head2 get_session_cookie($r)
 
-Parameters:
-  C<$r>: request-object.
+=head3 Parameters:
 
-Returns:
-  Session handle if successful, empty string otherwise.
+    $r: request-object.
 
-Description:
-  none yet.
+=head3 Returns:
+
+Session handle if successful, empty string otherwise.
 
 =cut
 
@@ -204,16 +202,19 @@ sub get_session_cookie {
     return $session || q{};
 }
 
-=head2 C<set_session_cookie($r, $session)>
+=head2 set_session_cookie($r, $session)
 
-Parameters:
-  C<$r>: request-object, C<$session>: session-object.
+=head3 Parameters:
 
-Returns:
-  1 if succsessful, 0 otherwise.
+    $r: request-object, C<$session>: session-object.
 
-Description:
-  Creates a cookie, redirects to old destination?
+=head3 Returns:
+
+    1 if succsessful, 0 otherwise.
+
+=head3 Description:
+
+Creates a cookie, redirects to old destination?
 
 =cut
 
@@ -249,16 +250,15 @@ sub set_session_cookie {
     return $retval;
 }
 
-=head2 C<unset_session_cookie($r)>
+=head2 unset_session_cookie($r)
 
-Parameters:
-   C<$r>: request-object.
+=head3 Parameters:
 
-Returns:
-   1.
+    $r: request-object.
 
-Description:
-  none yet.
+=head3 Returns:
+
+    1.
 
 =cut
 
@@ -282,20 +282,17 @@ sub unset_session_cookie {
     return 1;
 }
 
-=head2 C<set_user_info()>
+=head2 set_user_info($r,$dp,$session)
 
-Parameters:
-   C<$r>: request-object,
-   C<$dp>: dataprovider-object,
-   C<$session>: session-object,
-   C<$config>: directory configuration.
+=head3 Parameters:
 
+    $r: request-object,
+    $dp: dataprovider-object,
+    $session: session-object,
 
-Returns:
-   nothing meaningful.
+=head3 Returns:
 
-Description:
-   none yet.
+    nothing meaningful.
 
 =cut
 
@@ -311,18 +308,17 @@ sub set_user_info {
     return;
 }
 
-=head2 C<test_session()>
+=head2 test_session()
 
-Parameters:
-   C<$r>: request-object,
-   C<$dp>: dataprovider,
-   C<$sessionstring>: ???.
+=head3 Parameters:
 
-Returns:
-   C<$cSession>.
+    $r: request-object,
+    $dp: dataprovider,
+    $sessionstring: ???.
 
-Description:
-   none yet
+=head3 Returns:
+
+    $cSession.
 
 =cut
 
@@ -354,18 +350,17 @@ sub test_session {
     return $cSession;    # return session class
 }
 
-=head2 C<create_session_id($r, $dp, $cUser)>
+=head2 create_session_id($r, $dp, $cUser)
 
-Parameters:
-   C<$r>: request-object,
-   C<$dp>: dataprovider,
-   C<$cUser>: ???.
+=head3 Parameters:
 
-Returns:
-   C<$cSession>.
+    $r: request-object,
+    $dp: dataprovider,
+    $cUser: ???.
 
-Description:
-   none yet.
+=head3 Returns:
+
+    $cSession.
 
 =cut
 
@@ -399,16 +394,19 @@ sub create_session_id {
     return $cSession;
 }
 
-=head2 C<get_logindata($r)>
+=head2 get_logindata($r)
 
-Parameters:
-   C<$r>: request-object.
+=head3 Parameters:
 
-Returns:
-   List ( userid, password ).
+    $r: request-object.
 
-Description:
-   Read login data from request and return it as an array.
+=head3 Returns:
+
+    ( userid, password ).
+
+=head3 Description:
+
+Read login data from request and return it as an array.
 
 =cut
 
@@ -430,18 +428,20 @@ sub get_logindata {
     );
 }
 
-=head2 C<login_user($r, $dp)>
+=head2 login_user($r, $dp)
 
-Parameters:
-   C<$r>: request-object,
-   C<$dp>: dataprovider.
+=head3 Parameters:
 
-Returns:
-   C<$csession>:
+    $r: request-object,
+    $dp: dataprovider.
 
-Description:
+=head3 Returns:
 
-   Gets the login info and tests the information against the UserDB and LDAP.
+    $csession:
+
+=head3 Description:
+
+Gets the login info and tests the information against the UserDB and LDAP.
 
 =cut
 
@@ -452,7 +452,7 @@ sub login_user {
     my $session;
     my ( $username, $password ) = get_logindata($r);
 
-    # first we test if the parameter are ok
+    # first we test if the parameters are ok
     if (    $dp
         and $username
         and length $username
@@ -477,18 +477,17 @@ sub login_user {
     return $session;
 }
 
-=head2 C<test_for_logout($r, $dp, $session)>
+=head2 test_for_logout($r, $dp, $session)
 
-Parameters:
-   C<$r>: request-object,
-   C<$dp>: dataprovider,
-   C<$session>: session object.
+=head3 Parameters:
 
-Returns:
+   $r: request-object,
+   $dp: dataprovider,
+   $session: session object.
+
+=head3 Returns:
+
    undef or 1.
-
-Description:
-   none yet.
 
 =cut
 
@@ -511,18 +510,13 @@ sub test_for_logout {
     return $retval;
 }
 
-=head2 C<redirToDefault($r, $dp, $userid)>
+=head2 redirToDefault($r, $dp, $userid)
 
-Parameters:
-   C<$r>: request-object,
-   C<$dp>: dataprovider,
-   C<$userid>.
+=head3 Parameters:
 
-Returns:
-   nothing meaningful.
-
-Description:
-   none yet.
+    $r: request-object,
+    $dp: dataprovider,
+    $userid.
 
 =cut
 
@@ -606,16 +600,16 @@ sub redirToDefault {
     return;
 }
 
-=head2 C<view_privilege_handler($r, $session);>
+=head2 view_privilege_handler($r, $session)
 
-Parameters:
-   C<$r>: request object,
-   C<$session>: session object.
-Returns:
+=head3 Parameters:
+
+    $r: request object,
+    $session: session object.
+
+=head3 Returns:
+
    nothing meaningful.
-
-Description:
-   none yet.
 
 =cut
 
@@ -656,7 +650,7 @@ __END__
 
 =head1 DIAGNOSTICS
 
-error_log; yadda, yadda...
+Look at the F<error_log> file for messages.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -666,10 +660,6 @@ httpd_conf, ximshttpd.conf; yadda, yadda...
 
 mod_perl, Apache::Request, Apache::Cookie, URI::Escape, XIMS.
 
-=head1 INCOMPATABILITIES
-
-None known.
-
 =head1 BUGS AND LIMITATION
 
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
@@ -678,9 +668,8 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 Copyright (c) 2002-2007 The XIMS Project.
 
-See the file "LICENSE" for information and conditions for use,
-reproduction, and distribution of this work, and for a DISCLAIMER OF ALL
-WARRANTIES.
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 
 =cut
 

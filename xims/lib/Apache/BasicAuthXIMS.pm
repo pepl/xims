@@ -97,11 +97,15 @@ sub handler {
 
 __END__
 
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
 =head1 CONFIGURATION AND ENVIRONMENT
 
-in F<httpd.conf>
+in F<httpd.conf>:
 
-Example taken from F<ximshttpd.conf>:
+(Example taken from F<ximshttpd.conf>)
 
    <Locationmatch "^/gobaxims*">
        SetHandler perl-script
@@ -127,7 +131,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 Copyright (c) 2002-2007 The XIMS Project.
 
-See the file "LICENSE" for information and conditions for use, reproduction,
+See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 
 =cut
