@@ -417,14 +417,16 @@ sub get_logindata {
 
     my $apr = Apache::Request->new($r);
 
-    my %args = ();
+    # needed, because Apache::unescape_url() mangles its argument.
+    my $userid = $apr->param('userid');
+    my $password = $apr->param('password');
 
-    $args{'userid'}   = $apr->param('userid');
-    $args{'password'} = $apr->param('password');
-
+    # use Apache::unescape_url() instead of Apache::unescape_url_info() as the
+    # latter translates '+' to ' '. Usernames and passwords must not contain
+    # spaces, but may contain '+'.
     return (
-        Apache::unescape_url_info( $args{userid} ),
-        Apache::unescape_url_info( $args{password} )
+        Apache::unescape_url( $userid ),
+        Apache::unescape_url( $password )
     );
 }
 
