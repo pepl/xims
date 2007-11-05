@@ -1,7 +1,27 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS -- the XIMS base class.
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS;
+
+=head1 DESCRIPTION
+
+This is The XIMS baseclass, it provides access to the configuration and the data provider.
+It also defines a set of utility methods used throughout XIMS.
+
+Always C<require> or C<use> this first in scripts or modules!
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS;
 
 use strict;
@@ -18,13 +38,16 @@ our $_DATA_FORMATS_;
 
 BEGIN {
     $_CONFIG_ = XIMS::Config->new();
+
     require XIMS::DataProvider;
     my $dp = XIMS::DataProvider->new();
     $dp->driver->dbh->SQLLogging(0);
+
     my @df = $dp->data_formats();
     foreach my $df (@df) {
         $_DATA_FORMATS_->{ $df->id() } = $df;
     }
+
     my @ot = $dp->object_types();
     foreach my $ot (@ot) {
         $_OBJECT_TYPES_->{ $ot->id() } = $ot;
@@ -60,6 +83,8 @@ BEGIN {
 }
 
 require XIMS::DataProvider;
+require XIMS::Privileges;
+require XIMS::Privileges::System;
 
 sub DATAPROVIDER {
     $_DATAPROVIDER_ ||= XIMS::DataProvider->new();
@@ -74,50 +99,109 @@ sub HOME {
     $ENV{'XIMS_HOME'} || '/usr/local/xims';
 }
 
-# XIMS::Config wrappers
+=head2 XIMS::Config wrappers
 
-sub GOXIMS             { return $_CONFIG_->goxims(); }
+=item GOXIMS
 
-sub DEBUGLEVEL         { return $ENV{XIMSDEBUGLEVEL}
-                             || $_CONFIG_->DebugLevel();
+=item DEBUGLEVEL
+
+=item PUBROOT_URL
+
+=item PUBROOT
+
+=item DEFAULT_SKIN
+
+=item FALLBACKSTARTPATH
+
+=item DEFAULTXHTMLEDITOR
+
+=item XMLEDITOR
+
+=item TIDYPATH
+
+=item TIDYOPTIONS
+
+=item XIMSROOT_URL
+
+=item XIMSROOT
+
+=item AUTHSTYLE
+
+=item AUTHSERVER
+
+=item PROXYIP
+
+=item CONTENTINTERFACE
+
+=item DBMS
+
+=item QBDRIVER
+
+=item DBDSN
+
+=item DBENCODING
+
+=item UIFALLBACKLANG
+
+=item PUBLICUSERID
+
+=item AUTOINDEXFILENAME
+
+=item AUTOINDEXEXPORTSTYLESHEET
+
+=item RESOLVERELTOSITEROOTS
+
+=item SEARCHRESULTROWLIMIT
+
+=item UILANGUAGES
+
+=back
+
+=cut
+
+sub GOXIMS                    { return $_CONFIG_->goxims(); }
+
+sub DEBUGLEVEL                { return $ENV{XIMSDEBUGLEVEL}
+                                    || $_CONFIG_->DebugLevel();
 }
-sub PUBROOT_URL        { return "/" . $_CONFIG_->PublicRoot(); }
+sub PUBROOT_URL               { return "/" . $_CONFIG_->PublicRoot(); }
 
-sub PUBROOT            { return $_CONFIG_->ApacheDocumentRoot()
-                              . "/"
-                              . $_CONFIG_->PublicRoot();
+sub PUBROOT                   { return $_CONFIG_->ApacheDocumentRoot()
+                                     . "/"
+                                     . $_CONFIG_->PublicRoot();
 }
-sub DEFAULT_SKIN       { return $_CONFIG_->DefaultSkin(); }
+sub DEFAULT_SKIN              { return $_CONFIG_->DefaultSkin(); }
 
-sub FALLBACKSTARTPATH  { return $_CONFIG_->FallbackStartPath(); }
+sub FALLBACKSTARTPATH         { return $_CONFIG_->FallbackStartPath(); }
 
-sub DEFAULTXHTMLEDITOR { return $_CONFIG_->DefaultXHTMLEditor(); }
+sub DEFAULTXHTMLEDITOR        { return $_CONFIG_->DefaultXHTMLEditor(); }
 
-sub XMLEDITOR          { return $_CONFIG_->XMLEditor(); }
+sub XMLEDITOR                 { return $_CONFIG_->XMLEditor(); }
 
-sub TIDYPATH           { return $_CONFIG_->TidyPath(); }
+sub TIDYPATH                  { return $_CONFIG_->TidyPath(); }
 
-sub TIDYOPTIONS        { return $_CONFIG_->TidyOptions(); }
+sub TIDYOPTIONS               { return $_CONFIG_->TidyOptions(); }
 
-sub XIMSROOT_URL       { return "/" . $_CONFIG_->XIMSRoot(); }
+sub XIMSROOT_URL              { return "/" . $_CONFIG_->XIMSRoot(); }
 
-sub XIMSROOT           { return $_CONFIG_->ApacheDocumentRoot()
-                              . "/"
-                              . $_CONFIG_->XIMSRoot(); }
+sub XIMSROOT                  { return $_CONFIG_->ApacheDocumentRoot()
+                                     . "/"
+                                     . $_CONFIG_->XIMSRoot();
+}
 
-sub AUTHSTYLE          { return $_CONFIG_->AuthStyle(); }
+sub AUTHSTYLE                 { return $_CONFIG_->AuthStyle(); }
 
-sub AUTHSERVER         { return $_CONFIG_->AuthServer(); }
+sub AUTHSERVER                { return $_CONFIG_->AuthServer(); }
 
-sub PROXYIP            { return $_CONFIG_->ProxyIP(); }
+sub PROXYIP                   { return $_CONFIG_->ProxyIP(); }
 
-sub CONTENTINTERFACE   { return "/" . $_CONFIG_->ContentInterface(); }
+sub CONTENTINTERFACE          { return "/" . $_CONFIG_->ContentInterface(); }
 
-sub DBMS               { return $_CONFIG_->DBMS(); }
+sub DBMS                      { return $_CONFIG_->DBMS(); }
 
-sub QBDRIVER           { return $_CONFIG_->QBDriver(); }
+sub QBDRIVER                  { return $_CONFIG_->QBDriver(); }
 
-sub DBDSN              { return $_CONFIG_->DBdsn(); }
+sub DBDSN                     { return $_CONFIG_->DBdsn(); }
 
 sub DBENCODING {
     (         defined $_CONFIG_->DBEncoding()
@@ -148,34 +232,44 @@ sub UILANGUAGES {
     return %rv;
 }
 
-# Provide access to custom config values using the XIMS::ConfigValueName interface
+# Provide access to custom config values using the XIMS::ConfigValueName
+# interface
 sub AUTOLOAD {
     my ( undef, $called_sub ) = ( $AUTOLOAD =~ /(.*)::(.*)/ );
     return if $called_sub eq 'DESTROY';
     return $_CONFIG_->$called_sub if $_CONFIG_->can($called_sub);
 }
 
-# Provide access to the config itself
+=head2 CONFIG
+
+Provide access to the config itself.
+
+=cut
+
 sub CONFIG { return $_CONFIG_; }
 
 #  Utility methods
 
-##
-#
-# SYNOPSIS
-#    XIMS::Debug( $level, @debug )
-#
-# PARAMETER
-#    $level: debuglevel
-#    @debug: message
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    checks if $level is below or equal to the current threshold (XIMS::DEBUGLEVEL)
-#    and if so, the calling module, method and @debug are passed to Apache's errorlog
-#
+=head2 Debug
+
+=head3 Parameter
+
+    $level: debuglevel
+    @debug: message
+
+=head3 Returns
+
+    nothing
+
+=head3 Description
+
+    XIMS::Debug( $level, @debug )
+
+If $level is below or equals the current threshold (XIMS::DEBUGLEVEL), print
+the calling module, the method and @debug to Apache's F<error_log>
+
+=cut
+
 sub Debug {
     my $level = shift;
     if ( $level <= XIMS::DEBUGLEVEL() ) {
@@ -187,7 +281,9 @@ sub Debug {
             if ( $ENV{MOD_PERL} and Apache->request ) {
                 my $log = Apache->request->log();
 
-#$log->warn( "[Timed Interval] : " . int(1000 * Time::HiRes::tv_interval($XIMS::T0)) . "ms" );
+                #$log->warn( "[Timed Interval] : "
+                #           . int(1000 * Time::HiRes::tv_interval($XIMS::T0))
+                #           . "ms" );
                 $log->warn( "[$module, $method] " . join( '', @debug ) );
             }
             else {
@@ -195,22 +291,27 @@ sub Debug {
             }
         }
     }
+    return;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::xml_escape( $text )
-#
-# PARAMETER
-#    $text: string
-#
-# RETURNS
-#    $text: escaped string
-#
-# DESCRIPTION
-#    xml-escape string
-#
+=head2 xml_escape
+
+=head3 Parameter
+
+    $text: string
+
+=head3 Returns
+
+    $text: escaped string
+
+=head3 Description
+
+    XIMS::xml_escape( $text )
+
+XML-escape string.
+
+=cut
+
 sub xml_escape {
     my $text = shift;
     return unless defined $text;
@@ -231,20 +332,24 @@ sub xml_escape {
     return $text;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::xml_unescape( $text )
-#
-# PARAMETER
-#    $text: string
-#
-# RETURNS
-#    $text: unescaped string
-#
-# DESCRIPTION
-#    xml-unescape string
-#
+=head2 xml_unescape( $text )
+
+=head3 Parameter
+
+    $text: string
+
+=head3 Returns
+
+    $text: unescaped string
+
+=head3 Description
+
+    XIMS::xml_unescape( $text )
+
+XML-unescape string.
+
+=cut
+
 sub xml_unescape {
     my $text = shift;
     return unless defined $text;
@@ -265,20 +370,24 @@ sub xml_unescape {
     return $text;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::xml_escape_noquot( $text )
-#
-# PARAMETER
-#    $text: string
-#
-# RETURNS
-#    $text: escaped string
-#
-# DESCRIPTION
-#    xml-escape string without escaping single- and doublequotes
-#
+=head2 xml_escape_noquot
+
+=head3 Parameter
+
+    $text: string
+
+=head3 Returns
+
+    $text: escaped string
+
+=head3 Description
+
+    XIMS::xml_escape_noquot( $text )
+
+XML-escape string without escaping single- and doublequotes.
+
+=cut
+
 sub xml_escape_noquot {
     my $text = shift;
     return unless defined $text;
@@ -297,64 +406,83 @@ sub xml_escape_noquot {
     return $text;
 }
 
-##
-#
-# SYNOPSIS
-#    my $encoded = XIMS::encode( $to_encode )
-#
-# PARAMETER
-#    $to_encode: string
-#
-# RETURNS
-#    $encoded: string encoded from XIMS::DBENCODING to UTF-8
-#
-# DESCRIPTION
-#    Encodes a string from XIMS::DBENCODING to UTF-8
-#
+=head2 encode
+
+=head3 Parameter
+
+    $to_encode: string
+
+=head3 Returns
+
+    $encoded: string encoded from XIMS::DBENCODING to UTF-8
+
+=head3 Description
+
+    my $encoded = XIMS::encode( $to_encode )
+
+Encodes a string from XIMS::DBENCODING to UTF-8
+
+=cut
+
 sub encode {
     my $string = shift;
+
     return $string unless XIMS::DBENCODING();
+
     my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
     $string = $converter->convert($string) if defined $string;
+
     return $string;
 }
 
-##
-#
-# SYNOPSIS
-#    my $decoded = XIMS::decode( $to_decode )
-#
-# PARAMETER
-#    $to_decode: string
-#
-# RETURNS
-#    $decoded: string encoded from UTF-8 to XIMS::DBENCODING
-#
-# DESCRIPTION
-#    Decodes a string from UTF-8 to XIMS::DBENCODING
-#
+=head2 decode
+
+=head3 Parameter
+
+    $to_decode: string
+
+=head3 Returns
+
+    $decoded: string encoded from UTF-8 to XIMS::DBENCODING
+
+=head3 Description
+
+    my $decoded = XIMS::decode( $to_decode )
+
+Decodes a string from UTF-8 to XIMS::DBENCODING.
+
+=cut
+
 sub decode {
     my $string = shift;
+
     return $string unless XIMS::DBENCODING();
+
     my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
     $string = $converter->convert($string) if defined $string;
+
     return $string;
 }
 
-##
-#
-# SYNOPSIS
-#    my $value = XIMS::nodevalue( $node )
-#
-# PARAMETER
-#    $node: XML::LibXML::Node instance
-#
-# RETURNS
-#    $value: String value of node. If the node has child nodes, toString is called on them
-#
-# DESCRIPTION
-#    Returns a string value of a XML::LibXML::Node including potential child nodes
-#
+=head2 nodevalue
+
+=head3 Parameter
+
+    $node: XML::LibXML::Node instance
+
+=head3 Returns
+
+    $value: String value of node. If the node has child nodes, toString is
+            called on them
+
+=head3 Description
+
+    my $value = XIMS::nodevalue( $node )
+
+Returns a string value of a XML::LibXML::Node including potential child nodes
+
+=cut
+
 sub nodevalue {
     my $node = shift;
 
@@ -370,26 +498,30 @@ sub nodevalue {
         }
         if ( length $value ) {
 
-#            $value = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value;
+# $value = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value;
             return $value;
         }
     }
 }
 
-##
-#
-# SYNOPSIS
-#    my $trimmed = XIMS::trim( $string )
-#
-# PARAMETER
-#    $string: string
-#
-# RETURNS
-#    $trimmed: String with stripped leading and trailing whitespace
-#
-# DESCRIPTION
-#    Trims leading and trailing whitespace from a string
-#
+=head2 trim
+
+=head3 Parameter
+
+    $string: string
+
+=head3 Returns
+
+    $trimmed: String with stripped leading and trailing whitespace
+
+=head3 Description
+
+    my $trimmed = XIMS::trim( $string )
+
+Trims leading and trailing whitespace from a string
+
+=cut
+
 sub trim {
     my $string = shift;
 
@@ -401,20 +533,24 @@ sub trim {
     return $string;
 }
 
-##
-#
-# SYNOPSIS
-#    my $unquotted = XIMS::unquot( $string )
-#
-# PARAMETER
-#    $string: string
-#
-# RETURNS
-#    $unquotted: String with literal quotes
-#
-# DESCRIPTION
-#    Converts apos and quot entities to its string literal values inside a string
-#
+=head2 unquot
+
+=head3 Parameter
+
+    $string: string
+
+=head3 Returns
+
+    $unquotted: String with literal quotes.
+
+=head3 Description
+
+    my $unquotted = XIMS::unquot( $string )
+
+Replace C<&apos;> and C<&quot;> entities with their literal values.
+
+=cut
+
 sub unquot {
     my $string = shift;
 
@@ -426,20 +562,24 @@ sub unquot {
     return $string;
 }
 
-##
-#
-# SYNOPSIS
-#    my $clean = XIMS::clean( $string )
-#
-# PARAMETER
-#    $string: string
-#
-# RETURNS
-#    $clean: Unquoted and trimmed string
-#
-# DESCRIPTION
-#    Unquots and trims a string
-#
+=head2 clean
+
+=head3 Parameter
+
+    $string: string
+
+=head3 Returns
+
+    $clean: Unquoted and trimmed string
+
+=head3 Description
+
+    my $clean = XIMS::clean( $string )
+
+Unquots and trims a string.
+
+=cut
+
 sub clean {
     my $string = shift;
 
@@ -450,43 +590,53 @@ sub clean {
     return $string;
 }
 
-##
-#
-# SYNOPSIS
-#    my $escaped = XIMS::escapewildcard( $string )
-#
-# PARAMETER
-#    $string: string
-#
-# RETURNS
-#    $escaped: String with SQL-escaped '%' strings
-#
-# DESCRIPTION
-#    SQL-escapes '%' inside a string by replacing them with '%%'
-#
+=head2 escapewildcard
+
+=head3 Parameter
+
+    $string: string
+
+=head3 Returns
+
+    $escaped: String with SQL-escaped '%' strings.
+
+=head3 Description
+
+    my $escaped = XIMS::escapewildcard( $string )
+
+SQL-escapes '%' inside a string by replacing them with '%%'.
+
+=cut
+
 sub escapewildcard {
     my $string = shift;
 
     return unless $string;
+
     $string =~ s/%/%%/g;
 
     return $string;
 }
 
-##
-#
-# SYNOPSIS
-#    my $blocks = XIMS::tokenize_string( $string )
-#
-# PARAMETER
-#    $string: string
-#
-# RETURNS
-#    $blocks: Array reference holding the string split spaces and honoring double quotes
-#
-# DESCRIPTION
-#    Tokenizes a string along spaces while honoring double quotes
-#
+=head2  tokenize_string
+
+=head3 Parameter
+
+    $string: string
+
+=head3 Returns
+
+    $blocks: Array reference holding the string split spaces and honoring
+             double quotes.
+
+=head3 Description
+
+    my $blocks = XIMS::tokenize_string( $string )
+
+Tokenizes a string along spaces, while honoring double quotes.
+
+=cut
+
 sub tokenize_string {
     my $search = shift;
     my $retval = [];
@@ -506,22 +656,30 @@ sub tokenize_string {
     return $retval;
 }
 
-##
-#
-# SYNOPSIS
-#    my $utf8_string = XIMS::utf8_sanitize( $string )
-#
-# PARAMETER
-#    $string: string
-#
-# RETURNS
-#    $utf8_string: UTF-8 encoded string
-#
-# DESCRIPTION
-#    Tests, whether input string is utf-8 or iso-8859-1 encoded and will utf-8 encode in case
-#
+
+
+=head2 utf8_sanitize
+
+=head3 Parameter
+
+    $string: string
+
+=head3 Returns
+
+    $utf8_string: UTF-8 encoded string
+
+=head3 Description
+
+    my $utf8_string = XIMS::utf8_sanitize( $string )
+
+Tests, whether input string is utf-8 or iso-8859-1 encoded and will utf-8
+encode in case.
+
+=cut
+
 sub utf8_sanitize {
     my $string = shift;
+
     if ( defined XIMS::is_notutf8($string) ) {
         return Encode::decode_utf8( Encode::encode_utf8($string) );
     }
@@ -531,40 +689,52 @@ sub utf8_sanitize {
     }
 }
 
-##
-#
-# SYNOPSIS
-#    my $boolean = XIMS::is_notutf8( $string )
-#
-# PARAMETER
-#    $string: string
-#
-# RETURNS
-#    $boolean: True if string is not utf-8 and false if it is utf-8 encoded
-#
-# DESCRIPTION
-#    Tests whether a string is utf-8 encoded or not.
-#
+
+
+=head2 is_notutf8
+
+=head3 Parameter
+
+    $string: string
+
+=head3 Returns
+
+    $boolean: True if string is not utf-8 and false if it is utf-8 encoded
+
+=head3 Description
+
+    my $boolean = XIMS::is_notutf8( $string )
+
+Tests whether a string is utf-8 encoded or not.
+
+=cut
+
 sub is_notutf8 {
     eval { Encode::decode_utf8( shift, 1 ); };
     return $@ ? 1 : undef;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::is_known_proxy( $remote_host )
-#
-# PARAMETER
-#    $remote_host: IP-Adress
-#
-# RETURNS
-#    1 or undef
-#
-# DESCRIPTION
-#    Compares the given IP-Adress to the configured known proxyservers.
-#    Returns 1 on success, undef otherwise.
-#
+
+
+=head2 is_known_proxy
+
+=head3 Parameter
+
+    $remote_host: IP-address.
+
+=head3 Returns
+
+    1 or nothing.
+
+=head3 Description
+
+    XIMS::is_known_proxy( $remote_host )
+
+Compares the given IP-Adress to the configured known proxyservers. Returns 1
+on success, nothing otherwise.
+
+=cut
+
 sub is_known_proxy {
     my $remote_host = shift;
 
@@ -573,22 +743,27 @@ sub is_known_proxy {
     return;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::via_proxy_test( $r )
-#
-# PARAMETER
-#    $r: Apache::Request object
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    If the Request appears to come from a known proxy, replace
-#    the IP-adress with the one from the X-Forwarded-For header,
-#    and flag the request in pnotes.
-#
+
+
+=head2 via_proxy_test
+
+=head3 Parameter
+
+    $r: Apache::Request object
+
+=head3 Returns
+
+    nothing
+
+=head3 Description
+
+    XIMS::via_proxy_test( $r )
+
+If the Request appears to come from a known proxy, replace the IP-address with
+the one from the X-Forwarded-For header, and flag the request in pnotes.
+
+=cut
+
 sub via_proxy_test {
     my $r = shift;
 
@@ -599,209 +774,49 @@ sub via_proxy_test {
         XIMS::Debug( 6, "Remote IP taken from X-Forwarded-For-header\n" );
     }
     $r->pnotes( 'PROXY_TEST' => 1 );
+
+    return;
 }
 
-# ##########################################################################
-# Package XIMS::Privileges
+=head1 NAME
 
-package XIMS::Privileges;
+XIMS::Helpers
 
-#
-# this package defines all privilege methods!
-#
-sub list {
+=head1 VERSION
 
-    #
-    # example usage:
-    #
-    #{
-    #  no strict 'refs';
-    #  for (XIMS::Privileges::list()) {
-    #   print $_ . ": " . &{"XIMS::Privileges::$_"} . "\n";
-    #  }
-    #}
-    #
-    return qw(DENIED          VIEW       WRITE DELETE    PUBLISH ATTRIBUTES
-      TRANSLATE       CREATE     MOVE  COPY      LINK    PUBLISH_ALL
-      ATTRIBUTES_ALL  DELETE_ALL GRANT GRANT_ALL OWNER   MASTER
-    );
-}
+$Id:$
 
-# userrights allow a user to ...
-#
-sub DENIED { return 0x00000000; }    # explicit denial of content
+=head1 SYNOPSIS
 
-# CATEGORY a) 0x01 - 0x80: primitive user rights on content
-#
-sub VIEW { return 0x00000001; }      # view content
+    use XIMS::Helpers;
 
-#
-sub WRITE { return 0x00000002; }     # edit content
+=head1 DESCRIPTION
 
-#
-sub DELETE { return 0x00000004; }    # delete content
+Some helpers that live in their own namespace.
 
-#
-sub PUBLISH { return 0x00000008; }    # publish content
+=head1 SUBROUTINES/METHODS
 
-#
-sub ATTRIBUTES { return 0x00000010; }    # change attributes for content
-
-#
-# CATEGORY b) 0x100 - 0x8000: document related rights
-#
-sub TRANSLATE { return 0x00000100; }     # create new contents
-
-#
-sub CREATE { return 0x00000200; }        # create new child
-
-#
-sub MOVE { return 0x00000400; }          # move document to another location
-
-#
-sub LINK { return 0x00000800; }          # create a symlink on document
-
-#
-sub PUBLISH_ALL { return 0x00001000; }    # publish all content
-
-#
-sub ATTRIBUTES_ALL { return 0x00002000; }    # change attributes for document
-
-#
-sub COPY { return 0x00004000; }              # copy object to another location
-
-#
-# CATEGORY c) 0x10000 - 0x80000: administrative subtree privileges
-# the DELETE_ALL flag is not granted by default to the owner!
-#
-sub DELETE_ALL { return 0x00010000; }        # delete document subtree
-
-#
-# CATEGORY d) 0x01000000 - 0x08000000: grant privileges
-#
-# the GRANT right is a little complicated: if a user wants to grant a
-# certain right to another user, the grantor needs to have the right
-# to grant! this is to avoid users grant privileges to others they
-# don't have themself. any ACL implementaion should follow this, to
-# avoid security leaks.
-#
-sub GRANT { return 0x01000000; }    # grant/revoke other users on content
-
-#
-sub GRANT_ALL { return 0x02000000; }   # grant/revoke other users on all content
-
-#
-# CATEGORY e) 0x10000000 - 0x80000000: special roles
-#
-# the OWNER flag shows that current user is the owner of the current
-# document.  this should be a workaround for the missing document
-# owner.  this flag implies 0x0300031f, i guess, this means the owner is only
-# entitled to do simple operations on the document.
-#
-sub OWNER { return 0x40000000; }       # user owns document
-
-#
-# MODIFY is a - for now static - combination of a list of privileges to be given to creating users on object
-# creation for example
-# MODIFY could be changed to be more restrictive in the future
-#
-sub MODIFY { return 0x43016F17; }
-
-# user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE,
-# COPY, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER
-# privilege on object
-
-#
-# the master flag shows, that the user is the master of the entire
-# subtree.  this should imply 0x0301331d. this privilege is mainly for
-# administrative reasons. therefore a master has also the right to
-# grant/revoke privileges not owned by the master himself. as well the
-#  MASTER is allowed to delete an entire subtree regardless of the
-# rights the user has on any child in the subtree.
-#
-# since the master is generally not responsible for the content he is
-# not allowed to edit the content
-#
-sub MASTER { return 0x80000000; }
-
-#
-#  SYSTEM PRIVILEGES
-#
-# the ADMIN privilege indicates extreme superuser! actually this is the helper right :P
-#
-sub ADMIN { return 0xffffffff; }
-
-# ##########################################################################
-# Package XIMS::Privileges::System
-package XIMS::Privileges::System;
-
-sub list {
-    return qw( CHANGE_PASSWORD         GRANT_ROLE           RESET_PASSWORD
-      SET_STATUS              CREATE_ROLE          DELETE_ROLE
-      CHANGE_ROLE_FULLNAME    CHANGE_USER_FULLNAME CHANGE_ROLE_NAME
-      CHANGE_USER_NAME        CREATE_USER          DELETE_USER
-      CHANGE_DAV_OTPRIVS_MASK CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU
-    );
-}
-
-#
-# 0x01 - 0x80: user-self-management
-#
-sub CHANGE_PASSWORD { return 0x00000001; }    # user can change his password
-
-# if users are role-masters of a role, they can grant/revoke other
-# user/roles to/from his role
-sub GRANT_ROLE { return 0x00000002; }
-
-#
-# 0x1000 - 0x800000: helpdesk-related user/role-management
-#
-sub RESET_PASSWORD { return 0x00001000; }
-sub SET_STATUS     { return 0x00002000; }     # (un)lock users
-
-# with this privilege, users can add role-members without being
-# role-masters of the role
-sub CREATE_ROLE { return 0x00004000; }
-
-sub DELETE_ROLE { return 0x00008000; }
-
-sub CHANGE_ROLE_FULLNAME { return 0x00010000; }
-sub CHANGE_USER_FULLNAME { return 0x00020000; }
-
-sub CHANGE_ROLE_NAME { return 0x00040000; }
-sub CHANGE_USER_NAME { return 0x00080000; }
-
-sub CREATE_USER { return 0x00100000; }
-sub DELETE_USER { return 0x00200000; }
-
-sub CHANGE_DAV_OTPRIVS_MASK { return 0x00400000; }
-
-#
-# 0x10000000 - 0x80000000: system-management related
-#
-sub CHANGE_SYSPRIVS_MASK { return 0x10000000; }
-sub SET_ADMIN_EQU        { return 0x20000000; }
+=cut
 
 package XIMS::Helpers;
 
-# ##########################################################################
-# Package XIMS::Helpers
-#
+=head2 privmask_to_hash( $privmask )
 
-##
-#
-# SYNOPSIS
-#    privmask_to_hash( $privmask )
-#
-# PARAMETER
-#    $privmask: integer bitmask
-#
-# RETURNS
-#    Returns a hash-reference with the corresponding XIMS::Privileges to $privmask as keys set to 1
-#
-# DESCRIPTION
-#    Used to get a more readable representation of the integer bitmask
-#
+=head3 Parameter
+
+    $privmask: integer bitmask.
+
+=head3 Returns
+
+    Returns a hash-reference with the corresponding XIMS::Privileges to
+    $privmask as keys set to 1.
+
+=head3 Description
+
+Used, to get a more readable representation of the integer bitmask.
+
+=cut
+
 sub privmask_to_hash {
     my $privmask  = shift;
     my $privclass = shift;
@@ -817,52 +832,105 @@ sub privmask_to_hash {
     my %privs =
       map { ( lc($_), 1 ) }
       grep { $privmask & &{"XIMS::Privileges::$privclass$_"} } &{$listclass}();
+
     return \%privs;
 }
 
-##
-#
-# SYNOPSIS
-#    system_privmask_to_hash( $privmask )
-#
-# PARAMETER
-#    $privmask: integer bitmask
-#
-# RETURNS
-#    Returns a hash-reference with the corresponding XIMS::Privileges::System to $privmask as keys set to 1
-#
-# DESCRIPTION
-#    Used to get a more readable representation of the integer bitmask
-#
+=head2  system_privmask_to_hash
+
+=head3 Parameter
+
+    $privmask: integer bitmask
+
+=head3 Returns
+
+Returns a hash-reference with the corresponding XIMS::Privileges::System to
+$privmask as keys set to 1.
+
+=head3 Description
+
+    system_privmask_to_hash( $privmask )
+
+Used, to get a more readable representation of the integer bitmask.
+
+=cut
+
 sub system_privmask_to_hash { privmask_to_hash( shift, 'System::' ) }
 
-##
-#
-# SYNOPSIS
-#    dav_otprivmask_to_hash( $privmask, $object_types )
-#
-# PARAMETER
-#    $privmask     : integer bitmask
-#    $object_types : Reference to array of XIMS::ObjectType instances
-#
-# RETURNS
-#    Returns a hash-reference with the corresponding DAV object type privileges as keys set to 1
-#
-# DESCRIPTION
-#    Used to get a more readable representation of the integer bitmask
-#
+
+
+=head2    dav_otprivmask_to_hash( $privmask, $object_types )
+
+=head3 Parameter
+
+    $privmask     : integer bitmask
+    $object_types : Reference to array of XIMS::ObjectType instances
+
+=head3 Returns
+
+Returns a hash-reference with the corresponding DAV object type privileges as
+keys set to 1.
+
+=head3 Description
+
+Used, to get a more readable representation of the integer bitmask.
+
+=cut
+
 sub dav_otprivmask_to_hash {
     my $privmask     = shift;
     my $object_types = shift;
 
-    # cast $privmask to an integer, so that the bitwise operation will
-    # work as expected
+    # cast $privmask to an integer, so that the bitwise operation will work as
+    # expected.
     1 if $privmask == 1;
 
     my %privs =
       map { ( $_->name(), 1 ) }
       grep { $privmask & $_->davprivval() } @{$object_types};
+
     return \%privs;
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+This module wraps access to F<ximsconfig.xml>: See also L<XIMS::Config>.
+
+It also instantiates a XIMS::DataProvider, which, in turn, may be affected by
+environment variables. (E. g., ORACLE_HOME)
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+
