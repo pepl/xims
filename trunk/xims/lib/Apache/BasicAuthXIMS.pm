@@ -42,7 +42,7 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Returns
 
-    One of 'OK', 'AUTH_REQUIRED, 'SERVER_ERROR'.
+    One of 'OK', 'AUTH_REQUIRED', 'SERVER_ERROR'.
 
 =cut
 
