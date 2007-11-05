@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::AbstractClass -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::AbstractClass;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::AbstractClass;
 
 use strict;
@@ -56,25 +73,29 @@ sub data {
 
 sub data_provider { XIMS::DATAPROVIDER() }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Foo->new( %args );
-#
-# PARAMETER
-#    %args: If $args{id} or $args{name} is given, a lookup of an already
-#           existing object will be tried. Otherwise, an object blessed
-#           into the caller's object class with the specific resource
-#           type properties given in %args will be returned.
-#
-# RETURNS
-#    $object: XIMS::Foo instance
-#
-# DESCRIPTION
-#    Generic constructor for XIMS resource types which may be looked up
-#    by 'id' or 'name'. This method is designed to be inherited by the
-#    resource type subclasses.
-#
+
+
+=head2    XIMS::Foo->new( %args );
+
+=head3 Parameter
+
+    %args: If $args{id} or $args{name} is given, a lookup of an already
+           existing object will be tried. Otherwise, an object blessed
+           into the caller's object class with the specific resource
+           type properties given in %args will be returned.
+
+=head3 Returns
+
+    $object: XIMS::Foo instance
+
+=head3 Description
+
+Generic constructor for XIMS resource types which may be looked up
+by 'id' or 'name'. This method is designed to be inherited by the
+resource type subclasses.
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -102,21 +123,25 @@ sub new {
     return $self;
 }
 
-##
-#
-# SYNOPSIS
-#    $object->create();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $id: id of an newly created object.
-#
-# DESCRIPTION
-#    Generic method for creating objects using XIMS::DataProvider. This
-#    method is designed to be inherited by the resource type subclasses.
-#
+
+
+=head2    $object->create();
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    $id: id of an newly created object.
+
+=head3 Description
+
+Generic method for creating objects using XIMS::DataProvider. This
+method is designed to be inherited by the resource type subclasses.
+
+=cut
+
 sub create {
     my $self = shift;
     my $rt = ref($self);
@@ -127,21 +152,25 @@ sub create {
     return $id;
 }
 
-##
-#
-# SYNOPSIS
-#    $object->delete();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    1 on success, undef on failure
-#
-# DESCRIPTION
-#    Generic method for deleting objects using XIMS::DataProvider. This
-#    method is designed to be inherited by the resource type subclasses.
-#
+
+
+=head2    $object->delete();
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    1 on success, undef on failure
+
+=head3 Description
+
+Generic method for deleting objects using XIMS::DataProvider. This
+method is designed to be inherited by the resource type subclasses.
+
+=cut
+
 sub delete {
     my $self = shift;
     my $rt = ref($self);
@@ -157,21 +186,25 @@ sub delete {
     }
 }
 
-##
-#
-# SYNOPSIS
-#    $object->update();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    count of updated rows
-#
-# DESCRIPTION
-#    Generic method for updating objects using XIMS::DataProvider. This
-#    method is designed to be inherited by the resource type subclasses.
-#
+
+
+=head2    $object->update();
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    count of updated rows
+
+=head3 Description
+
+Generic method for updating objects using XIMS::DataProvider. This
+method is designed to be inherited by the resource type subclasses.
+
+=cut
+
 sub update {
     my $self = shift;
     my $rt = ref($self);
@@ -181,3 +214,51 @@ sub update {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::Entities -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::Entities;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 #
 # This is is a modified version of Gisle Aas' HTML::Entities module,
 # It was stripped down to what we need and pulled into the XIMS namespace,
@@ -16,7 +33,6 @@
 # Original Copyright:
 #
 # Id: Entities.pm,v 1.22 2001/04/11 17:22:45 gisle Exp
-# Copyright 1995-2001 Gisle Aas. All rights reserved.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
@@ -449,3 +465,51 @@ sub decode {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

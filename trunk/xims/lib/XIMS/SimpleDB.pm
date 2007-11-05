@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::SimpleDB -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::SimpleDB;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::SimpleDB;
 
 use strict;
@@ -12,20 +29,24 @@ use XIMS::SimpleDBMemberPropertyMap;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-##
-#
-# SYNOPSIS
-#    my $simpledb = XIMS::SimpleDB->new( %args )
-#
-# PARAMETER
-#    %args: recognized keys are the fields from ...
-#
-# RETURNS
-#    $simpledb: XIMS::SimpleDB instance
-#
-# DESCRIPTION
-#    Constructor
-#
+
+
+=head2    my $simpledb = XIMS::SimpleDB->new( %args )
+
+=head3 Parameter
+
+    %args: recognized keys are the fields from ...
+
+=head3 Returns
+
+    $simpledb: XIMS::SimpleDB instance
+
+=head3 Description
+
+Constructor
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -38,22 +59,26 @@ sub new {
     return $class->SUPER::new( %args );
 }
 
-##
-#
-# SYNOPSIS
-#    my @property_list = $simpledb->mapped_member_properties( [ %args ] );
-#
-# PARAMETER
-#    $args{part_of_title}    (optional)    : Filter properties by part_of_title property
-#    $args{mandatory}        (optional)    : Filter properties by mandatory property
-#    $args{gopublic}         (optional)    : Filter properties by gopublic property
-#
-# RETURNS
-#    @property_list  : Array of mapped member properties (XIMS::SimpleDBMemberProperty instances)
-#
-# DESCRIPTION
-#    Fetch mapped properties assigned to the SimpleDB
-#
+
+
+=head2    my @property_list = $simpledb->mapped_member_properties( [ %args ] );
+
+=head3 Parameter
+
+    $args{part_of_title}    (optional)    : Filter properties by part_of_title property
+    $args{mandatory}        (optional)    : Filter properties by mandatory property
+    $args{gopublic}         (optional)    : Filter properties by gopublic property
+
+=head3 Returns
+
+    @property_list  : Array of mapped member properties (XIMS::SimpleDBMemberProperty instances)
+
+=head3 Description
+
+Fetch mapped properties assigned to the SimpleDB
+
+=cut
+
 sub mapped_member_properties {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -78,20 +103,24 @@ sub mapped_member_properties {
     return @out;
 }
 
-##
-#
-# SYNOPSIS
-#    my $boolean = $simpledb->map_member_property( $memberproperty );
-#
-# PARAMETER
-#    $memberproperty                : Instance of XIMS::SimpleDBMemberProperty
-#
-# RETURNS
-#    True if mapping suceeded, false otherwise
-#
-# DESCRIPTION
-#    Maps a SimpleDB member property to a SimpleDB instance
-#
+
+
+=head2    my $boolean = $simpledb->map_member_property( $memberproperty );
+
+=head3 Parameter
+
+    $memberproperty                : Instance of XIMS::SimpleDBMemberProperty
+
+=head3 Returns
+
+    True if mapping suceeded, false otherwise
+
+=head3 Description
+
+Maps a SimpleDB member property to a SimpleDB instance
+
+=cut
+
 sub map_member_property {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -116,20 +145,24 @@ sub map_member_property {
     }
 }
 
-##
-#
-# SYNOPSIS
-#    my $boolean = $simpledb->unmap_member_property( $memberproperty );
-#
-# PARAMETER
-#    $memberproperty                : Instance of XIMS::SimpleDBMemberProperty
-#
-# RETURNS
-#    True if unmapping suceeded, false otherwise
-#
-# DESCRIPTION
-#    Unmaps a SimpleDB member property to a SimpleDB instance
-#
+
+
+=head2    my $boolean = $simpledb->unmap_member_property( $memberproperty );
+
+=head3 Parameter
+
+    $memberproperty                : Instance of XIMS::SimpleDBMemberProperty
+
+=head3 Returns
+
+    True if unmapping suceeded, false otherwise
+
+=head3 Description
+
+Unmaps a SimpleDB member property to a SimpleDB instance
+
+=cut
+
 sub unmap_member_property {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -151,22 +184,26 @@ sub unmap_member_property {
     }
 }
 
-##
-#
-# SYNOPSIS
-#    my $boolean = $item->reposition_property( %args );
-#
-# PARAMETER
-#    $args{ old_position }    :  Old position
-#    $args{ new_position }    :  New position
-#    $args{ property_id }     :  Member property_id
-#
-# RETURNS
-#    $boolean : True or False for repositioning the property
-#
-# DESCRIPTION
-#    Updates position of the member property for a SimpleDB instance
-#
+
+
+=head2    my $boolean = $item->reposition_property( %args );
+
+=head3 Parameter
+
+    $args{ old_position }    :  Old position
+    $args{ new_position }    :  New position
+    $args{ property_id }     :  Member property_id
+
+=head3 Returns
+
+    $boolean : True or False for repositioning the property
+
+=head3 Description
+
+Updates position of the member property for a SimpleDB instance
+
+=cut
+
 sub reposition_property {
     my $self = shift;
     my %args = @_;
@@ -223,20 +260,24 @@ sub reposition_property {
     return $data;
 }
 
-##
-#
-# SYNOPSIS
-#    my $boolean = $item->close_property_position_gap( %args );
-#
-# PARAMETER
-#    $args{ position }        :  Position of property to be deleted
-#
-# RETURNS
-#    $boolean : True or False for closing the property position gap
-#
-# DESCRIPTION
-#    Closes the position gap resulting in the deletion of a member property of a SimpleDB instance
-#
+
+
+=head2    my $boolean = $item->close_property_position_gap( %args );
+
+=head3 Parameter
+
+    $args{ position }        :  Position of property to be deleted
+
+=head3 Returns
+
+    $boolean : True or False for closing the property position gap
+
+=head3 Description
+
+Closes the position gap resulting in the deletion of a member property of a SimpleDB instance
+
+=cut
+
 sub close_property_position_gap {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -262,35 +303,39 @@ sub close_property_position_gap {
                                   );
 }
 
-##
-#
-# SYNOPSIS
-#    my ($item_count, $items) = $simpledb->items_granted( [ %args ] )
-#
-# PARAMETER
-#    $args{ User }         (optional) :  XIMS::User instance
-#
-#    $args{ limit }        (optional) :  Limit size of $reflibitems arrayref
-#                                        Usually used together with 'offset' for pagination
-#    $args{ offset }       (optional) :  Offset of returned items relative to total items
-#                                        Usually used together with 'limit' for pagination
-#    $args{ order }        (optional) :  Sort by object property
-#
-#    $args{ criteria }     (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::SimpleDB)
-#                                        for in the mandatory member properties
-#    $args{ published }    (optional) :  Filter published items
-#    $args{ gopublic }     (optional) :  Filter properties where gopublic is set
-#
-# RETURNS
-#    $item_count:  Count of total items
-#    $items: Arrayref of SimpleDBItems part of the SimpleDB,
-#                  slice selected by $args{limit} and $args{offset}
-#
-# DESCRIPTION
-#    Fetches SimpleDBItems part of the SimpleDB granted to $args{User} or $simpledb->User resp.
-#    Returned SimpleDBItems will include a 'member_values' key including the items member property values
-#    and a 'user_privileges' key containing the active user object privileges
-#
+
+
+=head2    my ($item_count, $items) = $simpledb->items_granted( [ %args ] )
+
+=head3 Parameter
+
+    $args{ User }         (optional) :  XIMS::User instance
+
+    $args{ limit }        (optional) :  Limit size of $reflibitems arrayref
+                                        Usually used together with 'offset' for pagination
+    $args{ offset }       (optional) :  Offset of returned items relative to total items
+                                        Usually used together with 'limit' for pagination
+    $args{ order }        (optional) :  Sort by object property
+
+    $args{ criteria }     (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::SimpleDB)
+                                        for in the mandatory member properties
+    $args{ published }    (optional) :  Filter published items
+    $args{ gopublic }     (optional) :  Filter properties where gopublic is set
+
+=head3 Returns
+
+    $item_count:  Count of total items
+    $items: Arrayref of SimpleDBItems part of the SimpleDB,
+                  slice selected by $args{limit} and $args{offset}
+
+=head3 Description
+
+Fetches SimpleDBItems part of the SimpleDB granted to $args{User} or $simpledb->User resp.
+Returned SimpleDBItems will include a 'member_values' key including the items member property values
+and a 'user_privileges' key containing the active user object privileges
+
+=cut
+
 sub items_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -379,3 +424,51 @@ sub items_granted {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

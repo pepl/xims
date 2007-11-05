@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::QuestionnaireResult -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::QuestionnaireResult;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::QuestionnaireResult ;
 
 use strict;
@@ -33,23 +50,27 @@ sub store {
     return $id;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::QuestionnaireResult->get_result_count( $questionnaire_id, $last_question )
-#
-# PARAMETER
-#    $questionnaire_id: Document-ID of the questionnaire
-#    $last_question   : number of the last question that has
-#                       to be answered (= total number of questions)
-#
-# RETURNS
-#    $total_count: number of all answered questionnaires
-#    $valid_count: number of valid answered questionnaires (all questions answered)
-#    $total_count-$valid_count: number of invalid answered questionnaires
-#
-# DESCRIPTION
-#
+
+
+=head2    XIMS::QuestionnaireResult->get_result_count( $questionnaire_id, $last_question )
+
+=head3 Parameter
+
+    $questionnaire_id: Document-ID of the questionnaire
+    $last_question   : number of the last question that has
+                       to be answered (= total number of questions)
+
+=head3 Returns
+
+    $total_count: number of all answered questionnaires
+    $valid_count: number of valid answered questionnaires (all questions answered)
+    $total_count-$valid_count: number of invalid answered questionnaires
+
+=head3 Description
+
+
+=cut
+
 sub get_result_count {
     XIMS::Debug ( 5, "called" );
     my $self = shift;
@@ -63,21 +84,25 @@ sub get_result_count {
     return ($total_count, $valid_count, $total_count - $valid_count);
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::QuestionnaireResult->get_answer_count( $questionnaire_id, $question_id, $answer )
-#
-# PARAMETER
-#    $questionnaire_id: Document-ID of the questionnaire
-#    $question_id     : ID of the question of which the number of answers should be returned
-#    $answer          : text of the answer
-#
-# RETURNS
-#    $answer_count: how many times was the specific answer given to the question
-#
-# DESCRIPTION
-#
+
+
+=head2    XIMS::QuestionnaireResult->get_answer_count( $questionnaire_id, $question_id, $answer )
+
+=head3 Parameter
+
+    $questionnaire_id: Document-ID of the questionnaire
+    $question_id     : ID of the question of which the number of answers should be returned
+    $answer          : text of the answer
+
+=head3 Returns
+
+    $answer_count: how many times was the specific answer given to the question
+
+=head3 Description
+
+
+=cut
+
 sub get_answer_count {
     XIMS::Debug ( 5, "called" );
     my $self = shift;
@@ -90,21 +115,25 @@ sub get_answer_count {
     return $answer_count;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::QuestionnaireResult->get_answers( $questionnaire_id, $question_id, $answered )
-#
-# PARAMETER
-#    $questionnaire_id: Document-ID of the questionnaire
-#    $question_id     : ID of the question of which the answers should be returned
-#
-#
-# RETURNS
-#    $answers: reference to an array with all answers to the question and how often each answer was given
-#
-# DESCRIPTION
-#
+
+
+=head2    XIMS::QuestionnaireResult->get_answers( $questionnaire_id, $question_id, $answered )
+
+=head3 Parameter
+
+    $questionnaire_id: Document-ID of the questionnaire
+    $question_id     : ID of the question of which the answers should be returned
+
+
+=head3 Returns
+
+    $answers: reference to an array with all answers to the question and how often each answer was given
+
+=head3 Description
+
+
+=cut
+
 sub get_answers {
     XIMS::Debug ( 5, "called" );
     my $self = shift;
@@ -128,24 +157,28 @@ sub get_answers {
     return $answers;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::QuestionnaireResult->get_last_answer ( $questionnaire_id, $tan )
-#
-# PARAMETER
-#    $questionnaire_id: Document-ID of the questionnaire
-#    $tan             : TAN of questionnaire that should be checked
-#
-# RETURNS
-#    $question_id: ID of the last answered question of the questionnaire
-#
-# DESCRIPTION
-#    Before a question can be answered we check if the question has not been answered before
-#    This function returns the ID of the last question the TAN has answered.
-#    The answering of the questionnaire continues at the next question.
-#    See XIMS::Questionnaire::set_answer_data()
-#
+
+
+=head2    XIMS::QuestionnaireResult->get_last_answer ( $questionnaire_id, $tan )
+
+=head3 Parameter
+
+    $questionnaire_id: Document-ID of the questionnaire
+    $tan             : TAN of questionnaire that should be checked
+
+=head3 Returns
+
+    $question_id: ID of the last answered question of the questionnaire
+
+=head3 Description
+
+Before a question can be answered we check if the question has not been answered before
+This function returns the ID of the last question the TAN has answered.
+The answering of the questionnaire continues at the next question.
+See XIMS::Questionnaire::set_answer_data()
+
+=cut
+
 sub get_last_answer {
     XIMS::Debug ( 5, "called" );
     my $self = shift;
@@ -167,4 +200,52 @@ sub getResult {
 }
 
 1;
+
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
 

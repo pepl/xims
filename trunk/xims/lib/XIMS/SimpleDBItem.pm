@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::SimpleDBItem -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::SimpleDBItem;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::SimpleDBItem;
 
 use strict;
@@ -13,20 +30,24 @@ use XIMS::SimpleDBMemberPropertyValue;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-##
-#
-# SYNOPSIS
-#    my $item = XIMS::SimpleDBItem->new( [ %args ] )
-#
-# PARAMETER
-#    %args                  (optional) :  Takes the same arguments as its super class XIMS::Object
-#
-# RETURNS
-#    $item    : instance of XIMS::SimpleDBMemberItem
-#
-# DESCRIPTION
-#    Fetches existing objects or creates a new instance of XIMS::SimpleDBMemberItem for object creation.
-#
+
+
+=head2    my $item = XIMS::SimpleDBItem->new( [ %args ] )
+
+=head3 Parameter
+
+    %args                  (optional) :  Takes the same arguments as its super class XIMS::Object
+
+=head3 Returns
+
+    $item    : instance of XIMS::SimpleDBMemberItem
+
+=head3 Description
+
+Fetches existing objects or creates a new instance of XIMS::SimpleDBMemberItem for object creation.
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -40,21 +61,25 @@ sub new {
 }
 
 
-##
-#
-# SYNOPSIS
-#    my $id = $item->create( [ %args ] );
-#
-# PARAMETER
-#    $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user, %args ) )
-#
-# RETURNS
-#    $id    : Content id of newly created object
-#
-# DESCRIPTION
-#    Returns the content id of the newly created object, undef on failure. $args{User}, or, if that is not given, $object->User() will be used to set last modifier, creator, and owner metadata.
-#    Sets the values of the mapped SimpleDBMemberProperties where part_of_title is set to 1 as object title.
-#
+
+
+=head2    my $id = $item->create( [ %args ] );
+
+=head3 Parameter
+
+    $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user, %args ) )
+
+=head3 Returns
+
+    $id    : Content id of newly created object
+
+=head3 Description
+
+Returns the content id of the newly created object, undef on failure. $args{User}, or, if that is not given, $object->User() will be used to set last modifier, creator, and owner metadata.
+Sets the values of the mapped SimpleDBMemberProperties where part_of_title is set to 1 as object title.
+
+=cut
+
 sub create {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -67,22 +92,26 @@ sub create {
 }
 
 
-##
-#
-# SYNOPSIS
-#    my @rowcount = $item->update( [ %args ] );
-#
-# PARAMETER
-#    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
-#    $args{ no_modder }   (optional) :  If set, last modifier and last modification timestamp properties will not be set.
-#
-# RETURNS
-#    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
-#
-# DESCRIPTION
-#    Updates object in database and sets last modifier properties unless $args{no_modder} has been set.
-#    Sets the values of the mapped SimpleDBMemberProperties where part_of_title is set to 1 as object title.
-#
+
+
+=head2    my @rowcount = $item->update( [ %args ] );
+
+=head3 Parameter
+
+    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+    $args{ no_modder }   (optional) :  If set, last modifier and last modification timestamp properties will not be set.
+
+=head3 Returns
+
+    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
+
+=head3 Description
+
+Updates object in database and sets last modifier properties unless $args{no_modder} has been set.
+Sets the values of the mapped SimpleDBMemberProperties where part_of_title is set to 1 as object title.
+
+=cut
+
 sub update {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -106,22 +135,26 @@ sub update {
     return $self->SUPER::update( @_ );
 }
 
-##
-#
-# SYNOPSIS
-#    my @property_list = $item->property_list( [ %args ] );
-#
-# PARAMETER
-#    $args{part_of_title}    (optional)    : Filter properties by part_of_title property
-#    $args{mandatory}        (optional)    : Filter properties by mandatory property
-#    $args{gopublic}         (optional)    : Filter properties by gopublic property
-#
-# RETURNS
-#    @property_list  : Array of mapped member properties (XIMS::SimpleDBMemberProperty instances)
-#
-# DESCRIPTION
-#    Fetch mapped properties assigned to the SimpleDB where $item is part of
-#
+
+
+=head2    my @property_list = $item->property_list( [ %args ] );
+
+=head3 Parameter
+
+    $args{part_of_title}    (optional)    : Filter properties by part_of_title property
+    $args{mandatory}        (optional)    : Filter properties by mandatory property
+    $args{gopublic}         (optional)    : Filter properties by gopublic property
+
+=head3 Returns
+
+    @property_list  : Array of mapped member properties (XIMS::SimpleDBMemberProperty instances)
+
+=head3 Description
+
+Fetch mapped properties assigned to the SimpleDB where $item is part of
+
+=cut
+
 sub property_list {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -131,20 +164,24 @@ sub property_list {
     return $simpledb->mapped_member_properties( @_ );
 }
 
-##
-#
-# SYNOPSIS
-#    my @property_values = $item->property_values();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    @property_values    : Array of XIMS::SimpleDBMemberPropertyValue instances
-#
-# DESCRIPTION
-#    Fetch property values for the current $item
-#
+
+
+=head2    my @property_values = $item->property_values();
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    @property_values    : Array of XIMS::SimpleDBMemberPropertyValue instances
+
+=head3 Description
+
+Fetch property values for the current $item
+
+=cut
+
 sub property_values {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -166,20 +203,24 @@ sub content_field {
     return 'binfile';
 }
 
-##
-#
-# SYNOPSIS
-#    my $member = $item->member( [ $member ] );
-#
-# PARAMETER
-#    $member                 (optional) :
-#
-# RETURNS
-#    $member    : instance of XIMS::SimpleDBMember
-#
-# DESCRIPTION
-#    Helper method to fetch the XIMS::SimpleDBMember entry for the current object
-#
+
+
+=head2    my $member = $item->member( [ $member ] );
+
+=head3 Parameter
+
+    $member                 (optional) :
+
+=head3 Returns
+
+    $member    : instance of XIMS::SimpleDBMember
+
+=head3 Description
+
+Helper method to fetch the XIMS::SimpleDBMember entry for the current object
+
+=cut
+
 sub member {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -203,3 +244,51 @@ sub member {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

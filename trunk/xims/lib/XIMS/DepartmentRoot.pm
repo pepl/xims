@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::DepartmentRoot -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::DepartmentRoot;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::DepartmentRoot;
 
 use strict;
@@ -16,20 +33,24 @@ use XML::LibXML;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-##
-#
-# SYNOPSIS
-#    XIMS::DepartmentRoot->new( %args )
-#
-# PARAMETER
-#    %args: recognized keys are the fields from ...
-#
-# RETURNS
-#    $dept: XIMS::DepartmentRoot instance
-#
-# DESCRIPTION
-#    Constructor
-#
+
+
+=head2    XIMS::DepartmentRoot->new( %args )
+
+=head3 Parameter
+
+    %args: recognized keys are the fields from ...
+
+=head3 Returns
+
+    $dept: XIMS::DepartmentRoot instance
+
+=head3 Description
+
+Constructor
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -42,21 +63,25 @@ sub new {
     return $class->SUPER::new( %args );
 }
 
-##
-# SYNOPSIS
-#    my $boolean = $deptroot->add_departmentlinks( @objects );
-#
-# PARAMETER
-#    @objects    : Array of content objects to be used as departmentlinks
-#
-# RETURNS
-#    $boolean : True or False on success or failure
-#
-# DESCRIPTION
-#    Checks for an already assigned departmentlinks portlet and adds additional departmentlinks
-#    if such portlet already exists.  If not, a 'departmentlinks' folder is created,
-#    the departmentlinks and the portlet added and assigned respectively.
-#
+
+=head2    my $boolean = $deptroot->add_departmentlinks( @objects );
+
+=head3 Parameter
+
+    @objects    : Array of content objects to be used as departmentlinks
+
+=head3 Returns
+
+    $boolean : True or False on success or failure
+
+=head3 Description
+
+Checks for an already assigned departmentlinks portlet and adds additional departmentlinks
+if such portlet already exists.  If not, a 'departmentlinks' folder is created,
+the departmentlinks and the portlet added and assigned respectively.
+
+=cut
+
 sub add_departmentlinks {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -134,19 +159,23 @@ sub add_departmentlinks {
     return 1;
 }
 
-##
-# SYNOPSIS
-#    my @portlet_ids = $deproot->get_portlet_ids();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    @portlet_ids : Array of content ids of portlets stored in the body's XML-Fragment
-#
-# DESCRIPTION
-#    Returns a list of content ids of the portlets stored in the body's XML-Fragment. In scalar context it returns the first entry.
-#
+
+=head2    my @portlet_ids = $deproot->get_portlet_ids();
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    @portlet_ids : Array of content ids of portlets stored in the body's XML-Fragment
+
+=head3 Description
+
+Returns a list of content ids of the portlets stored in the body's XML-Fragment. In scalar context it returns the first entry.
+
+=cut
+
 sub get_portlet_ids {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -167,21 +196,25 @@ sub get_portlet_ids {
 }
 
 
-##
-# SYNOPSIS
-#    my $boolean = $deproot->add_portlet( $target );
-#
-# PARAMETER
-#    $target   :  XIMS::Object instance or location_path to one
-#
-# RETURNS
-#    $boolean : True or False on success or failure
-#
-# DESCRIPTION
-#    Adds a portlet entry to the body in form of an XML-Fragment.
-#    Storing the portlets that way and not relational is something still
-#    to be discussed I guess.
-#
+
+=head2    my $boolean = $deproot->add_portlet( $target );
+
+=head3 Parameter
+
+    $target   :  XIMS::Object instance or location_path to one
+
+=head3 Returns
+
+    $boolean : True or False on success or failure
+
+=head3 Description
+
+Adds a portlet entry to the body in form of an XML-Fragment.
+Storing the portlets that way and not relational is something still
+to be discussed I guess.
+
+=cut
+
 sub add_portlet {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -228,19 +261,23 @@ sub add_portlet {
     return 1;
 }
 
-##
-# SYNOPSIS
-#    my $boolean = $deproot->remove_portlet( $portlet_id );
-#
-# PARAMETER
-#    $portlet_id   :  Content id of portlet to be removed
-#
-# RETURNS
-#    $boolean : True or False on success or failure
-#
-# DESCRIPTION
-#    Removes a portlet entry from the body's XML-Fragment.
-#
+
+=head2    my $boolean = $deproot->remove_portlet( $portlet_id );
+
+=head3 Parameter
+
+    $portlet_id   :  Content id of portlet to be removed
+
+=head3 Returns
+
+    $boolean : True or False on success or failure
+
+=head3 Description
+
+Removes a portlet entry from the body's XML-Fragment.
+
+=cut
+
 sub remove_portlet {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -284,3 +321,51 @@ sub _getbodyfragment {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

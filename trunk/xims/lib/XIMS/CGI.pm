@@ -1,12 +1,29 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::CGI::ByeBye -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::CGI::ByeBye;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::CGI;
 
 use strict;
-use base qw(CGI::XMLApplication)
-    ; # 1.1.3; # sub-sub-version is not recognized here and only gives a warning :-/
+use base qw(CGI::XMLApplication); # 1.1.3; # sub-sub-version is not recognized
+                                  # here and only gives a warning :-/
 use XIMS;
 use XIMS::DataFormat;
 use XIMS::ObjectType;
@@ -34,9 +51,12 @@ sub registerEvents {
     );
 }
 
-############################################################################
-# event methods
-############################################################################
+=pod
+
+event methods
+
+=cut
+
 
 sub event_init {
     my $self = shift;
@@ -342,10 +362,12 @@ sub event_plain {
     return 0;
 }
 
-#*#
-############################################################################
-# methods called directly by (or overrides to methods in) CGI::XMLApplication
-############################################################################
+=pod
+
+methods called directly by (or overrides to methods in) CGI::XMLApplication
+
+=cut
+
 
 sub selectStylesheet {
     XIMS::Debug( 5, "called" );
@@ -500,9 +522,12 @@ sub event_error {
     return 0;
 }
 
-############################################################################
-# helper methods available to all event subs.
-############################################################################
+=pod
+
+ helper methods available to all event subs.
+
+=cut
+
 
 sub object_locked {
     my $self = shift;
@@ -706,11 +731,11 @@ sub init_store_object {
 
     my $object = $ctxt->object();
     my $parent;
-    my $location = $self->param('name')
-        ;    # is somehow xml-escaped magically by libxml2 (???)
+    my $location = $self->param('name');    # is somehow xml-escaped magically
+                                            # by libxml2 (???)
 
-    # $location will be part of the URI, converting to iso-8859-1 is a
-    # first step before clean_location() to ensure browser compatibility
+    # $location will be part of the URI, converting to iso-8859-1 is a first
+    # step before clean_location() to ensure browser compatibility
     my $converter = Text::Iconv->new( "UTF-8", "ISO-8859-1" );
 
     # will be undef if string can not be converted to iso-8859-1
@@ -805,7 +830,8 @@ sub init_store_object {
             return 0;
         }
 
-# check if the same location already exists in the current container (and its a different object)
+        # check if the same location already exists in the current container
+        # (and its a different object)
         if ( defined $parent ) {
             my @children = $parent->children(
                 location       => $location,
@@ -1158,13 +1184,10 @@ sub event_undelete {
     }
 
     if ($gotactive) {
-
-        #
         # If there is already an active (non deleted) object with the
         # same location we'll reject for now. Later, we should implement
         # a dialogue which asks for a new location for the undeleted
         # object.
-        #
         $self->sendError( $ctxt,
                   "An object with the location '"
                 . $object->location()
@@ -1228,9 +1251,9 @@ sub event_trashcan {
         or ( not defined $diffobject and $chldinfo[0] > 0 ) )
     {
 
-        # In case the object is a container and has remaining children
-        # besided an automatically created .diff_to_second_last object,
-        # we are asking for confirmation of recursion
+        # In case the object is a container and has remaining children besided
+        # an automatically created .diff_to_second_last object, we are asking
+        # for confirmation of recursion
         XIMS::Debug( 4,
             "container has got children, ask for confirmation of recursion" );
 
@@ -1284,9 +1307,9 @@ sub event_delete {
         unless $current_user_object_priv & XIMS::Privileges::DELETE();
 
     my $object = $ctxt->object();
+    #needed for redirection after deletion
     my $parent_content_id
-        = XIMS::Object->new( document_id => $object->parent_id() )->id()
-        ;    # needed for redirection after deletion
+        = XIMS::Object->new( document_id => $object->parent_id() )->id();
     if ( $object->published() ) {
         XIMS::Debug( 3, "attempt to delete pub'd object" );
         $self->sendError( $ctxt,
@@ -1378,8 +1401,9 @@ sub event_contentbrowse {
     $ctxt->properties->content->getchildren->objectid($to);
 
     if ( defined $otfilter and length $otfilter > 0 ) {
-        my @otherot = split '\s*,\s*', $otfilter
-            ; # in case we want to filter a comma separated list of object types
+        my @otherot = split '\s*,\s*', $otfilter; # in case we want to filter
+                                                  # a comma separated list of
+                                                  # object types
         push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', @otherot );
     }
     elsif ( defined $notfilter and length $notfilter > 0 ) {
@@ -1998,8 +2022,8 @@ sub event_prettyprintxml {
     my $doc = $ctxt->object->balanced_string($string);
     if ( defined $doc and $doc->isa('XML::LibXML::DocumentFragment') ) {
 
-     # $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' ); does not work
-     # correctly for whatever reasons - we have to manually decode again then.
+        # $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' ); does not work
+        # correctly for whatever reasons - we have to manually decode again then.
 
         # Format 1 does not work as documented :-/
         # Format 2 deals better with the one-line fragment produced by
@@ -2032,15 +2056,14 @@ sub event_obj_acllist {
 
     if ( $user and $objprivs and $object ) {
 
+        # The acllist event will work only if there is a user, an object, and
+        # a minimal privilege mask found.
         #
-        # The acllist event will work only if there is a user, an
-        # object, and a minimal privilege mask found.
-        #
-        # Before one can really see the privileges for an object, he has
-        # to have a grant privilege (XIMS::Privilege::GRANT or
-        # XIMS::Privilege::GRANT_ALL) for it.  (Optionally, a system
-        # privilege may do the same trick.)
-        #
+        # Before one can really see the privileges for an object, he has to
+        # have a grant privilege (XIMS::Privilege::GRANT or
+        # XIMS::Privilege::GRANT_ALL) for it. (Optionally, a system privilege
+        # may do the same trick.)
+
         if (   $objprivs & XIMS::Privileges::GRANT()
             || $objprivs & XIMS::Privileges::GRANT_ALL() )
         {
@@ -2053,8 +2076,8 @@ sub event_obj_acllist {
             if ( my $user_id = $self->param("userid") ) {
                 if ( my $context_user = XIMS::User->new( id => $user_id ) ) {
 
-                    # second parameter to object_privileges forces check
-                    # for explicit grants to user only
+                    # second parameter to object_privileges forces check for
+                    # explicit grants to user only
                     my %oprivs
                         = $context_user->object_privileges( $object, 1 );
 
@@ -2099,8 +2122,8 @@ sub event_obj_acllist {
             }
             else {
 
-                # this will fetch only the users that have one or more
-                # grants on the current obj.
+                # this will fetch only the users that have one or more grants
+                # on the current obj.
                 my @granted_user_ids = map { $_->grantee_id() } @object_privs;
                 my @granted_users
                     = map { XIMS::User->new( id => $_ ) } @granted_user_ids;
@@ -2142,15 +2165,14 @@ sub event_obj_aclgrant {
 
     if ( $user and $objprivs and $object ) {
 
-        #
-        # the aclist event will only work if there can be an user,
-        # object found, plus a minimal privilege mask is found.
+        # the aclist event will only work if there can be an user, object
+        # found, plus a minimal privilege mask is found.
         #
         # before one can really see the privileges on an object, one
         # needs one or the other grant privilege (XIMS::Privilege::GRANT
         # or XIMS::Privilege::GRANT_ALL) for his own. Optional a system
         # privilege may does the same trick.
-        #
+
         if (   $objprivs & XIMS::Privileges::GRANT()
             || $objprivs & XIMS::Privileges::GRANT_ALL() )
         {
@@ -2220,15 +2242,14 @@ sub event_obj_aclrevoke {
 
     if ( $user and $objprivs and $object ) {
 
+        # the aclist event will only work if there can be an user, object
+        # found, plus a minimal privilege mask is found.
         #
-        # the aclist event will only work if there can be an user,
-        # object found, plus a minimal privilege mask is found.
-        #
-        # before one can really see the privileges on an object, one
-        # needs one or the other grant privilege (XIMS::Privilege::GRANT
-        # or XIMS::Privilege::GRANT_ALL) for his own. Optional a system
-        # privilege may does the same trick.
-        #
+        # before one can really see the privileges on an object, one needs one
+        # or the other grant privilege (XIMS::Privilege::GRANT or
+        # XIMS::Privilege::GRANT_ALL) for his own. Optional a system privilege
+        # may does the same trick.
+
         if (   $objprivs & XIMS::Privileges::GRANT()
             || $objprivs & XIMS::Privileges::GRANT_ALL() )
         {
@@ -2325,21 +2346,25 @@ sub event_reposition {
     return 0;
 }
 
-##
-# SYNOPSIS
-#    $self->handle_bang_commands( $ctxt, $search );
-#
-# PARAMETER
-#    $ctxt            : Application context
-#    $search          : Searchstring
-#
-# RETURNS
-#    undef on error, 1 on succes
-#
-# DESCRIPTION
-#    this one exists to avoid spaghetti- and nested-if-uglyness in
-#    event_search; commands that start with a bang get processed here.
-#
+
+=head2    $self->handle_bang_commands( $ctxt, $search );
+
+=head3 Parameter
+
+    $ctxt            : Application context
+    $search          : Searchstring
+
+=head3 Returns
+
+    undef on error, 1 on succes
+
+=head3 Description
+
+this one exists to avoid spaghetti- and nested-if-uglyness in
+event_search; commands that start with a bang get processed here.
+
+=cut
+
 sub handle_bang_commands {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt, $search ) = @_;
@@ -2390,17 +2415,19 @@ sub handle_bang_commands {
     return $retval;
 }
 
-##
-# SYNOPSIS
-#     $self->body_ref_objects( $ctxt );
-#
-# DESCRIPTION
-#
-# Checks links stored within an object's body. If local references are
-# found the function will test if the object is stored in XIMS. The
-# function will return a hash that has the local URI as the key and the
-# object as value.
-#
+
+=head2     $self->body_ref_objects( $ctxt );
+
+=head3 Description
+
+
+Checks links stored within an object's body. If local references are
+found the function will test if the object is stored in XIMS. The
+function will return a hash that has the local URI as the key and the
+object as value.
+
+=cut
+
 sub body_ref_objects {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -2491,8 +2518,8 @@ sub body_ref_objects {
         );
         $paths_seen{$p}++;
         next unless $object;
-        $object->{location_path}
-            = $p;    # we want to preserve the original link for the users
+        $object->{location_path}= $p; # we want to preserve the original link
+                                      # for the users
         push @objects, $object;
     }
 
@@ -2550,8 +2577,8 @@ sub event_search {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    # if we are coming from a different interface (e.g. user(s)) we have
-    # to check for that here
+    # if we are coming from a different interface (e.g. user(s)) we have to
+    # check for that here
     if ( not $ctxt->object() ) {
 
         # reuse code
@@ -2562,15 +2589,15 @@ sub event_search {
     my $filterpublished = $self->param('p');
     my $user            = $ctxt->session->user();
 
-    # event_search may get the search string latin1-encoded if used by
-    # the public-search interface (?search=1;s=searchstring;p=1) Check
-    # for that eventuality here and encode to utf-8 in case.
+    # event_search may get the search string latin1-encoded if used by the
+    # public-search interface (?search=1;s=searchstring;p=1) Check for that
+    # eventuality here and encode to utf-8 in case.
     my $search = XIMS::utf8_sanitize( $self->param('s') );
     if ( defined $search ) {
-        $self->param( 's', $search )
-            ;    # update CGI param, so that stylesheets get the right one
+        $self->param( 's', $search ); # update CGI param, so that stylesheets
+                                      # get the right one
     }
-    $search ||= XIMS::decode( $self->param('s') );    # fallback
+    $search ||= XIMS::decode( $self->param('s') );  # fallback
 
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
@@ -2692,7 +2719,7 @@ sub event_search {
                 $ctxt->session->searchresultcount($count);
             }
 
-            # superfluos db hits!
+            # TODO superfluos db hits!
             #
             # every look up takes 0.008s to 0.009s at c102-bruce after init
             # this has to be changed!!!
@@ -2745,21 +2772,24 @@ sub event_sitemap {
 
 package XIMS::CGI::ByeBye;
 
-##
-#
-# SYNOPSIS
-#    $self->event_trashcan( $ctxt );
-#
-# PARAMETER
-#    $ctxt: application context
-#
-# RETURNS
-# 0 ;)
-#
-# DESCRIPTION
-#    none
-#
-#
+
+
+=head2    $self->event_trashcan( $ctxt );
+
+=head3 Parameter
+
+    $ctxt: application context
+
+=head3 Returns
+
+ 0 ;)
+
+=head3 Description
+
+none
+
+=cut
+
 sub event_trashcan_content {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -2783,3 +2813,51 @@ sub event_trashcan_content {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

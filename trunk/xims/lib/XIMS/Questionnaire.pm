@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::Questionnaire -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::Questionnaire;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::Questionnaire;
 
 use strict;
@@ -13,20 +30,24 @@ use XML::LibXML;
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our $AUTOLOAD;
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->new( %args )
-#
-# PARAMETER
-#    %args: recognized keys are the fields from ...
-#
-# RETURNS
-#    $questionnaire: XIMS:: instance
-#
-# DESCRIPTION
-#    Constructor
-#
+
+
+=head2    XIMS::Questionnaire->new( %args )
+
+=head3 Parameter
+
+    %args: recognized keys are the fields from ...
+
+=head3 Returns
+
+    $questionnaire: XIMS:: instance
+
+=head3 Description
+
+Constructor
+
+=cut
+
 
 sub new {
     my $proto = shift;
@@ -42,22 +63,26 @@ sub new {
     return $q;
 }
 
-##
-#
-# SYNOPSIS
-#    my $body = $object->body();
-#    my $boolean = $object->body( $body [, %args] );
-#
-# PARAMETER
-#    $body                  (optional) :  Body string to save
-#
-# RETURNS
-#    $body    : Body string from object
-#    $boolean : True or False for storing back body to object
-#
-# DESCRIPTION
-#    Overrides XIMS::Object::body().
-#
+
+
+=head2    my $body = $object->body();
+    my $boolean = $object->body( $body [, %args] );
+
+=head3 Parameter
+
+    $body                  (optional) :  Body string to save
+
+=head3 Returns
+
+    $body    : Body string from object
+    $boolean : True or False for storing back body to object
+
+=head3 Description
+
+Overrides XIMS::Object::body().
+
+=cut
+
 sub body {
     XIMS::Debug( 5, "called");
     my $self = shift;
@@ -71,20 +96,24 @@ sub body {
     return 1;
 }
 
-##
-#
-# SYNOPSIS
-#    my $q_dom = $questionnaire->questionnaire_dom();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $q_dom   : XML::LibXML instance of Questionnaire (stored in body)
-#
-# DESCRIPTION
-#    Returns the XML::LibXML instance of the Questionnaire (stored in body). Helper method to avoid redundant parsing of body.
-#
+
+
+=head2    my $q_dom = $questionnaire->questionnaire_dom();
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    $q_dom   : XML::LibXML instance of Questionnaire (stored in body)
+
+=head3 Description
+
+Returns the XML::LibXML instance of the Questionnaire (stored in body). Helper method to avoid redundant parsing of body.
+
+=cut
+
 sub questionnaire_dom {
     XIMS::Debug( 5, "called");
     my $self = shift;
@@ -108,23 +137,27 @@ sub questionnaire_dom {
 }
 
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->move_up( id, questionnaire )
-#
-# PARAMETER
-#    node_id: id of node in the xsl:number multiple format
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    moves up a question or answer in the vertical hierarchy,
-#    e.g. 1.2 -> 1.1 or 2->1, by changing the node with its
-#    previous sibling on the same level.
-#
+
+
+=head2    XIMS::Questionnaire->move_up( id, questionnaire )
+
+=head3 Parameter
+
+    node_id: id of node in the xsl:number multiple format
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+moves up a question or answer in the vertical hierarchy,
+e.g. 1.2 -> 1.1 or 2->1, by changing the node with its
+previous sibling on the same level.
+
+=cut
+
 sub move_up {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
@@ -138,23 +171,27 @@ sub move_up {
     $self->body( XIMS::decode( $xml_string ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->move_down( node_id, questionnaire )
-#
-# PARAMETER
-#    node_id: id of node in the xsl:number multiple format
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    moves down a question or answer in the vertical hierarchy,
-#    e.g. 1.1 -> 1.2 or 1->2, by changing the node with its
-#    next sibling on the same level.
-#
+
+
+=head2    XIMS::Questionnaire->move_down( node_id, questionnaire )
+
+=head3 Parameter
+
+    node_id: id of node in the xsl:number multiple format
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+moves down a question or answer in the vertical hierarchy,
+e.g. 1.1 -> 1.2 or 1->2, by changing the node with its
+next sibling on the same level.
+
+=cut
+
 sub move_down {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
@@ -168,21 +205,25 @@ sub move_down {
     $self->body( XIMS::decode( $xml_string ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->add_question( node_id, questionnaire )
-#
-# PARAMETER
-#    node_id: id of node in the xsl:number multiple format
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    Adds an empty question to the end of the current branch
-#
+
+
+=head2    XIMS::Questionnaire->add_question( node_id, questionnaire )
+
+=head3 Parameter
+
+    node_id: id of node in the xsl:number multiple format
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+Adds an empty question to the end of the current branch
+
+=cut
+
 sub add_question {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
@@ -213,22 +254,26 @@ sub add_question {
     $self->body( XIMS::decode( $xml_string ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->edit_question( $node_id, $questionnaire )
-#
-# PARAMETER
-#    $node_id: id of node in the xsl:number multiple format
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    Sets the edit attribute of the question to "1" to make the
-#    question editable
-#
+
+
+=head2    XIMS::Questionnaire->edit_question( $node_id, $questionnaire )
+
+=head3 Parameter
+
+    $node_id: id of node in the xsl:number multiple format
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+Sets the edit attribute of the question to "1" to make the
+question editable
+
+=cut
+
 sub edit_question{
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
@@ -250,21 +295,25 @@ sub edit_question{
 }
 
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->delete_node( $node_id, $questionnaire )
-#
-# PARAMETER
-#    $node_id: id of node in the xsl:number multiple format
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    Deletes the question or answer with the node_id
-#
+
+
+=head2    XIMS::Questionnaire->delete_node( $node_id, $questionnaire )
+
+=head3 Parameter
+
+    $node_id: id of node in the xsl:number multiple format
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+Deletes the question or answer with the node_id
+
+=cut
+
 sub delete_node {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
@@ -278,21 +327,25 @@ sub delete_node {
     $self->body( XIMS::decode( $xml_string ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->copy_question( node_id, questionnaire )
-#
-# PARAMETER
-#    node_id: id of node to copy in the xsl:number multiple format
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    Adds an empty question to the end of the current branch
-#
+
+
+=head2    XIMS::Questionnaire->copy_question( node_id, questionnaire )
+
+=head3 Parameter
+
+    node_id: id of node to copy in the xsl:number multiple format
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+Adds an empty question to the end of the current branch
+
+=cut
+
 sub copy_question {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
@@ -314,21 +367,25 @@ sub copy_question {
     $self->body( XIMS::decode( $xml_string ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->add_answer( node_id, questionnaire )
-#
-# PARAMETER
-#    node_id: id of node in the xsl:number multiple format
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    Adds an empty answer to the end of the current branch
-#
+
+
+=head2    XIMS::Questionnaire->add_answer( node_id, questionnaire )
+
+=head3 Parameter
+
+    node_id: id of node in the xsl:number multiple format
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+Adds an empty answer to the end of the current branch
+
+=cut
+
 sub add_answer {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
@@ -355,21 +412,25 @@ sub add_answer {
     $self->body( XIMS::decode( $xml_string ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->delete_answer( $node_id, $questionnaire )
-#
-# PARAMETER
-#    $node_id: id of node in the xsl:number multiple format
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    Deletes the answer with the node_id
-#
+
+
+=head2    XIMS::Questionnaire->delete_answer( $node_id, $questionnaire )
+
+=head3 Parameter
+
+    $node_id: id of node in the xsl:number multiple format
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+Deletes the answer with the node_id
+
+=cut
+
 sub delete_answer {
     XIMS::Debug ( 5, "called" );
     my ($self, $node_id, $questionnaire) = @_;
@@ -383,25 +444,29 @@ sub delete_answer {
     $self->body( XIMS::decode( $xml_string ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->get_value( XPath )
-#
-# PARAMETER
-#    $XPath: XPath to the node we wish the value of
-#
-# RETURNS
-#    Text value of the first node found
-#
-# DESCRIPTION
-#    only XPath expressions that return a node-list
-#    should be used, because of get_node(). Will be
-#    changed, so that any XPath returns the value of
-#    of the found node.
-#    At this time only used to get the title and comment
-#    of the questionnaire.
-#
+
+
+=head2    XIMS::Questionnaire->get_value( XPath )
+
+=head3 Parameter
+
+    $XPath: XPath to the node we wish the value of
+
+=head3 Returns
+
+    Text value of the first node found
+
+=head3 Description
+
+only XPath expressions that return a node-list
+should be used, because of get_node(). Will be
+changed, so that any XPath returns the value of
+of the found node.
+At this time only used to get the title and comment
+of the questionnaire.
+
+=cut
+
 sub get_value {
     my $self = shift;
     my $XPath = shift;
@@ -418,20 +483,24 @@ sub get_value {
     }
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->get_option( $optionname )
-#
-# PARAMETER
-#    $optionname: Name of the option stored in /questionnaire/options
-#
-# RETURNS
-#    1 if option is set, undef if not.
-#
-# DESCRIPTION
-#    Checks if a Questionnaire option is set
-#
+
+
+=head2    XIMS::Questionnaire->get_option( $optionname )
+
+=head3 Parameter
+
+    $optionname: Name of the option stored in /questionnaire/options
+
+=head3 Returns
+
+    1 if option is set, undef if not.
+
+=head3 Description
+
+Checks if a Questionnaire option is set
+
+=cut
+
 sub get_option {
     my $self = shift;
     my $optionname = shift;
@@ -444,21 +513,25 @@ sub get_option {
     }
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->get_full_question_title( $question_id )
-#
-# PARAMETER
-#    $question_id: Id of the question the title should be returned
-#
-# RETURNS
-#    Title of all the Questions in the Question id - hierarchy
-#
-# DESCRIPTION
-#    The titles of all question in the id-hierarchy are returned,
-#    seperated by ":"
-#
+
+
+=head2    XIMS::Questionnaire->get_full_question_title( $question_id )
+
+=head3 Parameter
+
+    $question_id: Id of the question the title should be returned
+
+=head3 Returns
+
+    Title of all the Questions in the Question id - hierarchy
+
+=head3 Description
+
+The titles of all question in the id-hierarchy are returned,
+seperated by ":"
+
+=cut
+
 sub get_full_question_title {
     my $self = shift;
     my $question_id = shift;
@@ -478,19 +551,23 @@ sub get_full_question_title {
     return $full_question_title;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->get_full_question_titles( )
-#
-# PARAMETER
-#
-# RETURNS
-#    A hash with the question titles to all answers
-#
-# DESCRIPTION
-#
-#
+
+
+=head2    XIMS::Questionnaire->get_full_question_titles( )
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    A hash with the question titles to all answers
+
+=head3 Description
+
+
+
+=cut
+
 sub get_full_question_titles {
     my $self = shift;
     my $question_id = shift;
@@ -518,19 +595,23 @@ sub get_full_question_titles {
     return %question_titles;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->get_answer_ids( [ $question_id ] )
-#
-# PARAMETER
-#
-# RETURNS
-#    Arrayref of answer ids
-#
-# DESCRIPTION
-#
-#
+
+
+=head2    XIMS::Questionnaire->get_answer_ids( [ $question_id ] )
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    Arrayref of answer ids
+
+=head3 Description
+
+
+
+=cut
+
 sub get_answer_ids {
     XIMS::Debug( 5, "Called" );
     my $self = shift;
@@ -547,20 +628,24 @@ sub get_answer_ids {
     return \@answer_ids;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->get_question_title( $question_id )
-#
-# PARAMETER
-#    $question_id: Id of the question the title should be returned
-#
-# RETURNS
-#    Title of the Question with the Question id
-#
-# DESCRIPTION
-#
-#
+
+
+=head2    XIMS::Questionnaire->get_question_title( $question_id )
+
+=head3 Parameter
+
+    $question_id: Id of the question the title should be returned
+
+=head3 Returns
+
+    Title of the Question with the Question id
+
+=head3 Description
+
+
+
+=cut
+
 sub get_question_title {
     my $self = shift;
     my $question_id = shift;
@@ -570,21 +655,25 @@ sub get_question_title {
     return $question_title;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->form_to_xml( %params )
-#
-# PARAMETER
-#    %params: all parameters given to the script
-#
-# RETURNS
-#    xml-document
-#
-# DESCRIPTION
-#    parses the html-form in %params to a
-#    xml-questionnaire-document.
-#
+
+
+=head2    XIMS::Questionnaire->form_to_xml( %params )
+
+=head3 Parameter
+
+    %params: all parameters given to the script
+
+=head3 Returns
+
+    xml-document
+
+=head3 Description
+
+parses the html-form in %params to a
+xml-questionnaire-document.
+
+=cut
+
 sub form_to_xml {
     XIMS::Debug ( 5, "called" );
     my ($self, %params ) = @_;
@@ -632,21 +721,25 @@ sub form_to_xml {
     return $questionnaire_document->documentElement();
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->set_answer_data( %params )
-#
-# PARAMETER
-#    %params: all parameters given to the script
-#
-# RETURNS
-#
-# DESCRIPTION
-#    Adds the tan and current question information
-#    to the questionnaire. If no tan is needed, the
-#    session_id is taken as unique number
-#
+
+
+=head2    XIMS::Questionnaire->set_answer_data( %params )
+
+=head3 Parameter
+
+    %params: all parameters given to the script
+
+=head3 Returns
+
+
+=head3 Description
+
+Adds the tan and current question information
+to the questionnaire. If no tan is needed, the
+session_id is taken as unique number
+
+=cut
+
 sub set_answer_data {
     XIMS::Debug( 5, "called");
     my ($self, %params) = @_;
@@ -889,22 +982,26 @@ sub _set_top_question_edit {
     return $questionnaire;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->add_tanlist( tanlist_path, questionnaire )
-#
-# PARAMETER
-#    tanlist_path: location_path of the TAN_List to be added to the Questionnaire
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#    Updated body of the Questionnaire on success
-#    Undef on failure
-#
-# DESCRIPTION
-#    Adds a TAN-List to the Questionnaire
-#
+
+
+=head2    XIMS::Questionnaire->add_tanlist( tanlist_path, questionnaire )
+
+=head3 Parameter
+
+    tanlist_path: location_path of the TAN_List to be added to the Questionnaire
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+    Updated body of the Questionnaire on success
+    Undef on failure
+
+=head3 Description
+
+Adds a TAN-List to the Questionnaire
+
+=cut
+
 sub add_tanlist {
     XIMS::Debug ( 5, "called" );
     my ($self, $tanlist_path, $questionnaire) = @_;
@@ -924,21 +1021,25 @@ sub add_tanlist {
     $self->body( XIMS::decode( $questionnaire->toString() ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->remove_tanlist( tanlist_id, questionnaire )
-#
-# PARAMETER
-#    tanlist_id: id of the TAN_List to be removed from the Questionnaire
-#    questionnaire: XML-Document representing the Questionnaire
-#
-# RETURNS
-#
-#
-# DESCRIPTION
-#    Removes a TAN-List from the Questionnaire
-#
+
+
+=head2    XIMS::Questionnaire->remove_tanlist( tanlist_id, questionnaire )
+
+=head3 Parameter
+
+    tanlist_id: id of the TAN_List to be removed from the Questionnaire
+    questionnaire: XML-Document representing the Questionnaire
+
+=head3 Returns
+
+
+
+=head3 Description
+
+Removes a TAN-List from the Questionnaire
+
+=cut
+
 sub remove_tanlist {
     XIMS::Debug ( 5, "called" );
     my ($self, $tanlist_id, $questionnaire) = @_;
@@ -959,19 +1060,23 @@ sub remove_tanlist {
     $self->body( XIMS::decode( $xml_string ) );
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->set_statistics()
-#
-# PARAMETER
-##
-# RETURNS
-#
-# DESCRIPTION
-#    Gets the total number of answered questionnaires
-#    and the number of valid answered questionnaires
-#
+
+
+=head2    XIMS::Questionnaire->set_statistics()
+
+=head3 Parameter
+
+
+=head3 Returns
+
+
+=head3 Description
+
+Gets the total number of answered questionnaires
+and the number of valid answered questionnaires
+
+=cut
+
 sub set_statistics {
     XIMS::Debug( 5, "called");
     my ($self) = @_;
@@ -994,19 +1099,23 @@ sub _last_question {
     return $result;
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->set_results()
-#
-# PARAMETER
-##
-# RETURNS
-#
-# DESCRIPTION
-#    Gets the answers to each question and inserts them
-#    into the xml-structure
-#
+
+
+=head2    XIMS::Questionnaire->set_results()
+
+=head3 Parameter
+
+
+=head3 Returns
+
+
+=head3 Description
+
+Gets the answers to each question and inserts them
+into the xml-structure
+
+=cut
+
 sub set_results {
     XIMS::Debug( 5, "called");
     my $self = shift;
@@ -1058,19 +1167,23 @@ sub set_results {
     return 1
 }
 
-##
-#
-# SYNOPSIS
-#    XIMS::Questionnaire->has_answers()
-#
-# PARAMETER
-##
-# RETURNS
-#    number of answered questionnaires
-#
-# DESCRIPTION
-#
-#
+
+
+=head2    XIMS::Questionnaire->has_answers()
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    number of answered questionnaires
+
+=head3 Description
+
+
+
+=cut
+
 sub has_answers {
     XIMS::Debug( 5, "called");
     my ($self) = @_;
@@ -1117,3 +1230,51 @@ sub AUTOLOAD {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+
