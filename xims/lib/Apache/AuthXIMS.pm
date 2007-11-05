@@ -13,7 +13,8 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module is a mod-perl AccessHandler that initiates authentication and
+session handling for XIMS. 
 
 =head1 SUBROUTINES/METHODS
 
@@ -40,11 +41,11 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 handler($r)
 
-=head3 Parameters:
+=head3 Parameters
 
     $r: request-object.
 
-=head3 Returns:
+=head3 Returns
 
     DECLINED, OK or FORBIDDEN.
 
@@ -174,11 +175,11 @@ sub handler {
 
 =head2 get_session_cookie($r)
 
-=head3 Parameters:
+=head3 Parameters
 
     $r: request-object.
 
-=head3 Returns:
+=head3 Returns
 
 Session handle if successful, empty string otherwise.
 
@@ -204,15 +205,16 @@ sub get_session_cookie {
 
 =head2 set_session_cookie($r, $session)
 
-=head3 Parameters:
+=head3 Parameters
 
-    $r: request-object, C<$session>: session-object.
+    $r:       request-object,
+    $session: session-object.
 
-=head3 Returns:
+=head3 Returns
 
     1 if succsessful, 0 otherwise.
 
-=head3 Description:
+=head3 Description
 
 Creates a cookie, redirects to old destination?
 
@@ -252,11 +254,11 @@ sub set_session_cookie {
 
 =head2 unset_session_cookie($r)
 
-=head3 Parameters:
+=head3 Parameters
 
     $r: request-object.
 
-=head3 Returns:
+=head3 Returns
 
     1.
 
@@ -284,15 +286,15 @@ sub unset_session_cookie {
 
 =head2 set_user_info($r,$dp,$session)
 
-=head3 Parameters:
+=head3 Parameters
 
-    $r: request-object,
-    $dp: dataprovider-object,
+    $r:       request-object,
+    $dp:      dataprovider-object,
     $session: session-object,
 
-=head3 Returns:
+=head3 Returns
 
-    nothing meaningful.
+nothing meaningful.
 
 =cut
 
@@ -310,13 +312,13 @@ sub set_user_info {
 
 =head2 test_session()
 
-=head3 Parameters:
+=head3 Parameters
 
-    $r: request-object,
+    $r:  request-object,
     $dp: dataprovider,
     $sessionstring: ???.
 
-=head3 Returns:
+=head3 Returns
 
     $cSession.
 
@@ -352,13 +354,13 @@ sub test_session {
 
 =head2 create_session_id($r, $dp, $cUser)
 
-=head3 Parameters:
+=head3 Parameters
 
-    $r: request-object,
+    $r:  request-object,
     $dp: dataprovider,
     $cUser: ???.
 
-=head3 Returns:
+=head3 Returns
 
     $cSession.
 
@@ -396,15 +398,15 @@ sub create_session_id {
 
 =head2 get_logindata($r)
 
-=head3 Parameters:
+=head3 Parameters
 
     $r: request-object.
 
-=head3 Returns:
+=head3 Returns
 
     ( userid, password ).
 
-=head3 Description:
+=head3 Description
 
 Read login data from request and return it as an array.
 
@@ -418,30 +420,27 @@ sub get_logindata {
     my $apr = Apache::Request->new($r);
 
     # needed, because Apache::unescape_url() mangles its argument.
-    my $userid = $apr->param('userid');
+    my $userid   = $apr->param('userid');
     my $password = $apr->param('password');
 
     # use Apache::unescape_url() instead of Apache::unescape_url_info() as the
     # latter translates '+' to ' '. Usernames and passwords must not contain
     # spaces, but may contain '+'.
-    return (
-        Apache::unescape_url( $userid ),
-        Apache::unescape_url( $password )
-    );
+    return ( Apache::unescape_url($userid), Apache::unescape_url($password) );
 }
 
 =head2 login_user($r, $dp)
 
-=head3 Parameters:
+=head3 Parameters
 
-    $r: request-object,
+    $r:  request-object,
     $dp: dataprovider.
 
-=head3 Returns:
+=head3 Returns
 
     $csession:
 
-=head3 Description:
+=head3 Description
 
 Gets the login info and tests the information against the UserDB and LDAP.
 
@@ -481,15 +480,15 @@ sub login_user {
 
 =head2 test_for_logout($r, $dp, $session)
 
-=head3 Parameters:
+=head3 Parameters
 
-   $r: request-object,
-   $dp: dataprovider,
-   $session: session object.
+    $r:       request-object,
+    $dp:      dataprovider,
+    $session: session object.
 
-=head3 Returns:
+=head3 Returns
 
-   undef or 1.
+    undef or 1.
 
 =cut
 
@@ -514,9 +513,9 @@ sub test_for_logout {
 
 =head2 redirToDefault($r, $dp, $userid)
 
-=head3 Parameters:
+=head3 Parameters
 
-    $r: request-object,
+    $r:  request-object,
     $dp: dataprovider,
     $userid.
 
@@ -533,11 +532,10 @@ sub redirToDefault {
         XIMS::Debug( 4, "redirecting user " );
         my $pathinfo;
 
-        # here we should find the root path for the user (the department
-        # for example)
+        # here we should find the root path for the user (the department for
+        # example)
 
-        #check for previous (before login) path and query stored in
-        #cookie
+        #check for previous (before login) path and query stored in cookie
         my %cookies = Apache::Cookie->fetch();
         my $cookie;
         my $askedpath;
@@ -583,8 +581,8 @@ sub redirToDefault {
 
         my $uri = Apache::URI->parse($r);
 
-        # we got user login information including the password in
-        # $uri->query which we want to get rid of
+        # we got user login information including the password in $uri->query
+        # which we want to get rid of
         $uri->query(undef);
 
         $uri->path( XIMS::GOXIMS() . $pathinfo );
@@ -604,14 +602,18 @@ sub redirToDefault {
 
 =head2 view_privilege_handler($r, $session)
 
-=head3 Parameters:
+=head3 Parameters
 
-    $r: request object,
+    $r:       request object,
     $session: session object.
 
-=head3 Returns:
+=head3 Returns
 
-   nothing meaningful.
+    OK, NOT_FOUND, AUTH_REQUIRED, FORBIDDEN or NOT_FOUND.
+
+=head3 Description
+
+Checks, whether the session owner has VIEW privileges on the requested object.
 
 =cut
 
@@ -656,7 +658,23 @@ Look at the F<error_log> file for messages.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-httpd_conf, ximshttpd.conf; yadda, yadda...
+Look at F<ximshttpd.conf> for some well-commented examples.
+
+A configuration example as intranet AccessHandler:
+
+    <DirectoryMatch "intranet">
+        PerlAccessHandler Apache::AuthXIMS
+        SetHandler perl-script
+
+        # might be useful for IE-6 and HTTPS
+        # PerlSetVar ximsCacheControl private
+
+        PerlSetVar ximsBrowsePublished On
+        PerlSetVar ximsPubPathBase /var/www/ximspubroot
+        PerlSetVar ximsSiteRootLocation /site
+        PerlSetVar ximsAccessDocument /intranet_login.xsp
+        PerlSetVar ximsAuthStyle XIMS::Auth::LDAP
+    </DirectoryMatch>
 
 =head1 DEPENDENCIES
 
