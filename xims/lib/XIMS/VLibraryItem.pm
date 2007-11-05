@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::VLibraryItem -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::VLibraryItem;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::VLibraryItem;
 
 use strict;
@@ -24,110 +41,130 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # use Data::Dumper;
 
-##
-#
-# SYNOPSIS
-#    my @authors = $vlibitem->vleauthors();
-#    my $boolean = $vlibitem->vleauthors( @authors );
-#
-# PARAMETER
-#    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the VLibraryItem
-#
-# RETURNS
-#    @authors    : Array of XIMS::VLibAuthor objects associated to the VLibraryItem
-#    $boolean    : True or False for associating @authors to the VLibraryItem
-#
-# DESCRIPTION
-#    get/set accessor method for managing author entries of VLibrary items
-#
+
+
+=head2    my @authors = $vlibitem->vleauthors();
+    my $boolean = $vlibitem->vleauthors( @authors );
+
+=head3 Parameter
+
+    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the VLibraryItem
+
+=head3 Returns
+
+    @authors    : Array of XIMS::VLibAuthor objects associated to the VLibraryItem
+    $boolean    : True or False for associating @authors to the VLibraryItem
+
+=head3 Description
+
+get/set accessor method for managing author entries of VLibrary items
+
+=cut
+
 sub vleauthors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vleproperties('Author', @_);
 }
 
-##
-#
-# SYNOPSIS
-#    my @keywords = $vlibitem->vlekeywords();
-#    my $boolean = $vlibitem->vlekeywords( @keywords );
-#
-# PARAMETER
-#    @keywords                 (optional) : Array of XIMS::VLibKeyword objects to be associated to the VLibraryItem
-#
-# RETURNS
-#    @keywords   : Array of XIMS::VLibKeyword objects associated to the VLibraryItem
-#    $boolean    : True or False for associating @keywords to the VLibraryItem
-#
-# DESCRIPTION
-#    get/set accessor method for managing keyword entries of VLibrary items
-#
+
+
+=head2    my @keywords = $vlibitem->vlekeywords();
+    my $boolean = $vlibitem->vlekeywords( @keywords );
+
+=head3 Parameter
+
+    @keywords                 (optional) : Array of XIMS::VLibKeyword objects to be associated to the VLibraryItem
+
+=head3 Returns
+
+    @keywords   : Array of XIMS::VLibKeyword objects associated to the VLibraryItem
+    $boolean    : True or False for associating @keywords to the VLibraryItem
+
+=head3 Description
+
+get/set accessor method for managing keyword entries of VLibrary items
+
+=cut
+
 sub vlekeywords {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vleproperties('Keyword', @_);
 }
 
-##
-#
-# SYNOPSIS
-#    my @subjects = $vlibitem->vlesubjects();
-#    my $boolean = $vlibitem->vlesubjects( @subjects );
-#
-# PARAMETER
-#    @subjects                 (optional) : Array of XIMS::VLibSubject objects to be associated to the VLibraryItem
-#
-# RETURNS
-#    @subjects   : Array of XIMS::VLibSubject objects associated to the VLibraryItem
-#    $boolean    : True or False for associating @subjects to the VLibraryItem
-#
-# DESCRIPTION
-#    get/set accessor method for managing subject entries of VLibrary items
-#
+
+
+=head2    my @subjects = $vlibitem->vlesubjects();
+    my $boolean = $vlibitem->vlesubjects( @subjects );
+
+=head3 Parameter
+
+    @subjects                 (optional) : Array of XIMS::VLibSubject objects to be associated to the VLibraryItem
+
+=head3 Returns
+
+    @subjects   : Array of XIMS::VLibSubject objects associated to the VLibraryItem
+    $boolean    : True or False for associating @subjects to the VLibraryItem
+
+=head3 Description
+
+get/set accessor method for managing subject entries of VLibrary items
+
+=cut
+
 sub vlesubjects {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vleproperties('Subject', @_);
 }
 
-##
-#
-# SYNOPSIS
-#    my @publications = $vlibitem->vlepublications();
-#    my $boolean = $vlibitem->vlepublications( @publications );
-#
-# PARAMETER
-#    @publications             (optional) : Array of XIMS::VLibPublication objects to be associated to the VLibraryItem
-#
-# RETURNS
-#    @publications   : Array of XIMS::VLibPublication objects associated to the VLibraryItem
-#    $boolean        : True or False for associating @publications to the VLibraryItem
-#
-# DESCRIPTION
-#    get/set accessor method for managing publication entries of VLibrary items
-#
+
+
+=head2    my @publications = $vlibitem->vlepublications();
+    my $boolean = $vlibitem->vlepublications( @publications );
+
+=head3 Parameter
+
+    @publications             (optional) : Array of XIMS::VLibPublication objects to be associated to the VLibraryItem
+
+=head3 Returns
+
+    @publications   : Array of XIMS::VLibPublication objects associated to the VLibraryItem
+    $boolean        : True or False for associating @publications to the VLibraryItem
+
+=head3 Description
+
+get/set accessor method for managing publication entries of VLibrary items
+
+=cut
+
 sub vlepublications {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vleproperties('Publication', @_);
 }
 
-##
-#
-# SYNOPSIS
-#    my $meta = $vlibitem->vlemeta();
-#    my $boolean = $vlibitem->vlemeta( $meta );
-#
-# PARAMETER
-#    $meta(optional) : XIMS::VLibMeta object to be associated to the VLibraryItem
-#
-# RETURNS
-#    $meta           : XIMS::VLibMeta object associated to the VLibraryItem
-#    $boolean        : True or False for associating $meta to the VLibraryItem
-#
-# DESCRIPTION
-#    get/set accessor method for managing extra meta information of VLibrary items
-#
+
+
+=head2    my $meta = $vlibitem->vlemeta();
+    my $boolean = $vlibitem->vlemeta( $meta );
+
+=head3 Parameter
+
+    $meta(optional) : XIMS::VLibMeta object to be associated to the VLibraryItem
+
+=head3 Returns
+
+    $meta           : XIMS::VLibMeta object associated to the VLibraryItem
+    $boolean        : True or False for associating $meta to the VLibraryItem
+
+=head3 Description
+
+get/set accessor method for managing extra meta information of VLibrary items
+
+=cut
+
 sub vlemeta {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -223,3 +260,51 @@ sub _vleproperties {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::Document -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::Document;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::Document;
 
 use strict;
@@ -23,23 +40,27 @@ sub new {
     return $class->SUPER::new( %args );
 }
 
-##
-#
-# SYNOPSIS
-#    my $body = $object->body();
-#    my $boolean = $object->body( $body [, %args] );
-#
-# PARAMETER
-#    $body                  (optional) :  Body string to save
-#    $args{ dontbalance }   (optional) :  If set, there will be no attempt to convert the body to a well-balanced string, this may be neccessary if users don't want their whitespace info munged by tidy.
-#
-# RETURNS
-#    $body    : Body string from object
-#    $boolean : True or False for storing back body to object
-#
-# DESCRIPTION
-#    Overrides XIMS::Object::body(). Tests $body for being well-balanced and if it is not, tries to well-balance $body unless $args{dontbalance} is given.
-#
+
+
+=head2    my $body = $object->body();
+    my $boolean = $object->body( $body [, %args] );
+
+=head3 Parameter
+
+    $body                  (optional) :  Body string to save
+    $args{ dontbalance }   (optional) :  If set, there will be no attempt to convert the body to a well-balanced string, this may be neccessary if users don't want their whitespace info munged by tidy.
+
+=head3 Returns
+
+    $body    : Body string from object
+    $boolean : True or False for storing back body to object
+
+=head3 Description
+
+Overrides XIMS::Object::body(). Tests $body for being well-balanced and if it is not, tries to well-balance $body unless $args{dontbalance} is given.
+
+=cut
+
 sub body {
     XIMS::Debug( 5, "called");
     my $self = shift;
@@ -76,3 +97,51 @@ sub body {
 
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

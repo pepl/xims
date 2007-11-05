@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::SAX::Filter::DataCollector -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::SAX::Filter::DataCollector;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::SAX::Filter::DataCollector;
 
 #
@@ -17,20 +34,24 @@ use XML::LibXML;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-##
-#
-# SYNOPSIS
-#    XIMS::SAX::Filter::DataCollector->new();
-#
-# PARAMETER
-#    ?
-#
-# RETURNS
-#    $self : XIMS::SAX::Filter::DataCollector instance
-#
-# DESCRIPTION
-#    Constructor
-#
+
+
+=head2    XIMS::SAX::Filter::DataCollector->new();
+
+=head3 Parameter
+
+    ?
+
+=head3 Returns
+
+    $self : XIMS::SAX::Filter::DataCollector instance
+
+=head3 Description
+
+Constructor
+
+=cut
+
 sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
@@ -41,23 +62,27 @@ sub new {
     return $self;
 }
 
-##
-#
-# SYNOPSIS
-#    $filter->preserve_data($boolean);
-#
-# PARAMETER
-#    $boolean
-#
-# RETURNS
-#    $self->{PreserveData}
-#
-# DESCRIPTION
-#    sometimes it is nessecary to keep the collected data in the SAX
-#    chain. this function sets (or reads) a flag, that toggels the
-#    filters behaviour. If preserve_data is TRUE (1), the data will be
-#    still available as the character data it was originally collected.
-#
+
+
+=head2    $filter->preserve_data($boolean);
+
+=head3 Parameter
+
+    $boolean
+
+=head3 Returns
+
+    $self->{PreserveData}
+
+=head3 Description
+
+sometimes it is nessecary to keep the collected data in the SAX
+chain. this function sets (or reads) a flag, that toggels the
+filters behaviour. If preserve_data is TRUE (1), the data will be
+still available as the character data it was originally collected.
+
+=cut
+
 sub preserve_data {
     my $self = shift;
     $self->{PreserveData} = shift if scalar @_;
@@ -66,23 +91,27 @@ sub preserve_data {
     return $self->{PreserveData};
 }
 
-##
-#
-# SYNOPSIS
-#    $filter->get_data_fragment()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $self->{Fragment}
-#
-# DESCRIPTION
-#    get_data_fragment() overloads the version provided by
-#    XML::SAX::Filter::GenericChunk. Since XML::SAX::Filter::GenericChunk
-#    will forget about the fragment once it's parsed, we have to cache
-#    the fragment for multiple usage.
-#
+
+
+=head2    $filter->get_data_fragment()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    $self->{Fragment}
+
+=head3 Description
+
+get_data_fragment() overloads the version provided by
+XML::SAX::Filter::GenericChunk. Since XML::SAX::Filter::GenericChunk
+will forget about the fragment once it's parsed, we have to cache
+the fragment for multiple usage.
+
+=cut
+
 sub get_data_fragment {
     my $self = shift;
     unless ( defined $self->{Fragment} ) {
@@ -97,20 +126,24 @@ sub get_data_fragment {
     return $self->{Fragment};
 }
 
-##
-#
-# SYNOPSIS
-#    $filter->get_content()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $self->{Content}
-#
-# DESCRIPTION
-#    Accessor for the "content" node.
-#
+
+
+=head2    $filter->get_content()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    $self->{Content}
+
+=head3 Description
+
+Accessor for the "content" node.
+
+=cut
+
 sub get_content {
     my $self = shift;
     unless ( defined $self->{Content} ) {
@@ -122,21 +155,25 @@ sub get_content {
     return $self->{Content};
 }
 
-##
-#
-# SYNOPSIS
-#    $filter->push_listobject( $object | @object );
-#
-# PARAMETER
-#    $object, @object
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    this function will push a certain object or object list to the list
-#    of objects that will be processed.
-#
+
+
+=head2    $filter->push_listobject( $object | @object );
+
+=head3 Parameter
+
+    $object, @object
+
+=head3 Returns
+
+    nothing
+
+=head3 Description
+
+this function will push a certain object or object list to the list
+of objects that will be processed.
+
+=cut
+
 sub push_listobject {
     my $self = shift;
 
@@ -146,20 +183,24 @@ sub push_listobject {
     return;
 }
 
-##
-#
-# SYNOPSIS
-#    $filter->end_element()
-#
-# PARAMETER
-#    $data
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    none yet
-#
+
+
+=head2    $filter->end_element()
+
+=head3 Parameter
+
+    $data
+
+=head3 Returns
+
+    nothing
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub end_element {
     my $self = shift;
     my $data = shift;
@@ -187,20 +228,24 @@ sub end_element {
     return;
 }
 
-##
-#
-# SYNOPSIS
-#    $filter->characters( $data );
-#
-# PARAMETER
-#    $data :
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    none yet
-#
+
+
+=head2    $filter->characters( $data );
+
+=head3 Parameter
+
+    $data :
+
+=head3 Returns
+
+    nothing
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub characters {
     my $self = shift;
     my $data = shift;
@@ -215,20 +260,24 @@ sub characters {
     return;
 }
 
-##
-#
-# SYNOPSIS
-#    $filter->handle_data()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    has to be overloaded (build the object list!)
-#
+
+
+=head2    $filter->handle_data()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    nothing
+
+=head3 Description
+
+has to be overloaded (build the object list!)
+
+=cut
+
 sub handle_data {
     my $self = shift;
 
@@ -249,21 +298,25 @@ sub handle_data {
     return;
 }
 
-##
-#
-# SYNOPSIS
-#    $self->_handle_columns()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    This helper function will initialize the column list provided to the
-#    DataProvider. If there [...???]
-#
+
+
+=head2    $self->_handle_columns()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    nothing
+
+=head3 Description
+
+This helper function will initialize the column list provided to the
+DataProvider. If there [...???]
+
+=cut
+
 sub _handle_columns {
     my $self = shift;
 
@@ -298,3 +351,51 @@ sub _handle_columns {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

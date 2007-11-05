@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::ReferenceLibraryItem -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::ReferenceLibraryItem;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::ReferenceLibraryItem;
 
 use strict;
@@ -20,20 +37,24 @@ __PACKAGE__->mk_accessors( qw(vlauthors) );
 
 #use Data::Dumper;
 
-##
-#
-# SYNOPSIS
-#    my $item = XIMS::ReferenceLibraryItem->new( [ %args ] )
-#
-# PARAMETER
-#    %args                  (optional) :  Takes the same arguments as its super class XIMS::Object
-#
-# RETURNS
-#    $item : instance of XIMS::ReferenceLibraryItem
-#
-# DESCRIPTION
-#    Fetches existing objects or creates a new instance of XIMS::ReferenceLibraryItem for object creation.
-#
+
+
+=head2    my $item = XIMS::ReferenceLibraryItem->new( [ %args ] )
+
+=head3 Parameter
+
+    %args                  (optional) :  Takes the same arguments as its super class XIMS::Object
+
+=head3 Returns
+
+    $item : instance of XIMS::ReferenceLibraryItem
+
+=head3 Description
+
+Fetches existing objects or creates a new instance of XIMS::ReferenceLibraryItem for object creation.
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -46,20 +67,24 @@ sub new {
     return $class->SUPER::new( %args );
 }
 
-##
-#
-# SYNOPSIS
-#    my @property_list = $item->property_list()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    @property_list: Array of reference properties mapped to the RefLibReferenceItem
-#
-# DESCRIPTION
-#    Fetches reference properties mapped to the RefLibReferenceItem
-#
+
+
+=head2    my @property_list = $item->property_list()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    @property_list: Array of reference properties mapped to the RefLibReferenceItem
+
+=head3 Description
+
+Fetches reference properties mapped to the RefLibReferenceItem
+
+=cut
+
 sub property_list {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -78,20 +103,24 @@ sub property_list {
     return @out;
 }
 
-##
-#
-# SYNOPSIS
-#    my @property_values = $item->property_values()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    @property_values: Array of reference property values mapped to the RefLibReferenceItem
-#
-# DESCRIPTION
-#    Fetches reference property values mapped to the RefLibReferenceItem
-#
+
+
+=head2    my @property_values = $item->property_values()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    @property_values: Array of reference property values mapped to the RefLibReferenceItem
+
+=head3 Description
+
+Fetches reference property values mapped to the RefLibReferenceItem
+
+=cut
+
 sub property_values {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -109,20 +138,24 @@ sub content_field {
     return 'binfile';
 }
 
-##
-#
-# SYNOPSIS
-#    my $reference = $reflibitem->reference( [ $reference ] );
-#
-# PARAMETER
-#    $reference    (optional) : Set reference entry of XIMS::ReferenceLibraryItem
-#
-# RETURNS
-#    $reference    : instance of XIMS::RefLibReference
-#
-# DESCRIPTION
-#    Gets/Sets reference entry of the XIMS::ReferenceLibraryItem
-#
+
+
+=head2    my $reference = $reflibitem->reference( [ $reference ] );
+
+=head3 Parameter
+
+    $reference    (optional) : Set reference entry of XIMS::ReferenceLibraryItem
+
+=head3 Returns
+
+    $reference    : instance of XIMS::RefLibReference
+
+=head3 Description
+
+Gets/Sets reference entry of the XIMS::ReferenceLibraryItem
+
+=cut
+
 sub reference {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -145,66 +178,78 @@ sub reference {
     }
 }
 
-##
-#
-# SYNOPSIS
-#    my @authors = $item->vleauthors();
-#    my $boolean = $item->vleauthors( @authors );
-#
-# PARAMETER
-#    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
-#
-# RETURNS
-#    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
-#    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
-#
-# DESCRIPTION
-#    Get/Set accessor method for managing author entries of ReferenceLibraryItem items
-#
+
+
+=head2    my @authors = $item->vleauthors();
+    my $boolean = $item->vleauthors( @authors );
+
+=head3 Parameter
+
+    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
+
+=head3 Returns
+
+    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
+    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
+
+=head3 Description
+
+Get/Set accessor method for managing author entries of ReferenceLibraryItem items
+
+=cut
+
 sub vleauthors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vleauthors( 0, @_ );
 }
 
-##
-#
-# SYNOPSIS
-#    my @authors = $item->vleeditors();
-#    my $boolean = $item->vleeditors( @authors );
-#
-# PARAMETER
-#    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
-#
-# RETURNS
-#    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
-#    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
-#
-# DESCRIPTION
-#    Get/Set accessor method for managing author entries of ReferenceLibraryItem items
-#
+
+
+=head2    my @authors = $item->vleeditors();
+    my $boolean = $item->vleeditors( @authors );
+
+=head3 Parameter
+
+    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
+
+=head3 Returns
+
+    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
+    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
+
+=head3 Description
+
+Get/Set accessor method for managing author entries of ReferenceLibraryItem items
+
+=cut
+
 sub vleeditors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vleauthors( 1, @_ );
 }
 
-##
-#
-# SYNOPSIS
-#    my $serial = $item->vleserial();
-#    my $boolean = $item->vleserial( $serial );
-#
-# PARAMETER
-#    $serial                  (optional) : Instance of a XIMS::RefLibSerial object to be associated to the ReferenceLibraryItem
-#
-# RETURNS
-#    $serial     : Instance of the XIMS::RefLibSerial object to be associated to the ReferenceLibraryItem
-#    $boolean    : True or False for associating $serial to the ReferenceLibraryItem
-#
-# DESCRIPTION
-#    Get/Set accessor method for managing the serial publication entry of ReferenceLibraryItem items
-#
+
+
+=head2    my $serial = $item->vleserial();
+    my $boolean = $item->vleserial( $serial );
+
+=head3 Parameter
+
+    $serial                  (optional) : Instance of a XIMS::RefLibSerial object to be associated to the ReferenceLibraryItem
+
+=head3 Returns
+
+    $serial     : Instance of the XIMS::RefLibSerial object to be associated to the ReferenceLibraryItem
+    $boolean    : True or False for associating $serial to the ReferenceLibraryItem
+
+=head3 Description
+
+Get/Set accessor method for managing the serial publication entry of ReferenceLibraryItem items
+
+=cut
+
 sub vleserial {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -232,23 +277,27 @@ sub vleserial {
 }
 
 
-##
-#
-# SYNOPSIS
-#    my @authors = $item->_vleauthors( 1|0 );
-#    my $boolean = $item->vleauthors( 1|0, @authors );
-#
-# PARAMETER
-#    1 | 0                                : 0 for authors, 1 for editors
-#    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
-#
-# RETURNS
-#    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
-#    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
-#
-# DESCRIPTION
-#    Get/Set helper method for managing author/editor entries of ReferenceLibraryItem items
-#
+
+
+=head2    my @authors = $item->_vleauthors( 1|0 );
+    my $boolean = $item->vleauthors( 1|0, @authors );
+
+=head3 Parameter
+
+    1 | 0                                : 0 for authors, 1 for editors
+    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
+
+=head3 Returns
+
+    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
+    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
+
+=head3 Description
+
+Get/Set helper method for managing author/editor entries of ReferenceLibraryItem items
+
+=cut
+
 sub _vleauthors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -331,24 +380,28 @@ sub _vleauthors {
     }
 }
 
-##
-#
-# SYNOPSIS
-#    my $boolean = $item->reposition_author( %args );
-#
-# PARAMETER
-#    $args{ old_position }    :  Old position
-#    $args{ new_position }    :  New position
-#    $args{ author_id }       :  Author ID
-#    $args{ role }            :  Role (0|1)
-#
-# RETURNS
-#    $boolean : True or False for repositioning object
-#
-# DESCRIPTION
-#    Updates position of the author relative to the other associated VLibAuthors
-#    associated to the ReferenceLibraryItem
-#
+
+
+=head2    my $boolean = $item->reposition_author( %args );
+
+=head3 Parameter
+
+    $args{ old_position }    :  Old position
+    $args{ new_position }    :  New position
+    $args{ author_id }       :  Author ID
+    $args{ role }            :  Role (0|1)
+
+=head3 Returns
+
+    $boolean : True or False for repositioning object
+
+=head3 Description
+
+Updates position of the author relative to the other associated VLibAuthors
+associated to the ReferenceLibraryItem
+
+=cut
+
 sub reposition_author {
     my $self = shift;
     my %args = @_;
@@ -409,21 +462,25 @@ sub reposition_author {
     return $data;
 }
 
-##
-#
-# SYNOPSIS
-#    my $boolean = $object->create_author_mapping_from_name( $role, $namestring );
-#
-# PARAMETER
-#    $role                    :  0 for author, 1 for editor
-#    $namestring              :  Namestring of the author(s); Multiple authors ';'-separated, author name parts ','-separated
-#
-# RETURNS
-#    $boolean : True or False for creating author mapping
-#
-# DESCRIPTION
-#    Associates author specified by name to the ReferenceLibraryItem. Creates new VLibAuthors if they do not exist yet.
-#
+
+
+=head2    my $boolean = $object->create_author_mapping_from_name( $role, $namestring );
+
+=head3 Parameter
+
+    $role                    :  0 for author, 1 for editor
+    $namestring              :  Namestring of the author(s); Multiple authors ';'-separated, author name parts ','-separated
+
+=head3 Returns
+
+    $boolean : True or False for creating author mapping
+
+=head3 Description
+
+Associates author specified by name to the ReferenceLibraryItem. Creates new VLibAuthors if they do not exist yet.
+
+=cut
+
 sub create_author_mapping_from_name {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -472,24 +529,28 @@ sub create_author_mapping_from_name {
     return $self->$method( @authors );
 }
 
-##
-#
-# SYNOPSIS
-#    my $boolean = $item->update_title( $date, $title, [ @vleauthors ] );
-#
-# PARAMETER
-#    $date                    :  Date to be part of the title
-#    $title                   :  Title of the reference item to be part in the object's title
-#    @vleauthors (optional)   :  Array of XIMS::VLibAuthor instances; if not given $object->vleauthors() will be used.
-#
-# RETURNS
-#    $boolean : True or False for updating the title
-#
-# DESCRIPTION
-#    Sets $item->title() to a short citation based on VLibAuthors, reference title and reference date.
-#    E.g. "AuthorOneLastname, AuthorTwoLastname, Title of Book (Year of Publication)"
-#    Note: This method does not update the object in the database after setting the title
-#
+
+
+=head2    my $boolean = $item->update_title( $date, $title, [ @vleauthors ] );
+
+=head3 Parameter
+
+    $date                    :  Date to be part of the title
+    $title                   :  Title of the reference item to be part in the object's title
+    @vleauthors (optional)   :  Array of XIMS::VLibAuthor instances; if not given $object->vleauthors() will be used.
+
+=head3 Returns
+
+    $boolean : True or False for updating the title
+
+=head3 Description
+
+Sets $item->title() to a short citation based on VLibAuthors, reference title and reference date.
+E.g. "AuthorOneLastname, AuthorTwoLastname, Title of Book (Year of Publication)"
+Note: This method does not update the object in the database after setting the title
+
+=cut
+
 sub update_title {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -540,3 +601,51 @@ sub update_title {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

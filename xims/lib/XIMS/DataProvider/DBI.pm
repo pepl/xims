@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::DataProvider::DBI -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::DataProvider::DBI;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::DataProvider::DBI;
 
 use strict;
@@ -40,12 +57,14 @@ sub resolve_resource {
     return [ $table_name, $table_name . '.' . $property_name ];
 }
 
-##################################################################################
-# Core Methods
-##################################################################################
-# These are the low-level methods for getting data into and out of the
-# the DB.
-##################################################################################
+
+=head2 Core Methods
+
+ These are the low-level methods for getting data into and out of the
+ the DB.
+
+=cut
+
 
 sub get {
     my ($self, %args) = @_;
@@ -128,11 +147,13 @@ sub update {
     return $data;
 }
 
-##################################################################################
-# Helper Methods
-##################################################################################
-# These are helper subs for munging SQL queries and returned data
-##################################################################################
+
+=head2 Helper Methods
+
+ These are helper subs for munging SQL queries and returned data
+
+=cut
+
 
 sub name_fixer {
     my $row = shift;
@@ -231,18 +252,19 @@ sub property_relationships {
 }
 
 
-##################################################################################
-# Binary File Support
-##################################################################################
-# Despite the overall goodness of the DBI/DBD/DBIx modules, some rdbmses
-# handle inserting binary data specially, and in a way that breaks the
-# otherwise clean and tidy "it just works" syntax normalization (/me glares at Oracle).
-#
-# To avoid the possible overkill of having special helper classes just to deal
-# with *one* column in *one* table in XIMS, we will resort to RDBMS-specific branching
-# in the following methods. If these start to get too messy as support for new DBs
-# are added, we should reconsider using helper classes instead.
-##################################################################################
+
+=head2 Binary File Support
+
+Despite the overall goodness of the DBI/DBD/DBIx modules, some rdbmses handle
+inserting binary data specially, and in a way that breaks the otherwise clean
+and tidy "it just works" syntax normalization (/me glares at Oracle).
+
+To avoid the possible overkill of having special helper classes just to deal
+with *one* column in *one* table in XIMS, we will resort to RDBMS-specific
+branching in the following methods. If these start to get too messy as support
+for new DBs are added, we should reconsider using helper classes instead.
+
+=cut
 
 sub update_content_binfile {
     XIMS::Debug( 5, "called" );
@@ -283,13 +305,15 @@ sub update_content_body {
 
 sub dbh { $_[0]->{dbh} }
 
-#############################################################
-# One-offs
-#
-# These are the DP methods that do not easliy fit into the
-# cleaner abstraction model for one reason or another or
-# need to be revisited.
-#############################################################
+
+=head2 One-offs
+
+ These are the DP methods that do not easliy fit into the
+ cleaner abstraction model for one reason or another or
+ need to be revisited.
+
+=cut
+
 
 sub reposition {
     XIMS::Debug( 5, "called" );
@@ -596,22 +620,26 @@ sub get_descendant_id_level {
 }
 
 
-##
-#
-# SYNOPSIS
-#    $dp->get_descendant_infos( %param );
-#
-# PARAMETER
-#    $param{parent_id}
-#
-# RETURNS
-#    \@rv : [ number of descendants, the newest modification timestamp, latest publication timestamp found ]
-#
-# DESCRIPTION
-#    takes a document_id as argument; returns the count of its descendants and
-#    the newest last_modification_timestamp and last_publication_timestamp of all descendants and the object
-#    itself.
-#
+
+
+=head2    $dp->get_descendant_infos( %param );
+
+=head3 Parameter
+
+    $param{parent_id}
+
+=head3 Returns
+
+    \@rv : [ number of descendants, the newest modification timestamp, latest publication timestamp found ]
+
+=head3 Description
+
+takes a document_id as argument; returns the count of its descendants and
+the newest last_modification_timestamp and last_publication_timestamp of all descendants and the object
+itself.
+
+=cut
+
 sub get_descendant_infos {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -684,27 +712,31 @@ sub _sqlwhere_from_hashgroup {
     return $crit->sql_where();
 }
 
-##
-#
-# SYNOPSIS
-#    $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel, $noorder] );
-#
-# PARAMETER
-#    $parent_id             :  document_id of the parent object to descend from
-#    $maxlevel   (optional) :  maxlevel of recursion, if unspecified or 0 means no recursion limit
-#    $getlevel   (optional) :  per default, only document_id is returned, if $getlevel is specified,
-#                             the level property will be included in the query
-#    $noorder    (optional) :  if given, siblings are not ordered by position
-#    $properties (optional) :  if given, this string is used to specify which properties are to be returned
-#
-# RETURNS
-#    $query : Reference to an Array, including the hierarchical SQL query with ci_documents.id, or
-#             level and ci_documents.id at index '0' and bind params at the following indices
-#
-# DESCRIPTION
-#    Helper method for get_descendant_id_level() and get_descendant_infos()
-#    Returns reference to an array which may be passed to $dbh->fetch_select( sql => $query ) for example
-#
+
+
+=head2    $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel, $noorder] );
+
+=head3 Parameter
+
+    $parent_id             :  document_id of the parent object to descend from
+    $maxlevel   (optional) :  maxlevel of recursion, if unspecified or 0 means no recursion limit
+    $getlevel   (optional) :  per default, only document_id is returned, if $getlevel is specified,
+                             the level property will be included in the query
+    $noorder    (optional) :  if given, siblings are not ordered by position
+    $properties (optional) :  if given, this string is used to specify which properties are to be returned
+
+=head3 Returns
+
+    $query : Reference to an Array, including the hierarchical SQL query with ci_documents.id, or
+             level and ci_documents.id at index '0' and bind params at the following indices
+
+=head3 Description
+
+Helper method for get_descendant_id_level() and get_descendant_infos()
+Returns reference to an array which may be passed to $dbh->fetch_select( sql => $query ) for example
+
+=cut
+
 sub _get_descendant_sql {
     my $self = shift;
     my $parent_id = shift;
@@ -754,20 +786,24 @@ sub _get_descendant_sql {
 }
 
 
-##
-#
-# SYNOPSIS
-#    $dp->get_object_id_by_path( %param );
-#
-# PARAMETER
-#    $param{path}
-#
-# RETURNS
-#    $retval: document_id on success, undef otherwise
-#
-# DESCRIPTION
-#    Fetches document_id corresponding to $param{path}.
-#
+
+
+=head2    $dp->get_object_id_by_path( %param );
+
+=head3 Parameter
+
+    $param{path}
+
+=head3 Returns
+
+    $retval: document_id on success, undef otherwise
+
+=head3 Description
+
+Fetches document_id corresponding to $param{path}.
+
+=cut
+
 sub get_object_id_by_path {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -888,4 +924,52 @@ sub DESTROY {
 }
 
 1;
+
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
 

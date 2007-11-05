@@ -1,56 +1,70 @@
-# Copyright (c) 2002-2007 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::Exporter -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::Exporter;
+
+=head1 DESCRIPTION
+
+This module holds the base classes required for the filesystem
+export.  these classes are ment to be loaded for any export
+done. Because of this the classes are bundled together in a single
+module. I think this reduces loading time, since the code is loaded
+all at the same time.
+
+the exporter has a simple concept:
+it exports every object to an outputsystem if it can find a
+specialized output class.
+
+the exporter wraps the following structure for the calling application:
+
+ +------------------------------------------------------+
+ |                XIMS::Exporter::OT                    |
+ |       (where OT is the special object type)          |
+ | +---------+ +--------+ +------+ +--------------+     |
+ | |   XML   | | Binary | | Link | | FS_Container | ... |
+ | +---------+ +--------+ +------+ +--------------+     |
+ +------------------------------------------------------+
+                         ||
+                         \/
+ +------------------------------------------------------+
+ |                XIMS::Exporter::Output                |
+ |                 (not implemented yet)                |
+ +------------------------------------------------------+
+
+commonly a specialized exporter class specifies only which of type
+data it has to be exported. on this for XML data and Container, the
+specialized Exporter class may define, which filters to use (in case
+of XML data) or how to handle any extra data (meta data, extra
+definitions etc.) in case of Containers.
+
+[MORE EXPLAINATIONS]
+as the schema shows, XIMS::Exporter knows 4 basic types of data to
+export: XML, Binary data, Links and filesystem containers.  the XML
+class implements the same algorithm as XIMS::CGI::getDOM(), so one
+can specifiy any special filters to use in the specialized class.
+
+in future implementations the XIMS::Exporter will use an abstract
+output layer to hide special output systems. This should make it
+possible to have make use of XIMS in different presentation
+environments (e.g. parts of the system may run with DAV, some parts
+may be localy installed others may only be reached by SOAP/XMLRPC or
+ssh. the output layer should hide this information from the
+exporter.
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::Exporter;
-#
-# This module holds the base classes required for the filesystem
-# export.  these classes are ment to be loaded for any export
-# done. Because of this the classes are bundled together in a single
-# module. I think this reduces loading time, since the code is loaded
-# all at the same time.
-#
-# the exporter has a simple concept:
-# it exports every object to an outputsystem if it can find a
-# specialized output class.
-#
-# the exporter wraps the following structure for the calling application:
-#
-#  +------------------------------------------------------+
-#  |                XIMS::Exporter::OT                    |
-#  |       (where OT is the special object type)          |
-#  | +---------+ +--------+ +------+ +--------------+     |
-#  | |   XML   | | Binary | | Link | | FS_Container | ... |
-#  | +---------+ +--------+ +------+ +--------------+     |
-#  +------------------------------------------------------+
-#                          ||
-#                          \/
-#  +------------------------------------------------------+
-#  |                XIMS::Exporter::Output                |
-#  |                 (not implemented yet)                |
-#  +------------------------------------------------------+
-#
-# commonly a specialized exporter class specifies only which of type
-# data it has to be exported. on this for XML data and Container, the
-# specialized Exporter class may define, which filters to use (in case
-# of XML data) or how to handle any extra data (meta data, extra
-# definitions etc.) in case of Containers.
-#
-# [MORE EXPLAINATIONS]
-# as the schema shows, XIMS::Exporter knows 4 basic types of data to
-# export: XML, Binary data, Links and filesystem containers.  the XML
-# class implements the same algorithm as XIMS::CGI::getDOM(), so one
-# can specifiy any special filters to use in the specialized class.
-#
-# in future implementations the XIMS::Exporter will use an abstract
-# output layer to hide special output systems. This should make it
-# possible to have make use of XIMS in different presentation
-# environments (e.g. parts of the system may run with DAV, some parts
-# may be localy installed others may only be reached by SOAP/XMLRPC or
-# ssh. the output layer should hide this information from the
-# exporter.
-#
-#############################################################################################
+
 use strict;
 
 use XIMS;
@@ -65,32 +79,41 @@ use XIMS::Object; # just to be failsafe
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-##
-#
-# SYNOPSIS
-#    $exporter = XIMS::Exporter->new( %param );
-#
-# PARAMETER
-#    $param{Provider}   : the xims dataprovider. (optional, may be set in publish/unpublish)
-#    $param{Basedir}    : the base directory for filesystem export (optional, may be set in publish/unpublish)
-#    $param{Stylesheet} : a xsl stylesheet used to generate exported DOMS (optional, may be set in publish/unpublish)
-#
-# RETURNS
-#    $self : exporter class
-#
-# DESCRIPTION
-#
-#    Constructor of the XIMS::Exporter. It creates the Exporter Class and
-#    initialises it.
-#
-#    the provider option is required to toggle the publishing state of
-#    the processed object and to allow XIMS::SAX to fetch additional
-#    information from the database.
-#
-#    the mandatory basedir option marks the root directory for all
-#    exported files. This directory is added to all relative application
-#    paths.
-#
+
+
+=head2 new()
+
+=head3 Parameter
+
+    $param{Provider} : the xims dataprovider. (optional, may be set in
+                       publish/unpublish)
+
+    $param{Basedir} : the base directory for filesystem export (optional, may
+                      be set in publish/unpublish)
+
+    $param{Stylesheet} : a xsl stylesheet used to generate exported DOMS
+                         (optional, may be set in publish/unpublish)
+
+=head3 Returns
+
+    $self : exporter class
+
+=head3 Description
+
+    $exporter = XIMS::Exporter->new( %param );
+
+Constructor of the XIMS::Exporter. It creates the Exporter Class and
+initialises it.
+
+the provider option is required to toggle the publishing state of the
+processed object and to allow XIMS::SAX to fetch additional information from
+the database.
+
+the mandatory basedir option marks the root directory for all exported files.
+This directory is added to all relative application paths.
+
+=cut
+
 sub new {
     XIMS::Debug( 5, "called" );
 
@@ -109,22 +132,26 @@ sub new {
     return $self;
 }
 
-##
-#
-# SYNOPSIS
-#    $boolean = $exporter->publish( %param );
-#
-# PARAMETER
-#    $param{Object} : the object to be processed (mandatory)
-#    $param{Basedir}    : the base directory for filesystem export (optional, may be set in constructor)
-#    $param{Stylesheet} : a xsl stylesheet used to generate exported DOMS (optional, may be set in constructor)
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    Handles the create sequence of the exporter.
-#
+
+
+=head2    $boolean = $exporter->publish( %param );
+
+=head3 Parameter
+
+    $param{Object} : the object to be processed (mandatory)
+    $param{Basedir}    : the base directory for filesystem export (optional, may be set in constructor)
+    $param{Stylesheet} : a xsl stylesheet used to generate exported DOMS (optional, may be set in constructor)
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+Handles the create sequence of the exporter.
+
+=cut
+
 sub publish {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -226,20 +253,24 @@ sub publish {
     return $retval;
 }
 
-##
-#
-# SYNOPSIS
-#    $bool = $exporter->unpublish( %param )
-#
-# PARAMETER
-#    $param{Object} : the object to be processed (mandatory)
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#   handles the remove sequence of XIMS::Exporter
-#
+
+
+=head2    $bool = $exporter->unpublish( %param )
+
+=head3 Parameter
+
+    $param{Object} : the object to be processed (mandatory)
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+handles the remove sequence of XIMS::Exporter
+
+=cut
+
 sub unpublish {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -320,27 +351,29 @@ sub unpublish {
     return $retval;
 }
 
-##
-#
-# SYNOPSIS
-#   $exporter->update_dependencies( %params );
-#
-# PARAMETER
-#   $params{handler}    : The exporter handler instance.
-#
-# DESCRIPTION
-#
-# This method (un)publishes related and/or depending objects. For this
-# it calls
-#   * update_related()
-#         - (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
-#           are not published yet, they will be published.
-#         - Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
-#           of the object or its ancestors
-#   * update_parent()
-#         updates autoindex, container.xml of parent
-#
-#
+
+
+=head2   $exporter->update_dependencies( %params );
+
+=head3 Parameter
+
+   $params{handler}    : The exporter handler instance.
+
+=head3 Description
+
+
+This method (un)publishes related and/or depending objects. For this
+it calls
+* update_related()
+- (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
+are not published yet, they will be published.
+- Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
+of the object or its ancestors
+* update_parent()
+updates autoindex, container.xml of parent
+
+=cut
+
 sub update_dependencies {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -354,9 +387,12 @@ sub update_dependencies {
 
 1;
 
-#############################################################################################
+=head1 XIMS::Exporter::Helper
+
+=cut
+
 package XIMS::Exporter::Helper;
-#############################################################################################
+
 
 sub new {
    my $class = shift;
@@ -410,34 +446,44 @@ sub exporterclass {
 
 1;
 
-#############################################################################################
+
+=head1 XIMS::Exporter::Handler
+
+this package is the base class for folder and object!!!
+
+=cut
+
 package XIMS::Exporter::Handler;
-# this package is the base class for folder and object!!!
-#############################################################################################
+
 use XIMS::AppContext;
 
-##
-#
-# SYNOPSIS
-#    $object = XIMS::Exporter::Handler->new( %param );
-#
-# PARAMETERS
-#    $param{Object}     : the object being synch'd
-#    $param{Provider}   : the dataprovider instance
-#    $param{Stylesheet} : the stylesheet used for DOM export
-#    $param{Basedir}    : the rootdirectory for the exported data.
-#
-# RETURNS
-#    $self : the Exporter Object Handler Class
-#
-# DESCRIPTION
-#
-#    The XIMS::Exporter::Handler class provides the common functions of
-#    XIMS::Exporter::Object and XIMS::Exporter::Folder. One of them is
-#    the class constructor.
-#
-#    ubu-note: every handler is now atomic in the sense that each handler
-#              gets its own object.
+
+
+=head2    $object = XIMS::Exporter::Handler->new( %param );
+
+=head3 Parameter
+
+    $param{Object}     : the object being synch'd
+    $param{Provider}   : the dataprovider instance
+    $param{Stylesheet} : the stylesheet used for DOM export
+    $param{Basedir}    : the rootdirectory for the exported data.
+
+=head3 Returns
+
+    $self : the Exporter Object Handler Class
+
+=head3 Description
+
+
+The XIMS::Exporter::Handler class provides the common functions of
+XIMS::Exporter::Object and XIMS::Exporter::Folder. One of them is
+the class constructor.
+
+ubu-note: every handler is now atomic in the sense that each handler
+gets its own object.
+
+=cut
+
 sub new {
     XIMS::Debug( 5, "called" );
     my $class = shift;
@@ -508,25 +554,29 @@ sub new {
     return $self;
 }
 
-##
-#
-# SYNOPSIS
-#    $self->toggle_publish_state( $state );
-#
-# PARAMETER
-#    $state: '0' or '1'.
-#
-# RETURNS
-#    nothing
-#
-# DESCRIPTION
-#    This helper function is only used to change the publish state of an
-#    object. For this a temporary Object is created, to avoid overriding
-#    existing information without notice or intention.
-#
-#    The method is called be the exporter, after the creation or
-#    removement has done.
-#
+
+
+=head2    $self->toggle_publish_state( $state );
+
+=head3 Parameter
+
+    $state: '0' or '1'.
+
+=head3 Returns
+
+    nothing
+
+=head3 Description
+
+This helper function is only used to change the publish state of an
+object. For this a temporary Object is created, to avoid overriding
+existing information without notice or intention.
+
+The method is called be the exporter, after the creation or
+removement has done.
+
+=cut
+
 sub toggle_publish_state {
     XIMS::Debug( 5, "called" );
     my ( $self, $state ) = @_;
@@ -546,22 +596,27 @@ sub toggle_publish_state {
 }
 
 sub create { return; }
+
 sub update { return; }
 
-##
-#
-# SYNOPSIS
-#    $self->remove();
-#
-# PARAMETER
-#    none: handled via properites
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
+
+
+=head2    $self->remove();
+
+=head3 Parameter
+
+    none: handled via properites
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub remove {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -602,23 +657,27 @@ sub remove {
 }
 
 
-##
-#
-# SYNOPSIS
-#    $errcode = $self->test_ancestors();
-#
-# PARAMETER
-#    none: handled via properties
-#
-# RETURNS
-#    $retval : undef on failure
-#
-# DESCRIPTION
-#    commonly an object will be published to the output system. only
-#    if one ancestor is *not* a fs_container this should be
-#    denied. This function tests if a certain object should be
-#    created.
-#
+
+
+=head2    $errcode = $self->test_ancestors();
+
+=head3 Parameter
+
+    none: handled via properties
+
+=head3 Returns
+
+    $retval : undef on failure
+
+=head3 Description
+
+commonly an object will be published to the output system. only
+if one ancestor is *not* a fs_container this should be
+denied. This function tests if a certain object should be
+created.
+
+=cut
+
 sub test_ancestors {
     my $self = shift;
     my $retval = undef;
@@ -639,23 +698,27 @@ sub test_ancestors {
     return $retval;
 }
 
-##
-# SYNOPSIS
-#    my $boolean = $self->update_related();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $boolean : True or False for updating related objects
-#
-# DESCRIPTION
-#    - (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
-#      are not published yet, they will be published.
-#    - Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
-#      of the object or its ancestors
-#    - Republishes Documents if current object is a DocumentLink
-#
+
+=head2    my $boolean = $self->update_related();
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    $boolean : True or False for updating related objects
+
+=head3 Description
+
+- (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
+are not published yet, they will be published.
+- Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
+of the object or its ancestors
+- Republishes Documents if current object is a DocumentLink
+
+=cut
+
 sub update_related {
     XIMS::Debug( 5, "called" );
     my ( $self, %params ) = @_;
@@ -730,19 +793,23 @@ sub update_related {
 }
 
 
-##
-# SYNOPSIS
-#    my $boolean = $self->update_parent();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $boolean : True or False for updating the parent
-#
-# DESCRIPTION
-#    Updates the autoindex and container.xml of the parent object
-#
+
+=head2  my $boolean = $self->update_parent();
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    $boolean : True or False for updating the parent
+
+=head3 Description
+
+Updates the autoindex and container.xml of the parent object
+
+=cut
+
 sub update_parent {
     XIMS::Debug( 5, "called" );
     my ( $self, %params ) = @_;
@@ -776,25 +843,26 @@ sub update_parent {
 
 1;
 
-###############################################################################################
+=head1 XIMS::Exporter::NULL
+
+the NULL exporter simply toggles the publish state, but do no cause
+any output. This exporter is usefull for object types, that need the
+publish state on, but have no representation in the filesystem as a
+standalone object.
+
+since XIMS::Exporter::NULL will not create any output, this function
+must return 'undef', to avoid any parent handling.
+
+=cut
+
 package XIMS::Exporter::NULL;
-#
-# the NULL exporter simply toggles the publish state, but do no cause
-# any output. This exporter is usefull for object types, that need the
-# publish state on, but have no representation in the filesystem as a
-# standalone object.
-###############################################################################################
+
+
+
 use strict;
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Handler );
 
-##
-#
-# DESCRIPTION
-#
-# since XIMS::Exporter::NULL will not create any output, this function
-# must return 'undef', to avoid any parent handling.
-#
 sub test_ancestors {
     return;
 }
@@ -816,12 +884,17 @@ sub remove {
 
 1;
 
-###############################################################################################
+=head1 XIMS::Exporter::XMLChunk
+
+abstract class that covers all objects that need to
+write/remove XML files to disk.
+
+=cut
+
+
 package XIMS::Exporter::XMLChunk;
-#
-# abstract class that covers all objects that need to
-# write/remove XML files to disk.
-#############################################################################################
+
+
 use strict;
 use vars qw( @ISA );
 
@@ -830,19 +903,23 @@ use XIMS::SAX::Filter::ContentIDPathResolver;
 
 @ISA = qw( XIMS::Exporter::Handler );
 
-##
-#
-# SYNOPSIS
-#    $self->create( %param )
-#
-# PARAMETER
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
+
+
+=head2 $self->create( %param )
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub create {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -855,8 +932,8 @@ sub create {
         return;
     }
 
-    # THEN we have to do the transformation of the DOM, as the output
-    # should contain using XSL.
+    # THEN we have to do the transformation of the DOM, as the output should
+    # contain using XSL.
     my $transd_dom = $self->transform_dom( $raw_dom );
 
     unless ( defined $transd_dom ) {
@@ -872,8 +949,8 @@ sub create {
     my $document_fh = IO::File->new( $document_path, 'w' );
 
     if ( defined $document_fh ) {
-        # Exporter stylesheets generate UTF-8 encoded documents. Make sure that
-        # they get written out as such
+        # Exporter stylesheets generate UTF-8 encoded documents. Make sure
+        # that they get written out as such
         binmode( $document_fh, ':utf8' );
 
         print $document_fh $transd_dom->toString(1);
@@ -894,21 +971,25 @@ sub create {
 }
 
 
-##
-#
-# SYNOPSIS
-#    $self->generate_dom( %param );
-#
-# PARAMETER
-#    none: uses $self->{Object}. Maybe add params for encoding, stylesheet PIs or whatever at some point?
-#
-# RETURNS
-#    $retval : The objects DOM, undef on error
-#
-# DESCRIPTION
-#    This is a helper function that transforms an object into a DOM
-#    by using XIMS::SAX.
-#
+
+
+=head2    $self->generate_dom( %param );
+
+=head3 Parameter
+
+    none: uses $self->{Object}. Maybe add params for encoding, stylesheet PIs or whatever at some point?
+
+=head3 Returns
+
+    $retval : The objects DOM, undef on error
+
+=head3 Description
+
+This is a helper function that transforms an object into a DOM
+by using XIMS::SAX.
+
+=cut
+
 sub generate_dom {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -976,21 +1057,22 @@ sub generate_dom {
     return $dom;
 }
 
+=head2    $self->set_sax_generator();
 
-##
-#
-# SYNOPSIS
-#    $self->set_sax_generator();
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    $retval : instance of XIMS::SAX::Generator::Exporter
-#
-# DESCRIPTION
-#    Allows Exporter subclasses to use other SAX Generators than the default XIMS::SAX::Generator::Exporter
-#
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    $retval : instance of XIMS::SAX::Generator::Exporter
+
+=head3 Description
+
+Allows Exporter subclasses to use other SAX Generators than the default XIMS::SAX::Generator::Exporter
+
+=cut
+
 sub set_sax_generator {
     XIMS::Debug( 5, "called" );
     my $self  = shift;
@@ -998,22 +1080,23 @@ sub set_sax_generator {
     return XIMS::SAX::Generator::Exporter->new();
 }
 
+=head2    $self->transform_dom( $dom );
 
-##
-#
-# SYNOPSIS
-#    $self->transform_dom( $dom );
-#
-# PARAMETER
-#    $dom: the DOM to be transformed.
-#
-# RETURNS
-#    $retval : the transformed DOM, undef on error
-#
-# DESCRIPTION
-#    This is a helper function that transforms a DOM into another one
-#    by using XSLT.
-#
+=head3 Parameter
+
+    $dom: the DOM to be transformed.
+
+=head3 Returns
+
+    $retval : the transformed DOM, undef on error
+
+=head3 Description
+
+This is a helper function that transforms a DOM into another one
+by using XSLT.
+
+=cut
+
 sub transform_dom {
     XIMS::Debug( 5, "called" );
 
@@ -1081,33 +1164,41 @@ sub set_sax_filters {
 
 1;
 
-###############################################################################################
+=head1 XIMS::Exporter::Binary
+
+abstract class that covers all objects that need to write/remove binary/plain
+files to disk.
+
+Binary data is everything that is neither XML data, FS Container nor Symbolic
+link
+
+=cut
+
 package XIMS::Exporter::Binary;
-#
-# abstract class that covers all objects that need to
-# write/remove binary/plain files to disk.
-#
-# Binary data is everything that is neither XML data, FS Container nor Symbolic link
-###############################################################################################
+
 use strict;
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Handler );
 
-##
-#
-# SYNOPSIS
-#    $self->create( %param );
-#
-# PARAMETER
-#    $param{-location} : (mandatory)
-#    $param{Object}   : (mandatory)
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
+
+
+=head2    $self->create( %param );
+
+=head3 Parameter
+
+    $param{-location} : (mandatory)
+    $param{Object}   : (mandatory)
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub create {
     XIMS::Debug( 5, "called" );
 
@@ -1143,32 +1234,38 @@ sub create {
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::Folder
+
+lowlevel class for folder objs.
+
+=cut
 package XIMS::Exporter::Folder;
-#
-# lowlevel class for folder objs.
-###############################################################################################
+
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
 use File::Path;
 use strict;
 
-##
-#
-# SYNOPSIS
-#    $self->create( $param );
-#
-# PARAMETER
-#    $param->{-path}   : (mandatory)
-#    $param->{-folder} : (mandatory)
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
-#
+
+
+=head2 $self->create( $param );
+
+=head3 Parameter
+
+    $param->{-path}   : (mandatory)
+    $param->{-folder} : (mandatory)
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub create {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -1200,11 +1297,11 @@ sub create {
         # generate metadata
         #
 
-        # delete children cache so that autoindex and container.xml will be up-to-date
+        # delete children cache so that autoindex and container.xml will be
+        # up-to-date
         delete $self->{Provider}->{ocache}->{kids};
 
         # first, the object DOM
-        #
         my $raw_dom = $self->generate_dom();
 
         unless ( $raw_dom ) {
@@ -1270,19 +1367,21 @@ sub create {
     return 1;
 }
 
-##
-#
-# SYNOPSIS
-#    $self->remove();
-#
-# PARAMETER
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
+=head2    $self->remove();
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub remove {
     XIMS::Debug( 5, "called" );
     my ( $self, $param ) = @_;
@@ -1334,34 +1433,36 @@ sub remove {
 
 1;
 
-###############################################################################################
-## CORE EXPORTER CLASSES
-###############################################################################################
+=head1  XIMS::Exporter::Document
 
-###############################################################################################
+lowlevel class for document objs.
+
+=cut
+
 package XIMS::Exporter::Document;
-#
-# lowlevel class for document objs.
-###############################################################################################
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
 
-##
-#
-# SYNOPSIS
-#    $self->remove();
-#
-# PARAMETER
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
+
+
+=head2    $self->remove();
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub remove {
     XIMS::Debug( 5, "called" );
     my ( $self, $param ) = @_;
@@ -1383,18 +1484,21 @@ sub remove {
     return $self->SUPER::remove();
 }
 
-##
-#
-# SYNOPSIS
-#    $self->set_sax_filters(@parameter)
-#
-# PARAMETER
-#    @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
-#
-# DESCRIPTION
-# internally called.
-#
-#
+
+
+=head2    $self->set_sax_filters(@parameter)
+
+=head3 Parameter
+
+    @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
+
+=head3 Description
+
+internally called.
+
+
+=cut
+
 sub set_sax_filters {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -1412,22 +1516,25 @@ sub set_sax_filters {
     return @retval;
 }
 
-##
-#
-# SYNOPSIS
-#    $self->generate_dom(@parameter)
-#
-# PARAMETER
-#    @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
-#
-# DESCRIPTION
-# internally called.
-#
-# The document exporter should export significant information as
-# well. this information is indirectly stored as child objects.  the
-# exporter must only export the information, that is marked as public
-# available. These object therefore must be published in advance.
-#
+
+
+=head2    $self->generate_dom(@parameter)
+
+=head3 Parameter
+
+    @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
+
+=head3 Description
+
+internally called.
+
+The document exporter should export significant information as
+well. this information is indirectly stored as child objects.  the
+exporter must only export the information, that is marked as public
+available. These object therefore must be published in advance.
+
+=cut
+
 sub generate_dom {
     my $self = shift;
     $self->{AppContext}->properties->content->getchildren->objecttypes( [ qw( URLLink ) ] );
@@ -1436,11 +1543,14 @@ sub generate_dom {
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::AutoIndexer
+
+Internal class for creating the auto index.
+
+=cut
 package XIMS::Exporter::AutoIndexer;
-#
-# Internal class for creating the auto index.
-###############################################################################################
+
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
 
@@ -1450,8 +1560,8 @@ sub generate_dom {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    # temporarily set department id to document for object roots
-    # to trick the auto index to point to the correct ou.xml
+    # temporarily set department id to document for object roots to trick the
+    # auto index to point to the correct ou.xml
     my $department_id = $self->{Object}->department_id();
     if ( $self->{Object}->object_type->is_objectroot() ) {
         $self->{Object}->department_id( $self->{Object}->document_id() ) ;
@@ -1464,13 +1574,12 @@ sub generate_dom {
 
     return unless $dom;
 
-    # after a second thought, i guess it would be better to convert
-    # the DOM with an exporter stylesheet instead of letting a
-    # stylesheet called from AxKit do the work. why? because of having
-    # ONE common schema for dumb end-userstylesheet-designers making
-    # things easier for them. exporter_document_autoindex.xsl should
-    # create a file quite similar to the result of
-    # exporter_document.xsl
+    # after a second thought, i guess it would be better to convert the DOM
+    # with an exporter stylesheet instead of letting a stylesheet called from
+    # AxKit do the work. why? because of having ONE common schema for dumb
+    # end-userstylesheet-designers making things easier for them.
+    # exporter_document_autoindex.xsl should create a file quite similar to
+    # the result of exporter_document.xsl
 
     $self->{Stylesheet} = XIMS::XIMSROOT() . '/stylesheets/exporter/' . XIMS::AUTOINDEXEXPORTSTYLESHEET();
     $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/' . XIMS::AUTOINDEXFILENAME();
@@ -1493,11 +1602,15 @@ sub set_sax_filters {
 
 1;
 
-###############################################################################################
+=head1 XIMS::Exporter::Portlet
+
+lowlevel class for pork cutlet objs. ;->
+
+=cut
+
 package XIMS::Exporter::Portlet;
-#
-# lowlevel class for pork cutlet objs. ;->
-###############################################################################################
+
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
@@ -1540,11 +1653,16 @@ sub create {
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::DepartmentRoot
+
+lowlevel class for DepartmentRoot objs.
+
+=cut
+
 package XIMS::Exporter::DepartmentRoot;
-#
-# lowlevel class for DepartmentRoot objs.
-###############################################################################################
+
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Folder );
@@ -1580,11 +1698,14 @@ sub remove {
 
 1;
 
-###############################################################################################
+=head1 XIMS::Exporter::OUIndexer
+
+lowlevel class for DepartmentRoot objs.
+
+=cut
+
+
 package XIMS::Exporter::OUIndexer;
-#
-# lowlevel class for DepartmentRoot objs.
-###############################################################################################
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
@@ -1641,11 +1762,14 @@ sub remove {
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::NewsItem
+
+lowlevel class for newsitem objs.
+
+=cut
+
 package XIMS::Exporter::NewsItem;
-#
-# lowlevel class for newsitem objs.
-###############################################################################################
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Document );
@@ -1676,11 +1800,16 @@ sub set_sax_filters {
 
 1;
 
-###############################################################################################
+
+
+=head1 XIMS::Exporter::File
+
+lowlevel class for File objs.
+
+=cut
+
+
 package XIMS::Exporter::File;
-#
-# lowlevel class for File objs.
-###############################################################################################
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Binary );
@@ -1688,11 +1817,14 @@ use vars qw( @ISA );
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::XML
+
+lowlevel class for XSLStylesheet objs.
+
+=cut
+
 package XIMS::Exporter::XML;
-#
-# lowlevel class for XSLStylesheet objs.
-###############################################################################################
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Binary );
@@ -1700,11 +1832,14 @@ use vars qw( @ISA );
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::XSLStylesheet
+
+lowlevel class for XSLStylesheet objs.
+
+=cut
+
 package XIMS::Exporter::XSLStylesheet;
-#
-# lowlevel class for XSLStylesheet objs.
-###############################################################################################
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XML );
@@ -1712,23 +1847,27 @@ use vars qw( @ISA );
 
 1;
 
-###############################################################################################
+=head1 XIMS::Exporter::XSPScript
+
+lowlevel class for XSPScript objs. ALERT! this is just a dummy!
+
+=cut
+
 package XIMS::Exporter::XSPScript;
-#
-# lowlevel class for XSPScript objs. ALERT! this is just a dummy!
-###############################################################################################
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XML );
 
 1;
 
+=head1
 
-###############################################################################################
+lowlevel class for URLLink objs.
+
+=cut
+
 package XIMS::Exporter::URLLink;
-#
-# lowlevel class for URLLink objs.
-###############################################################################################
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::NULL );
@@ -1736,28 +1875,37 @@ use vars qw( @ISA );
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::SymbolicLink
+
+lowlevel class for SymbolicLink objs.
+
+=cut
+
 package XIMS::Exporter::SymbolicLink;
-#
-# lowlevel class for SymbolicLink objs.
-###############################################################################################
+
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Handler );
 
-##
-#
-# SYNOPSIS
-#    $self->create( %param )
-#
-# PARAMETER
-#
-# RETURNS
-#    $retval : undef on error
-#
-# DESCRIPTION
-#    none yet
-#
+
+
+=head2    $self->create( %param )
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub create {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -1794,11 +1942,16 @@ sub create {
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::AnonDiscussionForum
+
+lowlevel class for AnonDiscussionForum objs.
+
+=cut
+
 package XIMS::Exporter::AnonDiscussionForum;
-#
-# lowlevel class for AnonDiscussionForum objs.
-###############################################################################################
+
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
@@ -1806,11 +1959,14 @@ use vars qw( @ISA );
 
 1;
 
-###############################################################################################
+=head1 XIMS::Exporter::AnonDiscussionForumContrib
+
+lowlevel class for AnonDiscussionForumContrib objs.
+
+=cut
+
 package XIMS::Exporter::AnonDiscussionForumContrib;
-#
-# lowlevel class for AnonDiscussionForumContrib objs.
-###############################################################################################
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
@@ -1818,11 +1974,15 @@ use vars qw( @ISA );
 
 1;
 
-###############################################################################################
+
+=head1
+
+lowlevel class for AxPointPresentation objs.
+
+=cut
+
 package XIMS::Exporter::AxPointPresentation;
-#
-# lowlevel class for AxPointPresentation objs.
-###############################################################################################
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
@@ -1830,11 +1990,15 @@ use vars qw( @ISA );
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::Image
+
+lowlevel class for Image objs.
+
+=cut
+
 package XIMS::Exporter::Image;
-#
-# lowlevel class for Image objs.
-###############################################################################################
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Binary );
@@ -1842,11 +2006,16 @@ use vars qw( @ISA );
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::sDocBookXML
+
+lowlevel class for sDocBookXML objs.
+
+=cut
+
 package XIMS::Exporter::sDocBookXML;
-#
-# lowlevel class for sDocBookXML objs.
-###############################################################################################
+
+
 
 use vars qw( @ISA );
 use XIMS::SAX::Filter::ContentIDPathResolver;
@@ -1866,11 +2035,16 @@ sub set_sax_filters {
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::Portal
+
+Portal Exporter class
+
+=cut
+
 package XIMS::Exporter::Portal;
-#
-# Portal Exporter class
-###############################################################################################
+
+
 
 use vars qw(@ISA);
 @ISA=qw( XIMS::Exporter::XMLChunk );
@@ -1898,14 +2072,67 @@ sub create {
 
 1;
 
-###############################################################################################
+
+=head1 XIMS::Exporter::SiteRoot
+
+lowlevel class for AnonDiscussionForum objs.
+
+=cut
+
 package XIMS::Exporter::SiteRoot;
-#
-# lowlevel class for AnonDiscussionForum objs.
-###############################################################################################
+
+
 
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::DepartmentRoot );
 
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

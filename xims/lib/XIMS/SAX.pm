@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::SAX -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::SAX;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::SAX;
 
 use strict;
@@ -15,27 +32,31 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our $DefaultSAXHandler ||= 'XML::LibXML::SAX::Builder';
 our $DefaultSAXGenerator ||= 'XIMS::SAX::Generator::Content';
 
-##
-#
-# SYNOPSIS
-#    XIMS::SAX->new( %args );
-#
-# PARAMETERS
-#    $args{Handler}    : (optional) A blessed reference to a SAX Handler class,
-#                                    or a string containing the package name of one
-#
-#    $args{Generator}  : (optional) A blessed reference to a SAX Generator class,
-#                                   or a string containing the package name of one
-#
-#    $args{FilterList} : (optional) A list (@array) of SAX Filter package names or
-#                                    SAX::Machines descriptions.
-#
-# RETURNS
-#    $self :  XIMS::SAX object
-#
-# DESCRIPTION
-#    Constructor
-#
+
+
+=head2    XIMS::SAX->new( %args );
+
+=head3 Parameter
+
+    $args{Handler}    : (optional) A blessed reference to a SAX Handler class,
+                                    or a string containing the package name of one
+
+    $args{Generator}  : (optional) A blessed reference to a SAX Generator class,
+                                   or a string containing the package name of one
+
+    $args{FilterList} : (optional) A list (@array) of SAX Filter package names or
+                                    SAX::Machines descriptions.
+
+=head3 Returns
+
+    $self :  XIMS::SAX object
+
+=head3 Description
+
+Constructor
+
+=cut
+
 sub new {
     XIMS::Debug( 5, "called" );
     my $class = shift;
@@ -75,20 +96,24 @@ sub new {
 }
 
 
-##
-#
-# SYNOPSIS
-#     $sax->parse( $ctxt [, $prependgeneratorfilters] );
-#
-# PARAMETERS
-#     $ctxt:
-#
-# RETURNS
-#     $parse_result :
-#
-# DESCRIPTION
-#     none yet
-#
+
+
+=head2     $sax->parse( $ctxt [, $prependgeneratorfilters] );
+
+=head3 Parameter
+
+     $ctxt:
+
+=head3 Returns
+
+     $parse_result :
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub parse {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -132,23 +157,27 @@ sub parse {
 # ###
 
 
-##
-#
-# SYNOPSIS
-#     $sax->set_handler( $handler );
-#
-# PARAMETERS
-#     $handler: Name of handler class or reference to handler object
-#
-# RETURNS
-#     nothing
-#
-# DESCRIPTION
-#     sets the handler for the instance $sax
-#
-#     if $handler is not a reference, set_handler() treats the given
-#     argument as a classname and tries to run its constructor
-#
+
+
+=head2     $sax->set_handler( $handler );
+
+=head3 Parameter
+
+     $handler: Name of handler class or reference to handler object
+
+=head3 Returns
+
+     nothing
+
+=head3 Description
+
+sets the handler for the instance $sax
+
+if $handler is not a reference, set_handler() treats the given
+argument as a classname and tries to run its constructor
+
+=cut
+
 sub set_handler {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -166,23 +195,27 @@ sub set_handler {
 }
 
 
-##
-#
-# SYNOPSIS
-#     $sax->set_generator( $generator );
-#
-# PARAMETERS
-#     $generator: Name of generator class or reference to generator object
-#
-# RETURNS
-#     nothing
-#
-# DESCRIPTION
-#     sets the generator for the instance $sax
-#
-#     if $generator is not a reference, set_generator() treats the
-#     given argument as a classname and tries to run its constructor
-#
+
+
+=head2     $sax->set_generator( $generator );
+
+=head3 Parameter
+
+     $generator: Name of generator class or reference to generator object
+
+=head3 Returns
+
+     nothing
+
+=head3 Description
+
+sets the generator for the instance $sax
+
+if $generator is not a reference, set_generator() treats the
+given argument as a classname and tries to run its constructor
+
+=cut
+
 sub set_generator {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -200,20 +233,24 @@ sub set_generator {
 }
 
 
-##
-#
-# SYNOPSIS
-#     $sax->set_filterlist( @filters );
-#
-# PARAMETERS
-#     $ctxt:
-#
-# RETURNS
-#     nothing
-#
-# DESCRIPTION
-#     none yet
-#
+
+
+=head2     $sax->set_filterlist( @filters );
+
+=head3 Parameter
+
+     $ctxt:
+
+=head3 Returns
+
+     nothing
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub set_filterlist {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -226,22 +263,26 @@ sub set_filterlist {
 # Legacy stuff
 # ####
 
-##
-#
-# SYNOPSIS
-#     $driver->source( { Encoding => $myEncoding } );
-#
-# PARAMETERS
-#     $options_hash: A hash of options to describe the source
-#
-# RETURNS
-#     nothing
-#
-# DESCRIPTION
-#     This lets one set the encoding wanted for the DOM. It takes only the
-#     Encoding option and ignores the rest. Be aware that the setting of
-#     the encoding will work ONLY with XML::LibXML::SAX::Builder.
-#
+
+
+=head2     $driver->source( { Encoding => $myEncoding } );
+
+=head3 Parameter
+
+     $options_hash: A hash of options to describe the source
+
+=head3 Returns
+
+     nothing
+
+=head3 Description
+
+This lets one set the encoding wanted for the DOM. It takes only the
+Encoding option and ignores the rest. Be aware that the setting of
+the encoding will work ONLY with XML::LibXML::SAX::Builder.
+
+=cut
+
 sub source {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -250,3 +291,51 @@ sub source {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+

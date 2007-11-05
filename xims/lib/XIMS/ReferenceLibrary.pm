@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+XIMS::ReferenceLibrary -- A .... doing bla, bla, bla. (short)
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use XIMS::ReferenceLibrary;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package XIMS::ReferenceLibrary;
 
 use strict;
@@ -13,20 +30,24 @@ use XIMS::RefLibSerial;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-##
-#
-# SYNOPSIS
-#    my $reflib = XIMS::ReferenceLibrary->new( %args )
-#
-# PARAMETER
-#    %args: recognized keys are the fields from XIMS::Object::new()
-#
-# RETURNS
-#    $reflib: instance of XIMS::ReferenceLibrary
-#
-# DESCRIPTION
-#    Fetches existing objects or creates a new instance of XIMS::ReferenceLibrary for object creation.
-#
+
+
+=head2    my $reflib = XIMS::ReferenceLibrary->new( %args )
+
+=head3 Parameter
+
+    %args: recognized keys are the fields from XIMS::Object::new()
+
+=head3 Returns
+
+    $reflib: instance of XIMS::ReferenceLibrary
+
+=head3 Description
+
+Fetches existing objects or creates a new instance of XIMS::ReferenceLibrary for object creation.
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -39,21 +60,25 @@ sub new {
     return $class->SUPER::new( %args );
 }
 
-##
-#
-# SYNOPSIS
-#    my @reference_types = $reflib->reference_types( [ %args ] )
-#
-# PARAMETER
-#    %args: One of the properties of XIMS::ReflibReferenceType
-#
-# RETURNS
-#    @reference_types: Array of available reference types
-#
-# DESCRIPTION
-#    Fetches available reference types. Reference Types can be filtered by a reference
-#    type property. (E.g. name => '%Talk%')
-#
+
+
+=head2    my @reference_types = $reflib->reference_types( [ %args ] )
+
+=head3 Parameter
+
+    %args: One of the properties of XIMS::ReflibReferenceType
+
+=head3 Returns
+
+    @reference_types: Array of available reference types
+
+=head3 Description
+
+Fetches available reference types. Reference Types can be filtered by a reference
+type property. (E.g. name => '%Talk%')
+
+=cut
+
 sub reference_types {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -68,21 +93,25 @@ sub reference_types {
     return @out;
 }
 
-##
-#
-# SYNOPSIS
-#    my @reference_properties = $reflib->reference_properties( [ %args ] )
-#
-# PARAMETER
-#    %args: One of the properties of XIMS::ReflibReferenceProperty
-#
-# RETURNS
-#    @reference_properties: Array of available reference properties
-#
-# DESCRIPTION
-#    Fetches available reference properties. Reference Properties can be filtered by a reference
-#    property property. (E.g. name => '%conf%')
-#
+
+
+=head2    my @reference_properties = $reflib->reference_properties( [ %args ] )
+
+=head3 Parameter
+
+    %args: One of the properties of XIMS::ReflibReferenceProperty
+
+=head3 Returns
+
+    @reference_properties: Array of available reference properties
+
+=head3 Description
+
+Fetches available reference properties. Reference Properties can be filtered by a reference
+property property. (E.g. name => '%conf%')
+
+=cut
+
 sub reference_properties {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -97,20 +126,24 @@ sub reference_properties {
     return @out;
 }
 
-##
-#
-# SYNOPSIS
-#    my @vlauthors = $reflib->vlauthors()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    @vlauthors: Array of VLAuthors mapped to the Reference Library
-#
-# DESCRIPTION
-#    Fetches VLAuthors mapped to the Reference Library
-#
+
+
+=head2    my @vlauthors = $reflib->vlauthors()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    @vlauthors: Array of VLAuthors mapped to the Reference Library
+
+=head3 Description
+
+Fetches VLAuthors mapped to the Reference Library
+
+=cut
+
 sub vlauthors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -129,20 +162,24 @@ sub vlauthors {
     return @objects;
 }
 
-##
-#
-# SYNOPSIS
-#    my @vlserials = $reflib->vlserials()
-#
-# PARAMETER
-#    none
-#
-# RETURNS
-#    @vlserials: Array of RefLibSerials mapped to the Reference Library
-#
-# DESCRIPTION
-#    Fetches RefLibSerials mapped to the Reference Library
-#
+
+
+=head2    my @vlserials = $reflib->vlserials()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    @vlserials: Array of RefLibSerials mapped to the Reference Library
+
+=head3 Description
+
+Fetches RefLibSerials mapped to the Reference Library
+
+=cut
+
 sub vlserials {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -161,40 +198,44 @@ sub vlserials {
     return @objects;
 }
 
-##
-#
-# SYNOPSIS
-#    my ($item_count, $reflibitems) = $reflib->items_granted( [ %args ] )
-#
-# PARAMETER
-#    $args{ User }              (optional) :  XIMS::User instance
-#
-#    $args{ limit }             (optional) :  Limit size of $reflibitems arrayref
-#                                             Usually used together with 'offset' for pagination
-#    $args{ offset }            (optional) :  Offset of returned items relative to total items
-#                                             Usually used together with 'limit' for pagination
-#    $args{ order }             (optional) :  Sort by object property
-#
-#    $args{ criteria }          (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::ReferenceLibrary)
-#    $args{ published }         (optional) :  Filter published items
-#    $args{ date }              (optional) :  Filter items by date ReflibReferenceProperty
-#    $args{ author_id }         (optional) :  Filter items by VLAuthor id
-#    $args{ author_lname }      (optional) :  Filter items by VLAuthor lastname
-#    $args{ serial_id }         (optional) :  Filter items by ReflibSerial id
-#    $args{ reference_type_id } (optional) :  Filter items by reference_type_id
-#    $args{ workgroup_id }      (optional) :  Filter items by workgroup_id
-#
-# RETURNS
-#    $item_count:  Count of total items
-#    $reflibitems: Arrayref of ReferenceLibraryItems part of the Reference Library,
-#                  slice selected by $args{limit} and $args{offset}
-#
-# DESCRIPTION
-#    Fetches ReferenceLibraryItems part of the Reference Library granted to $args{User} or $reflib->User resp.
-#    Returned ReferenceLibraryItems will include 'authorgroup' and 'editorgroup' keys containing arrayrefs of
-#    authors and editors assigned to the ReferenceLibraryItem as well as a 'user_privileges' key containing
-#    the active user object privileges
-#
+
+
+=head2    my ($item_count, $reflibitems) = $reflib->items_granted( [ %args ] )
+
+=head3 Parameter
+
+    $args{ User }              (optional) :  XIMS::User instance
+
+    $args{ limit }             (optional) :  Limit size of $reflibitems arrayref
+                                             Usually used together with 'offset' for pagination
+    $args{ offset }            (optional) :  Offset of returned items relative to total items
+                                             Usually used together with 'limit' for pagination
+    $args{ order }             (optional) :  Sort by object property
+
+    $args{ criteria }          (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::ReferenceLibrary)
+    $args{ published }         (optional) :  Filter published items
+    $args{ date }              (optional) :  Filter items by date ReflibReferenceProperty
+    $args{ author_id }         (optional) :  Filter items by VLAuthor id
+    $args{ author_lname }      (optional) :  Filter items by VLAuthor lastname
+    $args{ serial_id }         (optional) :  Filter items by ReflibSerial id
+    $args{ reference_type_id } (optional) :  Filter items by reference_type_id
+    $args{ workgroup_id }      (optional) :  Filter items by workgroup_id
+
+=head3 Returns
+
+    $item_count:  Count of total items
+    $reflibitems: Arrayref of ReferenceLibraryItems part of the Reference Library,
+                  slice selected by $args{limit} and $args{offset}
+
+=head3 Description
+
+Fetches ReferenceLibraryItems part of the Reference Library granted to $args{User} or $reflib->User resp.
+Returned ReferenceLibraryItems will include 'authorgroup' and 'editorgroup' keys containing arrayrefs of
+authors and editors assigned to the ReferenceLibraryItem as well as a 'user_privileges' key containing
+the active user object privileges
+
+=cut
+
 sub items_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -340,3 +381,51 @@ sub items_granted {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+in F<httpd.conf>: yadda, yadda...
+
+Optional section , remove if bogus
+
+=head1 DEPENDENCIES
+
+Optional section, remove if bogus.
+
+=head1 INCOMPATABILITIES
+
+Optional section, remove if bogus.
+
+=head1 BUGS AND LIMITATION
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+
