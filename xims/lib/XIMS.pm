@@ -20,29 +20,33 @@ BEGIN {
     $_CONFIG_ = XIMS::Config->new();
     require XIMS::DataProvider;
     my $dp = XIMS::DataProvider->new();
-    $dp->driver->dbh->SQLLogging( 0 );
+    $dp->driver->dbh->SQLLogging(0);
     my @df = $dp->data_formats();
-    foreach my $df ( @df ) {
-        $_DATA_FORMATS_->{$df->id()} = $df;
+    foreach my $df (@df) {
+        $_DATA_FORMATS_->{ $df->id() } = $df;
     }
     my @ot = $dp->object_types();
-    foreach my $ot ( @ot ) {
-        $_OBJECT_TYPES_->{$ot->id()} = $ot;
+    foreach my $ot (@ot) {
+        $_OBJECT_TYPES_->{ $ot->id() } = $ot;
     }
     foreach my $ot ( values %$_OBJECT_TYPES_ ) {
         $ot->{fullname} = _getOTFullName( $ot, $_OBJECT_TYPES_ );
     }
 
-    # internal helper for building up fullname of entry of XIMS::OBJECT_TYPES
+    # internal helper for building up fullname of entry of
+    # XIMS::OBJECT_TYPES
+
+    ## no critic (ProhibitNestedSubs)
+
     sub _getOTFullName {
-        my $ot = shift;
-        my $ots = shift;
+        my $ot       = shift;
+        my $ots      = shift;
         my $fullname = shift;
 
         $fullname ||= $ot->{name};
 
         if ( defined $ot->{parent_id} ) {
-            my $parent = $ots->{$ot->{parent_id}};
+            my $parent = $ots->{ $ot->{parent_id} };
             $fullname = $parent->{name} . '::' . $fullname;
             return _getOTFullName( $parent, $ots, $fullname );
         }
@@ -50,49 +54,92 @@ BEGIN {
             return $fullname;
         }
     }
+
+    ## use critic
+
 }
 
 require XIMS::DataProvider;
+
 sub DATAPROVIDER {
     $_DATAPROVIDER_ ||= XIMS::DataProvider->new();
     return $_DATAPROVIDER_;
 }
 
 sub OBJECT_TYPES { $_OBJECT_TYPES_ }
+
 sub DATA_FORMATS { $_DATA_FORMATS_ }
 
 sub HOME {
-    $ENV{'XIMS_HOME'} || '/usr/local/xims'
+    $ENV{'XIMS_HOME'} || '/usr/local/xims';
 }
 
 # XIMS::Config wrappers
-sub GOXIMS()                    { $_CONFIG_->goxims() }
-sub DEBUGLEVEL()                { $ENV{XIMSDEBUGLEVEL} || $_CONFIG_->DebugLevel() }
-sub PUBROOT_URL()               { "/" . $_CONFIG_->PublicRoot() }
-sub PUBROOT()                   { $_CONFIG_->ApacheDocumentRoot() . "/" . $_CONFIG_->PublicRoot()  }
-sub DEFAULT_SKIN()              { $_CONFIG_->DefaultSkin() }
-sub FALLBACKSTARTPATH()         { $_CONFIG_->FallbackStartPath() }
-sub DEFAULTXHTMLEDITOR()        { $_CONFIG_->DefaultXHTMLEditor() }
-sub XMLEDITOR()                 { $_CONFIG_->XMLEditor() }
-sub TIDYPATH()                  { $_CONFIG_->TidyPath() }
-sub TIDYOPTIONS()               { $_CONFIG_->TidyOptions() }
-sub XIMSROOT_URL()              { "/" . $_CONFIG_->XIMSRoot() }
-sub XIMSROOT()                  { $_CONFIG_->ApacheDocumentRoot() . "/" . $_CONFIG_->XIMSRoot() }
-sub AUTHSTYLE()                 { $_CONFIG_->AuthStyle() }
-sub AUTHSERVER()                { $_CONFIG_->AuthServer() }
-sub PROXYIP()                   { $_CONFIG_->ProxyIP() }
-sub CONTENTINTERFACE()          { "/" . $_CONFIG_->ContentInterface() }
-sub DBMS()                      { $_CONFIG_->DBMS() }
-sub QBDRIVER()                  { $_CONFIG_->QBDriver() }
-sub DBDSN()                     { $_CONFIG_->DBdsn() }
-sub DBENCODING()                { (defined $_CONFIG_->DBEncoding() and length $_CONFIG_->DBEncoding() and $_CONFIG_->DBEncoding() !~ /UTF-?8/i) ? return $_CONFIG_->DBEncoding() : return }
-sub UIFALLBACKLANG()            { $_CONFIG_->UIFallbackLang() }
-sub PUBLICUSERID()              { $_CONFIG_->PublicUserID() }
-sub AUTOINDEXFILENAME()         { $_CONFIG_->AutoIndexFilename() }
-sub AUTOINDEXEXPORTSTYLESHEET() { $_CONFIG_->AutoindexExportStylesheet() }
-sub RESOLVERELTOSITEROOTS()     { $_CONFIG_->ResolveRelToSiteRoots() }
-sub SEARCHRESULTROWLIMIT()      { $_CONFIG_->SearchResultRowLimit() }
-sub UILANGUAGES() {
+
+sub GOXIMS             { return $_CONFIG_->goxims(); }
+
+sub DEBUGLEVEL         { return $ENV{XIMSDEBUGLEVEL}
+                             || $_CONFIG_->DebugLevel();
+}
+sub PUBROOT_URL        { return "/" . $_CONFIG_->PublicRoot(); }
+
+sub PUBROOT            { return $_CONFIG_->ApacheDocumentRoot()
+                              . "/"
+                              . $_CONFIG_->PublicRoot();
+}
+sub DEFAULT_SKIN       { return $_CONFIG_->DefaultSkin(); }
+
+sub FALLBACKSTARTPATH  { return $_CONFIG_->FallbackStartPath(); }
+
+sub DEFAULTXHTMLEDITOR { return $_CONFIG_->DefaultXHTMLEditor(); }
+
+sub XMLEDITOR          { return $_CONFIG_->XMLEditor(); }
+
+sub TIDYPATH           { return $_CONFIG_->TidyPath(); }
+
+sub TIDYOPTIONS        { return $_CONFIG_->TidyOptions(); }
+
+sub XIMSROOT_URL       { return "/" . $_CONFIG_->XIMSRoot(); }
+
+sub XIMSROOT           { return $_CONFIG_->ApacheDocumentRoot()
+                              . "/"
+                              . $_CONFIG_->XIMSRoot(); }
+
+sub AUTHSTYLE          { return $_CONFIG_->AuthStyle(); }
+
+sub AUTHSERVER         { return $_CONFIG_->AuthServer(); }
+
+sub PROXYIP            { return $_CONFIG_->ProxyIP(); }
+
+sub CONTENTINTERFACE   { return "/" . $_CONFIG_->ContentInterface(); }
+
+sub DBMS               { return $_CONFIG_->DBMS(); }
+
+sub QBDRIVER           { return $_CONFIG_->QBDriver(); }
+
+sub DBDSN              { return $_CONFIG_->DBdsn(); }
+
+sub DBENCODING {
+    (         defined $_CONFIG_->DBEncoding()
+          and length $_CONFIG_->DBEncoding()
+          and $_CONFIG_->DBEncoding() !~ /UTF-?8/i )
+      ? return $_CONFIG_->DBEncoding()
+      : return;
+}
+
+sub UIFALLBACKLANG            { return $_CONFIG_->UIFallbackLang(); }
+
+sub PUBLICUSERID              { return $_CONFIG_->PublicUserID(); }
+
+sub AUTOINDEXFILENAME         { return $_CONFIG_->AutoIndexFilename(); }
+
+sub AUTOINDEXEXPORTSTYLESHEET { return $_CONFIG_->AutoindexExportStylesheet(); }
+
+sub RESOLVERELTOSITEROOTS     { return $_CONFIG_->ResolveRelToSiteRoots(); }
+
+sub SEARCHRESULTROWLIMIT      { return $_CONFIG_->SearchResultRowLimit(); }
+
+sub UILANGUAGES {
     my %rv;
     foreach ( $_CONFIG_->UILanguages() ) {
         /^(\w{1,8})(?:-\w+)/;
@@ -103,15 +150,13 @@ sub UILANGUAGES() {
 
 # Provide access to custom config values using the XIMS::ConfigValueName interface
 sub AUTOLOAD {
-    my (undef, $called_sub) = ($AUTOLOAD =~ /(.*)::(.*)/);
+    my ( undef, $called_sub ) = ( $AUTOLOAD =~ /(.*)::(.*)/ );
     return if $called_sub eq 'DESTROY';
     return $_CONFIG_->$called_sub if $_CONFIG_->can($called_sub);
 }
 
 # Provide access to the config itself
-sub CONFIG {
-    return $_CONFIG_;
-}
+sub CONFIG { return $_CONFIG_; }
 
 #  Utility methods
 
@@ -133,19 +178,20 @@ sub CONFIG {
 #
 sub Debug {
     my $level = shift;
-    if ($level <= XIMS::DEBUGLEVEL() ) {
+    if ( $level <= XIMS::DEBUGLEVEL() ) {
         if ( defined @_ and scalar(@_) == 1 ) {
             my @debug = @_;
             $debug[-1] =~ s/\n|\s+/ /g;
-            my ( $module, $method ) ;
-            ($module, undef, undef, $method) = caller(1);
+            my ( $module, $method );
+            ( $module, undef, undef, $method ) = caller(1);
             if ( $ENV{MOD_PERL} and Apache->request ) {
                 my $log = Apache->request->log();
-                #$log->warn( "[Timed Interval] : " . int(1000 * Time::HiRes::tv_interval($XIMS::T0)) . "ms" );
-                $log->warn("[$module, $method] " . join('', @debug));
+
+#$log->warn( "[Timed Interval] : " . int(1000 * Time::HiRes::tv_interval($XIMS::T0)) . "ms" );
+                $log->warn( "[$module, $method] " . join( '', @debug ) );
             }
             else {
-                warn("[$module, $method] " . join('', @debug) ."\n");
+                warn( "[$module, $method] " . join( '', @debug ) . "\n" );
             }
         }
     }
@@ -170,12 +216,12 @@ sub xml_escape {
     return unless defined $text;
 
     my %escapes = (
-                   '<' => '&lt;',
-                   '>' => '&gt;',
-                   '\'' => '&apos;',
-                   '&' => '&amp;',
-                   '"' => '&quot;',
-                  );
+        '<'  => '&lt;',
+        '>'  => '&gt;',
+        '\'' => '&apos;',
+        '&'  => '&amp;',
+        '"'  => '&quot;',
+    );
 
     $text =~ s/([<>\'&\"])
         /
@@ -204,12 +250,12 @@ sub xml_unescape {
     return unless defined $text;
 
     my %escapes = (
-                   '&lt;' => '<',
-                   '&gt;' => '>',
-                   '&apos;' => '\'',
-                   '&amp;' => '&',
-                   '&quot;' => '"',
-                  );
+        '&lt;'   => '<',
+        '&gt;'   => '>',
+        '&apos;' => '\'',
+        '&amp;'  => '&',
+        '&quot;' => '"',
+    );
 
     $text =~ s/(&lt;|&gt;|&apos;|&amp;|&quot;)
         /
@@ -238,10 +284,10 @@ sub xml_escape_noquot {
     return unless defined $text;
 
     my %escapes = (
-                   '<' => '&lt;',
-                   '>' => '&gt;',
-                   '&' => '&amp;',
-                  );
+        '<' => '&lt;',
+        '>' => '&gt;',
+        '&' => '&amp;',
+    );
 
     $text =~ s/([<>&])
         /
@@ -272,7 +318,6 @@ sub encode {
     $string = $converter->convert($string) if defined $string;
     return $string;
 }
-
 
 ##
 #
@@ -316,14 +361,15 @@ sub nodevalue {
     if ( defined $node ) {
         my $value = "";
         if ( $node->hasChildNodes() ) {
-            foreach( $node->childNodes ) {
-                $value .= $_->toString(0,1);
+            foreach ( $node->childNodes ) {
+                $value .= $_->toString( 0, 1 );
             }
         }
         else {
             $value = $node->textContent();
         }
         if ( length $value ) {
+
 #            $value = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value;
             return $value;
         }
@@ -399,7 +445,7 @@ sub clean {
 
     return unless $string;
 
-    $string = XIMS::unquot( XIMS::trim( $string ) );
+    $string = XIMS::unquot( XIMS::trim($string) );
 
     return $string;
 }
@@ -444,21 +490,21 @@ sub escapewildcard {
 sub tokenize_string {
     my $search = shift;
     my $retval = [];
-    my @blocks = split(/ *\" */, $search);
+    my @blocks = split( / *\" */, $search );
+
     # deal with quotes
     my $in_quote = 0;
-    for my $part ( @blocks ) {
+    for my $part (@blocks) {
         if ( $in_quote == 0 ) {
-            push(@{$retval}, split(' ', $part)) if $part;
+            push( @{$retval}, split( ' ', $part ) ) if $part;
         }
         else {
-            push(@{$retval}, $part) if $part;
+            push( @{$retval}, $part ) if $part;
         }
         $in_quote = ++$in_quote % 2;
     }
     return $retval;
 }
-
 
 ##
 #
@@ -476,11 +522,11 @@ sub tokenize_string {
 #
 sub utf8_sanitize {
     my $string = shift;
-    if ( defined XIMS::is_notutf8( $string ) ) {
-        return Encode::decode_utf8(Encode::encode_utf8($string));
+    if ( defined XIMS::is_notutf8($string) ) {
+        return Encode::decode_utf8( Encode::encode_utf8($string) );
     }
     else {
-        Encode::_utf8_on( $string );
+        Encode::_utf8_on($string);
         return $string;
     }
 }
@@ -500,10 +546,9 @@ sub utf8_sanitize {
 #    Tests whether a string is utf-8 encoded or not.
 #
 sub is_notutf8 {
-    eval { Encode::decode_utf8(shift,1); };
+    eval { Encode::decode_utf8( shift, 1 ); };
     return $@ ? 1 : undef;
 }
-
 
 ##
 #
@@ -520,10 +565,10 @@ sub is_notutf8 {
 #    Compares the given IP-Adress to the configured known proxyservers.
 #    Returns 1 on success, undef otherwise.
 #
-sub is_known_proxy($) {
+sub is_known_proxy {
     my $remote_host = shift;
 
-    map {return 1 if defined $_ and $remote_host eq $_} PROXYIP();
+    map { return 1 if defined $_ and $remote_host eq $_ } PROXYIP();
 
     return;
 }
@@ -544,26 +589,28 @@ sub is_known_proxy($) {
 #    the IP-adress with the one from the X-Forwarded-For header,
 #    and flag the request in pnotes.
 #
-sub via_proxy_test($){
+sub via_proxy_test {
     my $r = shift;
 
     if ( my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/
-         and is_known_proxy($r->connection->remote_ip()) ) {
+        and is_known_proxy( $r->connection->remote_ip() ) )
+    {
         $r->connection->remote_ip($ip);
-        XIMS::Debug(6, "Remote IP taken from X-Forwarded-For-header\n");
+        XIMS::Debug( 6, "Remote IP taken from X-Forwarded-For-header\n" );
     }
-    $r->pnotes('PROXY_TEST' => 1);
+    $r->pnotes( 'PROXY_TEST' => 1 );
 }
-
 
 # ##########################################################################
 # Package XIMS::Privileges
 
 package XIMS::Privileges;
+
 #
 # this package defines all privilege methods!
 #
 sub list {
+
     #
     # example usage:
     #
@@ -574,47 +621,61 @@ sub list {
     #  }
     #}
     #
-    return qw(DENIED VIEW WRITE DELETE PUBLISH ATTRIBUTES TRANSLATE CREATE MOVE COPY LINK PUBLISH_ALL ATTRIBUTES_ALL
-              DELETE_ALL GRANT GRANT_ALL OWNER MASTER);
+    return qw(DENIED          VIEW       WRITE DELETE    PUBLISH ATTRIBUTES
+      TRANSLATE       CREATE     MOVE  COPY      LINK    PUBLISH_ALL
+      ATTRIBUTES_ALL  DELETE_ALL GRANT GRANT_ALL OWNER   MASTER
+    );
 }
-
 
 # userrights allow a user to ...
 #
-sub DENIED()          { return 0x00000000; } # explicit denial of content
+sub DENIED { return 0x00000000; }    # explicit denial of content
 
 # CATEGORY a) 0x01 - 0x80: primitive user rights on content
 #
-sub VIEW()          { return 0x00000001; } # view content
+sub VIEW { return 0x00000001; }      # view content
+
 #
-sub WRITE()         { return 0x00000002; } # edit content
+sub WRITE { return 0x00000002; }     # edit content
+
 #
-sub DELETE()        { return 0x00000004; } # delete content
+sub DELETE { return 0x00000004; }    # delete content
+
 #
-sub PUBLISH()       { return 0x00000008; } # publish content
+sub PUBLISH { return 0x00000008; }    # publish content
+
 #
-sub ATTRIBUTES()    { return 0x00000010; } # change attributes for content
+sub ATTRIBUTES { return 0x00000010; }    # change attributes for content
+
 #
 # CATEGORY b) 0x100 - 0x8000: document related rights
 #
-sub TRANSLATE()       { return 0x00000100; } # create new contents
+sub TRANSLATE { return 0x00000100; }     # create new contents
+
 #
-sub CREATE()          { return 0x00000200; } # create new child
+sub CREATE { return 0x00000200; }        # create new child
+
 #
-sub MOVE()            { return 0x00000400; } # move document to another location
+sub MOVE { return 0x00000400; }          # move document to another location
+
 #
-sub LINK()            { return 0x00000800; } # create a symlink on document
+sub LINK { return 0x00000800; }          # create a symlink on document
+
 #
-sub PUBLISH_ALL()     { return 0x00001000; } # publish all content
+sub PUBLISH_ALL { return 0x00001000; }    # publish all content
+
 #
-sub ATTRIBUTES_ALL()  { return 0x00002000; } # change attributes for document
+sub ATTRIBUTES_ALL { return 0x00002000; }    # change attributes for document
+
 #
-sub COPY()            { return 0x00004000; } # copy object to another location
+sub COPY { return 0x00004000; }              # copy object to another location
+
 #
 # CATEGORY c) 0x10000 - 0x80000: administrative subtree privileges
 # the DELETE_ALL flag is not granted by default to the owner!
 #
-sub DELETE_ALL()    { return 0x00010000; } # delete document subtree
+sub DELETE_ALL { return 0x00010000; }        # delete document subtree
+
 #
 # CATEGORY d) 0x01000000 - 0x08000000: grant privileges
 #
@@ -624,9 +685,11 @@ sub DELETE_ALL()    { return 0x00010000; } # delete document subtree
 # don't have themself. any ACL implementaion should follow this, to
 # avoid security leaks.
 #
-sub GRANT()         { return 0x01000000; } # grant/revoke other users on content
+sub GRANT { return 0x01000000; }    # grant/revoke other users on content
+
 #
-sub GRANT_ALL()     { return 0x02000000; } # grant/revoke other users on all content
+sub GRANT_ALL { return 0x02000000; }   # grant/revoke other users on all content
+
 #
 # CATEGORY e) 0x10000000 - 0x80000000: special roles
 #
@@ -635,14 +698,18 @@ sub GRANT_ALL()     { return 0x02000000; } # grant/revoke other users on all con
 # owner.  this flag implies 0x0300031f, i guess, this means the owner is only
 # entitled to do simple operations on the document.
 #
-sub OWNER()         { return 0x40000000; } # user owns document
+sub OWNER { return 0x40000000; }       # user owns document
 
 #
 # MODIFY is a - for now static - combination of a list of privileges to be given to creating users on object
 # creation for example
 # MODIFY could be changed to be more restrictive in the future
 #
-sub MODIFY()        { return 0x43016F17; } # user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE, COPY, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER privilege on object
+sub MODIFY { return 0x43016F17; }
+
+# user has VIEW, WRITE, DELETE, ATTRIBUTES, TRANSLATE, CREATE, MOVE,
+# COPY, LINK, ATTRIBUTES_ALL, DELETE_ALL, GRANT, GRANT_ALL, and OWNER
+# privilege on object
 
 #
 # the master flag shows, that the user is the master of the entire
@@ -655,59 +722,68 @@ sub MODIFY()        { return 0x43016F17; } # user has VIEW, WRITE, DELETE, ATTRI
 # since the master is generally not responsible for the content he is
 # not allowed to edit the content
 #
-sub MASTER()        { return 0x80000000; }
+sub MASTER { return 0x80000000; }
+
 #
 #  SYSTEM PRIVILEGES
 #
 # the ADMIN privilege indicates extreme superuser! actually this is the helper right :P
 #
-sub ADMIN()         { return 0xffffffff; }
-
+sub ADMIN { return 0xffffffff; }
 
 # ##########################################################################
 # Package XIMS::Privileges::System
 package XIMS::Privileges::System;
 
 sub list {
-    return qw( CHANGE_PASSWORD GRANT_ROLE RESET_PASSWORD SET_STATUS CREATE_ROLE DELETE_ROLE
-               CHANGE_ROLE_FULLNAME CHANGE_USER_FULLNAME CHANGE_ROLE_NAME CHANGE_USER_NAME
-               CREATE_USER DELETE_USER CHANGE_DAV_OTPRIVS_MASK CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU );
+    return qw( CHANGE_PASSWORD         GRANT_ROLE           RESET_PASSWORD
+      SET_STATUS              CREATE_ROLE          DELETE_ROLE
+      CHANGE_ROLE_FULLNAME    CHANGE_USER_FULLNAME CHANGE_ROLE_NAME
+      CHANGE_USER_NAME        CREATE_USER          DELETE_USER
+      CHANGE_DAV_OTPRIVS_MASK CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU
+    );
 }
 
 #
 # 0x01 - 0x80: user-self-management
 #
-sub CHANGE_PASSWORD()           { return 0x00000001; } # user can change his password
-sub GRANT_ROLE()                { return 0x00000002; } # if users are role-masters of a role, they can grant/revoke other user/roles to/from his role
+sub CHANGE_PASSWORD { return 0x00000001; }    # user can change his password
+
+# if users are role-masters of a role, they can grant/revoke other
+# user/roles to/from his role
+sub GRANT_ROLE { return 0x00000002; }
 
 #
 # 0x1000 - 0x800000: helpdesk-related user/role-management
 #
-sub RESET_PASSWORD()            { return 0x00001000; }
-sub SET_STATUS()                { return 0x00002000; } # (un)lock users
+sub RESET_PASSWORD { return 0x00001000; }
+sub SET_STATUS     { return 0x00002000; }     # (un)lock users
 
-sub CREATE_ROLE()               { return 0x00004000; } # with this privilege, users can add role-members without being role-masters of the role
-sub DELETE_ROLE()               { return 0x00008000; }
+# with this privilege, users can add role-members without being
+# role-masters of the role
+sub CREATE_ROLE { return 0x00004000; }
 
-sub CHANGE_ROLE_FULLNAME()      { return 0x00010000; }
-sub CHANGE_USER_FULLNAME()      { return 0x00020000; }
+sub DELETE_ROLE { return 0x00008000; }
 
-sub CHANGE_ROLE_NAME()          { return 0x00040000; }
-sub CHANGE_USER_NAME()          { return 0x00080000; }
+sub CHANGE_ROLE_FULLNAME { return 0x00010000; }
+sub CHANGE_USER_FULLNAME { return 0x00020000; }
 
-sub CREATE_USER()               { return 0x00100000; }
-sub DELETE_USER()               { return 0x00200000; }
+sub CHANGE_ROLE_NAME { return 0x00040000; }
+sub CHANGE_USER_NAME { return 0x00080000; }
 
-sub CHANGE_DAV_OTPRIVS_MASK()   { return 0x00400000; }
+sub CREATE_USER { return 0x00100000; }
+sub DELETE_USER { return 0x00200000; }
+
+sub CHANGE_DAV_OTPRIVS_MASK { return 0x00400000; }
 
 #
 # 0x10000000 - 0x80000000: system-management related
 #
-sub CHANGE_SYSPRIVS_MASK()      { return 0x10000000; }
-sub SET_ADMIN_EQU()             { return 0x20000000; }
-
+sub CHANGE_SYSPRIVS_MASK { return 0x10000000; }
+sub SET_ADMIN_EQU        { return 0x20000000; }
 
 package XIMS::Helpers;
+
 # ##########################################################################
 # Package XIMS::Helpers
 #
@@ -727,12 +803,20 @@ package XIMS::Helpers;
 #    Used to get a more readable representation of the integer bitmask
 #
 sub privmask_to_hash {
-    my $privmask = shift;
+    my $privmask  = shift;
     my $privclass = shift;
     $privclass ||= '';
+
+    ## no critic (ProhibitNoStrict)
+
     no strict 'refs';
-    my $listclass = "XIMS::Privileges::".$privclass."list";
-    my %privs = map { (lc($_), 1) } grep { $privmask & &{"XIMS::Privileges::$privclass$_"} } &{$listclass}();
+
+    ## use critic
+
+    my $listclass = "XIMS::Privileges::" . $privclass . "list";
+    my %privs =
+      map { ( lc($_), 1 ) }
+      grep { $privmask & &{"XIMS::Privileges::$privclass$_"} } &{$listclass}();
     return \%privs;
 }
 
@@ -768,15 +852,17 @@ sub system_privmask_to_hash { privmask_to_hash( shift, 'System::' ) }
 #    Used to get a more readable representation of the integer bitmask
 #
 sub dav_otprivmask_to_hash {
-    my $privmask = shift;
+    my $privmask     = shift;
     my $object_types = shift;
 
-    # cast $privmask to an integer, so that the bitwise operation will work as expected
+    # cast $privmask to an integer, so that the bitwise operation will
+    # work as expected
     1 if $privmask == 1;
 
-    my %privs = map { ($_->name(), 1) } grep { $privmask & $_->davprivval() } @{$object_types};
+    my %privs =
+      map { ( $_->name(), 1 ) }
+      grep { $privmask & $_->davprivval() } @{$object_types};
     return \%privs;
 }
-
 
 1;
