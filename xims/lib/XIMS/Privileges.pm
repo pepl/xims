@@ -88,7 +88,7 @@ Publish content.
 
 sub PUBLISH { return 0x00000008; }
 
-=head3
+=head3 ATTRIBUTES 
 
 Change attributes for content.
 
@@ -166,7 +166,7 @@ The DELETE_ALL flag is not granted by default to the owner!
 
 sub DELETE_ALL { return 0x00010000; }
 
-=head3 0x01000000 - 0x08000000: grant privileges
+=head2 0x01000000 - 0x08000000: grant privileges
 
 =head3 GRANT
 
