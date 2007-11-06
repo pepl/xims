@@ -5,7 +5,7 @@ XIMS -- the XIMS base class.
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -86,20 +86,46 @@ require XIMS::DataProvider;
 require XIMS::Privileges;
 require XIMS::Privileges::System;
 
+=head2 DATAPROVIDER
+
+Returns a XIMS::DataProvider instance.
+
+=cut
+
 sub DATAPROVIDER {
     $_DATAPROVIDER_ ||= XIMS::DataProvider->new();
     return $_DATAPROVIDER_;
 }
 
+=head2 OBJECT_TYPES
+
+Returns the list of object types.
+
+=cut
+
 sub OBJECT_TYPES { $_OBJECT_TYPES_ }
 
+=head2 DATA_FORMATS
+
+Returns the list of data formats.
+
+=cut
+
 sub DATA_FORMATS { $_DATA_FORMATS_ }
+
+=head2 HOME
+
+Returns the path to XIMS' root directory.
+
+=cut
 
 sub HOME {
     $ENV{'XIMS_HOME'} || '/usr/local/xims';
 }
 
 =head2 XIMS::Config wrappers
+
+=over
 
 =item GOXIMS
 
@@ -784,7 +810,7 @@ XIMS::Helpers
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
