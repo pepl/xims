@@ -1,7 +1,24 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+godav -- XIMS' mod_perl handler for WebDAV.
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    use godav;
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package godav;
 
 use strict;
@@ -22,32 +39,6 @@ use Time::Piece;
 use Digest::MD5;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-
-#
-# Note: This module has beta status. All Litmus tests besides some of the
-#       props tests do pass.
-#
-#       This DAV handler has been tested with cadaver, konqueror, Webdrive,
-#       Novell's Netdrive DAV client software and MS WebFolders
-#
-#       Body-less or dynamic object types like URLLink or Questionnaire are filtered
-#       out.
-#
-#       It is not possible to rename/move or delete published objects.
-#
-#       Under Windows: Do not create objects with Explorer using the right mouse button.
-#                      "New Text Document.txt" will be created as "new_text_document.txt"
-#                      and not found again right away...
-#
-#       http://host/godav/xims/
-#
-# TODO
-#    * Add acceptance tests (HTTP::DAV)
-#    * Add documentation with nice screenshots
-#    * PROPPATCH?
-#    * Things I forgot
-#
-#
 
 sub handler {
     my $r = shift;
@@ -790,4 +781,77 @@ sub _tmpsafe {
 }
 
 1;
+
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+Look at F<ximshttpd.conf> for some well-commented examples.
+
+=head1 BUGS AND LIMITATION
+
+This module has beta status. All Litmus tests besides some of the props tests
+do pass.
+
+This DAV handler has been tested with cadaver, konqueror, Webdrive, Novell's
+Netdrive DAV client software and MS WebFolders
+
+Body-less or dynamic object types like URLLink or Questionnaire are filtered
+out.
+
+It is not possible to rename/move or delete published objects.
+
+Under Windows: Do not create objects with Explorer using the right mouse
+button. "New Text Document.txt" will be created as "new_text_document.txt" and
+not found again right away...
+
+http://host/godav/xims/
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 TODO
+
+=over
+
+=item *
+
+Add acceptance tests (HTTP::DAV)
+
+=item *
+
+Add documentation with nice screenshots
+
+=item *
+
+PROPPATCH?
+
+=back
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
 
