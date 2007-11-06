@@ -1,7 +1,25 @@
-# Copyright (c) 2002-2006 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
+
+=head1 NAME
+
+goxims -- XIMS' main mod_perl handler
+
+=head1 VERSION
+
+$Id:$
+
+=head1 SYNOPSIS
+
+    SetHandler  perl-script
+    PerlHandler goxims
+
+=head1 DESCRIPTION
+
+This module bla bla
+
+=head1 SUBROUTINES/METHODS
+
+=cut
+
 package goxims;
 use Apache::Constants qw(:common);
 use strict;
@@ -31,20 +49,22 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 #use Data::Dumper;
 #use Time::HiRes;
 
-##
-#
-# SYNOPSIS
-#    handler();
-#
-# PARAMETERS
-#    none
-#
-# RETURNVALUES
-#    none
-#
-# DESCRIPTION
-#    none yet
-#
+=head2 handler
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+'SERVER_ERROR', 'NOT_FOUND', 'FORBIDDEN', or 'OK'.
+
+=head3 Description
+
+none yet
+
+=cut
+
 sub handler {
     my $r = shift;
 
@@ -223,31 +243,32 @@ sub handler {
     return NOT_FOUND;
 }
 
+=head2    readNotes($r);
 
-##
-#
-# SYNOPSIS
-#    readNotes($r);
-#
-# PARAMETERS
-#    $r: request-object
-#
-# RETURNVALUES
-#     $retval: hash-ref of notes, keys: 'session', 'provider'
-#
-# DESCRIPTION
-#    Fetches values of a couple of named entries in the Apache "pnotes" table.
-#    Namely values of 'ximsSession' and 'ximsProvider' are read,
-#    provided they exist.
-#
+=head3 Parameter
+
+    $r: request-object
+
+=head3 Returns
+
+     $retval: hash-ref of notes, keys: 'session', 'provider'
+
+=head3 Description
+
+Fetches values of a couple of named entries in the Apache "pnotes" table.
+Namely values of 'ximsSession' and 'ximsProvider' are read, provided they
+exist.
+
+=cut
+
 sub readNotes {
     my $r = shift;
     my $retval = {};
 
-    # Authentication modules have to set the session and user id.
-    # goxims simply requests that information from the server and because
-    # authentication has already finished at this stage, no extra session
-    # or user validation is neccesary.
+    # Authentication modules have to set the session and user id. goxims
+    # simply requests that information from the server and because
+    # authentication has already finished at this stage, no extra session or
+    # user validation is neccesary.
 
     if ( $r ) {
         $retval->{session}    =  $r->pnotes( 'ximsSession' );
@@ -260,21 +281,25 @@ sub readNotes {
     return $retval;
 }
 
-##
-#
-# SYNOPSIS
-#    getInterface($r)
-#
-# PARAMETERS
-#    $r:    request-object      (mandatory)
-#
-# RETURN VALUES
-#    $retval: $interface_type
-#
-# DESCRIPTION
-#    Snip the context (first level URI path step) from the request string to determine
-#    what type of interface we are loading.
-#
+
+
+=head2    getInterface($r)
+
+=head3 Parameter
+
+    $r:    request-object      (mandatory)
+
+=head3 Returns
+
+    $retval: $interface_type
+
+=head3 Description
+
+Snip the context (first level URI path step) from the request string to
+determine what type of interface we are loading.
+
+=cut
+
 sub getInterface {
     my $r = shift;
     # check to see if we are editing managed content or seeking
@@ -288,11 +313,11 @@ sub getInterface {
     }
     elsif ( not length $pathinfo or $pathinfo eq "/") {
         #
-        # if the user only types in '/goxims' or '/goxims/' we don't
-        # want to give a 404. instead we redirect to the default bookmark.
-        # i think this is ok, since the users types in /goxims for login.
-        # through this a user will have the chance to return to the page
-        # the system started with.
+        # if the user only types in '/goxims' or '/goxims/' we don't want to
+        # give a 404. instead we redirect to the default bookmark. i think
+        # this is ok, since the users types in /goxims for login. through this
+        # a user will have the chance to return to the page the system started
+        # with.
         #
         # this should not happen, if one types in the interface name but
         # leaves a required path empty.
@@ -304,20 +329,22 @@ sub getInterface {
     return $interface_type;
 }
 
-##
-#
-# SYNOPSIS
-#    getObject($r)
-#
-# PARAMETERS
-#    $r:    request-object      (mandatory)
-#
-# RETURNVALUES
-#    $retval: object
-#
-# DESCRIPTION
-#    Watch out: language is hardcoded to de-at here!
-#
+=head2    getObject($r)
+
+=head3 Parameter
+
+    $r:    request-object      (mandatory)
+
+=head3 Returns
+
+    $retval: object
+
+=head3 Description
+
+Watch out: language is hardcoded to de-at here!
+
+=cut
+
 sub getObject {
     my $r = shift;
     my $user = shift;
@@ -341,22 +368,23 @@ sub getObject {
     return $retval;
 }
 
+=head2    getLanguage($r)
 
-##
-#
-# SYNOPSIS
-#    getLanguage($r)
-#
-# PARAMETERS
-#    $r:    request-object      (mandatory)
-#
-# RETURN VALUES
-#    $retval: interface language (string)
-#
-# DESCRIPTION
-#    loose implementation of what is described in:
-#    http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
-#
+=head3 Parameter
+
+    $r:    request-object      (mandatory)
+
+=head3 Returns
+
+    $retval: interface language (string)
+
+=head3 Description
+
+loose implementation of what is described in:
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
+
+=cut
+
 sub getLanguagePref {
     my $r = shift;
     my $langrex = qr/(\w{1,8}(?:-\w{1,8})?)(?:;q=([0|1](?:\.\d{1,3})?))?/;
@@ -382,3 +410,43 @@ sub getLanguagePref {
 }
 
 1;
+
+__END__
+
+=head1 DIAGNOSTICS
+
+Look at the F<error_log> file for messages.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+Look at F<ximshttpd.conf> for some well-commented examples.
+
+=head1 BUGS AND LIMITATION
+
+Language-preference handling does not comply to RFC 2616.
+
+Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
+
+=head1 LICENCE AND COPYRIGHT
+
+Copyright (c) 2002-2007 The XIMS Project.
+
+See the file F<LICENSE> for information and conditions for use, reproduction,
+and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+
+=cut
+
+# Local Variables:
+#   mode: cperl
+#   cperl-indent-level: 4
+#   cperl-close-paren-offset: -4
+#   cperl-continued-statement-offset: 4
+#   cperl-indent-level: 4
+#   cperl-indent-parens-as-block: t
+#   cperl-merge-trailing-else: nil
+#   cperl-tab-always-indent: t
+#   fill-column: 78
+#   indent-tabs-mode: nil
+# End:
+# ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+
