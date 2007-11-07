@@ -35,6 +35,7 @@ our $_CONFIG_;
 our $_DATAPROVIDER_;
 our $_OBJECT_TYPES_;
 our $_DATA_FORMATS_;
+our $_DEBUGLEVEL_;
 
 BEGIN {
     $_CONFIG_ = XIMS::Config->new();
@@ -56,10 +57,14 @@ BEGIN {
         $ot->{fullname} = _getOTFullName( $ot, $_OBJECT_TYPES_ );
     }
 
-    # internal helper for building up fullname of entry of
-    # XIMS::OBJECT_TYPES
+    # Decide the debug level here, at compile time. This allows perl to
+    # `inline´ XIMS::DEBUGLEVEL() for really fast access.
+    $_DEBUGLEVEL_ = $ENV{XIMSDEBUGLEVEL} || $_CONFIG_->DebugLevel();
 
     ## no critic (ProhibitNestedSubs)
+
+    # internal helper for building up fullname of entry of
+    # XIMS::OBJECT_TYPES
 
     sub _getOTFullName {
         my $ot       = shift;
@@ -82,6 +87,8 @@ BEGIN {
 
 }
 
+## no critic ( RequireFinalReturn, ProhibitSubroutinePrototypes )
+
 require XIMS::DataProvider;
 require XIMS::Privileges;
 require XIMS::Privileges::System;
@@ -103,7 +110,7 @@ Returns the list of object types.
 
 =cut
 
-sub OBJECT_TYPES { $_OBJECT_TYPES_ }
+sub OBJECT_TYPES () { $_OBJECT_TYPES_ }
 
 =head2 DATA_FORMATS
 
@@ -111,7 +118,7 @@ Returns the list of data formats.
 
 =cut
 
-sub DATA_FORMATS { $_DATA_FORMATS_ }
+sub DATA_FORMATS () { $_DATA_FORMATS_ }
 
 =head2 HOME
 
@@ -187,9 +194,8 @@ sub HOME {
 
 sub GOXIMS                    { return $_CONFIG_->goxims(); }
 
-sub DEBUGLEVEL                { return $ENV{XIMSDEBUGLEVEL}
-                                    || $_CONFIG_->DebugLevel();
-}
+sub DEBUGLEVEL ()             { $_DEBUGLEVEL_ }
+
 sub PUBROOT_URL               { return "/" . $_CONFIG_->PublicRoot(); }
 
 sub PUBROOT                   { return $_CONFIG_->ApacheDocumentRoot()
@@ -272,7 +278,9 @@ Provide access to the config itself.
 
 =cut
 
-sub CONFIG { return $_CONFIG_; }
+sub CONFIG () { $_CONFIG_ }
+
+## use critic
 
 #  Utility methods
 
