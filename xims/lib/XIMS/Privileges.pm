@@ -24,6 +24,9 @@ package XIMS::Privileges;
 
 use strict;
 
+# we use `constant functions´ with prototypes as described in perlsub(1).
+## no critic
+
 =head2 list
 
 Returns the complete list of defined system privileges.
@@ -39,11 +42,10 @@ Example usage:
 
 =cut
 
-sub list {
-    return qw(DENIED          VIEW       WRITE DELETE    PUBLISH ATTRIBUTES
-              TRANSLATE       CREATE     MOVE  COPY      LINK    PUBLISH_ALL
-              ATTRIBUTES_ALL  DELETE_ALL GRANT GRANT_ALL OWNER   MASTER
-    );
+sub list { qw( DENIED          VIEW       WRITE DELETE    PUBLISH ATTRIBUTES
+               TRANSLATE       CREATE     MOVE  COPY      LINK    PUBLISH_ALL
+               ATTRIBUTES_ALL  DELETE_ALL GRANT GRANT_ALL OWNER   MASTER
+           );
 }
 
 =head2 0x00 - 0x80: primitive user rights on content
@@ -54,7 +56,7 @@ Explicit denial of content.
 
 =cut
 
-sub DENIED { return 0x00000000; }
+sub DENIED () { 0x00000000 }
 
 =head3 VIEW
 
@@ -62,7 +64,7 @@ View content.
 
 =cut
 
-sub VIEW { return 0x00000001; }
+sub VIEW () { 0x00000001 }
 
 =head3 WRITE
 
@@ -78,7 +80,7 @@ Delete content.
 
 =cut
 
-sub DELETE { return 0x00000004; }
+sub DELETE () { 0x00000004 }
 
 =head3 PUBLISH
 
@@ -86,7 +88,7 @@ Publish content.
 
 =cut
 
-sub PUBLISH { return 0x00000008; }
+sub PUBLISH () { 0x00000008 }
 
 =head3 ATTRIBUTES 
 
@@ -94,7 +96,7 @@ Change attributes for content.
 
 =cut
 
-sub ATTRIBUTES { return 0x00000010; }
+sub ATTRIBUTES () { 0x00000010 }
 
 =head2 0x100 - 0x8000: document related rights
 
@@ -104,7 +106,7 @@ Create new contents.
 
 =cut
 
-sub TRANSLATE { return 0x00000100; }
+sub TRANSLATE () { 0x00000100 }
 
 =head3 CREATE
 
@@ -112,7 +114,7 @@ Create new child.
 
 =cut
 
-sub CREATE { return 0x00000200; }
+sub CREATE () { 0x00000200 }
 
 =head3 MOVE
 
@@ -120,7 +122,7 @@ Move document to another location.
 
 =cut
 
-sub MOVE { return 0x00000400; }
+sub MOVE () { 0x00000400 }
 
 =head3 LINK
 
@@ -128,7 +130,7 @@ Create a symlink on document.
 
 =cut
 
-sub LINK { return 0x00000800; }
+sub LINK () { 0x00000800 }
 
 =head3 PUBLISH_ALL
 
@@ -136,7 +138,7 @@ Publish all content.
 
 =cut
 
-sub PUBLISH_ALL { return 0x00001000; }
+sub PUBLISH_ALL () { 0x00001000 }
 
 =head3 ATTRIBUTES_ALL
 
@@ -144,7 +146,7 @@ Change attributes for document.
 
 =cut
 
-sub ATTRIBUTES_ALL { return 0x00002000; }
+sub ATTRIBUTES_ALL () { 0x00002000 }
 
 =head3 COPY
 
@@ -152,7 +154,7 @@ Copy object to another location.
 
 =cut
 
-sub COPY { return 0x00004000; }
+sub COPY () { 0x00004000 }
 
 =head2 0x10000 - 0x80000: administrative subtree privileges
 
@@ -164,7 +166,7 @@ The DELETE_ALL flag is not granted by default to the owner!
 
 =cut
 
-sub DELETE_ALL { return 0x00010000; }
+sub DELETE_ALL () { 0x00010000 }
 
 =head2 0x01000000 - 0x08000000: grant privileges
 
@@ -179,7 +181,7 @@ implementaion should follow this, to avoid security leaks.
 
 =cut
 
-sub GRANT { return 0x01000000; }
+sub GRANT () { 0x01000000 }
 
 =head3 GRANT_ALL
 
@@ -187,7 +189,7 @@ Grant/revoke other users on all content.
 
 =cut
 
-sub GRANT_ALL { return 0x02000000; }
+sub GRANT_ALL () { 0x02000000 }
 
 =head2 0x10000000 - 0x80000000: special roles
 
@@ -202,7 +204,7 @@ operations on the document.
 
 =cut
 
-sub OWNER { return 0x40000000; }
+sub OWNER () { 0x40000000 }
 
 =head3 MODIFY
 
@@ -212,7 +214,7 @@ more restrictive in the future.
 
 =cut
 
-sub MODIFY { return 0x43016F17; }
+sub MODIFY () { 0x43016F17 }
 
 =head3 MASTER
 
@@ -231,7 +233,7 @@ allowed to edit the content.
 
 =cut
 
-sub MASTER { return 0x80000000; }
+sub MASTER () { 0x80000000 }
 
 =head3 ADMIN
 
@@ -242,7 +244,7 @@ Note to self: Isn't this more of a system privilege?
 
 =cut
 
-sub ADMIN { return 0xffffffff; }
+sub ADMIN () { 0xffffffff }
 
 1;
 
@@ -256,7 +258,7 @@ Look at the F<error_log> file for messages.
 
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
-This file contains lots of funny english.
+This file contains lots of funny English.
 
 =head1 LICENCE AND COPYRIGHT
 

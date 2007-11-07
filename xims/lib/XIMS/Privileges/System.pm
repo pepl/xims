@@ -23,19 +23,21 @@ package XIMS::Privileges::System;
 
 use strict;
 
+# we use `constant functions´ with prototypes as described in perlsub(1).
+## no critic
+
 =head2 list
 
 Returns the complete list of defined system privileges.
 
 =cut
 
-sub list {
-    return qw( CHANGE_PASSWORD         GRANT_ROLE           RESET_PASSWORD
-               SET_STATUS              CREATE_ROLE          DELETE_ROLE
-               CHANGE_ROLE_FULLNAME    CHANGE_USER_FULLNAME CHANGE_ROLE_NAME
-               CHANGE_USER_NAME        CREATE_USER          DELETE_USER
-               CHANGE_DAV_OTPRIVS_MASK CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU
-    );
+sub list () { qw( CHANGE_PASSWORD         GRANT_ROLE           RESET_PASSWORD
+                  SET_STATUS              CREATE_ROLE          DELETE_ROLE
+                  CHANGE_ROLE_FULLNAME    CHANGE_USER_FULLNAME CHANGE_ROLE_NAME
+                  CHANGE_USER_NAME        CREATE_USER          DELETE_USER
+                  CHANGE_DAV_OTPRIVS_MASK CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU
+              );
 }
 
 =head2 0x01 - 0x80: user-self-management
@@ -46,7 +48,7 @@ User can change his password.
 
 =cut
 
-sub CHANGE_PASSWORD { return 0x00000001; }
+sub CHANGE_PASSWORD () { 0x00000001 }
 
 =head3 GRANT_ROLE
 
@@ -55,7 +57,7 @@ to/from this role.
 
 =cut
 
-sub GRANT_ROLE { return 0x00000002; }
+sub GRANT_ROLE () { 0x00000002 }
 
 =head2 0x1000 - 0x800000: helpdesk-related user/role-management
 
@@ -65,7 +67,7 @@ undocumented.
 
 =cut
 
-sub RESET_PASSWORD { return 0x00001000; }
+sub RESET_PASSWORD () { 0x00001000 }
 
 =head3 SET_STATUS
 
@@ -73,7 +75,7 @@ sub RESET_PASSWORD { return 0x00001000; }
 
 =cut
 
-sub SET_STATUS { return 0x00002000; }
+sub SET_STATUS () { 0x00002000 }
 
 =head3 CREATE_ROLE
 
@@ -82,7 +84,7 @@ the role.
 
 =cut
 
-sub CREATE_ROLE { return 0x00004000; }
+sub CREATE_ROLE () { 0x00004000 }
 
 =head3 DELETE_ROLE
 
@@ -90,7 +92,7 @@ undocumented.
 
 =cut
 
-sub DELETE_ROLE { return 0x00008000; }
+sub DELETE_ROLE () { 0x00008000 }
 
 =head3 CHANGE_ROLE_FULLNAME
 
@@ -98,7 +100,7 @@ undocumented.
 
 =cut
 
-sub CHANGE_ROLE_FULLNAME { return 0x00010000; }
+sub CHANGE_ROLE_FULLNAME () { 0x00010000 }
 
 =head3 CHANGE_USER_FULLNAME
 
@@ -106,7 +108,7 @@ undocumented.
 
 =cut
 
-sub CHANGE_USER_FULLNAME { return 0x00020000; }
+sub CHANGE_USER_FULLNAME () { 0x00020000 }
 
 =head3 CHANGE_ROLE_NAME
 
@@ -114,7 +116,7 @@ undocumented.
 
 =cut
 
-sub CHANGE_ROLE_NAME { return 0x00040000; }
+sub CHANGE_ROLE_NAME () { 0x00040000 }
 
 =head3 CHANGE_USER_NAME
 
@@ -122,7 +124,7 @@ undocumented.
 
 =cut
 
-sub CHANGE_USER_NAME { return 0x00080000; }
+sub CHANGE_USER_NAME () { 0x00080000 }
 
 =head3 CREATE_USER
 
@@ -130,7 +132,7 @@ undocumented.
 
 =cut
 
-sub CREATE_USER { return 0x00100000; }
+sub CREATE_USER () { 0x00100000 }
 
 =head3 DELETE_USER
 
@@ -138,7 +140,7 @@ undocumented.
 
 =cut
 
-sub DELETE_USER { return 0x00200000; }
+sub DELETE_USER () { 0x00200000 }
 
 =head3 CHANGE_DAV_OTPRIVS_MASK
 
@@ -146,7 +148,7 @@ undocumented.
 
 =cut
 
-sub CHANGE_DAV_OTPRIVS_MASK { return 0x00400000; }
+sub CHANGE_DAV_OTPRIVS_MASK () { 0x00400000 }
 
 
 =head2 0x10000000 - 0x80000000: system-management related
@@ -157,7 +159,7 @@ undocumented.
 
 =cut
 
-sub CHANGE_SYSPRIVS_MASK { return 0x10000000; }
+sub CHANGE_SYSPRIVS_MASK () { 0x10000000 }
 
 
 =head3 SET_ADMIN_EQU
@@ -166,7 +168,7 @@ undocumented.
 
 =cut
 
-sub SET_ADMIN_EQU { return 0x20000000; }
+sub SET_ADMIN_EQU () { 0x20000000 }
 
 1;
 
