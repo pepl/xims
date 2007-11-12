@@ -13,7 +13,9 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+Class::Accessor provides get/set accessor methods for all the content object
+properties specified in XIMS::Names. For example uses of the XIMS::Object API
+see code in the unit tests t/unit??_object_*.t
 
 =head1 SUBROUTINES/METHODS
 
@@ -61,24 +63,20 @@ sub resource_type {
 
 __PACKAGE__->mk_accessors(@Fields);
 
-=head2 Please put me somewhere else
-
-Class::Accessor provides get/set accessor methods for all the content object
-properties specified in XIMS::Names. For example uses of the XIMS::Object API
-see code in the unit tests t/unit??_object_*.t
-
-=cut
-
-=head2    my $object = XIMS::Object->new( [ %args ] );
+=head2      new()
 
 =head3 Parameter
 
-    $args{ User }                  (optional) :  XIMS::User instance
-    $args{ path }                  (optional) :  Location path to a XIMS Object, For example: '/xims'
-    $args{ $object_property_name } (optional) :  Object property like 'id', 'document_id', or 'title'.
-                                                 To fetch existing objects either 'path', 'id' or 'document_id' has to be specified.
-                                                 Multiple object properties can be specified in the %args hash.
-                                                 For example: XIMS::Object->new( id => $id )
+    $args{ User }                  :  XIMS::User instance
+    $args{ path }                  :  Location path to a XIMS Object,
+                                      For Example: '/xims'
+    $args{ $object_property_name } :  Object property like 'id',
+                                      'document_id', or 'title'.
+                                      To fetch existing objects either 'path',
+                                      'id' or 'document_id' has to be
+                                      specified. Multiple object properties
+                                      can be specified in the %args hash.
+                                      For example: XIMS::Object->new( id => $id )
 
 =head3 Returns
 
@@ -86,8 +84,12 @@ see code in the unit tests t/unit??_object_*.t
 
 =head3 Description
 
+my $object = XIMS::Object->new( [ %args ] );
+
 Fetches existing objects or creates a new instance of XIMS::Object for object
-creation. For fetching
+creation.
+Multiple object properties can be specified in the %args hash (optional).
+For example: XIMS::Object->new( id => $id )
 
 =cut
 
@@ -181,8 +183,7 @@ sub new {
     return $self;
 }
 
-=head2    my $body = $object->body();
-    my $boolean = $object->body( $body );
+=head2    body()
 
 =head3 Parameter
 
@@ -194,6 +195,10 @@ sub new {
     $boolean : True or False for storing back body to object
 
 =head3 Description
+
+my $body = $object->body();
+    my $boolean = $object->body( $body );
+
 
 Specific override for body() to the default get/set accessor methods provided
 by Class::Accessor to avoid the memory/performance hit of loading the content
@@ -210,7 +215,7 @@ sub body {
 
     if ( defined($data) ) {
 
-# since department root's portlet info is stored in the body. we have to allow
+# since department root's portlet info is stored in the body, we have to allow
 # setting the body for containers, or create a separate dataformat for
 # department roots... unless( defined( $content_field ) ) { XIMS::Debug( 3,
 # "Attempt to set body on Container object. This action is not allowed." );
@@ -232,7 +237,7 @@ sub body {
     }
 }
 
-=head2    my $size = $object->content_length();
+=head2    content_length()
 
 =head3 Parameter
 
@@ -244,7 +249,7 @@ sub body {
 
 =head3 Description
 
-
+my $size = $object->content_length();
 
 =cut
 
@@ -258,7 +263,7 @@ sub content_length {
 Object selection methods based on axis relationships to the current
 object (parent, children, descendants, etc.)
 
-=head2    my $parent = $object->parent();
+=head2    parent()
 
 =head3 Parameter
 
@@ -270,7 +275,7 @@ object (parent, children, descendants, etc.)
 
 =head3 Description
 
-
+my $parent = $object->parent();
 
 =cut
 
@@ -285,24 +290,30 @@ sub parent {
     );
 }
 
-=head2    my @children = $object->children( [ %args ] );
-    my $iterator = $object->children( [ %args ] );
+=head2    children()
 
 =head3 Parameter
 
-    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
-                                            Multiple object properties can be specified in the %args hash. For example,
-                                            $object->children( title => 'Welcome' )
+    $args{ $object_property } : Object property like 'location',
+                                'Document_id', or 'title'
 
 =head3 Returns
 
     @objects    : Array of XIMS::Objects (list context)
-    $iterator   : Instance of XIMS::Iterator::Object created with the children ids (scalar context)
+    $iterator   : Instance of XIMS::Iterator::Object created with the children
+                  ids (scalar context)
 
 =head3 Description
 
-Returns all children of an object unless they are filtered by a specific object property.
-In list context an array is returned, in scalar context an iterator.
+my @children = $object->children( [ %args ] );
+    my $iterator = $object->children( [ %args ] );
+    
+Returns all children of an object unless they are filtered by a specific
+object property. In list context an array is returned, in scalar context an
+iterator.
+Multiple object properties can be specified in the %args hash (optional).
+For example, $object->children( title => 'Welcome' )
+
 
 =cut
 
@@ -330,27 +341,32 @@ sub children {
     return @children;
 }
 
-=head2    my @children = $object->children_granted( [ %args ] );
-    my $iterator = $object->children_granted( [ %args ] );
+=head2    children_granted()
 
 =head3 Parameter
 
-    $args{ User }             (optional) :  XIMS::User instance if you want to override the user already stored in $object
-                                            or if there is no $object->User yet.
-    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
-                                            Multiple object properties can be specified in the %args hash. For example,
-                                            $object->children_granted( title => 'Welcome' )
+    $args{ User }             :  XIMS::User instance if you want to override 
+                                 the user already stored in $object or if
+                                 there is no $object->User yet.
+    $args{ $object_property } :  Object property like 'location',
+                                 'department_id', or 'title'
 
 =head3 Returns
 
     @objects    : Array of XIMS::Objects (list context)
-    $iterator   : Instance of XIMS::Iterator::Object created with the granted children ids (scalar context)
+    $iterator   : Instance of XIMS::Iterator::Object created with the granted
+                  children ids (scalar context)
 
 =head3 Description
 
-Returns children granted to $args{User}. If that is not given, $object->User() will be used.
-Children can be filtered using object property values. In list context an array is returned,
-in scalar context an iterator.
+ my @children = $object->children_granted( [ %args ] );
+     my $iterator = $object->children_granted( [ %args ] );
+     
+Returns children granted to $args{User}. If that is not given, $object->User()
+will be used. Children can be filtered using object property values. In list
+context an array is returned, in scalar context an iterator.
+Multiple object properties can be specified in the %args hash (optional).
+For example, $object->children_granted( title => 'Welcome' )
 
 =cut
 
@@ -403,13 +419,12 @@ sub children_granted {
     return @children;
 }
 
-=head2    my $count = $object->child_count( [ %args ] );
+=head2    child_count()
 
 =head3 Parameter
 
-    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
-                                            Multiple object properties can be specified in the %args hash. For example,
-                                            $object->child_count( marked_deleted => undef )
+    $args{ $object_property } :  Object property like 'location',
+                                 'department_ id', or 'title'
 
 =head3 Returns
 
@@ -417,6 +432,10 @@ sub children_granted {
 
 =head3 Description
 
+my $count = $object->child_count( [ %args ] );
+
+Multiple object properties can be specified in the %args hash. For example,
+$object->child_count( marked_deleted => undef )
 
 
 =cut
@@ -428,7 +447,7 @@ sub child_count {
     return scalar(@child_ids);
 }
 
-=head2    my $count = $object->child_count_granted( %args );
+=head2    child_count_granted()
 
 =head3 Parameter
 
@@ -440,6 +459,7 @@ sub child_count {
 
 =head3 Description
 
+my $count = $object->child_count_granted( %args );
 
 Returns number of children granted to $args{User}. If that is not given,
 $object->User() will be used.
@@ -455,7 +475,7 @@ sub child_count_granted {
     return $iterator->getLength();
 }
 
-=head2    my $ancestors = $object->ancestors();
+=head2    ancestors()
 
 =head3 Parameter
 
@@ -466,6 +486,8 @@ sub child_count_granted {
     $ancestors : Reference to Array of XIMS::Objects
 
 =head3 Description
+
+my $ancestors = $object->ancestors();
 
 Returns all ancestors.
 
@@ -493,7 +515,7 @@ sub ancestors {
     return \@ancs;
 }
 
-=head2    my $or_ancestors = $object->objectroot_ancestors();
+=head2    objectroot_ancestors()
 
 =head3 Parameter
 
@@ -504,6 +526,8 @@ sub ancestors {
     $or_ancestors : Reference to Array of XIMS::Objects
 
 =head3 Description
+
+my $or_ancestors = $object->objectroot_ancestors();
 
 Returns all ObjectRoot ancestors from which ObjectRoot-wide
 settings may be inherited
@@ -530,26 +554,34 @@ sub objectroot_ancestors {
     return $self->{ORootAncestors};
 }
 
-=head2    my @descendants = $object->descendants( [ %args ] );
-    my $iterator    = $object->descendants( [ %args ] );
+=head2    descendants()
 
 =head3 Parameter
 
-    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
-                                            Multiple object properties can be specified in the %args hash. For example,
-                                            $object->descendants( department_id => $document_id, location => 'index.html' )
-    $args{ maxlevel }         (optional) :  Maxlevel of recursion, if unspecified or 0 results in no recursion limit
+    $args{ $object_property } :  Object property like 'location',
+                                 'department_id', or 'title'
+    $args{ maxlevel }         :  Maxlevel of recursion, unspecified or 0
+                                 results in no recursion limit
 
 =head3 Returns
 
-    @descendants : Array of XIMS::Objects including "level" pseudo-property (list context)
-    $iterator    : Instance of XIMS::Iterator::Object created with the descendants ids (scalar context)
+    @descendants : Array of XIMS::Objects including "level" pseudo-property 
+                   (list context)
+    $iterator    : Instance of XIMS::Iterator::Object created with the
+                   descendants ids (scalar context)
 
 =head3 Description
 
-Returns all descendants unless they are filtered by a specific object property.
-In list context an array of the objects including a "level" pseudo-property is returned,
-in scalar context an iterator is returned. The objects fetched using this iterator will NOT contain that pseudo-property!
+my @descendants = $object->descendants( [ %args ] );
+    my $iterator    = $object->descendants( [ %args ] );
+
+Returns all descendants unless they are filtered by a specific object
+property. In list context an array of the objects including a "level"
+pseudo-property is returned, in scalar context an iterator is returned. The
+objects fetched using this iterator will NOT contain that pseudo-property!
+Multiple object properties can be specified in the %args hash (optional). 
+For example,
+$object->descendants( department_id => $document_id, location => 'index.html' )
 
 =cut
 
@@ -603,30 +635,38 @@ sub descendants {
     return @sorted_descendants;
 }
 
-=head2    my @descendants = $object->descendants_granted( [ %args ] );
-    my @iterator = $object->descendants_granted( [ %args ] );
+=head2    descendants_granted()
 
 =head3 Parameter
 
-    $args{ User }             (optional) :  XIMS::User instance if you want to override the user already stored in $object
-                                            or if there is no $object->User yet.
-    $args{ $object_property } (optional) :  Object property like 'location', 'department_id', or 'title'
-                                            Multiple object properties can be specified in the %args hash. For example,
-                                            $object->descendants_granted( department_id => $document_id, location => 'index.html' )
-    $args{ maxlevel }         (optional) :  Maxlevel of recursion, if unspecified or 0 results in no recursion limit
+    $args{ User }             :  XIMS::User instance if you want to override
+                                 the user already stored in $object or if
+                                 there is no $object->User yet.
+    $args{ $object_property } :  Object property like 'location',
+                                 'department_id', or 'title'
+    $args{ maxlevel }         :  Maxlevel of recursion, unspecified or 0
+                                 results in no recursion limit
 
 =head3 Returns
 
-    @descendants : Array of XIMS::Objects including "level" pseudo-property (list context)
-    $iterator    : Instance of XIMS::Iterator::Object created with the granted descendants ids (scalar context)
+    @descendants : Array of XIMS::Objects including "level" pseudo-property
+                   (list context)
+    $iterator    : Instance of XIMS::Iterator::Object created with the
+                   granted descendants ids (scalar context)
 
 =head3 Description
+
+my @descendants = $object->descendants_granted( [ %args ] );
+    my @iterator = $object->descendants_granted( [ %args ] );
 
 Returns descendants granted to $args{User}. If that is not given,
 $object->User() will be used. Descendants can be filtered using object
 property values. In list context an array of the objects including a "level"
 pseudo-property is returned, in scalar context an iterator is returned. The
 objects fetched using this iterator will NOT contain that pseudo-property!
+$Args are optional.
+Multiple object properties can be specified in the %args hash. For example,
+$object->descendants_granted( department_id => $document_id, location => 'index.html' )
 
 =cut
 
@@ -688,7 +728,7 @@ sub descendants_granted {
     return @sorted_descendants;
 }
 
-=head2    my ($total_descendants, $levels) = $object->descendant_count();
+=head2    descendant_count()
 
 =head3 Parameter
 
@@ -696,13 +736,15 @@ sub descendants_granted {
 
 =head3 Returns
 
-    ($total_descendants, $levels)    : $total_descendants contains the descendant count,
-                                       $levels contains the number of levels in the hierarchy the
-                                       descendants are spread over.
+    ($total_descendants, $levels)    : $total_descendants contains the
+                                       descendant count,
+                                       $levels contains the number of levels
+                                       in the hierarchy the descendants are
+                                       spread over.
 
 =head3 Description
 
-
+ my ($total_descendants, $levels) = $object->descendant_count();
 
 =cut
 
@@ -725,7 +767,7 @@ sub descendant_count {
     return ( scalar(@doc_ids), $lvls[-1] - $lvls[0] + 1 );
 }
 
-=head2    my $count = $object->descendant_count_granted( %args );
+=head2   descendant_count_granted()
 
 =head3 Parameter
 
@@ -737,8 +779,10 @@ sub descendant_count {
 
 =head3 Description
 
+my $count = $object->descendant_count_granted( %args );
 
-Returns number of descendants granted to $args{User}. If that is not given, $object->User() will be used.
+Returns number of descendants granted to $args{User}. If that is not given,
+$object->User() will be used.
 
 =cut
 
@@ -751,8 +795,7 @@ sub descendant_count_granted {
     return $iterator->getLength();
 }
 
-=head2    my @objects = $object->find_objects( %args );
-    my $iterator = $object->find_objects( %args );
+=head2    find_objects()
 
 =head3 Parameter
 
@@ -761,9 +804,13 @@ sub descendant_count_granted {
 =head3 Returns
 
     @objects     : Array of XIMS::Objects (list context)
-    $iterator    : Instance of XIMS::Iterator::Object created with the granted found ids (scalar context)
+    $iterator    : Instance of XIMS::Iterator::Object created with the
+                   granted found ids (scalar context)
 
 =head3 Description
+
+my @objects = $object->find_objects( %args );
+     my $iterator = $object->find_objects( %args );
 
 Returns content objects to which search criteria apply.
 
@@ -793,7 +840,7 @@ sub find_objects {
     return @objects;
 }
 
-=head2    my $count = $object->find_objects_count( %args );
+=head2    find_objects_count()
 
 =head3 Parameter
 
@@ -805,7 +852,7 @@ sub find_objects {
 
 =head3 Description
 
-
+my $count = $object->find_objects_count( %args );
 
 =cut
 
@@ -818,27 +865,37 @@ sub find_objects_count {
     return $self->__find_ids_count(%args);
 }
 
-=head2    my @objects = $object->find_objects_granted( %args );
-    my $iterator = $object->find_objects_granted( %args );
+=head2    find_objects_granted()
 
 =head3 Parameter
 
-    $args{ criteria }               : Criteria string or Array-Ref [ $string_placeholders, @values ]
-    $args{ columns }    (optional)  : Name of properties to be fetched (defaults to 'DISTINCT ci_content.ID, last_modification_timestamp as ts')
-    $args{ limit }      (optional)  : Number of record to limit result to
-    $args{ offset }     (optional)  : Start offset from the overall recordset to which 'limit' will be applied
-    $args{ order }      (optional)  : Order by clause (E.g. 'title ASC', defaults to 'ci_content.last_modification_timestamp DESC')
-    $args{ noorder }    (optional)  : Deactivates 'order' param and sorting by the database
-    $args{ start_here } (optional)  : location_path string or XIMS Object instance from where to start searching from
+    $args{ criteria }   : Criteria string or Array-Ref
+                          [ $string_placeholders, @values ]
+    $args{ columns }    : Name of properties to be fetched (defaults to
+                          'DISTINCT ci_content.ID, last_modification_timestamp
+                          as ts')
+    $args{ limit }      : Number of record to limit result to
+    $args{ offset }     : Start offset from the overall recordset to which
+                          'limit' will be applied
+    $args{ order }      : Order by clause (E.g. 'title ASC', defaults to
+                          'ci_content.last_modification_timestamp DESC')
+    $args{ noorder }    : Deactivates 'order' param and sorting by the database
+    $args{ start_here } : location_path string or XIMS Object instance from
+                          where to start searching from
 
 =head3 Returns
 
     @objects     : Array of XIMS::Objects (list context)
-    $iterator    : Instance of XIMS::Iterator::Object created with the granted found ids (scalar context)
+    $iterator    : Instance of XIMS::Iterator::Object created with the granted
+                   found ids (scalar context)
 
 =head3 Description
 
+my @objects = $object->find_objects_granted( %args );
+    my $iterator = $object->find_objects_granted( %args );
+
 Returns content objects to which search criteria apply.
+Args except criteria are optinal.
 
 =cut
 
@@ -873,7 +930,7 @@ sub find_objects_granted {
     return @objects;
 }
 
-=head2    my $count = $object->find_objects_granted_count( %args );
+=head2    find_objects_granted_count()
 
 =head3 Parameter
 
@@ -885,7 +942,7 @@ sub find_objects_granted {
 
 =head3 Description
 
-
+my $count = $object->find_objects_granted_count( %args );
 
 =cut
 
@@ -904,29 +961,36 @@ sub find_objects_granted_count {
     return $self->find_objects_count(%args);
 }
 
-=head2    my @referenced_by = $object->referenced_by( [ %args ] );
-    my $iterator      = $object->referenced_by( [ %args ] );
+=head2    referenced_by()
 
 =head3 Parameter
 
-    $args{ $object_property } (optional)  :  Object property like 'location', 'department_id', or 'title'
-                                             Multiple object properties can be specified in the %args hash. For example,
-                                             $object->referenced_by( published => 1 )
-    $args{ include_ancestors } (optional) :  If given, not only the objects referenced by symname_to_doc_id of the
-                                             current object, but also the ones of its ancestors will be returned.
+    $args{ $object_property }  :  Object property like 'location',
+                                  'department_id', or 'title'
+    $args{ include_ancestors } :  If given, not only the objects referenced
+                                  by symname_to_doc_id of the current object,
+                                  but also the ones of its ancestors will be
+                                  returned.
 
 =head3 Returns
 
     @objects    : Array of XIMS::Objects (list context)
-    $iterator   : Instance of XIMS::Iterator::Object created with the referenced by object ids (scalar context)
+    $iterator   : Instance of XIMS::Iterator::Object created with the
+                  referenced by object ids (scalar context)
 
 =head3 Description
+
+my @referenced_by = $object->referenced_by( [ %args ] );
+    my $iterator      = $object->referenced_by( [ %args ] );
 
 Returns all objects referenced by symname_to_doc_id. The current
 implementation does not check whether a ancestrial Portlet high up in the
 hierarchy actually really includes the current object; the Portlet's "level"
 attribute is not checked. In list context an array is returned, in scalar
-context an iterator.
+context an iterator. Args are optional.
+Multiple object properties can be specified in the %args hash. For example,
+$object->referenced_by( published => 1 )
+
 
 =cut
 
@@ -973,31 +1037,40 @@ sub referenced_by {
     }
 }
 
-=head2    my @referenced_by = $object->referenced_by_granted( [ %args ] );
-    my $iterator      = $object->referenced_by_granted( [ %args ] );
+=head2    referenced_by_granted()
 
 =head3 Parameter
 
-    $args{ User }             (optional)  :  XIMS::User instance if you want to override the user already stored in $object
-                                             or if there is no $object->User yet.
-    $args{ $object_property } (optional)  :  Object property like 'location', 'department_id', or 'title'
-                                             Multiple object properties can be specified in the %args hash. For example,
-                                             $object->referenced_by_granted( published => 1 )
-    $args{ include_ancestors } (optional) :  If given, not only the objects referenced by symname_to_doc_id of the
-                                             current object, but also the ones of its ancestors will be returned.
+    $args{ User }              :  XIMS::User instance if you want to override
+                                  the user already stored in $object or if
+                                  there is no $object->User yet.
+    $args{ $object_property }  :  Object property like 'location',
+                                  'department_id', or 'title'
+    $args{ include_ancestors } :  If given, not only the objects referenced by
+                                  symname_to_doc_id of the current object, but
+                                  also the ones of its ancestors will be
+                                  returned.
 
 =head3 Returns
 
     @objects    : Array of XIMS::Objects (list context)
-    $iterator   : Instance of XIMS::Iterator::Object created with the granted children ids (scalar context)
+    $iterator   : Instance of XIMS::Iterator::Object created with the granted
+                  children ids (scalar context)
 
 =head3 Description
 
+my @referenced_by = $object->referenced_by_granted( [ %args ] );
+    my $iterator      = $object->referenced_by_granted( [ %args ] );
+
 Returns all objects referenced by symname_to_doc_id granted to $args{User}. If
-that is not given, $object->User() will be used.The current implementation
+that is not given, $object->User() will be used. The current implementation
 does not check whether a ancestrial Portlet high up in the hierarchy actually
 really includes the current object; the Portlet's "level" attribute is not
 checked. In list context an array is returned, in scalar context an iterator.
+Args are optional.
+Multiple object properties can be specified in the %args hash.
+For example, $object->referenced_by_granted( published => 1 )
+
 
 =cut
 
@@ -1132,7 +1205,7 @@ sub __filter_granted_ids {
     return @ids;
 }
 
-=head2    my $siteroot = $object->siteroot();
+=head2    siteroot()
 
 =head3 Parameter
 
@@ -1144,6 +1217,7 @@ sub __filter_granted_ids {
 
 =head3 Description
 
+my $siteroot = $object->siteroot();
 
 Returns the SiteRoot of the object.
 
@@ -1301,17 +1375,23 @@ sub User {
 
 =cut
 
-=head2    my $id = $object->create( [ %args ] );
+=head2    create()
 
 =head3 Parameter
 
-    $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user, %args ) )
+    $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not
+                                   given, the user has to be set at object
+                                   instantiation.
+
+(Example XIMS::Object->new( User => $user, %args ) )
 
 =head3 Returns
 
     $id    : Content id of newly created object
 
 =head3 Description
+
+my $id = $object->create( [ %args ] );
 
 Returns the content id of the newly created object, undef on failure.
 $args{User}, or, if that is not given, $object->User() will be used to set
@@ -1376,17 +1456,22 @@ sub create {
     return $id;
 }
 
-=head2    my $boolean = $object->delete( [ %args ] );
+=head2    delete()
 
 =head3 Parameter
 
-    $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+    $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not
+                                   given, the user has to be set at object
+                                   instantiation. 
+                                   (E.g. XIMS::Object->new( User => $user ) )
 
 =head3 Returns
 
     $boolean : True or False for deleting object
 
 =head3 Description
+
+my $boolean = $object->delete( [ %args ] );
 
 Deletes object in database and unsets properties in memory.
 
@@ -1418,20 +1503,29 @@ sub delete {
     }
 }
 
-=head2    my @rowcount = $object->update( [ %args ] );
+=head2    update()
 
 =head3 Parameter
 
-    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
-    $args{ no_modder }   (optional) :  If set, last modifier and last modification timestamp properties will not be set.
+    $args{ User }        :  XIMS::User instance. If $args{User} is not given,
+                            the user has to be set at object instantiation.
+                            (Example XIMS::Object->new( User => $user ) )
+    $args{ no_modder }   :  If set, last modifier and last modification
+                            timestamp properties will not be set.
 
 =head3 Returns
 
-    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
+    @rowcount : Array with one or two entries. Two if both 'Content' and
+                'Document' have been updated, one if only 'Document' resource
+                type has been updated. Each entry is true if update was
+                successful, false otherwise.
 
 =head3 Description
 
-Updates object in database and sets last modifier properties unless $args{no_modder} has been set.
+my @rowcount = $object->update( [ %args ] );
+
+Updates object in database and sets last modifier properties unless
+$args{no_modder} has been set. Args are optional.
 
 =cut
 
@@ -1460,17 +1554,25 @@ sub update {
     return @rowcount;
 }
 
-=head2    my @rowcount = $object->trashcan( [ %args ] );
+=head2    trashcan()
 
 =head3 Parameter
 
-    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is
+                                       not given, the user has to be set at
+                                       object instantiation.
+                                       (E.g. XIMS::Object->new( User => $user ) )
 
 =head3 Returns
 
-    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
+    @rowcount : Array with one or two entries. Two if both 'Content' and
+                'Document' have been updated, one if only 'Document' resource
+                type has been updated. Each entry is true if update was
+                successful, false otherwise.
 
 =head3 Description
+
+my @rowcount = $object->trashcan( [ %args ] );
 
 Moves object including descendants to the trashcan, updates object in database.
 
@@ -1533,19 +1635,28 @@ sub trashcan {
     return @retval;
 }
 
-=head2    my @rowcount = $object->undelete( [ %args ] );
+=head2    undelete()
 
 =head3 Parameter
 
-    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is
+                                       not given, the user has to be set at
+                                       object instantiation.
+                                       (E.g. XIMS::Object->new( User => $user ) )
 
 =head3 Returns
 
-    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
+    @rowcount : Array with one or two entries. Two if both 'Content' and
+                'Document' have been updated, one if only 'Document' resource
+                type has been updated. Each entry is true if update was
+                successful, false otherwise.
 
 =head3 Description
 
-Moves object including descendants out of the trashcan, updates object in database.
+my @rowcount = $object->undelete( [ %args ] );
+
+Moves object including descendants out of the trashcan, updates object in
+database.
 
 =cut
 
@@ -1589,20 +1700,29 @@ sub undelete {
     }
 }
 
-=head2    my @rowcount = $object->move( [ %args ] );
+=head2    move()
 
 =head3 Parameter
 
     $args{ target }                 :  document_id of the target container
-    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+    $args{ User }        (optional) :  XIMS::User instance. If $args{User}
+                                       is not given, the user has to be set at
+                                       object instantiation.
+                                       (E.g. XIMS::Object->new( User => $user ) )
 
 =head3 Returns
 
-    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
+    @rowcount : Array with one or two entries. Two if both 'Content' and
+    'Document' have been updated, one if only 'Document' resource type has
+    been updated. Each entry is true if update was successful, false
+    otherwise.
 
 =head3 Description
 
-Moves object in the content hierarchy, sets "parent_id" to the "target"'s document_id. Updates object in database.
+my @rowcount = $object->move( [ %args ] );
+
+Moves object in the content hierarchy, sets "parent_id" to the "target"'s
+document_id. Updates object in database.
 
 =cut
 
@@ -1658,17 +1778,34 @@ sub move {
     return @rv;
 }
 
-=head2    my $clone = $object->clone( %args );
+=head2    clone()
 
 =head3 Parameter
 
-    $args{ User }            (optional) : XIMS::User instance. Used to find granted children. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
-    $args{ target_id }       (optional) : document_id of parent if it should not be $self->parent_id
-    $args{ target_location } (optional) : location of clone object; per default "copy_of_location" will be used
-    $args{ scope_subtree }   (optional) : flag, 0 ... shallow copy ( only object, not its descendants ), 1 ... full subtree copy ( object and all granted descendants )
-    $args{ _parent_id }      (private)  : document_id of parent object ( should be undef, only used in recursive call )
-    $args{ _id_map }         (private)  : hash ref with key=old object id, value=new object id ( should be undef, only used in recursive call )
-    $args{ _ref_object_ids } (private)  : array ref with all cloned objects that have references to other objects ( should be undef, only used in recursive call )
+    $args{ User }            (optional) : XIMS::User instance. Used to find
+                                          granted children. If $args{User} is
+                                          not given, the user has to be set at
+                                          object instantiation.
+                                          (E.g. XIMS::Object->new( User => $user ) )
+    $args{ target_id }       (optional) : document_id of parent if it should
+                                          not be $self->parent_id
+    $args{ target_location } (optional) : location of clone object; per
+                                          default "copy_of_location" will
+                                          be used
+    $args{ scope_subtree }   (optional) : flag, 0 ... shallow copy ( only
+                                          object, not its descendants ),
+                                          1 ... full subtree copy ( object
+                                          and all granted descendants )
+    $args{ _parent_id }      (private)  : document_id of parent object
+                                          ( should be undef, only used in
+                                          recursive call )
+    $args{ _id_map }         (private)  : hash ref with key=old object id,
+                                          value=new object id ( should be
+                                          undef, only used in recursive call )
+    $args{ _ref_object_ids } (private)  : array ref with all cloned objects
+                                          that have references to other
+                                          objects ( should be undef,
+                                          only used in recursive call )
 
 =head3 Returns
 
@@ -1676,8 +1813,10 @@ sub move {
 
 =head3 Description
 
-creates a copy of the object in the database ( clone has same parent as
-orginal ). the clone is named 'copy_of_...' (location and title) the clone is
+my $clone = $object->clone( %args );
+
+creates a copy of the object in the database (clone has same parent as
+orginal). the clone is named 'copy_of_...' (location and title) the clone is
 always unpublished and unlocked references to other copied objects are
 updated, as are references to portlets in body of department- and siteroot if
 scope_subtree = 1, all granted descendants are copied, too.
@@ -1890,19 +2029,27 @@ sub clone {
     return $clone;
 }
 
-=head2    my $copy = $object->copy( %args );
+=head2    copy()
 
 =head3 Parameter
 
-    $args{ User }            (optional) : XIMS::User instance. Used to find granted children. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
-    $args{ target }                     : document_id of container where the object should be copied to
-    $args{ target_location } (optional) : location of the copy; per default "copy_of_location" will be used
+    $args{ User }            (optional) : XIMS::User instance. Used to find
+                                          granted children. If $args{User} is
+                                          not given, the user has to be set at
+                                          object instantiation.
+                                          (E.g. XIMS::Object->new( User => $user ) )
+    $args{ target }                     : document_id of container where the
+                                          object should be copied to
+    $args{ target_location } (optional) : location of the copy; per default
+                                          "copy_of_location" will be used
 
 =head3 Returns
 
     undef on error, reference to copied object on success
 
 =head3 Description
+
+my $copy = $object->copy( %args );
 
 Creates a copy of the object in the database in the container specified by
 'target_id. Per default, the copy will be named 'copy_of_...' (location).
@@ -1934,7 +2081,7 @@ sub copy {
     );
 }
 
-=head2    my $boolean = $object->reposition( %args );
+=head2    reposition()
 
 =head3 Parameter
 
@@ -1945,6 +2092,8 @@ sub copy {
     $boolean : True or False for repositioning object
 
 =head3 Description
+
+my $boolean = $object->reposition( %args );
 
 Updates position of the object in its container, updates object in database.
 
@@ -1965,7 +2114,7 @@ sub reposition {
     );
 }
 
-=head2    my $boolean = $object->attribute( %attrhash );
+=head2    attribute()
 
 =head3 Parameter
 
@@ -1976,6 +2125,8 @@ sub reposition {
     boolean      :  1 one success
 
 =head3 Description
+
+my $boolean = $object->attribute( %attrhash );
 
 Attributes are stored in ";" separated key=value pairs in the attributes
 column attribute() sets attributes through a hash. If a hash value is empty,
@@ -2019,7 +2170,7 @@ sub attribute {
     return 1 if $self->attributes($text);
 }
 
-=head2    my $attribute = $object->attribute_by_key( $key );
+=head2    attribute_by_key()
 
 =head3 Parameter
 
@@ -2030,6 +2181,8 @@ sub attribute {
     $attribute : Value of the requested attribute
 
 =head3 Description
+
+my $attribute = $object->attribute_by_key( $key );
 
 Attributes are stored in ";" separated key=value pairs in the attributes column
 
@@ -2049,7 +2202,7 @@ sub attribute_by_key {
     return;
 }
 
-=head2    my %attributes = $object->_parse_attributes( $text );
+=head2    _parse_attributes()
 
 =head3 Parameter
 
@@ -2060,6 +2213,8 @@ sub attribute_by_key {
     %attributes : Key/Value attribute hash
 
 =head3 Description
+
+my %attributes = $object->_parse_attributes( $text );
 
 Parses the ';'-separated key/value pairs into a hash.
 
@@ -2080,7 +2235,7 @@ sub _parse_attributes {
     return %attributes;
 }
 
-=head2    my $attrib_escaped = $object->_escapeattrib( $text );
+=head2    _escapeattrib()
 
 =head3 Parameter
 
@@ -2091,6 +2246,8 @@ sub _parse_attributes {
     $attrib_escaped : String where the special attrib chars have been escaped
 
 =head3 Description
+
+my $attrib_escaped = $object->_escapeattrib( $text );
 
 Escapes quotes, semicolons and equal signs with backslashes in a string
 
@@ -2110,7 +2267,7 @@ sub _escapeattrib {
     return $text;
 }
 
-=head2    my $attrib_unescaped = $object->_unescapeattrib( $text );
+=head2    _unescapeattrib()
 
 =head3 Parameter
 
@@ -2121,6 +2278,8 @@ sub _escapeattrib {
     $attrib_unescaped : String where the special attrib chars have been unescaped
 
 =head3 Description
+
+my $attrib_unescaped = $object->_unescapeattrib( $text );
 
 Unescapes quotes, semicolons and equal signs in a string
 
@@ -2144,19 +2303,27 @@ sub _unescapeattrib {
 
 User-priv related methods
 
-=head2    my $boolean = $object->grant_user_privileges( %args );
+=head2    grant_user_privileges()
 
 =head3 Parameter
 
     $args{ grantee }     :  Grantee XIMS::User instance to grant privileges to
-    $args{ grantor }     :  Grantor XIMS::User instance to grant privileges from
-    $args{ privmask }    :  Privmask value. The full list of registered privmask is available via XIMS::Privileges::list(). If you want to grant multiple privileges, the values of XIMS::Privileges::* must be ORed together.
+    $args{ grantor }     :  Grantor XIMS::User instance to grant privileges
+                            from
+    $args{ privmask }    :  Privmask value. The full list of registered
+                            privmask is available via
+                            XIMS::Privileges::list().
+                            If you want to grant multiple privileges, the
+                            values of XIMS::Privileges::* must be ORed
+                            together.
 
 =head3 Returns
 
     $boolean : True or False for granting user privileges
 
 =head3 Description
+
+my $boolean = $object->grant_user_privileges( %args );
 
 Grants $args{privmask} to $args{grantee} on object.
 
@@ -2211,11 +2378,14 @@ sub grant_user_privileges {
     );
 }
 
-=head2    my $boolean = $object->lock( [ %args ] );
+=head2    lock()
 
 =head3 Parameter
 
-    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is
+                                       not given, the user has to be set at
+                                       object instantiation.
+                                       (E.g. XIMS::Object->new( User => $user ) )
 
 =head3 Returns
 
@@ -2223,7 +2393,10 @@ sub grant_user_privileges {
 
 =head3 Description
 
-Locks the object for $args{User} (Or $object->User if $args{User} has not been specified.) Updates object in database.
+my $boolean = $object->lock( [ %args ] );
+
+Locks the object for $args{User} (Or $object->User if $args{User} has not been
+specified.) Updates object in database.
 
 =cut
 
@@ -2242,7 +2415,7 @@ sub lock {
     return $self->data_provider->updateObject( $self->_lock_data() );
 }
 
-=head2    my $boolean = $object->unlock();
+=head2    unlock()
 
 =head3 Parameter
 
@@ -2253,6 +2426,8 @@ sub lock {
     $boolean : True or False for unlocking the object
 
 =head3 Description
+
+my $boolean = $object->unlock();
 
 Unlocks the object, updates object in database.
 
@@ -2291,7 +2466,7 @@ sub _lock_data {
     return %data;
 }
 
-=head2    my $boolean = $object->locked();
+=head2    locked()
 
 =head3 Parameter
 
@@ -2302,6 +2477,8 @@ sub _lock_data {
     $boolean : True or False is object is locked
 
 =head3 Description
+
+my $boolean = $object->locked();
 
 Check if object is locked or not.
 
@@ -2315,18 +2492,25 @@ sub locked {
     return;
 }
 
-=head2    my $boolean = $object->publish( [ %args ] );
+=head2    publish()
 
 =head3 Parameter
 
-    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
-    $args{ no_pubber }   (optional) :  If set, last publisher and last publication timestamp properties will not be set.
+    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is
+                                       not given, the user has to be set at
+                                       object instantiation.
+                                       (E.g. XIMS::Object->new( User => $user ) )
+    $args{ no_pubber }   (optional) :  If set, last publisher and last
+                                       publication timestamp properties will
+                                       not be set.
 
 =head3 Returns
 
     $boolean : True or False for publishing the object
 
 =head3 Description
+
+my $boolean = $object->publish( [ %args ] );
 
 Sets the "published" property and last publisher user metadata. Updates object
 in database.
@@ -2350,11 +2534,14 @@ sub publish {
     return $self->data_provider->updateObject( $self->data() );
 }
 
-=head2    my $boolean = $object->unpublish( [ %args ] );
+=head2    unpublish()
 
 =head3 Parameter
 
-    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
+    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is
+                                       not given, the user has to be set at
+                                       object instantiation.
+                                       (E.g. XIMS::Object->new( User => $user ) )
 
 =head3 Returns
 
@@ -2362,7 +2549,10 @@ sub publish {
 
 =head3 Description
 
-Unsets the "published" property and last publisher user metadata. Updates object in database.
+my $boolean = $object->unpublish( [ %args ] );
+
+Unsets the "published" property and last publisher user metadata. Updates
+object in database.
 
 =cut
 
@@ -2381,7 +2571,7 @@ sub unpublish {
 # The following methods allow the more intuitive $obj->data_format() to work,
 # rather than forcing XIMS::DataFormat->new( id => $obj->id() ) for example.
 
-=head2    my $ot = $object->object_type();
+=head2    object_type()
 
 =head3 Parameter
 
@@ -2392,6 +2582,8 @@ sub unpublish {
     $ot : XIMS::ObjectType instance
 
 =head3 Description
+
+my $ot = $object->object_type();
 
 Returns object type of object.
 
@@ -2407,7 +2599,7 @@ sub object_type {
     return $ot;
 }
 
-=head2    my $df = $object->data_format();
+=head2    data_format()
 
 =head3 Parameter
 
@@ -2418,6 +2610,8 @@ sub object_type {
     $df : XIMS::DataFormat instance
 
 =head3 Description
+
+my $df = $object->data_format();
 
 Returns data format of object.
 
@@ -2433,7 +2627,7 @@ sub data_format {
     return $df;
 }
 
-=head2    my $language = $object->language();
+=head2    language()
 
 =head3 Parameter
 
@@ -2444,6 +2638,8 @@ sub data_format {
     $ot : XIMS::Language instance
 
 =head3 Description
+
+my $language = $object->language();
 
 Returns language of object.
 
@@ -2458,12 +2654,13 @@ sub language {
     return $lang;
 }
 
-=head2    my $stylesheet = $object->stylesheet( [ explicit => 1 ] );
+=head2    stylesheet()
 
 =head3 Parameter
 
     %args        (optional) : hash
-       recognized key: 'explicit': If given, only explicitly assigned stylesheet objects or directories
+       recognized key: 'explicit': If given, only explicitly assigned
+                                   stylesheet objects or directories
                                    will be returned neglecting inherited ones.
 
 =head3 Returns
@@ -2471,6 +2668,8 @@ sub language {
     $stylesheet : XIMS::Object instance (Objecttype 'XSLStylesheet' or 'Folder')
 
 =head3 Description
+
+my $stylesheet = $object->stylesheet( [ explicit => 1 ] );
 
 Returns stylesheet(-directory) assigned to the object. If a
 stylesheet(-directory) is not assigned directly, inherited
@@ -2503,12 +2702,13 @@ sub stylesheet {
     return $stylesheet;
 }
 
-=head2    my $css = $object->css( [ explicit => 1 ] );
+=head2    css()
 
 =head3 Parameter
 
     %args        (optional) : hash
-       recognized key: 'explicit': If given, only explicitly assigned stylesheet objects or directories
+       recognized key: 'explicit': If given, only explicitly assigned
+                                   stylesheet objects or directories
                                    will be returned neglecting inherited ones.
 
 =head3 Returns
@@ -2516,6 +2716,8 @@ sub stylesheet {
     $css : XIMS::Object instance
 
 =head3 Description
+
+my $css = $object->css( [ explicit => 1 ] );
 
 Returns a CSS stylesheet assigned to the object. If a CSS stylesheet is not
 assigned directly, an inherited one from the objectroot objects up the
@@ -2549,7 +2751,7 @@ sub css {
     return $css;
 }
 
-=head2    my $image = $object->image( [ explicit => 1 ] );
+=head2    image()
 
 =head3 Parameter
 
@@ -2562,6 +2764,8 @@ sub css {
     $image : XIMS::Object instance
 
 =head3 Description
+
+my $image = $object->image( [ explicit => 1 ] );
 
 Returns an Image assigned to the object. If an Image is not assigned directly,
 an inherited one from the objectroot objects up the hierarchy is looked for
@@ -2595,19 +2799,22 @@ sub image {
     return $image;
 }
 
-=head2    my $script = $object->script( [ explicit => 1 ] );
+=head2    script()
 
 =head3 Parameter
 
     %args        (optional) : hash
-       recognized key: 'explicit': If given, only explicitly assigned script objects
-                                   will be returned neglecting inherited ones.
+       recognized key: 'explicit': If given, only explicitly assigned script
+                                   objects will be returned neglecting
+                                   inherited ones.
 
 =head3 Returns
 
     $script : XIMS::Object instance
 
 =head3 Description
+
+my $script = $object->script( [ explicit => 1 ] );
 
 Returns a Script assigned to the object. If a Script is not assigned directly,
 an inherited one from the objectroot objects up the hierarchy is looked for
@@ -2641,7 +2848,7 @@ sub script {
     return $script;
 }
 
-=head2    my $schema = $object->schema( [ explicit => 1 ] );
+=head2    schema()
 
 =head3 Parameter
 
@@ -2654,6 +2861,8 @@ sub script {
     $schema : XIMS::Object instance
 
 =head3 Description
+
+my $schema = $object->schema( [ explicit => 1 ] );
 
 Returns a Schema assigned to the object. If a Schema is not assigned directly,
 an inherited one from the objectroot objects up the hierarchy is looked for
@@ -2685,7 +2894,7 @@ sub schema {
     return $schema;
 }
 
-=head2    my $creator = $object->creator( [ $user ] );
+=head2    creator()
 
 =head3 Parameter
 
@@ -2696,6 +2905,8 @@ sub schema {
     $creator : XIMS::User instance
 
 =head3 Description
+
+my $creator = $object->creator( [ $user ] );
 
 Returns creator of object. If $user is given as parameter, creator of object
 is updated.
@@ -2721,7 +2932,7 @@ sub creator {
     return $creator;
 }
 
-=head2    my $owner = $object->owner( [ $user ] );
+=head2    owner()
 
 =head3 Parameter
 
@@ -2732,6 +2943,8 @@ sub creator {
     $owner : XIMS::User instance
 
 =head3 Description
+
+my $owner = $object->owner( [ $user ] );
 
 Returns owner of object. If $user is given as parameter, owner of object is
 updated.
@@ -2757,7 +2970,7 @@ sub owner {
     return $owner;
 }
 
-=head2    my $last_modifier = $object->last_modifier( [ $user ] );
+=head2    last_modifier()
 
 =head3 Parameter
 
@@ -2768,6 +2981,8 @@ sub owner {
     $last_modifier : XIMS::User instance
 
 =head3 Description
+
+my $last_modifier = $object->last_modifier( [ $user ] );
 
 Returns last modifier of object. If $user is given as parameter, last modifier
 of object is updated.
@@ -2793,7 +3008,7 @@ sub last_modifier {
     return $modder;
 }
 
-=head2    my $last_publisher = $object->last_publisher( [ $user ] );
+=head2    last_publisher()
 
 =head3 Parameter
 
@@ -2805,7 +3020,10 @@ sub last_modifier {
 
 =head3 Description
 
-Returns last publisher of object. If $user is given as parameter, last publisher of object is updated.
+my $last_publisher = $object->last_publisher( [ $user ] );
+
+Returns last publisher of object. If $user is given as parameter, last
+publisher of object is updated.
 
 =cut
 
@@ -2828,7 +3046,7 @@ sub last_publisher {
     return $pubber;
 }
 
-=head2    my $locker = $object->locker();
+=head2    locker()
 
 =head3 Parameter
 
@@ -2839,6 +3057,8 @@ sub last_publisher {
     $locker : XIMS::User instance
 
 =head3 Description
+
+my $locker = $object->locker();
 
 Returns locker of object if its locked.
 
@@ -2853,7 +3073,7 @@ sub locker {
     return $locker;
 }
 
-=head2    my $location_path = $object->location_path();
+=head2    location_path()
 
 =head3 Parameter
 
@@ -2864,6 +3084,8 @@ sub locker {
     $location_path : Location path of object
 
 =head3 Description
+
+my $location_path = $object->location_path();
 
 Returns location path of object. The location path is the virtual path of the
 object in the hierarchy without '/root'. An object with the location
@@ -2897,7 +3119,7 @@ sub location_path {
     return '';
 }
 
-=head2    my $location_path_relative = $object->location_path_relative();
+=head2    location_path_relative()
 
 =head3 Parameter
 
@@ -2908,6 +3130,8 @@ sub location_path {
     $location_path : Location path relative to the SiteRoot of the object
 
 =head3 Description
+
+my $location_path_relative = $object->location_path_relative();
 
 Returns the location path relative to the SiteRoot of the object. The
 'index.html' object example given in the location_path() description above
@@ -2926,7 +3150,7 @@ sub location_path_relative {
     return '';
 }
 
-=head2    my $boolean = $object->store_diff_to_second_last( $oldbody, $newbody );
+=head2    store_diff_to_second_last()
 
 =head3 Parameter
 
@@ -2938,6 +3162,8 @@ sub location_path_relative {
     $boolean : True or False for storing diff
 
 =head3 Description
+
+my $boolean = $object->store_diff_to_second_last( $oldbody, $newbody );
 
 When given two strings store_diff_to_second_last() stores the unified diff of
 them in a child XIMS::Text object called '.diff_to_second_last'. This may be
@@ -3017,25 +3243,33 @@ sub store_diff_to_second_last {
 
 Helpers
 
-=head2    my $doc = $object->balanced_string( $CDATAstring, [$params] );
+=head2    balanced_string()
 
 =head3 Parameter
 
     $CDATAstring : input string
     %args        :  hash
-       recognized keys: nochunk     : if set, $CDATAstring is assumed to be a document with a root-element
-                                      and will be parsed with parse_string() instead of the default parse_xml_chunk()
-                                      useful for importing
-                        verbose_msg : if set, XML::LibXML'S error string instead of undef is returned on parse-error
-                        encoding    : can be optionally given if a chunk is to be parsed; defaults to 'UTF-8'
+       recognized keys: nochunk     : if set, $CDATAstring is assumed to be a
+                                      document with a root-element and will be
+                                      parsed with parse_string() instead of
+                                      the default parse_xml_chunk() useful
+                                      for importing
+                        verbose_msg : if set, XML::LibXML'S error string
+                                      instead of undef is returned on
+                                      parse-error
+                        encoding    : can be optionally given if a chunk is
+                                      to be parsed; defaults to 'UTF-8'
 
  RETURN
-    $doc : XML::LibXML::Document instance if string is well-formed and 'nochunk' is given
+    $doc : XML::LibXML::Document instance if string is well-formed
+           and 'nochunk' is given
            XML::LibXML::DocumentFragment instance if string is well-balanced
            undef if string is not given and 'verbose_msg' is ommitted
            error string if string is well-formed and 'nochunk' is given
 
 =head3 Description
+
+my $doc = $object->balanced_string( $CDATAstring, [$params] );
 
 tests if input string is wellbalanced useful for testing wellbalancedness of
 object abstracts or document-based bodies for example
@@ -3085,23 +3319,29 @@ sub balanced_string {
     return $retval;
 }
 
-=head2    my $wbCDATAstring = $object->balance_string( $CDATAstring, [$params] );
+=head2    balance_string()
 
 =head3 Parameter
 
     $CDATAstring : input string
     %args        : hash
-       recognized keys: keephtmlheader : per default, the html-header tidy generates is stripped of the return
-                                         string and only the part between the "body" tag is returned
-                                         in case of importing legacy html documents it may be useful to keep
-                                         the meta information in the html header - the keephtmlheader flag is
-                                         your friend for that.
+       recognized keys: keephtmlheader : per default, the html-header tidy
+                                         generates is stripped of the return
+                                         string and only the part between the
+                                         "body" tag is returned in case of
+                                         importing legacy html documents it
+                                         may be useful to keep the meta
+                                         information in the html header - the
+                                         keephtmlheader flag is your friend
+                                         for that.
 
 =head3 Returns
 
     $wbCDATAstring : well balanced outputstring or undef in case of error
 
 =head3 Description
+
+my $wbCDATAstring = $object->balance_string( $CDATAstring, [$params] );
 
 takes a string and tries tidy, or if that fails XML::LibXML to well-balance it
 
@@ -3251,20 +3491,6 @@ __END__
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
