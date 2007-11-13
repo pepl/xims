@@ -129,6 +129,21 @@
                    title="URL"/>
           </td>
         </tr>
+         <tr>
+          <td>
+            <label for="vlauthor_image_url">Image URL</label>
+          </td>
+          <td colspan="2">
+            <input tabindex="40"
+                   type="text" 
+                   id="vlauthor_image_url" 
+                   name="vlauthor_image_url"
+                   size="50"
+                   value="{image_url}"
+                   class="text"
+                   title="Image URL"/>
+          </td>
+        </tr>
         <tr>
           <td>
             <label for="vlauthor_object_type"><xsl:value-of select="$i18n_vlib/l/orgauthor"/></label>
