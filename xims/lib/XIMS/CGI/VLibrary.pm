@@ -1,11 +1,12 @@
 
+
 =head1 NAME
 
 XIMS::CGI::VLibrary -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -485,6 +486,7 @@ sub event_author_store {
     my $suffix     = XIMS::clean( $self->param('vlauthor_suffix') ) || '';
     my $objecttype = XIMS::clean( $self->param('vlauthor_object_type') );
     my $url        = XIMS::clean( $self->param('vlauthor_url') );
+    my $image_url  = XIMS::clean( $self->param('vlauthor_image_url') );
     my $email      = XIMS::clean( $self->param('vlauthor_email') );
     my $vlibauthor;
 
@@ -507,6 +509,7 @@ sub event_author_store {
         $vlibauthor->suffix($suffix);
         $vlibauthor->email($email);
         $vlibauthor->url($url);
+        $vlibauthor->image_url($image_url);
 
         if ( defined $objecttype and $objecttype ) {
             $vlibauthor->object_type(1);
@@ -514,6 +517,7 @@ sub event_author_store {
         else {
             $vlibauthor->object_type(0);
         }
+
         unless ( $vlibauthor->id() ) {
             if ( not $vlibauthor->create() ) {
                 XIMS::Debug( 3, "could not create author" );
@@ -915,7 +919,7 @@ sub event_filter {
             my $qbdriver = XIMS::DBDSN();
             $qbdriver = ( split( ':', $qbdriver ) )[1];
             $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
-    
+
             eval "require $qbdriver";    #
             if ($@) {
                 XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
@@ -925,8 +929,7 @@ sub event_filter {
 
             use encoding "latin-1";
             my $allowed = XIMS::decode(
-                q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~})
-                ;                        ## just for emacs' font-lock... ;-)
+                q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~});
             my $qb = $qbdriver->new(
                 {   search         => $text,
                     allowed        => $allowed,

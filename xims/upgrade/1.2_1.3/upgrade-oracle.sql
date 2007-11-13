@@ -29,3 +29,7 @@ BEGIN
                       WHERE s.user_id = c.locked_by_id);
 END;
 /
+
+PROMPT Adding new attribute cilib_authors.image_url
+ALTER TABLE CILIB_AUTHORS ADD IMAGE_URL VARCHAR2(250) DEFAULT ''
+/
