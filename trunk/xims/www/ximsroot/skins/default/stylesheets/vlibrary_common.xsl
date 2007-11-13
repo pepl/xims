@@ -17,7 +17,6 @@
     <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
     <xsl:variable name="user_privileges" select="/document/context/object/user_privileges" />
 
-    <xsl:param name="mo" />
     <xsl:param name="colms" select="3"/>
     <xsl:param name="vls"/>
     <xsl:param name="date_from" />
@@ -54,8 +53,9 @@
     </xsl:template>
 
     <xsl:template name="item">
+      <xsl:param name="mo" />
         <tr>
-            <td>
+          <td>
                 <xsl:call-template name="item_div">
                     <xsl:with-param name="mo" select="$mo"/>
                 </xsl:call-template>
@@ -71,6 +71,7 @@
     </xsl:template>
 
     <xsl:template name="item_div">
+      <xsl:param name="mo" />
         <div class="vliteminfo" name="vliteminfo" align="center">
             <xsl:choose>
                 <xsl:when test="$mo = 'author'">
@@ -134,6 +135,7 @@
     </xsl:template>
 
     <xsl:template name="switch_vlib_views_action">
+      <xsl:param name="mo" />
         <table cellpadding="0" cellspacing="0" style="margin: 0px;">
             <tr>
                 <td valign="top">
