@@ -1,5 +1,4 @@
 
-
 =head1 NAME
 
 XIMS::CGI::VLibrary -- A .... doing bla, bla, bla. (short)
@@ -480,15 +479,20 @@ sub event_author_store {
     $object->unlock();
 
     my $id         = $self->param('vlauthor_id');
-    my $firstname  = XIMS::clean( $self->param('vlauthor_firstname') ) || '';
+    my $firstname  = XIMS::clean( $self->param('vlauthor_firstname') )  || '';
     my $middlename = XIMS::clean( $self->param('vlauthor_middlename') ) || '';
-    my $lastname   = XIMS::clean( $self->param('vlauthor_lastname') ) || '';
-    my $suffix     = XIMS::clean( $self->param('vlauthor_suffix') ) || '';
-    my $objecttype = XIMS::clean( $self->param('vlauthor_object_type') );
-    my $url        = XIMS::clean( $self->param('vlauthor_url') );
-    my $image_url  = XIMS::clean( $self->param('vlauthor_image_url') );
-    my $email      = XIMS::clean( $self->param('vlauthor_email') );
+    my $lastname   = XIMS::clean( $self->param('vlauthor_lastname') )   || '';
+    my $suffix     = XIMS::clean( $self->param('vlauthor_suffix') )     || '';
+    my $objecttype = XIMS::clean( $self->param('vlauthor_object_type')  || '');
+    my $url        = XIMS::clean( $self->param('vlauthor_url')          || '');
+    my $image_url  = XIMS::clean( $self->param('vlauthor_image_url')    || '');
+    my $email      = XIMS::clean( $self->param('vlauthor_email')        || '');
     my $vlibauthor;
+
+    XIMS::Debug( 6, "id: $id firstname: $firstname middlename: $middlename "
+                  . "lastname: $lastname suffix: $suffix "
+                  . "objecttype: $objecttype url: $url image_url: $image_url"
+                  . "email: $email" );
 
     if ( defined $id and $id ) {
         $vlibauthor = XIMS::VLibAuthor->new(
