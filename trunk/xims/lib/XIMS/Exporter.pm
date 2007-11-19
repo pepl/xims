@@ -5,7 +5,7 @@ XIMS::Exporter -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -134,19 +134,23 @@ sub new {
 
 
 
-=head2    $boolean = $exporter->publish( %param );
+=head2    publish()
 
 =head3 Parameter
 
     $param{Object} : the object to be processed (mandatory)
-    $param{Basedir}    : the base directory for filesystem export (optional, may be set in constructor)
-    $param{Stylesheet} : a xsl stylesheet used to generate exported DOMS (optional, may be set in constructor)
+    $param{Basedir}    : the base directory for filesystem export
+                         (optional, may be set in constructor)
+    $param{Stylesheet} : a xsl stylesheet used to generate exported DOMS 
+                         (optional, may be set in constructor)
 
 =head3 Returns
 
     $retval : undef on error
 
 =head3 Description
+
+$boolean = $exporter->publish( %param );
 
 Handles the create sequence of the exporter.
 
@@ -255,7 +259,7 @@ sub publish {
 
 
 
-=head2    $bool = $exporter->unpublish( %param )
+=head2    unpublish()
 
 =head3 Parameter
 
@@ -266,6 +270,8 @@ sub publish {
     $retval : undef on error
 
 =head3 Description
+
+$bool = $exporter->unpublish( %param )
 
 handles the remove sequence of XIMS::Exporter
 
@@ -353,7 +359,7 @@ sub unpublish {
 
 
 
-=head2   $exporter->update_dependencies( %params );
+=head2   update_dependencies()
 
 =head3 Parameter
 
@@ -361,14 +367,15 @@ sub unpublish {
 
 =head3 Description
 
+$exporter->update_dependencies( %params );
 
 This method (un)publishes related and/or depending objects. For this
 it calls
 * update_related()
-- (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
-are not published yet, they will be published.
-- Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
-of the object or its ancestors
+- (Re)publishes objects that are referred to by image_id, style_id, or css_id.
+If that objects are not published yet, they will be published.
+- Republishes published objects referred to by symname_to_doc_id (Portlets and
+Symlinks) of of the object or its ancestors
 * update_parent()
 updates autoindex, container.xml of parent
 
@@ -459,7 +466,7 @@ use XIMS::AppContext;
 
 
 
-=head2    $object = XIMS::Exporter::Handler->new( %param );
+=head2    new()
 
 =head3 Parameter
 
@@ -474,6 +481,7 @@ use XIMS::AppContext;
 
 =head3 Description
 
+$object = XIMS::Exporter::Handler->new( %param );
 
 The XIMS::Exporter::Handler class provides the common functions of
 XIMS::Exporter::Object and XIMS::Exporter::Folder. One of them is
@@ -556,7 +564,7 @@ sub new {
 
 
 
-=head2    $self->toggle_publish_state( $state );
+=head2    toggle_publish_state()
 
 =head3 Parameter
 
@@ -567,6 +575,8 @@ sub new {
     nothing
 
 =head3 Description
+
+$self->toggle_publish_state( $state );
 
 This helper function is only used to change the publish state of an
 object. For this a temporary Object is created, to avoid overriding
@@ -601,7 +611,7 @@ sub update { return; }
 
 
 
-=head2    $self->remove();
+=head2    remove()
 
 =head3 Parameter
 
@@ -613,7 +623,7 @@ sub update { return; }
 
 =head3 Description
 
-none yet
+$self->remove();
 
 =cut
 
@@ -659,7 +669,7 @@ sub remove {
 
 
 
-=head2    $errcode = $self->test_ancestors();
+=head2    test_ancestors()
 
 =head3 Parameter
 
@@ -670,6 +680,8 @@ sub remove {
     $retval : undef on failure
 
 =head3 Description
+
+$errcode = $self->test_ancestors();
 
 commonly an object will be published to the output system. only
 if one ancestor is *not* a fs_container this should be
@@ -699,7 +711,7 @@ sub test_ancestors {
 }
 
 
-=head2    my $boolean = $self->update_related();
+=head2    update_related()
 
 =head3 Parameter
 
@@ -711,11 +723,13 @@ sub test_ancestors {
 
 =head3 Description
 
-- (Re)publishes objects that are referred to by image_id, style_id, or css_id. If that objects
-are not published yet, they will be published.
-- Republishes published objects referred to by symname_to_doc_id (Portlets and Symlinks) of
-of the object or its ancestors
-- Republishes Documents if current object is a DocumentLink
+my $boolean = $self->update_related();
+
+- (Re)publishes objects that are referred to by image_id, style_id, or css_id.
+If that objects are not published yet, they will be published.
+- Republishes published objects referred to by symname_to_doc_id (Portlets
+and Symlinks) of of the object or its ancestors - Republishes Documents if
+current object is a DocumentLink
 
 =cut
 
@@ -794,7 +808,7 @@ sub update_related {
 
 
 
-=head2  my $boolean = $self->update_parent();
+=head2  update_parent()
 
 =head3 Parameter
 
@@ -805,6 +819,8 @@ sub update_related {
     $boolean : True or False for updating the parent
 
 =head3 Description
+
+my $boolean = $self->update_parent();
 
 Updates the autoindex and container.xml of the parent object
 
@@ -905,7 +921,7 @@ use XIMS::SAX::Filter::ContentIDPathResolver;
 
 
 
-=head2 $self->create( %param )
+=head2 create()
 
 =head3 Parameter
 
@@ -916,7 +932,7 @@ use XIMS::SAX::Filter::ContentIDPathResolver;
 
 =head3 Description
 
-none yet
+$self->create( %param )
 
 =cut
 
@@ -973,17 +989,20 @@ sub create {
 
 
 
-=head2    $self->generate_dom( %param );
+=head2    generate_dom()
 
 =head3 Parameter
 
-    none: uses $self->{Object}. Maybe add params for encoding, stylesheet PIs or whatever at some point?
+    none: uses $self->{Object}. Maybe add params for encoding, stylesheet PIs
+    or whatever at some point?
 
 =head3 Returns
 
     $retval : The objects DOM, undef on error
 
 =head3 Description
+
+$self->generate_dom( %param );
 
 This is a helper function that transforms an object into a DOM
 by using XIMS::SAX.
@@ -1057,7 +1076,7 @@ sub generate_dom {
     return $dom;
 }
 
-=head2    $self->set_sax_generator();
+=head2    set_sax_generator()
 
 =head3 Parameter
 
@@ -1069,7 +1088,10 @@ sub generate_dom {
 
 =head3 Description
 
-Allows Exporter subclasses to use other SAX Generators than the default XIMS::SAX::Generator::Exporter
+$self->set_sax_generator();
+
+Allows Exporter subclasses to use other SAX Generators than the default
+XIMS::SAX::Generator::Exporter
 
 =cut
 
@@ -1080,7 +1102,7 @@ sub set_sax_generator {
     return XIMS::SAX::Generator::Exporter->new();
 }
 
-=head2    $self->transform_dom( $dom );
+=head2    transform_dom()
 
 =head3 Parameter
 
@@ -1091,6 +1113,8 @@ sub set_sax_generator {
     $retval : the transformed DOM, undef on error
 
 =head3 Description
+
+$self->transform_dom( $dom );
 
 This is a helper function that transforms a DOM into another one
 by using XSLT.
@@ -1182,7 +1206,7 @@ use vars qw( @ISA );
 
 
 
-=head2    $self->create( %param );
+=head2    create()
 
 =head3 Parameter
 
@@ -1195,7 +1219,7 @@ use vars qw( @ISA );
 
 =head3 Description
 
-none yet
+$self->create( %param );
 
 =cut
 
@@ -1249,7 +1273,7 @@ use strict;
 
 
 
-=head2 $self->create( $param );
+=head2 create()
 
 =head3 Parameter
 
@@ -1262,7 +1286,7 @@ use strict;
 
 =head3 Description
 
-none yet
+$self->create( $param );
 
 =cut
 
@@ -1367,7 +1391,7 @@ sub create {
     return 1;
 }
 
-=head2    $self->remove();
+=head2    remove()
 
 =head3 Parameter
 
@@ -1378,7 +1402,7 @@ sub create {
 
 =head3 Description
 
-none yet
+$self->remove();
 
 =cut
 
@@ -1448,7 +1472,7 @@ use XIMS::SAX::Filter::ContentIDPathResolver;
 
 
 
-=head2    $self->remove();
+=head2   remove()
 
 =head3 Parameter
 
@@ -1459,7 +1483,7 @@ use XIMS::SAX::Filter::ContentIDPathResolver;
 
 =head3 Description
 
-none yet
+$self->remove();
 
 =cut
 
@@ -1486,13 +1510,15 @@ sub remove {
 
 
 
-=head2    $self->set_sax_filters(@parameter)
+=head2    set_sax_filters()
 
 =head3 Parameter
 
     @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
 
 =head3 Description
+
+$self->set_sax_filters(@parameter)
 
 internally called.
 
@@ -1518,13 +1544,15 @@ sub set_sax_filters {
 
 
 
-=head2    $self->generate_dom(@parameter)
+=head2    generate_dom()
 
 =head3 Parameter
 
     @parameter: same parameterlist as XIMS::Exporter::XMLChunk uses
 
 =head3 Description
+
+$self->generate_dom(@parameter)
 
 internally called.
 
@@ -1891,7 +1919,7 @@ use vars qw( @ISA );
 
 
 
-=head2    $self->create( %param )
+=head2    create()
 
 =head3 Parameter
 
@@ -1902,7 +1930,7 @@ use vars qw( @ISA );
 
 =head3 Description
 
-none yet
+$self->create( %param )
 
 =cut
 
