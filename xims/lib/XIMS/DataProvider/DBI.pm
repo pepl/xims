@@ -5,7 +5,7 @@ XIMS::DataProvider::DBI -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -622,7 +622,7 @@ sub get_descendant_id_level {
 
 
 
-=head2    $dp->get_descendant_infos( %param );
+=head2    get_descendant_infos()
 
 =head3 Parameter
 
@@ -630,13 +630,16 @@ sub get_descendant_id_level {
 
 =head3 Returns
 
-    \@rv : [ number of descendants, the newest modification timestamp, latest publication timestamp found ]
+    \@rv : [ number of descendants, the newest modification timestamp, latest
+    publication timestamp found ]
 
 =head3 Description
 
-takes a document_id as argument; returns the count of its descendants and
-the newest last_modification_timestamp and last_publication_timestamp of all descendants and the object
-itself.
+$dp->get_descendant_infos( %param );
+
+Takes a document_id as argument; returns the count of its descendants and
+the newest last_modification_timestamp and last_publication_timestamp of all
+descendants and the object itself.
 
 =cut
 
@@ -714,26 +717,33 @@ sub _sqlwhere_from_hashgroup {
 
 
 
-=head2    $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel, $noorder] );
+=head2    _get_descendant_sql()
 
 =head3 Parameter
 
     $parent_id             :  document_id of the parent object to descend from
-    $maxlevel   (optional) :  maxlevel of recursion, if unspecified or 0 means no recursion limit
-    $getlevel   (optional) :  per default, only document_id is returned, if $getlevel is specified,
-                             the level property will be included in the query
+    $maxlevel   (optional) :  maxlevel of recursion, if unspecified or 0 means
+                              no recursion limit
+    $getlevel   (optional) :  per default, only document_id is returned, if
+                              $getlevel is specified, the level property will
+                              be included in the query
     $noorder    (optional) :  if given, siblings are not ordered by position
-    $properties (optional) :  if given, this string is used to specify which properties are to be returned
+    $properties (optional) :  if given, this string is used to specify which
+                              properties are to be returned
 
 =head3 Returns
 
-    $query : Reference to an Array, including the hierarchical SQL query with ci_documents.id, or
-             level and ci_documents.id at index '0' and bind params at the following indices
+    $query : Reference to an Array, including the hierarchical SQL query with
+             ci_documents.id, or level and ci_documents.id at index '0' and
+             bind params at the following indices
 
 =head3 Description
 
+$dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel, $noorder] );
+
 Helper method for get_descendant_id_level() and get_descendant_infos()
-Returns reference to an array which may be passed to $dbh->fetch_select( sql => $query ) for example
+Returns reference to an array which may be passed to 
+$dbh->fetch_select( sql => $query ) for example
 
 =cut
 
@@ -788,7 +798,7 @@ sub _get_descendant_sql {
 
 
 
-=head2    $dp->get_object_id_by_path( %param );
+=head2    get_object_id_by_path()
 
 =head3 Parameter
 
@@ -799,6 +809,8 @@ sub _get_descendant_sql {
     $retval: document_id on success, undef otherwise
 
 =head3 Description
+
+$dp->get_object_id_by_path( %param );
 
 Fetches document_id corresponding to $param{path}.
 
