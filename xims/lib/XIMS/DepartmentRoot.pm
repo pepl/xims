@@ -5,7 +5,7 @@ XIMS::DepartmentRoot -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -76,9 +76,10 @@ sub new {
 
 =head3 Description
 
-Checks for an already assigned departmentlinks portlet and adds additional departmentlinks
-if such portlet already exists.  If not, a 'departmentlinks' folder is created,
-the departmentlinks and the portlet added and assigned respectively.
+Checks for an already assigned departmentlinks portlet and adds additional
+departmentlinks if such portlet already exists.  If not, a 'departmentlinks'
+folder is created, the departmentlinks and the portlet added and assigned
+respectively.
 
 =cut
 
@@ -168,11 +169,13 @@ sub add_departmentlinks {
 
 =head3 Returns
 
-    @portlet_ids : Array of content ids of portlets stored in the body's XML-Fragment
+    @portlet_ids : Array of content ids of portlets stored in the body's
+    XML-Fragment
 
 =head3 Description
 
-Returns a list of content ids of the portlets stored in the body's XML-Fragment. In scalar context it returns the first entry.
+Returns a list of content ids of the portlets stored in the body's
+XML-Fragment. In scalar context it returns the first entry.
 
 =cut
 
