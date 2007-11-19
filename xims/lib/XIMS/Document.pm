@@ -5,7 +5,7 @@ XIMS::Document -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -42,13 +42,17 @@ sub new {
 
 
 
-=head2    my $body = $object->body();
+=head2    body()
     my $boolean = $object->body( $body [, %args] );
 
 =head3 Parameter
 
     $body                  (optional) :  Body string to save
-    $args{ dontbalance }   (optional) :  If set, there will be no attempt to convert the body to a well-balanced string, this may be neccessary if users don't want their whitespace info munged by tidy.
+    $args{ dontbalance }   (optional) :  If set, there will be no attempt to
+                                         convert the body to a well-balanced
+                                         string, this may be neccessary if
+                                         users don't want their whitespace
+                                         info munged by tidy.
 
 =head3 Returns
 
@@ -57,7 +61,10 @@ sub new {
 
 =head3 Description
 
-Overrides XIMS::Object::body(). Tests $body for being well-balanced and if it is not, tries to well-balance $body unless $args{dontbalance} is given.
+ my $body = $object->body();
+ 
+Overrides XIMS::Object::body(). Tests $body for being well-balanced and if it
+is not, tries to well-balance $body unless $args{dontbalance} is given.
 
 =cut
 
