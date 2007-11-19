@@ -5,7 +5,7 @@ XIMS::DocBookXML -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -34,7 +34,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Parameter
 
-    %args        (optional) :  Takes the same arguments as its super class XIMS::Document
+    %args        (optional) :  Takes the same arguments as its super
+                               class XIMS::Document
 
 =head3 Returns
 
@@ -42,7 +43,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Description
 
-Fetches existing objects or creates a new instance of XIMS::DocBookXML for object creation.
+Fetches existing objects or creates a new instance of XIMS::DocBookXML
+for object creation.
 
 =cut
 
@@ -65,14 +67,18 @@ sub new {
 =head3 Parameter
 
     %args    (optional)
-       recognized keys: public (optional) : Used to set a custom PUBLIC identifier for a
-                                            DocBook DTD. If not set, "-//OASIS//DTD DocBook XML V4.3//EN"
-                                            will be used.
-                        system (optional) : Used to set a custom SYSTEM identifier for a
-                                            DocBook DTD. If not set, "http://www.docbook.org/xml/4.3/docbookx.dtd"
-                                            will be used.
-                        string (optional) : An XML string to be validated. If not set $self->body() will be used for
-                                            validation
+       recognized keys  (optional):
+                        public : Used to set a custom PUBLIC identifier for
+                                 a DocBook DTD. If not set, 
+                                 "-//OASIS//DTD DocBook XML V4.3//EN"
+                                 will be used.
+                        system : Used to set a custom SYSTEM identifier for a
+                                 DocBook DTD. If not set,
+                                 "http://www.docbook.org/xml/4.3/docbookx.dtd"
+                                 will be used.
+                        string : An XML string to be validated. If not set
+                                 $self->body() will be used for validation
+
 =head3 Returns
 
     True or false
