@@ -5,7 +5,7 @@ XIMS::DataProvider -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -33,11 +33,13 @@ our $cached_URIs;
 
 # The idea here is to create a generic bridge between the data store and the
 # top-level XIMS Object classes. We try to lighten the Object classes that rely
-# the DP by deciding here how to organise the arguments passed in from those clases.
+# the DP by deciding here how to organise the arguments passed in from those
+# clases.
 #
-# Peer-level methods (those implemented by this class) can use this factory to prepare
-# the %conditions and %properties of non-Object related methods, but its probably
-# better if they just set those argument and call the Driver directly.
+# Peer-level methods (those implemented by this class) can use this factory to
+# prepare # the %conditions and %properties of non-Object related methods, but
+# its probably better if they just set those argument and call the Driver
+# directly.
 #
 BEGIN {
     $cached_URIs = {};
