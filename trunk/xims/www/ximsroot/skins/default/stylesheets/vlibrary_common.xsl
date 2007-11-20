@@ -248,7 +248,7 @@
                 />
           </a>
           <xsl:if test="object_count = 0">
-            <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_prompt_delete=1;author_id={id}')">
+            <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_delete_prompt=1;author_id={id}')">
               <img src="{$skimages}option_delete.png"
                    alt="{$i18n_vlib/l/delete_author}"
                    title="{$i18n_vlib/l/delete_author}" />
