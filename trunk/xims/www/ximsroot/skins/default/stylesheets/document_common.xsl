@@ -47,14 +47,32 @@
         <tr>
             <td colspan="3">
                 <xsl:value-of select="$i18n/l/Try_to_well-balance"/>
-                <input name="trytobalance" type="radio" value="true" checked="checked"/><xsl:value-of select="$i18n/l/Yes"/>
-                <input name="trytobalance" type="radio" value="false" /><xsl:value-of select="$i18n/l/No"/>
+                <input name="trytobalance" type="radio" value="true" onchange="javascript:createCookie('xims_trytobalancewell','true',90);"/>
+                <xsl:value-of select="$i18n/l/Yes"/>
+                <input name="trytobalance" type="radio" value="false" onchange="javascript:createCookie('xims_trytobalancewell','false',90);"/>
+                <xsl:value-of select="$i18n/l/No"/>
             </td>
         </tr>
     </xsl:template>
 
     <xsl:template name="setdefaulteditor">
         <script type="text/javascript">
+            <!-- 
+                function which selects 'trytobalance' input form element to a
+                given value (e.g. from cookie); see 'document_edit.xsl'
+            -->
+            function selTryToBalanceWell(selElement, toSelect) {
+                if ( !toSelect ) {
+                    toSelect = 'true';
+                }   
+                toSelect = toSelect.toLowerCase();
+                for (var i=0; i &lt; selElement.length; i++) {
+                    if ( selElement[i].value.toString().toLowerCase() == toSelect ) {
+                        selElement[i].checked = true;
+                    }   
+                }   
+            }
+
             function createCookie(name,value,days) {
                 if (days) {
                     var date = new Date();
@@ -121,7 +139,7 @@
                 }
 
                 createCookie('xims_wysiwygeditor',selection,90);
-                location.reload();
+                window.location.href = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/@id"/>;edit=1';
 
                 return true;
             }
