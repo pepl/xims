@@ -197,6 +197,9 @@ sub event_subject_store {
         return $self->sendError( $ctxt, "Error updating Subject." );
     }
     XIMS::Debug( 6, "Subject updated" );
+    # call update on the VLibrary itself to void cache for
+    # AxKit::AxKit::Provider::XIMSGoPublic.
+    $ctxt->object->update();
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
     return 0;
 }
@@ -530,6 +533,9 @@ sub event_author_store {
         }
         else {
             if ( $vlibauthor->update == 1 ) {
+                # call update on the VLibrary itself to void cache for
+                # AxKit::AxKit::Provider::XIMSGoPublic.
+                $ctxt->object->update();
                 XIMS::Debug( 6, "VLibAuthor: Update record successful." );
                 $ctxt->properties->application->style("objectlist");
             }
@@ -614,6 +620,9 @@ sub event_author_delete {
     }
 
     if ( defined $vlibauthor and $vlibauthor->delete ) {
+        # call update on the VLibrary itself to void cache for
+        # AxKit::AxKit::Provider::XIMSGoPublic.
+        $ctxt->object->update();
         XIMS::Debug( 6, "VLibAuthor $id: deleted!" );
     }
     else {
