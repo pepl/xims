@@ -35,6 +35,10 @@
                         </table>
                         <xsl:call-template name="saveedit"/>
                     </form>
+                    <script type="text/javascript">
+                        <!-- set checked attribute for trytobalance-input-element according to cookie -->
+                        selTryToBalanceWell(document.eform.trytobalance , readCookie('xims_trytobalancewell'));
+                    </script>
                 </div>
                 <br />
                 <xsl:call-template name="canceledit"/>
