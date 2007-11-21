@@ -37,7 +37,7 @@
                     </form>
                     <script type="text/javascript">
                         <!-- set checked attribute for trytobalance-input-element according to cookie -->
-                        selTryToBalanceWell(document.eform.trytobalance , readCookie('xims_trytobalancewell'));
+                        selTryToBalance(document.eform.trytobalance , readCookie('xims_trytobalancewell'));
                     </script>
                 </div>
                 <br />
