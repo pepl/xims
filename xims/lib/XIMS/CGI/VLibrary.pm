@@ -197,9 +197,7 @@ sub event_subject_store {
         return $self->sendError( $ctxt, "Error updating Subject." );
     }
     XIMS::Debug( 6, "Subject updated" );
-    # call update on the VLibrary itself to void cache for
-    # AxKit::AxKit::Provider::XIMSGoPublic.
-    $ctxt->object->update();
+    _update_or_publish($ctxt); # update the VLibraries timestamps
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
     return 0;
 }
@@ -533,9 +531,7 @@ sub event_author_store {
         }
         else {
             if ( $vlibauthor->update == 1 ) {
-                # call update on the VLibrary itself to void cache for
-                # AxKit::AxKit::Provider::XIMSGoPublic.
-                $ctxt->object->update();
+                _update_or_publish($ctxt); # update the VLibraries timestamps
                 XIMS::Debug( 6, "VLibAuthor: Update record successful." );
                 $ctxt->properties->application->style("objectlist");
             }
@@ -620,9 +616,7 @@ sub event_author_delete {
     }
 
     if ( defined $vlibauthor and $vlibauthor->delete ) {
-        # call update on the VLibrary itself to void cache for
-        # AxKit::AxKit::Provider::XIMSGoPublic.
-        $ctxt->object->update();
+        _update_or_publish($ctxt); # update the VLibraries timestamps
         XIMS::Debug( 6, "VLibAuthor $id: deleted!" );
     }
     else {
@@ -1137,6 +1131,9 @@ sub event_simile {
 
 # sub event_publish_simile ?!
 
+# END RUNTIME EVENTS
+# #############################################################################
+
 sub _heuristic_date_parser {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -1166,8 +1163,18 @@ sub _heuristic_date_parser {
     }
 }
 
-# END RUNTIME EVENTS
-# #############################################################################
+# call update or publish on the VLibrary itself to set the timestamps and void
+# the cache for AxKit::AxKit::Provider::XIMSGoPublic.
+sub _update_or_publish {
+    my $ctxt = shift;
+    if ( $ctxt->object->published() == 1 ) {
+        $ctxt->object->publish();
+    }
+    else {
+        $ctxt->object->update();
+    }
+}
+
 1;
 
 __END__
