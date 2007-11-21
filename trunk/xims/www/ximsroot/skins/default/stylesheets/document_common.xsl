@@ -61,7 +61,7 @@
                 function which selects 'trytobalance' input form element to a
                 given value (e.g. from cookie); see 'document_edit.xsl'
             -->
-            function selTryToBalanceWell(selElement, toSelect) {
+            function selTryToBalance(selElement, toSelect) {
                 if ( !toSelect ) {
                     toSelect = 'true';
                 }   
