@@ -197,7 +197,7 @@ sub event_subject_store {
         return $self->sendError( $ctxt, "Error updating Subject." );
     }
     XIMS::Debug( 6, "Subject updated" );
-    _update_or_publish($ctxt); # update the VLibraries timestamps
+    _update_or_publish($ctxt); # update the VLibrary's timestamps
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
     return 0;
 }
@@ -531,7 +531,7 @@ sub event_author_store {
         }
         else {
             if ( $vlibauthor->update == 1 ) {
-                _update_or_publish($ctxt); # update the VLibraries timestamps
+                _update_or_publish($ctxt); # update the VLibrary's timestamps
                 XIMS::Debug( 6, "VLibAuthor: Update record successful." );
                 $ctxt->properties->application->style("objectlist");
             }
@@ -616,7 +616,7 @@ sub event_author_delete {
     }
 
     if ( defined $vlibauthor and $vlibauthor->delete ) {
-        _update_or_publish($ctxt); # update the VLibraries timestamps
+        _update_or_publish($ctxt); # update the VLibrary's timestamps
         XIMS::Debug( 6, "VLibAuthor $id: deleted!" );
     }
     else {
@@ -646,7 +646,7 @@ sub event_publication {
         my $publicationvolume
             = XIMS::decode( $self->param('publication_volume') );
 
-#XIMS::Debug( 6, "publicationname: $publicationname publicationvolume: $publicationvolume" );
+        #XIMS::Debug( 6, "publicationname: $publicationname publicationvolume: $publicationvolume" );
         if ( $publicationname and $publicationvolume ) {
             my $publication = XIMS::VLibPublication->new(
                 name   => $publicationname,
@@ -657,7 +657,7 @@ sub event_publication {
             if ( $publication and $publication->id() ) {
                 $publicationid = $publication->id();
 
-#XIMS::Debug( 6, "secondary lookup on publicationid returned: $publicationid" );
+                #XIMS::Debug( 6, "secondary lookup on publicationid returned: $publicationid" );
             }
             else { return 0; }
         }
