@@ -372,7 +372,8 @@ sub event_author {
             $author = XIMS::VLibAuthor->new(
                 firstname  => $authorfirstname,
                 middlename => $authormiddlename,
-                lastname   => $authorlastname
+                lastname   => $authorlastname,
+                document_id => $ctxt->object->document_id(),
             );
             if ( $author and $author->id() ) {
                 $author_type = "personal";
@@ -384,7 +385,8 @@ sub event_author {
                 XIMS::Debug( 4, "high chance for corporate author" );
                 $author = XIMS::VLibAuthor->new(
                     lastname    => $authorlastname,
-                    object_type => 1
+                    object_type => 1,
+                    document_id => $ctxt->object->document_id(),
                 );
                 if ( $author and $author->id() ) {
                     $author_type = "corporate";
