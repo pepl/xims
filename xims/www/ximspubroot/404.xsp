@@ -42,12 +42,12 @@
     </rdf:RDF>
     <body>
     <xsp:logic>
-    if (<web:request_uri/> ne '/ximspubroot/404.xsp') {
+    if (!<web:is_initial_req/>) {
     </xsp:logic>
     <h1>Object not found</h1>
 
     <p>
-        '<web:request_uri/>' was not found.
+        '<web:request_prev_uri/>' was not found.
     </p>
 
     <xsp:logic>
