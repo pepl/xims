@@ -832,7 +832,7 @@ sub event_vlsearch {
 #
 # event filter_create
 #
-# opens a windows where the URL for a filtered objectlist 
+# opens a windows where the URL for a filtered objectlist
 # is created
 #
 sub event_filter_create {
@@ -859,9 +859,9 @@ sub event_filter_create {
 #
 # this event could replace the events: subject, author, keyword, vlsearch, vlchronicle, keyword
 #
-# in the %criteria-hash are the SQL-Conditions as a string. 
+# in the %criteria-hash are the SQL-Conditions as a string.
 # Only date, fulltext and mediatype conditions are with parameters
-# in the %params-list are the values for parameters for the date 
+# in the %params-list are the values for parameters for the date
 # and fulltext conditions
 #
 # still half-baked, would be nice to move the whole SQL into
@@ -877,7 +877,7 @@ sub event_filter {
     # Build filter criteria
     my %criteria = ();
     my %params = ();
-    
+
     # subjects
     my $subject_ids = $self->param('sid');
     if ( defined $subject_ids ) {
@@ -890,10 +890,10 @@ sub event_filter {
         XIMS::Debug( 6, "keyword param '$keyword_ids'" );
         $criteria{keywords} = " km.document_id = d.id AND km.keyword_id IN ( $keyword_ids ) ";
     }
-    
+
     # authors
     # not implemented yet
-    
+
     # mediatype
     my $mediatype = $self->param('mt');
     if ( defined $mediatype ) {
@@ -964,24 +964,24 @@ sub event_filter {
     }
     # end of building filter criteria
 
-    # parameters for diplaying result 
-    
+    # parameters for diplaying result
+
     # pagination
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
     $offset ||= 0;
-    
+
     my $rowlimit = $self->param('rowlimit');
     # rowlimit = 0 means no limit (display all results)
     if ( ( !defined $rowlimit ) or ( $rowlimit != 0 ) ) {
         $rowlimit = 10;
     }
     $offset = $offset * $rowlimit;
-    
-    # order of the result 
+
+    # order of the result
     #   chrono: chronicle date from
     #   alpha: Title
-    #   create: creation date 
+    #   create: creation date
     #   modify: modification date
     my $order = $self->param('order');
     if ( ( !defined $order ) or ( $order eq '' ) ) {
@@ -990,7 +990,7 @@ sub event_filter {
 
     XIMS::Debug(6,"Filter criteria:" . Dumper(%criteria));
     XIMS::Debug(6,"Filter params:" . Dumper(%params));
-    
+
     #define parameters for query
     my %param = (
         criteria   => \%criteria,
@@ -1021,7 +1021,16 @@ sub event_filter {
     }
 
     $ctxt->objectlist( \@objects );
-    $ctxt->properties->application->style("objectlist");
+
+    my $style = $self->param('style');
+    if ( defined $style ) {
+        $ctxt->properties->application->style($style);
+        $ctxt->properties->content->objectlistpassthru(1);
+        $ctxt->properties->content->getformatsandtypes(1);
+    }
+    else {
+        $ctxt->properties->application->style("objectlist");
+    }
 
     return 0;
 }
