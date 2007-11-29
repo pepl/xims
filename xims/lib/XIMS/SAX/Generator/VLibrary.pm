@@ -1,4 +1,3 @@
-
 =head1 NAME
 
 XIMS::SAX::Generator::VLibrary
@@ -100,6 +99,8 @@ sub prepare {
               { keyword => $ctxt->object->vlkeywordinfo_granted() };
         }
         elsif ( $ctxt->properties->application->style() eq "filter_create" ) {
+            $doc_data->{context}->{vlsubjectinfo} =
+              { subject => $ctxt->object->vlsubjectinfo_granted() };
             $doc_data->{context}->{vlmediatypeinfo} =
               { mediatype => $ctxt->object->vlmediatypeinfo_granted() };
             $doc_data->{context}->{vlkeywordinfo} =
