@@ -35,36 +35,37 @@ sub registerEvents {
     XIMS::CGI::registerEvents(
         $self,
         qw(
-            create
-            edit
-            store
-            obj_acllist
-            obj_aclgrant
-            obj_aclrevoke
-            publish
-            publish_prompt
-            unpublish
-            subject
-            subject_store
-            subject_edit
-            subject_view
-            keywords
-            keyword
-            authors
-            author
-            author_store
-            author_edit
-            author_delete_prompt
-            author_delete
-            publications
-            publication
-            vlsearch
-            vlchronicle
-            most_recent
-            simile
-            filter
-            filter_create
-            )
+          create
+          edit
+          store
+          obj_acllist
+          obj_aclgrant
+          obj_aclrevoke
+          publish
+          publish_prompt
+          unpublish
+          subject
+          subject_store
+          subject_edit
+          subject_view
+          keywords
+          keyword
+          authors
+          author
+          author_store
+          author_edit
+          author_show
+          author_delete_prompt
+          author_delete
+          publications
+          publication
+          vlsearch
+          vlchronicle
+          most_recent
+          simile
+          filter
+          filter_create
+          )
     );
 }
 
@@ -98,14 +99,13 @@ sub event_edit {
 sub event_copy {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt,
-        "Copying VLibraries is not implemented." );
+    return $self->sendError( $ctxt, "Copying VLibraries is not implemented." );
 }
 
 # jokar: Enable deletion of Vlibraries. Metadata is not deleted
 # (Authors, Keywords, Subjects, ...)
 
-# sub event_delete {
+#sub event_delete {
 #    XIMS::Debug( 5, "called" );
 #    my ( $self, $ctxt ) = @_;
 #    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
@@ -163,8 +163,8 @@ sub event_subject_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
-    unless ( $ctxt->session->user->object_privmask($object)
-        & XIMS::Privileges::WRITE )
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
     {
         return $self->event_access_denied($ctxt);
     }
@@ -197,7 +197,7 @@ sub event_subject_store {
         return $self->sendError( $ctxt, "Error updating Subject." );
     }
     XIMS::Debug( 6, "Subject updated" );
-    _update_or_publish($ctxt); # update the VLibrary's timestamps
+    _update_or_publish($ctxt);    # update the VLibrary's timestamps
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
     return 0;
 }
@@ -250,8 +250,8 @@ sub event_subject_edit {
 
     # operation control section
     # whole VLibrary is locked if subject is edited
-    unless ( $ctxt->session->user->object_privmask($object)
-        & XIMS::Privileges::WRITE )
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
     {
         return $self->event_access_denied($ctxt);
     }
@@ -260,18 +260,18 @@ sub event_subject_edit {
     if ( $self->object_locked($ctxt) ) {
         XIMS::Debug( 3, "Attempt to edit locked object" );
         $self->sendError( $ctxt,
-                  "This object is locked by "
-                . $object->locker->firstname() . " "
-                . $object->locker->lastname()
-                . " since "
-                . $object->locked_time()
-                . ". Please try again later." );
+                "This object is locked by "
+              . $object->locker->firstname() . " "
+              . $object->locker->lastname()
+              . " since "
+              . $object->locked_time()
+              . ". Please try again later." );
     }
     else {
         if ( $object->lock() ) {
             XIMS::Debug( 4, "lock set" );
             $ctxt->session->message(
-                "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
+"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
             );
         }
         else {
@@ -359,10 +359,9 @@ sub event_author {
 
     my $authorid = $self->param('author_id');
     unless ($authorid) {
-        my $authorfirstname
-            = XIMS::decode( $self->param('author_firstname') );
-        my $authormiddlename
-            = XIMS::decode( $self->param('author_middlename') );
+        my $authorfirstname = XIMS::decode( $self->param('author_firstname') );
+        my $authormiddlename =
+          XIMS::decode( $self->param('author_middlename') );
         my $authorlastname = XIMS::decode( $self->param('author_lastname') );
 
         my $author;
@@ -370,9 +369,9 @@ sub event_author {
         if ( $authorlastname and $authorfirstname ) {
             XIMS::Debug( 4, "high chance for personal author" );
             $author = XIMS::VLibAuthor->new(
-                firstname  => $authorfirstname,
-                middlename => $authormiddlename,
-                lastname   => $authorlastname,
+                firstname   => $authorfirstname,
+                middlename  => $authormiddlename,
+                lastname    => $authorlastname,
                 document_id => $ctxt->object->document_id(),
             );
             if ( $author and $author->id() ) {
@@ -421,8 +420,8 @@ sub event_author_edit {
 
     # operation control section
     # whole VLibrary is locked if author is edited
-    unless ( $ctxt->session->user->object_privmask($object)
-        & XIMS::Privileges::WRITE )
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
     {
         return $self->event_access_denied($ctxt);
     }
@@ -432,18 +431,18 @@ sub event_author_edit {
     if ( $self->object_locked($ctxt) ) {
         XIMS::Debug( 3, "Attempt to edit locked object" );
         $self->sendError( $ctxt,
-                  "This object is locked by "
-                . $object->locker->firstname() . " "
-                . $object->locker->lastname()
-                . " since "
-                . $object->locked_time()
-                . ". Please try again later." );
+                "This object is locked by "
+              . $object->locker->firstname() . " "
+              . $object->locker->lastname()
+              . " since "
+              . $object->locked_time()
+              . ". Please try again later." );
     }
     else {
         if ( $object->lock() ) {
             XIMS::Debug( 4, "lock set" );
             $ctxt->session->message(
-                "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
+"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
             );
         }
         else {
@@ -467,13 +466,37 @@ sub event_author_edit {
     return 0;
 }
 
+sub event_author_show {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+
+    $ctxt->properties->application->style("author_show");
+
+    my $authorid = $self->param('author_id');
+    my $author;
+
+    if ( defined $authorid and $authorid ) {
+        $author = XIMS::VLibAuthor->new(
+            id          => $authorid,
+            document_id => $object->document_id()
+        );
+    }
+    else {
+        return $self->sendError( $ctxt, "Missing author_id." );
+    }
+    $ctxt->objectlist( [$author] );
+    return 0;
+}
+
 sub event_author_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
-    unless ( $ctxt->session->user->object_privmask($object)
-        & XIMS::Privileges::WRITE )
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
     {
         return $self->event_access_denied($ctxt);
     }
@@ -482,20 +505,21 @@ sub event_author_store {
     $object->unlock();
 
     my $id         = $self->param('vlauthor_id');
-    my $firstname  = XIMS::clean( $self->param('vlauthor_firstname') )  || '';
-    my $middlename = XIMS::clean( $self->param('vlauthor_middlename') ) || '';
-    my $lastname   = XIMS::clean( $self->param('vlauthor_lastname') )   || '';
-    my $suffix     = XIMS::clean( $self->param('vlauthor_suffix') )     || '';
-    my $objecttype = XIMS::clean( $self->param('vlauthor_object_type')  || '');
-    my $url        = XIMS::clean( $self->param('vlauthor_url')          || '');
-    my $image_url  = XIMS::clean( $self->param('vlauthor_image_url')    || '');
-    my $email      = XIMS::clean( $self->param('vlauthor_email')        || '');
+    my $firstname  = XIMS::clean( $self->param('vlauthor_firstname') )   || '';
+    my $middlename = XIMS::clean( $self->param('vlauthor_middlename') )  || '';
+    my $lastname   = XIMS::clean( $self->param('vlauthor_lastname') )    || '';
+    my $suffix     = XIMS::clean( $self->param('vlauthor_suffix') )      || '';
+    my $objecttype = XIMS::clean( $self->param('vlauthor_object_type') ) || '';
+    my $url        = XIMS::clean( $self->param('vlauthor_url') )         || '';
+    my $image_url  = XIMS::clean( $self->param('vlauthor_image_url') )   || '';
+    my $email      = XIMS::clean( $self->param('vlauthor_email') )       || '';
     my $vlibauthor;
 
-    XIMS::Debug( 6, "id: $id firstname: $firstname middlename: $middlename "
-                  . "lastname: $lastname suffix: $suffix "
-                  . "objecttype: $objecttype url: $url image_url: $image_url"
-                  . "email: $email" );
+    XIMS::Debug( 6,
+            "id: $id firstname: $firstname middlename: $middlename "
+          . "lastname: $lastname suffix: $suffix "
+          . "objecttype: $objecttype url: $url image_url: $image_url"
+          . "email: $email" );
 
     if ( defined $id and $id ) {
         $vlibauthor = XIMS::VLibAuthor->new(
@@ -504,6 +528,7 @@ sub event_author_store {
         );
     }
     else {
+
         # create new VLibAuthor
         $vlibauthor = XIMS::VLibAuthor->new();
         $vlibauthor->document_id( $object->document_id() );
@@ -525,22 +550,31 @@ sub event_author_store {
             $vlibauthor->object_type(0);
         }
 
-        unless ( $vlibauthor->id() ) {
-            if ( not $vlibauthor->create() ) {
-                XIMS::Debug( 3, "could not create author" );
-                next;
-            }
-        }
-        else {
+        if ( $vlibauthor->id() ) {            # update author
             if ( $vlibauthor->update == 1 ) {
-                _update_or_publish($ctxt); # update the VLibrary's timestamps
+                _update_or_publish($ctxt);    # update the VLibrary's timestamps
                 XIMS::Debug( 6, "VLibAuthor: Update record successful." );
-                $ctxt->properties->application->style("objectlist");
+                $self->redirect( $self->redirect_path($ctxt)
+                      . '?author_show=1;author_id='
+                      . $vlibauthor->id() );
             }
             else {
                 XIMS::Debug( 3, "VLibAuthor: Update record failed." );
                 return $self->sendError( $ctxt,
-                    "Author: Update record failed." );
+                                         "Author: Update record failed." );
+            }
+        }
+        else {                                # create author
+            if ( $vlibauthor->create() ) {
+                _update_or_publish($ctxt);    # update the VLibrary's timestamps
+                XIMS::Debug( 6, "VLibAuthor: Update record successful." );
+                $self->redirect( $self->redirect_path($ctxt)
+                      . '?author_show=1;author_id='
+                      . $vlibauthor->id() );
+            }
+            else {
+                XIMS::Debug( 3, "could not create author" );
+                next;
             }
         }
     }
@@ -559,8 +593,8 @@ sub event_author_delete_prompt {
     my $object = $ctxt->object();
 
     # operation control section
-    unless ( $ctxt->session->user->object_privmask($object)
-        & XIMS::Privileges::WRITE )
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
     {
         return $self->event_access_denied($ctxt);
     }
@@ -570,18 +604,18 @@ sub event_author_delete_prompt {
     if ( $self->object_locked($ctxt) ) {
         XIMS::Debug( 3, "Attempt to edit locked object" );
         $self->sendError( $ctxt,
-                  "This object is locked by "
-                . $object->locker->firstname() . " "
-                . $object->locker->lastname()
-                . " since "
-                . $object->locked_time()
-                . ". Please try again later." );
+                "This object is locked by "
+              . $object->locker->firstname() . " "
+              . $object->locker->lastname()
+              . " since "
+              . $object->locked_time()
+              . ". Please try again later." );
     }
     else {
         if ( $object->lock() ) {
             XIMS::Debug( 4, "lock set" );
             $ctxt->session->message(
-                "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
+"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
             );
         }
         else {
@@ -598,8 +632,8 @@ sub event_author_delete {
 
     my $object = $ctxt->object();
 
-    unless ( $ctxt->session->user->object_privmask($object)
-        & XIMS::Privileges::WRITE )
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
     {
         return $self->event_access_denied($ctxt);
     }
@@ -618,7 +652,7 @@ sub event_author_delete {
     }
 
     if ( defined $vlibauthor and $vlibauthor->delete ) {
-        _update_or_publish($ctxt); # update the VLibrary's timestamps
+        _update_or_publish($ctxt);    # update the VLibrary's timestamps
         XIMS::Debug( 6, "VLibAuthor $id: deleted!" );
     }
     else {
@@ -643,10 +677,9 @@ sub event_publication {
 
     my $publicationid = $self->param('publication_id');
     unless ($publicationid) {
-        my $publicationname
-            = XIMS::decode( $self->param('publication_name') );
-        my $publicationvolume
-            = XIMS::decode( $self->param('publication_volume') );
+        my $publicationname = XIMS::decode( $self->param('publication_name') );
+        my $publicationvolume =
+          XIMS::decode( $self->param('publication_volume') );
 
         #XIMS::Debug( 6, "publicationname: $publicationname publicationvolume: $publicationvolume" );
         if ( $publicationname and $publicationvolume ) {
@@ -682,10 +715,10 @@ sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $current_user_object_priv
-        = $ctxt->session->user->object_privmask( $ctxt->object );
+    my $current_user_object_priv =
+      $ctxt->session->user->object_privmask( $ctxt->object );
     return $self->event_access_denied($ctxt)
-        unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
+      unless $current_user_object_priv & XIMS::Privileges::PUBLISH();
 
     $ctxt->properties->application->styleprefix('common_publish');
     $ctxt->properties->application->style('prompt');
@@ -758,25 +791,26 @@ sub event_vlsearch {
     XIMS::Debug( 6, "param $search" );
 
     # length within 2..30 chars
-    if ( defined $search and length($search) >= 2 and length($search) <= 30 )
-    {
+    if ( defined $search and length($search) >= 2 and length($search) <= 30 ) {
         my $qbdriver = XIMS::DBDSN();
         $qbdriver = ( split( ':', $qbdriver ) )[1];
         $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
-
-        eval "require $qbdriver";    #
+        ## no critic (ProhibitStringyEval)
+        eval "require $qbdriver";
         if ($@) {
             XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
             $ctxt->send_error("QueryBuilder-Driver could not be found!");
             return 0;
         }
-
+        ## use critic
         use encoding "latin-1";
-        my $allowed = XIMS::decode(
+        my $allowed =
+          XIMS::decode(
             q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~})
-            ;                        ## just for emacs' font-lock... ;-)
+          ;    ## just for emacs' font-lock... ;-)
         my $qb = $qbdriver->new(
-            {   search         => $search,
+            {
+                search         => $search,
                 allowed        => $allowed,
                 fieldstolookin => [qw(title abstract body)]
             }
@@ -801,12 +835,12 @@ sub event_vlsearch {
                     criteria   => $qb->criteria(),
                     start_here => $ctxt->object()
                 );
-                my $count = $ctxt->object->find_objects_granted_count(%param);
+                my $count   = $ctxt->object->find_objects_granted_count(%param);
                 my $message = "Query returned $count objects.";
                 $message .= " Displaying objects " . ( $offset + 1 )
-                    if $count >= $rowlimit;
+                  if $count >= $rowlimit;
                 $message .= " to " . ( $offset + $rowlimit )
-                    if ( $offset + $rowlimit <= $count );
+                  if ( $offset + $rowlimit <= $count );
                 $ctxt->session->message($message);
                 $ctxt->session->searchresultcount($count);
             }
@@ -827,7 +861,6 @@ sub event_vlsearch {
 
     return 0;
 }
-
 
 #
 # event filter_create
@@ -872,23 +905,26 @@ sub event_filter {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $user   = $ctxt->session->user();
+    my $user = $ctxt->session->user();
 
     # Build filter criteria
     my %criteria = ();
-    my %params = ();
+    my %params   = ();
 
     # subjects
     my $subject_ids = $self->param('sid');
     if ( defined $subject_ids ) {
         XIMS::Debug( 6, "subject param '$subject_ids'" );
-        $criteria{subjects} = " sm.document_id = d.id AND sm.subject_id IN ( $subject_ids ) ";
+        $criteria{subjects} =
+          " sm.document_id = d.id AND sm.subject_id IN ( $subject_ids ) ";
     }
+
     # keywords
     my $keyword_ids = $self->param('kid');
     if ( defined $keyword_ids ) {
         XIMS::Debug( 6, "keyword param '$keyword_ids'" );
-        $criteria{keywords} = " km.document_id = d.id AND km.keyword_id IN ( $keyword_ids ) ";
+        $criteria{keywords} =
+          " km.document_id = d.id AND km.keyword_id IN ( $keyword_ids ) ";
     }
 
     # authors
@@ -899,12 +935,12 @@ sub event_filter {
     if ( defined $mediatype ) {
         XIMS::Debug( 6, "mediatype param '$mediatype'" );
         $criteria{mediatype} = " m.mediatype = ? ";
-        $params{mediatype} = $mediatype;
+        $params{mediatype}   = $mediatype;
     }
 
     # chronicle dates
     my $date_from = $self->_heuristic_date_parser( $self->param('cf') );
-    my $date_to = $self->_heuristic_date_parser( $self->param('ct') );
+    my $date_to   = $self->_heuristic_date_parser( $self->param('ct') );
     if ( defined $date_from ) {
         XIMS::Debug( 6, "date_from param '$date_from'" );
     }
@@ -912,35 +948,38 @@ sub event_filter {
         XIMS::Debug( 6, "date_to param '$date_to'" );
     }
     if ( ( defined $date_from ) or ( defined $date_to ) ) {
-        my %date_conditions_values = $ctxt->object->_date_conditions_values( $date_from, $date_to );
+        my %date_conditions_values =
+          $ctxt->object->_date_conditions_values( $date_from, $date_to );
         $criteria{chronicle} = $date_conditions_values{conditions};
-        $params{chronicle} = $date_conditions_values{values};
+        $params{chronicle}   = $date_conditions_values{values};
     }
 
     # fulltext search
-    my $text = $self->param('vls') ;
+    my $text = $self->param('vls');
 
     if ( defined $text ) {
         XIMS::Debug( 6, "fulltext param $text" );
+
         # length within 2..30 chars
-        if ( length($text) >= 2 and length($text) <= 30 )
-        {
+        if ( length($text) >= 2 and length($text) <= 30 ) {
             my $qbdriver = XIMS::DBDSN();
             $qbdriver = ( split( ':', $qbdriver ) )[1];
             $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
-
-            eval "require $qbdriver";    #
+            ## no critic (ProhibitStringyEval)
+            eval "require $qbdriver";
             if ($@) {
                 XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
                 $ctxt->send_error("QueryBuilder-Driver could not be found!");
                 return 0;
             }
-
+            ## use critic
             use encoding "latin-1";
-            my $allowed = XIMS::decode(
+            my $allowed =
+              XIMS::decode(
                 q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~});
             my $qb = $qbdriver->new(
-                {   search         => $text,
+                {
+                    search         => $text,
                     allowed        => $allowed,
                     fieldstolookin => [qw(title abstract body)]
                 }
@@ -948,7 +987,7 @@ sub event_filter {
             if ( defined $qb ) {
                 my $textcriteria = $qb->criteria();
                 $criteria{text} = shift( @{$textcriteria} );
-                $params{text} = $textcriteria;
+                $params{text}   = $textcriteria;
             }
             else {
                 XIMS::Debug( 3, "please specify a valid query" );
@@ -958,10 +997,12 @@ sub event_filter {
         }
         else {
             XIMS::Debug( 3, "catched improper query length" );
-            $self->sendError( $ctxt, "Please keep your queries between 2 and 30 characters!" );
+            $self->sendError( $ctxt,
+                "Please keep your queries between 2 and 30 characters!" );
             return 0;
         }
     }
+
     # end of building filter criteria
 
     # parameters for diplaying result
@@ -972,6 +1013,7 @@ sub event_filter {
     $offset ||= 0;
 
     my $rowlimit = $self->param('rowlimit');
+
     # rowlimit = 0 means no limit (display all results)
     if ( ( !defined $rowlimit ) or ( $rowlimit != 0 ) ) {
         $rowlimit = 10;
@@ -988,10 +1030,11 @@ sub event_filter {
         $order = 'alpha';
     }
 
-    XIMS::Debug(6,"Filter criteria:" . Dumper(%criteria));
-    XIMS::Debug(6,"Filter params:" . Dumper(%params));
 
-    #define parameters for query
+    XIMS::Debug( 6, "Filter criteria:" . Dumper(%criteria) );
+    XIMS::Debug( 6, "Filter params:"   . Dumper(%params) );
+
+    # define parameters for query
     my %param = (
         criteria   => \%criteria,
         params     => \%params,
@@ -1001,7 +1044,7 @@ sub event_filter {
         start_here => $ctxt->object(),
     );
 
-    my @objects = $ctxt->object->vlitems_byfilter_granted( %param );
+    my @objects = $ctxt->object->vlitems_byfilter_granted(%param);
 
     if ( not @objects ) {
         $ctxt->session->warning_msg("Query returned no objects!");
@@ -1012,10 +1055,12 @@ sub event_filter {
             params     => \%params,
             start_here => $ctxt->object()
         );
-        my $count = $ctxt->object->vlitems_byfilter_granted_count( %param );
+        my $count   = $ctxt->object->vlitems_byfilter_granted_count(%param);
         my $message = "Query returned $count objects.";
-        $message .= " Displaying objects " . ( $offset + 1 ) if $count >= $rowlimit;
-        $message .= " to " . ( $offset + $rowlimit ) if ( $offset + $rowlimit <= $count );
+        $message .= " Displaying objects " . ( $offset + 1 )
+          if $count >= $rowlimit;
+        $message .= " to " . ( $offset + $rowlimit )
+          if ( $offset + $rowlimit <= $count );
         $ctxt->session->message($message);
         $ctxt->session->searchresultcount($count);
     }
@@ -1034,7 +1079,6 @@ sub event_filter {
 
     return 0;
 }
-
 
 sub event_most_recent {
     XIMS::Debug( 5, "called" );
@@ -1059,10 +1103,9 @@ sub event_vlchronicle {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $date_from
-        = $self->_heuristic_date_parser( $self->param('chronicle_from') );
-    my $date_to
-        = $self->_heuristic_date_parser( $self->param('chronicle_to') );
+    my $date_from =
+      $self->_heuristic_date_parser( $self->param('chronicle_from') );
+    my $date_to = $self->_heuristic_date_parser( $self->param('chronicle_to') );
 
     XIMS::Debug( 6, "Chronicle from $date_from to $date_to." );
 
@@ -1084,9 +1127,9 @@ sub event_vlchronicle {
         );
         my $message = "Query returned $count objects.";
         $message .= " Displaying objects " . ( $offset + 1 )
-            if $count >= $rowlimit;
+          if $count >= $rowlimit;
         $message .= " to " . ( $offset + $rowlimit )
-            if ( $offset + $rowlimit <= $count );
+          if ( $offset + $rowlimit <= $count );
         $ctxt->session->message($message);
         $ctxt->session->searchresultcount($count);
     }
@@ -1116,14 +1159,13 @@ sub event_simile {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $date_from
-        = $self->_heuristic_date_parser( $self->param('chronicle_from') );
-    my $date_to
-        = $self->_heuristic_date_parser( $self->param('chronicle_to') );
+    my $date_from =
+      $self->_heuristic_date_parser( $self->param('chronicle_from') );
+    my $date_to = $self->_heuristic_date_parser( $self->param('chronicle_to') );
 
     if ( not $date_from and not $date_to ) {
         $ctxt->session->message(
-            'Loading all chronicle data may take a lot of time. Consider providing a filter time span!'
+'Loading all chronicle data may take a lot of time. Consider providing a filter time span!'
         );
     }
 
@@ -1184,6 +1226,7 @@ sub _update_or_publish {
     else {
         $ctxt->object->update();
     }
+
 }
 
 1;

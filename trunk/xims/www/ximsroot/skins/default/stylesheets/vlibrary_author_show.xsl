@@ -16,23 +16,27 @@
               doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
               omit-xml-declaration="yes"
               indent="yes"/>
-  <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
-  <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
+  <xsl:variable name="i18n_vlib"
+                select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
+  <xsl:variable name="i18n"
+                select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
   <xsl:template match="/document/context/object">
     <html>
       <head>
-        <title><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/author)"/></title>
+        <title>
+          <xsl:value-of select="$i18n_vlib/l/author"/>
+        </title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
       </head>
       <body>
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
-          <form action="{$xims_box}{$goxims_content}"
-              name="eform"
-              method="GET">
-          <input type="hidden" name="id" id="id" value="{@id}"/>
-          <xsl:apply-templates select="/document/context/object/children"/>
-        </form>
+          <form action="%200"
+                name="eform"
+                method="%200">
+            <input type="hidden" name="id" id="id" value="{@id}"/>
+            <xsl:apply-templates select="/document/context/object/children"/>
+          </form>
         </div>
       </body>
     </html>
@@ -41,13 +45,19 @@
   <xsl:template match="children/object">
     <fieldset>
       <legend>
-        <xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/author)"/>
+        <xsl:value-of select="$i18n_vlib/l/author"/>
       </legend>
       <table>
         <tr>
-          <td><label for="vlauthor_firstname"><xsl:value-of select="$i18n_vlib/l/firstname"/></label></td>
+          <td>
+            <label for="vlauthor_firstname">
+              <xsl:value-of select="$i18n_vlib/l/firstname"/>
+            </label>
+          </td>
           <td colspan="2">
-            <input tabindex="40" 
+            <input tabindex="40"
+                   readonly="readonly"
+                   style="background-color:#eeeeee;"
                    type="text" 
                    id="vlauthor_firstname" 
                    name="vlauthor_firstname" 
@@ -58,22 +68,34 @@
           </td>
         </tr>
         <tr>
-          <td><label for="vlauthor_middlename"><xsl:value-of select="$i18n_vlib/l/middlename"/></label></td>
+          <td>
+            <label for="vlauthor_middlename">
+              <xsl:value-of select="$i18n_vlib/l/middlename"/>
+            </label>
+          </td>
           <td colspan="2">
-            <input tabindex="40" 
+            <input tabindex="40"
+                   readonly="readonly"
+                   style="background-color:#eeeeee;"
                    type="text" 
                    id="vlauthor_middlename" 
                    name="vlauthor_middlename" 
                    size="25" 
                    value="{middlename}" 
-                   class="text" 
+                   class="text"
                    title="{$i18n_vlib/l/middlename}"/>
           </td>
         </tr>
         <tr>
-          <td><label for="vlauthor_lastname"><xsl:value-of select="$i18n_vlib/l/lastname"/></label></td>
+          <td>
+            <label for="vlauthor_lastname">
+              <xsl:value-of select="$i18n_vlib/l/lastname"/>
+            </label>
+          </td>
           <td colspan="2">
-            <input tabindex="40" 
+            <input tabindex="40"
+                   readonly="readonly"
+                   style="background-color:#eeeeee;"
                    type="text" 
                    id="vlauthor_lastname" 
                    name="vlauthor_lastname"
@@ -85,10 +107,14 @@
         </tr>
         <tr>
           <td>
-            <label for="vlauthor_suffix"><xsl:value-of select="$i18n_vlib/l/suffix"/></label>
+            <label for="vlauthor_suffix">
+              <xsl:value-of select="$i18n_vlib/l/suffix"/>
+            </label>
           </td>
           <td colspan="2">
             <input tabindex="40"
+                   readonly="readonly"
+                   style="background-color:#eeeeee;"
                    type="text" 
                    id="vlauthor_suffix" 
                    name="vlauthor_suffix"
@@ -104,6 +130,8 @@
           </td>
           <td colspan="2">
             <input tabindex="40"
+                   readonly="readonly"
+                   style="background-color:#eeeeee;"
                    type="text" 
                    id="vlauthor_email" 
                    name="vlauthor_email"
@@ -119,6 +147,8 @@
           </td>
           <td colspan="2">
             <input tabindex="40"
+                   readonly="readonly"
+                   style="background-color:#eeeeee;"
                    type="text" 
                    id="vlauthor_url" 
                    name="vlauthor_url"
@@ -128,12 +158,14 @@
                    title="URL"/>
           </td>
         </tr>
-         <tr>
+        <tr>
           <td>
             <label for="vlauthor_image_url">Image URL</label>
           </td>
           <td colspan="2">
             <input tabindex="40"
+                   readonly="readonly"
+                   style="background-color:#eeeeee;"
                    type="text" 
                    id="vlauthor_image_url" 
                    name="vlauthor_image_url"
@@ -145,11 +177,15 @@
         </tr>
         <tr>
           <td>
-            <label for="vlauthor_object_type"><xsl:value-of select="$i18n_vlib/l/orgauthor"/></label>
+            <label for="vlauthor_object_type">
+              <xsl:value-of select="$i18n_vlib/l/orgauthor"/>
+            </label>
           </td>
           <td colspan="2">
             <input tabindex="40" 
-                   type="checkbox" 
+                   type="checkbox"
+                   style="background-color:#eeeeee;"
+                   readonly="readonly" 
                    id="vlauthor_object_type" 
                    name="vlauthor_object_type" 
                    class="text" 
@@ -164,12 +200,17 @@
       </table>
     </fieldset>
     <p>
-      <input type="hidden"
-             name="vlauthor_id"
-             id="vlauthor_id"
-             value="{@id}"/>
-      <input type="submit" name="author_store" value="{$i18n/l/save}" class="control" accesskey="S"/>
-      <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C" onClick="self.close();"/>
-    </p>
-  </xsl:template>
-</xsl:stylesheet>
+      <input type="submit"
+             onClick="window.opener.document.location.reload();self.close();return false;"
+             value="OK, {$i18n/l/close_window}"
+             class="control"
+             accesskey="S"/>
+      
+      <!-- The simple solution history.go(-1) would lead to a stale -->
+      <!-- second entry, if we wanted tho fix a freshly created author. -->
+      <input type="submit"
+             onClick="location.replace('{$xims_box}{$goxims_content}' +
+                      '?id={/document/context/object/@id}' +
+                      ';author_edit=1;author_id={@id}'); return false;"
+             value="{$i18n/l/Back}" class="control" accesskey="B"/> </p>
+    </xsl:template> </xsl:stylesheet>
