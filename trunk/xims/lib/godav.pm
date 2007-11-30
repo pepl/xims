@@ -1,11 +1,12 @@
 
+
 =head1 NAME
 
 godav -- XIMS' mod_perl handler for WebDAV.
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -77,11 +78,11 @@ sub handler {
             }
         }
     }
-
+    ## no critic (ProhibitNoStrict)
     no strict 'refs';
     my ($status_code, $content) = &{$method}( $r, $user );
     use strict 'refs';
-
+    ## use critic
     #$r->header_out( 'Status', $status_code );
     $r->status( $status_code );
     if ( defined $content ) {
@@ -189,12 +190,13 @@ sub put {
         # now that should be moved to run()....
         my $ot_fullname = $object->object_type->fullname();
         $object_class .= 'XIMS::' . $ot_fullname;
-
+        ## no critic (ProhibitStringyEval)
         # load the object class
         eval "require $object_class;" if $object_class;
         if ( $@ ) {
             $status_code = 500;
         }
+        ## use critic
         bless $object, $object_class;
 
         if ( $object->data_format->mime_type =~ /^text/ ) {
@@ -230,12 +232,13 @@ sub put {
 
         # now that should be moved somewhere else....
         $object_class .= 'XIMS::' . $object_type->fullname;
-
+        ## no critic (ProhibitStringyEval)
         # load the object class
         eval "require $object_class;" if $object_class;
         if ( $@ ) {
             $status_code = 500;
         }
+        ## use critic
         my ( $location ) = ( $path =~ m|([^/]+)$| );
         $object = $object_class->new( User => $user, location => $location );
         $object->data_format_id( $data_format->id() ) if defined $data_format;
@@ -653,9 +656,11 @@ sub copymove {
     return (404) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
+    ## no critic (ProhibitNoStrict)
     no strict 'refs';
     return (403) unless $privmask & &{"XIMS::Privileges::$method"};
     use strict 'refs';
+    ## use critic
     $method = lc $method;
 
     if ( $method eq 'move' and $object->published() ) {
