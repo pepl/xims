@@ -5,7 +5,7 @@ goxims -- XIMS' main mod_perl handler
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -71,18 +71,18 @@ sub handler {
     #$XIMS::T0 = [Time::HiRes::gettimeofday()];
 
     XIMS::via_proxy_test($r) unless $r->pnotes('PROXY_TEST');
-    XIMS::Debug( 5, "goxims called from " .  $r->connection->remote_ip() );
+    XIMS::Debug( 5, "goxims called from " . $r->connection->remote_ip() );
 
     #my $apr = Apache::Request->new($r);
     my $ctxt = XIMS::AppContext->new( apache => $r );
 
     # set default 500 error document
-    $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp");
+    $r->custom_response( SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp" );
 
     my $publicuser = $r->dir_config('ximsPublicUserName');
 
     # getting interface
-    my $interface_type = getInterface( $r );
+    my $interface_type = getInterface($r);
     return NOT_FOUND unless $interface_type;
 
     # The public user should not have the interface 'user'
@@ -91,54 +91,75 @@ sub handler {
     }
 
     if ( not $publicuser ) {
-        # we are coming in via /goxims
-        my $sessioninfo = readNotes( $r );
 
-        if ( defined $sessioninfo->{session} 
-                 and $sessioninfo->{session}->user->id() == XIMS::Config::PublicUserID() ) {
+        # we are coming in via /goxims
+        my $sessioninfo = readNotes($r);
+
+        if ( defined $sessioninfo->{session}
+            and $sessioninfo->{session}->user->id() ==
+            XIMS::Config::PublicUserID() )
+        {
+
             # Drop session if the public user is not coming in via /gopublic...
             $sessioninfo->{session}->delete();
             return FORBIDDEN;
         }
 
         # if we have a cookiestring, we'll set it to the context
-        if ( defined $sessioninfo->{cookie} and length $sessioninfo->{cookie} ) {
+        if ( defined $sessioninfo->{cookie} and length $sessioninfo->{cookie} )
+        {
             $ctxt->cookie( $sessioninfo->{cookie} );
         }
 
-        return SERVER_ERROR unless ( $sessioninfo->{provider} and $ctxt->data_provider( $sessioninfo->{provider} ) );
-        return SERVER_ERROR unless ( $sessioninfo->{session} and $ctxt->session( $sessioninfo->{session} ) );
+        return SERVER_ERROR
+          unless ( $sessioninfo->{provider}
+            and $ctxt->data_provider( $sessioninfo->{provider} ) );
+        return SERVER_ERROR
+          unless ( $sessioninfo->{session}
+            and $ctxt->session( $sessioninfo->{session} ) );
     }
     else {
+
         # using the ximsPublic role
         unless ( $ctxt->data_provider() ) {
-            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp?reason=A%20database%20connection%20problem%20occured.");
+            $r->custom_response( SERVER_ERROR,
+                XIMS::PUBROOT_URL()
+                  . "/500.xsp?reason=A%20database%20connection%20problem%20occured."
+            );
             return SERVER_ERROR;
         }
 
         XIMS::Debug( 6, "setting user to $publicuser" );
-        my $sessionid  = Apache::AuthXIMS::get_session_cookie( $r );
+        my $sessionid = Apache::AuthXIMS::get_session_cookie($r);
         my $session;
         my $public = XIMS::User->new( name => $publicuser );
         if ( defined $sessionid and length $sessionid ) {
             $session = XIMS::Session->new( session_id => $sessionid );
             if ( defined $session ) {
-                XIMS::Debug( 4, "found existing session cookie, user already logged in" );
-                # fake session user's id to public user's id, so that actions happen in the context of the
-                # public user and the currently logged-in user does not need to logout while coming in via /gopublic/
+                XIMS::Debug( 4,
+                    "found existing session cookie, user already logged in" );
+
+                # fake session user's id to public user's id, so that
+                # actions happen in the context of the public user and
+                # the currently logged-in user does not need to logout
+                # while coming in via /gopublic/
                 $session->user_id( $public->id() );
             }
         }
 
         if ( not defined $session ) {
-            $session = XIMS::Session->new( 'user_id' => $public->id(),
-                                           'host'    => $r->connection->remote_ip() );
+            $session = XIMS::Session->new(
+                'user_id' => $public->id(),
+                'host'    => $r->connection->remote_ip()
+            );
             XIMS::Debug( 4, "setting session cookie for $publicuser" );
             Apache::AuthXIMS::set_session_cookie( $r, $session->session_id() );
         }
 
-        unless ( $session and $ctxt->session( $session ) ) {
-            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp?reason=Could%20not%20create%20session.");
+        unless ( $session and $ctxt->session($session) ) {
+            $r->custom_response( SERVER_ERROR,
+                XIMS::PUBROOT_URL()
+                  . "/500.xsp?reason=Could%20not%20create%20session." );
             return SERVER_ERROR;
         }
     }
@@ -148,12 +169,17 @@ sub handler {
     $ctxt->session->date( $tp->ymd() . ' ' . $tp->hms() );
 
     # test if we are called through a proxy, set serverurl accordingly
-    my $uri = Apache::URI->parse( $r );
-    my $hostname = (defined $r->headers_in->{'X-Forwarded-Host'} and length $r->headers_in->{'X-Forwarded-Host'}) ? $r->headers_in->{'X-Forwarded-Host'} : $uri->hostinfo();
+    my $uri = Apache::URI->parse($r);
+    my $hostname =
+      ( defined $r->headers_in->{'X-Forwarded-Host'}
+          and length $r->headers_in->{'X-Forwarded-Host'} )
+      ? $r->headers_in->{'X-Forwarded-Host'}
+      : $uri->hostinfo();
     XIMS::Debug( 6, "setting serverurl to $hostname" );
-    $ctxt->session->serverurl( $uri->scheme . '://' . $hostname);
+    $ctxt->session->serverurl( $uri->scheme . '://' . $hostname );
 
-    # for now there is no user/browser based skin selection. the default values are used.
+    # for now there is no user/browser based skin selection. the default
+    # values are used.
     $ctxt->session->skin( XIMS::DEFAULT_SKIN() );
 
     # set UILanguage
@@ -163,32 +189,39 @@ sub handler {
     # Big fork here
     #
 
-    my $app_class = 'XIMS::CGI::';
+    my $app_class    = 'XIMS::CGI::';
     my $object_class = 'XIMS::';
 
     if ( $interface_type eq 'content' ) {
+
         # now we know, that we have to get the content-object
         $ctxt->object( getObject( $r, $ctxt->session->user() ) );
-        if ( not ($ctxt->object() and $ctxt->object->id()) ) {
+        if ( not( $ctxt->object() and $ctxt->object->id() ) ) {
+
             # in this case we could pass the user to a more informative
             # page, where one can select the defaultbookmark!!
 
             # emulate default 404 log entry
-            $r->log->warn("File does not exist: " . $r->document_root() . $r->uri());
+            $r->log->warn(
+                "File does not exist: " . $r->document_root() . $r->uri() );
             return NOT_FOUND;
         }
 
         my $ot_fullname = $ctxt->object->object_type->fullname();
         $object_class .= $ot_fullname;
 
+        ## no critic (ProhibitStringyEval)
         # load the object class
         eval "require $object_class;" if $object_class;
-        if ( $@ ) {
+        if ($@) {
             XIMS::Debug( 2, "could not load object class $object_class: $@" );
-            $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp?reason=Could%20not%20load%20object%20class%20$object_class.");
+            $r->custom_response( SERVER_ERROR,
+                XIMS::PUBROOT_URL()
+                  . "/500.xsp?reason=Could%20not%20load%20object%20class%20$object_class."
+            );
             return SERVER_ERROR;
         }
-
+        ## use critic
         # rebless the object
         XIMS::Debug( 4, "reblessing object to " . $object_class );
         bless $ctxt->object(), $object_class;
@@ -196,8 +229,9 @@ sub handler {
         # find out if we want to create an object!
         # if goxims finds an 'objtype'-param it assumes that it
         # is called to create a new object.
-        my %args = $r->args();
+        my %args    = $r->args();
         my $objtype = $args{objtype};
+
         # my $objtype = $apr->param('objtype');
         my $prefix;
         if ( defined $objtype and length $objtype ) {
@@ -210,12 +244,13 @@ sub handler {
             $prefix = lc $ot_fullname;
         }
         $prefix =~ s/::/_/g;
-        $ctxt->properties->application->styleprefix( $prefix );
-    }# end 'content' case
-    # think of XIMS::REGISTEREDINTERFACES() here
-    elsif ( $interface_type =~ /users?|bookmark|defaultbookmark/ ) {
+        $ctxt->properties->application->styleprefix($prefix);
+    }    # end 'content' case
+
+    # TODO: think of XIMS::REGISTEREDINTERFACES() here
+    elsif ( $interface_type =~ /users?|bookmark|defaultbookmark|search_intranet/ ) {
         $app_class .= $interface_type;
-        $ctxt->properties->application->styleprefix( $interface_type );
+        $ctxt->properties->application->styleprefix($interface_type);
     }
     else {
         return NOT_FOUND;
@@ -224,19 +259,27 @@ sub handler {
     ##
     # end interface-lookup
     ##
-
+    ## no critic (ProhibitStringyEval)
     eval "require $app_class";
-    if ( $@ ) {
+    if ($@) {
         XIMS::Debug( 2, "could not load application-class $app_class: $@" );
-        $r->custom_response(SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp?reason=Could%20not%20load%20application%20class%20$app_class.");
+        $r->custom_response( SERVER_ERROR,
+            XIMS::PUBROOT_URL()
+              . "/500.xsp?reason=Could%20not%20load%20application%20class%20$app_class."
+        );
         return SERVER_ERROR;
     }
-
+    ## use critic
     if ( my $appclass = $app_class->new() ) {
         XIMS::Debug( 4, "application-class $app_class initiated." );
-        $appclass->setStylesheetDir( XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/' . $ctxt->session->uilanguage() );
-        my $rv = $appclass->run( $ctxt );
-        XIMS::Debug( 4, "application-class $app_class successfully run") if $rv;
+        $appclass->setStylesheetDir( XIMS::XIMSROOT()
+              . '/skins/'
+              . $ctxt->session->skin
+              . '/stylesheets/'
+              . $ctxt->session->uilanguage() );
+        my $rv = $appclass->run($ctxt);
+        XIMS::Debug( 4, "application-class $app_class successfully run" )
+          if $rv;
         return OK;
     }
 
@@ -262,7 +305,7 @@ exist.
 =cut
 
 sub readNotes {
-    my $r = shift;
+    my $r      = shift;
     my $retval = {};
 
     # Authentication modules have to set the session and user id. goxims
@@ -270,9 +313,9 @@ sub readNotes {
     # authentication has already finished at this stage, no extra session or
     # user validation is neccesary.
 
-    if ( $r ) {
-        $retval->{session}    =  $r->pnotes( 'ximsSession' );
-        $retval->{provider}   =  $r->pnotes( 'ximsProvider' );
+    if ($r) {
+        $retval->{session}  = $r->pnotes('ximsSession');
+        $retval->{provider} = $r->pnotes('ximsProvider');
     }
     else {
         XIMS::Debug( 2, "no request found" );
@@ -280,8 +323,6 @@ sub readNotes {
 
     return $retval;
 }
-
-
 
 =head2    getInterface($r)
 
@@ -302,16 +343,18 @@ determine what type of interface we are loading.
 
 sub getInterface {
     my $r = shift;
+
     # check to see if we are editing managed content or seeking
     # one of the meta or admin interfaces
     my $interface_type;
     my $pathinfo = $r->path_info();
 
-    if ($pathinfo =~ s/^(\/)(\w*)//) {
+    if ( $pathinfo =~ s/^(\/)(\w*)// ) {
         $interface_type = $2;
-        XIMS::Debug(6, "Using interface type: " . $interface_type )
+        XIMS::Debug( 6, "Using interface type: " . $interface_type );
     }
-    elsif ( not length $pathinfo or $pathinfo eq "/") {
+    elsif ( not length $pathinfo or $pathinfo eq "/" ) {
+
         #
         # if the user only types in '/goxims' or '/goxims/' we don't want to
         # give a 404. instead we redirect to the default bookmark. i think
@@ -346,16 +389,16 @@ Watch out: language is hardcoded to de-at here!
 =cut
 
 sub getObject {
-    my $r = shift;
+    my $r    = shift;
     my $user = shift;
 
     my $retval = undef;
 
     if ( $r and $user ) {
-        my %id_or_path = ( language => 2 ); # de-at ... hardcode == nogood
+        my %id_or_path = ( language => 2 );    # de-at ... hardcode == nogood
         my $pathinfo = $r->path_info() || '/';
-        my %args = $r->args();
-        my $id = $args{id};
+        my %args     = $r->args();
+        my $id       = $args{id};
         if ( defined $id and $id > 0 ) {
             $id_or_path{id} = $id;
         }
@@ -386,23 +429,24 @@ http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
 =cut
 
 sub getLanguagePref {
-    my $r = shift;
+    my $r       = shift;
     my $langrex = qr/(\w{1,8}(?:-\w{1,8})?)(?:;q=([0|1](?:\.\d{1,3})?))?/;
     my %langprefs;
     my %havelangs = XIMS::UILANGUAGES();
 
     # parse Header
-    foreach my $pref_field (split(/,/, $r->header_in( "Accept-Language" ))) {
+    foreach my $pref_field ( split( /,/, $r->header_in("Accept-Language") ) ) {
         my $qvalue;
         $pref_field =~ $langrex;
         $qvalue = $2 or $qvalue = "1";
-        push @{$langprefs{$qvalue}}, $1;
+        push @{ $langprefs{$qvalue} }, $1;
     }
 
     # compare
-    foreach my $wantlang (reverse sort keys(%langprefs)) {
+    foreach my $wantlang ( reverse sort keys(%langprefs) ) {
         foreach my $langpref ( keys %havelangs ) {
-            map { $_ =~ $havelangs{$langpref} ? return $langpref : next;} @{$langprefs{$wantlang}};
+            map { $_ =~ $havelangs{$langpref} ? return $langpref : next; }
+              @{ $langprefs{$wantlang} };
         }
     }
 
@@ -431,8 +475,9 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 Copyright (c) 2002-2007 The XIMS Project.
 
-See the file F<LICENSE> for information and conditions for use, reproduction,
-and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+See the file F<LICENSE> for information and conditions for use,
+reproduction, and distribution of this work, and for a DISCLAIMER OF ALL
+WARRANTIES.
 
 =cut
 
