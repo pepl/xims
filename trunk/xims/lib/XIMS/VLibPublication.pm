@@ -5,7 +5,7 @@ XIMS::VLibPublication -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -46,8 +46,13 @@ __PACKAGE__->mk_accessors( @Fields );
 =head3 Parameter
 
     $args{ id }                  (optional) :  id of an existing publication.
-    $args{ name }                (optional) :  name of a VLibPublication. To be used together with $args{volume} to look up an existing publication.
-    $args{ volume }              (optional) :  volume of a VLibPublication. To be used together with $args{name} to look up an existing publication.
+    $args{ name }                (optional) :  name of a VLibPublication. To be
+                                               used together with $args{volume}
+                                               to look up an existing
+                                               publication.
+    $args{ volume }              (optional) :  volume of a VLibPublication. To
+                                               be used together with $args{name}
+                                               to look up an existing publication.
     $args{ isbn }                (optional) :  isbn of an existing VLibPublication.
     $args{ issn }                (optional) :  issn of an existing VLibPublication.
 
