@@ -5,7 +5,7 @@ XIMS::ReferenceLibraryItem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -43,7 +43,8 @@ __PACKAGE__->mk_accessors( qw(vlauthors) );
 
 =head3 Parameter
 
-    %args                  (optional) :  Takes the same arguments as its super class XIMS::Object
+    %args                  (optional) :  Takes the same arguments as its super
+                                         class XIMS::Object
 
 =head3 Returns
 
@@ -51,7 +52,8 @@ __PACKAGE__->mk_accessors( qw(vlauthors) );
 
 =head3 Description
 
-Fetches existing objects or creates a new instance of XIMS::ReferenceLibraryItem for object creation.
+Fetches existing objects or creates a new instance of
+XIMS::ReferenceLibraryItem for object creation.
 
 =cut
 
@@ -77,7 +79,8 @@ sub new {
 
 =head3 Returns
 
-    @property_list: Array of reference properties mapped to the RefLibReferenceItem
+    @property_list: Array of reference properties mapped to the
+                    RefLibReferenceItem
 
 =head3 Description
 
@@ -113,7 +116,8 @@ sub property_list {
 
 =head3 Returns
 
-    @property_values: Array of reference property values mapped to the RefLibReferenceItem
+    @property_values: Array of reference property values mapped to the
+                      RefLibReferenceItem
 
 =head3 Description
 
@@ -144,7 +148,8 @@ sub content_field {
 
 =head3 Parameter
 
-    $reference    (optional) : Set reference entry of XIMS::ReferenceLibraryItem
+    $reference    (optional) : Set reference entry of
+                               XIMS::ReferenceLibraryItem
 
 =head3 Returns
 
@@ -185,16 +190,21 @@ sub reference {
 
 =head3 Parameter
 
-    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
+    @authors                  (optional) : Array of XIMS::VLibAuthor objects
+                                           to be associated to the 
+                                           ReferenceLibraryItem
 
 =head3 Returns
 
-    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
-    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
+    @authors    : Array of XIMS::VLibAuthor objects associated to the
+                  ReferenceLibraryItem
+    $boolean    : True or False for associating @authors to the
+                  ReferenceLibraryItem
 
 =head3 Description
 
-Get/Set accessor method for managing author entries of ReferenceLibraryItem items
+Get/Set accessor method for managing author entries of ReferenceLibraryItem
+items
 
 =cut
 
@@ -211,16 +221,21 @@ sub vleauthors {
 
 =head3 Parameter
 
-    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
+    @authors                  (optional) : Array of XIMS::VLibAuthor objects to
+                                           be associated to the
+                                           ReferenceLibraryItem
 
 =head3 Returns
 
-    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
-    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
+    @authors    : Array of XIMS::VLibAuthor objects associated to the
+                  ReferenceLibraryItem
+    $boolean    : True or False for associating @authors to the
+                  ReferenceLibraryItem
 
 =head3 Description
 
-Get/Set accessor method for managing author entries of ReferenceLibraryItem items
+Get/Set accessor method for managing author entries of ReferenceLibraryItem
+items
 
 =cut
 
@@ -237,16 +252,21 @@ sub vleeditors {
 
 =head3 Parameter
 
-    $serial                  (optional) : Instance of a XIMS::RefLibSerial object to be associated to the ReferenceLibraryItem
+    $serial                  (optional) : Instance of a XIMS::RefLibSerial
+                                          object to be associated to the
+                                          ReferenceLibraryItem
 
 =head3 Returns
 
-    $serial     : Instance of the XIMS::RefLibSerial object to be associated to the ReferenceLibraryItem
-    $boolean    : True or False for associating $serial to the ReferenceLibraryItem
+    $serial     : Instance of the XIMS::RefLibSerial object to be associated
+                  to the ReferenceLibraryItem
+    $boolean    : True or False for associating $serial to the 
+                  ReferenceLibraryItem
 
 =head3 Description
 
-Get/Set accessor method for managing the serial publication entry of ReferenceLibraryItem items
+Get/Set accessor method for managing the serial publication entry of
+ReferenceLibraryItem items
 
 =cut
 
@@ -285,16 +305,21 @@ sub vleserial {
 =head3 Parameter
 
     1 | 0                                : 0 for authors, 1 for editors
-    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the ReferenceLibraryItem
+    @authors                  (optional) : Array of XIMS::VLibAuthor objects
+                                           to be associated to the
+                                           ReferenceLibraryItem
 
 =head3 Returns
 
-    @authors    : Array of XIMS::VLibAuthor objects associated to the ReferenceLibraryItem
-    $boolean    : True or False for associating @authors to the ReferenceLibraryItem
+    @authors    : Array of XIMS::VLibAuthor objects associated to the
+                  ReferenceLibraryItem
+    $boolean    : True or False for associating @authors to the
+                  ReferenceLibraryItem
 
 =head3 Description
 
-Get/Set helper method for managing author/editor entries of ReferenceLibraryItem items
+Get/Set helper method for managing author/editor entries of ReferenceLibraryItem
+items
 
 =cut
 
@@ -469,7 +494,8 @@ sub reposition_author {
 =head3 Parameter
 
     $role                    :  0 for author, 1 for editor
-    $namestring              :  Namestring of the author(s); Multiple authors ';'-separated, author name parts ','-separated
+    $namestring              :  Namestring of the author(s); Multiple authors
+                                ';'-separated, author name parts ','-separated
 
 =head3 Returns
 
@@ -477,7 +503,8 @@ sub reposition_author {
 
 =head3 Description
 
-Associates author specified by name to the ReferenceLibraryItem. Creates new VLibAuthors if they do not exist yet.
+Associates author specified by name to the ReferenceLibraryItem. Creates new
+VLibAuthors if they do not exist yet.
 
 =cut
 
@@ -536,8 +563,10 @@ sub create_author_mapping_from_name {
 =head3 Parameter
 
     $date                    :  Date to be part of the title
-    $title                   :  Title of the reference item to be part in the object's title
-    @vleauthors (optional)   :  Array of XIMS::VLibAuthor instances; if not given $object->vleauthors() will be used.
+    $title                   :  Title of the reference item to be part in the
+                                object's title
+    @vleauthors (optional)   :  Array of XIMS::VLibAuthor instances; if not
+                                given $object->vleauthors() will be used.
 
 =head3 Returns
 
@@ -545,9 +574,10 @@ sub create_author_mapping_from_name {
 
 =head3 Description
 
-Sets $item->title() to a short citation based on VLibAuthors, reference title and reference date.
-E.g. "AuthorOneLastname, AuthorTwoLastname, Title of Book (Year of Publication)"
-Note: This method does not update the object in the database after setting the title
+Sets $item->title() to a short citation based on VLibAuthors, reference title
+and reference date. E.g. "AuthorOneLastname, AuthorTwoLastname, Title of Book
+(Year of Publication)" Note: This method does not update the object in the
+database after setting the title
 
 =cut
 
