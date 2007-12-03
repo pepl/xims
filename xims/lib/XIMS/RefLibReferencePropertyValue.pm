@@ -5,7 +5,7 @@ XIMS::RefLibReferencePropertyValue -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -45,17 +45,23 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head3 Parameter
 
-    $args{ id }                  (optional) :  id.
-    $args{ property_id }         (optional) :  property_id of the RefLibReferencePropertyValue, to be used together with reference_id.
-    $args{ reference_id }        (optional) :  reference_id of the RefLibReferencePropertyValue, to be used together with property_id.
+    $args{ id }                  :  id.
+    $args{ property_id }         :  property_id of the
+                                    RefLibReferencePropertyValue, to be used
+                                    together with reference_id.
+    $args{ reference_id }        :  reference_id of the
+                                    RefLibReferencePropertyValue, to be used
+                                    together with property_id.
 
 =head3 Returns
 
-    $reflibreferencepropertyvalue    : Instance of XIMS::RefLibReferencePropertyValue
+    $reflibreferencepropertyvalue    : Instance of
+                                       XIMS::RefLibReferencePropertyValue
 
 =head3 Description
 
-Fetches existing property values or creates a new instance of XIMS::RefLibReferencePropertyValue.
+Fetches existing property values or creates a new instance of
+XIMS::RefLibReferencePropertyValue. Args are optional.
 
 =cut
 
