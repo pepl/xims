@@ -5,7 +5,7 @@ XIMS::RefLibReferencePropertyMap -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -45,9 +45,13 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head3 Parameter
 
-    $args{ id }                  (optional) :  id of an existing mapping.
-    $args{ property_id }         (optional) :  id of a RefLibReferenceProperty. To be used together with $args{reference_type_id} to look up an existing mapping.
-    $args{ reference_type_id }   (optional) :  id of a ReflibReference. To be used together with $args{property_id} to look up an existing mapping.
+    $args{ id }                  :  id of an existing mapping.
+    $args{ property_id }         :  id of a RefLibReferenceProperty. To be used
+                                    together with $args{reference_type_id} to
+                                    look up an existing mapping.
+    $args{ reference_type_id }   :  id of a ReflibReference. To be used together
+                                    with $args{property_id} to look up an
+                                    existing mapping.
 
 =head3 Returns
 
@@ -55,7 +59,8 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head3 Description
 
-Fetches existing mappings or creates a new instance of XIMS::RefLibReferencePropertyMap.
+Fetches existing mappings or creates a new instance of
+XIMS::RefLibReferencePropertyMap. Args are optional.
 
 =cut
 
