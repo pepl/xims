@@ -5,7 +5,7 @@ XIMS::Questionnaire -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -110,7 +110,8 @@ sub body {
 
 =head3 Description
 
-Returns the XML::LibXML instance of the Questionnaire (stored in body). Helper method to avoid redundant parsing of body.
+Returns the XML::LibXML instance of the Questionnaire (stored in body). Helper
+method to avoid redundant parsing of body.
 
 =cut
 
