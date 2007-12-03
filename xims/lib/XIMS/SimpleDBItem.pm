@@ -5,7 +5,7 @@ XIMS::SimpleDBItem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -36,7 +36,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Parameter
 
-    %args                  (optional) :  Takes the same arguments as its super class XIMS::Object
+    %args                  (optional) :  Takes the same arguments as its super
+                                         class XIMS::Object
 
 =head3 Returns
 
@@ -44,7 +45,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Description
 
-Fetches existing objects or creates a new instance of XIMS::SimpleDBMemberItem for object creation.
+Fetches existing objects or creates a new instance of XIMS::SimpleDBMemberItem
+for object creation.
 
 =cut
 
@@ -67,7 +69,10 @@ sub new {
 
 =head3 Parameter
 
-    $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user, %args ) )
+    $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not
+                                   given, the user has to be set at object
+                                   instantiation.
+                     (Example XIMS::Object->new( User => $user, %args ) )
 
 =head3 Returns
 
@@ -75,8 +80,10 @@ sub new {
 
 =head3 Description
 
-Returns the content id of the newly created object, undef on failure. $args{User}, or, if that is not given, $object->User() will be used to set last modifier, creator, and owner metadata.
-Sets the values of the mapped SimpleDBMemberProperties where part_of_title is set to 1 as object title.
+Returns the content id of the newly created object, undef on failure.
+$args{User}, or, if that is not given, $object->User() will be used to set last
+modifier, creator, and owner metadata. Sets the values of the mapped
+SimpleDBMemberProperties where part_of_title is set to 1 as object title.
 
 =cut
 
@@ -98,17 +105,26 @@ sub create {
 
 =head3 Parameter
 
-    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is not given, the user has to be set at object instantiation. (Example XIMS::Object->new( User => $user ) )
-    $args{ no_modder }   (optional) :  If set, last modifier and last modification timestamp properties will not be set.
+    $args{ User }        (optional) :  XIMS::User instance. If $args{User} is
+                                       not given, the user has to be set at
+                                       object instantiation.
+                                       (Example XIMS::Object->new( User => $user ) )
+    $args{ no_modder }   (optional) :  If set, last modifier and last
+                                       modification timestamp properties will
+                                       not be set.
 
 =head3 Returns
 
-    @rowcount : Array with one or two entries. Two if both 'Content' and 'Document' have been updated, one if only 'Document' resource type has been updated. Each entry is true if update was successful, false otherwise.
+    @rowcount : Array with one or two entries. Two if both 'Content' and
+    'Document' have been updated, one if only 'Document' resource type has
+    been updated. Each entry is true if update was successful, false otherwise.
 
 =head3 Description
 
-Updates object in database and sets last modifier properties unless $args{no_modder} has been set.
-Sets the values of the mapped SimpleDBMemberProperties where part_of_title is set to 1 as object title.
+Updates object in database and sets last modifier properties unless
+$args{no_modder} has been set.
+Sets the values of the mapped SimpleDBMemberProperties where part_of_title is
+set to 1 as object title.
 
 =cut
 
@@ -141,13 +157,16 @@ sub update {
 
 =head3 Parameter
 
-    $args{part_of_title}    (optional)    : Filter properties by part_of_title property
-    $args{mandatory}        (optional)    : Filter properties by mandatory property
+    $args{part_of_title}    (optional)    : Filter properties by part_of_title
+                                            property
+    $args{mandatory}        (optional)    : Filter properties by mandatory
+                                            property
     $args{gopublic}         (optional)    : Filter properties by gopublic property
 
 =head3 Returns
 
-    @property_list  : Array of mapped member properties (XIMS::SimpleDBMemberProperty instances)
+    @property_list  : Array of mapped member properties
+                      (XIMS::SimpleDBMemberProperty instances)
 
 =head3 Description
 
