@@ -5,7 +5,7 @@ XIMS::SQLReport -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -33,12 +33,16 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Parameter
 
-    $args{ User }                  (optional) :  XIMS::User instance
-    $args{ path }                  (optional) :  Location path to a XIMS Object, For example: '/xims'
-    $args{ $object_property_name } (optional) :  Object property like 'id', 'document_id', or 'title'.
-                                                 To fetch existing objects either 'path', 'id' or 'document_id' has to be specified.
-                                                 Multiple object properties can be specified in the %args hash.
-                                                 For example: XIMS::SQLReport->new( id => $id )
+    $args{ User }                   :  XIMS::User instance
+    $args{ path }                   :  Location path to a XIMS Object, For
+                                       example: '/xims'
+    $args{ $object_property_name }  :  Object property like 'id',
+                                       'document_id', or 'title'.
+                                       To fetch existing objects either 'path',
+                                       'id' or 'document_id' has to be
+                                       specified. Multiple object properties can
+                                       be specified in the %args hash. For
+                                       example: XIMS::SQLReport->new( id => $id )
 
 =head3 Returns
 
@@ -46,7 +50,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Description
 
-Fetches existing objects or creates a new instance of XIMS::SQLReport for object creation.
+Fetches existing objects or creates a new instance of XIMS::SQLReport for
+object creation. Args are optional.
 
 =cut
 
