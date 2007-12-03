@@ -5,7 +5,7 @@ XIMS::SiteRoot -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -64,7 +64,8 @@ sub new {
 
 =head3 Parameter
 
-    $url    (optional) : SiteRoot URL to be set (will be set as 'title' internally)
+    $url    (optional) : SiteRoot URL to be set (will be set as 'title' 
+                         internally)
 
 =head3 Returns
 
@@ -72,7 +73,8 @@ sub new {
 
 =head3 Description
 
-Get/set accessor for SiteRoot URL. Internally, the SiteRoot is the content object's title.
+Get/set accessor for SiteRoot URL. Internally, the SiteRoot is the content
+object's title.
 
 =cut
 
