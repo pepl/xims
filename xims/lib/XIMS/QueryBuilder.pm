@@ -5,7 +5,7 @@ XIMS::QueryBuilder -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -29,27 +29,32 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 =head2    $qb = XIMS::QueryBuilder->new( { search => $search,
-                                   [ allowed => $to_be_qr-compiled_string_of_allowed_chars,]
-                                   [ fieldstolookin => [qw(title abstract body)] ] } );
+                      [ allowed => $to_be_qr-compiled_string_of_allowed_chars,]
+                      [ fieldstolookin => [qw(title abstract body)] ] } );
 
 =head3 Parameter
 
     search                     : The search string
-    allowed        (optional   : String of allowed chars that are filtered; chars like '/','(','-',... have to be escaped
-                                 because this string is compiled with qr// and used in a /[^$allowed ]/ regex construct
-    fieldstolookin (optional)  : Array-ref of SQL-field names to be explicitly looked in (e.g. field:value) resulting
+    allowed        (optional   : String of allowed chars that are filtered;
+                                 chars like '/','(','-',... have to be escaped
+                                 because this string is compiled with qr//
+                                 and used in a /[^$allowed ]/ regex construct
+    fieldstolookin (optional)  : Array-ref of SQL-field names to be explicitly
+                                looked in (e.g. field:value) resulting
                                  in a SQL-condition similar to 'AND field LIKE '%value%'
     filterpublished (optional) : If true, filters published objects
 
 
 =head3 Returns
 
-    An instance of XIMS::QueryBuilder with a 'criteria' property on success, undef on failure
+    An instance of XIMS::QueryBuilder with a 'criteria' property on success,
+    undef on failure
 
 =head3 Description
 
 
-Builds SQL search criteria out of a search string. Search syntax and search macros are described in the XIMS User's Reference
+Builds SQL search criteria out of a search string. Search syntax and search
+macros are described in the XIMS User's Reference
 
 =cut
 
