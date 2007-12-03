@@ -5,7 +5,7 @@ XIMS::ObjectType -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -39,13 +39,13 @@ __PACKAGE__->mk_accessors( @Fields );
 
 
 
-=head2    XIMS::ObjectType->new( %args );
+=head2    new()
 
 =head3 Parameter
 
-    %args: If $args{id} or $args{name} or $args{fullname} is given, a lookup of an already
-           existing object will be tried. Otherwise, an object blessed
-           into the caller's object class with the specific resource
+    %args: If $args{id} or $args{name} or $args{fullname} is given, a lookup of
+           an already existing object will be tried. Otherwise, an object
+           blessed into the caller's object class with the specific resource
            type properties given in %args will be returned.
 
 =head3 Returns
@@ -53,6 +53,8 @@ __PACKAGE__->mk_accessors( @Fields );
     $object: XIMS::ObjectType instance
 
 =head3 Description
+
+XIMS::ObjectType->new( %args );
 
 Constructor for XIMS object types which may be looked up
 by 'id', 'name', or 'fullname'. If 'name' is given as look up key and two object types
@@ -99,7 +101,7 @@ sub new {
 
 
 
-=head2    my $fullname = $objecttype->fullname();
+=head2    fullname()
 
 =head3 Parameter
 
@@ -111,6 +113,8 @@ sub new {
                 the names of its ancestors
 
 =head3 Description
+
+my $fullname = $objecttype->fullname();
 
 Returns the fullname of the object type, separated by '::' including
 the names of the object type's ancestors.
@@ -133,7 +137,7 @@ sub fullname {
 
 
 
-=head2    my $ancestors = $objecttype->ancestors();
+=head2    ancestors()
 
 =head3 Parameter
 
@@ -144,6 +148,8 @@ sub fullname {
     $ancestors : Reference to Array of XIMS::ObjectTypes
 
 =head3 Description
+
+my $ancestors = $objecttype->ancestors();
 
 Returns ancestor object types.
 
