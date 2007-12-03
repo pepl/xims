@@ -5,7 +5,7 @@ XIMS::QuestionnaireResult -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -63,7 +63,8 @@ sub store {
 =head3 Returns
 
     $total_count: number of all answered questionnaires
-    $valid_count: number of valid answered questionnaires (all questions answered)
+    $valid_count: number of valid answered questionnaires (all questions
+                  answered)
     $total_count-$valid_count: number of invalid answered questionnaires
 
 =head3 Description
@@ -91,7 +92,8 @@ sub get_result_count {
 =head3 Parameter
 
     $questionnaire_id: Document-ID of the questionnaire
-    $question_id     : ID of the question of which the number of answers should be returned
+    $question_id     : ID of the question of which the number of answers should
+                       be returned
     $answer          : text of the answer
 
 =head3 Returns
@@ -122,12 +124,14 @@ sub get_answer_count {
 =head3 Parameter
 
     $questionnaire_id: Document-ID of the questionnaire
-    $question_id     : ID of the question of which the answers should be returned
+    $question_id     : ID of the question of which the answers should be
+                       returned
 
 
 =head3 Returns
 
-    $answers: reference to an array with all answers to the question and how often each answer was given
+    $answers: reference to an array with all answers to the question and how
+              often each answer was given
 
 =head3 Description
 
@@ -172,7 +176,8 @@ sub get_answers {
 
 =head3 Description
 
-Before a question can be answered we check if the question has not been answered before
+Before a question can be answered we check if the question has not been
+answered before.
 This function returns the ID of the last question the TAN has answered.
 The answering of the questionnaire continues at the next question.
 See XIMS::Questionnaire::set_answer_data()
