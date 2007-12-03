@@ -5,7 +5,7 @@ XIMS::SimpleDBMember -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -46,7 +46,9 @@ __PACKAGE__->mk_accessors( @Fields );
 =head3 Parameter
 
     $args{ id }                  (optional) :  id of an existing mapping.
-    $args{ document_id }         (optional) :  document_id of a Object. To be used to look up an existing mapping.
+    $args{ document_id }         (optional) :  document_id of a Object. To be
+                                               used to look up an existing
+                                               mapping.
 
 =head3 Returns
 
