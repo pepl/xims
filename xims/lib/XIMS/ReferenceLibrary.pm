@@ -5,7 +5,7 @@ XIMS::ReferenceLibrary -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -44,7 +44,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Description
 
-Fetches existing objects or creates a new instance of XIMS::ReferenceLibrary for object creation.
+Fetches existing objects or creates a new instance of XIMS::ReferenceLibrary
+for object creation.
 
 =cut
 
@@ -204,35 +205,39 @@ sub vlserials {
 
 =head3 Parameter
 
-    $args{ User }              (optional) :  XIMS::User instance
+    $args{ User }              :  XIMS::User instance
 
-    $args{ limit }             (optional) :  Limit size of $reflibitems arrayref
-                                             Usually used together with 'offset' for pagination
-    $args{ offset }            (optional) :  Offset of returned items relative to total items
-                                             Usually used together with 'limit' for pagination
-    $args{ order }             (optional) :  Sort by object property
+    $args{ limit }             :  Limit size of $reflibitems arrayref
+                                  Usually used together with 'offset' for
+                                  pagination
+    $args{ offset }            :  Offset of returned items relative to total
+                                  items. Usually used together with 'limit' for
+                                  pagination
+    $args{ order }             :  Sort by object property
 
-    $args{ criteria }          (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::ReferenceLibrary)
-    $args{ published }         (optional) :  Filter published items
-    $args{ date }              (optional) :  Filter items by date ReflibReferenceProperty
-    $args{ author_id }         (optional) :  Filter items by VLAuthor id
-    $args{ author_lname }      (optional) :  Filter items by VLAuthor lastname
-    $args{ serial_id }         (optional) :  Filter items by ReflibSerial id
-    $args{ reference_type_id } (optional) :  Filter items by reference_type_id
-    $args{ workgroup_id }      (optional) :  Filter items by workgroup_id
+    $args{ criteria }          :  Filter items by where clause (created with
+                                  XIMS::QueryBuilder::ReferenceLibrary)
+    $args{ published }         :  Filter published items
+    $args{ date }              :  Filter items by date ReflibReferenceProperty
+    $args{ author_id }         :  Filter items by VLAuthor id
+    $args{ author_lname }      :  Filter items by VLAuthor lastname
+    $args{ serial_id }         :  Filter items by ReflibSerial id
+    $args{ reference_type_id } :  Filter items by reference_type_id
+    $args{ workgroup_id }      :  Filter items by workgroup_id
 
 =head3 Returns
 
     $item_count:  Count of total items
-    $reflibitems: Arrayref of ReferenceLibraryItems part of the Reference Library,
-                  slice selected by $args{limit} and $args{offset}
+    $reflibitems: Arrayref of ReferenceLibraryItems part of the Reference
+                  Library, slice selected by $args{limit} and $args{offset}
 
 =head3 Description
 
-Fetches ReferenceLibraryItems part of the Reference Library granted to $args{User} or $reflib->User resp.
-Returned ReferenceLibraryItems will include 'authorgroup' and 'editorgroup' keys containing arrayrefs of
-authors and editors assigned to the ReferenceLibraryItem as well as a 'user_privileges' key containing
-the active user object privileges
+Fetches ReferenceLibraryItems part of the Reference Library granted to
+$args{User} or $reflib->User resp. Returned ReferenceLibraryItems will include
+'authorgroup' and 'editorgroup' keys containing arrayrefs of authors and editors
+assigned to the ReferenceLibraryItem as well as a 'user_privileges' key containing
+the active user object privileges. Args are optional.
 
 =cut
 
