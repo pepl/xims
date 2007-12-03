@@ -5,7 +5,7 @@ XIMS::SimpleDB -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -65,13 +65,17 @@ sub new {
 
 =head3 Parameter
 
-    $args{part_of_title}    (optional)    : Filter properties by part_of_title property
-    $args{mandatory}        (optional)    : Filter properties by mandatory property
-    $args{gopublic}         (optional)    : Filter properties by gopublic property
+    $args{part_of_title}    (optional)    : Filter properties by part_of_title
+                                            property
+    $args{mandatory}        (optional)    : Filter properties by mandatory
+                                            property
+    $args{gopublic}         (optional)    : Filter properties by gopublic
+                                            property
 
 =head3 Returns
 
-    @property_list  : Array of mapped member properties (XIMS::SimpleDBMemberProperty instances)
+    @property_list  : Array of mapped member properties 
+                      (XIMS::SimpleDBMemberProperty instances)
 
 =head3 Description
 
@@ -274,7 +278,8 @@ sub reposition_property {
 
 =head3 Description
 
-Closes the position gap resulting in the deletion of a member property of a SimpleDB instance
+Closes the position gap resulting in the deletion of a member property of a 
+SimpleDB instance
 
 =cut
 
@@ -312,12 +317,16 @@ sub close_property_position_gap {
     $args{ User }         (optional) :  XIMS::User instance
 
     $args{ limit }        (optional) :  Limit size of $reflibitems arrayref
-                                        Usually used together with 'offset' for pagination
-    $args{ offset }       (optional) :  Offset of returned items relative to total items
-                                        Usually used together with 'limit' for pagination
+                                        Usually used together with 'offset' for
+                                        pagination
+    $args{ offset }       (optional) :  Offset of returned items relative to
+                                        total items
+                                        Usually used together with 'limit' for
+                                        pagination
     $args{ order }        (optional) :  Sort by object property
 
-    $args{ criteria }     (optional) :  Filter items by where clause (created with XIMS::QueryBuilder::SimpleDB)
+    $args{ criteria }     (optional) :  Filter items by where clause
+                                        (created with XIMS::QueryBuilder::SimpleDB)
                                         for in the mandatory member properties
     $args{ published }    (optional) :  Filter published items
     $args{ gopublic }     (optional) :  Filter properties where gopublic is set
@@ -330,9 +339,10 @@ sub close_property_position_gap {
 
 =head3 Description
 
-Fetches SimpleDBItems part of the SimpleDB granted to $args{User} or $simpledb->User resp.
-Returned SimpleDBItems will include a 'member_values' key including the items member property values
-and a 'user_privileges' key containing the active user object privileges
+Fetches SimpleDBItems part of the SimpleDB granted to $args{User} or
+$simpledb->User resp. Returned SimpleDBItems will include a 'member_values'
+key including the items member property values and a 'user_privileges' key
+containing the active user object privileges.
 
 =cut
 
