@@ -5,7 +5,7 @@ XIMS::VLibKeywordMap -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -47,8 +47,13 @@ __PACKAGE__->mk_accessors( @Fields );
 =head3 Parameter
 
     $args{ id }                  (optional) :  id of an existing mapping.
-    $args{ document_id }         (optional) :  document_id of a VLibraryItem. To be used together with $args{keyword_id} to look up an existing mapping.
-    $args{ keyword_id }          (optional) :  id of a VLibKeyword. To be used together with $args{document_id} to look up an existing mapping.
+    $args{ document_id }         (optional) :  document_id of a VLibraryItem.
+                                               To be used together with
+                                               $args{keyword_id} to look up an
+                                               existing mapping.
+    $args{ keyword_id }          (optional) :  id of a VLibKeyword. To be used
+                                               together with $args{document_id}
+                                               to look up an existing mapping.
 
 =head3 Returns
 
@@ -56,7 +61,8 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head3 Description
 
-Fetches existing mappings or creates a new instance of XIMS::VLibKeywordMap for VLibraryItem <-> VLibKeyword mapping.
+Fetches existing mappings or creates a new instance of XIMS::VLibKeywordMap for
+VLibraryItem <-> VLibKeyword mapping.
 
 =cut
 
