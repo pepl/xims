@@ -5,7 +5,7 @@ XIMS::RefLibAuthorMap -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -45,10 +45,17 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head3 Parameter
 
-    $args{ id }                  (optional) :  id of an existing mapping.
-    $args{ reference_id }        (optional) :  reference_id of a RefLibReference. To be used together with $args{author_id} and $args{role} to look up an existing mapping.
-    $args{ author_id }           (optional) :  id of a VLibAuthor. To be used together with $args{reference_id} and $args{role} to look up an existing mapping.
-    $args{ role }                (optional) :  Role (integer) of the author in the mapping. To be used together with $args{reference_id} and $args{author_id} to look up an existing mapping.
+    $args{ id }                  :  id of an existing mapping.
+    $args{ reference_id }        :  reference_id of a RefLibReference. To be
+                                    used together with $args{author_id} and
+                                    $args{role} to look up an existing mapping.
+    $args{ author_id }           :  id of a VLibAuthor. To be used together
+                                    with $args{reference_id} and $args{role} to
+                                    look up an existing mapping.
+    $args{ role }                :  Role (integer) of the author in the mapping.
+                                    To be used together with $args{reference_id}
+                                    and $args{author_id} to look up an existing
+                                    mapping.
 
 =head3 Returns
 
@@ -56,7 +63,8 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head3 Description
 
-Fetches existing mappings or creates a new instance of XIMS::RefLibAuthorMap for ReferenceLibrary <-> VLibAuthor mapping.
+Fetches existing mappings or creates a new instance of XIMS::RefLibAuthorMap for
+ReferenceLibrary <-> VLibAuthor mapping. Args are optional.
 
 =cut
 
