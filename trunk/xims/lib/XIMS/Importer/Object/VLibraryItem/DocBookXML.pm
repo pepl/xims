@@ -5,7 +5,7 @@ XIMS::Importer::Object::VLibraryItem::DocBookXML -- A .... doing bla, bla, bla. 
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -191,10 +191,12 @@ sub keywords_from_node {
 
     foreach my $keyword ( $keywordset->getChildrenByTagName("keyword") ) {
         my $keywordvalue = XIMS::clean( XIMS::nodevalue( $keyword ) );
-        my $vlibkeyword = XIMS::VLibKeyword->new( name => $keywordvalue );
+        my $vlibkeyword = XIMS::VLibKeyword->new( name => $keywordvalue,
+                                                  document_id => $self->{Parent}->document_id() );
         if ( not (defined $vlibkeyword and $vlibkeyword->id) ) {
             $vlibkeyword = XIMS::VLibKeyword->new();
             $vlibkeyword->name( $keywordvalue );
+            $vlibkeyword->document_id ( $self->{Parent}->document_id() );
             if ( not $vlibkeyword->create() ) {
                 XIMS::Debug( 3, "could not create VLibKeyword $keywordvalue" );
                 next;
@@ -244,7 +246,7 @@ sub meta_from_node {
 
     # legalnotice
     my $legalnotice = XIMS::clean(
-      XIMS::nodevalue( $metaset->findnodes('//legalnotice/simpara|//legalnotice/para')));
+        XIMS::nodevalue( $metaset->findnodes('//legalnotice/simpara|//legalnotice/para')));
     $meta->legalnotice( $legalnotice ) if length( $legalnotice );
 
     # mediatype
@@ -255,7 +257,7 @@ sub meta_from_node {
     my $bibliosource;
     if ( $bibliosourceset[0] ) {
         map { $bibliosource .= XIMS::nodevalue($_) }
-          ($bibliosourceset[0]->getChildrenByTagName('bibliosource'));
+            ($bibliosourceset[0]->getChildrenByTagName('bibliosource'));
         $meta->bibliosource( XIMS::clean( $bibliosource ) );
     }
 
@@ -273,13 +275,16 @@ sub vlpublication {
 
     return unless $name;
 
-    my $vlpublication = XIMS::VLibPublication->new( name => $name, volume => $volume );
+    my $vlpublication = XIMS::VLibPublication->new( name => $name,
+                                                    volume => $volume,
+                                                    document_id => $self->{Parent}->document_id());
     if ( not (defined $vlpublication and $vlpublication->id) ) {
         $vlpublication = XIMS::VLibPublication->new();
         $vlpublication->name( $name );
         $vlpublication->volume( $volume );
         #$vlpublication->volume( $isbn );
         #$vlpublication->volume( $issn );
+        $vlpublication->document_id( $self->{Parent}->document_id() );
         if ( not $vlpublication->create() ) {
             XIMS::Debug( 3, "could not create VLibPublication $name" );
         }
