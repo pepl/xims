@@ -7,7 +7,7 @@
     <subjects>Themen</subjects>
     <author>AutorIn</author>
     <authors>AutorInnen</authors>
-    <authors_unmapped>derzeit nicht zugeordnete AutorInnen</authors_unmapped>
+    <unmapped>derzeit nicht zugeordnete</unmapped>
     <select_name>Bitte wählen Sie einen Namen!</select_name>
     <firstname>Vorname</firstname>
     <middlename>zweiter Vorname</middlename>

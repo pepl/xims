@@ -1,11 +1,12 @@
 
+
 =head1 NAME
 
 XIMS::VLibrary -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -31,8 +32,6 @@ use XIMS::VLibSubject;
 use Data::Dumper;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-
-
 
 =head2    XIMS::VLibrary->new( %args )
 
@@ -119,9 +118,9 @@ sub vlsubjectinfo_granted {
 sub vlkeywordinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
-
-    my $sql = 'SELECT s.name, s.id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_keywordmap m, cilib_keywords s, ci_documents d, ci_content c WHERE d.ID = m.document_id AND m.keyword_id = s.ID AND d.id = c.document_id AND d.parent_id = ? GROUP BY s.name, s.id';
-    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() ] );
+    
+    my $sql = 'SELECT k.name, k.id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_keywordmap m, cilib_keywords k, ci_documents d, ci_content c WHERE d.ID = m.document_id AND m.keyword_id = k.ID AND d.id = c.document_id AND d.parent_id = ? GROUP BY k.name, k.id UNION SELECT k.name, k.id, 0 AS object_count, NULL AS last_modification_timestamp FROM cilib_keywords k WHERE k.document_id = ? AND NOT EXISTS (select 1 FROM cilib_keywordmap m where m.keyword_id = k.id )';
+    my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id() , $self->document_id()] );
 
     return $sidata;
 }
@@ -136,7 +135,7 @@ sub vlkeywordinfo_granted {
 
     my ($userprivsql, @userprivids) = $self->_userpriv_where_clause( $user );
 
-    my $sql = 'SELECT s.name, s.id, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_keywordmap m, cilib_keywords s, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.keyword_id = s.ID AND d.id = c.document_id AND d.parent_id = ? ' . $userprivsql . ' GROUP BY s.name, s.id';
+    my $sql = 'SELECT k.name, k.id, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp FROM cilib_keywordmap m, cilib_keywords k, ci_documents d, ci_content c, ci_object_privs_granted o WHERE d.ID = m.document_id AND m.keyword_id = k.ID AND d.id = c.document_id AND d.parent_id = ? ' . $userprivsql . ' GROUP BY k.name, k.id UNION SELECT k.name, k.id, 0 AS object_count, NULL AS last_modification_timestamp FROM cilib_keywords k WHERE k.document_id = ? AND NOT EXISTS (select 1 FROM cilib_keywordmap m where m.keyword_id = k.id )';
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql, $self->document_id(), @userprivids ] );
 
     return $sidata;
