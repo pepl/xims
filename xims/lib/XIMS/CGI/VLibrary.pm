@@ -316,7 +316,8 @@ sub event_keyword {
     unless ($keywordid) {
         my $keywordname = XIMS::decode( $self->param('keyword_name') );
         if ( defined $keywordname ) {
-            my $keyword = XIMS::VLibKeyword->new( name => $keywordname );
+            my $keyword = XIMS::VLibKeyword->new( name => $keywordname,
+                                                  document_id => $ctxt->object()->document_id(), );
             if ( $keyword and $keyword->id() ) {
                 $keywordid = $keyword->id();
             }
@@ -685,7 +686,8 @@ sub event_publication {
         if ( $publicationname and $publicationvolume ) {
             my $publication = XIMS::VLibPublication->new(
                 name   => $publicationname,
-                volume => $publicationvolume
+                volume => $publicationvolume,
+                document_id => $ctxt->object()->document_id(),
             );
 
             #use Data::Dumper; XIMS::Debug( 1, Dumper( $publication ) );

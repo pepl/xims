@@ -228,14 +228,14 @@ sub _create_mapping_from_name {
     foreach my $value (@vlpropvalues) {
         my $parsed_name;
         my $propclass = "XIMS::VLib" . $propertyname;
-        if ( $propertyname eq 'Subject' ) {
+
+        # XXX no code for publications?
+
+        if ( $propertyname eq 'Subject' or $propertyname eq 'Keyword') {
             $propobject = $propclass->new(
                 name        => $value,
                 document_id => $object->parent_id()
             );
-        }
-        elsif ( $propertyname eq 'Keyword' ) {
-            $propobject = $propclass->new( name => $value );
         }
         elsif ( $propertyname eq 'Author' ) {
             $parsed_name = XIMS::VLibAuthor::parse_namestring($value);
@@ -243,6 +243,7 @@ sub _create_mapping_from_name {
               $propclass->new( %{$parsed_name},
                 document_id => $object->parent_id() );
         }
+
         if ( not( defined $propobject and $propobject->id() ) ) {
             $propobject = $propclass->new();
             if ( $propertyname eq 'Author' ) {
@@ -256,23 +257,15 @@ sub _create_mapping_from_name {
                 $propobject->suffix( $parsed_name->{suffix} )
                   if ( defined $parsed_name->{suffix}
                     and length $parsed_name->{suffix} );
-
                 # refers to the *VLibrary*, thence parent_id()
                 $propobject->document_id( $object->parent_id() );
             }
             else {
                 $propobject->name($value);
-                if ( $propertyname eq 'Subject' ) {
-
-                    # refers to the *VLibrary*, thence parent_id()
-                    $propobject->document_id( $object->parent_id() );
-                    XIMS::Debug( 6,
-                            "Subject "
-                          . $propobject->name($value)
-                          . " lib_id = "
-                          . $propobject->document_id( $object->parent_id() ) );
-                }
+                # refers to the *VLibrary*, thence parent_id()
+                $propobject->document_id( $object->parent_id() );
             }
+            
             if ( not $propobject->create() ) {
                 XIMS::Debug( 3, "could not create $propclass $value" );
                 next;
@@ -317,7 +310,8 @@ sub _create_mapping_from_id {
           $propclass->new( id => $value, document_id => $object->parent_id() );
     }
     elsif ( $propertyname eq 'Keyword' ) {
-        $propobject = $propclass->new( name => $value );
+        $propobject = $propclass->new( name => $value,
+                                       document_id => $object->parent_id() );
     }
     if ( not( defined $propobject and $propobject->id() ) ) {
         XIMS::Debug( 3, "could not create $propclass $value" );
