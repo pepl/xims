@@ -47,7 +47,7 @@
 
     <xsl:template match="vlkeywordinfo">
         <xsl:variable name="sortedkeywords">
-            <xsl:for-each select="/document/context/vlkeywordinfo/keyword">
+            <xsl:for-each select="/document/context/vlkeywordinfo/keyword[object_count &gt; 0]">
                 <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                           order="ascending"/>
                 <xsl:copy>
@@ -55,14 +55,52 @@
                 </xsl:copy>
             </xsl:for-each>
         </xsl:variable>
-
+        
+        <xsl:variable name="unmappedkeywords">
+          <xsl:for-each select="/document/context/vlkeywordinfo/keyword[object_count = 0]">
+            <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                      order="ascending"/>
+            <xsl:copy>
+              <xsl:copy-of select="*"/>
+            </xsl:copy>
+          </xsl:for-each>
+        </xsl:variable>
+        
         <table width="600" border="0" align="center" id="vlpropertyinfo">
             <tr><th colspan="{$keywordcolumns}"><xsl:value-of select="$i18n_vlib/l/keywords"/></th></tr>
             <xsl:apply-templates select="exslt:node-set($sortedkeywords)/keyword[(position()-1) mod $keywordcolumns = 0]">
                 <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
                 <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
             </xsl:apply-templates>
+            <xsl:if test="count(/document/context/vlkeywordinfo/keyword[object_count = 0])&gt;0">
+              <tr>
+                <th colspan="{$keywordcolumns}">
+                  <xsl:value-of select="concat($i18n_vlib/l/unmapped, ' ', $i18n_vlib/l/keywords)"/>
+                </th>
+              </tr>
+              <xsl:apply-templates select="exslt:node-set($unmappedkeywords)/keyword[(position()-1) mod $keywordcolumns = 0]">
+                <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
+                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
+              </xsl:apply-templates>
+            </xsl:if>
         </table>
+
+        <xsl:if test="count(/document/context/vlauthorinfo/author[object_count = 0])&gt;0">
+          <tr>
+          <th colspan="{$authorcolumns}">
+            <xsl:value-of select="$i18n_vlib/l/authors_unmapped"/>
+          </th>
+        </tr>
+        <xsl:apply-templates select="exslt:node-set($unmappedauthors)/author[(position()-1) mod $authorcolumns = 0]">
+          <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
+          <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                    order="ascending"/>
+          <xsl:sort select="translate(firstname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                    order="ascending"/>
+        </xsl:apply-templates>
+      </xsl:if>
+
+        
     </xsl:template>
 
     <xsl:template match="keyword">
