@@ -14,8 +14,17 @@ function confirmDelete() {
     }
 }
 
-function genericWindow(url) {
-    newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=400,height=400,screenX=100,screenY=300" );
+function genericWindow( url, width, height ) {
+    var height = ( height == null ) ? "400" : height;
+    var width  = ( width  == null ) ? "400" : width;
+    
+    newWindow  = window.open( url,
+                              "displayWindow",
+                              "resizable=yes,scrollbars=yes,width="
+                              + width
+                              + ",height="
+                              + height
+                              + ",screenX=100,screenY=300" );
 }
 
 function previewWindow(url) {
@@ -28,10 +37,6 @@ function diffWindow(url) {
 
 function openDocWindow(topic) {
     docWindow = window.open( "http://xims.info/documentation/users/xims-user_s-reference.sdbk#" + escape(topic), "displayWindow", "resizable=yes,scrollbars=yes,width=800,height=480,screenX=100,screenY=300" );
-}
-
-function editAuthorWindow(url) {
-    newWindow = window.open( url, "displayWindow", "resizable=yes,scrollbars=yes,width=620,height=305,screenX=100,screenY=300" );
 }
 
 function createFilterWindow(url) {
