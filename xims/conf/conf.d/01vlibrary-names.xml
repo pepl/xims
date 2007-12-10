@@ -34,6 +34,7 @@
                 <item>vlibkeyword.id</item>
                 <item>vlibkeyword.name</item>
                 <item>vlibkeyword.description</item>
+                <item>vlibkeyword.document_id</item>
             </VLibKeyword>
             <VLibKeywordMap>
                 <item>vlibkeywordmap.id</item>
@@ -57,6 +58,9 @@
                 <item>vlibpublication.isbn</item>
                 <item>vlibpublication.issn</item>
                 <item>vlibpublication.volume</item>
+                <item>vlibpublication.url</item>
+                <item>vlibpublication.image_url</item>
+                <item>vlibpublication.document_id</item>
             </VLibPublication>
             <VLibPublicationMap>
                 <item>vlibpublicationmap.id</item>
