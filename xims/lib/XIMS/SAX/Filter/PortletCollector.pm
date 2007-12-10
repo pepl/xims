@@ -5,7 +5,7 @@ XIMS::SAX::Filter::PortletCollector -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -121,7 +121,7 @@ sub handle_data {
             $ot = $object_types_names->{$name};
             push( @object_type_ids, $ot->id() ) if defined $ot;
         }
-        $childrenargs{object_type_id} = \@object_type_ids;
+        $childrenargs{object_type_id} = \@object_type_ids if scalar @object_type_ids;
 
         my @doclinks_object_type_ids;
         if ( $self->get_documentlinks() ) {
