@@ -1,20 +1,28 @@
-use Test::More tests => 11;
+
+use Test::More tests => 12;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
+
 #use Data::Dumper;
 
 BEGIN {
-   use_ok( 'XIMS::VLibKeyword' );
+    use_ok('XIMS::VLibKeyword');
 }
 
-# make a simple one, test that the objecttype and data_formats are set by the constructor
+# make a simple one, test that the objecttype and data_formats are set by the
+# constructor
 my $keyword = XIMS::VLibKeyword->new();
+
+eval { my $id = $keyword->create(); };
+like( $@, qr/Query failed/, 'record insert w/o document_id must fail' );
+
+$keyword->document_id(2);
 
 isa_ok( $keyword, 'XIMS::VLibKeyword' );
 
-$keyword->name( 'TestKeywordName' );
-$keyword->description( 'TestKeywordDescription' );
+$keyword->name('TestKeywordName');
+$keyword->description('TestKeywordDescription');
 
 my $id = $keyword->create();
 cmp_ok( $id, '>', 0, "Keyword created with id $id" );
@@ -23,20 +31,22 @@ cmp_ok( $id, '>', 0, "Keyword created with id $id" );
 $keyword = undef;
 $keyword = XIMS::VLibKeyword->new( id => $id );
 
-ok( $keyword );
+ok($keyword);
 is( $keyword->name(), 'TestKeywordName', 'TestKeyword has correct name' );
-is( $keyword->description(), 'TestKeywordDescription' , 'TestKeyword has correct description' );
+is( $keyword->description(), 'TestKeywordDescription',
+    'TestKeyword has correct description' );
 
 # now, change something
-$keyword->name( 'RenamedTestKeywordName' );
+$keyword->name('RenamedTestKeywordName');
 ok( $keyword->update(), 'Updated TestKeywordName' );
 
 # fetch it back...
 $keyword = undef;
 $keyword = XIMS::VLibKeyword->new( id => $id );
 
-ok( $keyword );
-is( $keyword->name(), 'RenamedTestKeywordName' , 'TestKeyword has correct name' );
+ok($keyword);
+is( $keyword->name(), 'RenamedTestKeywordName',
+    'TestKeyword has correct name' );
 
 ok( $keyword->delete(), 'Successfully deleted testkeyword' );
 
