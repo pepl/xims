@@ -1,22 +1,33 @@
-use Test::More tests => 13;
+
+use Test::More tests => 16;
 use strict;
 use lib "../lib", "lib";
 use XIMS::Test;
+
 #use Data::Dumper;
 
 BEGIN {
-   use_ok( 'XIMS::VLibPublication' );
+    use_ok('XIMS::VLibPublication');
 }
 
-# make a simple one, test that the objecttype and data_formats are set by the constructor
+# make a simple one, test that the objecttype and data_formats are set by the
+# constructor
 my $publication = XIMS::VLibPublication->new();
 
 isa_ok( $publication, 'XIMS::VLibPublication' );
 
-$publication->name( 'TestPublicationName' );
-$publication->volume( 'TestPublicationVolume' );
-$publication->isbn( 'TestPublicationISBN' );
-$publication->issn( 'TestPublicationISSN' );
+$publication->name('TestPublicationName');
+$publication->volume('TestPublicationVolume');
+$publication->isbn('TestPublicationISBN');
+$publication->issn('TestPublicationISSN');
+$publication->url('http://xims.info/url?nonesene=lots&TestPublication=ok');
+$publication->image_url(
+    'http://xims.info/image%20url?nonesene=lots&TestPublication=ok');
+
+eval { my $id = $publication->create(); };
+like( $@, qr/Query failed/, 'record insert w/o document_id must fail' );
+
+$publication->document_id(2);
 
 my $id = $publication->create();
 cmp_ok( $id, '>', 0, "Publication created with id $id" );
@@ -25,23 +36,37 @@ cmp_ok( $id, '>', 0, "Publication created with id $id" );
 $publication = undef;
 $publication = XIMS::VLibPublication->new( id => $id );
 
-ok( $publication );
-is( $publication->name(), 'TestPublicationName', 'TestPublication has correct name' );
-is( $publication->volume(), 'TestPublicationVolume', 'TestPublication has correct volume' );
-is( $publication->isbn(), 'TestPublicationISBN' , 'TestPublication has correct isbn' );
-is( $publication->issn(), 'TestPublicationISSN' , 'TestPublication has correct issn' );
-
+ok($publication);
+is( $publication->name(), 'TestPublicationName',
+    'TestPublication has correct name' );
+is( $publication->volume(), 'TestPublicationVolume',
+    'TestPublication has correct volume' );
+is( $publication->isbn(), 'TestPublicationISBN',
+    'TestPublication has correct isbn' );
+is( $publication->issn(), 'TestPublicationISSN',
+    'TestPublication has correct issn' );
+is(
+    $publication->url(),
+    'http://xims.info/url?nonesene=lots&TestPublication=ok',
+    'TestPublication has correct url'
+);
+is(
+    $publication->image_url(),
+    'http://xims.info/image%20url?nonesene=lots&TestPublication=ok',
+    'TestPublication has correct image_url'
+);
 
 # now, change something
-$publication->name( 'RenamedTestPublicationName' );
+$publication->name('RenamedTestPublicationName');
 ok( $publication->update(), 'Updated TestPublicationName' );
 
 # fetch it back...
 $publication = undef;
 $publication = XIMS::VLibPublication->new( id => $id );
 
-ok( $publication );
-is( $publication->name(), 'RenamedTestPublicationName' , 'TestPublication has correct name' );
+ok($publication);
+is( $publication->name(), 'RenamedTestPublicationName',
+    'TestPublication has correct name' );
 
 ok( $publication->delete(), 'Successfully deleted testpublication' );
 
