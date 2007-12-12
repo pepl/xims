@@ -170,8 +170,8 @@ XIMS_SVN_URI="http://xims.svn.sourceforge.net/svnroot/xims/trunk"
 XIMS_SVN_BRANCH="$XIMS_SVN_URI/xims"
 XIMS_CONTRIB_SVN_BRANCH="$XIMS_SVN_URI/xims-contrib"
 # we get the xims-build system from sf.net's files-section
-BUILD_SYSTEM_FILE="xims_box_build_system_1.0.2.tar.gz"
-XIMS_BOX_BUILD_SYSTEM_URI="http://downloads.sourceforge.net/xims/$BUILD_SYSTEM_FILE"
+BUILD_SYSTEM_FILE="xims_box_build_system_current.tar.gz"
+XIMS_BOX_BUILD_SYSTEM_URI="http://xims.info/downloads/$BUILD_SYSTEM_FILE"
 
 BUILD_DIR="/tmp/xims_box_build_system"
 
@@ -218,10 +218,10 @@ echo "Done! Getting and preparing the latest XIMS dev snapshot ..."
 # cd to the xims place
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package
 # get snapshot
-svn checkout --quiet $XIMS_SVN_BRANCH xims
+svn export --quiet $XIMS_SVN_BRANCH xims
 # add xims-contrib and put htmlarea link
 cd $DEB_XIMS_DIR
-svn checkout --quiet $XIMS_CONTRIB_SVN_BRANCH xims-contrib
+svn export --quiet $XIMS_CONTRIB_SVN_BRANCH xims-contrib
 # move contents to the right place
 mv xims-contrib/* $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/
 # clean up
@@ -234,10 +234,6 @@ ln -s htmlarea3rc1 htmlarea
 ln -s tinymce_2.1.2 tinymce
 # put examplesite from the xims_box_build_system to ximspubroot
 mv $DEB_XIMS_DIR/examplesite $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximspubroot/
-# cd to xims-home
-cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims
-# remove '.svn' dirs
-find ./ -name '.svn' -print0 | xargs -0 rm -rf
 # we build the xims-box with the according default-data, thus change the
 # switch in 'defaultdata.sql'
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/sql/Pg/
