@@ -5,7 +5,7 @@ XIMS::CGI::ByeBye -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -518,13 +518,60 @@ sub sendError {
     return 0;
 }
 
+=head2 simple_response()
+
+=head3 Parameter
+
+    $status: The status header's contents
+
+    $msg: the message (body)
+
+    $type: (optional) mimetype; defaults to 'text/plain'
+
+=head3 Returns
+
+    0.
+
+=head3 Description
+
+    $self->simple_response( '409 CONFLICT'
+                          , 'Des darfst' nicht thun, Fisch!');
+
+    $self->simple_response( '400 BAD REQUEST',
+                          , '<error>You're gonking me.</error>'
+                          , 'application/xml');
+
+This is a simple method to send little custom responses. The message is
+printed out literally. (No XSLT transformation.)
+
+=cut
+
+
+sub simple_response {
+    my $self   = shift;
+    my $status = shift;
+    my $msg    = shift;
+    my $type   = shift or 'text/plain';
+
+    print $self->header(
+        -status  => $status,
+        -type    => $type,
+        -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+      ),
+      $msg, "\n";
+
+    $self->skipSerialization(1);
+
+    return 0;
+}
+
 sub event_error {
     return 0;
 }
 
 =pod
 
- helper methods available to all event subs.
+helper methods available to all event subs.
 
 =cut
 
@@ -2663,7 +2710,6 @@ sub event_search {
             }
         );
 
-        #'# just for emacs' font-lock...
         if ( defined $qb ) {
             my ( $critstring, @critvals ) = @{ $qb->criteria() };
             my %param = (
