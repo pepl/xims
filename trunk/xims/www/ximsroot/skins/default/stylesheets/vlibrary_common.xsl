@@ -166,6 +166,13 @@
                                 </a>
                             </li>
                         </xsl:if>
+                        <xsl:if test="$mo != 'keyword'">
+                            <li>
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?keywords=1;m={$m}">
+                                    <xsl:value-of select="$i18n_vlib/l/keyword_list"/>
+                                </a>
+                            </li>
+                        </xsl:if>
                         <xsl:if test="$most_recent != '1'">
                             <li>
                                 <a href="{$xims_box}{$goxims_content}{$absolute_path}?most_recent=1;m={$m}">
@@ -233,7 +240,7 @@
         <!-- only show Edit-icon in authors-overview and if user has the privilege "write" on the VLibray -->
         <xsl:if test="$user_privileges/write=1 and object_count">
           &#160;
-          <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_edit=1;author_id={id}')">
+          <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_edit=1;author_id={id}', '620', '320')">
             <img src="{$skimages}option_edit.png"
                  alt="{$i18n_vlib/l/manage_authors}"
                  title="{$i18n_vlib/l/manage_authors}"
@@ -248,7 +255,7 @@
                 />
           </a>
           <xsl:if test="object_count = 0">
-            <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_delete_prompt=1;author_id={id}')">
+            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_delete_prompt=1;author_id={id};author_firstname={firstname};author_middlename={middlename};author_lastname={lastname}', '620', '320')">
               <img src="{$skimages}option_delete.png"
                    alt="{$i18n_vlib/l/delete_author}"
                    title="{$i18n_vlib/l/delete_author}" />
@@ -282,6 +289,31 @@
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?keyword=1;keyword_id={id}">
             <xsl:value-of select="name"/>
         </a>
+        <!-- only show Edit-icon in keywords-overview and if user has the privilege "write" on the VLibray -->
+        <xsl:if test="$user_privileges/write=1 and object_count">
+          &#160;
+          <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?keyword_edit=1;keyword_id={id}', '550', '200')">
+            <img src="{$skimages}option_edit.png"
+                 alt="{$i18n_vlib/l/manage_keywords}"
+                 title="{$i18n_vlib/l/manage_keywords}"
+                 border="0"
+                 onmouseover="pass('edit{id}','edit','h'); return true;"
+                 onmouseout="pass('edit{id}','edit','c'); return true;"
+                 onmousedown="pass('edit{id}','edit','s'); return true;"
+                 onmouseup="pass('edit{id}','edit','s'); return true;"
+                 name="edit{id}"
+                 width="32"
+                 height="19"
+                />
+          </a>
+          <xsl:if test="object_count = 0">
+            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?keyword_delete_prompt=1;keyword_id={id};keyword_name={name}', '550', '340')">
+              <img src="{$skimages}option_delete.png"
+                   alt="{$i18n_vlib/l/delete_keyword}"
+                   title="{$i18n_vlib/l/delete_keyword}" />
+            </a>
+          </xsl:if>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="search_switch">
