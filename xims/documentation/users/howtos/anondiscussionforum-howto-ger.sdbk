@@ -1,87 +1,78 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <article>
-  <title>XIMS Anonymes Diskussionsforum Schritt fuer Schritt</title>
+    <title>XIMS Anonymes Diskussionsforum Schritt fuer Schritt</title>
 
-  <articleinfo>
-    <authorgroup>
-      <author>
-        <firstname>Britta</firstname>
+    <articleinfo>
+        <authorgroup>
+            <author>
+                <firstname>Britta</firstname>
 
-        <surname>Tautermann</surname>
+                <surname>Tautermann</surname>
 
-        <affiliation>
-          <orgname>University of Innsbruck</orgname>
-        </affiliation>
+                <affiliation>
+                    <orgname>University of Innsbruck</orgname>
+                </affiliation>
 
-        <authorblurb>
-          <para><email>britta.tautermann@uibk.ac.at</email></para>
-        </authorblurb>
-      </author>
-    </authorgroup>
+                <authorblurb>
+                    <para><email>britta.tautermann@uibk.ac.at</email></para>
+                </authorblurb>
+            </author>
+        </authorgroup>
 
-    <revhistory>
-      <revision>
-        <revnumber>$Revision$</revnumber>
+        <revhistory>
+            <revision>
+                <revnumber>$Revision$</revnumber>
 
-        <date>$Date: 2003/03/18</date>
-      </revision>
-    </revhistory>
+                <date>$Date: 2003/03/18</date>
+            </revision>
+        </revhistory>
 
-    <legalnotice>
-      <para>Copyright 2003</para>
-    </legalnotice>
-  </articleinfo>
+        <legalnotice>
+            <para>Copyright 2003</para>
+        </legalnotice>
+    </articleinfo>
 
-  <section>
-    <title>Wie erstellt man ein anonymes Diskussionsforum</title>
+    <section>
+        <title>Wie erstellt man ein anonymes Diskussionsforum</title>
 
-    <para>Ein anonymes Diskussionsforum (AnonDiscussionForum) ist ein Forum in
-    dem Benutzer anonyme Beiträge zu einem bestimmten Thema posten können.Um
-    ein solches Forum zu erstellen sind folgende Schritte notwendig:</para>
+        <para>Ein anonymes Diskussionsforum (AnonDiscussionForum) ist ein Forum in dem Benutzer anonyme BeitrÃ¤ge zu einem bestimmten Thema posten kÃ¶nnen.Um ein
+        solches Forum zu erstellen sind folgende Schritte notwendig:</para>
 
-    <orderedlist>
-      <listitem>
-        <para>Wählen Sie &quot;AnonDiscussionForum&quot; im Dropdown-Menü.</para>
+        <orderedlist>
+            <listitem>
+                <para>WÃ¤hlen Sie &#34;AnonDiscussionForum&#34; im Dropdown-MenÃ¼.</para>
 
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="images/xims_anondiscussionforum_howto_step1.png"/>
-          </imageobject>
-        </mediaobject>
-      </listitem>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims_anondiscussionforum_howto_step1.png" />
+                    </imageobject>
+                </mediaobject>
+            </listitem>
 
-      <listitem>
-        <para>Weisen Sie Ihrem Forum Location und Titel zu.</para>
+            <listitem>
+                <para>Weisen Sie Ihrem Forum Location und Titel zu.</para>
 
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="images/xims_anondiscussionforum_howto_step2.png"/>
-          </imageobject>
-        </mediaobject>
-      </listitem>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims_anondiscussionforum_howto_step2.png" />
+                    </imageobject>
+                </mediaobject>
+            </listitem>
 
-      <listitem>
-        <para>Veröffentlichen Sie das Forum mit &quot;publish&quot;.</para>
+            <listitem>
+                <para>VerÃ¶ffentlichen Sie das Forum mit &#34;publish&#34;.</para>
 
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="images/xims_anondiscussionforum_howto_step3.png"/>
-          </imageobject>
-        </mediaobject>
-      </listitem>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims_anondiscussionforum_howto_step3.png" />
+                    </imageobject>
+                </mediaobject>
+            </listitem>
 
-      <listitem>
-        <para>Unter welcher Adresse wird das Forum veröffentlicht?
-        Ein Forum, das im Verzeichnis
-        &quot;http://xims.uibk.ac.at/xims/myfolder/myforum &quot;erstellt wird,
-        wird unter der Adresse
-        &quot;http://xims.uibk.ac.at/xims/myfolder/myforum &quot;
-        veröffentlicht. Das Testforum wurde z.B. unter
-        &quot;http://xims.uibk.ac.at/xims/test/anondiscussionforum_demo&quot;
-        erstellt und unter: <ulink url="http://xims.uibk.ac.at/gopublic/content/xims/test/anondiscussionforum_demo">&quot;
-        http://xims.uibk.ac.at/gopublic/content/xims/test/anondiscussionforum_demo&quot;</ulink>
-        veröffentlicht</para>
-      </listitem>
-    </orderedlist>
-  </section>
+            <listitem>
+                <para>Unter welcher Adresse wird das Forum verÃ¶ffentlicht? Ein Forum, das im Verzeichnis &#34;http://xims.uibk.ac.at/xims/myfolder/myforum
+                &#34;erstellt wird, wird unter der Adresse &#34;http://xims.uibk.ac.at/xims/myfolder/myforum &#34; verÃ¶ffentlicht.</para>
+            </listitem>
+        </orderedlist>
+    </section>
 </article>
