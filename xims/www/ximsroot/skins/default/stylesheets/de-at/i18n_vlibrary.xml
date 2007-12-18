@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <l>
     <subject_list>Themenbereiche</subject_list>
-    <author_list>AutorInnenindex</author_list>
+    <author_list>Autor&#x2009;/&#x2009;-innen</author_list>
     <publication_list>Zeitschriften</publication_list>
+    <keyword_list>Schlagwörter</keyword_list>
     <subject>Thema</subject>
     <subjects>Themen</subjects>
-    <author>AutorIn</author>
-    <authors>AutorInnen</authors>
+    <author>Autor&#x2009;/&#x2009;-in</author>
+    <authors>Autor&#x2009;/&#x2009;-innen</authors>
     <unmapped>derzeit nicht zugeordnete</unmapped>
     <select_name>Bitte wählen Sie einen Namen!</select_name>
     <firstname>Vorname</firstname>
@@ -25,7 +26,7 @@
     <Fulltext_search>Volltextsuche</Fulltext_search>
     <Switch_to>Wechsle zu</Switch_to>
     <Page>Seite</Page>
-    <Latest_entries>Die neuesten Einträge</Latest_entries>
+    <Latest_entries>Neueste Einträge</Latest_entries>
     <numbers_and_symbols>Zahlen &amp; Symbole</numbers_and_symbols>
     <back_to_top>Zum Seitenanfang</back_to_top>
     <Delete_mapping>Zuweisung löschen</Delete_mapping>
@@ -40,12 +41,14 @@
     <chronicle_to>Chronik bis</chronicle_to>
     <fill_in>Auswahl einfüllen</fill_in>
     <manage_subjects>Themen verwalten</manage_subjects>
-    <manage_authors>AutorInnen verwalten</manage_authors>
+    <manage_authors>Autor&#x2009;/&#x2009;-innen verwalten</manage_authors>
     <filter_create>VLibrary Filter erstellen</filter_create>
     <available>verfügbar</available>
     <selected>ausgewählt</selected>
+    <keyword>Schlagwort</keyword>
     <keywords>Schlagwörter</keywords>
     <mediatype>Medientyp</mediatype>
     <chronicle_filter>Datumsfilter</chronicle_filter>
     <activate>Anwenden</activate>
+    <description>Beschreibung</description>
 </l>
