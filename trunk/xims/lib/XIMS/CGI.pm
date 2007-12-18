@@ -546,12 +546,13 @@ printed out literally. (No XSLT transformation.)
 
 =cut
 
-
 sub simple_response {
     my $self   = shift;
     my $status = shift;
     my $msg    = shift;
-    my $type   = shift or 'text/plain';
+    my $type   = shift;
+
+    $type = ( defined $type ) ? $type : 'text/plain';
 
     print $self->header(
         -status  => $status,
