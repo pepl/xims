@@ -3,6 +3,7 @@
     <subject_list>Subject List</subject_list>
     <author_list>Author List</author_list>
     <publication_list>Publication List</publication_list>
+    <keyword_list>Keyword List</keyword_list>
     <subject>Subject</subject>
     <subjects>Subjects</subjects>
     <author>Author</author>
@@ -44,8 +45,10 @@
     <filter_create>Create VLibrary filter</filter_create>
     <available>available</available>
     <selected>selected</selected>
+    <keyword>keyword</keyword>
     <keywords>Keywords</keywords>
     <mediatype>Mediatype</mediatype>
     <chronicle_filter>Date filter</chronicle_filter>
     <activate>Activate</activate>
+    <description>Description</description>
 </l>
