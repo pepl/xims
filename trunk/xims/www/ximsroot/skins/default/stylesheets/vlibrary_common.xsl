@@ -13,10 +13,11 @@
                 xmlns:exslt="http://exslt.org/common"
                 extension-element-prefixes="exslt date"
                 >
-
+  
+    <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
     <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
     <xsl:variable name="user_privileges" select="/document/context/object/user_privileges" />
-
+  
     <xsl:param name="colms" select="3"/>
     <xsl:param name="vls"/>
     <xsl:param name="date_from" />
@@ -412,6 +413,39 @@ h">
         <xsl:text>:</xsl:text>
         <xsl:value-of select="./second"/>
         <xsl:text> GMT</xsl:text>
+    </xsl:template>
+
+    <xsl:template name="post_async_js">
+      function handleResponse() {
+          if (xmlhttp.readyState == 4) {
+             
+              if (xmlhttp.status == 200) {
+                  window.opener.document.location.reload();
+                  window.close();
+              } 
+              else {
+                  document.getElementById('message').innerHTML 
+                      = '<strong>' + xmlhttp.responseText + '</strong>'; 
+                  document.getElementById('buttons').innerHTML 
+                      = '<input type="button" 
+                                onclick="window.close()" 
+                                class="control" 
+                                value="{$i18n/l/close_window}"/>';
+              }
+          }
+      }
+
+      function post_async(poststr) {
+          
+          xmlhttp.onreadystatechange = handleResponse;
+          xmlhttp.open('POST'
+                       , '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>'
+                       , true);
+          xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xmlhttp.setRequestHeader("Content-length", poststr.length);
+          xmlhttp.setRequestHeader("Connection", "close");
+          xmlhttp.send(poststr);                 
+      }                     
     </xsl:template>
 
 </xsl:stylesheet>
