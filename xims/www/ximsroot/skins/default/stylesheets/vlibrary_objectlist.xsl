@@ -69,8 +69,13 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body onLoad="setBg('vlchildrenlistitem');">
-            <xsl:call-template name="header" />
+        <body>
+            <xsl:call-template name="header">
+              <xsl:with-param name="createwidget">true</xsl:with-param>
+              <xsl:with-param name="parent_id">
+                <xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" />
+              </xsl:with-param>
+            </xsl:call-template>
 
             <div id="vlbody">
                 <h1 id="vlchildrenlisttitle">
@@ -82,7 +87,6 @@
 
                 <xsl:call-template name="search_switch"/>
                 <xsl:call-template name="chronicle_switch" />
-
                 <xsl:call-template name="childrenlist"/>
 
                 <xsl:choose>
@@ -106,6 +110,7 @@
                     </xsl:when>
                 </xsl:choose>
             </div>
+            <script>setBg('vlchildrenlistitem');</script>
         </body>
     </html>
 </xsl:template>

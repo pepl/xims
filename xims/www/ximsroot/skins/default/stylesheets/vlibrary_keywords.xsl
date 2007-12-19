@@ -21,12 +21,11 @@
     <xsl:template match="/document/context/object">
         <html>
             <xsl:call-template name="head_default"/>
-            <body onLoad="setBg('vliteminfo');">
+            <body>
               <xsl:call-template name="header">
                 <xsl:with-param name="createwidget">true</xsl:with-param>
                 <xsl:with-param name="parent_id"><xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" /></xsl:with-param>
               </xsl:call-template>
-
                 <div id="vlbody">
                     <h1><xsl:value-of select="title"/></h1>
                     <div>
@@ -35,9 +34,10 @@
                     <xsl:call-template name="search_switch">
                         <xsl:with-param name="mo" select="'keyword'"/>
                     </xsl:call-template>
-
+                    <xsl:call-template name="chronicle_switch" />
                     <xsl:apply-templates select="/document/context/vlkeywordinfo"/>
                 </div>
+                <script>setBg('vliteminfo');</script>
             </body>
         </html>
     </xsl:template>
