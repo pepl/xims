@@ -20,9 +20,13 @@
     <xsl:template match="/document/context/object">
         <html>
             <xsl:call-template name="head_default"/>
-            <body onLoad="setBg('vliteminfo');">
-                <xsl:call-template name="header"/>
-                <div id="vlbody">
+            <body>
+              <xsl:call-template name="header">
+                <xsl:with-param name="createwidget">true</xsl:with-param>
+                <xsl:with-param name="parent_id"><xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" /></xsl:with-param>
+              </xsl:call-template>
+
+              <div id="vlbody">
                     <h1><xsl:value-of select="title"/></h1>
                     <div>
                         <xsl:apply-templates select="abstract"/>
@@ -30,16 +34,11 @@
                     <xsl:call-template name="search_switch">
                         <xsl:with-param name="mo" select="'publication'"/>
                     </xsl:call-template>
-
+                    <xsl:call-template name="chronicle_switch" />
                     <xsl:apply-templates select="/document/context/vlpublicationinfo"/>
-
-                    <xsl:if test="/document/context/object/user_privileges/create">
-                        <div class="vlitemcreate">
-                            <xsl:call-template name="vlib_create_action"/>
-                        </div>
-                    </xsl:if>
                 </div>
             </body>
+            <script>setBg('vliteminfo');</script>
         </html>
     </xsl:template>
 

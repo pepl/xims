@@ -316,6 +316,8 @@ sub event_keywords {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    $ctxt->properties->content->getformatsandtypes( 1 );
+
     $ctxt->properties->application->style("keywords");
 
     return 0;
@@ -593,6 +595,8 @@ sub event_keyword_delete {
 sub event_authors {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    $ctxt->properties->content->getformatsandtypes( 1 );
 
     $ctxt->properties->application->style("authors");
 
@@ -915,6 +919,8 @@ sub event_author_delete {
 sub event_publications {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    $ctxt->properties->content->getformatsandtypes( 1 );
 
     $ctxt->properties->application->style("publications");
 
@@ -1346,6 +1352,8 @@ sub event_most_recent {
     else {
         $param{limit} = 10;
     }
+
+    $ctxt->properties->content->getformatsandtypes( 1 );
 
     my @objects = $ctxt->object->children_granted(%param);
     $ctxt->objectlist( \@objects );
