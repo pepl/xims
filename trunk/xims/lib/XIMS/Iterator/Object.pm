@@ -5,7 +5,7 @@ XIMS::Iterator::Object -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -34,8 +34,10 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 =head3 Parameter
 
     $arryref                        :  Reference to an array of XIMS::Object ids
-                                       If $cttid is ommited, 'document_id' will be used for object lookup
-    $cttid               (optional) :  If given, content 'id' is used for XIMS::Object lookup instead of
+                                       If $cttid is ommited, 'document_id'
+                                       will be used for object lookup
+    $cttid               (optional) :  If given, content 'id' is used for
+                                       XIMS::Object lookup instead of
                                        'document_id'
 
 =head3 Returns
@@ -45,7 +47,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 =head3 Description
 
 Returns an iterator instance to iterate over XIMS::Objects. XIMS::Iterator::Object
-subclasses Array::Iterator, see it's module documentation for available iterator methods.
+subclasses Array::Iterator, see it's module documentation for available iterator
+methods.
 
 Example use:
 
