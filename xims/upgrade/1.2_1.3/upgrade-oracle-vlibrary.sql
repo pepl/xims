@@ -582,9 +582,6 @@ PACKAGE BODY tmp_update_xims_vlibrary IS
 END tmp_update_xims_vlibrary;
 /
 
-ALTER PACKAGE tmp_update_xims_vlibrary COMPILE
-/
-
 -- backup tables:
 CREATE TABLE bak$cilib_subjects AS SELECT * FROM cilib_subjects
 /
@@ -612,15 +609,15 @@ ALTER TABLE cilib_subjects MODIFY  (description  VARCHAR2(4000));
 ALTER TABLE cilib_subjects ADD     (document_id NUMBER)
 /
 
-ALTER TABLE cilib_authors ADD      (image_url   VARCHAR2(250) DEFAULT '')
+ALTER TABLE cilib_authors ADD      (image_url   VARCHAR2(250) DEFAULT '');
 ALTER TABLE cilib_authors ADD      (document_id NUMBER)
 /
 
 ALTER TABLE cilib_keywords ADD     (document_id NUMBER)
 /
 
-ALTER TABLE cilib_publications ADD (url         VARCHAR2(250) DEFAULT '')
-ALTER TABLE cilib_publications ADD (image_url   VARCHAR2(250) DEFAULT '')
+ALTER TABLE cilib_publications ADD (url         VARCHAR2(250) DEFAULT '');
+ALTER TABLE cilib_publications ADD (image_url   VARCHAR2(250) DEFAULT '');
 ALTER TABLE cilib_publications ADD (document_id NUMBER)
 /
 
@@ -661,6 +658,8 @@ ALTER TABLE cilib_publications DROP CONSTRAINT pub_issn_unq;
 --   (document_id, issn))
 /
 
+ALTER PACKAGE tmp_update_xims_vlibrary COMPILE
+/
 
 BEGIN
 
