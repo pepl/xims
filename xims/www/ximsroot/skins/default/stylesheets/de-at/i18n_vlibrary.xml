@@ -7,7 +7,7 @@
     <subject>Thema</subject>
     <subjects>Themen</subjects>
     <author>Autor&#x2009;/&#x2009;-in</author>
-    <authors>Autorinnen&#x2009;/&#x2009;Autoren</authors>
+    <authors>Autorinnen und Autoren</authors>
     <unmapped>derzeit nicht zugeordnete</unmapped>
     <select_name>Bitte wählen Sie einen Namen!</select_name>
     <firstname>Vorname</firstname>
@@ -41,7 +41,7 @@
     <chronicle_to>Chronik bis</chronicle_to>
     <fill_in>Auswahl einfüllen</fill_in>
     <manage_subjects>Themen verwalten</manage_subjects>
-    <manage_authors>Autor&#x2009;/&#x2009;-innen verwalten</manage_authors>
+    <manage_authors>Autorinnen und Autoren verwalten</manage_authors>
     <filter_create>VLibrary Filter erstellen</filter_create>
     <available>verfügbar</available>
     <selected>ausgewählt</selected>
