@@ -5,7 +5,7 @@ XIMS::VLibSubjectMap -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -46,8 +46,13 @@ __PACKAGE__->mk_accessors( @Fields );
 =head3 Parameter
 
     $args{ id }                  (optional) :  id of an existing mapping.
-    $args{ document_id }         (optional) :  document_id of a VLibraryItem. To be used together with $args{subject_id} to look up an existing mapping.
-    $args{ subject_id }          (optional) :  id of a VLibSubject. To be used together with $args{document_id} to look up an existing mapping.
+    $args{ document_id }         (optional) :  document_id of a VLibraryItem.
+                                               To be used together with 
+                                               $args{subject_id} to look up
+                                               an existing mapping.
+    $args{ subject_id }          (optional) :  id of a VLibSubject. To be used
+                                               together with $args{document_id}
+                                               to look up an existing mapping.
 
 =head3 Returns
 
@@ -55,7 +60,8 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head3 Description
 
-Fetches existing mappings or creates a new instance of XIMS::VLibSubjectMap for VLibraryItem <-> VLibSubject mapping.
+Fetches existing mappings or creates a new instance of XIMS::VLibSubjectMap for
+VLibraryItem <-> VLibSubject mapping.
 
 =cut
 
