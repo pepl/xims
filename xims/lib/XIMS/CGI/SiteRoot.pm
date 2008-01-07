@@ -5,7 +5,7 @@ XIMS::CGI::SiteRoot -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -33,8 +33,8 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    # we do not want to touch the provided location and are trusting the admins who are creating siteroots to provide a
-    # valid DNS name here
+    # we do not want to touch the provided location and are trusting the admins
+    # who are creating siteroots to provide a valid DNS name here
     $ctxt->properties->application->preservelocation( 1 );
     return $self->SUPER::event_store( $ctxt );
 }
