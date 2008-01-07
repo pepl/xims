@@ -5,7 +5,7 @@ XIMS::VLibPublicationMap -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -45,14 +45,20 @@ __PACKAGE__->mk_accessors( @Fields );
 #
 # PARAMETER
 #    $args{ id }                  (optional) :  id of an existing mapping.
-#    $args{ document_id }         (optional) :  document_id of a VLibraryItem. To be used together with $args{publication_id} to look up an existing mapping.
-#    $args{ publication_id }      (optional) :  id of a VLibPublication. To be used together with $args{document_id} to look up an existing mapping.
+#    $args{ document_id }         (optional) :  document_id of a VLibraryItem.
+#                                               To be used together with 
+#                                               $args{publication_id} to look
+#                                               up an existing mapping.
+#    $args{ publication_id }      (optional) :  id of a VLibPublication. To be
+#                                               used together with $args{document_id}
+#                                               to look up an existing mapping.
 #
 # RETURNS
 #    $pubmap    : Instance of XIMS::VLibPublicationMap
 #
 # DESCRIPTION
-#    Fetches existing mappings or creates a new instance of XIMS::VLibPublicationMap for VLibraryItem <-> VLibPublication mapping.
+#    Fetches existing mappings or creates a new instance of XIMS::VLibPublicationMap
+#    for VLibraryItem <-> VLibPublication mapping.
 #
 sub new {
     my $proto = shift;
