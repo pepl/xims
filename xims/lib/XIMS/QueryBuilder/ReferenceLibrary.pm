@@ -5,7 +5,7 @@ XIMS::QueryBuilder::ReferenceLibrary -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -43,7 +43,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 =head3 Description
 
 
-Helper method that fills up $self->{criteria}, $self->{properties}, and $self->{order} on success
+Helper method that fills up $self->{criteria}, $self->{properties},
+and $self->{order} on success
 
 
 =cut
