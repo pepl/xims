@@ -5,7 +5,7 @@ XIMS::XSLStylesheet -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -41,7 +41,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Description
 
-Fetches existing objects or creates a new instance of XIMS::XSLStylesheet for object creation.
+Fetches existing objects or creates a new instance of XIMS::XSLStylesheet
+for object creation.
 
 =cut
 
