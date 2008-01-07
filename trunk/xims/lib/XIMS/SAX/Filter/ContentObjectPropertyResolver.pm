@@ -5,7 +5,7 @@ XIMS::SAX::Filter::ContentObjectPropertyResolver -- A .... doing bla, bla, bla. 
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -33,9 +33,11 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Parameter
 
-    $args{ResolveContent}              : Reference to an array of content object properties
+    $args{ResolveContent}              : Reference to an array of content object
+                                         properties
     $args{User}                        : Instance of XIMS::User
-    $args{Properties}     (optional)   : Reference to an array of properties which should be added
+    $args{Properties}     (optional)   : Reference to an array of properties
+                                         which should be added
 
 =head3 Returns
 
@@ -43,8 +45,9 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Description
 
-This SAX Filter adds the property values for the properties specified in $args{Properties} for
-the content object property specified in $args{ResolveContent}.
+This SAX Filter adds the property values for the properties specified in
+$args{Properties} for the content object property specified in
+$args{ResolveContent}.
 
 =cut
 
