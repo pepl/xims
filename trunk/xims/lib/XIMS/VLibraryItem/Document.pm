@@ -5,7 +5,7 @@ XIMS::VLibraryItem::Document -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -32,7 +32,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Parameter
 
-    %args                  (optional) :  Takes the same arguments as its super class XIMS::VLibrayItem
+    %args                  (optional) :  Takes the same arguments as its super
+                                         class XIMS::VLibrayItem
 
 =head3 Returns
 
@@ -40,7 +41,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Description
 
-Fetches existing objects or creates a new instance of XIMS::VLibraryItem::Document for object creation.
+Fetches existing objects or creates a new instance of
+XIMS::VLibraryItem::Document for object creation.
 
 =cut
 
