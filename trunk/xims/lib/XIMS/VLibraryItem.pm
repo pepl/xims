@@ -5,7 +5,7 @@ XIMS::VLibraryItem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -48,11 +48,13 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Parameter
 
-    @authors                  (optional) : Array of XIMS::VLibAuthor objects to be associated to the VLibraryItem
+    @authors                  (optional) : Array of XIMS::VLibAuthor objects to
+                                           be associated to the VLibraryItem
 
 =head3 Returns
 
-    @authors    : Array of XIMS::VLibAuthor objects associated to the VLibraryItem
+    @authors    : Array of XIMS::VLibAuthor objects associated to the
+                  VLibraryItem
     $boolean    : True or False for associating @authors to the VLibraryItem
 
 =head3 Description
@@ -74,11 +76,13 @@ sub vleauthors {
 
 =head3 Parameter
 
-    @keywords                 (optional) : Array of XIMS::VLibKeyword objects to be associated to the VLibraryItem
+    @keywords                 (optional) : Array of XIMS::VLibKeyword objects
+                                           to be associated to the VLibraryItem
 
 =head3 Returns
 
-    @keywords   : Array of XIMS::VLibKeyword objects associated to the VLibraryItem
+    @keywords   : Array of XIMS::VLibKeyword objects associated to the
+                  VLibraryItem
     $boolean    : True or False for associating @keywords to the VLibraryItem
 
 =head3 Description
@@ -100,7 +104,8 @@ sub vlekeywords {
 
 =head3 Parameter
 
-    @subjects                 (optional) : Array of XIMS::VLibSubject objects to be associated to the VLibraryItem
+    @subjects                 (optional) : Array of XIMS::VLibSubject objects to be
+                                           associated to the VLibraryItem
 
 =head3 Returns
 
@@ -126,12 +131,15 @@ sub vlesubjects {
 
 =head3 Parameter
 
-    @publications             (optional) : Array of XIMS::VLibPublication objects to be associated to the VLibraryItem
+    @publications             (optional) : Array of XIMS::VLibPublication objects
+                                           to be associated to the VLibraryItem
 
 =head3 Returns
 
-    @publications   : Array of XIMS::VLibPublication objects associated to the VLibraryItem
-    $boolean        : True or False for associating @publications to the VLibraryItem
+    @publications   : Array of XIMS::VLibPublication objects associated to the
+                      VLibraryItem
+    $boolean        : True or False for associating @publications to the
+                      VLibraryItem
 
 =head3 Description
 
