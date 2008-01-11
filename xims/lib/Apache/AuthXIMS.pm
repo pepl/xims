@@ -416,17 +416,9 @@ sub get_logindata {
     XIMS::Debug( 5, "called" );
 
     my $r = shift;
-
     my $apr = Apache::Request->new($r);
 
-    # needed, because Apache::unescape_url() mangles its argument.
-    my $userid   = $apr->param('userid');
-    my $password = $apr->param('password');
-
-    # use Apache::unescape_url() instead of Apache::unescape_url_info() as the
-    # latter translates '+' to ' '. Usernames and passwords must not contain
-    # spaces, but may contain '+'.
-    return ( Apache::unescape_url($userid), Apache::unescape_url($password) );
+    return($apr->param('userid'), $apr->param('password'));
 }
 
 =head2 login_user($r, $dp)
