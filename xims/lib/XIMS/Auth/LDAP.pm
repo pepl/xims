@@ -13,7 +13,7 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module provides LDAP autentication for XIMS
+This module provides LDAP authentication for XIMS
 
 =head1 SUBROUTINES/METHODS
 
