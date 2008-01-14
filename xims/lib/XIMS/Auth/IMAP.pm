@@ -1,11 +1,11 @@
 
 =head1 NAME
 
-XIMS::Auth::IMAP -- A .... doing bla, bla, bla. (short)
+XIMS::Auth::IMAP -- A module providing IMAP authentication for XIMS
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
