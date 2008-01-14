@@ -1,11 +1,11 @@
 
 =head1 NAME
 
-XIMS::Auth::LDAP -- A .... doing bla, bla, bla. (short)
+XIMS::Auth::LDAP -- A module providing LDAP authentication for XIMS
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -13,7 +13,7 @@ $Id:$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module provides LDAP autentication for XIMS
 
 =head1 SUBROUTINES/METHODS
 
