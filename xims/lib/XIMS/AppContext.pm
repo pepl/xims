@@ -5,7 +5,7 @@ GetChildren -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -32,6 +32,7 @@ our @Fields = (
     'userlist', # used for privilege managment
     'object', # used for content-object-management
     'objectlist', # used for content-object-listings like search results or site maps
+    'objectlist_info', # used for objectlist metadata.
     'userobjectlist', # used for content-object-listings with user context
     'bookmarklist', # used for bookmarklisting during user/role-management
     'objecttypelist', # used for objecttypelisting during user/role- object-type priv management

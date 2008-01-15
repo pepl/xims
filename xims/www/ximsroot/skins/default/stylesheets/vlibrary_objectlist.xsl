@@ -7,7 +7,20 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns:exslt="http://exslt.org/common"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="exslt">
+
+  <xsl:variable name="xsl.order">
+    <xsl:choose>
+      <xsl:when test="$order='desc'">
+        <xsl:text>descending</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>ascending</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
 
     <xsl:variable name="subjectID">
         <xsl:choose>
@@ -26,18 +39,21 @@
                 <xsl:value-of select="/document/context/vlsubjectinfo/subject[id=$subjectID]/name"/>
             </xsl:when>
             <xsl:when test="$author">
-                <xsl:value-of select="$author_firstname"/>
+              <xsl:value-of select="/document/context/vlauthorinfo/author/firstname"/>
+              <xsl:text> </xsl:text>
+              <xsl:if test="string-length(/document/context/vlauthorinfo/author/middlename) &gt; 0">
+                <xsl:value-of select="/document/context/vlauthorinfo/author/middlename"/>
                 <xsl:text> </xsl:text>
-                <xsl:if test="string-length($author_middlename) &gt; 0">
-                    <xsl:value-of select="$author_middlename"/>
-                    <xsl:text> </xsl:text>
-                </xsl:if>
-                <xsl:value-of select="$author_lastname"/>
+              </xsl:if>
+              <xsl:value-of select="/document/context/vlauthorinfo/author/lastname"/>
+            </xsl:when>
+            <xsl:when test="$keyword">
+              <xsl:value-of select="/document/context/vlkeywordinfo/keyword/name"/>
             </xsl:when>
             <xsl:when test="$publication">
-                <xsl:value-of select="$publication_name"/>
+              <xsl:value-of select="/document/context/vlpublicationinfo/publication/name"/>
                 <xsl:text> (</xsl:text>
-                <xsl:value-of select="$publication_volume"/>
+                <xsl:value-of select="/document/context/vlpublicationinfo/publication/volume"/>
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <xsl:when test="$vls">
@@ -52,7 +68,16 @@
     <xsl:variable name="objectitems_count">
         <xsl:choose>
             <xsl:when test="$subject">
-                <xsl:value-of select="/document/context/vlsubjectinfo/subject[id=$subjectID]/object_count"/>
+                <xsl:value-of select="/document/context/vlsubjectinfo/subject/object_count"/>
+            </xsl:when>
+            <xsl:when test="$author">
+                <xsl:value-of select="/document/context/vlauthorinfo/author/object_count"/>
+            </xsl:when>
+            <xsl:when test="$keyword">
+                <xsl:value-of select="/document/context/vlkeywordinfo/keyword/object_count"/>
+            </xsl:when>
+            <xsl:when test="$publication">
+                <xsl:value-of select="/document/context/vlpublicationinfo/publication/object_count"/>
             </xsl:when>
             <xsl:when test="/document/context/session/searchresultcount != ''">
                 <xsl:value-of select="/document/context/session/searchresultcount"/>
@@ -66,54 +91,64 @@
     <xsl:variable name="objectitems_rowlimit" select="'10'"/>
     <xsl:variable name="totalpages" select="ceiling($objectitems_count div $objectitems_rowlimit)"/>
 
-<xsl:template match="/document/context/object">
-    <html>
+    <xsl:template match="/document/context/object">
+      <html>
         <xsl:call-template name="head_default"/>
         <body>
-            <xsl:call-template name="header">
-              <xsl:with-param name="createwidget">true</xsl:with-param>
-              <xsl:with-param name="parent_id">
-                <xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" />
-              </xsl:with-param>
+          <xsl:call-template name="header">
+            <xsl:with-param name="createwidget">true</xsl:with-param>
+            <xsl:with-param name="parent_id">
+              <xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" />
+            </xsl:with-param>
+          </xsl:call-template>
+
+          <div id="vlbody">
+            <h1 id="vlchildrenlisttitle">
+              <xsl:value-of select="$objectname"/>
+              <span style="font-size: small">
+                <xsl:call-template name="items_page_info"/>
+              </span>
+            </h1>
+
+            <xsl:call-template name="search_switch"/>
+            <xsl:call-template name="chronicle_switch" />
+            <xsl:call-template name="childrenlist"/>
+            
+            <xsl:variable name="pagenav.params">
+              <xsl:choose>
+                <xsl:when test="$subject">
+                  <xsl:value-of select="concat('?subject=1;subject_id=',$subjectID,';m=',$m)"/>
+                </xsl:when>
+                <xsl:when test="$author">
+                  <xsl:value-of select="concat('?author=1;author_id=',$author_id,';m=',$m)"/>
+                </xsl:when>
+                <xsl:when test="$keyword">
+                  <xsl:value-of select="concat('?keyword=1;keyword_id=',$keyword_id,';m=',$m)"/>
+                </xsl:when>
+                <xsl:when test="$publication">
+                  <xsl:value-of select="concat('?publication=1;publication_id=',$publication_id,';m=',$m)"/>
+                </xsl:when>
+                <xsl:when test="/document/context/session/searchresultcount != ''">
+                  <xsl:value-of select="concat('?vls=',$vls,';vlsearch=1;start_here=1;m=',$m)"/>
+                </xsl:when>
+              </xsl:choose>
+            </xsl:variable>
+
+            <xsl:call-template name="pagenav">
+              <xsl:with-param name="totalitems" select="$objectitems_count"/>
+              <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
+              <xsl:with-param name="currentpage" select="$page"/>
+              <xsl:with-param name="url"
+                              select="concat($xims_box
+                                            ,$goxims_content
+                                            ,$absolute_path
+                                            ,$pagenav.params)"/>
             </xsl:call-template>
-
-            <div id="vlbody">
-                <h1 id="vlchildrenlisttitle">
-                    <xsl:value-of select="$objectname"/>
-                    <span style="font-size: small">
-                        <xsl:call-template name="items_page_info"/>
-                    </span>
-                </h1>
-
-                <xsl:call-template name="search_switch"/>
-                <xsl:call-template name="chronicle_switch" />
-                <xsl:call-template name="childrenlist"/>
-
-                <xsl:choose>
-                    <xsl:when test="$subject">
-                        <xsl:call-template name="pagenav">
-                            <xsl:with-param name="totalitems" select="$objectitems_count"/>
-                            <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
-                            <xsl:with-param name="currentpage" select="$page"/>
-                            <xsl:with-param name="url"
-                                            select="concat($xims_box,$goxims_content,$absolute_path,'?subject=1;subject_id=',$subjectID,';m=',$m)"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <xsl:when test="/document/context/session/searchresultcount != ''">
-                        <xsl:call-template name="pagenav">
-                            <xsl:with-param name="totalitems" select="$objectitems_count"/>
-                            <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
-                            <xsl:with-param name="currentpage" select="$page"/>
-                            <xsl:with-param name="url"
-                                            select="concat($xims_box,$goxims_content,$absolute_path,'?vls=',$vls,';vlsearch=1;start_here=1;m=',$m)"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                </xsl:choose>
-            </div>
-            <script>setBg('vlchildrenlistitem');</script>
+          </div>
+          <script>setBg('vlchildrenlistitem');</script>
         </body>
-    </html>
-</xsl:template>
+      </html>
+    </xsl:template>
 
 <xsl:template name="cttobject.content_length">
     <xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>
@@ -136,11 +171,32 @@
         <xsl:choose>
             <xsl:when test="$most_recent ='1'">
                 <xsl:apply-templates select="children/object" mode="divlist">
-                    <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="descending"/>
+                    <xsl:sort select="concat( last_modification_timestamp/year
+                                             ,last_modification_timestamp/month
+                                             ,last_modification_timestamp/day
+                                             ,last_modification_timestamp/hour
+                                             ,last_modification_timestamp/minute
+                                             ,last_modification_timestamp/second)"
+                              order="descending"/>
                 </xsl:apply-templates>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:apply-templates select="children/object" mode="divlist"/>
+                <xsl:apply-templates select="children/object" mode="divlist">
+                  <xsl:sort select="exslt:node-set( concat( last_modification_timestamp/year
+                                                           ,last_modification_timestamp/month
+                                                           ,last_modification_timestamp/day
+                                                           ,last_modification_timestamp/hour
+                                                           ,last_modification_timestamp/minute
+                                                           ,last_modification_timestamp/second 
+                                                    ) 
+                                    ) [$sb='date']
+                                  | exslt:node-set( translate( title
+                                                              ,'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                                                              ,'abcdefghijklmnopqrstuvwxyz' 
+                                                    ) 
+                                    ) [$sb!='date']" 
+                            order="{$xsl.order}"/>
+                </xsl:apply-templates>
             </xsl:otherwise>
         </xsl:choose>
     </div>

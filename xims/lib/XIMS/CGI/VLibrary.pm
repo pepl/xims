@@ -158,9 +158,11 @@ sub event_subject {
         subject_id => $subjectid,
         limit      => $rowlimit,
         offset     => $offset,
-        order      => 'title'
+        order      => join( " ", $self->_decide_sorting($ctxt) ),
     );
     $ctxt->objectlist( \@objects );
+    $ctxt->objectlist_info(
+        $ctxt->object->this_propertyinfo( 'subject' => $subjectid ) );
     $ctxt->properties->application->style("objectlist");
 
     return 0;
@@ -352,9 +354,11 @@ sub event_keyword {
         keyword_id => $keywordid,
         limit      => $rowlimit,
         offset     => $offset,
-        order      => 'title'
+        order     => join(" ", $self->_decide_sorting($ctxt)),
     );
     $ctxt->objectlist( \@objects );
+    $ctxt->objectlist_info(
+        $ctxt->object->this_propertyinfo( 'keyword' => $keywordid ) );
     $ctxt->properties->application->style("objectlist");
 
     return 0;
@@ -608,6 +612,7 @@ sub event_author {
     my ( $self, $ctxt ) = @_;
 
     my $authorid = $self->param('author_id');
+
     unless ($authorid) {
         my $authorfirstname = XIMS::decode( $self->param('author_firstname') );
         my $authormiddlename =
@@ -652,11 +657,20 @@ sub event_author {
 
     $ctxt->properties->content->getformatsandtypes(1);
 
+   my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+    my $rowlimit = 10;
+    $offset = $offset * $rowlimit;
+
     my @objects = $ctxt->object->vlitems_byauthor_granted(
         author_id => $authorid,
-        order     => 'title'
+        limit      => $rowlimit,
+        offset     => $offset,
+        order     => join(" ", $self->_decide_sorting($ctxt)),
     );
     $ctxt->objectlist( \@objects );
+    $ctxt->objectlist_info(
+        $ctxt->object->this_propertyinfo( 'author' => $authorid ) );
     $ctxt->properties->application->style("objectlist");
 
     return 0;
@@ -958,11 +972,20 @@ sub event_publication {
 
     $ctxt->properties->content->getformatsandtypes(1);
 
+    my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+    my $rowlimit = 10;
+    $offset = $offset * $rowlimit;
+
     my @objects = $ctxt->object->vlitems_bypublication_granted(
         publication_id => $publicationid,
-        order          => 'title'
+        limit      => $rowlimit,
+        offset     => $offset,
+        order     => join(" ", $self->_decide_sorting($ctxt)),
     );
     $ctxt->objectlist( \@objects );
+    $ctxt->objectlist_info(
+        $ctxt->object->this_propertyinfo( 'publication' => $publicationid ) );
     $ctxt->properties->application->style("objectlist");
 
     return 0;
@@ -1490,6 +1513,17 @@ sub _update_or_publish {
         $ctxt->object->update();
     }
 
+}
+
+
+# we need the real columnname in this class. (but not in XIMS::CGI::Folder.)
+sub _decide_sorting {
+    my ( $self, $ctxt )  = @_;
+    my ( $sb,   $order ) = $self->SUPER::_decide_sorting($ctxt);
+
+    $sb = ( $sb eq 'date' ) ? 'last_modification_timestamp' : $sb;
+
+    return ( $sb, $order );
 }
 
 1;
