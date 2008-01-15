@@ -28,8 +28,6 @@ use XIMS::VLibraryItem;
 use XIMS::VLibKeyword;
 use XIMS::VLibSubject;
 
-use Data::Dumper;
-
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2    XIMS::VLibrary->new( %args )
@@ -130,6 +128,77 @@ sub vlsubjectinfo_granted {
         $sql, $self->document_id(), @userprivids ] );
 
     return $sidata;
+}
+
+=head2  this_propertyinfo
+
+=head3 Parameter
+
+one of:
+
+     'subject'     => $subjectid
+     'keyword'     => $keywordid
+     'author'      => $authorid
+     'publication' => $publicationid
+
+=head3 Returns
+
+A reference to an anonymous hash, e.g.:
+
+ $VAR1 = {
+           'vlauthorinfo' => {
+                               'author' => [
+                                             {
+                                               'firstname' => 'Leo',
+                                               'object_type' => undef,
+                                               'middlename' => undef,
+                                               'object_count' => '1',
+                                               'lastname' => 'XIII.',
+                                               'email' => undef,
+                                               'url' => undef,
+                                               'image_url' => undef,
+                                               'id' => '1642'
+                                             }
+                                           ]
+                             }
+         };
+
+=head3 Description
+
+Common method to generate and populate the single-entry
+vl(author|subject|keyword|publication)info nested data-structure used for
+event_(author|subject|keyword|publication).
+
+=cut
+
+sub this_propertyinfo {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    my %sql = (
+        'subject'     => 'SELECT a.id, a.name, a.description ',
+        'keyword'     => 'SELECT a.id, a.name, a.description ',
+        'author'      => 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, a.email, a.url, a.image_url ',
+        'publication' => 'SELECT a.id, a.name, a.isbn, a.issn, a.volume, a.document_id, a.url, a.image_url ',
+    );
+
+    foreach (keys(%sql)) {
+        $sql{$_} .= ", (SELECT COUNT(*) FROM cilib_${_}map b WHERE b.${_}_id = a.id) AS object_count "
+                 .  "FROM cilib_${_}s a WHERE a.id = ?";
+    }
+
+    my ( $key, $value ) = each %args;
+    if ( $sql{$key} ) {
+        my $pidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql{$key}, $value ] );
+        my $rv = { "vl${key}info" => {"$key" => $pidata} };
+
+        return $rv;
+    }
+    else {
+        XIMS::Debug( 1, "Wrong Parameter!" );
+        return;
+    }
 }
 
 sub vlkeywordinfo {
@@ -728,7 +797,7 @@ sub _vlitems_byproperty {
     my $propertyid = delete $args{ $property . "_id" };
     return unless $propertyid;
 
-    # think of fetching the whole object data here for performance
+    # TODO think of fetching the whole object data here for performance
     my $sql =
         'SELECT d.id AS id FROM cilib_'
       . $property
@@ -756,7 +825,8 @@ sub _vlitems_byproperty {
         $key = 'id';
     }
 
-    # should be grepped from event/resource type specific list in XIMS::Names
+    # TODO should be grepped from event/resource type specific list in
+    # XIMS::Names
     my @default_properties =
       grep { $_ ne 'body' and $_ ne 'binfile' }
       @{ XIMS::Names::property_interface_names('Object') };

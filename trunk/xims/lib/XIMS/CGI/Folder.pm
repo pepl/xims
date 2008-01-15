@@ -5,7 +5,7 @@ XIMS::CGI::Folder -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -63,25 +63,7 @@ sub event_default {
 
     $ctxt->properties->content->getformatsandtypes( 1 );
 
-    my $defaultsortby = $ctxt->object->attribute_by_key( 'defaultsortby' );
-    my $defaultsort = $ctxt->object->attribute_by_key( 'defaultsort' );
-
-    # maybe put that into config values
-    $defaultsortby ||= 'position';
-    $defaultsort ||= 'asc';
-
-    unless ( $self->param('sb') and $self->param('order') ) {
-        $self->param( 'sb', $defaultsortby );
-        $self->param( 'order', $defaultsort );
-        $self->param( 'defsorting', 1 ); # tell stylesheets not to
-                                         # pass 'sb' and 'order' params
-                                         # when linking to children
-    }
-    # The params override attribute and default values
-    else {
-        $defaultsortby = $self->param('sb');
-        $defaultsort = $self->param('order');
-    }
+    my ($defaultsortby, $defaultsort) = $self->_decide_sorting($ctxt);
 
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
@@ -95,7 +77,8 @@ sub event_default {
     $ctxt->properties->content->getchildren->offset( $offset );
     $ctxt->properties->content->getchildren->order( $order );
 
-    # This prevents the loading of XML::Filter::CharacterChunk and thus saving some ms...
+    # This prevents the loading of XML::Filter::CharacterChunk and thus saving
+    # some ms...
     $ctxt->properties->content->escapebody( 1 );
 
     return 0;
@@ -151,6 +134,32 @@ sub event_store {
 
 # END RUNTIME EVENTS
 # #############################################################################
+
+sub _decide_sorting {
+    my ( $self, $ctxt ) = @_;
+    my $defaultsortby = $ctxt->object->attribute_by_key('defaultsortby');
+    my $defaultsort   = $ctxt->object->attribute_by_key('defaultsort');
+
+    # maybe put that into config values
+    $defaultsortby ||= 'position';
+    $defaultsort   ||= 'asc';
+
+    unless ( $self->param('sb') and $self->param('order') ) {
+        $self->param( 'sb',         $defaultsortby );
+        $self->param( 'order',      $defaultsort );
+        $self->param( 'defsorting', 1 ); # tell stylesheets not to pass 'sb'
+                                         # and 'order' params when linking to
+                                         # children
+    }
+
+    # The params override attribute and default values
+    else {
+        $defaultsortby = $self->param('sb');
+        $defaultsort   = $self->param('order');
+    }
+
+    return ( $defaultsortby, $defaultsort );
+}
 
 1;
 

@@ -110,6 +110,15 @@ sub prepare {
     }
 
     if ( $ctxt->objectlist() ) {
+
+        if ( defined $ctxt->objectlist_info() ) {
+            while ( my ( $key, $value ) =
+                each( %{ $ctxt->objectlist_info() } ) )
+            {
+                $doc_data->{context}->{$key} = $value;
+            }
+        }
+
         if ( scalar( @{ $ctxt->objectlist() } ) > 0 ) {
             if ( $ctxt->properties->content->objectlistpassthru() != 1 ) {
                 foreach my $child ( @{ $ctxt->objectlist() } ) {
