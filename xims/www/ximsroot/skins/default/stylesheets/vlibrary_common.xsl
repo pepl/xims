@@ -37,6 +37,8 @@
     <xsl:param name="publication_id"/>
     <xsl:param name="publication_name"/>
     <xsl:param name="publication_volume"/>
+    <xsl:param name="keyword"/>
+    <xsl:param name="keyword_id"/>
     <xsl:param name="most_recent"/>
     <xsl:param name="chronicle_from" />
     <xsl:param name="chronicle_to" />

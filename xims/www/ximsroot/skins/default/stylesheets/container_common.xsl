@@ -9,9 +9,20 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-
+<xsl:param name="onepage" select="0"/>
+<xsl:param name="pagerowlimit" select="$searchresultrowlimit"/>
 <xsl:variable name="pagesperpagenav" select="10" />
-<xsl:variable name="totalpages" select="ceiling(/document/context/object/children/@totalobjects div $searchresultrowlimit)"/>
+
+<xsl:variable name="totalpages">
+  <xsl:choose>
+    <xsl:when test="$onepage &gt; 0">
+      <xsl:number value="1"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:number value="ceiling(/document/context/object/children/@totalobjects div $pagerowlimit)"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
 
 <!-- save those strings in variables as they are called per object in object/children -->
 <xsl:variable name="l_location" select="$i18n/l/location"/>
@@ -81,15 +92,15 @@
     <xsl:if test="$totalpages &gt; 1">
         <div id="pagenav">
             <div>
-                <xsl:if test="$currentpage &gt; 1">
-                    <a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
-                </xsl:if>
-                <xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
-                    |
-                </xsl:if>
-                <xsl:if test="$currentpage &lt; $totalpages">
-                    <a href="{$url};page={number($currentpage)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
-                </xsl:if>
+              <xsl:if test="$currentpage &gt; 1">
+                <a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/></a>
+              </xsl:if>
+              <xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
+                |
+              </xsl:if>
+              <xsl:if test="$currentpage &lt; $totalpages">
+                <a href="{$url};page={number($currentpage)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/></a>
+              </xsl:if>
             </div>
             <div>
                 <xsl:call-template name="pageslinks">
@@ -104,53 +115,109 @@
 </xsl:template>
 
 <xsl:template name="pageslinks">
-    <xsl:param name="page"/>
-    <xsl:param name="current"/>
-    <xsl:param name="total"/>
-    <xsl:param name="url"/>
+  <xsl:param name="page"/>
+  <xsl:param name="current"/>
+  <xsl:param name="total"/>
+  <xsl:param name="url"/>
 
+  <xsl:variable name="first_in_list">
     <xsl:choose>
-        <xsl:when test="$page = $current">
-            <strong><a href="{$url};page={$page}"><xsl:value-of select="$page" /></a></strong>
-        </xsl:when>
-        <xsl:otherwise>
-            <a href="{$url};page={$page}"><xsl:value-of select="$page" /></a>
-        </xsl:otherwise>
+      <xsl:when test="1 &gt; ( $current - $pagesperpagenav div 2 )">
+        <xsl:number value="1"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:number value="$current - $pagesperpagenav div 2"/>
+      </xsl:otherwise>
     </xsl:choose>
+  </xsl:variable>
 
+  <xsl:variable name="last_in_list">
+    <xsl:choose>
+      <xsl:when test="($first_in_list + $pagesperpagenav ) &gt; $total">
+        <xsl:number value="$total"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:number value="$first_in_list + $pagesperpagenav "/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
+  <xsl:if test="$page = $first_in_list - 1">
+    <a href="{$url};page=1">1</a> ...
+  </xsl:if>
+  
+  <xsl:if test="$page &gt;= $first_in_list">
+    <xsl:choose>
+      <xsl:when test="$page = $current">
+        <strong>
+          <a href="{$url};page={$page}">
+            <xsl:value-of select="$page" />
+          </a>
+        </strong>
+      </xsl:when>
+      
+      <xsl:when test="$page &lt;= $last_in_list">
+        <a href="{$url};page={$page}">
+          <xsl:value-of select="$page" />
+        </a>
+      </xsl:when>
+    </xsl:choose>
+    
     <xsl:text> </xsl:text>
+  </xsl:if>
+  
+  <xsl:if test="$page &lt;= $last_in_list">
+    <xsl:call-template name="pageslinks">
+      <xsl:with-param name="page" select="$page + 1" />
+      <xsl:with-param name="current" select="$current" />
+      <xsl:with-param name="total" select="$total" />
+      <xsl:with-param name="url" select="$url" />
+    </xsl:call-template>
+  </xsl:if>
 
-    <xsl:if test="$page &lt; $total and $page &lt; ($current + $pagesperpagenav)">
-        <xsl:call-template name="pageslinks">
-            <xsl:with-param name="page" select="$page + 1" />
-            <xsl:with-param name="current" select="$current" />
-            <xsl:with-param name="total" select="$total" />
-            <xsl:with-param name="url" select="$url" />
-        </xsl:call-template>
-    </xsl:if>
-
-    <xsl:if test="$page = ($current + $pagesperpagenav)">
-    ...
-    </xsl:if>
-
+  <xsl:if test="$page = $last_in_list + 1 and $last_in_list &lt; $total">
+    ... <a href="{$url};page={$total}">
+    <xsl:value-of select="$total"/>
+  </a>
+  </xsl:if>
+  
 </xsl:template>
 
 <xsl:template name="pagenavtable">
-    <xsl:variable name="navurl"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:variable>
-    <xsl:if test="$totalpages &gt; 1">
-        <table style="margin-left:5px; margin-right:10px; margin-top: 10px; margin-bottom: 0px; width: 99%; padding: 3px; border: thin solid #C1C1C1; background: #F9F9F9 font-size: small;" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-                <td>
-                    <xsl:call-template name="pagenav">
-                        <xsl:with-param name="totalitems" select="/document/context/object/children/@totalobjects"/>
-                        <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
-                        <xsl:with-param name="currentpage" select="$page"/>
-                        <xsl:with-param name="url" select="$navurl"/>
-                    </xsl:call-template>
-                </td>
-            </tr>
-        </table>
+  <xsl:variable name="navurl">
+    <xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?m=',$m)"/>
+    <xsl:if test="$defsorting != 1">
+      <xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/>
     </xsl:if>
+    <xsl:if test="$pagerowlimit != $searchresultrowlimit">
+      <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit)"/>
+    </xsl:if>
+  </xsl:variable>
+  <xsl:if test="$totalpages &gt; 1">
+    <table style="margin-left:5px; 
+                  margin-right:10px; 
+                  margin-top: 10px; 
+                  margin-bottom: 0px; 
+                  width: 99%;
+                  padding: 3px; 
+                  border: thin solid #C1C1C1; 
+                  background: #F9F9F9 
+                  font-size: small;" 
+           border="0" 
+           cellpadding="0" 
+           cellspacing="0">
+      <tr>
+        <td>
+          <xsl:call-template name="pagenav">
+            <xsl:with-param name="totalitems" select="/document/context/object/children/@totalobjects"/>
+            <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
+            <xsl:with-param name="currentpage" select="$page"/>
+            <xsl:with-param name="url" select="$navurl"/>
+          </xsl:call-template>
+        </td>
+      </tr>
+    </table>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template name="childrentable">
@@ -802,6 +869,17 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
         <xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>
         <img src="{$ximsroot}images/spacer_white.gif" width="9" border="0" alt="" />
     </xsl:if>
+</xsl:template>
+
+<xsl:template name="tr-pagerowlimit-edit">
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n/l/PageRowLimit"/></td>
+        <td colspan="2">
+            <input tabindex="35" type="text" name="pagerowlimit" size="2" maxlength="2" value="{attributes/pagerowlimit}" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>
+        </td>
+    </tr>
 </xsl:template>
 
 </xsl:stylesheet>

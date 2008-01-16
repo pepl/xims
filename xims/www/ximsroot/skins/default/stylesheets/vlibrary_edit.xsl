@@ -20,6 +20,7 @@
                     <table border="0" width="98%">
                         <xsl:call-template name="tr-locationtitle-edit"/>
                         <xsl:call-template name="tr-stylesheet-edit"/>
+                        <xsl:call-template name="tr-pagerowlimit-edit"/>
                         <xsl:call-template name="markednew"/>
                     </table>
                     <xsl:call-template name="saveedit"/>
@@ -35,6 +36,7 @@
 
 
 <xsl:template name="tr-stylesheet-edit">
+
 <xsl:variable name="parentid" select="parents/object[/document/context/object/@parent_id=@document_id]/@id"/>
 <tr>
     <td valign="top"><xsl:value-of select="$i18n/l/Stylesheet"/></td>
@@ -47,5 +49,17 @@
     </td>
 </tr>
 </xsl:template>
+
+<xsl:template name="tr-pagerowlimit-edit">
+    <tr>
+        <td valign="top"><xsl:value-of select="$i18n/l/PageRowLimit"/></td>
+        <td colspan="2">
+            <input tabindex="35" type="text" name="pagerowlimit" size="2" maxlength="2" value="{attributes/pagerowlimit}" class="text"/>
+            <xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>
+        </td>
+    </tr>
+</xsl:template>
+
 
 </xsl:stylesheet>

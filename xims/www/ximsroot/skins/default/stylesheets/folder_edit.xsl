@@ -20,6 +20,7 @@
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>
+                    <xsl:call-template name="tr-pagerowlimit-edit"/>
                     <xsl:call-template name="defaultsorting"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
@@ -30,4 +31,5 @@
     </body>
 </html>
 </xsl:template>
+
 </xsl:stylesheet>
