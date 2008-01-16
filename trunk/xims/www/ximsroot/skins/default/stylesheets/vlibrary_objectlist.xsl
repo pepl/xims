@@ -87,9 +87,17 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
-
-    <xsl:variable name="objectitems_rowlimit" select="'10'"/>
-    <xsl:variable name="totalpages" select="ceiling($objectitems_count div $objectitems_rowlimit)"/>
+    
+    <xsl:variable name="totalpages">
+      <xsl:choose>
+        <xsl:when test="$onepage &gt; 0">
+          <xsl:number value="1"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:number value="ceiling($objectitems_count div $pagerowlimit)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
     <xsl:template match="/document/context/object">
       <html>
@@ -113,38 +121,47 @@
             <xsl:call-template name="search_switch"/>
             <xsl:call-template name="chronicle_switch" />
             <xsl:call-template name="childrenlist"/>
-            
-            <xsl:variable name="pagenav.params">
-              <xsl:choose>
-                <xsl:when test="$subject">
-                  <xsl:value-of select="concat('?subject=1;subject_id=',$subjectID,';m=',$m)"/>
-                </xsl:when>
-                <xsl:when test="$author">
-                  <xsl:value-of select="concat('?author=1;author_id=',$author_id,';m=',$m)"/>
-                </xsl:when>
-                <xsl:when test="$keyword">
-                  <xsl:value-of select="concat('?keyword=1;keyword_id=',$keyword_id,';m=',$m)"/>
-                </xsl:when>
-                <xsl:when test="$publication">
-                  <xsl:value-of select="concat('?publication=1;publication_id=',$publication_id,';m=',$m)"/>
-                </xsl:when>
-                <xsl:when test="/document/context/session/searchresultcount != ''">
-                  <xsl:value-of select="concat('?vls=',$vls,';vlsearch=1;start_here=1;m=',$m)"/>
-                </xsl:when>
-              </xsl:choose>
-            </xsl:variable>
 
-            <xsl:call-template name="pagenav">
-              <xsl:with-param name="totalitems" select="$objectitems_count"/>
-              <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
-              <xsl:with-param name="currentpage" select="$page"/>
-              <xsl:with-param name="url"
-                              select="concat($xims_box
-                                            ,$goxims_content
-                                            ,$absolute_path
-                                            ,$pagenav.params)"/>
-            </xsl:call-template>
+            <xsl:if test="$totalpages &gt; 1">
+              <xsl:variable name="pagenav.params">
+                <xsl:choose>
+                  <xsl:when test="$subject">
+                    <xsl:value-of select="concat('?subject=1;subject_id=',$subjectID,';m=',$m)"/>
+                  </xsl:when>
+                  <xsl:when test="$author">
+                    <xsl:value-of select="concat('?author=1;author_id=',$author_id,';m=',$m)"/>
+                  </xsl:when>
+                  <xsl:when test="$keyword">
+                    <xsl:value-of select="concat('?keyword=1;keyword_id=',$keyword_id,';m=',$m)"/>
+                  </xsl:when>
+                  <xsl:when test="$publication">
+                    <xsl:value-of select="concat('?publication=1;publication_id=',$publication_id,';m=',$m)"/>
+                  </xsl:when>
+                  <xsl:when test="/document/context/session/searchresultcount != ''">
+                    <xsl:value-of select="concat('?vls=',$vls,';vlsearch=1;start_here=1;m=',$m)"/>
+                  </xsl:when>
+                </xsl:choose>
+                <xsl:if test="$pagerowlimit != $searchresultrowlimit">
+                  <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit)"/>
+                </xsl:if>
+              </xsl:variable>
+              
+              <xsl:call-template name="pagenav">
+                <xsl:with-param name="totalitems" select="$objectitems_count"/>
+                <xsl:with-param name="itemsperpage" select="$pagerowlimit"/>
+                <xsl:with-param name="currentpage" select="$page"/>
+                <xsl:with-param name="url"
+                                select="concat($xims_box
+                                        ,$goxims_content
+                                        ,$absolute_path
+                                        ,$pagenav.params)"/>
+              </xsl:call-template>
+            </xsl:if>
           </div>
+
+          <table align="center" width="98.7%" class="footer">
+            <xsl:call-template name="footer"/>
+          </table>
           <script>setBg('vlchildrenlistitem');</script>
         </body>
       </html>
@@ -155,15 +172,16 @@
 </xsl:template>
 
 <xsl:template name="items_page_info">
-    (<xsl:value-of select="$objectitems_count"/>
-    <xsl:text> </xsl:text>
-    <xsl:call-template name="decide_plural"/>
-    <xsl:if test="$subject">
-        <xsl:text>, </xsl:text>
-        <xsl:value-of select="$i18n_vlib/l/Page"/>
-        <xsl:text> </xsl:text><xsl:value-of select="$page"/>/<xsl:value-of select="$totalpages"/>
-    </xsl:if>
-    <xsl:text>)</xsl:text>
+  (<xsl:value-of select="$objectitems_count"/>
+  <xsl:text> </xsl:text>
+  <xsl:call-template name="decide_plural"/>
+  
+  <xsl:if test="$totalpages &gt; 1">
+    <xsl:text>, </xsl:text>
+    <xsl:value-of select="$i18n_vlib/l/Page"/>
+    <xsl:text> </xsl:text><xsl:value-of select="$page"/>/<xsl:value-of select="$totalpages"/>
+  </xsl:if>
+  <xsl:text>)</xsl:text>
 </xsl:template>
 
 <xsl:template name="childrenlist">

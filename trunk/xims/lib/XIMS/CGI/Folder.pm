@@ -30,23 +30,18 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 # GLOBAL SETTINGS
 
 sub registerEvents {
-    XIMS::Debug( 5, "called");
+    XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->SUPER::registerEvents(
         (
-          'create',
-          'edit',
-          'store',
-          'obj_acllist',
-          'obj_aclgrant',
-          'obj_aclrevoke',
-          'publish',
-          'publish_prompt',
-          'unpublish',
-          'test_wellformedness',
-          @_
-          )
-        );
+            'create',       'edit',
+            'store',        'obj_acllist',
+            'obj_aclgrant', 'obj_aclrevoke',
+            'publish',      'publish_prompt',
+            'unpublish',    'test_wellformedness',
+            @_
+        )
+    );
 }
 
 # END GLOBAL SETTINGS
@@ -59,27 +54,25 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    return 0 if $self->SUPER::event_default( $ctxt );
+    return 0 if $self->SUPER::event_default($ctxt);
 
-    $ctxt->properties->content->getformatsandtypes( 1 );
+    $ctxt->properties->content->getformatsandtypes(1);
 
-    my ($defaultsortby, $defaultsort) = $self->_decide_sorting($ctxt);
+    my $display_params = $self->get_display_params($ctxt);
 
-    my $offset = $self->param('page');
-    $offset = $offset - 1 if $offset;
-    my $rowlimit = XIMS::SEARCHRESULTROWLIMIT(); # Create XIMS::CHILDRENROWLIMIT for that?
-    $offset = $offset * $rowlimit;
+    $ctxt->properties->content->getchildren->limit( $display_params->{limit} );
+    $ctxt->properties->content->getchildren->offset(
+        $display_params->{offset} );
+    $ctxt->properties->content->getchildren->order( $display_params->{order} );
 
-    my %sortbymap = ( date => 'last_modification_timestamp', position => 'position', title => 'title' );
-    my $order = $sortbymap{$defaultsortby} . ' ' . $defaultsort;
-
-    $ctxt->properties->content->getchildren->limit( $rowlimit );
-    $ctxt->properties->content->getchildren->offset( $offset );
-    $ctxt->properties->content->getchildren->order( $order );
+    # not needed ATM, kept for reference.
+    #     if ( defined $display_params->{style} ) {
+    #         $ctxt->properties->application->style($display_params->{style});
+    #     }
 
     # This prevents the loading of XML::Filter::CharacterChunk and thus saving
     # some ms...
-    $ctxt->properties->content->escapebody( 1 );
+    $ctxt->properties->content->escapebody(1);
 
     return 0;
 }
@@ -88,22 +81,24 @@ sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    $self->expand_attributes( $ctxt );
+    $self->expand_attributes($ctxt);
 
-    return $self->SUPER::event_edit( $ctxt );
+    return $self->SUPER::event_edit($ctxt);
 }
 
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    return 0 unless $self->init_store_object( $ctxt )
-                    and defined $ctxt->object();
+    return 0
+      unless $self->init_store_object($ctxt)
+      and defined $ctxt->object();
 
     my $object = $ctxt->object();
 
-    my $autoindex  = $self->param( 'autoindex' );
-    if ( defined $autoindex and $autoindex eq 'false') {
+    my $autoindex = $self->param('autoindex');
+
+    if ( defined $autoindex and $autoindex eq 'false' ) {
         XIMS::Debug( 6, "autoindex: $autoindex" );
         $object->attribute( autoindex => '0' );
     }
@@ -111,31 +106,68 @@ sub event_store {
         $object->attribute( autoindex => '1' );
     }
 
-    my $defaultsortby = $self->param( 'defaultsortby' );
+    my $pagerowlimit = $self->param('pagerowlimit');
+
+    #empty or up to 2 figures.
+    if ( defined $pagerowlimit and $pagerowlimit =~ /^\d{0,2}$/ ) {
+        XIMS::Debug( 6, "pagerowlimit: $pagerowlimit" );
+        $object->attribute( pagerowlimit => $pagerowlimit );
+    }
+
+    my $defaultsortby = $self->param('defaultsortby');
+
     if ( defined $defaultsortby ) {
         XIMS::Debug( 6, "defaultsortby: $defaultsortby" );
-        my $currentvalue = $object->attribute_by_key( 'defaultsortby' );
+        my $currentvalue = $object->attribute_by_key('defaultsortby');
         if ( $defaultsortby ne 'position' or defined $currentvalue ) {
             $object->attribute( defaultsortby => $defaultsortby );
         }
     }
 
-    my $defaultsort = $self->param( 'defaultsort' );
+    my $defaultsort = $self->param('defaultsort');
+
     if ( defined $defaultsort ) {
         XIMS::Debug( 6, "defaultsort: $defaultsort" );
-        my $currentvalue = $object->attribute_by_key( 'defaultsort' );
+        my $currentvalue = $object->attribute_by_key('defaultsort');
         if ( $defaultsort ne 'asc' or defined $currentvalue ) {
             $object->attribute( defaultsort => $defaultsort );
         }
     }
 
-    return $self->SUPER::event_store( $ctxt );
+    return $self->SUPER::event_store($ctxt);
 }
 
 # END RUNTIME EVENTS
 # #############################################################################
 
-sub _decide_sorting {
+=head2   get_display_params()
+
+=head3 Parameter
+
+    $ctxt: AppContext object.
+
+=head3 Returns
+
+A reference to a hash:
+
+    {
+        offset => $offset,
+        limit  => $limit,
+        order  => $order,
+        style  => $style,
+    }
+
+=head3 Description
+    
+    my $display_params = $self->get_display_params($ctxt);
+
+A common method to get the values for display-styles (ordering, pagination,
+custom stylesheet names) merged from defaults, container attributes, and
+CGI-parameters.
+
+=cut
+
+sub get_display_params {
     my ( $self, $ctxt ) = @_;
     my $defaultsortby = $ctxt->object->attribute_by_key('defaultsortby');
     my $defaultsort   = $ctxt->object->attribute_by_key('defaultsort');
@@ -145,11 +177,11 @@ sub _decide_sorting {
     $defaultsort   ||= 'asc';
 
     unless ( $self->param('sb') and $self->param('order') ) {
-        $self->param( 'sb',         $defaultsortby );
-        $self->param( 'order',      $defaultsort );
-        $self->param( 'defsorting', 1 ); # tell stylesheets not to pass 'sb'
-                                         # and 'order' params when linking to
-                                         # children
+        $self->param( 'sb',    $defaultsortby );
+        $self->param( 'order', $defaultsort );
+        $self->param( 'defsorting', 1 );    # tell stylesheets not to pass
+                                            # 'sb' and 'order' params when
+                                            # linking to children
     }
 
     # The params override attribute and default values
@@ -158,7 +190,44 @@ sub _decide_sorting {
         $defaultsort   = $self->param('order');
     }
 
-    return ( $defaultsortby, $defaultsort );
+    my %sortbymap = (
+        date     => 'last_modification_timestamp',
+        position => 'position',
+        title    => 'title'
+    );
+
+    my $order = $sortbymap{$defaultsortby} . ' ' . $defaultsort;
+
+    my $style = $self->param('style');
+
+    my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+
+    my $limit;
+    if ( defined $self->param('onepage') or defined $style ) {
+        $limit = undef;
+    }
+    else {
+        $limit = $self->param('pagerowlimit');
+        unless ($limit) {
+            $limit ||= $ctxt->object->attribute_by_key('pagerowlimit');
+            $limit ||= XIMS::SEARCHRESULTROWLIMIT();
+
+            # set for stylesheet consumation;
+            $self->param( 'searchresultrowlimit', $limit );
+        }
+        $offset ||= 0;
+        $offset = $offset * $limit;
+    }
+
+    return (
+        {
+            offset => $offset,
+            limit  => $limit,
+            order  => $order,
+            style  => $style,
+        }
+    );
 }
 
 1;

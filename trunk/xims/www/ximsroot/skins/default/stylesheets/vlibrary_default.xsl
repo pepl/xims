@@ -22,9 +22,11 @@
         <html>
             <xsl:call-template name="head_default"/>
             <body>
-                <xsl:call-template name="header">
+              <xsl:call-template name="header">
                     <xsl:with-param name="createwidget">true</xsl:with-param>
-                    <xsl:with-param name="parent_id"><xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" /></xsl:with-param>
+                    <xsl:with-param name="parent_id">
+                      <xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" />
+                    </xsl:with-param>
                 </xsl:call-template>
                 <div id="vlbody">
                     <h1><xsl:value-of select="title"/></h1>
@@ -37,6 +39,9 @@
                     <xsl:call-template name="chronicle_switch" />
                     <xsl:apply-templates select="/document/context/vlsubjectinfo"/>
                 </div>
+                <table align="center" width="98.7%" class="footer">
+                  <xsl:call-template name="footer"/>
+                </table>
                 <script>setBg('vliteminfo');</script>
             </body>
         </html>

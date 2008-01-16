@@ -27,6 +27,7 @@
                     <xsl:call-template name="tr-abstract-edit"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>
+                    <xsl:call-template name="tr-pagerowlimit-edit"/>
                     <xsl:call-template name="defaultsorting"/>
                     <!--<xsl:call-template name="defaultprivmask-edit"/>-->
                     <xsl:call-template name="tr-deptportlets-edit"/>

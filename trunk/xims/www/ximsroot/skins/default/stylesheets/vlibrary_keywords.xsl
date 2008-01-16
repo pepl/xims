@@ -37,6 +37,9 @@
                     <xsl:call-template name="chronicle_switch" />
                     <xsl:apply-templates select="/document/context/vlkeywordinfo"/>
                 </div>
+                <table align="center" width="98.7%" class="footer">
+                  <xsl:call-template name="footer"/>
+                </table>
                 <script>setBg('vliteminfo');</script>
             </body>
         </html>
