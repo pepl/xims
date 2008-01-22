@@ -53,17 +53,15 @@ sub registerEvents {
           keyword_store
           keyword_edit
           keyword_show
-          keyword_delete_prompt
-          keyword_delete
           authors
           author
           author_store
           author_edit
           author_show
-          author_delete_prompt
-          author_delete
           publications
           publication
+          property_delete_prompt
+          property_delete
           vlsearch
           vlchronicle
           most_recent
@@ -518,82 +516,6 @@ sub event_keyword_store {
     return 0;
 }
 
-sub event_keyword_delete_prompt {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    # operation control section
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    $ctxt->properties->application->style('keyword_delete_prompt');
-
-    if ( $self->object_locked($ctxt) ) {
-        XIMS::Debug( 3, "Attempt to edit locked object" );
-        $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
-    }
-    else {
-        if ( $object->lock() ) {
-            XIMS::Debug( 4, "lock set" );
-            $ctxt->session->message(
-"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
-            );
-        }
-        else {
-            XIMS::Debug( 3, "lock not set" );
-        }
-    }
-
-    return 0;
-}
-
-sub event_keyword_delete {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    XIMS::Debug( 6, "unlocking object" );
-    $object->unlock();
-
-    my $id = $self->param('vlkeyword_id');
-    my $vlibkeyword;
-
-    if ( defined $id and $id ) {
-        $vlibkeyword = XIMS::VLibKeyword->new(
-            id          => $id,
-            document_id => $object->document_id(),
-        );
-    }
-
-    if ( defined $vlibkeyword and $vlibkeyword->delete ) {
-        _update_or_publish($ctxt);    # update the VLibrary's timestamps
-        XIMS::Debug( 6, "VLibKeyword $id: deleted!" );
-        return $self->simple_response( '200 OK', "VLibKeyword deleted." );
-    }
-    else {
-        XIMS::Debug( 3, "VLibKeyword $id: deletion failed!" );
-        return $self->simple_response( '409 CONFLICT', "VLibKeyword $id: deletion failed!" );
-    }
-}
-
 ##############################################################################
 # end keywords, begin authors
 ##############################################################################
@@ -852,82 +774,6 @@ sub event_author_store {
     return 0;
 }
 
-sub event_author_delete_prompt {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    # operation control section
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    $ctxt->properties->application->style('author_delete_prompt');
-
-    if ( $self->object_locked($ctxt) ) {
-        XIMS::Debug( 3, "Attempt to edit locked object" );
-        $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
-    }
-    else {
-        if ( $object->lock() ) {
-            XIMS::Debug( 4, "lock set" );
-            $ctxt->session->message(
-"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
-            );
-        }
-        else {
-            XIMS::Debug( 3, "lock not set" );
-        }
-    }
-
-    return 0;
-}
-
-sub event_author_delete {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    XIMS::Debug( 6, "unlocking object" );
-    $object->unlock();
-
-    my $id = $self->param('vlauthor_id');
-    my $vlibauthor;
-
-    if ( defined $id and $id ) {
-        $vlibauthor = XIMS::VLibAuthor->new(
-            id          => $id,
-            document_id => $object->document_id(),
-        );
-    }
-
-    if ( defined $vlibauthor and $vlibauthor->delete ) {
-        _update_or_publish($ctxt);    # update the VLibrary's timestamps
-        XIMS::Debug( 6, "VLibAuthor $id: deleted!" );
-        return $self->simple_response( '200 OK', "VLibAuthor deleted." );
-    }
-    else {
-        XIMS::Debug( 3, "VLibAuthor $id: deletion failed!" );
-        return $self->simple_response( '409 CONFLICT', "VLibAuthor $id: deletion failed!" );
-    }
-}
-
 ##############################################################################
 # end authors, begin publications
 ##############################################################################
@@ -993,6 +839,97 @@ sub event_publication {
 ##############################################################################
 # end publications
 ##############################################################################
+
+
+sub event_property_delete_prompt {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+
+    # operation control section
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
+    {
+        return $self->event_access_denied($ctxt);
+    }
+
+    $ctxt->properties->application->style('property_delete_prompt');
+
+    if ( $self->object_locked($ctxt) ) {
+        XIMS::Debug( 3, "Attempt to edit locked object" );
+        $self->sendError( $ctxt,
+                "This object is locked by "
+              . $object->locker->firstname() . " "
+              . $object->locker->lastname()
+              . " since "
+              . $object->locked_time()
+              . ". Please try again later." );
+    }
+    else {
+        if ( $object->lock() ) {
+            XIMS::Debug( 4, "lock set" );
+            $ctxt->session->message(
+"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
+            );
+        }
+        else {
+            XIMS::Debug( 3, "lock not set" );
+        }
+    }
+
+    return 0;
+}
+
+sub event_property_delete {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
+    {
+        return $self->event_access_denied($ctxt);
+    }
+
+    XIMS::Debug( 6, "unlocking object" );
+    $object->unlock();
+
+    my $id = $self->param('property_id');
+
+    if ( $self->param('property') !~ /^(subject|author|publication|keyword)$/ )
+    {
+        return $self->simple_response(
+            '400 BAD REQUEST',
+            "ERROR: Property must be one of: subject, author, publication, or keyword"
+        );
+    }
+
+    my $class = "XIMS::VLib" . ucfirst( $self->param('property') );
+
+    my $vlibproperty;
+
+    if ( defined $id and $id ) {
+        $vlibproperty = $class->new(
+            id          => $id,
+            document_id => $object->document_id(),
+        );
+    }
+
+    if ( defined $vlibproperty and $vlibproperty->delete ) {
+        _update_or_publish($ctxt);    # update the VLibrary's timestamps
+        XIMS::Debug( 6, "$class $id: deleted!" );
+        return $self->simple_response( '200 OK', "$class deleted." );
+    }
+    else {
+        XIMS::Debug( 3, "$class $id: deletion failed!" );
+        return $self->simple_response( '409 CONFLICT',
+            "ERROR: $class $id: deletion failed!" );
+    }
+}
+
+
 
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
