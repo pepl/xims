@@ -100,10 +100,13 @@ sub vlsubjectinfo {
     my $sql = 'SELECT s.name, s.id, s.description, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp '
             . 'FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c '
             . 'WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = s.document_id AND d.parent_id = ? '
-            . 'GROUP BY s.name, s.id, s.description';
-
+            . 'GROUP BY s.name, s.id, s.description '
+            . 'UNION '
+            . 'SELECT s.name, s.id, s.description, 0 AS object_count, NULL AS last_modification_timestamp '
+            . 'FROM cilib_subjects s '
+            . 'WHERE s.document_id = ? AND NOT EXISTS (select 1 FROM cilib_subjectmap m where m.subject_id = s.id )';
      my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [
-         $sql, $self->document_id() ] );
+         $sql, $self->document_id(), $self->document_id() ] );
 
     return $sidata;
 }
@@ -122,10 +125,14 @@ sub vlsubjectinfo_granted {
             . 'FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c, ci_object_privs_granted o '
             . 'WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = s.document_id AND d.parent_id = ? '
             . $userprivsql
-            . ' GROUP BY s.name, s.id, s.description';
+            . ' GROUP BY s.name, s.id, s.description '
+            . 'UNION '
+            . 'SELECT s.name, s.id, s.description, 0 AS object_count, NULL AS last_modification_timestamp '
+            . 'FROM cilib_subjects s '
+            . 'WHERE s.document_id = ? AND NOT EXISTS (select 1 FROM cilib_subjectmap m where m.subject_id = s.id )';
 
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [
-        $sql, $self->document_id(), @userprivids ] );
+        $sql, $self->document_id(), @userprivids, $self->document_id() ] );
 
     return $sidata;
 }
@@ -240,7 +247,7 @@ sub vlkeywordinfo_granted {
             . 'WHERE k.document_id = ? AND NOT EXISTS (select 1 FROM cilib_keywordmap m where m.keyword_id = k.id )';
 
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [
-        $sql, $self->document_id(), @userprivids ] );
+        $sql, $self->document_id(), @userprivids, $self->document_id() ] );
 
     return $sidata;
 }
@@ -249,12 +256,12 @@ sub vlauthorinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(c.id) AS object_count '
+    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp '
             . 'FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c '
             . 'WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = a.document_id AND d.parent_id = ? '
             . 'GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type '
             . 'UNION '
-            . 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, 0 AS object_count '
+            . 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, 0 AS object_count, NULL AS last_modification_timestamp '
             . 'FROM cilib_authors a WHERE a.document_id = ? AND NOT EXISTS (select 1 FROM cilib_authormap m where m.author_id = a.id )';
 
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [
@@ -273,13 +280,13 @@ sub vlauthorinfo_granted {
 
     my ( $userprivsql, @userprivids ) = $self->_userpriv_where_clause($user);
 
-    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(DISTINCT c.id) AS object_count '
+    my $sql = 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp  '
             . 'FROM cilib_authormap m, cilib_authors a, ci_documents d, ci_content c, ci_object_privs_granted o '
             . 'WHERE d.ID = m.document_id AND m.author_id = a.ID AND d.id = c.document_id AND d.parent_id = a.document_id AND d.parent_id = ? '
             . $userprivsql
             . ' GROUP BY a.id, a.lastname, a.middlename, a.firstname, a.object_type '
             . 'UNION '
-            . 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, 0 AS object_count '
+            . 'SELECT a.id, a.lastname, a.middlename, a.firstname, a.object_type, 0 AS object_count, NULL AS last_modification_timestamp '
             . 'FROM cilib_authors a '
             . 'WHERE a.document_id = ? AND NOT EXISTS (select 1 FROM cilib_authormap m where m.author_id = a.id )';
 
@@ -293,13 +300,18 @@ sub vlpublicationinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    my $sql = 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, count(c.id) AS object_count '
+    my $sql = 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, count(c.id) AS object_count, '
+            .        'max(c.last_modification_timestamp) AS last_modification_timestamp '
             . 'FROM cilib_publicationmap m, cilib_publications p, ci_documents d, ci_content c '
             . 'WHERE d.ID = m.document_id AND m.publication_id = p.ID AND d.id = c.document_id AND d.parent_id = ? '
-            . 'GROUP BY p.id, p.name, p.volume, p.isbn, p.issn';
+            . 'GROUP BY p.id, p.name, p.volume, p.isbn, p.issn '
+            . 'UNION '
+            . 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, 0 AS object_count, NULL AS last_modification_timestamp '
+            . 'FROM cilib_publications p '
+            . 'WHERE p.document_id = ? AND NOT EXISTS (select 1 FROM cilib_publicationmap m where m.publication_id = p.id )';
 
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [
-        $sql, $self->document_id() ] );
+        $sql, $self->document_id(), $self->document_id() ] );
 
     return $sidata;
 }
@@ -314,14 +326,19 @@ sub vlpublicationinfo_granted {
 
     my ( $userprivsql, @userprivids ) = $self->_userpriv_where_clause($user);
 
-    my $sql = 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, count(DISTINCT c.id) AS object_count '
+    my $sql = 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, count(DISTINCT c.id) AS object_count, '
+            .        'max(c.last_modification_timestamp) AS last_modification_timestamp '
             . 'FROM cilib_publicationmap m, cilib_publications p, ci_documents d, ci_content c, ci_object_privs_granted o '
             . 'WHERE d.ID = m.document_id AND m.publication_id = p.ID AND d.id = c.document_id AND d.parent_id = ? '
             . $userprivsql
-            . ' GROUP BY p.id, p.name, p.volume, p.isbn, p.issn';
+            . ' GROUP BY p.id, p.name, p.volume, p.isbn, p.issn '
+            . 'UNION '
+            . 'SELECT p.id, p.name, p.volume, p.isbn, p.issn, 0 AS object_count, NULL AS last_modification_timestamp '
+            . 'FROM cilib_publications p '
+            . 'WHERE p.document_id = ? AND NOT EXISTS (select 1 FROM cilib_publicationmap m where m.publication_id = p.id )';
 
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [
-        $sql, $self->document_id(), @userprivids ] );
+        $sql, $self->document_id(), @userprivids, $self->document_id() ] );
 
     return $sidata;
 }

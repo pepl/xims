@@ -272,10 +272,12 @@
 </xsl:template>
 
 <xsl:template match="author">
-    <xsl:call-template name="author_link"/>
-    <xsl:if test="position() != last()">
-        <xsl:text>, </xsl:text>
-    </xsl:if>
+  <xsl:call-template name="property_link">
+    <xsl:with-param name="mo" select="'author'"/>
+  </xsl:call-template>
+  <xsl:if test="position() != last()">
+    <xsl:text>, </xsl:text>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="abstract">

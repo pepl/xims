@@ -51,4 +51,6 @@
     <chronicle_filter>Date filter</chronicle_filter>
     <activate>Activate</activate>
     <description>Description</description>
+    <edit>edit</edit>
+    <delete>delete</delete>
 </l>

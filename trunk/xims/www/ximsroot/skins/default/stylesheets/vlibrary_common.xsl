@@ -75,46 +75,23 @@
 
     <xsl:template name="item_div">
       <xsl:param name="mo" />
-        <div class="vliteminfo" name="vliteminfo" align="center">
-            <xsl:choose>
-                <xsl:when test="$mo = 'author'">
-                    <div>
-                        <xsl:call-template name="author_link"/>
-                    </div>
-                    <div>
-                        <xsl:call-template name="item_count"/>
-                    </div>
-                </xsl:when>
-                <xsl:when test="$mo = 'publication'">
-                    <div>
-                        <xsl:call-template name="publication_link"/>
-                    </div>
-                    <div>
-                        <xsl:call-template name="item_count"/>
-                    </div>
-                </xsl:when>
-                <xsl:when test="$mo = 'keyword'">
-                    <div>
-                        <xsl:call-template name="keyword_link"/>
-                    </div>
-                    <div>
-                        <xsl:call-template name="item_count"/>
-                    </div>
-                </xsl:when>
-                <xsl:otherwise>
-                    <div>
-                        <xsl:call-template name="subject_link"/>
-                    </div>
-                    <div>
-                        <xsl:call-template name="item_count"/>
-                        <xsl:text> </xsl:text>
-                        <xsl:value-of select="$i18n_vlib/l/last_modified_at"/>
-                        <br />
-                        <xsl:apply-templates select="last_modification_timestamp" mode="datetime" />
-                    </div>
-                </xsl:otherwise>
-            </xsl:choose>
+      <div class="vliteminfo" name="vliteminfo" align="center">
+        <div> 
+          <xsl:call-template name="property_link">
+            <xsl:with-param name="mo" select="$mo"/>
+          </xsl:call-template>
         </div>
+        <div>
+          <xsl:call-template name="item_count"/>
+        </div>
+        <xsl:if test="last_modification_timestamp/day">
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="$i18n_vlib/l/last_modified_at"/>
+          <br />
+          <xsl:apply-templates select="last_modification_timestamp" 
+                               mode="datetime" />
+        </xsl:if>
+      </div>
     </xsl:template>
 
     <xsl:template name="item_count">
@@ -189,21 +166,6 @@
         </table>
     </xsl:template>
 
-
-    <xsl:template name="vlib_create_action">
-        - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::DocBookXML">
-        <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>: DocBookXML
-        </a>
-        <br/>
-        - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::URLLink">
-        <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>: URLLink
-        </a>
-        <br/>
-        - <a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=VLibraryItem::Document">
-        <xsl:value-of select="$i18n_vlib/l/create_new_vlibraryitem"/>: Document
-        </a>
-    </xsl:template>
-
     <xsl:template name="vlib_search_action">
         <xsl:variable name="Search" select="$i18n_vlib/l/Fulltext_search"/>
         <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_search">
@@ -231,93 +193,60 @@
         <a href="javascript:createFilterWindow('{$xims_box}{$goxims_content}{$absolute_path}?filter_create=1');"><xsl:value-of select="$i18n_vlib/l/filter_create"/></a>
     </xsl:template>
 
-    <xsl:template name="author_link">
-      <a href="{$xims_box}{$goxims_content}{$absolute_path}?author=1;author_id={id};author_firstname={firstname};author_middlename={middlename};author_lastname={lastname}">
-        <xsl:value-of select="firstname"/>
-        <xsl:text> </xsl:text>
-        <xsl:if test="middlename">
-          <xsl:value-of select="middlename"/>
-          <xsl:text> </xsl:text>
-        </xsl:if>
-        <xsl:value-of select="lastname"/></a>
-        <!-- only show Edit-icon in authors-overview and if user has the privilege "write" on the VLibray -->
-        <xsl:if test="$user_privileges/write=1 and object_count">
-          &#160;
-          <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_edit=1;author_id={id}', '620', '320')">
-            <img src="{$skimages}option_edit.png"
-                 alt="{$i18n_vlib/l/manage_authors}"
-                 title="{$i18n_vlib/l/manage_authors}"
-                 border="0"
-                 onmouseover="pass('edit{id}','edit','h'); return true;"
-                 onmouseout="pass('edit{id}','edit','c'); return true;"
-                 onmousedown="pass('edit{id}','edit','s'); return true;"
-                 onmouseup="pass('edit{id}','edit','s'); return true;"
-                 name="edit{id}"
-                 width="32"
-                 height="19"
-                />
-          </a>
-          <xsl:if test="object_count = 0">
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?author_delete_prompt=1;author_id={id};author_firstname={firstname};author_middlename={middlename};author_lastname={lastname}', '620', '320')">
-              <img src="{$skimages}option_delete.png"
-                   alt="{$i18n_vlib/l/delete_author}"
-                   title="{$i18n_vlib/l/delete_author}" />
-            </a>
-          </xsl:if>
-        </xsl:if>
-    </xsl:template>
+    <xsl:template name="property_link">
+      <xsl:param name="mo"/>
+      
 
-
-    <xsl:template name="publication_link">
-        <xsl:variable name="publication_url" select="concat($xims_box,$goxims_content,$absolute_path,'?publication=1;publication_id=',id,';publication_name=',name,';publication_volume=',volume)"/>
-        <a href="{$publication_url}">
-            <xsl:value-of select="name"/> (<xsl:value-of select="volume"/>)
-        </a>
-    </xsl:template>
-
-    <xsl:template name="subject_link">
-        <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject=1;subject_id={id}">
+      <xsl:variable name="display_name">
+        <xsl:choose>
+          <xsl:when test="$mo = 'author'">
+            <xsl:if test="firstname">
+              <xsl:value-of select="firstname"/>
+            <xsl:text> </xsl:text>
+            </xsl:if>
+            <xsl:if test="middlename">
+              <xsl:value-of select="middlename"/>
+              <xsl:text> </xsl:text>
+            </xsl:if>
+            <xsl:value-of select="lastname"/>
+          </xsl:when>
+          <xsl:otherwise>
             <xsl:value-of select="name"/>
-        </a>&#160;
-        <!-- only show Edit-icon if user has the privilege "write" on the VLibray -->
-        <xsl:if test="$user_privileges/write=1">
-            <a href="{$xims_box}{$goxims_content}{$absolute_path}?subject_edit=1;subject_id={id}">
-                <img src="{$skimages}option_edit.png" alt="{$i18n_vlib/l/manage_subjects}" title="{$i18n_vlib/l/manage_subjects}" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
 
-            </a>
-        </xsl:if>
-        </xsl:template>
+      <a href="{$xims_box}{$goxims_content}{$absolute_path}?{$mo}=1;{$mo}_id={id}">
+        <xsl:value-of select="$display_name"/>
+      </a>
 
-    <xsl:template name="keyword_link">
-        <a href="{$xims_box}{$goxims_content}{$absolute_path}?keyword=1;keyword_id={id}">
-            <xsl:value-of select="name"/>
+      <!-- only show action icons if user has the privilege "write" on the VLibray -->
+      <xsl:if test="$user_privileges/write=1 and object_count">
+        &#160;
+        <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$absolute_path}?{$mo}_edit=1;{$mo}_id={id}', 'edit_{$mo}')">
+          <img src="{$skimages}option_edit.png"
+               alt="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
+               title="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
+               border="0"
+               onmouseover="pass('edit{id}','edit','h'); return true;"
+               onmouseout="pass('edit{id}','edit','c'); return true;"
+               onmousedown="pass('edit{id}','edit','s'); return true;"
+               onmouseup="pass('edit{id}','edit','s'); return true;"
+               name="edit{id}"
+               width="32"
+               height="19"/>
         </a>
-        <!-- only show Edit-icon in keywords-overview and if user has the privilege "write" on the VLibray -->
-        <xsl:if test="$user_privileges/write=1 and object_count">
-          &#160;
-          <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?keyword_edit=1;keyword_id={id}', '550', '200')">
-            <img src="{$skimages}option_edit.png"
-                 alt="{$i18n_vlib/l/manage_keywords}"
-                 title="{$i18n_vlib/l/manage_keywords}"
-                 border="0"
-                 onmouseover="pass('edit{id}','edit','h'); return true;"
-                 onmouseout="pass('edit{id}','edit','c'); return true;"
-                 onmousedown="pass('edit{id}','edit','s'); return true;"
-                 onmouseup="pass('edit{id}','edit','s'); return true;"
-                 name="edit{id}"
-                 width="32"
-                 height="19"
-                />
+
+        <xsl:if test="object_count = 0">
+          <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$absolute_path}?{$mo}_delete_prompt=1;{$mo}_id={id};display_name={$display_name}', 'delete_{$mo}')">
+            <img src="{$skimages}option_delete.png"
+                 alt="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"
+                 title="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"/>
           </a>
-          <xsl:if test="object_count = 0">
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?keyword_delete_prompt=1;keyword_id={id};keyword_name={name}', '550', '340')">
-              <img src="{$skimages}option_delete.png"
-                   alt="{$i18n_vlib/l/delete_keyword}"
-                   title="{$i18n_vlib/l/delete_keyword}" />
-            </a>
-          </xsl:if>
         </xsl:if>
+      </xsl:if>
     </xsl:template>
+    
 
     <xsl:template name="search_switch">
         <xsl:param name="mo"/>
@@ -339,10 +268,10 @@
         <table width="100%" border="0" style="margin: 0px;" id="vlsearchswitch">
             <tr>
                 <td valign="top" width="50%" align="center" class="vlsearchswitchcell">
-        <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_searc\
-h">
+        <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_search">
             Chronik von
-            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="chronicle_from" size="10" maxlength="200" value="{$chronicle_from}" />
+            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" 
+                   type="text" name="chronicle_from" size="10" maxlength="200" value="{$chronicle_from}" />
             bis
             <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="chronicle_to" size="10" maxlength="200" value="{$chronicle_to}" />
             <xsl:text>&#160;</xsl:text>

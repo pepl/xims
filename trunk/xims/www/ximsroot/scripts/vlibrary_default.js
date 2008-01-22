@@ -30,3 +30,21 @@ function setBg(elid){
         eval("els[i].style.backgroundColor = color"+(i%2));
     }
 }
+ 
+
+function genericVLibraryPopup (url, action) {
+
+    var window_sizes = {
+        'edit_subject'      : ['870', '500'],
+        'edit_author'       : ['620', '320'],
+        'edit_keyword'      : ['550', '200'],
+        'edit_publication'  : ['620', '320'],
+        'delete_subject'    : ['620', '320'],
+        'delete_author'     : ['620', '320'],
+        'delete_keyword'    : ['550', '340'],
+        'delete_publication': ['620', '320']
+    }
+
+    genericWindow(url, window_sizes[action][0], window_sizes[action][1]);
+
+}
