@@ -9,6 +9,20 @@
     xmlns="http://www.w3.org/1999/xhtml">
 
     <xsl:template name="tinymce_scripts">
+        <!-- variable used for propper url-conversion:
+                see 'urltransformer' JS function -->
+        <xsl:variable name="xims_host_temp">
+            <xsl:choose>
+                <!-- we have to substitute 'https://' with 'http://'
+                     for correct url conversion -->
+                <xsl:when test="starts-with($xims_box, 'https://')">
+                    <xsl:value-of select="concat('http:\/\/', substring-after($xims_box, 'https://'))"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="concat('http:\/\/', substring-after($xims_box, 'http://'))"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js"/>
         <script language="javascript" type="text/javascript">
             var origbody = null;
@@ -78,7 +92,8 @@
              * Custom URL transformation routine. Make TinyMCE
              * act more like HTMLArea
              *   1. leave URLs starting with a '/' untouched
-             *   2. leave URLS starting with 'http://' untouched => unchanged feature
+             *   2. leave URLS starting with 'http://' untouched (=> unchanged feature,
+             *      exept for '/gopublic' URLs)
              *   3. resolve all other URLs relative to 'document_base_url'
              * 
              * We first check for '/'-starting URLs and pass it then on to TinyMCEs
@@ -90,8 +105,15 @@
                     return url;
                 }
                 else {
-                    // we simply pass it on to the default TinyMCE function
-                    return tinyMCE.convertURL(url, node, on_save);
+                    <!--  test for 'http://{$xims_host_temp}/gopublic/*' matches -->
+                    <xsl:value-of select="concat('match = url.search(/^',$xims_host_temp,'\/gopublic\/.+/);')"/>
+                    if ( match != -1 ) {
+                        return url;
+                    }
+                    else {
+                        // we simply pass it on to the default TinyMCE function
+                        return tinyMCE.convertURL(url, node, on_save);
+                    }
                 }
             }
         </script>
