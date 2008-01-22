@@ -9,6 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common">
     <xsl:import href="common.xsl"/>
+    <xsl:import href="../container_common.xsl"/>
     <xsl:import href="../vlibrary_common.xsl"/>
     <xsl:import href="../vlibrary_default.xsl"/>
     <xsl:output method="html" 

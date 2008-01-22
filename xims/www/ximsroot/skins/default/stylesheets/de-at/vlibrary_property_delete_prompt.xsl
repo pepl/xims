@@ -8,14 +8,15 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-  
+
   <xsl:import href="common.xsl"/>
   <xsl:import href="../vlibrary_common.xsl"/>
   
   <xsl:output method="html" encoding="utf-8"/>
   
-  <xsl:param name="keyword_id"/>
-  <xsl:param name="keyword_name"/>
+  <xsl:param name="property_id"/>
+  <xsl:param name="property"/>
+  <xsl:param name="display_name"/>
   
   <xsl:template match="/document/context/object">
     <html>
@@ -23,17 +24,19 @@
         <title>
           Löschen des Objekts bestätigen - XIMS
         </title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+        <link rel="stylesheet" 
+              href="{$ximsroot}{$defaultcss}" 
+              type="text/css" />
       </head>
-      
-      <body margintop="0"
-            marginleft="0"
-            marginwidth="0"
-            marginheight="0"
+
+      <body margintop="0" 
+            marginleft="0" 
+            marginwidth="0" 
+            marginheight="0" 
             background="{$skimages}body_bg.png">
 
-        <form name="objectdeletion"
-              action="javascript:post_async('keyword_delete=1;vlkeyword_id='+document.getElementById('vlkeyword_id').value);"
+        <form name="objectdeletion"  
+              action="javascript:post_async('property_delete=1;property_id={$property_id};property={$property}');"
               style="margin-top: 0px; margin-left: 5px;">
 
           <table width="99%"
@@ -42,7 +45,7 @@
                  border="0"
                  bgcolor="#eeeeee">
             <tr>
-              <td align="center">
+              <td align="center">  
                 <br />
                 <!-- begin widget table -->
                 <table width="300"
@@ -62,7 +65,7 @@
                       </p>
                       <p>
                         <em>
-                          <xsl:value-of select="$keyword_name"/>&#160;
+                          <xsl:value-of select="$display_name"/>
                         </em>
                       </p>
                       <p>
@@ -78,28 +81,25 @@
                   </tr>
                   <tr>
                     <td align="center">
-                      <input name="vlkeyword_id"
-                             id="vlkeyword_id"
-                             type="hidden"
-                             value="{$keyword_id}"/>
                       <!-- begin buttons table -->
                       <table id="buttons" cellpadding="2" cellspacing="0" border="0">
                         <tr align="center">
                           <td>
-                            <input type="submit"
-                                   name="keyword_delete"
-                                   id="keyword_delete"
-                                   value="Bestätigen"
-                                   class="control"
+                            <input type="submit" 
+                                   name="author_delete" 
+                                   id="author_delete" 
+                                   value="Bestätigen" 
+                                   class="control" 
+                                   onClick="document.objectdeletion.submit; window.opener.document.location.reload();"
                                    accesskey="S"/>
                           </td>
                           <td>
-                            <input type="submit"
-                                   name="cancel"
-                                   id="cancel"
-                                   value="{$i18n/l/cancel}"
-                                   class="control"
-                                   accesskey="C"/>
+                            <input type="button" 
+                                   name="cancel" 
+                                   value="{$i18n/l/cancel}" 
+                                   class="control" 
+                                   accesskey="C" 
+                                   onClick="self.close();"/>
                           </td>
                         </tr>
                       </table>
