@@ -12,8 +12,6 @@
   <xsl:import href="document_edit_htmlarea.xsl"/>
   <xsl:import href="vlibraryitem_document_edit.xsl"/>
   
-  <xsl:param name="init_editor" select="1"/>
-  
   <xsl:template name="tr_set-body-edit">
     <xsl:call-template name="tr-body-edit_htmlarea"/> 
     <script type="text/javascript">timeoutWYSIWYGChange(3); initEditor();</script>
