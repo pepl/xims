@@ -2,7 +2,7 @@
 <l>
   <subject_list>Themenbereiche</subject_list>
   <author_list>Autorinnen und Autoren</author_list>
-  <publication_list>Zeitschriften</publication_list>
+  <publication_list>Publikationen</publication_list>
   <keyword_list>Schlagwörter</keyword_list>
   <subject>Thema</subject>
   <subjects>Themen</subjects>
@@ -17,6 +17,7 @@
   <orgauthor>ist Organisation</orgauthor>
   <editor>Herausgeber</editor>
   <editors>Herausgeber</editors>
+  <publication>Publikation</publication>
   <publications>Publikationen</publications>
   <publication_volume>Ausgabe</publication_volume>
   <item>Eintrag</item>
