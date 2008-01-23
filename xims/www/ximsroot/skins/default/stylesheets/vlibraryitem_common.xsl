@@ -11,6 +11,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:import href="common.xsl"/>
+  
   <xsl:output method="html"
               encoding="utf-8"
               media-type="text/html"
@@ -18,133 +19,64 @@
               doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
               indent="no"/>
 
+
   <xsl:variable name="i18n_vlib"
                 select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 
-  <xsl:template name="tr-vlkeywords-edit">
-    <tr>
+
+ <xsl:template name="tr-vlproperties">
+
+   <xsl:param name="mo"/>
+
+   <tr>
+     <xsl:value-of select="$mo"/>
       <td valign="top">
         <xsl:value-of select="$i18n_vlib/l/Currently_mapped"/>
         <xsl:text>&#160;</xsl:text>
-        <xsl:value-of select="$i18n/l/Keywords"/>
+        <xsl:value-of select="$i18n_vlib/l/*[name()=concat($mo,'s')]"/>:
       </td>
       <td colspan="2">
-        <xsl:apply-templates select="keywordset/keyword">
-          <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                    order="ascending"/>
-        </xsl:apply-templates>
+        <xsl:choose>
+          <xsl:when test="$mo='author'">
+            <xsl:apply-templates select="authorgroup/author">
+              <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                        order="ascending"/>
+            </xsl:apply-templates>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates select="*[name()=concat($mo, 'set')]/*[name()=$mo]">
+              <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                        order="ascending"/>
+            </xsl:apply-templates>
+          </xsl:otherwise>
+        </xsl:choose>
       </td>
     </tr>
     <tr>
       <td valign="top">
         <xsl:value-of select="$i18n_vlib/l/Assign_new"/>
         <xsl:text>&#160;</xsl:text>
-        <xsl:value-of select="$i18n/l/Keywords"/>
+        <xsl:value-of select="$i18n_vlib/l/*[name()=concat($mo,'s')]"/>
       </td>
       <td colspan="2">
-        <input tabindex="40"
-               type="text"
-               name="vlkeyword"
-               size="50"
-               value=""
-               class="text"
-               title="VLKeyword"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>
-        <xsl:text>&#160;</xsl:text>
-        <input type="button" value="&lt;--" onClick="return addVLProperty( 'keyword' );"/>
-        <xsl:text>&#160;</xsl:text>
-        <xsl:apply-templates select="/document/context/vlkeywords"/>
-        <xsl:text>&#160;</xsl:text>
-        <input type="submit"
-               name="create_mapping"
-               value="{$i18n_vlib/l/Create_mapping}"
-               class="control"
-               onClick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for \'{$i18n/l/Keywords}\'', document.eform.svlkeyword);"/>
+        <xsl:if test="/document/context/*[name()=concat('vl', $mo,'s')]">
+          <xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
+          <input type="hidden"
+                 name="vlauthor"
+                 value=""/>
+          <input type="submit"
+                 name="create_mapping"
+                 value="{$i18n_vlib/l/Create_mapping}"
+                 class="control"
+               onClick="submitOnId('{$mo}', '{$i18n_vlib/l/select_name}')"/>
+          <xsl:text>&#160;</xsl:text>
+        </xsl:if>
+        <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$parent_path}?{$mo}_edit=1', '{$mo}')">
+          <xsl:value-of select="concat($i18n/l/create, ' ', $i18n_vlib/l/*[name()=$mo])"/>
+        </a>
       </td>
     </tr>
-  </xsl:template>
-
-  <xsl:template name="tr-vlsubjects-edit">
-    <tr>
-      <td valign="top">
-        <xsl:value-of select="$i18n_vlib/l/Currently_mapped"/>
-        <xsl:text>&#160;</xsl:text>
-        <xsl:value-of select="$i18n_vlib/l/subjects"/>
-      </td>
-      <td colspan="2">
-        <xsl:apply-templates select="subjectset/subject">
-          <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                    order="ascending"/>
-        </xsl:apply-templates>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top">
-        <xsl:value-of select="$i18n_vlib/l/Assign_new"/>
-        <xsl:text>&#160;</xsl:text>
-        <xsl:value-of select="$i18n_vlib/l/subjects"/>
-      </td>
-      <td colspan="2">
-        <input tabindex="40"
-               type="text"
-               name="vlsubject"
-               size="50"
-               value=""
-               class="text"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('VLSubject')" class="doclink">(?)</a>
-        <xsl:text>&#160;</xsl:text>
-        <input type="button"
-               value="&lt;--"
-               onClick="return addVLProperty( 'subject' );"/>
-        <xsl:text>&#160;</xsl:text>
-        <xsl:apply-templates select="/document/context/vlsubjects"/>
-        <xsl:text>&#160;</xsl:text>
-        <input type="submit"
-               name="create_mapping"
-               value="{$i18n_vlib/l/Create_mapping}"
-               class="control"
-               onClick="return submitOnValue(document.eform.vlsubject, 'Please fill in a value for \'{$i18n_vlib/l/subjects}\'', document.eform.svlsubject);"/>
-      </td>
-    </tr>
-  </xsl:template>
-
-  <xsl:template name="tr-vlauthors-edit">
-    <tr>
-      <td valign="top">
-        <xsl:value-of select="$i18n_vlib/l/Currently_mapped"/>
-        <xsl:text>&#160;</xsl:text>
-        <xsl:value-of select="$i18n_vlib/l/authors"/>
-      </td>
-      <td colspan="2">
-        <xsl:apply-templates select="authorgroup/author">
-          <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                    order="ascending"/>
-        </xsl:apply-templates>
-      </td>
-    </tr>
-    <tr>
-      <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/></td>
-      <td colspan="2">
-        <xsl:apply-templates select="/document/context/vlauthors"/>
-        <input type="hidden"
-               name="vlauthor"
-               value=""/>
-        <input type="submit"
-               name="create_mapping"
-               value="{$i18n_vlib/l/Create_mapping}"
-               class="control"
-               onClick="submitOnId('author', '{$i18n_vlib/l/select_name}')"/>
-        <xsl:text>&#160;</xsl:text> 
-        <a href="javascript:openDocWindow('VLAuthor')"
-           class="doclink">(?)</a> 
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:editAuthorWindow('{$xims_box}{$goxims_content}{$parent_path}?author_edit=1')">Neuen Autor anlegen</a>
-      </td>
-      
-    </tr>
-  </xsl:template>
+  </xsl:template> 
 
 
   <xsl:template name="tr-vlkeywords-create">
@@ -174,6 +106,7 @@
     </tr>
   </xsl:template>
 
+
   <xsl:template name="tr-vlsubjects-create">
     <tr>
       <td valign="top">
@@ -198,6 +131,7 @@
       </td>
     </tr>
   </xsl:template>
+
   
   <xsl:template name="tr-vlauthors-create">
     <tr>
@@ -225,7 +159,6 @@
   </xsl:template>
 
 
-
   <xsl:template match="keywordset/keyword|subjectset/subject">
     <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}"
        target="_blank"
@@ -240,6 +173,7 @@
       <xsl:text>, </xsl:text>
     </xsl:if>
   </xsl:template>
+
 
   <xsl:template match="authorgroup/author">
     <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}"
@@ -257,6 +191,7 @@
   <xsl:template match="vlsubjects">
     <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
             name="svlsubject">
+    <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
       <xsl:apply-templates select="/document/context/vlsubjects/subject">
         <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                   order="ascending"/>
@@ -264,8 +199,11 @@
     </select>
   </xsl:template>
 
+
   <xsl:template match="vlkeywords">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="svlkeyword">
+    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" 
+            name="svlkeyword">
+      <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
       <xsl:apply-templates select="/document/context/vlkeywords/keyword">
         <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                   order="ascending"/>
@@ -273,29 +211,48 @@
     </select>
   </xsl:template>
 
-  <xsl:template match="vlauthors">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
-            name="svlauthor">
-      <option value="-1">Autor auswählen</option>
-      <xsl:apply-templates select="/document/context/vlauthors/author">
-        <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+
+  <xsl:template match="vlpublications">
+    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" 
+            name="svlpublication">
+      <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
+      <xsl:apply-templates select="/document/context/vlpublications/publication">
+        <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                   order="ascending"/>
       </xsl:apply-templates>
     </select>
   </xsl:template>
 
 
-  <xsl:template match="vlsubjects/subject|vlkeywords/keyword">
-    <option value="{name}">
-      <xsl:value-of select="name"/>
+  <xsl:template match="vlauthors">
+    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+            name="svlauthor">
+      <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
+      <xsl:apply-templates select="/document/context/vlauthors/author">
+        <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                  order="ascending"/>
+        <xsl:sort select="translate(firstname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                  order="ascending"/>
+        <xsl:sort select="translate(middlename,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                  order="ascending"/>
+      </xsl:apply-templates>
+    </select>
+  </xsl:template>
+
+
+  <xsl:template match="vlsubjects/subject|vlkeywords/keyword|vlpublications/publication">
+    <option value="{id}">
+      <xsl:value-of select="normalize-space(name)"/>
     </option>
   </xsl:template>
+
 
   <xsl:template match="vlauthors/author">
     <option value="{id}">
       <xsl:value-of select="normalize-space(concat(firstname, ' ', middlename, ' ', lastname, ' ', suffix))"/>
     </option>
   </xsl:template>
+
 
   <xsl:template name="tr-subject-create">
     <tr>
@@ -312,6 +269,7 @@
       </td>
     </tr>
   </xsl:template>
+
 
   <xsl:template name="tr-subtitle">
     <tr>
@@ -330,6 +288,7 @@
     </tr>
   </xsl:template>
 
+
   <xsl:template name="tr-mediatype">
     <tr>
       <td valign="top">Mediatype</td>
@@ -346,6 +305,7 @@
       </td>
     </tr>
   </xsl:template>
+
 
   <xsl:template name="tr-legalnotice">
     <tr>
@@ -382,6 +342,7 @@
     </tr>
   </xsl:template>
 
+
   <xsl:template name="tr-audience">
     <tr>
       <td valign="top">Audience</td>
@@ -398,6 +359,7 @@
       </td>
     </tr>
   </xsl:template>
+
 
   <xsl:template name="tr-bibliosource">
     <tr>
@@ -416,6 +378,7 @@
       </td>
     </tr>
   </xsl:template>
+
 
   <xsl:template name="tr-date-create">
     <tr>
@@ -457,6 +420,7 @@
     </tr>
   </xsl:template>
 
+
   <xsl:template name="tr-publisher">
     <tr>
       <td valign="top">Institution</td>
@@ -473,6 +437,7 @@
       </td>
     </tr>
   </xsl:template>
+
 
   <xsl:template name="tr-date-edit">
     <xsl:variable name="date_from"
@@ -492,6 +457,7 @@
       </td>
     </tr>
   </xsl:template>
+
 
   <xsl:template name="tr-chronicle_from">
     <xsl:variable name="chronicle_from_date_tmp"
@@ -548,9 +514,12 @@
     </tr>
   </xsl:template>
 
+
   <xsl:template name="tr-chronicle_to">
+
     <xsl:variable name="chronicle_to_date_tmp"
                   select="concat(meta/date_to_timestamp/year,'-',meta/date_to_timestamp/month,'-',meta/date_to_timestamp/day)" />
+
     <xsl:variable name="chronicle_to_date">
       <xsl:if test="$chronicle_to_date_tmp != '--'">
         <xsl:value-of select="$chronicle_to_date_tmp"/>
