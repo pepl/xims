@@ -238,16 +238,16 @@ CREATE INDEX ci_content_doc_id_idx
 
 \echo creating trigger remove_stale_locks...
 CREATE OR REPLACE FUNCTION remove_stale_locks() RETURNS TRIGGER AS '
-BEGIN                                    
-    UPDATE ci_content 
+BEGIN
+    UPDATE ci_content
     SET locked_by_id         = NULL
        ,locked_by_lastname   = NULL
        ,locked_by_middlename = NULL
        ,locked_by_firstname  = NULL
        ,locked_time          = NULL
-    WHERE locked_by_id  IS NOT NULL      
-      AND NOT EXISTS (SELECT 1 
-                      FROM ci_sessions  
+    WHERE locked_by_id  IS NOT NULL
+      AND NOT EXISTS (SELECT 1
+                      FROM ci_sessions
                       WHERE user_id = locked_by_id);
     RETURN NULL;
 END;
@@ -268,10 +268,7 @@ CREATE TABLE ci_object_privs_granted
 \echo creating indices on 'ci_object_privs_granted'
 CREATE INDEX ci_obj_privs_grantee_idx ON ci_object_privs_granted ( grantee_id );
 CREATE INDEX ci_obj_privs_content_idx ON ci_object_privs_granted ( content_id );
-
-
-
-
+CREATE INDEX ci_obj_privs_pmask_idx ON ci_object_privs_granted ( privilege_mask );
 
 \echo creating table 'ci_bookmarks'
 CREATE TABLE ci_bookmarks

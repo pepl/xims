@@ -16,19 +16,20 @@ ALTER TABLE ci_object_privs_granted ADD CONSTRAINT OPG_USR_GRANTOR_FK FOREIGN KE
 ALTER TABLE ci_object_privs_granted ADD CONSTRAINT OPG_CTT_CONTENT_FK FOREIGN KEY (CONTENT_ID) REFERENCES CI_CONTENT (ID) ON DELETE CASCADE;
 CREATE INDEX ci_obj_privs_grantee_idx ON ci_object_privs_granted ( grantee_id );
 CREATE INDEX ci_obj_privs_content_idx ON ci_object_privs_granted ( content_id );
+CREATE INDEX ci_obj_privs_pmask_idx ON ci_object_privs_granted ( privilege_mask );
 
 \echo creating trigger remove_stale_locks...
 CREATE OR REPLACE FUNCTION remove_stale_locks() RETURNS TRIGGER AS '
-BEGIN                                    
-    UPDATE ci_content 
+BEGIN
+    UPDATE ci_content
     SET locked_by_id         = NULL
        ,locked_by_lastname   = NULL
        ,locked_by_middlename = NULL
        ,locked_by_firstname  = NULL
        ,locked_time          = NULL
-    WHERE locked_by_id  IS NOT NULL      
-      AND NOT EXISTS (SELECT 1 
-                      FROM ci_sessions  
+    WHERE locked_by_id  IS NOT NULL
+      AND NOT EXISTS (SELECT 1
+                      FROM ci_sessions
                       WHERE user_id = locked_by_id);
     RETURN NULL;
 END;
