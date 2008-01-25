@@ -81,15 +81,22 @@
         <input name="trytobalance"
                type="radio" 
                value="true"
-               checked="checked"/>
+               checked="checked"
+               onchange="javascript:createCookie('xims_trytobalancewell','true',90);"/>
         <xsl:value-of select="$i18n/l/Yes"/>
         <input name="trytobalance" 
                type="radio" 
-               value="false" />
+               value="false"
+               onchange="javascript:createCookie('xims_trytobalancewell','false',90);"/>
         <xsl:value-of select="$i18n/l/No"/>
       </td>
     </tr>
+    <!-- set checked attribute for trytobalance-input-element according to cookie -->
+    <script type="text/javascript">
+      <xsl:text>selTryToBalance(document.eform.trytobalance, readCookie('xims_trytobalancewell'));</xsl:text>
+    </script>
   </xsl:template>
+
 
   <xsl:template name="setdefaulteditor">
     <script type="text/javascript">

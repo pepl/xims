@@ -19,16 +19,14 @@
     <xsl:call-template name="tr-body-edit">
       <xsl:with-param name="with_origbody" select="'yes'"/>
     </xsl:call-template>
+   
     <tr>
       <td colspan="3">
         <xsl:call-template name="testbodysxml"/>
         <xsl:call-template name="prettyprint"/>
-        <script type="text/javascript">
-          <!-- set checked attribute for trytobalance-input-element according to cookie -->
-          selTryToBalance(document.eform.trytobalance , readCookie('xims_trytobalancewell'));
-        </script>
       </td>
     </tr>
+    <xsl:call-template name="trytobalance"/>
   </xsl:template>
   
 
