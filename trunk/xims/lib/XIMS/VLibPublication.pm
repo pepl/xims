@@ -23,7 +23,6 @@ package XIMS::VLibPublication;
 
 use strict;
 use base qw( XIMS::AbstractClass Class::Accessor );
-use Carp;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{ XIMS::Names::property_interface_names( resource_type() ) };
