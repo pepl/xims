@@ -23,9 +23,10 @@ package XIMS::VLibPublication;
 
 use strict;
 use base qw( XIMS::AbstractClass Class::Accessor );
+use Carp;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
+our @Fields = @{ XIMS::Names::property_interface_names( resource_type() ) };
 
 sub fields {
     return @Fields;
@@ -37,24 +38,30 @@ sub resource_type {
     return $rt;
 }
 
-__PACKAGE__->mk_accessors( @Fields );
+__PACKAGE__->mk_accessors(@Fields);
 
-
-
-=head2    my $publication = XIMS::VLibPublication->new( [ %args ] );
+=head2 new()
 
 =head3 Parameter
 
-    $args{ id }                  (optional) :  id of an existing publication.
-    $args{ name }                (optional) :  name of a VLibPublication. To be
-                                               used together with $args{volume}
-                                               to look up an existing
-                                               publication.
-    $args{ volume }              (optional) :  volume of a VLibPublication. To
-                                               be used together with $args{name}
-                                               to look up an existing publication.
-    $args{ isbn }                (optional) :  isbn of an existing VLibPublication.
-    $args{ issn }                (optional) :  issn of an existing VLibPublication.
+    $args{ id } (optional)     : id of an existing publication.
+
+    $args{ name } (optional)   : name of a VLibPublication. To be used together
+                                 with $args{volume} to look up an existing
+                                 publication.
+
+
+    $args{ volume } (optional) : volume of a VLibPublication. To be used
+                                 together with $args{name} to look up an
+                                 existing publication.
+
+    $args{ isbn } (optional)   : isbn of an existing VLibPublication.
+
+    $args{ issn } (optional)   : issn of an existing VLibPublication.
+
+    $args{ url } (optional)
+
+    $args{ image_url } (optional)
 
 =head3 Returns
 
@@ -62,32 +69,38 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head3 Description
 
+    my $publication = XIMS::VLibPublication->new( [ %args ] );
+
 Fetches existing publications or creates a new instance of XIMS::VLibPublication.
 
 =cut
 
 sub new {
     my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
+    my $class = ref($proto) || $proto;
+    my %args  = @_;
 
     my $self = bless {}, $class;
 
-    if ( scalar( keys(%args)) > 0 ) {
-        if ( defined( $args{id} ) or ( defined( $args{name} ) and defined( $args{volume} ) ) or defined( $args{isbn} ) or defined( $args{issn} ) ) {
+    if ( scalar( keys(%args) ) > 0 ) {
+        if (   defined( $args{id} )
+            or ( defined( $args{name} ) and defined( $args{volume} ) )
+            or defined( $args{isbn} )
+            or defined( $args{issn} ) )
+        {
             my $rt = ref($self);
             $rt =~ s/.*://;
-            my $method = 'get'.$rt;
-            my $data = $self->data_provider->$method( %args );
-            if ( defined( $data )) {
-               $self->data( %{$data} );
+            my $method = 'get' . $rt;
+            my $data   = $self->data_provider->$method(%args);
+            if ( defined($data) ) {
+                $self->data( %{$data} );
             }
             else {
                 return;
             }
         }
         else {
-            $self->data( %args );
+            $self->data(%args);
         }
     }
     return $self;
