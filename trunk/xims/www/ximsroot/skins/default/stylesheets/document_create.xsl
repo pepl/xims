@@ -36,10 +36,6 @@
                     </table>
                     <xsl:call-template name="saveaction"/>
                 </form>
-                <script type="text/javascript">
-                    <!-- set checked attribute for trytobalance-input-element according to cookie -->
-                    selTryToBalance(document.eform.trytobalance , readCookie('xims_trytobalancewell'));
-                </script>
             </div>
             <br />
             <xsl:call-template name="cancelaction"/>
