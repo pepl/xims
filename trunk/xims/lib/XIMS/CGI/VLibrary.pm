@@ -46,20 +46,18 @@ sub registerEvents {
           unpublish
           subject
           subject_store
-          subject_edit
           subject_view
           keywords
           keyword
           keyword_store
-          keyword_edit
           keyword_show
           authors
           author
           author_store
-          author_edit
           author_show
           publications
           publication
+          property_edit
           property_delete_prompt
           property_delete
           vlsearch
@@ -246,67 +244,6 @@ sub event_subject_view {
     return 0;
 }
 
-sub event_subject_edit {
-
-    # edit the subject name and description
-    # call the library with the param subject_edit=1
-
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    # operation control section
-    # whole VLibrary is locked if subject is edited
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-    $ctxt->properties->application->style("subject_edit");
-
-    if ( $self->object_locked($ctxt) ) {
-        XIMS::Debug( 3, "Attempt to edit locked object" );
-        $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
-    }
-    else {
-        if ( $object->lock() ) {
-            XIMS::Debug( 4, "lock set" );
-            $ctxt->session->message(
-"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
-            );
-        }
-        else {
-            XIMS::Debug( 3, "lock not set" );
-        }
-    }
-
-    my $subjectid = $self->param('subject_id');
-    unless ($subjectid) {
-        my $subjectname = XIMS::decode( $self->param('subject_name') );
-        if ( defined $subjectname ) {
-            my $subject = XIMS::VLibSubject->new(
-                name        => $subjectname,
-                document_id => $object->document_id()
-            );
-            if ( $subject and $subject->id() ) {
-                $subjectid = $subject->id();
-            }
-            else { return 0; }
-        }
-        else { return 0; }
-    }
-
-    XIMS::Debug( 5, "Editing subject" );
-    return 0;
-}
-
 ##############################################################################
 # end subjects, begin keywords
 ##############################################################################
@@ -361,60 +298,6 @@ sub event_keyword {
         $ctxt->object->this_propertyinfo( 'keyword' => $keywordid ) );
     $ctxt->properties->application->style("objectlist");
 
-    return 0;
-}
-
-sub event_keyword_edit {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    # operation control section
-    # whole VLibrary is locked if keyword is edited
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    $ctxt->properties->application->style("keyword_edit");
-
-    if ( $self->object_locked($ctxt) ) {
-        XIMS::Debug( 3, "Attempt to edit locked object" );
-        $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
-    }
-    else {
-        if ( $object->lock() ) {
-            XIMS::Debug( 4, "lock set" );
-            $ctxt->session->message(
-"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
-            );
-        }
-        else {
-            XIMS::Debug( 3, "lock not set" );
-        }
-    }
-
-    my $keywordid = $self->param('keyword_id');
-    my $keyword;
-
-    if ( defined $keywordid and $keywordid ) {
-        $keyword = XIMS::VLibKeyword->new(
-            id          => $keywordid,
-            document_id => $object->document_id()
-        );
-    }
-    else {
-        $keyword = XIMS::VLibKeyword->new();
-    }
-    $ctxt->objectlist( [$keyword] );
     return 0;
 }
 
@@ -600,60 +483,6 @@ sub event_author {
     return 0;
 }
 
-sub event_author_edit {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    # operation control section
-    # whole VLibrary is locked if author is edited
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    $ctxt->properties->application->style("author_edit");
-
-    if ( $self->object_locked($ctxt) ) {
-        XIMS::Debug( 3, "Attempt to edit locked object" );
-        $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
-    }
-    else {
-        if ( $object->lock() ) {
-            XIMS::Debug( 4, "lock set" );
-            $ctxt->session->message(
-"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
-            );
-        }
-        else {
-            XIMS::Debug( 3, "lock not set" );
-        }
-    }
-
-    my $authorid = $self->param('author_id');
-    my $author;
-
-    if ( defined $authorid and $authorid ) {
-        $author = XIMS::VLibAuthor->new(
-            id          => $authorid,
-            document_id => $object->document_id()
-        );
-    }
-    else {
-        $author = XIMS::VLibAuthor->new();
-    }
-    $ctxt->objectlist( [$author] );
-    return 0;
-}
-
 sub event_author_show {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -799,7 +628,8 @@ sub event_publication {
         my $publicationvolume =
           XIMS::decode( $self->param('publication_volume') );
 
-        #XIMS::Debug( 6, "publicationname: $publicationname publicationvolume: $publicationvolume" );
+        #XIMS::Debug( 6, "publicationname: $publicationname publicationvolume:
+        #$publicationvolume" );
         if ( $publicationname and $publicationvolume ) {
             my $publication = XIMS::VLibPublication->new(
                 name   => $publicationname,
@@ -811,7 +641,8 @@ sub event_publication {
             if ( $publication and $publication->id() ) {
                 $publicationid = $publication->id();
 
-                #XIMS::Debug( 6, "secondary lookup on publicationid returned: $publicationid" );
+                #XIMS::Debug( 6, "secondary lookup on publicationid returned:
+                #$publicationid" );
             }
             else { return 0; }
         }
@@ -839,6 +670,44 @@ sub event_publication {
 ##############################################################################
 # end publications
 ##############################################################################
+
+sub event_property_edit {
+    my ( $self, $ctxt ) = @_;
+
+    unless ($self->_privcheck_lock($ctxt)) {
+        return $self->event_access_denied($ctxt);
+    }
+
+    my $property = $self->param('property');
+
+    if ( $property !~ /^(subject|author|publication|keyword)$/ )
+    {
+        return $self->simple_response(
+            '400 BAD REQUEST',
+            "ERROR: Property must be one of: subject, author, publication, or keyword"
+        );
+    }
+
+    my $object = $ctxt->object();
+    my $class = "XIMS::VLib" . ucfirst( $property );
+    my $id = $self->param('property_id');
+    my $vlibproperty;
+
+    if ( defined $id and $id ) {
+        $vlibproperty = $class->new(
+            id          => $id,
+            document_id => $object->document_id(),
+        );
+    }
+    else {
+        $vlibproperty = $class->new();
+    }
+
+    $ctxt->objectlist( [$vlibproperty] );
+    $ctxt->properties->application->style("${property}_edit");
+    return 0;
+
+}
 
 
 sub event_property_delete_prompt {
@@ -1450,6 +1319,45 @@ sub _update_or_publish {
     }
 
 }
+
+sub _privcheck_lock {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+
+    # operation control section
+    # whole VLibrary is locked if keyword is edited
+    return
+      unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE );
+
+    if ( $self->object_locked($ctxt) ) {
+        XIMS::Debug( 3, "Attempt to edit locked object" );
+        $self->sendError( $ctxt,
+                "This object is locked by "
+              . $object->locker->firstname() . " "
+              . $object->locker->lastname()
+              . " since "
+              . $object->locked_time()
+              . ". Please try again later." );
+    }
+    else {
+        if ( $object->lock() ) {
+            XIMS::Debug( 4, "lock set" );
+            $ctxt->session->message(
+"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
+            );
+        }
+        else {
+            XIMS::Debug( 3, "lock not set" );
+        }
+    }
+    return 1;
+}
+
+
+
 
 1;
 

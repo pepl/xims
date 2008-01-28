@@ -247,7 +247,7 @@
     <!-- only show action icons if user has the privilege "write" on the VLibray -->
     <xsl:if test="$user_privileges/write=1 and object_count">
       &#160;
-      <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$absolute_path}?{$mo}_edit=1;{$mo}_id={id}', '{$mo}')">
+      <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};', '{$mo}')">
         <img src="{$skimages}option_edit.png"
              alt="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
              title="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
