@@ -71,7 +71,7 @@
                onClick="submitOnId('{$mo}', '{$i18n_vlib/l/select_name}')"/>
           <xsl:text>&#160;</xsl:text>
         </xsl:if>
-        <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$parent_path}?{$mo}_edit=1', '{$mo}')">
+        <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}', '{$mo}')">
           <xsl:value-of select="concat($i18n/l/create, ' ', $i18n_vlib/l/*[name()=$mo])"/>
         </a>
       </td>
