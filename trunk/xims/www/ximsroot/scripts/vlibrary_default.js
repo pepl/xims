@@ -35,11 +35,12 @@ function setBg(elid){
 function genericVLibraryPopup (url, action) {
 
     var window_sizes = {
-        'subject'    : ['870', '500'],
-        'author'     : ['620', '320'],
-        'keyword'    : ['550', '200'],
-        'publication': ['600', '260'],
-        'delete'     : ['550', '340'],
+      //'subject_htmlarea'    : ['870', '500'],
+        'subject'             : ['550', '200'],
+        'author'              : ['620', '320'],
+        'keyword'             : ['550', '200'],
+        'publication'         : ['600', '260'],
+        'delete'              : ['550', '340'],
     }
 
     genericWindow(url, window_sizes[action][0], window_sizes[action][1]);
