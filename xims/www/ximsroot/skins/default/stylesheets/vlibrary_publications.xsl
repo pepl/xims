@@ -23,7 +23,9 @@
             <body>
               <xsl:call-template name="header">
                 <xsl:with-param name="createwidget">true</xsl:with-param>
-                <xsl:with-param name="parent_id"><xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" /></xsl:with-param>
+                <xsl:with-param name="parent_id">
+                  <xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" />
+                </xsl:with-param>
               </xsl:call-template>
 
               <div id="vlbody">
@@ -46,8 +48,9 @@
     </xsl:template>
 
     <xsl:template match="vlpublicationinfo">
-        <xsl:variable name="sortedpublications">
-            <xsl:for-each select="/document/context/vlpublicationinfo/publication">
+ 
+      <xsl:variable name="sortedpublications">
+            <xsl:for-each select="/document/context/vlpublicationinfo/publication[object_count &gt; 0]">
                 <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                           order="ascending"/>
                 <xsl:copy>
@@ -56,6 +59,16 @@
             </xsl:for-each>
         </xsl:variable>
 
+        <xsl:variable name="unmappedpublications">
+            <xsl:for-each select="/document/context/vlpublicationinfo/publication[object_count = 0]">
+                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                          order="ascending"/>
+                <xsl:copy>
+                    <xsl:copy-of select="*"/>
+                </xsl:copy>
+            </xsl:for-each>
+        </xsl:variable>
+        
         <table width="600" align="center" id="vlpropertyinfo">
             <tr>
                 <th colspan="3">
@@ -67,6 +80,18 @@
                 <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                           order="ascending"/>
             </xsl:apply-templates>
+            <xsl:if test="count(/document/context/vlpublicationinfo/publication[object_count = 0])&gt;0">
+              <tr>
+                <th colspan="{$publicationcolumns}">
+                  <xsl:value-of select="concat($i18n_vlib/l/unmapped, ' ', $i18n_vlib/l/publications)"/>
+                </th>
+              </tr>
+              <xsl:apply-templates select="exslt:node-set($unmappedpublications)/publication[(position()-1) mod $publicationcolumns = 0]">
+                <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
+                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                          order="ascending"/>               
+              </xsl:apply-templates>
+            </xsl:if>
         </table>
     </xsl:template>
 
