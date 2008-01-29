@@ -8,7 +8,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common">
+
   <xsl:import href="common.xsl"/>
+
   <xsl:output method="xml"
               encoding="utf-8"
               media-type="text/html"
@@ -16,8 +18,10 @@
               doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
               omit-xml-declaration="yes"
               indent="yes"/>
+
   <xsl:variable name="i18n_vlib"
                 select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
+
   <xsl:variable name="i18n"
                 select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
@@ -41,6 +45,7 @@
       </body>
     </html>
   </xsl:template>
+
   
   <xsl:template match="children/object">
     <fieldset>
@@ -90,8 +95,12 @@
              name="vlkeyword_id"
              id="vlkeyword_id"
              value="{@id}"/>
+      <input type="hidden"
+             name="property"
+             id="property"
+             value="keyword"/>
       <input type="submit"
-             name="keyword_store"
+             name="property_store"
              value="{$i18n/l/save}"
              class="control"
              accesskey="S"/>
@@ -103,4 +112,5 @@
              onClick="self.close();"/>
     </p>
   </xsl:template>
+
 </xsl:stylesheet>
