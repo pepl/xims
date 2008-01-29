@@ -776,19 +776,8 @@ sub _vlobjects {
     my $type = shift;
     my $sql;
 
-    if ( $type eq 'Author' ) {
+    $sql = "SELECT DISTINCT id FROM cilib_${type}s where document_id = ?";
 
-        # currently unmapped authors needed as well...
-        $sql =
-          'SELECT DISTINCT id FROM cilib_' . $type . 's where document_id = ?';
-    }
-    else {
-        $sql =
-            'select DISTINCT m.' . $type
-          . '_id AS ID from cilib_'
-          . $type
-          . 'map m, ci_documents d where d.id = m.document_id and d.parent_id = ?';
-    }
     my $iddata =
       $self->data_provider->driver->dbh->fetch_select(
         sql => [ $sql, $self->document_id() ] );
