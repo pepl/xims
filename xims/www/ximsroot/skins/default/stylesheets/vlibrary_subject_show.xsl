@@ -10,7 +10,7 @@
                 xmlns:exslt="http://exslt.org/common">
 
   <xsl:import href="common.xsl"/>
-
+  
   <xsl:output method="xml"
               encoding="utf-8"
               media-type="text/html"
@@ -18,10 +18,10 @@
               doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
               omit-xml-declaration="yes"
               indent="yes"/>
-
+  
   <xsl:variable name="i18n_vlib"
                 select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
-
+  
   <xsl:variable name="i18n"
                 select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
@@ -29,38 +29,40 @@
     <html>
       <head>
         <title>
-        <xsl:value-of select="concat($i18n/l/edit, ' ', $i18n/l/subjects)"/>
+          <xsl:value-of select="$i18n_vlib/l/subject"/>
         </title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
       </head>
       <body>
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
-          <form action="{$xims_box}{$goxims_content}"
-              name="eform"
-              method="GET">
-          <input type="hidden" name="id" id="id" value="{@id}"/>
-          <xsl:apply-templates select="/document/context/object/children"/>
-        </form>
+          <form action="%200"
+                name="eform"
+                method="%200">
+            <input type="hidden" name="id" id="id" value="{@id}"/>
+            <xsl:apply-templates select="/document/context/object/children"/>
+          </form>
         </div>
       </body>
     </html>
   </xsl:template>
-
   
+
   <xsl:template match="children/object">
     <fieldset>
       <legend>
-        <xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/subject)"/>
+        <xsl:value-of select="$i18n_vlib/l/subject"/>
       </legend>
       <table>
         <tr>
           <td>
-          <label for="vlsubject_name">
-            Name
-          </label>
+            <label for="vlsubject_name">
+              Name
+            </label>
           </td>
           <td colspan="2">
-            <input tabindex="40" 
+            <input tabindex="40"
+                   readonly="readonly"
+                   style="background-color:#eeeeee;"
                    type="text" 
                    id="vlsubject_name" 
                    name="vlsubject_name" 
@@ -77,40 +79,35 @@
             </label>
           </td>
           <td colspan="2">
-            <textarea tabindex="40" 
+            <textarea tabindex="40"
+                      readonly="readonly"
                       id="vlsubject_description" 
-                      name="vlsubject_description" 
+                      name="vlsubject_description"
+                      style="background-color:#eeeeee;"
                       cols="40"
                       rows="3"
                       class="text" 
                       title="{$i18n_vlib/l/description}">
               <xsl:value-of select="description"/>
             </textarea>
-          </td>
+          </td> 
         </tr>
       </table>
     </fieldset>
     <p>
-      <input type="hidden"
-             name="vlsubject_id"
-             id="vlsubject_id"
-             value="{@id}"/>
-      <input type="hidden"
-             name="property"
-             id="property"
-             value="subject"/>
       <input type="submit"
-             name="property_store"
-             value="{$i18n/l/save}"
+             onClick="window.opener.document.location.reload();self.close();return false;"
+             value="OK, {$i18n/l/close_window}"
              class="control"
              accesskey="S"/>
+      
+      <!-- The simple solution history.go(-1) would lead to a stale -->
+      <!-- second entry, if we wanted tho fix a freshly created subject. -->
       <input type="submit"
-             name="cancel"
-             value="{$i18n/l/cancel}"
-             class="control"
-             accesskey="C"
-             onClick="self.close();"/>
-    </p>
+             onClick="location.replace('{$xims_box}{$goxims_content}' +
+                      '?id={/document/context/object/@id}' +
+                      ';property_edit=1;property=subject;property_id={@id}'); return false;"
+             value="{$i18n/l/Back}" class="control" accesskey="B"/> </p>
   </xsl:template>
 
 </xsl:stylesheet>
