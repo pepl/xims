@@ -8,7 +8,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common">
+
   <xsl:import href="common.xsl"/>
+  
   <xsl:output method="xml"
               encoding="utf-8"
               media-type="text/html"
@@ -16,8 +18,12 @@
               doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
               omit-xml-declaration="yes"
               indent="yes"/>
-  <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
-  <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
+  
+  <xsl:variable name="i18n_vlib"
+                select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
+
+  <xsl:variable name="i18n" 
+                select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
   <xsl:template match="/document/context/object">
     <html>
@@ -37,6 +43,7 @@
       </body>
     </html>
   </xsl:template>
+  
   
   <xsl:template match="children/object">
     <fieldset>
@@ -168,8 +175,17 @@
              name="vlauthor_id"
              id="vlauthor_id"
              value="{@id}"/>
-      <input type="submit" name="author_store" value="{$i18n/l/save}" class="control" accesskey="S"/>
+      <input type="hidden"
+             name="property"
+             id="property"
+             value="author"/>
+      <input type="submit" 
+             name="property_store" 
+             value="{$i18n/l/save}" 
+             class="control" 
+             accesskey="S"/>
       <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C" onClick="self.close();"/>
     </p>
   </xsl:template>
+
 </xsl:stylesheet>

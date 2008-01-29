@@ -45,19 +45,16 @@ sub registerEvents {
           publish_prompt
           unpublish
           subject
-          subject_store
           subject_view
           keywords
           keyword
-          keyword_store
-          keyword_show
           authors
           author
-          author_store
-          author_show
           publications
           publication
           property_edit
+          property_show
+          property_store
           property_delete_prompt
           property_delete
           vlsearch
@@ -103,20 +100,6 @@ sub event_copy {
     return $self->sendError( $ctxt, "Copying VLibraries is not implemented." );
 }
 
-# jokar: Enable deletion of Vlibraries. Metadata is not deleted
-# (Authors, Keywords, Subjects, ...)
-
-#sub event_delete {
-#    XIMS::Debug( 5, "called" );
-#    my ( $self, $ctxt ) = @_;
-#    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
-#}
-#
-#sub event_delete_prompt {
-#    XIMS::Debug( 5, "called" );
-#    my ( $self, $ctxt ) = @_;
-#    return $self->sendError( $ctxt, "Deleting VLibraries is not implemented." );
-#}
 
 ##############################################################################
 # begin subjects
@@ -160,51 +143,6 @@ sub event_subject {
 
     $ctxt->properties->application->style("objectlist");
 
-    return 0;
-}
-
-# store edited subject name and description
-# call the library with the param subject_store=1
-sub event_subject_store {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-    my $object = $ctxt->object();
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    XIMS::Debug( 6, "unlocking object" );
-    $object->unlock();
-
-    my $subjectid = $self->param('subject_id');
-
-    unless ($subjectid) {
-        my $subjectname = XIMS::decode( $self->param('subject_name') );
-        if ( defined $subjectname ) {
-            my $subject = XIMS::VLibSubject->new(
-                name        => $subjectname,
-                document_id => $object->document_id()
-            );
-            if ( $subject and $subject->id() ) {
-                $subjectid = $subject->id();
-            }
-            else { return 0; }
-        }
-        else { return 0; }
-    }
-
-    XIMS::Debug( 5, "Updating subject" );
-    my $subject = XIMS::VLibSubject->new( id => $subjectid );
-    $subject->name( $self->param('name') );
-    $subject->description( $self->param('description') );
-    if ( !$subject->update() ) {
-        return $self->sendError( $ctxt, "Error updating Subject." );
-    }
-    XIMS::Debug( 6, "Subject updated" );
-    _update_or_publish($ctxt);    # update the VLibrary's timestamps
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
     return 0;
 }
 
@@ -252,7 +190,7 @@ sub event_keywords {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    $ctxt->properties->content->getformatsandtypes( 1 );
+    $ctxt->properties->content->getformatsandtypes(1);
 
     $ctxt->properties->application->style("keywords");
 
@@ -267,8 +205,10 @@ sub event_keyword {
     unless ($keywordid) {
         my $keywordname = XIMS::decode( $self->param('keyword_name') );
         if ( defined $keywordname ) {
-            my $keyword = XIMS::VLibKeyword->new( name => $keywordname,
-                                                  document_id => $ctxt->object()->document_id(), );
+            my $keyword = XIMS::VLibKeyword->new(
+                name        => $keywordname,
+                document_id => $ctxt->object()->document_id(),
+            );
             if ( $keyword and $keyword->id() ) {
                 $keywordid = $keyword->id();
             }
@@ -280,7 +220,6 @@ sub event_keyword {
     $ctxt->properties->content->getformatsandtypes(1);
 
     my $display_params = $self->get_display_params($ctxt);
-
 
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
@@ -301,103 +240,6 @@ sub event_keyword {
     return 0;
 }
 
-sub event_keyword_show {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    $ctxt->properties->application->style("keyword_show");
-
-    my $keywordid = $self->param('keyword_id');
-    my $keyword;
-
-    if ( defined $keywordid and $keywordid ) {
-        $keyword = XIMS::VLibKeyword->new(
-            id          => $keywordid,
-            document_id => $object->document_id()
-        );
-    }
-    else {
-        return $self->sendError( $ctxt, "Missing keyword_id." );
-    }
-    $ctxt->objectlist( [$keyword] );
-    return 0;
-}
-
-sub event_keyword_store {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    XIMS::Debug( 6, "unlocking object" );
-    $object->unlock();
-
-    my $id         = $self->param('vlkeyword_id');
-    my $name  = XIMS::clean( $self->param('vlkeyword_name') )   || '';
-    my $description = XIMS::clean( $self->param('vlkeyword_description') )  || '';
-    my $vlibkeyword;
-
-    XIMS::Debug( 6, "id: $id name: $name description: $description");
-
-    if ( defined $id and $id ) {
-        $vlibkeyword = XIMS::VLibKeyword->new(
-            id          => $id,
-            document_id => $object->document_id()
-        );
-    }
-    else {
-
-        # create new VLibKeyword
-        $vlibkeyword = XIMS::VLibKeyword->new();
-        $vlibkeyword->document_id( $object->document_id() );
-    }
-
-    if ( ref $vlibkeyword ) {
-        $vlibkeyword->name($name);
-        $vlibkeyword->description($description);
-
-        if ( $vlibkeyword->id() ) {            # update keyword
-            if ( $vlibkeyword->update == 1 ) {
-                _update_or_publish($ctxt);    # update the VLibrary's timestamps
-                XIMS::Debug( 6, "VLibKeyword: Update record successful." );
-                $self->redirect( $self->redirect_path($ctxt)
-                      . '?keyword_show=1;keyword_id='
-                      . $vlibkeyword->id() );
-            }
-            else {
-                XIMS::Debug( 3, "VLibKeyword: Update record failed." );
-                return $self->sendError( $ctxt,
-                                         "Keyword: Update record failed." );
-            }
-        }
-        else {                                # create keyword
-            if ( $vlibkeyword->create() ) {
-                _update_or_publish($ctxt);    # update the VLibrary's timestamps
-                XIMS::Debug( 6, "VLibKeyword: Update record successful." );
-                $self->redirect( $self->redirect_path($ctxt)
-                      . '?keyword_show=1;keyword_id='
-                      . $vlibkeyword->id() );
-            }
-            else {
-                XIMS::Debug( 3, "could not create keyword" );
-                next;
-            }
-        }
-    }
-    else {
-        XIMS::Debug( 3, "Keyword: creation failed." );
-        return $self->sendError( $ctxt, "Keyword: creation failed." );
-    }
-
-    return 0;
-}
 
 ##############################################################################
 # end keywords, begin authors
@@ -407,7 +249,7 @@ sub event_authors {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    $ctxt->properties->content->getformatsandtypes( 1 );
+    $ctxt->properties->content->getformatsandtypes(1);
 
     $ctxt->properties->application->style("authors");
 
@@ -469,9 +311,9 @@ sub event_author {
     my @objects = $ctxt->object->vlitems_byauthor_granted(
 
         author_id => $authorid,
-        limit      => $display_params->{limit},
-        offset     => $display_params->{offset},
-        order      => $display_params->{order},
+        limit     => $display_params->{limit},
+        offset    => $display_params->{offset},
+        order     => $display_params->{order},
     );
 
     $ctxt->objectlist( \@objects );
@@ -483,125 +325,6 @@ sub event_author {
     return 0;
 }
 
-sub event_author_show {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-
-    $ctxt->properties->application->style("author_show");
-
-    my $authorid = $self->param('author_id');
-    my $author;
-
-    if ( defined $authorid and $authorid ) {
-        $author = XIMS::VLibAuthor->new(
-            id          => $authorid,
-            document_id => $object->document_id()
-        );
-    }
-    else {
-        return $self->sendError( $ctxt, "Missing author_id." );
-    }
-    $ctxt->objectlist( [$author] );
-    return 0;
-}
-
-sub event_author_store {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-    unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE )
-    {
-        return $self->event_access_denied($ctxt);
-    }
-
-    XIMS::Debug( 6, "unlocking object" );
-    $object->unlock();
-
-    my $id         = $self->param('vlauthor_id');
-    my $firstname  = XIMS::clean( $self->param('vlauthor_firstname') )   || '';
-    my $middlename = XIMS::clean( $self->param('vlauthor_middlename') )  || '';
-    my $lastname   = XIMS::clean( $self->param('vlauthor_lastname') )    || '';
-    my $suffix     = XIMS::clean( $self->param('vlauthor_suffix') )      || '';
-    my $objecttype = XIMS::clean( $self->param('vlauthor_object_type') ) || '';
-    my $url        = XIMS::clean( $self->param('vlauthor_url') )         || '';
-    my $image_url  = XIMS::clean( $self->param('vlauthor_image_url') )   || '';
-    my $email      = XIMS::clean( $self->param('vlauthor_email') )       || '';
-    my $vlibauthor;
-
-    XIMS::Debug( 6,
-            "id: $id firstname: $firstname middlename: $middlename "
-          . "lastname: $lastname suffix: $suffix "
-          . "objecttype: $objecttype url: $url image_url: $image_url"
-          . "email: $email" );
-
-    if ( defined $id and $id ) {
-        $vlibauthor = XIMS::VLibAuthor->new(
-            id          => $id,
-            document_id => $object->document_id()
-        );
-    }
-    else {
-
-        # create new VLibAuthor
-        $vlibauthor = XIMS::VLibAuthor->new();
-        $vlibauthor->document_id( $object->document_id() );
-    }
-
-    if ( ref $vlibauthor ) {
-        $vlibauthor->firstname($firstname);
-        $vlibauthor->middlename($middlename);
-        $vlibauthor->lastname($lastname);
-        $vlibauthor->suffix($suffix);
-        $vlibauthor->email($email);
-        $vlibauthor->url($url);
-        $vlibauthor->image_url($image_url);
-
-        if ( defined $objecttype and $objecttype ) {
-            $vlibauthor->object_type(1);
-        }
-        else {
-            $vlibauthor->object_type(0);
-        }
-
-        if ( $vlibauthor->id() ) {            # update author
-            if ( $vlibauthor->update == 1 ) {
-                _update_or_publish($ctxt);    # update the VLibrary's timestamps
-                XIMS::Debug( 6, "VLibAuthor: Update record successful." );
-                $self->redirect( $self->redirect_path($ctxt)
-                      . '?author_show=1;author_id='
-                      . $vlibauthor->id() );
-            }
-            else {
-                XIMS::Debug( 3, "VLibAuthor: Update record failed." );
-                return $self->sendError( $ctxt,
-                                         "Author: Update record failed." );
-            }
-        }
-        else {                                # create author
-            if ( $vlibauthor->create() ) {
-                _update_or_publish($ctxt);    # update the VLibrary's timestamps
-                XIMS::Debug( 6, "VLibAuthor: Update record successful." );
-                $self->redirect( $self->redirect_path($ctxt)
-                      . '?author_show=1;author_id='
-                      . $vlibauthor->id() );
-            }
-            else {
-                XIMS::Debug( 3, "could not create author" );
-                next;
-            }
-        }
-    }
-    else {
-        XIMS::Debug( 3, "Author: creation failed." );
-        return $self->sendError( $ctxt, "Author: creation failed." );
-    }
-
-    return 0;
-}
 
 ##############################################################################
 # end authors, begin publications
@@ -611,7 +334,7 @@ sub event_publications {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    $ctxt->properties->content->getformatsandtypes( 1 );
+    $ctxt->properties->content->getformatsandtypes(1);
 
     $ctxt->properties->application->style("publications");
 
@@ -632,8 +355,8 @@ sub event_publication {
         #$publicationvolume" );
         if ( $publicationname and $publicationvolume ) {
             my $publication = XIMS::VLibPublication->new(
-                name   => $publicationname,
-                volume => $publicationvolume,
+                name        => $publicationname,
+                volume      => $publicationvolume,
                 document_id => $ctxt->object()->document_id(),
             );
 
@@ -655,9 +378,9 @@ sub event_publication {
 
     my @objects = $ctxt->object->vlitems_bypublication_granted(
         publication_id => $publicationid,
-        limit      => $display_params->{limit},
-        offset     => $display_params->{offset},
-        order      => $display_params->{order},
+        limit          => $display_params->{limit},
+        offset         => $display_params->{offset},
+        order          => $display_params->{order},
     );
     $ctxt->objectlist( \@objects );
     $ctxt->objectlist_info(
@@ -667,6 +390,8 @@ sub event_publication {
     return 0;
 }
 
+
+
 ##############################################################################
 # end publications
 ##############################################################################
@@ -674,29 +399,27 @@ sub event_publication {
 sub event_property_edit {
     my ( $self, $ctxt ) = @_;
 
-    unless ($self->_privcheck_lock($ctxt)) {
+    unless ( $self->_privcheck_lock($ctxt) ) {
         return $self->event_access_denied($ctxt);
     }
 
     my $property = $self->param('property');
 
-    if ( $property !~ /^(subject|author|publication|keyword)$/ )
-    {
+    if ( $property !~ /^(subject|author|publication|keyword)$/ ) {
         return $self->simple_response(
             '400 BAD REQUEST',
-            "ERROR: Property must be one of: subject, author, publication, or keyword"
+"ERROR: Property must be one of: subject, author, publication, or keyword!"
         );
     }
 
-    my $object = $ctxt->object();
-    my $class = "XIMS::VLib" . ucfirst( $property );
-    my $id = $self->param('property_id');
+    my $class  = "XIMS::VLib" . ucfirst($property);
+    my $id     = $self->param('property_id');
     my $vlibproperty;
 
     if ( defined $id and $id ) {
         $vlibproperty = $class->new(
             id          => $id,
-            document_id => $object->document_id(),
+            document_id => $ctxt->object()->document_id(),
         );
     }
     else {
@@ -709,43 +432,138 @@ sub event_property_edit {
 
 }
 
+sub event_property_show {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
 
-sub event_property_delete_prompt {
+    my $property = $self->param('property');
+
+    if ( $property !~ /^(subject|author|publication|keyword)$/ ) {
+        return $self->simple_response(
+            '400 BAD REQUEST',
+"ERROR: Property must be one of: subject, author, publication, or keyword!"
+        );
+    }
+
+    my $class = "XIMS::VLib" . ucfirst( $self->param('property') );
+    my $id = $self->param('property_id');
+    my $vlproperty;
+
+    if ( defined $id and $id ) {
+        $vlproperty = $class->new(
+            id          => $id,
+            document_id => $ctxt->object()->document_id()
+        );
+    }
+    else {
+        return $self->sendError( $ctxt, "Missing property_id." );
+    }
+    $ctxt->objectlist( [$vlproperty] );
+
+    $ctxt->properties->application->style("${property}_show");
+
+    return 0;
+}
+
+sub event_property_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
+    my $property = $self->param('property');
 
-    # operation control section
+    if ( $property !~ /^(subject|author|publication|keyword)$/ ) {
+        return $self->simple_response(
+            '400 BAD REQUEST',
+"ERROR: Property must be one of: subject, author, publication, or keyword!"
+        );
+    }
+
     unless ( $ctxt->session->user->object_privmask($object) &
         XIMS::Privileges::WRITE )
     {
         return $self->event_access_denied($ctxt);
     }
 
-    $ctxt->properties->application->style('property_delete_prompt');
+    XIMS::Debug( 6, "unlocking object" );
+    $object->unlock();
 
-    if ( $self->object_locked($ctxt) ) {
-        XIMS::Debug( 3, "Attempt to edit locked object" );
-        $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
-    }
-    else {
-        if ( $object->lock() ) {
-            XIMS::Debug( 4, "lock set" );
-            $ctxt->session->message(
-"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
-            );
+    my %fields;
+    my $vlibpublication;
+    my $class = "XIMS::VLib" . ucfirst($property);
+
+    my $vlibproperty = $class->new();
+
+    foreach ( $vlibproperty->fields() ) {
+        if ( $_ eq 'document_id' ) {
+            $fields{$_} = $object->document_id();
         }
         else {
-            XIMS::Debug( 3, "lock not set" );
+            $fields{$_} =  XIMS::clean( $self->param("vl${property}_${_}") );
         }
     }
+
+    #use Data::Dumper;
+    #warn Dumper(\%fields);
+
+    if ( $fields{'id'} ) {
+        # create new object by id if set
+        $vlibproperty = $class->new(
+            id          => $fields{'id'},
+        );
+    }
+    if ( ref $vlibproperty ) {
+        foreach ($vlibproperty->fields()) {
+            next if $_ eq 'id';
+            $vlibproperty->$_( $fields{$_} );
+        }
+
+        if ( $vlibproperty->id() ) {    # update property
+            if ( $vlibproperty->update == 1 ) {
+                _update_or_publish($ctxt);    # update the VLibrary's timestamps
+                XIMS::Debug( 6, "$class: Update record successful." );
+                $self->redirect( $self->redirect_path($ctxt)
+                      . "?property_show=1;property=${property};property_id="
+                      . $vlibproperty->id() );
+            }
+            else {
+                XIMS::Debug( 3, "$class: Update record failed." );
+                return $self->sendError( $ctxt,
+                    "Property: Update record failed." );
+            }
+        }
+        else {                                # create property
+            if ( $vlibproperty->create() ) {
+                _update_or_publish($ctxt);    # update the VLibrary's timestamps
+                XIMS::Debug( 6, "$class: Update record successful." );
+                $self->redirect( $self->redirect_path($ctxt)
+                      . "?property_show=1;property=${property};property_id="
+                      . $vlibproperty->id() );
+            }
+            else {
+                XIMS::Debug( 3, "could not create $class" );
+                next;
+            }
+        }
+    }
+    else {
+        XIMS::Debug( 3, "$class: creation failed." );
+        return $self->sendError( $ctxt, "$class: creation failed." );
+    }
+
+    return 0;
+}
+
+
+sub event_property_delete_prompt {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    unless ( $self->_privcheck_lock($ctxt) ) {
+        return $self->event_access_denied($ctxt);
+    }
+
+    $ctxt->properties->application->style('property_delete_prompt');
 
     return 0;
 }
@@ -771,7 +589,7 @@ sub event_property_delete {
     {
         return $self->simple_response(
             '400 BAD REQUEST',
-            "ERROR: Property must be one of: subject, author, publication, or keyword"
+"ERROR: Property must be one of: subject, author, publication, or keyword!"
         );
     }
 
@@ -797,8 +615,6 @@ sub event_property_delete {
             "ERROR: $class $id: deletion failed!" );
     }
 }
-
-
 
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
@@ -1119,9 +935,8 @@ sub event_filter {
         $order = 'alpha';
     }
 
-
     XIMS::Debug( 6, "Filter criteria:" . Dumper(%criteria) );
-    XIMS::Debug( 6, "Filter params:"   . Dumper(%params) );
+    XIMS::Debug( 6, "Filter params:" . Dumper(%params) );
 
     # define parameters for query
     my %param = (
@@ -1181,7 +996,7 @@ sub event_most_recent {
         $param{limit} = 10;
     }
 
-    $ctxt->properties->content->getformatsandtypes( 1 );
+    $ctxt->properties->content->getformatsandtypes(1);
 
     my @objects = $ctxt->object->children_granted(%param);
     $ctxt->objectlist( \@objects );
@@ -1355,9 +1170,6 @@ sub _privcheck_lock {
     }
     return 1;
 }
-
-
-
 
 1;
 
