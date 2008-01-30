@@ -152,10 +152,10 @@ sub event_create_mapping {
     my $vlauthor  = $self->param('vlauthor');
 
     if ( $vlsubject or $vlkeyword or $vlauthor ) {
-        $self->_create_mapping_from_name( $ctxt->object(), 'Subject',
+        $self->_create_mapping_from_id( $ctxt->object(), 'Subject',
             $vlsubject )
           if $vlsubject;
-        $self->_create_mapping_from_name( $ctxt->object(), 'Keyword',
+        $self->_create_mapping_from_id( $ctxt->object(), 'Keyword',
             $vlkeyword )
           if $vlkeyword;
         $self->_create_mapping_from_id( $ctxt->object(), 'Author', $vlauthor )
@@ -305,16 +305,20 @@ sub _create_mapping_from_id {
     my $propobject;
     my $propclass = "XIMS::VLib" . $propertyname;
 
-    if ( $propertyname eq 'Author' or $propertyname eq 'Subject' ) {
-        $propobject =
-          $propclass->new( id => $value, document_id => $object->parent_id() );
-    }
-    elsif ( $propertyname eq 'Keyword' ) {
-        $propobject = $propclass->new( name => $value,
-                                       document_id => $object->parent_id() );
-    }
-    if ( not( defined $propobject and $propobject->id() ) ) {
-        XIMS::Debug( 3, "could not create $propclass $value" );
+    $propobject = $propclass->new(
+        id          => $value,
+        document_id => $object->parent_id()
+    );
+
+    if (
+        not( defined $propobject
+            and $propobject->id() )
+      )
+    {
+        XIMS::Debug(
+            3, "could not create $propclass
+          $value"
+        );
         return;
     }
 
