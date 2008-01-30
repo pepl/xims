@@ -62,7 +62,7 @@
         <xsl:if test="/document/context/*[name()=concat('vl', $mo,'s')]">
           <xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
           <input type="hidden"
-                 name="vlauthor"
+                 name="vl{$mo}"
                  value=""/>
           <input type="submit"
                  name="create_mapping"
@@ -165,7 +165,7 @@
        title="Browse in a new window">
       <xsl:value-of select="name"/>
     </a>
-    <xsl:text> </xsl:text>
+    <xsl:text>&#160;</xsl:text>
     <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}"
        title="Delete Mapping">(x)
     </a>
@@ -181,7 +181,7 @@
        title="Browse in a new window">
       <xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/>
     </a>
-    <xsl:text> </xsl:text>
+    <xsl:text>&#160;</xsl:text>
     <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}"
        title="Delete Mapping">(x)
     </a>
