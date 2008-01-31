@@ -182,7 +182,10 @@
           }
 
           createCookie('xims_wysiwygeditor',selection,90);
-          window.location.href = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/@id"/>;edit=1';
+          if ( !window.location.href.search(/\?create=1/) ) {
+              window.location.href = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/@id"/>;edit=1';
+          }
+          else { window.location.reload(); }
 
           return true;
       }
