@@ -38,9 +38,10 @@
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px; background: #ffffff">
                 <tr>
                     <td colspan="2">
-                        <span id="body">
-                            <xsl:apply-templates select="body"/>
-                        </span>
+                      <xsl:call-template name="pre-body-hook"/>
+                      <span id="body">
+                        <xsl:apply-templates select="body"/>
+                      </span>
                     </td>
                 </tr>
                 <tr>
@@ -204,6 +205,10 @@
         <xsl:if test="@type != ''"><xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
         <xsl:value-of select="text()"/>
     </script>
+</xsl:template>
+
+<xsl:template name="pre-body-hook">
+  <!-- Do nothing; derived stylesheets may overwrite this template. -->
 </xsl:template>
 
 </xsl:stylesheet>
