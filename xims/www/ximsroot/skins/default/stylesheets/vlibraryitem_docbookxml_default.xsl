@@ -9,8 +9,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:import href="sdocbookxml_default.xsl"/>
-<xsl:import href="vlibrary_common.xsl"/>
+  <xsl:import href="sdocbookxml_default.xsl"/>
+  <xsl:import href="vlibraryitem_common.xsl"/>
+  <xsl:import href="vlibrary_common.xsl"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -23,19 +24,7 @@
                 <tr>
                     <td bgcolor="#ffffff">
                         <span id="body">
-                            <div id="vlitemmeta">
-                                <ul>
-                                    <li><xsl:apply-templates select="authorgroup"/></li>
-                                    <li><xsl:apply-templates select="subjectset"/></li>
-                                    <li><xsl:apply-templates select="keywordset"/></li>
-                                    <li><xsl:apply-templates select="publicationset"/></li>
-                                    <li>Mediatype: <xsl:apply-templates select="meta/mediatype"/></li>
-                                    <li>Legalnotice: <xsl:apply-templates select="meta/legalnotice"/></li>
-                                    <xsl:if test="meta/bibliosource != ''">
-                                        <li>Releaseinfo: <xsl:apply-templates select="meta/bibliosource"/></li>
-                                    </xsl:if>
-                                </ul>
-                            </div>
+                          <xsl:call-template name="div-vlitemmeta"/>
                             <h1><xsl:value-of select="title"/></h1>
                             <xsl:choose>
                                 <xsl:when test="$section > 0 and $section-view='true'">
@@ -59,30 +48,40 @@
 </xsl:template>
 
 <xsl:template match="keywordset">
-    Keywords:
+    <strong>Keywords:</strong> 
         <xsl:apply-templates select="keyword"/>
 </xsl:template>
 
 <xsl:template match="subjectset">
-    Subjects:
+    <strong>Subjects:</strong> 
         <xsl:apply-templates select="subject"/>
 </xsl:template>
 
 <xsl:template match="publicationset">
-    Published in:
+    <strong>Published in:</strong> 
         <xsl:apply-templates select="publication[name != '']"/>
 </xsl:template>
 
 <xsl:template match="keyword">
-    <xsl:value-of select="name"/><xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
+  <a href="{$xims_box}{$goxims_content}{$parent_path}?keyword=1;keyword_id={id}">
+    <xsl:value-of select="name"/>
+  </a>
+  <xsl:if test="position()!=last()">
+    <xsl:text>, </xsl:text>
+  </xsl:if>
 </xsl:template>
 
 <xsl:template match="subject">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?subject=1;subject_id={id}"><xsl:value-of select="name"/></a><xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?subject=1;subject_id={id}">
+      <xsl:value-of select="name"/>
+    </a>
+    <xsl:if test="position()!=last()">
+      <xsl:text>, </xsl:text>
+    </xsl:if>
 </xsl:template>
 
 <xsl:template match="authorgroup">
-    Authors:
+    <strong>Authors:</strong> 
         <xsl:apply-templates select="author"/>
 </xsl:template>
 
@@ -94,7 +93,7 @@
 </xsl:template>
 
 <xsl:template name="author_link">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?author=1;author_id={id};author_firstname={firstname};author_middlename={middlename};author_lastname={lastname}">
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?author=1;author_id={id}">
     <xsl:value-of select="firstname"/>
     <xsl:text> </xsl:text>
     <xsl:if test="middlename">
