@@ -327,10 +327,19 @@
 </xsl:template>
 
 <xsl:template name="meta">
+  <xsl:if test="count(meta/date_from_timestamp/*) &gt; 0 or count(meta/date_to_timestamp/*) &gt; 0">
     <div class="vlmeta">
-        <xsl:if test="meta/date_from_timestamp"><strong><xsl:value-of select="$i18n_vlib/l/chronicle_from"/>:</strong>&#xa0;<xsl:apply-templates select="meta/date_from_timestamp" mode="datetime"/></xsl:if>
-        &#xa0;<xsl:if test="meta/date_to_timestamp"><strong><xsl:value-of select="$i18n_vlib/l/chronicle_to"/>:</strong>&#xa0;<xsl:apply-templates select="meta/date_to_timestamp" mode="datetime"/></xsl:if>
+        <xsl:if test="meta/date_from_timestamp">
+          <strong><xsl:value-of select="$i18n_vlib/l/chronicle_from"/>:</strong>&#xa0;
+          <xsl:apply-templates select="meta/date_from_timestamp" mode="datetime"/>
+        </xsl:if>
+        &#xa0;
+        <xsl:if test="meta/date_to_timestamp"><strong>
+        <xsl:value-of select="$i18n_vlib/l/chronicle_to"/>:</strong>&#xa0;
+        <xsl:apply-templates select="meta/date_to_timestamp" mode="datetime"/>
+      </xsl:if>
     </div>
+  </xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>
