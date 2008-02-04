@@ -10,7 +10,6 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:import href="sdocbookxml_default.xsl"/>
-  <xsl:import href="vlibraryitem_common.xsl"/>
   <xsl:import href="vlibrary_common.xsl"/>
 
 <xsl:template match="/document/context/object">
@@ -104,7 +103,7 @@
 </xsl:template>
 
 <xsl:template match="publication">
-    <a href="{$xims_box}{$goxims_content}{$parent_path}?publication=1;publication_id={id};publication_name={name} ({volume})"><xsl:value-of select="name"/><xsl:text> (</xsl:text><xsl:value-of select="volume"/>)</a>
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?publication=1;publication_id={id}"><xsl:value-of select="name"/><xsl:text> (</xsl:text><xsl:value-of select="volume"/>)</a>
     <xsl:if test="isbn != ''">
         ISBN: <xsl:value-of select="isbn"/>
     </xsl:if>
@@ -117,5 +116,57 @@
 <xsl:template match="ulink">
     <a href="{@url}"><xsl:value-of select="text()"/></a>
 </xsl:template>
+
+
+  <xsl:template name="div-vlitemmeta">
+    <div id="vlitemmeta">
+      <ul>
+        <xsl:if test="meta/subtitle != ''">
+          <li><strong>Subtitle:</strong> <xsl:value-of select="meta/subtitle"/></li>
+        </xsl:if>
+        <li><strong>Abstract:</strong> <span><xsl:value-of select="abstract"/></span></li>
+        <xsl:if test="count(authorgroup/author) &gt; 0">
+          <li><xsl:apply-templates select="authorgroup"/></li>
+        </xsl:if>
+        <xsl:if test="count(subjectset/subject) &gt; 0">
+          <li><xsl:apply-templates select="subjectset"/></li>
+        </xsl:if>
+        <xsl:if test="count(keywordset/keyword) &gt; 0">
+          <li><xsl:apply-templates select="keywordset"/></li>
+        </xsl:if>
+        <xsl:if test="count(publication/publication) &gt; 0">
+          <li><xsl:apply-templates select="publicationset"/></li>
+        </xsl:if> 
+        <xsl:if test="meta/mediatype != ''">
+          <li><strong>Mediatype:</strong> <xsl:apply-templates select="meta/mediatype"/></li>
+        </xsl:if>
+        <xsl:if test="meta/legalnotice != ''">
+          <li><strong>Legalnotice:</strong> <xsl:apply-templates select="meta/legalnotice"/></li>
+        </xsl:if>
+        <xsl:if test="meta/bibliosource != ''">
+          <li><strong>Releaseinfo:</strong> <xsl:apply-templates select="meta/bibliosource"/></li>
+        </xsl:if>
+        <xsl:if test="meta/coverage != ''">
+        <li><strong>Coverage:</strong> <xsl:value-of select="meta/coverage"/></li>
+        </xsl:if>
+        <xsl:if test="meta/publisher != ''">
+        <li><strong>Publisher:</strong> <xsl:value-of select="meta/publisher"/></li>
+        </xsl:if>
+        <xsl:if test="meta/audience != ''">
+        <li><strong>Audience:</strong> <xsl:value-of select="meta/audience"/></li>
+        </xsl:if>
+        <xsl:if test="meta/dc_date != ''">
+        <li><strong>DC.Date:</strong> <xsl:value-of select="meta/dc_date"/></li>
+        </xsl:if>
+        <xsl:if test="count(meta/date_from_timestamp/*) &gt; 0">
+        <li><strong>Chronicle from:</strong> <xsl:apply-templates select="meta/date_from_timestamp"  mode="datetime"/></li>
+        </xsl:if>
+        <xsl:if test="count(meta/date_to_timestamp/*) &gt; 0">
+        <li><strong>Chronicle to:</strong> <xsl:apply-templates select="meta/date_to_timestamp"  mode="datetime"/></li>
+        </xsl:if>
+      </ul>
+    </div>
+  </xsl:template>
+
 
 </xsl:stylesheet>
