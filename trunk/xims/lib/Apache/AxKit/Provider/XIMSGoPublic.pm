@@ -189,8 +189,12 @@ sub get_dom {
         $dom->setInternalSubset($dtd);
     }
 
-    # Pass through the response headers - now as we have a valid dom
-    $r->content_type( $response->header('Content-type') );
+    # Check if the content type should be overwritten (MSIE may need text/html)
+    my $content_type = $r->dir_config('ProxyOutputContentType');
+    $content_type ||= $response->header('Content-type');
+
+    # Pass through the rest of the response headers - now as we have a valid dom
+    $r->content_type( $content_type );
     $r->status( $response->code() );
     $r->status_line( $response->status_line );
     my $table = $r->headers_out();
@@ -377,6 +381,8 @@ in F<httpd.conf> or F<ximshttpd.conf>:
        PerlSetVar ProxyObject http://xims.acme.com/gopublic/content/acme.com/people/staff
        # Optional timeout on fetching the ProxyObject. Defaults to 10 seconds.
        PerlSetVar ProxyObjectTimeout 20
+       # Maybe the output content type should be overwritten (MSIE may need text/html)
+       #PerlSetVar ProxyOutputContentType 'text/html; charset=utf-8'
  </Location>
 
 =head1 DEPENDENCIES
@@ -412,4 +418,5 @@ and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 #   indent-tabs-mode: nil
 # End:
 # ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+
 
