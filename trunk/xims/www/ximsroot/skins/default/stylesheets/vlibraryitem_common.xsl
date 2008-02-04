@@ -571,4 +571,54 @@
     </tr>
   </xsl:template>
   
+  <xsl:template name="div-vlitemmeta">
+    <div id="vlitemmeta">
+      <ul>
+        <xsl:if test="meta/subtitle != ''">
+          <li><strong>Subtitle:</strong> <xsl:value-of select="meta/subtitle"/></li>
+        </xsl:if>
+        <li><strong>Zusammenfassung:</strong> <span><xsl:value-of select="abstract"/></span></li>
+        <xsl:if test="count(authorgroup/author) &gt; 0">
+          <li><xsl:apply-templates select="authorgroup"/></li>
+        </xsl:if>
+        <xsl:if test="count(subjectset/subject) &gt; 0">
+          <li><xsl:apply-templates select="subjectset"/></li>
+        </xsl:if>
+        <xsl:if test="count(keywordset/keyword) &gt; 0">
+          <li><xsl:apply-templates select="keywordset"/></li>
+        </xsl:if>
+        <xsl:if test="count(publication/publication) &gt; 0">
+          <li><xsl:apply-templates select="publicationset"/></li>
+        </xsl:if> 
+        <xsl:if test="meta/mediatype != ''">
+          <li><strong>Mediatype:</strong> <xsl:apply-templates select="meta/mediatype"/></li>
+        </xsl:if>
+        <xsl:if test="meta/legalnotice != ''">
+          <li><strong>Legalnotice:</strong> <xsl:apply-templates select="meta/legalnotice"/></li>
+        </xsl:if>
+        <xsl:if test="meta/bibliosource != ''">
+          <li><strong>Releaseinfo:</strong> <xsl:apply-templates select="meta/bibliosource"/></li>
+        </xsl:if>
+        <xsl:if test="meta/coverage != ''">
+        <li><strong>Coverage:</strong> <xsl:value-of select="meta/coverage"/></li>
+        </xsl:if>
+        <xsl:if test="meta/publisher != ''">
+        <li><strong>Publisher:</strong> <xsl:value-of select="meta/publisher"/></li>
+        </xsl:if>
+        <xsl:if test="meta/audience != ''">
+        <li><strong>Audience:</strong> <xsl:value-of select="meta/audience"/></li>
+        </xsl:if>
+        <xsl:if test="meta/dc_date != ''">
+        <li><strong>DC.Date:</strong> <xsl:value-of select="meta/dc_date"/></li>
+        </xsl:if>
+        <xsl:if test="meta/date_from_timestamp != ''">
+        <li><strong>Chronicle from:</strong> <xsl:apply-templates select="meta/date_from_timestamp"  mode="ISO8601-MinNoT"/></li>
+        </xsl:if>
+        <xsl:if test="meta/date_to_timestamp != ''">
+        <li><strong>Chronicle to:</strong> <xsl:apply-templates select="meta/date_to_timestamp"  mode="ISO8601-MinNoT"/></li>
+        </xsl:if>
+      </ul>
+    </div>
+  </xsl:template>
+
 </xsl:stylesheet>
