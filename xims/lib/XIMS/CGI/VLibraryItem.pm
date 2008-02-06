@@ -76,6 +76,7 @@ sub event_create {
     $ctxt->object->vlkeywords( $vlibrary->vlkeywords() );
     $ctxt->object->vlsubjects( $vlibrary->vlsubjects() );
     $ctxt->object->vlauthors( $vlibrary->vlauthors() );
+    $ctxt->object->vlpublications( $vlibrary->vlpublications() );
 
     $self->SUPER::event_create($ctxt);
 }
@@ -90,6 +91,7 @@ sub event_edit {
     $ctxt->object->vlkeywords( $vlibrary->vlkeywords() );
     $ctxt->object->vlsubjects( $vlibrary->vlsubjects() );
     $ctxt->object->vlauthors( $vlibrary->vlauthors() );
+    $ctxt->object->vlpublications( $vlibrary->vlpublications() );
 
     $self->expand_attributes($ctxt);
 
