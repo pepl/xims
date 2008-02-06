@@ -124,7 +124,9 @@
         <xsl:if test="meta/subtitle != ''">
           <li><strong>Subtitle:</strong> <xsl:value-of select="meta/subtitle"/></li>
         </xsl:if>
+        <xsl:if test="meta/abstract != ''">
         <li><strong>Abstract:</strong> <span><xsl:value-of select="abstract"/></span></li>
+        </xsl:if>
         <xsl:if test="count(authorgroup/author) &gt; 0">
           <li><xsl:apply-templates select="authorgroup"/></li>
         </xsl:if>
