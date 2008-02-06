@@ -160,8 +160,6 @@ sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    my $dp = $ctxt->data_provider();
-
     my $r_type = $self->resource_type($ctxt);
     return $self->event_access_denied($ctxt) unless defined($r_type);
 
