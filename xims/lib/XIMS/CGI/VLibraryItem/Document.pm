@@ -132,16 +132,15 @@ sub event_store {
         $meta = XIMS::VLibMeta->new( document_id => $object->document_id() );
     }
 
-    # store subjects, keywords and authors
-    my $vlsubject = $self->param('vlsubject');
-    my $vlkeyword = $self->param('vlkeyword');
-    my $vlauthor  = $self->param('vlauthor');
-    $self->_create_mapping_from_name( $ctxt->object(), 'Subject', $vlsubject )
-      if $vlsubject;
-    $self->_create_mapping_from_name( $ctxt->object(), 'Keyword', $vlkeyword )
-      if $vlkeyword;
-    $self->_create_mapping_from_name( $ctxt->object(), 'Author', $vlauthor )
-      if $vlauthor;
+    # store publications, subjects, keywords, and authors
+    foreach my $property ( qw(subject keyword author publication)) {
+        if ($self->param( "vl$property")) {
+            $self->_create_mapping_from_id( $ctxt->object(),
+                                            ucfirst($property),
+                                            $self->param( "vl$property")
+                   )
+        }
+    }
 
     # Store metadata (publisher, chronicle dates, etc)
     map { $meta->data( $_ => $self->param($_) ) if defined $self->param($_) }
