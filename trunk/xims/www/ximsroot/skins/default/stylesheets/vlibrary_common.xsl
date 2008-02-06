@@ -218,8 +218,8 @@
   </xsl:template>
 
   <xsl:template name="property_link">
-    <xsl:param name="mo"/>
     
+    <xsl:param name="mo"/>
 
     <xsl:variable name="display_name">
       <xsl:choose>
@@ -236,6 +236,11 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="name"/>
+          <xsl:if test="volume != ''">
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="volume"/>
+            <xsl:text>)</xsl:text>
+          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
