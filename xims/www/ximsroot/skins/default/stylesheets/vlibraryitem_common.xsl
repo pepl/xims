@@ -159,21 +159,29 @@
   </xsl:template>
 
 
-  <xsl:template match="keywordset/keyword|subjectset/subject">
+  <xsl:template match="keywordset/keyword|subjectset/subject|publicationset/publication">
     <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}"
        target="_blank"
        title="Browse in a new window">
       <xsl:value-of select="name"/>
+      <xsl:if test="volume != ''">
+        <xsl:text> (</xsl:text>
+        <xsl:value-of select="volume"/>
+        <xsl:text>)</xsl:text>
+      </xsl:if>
     </a>
     <xsl:text>&#160;</xsl:text>
     <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}"
-       title="Delete Mapping">(x)
+       title="Delete Mapping">
+      <span style="background-color:#b1b5b8;
+                   border:#333333 solid 1px;
+                   color: maroon; 
+                   font-weight: bold;"> x </span>
     </a>
     <xsl:if test="position()!=last()">
       <xsl:text>, </xsl:text>
     </xsl:if>
   </xsl:template>
-
 
   <xsl:template match="authorgroup/author">
     <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}"
@@ -183,7 +191,11 @@
     </a>
     <xsl:text>&#160;</xsl:text>
     <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}"
-       title="Delete Mapping">(x)
+       title="Delete Mapping">
+      <span style="background-color:#b1b5b8;
+                   border:#333333 solid 1px;
+                   color: maroon; 
+                   font-weight: bold;"> x </span>
     </a>
     <xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
   </xsl:template>
@@ -239,8 +251,15 @@
     </select>
   </xsl:template>
 
+ <xsl:template match="vlpublications/publication">
+    <option value="{id}">
+      <xsl:value-of select="normalize-space(concat(name, ' (', volume, ')'))"/>
+    </option>
+  </xsl:template>
+  
+  
 
-  <xsl:template match="vlsubjects/subject|vlkeywords/keyword|vlpublications/publication">
+  <xsl:template match="vlsubjects/subject|vlkeywords/keyword">
     <option value="{id}">
       <xsl:value-of select="normalize-space(name)"/>
     </option>

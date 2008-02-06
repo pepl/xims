@@ -149,19 +149,22 @@ sub event_create_mapping {
     my $object = $ctxt->object();
     XIMS::Debug( 5, "called" );
 
-    my $vlsubject = $self->param('vlsubject');
-    my $vlkeyword = $self->param('vlkeyword');
-    my $vlauthor  = $self->param('vlauthor');
+    my $vlsubject     = $self->param('vlsubject');
+    my $vlkeyword     = $self->param('vlkeyword');
+    my $vlauthor      = $self->param('vlauthor');
+    my $vlpublication = $self->param('vlpublication');
 
-    if ( $vlsubject or $vlkeyword or $vlauthor ) {
-        $self->_create_mapping_from_id( $ctxt->object(), 'Subject',
-            $vlsubject )
+    if ( $vlsubject or $vlkeyword or $vlauthor or $vlpublication ) {
+        $self->_create_mapping_from_id( $ctxt->object(), 'Subject', $vlsubject )
           if $vlsubject;
-        $self->_create_mapping_from_id( $ctxt->object(), 'Keyword',
-            $vlkeyword )
+        $self->_create_mapping_from_id( $ctxt->object(), 'Keyword', $vlkeyword )
           if $vlkeyword;
         $self->_create_mapping_from_id( $ctxt->object(), 'Author', $vlauthor )
           if $vlauthor;
+        $self->_create_mapping_from_id( $ctxt->object(), 'Publication',
+            $vlpublication )
+          if $vlpublication;
+
         if ( index( ref($object), 'URLLink' ) > -1 ) {
 
             # jokar: If the object is an URLLink the edit parameter has
@@ -183,6 +186,7 @@ sub event_create_mapping {
 
     return 0;
 }
+
 
 sub _isvaliddate {
     XIMS::Debug( 5, "called" );
