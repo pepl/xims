@@ -159,12 +159,7 @@
       }
 
       function checkBodyFromSel (selection) {
-          if ( hasBodyChanged() ) {
-              document.getElementById('xims_wysiwygeditor').disabled = true;
-              alert("<xsl:value-of select="$i18n/l/Body_content_changed"/>");
-              return false;
-          }
-
+         
           /* we do not allow ewebeditpro to be set as default editor
            * via cookie on unsupported platforms
            */
@@ -182,6 +177,13 @@
           }
 
           createCookie('xims_wysiwygeditor',selection,90);
+
+          if ( hasBodyChanged() ) {
+              document.getElementById('xims_wysiwygeditor').disabled = true;
+              alert("<xsl:value-of select="$i18n/l/Body_content_changed"/>");
+              return false;
+          }
+
           if ( !window.location.href.search(/\?create=1/) ) {
               window.location.href = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/@id"/>;edit=1';
           }
