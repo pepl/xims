@@ -66,6 +66,17 @@ sub prepare {
     $doc_data->{context}->{object}->{user_privileges} = {%userprivs}
       if ( grep { defined $_ } values %userprivs );
 
+    my %encargs;
+    if ( $ctxt->properties->application->style() eq 'subject_show' ) {
+        $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
+        push(
+            @{ $self->{FilterList} },
+            XML::Filter::CharacterChunk->new(
+                %encargs, TagName => [qw(description)]
+            )
+        );
+    }
+
     if ( not $ctxt->parent() ) {
 
         # Left here for amusement.
