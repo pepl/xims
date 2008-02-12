@@ -5,7 +5,7 @@ XIMS::SAX::Generator::VLibraryItem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -33,27 +33,26 @@ sub _insert_vle_common {
 
     my @authors = $ctxt->object->vleauthors();
     $doc_data->{context}->{object}->{authorgroup} = { author => \@authors }
-        if ( !( $authors[0] eq undef ) );
+      if ( !( $authors[0] eq undef ) );
 
     my @keywords = $ctxt->object->vlekeywords();
     $doc_data->{context}->{object}->{keywordset} = { keyword => \@keywords }
-        if ( !( $keywords[0] eq undef ) );
+      if ( !( $keywords[0] eq undef ) );
 
     my @subjects = $ctxt->object->vlesubjects();
     $doc_data->{context}->{object}->{subjectset} = { subject => \@subjects }
-        if ( !( $subjects[0] eq undef ) );
+      if ( !( $subjects[0] eq undef ) );
 
     my @publications = $ctxt->object->vlepublications();
-    $doc_data->{context}->{object}->{publicationset}
-        = { publication => \@publications };
+    $doc_data->{context}->{object}->{publicationset} =
+      { publication => \@publications };
+    # XXX why no "if ( !( $publication[0] eq undef ) )" here?
 
     my $meta = $ctxt->object->vlemeta();
     $doc_data->{context}->{object}->{meta} = $meta;
 
     return;
 }
-
-
 
 =head2    $generator->prepare( $ctxt );
 
@@ -88,15 +87,20 @@ sub prepare {
 
         my @vlsubjects = $ctxt->object->vlsubjects();
         $doc_data->{context}->{vlsubjects} = { subject => \@vlsubjects }
-            if scalar @vlsubjects;
+          if scalar @vlsubjects;
 
         my @vlkeywords = $ctxt->object->vlkeywords();
         $doc_data->{context}->{vlkeywords} = { keyword => \@vlkeywords }
-            if scalar @vlkeywords;
+          if scalar @vlkeywords;
 
         my @vlauthors = $ctxt->object->vlauthors();
         $doc_data->{context}->{vlauthors} = { author => \@vlauthors }
-            if scalar @vlauthors;
+          if scalar @vlauthors;
+
+        my @vlpublications = $ctxt->object->vlpublications();
+        $doc_data->{context}->{vlpublications} =
+          { publication => \@vlpublications }
+          if scalar @vlpublications;
     }
 
     return $doc_data;
