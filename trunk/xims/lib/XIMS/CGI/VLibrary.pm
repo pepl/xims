@@ -427,7 +427,17 @@ sub event_property_edit {
     }
 
     $ctxt->objectlist( [$vlibproperty] );
-    $ctxt->properties->application->style("${property}_edit");
+
+    # Hacked-on HTMLArea editable subjects description, an »Extrawurst« for
+    # ZIS.
+    my $ed = '';
+
+    if ($property eq 'subject') {
+        # XXX calling foreign internal methods is certainly not not ugly...
+        $ed = XIMS::CGI::Document::_set_wysiwyg_editor($self, $ctxt)
+    }
+
+    $ctxt->properties->application->style("${property}_edit${ed}");
     return 0;
 
 }
@@ -458,6 +468,7 @@ sub event_property_show {
     else {
         return $self->sendError( $ctxt, "Missing property_id." );
     }
+
     $ctxt->objectlist( [$vlproperty] );
 
     $ctxt->properties->application->style("${property}_show");
