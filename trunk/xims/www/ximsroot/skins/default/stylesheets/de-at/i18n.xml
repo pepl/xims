@@ -236,4 +236,13 @@
 <Object_available_at>Diese Objekt ist verfügbar unter</Object_available_at>
 <More>Weitere</More>
 <PageRowLimit>Anzahl der Einträge pro Seite</PageRowLimit>
+<IlpDefaultWinlabel>XIMS Hinweis!</IlpDefaultWinlabel>
+<IlpProvideLocationFirst>Sie haben noch keine 'Location' eingegeben. Bitte geben Sie diese jetzt ein!</IlpProvideLocationFirst>
+<IlpLocationWouldChange>Hinweis! Nach speichern würde sich die 'Location' ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
+<IlpLocationExists>Sie haben eine 'Location' eingegeben, die im Container bereits existiert. Die 'Location' muss eindeutig sein! Bitte geben Sie eine andere 'Location' ein.</IlpLocationExists>
+<IlpNoLocationProvided>Das Feld 'Location' ist leer. Bitte geben Sie eine 'Location' ein.</IlpNoLocationProvided>
+<IlpDirtyLocation>Das Feld 'Location' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyLocation>
+<IlpButtonChange>Bearbeiten!</IlpButtonChange>
+<IlpButtonOK>OK</IlpButtonOK>
+<IlpButtonIgnore>Ignorieren!</IlpButtonIgnore>
 </l>
