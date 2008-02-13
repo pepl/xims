@@ -5,7 +5,7 @@ XIMS::Importer -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -391,6 +391,7 @@ sub clean_location {
                    '+'  =>  '_',
                    '~'  =>  '_',
                    "'"  =>  '_',
+                   '"'  =>  '_',
                    '#'  =>  '_',
                    '|'  =>  '_',
                    '°'  =>  '_',
