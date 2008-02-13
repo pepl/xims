@@ -73,13 +73,16 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td colspan="3">
             <label for="vlsubject_description">
               <xsl:value-of select="$i18n_vlib/l/description"/>
             </label>
-          </td>
-          <td colspan="2">
-            <div style="border:solid black 1px; margin:1px;">
+            <br />
+            <div style="border:     solid black 1px; 
+                        background: white;
+                        padding:    1px;
+                        width:      100%;
+                        height:     25em;">
               <xsl:apply-templates select="description"/>
             </div>
           </td> 
