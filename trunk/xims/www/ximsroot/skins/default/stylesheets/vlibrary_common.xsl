@@ -10,8 +10,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:date="http://exslt.org/dates-and-times"
-                xmlns:exslt="http://exslt.org/common"
-                extension-element-prefixes="exslt date">
+                xmlns:exsl="http://exslt.org/common"
+                extension-element-prefixes="exsl date">
   
   <xsl:variable name="i18n" 
                 select="document(concat($currentuilanguage,'/i18n.xml'))"/>
@@ -19,6 +19,18 @@
                 select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
   <xsl:variable name="user_privileges" 
                 select="/document/context/object/user_privileges" />
+
+
+  <xsl:variable name="popupsizes-rtf">
+    <subject     x="910" y="500"/>
+    <author      x="620" y="320"/> 
+    <keyword     x="550" y="200"/>
+    <publication x="600" y="260"/>
+    <delete      x="550" y="340"/>
+  </xsl:variable>
+
+  <xsl:variable name="popupsizes" 
+                select="exsl:node-set($popupsizes-rtf)/*"/>
   
   <xsl:param name="colms" select="3"/>
   <xsl:param name="vls"/>
@@ -252,7 +264,10 @@
     <!-- only show action icons if user has the privilege "write" on the VLibray -->
     <xsl:if test="$user_privileges/write=1 and object_count">
       &#160;
-      <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};', '{$mo}')">
+      <a href="javascript:genericWindow(
+                   '{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};',
+                   '{$popupsizes[name()=$mo]/@x}',
+                   '{$popupsizes[name()=$mo]/@y}')">
         <img src="{$skimages}option_edit.png"
              alt="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
              title="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
@@ -265,9 +280,12 @@
              width="32"
              height="19"/>
       </a>
-
+      
       <xsl:if test="object_count = 0">
-        <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={$display_name}', 'delete')">
+        <a href="javascript:genericWindow(
+                     '{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={$display_name}',
+                     '{$popupsizes[name()='delete']/@x}', 
+                     '{$popupsizes[name()='delete']/@y}')">
           <img src="{$skimages}option_delete.png"
                alt="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"
                title="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"/>
@@ -347,7 +365,6 @@
         </td>
       </tr>
     </table>
-
   </xsl:template>
 
   <xsl:template name="mode_switcher">
