@@ -229,4 +229,14 @@
 <Object_available_at>This object is available at</Object_available_at>
 <More>More</More>
 <PageRowLimit>Number of items per page</PageRowLimit>
+<!-- Text for inline-popups -->
+<IlpDefaultWinlabel>XIMS notice!</IlpDefaultWinlabel>
+<IlpProvideLocationFirst>You have not provided a 'Location', yet. Please enter it now!</IlpProvideLocationFirst>
+<IlpLocationWouldChange>Note! The 'Location' would change upon saving. How would you like to proceed?</IlpLocationWouldChange>
+<IlpLocationExists>You have provided a 'Location' which already exists in the container. 'Locations' must be unique. Please enter a different one!</IlpLocationExists>
+<IlpNoLocationProvided>You have not provided a 'Location'. Please enter one now.</IlpNoLocationProvided>
+<IlpDirtyLocation>'Location' contains invalid characters! Valid characters are: 'a-zA-Z0-9', minus ('-') and underscore ('_').</IlpDirtyLocation>
+<IlpButtonChange>Change!</IlpButtonChange>
+<IlpButtonOK>OK</IlpButtonOK>
+<IlpButtonIgnore>Ignore!</IlpButtonIgnore>
 </l>
