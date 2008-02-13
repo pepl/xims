@@ -5,7 +5,7 @@ XIMS::CGI::URLLink -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -73,6 +73,16 @@ sub event_store {
                     and defined $ctxt->object();
 
     return $self->SUPER::event_store( $ctxt );
+}
+
+sub event_test_location {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    # check URL;
+    $ctxt->object->check();
+    $ctxt->properties->application->preservelocation( 1 );
+
+    return $self->SUPER::event_test_location( $ctxt );
 }
 
 sub event_publish_prompt {
