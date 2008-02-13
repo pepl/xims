@@ -31,7 +31,7 @@
         <xsl:with-param name="mode">edit</xsl:with-param>
         <xsl:with-param name="htmlarea" select="true()" />
       </xsl:call-template>
-      <body onload="window.resizeTo(920, 500);initEditor();">
+      <body onload="initEditor();">
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
           <form action="{$xims_box}{$goxims_content}"
                 name="eform"

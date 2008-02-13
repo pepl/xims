@@ -71,17 +71,16 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td colspan="3">
             <label for="vlsubject_description">
               <xsl:value-of select="$i18n_vlib/l/description"/>
             </label>
-          </td>
-          <td colspan="2">
+            <br />
             <textarea tabindex="40" 
                       id="vlsubject_description" 
                       name="vlsubject_description" 
-                      cols="40"
-                      rows="3"
+                      cols="90"
+                      rows="20"
                       class="text" 
                       title="{$i18n_vlib/l/description}">
               <xsl:value-of select="description"/>
