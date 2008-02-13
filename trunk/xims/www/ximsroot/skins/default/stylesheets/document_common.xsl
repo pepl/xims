@@ -159,7 +159,6 @@
       }
 
       function checkBodyFromSel (selection) {
-         
           /* we do not allow ewebeditpro to be set as default editor
            * via cookie on unsupported platforms
            */
@@ -553,6 +552,9 @@
 
 
   <xsl:template name="tr-locationtitle-edit_doc">
+    <xsl:variable name="objecttype">
+        <xsl:value-of select="object_type_id"/>
+    </xsl:variable>
     <tr>
       <td valign="top">
         <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
@@ -570,6 +572,8 @@
             </xsl:when>
             <xsl:otherwise>
               <xsl:attribute name="class">text</xsl:attribute>
+	      <xsl:attribute name="onfocus">this.className='text focused'</xsl:attribute>
+	      <xsl:attribute name="onchange">this.className='text'; return testlocation();</xsl:attribute>
             </xsl:otherwise>
           </xsl:choose>
           <xsl:choose>
@@ -593,6 +597,13 @@
         </input>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
+	<!-- we only test locations for unpublished docs -->
+	<xsl:if test="not(published = '1')">
+	    <xsl:call-template name="testlocationjs">
+		<xsl:with-param name="event" select="'edit'"/>
+		<xsl:with-param name="obj_type" select="/document/object_types/object_type[@id=$objecttype]/fullname"/>
+	    </xsl:call-template>
+	</xsl:if>
       </td>
       <td align="right" valign="top">
         <xsl:call-template name="marked_mandatory"/>
