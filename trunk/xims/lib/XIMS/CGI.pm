@@ -47,6 +47,7 @@ sub registerEvents {
         'trashcan_prompt', 'trashcan',       'delete',
         'delete_prompt',   'undelete',       'trashcan_content',
         'error',           'prettyprintxml', 'htmltidy',
+        'test_location',
         @_
     );
 }
@@ -56,7 +57,6 @@ sub registerEvents {
 event methods
 
 =cut
-
 
 sub event_init {
     my $self = shift;
@@ -71,6 +71,8 @@ sub event_init {
     # ACL check
     if (length $self->checkPush('create')
         || (    length $self->checkPush('store')
+            and length $self->param('objtype') )
+        || (    length $self->checkPush('test_location')
             and length $self->param('objtype') )
         )
     {
@@ -111,6 +113,69 @@ sub event_init {
         return $self->sendEvent('access_denied')
             unless $privmask & XIMS::Privileges::VIEW();
     }
+}
+
+=head2 Runtime event which (pre)tests validity of the provided location
+
+=head3 Description
+
+Event 'test_location' is, and ONLY is, called via AJAX (for the time being).
+Basically, it prints a plain text response, which contains a status code,
+the possible mangled location (l) and a human readable reason (reason). The
+whole text string is designed to be easily parsable. Example response-text:
+
+s="3";l="test÷xyz.html";reason="Location, 'test÷xyz.html', NOT valid!";
+
+For now, there are four different response codes:
+    0 =E<gt> Location (is) OK
+    1 =E<gt> Location already exists (in container)
+    2 =E<gt> No location provided (or location is not convertible)
+    3 =E<gt> Dirty (no sane) location (location contains hilarious characters)
+
+The test calls 'init_store_object' and traverses routines for cleaning/testing
+the location.
+
+=cut
+
+sub event_test_location {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    
+    my ($retval, $location);
+    if ( defined $ctxt->object() ) {
+        ($retval, $location) = $self->init_store_object( $ctxt );
+    }
+
+    print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
+    $self->skipSerialization(1);
+
+    XIMS::Debug( 4, "retval is: '$retval'; location is: '$location'" );
+
+    # fill $response_blurb according to $retval
+    my $response_blurb;
+    if ( defined $retval and $retval != 0 ) {
+        if ($retval == 1) {
+            $response_blurb = "Location, '$location', already exists!";
+        }
+        elsif ($retval == 2) {
+            $response_blurb = "NO or BAD location provided!";
+        }
+        elsif ($retval == 3) {
+            $response_blurb = "Location, '$location', NOT valid!";
+        }
+        else {
+            XIMS::Debug( 4, "Return value, '$retval',  not known!" );
+            $response_blurb = "Return value not known!";
+        }
+    }
+    else {
+        $response_blurb = "Location, '$location', 0K!";
+    }
+
+    # finally print some "parsable" response
+    print "s=##$retval##;l=##$location##;reason=##$response_blurb##;";
+
+    return 0;
 }
 
 sub event_dbhpanic {
@@ -770,6 +835,12 @@ sub clean_userquery {
     return $userquery;
 }
 
+# Returns status code and location for 'test_location' events (see event_test_location):
+#  0 => all OK
+#  1 => location already exists
+#  2 => no location provided
+#  3 => dirty location
+# Otherwise, nothing meaningful ;-)
 sub init_store_object {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -779,6 +850,8 @@ sub init_store_object {
     my $parent;
     my $location = $self->param('name');    # is somehow xml-escaped magically
                                             # by libxml2 (???)
+    # do we have an 'test_location' AJAX event?
+    my $is_event_test_location = $self->param('test_location');
 
     # $location will be part of the URI, converting to iso-8859-1 is a first
     # step before clean_location() to ensure browser compatibility
@@ -820,12 +893,15 @@ sub init_store_object {
             # location to be untouched
             $location
                 = ( split /[\\|\/]/, $location )[-1];    # should always work
+            XIMS::Debug( 4, "will now clean location: '$location'" );
             $location = XIMS::Importer::clean_location( 1, $location );
+            XIMS::Debug( 4, "location is now: $location");
             unless ( $ctxt->properties->application->keepsuffix )
             {   # some object type, like File or Image for example
                 # don't want filesuffixes to be overridden by our data
                 # format's default value
                 my $suffix = $object->data_format->suffix();
+                XIMS::Debug( 5, "suffix is: $suffix");
 
                 # temp. hack until multi-language support is implemented
                 # to allow simple content-negotiation using .lang
@@ -849,14 +925,26 @@ sub init_store_object {
                         "exchange done, location is now $location" );
                 }
             }
-            unless ( ( $location =~ /[\w\d]+\.[\w\d]+/ )
-                || ( $location =~ /[\w\d]+/ ) )
+            # be more restrictive for valid locations (\w is too resilient)
+            # only characters in char-class(es) are allowed explicitly
+            unless ( 
+                    ( $location =~ /^[-\[\]_.()0-9a-zA-Z]+\.[A-Za-z]+$/ )
+                    || ( $location =~ /^[-\[\]_.()0-9a-zA-Z]+$/ )
+                    || ( $location =~ /^[-\[\]_.()0-9a-zA-Z]+\.[A-Za-z]+\.[A-Za-z]{2,4}$/ )
+                   )
             {
                 XIMS::Debug( 2, "dirty location" );
-                $self->sendError( $ctxt,
-                    "failed to clean the location / filename. Please supply a sane filename!"
-                );
-                return 0;
+                # only send error for events other than 'test_location'
+                # return 3 (dirty location) otherwise
+                if ( not defined $is_event_test_location ) {
+                    $self->sendError( $ctxt,
+                        "Failed to clean the location / filename. Please supply a sane filename!"
+                    );
+                    return 0;
+                }
+                else {
+                    return (3, "$location");
+                }
             }
         }
 
@@ -892,19 +980,41 @@ sub init_store_object {
                 )
             {
                 XIMS::Debug( 2, "location already exists" );
-                $self->sendError( $ctxt,
-                    "Location '$location' already exists in container." );
-                return 0;
+
+                # only send error for events other than 'test_location'
+                # return 1 (location already exists) otherwise
+                if ( not defined $is_event_test_location ) {
+                    $self->sendError( $ctxt,
+                        "Location '$location' already exists in container." );
+                    return 0;
+                }
+                else {
+                    return (1, $location);
+                }
             }
         }
 
         XIMS::Debug( 6, "got location: $location " );
+
+        # positively exit for 'test_location' events, here
+        if ( defined $is_event_test_location ) {
+            return (0, $location);
+        }
         $object->location($location);
     }
     else {
         XIMS::Debug( 3, "no location" );
-        $self->sendError( $ctxt, "Please supply a valid location!" );
-        return 0;
+
+        # only send error for events other than 'test_location'
+        # return 2 (no location) otherwise
+        if ( not defined $is_event_test_location ) {
+            $self->sendError( $ctxt, "Please supply a valid location!" );
+            return 0;
+        }
+        else {
+            XIMS::Debug( 4, "exit" );
+            return (2, "");
+        }
     }
 
     my $location_nosuffix = $location;
