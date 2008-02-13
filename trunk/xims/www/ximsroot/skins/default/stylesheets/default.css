@@ -36,3 +36,93 @@
 	color: #808080;
 	padding-left: 10px;
 }
+
+/* styles for test_location event */
+input.focused {
+	background-color: #ffc;
+	border: 1px solid Maroon;
+}
+
+.loading {
+	cursor: wait;
+}
+/* end of styles for test_location event */
+
+/* styles for inline-popups */
+div#xims_ilp {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -165px;
+    height: 180px;
+    width: 330px;
+    z-index: 150;
+    background-color: White;
+    border: 2px solid #333333;
+}
+
+div#xims_ilp_windowbg div#xims_ilp_winlabel div#xims_ilp_close {
+    border-left: 1px solid #333333;
+    color: Black;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 0.8em;
+    float: right;
+    display: inline;
+    padding: 2px;
+    cursor: pointer;
+}
+
+#xims_ilp_windowbg {
+    border-bottom: 2px solid #333333;
+    background-color: #CED3D6;
+}
+
+#xims_ilp_winlabel {
+    display:inline;
+    left: 0px;
+    color: Maroon;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 2px;
+}
+
+#xims_ilp_content {
+    padding: 10px;
+    clear: both;
+    overflow: auto;
+}
+
+#xims_ilp_fadebg {
+    display: none;
+    background-color: #EEEEEE;
+    position:absolute;
+    z-index:100;
+    overflow:hidden;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    margin: 0;
+    filter:alpha(opacity=80);
+    -moz-opacity:0.80;
+    -khtml-opacity:0.80;
+    opacity:0.80;
+}
+
+/* ie6 z-index hack (see conditional comment)*/
+#xims_ilp_fadebg iframe {
+    display:none;
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:-1;
+    filter:mask();
+    width:3000px;
+    height:3000px;
+}
+/* end styles for test_location event */
