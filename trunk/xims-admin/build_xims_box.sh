@@ -62,6 +62,13 @@ function usage () {
                      In interactive mode, the user will be prompted
                      for a version number.
 
+  ############################## NOTE!!! #################################
+
+    This script depends on GNU core-utils, a subversion client plus
+    dpkg/rpm build tools!
+
+  ############################## NOTE!!! #################################
+
 MSG_USAGE
     exit 1
 }
@@ -85,9 +92,6 @@ function int_err_script () {
     echo
     exit 1
 }
-
-# provide a 'catch-all' for possible errors and SIGINTs
-trap 'int_err_script' ERR SIGINT
 
 # run interactively per default
 INTERACTIVE="yes"
@@ -196,11 +200,30 @@ RPM_BUILD_ROOT="/usr/src/rpm"
 #
 ############################################################
 
-# clean up from previous builds
-if [ -e /tmp/$BUILD_SYSTEM_FILE ]; then
-    # remove, if there is another downloaded file
-    rm -rf /tmp/$BUILD_SYSTEM_FILE
-fi
+#### store current path for later use
+SCRIPTPATH=$(pwd)
+
+#### trap errors from here onwards
+# provide a 'catch-all' for possible errors and SIGINTs
+trap 'int_err_script' ERR SIGINT
+
+#### reset $BUILD_SYSTEM_FILE to actual filename (if present)
+# filename must contain 'xims_box_build_system'!
+# this routine is necessary for pre-download-removals
+for i in `ls /tmp`; do
+    trap '' ERR
+    echo "$i" | grep 'xims_box_build_system' > /dev/null 2>&1
+    trap 'int_err_script' ERR
+    if [ "$?" == "0" ]; then
+        BUILD_SYSTEM_FILE="$i"
+        # clean up from previous builds
+        if [ -e /tmp/$BUILD_SYSTEM_FILE ]; then
+            # remove, if there is another downloaded file
+            rm -rf /tmp/$BUILD_SYSTEM_FILE
+        fi
+    fi
+done
+
 if [ -e $BUILD_DIR ]; then
     # remove, if build dir already exists
     rm -rf $BUILD_DIR
@@ -211,6 +234,22 @@ echo "Getting XIMS-Box build system from sf.net ..."
 cd /tmp
 wget "$XIMS_BOX_BUILD_SYSTEM_URI"
 echo "Done! Start extracting ..."
+
+# suspend error-trapping for the following loop
+trap '' ERR
+
+#### reset $BUILD_SYSTEM_FILE to actual filename
+# filename must contain 'xims_box_build_system'!
+for i in `ls /tmp`; do
+    echo "$i" | grep 'xims_box_build_system' > /dev/null 2>&1
+    if [ "$?" == "0" ]; then
+        BUILD_SYSTEM_FILE="/tmp/$i"
+    fi
+done
+
+# resume error-trapping
+trap 'int_err_script' ERR
+
 tar -xzf $BUILD_SYSTEM_FILE
 # remove tar-file again
 rm -f $BUILD_SYSTEM_FILE
@@ -354,6 +393,13 @@ echo "Done!"
 echo 
 
 #### move files to BUILD_TARGET
+
+# process BUILD_TARGET in order to allow relative paths too
+StartString=${BUILD_TARGET:0:1}
+if [ "$StartString" != "/" ]; then
+    BUILD_TARGET="$SCRIPTPATH/$BUILD_TARGET"
+fi
+
 mv $XIMS_BOX_DIR/debs/*.$XIMS_BOX_FEXTENSION $BUILD_TARGET
 mv $XIMS_BOX_DIR/rpms/*.$XIMS_BOX_FEXTENSION $BUILD_TARGET
 # clean
