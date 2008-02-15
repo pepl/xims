@@ -5,7 +5,7 @@ XIMS::CGI::SimpleDB -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -149,6 +149,18 @@ sub event_store {
     my ( $self, $ctxt ) = @_;
 
     my $object = $ctxt->object();
+
+    # report error that at least one property must be set to be
+    # part of the title ( would cause violation of NOT NULL constraint
+    # of DB-table when storing SimpleDBItems )
+    my @title_props = $object->mapped_member_properties( part_of_title => 1 );
+    if ( not defined @title_props ) {
+        XIMS::Debug( 3, "No property set to be part of title!
+                            Check at least one property!" );
+        return $self->sendError( $ctxt, "At least one property must be
+                                         specified to be part of the title!" );
+    }
+
     my $pagerowlimit = $self->param( 'pagerowlimit' );
     if ( defined $pagerowlimit and (length $pagerowlimit and $pagerowlimit !~ /^\s+$/ or not length $pagerowlimit) ) {
         XIMS::Debug( 6, "pagerowlimit: $pagerowlimit" );
