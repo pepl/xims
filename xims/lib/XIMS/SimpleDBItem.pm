@@ -144,8 +144,13 @@ sub update {
         foreach my $prop ( sort { $a->position() <=> $b->position() } @title_props ) {
             push (@sorted_values, $data{$prop->id()});
         }
-        
-        $self->title( join(', ', @sorted_values) );
+        if ( defined @sorted_values ) {
+            $self->title( join(', ', @sorted_values) );
+        }
+        else {
+            XIMS::Debug( 3, "No property set to be part of title! Setting a dummy title!" );
+            $self->title( "dummytitle" );
+        }
     }
 
     return $self->SUPER::update( @_ );
