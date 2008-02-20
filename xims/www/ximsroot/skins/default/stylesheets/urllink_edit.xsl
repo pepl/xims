@@ -11,7 +11,10 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-edit"/>
+  <xsl:call-template name="common-head">
+    <xsl:with-param name="mode" select="'edit'"/>
+    <xsl:with-param name="calendar" select="true()"/>
+  </xsl:call-template>
     <body>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
@@ -20,6 +23,8 @@
                     <xsl:call-template name="tr-locationtitle-edit_urllink"/>
                     <xsl:call-template name="tr-keywords-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
+                    <xsl:call-template name="tr-valid_from"/>
+                    <xsl:call-template name="tr-valid_to"/>
                     <xsl:call-template name="markednew"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
