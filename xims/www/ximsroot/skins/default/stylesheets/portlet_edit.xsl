@@ -20,6 +20,7 @@
             <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitletarget-edit"/>
+                    <xsl:call-template name="tr-abstract-edit"/>
                     <xsl:call-template name="markednew"/>
                     <tr>
                         <td colspan="3">
