@@ -32,18 +32,17 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
-                                 qw(
-                                    create
-                                    edit
-                                    store
-                                    publish
-                                    publish_prompt
-                                    unpublish
-                                    obj_acllist
-                                    obj_aclgrant
-                                    obj_aclrevoke
-                                   )
-                                );
+               qw( create
+                   edit
+                   store
+                   publish
+                   publish_prompt
+                   unpublish
+                   obj_acllist
+                   obj_aclgrant
+                   obj_aclrevoke
+               )
+           );
 }
 
 # END GLOBAL SETTINGS
@@ -54,7 +53,7 @@ sub registerEvents {
 
 sub event_default {
     XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt) = @_;
+    my ( $self, $ctxt ) = @_;
 
     # this handles absolute URLs only for now
     $self->redirect( $ctxt->object->location() );
@@ -65,32 +64,35 @@ sub event_default {
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
     # check URL;
     $ctxt->object->check();
-    $ctxt->properties->application->preservelocation( 1 );
+    $ctxt->properties->application->preservelocation(1);
 
-    return 0 unless $self->init_store_object( $ctxt )
-                    and defined $ctxt->object();
+    return 0
+      unless $self->init_store_object($ctxt)
+      and defined $ctxt->object();
 
-    return $self->SUPER::event_store( $ctxt );
+    return $self->SUPER::event_store($ctxt);
 }
 
 sub event_test_location {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
     # check URL;
     $ctxt->object->check();
-    $ctxt->properties->application->preservelocation( 1 );
+    $ctxt->properties->application->preservelocation(1);
 
-    return $self->SUPER::event_test_location( $ctxt );
+    return $self->SUPER::event_test_location($ctxt);
 }
 
 sub event_publish_prompt {
     my ( $self, $ctxt ) = @_;
 
-    $ctxt->session->warning_msg( "URLLink objects are only FLAGGED published!" );
+    $ctxt->session->warning_msg("URLLink objects are only FLAGGED published!");
 
-    $self->SUPER::event_publish_prompt( $ctxt );
+    $self->SUPER::event_publish_prompt($ctxt);
 
     return 0;
 }
@@ -98,9 +100,9 @@ sub event_publish_prompt {
 sub event_exit {
     my ( $self, $ctxt ) = @_;
 
-    $self->resolve_content( $ctxt, [ qw( SYMNAME_TO_DOC_ID ) ] );
+    $self->resolve_content( $ctxt, [qw( SYMNAME_TO_DOC_ID )] );
 
-    return $self->SUPER::event_exit( $ctxt );
+    return $self->SUPER::event_exit($ctxt);
 }
 
 # END RUNTIME EVENTS
