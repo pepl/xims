@@ -11,7 +11,10 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-create"/>
+    <xsl:call-template name="common-head">
+      <xsl:with-param name="mode" select="'create'"/>
+      <xsl:with-param name="calendar" select="true()"/>
+    </xsl:call-template>
     <body onLoad="document.eform['abstract'].value=''; document.eform.name.focus();">
         <div class="edit">
             <xsl:call-template name="table-create"/>
@@ -21,6 +24,8 @@
                     <xsl:call-template name="tr-locationtitle-create"/>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-abstract-create"/>
+                    <xsl:call-template name="tr-valid_from"/>
+                    <xsl:call-template name="tr-valid_to"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="grantowneronly"/>
                 </table>
