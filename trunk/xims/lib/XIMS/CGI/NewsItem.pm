@@ -5,7 +5,7 @@ XIMS::CGI::NewsItem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -31,29 +31,29 @@ use Text::Iconv;
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub event_default {
-    my ( $self, $ctxt) = @_;
+    my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
 
     # replace image id with image path
-    $self->resolve_content( $ctxt, [ qw( IMAGE_ID ) ] );
+    $self->resolve_content( $ctxt, [qw( IMAGE_ID )] );
 
-    return $self->SUPER::event_default( $ctxt );
+    return $self->SUPER::event_default($ctxt);
 }
 
 sub event_edit {
-    my ( $self, $ctxt) = @_;
+    my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
 
-    $self->resolve_content( $ctxt, [ qw( IMAGE_ID ) ] );
+    $self->resolve_content( $ctxt, [qw( IMAGE_ID )] );
 
-    return $self->SUPER::event_edit( $ctxt );
+    return $self->SUPER::event_edit($ctxt);
 }
 
 sub event_store {
-    my ( $self, $ctxt) = @_;
+    my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
 
-    my $img_fh = $self->upload( 'imagefile' );
+    my $img_fh = $self->upload('imagefile');
     if ( length $img_fh ) {
         my $target_location = $self->param('imagefolder');
         my $img_target = XIMS::Object->new( path => $target_location );
@@ -63,87 +63,124 @@ sub event_store {
             my $img_obj = XIMS::Image->new( User => $ctxt->session->user() );
             $img_obj->parent_id( $img_target->document_id() );
 
-            # $location will be part of the URI, converting to iso-8859-1 is
-            # a first step before clean_location() to ensure browser compatibility
-            my $converter = Text::Iconv->new("UTF-8", "ISO-8859-1");
+            # $location will be part of the URI, converting to iso-8859-1 is a
+            # first step before clean_location() to ensure browser
+            # compatibility
+            my $converter = Text::Iconv->new( "UTF-8", "ISO-8859-1" );
+
             # will be undef if string can not be converted to iso-8859-1
-            $img_obj->location( $converter->convert( $self->param('imagefile') ) );
+            $img_obj->location(
+                $converter->convert( $self->param('imagefile') ) );
 
             my $type = $self->uploadInfo($img_fh)->{'Content-Type'};
             my $df;
             if ( $df = XIMS::DataFormat->new( mime_type => $type ) ) {
-                XIMS::Debug( 6, "xims mime type: ". $df->mime_type() );
-                XIMS::Debug( 6, "UA   mime type: ". $type );
+                XIMS::Debug( 6, "xims mime type: " . $df->mime_type() );
+                XIMS::Debug( 6, "UA   mime type: " . $type );
             }
             else {
-                $df = XIMS::DataFormat->new( mime_type => 'application/octet-stream' );
-                XIMS::Debug( 6, "xims mime type: forced to 'application/octet-stream'" );
-                XIMS::Debug( 6, "UA   mime type: ". $type );
+                $df =
+                  XIMS::DataFormat->new(
+                    mime_type => 'application/octet-stream' );
+                XIMS::Debug( 6,
+                    "xims mime type: forced to 'application/octet-stream'" );
+                XIMS::Debug( 6, "UA   mime type: " . $type );
 
             }
             $img_obj->data_format_id( $df->id() );
 
             my $image_title = $self->param('imagetitle');
-            if ( defined $image_title and length $image_title and $image_title !~ /^\s+$/ ) {
+            if (    defined $image_title
+                and length $image_title
+                and $image_title !~ /^\s+$/ )
+            {
                 if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
                     $image_title = XIMS::decode($image_title);
                 }
-                $img_obj->title( $image_title );
+                $img_obj->title($image_title);
             }
 
-            my $image_description = $self->param( 'imagedescription' );
+            my $image_description = $self->param('imagedescription');
+
             # check if a valid image_description is given
-            if ( defined $image_description and (length $image_description and $image_description !~ /^\s+$/ or not length $image_description) ) {
-                if ( length $image_description and XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+            if (
+                defined $image_description
+                and
+                ( length $image_description and $image_description !~ /^\s+$/
+                    or not length $image_description )
+              )
+            {
+                if (    length $image_description
+                    and XIMS::DBENCODING()
+                    and $self->request_method eq 'POST' )
+                {
                     $image_description = XIMS::decode($image_description);
                 }
-                XIMS::Debug( 6, "image_description, len: " . length($image_description) );
-                $img_obj->abstract( $image_description );
+                XIMS::Debug( 6,
+                    "image_description, len: " . length($image_description) );
+                $img_obj->abstract($image_description);
             }
 
-            XIMS::Debug( 4, "reading from filehandle");
-            my ($buffer, $body);
-            while ( read($img_fh, $buffer, 1024) ) {
+            XIMS::Debug( 4, "reading from filehandle" );
+            my ( $buffer, $body );
+            while ( read( $img_fh, $buffer, 1024 ) ) {
                 $body .= $buffer;
             }
 
-            $img_obj->body( $body );
-            my $img_created = $ctxt->object->add_image( $img_obj );
+            $img_obj->body($body);
+            my $img_created = $ctxt->object->add_image($img_obj);
             XIMS::Debug( 3, "Image object import failed" ) unless $img_created;
 
         }
         else {
-            XIMS::Debug( 3, "Image upload folder undefined or does not exist, the new Image object was not created" );
+            XIMS::Debug( 3,
+"Image upload folder undefined or does not exist, the new Image object was not created"
+            );
         }
     }
 
     my $location;
     if ( defined $ctxt->object->document_id() ) {
-        $location = $ctxt->object->document_id() . '.' . $ctxt->object->data_format->suffix();
+        $location =
+            $ctxt->object->document_id() . '.'
+          . $ctxt->object->data_format->suffix();
         $self->param( 'name', $location );
     }
     else {
-        $self->param( 'name', 'dummy.html' ); # provide a dummy location during object creation
+        $self->param( 'name', 'dummy.html' )
+          ;    # provide a dummy location during object creation
     }
 
-    my $rc = $self->SUPER::event_store( $ctxt );
+    my $rc = $self->SUPER::event_store($ctxt);
     if ( not $rc ) {
         return 0;
     }
     else {
         if ( $ctxt->object->location() eq 'dummy.html' ) {
-            XIMS::Debug( 4, "replacing the dummy location with the document_id" );
+            XIMS::Debug( 4,
+                "replacing the dummy location with the document_id" );
+
             # set the document_id as location
-            $location = $ctxt->object->document_id() . '.' . $ctxt->object->data_format->suffix();
+            $location =
+                $ctxt->object->document_id() . '.'
+              . $ctxt->object->data_format->suffix();
+
             # take the faster shortcut through the data provider
-            if ( not $ctxt->data_provider->updateObject( document_id => $ctxt->object->document_id(), location => $location ) ) {
+            if (
+                not $ctxt->data_provider->updateObject(
+                    document_id => $ctxt->object->document_id(),
+                    location    => $location
+                )
+              )
+            {
                 XIMS::Debug( 2, "setting document_id as location failed" );
                 $self->sendError( $ctxt, "Setting location failed." );
                 return 0;
             }
+
             # update the redirect path to the changed location
-            $ctxt->object->location( $location );
-            $self->redirect( $self->redirect_path( $ctxt ) );
+            $ctxt->object->location($location);
+            $self->redirect( $self->redirect_path($ctxt) );
         }
         return 1;
     }
