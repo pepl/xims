@@ -21,6 +21,7 @@
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitletarget-create"/>
+                    <xsl:call-template name="tr-abstract-create"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="grantowneronly"/>
                     <tr>
