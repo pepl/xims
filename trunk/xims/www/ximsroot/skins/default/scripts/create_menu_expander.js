@@ -160,7 +160,7 @@ LICollection=document.getElementById("MDME").getElementsByTagName("LI");
 		for (d=0; d<LICollection; d++)
 			{LICollection.item(i).style.listStyleImage="none";}}
 			
-firstLoad=0; GlobalECState=o; Icons();
+firstLoad=0; GlobalECState=0; Icons();
 if(showECOption=='yes' && oneBranch!='yes')
 	{
 	if(GlobalECState==0)
@@ -299,7 +299,7 @@ function findTH(t)
   	{return t;}
   else if
   	(t.tagName == "UL")
-  	{return null;}
+  	{return t.firstChild;} // fixes IE6 js error when clicking on "more" initially 
   else
   {return findTH(t.parentNode);}
 }
