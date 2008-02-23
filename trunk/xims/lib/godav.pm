@@ -27,13 +27,12 @@ use XIMS::Object;
 use XIMS::Folder;
 use XIMS::User;
 use XIMS::Importer::Object;
-use Encode;
 
 use Apache;
 use Apache::Constants qw(:common :response);
-use Apache::File ();
-use Apache::URI;
-use URI::Escape;
+use Apache::File (); # for set_last_modified et.al.
+use Apache::URI; # for parsed_uri
+use URI::Escape; # for uri_unescape
 use XML::LibXML;
 use Time::Piece;
 #use Data::UUID;
@@ -54,7 +53,7 @@ sub handler {
     return (403) unless defined $user;
 
     $r->header_out( 'X-Server', 'XIMS::DAVServer ' . $VERSION );
-    $r->header_out( 'MS-Author-Via', 'DAV' );
+    $r->header_out( 'MS-Author-Via', 'DAV' ); # Tell MS Webfolders that we are not a Frontpage Server Extensions, but a WebDAV server
 
     #use Data::Dumper;
     #my %h = $r->headers_in();
