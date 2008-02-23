@@ -93,10 +93,12 @@ sub vlproperties_from_document {
     my @metaset = $root->findnodes( "/book/bookinfo|/article/articleinfo" );
 
     my $meta = $self->meta_from_node( $metaset[0] );
-    $meta->subtitle( XIMS::clean(
-           XIMS::nodevalue($root->findnodes( '/book/bookinfo/subtitle|/article/articleinfo/subtitle' ))));
+    if ( defined $meta ) {
+        $meta->subtitle( XIMS::clean(
+               XIMS::nodevalue($root->findnodes( '/book/bookinfo/subtitle|/article/articleinfo/subtitle' ))));
 
-    $object->vlemeta( $meta );
+        $object->vlemeta( $meta );
+    }
 
     #vlpublication
     my @issuenumnode = $root->findnodes( "/article/articleinfo/biblioset|/book/bookinfo/biblioset");
@@ -132,7 +134,7 @@ sub authors_from_node {
     my $self = shift;
     my $authorset = shift;
     my @authors;
- 
+
     return () unless $authorset;
 
     foreach my $author ( $authorset->getChildrenByTagName("author") ) {
