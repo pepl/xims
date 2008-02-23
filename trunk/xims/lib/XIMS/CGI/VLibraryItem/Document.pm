@@ -135,7 +135,7 @@ sub event_store {
     # store publications, subjects, keywords, and authors
     foreach my $property ( qw(subject keyword author publication)) {
         if ($self->param( "vl$property")) {
-            $self->_create_mapping_from_id( $ctxt->object(),
+            $self->_create_mapping_from_name( $ctxt->object(),
                                             ucfirst($property),
                                             $self->param( "vl$property")
                    )
