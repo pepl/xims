@@ -5,13 +5,13 @@
  # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
  # $Id$
  -->
- 
+
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:import href="common.xsl"/>
-  
+
   <xsl:output method="html"
               encoding="utf-8"
               media-type="text/html"
@@ -64,6 +64,9 @@
           <input type="hidden"
                  name="vl{$mo}"
                  value=""/>
+          <input type="hidden"
+            name="gotid"
+            value="1"/>
           <input type="submit"
                  name="create_mapping"
                  value="{$i18n_vlib/l/Create_mapping}"
@@ -76,7 +79,7 @@
         </a>
       </td>
     </tr>
-  </xsl:template> 
+  </xsl:template>
 
 
   <xsl:template name="tr-vlkeywords-create">
@@ -132,7 +135,7 @@
     </tr>
   </xsl:template>
 
-  
+
   <xsl:template name="tr-vlauthors-create">
     <tr>
       <td valign="top">
@@ -158,6 +161,58 @@
     </tr>
   </xsl:template>
 
+  <xsl:template name="tr-vlkeywords-edit">
+    <tr>
+      <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n/l/Keywords"/></td>
+      <td colspan="2">
+        <xsl:apply-templates select="keywordset/keyword">
+          <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+            order="ascending"/>
+        </xsl:apply-templates>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n/l/Keywords"/></td>
+      <td colspan="2">
+        <input tabindex="40" type="text" name="vlkeyword" size="50" value="" class="text" title="VLKeyword"/>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>
+        <xsl:text>&#160;</xsl:text>
+        <input type="button" value="&lt;--" onClick="return addVLProperty( 'keyword' );"/>
+        <xsl:text>&#160;</xsl:text>
+        <xsl:apply-templates select="/document/context/vlkeywords"/>
+        <xsl:text>&#160;</xsl:text>
+        <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onClick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for', document.eform.svlkeyword);"/>
+      </td>
+    </tr>
+  </xsl:template>
+
+  <xsl:template name="tr-vlsubjects-edit">
+    <tr>
+      <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/subjects"/></td>
+      <td colspan="2">
+        <xsl:apply-templates select="subjectset/subject">
+          <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+            order="ascending"/>
+        </xsl:apply-templates>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/subjects"/></td>
+      <td colspan="2">
+        <input tabindex="40" type="text" name="vlsubject" size="50" value="" class="text"/>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('VLSubject')" class="doclink">(?)</a>
+        <xsl:text>&#160;</xsl:text>
+        <input type="button" value="&lt;--" onClick="return addVLProperty( 'subject' );"/>
+        <xsl:text>&#160;</xsl:text>
+        <xsl:apply-templates select="/document/context/vlsubjects"/>
+        <xsl:text>&#160;</xsl:text>
+        <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
+      </td>
+    </tr>
+  </xsl:template>
+
 
   <xsl:template match="keywordset/keyword|subjectset/subject|publicationset/publication">
     <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}"
@@ -171,11 +226,11 @@
       </xsl:if>
     </a>
     <xsl:text>&#160;</xsl:text>
-    <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}"
+    <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};remove_mapping=1;property={name()};property_id={id}"
        title="Delete Mapping">
       <span style="background-color:#b1b5b8;
                    border:#333333 solid 1px;
-                   color: maroon; 
+                   color: maroon;
                    font-weight: bold;"> x </span>
     </a>
     <xsl:if test="position()!=last()">
@@ -190,11 +245,11 @@
       <xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/>
     </a>
     <xsl:text>&#160;</xsl:text>
-    <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_mapping=1;property={name()};property_id={id}"
+    <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};remove_mapping=1;property={name()};property_id={id}"
        title="Delete Mapping">
       <span style="background-color:#b1b5b8;
                    border:#333333 solid 1px;
-                   color: maroon; 
+                   color: maroon;
                    font-weight: bold;"> x </span>
     </a>
     <xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
@@ -213,7 +268,7 @@
 
 
   <xsl:template match="vlkeywords">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" 
+    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
             name="svlkeyword">
       <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
       <xsl:apply-templates select="/document/context/vlkeywords/keyword">
@@ -225,7 +280,7 @@
 
 
   <xsl:template match="vlpublications">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" 
+    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
             name="svlpublication">
       <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
       <xsl:apply-templates select="/document/context/vlpublications/publication">
@@ -256,8 +311,8 @@
       <xsl:value-of select="normalize-space(concat(name, ' (', volume, ')'))"/>
     </option>
   </xsl:template>
-  
-  
+
+
 
   <xsl:template match="vlsubjects/subject|vlkeywords/keyword">
     <option value="{id}">
@@ -347,7 +402,7 @@
   <xsl:template name="tr-coverage">
     <tr>
       <td valign="top">Coverage</td>
-      <td colspan="2">     
+      <td colspan="2">
         <input tabindex="20"
                type="text"
                name="coverage"
@@ -589,5 +644,5 @@
       </td>
     </tr>
   </xsl:template>
-  
+
 </xsl:stylesheet>

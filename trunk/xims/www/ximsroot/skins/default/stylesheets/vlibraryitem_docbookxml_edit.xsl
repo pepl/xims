@@ -10,6 +10,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="common.xsl"/>
+<xsl:import href="vlibraryitem_common.xsl"/>
+
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 
 <xsl:template match="/document/context/object">
@@ -35,58 +37,6 @@
         <xsl:call-template name="canceledit"/>
     </body>
 </html>
-</xsl:template>
-
-<xsl:template name="tr-vlkeywords-edit">
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n/l/Keywords"/></td>
-        <td colspan="2">
-            <xsl:apply-templates select="keywordset/keyword">
-                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                    order="ascending"/>
-            </xsl:apply-templates>
-        </td>
-    </tr>
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n/l/Keywords"/></td>
-        <td colspan="2">
-            <input tabindex="40" type="text" name="vlkeyword" size="50" value="" class="text" title="VLKeyword"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>
-            <xsl:text>&#160;</xsl:text>
-            <input type="button" value="&lt;--" onClick="return addVLProperty( 'keyword' );"/>
-            <xsl:text>&#160;</xsl:text>
-            <xsl:apply-templates select="/document/context/vlkeywords"/>
-            <xsl:text>&#160;</xsl:text>
-            <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onClick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for', document.eform.svlkeyword);"/>
-        </td>
-    </tr>
-</xsl:template>
-
-<xsl:template name="tr-vlsubjects-edit">
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/subjects"/></td>
-        <td colspan="2">
-            <xsl:apply-templates select="subjectset/subject">
-                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                    order="ascending"/>
-            </xsl:apply-templates>
-        </td>
-    </tr>
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/subjects"/></td>
-        <td colspan="2">
-            <input tabindex="40" type="text" name="vlsubject" size="50" value="" class="text"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('VLSubject')" class="doclink">(?)</a>
-            <xsl:text>&#160;</xsl:text>
-            <input type="button" value="&lt;--" onClick="return addVLProperty( 'subject' );"/>
-            <xsl:text>&#160;</xsl:text>
-            <xsl:apply-templates select="/document/context/vlsubjects"/>
-            <xsl:text>&#160;</xsl:text>
-            <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
-        </td>
-    </tr>
 </xsl:template>
 
 <xsl:template match="keywordset/keyword|subjectset/subject">
