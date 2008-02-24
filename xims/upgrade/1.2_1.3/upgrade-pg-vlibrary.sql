@@ -293,6 +293,20 @@ ALTER TABLE cilib_authors ADD FOREIGN KEY (document_id) REFERENCES ci_documents 
 ALTER TABLE cilib_authors ADD CONSTRAINT cilib_authors_unique_key
       UNIQUE (lastname, middlename, firstname, object_type, suffix, email, url, document_id);
 
+
+-- Add the document_id of the respective VLibrary to the keyword
+ALTER TABLE cilib_keywords ADD COLUMN document_id integer;
+ALTER TABLE cilib_keywords ADD FOREIGN KEY (document_id) REFERENCES ci_documents (id) ON DELETE CASCADE;
+ALTER TABLE cilib_keywords ADD CONSTRAINT cilib_keywords_unique_key
+      UNIQUE (name, document_id);
+
+-- Add the document_id of the respective VLibrary to the publication
+ALTER TABLE cilib_publications ADD COLUMN document_id integer;
+ALTER TABLE cilib_publications ADD FOREIGN KEY (document_id) REFERENCES ci_documents (id) ON DELETE CASCADE;
+ALTER TABLE cilib_publications ADD CONSTRAINT cilib_publications_unique_key
+      UNIQUE (name, volume, document_id);
+
+
 -- Add the document_id of the respective VLibrary to the subject
 
 ALTER TABLE cilib_subjects ADD COLUMN document_id int4;
@@ -308,6 +322,9 @@ ALTER TABLE cilib_subjects RENAME t_description TO description;
 
 select update_cilib_subjects();
 select update_cilib_authors();
+--TODO
+--select update_cilib_keywords();
+--select update_cilib_publications();
 
 DELETE FROM cilib_authors
   WHERE document_id IS NULL
@@ -320,5 +337,7 @@ DELETE FROM cilib_subjects
 
 ALTER TABLE cilib_authors ALTER COLUMN document_id SET NOT NULL;
 ALTER TABLE cilib_subjects ALTER COLUMN document_id SET NOT NULL;
+ALTER TABLE cilib_keywords ALTER COLUMN document_id SET NOT NULL;
+ALTER TABLE cilib_publications ALTER COLUMN document_id SET NOT NULL;
 
 
