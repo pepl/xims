@@ -133,8 +133,17 @@ sub event_remove_mapping {
 
     # delete mapping and redirect to event edit
     if ( $propmapobject->delete() ) {
-        $self->redirect(
-            $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+        # TODO: fix this dirtyness
+        if ( index( ref($ctxt->object), 'URLLink' ) > -1 ) {
+            my $uri = Apache::URI->parse( $ctxt->apache() );
+            $uri->path( $ctxt->apache->parsed_uri->rpath() );
+            $uri->query('id='.$ctxt->object->id().';edit=1');
+            $self->redirect( $uri->unparse() );
+        }
+        else {
+            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+                  . "?edit=1" );
+        }
         return 1;
     }
     else {
@@ -154,34 +163,91 @@ sub event_create_mapping {
     my $vlauthor      = $self->param('vlauthor');
     my $vlpublication = $self->param('vlpublication');
 
+    # temporary, until all OT edit/create screens have been updated
+    my $gotid = $self->param('gotid');
+    my $method = '_create_mapping_from_';
+    if ( $gotid ) {
+        $method .= 'id';
+    }
+    else {
+        $method .= 'name';
+    }
+
     if ( $vlsubject or $vlkeyword or $vlauthor or $vlpublication ) {
-        $self->_create_mapping_from_id( $ctxt->object(), 'Subject', $vlsubject )
+        $self->$method( $ctxt->object(), 'Subject', $vlsubject )
           if $vlsubject;
-        $self->_create_mapping_from_id( $ctxt->object(), 'Keyword', $vlkeyword )
+        $self->$method( $ctxt->object(), 'Keyword', $vlkeyword )
           if $vlkeyword;
-        $self->_create_mapping_from_id( $ctxt->object(), 'Author', $vlauthor )
+        $self->$method( $ctxt->object(), 'Author', $vlauthor )
           if $vlauthor;
-        $self->_create_mapping_from_id( $ctxt->object(), 'Publication',
+        $self->$method( $ctxt->object(), 'Publication',
             $vlpublication )
           if $vlpublication;
 
+        # TODO: fix this dirtyness
         if ( index( ref($object), 'URLLink' ) > -1 ) {
-
-            # jokar: If the object is an URLLink the edit parameter has
-            # to be preceeded with a semikolon Because the parameter
-            # string is not empty
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
-                  . ";edit=1" );
+            my $uri = Apache::URI->parse( $ctxt->apache() );
+            $uri->path( $ctxt->apache->parsed_uri->rpath() );
+            $uri->query('id='.$object->id().';edit=1');
+            $self->redirect( $uri->unparse() );
         }
         else {
-
-            # jokar: else a questionmark is needed
             $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
                   . "?edit=1" );
         }
 
         #$ctxt->properties->application->style( "edit" );
         return 1;
+    }
+
+    return 0;
+}
+
+sub event_publish {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user     = $ctxt->session->user();
+    my $object   = $ctxt->object();
+    my $objprivs = $user->object_privmask($object);
+
+    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
+        $self->SUPER::event_publish($ctxt);
+        return 0 if $ctxt->properties->application->style() eq 'error';
+
+        $object->grant_user_privileges(
+            grantee        => XIMS::PUBLICUSERID(),
+            privilege_mask => (XIMS::Privileges::VIEW),
+            grantor        => $user->id()
+        );
+    }
+    else {
+        return $self->event_access_denied($ctxt);
+    }
+
+    return 0;
+}
+
+sub event_unpublish {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user     = $ctxt->session->user();
+    my $object   = $ctxt->object();
+    my $objprivs = $user->object_privmask($object);
+
+    if ( $objprivs & XIMS::Privileges::PUBLISH() ) {
+        $self->SUPER::event_unpublish($ctxt);
+        return 0 if $ctxt->properties->application->style() eq 'error';
+
+        my $privs_object = XIMS::ObjectPriv->new(
+            grantee_id => XIMS::PUBLICUSERID(),
+            content_id => $object->id()
+        );
+        $privs_object->delete();
+    }
+    else {
+        return $self->event_access_denied($ctxt);
     }
 
     return 0;
@@ -271,7 +337,7 @@ sub _create_mapping_from_name {
                 # refers to the *VLibrary*, thence parent_id()
                 $propobject->document_id( $object->parent_id() );
             }
-            
+
             if ( not $propobject->create() ) {
                 XIMS::Debug( 3, "could not create $propclass $value" );
                 next;
