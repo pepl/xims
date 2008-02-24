@@ -220,7 +220,7 @@ sub event_keyword {
 
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
-    my $rowlimit = 10;
+    my $rowlimit = XIMS::SEARCHRESULTROWLIMIT();
     $offset = $offset * $rowlimit;
 
     my @objects = $ctxt->object->vlitems_bykeyword_granted(
@@ -698,7 +698,7 @@ sub event_vlsearch {
     my $offset = $self->param('page');
     $offset = $offset - 1 if $offset;
     $offset ||= 0;
-    my $rowlimit = 10;
+    my $rowlimit = XIMS::SEARCHRESULTROWLIMIT();
     $offset = $offset * $rowlimit;
 
     XIMS::Debug( 6, "param $search" );
@@ -820,13 +820,15 @@ sub event_filter {
 
     my $user = $ctxt->session->user();
 
+    my $order = $self->param('order');
+
     # Build filter criteria
     my %criteria = ();
     my %params   = ();
 
     # subjects
     my $subject_ids = $self->param('sid');
-    if ( defined $subject_ids ) {
+    if ( defined $subject_ids and length $subject_ids ) {
         XIMS::Debug( 6, "subject param '$subject_ids'" );
         my @subject_ids = split(',',$subject_ids);
         $criteria{subjects} =
@@ -836,7 +838,7 @@ sub event_filter {
 
     # keywords
     my $keyword_ids = $self->param('kid');
-    if ( defined $keyword_ids ) {
+    if ( defined $keyword_ids and length $keyword_ids ) {
         XIMS::Debug( 6, "keyword param '$keyword_ids'" );
         my @keyword_ids = split(',',$keyword_ids);
         $criteria{keywords} =
@@ -846,7 +848,7 @@ sub event_filter {
 
     # object_type
     my $object_type_ids = $self->param('otid');
-    if ( defined $object_type_ids ) {
+    if ( defined $object_type_ids and length $object_type_ids ) {
         XIMS::Debug( 6, "object_type_id param '$object_type_ids'" );
         my @object_type_ids = split(',',$object_type_ids);
         $criteria{object_type_id} =
@@ -859,7 +861,7 @@ sub event_filter {
 
     # mediatype
     my $mediatype = $self->param('mt');
-    if ( defined $mediatype ) {
+    if ( defined $mediatype and length $mediatype ) {
         XIMS::Debug( 6, "mediatype param '$mediatype'" );
         $criteria{mediatype} = " m.mediatype = ? ";
         $params{mediatype}   = $mediatype;
@@ -879,12 +881,13 @@ sub event_filter {
           $ctxt->object->_date_conditions_values( $date_from, $date_to );
         $criteria{chronicle} = $date_conditions_values{conditions};
         $params{chronicle}   = $date_conditions_values{values};
+        $order ||= 'chrono';
     }
 
     # fulltext search
     my $text = $self->param('vls');
 
-    if ( defined $text ) {
+    if ( defined $text and length $text ) {
         XIMS::Debug( 6, "fulltext param $text" );
 
         # length within 2..30 chars
@@ -942,9 +945,7 @@ sub event_filter {
     my $rowlimit = $self->param('rowlimit');
 
     # rowlimit = 0 means no limit (display all results)
-    if ( ( !defined $rowlimit ) or ( $rowlimit != 0 ) ) {
-        $rowlimit = 10;
-    }
+    $rowlimit ||= XIMS::SEARCHRESULTROWLIMIT();
     $offset = $offset * $rowlimit;
 
     # order of the result
@@ -952,10 +953,7 @@ sub event_filter {
     #   alpha: Title
     #   create: creation date
     #   modify: modification date
-    my $order = $self->param('order');
-    if ( ( !defined $order ) or ( $order eq '' ) ) {
-        $order = 'alpha';
-    }
+    $order ||= 'modify';
 
     XIMS::Debug( 6, "Filter criteria:" . Dumper(%criteria) );
     XIMS::Debug( 6, "Filter params:" . Dumper(%params) );

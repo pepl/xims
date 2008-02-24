@@ -480,7 +480,7 @@ sub vlitems_byfilter {
     # TODO: parse and validate date here
 
     my ( $sql, $values ) =
-      $self->_vlitems_byfilter_sql( $criteria, $params, $filter_granted );
+      $self->_vlitems_byfilter_sql( $criteria, $params, $filter_granted, undef, $order );
     my $data = $self->data_provider->driver->dbh->fetch_select(
         sql    => [ $sql, @{$values} ],
         limit  => $limit,
@@ -567,6 +567,7 @@ sub _vlitems_byfilter_sql {
     my $params         = shift;
     my $filter_granted = shift;
     my $count          = shift;
+    my $order          = shift;
 
     use Data::Dumper;
     XIMS::Debug( 6, "Filter Criteria: " . Dumper($criteria) );
@@ -588,7 +589,7 @@ sub _vlitems_byfilter_sql {
     my $tables     = 'ci_documents d, ci_content c';
     my $conditions = 'd.ID = c.document_id AND d.parent_id = ? ';
     my @values     = ( $self->document_id() );
-    if ( $criteria{mediatype} ne '' || $criteria{chronicle} ne '' ) {
+    if ( $criteria{mediatype} ne '' || $criteria{chronicle} ne '' || defined $order and $order eq 'm.date_from_timestamp ASC' ) {
         XIMS::Debug( 6, "Mediatype or Chronicle filter" );
         $tables     .= ', cilib_meta m ';
         $conditions .= "AND d.ID = m.document_id ";
@@ -616,12 +617,14 @@ sub _vlitems_byfilter_sql {
         $conditions .= " AND " . $criteria{mediatype};
         push @values, $params{mediatype};
     }
-    if ( $criteria{chronicle} ne '' ) {
+    if ( $criteria{chronicle} ne '' || defined $order and $order eq 'm.date_from_timestamp ASC' ) {
         XIMS::Debug( 6, "Chronicle filter" );
         $properties .= ", m.date_from_timestamp, m.date_to_timestamp"
           if ( not defined $count );
-        $conditions .= $criteria{chronicle};
-        push @values, @{ $params{chronicle} };
+        if ( $criteria{chronicle} ) {
+            $conditions .= $criteria{chronicle};
+            push @values, @{ $params{chronicle} };
+        }
     }
     if ( $criteria{text} ne '' ) {
         XIMS::Debug( 6, "Text filter" );
