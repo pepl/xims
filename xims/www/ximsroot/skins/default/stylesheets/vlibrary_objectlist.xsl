@@ -87,7 +87,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:variable name="totalpages">
       <xsl:choose>
         <xsl:when test="$onepage &gt; 0">
@@ -145,7 +145,7 @@
                   <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit)"/>
                 </xsl:if>
               </xsl:variable>
-              
+
               <xsl:call-template name="pagenav">
                 <xsl:with-param name="totalitems" select="$objectitems_count"/>
                 <xsl:with-param name="itemsperpage" select="$pagerowlimit"/>
@@ -175,7 +175,7 @@
   (<xsl:value-of select="$objectitems_count"/>
   <xsl:text> </xsl:text>
   <xsl:call-template name="decide_plural"/>
-  
+
   <xsl:if test="$totalpages &gt; 1">
     <xsl:text>, </xsl:text>
     <xsl:value-of select="$i18n_vlib/l/Page"/>
@@ -205,14 +205,14 @@
                                                            ,last_modification_timestamp/day
                                                            ,last_modification_timestamp/hour
                                                            ,last_modification_timestamp/minute
-                                                           ,last_modification_timestamp/second 
-                                                    ) 
+                                                           ,last_modification_timestamp/second
+                                                    )
                                     ) [$sb='date']
                                   | exslt:node-set( translate( title
                                                               ,'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-                                                              ,'abcdefghijklmnopqrstuvwxyz' 
-                                                    ) 
-                                    ) [$sb!='date']" 
+                                                              ,'abcdefghijklmnopqrstuvwxyz'
+                                                    )
+                                    ) [$sb!='date']"
                             order="{$xsl.order}"/>
                 </xsl:apply-templates>
             </xsl:otherwise>
@@ -302,7 +302,7 @@
 </xsl:template>
 
 <xsl:template name="size">
-    <xsl:if test="content_length">
+    <xsl:if test="number(content_length) &gt; 0">
         <span class="vlsize">
             <strong>, <xsl:value-of select="$i18n/l/Size"/>:</strong>
             <xsl:call-template name="cttobject.content_length"/>
