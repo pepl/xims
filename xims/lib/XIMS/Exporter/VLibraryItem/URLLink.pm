@@ -109,8 +109,8 @@ sub set_sax_generator {
     return XIMS::SAX::Generator::VLibraryItem->new();
 }
 
-sub update_related { return; }
-sub update_parent_autoindex { return; }
+sub update_dependencies { return; }
+sub update_parent { return; }
 
 1;
 

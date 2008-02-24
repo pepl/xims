@@ -111,6 +111,8 @@ sub set_sax_generator {
     return XIMS::SAX::Generator::Exporter::VLibraryItem->new();
 }
 
+sub update_dependencies { return; }
+sub update_parent { return; }
 
 1;
 
