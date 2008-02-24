@@ -5,7 +5,7 @@ XIMS::Exporter::VLibraryItem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -25,6 +25,7 @@ use strict;
 use XIMS::Exporter;
 use base qw( XIMS::Exporter::XMLChunk );
 use XIMS::ObjectType;
+use XIMS::ObjectPriv;
 use XIMS::SAX::Generator::Exporter::VLibraryItem;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
@@ -34,6 +35,13 @@ sub create {
     my ( $self, %param ) = @_;
 
     return unless $self->SUPER::create( %param );
+
+    # Grant to the public user
+    $self->{Object}->grant_user_privileges(
+        grantee        => XIMS::PUBLICUSERID(),
+        privilege_mask => (XIMS::Privileges::VIEW),
+        grantor        => $self->{User}->id()
+    );
 
     # publish all image children
     my $image_ot_id = XIMS::ObjectType->new( name => 'Image' )->id();
@@ -63,6 +71,13 @@ sub create {
 sub remove {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
+
+    # remove grant to the public user
+    my $privs_object = XIMS::ObjectPriv->new(
+        grantee_id => XIMS::PUBLICUSERID(),
+        content_id => $self->{Object}->id()
+    );
+    $privs_object->delete();
 
     # unpublish all published image children
     my $image_ot_id = XIMS::ObjectType->new( name => 'Image' )->id();
