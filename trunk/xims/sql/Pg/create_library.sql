@@ -75,6 +75,8 @@ CREATE TABLE cilib_keywords
  id                 SERIAL            PRIMARY KEY
  ,name              VARCHAR(64)       UNIQUE NOT NULL
  ,description       VARCHAR(256)
+ ,document_id       INTEGER         NOT NULL REFERENCES ci_documents  ( id ) ON DELETE CASCADE
+ ,UNIQUE(document_id, name)
  )
 ;
 
@@ -117,7 +119,8 @@ CREATE TABLE cilib_publications
  ,isbn              VARCHAR(30)         UNIQUE
  ,issn              varchar(30)         UNIQUE
  ,volume            varchar(30)
- ,UNIQUE(name, volume)
+ ,document_id       INTEGER       NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
+ ,UNIQUE(name, volume,document_id)
  )
 ;
 
