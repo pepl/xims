@@ -97,6 +97,12 @@ sub prepare {
             $doc_data->{context}->{vlsubjectinfo} =
               { subject => $ctxt->object->vlsubjectinfo_granted() };
         }
+        elsif ( $ctxt->properties->application->style() eq "subject_view" ) {
+            $doc_data->{context}->{vlsubject} =
+              { subject => $ctxt->objectlist() };
+
+             $ctxt->objectlist([]);
+        }
         elsif ( $ctxt->properties->application->style() eq "authors" ) {
             $doc_data->{context}->{vlauthorinfo} =
               { author => $ctxt->object->vlauthorinfo_granted() };

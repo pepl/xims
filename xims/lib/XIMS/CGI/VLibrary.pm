@@ -151,20 +151,17 @@ sub event_subject_view {
     my ( $self, $ctxt ) = @_;
 
     my $subjectid = $self->param('subject_id');
-
-    unless ($subjectid) {
-        my $subjectname = XIMS::decode( $self->param('subject_name') );
-        if ( defined $subjectname ) {
-            my $subject = XIMS::VLibSubject->new(
-                name        => $subjectname,
-                document_id => $ctxt->object()->document_id()
-            );
-            if ( $subject and $subject->id() ) {
-                $subjectid = $subject->id();
-            }
-            else { return 0; }
+    if ( defined $subjectid ) {
+        my $subject = XIMS::VLibSubject->new( id => $subjectid, );
+        if ( defined $subject  ) {
+            $ctxt->objectlist( $subject ); # abuse objectlist
         }
-        else { return 0; }
+        else {
+             return 0;
+        }
+    }
+    else {
+        return 0;
     }
 
     # View kind of intro page for the selected subject. Just for public use.
@@ -831,16 +828,30 @@ sub event_filter {
     my $subject_ids = $self->param('sid');
     if ( defined $subject_ids ) {
         XIMS::Debug( 6, "subject param '$subject_ids'" );
+        my @subject_ids = split(',',$subject_ids);
         $criteria{subjects} =
-          " sm.document_id = d.id AND sm.subject_id IN ( $subject_ids ) ";
+          " sm.document_id = d.id AND sm.subject_id IN (" . join( ',', map { '?' } @subject_ids ) . ')';
+          $params{subjects} = \@subject_ids;
     }
 
     # keywords
     my $keyword_ids = $self->param('kid');
     if ( defined $keyword_ids ) {
         XIMS::Debug( 6, "keyword param '$keyword_ids'" );
+        my @keyword_ids = split(',',$keyword_ids);
         $criteria{keywords} =
-          " km.document_id = d.id AND km.keyword_id IN ( $keyword_ids ) ";
+          " km.document_id = d.id AND km.keyword_id IN (" . join( ',', map { '?' } @keyword_ids ) . ')';
+        $params{keywords} = \@keyword_ids;
+    }
+
+    # object_type
+    my $object_type_ids = $self->param('otid');
+    if ( defined $object_type_ids ) {
+        XIMS::Debug( 6, "object_type_id param '$object_type_ids'" );
+        my @object_type_ids = split(',',$object_type_ids);
+        $criteria{object_type_id} =
+          " d.object_type_id IN (" . join( ',', map { '?' } @object_type_ids ) . ')';
+        $params{object_type_id} = \@object_type_ids;
     }
 
     # authors

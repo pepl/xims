@@ -97,12 +97,12 @@ sub vlsubjectinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
-    my $sql = 'SELECT s.name, s.id, s.description, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp '
+    my $sql = 'SELECT s.name, s.id, s.description, d.object_type_id, count(c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp '
             . 'FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c '
             . 'WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = s.document_id AND d.parent_id = ? '
-            . 'GROUP BY s.name, s.id, s.description '
+            . 'GROUP BY s.name, s.id, s.description, d.object_type_id '
             . 'UNION '
-            . 'SELECT s.name, s.id, s.description, 0 AS object_count, NULL AS last_modification_timestamp '
+            . 'SELECT s.name, s.id, s.description, 0 AS object_type_id, 0 AS object_count, NULL AS last_modification_timestamp '
             . 'FROM cilib_subjects s '
             . 'WHERE s.document_id = ? AND NOT EXISTS (select 1 FROM cilib_subjectmap m where m.subject_id = s.id )';
      my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [
@@ -121,13 +121,13 @@ sub vlsubjectinfo_granted {
 
     my ( $userprivsql, @userprivids ) = $self->_userpriv_where_clause($user);
 
-    my $sql = 'SELECT s.name, s.id, s.description, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp '
+    my $sql = 'SELECT s.name, s.id, s.description, d.object_type_id, count(DISTINCT c.id) AS object_count, max(c.last_modification_timestamp) AS last_modification_timestamp '
             . 'FROM cilib_subjectmap m, cilib_subjects s, ci_documents d, ci_content c, ci_object_privs_granted o '
             . 'WHERE d.ID = m.document_id AND m.subject_id = s.ID AND d.id = c.document_id AND d.parent_id = s.document_id AND d.parent_id = ? '
             . $userprivsql
-            . ' GROUP BY s.name, s.id, s.description '
+            . ' GROUP BY s.name, s.id, s.description, d.object_type_id '
             . 'UNION '
-            . 'SELECT s.name, s.id, s.description, 0 AS object_count, NULL AS last_modification_timestamp '
+            . 'SELECT s.name, s.id, s.description, 0 AS object_type_id, 0 AS object_count, NULL AS last_modification_timestamp '
             . 'FROM cilib_subjects s '
             . 'WHERE s.document_id = ? AND NOT EXISTS (select 1 FROM cilib_subjectmap m where m.subject_id = s.id )';
 
@@ -568,7 +568,8 @@ sub _vlitems_byfilter_sql {
     my $filter_granted = shift;
     my $count          = shift;
 
-    XIMS::Debug( 6, "Kriterien: " . Dumper($criteria) );
+    use Data::Dumper;
+    XIMS::Debug( 6, "Filter Criteria: " . Dumper($criteria) );
     my %criteria = %{$criteria};
     my %params   = %{$params};
 
@@ -596,11 +597,18 @@ sub _vlitems_byfilter_sql {
         XIMS::Debug( 6, "Subject filter" );
         $tables     .= ', cilib_subjectmap sm ';
         $conditions .= " AND " . $criteria{subjects};
+        push @values, $params{subjects};
     }
     if ( $criteria{keywords} ne '' ) {
         XIMS::Debug( 6, "Keyword filter" );
         $tables     .= ', cilib_keywordmap km ';
         $conditions .= " AND " . $criteria{keywords};
+        push @values, $params{keywords};
+    }
+    if ( $criteria{object_type_id} ne '' ) {
+        XIMS::Debug( 6, "OT filter" );
+        $conditions .= " AND " . $criteria{object_type_id};
+        push @values, $params{object_type_id};
     }
     if ( $criteria{mediatype} ne '' ) {
         XIMS::Debug( 6, "Mediatype filter" );
