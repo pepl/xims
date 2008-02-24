@@ -110,7 +110,7 @@ sub set_sax_generator {
 }
 
 sub update_related { return; }
-sub update_parent_autoindex { return; }
+sub update_parent { return; }
 
 1;
 
