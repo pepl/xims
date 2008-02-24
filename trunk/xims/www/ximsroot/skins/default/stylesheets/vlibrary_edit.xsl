@@ -14,7 +14,7 @@
     <xsl:call-template name="head-edit"/>
     <body>
         <div class="edit">
-            <xsl:if test="{edit}">
+            <xsl:if test="$edit != ''">
                 <xsl:call-template name="table-edit"/>
                 <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
                     <table border="0" width="98%">
@@ -26,7 +26,7 @@
                     <xsl:call-template name="saveedit"/>
                 </form>
             </xsl:if>
-            
+
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
