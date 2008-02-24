@@ -82,6 +82,8 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'JavaScript', 0, 1, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'SQLReport', 0, 1, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Event', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
 
 \echo inserting into ci_data_formats...
 
@@ -307,10 +309,10 @@ INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
 INSERT INTO ci_object_privs_granted ( privilege_mask, grantee_id, grantor_id, content_id )
        VALUES ( 1, 3, 2, 2 );
 
-       
+
 \echo Setting is_ci_object_types.davgetable
 UPDATE ci_object_types SET is_davgetable = 0;
-UPDATE ci_object_types SET is_davgetable = 1 WHERE id IN (SELECT id from ci_object_types WHERE name IN ('Annotation', 'AxPointPresentation', 'CSS', 'DepartmentRoot', 'DocBookXML', 'Document', 'File', 'Folder', 'Image', 'JavaScript', 'NewsItem', 'Portal', 'Portlet', 'Questionnaire', 'SQLReport', 'SiteRoot', 'Text', 'XML', 'XSLStylesheet', 'XSPScript', 'sDocBookXML'));
+UPDATE ci_object_types SET is_davgetable = 1 WHERE id IN (SELECT id from ci_object_types WHERE name IN ('Annotation', 'AxPointPresentation', 'CSS', 'DepartmentRoot', 'DocBookXML', 'Document', 'File', 'Folder', 'Image', 'JavaScript', 'NewsItem', 'Portal', 'Portlet', 'Questionnaire', 'SQLReport', 'SiteRoot', 'Text', 'XML', 'XSLStylesheet', 'XSPScript', 'sDocBookXML','Event'));
 
 \echo Setting ci_object_types.davprivval
 UPDATE ci_object_types SET davprivval = 0;
