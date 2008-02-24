@@ -12,26 +12,26 @@
                 xmlns:date="http://exslt.org/dates-and-times"
                 xmlns:exsl="http://exslt.org/common"
                 extension-element-prefixes="exsl date">
-  
-  <xsl:variable name="i18n" 
+
+  <xsl:variable name="i18n"
                 select="document(concat($currentuilanguage,'/i18n.xml'))"/>
-  <xsl:variable name="i18n_vlib" 
+  <xsl:variable name="i18n_vlib"
                 select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
-  <xsl:variable name="user_privileges" 
+  <xsl:variable name="user_privileges"
                 select="/document/context/object/user_privileges" />
 
 
   <xsl:variable name="popupsizes-rtf">
     <subject     x="910" y="500"/>
-    <author      x="620" y="320"/> 
+    <author      x="620" y="320"/>
     <keyword     x="550" y="200"/>
     <publication x="600" y="260"/>
     <delete      x="550" y="340"/>
   </xsl:variable>
 
-  <xsl:variable name="popupsizes" 
+  <xsl:variable name="popupsizes"
                 select="exsl:node-set($popupsizes-rtf)/*"/>
-  
+
   <xsl:param name="colms" select="3"/>
   <xsl:param name="vls"/>
   <xsl:param name="date_from" />
@@ -90,7 +90,7 @@
   <xsl:template name="item_div">
     <xsl:param name="mo" />
     <div class="vliteminfo" name="vliteminfo" align="center">
-      <div> 
+      <div>
         <xsl:call-template name="property_link">
           <xsl:with-param name="mo" select="$mo"/>
         </xsl:call-template>
@@ -102,7 +102,7 @@
         <xsl:text> </xsl:text>
         <xsl:value-of select="$i18n_vlib/l/last_modified_at"/>
         <br />
-        <xsl:apply-templates select="last_modification_timestamp" 
+        <xsl:apply-templates select="last_modification_timestamp"
                              mode="datetime" />
       </xsl:if>
     </div>
@@ -131,8 +131,8 @@
 
   <xsl:template name="switch_vlib_views_action">
     <xsl:param name="mo" />
-    <table cellpadding="0" 
-           cellspacing="0" 
+    <table cellpadding="0"
+           cellspacing="0"
            style="margin: 0px;">
       <tr>
         <td valign="top">
@@ -185,19 +185,19 @@
 
   <xsl:template name="vlib_search_action">
 
-    <xsl:variable name="Search" 
+    <xsl:variable name="Search"
                   select="$i18n_vlib/l/Fulltext_search"/>
 
-    <form style="margin-bottom: 0px;" 
-          action="{$xims_box}{$goxims_content}{$absolute_path}" 
-          method="GET" 
+    <form style="margin-bottom: 0px;"
+          action="{$xims_box}{$goxims_content}{$absolute_path}"
+          method="GET"
           name="vlib_search">
       <strong><xsl:value-of select="$Search"/></strong>
       <xsl:text>&#160;</xsl:text>
-      <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" 
-             type="text" 
-             name="vls" 
-             size="17" 
+      <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+             type="text"
+             name="vls"
+             size="17"
              maxlength="200">
         <xsl:if test="$vls != ''">
           <xsl:attribute name="value">
@@ -216,11 +216,11 @@
              border="0"
              style="vertical-align: text-bottom;"
              />
-      <input type="hidden" 
-             name="start_here" 
+      <input type="hidden"
+             name="start_here"
              value="1"/>
       <input type="hidden"
-             name="vlsearch" 
+             name="vlsearch"
              value="1"/>
       </form>
       <br />
@@ -230,7 +230,7 @@
   </xsl:template>
 
   <xsl:template name="property_link">
-    
+
     <xsl:param name="mo"/>
 
     <xsl:variable name="display_name">
@@ -280,11 +280,11 @@
              width="32"
              height="19"/>
       </a>
-      
+
       <xsl:if test="object_count = 0">
         <a href="javascript:genericWindow(
                      '{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={$display_name}',
-                     '{$popupsizes[name()='delete']/@x}', 
+                     '{$popupsizes[name()='delete']/@x}',
                      '{$popupsizes[name()='delete']/@y}')">
           <img src="{$skimages}option_delete.png"
                alt="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"
@@ -293,24 +293,24 @@
       </xsl:if>
     </xsl:if>
   </xsl:template>
-  
+
 
   <xsl:template name="search_switch">
     <xsl:param name="mo"/>
-    <table width="100%" 
-           border="0" 
-           style="margin: 0px;" 
+    <table width="100%"
+           border="0"
+           style="margin: 0px;"
            id="vlsearchswitch">
       <tr>
-        <td valign="top" 
-            width="50%" 
-            align="center" 
+        <td valign="top"
+            width="50%"
+            align="center"
             class="vlsearchswitchcell">
           <xsl:call-template name="vlib_search_action"/>
         </td>
-        <td valign="top" 
-            width="50%" 
-            align="center" 
+        <td valign="top"
+            width="50%"
+            align="center"
             class="vlsearchswitchcell">
           <xsl:call-template name="switch_vlib_views_action">
             <xsl:with-param name="mo" select="$mo"/>
@@ -321,32 +321,32 @@
   </xsl:template>
 
   <xsl:template name="chronicle_switch">
-    <table width="100%" 
-           border="0" 
-           style="margin: 0px;" 
+    <table width="100%"
+           border="0"
+           style="margin: 0px;"
            id="vlsearchswitch">
       <tr>
         <td valign="top"
-            width="50%" 
-            align="center" 
+            width="50%"
+            align="center"
             class="vlsearchswitchcell">
-          <form style="margin-bottom: 0px;" 
-                action="{$xims_box}{$goxims_content}{$absolute_path}" 
-                method="GET" 
+          <form style="margin-bottom: 0px;"
+                action="{$xims_box}{$goxims_content}{$absolute_path}"
+                method="GET"
                 name="vlib_search">
             Chronik von
-            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" 
+            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
                    type="text"
-                   name="chronicle_from" 
-                   size="10" 
-                   maxlength="200" 
+                   name="chronicle_from"
+                   size="10"
+                   maxlength="200"
                    value="{$chronicle_from}"/>
             bis
-            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" 
-                   type="text" 
-                   name="chronicle_to" 
-                   size="10" 
-                   maxlength="200" 
+            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+                   type="text"
+                   name="chronicle_to"
+                   size="10"
+                   maxlength="200"
                    value="{$chronicle_to}" />
             <xsl:text>&#160;</xsl:text>
             <input type="image"
@@ -434,27 +434,27 @@
 
 
   <xsl:template name="post_async_js">
+var xmlhttp = getXMLHTTPObject();
 function handleResponse() {
     if (xmlhttp.readyState == 4) {
-        
+
         if (xmlhttp.status == 200) {
             window.opener.document.location.reload();
             window.close();
-        } 
+        }
         else {
-            document.getElementById('message').innerHTML 
-                = '<strong>' + xmlhttp.responseText + '</strong>'; 
-    document.getElementById('buttons').innerHTML 
-                = '<input type="button" 
-                          onclick="window.close()" 
-                          class="control" 
+            document.getElementById('message').innerHTML
+                = '<strong>' + xmlhttp.responseText + '</strong>';
+    document.getElementById('buttons').innerHTML
+                = '<input type="button"
+                          onclick="window.close()"
+                          class="control"
                           value="{$i18n/l/close_window}"/>';
         }
     }
 }
 
 function post_async(poststr) {
-    
     xmlhttp.onreadystatechange = handleResponse;
     xmlhttp.open('POST'
                  , '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>'
@@ -462,8 +462,8 @@ function post_async(poststr) {
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.setRequestHeader("Content-length", poststr.length);
     xmlhttp.setRequestHeader("Connection", "close");
-    xmlhttp.send(poststr);                 
-}                     
+    xmlhttp.send(poststr);
+}
   </xsl:template>
 
 </xsl:stylesheet>

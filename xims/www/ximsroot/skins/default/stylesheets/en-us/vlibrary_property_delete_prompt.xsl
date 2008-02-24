@@ -11,7 +11,7 @@
 
   <xsl:import href="common.xsl"/>
   <xsl:import href="../vlibrary_common.xsl"/>
-  
+
   <xsl:output method="html" encoding="utf-8"/>
 
   <xsl:param name="property_id"/>
@@ -24,18 +24,18 @@
         <title>
           Confirm Object Deletion - XIMS
         </title>
-        <link rel="stylesheet" 
-              href="{$ximsroot}{$defaultcss}" 
+        <link rel="stylesheet"
+              href="{$ximsroot}{$defaultcss}"
               type="text/css" />
       </head>
 
-      <body margintop="0" 
+      <body margintop="0"
             marginleft="0"
-            marginwidth="0" 
-            marginheight="0" 
+            marginwidth="0"
+            marginheight="0"
             background="{$skimages}body_bg.png">
-        
-        <form name="objectdeletion"  
+
+        <form name="objectdeletion"
               action="javascript:post_async('property_delete=1;property_id={$property_id};property={$property}');"
               style="margin-top: 0px; margin-left: 5px;">
 
@@ -45,7 +45,7 @@
                  border="0"
                  bgcolor="#eeeeee">
             <tr>
-              <td align="center">  
+              <td align="center">
                 <br />
                 <!-- begin widget table -->
                 <table width="300"
@@ -85,20 +85,20 @@
                       <table id="buttons" cellpadding="2" cellspacing="0" border="0">
                         <tr align="center">
                           <td>
-                            <input type="submit" 
-                                   name="author_delete" 
-                                   id="author_delete" 
-                                   value="Bestätigen" 
-                                   class="control" 
+                            <input type="submit"
+                                   name="author_delete"
+                                   id="author_delete"
+                                   value="Confirm"
+                                   class="control"
                                    onClick="document.objectdeletion.submit; window.opener.document.location.reload();"
                                    accesskey="S"/>
                           </td>
                           <td>
-                            <input type="button" 
-                                   name="cancel" 
-                                   value="{$i18n/l/cancel}" 
-                                   class="control" 
-                                   accesskey="C" 
+                            <input type="button"
+                                   name="cancel"
+                                   value="{$i18n/l/cancel}"
+                                   class="control"
+                                   accesskey="C"
                                    onClick="self.close();"/>
                           </td>
                         </tr>
