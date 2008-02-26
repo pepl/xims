@@ -460,15 +460,8 @@
             switching from TinyMCE to Plain Textarea
         -->
         origbody = origbody.replace(/\s+mce_\w+="[^"]+"/g,"");
-        origbody = origbody.replace(/\s?mce[^"]+/g,"");
+        origbody = origbody.replace(/"mce[^"]+/g,"");
         origbody = origbody.replace(/\s+class=""/g,"");
-        var Hostregex = '\s+href="<xsl:value-of select="concat($xims_box,$goxims_content)"/>([^"]+)"';
-        Hostregex = Hostregex.replace(/\//g, '\\/');
-        Hostregex = Hostregex.replace(/\./g, '\\.');
-        Hostregex = '/'+Hostregex+'/g';
-        //Hostregex.exec(origbody);
-        //origbody = origbody.replace(hostregex,' href="$1"');
-        //origbody = origbody.replace(|\s+src="<xsl:value-of select="concat($xims_box,$goxims_content)"/>([^"]+)"/g,' src="$1"');
         <!-- replace with clean body -->
         document.getElementById('body').value = origbody;
     </script>
@@ -1463,17 +1456,27 @@
 
     <!-- give notice that location needs to be set first -->
     function enterCheckLoc() {
+        var badBrowserEditorCombi = testBadBrowserEditorCombi();
         var notice = "<xsl:value-of select="$i18n/l/IlpProvideLocationFirst"/>";
         var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
         notice += <![CDATA[ '<br/><br/>\
                   <input type="button" id="xims_ilp_btn_select" value="'+ btnOK +'" class="control" \
                   onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                   ]]>
+        // reset notice if ILP would not work properly
+        if ( badBrowserEditorCombi ) {
+            notice = "You have not entered a Location, yet!\nPlease enter one now!";
+        }
         var loc = document.eform.name.value;
         <!-- open il-popup when location has not been entered yet -->
         if ( loc.length &lt; 1 ) {
             document.getElementById('xims_ilp_content').innerHTML=notice;
-            openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
+            if ( !badBrowserEditorCombi ) {
+                openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
+            }
+            else {
+                alert(notice);
+            }
         }
     }
 
@@ -1484,6 +1487,43 @@
         var fromPos = str.indexOf(searchToken) + searchToken.length;
         var subStr = str.substring(fromPos, str.length);
         return(subStr.substring(0, subStr.indexOf(";")));
+    }
+
+    <!--
+        Hack, for Esker Active X plugin/wepro combis on windows
+        inline-popup does not work properly with this software combination
+    -->
+    // returns true for bad setup; false otherwise
+    function testBadBrowserEditorCombi() {
+        var wysiwygEditor; // which WYSIWYG?
+        var badBrowser = false; // do we have a "bad" browser?
+        // get wysiwyg info
+        if (document.getElementById('xims_wysiwygeditor')) {
+            wysiwygEditor = readCookie('xims_wysiwygeditor');
+            if ( wysiwygEditor != 'wepro' ) {
+                wysiwygEditor = false;
+            }
+        }
+        // get browser info
+        var browser = navigator.userAgent; 
+        var browserRegexp = /.*Mozilla\/5\.0.*rv:(1\.[0-9]).+(Firefox)?.*$/;
+        if ( browser.search(/(MSIE|Opera|Safari).*/) == -1 ) {
+            // we have no IE, Opera, Safari
+            browserRegexp.exec(browser);
+            var revision = RegExp.$1;
+            if ( revision &gt; 1.5 ) {
+                if ( browser.search(/Windows.*/) != -1 ) {
+                    // we have the Windows platform
+                    badBrowser = true;
+                }
+            }
+        }
+        if ( wysiwygEditor &amp;&amp; badBrowser ) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     <!-- we need special handling of Object-Types with WYSIWYG
@@ -1554,6 +1594,7 @@
 
                 var notice;
                 var controlHtml;
+                var badBrowserEditorCombi = testBadBrowserEditorCombi();
                 <!-- choose response according to statusCode. remember: 
                     0 => Location (is) OK
                     1 => Location already exists (in container)
@@ -1578,6 +1619,12 @@
                             <input type="button" class="control" value="'+ btnIgnore +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');return false;"/>&#160;';
                             notice += controlHtml;
                             ]]>
+                            // reset notice if ILP would not work properly
+                            if ( badBrowserEditorCombi ) {
+                                notice = location+"\n";
+                                notice += processedLocation+"\n\n";
+                                notice += "Note!\nLocation would change (as indicated above) upon saving!";
+                            }
                         }
                         break;
                     case "1":
@@ -1589,6 +1636,10 @@
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
+                        // reset notice if ILP would not work properly
+                        if ( badBrowserEditorCombi ) {
+                            notice = "Location already exists in current Container!";
+                        }
                         break;
                     case "2":
                         // no loc
@@ -1599,6 +1650,10 @@
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
+                        // reset notice if ILP would not work properly
+                        if ( badBrowserEditorCombi ) {
+                            notice = "No Location provided\nPlease enter one now!";
+                        }
                         break;
                     case "3":
                         // dirty loc
@@ -1609,6 +1664,10 @@
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
+                        // reset notice if ILP would not work properly
+                        if ( badBrowserEditorCombi ) {
+                            notice = "Location contains invalid characters!\nValid characters are 0-9a-zA-Z, '-' and '_'.";
+                        }
                         break;
                     default:
                         // debug message
@@ -1619,6 +1678,10 @@
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
+                        // reset notice if ILP would not work properly
+                        if ( badBrowserEditorCombi ) {
+                            notice = text;
+                        }
                     break;
                 }
                 // set content for ILP
@@ -1628,7 +1691,12 @@
                 -->
                 // report notice/error if set
                 if (notice) {
-                    openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
+                    if ( !badBrowserEditorCombi ) {
+                        openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
+                    }
+                    else {
+                        alert(notice);
+                    }
                 }
             }
         }
@@ -1661,7 +1729,7 @@
     <div id="xims_ilp_fadebg">
         &#160;
         <!-- IE conditional comment (do not add additional spaces)-->
-        <xsl:comment>[if lte IE 6.5]&gt;&lt;iframe&gt;&lt;/iframe&gt;&lt;![endif]</xsl:comment>
+        <xsl:comment>[if lte IE 6.5]&gt;&lt;iframe src="index.html"&gt;&lt;/iframe&gt;&lt;![endif]</xsl:comment>
     </div>
 
     <!-- here is our inline-popup code -->
