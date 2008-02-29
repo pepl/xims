@@ -340,8 +340,7 @@ datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"&gt;
     <emphasis>Body</emphasis> fügen Sie den XSL-Code ein. Hier ein
     Beispiel-Code, der weiter unten erklärt wird:</para>
 
-    <literallayout>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"&gt;
+    <literallayout>&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"&gt;
 
 &lt;xsl:template match="/"&gt;
     &lt;page&gt;
