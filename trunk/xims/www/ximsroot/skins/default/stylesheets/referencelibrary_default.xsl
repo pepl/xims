@@ -365,6 +365,8 @@ z-index:100;
         <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="style" id="style">
             <option value="cv_defaultstyle" selected="selected">default style</option>
             <option value="cv_printstyle">print style</option>
+            <option value="cv_wordmlstyle">WordML</option>
+        
         </select>
         <xsl:if test="$reflibsearch != ''">
             <input type="hidden" name="reflibsearch" value="{$reflibsearch}"/>
