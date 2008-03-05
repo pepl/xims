@@ -1655,7 +1655,7 @@ sub set_sax_filters {
                                                                     ResolveContent => [ qw( DEPARTMENT_ID ) ] ),
                      XIMS::SAX::Filter::ContentObjectPropertyResolver->new( User           => $self->{User},
                                                                             ResolveContent => [ qw( image_id ) ],
-                                                                            Properties     => [ qw( abstract ) ]
+                                                                            Properties     => [ qw( abstract content_length ) ],
                                                                           );
 
     my $filter = XIMS::SAX::Filter::PortletCollector->new( Provider => $self->{Provider},

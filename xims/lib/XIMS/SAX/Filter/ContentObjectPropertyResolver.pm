@@ -86,7 +86,7 @@ sub end_element {
                 or $element->{LocalName} eq 'department_id'
                 or $element->{LocalName} eq 'parent_id'
                 or $element->{LocalName} eq 'symname_to_doc_id' )
-            )
+          )
         {
             $id = 'document_id';
         }
@@ -106,15 +106,21 @@ sub end_element {
             push(
                 @{ $self->{Properties} },
                 qw( id document_id parent_id object_type_id
-                    data_format_id symname_to_doc_id location location_path title )
+                    data_format_id symname_to_doc_id location
+                    location_path title)
             ) unless exists $self->{PushedDefaultProperties};
             $self->{PushedDefaultProperties}++;
+
+            #  XIMS::Object->new() does not like content_length...
+            my @saveProperties =
+              grep { $_ ne 'content_length' } @{ $self->{Properties} };
 
             $object = XIMS::Object->new(
                 User       => $self->{User},
                 $id        => $self->{document_id},
-                properties => $self->{Properties}
+                properties => \@saveProperties
             );
+
             if ( defined $object->{location_path}
                 and not exists $self->{NonExport} )
             {
@@ -126,6 +132,11 @@ sub end_element {
                 else {
                     $object->{location_path} = XIMS::PUBROOT_URL() . $path;
                 }
+            }
+
+            if ( scalar(@saveProperties) < scalar( @{ $self->{Properties} } ) )
+            {
+                $object->{content_length} = $object->content_length;
             }
 
             $self->{$cachekey} = $object;
