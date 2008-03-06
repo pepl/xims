@@ -1729,7 +1729,7 @@
     <div id="xims_ilp_fadebg">
         &#160;
         <!-- IE conditional comment (do not add additional spaces)-->
-        <xsl:comment>[if lte IE 6.5]&gt;&lt;iframe src="index.html"&gt;&lt;/iframe&gt;&lt;![endif]</xsl:comment>
+        <xsl:comment>[if lte IE 10.0]&gt;&lt;iframe src="index.html"&gt;&lt;/iframe&gt;&lt;![endif]</xsl:comment>
     </div>
 
     <!-- here is our inline-popup code -->
