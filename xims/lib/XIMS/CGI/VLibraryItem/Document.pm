@@ -168,14 +168,22 @@ sub event_store {
     }
     $object->vlemeta($meta);
 
+    my $rdpath = $self->redirect_path($ctxt);
+
+    if ( $self->param('proceed_to_edit') == 1 ) {
+        $rdpath .=
+          ( $self->redirect_path($ctxt) =~ /\?/ ) ? ';edit=1' : '?edit=1';
+    }
+
     if ($error_message) {
         $self->sendError( $ctxt, $error_message );
         return 0;
     }
     else {
-        $self->redirect( $self->redirect_path($ctxt) );
+        $self->redirect($rdpath);
         return 1;
     }
+
 }
 
 sub _set_wysiwyg_editor {
