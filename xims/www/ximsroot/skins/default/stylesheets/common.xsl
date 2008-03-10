@@ -1559,7 +1559,7 @@
         </xsl:choose>
 
         <!-- append '.html' in case of a Document with no lang-extension -->
-        if ( location.length != 0 &amp;&amp; obj.toUpperCase() == 'DOCUMENT' ) {
+        if ( location.length != 0 &amp;&amp; obj.search(/Document$/i) != -1 ) {
             var searchres = location.search(/.*\.html(\.\w+)?$/);
             if ( searchres == -1 ) {
                 location += '.html';
