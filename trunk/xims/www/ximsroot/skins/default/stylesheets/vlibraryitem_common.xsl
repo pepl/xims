@@ -11,6 +11,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:import href="common.xsl"/>
+  <xsl:import href="vlibrary_common.xsl"/>
 
   <xsl:output method="html"
               encoding="utf-8"
@@ -18,7 +19,6 @@
               doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
               doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
               indent="no"/>
-
 
   <xsl:variable name="i18n_vlib"
                 select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
@@ -29,8 +29,7 @@
    <xsl:param name="mo"/>
 
    <tr>
-     <xsl:value-of select="$mo"/>
-      <td valign="top">
+     <td valign="top">
         <xsl:value-of select="$i18n_vlib/l/Currently_mapped"/>
         <xsl:text>&#160;</xsl:text>
         <xsl:value-of select="$i18n_vlib/l/*[name()=concat($mo,'s')]"/>:
@@ -74,7 +73,7 @@
                onClick="submitOnId('{$mo}', '{$i18n_vlib/l/select_name}')"/>
           <xsl:text>&#160;</xsl:text>
         </xsl:if>
-        <a href="javascript:genericVLibraryPopup('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}', '{$mo}')">
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','{$popupsizes[name()=$mo]/@x}','{$popupsizes[name()=$mo]/@y}')">
           <xsl:value-of select="concat($i18n/l/create, ' ', $i18n_vlib/l/*[name()=$mo])"/>
         </a>
       </td>
