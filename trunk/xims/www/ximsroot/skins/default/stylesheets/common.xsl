@@ -425,7 +425,7 @@
                 </input>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
-            <xsl:if test="published != 1">
+            <xsl:if test="not(published = 1)">
                 <!-- location-testing AJAX code -->
                 <xsl:call-template name="testlocationjs">
                     <xsl:with-param name="event" select="'edit'"/>
