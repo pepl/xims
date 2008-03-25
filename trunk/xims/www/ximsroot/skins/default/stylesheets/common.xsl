@@ -386,6 +386,9 @@
 </xsl:template>
 
 <xsl:template name="tr-locationtitle-edit_xml">
+    <xsl:variable name="objecttype">
+        <xsl:value-of select="object_type_id"/>
+    </xsl:variable>
     <tr>
         <td valign="top">
             <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
@@ -422,6 +425,13 @@
                 </input>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
+            <xsl:if test="published != 1">
+                <!-- location-testing AJAX code -->
+                <xsl:call-template name="testlocationjs">
+                    <xsl:with-param name="event" select="'edit'"/>
+                    <xsl:with-param name="obj_type" select="/document/object_types/object_type[@id=$objecttype]/fullname"/>
+                </xsl:call-template>
+            </xsl:if>
         </td>
         <td align="right" valign="top">
             <xsl:call-template name="marked_mandatory"/>
@@ -1558,11 +1568,34 @@
             </xsl:otherwise>
         </xsl:choose>
 
-        <!-- append '.html' in case of a Document with no lang-extension -->
-        if ( location.length != 0 &amp;&amp; obj.search(/Document$/i) != -1 ) {
-            var searchres = location.search(/.*\.html(\.\w+)?$/);
+        <!-- append suffixes with no lang-extension -->
+        if ( location.length != 0 &amp;&amp; obj.search(/(Document|sDocBookXML)$/i) != -1 ) {
+            var searchres = location.search(/.*\.[^.]+(\.[^.]+)?$/);
             if ( searchres == -1 ) {
-                location += '.html';
+                // handle .html and .sdbk
+                if ( obj.search(/Document$/i) != -1 ) {
+                    location += '.html';
+                }
+                else {
+                    location += '.sdbk';
+                }
+            }
+        }
+        else {
+            var searchres = location.search(/.*(\.[^.]+)$/);
+            if ( searchres == -1 ) {
+                // append mime-type suffixes
+                switch (obj) {
+                    case "AxPointPresentation": location += '.axp';  break;
+                    case "CSS":                 location += '.css';  break;
+                    case "JavaScript":          location += '.js';   break;
+                    case "Portlet":             location += '.ptlt'; break;
+                    case "TAN_List":            location += '.tls';  break;
+                    case "Text":                location += '.txt';  break;
+                    case "SQLReport":           location += '.html'; break;
+                    case "XSLStylesheet":       location += '.xsl';  break;
+                    case "XML":                 location += '.xml';  break;
+                }
             }
         }
 
