@@ -431,7 +431,9 @@ sub event_property_edit {
 
     if ($property eq 'subject') {
         # XXX calling foreign internal methods is certainly not not ugly...
-        $ed = XIMS::CGI::Document::_set_wysiwyg_editor($self, $ctxt)
+        $ed = XIMS::CGI::Document::_set_wysiwyg_editor($self, $ctxt);
+        # either Plain or HTMLArea
+        if (length($ed)) {$ed = '_htmlarea';}
     }
 
     $ctxt->properties->application->style("${property}_edit${ed}");
