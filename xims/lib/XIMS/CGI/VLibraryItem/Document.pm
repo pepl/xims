@@ -34,11 +34,6 @@ sub event_create {
 
     # event edit in SUPER implements operation control
     $self->SUPER::event_create($ctxt);
-    return 0 if $ctxt->properties->application->style() eq 'error';
-
-    # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor($ctxt);
-    $ctxt->properties->application->style( "create" . $ed );
 
     return 0;
 }
