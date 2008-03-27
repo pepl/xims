@@ -20,7 +20,6 @@
   <xsl:template name="head">
     <xsl:call-template name="common-head">
       <xsl:with-param name="mode">edit</xsl:with-param>
-      <xsl:with-param name="calendar" select="true()" />
       <xsl:with-param name="htmlarea" select="true()" />
     </xsl:call-template>
   </xsl:template>
