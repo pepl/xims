@@ -14,7 +14,7 @@
   
   <xsl:template name="tr_set-body-edit">
     <xsl:call-template name="tr-body-edit_tinymce"/> 
-    <script type="text/javascript">timeoutWYSIWYGChange(3); initEditor();</script>
+    <script type="text/javascript">timeoutWYSIWYGChange(3);</script>
   </xsl:template>
 
   <xsl:template name="head">
