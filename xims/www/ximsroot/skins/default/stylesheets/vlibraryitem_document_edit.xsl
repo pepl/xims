@@ -33,16 +33,13 @@
   <xsl:template name="head">
     <xsl:call-template name="common-head">
       <xsl:with-param name="mode">edit</xsl:with-param>
-      <xsl:with-param name="calendar" select="true()" />
     </xsl:call-template>
   </xsl:template>
 
   <xsl:template match="/document/context/object">
     
     <html>
-      <head>
-        <xsl:call-template name="head"/>
-      </head>
+      <xsl:call-template name="head"/>
       <body>
         <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
@@ -71,9 +68,6 @@
               <xsl:call-template name="tr-vlproperties">
                 <xsl:with-param name="mo" select="'publication'"/>
               </xsl:call-template>
-              <tr><td colspan="3"> </td></tr>
-              <xsl:call-template name="tr-chronicle_from"/>
-              <xsl:call-template name="tr-chronicle_to"/>
               <tr><td colspan="3"> </td></tr>
               <xsl:call-template name="tr_set-body-edit"/>    
               <xsl:call-template name="markednew"/>
