@@ -598,18 +598,18 @@ sub _vlitems_byfilter_sql {
         XIMS::Debug( 6, "Subject filter" );
         $tables     .= ', cilib_subjectmap sm ';
         $conditions .= " AND " . $criteria{subjects};
-        push @values, $params{subjects};
+        push @values, @{ $params{subjects} };
     }
     if ( $criteria{keywords} ne '' ) {
         XIMS::Debug( 6, "Keyword filter" );
         $tables     .= ', cilib_keywordmap km ';
         $conditions .= " AND " . $criteria{keywords};
-        push @values, $params{keywords};
+        push @values, @{ $params{keywords} };
     }
     if ( $criteria{object_type_id} ne '' ) {
         XIMS::Debug( 6, "OT filter" );
         $conditions .= " AND " . $criteria{object_type_id};
-        push @values, $params{object_type_id};
+        push @values, @{ $params{object_type_id} };
     }
     if ( $criteria{mediatype} ne '' ) {
         XIMS::Debug( 6, "Mediatype filter" );
