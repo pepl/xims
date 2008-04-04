@@ -579,7 +579,7 @@ sub _vlitems_byfilter_sql {
         $properties = 'count(d.id) AS count';
     }
     else {
-        $properties = 'd.id AS id, d.parent_id, d.location, d.object_type_id, c.document_id, '
+        $properties = 'c.id AS id, d.parent_id, d.location, d.object_type_id, c.document_id, '
                     . 'c.abstract, c.title, c.last_modification_timestamp, '
                     . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
     }
