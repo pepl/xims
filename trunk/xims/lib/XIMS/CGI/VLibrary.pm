@@ -1015,7 +1015,10 @@ sub event_most_recent {
         $param{marked_new} = 1;
     }
     else {
-        $param{limit} = 10;
+        $param{limit} =
+          ( $self->param('pagerowlimit') > 0 )
+          ? $self->param('pagerowlimit')
+          : 10;
     }
 
     $ctxt->properties->content->getformatsandtypes(1);
