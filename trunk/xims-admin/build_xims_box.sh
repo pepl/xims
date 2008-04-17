@@ -29,8 +29,8 @@
 #   Do not change this setup, unless you know what you are
 #   doing!
 #
-# debug
-#set -xv
+# 
+#set -xv #debug
 
 function usage () {
     cat <<MSG_USAGE
@@ -64,7 +64,7 @@ function usage () {
 
   ############################## NOTE!!! #################################
 
-    This script depends on GNU core-utils, a subversion client plus
+    This script requires GNU core-utils, a subversion client plus
     dpkg/rpm build tools!
 
   ############################## NOTE!!! #################################
@@ -73,24 +73,47 @@ MSG_USAGE
     exit 1
 }
 
-function end_script () {
+function cleanup_end_script () {
     # print error and exit
-    echo -n "'$1'-build failed! Cleaning up and exiting ..."
-    rm -rf $BUILD_DIR $RPM_BUILD_ROOT >> /dev/null 2>&1
-    echo "Done! Bye, bye!"
-    exit 1
-}
-
-function int_err_script () {
     echo
     echo "**********************************************"
     echo 
-    echo "Ups, caught SIGINT or an error has occurred!"
-    echo -n "Cleaning up and exiting ..."
-    rm -rf /tmp/$BUILD_SYSTEM_FILE $BUILD_DIR $RPM_BUILD_ROOT >> /dev/null 2>&1
+    echo -ne "Error!!\nSome action exited with non-zero exit-code!\
+              \nThe error occured somewhere near '$1' in '$0'.\nSee '$LOGFILE' and '$ERRORLOGFILE' for details!\n
+              \nPlease correct errors and rerun script. Cleaning up, now ... "
+    rm -rf $RPM_BUILD_ROOT >> /dev/null 2>&1
+    if [ "$REMOVE_BUILD_DIR" == "yes" ]; then
+        rm -rf $BUILD_DIR >> /dev/null 2>&1
+        # remove downloaded tar-file
+        rm -f $BUILD_SYSTEM_FILE
+    fi
     echo "Done! Bye, bye!"
     echo
+    echo -e "\n... then an ERROR occurred :-( See '$ERRORLOGFILE' for details!" >> $LOGFILE
+    echo "... which should be our ERROR cause :-(" >> $ERRORLOGFILE
     exit 1
+}
+
+function script_interrupt () {
+    echo
+    echo "**********************************************"
+    echo 
+    echo "Caught interrupt! "
+    echo -n "Cleaning up ... "
+    rm -rf /tmp/$BUILD_SYSTEM_FILE $RPM_BUILD_ROOT >> /dev/null 2>&1
+    if [ "$REMOVE_BUILD_DIR" == "yes" ]; then
+        rm -rf $BUILD_DIR >> /dev/null 2>&1
+    fi
+    echo "done! Exit script, now. Bye, bye!"
+    echo
+    echo "... then I received an interrupt :-(" | tee -a $LOGFILE >> $ERRORLOGFILE
+    exit 1
+}
+
+function check_if_failed () {
+    if [[ $? -gt 0 ]]; then
+        cleanup_end_script $1
+    fi
 }
 
 # run interactively per default
@@ -194,6 +217,10 @@ DEB_XIMS_DIR="$DEB_BUILD_ROOT/xims"
 # rpm build config
 RPM_BUILD_ROOT="/usr/src/rpm"
 
+# logs config
+LOGFILE="build_xims_box.common.log"
+ERRORLOGFILE="build_xims_box.error.log"
+
 ############################################################
 #
 # You must not edit anything below here!
@@ -203,17 +230,29 @@ RPM_BUILD_ROOT="/usr/src/rpm"
 #### store current path for later use
 SCRIPTPATH=$(pwd)
 
-#### trap errors from here onwards
-# provide a 'catch-all' for possible errors and SIGINTs
-trap 'int_err_script' ERR SIGINT
+#### prepend path for logfiles
+LOGFILE="$SCRIPTPATH/$LOGFILE"
+ERRORLOGFILE="$SCRIPTPATH/$ERRORLOGFILE"
+
+#### trap SIGINTs
+trap 'script_interrupt' SIGINT
+
+#### logfile preparation
+if [ -e $LOGFILE ]; then
+    rm $LOGFILE # remove old logs
+fi
+if [ -e $ERRORLOGFILE ]; then
+    rm $ERRORLOGFILE # remove old logs
+fi
+# create logfile initially
+echo "**********************************************" | tee $LOGFILE
+echo | tee -a $LOGFILE
 
 #### reset $BUILD_SYSTEM_FILE to actual filename (if present)
 # filename must contain 'xims_box_build_system'!
 # this routine is necessary for pre-download-removals
 for i in `ls /tmp`; do
-    trap '' ERR
     echo "$i" | grep 'xims_box_build_system' > /dev/null 2>&1
-    trap 'int_err_script' ERR
     if [ "$?" == "0" ]; then
         BUILD_SYSTEM_FILE="$i"
         # clean up from previous builds
@@ -225,18 +264,17 @@ for i in `ls /tmp`; do
 done
 
 if [ -e $BUILD_DIR ]; then
+    echo "Build directory ($BUILD_DIR) exists, so removing." >> $LOGFILE
     # remove, if build dir already exists
     rm -rf $BUILD_DIR
 fi
 
 #### get and prepare build system
-echo "Getting XIMS-Box build system from sf.net ..."
+echo -n "Getting XIMS-Box build system from sf.net ..." | tee -a $LOGFILE
 cd /tmp
-wget "$XIMS_BOX_BUILD_SYSTEM_URI"
-echo "Done! Start extracting ..."
-
-# suspend error-trapping for the following loop
-trap '' ERR
+wget "$XIMS_BOX_BUILD_SYSTEM_URI" 2>> $ERRORLOGFILE >> $LOGFILE
+check_if_failed $_ # check for success
+echo -en "Done!\nPreparing build system ..." | tee -a $LOGFILE
 
 #### reset $BUILD_SYSTEM_FILE to actual filename
 # filename must contain 'xims_box_build_system'!
@@ -247,150 +285,173 @@ for i in `ls /tmp`; do
     fi
 done
 
-# resume error-trapping
-trap 'int_err_script' ERR
-
-tar -xzf $BUILD_SYSTEM_FILE
-# remove tar-file again
-rm -f $BUILD_SYSTEM_FILE
-echo "Done! Getting and preparing the latest XIMS dev snapshot ..."
+echo "Build-system-file is: '$BUILD_SYSTEM_FILE'" >> $LOGFILE
+tar -xzf $BUILD_SYSTEM_FILE 2>> $ERRORLOGFILE | tee -a $LOGFILE # report errors to error-log
+check_if_failed $_ # check for success
+echo -e "Done!\nGetting and preparing the latest XIMS dev snapshot ..." | tee $LOGFILE
 # cd to the xims place
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package
 # get snapshot
-svn export --quiet $XIMS_SVN_BRANCH xims
+svn export --quiet $XIMS_SVN_BRANCH xims 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # add xims-contrib and put htmlarea link
 cd $DEB_XIMS_DIR
-svn export --quiet $XIMS_CONTRIB_SVN_BRANCH xims-contrib
+svn export --quiet $XIMS_CONTRIB_SVN_BRANCH xims-contrib 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # move contents to the right place
-mv xims-contrib/* $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/
+mv xims-contrib/* $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # clean up
 rm -rf xims-contrib
 # move tinymce install-files under ximsroot
-mv tinymce_2.1.2 $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/
+mv tinymce_2.1.2 $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # create the htmlarea and tinymce symlinks
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/
-ln -s htmlarea3rc1 htmlarea
-ln -s tinymce_2.1.2 tinymce
+ln -s htmlarea3rc1 htmlarea 2>> $ERRORLOGFILE
+ln -s tinymce_2.1.2 tinymce 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # put examplesite from the xims_box_build_system to ximspubroot
-mv $DEB_XIMS_DIR/examplesite $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximspubroot/
+mv $DEB_XIMS_DIR/examplesite $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximspubroot/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # we build the xims-box with the according default-data, thus change the
 # switch in 'defaultdata.sql'
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/sql/Pg/
-perl -pni -e 's/^(\\i defaultdata-content\.sql)/--$1/' defaultdata.sql
-perl -pni -e 's/^--(\\i xims-box-defaultdata-content\.sql)/$1/' defaultdata.sql
+perl -pni -e 's/^(\\i defaultdata-content\.sql)/--$1/' defaultdata.sql 2>> $ERRORLOGFILE
+perl -pni -e 's/^--(\\i xims-box-defaultdata-content\.sql)/$1/' defaultdata.sql 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # cd to xims-home
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims
 # replace headers of perl files of the xims-distri to fit xims-box needs
-find ./ -name '*.pl' -print0 | xargs -0 perl -pni -e 's|^#!/usr/bin/perl( ?)|#!/opt/xims-package/ximsperl/bin/perl$1|'
+find ./ -name '*.pl' -print0 | xargs -0 perl -pni -e 's|^#!/usr/bin/perl( ?)|#!/opt/xims-package/ximsperl/bin/perl$1|' 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # patch xims svn branch (adjust default wysiwyg and ximsconfig.xml)
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims
-echo "Apply XIMS-Box patch ..."
-patch -p1 -u < $DEB_XIMS_DIR/xims_box.patch
+echo -n "   Applying XIMS-Box patch ..." | tee -a $LOGFILE
+patch -p1 -u < $DEB_XIMS_DIR/xims_box.patch >> $LOGFILE
+check_if_failed $_ # check for success
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/conf
-echo "done!"
+echo "Done!" | tee -a $LOGFILE
 # adjust XIMS_HOME env-variable in ximshttpd.conf
 perl -pni -e 's|^#(PerlSetEnv\sXIMS_HOME\s).*$|$1/opt/xims-package/xims|' ximshttpd.conf
+check_if_failed $_ # check for success
 # adjust ximsstartup.pl
 perl -pni -e 's/^#\s(DBI\->install_driver\("Pg"\);).*$/$1/' ximsstartup.pl
+check_if_failed $_ # check for success
 perl -pni -e 's/^#\s(use AxKit \(\);).*$/$1/' ximsstartup.pl
+check_if_failed $_ # check for success
 perl -pni -e 's|^(use\slib\sqw\()[^)]+(\))|$1 /opt/xims-package/xims/lib $2|' ximsstartup.pl
+check_if_failed $_ # check for success
 
 # give some feedback again 
-echo "Done!"
-echo "**********************************************"
-echo 
-echo "Start building debian packages ..."
+{ cat <<OUTPUT
+Done!"
+**********************************************
+
+Start building debian packages ...
+OUTPUT
+} | tee -a $LOGFILE
 
 #### build debs
 # build apache-xims
 cd $DEB_APACHE_DIR/deb
-dpkg-deb --build debian apache-xims_1.3.37-1_i386.deb
-# test if build succeeded
-if [ $? -ne 0 ]; then
-    end_script "apache_xims (deb)"
-fi
+dpkg-deb --build debian apache-xims_1.3.37-1_i386.deb | tee -a $LOGFILE
+check_if_failed $_ # check for success
 # build libxml2-xims
 cd $DEB_LIBXML2_DIR/deb
-dpkg-deb --build debian libxml2-xims_2.6.27-1_i386.deb
-if [ $? -ne 0 ]; then
-    end_script "libxml2_xims (deb)"
-fi
+dpkg-deb --build debian libxml2-xims_2.6.27-1_i386.deb | tee -a $LOGFILE
+check_if_failed $_ # check for success
 # build libxslt-xims
 cd $DEB_LIBXSLT_DIR/deb
-dpkg-deb --build debian libxslt-xims_1.1.19-1_i386.deb
-if [ $? -ne 0 ]; then
-    end_script "libxslt_xims (deb)"
-fi
+dpkg-deb --build debian libxslt-xims_1.1.19-1_i386.deb | tee -a $LOGFILE
+check_if_failed $_ # check for success
 # build perl-xims
 cd $DEB_PERL_DIR/deb
-dpkg-deb --build debian perl-xims_5.8.8-1_i386.deb
-if [ $? -ne 0 ]; then
-    end_script "perl_xims (deb)"
-fi
+dpkg-deb --build debian perl-xims_5.8.8-1_i386.deb | tee -a $LOGFILE
+check_if_failed $_ # check for success
 ## finally build xims
 # adjust version first (XIMS_VERSION)
 cd $DEB_XIMS_DIR/deb/debian/DEBIAN
-perl -pni -e "s/^Version: [^-]+-1/Version: $XIMS_VERSION-1/" control
+perl -pni -e "s/^Version: [^-]+-1/Version: $XIMS_VERSION-1/" control 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 cd $DEB_XIMS_DIR/deb
-dpkg-deb --build debian xims_$XIMS_VERSION-1_i386.deb
-if [ $? -ne 0 ]; then
-    end_script "xims (deb)"
-fi
+dpkg-deb --build debian xims_$XIMS_VERSION-1_i386.deb | tee -a $LOGFILE
+check_if_failed $_ # check for success
 
-echo "Done!"
-echo "**********************************************"
-echo 
-echo "Start building rpm packages ..."
+{ cat <<OUTPUT
+Done!"
+**********************************************
+
+Start building rpm packages ...
+OUTPUT
+} | tee -a $LOGFILE
 
 #### build rpms
-
-## this is really bad on systems where other rpms are built the default
-## rpm-way :-O !
-# remove existent 'rpm' dir in '/usr/src' (as it is the Debian default name)
+# backup existent 'rpm' dir in '/usr/src' (we use our own rpm dir, as it is the Debian default name)
 if [ -e /usr/src/rpm ]; then
-    rm -rf /usr/src/rpm
+    timestamp=`date +%Y%m%d%H:%M:%S`
+    echo "WARNING!!! '/usr/src/rpm' exists. Old directory renamed into 'rpm_$timestamp'" | tee -a $LOGFILE
+    mv /usr/src/rpm /usr/src/rpm_$timestamp 2>> $ERRORLOGFILE
 fi
 # move xims-box provided rpm-build system to /usr/src (prepare rpm-build-root)
-mv $BUILD_DIR/redhat $RPM_BUILD_ROOT
+mv $BUILD_DIR/redhat $RPM_BUILD_ROOT 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # prepare rpm build system (copying files)
-cp -r $DEB_APACHE_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/apache_xims-root/
-cp -r $DEB_LIBXML2_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/libxml2_xims-root/
-cp -r $DEB_LIBXSLT_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/libxslt_xims-root/
-cp -r $DEB_PERL_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/perl_xims-root/
-cp -r $DEB_XIMS_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/xims-root/
+cp -r $DEB_APACHE_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/apache_xims-root/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+cp -r $DEB_LIBXML2_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/libxml2_xims-root/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+cp -r $DEB_LIBXSLT_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/libxslt_xims-root/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+cp -r $DEB_PERL_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/perl_xims-root/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+cp -r $DEB_XIMS_DIR/deb/debian/opt $RPM_BUILD_ROOT/BUILD/xims-root/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # prepare for build (adjust xims-version)
 cd $RPM_BUILD_ROOT/SPECS
-perl -pni -e "s/^Version: .+$/Version: $XIMS_VERSION/" xims-1.spec
-find -name '??*' -print0 | xargs -0 rpmbuild --quiet -bb >> /dev/null 2>&1
-# end if unsuccessful
-if [ $? -ne 0 ]; then
-    end_script "RPM"
-fi
+perl -pni -e "s/^Version: .+$/Version: $XIMS_VERSION/" xims-1.spec 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+find -name '??*' -print0 | xargs -0 rpmbuild --quiet -bb 2>> $ERRORLOGFILE | egrep '^(Processing files:)' | tee -a $LOGFILE
+check_if_failed $_ # check for success
 
-echo "Done!"
-echo "**********************************************"
-echo 
-echo "Collect and 'tar' packages ..."
+{ cat <<OUTPUT
+Done!"
+**********************************************
+
+OUTPUT
+} | tee -a $LOGFILE
+echo -n "Collect and 'tar' packages ..." | tee -a $LOGFILE
+
 #### collect debs/rpms
 # debs first ;-)
-mv $DEB_APACHE_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/
-mv $DEB_LIBXML2_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/
-mv $DEB_LIBXSLT_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/
-mv $DEB_PERL_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/
-mv $DEB_XIMS_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/
+mv $DEB_APACHE_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+mv $DEB_LIBXML2_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+mv $DEB_LIBXSLT_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+mv $DEB_PERL_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+mv $DEB_XIMS_DIR/deb/*.deb $XIMS_BOX_DIR/debs/xims-box/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+
 # now the rpms
-mv $RPM_BUILD_ROOT/RPMS/i386/*.rpm $XIMS_BOX_DIR/rpms/xims-box/
+mv $RPM_BUILD_ROOT/RPMS/i386/*.rpm $XIMS_BOX_DIR/rpms/xims-box/ 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+
 #### create the 2 'tar.gzs' ;-)
 # again, debs first
 cd $XIMS_BOX_DIR/debs
-tar -czf $XIMS_BOX_BASE_NAME-debs.$XIMS_BOX_FEXTENSION xims-box >> /dev/null 2>&1
+tar -czf $XIMS_BOX_BASE_NAME-debs.$XIMS_BOX_FEXTENSION xims-box 2>> $ERRORLOGFILE | tee -a $LOGFILE
+check_if_failed $_ # check for success
 # now, the rpms
 cd $XIMS_BOX_DIR/rpms
-tar -czf $XIMS_BOX_BASE_NAME-rpms.$XIMS_BOX_FEXTENSION xims-box >> /dev/null 2>&1
+tar -czf $XIMS_BOX_BASE_NAME-rpms.$XIMS_BOX_FEXTENSION xims-box 2>> $ERRORLOGFILE | tee -a $LOGFILE
+check_if_failed $_ # check for success
 
 # give feedback
-echo "Done!"
-echo 
+echo "Done!" | tee -a $LOGFILE
+echo | tee -a $LOGFILE
 
 #### move files to BUILD_TARGET
 
@@ -400,8 +461,10 @@ if [ "$StartString" != "/" ]; then
     BUILD_TARGET="$SCRIPTPATH/$BUILD_TARGET"
 fi
 
-mv $XIMS_BOX_DIR/debs/*.$XIMS_BOX_FEXTENSION $BUILD_TARGET
-mv $XIMS_BOX_DIR/rpms/*.$XIMS_BOX_FEXTENSION $BUILD_TARGET
+mv $XIMS_BOX_DIR/debs/*.$XIMS_BOX_FEXTENSION $BUILD_TARGET 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
+mv $XIMS_BOX_DIR/rpms/*.$XIMS_BOX_FEXTENSION $BUILD_TARGET 2>> $ERRORLOGFILE
+check_if_failed $_ # check for success
 # clean
 rm -rf $XIMS_BOX_DIR
 
@@ -411,19 +474,22 @@ if [ "$REMOVE_BUILD_DIR" == "yes" ]; then
     rm -rf $RPM_BUILD_ROOT/SPECS/*
     rm -rf $RPM_BUILD_ROOT/RPMS/i386/*
     rm -rf $RPM_BUILD_ROOT/BUILD/*
-    echo "Removed '$BUILD_DIR' as I have been told so!"
+    echo "Removed '$BUILD_DIR' as I have been told so!" | tee -a $LOGFILE
 else
-    echo "Kept '$BUILD_DIR' as I have been told so!"
+    echo "Kept '$BUILD_DIR' as I have been told so!" | tee -a $LOGFILE
 fi
-echo
+echo | tee -a $LOGFILE
 
-echo "**********************************************"
-echo "*                                            *"
-echo "*  BUILD COMPLETE !                          *"
-echo "*                                            *"
-echo "*  Placed '*.tar.gz'-files into directory:   *"
-echo "*    '$BUILD_TARGET'"
-echo "*                                            *"
-echo "**********************************************"
+{ cat <<OUTPUT
+**********************************************
+
+BUILD COMPLETE !
+   Placed '*.tar.gz'-files into directory: '$BUILD_TARGET'
+
+
+**********************************************
+OUTPUT
+} | tee -a $LOGFILE
 
 exit 0
+## vim: set bg=dark sts=4 ts=4 et ai :
