@@ -263,10 +263,7 @@
                 </xsl:if>
                 <xsl:text>: </xsl:text>
             </strong>
-
-            <xsl:apply-templates select="author">
-                <xsl:sort select="lastname" order="ascending"/>
-            </xsl:apply-templates>
+            <xsl:apply-templates select="author"/>
         </div>
     </xsl:if>
 </xsl:template>

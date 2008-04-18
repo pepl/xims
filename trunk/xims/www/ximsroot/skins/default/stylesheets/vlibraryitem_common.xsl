@@ -37,10 +37,7 @@
       <td colspan="2">
         <xsl:choose>
           <xsl:when test="$mo='author'">
-            <xsl:apply-templates select="authorgroup/author">
-              <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                        order="ascending"/>
-            </xsl:apply-templates>
+            <xsl:apply-templates select="authorgroup/author"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:apply-templates select="*[name()=concat($mo, 'set')]/*[name()=$mo]">
