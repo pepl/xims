@@ -40,7 +40,7 @@ function usage () {
       build_xims_box.sh -o {clean|keep}
  
     non interactive (e.g. for a cron-job):
-      build_xims_box.sh -n -o {clean|keep} [-v <VERSION>] -b <BUILD_TARGET>
+      build_xims_box.sh -n -o {clean|keep} [-v <VERSION>] [-a <BOX-VERSION>] -b <BUILD_TARGET>
     
     -b BUILD_TARGET  Is the directory where the resulting
                      *.tar.gz files (one containing the rpms and one
@@ -62,10 +62,24 @@ function usage () {
                      In interactive mode, the user will be prompted
                      for a version number.
 
+    -a BOX-VERSION   If called in non interactive mode and this option
+                     is provided, the resulting *.tar.gz files - holding
+                     the rpms/debs - will get 'BOX-VERSION' appended in
+                     the filename. Hence, if provided, the resulting
+                     *.tar.gz files will get following filenames:
+                        xims-out-of-the-box-debs-<BOX-VERSION>.tar.gz
+                        xims-out-of-the-box-rpms-<BOX-VERSION>.tar.gz
+                     If omitted, a date-string of the format 'YYYYMMDD'
+                     will be used instead.
+
   ############################## NOTE!!! #################################
 
     This script requires GNU core-utils, a subversion client plus
     dpkg/rpm build tools!
+    
+    It has been developed for execution on a Debian-based machine (tested
+    on Debian/Ubuntu). However, it should be easily possible to be run on
+    any RPM-based system with some minor adjustments.
 
   ############################## NOTE!!! #################################
 
@@ -110,6 +124,19 @@ function script_interrupt () {
     exit 1
 }
 
+function set_opt_versions () {
+    # when there is no XIMS_VERSION, we put a
+    # fiction-version of '0.007' ;-)
+    if [ "$XIMS_VERSION" == '' ]; then
+        XIMS_VERSION="0.007"
+    fi
+    # when there is no BOX_VERSION, we put a
+    # version of YYYYMMDD
+    if [ "$BOX_VERSION" == '' ]; then
+        BOX_VERSION=`date +%Y%m%d`
+    fi
+}
+
 function check_if_failed () {
     if [[ $? -gt 0 ]]; then
         cleanup_end_script $1
@@ -148,6 +175,13 @@ while getopts "b:no:v:*" options; do
                 usage
             fi
         ;;
+        a)  
+            if [ "$OPTARG" != "" ]; then
+                BOX_VERSION=$OPTARG
+            else
+                usage
+            fi
+        ;;
         *)
             usage
         ;;
@@ -166,22 +200,21 @@ if [ "$INTERACTIVE" == 'no' ]; then
     if [ "$BUILD_TARGET" == '' ]; then
         usage
     fi
-    # when there is no XIMS_VERSION, we put a
-    # fiction-version of '0.007' ;-)
-    if [ "$XIMS_VERSION" == '' ]; then
-        XIMS_VERSION="0.007"
-    fi
+    set_opt_versions # set default versions for xims/xims-box, if not set
 else
     # if run interactively prompt for the required information
     read -p 'Where should I place the resulting *.tar.gz files? ' BUILD_TARGET
-    read -p 'Which version should I use for the xims deb/rpm packages? ' XIMS_VERSION
+    read -p 'Which version should I use for the xims deb/rpm packages? Hit return for default ("0.007"): ' XIMS_VERSION
+    read -p 'Which "Box-Version" should I use for the resulting filenames? Hit return for default ("YYYYMMDD"): ' BOX_VERSION
+    set_opt_versions # set default versions for xims/xims-box, if not set
 fi
 
 #### to here, we should have all required information to get the script run
 # nevertheless, have a last check, to be on the save side anyway
 if [ "$BUILD_TARGET" == '' -o \
      "$REMOVE_BUILD_DIR" == '' -o \
-     "$XIMS_VERSION" == '' ]; then
+     "$XIMS_VERSION" == '' -o \
+     "$BOX_VERSION" == '' ]; then
     usage
 fi
 
@@ -442,11 +475,13 @@ check_if_failed $_ # check for success
 #### create the 2 'tar.gzs' ;-)
 # again, debs first
 cd $XIMS_BOX_DIR/debs
-tar -czf $XIMS_BOX_BASE_NAME-debs.$XIMS_BOX_FEXTENSION xims-box 2>> $ERRORLOGFILE | tee -a $LOGFILE
+mv xims-box xims-box-$BOX_VERSION
+tar -czf $XIMS_BOX_BASE_NAME-debs-$BOX_VERSION.$XIMS_BOX_FEXTENSION xims-box-$BOX_VERSION 2>> $ERRORLOGFILE | tee -a $LOGFILE
 check_if_failed $_ # check for success
 # now, the rpms
 cd $XIMS_BOX_DIR/rpms
-tar -czf $XIMS_BOX_BASE_NAME-rpms.$XIMS_BOX_FEXTENSION xims-box 2>> $ERRORLOGFILE | tee -a $LOGFILE
+mv xims-box xims-box-$BOX_VERSION
+tar -czf $XIMS_BOX_BASE_NAME-rpms-$BOX_VERSION.$XIMS_BOX_FEXTENSION xims-box-$BOX_VERSION 2>> $ERRORLOGFILE | tee -a $LOGFILE
 check_if_failed $_ # check for success
 
 # give feedback
