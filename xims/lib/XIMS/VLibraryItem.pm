@@ -214,9 +214,9 @@ sub vlemeta {
 
 sub _vleproperties {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
+    my $self     = shift;
     my $property = shift;
-    my @objects = @_;
+    my @objects  = @_;
 
     return unless $property;
 
@@ -224,39 +224,68 @@ sub _vleproperties {
 
     my $class = "XIMS::VLib$property";
 
-    if ( not (@objects and scalar @objects > 0) ) {
+    if ( not( @objects and scalar @objects > 0 ) ) {
+
         # think of doing one instead of two queries here
-        my $method = "getVLib".$property."Map";
+        my $method     = "getVLib" . $property . "Map";
         my $propertyid = lc $property . "_id";
-        my @object_ids = $self->data_provider->$method( document_id => $self->document_id(), properties => [($propertyid)] );
-        my $key = lc ("vlib".$property."map.".$property."_id");
+        my @object_ids = $self->data_provider->$method(
+            document_id => $self->document_id(),
+            properties  => [ ($propertyid) ],
+            order       => "cilib_${property}map.id"
+        );
+        my $key = lc( "vlib" . $property . "map." . $property . "_id" );
         @object_ids = map { $_->{$key} } @object_ids;
         return unless scalar @object_ids;
 
-        $method = "getVLib".$property;
-        my @objects_data = $self->data_provider->$method( id => \@object_ids );
+        $method = "getVLib" . $property;
+
+        my @objects_data;
+        if ( $property eq 'Author' ) {
+            # we need to keep the mapping positions (the order might matter
+            # for author lists!), thus we loop here. This might be costly
+            # for long lists, but these are rare in actual data.
+            foreach (@object_ids) {
+                push @objects_data, $self->data_provider->$method( id => $_ );
+            }
+        }
+        else {
+            # these will later be sorted alphabetically by the stylesheets.
+            @objects_data = $self->data_provider->$method( id => \@object_ids );
+        }
+
         @objects = map { $class->new->data( %{$_} ) } @objects_data;
+
         return wantarray ? @objects : $objects[0];
     }
     else {
         my $retval;
         my $objectmap;
-        my $mapclass= $class."Map";
-        foreach my $object ( @objects ) {
-            next unless defined $object and ref $object and $object->isa( $class );
-            my $method = lc $property."_id";
-            $objectmap = $mapclass->new( document_id => $self->document_id(), $method => $object->id() );
+        my $mapclass = $class . "Map";
+        foreach my $object (@objects) {
+            next
+              unless defined $object
+              and ref $object
+              and $object->isa($class);
+            my $method = lc $property . "_id";
+            $objectmap = $mapclass->new(
+                document_id => $self->document_id(),
+                $method     => $object->id()
+            );
             if ( not defined $objectmap ) {
                 $objectmap = $mapclass->new();
                 $objectmap->document_id( $self->document_id() );
                 $objectmap->$method( $object->id() );
                 my $id = $objectmap->create();
                 if ( defined $id ) {
-                    XIMS::Debug( 4, "successfully created objectmap with id $id" );
+                    XIMS::Debug( 4,
+                        "successfully created objectmap with id $id" );
                     $retval++;
                 }
                 else {
-                    XIMS::Debug( 2, "could not create objectmap for object " . $object->id() );
+                    XIMS::Debug( 2,
+                        "could not create objectmap for object "
+                          . $object->id() );
                 }
             }
             else {
