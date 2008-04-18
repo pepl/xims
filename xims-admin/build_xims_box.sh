@@ -137,6 +137,37 @@ function set_opt_versions () {
     fi
 }
 
+function is_root () {
+    cuser=`whoami`
+    cuid=`grep $cuser /etc/passwd | cut -d: -f3`
+    if [[ "$cuid" != "0" ]]; then
+        echo "ERROR!!! Stop script, now! Are you root?" 1>&2
+        exit 1
+    fi
+}
+
+function check_deb_req () {
+    # root-privileges?
+    is_root
+    # coreutils should never be not installed, but to be super-safe (or just dumb)
+    dpkg -l 'coreutils' > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "ERROR!!! Stop script, now! 'coreutils' package installed?" 1>&2
+        exit 1
+    fi
+    # subversion client
+    which svn > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "ERROR!!! Stop script, now! 'subversion' package installed?" 1>&2
+        exit 1
+    fi
+    which rpm > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "ERROR!!! Stop script, now! 'rpm' package installed?" 1>&2
+        exit 1
+    fi
+}
+
 function check_if_failed () {
     if [[ $? -gt 0 ]]; then
         cleanup_end_script $1
@@ -149,7 +180,7 @@ INTERACTIVE="yes"
 # we do not show 'getopts' errors
 OPTERR="0"
 # get options
-while getopts "b:no:v:*" options; do
+while getopts "b:no:v:a:*" options; do
     case $options in
         b)
             if [ "$OPTARG" != "" ]; then
@@ -259,6 +290,9 @@ ERRORLOGFILE="build_xims_box.error.log"
 # You must not edit anything below here!
 #
 ############################################################
+
+#### basic privilege and requirements checking
+check_deb_req
 
 #### store current path for later use
 SCRIPTPATH=$(pwd)
