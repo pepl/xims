@@ -155,13 +155,20 @@ function check_deb_req () {
         echo "ERROR!!! Stop script, now! 'coreutils' package installed?" 1>&2
         exit 1
     fi
+    # wget
+    which wget > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "ERROR!!! Stop script, now! 'wget' package installed?" 1>&2
+        exit 1
+    fi
     # subversion client
     which svn > /dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo "ERROR!!! Stop script, now! 'subversion' package installed?" 1>&2
         exit 1
     fi
-    which rpm > /dev/null 2>&1
+    # rpmbuild
+    which rpmbuild > /dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo "ERROR!!! Stop script, now! 'rpm' package installed?" 1>&2
         exit 1
