@@ -67,7 +67,8 @@ sub prepare {
       if ( grep { defined $_ } values %userprivs );
 
     my %encargs;
-    if ( $ctxt->properties->application->style() eq 'subject_show' ) {
+    if ( $ctxt->properties->application->style() eq 'subject_show'
+         or $ctxt->properties->application->style() eq 'subject_view' ) {
         $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
         push(
             @{ $self->{FilterList} },
