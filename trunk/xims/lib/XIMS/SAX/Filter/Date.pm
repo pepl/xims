@@ -1,19 +1,15 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::Date -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::Date -- A SAX Filter expanding datetime strings to nodesets.
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
     use XIMS::SAX::Filter::Date;
-
-=head1 DESCRIPTION
-
-This module bla bla
 
 =head1 SUBROUTINES/METHODS
 
@@ -21,27 +17,28 @@ This module bla bla
 
 package XIMS::SAX::Filter::Date;
 
-
-=head3 Description
-:
-This SAX Filter expands a datetime string to a nodeset.
-=cut
-
-
 use strict;
 use base qw( XML::SAX::Base );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 new
+
+=cut
 
 sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
 
     # this has to be adapted to the current format we get the datetime in
-    $self->{timestamp_regex}
-        = qr/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
+    $self->{timestamp_regex} =
+      qr/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/;
     return $self;
 }
+
+=head2 start_element
+
+=cut
 
 sub start_element {
     my ( $self, $element ) = @_;
@@ -49,7 +46,7 @@ sub start_element {
     # how am i happy when we got the naming cleaned up...
     if (   $element->{LocalName} =~ /\_time$/i
         || $element->{LocalName} =~ /\_timestamp$/i
-        || $element->{LocalName} eq "date"
+        || $element->{LocalName} =~ /^(?:dc_)?date$/i
         || $element->{LocalName} eq "lastaccess" )
     {
         $self->{got_date} = 1;
@@ -60,15 +57,20 @@ sub start_element {
     return;
 }
 
+=head2 end_element
+
+=cut
+
 sub end_element {
     my $self = shift;
 
     if ( defined $self->{got_date} and defined $self->{date} ) {
-        my ( $year, $month, $day, $hour, $min, $sec )
-            = ( $self->{date} =~ $self->{timestamp_regex} );
+        my ( $year, $month, $day, $hour, $min, $sec ) =
+          ( $self->{date} =~ $self->{timestamp_regex} );
 
         $self->SUPER::start_element(
-            {   Name         => "day",
+            {
+                Name         => "day",
                 LocalName    => "day",
                 Prefix       => "",
                 NamespaceURI => undef,
@@ -79,7 +81,8 @@ sub end_element {
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
-            {   Name         => "month",
+            {
+                Name         => "month",
                 LocalName    => "month",
                 Prefix       => "",
                 NamespaceURI => undef,
@@ -90,7 +93,8 @@ sub end_element {
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
-            {   Name         => "year",
+            {
+                Name         => "year",
                 LocalName    => "year",
                 Prefix       => "",
                 NamespaceURI => undef,
@@ -101,7 +105,8 @@ sub end_element {
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
-            {   Name         => "hour",
+            {
+                Name         => "hour",
                 LocalName    => "hour",
                 Prefix       => "",
                 NamespaceURI => undef,
@@ -112,7 +117,8 @@ sub end_element {
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
-            {   Name         => "minute",
+            {
+                Name         => "minute",
                 LocalName    => "minute",
                 Prefix       => "",
                 NamespaceURI => undef,
@@ -123,7 +129,8 @@ sub end_element {
         $self->SUPER::end_element();
 
         $self->SUPER::start_element(
-            {   Name         => "second",
+            {
+                Name         => "second",
                 LocalName    => "second",
                 Prefix       => "",
                 NamespaceURI => undef,
@@ -162,20 +169,6 @@ __END__
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
