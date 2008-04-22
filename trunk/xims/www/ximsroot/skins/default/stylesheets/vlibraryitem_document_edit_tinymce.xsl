@@ -18,7 +18,9 @@
   </xsl:template>
 
   <xsl:template name="head">
-    <xsl:call-template name="head-edit_tinymce"/>
+    <xsl:call-template name="head-edit_tinymce">
+      <xsl:with-param name="calendar" select="true()" />
+    </xsl:call-template>
   </xsl:template>
   
 </xsl:stylesheet>
