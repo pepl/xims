@@ -110,8 +110,7 @@ sub event_store {
             $self->sendError( $ctxt, "Document body could not be converted to"
                                    . "a well balanced string. Please consult "
                                    . "the User's Reference for information on "
-                                   . "well-balanced document bodies."
-            );
+                                   . "well-balanced document bodies." );
             return 0;
         }
     }
@@ -128,12 +127,11 @@ sub event_store {
     }
 
     # store publications, subjects, keywords, and authors
-    foreach my $property ( qw(subject keyword author publication)) {
-        if ($self->param( "vl$property")) {
+    foreach my $property (qw(subject keyword author publication)) {
+        if ( $self->param("vl$property") ) {
             $self->_create_mapping_from_name( $ctxt->object(),
-                                            ucfirst($property),
-                                            $self->param( "vl$property")
-                   )
+                                              ucfirst($property), 
+                                              $self->param("vl$property") );
         }
     }
 
@@ -141,26 +139,20 @@ sub event_store {
     map { $meta->data( $_ => $self->param($_) ) if defined $self->param($_) }
       qw(publisher subtitle legalnotice bibliosource mediatype coverage audience);
 
-    my $date_from = $self->param('chronicle_from_date');
-    if ($date_from) {
-        if ( $self->_isvaliddate($date_from) ) {
-            $meta->data( date_from_timestamp => $date_from );
-        }
-        else {
-            $error_message = "$date_from is not a valid date or not in the "
-                           . "correct format (YYYY-MM-DD)";
-        }
-    }
-    my $date_to = $self->param('chronicle_to_date');
-    if ($date_to) {
-        if ( $self->_isvaliddate($date_to) ) {
-            $meta->data( date_to_timestamp => $date_to );
-        }
-        else {
-            $error_message = "$date_to is not a valid date or not in the "
-                           . "correct format (YYYY-MM-DD)";
+    # For these, check date-format first
+    foreach (qw(chronicle_from_date chronicle_to_date dc_date)) {
+        if ( defined $self->param($_) ) {
+            if ( $self->_isvaliddate( $self->param($_) ) ) {
+                $meta->data( $_ => $self->param($_) );
+            }
+            else {
+                $error_message =
+                  $self->param($_)
+                  . "is not a valid date or not in the correct format (YYYY-MM-DD)";
+            }
         }
     }
+
     $object->vlemeta($meta);
 
     my $rdpath = $self->redirect_path($ctxt);
@@ -178,7 +170,6 @@ sub event_store {
         $self->redirect($rdpath);
         return 1;
     }
-
 }
 
 sub _set_wysiwyg_editor {
