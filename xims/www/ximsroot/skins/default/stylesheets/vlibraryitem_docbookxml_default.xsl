@@ -172,7 +172,7 @@
           <li><strong>Audience:</strong> <xsl:value-of select="meta/audience"/></li>
         </xsl:if>
         <xsl:if test="meta/dc_date != ''">
-          <li><strong>DC.Date:</strong> <xsl:value-of select="meta/dc_date"/></li>
+          <li><strong>DC.Date:</strong> <xsl:apply-templates select="meta/dc_date"  mode="date"/></li>
         </xsl:if>
         <xsl:if test="count(meta/date_from_timestamp/*) &gt; 0">
           <li><strong>Chronicle from:</strong> <xsl:apply-templates select="meta/date_from_timestamp"  mode="datetime"/></li>
