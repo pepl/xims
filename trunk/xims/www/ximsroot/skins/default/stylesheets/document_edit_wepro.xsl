@@ -38,6 +38,7 @@
     </xsl:template>
 
     <xsl:template name="head-edit_wepro">
+      <xsl:param name="calendar" select="false()"/>
         <head>
             <title><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
@@ -51,6 +52,9 @@
                 eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty(&apos;TransferMethod&apos;,&apos;<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')"/>?contentbrowse=1;style=ewebeditimage;otfilter=Image&apos;);
                 }
             </script>
+            <xsl:if test="$calendar">
+              <xsl:call-template name="jscalendar_scripts" />
+            </xsl:if>
         </head>
     </xsl:template>
 
