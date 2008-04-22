@@ -74,8 +74,8 @@ function usage () {
 
   ############################## NOTE!!! #################################
 
-    This script requires GNU core-utils, a subversion client plus
-    dpkg/rpm build tools!
+    This script requires GNU core-utils, wget, patch, a subversion client
+    plus dpkg/rpm build tools!
     
     It has been developed for execution on a Debian-based machine (tested
     on Debian/Ubuntu). However, it should be easily possible to be run on
@@ -165,6 +165,12 @@ function check_deb_req () {
     which svn > /dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo "ERROR!!! Stop script, now! 'subversion' package installed?" 1>&2
+        exit 1
+    fi
+    # patch
+    which patch > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "ERROR!!! Stop script, now! 'patch' package installed?" 1>&2
         exit 1
     fi
     # rpmbuild
