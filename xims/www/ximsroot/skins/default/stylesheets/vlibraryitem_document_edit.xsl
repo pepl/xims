@@ -33,6 +33,7 @@
   <xsl:template name="head">
     <xsl:call-template name="common-head">
       <xsl:with-param name="mode">edit</xsl:with-param>
+      <xsl:with-param name="calendar" select="true()" />
     </xsl:call-template>
   </xsl:template>
 
@@ -69,6 +70,8 @@
                 <xsl:with-param name="mo" select="'publication'"/>
               </xsl:call-template>
               <tr><td colspan="3"> </td></tr>
+              <xsl:call-template name="tr-dc_date"/>
+              <tr><td colspan="3"> </td></tr>
               <xsl:call-template name="tr_set-body-edit"/>    
               <xsl:call-template name="markednew"/>
               <xsl:call-template name="expandrefs"/>
