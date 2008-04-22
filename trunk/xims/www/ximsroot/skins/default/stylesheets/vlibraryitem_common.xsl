@@ -641,4 +641,62 @@
     </tr>
   </xsl:template>
 
+  <xsl:template name="tr-dc_date">
+
+    <xsl:variable name="dc_date_tmp"
+                  select="concat(meta/dc_date/year,
+                                 '-',
+                                 meta/dc_date/month,
+                                 '-',
+                                 meta/dc_date/day)" />
+
+    <xsl:variable name="dc_date">
+      <xsl:if test="$dc_date_tmp != '--'">
+        <xsl:value-of select="$dc_date_tmp"/>
+      </xsl:if>
+    </xsl:variable>
+
+    <tr>
+      <td valign="top">
+        <xsl:value-of select="$i18n/l/Date_selector"/>
+      </td>
+      <td colspan="2">
+        <input tabindex="40"
+               type="text"
+               name="dc_date"
+               id="dc_date"
+               class="text"
+               size="10"
+               value="{$dc_date}" />
+        <xsl:text>&#160;</xsl:text>
+        <img src="{$skimages}calendar.gif"
+             id="f_trigger_vft"
+             style="cursor: pointer;"
+             alt="{$i18n/l/Date_selector}"
+             title="{$i18n/l/Date_selector}"
+             onmouseover="this.style.background='red';"
+             onmouseout="this.style.background=''" />
+        <script type="text/javascript">
+          var current_datestring = "<xsl:value-of select="$dc_date"/>";
+          var current_date;
+          if ( current_datestring.length > 0 ) {
+            current_date = Date.parseDate(current_datestring, "%Y-%m-%d").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
+          }
+          Calendar.setup({
+            inputField     :    "dc_date",
+            ifFormat       :    "%Y-%m-%d",
+            displayArea    :    "show_vft",
+            daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
+            button         :    "f_trigger_vft",
+            align          :    "Tl",
+            singleClick    :    true,
+            showsTime      :    true,
+            timeFormat     :    "24"
+          });
+        </script>
+      </td>
+    </tr>
+  </xsl:template>
+
+
 </xsl:stylesheet>
