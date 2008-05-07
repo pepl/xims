@@ -919,7 +919,10 @@ sub init_store_object {
                     )
                     )
                 {
-                    $location =~ s/\.[^\.]+$//;
+                    # the following snippet homogenizes doc-suffixes:
+                    # eg. location 'test' becomes 'test.html' and
+                    #     location 'test.html' REMAINS 'test.html'!
+                    $location =~ s/\.(?:$suffix)$//;
                     $location .= "." . $suffix;
                     XIMS::Debug( 6,
                         "exchange done, location is now $location" );
