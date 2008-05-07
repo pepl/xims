@@ -1570,7 +1570,7 @@
 
         <!-- append suffixes with no lang-extension -->
         if ( location.length != 0 &amp;&amp; obj.search(/(Document|sDocBookXML)$/i) != -1 ) {
-            var searchres = location.search(/.*\.[^.]+(\.[^.]+)?$/);
+            var searchres = location.search(/.*\.(html|sdbk)(\.[^.]+)?$/);
             if ( searchres == -1 ) {
                 // handle .html and .sdbk
                 if ( obj.search(/Document$/i) != -1 ) {
