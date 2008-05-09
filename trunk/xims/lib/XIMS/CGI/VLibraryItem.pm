@@ -52,7 +52,10 @@ sub registerEvents {
           publish_prompt
           unpublish
           remove_mapping
+          remove_mapping_async
           create_mapping
+          create_mapping_async
+          show_mapping_async
           )
     );
 }
@@ -202,6 +205,139 @@ sub event_create_mapping {
 
     return 0;
 }
+
+
+sub event_create_mapping_async {
+    my ( $self, $ctxt ) = @_;
+    my $object = $ctxt->object();
+    XIMS::Debug( 5, "called" );
+
+    my $property    = $self->param('property');
+    my $property_id = $self->param('property_id');
+    if (
+        not(    $property =~ /^(subject|author|publication|keyword)$/
+            and $property_id > 0 )
+      )
+    {
+        return $self->simple_response(
+            '400 BAD REQUEST',
+            "ERROR: Parameter wrong or missing"
+        );
+    }
+
+    $self->_create_mapping_from_id( $ctxt->object(), ucfirst($property),
+        $property_id );
+
+    # TODO: fix this dirtyness
+    if ( index( ref($object), 'URLLink' ) > -1 ) {
+        my $uri = Apache::URI->parse( $ctxt->apache() );
+        $uri->path( $ctxt->apache->parsed_uri->rpath() );
+        $uri->query('id='.$object->id().';show_mapping_async=1;property='.$property);
+        $self->redirect( $uri->unparse() );
+    }
+    else {
+        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+                             . "?show_mapping_async=1;property=$property" );
+    }
+
+    return 1;
+
+    # set prefix: use a common stylesheet for derived classes.
+    $ctxt->properties->application->styleprefix('vlibraryitem');
+    $ctxt->properties->application->style("properties_mapped");
+    return 0;
+}
+
+sub event_show_mapping_async {
+    my ( $self, $ctxt ) = @_;
+    my $object = $ctxt->object();
+    XIMS::Debug( 5, "called" );
+
+    my $property    = $self->param('property');
+    if ( $property !~ /^(subject|author|publication|keyword)$/ )
+        {
+            return $self->simple_response(
+                '400 BAD REQUEST',
+                "ERROR: Parameter wrong or missing"
+            );
+    }
+
+    # set prefix: use a common stylesheet for derived classes.
+    $ctxt->properties->application->styleprefix('vlibraryitem');
+    $ctxt->properties->application->style("properties_mapped");
+    return 0;
+}
+
+sub event_remove_mapping_async {
+    my ( $self, $ctxt ) = @_;
+    XIMS::Debug( 5, "called" );
+
+    my $property    = $self->param('property');
+    my $property_id = $self->param('property_id');
+    if (
+        not(    $property =~ /^(subject|author|publication|keyword)$/
+            and $property_id > 0 )
+      )
+    {
+        return $self->simple_response(
+            '400 BAD REQUEST',
+            "ERROR: Parameter wrong or missing $property $property_id"
+        );
+    }
+
+    # look up mapping
+    my $propmapclass  = "XIMS::VLib" . ucfirst($property) . "Map";
+    my $propid        = $property . "_id";
+    my $propmapobject = $propmapclass->new(
+        document_id => $ctxt->object->document_id(),
+        $propid     => $property_id
+    );
+    if ( not($propmapobject) ) {
+        #$self->sendError( $ctxt, "No mapping found which could be deleted." );
+        return $self->simple_response(
+                '409 CONFLICT',
+                "ERROR: No mapping found which could be deleted."
+            );
+        #return 0;
+    }
+
+    # special case for property "subject", we will not delete the mapping if
+    # it is the last one.
+    if ( $property eq 'subject' ) {
+        my $propmethod = "vl" . $property . "s";
+        if ( scalar $ctxt->object->$propmethod() == 1 ) {
+            # $self->sendError( $ctxt,
+#                 "Will not delete last associated subject." );
+#             return 0;
+            return $self->simple_response(
+                '409 CONFLICT',
+                "ERROR: Will not delete last associated subject."
+            );
+        }
+    }
+
+    # delete mapping and redirect to event edit
+    if ( $propmapobject->delete() ) {
+        # TODO: fix this dirtyness
+        if ( index( ref($ctxt->object), 'URLLink' ) > -1 ) {
+            my $uri = Apache::URI->parse( $ctxt->apache() );
+            $uri->path( $ctxt->apache->parsed_uri->rpath() );
+            $uri->query('id='.$ctxt->object->id().';show_mapping_async=1;property='.$property);
+            $self->redirect( $uri->unparse() );
+        }
+        else {
+            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+                  . "?show_mapping_async=1;property=$property" );
+        }
+        return 1;
+    }
+    else {
+        $self->sendError( $ctxt, "Mapping could not be deleted." );
+    }
+
+    return 0;
+}
+
 
 sub event_publish {
     XIMS::Debug( 5, "called" );

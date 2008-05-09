@@ -34,18 +34,16 @@
         <xsl:text>&#160;</xsl:text>
         <xsl:value-of select="$i18n_vlib/l/*[name()=concat($mo,'s')]"/>:
       </td>
-      <td colspan="2">
+      <td colspan="2" id="mapped_{$mo}s">
         <xsl:choose>
           <xsl:when test="$mo='author'">
             <xsl:apply-templates select="authorgroup/author"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:apply-templates select="*[name()=concat($mo, 'set')]/*[name()=$mo]">
-              <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                        order="ascending"/>
-            </xsl:apply-templates>
+            <xsl:apply-templates select="*[name()=concat($mo, 'set')]/*[name()=$mo]"/>
           </xsl:otherwise>
         </xsl:choose>
+        <span id="message_{$mo}"/>
       </td>
     </tr>
     <tr>
@@ -57,17 +55,11 @@
       <td colspan="2">
         <xsl:if test="/document/context/*[name()=concat('vl', $mo,'s')]">
           <xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
-          <input type="hidden"
-                 name="vl{$mo}"
-                 value=""/>
-          <input type="hidden"
-            name="gotid"
-            value="1"/>
-          <input type="submit"
-                 name="create_mapping"
-                 value="{$i18n_vlib/l/Create_mapping}"
-                 class="control"
-               onClick="submitOnId('{$mo}', '{$i18n_vlib/l/select_name}')"/>
+          <input type="button"
+                  name="create_mapping"
+                  value="{$i18n_vlib/l/Create_mapping}"
+                  class="control"
+                  onClick="createMapping('{$mo}', '{$i18n_vlib/l/select_name}')"/>
           <xsl:text>&#160;</xsl:text>
         </xsl:if>
         <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','{$popupsizes[name()=$mo]/@x}','{$popupsizes[name()=$mo]/@y}')">
@@ -222,7 +214,7 @@
       </xsl:if>
     </a>
     <xsl:text>&#160;</xsl:text>
-    <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};remove_mapping=1;property={name()};property_id={id}"
+    <a href="javascript:removeMapping('{name()}', '{id}')" 
        title="Delete Mapping">
       <span style="background-color:#b1b5b8;
                    border:#333333 solid 1px;
@@ -241,7 +233,7 @@
       <xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/>
     </a>
     <xsl:text>&#160;</xsl:text>
-    <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};remove_mapping=1;property={name()};property_id={id}"
+    <a href="javascript:removeMapping('{name()}', '{id}')" 
        title="Delete Mapping">
       <span style="background-color:#b1b5b8;
                    border:#333333 solid 1px;
@@ -618,22 +610,22 @@
             onmouseover="this.style.background='red';"
             onmouseout="this.style.background=''"/>
         <script type="text/javascript">
-          var current_datestring = "<xsl:value-of select="$chronicle_to_date"/>";
-          var current_date;
-          if ( current_datestring.length > 0 ) {
-          current_date = Date.parseDate(current_datestring, "%Y-%m-%d").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-          }
-          Calendar.setup({
-          inputField     :    "chronicle_to_date",
-          ifFormat       :    "%Y-%m-%d",
-          displayArea    :    "show_vft",
-          daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-          button         :    "t_trigger_vft",
-          align          :    "Tl",
-          singleClick    :    true,
-          showsTime      :    true,
-          timeFormat     :    "24"
-          });
+var current_datestring = "<xsl:value-of select="$chronicle_to_date"/>";
+var current_date;
+if ( current_datestring.length &gt; 0 ) {
+  current_date = Date.parseDate(current_datestring, "%Y-%m-%d").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
+}
+
+Calendar.setup({ inputField     :    "chronicle_to_date",
+                 ifFormat       :    "%Y-%m-%d",
+                 displayArea    :    "show_vft",
+                 daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
+                 button         :    "t_trigger_vft",
+                 align          :    "Tl",
+                 singleClick    :    true,
+                 showsTime      :    true,
+                 timeFormat     :    "24"
+               });
         </script>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('chronicle_to')" class="doclink">(?)</a>
