@@ -21,8 +21,8 @@ function setBg(elid){
         color1 = document.styleSheets[1].rules.item(1).style.backgroundColor;
     }
     else {
-        color0 = document.styleSheets[1].cssRules[0].style.backgroundColor
-        color1 = document.styleSheets[1].cssRules[1].style.backgroundColor
+        color0 = document.styleSheets[1].cssRules[0].style.backgroundColor;
+        color1 = document.styleSheets[1].cssRules[1].style.backgroundColor;
     }
 
     var i;
