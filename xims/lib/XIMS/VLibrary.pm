@@ -192,12 +192,12 @@ sub this_propertyinfo {
 
     foreach (keys(%sql)) {
         $sql{$_} .= ", (SELECT COUNT(*) FROM cilib_${_}map b WHERE b.${_}_id = a.id) AS object_count "
-                 .  "FROM cilib_${_}s a WHERE a.id = ?";
+                 .  "FROM cilib_${_}s a WHERE a.id = ? AND a.document_id = ?";
     }
 
     my ( $key, $value ) = each %args;
     if ( $sql{$key} ) {
-        my $pidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql{$key}, $value ] );
+        my $pidata = $self->data_provider->driver->dbh->fetch_select( sql => [ $sql{$key}, $value, $self->document_id() ] );
         my $rv = { "vl${key}info" => {"$key" => $pidata} };
 
         return $rv;
