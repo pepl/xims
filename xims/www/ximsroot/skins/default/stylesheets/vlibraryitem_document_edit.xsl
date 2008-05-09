@@ -42,8 +42,6 @@
     <html>
       <xsl:call-template name="head"/>
       <body>
-        <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <div class="edit">
           <xsl:call-template name="table-edit"/>
           <form action="{$xims_box}{$goxims_content}?id={@id}" 
@@ -88,6 +86,45 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
+        <script type="text/javascript" language="javascript">
+          <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+          <xsl:call-template name="xmlhttpjs"/>          
+function mkHandleResponse(xmlhttp, property) {
+    var mapped_properties = 'mapped_' +  property + 's';
+    var message_property  = 'message_' + property ;
+
+    return function() {
+       if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+            document.getElementById(mapped_properties).innerHTML = xmlhttp.responseText;
+        }
+        else {
+            document.getElementById(message_property ).innerHTML
+                = '<strong>' + xmlhttp.responseText + '</strong>';
+        }
+      }
+    };
+}
+
+function post_async(poststr, extra) {
+    var xmlhttp = getXMLHTTPObject(); 
+    xmlhttp.onreadystatechange = mkHandleResponse(xmlhttp, extra);
+    xmlhttp.open('POST'
+                 , '<xsl:value-of select="concat($xims_box
+                                                ,$goxims_content,/document/context/object/location_path)"/>'
+                 , true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.setRequestHeader("Content-length", poststr.length);
+    xmlhttp.setRequestHeader("Connection", "close");
+    xmlhttp.send(poststr);
+}
+
+<xsl:text disable-output-escaping="yes">
+  //]]&gt;
+</xsl:text>
+        </script>
+        <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
       </body>
     </html>
   </xsl:template>

@@ -47,4 +47,22 @@ function submitOnId ( property, text ) {
         if (selectfield) { selectfield.focus(); }
     }
     return false;
-}      
+}
+
+function createMapping ( property, text ) {
+    var selectfield = eval("document.eform.svl"  + property);
+    if ( selectfield.value > 0 ) {
+        post_async("create_mapping_async=1;property=" + property
+                   + ";property_id=" + selectfield.value, property);
+    }
+    else {
+        alert ( text );
+        if (selectfield) { selectfield.focus(); }
+    }
+    return false;
+}
+
+function removeMapping ( property, property_id ) {
+    post_async("remove_mapping_async=1;property=" + property
+               + ";property_id=" + property_id, property);
+}
