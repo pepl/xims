@@ -1,3 +1,4 @@
+
 =head1 NAME
 
 XIMS::SAX::Generator::VLibrary
@@ -94,7 +95,8 @@ sub prepare {
             !$ctxt->properties->application->style()    # event_default
             || $ctxt->properties->application->style() eq "subjects"
             || $ctxt->properties->application->style() eq "subject_edit"
-        ) {
+          )
+        {
             $doc_data->{context}->{vlsubjectinfo} =
               { subject => $ctxt->object->vlsubjectinfo_granted() };
         }
@@ -102,7 +104,7 @@ sub prepare {
             $doc_data->{context}->{vlsubject} =
               { subject => $ctxt->objectlist() };
 
-             $ctxt->objectlist([]);
+            $ctxt->objectlist( [] );
         }
         elsif ( $ctxt->properties->application->style() eq "authors" ) {
             $doc_data->{context}->{vlauthorinfo} =
@@ -154,6 +156,8 @@ sub prepare {
                     $child->{authorgroup} =
                       { author => [ $child->vleauthors() ] };
                     $child->{meta} = [ $child->vlemeta() ];
+                    $child->{subjectset} =
+                      { subject => [ $child->vlesubjects() ] };
                 }
             }
             $doc_data->{context}->{object}->{children} =
