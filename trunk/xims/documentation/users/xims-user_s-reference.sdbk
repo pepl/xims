@@ -306,6 +306,18 @@
         </section>
 
         <section>
+            <title><literal>Minify</literal> on publishing</title>
+
+            <para>This option is present in JavaScript and CSS objects.
+            When set, the Exporter tries to remove un-necessary
+            whitespace and comments (while not breaking the logic) in
+            order to reduce size. This works best with very clean code,
+            but still may fail in some cases. When using this option,
+            please carefully test the resulting code.</para>
+
+        </section>
+        
+        <section>
             <title>Mark object as new</title>
 
             <para>Sets a flag to mark objects as new to emphase changes made. If set, a <literal>NEW!</literal> icon is shown in the folderlistings. The

@@ -5,7 +5,7 @@ XIMS::CGI::Text -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -43,12 +43,31 @@ sub registerEvents {
                                 );
 }
 
+sub event_edit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    $self->expand_attributes($ctxt);
+
+    return $self->SUPER::event_edit($ctxt);
+}
+
+
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     return 0 unless $self->init_store_object( $ctxt )
                     and defined $ctxt->object();
+
+    # This is actually used in the derived XIMS::CGI::JavaScript and
+    # XIMS::CGI::CSS classes.
+    if ( $self->param('minify') eq 'true' ) {
+        $ctxt->object->attribute( minify => '1' );
+    }
+    else {
+        $ctxt->object->attribute( minify => '0' );
+    }
 
     my $body;
     my $fh = $self->upload( 'file' );

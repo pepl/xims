@@ -54,6 +54,8 @@ XML::LibXML::Iterator -
 Array::Iterator -
 Archive::Zip -
 Text::Template -
+JavaScript::Minify::XS -
+CSS::Minify::XS -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
 # Net::LDAP -

@@ -1781,4 +1781,20 @@
     </div>
 </xsl:template>
 
+
+<xsl:template name="tr-minify">
+  <tr>
+    <td colspan="3">
+      <xsl:value-of select="$i18n/l/minify"/>
+      <input name="minify" type="checkbox" value="true">
+        <xsl:if test="attributes/minify = '1'">
+          <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
+        </xsl:if>
+      </input>
+      <xsl:text>&#160;</xsl:text>
+      <a href="javascript:openDocWindow('minify')" class="doclink">(?)</a>
+    </td>
+  </tr>
+</xsl:template>
+
 </xsl:stylesheet>
