@@ -239,4 +239,5 @@
 <IlpButtonChange>Change!</IlpButtonChange>
 <IlpButtonOK>OK</IlpButtonOK>
 <IlpButtonIgnore>Ignore!</IlpButtonIgnore>
+<minify>Minify on publishing</minify>
 </l>
