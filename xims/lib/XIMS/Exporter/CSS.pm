@@ -1,19 +1,16 @@
 
 =head1 NAME
 
-XIMS::Exporter::CSS -- A .... doing bla, bla, bla. (short)
+XIMS::Exporter::CSS -- Export XIMS::CSS objects.
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
     use XIMS::Exporter::CSS;
 
-=head1 DESCRIPTION
-
-This module bla bla
 
 =head1 SUBROUTINES/METHODS
 
@@ -23,8 +20,36 @@ package XIMS::Exporter::CSS;
 
 use strict;
 use base qw( XIMS::Exporter::Text );
+use CSS::Minifier::XS qw(minify);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 create()
+
+=head3 Parameter
+
+    %param : implemented, but unused.
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+Writes the object to the filesystem. When the minify atribute is set, pass
+CSS::Minifier::XS::minify() as filter.
+
+=cut
+
+sub create {
+    my ( $self, %param ) = @_;
+
+    if ( $self->{Object}->attribute_by_key('minify') == 1 ) {
+        $param{filter} = \&minify;
+    }
+
+    return $self->SUPER::create(%param);
+}
 
 1;
 
@@ -34,27 +59,13 @@ __END__
 
 Look at the F<error_log> file for messages.
 
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
-
 =head1 BUGS AND LIMITATION
 
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
