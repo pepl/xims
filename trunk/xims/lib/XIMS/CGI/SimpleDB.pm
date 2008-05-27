@@ -154,7 +154,8 @@ sub event_store {
     # part of the title ( would cause violation of NOT NULL constraint
     # of DB-table when storing SimpleDBItems )
     my @title_props = $object->mapped_member_properties( part_of_title => 1 );
-    if ( not defined @title_props ) {
+    my $is_event_create = $self->param("sdb_is_new");
+    if ( $is_event_create != 1 and not @title_props ) {
         XIMS::Debug( 3, "No property set to be part of title!
                             Check at least one property!" );
         return $self->sendError( $ctxt, "At least one property must be
