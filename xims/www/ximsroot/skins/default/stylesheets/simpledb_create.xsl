@@ -10,4 +10,28 @@
     <xsl:import href="container_common.xsl"/>
     <xsl:import href="folder_create.xsl"/>
     <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+
+<xsl:template match="/document/context/object">
+<html>
+    <xsl:call-template name="head-create"/>
+    <body onLoad="document.eform.name.focus()">
+        <div class="edit">
+            <xsl:call-template name="table-create"/>
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
+                <input type="hidden" name="objtype" value="{$objtype}"/>
+		<input type="hidden" name="sdb_is_new" value="1"/>
+                <table border="0" width="98%">
+                    <xsl:call-template name="tr-locationtitle-create"/>
+                    <xsl:call-template name="markednew"/>
+                    <xsl:call-template name="autoindex"/>
+                    <xsl:call-template name="grantowneronly"/>
+                </table>
+                <xsl:call-template name="saveaction"/>
+            </form>
+            </div>
+            <br />
+            <xsl:call-template name="cancelaction"/>
+    </body>
+    </html>
+</xsl:template>
 </xsl:stylesheet>
