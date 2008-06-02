@@ -38,34 +38,6 @@
 		file_browser_callback : 'filebrowse',
 		urlconverter_callback : 'urltransformer',
 
-                <!--
-                ################################################
-                    Start IBK customizations
-                ################################################
-                -->
-		remove_linebreaks : 'false',
-		cleanup_on_startup : 'false',
-		cleanup : 'true',
-                valid_elements : '*[*]',
-                apply_source_formatting : 'true',
-                plugins : 'table,contextmenu,advhr,searchreplace,paste,inlinepopups,uibkextras',
-                theme_advanced_buttons1: 'cut,copy,paste,pastetext,search,replace,separator,undo,redo,separator,anchor,link,unlink,separator,hr,image,separator,numlist,bullist,outdent,indent,blockquote,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,visualaid,code,help',
-                theme_advanced_buttons2: 'removeformat,cleanup,styleselect,formatselect,separator,bold,italic,underline,separator,sup,sub,separator,charmap,separator,uibkextras_MsWord,uibkextras_MsExcel,uibkextras_MsPPT,uibkextras_Document,uibkextras_PDF,uibkextras_EMail,uibkextras_Folder,uibkextras_Image',
-                theme_advanced_buttons3: 'tablecontrols',
-                theme_advanced_toolbar_location : 'top',
-                theme_advanced_toolbar_align : 'left',
-                theme_advanced_path_location : 'bottom',
-                theme_advanced_resizing : true,
-                theme_advanced_resize_horizontal : false,
-                theme_advanced_styles : 'Highlighted Background=highlighted;Important=important;Border=warn;Indent Both=blockquote;Indent First Line=firstline_indent;Table Light=bg_light;Table Dark=bg_dark;Table Border=bg_border;Table Header=bg_header;List Icon Folder=folderlist;List Icon PDF=pdflist;List Icon MS-Word=wordlist;List Icon MS-Excel=excellist;List Icon MS-Powerpoint=pptlist;List Icon Bild=imagelist;List Icon Document=documentlist;List Icon Email=emaillist',
-		content_css :  'https://www.uibk.ac.at/stylesheets/css/07/wysiwyg_editoren.css',
-                uibkextras_ressourceUrl : 'http://www.uibk.ac.at/images/07/icons/',
-                uibkextras_iconNames : 'MsWord=list_word.gif,MsExcel=list_excel.gif,MsPPT=list_ppt.gif,Document=list_document_generic.gif,EMail=list_email.gif,PDF=list_pdf.gif,Folder=list_folder.gif,Image=list_png.gif'
-                <!-- 
-                ################################################
-                    End of UIBK customizations
-                ################################################
-                -->
             });
 
 	    /*
