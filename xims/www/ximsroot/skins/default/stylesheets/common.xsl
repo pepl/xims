@@ -465,15 +465,6 @@
 <xsl:template name="jsorigbody">
     <script type="text/javascript">
         var origbody = document.getElementById('body').value;
-        <!-- 
-            clean up TinyMCE stuff; Necessary for having clean HTML when
-            switching from TinyMCE to Plain Textarea
-        -->
-        origbody = origbody.replace(/\s+mce_\w+="[^"]+"/g,"");
-        origbody = origbody.replace(/"mce[^"]+/g,"");
-        origbody = origbody.replace(/\s+class=""/g,"");
-        <!-- replace with clean body -->
-        document.getElementById('body').value = origbody;
     </script>
 </xsl:template>
 
