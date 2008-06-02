@@ -50,8 +50,8 @@ sub create {
     # create the item on disk
     my $document_fh = IO::File->new( $document_path, 'w' );
     if ( defined $document_fh ) {
-        print $document_fh XIMS::xml_unescape(
-            $filter->( $self->{Object}->body() ) );
+        print $document_fh $filter->(
+            XIMS::xml_unescape( $self->{Object}->body() ) );
         $document_fh->close;
         XIMS::Debug( 4, "document written" );
     }
