@@ -61,7 +61,7 @@
                         <option value="_parent">Parent Window (_parent)</option>
                         <option value="_top">Browser Window (_top)</option>
                     </select>
-                    <input class="control" type="button" value="Store Back" onClick="inserthyperlink(window.opener.editor);"/>
+                    <input class="control" type="button" value="Store Back" onClick="inserthyperlink();"/>
                 </td>
             </tr>
             <tr>
@@ -80,10 +80,6 @@
        </table>
        <input type="hidden" name="id" value="{@id}"/>
     </form>
-    <!-- the following needs to happen after form definition-->
-    <script type="text/javascript">
-      loadselectedtext();
-    </script>
 </xsl:template>
 
 </xsl:stylesheet>

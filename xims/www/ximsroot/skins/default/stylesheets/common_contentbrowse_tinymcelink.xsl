@@ -65,30 +65,14 @@
             }
         }
 
-        function loadselectedtext() {
-            var control = tinyMCE.getInstanceById('body'); //returns TinyMCE_Control object
-            // get selected text
-            selectedText = control.selection.getSelectedText();
-            //alert(selectedText); //debug
-            // pass value on to corresponding input field
-            tinyMCE.setAttrib(document.selectform.linktext, 'value' ,selectedText, false);
-                
-            if ( document.selectform.linktext.value.length > 0 ) {
-                gotselection = true;
-            }
-        }
-
         function inserthyperlink() {
             var title = document.selectform.linktext.value;
-            var win = tinyMCE.getWindowArg("window");
+            var win = tinyMCEPopup.getWindowArg("window");
             var hyperlinkvalue = document.selectform.httpLink.value;
             var targetvalue = document.selectform.Target.value;
             win.document.getElementById("href").value = hyperlinkvalue;
             win.document.getElementById("linktitle").value = title;
-            win.document.getElementById("target").value = targetvalue;
-            if (win.getImageData) {
-                win.getImageData();
-            }
+            win.document.getElementById("target_list").value = targetvalue;
             tinyMCEPopup.close();
         }
 
@@ -111,6 +95,11 @@
             }
         }
         function createThumbs() {}
+
+	function popupClose() {
+	    if (tinyMCEPopup) tinyMCEPopup.close();
+	    else window.close();
+	}
     </script>
 </xsl:template>
 

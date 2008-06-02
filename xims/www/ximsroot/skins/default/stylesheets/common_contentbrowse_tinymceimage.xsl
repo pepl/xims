@@ -38,8 +38,8 @@
     <script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce_popup.js"></script>
     <xsl:call-template name="scripts"/>
   </head>
-  <body onload = "createThumbs();">
-    <p align="right"><a href="#" onClick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
+  <body onload="createThumbs();">
+    <p align="right"><a href="#" onClick="popupClose()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
     <p><xsl:call-template name="selectform"/> </p>
   </body>
 </html>
@@ -78,15 +78,21 @@
 <xsl:template name="scripts">
     <script type="text/javascript">
       <![CDATA[
+
+function popupClose() {
+    if (tinyMCEPopup) tinyMCEPopup.close();
+    else window.close();
+}
+
 function insertfile() {
-  var URL = document.selectform.imgpath.value;
-  var win = tinyMCE.getWindowArg("window");
-  var titel = document.selectform.imgtext.value;
-  win.document.getElementById("src").value = URL;
-  win.document.getElementById("alt").value = titel;
-  if (win.getImageData) win.getImageData();
-  tinyMCEPopup.close();
-  }
+    var URL = document.selectform.imgpath.value;
+    var win = tinyMCEPopup.getWindowArg("window");
+    var title = document.selectform.imgtext.value;
+    win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
+    win.document.getElementById("alt").value = title;
+    // for image browsers: update image dimensions
+    tinyMCEPopup.close();
+}
 
      
         function storeBack(target, imgtext) {
