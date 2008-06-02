@@ -183,10 +183,9 @@
               return false;
           }
 
-          if ( !window.location.href.search(/\?create=1/) ) {
-              window.location.href = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/@id"/>;edit=1';
-          }
-          else { window.location.reload(); }
+	  <!-- reload with param 'true' in order to fetch (clean) content from
+	  server again; this interfears the least with JS-WYSIWYG editors -->
+          window.location.reload(true);
 
           return true;
       }
@@ -199,7 +198,7 @@
           }
           // then check for TinyMCE editor content
           else if (window.tinyMCE){
-              currentbody = window.tinyMCE.getContent();
+              currentbody = tinyMCE.get('body').getContent();
           }
           // eWebEditPro
           else if ( window.eWebEditPro ) {
