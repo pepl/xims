@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::User -- A .... doing bla, bla, bla. (short)
+XIMS::User -- represents a XIMS user.
 
 =head1 VERSION
 
@@ -10,11 +10,6 @@ $Id$
 =head1 SYNOPSIS
 
     use XIMS::User;
-
-=head1 DESCRIPTION
-
-
-This module bla bla
 
 =head1 SUBROUTINES/METHODS
 
@@ -413,6 +408,40 @@ sub grant_role_privileges {
 
     return $self->data_provider->$serialization_method(%params);
 }
+
+
+=head2 fullname()
+
+=head3 Parameter
+
+    none
+
+=head3 Returns
+
+    name string
+
+=head3 Description
+
+Returns the user's firstname, middlename, and lastname in one, whitespace
+normalised string.
+
+=cut
+
+
+sub fullname {
+    my $self = shift;
+
+    my $fullname =
+        $self->firstname  . ' '
+      . $self->middlename . ' '
+      . $self->lastname;
+
+    $fullname =~ s/(?:^\s*|\s*$)//g;
+    $fullname =~ s/\s+/ /g;
+
+    return $fullname;
+}
+
 
 1;
 
