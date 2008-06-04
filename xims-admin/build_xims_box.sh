@@ -277,7 +277,7 @@ XIMS_CONTRIB_SVN_BRANCH="$XIMS_SVN_URI/xims-contrib"
 BUILD_SYSTEM_FILE="xims_box_build_system_current.tar.gz"
 XIMS_BOX_BUILD_SYSTEM_URI="http://xims.info/downloads/$BUILD_SYSTEM_FILE"
 
-BUILD_DIR="/tmp/xims_box_build_system"
+BUILD_DIR="/tmp/xims_box_build_system" # no trailing slashes allowed here
 
 XIMS_BOX_DIR="$BUILD_DIR/xims-box"
 XIMS_BOX_BASE_NAME="xims-out-of-the-box"
@@ -331,14 +331,15 @@ echo | tee -a $LOGFILE
 #### reset $BUILD_SYSTEM_FILE to actual filename (if present)
 # filename must contain 'xims_box_build_system'!
 # this routine is necessary for pre-download-removals
-for i in `ls /tmp`; do
+BUILD_DIR_TMP=`dirname $BUILD_DIR`
+for i in `ls $BUILD_DIR_TMP`; do
     echo "$i" | grep 'xims_box_build_system' > /dev/null 2>&1
     if [ "$?" == "0" ]; then
         BUILD_SYSTEM_FILE="$i"
         # clean up from previous builds
-        if [ -e /tmp/$BUILD_SYSTEM_FILE ]; then
+        if [ -e $BUILD_DIR_TMP/$BUILD_SYSTEM_FILE ]; then
             # remove, if there is another downloaded file
-            rm -rf /tmp/$BUILD_SYSTEM_FILE
+            rm -rf $BUILD_DIR_TMP/$BUILD_SYSTEM_FILE
         fi
     fi
 done
@@ -358,10 +359,10 @@ echo -en "Done!\nPreparing build system ..." | tee -a $LOGFILE
 
 #### reset $BUILD_SYSTEM_FILE to actual filename
 # filename must contain 'xims_box_build_system'!
-for i in `ls /tmp`; do
+for i in `ls $BUILD_DIR_TMP`; do
     echo "$i" | grep 'xims_box_build_system' > /dev/null 2>&1
     if [ "$?" == "0" ]; then
-        BUILD_SYSTEM_FILE="/tmp/$i"
+        BUILD_SYSTEM_FILE="$BUILD_DIR_TMP/$i"
     fi
 done
 
@@ -384,12 +385,12 @@ check_if_failed $_ # check for success
 # clean up
 rm -rf xims-contrib
 # move tinymce install-files under ximsroot
-mv tinymce_2.1.2 $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/ 2>> $ERRORLOGFILE
+mv tinymce_3.0.9 $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/ 2>> $ERRORLOGFILE
 check_if_failed $_ # check for success
 # create the htmlarea and tinymce symlinks
 cd $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximsroot/
 ln -s htmlarea3rc1 htmlarea 2>> $ERRORLOGFILE
-ln -s tinymce_2.1.2 tinymce 2>> $ERRORLOGFILE
+ln -s tinymce_3.0.9 tinymce 2>> $ERRORLOGFILE
 check_if_failed $_ # check for success
 # put examplesite from the xims_box_build_system to ximspubroot
 mv $DEB_XIMS_DIR/examplesite $DEB_XIMS_DIR/deb/debian/opt/xims-package/xims/www/ximspubroot/ 2>> $ERRORLOGFILE
