@@ -156,6 +156,14 @@ Copy object to another location.
 
 sub COPY () { 0x00004000 }
 
+=head3 SEND_AS_MAIL
+
+Send object as email.
+
+=cut
+
+sub SEND_AS_MAIL () { 0x00008000 }
+
 =head2 0x10000 - 0x80000: administrative subtree privileges
 
 =head3 DELETE_ALL
