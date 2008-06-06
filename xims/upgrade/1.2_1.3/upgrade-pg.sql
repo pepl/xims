@@ -39,3 +39,5 @@ CREATE TRIGGER remove_stale_locks AFTER DELETE ON ci_sessions
        EXECUTE PROCEDURE remove_stale_locks();
 
 ALTER TABLE cilib_authors ADD  image_url VARCHAR(250) DEFAULT '';
+
+ALTER TABLE ci_object_types ADD is_mailable SMALLINT DEFAULT 0;

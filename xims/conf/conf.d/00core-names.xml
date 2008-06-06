@@ -173,6 +173,7 @@
                 <item>objecttype.parent_id</item>
                 <item>objecttype.is_objectroot</item>
                 <item>objecttype.is_davgetable</item>
+                <item>objecttype.is_mailable</item>
                 <item>objecttype.davprivval</item>
             </ObjectType>
             <Bookmark>

@@ -33,3 +33,7 @@ END;
 PROMPT Adding new attribute cilib_authors.image_url
 ALTER TABLE CILIB_AUTHORS ADD IMAGE_URL VARCHAR2(250) DEFAULT ''
 /
+
+PROMPT Adding new attribute ci_object_types.is_mailable
+ALTER TABLE CI_OBJECT_TYPES ADD IS_MAILABLE NUMBER(1,0) DEFAULT 0
+/
