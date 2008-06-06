@@ -45,6 +45,7 @@ Example usage:
 sub list { qw( DENIED          VIEW       WRITE DELETE    PUBLISH ATTRIBUTES
                TRANSLATE       CREATE     MOVE  COPY      LINK    PUBLISH_ALL
                ATTRIBUTES_ALL  DELETE_ALL GRANT GRANT_ALL OWNER   MASTER
+               SEND_AS_MAIL
            );
 }
 
