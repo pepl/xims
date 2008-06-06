@@ -161,6 +161,22 @@
                    </input>
                    Publish
                  </span>
+                 <!-- 
+                      Show SEND_AS_MAIL privilege for mailable
+                      objects only.  
+                 -->
+                 <xsl:if test="/document/object_types/object_type[
+                                   @id=/document/context/object/object_type_id
+                               ]/is_mailable = 1">
+                   <span class="cboxitem">
+                     <input type="checkbox" name="acl_send_as_mail" value="1">
+                       <xsl:if test="object_privileges/send_as_mail">
+                         <xsl:attribute name="checked">checked</xsl:attribute>
+                       </xsl:if>
+                     </input>
+                     Send Email
+                   </span>
+                 </xsl:if>
      <!--            <span class="cboxitem">
                    <input type="checkbox" name="acl_publish_all" value="1">
                      <xsl:if test="object_privileges/publish_all">
