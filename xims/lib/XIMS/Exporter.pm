@@ -1264,6 +1264,7 @@ sub create {
 lowlevel class for folder objs.
 
 =cut
+
 package XIMS::Exporter::Folder;
 
 use vars qw( @ISA );
@@ -1577,6 +1578,7 @@ sub generate_dom {
 Internal class for creating the auto index.
 
 =cut
+
 package XIMS::Exporter::AutoIndexer;
 
 use vars qw( @ISA );
@@ -1889,7 +1891,7 @@ use vars qw( @ISA );
 
 1;
 
-=head1
+=head1 XIMS::Exporter::URLLink
 
 lowlevel class for URLLink objs.
 
@@ -2003,7 +2005,7 @@ use vars qw( @ISA );
 1;
 
 
-=head1
+=head1 XIMS::Exporter::AxPointPresentation
 
 lowlevel class for AxPointPresentation objs.
 
