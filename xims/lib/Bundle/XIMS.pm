@@ -56,6 +56,7 @@ Archive::Zip -
 Text::Template -
 JavaScript::Minify::XS -
 CSS::Minify::XS -
+MIME::Lite::HTML -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
 # Net::LDAP -
