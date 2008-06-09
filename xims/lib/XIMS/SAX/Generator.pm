@@ -5,7 +5,7 @@ XIMS::SAX::Generator -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -56,7 +56,7 @@ sub prepare {
 
 
 
-=head2
+=head2 get_filters()
 
 =head3 Parameter
 
