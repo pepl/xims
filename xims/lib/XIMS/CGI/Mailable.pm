@@ -5,7 +5,7 @@ XIMS::CGI::Mailable - implements the cgi events needed to make a XIMS class mail
 
 =head1 VERSION
 
-$Id: AuthXIMS.pm 1887 2008-01-11 12:01:11Z haensel $
+$Id:$
 
 =head1 SYNOPSIS
 
@@ -23,7 +23,6 @@ ci_object_types table.
 package XIMS::CGI::Mailable;
 use strict;
 
-use Data::Dumper;
 use XIMS::Mailer;
 use Email::Valid;
 
@@ -48,10 +47,28 @@ sub event_prepare_mail {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+    my $object = $ctxt->object();
+
+    unless ( $object->published() ) {
+        $self->sendError( $ctxt, "Object must be published!" );
+        return 0;
+    }
+
     unless ( $ctxt->session->user->object_privmask( $ctxt->object ) &
         XIMS::Privileges::SEND_AS_MAIL() )
     {
         return $self->event_access_denied($ctxt);
+    }
+
+    if ( $self->object_locked($ctxt) ) {
+        XIMS::Debug( 3, "Attempt to send locked object" );
+        $self->sendError( $ctxt,
+                "This object is locked by "
+              . $object->locker->firstname() . " "
+              . $object->locker->lastname()
+              . " since "
+              . $object->locked_time()
+              . ". Please try again later." );
     }
 
     $ctxt->properties->application->styleprefix('common');
@@ -66,18 +83,32 @@ sub event_prepare_mail {
 sub event_send_as_mail {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    $Data::Dumper::Deparse = 1;
-    warn Dumper($ctxt);
 
     my $object = $ctxt->object();
 
     my $from =
       '"' . $object->User->fullname . '" <' . $object->User->email . '>';
 
+    unless ( $object->published() ) {
+        $self->sendError( $ctxt, "Object must be published!" );
+        return 0;
+    }
+
     unless ( $ctxt->session->user->object_privmask($object) &
         XIMS::Privileges::SEND_AS_MAIL() )
     {
         return $self->event_access_denied($ctxt);
+    }
+
+    if ( $self->object_locked($ctxt) ) {
+        XIMS::Debug( 3, "Attempt to send locked object" );
+        $self->sendError( $ctxt,
+                "This object is locked by "
+              . $object->locker->firstname() . " "
+              . $object->locker->lastname()
+              . " since "
+              . $object->locked_time()
+              . ". Please try again later." );
     }
 
     my $to = Email::Valid->address( $self->param('to') );
@@ -111,11 +142,11 @@ sub event_send_as_mail {
     warn "Published URL: $path";
 
     my $user_id = $object->User->id();
-    my $host_ip =
-      '138.232.2.58'
-      ;    #$ctxt->apache->connection->remote_addr(); won't work. why?
-    my $tmpSession =
-      XIMS::Session->new( user_id => $user_id, host => $host_ip );
+
+    my $tmpSession = XIMS::Session->new(
+        user_id => $user_id,
+        host    => XIMS::REQUESTAGENTSOURCEIP()
+    );
 
     my $mailer = XIMS::Mailer->new(
         From         => $from,
@@ -140,7 +171,18 @@ sub event_send_as_mail {
 
     }
 
-    #   warn Dumper($ctxt);
+    my $size = $MIMEmail->size();
+
+    if ( $size > XIMS::MAILSIZELIMIT() ) {
+        XIMS::Debug( 2,
+                "Mail size $size exceeds hard limit of "
+              . XIMS::MAILSIZELIMIT()
+              . '.' );
+        $self->sendError( "Mail size $size exceeds hard limit of "
+              . XIMS::MAILSIZELIMIT()
+              . '.' );
+        return 0;
+    }
 
     if ( $MIMEmail->send() ) {
         $ctxt->session->message("Mail sent");
@@ -155,7 +197,6 @@ sub event_send_as_mail {
 }
 
 1;
-
 
 __END__
 
@@ -192,4 +233,3 @@ and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 #   indent-tabs-mode: nil
 # End:
 # ex: set ts=4 sr sw=4 tw=78 ft=perl et :
-
