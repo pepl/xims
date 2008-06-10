@@ -42,7 +42,7 @@
         <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS</title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-	<script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text></script>
+        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <xsl:call-template name="tinymce_scripts"/>
     </head>
 </xsl:template>
@@ -55,7 +55,7 @@
             <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
             <br/>
             <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;">
-                <xsl:text>&#160;</xsl:text>
+                <xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text>
             </textarea>
             <xsl:call-template name="jsorigbody"/>
         </td>
