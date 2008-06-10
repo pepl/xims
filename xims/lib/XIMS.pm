@@ -93,7 +93,7 @@ require XIMS::DataProvider;
 require XIMS::Privileges;
 require XIMS::Privileges::System;
 
-=head2 DATAPROVIDER
+=head2 DATAPROVIDER()
 
 Returns a XIMS::DataProvider instance.
 
@@ -104,7 +104,7 @@ sub DATAPROVIDER {
     return $_DATAPROVIDER_;
 }
 
-=head2 OBJECT_TYPES
+=head2 OBJECT_TYPES()
 
 Returns the list of object types.
 
@@ -112,7 +112,7 @@ Returns the list of object types.
 
 sub OBJECT_TYPES () { $_OBJECT_TYPES_ }
 
-=head2 DATA_FORMATS
+=head2 DATA_FORMATS()
 
 Returns the list of data formats.
 
@@ -120,7 +120,7 @@ Returns the list of data formats.
 
 sub DATA_FORMATS () { $_DATA_FORMATS_ }
 
-=head2 HOME
+=head2 HOME()
 
 Returns the path to XIMS' root directory.
 
@@ -134,59 +134,63 @@ sub HOME {
 
 =over
 
-=item GOXIMS
+=item GOXIMS()
 
-=item DEBUGLEVEL
+=item DEBUGLEVEL()
 
-=item PUBROOT_URL
+=item PUBROOT_URL()
 
-=item PUBROOT
+=item PUBROOT()
 
-=item DEFAULT_SKIN
+=item DEFAULT_SKIN()
 
-=item FALLBACKSTARTPATH
+=item FALLBACKSTARTPATH()
 
-=item DEFAULTXHTMLEDITOR
+=item DEFAULTXHTMLEDITOR()
 
-=item XMLEDITOR
+=item XMLEDITOR()
 
-=item TIDYPATH
+=item TIDYPATH()
 
-=item TIDYOPTIONS
+=item TIDYOPTIONS()
 
-=item XIMSROOT_URL
+=item XIMSROOT_URL()
 
-=item XIMSROOT
+=item XIMSROOT()
 
-=item AUTHSTYLE
+=item AUTHSTYLE()
 
-=item AUTHSERVER
+=item AUTHSERVER()
 
-=item PROXYIP
+=item PROXYIP()
 
-=item CONTENTINTERFACE
+=item CONTENTINTERFACE()
 
-=item DBMS
+=item DBMS()
 
-=item QBDRIVER
+=item QBDRIVER()
 
-=item DBDSN
+=item DBDSN()
 
-=item DBENCODING
+=item DBENCODING()
 
-=item UIFALLBACKLANG
+=item UIFALLBACKLANG()
 
-=item PUBLICUSERID
+=item PUBLICUSERID()
 
-=item AUTOINDEXFILENAME
+=item AUTOINDEXFILENAME()
 
-=item AUTOINDEXEXPORTSTYLESHEET
+=item AUTOINDEXEXPORTSTYLESHEET()
 
-=item RESOLVERELTOSITEROOTS
+=item RESOLVERELTOSITEROOTS()
 
-=item SEARCHRESULTROWLIMIT
+=item SEARCHRESULTROWLIMIT()
 
-=item UILANGUAGES
+=item UILANGUAGES()
+
+=item REQUESTAGENTSOURCEIP()
+
+=item MAILSIZELIMIT()
 
 =back
 
@@ -264,6 +268,10 @@ sub UILANGUAGES {
     return %rv;
 }
 
+sub REQUESTAGENTSOURCEIP      { return $_CONFIG_->RequestAgentSourceIP(); }
+
+sub MAILSIZELIMIT             { return $_CONFIG_->MailSizeLimit(); }
+
 # Provide access to custom config values using the XIMS::ConfigValueName
 # interface
 sub AUTOLOAD {
@@ -284,7 +292,7 @@ sub CONFIG () { $_CONFIG_ }
 
 #  Utility methods
 
-=head2 Debug
+=head2 Debug()
 
 =head3 Parameter
 
@@ -319,6 +327,7 @@ sub Debug {
                 #           . int(1000 * Time::HiRes::tv_interval($XIMS::T0))
                 #           . "ms" );
                 $log->warn( "[$module, $method] " . join( '', @debug ) );
+
             }
             else {
                 warn( "[$module, $method] " . join( '', @debug ) . "\n" );
@@ -328,7 +337,7 @@ sub Debug {
     return;
 }
 
-=head2 xml_escape
+=head2 xml_escape()
 
 =head3 Parameter
 
@@ -366,7 +375,7 @@ sub xml_escape {
     return $text;
 }
 
-=head2 xml_unescape( $text )
+=head2 xml_unescape()
 
 =head3 Parameter
 
@@ -404,7 +413,7 @@ sub xml_unescape {
     return $text;
 }
 
-=head2 xml_escape_noquot
+=head2 xml_escape_noquot()
 
 =head3 Parameter
 
@@ -440,7 +449,7 @@ sub xml_escape_noquot {
     return $text;
 }
 
-=head2 encode
+=head2 encode()
 
 =head3 Parameter
 
@@ -469,7 +478,7 @@ sub encode {
     return $string;
 }
 
-=head2 decode
+=head2 decode()
 
 =head3 Parameter
 
@@ -498,7 +507,7 @@ sub decode {
     return $string;
 }
 
-=head2 nodevalue
+=head2 nodevalue()
 
 =head3 Parameter
 
@@ -538,7 +547,7 @@ sub nodevalue {
     }
 }
 
-=head2 trim
+=head2 trim()
 
 =head3 Parameter
 
@@ -567,7 +576,7 @@ sub trim {
     return $string;
 }
 
-=head2 unquot
+=head2 unquot()
 
 =head3 Parameter
 
@@ -596,7 +605,7 @@ sub unquot {
     return $string;
 }
 
-=head2 clean
+=head2 clean()
 
 =head3 Parameter
 
@@ -624,7 +633,7 @@ sub clean {
     return $string;
 }
 
-=head2 escapewildcard
+=head2 escapewildcard()
 
 =head3 Parameter
 
@@ -652,7 +661,7 @@ sub escapewildcard {
     return $string;
 }
 
-=head2  tokenize_string
+=head2  tokenize_string()
 
 =head3 Parameter
 
@@ -692,7 +701,7 @@ sub tokenize_string {
 
 
 
-=head2 utf8_sanitize
+=head2 utf8_sanitize()
 
 =head3 Parameter
 
@@ -725,7 +734,7 @@ sub utf8_sanitize {
 
 
 
-=head2 is_notutf8
+=head2 is_notutf8()
 
 =head3 Parameter
 
@@ -750,7 +759,7 @@ sub is_notutf8 {
 
 
 
-=head2 is_known_proxy
+=head2 is_known_proxy()
 
 =head3 Parameter
 
@@ -779,7 +788,7 @@ sub is_known_proxy {
 
 
 
-=head2 via_proxy_test
+=head2 via_proxy_test()
 
 =head3 Parameter
 
@@ -870,7 +879,7 @@ sub privmask_to_hash {
     return \%privs;
 }
 
-=head2  system_privmask_to_hash
+=head2  system_privmask_to_hash()
 
 =head3 Parameter
 
@@ -889,7 +898,7 @@ Used, to get a more readable representation of the integer bitmask.
 
 =cut
 
-sub system_privmask_to_hash { privmask_to_hash( shift, 'System::' ) }
+sub system_privmask_to_hash { return privmask_to_hash( shift, 'System::' ); }
 
 
 
