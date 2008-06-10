@@ -16,6 +16,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+  <xsl:import href="common.xsl"/>
   <!-- XXX c&p :-( -->
   <xsl:variable name="objecttype">
     <xsl:value-of select="/document/context/object/object_type_id"/>
