@@ -148,6 +148,8 @@
                     <td width="215" background="{$skimages}options_bg.png" nowrap="nowrap">
                         <xsl:if test="$nooptions='false'">
                             <xsl:call-template name="cttobject.options"/>
+                            <!-- send_email is not in cttobject.options -->
+                            <xsl:call-template name="cttobject.options.send_email"/>
                         </xsl:if>
                     </td>
                     <td width="80" background="{$skimages}subheader-generic_bg.png" nowrap="nowrap">
@@ -423,5 +425,37 @@
     </xsl:variable>
     <option value="{$fullname}"><xsl:value-of select="$fullname"/></option>
 </xsl:template>
+
+
+  <xsl:template name="cttobject.options.send_email">
+    <xsl:variable name="id" select="@id"/>
+    <xsl:if test="marked_deleted != '1' 
+                  and (user_privileges/send_as_mail = '1')  
+                  and (locked_time = '' 
+                       or locked_by_id = /document/context/session/user/@id)
+                  and /document/object_types/object_type[
+                        @id=/document/context/object/object_type_id
+                      ]/is_mailable = '1'
+                  and published = '1'">
+        <a>
+          <xsl:attribute name="href">
+            <xsl:value-of select="concat($goxims_content,'?id=',$id,';prepare_mail=1')"/>
+            <xsl:if test="$currobjmime='application/x-container'">
+              <xsl:value-of select="concat(';sb=',$sb,
+                                           ';order=',$order,
+                                           ';page=',$page,
+                                           ';r=',/document/context/object/@id)"/>
+            </xsl:if>
+          </xsl:attribute>
+          <img src="{$skimages}option_email.png"
+               border="0"
+               name="email{$id}"
+               width="18"
+               height="19"
+               title="Generate Spam"
+               alt="Generate Spam"/>
+        </a>
+    </xsl:if>
+  </xsl:template>
 
 </xsl:stylesheet>
