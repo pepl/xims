@@ -171,14 +171,14 @@ sub event_send_as_mail {
 
     }
 
-    my $size = $MIMEmail->size();
+    my $size = $mailer->size();
 
     if ( $size > XIMS::MAILSIZELIMIT() ) {
         XIMS::Debug( 2,
                 "Mail size $size exceeds hard limit of "
               . XIMS::MAILSIZELIMIT()
               . '.' );
-        $self->sendError( "Mail size $size exceeds hard limit of "
+        $self->sendError( $ctxt, "Mail size $size exceeds hard limit of "
               . XIMS::MAILSIZELIMIT()
               . '.' );
         return 0;
