@@ -84,6 +84,8 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_
        VALUES ( nextval('ci_object_types_id_seq'), 'SQLReport', 0, 1, 1 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
        VALUES ( nextval('ci_object_types_id_seq'), 'Event', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_mailable ) 
+       VALUES ( nextval('ci_object_types_id_seq'), 'NewsLetter', 0, 1, 1, 0, 1 );
 
 \echo inserting into ci_data_formats...
 
