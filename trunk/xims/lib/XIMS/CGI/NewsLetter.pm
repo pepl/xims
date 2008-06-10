@@ -24,13 +24,15 @@ package XIMS::CGI::NewsLetter;
 use strict;
 use base qw( XIMS::CGI::Document XIMS::CGI::Mailable );
 
-use Data::Dumper qw( Dumper );
-
-
 our ($VERSION) = ( q$Revision: 1947 $ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # GLOBAL SETTINGS
+
+sub registerEvents {
+    my $self = shift;
+    $self->SUPER::registerEvents( 'prepare_mail', 'send_as_mail', @_ );
+}
 
 1;
 
