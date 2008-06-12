@@ -9,7 +9,7 @@ use XIMS::Object;
 #use Data::Dumper;
 
 BEGIN { 
-    plan tests => 23;
+    plan tests => 24;
 }
 
 ##
@@ -37,23 +37,24 @@ $user = XIMS::User->new( id => 2 );
 ok( $user );
 ok( $user->name() eq 'admin' );
 
-ok( scalar( keys( %priv_hash ) ) == 17 );
-ok( defined( $priv_hash{view} ) );
-ok( defined( $priv_hash{delete} ) );
-ok( defined( $priv_hash{create} ) );
-ok( defined( $priv_hash{write} ) );
-ok( defined( $priv_hash{publish_all} ) );
-ok( defined( $priv_hash{attributes_all} ) );
-ok( defined( $priv_hash{publish} ) );
-ok( defined( $priv_hash{master} ) );
+ok( scalar( keys( %priv_hash ) ) == 18 );
 ok( defined( $priv_hash{attributes} ) );
+ok( defined( $priv_hash{attributes_all} ) );
+ok( defined( $priv_hash{create} ) );
+ok( defined( $priv_hash{delete} ) );
 ok( defined( $priv_hash{delete_all} ) );
-ok( defined( $priv_hash{translate} ) );
-ok( defined( $priv_hash{owner} ) );
-ok( defined( $priv_hash{grant_all} ) );
 ok( defined( $priv_hash{grant} ) );
-ok( defined( $priv_hash{move} ) );
+ok( defined( $priv_hash{grant_all} ) );
 ok( defined( $priv_hash{link} ) );
+ok( defined( $priv_hash{master} ) );
+ok( defined( $priv_hash{move} ) );
+ok( defined( $priv_hash{owner} ) );
+ok( defined( $priv_hash{publish} ) );
+ok( defined( $priv_hash{publish_all} ) );
+ok( defined( $priv_hash{send_as_mail} ) );
+ok( defined( $priv_hash{translate} ) );
+ok( defined( $priv_hash{view} ) );
+ok( defined( $priv_hash{write} ) );
 
 
 
