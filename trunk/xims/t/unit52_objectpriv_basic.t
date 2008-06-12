@@ -8,7 +8,7 @@ use XIMS::ObjectPriv;
 #use Data::Dumper;
 
 BEGIN {
-    plan tests => 42;
+    plan tests => 43;
 }
 
 my $p = XIMS::ObjectPriv->new();
@@ -18,7 +18,11 @@ ok( $p );
 
 no strict 'refs';
 foreach my $privname (XIMS::Privileges::list()) {
-    if ( $privname eq 'PUBLISH' or $privname eq 'PUBLISH_ALL' or $privname eq 'DENIED' or $privname eq 'MASTER' ) {
+    if ( $privname eq 'PUBLISH' 
+      or $privname eq 'PUBLISH_ALL' 
+      or $privname eq 'DENIED' 
+      or $privname eq 'MASTER'
+      or $privname eq 'SEND_AS_MAIL') {
         ok( (&{"XIMS::Privileges::$privname"} & XIMS::Privileges::MODIFY()) == 0 );
     }
     else {
