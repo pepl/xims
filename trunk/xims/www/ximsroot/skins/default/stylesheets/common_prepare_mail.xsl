@@ -17,13 +17,17 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
   <xsl:import href="common.xsl"/>
+
   <!-- XXX c&p :-( -->
+
   <xsl:variable name="objecttype">
     <xsl:value-of select="/document/context/object/object_type_id"/>
   </xsl:variable>
+
   <xsl:variable name="publish_gopublic">
     <xsl:value-of select="/document/object_types/object_type[@id=$objecttype]/publish_gopublic"/>
   </xsl:variable>
+
   <xsl:variable name="published_path_base">
     <xsl:choose>
       <xsl:when test="$resolvereltositeroots = 1 and $publish_gopublic = 0">
@@ -34,6 +38,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+
   <xsl:variable name="object_path">
     <xsl:choose>
       <xsl:when test="local-name(..) = 'children'">
@@ -44,6 +49,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+
   <xsl:variable name="published_path">
     <xsl:choose>
       <xsl:when test="$publish_gopublic = 0">
@@ -72,7 +78,7 @@
             </div>
             <table border="0" 
                    width="98%">
-              <xsl:call-template name="mk-tr-small">
+              <xsl:call-template name="mk-tr-textfield-small">
                 <xsl:with-param name="title" select="'To'"/>
               </xsl:call-template>
               <!--  <xsl:call-template name="mk-tr-small"> -->
@@ -81,18 +87,32 @@
               <!--  <xsl:call-template name="mk-tr-small"> -->
               <!--    <xsl:with-param name="title" select="'Bcc'"/> -->
               <!--  </xsl:call-template> -->
-              <!--  <xsl:call-template name="mk-tr-small"> -->
-              <!--    <xsl:with-param name="title" select="'Reply-To'"/> -->
-              <!--  </xsl:call-template> -->
-              <xsl:call-template name="mk-tr-small">
+              <xsl:call-template name="mk-tr-textfield-small">
+                <xsl:with-param name="title" select="'Reply-To'"/>
+              </xsl:call-template>
+              <xsl:call-template name="mk-tr-textfield-small">
                 <xsl:with-param name="title" select="'Subject'"/>
               </xsl:call-template>
+              <tr>
+                <td>
+                  <xsl:value-of select="$i18n/l/Include_images"/>
+                </td>
+                <td colspan="2">
+                  <input name="mailer_include_images"
+                         type="checkbox"
+                         value="true">
+                  </input>
+                  <xsl:text>&#160;</xsl:text>
+                  <a href="javascript:openDocWindow('minify')"
+                     class="doclink">(?)</a>
+                </td>
+              </tr>
             </table>
           </form>
         </div>
         <br />
         <div style="margin: auto; text-align: center;">
-          <p>Vorschau im IFrame.</p>
+          <p><xsl:value-of select="$i18n/l/Preview"/>:</p>
           <iframe name="Mail Preview" 
                   src="{$published_path}"
                   width="750px" 
@@ -103,13 +123,15 @@
                   frameborder="1">
             <p>No iframes?</p>
           </iframe>
-        </div>      </body>
+        </div>      
+      </body>
     </html>
   </xsl:template>
 
-
-  <xsl:template name="mk-tr-small">
+  <xsl:template name="mk-tr-textfield-small">
     <xsl:param name="title" select="'WTF?'"/>
+    <xsl:param name="name" select="translate($title, &uc;, &lc;)"/>
+    <xsl:param name="size" select="'40'"/>
     <tr>  
       <td valign="top">
         <xsl:value-of select="concat($title, ':')"/>
@@ -117,11 +139,13 @@
       <td colspan="2">
         <input tabindex="20" 
                type="text" 
-               size="60" 
-               name="{translate($title, &uc;, &lc;)}"
+               size="{$size}" 
+               name="{$name}"
                class="text"/>
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('$title')" class="doclink">(?)</a>
+        <a href="javascript:openDocWindow('$title')" 
+           class="doclink">(?)
+        </a>
       </td>
     </tr>
   </xsl:template>
