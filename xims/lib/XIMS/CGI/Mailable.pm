@@ -1,7 +1,8 @@
 
 =head1 NAME
 
-XIMS::CGI::Mailable - implements the cgi events needed to make a XIMS class mailable.
+XIMS::CGI::Mailable - implements the cgi events needed to make a XIMS class
+mailable.
 
 =head1 VERSION
 
@@ -132,6 +133,13 @@ sub event_send_as_mail {
         return 0;
     }
 
+    my $reply_to = Email::Valid->address( $self->param('reply-to') );
+
+    my $include_type = 'extern';
+    if ( $self->param('mailer_include_images') eq 'true' ) {
+        $include_type = 'location';
+    }
+
     # XXX XIMS::RESOLVERELTOSITEROOTS() et al. ignored for now...
     my $path =
         $object->siteroot->url() =~ m#/#
@@ -139,7 +147,7 @@ sub event_send_as_mail {
       : XIMS::PUBROOT_URL();
     $path .= $object->location_path_relative();
 
-    warn "Published URL: $path";
+    #warn "Published URL: $path";
 
     my $user_id = $object->User->id();
 
@@ -152,9 +160,10 @@ sub event_send_as_mail {
         From         => $from,
         To           => $to,
         Subject      => $subject,
+        'Reply-To'   => $reply_to,
         HTMLCharset  => 'UTF-8',
         HTMLEncoding => 'base64',
-        IncludeType  => 'extern',
+        IncludeType  => $include_type,
         Session      => $tmpSession->session_id()
     );
 
@@ -178,7 +187,8 @@ sub event_send_as_mail {
                 "Mail size $size exceeds hard limit of "
               . XIMS::MAILSIZELIMIT()
               . '.' );
-        $self->sendError( $ctxt, "Mail size $size exceeds hard limit of "
+        $self->sendError( $ctxt,
+                "Mail size $size exceeds hard limit of "
               . XIMS::MAILSIZELIMIT()
               . '.' );
         return 0;
