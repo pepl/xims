@@ -240,4 +240,7 @@
 <IlpButtonOK>OK</IlpButtonOK>
 <IlpButtonIgnore>Ignore!</IlpButtonIgnore>
 <minify>Minify on publishing</minify>
+<Send>Send</Send>
+<Include_images>Include images</Include_images>
+<Preview>Preview</Preview>
 </l>

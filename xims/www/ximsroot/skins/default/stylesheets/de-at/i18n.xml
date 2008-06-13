@@ -246,4 +246,7 @@
 <IlpButtonOK>OK</IlpButtonOK>
 <IlpButtonIgnore>Ignorieren!</IlpButtonIgnore>
 <minify>Beim Publizieren verkleinern</minify>
+<Send>Abschicken</Send>
+<Include_images>Bilder einschließen</Include_images>
+<Preview>Vorschau</Preview>
 </l>
