@@ -1,5 +1,4 @@
 
-
 =head1 NAME
 
 XIMS::Mailer - XIMS wrapper class for MIME::Lite::HTML.
@@ -39,7 +38,7 @@ our ($VERSION) = ( q$Revision:  $ =~ /\s+(\d+)\s*$/ );
 =head2 new()
 
 Derived constructor. The `Url' parameter will be ignored, the new parameter
-`Session' takes a XIMS session-id as value. Beside that, see
+`Session' takes a XIMS session-id as value. Besides that, see
 L<MIME::Lite::HTML>.
 
 =cut
@@ -73,6 +72,84 @@ sub get_agent {
     # XXX using ancestor module's internals
     return $self->{_AGENT};
 }
+
+=head2 create_image_part()
+
+Once more we need to mess with MIME::Lite::HTML's internals, as it sets the
+mimetype using regex-matches on the suffix:
+
+    elsif (lc($ur)=~/\.gif$/i) {$type= "image/gif";}
+    elsif (lc($ur)=~/\.jpg$/i) {$type = "image/jpg";}
+    elsif (lc($ur)=~/\.png$/i) {$type = "image/png";}
+    else { $type = "application/x-shockwave-flash"; }
+
+These break for image URLs with CGI parameters, i.e. our JPEGs (being
+processed by Apache::Imagemagick) get marked as
+`application/x-shockwave-flash' -- in turn rendering them unusable by many
+MUAs.
+
+We need to overwrite this method and try to get the mimetype from the
+response's Content-Type header, if possible.
+
+=cut
+
+#-------------------------------------------------------------------------------
+# create_image_part (Taken from MIME::Lite::HTML-1.22, reformatted, mod. marked)
+#-------------------------------------------------------------------------------
+sub create_image_part {
+    my ( $self, $ur, $typ ) = @_;
+    my ( $type, $buff1 );
+
+    # Create MIME type
+    if ($typ) { $type = $typ; }
+    elsif ( lc($ur) =~ /\.gif$/i ) { $type = "image/gif"; }
+    elsif ( lc($ur) =~ /\.jpg$/i ) { $type = "image/jpg"; }
+    elsif ( lc($ur) =~ /\.png$/i ) { $type = "image/png"; }
+    else                           { $type = "application/x-shockwave-flash"; }
+
+    # Url is already in memory
+    if ( $self->{_HASH_TEMPLATE}{$ur} ) {
+        print "Using buffer on: ", $ur, "\n" if $self->{_DEBUG};
+        $buff1 =
+          ref( $self->{_HASH_TEMPLATE}{$ur} ) eq "ARRAY"
+          ? join "", @{ $self->{_HASH_TEMPLATE}{$ur} }
+          : $self->{_HASH_TEMPLATE}{$ur};
+        delete $self->{_HASH_TEMPLATE}{$ur};
+    }
+    else {    # Get image
+        print "Get img ", $ur, "\n" if $self->{_DEBUG};
+        my $res2 =
+          $self->{_AGENT}->request( new HTTP::Request( 'GET' => $ur ) );
+        if ( !$res2->is_success ) { $self->set_err("Can't get $ur\n"); }
+        $buff1 = $res2->content;
+
+        # added
+        $type = $res2->header('Content-Type')
+          if length $res2->header('Content-Type');
+        # End mod
+
+    }
+
+    # Create part
+    my $mail = new MIME::Lite( Data => $buff1, Encoding => 'base64' );
+
+    $mail->attr( "Content-type" => $type );
+
+    # With cid configuration, add a Content-ID field
+    if ( $self->{_include} eq 'cid' ) {
+        $mail->attr( 'Content-ID' => '<' . $self->cid($ur) . '>' );
+    }
+    else {    # Else (location) put a Content-Location field
+        $mail->attr( 'Content-Location' => $ur );
+    }
+
+    # Remove header for Eudora client
+    $mail->replace( "X-Mailer"            => "" );
+    $mail->replace( "MIME-Version"        => "" );
+    $mail->replace( "Content-Disposition" => "" );
+    return $mail;
+}
+
 
 1;
 
