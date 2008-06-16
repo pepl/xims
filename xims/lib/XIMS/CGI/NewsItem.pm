@@ -13,7 +13,7 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+It is based on XIMS::CGI::NewsItem.
 
 =head1 SUBROUTINES/METHODS
 
@@ -30,6 +30,8 @@ use Text::Iconv;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 event_default ()
+=cut
 sub event_default {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
@@ -40,6 +42,8 @@ sub event_default {
     return $self->SUPER::event_default($ctxt);
 }
 
+=head2 event_edit ()
+=cut
 sub event_edit {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
@@ -49,6 +53,8 @@ sub event_edit {
     return $self->SUPER::event_edit($ctxt);
 }
 
+=head2 event_store ()
+=cut
 sub event_store {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );

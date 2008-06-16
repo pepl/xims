@@ -1,11 +1,11 @@
 
 =head1 NAME
 
-XIMS::CGI::AnonDiscussionForum -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::AnonDiscussionForum
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -13,7 +13,7 @@ $Id:$
 
 =head1 DESCRIPTION
 
-This module bla bla
+It is based on XIMS::CGI::Folder.
 
 =head1 SUBROUTINES/METHODS
 
@@ -29,6 +29,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 # #############################################################################
 # RUNTIME EVENTS
 
+=head2 event_default ()
+=cut
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -40,6 +42,8 @@ sub event_default {
     return 0;
 }
 
+=head2 event_publish ()
+=cut
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -71,6 +75,8 @@ sub event_publish {
     }
 }
 
+=head2 event_unpublish ()
+=cut
 sub event_unpublish {
     my ( $self, $ctxt ) = @_;
     $self->unpublish_gopublic( $ctxt, @_ );

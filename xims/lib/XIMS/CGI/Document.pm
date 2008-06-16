@@ -5,7 +5,7 @@ XIMS::CGI::Document -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -13,7 +13,7 @@ $Id:$
 
 =head1 DESCRIPTION
 
-This module bla bla
+It is based on XIMS::CGI.
 
 =head1 SUBROUTINES/METHODS
 
@@ -32,6 +32,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 # #############################################################################
 # GLOBAL SETTINGS
 
+=head2 registerEvents ()
+=cut
 sub registerEvents {
     my $self = shift;
     $self->SUPER::registerEvents(
@@ -57,6 +59,8 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
+=head2 event_edit ()
+=cut
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -82,6 +86,8 @@ sub event_edit {
     return 0;
 }
 
+=head2 event_create ()
+=cut
 sub event_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -105,6 +111,8 @@ sub event_create {
     return 0;
 }
 
+=head2 event_store ()
+=cut
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -163,6 +171,8 @@ sub event_store {
     return $self->SUPER::event_store( $ctxt );
 }
 
+=head2 event_exit ()
+=cut
 sub event_exit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -178,6 +188,8 @@ sub event_exit {
 #
 # may be inserted into event_default ...
 
+=head2 event_default ()
+=cut
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -201,6 +213,8 @@ sub event_default {
     return 0;
 }
 
+=head2 event_pub_preview ()
+=cut
 sub event_pub_preview {
     my ( $self, $ctxt ) = @_;
 
@@ -224,6 +238,8 @@ sub event_pub_preview {
 # #############################################################################
 # Local Helper functions
 
+=head2 getPubPreviewDOM ()
+=cut
 sub getPubPreviewDOM {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -255,6 +271,8 @@ sub getPubPreviewDOM {
     return $transd_dom;
 }
 
+=head2 selectPubPreviewStylesheet ()
+=cut
 sub selectPubPreviewStylesheet {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -290,6 +308,8 @@ sub selectPubPreviewStylesheet {
     return $style;
 }
 
+=head2 selectStylesheet ()
+=cut
 sub selectStylesheet {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -303,6 +323,8 @@ sub selectStylesheet {
     }
 }
 
+=head2 getDOM ()
+=cut
 sub getDOM {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -316,6 +338,8 @@ sub getDOM {
     }
 }
 
+=head2 resolve_annotations ()
+=cut
 sub resolve_annotations {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -381,6 +405,8 @@ sub _absrel_urlmangle {
     return $body;
 }
 
+=head2 save_PUT_data ()
+=cut
 sub save_PUT_data {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -405,6 +431,8 @@ sub save_PUT_data {
     }
 }
 
+=head2 event_bxeconfig ()
+=cut
 sub event_bxeconfig {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;

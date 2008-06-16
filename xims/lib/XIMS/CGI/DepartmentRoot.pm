@@ -1,11 +1,11 @@
 
 =head1 NAME
 
-XIMS::CGI::DepartmentRoot -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::DepartmentRoot
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -13,7 +13,7 @@ $Id:$
 
 =head1 DESCRIPTION
 
-This module bla bla
+It is based on XIMS::CGI::Folder.
 
 =head1 SUBROUTINES/METHODS
 
@@ -45,6 +45,8 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
+=head2 event_edit ()
+=cut
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -56,6 +58,8 @@ sub event_edit {
 }
 
 # hmmm, really needed?
+=head2 event_view ()
+=cut
 sub event_view {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -63,6 +67,8 @@ sub event_view {
     return $self->event_edit( $ctxt );
 }
 
+=head2 event_add_portlet ()
+=cut
 sub event_add_portlet {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -88,6 +94,8 @@ sub event_add_portlet {
     return $self->event_edit( $ctxt );
 }
 
+=head2 event_rem_portlet ()
+=cut
 sub event_rem_portlet {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -116,6 +124,8 @@ sub event_rem_portlet {
 # END RUNTIME EVENTS
 # #############################################################################
 
+=head2 expand_bodydeptinfo ()
+=cut
 sub expand_bodydeptinfo {
     my $self = shift;
     my $ctxt = shift;

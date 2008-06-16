@@ -5,7 +5,7 @@ XIMS::CGI::SQLReport -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -13,7 +13,7 @@ $Id:$
 
 =head1 DESCRIPTION
 
-This module bla bla
+It is based on XIMS::CGI.
 
 =head1 SUBROUTINES/METHODS
 
@@ -33,7 +33,9 @@ use XIMS::DataProvider;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-# (de)register events here
+#(de)register events here
+=head2 registerEvents ()
+=cut
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
@@ -51,7 +53,8 @@ sub registerEvents {
         );
 }
 
-
+=head2 event_default ()
+=cut
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -69,6 +72,8 @@ sub event_default {
     return 0;
 }
 
+=head2 event_edit ()
+=cut
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -79,6 +84,8 @@ sub event_edit {
     return $self->SUPER::event_edit( $ctxt );
 }
 
+=head2 event_store ()
+=cut
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -135,7 +142,8 @@ sub event_store {
     return $self->SUPER::event_store( $ctxt );
 }
 
-
+=head2 event_plain ()
+=cut
 sub event_plain {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -154,6 +162,8 @@ sub event_plain {
     return 0;
 }
 
+=head2 event_publish_prompt ()
+=cut
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -168,12 +178,16 @@ sub event_publish_prompt {
     return 0;
 }
 
+=head2 event_publish ()
+=cut
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->publish_gopublic( @_ );
 }
 
+=head2 event_unpublish ()
+=cut
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
     my $self = shift;
