@@ -376,6 +376,18 @@ sub resolve_annotations {
          );
 }
 
+=head2 private functions/methods
+
+=over
+
+=item _set_wysiwyg_editor()
+
+=item _absrel_urlmangle()
+
+=back
+
+=cut
+
 sub _set_wysiwyg_editor {
     my ( $self, $ctxt ) = @_;
 

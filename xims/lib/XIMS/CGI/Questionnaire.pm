@@ -88,6 +88,16 @@ sub event_default {
     $self->SUPER::event_default($ctxt);
 }
 
+=head2 private functions/methods
+
+=over
+
+=item _default_public()
+
+=back
+
+=cut
+
 sub _default_public {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;

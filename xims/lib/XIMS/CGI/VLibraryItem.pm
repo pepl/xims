@@ -432,6 +432,21 @@ sub event_unpublish {
 }
 
 
+=head2 private methods
+
+=over 
+
+=item _isvaliddate()
+
+=item _create_mapping_from_name()
+
+=item _create_mapping_from_id()
+
+=back
+
+=cut
+
+
 sub _isvaliddate {
     XIMS::Debug( 5, "called" );
     my $self  = shift;

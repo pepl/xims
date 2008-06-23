@@ -211,6 +211,24 @@ sub event_unpublish {
     return $self->unpublish_gopublic( @_ );
 }
 
+=head2 private functions/methods
+
+=over
+
+=item _build_form_from_skeys()
+
+=item _generate_body_from_sql()
+
+=item _build_crits_from_skeys()
+
+=item _test_granted_schemata()
+
+=item _agentdbh()
+
+=back
+
+=cut
+
 sub _build_form_from_skeys {
     XIMS::Debug( 5, "called" );
     my $self = shift;
