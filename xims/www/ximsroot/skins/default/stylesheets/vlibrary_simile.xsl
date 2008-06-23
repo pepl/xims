@@ -60,7 +60,6 @@
             <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <xsl:call-template name="create_menu_jscss"/>
             <script src="http://simile.mit.edu/timeline/api/timeline-api.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="http://simile.mit.edu/timeline/examples/examples.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
