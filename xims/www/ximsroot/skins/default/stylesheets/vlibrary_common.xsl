@@ -64,7 +64,7 @@
       <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
       <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
       <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-      <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+      <script src="{$ximsroot}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
       <xsl:call-template name="create_menu_jscss"/>
     </head>
   </xsl:template>
@@ -435,6 +435,7 @@
 
   <xsl:template name="post_async_js">
 var xmlhttp = getXMLHTTPObject();
+
 function handleResponse() {
     if (xmlhttp.readyState == 4) {
 

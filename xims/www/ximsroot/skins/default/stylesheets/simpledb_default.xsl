@@ -48,7 +48,7 @@
   <xsl:template match="/document/context/object">
     <html>
       <xsl:call-template name="head_default"/>
-      <body onLoad="setBg('simpledbchildrenlistitem');">
+      <body>
         <xsl:call-template name="header"/>
 
         <div id="simpledb_body">
@@ -134,7 +134,7 @@
               type="text/javascript">
         <xsl:text>&#160;</xsl:text>
       </script>
-      <script src="{$ximsroot}scripts/vlibrary_default.js"
+      <script src="{$ximsroot}jquery.js"
               type="text/javascript">
         <xsl:text>&#160;</xsl:text>
       </script>
@@ -146,6 +146,9 @@
               type="text/javascript">
         <xsl:text>&#160;</xsl:text>
       </script>
+      <xsl:call-template name="jquery-listitems-bg">
+        <xsl:with-param name="pick" select="'div.simpledb_childrenlistitem'"/>
+      </xsl:call-template>
     </head>
   </xsl:template>
 

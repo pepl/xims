@@ -5,21 +5,6 @@
 # $Id$
 */
 
-/*
-   Those two have to stay here as the first two rules to let the the setBg()
-   function play its magic
-   caveat: setBg() takes the first two rules of the SECOND css-stylesheet
-           in order to choose customised colours, just make THIS stylesheet
-           the first one and provide different rules in the other css-stylesheet
-*/
-.vlchildrenlistitem_even {
-    background-color: #f6f0f0;
-}
-
-.vlchildrenlistitem_odd {
-    background-color: #fcfcff;
-}
-
 #vlchildrenlisttitle {
     margin-bottom: -10px;
     padding: 0px 5px 5px 0px;

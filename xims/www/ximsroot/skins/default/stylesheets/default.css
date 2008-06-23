@@ -126,3 +126,11 @@ div#xims_ilp_windowbg div#xims_ilp_winlabel div#xims_ilp_close {
     height:3000px;
 }
 /* end styles for test_location event */
+
+.listitem_even {
+    background-color: #f6f0f0;
+}
+
+.listitem_odd {
+    background-color: #fcfcff;
+}
