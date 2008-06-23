@@ -5,7 +5,7 @@ XIMS::CGI::users -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -30,6 +30,10 @@ use XIMS::ObjectTypePriv;
 use Digest::MD5 qw( md5_hex );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 registerEvents()
+
+=cut
 
 sub registerEvents {
     XIMS::Debug( 5, "called" );
@@ -56,6 +60,10 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
+=head2 event_init()
+
+=cut
+
 sub event_init {
     my $self = shift;
     my $ctxt = shift;
@@ -70,7 +78,12 @@ sub event_init {
     $ctxt->sax_generator( 'XIMS::SAX::Generator::Users' );
 }
 
-# the 'list all users' screen
+=head2 event_default()
+
+the 'list all users' screen
+
+=cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -88,7 +101,12 @@ sub event_default {
     }
 }
 
-# the 'create user' data entry screen
+=head2 event_create()
+
+the 'create user' data entry screen
+
+=cut
+
 sub event_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -102,7 +120,12 @@ sub event_create {
     $ctxt->properties->application->style( 'create' );
 }
 
-# the 'create user' confirmation and data-handling screen
+=head2 event_create_update()
+
+the 'create user' confirmation and data-handling screen
+
+=cut
+
 sub event_create_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -213,7 +236,12 @@ sub event_create_update {
 
 }
 
-# the 'edit user' data entry screen
+=head2 event_edit()
+
+the 'edit user' data entry screen
+
+=cut
+
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -236,7 +264,13 @@ sub event_edit {
         $self->sendError( $ctxt, "User '$uname' does not exist." );
     }
 }
-# the 'edit user' confirmation and data-handling screen
+
+=head2 event_update()
+
+the 'edit user' confirmation and data-handling screen
+
+=cut
+
 sub event_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -314,7 +348,13 @@ sub event_update {
         $self->sendError( $ctxt,  "User does not exist.");
     }
 }
-# the 'change password' data entry screen
+
+=head2 event_passwd()
+
+the 'change password' data entry screen
+
+=cut
+
 sub event_passwd {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -325,7 +365,13 @@ sub event_passwd {
 
     $ctxt->properties->application->style( 'passwd_edit' );
 }
-# the 'change password' confirmation and data handling screen
+
+=head2 event_password_update()
+
+the 'change password' confirmation and data handling screen
+
+=cut
+
 sub event_passwd_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -371,7 +417,13 @@ sub event_passwd_update {
         $ctxt->session->warning_msg( "Please specify a new password." );
     }
 }
-# the 'remove user' "are you *really* sure" screen
+
+=head2 event_remove()
+
+the 'remove user' "are you *really* sure" screen
+
+=cut
+
 sub event_remove {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -388,7 +440,13 @@ sub event_remove {
     # boot 'em to the list if the uname is missing
     $ctxt->properties->application->style( 'default' ) unless $uname;
 }
-# the 'remove user' "you did" and data handling screen
+
+=head2 event_remove_update()
+
+the 'remove user' "you did" and data handling screen
+
+=cut
+
 sub event_remove_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -418,6 +476,11 @@ sub event_remove_update {
         $self->sendError( $ctxt, "User '$uname' does not exist." );
     }
 }
+
+=head2 event_manage_roles()
+
+=cut
+
 sub event_manage_roles {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -442,6 +505,10 @@ sub event_manage_roles {
         $self->sendError( $ctxt, "User '$uname' does not exist." );
     }
 }
+
+=head2 event_grant_role()
+
+=cut
 
 sub event_grant_role {
     XIMS::Debug( 5, "called" );
@@ -480,6 +547,10 @@ sub event_grant_role {
     }
 }
 
+=head2 event_grant_role_update()
+
+=cut
+
 sub event_grant_role_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -513,6 +584,10 @@ sub event_grant_role_update {
 
 }
 
+=head2 event_revoke_role()
+
+=cut
+
 sub event_revoke_role {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -544,6 +619,10 @@ sub event_revoke_role {
 
 }
 
+=head2 event_bookmarks()
+
+=cut
+
 sub event_bookmarks {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -569,6 +648,10 @@ sub event_bookmarks {
     }
     return 0;
 }
+
+=head2 event_objecttypeprivs()
+
+=cut
 
 sub event_objecttypeprivs {
     XIMS::Debug( 5, "called" );
@@ -653,6 +736,10 @@ sub event_objecttypeprivs {
 
 # END RUNTIME EVENTS
 # #############################################################################
+
+=head2 redirect_path()
+
+=cut
 
 sub redirect_path {
     my ( $self, $ctxt, $event ) = @_;

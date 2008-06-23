@@ -5,7 +5,7 @@ XIMS::CGI::TAN_List -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -28,6 +28,11 @@ use XIMS::DataFormat;
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # (de)register events here
+
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
@@ -49,6 +54,11 @@ sub registerEvents {
 #
 # override or add event handlers here
 #
+
+=head2 event_default()
+
+=cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -59,6 +69,10 @@ sub event_default {
 
     return 0;
 }
+
+=head2 event_download()
+
+=cut
 
 sub event_download {
     XIMS::Debug( 5, "called" );
@@ -98,6 +112,10 @@ sub event_download {
     }
     return 0;
 }
+
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );

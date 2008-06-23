@@ -29,6 +29,10 @@ our ($VERSION) = ( q$Revision: 1947 $ =~ /\s+(\d+)\s*$/ );
 # #############################################################################
 # GLOBAL SETTINGS
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     my $self = shift;
     $self->SUPER::registerEvents( 'prepare_mail', 'send_as_mail', @_ );

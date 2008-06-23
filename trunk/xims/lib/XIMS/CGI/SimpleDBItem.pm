@@ -5,7 +5,7 @@ XIMS::CGI::SimpleDBItem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -30,6 +30,10 @@ use Encode;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called");
     my $self = shift;
@@ -48,6 +52,9 @@ sub registerEvents {
         );
 }
 
+=head2 event_init()
+
+=cut
 
 sub event_init {
     my ( $self, $ctxt) = @_;
@@ -56,6 +63,10 @@ sub event_init {
     $ctxt->sax_generator( 'XIMS::SAX::Generator::SimpleDBItem' );
     return $self->SUPER::event_init( $ctxt );
 }
+
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );
@@ -132,6 +143,10 @@ sub event_store {
     return 1;
 }
 
+=head2 event_publish_prompt()
+
+=cut
+
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -146,17 +161,29 @@ sub event_publish_prompt {
     return 0;
 }
 
+=head2 event_publish()
+
+=cut
+
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->publish_gopublic( @_ );
 }
 
+=head2 event_unpublish()
+
+=cut
+
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->unpublish_gopublic( @_ );
 }
+
+=head2 update_properties()
+
+=cut
 
 sub update_properties {
     my ( $self, $ctxt) = @_;

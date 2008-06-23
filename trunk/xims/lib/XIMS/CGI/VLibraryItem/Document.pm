@@ -28,6 +28,10 @@ use XIMS::VLibMeta;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 event_create()
+
+=cut
+
 sub event_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -37,6 +41,10 @@ sub event_create {
 
     return 0;
 }
+
+=head2 event_edit()
+
+=cut
 
 sub event_edit {
     XIMS::Debug( 5, "called" );
@@ -54,6 +62,10 @@ sub event_edit {
 
     return 0;
 }
+
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );

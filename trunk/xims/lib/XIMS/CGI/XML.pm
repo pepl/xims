@@ -5,7 +5,7 @@ XIMS::CGI::XML -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,11 @@ use base qw( XIMS::CGI );
 use Text::Iconv;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+
+=head2 registerEvents()
+
+=cut
 
 sub registerEvents {
     XIMS::Debug( 5, "called" );
@@ -52,6 +57,10 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
+=head2 event_default()
+
+=cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -74,6 +83,10 @@ sub event_default {
     }
 }
 
+=head2 event_unescapebody()
+
+=cut
+
 sub event_unescapebody {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -82,6 +95,10 @@ sub event_unescapebody {
     $ctxt->properties->content->escapebody( 0 );
     return 0;
 }
+
+=head2 event_edit()
+
+=cut
 
 sub event_edit {
     XIMS::Debug( 5, "called" );
@@ -108,6 +125,10 @@ sub event_edit {
     $ctxt->properties->content->escapebody( 1 );
     return 0;
 }
+
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );
@@ -191,6 +212,10 @@ sub event_store {
     return $self->SUPER::event_store( $ctxt );
 }
 
+=head2 update_decl_encoding()
+
+=cut
+
 sub update_decl_encoding {
     XIMS::Debug( 5, "called" );
     my $body = shift;
@@ -205,6 +230,9 @@ sub update_decl_encoding {
     return $body;
 }
 
+=head2 save_PUT_data()
+
+=cut
 
 sub save_PUT_data {
     XIMS::Debug( 5, "called" );
@@ -239,7 +267,12 @@ sub save_PUT_data {
     }
 }
 
-# creates the config file for BXE
+=head2 event_bxeconfig()
+
+creates the config file for BXE
+
+=cut
+
 sub event_bxeconfig {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -319,6 +352,11 @@ sub event_bxeconfig {
 #    </element>
 #  </start>
 #</grammar>
+
+=head2 event_simpleformedit()
+
+=cut
+
 sub event_simpleformedit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;

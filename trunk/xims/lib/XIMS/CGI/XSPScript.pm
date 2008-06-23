@@ -30,8 +30,10 @@ use Apache::AxKit::Language::XSP;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-=head registerEvents ()
+=head2 registerEvents()
+
 =cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called");
     $_[0]->SUPER::registerEvents(
@@ -51,8 +53,10 @@ sub registerEvents {
         );
 }
 
-=head2 event_default ()
+=head2 event_default()
+
 =cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -76,8 +80,10 @@ sub event_default {
     return $self->SUPER::event_default( $ctxt );
 }
 
-=head2 event_edit ()
+=head2 event_edit()
+
 =cut
+
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -87,8 +93,10 @@ sub event_edit {
     return $self->SUPER::event_edit( $ctxt );
 }
 
-=head2 event_store ()
+=head2 event_store()
+
 =cut
+
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -107,8 +115,10 @@ sub event_store {
     return $self->SUPER::event_store( $ctxt );
 }
 
-=head2 event_process_xsp ()
+=head2 event_process_xsp()
+
 =cut
+
 sub event_process_xsp {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;

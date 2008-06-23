@@ -29,8 +29,10 @@ use Digest::MD5 qw( md5_hex );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-=head2 registerEvents ()
+=head2 registerEvents()
+
 =cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
@@ -45,8 +47,10 @@ sub registerEvents {
         );
 }
 
-=head2 event_init ()
+=head2 event_init()
+
 =cut
+
 sub event_init {
     my $self = shift;
     my $ctxt = shift;
@@ -58,8 +62,10 @@ sub event_init {
     $ctxt->sax_generator( 'XIMS::SAX::Generator::User' );
 }
 
-=head2 event_default ()
+=head2 event_default()
+
 =cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -119,8 +125,10 @@ sub event_default {
 }
 
 # the 'change password' data entry screen
-=head2 event_passwd ()
+=head2 event_passwd()
+
 =cut
+
 sub event_passwd {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -132,8 +140,10 @@ sub event_passwd {
     $ctxt->properties->application->style( 'passwd' );
 }
 # the 'change password' confirmation and data handling screen
-=head2 event_passwd_update ()
+=head2 event_passwd_update()
+
 =cut
+
 sub event_passwd_update {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -173,8 +183,10 @@ sub event_passwd_update {
     }
 }
 
-=head2 event_bookmarks ()
+=head2 event_bookmarks()
+
 =cut
+
 sub event_bookmarks {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;

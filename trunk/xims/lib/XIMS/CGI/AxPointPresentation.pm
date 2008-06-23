@@ -5,7 +5,7 @@ XIMS::CGI::AxPointPresentation::Output -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -30,9 +30,17 @@ use Cwd 'fastcwd';
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     $_[0]->SUPER::registerEvents( qw( download_pdf ) );
 }
+
+=head2 event_create()
+
+=cut
 
 sub event_create {
     XIMS::Debug( 5, "called" );
@@ -46,6 +54,10 @@ sub event_create {
 
     return 0;
 }
+
+=head2 event_default()
+
+=cut
 
 sub event_default {
     XIMS::Debug( 5, "called" );
@@ -71,6 +83,10 @@ sub event_default {
     }
 }
 
+=head2 event_edit()
+
+=cut
+
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -91,6 +107,10 @@ sub event_edit {
 
     return 0;
 }
+
+=head2 event_download_pdf()
+
+=cut
 
 sub event_download_pdf {
     XIMS::Debug( 5, "called" );
@@ -183,15 +203,27 @@ use Text::Iconv;
 use vars qw(@ISA);
 @ISA = ('XML::SAX::Writer::ConsumerInterface');
 
+=head2 new()
+
+=cut
+
 sub new {
     my $self = shift->SUPER::new( {} );
     return $self;
 }
 
+=head2 output()
+
+=cut
+
 sub output {
     my $self = shift;
     $$self->{Output} .= shift;
 }
+
+=head2 get_output()
+
+=cut
 
 sub get_output {
     my $self = shift;

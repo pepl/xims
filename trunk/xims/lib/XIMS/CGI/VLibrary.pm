@@ -29,6 +29,10 @@ use Time::Piece;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -70,6 +74,10 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
+=head2 event_init()
+
+=cut
+
 sub event_init {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -78,12 +86,20 @@ sub event_init {
     return $self->SUPER::event_init($ctxt);
 }
 
+=head2 event_default()
+
+=cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     return 0 if $self->SUPER::event_default($ctxt);
 }
+
+=head2 event_edit()
+
+=cut
 
 sub event_edit {
     XIMS::Debug( 5, "called" );
@@ -93,6 +109,10 @@ sub event_edit {
 
     return $self->SUPER::event_edit($ctxt);
 }
+
+=head2 event_copy()
+
+=cut
 
 sub event_copy {
     XIMS::Debug( 5, "called" );
@@ -104,6 +124,10 @@ sub event_copy {
 ##############################################################################
 # begin subjects
 ##############################################################################
+
+=head2 event_subject()
+
+=cut
 
 sub event_subject {
     XIMS::Debug( 5, "called" );
@@ -146,6 +170,10 @@ sub event_subject {
     return 0;
 }
 
+=head2 event_subject_view()
+
+=cut
+
 sub event_subject_view {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -183,6 +211,10 @@ sub event_subject_view {
 # end subjects, begin keywords
 ##############################################################################
 
+=head2 event_keywords()
+
+=cut
+
 sub event_keywords {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -193,6 +225,10 @@ sub event_keywords {
 
     return 0;
 }
+
+=head2 event_keyword()
+
+=cut
 
 sub event_keyword {
     XIMS::Debug( 5, "called" );
@@ -242,6 +278,10 @@ sub event_keyword {
 # end keywords, begin authors
 ##############################################################################
 
+=head2 event_authors()
+
+=cut
+
 sub event_authors {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -252,6 +292,10 @@ sub event_authors {
 
     return 0;
 }
+
+=head2 event_author()
+
+=cut
 
 sub event_author {
     XIMS::Debug( 5, "called" );
@@ -327,6 +371,10 @@ sub event_author {
 # end authors, begin publications
 ##############################################################################
 
+=head2 event_publicaions()
+
+=cut
+
 sub event_publications {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -337,6 +385,10 @@ sub event_publications {
 
     return 0;
 }
+
+=head2 event_publication()
+
+=cut
 
 sub event_publication {
     XIMS::Debug( 5, "called" );
@@ -393,6 +445,10 @@ sub event_publication {
 # end publications
 ##############################################################################
 
+=head2 event_property_edit()
+
+=cut
+
 sub event_property_edit {
     my ( $self, $ctxt ) = @_;
 
@@ -441,6 +497,10 @@ sub event_property_edit {
 
 }
 
+=head2 event_property_show()
+
+=cut
+
 sub event_property_show {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -474,6 +534,10 @@ sub event_property_show {
 
     return 0;
 }
+
+=head2 event_property_store()
+
+=cut
 
 sub event_property_store {
     XIMS::Debug( 5, "called" );
@@ -564,6 +628,9 @@ sub event_property_store {
     return 0;
 }
 
+=head2 event_property_delete_prompt()
+
+=cut
 
 sub event_property_delete_prompt {
     XIMS::Debug( 5, "called" );
@@ -577,6 +644,10 @@ sub event_property_delete_prompt {
 
     return 0;
 }
+
+=head2 event_property_delete()
+
+=cut
 
 sub event_property_delete {
     XIMS::Debug( 5, "called" );
@@ -626,6 +697,10 @@ sub event_property_delete {
     }
 }
 
+=head2 event_publish_prompt()
+
+=cut
+
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -640,6 +715,10 @@ sub event_publish_prompt {
 
     return 0;
 }
+
+=head2 event_publish()
+
+=cut
 
 sub event_publish {
     XIMS::Debug( 5, "called" );
@@ -666,6 +745,10 @@ sub event_publish {
     return 0;
 }
 
+=head2 event_unpublish()
+
+=cut
+
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -690,6 +773,10 @@ sub event_unpublish {
 
     return 0;
 }
+
+=head2 event_vlsearch()
+
+=cut
 
 sub event_vlsearch {
     XIMS::Debug( 5, "called" );
@@ -777,12 +864,13 @@ sub event_vlsearch {
     return 0;
 }
 
-#
-# event filter_create
-#
-# opens a windows where the URL for a filtered objectlist
-# is created
-#
+
+=head2 event_filter_create()
+
+opens a windows where the URL for a filtered objectlist is created
+
+=cut
+
 sub event_filter_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -794,18 +882,20 @@ sub event_filter_create {
     return 0;
 }
 
-#
-# event filter
-#
-# The following criteria can be filtered:
-#     subjects (by subject_ids coma seperated)
-#     keywords (by keyword_id coma seperated)
-#     authors (by author_ids coma seperated)
-#     mediatype (as text, just one type possible)
-#     chronicle (chronicle_from - chronicle_to)
-#     fulltext (with querybuilder)
-#
-# this event could replace the events: subject, author, keyword, vlsearch, vlchronicle, keyword
+
+=head2 event_filter()
+
+ The following criteria can be filtered:
+     subjects (by subject_ids coma seperated)
+     keywords (by keyword_id coma seperated)
+     authors (by author_ids coma seperated)
+     mediatype (as text, just one type possible)
+     chronicle (chronicle_from - chronicle_to)
+     fulltext (with querybuilder)
+
+=cut
+
+#this event could replace the events: subject, author, keyword, vlsearch, vlchronicle, keyword
 #
 # in the %criteria-hash are the SQL-Conditions as a string.
 # Only date, fulltext and mediatype conditions are with parameters
@@ -815,7 +905,8 @@ sub event_filter_create {
 # still half-baked, would be nice to move the whole SQL into
 # Vlibrary-object and just call vlitems_byfilter_granted which does
 # the SQL-things. Quick and dirty, I know :-/
-#
+
+
 sub event_filter {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1006,6 +1097,10 @@ sub event_filter {
     return 0;
 }
 
+=head2 event_most_recent()
+
+=cut
+
 sub event_most_recent {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1029,6 +1124,10 @@ sub event_most_recent {
 
     return 0;
 }
+
+=head2 event_vlchronicle()
+
+=cut
 
 sub event_vlchronicle {
     XIMS::Debug( 5, "called" );
@@ -1085,6 +1184,10 @@ sub event_vlchronicle {
 
     return 0;
 }
+
+=head2 event_simile()
+
+=cut
 
 sub event_simile {
     XIMS::Debug( 5, "called" );
