@@ -43,7 +43,9 @@
                   <xsl:call-template name="footer"/>
                 </table>
             </body>
-            <script>setBg('vliteminfo');</script>
+            <xsl:call-template name="jquery-listitems-bg">
+              <xsl:with-param name="pick" select="'div.vliteminfo'"/>
+            </xsl:call-template>
         </html>
     </xsl:template>
 

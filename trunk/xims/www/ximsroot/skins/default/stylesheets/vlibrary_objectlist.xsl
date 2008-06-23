@@ -162,7 +162,9 @@
           <table align="center" width="98.7%" class="footer">
             <xsl:call-template name="footer"/>
           </table>
-          <script>setBg('vlchildrenlistitem');</script>
+          <xsl:call-template name="jquery-listitems-bg">
+            <xsl:with-param name="pick" select="'div.vlchildrenlistitem'"/>
+          </xsl:call-template>
         </body>
       </html>
     </xsl:template>

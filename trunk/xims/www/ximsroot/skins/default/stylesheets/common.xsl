@@ -223,6 +223,7 @@
 -->
     <xsl:param name="calendar" select="false()" />
     <xsl:param name="htmlarea" select="false()" />
+    <xsl:param name="jquery" select="false()" />
     <head>
         <title>
         <xsl:if test="$mode='create'"><xsl:value-of select="$i18n/l/create"/></xsl:if>
@@ -236,6 +237,9 @@
         </xsl:if>
         <xsl:if test="$htmlarea">
             <xsl:call-template name="htmlarea_scripts"/>
+        </xsl:if>
+        <xsl:if test="$jquery">
+          <script src="{$ximsroot}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </xsl:if>
     </head>
 </xsl:template>
@@ -1787,5 +1791,17 @@
     </td>
   </tr>
 </xsl:template>
+
+  <xsl:template name="jquery-listitems-bg">
+    <xsl:param name="pick"/>
+    <xsl:if test="$pick">
+      <script type="text/javascript">
+        $(function() {
+          $("<xsl:value-of select="$pick"/>:odd").addClass("listitem_odd");
+          $("<xsl:value-of select="$pick"/>:even").addClass("listitem_even");
+        });
+      </script>
+    </xsl:if>
+  </xsl:template>
 
 </xsl:stylesheet>
