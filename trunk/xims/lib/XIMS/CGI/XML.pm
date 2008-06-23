@@ -533,6 +533,16 @@ sub event_simpleformedit {
     return 0;
 }
 
+=head2 private functions/methods
+
+=over
+
+=item _updateIDs()
+
+=back
+
+=cut
+
 sub _updateIDs {
     my $self = shift;
     my $root = shift;

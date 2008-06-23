@@ -1221,6 +1221,20 @@ sub event_simile {
 # END RUNTIME EVENTS
 # #############################################################################
 
+=head2 private functions/methods
+
+=over
+
+=item _heuristic_date_parser()
+
+=item _update_or_publish()
+
+=item _privcheck_lock()
+
+=back
+
+=cut
+
 sub _heuristic_date_parser {
     XIMS::Debug( 5, "called" );
     my $self = shift;
