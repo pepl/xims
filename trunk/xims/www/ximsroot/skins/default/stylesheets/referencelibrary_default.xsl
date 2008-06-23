@@ -32,7 +32,7 @@
         <xsl:variable name="pagenavurl"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id,';m=',$m)"/><xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch)"/></xsl:if></xsl:variable>
         <html>
             <xsl:call-template name="head_default"/>
-            <body onLoad="setBg('vlchildrenlistitem');">
+            <body>
                 <xsl:call-template name="header"/>
 
                 <div id="vlbody">
@@ -133,20 +133,22 @@
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
         <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}scripts/vlibrary_default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <script src="{$ximsroot}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-<style type="text/css">
+        <xsl:call-template name="jquery-listitems-bg">
+          <xsl:with-param name="pick" select="'div.vlchildrenlistitem'"/>
+        </xsl:call-template>
 
-#fixedtipdiv{
-position:absolute;
-padding: 2px;
-border:1px solid black;
-font:normal 10pt helvetica, arial, sans-serif;
-line-height:18px;
-z-index:100;
-}
-
-</style>
+        <style type="text/css">
+          #fixedtipdiv{
+              position:absolute;
+              padding: 2px;
+              border:1px solid black;
+              font: normal 10pt helvetica, arial, sans-serif;
+              line-height: 18px;
+              z-index: 100;
+          }
+        </style>
     </head>
 </xsl:template>
 
