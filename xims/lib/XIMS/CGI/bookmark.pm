@@ -5,7 +5,7 @@ XIMS::CGI::bookmark -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -28,6 +28,10 @@ use XIMS::Bookmark;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
@@ -39,6 +43,10 @@ sub registerEvents {
           )
         );
 }
+
+=head2 event_init()
+
+=cut
 
 sub event_init {
     my $self = shift;
@@ -68,6 +76,10 @@ sub event_init {
     return 0;
 }
 
+=head2 event_default()
+
+=cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -75,6 +87,10 @@ sub event_default {
     $self->redirToDefault( $ctxt ); # redir to defaultbookmark
     return 1;
 }
+
+=head2 event_setdefault()
+
+=cut
 
 sub event_setdefault {
     XIMS::Debug( 5, "called" );
@@ -108,6 +124,10 @@ sub event_setdefault {
     $self->redirect( $self->redirect_path( $ctxt ) );
     return 0;
 }
+
+=head2 event_create()
+
+=cut
 
 sub event_create {
     XIMS::Debug( 5, "called" );
@@ -158,6 +178,10 @@ sub event_create {
     return 0;
 }
 
+=head2 event_delete()
+
+=cut
+
 sub event_delete {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -176,6 +200,10 @@ sub event_delete {
 
 # END RUNTIME EVENTS
 # #############################################################################
+
+=head2 redirect_path()
+
+=cut
 
 sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;

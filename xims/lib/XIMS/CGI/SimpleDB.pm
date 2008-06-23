@@ -30,6 +30,10 @@ use XIMS::QueryBuilder::SimpleDB;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called");
     my $self = shift;
@@ -55,6 +59,10 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
+=head2 event_init()
+
+=cut
+
 sub event_init {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -63,6 +71,10 @@ sub event_init {
     $ctxt->sax_generator( 'XIMS::SAX::Generator::SimpleDB' ) unless $self->testEvent($ctxt) eq 'search';
     return $self->SUPER::event_init( $ctxt );
 }
+
+=head2 event_default()
+
+=cut
 
 sub event_default {
     XIMS::Debug( 5, "called" );
@@ -130,6 +142,10 @@ sub event_default {
     return 0;
 }
 
+=head2 event_edit
+
+=cut
+
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -143,6 +159,10 @@ sub event_edit {
 
     return $rv;
 }
+
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );
@@ -171,6 +191,10 @@ sub event_store {
 
     return $self->SUPER::event_store( $ctxt );
 }
+
+=head2 event_create_property_mapping()
+
+=cut
 
 sub event_create_property_mapping {
     my ( $self, $ctxt) = @_;
@@ -212,6 +236,10 @@ sub event_create_property_mapping {
         return $self->sendError( $ctxt, "Could not create propertymapping for " . $property->name() . "." );
     }
 }
+
+=head2 event_update_property_mapping()
+
+=cut
 
 sub event_update_property_mapping {
     my ( $self, $ctxt) = @_;
@@ -264,6 +292,10 @@ sub event_update_property_mapping {
     return 1;
 }
 
+=head2 event_delete_property_mapping()
+
+=cut
+
 sub event_delete_property_mapping {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -305,11 +337,19 @@ sub event_delete_property_mapping {
     return 1;
 }
 
+=head2 event_copy()
+
+=cut
+
 sub event_copy {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     return $self->sendError( $ctxt, "Copying SimpleDBs is not implemented." );
 }
+
+=head2 event_delete()
+
+=cut
 
 sub event_delete {
     XIMS::Debug( 5, "called" );
@@ -317,11 +357,19 @@ sub event_delete {
     return $self->sendError( $ctxt, "Deleting SimpleDBs is not implemented." );
 }
 
+=head2 event_delete_prompt()
+
+=cut
+
 sub event_delete_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     return $self->sendError( $ctxt, "Deleting SimpleDBs is not implemented." );
 }
+
+=head2 event_publish_prompt()
+
+=cut
 
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
@@ -337,11 +385,19 @@ sub event_publish_prompt {
     return 0;
 }
 
+=head2 event_publish()
+
+=cut
+
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->publish_gopublic( @_ );
 }
+
+=head2 event_unpublish()
+
+=cut
 
 sub event_unpublish {
     XIMS::Debug( 5, "called" );

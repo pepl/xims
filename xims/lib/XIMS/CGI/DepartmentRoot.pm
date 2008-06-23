@@ -45,8 +45,11 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
-=head2 event_edit ()
+
+=head2 event_edit()
+
 =cut
+
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -58,8 +61,11 @@ sub event_edit {
 }
 
 # hmmm, really needed?
-=head2 event_view ()
+
+=head2 event_view()
+
 =cut
+
 sub event_view {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -67,8 +73,10 @@ sub event_view {
     return $self->event_edit( $ctxt );
 }
 
-=head2 event_add_portlet ()
+=head2 event_add_portlet()
+
 =cut
+
 sub event_add_portlet {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -94,8 +102,10 @@ sub event_add_portlet {
     return $self->event_edit( $ctxt );
 }
 
-=head2 event_rem_portlet ()
+=head2 event_rem_portlet()
+
 =cut
+
 sub event_rem_portlet {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -124,8 +134,10 @@ sub event_rem_portlet {
 # END RUNTIME EVENTS
 # #############################################################################
 
-=head2 expand_bodydeptinfo ()
+=head2 expand_bodydeptinfo()
+
 =cut
+
 sub expand_bodydeptinfo {
     my $self = shift;
     my $ctxt = shift;

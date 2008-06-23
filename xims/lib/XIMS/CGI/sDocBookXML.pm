@@ -5,7 +5,7 @@ XIMS::CGI::sDocBookXML -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use base qw( XIMS::CGI::Document );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 event_create()
+
+=cut
+
 sub event_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -38,6 +42,10 @@ sub event_create {
 
     return 0;
 }
+
+=head2 event_edit()
+
+=cut
 
 sub event_edit {
     XIMS::Debug( 5, "called" );
@@ -52,6 +60,10 @@ sub event_edit {
     $ctxt->properties->application->style( "edit" );
     return 0;
 }
+
+=head2 event_exit()
+
+=cut
 
 sub event_exit {
     XIMS::Debug( 5, "called" );

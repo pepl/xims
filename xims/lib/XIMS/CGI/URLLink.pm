@@ -29,6 +29,10 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 # #############################################################################
 # GLOBAL SETTINGS
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
@@ -51,6 +55,10 @@ sub registerEvents {
 # #############################################################################
 # RUNTIME EVENTS
 
+=head2 event_default()
+
+=cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -60,6 +68,10 @@ sub event_default {
 
     return 0;
 }
+
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );
@@ -76,6 +88,10 @@ sub event_store {
     return $self->SUPER::event_store($ctxt);
 }
 
+=head2 event_test_location()
+
+=cut
+
 sub event_test_location {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -87,6 +103,10 @@ sub event_test_location {
     return $self->SUPER::event_test_location($ctxt);
 }
 
+=head2 event_publish_prompt()
+
+=cut
+
 sub event_publish_prompt {
     my ( $self, $ctxt ) = @_;
 
@@ -96,6 +116,10 @@ sub event_publish_prompt {
 
     return 0;
 }
+
+=head2 event_exit()
+
+=cut
 
 sub event_exit {
     my ( $self, $ctxt ) = @_;

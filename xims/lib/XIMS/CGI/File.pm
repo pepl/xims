@@ -5,7 +5,7 @@ XIMS::CGI::File -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use base qw( XIMS::CGI );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called");
     return $_[0]->SUPER::registerEvents(
@@ -44,6 +48,10 @@ sub registerEvents {
         );
 }
 
+=head2 event_default()
+
+=cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -57,6 +65,9 @@ sub event_default {
     return 0;
 }
 
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );
@@ -103,6 +114,10 @@ sub event_store {
     return 0 unless $self->SUPER::event_store( $ctxt );
 
 }
+
+=head2 event_view_data()
+
+=cut
 
 sub event_view_data {
     XIMS::Debug( 5, "called" );

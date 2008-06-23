@@ -36,6 +36,10 @@ use XIMS::VLibMeta;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -60,6 +64,10 @@ sub registerEvents {
     );
 }
 
+=head2 event_init()
+
+=cut
+
 sub event_init {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
@@ -67,6 +75,10 @@ sub event_init {
     $ctxt->sax_generator('XIMS::SAX::Generator::VLibraryItem');
     $self->SUPER::event_init($ctxt);
 }
+
+=head2 event_create()
+
+=cut
 
 sub event_create {
     my ( $self, $ctxt ) = @_;
@@ -84,6 +96,10 @@ sub event_create {
     $self->SUPER::event_create($ctxt);
 }
 
+=head2 event_edit()
+
+=cut
+
 sub event_edit {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
@@ -100,6 +116,10 @@ sub event_edit {
 
     return $self->SUPER::event_edit($ctxt);
 }
+
+=head2 event_remove_mapping()
+
+=cut
 
 sub event_remove_mapping {
     my ( $self, $ctxt ) = @_;
@@ -156,6 +176,10 @@ sub event_remove_mapping {
     return 0;
 }
 
+=head2 event_create_mapping()
+
+=cut
+
 sub event_create_mapping {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
@@ -206,6 +230,9 @@ sub event_create_mapping {
     return 0;
 }
 
+=head2 event_create_mapping_async()
+
+=cut
 
 sub event_create_mapping_async {
     my ( $self, $ctxt ) = @_;
@@ -248,6 +275,10 @@ sub event_create_mapping_async {
     return 0;
 }
 
+=head2 event_show_mapping_async()
+
+=cut
+
 sub event_show_mapping_async {
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
@@ -267,6 +298,10 @@ sub event_show_mapping_async {
     $ctxt->properties->application->style("properties_mapped");
     return 0;
 }
+
+=head2 event_remove_mapping_async()
+
+=cut
 
 sub event_remove_mapping_async {
     my ( $self, $ctxt ) = @_;
@@ -338,6 +373,9 @@ sub event_remove_mapping_async {
     return 0;
 }
 
+=head2 event_publish()
+
+=cut
 
 sub event_publish {
     XIMS::Debug( 5, "called" );
@@ -363,6 +401,10 @@ sub event_publish {
 
     return 0;
 }
+
+=head2 event_unpublish()
+
+=cut
 
 sub event_unpublish {
     XIMS::Debug( 5, "called" );

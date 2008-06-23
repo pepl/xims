@@ -47,8 +47,11 @@ sub registerEvents {
 
 # #############################################################################
 # RUNTIME EVENTS
+
 =head2 event_default()
+
 =cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
@@ -64,8 +67,11 @@ sub event_default {
 
     return 0;
 }
-=head2 event_store ()
+
+=head2 event_store()
+
 =cut
+
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -177,8 +183,11 @@ sub event_store {
 }
 
 # override SUPER::events
-=head2 event_delete ()
+
+=head2 event_delete()
+
 =cut
+
 sub event_delete {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -198,14 +207,17 @@ sub event_delete {
 
 
 =head2 event_publish()
+
 =cut
+
 sub event_publish {
     my ( $self, $ctxt ) = @_;
     $self->sendError( $ctxt, "This object can not be published directly, please publish the related forum." );
     return 0;
 }
 
-=head2 event_publish_prompt ()
+=head2 event_publish_prompt()
+
 =cut
 
 sub event_publish_prompt {
@@ -214,8 +226,10 @@ sub event_publish_prompt {
     return 0;
 }
 
-=head2 event_unpublish ()
+=head2 event_unpublish()
+
 =cut
+
 sub event_unpublish {
     my ( $self, $ctxt ) = @_;
     $self->sendError( $ctxt, "This object can not be published directly, please publish the related forum." );

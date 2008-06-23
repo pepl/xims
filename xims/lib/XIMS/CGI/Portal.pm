@@ -5,7 +5,7 @@ XIMS::CGI::Portal -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -28,6 +28,10 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
 # RUNTIME EVENTS
+
+=head2 event_default()
+
+=cut
 
 sub event_default {
     XIMS::Debug( 5, "called" );

@@ -5,7 +5,7 @@ XIMS::CGI::VLibraryItem::DocBookXML -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -27,6 +27,10 @@ use XIMS::CGI::XML;
 use XIMS::Importer::Object::VLibraryItem::DocBookXML;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );

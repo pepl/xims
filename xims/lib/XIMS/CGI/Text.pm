@@ -27,6 +27,10 @@ use Text::Iconv;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     my $self = shift;
     $self->SUPER::registerEvents(
@@ -43,6 +47,10 @@ sub registerEvents {
                                 );
 }
 
+=head2 event_edit()
+
+=cut
+
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -52,6 +60,9 @@ sub event_edit {
     return $self->SUPER::event_edit($ctxt);
 }
 
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );

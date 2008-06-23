@@ -29,8 +29,10 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 # #############################################################################
 # RUNTIME EVENTS
 
-=head2 event_default ()
+=head2 event_default()
+
 =cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -42,8 +44,10 @@ sub event_default {
     return 0;
 }
 
-=head2 event_publish ()
+=head2 event_publish()
+
 =cut
+
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -75,8 +79,10 @@ sub event_publish {
     }
 }
 
-=head2 event_unpublish ()
+=head2 event_unpublish()
+
 =cut
+
 sub event_unpublish {
     my ( $self, $ctxt ) = @_;
     $self->unpublish_gopublic( $ctxt, @_ );

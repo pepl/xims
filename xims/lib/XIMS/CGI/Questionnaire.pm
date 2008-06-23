@@ -5,7 +5,7 @@ XIMS::CGI::Questionnaire -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -33,6 +33,11 @@ use XML::LibXSLT;
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # (de)register events here
+
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called" );
     $_[0]->SUPER::registerEvents(
@@ -59,6 +64,11 @@ sub registerEvents {
 # override or add event handlers here
 #
 # override SUPER::events
+
+=head2 event_default()
+
+=cut
+
 sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -117,6 +127,10 @@ sub _default_public {
     $object->body( XIMS::decode( $object->body() ) );
 }
 
+=head2 event_edit()
+
+=cut
+
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -173,12 +187,20 @@ sub event_edit {
     $self->SUPER::event_edit($ctxt);
 }
 
+=head2 event_create()
+
+=cut
+
 sub event_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my $object = $ctxt->object();
     $self->SUPER::event_create($ctxt);
 }
+
+=head2 event_store()
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );
@@ -212,6 +234,10 @@ sub event_store {
         ->title( XIMS::decode( $self->param('questionnaire_title') ) );
     return $self->SUPER::event_store($ctxt);
 }
+
+=head2 event_answer()
+
+=cut
 
 sub event_answer {
     XIMS::Debug( 5, "called" );
@@ -275,6 +301,10 @@ sub event_answer {
     $self->SUPER::event_default($ctxt);
 }
 
+=head2 event_download_results()
+
+=cut
+
 sub event_download_results {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -308,6 +338,10 @@ sub event_download_results {
     }
     return 0;
 }
+
+=head2 event_download_all_results()
+
+=cut
 
 sub event_download_all_results {
     XIMS::Debug( 5, "called" );
@@ -419,6 +453,10 @@ sub event_download_all_results {
     return 0;
 }
 
+=head2 event_download_raw_results()
+
+=cut
+
 sub event_download_raw_results {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -502,6 +540,10 @@ sub event_download_raw_results {
     return 0;
 }
 
+=head2 event_download_results_pdf()
+
+=cut
+
 sub event_download_results_pdf {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -580,17 +622,29 @@ sub event_download_results_pdf {
     }
 }
 
+=head2 event_publish()
+
+=cut
+
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->publish_gopublic(@_);
 }
 
+=head2 event_unpublish()
+
+=cut
+
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->unpublish_gopublic(@_);
 }
+
+=head2 event_exit()
+
+=cut
 
 sub event_exit {
     XIMS::Debug( 5, "called" );

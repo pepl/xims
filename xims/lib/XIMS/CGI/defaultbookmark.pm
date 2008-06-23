@@ -5,7 +5,7 @@ XIMS::CGI::defaultbookmark -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -31,6 +31,10 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 # #############################################################################
 # GLOBAL SETTINGS
 
+=head2 selectStylesheet()
+
+=cut
+
 sub selectStylesheet { return 1; };
 
 # END GLOBAL SETTINGS
@@ -45,6 +49,10 @@ sub selectStylesheet { return 1; };
 #
 # we might consider moving this to a more generic
 # redir-to-bookmark-and-fallback-to-default script, but...
+
+=head2 event_init()
+
+=cut
 
 sub event_init {
     XIMS::Debug( 5, "called" );
@@ -80,6 +88,9 @@ sub event_init {
 redirect to the user's defaultbookmark unless a specific path is requested via path_info
 =cut
 
+=head2 redirToDefault()
+
+=cut
 
 sub redirToDefault {
     XIMS::Debug( 5, "called" );

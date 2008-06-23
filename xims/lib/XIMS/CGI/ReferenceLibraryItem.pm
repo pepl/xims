@@ -34,8 +34,10 @@ use Encode;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-=head2 registerEvents ()
+=head2 registerEvents()
+
 =cut
+
 sub registerEvents {
     XIMS::Debug( 5, "called");
     my $self = shift;
@@ -61,8 +63,10 @@ sub registerEvents {
         );
 }
 
-=head2 event_init ()
+=head2 event_init()
+
 =cut
+
 sub event_init {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -84,8 +88,10 @@ sub event_init {
     }
 }
 
-=head2 event_store ()
+=head2 event_store()
+
 =cut
+
 sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -185,8 +191,10 @@ sub event_store {
     return 1;
 }
 
-=head2 create_author_mapping ()
+=head2 create_author_mapping()
+
 =cut
+
 sub create_author_mapping {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -208,8 +216,10 @@ sub create_author_mapping {
     return 0;
 }
 
-=head2 create_serial_mapping ()
+=head2 create_serial_mapping()
+
 =cut
+
 sub create_serial_mapping {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -231,8 +241,10 @@ sub create_serial_mapping {
     return 0;
 }
 
-=head2 update_properties ()
+=head2 update_properties()
+
 =cut
+
 sub update_properties {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -271,8 +283,10 @@ sub update_properties {
     return 1;
 }
 
-=head2 event_remove_author_mapping ()
+=head2 event_remove_author_mapping()
+
 =cut
+
 sub event_remove_author_mapping {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -324,8 +338,10 @@ sub event_remove_author_mapping {
     return 0;
 }
 
-=head2 event_remove_serial_mapping ()
+=head2 event_remove_serial_mapping()
+
 =cut
+
 sub event_remove_serial_mapping {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -367,8 +383,10 @@ sub event_remove_serial_mapping {
     return 0;
 }
 
-=head2 event_create_author_mapping ()
+=head2 event_create_author_mapping()
+
 =cut
+
 sub event_create_author_mapping {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -383,8 +401,10 @@ sub event_create_author_mapping {
     return 1;
 }
 
-=head2 event_create_editor_mapping ()
+=head2 event_create_editor_mapping()
+
 =cut
+
 sub event_create_editor_mapping {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -399,8 +419,10 @@ sub event_create_editor_mapping {
     return 1;
 }
 
-=head2 event_create_serial_mapping ()
+=head2 event_create_serial_mapping()
+
 =cut
+
 sub event_create_serial_mapping {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -414,8 +436,10 @@ sub event_create_serial_mapping {
     return 1;
 }
 
-=head2 event_reposition_author ()
+=head2 event_reposition_author()
+
 =cut
+
 sub event_reposition_author {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -450,8 +474,10 @@ sub event_reposition_author {
     }
 }
 
-=head2 event_change_reference_type ()
+=head2 event_change_reference_type()
+
 =cut
+
 sub event_change_reference_type {
     my ( $self, $ctxt) = @_;
     XIMS::Debug( 5, "called" );
@@ -482,8 +508,10 @@ sub event_change_reference_type {
     }
 }
 
-=head2 event_publish_prompt ()
+=head2 event_publish_prompt()
+
 =cut
+
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -498,16 +526,20 @@ sub event_publish_prompt {
     return 0;
 }
 
-=head2 event_publish ()
+=head2 event_publish()
+
 =cut
+
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->publish_gopublic( @_ );
 }
 
-=head2 event_unpublish ()
+=head2 event_unpublish()
+
 =cut
+
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
     my $self = shift;

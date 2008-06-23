@@ -5,7 +5,7 @@ XIMS::CGI::CSS -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -27,9 +27,17 @@ use CSS::Tiny;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=cut
+
 sub registerEvents {
     $_[0]->SUPER::registerEvents( qw( parse_css ) );
 }
+
+=head2 event_parse_css()
+
+=cut
 
 sub event_parse_css {
     XIMS::Debug( 5, "called" );
