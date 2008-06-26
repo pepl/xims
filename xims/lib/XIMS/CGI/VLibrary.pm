@@ -61,6 +61,7 @@ sub registerEvents {
           property_store
           property_delete_prompt
           property_delete
+          list_properties_items
           vlsearch
           vlchronicle
           most_recent
@@ -716,6 +717,39 @@ sub event_publish_prompt {
     return 0;
 }
 
+=head2 event_list_properties_items()
+
+=cut
+
+sub event_list_properties_items {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $object = $ctxt->object();
+    my $property = $self->param('property');
+
+    if ( $property !~ /^(subject|author|publication|keyword)$/ ) {
+        return $self->simple_response(
+            '400 BAD REQUEST',
+"ERROR: Property must be one of: subject, author, publication, or keyword!"
+        );
+    }
+
+    unless ( $ctxt->session->user->object_privmask($object) &
+        XIMS::Privileges::WRITE )
+    {
+        return $self->event_access_denied($ctxt);
+    }
+
+    # we need this information in XIMS::SAX::Generator::VLibrary;
+    $ctxt->objectlist_info($property);
+
+    $ctxt->properties->application->style('list_properties_items');
+
+    return 0;
+
+}
+
 =head2 event_publish()
 
 =cut
@@ -960,6 +994,14 @@ sub event_filter {
         $params{mediatype}   = $mediatype;
     }
 
+    # publisher
+    my $publisher = $self->param('pbl');
+    if ( defined $publisher and length $publisher ) {
+        XIMS::Debug( 6, "publisher param '$publisher'" );
+        $criteria{publisher} = " m.publisher = ? ";
+        $params{publisher}   = $publisher;
+    }
+
     # chronicle dates
     my $date_from = $self->_heuristic_date_parser( $self->param('cf') );
     my $date_to   = $self->_heuristic_date_parser( $self->param('ct') );
@@ -1037,6 +1079,9 @@ sub event_filter {
 
     my $rowlimit = $self->param('rowlimit');
 
+    # for consistency...
+    $rowlimit ||= $self->param('pagerowlimit');
+
     # rowlimit = 0 means no limit (display all results)
     $rowlimit ||= XIMS::SEARCHRESULTROWLIMIT();
     $offset = $offset * $rowlimit;
@@ -1046,6 +1091,7 @@ sub event_filter {
     #   alpha: Title
     #   create: creation date
     #   modify: modification date
+    #   dc.date: meta.dc_date
     $order ||= 'modify';
 
     XIMS::Debug( 6, "Filter criteria:" . Dumper(%criteria) );
