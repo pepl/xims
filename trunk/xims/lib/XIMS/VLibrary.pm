@@ -467,6 +467,9 @@ sub vlitems_byfilter {
     elsif ( $order eq "chrono" ) {
         $order = "m.date_from_timestamp ASC";
     }
+     elsif ( $order eq "dc.date" ) {
+        $order = "m.dc_date DESC";
+    }
     elsif ( $order eq "create" ) {
         $order = "c.creation_timestamp DESC";
     }
@@ -481,6 +484,7 @@ sub vlitems_byfilter {
 
     my ( $sql, $values ) =
       $self->_vlitems_byfilter_sql( $criteria, $params, $filter_granted, undef, $order );
+
     my $data = $self->data_provider->driver->dbh->fetch_select(
         sql    => [ $sql, @{$values} ],
         limit  => $limit,
@@ -499,7 +503,10 @@ sub vlitems_byfilter {
           delete $kiddo->{date_from_timestamp};
         $kiddo->{meta}->{date_to_timestamp} =
           delete $kiddo->{date_to_timestamp};
+        $kiddo->{meta}->{dc_date} =
+          delete $kiddo->{dc_date};
         $kiddo->{meta}->{mediatype} = delete $kiddo->{mediatype};
+        $kiddo->{meta}->{publisher} = delete $kiddo->{publisher};
         push( @items, ( bless $kiddo, 'XIMS::VLibraryItem' ) );
         push( @itemids, $kiddo->{id} );
         $privmask{ $kiddo->{id} } = 0xffffffff if $self->User->admin();
@@ -579,9 +586,10 @@ sub _vlitems_byfilter_sql {
         $properties = 'count(d.id) AS count';
     }
     else {
-        $properties = 'c.id AS id, d.parent_id, d.location, d.object_type_id, c.document_id, '
-                    . 'c.abstract, c.title, c.last_modification_timestamp, '
-                    . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
+        $properties =
+'c.id AS id, d.parent_id, d.location, d.object_type_id, c.document_id, '
+          . 'c.abstract, c.title, c.last_modification_timestamp, '
+          . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
     }
 
     # Select Tables
@@ -589,7 +597,11 @@ sub _vlitems_byfilter_sql {
     my $tables     = 'ci_documents d, ci_content c';
     my $conditions = 'd.ID = c.document_id AND d.parent_id = ? ';
     my @values     = ( $self->document_id() );
-    if ( $criteria{mediatype} ne '' || $criteria{chronicle} ne '' || defined $order and $order eq 'm.date_from_timestamp ASC' ) {
+    if (   $criteria{mediatype} ne ''
+        || $criteria{chronicle} ne ''
+        || $criteria{publisher} ne ''
+        || ( defined $order and $order =~ /^m\./ ) )
+    {
         XIMS::Debug( 6, "Mediatype or Chronicle filter" );
         $tables     .= ', cilib_meta m ';
         $conditions .= "AND d.ID = m.document_id ";
@@ -617,11 +629,20 @@ sub _vlitems_byfilter_sql {
         $conditions .= " AND " . $criteria{mediatype};
         push @values, $params{mediatype};
     }
-    if ( $criteria{chronicle} ne '' || defined $order and $order eq 'm.date_from_timestamp ASC' ) {
+    if ( $criteria{publisher} ne '' ) {
+        XIMS::Debug( 6, "Publisher filter" );
+        $properties .= ", m.publisher" if ( not defined $count );
+        $conditions .= " AND " . $criteria{publisher};
+        push @values, $params{publisher};
+    }
+
+    if ( $criteria{chronicle} ne ''
+        || ( defined $order and $order eq 'm.date_from_timestamp ASC' ) )
+    {
         XIMS::Debug( 6, "Chronicle filter" );
         $properties .= ", m.date_from_timestamp, m.date_to_timestamp"
           if ( not defined $count );
-        if ( $criteria{chronicle} ) {
+        if   ( $criteria{chronicle} ) {
             $conditions .= $criteria{chronicle};
             push @values, @{ $params{chronicle} };
         }
