@@ -998,8 +998,8 @@ sub event_filter {
     my $publisher = $self->param('pbl');
     if ( defined $publisher and length $publisher ) {
         XIMS::Debug( 6, "publisher param '$publisher'" );
-        $criteria{publisher} = " m.publisher = ? ";
-        $params{publisher}   = $publisher;
+        $criteria{publisher} = " m.publisher LIKE ? ";
+        $params{publisher}   = "\%$publisher\%";
     }
 
     # chronicle dates
