@@ -141,7 +141,7 @@ sub new {
     $param{Object} : the object to be processed (mandatory)
     $param{Basedir}    : the base directory for filesystem export
                          (optional, may be set in constructor)
-    $param{Stylesheet} : a xsl stylesheet used to generate exported DOMS 
+    $param{Stylesheet} : a xsl stylesheet used to generate exported DOMS
                          (optional, may be set in constructor)
 
 =head3 Returns
@@ -411,12 +411,25 @@ sub stylesheet {
     my ($self, $object) = @_;
     my $stylename = lc( $object->object_type->fullname() );
     $stylename =~ s/::/_/;
-    my $stylesheet = XIMS::XIMSROOT()
-                     . '/stylesheets/exporter/export_'
-                     . $stylename
-                     . '.xsl';
 
-    return $stylesheet;
+    my $stylefilename = 'export_' . $stylename . '.xsl';
+    my $stylesheetfile;
+
+    # Check for a custom export stylesheet in an assigned stylesheet folder
+    my $stylesheet = $object->stylesheet();
+    if ( defined $stylesheet and $stylesheet->published() ) {
+        XIMS::Debug( 4, "Checking for custom export stylesheet from assigned folder" );
+        my $pubstylepath = XIMS::PUBROOT() . $stylesheet->location_path() . '/' . $stylefilename;
+         if ( -f $pubstylepath and -r $pubstylepath ) {
+                XIMS::Debug( 4, "Using custom export stylesheet '$pubstylepath'" );
+                $stylesheetfile = $pubstylepath;
+         }
+    }
+    # Use default export stylesheet if there is no custom one
+    if ( not defined $stylesheetfile )  {
+        $stylesheetfile = XIMS::XIMSROOT() . '/stylesheets/exporter/' . $stylefilename;
+    }
+    return $stylesheetfile;
 }
 
 sub classname {
@@ -1123,10 +1136,7 @@ by using XSLT.
 
 sub transform_dom {
     XIMS::Debug( 5, "called" );
-
     my ( $self, $dom ) = @_;
-
-    my $retval = undef;
 
     my $stylesheet = $self->{Stylesheet};
     if ( defined $stylesheet and -f $stylesheet and -r $stylesheet ) {
@@ -1140,8 +1150,8 @@ sub transform_dom {
             $xsl_dom  = $parser->parse_file( $stylesheet );
         };
         if ( $@ ) {
-            XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
-            return $retval;
+            XIMS::Debug( 3, "Could not parse stylesheet file: ". $@ );
+            return;
         }
 
         eval {
@@ -1149,19 +1159,20 @@ sub transform_dom {
             # $style = $xslt->parse_stylesheet_file( $file );
         };
         if( $@ ) {
-            debug_msg( 3, "Corrupted Stylesheet:\n". $@ ."\n" );
-            $self->setPanicMsg( "Corrupted Stylesheet:\n". $@ );
-            return $retval;
-        }
-
-        eval {
-            $retval = $style->transform( $dom );
-        };
-        if( $@ ) {
-            XIMS::Debug( 3, "Broken Transformation:\n". $@ ."\n" );
+            XIMS::Debug( 2, "Error in Stylesheet: ". $@ );
             return;
         }
-        XIMS::Debug( 4, "transformation done" );
+
+        my $transformed_dom;
+        eval {
+            $transformed_dom = $style->transform( $dom );
+        };
+        if( $@ ) {
+            XIMS::Debug( 3, "Broken Transformation: ". $@ );
+            return;
+        }
+        XIMS::Debug( 4, "Transformation done" );
+        return $transformed_dom;
     }
     else {
         #
@@ -1169,10 +1180,9 @@ sub transform_dom {
         # returns the untransformed DOM
         #
         XIMS::Debug( 4, "dom has not been transformed" );
-        $retval = $dom;
+        return $dom;
     }
-
-    return $retval;
+    return;
 }
 
 # default, should be overwritten by classes inheriting from this base class.
