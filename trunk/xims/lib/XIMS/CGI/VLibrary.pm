@@ -482,7 +482,7 @@ sub event_property_edit {
 
     $ctxt->objectlist( [$vlibproperty] );
 
-    # Hacked-on HTMLArea editable subjects description, an »Extrawurst« for
+    # Hacked-on TinyMCE editable subjects description, an »Extrawurst« for
     # ZIS.
     my $ed = '';
 
@@ -490,7 +490,7 @@ sub event_property_edit {
         # XXX calling foreign internal methods is certainly not not ugly...
         $ed = XIMS::CGI::Document::_set_wysiwyg_editor($self, $ctxt);
         # either Plain or HTMLArea
-        if (length($ed)) {$ed = '_htmlarea';}
+        if (length($ed)) {$ed = '_tinymce';}
     }
 
     $ctxt->properties->application->style("${property}_edit${ed}");

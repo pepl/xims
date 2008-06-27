@@ -23,7 +23,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js"/>
+        <xsl:call-template name="tinymce_load"/>
         <script language="javascript" type="text/javascript">
             var origbody = null;
             var editor = null;
@@ -37,7 +37,6 @@
                 entity_encoding : 'raw',
 		file_browser_callback : 'filebrowse',
 		urlconverter_callback : 'urltransformer',
-
             });
 
 	    /*
@@ -50,7 +49,8 @@
 	    else {
 		var browseurl = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;contentbrowse=1&amp;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;style=tinymceimage&amp;otfilter=Image';
 	    }
-	    <![CDATA[
+
+            <![CDATA[
 	    tinyMCE.get('body').windowManager.open({
 		file : browseurl,
 		title : "XIMS File Browser",
@@ -74,7 +74,7 @@
              *   1. leave URLs starting with a '/' untouched
              *   2. leave URLS starting with 'http://' untouched
              *   3. resolve all other URLs relative to 'document_base_url'
-             * 
+             *
              * We first check for '/'-starting URLs and pass it then on to TinyMCEs
              * default function 'TinyMCE.prototype.convertURL' :-)
              */
@@ -118,6 +118,24 @@
                 origbody = tinyMCE.get('body').getContent();
             }
         </script>
+    </xsl:template>
+
+    <xsl:template name="tinymce_load">
+       <script language="javascript" 
+               type="text/javascript" 
+               src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js"/>
+    </xsl:template>
+
+    <xsl:template name="tinymce_simple">
+       <script language="javascript" 
+               type="text/javascript">
+         tinyMCE.init({
+           mode : "textareas",
+	   editor_selector : "mceEditor",
+	   theme : "simple",
+           language : '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)"/>',
+         });
+       </script>
     </xsl:template>
 
 </xsl:stylesheet>
