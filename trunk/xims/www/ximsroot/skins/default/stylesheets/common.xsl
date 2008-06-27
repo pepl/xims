@@ -15,9 +15,9 @@
 
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:saxon="http://icl.com/saxon"
+    xmlns:dyn="http://exslt.org/dynamic"
     xmlns="http://www.w3.org/1999/xhtml"
-    extension-element-prefixes="saxon">
+    extension-element-prefixes="dyn">
 
 <xsl:import href="../../../stylesheets/common.xsl"/>
 <xsl:import href="common_footer.xsl"/>
@@ -1817,7 +1817,7 @@
       <td valign="top">
         <xsl:choose>
           <xsl:when test="string-length($title-i18n)&gt;0">
-            <xsl:value-of select="saxon:evaluate( concat('$i18n/l/', $title-i18n) )"/>
+            <xsl:value-of select="dyn:evaluate( concat('$i18n/l/', $title-i18n) )"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat($title, ':')"/>
@@ -1828,7 +1828,7 @@
         <input type="text" 
                size="{$size}" 
                name="{$name}"
-               value="{saxon:evaluate($xpath)}"
+               value="{dyn:evaluate($xpath)}"
                class="text"/>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('{$title}')" 
@@ -1847,7 +1847,7 @@
       <td >
         <xsl:choose>
           <xsl:when test="string-length($title-i18n)&gt;0">
-            <xsl:value-of select="saxon:evaluate( concat('$i18n/l/', $title-i18n) )"/>
+            <xsl:value-of select="dyn:evaluate( concat('$i18n/l/', $title-i18n) )"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="concat($title, ':')"/>
@@ -1858,7 +1858,7 @@
         <input name="{$name}" 
                type="checkbox" 
                value="true">
-          <xsl:if test="saxon:evaluate($xpath) = '1'">
+          <xsl:if test="dyn:evaluate($xpath) = '1'">
             <xsl:attribute name="checked">
               <xsl:value-of select="checked"/>
             </xsl:attribute>
