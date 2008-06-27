@@ -245,7 +245,8 @@
 
   <xsl:template match="vlsubjects">
     <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
-            name="svlsubject">
+            name="svlsubject"
+            id="svlsubject">
     <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
       <xsl:apply-templates select="/document/context/vlsubjects/subject">
         <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
@@ -257,7 +258,8 @@
 
   <xsl:template match="vlkeywords">
     <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
-            name="svlkeyword">
+            name="svlkeyword" 
+            id="svlkeyword">
       <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
       <xsl:apply-templates select="/document/context/vlkeywords/keyword">
         <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
@@ -269,7 +271,8 @@
 
   <xsl:template match="vlpublications">
     <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
-            name="svlpublication">
+            name="svlpublication" 
+            id="svlpublication">
       <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
       <xsl:apply-templates select="/document/context/vlpublications/publication">
         <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
@@ -281,7 +284,8 @@
 
   <xsl:template match="vlauthors">
     <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
-            name="svlauthor">
+            name="svlauthor" 
+            id="svlauthor">
       <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
       <xsl:apply-templates select="/document/context/vlauthors/author">
         <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
@@ -334,92 +338,43 @@
 
 
   <xsl:template name="tr-subtitle">
-    <tr>
-      <td valign="top">Subtitle</td>
-      <td colspan="2">
-        <input tabindex="20"
-               type="text"
-               name="subtitle"
-               size="60"
-               class="text"
-               maxlength="256"
-               value="{meta/subtitle}"/>
-        <xsl:text>&#160;</xsl:text>
-        <!-- <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
-      </td>
-    </tr>
+     <xsl:call-template name="mk-tr-textfield">
+       <xsl:with-param name="title" select="'Subtitle'"/>
+       <xsl:with-param name="maxlength" select="'256'"/>
+       <xsl:with-param name="xpath" select="'meta/subtitle'"/>
+     </xsl:call-template>
   </xsl:template>
 
 
   <xsl:template name="tr-mediatype">
-    <tr>
-      <td valign="top">Mediatype</td>
-      <td colspan="2">
-        <input tabindex="20"
-               type="text"
-               name="mediatype"
-               size="60"
-               class="text"
-               maxlength="128"
-               value="{meta/mediatype}"/>
-        <xsl:text>&#160;</xsl:text>
-        <!-- <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
-      </td>
-    </tr>
+    <xsl:call-template name="mk-tr-textfield">
+      <xsl:with-param name="title" select="'Mediatype'"/>
+      <xsl:with-param name="xpath" select="'meta/mediatype'"/>
+    </xsl:call-template>
   </xsl:template>
 
 
   <xsl:template name="tr-legalnotice">
-    <tr>
-      <td valign="top">Legalnotice</td>
-      <td colspan="2">
-        <input tabindex="20"
-               type="text"
-               name="legalnotice"
-               size="60"
-               class="text"
-               maxlength="128"
-               value="{meta/legalnotice}"/>
-        <xsl:text>&#160;</xsl:text>
-        <!-- <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
-      </td>
-    </tr>
+    <xsl:call-template name="mk-tr-textfield">
+      <xsl:with-param name="title" select="'Legalnotice'"/>
+      <xsl:with-param name="xpath" select="'meta/legalnotice'"/>
+    </xsl:call-template>
   </xsl:template>
 
 
   <xsl:template name="tr-coverage">
-    <tr>
-      <td valign="top">Coverage</td>
-      <td colspan="2">
-        <input tabindex="20"
-               type="text"
-               name="coverage"
-               size="60"
-               class="text"
-               maxlength="256"
-               value="{meta/coverage}"/>
-        <xsl:text>&#160;</xsl:text>
-        <!-- <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
-      </td>
-    </tr>
+    <xsl:call-template name="mk-tr-textfield">
+      <xsl:with-param name="title" select="'Coverage'"/>
+      <xsl:with-param name="xpath" select="'meta/coverage'"/>
+    </xsl:call-template>
   </xsl:template>
 
 
   <xsl:template name="tr-audience">
-    <tr>
-      <td valign="top">Audience</td>
-      <td colspan="2">
-        <input tabindex="20"
-               type="text"
-               name="audience"
-               size="60"
-               class="text"
-               maxlength="256"
-               value="{meta/audience}"/>
-        <xsl:text>&#160;</xsl:text>
-        <!-- <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
-      </td>
-    </tr>
+    <xsl:call-template name="mk-tr-textfield">
+      <xsl:with-param name="title" select="'Audience'"/>
+      <xsl:with-param name="xpath" select="'meta/audience'"/>
+    </xsl:call-template>
   </xsl:template>
 
 
@@ -484,20 +439,11 @@
 
 
   <xsl:template name="tr-publisher">
-    <tr>
-      <td valign="top">Institution</td>
-      <td colspan="2">
-        <input tabindex="20"
-               type="text"
-               name="publisher"
-               size="60"
-               class="text"
-               maxlength="256"
-               value="{meta/publisher}" />
-        <xsl:text>&#160;</xsl:text>
-        <!-- <a href="javascript:openDocWindow('Institution')" class="doclink">(?)</a> -->
-      </td>
-    </tr>
+    <xsl:call-template name="mk-tr-textfield">
+      <xsl:with-param name="title" select="'Institution'"/>
+      <xsl:with-param name="name" select="'publisher'"/>
+      <xsl:with-param name="xpath" select="'meta/publisher'"/>
+    </xsl:call-template>
   </xsl:template>
 
 
