@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <!--
 # Copyright (c) 2002-2006 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
+
+<!DOCTYPE stylesheet [
+<!ENTITY  lc "'aäbcdefghijklmnoöpqrstuüvwxyz'">
+<!ENTITY  uc "'AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ'">
+]>
+
+
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns="http://www.w3.org/1999/xhtml">
+    xmlns:saxon="http://icl.com/saxon"
+    xmlns="http://www.w3.org/1999/xhtml"
+    extension-element-prefixes="saxon">
 
 <xsl:import href="../../../stylesheets/common.xsl"/>
 <xsl:import href="common_footer.xsl"/>
@@ -1777,20 +1787,12 @@
 </xsl:template>
 
 
-<xsl:template name="tr-minify">
-  <tr>
-    <td colspan="3">
-      <xsl:value-of select="$i18n/l/minify"/>
-      <input name="minify" type="checkbox" value="true">
-        <xsl:if test="attributes/minify = '1'">
-          <xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
-        </xsl:if>
-      </input>
-      <xsl:text>&#160;</xsl:text>
-      <a href="javascript:openDocWindow('minify')" class="doclink">(?)</a>
-    </td>
-  </tr>
-</xsl:template>
+  <xsl:template name="tr-minify">
+    <xsl:call-template name="mk-tr-checkbox">
+      <xsl:with-param name="title-i18n" select="'minify'"/>
+      <xsl:with-param name="xpath" select="'attributes/minify'"/>
+    </xsl:call-template>
+  </xsl:template>
 
   <xsl:template name="jquery-listitems-bg">
     <xsl:param name="pick"/>
@@ -1802,6 +1804,71 @@
         });
       </script>
     </xsl:if>
+  </xsl:template>
+
+
+  <xsl:template name="mk-tr-textfield">
+    <xsl:param name="title-i18n" select="''"/>
+    <xsl:param name="title" select="$title-i18n"/>    
+    <xsl:param name="name" select="translate($title, &uc;, &lc;)"/>
+    <xsl:param name="size" select="'40'"/>
+    <xsl:param name="xpath" select="'/..'"/>
+    <tr>  
+      <td valign="top">
+        <xsl:choose>
+          <xsl:when test="string-length($title-i18n)&gt;0">
+            <xsl:value-of select="saxon:evaluate( concat('$i18n/l/', $title-i18n) )"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat($title, ':')"/>
+          </xsl:otherwise>
+        </xsl:choose>        
+      </td>
+      <td colspan="2">
+        <input type="text" 
+               size="{$size}" 
+               name="{$name}"
+               value="{saxon:evaluate($xpath)}"
+               class="text"/>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('{$title}')" 
+           class="doclink">(?)
+        </a>
+      </td>
+    </tr>
+  </xsl:template>
+
+  <xsl:template name="mk-tr-checkbox">
+    <xsl:param name="title-i18n" select="''"/>
+    <xsl:param name="title" select="$title-i18n"/>   
+    <xsl:param name="name" select="translate($title, &uc;, &lc;)"/>
+    <xsl:param name="xpath" select="'/..'"/>
+    <tr>
+      <td >
+        <xsl:choose>
+          <xsl:when test="string-length($title-i18n)&gt;0">
+            <xsl:value-of select="saxon:evaluate( concat('$i18n/l/', $title-i18n) )"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat($title, ':')"/>
+          </xsl:otherwise>
+        </xsl:choose>     
+      </td>
+      <td colspan="2">
+        <input name="{$name}" 
+               type="checkbox" 
+               value="true">
+          <xsl:if test="saxon:evaluate($xpath) = '1'">
+            <xsl:attribute name="checked">
+              <xsl:value-of select="checked"/>
+            </xsl:attribute>
+          </xsl:if>
+        </input>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('{$title}')"
+           class="doclink">(?)</a>
+      </td>
+    </tr>
   </xsl:template>
 
 </xsl:stylesheet>

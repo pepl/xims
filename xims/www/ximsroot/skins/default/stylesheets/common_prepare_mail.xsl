@@ -6,16 +6,11 @@
 # $Id: document_edit.xsl 1902 2008-01-25 12:17:28Z haensel $
 -->
 
-<!DOCTYPE stylesheet [
-<!ENTITY  lc "'aäbcdefghijklmnoöpqrstuüvwxyz'">
-<!ENTITY  uc "'AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ'">
-]>
-
 
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-
+                
   <xsl:import href="common.xsl"/>
 
   <xsl:output method="xml"
@@ -86,35 +81,19 @@
             </div>
             <table border="0" 
                    width="98%">
-              <xsl:call-template name="mk-tr-textfield-small">
+              <xsl:call-template name="mk-tr-textfield">
                 <xsl:with-param name="title" select="'To'"/>
               </xsl:call-template>
-              <!--  <xsl:call-template name="mk-tr-small"> -->
-              <!--    <xsl:with-param name="title" select="'Cc'"/> -->
-              <!--  </xsl:call-template> -->
-              <!--  <xsl:call-template name="mk-tr-small"> -->
-              <!--    <xsl:with-param name="title" select="'Bcc'"/> -->
-              <!--  </xsl:call-template> -->
-              <xsl:call-template name="mk-tr-textfield-small">
+              <xsl:call-template name="mk-tr-textfield">
                 <xsl:with-param name="title" select="'Reply-To'"/>
               </xsl:call-template>
-              <xsl:call-template name="mk-tr-textfield-small">
+              <xsl:call-template name="mk-tr-textfield">
                 <xsl:with-param name="title" select="'Subject'"/>
               </xsl:call-template>
-              <tr>
-                <td>
-                  <xsl:value-of select="$i18n/l/Include_images"/>
-                </td>
-                <td colspan="2">
-                  <input name="mailer_include_images"
-                         type="checkbox"
-                         value="true">
-                  </input>
-                  <xsl:text>&#160;</xsl:text>
-                  <a href="javascript:openDocWindow('minify')"
-                     class="doclink">(?)</a>
-                </td>
-              </tr>
+              <xsl:call-template name="mk-tr-checkbox">
+                <xsl:with-param name="title-i18n" select="'Include_images'"/>
+                <xsl:with-param name="title" select="'mailer_include_images'"/>
+              </xsl:call-template>
             </table>
           </form>
         </div>
@@ -134,28 +113,6 @@
         </div>      
       </body>
     </html>
-  </xsl:template>
-
-  <xsl:template name="mk-tr-textfield-small">
-    <xsl:param name="title" select="'WTF?'"/>
-    <xsl:param name="name" select="translate($title, &uc;, &lc;)"/>
-    <xsl:param name="size" select="'40'"/>
-    <tr>  
-      <td valign="top">
-        <xsl:value-of select="concat($title, ':')"/>
-      </td>
-      <td colspan="2">
-        <input tabindex="20" 
-               type="text" 
-               size="{$size}" 
-               name="{$name}"
-               class="text"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('$title')" 
-           class="doclink">(?)
-        </a>
-      </td>
-    </tr>
   </xsl:template>
   
 </xsl:stylesheet>
