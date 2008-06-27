@@ -1811,7 +1811,8 @@
     <xsl:param name="title-i18n" select="''"/>
     <xsl:param name="title" select="$title-i18n"/>    
     <xsl:param name="name" select="translate($title, &uc;, &lc;)"/>
-    <xsl:param name="size" select="'40'"/>
+    <xsl:param name="size" select="'60'"/>
+    <xsl:param name="maxlength" select="'127'"/>
     <xsl:param name="xpath" select="'/..'"/>
     <tr>  
       <td valign="top">
@@ -1820,7 +1821,7 @@
             <xsl:value-of select="dyn:evaluate( concat('$i18n/l/', $title-i18n) )"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($title, ':')"/>
+            <xsl:value-of select="$title"/>
           </xsl:otherwise>
         </xsl:choose>        
       </td>
@@ -1829,7 +1830,8 @@
                size="{$size}" 
                name="{$name}"
                value="{dyn:evaluate($xpath)}"
-               class="text"/>
+               class="text"
+               maxlength="{$maxlength}"/>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('{$title}')" 
            class="doclink">(?)
@@ -1850,7 +1852,7 @@
             <xsl:value-of select="dyn:evaluate( concat('$i18n/l/', $title-i18n) )"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($title, ':')"/>
+            <xsl:value-of select="$title"/>
           </xsl:otherwise>
         </xsl:choose>     
       </td>
