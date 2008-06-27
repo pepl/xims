@@ -5,7 +5,7 @@ XIMS::Installer -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -61,6 +61,7 @@ sub new {
                 [ "Array::Iterator", '' ],
                 [ "Archive::Zip", '' ],
                 [ "Text::Template", '' ],
+                [ "MIME::Lite::HTML", ''],
               );
 
     my @optional_mods = ();
