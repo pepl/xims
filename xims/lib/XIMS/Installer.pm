@@ -61,8 +61,11 @@ sub new {
                 [ "Array::Iterator", '' ],
                 [ "Archive::Zip", '' ],
                 [ "Text::Template", '' ],
-                [ "MIME::Lite::HTML", ''],
-              );
+                [ "Email::Valid", '' ],
+                [ "MIME::Lite::HTML", '' ],
+                [ "JavaScript::Minify::XS", '' ],
+                [ "CSS::Minify::XS", '' ],
+    );
 
     my @optional_mods = ();
 
