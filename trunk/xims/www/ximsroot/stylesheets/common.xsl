@@ -168,31 +168,31 @@
 </xsl:template>
 
 <xsl:template name="userfullname">
-    <xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/>
+    <xsl:if test="firstname != ''"><xsl:value-of select="firstname"/><xsl:text> </xsl:text></xsl:if><xsl:value-of select="lastname"/>
 </xsl:template>
 
 <xsl:template name="creatorfullname">
-    <xsl:value-of select="created_by_firstname"/><xsl:text> </xsl:text><xsl:value-of select="created_by_lastname"/>
+    <xsl:if test="created_by_firstname != ''"><xsl:value-of select="created_by_firstname"/><xsl:text> </xsl:text></xsl:if><xsl:value-of select="created_by_lastname"/>
 </xsl:template>
 
 <xsl:template name="modifierfullname">
-    <xsl:value-of select="last_modified_by_firstname"/><xsl:text> </xsl:text><xsl:value-of select="last_modified_by_lastname"/>
+    <xsl:if test="last_modified_by_firstname != ''"><xsl:value-of select="last_modified_by_firstname"/><xsl:text> </xsl:text></xsl:if><xsl:value-of select="last_modified_by_lastname"/>
 </xsl:template>
 
 <xsl:template name="publisherfullname">
-    <xsl:value-of select="published_by_firstname"/><xsl:text> </xsl:text><xsl:value-of select="published_by_lastname"/>
+    <xsl:if test="published_by_firstname != ''"><xsl:value-of select="published_by_firstname"/><xsl:text> </xsl:text></xsl:if><xsl:value-of select="published_by_lastname"/>
 </xsl:template>
 
 <xsl:template name="lastpublisherfullname">
-    <xsl:value-of select="last_published_by_firstname"/><xsl:text> </xsl:text><xsl:value-of select="last_published_by_lastname"/>
+    <xsl:if test="last_published_by_firstname != ''"><xsl:value-of select="last_published_by_firstname"/><xsl:text> </xsl:text></xsl:if><xsl:value-of select="last_published_by_lastname"/>
 </xsl:template>
 
 <xsl:template name="ownerfullname">
-    <xsl:value-of select="owned_by_firstname"/><xsl:text> </xsl:text><xsl:value-of select="owned_by_lastname"/>
+    <xsl:if test="owned_by_firstname != ''"><xsl:value-of select="owned_by_firstname"/><xsl:text> </xsl:text></xsl:if><xsl:value-of select="owned_by_lastname"/>
 </xsl:template>
 
 <xsl:template name="lockerfullname">
-    <xsl:value-of select="locked_by_firstname"/><xsl:text> </xsl:text><xsl:value-of select="locked_by_lastname"/>
+    <xsl:if test="locked_by_firstname != ''"><xsl:value-of select="locked_by_firstname"/><xsl:text> </xsl:text></xsl:if><xsl:value-of select="locked_by_lastname"/>
 </xsl:template>
 
 <xsl:template name="message">
