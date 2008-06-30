@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::AxPointPresentation::Output -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::AxPointPresentation::Output -- handles XML based PDF Presentations
 
 =head1 VERSION
 
@@ -13,7 +13,8 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module handles AxPointPresentations, a XML Format used for simple PDF
+Presentations.
 
 =head1 SUBROUTINES/METHODS
 

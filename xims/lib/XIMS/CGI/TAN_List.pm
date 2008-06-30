@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::TAN_List -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::TAN_List -- A module used to create TAN lists for Questionnaire
 
 =head1 VERSION
 
@@ -13,7 +13,8 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module handles the creation of TAN lists (for polls with a closed user
+group.)
 
 =head1 SUBROUTINES/METHODS
 
