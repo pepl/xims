@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::Questionnaire -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::Questionnaire -- A module introducing a poll system
 
 =head1 VERSION
 
@@ -13,7 +13,7 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module introduces a simple poll system.
 
 =head1 SUBROUTINES/METHODS
 
