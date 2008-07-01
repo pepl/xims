@@ -55,6 +55,33 @@ sub prepare {
     $self->{FilterList} = [];
 
     my $doc_data = { context => {} };
+
+    if ( $ctxt->properties->application->style() eq 'list_properties_items' ) {
+
+        if ( $ctxt->objectlist_info() eq 'author' ) {
+            $doc_data->{context}->{vlauthors} =
+              { author => $ctxt->object->vlauthorinfo_granted() };
+        }
+        elsif ( $ctxt->objectlist_info() eq 'subject' ) {
+            $doc_data->{context}->{vlsubjects} =
+              { subject => $ctxt->object->vlsubjectinfo_granted() };
+        }
+        elsif ( $ctxt->objectlist_info() eq 'publication' ) {
+            $doc_data->{context}->{vlpublications} =
+              { publication => $ctxt->object->vlpublicationinfo_granted() };
+        }
+        elsif ( $ctxt->objectlist_info() eq 'keyword' ) {
+            $doc_data->{context}->{vlkeywords} =
+              { keyword => $ctxt->object->vlkeywordinfo_granted() };
+        }
+
+        # needed for UI-language information
+        $doc_data->{context}->{session} = { $ctxt->session->data() };
+
+        # no other information reqired, shortcut here.
+        return $doc_data;
+    }
+
     $doc_data->{context}->{session} = { $ctxt->session->data() };
     $doc_data->{context}->{session}->{user} = { $ctxt->session->user->data() };
 
@@ -92,7 +119,7 @@ sub prepare {
         # }
 
         if (
-            !$ctxt->properties->application->style()    # event_default
+            !$ctxt->properties->application->style()   # event_default
             || $ctxt->properties->application->style() eq "subjects"
             || $ctxt->properties->application->style() eq "subject_edit"
           )
