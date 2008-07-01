@@ -22,6 +22,7 @@
   <xsl:template name="head">
     <xsl:call-template name="head-edit_wepro">
       <xsl:with-param name="calendar" select="true()" />
+      <xsl:with-param name="jquery"   select="true()" />
     </xsl:call-template>
   </xsl:template>
 

@@ -43,6 +43,11 @@
             <xsl:call-template name="jquery-listitems-bg">
               <xsl:with-param name="pick" select="'div.vliteminfo'"/>
             </xsl:call-template>
+            <script type="text/javascript">
+               function refresh() {
+                  window.document.location.reload();
+               }; 
+            </script>
         </body>
     </html>
 </xsl:template>

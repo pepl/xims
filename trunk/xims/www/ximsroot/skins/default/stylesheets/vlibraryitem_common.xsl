@@ -54,15 +54,18 @@
       </td>
       <td colspan="2">
         <xsl:if test="/document/context/*[name()=concat('vl', $mo,'s')]">
-          <xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
+          <span id="svl{$mo}container">
+            <xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
+          </span>
           <input type="button"
-                  name="create_mapping"
-                  value="{$i18n_vlib/l/Create_mapping}"
-                  class="control"
-                  onClick="createMapping('{$mo}', '{$i18n_vlib/l/select_name}')"/>
+                 name="create_mapping"
+                 value="{$i18n_vlib/l/Create_mapping}"
+                 class="control"
+                 onClick="createMapping('{$mo}', '{$i18n_vlib/l/select_name}')"/>
           <xsl:text>&#160;</xsl:text>
         </xsl:if>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','{$popupsizes[name()=$mo]/@x}','{$popupsizes[name()=$mo]/@y}')">
+        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','{$popupsizes[name()=$mo]/@x}','{$popupsizes[name()=$mo]/@y}')"> 
+       <!--  <a onclick="$('#{$mo}_box').load('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo} fieldset')"> -->
           <xsl:value-of select="concat($i18n/l/create, ' ', $i18n_vlib/l/*[name()=$mo])"/>
         </a>
       </td>

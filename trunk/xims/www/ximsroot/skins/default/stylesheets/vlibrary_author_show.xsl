@@ -32,6 +32,7 @@
           <xsl:value-of select="$i18n_vlib/l/author"/>
         </title>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+       
       </head>
       <body>
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
@@ -206,7 +207,7 @@
     </fieldset>
     <p>
       <input type="submit"
-             onClick="window.opener.document.location.reload();self.close();return false;"
+             onClick="window.opener.refresh('author');self.close();return false;"
              value="OK, {$i18n/l/close_window}"
              class="control"
              accesskey="S"/>
