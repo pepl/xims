@@ -96,7 +96,7 @@
     </fieldset>
     <p>
       <input type="submit"
-             onClick="window.opener.document.location.reload();self.close();return false;"
+             onClick="window.opener.refresh('keyword');self.close();return false;"
              value="OK, {$i18n/l/close_window}"
              class="control"
              accesskey="S"/>
