@@ -249,7 +249,7 @@
             <xsl:call-template name="htmlarea_scripts"/>
         </xsl:if>
         <xsl:if test="$jquery">
-          <script src="{$ximsroot}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+          <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         </xsl:if>
     </head>
 </xsl:template>

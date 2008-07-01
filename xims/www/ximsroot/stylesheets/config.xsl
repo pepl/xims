@@ -15,7 +15,9 @@
 
   <xsl:variable name="editoroptions">
     <option value="plain">Plain Textarea</option>
-    <option value="htmlarea">HTMLArea Editor</option>
+    <option value="tinymce">TinyMCE Editor</option>
+    <!--<option value="htmlarea">HTMLArea Editor</option>-->
+    <!--<option value="wepro">eWebEditPro Editor</option>-->
   </xsl:variable>
   <xsl:variable name="searchresultrowlimit">30</xsl:variable>
 
@@ -34,4 +36,5 @@
   <xsl:variable name="currentskin"><xsl:value-of select="/document/context/session/skin"/></xsl:variable>
   <xsl:variable name="defaultcss">skins/<xsl:value-of select="$currentskin"/>/stylesheets/default.css</xsl:variable>
   <xsl:variable name="resolvereltositeroots">1</xsl:variable>
+  <xsl:variable name="jquery_dir"><xsl:value-of select="$ximsroot"/>jquery/</xsl:variable>
 </xsl:stylesheet>

@@ -42,6 +42,7 @@
 
     <xsl:template name="head-edit_tinymce">
       <xsl:param name="calendar" select="false()"/>
+      <xsl:param name="jquery" select="false()"/>
         <head>
             <title><xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS</title>
             <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
@@ -50,6 +51,9 @@
             <xsl:call-template name="tinymce_scripts"/>
             <xsl:if test="$calendar">
               <xsl:call-template name="jscalendar_scripts" />
+            </xsl:if>
+            <xsl:if test="$jquery">
+              <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             </xsl:if>
         </head>
     </xsl:template>

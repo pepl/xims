@@ -134,7 +134,7 @@
               type="text/javascript">
         <xsl:text>&#160;</xsl:text>
       </script>
-      <script src="{$ximsroot}jquery.js"
+      <script src="{$jquery_dir}jquery.js"
               type="text/javascript">
         <xsl:text>&#160;</xsl:text>
       </script>
