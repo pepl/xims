@@ -58,6 +58,9 @@ JavaScript::Minify::XS -
 CSS::Minify::XS -
 MIME::Lite::HTML -
 Email::Valid -
+MIME::Lite::HTML -
+JavaScript::Minify::XS -
+CSS::Minify::XS -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
 # Net::LDAP -
@@ -72,7 +75,7 @@ The XIMS home page, at L<http://xims.info/>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2006 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 See the file L<http://xims.info/license/license-1.0.txt> for information and
 conditions for use, reproduction, and distribution of this work,
 and for a DISCLAIMER OF ALL WARRANTIES.
