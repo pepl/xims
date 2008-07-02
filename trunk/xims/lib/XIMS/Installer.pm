@@ -63,8 +63,8 @@ sub new {
                 [ "Text::Template", '' ],
                 [ "Email::Valid", '' ],
                 [ "MIME::Lite::HTML", '' ],
-                [ "JavaScript::Minify::XS", '' ],
-                [ "CSS::Minify::XS", '' ],
+                [ "JavaScript::Minifier::XS", '' ],
+                [ "CSS::Minifier::XS", '' ],
     );
 
     my @optional_mods = ();
