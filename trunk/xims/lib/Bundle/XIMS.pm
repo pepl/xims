@@ -58,9 +58,6 @@ JavaScript::Minify::XS -
 CSS::Minify::XS -
 MIME::Lite::HTML -
 Email::Valid -
-MIME::Lite::HTML -
-JavaScript::Minify::XS -
-CSS::Minify::XS -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
 # Net::LDAP -
