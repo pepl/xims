@@ -34,8 +34,8 @@ my $meta = XIMS::VLibMeta->new();
 isa_ok( $meta, 'XIMS::VLibMeta' );
 
 $meta->document_id( $document->document_id() );
-$meta->legalnotice('© 2004 Gonkulator Inc.');
-$meta->bibliosource('<a href="http://xims.info/">Gonkulators in the Nü Millienium Today Conference</a>');
+$meta->legalnotice('Â© 2004 Gonkulator Inc.');
+$meta->bibliosource('<a href="http://xims.info/">Gonkulators in the NÃ¼ Millienium Today Conference</a>');
 $meta->mediatype('Conference Talk');
 $meta->subtitle('A Position-Fixing');
 $meta->coverage(
@@ -65,19 +65,12 @@ is( $meta->document_id(),
     'TestMeta has correct document_id'
 );
 
-
-# XXX
-#
-# It seems that accessor methods return utf-8 strings w/o the proper flag set.
-# As this is the current (and seemingly working) behaviour, I use encode_utf()
-# here, in order to let the tests succeed. This feels odd, nonetheless. (zeya)
-
-is( encode_utf8($meta->legalnotice()),
-    '© 2004 Gonkulator Inc.',
+is( $meta->legalnotice(),
+    'Â© 2004 Gonkulator Inc.',
     'TestMeta has correct legalnotice'
 );
-is( encode_utf8($meta->bibliosource()),
-    '<a href="http://xims.info/">Gonkulators in the Nü Millienium Today Conference</a>',
+is( $meta->bibliosource(),
+    '<a href="http://xims.info/">Gonkulators in the NÃ¼ Millienium Today Conference</a>',
     'TestMeta has correct bibliosource'
 );
 is( $meta->mediatype(), 'Conference Talk', 'TestMeta has correct mediatype' );
