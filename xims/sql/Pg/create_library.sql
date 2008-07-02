@@ -119,6 +119,8 @@ CREATE TABLE cilib_publications
  ,isbn              VARCHAR(30)         UNIQUE
  ,issn              varchar(30)         UNIQUE
  ,volume            varchar(30)
+ ,url               varchar(250)
+ ,image_url         varchar(250)
  ,document_id       INTEGER       NOT NULL REFERENCES ci_documents (id) ON DELETE CASCADE
  ,UNIQUE(name, volume,document_id)
  )
