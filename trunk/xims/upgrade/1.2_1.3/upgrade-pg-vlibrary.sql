@@ -286,8 +286,9 @@ CREATE TABLE bak$cilib_authors AS SELECT * FROM cilib_authors;
 CREATE TABLE bak$cilib_authormap AS SELECT * FROM cilib_authormap;
 CREATE TABLE bak$cireflib_authormap AS SELECT * FROM cireflib_authormap;
 
--- Add the document_id of the respective VLibrary to the author
+ALTER TABLE cilib_authors ADD COLUMN image_url VARCHAR(250);
 
+-- Add the document_id of the respective VLibrary to the author
 ALTER TABLE cilib_authors ADD COLUMN document_id integer;
 ALTER TABLE cilib_authors ADD FOREIGN KEY (document_id) REFERENCES ci_documents (id) ON DELETE CASCADE;
 ALTER TABLE cilib_authors ADD CONSTRAINT cilib_authors_unique_key
@@ -299,6 +300,9 @@ ALTER TABLE cilib_keywords ADD COLUMN document_id integer;
 ALTER TABLE cilib_keywords ADD FOREIGN KEY (document_id) REFERENCES ci_documents (id) ON DELETE CASCADE;
 ALTER TABLE cilib_keywords ADD CONSTRAINT cilib_keywords_unique_key
       UNIQUE (name, document_id);
+
+ALTER TABLE cilib_publications ADD COLUMN url VARCHAR(250);
+ALTER TABLE cilib_publications ADD COLUMN image_url VARCHAR(250);
 
 -- Add the document_id of the respective VLibrary to the publication
 ALTER TABLE cilib_publications ADD COLUMN document_id integer;
