@@ -54,8 +54,8 @@ XML::LibXML::Iterator -
 Array::Iterator -
 Archive::Zip -
 Text::Template -
-JavaScript::Minify::XS -
-CSS::Minify::XS -
+JavaScript::Minifier::XS -
+CSS::Minifier::XS -
 MIME::Lite::HTML -
 Email::Valid -
 
