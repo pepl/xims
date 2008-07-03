@@ -73,7 +73,7 @@ Edit content.
 
 =cut
 
-sub WRITE { return 0x00000002; } 
+sub WRITE () { return 0x00000002; } 
 
 =head3 DELETE
 
