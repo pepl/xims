@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -10,7 +10,7 @@ my $xims_home = $ENV{'XIMS_HOME'} || '/usr/local/xims';
 die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninstall into a different location than /usr/local/xims\n" unless -f "$xims_home/Makefile";
 use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib";
 
-use XIMS;
+use XIMS::Config;
 use XIMS::Installer;
 use XIMS::Term;
 use XML::LibXML;
@@ -50,7 +50,8 @@ my @upd_fields = qw{ApacheDocumentRoot DBUser DBPassword DBdsn DBDOpt DBSessionO
 my $installer = XIMS::Installer->new();
 
 my $configfile = "$xims_home/conf/ximsconfig.xml";
-my %Conf = %{XIMS::CONFIG->general};
+my $xims_config = XIMS::Config->new();
+my %Conf = %{$xims_config->general};
 my $publicroot = "$xims_home/www/" . $Conf{PublicRoot};
 my $ximsstartuppl = "$xims_home/conf/ximsstartup.pl";
 my $tidypath_default = $Conf{'TidyPath'} || TidyPath();
