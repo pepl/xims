@@ -21,7 +21,6 @@ BEGIN
        ,locked_by_lastname   = NULL
        ,locked_by_middlename = NULL
        ,locked_by_firstname  = NULL
-       ,locked_by_fullname   = NULL
        ,locked_time          = NULL
     WHERE locked_by_id  IS NOT NULL      
       AND NOT EXISTS (SELECT 1 
