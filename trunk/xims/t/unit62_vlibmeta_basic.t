@@ -8,6 +8,9 @@ use XIMS::User;
 
 #use Data::Dumper;
 
+# Bytes in the source text that have their high-bit set will be treated as being part of a literal UTF-X sequence
+use utf8;
+
 BEGIN {
     use_ok('XIMS::VLibMeta');
 }
@@ -73,6 +76,7 @@ is( $meta->bibliosource(),
     '<a href="http://xims.info/">Gonkulators in the Nü Millienium Today Conference</a>',
     'TestMeta has correct bibliosource'
 );
+
 is( $meta->mediatype(), 'Conference Talk', 'TestMeta has correct mediatype' );
 is( $meta->subtitle(), 'A Position-Fixing', 'TestMeta has correct subtitle' );
 is( $meta->coverage(),
