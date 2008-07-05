@@ -30,43 +30,47 @@
             tinyMCE.init({
                 mode : 'exact',
                 elements : 'body',
-		theme : 'advanced',
-		language : '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)"/>',
+                theme : 'advanced',
+                language : '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)"/>',
                 document_base_url : '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')"/>',
                 auto_cleanup_word : true,
                 entity_encoding : 'raw',
-		file_browser_callback : 'filebrowse',
-		urlconverter_callback : 'urltransformer',
+                file_browser_callback : 'filebrowse',
+                urlconverter_callback : 'urltransformer',
+                content_css :  &apos;<xsl:choose>
+                            <xsl:when test="css_id != ''"><xsl:value-of select="concat($xims_box,$goxims_content,css_id,'?plain=1')"/></xsl:when>
+                            <xsl:otherwise><xsl:value-of select="concat($ximsroot,$defaultcss)"/></xsl:otherwise>
+                          </xsl:choose>&apos;
             });
 
-	    /*
-	    * Custom file-browse dialog (XIMS file-browse-url)
-	    */
-	    function filebrowse (field_name, url, type, win) {
-	    if (type == "file") {
-		var browseurl = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;contentbrowse=1&amp;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;style=tinymcelink';
-	    }
-	    else {
-		var browseurl = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;contentbrowse=1&amp;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;style=tinymceimage&amp;otfilter=Image';
-	    }
+        /*
+        * Custom file-browse dialog (XIMS file-browse-url)
+        */
+        function filebrowse (field_name, url, type, win) {
+        if (type == "file") {
+        var browseurl = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;contentbrowse=1&amp;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;style=tinymcelink';
+        }
+        else {
+        var browseurl = '<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;contentbrowse=1&amp;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>&amp;style=tinymceimage&amp;otfilter=Image';
+        }
 
             <![CDATA[
-	    tinyMCE.get('body').windowManager.open({
-		file : browseurl,
-		title : "XIMS File Browser",
-		width : 600,  // width of XIMS File Browser pop-up
-		height : 400,
-		resizable : "yes",
-		scrollbars : "yes",
-		inline : "yes",  // This parameter only has an effect if you use the inlinepopups plugin!
-		close_previous : "no"
-	    }, {
-		window : win,
-		input : field_name
-	    });
-	    return false;
-	    }
-	    ]]>
+        tinyMCE.get('body').windowManager.open({
+        file : browseurl,
+        title : "XIMS File Browser",
+        width : 600,  // width of XIMS File Browser pop-up
+        height : 400,
+        resizable : "yes",
+        scrollbars : "yes",
+        inline : "yes",  // This parameter only has an effect if you use the inlinepopups plugin!
+        close_previous : "no"
+        }, {
+        window : win,
+        input : field_name
+        });
+        return false;
+        }
+        ]]>
 
             /*
              * Custom URL transformation routine. Make TinyMCE
@@ -91,7 +95,7 @@
                     }
                     else {
                         // we simply pass it on to the default TinyMCE function (implicit)
-			return url;
+            return url;
                     }
                 }
             }
@@ -121,18 +125,18 @@
     </xsl:template>
 
     <xsl:template name="tinymce_load">
-       <script language="javascript" 
-               type="text/javascript" 
+       <script language="javascript"
+               type="text/javascript"
                src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js"/>
     </xsl:template>
 
     <xsl:template name="tinymce_simple">
-       <script language="javascript" 
+       <script language="javascript"
                type="text/javascript">
          tinyMCE.init({
            mode : "textareas",
-	   editor_selector : "mceEditor",
-	   theme : "simple",
+       editor_selector : "mceEditor",
+       theme : "simple",
            language : '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)"/>',
          });
        </script>
