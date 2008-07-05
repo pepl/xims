@@ -72,6 +72,14 @@
 
       xinha_config.baseURL = &apos;<xsl:choose><xsl:when test="$edit = '1'"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/></xsl:otherwise></xsl:choose>&apos;;
 
+      xinha_config.baseHref = &apos;<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')"/>&apos;;
+
+      <!-- TODO: Check why drap&drop of images does not work
+      xinha_config.baseURL = 'content/$parent_path';
+      xinha_config.expandRelativeUrl = false;
+      xinha_config.stripBaseHref = false;
+      -->
+
       xinha_config.makeLinkShowsTarget = false;
 
       xinha_config.URIs['insert_image'] = &apos;<xsl:value-of select="concat($xims_box,$goxims_content)"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;to=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;style=xinhaimage;otfilter=Image&apos;;
