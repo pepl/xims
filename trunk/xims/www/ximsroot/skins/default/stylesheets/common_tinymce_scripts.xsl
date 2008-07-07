@@ -30,18 +30,31 @@
             tinyMCE.init({
                 mode : 'exact',
                 elements : 'body',
+                dialog_type : "modal",
                 theme : 'advanced',
                 language : '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)"/>',
                 document_base_url : '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')"/>',
                 auto_cleanup_word : true,
                 entity_encoding : 'raw',
-                file_browser_callback : 'filebrowse',
-                urlconverter_callback : 'urltransformer',
+                plugins : 'table,contextmenu,advhr,searchreplace,inlinepopups',
+                theme_advanced_buttons1_add_before: 'cut,copy,paste,separator,search,replace,separator',
+                theme_advanced_buttons3_add_before : 'tablecontrols,separator',
+                theme_advanced_toolbar_location : 'top',
+                theme_advanced_toolbar_align : 'left',
+                theme_advanced_path_location : 'bottom',
+                theme_advanced_resizing : true,
+                theme_advanced_resize_horizontal : false,
                 content_css :  &apos;<xsl:choose>
                             <xsl:when test="css_id != ''"><xsl:value-of select="concat($xims_box,$goxims_content,css_id,'?plain=1')"/></xsl:when>
                             <xsl:otherwise><xsl:value-of select="concat($ximsroot,$defaultcss)"/></xsl:otherwise>
-                          </xsl:choose>&apos;
-            });
+                          </xsl:choose>&apos;,
+                file_browser_callback : 'filebrowse',
+                urlconverter_callback : 'urltransformer',
+                remove_linebreaks : 'false',
+                cleanup : 'true',
+                cleanup_on_startup : 'false',
+                apply_source_formatting : 'true'
+             });
 
         /*
         * Custom file-browse dialog (XIMS file-browse-url)
