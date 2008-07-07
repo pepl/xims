@@ -78,10 +78,10 @@
         # Xinha is available at xinha.org and should be unpacked to $ximsroot/xinha, TinyMCE
         # is available at http://tinymce.moxiecode.com/ and should be unpacked to $ximsroot/tinymce
         #
-        # Note: 'htmlarea' will be used even if DefaultXHTMLEditor is set to 'wepro' when editing
+        # Note: 'tinymce' will be used even if DefaultXHTMLEditor is set to 'wepro' when editing
         # a Document on non-Windows browsers.
         -->
-        <DefaultXHTMLEditor>htmlarea</DefaultXHTMLEditor>
+        <DefaultXHTMLEditor>tinymce</DefaultXHTMLEditor>
 
         <!--
         # Currently 'bxe' is the only implemented XML editor which can be activated
