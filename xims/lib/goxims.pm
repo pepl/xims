@@ -168,15 +168,20 @@ sub handler {
     my $tp = localtime;
     $ctxt->session->date( $tp->ymd() . ' ' . $tp->hms() );
 
-    # test if we are called through a proxy, set serverurl accordingly
-    my $uri = Apache::URI->parse($r);
-    my $hostname =
-      ( defined $r->headers_in->{'X-Forwarded-Host'}
-          and length $r->headers_in->{'X-Forwarded-Host'} )
-      ? $r->headers_in->{'X-Forwarded-Host'}
-      : $uri->hostinfo();
-    XIMS::Debug( 6, "setting serverurl to $hostname" );
-    $ctxt->session->serverurl( $uri->scheme . '://' . $hostname );
+    my $serverurl = $r->dir_config('ximsServerURL');
+    if ( not defined $serverurl ) {
+        # test if we are called through a proxy, set serverurl accordingly
+        my $uri = Apache::URI->parse($r);
+        my $hostname =
+          ( defined $r->headers_in->{'X-Forwarded-Host'}
+              and length $r->headers_in->{'X-Forwarded-Host'} )
+          ? $r->headers_in->{'X-Forwarded-Host'}
+          : $uri->hostinfo();
+        $serverurl = $uri->scheme . '://' . $hostname;
+    }
+
+    XIMS::Debug( 6, "setting serverurl to $serverurl" );
+    $ctxt->session->serverurl( $serverurl );
 
     # for now there is no user/browser based skin selection. the default
     # values are used.
