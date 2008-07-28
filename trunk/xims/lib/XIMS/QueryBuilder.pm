@@ -22,11 +22,10 @@ This module bla bla
 package XIMS::QueryBuilder;
 
 use strict;
+
 # use warnings;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-
-
 
 =head2    $qb = XIMS::QueryBuilder->new( { search => $search,
                       [ allowed => $to_be_qr-compiled_string_of_allowed_chars,]
@@ -59,32 +58,38 @@ macros are described in the XIMS User's Reference
 =cut
 
 sub new {
-    XIMS::Debug( 5, 'called');
+    XIMS::Debug( 5, 'called' );
     my $class = shift;
-    my $args = shift;
+    my $args  = shift;
 
     my $self;
     if ( ref $args and exists $args->{search} ) {
         my $search;
         if ( defined $args->{allowed} ) {
-            $search = XIMS::tokenize_string( _clean_search_string( $args->{search}, qr/$args->{allowed}/ ) );
+            $search =
+              XIMS::tokenize_string(
+                _clean_search_string( $args->{search}, qr/$args->{allowed}/ ) );
         }
         else {
-            $search = XIMS::tokenize_string( _clean_search_string( $args->{search} ) );
+            $search =
+              XIMS::tokenize_string( _clean_search_string( $args->{search} ) );
         }
-        $self = bless { search => $search, fieldstolookin => $args->{fieldstolookin}, filterpublished => $args->{filterpublished}, extraargs => $args->{extraargs} }, $class;
+        $self = bless {
+            search          => $search,
+            fieldstolookin  => $args->{fieldstolookin},
+            filterpublished => $args->{filterpublished},
+            extraargs       => $args->{extraargs}
+        }, $class;
         $self->_build() ? return $self : return;
     }
 
     return $self;
 }
 
-sub criteria { $_[0]->{criteria} }
-sub properties { $_[0]->{properties} }
-sub order { $_[0]->{order} }
+sub criteria        { $_[0]->{criteria} }
+sub properties      { $_[0]->{properties} }
+sub order           { $_[0]->{order} }
 sub filterpublished { $_[0]->{filterpublished} }
-
-
 
 =head2    search_boolean( $arryref, $arryindex );
 
@@ -104,27 +109,26 @@ helper for buildSearchConditions()
 =cut
 
 sub search_boolean {
-    XIMS::Debug( 5, 'called');
-    my $self = shift;
+    XIMS::Debug( 5, 'called' );
+    my $self   = shift;
     my $search = shift;
-    my $i = shift;
+    my $i      = shift;
 
-    my $retval = ''; #return value
+    my $retval = '';    #return value
 
-    if ( $i > 0
-            && $search->[$i-1] ne "("
-            && $search->[$i-1] ne "AND"
-            && $search->[$i-1] ne "OR"
-            && $search->[$i-1] ne "AND ("
-            && $search->[$i] ne ")" ) {
+    if (   $i > 0
+        && $search->[ $i - 1 ] ne "("
+        && $search->[ $i - 1 ] ne "AND"
+        && $search->[ $i - 1 ] ne "OR"
+        && $search->[ $i - 1 ] ne "AND ("
+        && $search->[$i]       ne ")" )
+    {
 
         $retval = "AND ";
     }
 
     return $retval;
 }
-
-
 
 =head2    _clean_search_string( $searchstring, $allowedcharsregex );
 
@@ -145,8 +149,8 @@ sub search_boolean {
 =cut
 
 sub _clean_search_string {
-    XIMS::Debug( 5, 'called');
-    my $retval = shift;
+    XIMS::Debug( 5, 'called' );
+    my $retval  = shift;
     my $allowed = shift;
 
     $retval =~ s/[^$allowed ]//g if defined $allowed;
@@ -161,7 +165,6 @@ sub _clean_search_string {
 }
 
 1;
-
 
 __END__
 
