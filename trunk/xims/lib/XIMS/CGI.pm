@@ -459,7 +459,7 @@ sub selectStylesheet {
     my $gotpubuilangstylesheet;
 
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
-    if ( defined $publicusername ) {
+    if ( defined $publicusername or $ctxt->properties->application->usepubui() ) {
 
         # Emulate request.uri CGI param, set by
         # Apache::AxKit::Plugin::AddXSLParams::Request ($request.uri is
@@ -2746,6 +2746,14 @@ sub event_search {
     }
 
     my $filterpublished = $self->param('p');
+
+    # Usage: ?intranet=intern;... filter granted, published objects that have
+    # "/intern/" in their location_path.
+    my $filterintranet  = $self->param('intranet');
+    if ($filterintranet) {
+        $ctxt->properties->application->usepubui(1);
+        $filterpublished = 1;
+    }
     my $user            = $ctxt->session->user();
 
     # event_search may get the search string latin1-encoded if used by the
@@ -2833,10 +2841,15 @@ sub event_search {
                 offset => $offset,
                 order  => $qb->order(),
             );
-
             my $method;
             my $start_here;
-            if ($filterpublished) {
+            if ($filterintranet) {
+                $param{criteria}->[0] .= " AND location_path LIKE ?";
+                push(@{$param{criteria}}, "%/$filterintranet/%");
+                $start_here = $self->param('start_here') ? $ctxt->object() : '/uniweb';
+                $method = 'find_objects_granted';
+            }
+            elsif ($filterpublished) {
                 my $searchpath = $self->param('sp');
                 if ( defined $searchpath and length $searchpath > 2 ) {
                     $start_here = $searchpath;
@@ -2969,6 +2982,8 @@ sub event_trashcan_content {
 
     return 0;
 }
+
+
 
 1;
 
