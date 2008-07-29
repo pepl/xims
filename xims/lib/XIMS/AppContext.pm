@@ -80,7 +80,7 @@ sub new {
 
 package Application;
 use base qw(Class::Accessor);
-__PACKAGE__->mk_accessors(qw(cookie style styleprefix preservelocation keepsuffix));
+__PACKAGE__->mk_accessors(qw(cookie style styleprefix preservelocation keepsuffix usepubui));
 1;
 
 package Content;
