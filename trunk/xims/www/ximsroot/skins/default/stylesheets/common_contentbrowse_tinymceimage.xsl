@@ -97,10 +97,9 @@ function insertfile() {
      
         function storeBack(target, imgtext) {
       ]]>
-            re = new RegExp("<xsl:value-of select="$absolute_path_nosite"/>/");
+            var re = new RegExp("<xsl:value-of select="$absolute_path_nosite"/>/");
       <![CDATA[
-            re.test(target);
-            if (RegExp.rightContext.length > 0) {
+            if (re.test(target) && RegExp.rightContext.length > 0) {
                 document.selectform.imgpath.value=RegExp.rightContext;
             }
             else {
