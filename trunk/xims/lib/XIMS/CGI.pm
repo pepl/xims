@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::ByeBye -- A .... doing bla, bla, bla. (short)
+XIMS::CGI -- the XIMS CGI baseclass
 
 =head1 VERSION
 
@@ -9,13 +9,13 @@ $Id$
 
 =head1 SYNOPSIS
 
-    use XIMS::CGI::ByeBye;
+    use XIMS::CGI;
 
 =head1 DESCRIPTION
 
 This module bla bla
 
-=head1 SUBROUTINES/METHODS
+=head1 EVENT METHODS
 
 =cut
 
@@ -37,6 +37,26 @@ use Time::Piece;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 registerEvents()
+
+=head3 Parameter
+
+A list of events to be added to the list of events implemented here.
+
+=head3 Returns
+
+A list of event_names.
+
+=head3 Description
+
+    $self->registerEvents( qw(some additional events) )
+
+Derived classes may use this to register their own events.
+
+    L<CGI::XMLApplication>
+
+=cut
+
 sub registerEvents {
     my $self = shift;
     return (
@@ -52,9 +72,15 @@ sub registerEvents {
     );
 }
 
-=pod
+=head2 event_init()
 
-event methods
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_init(...)
 
 =cut
 
@@ -115,9 +141,14 @@ sub event_init {
     }
 }
 
-=head2 Runtime event which (pre)tests validity of the provided location
+
+
+
+=head2 event_test_location()
 
 =head3 Description
+
+Runtime event which (pre)tests validity of the provided location.
 
 Event 'test_location' is, and ONLY is, called via AJAX (for the time being).
 Basically, it prints a plain text response, which contains a status code,
@@ -178,11 +209,36 @@ sub event_test_location {
     return 0;
 }
 
+=head2 event_dbhpanic()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+     $self->event_dbhpanic(...)
+
+=cut
+
+
 sub event_dbhpanic {
     my $self = shift;
     $self->setPanicMsg("Can not connect to database server.");
     return -4;
 }
+
+=head2 event_access_denied()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_access_denied(...)
+
+=cut
 
 sub event_access_denied {
     XIMS::Debug( 5, "called" );
@@ -192,6 +248,18 @@ sub event_access_denied {
 
     return 0;
 }
+
+=head2 event_default()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_default(...)
+
+=cut
 
 sub event_default {
     XIMS::Debug( 5, "called" );
@@ -220,6 +288,18 @@ sub event_default {
 
     return 0;
 }
+
+=head2 event_edit()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_edit(...)
+
+=cut
 
 sub event_edit {
     XIMS::Debug( 5, "called" );
@@ -266,6 +346,18 @@ sub event_edit {
     return 0;
 }
 
+=head2 event_create()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_create(...)
+
+=cut
+
 sub event_create {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -279,6 +371,18 @@ sub event_create {
 
     return 0;
 }
+
+=head2 event_store()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_store(...)
+
+=cut
 
 sub event_store {
     XIMS::Debug( 5, "called" );
@@ -354,12 +458,36 @@ sub event_store {
     return 1;
 }
 
+=head2 event_exit()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_exit(...)
+
+=cut
+
 sub event_exit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     return 0;
 }
+
+=head2 event_trashcan_prompt()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_trashcan_prompt(...)
+
+=cut
 
 sub event_trashcan_prompt {
     XIMS::Debug( 5, "called" );
@@ -369,6 +497,18 @@ sub event_trashcan_prompt {
     $ctxt->properties->application->style('trashcan_confirm');
 }
 
+=head2 event_delete_prompt()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_delete_prompt(...)
+
+=cut
+
 sub event_delete_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -376,6 +516,18 @@ sub event_delete_prompt {
     $ctxt->properties->application->styleprefix('common');
     $ctxt->properties->application->style('delete_confirm');
 }
+
+=head2 event_cancel()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_cancel(...)
+
+=cut
 
 sub event_cancel {
     XIMS::Debug( 5, "called" );
@@ -401,16 +553,30 @@ sub event_cancel {
     return 0;
 }
 
+=head2 event_plain()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_plain(...)
+
+=cut
+
 sub event_plain {
 
-# Give back only and really only the body of the object with its content-type and the DB-Encoding
+    # Give back only and really only the body of the object with its
+    # content-type and the DB-Encoding
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my $body = $ctxt->object->body();
     my $df = XIMS::DataFormat->new( id => $ctxt->object->data_format_id() );
 
-# Since the body of Text and CSS objects is stored XML escaped, we want to unescape it here again
+    # Since the body of Text and CSS objects is stored XML escaped, we want to
+    # unescape it here again
     if ( $df->name() eq 'Text' or $df->name() eq 'CSS' ) {
         $body = XIMS::xml_unescape($body);
     }
@@ -425,12 +591,23 @@ sub event_plain {
     return 0;
 }
 
-=pod
+=head1 CGI::XMLApplication METHODS
 
-methods called directly by (or overrides to methods in) CGI::XMLApplication
+Methods called directly by (or override to methods in) CGI::XMLApplication
 
 =cut
 
+=head2 selectStylesheet()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->selectStylesheet(...)
+
+=cut
 
 sub selectStylesheet {
     XIMS::Debug( 5, "called" );
@@ -495,6 +672,7 @@ sub selectStylesheet {
                 $stylepath       = $pubstylepath;
                 $foundstylesheet = 1;
             }
+            warn "pubstylepath: '$pubstylepath' filepath: '$filepath' filepathuilang: '$filepathuilang'\n";
         }
         unless ($foundstylesheet) {
             XIMS::Debug( 4, "trying fallback public-user-stylesheet" );
@@ -535,6 +713,18 @@ sub selectStylesheet {
     return $retval;
 }
 
+=head2 getDom()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->getDom(...)
+
+=cut
+
 sub getDOM {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -555,6 +745,18 @@ sub getDOM {
     return $controller->parse($ctxt);
 }
 
+=head2 setHttpHeader()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->setHttpHeader(...)
+
+=cut
+
 sub setHttpHeader {
     my $self       = shift;
     my $ctxt       = shift;
@@ -565,10 +767,34 @@ sub setHttpHeader {
     return %my_headers;
 }
 
+=head2 getXSLParameter()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->getXSLParameter(...)
+
+=cut
+
 sub getXSLParameter {
     my ( $self, $ctxt ) = @_;
     return %{ $self->Vars() };
 }
+
+=head2 sendError()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->sendError(...)
+
+=cut
 
 sub sendError {
     my $self = shift;
@@ -629,16 +855,37 @@ sub simple_response {
     return 0;
 }
 
+=head2 event_error()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_error(...)
+
+=cut
+
 sub event_error {
     return 0;
 }
 
-=pod
+=head1 HELPER METHODS
 
-helper methods available to all event subs.
+Helper methods available to all event subs.
+
+=head2 object_locked()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->object_locked(...)
 
 =cut
-
 
 sub object_locked {
     my $self = shift;
@@ -651,14 +898,39 @@ sub object_locked {
     return;
 }
 
+=head2 redirect()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->redirect(...)
+
+=cut
+
 sub redirect {
     my $self = shift;
     XIMS::Debug( 6, "called " . join( ", ", @_ ) );
     $self->redirectToURI(@_);
 }
 
-# small helper to determine what sort of 'thingie' we are operating on
-# (user, content object, whatever we might add later)
+=head2 resource_type()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->resource_type(...)
+
+Small helper to determine what sort of 'thingie' we are operating on (user,
+content object, whatever we might add later)
+
+=cut
+
 sub resource_type {
     my $self = shift;
     my $ctxt = shift;
@@ -674,12 +946,36 @@ sub resource_type {
     }
 }
 
+=head2 expand_attributes()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->expand_attributes(...)
+
+=cut
+
 sub expand_attributes {
     my ( $self, $ctxt ) = @_;
 
     $ctxt->sax_filter( [] ) unless defined $ctxt->sax_filter();
     push @{ $ctxt->sax_filter() }, "XIMS::SAX::Filter::Attributes";
 }
+
+=head2 resolve_content()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->resolve_content(...)
+
+=cut
 
 sub resolve_content {
     my $self      = shift;
@@ -709,6 +1005,18 @@ sub resolve_content {
     );
 }
 
+=head2 resolve_user()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->resolve_user(...)
+
+=cut
+
 sub resolve_user {
     my $self = shift;
     my $ctxt = shift;
@@ -732,6 +1040,18 @@ sub resolve_user {
         )
     );
 }
+
+=head2 redirect_path()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->redirect_path(...)
+
+=cut
 
 sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;
@@ -820,6 +1140,18 @@ sub redirect_path {
     return $uri->unparse();
 }
 
+=head2 clean_userquery()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->clean_userquery(...)
+
+=cut
+
 sub clean_userquery {
     XIMS::Debug( 5, "called" );
     my $self      = shift;
@@ -835,12 +1167,25 @@ sub clean_userquery {
     return $userquery;
 }
 
-# Returns status code and location for 'test_location' events (see event_test_location):
-#  0 => all OK
-#  1 => location already exists
-#  2 => no location provided
-#  3 => dirty location
-# Otherwise, nothing meaningful ;-)
+=head2 init_store_object()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->init_store_object(...)
+
+Returns status code and location for 'test_location' events (see event_test_location):
+    0 => all OK
+    1 => location already exists
+    2 => no location provided
+    3 => dirty location
+    Otherwise, nothing meaningful ;-)
+
+=cut
+
 sub init_store_object {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -1251,6 +1596,18 @@ sub init_store_object {
     return 1;
 }
 
+=head2 default_grants()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->default_grants(...)
+
+=cut
+
 sub default_grants {
     XIMS::Debug( 5, "called" );
     my $self              = shift;
@@ -1319,6 +1676,18 @@ sub default_grants {
     return $retval;
 }
 
+=head2 event_undelete()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_undelete(...)
+
+=cut
+
 sub event_undelete {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1369,6 +1738,18 @@ sub event_undelete {
     $self->redirect( $self->redirect_path($ctxt) );
     return 0;
 }
+
+=head2 event_trashcan()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_trashcan(...)
+
+=cut
 
 sub event_trashcan {
     XIMS::Debug( 5, "called" );
@@ -1456,6 +1837,18 @@ sub event_trashcan {
     return 0;
 }
 
+=head2 event_delete()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_delete(...)
+
+=cut
+
 sub event_delete {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1542,6 +1935,18 @@ sub event_delete {
     return 0;
 }
 
+=head2 event_contentbrowse()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_contentbrowse(...)
+
+=cut
+
 sub event_contentbrowse {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1589,6 +1994,18 @@ sub event_contentbrowse {
     return 0;
 }
 
+=head2 event_move_browse()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_move_browse(...)
+
+=cut
+
 sub event_move_browse {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1624,6 +2041,18 @@ sub event_move_browse {
 
     return 0;
 }
+
+=head2 event_move()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_move(...)
+
+=cut
 
 sub event_move {
     XIMS::Debug( 5, "called" );
@@ -1713,6 +2142,18 @@ sub event_move {
     return 0;
 }
 
+=head2 event_copy()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_copy(...)
+
+=cut
+
 sub event_copy {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1773,6 +2214,18 @@ sub event_copy {
     }
 
 }
+
+=head2 event_publishpromt()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_publishpromt(...)
+
+=cut
 
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
@@ -1853,6 +2306,18 @@ sub event_publish_prompt {
     return 0;
 }
 
+=head2 event_publish()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_publish(...)
+
+=cut
+
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -1926,6 +2391,18 @@ sub event_publish {
     return 0;
 }
 
+=head2 publish_gopublic()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->publish_gopublic(...)
+
+=cut
+
 sub publish_gopublic {
     XIMS::Debug( 5, "called" );
     my $self    = shift;
@@ -1978,6 +2455,18 @@ sub publish_gopublic {
         return $self->event_access_denied($ctxt);
     }
 }
+
+=head2 event_unpuplish()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_unpuplish(...)
+
+=cut
 
 sub event_unpublish {
     XIMS::Debug( 5, "called" );
@@ -2053,6 +2542,18 @@ sub event_unpublish {
     return 0;
 }
 
+=head2 unpublish_gopublic()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->unpublish_gopublic(...)
+
+=cut
+
 sub unpublish_gopublic {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -2096,6 +2597,18 @@ sub unpublish_gopublic {
     }
 }
 
+=head2 event_test_wellformedness()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_test_wellformedness(...)
+
+=cut
+
 sub event_test_wellformedness {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -2121,6 +2634,18 @@ sub event_test_wellformedness {
 
     return 0;
 }
+
+=head2 event_htmltidy()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_htmltidy(...)
+
+=cut
 
 sub event_htmltidy {
     XIMS::Debug( 5, "called" );
@@ -2163,6 +2688,18 @@ sub event_htmltidy {
     return 0;
 }
 
+=head2 event_prettyprintxml()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_prettyprintxml(...)
+
+=cut
+
 sub event_prettyprintxml {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -2201,6 +2738,18 @@ sub event_prettyprintxml {
     }
     return 0;
 }
+
+=head2 event_obj_acllist()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_obj_acllist(...)
+
+=cut
 
 sub event_obj_acllist {
     XIMS::Debug( 5, "called" );
@@ -2311,6 +2860,18 @@ sub event_obj_acllist {
     return 0;
 }
 
+=head2 event_obj_aclgrant()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_obj_aclgrant(...)
+
+=cut
+
 sub event_obj_aclgrant {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
@@ -2388,6 +2949,18 @@ sub event_obj_aclgrant {
     return 0;
 }
 
+=head2 event_obj_aclrevoke()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_obj_aclrevoke(...)
+
+=cut
+
 sub event_obj_aclrevoke {
     my ( $self, $ctxt ) = @_;
     XIMS::Debug( 5, "called" );
@@ -2452,6 +3025,18 @@ sub event_obj_aclrevoke {
     return 0;
 }
 
+=head2 event_posview()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_posview(...)
+
+=cut
+
 sub event_posview {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -2469,6 +3054,18 @@ sub event_posview {
 
     return 0;
 }
+
+=head2 event_reposition()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_reposition(...)
+
+=cut
 
 sub event_reposition {
     XIMS::Debug( 5, "called" );
@@ -2506,7 +3103,7 @@ sub event_reposition {
 }
 
 
-=head2    $self->handle_bang_commands( $ctxt, $search );
+=head2 handle_bang_commands();
 
 =head3 Parameter
 
@@ -2518,6 +3115,8 @@ sub event_reposition {
     undef on error, 1 on succes
 
 =head3 Description
+
+   $self->handle_bang_commands( $ctxt, $search );
 
 this one exists to avoid spaghetti- and nested-if-uglyness in
 event_search; commands that start with a bang get processed here.
@@ -2574,11 +3173,11 @@ sub handle_bang_commands {
     return $retval;
 }
 
-
-=head2     $self->body_ref_objects( $ctxt );
+=head2 body_ref_objects();
 
 =head3 Description
 
+    $self->body_ref_objects( $ctxt );
 
 Checks links stored within an object's body. If local references are
 found the function will test if the object is stored in XIMS. The
@@ -2685,6 +3284,18 @@ sub body_ref_objects {
     return @objects;
 }
 
+=head2 autopublish()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->autopublish(...)
+
+=cut
+
 sub autopublish {
     XIMS::Debug( 5, "called" );
     my $self                   = shift;
@@ -2731,6 +3342,18 @@ sub autopublish {
 
     return $published;
 }
+
+=head2 event_search()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_search(...)
+
+=cut
 
 sub event_search {
     XIMS::Debug( 5, "called" );
@@ -2919,6 +3542,18 @@ sub event_search {
     return 0;
 }
 
+=head2 event_sitemap()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_sitemap(...)
+
+=cut
+
 sub event_sitemap {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
@@ -2943,9 +3578,7 @@ sub event_sitemap {
 
 package XIMS::CGI::ByeBye;
 
-
-
-=head2    $self->event_trashcan( $ctxt );
+=head2 event_trashcan();
 
 =head3 Parameter
 
@@ -2957,7 +3590,7 @@ package XIMS::CGI::ByeBye;
 
 =head3 Description
 
-none
+    $self->event_trashcan( $ctxt );
 
 =cut
 
@@ -2982,8 +3615,6 @@ sub event_trashcan_content {
 
     return 0;
 }
-
-
 
 1;
 
