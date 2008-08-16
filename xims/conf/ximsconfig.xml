@@ -91,6 +91,16 @@
         <XMLEditor>bxe</XMLEditor>
 
         <!--
+        # Source IP of the mailable object types' request agent session
+        -->
+        <RequestAgentSourceIP>127.0.0.1</RequestAgentSourceIP>
+
+        <!--
+        #  Sizelimit of E-Mails sent by XIMS in  characters (octets)
+        -->
+        <MailSizeLimit>524288</MailSizeLimit>
+
+        <!--
         # If set to a non-zero value, locations of content objects will be lowercased during save
         -->
         <LowerCaseLocations>0</LowerCaseLocations>
