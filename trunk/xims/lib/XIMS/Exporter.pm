@@ -455,7 +455,7 @@ sub exporterclass {
     if ( $@ ) {
         eval "require $exporter_class;";
         if ( $@ ) {
-            XIMS::Debug( 3, "could not not load exporter class: $@" );
+            XIMS::Debug( 2, "could not not load exporter class: $@" );
             return;
         }
         $exporter = $exporter_class->new( %args );
@@ -781,7 +781,7 @@ sub update_related {
                                           );
         return unless $obj_handler;
 
-        # check if the object's ancestors are published
+        # check if the object's ancestors are published # '
         if ( $obj_handler->test_ancestors() ) {
             foreach my $ancestor ( reverse @{$obj_handler->{Ancestors}} ) {
                 last if $ancestor->published();
