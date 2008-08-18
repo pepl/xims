@@ -60,6 +60,10 @@ sub new {
     return $self;
 }
 
+=head2 getUserInfo()
+
+=cut
+
 sub getUserInfo { return $_[0]->{User}; }
 
 1;

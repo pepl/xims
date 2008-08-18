@@ -39,27 +39,30 @@ sub resource_type {
 
 __PACKAGE__->mk_accessors( @Fields );
 
-#
-# SYNOPSIS
-#    my $pubmap = XIMS::VLibPublicationMap->new( [ %args ] );
-#
-# PARAMETER
-#    $args{ id }                  (optional) :  id of an existing mapping.
-#    $args{ document_id }         (optional) :  document_id of a VLibraryItem.
-#                                               To be used together with 
-#                                               $args{publication_id} to look
-#                                               up an existing mapping.
-#    $args{ publication_id }      (optional) :  id of a VLibPublication. To be
-#                                               used together with $args{document_id}
-#                                               to look up an existing mapping.
-#
-# RETURNS
-#    $pubmap    : Instance of XIMS::VLibPublicationMap
-#
-# DESCRIPTION
-#    Fetches existing mappings or creates a new instance of XIMS::VLibPublicationMap
-#    for VLibraryItem <-> VLibPublication mapping.
-#
+=head3 Parameter
+
+    $args{ id }                  (optional) :  id of an existing mapping.
+
+    $args{ document_id }         (optional) :  document_id of a VLibraryItem.
+                                               To be used together with 
+                                               $args{publication_id} to look
+                                               up an existing mapping.
+    $args{ publication_id }      (optional) :  id of a VLibPublication. To be
+                                               used together with $args{document_id}
+                                               to look up an existing mapping.
+
+=head3 Returns
+
+    $pubmap    : Instance of XIMS::VLibPublicationMap
+
+=head3 Description
+
+    Fetches existing mappings or creates a new instance of XIMS::VLibPublicationMap
+    for VLibraryItem <-> VLibPublication mapping.
+    my $pubmap = XIMS::VLibPublicationMap->new( [ %args ] );
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;

@@ -5,7 +5,7 @@ XIMS::Config -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -46,6 +46,10 @@ Loaded by XIMS.pm; do not load it in your scripts, access it through XIMS::CONFI
 
 =cut
 
+=head2 new()
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -60,8 +64,21 @@ sub new {
     return $self;
 }
 
+=head2 general()
+
+=cut
+
 sub general { shift->{general} }
+
+=head2 dpconfig()
+
+=cut
+
 sub dpconfig { shift->{dpconfig} }
+
+=head2 process_file()
+
+=cut
 
 sub process_file {
     my $self = shift;
@@ -116,6 +133,10 @@ sub process_file {
 
     return 1;
 }
+
+=head2 process_dbi()
+
+=cut
 
 sub process_dbi {
     my $self = shift;
@@ -180,6 +201,10 @@ sub process_dbi {
     return 1;
 }
 
+=head2 get_values()
+
+=cut
+
 sub get_values {
     my $self = shift;
     my @nodes = @_;
@@ -202,6 +227,10 @@ sub get_values {
     }
     return \%rv;
 }
+
+=head2 install_methods()
+
+=cut
 
 sub install_methods {
     my $self = shift;
@@ -232,6 +261,10 @@ sub install_methods {
         }
     }
 }
+
+=head2 process_includes()
+
+=cut
 
 sub process_includes {
     my $self = shift;

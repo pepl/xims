@@ -5,7 +5,7 @@ XIMS::CSS -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -45,6 +45,9 @@ Constructor
 
 =cut
 
+=head2 new()
+
+=cut
 
 sub new {
     my $proto = shift;

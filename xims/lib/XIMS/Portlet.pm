@@ -5,7 +5,7 @@ XIMS::Portlet -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -27,8 +27,14 @@ use base qw( XIMS::SymbolicLink );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-# the following functions are dummy functions, so we have an interface
-# for filters in the future :)
+=pod
+
+The following functions are dummy functions, so we have an interface
+for filters in the future :)
+
+=head2 testCondition()
+
+=cut
 
 sub testCondition {
     my ( $self, $condition ) = @_;
@@ -44,7 +50,13 @@ sub testCondition {
     return $retval;
 }
 
-# the following three functions place/remove a filter into the body.
+=pod 
+
+The following three functions place/remove a filter into the body.
+
+=head2 applyFilter()
+
+=cut
 
 sub applyFilter {
     my ( $self, $name, $condition ) = @_;
@@ -62,6 +74,10 @@ sub applyFilter {
     return $retval;
 }
 
+=head2 removeFilter()
+
+=cut
+
 sub removeFilter {
     my ( $self, $name ) = @_;
     my $retval = 0;
@@ -77,6 +93,10 @@ sub removeFilter {
 
     return $retval
 }
+
+=head2 updateFilter()
+
+=cut
 
 sub updateFilter {
     my ( $self, $name, $condition ) = @_;
