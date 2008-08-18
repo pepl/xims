@@ -372,7 +372,7 @@ sub event_author {
 # end authors, begin publications
 ##############################################################################
 
-=head2 event_publicaions()
+=head2 event_publications()
 
 =cut
 
