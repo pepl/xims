@@ -5,7 +5,7 @@ XIMS::NewsItem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use base qw( XIMS::Document );
 use XIMS::Importer::Object;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 add_image()
+
+=cut
 
 sub add_image {
     XIMS::Debug( 5, "called" );

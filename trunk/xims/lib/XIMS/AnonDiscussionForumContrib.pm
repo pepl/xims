@@ -5,7 +5,7 @@ XIMS::AnonDiscussionForumContrib -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use base qw( XIMS::Document );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 author()
+
+=cut
+
 sub author {
     my $self= shift;
     my $author = shift;
@@ -41,6 +45,10 @@ sub author {
 
     return $retval;
 }
+
+=head2 email()
+
+=cut
 
 sub email {
     my $self= shift;
@@ -59,6 +67,10 @@ sub email {
     return $retval;
 }
 
+=head2 coauthor()
+
+=cut
+
 sub coauthor {
     my $self= shift;
     my $author = shift;
@@ -74,6 +86,10 @@ sub coauthor {
 
     return $retval;
 }
+
+=head2 coemail()
+
+=cut
 
 sub coemail {
     my $self= shift;
@@ -91,6 +107,10 @@ sub coemail {
 
     return $retval;
 }
+
+=head2 senderip()
+
+=cut
 
 sub senderip {
     my $self= shift;
@@ -123,6 +143,17 @@ sub senderip {
 # trailing multiple whitespace, returning the first 30 characters as scalar.
 # optionally give the wanted stringlength as second argument.
 #
+
+=head2 private functions/methods
+
+=over
+
+=item _limit_string_length()
+
+=back
+
+=cut
+
 sub __limit_string_length {
     my ( $string, $length ) = @_;
     $length = 30 unless defined $length;

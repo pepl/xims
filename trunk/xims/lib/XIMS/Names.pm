@@ -5,7 +5,7 @@ XIMS::Names -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -29,6 +29,10 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our %Properties = XIMS::Config::Names::Properties();
 our @ResourceTypes = XIMS::Config::Names::ResourceTypes();
 
+=head2 get_URI()
+
+=cut
+
 sub get_URI {
     my ($r_type, $property_name) = @_;
     XIMS::Debug( 1, "Unknown resource type '$r_type'!" ) unless grep { $_ eq $r_type} @ResourceTypes;
@@ -47,6 +51,10 @@ sub get_URI {
     return $property_name =~ /\./go ? $property_name : lc( $r_type ) . '.' . $property_name;
 }
 
+=head2 property_list()
+
+=cut
+
 sub property_list {
     my $r_type = shift;
     if ( $r_type ) {
@@ -57,6 +65,10 @@ sub property_list {
     }
 }
 
+=head2 property_interface_names()
+
+=cut
+
 sub property_interface_names {
     my $r_type = shift;
     return [] unless $r_type;
@@ -64,13 +76,25 @@ sub property_interface_names {
     return \@out_list;
 }
 
+=head2 resource_types()
+
+=cut
+
 sub resource_types {
     return @ResourceTypes;
 }
 
+=head2 properties()
+
+=cut
+
 sub properties {
     return %Properties;
 }
+
+=head2 valid_property()
+
+=cut
 
 sub valid_property {
     my ( $r_type, $prop_name ) = @_;

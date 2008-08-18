@@ -43,7 +43,6 @@ sub new {
 
 
 =head2    body()
-    my $boolean = $object->body( $body [, %args] );
 
 =head3 Parameter
 
@@ -62,6 +61,7 @@ sub new {
 =head3 Description
 
  my $body = $object->body();
+ my $boolean = $object->body( $body [, %args] );
  
 Overrides XIMS::Object::body(). Tests $body for being well-balanced and if it
 is not, tries to well-balance $body unless $args{dontbalance} is given.

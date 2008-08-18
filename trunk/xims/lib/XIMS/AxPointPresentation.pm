@@ -5,7 +5,7 @@ XIMS::AxPointPresentation -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -42,6 +42,10 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 =head3 Description
 
 Constructor
+
+=cut
+
+=head2 new()
 
 =cut
 

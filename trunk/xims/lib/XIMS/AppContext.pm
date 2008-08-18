@@ -42,11 +42,20 @@ our @Fields = (
     'sax_filter', # a reference to a list of SAX filter classes
     'sax_generator', # a reference to a SAX generator class
 );
+
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
 
 __PACKAGE__->mk_accessors( @Fields );
+
+=head2 new()
+
+=cut
 
 sub new {
     my $proto = shift;

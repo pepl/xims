@@ -5,7 +5,7 @@ XIMS::Auth::Password -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -41,6 +41,10 @@ sub new {
     }
     return $self ;
 }
+
+=head2 getUserInfo()
+
+=cut
 
 sub getUserInfo { return $_[0]->{User}; }
 

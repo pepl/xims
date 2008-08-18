@@ -5,7 +5,7 @@ XIMS::Term -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -32,6 +32,10 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @files;
 our @links;
 
+=head2 new()
+
+=cut
+
 sub new {
     my $class = shift;
     my %args = @_;
@@ -41,6 +45,10 @@ sub new {
 
     return $self;
 }
+
+=head2 debuglevel()
+
+=cut
 
 sub debuglevel {
     my $self = shift;
@@ -55,6 +63,10 @@ sub debuglevel {
         return $self->{debuglevel};
     }
 }
+
+=head2 authenticate()
+
+=cut
 
 sub authenticate {
     my $self = shift;
@@ -82,6 +94,10 @@ sub authenticate {
     return $auth->authenticate();
 }
 
+=head2 banner()
+
+=cut
+
 sub banner {
     my $self = shift;
     my $name = shift;
@@ -99,6 +115,10 @@ return q*
 *;
 }
 
+=head2 interactive_user_pass()
+
+=cut
+
 sub interactive_user_pass {
     my $self = shift;
     my $unarg = shift;
@@ -110,6 +130,10 @@ sub interactive_user_pass {
     return ($username, $password);
 }
 
+=head2 findfiles()
+
+=cut
+
 sub findfiles {
     my $self = shift;
     my $path = shift;
@@ -117,6 +141,20 @@ sub findfiles {
     push (@files, @links); # add the processed links to the files
     return @files;
 }
+
+=head2 private functions/methods
+
+=over
+
+=item _prompt()
+
+=item _read_passphrase()
+
+=item _process()
+
+=back
+
+=cut
 
 sub _prompt {
     my $self = shift;
@@ -150,6 +188,10 @@ sub _process {
         }
     }
 }
+
+=head2 utf8_sanitize()
+
+=cut
 
 sub utf8_sanitize {
     my $self = shift;

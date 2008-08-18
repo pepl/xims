@@ -50,6 +50,10 @@ BEGIN {
     }
 }
 
+=head2 request_factory()
+
+=cut
+
 sub request_factory {
     my $self = shift;
     my $r_type = shift;
@@ -126,6 +130,10 @@ sub request_factory {
     return ( \%properties, \%conditions );
 }
 
+=head2 new()
+
+=cut
+
 sub new {
     my $class  = shift;
     my $drvnme = shift || 'DBI';
@@ -159,6 +167,10 @@ sub new {
 
     return $self;
 }
+
+=head2 AUTOLOAD()
+
+=cut
 
 sub AUTOLOAD {
     my $self = shift;
@@ -214,6 +226,11 @@ sub AUTOLOAD {
 }
 
 # we need special cases here because content objects span mutiple tables
+
+=head2 createObject()
+
+=cut
+
 sub createObject {
     my $self = shift;
     my %doc_properties = ();
@@ -250,6 +267,10 @@ sub createObject {
     #warn "returning object_id: $object_id \n";
     return ( $object_id, $doc_id );
 }
+
+=head2 getObject()
+
+=cut
 
 sub getObject {
     my $self = shift;
@@ -302,6 +323,10 @@ sub getObject {
     }
 }
 
+=head2 updateObject()
+
+=cut
+
 sub updateObject {
     my $self = shift;
     my %doc_properties = ();
@@ -353,6 +378,10 @@ sub updateObject {
     return @ret;
 }
 
+=head2 deleteObject()
+
+=cut
+
 sub deleteObject {
     my $self = shift;
     my %args = @_;
@@ -367,6 +396,9 @@ sub deleteObject {
     return 1;
 }
 
+=head2 getUser()
+
+=cut
 
 sub getUser {
     my $self = shift;
@@ -388,6 +420,10 @@ sub getUser {
         return $data;
    }
 }
+
+=head2 driver()
+
+=cut
 
 sub driver { $_[0]->{Driver} }
 
@@ -427,6 +463,11 @@ sub recurse_ancestor {
 # selection of specific objects, users, object_types, etc.
 
 # list all object types, data_formats, etc.
+
+=head2 object_types()
+
+=cut
+
 sub object_types {
     my $self = shift;
     my %args = @_;
@@ -440,6 +481,10 @@ sub object_types {
     my @out = map { XIMS::ObjectType->new->data( %{$_} ) } @data;
     return @out;
 }
+
+=head2 data_formats()
+
+=cut
 
 sub data_formats {
     my $self = shift;
@@ -457,12 +502,17 @@ sub data_formats {
 
 =pod
 
-user-related
+ user-related
 
 =cut
 
 
 # list all users
+
+=head2 users()
+
+=cut
+
 sub users {
     my $self = shift;
     my @data = $self->getUser();
@@ -472,6 +522,11 @@ sub users {
 }
 
 # list all admins
+
+=head2 admins()
+
+=cut
+
 sub admins {
     my $self = shift;
     my @data = $self->getUser( admin => 1 );
@@ -487,6 +542,11 @@ sub admins {
 
 
 # list all objects
+
+=head2 objects()
+
+=cut
+
 sub objects {
     my $self = shift;
     if ( wantarray() ) {
@@ -501,6 +561,11 @@ sub objects {
 }
 
 # the global dump site
+
+=head2 trashcan()
+
+=cut
+
 sub trashcan {
     my $self = shift;
     my %args = @_;
@@ -543,7 +608,7 @@ Optional section, remove if bogus.
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
-
+ 
 Copyright (c) 2002-2007 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,

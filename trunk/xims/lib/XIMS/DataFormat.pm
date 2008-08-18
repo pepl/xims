@@ -5,7 +5,7 @@ XIMS::DataFormat -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -28,11 +28,19 @@ use XIMS::MimeType;
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
 
 #use Data::Dumper;
+
+=head2 resource_type()
+
+=cut
 
 sub resource_type {
     return 'DataFormat';
