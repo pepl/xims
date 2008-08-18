@@ -1,19 +1,21 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::ContentIDPathResolver -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::ContentIDPathResolver -- expands an id or document_id to its corresponding location_path string
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
     use XIMS::SAX::Filter::ContentIDPathResolver;
 
 =head1 DESCRIPTION
-
-This module bla bla
+ 
+This SAX Filter expands an id or document_id to its
+corresponding location_path string.  Note: This version does not touch
+the element name and therefore we got path-string in *_id elements!
 
 =head1 SUBROUTINES/METHODS
 
@@ -21,26 +23,25 @@ This module bla bla
 
 package XIMS::SAX::Filter::ContentIDPathResolver;
 
-
-
-=head2 Please put me somewhere else
- This SAX Filter expands an id or document_id to its
-corresponding location_path string.  Note: This version does not touch
-the element name and therefore we got path-string in *_id elements!
-=cut
-
-
 use strict;
 use base qw( XML::SAX::Base );
 use XIMS::Object;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 new()
+
+=cut
+
 sub new {
     my $class = shift;
 
     return $class->SUPER::new(@_);
 }
+
+=head2 start_element()
+
+=cut
 
 sub start_element {
     my ( $self, $element ) = @_;
@@ -55,6 +56,10 @@ sub start_element {
 
     return;
 }
+
+=head2 end_element()
+
+=cut
 
 sub end_element {
     my ( $self, $element ) = @_;
@@ -123,6 +128,10 @@ sub end_element {
 
     return;
 }
+
+=head2 characters
+
+=cut
 
 sub characters {
     my ( $self, $string ) = @_;

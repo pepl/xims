@@ -26,6 +26,10 @@ use CPAN;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 new()
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -75,8 +79,21 @@ sub new {
     return $self;
 }
 
+=head2 required_mods()
+
+=cut
+
 sub required_mods { return shift->{RequiredMods} }
+
+=head2 optional_mods()
+
+=cut
+
 sub optional_mods { return shift->{OptionalMods} }
+
+=head2 check_required_mods()
+
+=cut
 
 sub check_required_mods {
     my $self = shift;
@@ -96,6 +113,10 @@ sub check_required_mods {
     return @retval;
 }
 
+=head2 expand_mods()
+
+=cut
+
 sub expand_mods {
     my $self = shift;
     my @mods = @_;
@@ -109,6 +130,10 @@ sub expand_mods {
     }
     return @retval;
 }
+
+=head2 prompt()
+
+=cut
 
 sub prompt {
     my $self= shift;
@@ -135,6 +160,10 @@ sub prompt {
       }
    }
 }
+
+=head2 httpd_conf()
+
+=cut
 
 sub httpd_conf {
     my $self = shift;
@@ -173,6 +202,10 @@ sub httpd_conf {
     }
     return $self->{ApacheHttpdConf};
 }
+
+=head2 prase_httpd_conf()
+
+=cut
 
 sub parse_httpd_conf {
     my $self = shift;
@@ -232,7 +265,15 @@ sub _parse_apconfig_file {
     $fh->close;
 }
 
+=head2 parsed_httpd_conf()
+
+=cut
+
 sub parsed_httpd_conf { return shift->{parsedhttpdconf} };
+
+=head2 apache_document_root()
+
+=cut
 
 sub apache_document_root {
     my $self = shift;
@@ -244,6 +285,10 @@ sub apache_document_root {
     }
 }
 
+=head2 apache_user()
+
+=cut
+
 sub apache_user {
     my $self = shift;
     if ( $self->parsed_httpd_conf() ) {
@@ -253,6 +298,10 @@ sub apache_user {
         $self->parse_httpd_conf() and return $self->apache_user();
     }
 }
+
+=head2 apache_goup()
+
+=cut
 
 sub apache_group {
     my $self = shift;
@@ -264,6 +313,10 @@ sub apache_group {
     }
 }
 
+=head2 xims_httpd_conf()
+
+=cut
+
 sub xims_httpd_conf {
     my $self = shift;
     if ( $self->parsed_httpd_conf() ) {
@@ -273,6 +326,10 @@ sub xims_httpd_conf {
         $self->parse_httpd_conf() and return $self->xims_httpd_conf();
     }
 }
+
+=head2 xims_startup_pl()
+
+=cut
 
 sub xims_startup_pl {
     my $self = shift;
@@ -284,12 +341,26 @@ sub xims_startup_pl {
     }
 }
 
+=head2 inplace_edit()
+
+=cut
+
 sub inplace_edit {
     my $self = shift;
     my $file = shift;
     system ($^X, "-pi", "-e", "@_", $file) == 0
          or die "inplace_edit() failed: $?";
 }
+
+=head2 private functions/methods
+
+=over
+
+=item _parse_apconfig_file()
+
+=back
+
+=cut
 
 1;
 

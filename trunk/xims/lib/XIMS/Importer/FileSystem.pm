@@ -5,7 +5,7 @@ XIMS::Importer::FileSystem -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -30,6 +30,10 @@ use File::Basename;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 import()
+
+=cut
+
 sub import {
     my $self = shift;
     my $location = shift;
@@ -44,6 +48,10 @@ sub import {
     return $self->SUPER::import( $object, $updateexisting );
 }
 
+=head2 handle_data()
+
+=cut
+
 sub handle_data {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -57,6 +65,10 @@ sub handle_data {
     return $object;
 }
 
+=head2 parent_by_location()
+
+=cut
+
 sub parent_by_location {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -69,6 +81,10 @@ sub parent_by_location {
 
     return XIMS::Object->new( path => lc($plocation) );
 }
+
+=head2 resolve_location()
+
+=cut
 
 sub resolve_location {
     XIMS::Debug( 5, "called" );
@@ -89,6 +105,10 @@ sub resolve_location {
         die "could not resolve location '$location'. (we should not get there)";
     }
 }
+
+=head2 resolve_importer()
+
+=cut
 
 sub resolve_importer {
     XIMS::Debug( 5, "called" );
@@ -112,6 +132,10 @@ sub resolve_importer {
 
     return $importer;
 }
+
+=head2 get_strref()
+
+=cut
 
 sub get_strref {
     my $self = shift;

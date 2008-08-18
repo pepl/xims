@@ -5,7 +5,7 @@ XIMS::VLibAuthor -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -65,7 +65,7 @@ __PACKAGE__->mk_accessors( @Fields );
 
 =head2    my $author = XIMS::VLibAuthor->new( [ %args ] );
 
-Parameter
+=head3 Parameter
 
    C<$args{ id }>: an existing entry's id.
 
@@ -88,11 +88,11 @@ Parameter
    C<$args{url}>
 
 
-Returns
+=head3 Returns
 
    An instance of XIMS::VLibAuthor.
 
-Description
+=head3 Description
 
    Fetches existing authors or creates a new instance of
    XIMS::VLibAuthor.

@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Exporter -- A .... doing bla, bla, bla. (short)
+XIMS::Exporter -- holds the base classes for the filesystem export
 
 =head1 VERSION
 
