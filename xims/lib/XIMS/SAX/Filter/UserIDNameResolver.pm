@@ -1,11 +1,12 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::UserIDNameResolver -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::UserIDNameResolver -- expands a user id to its
+corresponding name
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -13,20 +14,13 @@ $Id:$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This SAX Filter expands a user id to its corresponding name.
 
 =head1 SUBROUTINES/METHODS
 
 =cut
 
 package XIMS::SAX::Filter::UserIDNameResolver;
-
-
-=head3 Description
-:
-This SAX Filter expands a user id to its corresponding name.
-=cut
-
 
 use strict;
 use base qw( XIMS::SAX::Filter::DataCollector );

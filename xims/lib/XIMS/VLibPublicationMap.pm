@@ -39,6 +39,8 @@ sub resource_type {
 
 __PACKAGE__->mk_accessors( @Fields );
 
+=head2 new()
+
 =head3 Parameter
 
     $args{ id }                  (optional) :  id of an existing mapping.

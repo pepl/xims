@@ -1,11 +1,11 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::ContentLinkResolver -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::ContentLinkResolver -- expands a content-id (major_id) to its corresponding path-string
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -13,7 +13,10 @@ $Id:$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This SAX Filter expands a content-id (major_id) to its corresponding
+path-string.  Note: This version does not touch the element name and
+therefore we got path-string in *_id elements!
+
 
 =head1 SUBROUTINES/METHODS
 
@@ -21,21 +24,15 @@ This module bla bla
 
 package XIMS::SAX::Filter::ContentLinkResolver;
 
-
-=head3 Description
-:
-
-This SAX Filter expands a content-id (major_id) to its corresponding
-path-string.  Note: This version does not touch the element name and
-therefore we got path-string in *_id elements!
-=cut
-
-
 use strict;
 use base qw( XML::SAX::Base );
 use XIMS;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 new()
+
+=cut
 
 sub new {
     my $class = shift;
@@ -45,6 +42,10 @@ sub new {
 
     return $self;
 }
+
+=head2 start_element()
+
+=cut
 
 sub start_element {
     my ( $self, $element ) = @_;

@@ -22,7 +22,7 @@ use base qw( XML::SAX::Base );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-=head2 new
+=head2 new()
 
 =cut
 
@@ -36,7 +36,7 @@ sub new {
     return $self;
 }
 
-=head2 start_element
+=head2 start_element()
 
 =cut
 
@@ -57,7 +57,7 @@ sub start_element {
     return;
 }
 
-=head2 end_element
+=head2 end_element()
 
 =cut
 
@@ -148,6 +148,10 @@ sub end_element {
 
     return;
 }
+
+=head2 charachters()
+
+=cut
 
 sub characters {
     my ( $self, $string ) = @_;
