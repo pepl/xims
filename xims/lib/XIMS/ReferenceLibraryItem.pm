@@ -138,6 +138,10 @@ sub property_values {
     return @out;
 }
 
+=head2 content_field()
+
+=cut
+
 sub content_field {
     return 'binfile';
 }

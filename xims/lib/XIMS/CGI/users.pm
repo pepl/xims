@@ -366,7 +366,7 @@ sub event_passwd {
     $ctxt->properties->application->style( 'passwd_edit' );
 }
 
-=head2 event_password_update()
+=head2 event_passwd_update()
 
 the 'change password' confirmation and data handling screen
 
