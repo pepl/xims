@@ -5,7 +5,7 @@ XIMS::Importer::Object::XML -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -29,6 +29,10 @@ use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implemen
                       # $doc->getDocumentElement() instead of $doc->documentElement() for example...
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 get_rootelement()
+
+=cut
 
 sub get_rootelement {
     XIMS::Debug( 5, "called" );

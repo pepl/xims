@@ -5,7 +5,7 @@ XIMS::Importer::Object::URLLink -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -25,6 +25,10 @@ use strict;
 use base qw( XIMS::Importer::Object );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 check_location()
+
+=cut
 
 sub check_location {
     XIMS::Debug( 5, "called" );

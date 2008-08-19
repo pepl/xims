@@ -416,7 +416,7 @@ sub getObject {
     return $retval;
 }
 
-=head2    getLanguage($r)
+=head2    getLanguagePref($r)
 
 =head3 Parameter
 

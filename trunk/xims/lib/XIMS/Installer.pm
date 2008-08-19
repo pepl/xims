@@ -203,7 +203,7 @@ sub httpd_conf {
     return $self->{ApacheHttpdConf};
 }
 
-=head2 prase_httpd_conf()
+=head2 parse_httpd_conf()
 
 =cut
 
@@ -299,7 +299,7 @@ sub apache_user {
     }
 }
 
-=head2 apache_goup()
+=head2 apache_group()
 
 =cut
 

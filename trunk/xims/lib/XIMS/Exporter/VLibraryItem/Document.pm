@@ -30,6 +30,10 @@ use XIMS::SAX::Generator::Exporter::VLibraryItem;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 create()
+
+=cut
+
 sub create {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -67,6 +71,10 @@ sub create {
     return 1;
 }
 
+=head2 remove()
+
+=cut
+
 sub remove {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
@@ -102,6 +110,10 @@ sub remove {
     return $self->SUPER::remove( %param );
 }
 
+=head2 set_sax_generator()
+
+=cut
+
 sub set_sax_generator {
     XIMS::Debug( 5, "called" );
     my $self  = shift;
@@ -109,7 +121,16 @@ sub set_sax_generator {
     return XIMS::SAX::Generator::Exporter::VLibraryItem->new();
 }
 
+=head2 update_related()
+
+=cut
+
 sub update_related { return; }
+
+=head2 update_parent()
+
+=cut
+
 sub update_parent { return; }
 
 1;

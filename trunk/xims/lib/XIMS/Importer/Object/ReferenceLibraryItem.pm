@@ -5,7 +5,7 @@ XIMS::Importer::Object::ReferenceLibraryItem -- A .... doing bla, bla, bla. (sho
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use base qw( XIMS::Importer::Object );
 use XIMS::RefLibReferenceProperty;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 check_duplicate_identifier()
+
+=cut
 
 sub check_duplicate_identifier {
     XIMS::Debug( 5, "called" );

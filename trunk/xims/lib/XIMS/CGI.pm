@@ -2215,7 +2215,7 @@ sub event_copy {
 
 }
 
-=head2 event_publishpromt()
+=head2 event_publish_promt()
 
 =head3 Parameter
 
@@ -2223,7 +2223,7 @@ sub event_copy {
 
 =head3 Description
 
-    $self->event_publishpromt(...)
+    $self->event_publish_promt(...)
 
 =cut
 
@@ -2456,7 +2456,7 @@ sub publish_gopublic {
     }
 }
 
-=head2 event_unpuplish()
+=head2 event_unpublish()
 
 =head3 Parameter
 

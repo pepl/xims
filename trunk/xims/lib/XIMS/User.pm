@@ -26,9 +26,17 @@ use Digest::MD5 qw( md5_hex );
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{ XIMS::Names::property_interface_names( resource_type() ) };
 
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
+
+=head2 resource_type()
+
+=cut
 
 sub resource_type {
     my $rt = __PACKAGE__;
@@ -37,6 +45,10 @@ sub resource_type {
 }
 
 __PACKAGE__->mk_accessors(@Fields);
+
+=head2 validate_password()
+
+=cut
 
 sub validate_password {
     XIMS::Debug( 5, "called" );
@@ -50,11 +62,19 @@ sub validate_password {
     return;
 }
 
+=head2 creatable_object_types()
+
+=cut
+
 sub creatable_object_types {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->objecttype_privileges(@_);
 }
+
+=head2 object_privmask()
+
+=cut
 
 sub object_privmask {
     XIMS::Debug( 5, "called" );
@@ -93,6 +113,10 @@ sub object_privmask {
     }
 }
 
+=head2 object_privileges()
+
+=cut
+
 sub object_privileges {
     XIMS::Debug( 5, "called" );
     my $self     = shift;
@@ -118,6 +142,10 @@ sub object_privileges {
 #     die "must have a object to grant to" unless defined( $object );
 # }
 
+=head2 system_privileges()
+
+=cut
+
 sub system_privileges {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -133,6 +161,10 @@ sub system_privileges {
 
     return ();
 }
+
+=head2 dav_otprivileges()
+
+=cut
 
 sub dav_otprivileges {
     XIMS::Debug( 5, "called" );
@@ -152,6 +184,10 @@ sub dav_otprivileges {
     return ();
 }
 
+=head2 default_bookmark()
+
+=cut
+
 sub default_bookmark {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -170,6 +206,10 @@ sub default_bookmark {
         }
     }
 }
+
+=head2 bookmarks()
+
+=cut
 
 sub bookmarks {
     XIMS::Debug( 5, "called" );
@@ -195,6 +235,11 @@ sub bookmarks {
 
 # returns a list of all the roles that the
 # user is a member of (*not* including his/her own id).
+
+=head2 role_ids()
+
+=cut
+
 sub role_ids {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -244,6 +289,10 @@ sub role_ids {
     return @role_ids;
 }
 
+=head2 roles_granted()
+
+=cut
+
 sub roles_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -257,6 +306,10 @@ sub roles_granted {
     #warn "roles" . Dumper( \@roles ) . "\n";
     return wantarray ? @roles : $roles[0];
 }
+
+=head2 objecttype_privileges()
+
+=cut
 
 sub objecttype_privileges {
     XIMS::Debug( 5, "called" );
@@ -323,6 +376,10 @@ sub objecttype_privileges {
     return @all_types;
 }
 
+=head2 dav_object_types_granted()
+
+=cut
+
 sub dav_object_types_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -356,6 +413,11 @@ sub dav_object_types_granted {
 }
 
 # use XIMS::UserPriv here?
+
+=head2 grant_role_privileges()
+
+=cut
+
 sub grant_role_privileges {
     my $self = shift;
     my %args = @_;

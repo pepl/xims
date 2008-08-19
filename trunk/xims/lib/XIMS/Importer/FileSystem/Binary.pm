@@ -5,7 +5,7 @@ XIMS::Importer::FileSystem::Binary -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use base qw( XIMS::Importer::FileSystem );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 handle_data()
+
+=cut
+
 sub handle_data {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -39,6 +43,10 @@ sub handle_data {
 
     return $object;
 }
+
+=head2 get_binref()
+
+=cut
 
 sub get_binref {
     my $self = shift;

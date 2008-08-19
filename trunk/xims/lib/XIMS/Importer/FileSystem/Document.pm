@@ -5,7 +5,7 @@ XIMS::Importer::FileSystem::Document -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -31,6 +31,10 @@ use XIMS::Object;
 use Encode;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 handle_data()
+
+=cut
 
 sub handle_data {
     XIMS::Debug( 5, "called" );
@@ -70,6 +74,10 @@ sub handle_data {
 
     return $object;
 }
+
+=head2 get_rootelement()
+
+=cut
 
 sub get_rootelement {
     XIMS::Debug( 5, "called" );
@@ -114,6 +122,10 @@ sub get_rootelement {
     return $doc->documentElement();
 }
 
+=head2 utf8_sanitize()
+
+=cut
+
 sub utf8_sanitize {
     my $string = shift;
     if ( is_notutf8( $string ) ) {
@@ -125,6 +137,11 @@ sub utf8_sanitize {
 }
 
 # poor man's check
+
+=head2 is_notutf8()
+
+=cut
+
 sub is_notutf8 {
     # <yarg/>
     if ( $] == 5.008004 ) {

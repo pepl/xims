@@ -125,6 +125,7 @@ sub event_default {
 }
 
 # the 'change password' data entry screen
+
 =head2 event_passwd()
 
 =cut
@@ -140,6 +141,7 @@ sub event_passwd {
     $ctxt->properties->application->style( 'passwd' );
 }
 # the 'change password' confirmation and data handling screen
+
 =head2 event_passwd_update()
 
 =cut

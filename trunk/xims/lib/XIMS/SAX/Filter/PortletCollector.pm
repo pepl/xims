@@ -225,6 +225,10 @@ sub handle_data {
     return;
 }
 
+=head2 get_objecttypes()
+
+=cut
+
 sub get_objecttypes {
     my $self     = shift;
     my $fragment = $self->get_data_fragment;
@@ -246,6 +250,10 @@ sub get_objecttypes {
     return @ots;
 }
 
+=head2 get_direct_filter()
+
+=cut
+
 sub get_direct_filter {
     my $self     = shift;
     my $fragment = $self->get_data_fragment;
@@ -263,6 +271,10 @@ sub get_direct_filter {
     return \%retval;
 }
 
+=head2 get_latest()
+
+=cut
+
 sub get_latest {
     my $self = shift;
     my $latest;
@@ -276,6 +288,10 @@ sub get_latest {
     }
     return;
 }
+
+=head2 get_latest_sortkey()
+
+=cut
 
 sub get_latest_sortkey {
     my $self = shift;
@@ -296,6 +312,10 @@ sub get_latest_sortkey {
     return;
 }
 
+=head2 get_depth()
+
+=cut
+
 sub get_depth {
     my $self = shift;
     my $depth;
@@ -309,6 +329,10 @@ sub get_depth {
     }
     return;
 }
+
+=head2 get_documentlinks()
+
+=cut
 
 sub get_documentlinks {
     my $self = shift;
@@ -325,6 +349,10 @@ sub get_documentlinks {
 }
 
 # not yet rewritten code and thus currently unused code ahead
+
+=head2 build_or_filter()
+
+=cut
 
 sub build_or_filter {
     my $self   = shift;
@@ -369,6 +397,10 @@ sub build_or_filter {
     return DBIx::SQLEngine::Criteria::Or->new(@conds);
 }
 
+=head2 build_not_filter()
+
+=cut
+
 sub build_not_filter {
     my $self   = shift;
     my @tags   = @_;
@@ -381,6 +413,10 @@ sub build_not_filter {
     }
     return $retval;
 }
+
+=head2 build_and_filter()
+
+=cut
 
 sub build_and_filter {
     my $self   = shift;
@@ -432,6 +468,10 @@ sub build_and_filter {
  various date fields we have.
  the current version of this g'damn builder version is very close to
  Oracle SQL it may not work with other systems.
+
+=cut
+
+=head2 build_date_filter()
 
 =cut
 

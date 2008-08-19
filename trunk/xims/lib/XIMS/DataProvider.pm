@@ -428,6 +428,11 @@ sub getUser {
 sub driver { $_[0]->{Driver} }
 
 # to be replaced by hierarchical query...
+
+=head2 recurse_ancestor()
+
+=cut
+
 sub recurse_ancestor {
     my $self = shift;
     my $object = shift;

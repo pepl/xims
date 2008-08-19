@@ -27,15 +27,27 @@ use base qw( XIMS::AbstractClass Class::Accessor );
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
+
+=head2 resource_type()
+
+=cut
 
 sub resource_type {
     return 'QuestionnaireResult';
 }
 
 __PACKAGE__->mk_accessors( @Fields );
+
+=head2 store()
+
+=cut
 
 sub store {
     XIMS::Debug ( 5, "called" );
@@ -194,6 +206,10 @@ sub get_last_answer {
     my $last_answered_question = $self->data_provider->driver->dbh->fetch_one_value( sql => [ $sql, $questionnaire_id, $tan ] );
     return $last_answered_question;
 }
+
+=head2 getResult()
+
+=cut
 
 sub getResult {
     XIMS::Debug ( 5, "called" );
