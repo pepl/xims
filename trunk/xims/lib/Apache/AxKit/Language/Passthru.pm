@@ -27,11 +27,23 @@ use base qw( Apache::AxKit::Language );
 
 our $VERSION = 1.0;
 
+=head2 stylesheet_exists()
+
+=cut
+
 sub stylesheet_exists { return 0; }
+
+=head2 get_mtime()
+
+=cut
 
 sub get_mtime {
     return 3000;    # TODO: sane value
 }
+
+=head2 handler()
+
+=cut
 
 sub handler {
     my $self = shift;
