@@ -336,7 +336,7 @@ sub vlauthorinfo_granted {
     return $sidata;
 }
 
-=head2 vlpublicationsinfo()
+=head2 vlpublicationinfo()
 
 =cut
 
@@ -658,6 +658,10 @@ sub vlitems_byfilter {
 
 }
 
+=head2 vlitems_byfilter_count()
+
+=cut
+
 sub vlitems_byfilter_count {
     XIMS::Debug( 5, "called" );
     my $self           = shift;
@@ -776,6 +780,10 @@ sub _vlitems_byfilter_sql {
 
 }
 
+=head2 vlitems_bydate_count()
+
+=cut
+
 sub vlitems_bydate_count {
     XIMS::Debug( 5, "called" );
     my $self           = shift;
@@ -795,6 +803,11 @@ sub vlitems_bydate_count {
 }
 
 # for chronicle
+
+=head2 vlitems_bydate()
+
+=cut
+
 sub vlitems_bydate {
     XIMS::Debug( 5, "called" );
     my $self           = shift;
@@ -1042,6 +1055,26 @@ sub _date_conditions_values {
     }
     return ( conditions => $conditions, values => \@values );
 }
+
+=head2 private functions/methods
+
+=over
+
+=item _vlitems_byfilter_sql()
+
+=item _vlitems_by_date_sql()
+
+=item _vlobjects()
+
+=item _vlitems_byproperty()
+
+=item _userpriv_where_clause()
+
+=item _date_conditions_values()
+
+=back
+
+=cut
 
 1;
 

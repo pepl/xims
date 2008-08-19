@@ -2215,7 +2215,7 @@ sub event_copy {
 
 }
 
-=head2 event_publish_promt()
+=head2 event_publish_prompt()
 
 =head3 Parameter
 

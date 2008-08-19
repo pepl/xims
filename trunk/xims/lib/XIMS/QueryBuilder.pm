@@ -91,7 +91,8 @@ sub new {
 =cut
 
 sub criteria        { $_[0]->{criteria} }
-=head properties()
+
+=head2 properties()
 
 =cut
 
