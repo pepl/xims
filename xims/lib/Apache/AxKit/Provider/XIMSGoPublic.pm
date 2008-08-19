@@ -46,6 +46,10 @@ use XIMS::User;
 our $VERSION = '1.0';
 our $publicuser = XIMS::User->new( id => XIMS::PUBLICUSERID() );
 
+=head2 get_dom()
+
+=cut
+
 sub get_dom {
     my $self = shift;
     my $string;
@@ -204,11 +208,18 @@ sub get_dom {
     return $dom;
 }
 
+=head2 get_strref()
+
+=cut
 sub get_strref {
     my $self = shift;
     my $dom  = $self->get_dom();
     return \$dom->toString() if defined $dom;
 }
+
+=head2 process()
+
+=cut
 
 sub process {
     my $self = shift;
@@ -264,10 +275,18 @@ sub process {
     return 1;
 }
 
+=head2 key()
+
+=cut
+
 sub key {
     my ($self) = shift;
     return $self->apache_request->uri();
 }
+
+=head2 mtime()
+
+=cut
 
 sub mtime {
     my $self = shift;
@@ -330,9 +349,17 @@ sub mtime {
     return $latest->epoch();
 }
 
+=head2 exists()
+
+=cut
+
 sub exists {
     return 1;
 }
+
+=head2 get_fh()
+
+=cut
 
 sub get_fh {
     throw Apache::AxKit::Exception::IO( -text => "not implemented" );

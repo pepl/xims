@@ -53,9 +53,17 @@ our @Default_Properties    = grep { $_ ne 'body' } @Fields, 'location_path';
 our @Reference_Id_Names    = qw( style_id script_id css_id image_id schema_id);
 our @Reference_DocId_Names = qw( symname_to_doc_id );
 
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
+
+=head2 resource_type()
+
+=cut
 
 sub resource_type {
     return 'Object';
@@ -1363,6 +1371,10 @@ sub __decide_department_id {
         return $object->department_id();
     }
 }
+
+=head2 User()
+
+=cut
 
 sub User {
     my $self = shift;
@@ -3435,6 +3447,10 @@ sub balance_string {
     }
 }
 
+=head2 content_field()
+
+=cut
+
 sub content_field {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -3462,6 +3478,11 @@ sub content_field {
 }
 
 #workflow implementation#
+
+=head2 forward()
+
+=cut
+
 sub forward {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -3471,6 +3492,10 @@ sub forward {
         id     => $self->id()
     );
 }
+
+=head2 reject()
+
+=cut
 
 sub reject {
     XIMS::Debug( 5, "called" );
