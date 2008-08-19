@@ -5,7 +5,7 @@ XIMS::Session -- A class representing a XIMS session.
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -31,9 +31,17 @@ our @Fields = (
     )
 );
 
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
+
+=head2 resource_type(9
+
+=cut
 
 sub resource_type {
     return 'Session';

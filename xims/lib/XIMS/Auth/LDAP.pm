@@ -27,6 +27,10 @@ use Net::LDAP qw(LDAP_SUCCESS);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 new()
+
+=cut
+
 sub new {
     my $class = shift;
     my %param = @_;

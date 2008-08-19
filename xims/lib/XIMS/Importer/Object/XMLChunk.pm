@@ -5,7 +5,7 @@ XIMS::Importer::Object::XMLChunk -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -27,6 +27,10 @@ use XIMS::Object;
 use XML::LibXML;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 get_rootelement()
+
+=cut
 
 sub get_rootelement {
     XIMS::Debug( 5, "called" );

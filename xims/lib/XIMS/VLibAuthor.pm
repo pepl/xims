@@ -49,9 +49,17 @@ our @compound_lastnames = (
     qr/Ben /i,               # Hebrew
 );
 
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
+
+=head2 resource_type()
+
+=cut
 
 sub resource_type {
     my $rt = __PACKAGE__;
@@ -158,6 +166,9 @@ sub new {
     return $self;
 }
 
+=head2 parse_namestring()
+
+=cut
 
 sub parse_namestring {
     my $name = shift;
@@ -192,6 +203,10 @@ sub parse_namestring {
     }
 }
 
+=head2 escape_compound_lastnames()
+
+=cut
+
 sub escape_compound_lastnames {
     my $name = shift;
 
@@ -207,6 +222,10 @@ sub escape_compound_lastnames {
 
     return $name;
 }
+
+=head2 unescape_compound_lastnames()
+
+=cut
 
 sub unescape_compound_lastnames {
     my $name = shift;

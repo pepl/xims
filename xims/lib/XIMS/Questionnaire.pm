@@ -759,6 +759,10 @@ sub set_answer_data {
     return 1
 }
 
+=head2 set_answer_error()
+
+=cut
+
 sub set_answer_error {
     XIMS::Debug( 5, "called");
     my ($self, $error_message, $q) = @_;
@@ -770,6 +774,10 @@ sub set_answer_error {
     return 1
 }
 
+=head2 kioskmode()
+
+=cut
+
 sub kioskmode () {
     XIMS::Debug( 5, "called");
     my $self = shift;
@@ -777,12 +785,20 @@ sub kioskmode () {
     return $self->get_option( 'kioskmode' );
 }
 
+=head2 mandatoryanswers()
+
+=cut
+
 sub mandatoryanswers () {
     XIMS::Debug( 5, "called");
     my $self = shift;
 
     return $self->get_option( 'mandatoryanswers' );
 }
+
+=head2 tan_needed()
+
+=cut
 
 sub tan_needed () {
     XIMS::Debug( 5, "called");
@@ -800,6 +816,10 @@ sub tan_needed () {
 
     return $result;
 }
+
+=head2 tan_ok()
+
+=cut
 
 sub tan_ok() {
     XIMS::Debug( 5, "called");
@@ -824,6 +844,10 @@ sub tan_ok() {
     # Return result
     return $tan_ok;
 }
+
+=head2 store_result()
+
+=cut
 
 sub store_result {
     XIMS::Debug( 5, "called" );
@@ -1222,6 +1246,9 @@ sub _qnode {
     return $node;
 }
 
+=head2 AUTOLOAD()
+
+=cut
 
 sub AUTOLOAD {
     my $self = shift;
@@ -1229,6 +1256,28 @@ sub AUTOLOAD {
     XIMS::Debug (6, "Questionnaire-Method $called_sub not implemented!") unless $called_sub eq 'DESTROY';
     return 1;
 }
+
+=head2 private functions/methods
+
+=over
+
+=item _create_tanlists()
+
+=item _create_childrin()
+
+=item _make_element()
+
+=item _set_top_question_edit()
+
+=item _last_question()
+
+=item _parser()
+
+=item _qnode()
+
+=back
+
+=cut
 
 1;
 

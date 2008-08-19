@@ -5,7 +5,7 @@ XIMS::SAX::Filter::DepartmentExpander -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -33,11 +33,19 @@ use XML::Generator::PerlData;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 new()
+
+=cut
+
 sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
     return $self;
 }
+
+=head2 end_element()
+
+=cut
 
 sub end_element {
     my $self = shift;

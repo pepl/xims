@@ -5,7 +5,7 @@ XIMS::Auth -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use XIMS;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 new()
+
+=cut
+
 sub new {
     XIMS::Debug( 5, "called" );
     my $proto = shift;
@@ -36,7 +40,14 @@ sub new {
     return $self ;
 }
 
-# returns an instance of XIMS::User
+=head2 authenticate()
+
+=head3 Returns
+
+ Returns an instance of XIMS::User
+
+=cut
+
 sub authenticate {
     XIMS::Debug( 5, "called" );
     my $self = shift;

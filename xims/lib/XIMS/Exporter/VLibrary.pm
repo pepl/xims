@@ -5,7 +5,7 @@ XIMS::Exporter::VLibrary -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use XIMS::Exporter;
 use base qw( XIMS::Exporter::Folder );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 create()
+
+=cut
 
 sub create {
     XIMS::Debug( 5, "called" );

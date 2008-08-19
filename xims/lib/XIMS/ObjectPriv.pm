@@ -5,7 +5,7 @@ XIMS::ObjectPriv -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -27,9 +27,17 @@ use base qw( XIMS::AbstractClass Class::Accessor );
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
+
+=head2 resource_type()
+
+=cut
 
 sub resource_type {
     return 'ObjectPriv';
@@ -57,11 +65,19 @@ sub new {
     return $self;
 }
 
+=head2 create()
+
+=cut
+
 sub create {
     my $self = shift;
     my $ret = $self->data_provider->createObjectPriv( $self->data());
     return $ret;
 }
+
+=head2 delete()
+
+=cut
 
 sub delete {
     my $self = shift;
@@ -74,6 +90,10 @@ sub delete {
        return;
     }
 }
+
+=head2 update()
+
+=cut
 
 sub update {
     my $self = shift;

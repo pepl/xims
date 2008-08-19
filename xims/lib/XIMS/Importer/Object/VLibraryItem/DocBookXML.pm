@@ -31,6 +31,10 @@ use XIMS::VLibMeta;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 import()
+
+=cut
+
 sub import {
     XIMS::Debug(5, "called");
 
@@ -56,6 +60,9 @@ sub import {
     return $id;
 }
 
+=head2 vlproperties_from_document()
+
+=cut
 
 sub vlproperties_from_document {
     XIMS::Debug( 5, "called" );
@@ -128,6 +135,9 @@ sub vlproperties_from_document {
     }
 }
 
+=head2 authors_from_node()
+
+=cut
 
 sub authors_from_node {
     XIMS::Debug( 5, "called" );
@@ -182,6 +192,9 @@ sub authors_from_node {
     return @authors;
 }
 
+=head2 keywords_from_node()
+
+=cut
 
 sub keywords_from_node {
     XIMS::Debug( 5, "called" );
@@ -210,6 +223,9 @@ sub keywords_from_node {
     return @keywords;
 }
 
+=head2 subjects_from_node()
+
+=cut
 
 sub subjects_from_node {
     XIMS::Debug( 5, "called" );
@@ -237,6 +253,9 @@ sub subjects_from_node {
     return @subjects;
 }
 
+=head2 meta_from_node()
+
+=cut
 
 sub meta_from_node {
     XIMS::Debug( 5, "called" );
@@ -266,6 +285,9 @@ sub meta_from_node {
     return $meta;
 }
 
+=head2 vlpublication()
+
+=cut
 
 sub vlpublication {
     XIMS::Debug( 5, "called" );

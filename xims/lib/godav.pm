@@ -40,6 +40,10 @@ use Digest::MD5;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 handler()
+
+=cut
+
 sub handler {
     my $r = shift;
 
@@ -107,6 +111,10 @@ sub handler {
     # return $status_code;
 }
 
+=head2 options()
+
+=cut
+
 sub options {
     my $r = shift;
     my $user = shift;
@@ -117,9 +125,17 @@ sub options {
     return (200, undef);
 }
 
+=head2 proppatch()
+
+=cut
+
 sub proppatch {
     (403);
 }
+
+=head2 get()
+
+=cut
 
 sub get {
     my $r = shift;
@@ -166,8 +182,21 @@ sub get {
     return ($status_code, $content);
 }
 
+=head2 post()
+
+=cut
+
 sub post { get( @_ ) }
+
+=head2 head()
+
+=cut
+
 sub head { get( @_ ) } # TODO
+
+=head2 put()
+
+=cut
 
 sub put {
     my $r = shift;
@@ -261,6 +290,10 @@ sub put {
     return ($status_code);
 }
 
+=head2 delete()
+
+=cut
+
 sub delete {
     my $r = shift;
     my $user = shift;
@@ -323,17 +356,29 @@ EOS
     return ($status_code);
 }
 
+=head2 copy()
+
+=cut
+
 sub copy {
     my $r = shift;
     my $user = shift;
     return copymove( $r, $user, 'COPY' );
 }
 
+=head2 move()
+
+=cut
+
 sub move {
     my $r = shift;
     my $user = shift;
     return copymove( $r, $user, 'MOVE' );
 }
+
+=head2 mkcol()
+
+=cut
 
 sub mkcol {
     my $r = shift;
@@ -366,6 +411,10 @@ sub mkcol {
     }
     return (201);
 }
+
+=head2 propfind()
+
+=cut
 
 sub propfind {
     my $r = shift;
@@ -557,6 +606,10 @@ sub propfind {
     return ($status_code, $dom->toString(1));
 }
 
+=head2 lock()
+
+=cut
+
 sub lock {
     my $r = shift;
     my $user = shift;
@@ -615,6 +668,10 @@ EOS
     return ($status_code, $response);
 }
 
+=head2 unlock()
+
+=cut
+
 sub unlock {
     my $r = shift;
     my $user = shift;
@@ -643,6 +700,10 @@ sub unlock {
         return (412, undef);
     }
 }
+
+=head2 copymove()
+
+=cut
 
 sub copymove {
     my $r = shift;

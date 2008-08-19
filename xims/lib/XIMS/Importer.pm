@@ -81,7 +81,15 @@ sub new {
     return $self;
 }
 
+=head2 data_provider()
+
+=cut
+
 sub data_provider { XIMS::DATAPROVIDER() }
+
+=head2 object()
+
+=cut
 
 sub object {
     my $self = shift;
@@ -102,6 +110,10 @@ sub object {
     }
 }
 
+=head2 object_type()
+
+=cut
+
 sub object_type {
     my $self = shift;
     my $object_type = shift;
@@ -114,6 +126,10 @@ sub object_type {
         return $self->{ObjectType};
     }
 }
+
+=head2 data_format()
+
+=cut
 
 sub data_format {
     my $self = shift;
@@ -128,8 +144,21 @@ sub data_format {
     }
 }
 
+=head2 parent()
+
+=cut
+
 sub parent { return shift->{Parent} }
+
+=head2 user()
+
+=cut
+
 sub user { return shift->{User} }
+
+=head2 object_from_object_type()
+
+=cut
 
 sub object_from_object_type {
     my $self = shift;
@@ -146,6 +175,10 @@ sub object_from_object_type {
     }
     return $objclass->new( User => $self->user() );
 }
+
+=head2 import()
+
+=cut
 
 sub import {
     my $self = shift;
@@ -201,6 +234,10 @@ sub import {
     return $id;
 }
 
+=head2 check_location()
+
+=cut
+
 sub check_location {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -221,6 +258,10 @@ sub check_location {
     return $location;
 }
 
+=head2 resolve_filename()
+
+=cut
+
 sub resolve_filename {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -236,6 +277,10 @@ sub resolve_filename {
 
     return ( $object_type, $data_format );
 }
+
+=head2 resolve_suffix()
+
+=cut
 
 sub resolve_suffix {
     XIMS::Debug( 5, "called" );
@@ -290,6 +335,10 @@ sub resolve_suffix {
     return ( $object_type, $data_format );
 }
 
+=head2 default_grants()
+
+=cut
+
 sub default_grants {
     XIMS::Debug( 5, "called" );
     my $self           = shift;
@@ -341,6 +390,10 @@ sub default_grants {
 
     return $retval;
 }
+
+=head2 clean_location()
+
+=cut
 
 sub clean_location {
     my $self = shift;

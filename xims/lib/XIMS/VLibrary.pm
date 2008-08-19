@@ -65,12 +65,20 @@ sub new {
     return $class->SUPER::new(%args);
 }
 
+=head2 vlkeywords()
+
+=cut
+
 sub vlkeywords {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
     return $self->_vlobjects('Keyword');
 }
+
+=head2 vlsubjects()
+
+=cut
 
 sub vlsubjects {
     XIMS::Debug( 5, "called" );
@@ -79,6 +87,10 @@ sub vlsubjects {
     return $self->_vlobjects('Subject');
 }
 
+=head2 vlpublications()
+
+=cut
+
 sub vlpublications {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -86,12 +98,20 @@ sub vlpublications {
     return $self->_vlobjects('Publication');
 }
 
+=head2 vlauthors()
+
+=cut
+
 sub vlauthors {
     XIMS::Debug( 5, "called" );
     my $self = shift;
 
     return $self->_vlobjects('Author');
 }
+
+=head2 vlsubjectinfo()
+
+=cut
 
 sub vlsubjectinfo {
     XIMS::Debug( 5, "called" );
@@ -110,6 +130,10 @@ sub vlsubjectinfo {
 
     return $sidata;
 }
+
+=head2 vlsubjectinfo_granted()
+
+=cut
 
 sub vlsubjectinfo_granted {
     XIMS::Debug( 5, "called" );
@@ -208,6 +232,10 @@ sub this_propertyinfo {
     }
 }
 
+=head2 vlkeywordinfo()
+
+=cut
+
 sub vlkeywordinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -226,6 +254,10 @@ sub vlkeywordinfo {
 
     return $sidata;
 }
+
+=head2 vlkeywordinfo_granted()
+
+=cut
 
 sub vlkeywordinfo_granted {
     XIMS::Debug( 5, "called" );
@@ -252,6 +284,10 @@ sub vlkeywordinfo_granted {
     return $sidata;
 }
 
+=head2 vlauthorinfo()
+
+=cut
+
 sub vlauthorinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -269,6 +305,10 @@ sub vlauthorinfo {
 
     return $sidata;
 }
+
+=head2 vlauthorinfo_granted()
+
+=cut
 
 sub vlauthorinfo_granted {
     XIMS::Debug( 5, "called" );
@@ -296,6 +336,10 @@ sub vlauthorinfo_granted {
     return $sidata;
 }
 
+=head2 vlpublicationsinfo()
+
+=cut
+
 sub vlpublicationinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -315,6 +359,10 @@ sub vlpublicationinfo {
 
     return $sidata;
 }
+
+=head2 vlpublicationinfo_granted()
+
+=cut
 
 sub vlpublicationinfo_granted {
     XIMS::Debug( 5, "called" );
@@ -343,6 +391,10 @@ sub vlpublicationinfo_granted {
     return $sidata;
 }
 
+=head2 vlmediatypeinfo()
+
+=cut
+
 sub vlmediatypeinfo {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -357,6 +409,10 @@ sub vlmediatypeinfo {
 
     return $sidata;
 }
+
+=head2 vlmediatypeinfo_granted()
+
+=cut
 
 sub vlmediatypeinfo_granted {
     XIMS::Debug( 5, "called" );
@@ -380,11 +436,19 @@ sub vlmediatypeinfo_granted {
     return $sidata;
 }
 
+=head2 vlitems_bysubject()
+
+=cut
+
 sub vlitems_bysubject {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vlitems_byproperty( 'subject', @_ );
 }
+
+=head2 vlitems_bykeyword()
+
+=cut
 
 sub vlitems_bykeyword {
     XIMS::Debug( 5, "called" );
@@ -392,11 +456,19 @@ sub vlitems_bykeyword {
     return $self->_vlitems_byproperty( 'keyword', @_ );
 }
 
+=head2 vlitems_byauthor()
+
+=cut
+
 sub vlitems_byauthor {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vlitems_byproperty( 'author', @_ );
 }
+
+=head2 vlitems_bypublication()
+
+=cut
 
 sub vlitems_bypublication {
     XIMS::Debug( 5, "called" );
@@ -404,11 +476,19 @@ sub vlitems_bypublication {
     return $self->_vlitems_byproperty( 'publication', @_ );
 }
 
+=head2 vlitems_bysubject_granted()
+
+=cut
+
 sub vlitems_bysubject_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vlitems_byproperty( 'subject', filter_granted => 1, @_ );
 }
+
+=head2 vlitems_bykeyword_granted()
+
+=cut
 
 sub vlitems_bykeyword_granted {
     XIMS::Debug( 5, "called" );
@@ -416,11 +496,19 @@ sub vlitems_bykeyword_granted {
     return $self->_vlitems_byproperty( 'keyword', filter_granted => 1, @_ );
 }
 
+=head2 vlitems_byauthor_granted()
+
+=cut
+
 sub vlitems_byauthor_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->_vlitems_byproperty( 'author', filter_granted => 1, @_ );
 }
+
+=head2 vlitems_bypublication_granted()
+
+=cut
 
 sub vlitems_bypublication_granted {
     XIMS::Debug( 5, "called" );
@@ -428,11 +516,19 @@ sub vlitems_bypublication_granted {
     return $self->_vlitems_byproperty( 'publication', filter_granted => 1, @_ );
 }
 
+=head2 vlitems_bydate_granted()
+
+=cut
+
 sub vlitems_bydate_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->vlitems_bydate( @_, filter_granted => 1 );
 }
+
+=head2 vlitems_bydate_granted_count()
+
+=cut
 
 sub vlitems_bydate_granted_count {
     XIMS::Debug( 5, "called" );
@@ -440,17 +536,29 @@ sub vlitems_bydate_granted_count {
     return $self->vlitems_bydate_count( @_, filter_granted => 1 );
 }
 
+=head2 vlitems_byfilter_granted()
+
+=cut
+
 sub vlitems_byfilter_granted {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->vlitems_byfilter( @_, filter_granted => 1 );
 }
 
+=head2 vlitems_byfilter_granted_count()
+
+=cut
+
 sub vlitems_byfilter_granted_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     return $self->vlitems_byfilter_count( @_, filter_granted => 1 );
 }
+
+=head2 vlitems_byfilter()
+
+=cut
 
 sub vlitems_byfilter {
     XIMS::Debug( 5, "called" );

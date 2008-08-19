@@ -46,6 +46,10 @@ foreach my $values (values %XIMS::Names::Properties) {
     }
 }
 
+=head2 resolve_resource()
+
+=cut
+
 sub resolve_resource {
     # here is where we resolve the uri-id to the tables and fields
     # in the database.
@@ -65,6 +69,9 @@ sub resolve_resource {
 
 =cut
 
+=head2 get()
+
+=cut
 
 sub get {
     my ($self, %args) = @_;
@@ -83,6 +90,10 @@ sub get {
     #warn "Driver returned: " . Dumper( \@out ) . "\n";
     return  \@out;
 }
+
+=head2 create()
+
+=cut
 
 sub create {
     my ($self, %args) = @_;
@@ -122,6 +133,9 @@ sub create {
     }
 }
 
+=head2 delete()
+
+=cut
 
 sub delete {
     my ($self, %args) = @_;
@@ -132,6 +146,9 @@ sub delete {
                                     criteria  => $crit );
 }
 
+=head2 update()
+
+=cut
 
 sub update {
     my ($self, %args) = @_;
@@ -154,6 +171,9 @@ sub update {
 
 =cut
 
+=head2 name_fixer()
+
+=cut
 
 sub name_fixer {
     my $row = shift;
@@ -172,6 +192,10 @@ sub name_fixer {
     return \%out_row;
 }
 
+=head2 tables_and_columns()
+
+=cut
+
 sub tables_and_columns {
     my ($self, $hashref) = @_;
     my %seen_tables = ();
@@ -185,6 +209,10 @@ sub tables_and_columns {
     my @tables = keys( %seen_tables );
     return ( \@tables, \%columns );
 }
+
+=head2 tables_and_columns_get()
+
+=cut
 
 sub tables_and_columns_get {
     my ($self, $hashref) = @_;
@@ -201,6 +229,10 @@ sub tables_and_columns_get {
     my @tables = map { "$_ $_" } ( keys( %seen_tables ));
     return ( \@tables, \%columns );
 }
+
+=head2 crit()
+
+=cut
 
 sub crit {
     my ($self, $conds) = @_;
@@ -221,6 +253,10 @@ sub crit {
     return $cond_object;
 }
 
+=head2 crit_get()
+
+=cut
+
 sub crit_get {
     my ($self, $conds) = @_;
     my @outie = ();
@@ -238,6 +274,10 @@ sub crit_get {
     my $cond_object = DBIx::SQLEngine::Criteria::And->new( @outie );
     return $cond_object;
 }
+
+=head2 property_relationships()
+
+=cut
 
 sub property_relationships {
     # make sure the conditions include any object or method specific joins
@@ -266,6 +306,10 @@ for new DBs are added, we should reconsider using helper classes instead.
 
 =cut
 
+=head2 update_content_binfile()
+
+=cut
+
 sub update_content_binfile {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -291,6 +335,10 @@ sub update_content_binfile {
     return $sth->execute;
 }
 
+=head2 update_content_body()
+
+=cut
+
 sub update_content_body {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -303,6 +351,10 @@ sub update_content_body {
     );
 }
 
+=head2 dbh()
+
+=cut
+
 sub dbh { $_[0]->{dbh} }
 
 
@@ -314,6 +366,9 @@ sub dbh { $_[0]->{dbh} }
 
 =cut
 
+=head2 reposition()
+
+=cut
 
 sub reposition {
     XIMS::Debug( 5, "called" );
@@ -368,6 +423,10 @@ sub reposition {
     return $data;
 }
 
+=head2 max_position()
+
+=cut
+
 sub max_position {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -380,6 +439,10 @@ sub max_position {
 
     return $data->[0]->{'position'};
 }
+
+=head2 close_position_gap()
+
+=cut
 
 sub close_position_gap {
     XIMS::Debug( 5, "called" );
@@ -401,6 +464,10 @@ sub close_position_gap {
                                   );
 }
 
+=head2 update_descendant_department_id()
+
+=cut
+
 sub update_descendant_department_id {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -416,6 +483,10 @@ sub update_descendant_department_id {
                                                   'location_path' => $args{parent_location_path} . '/%' } );
 }
 
+=head2 function_val()
+
+=cut
+
 sub function_val {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -430,6 +501,10 @@ sub function_val {
     my $data = $self->{dbh}->fetch_select( sql => $query );
     return $data->[0]->{'val'};
 }
+
+=head2 db_now()
+
+=cut
 
 sub db_now {
     XIMS::Debug( 5, "called" );
@@ -447,6 +522,10 @@ sub db_now {
 
     return $data->[0]->{'now'};
 }
+
+=head2 get_object_id()
+
+=cut
 
 sub get_object_id {
     XIMS::Debug( 5, "called" );
@@ -470,6 +549,10 @@ sub get_object_id {
     }
     return \@ids;
 }
+
+=head2 find_object_id()
+
+=cut
 
 sub find_object_id {
     XIMS::Debug( 5, "called" );
@@ -560,6 +643,10 @@ sub find_object_id {
     return \@ids;
 }
 
+=head2 find_object_id_count()
+
+=cut
+
 sub find_object_id_count {
     XIMS::Debug( 5, "called" );
     my $self = shift;
@@ -569,6 +656,10 @@ sub find_object_id_count {
     my $ids = $self->find_object_id( %args, noorder => 1 );
     return $ids->[0] if $ids;
 }
+
+=head2 content_length()
+
+=cut
 
 sub content_length {
     XIMS::Debug( 5, "called" );
@@ -582,6 +673,10 @@ sub content_length {
     return unless ref( $data ) and scalar( @{$data} > 0);
     return $data->[0]->{lob_length};
 }
+
+=head2 get_descendant_id_level()
+
+=cut
 
 sub get_descendant_id_level {
     XIMS::Debug( 5, "called" );
@@ -656,6 +751,10 @@ sub get_descendant_infos {
     return \@rv ;
 }
 
+=head2 location_path()
+
+=cut
+
 sub location_path {
     my $self = shift;
     my $document_id;
@@ -691,6 +790,10 @@ sub location_path {
     return $data->[0]->{location_path};
 }
 
+=head2 location_path_relative()
+
+=cut
+
 sub location_path_relative {
     my $self = shift;
     my $relative_path = $self->location_path( @_ );
@@ -702,6 +805,11 @@ sub location_path_relative {
 
 # mini request factory to allow compatibility of 'property => value' conditions
 # currently used by find_object_ids and find_object_id_count
+
+=head2 _sqlwhere_from_hashgroup()
+
+=cut
+
 sub _sqlwhere_from_hashgroup {
     my $self = shift;
     my %args = @_;
@@ -881,6 +989,10 @@ sub get_object_id_by_path {
     return $retval;
 }
 
+=head2 new()
+
+=cut
+
 sub new {
     my $proto = shift;
     my $class = ref( $proto ) || $proto;
@@ -926,6 +1038,10 @@ sub new {
 
     return bless $self, $class;
 }
+
+=head2 DESTROY()
+
+=cut
 
 sub DESTROY {
     my $self = shift;

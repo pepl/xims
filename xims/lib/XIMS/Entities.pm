@@ -5,7 +5,7 @@ XIMS::Entities -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -46,6 +46,11 @@ require Encode;
 
 our %decodemap;
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 Version()
+
+=cut
+
 sub Version { $VERSION; }
 
 BEGIN {
@@ -421,6 +426,9 @@ our %entity2char = (
  ) : ())
 );
 
+=head2 decode()
+
+=cut
 
 sub decode {
     my $array;

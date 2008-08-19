@@ -5,7 +5,7 @@ XIMS::VLibSubject -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -27,9 +27,17 @@ use base qw( XIMS::AbstractClass Class::Accessor );
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};
 
+=head2 fields()
+
+=cut
+
 sub fields {
     return @Fields;
 }
+
+=head2 resource_type()
+
+=cut
 
 sub resource_type {
     my $rt = __PACKAGE__;

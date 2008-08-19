@@ -28,12 +28,20 @@ use XIMS::User;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 new()
+
+=cut
+
 sub new {
     my $class = shift;
     my $self  = $class->SUPER::new(@_);
 
     return $self;
 }
+
+=head2 start_element()
+
+=cut
 
 sub start_element {
     my ( $self, $element ) = @_;
@@ -48,6 +56,10 @@ sub start_element {
 
     return;
 }
+
+=head2 end_element()
+
+=cut
 
 sub end_element {
     my $self = shift;
@@ -66,6 +78,10 @@ sub end_element {
 
     return;
 }
+
+=head2 characters()
+
+=cut
 
 sub characters {
     my ( $self, $string ) = @_;

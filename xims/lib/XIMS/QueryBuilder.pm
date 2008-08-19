@@ -86,9 +86,27 @@ sub new {
     return $self;
 }
 
+=head2 criteria()
+
+=cut
+
 sub criteria        { $_[0]->{criteria} }
+=head properties()
+
+=cut
+
 sub properties      { $_[0]->{properties} }
+
+=head2 order()
+
+=cut
+
 sub order           { $_[0]->{order} }
+
+=head2 filterpublished()
+
+=cut
+
 sub filterpublished { $_[0]->{filterpublished} }
 
 =head2    search_boolean( $arryref, $arryindex );

@@ -5,7 +5,7 @@ XIMS::Importer::FileSystem::XML -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,10 @@ use base qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XML);
 use XML::LibXML;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 handle_data()
+
+=cut
 
 sub handle_data {
     XIMS::Debug( 5, "called" );
@@ -52,6 +56,10 @@ sub handle_data {
 
     return $object;
 }
+
+=head2 get_rootelement()
+
+=cut
 
 sub get_rootelement {
     XIMS::Debug( 5, "called" );

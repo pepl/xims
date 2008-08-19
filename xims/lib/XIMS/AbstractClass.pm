@@ -5,7 +5,7 @@ XIMS::AbstractClass -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -25,6 +25,10 @@ use strict;
 use XIMS;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+=head2 data()
+
+=cut
 
 sub data {
     my $self = shift;
@@ -70,6 +74,10 @@ sub data {
     }
     return %data;
 }
+
+=head2 data_provider()
+
+=cut
 
 sub data_provider { XIMS::DATAPROVIDER() }
 
