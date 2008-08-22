@@ -314,19 +314,32 @@
 </xsl:template>
 
 <xsl:template name="tr-location-create">
+  <xsl:param name="testlocation" select="true()"/>
     <tr>
         <td valign="top">
             <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
             <span class="compulsory"><xsl:value-of select="$i18n/l/Location"/></span>
         </td>
         <td>
-            <input tabindex="10" type="text" name="name" size="40" class="text" onfocus="this.className='text focused'" onblur="this.className='text';" onchange="testlocation();"/>
+            <input tabindex="10" 
+                   type="text" 
+                   name="name" 
+                   size="40" 
+                   class="text"
+                   onfocus="this.className='text focused'"
+                   onblur="this.className='text';">
+              <xsl:if test="$testlocation">
+                <xsl:attribute name="onchange">return testlocation();</xsl:attribute>
+              </xsl:if>
+            </input>
             <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         <!-- location-testing AJAX code -->
-        <xsl:call-template name="testlocationjs">
+        <xsl:if test="$testlocation">
+          <xsl:call-template name="testlocationjs">
             <xsl:with-param name="event" select="'create'"/>
-        </xsl:call-template>
+          </xsl:call-template>
+        </xsl:if>
         </td>
         <td align="right" valign="top">
             <xsl:call-template name="marked_mandatory"/>
@@ -335,6 +348,7 @@
 </xsl:template>
 
 <xsl:template name="tr-location-edit">
+  <xsl:param name="testlocation" select="true()"/>
     <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
@@ -356,7 +370,9 @@
                     <xsl:otherwise>
                         <xsl:attribute name="class">text</xsl:attribute>
                         <xsl:attribute name="onfocus">this.className='text focused'</xsl:attribute>
-                        <xsl:attribute name="onchange">this.className='text'; return testlocation();</xsl:attribute>
+                        <xsl:if test="$testlocation">
+                          <xsl:attribute name="onchange">this.className='text'; return testlocation();</xsl:attribute>
+                        </xsl:if>
                     </xsl:otherwise>
                 </xsl:choose>
             </input>
@@ -365,10 +381,14 @@
             <!-- we only test locations for unpublished docs -->
             <xsl:if test="published = '0'">
                 <!-- location-testing AJAX code -->
-                <xsl:call-template name="testlocationjs">
-                    <xsl:with-param name="event" select="'edit'"/>
-                    <xsl:with-param name="obj_type" select="/document/object_types/object_type[@id=$objecttype]/fullname"/>
-                </xsl:call-template>
+                <xsl:if test="$testlocation">
+                  <xsl:call-template name="testlocationjs">
+                    <xsl:with-param name="event" 
+                                    select="'edit'"/>
+                    <xsl:with-param name="obj_type"
+                                    select="/document/object_types/object_type[@id=$objecttype]/fullname"/>
+                  </xsl:call-template>
+                </xsl:if>
             </xsl:if>
         </td>
         <td align="right" valign="top">
