@@ -30,7 +30,7 @@
             <table border="0" 
                    width="98%">
               <xsl:call-template name="tr-location-create">
-                <xsl:with-param name="checklocation" select="false()"/>
+                <xsl:with-param name="testlocation" select="false()"/>
               </xsl:call-template>
               <xsl:call-template name="tr-title-create"/>
               <xsl:call-template name="tr-keywords-create"/>
