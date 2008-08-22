@@ -54,7 +54,9 @@
       <td>
         <input tabindex="10" 
                type="text" 
-               class="text" 
+               class="text"
+               onfocus="this.className='text focused'"
+               onblur="this.className='text';"
                name="name" 
                size="40">
           <xsl:choose>
