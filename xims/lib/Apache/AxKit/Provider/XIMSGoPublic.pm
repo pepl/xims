@@ -211,6 +211,7 @@ sub get_dom {
 =head2 get_strref()
 
 =cut
+
 sub get_strref {
     my $self = shift;
     my $dom  = $self->get_dom();
