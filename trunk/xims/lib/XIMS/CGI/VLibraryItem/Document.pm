@@ -127,16 +127,18 @@ sub event_store {
         }
     }
 
+    $self->SUPER::event_store($ctxt);
+
     my $meta;
-    if ( !$object->document_id() ) {
-        $self->SUPER::event_store($ctxt);
-        $object = $ctxt->object();
-        $meta   = XIMS::VLibMeta->new();
-    }
-    else {
-        $self->SUPER::event_store($ctxt);
+
+    if ( defined $object->document_id() ) {
         $meta = XIMS::VLibMeta->new( document_id => $object->document_id() );
     }
+    else {
+        $object = $ctxt->object();
+    }
+
+    $meta = XIMS::VLibMeta->new() unless defined $meta;
 
     # store publications, subjects, keywords, and authors
     foreach my $property (qw(subject keyword author publication)) {
