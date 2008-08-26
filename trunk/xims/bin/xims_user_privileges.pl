@@ -231,3 +231,63 @@ sub usage {
 *;
 }
 
+__END__
+
+=head1 NAME
+
+xims_user_privileges.pl - changes object privileges
+
+=head1 SYNOPSIS
+
+xims_user_privileges.pl [-h][-d][-u username -p password] [-r] [-e] [-l privilege-list] -g grantee-username path-to-object-to-grant
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-r>
+
+Recursively grant descendants.
+
+=item B<-e>
+
+If specified, all privileges of the grantee will be revoked instead of granted.
+
+=item B<-l>
+
+Comma-separated list of XIMS::Privileges to be granted, default is VIEW.
+Example: -l MODIFY,PUBLISH
+
+=item B<-g>
+
+Comma-separated list of grantee's usernames.
+
+=item B<-u>
+
+The username to connect to XIMS. If not specified,
+you will be asked for it interactively.
+
+=item B<-p>
+
+The password of the XIMS user. If not specified,
+you will be asked for it interactively.
+
+=item B<-d>
+
+For more verbose output, specify the XIMS debug level; default is '1'
+
+=back
+
+=cut

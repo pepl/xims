@@ -391,3 +391,72 @@ sub filter_ximsfiles {
     }
     return @ximsfiles;
 }
+
+__END__
+
+=head1 NAME
+
+xims_setup.pl - XIMS Setup
+
+=head1 SYNOPSIS
+
+xims_setup.pl [-h|-c|-a httpdconf -u user -p pwd -n dbname -x path_to_tidy -t dbtype [-b host [-o port]]]
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-a>
+
+The path to your Apache's config file
+
+=item B<-u>
+
+The name of your database user to connect to the XIMS
+database
+
+=item B<-p>
+
+The password of your database user to connect to the XIMS
+database
+
+=item B<-n>
+
+The name of the XIMS database to connect to
+
+=item B<-t>
+
+The type of RDBMS of your XIMS database. Currently, either
+'Pg' or 'Oracle' are supported
+
+=item B<-b>
+
+The name of the database host if you connect to a remote machine (optional for Pg)
+
+=item B<-o>
+
+The port number of the database listener at the remote machine, omit for default (Pg)
+
+=item B<-x>
+
+The path to your tidy executable
+
+=item B<-c>
+
+Only update ximsconfig.xml
+
+=back
+
+=cut

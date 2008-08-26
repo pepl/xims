@@ -115,3 +115,46 @@ sub XIMS::Questionnaire::copy {
     return $clone;
 }
 
+__END__
+
+=head1 NAME
+
+copy_questionnaire.pl
+
+=head1 SYNOPSIS
+
+copy_questionnaire.pl [-h][-d][-u username -p password] source-path target-path
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-u>
+
+The username to connect to XIMS. If not specified,
+you will be asked for it interactively.
+
+=item B<-p>
+
+The password of the XIMS user. If not specified,
+you will be asked for it interactively.
+
+=item B<-d>
+
+For more verbose output, specify the XIMS debug level; default is '1'
+
+=back
+
+=cut

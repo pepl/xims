@@ -112,4 +112,59 @@ sub usage {
 }
 
 
+__END__
 
+=head1 NAME
+
+xims_importer.pl - imports large numbers of documents
+
+=head1 SYNOPSIS
+
+xims_importer.pl [-h][-d][-f][-u username -p password] -m xims-mount-path path-to-import
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-l>
+
+If given, this list of locations of the children of the Department- or SiteRoot will be
+used for creating the Departmentlinks. Optionally, -n can be specified, to negate that list.
+Per default, all children (except 'departmentlinks' and 'departmentlinks_portlet') will be added
+as DepartmentLinks.
+
+=item B<-u>
+
+The username to connect to XIMS. If not specified,
+you will be asked for it interactively.
+
+=item B<-p>
+
+The password of the XIMS user. If not specified,
+you will be asked for it interactively.
+
+=item B<-d>
+
+For more verbose output, specify the XIMS debug level; default is '1'
+
+=back
+
+=head1 EXAMPLE
+
+xims_importer.pl -u admin -l index.html,contact.html,about.html /foo.bar.tld
+    Adds the children of /foo.bar.tld with the three specified locations
+    as DepartmentLinks.
+
+=cut

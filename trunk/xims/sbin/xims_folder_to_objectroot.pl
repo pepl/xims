@@ -96,4 +96,51 @@ sub usage {
 }
 
 
+__END__
 
+=head1 NAME
+
+xims_folder_to_objectroot.pl
+
+=head1 SYNOPSIS
+
+xims_folder_to_objectroot.pl [-h][-d][-u username -p password] [-s SiteRootURL] xims-path-to-folder
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-s>
+
+If given, the folder will be converted to a SiteRoot instead of
+a DepartmentRoot and the SiteRootURL will be set.
+
+=item B<-u>
+
+The username to connect to XIMS. If not specified,
+you will be asked for it interactively.
+
+=item B<-p>
+
+The password of the XIMS user. If not specified,
+you will be asked for it interactively.
+
+=item B<-d>
+
+For more verbose output, specify the XIMS debug level; default is '1'
+
+=back
+
+=cut

@@ -290,3 +290,87 @@ sub usage {
 
 *;
 }
+
+__END__
+
+=head1 NAME
+
+cot_creator.pl
+
+=head1 SYNOPSIS
+cot_creator.pl	 [-h|-n object_type_name [-i isa] [-f data_format_name]
+	         [-c -m mime_type -s suffix] [-o outputdir]
+           	 [-r redir_to_self] [-g publish_gopublic] [-t is_fs_container]
+           	 [-u dbusername] [-p dbpassword] [-d debuglevel] ]
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-n>
+
+The name of the object type you want to create
+
+=item B<-i>
+
+The super class of the object-, application-, and exporter
+class; defaults to XIMS::Object, XIMS::CGI, and
+XIMS::Exporter::XML respectively
+
+=item B<-r>
+
+Set redir_to_self objecttype property, defaults to 1
+
+=item B<-g>
+
+Set publish_gopublic objecttype property, defaults to 0
+
+=item B<-t>
+
+Set is_fs_container objecttype property, defaults to 0
+
+=item B<-f>
+
+The name of the data format (list of df)
+If you want to create a new data format, you have to set the
+following three arguments:
+-c flag to actually create the data format
+-m mime-type
+-s suffix
+
+=item B<-u>
+
+If set, overrides XIMS::Config::DBUser. You may need this if
+the database user specified in XIMS::Config::DBUser has
+insufficient privileges to create object types or data
+formats. For Pg, for example the user default user 'xims' has
+the privileges, whereas 'ximsrun' does not.
+
+=item B<-p>
+
+If set, overrides XIMS::Config::DBPassword
+
+=item B<-o>
+
+Output directory of template modules and stylesheets,
+defaults to '.'
+
+=item B<-d>
+
+For more verbose output, specify the XIMS debug level; default is '1'
+
+=back
+
+=cut

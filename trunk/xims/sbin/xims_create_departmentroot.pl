@@ -162,3 +162,69 @@ sub defaultgrants {
     }
 }
 
+__END__
+
+=head1 NAME
+
+xims_create_departmentroot.pl - creates a departmentroot
+
+=head1 SYNOPSIS
+
+xims_create_departmentroot.pl [-h][-d][-u username -p password] -m parent_path -o owner_username -r role_username -l location -t title
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-m>
+
+Path to the XIMS container where the DepartmentRoot should be created.
+
+=item B<-o>
+
+Username used as owner, creator and last_modifier of the created DepartmentRoot.
+MODIFY and PUBLISH privileges will be granted to this user.
+
+=item B<-r>
+
+Rolename to which VIEW privileges will be granted. The newly created DepartmentRoot
+will be set as default bookmark of this role.
+
+=item B<-l>
+
+Location of the DepartmentRoot
+
+=item B<-t>
+
+Title of the DepartmentRoot. Will be used as title and header for the automatically created
+index.html
+
+=item B<-u>
+
+The username to connect to XIMS. If not specified,
+you will be asked for it interactively.
+
+=item B<-p>
+
+The password of the XIMS user. If not specified,
+you will be asked for it interactively.
+
+=item B<-d>
+
+For more verbose output, specify the XIMS debug level; default is '1'
+
+=back
+
+=cut
