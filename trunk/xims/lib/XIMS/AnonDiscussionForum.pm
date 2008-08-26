@@ -1,11 +1,11 @@
 
 =head1 NAME
 
-XIMS::AnonDiscussionForum -- A .... doing bla, bla, bla. (short)
+XIMS::AnonDiscussionForum -- AnonDiscussionForum Constructor
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -13,7 +13,7 @@ $Id:$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module creates the class needed for AnonDiscussionForum.
 
 =head1 SUBROUTINES/METHODS
 
@@ -65,10 +65,6 @@ __END__
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
 
 Optional section , remove if bogus
 

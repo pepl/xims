@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::AxPointPresentation -- A .... doing bla, bla, bla. (short)
+XIMS::AxPointPresentation -- AxPoint Constructor
 
 =head1 VERSION
 
