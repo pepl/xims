@@ -137,3 +137,41 @@ sub _try_cpanshell {
 
     print "\nAll required modules found\033[m.\n\n";
 }
+
+__END__
+
+=head1 NAME
+
+cpan_install.pl
+
+=head1 SYNOPSIS
+
+cpan_install.pl [-c|-h|-m comma-separated-list-of-modules]
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-c>
+
+checks for missing modules only
+
+=item B<-m>
+
+comma separated list of modules to be installed
+
+=back
+
+=cut

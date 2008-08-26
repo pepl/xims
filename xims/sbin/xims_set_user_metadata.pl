@@ -117,4 +117,62 @@ sub usage {
 }
 
 
+__END__
 
+=head1 NAME
+
+xims_set_user_metadata.pl
+
+=head1 SYNOPSIS
+
+xims_set_user_metadata.pl [-h][-d][-u username -p password] [-r] [-o owner] [-c creator] [-l last-modifier] path-to-object
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-r>
+
+Recursively set user metadata.
+
+=item B<-o>
+
+Username of the owner
+
+=item B<-c>
+
+Username of the creator
+
+=item B<-l>
+
+Username of the last modifier
+
+=item B<-u>
+
+The username to connect to XIMS. If not specified,
+you will be asked for it interactively.
+
+=item B<-p>
+
+The password of the XIMS user. If not specified,
+you will be asked for it interactively.
+
+=item B<-d>
+
+For more verbose output, specify the XIMS debug level; default is '1'
+
+=back
+
+=cut

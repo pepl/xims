@@ -214,3 +214,61 @@ sub rename_object {
         return 0;
     }
 }
+
+__END__
+
+=head1 NAME
+
+xims_move.pl - moves large numbers of objects
+
+=head1 SYNOPSIS
+
+xims_move.pl [-h][-d][-u username -p password] [-a] -f path_to_object_to_move -t move_target_path
+
+
+Options:
+  -help            brief help message
+  -man             full documentation
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-help>
+
+Print a brief help message and exits.
+
+=item B<-man>
+
+Prints the manual page and exits.
+
+=item B<-f>
+
+Path to object to be moved
+
+=item B<-t>
+
+Path to target, if target parent and source parent are identical, object will
+be renamed only
+
+=item B<-a>
+
+If given, object and possible descendants will be be unpublished after moving
+
+=item B<-u>
+
+The username to connect to XIMS. If not specified,
+you will be asked for it interactively.
+
+=item B<-p>
+
+The password of the XIMS user. If not specified,
+you will be asked for it interactively.
+
+=item B<-d>
+
+For more verbose output, specify the XIMS debug level; default is '1'
+
+=back
+
+=cut
