@@ -80,17 +80,7 @@ Look at the F<error_log> file for messages.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
+In F<ximsconfig.xml>
 
 =head1 BUGS AND LIMITATION
 
