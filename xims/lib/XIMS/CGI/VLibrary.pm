@@ -1089,6 +1089,7 @@ sub event_filter {
     # order of the result
     #   chrono: chronicle date from
     #   alpha: Title
+    #   loctn: Location
     #   create: creation date
     #   modify: modification date
     #   dc.date: meta.dc_date
