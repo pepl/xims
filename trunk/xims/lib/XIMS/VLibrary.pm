@@ -584,6 +584,10 @@ sub vlitems_byfilter {
     elsif ( $order eq "modify" ) {
         $order = "c.last_modification_timestamp DESC";
     }
+    # 'location' might trigger XSS-warnings.
+    elsif ( $order eq "loctn" ) {
+        $order = "d.location DESC";
+    }
 
     my $limit  = delete $args{limit};
     my $offset = delete $args{offset};
@@ -699,7 +703,7 @@ sub _vlitems_byfilter_sql {
     }
     else {
         $properties =
-'c.id AS id, d.parent_id, d.location, d.object_type_id, c.document_id, '
+            'c.id AS id, d.parent_id, d.location, d.object_type_id, c.document_id, '
           . 'c.abstract, c.title, c.last_modification_timestamp, '
           . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
     }
@@ -707,7 +711,7 @@ sub _vlitems_byfilter_sql {
     # Select Tables
     # create conditions and values
     my $tables     = 'ci_documents d, ci_content c';
-    my $conditions = 'd.ID = c.document_id AND d.parent_id = ? ';
+    my $conditions = 'd.ID = c.document_id AND d.parent_id = ? AND c.marked_deleted IS NULL ';
     my @values     = ( $self->document_id() );
     if (   $criteria{mediatype} ne ''
         || $criteria{chronicle} ne ''
