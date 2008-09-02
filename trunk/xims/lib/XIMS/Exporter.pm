@@ -1248,8 +1248,15 @@ sub create {
 
     if ( defined $document_fh ) {
         binmode( $document_fh, ':raw' );
+
+        # Despite binmode :raw, the virtual utf-8 IO layer will be used
+        # This Binary handler may also get utf-8 flagged strings (e.g. XML object type)
+        # Encode::_utf8_off will not directly work on $self->{Object}->body but only on copies
+        # To save copying or adding more logic, we just disable the IO layer magic by using bytes here... 
+        use bytes;
         print $document_fh $self->{Object}->body;
         $document_fh->close;
+        no bytes;
         XIMS::Debug( 4, "document written" );
     }
     else {
