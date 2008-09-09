@@ -65,6 +65,21 @@
         </xsl:choose>
     </xsl:variable>
 
+    <xsl:variable name="objectdescription">
+       <xsl:choose>
+            <xsl:when test="$subject and /document/context/vlsubjectinfo/subject[id=$subjectID]/description/*">
+              <div>
+                <xsl:copy-of select="/document/context/vlsubjectinfo/subject[id=$subjectID]/description"/>
+              </div>
+            </xsl:when>
+            <xsl:when test="$keyword and /document/context/vlkeywordinfo/keyword/description/*">
+              <div>
+                <xsl:copy-of select="/document/context/vlkeywordinfo/keyword/description"/>
+              </div>
+            </xsl:when>
+       </xsl:choose>
+    </xsl:variable>
+
     <xsl:variable name="objectitems_count">
         <xsl:choose>
             <xsl:when test="$subject">
@@ -117,7 +132,7 @@
                 <xsl:call-template name="items_page_info"/>
               </span>
             </h1>
-
+            <xsl:copy-of select="$objectdescription"/>
             <xsl:call-template name="search_switch"/>
             <xsl:call-template name="chronicle_switch" />
             <xsl:call-template name="childrenlist"/>
