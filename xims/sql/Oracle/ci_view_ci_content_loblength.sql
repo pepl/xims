@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2006 The XIMS Project.
+-- Copyright (c) 2002-2008 The XIMS Project.
 -- See the file "LICENSE" for information and conditions for use, reproduction,
 -- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -94,9 +94,9 @@ SELECT c.binfile,
        , c.created_by_middlename
        , c.created_by_firstname
        , c.data_format_name
-       , DECODE(NVL(DBMS_LOB.getlength (c.body), 0), 0,
+       , DECODE(NVL(CLOB_BYTELENGTH (c.body), 0), 0,
                    NVL(DBMS_LOB.getlength (c.binfile), 0),
-                   NVL(DBMS_LOB.getlength (c.body), 0)
+                   NVL(CLOB_BYTELENGTH (c.body), 0)
                    ) lob_length
        , c.last_publication_timestamp
        , c.last_published_by_id
