@@ -102,6 +102,17 @@ sub prepare {
           { publication => \@vlpublications }
           if scalar @vlpublications;
     }
+    # hmmm, handle all VLibrary abstracts as chunk?
+    elsif ( $ctxt->object->object_type->name() eq 'Event' )  {
+        my %encargs;
+        $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
+        push(
+            @{ $self->{FilterList} },
+            XML::Filter::CharacterChunk->new(
+                %encargs, TagName => [qw(abstract)]
+            )
+        );
+    }
 
     return $doc_data;
 }
