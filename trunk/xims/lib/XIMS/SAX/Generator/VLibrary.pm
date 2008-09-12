@@ -105,6 +105,16 @@ sub prepare {
             )
         );
     }
+    # only for style eq 'objectlist'?
+    elsif ( $ctxt->properties->application->style() !~ /^edit|^create/ )  {
+        $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
+        push(
+            @{ $self->{FilterList} },
+            XML::Filter::CharacterChunk->new(
+                %encargs, TagName => [qw(abstract)]
+            )
+        );
+    }
 
     if ( not $ctxt->parent() ) {
 
@@ -210,13 +220,8 @@ sub prepare {
           $ctxt->properties->content->siblingscount();
     }
 
-    my %object_types = ();
-    my %data_formats = ();
-    $object_types{ $ctxt->object->object_type_id() } = 1;
-    $data_formats{ $ctxt->object->data_format_id() } = 1;
-
-    $self->_set_formats_and_types( $ctxt, $doc_data, \%object_types,
-        \%data_formats );
+    $ctxt->properties->content->getformatsandtypes( 1 );
+    $self->_set_formats_and_types( $ctxt, $doc_data, \%object_types, \%data_formats );
 
     return $doc_data;
 }

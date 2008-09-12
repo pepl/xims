@@ -5,7 +5,7 @@ XIMS::URLLink -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -26,11 +26,7 @@ use base qw( XIMS::Object );
 use XIMS::DataFormat;
 use LWP::UserAgent;
 
-use Data::Dumper;
-
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-
-
 
 =head2    XIMS::URLLink->new( %args )
 
@@ -62,11 +58,12 @@ sub new {
 
 
 
-=head2    XIMS::URLLink->check( [$url] )
+=head2    XIMS::URLLink->check( [$url, $timeout] )
 
 =head3 Parameter
 
-    $url: optional URL to check. If missing the object->location is checked
+    $url: optional URL to check. If missing, $object->location() is checked
+    $timeout: optional timeout value the http client will use, defaults to 10
 
 =head3 Returns
 
@@ -75,30 +72,84 @@ sub new {
 
 =head3 Description
 
-Checks the HTTP-Status of the URL-link and stores 
-the result in ci_content
-* status: status line (code and message)
+Checks the HTTP-Status of the URL-link and stores the result in the object
+* status: status code
 * status_checked_timestamp: date and time of last check
 
 =cut
 
 sub check {
+    XIMS::Debug( 5, "called" );
     my $self = shift;
     my $url = shift;
-    
-    $url = $self->location if (not $url);
-    my $ua = LWP::UserAgent->new;
-    $ua->agent('XIMS URL-Check');
-    my $req = HTTP::Request->new(GET => $url);
+    my $timeout = shift;
+
+    $url = $self->location() unless defined $url;
+    return unless defined $url;
+
+    my $ua = LWP::UserAgent->new();
+    $ua->timeout( $timeout || 10 );
+
+    my $req = HTTP::Request->new( GET => $url );
     my $res = $ua->request( $req );
-    #if object is already created store status as attributes
-    if ($self->document_id()) {
-        $self->status( $res->status_line );
-        $self->status_checked_timestamp( $self->data_provider->db_now() );
-    }
-    return 1 if ($res->code =~ (/^[23]/));
+
+    XIMS::Debug( 6, "http response status_line: " . $res->status_line() );
+
+    # store status info in object
+    $self->status( $res->code() );
+    $self->status_checked_timestamp( $self->data_provider->db_now() );
+
+    return 1 if ($res->code() =~ (/^[23]/));
     return 0;
 }
+
+=head2    $urllink->update_status( [User => $user] )
+
+=head3 Parameter
+
+    $args{User}: optional XIMS::User instance, defaults to user set at object construction
+
+=head3 Returns
+
+    $boolean: true if updating status was successful
+              false if updating status was not successful
+
+=head3 Description
+
+Checks the HTTP Status of the URLLink using check() and updat the object in the database
+
+=cut
+
+sub update_status {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args  = @_;
+    my $user = delete $args{User} || $self->{User};
+
+    die "Updating an object requires an associated User"
+      unless defined($user);
+
+    if ( not (defined $self->id() and defined $self->location() and length $self->location() ) ) {
+        XIMS::Debug( 3, "update_status can only be called on an already created object" );
+        return;
+    }
+
+    if ( defined $self->check() ) {
+        if ( $self->update( User => $user, no_modder => 1 ) ) {
+            XIMS::Debug( 4, "Updated status" );
+            return 1;
+        }
+        else {
+            XIMS::Debug( 2, "Could not update status for " . $self->id() );
+        }
+    }
+    else {
+        XIMS::Debug( 3, "check() did return an undefined value" );
+    }
+
+    return
+}
+
 
 1;
 
@@ -129,7 +180,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

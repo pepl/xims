@@ -54,4 +54,6 @@
   <description>Beschreibung</description>
   <delete>lösche</delete>
   <edit>bearbeite</edit>
+  <link_status>Link Status</link_status>
+  <last_checked>Zuletzt geprüft</last_checked>
 </l>

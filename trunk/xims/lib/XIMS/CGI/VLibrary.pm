@@ -1002,6 +1002,21 @@ sub event_filter {
         $params{publisher}   = "\%$publisher\%";
     }
 
+    # status operator
+    my $statusoperator = $self->param('sto');
+    $statusoperator ||= '=';
+    if ( defined $statusoperator and $statusoperator =~ /^(=|>|<)$/ ) {
+        XIMS::Debug( 6, "statusoperator param '$statusoperator'" );
+
+        # status
+        my $status = $self->param('status');
+        if ( defined $status and $status =~ /^\d+$/ ) {
+            XIMS::Debug( 6, "status param '$status'" );
+            $criteria{status} = " c.status $statusoperator ? ";
+            $params{status}   = $status;
+        }
+    }
+
     # chronicle dates
     my $date_from = $self->_heuristic_date_parser( $self->param('cf') );
     my $date_to   = $self->_heuristic_date_parser( $self->param('ct') );

@@ -703,8 +703,9 @@ sub _vlitems_byfilter_sql {
     }
     else {
         $properties =
-            'c.id AS id, d.parent_id, d.location, d.object_type_id, c.document_id, '
+            'c.id AS id, d.parent_id, d.location, d.object_type_id, d.data_format_id, c.document_id, '
           . 'c.abstract, c.title, c.last_modification_timestamp, '
+          . 'c.status, c.status_checked_timestamp, '
           . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
     }
 
@@ -751,6 +752,12 @@ sub _vlitems_byfilter_sql {
         $conditions .= " AND " . $criteria{publisher};
         push @values, $params{publisher};
     }
+    if ( $criteria{status} ne '' ) {
+        XIMS::Debug( 6, "Status filter" );
+        $conditions .= " AND " . $criteria{status};
+        push @values, $params{status};
+    }
+
 
     if ( $criteria{chronicle} ne ''
         || ( defined $order and $order eq 'm.date_from_timestamp ASC' ) )
@@ -773,7 +780,7 @@ sub _vlitems_byfilter_sql {
         my @userids = ( $self->User->id(), $self->User->role_ids() );
         $tables .= ', ci_object_privs_granted p';
         $conditions .=
-' AND p.content_id = c.id AND p.privilege_mask >= 1 AND p.grantee_id IN ('
+          ' AND p.content_id = c.id AND p.privilege_mask >= 1 AND p.grantee_id IN ('
           . join( ',', map { '?' } @userids ) . ')';
         push @values, @userids;
     }
@@ -1094,7 +1101,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

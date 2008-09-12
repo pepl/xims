@@ -54,4 +54,7 @@
   <description>Description</description>
   <edit>edit</edit>
   <delete>delete</delete>
+  <link_status>Link status</link_status>
+  <last_checked>Last checked</last_checked>
+
 </l>

@@ -249,6 +249,7 @@
                 <xsl:call-template name="cttobject.options"/>
             </xsl:if>
         </span>
+        <xsl:call-template name="urllink_status"/>
         <xsl:call-template name="meta"/>
         <xsl:apply-templates select="abstract"/>
     </div>
@@ -256,15 +257,33 @@
 
 
 <xsl:template match="title">
+    <xsl:variable name="dataformat" select="../data_format_id"/>
+    <xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
+    <xsl:variable name="dfname" select="$df/name"/>
+
     <xsl:variable name="location" select="../location"/>
     <xsl:variable name="hlsstring" select="concat('?hls=',$vls)"/>
 
     <div class="vltitle">
+        <xsl:call-template name="cttobject.dataformat">
+            <xsl:with-param name="dfname" select="$dfname"/>
+        </xsl:call-template>
+        &#xa0;
         <a  title="{$location}"
             href="{$xims_box}{$goxims_content}{$absolute_path}/{$location}{$hlsstring}">
             <xsl:apply-templates/>
         </a>
     </div>
+</xsl:template>
+
+<xsl:template name="cttobject.dataformat">
+    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
+
+    <img src="{$ximsroot}images/icons/list_{$dfname}.gif"
+        border="0"
+        alt="{$dfname}"
+        title="{$dfname}"
+    />
 </xsl:template>
 
 <xsl:template match="authorgroup">
@@ -302,6 +321,22 @@
                 <xsl:text>: </xsl:text>
             </strong>
             <xsl:apply-templates/>
+        </div>
+    </xsl:if>
+</xsl:template>
+
+<xsl:template name="urllink_status">
+    <xsl:if test="status != ''">
+        <div class="vlurllinkstatus">
+            <strong>
+                <xsl:value-of select="$i18n_vlib/l/link_status"/>:
+            </strong>
+            <xsl:value-of select="status"/>
+            &#xa0;
+            <strong>
+                <xsl:value-of select="$i18n_vlib/l/last_checked"/>:
+            </strong>
+            <xsl:apply-templates select="status_checked_timestamp" mode="datetime"/>
         </div>
     </xsl:if>
 </xsl:template>
