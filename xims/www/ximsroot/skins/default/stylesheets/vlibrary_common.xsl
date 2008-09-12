@@ -194,7 +194,7 @@
           name="vlib_search">
       <strong><xsl:value-of select="$Search"/></strong>
       <xsl:text>&#160;</xsl:text>
-      <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+      <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
              type="text"
              name="vls"
              size="17"
@@ -335,14 +335,14 @@
                 method="GET"
                 name="vlib_search">
             Chronik von
-            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+            <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
                    type="text"
                    name="chronicle_from"
                    size="10"
                    maxlength="200"
                    value="{$chronicle_from}"/>
             bis
-            <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+            <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
                    type="text"
                    name="chronicle_to"
                    size="10"

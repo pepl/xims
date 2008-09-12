@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -11,7 +11,7 @@
 
 <xsl:import href="../common.xsl"/>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="date">
+    <xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|status_checked_timestamp" mode="date">
     <xsl:value-of select="./day"/>
     <xsl:text>.</xsl:text>
     <xsl:value-of select="./month"/>
@@ -19,7 +19,7 @@
     <xsl:value-of select="./year"/>
 </xsl:template>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp" mode="datetime">
+    <xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|status_checked_timestamp" mode="datetime">
     <xsl:value-of select="./day"/>
     <xsl:text>.</xsl:text>
     <xsl:value-of select="./month"/>
