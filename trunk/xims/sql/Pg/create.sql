@@ -223,6 +223,7 @@ CREATE TABLE ci_content
  ,last_published_by_middlename  VARCHAR(30)
  ,last_published_by_firstname   VARCHAR(90)
  ,data_format_name              VARCHAR(40)
+ ,content_length                INTEGER
  )
 ;
 
@@ -256,6 +257,19 @@ END;
 
 CREATE TRIGGER remove_stale_locks AFTER DELETE ON ci_sessions
        EXECUTE PROCEDURE remove_stale_locks();
+
+
+\echo creating trigger update_content_length...
+CREATE OR REPLACE FUNCTION update_content_length() RETURNS TRIGGER AS '
+BEGIN
+    NEW.content_length := COALESCE( octet_length(NEW.body), octet_length(NEW.binfile), 0 );
+    RETURN NEW;
+END;
+' LANGUAGE 'plpgsql';
+
+CREATE TRIGGER update_content_length BEFORE INSERT OR UPDATE ON ci_content
+       FOR EACH ROW EXECUTE PROCEDURE update_content_length();
+
 
 \echo creating table 'ci_object_privs_granted'
 CREATE TABLE ci_object_privs_granted
@@ -323,102 +337,6 @@ CREATE TABLE ci_questionnaire_results
 REVOKE ALL ON TABLE ci_questionnaire_results FROM PUBLIC;
 GRANT ALL ON TABLE ci_questionnaire_results TO xims;
 GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE ci_questionnaire_results TO ximsrun;
-
-\echo creating view ci_content_loblength...
-CREATE VIEW ci_content_loblength (
-            binfile
-           ,last_modification_timestamp
-           ,notes
-           ,marked_new
-           ,id
-           ,locked_time
-           ,abstract
-           ,body
-           ,title
-           ,keywords
-           ,status
-           ,creation_timestamp
-           ,attributes
-           ,locked_by_id
-           ,style_id
-           ,script_id
-           ,language_id
-           ,last_modified_by_id
-           ,owned_by_id
-           ,created_by_id
-           ,css_id
-           ,image_id
-           ,document_id
-           ,published
-           ,locked_by_lastname
-           ,locked_by_middlename
-           ,locked_by_firstname
-           ,last_modified_by_lastname
-           ,last_modified_by_middlename
-           ,last_modified_by_firstname
-           ,owned_by_lastname
-           ,owned_by_middlename
-           ,owned_by_firstname
-           ,created_by_lastname
-           ,created_by_middlename
-           ,created_by_firstname
-           ,data_format_name
-           ,lob_length
-           ,last_publication_timestamp
-           ,last_published_by_id
-           ,last_published_by_lastname
-           ,last_published_by_middlename
-           ,last_published_by_firstname
-           ,marked_deleted
-)
-AS
-SELECT  c.binfile
-       ,c.last_modification_timestamp
-       ,c.notes
-       ,c.marked_new
-       ,c.id
-       ,c.locked_time
-       ,c.abstract
-       ,c.body
-       ,c.title
-       ,c.keywords
-       ,c.status
-       ,c.creation_timestamp
-       ,c.attributes
-       ,c.locked_by_id
-       ,c.style_id
-       ,c.script_id
-       ,c.language_id
-       ,c.last_modified_by_id
-       ,c.owned_by_id
-       ,c.created_by_id
-       ,c.css_id
-       ,c.image_id
-       ,c.document_id
-       ,c.published
-       ,c.locked_by_lastname
-       ,c.locked_by_middlename
-       ,c.locked_by_firstname
-       ,c.last_modified_by_lastname
-       ,c.last_modified_by_middlename
-       ,c.last_modified_by_firstname
-       ,c.owned_by_lastname
-       ,c.owned_by_middlename
-       ,c.owned_by_firstname
-       ,c.created_by_lastname
-       ,c.created_by_middlename
-       ,c.created_by_firstname
-       ,c.data_format_name
-       ,COALESCE( octet_length(c.body), octet_length(c.binfile), 0 )
-       AS lob_length
-       ,c.last_publication_timestamp
-       ,c.last_published_by_id
-       ,c.last_published_by_lastname
-       ,c.last_published_by_middlename
-       ,c.last_published_by_firstname
-       ,c.marked_deleted
-  FROM ci_content AS c
-;
 
 
 --functions as compatability-wrappers for Oracles vs. PostgreSQL
@@ -527,7 +445,6 @@ GRANT SELECT
       ,ci_sessions_id_seq
       ,ci_users_roles
       ,ci_users_roles_id_seq
-      ,ci_content_loblength
       ,ci_questionnaire_results_id_seq
    TO ximsrun
 ;

@@ -44,3 +44,23 @@ ALTER TABLE cilib_authors alter column image_url SET DEFAULT '';
 ALTER TABLE ci_object_types ADD is_mailable SMALLINT;
 ALTER TABLE ci_object_types alter column is_mailable SET DEFAULT 0;
 
+\echo Adding ci_objects.content_length column
+ALTER TABLE ci_content ADD content_length INTEGER;
+
+\echo Setting content_length across ci_content
+UPDATE ci_content set content_length = COALESCE( octet_length(body), octet_length(binfile), 0 );
+
+\echo creating trigger update_content_length...
+CREATE OR REPLACE FUNCTION update_content_length() RETURNS TRIGGER AS '
+BEGIN
+    NEW.content_length := COALESCE( octet_length(NEW.body), octet_length(NEW.binfile), 0 );
+    RETURN NEW;
+END;
+' LANGUAGE 'plpgsql';
+
+CREATE TRIGGER update_content_length BEFORE INSERT OR UPDATE ON ci_content
+       FOR EACH ROW EXECUTE PROCEDURE update_content_length();
+
+\echo Dropping view ci_content_loblength
+DROP VIEW ci_content_loblength;
+
