@@ -49,7 +49,7 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields =
   grep { $_ ne 'binfile' }
   @{ XIMS::Names::property_interface_names( resource_type() ) };
-our @Default_Properties    = grep { $_ ne 'body' } @Fields, 'location_path';
+our @Default_Properties    = grep { $_ ne 'body' } @Fields;
 our @Reference_Id_Names    = qw( style_id script_id css_id image_id schema_id);
 our @Reference_DocId_Names = qw( symname_to_doc_id );
 
@@ -78,6 +78,7 @@ __PACKAGE__->mk_accessors(@Fields);
     $args{ User }                  :  XIMS::User instance
     $args{ path }                  :  Location path to a XIMS Object,
                                       For Example: '/xims'
+    #$args{ language_id }           :  To optionally override XIMS::Config::FallbackLangID() (not yet implemented)
     $args{ $object_property_name } :  Object property like 'id',
                                       'document_id', or 'title'.
                                       To fetch existing objects either 'path',
@@ -109,13 +110,22 @@ sub new {
     my $self = bless {}, $class;
     $self->{User} = delete $args{User} if defined $args{User};
     my $real_object;
+
+    ## Set fallback language unless we are looking up via id
+    #if ( not defined $args{id} ) {
+    #   $args{language_id} = XIMS::Config::FallbackLangID();
+    #}
+
     if ( defined( $args{path} ) ) {
         XIMS::Debug( 5, "fetching object id from path $args{path}." );
 
         # this is bad... fix me later
+        #my $id =
         my $document_id =
-          $self->data_provider->get_object_id_by_path( path => $args{path} );
+          $self->data_provider->get_object_id_by_path( path => $args{path} ); # , language_id => $args{language_id}
+        #if ( defined $id ) {
         if ( defined $document_id ) {
+            #$args{id} = $id;
             $args{document_id} = $document_id;
         }
         else {
@@ -229,7 +239,12 @@ sub body {
 # "Attempt to set body on Container object. This action is not allowed." );
 # return; }
 
+        # Update the content_length
         $self->{$content_field} = $data;
+        my $bytes;
+        do { use bytes; $bytes = length($data) };
+        $self->{'content_length'} = $bytes;
+
     }
     else {
         return unless defined($content_field);
@@ -243,27 +258,6 @@ sub body {
         $self->{$content_field} = $actual_data;
         return $actual_data;
     }
-}
-
-=head2    content_length()
-
-=head3 Parameter
-
-    none
-
-=head3 Returns
-
-    $size    : Content size of the object's body in kilobytes
-
-=head3 Description
-
-my $size = $object->content_length();
-
-=cut
-
-sub content_length {
-    my $self = shift;
-    return $self->data_provider->content_length( id => $self->id() );
 }
 
 =pod
@@ -295,6 +289,7 @@ sub parent {
     return XIMS::Object->new(
         User        => $self->User,
         document_id => $self->parent_id
+        #language_id => $self->language_id
     );
 }
 
@@ -315,7 +310,7 @@ sub parent {
 
 my @children = $object->children( [ %args ] );
     my $iterator = $object->children( [ %args ] );
-    
+
 Returns all children of an object unless they are filtered by a specific
 object property. In list context an array is returned, in scalar context an
 iterator.
@@ -335,6 +330,8 @@ sub children {
         $properties = \@Default_Properties;
     }
 
+    #$args{language_id} ||= $self->{language_id};
+
     my @child_ids = $self->__child_ids(%args);
     return () unless scalar(@child_ids) > 0;
     return XIMS::Iterator::Object->new( \@child_ids ) unless wantarray;
@@ -353,7 +350,7 @@ sub children {
 
 =head3 Parameter
 
-    $args{ User }             :  XIMS::User instance if you want to override 
+    $args{ User }             :  XIMS::User instance if you want to override
                                  the user already stored in $object or if
                                  there is no $object->User yet.
     $args{ $object_property } :  Object property like 'location',
@@ -369,7 +366,7 @@ sub children {
 
  my @children = $object->children_granted( [ %args ] );
      my $iterator = $object->children_granted( [ %args ] );
-     
+
 Returns children granted to $args{User}. If that is not given, $object->User()
 will be used. Children can be filtered using object property values. In list
 context an array is returned, in scalar context an iterator.
@@ -573,7 +570,7 @@ sub objectroot_ancestors {
 
 =head3 Returns
 
-    @descendants : Array of XIMS::Objects including "level" pseudo-property 
+    @descendants : Array of XIMS::Objects including "level" pseudo-property
                    (list context)
     $iterator    : Instance of XIMS::Iterator::Object created with the
                    descendants ids (scalar context)
@@ -587,7 +584,7 @@ Returns all descendants unless they are filtered by a specific object
 property. In list context an array of the objects including a "level"
 pseudo-property is returned, in scalar context an iterator is returned. The
 objects fetched using this iterator will NOT contain that pseudo-property!
-Multiple object properties can be specified in the %args hash (optional). 
+Multiple object properties can be specified in the %args hash (optional).
 For example,
 $object->descendants( department_id => $document_id, location => 'index.html' )
 
@@ -1409,7 +1406,7 @@ Returns the content id of the newly created object, undef on failure.
 $args{User}, or, if that is not given, $object->User() will be used to set
 last modifier, creator, and owner metadata.
 
-Before you call $object->create() at least the "parent_id", "language_id",
+Before you call $object->create() at least the "parent_id",
 "object_type_id", and "data_format_id" properties have to be set for the
 object. The latter two properties "object_type_id" and "data_format_id" will
 be set at object instantiation from a subclass of XIMS::Object, like
@@ -1474,7 +1471,7 @@ sub create {
 
     $args{ User }    (optional) :  XIMS::User instance. If $args{User} is not
                                    given, the user has to be set at object
-                                   instantiation. 
+                                   instantiation.
                                    (E.g. XIMS::Object->new( User => $user ) )
 
 =head3 Returns

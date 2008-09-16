@@ -171,7 +171,7 @@ the location.
 sub event_test_location {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    
+
     my ($retval, $location);
     if ( defined $ctxt->object() ) {
         ($retval, $location) = $self->init_store_object( $ctxt );
@@ -654,7 +654,7 @@ sub selectStylesheet {
 
             # check here if the stylesheet is not a directory but a
             # single XSLStylesheet?
-            
+
             XIMS::Debug( 4,
                 "trying public-user-stylesheet from assigned directory" );
             $pubstylepath
@@ -1275,7 +1275,7 @@ sub init_store_object {
             }
             # be more restrictive for valid locations (\w is too resilient)
             # only characters in char-class(es) are allowed explicitly
-            unless ( 
+            unless (
                     ( $location =~ /^[-\[\]_.()0-9a-zA-Z]+\.[A-Za-z]+$/ )
                     || ( $location =~ /^[-\[\]_.()0-9a-zA-Z]+$/ )
                     || ( $location =~ /^[-\[\]_.()0-9a-zA-Z]+\.[A-Za-z]+\.[A-Za-z]{2,4}$/ )
@@ -3512,12 +3512,6 @@ sub event_search {
                 $ctxt->session->message($message);
                 $ctxt->session->searchresultcount($count);
             }
-
-            # TODO superfluos db hits!
-            #
-            # every look up takes 0.008s to 0.009s at c102-bruce after init
-            # this has to be changed!!!
-            map { $_->{content_length} = $_->content_length() } @objects;
 
             $ctxt->objectlist( \@objects );
             $ctxt->properties->content->getformatsandtypes(1)

@@ -25,7 +25,6 @@ ok( $user->name() eq 'admin' );
 # now create some depth
 
 my %c1_hash = ( title => 'Child One Dir',
-                language_id => 1,
                 location => 'child1',
                 parent_id => $o->document_id(),
                 object_type_id => 1,
@@ -38,7 +37,6 @@ my $child1_id = $child1->create( User => $user );
 ok( $child1_id and $child1_id > 1 );
 
 my %c2_hash = ( title => 'Child Two Dir',
-                language_id => 1,
                 location => 'child2',
                 parent_id => $child1->document_id(),
                 object_type_id => 1,
@@ -52,7 +50,6 @@ my $child2_id = $child2->create( User => $user );
 ok( $child2_id and $child2_id > $child1_id );
 
 my %c3_hash = ( title => 'Child Three Dir',
-                language_id => 1,
                 location => 'child3',
                 parent_id => $child2->document_id(),
                 object_type_id => 1,

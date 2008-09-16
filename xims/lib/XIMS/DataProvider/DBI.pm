@@ -1,4 +1,3 @@
-
 =head1 NAME
 
 XIMS::DataProvider::DBI -- A .... doing bla, bla, bla. (short)
@@ -657,23 +656,6 @@ sub find_object_id_count {
     return $ids->[0] if $ids;
 }
 
-=head2 content_length()
-
-=cut
-
-sub content_length {
-    XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my %args = @_;
-
-    my $data = $self->{dbh}->fetch_select( table   =>  'ci_content_loblength',
-                                           columns =>  'lob_length',
-                                           criteria => { id => $args{id} } );
-
-    return unless ref( $data ) and scalar( @{$data} > 0);
-    return $data->[0]->{lob_length};
-}
-
 =head2 get_descendant_id_level()
 
 =cut
@@ -850,7 +832,7 @@ sub _sqlwhere_from_hashgroup {
 $dp->_get_descendant_sql( $parent_id[, $maxlevel, $getlevel, $noorder] );
 
 Helper method for get_descendant_id_level() and get_descendant_infos()
-Returns reference to an array which may be passed to 
+Returns reference to an array which may be passed to
 $dbh->fetch_select( sql => $query ) for example
 
 =cut
@@ -867,7 +849,7 @@ sub _get_descendant_sql {
     my $orderby = '';
     if ( $self->{RDBMSClass} eq 'Pg' ) {
         $maxlevel ||= 0;
-        $orderby = "ORDER BY t.pos" unless defined $noorder;
+        $orderby = "ORDER BY t.position" unless defined $noorder;
         $levelproperty = 't.lvl,' if defined $getlevel;
         $properties ||= "$levelproperty t.id AS id";
         #
@@ -882,7 +864,7 @@ sub _get_descendant_sql {
             return ["SELECT $properties FROM ci_content c, connectby('ci_documents', 'id', 'parent_id', ?, ?) AS t(id int, parent_id int, lvl int), ci_documents d  WHERE t.id <> t.parent_id AND c.document_id = t.id AND t.id = d.id", [$parent_id, 12], $maxlevel]; # 12 => bind as 'Text'
         }
         else {
-            return ["SELECT $properties FROM ci_content c, connectby('ci_documents', 'id', 'parent_id', 'position', ?, ?) AS t(id int, parent_id int, lvl int, pos int), ci_documents d WHERE t.id <> t.parent_id AND c.document_id = t.id AND t.id = d.id $orderby", [$parent_id, 12], [$maxlevel, 4]]; # 12 => bind as 'Text', 4 => bind as 'Integer'
+            return ["SELECT $properties FROM ci_content c, connectby('ci_documents', 'id', 'parent_id', 'position', ?, ?) AS t(id int, parent_id int, lvl int, position int), ci_documents d WHERE t.id <> t.parent_id AND c.document_id = t.id AND t.id = d.id $orderby", [$parent_id, 12], [$maxlevel, 4]]; # 12 => bind as 'Text', 4 => bind as 'Integer'
         }
     }
     elsif ( $self->{RDBMSClass} eq 'Oracle' ) {
@@ -902,8 +884,6 @@ sub _get_descendant_sql {
         return;
     }
 }
-
-
 
 
 =head2    get_object_id_by_path()
@@ -928,11 +908,21 @@ sub get_object_id_by_path {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %param = @_;
-    my $retval = undef; # return value
+    my $retval; # return value
 
-    if ( exists $param{path} and length $param{path} ) {
-        return 1 if $param{path} eq '/root' or $param{path} eq '/'; # special case for 'root' since it does not have got a parent_id
+    #my $fallbacklangid = XIMS::Config::FallbackLangID();
+    #my $requested_lang = $param{language_id};
+    #$requested_lang ||= $fallbacklangid;
+
+    # no trailing slashes there...
+    $param{path} =~ s#/$##;
+
+    if ( exists $param{path} ) {
+        return 1 if $param{path} eq '/root' or $param{path} eq '/' or $param{path} eq ''; # special case for 'root' since it does not have got a parent_id
         # first, try a lookup via location_path
+
+        #my $location_path_sqlstr = "SELECT c.id FROM ci_documents d, ci_content c WHERE c.document_id=d.id AND c.marked_deleted IS NULL AND d.location_path = ? AND c.language_id IN (?,$fallbacklangid) ORDER BY CASE WHEN language_id = ? THEN 1 END";
+        #my $data = $self->{dbh}->fetch_select( sql => [ $location_path_sqlstr, $param{path}, $requested_lang, $requested_lang ], limit => 1 );
         my $location_path_sqlstr = "SELECT d.id FROM ci_documents d, ci_content c WHERE c.document_id=d.id AND c.marked_deleted IS NULL AND location_path = ?";
         my $data = $self->{dbh}->fetch_select( sql => [ $location_path_sqlstr, $param{path} ] );
         my $docid = $data->[0]->{'id'};
@@ -954,19 +944,23 @@ sub get_object_id_by_path {
             foreach my $location ( @path ) {
                 my @ids = ();
                 map { defined $_ and push(@ids, $_) } ( $id, $symid );
+                #my $sqlstr = "SELECT c.id,symname_to_doc_id
                 my $sqlstr = "SELECT d.id,symname_to_doc_id
                               FROM ci_documents d, ci_content c
                               WHERE c.document_id=d.id
                               AND c.marked_deleted IS NULL
                               AND location = ?
                               AND parent_id IN (" .  join(',', map { '?' } @ids ) . ") ";
+                              #. " AND c.language_id IN (?,$fallbacklangid) ORDER BY CASE WHEN language_id = ? THEN 1 END";
 
                 my $row;
                 if ( $row = $self->{dbh}->fetch_select_rows(
                                                         sql => [ $sqlstr,
                                                                  $location,
-                                                                 @ids
-                                                               ]
+                                                                 #$requested_lang, $requested_lang,
+                                                                 @ids,
+                                                               ],
+                                                        limit => 1
                                                            )
                       and $row->[0]->[0] ) {
                     $id = $row->[0]->[0];
@@ -984,6 +978,7 @@ sub get_object_id_by_path {
     }
     else {
         XIMS::Debug( 2, "need path to fetch the document_id by path" );
+        #XIMS::Debug( 2, "need path to fetch the id by path" );
     }
 
     return $retval;

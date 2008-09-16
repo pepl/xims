@@ -111,14 +111,10 @@ sub end_element {
             ) unless exists $self->{PushedDefaultProperties};
             $self->{PushedDefaultProperties}++;
 
-            #  XIMS::Object->new() does not like content_length...
-            my @saveProperties =
-              grep { $_ ne 'content_length' } @{ $self->{Properties} };
-
             $object = XIMS::Object->new(
                 User       => $self->{User},
                 $id        => $self->{document_id},
-                properties => \@saveProperties
+                properties => $self->{Properties}
             );
 
             if ( defined $object->{location_path}
@@ -132,11 +128,6 @@ sub end_element {
                 else {
                     $object->{location_path} = XIMS::PUBROOT_URL() . $path;
                 }
-            }
-
-            if ( scalar(@saveProperties) < scalar( @{ $self->{Properties} } ) )
-            {
-                $object->{content_length} = $object->content_length;
             }
 
             $self->{$cachekey} = $object;

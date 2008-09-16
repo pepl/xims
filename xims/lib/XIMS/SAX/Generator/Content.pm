@@ -5,7 +5,7 @@ XIMS::SAX::Generator::Content -- A .... doing bla, bla, bla. (short)
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -302,8 +302,8 @@ sub _set_children {
         #
         my $userid = $ctxt->session->user()->id();
         my $properties
-            = 'distinct c.id, d.document_status, d.position, c.lob_length AS content_length, d.parent_id, object_type_id, creation_timestamp, symname_to_doc_id, last_modified_by_middlename, last_modified_by_firstname, language_id, last_publication_timestamp, last_published_by_lastname, css_id, created_by_firstname, data_format_id, keywords, last_modification_timestamp, last_modified_by_id, title, document_id, location, created_by_lastname, attributes, last_modified_by_lastname, image_id, created_by_id, owned_by_firstname, marked_deleted, last_published_by_id, notes, style_id, owned_by_lastname, owned_by_middlename, abstract, published, locked_by_lastname, locked_by_id, last_published_by_firstname, script_id, owned_by_id, created_by_middlename, data_format_name, locked_by_middlename, last_published_by_middlename, marked_new, locked_time, department_id, locked_by_firstname ';
-        my $tables     = 'ci_content_loblength c, ci_documents d';
+            = 'distinct c.id, d.document_status, d.position, c.content_length, d.parent_id, object_type_id, creation_timestamp, symname_to_doc_id, last_modified_by_middlename, last_modified_by_firstname, language_id, last_publication_timestamp, last_published_by_lastname, css_id, created_by_firstname, data_format_id, keywords, last_modification_timestamp, last_modified_by_id, title, document_id, location, created_by_lastname, attributes, last_modified_by_lastname, image_id, created_by_id, owned_by_firstname, marked_deleted, last_published_by_id, notes, style_id, owned_by_lastname, owned_by_middlename, abstract, published, locked_by_lastname, locked_by_id, last_published_by_firstname, script_id, owned_by_id, created_by_middlename, data_format_name, locked_by_middlename, last_published_by_middlename, marked_new, locked_time, department_id, locked_by_firstname ';
+        my $tables     = 'ci_content c, ci_documents d';
         my $conditions = 'c.document_id = d.id AND d.parent_id = ?';
         my @values     = ( $object->document_id() );
         if ( not $ctxt->session->user->admin() ) {
@@ -415,14 +415,6 @@ sub _set_children {
                 my $privilege_mask = $privmask{ $child->{id} };
                 $child->{user_privileges}
                     = XIMS::Helpers::privmask_to_hash($privilege_mask);
-            }
-
-            # content length has already been loaded if $level == 1
-            if ( $level != 1
-                and ( not exists $container_ids{ $child->data_format_id() } )
-                )
-            {
-                $child->{content_length} = $child->content_length();
             }
         }
     }
