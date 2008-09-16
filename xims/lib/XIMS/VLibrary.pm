@@ -401,7 +401,7 @@ sub vlmediatypeinfo {
 
     my $sql = 'SELECT m.mediatype, count(c.id) AS object_count '
             . 'FROM cilib_meta m, ci_documents d, ci_content c '
-            . 'WHERE d.ID = m.document_id AND d.id = c.document_id AND d.parent_id = ? '
+            . 'WHERE d.ID = m.document_id AND d.id = c.document_id AND m.mediatype IS NOT NULL AND d.parent_id = ? '
             . 'GROUP BY m.mediatype';
 
     my $sidata = $self->data_provider->driver->dbh->fetch_select( sql => [
@@ -426,7 +426,7 @@ sub vlmediatypeinfo_granted {
 
     my $sql = 'SELECT m.mediatype, count(DISTINCT c.id) AS object_count '
             . 'FROM cilib_meta m, ci_documents d, ci_content c, ci_object_privs_granted o '
-            . 'WHERE d.ID = m.document_id AND d.id = c.document_id AND d.parent_id = ? '
+            . 'WHERE d.ID = m.document_id AND d.id = c.document_id AND m.mediatype IS NOT NULL AND d.parent_id = ? '
             . $userprivsql
             . ' GROUP BY m.mediatype';
 
