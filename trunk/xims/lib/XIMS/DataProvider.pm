@@ -244,6 +244,7 @@ sub createObject {
 
     $doc_properties{'document.id'} = 1;
     delete $doc_properties{'document.location_path'}; # gets set by the corresponding trigger
+    delete $properties->{'content.content_length'}; # gets set by the corresponding trigger
 
     my $doc_id = $self->{Driver}->create( properties => \%doc_properties, conditions => {} );
     $properties->{'content.document_id'} = $doc_id;
@@ -338,6 +339,7 @@ sub updateObject {
     my ( $properties, $conditions ) = $self->request_factory( 'Object', 'update', @_ );
 
     delete $properties->{'document.location_path'}; # gets set by the corresponding trigger
+    delete $properties->{'content.content_length'}; # gets set by the corresponding trigger
 
     my @doc_prop_keys = grep { (split /\./, $_)[0] eq 'document' } keys %{$properties};
     @doc_properties{@doc_prop_keys} = delete @{$properties}{@doc_prop_keys};
@@ -613,7 +615,7 @@ Optional section, remove if bogus.
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
- 
+
 Copyright (c) 2002-2007 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,

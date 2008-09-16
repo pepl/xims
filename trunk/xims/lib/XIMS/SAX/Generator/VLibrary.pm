@@ -187,9 +187,6 @@ sub prepare {
                     $child->{user_privileges} = {%uprivs}
                       if ( grep { defined $_ } values %uprivs );
 
-                    # TODO
-                    # yet another superfluos db hit! this has to be changed!!!
-                    $child->{content_length} = $child->content_length();
                     $child->{authorgroup} =
                       { author => [ $child->vleauthors() ] };
                     $child->{meta} = [ $child->vlemeta() ];

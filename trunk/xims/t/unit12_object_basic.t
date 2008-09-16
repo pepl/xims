@@ -28,7 +28,7 @@ cmp_ok( $id, '>', 1, 'User has a sane ID' );
 
 # now, fetch it back...
 $o = undef;
-$o = XIMS::Object->new( id => $id, User => $user, marked_deleted => undef );
+$o = XIMS::Object->new( id => $id, User => $user,  marked_deleted => undef );
 isa_ok( $o, 'XIMS::Object', 're-fetched our object, ' );
 
 is( $o->title(), 'My Test Dir', 'testobject has correct title' );
@@ -47,7 +47,7 @@ ok( $o->update(), 'update title' );
 
 # now, fetch it back again
 $o = undef;
-$o = XIMS::Object->new( id => $id, User => $user, marked_deleted => undef );
+$o = XIMS::Object->new( id => $id, User => $user, language_id => 1, marked_deleted => undef );
 is( $o->title(), 'Renamed Test Dir', 'title correctly altered' );
 is( $o->last_modified_by_id(), $user->id(), 'testobject has correct last_modified_by_id' );
 
