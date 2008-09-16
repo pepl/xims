@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: vlibrary_publications.xsl 1442 2006-03-26 18:51:16Z pepl $
@@ -37,8 +37,9 @@
           <xsl:apply-templates select="/document/context/vlsubjectinfo"/>
           <xsl:apply-templates select="/document/context/vlkeywordinfo"/>
           <div style="position:relative; width:250px; float:left">
-          <xsl:apply-templates select="/document/context/vlmediatypeinfo"/>
-          <xsl:call-template name="vlib_filter_search" />
+            <xsl:apply-templates select="/document/object_types"/>
+            <xsl:apply-templates select="/document/context/vlmediatypeinfo"/>
+            <xsl:call-template name="vlib_filter_search" />
           </div>
           <xsl:call-template name="vlib_filter_buttons" />
           <xsl:call-template name="vlib_filter_chronicle" />
@@ -48,7 +49,7 @@
       </body>
     </html>
   </xsl:template>
-  
+
   <xsl:template match="vlsubjectinfo">
     <fieldset>
       <legend>
@@ -60,13 +61,14 @@
             <label for="vlsubjects_available"><xsl:value-of select="$i18n_vlib/l/available"/></label><br />
             <select id="subject1" name="vlsubjects_available" size="10" ondblclick="add_item('subject');" style="width:280px">
                 <xsl:apply-templates select="subject" >
-                    <xsl:sort />
+                  <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                    order="ascending"/>
                 </xsl:apply-templates>
             </select>
           </td>
           <td style="vertical-align:top; padding-top:20px;">
             <button type="button" onclick="add_item('subject');"><xsl:text>&#160;&gt;&#160;</xsl:text></button><br />
-            <button type="button" onclick="remove_item('subject');"><xsl:text>&#160;&lt;&#160;</xsl:text></button> 
+            <button type="button" onclick="remove_item('subject');"><xsl:text>&#160;&lt;&#160;</xsl:text></button>
           </td>
           <td>
             <label for="vlsubjects_selected"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
@@ -81,7 +83,7 @@
     <option value="{id}"><xsl:value-of select="concat(name,' (',object_count,')')" /></option>
   </xsl:template>
 
-<xsl:template match="vlkeywordinfo">
+  <xsl:template match="vlkeywordinfo">
     <fieldset>
       <legend>
         <xsl:value-of select="$i18n_vlib/l/keywords"/>
@@ -92,13 +94,14 @@
             <label for="vlkeywords_available"><xsl:value-of select="$i18n_vlib/l/available"/></label><br />
             <select id="keyword1" name="vlkeywords_available" size="10" ondblclick="add_item('keyword');" style="width:280px">
                 <xsl:apply-templates select="keyword" >
-                    <xsl:sort />
+                  <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                    order="ascending"/>
                 </xsl:apply-templates>
             </select>
           </td>
           <td style="vertical-align:top; padding-top:20px;">
             <button type="button" onclick="add_item('keyword');"><xsl:text>&#160;&gt;&#160;</xsl:text></button><br />
-            <button type="button" onclick="remove_item('keyword');"><xsl:text>&#160;&lt;&#160;</xsl:text></button> 
+            <button type="button" onclick="remove_item('keyword');"><xsl:text>&#160;&lt;&#160;</xsl:text></button>
           </td>
           <td>
             <label for="vlkeywords_selected"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
@@ -128,7 +131,26 @@
   <xsl:template match="mediatype">
     <option value="{mediatype}"><xsl:value-of select="concat(mediatype,' (',object_count,')')" /></option>
   </xsl:template>
-  
+
+  <xsl:template match="/document/object_types">
+    <fieldset style="position:relative;width:250px; display:block">
+      <legend>
+        <xsl:value-of select="$i18n_vlib/l/subject"/>
+      </legend>
+      <select name="vlobjecttype_selected" size="1" >
+        <option />
+        <xsl:apply-templates select="object_type[parent_id=/document/object_types/object_type[name='VLibraryItem']/@id]" >
+          <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+            order="ascending"/>
+        </xsl:apply-templates>
+      </select>
+    </fieldset>
+  </xsl:template>
+
+  <xsl:template match="object_type">
+    <option value="{@id}"><xsl:value-of select="name" /></option>
+  </xsl:template>
+
   <xsl:template name="vlib_filter_search">
     <fieldset style="width:250px; position:relative; display:block;">
       <legend>
@@ -142,7 +164,7 @@
     <fieldset style="position:relative; float:right; width:200px;">
       <legend>
         <xsl:value-of select="$i18n_vlib/l/chronicle_filter"/>
-      </legend>    
+      </legend>
       <table>
         <xsl:call-template name="vlib_filter_tr-chronicle_from" />
         <xsl:call-template name="vlib_filter_tr-chronicle_to" />
@@ -182,7 +204,7 @@
         </td>
     </tr>
   </xsl:template>
-  
+
   <xsl:template name="vlib_filter_tr-chronicle_to">
     <tr>
         <td valign="top"><xsl:value-of select="$i18n_vlib/l/chronicle_to"/></td>
