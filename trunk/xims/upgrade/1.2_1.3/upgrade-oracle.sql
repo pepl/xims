@@ -36,3 +36,35 @@ ALTER TABLE CILIB_AUTHORS ADD IMAGE_URL VARCHAR2(250) DEFAULT ''
 PROMPT Adding new attribute ci_object_types.is_mailable
 ALTER TABLE CI_OBJECT_TYPES ADD IS_MAILABLE NUMBER(1,0) DEFAULT 0
 /
+
+PROMPT Adding new attribute ci_content.content_length
+ALTER TABLE CI_CONTENT ADD CONTENT_LENGTH NUMBER
+/
+
+PROMPT Setting content_length accross ci_content (May take a while)
+UPDATE CI_CONTENT SET CONTENT_LENGTH = DECODE(NVL(CLOB_BYTELENGTH (body), 0), 0, NVL(DBMS_LOB.getlength (binfile), 0), NVL(CLOB_BYTELENGTH (body), 0))
+/
+
+PROMPT Adding Trigger on ci_content to set content_length
+CREATE OR REPLACE TRIGGER update_content_length
+  BEFORE
+    INSERT OR UPDATE
+  ON ci_content
+REFERENCING NEW AS NEW OLD AS OLD
+FOR EACH ROW
+DECLARE
+    lv_return BOOLEAN;
+BEGIN
+    IF UPDATING('BODY') OR INSERTING THEN
+        :NEW.content_length := NVL(CLOB_BYTELENGTH(:NEW.body), 0);
+    ELSIF UPDATING('BINFILE') OR INSERTING THEN
+        :NEW.content_length := NVL(DBMS_LOB.getlength(:NEW.binfile), 0);
+    END IF;
+
+    lv_return := TRUE;
+END;
+/
+
+PROMPT Dropping view ci_content_loblength
+DROP VIEW ci_content_loblength
+/

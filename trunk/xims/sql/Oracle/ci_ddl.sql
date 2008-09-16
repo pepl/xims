@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2006 The XIMS Project.
+-- Copyright (c) 2002-2008 The XIMS Project.
 -- See the file "LICENSE" for information and conditions for use, reproduction,
 -- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -29,7 +29,8 @@
 @@ci_ddl_eval.con
 @@ci_ddl_eval.sqs
 
-@@ci_view_ci_content_loblength.sql
+-- CLOB_BYTELENGTH function for ci_content.content_length trigger
+@@function_clob_bytelength.sql
 
 -- SYSDATE wrapper
 @@function_now.sql

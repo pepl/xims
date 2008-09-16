@@ -1,4 +1,4 @@
--- Copyright (c) 2002-2006 The XIMS Project.
+-- Copyright (c) 2002-2008 The XIMS Project.
 -- See the file "LICENSE" for information and conditions for use, reproduction,
 -- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
@@ -133,6 +133,7 @@ CREATE TABLE CI_CONTENT
  ,SCHEMA_ID NUMBER
  ,CSS_ID NUMBER
  ,IMAGE_ID NUMBER
+ ,CONTENT_LENGTH NUMBER
  )
  PCTFREE    10
  PCTUSED    40
@@ -149,6 +150,26 @@ CREATE TABLE CI_CONTENT
 /
 
 COMMENT ON COLUMN CI_CONTENT.KEYWORDS IS 'values ";"-separated'
+/
+
+PROMPT Adding Trigger on ci_content to set content_length
+CREATE OR REPLACE TRIGGER update_content_length
+  BEFORE
+    INSERT OR UPDATE
+  ON ci_content
+REFERENCING NEW AS NEW OLD AS OLD
+FOR EACH ROW
+DECLARE
+    lv_return BOOLEAN;
+BEGIN
+    IF UPDATING('BODY') OR INSERTING THEN
+        :NEW.content_length := NVL(CLOB_BYTELENGTH(:NEW.body), 0);
+    ELSIF UPDATING('BINFILE') OR INSERTING THEN
+        :NEW.content_length := NVL(DBMS_LOB.getlength(:NEW.binfile), 0);
+    END IF;
+
+    lv_return := TRUE;
+END;
 /
 
 PROMPT Creating Table 'CI_DATA_FORMATS'
