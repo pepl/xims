@@ -29,6 +29,14 @@ BEGIN
                                lang_context,
                                warn);
         byte_length := dbms_lob.getlength(temp_lob);
+        --DBMS_LOB.LOBMAXSIZE
+        
+        -- Temporary LOB handle has to be explicitly freed to avoid 
+        -- wrong length calculations at dbms_lob.getlength( clob_in )
+        -- during calls inside the same transactions
+        -- Result would be ORA-21560 
+        -- Not sure about performance penalty
+        dbms_lob.freetemporary(temp_lob);
 
     END IF;
    
