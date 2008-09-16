@@ -31,13 +31,17 @@ function createFilterParams() {
         if (i < list.length - 1) {kid += ',';}
     }
     if (kid != '') {params += "kid=" + kid + ";";}
+    // Object Type
+    var objecttype_list = document.getElementsByName("vlobjecttype_selected")[0];
+    var otid = objecttype_list.options[objecttype_list.selectedIndex].value;
+    if (otid != '') {params += "otid=" + otid + ";";}
     // Mediatype
     var mediatype_list = document.getElementsByName("vlmediatype_selected")[0];
     var mt = mediatype_list.options[mediatype_list.selectedIndex].value;
     if (mt != '') {params += "mt=" + mt + ";";}
     // Fulltext
     var vls = document.getElementsByName("vls")[0].value;
-    if (vls != '') {params += "vls=" + vls + ";";}    
+    if (vls != '') {params += "vls=" + vls + ";";}
     // Chronicle Dates
     var cf = document.getElementsByName("chronicle_from_date")[0].value;
     if (cf != '') {params += "cf=" + cf + ";";}
