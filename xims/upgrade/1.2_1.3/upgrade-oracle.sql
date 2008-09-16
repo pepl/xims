@@ -45,6 +45,9 @@ PROMPT Setting content_length accross ci_content (May take a while)
 UPDATE CI_CONTENT SET CONTENT_LENGTH = DECODE(NVL(CLOB_BYTELENGTH (body), 0), 0, NVL(DBMS_LOB.getlength (binfile), 0), NVL(CLOB_BYTELENGTH (body), 0))
 /
 
+PROMPT Adding CLOB_BYTELENGTH function
+@@../../sql/Oracle/function_clob_bytelength.sql
+
 PROMPT Adding Trigger on ci_content to set content_length
 CREATE OR REPLACE TRIGGER update_content_length
   BEFORE
