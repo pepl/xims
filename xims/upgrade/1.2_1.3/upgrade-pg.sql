@@ -47,7 +47,7 @@ ALTER TABLE ci_object_types alter column is_mailable SET DEFAULT 0;
 \echo Adding ci_objects.content_length column
 ALTER TABLE ci_content ADD content_length INTEGER;
 
-\echo Setting content_length across ci_content
+\echo Setting content_length across ci_content (May take a while)
 UPDATE ci_content set content_length = COALESCE( octet_length(body), octet_length(binfile), 0 );
 
 \echo creating trigger update_content_length...
