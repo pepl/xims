@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -25,9 +25,14 @@
         <strong><xsl:value-of select="$i18n/l/Error"/>:</strong><br/>
         <xsl:value-of select="/document/context/session/error_msg"/>
     </p>
-    <pre>
-        <xsl:value-of select="/document/context/session/verbose_msg" />
-    </pre>
+      <xsl:if test="/document/context/session/verbose_msg != ''">
+        <div class="error_details">
+            <p><strong><xsl:value-of select="$i18n/l/Error_details"/>:</strong></p>
+            <pre>
+                <xsl:value-of select="/document/context/session/verbose_msg" />
+            </pre>
+        </div>
+      </xsl:if>
     <p>
         <a href="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/Back"/></a>
     </p>
