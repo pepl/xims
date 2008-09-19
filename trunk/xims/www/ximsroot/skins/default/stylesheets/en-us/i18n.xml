@@ -165,6 +165,7 @@
 <!-- End common_search_result -->
 <!-- Begin common_error -->
 <Error>Error</Error>
+<Error_details>Error details</Error_details>
 <!-- End common_error -->
 <!-- Begin common_sitemap -->
 <Treeview_from>Treeview from</Treeview_from>

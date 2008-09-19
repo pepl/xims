@@ -171,7 +171,20 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "could not convert to a well balanced string" );
-            $self->sendError( $ctxt, "Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
+            # Set a verbose error message to help users find the error
+            $body = XIMS::Entities::decode( $body );
+            my $verbose_msg = $object->balanced_string( $body, verbose_msg => 1);
+
+            # Add the original faulty string together with line numbers
+            my ($faulty_ln) = ( $verbose_msg =~ /Entity: line (\d+)/);
+            my $ln = 1;
+            $verbose_msg .= '=' x 72 . "\n";
+            $body = _getln($ln++, $faulty_ln) . '| ' . $body;
+            $body =~ s#\n#"\n" . _getln($ln++, $faulty_ln) . '| '#eg;
+            $verbose_msg .= $body . "\n";
+            $verbose_msg .= '=' x 72 . "\n";
+
+            $self->sendError( $ctxt, "Document body could not be converted to a well balanced string.", $verbose_msg );
             return 0;
         }
     }
@@ -506,6 +519,18 @@ sub event_bxeconfig {
     return 0;
 }
 
+sub _getln {
+    my $ln = shift;
+    my $faulty = shift;
+
+    if ( $faulty == $ln ) {
+        return sprintf('==> %4d', $ln );
+    }
+    else {
+        return sprintf(' %7d', $ln );
+    }
+}
+
 1;
 
 __END__
@@ -534,7 +559,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
