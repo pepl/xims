@@ -672,7 +672,7 @@ sub selectStylesheet {
                 $stylepath       = $pubstylepath;
                 $foundstylesheet = 1;
             }
-            warn "pubstylepath: '$pubstylepath' filepath: '$filepath' filepathuilang: '$filepathuilang'\n";
+            #warn "pubstylepath: '$pubstylepath' filepath: '$filepath' filepathuilang: '$filepathuilang'\n";
         }
         unless ($foundstylesheet) {
             XIMS::Debug( 4, "trying fallback public-user-stylesheet" );
