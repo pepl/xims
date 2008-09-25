@@ -53,7 +53,15 @@ UPDATE ci_content set content_length = COALESCE( octet_length(body), octet_lengt
 \echo creating trigger update_content_length...
 CREATE OR REPLACE FUNCTION update_content_length() RETURNS TRIGGER AS '
 BEGIN
-    NEW.content_length := COALESCE( octet_length(NEW.body), octet_length(NEW.binfile), 0 );
+    IF TG_OP = ''UPDATE'' THEN
+        IF NEW.content_length ISNULL OR NEW.content_length = OLD.content_length THEN
+            NEW.content_length := COALESCE( octet_length(NEW.body), octet_length(NEW.binfile), 0 );
+        END IF;
+    ELSE
+        IF NEW.content_length ISNULL THEN
+            NEW.content_length := COALESCE( octet_length(NEW.body), octet_length(NEW.binfile), 0 );
+        END IF;
+    END IF;
     RETURN NEW;
 END;
 ' LANGUAGE 'plpgsql';
