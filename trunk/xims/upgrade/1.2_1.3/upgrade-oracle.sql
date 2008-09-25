@@ -49,19 +49,21 @@ PROMPT Adding CLOB_BYTELENGTH function
 @@../../sql/Oracle/function_clob_bytelength.sql
 
 PROMPT Adding Trigger on ci_content to set content_length
-CREATE OR REPLACE TRIGGER update_content_length
-  BEFORE
-    INSERT OR UPDATE
+CREATE OR REPLACE
+TRIGGER update_content_length
+  BEFORE UPDATE
   ON ci_content
 REFERENCING NEW AS NEW OLD AS OLD
 FOR EACH ROW
 DECLARE
     lv_return BOOLEAN;
 BEGIN
-    IF UPDATING('BODY') OR INSERTING THEN
-        :NEW.content_length := NVL(CLOB_BYTELENGTH(:NEW.body), 0);
-    ELSIF UPDATING('BINFILE') OR INSERTING THEN
-        :NEW.content_length := NVL(DBMS_LOB.getlength(:NEW.binfile), 0);
+    IF NOT UPDATING('CONTENT_LENGTH') THEN
+        IF UPDATING('BODY') THEN
+            :NEW.content_length := NVL(CLOB_BYTELENGTH(:NEW.body), 0);
+        ELSIF UPDATING('BINFILE') THEN
+            :NEW.content_length := NVL(DBMS_LOB.getlength(:NEW.binfile), 0);
+        END IF;
     END IF;
 
     lv_return := TRUE;
