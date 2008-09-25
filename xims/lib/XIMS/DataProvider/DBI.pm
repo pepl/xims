@@ -55,7 +55,7 @@ sub resolve_resource {
     # we can autogen here, all drivers might not be able to
     my $self = shift;
     my $resource_id = shift;
-    my ($r_type, $property_name) = split /\./, $resource_id;
+    my ($r_type, $property_name) = split /\./, $resource_id; #/
     my $table_name = $Tables{$r_type};
     return [ $table_name, $table_name . '.' . $property_name ];
 }
@@ -314,7 +314,10 @@ sub update_content_binfile {
     my $self = shift;
     my ( $content_id, $data ) = @_;
 
-    my $sth = $self->{dbh}->get_dbh->prepare("UPDATE ci_content set binfile = ? where id = ?");
+    my $content_length;
+    do { use bytes; $content_length = length( $data ) };
+
+    my $sth = $self->{dbh}->get_dbh->prepare("UPDATE ci_content set binfile = ?, content_length = ? where id = ?");
 
     if ( $self->{RDBMSClass} eq 'Oracle' ) {
         $sth->bind_param( 1, $data, { ora_type => 113 } );
@@ -328,8 +331,8 @@ sub update_content_binfile {
         $sth->bind_param( 1, $data );
     }
 
-    # bind the id (should be the same for all)
-    $sth->bind_param( 2, $content_id );
+    $sth->bind_param( 2, $content_length );
+    $sth->bind_param( 3, $content_id );
 
     return $sth->execute;
 }
@@ -344,8 +347,14 @@ sub update_content_body {
     my ( $content_id, $data ) = @_;
 
     # Oracle needs a special bind to update CLOBs
-    return $self->{dbh}->do_sql("UPDATE ci_content set body = ? where id = ?",
+    # Passing the content_length here save the trigger work which is costly
+    # for Oracle CLOBs
+    my $content_length;
+    do { use bytes; $content_length = length( $data ) };
+    
+    return $self->{dbh}->do_sql("UPDATE ci_content set body = ?, content_length = ? where id = ?",
       [$data, ($self->{RDBMSClass} eq 'Oracle') ? {ora_type=>112} : ()],
+      $content_length,
       $content_id
     );
 }
