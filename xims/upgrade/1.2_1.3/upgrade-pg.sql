@@ -72,3 +72,26 @@ CREATE TRIGGER update_content_length BEFORE INSERT OR UPDATE ON ci_content
 \echo Dropping view ci_content_loblength
 DROP VIEW ci_content_loblength;
 
+\echo updating trigger location_path_update...
+CREATE OR REPLACE FUNCTION location_path_update(INTEGER, TEXT, TEXT) RETURNS BOOLEAN AS '
+DECLARE
+    parent_id_in ALIAS FOR $1;
+    new_location_in ALIAS FOR $2;
+    old_location_path_in ALIAS FOR $3;
+
+    new_location_path TEXT;
+
+BEGIN
+    SELECT INTO new_location_path location_path_make(parent_id_in,new_location_in);
+
+    UPDATE ci_documents
+        SET location_path =
+            REPLACE (location_path, old_location_path_in, new_location_path)
+    WHERE location_path = old_location_path_in
+          OR location_path LIKE old_location_path_in || ''/%'';
+
+    RETURN TRUE;
+
+END;
+' LANGUAGE plpgsql;
+

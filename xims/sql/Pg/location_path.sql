@@ -38,7 +38,8 @@ BEGIN
     UPDATE ci_documents
         SET location_path =
             REPLACE (location_path, old_location_path_in, new_location_path)
-    WHERE location_path LIKE old_location_path_in || ''%'';
+    WHERE location_path = old_location_path_in
+          OR location_path LIKE old_location_path_in || ''/%'';
 
     RETURN TRUE;
 

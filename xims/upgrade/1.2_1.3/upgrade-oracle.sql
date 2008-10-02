@@ -73,3 +73,7 @@ END;
 PROMPT Dropping view ci_content_loblength
 DROP VIEW ci_content_loblength
 /
+
+PROMPT Updating functions and triggers for location_path denormalization
+@@../../sql/Oracle/ci_util_location_path.sql
+
