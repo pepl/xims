@@ -2181,14 +2181,10 @@ sub event_copy {
     my $recursivecopy = 1 if $self->param('recursivecopy');
     my $confirmcopy   = 1 if $self->param('confirmcopy');
     my @chldinfo   = $object->descendant_count();
-    my $diffobject = XIMS::Object->new(
-        location  => '.diff_to_second_last',
-        parent_id => $object->document_id()
-    );
 
     if (   $confirmcopy == 1
         or $chldinfo[0] == 0
-        or defined $diffobject and $chldinfo[0] == 1 )
+        or $chldinfo[0] == 1 and $object->children( location => '.diff_to_second_last', marked_deleted => undef ) )
     {
         if ( not $object->clone( scope_subtree => $recursivecopy ) ) {
             $ctxt->session->error_msg("copy failed!");
