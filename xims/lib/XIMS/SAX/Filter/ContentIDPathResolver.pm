@@ -117,7 +117,7 @@ sub end_element {
                     }
                 }
             }
-            $self->{Provider}->{$cachekey} = $path;
+            $self->{Provider}->{$cachekey} = $path unless defined $self->{PrependSiteRootURL};
         }
         $self->SUPER::characters( { Data => $path } );
         $self->{document_id} = undef;
