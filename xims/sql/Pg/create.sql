@@ -262,20 +262,14 @@ CREATE TRIGGER remove_stale_locks AFTER DELETE ON ci_sessions
 \echo creating trigger update_content_length...
 CREATE OR REPLACE FUNCTION update_content_length() RETURNS TRIGGER AS '
 BEGIN
-    IF TG_OP = ''UPDATE'' THEN
-        IF NEW.content_length ISNULL OR NEW.content_length = OLD.content_length THEN
-            NEW.content_length := COALESCE( octet_length(NEW.body), octet_length(NEW.binfile), 0 );
-        END IF;
-    ELSE
-        IF NEW.content_length ISNULL THEN
-            NEW.content_length := COALESCE( octet_length(NEW.body), octet_length(NEW.binfile), 0 );
-        END IF;
+    IF NEW.content_length ISNULL OR NEW.content_length = OLD.content_length THEN
+        NEW.content_length := COALESCE( octet_length(NEW.body), octet_length(NEW.binfile), 0 );
     END IF;
     RETURN NEW;
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE TRIGGER update_content_length BEFORE INSERT OR UPDATE ON ci_content
+CREATE TRIGGER update_content_length BEFORE UPDATE ON ci_content
        FOR EACH ROW EXECUTE PROCEDURE update_content_length();
 
 
