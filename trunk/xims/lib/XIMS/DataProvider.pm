@@ -244,7 +244,11 @@ sub createObject {
 
     $doc_properties{'document.id'} = 1;
     delete $doc_properties{'document.location_path'}; # gets set by the corresponding trigger
-    delete $properties->{'content.content_length'}; # gets set by the corresponding trigger
+
+    # The update triggers on body will set the real content_length on update
+    # If body is empty, content_length will be set to zero and not to undef
+    # Therefore, we set it to zero here for object creation
+    $properties->{'content.content_length'} ||= 0; 
 
     my $doc_id = $self->{Driver}->create( properties => \%doc_properties, conditions => {} );
     $properties->{'content.document_id'} = $doc_id;
