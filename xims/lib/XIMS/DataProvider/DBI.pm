@@ -954,13 +954,12 @@ sub get_object_id_by_path {
                 my @ids = ();
                 map { defined $_ and push(@ids, $_) } ( $id, $symid );
                 #my $sqlstr = "SELECT c.id,symname_to_doc_id
-                my $sqlstr = "SELECT d.id,symname_to_doc_id
-                              FROM ci_documents d, ci_content c
+                my $sqlstr = "SELECT d.id, d.symname_to_doc_id FROM ci_documents d, ci_content c
                               WHERE c.document_id=d.id
                               AND c.marked_deleted IS NULL
-                              AND location = ?
-                              AND parent_id IN (" .  join(',', map { '?' } @ids ) . ") ";
-                              #. " AND c.language_id IN (?,$fallbacklangid) ORDER BY CASE WHEN language_id = ? THEN 1 END";
+                              AND d.location = ?
+                              AND d.parent_id IN (" .  join(',', map { '?' } @ids ) . ") ";
+                              #. " AND c.language_id IN (?,$fallbacklangid) ORDER BY CASE WHEN c.language_id = ? THEN 1 END";
 
                 my $row;
                 if ( $row = $self->{dbh}->fetch_select_rows(
