@@ -247,7 +247,7 @@
   </xsl:template>
 
   <xsl:template match="vlsubjects">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
             name="svlsubject"
             id="svlsubject">
     <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
@@ -260,7 +260,7 @@
 
 
   <xsl:template match="vlkeywords">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
             name="svlkeyword" 
             id="svlkeyword">
       <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
@@ -273,7 +273,7 @@
 
 
   <xsl:template match="vlpublications">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
             name="svlpublication" 
             id="svlpublication">
       <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
@@ -286,7 +286,7 @@
 
 
   <xsl:template match="vlauthors">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
             name="svlauthor" 
             id="svlauthor">
       <option value="-1"><xsl:value-of select="$i18n_vlib/l/select_name"/></option>
