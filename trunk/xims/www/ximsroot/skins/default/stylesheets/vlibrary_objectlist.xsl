@@ -9,7 +9,33 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common"
                 xmlns="http://www.w3.org/1999/xhtml"
-                extension-element-prefixes="exslt">
+                xmlns:dyn="http://exslt.org/dynamic"
+                extension-element-prefixes="exslt dyn">
+
+    <xsl:param name="filter"/>
+    <xsl:param name="sid"/>
+    <xsl:param name="kid"/>
+    <xsl:param name="otid"/>
+    <xsl:param name="mt"/>
+    <xsl:param name="pbl"/>
+    <xsl:param name="sto"/>
+    <xsl:param name="status"/>
+    <xsl:param name="cf"/>
+    <xsl:param name="ct"/>
+
+    <!-- Keep that in sync with the actually registered filter related params -->
+    <xsl:variable name="filterparams">
+        <fp name="vls"/>
+        <fp name="sid"/>
+        <fp name="kid"/>
+        <fp name="otid"/>
+        <fp name="mt"/>
+        <fp name="pbl"/>
+        <fp name="sto"/>
+        <fp name="status"/>
+        <fp name="cf"/>
+        <fp name="ct"/>
+    </xsl:variable>
 
   <xsl:variable name="xsl.order">
     <xsl:choose>
@@ -151,6 +177,9 @@
                   </xsl:when>
                   <xsl:when test="$publication">
                     <xsl:value-of select="concat('?publication=1;publication_id=',$publication_id,';m=',$m)"/>
+                  </xsl:when>
+                  <xsl:when test="$filter">
+                      <xsl:call-template name="filterparams"/>
                   </xsl:when>
                   <xsl:when test="/document/context/session/searchresultcount != ''">
                     <xsl:value-of select="concat('?vls=',$vls,';vlsearch=1;start_here=1;m=',$m)"/>
@@ -323,6 +352,14 @@
             <xsl:apply-templates/>
         </div>
     </xsl:if>
+</xsl:template>
+
+<xsl:template name="filterparams">
+    <xsl:text>?filter=1</xsl:text>
+    <xsl:for-each select="exslt:node-set($filterparams)/*">
+        <xsl:variable name="paramvalue" select="dyn:evaluate(concat('$',@name))"/>
+        <xsl:if test="$paramvalue"><xsl:value-of select="concat(';',@name,'=',$paramvalue)"/></xsl:if>
+    </xsl:for-each>
 </xsl:template>
 
 <xsl:template name="urllink_status">
