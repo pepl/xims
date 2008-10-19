@@ -135,9 +135,9 @@
                 <td valign="top" width="50%" align="center" class="vlsearchswitchcell">
                     <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_search">
                         Chronik von
-                        <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="chronicle_from" size="10" maxlength="200" value="{$chronicle_from}" />
+                        <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt" type="text" name="chronicle_from" size="10" maxlength="200" value="{$chronicle_from}" />
                         bis
-                        <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="chronicle_to" size="10" maxlength="200" value="{$chronicle_to}" />
+                        <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt" type="text" name="chronicle_to" size="10" maxlength="200" value="{$chronicle_to}" />
                         <xsl:text>&#160;</xsl:text>
                         <input type="image"
                             src="{$skimages}go.png"
