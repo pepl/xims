@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::bookmark -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::bookmark
 
 =head1 VERSION
 
@@ -13,7 +13,7 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+XIMS CGI class for managing bookmarks XIMS::CGI::defaultbookmark
 
 =head1 SUBROUTINES/METHODS
 
@@ -33,15 +33,17 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 =cut
 
 sub registerEvents {
+    my $self = shift;
+
     XIMS::Debug( 5, "called" );
-    $_[0]->SUPER::registerEvents(
-        qw(
-          default
-          setdefault
-          create
-          delete
+
+    return $self->SUPER::registerEvents(
+        qw( default
+            setdefault
+            create
+            delete
           )
-        );
+    );
 }
 
 =head2 event_init()
@@ -49,11 +51,10 @@ sub registerEvents {
 =cut
 
 sub event_init {
-    my $self = shift;
-    my $ctxt = shift;
+    my ( $self, $ctxt ) = @_;
 
     # sanity check
-    return $self->event_access_denied( $ctxt ) unless $ctxt->session->user();
+    return $self->event_access_denied($ctxt) unless $ctxt->session->user();
 
     my $create = $self->param('create');
 
@@ -62,17 +63,19 @@ sub event_init {
         my $id = $self->param('id');
         $bookmark = XIMS::Bookmark->new( id => $id );
         if ( not $ctxt->session->user->admin() ) {
-            return $self->sendEvent( 'access_denied' ) if $bookmark->owner_id() != $ctxt->session->user->id();
+            return $self->sendEvent('access_denied')
+              if $bookmark->owner_id() != $ctxt->session->user->id();
         }
     }
     else {
         $bookmark = XIMS::Bookmark->new();
     }
 
-    $ctxt->object( $bookmark ); # hmmm, we do not really need
-                                # $ctxt->bookmark() since only do post-event-redirects
+    $ctxt->object($bookmark);    # hmmm, we do not really need
+                                 # $ctxt->bookmark() since only do
+                                 # post-event-redirects
 
-    $self->skipSerialization( 1 );
+    $self->skipSerialization(1);
     return 0;
 }
 
@@ -81,10 +84,11 @@ sub event_init {
 =cut
 
 sub event_default {
-    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    $self->redirToDefault( $ctxt ); # redir to defaultbookmark
+    XIMS::Debug( 5, "called" );
+
+    $self->redirToDefault($ctxt);    # redir to defaultbookmark
     return 1;
 }
 
@@ -93,24 +97,27 @@ sub event_default {
 =cut
 
 sub event_setdefault {
-    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    XIMS::Debug( 5, "called" );
+
     my $bookmark = $ctxt->object();
-    my $user = $ctxt->session->user();
+    my $user     = $ctxt->session->user();
 
     if ( $user->admin() ) {
         my $uname = $self->param('name');
         $user = XIMS::User->new( name => $uname );
-        if ( not ($user and $user->id()) ) {
-            XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
+        if ( not( $user and $user->id() ) ) {
+            XIMS::Debug( 3,
+                "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
             $self->sendError( $ctxt, "User '$uname' does not exist." );
             return 0;
         }
     }
 
     my $default_bookmark = $user->bookmarks( explicit_only => 1, stdhome => 1 );
-    if ( $default_bookmark ) {
-        $default_bookmark->stdhome( undef );
+    if ($default_bookmark) {
+        $default_bookmark->stdhome(undef);
         if ( not $default_bookmark->update() ) {
             XIMS::Debug( 3, "could not unset default bookmark" );
             $self->sendError( $ctxt, "Could not unset default bookmark!" );
@@ -118,10 +125,10 @@ sub event_setdefault {
         }
     }
 
-    $bookmark->stdhome( 1 );
+    $bookmark->stdhome(1);
     $bookmark->update();
 
-    $self->redirect( $self->redirect_path( $ctxt ) );
+    $self->redirect( $self->redirect_path($ctxt) );
     return 0;
 }
 
@@ -130,16 +137,19 @@ sub event_setdefault {
 =cut
 
 sub event_create {
-    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    XIMS::Debug( 5, "called" );
+
     my $bookmark = $ctxt->object();
-    my $user = $ctxt->session->user();
+    my $user     = $ctxt->session->user();
 
     my $uname = $self->param('name');
     if ( $user->admin() and $uname ) {
         $user = XIMS::User->new( name => $uname );
-        if ( not ($user and $user->id()) ) {
-            XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
+        if ( not( $user and $user->id() ) ) {
+            XIMS::Debug( 3,
+                "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
             $self->sendError( $ctxt, "User '$uname' does not exist." );
             return 0;
         }
@@ -149,9 +159,10 @@ sub event_create {
 
     my $stdhome = $self->param('stdhome');
     if ( $stdhome and $stdhome == 1 ) {
-        my $default_bookmark = $user->bookmarks( explicit_only => 1, stdhome => 1 );
-        if ( $default_bookmark ) {
-            $default_bookmark->stdhome( undef );
+        my $default_bookmark =
+          $user->bookmarks( explicit_only => 1, stdhome => 1 );
+        if ($default_bookmark) {
+            $default_bookmark->stdhome(undef);
             if ( not $default_bookmark->update() ) {
                 XIMS::Debug( 3, "could not unset default bookmark" );
                 $self->sendError( $ctxt, "Could not unset default bookmark!" );
@@ -160,7 +171,7 @@ sub event_create {
         }
     }
 
-    $bookmark->stdhome( $stdhome );
+    $bookmark->stdhome($stdhome);
 
     my $path = $self->param('path');
     my $object = XIMS::Object->new( path => $path );
@@ -174,7 +185,7 @@ sub event_create {
     $bookmark->content_id( $object->id() );
     $bookmark->create();
 
-    $self->redirect( $self->redirect_path( $ctxt ) );
+    $self->redirect( $self->redirect_path($ctxt) );
     return 0;
 }
 
@@ -183,20 +194,22 @@ sub event_create {
 =cut
 
 sub event_delete {
-    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+
+    XIMS::Debug( 5, "called" );
+
     my $bookmark = $ctxt->object();
 
     if ( not $bookmark->delete() ) {
-        XIMS::Debug( 3, "could not delete bookmark with id " . $bookmark->id() );
+        XIMS::Debug( 3,
+            "could not delete bookmark with id " . $bookmark->id() );
         $self->sendError( $ctxt, "Could not delete bookmark." );
         return 0;
     }
 
-    $self->redirect( $self->redirect_path( $ctxt ) );
+    $self->redirect( $self->redirect_path($ctxt) );
     return 0;
 }
-
 
 # END RUNTIME EVENTS
 # #############################################################################
@@ -208,7 +221,7 @@ sub event_delete {
 sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;
 
-    my $uri = Apache::URI->parse( $ctxt->apache() );
+    my $uri   = Apache::URI->parse( $ctxt->apache() );
     my $query = $uri->query();
 
     # get rid of event identifiers
@@ -216,11 +229,11 @@ sub redirect_path {
 
     if ( $query =~ /name=([^(;|&)]+)/ ) {
         $uri->path( XIMS::GOXIMS() . '/users' );
-        $uri->query( "name=$1;bookmarks=1;$query" );
+        $uri->query("name=$1;bookmarks=1;$query");
     }
     else {
         $uri->path( XIMS::GOXIMS() . '/user' );
-        $uri->query( "bookmarks=1;$query" );
+        $uri->query("bookmarks=1;$query");
     }
 
     #warn "redirecting to ". $uri->unparse();
@@ -235,27 +248,13 @@ __END__
 
 Look at the F<error_log> file for messages.
 
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
-
 =head1 BUGS AND LIMITATION
 
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
