@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::defaultbookmark -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::defaultbookmark
 
 =head1 VERSION
 
@@ -13,7 +13,12 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This is basically like an NPH script in that it returns no data
+to the client, but rather just redirects them to their default
+bookmark.
+
+We might consider moving this to a more generic
+redir-to-bookmark-and-fallback-to-default script
 
 =head1 SUBROUTINES/METHODS
 
@@ -35,20 +40,13 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =cut
 
-sub selectStylesheet { return 1; };
+sub selectStylesheet { return 1; }
 
 # END GLOBAL SETTINGS
 # #############################################################################
 
 # #############################################################################
 # RUNTIME EVENTS
-
-# this is basically like an NPH script in that it returns no data
-# to the client, but rather just redirects them to their default
-# bookmark.
-#
-# we might consider moving this to a more generic
-# redir-to-bookmark-and-fallback-to-default script, but...
 
 =head2 event_init()
 
@@ -60,18 +58,16 @@ sub event_init {
     my $ctxt = shift;
 
     # important! otherwise redirect will not work!
-    $self->skipSerialization( 1 );
+    $self->skipSerialization(1);
 
-    $self->redirToDefault( $ctxt );
+    $self->redirToDefault($ctxt);
 
-    XIMS::Debug( 5, "done");
+    XIMS::Debug( 5, "done" );
     return 0;
 }
 
 # END RUNTIME EVENTS
 # #############################################################################
-
-
 
 =head2    redirToDefault($ctxt);
 
@@ -85,8 +81,8 @@ sub event_init {
 
 =head3 Description
 
-redirect to the user's defaultbookmark unless a specific path is requested via path_info
-=cut
+redirect to the user's defaultbookmark unless a specific path is requested via
+path_info
 
 =head2 redirToDefault()
 
@@ -97,7 +93,7 @@ sub redirToDefault {
     my $self = shift;
     my $ctxt = shift;
 
-    my $uri = Apache::URI->parse( $ctxt->apache );
+    my $uri  = Apache::URI->parse( $ctxt->apache );
     my $path = $uri->path();
 
     my $contentinterface = XIMS::CONTENTINTERFACE();
@@ -105,9 +101,11 @@ sub redirToDefault {
         my $bookmark = $ctxt->session->user->default_bookmark();
         if ( $ctxt->session->user->default_bookmark ) {
             XIMS::Debug( 6, "bookmarked path: $bookmark" );
-            $bookmark =  XIMS::Object->new( id => $bookmark->content_id() )->location_path();
+            $bookmark =
+              XIMS::Object->new( id => $bookmark->content_id() )->location_path();
         }
         else {
+
             # use fallback start path if user has got no bookmark set
             XIMS::Debug( 6, "using fallback start path" );
             $bookmark = XIMS::FALLBACKSTARTPATH();
@@ -135,27 +133,13 @@ __END__
 
 Look at the F<error_log> file for messages.
 
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
-
 =head1 BUGS AND LIMITATION
 
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
