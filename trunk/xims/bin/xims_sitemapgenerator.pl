@@ -69,6 +69,13 @@ my $iterator = $object->descendants_granted(
 
 while ( my $desc = $iterator->getNext() ) {
     next if $desc->location eq '.diff_to_second_last';
+    next if $desc->location eq 'robots.txt';
+
+    # Skip symlinks|portlets that do not have a suffix in their location
+    if ( $desc->symname_to_doc_id() and $desc->location !~ m#\.\w+$# ) {
+        next;
+    }
+
     append_object( $root, $desc );
 }
 
