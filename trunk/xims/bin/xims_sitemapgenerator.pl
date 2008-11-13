@@ -61,6 +61,7 @@ my @dfs = ($dp->data_formats( mime_type => 'text/html' ), $dp->data_formats( mim
 my @df_ids = map { $_->id() } @dfs;
 
 my $iterator = $object->descendants_granted(
+        published => 1,
         data_format_id => \@df_ids,
         User           => $user,
         marked_deleted => undef
@@ -92,6 +93,8 @@ sub append_object {
 
     my $path = $object->location_path_relative();
     $path =~ s#/index\.html(\..+)?$#/#;
+    return unless length($path);
+
     $path = $siterooturl . $path;
 
     my $url = $dom->createElement('url');
