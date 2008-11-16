@@ -1,5 +1,5 @@
 /*
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -8,43 +8,43 @@
 @import url(../../../stylesheets/default.css);
 
 #department_title {
-	font-family:helvetica, arial, sans-serif;
-	font-size:10pt;
-	color: #A0A0A0;
+    font-family:helvetica, arial, sans-serif;
+    font-size:10pt;
+    color: #A0A0A0;
 }
 
 #searchresulttable {
-	margin-left:5px;
-	margin-right:5px;
+    margin-left:5px;
+    margin-right:5px;
 }
 
 #searchresulttable .searchresultrow td.title {
-	background: #eeeeee;
-	border-bottom: 1px solid #808080;
-	padding-top: 2px;
-	padding-bottom: 10px;
+    background: #eeeeee;
+    border-bottom: 1px solid #808080;
+    padding-top: 2px;
+    padding-bottom: 10px;
 }
 
 #searchresulttable .location_path {
-	font-size: 9pt;
-	color: #000000;
-	padding-left: 10px;
+    font-size: 9pt;
+    color: #000000;
+    padding-left: 10px;
 }
 
 #searchresulttable .abstract {
-	font-size: 9pt;
-	color: #808080;
-	padding-left: 10px;
+    font-size: 9pt;
+    color: #808080;
+    padding-left: 10px;
 }
 
 /* styles for test_location event */
 input.focused {
-	background-color: #ffc;
-	border: 1px solid Maroon;
+    background-color: #ffc;
+    border: 1px solid Maroon;
 }
 
 .loading {
-	cursor: wait;
+    cursor: wait;
 }
 /* end of styles for test_location event */
 
@@ -104,7 +104,7 @@ div#xims_ilp_windowbg div#xims_ilp_winlabel div#xims_ilp_close {
     overflow:hidden;
     left: 0;
     top: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     margin: 0;
     filter:alpha(opacity=80);
@@ -133,4 +133,9 @@ div#xims_ilp_windowbg div#xims_ilp_winlabel div#xims_ilp_close {
 
 .listitem_odd {
     background-color: #fcfcff;
+}
+
+tr.objrow:hover {
+    background-color: #EEEEEE;
+    font-weight: bold;
 }

@@ -141,11 +141,11 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  
+
   <xsl:if test="$page = $first_in_list - 1">
     <a href="{$url};page=1">1</a> ...
   </xsl:if>
-  
+
   <xsl:if test="$page &gt;= $first_in_list">
     <xsl:choose>
       <xsl:when test="$page = $current">
@@ -155,17 +155,17 @@
           </a>
         </strong>
       </xsl:when>
-      
+
       <xsl:when test="$page &lt;= $last_in_list">
         <a href="{$url};page={$page}">
           <xsl:value-of select="$page" />
         </a>
       </xsl:when>
     </xsl:choose>
-    
+
     <xsl:text> </xsl:text>
   </xsl:if>
-  
+
   <xsl:if test="$page &lt;= $last_in_list">
     <xsl:call-template name="pageslinks">
       <xsl:with-param name="page" select="$page + 1" />
@@ -180,7 +180,7 @@
     <xsl:value-of select="$total"/>
   </a>
   </xsl:if>
-  
+
 </xsl:template>
 
 <xsl:template name="pagenavtable">
@@ -194,17 +194,17 @@
     </xsl:if>
   </xsl:variable>
   <xsl:if test="$totalpages &gt; 1">
-    <table style="margin-left:5px; 
-                  margin-right:10px; 
-                  margin-top: 10px; 
-                  margin-bottom: 0px; 
+    <table style="margin-left:5px;
+                  margin-right:10px;
+                  margin-top: 10px;
+                  margin-bottom: 0px;
                   width: 99%;
-                  padding: 3px; 
-                  border: thin solid #C1C1C1; 
-                  background: #F9F9F9 
-                  font-size: small;" 
-           border="0" 
-           cellpadding="0" 
+                  padding: 3px;
+                  border: thin solid #C1C1C1;
+                  background: #F9F9F9
+                  font-size: small;"
+           border="0"
+           cellpadding="0"
            cellspacing="0">
       <tr>
         <td>
@@ -689,7 +689,7 @@
     <xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
     <xsl:variable name="dfname" select="$df/name"/>
     <xsl:variable name="dfmime" select="$df/mime_type"/>
-    <tr height="20">
+    <tr height="20" class="objrow">
         <xsl:if test="$m='e'">
             <td width="86">
                 <img src="{$ximsroot}images/spacer_white.gif" width="6" height="20" border="0" alt=" " />
