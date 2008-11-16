@@ -76,7 +76,16 @@ sub parent_by_location {
 
     my $dirname = dirname($location);
     my $plocation = $self->parent->location_path();
-    $plocation .= '/' . $dirname if ( length $dirname and $dirname ne '.' );
+
+    # for absolute paths, look for a virtual chroot parameter
+    if ( $dirname =~ m#^/# and defined $self->{Chroot} ) {
+        $dirname =~ s/$self->{Chroot}//;
+        $plocation .= $dirname;
+    }
+    elsif ( length $dirname and $dirname ne '.' ) {
+        $plocation .= '/' . $dirname;
+    }
+
     $plocation = '/root' unless (defined $plocation and $plocation);
 
     return XIMS::Object->new( path => lc($plocation) );
@@ -128,6 +137,7 @@ sub resolve_importer {
                                    User => $self->user(),
                                    ObjectType => $object_type,
                                    DataFormat => $data_format,
+                                   Chroot => $self->{Chroot},
                                    );
 
     return $importer;
@@ -175,7 +185,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

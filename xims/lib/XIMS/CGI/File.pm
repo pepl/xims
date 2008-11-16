@@ -24,6 +24,10 @@ package XIMS::CGI::File;
 use strict;
 use base qw( XIMS::CGI );
 
+use XIMS::Importer::FileSystem;
+use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
+use File::Temp qw/ tempdir unlink0 /;
+
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
@@ -81,6 +85,28 @@ sub event_store {
     # set the location parameter, so init_store_object sets the right location
     if ( defined $ctxt->parent() ) {
         $self->param( name => $self->param( 'file' ) );
+
+        # check if we should expand a zip file
+        if ( $self->param( 'unzip' )
+                and length $fh
+                and $self->uploadInfo($fh)->{'Content-Type'} eq 'application/zip' ) {
+
+            my $overwrite = $self->param( 'overwrite' );
+            $overwrite = 1 if $overwrite;
+
+            my $importretval = $self->import_from_zip( $ctxt, $fh, $overwrite );
+            if ( defined $importretval ) {
+                # TODO: provide successful/failed message
+                #       either by adding param to redirect_path
+                #       or by adding an _update style
+                my $count = $importretval->[0] . '%2F' . ($importretval->[0] + $importretval->[1]);
+                $self->redirect( $self->redirect_path( $ctxt, $ctxt->parent->id() ) .  "?message=" . $count . "%20objects%20imported." );
+                return 1;
+            }
+            else {
+                return $self->sendError( $ctxt, "Unpacking file failed" );
+            }
+        }
     }
 
     return 0 unless $self->init_store_object( $ctxt );
@@ -129,6 +155,92 @@ sub event_view_data {
 
     return $self->SUPER::event_default($ctxt);
 }
+
+=head2 import_from_zip()
+
+=cut
+
+sub import_from_zip {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt, $fh, $overwrite ) = @_;
+
+    my $successful = 0;
+    my $failed = 0;
+
+    return 1 unless (defined $ctxt and defined $ctxt->parent() and defined $fh);
+
+    # Archive::Zip does not support reading from a stream
+    # therefore we write to a temp file first
+    my $buffer;
+    my ($tmpfh, $tmpfilename) = Archive::Zip::tempFile();
+    while ( read($fh, $buffer, 1024) ) {
+        print $tmpfh $buffer;
+    }
+
+    my $zip = Archive::Zip->new();
+    if ( $zip->readFromFileHandle( $tmpfh ) != AZ_OK ) {
+        XIMS::Debug(2, "Could not read zipfile");
+        # TODO: throw exception here
+        return;
+    }
+    if ( not unlink0($tmpfh, $tmpfilename) ) {
+        XIMS::Debug( 3, "Could not unlink temporary file." . $!);
+    }
+
+    # Temp directory where the archive will be unpacked to
+    # for the FS importer to be picked up
+    my $tempdir = tempdir( CLEANUP => 1 );
+
+    my $importer = XIMS::Importer::FileSystem->new(
+                    User => $ctxt->session->user(),
+                    Parent => $ctxt->parent(),
+                    Chroot => $tempdir, );
+
+    if ( not defined $importer ) {
+        XIMS::Debug( 2, "Could not instantiate importer");
+        return;
+    }
+
+    foreach my $member ( $zip->members() ) {
+        my $fileName = $member->fileName();
+        my $status = $member->extractToFileNamed( "$tempdir/$fileName" );
+        my $handled_root;
+        if ( $status == AZ_OK ) {
+            # Depending on the ZIP file the initial member may be a document
+            # in the root folder - Make sure the root folder will be imported first
+            if ( $fileName =~ /\// and not $handled_root ) {
+                my @parts = split('/',$fileName);
+                if ( $importer->import( "$tempdir/$parts[0]", $overwrite ) ) {
+                    XIMS::Debug( 6, "'$tempdir/$parts[0]' imported successfully." );
+                    $successful++;
+                }
+                else {
+                    XIMS::Debug( 3, "Import of '$tempdir/$parts[0]' failed." );
+                    $failed++;
+                }
+                $handled_root = 1;
+            }
+            if ( $importer->import( "$tempdir/$fileName", $overwrite ) ) {
+                XIMS::Debug( 6, "'$tempdir/$fileName' imported successfully." );
+                $successful++;
+            }
+            else {
+                XIMS::Debug( 3, "Import of '$tempdir/$fileName' failed." );
+                $failed++;
+            }
+
+        }
+        else {
+            XIMS::Debug( 3, "Could not extract $fileName");
+        }
+    }
+
+    if ( defined $successful or defined $failed ) {
+        return [ $successful, $failed ];
+    }
+    return;
+}
+
 
 1;
 

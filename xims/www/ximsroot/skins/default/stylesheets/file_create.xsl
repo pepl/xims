@@ -23,8 +23,29 @@
                             <xsl:call-template name="marked_mandatory"/>
                         </td>
                     </tr>
-                    <xsl:call-template name="tr-title-create"/>
                     <xsl:call-template name="tr-file-create"/>
+                    <tr>
+                        <!-- TODO
+                                1) I18N.alize
+                                2) Hide other form fields
+                                3) Only show overwrite fied when unzip contents has been checked
+                        -->
+                        <td valign="top">Unzip Contents</td>
+                        <td colspan="2">
+                            <input tabindex="35" type="checkbox" name="unzip" value="1"/>
+                            <xsl:text>&#160;</xsl:text>
+                            <a href="javascript:openDocWindow('Unzip Contents')" class="doclink">(?)</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Overwrite existing objects when unzipping</td>
+                        <td colspan="2">
+                            <input tabindex="35" type="checkbox" name="overwrite" value="1"/>
+                            <xsl:text>&#160;</xsl:text>
+                            <a href="javascript:openDocWindow('Overwrite when unzipping contents')" class="doclink">(?)</a>
+                        </td>
+                    </tr>
+                    <xsl:call-template name="tr-title-create"/>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-abstract-create"/>
                     <xsl:call-template name="markednew"/>

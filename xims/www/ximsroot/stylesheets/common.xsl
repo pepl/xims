@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -53,6 +53,9 @@
 <xsl:param name="s"/>
 <xsl:param name="start_here"/>
 <xsl:param name="hls"/>
+<xsl:param name="message" select="/document/context/session/message"/>
+<xsl:param name="warning_msg" select="/document/context/session/warning_msg"/>
+<xsl:param name="error_msg" select="/document/context/session/error_msg"/>
 
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
@@ -197,19 +200,19 @@
 
 <xsl:template name="message">
     <xsl:choose>
-        <xsl:when test="/document/context/session/error_msg != ''">
+        <xsl:when test="$error_msg != ''">
             <span class="error_msg">
-                <xsl:value-of select="/document/context/session/error_msg"/>
+                <xsl:value-of select="$error_msg"/>
             </span>
         </xsl:when>
-        <xsl:when test="/document/context/session/warning_msg != ''">
+        <xsl:when test="$warning_msg != ''">
             <span class="warning_msg">
-                <xsl:value-of select="/document/context/session/warning_msg"/>
+                <xsl:value-of select="$warning_msg != ''"/>
             </span>
         </xsl:when>
-        <xsl:when test="/document/context/session/message != ''">
+        <xsl:when test="$message != ''">
             <span class="message">
-                <xsl:value-of select="/document/context/session/message"/>
+                <xsl:value-of select="$message"/>
             </span>
         </xsl:when>
         <xsl:otherwise>
