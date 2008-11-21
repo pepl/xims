@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Exporter::VLibraryItem::Document -- A .... doing bla, bla, bla. (short)
+XIMS::Exporter::VLibraryItem::Document
 
 =head1 VERSION
 
@@ -13,7 +13,7 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+Exporter subclass for VLibraryItem::Documents.
 
 =head1 SUBROUTINES/METHODS
 
@@ -38,7 +38,7 @@ sub create {
     XIMS::Debug( 5, "called" );
     my ( $self, %param ) = @_;
 
-    return unless $self->SUPER::create( %param );
+    return unless $self->SUPER::create(%param);
 
     # Grant to the public user
     $self->{Object}->grant_user_privileges(
@@ -52,18 +52,22 @@ sub create {
     if ( @children and scalar @children ) {
         my $helper = XIMS::Exporter::Helper->new();
         my $location;
-        foreach my $kind ( @children ) {
+        foreach my $kind (@children) {
+
+            # but don't automatically publish DocumentLinks
+            next if $kind->object_type->name eq 'URLLink';
+
             my $reaper = $helper->exporterclass(
-                                          Provider   => $self->{Provider},
-                                          User       => $self->{User},
-                                          Object     => $kind,
-                                          exportfilename => $self->{Basedir} . '/' . $kind->location()
-                                        );
+                Provider       => $self->{Provider},
+                User           => $self->{User},
+                Object         => $kind,
+                exportfilename => $self->{Basedir} . '/' . $kind->location()
+            );
             if ( $reaper and $reaper->create() ) {
-                XIMS::Debug( 4, "published " .$kind->location() );
+                XIMS::Debug( 4, "published " . $kind->location() );
             }
             else {
-                XIMS::Debug( 2, "could not publish " .$kind->location() );
+                XIMS::Debug( 2, "could not publish " . $kind->location() );
             }
         }
     }
@@ -87,27 +91,31 @@ sub remove {
     $privs_object->delete();
 
     # unpublish published children
-    my @children = $self->{Object}->children_granted( User => $self->{User}, published => 1 );
+    my @children = $self->{Object}->children_granted(
+        User      => $self->{User},
+        published => 1
+    );
+
     if ( @children and scalar @children ) {
         my $helper = XIMS::Exporter::Helper->new();
         my $location;
-        foreach my $kind ( @children ) {
+        foreach my $kind (@children) {
             my $reaper = $helper->exporterclass(
-                                          Provider   => $self->{Provider},
-                                          User       => $self->{User},
-                                          Object     => $kind,
-                                          exportfilename => $self->{Basedir} . '/' . $kind->location()
-                                        );
+                Provider       => $self->{Provider},
+                User           => $self->{User},
+                Object         => $kind,
+                exportfilename => $self->{Basedir} . '/' . $kind->location()
+            );
             if ( $reaper and $reaper->remove() ) {
-                XIMS::Debug( 4, "unpublished " .$kind->location() );
+                XIMS::Debug( 4, "unpublished " . $kind->location() );
             }
             else {
-                XIMS::Debug( 2, "could not unpublish " .$kind->location() );
+                XIMS::Debug( 2, "could not unpublish " . $kind->location() );
             }
         }
     }
 
-    return $self->SUPER::remove( %param );
+    return $self->SUPER::remove(%param);
 }
 
 =head2 set_sax_generator()
@@ -116,7 +124,7 @@ sub remove {
 
 sub set_sax_generator {
     XIMS::Debug( 5, "called" );
-    my $self  = shift;
+    my $self = shift;
 
     return XIMS::SAX::Generator::Exporter::VLibraryItem->new();
 }
@@ -135,26 +143,11 @@ sub update_parent { return; }
 
 1;
 
-
 __END__
 
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
