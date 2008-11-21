@@ -31,6 +31,12 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 sub _insert_vle_common {
     my ( $self, $ctxt, $doc_data ) = splice( @_, 0, 3 );
 
+    unless ($ctxt->object->isa( 'XIMS::VLibraryItem' )) {
+        my $class= 'XIMS::' . $ctxt->object->object_type->fullname();
+        eval "require $class";
+        bless $ctxt->object(), $class;
+    }
+
     my @authors = $ctxt->object->vleauthors();
     $doc_data->{context}->{object}->{authorgroup} = { author => \@authors }
       if ( !( $authors[0] eq undef ) );
