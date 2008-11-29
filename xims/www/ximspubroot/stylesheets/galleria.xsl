@@ -7,7 +7,7 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 exclude-result-prefixes="rdf dc dcq #default"
                 >
-<!--$Id$-->
+<!--$Id: default.xsl 1176 2005-07-01 16:07:45Z pepl $-->
 
 <xsl:import href="include/common.xsl"/>
 <xsl:import href="include/default_header.xsl"/>
@@ -17,11 +17,17 @@
 <xsl:template match="/page">
     <html>
     <head>
-      <xsl:call-template name="meta"/>
-      <meta http-equiv="imagetoolbar" content="no"/>
-      <title><xsl:value-of select="rdf:RDF/rdf:Description/dc:title/text()"/></title>
-      <link rel="stylesheet" href="/ximsroot/stylesheets/default.css" type="text/css" />
-      <link rel="stylesheet" href="/ximspubroot/stylesheets/default.css" type="text/css" />
+        <xsl:call-template name="meta"/>
+        <meta http-equiv="imagetoolbar" content="no"/>
+        <title><xsl:value-of select="rdf:RDF/rdf:Description/dc:title/text()"/></title>
+        <link rel="stylesheet" href="/ximsroot/galleria/galleria.css" type="text/css" />
+        <link rel="stylesheet" href="/ximsroot/stylesheets/default.css" type="text/css" />
+        <link rel="stylesheet" href="/ximspubroot/stylesheets/default.css" type="text/css" />
+        <script type="text/javascript" src="/ximsroot/jquery/jquery.js"></script>
+        <script type="text/javascript" src="/ximsroot/galleria/jquery.galleria.js"></script>
+        <script type="text/javascript">
+            jQuery(function($) { $('ul.gallery').galleria(); });
+        </script>
     </head>
     <body>
         <xsl:comment>UdmComment</xsl:comment>
@@ -45,6 +51,16 @@
         </div>
       </body>
     </html>
+</xsl:template>
+
+<xsl:template match="ul">
+    <div id="main_image"></div>
+    <ul class="gallery"><xsl:apply-templates select="li[@class='list_PJPEG' or @class='list_GIF' or @class='list_JPEG' or @class='list_PNG' or @class='list_TIFF']"/></ul>
+    <p class="nav"><a href="#" onclick="$.galleria.prev(); return false;">« previous</a> | <a href="#" onclick="$.galleria.next(); return false;">next »</a></p>
+</xsl:template>
+
+<xsl:template match="li">
+    <li><img src="{a/@href}" title="{a}" alt="{a}"/></li>
 </xsl:template>
 
 </xsl:stylesheet>
