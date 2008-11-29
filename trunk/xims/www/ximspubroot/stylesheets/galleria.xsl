@@ -12,7 +12,9 @@
 <xsl:import href="include/common.xsl"/>
 <xsl:import href="include/default_header.xsl"/>
 
-<xsl:output method="xml" media-type="text/html" omit-xml-declaration="yes" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+<xsl:output method="html" media-type="text/html" omit-xml-declaration="yes" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+
+<xsl:param name="scaletowidth" select="'400'"/>
 
 <xsl:template match="/page">
     <html>
@@ -26,8 +28,52 @@
         <script type="text/javascript" src="/ximsroot/jquery/jquery.js"></script>
         <script type="text/javascript" src="/ximsroot/galleria/jquery.galleria.js"></script>
         <script type="text/javascript">
-            jQuery(function($) { $('ul.gallery').galleria(); });
+            jQuery(function($) {
+                $('.gallery').addClass('gallery_demo'); // adds new class name to maintain degradability
+    
+                $('ul.gallery').galleria({
+                    history   : true, // activates the history object for bookmarking, back-button etc.
+                    clickNext : true, // helper for making the image clickable
+                    insert    : '#main_image', // the containing selector for our main image
+                    onImage   : function(image,caption,thumb) { // let's add some image effects for demonstration purposes
+                        // fade in the image and caption
+                        if(! ($.browser.mozilla &amp;&amp; navigator.appVersion.indexOf("Win")!=-1) ) { // FF/Win fades large images terribly slow
+                            image.css('display','none').fadeIn(1000);
+                        }
+                        caption.css('display','none').fadeIn(1000);
+            
+                        // fetch the thumbnail container
+                        var _li = thumb.parents('li');
+            
+                        // fade out inactive thumbnail
+                        _li.siblings().children('img.selected').fadeTo(500,0.3);
+            
+                        // fade in active thumbnail
+                        thumb.fadeTo('fast',1).addClass('selected');
+            
+                        // add a title for the clickable image
+                        image.attr('title','Next image »');
+                    },
+                    onThumb : function(thumb) { // thumbnail effects goes here
+                        // fetch the thumbnail container
+                        var _li = thumb.parents('li');
+            
+                        // if thumbnail is active, fade all the way.
+                        var _fadeTo = _li.is('.active') ? '1' : '0.3';
+            
+                        // fade in the thumbnail when finnished loading
+                        thumb.css({display:'none',opacity:_fadeTo}).fadeIn(1500);
+            
+                        // hover effects
+                        thumb.hover(
+                            function() { thumb.fadeTo('fast',1); },
+                            function() { _li.not('.active').children('img').fadeTo('fast',0.3); } // don't fade out if the parent is active
+                        )
+                    }
+                });
+            });
         </script>
+
     </head>
     <body>
         <xsl:comment>UdmComment</xsl:comment>
@@ -60,7 +106,12 @@
 </xsl:template>
 
 <xsl:template match="li">
-    <li><img src="{a/@href}" title="{a}" alt="{a}"/></li>
+    <li>
+        <xsl:if test="position() = 1">
+            <xsl:attribute name="class">active</xsl:attribute>
+        </xsl:if>
+        <img src="{a/@href}/Resize?geometry={$scaletowidth}" title="{a}" alt="{a}"/>
+    </li>
 </xsl:template>
 
 </xsl:stylesheet>
