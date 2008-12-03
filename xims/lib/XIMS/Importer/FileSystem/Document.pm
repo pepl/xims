@@ -65,8 +65,7 @@ sub handle_data {
             }
             if ( length $value ) {
                 # $doc->setEncoding() does not work depending on the libxml version :-/
-                # Using encode_utf8() here to make sure we get utf-8
-                $value = Encode::encode_utf8( $value ) unless XIMS::DBENCODING;
+                $value = utf8_sanitize( $value ) unless XIMS::DBENCODING;
                 $object->$field( XIMS::Entities::decode( $value ) );
             }
         }
