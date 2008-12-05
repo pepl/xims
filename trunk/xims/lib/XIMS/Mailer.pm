@@ -33,12 +33,14 @@ package XIMS::Mailer;
 use strict;
 use base qw(MIME::Lite::HTML);
 
+use HTTP::Request;
+
 our ($VERSION) = ( q$Revision:  $ =~ /\s+(\d+)\s*$/ );
 
 =head2 new()
 
-Derived constructor. The `Url' parameter will be ignored, the new parameter
-`Session' takes a XIMS session-id as value. Besides that, see
+Derived constructor. The 'Url' parameter will be ignored, the new parameter
+'Session' takes a XIMS session-id as value. Besides that, see
 L<MIME::Lite::HTML>.
 
 =cut
@@ -85,7 +87,7 @@ mimetype using regex-matches on the suffix:
 
 These break for image URLs with CGI parameters, i.e. our JPEGs (being
 processed by Apache::Imagemagick) get marked as
-`application/x-shockwave-flash' -- in turn rendering them unusable by many
+'application/x-shockwave-flash' -- in turn rendering them unusable by many
 MUAs.
 
 We need to overwrite this method and try to get the mimetype from the

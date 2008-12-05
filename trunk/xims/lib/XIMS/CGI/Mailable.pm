@@ -26,6 +26,7 @@ use strict;
 
 use XIMS::Mailer;
 use Email::Valid;
+use HTTP::Headers::Util ();
 
 =head2 registerEvents()
 
@@ -147,10 +148,9 @@ sub event_send_as_mail {
       : XIMS::PUBROOT_URL();
     $path .= $object->location_path_relative();
 
-    #warn "Published URL: $path";
-
+    XIMS::Debug( 6, "Published URL to be fetched: $path" );
+    
     my $user_id = $object->User->id();
-
     my $tmpSession = XIMS::Session->new(
         user_id => $user_id,
         host    => XIMS::REQUESTAGENTSOURCEIP()
@@ -161,14 +161,32 @@ sub event_send_as_mail {
         To           => $to,
         Subject      => $subject,
         'Reply-To'   => $reply_to,
-        HTMLCharset  => 'UTF-8',
+        HTMLCharset  => 'iso-8859-1',
         HTMLEncoding => 'base64',
         IncludeType  => $include_type,
         Session      => $tmpSession->session_id()
     );
 
-    my $MIMEmail;
+    # Default encoding of XIMS::Mailer (MIME::Lite::HTML) is iso-8859-1
+    # Per HTTP 1.1 spec, iso-8859-1 is also the default encoding unless a charset is 
+    # specified in the Content-Type header.
+    # Check here if the page to be sent is encoded differently
+    my $response = $mailer->get_agent->request( HTTP::Request->new( 'HEAD' => $path ) );
+    if ( $response->is_success() ) {
+        my @values = HTTP::Headers::Util::split_header_words($response->header("Content-Type"));
+        my $charset = $values[0]->[3]; # charset value
+        if ( defined $charset and $charset !~ /iso-8859-1/i ) {
+            XIMS::Debug( 6, "Setting mail charset to $charset" );
+            # MIME::Lite::HTML does not provide an interface to set the charset... 
+            # ...therefore, we have to be unfriendly here
+            $mailer->{_htmlcharset} = $charset;
+        }
+    }
+    else {
+        XIMS::Debug( 2, "HEAD request to $path failed" );
+    }
 
+    my $MIMEmail;
     eval { $MIMEmail = $mailer->parse($path); };
 
     $tmpSession->delete();
