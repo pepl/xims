@@ -269,6 +269,11 @@ CREATE  INDEX doc_location_i
    )
 /
 
+CREATE  INDEX doc_locationp_i
+ ON ci_documents
+  ( location_path  )
+/
+
 CREATE  INDEX ctt_last_mod_timestamp_i
  ON ci_content
   ( last_modification_timestamp  )

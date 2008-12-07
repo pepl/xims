@@ -25,6 +25,7 @@ package XIMS::QueryBuilder::Pg;
 use strict;
 use base qw( XIMS::QueryBuilder );
 use XIMS::User;
+use Time::Piece;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -60,6 +61,8 @@ sub _build {
     my $bol;
     my $foundmacro = 0;
 
+    my $now = localtime();
+
     use encoding "latin-1";
     my $allowedusernamechars = XIMS::decode( '-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_' );
 
@@ -78,35 +81,46 @@ sub _build {
 
         if ( $search->[$i] =~ s/^M:(\d*)$/$1/ ) {
             # 'M:x'  was MODIFIED x days in the past
-            $search->[$i] ||= '0';
+            # Optimizer for Pg < 8 does not use an index even
+            # for last_modification_timestamp > now() - interval '2 day' 
+            # Therefore we provide the date literal here. 
+            $search->[$i] ||= '1';
+            $search->[$i] = $now - $search->[$i] * 86400;
+            $search->[$i] = $search->[$i]->datetime();
             $bol = $self->search_boolean( $search, $i );
             push( @values, $search->[$i] );
-            $search->[$i] = $bol . "date(now()) - date(last_modification_timestamp) < ?+1";
+            $search->[$i] = $bol . "last_modification_timestamp > ?";
             $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^m:(\d*)$/$1/ ) {
             # 'm:x'  was MODIFIED x days in the past AND is MARKED_NEW
-            $search->[$i] ||= '0';
+            $search->[$i] ||= '1';
+            $search->[$i] = $now - $search->[$i] * 86400;
+            $search->[$i] = $search->[$i]->datetime();
             $bol = $self->search_boolean( $search, $i );
             push( @values, $search->[$i] );
-            $search->[$i] = $bol . "date(now()) - date(last_modification_timestamp) < ?+1"
+            $search->[$i] = $bol . "last_modification_timestamp > ?"
                                  . " AND ci_content.marked_new = 1";
             $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^N:(\d*)$/$1/ ) {
             # 'N:x'  was CREATED x days in the past
-            $search->[$i] ||= '0';
+            $search->[$i] ||= '1';
+            $search->[$i] = $now - $search->[$i] * 86400;
+            $search->[$i] = $search->[$i]->datetime();
             $bol = $self->search_boolean( $search, $i );
             push( @values, $search->[$i] );
-            $search->[$i] = $bol . "date(now()) - date(creation_timestamp) < ?+1";
+            $search->[$i] = $bol . "creation_timestamp > ?";
             $foundmacro++;
         }
         elsif ( $search->[$i] =~ s/^n:(\d*)$/$1/ ) {
             # 'n:x'  was CREATED x days in the past AND is MARKED_NEW
-            $search->[$i] ||= '0';
+            $search->[$i] ||= '1';
+            $search->[$i] = $now - $search->[$i] * 86400;
+            $search->[$i] = $search->[$i]->datetime();
             $bol = $self->search_boolean( $search, $i );
             push( @values, $search->[$i] );
-            $search->[$i] = $bol . "date(now()) - date(creation_timestamp) < ?+1"
+            $search->[$i] = $bol . "creation_timestamp > ?"
                                  . " AND ci_content.marked_new = 1";
             $foundmacro++;
         }

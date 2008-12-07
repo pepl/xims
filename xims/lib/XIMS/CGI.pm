@@ -3455,7 +3455,7 @@ sub event_search {
             my ( $critstring, @critvals ) = @{ $qb->criteria() };
             my %param = (
                 criteria => [
-                    $critstring . " AND title <> '.diff_to_second_last'",
+                    $critstring . " AND location <> '.diff_to_second_last'",
                     @critvals
                 ],
                 limit  => $rowlimit,
