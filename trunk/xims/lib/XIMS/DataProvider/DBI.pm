@@ -573,6 +573,8 @@ sub find_object_id {
 
     my $tables = 'ci_content';
     my $columns = delete $args{columns};
+    # The DISTINCT here will disable the index scan for Pg :-/
+    # Did not find an easy way to fix this yet
     $columns ||= 'DISTINCT ci_content.ID, last_modification_timestamp as ts';
 
     my %param;

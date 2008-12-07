@@ -77,3 +77,8 @@ DROP VIEW ci_content_loblength
 PROMPT Updating functions and triggers for location_path denormalization
 @@../../sql/Oracle/ci_util_location_path.sql
 
+CREATE  INDEX doc_locationp_i
+ ON ci_documents
+  ( location_path  )
+/
+

@@ -173,6 +173,8 @@ CREATE INDEX ci_documents_par_id_idx
        ON ci_documents ( parent_id )
 ;
 
+CREATE INDEX ci_doc_locp_idx ON ci_documents ( location_path );
+
 \echo creating table 'ci_content'
 CREATE TABLE ci_content
  (binfile                       BYTEA
@@ -237,6 +239,14 @@ COMMENT ON COLUMN ci_content.keywords
 CREATE INDEX ci_content_doc_id_idx
        ON ci_content ( document_id )
 ;
+
+\echo creating index on ci_content...
+CREATE INDEX ci_content_image_id_idx
+       ON ci_content ( image_id )
+;
+
+CREATE INDEX ci_ctt_lmts_idx ON ci_content ( last_modification_timestamp );
+CREATE INDEX ci_ctt_cts_idx ON ci_content ( creation_timestamp );
 
 \echo creating trigger remove_stale_locks...
 CREATE OR REPLACE FUNCTION remove_stale_locks() RETURNS TRIGGER AS '
