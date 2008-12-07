@@ -53,9 +53,9 @@
 <xsl:param name="s"/>
 <xsl:param name="start_here"/>
 <xsl:param name="hls"/>
-<xsl:param name="message" select="/document/context/session/message"/>
-<xsl:param name="warning_msg" select="/document/context/session/warning_msg"/>
-<xsl:param name="error_msg" select="/document/context/session/error_msg"/>
+<xsl:param name="message" select="/document/context/session/message/text()"/>
+<xsl:param name="warning_msg" select="/document/context/session/warning_msg/text()"/>
+<xsl:param name="error_msg" select="/document/context/session/error_msg/text()"/>
 
 <xsl:template match="/document">
     <xsl:apply-templates select="context/object"/>
@@ -207,7 +207,7 @@
         </xsl:when>
         <xsl:when test="$warning_msg != ''">
             <span class="warning_msg">
-                <xsl:value-of select="$warning_msg != ''"/>
+                <xsl:value-of select="$warning_msg"/>
             </span>
         </xsl:when>
         <xsl:when test="$message != ''">
