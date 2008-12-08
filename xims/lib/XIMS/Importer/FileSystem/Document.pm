@@ -65,7 +65,7 @@ sub handle_data {
             }
             if ( length $value ) {
                 # $doc->setEncoding() does not work depending on the libxml version :-/
-                $value = utf8_sanitize( $value ) unless XIMS::DBENCODING;
+                $value = XIMS::utf8_sanitize( $value ) unless XIMS::DBENCODING;
                 $object->$field( XIMS::Entities::decode( $value ) );
             }
         }
@@ -88,7 +88,7 @@ sub get_rootelement {
 
     # Most users will not have their legacy HTML documents encoded
     # in UTF-8. Therefore, we try to encode the documents to UTF-8 for them.
-    my $data = utf8_sanitize( $$strref );
+    my $data = XIMS::utf8_sanitize( $$strref );
 
     my $wbdata;
     my $object = XIMS::Object->new();
@@ -121,40 +121,6 @@ sub get_rootelement {
     return $doc->documentElement();
 }
 
-=head2 utf8_sanitize()
-
-=cut
-
-sub utf8_sanitize {
-    my $string = shift;
-    if ( is_notutf8( $string ) ) {
-        return Encode::encode_utf8($string);
-    }
-    else {
-        return $string;
-    }
-}
-
-# poor man's check
-
-=head2 is_notutf8()
-
-=cut
-
-sub is_notutf8 {
-    # <yarg/>
-    if ( $] == 5.008004 ) {
-        eval { Encode::decode_utf8(Encode::decode_utf8(shift)); };
-        return 1 if $@;
-        return 0;
-    }
-    else {
-        return 0 if defined Encode::decode_utf8(shift);
-        return 1;
-    }
-}
-
-
 1;
 
 __END__
@@ -183,7 +149,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2008 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
