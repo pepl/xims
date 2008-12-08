@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -20,6 +20,13 @@ use Getopt::Std;
 # untaint path and env
 $ENV{PATH} = '/bin:/usr/bin'; # older versions of CWD.pm need 'pwd'
 $ENV{ENV} = '';
+
+my $autoindex = XIMS::AUTOINDEXFILENAME();
+my $skippattern = qr{
+     $autoindex           # auto index files
+    | ^ou\.xml$           # object root files (DepartmentRoot|SiteRoot)
+    | \.container.xml$    # Container metadata files
+}x;
 
 my %args;
 getopts('hfd:u:p:m:', \%args);
@@ -70,7 +77,14 @@ if ( length $displaydir ) {
 my @files = $term->findfiles( $path );
 die "No files found, nothing to do.\n" unless scalar(@files);
 
+my $total = scalar @files;
 foreach my $file ( @files ) {
+    if ( skipfile( $file ) ) {
+        XIMS::Debug( 4, "Skipping $file");
+        $total--;
+        next;
+    }
+    
     $file =~ s/$dirname\/// if length $dirname;
     if ( $importer->import( $file, $args{f} ) ) {
         print "'$displaydir$file' imported successfully.\n";
@@ -82,7 +96,6 @@ foreach my $file ( @files ) {
     }
 }
 
-my $total = scalar @files;
 print qq*
     Import Report:
         Total files:            $total
@@ -92,6 +105,16 @@ print qq*
 *;
 
 exit 0;
+
+sub skipfile {
+    my ($location) = @_;
+ 
+    my $filename = basename $location;
+    if ( $filename =~ /$skippattern/ ) {
+        return 1;
+    }
+    return 0;
+}
 
 sub usage {
     return qq*
