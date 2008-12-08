@@ -27,8 +27,12 @@ use XIMS::DataFormat;
 use XIMS::ObjectType;
 use XIMS::Object;
 use File::Basename;
+use XML::LibXML;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+# Global hash for parsed files memoization
+my %parsed_files;
 
 =head2 import()
 
@@ -61,6 +65,9 @@ sub handle_data {
     $object->location( $location );
     $object->parent_id( $self->parent_by_location( $location )->document_id() );
     $object->data_format_id( $self->data_format->id() );
+
+    # Parse information from published metadata files if available
+    $self->handle_container_metadata( $object );
 
     return $object;
 }
@@ -143,6 +150,66 @@ sub resolve_importer {
     return $importer;
 }
 
+=head2 handle_container_metadata()
+
+=head3 Parameter
+
+    $object    :  Manadatory object to be checked for metadata
+
+=head3 Returns
+
+    $object    : Object instance with metadata set depending of availability of
+                 metadata file
+
+=head3 Description
+
+Looks for $containerlocation.container.xml metadata files which get created by
+the XIMS::Exporter and extracts metadata information from it.
+
+Currently, 'title', 'keywords', 'abstract' and 'attributes' will be extracted.
+
+=cut
+sub handle_container_metadata {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $object ) = @_;
+    return unless defined $object;
+
+    my $basexpath;
+    my $metadata_filename;
+    if ( $self->data_format->name() eq 'Container' ) {
+        $metadata_filename =  $object->location() . '/' . basename $object->location() . '.container.xml';;
+        $basexpath = '/document/context/object';
+    }
+    else {
+        $metadata_filename =  substr($object->parent->location_path_relative(),1) . '/' . basename $object->parent->location() . '.container.xml';;
+        $basexpath = '/document/context/object/children/object';
+    }
+
+    return unless -R $metadata_filename;
+
+    my $doc = $self->parse_file( $metadata_filename );
+    return unless defined $doc;
+
+    my $location_path = $object->parent->location_path() . '/' . basename $object->location();
+    my %importmap = (
+        title      => $basexpath."[location_path='$location_path']/title",
+        keywords   => $basexpath."[location_path='$location_path']/keywords",
+        abstract   => $basexpath."[location_path='$location_path']/abstract",
+        attributes => $basexpath."[location_path='$location_path']/attributes",
+        # TODO: maybe position-, user-, time- metadata here too?
+                    );
+
+    foreach my $field ( keys %importmap ) {
+        my $value = $doc->findvalue( $importmap{$field} );
+        if ( defined $value and length $value ) {
+            #warn "$field is $value";
+            $object->$field( $value );
+        }
+    }
+
+    return $object;
+}
+
 =head2 get_strref()
 
 =cut
@@ -155,6 +222,32 @@ sub get_strref {
     my $contents = <INPUT>;
     close INPUT;
     return \$contents;
+}
+
+=head2 parse_file()
+
+=cut
+
+sub parse_file {
+    my ( $self, $filename ) = @_;
+
+    # Check if we already parsed that file and return DOM in case
+    my $key = "_parsed_$filename";
+    return $parsed_files{$key} if defined $parsed_files{$key};
+
+    my $parser = XML::LibXML->new();
+    my $doc;
+    eval {
+        $doc = $parser->parse_file( $filename );
+        XIMS::Debug( 4, "Parsed $filename" );
+    };
+    if ( $@ ) {
+        XIMS::Debug( 3, "Could not parse: $@" );
+        return;
+    }
+
+    # Memoize and return
+    return $parsed_files{$key} = $doc;
 }
 
 1;
