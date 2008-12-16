@@ -169,6 +169,7 @@ the XIMS::Exporter and extracts metadata information from it.
 Currently, 'title', 'keywords', 'abstract' and 'attributes' will be extracted.
 
 =cut
+
 sub handle_container_metadata {
     XIMS::Debug( 5, "called" );
     my ( $self, $object ) = @_;
