@@ -284,7 +284,7 @@
     <noscript>
         <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET">
             <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap">
-                <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="objtype">
+                <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="objtype">
                     <xsl:choose>
                         <xsl:when test="/document/context/object/@id = 1">
                             <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]" mode="form"/>
@@ -342,7 +342,7 @@
                                 <xsl:attribute name="checked">true</xsl:attribute>
                             </xsl:if>
                         </input>
-                        <input style="background: #eeeeee; font-face: helvetica; font-size: 10pt" type="text" name="s" size="17" maxlength="200">
+                        <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt" type="text" name="s" size="17" maxlength="200">
                         <xsl:choose>
                             <xsl:when test="$s != ''">
                                 <xsl:attribute name="value"><xsl:value-of select="$s"/></xsl:attribute>
