@@ -140,8 +140,9 @@ logfile( $Conf{log_file} ); # hook up log file filter to STDOUT
 
 if ( $Conf{DBdsn} eq 'Oracle' ) {
     chdir "$xims_home/sql/Oracle";
+    warn "\nORACLE_HOME not set, sqlplus will likely fail now!\n\n" unless $ENV{ORACLE_HOME};
     system('sqlplus',$Conf{DBUser}.'/'.$Conf{DBPassword}.'@'.$Conf{DBName},'@ci_ddl.sql') == 0
-        or die "Setting up DB failed: $?\n. Please check your config information or try manually setting up the DB.\b";
+        or die "Setting up DB via sqlplus failed: $?\n. Please check your config information or try manually setting up the DB.\b";
 }
 elsif ( $Conf{DBdsn} eq 'Pg' ) {
     my @args = ('psql','-U',$Conf{DBUser},'-d',$Conf{DBName},'-f','setup.sql');
