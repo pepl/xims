@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -933,12 +933,14 @@
 </xsl:template>
 
 <xsl:template name="cttobject.options">
-    <xsl:call-template name="cttobject.options.edit"/>
-    <xsl:call-template name="cttobject.options.copy"/>
-    <xsl:call-template name="cttobject.options.move"/>
-    <xsl:call-template name="cttobject.options.publish"/>
-    <xsl:call-template name="cttobject.options.acl_or_undelete"/>
-    <xsl:call-template name="cttobject.options.purge_or_delete"/>
+    <span id="cttobject_options">
+        <xsl:call-template name="cttobject.options.edit"/>
+        <xsl:call-template name="cttobject.options.copy"/>
+        <xsl:call-template name="cttobject.options.move"/>
+        <xsl:call-template name="cttobject.options.publish"/>
+        <xsl:call-template name="cttobject.options.acl_or_undelete"/>
+        <xsl:call-template name="cttobject.options.purge_or_delete"/>
+    </span>
 </xsl:template>
 
 <xsl:template name="cttobject.options.edit">
@@ -1039,19 +1041,12 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
-            <a>
+            <a class="sprite-option_pub">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                <img src="{$skimages}option_pub.png"
-                    border="0"
-                    alt="{$l_Publishing_options}"
-                    title="{$l_Publishing_options}"
-                    name="publish{$id}"
-                    width="32"
-                    height="19"
-                />
+                &#xa0;-
             </a>
         </xsl:when>
         <xsl:otherwise>
@@ -1064,35 +1059,21 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a>
+            <a class="sprite-option_acl">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                <img src="{$skimages}option_acl.png"
-                    border="0"
-                    alt="{$l_Access_control}"
-                    title="{$l_Access_control}"
-                    name="acl{$id}"
-                    width="32"
-                    height="19"
-                />
+                &#xa0;
             </a>
         </xsl:when>
         <xsl:when test="user_privileges/delete and marked_deleted = '1'">
-            <a>
+            <a class="sprite-option_undelete">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                <img src="{$skimages}option_undelete.png"
-                    border="0"
-                    alt="{$l_Undelete}"
-                    title="{$l_Undelete}"
-                    name="undelete{$id}"
-                    width="32"
-                    height="19"
-                />
+                &#xa0;
             </a>
         </xsl:when>
         <xsl:otherwise>
@@ -1119,16 +1100,9 @@
                     <input name="hd" type="hidden" value="{$hd}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
-                <input
-                    type="image"
+                <button class="sprite-option_purge"
                     name="delete{$id}"
-                    src="{$skimages}option_purge.png"
-                    border="0"
-                    width="37"
-                    height="19"
-                    alt="{$l_purge}"
-                    title="{$l_purge}"
-                />
+                ><xsl:value-of select="$l_purge"/></button>
             </form>
         </xsl:when>
         <xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
@@ -1163,12 +1137,7 @@
 </xsl:template>
 
 <xsl:template name="cttobject.options.spacer">
-    <img src="{$ximsroot}images/spacer_white.gif"
-        width="32"
-        height="19"
-        border="0"
-        alt=" "
-    />
+    <span class="sprite-spacer"> </span>
 </xsl:template>
 
 <xsl:template name="toggle_hls">
