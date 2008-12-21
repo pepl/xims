@@ -57,8 +57,11 @@ sub debuglevel {
     if ( not $self->{debuglevel} or defined $debuglevel ) {
         *XIMS::DEBUGLEVEL = sub () { $debuglevel || 1 };
         $self->{debuglevel} = $debuglevel;
-        my $dp = XIMS::DATAPROVIDER();
-        $dp->driver->dbh->SQLLogging(0) if $debuglevel < 6;
+        my $dp;
+        eval { $dp = XIMS::DATAPROVIDER() };
+        if ( $debuglevel < 6 and not $@ ) {
+            $dp->driver->dbh->SQLLogging(0);
+        }
         return $debuglevel;
     }
     else {
