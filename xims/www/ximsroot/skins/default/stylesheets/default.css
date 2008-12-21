@@ -209,9 +209,9 @@ tr.objrow:hover {
 .sprite-option_pub { 
     background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     background-position: -300px -129px;
-    padding: 5px;
+    padding: 5px 5px 5px 23px;
     margin-left: 3px;
-    text-decoration: none
+    text-decoration: none;
 }
 .sprite-option_prettyprint { background-position: -209px -298px; }
 .sprite-option_move_over { background-position: -209px -347px; }
@@ -225,6 +225,9 @@ tr.objrow:hover {
 .sprite-option_delete { background-position: -209px -739px; }
 .sprite-option_copy { background-position: -209px -788px; }
 .sprite-spacer { background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left; padding-left: 32px; }
+.invisible {
+    display: none;
+}
 
 /*
 #cttobject_options { background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left; }
