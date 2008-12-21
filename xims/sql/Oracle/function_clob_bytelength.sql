@@ -39,3 +39,24 @@ BEGIN
 END CLOB_BYTELENGTH;
 /
 
+PROMPT Adding Trigger on ci_content to set content_length
+CREATE OR REPLACE
+TRIGGER update_content_length
+  BEFORE UPDATE
+  ON ci_content
+REFERENCING NEW AS NEW OLD AS OLD
+FOR EACH ROW
+DECLARE
+    lv_return BOOLEAN;
+BEGIN
+    IF NOT UPDATING('CONTENT_LENGTH') THEN
+        IF UPDATING('BODY') THEN
+            :NEW.content_length := NVL(CLOB_BYTELENGTH(:NEW.body), 0);
+        ELSIF UPDATING('BINFILE') THEN
+            :NEW.content_length := NVL(DBMS_LOB.getlength(:NEW.binfile), 0);
+        END IF;
+    END IF;
+
+    lv_return := TRUE;
+END;
+/
