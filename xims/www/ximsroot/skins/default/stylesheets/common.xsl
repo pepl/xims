@@ -1046,7 +1046,7 @@
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                <span class="invisible"><xsl:value-of select="$l_Publishing_options"/></span>
+                &#xa0;<span><xsl:value-of select="$l_Publishing_options"/></span>
             </a>
         </xsl:when>
         <xsl:otherwise>

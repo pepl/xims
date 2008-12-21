@@ -209,9 +209,11 @@ tr.objrow:hover {
 .sprite-option_pub { 
     background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     background-position: -300px -129px;
-    padding: 5px 5px 5px 23px;
+    padding: 5px 5px 5px 15px;
     margin-left: 3px;
     text-decoration: none;
+    position:relative;
+    z-index:24;
 }
 .sprite-option_prettyprint { background-position: -209px -298px; }
 .sprite-option_move_over { background-position: -209px -347px; }
@@ -225,8 +227,24 @@ tr.objrow:hover {
 .sprite-option_delete { background-position: -209px -739px; }
 .sprite-option_copy { background-position: -209px -788px; }
 .sprite-spacer { background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left; padding-left: 32px; }
-.invisible {
+.sprite-option_pub span {
     display: none;
+}
+.sprite-option_pub:hover{
+    z-index:25;
+}
+.sprite-option_pub:hover span {
+    display: block;
+    position: absolute;
+    top:2em; left:2em;
+    border:1px solid #000000;
+    color: #000000;
+    background-color: #ffffe0;
+    text-align: center;
+    font-weight: normal;
+    font-size: smaller;
+    padding: 3px;
+    opacity: 0.90;
 }
 
 /*
