@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -691,15 +691,14 @@
     <xsl:variable name="dfmime" select="$df/mime_type"/>
     <tr height="20" class="objrow">
         <xsl:if test="$m='e'">
-            <td width="86">
-                <img src="{$ximsroot}images/spacer_white.gif" width="6" height="20" border="0" alt=" " />
+            <td class="ctt_status">
                 <xsl:call-template name="cttobject.status"/>
             </td>
-            <td align="center">
+            <td class="ctt_position">
                 <xsl:call-template name="cttobject.position"/>
             </td>
         </xsl:if>
-        <td width="34">
+        <td class="ctt_df">
             <xsl:call-template name="cttobject.dataformat">
                 <xsl:with-param name="dfname" select="$dfname"/>
             </xsl:call-template>
@@ -710,10 +709,10 @@
                 <xsl:with-param name="dfmime" select="$dfmime"/>
             </xsl:call-template>
         </td>
-        <td background="{$skimages}containerlist_bg_transparent.gif">
+        <td class="ctt_lm">
             <xsl:call-template name="cttobject.last_modified"/>
         </td>
-        <td background="{$skimages}containerlist_bg_transparent.gif" align="right">
+        <td class="ctt_cl">
             <xsl:call-template name="cttobject.content_length">
                 <xsl:with-param name="dfname" select="$dfname"/>
                 <xsl:with-param name="dfmime" select="$dfmime"/>
@@ -829,8 +828,7 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
 </xsl:template>
 
 <xsl:template name="cttobject.dataformat">
-  <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
-
+    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
     <xsl:choose>
         <xsl:when test="marked_deleted=1">
             <xsl:attribute name="bgcolor">#c6c6c6</xsl:attribute>
@@ -839,16 +837,7 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
             <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
         </xsl:otherwise>
     </xsl:choose>
-    <img src="{$ximsroot}images/spacer_white.gif"
-        width="12"
-        height="20"
-        border="0"
-        alt=" " />
-    <img src="{$ximsroot}images/icons/list_{$dfname}.gif"
-        border="0"
-        alt="{$dfname}"
-        title="{$dfname}"
-     />
+    <span class="sprite-list sprite-list_{$dfname}"><span><xsl:value-of select="$dfname"/></span>&#xa0;</span>
 </xsl:template>
 
 <xsl:template name="cttobject.last_modified">

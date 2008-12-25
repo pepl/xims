@@ -855,12 +855,7 @@
             />
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                    width="26"
-                    height="19"
-                    border="0"
-                    alt=""
-            />
+            <xsl:call-template name="cttobject.status.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
     <xsl:choose>
@@ -886,12 +881,7 @@
             </a>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                    width="26"
-                    height="19"
-                    border="0"
-                    alt=""
-            />
+            <xsl:call-template name="cttobject.status.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
     <xsl:choose>
@@ -922,18 +912,13 @@
             </img>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{$ximsroot}images/spacer_white.gif"
-                    width="26"
-                    height="19"
-                    border="0"
-                    alt=""
-            />
+            <xsl:call-template name="cttobject.status.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
 
 <xsl:template name="cttobject.options">
-    <span id="cttobject_options">
+    <span class="cttobject_options">
         <xsl:call-template name="cttobject.options.edit"/>
         <xsl:call-template name="cttobject.options.copy"/>
         <xsl:call-template name="cttobject.options.move"/>
@@ -947,23 +932,12 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a>
+            <a class="sprite-option_edit">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                <img src="{$skimages}option_edit.png"
-                    alt="{$l_Edit}"
-                    title="{$l_Edit}"
-                    border="0"
-                    onmouseover="pass('edit{$id}','edit','h'); return true;"
-                    onmouseout="pass('edit{$id}','edit','c'); return true;"
-                    onmousedown="pass('edit{$id}','edit','s'); return true;"
-                    onmouseup="pass('edit{$id}','edit','s'); return true;"
-                    name="edit{$id}"
-                    width="32"
-                    height="19"
-                />
+                &#xa0;<span><xsl:value-of select="$l_Edit"/></span>
             </a>
         </xsl:when>
         <xsl:otherwise>
@@ -976,19 +950,12 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
-            <a>
+            <a class="sprite-option_copy">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                <img src="{$skimages}option_copy.png"
-                    alt="{$l_Copy}"
-                    title="{$l_Copy}"
-                    border="0"
-                    name="copy{$id}"
-                    width="32"
-                    height="19"
-                />
+                &#xa0;<span><xsl:value-of select="$l_Copy"/></span>
             </a>
         </xsl:when>
         <xsl:otherwise>
@@ -1012,23 +979,12 @@
     </xsl:variable>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a>
+            <a class="sprite-option_move">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                <img src="{$skimages}option_move.png"
-                    alt="{$l_Move}"
-                    title="{$l_Move}"
-                    border="0"
-                    onmouseover="pass('move{$id}','move','h'); return true;"
-                    onmouseout="pass('move{$id}','move','c'); return true;"
-                    onmousedown="pass('move{$id}','move','s'); return true;"
-                    onmouseup="pass('move{$id}','move','s'); return true;"
-                    name="move{$id}"
-                    width="32"
-                    height="19"
-                />
+                &#xa0;<span><xsl:value-of select="$l_Move"/></span>
             </a>
         </xsl:when>
         <xsl:otherwise>
@@ -1064,7 +1020,7 @@
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                &#xa0;
+                &#xa0;<span><xsl:value-of select="$l_Access_control"/></span>
             </a>
         </xsl:when>
         <xsl:when test="user_privileges/delete and marked_deleted = '1'">
@@ -1073,7 +1029,7 @@
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if>
                 </xsl:attribute>
-                &#xa0;
+                &#xa0;<span><xsl:value-of select="$l_Undelete"/></span>
             </a>
         </xsl:when>
         <xsl:otherwise>
@@ -1102,7 +1058,8 @@
                 </xsl:if>
                 <button class="sprite-option_purge"
                     name="delete{$id}"
-                ><xsl:value-of select="$l_purge"/></button>
+                    title="{$l_purge}"
+                    ><span><xsl:value-of select="$l_purge"/>&#xa0;</span></button>
             </form>
         </xsl:when>
         <xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
@@ -1118,16 +1075,10 @@
                     <input name="hd" type="hidden" value="{$hd}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
-                <input
-                    type="image"
+                <button class="sprite-option_delete"
                     name="delete{$id}"
-                    src="{$skimages}option_delete.png"
-                    border="0"
-                    width="37"
-                    height="19"
-                    alt="{$l_delete}"
                     title="{$l_delete}"
-                />
+                    ><span><xsl:value-of select="$l_delete"/>&#xa0;</span></button>
             </form>
         </xsl:when>
         <xsl:otherwise>
@@ -1137,7 +1088,11 @@
 </xsl:template>
 
 <xsl:template name="cttobject.options.spacer">
-    <span class="sprite-spacer"> </span>
+    <span class="sprite-spacer">&#xa0;</span>
+</xsl:template>
+
+<xsl:template name="cttobject.status.spacer">
+    <span class="sprite-status-spacer">&#xa0;</span>
 </xsl:template>
 
 <xsl:template name="toggle_hls">
