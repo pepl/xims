@@ -9,11 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-  
   <xsl:import href="vlibraryitem_common.xsl"/>
   <xsl:import href="document_common.xsl"/>
-
-
 
   <xsl:template name="tr_set-body-edit">
     <xsl:call-template name="tr-body-edit">
@@ -39,7 +36,6 @@
   </xsl:template>
 
   <xsl:template match="/document/context/object">
-    
     <html>
       <xsl:call-template name="head"/>
       <body>
@@ -137,6 +133,7 @@ function refresh( property ) {
                 type="text/javascript">
           <xsl:text>&#160;</xsl:text>
         </script>
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>

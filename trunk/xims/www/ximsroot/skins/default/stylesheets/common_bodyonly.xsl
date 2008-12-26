@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -9,6 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
 <xsl:import href="../../../stylesheets/text_common.xsl"/>
 
 <xsl:param name="pre"/>
@@ -16,7 +17,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0">
+        <body>
             <span id="body">
                 <xsl:apply-templates select="body"/>
             </span>

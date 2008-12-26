@@ -28,6 +28,7 @@
 <xsl:import href="common_htmlarea_scripts.xsl"/>
 <xsl:import href="common_tinymce_scripts.xsl"/>
 
+<xsl:output method="html" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
@@ -233,20 +234,23 @@
 -->
     <xsl:param name="calendar" select="false()" />
     <xsl:param name="htmlarea" select="false()" />
+    <xsl:param name="tinymce" select="false()" />
     <xsl:param name="jquery" select="false()" />
     <head>
         <title>
-        <xsl:if test="$mode='create'"><xsl:value-of select="$i18n/l/create"/></xsl:if>
-        <xsl:if test="$mode='edit'"><xsl:value-of select="$i18n/l/edit"/></xsl:if>
-        &#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <xsl:if test="$mode='create'"><xsl:value-of select="$i18n/l/create"/></xsl:if>
+            <xsl:if test="$mode='edit'"><xsl:value-of select="$i18n/l/edit"/></xsl:if>
+            &#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
+        </title>
+        <xsl:call-template name="css"/>
         <xsl:if test="$calendar">
             <xsl:call-template name="jscalendar_scripts" />
         </xsl:if>
         <xsl:if test="$htmlarea">
             <xsl:call-template name="htmlarea_scripts"/>
+        </xsl:if>
+        <xsl:if test="$tinymce">
+            <xsl:call-template name="tinymce_scripts"/>
         </xsl:if>
         <xsl:if test="$jquery">
           <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
@@ -257,18 +261,16 @@
 <xsl:template name="head-create">
     <head>
         <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
+        <xsl:call-template name="script_head"/>
     </head>
 </xsl:template>
 
 <xsl:template name="head-edit">
     <head>
         <title><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
+        <xsl:call-template name="script_head"/>
     </head>
 </xsl:template>
 
@@ -1693,10 +1695,13 @@
     </script>
 </xsl:template>
 
-<xsl:template name="create_menu_jscss">
+<xsl:template name="create_menu_js">
     <script src="{$ximsroot}skins/{$currentskin}/scripts/create_menu_expander.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     <script src="{$ximsroot}skins/{$currentskin}/scripts/create_menu_setup.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/create_menu_style.css" type="text/css" />
+</xsl:template>
+
+<xsl:template name="create_menu_css">
+    <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/create_menu_style.css" type="text/css" />        
 </xsl:template>
 
 <!-- This template provides HTML code for an inline-popup;

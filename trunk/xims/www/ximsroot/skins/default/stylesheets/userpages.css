@@ -71,3 +71,6 @@ hr {
 	height: 1px;
 	shade: no-shade;
 }
+table.objlist {
+    background-color: #eeeeee;
+}

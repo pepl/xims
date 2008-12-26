@@ -111,6 +111,7 @@
             <p>No iframes?</p>
           </iframe>
         </div>      
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>

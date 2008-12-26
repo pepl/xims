@@ -130,11 +130,26 @@
 
 <xsl:template name="head_default">
     <head>
-        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - <xsl:call-template name="department_title"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <title><xsl:call-template name="title"/></title>
+        <xsl:call-template name="css"/>
+        <xsl:call-template name="script_head"/>
     </head>
+</xsl:template>
+
+<xsl:template name="title">
+    <xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - <xsl:call-template name="department_title"/> - XIMS
+</xsl:template>
+
+<xsl:template name="css">
+    <link rel="stylesheet" href="{$ximsroot}stylesheets/default.css" type="text/css"/>
+    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+</xsl:template>
+    
+<xsl:template name="script_head"/>
+
+<xsl:template name="script_bottom">
+    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 </xsl:template>
 
 <xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|valid_from_timestamp|valid_to_timestamp|date_from_timestamp|date_to_timestamp|dc_date" mode="time">

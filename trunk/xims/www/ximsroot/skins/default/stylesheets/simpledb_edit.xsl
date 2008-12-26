@@ -88,6 +88,7 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
@@ -260,10 +261,6 @@
                                 alt="{$l_Edit}"
                                 title="{$l_Edit}"
                                 border="0"
-                                onmouseover="pass('eiedit{@id}','edit','h'); return true;"
-                                onmouseout="pass('eiedit{@id}','edit','c'); return true;"
-                                onmousedown="pass('eiedit{@id}','edit','s'); return true;"
-                                onmouseup="pass('eiedit{@id}','edit','s'); return true;"
                                 name="eiedit{@id}"
                                 width="32"
                                 height="19"
@@ -273,7 +270,7 @@
                     <td>
                         <xsl:if test="/document/context/object/user_privileges/delete">
                             <xsl:text> </xsl:text>
-                <a href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onClick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onClick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
                                 <input
                                     type="image"
                                     name="property_delete{@id}"

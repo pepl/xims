@@ -117,6 +117,7 @@
           <xsl:call-template name="xmlhttpjs"/>
           <xsl:call-template name="post_async_js"/>
         </script>
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>

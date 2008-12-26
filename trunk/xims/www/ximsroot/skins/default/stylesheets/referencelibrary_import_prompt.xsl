@@ -13,7 +13,7 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-import"/>
+    <xsl:call-template name="head_default"/>
     <body>
         <div class="edit">
             <xsl:call-template name="table-import"/>
@@ -25,9 +25,10 @@
                 </table>
                 <xsl:call-template name="import"/>
             </form>
-            </div>
-            <br />
-            <xsl:call-template name="canceledit"/>
+        </div>
+        <br />
+        <xsl:call-template name="canceledit"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
@@ -35,7 +36,7 @@
 <xsl:template name="tr-importsourcetype">
     <tr>
         <td valign="top" colspan="3">Input Format:
-            <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="importformat">
+            <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="importformat">
                 <option value="BibTeX">BibTeX</option>
                 <option value="RIS">RIS</option>
                 <option value="Endnote">Endnote</option>
@@ -112,13 +113,8 @@
     </table>
 </xsl:template>
 
-<xsl:template name="head-import">
-    <head>
-        <title>Import items into &#160;'<xsl:value-of select="title"/>' (<xsl:value-of select="$absolute_path"/>) - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    </head>
+<xsl:template name="title">
+    Import items into &#160;'<xsl:value-of select="title"/>' (<xsl:value-of select="$absolute_path"/>) - XIMS
 </xsl:template>
 
 </xsl:stylesheet>

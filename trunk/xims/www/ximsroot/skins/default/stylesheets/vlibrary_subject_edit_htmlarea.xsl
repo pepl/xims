@@ -8,16 +8,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
- 
- <xsl:import href="common.xsl"/>
- 
-  <xsl:output method="xml"
-              encoding="utf-8"
-              media-type="text/html"
-              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-              doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-              omit-xml-declaration="yes"
-              indent="yes"/>
+
+  <xsl:import href="vlibrary_subject_edit.xsl"/>
+  <xsl:import href="common_htmlarea_scripts.xsl"/>
 
   <xsl:variable name="i18n_vlib"
                 select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
@@ -40,6 +33,7 @@
             <xsl:apply-templates select="/document/context/object/children"/>
           </form>
         </div>
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>

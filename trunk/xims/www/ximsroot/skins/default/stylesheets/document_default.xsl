@@ -7,6 +7,9 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+<xsl:import href="document_common.xsl"/>
+
 <!-- firstlevel folders are considered to be 'sites' -->
 <xsl:variable name="site_location">
     <xsl:choose>
@@ -19,7 +22,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body>
             <xsl:if test="substring($hls,2,1) != ':'">
                 <xsl:attribute name="onLoad">stringHighlight(getParamValue('hls'))</xsl:attribute>
             </xsl:if>
@@ -85,6 +88,7 @@
                 <xsl:call-template name="document-options"/>
                 <xsl:call-template name="footer"/>
             </table>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

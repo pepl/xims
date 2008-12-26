@@ -64,6 +64,7 @@
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer"/>
             </table>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

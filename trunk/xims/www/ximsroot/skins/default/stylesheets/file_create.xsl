@@ -9,6 +9,8 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-create"/>
@@ -53,9 +55,10 @@
                 </table>
                 <xsl:call-template name="uploadaction"/>
             </form>
-            </div>
-            <br />
-            <xsl:call-template name="cancelaction"/>
+        </div>
+        <br />
+        <xsl:call-template name="cancelaction"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>

@@ -26,6 +26,7 @@
 
         <xsl:call-template name="forum"/>
 
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>
@@ -34,10 +35,7 @@
 <xsl:template name="head-create_discussionforum">
     <head>
         <title><xsl:value-of select="$i18n/l/Create_topic"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}scripts/anondiscussionforum.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
     </head>
 </xsl:template>
 

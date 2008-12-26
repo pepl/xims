@@ -38,10 +38,21 @@
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer"/>
             </table>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>
 
+    <xsl:template name="body_display_format_switcher">
+        <xsl:choose>
+            <xsl:when test="$pre = '0'">
+                <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=1;m={$m}">Zeige Body vorformatiert</a>
+            </xsl:when>
+            <xsl:otherwise>
+                <a href="{$xims_box}{$goxims_content}{$absolute_path}?pre=0;m={$m}">Zeige Body in Standardformatierung</a>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
 </xsl:stylesheet>
 

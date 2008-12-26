@@ -9,17 +9,11 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
     <xsl:import href="common.xsl"/>
-    <xsl:output method="html" encoding="utf-8"
-        media-type="text/html"
-        doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-        doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-        indent="no"/>
 
     <xsl:param name="section">0</xsl:param>
     <xsl:param name="section-view">false</xsl:param>
     <xsl:param name="_uri" select="concat($goxims_content,$absolute_path)"/>
     <xsl:variable name="docbookroot" select="/document/context/object/body"/>
-
 
     <xsl:template match="/document/context/object">
         <html>
@@ -43,12 +37,11 @@
                         </td><!-- end #ffffff -->
                     </tr>
                 </table>
-
                 <table align="center" width="98.7%" class="footer">
                     <xsl:call-template name="user-metadata"/>
                     <xsl:call-template name="footer"/>
                 </table>
-
+                <xsl:call-template name="script_bottom"/>
             </body>
         </html>
     </xsl:template>

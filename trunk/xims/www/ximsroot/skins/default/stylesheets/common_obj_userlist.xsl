@@ -8,11 +8,15 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-<xsl:param name="sort-by">id</xsl:param>
-<xsl:param name="order-by">ascending</xsl:param>
-<xsl:param name="userquery"/>
-<xsl:param name="usertype">user</xsl:param>
-<xsl:param name="id"/>
+
+
+  <xsl:import href="common.xsl"/>
+
+  <xsl:param name="sort-by">id</xsl:param>
+  <xsl:param name="order-by">ascending</xsl:param>
+  <xsl:param name="userquery"/>
+  <xsl:param name="usertype">user</xsl:param>
+  <xsl:param name="id"/>
 
 <xsl:variable name="order-by-opposite">
   <xsl:choose>
@@ -31,11 +35,9 @@
             <title>
                 <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="object/title"/>' - XIMS
             </title>
-            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-            <script src="{$ximsroot}scripts/default.js" type="text/javascript">0</script>
-            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <xsl:call-template name="css"/>
         </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body>
         <xsl:call-template name="header"/>
 
         <table width="100%" cellpadding="2" cellspacing="0" border="0">
@@ -355,6 +357,7 @@
         </td>
         </tr>
         </table>
+        <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 

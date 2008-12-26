@@ -9,6 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+
 <xsl:variable name="i18n_qn" select="document(concat($currentuilanguage,'/i18n_questionnaire.xml'))" />
 
 <xsl:template match="/document/context/object">
@@ -32,17 +34,16 @@
         </div>
         <br />
         <xsl:call-template name="cancelaction"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
 
 <xsl:template name="questionnaire-head-edit">
   <head>
-    <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
-    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+    <title><xsl:value-of select="$l_create"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
+    <xsl:call-template name="css"/>
     <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
   </head>
 </xsl:template>
 

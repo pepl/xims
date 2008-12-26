@@ -352,6 +352,7 @@
 <xsl:template name="head_default">
     <head>
         <title>Publications - <xsl:if test="$ptitle != ''"><xsl:value-of select="$ptitle"/> - </xsl:if> <xsl:value-of select="title" /></title>
+        <link rel="stylesheet" href="{$ximsroot}stylesheets/default.css" type="text/css"/>
         <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>

@@ -16,12 +16,7 @@
 
 <xsl:template match="/document/context/object">
     <html>
-      <head>
-        <title><xsl:value-of select="title"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}scripts/anondiscussionforum.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-      </head>
+      <xsl:call-template name="head_default"/>
       <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
         <xsl:call-template name="header">
           <xsl:with-param name="nooptions">true</xsl:with-param>
@@ -30,6 +25,7 @@
 
         <br/>
         <xsl:call-template name="forum"/>
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
 </xsl:template>

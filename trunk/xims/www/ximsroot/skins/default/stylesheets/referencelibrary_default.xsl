@@ -85,6 +85,7 @@
                         <xsl:with-param name="url" select="$pagenavurl"/>
                     </xsl:call-template>
                 </div>
+                <xsl:call-template name="script_bottom"/>
                 <script src="{$ximsroot}skins/{$currentskin}/scripts/tooltip.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             </body>
         </html>
@@ -93,7 +94,7 @@
 <xsl:template name="reference_type.createwidget">
     <xsl:apply-templates select="/document/reference_types/reference_type" mode="descriptions"/>
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET" id="reftype_creator" name="reftype_creator">
-        <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="reftype" id="reftype">
+        <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="reftype" id="reftype">
             <xsl:apply-templates select="/document/reference_types/reference_type" mode="selectoptions">
                 <xsl:sort select="name" order="ascending"/>
             </xsl:apply-templates>
@@ -128,11 +129,9 @@
 <xsl:template name="head_default">
     <head>
         <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+        <xsl:call-template name="css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <xsl:call-template name="jquery-listitems-bg">
@@ -364,7 +363,7 @@
 
 <xsl:template name="reflib_citationview">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="GET" id="citation_view" name="citation_view">
-        <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="style" id="style">
+        <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="style" id="style">
             <option value="cv_defaultstyle" selected="selected">default style</option>
             <option value="cv_printstyle">print style</option>
             <option value="cv_wordmlstyle">WordML</option>

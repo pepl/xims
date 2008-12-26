@@ -35,14 +35,13 @@
         </xsl:otherwise>
       </xsl:choose>
     - XIMS</title>
-    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <xsl:call-template name="css"/>
     <xsl:call-template name="scripts"/>
   </head>
   <body onload="createThumbs();">
     <p align="right"><a href="#" onClick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
     <p><xsl:call-template name="selectform"/> </p>
+    <xsl:call-template name="script_bottom"/>
   </body>
 </html>
 </xsl:template>

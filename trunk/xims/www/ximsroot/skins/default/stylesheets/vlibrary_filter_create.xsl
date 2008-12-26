@@ -22,8 +22,7 @@
     <html>
       <head>
         <title><xsl:value-of select="$i18n_vlib/l/filter_create"/></title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript" />
+        <xsl:call-template name="css"/>
         <script src="{$ximsroot}scripts/filter_create.js" type="text/javascript" />
         <xsl:call-template name="jscalendar_scripts" />
       </head>
@@ -46,6 +45,7 @@
           <div style="clear:both" />
         </form>
         </div>
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>

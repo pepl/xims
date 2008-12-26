@@ -37,6 +37,7 @@
     <p>
         <xsl:call-template name="selectform"/>
     </p>
+    <xsl:call-template name="script_bottom"/>
   </body>
 </html>
 </xsl:template>

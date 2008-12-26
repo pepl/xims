@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2007 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -12,6 +12,8 @@
                 xmlns:date="http://exslt.org/dates-and-times"
                 xmlns:exsl="http://exslt.org/common"
                 extension-element-prefixes="exsl date">
+
+  <xsl:import href="common.xsl"/>
 
   <xsl:variable name="i18n"
                 select="document(concat($currentuilanguage,'/i18n.xml'))"/>
@@ -57,16 +59,21 @@
   <xsl:param name="chronicle_from" />
   <xsl:param name="chronicle_to" />
 
-  <xsl:template name="head_default">
-    <head>
-      <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
-      <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-      <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
-      <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-      <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-      <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-      <xsl:call-template name="create_menu_jscss"/>
-    </head>
+  <xsl:template name="css">
+    <link rel="stylesheet" href="{$ximsroot}stylesheets/default.css" type="text/css"/>
+    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+    <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
+    <xsl:call-template name="create_menu_css"/>
+  </xsl:template>
+
+  <xsl:template name="script_head">
+    <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+  </xsl:template>
+
+  <xsl:template name="script_bottom">
+    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <xsl:call-template name="create_menu_js"/>
   </xsl:template>
 
   <xsl:template name="item">
@@ -272,10 +279,6 @@
              alt="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
              title="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
              border="0"
-             onmouseover="pass('edit{id}','edit','h'); return true;"
-             onmouseout="pass('edit{id}','edit','c'); return true;"
-             onmousedown="pass('edit{id}','edit','s'); return true;"
-             onmouseup="pass('edit{id}','edit','s'); return true;"
              name="edit{id}"
              width="32"
              height="19"/>

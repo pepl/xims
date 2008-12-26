@@ -27,9 +27,10 @@
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>
-            </div>
-            <br />
-            <xsl:call-template name="cancelaction"/>
+        </div>
+        <br />
+        <xsl:call-template name="cancelaction"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>

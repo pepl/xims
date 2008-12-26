@@ -9,6 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+
 <xsl:template name="browse_target">
     <tr>
         <td valign="top"><span class="compulsory"><xsl:value-of select="$i18n/l/target"/></span></td>
