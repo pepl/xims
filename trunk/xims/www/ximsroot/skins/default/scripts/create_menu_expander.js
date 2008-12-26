@@ -45,7 +45,10 @@ var GlobalECState=0
 // :::::::::::::::::::::::::
 // :::: Global Functions :::
 // :::::::::::::::::::::::::
-window.onload=InitializePage;
+var mdme = document.getElementById("MDME");
+if (mdme) {
+    window.onload=InitializePage;
+}
 
 function InitializePage()
 {defineLayout(); createTopMenu();  prepareListStyles(); setLEVELs(); Icons(); attachEventhandlers();}
@@ -53,21 +56,20 @@ function InitializePage()
 function defineLayout()
 {
 // Set Page position
-document.getElementById("MDME").style.position="absolute";
-document.getElementById('MDME').style.left= PagePositionLEFT+"px";
-document.getElementById('MDME').style.top= PagePositionTOP+"px";
-document.getElementById('MDME').style.zIndex=50;
+mdme.style.position="absolute";
+mdme.style.left= PagePositionLEFT+"px";
+mdme.style.top= PagePositionTOP+"px";
+mdme.style.zIndex=50;
 // Toggle visibility
-document.getElementById("MDME").style.display="block";
+mdme.style.display="block";
 }
 
-function setLEVELs()
-{
-ULCollection=document.getElementById("MDME").getElementsByTagName("UL");
-ULCollection.item(0).setAttribute("level", 1);
+function setLEVELs() {
+    ULCollection=mdme.getElementsByTagName("UL");
+    ULCollection.item(0).setAttribute("level", 1);
 
 // Initally set all LI to level 1
-LICollection=document.getElementById("MDME").getElementsByTagName("LI");
+LICollection=mdme.getElementsByTagName("LI");
 for (a=0; a<LICollection.length;a++)
 		{LICollection.item(a).setAttribute("level", 1);}
 
@@ -108,7 +110,7 @@ if(showECOption=='yes' && oneBranch!='yes')
 		{str+='<IMG border="0" src="'+imageCOLLAPSEALL+'" alt="Collapse ALL"><\/TD>';}
 	str+='<\/TR>';
 	str+='<\/TABLE>';
-	document.getElementById("MDME").insertAdjacentHTML("afterBegin", str);
+	mdme.insertAdjacentHTML("afterBegin", str);
 
 	if(GlobalECState==0)
 		{document.getElementById("expandAllMenuItem").style.display='inline'; 
@@ -122,7 +124,9 @@ if(showECOption=='yes' && oneBranch!='yes')
 
 function prepareListStyles()
 {
-ULCollection=document.getElementById("MDME").getElementsByTagName("UL");
+
+
+    ULCollection=mdme.getElementsByTagName("UL");
 if (ULCollection!=null)
 	{for (u=0; u<ULCollection.length; u++)
 		{ULCollection.item(u).style.listStyleType="none";
@@ -132,7 +136,7 @@ if (ULCollection!=null)
 function attachEventhandlers()
 {
 // Attach event handlers to all images within container
-LICollection=document.getElementById("MDME").getElementsByTagName("LI");
+LICollection=mdme.getElementsByTagName("LI");
 if (LICollection!=null)
 	{	for (l=0; l<LICollection.length; l++)
 			{LICollection.item(l).onmouseup=onMouseUpHandler;}
@@ -142,19 +146,19 @@ if (LICollection!=null)
 // Set Transparency level
 if(navigator.appName == 'Microsoft Internet Explorer')
 	{
-	document.getElementById('MDME').style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity="+TValue+")"
+	mdme.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity="+TValue+")"
 	}
 else
 	{
-	document.getElementById('MDME').style.MozOpacity=1;
+	mdme.style.MozOpacity=1;
 	TValue=parseFloat(TValue/100-.001); // .001 is fix for moz opacity/image bug
-	document.getElementById('MDME').style.MozOpacity=TValue;}
+	mdme.style.MozOpacity=TValue;}
 }
 
 function ECALL(o) // Expand or Collapse "ALL" routine
 {
 //strip all images
-LICollection=document.getElementById("MDME").getElementsByTagName("LI");
+LICollection=mdme.getElementsByTagName("LI");
 	if (LICollection!=null)
 		{
 		for (d=0; d<LICollection; d++)
@@ -174,7 +178,7 @@ if(showECOption=='yes' && oneBranch!='yes')
 
 function Icons(tarObj)
 {
-LICollection=document.getElementById("MDME").getElementsByTagName("LI");
+LICollection=mdme.getElementsByTagName("LI");
 // Loop through and insert icons at LI elements with children
 if (LICollection!=null)
 	{for (i=0; i<LICollection.length; i++)
