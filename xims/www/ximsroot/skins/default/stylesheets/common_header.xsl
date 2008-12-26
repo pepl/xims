@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -180,7 +180,7 @@
 
 <xsl:template name="header.arrownavigation">
     <td width="57" bgcolor="#ffffff" background="{$skimages}navigate_bg.png" align="center" nowrap="nowrap">
-        <a href="javascript:history.go(-1)" onmouseover="pass('back','back','h'); return true;" onmouseout="pass('back','back','c'); return true;" onmousedown="pass('back','back','s'); return true;" onmouseup="pass('back','back','s'); return true;">
+        <a href="javascript:history.go(-1)">
             <img src="{$skimages}navigate-back.png"
                     width="28"
                     height="28"
@@ -194,11 +194,7 @@
     <td width="41" bgcolor="#ffffff" background="{$skimages}navigate_bg.png" align="left" nowrap="nowrap">
         <xsl:choose>
             <xsl:when test="$parent_path != ''">
-                <a
-                    onmouseover="pass('up','up','h'); return true;"
-                    onmouseout="pass('up','up','c'); return true;"
-                    onmousedown="pass('up','up','s'); return true;"
-                    onmouseup="pass('up','up','s'); return true;">
+                <a>
                     <xsl:attribute name="href">
                         <xsl:value-of select="concat($goxims_content,$parent_path,'?m=',$m)"/>
                         <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
@@ -224,12 +220,7 @@
         </xsl:choose>
     </td>
     <td width="59" background="{$skimages}navigate-forward_bg.png" align="left" nowrap="nowrap">
-        <a href="javascript:history.go(+1)"
-            onmouseover="pass('forward','forward','h'); return true;"
-            onmouseout="pass('forward','forward','c'); return true;"
-            onmousedown="pass('forward','forward','s'); return true;"
-            onmouseup="pass('forward','forward','s'); return true;"
-        >
+        <a href="javascript:history.go(+1)">
             <img src="{$skimages}navigate-forward.png"
                     width="28"
                     height="28"

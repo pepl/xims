@@ -108,6 +108,7 @@
             </xsl:call-template>
           </xsl:if>
         </div>
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>
@@ -121,24 +122,14 @@
                                 ]/name"/> 
         - XIMS
       </title>
-      <link rel="stylesheet" 
-            href="{$ximsroot}{$defaultcss}"
-            type="text/css"/>
+      <xsl:call-template name="css"/>
       <link rel="stylesheet"
             href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css"
             type="text/css"/>
       <link rel="stylesheet"
             href="{$ximsroot}skins/{$currentskin}/stylesheets/simpledb.css"
             type="text/css"/>
-      <script src="{$ximsroot}scripts/default.js"
-              type="text/javascript">
-        <xsl:text>&#160;</xsl:text>
-      </script>
       <script src="{$jquery_dir}jquery.js"
-              type="text/javascript">
-        <xsl:text>&#160;</xsl:text>
-      </script>
-      <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" 
               type="text/javascript">
         <xsl:text>&#160;</xsl:text>
       </script>

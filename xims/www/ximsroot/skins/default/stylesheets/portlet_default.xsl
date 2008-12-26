@@ -32,6 +32,7 @@
                 <table align="center" width="98.7%" class="footer">
                     <xsl:call-template name="footer"/>
                 </table>
+                <xsl:call-template name="script_bottom"/>
             </body>
         </html>
     </xsl:template>

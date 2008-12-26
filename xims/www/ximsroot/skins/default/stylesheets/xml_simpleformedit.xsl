@@ -14,6 +14,7 @@
         xmlns:exslt="http://exslt.org/common"
         xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
 <xsl:import href="../../../stylesheets/common.xsl"/>
 <xsl:import href="common_jscalendar_scripts.xsl"/>
 
@@ -134,6 +135,7 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
@@ -218,10 +220,6 @@
                                     alt="{$l_Edit}"
                                     title="{$l_Edit}"
                                     border="0"
-                                    onmouseover="pass('eiedit{@id}','edit','h'); return true;"
-                                    onmouseout="pass('eiedit{@id}','edit','c'); return true;"
-                                    onmousedown="pass('eiedit{@id}','edit','s'); return true;"
-                                    onmouseup="pass('eiedit{@id}','edit','s'); return true;"
                                     name="eiedit{@id}"
                                     width="32"
                                     height="19"
@@ -328,9 +326,7 @@
 <xsl:template name="head-edit">
     <head>
         <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
         <xsl:call-template name="jscalendar_scripts"/>
     </head>
 </xsl:template>

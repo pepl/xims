@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:import href="user_common.xsl"/>
+    <xsl:import href="../user_common.xsl"/>
     <xsl:import href="../user_bookmarks.xsl"/>
     <xsl:output method="html" encoding="utf-8"/>
 
@@ -37,6 +37,7 @@
                 </p>
 
             </div>
+            <xsl:call-template name="script_bottom"/>
             </body>
         </html>
     </xsl:template>

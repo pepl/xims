@@ -41,16 +41,10 @@
                     <input name="order" type="hidden" value="{$order}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
-                <input
-                    type="image"
+                <button class="sprite-option_purge"
                     name="delete{$id}"
-                    src="{$skimages}option_purge.png"
-                    border="0"
-                    width="37"
-                    height="19"
-                    alt="{$l_purge}"
                     title="{$l_purge}"
-                />
+                    ><span><xsl:value-of select="$l_purge"/>&#xa0;</span></button>
             </form>
         </xsl:when>
         <xsl:otherwise>
@@ -142,9 +136,7 @@
 <xsl:template name="head-create">
     <head>
         <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
         <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <xsl:call-template name="jscalendar_scripts"/>
         <xsl:call-template name="jstextarea_keyupcheck"/>
@@ -154,9 +146,7 @@
 <xsl:template name="head-edit">
     <head>
         <title><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
         <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <xsl:call-template name="jscalendar_scripts"/>
         <xsl:call-template name="jstextarea_keyupcheck"/>

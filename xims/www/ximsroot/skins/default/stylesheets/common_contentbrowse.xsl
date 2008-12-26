@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2006 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
@@ -29,9 +29,7 @@
         </xsl:otherwise>
       </xsl:choose>
     - XIMS</title>
-    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <xsl:call-template name="css"/>
     <script type="text/javascript">
     function storeBack(target) {
         window.opener.document.<xsl:value-of select="$sbfield"/>.value=target;
@@ -59,6 +57,7 @@
         <input type="hidden" name="id" value="{@id}"/>
     </form>
     </p>
+    <xsl:call-template name="script_bottom"/>
   </body>
 
 </html>

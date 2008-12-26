@@ -9,7 +9,6 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:import href="common.xsl"/>
 <xsl:import href="vlibraryitem_common.xsl"/>
 
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
@@ -35,6 +34,7 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
@@ -47,7 +47,7 @@
 </xsl:template>
 
 <xsl:template match="vlsubjects">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="svlsubject">
+    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="svlsubject">
         <xsl:apply-templates select="/document/context/vlsubjects/subject">
             <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                       order="ascending"/>
@@ -56,7 +56,7 @@
 </xsl:template>
 
 <xsl:template match="vlkeywords">
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="svlkeyword">
+    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="svlkeyword">
         <xsl:apply-templates select="/document/context/vlkeywords/keyword">
             <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                       order="ascending"/>

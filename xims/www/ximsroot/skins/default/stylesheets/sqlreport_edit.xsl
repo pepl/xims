@@ -8,7 +8,8 @@
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
-    <xsl:import href="sqlreport_common.xsl"/>
+
+<xsl:import href="sqlreport_common.xsl"/>
 
 <xsl:template match="/document/context/object">
 <html>
@@ -35,6 +36,7 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>

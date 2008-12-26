@@ -17,7 +17,7 @@
         <table>
             <tr>
                 <td>
-                    Geben Sie einen Pfad zu einem Bild ein
+                    Type in a path to an image
                 </td>
                 <td>
                     <input type="text" name="imgpath" size="60"/>
@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <td>
-                    Geben Sie einen Titel ein
+                    Enter a title
                 </td>
                 <td>
                     <input type="text" name="imgtext" size="60"/>
@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    Oder durchsuchen Sie den XIMS Objektbaum nach einem Bild:
+                    Or browse for an image:
                     <br/>
                     <xsl:apply-templates select="targetparents/object[@id !='1']"/>
                     <xsl:apply-templates select="target/object"/>

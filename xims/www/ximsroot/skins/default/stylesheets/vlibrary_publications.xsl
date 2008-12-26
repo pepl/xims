@@ -8,12 +8,8 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common">
-    <xsl:output method="html"
-                encoding="utf-8"
-                media-type="text/html"
-                doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-                doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-                indent="no"/>
+
+    <xsl:import href="vlibrary_common.xsl"/>
 
     <xsl:variable name="publicationcolumns" select="'3'"/>
 
@@ -43,8 +39,9 @@
                   <xsl:call-template name="footer"/>
                 </table>
             </body>
+            <xsl:call-template name="script_bottom"/>
             <xsl:call-template name="jquery-listitems-bg">
-              <xsl:with-param name="pick" select="'div.vliteminfo'"/>
+                <xsl:with-param name="pick" select="'div.vliteminfo'"/>
             </xsl:call-template>
             <script type="text/javascript">
               function refresh() {

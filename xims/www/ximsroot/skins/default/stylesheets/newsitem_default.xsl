@@ -9,13 +9,14 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
 <xsl:import href="document_default.xsl"/>
 <xsl:import href="common_jscalendar_scripts.xsl"/>
 
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body onLoad="stringHighlight(getParamValue('hls'))" margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body onLoad="stringHighlight(getParamValue('hls'))">
             <!-- poor man's stylechooser -->
             <xsl:choose>
                 <xsl:when test="$printview != '0'">
@@ -115,18 +116,10 @@
                 <xsl:call-template name="document-options"/>
                 <xsl:call-template name="footer"/>
             </table>
+            <xsl:call-template name="script_bottom"/>
+            <xsl:call-template name="jscalendar_scripts"/>
         </body>
     </html>
-</xsl:template>
-
-<xsl:template name="head_default">
-    <head>
-        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <xsl:call-template name="jscalendar_scripts"/>
-    </head>
 </xsl:template>
 
 </xsl:stylesheet>

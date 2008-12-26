@@ -9,6 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
 <xsl:import href="container_common.xsl"/>
 
 <xsl:variable name="objectitems_count">
@@ -18,15 +19,8 @@
 
 <xsl:template match="/document/context/object">
     <html>
-        <head>
-            <title>
-                <xsl:value-of select="$i18n/l/Search_for"/> '<xsl:value-of select="$s"/>' - XIMS
-            </title>
-            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <xsl:call-template name="head_default"/>
+        <body>
             <xsl:call-template name="header">
                 <xsl:with-param name="nooptions">true</xsl:with-param>
                 <xsl:with-param name="nostatus">true</xsl:with-param>
@@ -55,8 +49,13 @@
                     </tr>
                 </table>
             </xsl:if>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
+</xsl:template>
+    
+<xsl:template name="title">
+    <xsl:value-of select="$i18n/l/Search_for"/> '<xsl:value-of select="$s"/>' - XIMS
 </xsl:template>
 
 <xsl:template name="tableheader">

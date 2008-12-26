@@ -11,12 +11,7 @@
                 extension-element-prefixes="exslt"
                 >
 
-  <xsl:output method="html"
-              encoding="utf-8"
-              media-type="text/html"
-              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-              doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-              indent="no"/>
+  <xsl:import href="vlibrary_common.xsl"/>
 
   <xsl:variable name="subjectcolumns" select="'3'"/>
 
@@ -65,6 +60,7 @@
         <xsl:call-template name="jquery-listitems-bg">
           <xsl:with-param name="pick" select="'div.vliteminfo'"/>
         </xsl:call-template>
+        <xsl:call-template name="script_bottom"/>
         <script type="text/javascript">
           function refresh() {
              window.document.location.reload();

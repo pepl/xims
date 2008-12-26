@@ -8,7 +8,10 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-<xsl:param name="sbfield"/>
+
+    <xsl:import href="common.xsl"/>
+
+    <xsl:param name="sbfield"/>
 
 <xsl:template match="/document/context/object">
     <html>
@@ -34,6 +37,14 @@
                 </table>
             </form>
             </p>
+            <xsl:call-template name="script_bottom"/>
+            <script type="text/javascript">
+                function storeBack(value) {
+                window.opener.document.<xsl:value-of select="$sbfield"/>.value=value;
+                window.opener.document.<xsl:value-of select="substring-before($sbfield, '.')"/>.submit();
+                window.close();
+                }
+            </script>
         </body>
     </html>
 </xsl:template>
@@ -56,20 +67,8 @@
     </xsl:if>
 </xsl:template>
 
-<xsl:template name="head_default">
-    <head>
-        <title><xsl:value-of select="$i18n/l/Position_object"/> '<xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/title"/>' - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script type="text/javascript">
-            function storeBack(value) {
-                window.opener.document.<xsl:value-of select="$sbfield"/>.value=value;
-                window.opener.document.<xsl:value-of select="substring-before($sbfield, '.')"/>.submit();
-                window.close();
-            }
-        </script>
-    </head>
+<xsl:template name="title">
+    <xsl:value-of select="$i18n/l/Position_object"/> '<xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/title"/>' - XIMS
 </xsl:template>
 
 </xsl:stylesheet>

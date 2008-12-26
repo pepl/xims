@@ -42,17 +42,16 @@
                 <xsl:call-template name="axpointpresentation-options"/>
                 <xsl:call-template name="footer"/>
             </table>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>
 
 <xsl:template name="head_default">
     <head>
-        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+        <title><xsl:call-template name="title"/></title>
+        <xsl:call-template name="css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/axpointpresentation.css" type="text/css"/>
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     </head>
 </xsl:template>
 

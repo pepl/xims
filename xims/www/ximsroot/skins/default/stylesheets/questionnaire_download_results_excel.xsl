@@ -10,4 +10,6 @@
 
 <xsl:import href="questionnaire_download_results_html.xsl"/>
 
+<xsl:output method="html" media-type="application/vnd.ms-excel" encoding="iso-8859-1"/>
+
 </xsl:stylesheet>

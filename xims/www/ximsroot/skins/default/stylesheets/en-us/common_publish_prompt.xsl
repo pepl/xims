@@ -16,7 +16,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png" onLoad="disableIt(document.forms[1].autopublish,'objids');">
+        <body onLoad="disableIt(document.forms[1].autopublish,'objids');">
             <xsl:call-template name="header">
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
@@ -209,6 +209,7 @@
                     </tr>
                 </table>
             </form>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

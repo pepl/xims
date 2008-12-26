@@ -9,6 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+
 <xsl:variable name="object_type_id">
     <xsl:value-of select="/document/context/object/object_type_id"/>
 </xsl:variable>
@@ -22,11 +24,9 @@
             <title>
                 <xsl:value-of select="title" /> - XIMS
             </title>
-            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-            <script src="{$ximsroot}scripts/default.js" type="text/javascript">0</script>
-            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+            <xsl:call-template name="css"/>
         </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body>
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
@@ -81,6 +81,7 @@
             </td>
           </tr>
         </table>
+        <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

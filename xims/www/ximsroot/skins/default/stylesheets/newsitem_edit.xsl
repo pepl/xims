@@ -9,6 +9,8 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+<xsl:import href="document_common.xsl"/>
 <xsl:import href="newsitem_common.xsl"/>
 
 <xsl:template match="/document/context/object">
@@ -42,6 +44,7 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
@@ -49,9 +52,7 @@
 <xsl:template name="head-edit">
     <head>
         <title><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
         <xsl:call-template name="jscalendar_scripts"/>
     </head>
 </xsl:template>

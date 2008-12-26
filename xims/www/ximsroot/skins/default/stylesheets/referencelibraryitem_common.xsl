@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -40,16 +40,10 @@
                     <input name="order" type="hidden" value="{$order}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
-                <input
-                    type="image"
+                <button class="sprite-option_purge"
                     name="delete{$id}"
-                    src="{$skimages}option_purge.png"
-                    border="0"
-                    width="37"
-                    height="19"
-                    alt="{$l_purge}"
                     title="{$l_purge}"
-                />
+                    ><span><xsl:value-of select="$l_purge"/>&#xa0;</span></button>
             </form>
         </xsl:when>
         <xsl:otherwise>
@@ -179,18 +173,16 @@
 <xsl:template name="head-create">
     <head>
         <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
+        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
     </head>
 </xsl:template>
 
 <xsl:template name="head-edit">
     <head>
         <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="css"/>
+        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
     </head>
 </xsl:template>
 
@@ -292,7 +284,7 @@
 
 <xsl:template match="vlauthors">
     <xsl:param name="svlauthor" select="'svlauthor'"/>
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="{$svlauthor}">
+    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="{$svlauthor}">
         <xsl:apply-templates select="/document/context/vlauthors/author">
             <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                       order="ascending"/>
@@ -311,7 +303,7 @@
 
 <xsl:template match="vlserials">
     <xsl:param name="svlserial" select="'svlserial'"/>
-    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="{$svlserial}">
+    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="{$svlserial}">
         <xsl:apply-templates select="/document/context/vlserials/serial">
             <xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                       order="ascending"/>
@@ -344,11 +336,9 @@
 
 <xsl:template name="head_default">
     <head>
-        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - <xsl:call-template name="department_title"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+        <title><xsl:call-template name="title"/></title>
+        <xsl:call-template name="css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     </head>
 </xsl:template>
 

@@ -67,9 +67,7 @@
                         </td>
                     </tr>
                 </table>
-
-
-
+                <xsl:call-template name="script_bottom"/>
             </body>
         </html>
     </xsl:template>
@@ -98,7 +96,7 @@
                 <xsl:value-of select="$i18n_users/l/Add_objecttypepriv"/>
             </h3>
             <form name="create_objecttypepriv" action="{$xims_box}{$goxims_users}" method="GET">
-                <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt"
+                <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
                     name="objtype">
                     <xsl:apply-templates
                         select="/document/objecttypelist/object_type[not(can_create)]" mode="option"

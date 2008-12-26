@@ -24,4 +24,10 @@
     </xsl:for-each>
 </xsl:template>
 
+<xsl:template name="script_bottom">
+    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}scripts/anondiscussionforum.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+</xsl:template>
+
 </xsl:stylesheet>

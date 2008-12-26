@@ -9,6 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+
 <xsl:variable name="sfe"><xsl:if test="/document/context/object/schema_id != '' and contains(/document/context/object/attributes, 'sfe=1')">1</xsl:if></xsl:variable>
 
 <xsl:variable name="bxe"><xsl:if test="/document/context/object/schema_id != '' and /document/context/object/css_id != '' 
@@ -57,6 +59,7 @@
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer"/>
             </table>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

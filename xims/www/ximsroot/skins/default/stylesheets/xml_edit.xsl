@@ -9,6 +9,8 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+
 <xsl:param name="bxepresent" />
 
 <xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
@@ -53,6 +55,7 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>

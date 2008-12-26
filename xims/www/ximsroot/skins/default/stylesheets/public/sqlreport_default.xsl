@@ -9,8 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
 <xsl:import href="../sqlreport_default.xsl"/>
+<xsl:import href="common.xsl"/>
 
 <xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
@@ -54,6 +54,7 @@
                 </span>
             </div>
         </div>
+        <xsl:call-template name="script_bottom"/>
       </body>
 </html>
 </xsl:template>

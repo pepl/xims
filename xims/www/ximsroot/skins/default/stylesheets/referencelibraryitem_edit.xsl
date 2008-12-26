@@ -38,15 +38,16 @@
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>
-            </div>
-            <br />
-            <xsl:call-template name="canceledit"/>
-            <form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="GET" style="display:none">
-                <input type="hidden" name="id" value="{@id}"/>
-                <input type="hidden" name="change_reference_type" value="1"/>
-                <input type="hidden" name="reference_type_id" value=""/>
-                <xsl:call-template name="rbacknav"/>
-            </form>
+        </div>
+        <br />
+        <xsl:call-template name="canceledit"/>
+        <form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="GET" style="display:none">
+            <input type="hidden" name="id" value="{@id}"/>
+            <input type="hidden" name="change_reference_type" value="1"/>
+            <input type="hidden" name="reference_type_id" value=""/>
+            <xsl:call-template name="rbacknav"/>
+        </form>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
@@ -67,7 +68,7 @@
             <xsl:if test="@id = /document/context/object/reference_type_id">
                 <xsl:attribute name="selected">selected</xsl:attribute>
             </xsl:if>
-            <xsl:value-of select="name"/>        
+            <xsl:value-of select="name"/>
         </option>
     </xsl:template>
 

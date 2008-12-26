@@ -86,6 +86,7 @@
           </div>
         </div>
       </body>
+      <xsl:call-template name="script_bottom"/>
     </html>
   </xsl:template>
 
@@ -93,9 +94,7 @@
     <head>
       <xsl:call-template name="meta"/>
       <title><xsl:value-of select="$i18n/l/Search_for"/> '<xsl:value-of select="$s"/>'</title>
-      <link rel="stylesheet" href="/ximsroot/stylesheets/default.css" type="text/css"/>
-      <link rel="stylesheet" href="/ximspubroot/stylesheets/default.css" type="text/css"/>
-      <script src="/ximspubroot/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+      <xsl:call-template name="css"/>
     </head>
   </xsl:template>
 

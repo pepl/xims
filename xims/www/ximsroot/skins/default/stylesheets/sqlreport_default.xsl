@@ -20,7 +20,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+        <body>
             <xsl:call-template name="header"/>
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <xsl:if test="abstract/text() != ''">
@@ -56,6 +56,7 @@
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer"/>
             </table>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

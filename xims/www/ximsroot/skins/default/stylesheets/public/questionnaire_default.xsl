@@ -9,8 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
 <xsl:import href="../questionnaire_default.xsl"/>
+<xsl:import href="common.xsl"/>
 
 <xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
@@ -41,6 +41,7 @@
                 </span>
             </div>
         </div>
+        <xsl:call-template name="script_bottom"/>
       </body>
 </html>
 </xsl:template>
@@ -48,8 +49,8 @@
 <xsl:template name="head_default">
     <head>
         <xsl:call-template name="meta"/>
-        <title><xsl:value-of select="title"/> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+        <title><xsl:call-template name="title"/></title>
+        <xsl:call-template name="css"/>
         <link rel="stylesheet" href="/ximspubroot/stylesheets/default.css" type="text/css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" style="text/css"/>
     </head>

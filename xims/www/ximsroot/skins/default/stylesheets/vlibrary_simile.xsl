@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2007 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: vlibrary_default.xsl 1652 2007-03-24 16:14:37Z pepl $
@@ -47,6 +47,8 @@
                 </div>
                 <div class="controls" id="controls">
                 </div>
+                <xsl:call-template name="script_bottom"/>
+                <xsl:call-template name="create_menu_js"/>
             </body>
         </html>
     </xsl:template>
@@ -56,11 +58,8 @@
     <xsl:template name="head_default">
         <head>
             <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
-            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-            <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
-            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <xsl:call-template name="create_menu_jscss"/>
+            <xsl:call-template name="css"/>
+            <xsl:call-template name="create_menu_css"/>
             <script src="http://simile.mit.edu/timeline/api/timeline-api.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="http://simile.mit.edu/timeline/examples/examples.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script>

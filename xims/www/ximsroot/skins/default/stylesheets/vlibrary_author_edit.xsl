@@ -29,7 +29,7 @@
     <html>
       <head>
         <title><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/author)"/></title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
+        <xsl:call-template name="css"/>
       </head>
       <body>
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
@@ -40,6 +40,7 @@
           <xsl:apply-templates select="/document/context/object/children"/>
         </form>
         </div>
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>

@@ -8,26 +8,28 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
+
+<xsl:import href="common.xsl"/>
+
 <xsl:template match="/">
-<html>
-  <head>
-      <title><xsl:value-of select="/document/context/session/error_msg|/document/context/session/warning_msg|/document/context/session/message"/></title>
-      <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-      <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-      <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-  </head>
-  <body margintop="0" marginleft="0" marginwidth="0" marginheight="0">
-    <p>
-        <xsl:call-template name="message"/>
-    </p>
-    <pre>
-        <xsl:value-of select="/document/context/session/verbose_msg" />
-    </pre>
-    <br/>
-    <p>
-        <a href="javascript:window.close()"><xsl:value-of select="$i18n/l/close_window"/></a>
-    </p>
-  </body>
-</html>
+    <html>
+      <head>
+          <title><xsl:value-of select="/document/context/session/error_msg|/document/context/session/warning_msg|/document/context/session/message"/></title>
+          <xsl:call-template name="css"/>
+      </head>
+      <body margintop="0" marginleft="0" marginwidth="0" marginheight="0">
+        <p>
+            <xsl:call-template name="message"/>
+        </p>
+        <pre>
+            <xsl:value-of select="/document/context/session/verbose_msg" />
+        </pre>
+        <br/>
+        <p>
+            <a href="javascript:window.close()"><xsl:value-of select="$i18n/l/close_window"/></a>
+        </p>
+        <xsl:call-template name="script_bottom"/>
+      </body>
+    </html>
 </xsl:template>
 </xsl:stylesheet>

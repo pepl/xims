@@ -9,25 +9,26 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+
 <xsl:template match="/document/context/object">
 <html>
-  <head>
-    <title><xsl:value-of select="$i18n/l/Treeview_from"/> <xsl:value-of select="location"/>  - XIMS</title>
-    <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-  </head>
-  <body>
-    <xsl:call-template name="header"/>
-    <h1 class="documenttitle">
-    <xsl:value-of select="$i18n/l/Treeview_from"/> <xsl:value-of select="$absolute_path"/>
-    </h1>
-    <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-        <xsl:apply-templates select="/document/objectlist/object[location != '.diff_to_second_last']"/>
-    </table>
-  </body>
-
+    <xsl:call-template name="head_default"/>
+    <body>
+        <xsl:call-template name="header"/>
+        <h1 class="documenttitle">
+        <xsl:value-of select="$i18n/l/Treeview_from"/> <xsl:value-of select="$absolute_path"/>
+        </h1>
+        <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
+            <xsl:apply-templates select="/document/objectlist/object[location != '.diff_to_second_last']"/>
+        </table>
+        <xsl:call-template name="script_bottom"/>
+    </body>
 </html>
+</xsl:template>
+    
+<xsl:template name="title">
+    <xsl:value-of select="$i18n/l/Treeview_from"/> <xsl:value-of select="location"/>  - XIMS
 </xsl:template>
 
 <xsl:template match="/document/objectlist/object">

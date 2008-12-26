@@ -18,7 +18,9 @@
   </xsl:template>
 
   <xsl:template name="head">
-    <xsl:call-template name="head-edit_tinymce">
+    <xsl:call-template name="common-head">
+      <xsl:with-param name="mode">edit</xsl:with-param>
+      <xsl:with-param name="tinymce" select="true()" />
       <xsl:with-param name="calendar" select="true()" />
       <xsl:with-param name="jquery" select="true()" />
     </xsl:call-template>

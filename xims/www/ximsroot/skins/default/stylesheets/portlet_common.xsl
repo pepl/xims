@@ -10,6 +10,9 @@
         xmlns:exslt="http://exslt.org/common"
         xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="common.xsl"/>
+<xsl:import href="link_common.xsl"/>
+
 <xsl:variable name="i18n_portlet" select="document(concat($currentuilanguage,'/i18n_portlet.xml'))"/>
 
 <!-- think of an object-type property "independent" instead of filtering object_types by name -->

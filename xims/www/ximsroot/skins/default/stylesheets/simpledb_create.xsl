@@ -19,7 +19,7 @@
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" style="margin-top:0px;">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
-		<input type="hidden" name="sdb_is_new" value="1"/>
+                <input type="hidden" name="sdb_is_new" value="1"/>
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-create"/>
                     <xsl:call-template name="markednew"/>
@@ -28,9 +28,10 @@
                 </table>
                 <xsl:call-template name="saveaction"/>
             </form>
-            </div>
-            <br />
-            <xsl:call-template name="cancelaction"/>
+        </div>
+        <br />
+        <xsl:call-template name="cancelaction"/>
+        <xsl:call-template name="script_bottom"/>
     </body>
     </html>
 </xsl:template>

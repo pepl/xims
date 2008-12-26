@@ -7,7 +7,8 @@
 -->
 
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
   <xsl:import href="sdocbookxml_default.xsl"/>
   <xsl:import href="vlibrary_common.xsl"/>
@@ -19,8 +20,8 @@
       <body onLoad="stringHighlight(getParamValue('hls'))">
         <xsl:call-template name="header"/>
         <xsl:call-template name="toggle_hls"/>
-        <table align="center" 
-               width="98.7%" 
+        <table align="center"
+               width="98.7%"
                style="border: 1px solid; margin-top: 0px; padding: 0.5px">
           <tr>
             <td bgcolor="#ffffff">
@@ -29,7 +30,7 @@
                 <h1><xsl:value-of select="title"/></h1>
                 <xsl:choose>
                   <xsl:when test="$section > 0 and $section-view='true'">
-                    <xsl:apply-templates select="$docbookroot" 
+                    <xsl:apply-templates select="$docbookroot"
                                          mode="section-view"/>
                   </xsl:when>
                   <xsl:otherwise>
@@ -40,12 +41,13 @@
             </td><!-- end #ffffff -->
           </tr>
         </table>
-        <table align="center" 
-               width="98.7%" 
+        <table align="center"
+               width="98.7%"
                class="footer">
           <xsl:call-template name="user-metadata"/>
           <xsl:call-template name="footer"/>
         </table>
+        <xsl:call-template name="script_bottom"/>
       </body>
     </html>
   </xsl:template>
@@ -139,7 +141,7 @@
           <li><strong>Subtitle:</strong> <xsl:value-of select="meta/subtitle"/></li>
         </xsl:if>
         <xsl:if test="abstract != ''">
-          <li><strong>Abstract:</strong> <span><xsl:value-of select="abstract"/></span></li>
+          <li><strong>Abstract:</strong> <span><xsl:apply-templates select="abstract"/></span></li>
         </xsl:if>
         <xsl:if test="count(authorgroup/author) &gt; 0">
           <li><xsl:apply-templates select="authorgroup"/></li>
@@ -152,7 +154,7 @@
         </xsl:if>
         <xsl:if test="count(publication/publication) &gt; 0">
           <li><xsl:apply-templates select="publicationset"/></li>
-        </xsl:if> 
+        </xsl:if>
         <xsl:if test="meta/mediatype != ''">
           <li><strong>Mediatype:</strong> <xsl:apply-templates select="meta/mediatype"/></li>
         </xsl:if>

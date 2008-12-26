@@ -12,6 +12,9 @@
                 xmlns:dyn="http://exslt.org/dynamic"
                 extension-element-prefixes="exslt dyn">
 
+    <xsl:import href="container_common.xsl"/>
+    <xsl:import href="vlibrary_common.xsl"/>
+
     <xsl:param name="filter"/>
     <xsl:param name="sid"/>
     <xsl:param name="kid"/>

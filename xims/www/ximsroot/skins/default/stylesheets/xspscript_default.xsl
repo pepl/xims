@@ -9,6 +9,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="xspscript_common.xsl"/>
+
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
@@ -34,8 +36,21 @@
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer"/>
             </table>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
+</xsl:template>
+
+<xsl:param name="process_xsp" select="'0'"/>
+<xsl:template name="processxsp_switcher">
+    <xsl:choose>
+        <xsl:when test="$process_xsp = '0'">
+            <a href="{$xims_box}{$goxims_content}{$absolute_path}?process_xsp=1;m={$m}">Show body XSP processed</a>
+        </xsl:when>
+        <xsl:otherwise>
+            <a href="{$xims_box}{$goxims_content}{$absolute_path}?do_not_process_xsp=1;m={$m}">Do not XSP process body</a>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>

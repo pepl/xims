@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -13,7 +13,7 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-default"/>
+    <xsl:call-template name="head_default"/>
     <body>
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
@@ -49,17 +49,13 @@
             </td>
           </tr>
         </table>
+        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
 
-<xsl:template name="head-default">
-    <head>
-        <title>Import result &#160;'<xsl:value-of select="title"/>' (<xsl:value-of select="$absolute_path"/>) - XIMS</title>
-        <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-        <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    </head>
+<xsl:template name="title">
+  Import result &#160;'<xsl:value-of select="title"/>' (<xsl:value-of select="$absolute_path"/>) - XIMS
 </xsl:template>
 
 </xsl:stylesheet>

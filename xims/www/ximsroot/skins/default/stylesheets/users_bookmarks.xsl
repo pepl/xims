@@ -29,19 +29,20 @@
             </xsl:call-template>
             <div id="content">
 
-            <h1>
-                <xsl:value-of select="$name"/>'s <xsl:value-of select="$i18n/l/Bookmarks"/>
-            </h1>
-
-            <xsl:apply-templates select="bookmarklist"/>
-
-            <xsl:call-template name="create_bookmark"/>
-
-            <p class="back">
-                <a href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Back"/></a>
-            </p>
+                <h1>
+                    <xsl:value-of select="$name"/>'s <xsl:value-of select="$i18n/l/Bookmarks"/>
+                </h1>
+    
+                <xsl:apply-templates select="bookmarklist"/>
+    
+                <xsl:call-template name="create_bookmark"/>
+    
+                <p class="back">
+                    <a href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Back"/></a>
+                </p>
 
             </div>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

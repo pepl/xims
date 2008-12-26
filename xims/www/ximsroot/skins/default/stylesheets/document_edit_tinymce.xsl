@@ -9,6 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+    <xsl:import href="common.xsl"/>
     <xsl:import href="document_common.xsl"/>
     <xsl:import href="common_tinymce_scripts.xsl"/>
 
@@ -18,7 +19,7 @@
 
     <xsl:template match="/document/context/object">
         <html>
-            <xsl:call-template name="head-edit_tinymce"/>
+            <xsl:call-template name="head_default"/>
             <body onload="timeoutWYSIWYGChange(2);">
                 <div class="edit">
                     <xsl:call-template name="table-edit"/>
@@ -36,26 +37,14 @@
                 </div>
                 <br />
                 <xsl:call-template name="canceledit"/>
+                <xsl:call-template name="script_bottom"/>
+                <xsl:call-template name="tinymce_scripts"/>
             </body>
         </html>
     </xsl:template>
 
-    <xsl:template name="head-edit_tinymce">
-      <xsl:param name="calendar" select="false()"/>
-      <xsl:param name="jquery" select="false()"/>
-        <head>
-            <title><xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS</title>
-            <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <xsl:call-template name="tinymce_scripts"/>
-            <xsl:if test="$calendar">
-              <xsl:call-template name="jscalendar_scripts" />
-            </xsl:if>
-            <xsl:if test="$jquery">
-              <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            </xsl:if>
-        </head>
+    <xsl:template name="title">
+        <xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
     </xsl:template>
 
     <xsl:template name="tr-body-edit_tinymce">

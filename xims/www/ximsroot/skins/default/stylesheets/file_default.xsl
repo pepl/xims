@@ -8,11 +8,13 @@
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml">
- 
+
+    <xsl:import href="common.xsl"/>
+    
     <xsl:template match="/document/context/object">
         <html>
             <xsl:call-template name="head_default"/>
-            <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+            <body>
                 <xsl:call-template name="header"/>
                 <xsl:call-template name="object-metadata"/>
                 <p>
@@ -30,6 +32,7 @@
                         <input type="submit" name="cancel" value="Cancel" class="control"/>
                     </form>
                 </p>
+                <xsl:call-template name="script_bottom"/>
             </body>
         </html>
     </xsl:template>
