@@ -703,7 +703,7 @@
                 <xsl:with-param name="dfname" select="$dfname"/>
             </xsl:call-template>
         </td>
-        <td colspan="2">
+        <td class="ctt_loctitle" colspan="2">
             <xsl:call-template name="cttobject.locationtitle">
                 <xsl:with-param name="dfname" select="$dfname"/>
                 <xsl:with-param name="dfmime" select="$dfmime"/>
@@ -729,29 +729,22 @@
 <xsl:template name="cttobject.locationtitle">
     <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
     <xsl:param name="dfmime" select="/document/data_formats/data_format[@id=current()/data_format_id]/mime_type"/>
+    <xsl:param name="link_to_id" select="false()"/>
 
     <xsl:choose>
         <xsl:when test="marked_deleted=1">
-            <xsl:attribute name="bgcolor">#c6c6c6</xsl:attribute>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
-        </xsl:otherwise>
-    </xsl:choose>
-    <xsl:choose>
-        <xsl:when test="marked_deleted=1">
-            <xsl:attribute name="background">
-                <xsl:value-of select="concat($skimages,'containerlist_bg_deleted.gif')"/>
+            <xsl:attribute name="class">
+                <xsl:value-of select="'ctt_loctitledel'"/>
             </xsl:attribute>
         </xsl:when>
         <xsl:when test="starts-with(location, 'index.')">
-            <xsl:attribute name="background">
-                <xsl:value-of select="concat($skimages,'containerlist_bg_hl.gif')"/>
+            <xsl:attribute name="class">
+                <xsl:value-of select="'ctt_loctitleindex'"/>
             </xsl:attribute>
         </xsl:when>
         <xsl:otherwise>
-            <xsl:attribute name="background">
-                <xsl:value-of select="concat($skimages,'containerlist_bg.gif')"/>
+            <xsl:attribute name="class">
+                <xsl:value-of select="'ctt_loctitle'"/>
             </xsl:attribute>
         </xsl:otherwise>
     </xsl:choose>
@@ -761,8 +754,11 @@ select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template 
         <a>
           <xsl:attribute name="href">
             <xsl:choose>
-                <xsl:when test="$dfmime='application/x-container'">
+                <xsl:when test="$dfmime='application/x-container' and not($link_to_id)">
                     <xsl:value-of select="concat($goxims_content,$absolute_path,'/',location,'?m=',$m)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                </xsl:when>
+                <xsl:when test="$dfmime='application/x-container' and $link_to_id">
+                    <xsl:value-of select="concat($goxims_content,'?id=',@id,';m=',$m)"/>
                 </xsl:when>
                 <xsl:when test="$dfname='URL'">
                     <xsl:choose>
@@ -777,7 +773,7 @@ select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template 
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:when>
-                <xsl:when test="marked_deleted=1">
+                <xsl:when test="marked_deleted=1 or $link_to_id">
                     <xsl:value-of select="concat($goxims_content,'?id=',@id,';m=',$m)"/>
                 </xsl:when>
                 <xsl:otherwise>
