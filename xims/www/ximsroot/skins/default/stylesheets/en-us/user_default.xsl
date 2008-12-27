@@ -38,7 +38,7 @@
                     </ul>
                 </div>
 
-                <table>
+                <table class="uol">
                     <tr>
                         <th><xsl:value-of select="count(/document/userobjectlist/objectlist/object)"/> last objects created or modified by you</th>
                         <th><xsl:value-of select="count(/document/objectlist/object)"/> last modified objects</th>

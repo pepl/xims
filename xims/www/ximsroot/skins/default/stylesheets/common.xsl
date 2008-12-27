@@ -846,77 +846,79 @@
         </xsl:choose>
     </xsl:variable>
 
-    <xsl:choose>
-        <xsl:when test="marked_new= '1'">
-            <img src="{$sklangimages}status_markednew.png"
-                    border="0"
-                    width="26"
-                    height="19"
-                    title="{$l_Object_marked_new}"
-                    alt="{$l_New}"
-            />
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:call-template name="cttobject.status.spacer"/>
-        </xsl:otherwise>
-    </xsl:choose>
-    <xsl:choose>
-        <xsl:when test="published = '1'">
-            <a href="{$published_path}" target="_blank">
-                <img
-                    border="0"
-                    width="26"
-                    height="19"
-                    alt="{$l_Published}"
-                >
-                    <xsl:choose>
-                        <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-                            <xsl:attribute name="title"><xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="$published_path"/></xsl:attribute>
-                            <xsl:attribute name="src"><xsl:value-of select="$skimages"/>status_pub.png</xsl:attribute>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:attribute name="title"><xsl:value-of select="$l_Object_modified"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_changed"/>.</xsl:attribute>
-                            <xsl:attribute name="src"><xsl:value-of select="$skimages"/>status_pub_async.png</xsl:attribute>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </img>
-            </a>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:call-template name="cttobject.status.spacer"/>
-        </xsl:otherwise>
-    </xsl:choose>
-    <xsl:choose>
-        <xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
-            <a>
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/>
-                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if>
-                    <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
-                </xsl:attribute>
+    <div class="cttobject_status">
+        <xsl:choose>
+            <xsl:when test="marked_new= '1'">
+                <img src="{$sklangimages}status_markednew.png"
+                        border="0"
+                        width="26"
+                        height="19"
+                        title="{$l_Object_marked_new}"
+                        alt="{$l_New}"
+                />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="cttobject.status.spacer"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="published = '1'">
+                <a href="{$published_path}" target="_blank">
+                    <img
+                        border="0"
+                        width="26"
+                        height="19"
+                        alt="{$l_Published}"
+                    >
+                        <xsl:choose>
+                            <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
+                                <xsl:attribute name="title"><xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="$published_path"/></xsl:attribute>
+                                <xsl:attribute name="src"><xsl:value-of select="$skimages"/>status_pub.png</xsl:attribute>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="title"><xsl:value-of select="$l_Object_modified"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_changed"/>.</xsl:attribute>
+                                <xsl:attribute name="src"><xsl:value-of select="$skimages"/>status_pub_async.png</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </img>
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="cttobject.status.spacer"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
+                <a>
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/>
+                        <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if>
+                        <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+                    </xsl:attribute>
+                    <img src="{$skimages}status_locked.png"
+                            width="26"
+                            height="19"
+                            border="0"
+                            alt="{$l_Unlock}"
+                            title="{$l_Release_lock}."
+                    />
+                </a>
+            </xsl:when>
+            <xsl:when test="locked_by_id != '' and locked_time != ''">
                 <img src="{$skimages}status_locked.png"
                         width="26"
                         height="19"
                         border="0"
-                        alt="{$l_Unlock}"
-                        title="{$l_Release_lock}."
-                />
-            </a>
-        </xsl:when>
-        <xsl:when test="locked_by_id != '' and locked_time != ''">
-            <img src="{$skimages}status_locked.png"
-                    width="26"
-                    height="19"
-                    border="0"
-                    alt="{$l_Locked}"
-            >
-                <xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/> <xsl:apply-templates select="locked_time" mode="datetime"/> <xsl:value-of select="$l_by"/> <xsl:call-template name="lockerfullname"/>.</xsl:attribute>
-            </img>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:call-template name="cttobject.status.spacer"/>
-        </xsl:otherwise>
-    </xsl:choose>
+                        alt="{$l_Locked}"
+                >
+                    <xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/> <xsl:apply-templates select="locked_time" mode="datetime"/> <xsl:value-of select="$l_by"/> <xsl:call-template name="lockerfullname"/>.</xsl:attribute>
+                </img>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="cttobject.status.spacer"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </div>
 </xsl:template>
 
 <xsl:template name="cttobject.options">

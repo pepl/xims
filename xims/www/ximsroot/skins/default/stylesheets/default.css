@@ -5,6 +5,100 @@
 # $Id$
 */
 
+#titlelogo {
+    width: 100%;
+    margin-top: 2px;
+    background-color: #eeeeee;
+    border: 0;
+}
+
+#titlelogo h1 {
+    font-size: 14pt;
+    color:#004080;
+    margin-bottom: 2px;
+}
+
+#titlelogo .title {
+    vertical-align: bottom;
+}
+
+#titlelogo .logo { 
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -521px;
+    padding: 0px 0px 0px 0px;
+    width: 50px;
+    height: 40px;
+    position:relative;
+    z-index:24;
+}
+
+#titlelogo .logo a {
+    display: none;
+}
+
+#navopt {
+    width: 100%;
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -840px;
+    height: 20px;
+}
+
+#navopt .locbar {
+   width: 59%;
+}
+
+#navopt .date_opt {
+   text-align: right;
+   color: #004080;
+   font-size: 10px;
+   font-family: Arial, Helvetica, sans-serif;
+}
+
+#subheader {
+    width: 100%;
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -860px;
+    height: 42px;
+}
+
+.qsearch {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -860px;
+    text-align: right;
+    width: 500px;
+    height: 42px;
+}
+
+.qsearch div {
+    padding-right: 5px;
+}
+
+.qsearch .search {
+    background-color: #eeeeee;
+}
+
+.qsearch label {
+    padding: 0px 5px 0px 0px;
+}
+
+#start_here {
+    margin-right: 5px;
+}
+
+
+td.navback, td.navup {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -902px;
+}
+td.navfwd {
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -944px;
+}
+
+#MDME {
+    margin: -3px 0px 0px 0px;
+}
+
 #department_title {
     font-family:helvetica, arial, sans-serif;
     font-size:10pt;
@@ -380,6 +474,11 @@ tr.objrow:hover {
 .cttobject_options {
     padding-left: 10px;
 }
+
+#subheader div.cttobject_status {
+    margin-top: 4px;
+}
+
 .ctt_status {
     width: 86px;
     padding-left: 2px;
@@ -391,9 +490,26 @@ tr.objrow:hover {
     width: 34px;
 }
 .ctt_lm, .ctt_cl {
-    background: url(/ximsroot/skins/default/images/containerlist_bg_transparent.gif) repeat-x;
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -1049px;
 }
 .ctt_cl {
     text-align: right;
+}
+
+.ctt_loctitle {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -987px;
+    background-color: #eeeeee;
+}
+.ctt_loctitledel {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -1028px;
+    background-color: #c6c6c6;
+}
+.ctt_loctitleindex {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -1006px;
+    background-color: #eeeeee;
 }
 

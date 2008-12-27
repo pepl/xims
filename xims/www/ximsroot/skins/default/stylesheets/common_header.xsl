@@ -21,10 +21,10 @@
     <xsl:param name="no_navigation_at_all">false</xsl:param>
 
     <!-- start 'app graphic' table -->
-    <table width="100%" style="margin-top: 2px;" bgcolor="#eeeeee" border="0" cellpadding="3" cellspacing="0" vspace="0" hspace="0" nowrap="nowrap">
+    <table id="titlelogo">
         <tr>
-            <td valign="bottom">
-                <h1 style="font-size: 14pt; color:#004080; margin-bottom: 2px">
+            <td class="title">
+                <h1>
                     <xsl:choose>
                         <xsl:when test="title != ''">
                             <xsl:value-of select="title"/>
@@ -35,17 +35,17 @@
                     </xsl:choose>
                 </h1>
             </td>
-            <td align="right" valign="top">
-                <a href="http://xims.info/"><img src="{$ximsroot}images/xims_logo.png"/></a>
+            <td class="logo">
+                <a href="http://xims.info/">&#xa0;<span>XIMS</span></a>
             </td>
         </tr>
     </table>
     <!-- end 'app graphic' table -->
 
     <!-- start 'location bar' table -->
-    <table border="0" cellpadding="2" cellspacing="0" width="100%" height="20">
+    <table id="navopt">
         <tr>
-            <td width="59%" bgcolor="#ffffff" background="{$skimages}tablebg_2nd_row.png" nowrap="nowrap">
+            <td class="locbar">
                 <xsl:if test="$nopath='false' and $noncontent ='false'">
                     <span style="color: #004080; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
                     <xsl:choose>
@@ -67,8 +67,8 @@
                     </span>
                 </xsl:if>
             </td>
-            <td background="{$skimages}tablebg_2nd_row.png" nowrap="nowrap" align="right">
-                <span style="color: #004080; font-size: 10px; font-family: Arial, Helvetica, sans-serif;">
+            <td class="date_opt">
+                <span>
                 <xsl:apply-templates select="/document/context/session/date" mode="date"/>
                 <xsl:choose>
                     <xsl:when test="/document/context/session/public_user = '1'">
@@ -112,9 +112,9 @@
 </xsl:template>
 
 <xsl:template name="subheader_noncontent">
-    <table border="0" cellspacing="0" cellpadding="0" width="100%" style="margin-left: 5px; padding-right: 5px;">
+    <table id="subheader">
         <tr>
-            <td align="center" width="758" background="{$skimages}subheader-generic_bg.png">
+            <td>
                 <!--<xsl:call-template name="message"/>-->
             </td>
             <xsl:call-template name="header.cttobject.search"/>
@@ -123,9 +123,9 @@
 </xsl:template>
 
 <xsl:template name="subheader_nonavigation">
-    <table border="0" cellspacing="0" cellpadding="5" width="100%" style="margin-left: 5px; padding-right: 5px;">
+    <table id="subheader">
         <tr>
-            <td align="center" background="{$skimages}subheader-generic_bg.png">
+            <td>
                 <xsl:call-template name="message"/>
             </td>
         </tr>
@@ -140,19 +140,19 @@
     <xsl:param name="nooptions">false</xsl:param>
     <xsl:param name="nostatus">false</xsl:param>
 
-    <table border="0" cellspacing="0" cellpadding="0" width="100%" style="padding-right: 5px;">
+    <table id="subheader">
         <tr>
             <xsl:call-template name="header.arrownavigation"/>
             <xsl:choose>
                 <xsl:when test="$m='e'">
-                    <td width="215" background="{$skimages}options_bg.png" nowrap="nowrap">
+                    <td width="215" nowrap="nowrap">
                         <xsl:if test="$nooptions='false'">
                             <xsl:call-template name="cttobject.options"/>
                             <!-- send_email is not in cttobject.options -->
                             <xsl:call-template name="cttobject.options.send_email"/>
                         </xsl:if>
                     </td>
-                    <td width="80" background="{$skimages}subheader-generic_bg.png" nowrap="nowrap">
+                    <td width="80" nowrap="nowrap">
                         <xsl:if test="$nostatus='false'">
                             <xsl:call-template name="cttobject.status"/>
                         </xsl:if>
@@ -166,11 +166,11 @@
                     </td>
                 </xsl:when>
                 <xsl:otherwise>
-                    <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap"><xsl:text>&#160;</xsl:text></td>
-                    <td width="80" background="{$skimages}subheader-generic_bg.png"><xsl:text>&#160;</xsl:text></td>
+                    <td width="126" nowrap="nowrap"><xsl:text>&#160;</xsl:text></td>
+                    <td width="80"><xsl:text>&#160;</xsl:text></td>
                 </xsl:otherwise>
             </xsl:choose>
-            <td width="629" background="{$skimages}subheader-generic_bg.png">
+            <td width="629">
                 <xsl:call-template name="message"/>
             </td>
             <xsl:call-template name="header.cttobject.search"/>
@@ -179,7 +179,7 @@
 </xsl:template>
 
 <xsl:template name="header.arrownavigation">
-    <td width="57" bgcolor="#ffffff" background="{$skimages}navigate_bg.png" align="center" nowrap="nowrap">
+    <td width="57" class="navback" align="center" nowrap="nowrap">
         <a href="javascript:history.go(-1)">
             <img src="{$skimages}navigate-back.png"
                     width="28"
@@ -191,7 +191,7 @@
             />
         </a>
     </td>
-    <td width="41" bgcolor="#ffffff" background="{$skimages}navigate_bg.png" align="left" nowrap="nowrap">
+    <td width="41" class="navup" align="left" nowrap="nowrap">
         <xsl:choose>
             <xsl:when test="$parent_path != ''">
                 <a>
@@ -219,7 +219,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </td>
-    <td width="59" background="{$skimages}navigate-forward_bg.png" align="left" nowrap="nowrap">
+    <td width="59" class="navfwd" align="left" nowrap="nowrap">
         <a href="javascript:history.go(+1)">
             <img src="{$skimages}navigate-forward.png"
                     width="28"
@@ -274,7 +274,7 @@
     </div>
     <noscript>
         <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET">
-            <td width="126" background="{$skimages}options_bg.png" nowrap="nowrap">
+            <td width="126" nowrap="nowrap">
                 <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="objtype">
                     <xsl:choose>
                         <xsl:when test="/document/context/object/@id = 1">
@@ -289,7 +289,7 @@
                     </xsl:choose>
                 </select>
             </td>
-            <td width="80" background="{$skimages}subheader-generic_bg.png" style="padding-top: 4">
+            <td width="80" style="padding-top: 4">
                 <xsl:text>&#160;</xsl:text>
                 <input type="image"
                     name="create"
@@ -312,54 +312,50 @@
 
 <xsl:template name="header.cttobject.search">
     <xsl:variable name="Search" select="$i18n/l/Search"/>
-    <form style="margin-bottom: 0;" method="GET" name="quicksearch">
-        <xsl:attribute name="action">
-            <xsl:choose>
-                <xsl:when test="$absolute_path != ''">
-                    <xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="concat($xims_box,$goxims,'/user')"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:attribute>
-        <td width="182" align="right">
-            <table width="100%" border="0" height="42" background="{$skimages}subheader-generic_bg.png" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td nowrap="nowrap">
-                        <xsl:value-of select="$i18n/l/From_here"/>
-                        <input type="checkbox" name="start_here" value="1">
-                            <xsl:if test="$start_here != ''">
-                                <xsl:attribute name="checked">true</xsl:attribute>
-                            </xsl:if>
-                        </input>
-                        <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt" type="text" name="s" size="17" maxlength="200">
-                        <xsl:choose>
-                            <xsl:when test="$s != ''">
-                                <xsl:attribute name="value"><xsl:value-of select="$s"/></xsl:attribute>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:attribute name="value">[<xsl:value-of select="$Search"/>]</xsl:attribute>
-                                <xsl:attribute name="onfocus">document.quicksearch.s.value=&apos;&apos;;</xsl:attribute>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        </input>
-                        <xsl:text>&#160;</xsl:text>
-                        <input type="image"
-                                src="{$sklangimages}search.png"
-                                name="submit"
-                                width="65"
-                                height="14"
-                                alt="{$Search}"
-                                title="{$Search}"
-                                border="0"
-                        />
-                        <input type="hidden" name="search" value="1"/>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </form>
+    <td class="qsearch">
+        <form method="GET" name="quicksearch">
+            <xsl:attribute name="action">
+                <xsl:choose>
+                    <xsl:when test="$absolute_path != ''">
+                        <xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="concat($xims_box,$goxims,'/user')"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <div>
+                <label for="start_here"><xsl:value-of select="$i18n/l/From_here"/></label>
+                <input id="start_here" type="checkbox" class="start_here" name="start_here" value="1">
+                    <xsl:if test="$start_here != ''">
+                        <xsl:attribute name="checked">true</xsl:attribute>
+                    </xsl:if>
+                </input>
+                <input type="text" class="search" name="s" size="17" maxlength="200">
+                <xsl:choose>
+                    <xsl:when test="$s != ''">
+                        <xsl:attribute name="value"><xsl:value-of select="$s"/></xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="value">[<xsl:value-of select="$Search"/>]</xsl:attribute>
+                        <xsl:attribute name="onfocus">document.quicksearch.s.value=&apos;&apos;;</xsl:attribute>
+                    </xsl:otherwise>
+                </xsl:choose>
+                </input>
+                <xsl:text>&#160;</xsl:text>
+                <input type="image"
+                    src="{$sklangimages}search.png"
+                    name="submit"
+                    width="65"
+                    height="14"
+                    alt="{$Search}"
+                    title="{$Search}"
+                    border="0"
+                />
+                <input type="hidden" name="search" value="1"/>
+            </div>
+        </form>
+    </td>
 </xsl:template>
 
 <xsl:template name="mode_switcher">
