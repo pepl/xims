@@ -141,6 +141,7 @@
 </xsl:template>
 
 <xsl:template name="css">
+    <link rel="stylesheet" href="{$ximsroot}stylesheets/reset.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}stylesheets/default.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
 </xsl:template>
