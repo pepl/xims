@@ -1138,7 +1138,12 @@ sub redirect_path {
         $uri->query($params);
     }
 
-    # warn "redirecting to ". $uri->unparse();
+    my $frontend_uri = Apache::URI->parse( $ctxt->apache, $ctxt->session->serverurl() );
+    $uri->scheme( $frontend_uri->scheme() );
+    $uri->hostname( $frontend_uri->hostname() );
+    $uri->port( $frontend_uri->port() );
+   
+    XIMS::Debug( 4, "redirecting to ". $uri->unparse() );
     return $uri->unparse();
 }
 
