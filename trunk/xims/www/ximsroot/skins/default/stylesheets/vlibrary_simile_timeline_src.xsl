@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2007 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: referencelibrary_export_mods.xsl 1654 2007-03-27 11:12:21Z pepl $
@@ -12,7 +12,7 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="vlibrary_common.xsl"/>
 
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" media-type="text/xml" standalone="yes" omit-xml-declaration="yes" doctype-public="" doctype-system=""/>
 
     <xsl:template match="/document/context/object">
         <data>
