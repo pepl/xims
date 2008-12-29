@@ -106,36 +106,10 @@ sub handler {
     else {
         XIMS::Debug( 3, "no session cookie found " );
         $cSession = login_user( $r, $dp );
-        unless ($cSession) {
-            my $askedpath  = $r->path_info();
-            my $askedquery = Apache::URI->parse($r)->query();
-
-            if ( $askedquery !~ m/dologin/ ) {
-                XIMS::Debug( 6,
-                    "setting client cookie 'askedquery' to value '$askedquery'"
-                );
-                Apache::Cookie->new(
-                    $r,
-                    -name  => 'askedquery',
-                    -value => uri_escape($askedquery),
-                    -path  => '/'
-                )->bake();
-                XIMS::Debug( 6,
-                    "setting client cookie 'askedpath' to value '$askedpath'"
-                );
-                Apache::Cookie->new(
-                    $r,
-                    -name  => 'askedpath',
-                    -value => $askedpath,
-                    -path  => '/'
-                )->bake();
-            }
-        }
         $login = 1;
     }
 
     if ($cSession) {
-
         #warn "session found" . Dumper( $cSession ) . "\n";
         my $browsepublished = $r->dir_config('ximsBrowsePublished');
         if ( not $login ) {
@@ -167,6 +141,28 @@ sub handler {
         if ( $args{dologin} ) {
             $url
                 .= "?reason=Access%20Denied.%20Please%20provide%20a%20valid%20username%20and%20password.";
+        }
+        else {
+            my $askedpath  = $r->path_info();
+            my $askedquery = Apache::URI->parse($r)->query();
+
+            if ( not defined $args{reason} ) {
+                XIMS::Debug( 6, "setting client cookie 'askedquery' to value '$askedquery'" );
+                Apache::Cookie->new(
+                    $r,
+                    -name  => 'askedquery',
+                    -value => uri_escape($askedquery),
+                    -path  => '/'
+                )->bake();
+            }
+
+            XIMS::Debug( 6, "setting client cookie 'askedpath' to value '$askedpath'" );
+            Apache::Cookie->new(
+                $r,
+                -name  => 'askedpath',
+                -value => $askedpath,
+                -path  => '/'
+            )->bake();
         }
         $r->custom_response( FORBIDDEN, $url );
         return FORBIDDEN;
@@ -581,6 +577,11 @@ sub redirToDefault {
 
         # add possible paramters of query before login
         $uri->query($askedquery) if $askedquery;
+
+        my $frontend_uri = Apache::URI->parse( $r, XIMS::get_server_url( $r ) );
+        $uri->scheme( $frontend_uri->scheme() );
+        $uri->hostname( $frontend_uri->hostname() );
+        $uri->port( $frontend_uri->port() );
 
         XIMS::Debug( 6, "redirecting to " . $uri->unparse() );
 
