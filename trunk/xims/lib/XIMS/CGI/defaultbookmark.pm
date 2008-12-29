@@ -120,6 +120,11 @@ sub redirToDefault {
     $query =~ s/userid|password//;
     $uri->query($query);
 
+    my $frontend_uri = Apache::URI->parse( $ctxt->apache, $ctxt->session->serverurl() );
+    $uri->scheme( $frontend_uri->scheme() );
+    $uri->hostname( $frontend_uri->hostname() );
+    $uri->port( $frontend_uri->port() );
+
     XIMS::Debug( 6, "redirecting to " . $uri->unparse() );
     $self->redirect( $uri->unparse() );
     return 0;

@@ -821,6 +821,47 @@ sub via_proxy_test {
     return;
 }
 
+=head2 get_server_url()
+
+=head3 Parameter
+
+    $r: Apache::Request object
+
+=head3 Returns
+
+    URL of the current frontend request
+
+=head3 Description
+
+    XIMS::get_server_url( $r )
+
+Checks for ximsServerURL Apache dir config variable, X-Forwarded-Host request header
+and finally the the parsed Apache::URI to determine the URL of the current frontend 
+request.
+
+=cut
+
+sub get_server_url {
+    my ($r) = @_;
+    
+    return $r->pnotes('SERVERURL') if defined $r->pnotes('SERVERURL');
+
+    my $serverurl = $r->dir_config('ximsServerURL');
+    if ( not defined $serverurl ) {
+        # test if we are called through a proxy, set serverurl accordingly
+        my $uri = Apache::URI->parse($r);
+        my $hostname =
+          ( defined $r->headers_in->{'X-Forwarded-Host'}
+              and length $r->headers_in->{'X-Forwarded-Host'} )
+          ? $r->headers_in->{'X-Forwarded-Host'}
+          : $uri->hostinfo();
+        $serverurl = $uri->scheme . '://' . $hostname;
+    }
+    
+    $r->pnotes('SERVERURL' => $serverurl );
+    return $serverurl;
+}
+
 =head1 NAME
 
 XIMS::Helpers
