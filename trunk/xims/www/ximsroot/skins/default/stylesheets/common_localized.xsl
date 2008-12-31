@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2008 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -21,7 +21,7 @@
     </xsl:choose>
 </xsl:template>
 
-<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|date_from_timestamp|date_to_timestamp|dc_date" mode="date">
+    <xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|date_from_timestamp|date_to_timestamp|dc_date|status_checked_timestamp" mode="date">
     <xsl:choose>
         <xsl:when test="$currentuilanguage = 'de-at'">
             <xsl:value-of select="./day"/>
@@ -40,7 +40,7 @@
     </xsl:choose>
 </xsl:template>
 
-    <xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|date_from_timestamp|date_to_timestamp|dc_date" mode="datetime">
+<xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|date_from_timestamp|date_to_timestamp|dc_date|status_checked_timestamp" mode="datetime">
     <xsl:choose>
         <xsl:when test="$currentuilanguage = 'de-at'">
             <xsl:value-of select="./day"/>

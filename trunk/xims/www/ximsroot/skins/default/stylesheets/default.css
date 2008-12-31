@@ -479,6 +479,10 @@ tr.objrow:hover {
     margin-top: 4px;
 }
 
+div.cttobject_status {
+    display: inline;
+}
+
 .ctt_status {
     width: 86px;
     padding-left: 2px;
