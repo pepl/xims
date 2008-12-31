@@ -302,7 +302,13 @@
         </xsl:call-template>
         &#xa0;
         <a  title="{$location}"
-            href="{$xims_box}{$goxims_content}{$absolute_path}/{$location}{$hlsstring}">
+            >
+            <xsl:attribute name="href">
+                <xsl:choose>
+                    <xsl:when test="$dfname = 'URL'"><xsl:value-of select="$location"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/',$location,$hlsstring)"/></xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:apply-templates/>
         </a>
     </div>
