@@ -62,12 +62,21 @@
   <xsl:template name="css">
     <link rel="stylesheet" href="{$ximsroot}stylesheets/default.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
+    <link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/thickbox.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
     <xsl:call-template name="create_menu_css"/>
   </xsl:template>
 
   <xsl:template name="script_head">
     <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}scripts/jquery/thickbox.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script type="text/javascript">
+      var tb_pathToImage='<xsl:value-of select="concat($ximsroot,'images/loadingAnimation.gif')"/>';
+      function tb_remove_reload () {
+        tb_remove();
+        document.location.reload();
+      }
+    </script>
   </xsl:template>
 
   <xsl:template name="script_bottom">
@@ -468,6 +477,25 @@ function post_async(poststr) {
     xmlhttp.setRequestHeader("Connection", "close");
     xmlhttp.send(poststr);
 }
+  </xsl:template>
+
+  <xsl:template name="cttobject.options.edit">
+    <xsl:variable name="id" select="@id"/>
+    <xsl:choose>
+      <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+        <a class="sprite-option_edit thickbox">
+          <xsl:attribute name="href">
+            <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
+            <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+            <xsl:text>;KeepThis=true;TB_iframe=true;height=600;width=800;modal=true</xsl:text>
+          </xsl:attribute>
+          &#xa0;<span><xsl:value-of select="$l_Edit"/></span>
+        </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="cttobject.options.spacer"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
