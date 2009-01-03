@@ -5,7 +5,7 @@ XIMS::Test
 
 =head1 VERSION
 
-$Id:$
+$Id$
 
 =head1 SYNOPSIS
 
@@ -147,7 +147,7 @@ __END__
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2007 The XIMS Project.
+Copyright (c) 2002-2009 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
