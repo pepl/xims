@@ -18,6 +18,13 @@
         <xsl:with-param name="calendar" select="true()" />
     </xsl:call-template>
     <body>
+        <!-- TODO: 
+            * post_async is currently not loaded
+            * should be moved to a script-bottom template together with vlibrary_edit.js
+            * post_async should post with OBJECT_ID and not LOCATION_PATH
+            * JQuery API should be used
+            * when adding or deleting a property the iframed (thickbox) page should be reloaded
+        -->
         <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
