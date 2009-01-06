@@ -61,21 +61,19 @@
                     <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}">
                         <xsl:value-of select="title" /></a>
                 </td>
-                <td nowrap="nowrap" bgcolor="#eeeeee" valign="middle" align="center">
+                <td nowrap="nowrap" valign="middle" align="center">
                     <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                 </td>
             </xsl:when>
             <!-- end sort by date -->
         </xsl:choose>
         <td align="left" valign="middle">
-            <a>
-                <xsl:attribute name="href">mailto:<xsl:value-of select="attributes/email"/>?subject=RE: <xsl:value-of select="title"/></xsl:attribute>
+            <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;subject=RE:{title}">
                 <xsl:value-of select="attributes/author"/>
             </a>
             <xsl:choose>
                 <xsl:when test="attributes/coemail">,
-                    <a>
-                        <xsl:attribute name="href">mailto:<xsl:value-of select="attributes/coemail"/>?subject=RE: <xsl:value-of select="title"/></xsl:attribute>
+                    <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;coemail=1;subject=RE:{title}">
                         <xsl:value-of select="attributes/coauthor"/>
                     </a>
                 </xsl:when>

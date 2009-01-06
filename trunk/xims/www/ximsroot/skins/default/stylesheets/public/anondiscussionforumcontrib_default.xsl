@@ -44,7 +44,7 @@
             <a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
             (<xsl:choose>
                 <xsl:when test="attributes/email">
-                    <a href="mailto:{attributes/email}"><xsl:value-of select="attributes/author"/></a>
+                    <a href="{$goxims_content}?id={@id};mt=1;subject={title}"><xsl:value-of select="attributes/author"/></a>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="attributes/author"/>
