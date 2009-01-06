@@ -41,6 +41,7 @@ sub registerEvents {
           publish
           publish_prompt
           unpublish
+          mt
           )
         );
 }
@@ -181,6 +182,25 @@ sub event_store {
     $self->redirect( $self->redirect_path( $ctxt ) );
     return 1;
 }
+
+=head2 event_mt()
+
+Server side mailto redirect for SPAM prevention 
+
+=cut
+
+sub event_mt {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $email = $ctxt->object->email();
+    $email = $ctxt->object->coemail() if $self->param('coemail');
+
+    XIMS::Debug( 4, "redirecting to mailto" );
+    $self->redirect( sprintf('mailto:%s?subject=%s', $email, $self->param('subject')) );
+    return 1;
+}
+
 
 # override SUPER::events
 
