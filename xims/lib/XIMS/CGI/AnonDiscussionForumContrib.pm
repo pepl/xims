@@ -25,6 +25,7 @@ package XIMS::CGI::AnonDiscussionForumContrib;
 use strict;
 use base qw( XIMS::CGI );
 use Text::Iconv;
+use URI::Escape ();
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -195,9 +196,11 @@ sub event_mt {
 
     my $email = $ctxt->object->email();
     $email = $ctxt->object->coemail() if $self->param('coemail');
+    
+    my $subject = URI::Escape::uri_escape( $self->param('subject') );
 
     XIMS::Debug( 4, "redirecting to mailto" );
-    $self->redirect( sprintf('mailto:%s?subject=%s', $email, $self->param('subject')) );
+    $self->redirect( sprintf('mailto:%s?subject=%s', $email, $subject) );
     return 1;
 }
 

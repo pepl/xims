@@ -10,8 +10,6 @@
 <xsl:import href="../anondiscussionforum_default.xsl"/>
 <xsl:import href="anondiscussionforum_common.xsl"/>
 
-<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-
 <xsl:template name="forum">
     <h1><xsl:value-of select="title" /></h1>
 
@@ -68,12 +66,12 @@
             <!-- end sort by date -->
         </xsl:choose>
         <td align="left" valign="middle">
-            <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;subject=RE:{title}">
+            <a href="#" title="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;subject=RE:{title}" target="hiddenIframe" onClick="this.href=this.title;">
                 <xsl:value-of select="attributes/author"/>
             </a>
             <xsl:choose>
                 <xsl:when test="attributes/coemail">,
-                    <a href="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;coemail=1;subject=RE:{title}">
+                    <a href="#" title="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;coemail=1;subject=RE:{title}" target="hiddenIframe" onClick="this.href=this.title;">
                         <xsl:value-of select="attributes/coauthor"/>
                     </a>
                 </xsl:when>
