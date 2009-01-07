@@ -12,16 +12,6 @@
 <xsl:import href="../anondiscussionforumcontrib_default.xsl"/>
 <xsl:import href="anondiscussionforum_common.xsl"/>
 
-<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-
-<xsl:template name="head_default">
-    <head>
-        <xsl:call-template name="meta"/>
-        <title><xsl:call-template name="title"/></title>
-        <xsl:call-template name="css"/>
-    </head>
-</xsl:template>
-
 <xsl:template match="/document/objectlist/object">
     <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
@@ -44,7 +34,7 @@
             <a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
             (<xsl:choose>
                 <xsl:when test="attributes/email">
-                    <a href="{$goxims_content}?id={@id};mt=1;subject={title}"><xsl:value-of select="attributes/author"/></a>
+                    <a href="#" title="{$goxims_content}?id={@id};mt=1;subject={title}" target="hiddenIframe" onClick="this.href=this.title;"><xsl:value-of select="attributes/author"/></a>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="attributes/author"/>

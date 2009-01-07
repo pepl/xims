@@ -34,7 +34,8 @@
                 </span>
             </div>
         </div>
-      </body>
+        <iframe name="hiddenIframe" id="hiddenIframe" style="display: none"/>
+    </body>
 </html>
 </xsl:template>
 
