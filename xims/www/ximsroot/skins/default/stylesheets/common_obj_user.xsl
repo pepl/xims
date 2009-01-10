@@ -29,11 +29,8 @@
     </xsl:template>
 
    <xsl:template match="/document/context/user">
-        <form action="{$xims_box}{$goxims_content}" method="GET">
+     <form id="objAcl" action="{$xims_box}{$goxims_content}" method="GET">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-          <tr background="{$skimages}generic_tablebg_1x20.png">
-            <td>&#160;</td>
-          </tr>
           <tr>
             <td align="center">
 
