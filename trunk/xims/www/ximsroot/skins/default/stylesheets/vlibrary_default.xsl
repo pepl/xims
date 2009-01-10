@@ -7,6 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:exslt="http://exslt.org/common"
                 extension-element-prefixes="exslt"
                 >
@@ -58,7 +59,7 @@
           <xsl:call-template name="footer"/>
         </table>
         <xsl:call-template name="jquery-listitems-bg">
-          <xsl:with-param name="pick" select="'div.vliteminfo'"/>
+          <xsl:with-param name="pick" select="'td.vliteminfo'"/>
         </xsl:call-template>
         <xsl:call-template name="script_bottom"/>
         <script type="text/javascript">
@@ -131,12 +132,12 @@
 
   <xsl:template name="subject_item">
     <tr>
-      <td>
+      <td class="vliteminfo">
         <xsl:call-template name="subject_item_div"/>
 
       </td>
       <xsl:for-each select="following-sibling::node()[position() &lt; $colms]">
-        <td>
+        <td class="vliteminfo">
           <xsl:call-template name="subject_item_div"/>
         </td>
       </xsl:for-each>

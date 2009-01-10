@@ -212,6 +212,7 @@
           <xsl:call-template name="jquery-listitems-bg">
             <xsl:with-param name="pick" select="'div.vlchildrenlistitem'"/>
           </xsl:call-template>
+          <xsl:call-template name="script_bottom"/>
         </body>
       </html>
     </xsl:template>

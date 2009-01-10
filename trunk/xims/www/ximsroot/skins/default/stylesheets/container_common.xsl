@@ -194,18 +194,7 @@
     </xsl:if>
   </xsl:variable>
   <xsl:if test="$totalpages &gt; 1">
-    <table style="margin-left:5px;
-                  margin-right:10px;
-                  margin-top: 10px;
-                  margin-bottom: 0px;
-                  width: 99%;
-                  padding: 3px;
-                  border: thin solid #C1C1C1;
-                  background: #F9F9F9
-                  font-size: small;"
-           border="0"
-           cellpadding="0"
-           cellspacing="0">
+    <table class="pagenav" align="center">
       <tr>
         <td>
           <xsl:call-template name="pagenav">

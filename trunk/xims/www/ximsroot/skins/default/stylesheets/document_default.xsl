@@ -38,8 +38,8 @@
             <xsl:if test="substring($hls,2,1) != ':'">
                 <xsl:call-template name="toggle_hls"/>
             </xsl:if>
-            <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px; background: #ffffff">
-                <tr>
+            <table id="tbody" align="center">
+                <tr class="trbody">
                     <td colspan="2">
                       <xsl:call-template name="pre-body-hook"/>
                       <span id="body">
@@ -47,7 +47,7 @@
                       </span>
                     </td>
                 </tr>
-                <tr>
+                <tr class="trlinksanno">
                     <td valign="top" width="50%" style="border:1px solid;">
                         <table width="100%" border="0">
                             <tr>
@@ -83,7 +83,7 @@
                     </td>
                 </tr>
             </table>
-            <table align="center" width="98.7%" class="footer">
+            <table align="center" class="footer">
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="document-options"/>
                 <xsl:call-template name="footer"/>

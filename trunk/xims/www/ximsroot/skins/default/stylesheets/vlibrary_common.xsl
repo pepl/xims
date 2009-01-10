@@ -60,6 +60,7 @@
   <xsl:param name="chronicle_to" />
 
   <xsl:template name="css">
+    <link rel="stylesheet" href="{$ximsroot}stylesheets/reset.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}stylesheets/default.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/thickbox.css" type="text/css"/>
@@ -273,37 +274,38 @@
       </xsl:choose>
     </xsl:variable>
 
-    <a href="{$xims_box}{$goxims_content}{$absolute_path}?{$mo}=1;{$mo}_id={id}">
-      <xsl:value-of select="$display_name"/>
-    </a>
-
-    <!-- only show action icons if user has the privilege "write" on the VLibray -->
-    <xsl:if test="$user_privileges/write=1 and object_count">
-      &#160;
-      <a href="javascript:genericWindow(
-                   '{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};',
-                   '{$popupsizes[name()=$mo]/@x}',
-                   '{$popupsizes[name()=$mo]/@y}')">
-        <img src="{$skimages}option_edit.png"
-             alt="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
-             title="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
-             border="0"
-             name="edit{id}"
-             width="32"
-             height="19"/>
+    <span class="property_link">
+      <a class="name" href="{$xims_box}{$goxims_content}{$absolute_path}?{$mo}=1;{$mo}_id={id}">
+        <xsl:value-of select="$display_name"/>
       </a>
-
-      <xsl:if test="object_count = 0">
+  
+      <!-- only show action icons if user has the privilege "write" on the VLibray -->
+      <xsl:if test="$user_privileges/write=1 and object_count">
         <a href="javascript:genericWindow(
-                     '{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={$display_name}',
-                     '{$popupsizes[name()='delete']/@x}',
-                     '{$popupsizes[name()='delete']/@y}')">
-          <img src="{$skimages}option_delete.png"
-               alt="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"
-               title="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"/>
+                     '{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};',
+                     '{$popupsizes[name()=$mo]/@x}',
+                     '{$popupsizes[name()=$mo]/@y}')">
+          <img src="{$skimages}option_edit.png"
+               alt="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
+               title="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
+               border="0"
+               name="edit{id}"
+               width="32"
+               height="19"/>
         </a>
+        <xsl:if test="object_count = 0">
+          <a href="javascript:genericWindow(
+                       '{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={$display_name}',
+                       '{$popupsizes[name()='delete']/@x}',
+                       '{$popupsizes[name()='delete']/@y}')">
+            <img src="{$skimages}option_delete.png"
+                 alt="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"
+                 title="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"
+                 class="delete"/>
+          </a>
+        </xsl:if>
       </xsl:if>
-    </xsl:if>
+    </span>
   </xsl:template>
 
 
@@ -311,7 +313,6 @@
     <xsl:param name="mo"/>
     <table width="100%"
            border="0"
-           style="margin: 0px;"
            id="vlsearchswitch">
       <tr>
         <td valign="top"

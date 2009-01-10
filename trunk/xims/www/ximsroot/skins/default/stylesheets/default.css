@@ -5,6 +5,15 @@
 # $Id$
 */
 
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+    font-weight: bold;
+}
+
 #titlelogo {
     width: 100%;
     margin-top: 2px;
@@ -97,6 +106,58 @@ td.navfwd {
 
 #MDME {
     margin: -3px 0px 0px 0px;
+}
+
+#tbody {
+    margin-top: 1px;
+    width: 98.7%;
+    border: 1px solid black;
+}
+
+#tbody tr.trbody td, #tbody tr.trlinksanno td {
+    padding: 1px;
+}
+
+table.footer {
+    width: 98.7%;
+}
+
+table.footer td {
+    padding: 1px 2px 2px 2px;
+}
+
+div.edit {
+    padding: 5px;
+}
+
+div.edit input, div.edit textarea {
+    margin: 2px 5px 3px 2px;
+}
+
+td.bluebg {
+    padding: 2px;
+}
+
+#objPublish table, #objAcl table {
+    border-collapse: separate;
+    border-spacing: 5px;
+} 
+
+#objPublish input, #objAcl input {
+    margin: 2px 5px 3px 2px;
+}
+
+table.pagenav {
+    width: 98.7%;
+    margin-top: 10px;
+    padding: 3px;
+    border: thin solid #C1C1C1;
+    background: #F9F9F9;
+    font-size: small;
+}
+
+table.pagenav td {
+    padding: 2px;
 }
 
 #department_title {

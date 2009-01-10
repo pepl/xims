@@ -37,7 +37,16 @@
 
 #vlsearchswitch ul {
     margin-top: 0px;
-    margin-bottom: 0px;
+    padding-left: 25px;
+    padding-bottom: 5px;
+}
+
+#vlsearchswitch li {
+    list-style-type: disc;
+}
+
+#vlsearchswitch form {
+    padding-bottom: 5px;
 }
 
 .vlsearchswitchcell {
@@ -45,6 +54,7 @@
     border-left: dotted 1px #a0a0a0;
     border-right: dotted 1px #a0a0a0;
     border-top: dotted 1px #a0a0a0;
+
 }
 
 #vlpropertyinfo {
@@ -54,11 +64,34 @@
 #vlpropertyinfo th {
     background-color:#ced3d6;
     margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
 }
 
 #vlpropertyinfo td {
     border-left: dotted 1px #a0a0a0;
     border-right: dotted 1px #a0a0a0;
+}
+
+td.vliteminfo {
+    padding: 4px;
+}
+
+#vlpropertyinfo .property_link {
+    white-space: nowrap;
+}
+
+#vlpropertyinfo a.name {
+    white-space: normal;
+}
+
+#vlpropertyinfo img {
+    position: absolute;
+}
+
+#vlpropertyinfo img.delete {
+    position: relative;
+    margin-left: 25px;
 }
 
 #pagenav {
