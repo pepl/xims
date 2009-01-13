@@ -88,8 +88,11 @@ sub event_send_as_mail {
 
     my $object = $ctxt->object();
 
-    my $from =
-      '"' . $object->User->fullname . '" <' . $object->User->email . '>';
+    my $from = '"'
+               . Encode::encode( "MIME-Header", 
+                                 XIMS::encode( $object->User->fullname ) 
+                 )
+               . '" <' . $object->User->email . '>';
 
     unless ( $object->published() ) {
         $self->sendError( $ctxt, "Object must be published!" );
@@ -133,6 +136,8 @@ sub event_send_as_mail {
             "Please keep the subject below 60 characters" );
         return 0;
     }
+    
+    my $subject = Encode::encode( "MIME-Header", XIMS::utf8_sanitize( $subject ) );
 
     my $reply_to = Email::Valid->address( $self->param('reply-to') );
 
