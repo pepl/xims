@@ -464,4 +464,8 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( DFM_SEQ.NEXTVAL, 'ReferenceLibrary', 'application/x-container' );
 
-
+PROMPT Create some additional foreign key indexes
+CREATE INDEX ref_rft_id_i  ON cireflib_references          (reference_type_id);
+CREATE INDEX rpv_ref_id_i  ON cireflib_ref_propertyvalues  (reference_id);
+CREATE INDEX ratm_aut_id_i ON cireflib_authormap           (author_id)
+/

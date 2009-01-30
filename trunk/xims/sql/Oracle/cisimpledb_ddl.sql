@@ -231,4 +231,8 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( DFM_SEQ.NEXTVAL, 'SimpleDB', 'application/x-container' );
 
-
+PROMPT Create some additional foreign key indexes
+CREATE INDEX prv_mem_id_i  ON cisimpledb_mempropertyvalues (member_id);
+CREATE INDEX prm_doc_id_i  ON cisimpledb_mempropertymap    (document_id);
+CREATE INDEX prm_pro_id_i  ON cisimpledb_mempropertymap    (property_id)
+/

@@ -77,8 +77,29 @@ DROP VIEW ci_content_loblength
 PROMPT Updating functions and triggers for location_path denormalization
 @@../../sql/Oracle/ci_util_location_path.sql
 
-CREATE  INDEX doc_locationp_i
+CREATE INDEX doc_locationp_i
  ON ci_documents
-  ( location_path  )
-/
+  ( location_path  );
 
+PROMPT Create missing foreign key indexes
+-- Vlibrary
+CREATE INDEX sum_sub_id_i  ON cilib_subjectmap             (subject_id);
+CREATE INDEX atm_aut_id_i  ON cilib_authormap              (author_id);
+CREATE INDEX kwm_kwd_id_i  ON cilib_keywordmap             (keyword_id);
+CREATE INDEX pbm_pub_id_i  ON cilib_publicationmap         (publication_id);
+
+CREATE INDEX kwr_lib_fk_i  ON cilib_keywords               (document_id);
+CREATE INDEX aut_lib_fk_i  ON cilib_authors                (document_id);
+CREATE INDEX sub_lib_fk_i  ON cilib_subjects               (document_id);
+CREATE INDEX pub_lib_fk_i  ON cilib_publications           (document_id);
+
+-- ReferenceLibrary
+CREATE INDEX ref_rft_id_i  ON cireflib_references          (reference_type_id);
+CREATE INDEX rpv_ref_id_i  ON cireflib_ref_propertyvalues  (reference_id);
+CREATE INDEX ratm_aut_id_i ON cireflib_authormap           (author_id);
+
+-- SimpleDB
+CREATE INDEX prv_mem_id_i  ON cisimpledb_mempropertyvalues (member_id);
+CREATE INDEX prm_doc_id_i  ON cisimpledb_mempropertymap    (document_id);
+CREATE INDEX prm_pro_id_i  ON cisimpledb_mempropertymap    (property_id)
+/

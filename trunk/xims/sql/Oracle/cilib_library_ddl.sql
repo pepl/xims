@@ -547,4 +547,17 @@ newid cilib_meta.id%TYPE;
  END;
 /
 
+PROMPT Create some additional foreign key indexes
+-- Vlibrary
+CREATE INDEX sum_sub_id_i  ON cilib_subjectmap             (subject_id);
+CREATE INDEX atm_aut_id_i  ON cilib_authormap              (author_id);
+CREATE INDEX kwm_kwd_id_i  ON cilib_keywordmap             (keyword_id);
+CREATE INDEX pbm_pub_id_i  ON cilib_publicationmap         (publication_id);
+
+CREATE INDEX kwr_lib_fk_i  ON cilib_keywords               (document_id);
+CREATE INDEX aut_lib_fk_i  ON cilib_authors                (document_id);
+CREATE INDEX sub_lib_fk_i  ON cilib_subjects               (document_id);
+CREATE INDEX pub_lib_fk_i  ON cilib_publications           (document_id)
+/
+
 
