@@ -814,6 +814,7 @@ sub via_proxy_test {
         and is_known_proxy( $r->connection->remote_ip() ) )
     {
         $r->connection->remote_ip($ip);
+        $r->pnotes(  'VALID_PROXY' => 1 );
         XIMS::Debug( 6, "Remote IP taken from X-Forwarded-For-header\n" );
     }
     $r->pnotes( 'PROXY_TEST' => 1 );
@@ -848,14 +849,29 @@ sub get_server_url {
 
     my $serverurl = $r->dir_config('ximsServerURL');
     if ( not defined $serverurl ) {
-        # test if we are called through a proxy, set serverurl accordingly
         my $uri = Apache::URI->parse($r);
-        my $hostname =
-          ( defined $r->headers_in->{'X-Forwarded-Host'}
-              and length $r->headers_in->{'X-Forwarded-Host'} )
-          ? $r->headers_in->{'X-Forwarded-Host'}
-          : $uri->hostinfo();
-        $serverurl = $uri->scheme . '://' . $hostname;
+        my $hostinfo;
+        my $scheme;
+        # test if we are called through a known proxy, set serverurl and URI
+        # scheme accordingly
+        if ( $r->pnotes('VALID_PROXY') ) {
+            $hostinfo = ( length $r->headers_in->{'X-Forwarded-Host'} )
+                      ? $r->headers_in->{'X-Forwarded-Host'}
+                      : $uri->hostinfo();
+
+            # check for the custom-set request header 'X-SSL-Connection'
+            # e.g. in Apache2: 
+            # RequestHeader set "X-SSL-Connection" "yes"
+            $scheme = ( $r->headers_in->{'X-SSL-Connection'} eq 'yes' ) 
+                    ? 'https'
+                    : $uri->scheme(); 
+        }
+        else {
+            $hostinfo = $uri->hostinfo();
+            $scheme   = $uri->scheme();
+        }  
+
+        $serverurl = $scheme . '://' . $hostinfo; 
     }
     
     $r->pnotes('SERVERURL' => $serverurl );
