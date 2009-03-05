@@ -3440,7 +3440,7 @@ sub event_search {
     XIMS::Debug( 6, "param $search" );
 
     # does the searchstring look like a command?
-    if ( $search =~ /^\!\w+:/ && ( length($search) <= 55 ) ) {
+    if ( $search =~ /^\!\w+:/ && ( length($search) <= 55 ) && !$filterintranet ) {
 
         return 0 if not defined $self->handle_bang_commands( $ctxt, $search );
 
