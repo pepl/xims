@@ -811,10 +811,9 @@ sub via_proxy_test {
     my $r = shift;
 
     if ( my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/
-        and is_known_proxy( $r->connection->remote_ip() ) )
-    {
+        and is_known_proxy( $r->connection->remote_ip() ) ) {
         $r->connection->remote_ip($ip);
-        $r->pnotes(  'VALID_PROXY' => 1 );
+        $r->pnotes( 'VALID_PROXY' => 1 );
         XIMS::Debug( 6, "Remote IP taken from X-Forwarded-For-header\n" );
     }
     $r->pnotes( 'PROXY_TEST' => 1 );
@@ -836,15 +835,20 @@ sub via_proxy_test {
 
     XIMS::get_server_url( $r )
 
-Checks for ximsServerURL Apache dir config variable, X-Forwarded-Host request header
-and finally the the parsed Apache::URI to determine the URL of the current frontend 
-request.
+Determines the server url from the following sources:
+
+If the ximsServerURL Apache dir config variable has a value, use that.
+
+If ximsServerURL is I<not> present: Either deduce the value from the
+X-Forwarded-Host and X-SSL-Connection request headers in case the request
+origins from a configured proxy (see: is_known_proxy()); otherwise use the
+parsed Apache::URI of the current frontend request as source.
 
 =cut
 
 sub get_server_url {
     my ($r) = @_;
-    
+
     return $r->pnotes('SERVERURL') if defined $r->pnotes('SERVERURL');
 
     my $serverurl = $r->dir_config('ximsServerURL');
@@ -852,6 +856,7 @@ sub get_server_url {
         my $uri = Apache::URI->parse($r);
         my $hostinfo;
         my $scheme;
+
         # test if we are called through a known proxy, set serverurl and URI
         # scheme accordingly
         if ( $r->pnotes('VALID_PROXY') ) {
@@ -860,21 +865,21 @@ sub get_server_url {
                       : $uri->hostinfo();
 
             # check for the custom-set request header 'X-SSL-Connection'
-            # e.g. in Apache2: 
+            # e.g. in Apache2:
             # RequestHeader set "X-SSL-Connection" "yes"
-            $scheme = ( $r->headers_in->{'X-SSL-Connection'} eq 'yes' ) 
+            $scheme = ( $r->headers_in->{'X-SSL-Connection'} eq 'yes' )
                     ? 'https'
-                    : $uri->scheme(); 
+                    : $uri->scheme();
         }
         else {
             $hostinfo = $uri->hostinfo();
             $scheme   = $uri->scheme();
-        }  
+        }
 
-        $serverurl = $scheme . '://' . $hostinfo; 
+        $serverurl = $scheme . '://' . $hostinfo;
     }
-    
-    $r->pnotes('SERVERURL' => $serverurl );
+
+    $r->pnotes( 'SERVERURL' => $serverurl );
     return $serverurl;
 }
 
