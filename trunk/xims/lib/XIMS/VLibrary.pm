@@ -699,11 +699,11 @@ sub _vlitems_byfilter_sql {
 
     my $properties;
     if ( defined $count ) {
-        $properties = 'count(d.id) AS count';
+        $properties = 'count(distinct c.id) AS count';
     }
     else {
         $properties =
-            'c.id AS id, d.parent_id, d.location, d.object_type_id, d.data_format_id, c.document_id, '
+            'distinct c.id AS id, d.parent_id, d.location, d.object_type_id, d.data_format_id, c.document_id, '
           . 'c.abstract, c.title, c.last_modification_timestamp, '
           . 'c.status, c.status_checked_timestamp, '
           . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
@@ -907,10 +907,10 @@ sub _vlitems_by_date_sql {
 
     my $properties;
     if ( defined $count ) {
-        $properties = 'count(d.id) AS count';
+        $properties = 'count(distinct c.id) AS count';
     }
     else {
-        $properties = 'd.id AS id, d.parent_id, d.location, c.document_id, '
+        $properties = 'distinct c.id AS id, d.parent_id, d.location, c.document_id, '
                     . 'c.abstract, c.title, c.last_modification_timestamp, '
                     . 'c.marked_deleted, c.locked_time, c.locked_by_id, '
                     . 'c.published, m.date_from_timestamp, m.date_to_timestamp';
