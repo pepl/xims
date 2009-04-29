@@ -5,6 +5,12 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
+
+<!DOCTYPE stylesheet [
+<!ENTITY  fromchars "'aÄäbcdefghijklmnoÖöpqrsßtuÜüvwxyz@„&quot;'">
+<!ENTITY    tochars "'AAABCDEFGHIJKLMNOOOPQRSSTUUUVWXYZ___'">
+]>
+
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common">
@@ -55,7 +61,7 @@
  
       <xsl:variable name="sortedpublications">
             <xsl:for-each select="/document/context/vlpublicationinfo/publication[object_count &gt; 0]">
-                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                <xsl:sort select="translate(name,&fromchars;,&tochars;)"
                           order="ascending"/>
                 <xsl:copy>
                     <xsl:copy-of select="*"/>
@@ -65,7 +71,7 @@
 
         <xsl:variable name="unmappedpublications">
             <xsl:for-each select="/document/context/vlpublicationinfo/publication[object_count = 0]">
-                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                <xsl:sort select="translate(name,&fromchars;,&tochars;)"
                           order="ascending"/>
                 <xsl:copy>
                     <xsl:copy-of select="*"/>
@@ -81,7 +87,7 @@
             </tr>
             <xsl:apply-templates select="exslt:node-set($sortedpublications)/publication[(position()-1) mod $publicationcolumns = 0]">
                 <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
-                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                <xsl:sort select="translate(name,&fromchars;,&tochars;)"
                           order="ascending"/>
             </xsl:apply-templates>
             <xsl:if test="count(/document/context/vlpublicationinfo/publication[object_count = 0])&gt;0">
@@ -92,7 +98,7 @@
               </tr>
               <xsl:apply-templates select="exslt:node-set($unmappedpublications)/publication[(position()-1) mod $publicationcolumns = 0]">
                 <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
-                <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                <xsl:sort select="translate(name,&fromchars;,&tochars;)"
                           order="ascending"/>               
               </xsl:apply-templates>
             </xsl:if>

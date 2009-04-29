@@ -258,10 +258,11 @@
                                                            ,last_modification_timestamp/second
                                                     )
                                     ) [$sb='date']
-                                  | exslt:node-set( translate( title
-                                                              ,'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-                                                              ,'abcdefghijklmnopqrstuvwxyz'
-                                                    )
+                                  | exslt:node-set( 
+                                        translate( title
+                                                  ,'aÄäbcdefghijklmnoÖöpqrsßtuÜüvwxyz@„&quot;'
+                                                  ,'AAABCDEFGHIJKLMNOOOPQRSSTUUUVWXYZ___'
+                                        )
                                     ) [$sb!='date']"
                             order="{$xsl.order}"/>
                 </xsl:apply-templates>
