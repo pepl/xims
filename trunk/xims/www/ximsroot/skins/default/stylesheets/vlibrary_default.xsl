@@ -5,12 +5,18 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
+
+<!DOCTYPE stylesheet [
+<!ENTITY  fromchars "'aÄäbcdefghijklmnoÖöpqrsßtuÜüvwxyz@„&quot;'">
+<!ENTITY    tochars "'AAABCDEFGHIJKLMNOOOPQRSSTUUUVWXYZ___'">
+]>
+
+
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:exslt="http://exslt.org/common"
-                extension-element-prefixes="exslt"
-                >
+                extension-element-prefixes="exslt">
 
   <xsl:import href="vlibrary_common.xsl"/>
 
@@ -74,7 +80,7 @@
   <xsl:template match="vlsubjectinfo">
     <xsl:variable name="sorteddistinctsubjects">
       <xsl:for-each select="/document/context/vlsubjectinfo/subject[object_count &gt; 0 and generate-id(id)=generate-id(key('subject_id',id)[1])]">
-        <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+        <xsl:sort select="translate(name,&fromchars;,&tochars;)"
                   order="ascending"/>
         <xsl:copy>
           <xsl:copy-of select="*"/>
@@ -84,9 +90,9 @@
 
     <xsl:variable name="unmappeddistinctsubjects">
       <xsl:for-each select="/document/context/vlsubjectinfo/subject[object_count = 0 and generate-id(id)=generate-id(key('subject_id',id)[1])]">
-        <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+        <xsl:sort select="translate(lastname,&fromchars;,&tochars;)"
                   order="ascending"/>
-        <xsl:sort select="translate(firstname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+        <xsl:sort select="translate(firstname,&fromchars;,&tochars;)"
                   order="ascending"/>
         <xsl:copy>
           <xsl:copy-of select="*"/>
@@ -102,7 +108,7 @@
       </tr>
       <xsl:apply-templates select="exslt:node-set($sorteddistinctsubjects)/subject[(position()-1) mod $subjectcolumns = 0]">
         <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
-        <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+        <xsl:sort select="translate(name,&fromchars;,&tochars;)"
                   order="ascending"/>
       </xsl:apply-templates>
 
@@ -114,9 +120,9 @@
         </tr>
         <xsl:apply-templates select="exslt:node-set($unmappeddistinctsubjects)/subject[(position()-1) mod $subjectcolumns = 0]">
           <!-- do not ask me why the second sorting is neccessary here ... 8-{ -->
-          <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+          <xsl:sort select="translate(lastname,&fromchars;,&tochars;)"
                     order="ascending"/>
-          <xsl:sort select="translate(firstname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+          <xsl:sort select="translate(firstname,&fromchars;,&tochars;)"
                     order="ascending"/>
         </xsl:apply-templates>
       </xsl:if>
