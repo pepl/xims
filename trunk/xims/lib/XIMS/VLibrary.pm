@@ -588,6 +588,10 @@ sub vlitems_byfilter {
     elsif ( $order eq "loctn" ) {
         $order = "d.location DESC";
     }
+    else {
+        # Whatever else in may be: ignore it.
+        $order = undef;
+    }
 
     my $limit  = delete $args{limit};
     my $offset = delete $args{offset};
@@ -707,6 +711,12 @@ sub _vlitems_byfilter_sql {
           . 'c.abstract, c.title, c.last_modification_timestamp, '
           . 'c.status, c.status_checked_timestamp, '
           . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
+    }
+
+    # SELECT DISTINCT requires the order item to be on the select list.
+    my $attr;
+    if ( ($attr) = split(q{ }, $order) and not $properties =~ /$attr/ ) {
+        $properties .= ", $attr";
     }
 
     # Select Tables
