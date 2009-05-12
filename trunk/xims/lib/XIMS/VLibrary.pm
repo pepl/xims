@@ -713,12 +713,6 @@ sub _vlitems_byfilter_sql {
           . 'c.marked_deleted, c.locked_time, c.locked_by_id, c.published';
     }
 
-    # SELECT DISTINCT requires the order item to be on the select list.
-    my $attr;
-    if ( ($attr) = split(q{ }, $order) and not $properties =~ /$attr/ ) {
-        $properties .= ", $attr";
-    }
-
     # Select Tables
     # create conditions and values
     my $tables     = 'ci_documents d, ci_content c';
@@ -784,6 +778,12 @@ sub _vlitems_byfilter_sql {
         XIMS::Debug( 6, "Text filter" );
         $conditions .= " AND " . $criteria{text};
         push @values, @{ $params{text} };
+    }
+
+    # SELECT DISTINCT requires the order item to be on the select list.
+    my $attr;
+    if ( ($attr) = split(q{ }, $order) and not $properties =~ /$attr/ ) {
+        $properties .= ", $attr";
     }
 
     if ( $filter_granted and not $self->User->admin() ) {
