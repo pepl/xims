@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer -- A .... doing bla, bla, bla. (short)
+XIMS::Importer
 
 =head1 VERSION
 
@@ -13,7 +13,7 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+The importer base class.
 
 =head1 SUBROUTINES/METHODS
 
@@ -31,8 +31,6 @@ use XIMS::ObjectType;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-
-
 =head2    $importer = XIMS::Importer->new( %param );
 
 =head3 Parameter
@@ -46,10 +44,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Description
 
-
 Constructor of the XIMS::Importer. It creates the Importer Class and
 initializes it.
-
 
 =cut
 
@@ -59,8 +55,8 @@ sub new {
     my %param = @_;
     my %data;
 
-    $data{Parent}     = $param{Parent}     if defined $param{Parent};
-    $data{User}       = $param{User}       if defined $param{User};
+    $data{Parent} = $param{Parent} if defined $param{Parent};
+    $data{User}   = $param{User}   if defined $param{User};
 
     # optional parameters
     $data{ObjectType} = $param{ObjectType} if defined $param{ObjectType};
@@ -70,8 +66,13 @@ sub new {
     $data{Chroot} = $param{Chroot} if defined $param{Chroot};
 
     unless ( exists $param{IgnoreCreatePriv} ) {
+
         # check if parent and user exist and user has create privileges...
-        if ( $data{Parent} and $data{Parent}->id() and $data{User} and $data{User}->id() ) {
+        if (    $data{Parent}
+            and $data{Parent}->id()
+            and $data{User}
+            and $data{User}->id() )
+        {
             my $privmask = $data{User}->object_privmask( $data{Parent} );
             return unless $privmask & XIMS::Privileges::CREATE();
         }
@@ -88,17 +89,17 @@ sub new {
 
 =cut
 
-sub data_provider { XIMS::DATAPROVIDER() }
+sub data_provider { return XIMS::DATAPROVIDER() }
 
 =head2 object()
 
 =cut
 
 sub object {
-    my $self = shift;
+    my $self   = shift;
     my $object = shift;
 
-    if ( $object ) {
+    if ($object) {
         $self->{Object} = $object;
         return 1;
     }
@@ -118,10 +119,10 @@ sub object {
 =cut
 
 sub object_type {
-    my $self = shift;
+    my $self        = shift;
     my $object_type = shift;
 
-    if ( $object_type ) {
+    if ($object_type) {
         $self->{ObjectType} = $object_type;
         return 1;
     }
@@ -135,10 +136,10 @@ sub object_type {
 =cut
 
 sub data_format {
-    my $self = shift;
+    my $self        = shift;
     my $data_format = shift;
 
-    if ( $data_format ) {
+    if ($data_format) {
         $self->{DataFormat} = $data_format;
         return 1;
     }
@@ -164,18 +165,19 @@ sub user { return shift->{User} }
 =cut
 
 sub object_from_object_type {
-    my $self = shift;
+    my $self        = shift;
     my $object_type = shift;
 
     $object_type ||= $self->object_type();
     return unless $object_type->isa('XIMS::ObjectType');
-
-    my $objclass = "XIMS::". $object_type->fullname();
+    ## no critic (ProhibitStringyEval)
+    my $objclass = "XIMS::" . $object_type->fullname();
     eval "require $objclass;";
-    if ( $@ ) {
+    if ($@) {
         XIMS::Debug( 3, "Could not load object class: $@" );
         return;
     }
+    ## use critic
     return $objclass->new( User => $self->user() );
 }
 
@@ -184,31 +186,44 @@ sub object_from_object_type {
 =cut
 
 sub import {
-    my $self = shift;
-    my $object = shift;
-    my $updateexisting = shift;
+    my $self               = shift;
+    my $object             = shift;
+    my $updateexisting     = shift;
     my $donotchecklocation = shift;
 
-    $self->object( $object ) if $object;
+    $self->object($object) if $object;
 
-    return $object->id() if ($object and $object->id());
+    return $object->id() if ( $object and $object->id() );
 
-    return unless ($object and $object->location());
-    $object->location( $self->check_location( $object->location(), $donotchecklocation ) ) ;
+    return unless ( $object and $object->location() );
+    $object->location(
+        $self->check_location( $object->location(), $donotchecklocation ) );
     $object->title( $object->location ) unless $object->title();
 
     # check if the same location already exists in the current container
     my $op = $object->parent;
     my $parent = $op ? $op : $self->parent;
-    if ( $parent->children( location => $object->location, marked_deleted => undef ) ) {
+    if ($parent->children(
+            location       => $object->location,
+            marked_deleted => undef )
+        )
+    {
+
         # overwrite the existing document, if we are told to do so
-        if ( $updateexisting ) {
-            my $oldobject = XIMS::Object->new( path => $parent->location_path() . '/' . $object->location(), marked_deleted => undef );
+        if ($updateexisting) {
+            my $oldobject = XIMS::Object->new(
+                path => $parent->location_path() . '/' . $object->location(),
+                marked_deleted => undef
+            );
 
             # check for update priv
-            my $privmask = $self->user->object_privmask( $oldobject );
-            if ( not ($privmask and $privmask & XIMS::Privileges::WRITE()) ) {
-                XIMS::Debug( 3, "missing update privileges for object '" . $oldobject->location_path() . "'" );
+            my $privmask = $self->user->object_privmask($oldobject);
+            if ( not( $privmask and $privmask & XIMS::Privileges::WRITE() ) )
+            {
+                XIMS::Debug( 3,
+                          "missing update privileges for object '"
+                        . $oldobject->location_path()
+                        . "'" );
                 return;
             }
 
@@ -218,7 +233,8 @@ sub import {
             foreach my $key ( keys %newdata ) {
                 $method = $key;
                 $method = 'body' if $key eq 'binfile';
-                $oldobject->$method( $newdata{$key} ) if defined $newdata{$key};
+                $oldobject->$method( $newdata{$key} )
+                    if defined $newdata{$key};
             }
             $oldobject->update( User => $self->user() );
             return $oldobject->id();
@@ -230,7 +246,7 @@ sub import {
     }
 
     $object->parent_id( $parent->document_id() );
-    $object->language_id( $parent->language_id() ) ;
+    $object->language_id( $parent->language_id() );
     my $id = $object->create();
     $self->default_grants();
 
@@ -243,12 +259,12 @@ sub import {
 
 sub check_location {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my $location = shift;
+    my $self               = shift;
+    my $location           = shift;
     my $donotchecklocation = shift;
 
     $location = ( split /[\\|\/]/, $location )[-1];
-    $location = $self->clean_location( $location ) unless $donotchecklocation;
+    $location = $self->clean_location($location) unless $donotchecklocation;
 
     #my $suffix = $self->object->data_format->suffix();
     #if ( defined $suffix and length $suffix ) {
@@ -267,15 +283,23 @@ sub check_location {
 
 sub resolve_filename {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
+    my $self     = shift;
     my $filename = shift;
 
     my ( $location, $suffix ) = ( $filename =~ m|(.*)\.(.*)$| );
     my ( $object_type, $data_format ) = $self->resolve_suffix( lc $suffix );
 
-    unless ( $object_type and $object_type->name() and $data_format and $data_format->name() ) {
+    unless ($object_type
+        and $object_type->name()
+        and $data_format
+        and $data_format->name() )
+    {
+
         # fallback value in case we could not resolve by suffix
-        return ( XIMS::ObjectType->new( fullname => 'File' ), XIMS::DataFormat->new( name => 'Binary' ) );
+        return (
+            XIMS::ObjectType->new( fullname => 'File' ),
+            XIMS::DataFormat->new( name     => 'Binary' )
+        );
     }
 
     return ( $object_type, $data_format );
@@ -287,53 +311,67 @@ sub resolve_filename {
 
 sub resolve_suffix {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
+    my $self   = shift;
     my $suffix = shift;
 
-    if ( not ( $self->{dataformatmap} and $self->{suffixmap} ) ) {
+    if ( not( $self->{dataformatmap} and $self->{suffixmap} ) ) {
         my %dataformatmap = ();
         foreach my $object_type ( $self->data_provider->object_types() ) {
-            my $object = $self->object_from_object_type( $object_type );
+            my $object = $self->object_from_object_type($object_type);
             next unless $object;
 
-            $dataformatmap{$object->data_format_id()} = $object_type if $object->data_format_id();
+            $dataformatmap{ $object->data_format_id() } = $object_type
+                if $object->data_format_id();
         }
+
         # !<its_a_hack_alarm>!
         my $htmldf = XIMS::DataFormat->new( name => 'HTML' );
-        $dataformatmap{$htmldf->id()} = XIMS::ObjectType->new( fullname => 'Document' );
+        $dataformatmap{ $htmldf->id() }
+            = XIMS::ObjectType->new( fullname => 'Document' );
         my $xmldf = XIMS::DataFormat->new( name => 'XML' );
-        $dataformatmap{$xmldf->id()} = XIMS::ObjectType->new( fullname => 'XML' );
+        $dataformatmap{ $xmldf->id() }
+            = XIMS::ObjectType->new( fullname => 'XML' );
         my $vlibitemdf = XIMS::DataFormat->new( name => 'DocBookXML' );
-        $dataformatmap{$vlibitemdf->id()} = XIMS::ObjectType->new( fullname => 'VLibraryItem::DocBookXML' );
+        $dataformatmap{ $vlibitemdf->id() }
+            = XIMS::ObjectType->new( fullname => 'VLibraryItem::DocBookXML' );
+
         # !</its_a_hack_alarm>
-        my $image_ot = XIMS::ObjectType->new( name => 'Image' ); # preload to avoid redundant instantiation in the loop
-        my $file_ot  = XIMS::ObjectType->new( name => 'File' );
+        my $image_ot = XIMS::ObjectType->new( name => 'Image' )
+            ;    # preload to avoid redundant instantiation in the loop
+        my $file_ot = XIMS::ObjectType->new( name => 'File' );
         my %suffixmap = ();
         foreach my $data_format ( $self->data_provider->data_formats() ) {
             next unless $data_format->suffix();
-            $suffixmap{$data_format->suffix()} = $data_format;
+            $suffixmap{ $data_format->suffix() } = $data_format;
+
             # Images and Files object types can have different data formats
             # Object Type File shall be our fallback value
-            if ( not $dataformatmap{$data_format->id()} and $data_format->mime_type() =~ /^image/ ) {
-                $dataformatmap{$data_format->id()} = $image_ot;
+            if ( not $dataformatmap{ $data_format->id() }
+                and $data_format->mime_type() =~ /^image/ )
+            {
+                $dataformatmap{ $data_format->id() } = $image_ot;
             }
-            elsif ( not $dataformatmap{$data_format->id()} ) {
-                $dataformatmap{$data_format->id()} = $file_ot;
+            elsif ( not $dataformatmap{ $data_format->id() } ) {
+                $dataformatmap{ $data_format->id() } = $file_ot;
             }
         }
 
         # suffix mappings for html.xy documents ( its_a_hack_alarm ^ 2 )
-        map { $suffixmap{$_} = XIMS::DataFormat->new( name => 'HTML' );
-              $suffixmap{$_}->{suffix}=$_ } qw(en de es it fr);
+        map {
+            $suffixmap{$_} = XIMS::DataFormat->new( name => 'HTML' );
+            $suffixmap{$_}->{suffix} = $_
+        } qw(en de es it fr);
 
         $self->{dataformatmap} = \%dataformatmap;
-        $self->{suffixmap} = \%suffixmap;
+        $self->{suffixmap}     = \%suffixmap;
     }
 
-    my $suffixmap = $self->{suffixmap};
+    my $suffixmap     = $self->{suffixmap};
     my $dataformatmap = $self->{dataformatmap};
-    my $data_format = $suffixmap->{$suffix} if $suffix;
-    my $object_type = $data_format ? $dataformatmap->{$data_format->id()} : undef;
+    my $data_format;
+    $data_format = $suffixmap->{$suffix} if $suffix;
+    my $object_type
+        = $data_format ? $dataformatmap->{ $data_format->id() } : undef;
 
     return ( $object_type, $data_format );
 }
@@ -344,20 +382,26 @@ sub resolve_suffix {
 
 sub default_grants {
     XIMS::Debug( 5, "called" );
-    my $self           = shift;
-    my $grantowneronly = shift;
+    my $self              = shift;
+    my $grantowneronly    = shift;
     my $grantdefaultroles = shift;
 
-    my $retval  = undef;
+    my $retval = undef;
 
     # grant the object to the current user
-    if ( $self->object->grant_user_privileges(
-                                         grantee  => $self->user(),
-                                         grantor  => $self->user(),
-                                         privmask => XIMS::Privileges::MODIFY()|XIMS::Privileges::PUBLISH()
-                                       )
-       ) {
-        XIMS::Debug( 6, "granted user " . $self->user->name . " default privs on " . $self->object->id() );
+    if ($self->object->grant_user_privileges(
+            grantee  => $self->user(),
+            grantor  => $self->user(),
+            privmask => XIMS::Privileges::MODIFY()
+                | XIMS::Privileges::PUBLISH()
+        )
+        )
+    {
+        XIMS::Debug( 6,
+                  "granted user "
+                . $self->user->name
+                . " default privs on "
+                . $self->object->id() );
         $retval = 1;
     }
     else {
@@ -365,28 +409,38 @@ sub default_grants {
         return 0;
     }
 
-    # TODO: through the user-interface the user should be able to decide if all the roles he
-    # is member of (and not only his default roles) should get read-access or not
+    # TODO: through the user-interface the user should be able to decide if
+    # all the roles he is member of (and not only his default roles) should
+    # get read-access or not
     if ( defined $retval and not $grantowneronly ) {
+
         # copy the grants of the parent
-        my @object_privs = map { XIMS::ObjectPriv->new->data( %{$_} ) } $self->data_provider->getObjectPriv( content_id => $self->parent->id() );
-        foreach my $priv ( @object_privs ) {
+        my @object_privs
+            = map { XIMS::ObjectPriv->new->data( %{$_} ) }
+            $self->data_provider->getObjectPriv(
+            content_id => $self->parent->id() );
+        foreach my $priv (@object_privs) {
             $self->object->grant_user_privileges(
-                                        grantee   => $priv->grantee_id(),
-                                        grantor   => $self->user(),
-                                        privmask  => $priv->privilege_mask(),
-                                    )
+                grantee  => $priv->grantee_id(),
+                grantor  => $self->user(),
+                privmask => $priv->privilege_mask(),
+            );
         }
 
         if ( defined $grantdefaultroles ) {
-            my @roles = $self->user->roles_granted( default_role => 1 ); # get granted default roles
-            foreach my $role ( @roles ) {
+            my @roles = $self->user->roles_granted( default_role => 1 )
+                ;    # get granted default roles
+            foreach my $role (@roles) {
                 $self->object->grant_user_privileges(
-                                                     grantee  => $role,
-                                                     grantor  => $self->user(),
-                                                     privmask => XIMS::Privileges::VIEW()
-                                                    );
-                XIMS::Debug( 6, "granted role " . $role->name . " view privs on " . $self->object->id()  );
+                    grantee  => $role,
+                    grantor  => $self->user(),
+                    privmask => XIMS::Privileges::VIEW()
+                );
+                XIMS::Debug( 6,
+                          "granted role "
+                        . $role->name
+                        . " view privs on "
+                        . $self->object->id() );
             }
         }
     }
@@ -399,70 +453,72 @@ sub default_grants {
 =cut
 
 sub clean_location {
-    my $self = shift;
+    my $self     = shift;
     my $location = shift;
-    my %escapes = (
-                   ' '  =>  '_',
-                   'ö'  =>  'oe',
-                   'ø'  =>  'oe',
-                   'Ö'  =>  'Oe',
-                   'Ø'  =>  'Oe',
-                   'ä'  =>  'ae',
-                   'Ä'  =>  'Ae',
-                   'ü'  =>  'ue',
-                   'Ü'  =>  'Ue',
-                   'ß'  =>  'ss',
-                   'á'  =>  'a',
-                   'à'  =>  'a',
-                   'å'  =>  'a',
-                   'Á'  =>  'A',
-                   'À'  =>  'A',
-                   'Å'  =>  'A',
-                   'é'  =>  'e',
-                   'ê'  =>  'e',
-                   'è'  =>  'e',
-                   'É'  =>  'E',
-                   'Ê'  =>  'E',
-                   'È'  =>  'E',
-                   'ñ'  =>  'gn',
-                   'Ñ'  =>  'Gn',
-                   'ó'  =>  'o',
-                   'ò'  =>  'o',
-                   'ô'  =>  'o',
-                   'Ò'  =>  'O',
-                   'Ó'  =>  'O',
-                   'Ô'  =>  'O',
-                   '§'  =>  '_',
-                   "\$" =>  '_',
-                   "\%" =>  '_',
-                   '&'  =>  '_',
-                   '/'  =>  '_',
-                   '\\' =>  '_',
-                   '='  =>  '_',
-                   '?'  =>  '',
-                   '!'  =>  '',
-                   '`'  =>  '_',
-                   '´'  =>  '_',
-                   '*'  =>  '_',
-                   '+'  =>  '_',
-                   '~'  =>  '_',
-                   "'"  =>  '_',
-                   '"'  =>  '_',
-                   '#'  =>  '_',
-                   '|'  =>  '_',
-                   '°'  =>  '_',
-                   ','  =>  '',
-                   ';'  =>  '',
-                   ':'  =>  ''
-                  );
+    my %escapes  = (
+        ' '  => '_',
+        'ö' => 'oe',
+        'ø' => 'oe',
+        'Ö' => 'Oe',
+        'Ø' => 'Oe',
+        'ä' => 'ae',
+        'Ä' => 'Ae',
+        'ü' => 'ue',
+        'Ü' => 'Ue',
+        'ß' => 'ss',
+        'á' => 'a',
+        'à' => 'a',
+        'å' => 'a',
+        'Á' => 'A',
+        'À' => 'A',
+        'Å' => 'A',
+        'é' => 'e',
+        'ê' => 'e',
+        'è' => 'e',
+        'É' => 'E',
+        'Ê' => 'E',
+        'È' => 'E',
+        'ñ' => 'gn',
+        'Ñ' => 'Gn',
+        'ó' => 'o',
+        'ò' => 'o',
+        'ô' => 'o',
+        'Ò' => 'O',
+        'Ó' => 'O',
+        'Ô' => 'O',
+        '§' => '_',
+        "\$" => '_',
+        "\%" => '_',
+        '&'  => '_',
+        '/'  => '_',
+        '\\' => '_',
+        '='  => '_',
+        '?'  => '',
+        '!'  => '',
+        '`'  => '_',
+        '´' => '_',
+        '*'  => '_',
+        '+'  => '_',
+        '~'  => '_',
+        "'"  => '_',
+        '"'  => '_',
+        '#'  => '_',
+        '|'  => '_',
+        '°' => '_',
+        ','  => '',
+        ';'  => '',
+        ':'  => ''
+    );
 
     my $badchars = join "", keys %escapes;
     $location =~ s/
                     ([$badchars])     # more flexible :)
                   /
                     $escapes{$1}
-                  /segx;              # *coff*
-    XIMS::Config::LowerCaseLocations() ? return lc($location) : return $location;
+                  /segx;    # *coff*
+    return XIMS::Config::LowerCaseLocations()
+           ?  lc($location)
+           :  $location;
 }
 
 1;
@@ -471,21 +527,8 @@ __END__
 
 =head1 DIAGNOSTICS
 
-Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
+Look at the F<error_log> file or the xims_importer scripts output for
+messages.
 
 =head1 BUGS AND LIMITATION
 
