@@ -462,7 +462,6 @@ sub clean_location {
                   /
                     $escapes{$1}
                   /segx;              # *coff*
-    $location =~ s/_+/_/g;
     XIMS::Config::LowerCaseLocations() ? return lc($location) : return $location;
 }
 
