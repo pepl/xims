@@ -13,7 +13,8 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module derives from CGI::XMLApplication. Most common events and helper
+methods used in XIMS' CGI classes are implemented here.
 
 =head1 EVENT METHODS
 
@@ -123,7 +124,7 @@ sub event_init {
             parent_id   => $parent->document_id(),
             language_id => $parent->language_id(),
         );
-
+        ## no critic (ProhibitStringyEval)
         my $class = 'XIMS::' . $objtype;
         eval "require $class";
         if ($@) {
@@ -131,6 +132,7 @@ sub event_init {
             $self->sendError( $ctxt, "Can't find the object class: " . $@ );
             return $self->sendEvent('error');
         }
+        ## use critic
         $ctxt->object( $class->new( %obj, User => $ctxt->session->user ) );
     }
     else {
@@ -573,6 +575,7 @@ HTML Document snippet to close thickbox window
 =head3 Description
 
 =cut
+
 sub close_thickbox {
     my ($self, $refresh_parent) = @_;
 
@@ -1026,12 +1029,13 @@ sub resolve_content {
 
     $ctxt->sax_filter( [] ) unless defined $ctxt->sax_filter();
 
+    ## no critic (ProhibitStringyEval)
     eval "require XIMS::SAX::Filter::ContentIDPathResolver;";
     if ($@) {
         XIMS::Debug( 2, "could not load ContentIDPathResolver: $@" );
         return 0;
     }
-
+    ## use critic
     my %args = (
         Provider       => $ctxt->data_provider(),
         ResolveContent => $list,
@@ -1064,13 +1068,13 @@ sub resolve_user {
     return unless defined $list and scalar @$list;
 
     $ctxt->sax_filter( [] ) unless defined $ctxt->sax_filter();
-
+    ## no critic (ProhibitStringyEval)
     eval "require XIMS::SAX::Filter::UserIDNameResolver;";
     if ($@) {
         XIMS::Debug( 2, "could not load UserIDNameResolver: $@" );
         return 0;
     }
-
+    ## use critic
     push(
         @{ $ctxt->sax_filter() },
         XIMS::SAX::Filter::UserIDNameResolver->new(
@@ -1814,7 +1818,7 @@ sub event_trashcan {
         return 0;
     }
 
-    my $force_trash = 1 if $self->param('forcetrash');
+    my $force_trash; $force_trash = 1 if $self->param('forcetrash');
     my @chldinfo    = $object->descendant_count();
     my $diffobject  = XIMS::Object->new(
         location  => '.diff_to_second_last',
@@ -1913,7 +1917,7 @@ sub event_delete {
         return 0;
     }
 
-    my $force_delete = 1 if $self->param('forcedelete');
+    my $force_delete; $force_delete = 1 if $self->param('forcedelete');
     my @chldinfo     = $object->descendant_count();
     my $diffobject   = XIMS::Object->new(
         location  => '.diff_to_second_last',
@@ -2220,8 +2224,8 @@ sub event_copy {
     return $self->event_access_denied($ctxt)
         unless $current_user_object_priv & XIMS::Privileges::COPY();
 
-    my $recursivecopy = 1 if $self->param('recursivecopy');
-    my $confirmcopy   = 1 if $self->param('confirmcopy');
+    my $recursivecopy; $recursivecopy = 1 if $self->param('recursivecopy');
+    my $confirmcopy;   $confirmcopy   = 1 if $self->param('confirmcopy');
     my @chldinfo   = $object->descendant_count();
 
     if (   $confirmcopy == 1
@@ -2948,8 +2952,10 @@ sub event_obj_aclgrant {
                 my $lcname = 'acl_' . lc($priv);
                 if ( $self->param($lcname) ) {
                     {
+                        ## no critic (ProhibitNoStrict)
                         no strict 'refs';
                         $bitmask += &{"XIMS::Privileges::$priv"}();
+                        ## use strict
                     }
                 }
             }
@@ -3463,6 +3469,7 @@ sub event_search {
             return 0;
         }
 
+        ## no critic (ProhibitStringyEval)
         $qbdriver = 'XIMS::QueryBuilder::' . $qbdriver . XIMS::QBDRIVER();
 
         eval "require $qbdriver";    #
@@ -3473,6 +3480,7 @@ sub event_search {
                 "QueryBuilder-Driver could not be found!");
             return 0;
         }
+        ## use critic
 
         # Make sure the utf8 flag is turned on for handling the allowed
         # chars regex
