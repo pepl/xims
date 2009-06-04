@@ -3,7 +3,7 @@
 # according to Damian Conway's own personal recommendations.  Feel free to
 # use this as your own, or make modifications.
 ##############################################################################
-severity = 4
+severity = 5
 
 
 [Perl::Critic::Policy::BuiltinFunctions::ProhibitLvalueSubstr]
@@ -16,7 +16,7 @@ severity   = 1
 severity   = 5
 
 [Perl::Critic::Policy::BuiltinFunctions::ProhibitStringyEval]
-severity   = 5
+severity   = 4
 
 [Perl::Critic::Policy::BuiltinFunctions::ProhibitStringySplit]
 severity   = 2
@@ -202,7 +202,7 @@ severity   = 4
 severity   = 3
 
 [Perl::Critic::Policy::Subroutines::RequireFinalReturn]
-severity   = 5
+severity   = 4
 
 [Perl::Critic::Policy::TestingAndDebugging::ProhibitNoStrict]
 severity   = 5
