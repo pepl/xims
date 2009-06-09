@@ -162,8 +162,6 @@ sub HOME {
 
 =item AUTHSERVER()
 
-=item PROXYIP()
-
 =item CONTENTINTERFACE()
 
 =item DBMS()
@@ -228,8 +226,6 @@ sub XIMSROOT                  { return $_CONFIG_->ApacheDocumentRoot()
 sub AUTHSTYLE                 { return $_CONFIG_->AuthStyle(); }
 
 sub AUTHSERVER                { return $_CONFIG_->AuthServer(); }
-
-sub PROXYIP                   { return $_CONFIG_->ProxyIP(); }
 
 sub CONTENTINTERFACE          { return "/" . $_CONFIG_->ContentInterface(); }
 
@@ -758,36 +754,6 @@ sub is_notutf8 {
 }
 
 
-
-=head2 is_known_proxy()
-
-=head3 Parameter
-
-    $remote_host: IP-address.
-
-=head3 Returns
-
-    1 or nothing.
-
-=head3 Description
-
-    XIMS::is_known_proxy( $remote_host )
-
-Compares the given IP-Adress to the configured known proxyservers. Returns 1
-on success, nothing otherwise.
-
-=cut
-
-sub is_known_proxy {
-    my $remote_host = shift;
-
-    map { return 1 if defined $_ and $remote_host eq $_ } PROXYIP();
-
-    return;
-}
-
-
-
 =head2 via_proxy_test()
 
 =head3 Parameter
@@ -810,10 +776,10 @@ the one from the X-Forwarded-For header, and flag the request in pnotes.
 sub via_proxy_test {
     my $r = shift;
 
-    if ( my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/
-        and is_known_proxy( $r->connection->remote_ip() ) ) {
+    if ( $r->dir_config('ximsTrustProxyHeaders')
+        and my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/ )
+    {
         $r->connection->remote_ip($ip);
-        $r->pnotes( 'VALID_PROXY' => 1 );
         XIMS::Debug( 6, "Remote IP taken from X-Forwarded-For-header\n" );
     }
     $r->pnotes( 'PROXY_TEST' => 1 );
@@ -840,9 +806,9 @@ Determines the server url from the following sources:
 If the ximsServerURL Apache dir config variable has a value, use that.
 
 If ximsServerURL is I<not> present: Either deduce the value from the
-X-Forwarded-Host and X-SSL-Connection request headers in case the request
-origins from a configured proxy (see: is_known_proxy()); otherwise use the
-parsed Apache::URI of the current frontend request as source.
+X-Forwarded-Host and X-SSL-Connection request headers in case we are
+configured to trust proxy headers; otherwise use the parsed Apache::URI of the
+current frontend request as source.
 
 =cut
 
@@ -857,9 +823,9 @@ sub get_server_url {
         my $hostinfo;
         my $scheme;
 
-        # test if we are called through a known proxy, set serverurl and URI
+        # test if we are supposed to trust proxy headers, set serverurl and URI
         # scheme accordingly
-        if ( $r->pnotes('VALID_PROXY') ) {
+        if ($r->dir_config('ximsTrustProxyHeaders') ) {
             $hostinfo = ( length $r->headers_in->{'X-Forwarded-Host'} )
                       ? $r->headers_in->{'X-Forwarded-Host'}
                       : $uri->hostinfo();
