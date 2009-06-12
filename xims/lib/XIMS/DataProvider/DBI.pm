@@ -888,7 +888,7 @@ sub _get_descendant_sql {
             push( @binds, $maxlevel + 1 );
         }
         $orderby = "ORDER SIBLINGS BY position" unless defined $noorder;
-        return ["SELECT $properties FROM ci_content c, (SELECT level AS l, ci_documents.* FROM ci_documents START WITH id = ? CONNECT BY PRIOR id = parent_id $levelcond AND id != parent_id $orderby) d WHERE c.document_id = d.id AND l > 1", @binds];
+        return ["SELECT /*+ ALL_ROWS */ $properties FROM ci_content c, (SELECT level AS l, ci_documents.* FROM ci_documents START WITH id = ? CONNECT BY PRIOR id = parent_id $levelcond AND id != parent_id $orderby) d WHERE c.document_id = d.id AND l > 1", @binds];
     }
     else {
         XIMS::Debug( 1, "Unsupported RDBMSClass!" );
