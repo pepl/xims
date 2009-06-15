@@ -108,6 +108,9 @@ INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask,
 -- add public user
 INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'public', 'public', 1, 1, 1);
 
+-- an implicit role for everyone BUT the public user
+INSERT INTO CI_USERS_ROLES ( id, name, lastname, object_type, system_privs_mask, enabled ) VALUES ( USR_SEQ.NEXTVAL, 'authenticated', 'Authenticated users', 1, 0, 1);
+
 -- grant roles
 -- grant 'xgu' and 'admin' their default roles 'guests' and 'admins'
 INSERT INTO CI_ROLES_GRANTED ( id, grantor_id, grantee_id, default_role ) VALUES ( 3, 2, 1, 1 );
