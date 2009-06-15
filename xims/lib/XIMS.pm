@@ -176,6 +176,8 @@ sub HOME {
 
 =item PUBLICUSERID()
 
+=item AUTHENTICATEDUSERROLEID()
+
 =item AUTOINDEXFILENAME()
 
 =item AUTOINDEXEXPORTSTYLESHEET()
@@ -246,6 +248,8 @@ sub DBENCODING {
 sub UIFALLBACKLANG            { return $_CONFIG_->UIFallbackLang(); }
 
 sub PUBLICUSERID              { return $_CONFIG_->PublicUserID(); }
+
+sub AUTHENTICATEDUSERROLEID   { return $_CONFIG_->AuthenticatedUserRoleID(); }
 
 sub AUTOINDEXFILENAME         { return $_CONFIG_->AutoIndexFilename(); }
 
