@@ -139,10 +139,19 @@
         <FallbackStartPath>/xims</FallbackStartPath>
 
         <!--
-        # Used for the /gopublic interface; default value comes from default_data.sql
-        # Do not change unless you know what you are doing!
+        The implicit user for the /gopublic interface; the default
+        value comes from default_data.sql If you are upgrading an
+        existing system, make sure this is set to a useful value!
         -->
         <PublicUserID>6</PublicUserID>
+
+        <!--
+        Everyone but the public user has this implicit role. The
+        default value comes from default_data.sql. If you are
+        upgrading an existing system, make sure this is set to a
+        useful value!
+        -->
+        <AuthenticatedUserRoleID>7</AuthenticatedUserRoleID>
 
         <!--
         # Optionally set a custom DBI specific QueryBuilder Driver.
