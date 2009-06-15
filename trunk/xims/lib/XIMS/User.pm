@@ -255,6 +255,7 @@ sub role_ids {
 
     my @current_ids = ();
     push @current_ids, $self->id();
+
     my %id_list;
 
     my $conditions = {};
@@ -282,6 +283,13 @@ sub role_ids {
     }
 
     @role_ids = keys %id_list;
+
+    # everyone but the public user has the implicit role
+    # XIMS:AUTHENTICATED_USER
+    if ( $self->id() != XIMS::PUBLICUSERID() ) {
+        push @role_ids, XIMS::AUTHENTICATEDUSERROLEID();
+    }
+
 
     # cache role ids if no args are given
     $self->{role_ids} = \@role_ids if keys %args == 0;
