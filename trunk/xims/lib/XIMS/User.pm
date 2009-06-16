@@ -233,10 +233,10 @@ sub bookmarks {
     return wantarray ? @bookmarks : $bookmarks[0];
 }
 
-# returns a list of all the roles that the
-# user is a member of (*not* including his/her own id).
-
 =head2 role_ids()
+
+returns a list of all the roles that the
+user is a member of (*not* including his/her own id).
 
 =cut
 
@@ -286,10 +286,10 @@ sub role_ids {
 
     # everyone but the public user has the implicit role
     # XIMS:AUTHENTICATED_USER
-    if ( $self->id() != XIMS::PUBLICUSERID() ) {
+    if ( keys %args == 0
+        and $self->id() != XIMS::PUBLICUSERID() ) {
         push @role_ids, XIMS::AUTHENTICATEDUSERROLEID();
     }
-
 
     # cache role ids if no args are given
     $self->{role_ids} = \@role_ids if keys %args == 0;
@@ -307,7 +307,9 @@ sub roles_granted {
     my %args = @_;
 
     my @role_ids = $self->role_ids(%args);
+
     return () unless scalar(@role_ids) > 0;
+
     my @roles_data = $self->data_provider->getUser( id => \@role_ids );
     my @roles = map { XIMS::User->new->data( %{$_} ) } @roles_data;
 
