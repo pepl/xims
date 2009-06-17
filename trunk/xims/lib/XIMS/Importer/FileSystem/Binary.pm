@@ -33,13 +33,13 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 sub handle_data {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
+    my $self     = shift;
     my $location = shift;
 
-    my $object = $self->SUPER::handle_data( $location );
+    my $object = $self->SUPER::handle_data($location);
 
-    my $data = $self->get_binref( $location );
-    $object->body( $$data );
+    my $data = $self->get_binref($location);
+    $object->body($$data);
     undef $data;
 
     return $object;
@@ -52,15 +52,16 @@ sub handle_data {
 sub get_binref {
     my $self = shift;
     my $file = shift;
-    open(my $FILE, '<', $file) || die "could not open $file: $!";
+    open( my $FILE, '<', $file ) || die "could not open $file: $!";
+
     # switch off perls auto encoding
     binmode($FILE);
     my $contents;
-    while (read($FILE, my $buff, 16 * 2**10)) {
-      $contents .= $buff;
+    while ( read( $FILE, my $buff, 16 * 2**10 ) ) {
+        $contents .= $buff;
     }
     close $FILE;
-    return \$contents
+    return \$contents;
 }
 
 __END__

@@ -40,15 +40,15 @@ my %parsed_files;
 =cut
 
 sub import {
-    my $self = shift;
-    my $location = shift;
+    my $self           = shift;
+    my $location       = shift;
     my $updateexisting = shift;
     return unless $location;
 
-    my $importer = $self->resolve_importer( $location );
+    my $importer = $self->resolve_importer($location);
     return unless $importer;
 
-    my $object = $importer->handle_data( $location );
+    my $object = $importer->handle_data($location);
 
     return $self->SUPER::import( $object, $updateexisting );
 }
@@ -59,16 +59,16 @@ sub import {
 
 sub handle_data {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
+    my $self     = shift;
     my $location = shift;
 
     my $object = $self->object();
-    $object->location( $location );
-    $object->parent_id( $self->parent_by_location( $location )->document_id() );
+    $object->location($location);
+    $object->parent_id( $self->parent_by_location($location)->document_id() );
     $object->data_format_id( $self->data_format->id() );
 
     # Parse information from published metadata files if available
-    $self->handle_container_metadata( $object );
+    $self->handle_container_metadata($object);
 
     return $object;
 }
@@ -79,10 +79,10 @@ sub handle_data {
 
 sub parent_by_location {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
+    my $self     = shift;
     my $location = shift;
 
-    my $dirname = dirname($location);
+    my $dirname   = dirname($location);
     my $plocation = $self->parent->location_path();
 
     # for absolute paths, look for a virtual chroot parameter
@@ -94,7 +94,7 @@ sub parent_by_location {
         $plocation .= '/' . $dirname;
     }
 
-    $plocation = '/root' unless (defined $plocation and $plocation);
+    $plocation = '/root' unless ( defined $plocation and $plocation );
 
     return XIMS::Object->new( path => lc($plocation) );
 }
@@ -105,21 +105,28 @@ sub parent_by_location {
 
 sub resolve_location {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
+    my $self     = shift;
     my $location = shift;
     XIMS::Debug( 6, "location: $location" );
 
     if ( -l $location ) {
-        return ( XIMS::ObjectType->new( name => 'SymbolicLink' ), XIMS::DataFormat->new( name => 'SymbolicLink' ) );
+        return (
+            XIMS::ObjectType->new( name => 'SymbolicLink' ),
+            XIMS::DataFormat->new( name => 'SymbolicLink' )
+        );
     }
     elsif ( -f $location ) {
         return $self->resolve_filename( basename($location) );
     }
     elsif ( -d $location ) {
-        return ( XIMS::ObjectType->new( name => 'Folder' ), XIMS::DataFormat->new( name => 'Container' ) );
+        return (
+            XIMS::ObjectType->new( name => 'Folder' ),
+            XIMS::DataFormat->new( name => 'Container' )
+        );
     }
     else {
-        die "could not resolve location '$location'. (we should not get there)";
+        die
+            "could not resolve location '$location'. (we should not get there)";
     }
 }
 
@@ -129,26 +136,26 @@ sub resolve_location {
 
 sub resolve_importer {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
+    my $self     = shift;
     my $location = shift;
     return unless $location;
 
-    my ($object_type, $data_format) = $self->resolve_location( $location );
+    my ( $object_type, $data_format ) = $self->resolve_location($location);
     my $impclass = "XIMS::Importer::FileSystem::" . $object_type->fullname();
     ## no critic (ProhibitStringyEval)
     eval "require $impclass;";
-    if ( $@ ) {
-        XIMS::Debug( 3 , "Could not load importer class: $@" );
+    if ($@) {
+        XIMS::Debug( 3, "Could not load importer class: $@" );
         return;
     }
     ## use critic
-    my $importer = $impclass->new( Provider => $self->data_provider(),
-                                   Parent => $self->parent(),
-                                   User => $self->user(),
+    my $importer = $impclass->new( Provider   => $self->data_provider(),
+                                   Parent     => $self->parent(),
+                                   User       => $self->user(),
                                    ObjectType => $object_type,
                                    DataFormat => $data_format,
-                                   Chroot => $self->{Chroot},
-                                   );
+                                   Chroot     => $self->{Chroot},
+                   );
 
     return $importer;
 }
@@ -181,33 +188,42 @@ sub handle_container_metadata {
     my $basexpath;
     my $metadata_filename;
     if ( $self->data_format->name() eq 'Container' ) {
-        $metadata_filename =  $object->location() . '/' . basename $object->location() . '.container.xml';;
+        $metadata_filename
+            = $object->location() . '/'
+            . basename $object->location()
+            . '.container.xml';
         $basexpath = '/document/context/object';
     }
     else {
-        $metadata_filename =  substr($object->parent->location_path_relative(),1) . '/' . basename $object->parent->location() . '.container.xml';;
+        $metadata_filename
+            = substr( $object->parent->location_path_relative(), 1 ) . '/'
+            . basename $object->parent->location()
+            . '.container.xml';
         $basexpath = '/document/context/object/children/object';
     }
 
     return unless -R $metadata_filename;
 
-    my $doc = $self->parse_file( $metadata_filename );
+    my $doc = $self->parse_file($metadata_filename);
     return unless defined $doc;
 
-    my $location_path = $object->parent->location_path() . '/' . basename $object->location();
+    my $location_path = $object->parent->location_path()
+        . '/'
+        . basename $object->location();
     my %importmap = (
-        title      => $basexpath."[location_path='$location_path']/title",
-        keywords   => $basexpath."[location_path='$location_path']/keywords",
-        abstract   => $basexpath."[location_path='$location_path']/abstract",
-        attributes => $basexpath."[location_path='$location_path']/attributes",
+        title      => $basexpath . "[location_path='$location_path']/title",
+        keywords   => $basexpath . "[location_path='$location_path']/keywords",
+        abstract   => $basexpath . "[location_path='$location_path']/abstract",
+        attributes => $basexpath . "[location_path='$location_path']/attributes",
         # TODO: maybe position-, user-, time- metadata here too?
-                    );
+    );
 
     foreach my $field ( keys %importmap ) {
         my $value = $doc->findvalue( $importmap{$field} );
         if ( defined $value and length $value ) {
+
             #warn "$field is $value";
-            $object->$field( $value );
+            $object->$field($value);
         }
     }
 
@@ -222,7 +238,8 @@ sub get_strref {
     my $self = shift;
     my $file = shift;
     local $/;
-    die "could not open $file: $!" unless -R $file and open (my $INPUT, '<', $file);
+    die "could not open $file: $!"
+        unless -R $file and open( my $INPUT, '<', $file );
     my $contents = <$INPUT>;
     close $INPUT;
     return \$contents;
@@ -242,10 +259,10 @@ sub parse_file {
     my $parser = XML::LibXML->new();
     my $doc;
     eval {
-        $doc = $parser->parse_file( $filename );
+        $doc = $parser->parse_file($filename);
         XIMS::Debug( 4, "Parsed $filename" );
     };
-    if ( $@ ) {
+    if ($@) {
         XIMS::Debug( 3, "Could not parse: $@" );
         return;
     }
