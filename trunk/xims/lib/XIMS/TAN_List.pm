@@ -117,16 +117,15 @@ sub create_TANs {
 
     my %tanlist;
     my $tanlist;
-    my $key;
     my $TAN_length = 8; # Length of created TANs
     my @TAN_charpool = qw( 1 2 3 4 5 6 7 8 9 ); # Characters/Numbers which the TAN is build of
     my $TAN;
-    my $i;
+
     srand();
 
     while ( $number ) {
         $TAN = '';
-        for ($i = $TAN_length; $i > 0; $i--) {
+        for (my $i = $TAN_length; $i > 0; $i--) {
             $TAN .= $TAN_charpool[ rand( @TAN_charpool ) ];
         }
         redo if $tanlist{$TAN}; # if TAN already exists redo creation of TAN
@@ -134,7 +133,7 @@ sub create_TANs {
         $number--;
     }
 
-    foreach $key ( keys( %tanlist ) ) {
+    foreach my $key ( keys( %tanlist ) ) {
         if ( $tanlist ) {
             $tanlist .= ",$key";
         }

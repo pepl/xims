@@ -774,6 +774,9 @@ sub set_answer_error {
     return 1
 }
 
+# don't know why Joachim put prototypes on these four subs...
+## no critic (ProhibitSubroutinePrototypes)
+
 =head2 kioskmode()
 
 =cut
@@ -822,30 +825,36 @@ sub tan_needed () {
 =cut
 
 sub tan_ok() {
-    XIMS::Debug( 5, "called");
-    my ($self, $tan) = @_;
+    XIMS::Debug( 5, "called" );
+    my ( $self, $tan ) = @_;
 
-    my $tan_ok = 0;
+    my $tan_ok        = 0;
     my $questionnaire = $self->questionnaire_dom();
+
     # get TAN-Lists from Questionnaire
-    my @nodes = $questionnaire->findnodes( "/questionnaire/tanlist" );
+    my @nodes = $questionnaire->findnodes("/questionnaire/tanlist");
+
     # look if TAN is in one of the TAN-Lists
     # for each TAN-List look if given TAN is in it
-    my $tan_listnode;
     my $TAN_List;
     my $a_single_tan;
-    foreach $tan_listnode ( @nodes ) {
-        my $TAN_List = XIMS::TAN_List->new( document_id => $tan_listnode->getAttribute("id"), marked_deleted => undef );
+    foreach my $tan_listnode (@nodes) {
+        $TAN_List = XIMS::TAN_List->new(
+            document_id    => $tan_listnode->getAttribute("id"),
+            marked_deleted => undef
+        );
         next unless defined $TAN_List;
         $a_single_tan = "," . $TAN_List->body() . ",";
-        last if $tan_ok = ($a_single_tan =~ /,$tan,/ );
+        last if $tan_ok = ( $a_single_tan =~ /,$tan,/ );
     }
 
     # Return result
     return $tan_ok;
 }
 
-=head2 store_result()
+## use critic
+
+=head2 store_result
 
 =cut
 
@@ -980,18 +989,20 @@ sub _create_children {
 }
 
 sub _make_element {
-    my ($element, $id, $comment, $alignment, $type, $titles) = @_;
+    my ( $element, $id, $comment, $alignment, $type, $titles ) = @_;
 
-    XIMS::Debug ( 6, "Making Element with values: $element, $id, $comment, $alignment, $type, $titles");
-    $element = XML::LibXML::Element->new( $element );
-    my @titles = split (/####/, $titles);
-    my $title;
-    foreach $title ( @titles ) {
-        $element->appendTextChild ("title", $title );
+    XIMS::Debug( 6,
+        "Making Element with values: $element, $id, $comment, $alignment, $type, $titles"
+    );
+    $element = XML::LibXML::Element->new($element);
+    my @titles = split( /####/, $titles );
+
+    foreach my $title (@titles) {
+        $element->appendTextChild( "title", $title );
     }
-    $element->appendTextChild ("comment",  $comment );
-    $element->setAttribute( "id", $id );
-    $element->setAttribute( "type", $type );
+    $element->appendTextChild( "comment", $comment );
+    $element->setAttribute( "id",        $id );
+    $element->setAttribute( "type",      $type );
     $element->setAttribute( "alignment", $alignment );
 
     return $element;
@@ -1142,54 +1153,65 @@ into the xml-structure
 =cut
 
 sub set_results {
-    XIMS::Debug( 5, "called");
-    my $self = shift;
-    my %args = @_;
+    XIMS::Debug( 5, "called" );
+    my $self     = shift;
+    my %args     = @_;
     my $answered = 1;
-    $answered = 0 if defined $args{full_text_answers} and $args{full_text_answers} == 1;
+    $answered = 0
+        if defined $args{full_text_answers} and $args{full_text_answers} == 1;
 
     my $questionnaire = $self->questionnaire_dom();
     my $result_object = XIMS::QuestionnaireResult->new();
     my $answer_nodes;
-    my $answer_node;
     my $title_nodes;
-    my $title_node;
-    $answer_nodes = $questionnaire->find( '//answer' );
-    #step through each answer
-    foreach $answer_node ( $answer_nodes->get_nodelist() ) {
-    # if answer type is "Checkbox", "Radio" or "Select" step through each title and get the answer count
-    my $title_nodes = $answer_node->find( 'title' );
-    my $question_id = $answer_node->findvalue( '@id' );
-    my $answer_type = $answer_node->findvalue( '@type' );
-    if (! ( $answer_type =~ /^Text/ ) ) {
-        foreach $title_node ( $title_nodes->get_nodelist() ) {
-            my $answer = $title_node->textContent();
-            my $answer_count = $result_object->get_answer_count( $self->document_id(), $question_id, $answer);
-            $title_node->setAttribute( 'count', $answer_count );
-        }
-    }
-    else {
-        # if answer type is "Text" or "Textarea" get each answer from the database
+    $answer_nodes = $questionnaire->find('//answer');
 
-        # get all default answers and delete them from the body
-        map { $answer_node->removeChild( $_ ) } $title_nodes->get_nodelist();
-        my $all_answers;
-        if ( $answered ) {
-            $all_answers = $result_object->get_answers( $self->document_id(), $answer_node->parentNode->findvalue( '@id' ), $answered );
+    #step through each answer
+    foreach my $answer_node ( $answer_nodes->get_nodelist() ) {
+
+        # if answer type is "Checkbox", "Radio" or "Select" step through each
+        # title and get the answer count
+        my $title_nodes = $answer_node->find('title');
+        my $question_id = $answer_node->findvalue('@id');
+        my $answer_type = $answer_node->findvalue('@type');
+        if ( !( $answer_type =~ /^Text/ ) ) {
+            foreach my $title_node ( $title_nodes->get_nodelist() ) {
+                my $answer = $title_node->textContent();
+                my $answer_count
+                    = $result_object->get_answer_count( $self->document_id(),
+                    $question_id, $answer );
+                $title_node->setAttribute( 'count', $answer_count );
+            }
         }
         else {
-            $all_answers = $result_object->get_answers( $self->document_id(), $answer_node->findvalue( '@id' ), $answered );
+
+            # if answer type is "Text" or "Textarea" get each answer from the
+            # database
+
+            # get all default answers and delete them from the body
+            map { $answer_node->removeChild($_) }
+                $title_nodes->get_nodelist();
+            my $all_answers;
+            if ($answered) {
+                $all_answers
+                    = $result_object->get_answers( $self->document_id(),
+                    $answer_node->parentNode->findvalue('@id'), $answered );
+            }
+            else {
+                $all_answers
+                    = $result_object->get_answers( $self->document_id(),
+                    $answer_node->findvalue('@id'), $answered );
+            }
+            foreach my $answer_text ( @{$all_answers} ) {
+                my $new_title = XML::LibXML::Element->new("title");
+                $new_title->setAttribute( "count", ${$answer_text}{'count'} );
+                $new_title->appendText( ${$answer_text}{'answer'} );
+                $answer_node->appendChild($new_title);
+            }
         }
-        foreach my $answer_text ( @{$all_answers} ) {
-            my $new_title = XML::LibXML::Element->new( "title" );
-            $new_title->setAttribute( "count" , ${$answer_text}{'count'} );
-            $new_title->appendText(  ${$answer_text}{'answer'} );
-            $answer_node->appendChild( $new_title );
-        }
-    }
     }
     $self->body( XIMS::decode( $questionnaire->toString() ) );
-    return 1
+    return 1;
 }
 
 
