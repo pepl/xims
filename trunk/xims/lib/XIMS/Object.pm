@@ -184,6 +184,11 @@ sub new {
                 }
             }
         }
+
+        $self->marked_deleted(0) unless delete $args{marked_deleted};
+        $self->marked_new(0) unless delete $args{marked_deleted};
+        $self->published(0) unless delete $args{published};
+
         if ( scalar( keys(%args) ) > 0 ) {
             # make sure those two ids come first, since things like body()
             # depend on them
@@ -440,7 +445,7 @@ sub children_granted {
 my $count = $object->child_count( [ %args ] );
 
 Multiple object properties can be specified in the %args hash. For example,
-$object->child_count( marked_deleted => undef )
+$object->child_count( marked_deleted => 0 )
 
 
 =cut
@@ -1336,9 +1341,9 @@ sub __fix_clone_reference {
                 }
                 else {
                     my @nodes = $fragment->childNodes;
-                    my $node;
                     my $update_body_flag = 0;
-                    foreach $node (@nodes) {
+
+                    foreach my $node (@nodes) {
                         my $newid = $id_map->{ $node->string_value() };
                         if ( defined $newid ) {
                             $node->firstChild->setData($newid);
@@ -1674,7 +1679,7 @@ sub undelete {
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
     my @retval;
-    $self->marked_deleted(undef);
+    $self->marked_deleted(0);
 
     my $max_position =
       $self->data_provider->max_position( parent_id => $self->parent_id() );
@@ -1685,14 +1690,14 @@ sub undelete {
     # 2 tables should have been updated
     if ( scalar @retval == 2 and defined $retval[1] ) {
 
-        # Set marked_deleted to 'undef' for all descendants
+        # Set marked_deleted to 0 for all descendants
         my $descendant_ids_lvls =
           $self->data_provider->get_descendant_id_level(
             parent_id => $self->document_id() );
         my @doc_ids = @{ $descendant_ids_lvls->[0] };
         if ( scalar(@doc_ids) > 0 ) {
             @retval = $self->data_provider->driver->update(
-                properties => { 'content.marked_deleted' => undef },
+                properties => { 'content.marked_deleted' => 0 },
                 conditions => { 'content.document_id'    => \@doc_ids }
             );
 
@@ -1885,7 +1890,7 @@ sub clone {
                 if (
                     $parent->children(
                         location       => $clonedata{location},
-                        marked_deleted => undef
+                        marked_deleted => 0
                     )
                   )
                 {
@@ -1912,7 +1917,7 @@ sub clone {
             defined $parent
             and $parent->children(
                 location       => $newlocation,
-                marked_deleted => undef
+                marked_deleted => 0
             )
           )
         {
@@ -1925,7 +1930,7 @@ sub clone {
               } while (
                 $parent->children(
                     location       => $newlocation,
-                    marked_deleted => undef
+                    marked_deleted => 0
                 )
               );
         }
@@ -1975,9 +1980,9 @@ sub clone {
     # copy all object privileges
     my @privs =
       $self->data_provider->getObjectPriv( content_id => $self->id() );
-    my $priv;
     my $clonepriv;
-    foreach $priv (@privs) {
+
+    foreach my $priv (@privs) {
         $priv->{content_id} = $clone->id();
         $clonepriv = XIMS::ObjectPriv->new->data( %{$priv} );
         $clonepriv->create();
@@ -1999,8 +2004,8 @@ sub clone {
 
         # clone all granted children except '.diff_to_second_last'
         my @children = $self->children_granted( User => $user );
-        my $child;
-        foreach $child (@children) {
+
+        foreach my $child (@children) {
             next if $child->location() eq '.diff_to_second_last';
             return
               unless $child->clone(
@@ -2569,12 +2574,20 @@ sub unpublish {
     my $self = shift;
     my %args = @_;
     my $user = delete $args{User} || $self->{User};
-    $self->published(undef);
-    $self->last_published_by_id(undef);
-    $self->last_published_by_firstname(undef);
-    $self->last_published_by_middlename(undef);
-    $self->last_published_by_lastname(undef);
+    $self->published(0);
+    unless ( exists $args{no_pubber} ) {
+        $self->last_published_by_id( $user->id() );
+        $self->last_published_by_firstname( $user->firstname() );
+        $self->last_published_by_middlename( $user->middlename() );
+        $self->last_published_by_lastname( $user->lastname() );
+        $self->last_publication_timestamp( $self->data_provider->db_now() );
+    }
+    #$self->last_published_by_id(undef);
+    #$self->last_published_by_firstname(undef);
+    #$self->last_published_by_middlename(undef);
+    #$self->last_published_by_lastname(undef);
     return $self->data_provider->updateObject( $self->data() );
+
 }
 
 # The following methods allow the more intuitive $obj->data_format() to work,

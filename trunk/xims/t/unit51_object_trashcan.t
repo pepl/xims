@@ -47,7 +47,7 @@ $o = undef;
 
 $o = XIMS::Object->new( id => 2 );
 
-ok( not defined $o->marked_deleted() );
+ok( not $o->marked_deleted() );
 
 __END__
 # Local Variables:

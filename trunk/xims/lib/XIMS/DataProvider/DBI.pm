@@ -351,7 +351,7 @@ sub update_content_body {
     # for Oracle CLOBs
     my $content_length;
     do { use bytes; $content_length = length( $data ) };
-    
+
     return $self->{dbh}->do_sql("UPDATE ci_content set body = ?, content_length = ? where id = ?",
       [$data, ($self->{RDBMSClass} eq 'Oracle') ? {ora_type=>112} : ()],
       $content_length,
@@ -934,7 +934,7 @@ sub get_object_id_by_path {
 
         #my $location_path_sqlstr = "SELECT c.id FROM ci_documents d, ci_content c WHERE c.document_id=d.id AND c.marked_deleted IS NULL AND d.location_path = ? AND c.language_id IN (?,$fallbacklangid) ORDER BY CASE WHEN language_id = ? THEN 1 END";
         #my $data = $self->{dbh}->fetch_select( sql => [ $location_path_sqlstr, $param{path}, $requested_lang, $requested_lang ], limit => 1 );
-        my $location_path_sqlstr = "SELECT d.id FROM ci_documents d, ci_content c WHERE c.document_id=d.id AND c.marked_deleted IS NULL AND location_path = ?";
+        my $location_path_sqlstr = "SELECT d.id FROM ci_documents d, ci_content c WHERE c.document_id=d.id AND c.marked_deleted = 0 AND location_path = ?";
         my $data = $self->{dbh}->fetch_select( sql => [ $location_path_sqlstr, $param{path} ] );
         my $docid = $data->[0]->{'id'};
         if ( defined $docid ) {
@@ -958,7 +958,7 @@ sub get_object_id_by_path {
                 #my $sqlstr = "SELECT c.id,symname_to_doc_id
                 my $sqlstr = "SELECT d.id, d.symname_to_doc_id FROM ci_documents d, ci_content c
                               WHERE c.document_id=d.id
-                              AND c.marked_deleted IS NULL
+                              AND c.marked_deleted = 0
                               AND d.location = ?
                               AND d.parent_id IN (" .  join(',', map { '?' } @ids ) . ") ";
                               #. " AND c.language_id IN (?,$fallbacklangid) ORDER BY CASE WHEN c.language_id = ? THEN 1 END";

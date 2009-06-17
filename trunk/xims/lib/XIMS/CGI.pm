@@ -1365,7 +1365,7 @@ sub init_store_object {
         if ( defined $parent ) {
             my @children = $parent->children(
                 location       => $location,
-                marked_deleted => undef
+                marked_deleted => 0
             );
             if ((       $object->id()
                     and scalar @children == 1
@@ -2156,7 +2156,7 @@ sub event_move {
 
         my @children = $target->children(
             location       => $object->location(),
-            marked_deleted => undef
+            marked_deleted => 0
         );
         if ( scalar @children > 0 and defined $children[0] ) {
             XIMS::Debug( 2,
@@ -2230,7 +2230,7 @@ sub event_copy {
 
     if (   $confirmcopy == 1
         or $chldinfo[0] == 0
-        or $chldinfo[0] == 1 and $object->children( location => '.diff_to_second_last', marked_deleted => undef ) )
+        or $chldinfo[0] == 1 and $object->children( location => '.diff_to_second_last', marked_deleted => 0 ) )
     {
         if ( not $object->clone( scope_subtree => $recursivecopy ) ) {
             $ctxt->session->error_msg("copy failed!");
@@ -2292,7 +2292,7 @@ sub event_publish_prompt {
         my $urllinkid = XIMS::ObjectType->new( fullname => 'URLLink' )->id();
         my @doclinks = $ctxt->object->children_granted(
             object_type_id => $urllinkid,
-            marked_deleted => undef
+            marked_deleted => 0
         );
         push( @objects, @doclinks ) if scalar @doclinks > 0;
 
@@ -2308,7 +2308,7 @@ sub event_publish_prompt {
         my @ids = map { $_->id() } @non_container_ot;
         @objects = $ctxt->object->children_granted(
             object_type_id => \@ids,
-            marked_deleted => undef
+            marked_deleted => 0
         );    # get non-container objects only
     }
 
@@ -3094,7 +3094,7 @@ sub event_posview {
     );
 
     $ctxt->properties->content->siblingscount(
-        $parent->child_count( marked_deleted => undef ) );
+        $parent->child_count( marked_deleted => 0 ) );
     $ctxt->properties->application->styleprefix("container");
     $ctxt->properties->application->style("posview");
 

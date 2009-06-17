@@ -838,12 +838,15 @@ sub tan_ok() {
     # for each TAN-List look if given TAN is in it
     my $TAN_List;
     my $a_single_tan;
+
     foreach my $tan_listnode (@nodes) {
         $TAN_List = XIMS::TAN_List->new(
             document_id    => $tan_listnode->getAttribute("id"),
-            marked_deleted => undef
+            marked_deleted => 0
         );
+
         next unless defined $TAN_List;
+
         $a_single_tan = "," . $TAN_List->body() . ",";
         last if $tan_ok = ( $a_single_tan =~ /,$tan,/ );
     }

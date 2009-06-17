@@ -105,10 +105,14 @@ DECLARE
     lv_return BOOLEAN;
 BEGIN
     IF :NEW.title <> '.diff_to_second_last' THEN
-        IF :OLD.marked_deleted IS NULL AND :NEW.marked_deleted = 1 THEN
+        IF :OLD.marked_deleted = 0 AND :NEW.marked_deleted = 1 THEN
             INSERT INTO ci_contentaudit (id, content_id, action) VALUES (cau_seq.nextval, :NEW.id, 'TRASHCAN');
-        ELSIF :OLD.marked_deleted = 1 AND :NEW.marked_deleted IS NULL THEN
+        ELSIF :OLD.marked_deleted = 1 AND :NEW.marked_deleted = 0 THEN
             INSERT INTO ci_contentaudit (id, content_id, action) VALUES (cau_seq.nextval, :NEW.id, 'UNDELETE');
+        ELSIF :OLD.published = 0 AND :NEW.published = 1 THEN
+            INSERT INTO ci_contentaudit (id, content_id, user_id, action) VALUES (cau_seq.nextval, :NEW.id, :NEW.last_published_by_id, 'PUBLISH');
+        ELSIF :OLD.published = 1 AND :NEW.published = 0 THEN
+            INSERT INTO ci_contentaudit (id, content_id, user_id, action) VALUES (cau_seq.nextval, :NEW.id, :NEW.last_published_by_id, 'UNPUBLISH');
         ELSIF :OLD.last_modification_timestamp <> :NEW.last_modification_timestamp THEN
             INSERT INTO ci_contentaudit (id, content_id, user_id, action) VALUES (cau_seq.nextval, :NEW.id, :NEW.last_modified_by_id, 'UPDATE');
         END IF;
