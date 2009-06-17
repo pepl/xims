@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::FileSystem::Binary -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::FileSystem::Binary
 
 =head1 VERSION
 
@@ -13,7 +13,8 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module implements the importer's methods related to the handling of
+binary files.
 
 =head1 SUBROUTINES/METHODS
 
@@ -51,14 +52,14 @@ sub handle_data {
 sub get_binref {
     my $self = shift;
     my $file = shift;
-    open(FILE, $file) || die "could not open $file: $!";
+    open(my $FILE, '<', $file) || die "could not open $file: $!";
     # switch off perls auto encoding
-    binmode(FILE);
+    binmode($FILE);
     my $contents;
-    while (read(FILE, my $buff, 16 * 2**10)) {
+    while (read($FILE, my $buff, 16 * 2**10)) {
       $contents .= $buff;
     }
-    close FILE;
+    close $FILE;
     return \$contents
 }
 
@@ -67,20 +68,6 @@ __END__
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
