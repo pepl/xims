@@ -100,14 +100,14 @@ sub add_departmentlinks {
     my @portlet_ids = $self->get_portlet_ids();
 
     my $deptlinksportlet;
-    $deptlinksportlet = XIMS::Portlet->new( id => \@portlet_ids, location => $dplp_location, marked_deleted => undef ) if $portlet_ids[0];
+    $deptlinksportlet = XIMS::Portlet->new( id => \@portlet_ids, location => $dplp_location, marked_deleted => 0 ) if $portlet_ids[0];
 
     my $deptlinksfolder;
     $deptlinksfolder = $deptlinksportlet->target() if $deptlinksportlet;
     $deptlinksfolder = undef if (defined $deptlinksfolder and $deptlinksfolder->marked_deleted());
     if ( not $deptlinksfolder ) {
         # add folder if its not here already
-        my @children = $self->children( location => $dpl_location, marked_deleted => undef );
+        my @children = $self->children( location => $dpl_location, marked_deleted => 0 );
         $deptlinksfolder = $children[0];
         if ( not ($deptlinksfolder and $deptlinksfolder->id) ) {
             $deptlinksfolder = XIMS::Folder->new( User => $self->User, location => $dpl_location );
@@ -225,8 +225,9 @@ sub add_portlet {
 
     return unless $target;
 
-    my $pobject = $target if (ref $target and $target->isa('XIMS::Object'));
-    $pobject ||= XIMS::Portlet->new( User => $self->User, path => $target, marked_deleted => undef );
+    my $pobject;
+    $pobject = $target if (ref $target and $target->isa('XIMS::Object'));
+    $pobject ||= XIMS::Portlet->new( User => $self->User, path => $target, marked_deleted => 0 );
     if ( $pobject ) {
         my $id = $pobject->id;
         XIMS::Debug( 4, "got portlet with id=$id for $target");

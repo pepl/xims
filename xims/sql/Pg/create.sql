@@ -180,7 +180,7 @@ CREATE TABLE ci_content
  (binfile                       BYTEA
  ,last_modification_timestamp   TIMESTAMP(0)  WITHOUT TIME ZONE  DEFAULT now() NOT NULL
  ,notes                         VARCHAR(1000)
- ,marked_new                    SMALLINT
+ ,marked_new                    SMALLINT      DEFAULT 0 NOT NULL
  ,id                            SERIAL        PRIMARY KEY
  ,locked_time                   TIMESTAMP(0)  WITHOUT TIME ZONE     -- should be locked_timestamp !!!
  ,abstract                      VARCHAR(2000)
@@ -204,10 +204,10 @@ CREATE TABLE ci_content
  ,css_id                        INTEGER       REFERENCES ci_content( id )
  ,image_id                      INTEGER       REFERENCES ci_content( id )
  ,document_id                   INTEGER       NOT NULL REFERENCES ci_documents(id) ON DELETE CASCADE
- ,published                     SMALLINT
+ ,published                     SMALLINT      DEFAULT 0 NOT NULL
  ,last_publication_timestamp    TIMESTAMP(0)  WITHOUT TIME ZONE
  ,last_published_by_id          INTEGER       REFERENCES ci_users_roles( id )
- ,marked_deleted                SMALLINT
+ ,marked_deleted                SMALLINT      DEFAULT 0 NOT NULL
  ,deletionmark_timestamp        TIMESTAMP(0)  WITHOUT TIME ZONE
  ,locked_by_lastname            VARCHAR(90)
  ,locked_by_middlename          VARCHAR(30)
@@ -225,7 +225,7 @@ CREATE TABLE ci_content
  ,last_published_by_middlename  VARCHAR(30)
  ,last_published_by_firstname   VARCHAR(90)
  ,data_format_name              VARCHAR(40)
- ,content_length                INTEGER
+ ,content_length                INTEGER       DEFAULT 0
  )
 ;
 

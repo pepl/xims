@@ -28,7 +28,7 @@ cmp_ok( $id, '>', 1, 'User has a sane ID' );
 
 # now, fetch it back...
 $o = undef;
-$o = XIMS::Object->new( id => $id, User => $user,  marked_deleted => undef );
+$o = XIMS::Object->new( id => $id, User => $user,  marked_deleted => 0 );
 isa_ok( $o, 'XIMS::Object', 're-fetched our object, ' );
 
 is( $o->title(), 'My Test Dir', 'testobject has correct title' );
@@ -47,7 +47,7 @@ ok( $o->update(), 'update title' );
 
 # now, fetch it back again
 $o = undef;
-$o = XIMS::Object->new( id => $id, User => $user, language_id => 1, marked_deleted => undef );
+$o = XIMS::Object->new( id => $id, User => $user, language_id => 1, marked_deleted => 0 );
 is( $o->title(), 'Renamed Test Dir', 'title correctly altered' );
 is( $o->last_modified_by_id(), $user->id(), 'testobject has correct last_modified_by_id' );
 
@@ -65,7 +65,7 @@ ok ($o->trashcan(User => $user), 'thrashcan testobject');
 is ($o->marked_deleted, 1, 'testobject is marked_deleted' );
 is ($o->position, undef, 'testobject has undefined position' );
 ok ( $o->undelete(), 'undelete testobject' );
-is ($o->marked_deleted, undef, 'testobject is not marked_deleted' );
+is ($o->marked_deleted, 0, 'testobject is not marked_deleted' );
 cmp_ok($o->position, '>', 0, 'testobject has a defined position' );
 
 # valid_from, valid_to
@@ -97,7 +97,7 @@ is( $o->attribute_by_key( 'key6' ), undef,    "attrib has correct value" );
 
 # now, fetch it back again
 $o = undef;
-$o = XIMS::Object->new( id => $id, User => $user, marked_deleted => undef );
+$o = XIMS::Object->new( id => $id, User => $user, marked_deleted => 0 );
 is($o->valid_from_timestamp(), $valid_from, 'valid_from_timestamp has correct value');
 is($o->valid_to_timestamp(), $valid_to, 'valid_to_timestamp has correct value');
 

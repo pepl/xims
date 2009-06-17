@@ -716,7 +716,7 @@ sub _vlitems_byfilter_sql {
     # Select Tables
     # create conditions and values
     my $tables     = 'ci_documents d, ci_content c';
-    my $conditions = 'd.ID = c.document_id AND d.parent_id = ? AND c.marked_deleted IS NULL ';
+    my $conditions = 'd.ID = c.document_id AND d.parent_id = ? AND c.marked_deleted = 0 ';
     my @values     = ( $self->document_id() );
     if (   $criteria{mediatype} ne ''
         || $criteria{chronicle} ne ''

@@ -205,7 +205,7 @@ sub import {
     my $parent = $op ? $op : $self->parent;
     if ($parent->children(
             location       => $object->location,
-            marked_deleted => undef )
+            marked_deleted => 0 )
         )
     {
 
@@ -213,7 +213,7 @@ sub import {
         if ($updateexisting) {
             my $oldobject = XIMS::Object->new(
                 path => $parent->location_path() . '/' . $object->location(),
-                marked_deleted => undef
+                marked_deleted => 0
             );
 
             # check for update priv

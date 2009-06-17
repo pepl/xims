@@ -282,7 +282,8 @@
                             </xsl:if>
                         </tr>
 
-                        <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
+                        <xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
+                                                                                             or marked_deleted = 0 )]">
                             <!-- as long as lower-first is not implemented, we probably have to use lowercase the title here -->
                             <xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                                       order="ascending"/>
@@ -347,9 +348,10 @@
                                 <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
-                        <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
-                            <xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                                      order="descending"/>
+                        <xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
+                                                                                             or marked_deleted = 0 )]">
+                          <xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                                    order="descending"/>
                         </xsl:apply-templates>
                     </table>
                 </xsl:when>
@@ -422,8 +424,15 @@
                                 <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
-                        <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
-                            <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="ascending"/>
+                        <xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
+                                                                                             or marked_deleted = 0 )]">
+                            <xsl:sort select="concat(last_modification_timestamp/year
+                                                    ,last_modification_timestamp/month
+                                                    ,last_modification_timestamp/day
+                                                    ,last_modification_timestamp/hour
+                                                    ,last_modification_timestamp/minute
+                                                    ,last_modification_timestamp/second)" 
+                                      order="ascending"/>
                         </xsl:apply-templates>
                     </table>
                 </xsl:when>
@@ -494,8 +503,15 @@
                                 <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
-                        <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
-                            <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="descending"/>
+                        <xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
+                                                                                             or marked_deleted = 0 )]">
+                            <xsl:sort select="concat(last_modification_timestamp/year
+                                                    ,last_modification_timestamp/month
+                                                    ,last_modification_timestamp/day
+                                                    ,last_modification_timestamp/hour
+                                                    ,last_modification_timestamp/minute
+                                                    ,last_modification_timestamp/second)" 
+                                      order="descending"/>
                         </xsl:apply-templates>
                     </table>
                 </xsl:when>
@@ -566,7 +582,8 @@
                                 <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
-                        <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
+                        <xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
+                                                                                             or marked_deleted = 0 )]">
                             <xsl:sort select="position" order="ascending"  data-type="number"/>
                         </xsl:apply-templates>
                     </table>
@@ -638,7 +655,8 @@
                                 <xsl:call-template name="th-options"/>
                             </xsl:if>
                         </tr>
-                        <xsl:apply-templates select="children/object[user_privileges/view and marked_deleted!=$hd]">
+                        <xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
+                                                                                             or marked_deleted = 0 )]">
                             <xsl:sort select="position" order="descending" data-type="number"/>
                         </xsl:apply-templates>
                     </table>
