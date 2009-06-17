@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Importer::FileSystem -- A .... doing bla, bla, bla. (short)
+XIMS::Importer::FileSystem
 
 =head1 VERSION
 
@@ -13,7 +13,8 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This module implements the importer's common methods related to filesystem
+operations.
 
 =head1 SUBROUTINES/METHODS
 
@@ -134,11 +135,13 @@ sub resolve_importer {
 
     my ($object_type, $data_format) = $self->resolve_location( $location );
     my $impclass = "XIMS::Importer::FileSystem::" . $object_type->fullname();
+    ## no critic (ProhibitStringyEval)
     eval "require $impclass;";
     if ( $@ ) {
         XIMS::Debug( 3 , "Could not load importer class: $@" );
         return;
     }
+    ## use critic
     my $importer = $impclass->new( Provider => $self->data_provider(),
                                    Parent => $self->parent(),
                                    User => $self->user(),
@@ -219,9 +222,9 @@ sub get_strref {
     my $self = shift;
     my $file = shift;
     local $/;
-    die "could not open $file: $!" unless -R $file and open (INPUT, $file);
-    my $contents = <INPUT>;
-    close INPUT;
+    die "could not open $file: $!" unless -R $file and open (my $INPUT, '<', $file);
+    my $contents = <$INPUT>;
+    close $INPUT;
     return \$contents;
 }
 
@@ -257,21 +260,7 @@ __END__
 
 =head1 DIAGNOSTICS
 
-Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
+Look at the F<error_log> file or xims_importer's output for messages.
 
 =head1 BUGS AND LIMITATION
 
