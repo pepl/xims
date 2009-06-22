@@ -84,7 +84,8 @@ sub reference_types {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    my $cache = 1 unless scalar keys %args > 0;
+    my $cache;
+    $cache = 1 unless scalar keys %args > 0;
     if ( defined $cache and defined $self->{'_cachedreft'} ) {
         return @{$self->{'_cachedreft'}};
     }
@@ -117,7 +118,8 @@ sub reference_properties {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-    my $cache = 1 unless scalar keys %args > 0;
+    my $cache;
+    $cache = 1 unless scalar keys %args > 0;
     if ( defined $cache and defined $self->{'_cachedrefp'} ) {
         return @{$self->{'_cachedrefp'}};
     }
