@@ -84,9 +84,6 @@ severity   = 3
 [Perl::Critic::Policy::ControlStructures::ProhibitMutatingListFunctions]
 severity   = 5
 
-# ... but *we* like it!
-[Perl::Critic::Policy::ControlStructures::ProhibitPostfixControls]
-severity   = 1
 
 # same
 [Perl::Critic::Policy::ControlStructures::ProhibitUnlessBlocks]
@@ -288,3 +285,11 @@ severity   = 5
 
 [Perl::Critic::Policy::Variables::RequireNegativeIndices]
 severity   = 4
+
+# disable 
+
+[-Compatibility::ProhibitThreeArgumentOpen]
+
+[-Perl::Critic::Policy::ControlStructures::ProhibitPostfixControls]
+
+[-Perl::Critic::Policy::ValuesAndExpressions::ProhibitAccessOfPrivateData]
