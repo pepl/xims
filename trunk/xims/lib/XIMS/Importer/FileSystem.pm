@@ -237,7 +237,7 @@ sub handle_container_metadata {
 sub get_strref {
     my $self = shift;
     my $file = shift;
-    local $/;
+    local $/ = undef;
     die "could not open $file: $!"
         unless -R $file and open( my $INPUT, '<', $file );
     my $contents = <$INPUT>;
