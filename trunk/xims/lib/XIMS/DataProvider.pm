@@ -142,6 +142,7 @@ sub new {
     my $drvcls = 'XIMS::DataProvider::' . $drvnme;
     my $driver = undef;
 
+    ## no critic (ProhibitStringyEval)
     eval "require $drvcls"; # first load the driver class module
     if ( $@ ) {
         die( "driver class not found! Reason: $@\n" );
@@ -164,7 +165,7 @@ sub new {
             die( "driver class $drvcls did not initialize!" );
         }
     }
-
+    ## use critic
     return $self;
 }
 
@@ -479,15 +480,18 @@ sub recurse_ancestor {
 
 =cut
 
+## no critic (ProhibitNoStrict)
+
 sub object_types {
     my $self = shift;
     my %args = @_;
-    my $cache = 1 unless scalar keys %args > 0;
+    my $cache;
+    $cache = 1 unless scalar keys %args > 0;
     no strict 'refs';
     if ( defined $cache and defined *{"XIMS::OBJECT_TYPES"}{CODE} ) {
-        return values %{XIMS::OBJECT_TYPES()};
+        return values %{ XIMS::OBJECT_TYPES() };
     }
-    my @data = $self->getObjectType( %args );
+    my @data = $self->getObjectType(%args);
     require XIMS::ObjectType;
     my @out = map { XIMS::ObjectType->new->data( %{$_} ) } @data;
     return @out;
@@ -500,7 +504,8 @@ sub object_types {
 sub data_formats {
     my $self = shift;
     my %args = @_;
-    my $cache = 1 unless scalar keys %args > 0;
+    my $cache;
+    $cache = 1 unless scalar keys %args > 0;
     no strict 'refs';
     if ( defined $cache and defined *{"XIMS::DATA_FORMATS"}{CODE} ) {
         return values %{XIMS::DATA_FORMATS()};
@@ -510,6 +515,8 @@ sub data_formats {
     my @out = map { XIMS::DataFormat->new->data( %{$_} ) } @data;
     return @out;
 }
+
+## use critic
 
 =pod
 
