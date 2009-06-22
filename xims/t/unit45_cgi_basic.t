@@ -8,6 +8,7 @@ use XIMS::User;
 use XIMS::Session;
 use XIMS::AppContext;
 use XIMS::CGI;
+use goxims;
 #use Data::Dumper;
 use Apache::FakeRequest;
 
@@ -63,7 +64,9 @@ $ctxt = XIMS::AppContext->new( user => $u,
 
 # we should test every case but... :-/ 
 $ctxt->session->skin( 'default' );
+$ctxt->session->uilanguage( goxims::getLanguagePref($a) );
 $ret = $q->selectStylesheet( $ctxt );
+
 #warn "select is $ret \n";
 ok( $ret eq XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/siteroot_default.xsl' );
 
