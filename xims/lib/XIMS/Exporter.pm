@@ -171,7 +171,8 @@ sub publish {
     $self->{Basedir}    = delete $param{Basedir}    if defined $param{Basedir};
     $self->{User}       = delete $param{User}       if defined $param{User};
 
-    my $forceancestorpublish = delete $param{force_ancestor_publish} if defined $param{force_ancestor_publish};
+    my $forceancestorpublish;
+    $forceancestorpublish = delete $param{force_ancestor_publish} if defined $param{force_ancestor_publish};
 
     # since it is likely that one Exporter instance should publish objects of different
     # object type we have to let the helper select the appropiate stylesheet
@@ -449,6 +450,7 @@ sub exporterclass {
     my $exporter_class = $self->classname( $object );
 
     my $exporter;
+    ## no critic (ProhibitStringyEval)
     eval {
         $exporter = $exporter_class->new( %args );
     };
@@ -460,7 +462,7 @@ sub exporterclass {
         }
         $exporter = $exporter_class->new( %args );
     }
-
+    ## use critic
     return $exporter;
 }
 
@@ -519,7 +521,8 @@ sub new {
     $self->{Exportfile}  = $param{exportfilename} if defined $param{exportfilename};
     $self->{Options}     = $param{Options} || {};
     $self->{AppContext}  = XIMS::AppContext->new();
-    my $bdir             = $param{Basedir}        if defined $param{Basedir};
+    my $bdir;
+    $bdir                = $param{Basedir}        if defined $param{Basedir};
     $self->{Ancestors}   = $param{Ancestors}      if defined $param{Ancestors};
 
     if ( defined $bdir and -d $bdir ) {
