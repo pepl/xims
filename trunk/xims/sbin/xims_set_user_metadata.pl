@@ -34,7 +34,7 @@ unless ( $ARGV[0] ) {
 my $user = $term->authenticate( %args );
 die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 
-my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => undef, User => $user );
+my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => 0, User => $user );
 die "Could not find object '".$ARGV[0]."'\n" unless $object and $object->id;
 
 die "Access Denied. Currently, only admins are allowed to manage user metadata.\n" unless $user->admin();
@@ -69,7 +69,7 @@ else {
 $total++;
 
 if ( $args{r} ) {
-    my $iterator = $object->descendants( marked_deleted => undef );
+    my $iterator = $object->descendants( marked_deleted => 0 );
     while ( my $desc = $iterator->getNext() ) {
         $path = $desc->location_path();
         $desc->owner( $owner ) if $args{o};

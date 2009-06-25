@@ -41,7 +41,7 @@ my $dateregex = qr/^(\d\d\d\d-\d\d-\d\d) \d\d:\d\d:\d\d$/;
 my $user = $term->authenticate( %args );
 die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 
-my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => undef, User => $user );
+my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => 0, User => $user );
 die "Could not find object '".$ARGV[0]."'\n" unless $object and $object->id;
 
 my $privmask = $user->object_privmask( $object );
@@ -64,7 +64,7 @@ my $iterator = $object->descendants_granted(
         published => 1,
         data_format_id => \@df_ids,
         User           => $user,
-        marked_deleted => undef
+        marked_deleted => 0
 );
 
 while ( my $desc = $iterator->getNext() ) {

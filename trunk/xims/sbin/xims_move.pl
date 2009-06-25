@@ -38,7 +38,7 @@ unless ( $args{f} and $args{t} ) {
 my $user = $term->authenticate( %args );
 die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 
-my $object = XIMS::Object->new( path => $args{f}, marked_deleted => undef, User => $user );
+my $object = XIMS::Object->new( path => $args{f}, marked_deleted => 0, User => $user );
 die "Could not find object '".$args{f}."'\n" unless defined $object;
 
 my $oldpath = $object->location_path_relative();
@@ -51,7 +51,7 @@ if ( $args{f} eq $args{t} ) {
     die "Target and source are the same, aborting.\n";
 }
 
-my $target = XIMS::Object->new( path => $args{t}, marked_deleted => undef, User => $user );
+my $target = XIMS::Object->new( path => $args{t}, marked_deleted => 0, User => $user );
 if ( defined $target ) {
     die "Something already exists at the target location, aborting.\n";
 }
@@ -77,7 +77,7 @@ else {
     # we are moving
     die "Access Denied. You do not have privileges to move '".$args{f}."'\n" unless $privmask and ($privmask & XIMS::Privileges::MOVE());
 
-    my $target = XIMS::Object->new( path => $targetparentpath, marked_deleted => undef, User => $user );
+    my $target = XIMS::Object->new( path => $targetparentpath, marked_deleted => 0, User => $user );
     die "Could not find target container '$targetparentpath'.\n" unless defined $target;
 
     $privmask = $user->object_privmask( $target );
