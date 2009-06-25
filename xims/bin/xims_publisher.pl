@@ -42,7 +42,7 @@ unless ( $ARGV[0] ) {
 my $user = $term->authenticate( %args );
 die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 
-my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => undef, User => $user );
+my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => 0, User => $user );
 die "Could not find object '".$ARGV[0]."'\n" unless $object and $object->id;
 
 # rebless to the object-type's class
@@ -69,7 +69,7 @@ $failed = 0;
 $ungranted = 0;
 
 if ( $args{r} or $method eq 'unpublish' ) {
-    my %param = (User => $user, marked_deleted => undef );
+    my %param = (User => $user, marked_deleted => 0 );
     $param{published} = 1 if ( $args{a} or $method eq 'unpublish' );
 
     # process the tree depth first, needed for unpublishing and handy for publishing since things like

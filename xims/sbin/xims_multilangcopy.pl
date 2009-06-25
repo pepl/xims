@@ -49,7 +49,7 @@ die "Could not instantiate Exporter.\n" unless defined $exporter;
 
 my $document_ot  = XIMS::ObjectType->new( fullname => 'Document' );
 my $location_path = delete $args{l};
-my $iterator = $dp->objects( location_path => "$location_path%", object_type_id => $document_ot->id(), marked_deleted => undef );
+my $iterator = $dp->objects( location_path => "$location_path%", object_type_id => $document_ot->id(), marked_deleted => 0 );
 my $objectcount;
 if ( defined $iterator and $objectcount = $iterator->getLength() ) {
     print "\nFound '" . $objectcount . "' Document objects.\n\n";

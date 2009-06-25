@@ -37,7 +37,7 @@ unless ( $path ) {
 my $user = $term->authenticate( %args );
 die "Could not authenticate user '".$args{u}."'.\n" unless $user and $user->id();
 
-my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
 die "Could not find object '$path'.\n" unless $object and $object->id();
 
 my $privmask = $user->object_privmask( $object );
@@ -55,7 +55,7 @@ if ( $args{l} ) {
 }
 
 $param{location} = \@locations unless $args{n};
-$param{marked_deleted} = undef;
+$param{marked_deleted} = 0;
 my @children = $object->children( %param );
 
 if ( $args{n} ) {

@@ -33,7 +33,7 @@ unless ( $args{s} and $ARGV[0] ) {
 my $user = XIMS::User->new( name => $args{u} );
 die "Could not authenticate user '".$args{u}."'\n" unless $user and $user->id();
 
-my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => undef, User => $user );
+my $object = XIMS::Object->new( path => $ARGV[0], marked_deleted => 0, User => $user );
 die "Could not find object '".$ARGV[0]."'\n" unless $object and $object->id;
 
 my $privmask = $user->object_privmask( $object );

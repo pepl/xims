@@ -42,7 +42,7 @@ die "Could not authenticate user '" . $args{u} . "'\n"
 
 my $object = XIMS::Object->new(
     path           => $ARGV[0],
-    marked_deleted => undef,
+    marked_deleted => 0,
     User           => $user
 );
 die "Could not find object '" . $ARGV[0] . "'\n"
@@ -143,7 +143,7 @@ if ( ( $successful or $iterate_anyway ) and $args{r} ) {
     my $desc_privmask;
     my $iterator = $object->descendants_granted(
         User           => $user,
-        marked_deleted => undef
+        marked_deleted => 0
     );
     while ( my $desc = $iterator->getNext() ) {
         $desc_privmask = $user->object_privmask($desc);
