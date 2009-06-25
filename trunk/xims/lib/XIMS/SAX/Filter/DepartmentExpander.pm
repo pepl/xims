@@ -112,7 +112,7 @@ sub handle_data {
         my $object = XIMS::Portlet->new(
             id             => $oid,
             User           => $self->{User},
-            marked_deleted => undef
+            marked_deleted => 0
         );
 
         if ( not defined $object ) {

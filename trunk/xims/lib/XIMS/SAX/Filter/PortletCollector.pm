@@ -162,7 +162,7 @@ sub handle_data {
         }
         @children = $object->$method(
             %childrenargs, %{$direct_filter},
-            marked_deleted => undef,
+            marked_deleted => 0,
             limit          => $self->get_latest(),
             order          => "$order DESC"
         );
