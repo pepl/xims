@@ -51,6 +51,7 @@ sub handler {
 
     return OK unless $r->is_initial_req;
 
+    XIMS::via_proxy_test($r) unless $r->pnotes('PROXY_TEST');
     XIMS::Debug( 5, "called from " . $r->connection->remote_ip() );
 
     my $dp = XIMS::DATAPROVIDER();
