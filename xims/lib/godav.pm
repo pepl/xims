@@ -145,14 +145,14 @@ sub get {
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
     return (404, undef) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::VIEW;
 
     if ( $object->object_type->is_fs_container() ) {
-        my @children = $object->children_granted( properties => [ 'location', 'id', 'object_type_id' ], marked_deleted => undef );
+        my @children = $object->children_granted( properties => [ 'location', 'id', 'object_type_id' ], marked_deleted => 0 );
         my $body;
         my $location;
         foreach my $child ( @children ) {
@@ -205,7 +205,7 @@ sub put {
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
 
     my $body;
     $r->read( $body, $r->header_in( 'Content-Length') );
@@ -249,7 +249,7 @@ sub put {
         # create new object
         my $parentpath = $path;
         $parentpath =~ s#[^/]+$##;
-        my $parent = XIMS::Object->new( User => $user, path => $parentpath, marked_deleted => undef );
+        my $parent = XIMS::Object->new( User => $user, path => $parentpath, marked_deleted => 0 );
         return (409) unless defined $parent and defined $parent->id();
 
         my $privmask = $user->object_privmask( $parent );
@@ -303,7 +303,7 @@ sub delete {
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
 
     my $privmask = $user->object_privmask( $object );
     return (403) unless $privmask & XIMS::Privileges::DELETE;
@@ -386,14 +386,14 @@ sub mkcol {
 
     my $path = uri_unescape( $r->path_info() );
     $path =~ s#/$##;
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
 
     if ( $r->header_in( 'Content-Length') ) {
         return (415);
     }
     elsif ( not defined $object ) {
         my ($parentpath) = ( $path =~ m|^(.*)/[^/]+$| );
-        my $parent = XIMS::Object->new( User => $user, path => $parentpath, marked_deleted => undef );
+        my $parent = XIMS::Object->new( User => $user, path => $parentpath, marked_deleted => 0 );
         return (409) unless (defined $parent and defined $parent->id());
 
         my $privmask = $user->object_privmask( $parent );
@@ -423,7 +423,7 @@ sub propfind {
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
     return (404, undef) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
@@ -467,7 +467,7 @@ sub propfind {
             $is_fs_container{$_->{id}} = $_->{is_fs_container};  # save db lookups later
         }
 
-        @objects = $object->children_granted( marked_deleted => undef, object_type_id => \@object_type_ids );
+        @objects = $object->children_granted( marked_deleted => 0, object_type_id => \@object_type_ids );
 	# do also provide requested object itself within the 207 response (fixes gnomevfs/nautilus issue)
         push (@objects, $object);
     }
@@ -617,7 +617,7 @@ sub lock {
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
     return (404, undef) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
@@ -679,7 +679,7 @@ sub unlock {
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
     return (404, undef) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
@@ -712,7 +712,7 @@ sub copymove {
 
     my $path = uri_unescape( $r->path_info() );
     $path ||= '/';
-    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => undef );
+    my $object = XIMS::Object->new( User => $user, path => $path, marked_deleted => 0 );
     return (404) unless defined $object;
 
     my $privmask = $user->object_privmask( $object );
@@ -736,7 +736,7 @@ sub copymove {
     my $overwrite = $r->header_in( 'Overwrite' );
 
     my $origlocation = $object->location;
-    my $destination = XIMS::Object->new( path => $destination_path, marked_deleted => undef, User => $user );
+    my $destination = XIMS::Object->new( path => $destination_path, marked_deleted => 0, User => $user );
     if ( defined $destination ) {
         XIMS::Debug( 4, "Destination $destination_path exists" );
 
@@ -776,7 +776,7 @@ sub copymove {
     else {
         XIMS::Debug( 4, "Destination $destination_path does not exist yet" );
         my ($destination_parentpath, $destination_location) = ($destination_path =~ m#(.*)/(.*)#);
-        my $destination = XIMS::Object->new( path => $destination_parentpath, marked_deleted => undef, User => $user );
+        my $destination = XIMS::Object->new( path => $destination_parentpath, marked_deleted => 0, User => $user );
         return (404) unless defined $destination;
         return (423) if $destination->locked();
 
