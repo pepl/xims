@@ -28,6 +28,7 @@ use XIMS::UserPriv;
 use XIMS::ObjectType;
 use XIMS::ObjectTypePriv;
 use Digest::MD5 qw( md5_hex );
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -187,7 +188,7 @@ sub event_create_update {
     if ( defined $pass1 and length $pass1 ) {
         if ( not ( defined $pass2 and length $pass2 ) ) {
             $ctxt->properties->application->style( 'create' );
-            $ctxt->session->warning_msg( "Error: Forgot password confirmation." );
+            $ctxt->session->warning_msg( __"Error: Forgot password confirmation." );
             return 0;
         }
         if ( $pass1 eq $pass2 ) {
@@ -195,7 +196,7 @@ sub event_create_update {
         }
         else {
             $ctxt->properties->application->style( 'create' );
-            $ctxt->session->warning_msg( "Error: Password mismatch." );
+            $ctxt->session->warning_msg( __"Passwords did not match." );
             return 0;
         }
     }
@@ -203,7 +204,7 @@ sub event_create_update {
     my $existing_user = XIMS::User->new( name => $udata{name} );
     if ( defined $existing_user ) {
         $ctxt->properties->application->style( 'create' );
-        $ctxt->session->warning_msg( "Error: An account with that name already exists." );
+        $ctxt->session->warning_msg( __"Error: An account with that name already exists." );
         return 0;
     }
 
@@ -215,7 +216,7 @@ sub event_create_update {
 
     if ( scalar @common != scalar @required_fields ) {
         $ctxt->properties->application->style( 'create' );
-        $ctxt->session->warning_msg( "Error: Missing required field." );
+        $ctxt->session->warning_msg( __"Error: Missing required field." );
         return 0;
     }
 
@@ -229,9 +230,10 @@ sub event_create_update {
         $ctxt->properties->application->style( 'create_update' );
     }
     else {
-        $self->sendError( $ctxt, "Error creating user '" .
-                                  $user->name .
-                                  "'. Please check with your system adminstrator.");
+        $self->sendError( $ctxt,
+            __x( "Error creating user '{name}'.", name => $user->name )
+                . __"Please check with your system adminstrator."
+            );
     }
 
 }
@@ -261,7 +263,7 @@ sub event_edit {
     }
     else {
         XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt, "User '$uname' does not exist." );
+        $self->sendError( $ctxt, __x("User '{name}' does not exist.", name => $uname) );
     }
 }
 
@@ -337,15 +339,21 @@ sub event_update {
 
         if ( $user->update ) {
             $ctxt->properties->application->style( 'update' );
-            $ctxt->session->message( "User '" . $user->name() . "' updated successfully." );
+            $ctxt->session->message(
+                __x("User '{name}' updated successfully.", name => $user->name()
+                )
+            );
         }
         else {
-            $self->sendError( $ctxt, "Update failed for user '" . $user->name() . "'. Please check with your system adminstrator." );
+            $self->sendError( $ctxt,  
+                              __x( "Update failed for user '{name}'.", name => $user->name )
+                                  . __"Please check with your system adminstrator."
+                              );
         }
     }
     else {
         XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt,  "User does not exist.");
+        $self->sendError( $ctxt,  __"User does not exist.");
     }
 }
 
@@ -393,12 +401,15 @@ sub event_passwd_update {
             if ( $user and $user->id() ) {
                 if ( $user->update() ) {
                     $ctxt->properties->application->style( 'update' );
-                    $ctxt->session->message( "Password for user '" . $user->name . "' updated successfully." );
+                    $ctxt->session->message( 
+                        __x("Password for user '{name}' updated successfully.", name => $user->name )
+                    );
                 }
                 else {
-                    $self->sendError( $ctxt,"Password update failed for user '" .
-                                              $user->name .
-                                             "'. Please check with your system adminstrator.");
+                    $self->sendError( $ctxt,
+                                      __x( "Password update failed for user '{name}'.", name => $user->name )
+                                          . __"Please check with your system adminstrator."
+                                      );
                 }
             }
             else {
@@ -409,12 +420,12 @@ sub event_passwd_update {
         # 'em back to the prompt.
         else {
             $ctxt->properties->application->style( 'passwd_edit' );
-            $ctxt->session->warning_msg( "Passwords did not match." );
+            $ctxt->session->warning_msg( __"Passwords did not match." );
         }
     }
     else {
         $ctxt->properties->application->style( 'passwd_edit' );
-        $ctxt->session->warning_msg( "Please specify a new password." );
+        $ctxt->session->warning_msg( __"Please specify a new password." );
     }
 }
 
@@ -465,15 +476,22 @@ sub event_remove_update {
     if ( $user and $user->id() ) {
         if ( $user->delete() ) {
             $ctxt->properties->application->style( 'update' );
-            $ctxt->session->message( "User '$uname' deleted successfully." );
+            $ctxt->session->message(
+                __x( "User '{name}' deleted successfully.", name => $uname ) 
+            );
         }
         else {
-            $self->sendError( $ctxt, "Error removing user '$uname'. Please check with your system adminstrator." );
+            $self->sendError( $ctxt, 
+                              __x( "Error removing user '{name}'.", name => $user->name )
+                                  . __"Please check with your system adminstrator." 
+                              );
         }
     }
     else {
         XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt, "User '$uname' does not exist." );
+        $self->sendError( $ctxt, 
+                          __x("User '{name}' does not exist.", name => $uname)
+                      );
     }
 }
 
@@ -502,7 +520,9 @@ sub event_manage_roles {
     }
     else {
         XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt, "User '$uname' does not exist." );
+        $self->sendError( $ctxt, 
+                          __x("User '{name}' does not exist.", name => $uname)
+                      );
     }
 }
 
@@ -543,7 +563,9 @@ sub event_grant_role {
     }
     else {
         XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt, "User '$uname' does not exist." );
+        $self->sendError( $ctxt, 
+                          __x("User '{name}' does not exist.", name => $uname)
+                      );
     }
 }
 
@@ -570,16 +592,29 @@ sub event_grant_role_update {
         $default_role = 1 unless $user->roles_granted(); # grant the first role grant of a user/role as default_role
 
         if ( $user->grant_role_privileges( grantor => $ctxt->session->user(), grantee => $user, role => $role, default_role => $default_role ) ) {
-            $ctxt->session->message( "Role '$rname' successfully granted to user/role '$uname'." );
+            $ctxt->session->message( 
+                __x( "Role '{role_name}' successfully granted to user/role '{user_name}'.",
+                     role_name => $rname,
+                     user_name => $uname
+                )
+            );
             $ctxt->properties->application->style( 'role_management_update' );
         }
         else {
-            $self->sendError( $ctxt, "Error granting '$rname' to '$uname'. Please check with your system adminstrator." );
+            $self->sendError(
+                $ctxt,
+                __x("Error granting '{role_name}' to '{user_name}'.",
+                    role_name => $rname,
+                    user_name => $uname
+                    )
+                    . __"Please check with your system adminstrator."
+            );
         }
+
     }
     else {
         XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt, "User does not exist." );
+        $self->sendError( $ctxt, __"User does not exist." );
     }
 
 }
@@ -592,8 +627,10 @@ sub event_revoke_role {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GRANT_ROLE() ) {
-        return $self->event_access_denied( $ctxt );
+    unless ( $ctxt->session->user->system_privs_mask()
+        & XIMS::Privileges::System::GRANT_ROLE() )
+    {
+        return $self->event_access_denied($ctxt);
     }
 
     my $uname = $self->param('name');
@@ -603,21 +640,38 @@ sub event_revoke_role {
     my $role = XIMS::User->new( name => $rname );
 
     if ( $user and $user->id() and $role and $role->id() ) {
-        my $privs_object = XIMS::UserPriv->new( grantee_id => $user->id(), id => $role->id() );
+        my $privs_object = XIMS::UserPriv->new(
+            grantee_id => $user->id(),
+            id         => $role->id()
+        );
         if ( $privs_object and $privs_object->delete() ) {
-            $ctxt->properties->application->style( 'role_management_update' );
-            $ctxt->session->message( "Role '$rname' successfully revoked from user/role '$uname'.");
+            $ctxt->properties->application->style('role_management_update');
+            $ctxt->session->message(
+                __x("Role '{role_name}' successfully revoked from user/role '{user_name}'.",
+                    role_name => $rname,
+                    user_name => $uname
+                )
+            );
         }
         else {
-            $self->sendError( $ctxt, "Error revoking '$rname' from '$uname'. Please check with your system adminstrator." );
+            $self->sendError(
+                $ctxt,
+                __x("Error revoking '{role_name}' from '{user_name}'.",
+                    role_name => $rname,
+                    user_name => $uname
+                    )
+                    . __"Please check with your system adminstrator."
+            );
         }
     }
     else {
-        XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt, "User does not exist." );
+        XIMS::Debug( 3,
+            "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
+        $self->sendError( $ctxt, __"User does not exist." );
     }
 
 }
+
 
 =head2 event_bookmarks()
 
@@ -644,7 +698,7 @@ sub event_bookmarks {
     }
     else {
         XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt, "User '$uname' does not exist." );
+        $self->sendError( $ctxt, __x("User '{name}' does not exist.", name => $uname) );
     }
     return 0;
 }
@@ -658,6 +712,7 @@ sub event_objecttypeprivs {
     my ( $self, $ctxt ) = @_;
 
     my $privmask = $ctxt->session->user->system_privs_mask();
+
     # fixme
     #unless ( $privmask & XIMS::Privileges::System::XXX() ) {
     #    return $self->event_access_denied( $ctxt );
@@ -667,69 +722,107 @@ sub event_objecttypeprivs {
     my $user = XIMS::User->new( name => $uname );
 
     if ( $user and $user->id() ) {
-        $ctxt->user( $user );
-        if ( ( $self->param( 'addpriv' ) or $self->param( 'addpriv.x' ) ) and my $objtype = $self->param('objtype' ) ) {
+        $ctxt->user($user);
+        if ( ( $self->param('addpriv') or $self->param('addpriv.x') )
+            and my $objtype = $self->param('objtype') )
+        {
             my $object_type = XIMS::ObjectType->new( fullname => $objtype );
-            return $self->sendError( $ctxt, "Could not resolve object type name" ) unless defined $object_type;
+            return $self->sendError( $ctxt,
+                __"Could not resolve object type name" )
+                unless defined $object_type;
 
-            my %data = (grantee_id => $user->id(), object_type_id => $object_type->id(), grantor_id => $ctxt->session->user->id());
-            my $otpriv = XIMS::ObjectTypePriv->new( %data );
-            return $self->sendError( $ctxt, "Objecttype privilege already exists" ) if defined $otpriv;
+            my %data = (
+                grantee_id     => $user->id(),
+                object_type_id => $object_type->id(),
+                grantor_id     => $ctxt->session->user->id()
+            );
+            my $otpriv = XIMS::ObjectTypePriv->new(%data);
+            return $self->sendError( $ctxt,
+                __"Objecttype privilege already exists" )
+                if defined $otpriv;
 
             $otpriv = XIMS::ObjectTypePriv->new();
-            $otpriv->data( %data );
+            $otpriv->data(%data);
             if ( $otpriv->create() ) {
-                $self->redirect( $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                $self->redirect(
+                    $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
                 return 0;
             }
             else {
-                return $self->sendError( $ctxt, "Could not create Objecttype privilege." );
+                return $self->sendError( $ctxt,
+                    __"Could not create Objecttype privilege." );
             }
         }
-        elsif ( $self->param( 'delpriv' )
-                and my $grantor_id = $self->param('grantor_id' )
-                and my $object_type_id = $self->param('object_type_id' )
-                ) {
-            my $otpriv = XIMS::ObjectTypePriv->new( grantee_id => $user->id(), grantor_id => $grantor_id, object_type_id => $object_type_id );
-            return $self->sendError( $ctxt, "Objecttype privilege not found" ) unless defined $otpriv;
+        elsif ( $self->param('delpriv')
+            and my $grantor_id     = $self->param('grantor_id')
+            and my $object_type_id = $self->param('object_type_id') )
+        {
+            my $otpriv = XIMS::ObjectTypePriv->new(
+                grantee_id     => $user->id(),
+                grantor_id     => $grantor_id,
+                object_type_id => $object_type_id
+            );
+            return $self->sendError( $ctxt,
+                __"Objecttype privilege not found" )
+                unless defined $otpriv;
 
             if ( $otpriv->delete() ) {
-                $self->redirect( $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                $self->redirect(
+                    $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
                 return 0;
             }
             else {
-                return $self->sendError( $ctxt, "Could not delete Objecttype privilege." );
+                return $self->sendError( $ctxt,
+                    __"Could not delete Objecttype privilege." );
             }
         }
-        elsif ( $self->param( 'dav_otprivs_update' ) ) {
-            if ( $privmask & XIMS::Privileges::System::CHANGE_DAV_OTPRIVS_MASK() ) {
+        elsif ( $self->param('dav_otprivs_update') ) {
+            if ( $privmask
+                & XIMS::Privileges::System::CHANGE_DAV_OTPRIVS_MASK() )
+            {
                 my $dav_otprivs_mask = 0;
-                foreach my $object_type ( $user->data_provider->object_types( is_davgetable => 1 ) ) {
-                    if ( $self->param( 'dav_otprivs_' . $object_type->name() ) ) {
+                foreach my $object_type (
+                    $user->data_provider->object_types( is_davgetable => 1 ) )
+                {
+                    if ( $self->param( 'dav_otprivs_' . $object_type->name() )
+                        )
+                    {
                         $dav_otprivs_mask |= $object_type->davprivval();
                     }
                 }
-                $user->dav_otprivs_mask( $dav_otprivs_mask );
+                $user->dav_otprivs_mask($dav_otprivs_mask);
 
                 if ( $user->update ) {
-                    $ctxt->session->message( "User '" . $user->name() . "' updated successfully." );
-                    $self->redirect( $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                    $ctxt->session->message(
+                        __x("User '{name}' updated successfully.",
+                            name => $user->name()
+                        )
+                    );
+                    $self->redirect(
+                        $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
                     return 0;
                 }
                 else {
-                    $self->sendError( $ctxt, "Update failed for user '" . $user->name() . "'. Please check with your system adminstrator." );
+                    $self->sendError(
+                        $ctxt,
+                        __x( "Update failed for user '{name}'.",
+                            name => $user->name() )
+                            . __ "Please check with your system adminstrator."
+                    );
                 }
             }
         }
 
         my @object_types = $user->objecttype_privileges( add_oprivdata => 1 );
         $ctxt->objecttypelist( \@object_types );
-        $self->resolve_user( $ctxt, [ qw( GRANTEE_ID ) ] );
-        $ctxt->properties->application->style( 'objecttypeprivs' );
+        $self->resolve_user( $ctxt, [qw( GRANTEE_ID )] );
+        $ctxt->properties->application->style('objecttypeprivs');
     }
     else {
-        XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-        $self->sendError( $ctxt, "User '$uname' does not exist." );
+        XIMS::Debug( 3,
+            "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
+        $self->sendError( $ctxt,
+            __x( "User '{name}' does not exist.", name => $uname ) );
     }
     return 0;
 }

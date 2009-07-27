@@ -27,6 +27,7 @@ use strict;
 use XIMS::Mailer;
 use Email::Valid;
 use HTTP::Headers::Util ();
+use Locale::TextDomain ('info.xims');
 
 =head2 registerEvents()
 
@@ -52,7 +53,7 @@ sub event_prepare_mail {
     my $object = $ctxt->object();
 
     unless ( $object->published() ) {
-        $self->sendError( $ctxt, "Object must be published!" );
+        $self->sendError( $ctxt, __"Object must be published!" );
         return 0;
     }
 
@@ -65,12 +66,12 @@ sub event_prepare_mail {
     if ( $self->object_locked($ctxt) ) {
         XIMS::Debug( 3, "Attempt to send locked object" );
         $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
+             __x("This object is locked by {firstname} {lastname} since {locked_time}. Please try again later.",
+                firstname   => $object->locker->firstname(),
+                lastname    => $object->locker->lastname(),
+                locked_time => $object->locked_time()
+            )
+         );
     }
 
     $ctxt->properties->application->styleprefix('common');
@@ -95,7 +96,7 @@ sub event_send_as_mail {
                . '" <' . $object->User->email . '>';
 
     unless ( $object->published() ) {
-        $self->sendError( $ctxt, "Object must be published!" );
+        $self->sendError( $ctxt, __"Object must be published!" );
         return 0;
     }
 
@@ -108,12 +109,12 @@ sub event_send_as_mail {
     if ( $self->object_locked($ctxt) ) {
         XIMS::Debug( 3, "Attempt to send locked object" );
         $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
+                          __x("This object is locked by {firstname} {lastname} since {locked_time}. Please try again later.",
+                              firstname   => $object->locker->firstname(),
+                              lastname    => $object->locker->lastname(),
+                              locked_time => $object->locked_time()
+                          )
+                      );
     }
 
     my $to = Email::Valid->address( $self->param('to') );
@@ -121,22 +122,22 @@ sub event_send_as_mail {
     # my $bcc    = Email::Valid->address($self->param('bcc')) or q();
 
     unless ( length $to ) {
-        $self->sendError( $ctxt, "No valid email address supplied!" );
+        $self->sendError( $ctxt, __"No valid email address supplied!" );
         return 0;
     }
 
     my $subject = $self->param('subject');
 
     if ( length $subject < 3 ) {
-        $self->sendError( $ctxt, "Please supply a meaningful subject" );
+        $self->sendError( $ctxt, __"Please supply a meaningful subject" );
         return 0;
     }
     if ( length $subject > 60 ) {
         $self->sendError( $ctxt,
-            "Please keep the subject below 60 characters" );
+            __"Please keep the subject below 60 characters" );
         return 0;
     }
-    
+
     my $subject = Encode::encode( "MIME-Header", XIMS::utf8_sanitize( $subject ) );
 
     my $reply_to = Email::Valid->address( $self->param('reply-to') );
@@ -154,7 +155,7 @@ sub event_send_as_mail {
     $path .= $object->location_path_relative();
 
     XIMS::Debug( 6, "Published URL to be fetched: $path" );
-    
+
     my $user_id = $object->User->id();
     my $tmpSession = XIMS::Session->new(
         user_id => $user_id,
@@ -211,9 +212,11 @@ sub event_send_as_mail {
               . XIMS::MAILSIZELIMIT()
               . '.' );
         $self->sendError( $ctxt,
-                "Mail size $size exceeds hard limit of "
-              . XIMS::MAILSIZELIMIT()
-              . '.' );
+                __x("Mail size {size} exceeds hard limit of {limit}.",
+                    size => $size,
+                    limit => XIMS::MAILSIZELIMIT()
+                )
+            );
         return 0;
     }
 
@@ -222,7 +225,7 @@ sub event_send_as_mail {
     }
     else {
         XIMS::Debug( 2, 'Mail-sending failed!' );
-        $self->sendError( $ctxt, 'Mail-sending failed!' );
+        $self->sendError( $ctxt, __"Mail-sending failed!" );
         return 0;
     }
 

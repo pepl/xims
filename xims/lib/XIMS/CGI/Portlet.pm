@@ -24,6 +24,7 @@ package XIMS::CGI::Portlet;
 use strict;
 use base qw( XIMS::CGI );
 use XIMS::Portlet;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -111,46 +112,63 @@ sub event_store {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    return 0 unless $self->init_store_object( $ctxt )
-                    and defined $ctxt->object();
+    return 0
+        unless $self->init_store_object($ctxt)
+            and defined $ctxt->object();
 
     my $object = $ctxt->object();
-    my $target = $self->param( 'target' );
+    my $target = $self->param('target');
 
     if ( defined $target and length $target ) {
         XIMS::Debug( 6, "target: $target" );
         my $targetobj;
-        if ( $target =~ /^\d+$/ and $target ne '1'
-                and $targetobj = XIMS::Object->new( document_id => $target, language => $object->language_id ) ) {
+        if (    $target =~ /^\d+$/
+            and $target ne '1'
+            and $targetobj = XIMS::Object->new(
+                document_id => $target,
+                language    => $object->language_id
+            )
+            )
+        {
             $object->symname_to_doc_id( $targetobj->document_id() );
         }
-        elsif ( $target ne '/' and $target ne '/root'
-               and $targetobj = XIMS::Object->new( path => $target, language => $object->language_id ) ) {
+        elsif (
+                $target ne '/'
+            and $target ne '/root'
+            and $targetobj = XIMS::Object->new(
+                path     => $target,
+                language => $object->language_id
+            )
+            )
+        {
             $object->symname_to_doc_id( $targetobj->document_id() );
         }
         else {
-            XIMS::Debug( 2, "Could not find or set target (SYMNAME_TO_DOC_ID)" );
-            $self->sendError( $ctxt, "Could not find or set target" );
+            XIMS::Debug( 2,
+                "Could not find or set target (SYMNAME_TO_DOC_ID)" );
+            $self->sendError( $ctxt, __"Could not find or set target" );
             return 0;
         }
 
-        if ( $object->document_id and $object->document_id == $object->symname_to_doc_id ) {
+        if (    $object->document_id
+            and $object->document_id == $object->symname_to_doc_id )
+        {
             XIMS::Debug( 2, "Will not store a self-referencing link" );
-            $self->sendError( $ctxt, "Will not store a self-referencing link" );
+            $self->sendError( $ctxt,
+                __"Will not store a self-referencing link" );
             return 0;
         }
     }
     else {
         XIMS::Debug( 2, "No target specified!" );
-        $self->sendError( $ctxt, "No target specified!" );
+        $self->sendError( $ctxt, __"No target specified!" );
         return 0;
     }
 
+    my $body = $self->generate_body($ctxt);
+    $ctxt->object->body($body);
 
-    my $body = $self->generate_body( $ctxt );
-    $ctxt->object->body( $body );
-
-    return $self->SUPER::event_store( $ctxt );
+    return $self->SUPER::event_store($ctxt);
 }
 
 
@@ -184,10 +202,10 @@ sub event_test_filter {
             my $chunk  = XML::LibXML->new->parse_xml_chunk( $filter );
         };
         if ( $@ ) {
-            $ctxt->session->error_msg( "bad formed filter conditions : $@" );
+            $ctxt->session->error_msg( __"bad formed filter conditions: " . $@ );
         }
         else {
-            $ctxt->session->message( "filter xml looks ok" );
+            $ctxt->session->message( __"filter xml looks ok" );
         }
     }
 

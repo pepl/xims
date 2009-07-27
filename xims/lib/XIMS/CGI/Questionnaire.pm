@@ -29,6 +29,7 @@ use File::Temp qw/ tempfile unlink0 /;
 use Archive::Zip qw/ :ERROR_CODES :CONSTANTS /;
 use Text::Iconv;
 use XML::LibXSLT;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -114,7 +115,7 @@ sub _default_public {
     my $tan    = $self->param('tan');
     if ( $tan_needed && ( !$object->tan_ok($tan) ) && $params{'q'} ) {
         XIMS::Debug( 5, "Start: TAN not valid!" );
-        $object->set_answer_error("Your TAN is not valid!");
+        $object->set_answer_error(__"Your TAN is not valid!");
 
         # Set current_question back
         $params{'q'} = 0;
@@ -161,14 +162,14 @@ sub event_edit {
     if ( $object->has_answers() ) {
         XIMS::Debug( 5, "cannot edit answered questionnaire" );
         $self->sendError( $ctxt,
-            'Already answered questionnaires cannot be edited! You can copy the questionnaire and edit the copy.'
+            __"Already answered questionnaires cannot be edited! You can copy the questionnaire and edit the copy."
         );
         return 0;
     }
     if ( $object->published() ) {
         XIMS::Debug( 5, "cannot edit published questionnaire" );
         $self->sendError( $ctxt,
-            'Published Questionnaires can not be edited! Unpublish first' );
+            __"Published Questionnaires can not be edited! Unpublish first" );
         return 0;
     }
     my $method = $self->param('edit');
@@ -518,7 +519,7 @@ sub event_download_raw_results {
     if ($zipfilefh) {
         if ( $zip->writeToFileHandle($zipfilefh) != AZ_OK ) {
             XIMS::Debug( 2, "Could not create temporary ZIP file." . $! );
-            $self->sendError( $ctxt, "Could not create temporary ZIP file" );
+            $self->sendError( $ctxt, __"Could not create temporary ZIP file" );
             return 0;
         }
         if ( not unlink0( $tmpfh, $tmpfilename ) ) {
@@ -527,7 +528,7 @@ sub event_download_raw_results {
     }
     else {
         XIMS::Debug( 2, "Could not write temporary ZIP file." . $! );
-        $self->sendError( $ctxt, "Could not write temporary ZIP file" );
+        $self->sendError( $ctxt, __"Could not write temporary ZIP file" );
         return 0;
     }
 
@@ -602,7 +603,7 @@ sub event_download_results_pdf {
     my $htmldoc = XIMS::Config::htmldocPath();
     unless ( -e $htmldoc and -x $htmldoc ) {
         XIMS::Debug( 2, "could not find/execute $htmldoc" );
-        $self->sendError( $ctxt, "Could not find or execute htmldoc." );
+        $self->sendError( $ctxt, __"Could not find or execute htmldoc." );
         return 0;
     }
 
@@ -627,7 +628,7 @@ sub event_download_results_pdf {
     }
     else {
         XIMS::Debug( 2, "failed to create pdf: $pdf" );
-        $self->sendError( $ctxt, "Could not create PDF file!" );
+        $self->sendError( $ctxt, __"Could not create PDF file!" );
         return 0;
     }
 }

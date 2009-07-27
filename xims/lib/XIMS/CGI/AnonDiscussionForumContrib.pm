@@ -26,6 +26,7 @@ use strict;
 use base qw( XIMS::CGI );
 use Text::Iconv;
 use URI::Escape ();
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -96,7 +97,7 @@ sub event_store {
         $self->param( name => localtime() );
     }
     else {
-        $self->sendError( $ctxt, "No title set!" );
+        $self->sendError( $ctxt, __"No title set!" );
         return 0;
     }
 
@@ -139,7 +140,7 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "could not convert to a well balanced string" );
-            $self->sendError( $ctxt, "Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
+            $self->sendError( $ctxt, __"Document body could not be converted to a well balanced string. Please consult the User's Reference for information on well-balanced document bodies." );
             return 0;
         }
     }
@@ -150,7 +151,7 @@ sub event_store {
         XIMS::Debug( 4, "updating existing object" );
         if ( not $object->update() ) {
             XIMS::Debug( 2, "update failed" );
-            $self->sendError( $ctxt, "Update of object failed." );
+            $self->sendError( $ctxt, __"Update of object failed." );
             return 0;
         }
         $self->redirect( $self->redirect_path( $ctxt ) );
@@ -160,7 +161,7 @@ sub event_store {
         XIMS::Debug( 4, "creating new object" );
         if ( not $object->create() ) {
             XIMS::Debug( 2, "create failed" );
-            $self->sendError( $ctxt, "Creation of object failed." );
+            $self->sendError( $ctxt, __"Creation of object failed." );
             return 0;
         }
         else {
@@ -235,7 +236,7 @@ sub event_delete {
 
 sub event_publish {
     my ( $self, $ctxt ) = @_;
-    $self->sendError( $ctxt, "This object can not be published directly, please publish the related forum." );
+    $self->sendError( $ctxt, __"This object can not be published directly, please publish the related forum." );
     return 0;
 }
 
@@ -245,7 +246,7 @@ sub event_publish {
 
 sub event_publish_prompt {
     my ( $self, $ctxt ) = @_;
-    $self->sendError( $ctxt, "This object can not be published directly, please publish the related forum." );
+    $self->sendError( $ctxt, __"This object can not be published directly, please publish the related forum." );
     return 0;
 }
 
@@ -255,7 +256,7 @@ sub event_publish_prompt {
 
 sub event_unpublish {
     my ( $self, $ctxt ) = @_;
-    $self->sendError( $ctxt, "This object can not be published directly, please publish the related forum." );
+    $self->sendError( $ctxt, __"This object can not be published directly, please publish the related forum." );
     return 0;
 }
 

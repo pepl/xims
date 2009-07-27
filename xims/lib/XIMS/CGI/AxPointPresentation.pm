@@ -28,6 +28,7 @@ use XIMS::DataFormat;
 use XML::LibXML::SAX;
 use Cwd 'fastcwd';
 #use Text::Iconv;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -129,7 +130,7 @@ sub event_download_pdf {
 
     if ( not $gotmodules ) {
         XIMS::Debug( 2, "Required module not found");
-        $self->sendError( $ctxt, "Required module not found. You need to have XML::SAX, XML::SAX::Writer, and XML::Handler::AxPoint installed to create a PDF presentation." );
+        $self->sendError( $ctxt, __"Required module not found. You need to have XML::SAX, XML::SAX::Writer, and XML::Handler::AxPoint installed to create a PDF presentation." );
         return 0;
     }
 
@@ -148,7 +149,7 @@ sub event_download_pdf {
     my $cwd = fastcwd;
     if ( not chdir($dir) ) {
         XIMS::Debug( 2, "Could not chdir to " . $dir );
-        $self->sendError( $ctxt, "The directory where the presentation file resides in, has to be published." );
+        $self->sendError( $ctxt, __"The directory where the presentation file resides in, has to be published." );
         return 0;
     }
 
@@ -171,7 +172,7 @@ sub event_download_pdf {
         my $err = $@;
         ($err) = ( $err =~ /^(.*)!/ );
         XIMS::Debug( 2, "Could not create PDF file: " . $err );
-        $self->sendError( $ctxt, "Could not create PDF file: \"$err\" Be aware that every referenced image has to be published before the PDF file can be created!" );
+        $self->sendError( $ctxt, __x("Could not create PDF file: \"{err}\" Be aware that every referenced image has to be published before the PDF file can be created!", err => $err ));
         return 0;
     }
     # chdir back to original dir
@@ -181,7 +182,7 @@ sub event_download_pdf {
     my $output_string = $output_handler->get_output();
     if ( not (defined $output_string and length $output_string) ) {
         XIMS::Debug( 2, "PDF creation has not been succesful." );
-        $self->sendError( $ctxt, "PDF creation has not been succesful." );
+        $self->sendError( $ctxt, __"PDF creation has not been succesful." );
         return 0;
     }
 

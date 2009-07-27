@@ -25,6 +25,7 @@ package XIMS::CGI::TAN_List;
 use strict;
 use base qw( XIMS::CGI );
 use XIMS::DataFormat;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -133,7 +134,7 @@ sub event_store {
         XIMS::Debug( 4, "updating existing object" );
         if ( not $object->update() ) {
             XIMS::Debug( 2, "update failed" );
-            $self->sendError( $ctxt, "Update of object failed." );
+            $self->sendError( $ctxt, __"Update of object failed." );
             return 0;
         }
         $self->redirect( $self->redirect_path( $ctxt ) );
@@ -144,7 +145,7 @@ sub event_store {
 
         my $number = $self->param( 'number' );
         if ( not (defined $number and length $number) ) {
-            $self->sendError( $ctxt, "Number of TANs not set!" );
+            $self->sendError( $ctxt, __"Number of TANs not set!" );
             return 0;
         }
         XIMS::Debug( 6, "Number of TANs: $number" );
@@ -157,14 +158,14 @@ sub event_store {
             }
             else {
                 XIMS::Debug( 2, "could not create TANs" );
-                $self->sendError( $ctxt, "TAN-List could not be created." );
+                $self->sendError( $ctxt, __"TAN-List could not be created." );
                 return 0;
             }
         }
 
         if ( not $object->create() ) {
             XIMS::Debug( 2, "create failed" );
-            $self->sendError( $ctxt, "Creation of object failed." );
+            $self->sendError( $ctxt, __"Creation of object failed." );
             return 0;
         }
 

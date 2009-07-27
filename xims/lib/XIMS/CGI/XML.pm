@@ -24,6 +24,7 @@ package XIMS::CGI::XML;
 use strict;
 use base qw( XIMS::CGI );
 use Text::Iconv;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -204,7 +205,7 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "body is not well-formed" );
-            $self->sendError( $ctxt, "Document body is not well-formed. Please consult the User's Reference for information on well-formed document bodies." );
+            $self->sendError( $ctxt, __"Document body is not well-formed. Please consult the User's Reference for information on well-formed document bodies." );
             return 0;
         }
     }
@@ -377,12 +378,12 @@ sub event_simpleformedit {
     my $schemaroot;
     if ( not defined $schema ) {
         XIMS::Debug( 3, "A schema is needed for simple form editing" );
-        $self->sendError( $ctxt, "A schema is needed for simple form editing" );
+        $self->sendError( $ctxt, __"A schema is needed for simple form editing" );
         return 0;
     }
     elsif ( defined $schema and not $schema->published() ) {
         XIMS::Debug( 3, "The schema needs to be published." );
-        $self->sendError( $ctxt, "The schema needs to be published. Please publish it." );
+        $self->sendError( $ctxt, __"The schema needs to be published. Please publish it." );
         return 0;
     }
 
@@ -394,7 +395,7 @@ sub event_simpleformedit {
     };
     if ( $@ ) {
         XIMS::Debug( 3, "Could not parse: $@" );
-        $self->sendError( $ctxt, "Could not parse schema." );
+        $self->sendError( $ctxt, __"Could not parse schema." );
         return 0;
     }
     $sdoc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
@@ -414,7 +415,7 @@ sub event_simpleformedit {
     while ( my ($xpath, $result) = each %validation_checks ) {
         if ( $schemaroot->findvalue($xpath) ne $result ) {
             XIMS::Debug( 3, "The schema does not meet the simpleformedit validation checks." );
-            $self->sendError( $ctxt, "The schema does not meet the simpleformedit validation checks. Please update the schema as described in the documentation." );
+            $self->sendError( $ctxt, __"The schema does not meet the simpleformedit validation checks. Please update the schema as described in the documentation." );
             return 0;
         }
     }
@@ -426,7 +427,7 @@ sub event_simpleformedit {
     };
     if ( $@ ) {
         XIMS::Debug( 3, "Could not parse: $@" );
-        $self->sendError( $ctxt, "Could not parse body." );
+        $self->sendError( $ctxt, __"Could not parse body." );
         return 0;
     }
     $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' );
@@ -452,7 +453,7 @@ sub event_simpleformedit {
             $oldelement = $root->findnodes('//'.$elementname.'[@id=\''.$elementid."']")->[0];
             if ( not defined $oldelement or not $oldelement->isa('XML::LibXML::Element') ) {
                 XIMS::Debug( 2, "Could not find element to update" );
-                $self->sendError( $ctxt, "Could not find element to update." );
+                $self->sendError( $ctxt, __"Could not find element to update." );
                 return 0;
             }
         }
@@ -511,17 +512,17 @@ sub event_simpleformedit {
                 return 1;
             }
             elsif ( $elementid ) {
-                $message = "Changes saved";
+                $message = __"Changes saved";
             }
             else {
-                $message = "Entry created";
+                $message = __"Entry created";
             }
             $ctxt->session->message( $message );
             XIMS::Debug( 4, "Body updated" );
         }
         else {
             XIMS::Debug( 2, "Could not update body" );
-            $self->sendError( $ctxt, "Could not update body." );
+            $self->sendError( $ctxt, __"Could not update body." );
             return 0;
         }
     }

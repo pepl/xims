@@ -27,6 +27,7 @@ use XIMS::SimpleDBItem;
 use XIMS::SimpleDBMemberPropertyValue;
 use XIMS::SimpleDBMemberProperty;
 use XIMS::QueryBuilder::SimpleDB;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -129,7 +130,7 @@ sub event_default {
         my $qb = XIMS::QueryBuilder::SimpleDB->new( { search => $search,
                                                       allowed => $allowed,
                                                       extraargs => { simpledb => $ctxt->object() } } );
-        return $self->sendError( $ctxt, "Querybuilder could not be instantiated." ) unless defined $qb;
+        return $self->sendError( $ctxt, __"Querybuilder could not be instantiated." ) unless defined $qb;
         $childrenargs{criteria} = $qb->criteria();
     }
 
@@ -178,8 +179,7 @@ sub event_store {
     if ( $is_event_create != 1 and not @title_props ) {
         XIMS::Debug( 3, "No property set to be part of title!
                             Check at least one property!" );
-        return $self->sendError( $ctxt, "At least one property must be
-                                         specified to be part of the title!" );
+        return $self->sendError( $ctxt, __"At least one property must be specified to be part of the title!" );
     }
 
     my $pagerowlimit = $self->param( 'pagerowlimit' );
@@ -216,7 +216,7 @@ sub event_create_property_mapping {
 
     if ( not defined $values{name} ) {
         XIMS::Debug( 3, "At least Name needed" );
-        return $self->sendError( $ctxt, "At least a name for the property is needed." );
+        return $self->sendError( $ctxt, __"At least a name for the property is needed." );
     }
 
     # TODO check property regex
@@ -224,7 +224,7 @@ sub event_create_property_mapping {
     $property = XIMS::SimpleDBMemberProperty->new()->data( %values );
     if ( not $property->create() ) {
         XIMS::Debug( 3, "Could not create property " . $property->name() . "." );
-        return $self->sendError( $ctxt, "Could not create property " . $property->name() . "." );
+        return $self->sendError( $ctxt, __"Could not create property " . $property->name() . "." );
     }
 
     if ( $ctxt->object->map_member_property( $property ) ) {
@@ -233,7 +233,7 @@ sub event_create_property_mapping {
     }
     else {
         XIMS::Debug( 3, "Could not create propertymapping for  " . $property->name() . "." );
-        return $self->sendError( $ctxt, "Could not create propertymapping for " . $property->name() . "." );
+        return $self->sendError( $ctxt, __"Could not create propertymapping for " . $property->name() . "." );
     }
 }
 
@@ -253,13 +253,13 @@ sub event_update_property_mapping {
     my $property_id = $self->param('property_id');
     if ( not defined $property_id or $property_id !~ /^\d+$/ ) {
         XIMS::Debug( 3, "Valid property_id needed" );
-        return $self->sendError( $ctxt, "Valid property_id needed." );
+        return $self->sendError( $ctxt, __"Valid property_id needed." );
     }
 
     my $property = XIMS::SimpleDBMemberProperty->new( id => $property_id );
     if ( not defined $property ) {
         XIMS::Debug( 3, "Valid property_id needed" );
-        return $self->sendError( $ctxt, "Valid property_id needed." );
+        return $self->sendError( $ctxt, __"Valid property_id needed." );
     }
 
     my $old_position = $property->position();
@@ -278,13 +278,13 @@ sub event_update_property_mapping {
     eval { $property->update(); };
     if ( $@ ) {
         XIMS::Debug( 3, "Could not update property " . $property->name() . ": $@." );
-        return $self->sendError( $ctxt, "Could not update property " . $property->name() . "." );
+        return $self->sendError( $ctxt, __"Could not update property " . $property->name() . "." );
     }
     else {
         if ( $old_position != $new_position and not $ctxt->object->reposition_property( old_position => $old_position,
                                                                                         new_position => $new_position,
                                                                                         property_id => $property_id ) ) {
-            XIMS::Debug( 3, "Could not reposition property " . $property->name() . "." );
+            XIMS::Debug( 3, __"Could not reposition property " . $property->name() . "." );
         }
     }
 
@@ -308,13 +308,13 @@ sub event_delete_property_mapping {
     my $property_id = $self->param('property_id');
     if ( not defined $property_id or $property_id !~ /^\d+$/ ) {
         XIMS::Debug( 3, "Valid property_id needed" );
-        return $self->sendError( $ctxt, "Valid property_id needed." );
+        return $self->sendError( $ctxt, __"Valid property_id needed." );
     }
 
     my $property = XIMS::SimpleDBMemberProperty->new( id => $property_id );
     if ( not defined $property ) {
         XIMS::Debug( 3, "Valid property_id needed" );
-        return $self->sendError( $ctxt, "Valid property_id needed." );
+        return $self->sendError( $ctxt, __"Valid property_id needed." );
     }
 
     my $property_name = $property->name();
@@ -323,14 +323,14 @@ sub event_delete_property_mapping {
     eval { $ctxt->object->close_property_position_gap( position => $property->position() ); };
     if ( $@ ) {
         XIMS::Debug( 3, "Could not close position gap " . $property_name . " $@." );
-        return $self->sendError( $ctxt, "Could not delete property " . $property_name . "." );
+        return $self->sendError( $ctxt, __"Could not delete property " . $property_name . "." );
     }
 
     # Actually delete the property. This will cascade to the mapping and value tables!
     eval { $property->delete(); };
     if ( $@ ) {
         XIMS::Debug( 3, "Could not delete property " . $property_name . " $@." );
-        return $self->sendError( $ctxt, "Could not delete property " . $property_name . "." );
+        return $self->sendError( $ctxt, __"Could not delete property " . $property_name . "." );
     }
 
     $self->redirect( $self->redirect_path( $ctxt ) . '?edit=1;message=Property%20%22' . $property_name . '%22%20deleted' );
@@ -344,7 +344,7 @@ sub event_delete_property_mapping {
 sub event_copy {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Copying SimpleDBs is not implemented." );
+    return $self->sendError( $ctxt, __"Copying SimpleDBs is not implemented." );
 }
 
 =head2 event_delete()
@@ -354,7 +354,7 @@ sub event_copy {
 sub event_delete {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Deleting SimpleDBs is not implemented." );
+    return $self->sendError( $ctxt, __"Deleting SimpleDBs is not implemented." );
 }
 
 =head2 event_delete_prompt()
@@ -364,7 +364,7 @@ sub event_delete {
 sub event_delete_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Deleting SimpleDBs is not implemented." );
+    return $self->sendError( $ctxt, __"Deleting SimpleDBs is not implemented." );
 }
 
 =head2 event_publish_prompt()

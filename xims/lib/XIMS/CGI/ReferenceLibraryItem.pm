@@ -31,6 +31,7 @@ use XIMS::RefLibSerial;
 use XIMS::RefLibReferencePropertyValue;
 use XIMS::Importer::Object::ReferenceLibraryItem;
 use Encode;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -82,7 +83,7 @@ sub event_init {
             $ctxt->object->reference( $reference );
         }
         else {
-            $self->sendError( $ctxt, "Could not resolve reference type." );
+            $self->sendError( $ctxt, __"Could not resolve reference type." );
             return 0;
         }
     }
@@ -112,7 +113,7 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "Could not set body." );
-            $self->sendError( $ctxt, "Could not set body." );
+            $self->sendError( $ctxt, __"Could not set body." );
             return 0;
         }
     }
@@ -135,14 +136,14 @@ sub event_store {
     if ( $ctxt->parent() ) {
         my $reference = $ctxt->object->reference();
         if ( not defined $reference ) {
-            $self->sendError( $ctxt, "Missing Reference Type." );
+            $self->sendError( $ctxt, __"Missing Reference Type." );
             return 0
         }
         my $importer = XIMS::Importer::Object::ReferenceLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->parent() );
         my $identifier = XIMS::trim( XIMS::decode( $self->param( 'identifier' ) ) );
         if ( defined $identifier and length $identifier and not $importer->check_duplicate_identifier( $identifier ) ) {
             XIMS::Debug( 3, "Reference with the same identifier already exists." );
-            $self->sendError( $ctxt , "Reference with the same identifier already exists." );
+            $self->sendError( $ctxt , __"Reference with the same identifier already exists." );
             return 0;
         }
         $ctxt->object->location( 'dummy.xml' );
@@ -155,13 +156,13 @@ sub event_store {
             }
             else {
                 XIMS::Debug( 2, "Could not create reference object." );
-                $self->sendError( $ctxt , "Could not create reference object." );
+                $self->sendError( $ctxt , __"Could not create reference object." );
                 return 0;
             }
         }
         else {
             XIMS::Debug( 2, "Could not import ReferenceLibraryItem" );
-            $self->sendError( $ctxt , "Could not import ReferenceLibraryItem" );
+            $self->sendError( $ctxt , __"Could not import ReferenceLibraryItem" );
             return 0;
         }
     }
@@ -184,7 +185,7 @@ sub event_store {
 
     if ( not $ctxt->object->update() ) {
         XIMS::Debug( 2, "update failed" );
-        $self->sendError( $ctxt, "Update of object failed." );
+        $self->sendError( $ctxt, __"Update of object failed." );
         return 0;
     }
     $self->redirect( $self->redirect_path( $ctxt ) );
@@ -307,7 +308,7 @@ sub event_remove_author_mapping {
     my $propid = $property . "_id";
     my $propmapobject = $propmapclass->new( reference_id => $ctxt->object->reference->id(), $propid => $property_id, role => $role );
     if ( not( $propmapobject ) ) {
-        $self->sendError( $ctxt, "No mapping found which could be deleted." );
+        $self->sendError( $ctxt, __"No mapping found which could be deleted." );
         return 0;
     }
 
@@ -316,7 +317,7 @@ sub event_remove_author_mapping {
     if ( $property eq 'author' and $role == 0 ) {
         my $propmethod = "vl".$property."s";
         if ( scalar $ctxt->object->$propmethod() == 1 ) {
-            $self->sendError( $ctxt, "Will not delete last associated author." );
+            $self->sendError( $ctxt, __"Will not delete last associated author." );
             return 0;
         }
     }
@@ -332,7 +333,7 @@ sub event_remove_author_mapping {
         return 1;
     }
     else {
-        $self->sendError( $ctxt, "Mapping could not be deleted." );
+        $self->sendError( $ctxt, __"Mapping could not be deleted." );
     }
 
     return 0;
@@ -353,14 +354,14 @@ sub event_remove_serial_mapping {
     my $serial_id = $self->param('serial_id');
 
     if ( not defined $serial_id ) {
-        $self->sendError( $ctxt, "Wrong Parameters." );
+        $self->sendError( $ctxt, __"Wrong Parameters." );
         return 0;
     }
 
     # look up mapping
     my $serial = XIMS::RefLibSerial->new( id => $serial_id );
     if ( not defined $serial ) {
-        $self->sendError( $ctxt, "Serial not found." );
+        $self->sendError( $ctxt, __"Serial not found." );
         return 0;
     }
 
@@ -373,11 +374,11 @@ sub event_remove_serial_mapping {
             return 1;
         }
         else {
-            $self->sendError( $ctxt, "Mapping could not be deleted." );
+            $self->sendError( $ctxt, __"Mapping could not be deleted." );
         }
     }
     else {
-        $self->sendError( $ctxt, "Given Serial does not match currently assigned serial." );
+        $self->sendError( $ctxt, __"Given Serial does not match currently assigned serial." );
     }
 
     return 0;
@@ -455,7 +456,7 @@ sub event_reposition_author {
     $param{role} = $self->param('role');
 
     if ( scalar grep { !/^\d+$/ } values %param ) {
-        $self->sendError( $ctxt, "Invalid parameters." );
+        $self->sendError( $ctxt, __"Invalid parameters." );
         return 0;
     }
 
@@ -469,7 +470,7 @@ sub event_reposition_author {
         return 1;
     }
     else {
-        $self->sendError( $ctxt, "Could not reposition author." );
+        $self->sendError( $ctxt, __"Could not reposition author." );
         return 0;
     }
 }
@@ -488,7 +489,7 @@ sub event_change_reference_type {
 
     my $reference_type_id = $self->param('reference_type_id');
     if ( not defined $reference_type_id ) {
-        return $self->sendError( $ctxt, "Need a new reference type id." );
+        return $self->sendError( $ctxt, __"Need a new reference type id." );
     }
 
     my $reference_type = XIMS::RefLibReferenceType->new( id => $reference_type_id );
@@ -500,11 +501,11 @@ sub event_change_reference_type {
             return 1;
         }
         else {
-            return $self->sendError( $ctxt, "Reference Type could not be updated." );
+            return $self->sendError( $ctxt, __"Reference Type could not be updated." );
         }
     }
     else {
-        return $self->sendError( $ctxt, "Could not resolve reference type." );
+        return $self->sendError( $ctxt, __"Could not resolve reference type." );
     }
 }
 

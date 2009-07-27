@@ -23,6 +23,7 @@ package XIMS::CGI::DepartmentRoot;
 
 use strict;
 use base qw( XIMS::CGI::Folder );
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -90,12 +91,12 @@ sub event_add_portlet {
     my $path = $self->param( "portlet" );
     if ( defined $path ) {
         if ( not ($object->add_portlet( $path ) and $object->update() ) ) {
-            $self->sendError( $ctxt, "Could not add portlet." );
+            $self->sendError( $ctxt, __"Could not add portlet." );
             return 0;
         }
     }
     else {
-        $self->sendError( $ctxt, "Path to portlet-target needed." );
+        $self->sendError( $ctxt, __"Path to portlet-target needed." );
         return 0;
     }
 
@@ -119,12 +120,12 @@ sub event_rem_portlet {
     my $portlet_id = $self->param( "portlet_id" );
     if ( defined $portlet_id and $portlet_id > 0 ) {
         if ( not ( $object->remove_portlet( $portlet_id ) and $object->update() ) ) {
-            $self->sendError( $ctxt, "Could not remove portlet." );
+            $self->sendError( $ctxt, __"Could not remove portlet." );
             return 0;
         }
     }
     else {
-        $self->sendError( $ctxt, "Which portlet should be removed?" );
+        $self->sendError( $ctxt, __"Which portlet should be removed?" );
         return 0;
     }
 

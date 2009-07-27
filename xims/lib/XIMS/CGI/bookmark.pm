@@ -25,6 +25,7 @@ use strict;
 use base qw( XIMS::CGI::defaultbookmark );
 use XIMS::User;
 use XIMS::Bookmark;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -110,17 +111,19 @@ sub event_setdefault {
         if ( not( $user and $user->id() ) ) {
             XIMS::Debug( 3,
                 "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-            $self->sendError( $ctxt, "User '$uname' does not exist." );
+            $self->sendError( $ctxt,
+                __x( "User '{name}' does not exist.", name => $uname ) );
             return 0;
         }
     }
 
-    my $default_bookmark = $user->bookmarks( explicit_only => 1, stdhome => 1 );
+    my $default_bookmark
+        = $user->bookmarks( explicit_only => 1, stdhome => 1 );
     if ($default_bookmark) {
         $default_bookmark->stdhome(undef);
         if ( not $default_bookmark->update() ) {
             XIMS::Debug( 3, "could not unset default bookmark" );
-            $self->sendError( $ctxt, "Could not unset default bookmark!" );
+            $self->sendError( $ctxt, __ "Could not unset default bookmark!" );
             return 0;
         }
     }
@@ -150,7 +153,9 @@ sub event_create {
         if ( not( $user and $user->id() ) ) {
             XIMS::Debug( 3,
                 "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
-            $self->sendError( $ctxt, "User '$uname' does not exist." );
+            $self->sendError( $ctxt, 
+                              __x("User '{name}' does not exist.", name=> $uname )
+                          );
             return 0;
         }
     }
@@ -165,7 +170,7 @@ sub event_create {
             $default_bookmark->stdhome(undef);
             if ( not $default_bookmark->update() ) {
                 XIMS::Debug( 3, "could not unset default bookmark" );
-                $self->sendError( $ctxt, "Could not unset default bookmark!" );
+                $self->sendError( $ctxt, __"Could not unset default bookmark!" );
                 return 0;
             }
         }
@@ -178,7 +183,11 @@ sub event_create {
 
     if ( not defined $object ) {
         XIMS::Debug( 3, "could not find object with path '$path'!" );
-        $self->sendError( $ctxt, "Could not find object with path '$path'!" );
+        $self->sendError( $ctxt, 
+                          __x("Could not find object with path '{path}'!",
+                              path => $path
+                          )
+        );
         return 0;
     }
 
@@ -203,7 +212,7 @@ sub event_delete {
     if ( not $bookmark->delete() ) {
         XIMS::Debug( 3,
             "could not delete bookmark with id " . $bookmark->id() );
-        $self->sendError( $ctxt, "Could not delete bookmark." );
+        $self->sendError( $ctxt, __"Could not delete bookmark." );
         return 0;
     }
 

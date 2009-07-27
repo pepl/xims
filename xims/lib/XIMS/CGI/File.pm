@@ -27,6 +27,7 @@ use base qw( XIMS::CGI );
 use XIMS::Importer::FileSystem;
 use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
 use File::Temp qw/ tempdir unlink0 /;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -104,7 +105,7 @@ sub event_store {
                 return 1;
             }
             else {
-                return $self->sendError( $ctxt, "Unpacking file failed" );
+                return $self->sendError( $ctxt, __"Unpacking file failed" );
             }
         }
     }

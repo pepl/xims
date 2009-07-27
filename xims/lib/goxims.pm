@@ -34,6 +34,7 @@ use XIMS::User;
 use XIMS::Session;
 use Apache::AuthXIMS;
 use Time::Piece;
+use POSIX qw(setlocale LC_ALL);
 
 # preload commonly used and publish_gopublic objecttypes
 use XIMS::CGI::SiteRoot;
@@ -78,6 +79,16 @@ sub handler {
 
     # set default 500 error document
     $r->custom_response( SERVER_ERROR, XIMS::PUBROOT_URL() . "/500.xsp" );
+
+    my $langpref = getLanguagePref($r);
+
+    # XXX temporary solution
+    if ( $langpref eq 'de-at' ) {
+        setlocale( LC_ALL, "de_AT.UTF-8" );
+    }
+    else {
+        setlocale( LC_ALL, "en_US.UTF-8" );
+    }
 
     my $publicuser = $r->dir_config('ximsPublicUserName');
 
@@ -177,7 +188,7 @@ sub handler {
     $ctxt->session->skin( XIMS::DEFAULT_SKIN() );
 
     # set UILanguage
-    $ctxt->session->uilanguage( getLanguagePref($r) );
+    $ctxt->session->uilanguage( $langpref );
 
     #
     # Big fork here
