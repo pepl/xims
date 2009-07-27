@@ -30,6 +30,7 @@ use XML::LibXML;
 use XML::LibXSLT;
 use XML::LibXML::SAX::Builder;
 use XIMS::DataProvider;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -346,9 +347,11 @@ sub _generate_body_from_sql {
 
     if ( $properties =~ /^\s*\*\s*$/ ) {
         XIMS::Debug( 2, "* in properties " . $@ );
-        $self->sendError( $ctxt, "Please specify explict query properties, do not use '*'.");
+        $self->sendError( $ctxt,
+            __ "Please specify explict query properties, do not use '*'." );
         return 0;
     }
+
 
     my $countproperty = 'COUNT(*) AS count';
     if ( defined $groupby ) {
@@ -408,7 +411,7 @@ sub _generate_body_from_sql {
         };
         if ( $@ ) {
             XIMS::Debug( 2, "Invalid Stylesheet: " . $@ );
-            $self->sendError( $ctxt, "Invalid Stylesheet: " . $@ );
+            $self->sendError( $ctxt, __"Invalid Stylesheet: " . $@ );
             return 0;
         }
 
@@ -417,7 +420,7 @@ sub _generate_body_from_sql {
         };
         if( $@ ) {
             XIMS::Debug( 2, "Invalid Stylesheet: " . $@ );
-            $self->sendError( $ctxt, "Invalid Stylesheet: " . $@ );
+            $self->sendError( $ctxt, __"Invalid Stylesheet: " . $@ );
             return 0;
         }
 
@@ -426,7 +429,7 @@ sub _generate_body_from_sql {
         };
         if( $@ ) {
             XIMS::Debug( 2, "Could not transform using stylesheet: " . $@ );
-            $self->sendError( $ctxt, "Could not transform using stylesheet: " . $@ );
+            $self->sendError( $ctxt, __"Could not transform using stylesheet: " . $@ );
             return 0;
         }
 
@@ -496,7 +499,7 @@ sub _test_granted_schemata {
     }
 
     unless ( scalar @schemata > 0 ) {
-        $self->sendError( $ctxt, "Tablenames need schema prefix. Please edit the SQLReport SQL query." );
+        $self->sendError( $ctxt, __"Tablenames need schema prefix. Please edit the SQLReport SQL query." );
         return 0;
     }
 
@@ -507,12 +510,18 @@ sub _test_granted_schemata {
         }
     }
 
-    foreach my $schema ( @schemata ) {
-        unless ( grep { /$schema/i } @sqlrep_schemaroles ) {
-            $self->sendError( $ctxt, "Schema $schema not granted. Please edit the SQLReport SQL query or get role grants for XIMS:SQLReportSchema:$schema." );
+    foreach my $schema (@schemata) {
+        unless ( grep {/$schema/i} @sqlrep_schemaroles ) {
+            $self->sendError(
+                $ctxt,
+                __x("Schema {name} not granted. Please edit the SQLReport SQL query or get role grants for XIMS:SQLReportSchema:{name}.",
+                    name => $schema
+                )
+            );
             return 0;
         }
     }
+
 
     return 1;
 }
@@ -536,7 +545,7 @@ sub _agentdbh {
         };
         if ( $@ or not defined $dbh ) {
             XIMS::Debug( 2, "Could not connect to database: $@");
-            return $self->sendError( $ctxt, "Could not connect to database: $@");
+            return $self->sendError( $ctxt, __"Could not connect to database: " . $@);
         }
     }
     else {
@@ -548,7 +557,7 @@ sub _agentdbh {
         };
         if ( $@ or not defined $dp ) {
             XIMS::Debug( 2, "could not create data provider with the ximsagent user");
-            return $self->sendError( $ctxt, "Could not connect to database using the SQLReportAgentUser. Please check your sqlreportconfig.xml");
+            return $self->sendError( $ctxt, __"Could not connect to database using the SQLReportAgentUser. Please check your sqlreportconfig.xml");
         }
         $dbh = $dp->driver->dbh();
     }

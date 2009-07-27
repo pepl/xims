@@ -32,6 +32,7 @@ use XIMS::Importer::Object::ReferenceLibraryItem;
 use XIMS::QueryBuilder::ReferenceLibrary;
 use XML::LibXML;
 use File::Temp qw/ tempfile unlink0 /;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -199,7 +200,7 @@ sub event_reflibsearch {
     }
 
     unless ( defined $search and length($search) >= 2 and length($search) <= 128 ) {
-        return $self->sendError( $ctxt, "A valid search string is needed." );
+        return $self->sendError( $ctxt, __"A valid search string is needed." );
     }
 
     use encoding "latin-1";
@@ -209,7 +210,7 @@ sub event_reflibsearch {
                                                           extraargs => { reflib => $ctxt->object() } } );
 
     if ( not defined $qb ) {
-        return $self->sendError( $ctxt, "Querybuilder could not be instantiated." );
+        return $self->sendError( $ctxt, __"Querybuilder could not be instantiated." );
     }
 
     my ( $child_count, $children ) = $ctxt->object->items_granted( limit => $limit, offset => $offset, order => $order, criteria => $qb->criteria() );
@@ -242,7 +243,7 @@ sub event_edit {
 sub event_copy {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Copying ReferenceLibraries is not implemented." );
+    return $self->sendError( $ctxt, __"Copying ReferenceLibraries is not implemented." );
 }
 
 =head2 event_delete()
@@ -252,7 +253,7 @@ sub event_copy {
 sub event_delete {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Deleting ReferenceLibraries is not implemented." );
+    return $self->sendError( $ctxt, __"Deleting ReferenceLibraries is not implemented." );
 }
 
 =head2 event_delete_prompt()
@@ -262,7 +263,7 @@ sub event_delete {
 sub event_delete_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Deleting ReferenceLibraries is not implemented." );
+    return $self->sendError( $ctxt, __"Deleting ReferenceLibraries is not implemented." );
 }
 
 =head2 event_import_prompt()
@@ -305,7 +306,7 @@ sub event_import {
 
     unless ( defined $body and length $body ) {
         XIMS::Debug( 3, "Need some text to import" );
-        $self->sendError( $ctxt, "Need some text to import." );
+        $self->sendError( $ctxt, __"Need some text to import." );
         return 0;
     }
 
@@ -323,7 +324,7 @@ sub event_import {
     my $importformat = $self->param('importformat');
     if ( not exists $sourcetypemap{$importformat} ) {
         XIMS::Debug( 3, "Unknown Import Format" );
-        $self->sendError( $ctxt, "Unknown Import Format." );
+        $self->sendError( $ctxt, __"Unknown Import Format." );
         return 0;
     }
 
@@ -336,7 +337,7 @@ sub event_import {
         my $inputformatfilter = $inputformatfilterpath . $sourcetypemap{$importformat};
         if ( not -f $inputformatfilter ) {
             XIMS::Debug( 3, "Could not find import filter binary $inputformatfilter" );
-            $self->sendError( $ctxt, "Could not find import filter." );
+            $self->sendError( $ctxt, __"Could not find import filter." );
             return 0;
         }
 
@@ -352,12 +353,12 @@ sub event_import {
         };
         if ( $@ ) {
             XIMS::Debug( 2, "Could not execute '$inputformatfilter $tmpfilename': $@" );
-            $self->sendError( $ctxt, "Could not convert input file." );
+            $self->sendError( $ctxt, __"Could not convert input file." );
             return 0;
         }
         if ( not defined $modsbody ) {
             XIMS::Debug( 2, "Inputformat filter returned empty string" );
-            $self->sendError( $ctxt, "Could not convert input file." );
+            $self->sendError( $ctxt, __"Could not convert input file." );
             return 0;
         }
         else {
@@ -378,7 +379,7 @@ sub event_import {
     };
     if ( $@ ) {
         XIMS::Debug( 3, "Could not parse: $@" );
-        $self->sendError( $ctxt, "Could not parse input MODS file." );
+        $self->sendError( $ctxt, __"Could not parse input MODS file." );
         return 0;
     }
 
@@ -618,7 +619,13 @@ sub event_import {
     #                  );
 
     #$ctxt->session->message( \%message  );
-    $ctxt->session->message( "Imported $modsimported of " . $root->findvalue( 'count(/m:modsCollection/m:mods)' ) . " items."  );
+
+    $ctxt->session->message(
+        __x("Imported {num_imported} of {num_total} items",
+            num_imported => $modsimported,
+            num_total => $root->findvalue('count(/m:modsCollection/m:mods)')
+        )
+    );
 
     return 0;
 }

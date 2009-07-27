@@ -26,6 +26,7 @@ use base qw( XIMS::CGI );
 use Text::Iconv;
 use Encode;
 use Text::Template;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -184,7 +185,7 @@ sub event_store {
             $verbose_msg .= $body . "\n";
             $verbose_msg .= '=' x 72 . "\n";
 
-            $self->sendError( $ctxt, "Document body could not be converted to a well balanced string.", $verbose_msg );
+            $self->sendError( $ctxt, __"Document body could not be converted to a well balanced string.", $verbose_msg );
             return 0;
         }
     }
@@ -502,7 +503,7 @@ sub event_bxeconfig {
     my $template = Text::Template->new(TYPE => 'FILE',  SOURCE => $templatefile );
     if ( not $template ) {
         XIMS::Debug( 2, "could not get template" );
-        $self->sendError( $ctxt, "Could not get template" );
+        $self->sendError( $ctxt, __"Could not get template" );
         return 0;
     }
 

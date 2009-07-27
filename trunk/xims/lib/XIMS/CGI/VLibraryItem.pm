@@ -33,6 +33,7 @@ use XIMS::VLibSubjectMap;
 use XIMS::VLibPublication;
 use XIMS::VLibPublicationMap;
 use XIMS::VLibMeta;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -139,7 +140,7 @@ sub event_remove_mapping {
         $propid     => $property_id
     );
     if ( not($propmapobject) ) {
-        $self->sendError( $ctxt, "No mapping found which could be deleted." );
+        $self->sendError( $ctxt, __"No mapping found which could be deleted." );
         return 0;
     }
 
@@ -149,7 +150,7 @@ sub event_remove_mapping {
         my $propmethod = "vl" . $property . "s";
         if ( scalar $ctxt->object->$propmethod() == 1 ) {
             $self->sendError( $ctxt,
-                "Will not delete last associated subject." );
+                __"Will not delete last associated subject." );
             return 0;
         }
     }
@@ -170,7 +171,7 @@ sub event_remove_mapping {
         return 1;
     }
     else {
-        $self->sendError( $ctxt, "Mapping could not be deleted." );
+        $self->sendError( $ctxt, __"Mapping could not be deleted." );
     }
 
     return 0;
@@ -367,7 +368,7 @@ sub event_remove_mapping_async {
         return 1;
     }
     else {
-        $self->sendError( $ctxt, "Mapping could not be deleted." );
+        $self->sendError( $ctxt, __"Mapping could not be deleted." );
     }
 
     return 0;

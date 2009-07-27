@@ -24,6 +24,7 @@ package XIMS::CGI::CSS;
 use strict;
 use base qw( XIMS::CGI::Text );
 use CSS::Tiny;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -48,11 +49,11 @@ sub event_parse_css {
     my $body = $ctxt->object->body();
     my $css = CSS::Tiny->read_string( $body );
     if ( $CSS::Tiny::errstr ) {
-        $ctxt->session->error_msg( "Parse failure" );
+        $ctxt->session->error_msg( __"Parse failure" );
         $ctxt->session->verbose_msg( $CSS::Tiny::errstr );
     }
     else {
-        $ctxt->session->message( "Parse ok. Parsed CSS:" );
+        $ctxt->session->message( __"Parse ok. Parsed CSS:" );
         $ctxt->session->verbose_msg( $css->write_string() );
     }
 

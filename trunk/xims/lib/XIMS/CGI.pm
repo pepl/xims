@@ -35,6 +35,8 @@ use XML::LibXML::SAX::Builder;
 use Apache::URI;
 use Text::Iconv;
 use Time::Piece;
+use Locale::TextDomain ('info.xims');
+use POSIX qw(LC_ALL setlocale);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -88,12 +90,13 @@ sub registerEvents {
 sub event_init {
     my $self = shift;
     my $ctxt = shift;
+
     $self->SUPER::event_init($ctxt);
 
     return $self->sendEvent('access_denied') unless $ctxt->session->user();
     return
         unless $ctxt->object()
-        ;    # no object-ACL-check needed if we do not have a content object
+    ;    # no object-ACL-check needed if we do not have a content object
 
     # ACL check
     if (length $self->checkPush('create')
@@ -107,7 +110,7 @@ sub event_init {
         my $objtype = $self->param('objtype');
         if ( not $objtype ) {
             $self->sendError( $ctxt,
-                "Specify an object type to create an object!" );
+                __"Specify an object type to create an object!" );
             return $self->sendEvent('error');
         }
 
@@ -129,7 +132,7 @@ sub event_init {
         eval "require $class";
         if ($@) {
             XIMS::Debug( 2, "Can't find the object class: " . $@ );
-            $self->sendError( $ctxt, "Can't find the object class: " . $@ );
+            $self->sendError( $ctxt, __"Can't find the object class: " . $@ );
             return $self->sendEvent('error');
         }
         ## use critic
@@ -226,7 +229,7 @@ sub event_test_location {
 
 sub event_dbhpanic {
     my $self = shift;
-    $self->setPanicMsg("Can not connect to database server.");
+    $self->setPanicMsg( __"Can not connect to database server.");
     return -4;
 }
 
@@ -246,7 +249,7 @@ sub event_access_denied {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
-    $self->sendError( $ctxt, "Access Denied" );
+    $self->sendError( $ctxt, __"Access Denied" );
 
     return 0;
 }
@@ -325,19 +328,20 @@ sub event_edit {
 
     if ( $self->object_locked($ctxt) ) {
         XIMS::Debug( 3, "Attempt to edit locked object" );
-        $self->sendError( $ctxt,
-                  "This object is locked by "
-                . $object->locker->firstname() . " "
-                . $object->locker->lastname()
-                . " since "
-                . $object->locked_time()
-                . ". Please try again later." );
+        $self->sendError(
+            $ctxt,
+            __x("This object is locked by {firstname} {lastname} since {locked_time}. Please try again later.",
+                firstname   => $object->locker->firstname(),
+                lastname    => $object->locker->lastname(),
+                locked_time => $object->locked_time()
+            )
+        );
     }
     else {
         if ( $object->lock() ) {
             XIMS::Debug( 4, "lock set" );
-            $ctxt->session->message(
-                "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
+            $ctxt->session->message( __
+                    "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
             );
         }
         else {
@@ -410,7 +414,7 @@ sub event_store {
         XIMS::Debug( 4, "updating existing object" );
         if ( not $object->update() ) {
             XIMS::Debug( 2, "update failed" );
-            $self->sendError( $ctxt, "Update of object failed." );
+            $self->sendError( $ctxt, __"Update of object failed." );
             return 0;
         }
         $self->redirect( $self->redirect_path($ctxt) );
@@ -420,7 +424,7 @@ sub event_store {
         XIMS::Debug( 4, "creating new object" );
         if ( not $object->create() ) {
             XIMS::Debug( 2, "create failed" );
-            $self->sendError( $ctxt, "Creation of object failed." );
+            $self->sendError( $ctxt, __"Creation of object failed." );
             return 0;
         }
 
@@ -449,7 +453,7 @@ sub event_store {
             XIMS::Debug( 4, "updated user privileges" );
         }
         else {
-            $self->sendError( $ctxt, "failed to set default grants" );
+            $self->sendError( $ctxt, __"failed to set default grants" );
             XIMS::Debug( 2, "failed to set default grants" );
             return 0;
         }
@@ -545,7 +549,7 @@ sub event_cancel {
         }
         else {
             XIMS::Debug( 2, "object could not be unlocked!" );
-            $self->sendError( $ctxt, "Object could not be unlocked!" );
+            $self->sendError( $ctxt, __"Object could not be unlocked!" );
             return 0;
         }
         if ( $self->param('close_thickbox') ) {
@@ -739,7 +743,11 @@ sub selectStylesheet {
         }
     }
 
-    my $stylepathuilang = $stylepath . $ctxt->session->uilanguage() . '/';
+
+    my $stylepathuilang
+        = $ctxt->session->uilanguage()
+        ? $stylepath . $ctxt->session->uilanguage() . '/'
+        : $stylepath;
 
     # Use a lang-specific stylesheet if there is one
     if ( -r ( $stylepathuilang . $stylefilename ) or $gotpubuilangstylesheet )
@@ -1334,7 +1342,7 @@ sub init_store_object {
                 # return 3 (dirty location) otherwise
                 if ( not defined $is_event_test_location ) {
                     $self->sendError( $ctxt,
-                        "Failed to clean the location / filename. Please supply a sane filename!"
+                        __"Failed to clean the location / filename. Please supply a sane filename!"
                     );
                     return 0;
                 }
@@ -1355,7 +1363,7 @@ sub init_store_object {
             # publish_gopublic set but are not published to the
             # filesystem either
             $self->sendError( $ctxt,
-                "Cannot rename this published object, please unpublish it first!"
+                __"Cannot rename this published object, please unpublish it first!"
             );
             return 0;
         }
@@ -1381,7 +1389,7 @@ sub init_store_object {
                 # return 1 (location already exists) otherwise
                 if ( not defined $is_event_test_location ) {
                     $self->sendError( $ctxt,
-                        "Location '$location' already exists in container." );
+                        __x("Location '{location}' already exists in container.", location => $location) );
                     return 0;
                 }
                 else {
@@ -1404,7 +1412,7 @@ sub init_store_object {
         # only send error for events other than 'test_location'
         # return 2 (no location) otherwise
         if ( not defined $is_event_test_location ) {
-            $self->sendError( $ctxt, "Please supply a valid location!" );
+            $self->sendError( $ctxt, __"Please supply a valid location!" );
             return 0;
         }
         else {
@@ -1760,25 +1768,27 @@ sub event_undelete {
     }
 
     if ($gotactive) {
-        # If there is already an active (non deleted) object with the
-        # same location we'll reject for now. Later, we should implement
-        # a dialogue which asks for a new location for the undeleted
-        # object.
-        $self->sendError( $ctxt,
-                  "An object with the location '"
-                . $object->location()
-                . "' already exists in container. Please rename or move that object before undeleting this one."
-        );
 
-        return 0;
-    }
+    # If there is already an active (non deleted) object with the
+    # same location we'll reject for now. Later, we should implement
+    # a dialogue which asks for a new location for the undeleted
+    # object.
+    $self->sendError(
+        $ctxt,
+        __x("An object with the location '{location}' already exists in container. Please rename or move that object before undeleting this one.",
+            location => $object->location()
+        )
+    );
+
+    return 0;
+}
 
     if ( $object->undelete() ) {
         XIMS::Debug( 4, "object has been undeleted" );
     }
     else {
         XIMS::Debug( 2, "object could not be undeleted!" );
-        $self->sendError( $ctxt, "Object could not be undeleted!" );
+        $self->sendError( $ctxt, __"Object could not be undeleted!" );
         return 0;
     }
 
@@ -1813,7 +1823,7 @@ sub event_trashcan {
     if ( $object->published() ) {
         XIMS::Debug( 3, "attempt to trash pub'd object" );
         $self->sendError( $ctxt,
-            "Can't move a published object to the trashcan, please unpublish first"
+            __"Can't move a published object to the trashcan, please unpublish first"
         );
         return 0;
     }
@@ -1831,7 +1841,7 @@ sub event_trashcan {
         }
         else {
             XIMS::Debug( 2, "object could not be trashed" );
-            $self->sendError( $ctxt, "Moving to the trashcan failed." );
+            $self->sendError( $ctxt, __"Moving to the trashcan failed." );
             return 0;
         }
     }
@@ -1875,7 +1885,7 @@ sub event_trashcan {
         }
         else {
             XIMS::Debug( 2, "object could not be trashed" );
-            $self->sendError( $ctxt, "Moving to the trashcan failed." );
+            $self->sendError( $ctxt, __"Moving to the trashcan failed." );
             return 0;
         }
     }
@@ -1913,7 +1923,8 @@ sub event_delete {
     if ( $object->published() ) {
         XIMS::Debug( 3, "attempt to delete pub'd object" );
         $self->sendError( $ctxt,
-            "Can't delete a published object, please unpublish first" );
+                          __"Can't delete a published object, please unpublish first"
+                      );
         return 0;
     }
 
@@ -1930,7 +1941,7 @@ sub event_delete {
         }
         else {
             XIMS::Debug( 2, "object could not be deleted" );
-            $self->sendError( $ctxt, "Delete failed." );
+            $self->sendError( $ctxt, __"Delete failed." );
             return 0;
         }
     }
@@ -1952,20 +1963,33 @@ sub event_delete {
         #
         # if ( $current_user_object_priv & XIMS::Privileges::DELETE_ALL() ) {
         if ( $current_user_object_priv & XIMS::Privileges::DELETE() ) {
-            $ctxt->session->warning_msg( "This Container has "
-                    . $chldinfo[0]
-                    . " child(ren) over "
-                    . $chldinfo[1]
-                    . " level(s) in the hierarchy " );
+            $ctxt->session->warning_msg(
+                __npx(
+                    "This Container has x children over y level(s) in the hierarchy",
+                    "This Container has 1 child",
+                    "This Container has {number} children",
+                    $chldinfo[0],
+                    number => $chldinfo[0]
+                )
+                . q{ }
+                . __npx(
+                    "This Container has x children over y level(s) in the hierarchy",
+                    "over one level in the hierarchy",
+                    "over {number} levels in the hierarchy",
+                    $chldinfo[1],
+                    number => $chldinfo[1]
+                )
+            );
             $ctxt->properties->application->styleprefix("common");
             $ctxt->properties->application->style("recursive_delete_confirm");
             return 0;
         }
         else {
-            $self->sendError( $ctxt, "Privilege mismatch." );
+            $self->sendError( $ctxt, __ "Privilege mismatch." );
             return 0;
         }
     }
+
     else {
         XIMS::Debug( 4, "object has no children?" );
         if ( $object->delete() ) {
@@ -1973,7 +1997,7 @@ sub event_delete {
         }
         else {
             XIMS::Debug( 2, "object could not be deleted" );
-            $self->sendError( $ctxt, "Delete failed." );
+            $self->sendError( $ctxt, __"Delete failed." );
             return 0;
         }
     }
@@ -2070,7 +2094,7 @@ sub event_move_browse {
         my $to = $self->param("to");
         if ( not( $to =~ /^\d+$/ ) ) {
             XIMS::Debug( 3, "Where to move?" );
-            $ctxt->session->error_msg("Where to move?");
+            $ctxt->session->error_msg(__"Where to move?");
             return 0;
         }
 
@@ -2083,7 +2107,7 @@ sub event_move_browse {
     else {
         XIMS::Debug( 3, "attempt to move published object" );
         $ctxt->session->error_msg(
-            "Moving published objects has not been implemented yet.");
+            __"Moving published objects has not been implemented yet.");
         return 0;
     }
 
@@ -2120,7 +2144,7 @@ sub event_move {
         my $to = $self->param("to");
         if ( not( length $to ) ) {
             XIMS::Debug( 3, "Where to move?" );
-            $ctxt->session->error_msg("Where to move?");
+            $ctxt->session->error_msg(__"Where to move?");
             return 0;
         }
 
@@ -2133,14 +2157,14 @@ sub event_move {
             )
             )
         {
-            $ctxt->session->error_msg("Invalid target path!");
+            $ctxt->session->error_msg(__"Invalid target path!");
             return 0;
         }
 
         if ( $object->document_id() == $target->document_id() ) {
             XIMS::Debug( 2, "target and source are the same" );
             $ctxt->session->error_msg(
-                "Target and source are the same. (Why would you want doing that?)"
+                __"Target and source are the same. (Why would you want doing that?)"
             );
             return 0;
         }
@@ -2150,7 +2174,7 @@ sub event_move {
         }
         else {
             XIMS::Debug( 3, "Target is not a valid container" );
-            $ctxt->session->error_msg("Target is not a valid container");
+            $ctxt->session->error_msg(__"Target is not a valid container");
             return 0;
         }
 
@@ -2163,9 +2187,10 @@ sub event_move {
                 "object with same location already exists in the target container"
             );
             $self->sendError( $ctxt,
-                      "Location '"
-                    . $object->location()
-                    . "' already exists in the target container." );
+                              __x("Location '{location}' already exists in the target container.",
+                                  location => $object->location()
+                              )
+            );
             return 0;
         }
 
@@ -2183,7 +2208,7 @@ sub event_move {
     else {
         XIMS::Debug( 3, "attempt to move published object" );
         $ctxt->session->error_msg(
-            "Moving published objects has not been implemented yet.");
+            __"Moving published objects has not been implemented yet.");
         return 0;
     }
 
@@ -2233,7 +2258,7 @@ sub event_copy {
         or $chldinfo[0] == 1 and $object->children( location => '.diff_to_second_last', marked_deleted => 0 ) )
     {
         if ( not $object->clone( scope_subtree => $recursivecopy ) ) {
-            $ctxt->session->error_msg("copy failed!");
+            $ctxt->session->error_msg(__"copy failed!");
             return 0;
         }
         else {
@@ -2407,14 +2432,20 @@ sub event_publish {
             and $self->param("verbose_result") == 1 )
         {
             if ( $published > 0 ) {
-                $ctxt->session->message( "Object '"
-                        . $ctxt->object->title()
-                        . "' together with $published related objects published."
+                $ctxt->session->message(
+                    __nx( "Object '{title}' together with one related object published.",
+                          "Object '{title}' together with {published} related object published.",
+                          title     => $ctxt->object->title(),
+                          published => $published,
+                      )
                 );
             }
             else {
                 $ctxt->session->message(
-                    "Object '" . $ctxt->object->title() . "' published." );
+                    __x("Object '{title}' published.",
+                        title => $ctxt->object->title(),
+                    )
+                );
             }
             $ctxt->properties->application->styleprefix('common_publish');
             $ctxt->properties->application->style('update');
@@ -2427,13 +2458,18 @@ sub event_publish {
     else {
         XIMS::Debug( 3, "object could not be published!" );
         $ctxt->session->error_msg(
-            "Object '" . $ctxt->object->title() . "' not published" );
+            __x("Object '{title}' not published.",
+                title => $ctxt->object->title(),
+            )
+        );
+
         $ctxt->properties->application->styleprefix('common');
         $ctxt->properties->application->style('error');
     }
 
     return 0;
 }
+
 
 =head2 publish_gopublic()
 
@@ -2463,8 +2499,12 @@ sub publish_gopublic {
         if ( not( $object->publish() and $object->parent->publish() ) ) {
             XIMS::Debug( 2,
                 "publishing object '" . $object->title() . "' failed" );
-            return $self->sendError( $ctxt,
-                "Publishing object '" . $object->title() . "' failed." );
+            return $self->sendError(
+                $ctxt,
+                __x("Publishing object '{title}' failed.",
+                    title => $object->title(),
+                )
+            );
         }
         else {
             my $privs_object = XIMS::ObjectPriv->new(
@@ -2485,7 +2525,10 @@ sub publish_gopublic {
                 and $self->param("verbose_result") == 1 )
             {
                 $ctxt->session->message(
-                    "Object '" . $object->title() . "' published." );
+                    __x("Object '{title}' published.",
+                        title => $object->title(),
+                    )
+                );
                 $ctxt->properties->application->styleprefix('common_publish');
                 $ctxt->properties->application->style('update');
             }
@@ -2531,9 +2574,10 @@ sub event_unpublish {
             published      => '1'
         );    # get published container objects
         if ( scalar @objects ) {
-            $ctxt->session->error_msg( "Object '"
-                    . $ctxt->object->title()
-                    . "' contains published container objects. Please unpublish those first."
+            $ctxt->session->error_msg(
+                __x("Object '{title}' contains published container objects. Please unpublish those first.",
+                    title => $ctxt->object->title(),
+                )
             );
             $ctxt->properties->application->styleprefix('common');
             $ctxt->properties->application->style('error');
@@ -2566,7 +2610,10 @@ sub event_unpublish {
             and $self->param("verbose_result") == 1 )
         {
             $ctxt->session->message(
-                "Object '" . $ctxt->object->title() . "' unpublished." );
+                __x("Object '{title}' unpublished.",
+                    title => $ctxt->object->title(),
+                )
+            );
             $ctxt->properties->application->styleprefix('common_publish');
             $ctxt->properties->application->style('update');
         }
@@ -2578,7 +2625,10 @@ sub event_unpublish {
     else {
         XIMS::Debug( 3, "object could not be unpublished!" );
         $ctxt->session->error_msg(
-            "Object '" . $ctxt->object->title() . "' not unpublished" );
+            __x("Object '{title}' not unpublished.",
+                title => $ctxt->object->title(),
+            )
+        );
         $ctxt->properties->application->styleprefix('common');
         $ctxt->properties->application->style('error');
     }
@@ -2612,8 +2662,12 @@ sub unpublish_gopublic {
         if ( not( $object->unpublish() and $object->parent->publish() ) ) {
             XIMS::Debug( 2,
                 "unpublishing object '" . $object->title() . "' failed" );
-            return $self->sendError( $ctxt,
-                "Unpublishing object '" . $object->title() . "' failed." );
+            return $self->sendError(
+                $ctxt,
+                __x("Object '{title}' not unpublished.",
+                    title => $ctxt->object->title(),
+                )
+            );
         }
         else {
             my $privs_object = XIMS::ObjectPriv->new(
@@ -2626,7 +2680,10 @@ sub unpublish_gopublic {
                 and $self->param("verbose_result") == 1 )
             {
                 $ctxt->session->message(
-                    "Object '" . $object->title() . "' unpublished." );
+                    __x("Object '{title}' unpublished.",
+                        title => $ctxt->object->title(),
+                    )
+                );
                 $ctxt->properties->application->styleprefix('common_publish');
                 $ctxt->properties->application->style('update');
             }
@@ -2762,8 +2819,8 @@ sub event_prettyprintxml {
     my $doc = $ctxt->object->balanced_string($string);
     if ( defined $doc and $doc->isa('XML::LibXML::DocumentFragment') ) {
 
-        # $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' ); does not work
-        # correctly for whatever reasons - we have to manually decode again then.
+     # $doc->setEncoding( XIMS::DBENCODING() || 'UTF-8' ); does not work
+     # correctly for whatever reasons - we have to manually decode again then.
 
         # Format 1 does not work as documented :-/
         # Format 2 deals better with the one-line fragment produced by
@@ -2778,7 +2835,7 @@ sub event_prettyprintxml {
 
         # set back to body if parsing was unsuccessful
         print $body;
-        $ctxt->session->message("Parse Failure. Could not prettyprint.");
+        $ctxt->session->message( __"Parse Failure. Could not prettyprint." );
     }
     return 0;
 }
@@ -2843,7 +2900,7 @@ sub event_obj_acllist {
                 else {
                     XIMS::Debug( 3, "No such user!" );
                     $self->sendError( $ctxt,
-                        "Sorry, there is no such user!" );
+                        __"Sorry, there is no such user!" );
                 }
             }
             elsif ( my $userquery = $self->param('userquery') ) {
@@ -2892,9 +2949,10 @@ sub event_obj_acllist {
                     . $user->name()
                     . " denied to list privileges on object" );
             $self->sendError( $ctxt,
-                      "user "
-                    . $user->name()
-                    . " denied to list privileges on object" );
+                              __x( "user {name} denied to list privileges on object",
+                                   name => $user->name(),
+                               )
+                          );
         }
     }
     else {
@@ -2973,9 +3031,9 @@ sub event_obj_aclgrant {
                 $ctxt->properties->application->style('obj_user_update');
                 my $granted = XIMS::User->new( id => $uid );
                 $ctxt->session->message(
-                          "Privileges changed successfully for user/role '"
-                        . $granted->name()
-                        . "'" );
+                         __x( "Privileges changed successfully for user/role '{name}'.",
+                              name => $granted->name(), )
+                     );
             }
             else {
                 XIMS::Debug( 2,
@@ -3048,9 +3106,8 @@ sub event_obj_aclrevoke {
                 $ctxt->properties->application->style('obj_user_update');
                 my $revoked = XIMS::User->new( id => $uid );
                 $ctxt->session->message(
-                          "Privileges successfully revoked for user/role '"
-                        . $revoked->name()
-                        . "'." );
+                    __x( "Privileges successfully revoked for user/role '{name}'.",
+                         name => $revoked->name(),) );
             }
             else {
                 XIMS::Debug( 2,
@@ -3187,7 +3244,7 @@ sub handle_bang_commands {
     }
     else {
         XIMS::Debug( 2, "invalid command: $search" );
-        $self->sendError( $ctxt, "$search is an invalid command!" );
+        $self->sendError( $ctxt, __x("{search} is an invalid command!", search => $search,) );
         return;
     }
 
@@ -3199,21 +3256,21 @@ sub handle_bang_commands {
                 $retval = 1;
             }
             else {
-                $self->sendError( $ctxt, "unlock failed" );
+                $self->sendError( $ctxt, __"unlock failed" );
             }
         }
         else {
             XIMS::Debug( 4,
                 "insufficient privileges, user cannot remove lock" );
             $self->sendError( $ctxt,
-                "Insufficient privileges, you cannot remove the lock" );
+                __"Insufficient privileges, you cannot remove the lock" );
         }
 
     }
     else {
         XIMS::Debug( 4, "no locked object found" );
         $self->sendError( $ctxt,
-            "Could not find a locked object with that search string" );
+           __"Could not find a locked object with that search string" );
     }
 
     return $retval;
@@ -3464,7 +3521,7 @@ sub event_search {
         else {
             XIMS::Debug( 2, "search not implemented for non DBI DPs" );
             $ctxt->session->error_msg(
-                "Search mechanism has not yet been implemented for non DBI based datastores!"
+                __"Search mechanism has not yet been implemented for non DBI based datastores!"
             );
             return 0;
         }
@@ -3477,7 +3534,7 @@ sub event_search {
         if ($@) {
             XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
             $ctxt->session->error_msg(
-                "QueryBuilder-Driver could not be found!");
+                __"QueryBuilder-Driver could not be found!");
             return 0;
         }
         ## use critic
@@ -3538,7 +3595,7 @@ sub event_search {
             my @objects = $ctxt->object->$method(%param);
 
             if ( not @objects ) {
-                $ctxt->session->warning_msg("Query returned no objects!");
+                $ctxt->session->warning_msg(__"Query returned no objects!");
             }
             else {
                 $method .= "_count";
@@ -3546,16 +3603,19 @@ sub event_search {
                 delete $param{offset};
                 delete $param{limit};
                 my $count   = $ctxt->object->$method(%param);
-                my $message = "Query returned $count objects.";
+                my $message = __nx(
+                    "Query returned one object.",
+                    "Query returned {count} objects.", 
+                    $count,
+                    count => $count,
+                );
                 if ($count) {
-                    $message .= " Displaying objects " . ( $offset + 1 );
-                    $message .= " to ";
-                    if ( ( $offset + $rowlimit ) > $count ) {
-                        $message .= $count;
-                    }
-                    else {
-                        $message .= $offset + $rowlimit;
-                    }
+                $message .= __x(" Displaying objects {lower} to {upper}.",
+                        lower => $offset + 1,
+                        upper => ( $offset + $rowlimit ) > $count
+                                 ? $count
+                                 : $offset + $rowlimit
+                    );
                 }
                 $ctxt->session->message($message);
                 $ctxt->session->searchresultcount($count);
@@ -3569,13 +3629,13 @@ sub event_search {
         }
         else {
             XIMS::Debug( 3, "please specify a valid query" );
-            $ctxt->session->error_msg("Please specify a valid query!");
+            $ctxt->session->error_msg( __"Please specify a valid query!" );
         }
     }
     else {
         XIMS::Debug( 3, "catched improper query length" );
         $ctxt->session->error_msg(
-            "Please keep your queries between 2 and 30 characters!");
+            __"Please keep your queries between 2 and 30 characters!");
     }
 
     $ctxt->properties->application->styleprefix('common_search');
@@ -3619,6 +3679,7 @@ sub event_sitemap {
 1;
 
 package XIMS::CGI::ByeBye;
+use Locale::TextDomain ('info.xims');
 
 =head2 event_trashcan();
 
@@ -3650,8 +3711,7 @@ sub event_trashcan_content {
         )
     );
 
-    $ctxt->session->error_msg
-        = "Use the options to undelete or purge objects.";
+    $ctxt->session->error_msg( __"Use the options to undelete or purge objects." );
     $ctxt->properties->application->styleprefix('common');
     $ctxt->properties->application->style('trashcan');
 

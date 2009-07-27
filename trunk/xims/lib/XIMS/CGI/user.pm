@@ -26,6 +26,7 @@ use base qw( XIMS::CGI );
 use XIMS::User;
 use XIMS::Bookmark;
 use Digest::MD5 qw( md5_hex );
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -91,7 +92,7 @@ sub event_default {
     }
     else {
         XIMS::Debug( 2, "search not implemented for non DBI DPs" );
-        $ctxt->session->error_msg( "Search mechanism has not yet been implemented for non DBI based datastores!" );
+        $ctxt->session->error_msg( __"Search mechanism has not yet been implemented for non DBI based datastores!" );
         return 0;
     }
 
@@ -99,7 +100,7 @@ sub event_default {
     eval "require $qbdriver"; #
     if ( $@ ) {
         XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
-        $ctxt->session->error_msg( "QueryBuilder-Driver could not be found!" );
+        $ctxt->session->error_msg( __"QueryBuilder-Driver could not be found!" );
         return 0;
     }
 
@@ -166,7 +167,7 @@ sub event_passwd_update {
 
             if ( $user->update() ) {
                 $ctxt->properties->application->style( 'update' );
-                $ctxt->session->message( "Password updated successfully." );
+                $ctxt->session->message( __"Password updated successfully." );
             }
             else {
                 $self->sendError( $ctxt,"Password update failed. Please check with your system adminstrator.");
@@ -176,12 +177,12 @@ sub event_passwd_update {
         # 'em back to the prompt.
         else {
             $ctxt->properties->application->style( 'passwd' );
-            $ctxt->session->warning_msg( "Passwords did not match." );
+            $ctxt->session->warning_msg( __"Passwords did not match." );
         }
     }
     else {
         $ctxt->properties->application->style( 'passwd' );
-        $ctxt->session->warning_msg( "Wrong Password." );
+        $ctxt->session->warning_msg( __"Wrong Password." );
     }
 }
 

@@ -27,6 +27,7 @@ use XIMS::Image;
 use XIMS::Portlet;
 use XIMS::ObjectType;
 use Text::Iconv;
+use Locale::TextDomain;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -186,7 +187,7 @@ sub event_store {
               )
             {
                 XIMS::Debug( 2, "setting document_id as location failed" );
-                $self->sendError( $ctxt, "Setting location failed." );
+                $self->sendError( $ctxt, __"Setting location failed." );
                 return 0;
             }
 

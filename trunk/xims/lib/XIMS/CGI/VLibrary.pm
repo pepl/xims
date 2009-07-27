@@ -23,9 +23,9 @@ package XIMS::CGI::VLibrary;
 
 use strict;
 use base qw(XIMS::CGI::Folder);
-use Data::Dumper;
 
 use Time::Piece;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -118,7 +118,7 @@ sub event_edit {
 sub event_copy {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-    return $self->sendError( $ctxt, "Copying VLibraries is not implemented." );
+    return $self->sendError( $ctxt, __"Copying VLibraries is not implemented." );
 }
 
 
@@ -203,7 +203,7 @@ sub event_subject_view {
     }
     else {
         $self->sendError( $ctxt,
-            "Viewing of a subject is only available for public use." );
+            __"Viewing of a subject is only available for public use." );
     }
     return 0;
 }
@@ -526,7 +526,7 @@ sub event_property_show {
         );
     }
     else {
-        return $self->sendError( $ctxt, "Missing property_id." );
+        return $self->sendError( $ctxt, __"Missing property_id" );
     }
 
     $ctxt->objectlist( [$vlproperty] );
@@ -604,7 +604,7 @@ sub event_property_store {
             else {
                 XIMS::Debug( 3, "$class: Update record failed." );
                 return $self->sendError( $ctxt,
-                    "Property: Update record failed." );
+                    __"Property: Update record failed." );
             }
         }
         else {                                # create property
@@ -623,7 +623,7 @@ sub event_property_store {
     }
     else {
         XIMS::Debug( 3, "$class: creation failed." );
-        return $self->sendError( $ctxt, "$class: creation failed." );
+        return $self->sendError( $ctxt, "$class: " . __"Creation failed." );
     }
 
     return 0;
@@ -835,7 +835,7 @@ sub event_vlsearch {
         eval "require $qbdriver";
         if ($@) {
             XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
-            $ctxt->send_error("QueryBuilder-Driver could not be found!");
+            $ctxt->send_error(__"QueryBuilder-Driver could not be found!");
             return 0;
         }
         ## use critic
@@ -864,7 +864,7 @@ sub event_vlsearch {
             my @objects = $ctxt->object->find_objects_granted(%param);
 
             if ( not @objects ) {
-                $ctxt->session->warning_msg("Query returned no objects!");
+                $ctxt->session->warning_msg(__"Query returned no objects!");
             }
             else {
                 %param = (
@@ -886,13 +886,13 @@ sub event_vlsearch {
         }
         else {
             XIMS::Debug( 3, "please specify a valid query" );
-            $self->sendError( $ctxt, "Please specify a valid query!" );
+            $self->sendError( $ctxt, __"Please specify a valid query!" );
         }
     }
     else {
         XIMS::Debug( 3, "catched improper query length" );
         $self->sendError( $ctxt,
-            "Please keep your queries between 2 and 30 characters!" );
+            __"Please keep your queries between 2 and 30 characters!" );
     }
 
     return 0;
@@ -1049,7 +1049,7 @@ sub event_filter {
             eval "require $qbdriver";
             if ($@) {
                 XIMS::Debug( 2, "querybuilderdriver $qbdriver not found" );
-                $ctxt->send_error("QueryBuilder-Driver could not be found!");
+                $ctxt->send_error(__"QueryBuilder-Driver could not be found!");
                 return 0;
             }
             ## use critic
@@ -1071,14 +1071,14 @@ sub event_filter {
             }
             else {
                 XIMS::Debug( 3, "please specify a valid query" );
-                $self->sendError( $ctxt, "Please specify a valid query!" );
+                $self->sendError( $ctxt, __"Please specify a valid query!" );
                 return 0;
             }
         }
         else {
             XIMS::Debug( 3, "catched improper query length" );
             $self->sendError( $ctxt,
-                "Please keep your queries between 2 and 30 characters!" );
+                __"Please keep your queries between 2 and 30 characters!" );
             return 0;
         }
     }
@@ -1110,8 +1110,8 @@ sub event_filter {
     #   dc.date: meta.dc_date
     $order ||= 'modify';
 
-    XIMS::Debug( 6, "Filter criteria:" . Dumper(%criteria) );
-    XIMS::Debug( 6, "Filter params:" . Dumper(%params) );
+    #XIMS::Debug( 6, "Filter criteria:" . Dumper(%criteria) );
+    #XIMS::Debug( 6, "Filter params:" . Dumper(%params) );
 
     # define parameters for query
     my %param = (
@@ -1126,7 +1126,7 @@ sub event_filter {
     my @objects = $ctxt->object->vlitems_byfilter_granted(%param);
 
     if ( not @objects ) {
-        $ctxt->session->warning_msg("Query returned no objects!");
+        $ctxt->session->warning_msg(__"Query returned no objects!");
     }
     else {
         %param = (
@@ -1348,24 +1348,25 @@ sub _privcheck_lock {
     # operation control section
     # whole VLibrary is locked if keyword is edited
     return
-      unless ( $ctxt->session->user->object_privmask($object) &
-        XIMS::Privileges::WRITE );
+        unless ( $ctxt->session->user->object_privmask($object)
+        & XIMS::Privileges::WRITE );
 
     if ( $self->object_locked($ctxt) ) {
         XIMS::Debug( 3, "Attempt to edit locked object" );
-        $self->sendError( $ctxt,
-                "This object is locked by "
-              . $object->locker->firstname() . " "
-              . $object->locker->lastname()
-              . " since "
-              . $object->locked_time()
-              . ". Please try again later." );
+        $self->sendError(
+            $ctxt,
+            __x("This object is locked by {firstname} {lastname} since {locked_time}. Please try again later.",
+                firstname   => $object->locker->firstname(),
+                lastname    => $object->locker->lastname(),
+                locked_time => $object->locked_time()
+            )
+        );
     }
     else {
         if ( $object->lock() ) {
             XIMS::Debug( 4, "lock set" );
             $ctxt->session->message(
-"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
+                __"Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
             );
         }
         else {

@@ -24,7 +24,7 @@ package XIMS::CGI::SymbolicLink;
 use strict;
 use base qw( XIMS::CGI );
 use XIMS::Object;
-
+use Locale::TextDomain ('info.xims');
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
@@ -135,19 +135,19 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "Could not find or set target (SYMNAME_TO_DOC_ID)" );
-            $self->sendError( $ctxt, "Could not find or set target" );
+            $self->sendError( $ctxt, __"Could not find or set target" );
             return 0;
         }
 
         if ( $object->document_id and $object->document_id == $object->symname_to_doc_id ) {
             XIMS::Debug( 2, "Will not store a self-referencing link" );
-            $self->sendError( $ctxt, "Will not store a self-referencing link" );
+            $self->sendError( $ctxt, __"Will not store a self-referencing link" );
             return 0;
         }
     }
     else {
         XIMS::Debug( 2, "No target specified!" );
-        $self->sendError( $ctxt, "No target specified!" );
+        $self->sendError( $ctxt, __"No target specified!" );
         return 0;
     }
 

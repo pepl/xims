@@ -27,7 +27,7 @@ use XIMS::SimpleDB;
 use XIMS::SimpleDBMember;
 use XIMS::SimpleDBMemberPropertyValue;
 use Encode;
-
+use Locale::TextDomain ('info.xims');
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 registerEvents()
@@ -93,13 +93,13 @@ sub event_store {
             }
             else {
                 XIMS::Debug( 2, "Could not create member object." );
-                $self->sendError( $ctxt , "Could not create member object." );
+                $self->sendError( $ctxt , __"Could not create member object." );
                 return 0;
             }
         }
         else {
             XIMS::Debug( 2, "Could not import SimpleDBItem" );
-            $self->sendError( $ctxt , "Could not import SimpleDBItem" );
+            $self->sendError( $ctxt , __"Could not import SimpleDBItem" );
             return 0;
         }
     }
@@ -136,7 +136,7 @@ sub event_store {
 
     if ( not $ctxt->object->update() ) {
         XIMS::Debug( 2, "update failed" );
-        $self->sendError( $ctxt, "Update of object failed." );
+        $self->sendError( $ctxt, __"Update of object failed." );
         return 0;
     }
     $self->redirect( $self->redirect_path( $ctxt ) );
@@ -203,7 +203,7 @@ sub update_properties {
         #    XIMS::Debug( 2, "mandatory value missing" );
         #    return $self->sendError( $ctxt, "'" . $property->name() . "' needs to be filled out." );
         #}
-        
+
         # check property regex
         my $regex = $property->regex();
         Encode::_utf8_on( $regex );
@@ -212,12 +212,22 @@ sub update_properties {
             eval { $qregex = qr/$regex/; };
             if ( not $qregex ) {
                 XIMS::Debug( 2, "regex did not compile" );
-                return $self->sendError( $ctxt, "Test regex did not compile. Please update SimpleDB field definition." );
+                return $self->sendError( 
+                    $ctxt,
+                    __"Test regex did not compile. Please update SimpleDB field definition." );
             }
             if ( not $value =~ $qregex ) {
                 XIMS::Debug( 2, "value does not match regex" );
-                return $self->sendError( $ctxt, "Value '$value' of '" . $property->name() . "' does not match input pattern '" . $regex . "'" );
+                return $self->sendError(
+                    $ctxt,
+                    __x("Value '{value}' of '{name}' does not match input pattern '{pattern}'.",
+                        value   => $value,
+                        name    => $property->name(),
+                        pattern => $regex
+                    )
+                );
             }
+
         }
 
 

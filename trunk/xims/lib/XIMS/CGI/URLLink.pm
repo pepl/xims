@@ -23,7 +23,7 @@ package XIMS::CGI::URLLink;
 
 use strict;
 use base qw( XIMS::CGI );
-
+use Locale::TextDomain ('info.xims');
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
@@ -110,7 +110,7 @@ sub event_test_location {
 sub event_publish_prompt {
     my ( $self, $ctxt ) = @_;
 
-    $ctxt->session->warning_msg("URLLink objects are only FLAGGED published!");
+    $ctxt->session->warning_msg(__"URLLink objects are only FLAGGED published!");
 
     $self->SUPER::event_publish_prompt($ctxt);
 
