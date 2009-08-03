@@ -36,5 +36,5 @@
   <xsl:variable name="currentskin"><xsl:value-of select="/document/context/session/skin"/></xsl:variable>
   <xsl:variable name="defaultcss">skins/<xsl:value-of select="$currentskin"/>/stylesheets/default.css</xsl:variable>
   <xsl:variable name="resolvereltositeroots">1</xsl:variable>
-  <xsl:variable name="jquery_dir"><xsl:value-of select="$ximsroot"/>jquery/</xsl:variable>
+  <xsl:variable name="jquery"><xsl:value-of select="$ximsroot"/>jquery/jquery.js</xsl:variable>
 </xsl:stylesheet>
