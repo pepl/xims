@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::DataCollector -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::DataCollector
 
 =head1 VERSION
 
@@ -13,19 +13,15 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This is a basic SAX Filter that provides some functions that should
+make it easier to write extensions that collect data from various
+positions (such as search or portlets)
 
 =head1 SUBROUTINES/METHODS
 
 =cut
 
 package XIMS::SAX::Filter::DataCollector;
-
-#
-# This is a basic SAX Filter that provides some functions that should
-# make it easier to write extensions that collect data from various
-# positions (such as search or portlets)
-#
 
 use strict;
 use base qw( XML::Filter::GenericChunk );
@@ -357,20 +353,6 @@ __END__
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
