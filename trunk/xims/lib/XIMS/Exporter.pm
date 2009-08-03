@@ -372,13 +372,18 @@ $exporter->update_dependencies( %params );
 
 This method (un)publishes related and/or depending objects. For this
 it calls
+
 * update_related()
-- (Re)publishes objects that are referred to by image_id, style_id, or css_id.
-If that objects are not published yet, they will be published.
-- Republishes published objects referred to by symname_to_doc_id (Portlets and
-Symlinks) of of the object or its ancestors
+
+  - (Re)publishes objects that are referred to by image_id, style_id, feed_id,
+    or css_id. If that objects are not published yet, they will be published.
+
+  - Republishes published objects referred to by symname_to_doc_id (Portlets and
+    Symlinks) of of the object or its ancestors
+
 * update_parent()
-updates autoindex, container.xml of parent
+
+  updates autoindex, container.xml of parent
 
 =cut
 
@@ -759,6 +764,7 @@ sub update_related {
     my $stylesheet = $object->stylesheet( explicit => 1 );
     my $css        = $object->css( explicit => 1 );
     my $image      = $object->image( explicit => 1 );
+    my $feed      = $object->feed( explicit => 1 );
 
     my @referenced_by = $object->referenced_by_granted( User => $self->{User}, include_ancestors => 1, published => 1 );
 
@@ -770,7 +776,7 @@ sub update_related {
         }
     }
 
-    foreach my $obj ( @referenced_by, $image, $css, $stylesheet ) {
+    foreach my $obj ( @referenced_by, $image, $css, $stylesheet, $feed ) {
         next unless defined $obj;
         my $base = XIMS::PUBROOT() . $obj->location_path();
         my $basedir = $base;
@@ -1774,7 +1780,7 @@ sub set_sax_filters {
                                                               Export   => 1,
                                                             );
     push @filter, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
-                                                                 ResolveContent => [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID ) ],
+                                                                 ResolveContent => [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID FEED_ID) ],
                                                                );
 
     push @filter, XIMS::SAX::Filter::Attributes->new();

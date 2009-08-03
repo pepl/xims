@@ -26,6 +26,7 @@
                     <xsl:call-template name="tr-css-edit"/>
                     <xsl:call-template name="tr-script-edit"/>
                     <xsl:call-template name="tr-imagedepartmentroot-edit"/>
+                    <xsl:call-template name="tr-feed-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="autoindex"/>

@@ -25,6 +25,13 @@
             <stylesheet><xsl:apply-templates select="context/object/style_id"/></stylesheet>
             <css><xsl:apply-templates select="context/object/css_id"/></css>
             <script><xsl:apply-templates select="context/object/script_id"/></script>
+            <xsl:if test="context/object/feed_id != ''">
+              <!-- we have AxKit configured to transform Portlets into
+                   RSS when .rss is added. This might be less
+                   intuitive than an extra feed object-type, but on
+                   the upside it seems a lot more flexible. -->
+              <feed url="{context/object/feed_id}.rss"/>
+            </xsl:if>
             <path>
                 <xsl:choose>
                     <xsl:when test="$resolvereltositeroots = 1">

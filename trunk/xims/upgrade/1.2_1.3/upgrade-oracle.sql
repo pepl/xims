@@ -10,6 +10,19 @@ PROMPT Adding new attribute ci_content.deletionmark_timestamp
 ALTER TABLE CI_CONTENT ADD DELETIONMARK_TIMESTAMP DATE
 /
 
+PROMPT Adding new attribute ci_content.feed_id
+ALTER TABLE CI_CONTENT ADD FEED_ID NUMBER
+/
+
+CREATE INDEX CTT_CTT_FEED_FK_I 
+   ON CI_CONTENT (FEED_ID) 
+;
+ALTER TABLE CI_CONTENT 
+   ADD CONSTRAINT CTT_CTT_FEED_FK 
+       FOREIGN KEY (FEED_ID)
+       REFERENCES CI_CONTENT (ID)
+/
+
 PROMPT Adding Trigger on ci_sessions to remove stale locks
 CREATE OR REPLACE TRIGGER "CI00"."REMOVE_STALE_LOCKS" 
   AFTER

@@ -1590,6 +1590,31 @@ sub init_store_object {
         }
     }
 
+    my $feed = $self->param('feed');
+    if ( defined $feed ) {
+        XIMS::Debug( 6, "feed: $feed" );
+        if ( length $feed ) {
+            my $feedobj;
+            if (    $feed =~ /^\d+$/
+                and $feedobj = XIMS::Object->new( id => $feed )
+                and ( $feedobj->object_type->name() eq 'Portlet' ) )
+            {
+                $object->feed_id( $feedobj->id() );
+            }
+            elsif ( $feedobj = XIMS::Object->new( path => $feed )
+                and ( $feedobj->object_type->name() eq 'Portlet' ) )
+            {
+                $object->feed_id( $feedobj->id() );
+            }
+            else {
+                XIMS::Debug( 3, "Could not set feed_id" );
+            }
+        }
+        else {
+            $object->feed_id(undef);
+        }
+    }
+
     my $valid_from = $self->param('valid_from_timestamp');
     if ( defined $valid_from ) {
         XIMS::Debug( 6, "valid_from: $valid_from" );
