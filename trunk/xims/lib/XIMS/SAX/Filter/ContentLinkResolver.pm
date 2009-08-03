@@ -17,7 +17,6 @@ This SAX Filter expands a content-id (major_id) to its corresponding
 path-string.  Note: This version does not touch the element name and
 therefore we got path-string in *_id elements!
 
-
 =head1 SUBROUTINES/METHODS
 
 =cut
@@ -80,20 +79,6 @@ __END__
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
