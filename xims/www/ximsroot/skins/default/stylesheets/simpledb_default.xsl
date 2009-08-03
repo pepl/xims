@@ -129,7 +129,7 @@
       <link rel="stylesheet"
             href="{$ximsroot}skins/{$currentskin}/stylesheets/simpledb.css"
             type="text/css"/>
-      <script src="{$jquery_dir}jquery.js"
+      <script src="{$jquery}"
               type="text/javascript">
         <xsl:text>&#160;</xsl:text>
       </script>

@@ -69,7 +69,7 @@
   </xsl:template>
 
   <xsl:template name="script_head">
-    <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$jquery}" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     <script src="{$ximsroot}scripts/jquery/thickbox.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
     <script type="text/javascript">
       var tb_pathToImage='<xsl:value-of select="concat($ximsroot,'images/loadingAnimation.gif')"/>';
