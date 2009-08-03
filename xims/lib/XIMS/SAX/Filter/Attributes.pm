@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::Attributes -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::Attributes
 
 =head1 VERSION
 
@@ -13,17 +13,13 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This SAX Filter expands semicolon-separated key=value pairs to a nodeset.
 
 =head1 SUBROUTINES/METHODS
 
 =cut
 
 package XIMS::SAX::Filter::Attributes;
-
-#
-# This SAX Filter expands semicolon-separated key=value pairs to a nodeset.
-#
 
 use strict;
 use base qw( XML::SAX::Base );
@@ -33,10 +29,6 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 =head2    XIMS::SAX::Filter::Attributes->new();
-
-=head3 Parameter
-
-    ?
 
 =head3 Returns
 
@@ -66,11 +58,7 @@ sub new {
 
 =head3 Returns
 
-    nothing
-
-=head3 Description
-
-none yet
+    undef
 
 =cut
 
@@ -94,15 +82,11 @@ sub start_element {
 
 =head3 Parameter
 
-    $element :
+    $element : hashref
 
 =head3 Returns
 
-    nothing
-
-=head3 Description
-
-none yet
+    undef
 
 =cut
 
@@ -143,11 +127,7 @@ sub end_element {
 
 =head3 Returns
 
-    nothing
-
-=head3 Description
-
-none yet
+    undef
 
 =cut
 
@@ -171,20 +151,6 @@ __END__
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
