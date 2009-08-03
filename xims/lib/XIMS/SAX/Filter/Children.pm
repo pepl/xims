@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::SAX::Filter::Children -- A .... doing bla, bla, bla. (short)
+XIMS::SAX::Filter::Children
 
 =head1 VERSION
 
@@ -13,18 +13,14 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This is a SAX Filter. This will collect all children of a certain
+object and place them into the stream
 
 =head1 SUBROUTINES/METHODS
 
 =cut
 
 package XIMS::SAX::Filter::Children;
-
-#
-# This is a SAX Filter. This will collect all children of a certain
-# object and place them into the stream
-#
 
 use strict;
 use base qw( XIMS::SAX::Filter::DataCollector );
@@ -33,19 +29,7 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 
-=head2    XIMS::SAX::Filter::DataCollector->new()
-
-=head3 Parameter
-
-    ?
-
-=head3 Returns
-
-    nothing (????)
-
-=head3 Description
-
-none yet
+=head2  new()
 
 =cut
 
@@ -59,19 +43,7 @@ sub new {
 
 
 
-=head2    $filter->handle_data()
-
-=head3 Parameter
-
-    none
-
-=head3 Returns
-
-    nothing
-
-=head3 Description
-
-none yet
+=head2  handle_data()
 
 =cut
 
@@ -107,20 +79,6 @@ __END__
 =head1 DIAGNOSTICS
 
 Look at the F<error_log> file for messages.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
 
 =head1 BUGS AND LIMITATION
 
