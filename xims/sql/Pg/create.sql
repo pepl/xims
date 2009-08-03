@@ -203,6 +203,7 @@ CREATE TABLE ci_content
  ,created_by_id                 INTEGER       NOT NULL REFERENCES ci_users_roles( id )
  ,css_id                        INTEGER       REFERENCES ci_content( id )
  ,image_id                      INTEGER       REFERENCES ci_content( id )
+ ,feed_id                       INTEGER       REFERENCES ci_content( id )
  ,document_id                   INTEGER       NOT NULL REFERENCES ci_documents(id) ON DELETE CASCADE
  ,published                     SMALLINT      DEFAULT 0 NOT NULL
  ,last_publication_timestamp    TIMESTAMP(0)  WITHOUT TIME ZONE

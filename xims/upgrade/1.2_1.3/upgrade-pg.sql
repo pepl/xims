@@ -10,6 +10,9 @@ ALTER TABLE ci_content ADD status_checked_timestamp TIMESTAMP(0) WITHOUT TIME ZO
 \echo Adding ci_content.deletionmark_timestamp
 ALTER TABLE ci_content ADD deletionmark_timestamp TIMESTAMP(0) WITHOUT TIME ZONE;
 
+\echo Adding ci_content.feed_id 
+ALTER TABLE ci_content ADD feed_id INTEGER REFERENCES ci_content( id );
+
 DELETE FROM ci_object_privs_granted WHERE content_id NOT IN (select id from ci_content);
 ALTER TABLE ci_object_privs_granted ADD CONSTRAINT OPG_USR_GRANTEE_FK FOREIGN KEY (GRANTEE_ID) REFERENCES CI_USERS_ROLES (ID) ON DELETE CASCADE;
 ALTER TABLE ci_object_privs_granted ADD CONSTRAINT OPG_USR_GRANTOR_FK FOREIGN KEY (GRANTOR_ID) REFERENCES CI_USERS_ROLES (ID) ON DELETE CASCADE;

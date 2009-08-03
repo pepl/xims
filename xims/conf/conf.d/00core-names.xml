@@ -89,6 +89,7 @@
                 <item>content.last_published_by_firstname</item>
                 <item>content.data_format_name</item>
                 <item>content.schema_id</item>
+                <item>content.feed_id</item>
                 <item>content.valid_from_timestamp</item>
                 <item>content.valid_to_timestamp</item>
                 <item>content.content_length</item>
@@ -123,6 +124,7 @@
                 <item>content.locked_by_id</item>
                 <item>content.style_id</item>
                 <item>content.script_id</item>
+                <item>content.feed_id</item>
                 <item>content.language_id</item>
                 <item>content.last_modified_by_id</item>
                 <item>content.owned_by_id</item>

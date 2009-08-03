@@ -50,7 +50,7 @@ our @Fields =
   grep { $_ ne 'binfile' }
   @{ XIMS::Names::property_interface_names( resource_type() ) };
 our @Default_Properties    = grep { $_ ne 'body' } @Fields;
-our @Reference_Id_Names    = qw( style_id script_id css_id image_id schema_id);
+our @Reference_Id_Names    = qw( style_id script_id css_id image_id schema_id feed_id );
 our @Reference_DocId_Names = qw( symname_to_doc_id );
 
 =head2 fields()
@@ -2915,6 +2915,53 @@ sub schema {
     $self->{Schema} = $schema;
     return $schema;
 }
+
+=head2    feed()
+
+=head3 Parameter
+
+    %args        (optional) : hash
+       recognized key: 'explicit': If given, only explicitly assigned feed objects
+                                   will be returned neglecting inherited ones.
+
+=head3 Returns
+
+    $feed : XIMS::Object instance
+
+=head3 Description
+
+my $feed = $object->feed( [ explicit => 1 ] );
+
+Returns a Feed assigned to the object. If a Feed is not assigned directly,
+an inherited one from the objectroot objects up the hierarchy is looked for
+unless "explicit" argument has been given.
+
+=cut
+
+sub feed {
+    my $self = shift;
+    my %args = @_;
+
+    return $self->{Feed} if defined $self->{Feed};
+    my $feed_id = $self->feed_id();
+    if ( not defined $feed_id ) {
+        if ( not defined $args{explicit} ) {
+
+            # look for feed_id in ancestrial objectroot objects
+            foreach my $oroot ( reverse @{ $self->objectroot_ancestors } ) {
+                last if $feed_id = $oroot->feed_id();
+            }
+            return unless defined $feed_id;
+        }
+        else {
+            return;
+        }
+    }
+    my $feed = XIMS::Object->new( id => $feed_id );
+    $self->{Feed} = $feed;
+    return $feed;
+}
+
 
 =head2    creator()
 
