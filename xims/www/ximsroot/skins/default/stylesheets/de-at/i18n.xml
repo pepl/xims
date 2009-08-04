@@ -239,13 +239,18 @@
 <PageRowLimit>Anzahl der Einträge pro Seite</PageRowLimit>
 <IlpDefaultWinlabel>XIMS Hinweis!</IlpDefaultWinlabel>
 <IlpProvideLocationFirst>Sie haben noch keine 'Location' eingegeben. Bitte geben Sie diese jetzt ein!</IlpProvideLocationFirst>
-<IlpLocationWouldChange>Hinweis! Nach speichern würde sich die 'Location' ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
+<IlpLocationWouldChange>Hinweis! Nach dem speichern würde sich die 'Location' wie folgt ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
 <IlpLocationExists>Sie haben eine 'Location' eingegeben, die im Container bereits existiert. Die 'Location' muss eindeutig sein! Bitte geben Sie eine andere 'Location' ein.</IlpLocationExists>
 <IlpNoLocationProvided>Das Feld 'Location' ist leer. Bitte geben Sie eine 'Location' ein.</IlpNoLocationProvided>
 <IlpDirtyLocation>Das Feld 'Location' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyLocation>
 <IlpButtonChange>Bearbeiten!</IlpButtonChange>
 <IlpButtonOK>OK</IlpButtonOK>
+<IlpButtonEdit>Bearbeiten!</IlpButtonEdit>
 <IlpButtonIgnore>Ignorieren!</IlpButtonIgnore>
+<IlpButtonAcceptSuggestion>Vorschlag übernehmen!</IlpButtonAcceptSuggestion>
+<IlpDirtyTitle>Das Feld 'Titel' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyTitle>
+<LocationWarning1>Die 'Location' ist länger als </LocationWarning1>
+<LocationWarning2>Zeichen. Umbenennen in </LocationWarning2>
 <minify>Beim Publizieren verkleinern</minify>
 <Send>Abschicken</Send>
 <Include_images>Bilder einschließen</Include_images>

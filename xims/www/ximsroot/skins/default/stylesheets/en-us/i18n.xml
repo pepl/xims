@@ -233,13 +233,17 @@
 <!-- Text for inline-popups -->
 <IlpDefaultWinlabel>XIMS notice!</IlpDefaultWinlabel>
 <IlpProvideLocationFirst>You have not provided a 'Location', yet. Please enter it now!</IlpProvideLocationFirst>
-<IlpLocationWouldChange>Note! The 'Location' would change upon saving. How would you like to proceed?</IlpLocationWouldChange>
+<IlpLocationWouldChange>Note! The 'Location' would change upon saving as follows. How would you like to proceed?</IlpLocationWouldChange>
 <IlpLocationExists>You have provided a 'Location' which already exists in the container. 'Locations' must be unique. Please enter a different one!</IlpLocationExists>
 <IlpNoLocationProvided>You have not provided a 'Location'. Please enter one now.</IlpNoLocationProvided>
 <IlpDirtyLocation>'Location' contains invalid characters! Valid characters are: 'a-zA-Z0-9', minus ('-') and underscore ('_').</IlpDirtyLocation>
 <IlpButtonChange>Change!</IlpButtonChange>
+<IlpButtonEdit>Edit!</IlpButtonEdit>
 <IlpButtonOK>OK</IlpButtonOK>
 <IlpButtonIgnore>Ignore!</IlpButtonIgnore>
+<IlpButtonAcceptSuggestion>Accept Suggestion!</IlpButtonAcceptSuggestion>
+<LocationWarning1>The 'Location' is longer than </LocationWarning1>
+<LocationWarning2>characters. Rename to </LocationWarning2>
 <minify>Minify on publishing</minify>
 <Send>Send</Send>
 <Include_images>Include images</Include_images>
