@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<!--
-# Copyright (c) 2002-2009 The XIMS Project.
-# See the file "LICENSE" for information and conditions for use, reproduction,
-# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id$
--->
+	<!--
+		# Copyright (c) 2002-2009 The XIMS Project. # See the file "LICENSE"
+		for information and conditions for use, reproduction, # and
+		distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES. #
+		$Id$
+	-->
 
 <!DOCTYPE stylesheet [
 <!ENTITY  lc "'aäbcdefghijklmnoöpqrstuüvwxyz'">
@@ -14,170 +14,203 @@
 
 
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:dyn="http://exslt.org/dynamic"
-    xmlns="http://www.w3.org/1999/xhtml"
-    extension-element-prefixes="dyn">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dyn="http://exslt.org/dynamic"
+	xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="dyn">
 
-<xsl:import href="../../../stylesheets/common.xsl"/>
-<xsl:import href="common_footer.xsl"/>
-<xsl:import href="common_header.xsl"/>
-<xsl:import href="common_metadata.xsl"/>
-<xsl:import href="common_localized.xsl"/>
-<xsl:import href="common_jscalendar_scripts.xsl"/>
-<xsl:import href="common_htmlarea_scripts.xsl"/>
-<xsl:import href="common_tinymce_scripts.xsl"/>
+	<xsl:import href="../../../stylesheets/common.xsl" />
+	<xsl:import href="common_footer.xsl" />
+	<xsl:import href="common_header.xsl" />
+	<xsl:import href="common_metadata.xsl" />
+	<xsl:import href="common_localized.xsl" />
+	<xsl:import href="common_jscalendar_scripts.xsl" />
+	<xsl:import href="common_htmlarea_scripts.xsl" />
+	<xsl:import href="common_tinymce_scripts.xsl" />
 
-<xsl:output method="html" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+	<xsl:output method="html" omit-xml-declaration="yes"
+		encoding="utf-8" media-type="text/html"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no" />
 
-<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
+	<xsl:variable name="i18n"
+		select="document(concat($currentuilanguage,'/i18n.xml'))" />
 
-<xsl:variable name="currobjmime" select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/mime_type"/>
+	<xsl:variable name="currobjmime"
+		select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/mime_type" />
 
-<!-- save those strings in variables as they are called per object in object/children -->
-<!-- cttobject.options -->
-<xsl:variable name="l_Edit" select="$i18n/l/Edit"/>
-<xsl:variable name="l_Move" select="$i18n/l/Move"/>
-<xsl:variable name="l_Copy" select="$i18n/l/Copy"/>
-<xsl:variable name="l_Publishing_options" select="$i18n/l/Publishing_options"/>
-<xsl:variable name="l_Access_control" select="$i18n/l/Access_control"/>
-<xsl:variable name="l_Undelete" select="$i18n/l/Undelete"/>
-<xsl:variable name="l_purge" select="$i18n/l/purge"/>
-<xsl:variable name="l_delete" select="$i18n/l/delete"/>
-<!-- cttobject.status -->
-<xsl:variable name="l_Object_marked_new" select="$i18n/l/Object_marked_new"/>
-<xsl:variable name="l_New" select="$i18n/l/New"/>
-<xsl:variable name="l_Published" select="$i18n/l/Published"/>
-<xsl:variable name="l_Object_last_published" select="$i18n/l/Object_last_published"/>
-<xsl:variable name="l_by" select="$i18n/l/by"/>
-<xsl:variable name="l_at_place" select="$i18n/l/at_place"/>
-<xsl:variable name="l_Object_modified" select="$i18n/l/Object_modified"/>
-<xsl:variable name="l_at_time" select="$i18n/l/at_time"/>
-<xsl:variable name="l_changed" select="$i18n/l/changed"/>
-<xsl:variable name="l_Unlock" select="$i18n/l/Unlock"/>
-<xsl:variable name="l_Release_lock" select="$i18n/l/Release_lock"/>
-<xsl:variable name="l_Locked" select="$i18n/l/Locked"/>
-<xsl:variable name="l_Object_locked" select="$i18n/l/Object_locked"/>
+	<!--
+		save those strings in variables as they are called per object in
+		object/children
+	-->
+	<!-- cttobject.options -->
+	<xsl:variable name="l_Edit" select="$i18n/l/Edit" />
+	<xsl:variable name="l_Move" select="$i18n/l/Move" />
+	<xsl:variable name="l_Copy" select="$i18n/l/Copy" />
+	<xsl:variable name="l_Publishing_options" select="$i18n/l/Publishing_options" />
+	<xsl:variable name="l_Access_control" select="$i18n/l/Access_control" />
+	<xsl:variable name="l_Undelete" select="$i18n/l/Undelete" />
+	<xsl:variable name="l_purge" select="$i18n/l/purge" />
+	<xsl:variable name="l_delete" select="$i18n/l/delete" />
+	<!-- cttobject.status -->
+	<xsl:variable name="l_Object_marked_new" select="$i18n/l/Object_marked_new" />
+	<xsl:variable name="l_New" select="$i18n/l/New" />
+	<xsl:variable name="l_Published" select="$i18n/l/Published" />
+	<xsl:variable name="l_Object_last_published" select="$i18n/l/Object_last_published" />
+	<xsl:variable name="l_by" select="$i18n/l/by" />
+	<xsl:variable name="l_at_place" select="$i18n/l/at_place" />
+	<xsl:variable name="l_Object_modified" select="$i18n/l/Object_modified" />
+	<xsl:variable name="l_at_time" select="$i18n/l/at_time" />
+	<xsl:variable name="l_changed" select="$i18n/l/changed" />
+	<xsl:variable name="l_Unlock" select="$i18n/l/Unlock" />
+	<xsl:variable name="l_Release_lock" select="$i18n/l/Release_lock" />
+	<xsl:variable name="l_Locked" select="$i18n/l/Locked" />
+	<xsl:variable name="l_Object_locked" select="$i18n/l/Object_locked" />
 
-<xsl:template name="cancelaction">
-    <table border="0" align="center" width="98%">
-        <tr>
-            <td>
-                <xsl:call-template name="cancelcreateform"/>
-            </td>
-        </tr>
-    </table>
-    <!-- inline popup hidden HTML code -->
-    <xsl:call-template name="inlinepopup">
-        <xsl:with-param name="winlabel" select="$i18n/l/IlpDefaultWinlabel"/>
-        <!-- optional parameter to show a close button
-        <xsl:with-param name="showclosebutton" select="true()"/>
-        -->
-    </xsl:call-template>
-</xsl:template>
+	<xsl:template name="cancelaction">
+		<table border="0" align="center" width="98%">
+			<tr>
+				<td>
+					<xsl:call-template name="cancelcreateform" />
+				</td>
+			</tr>
+		</table>
+		<!-- inline popup hidden HTML code -->
+		<xsl:call-template name="inlinepopup">
+			<xsl:with-param name="winlabel" select="$i18n/l/IlpDefaultWinlabel" />
+			<!--
+				optional parameter to show a close button <xsl:with-param
+				name="showclosebutton" select="true()"/>
+			-->
+		</xsl:call-template>
+	</xsl:template>
 
-<xsl:template name="canceledit">
-    <table border="0" align="center" width="98%">
-    <tr>
-        <td>
-            <xsl:call-template name="cancelform"/>
-        </td>
-    </tr>
-    </table>
-    <!-- inline popup hidden HTML code -->
-    <xsl:call-template name="inlinepopup">
-        <xsl:with-param name="winlabel" select="$i18n/l/IlpDefaultWinlabel"/>
-        <!-- optional parameter to show a close button
-        <xsl:with-param name="showclosebutton" select="true()"/>
-        -->
-    </xsl:call-template>
-</xsl:template>
+	<xsl:template name="canceledit">
+		<table border="0" align="center" width="98%">
+			<tr>
+				<td>
+					<xsl:call-template name="cancelform" />
+				</td>
+			</tr>
+		</table>
+		<!-- inline popup hidden HTML code -->
+		<xsl:call-template name="inlinepopup">
+			<xsl:with-param name="winlabel" select="$i18n/l/IlpDefaultWinlabel" />
+			<!--
+				optional parameter to show a close button <xsl:with-param
+				name="showclosebutton" select="true()"/>
+			-->
+		</xsl:call-template>
+	</xsl:template>
 
-<xsl:template name="cancelform">
-    <xsl:param name="with_save" select="'no'"/>
-    <!-- method GET is needed, because goxims does not handle a PUTed 'id' -->
-    <form action="{$xims_box}{$goxims_content}" name="cform" method="GET" style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">
-        <input type="hidden" name="id" value="{@id}"/>
-        <xsl:if test="$with_save = 'yes'">
-            <xsl:call-template name="save_jsbutton"/>
-        </xsl:if>
-        <xsl:call-template name="rbacknav"/>
-        <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C"/>
-    </form>
-</xsl:template>
+	<xsl:template name="cancelform">
+		<xsl:param name="with_save" select="'no'" />
+		<!--
+			method GET is needed, because goxims does not handle a PUTed 'id'
+		-->
+		<form action="{$xims_box}{$goxims_content}" name="cform" method="GET"
+			style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">
+			<input type="hidden" name="id" value="{@id}" />
+			<xsl:if test="$with_save = 'yes'">
+				<xsl:call-template name="save_jsbutton" />
+			</xsl:if>
+			<xsl:call-template name="rbacknav" />
+			<input type="submit" name="cancel" value="{$i18n/l/cancel}"
+				class="control" accesskey="C" />
+		</form>
+	</xsl:template>
 
-<xsl:template name="cancelcreateform">
-    <xsl:param name="with_save" select="'no'"/>
-    <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST">
-        <xsl:if test="$with_save = 'yes'">
-            <xsl:call-template name="save_jsbutton"/>
-        </xsl:if>
-        <xsl:call-template name="rbacknav"/>
-        <input type="submit" name="cancel_create" value="{$i18n/l/cancel}" class="control" accesskey="C"/>
-    </form>
-</xsl:template>
+	<xsl:template name="cancelcreateform">
+		<xsl:param name="with_save" select="'no'" />
+		<form action="{$xims_box}{$goxims_content}{$absolute_path}"
+			method="POST">
+			<xsl:if test="$with_save = 'yes'">
+				<xsl:call-template name="save_jsbutton" />
+			</xsl:if>
+			<xsl:call-template name="rbacknav" />
+			<input type="submit" name="cancel_create" value="{$i18n/l/cancel}"
+				class="control" accesskey="C" />
+		</form>
+	</xsl:template>
 
-<xsl:template name="save_jsbutton">
-    <script type="text/javascript">
-       document.write('<input type="submit" name="submit_eform" value="{$i18n/l/save}" onClick="document.eform.store.click(); return false" class="control"/>');
-    </script>
-</xsl:template>
+	<xsl:template name="save_jsbutton">
+		<script type="text/javascript">
+			document.write('
+			<input type="submit" name="submit_eform" value="{$i18n/l/save}"
+				onClick="document.eform.store.click(); return false" class="control" />
+			');
+		</script>
+	</xsl:template>
 
-<xsl:template name="exitredirectform">
-    <xsl:variable name="object_type_id" select="object_type_id"/>
-    <xsl:variable name="parent_id" select="@parent_id"/>
-    <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="GET">
-        <input class="control" name="exit" type="submit" value="Done"/>
-        <xsl:choose>
-            <xsl:when test="$r != ''">
-                <input name="id" type="hidden" value="{$r}"/>
-                <input name="page" type="hidden" value="{$page}"/>
-                <input name="sb" type="hidden" value="{$sb}"/>
-                <input name="order" type="hidden" value="{$order}"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <input name="id" type="hidden">
-                    <xsl:choose>
-                        <xsl:when test="/document/object_types/object_type[@id=$object_type_id]/redir_to_self='0'">
-                            <xsl:attribute name="value"><xsl:value-of select="parents/object[@document_id=$parent_id]/@id"/></xsl:attribute>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </input>
-            </xsl:otherwise>
-        </xsl:choose>
-    </form>
-</xsl:template>
+	<xsl:template name="exitredirectform">
+		<xsl:variable name="object_type_id" select="object_type_id" />
+		<xsl:variable name="parent_id" select="@parent_id" />
+		<form name="userConfirm" action="{$xims_box}{$goxims_content}"
+			method="GET">
+			<input class="control" name="exit" type="submit" value="Done" />
+			<xsl:choose>
+				<xsl:when test="$r != ''">
+					<input name="id" type="hidden" value="{$r}" />
+					<input name="page" type="hidden" value="{$page}" />
+					<input name="sb" type="hidden" value="{$sb}" />
+					<input name="order" type="hidden" value="{$order}" />
+				</xsl:when>
+				<xsl:otherwise>
+					<input name="id" type="hidden">
+						<xsl:choose>
+							<xsl:when
+								test="/document/object_types/object_type[@id=$object_type_id]/redir_to_self='0'">
+								<xsl:attribute name="value"><xsl:value-of
+									select="parents/object[@document_id=$parent_id]/@id" /></xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="value"><xsl:value-of
+									select="@id" /></xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
+					</input>
+				</xsl:otherwise>
+			</xsl:choose>
+		</form>
+	</xsl:template>
 
-<xsl:template name="saveaction">
-    <input type="hidden" name="id" value="{/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id}"/>
-    <xsl:if test="/document/object_types/object_type[name=$objtype]/redir_to_self='0'">
-        <input name="sb" type="hidden" value="date"/>
-        <input name="order" type="hidden" value="desc"/>
-    </xsl:if>
-    <input type="submit" name="store" value="{$i18n/l/save}" class="control" accesskey="S"/>
-</xsl:template>
+	<xsl:template name="saveaction">
+		<input type="hidden" name="id"
+			value="{/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id}" />
+		<xsl:if
+			test="/document/object_types/object_type[name=$objtype]/redir_to_self='0'">
+			<input name="sb" type="hidden" value="date" />
+			<input name="order" type="hidden" value="desc" />
+		</xsl:if>
+		<input type="submit" name="store" value="{$i18n/l/save}" class="control"
+			accesskey="S" />
+	</xsl:template>
 
-<xsl:template name="saveedit">
-    <input type="hidden" name="id" value="{@id}"/>
-    <xsl:if test="/document/object_types/object_type[@id=/document/context/object/object_type_id]/redir_to_self='0'">
-        <input name="sb" type="hidden" value="date"/>
-        <input name="order" type="hidden" value="desc"/>
-    </xsl:if>
-    <input type="submit" name="store" value="{$i18n/l/save}" class="control" accesskey="S"/>
-</xsl:template>
+	<xsl:template name="saveedit">
+		<input type="hidden" name="id" value="{@id}" />
+		<xsl:if
+			test="/document/object_types/object_type[@id=/document/context/object/object_type_id]/redir_to_self='0'">
+			<input name="sb" type="hidden" value="date" />
+			<input name="order" type="hidden" value="desc" />
+		</xsl:if>
+		<input type="submit" name="store" value="{$i18n/l/save}" class="control"
+			accesskey="S" />
+	</xsl:template>
 
-<xsl:template name="grantowneronly">
-    <tr>
-        <td valign="top" width="135"><xsl:value-of select="$i18n/l/Priv_grant_options"/></td>
-        <td valign="top">
-            <input name="owneronly" type="radio" value="false" checked="checked"/><xsl:value-of select="$i18n/l/Copy_parent_privs"/>
-            <input name="owneronly" type="radio" value="true" onClick="document.eform.defaultroles.disabled = true;" onBlur="document.eform.defaultroles.disabled = false;"/><xsl:value-of select="$i18n/l/Grant_myself_only"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('PrivilegeGrantOptions')" class="doclink">(?)</a>
-            <div><xsl:text>&#160;&#160;</xsl:text><xsl:value-of select="$i18n/l/Grant_default_roles"/>: <input name="defaultroles" type="checkbox" value="true"/></div>
+	<xsl:template name="grantowneronly">
+		<tr>
+			<td valign="top" width="135">
+				<xsl:value-of select="$i18n/l/Priv_grant_options" />
+			</td>
+			<td valign="top">
+				<input name="owneronly" type="radio" value="false" checked="checked" />
+				<xsl:value-of select="$i18n/l/Copy_parent_privs" />
+				<input name="owneronly" type="radio" value="true"
+					onClick="document.eform.defaultroles.disabled = true;" onBlur="document.eform.defaultroles.disabled = false;" />
+				<xsl:value-of select="$i18n/l/Grant_myself_only" />
+				<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('PrivilegeGrantOptions')" class="doclink">
+					(?)</a>
+				<div>
+					<xsl:text>&#160;&#160;</xsl:text><xsl:value-of select="$i18n/l/Grant_default_roles"/>: <input name="defaultroles" type="checkbox" value="true"/></div>
         </td>
     </tr>
 </xsl:template>
@@ -253,7 +286,7 @@
             <xsl:call-template name="tinymce_scripts"/>
         </xsl:if>
         <xsl:if test="$jquery">
-          <script src="{$jquery_dir}jquery.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+          <script src="{$jquery}" type="text/javascript"/>
         </xsl:if>
     </head>
 </xsl:template>
