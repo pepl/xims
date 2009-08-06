@@ -191,10 +191,9 @@
                                 <td>
                                     <span class="cboxitem">
                                         <input type="checkbox" name="dav_otprivs_Folder">
-                                            <xsl:if
-                                                test="/document/context/user/dav_otprivileges/Folder = 1">
-                                                <xsl:attribute name="checked" select="checked"/>
-                                            </xsl:if>
+                                          <xsl:if test="/document/context/user/dav_otprivileges/Folder = 1">
+                                            <xsl:attribute name="checked">checked</xsl:attribute>
+                                          </xsl:if>
                                         </input>
                                         <xsl:value-of select="$i18n_users/l/DAV_Container_Binary"/>
                                     </span>
@@ -202,9 +201,8 @@
                                 <td>
                                     <span class="cboxitem">
                                         <input type="checkbox" name="dav_otprivs_Text">
-                                            <xsl:if
-                                                test="/document/context/user/dav_otprivileges/Text = 1">
-                                                <xsl:attribute name="checked" select="checked"/>
+                                            <xsl:if test="/document/context/user/dav_otprivileges/Text = 1">
+                                                <xsl:attribute name="checked">checked</xsl:attribute>
                                             </xsl:if>
                                         </input>
                                         <xsl:value-of select="$i18n_users/l/DAV_Text"/>
@@ -215,9 +213,8 @@
                                 <td>
                                     <span class="cboxitem">
                                         <input type="checkbox" name="dav_otprivs_XML">
-                                            <xsl:if
-                                                test="/document/context/user/dav_otprivileges/XML = 1">
-                                                <xsl:attribute name="checked" select="checked"/>
+                                           <xsl:if test="/document/context/user/dav_otprivileges/XML = 1">
+                                                <xsl:attribute name="checked">checked</xsl:attribute>
                                             </xsl:if>
                                         </input>
                                         <xsl:value-of select="$i18n_users/l/DAV_XML"/>
@@ -226,9 +223,8 @@
                                 <td>
                                     <span class="cboxitem">
                                         <input type="checkbox" name="dav_otprivs_Document">
-                                            <xsl:if
-                                                test="/document/context/user/dav_otprivileges/Document = 1">
-                                                <xsl:attribute name="checked" select="checked"/>
+                                            <xsl:if test="/document/context/user/dav_otprivileges/Document = 1">
+                                                <xsl:attribute name="checked">checked</xsl:attribute>
                                             </xsl:if>
                                         </input> Document </span>
                                 </td>
@@ -260,7 +256,7 @@
             <span class="cboxitem">
                 <input type="checkbox" name="dav_otprivs_{name}">
                     <xsl:if test="dyn:evaluate($otxpath)">
-                        <xsl:attribute name="checked" select="checked"/>
+                        <xsl:attribute name="checked">checked</xsl:attribute>
                     </xsl:if>
                 </input>
                 <xsl:value-of select="name"/>

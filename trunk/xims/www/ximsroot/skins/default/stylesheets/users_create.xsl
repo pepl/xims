@@ -82,12 +82,12 @@
                   <td>
                       <input name="object_type" type="radio" value="role">
                         <xsl:if test="$object_type = 'role'">
-                          <xsl:attribute name="checked" select="checked"/>
+                          <xsl:attribute name="checked">checked</xsl:attribute>
                         </xsl:if>
                       </input><xsl:value-of select="$i18n/l/Yes"/>
                       <input name="object_type" type="radio" value="user">
                         <xsl:if test="$object_type != 'role'">
-                          <xsl:attribute name="checked" select="checked"/>
+                          <xsl:attribute name="checked">checked</xsl:attribute>
                         </xsl:if>
                       </input><xsl:value-of select="$i18n/l/No"/>
                   </td>

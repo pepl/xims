@@ -318,7 +318,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_PASSWORD">
                           <xsl:if test="system_privileges/change_password = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Change_Password"/>
@@ -328,7 +328,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_GRANT_ROLE">
                           <xsl:if test="system_privileges/grant_role = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Grant_Role"/>
@@ -352,7 +352,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_RESET_PASSWORD">
                           <xsl:if test="system_privileges/reset_password = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Reset_Password"/>
@@ -362,7 +362,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_SET_STATUS">
                           <xsl:if test="system_privileges/set_status = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Set_Status"/>
@@ -374,7 +374,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CREATE_ROLE">
                           <xsl:if test="system_privileges/create_role = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Create_Role"/>
@@ -384,7 +384,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_DELETE_ROLE">
                           <xsl:if test="system_privileges/delete_role = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Delete_Role"/>
@@ -396,7 +396,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_ROLE_FULLNAME">
                           <xsl:if test="system_privileges/change_role_fullname = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Change_Role_Fullname"/>
@@ -406,7 +406,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_USER_FULLNAME">
                           <xsl:if test="system_privileges/change_user_fullname = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Change_User_Fullname"/>
@@ -418,7 +418,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_ROLE_NAME">
                           <xsl:if test="system_privileges/change_role_name = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Change_Rolename"/>
@@ -428,7 +428,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_USER_NAME">
                           <xsl:if test="system_privileges/change_user_name = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Change_Username"/>
@@ -440,7 +440,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CREATE_USER">
                           <xsl:if test="system_privileges/create_user = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Create_User"/>
@@ -450,7 +450,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_DELETE_USER">
                           <xsl:if test="system_privileges/delete_user = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Delete_User"/>
@@ -462,7 +462,7 @@
               <span class="cboxitem">
                 <input type="checkbox" name="system_privs_CHANGE_DAV_OTPRIVS_MASK">
                   <xsl:if test="system_privileges/change_dav_otprivs_mask = 1">
-                    <xsl:attribute name="checked" select="checked"/>
+                    <xsl:attribute name="checked">checked</xsl:attribute>
                   </xsl:if>
                 </input>
                 <xsl:value-of select="$i18n_users/l/Change_DAV_OTPrivs_Mask"/>
@@ -487,7 +487,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_SYSPRIVS_MASK">
                           <xsl:if test="system_privileges/change_sysprivs_mask = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Change_Sysprivs_Mask"/>
@@ -497,7 +497,7 @@
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_SET_ADMIN_EQU">
                           <xsl:if test="system_privileges/set_admin_equ = 1">
-                            <xsl:attribute name="checked" select="checked"/>
+                            <xsl:attribute name="checked">checked</xsl:attribute>
                           </xsl:if>
                       </input>
                       <xsl:value-of select="$i18n_users/l/Set_Admin_EQU"/>
@@ -547,12 +547,12 @@
       <td>
           <input name="admin" type="radio" value="true">
             <xsl:if test="admin = '1'">
-              <xsl:attribute name="checked" select="checked"/>
+              <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input><xsl:value-of select="$i18n/l/Yes"/>
           <input name="admin" type="radio" value="false">
             <xsl:if test="admin != '1' or (not(admin) and $admin = 'false')">
-              <xsl:attribute name="checked" select="checked"/>
+              <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input><xsl:value-of select="$i18n/l/No"/>
       </td>
@@ -565,12 +565,12 @@
       <td>
           <input name="enabled" type="radio" value="true">
             <xsl:if test="enabled = '1' or $enabled = 'true'">
-              <xsl:attribute name="checked" select="checked"/>
+              <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input><xsl:value-of select="$i18n/l/Yes"/>
           <input name="enabled" type="radio" value="false">
             <xsl:if test="enabled != '1'">
-              <xsl:attribute name="checked" select="checked"/>
+              <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input><xsl:value-of select="$i18n/l/No"/>
       </td>
