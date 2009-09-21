@@ -3530,7 +3530,7 @@ sub content_field {
     # return if $df->name() eq 'Container';
     return 'binfile'
       if (  $df->mime_type
-        and $df->mime_type =~ /^(application|image)\//i
+        and $df->mime_type =~ /^(?:application|image|audio|video)\//i
         and $df->mime_type !~ /container|xsp/i );
     return 'body';
 }
