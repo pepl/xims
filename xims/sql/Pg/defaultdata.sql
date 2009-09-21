@@ -169,6 +169,16 @@ INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( nextval('ci_data_formats_id_seq'), 'VLibrary', 'application/x-container' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'DocBookXML', 'text/xml', 'dbk' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'MP3', 'audio/mpeg', 'mp3' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'M4A', 'audio/x-m4a', 'm4a' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'MP4', 'video/mp4', 'mp4' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'M4V', 'video/x-m4v', 'm4v' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'MOV', 'video/quicktime', 'mov' );
 
 
 \echo inserting into ci_mime_type_aliases...

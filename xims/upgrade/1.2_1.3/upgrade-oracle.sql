@@ -116,3 +116,11 @@ CREATE INDEX prv_mem_id_i  ON cisimpledb_mempropertyvalues (member_id);
 CREATE INDEX prm_doc_id_i  ON cisimpledb_mempropertymap    (document_id);
 CREATE INDEX prm_pro_id_i  ON cisimpledb_mempropertymap    (property_id)
 /
+
+PROMPT some audio/video data formats
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'MP3', 'audio/mpeg', 'mp3' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'M4A', 'audio/x-m4a', 'm4a' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'MP4', 'video/mp4', 'mp4' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'M4V', 'video/x-m4v', 'm4v' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'MOV', 'video/quicktime', 'mov' )
+/

@@ -97,4 +97,14 @@ CREATE INDEX ci_doc_locp_idx ON ci_documents ( location_path );
 CREATE INDEX ci_ctt_lmts_idx ON ci_content ( last_modification_timestamp );
 CREATE INDEX ci_ctt_cts_idx ON ci_content ( creation_timestamp );
 
-
+\echo some audio/video data formats
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'MP3', 'audio/mpeg', 'mp3' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'M4A', 'audio/x-m4a', 'm4a' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'MP4', 'video/mp4', 'mp4' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'M4V', 'video/x-m4v', 'm4v' );
+INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'MOV', 'video/quicktime', 'mov' );
