@@ -6,7 +6,7 @@
 % Icons einfügen
 % Overfull Boxes
 \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
-\documentclass[11pt]{scrartcl}
+\documentclass[fontsize=11pt]{scrartcl}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{%
@@ -68,6 +68,10 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 \title{XIMS Schritt für Schritt Anleitung}
 \author{XIMS-Support}
 \date{}
+
+
+\hyphenation{De-part-ment-Root}
+\hyphenation{Sup-port}
 
 \begin{document}
 
@@ -161,7 +165,7 @@ sondern als gekürzte Darstellung der XIMS Basisfunktionalität.
 
 Nachdem erfolgreicher Anmeldung wird die benutzerspezifische XIMS-Startseite
 angezeigt. Je nach Rollenzugehörigkeit2 stehen verschiedene Lesezeichen (1) zur
-Verfügung. Lesezeichen sollen die Navigation zum jeweiligen DepartmentRoot3
+Verfügung. Lesezeichen sollen die Navigation zum jeweiligen DepartmentRoot
 vereinfachen.
 
 \begin{figure}[!ht]
@@ -313,7 +317,7 @@ XIMS Inhalte-Management-Systems.
   \centering
   \includegraphics[width=1.00\textwidth]{./images/ximsstartseite.png}
   \caption{Benutzerspezifische XIMS Startseite}
-  \label{fig:ximsstartseite}
+  \label{fig:ximsstartseite2}
 \end{figure}
 
 Für jeden Benutzer sind so genannte Lesezeichen (Bookmarks) konfiguriert. Die
@@ -443,12 +447,9 @@ auch effektivere Suche ermöglichen:
 	\item ()
 \end{itemize}
 
-\begin{Hinweis}Um beispielsweise nach einem Objekt,
-welches die Begriffe »zid« und
-»antrag«/«dokument« beinhaltet, zu
-suchen, verwenden Sie folgenden
-Suchausdruck:
-zid AND ( antrag OR dokument)
+\begin{Hinweis}Um beispielsweise nach einem Objekt, welches die
+  Begriffe »zid« und »antrag«/""»dokument« beinhaltet, zu suchen,
+  verwenden Sie folgenden Suchausdruck: zid AND ( antrag OR dokument)
 \end{Hinweis}
 
 M:<Tage> Finde Objekte, die in den letzen <Tagen>
@@ -1135,7 +1136,7 @@ und entspricht einer erweiterten Version eines XIMS-Ordners mit besonderen
 Eigenschaften. Ein »Department Root« definiert einige Eigenschaften, die auf
 »Kinderobjekte« (untergeordnete Webseiten einer Organisationseinheit) weitervererbt
 werden. Zu diesen Eigenschaften zählen »Portlets« der Organisationseinheit -- wie
-zum Beispiel das »Department Link-Portlet«, ein für die Organisationseinheit bzw. für
+zum Beispiel das »Department Link Portlet«, ein für die Organisationseinheit bzw. für
 das Institut spezifisches Bild (»Department Image«), wie auch der »Department Titel«
 bzw. der »Department Infotext« oder ein für die Organisationseinheit bzw. für das
 Institut spezifisches XSLT-Stylesheet für eine angepasste Darstellung
@@ -1163,9 +1164,10 @@ auch auf allen untergeordneten Webseiten der Organisationseinheit wirksam.
 	
 \paragraph{Erstellen eines DepartmentRoot-Objekts}
 
-Ist noch kein Department Root Container vorhanden bzw. vom XIMS-Support-Team
-eingerichtet worden, muss das DepartmentRoot-Objekt erstellt werden. Dies erfolgt
-in gleicher Weise wie etwa das Erstellen eines Verzeichnisses (siehe Punkt ).
+Ist noch kein Department Root Container vorhanden bzw. vom
+XIMS-Support-Team eingerichtet worden, muss das DepartmentRoot"-Objekt
+erstellt werden. Dies erfolgt in gleicher Weise wie etwa das Erstellen
+eines Verzeichnisses (siehe Punkt ).
 
 \begin{Hinweis}Eine besondere Bedeutung hat im Department Root-Kontext die
 Zusammenfassung (Abstract). Mit Hilfe des Zusammenfassung Feldes kann
@@ -2170,8 +2172,8 @@ Das Department Root hat einige Eigenschaften, die auf dessen »Kinderobjekte«
 \item {\textbf{AxPointPresentation}: Ein XML Format für einfache PDF-Präsentationen.
 Mehr Informationen dazu finden Sie im AxPoint Presentation Howto.
 Zusätzliche Informationen über die Hintergründe von AxPointPresentations gibt
-es in einem Artikel des XIMS Co-Entwicklers Kip Hampton: http://www.xml.com/
-pub/a/2002/06/19/perl-xml.html}
+es in einem Artikel des XIMS Co-Entwicklers Kip Hampton: \url{http://www.xml.com/
+pub/a/2002/06/19/perl-xml.html}}
 	\item {\textbf{AnonDiscussionForum}: Ist ein anonymes Diskussionsforum. Mehr
 Informationen dazu erhalten Sie im Dokument Anonymes Diskussionsforum
 Howto.}
