@@ -5,14 +5,13 @@
 % Umbrüche korrigeren
 % Icons einfügen
 % Overfull Boxes
-
+\RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
 \documentclass[11pt]{scrartcl}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{%
   graphicx,
   longtable,
-  hyperref,
   fixltx2e,
   mparhack,
   url,
@@ -25,6 +24,39 @@
 
 \usepackage[english,ngerman]{babel}
 \usepackage[neveradjust]{paralist}
+\usepackage[babel,german=guillemets-italics]{csquotes} 
+\usepackage{microtype}
+
+\usepackage[%
+breaklinks               % Links »überstehen« Zeilenumbruch
+%,backref                 % Backlinks im Literaturverzeichnis
+,colorlinks              % Links erhalten Farben statt Kästen
+% ,citecolor=myblue        % Farbe für Zitate
+% ,linkcolor=myblue     % beeinflusst Inhaltsverzeichnis und Seitenzahlen
+% ,urlcolor=myblue         % Farbe für URLs
+,citecolor=black       % Farbe für Zitate
+,linkcolor=black       % beeinflusst Inhaltsverzeichnis und Seitenzahlen
+,urlcolor=black 
+,bookmarks               % Erzeugung von Bookmarks für PDF-Viewer
+,bookmarksnumbered       % Nummerierung der Bookmarks
+,hyperfootnotes=false    % Keine Links auf Fußnoten
+,pdffitwindow
+,pdflang=de
+,pdfpagelabels 
+%,pdfborder={0 0 0}
+,pdfpagelayout=SinglePage
+,pdftitle={XIMS Schritt für Schritt Anleitung}
+,pdfauthor={xims-support@uibk.ac.at}
+,pdfsubject={Proseminararbeit}
+,pdfkeywords={}
+,pdfcreator={pdfTeX}
+,pdfstartview=FitV,      % Dokument wird »Fit Height« geöffnet
+,pdfpagemode=UseOutlines % Bookmarks im Viewer anzeigen
+,bookmarksopenlevel=2    % Gliederungstiefe der Bookmarks
+] 
+{hyperref}               % PDF automatisch mit Links versehen und weitere
+% Hypertext-Funktionalität ermöglichen
+
 \usepackage{ellipsis}
 
 \newenvironment{Hinweis}
@@ -42,10 +74,14 @@
 \maketitle
 
 \setcounter{tocdepth}{3}
-\tableofcontents
-\vspace*{1cm}
 
+\tableofcontents
 \newpage
+\listoftables
+\newpage
+\listoffigures
+\newpage
+
 \section{Allgemeines zum System}
 \label{allgemeines}
 
@@ -112,7 +148,7 @@ erlangen XIMS-Benutzer Zugang zum Inhalte-Management-System.
 \end{figure}
 
 
-\subsection{Schnelleinstieg ­ XIMS in 5 Seiten}
+\subsection{Schnelleinstieg -­ XIMS in 5 Seiten}
 \label{schnelleinstieg}
 
 Der folgende Schnelleinstieg in XIMS soll den Benutzer in die Lage versetzen
@@ -163,7 +199,7 @@ Die unter (4) gezeigten Verwaltungsoptionen im Detail:
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/XI5S-optionsicons.png}
+		\includegraphics[width=0.4\textwidth]{./images/XI5S-optionsicons.png}
 	\caption{Verwaltungsoptionen für Objekte}
 	\label{fig:optionsicons}
 \end{figure}
@@ -189,7 +225,7 @@ verschiedenen Bild-Einfügen-Dialogen aufgefunden werden können.
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/XI5S-erstellen-menu.png}
+		\includegraphics[width=0.25\textwidth]{./images/XI5S-erstellen-menu.png}
 	\caption{Erstellen-Menü}
 	\label{fig:erstellenmenu}
 \end{figure}
@@ -274,10 +310,10 @@ Nach erfolgreicher Anmeldung gelangt man zur benutzerspezifischen Startseite des
 XIMS Inhalte-Management-Systems.
 
 \begin{figure}[h!]
-	\centering
-		\includegraphics[width=1.00\textwidth]{./images/ximsstartseite.png}
-	\caption{Benutzerspezifische XIMS Startseite}
-	\label{fig:ximsstartseite}
+  \centering
+  \includegraphics[width=1.00\textwidth]{./images/ximsstartseite.png}
+  \caption{Benutzerspezifische XIMS Startseite}
+  \label{fig:ximsstartseite}
 \end{figure}
 
 Für jeden Benutzer sind so genannte Lesezeichen (Bookmarks) konfiguriert. Die
@@ -301,10 +337,10 @@ unterteilt sich grundlegend in zwei verschiedene Bereiche: den Navigationsbereic
 (2.2) und den Inhalt des Containers (2.3).
 
 \begin{figure}[h!]
-	\centering
-		\includegraphics[width=\textwidth]{./images/containeransicht.png}
-	\caption{XIMS Container-Ansicht}
-	\label{fig:containeransicht2}
+  \centering
+  \includegraphics[width=\textwidth]{./images/containeransicht.png}
+  \caption{XIMS Container-Ansicht}
+  \label{fig:containeransicht2}
 \end{figure}
 
 \subsection{Navigation}
@@ -325,7 +361,7 @@ Der XIMS-Navigationsbereich besteht aus den folgenden Elementen:
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/navigationspfad.png}
+		\includegraphics[scale=0.7]{./images/navigationspfad.png}
 	\caption{Navigations-/Breadcrumb-Pfad}
 	\label{fig:navigationspfad}
 \end{figure}
@@ -345,7 +381,7 @@ dem »Location«-Attribut des Containers.
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/navigationspfeile.png}
+		\includegraphics[scale=0.7]{./images/navigationspfeile.png}
 	\caption{Navigationspfeile}
 	\label{fig:navigationspfeile}
 \end{figure}
@@ -361,7 +397,7 @@ vorwärts (forward).
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/logininfo.png}
+		\includegraphics[scale=0.7]{./images/logininfo.png}
 	\caption{Login-Informationen}
 	\label{fig:logininfo}
 \end{figure}
@@ -376,7 +412,7 @@ abzumelden.
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/button-erstellen.png}
+		\includegraphics[scale=0.7]{./images/button-erstellen.png}
 	\caption{Element zum Erstellen von neuen Objekten}
 	\label{fig:erstellenbutton}
 \end{figure}
@@ -391,7 +427,7 @@ beschrieben.
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/suche.png}
+		\includegraphics[scale=0.7]{./images/suche.png}
 	\caption{Suchfunktion}
 	\label{fig:suchfunktion}
 \end{figure}
@@ -457,26 +493,30 @@ Der Status gibt Auskunft über den derzeitigen Zustand des Objekts. In der aktuel
 Version kennt XIMS vier verschiedene Objektstati.
 
 %tobefixed!
-\begin{tabular}{|c|p|}
-\hline
-bild & Das Objekt ist als neu markiert. \\
-\hline
-bild & Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man
-zur veröffentlichten Ansicht des Objekts. \\
-\hline
-bild & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten
-Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
-man zur aktuell veröffentlichten Ansicht des Objekts. Erläuterungen dazu
-siehe Punkt . \\
-\hline
-bild & Das Objekt ist gesperrt. Eine Sperrung kann sich durch Editieren
-desselben Objekts durch einen anderen XIMS-User ergeben, oder weil
-man bewusst vermeiden will, dass das Objekt von anderen Benutzern
-bearbeitet werden kann. Durch Klicken auf das Schloss kann die
-Sperrung aufgehoben werden. Erläuterungen dazu siehe Punkt 3.1.1. \\
-\hline
-\end{tabular}
+\begin{table}[h!]
+\centering
 
+\begin{tabular}{|c|p{30em}|}
+  \hline
+  bild & Das Objekt ist als neu markiert. \\
+  \hline
+  bild & Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man
+  zur veröffentlichten Ansicht des Objekts. \\
+  \hline
+  bild & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten
+  Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
+  man zur aktuell veröffentlichten Ansicht des Objekts. Erläuterungen dazu
+  siehe Punkt . \\
+  \hline
+  bild & Das Objekt ist gesperrt. Eine Sperrung kann sich durch Editieren
+  desselben Objekts durch einen anderen XIMS-User ergeben, oder weil
+  man bewusst vermeiden will, dass das Objekt von anderen Benutzern
+  bearbeitet werden kann. Durch Klicken auf das Schloss kann die
+  Sperrung aufgehoben werden. Erläuterungen dazu siehe Punkt 3.1.1. \\
+  \hline
+\end{tabular}
+\caption{Status-Icons}
+\end{table}
 \paragraph{Position}
 
 Die Spalte »Pos« (Position) stellt einen Positionierungs- bzw. Gewichtungsmechanismus
@@ -511,33 +551,37 @@ werden verschiedene Optionen angeboten, um das Verwalten der entsprechenden
 Objekte zu ermöglichen.
 
 %tobefixed!
-\begin{tabular}{|c|p|}
-\hline
-bild & Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
-gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
-verändern.
-Siehe dazu Punkt : »Bearbeiten von Objekten«. \\
-\hline
-bild & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
-in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
-leichtes Verschieben des Objekts in einen anderen Container
-ermöglicht. \\
-\hline
-bild & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
-Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
-veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
-rückgängig gemacht werden. (Siehe dazu Punkt ). \\
-\hline
-bild & Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
-gelangt man in eine Maske, die zum einen Auskunft über die
-derzeitigen Zugriffsrechte für das Objekt gibt und zum anderen ein
-Editieren der Zugriffsrechte ermöglicht. \\
-\hline
-bild & Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
-(Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
-(Siehe auch Punkte 9 und 5.3). \\
-\hline
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|p{30em}|}
+  \hline
+  bild & Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
+  gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
+  verändern.
+  Siehe dazu Punkt : »Bearbeiten von Objekten«. \\
+  \hline
+  bild & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
+  in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
+  leichtes Verschieben des Objekts in einen anderen Container
+  ermöglicht. \\
+  \hline
+  bild & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
+  Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
+  veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
+  rückgängig gemacht werden. (Siehe dazu Punkt ). \\
+  \hline
+  bild & Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
+  gelangt man in eine Maske, die zum einen Auskunft über die
+  derzeitigen Zugriffsrechte für das Objekt gibt und zum anderen ein
+  Editieren der Zugriffsrechte ermöglicht. \\
+  \hline
+  bild & Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
+  (Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
+  (Siehe auch Punkte 9 und 5.3). \\
+  \hline
 \end{tabular}
+\caption{Options-Icons}
+\end{table}
 
 \section{Objekte manipulieren}
 \label{objektemanipulieren}
@@ -1336,7 +1380,7 @@ und vertikaler Abstand und der Titel für jedes Bild angegeben werden.}
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/tinymce-imagepopup-solo.png}
+		\includegraphics[width=0.55\textwidth]{./images/tinymce-imagepopup-solo.png}
 	\caption{Eigenschaften von Bildern in
 Dokumenten verändern}
 	\label{fig:tinymceimageprop}
@@ -1351,7 +1395,7 @@ Back« wird das Bild an der Cursor-Position eingefügt.}
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics[width=\textwidth]{./images/suchebild.png}
+		\includegraphics[width=0.9\textwidth]{./images/suchebild.png}
 	\caption{Auswahldialog zum Einfügen eines Bildes}
 	\label{fig:searchimage}
 \end{figure}
@@ -1377,7 +1421,7 @@ eines Hyperlinks.}
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/insertlink.png}
+		\includegraphics[width=0.5\textwidth]{./images/insertlink.png}
 	\caption{Hyperlink Dialogfenster}
 	\label{fig:hyperlinkdialog}
 \end{figure}
@@ -1386,7 +1430,7 @@ eines Hyperlinks.}
 	
 	\begin{figure}[h!]
 	\centering
-		\includegraphics[width=\textwidth]{./images/browselink.png}
+		\includegraphics[width=0.9\textwidth]{./images/browselink.png}
 	\caption{Erstellen eines Hyperlinks mit Dialog}
 	\label{fig:linkerstellendialog}
 \end{figure}
@@ -1410,7 +1454,7 @@ Hyperlink im Editor.}
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/tinycontextimage.png}
+		\includegraphics[width=0.4\textwidth]{./images/tinycontextimage.png}
 	\caption{TinyMCE: Im Kontext-Menü können Links
 eingefügt/verändert/entfernt werden.}
 	\label{fig:tinycontextimage}
@@ -1425,7 +1469,7 @@ Linkziel als \#Name-des-Ankers angeben.
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics{./images/tinylinkanchor.png}
+		\includegraphics[width=0.5\textwidth]{./images/tinylinkanchor.png}
 	\caption{TincMCE: Auf zuvor gesetzte Lesezeichen kann
 später verwiesen werden.}
 	\label{fig:tinyankerdialog}
@@ -1495,7 +1539,7 @@ das ein »Veröffentlichen« oder ein »Abbrechen« zur Auswahl stellt.
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics[width=\textwidth]{./images/XI5S-publish.png}
+		\includegraphics[width=0.7\textwidth]{./images/XI5S-publish.png}
 	\caption{Dialog zum Veröffentlichen von Objekten}
 	\label{fig:xims-publish}
 \end{figure}
@@ -1517,7 +1561,7 @@ gespeichert, sind jedoch noch nicht im Dateisystem aktualisiert.
 
 \begin{figure}[h!]
 	\centering
-		\includegraphics[width=\textwidth]{./images/XI5S-republish.png}
+		\includegraphics[width=0.8\textwidth]{./images/XI5S-republish.png}
 	\caption{Dialog zum erneuten Veröffentlichen von Objekten}
 	\label{fig:xims-republish}
 \end{figure}
