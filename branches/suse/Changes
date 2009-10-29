@@ -1,0 +1,344 @@
+1.2
+  - New Apache::AxKit::Provider::XIMSGoPublic module that can be used to proxy and
+    cache XIMS objects that are published via gopublic. Using the gopublic-cache- 
+    config-generator tool it is possible to pregenerate the needed AxKit configuration
+    sections to make use of AxKit caching for gopublic-served objects like AnonDiscussionForums
+    or Questionnaires and to access them through better URLs not containing the XIMS
+    backend server nor the "/gopublic/content/siterootlocation" part.
+  - Published AnonDiscussionForumContribs can be deleted through the web-interface
+    again.
+  - Fixed a memory consumption bug when importing large documents
+  - Minor ReferenceLibrary and Vlibrary updates
+  - Work around a bug in XML::Filter::CharacterChunk where the 'TagName' parameter
+    does not work as expected and *all* elements are parsed as chunk.
+    This fixes the behaviour where titles of Portlet items were double-xml-escaped
+    during event default.
+  - Adjust xsl:output media-type for SimpleDB events to be compatible with MSIE
+  - Various small fixes and updates
+
+1.1
+
+XIMS is now licensed the XIMS License, v1.0 (Apache License based).
+
+New Object Types:
+  - New Reference Library related object types. Reference Libraries store bibliographic data
+    Reference Library items can be imported and exported using BibTex, MODS, Endnote and
+    other formats
+  - New object type "SimpleDB" - A tool to create "Simple Databases" using a virtual table
+    with some generic field data types (integer, string, stringoptions, textare, boolean, datetime, and float)
+  - New VLibrary Object Types VLibraryItem::URLLink and VLibraryItem::Document
+
+Updates:
+  - Show location_path at search results (feature request #1375312)
+  - Public interface to search (filters published items, todo #585854)
+  - (Re-)Publish Document when DocumentLinks are published
+  - Introduced "LowerCaseLocations" config directive: If set to a non-zero value,
+    locations of content objects will be lowercased during save. Per default, its value is set to zero.
+  - Introduced WebDAV object type privileges (object types can be granted on a per 
+    user/role basis)
+  - UTF-8 sanitize content sent to godav handler (more convenience for editor applications
+    not recognizing the correct encoding of documents)
+  - SQLReport supports custom DSN connects now (e.g. fetch the data from a MySQL db)
+  - Moved config for SQLReports to sqlreportconfig.xml
+  - Added pagination size config for SQLReports and SimpleDB objects on a per object basis
+  - Show all bookmarks of the user at the user start page and not only the default bookmark
+  - Per default, the results of successful ((un|re)-)publishing processes are not shown anymore now,
+    but users are redirected back
+  - Improved handling of autoindexes
+  - Use CharacterMap plugin for HTMLArea editor
+  - Added well-formed check- and pretty print-options for XML objects
+  - Added SimpleFormEdit edit option for XML objects for HTML-form based editing of simple XML files
+    based on an assigned RelaxNG schema
+  - Use WRITE privilege for access check for results-download of Questionnaire objects
+  - Kioskmode option for Questionnaires to allow answering a Questionnaire multiple times using the
+    same browser instance
+  - New option for Questionnaires to enforce answering of all questions
+  - PDF download of Questionnaire Results using htmldoc
+  - HTML download of Questionnaire TAN Lists
+  - Added "ximsCacheControl" configuration directive in ximshttpd.conf to control cache headers
+  - Added gobaxims LocationMatch directive for limited automated clients who cannot deal with
+    session cookies it may be useful to grab data inside a cookie-less Basic Auth protected session
+  - Logout public user if he is coming in via /goxims
+  - Use document_id instead of MD5 string for the location of AnonDiscussionForumContribs (shorter URLs)
+  - New XSL-Stylesheet selection mechanism enabling fewer XSL-Stylesheets needed for the UI
+
+Fixes:
+  - Correctly update department_id of descendants during move actions (bug #1230144)
+  - Correctly update department_id of descendants when moving an objectroot object (bug #1429057)
+  - Check for same location in target container during move (bug #1370777)
+  - Link to correct ou.xml for DepartmentRoot auto indexes (bug #1376312)
+  - Allow unpublishing of broken symlinks
+  - Various smaller fixes
+
+1.0
+
+General:
+  - New godav.pm handler to connect to the XIMS data repository via WebDAV
+  - New XML-based config files and corresponding config reader modules
+  - Allow deletion of existing Keywords, Abstract, Valid_*_timestamps and
+    Stylesheet-, CSS-, Schema- as well as Image-Assignments (fixing bug #629767)
+  - Allow to change location of existing Files and Images (fixing bug #1196371)
+  - New SQLReport object type (Stores a SQL-select query in the body and
+    executes it at event_default, the results are shown as an HTML-table or
+    transformed via XSLT if a stylesheet has been assigned. If search keys
+    are defined, a HTML form will be generated prompting for values to filter
+    the query result)
+  - Files with with uppercased suffixes in their filenames are correctly
+    resolved during import now
+  - The goxims and Apache::AuthXIMS handlers are reverse proxy aware now (They honor X-Forwarded-For headers)
+  - Added RNG Schemata for UI and published documents
+  - Optional content audit table and triggers for recording creation and
+    updates of objects
+  - Object dependencies (e.g. like related Portlets, assigned stylesheets, ...)
+    are handled by the Exporter now
+  - Various smaller fixes and updates
+
+User Interface:
+  - Pagination for container default events
+  - Allow setting children's default sorting order on a per container
+    basis (stored in attributes)
+  - A unified diff between the latest two edited versions of Documents and
+    NewsItems is stored now to track the most recent changes
+  - Added a Save-button next to the Cancel-button in the upper right corner
+    for edit and create screens
+  - Added accesskeys for Save ("Meta"-S) and Cancel ("Meta"-C)
+  - Added a link in the footer to send an e-mail "Please attend to the following object"
+  - Allow displaying content of deleted documents in default container view
+  - Added an example of a Document publishing preview stylesheet
+  - Added a Document's "Document Links" to the "Publish related Objects"
+    dialog at event_publish_prompt
+
+User Administration:
+  - Added ObjectTypePriv Management
+  - Added option to lookup users and roles at the role management screen.
+    Will not load all accounts per default any longer
+
+Document Editing:
+  - Updates of the HTMLArea integration for a customized version of HTMLArea3RC1
+  - Added rudimentary support for Xinha and TinyMCE WYSIWYG editors
+  - HTMLArea preserves selection when creating links now
+  - CSS stylesheets to be shown during editing can be assigned now
+    (currently only used by HTMLArea)
+  - Added a "prettyprint"-option for non-WYSIWYG-editing
+  - Plain body textareas are resizable now (tested with FireFox and MSIE)
+  - Integration of BXE XML Editor
+  - Before switching the editor, it is checked if the content of the body
+    has been changed since loading now
+
+Commandline Tools:
+  - Moved tools in the 'tools' directory to the more packaging friendly
+    locations 'bin' and 'sbin'
+  - New move.pl tool for moving (published) object hierarchies
+  - Minor updates to the tools
+  - New copy_questionnaire.pl tool
+
+Portlets:
+  - Updated Portlet implementation for web portal management (together with
+    the NewsItem object type)
+  - Added Portlet-to-RSS-Feed stylesheets
+  - More meta information is copied from the source now; useful for generating
+    RSS feeds out of Portlets
+
+NewsItems:
+  - Updated NewsItem implementation for web portal management (together with
+    the Portlet object type)
+  - New SAX filter ContentObjectPropertyResolver is used for image
+    meta-information expansion now
+  - During NewsItem creation, it is possible to allow concurrent image
+    upload/creation now
+  - Added publish_portlets() method
+
+AxPointPresentation:
+  - Nicely display AxPointPresentations for event_default using CSS styles
+  - BXE-Support for AxPointPresentations
+  - Added an option to download an AxPointPresentation as a PDF file
+
+Questionnaire:
+  - Allow limited editing of TAN lists (closes bug #964752)
+  - Use a Mac-compatible content-type for result download
+  - Optionally include detailed text-based answers in result download
+  - Added option to download zipped tab-separated raw result data
+  - Allow Textarea- and Text-Types to have no default answer
+  - Made answer-editing more straight forward
+
+Stylesheets:
+  - Moved document editor options (Plain Textarea, HTMLArea, ...) to config.xsl
+  - Copy body elements into HTML namespace to produce validating output
+  - Removed 'organisation' from config.xsl
+  - Updated the default namespace from the old proposed-recommendation of
+    XHTML to the current official one (http://www.w3.org/1999/xhtml)
+
+New Module Dependencies:
+  - Array::Iterator
+  - Text::Diff
+  - Text::Template
+  - Archive::Zip
+  - DBIx::XHTML_Table
+  - XML::Generator::DBI
+
+API and Internals:
+  - Added caching logic to avoid superflous DB hits
+  - Changed default internal datestyle to a ISO8601 conformant string
+  - Enlarged LongReadLen in ximsconfig.xml to 64mb
+  - Added child_count_granted(), descendant_count_granted(), and copy()
+    methods to XIMS::Object
+  - Class::MethodMaker 2.x compatibility
+  - New XIMS::Iterator::Object class
+  - Added suffix,email,url columns to cilib_authors
+  - Added valid_from_timestamp and valid_to_timestamp handling
+  - Added schema_id column
+
+simple.examplesite.tld Example Site:
+  - Fixed HTML namespace
+  - Added System Identifier for xls:output
+  - Copy body elements into HTML namespace to produce validating output
+  - Exclude non HTML namespace prefixes in output
+  - Added MS-related meta tags
+  - Useing output method xml now
+
+0.9.1
+  - Fixed value of XIMS::Privileges::COPY() and XIMS::Privileges::MODIFY()
+  - Fixed wrong object privs that have been introduced by a typo in the 0.7_0.8/upgrade_common.sql script
+    (for 0.7 to 0.8 updated installations)
+  - Made COPY privilege available to the user interface
+  - Do not include .ptlt suffix in the title of departmentlinks portlets which are added
+    via XIMS::DepartmentRoot::add_departmentlinks()
+
+0.9
+  - Fixed wrong entries in location_path columns when creating objects directly under /root (PostgreSQL)
+  - Fixed foreign key constraints going to the wrong table (Oracle)
+  - Implemented option to assign a stylesheet directory for /gopublic/-published objects instead of using public/*.xsl
+  - Got rid of hard-coded publishing preview style. It is customizable using/assigning document_publishing_preview.xsl now
+  - New 'is_objectroot' object type property for inheritation logic (Currently set for DepartmentRoot,
+    SiteRoot, VLibrary, and Portal)
+  - New XIMS::Object methods: objectroot_ancestors(), stylesheet(), css(), image(), and script() using
+    ancestrial objectroot settings for cases where inheritation is wanted
+  - New JavaScript object type
+  - Search terms are highlighted in the search result now
+  - When uploading Files, content type 'application/octet-stream' is used as fallback value for unknown
+    content types instead of rejecting the File
+  - Fixed utf-8 encoded strings in XIMS::Importer::_clean_location()
+  - Various smaller fixes and updates
+
+0.8
+  - Better Performance (children are fetched only if needed, updates for fewer DB hits and cached queries)
+  - Users can select their favourite document editor (Plain, HTMLArea, eWebEditPro) during editing now
+  - Initial version of VLibrary modules. This virtual library object type will support storing and management
+    of documents, links and other media with separate management of metadata. The modules are neither document nor
+    finished yet, this will come with the next XIMS releases. For now, only the import of valid DocBookXML
+    documents (XIMS::VLibraryItem::DocBookXML) is supported.
+  - Fixes for the XIMS setup process (Amongst other things: Support for installing to remote
+    PostgreSQL databases and PostgreSQL databases with password or md5 authentification)
+  - Searching can be limited specific branches of the hierarchy using the "start from here" option
+  - XML object type objects (XML, XSLStylesheet, XSPScript) are handled as full XML documents and
+    no longer as document fragments now
+  - Updated DBIx::SQLEngine module dependancy to 0.017 (fetch_select_rows)
+  - Moved application classes to XIMS::CGI::*
+  - Reactivated cot_creator.pl for creating module templates of new object types
+  - Better path handling during image/link selection using the eWebEditPro WYSIWYG editor
+  - Fixes for Oracle support of the Questionnaire module
+  - Added o:, c:, and u: search macros to enable explicit searches for creators,
+    owners, and modifiers of objects
+  - Updated search result pagination
+  - Support for hierarchical object types
+  - Deleted objects are not shown during object browsing any longer
+  - A lot of smaller fixes and updates
+
+0.7
+  - The user interface language is chosen based on 'Accept-Language' headers now
+  - XSP object type supports an attribute whether or not to process the XSP at event default
+  - Updated module dependencies to XML::LibXML::Iterator, CGI::XMLApplication 1.1.3, and DBIx::SQLEngine 0.016
+  - Added "-f" option for fs_import.pl to update existing objects
+  - Intro and Exit text feature for Questionnaires
+  - TAN lists of Questionnaires can be exported in MS Excel and Text format now
+  - Added "-l" option for specifying a setup_db.pl logfile
+  - Show 'id' instead of 'document_id' in object tooltip (container_common.xsl)
+  - Added new $object->siteroot() and $object->siteroot->url convenience methods
+  - removed children_latest() and children_latest_granted() (functionality now provided by $object->children_granted)
+  - Various smaller fixes and updates
+
+0.6
+  - Added Questionnaire objects for creating online evaluations, surveys and polls
+  - Removed nested set implementation and replaced it with hierarchical queries.
+    With that, support for Pg 7.2 is dropped. DBD::Pg is needed in
+    version > 1.30_1 now.
+  - Added basic documentation for content object class API
+  - Added HowTos for AnonDiscussionForum and AxPointPresentation object types
+  - Restructured documentation
+  - Updated class-diagrams
+  - Added view_privilege_handler() for Apache::AuthXIMS to allow simple
+    access control of published documents
+  - New data format for "Icon" and special MS PowerPoint files.
+  - Renamed DocBookXML objecttype to sDocBookXML with new suffix .sdbk
+  - Renamed suffix of Portlets to .ptlt
+  - UI Stylesheet updates
+  - Added generic constructor, create(), update(), and delete() methods in
+    XIMS::AbstractClass for easier object class creation
+  - Various smaller fixes and updates
+
+0.5
+  - Filesystem importer to batch import HTML documents or folder hierarchies
+  - Added a feature to create copies of objects (optionally with all its descendants)
+  - Added Building Sites with XIMS (Admin Guide) document which gives a
+    step-by-step example how to build a simple XIMS powered site from an
+    admin's perspective.
+  - Added Auto(re)publish feature for container children
+  - Introduced SiteRoot URLs (former title of SiteRoots). Clicking on the
+    link to the published URL of an object takes you to the server specified
+    in the SiteRoot URL
+  - The DataProvider object and with it the database connection is globally
+    shared for command-line usage and shared per Apache child using now
+  - Changed default value of ResolveSiteRoots to '1'. Users are expected to
+    use XIMS in a Apache vhost scenario per default now.
+  - Updated the default stylesheets for published content in 'ximspubroot'
+    Christoph Wild did most of the new design, Armin Lanzinger did
+    fine tuning on the colors.
+  - The database for PostgreSQL will be created with Unicode encoding now.
+  - An UTF-8 encoded database is assumed to be the default in Config.pm now.
+  - The CGI application classes accept UTF-8 encoded input per default now.
+    If XIMS::DBENCODING is set, the content of CGI params will be converted
+    to it.
+  - Converted encoding of all stylesheets to UTF-8 and changed the
+    xls:output encoding to UTF-8
+  - Eliminated hardcoded ISO-8859-1 encoding and make use of
+    config option XIMS::DBENCODING()
+  - Added and updated unit tests
+  - Introduced 'admin','devel', and 'install' subdirs for the tools directory
+  - Added publisher.pl command line tool for recursive publishing
+  - Added user_privileges.pl command line tool for recursively
+    granting and revoking user privileges
+  - Added add_departmentlinks.pl command line tool for automated
+    DepartmentLink creation
+  - Added folder_to_objectroot.pl command line tool to convert imported
+    folders to SiteRoots or DepartmentRoots.
+  - Added set_user_metadata.pl command line tool for managing user metadata
+  - Added support for HTMLArea 3.0
+  - Links to published objects open in a new window now
+  - Added an example homepage "simple.examplesite.tld" under examples
+  - No more hardcoded object type IDs in the object classes
+  - Added a bottom line under "last modified date" and "content length" to
+    optically guide to the options in the default skin.
+  - Fixed editing of DocumentLinks
+  - Allow repositioning of DocumentLinks
+  - Introduced new content object type property "publish_gopublic" to
+    denote whether objects are published to the filesystem or publishing
+    means granting to the public user
+  - Cleanup of NewsItem object type implementation
+  - No need for HTML::Entities any more
+  - Various smaller fixes and updates
+0.1.1
+  - Allow installation directories other than "/usr/local/xims"
+  - Personal user start pages with bookmark management and password update (/goxims/user)
+  - Internationalization (i18n.xml) and "de-at" localization of "default"-skin stylesheets
+  - Added unit tests
+  - System privileges are actually used now
+  - Stylesheet optimizations (folder_default.xsl runs ~25% faster now)
+  - New content object types "Text" and "CSS"
+  - Config directive for Tidy installation path
+  - Additional search macros to find objects by creator or last modifier
+  - Search results are paged and search result count is shown now
+  - Sitemap feature for container objects (tree_view)
+  - Deactivated "patch_modules.pl"
+  - Added "Content Object Type Creator Tool"
+  - Added "show_data_formats.pl" and "show_object_types.pl" in "tools"
+

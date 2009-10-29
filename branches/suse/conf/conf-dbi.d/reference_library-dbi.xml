@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<Config>
+    <DBI>
+        <PropertyAttributes>
+            <item name="reflibreferencetype.id" value="cireflib_reftypes_id_seq_nval()"/>
+            <item name="reflibserial.id" value="cireflib_serials_id_seq_nval()"/>
+            <item name="reflibreference.id" value="cireflib_ref_id_seq_nval()"/>
+            <item name="reflibauthormap.id" value="cireflib_authormap_id_seq_nval()"/>
+            <item name="reflibreferenceproperty.id" value="cireflib_refprop_id_seq_nval()"/>
+            <item name="reflibreferencepropertyvalue.id" value="cireflib_rpv_id_seq_nval()"/>
+            <item name="reflibreferencepropertymap.id" value="cireflib_rtpm_id_seq_nval()"/>
+        </PropertyAttributes>
+        <Tables>
+            <item name="reflibreferencetype" value="cireflib_reference_types"/>
+            <item name="reflibserial" value="cireflib_serials"/>
+            <item name="reflibreference" value="cireflib_references"/>
+            <item name="reflibauthormap" value="cireflib_authormap"/>
+            <item name="reflibreferenceproperty" value="cireflib_reference_properties"/>
+            <item name="reflibreferencepropertyvalue" value="cireflib_ref_propertyvalues"/>
+            <item name="reflibreferencepropertymap" value="cireflib_ref_type_propertymap"/>
+        </Tables>
+    </DBI>
+</Config>
+

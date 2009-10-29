@@ -1,0 +1,2375 @@
+% -*- coding:iso-8859-1 -*-
+% 2do:
+% Referenzen setzen
+% Tabellen korrigieren
+% Umbrüche korrigeren
+% Icons einfügen
+% Overfull Boxes
+\RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
+\documentclass[fontsize=11pt]{scrartcl}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{%
+  graphicx,
+  longtable,
+  fixltx2e,
+  mparhack,
+  url,
+  xcolor,
+  ragged2e,
+  setspace,
+  pifont,
+  lmodern,
+}
+
+\usepackage[english,ngerman]{babel}
+\usepackage[neveradjust]{paralist}
+\usepackage[babel,german=guillemets-italics]{csquotes} 
+\usepackage{microtype}
+
+\usepackage[%
+breaklinks               % Links »überstehen« Zeilenumbruch
+%,backref                 % Backlinks im Literaturverzeichnis
+,colorlinks              % Links erhalten Farben statt Kästen
+% ,citecolor=myblue        % Farbe für Zitate
+% ,linkcolor=myblue     % beeinflusst Inhaltsverzeichnis und Seitenzahlen
+% ,urlcolor=myblue         % Farbe für URLs
+,citecolor=black       % Farbe für Zitate
+,linkcolor=black       % beeinflusst Inhaltsverzeichnis und Seitenzahlen
+,urlcolor=black 
+,bookmarks               % Erzeugung von Bookmarks für PDF-Viewer
+,bookmarksnumbered       % Nummerierung der Bookmarks
+,hyperfootnotes=false    % Keine Links auf Fußnoten
+,pdffitwindow
+,pdflang=de
+,pdfpagelabels 
+%,pdfborder={0 0 0}
+,pdfpagelayout=SinglePage
+,pdftitle={XIMS Schritt für Schritt Anleitung}
+,pdfauthor={xims-support@uibk.ac.at}
+,pdfsubject={Proseminararbeit}
+,pdfkeywords={}
+,pdfcreator={pdfTeX}
+,pdfstartview=FitV,      % Dokument wird »Fit Height« geöffnet
+,pdfpagemode=UseOutlines % Bookmarks im Viewer anzeigen
+,bookmarksopenlevel=2    % Gliederungstiefe der Bookmarks
+] 
+{hyperref}               % PDF automatisch mit Links versehen und weitere
+% Hypertext-Funktionalität ermöglichen
+
+\usepackage{ellipsis}
+
+\newenvironment{Hinweis}
+{\bigskip\begin{addmargin}[-2\parindent]{0\parindent}\sffamily\textcolor{red}{\rule{1ex}{1ex}\textbf{
+        Hinweis: }}}
+{\hspace{\stretch{1}}\end{addmargin}\bigskip}
+ 
+
+\title{XIMS Schritt für Schritt Anleitung}
+\author{XIMS-Support}
+\date{}
+
+
+\hyphenation{De-part-ment-Root}
+\hyphenation{Sup-port}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{3}
+
+\tableofcontents
+\newpage
+\listoftables
+\newpage
+\listoffigures
+\newpage
+
+\section{Allgemeines zum System}
+\label{allgemeines}
+
+XIMS (eXtensible Information Management System) ist ein Web-Content-
+Management- und Informationssystem, das vor allem auf die Anforderungen und
+Bedürfnisse von Universitäten und ähnlichen Institutionen zugeschnitten ist.
+
+Daraus ergeben sich unter anderem folgende Entwicklungsziele, die XIMS zu
+erfüllen versucht:
+\begin{compactitem}
+%\begin{itemize}
+	\item Einfache Einbringungsmöglichkeiten, um die Verwaltung der Inhalte möglichst
+unabhängig von technischem Know-how zu ermöglichen.
+	\item Granulares Berechtigungssystem bzw. Rollenmanagement, um die Aufgaben
+und Verantwortungsbereiche verschiedener Benutzer zu verwalten.
+	\item Flexible Gestaltungsmöglichkeit der zu präsentierenden Inhalte durch Trennung
+von Formatierung und Inhalt (realisiert durch die Verwendung von XML in
+Zusammenhang mit XSLT).
+	\item Delegierbarkeit von Berechtigungen für dezentrale Verwaltung von Inhalten und
+Benutzern.
+	\item Unterstützung mehrsprachiger Inhalte.
+\end{compactitem}    
+
+Neben den genannten Entwicklungszielen bietet die folgende Liste eine Auswahl von
+nützlichen XIMS Features:
+\begin{compactitem}
+%\begin{itemize}
+	\item Klare Strukturierung von Inhalten durch sprechende, leicht merkbare Adressen
+(Stichwort Kurznamen).
+	\item Übersichtliche Navigation durch den Inhalt (Verwendung eines »Breadcrumb-
+Navigations-Pfades«).
+	\item Flexible Suchmöglichkeiten unterstützt durch Google
+	\item Möglichkeit der Generierung von Dublin Core Metadaten für XIMS Inhalte und
+Objekte.
+%\end{itemize}
+\end{compactitem}    
+
+
+XIMS wurde am Zentralen Informatikdienst der Universität Innsbruck entwickelt und
+ist als Open Source freigegeben worden (http://xims.info/download). Für allgemeine
+Fragen und Fragen zur Benutzung wenden Sie sich bitte an das XIMS Support
+Team, für technische Fragen, Bug-Meldungen oder gewünschte Features bitte an
+xims-devel@lists.sourceforge.net.
+
+
+
+
+\subsection{Anmeldung}
+\label{anmeldung}
+
+XIMS ist an der LFU Innsbruck unter der Adresse http://xims.uibk.ac.at zu erreichen.
+Um Inhalte über XIMS verwalten zu können, benötigt man einen gültigen
+Benutzerzugang (Account). LFU-Mitarbeiter erlangen mit der Akkreditierung über die
+Personalabteilung bereits standardmäßig einen Zugang zu XIMS. Durch die Eingabe
+von Benutzername (i.d.R. beginnend mit »c«) und entsprechendem Passwort (selbes
+Passwort wie für das Mail-System) in der XIMS-Anmeldemaske (siehe Abb. 1)
+erlangen XIMS-Benutzer Zugang zum Inhalte-Management-System.
+
+\begin{figure}[ht!]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./images/xims-login.png}
+	\caption{XIMS Anmeldemaske}
+	\label{fig:xims-login}
+\end{figure}
+
+
+\subsection{Schnelleinstieg -­ XIMS in 5 Seiten}
+\label{schnelleinstieg}
+
+Der folgende Schnelleinstieg in XIMS soll den Benutzer in die Lage versetzen
+einfache Veränderungen an Webseiten via XIMS vorzunehmen. Der Schnelleinstieg
+ist nicht als Ersatz für die restlichen Kapitel der Schritt für Schritt Anleitung gedacht,
+sondern als gekürzte Darstellung der XIMS Basisfunktionalität.
+
+\subsubsection{Startseite mit Lesezeichen}
+\label{quick-startseite}
+
+Nachdem erfolgreicher Anmeldung wird die benutzerspezifische XIMS-Startseite
+angezeigt. Je nach Rollenzugehörigkeit2 stehen verschiedene Lesezeichen (1) zur
+Verfügung. Lesezeichen sollen die Navigation zum jeweiligen DepartmentRoot
+vereinfachen.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./images/ximsstartseite.png}
+	\caption{Benutzerspezifische XIMS Startseite}
+	\label{fig:ximsstartseite}
+\end{figure}
+
+
+Mittels Klick auf das gewünschte Zielobjekt (via Lesezeichen oder zuletzt geänderte
+Objekte) navigiert man zur Containeransicht.
+
+\subsubsection{Containeransicht}
+\label{quick-containeransicht}
+
+Die Containeransicht gibt einen Überblick über alle bereits vorhandenen Objekte und
+bietet verschiedene Optionen zur Objektverwaltung an.
+(1) zeigt den derzeitigen Objektstatus an (publiziert, nicht publiziert, ...)
+(2) listet die Objekte jeweils mit einem vom Objekttyp abhängigen Icon
+(3) zeigt das Datum der letzten Änderung
+(4) listet die zur Verfügung stehenden Optionen4 (editieren, kopieren,
+verschieben, publizieren, ...)
+(5) Menü zum Erstellen neuer Objekte
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./images/XI5S-containeransicht.png}
+	\caption{Containeransicht}
+	\label{fig:containeransicht}
+\end{figure}
+
+
+Die unter (4) gezeigten Verwaltungsoptionen im Detail:
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.4\textwidth]{./images/XI5S-optionsicons.png}
+	\caption{Verwaltungsoptionen für Objekte}
+	\label{fig:optionsicons}
+\end{figure}
+
+(A) Editieren: Öffnet den Editor (vom Objekttyp abhängig!)
+(B) Kopieren: Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
+(C) Verschieben5: Öffnet ein Menü zum Verschieben des Objekts
+(D) Publizieren: Öffnet das Menü zum Veröffentlichen von Objekten
+(E) Rechte verwalten: Öffnet die Rechteverwaltung
+(F) Löschen6: Löscht das Objekt (siehe Objekte löschen und »Papierkorb«)
+
+\subsubsection{Erstellen von Objekten}
+\label{quick-erstellen}
+
+Mit Hilfe des Erstellen-Menüs (5) können verschiedene Objekttypen erstellt werden.
+Die Standardobjekttypen lauten:
+
+Dokument (Document), Datei (File), Ordner (Folder), Bild (Image), Text und URLLink.
+Eine Datei kann prinzipiell jede binäre Datei sein (z.B. ein PDF-Datei, eine MS-Word-
+Datei, ...), einzig Bilder sollten stets über den Menüpunkt Bild (Image) erstellt
+werden. Nur so ist sichergestellt, dass die Bilder später problemlos in den
+verschiedenen Bild-Einfügen-Dialogen aufgefunden werden können.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.25\textwidth]{./images/XI5S-erstellen-menu.png}
+	\caption{Erstellen-Menü}
+	\label{fig:erstellenmenu}
+\end{figure}
+
+Ein Klick auf den jeweiligen Menüpunkt öffnet den Dialog zum Erstellen des Objekts.
+
+\subsubsection{Editieren von Objekten}
+\label{quick-editieren}
+
+Der Dialog zum Erstellen eines Dokuments gleicht dem zum Editieren eines
+Dokuments.
+Im Pflichtfeld Location muss der künftige Dateinamen des zu erstellenden
+Dokuments eingetragen werden. Wird das Dokument veröffentlicht (siehe dazu
+Punkt ), so findet man den Eintrag der Location in dem URL wieder. Deshalb sollte
+zum einen eine möglichst selbsterklärende und leicht zu merkende Bezeichnung der
+Location vergeben werden, zum anderen bestehen deshalb gewisse
+Beschränkungen für den Feldinhalt. So sind beispielsweise im Feld Location keine
+Umlaute, Sonder- oder Leerzeichen erlaubt.
+Die Dateiendung (.doc, .pdf, .html, etc.) wird vom System beim Speichern abhängig
+vom Objekttyp und Datenformat automatisch hinzugefügt.
+Der Titel, in unserem Beispiel »Schritt für Schritt«, entspricht dem Namen des
+Dokuments, unter welchem dieses Dokument zukünftig in der Containeransicht
+aufscheinen wird.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=1.00\textwidth]{./images/XI5S-dokument-tinymce.png}
+	\caption{Dokument im TinyMCE Editor}
+	\label{fig:XI5S-dokument-tinymce}
+\end{figure}
+
+
+Die Benutzeroberfläche des TinyMCE-Editor ähnelt der von MS-Word. Die
+verschiedenen Bedienelemente sind größtenteils analog zu MS-Word zu verwenden.
+Ist der Editiervorgang abgeschlossen, so können die Änderungen mit einem Klick
+auf den »Speichern«-Button gespeichert werden. Um die Änderungen zu verwerfen
+klickt man auf den »Abbrechen«-Button.
+
+\begin{Hinweis}Navigieren Sie nicht mit der »Vor«- und »Zurück«-Taste ihres Browsers aus dem
+Editor, weil das bearbeitete Objekt ansonsten für andere Benutzer gesperrt wird.
+Siehe »Gesperrte Objekte«.
+\end{Hinweis}
+
+\subsubsection{Veröffentlichen von Objekten}
+\label{quick-publizieren}
+
+Ein in XIMS erstelltes Objekt ist der Öffentlichkeit nicht sofort zugänglich. Es befindet
+sich zuerst lediglich auf dem XIMS-Server. Um es öffentlich abrufbar zu machen,
+muss es veröffentlicht werden. Beim erstmaligen Publizieren eines neu erstellten
+Objekts erscheint folgendes Dialogfenster, das ein »Veröffentlichen« oder
+»Abbrechen« zur Auswahl stellt.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.60\textwidth]{./images/XI5S-publish.png}
+	\caption{Veröffentlichen eines Objekts}
+	\label{fig:XI5S-publish}
+\end{figure}
+
+
+Bricht man den Vorgang an dieser Stelle ab, ist das Objekt weiterhin nur in der
+XIMS-Datenbank präsent, nicht aber am Webserver.
+Nach einem Klick auf den »Veröffentlichen«-Button erscheint eine Erfolgsmeldung,
+die bestätigt dass das Objekt nun öffentlich erreichbar ist.
+Wurden bei einem bereits veröffentlichten Objekt Änderungen vorgenommen, muss
+das Objekt »wiederveröffentlicht« werden, um die aktualisierte Version öffentlich
+abrufbar zu machen.
+Will man hingegen, dass ein zuvor publiziertes Objekt nicht mehr allgemein
+zugänglich ist, wählt man die Option »Veröffentlichen rückgängig machen«.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.80\textwidth]{./images/XI5S-republish.png}
+	\caption{Dialog Wiederveröffentlichen/Veröffentlichen rückgängig machen}
+	\label{fig:XI5S-republish}
+\end{figure}
+
+\section{Startseite und allgemeiner Aufbau}
+\label{startseite}
+
+Nach erfolgreicher Anmeldung gelangt man zur benutzerspezifischen Startseite des
+XIMS Inhalte-Management-Systems.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=1.00\textwidth]{./images/ximsstartseite.png}
+  \caption{Benutzerspezifische XIMS Startseite}
+  \label{fig:ximsstartseite2}
+\end{figure}
+
+Für jeden Benutzer sind so genannte Lesezeichen (Bookmarks) konfiguriert. Die
+Lesezeichen sind in Abhängigkeit zur Rollenzugehörigkeit gesetzt und können über
+Einstellungen => Lesezeichen verwalten verändert werden. Auf diese Weise
+können Sie auch das Standardlesezeichen (default Bookmark) ändern. LFUMitarbeiter
+haben zumindest ein Standardlesezeichen zum XIMS-Testordner
+gesetzt.
+
+\begin{Hinweis}
+  Nutzen Sie den XIMS-Testordner um sich mit dem System vertraut zu
+  machen. Dort können Sie Objekte erstellen und das allgemeine
+  Verhalten von XIMS testen.
+\end{Hinweis}
+
+Über die Lesezeichen gelangen Sie am schnellsten zu den Inhalten Ihrer
+Organisationseinheit. Sollte das Lesezeichen zu Ihren Inhalten noch nicht bestehen,
+können Sie dieses über Einstellungen => Lesezeichen verwalten erstellen. Indem Sie auf eines Ihrer Lesezeichen klicken, gelangen Sie zur so genannten
+Containeransicht10. Diese Ansicht zeigt die Inhalte eines Container-Objekts und
+unterteilt sich grundlegend in zwei verschiedene Bereiche: den Navigationsbereich
+(2.2) und den Inhalt des Containers (2.3).
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\textwidth]{./images/containeransicht.png}
+  \caption{XIMS Container-Ansicht}
+  \label{fig:containeransicht2}
+\end{figure}
+
+\subsection{Navigation}
+\label{navigation}
+
+Der XIMS-Navigationsbereich besteht aus den folgenden Elementen:
+\begin{itemize}
+	\item Ansichts- bzw. Bearbeitungsmodus [1]
+	\item Aktueller Pfad (Navigationspfad bzw. Breadcrumb-Pfad) [2]
+	\item Navigationspfeile [3]
+	\item Login-Informationen [4]
+	\item Element zum Erstellen von neuen Objekten [5]
+	\item Suchfunktion [6]
+\end{itemize}
+
+\paragraph{Aktueller Pfad (Navigations-/Breadcrumb-Pfad)}
+\label{breadcrumb}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[scale=0.7]{./images/navigationspfad.png}
+	\caption{Navigations-/Breadcrumb-Pfad}
+	\label{fig:navigationspfad}
+\end{figure}
+
+
+Der Navigationspfad zeigt den Pfad vom »Site
+Root« (an der LFU Innsbruck heißt der Site Root
+uniweb) bis zum aktuellen Objekt an.
+Das Anklicken eines Teilpfades ermöglicht ein
+schnelles Wechseln in einen übergeordneten
+Container.
+Die Pfadfragmente (z.B. uniweb) entsprechen dabei
+dem »Location«-Attribut des Containers.
+
+\paragraph{Navigationspfeile}
+\label{navigationspfeile}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[scale=0.7]{./images/navigationspfeile.png}
+	\caption{Navigationspfeile}
+	\label{fig:navigationspfeile}
+\end{figure}
+
+Die Navigationspfeile ermöglichen ein schnelles
+Bewegen innerhalb des Systems: einen Schritt
+zurück (back), eine Ebene höher im
+Verzeichnisbaum (one level up), oder einen Schritt
+vorwärts (forward).
+
+\paragraph{Login-Informationen}
+\label{logininfo}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[scale=0.7]{./images/logininfo.png}
+	\caption{Login-Informationen}
+	\label{fig:logininfo}
+\end{figure}
+
+Die Login-Informationen beinhalten das aktuelle
+Datum, den Namen des angemeldeten Benutzers
+und die Möglichkeit sich über »logout« vom System
+abzumelden.
+
+\paragraph{Element zum Erstellen von neuen Objekten}
+\label{newobject}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[scale=0.7]{./images/button-erstellen.png}
+	\caption{Element zum Erstellen von neuen Objekten}
+	\label{fig:erstellenbutton}
+\end{figure}
+
+Diese Option, die nur im Bearbeitungsmodus und mit
+den entsprechenden Rechten des angemeldeten
+Benutzers sichtbar ist, wird unter Punkt 3 ausführlich
+beschrieben.
+
+\paragraph{Suchfunktion}
+\label{suche}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[scale=0.7]{./images/suche.png}
+	\caption{Suchfunktion}
+	\label{fig:suchfunktion}
+\end{figure}
+
+Der Suchbegriff kann aus einem oder mehreren
+Wörtern bestehen und bis zu 55 Zeichen lang sein.
+Es gibt drei Operatoren, die eine komplexere wie
+auch effektivere Suche ermöglichen:
+
+\begin{itemize}
+	\item AND
+	\item OR
+	\item ()
+\end{itemize}
+
+\begin{Hinweis}Um beispielsweise nach einem Objekt, welches die
+  Begriffe »zid« und »antrag«/""»dokument« beinhaltet, zu suchen,
+  verwenden Sie folgenden Suchausdruck: zid AND ( antrag OR dokument)
+\end{Hinweis}
+
+M:<Tage> Finde Objekte, die in den letzen <Tagen>
+verändert wurden. <Tage> muss nicht unbedingt
+angeben werden, der Vorgabewert ist 1.
+N:<Tage> Finde Objekte, die in den letzen <Tagen>
+erstellt wurden. <Tage> muss nicht unbedingt
+angeben werden, der Vorgabewert ist 1.
+m:<Tage>, n:<Tage> Wie oben, aber schränke die
+Suche zusätzlich auf Objekte ein, die als neu
+markiert wurden.
+
+\subsection{Ansicht von Containerinhalten}
+\label{containeransicht}
+
+Die Ansicht über den Containerinhalt bietet einen Überblick der im jeweiligen
+Container enthaltenen Objekte. Die Objekte (Dateien, Ordner, HTML-Seiten, etc)
+werden tabellarisch aufgelistet und können nach einem beliebigen Kriterium sortiert
+werden (i.d.R. aufsteigend nach der Positionsnummer).
+
+Die Tabelle mit den Objekten setzt sich aus folgenden Spalten zusammen:
+
+\begin{itemize}
+	\item Status
+	\item Position (Pos)
+	\item Titel (Title)
+	\item Zuletzt geändert (Last Modified)
+	\item Größe des Objekts (Size)
+	\item Optionen zum Verwalten der Objekte (Options)
+\end{itemize}
+
+Jedes Objekt entspricht einer Zeile in der Tabelle. Zudem ist eine auf- bzw.
+absteigende Sortierung möglich, indem auf »Pos«, »Title« oder »Last Modified«
+geklickt wird.
+
+\subsection{Icons in XIMS}
+\label{icons}
+
+\paragraph{Status}
+
+Der Status gibt Auskunft über den derzeitigen Zustand des Objekts. In der aktuellen
+Version kennt XIMS vier verschiedene Objektstati.
+
+%tobefixed!
+\begin{table}[!ht]
+\centering
+
+\begin{tabular}{|c|p{30em}|}
+  \hline
+  bild & Das Objekt ist als neu markiert. \\
+  \hline
+  bild & Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man
+  zur veröffentlichten Ansicht des Objekts. \\
+  \hline
+  bild & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten
+  Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
+  man zur aktuell veröffentlichten Ansicht des Objekts. Erläuterungen dazu
+  siehe Punkt . \\
+  \hline
+  bild & Das Objekt ist gesperrt. Eine Sperrung kann sich durch Editieren
+  desselben Objekts durch einen anderen XIMS-User ergeben, oder weil
+  man bewusst vermeiden will, dass das Objekt von anderen Benutzern
+  bearbeitet werden kann. Durch Klicken auf das Schloss kann die
+  Sperrung aufgehoben werden. Erläuterungen dazu siehe Punkt 3.1.1. \\
+  \hline
+\end{tabular}
+\caption{Status-Icons}
+\end{table}
+\paragraph{Position}
+
+Die Spalte »Pos« (Position) stellt einen Positionierungs- bzw. Gewichtungsmechanismus
+zur Verfügung, der auf individuelle Bedürfnisse selbst angepasst
+werden kann.
+Über die Spalte »Pos« können Objekte in der Inhaltsansicht eines Containers nach
+vorne gereiht werden. Die Möglichkeit spezielle Positionen zu vergeben spielt bei
+den Department Links (siehe auch Punkt 7.2) und im Zusammenhang mit dem
+Autoindex (siehe auch Punkt 3.1.2) eine wichtige Rolle.
+
+\paragraph{Titel (Title)}
+
+Der Titel des Objekts soll eine für sich sprechende Bezeichnung des Objekts sein.
+Das Icon vor dem Titel des Objekts lässt auf dessen Dateityp (PDF-Dokument, MSWord-
+Dokument, etc.) schließen.
+In diesem Zusammenhang wird auf Punkt 3.1.1 verwiesen, der die wesentlichen
+Unterschiede zwischen Titel und Location aufzeigt.
+
+\paragraph{Zuletzt geändert (Last modified)}
+
+Die Spalte »Zuletzt geändert« gibt über das Datum und die Uhrzeit der letzten
+Änderung des Objekts Auskunft.
+
+\paragraph{Größe (Size)}
+
+Diese Spalte gibt die Größe in Kilobyte bei »Nicht-Container-Objekten« an.
+
+\paragraph{Options (Optionen)}
+
+Sofern der angemeldete Benutzer über die entsprechenden Berechtigungen verfügt,
+werden verschiedene Optionen angeboten, um das Verwalten der entsprechenden
+Objekte zu ermöglichen.
+
+%tobefixed!
+\begin{table}[!ht]
+\centering
+\begin{tabular}{|c|p{30em}|}
+  \hline
+  bild & Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
+  gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
+  verändern.
+  Siehe dazu Punkt : »Bearbeiten von Objekten«. \\
+  \hline
+  bild & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
+  in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
+  leichtes Verschieben des Objekts in einen anderen Container
+  ermöglicht. \\
+  \hline
+  bild & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
+  Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
+  veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
+  rückgängig gemacht werden. (Siehe dazu Punkt ). \\
+  \hline
+  bild & Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
+  gelangt man in eine Maske, die zum einen Auskunft über die
+  derzeitigen Zugriffsrechte für das Objekt gibt und zum anderen ein
+  Editieren der Zugriffsrechte ermöglicht. \\
+  \hline
+  bild & Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
+  (Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
+  (Siehe auch Punkte 9 und 5.3). \\
+  \hline
+\end{tabular}
+\caption{Options-Icons}
+\end{table}
+
+\section{Objekte manipulieren}
+\label{objektemanipulieren}
+
+Standardmäßig stehen zumindest die folgenden sieben Objekttypen zur Auswahl:
+
+\begin{itemize}
+	\item Dokument (Document)
+	\item Datei (File)
+	\item Ordner (Folder)
+	\item Bild (Image)
+	\item URLLink
+\end{itemize}
+
+Unter Weitere:
+
+\begin{itemize}
+	\item sDocBookXML
+	\item Portlet
+\end{itemize}
+
+Neben diesen sieben Objekttypen bietet XIMS je nach Benutzerrechten noch die
+Möglichkeit zum Erstellen einer Reihe weiterer Objekttypen, die unter Punkt 7.5 kurz
+angeführt werden.
+
+\subsection{Erstellen/Editieren}
+\label{erstelleneditieren}
+
+Im Bearbeitungsmodus kann man über ein Auswahlmenü unterschiedliche
+Objekttypen erstellen. Die Auswahl an Objekttypen ist abhängig von den
+Berechtigungen des angemeldeten Benutzers.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics{./images/XI5S-erstellen-menu.png}
+	\caption{Erstellen-Menü}
+	\label{fig:erstellenmenu2}
+\end{figure}
+
+Objekte können prinzipiell nur im Bearbeitungsmodus editiert bzw. verändert werden.
+Um ein Objekt zu editieren, klickt man auf das Edit-Icon wodurch sich die
+Editiermaske öffnet.
+
+\subsubsection{Dokumente}
+\label{dokumente}
+
+Ein neues Dokument kann auf zwei Arten erstellt werden. Einerseits mit Hilfe von
+WYSIWYG-Editoren (TinyMCE Editor oder eWebEditPro - siehe auch Punkt 4),
+andererseits mit Hilfe des »Plain Textarea« Editors. Letzterer ermöglicht das
+direkte Bearbeiten des Quellcodes eines Dokuments.
+Im Fenster für das Erstellen eines Dokuments gibt es folgende Eingabe- bzw.
+Auswahlfelder:
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/tinymce-full.png}
+	\caption{Erstellen eines Dokuments mit Hilfe eines WYSIWYG-Editors}
+	\label{fig:dokumentwysiwyg}
+\end{figure}
+
+\paragraph{Location}
+\label{location}
+
+Bei Dokumenten entspricht die Location dem Dateinamen des zu erstellenden
+Dokuments. Wird das Dokument veröffentlicht (siehe dazu Punkt ), so findet man
+den Eintrag der Location in dem URL wieder. Deshalb sollte zum einen eine
+möglichst selbsterklärende und leicht zu merkende Bezeichnung der Location
+vergeben werden, zum anderen bestehen deshalb gewisse Beschränkungen für den
+Feldinhalt. So sind beispielsweise im Feld Location keine Umlaute, Sonder- oder
+Leerzeichen erlaubt.
+Die Dateiendung (.doc, .pdf, .html, etc.) wird vom System beim Speichern abhängig
+vom Objekttyp und Datenformat automatisch hinzugefügt.
+
+\begin{Hinweis}
+  Das Feld »Location« ist ein Pflichtfeld!
+\end{Hinweis}
+
+Die unter Punkt 3.1.1 angeführten Grafiken sollen zusätzlich bildlich den Begriff der
+Location erläutern.
+
+\paragraph{Titel}
+\label{title}
+
+Der Titel, in unserem Beispiel »Schritt für Schritt«, entspricht dem Namen des
+Dokuments, unter welchem dieses Dokument zukünftig in der Containeransicht
+aufscheinen wird. Zudem wird der Titel auch im <title> Tag des HTML-Headers
+ausgewiesen und entsprechend vom Browser im Fenstertitel angezeigt.
+
+Für den Fall, dass kein Titel angegeben wird, wird die Location auch für den Titel
+automatisch übernommen.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/tinymce.png}
+	\caption{Unterscheidung: Location/Titel}
+	\label{fig:unterscheidunglocationtitel}
+\end{figure}
+
+In unserem Beispiel befindet sich der Benutzer im Verzeichnis
+/uniweb/test/christian/sfs und erstellt ein neues Dokument mit der Location
+»sfs« und dem Titel »Schritt für Schritt«.
+Das erstellte Dokument ist in XIMS im Verzeichnis /uniweb/test/christian/sfs
+zu finden und scheint unter dem Namen des Titels (in unserem Beispiel »Schritt
+für Schritt«) auf.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/container-short.png}
+	\caption{Ansicht des Dokuments im XIMS}
+	\label{fig:dokumentinxims}
+\end{figure}
+
+Nach dem Veröffentlichen im Siteroot »uniweb« sieht das Dokument wie folgt aus:
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/bsp-publiziert.png}
+	\caption{Beispieldokument publiziert}
+	\label{fig:bsppubliziert}
+\end{figure}
+
+\paragraph{Body}
+\label{body}
+
+Der Body beinhaltet den »eigentlichen« Inhalt des Dokuments.
+Unabhängig vom Browser oder Betriebssystem steht für die Erzeugung des Bodys
+der WYSIWYG-Editor TinyMCE zur Verfügung. Dieser bietet »MS-Word-ähnliche
+Funktionalität« um Inhalte zu erstellen.
+Alternativ kann der Body in Form von »wohlgeformtem« (wellformed) XHTML-Code
+im »Plain Textarea« Editor eingegeben werden. Vor dem Abspeichern kann über
+die »XML von Body testen«-Funktion getestet werden, ob der Body wohlgeformt
+ist. Über die Funktion »Prettyprint« (Icon neben »XML von Body testen«) wird
+der XHTML-Text in der Darstellung übersichtlicher formatiert bzw. entsprechend
+eingerückt.
+Falls die Option »Versuchen, einen wohlgeformten Body herzustellen« (Try
+to form body well) auf »Ja« gesetzt wurde, versucht Tidy, ungültigen Code beim
+Abspeichern »wohlzuformen«, d.h. alle Elemente werden auf Vorhandensein von
+Start- und ein Endtag geprüft bzw. die korrekte Verschachtelung von einzelnen Tags
+überprüft. Außerdem müssen die Tags klein geschrieben sein und das Body-
+Dokument muss genau ein Wurzelelement haben. Weitere Vorgaben entnehmen Sie
+bitte der XHTML-Spezifikation.
+Gelingt es Tidy nicht, den Body zu säubern, muss der Inhalt noch einmal manuell
+überarbeitet werden.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/xmlvonbodytesten.png}
+	\caption{Funktion »XML von Body testen«}
+	\label{fig:xmlvonbodytesten}
+\end{figure}
+
+\begin{Hinweis}Mit der Funktion »Versuchen, einen wohlgeformten Body
+herzustellen« verändert Tidy die Whitespace-Informationen. Nach dem
+Speichern des Dokuments und somit nach getaner Arbeit von Tidy, werden
+Einrückungen oder Umbrüche nicht mehr denen im Originaldokument
+entsprechen!
+\end{Hinweis}
+
+\paragraph{Schlagworte (Keywords)}
+\label{keywords}
+
+Die Liste der das Dokument beschreibenden Schlagworte soll durch Semikolons
+getrennt angeführt werden (beispielsweise: Antrag; Benutzungsantrag;
+Studierende). Die Schlagworte scheinen bei veröffentlichten Dokumenten als
+Metainformation auf. Über die XIMS-Suche kann gezielt nach ihnen gesucht werden.
+
+\paragraph{Zusammenfassung (Abstract)}
+\label{abstract}
+
+Die Zusammenfassung stellt eine kurze Beschreibung des Dokuments dar (z.B.:
+»ZID-Benutzungsantrag für Studierende«). I.d.R. scheint bei den
+Suchergebnissen die Zusammenfassung unter dem Titel auf.
+
+\paragraph{Objekt als neu markieren (Mark object as new)}
+\label{markasnew}
+
+Durch dieses Attribut wird das Objekt mit einem Icon versehen. Dieses Icon
+kennzeichnet neu erstellte Dokumente in XIMS (siehe auch Punkt 2.4). Bei der
+Verwendung der XIMS-Suche kann gezielt nach »als neu markierte Objekte« gesucht
+werden.
+
+\paragraph{Speichern (Save)}
+\label{save}
+
+Das Klicken des Speichern-Buttons speichert das erstellte Dokument und leitet zur
+Containeransicht des Eltern-Containers weiter.
+
+\paragraph{Abbrechen (Cancel)}
+\label{cancel}
+
+Das Klicken des Cancel-Buttons verwirft alle bei der Dokumenterstellung gemachten
+Einträge und leitet zur Containeransicht des Eltern-Containers weiter.
+
+\paragraph{Editieren eines Dokuments}
+\label{edit}
+
+Ein bereits erstelltes Dokument zeigt sich nach einem Klick auf das Edit-Icon in der
+Editiermaske. Abhängig des vom Benutzer bevorzugten Editors zum Bearbeiten von
+XHTML-Dokumenten (WYSIWYG oder Plain Textarea) zeigt XIMS die
+entsprechende Editiermaske.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/editdoktiny.png}
+	\caption{Editieren eines XHTML Dokuments im TinyMCE-Editor}
+	\label{fig:xhtmlintinymce}
+\end{figure}
+
+Nicht nur der Bodybereich kann verändert werden, sondern auch die Einträge in
+Location, Titel, Schlagworte, Zusammenfassung und die Option »Objekt als
+neu markieren«.
+
+\begin{Hinweis}Ist ein Objekt publiziert, kann die Location nicht verändert werden (siehe Abb.
+20). Um die Location eines veröffentlichten Objekts verändern zu können,
+muss dieses zuerst depubliziert werden.
+\end{Hinweis}
+
+Durch Klicken des »Speichern«-Buttons werden Änderungen gespeichert und man
+kommt automatisch in die Vollansicht des Dokuments zurück.
+
+\textbf{Gesperrte Objekte}
+
+Nach Veränderung eines Objektes ist es zwingend erforderlich das veränderte
+Dokument zu speichern (Speichern) oder die gemachten Änderungen zu verwerfen
+(Abbrechen) bevor man in die Containeransicht wechselt. Versucht man stattdessen
+über den Zurück-Button des Browsers in die Containeransicht zu gelangen ohne zu
+speichern bzw. zu verwerfen, ist das Dokument automatisch für andere Benutzer
+gesperrt . XIMS betrachtet ein solches Dokument als im Zustand »in Bearbeitung«
+befindlich und sperrt es deshalb für andere Benutzer, weil ein zeitgleiches Editieren
+eines Dokuments durch mehrere Benutzer nicht möglich ist.
+
+\subsubsection{Verzeichnisse/Ordner (Folder)}
+\label{ordner}
+
+Für das Erstellen eines Verzeichnisses ist nur die Eingabe der Location
+erforderlich. Wird kein Eintrag im Feld Titel gemacht, wird der Location-Name
+auch für das Titel-Feld übernommen.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstellefolder.png}
+	\caption{Erstellung eines Ordners}
+	\label{fig:erstellefolder}
+\end{figure}
+
+\paragraph{Location}
+Siehe Punkt~\ref{location}.
+
+\paragraph{Titel}
+Siehe Punkt~\ref{title}.
+
+\paragraph{Objekt als neu markieren}
+Siehe Punkt~\ref{markasnew}.
+
+\paragraph{Verhindere Autoindex beim Veröffentlichen:}
+
+Auf eine Anfrage nach einem Verzeichnis (z.B.: http://www.uibk.ac.at/zid/) liefert der
+Webserver normalerweise ein sogenanntes Indexdokument aus. XIMS kann beim
+Veröffentlichen automatisch ein solches Dokument mit einer einfachen Liste des
+Verzeichnisinhalts zu erstellen. Dieses Standardverhalten kann mit der Option
+»Verhindere Autoindex beim Veröffentlichen« wenn nötig unterbunden
+werden.12 In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; es
+muss die Location »index« erhalten und wird dann vom Webserver automatisch
+verwendet.
+
+\begin{Hinweis}Ein Objekt mit der Location »index« (z.B. index.html) wird vom Webserver
+gegenüber dem automatisch erstellten Index vorgezogen, d.h. sobald ein Objekt
+mit der Location »index« in dem Container existiert, wird dieses Dokument
+ausgeliefert, auch wenn ein Autoindex erstellt wurde.
+\end{Hinweis}
+
+Ist in einem Verzeichnis kein Indexdokument vorhanden und publiziert, gibt der
+Webserver auf eine Anfrage nach einem Verzeichnis die Fehlermeldung
+»Forbidden« zurück -- sinngemäß: das Auflisten des Verzeichnisinhalts ist
+verboten.
+
+\begin{Hinweis}Bloß zu verhindern, dass ein Verzeichnis aufgelistet wird, ist kein taugliches
+Mittel, um Dokumente zu »verstecken« oder gar unzugänglich zu machen!
+\end{Hinweis}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex.png}
+	\caption{XIMS Ansicht eines Ordners mit Inhalt. Keines dieser Objekte hat die Location
+»index«!}
+	\label{fig:ordnerohneindex}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex_publiziert.png}
+	\caption{Die veröffentlichte Version desselben Ordners. Da kein Objekt mit der
+Location »index« enthalten ist, wird der Ordnerinhalt angezeigt. Die Darstellung im Bild
+zeigt den von XIMS generierten Autoindex.}
+	\label{fig:ordnerohneindexpubliziert}
+\end{figure}
+
+\paragraph{Zugriffsrechte erteilen}
+
+Über diese Funktion können die Berechtigungen für das Objekt konfiguriert werden.
+XIMS »vererbt« standardmäßig die Einstellungen von den Elternobjekten.
+»Nur mir selbst Rechte erteilen«:
+Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
+gelesen bzw. verändert werden.
+»Zusätzlich Leserechte für Mitglieder der Standard Rollen
+erteilen« (Grant VIEW privilege of your default roles)
+Über dieses Attribut erhalten XIMS-Standardrollen das Leserecht für dieses Objekt.
+
+\begin{Hinweis}Die Funktion »Zusätzlich Leserechte für Mitglieder der
+Standard Rollen erteilen« wird derzeit nicht verwendet!
+\end{Hinweis}
+
+\paragraph{Editieren eines Verzeichnisses (Folders)}
+
+Es können die Location, der Titel und die Optionen »Objekt als neu
+markieren« bzw. »Verhindere Autoindex beim Veröffentlichen« geändert
+werden. Außerdem besteht die Möglichkeit die Kriterien für die standardmäßige
+Sortierung der Kindobjekte des Verzeichnisses festzulegen (nach Position, Titel,
+Änderungsdatum).
+Bitte beachten Sie an dieser Stelle Punkt 3.1.1 »Gesperrte Objekte«.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/editierefolder.png}
+	\caption{Editieren eines Verzeichnisses (nicht publiziert)}
+	\label{fig:editierefolder}
+\end{figure}
+
+\subsubsection{Bilder (Images)}
+\label{bilder}
+
+Um eine Bild-Datei (Image) in XIMS zu erstellen, d.h. ein Bild vom lokalen Rechner
+in das XIMS zu importieren, kann man entweder die Durchsuchen-Funktion
+verwenden oder den Dateipfad im lokalen Dateisystem direkt eingeben. Über die
+Durchsuchen-Funktion vermeidet man falsche Pfadangaben durch Tippfehler und
+sie ist der komfortablere Weg um den Pfad zur gewünschten Bild-Datei zu
+generieren (z.B.: G:\textbackslash{}service\textbackslash{}bilder\textbackslash{}sun.jpg).
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstellebild.png}
+	\caption{Erstellen einer Bild-Datei in XIMS}
+	\label{fig:erstellebild}
+\end{figure}
+
+\paragraph{Titel}
+
+Der Titel (in unserem Beispiel Sonnenuntergang) entspricht dem Namen des Bildes,
+unter welchem das Bild in der Containeransicht aufscheint.
+
+\paragraph{Bild (Image)}
+
+Dieses Eingabefeld dient zur Angabe des Verzeichnispfades wo das Bild am lokalen
+Rechner zu finden ist (in unserem Beispiel unter G:\textbackslash{}service\textbackslash{}bilder\textbackslash{}sun.jpg).
+
+Der Durchsuchen-Button erleichtert die Angabe des absoluten Dateipfades durch
+Öffnen eines Dateiauswahl-Dialoges.
+
+\paragraph{Schlagworte}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Zusammenfassung}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Zugriffsrechte erteilen}
+
+Siehe Punkt 3.1.2
+
+\paragraph{Hinaufladen}
+
+Das Klicken des Hinaufladen-Buttons speichert die ausgewählte Datei im XIMS und
+man wird zur Containeransicht weitergeleitet.
+
+\paragraph{Abbrechen}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Editieren eines Bildes (Image)}
+
+Es wird auf Punkt 3.1.4 verwiesen, da alle wesentlichen Editiermöglichkeiten
+übereinstimmen.
+
+\subsubsection{Dateien (Files)}
+\label{dateien}
+
+Um eine binäre Datei (MS-Word Dokument, PDF-Datei, etc.) zu erstellen, d.h. die
+Datei vom lokalen Rechner in das XIMS zu importieren, kann man entweder die
+Durchsuchen-Funktion verwenden oder den Dateipfad im lokalen Dateisystem direkt
+eingeben. Über die Durchsuchen-Funktion vermeidet man falsche Pfadangaben
+durch Tippfehler und sie ist der komfortablere Weg um den Pfad zur gewünschten
+Datei zu generieren (z.B.: G:\textbackslash{}docs\textbackslash{}anmeldung.pdf).
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstelledatei.png}
+	\caption{Erstellen einer Datei}
+	\label{fig:erstelledatei}
+\end{figure}
+
+\paragraph{Titel}
+
+Siehe Punkt 3.1.3
+
+\paragraph{Datei}
+
+Siehe Punkt 3.1.3
+
+\paragraph{Schlagworte}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Zusammenfassung}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Zugriffsrechte erteilen}
+
+Siehe Punkt 3.1.2
+
+\paragraph{Hinaufladen (Upload)}
+Siehe Punkt 3.1.1
+
+\paragraph{Abbrechen}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Editieren einer Datei (File)}
+Es können Titel, Schlagworte und Zusammenfassung der Datei geändert
+werden. Soll die Datei durch eine andere ersetzt werden, kann man mit
+Hilfe des »Durchsuchen«-Dialoges den Pfad zur neuen Datei angeben bzw.
+diesen direkt ins Eingabefeld eintippen. Will man lediglich den Titel
+editieren, so kann das Feld »Datei ersetzen« leer bleiben.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/editieredatei.png}
+	\caption{Editieren einer Datei (nicht publiziert)}
+	\label{fig:editieredatei}
+\end{figure}
+
+\subsubsection{URL-Links}
+\label{urllinks}
+
+Über den Objekttyp URLLink können sowohl externe (d.h. Links außerhalb
+der Domäne http://www.uibk.ac.at) als auch interne Links erstellt
+werden. Hinzu kommt, dass diesem Objekttyp bei der Erstellung von
+Departmentlinks eine besondere Rolle zukommt (siehe Punkt 7.1 und
+7.2). Bei internen Links ist zu beachten, dass diese absolut zum
+Site-Root anzugeben sind (i.d.R. absolut zu /uniweb). Alternativ kann
+auch die offizielle URL der Seite (z.B. http://www.uibk.ac.at/zid),
+welche verlinkt werden soll, angegeben werden. Externe Links müssen
+zwingend mit dem http://- bzw. https://-Prefix angegeben werden.
+
+\paragraph{Location}
+
+Die Location bei URLLink Objekten wird anders gehandhabt als die Location
+anderer Objekte. Bei URLLink Objekten beschreibt die Location den Pfad zum
+Objekt auf welches verwiesen wird.
+Grundsätzlich sind dieselben Regeln wie bei URLs üblich zu beachten. Jeder nach
+RFC 2396 gültiger URI ist zulässig.
+
+\paragraph{Titel}
+
+Siehe Punkt 3.1.3
+
+\paragraph{Schlagworte}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Zusammenfassung}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Zugriffsrechte erteilen}
+
+Siehe Punkt 3.1.2
+
+\paragraph{Speichern}
+Siehe Punkt 3.1.1
+
+\paragraph{Abbrechen}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Editieren eines URL-Links}
+
+Hier wird auf Punkt 3.1.2 verwiesen, da alle wesentlichen Editiermöglichkeiten
+übereinstimmen.
+
+\subsubsection{Portlets}
+\label{portlets}
+
+Ein Portlet kann als eine spezielle Sicht auf eine bestimmte Datenmenge bezeichnet
+werden. Bei Webseiten erscheinen Portlets normalerweise in Form von Boxen neben
+dem eigentlichen Inhalt der Seite. Beispielsweise kann eine Seitennavigation ein
+solches Portlet darstellen (siehe dazu auch Punkt -- Erstellen von Department
+Links).
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstelleportlet.png}
+	\caption{Erstellen eines Portlets}
+	\label{fig:erstelleportlet}
+\end{figure}
+
+\paragraph{Location}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Titel}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Ziel (Target)}
+
+Als Ziel wird der Pfad jenes Verzeichnisses bzw. jener Datenmenge angegeben, auf
+das bzw. die das Portlet seine spezielle Sicht richten soll.
+Die »Ziel Suchen« (Browse for Target)-Funktionalität erleichtert das exakte
+Bestimmen dieses Pfades.
+
+\begin{Hinweis}Über ein Portlet kann zum Beispiel eine Box mit einer Linkliste als Inhalt einfach
+erstellt werden. XIMS durchsucht hierfür den Inhalt eines Containers (z.B. eines
+Verzeichnisses) und listet den entsprechenden Inhalt (z.B. eine Reihe von
+Dokumenten), dargestellt als Liste mit Links verweisend auf die entsprechenden
+Dokumente, auf.
+\end{Hinweis}
+
+\paragraph{Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen}
+
+Siehe Punkt 3.1.2
+
+\paragraph{Zusätzliche Einstellmöglichkeiten für Portlets}
+
+Portlets sind ein mächtiges Werkzeug von XIMS. Sie schaffen zusätzlich zur
+Auflistung der Objekttitel eine Reihe anderer Möglichkeiten, z.B. können
+Containerinhalte gefiltert nach speziellen Attributen bzw. Objekttypen dargestellt
+werden. Für genauere Informationen bezüglich Portlets wird auf die XIMSSchulungen
+bzw. den XIMS-Support verwiesen.
+
+\paragraph{Editieren eines Portlets}
+
+Siehe Punkt 3.1.1.
+
+\subsubsection{DepartmentRoots}
+\label{departmentroots}
+
+Der Begriff »Department Root« beschreibt die Startseite einer Organisationseinheit
+und entspricht einer erweiterten Version eines XIMS-Ordners mit besonderen
+Eigenschaften. Ein »Department Root« definiert einige Eigenschaften, die auf
+»Kinderobjekte« (untergeordnete Webseiten einer Organisationseinheit) weitervererbt
+werden. Zu diesen Eigenschaften zählen »Portlets« der Organisationseinheit -- wie
+zum Beispiel das »Department Link Portlet«, ein für die Organisationseinheit bzw. für
+das Institut spezifisches Bild (»Department Image«), wie auch der »Department Titel«
+bzw. der »Department Infotext« oder ein für die Organisationseinheit bzw. für das
+Institut spezifisches XSLT-Stylesheet für eine angepasste Darstellung
+veröffentlichter Seiten.
+
+Die folgende Abbildung zeigt wie ein individualisierter Department Root mit
+»Department Links«, »Department Image«, »Department Titel«, »Department Infotext«
+und »Department Speziallinks« aussehen könnte. Die individualisierten Elemente sind
+auch auf allen untergeordneten Webseiten der Organisationseinheit wirksam.
+
+\begin{itemize}
+	\item {[1] Department Titel}
+	\item {[2] Department Info}
+	\item {[3] Department Image}
+	\item {[4] Department Links}
+	\item {[5] Department Speziallinks}
+\end{itemize}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/departmentroot-zid.png}
+	\caption{Department Root mit adaptierbaren Elementen}
+	\label{fig:departmentrootzid}
+\end{figure}
+	
+\paragraph{Erstellen eines DepartmentRoot-Objekts}
+
+Ist noch kein Department Root Container vorhanden bzw. vom
+XIMS-Support-Team eingerichtet worden, muss das DepartmentRoot"-Objekt
+erstellt werden. Dies erfolgt in gleicher Weise wie etwa das Erstellen
+eines Verzeichnisses (siehe Punkt ).
+
+\begin{Hinweis}Eine besondere Bedeutung hat im Department Root-Kontext die
+Zusammenfassung (Abstract). Mit Hilfe des Zusammenfassung Feldes kann
+der »Department Infotext« gesetzt werden. Umgeben mit dem <span>-Tag und
+in Verbindung mit dem lang-Attribut repräsentiert der so gekapselte Text den
+»Department Infotext« in deutscher bzw. englischer Sprache.
+\end{Hinweis}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/departmentroot-erstellen.png}
+	\caption{Erstellen eines DepartmentRoot}
+	\label{fig:erstellendepartmentroot}
+\end{figure}
+
+\paragraph{Stylesheet}
+
+Dem DepartmentRoot kann hier ein spezielles Stylesheet zugewiesen werden.
+
+\paragraph{CSS}
+
+Dem DepartmentRoot kann hier ein spezielles CSS zugewiesen werden.
+
+\paragraph{JavaScript}
+
+Dem DepartmentRoot kann hier ein spezielles JavaScript zugewiesen werden.
+
+\paragraph{Bild}
+
+Dem DepartmentRoot kann hier ein spezielles Department-Image zugewiesen
+werden. Siehe dazu
+
+\paragraph{RSS-Feed}
+
+Dem DepartmentRoot kann hier ein spezieller RSS-Feed zugewiesen werden.
+
+\paragraph{Ausblenden der 3. Spalte für dieses DepartmentRoot}
+
+Ist diese Option aktiviert, wird die rechts äußerste Spalte des Unidesigns (Quicklinks,
+Service, ...) ausgeblendet.
+
+\paragraph{Editieren eines DepartmentRoots}
+
+Zusätzlich zu den Einstellungen die man beim Erstellen eines DepartmentRoot
+machen kann, kann man beim Editieren dem DepartmentRoot Portlets hinzufügen.
+Nähere Informationen dazu finden sich im Punkt »DepartmentRoot Navigation«.
+
+\subsubsection{sDocBookXML Objekte}
+\label{sdocbookxml}
+
+\begin{quotation}
+	»DocBook is an XML/SGML vocabulary particularly well suited to books and papers
+about computer hardware and software (though it is by no means limited to these
+applications).« Homepage des DocBook Technical Committee
+\end{quotation}
+
+Unter DocBook versteht man XML-Dokumente, welche den Regeln einer
+bestimmten DTD (Document Type Definition) folgen. Es dient dazu,
+strukturierte Dokumente mit Hilfe von XML zu schreiben. Docbook XML
+eignet sich besonders für Bücher und Artikel über
+Computerhardware/-software sowie sonstige technische Dokumentationen.
+Docbook XML verfolgt das Konzept, Dokumente unabhängig vom später
+publizierten Medium (z.B. Internetseite, gedrucktes Buch) zu
+erstellen. Für die spätere Konvertierung in das entsprechende
+Endformat wird XSLT verwendet. In XIMS können Simplified Docbook XML
+Objekte (sDocBookXML) erstellt werden. Simplified DocBook XML bzw. die
+entsprechende DTD lässt mit ca. 100 XMLElementen weniger Elemente als
+DocBook XML zu. Simplified Docbook XML (sDocBookXML) ist eine also
+Untermenge von DocBook XML, welche besonders für kleinere Dokumente
+(Artikel, White Papers u.ä.) gedacht ist.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstellesdocbookxml.png}
+	\caption{Erstellen eines Simplified Docbook XML Objekts}
+	\label{fig:erstelledocbookxml}
+\end{figure}
+
+\paragraph{Location}
+Siehe Punkt 3.1.1
+
+\paragraph{Titel}
+Siehe Punkt 3.1.1
+
+\paragraph{Body}
+
+Anders als beim Erstellen eines Dokuments gibt es hier keinen WYSIWYG-Editor
+zum Schreiben eines sDocBookXML-Artikels. Daher empfiehlt es sich, das
+sDocBookXML-Dokument mit Hilfe eines externen Editors zu erstellen und den
+Quellcode anschließend in das Body-Textfeld zu kopieren.
+
+Ein externer Editor mit Unterstützung für sDocBookXML ist zum Beispiel XMLmind.
+Dieser steht zum kostenlosen Download zur Verfügung. Ein Tutorial zu XMLmind ist
+dort ebenfalls verfügbar.
+
+Grundsätzlich gilt, dass ein sDocBookXML-Dokument zum einen in wohlgeformtem
+XML vorliegen muss und zum anderen keine Deklarationen oder Processing
+Instructions (PIs) im Body des sDocBookXML-Dokuments aufscheinen dürfen. Alle
+Elemente von sDocBookXML-Dokumenten müssen zwingend Kind-Elemente des
+Wurzelelements <article> sein.
+
+\begin{Hinweis}Sollte das sDocBookXML Dokument wohlgeformt sein, jedoch Elemente
+enthalten, welche nicht in der Simplified DocBook XML DTD definiert sind, so
+werden diese Elemente zwar von XIMS »akzeptiert«, jedoch in der veröffentlichten
+Version nicht dargestellt. Solche Elemente existieren dann nur im Quelldokument
+im XIMS. Aus diesem Grund sollte man nur valide sDocBookXML-Dokumente ins
+XIMS einpflegen.
+\end{Hinweis}
+
+\paragraph{Schlagworte}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Zusammenfassung}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Zugriffsrechte erteilen}
+
+Siehe Punkt 3.1.2
+
+\paragraph{Speichern}
+
+Siehe Punkt 3.1.1
+
+\paragraph{Abbrechen}
+
+Siehe Punkt 3.1.1
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/sdocbookxmlerstellt.png}
+	\caption{Das erstellte sDocBookXML Objekt in der Vollansicht}
+	\label{fig:sdocbookxmlerstellt}
+\end{figure}
+
+\paragraph{Editieren eines sDocBookXML Objekts}
+
+Siehe Punkt 3.1.1. 
+
+Da kein WYSIWYG-Editor zur Verfügung steht, empfiehlt es sich,
+die Änderungen am sDocBookXML-Objekt mit einem externen Editor wie z.B. dem
+XMLmind Editor mit anschließender Überprüfung auf »Wohlgeformtheit« und Validität
+zu machen und anschließend den editierten Code wieder in den Body des
+sDocBookXML Objekts einzufügen.
+
+\subsection{Objekte löschen und »Papierkorb«}
+\label{delete}
+
+Objekte können mit dem Icon gelöscht werden, wenn sie unveröffentlicht sind
+und die entsprechenden Privilegien in der ACL vergeben wurden.
+
+Das Objekt wird im ersten Schritt nur als gelöscht markiert, es verbleibt vorerst noch
+in der Datenbank, sozusagen im Papierkorb. Wenn derartige Objekte in einem
+Ordner vorhanden sind, wird in der Fußzeile ein Link »Zeige alle (\#) gelöschten
+Objekte in diesem Container« eingeblendet. In dieser Ansicht werden die gelöschten
+Objekte grau hinterlegt und mit zwei Optionen dargestellt:
+
+\begin{itemize}
+	\item Löschen rückgängig machen;
+\end{itemize}
+
+\begin{Hinweis}Dies kann fehlschlagen, wenn zwischenzeitlich ein Objekt mit der selben
+Location im Container angelegt wurde, in diesem Fall muss das neuere Objekt
+zuerst umbenannt werden.
+\end{Hinweis}
+
+\begin{itemize}
+	\item Endgültig löschen
+\end{itemize}
+
+\begin{Hinweis}Bitte löschen Sie Objekte, die Sie nicht mehr benötigen ganz! Die
+Papierkorbfunktion ist lediglich als Sicherheit gedacht. Die gelöschten Objekte
+nehmen weiterhin Ressourcen in der Datenbank in Anspruch und werden daher
+periodisch von uns gelöscht!
+\end{Hinweis}
+
+\section{Dokumente mit einem WYSIWYG-Editor bearbeiten}
+\label{wysiwig}
+
+\subsection{Allgemeines}
+\label{allgemeines-wysiwig}
+
+Beim Betrachten des WYSIWYG-Editors TinyMCE fällt die Ähnlichkeit zur MS-Word-
+Oberfläche auf. Viele der Icons und vertraute Funktionen finden sich auch in
+eWebEditPro. Will man beispielsweise einen Text fett darstellen, so muss dieser nur
+mit der Maus markiert und auf das -Icon geklickt werden.
+Da TinyMCE ein englischsprachiges Programm ist, mögen einige Schaltflächen
+etwas ungewohnt erscheinen (beispielsweise steht »B« für »bold« im Gegensatz zum
+bekannten »F« für »fett«).
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/tinymce-edit.png}
+	\caption{Ansicht des TinyMCE WYSIWYG Editors}
+	\label{fig:tinymceedit}
+\end{figure}
+
+\subsection{Einfügen eines Bildes (mit TinyMCE)}
+\label{insimage}
+
+Wurde ein Bild wie in beschrieben im Container erstellt bzw. ist es bereits an
+anderer Stelle ins XIMS hochgeladen worden, ist das Einfügen in das Dokument ein
+Leichtes. Im Folgenden werden die grundlegenden Schritte beschrieben:
+
+\begin{enumerate}
+	\item {Der Cursor muss sich an der Stelle befinden, an der das Bild eingefügt
+werden soll.}
+	\item {Durch Klicken auf das -Icon öffnet sich der Eigenschaften-Dialog. Über
+diesen Dialog können die Breite, Höhe, Randbreite, Ausrichtung, horizontaler
+und vertikaler Abstand und der Titel für jedes Bild angegeben werden.}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.55\textwidth]{./images/tinymce-imagepopup-solo.png}
+	\caption{Eigenschaften von Bildern in
+Dokumenten verändern}
+	\label{fig:tinymceimageprop}
+\end{figure}
+
+	\item {Durch Klicken auf das - Icon öffnet sich der Durchsuchen-Dialog. An
+dieser Stelle können Sie den Pfad zum Bild bzw. dessen Titel
+eingeben. Alternativ besteht die Möglichkeit im XIMS-Verzeichnisbaum
+nach dem gewünschten Bild zu suchen. Mit Betätigen des Buttons »Store
+Back« wird das Bild an der Cursor-Position eingefügt.}
+\end{enumerate}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.9\textwidth]{./images/suchebild.png}
+	\caption{Auswahldialog zum Einfügen eines Bildes}
+	\label{fig:searchimage}
+\end{figure}
+
+\begin{Hinweis}Vermeiden Sie Bilder mit einer größeren Breite als 600 Pixel, da dadurch das
+LFU-Design beeinträchtigt wird.
+\end{Hinweis}
+
+\subsection{Einfügen eines Hyperlinks}
+\label{inslink}
+
+\paragraph{Automatische Hyperlinkerzeugung}
+Wird in den WYSIWYG Editoren eine »http://«-Adresse im Fließtext eingegeben,
+wird diese vom Editor automatisch als URL erkannt und in weiterer Folge als
+Hyperlink erstellt.
+
+\paragraph{Hyperlink unter Anleitung erstellen (TinyMCE)}
+
+\begin{enumerate}
+	\item {Der Text der zum Hyperlink werden soll muss markiert sein.}
+	\item {Durch klicken des - Icon öffnet sich der Dialog zum Erstellen/Editieren
+eines Hyperlinks.}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.5\textwidth]{./images/insertlink.png}
+	\caption{Hyperlink Dialogfenster}
+	\label{fig:hyperlinkdialog}
+\end{figure}
+
+	\item {Durch klicken auf das -Icon öffnet sich der Durchsuchen-Dialog.}
+	
+	\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.9\textwidth]{./images/browselink.png}
+	\caption{Erstellen eines Hyperlinks mit Dialog}
+	\label{fig:linkerstellendialog}
+\end{figure}
+
+	\item {Das Linkziel kann analog zur Auswahl eines Bildes erstellt werden (Siehe
+Punkt 4.2). Im Feld »Enter a title« kann der gewünschte Linktext, falls
+abweichend vom Linkziel, eingegeben werden.
+
+\begin{Hinweis}Es besteht natürlich nicht nur die Möglichkeit eine URL einzufügen, sondern es
+kann auch auf andere Objekte wie beispielsweise Dateien u.ä. verlinkt werden.
+\end{Hinweis}
+
+Optional kann auch das Zielfenster (Target) des Hyperlinks angegeben
+werden. Von dieser Möglichkeit wird jedoch zu Gunsten der Barrierefreiheit
+abgeraten. Es wird empfohlen, dieses Feld leer zu lassen.}
+	\item {Nach dem Bestätigen mit dem »Store Back«-Button erscheint der erstellte
+Hyperlink im Editor.}
+\end{enumerate}
+
+\paragraph{Interne Links in Dokumenten (TinyMCE)}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.4\textwidth]{./images/tinycontextimage.png}
+	\caption{TinyMCE: Im Kontext-Menü können Links
+eingefügt/verändert/entfernt werden.}
+	\label{fig:tinycontextimage}
+\end{figure}
+
+Um auf einzelne Abschnitte innerhalb eines Dokuments verlinken zu können,
+müssen zuerst Lesezeichen (»Anchors«) definiert werden, auf die später verwiesen
+werden kann. Um ein solches Lesezeichen zu setzen, markieren Sie den
+gewünschten Text, zu welchem später verwiesen werden soll, und klicken dann auf
+das Lesezeichen Symbol . Später können Sie beim Erstellen von Hyperlinks das
+Linkziel als \#Name-des-Ankers angeben.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.5\textwidth]{./images/tinylinkanchor.png}
+	\caption{TincMCE: Auf zuvor gesetzte Lesezeichen kann
+später verwiesen werden.}
+	\label{fig:tinyankerdialog}
+\end{figure}
+
+Im Feld »Adresse« kann nun auf das soeben erstelle Lesezeichen Bezug genommen
+werden, in diesem Fall z.B. mit \#seitenende.
+
+\subsection{Importieren von MS Word-Text in TinyMCE}
+\label{importword}
+
+Der WYSIWYG-Editor TinyMCE ist in der Lage, Texte aus MS Word zu importieren
+und dabei die Formatierungen weitgehend beizubehalten. Hierfür sind folgende
+Schritte notwendig.
+
+\begin{enumerate}
+	\item {Der markierte Text bzw. Textausschnitt in MS-Word wird mit Klick auf das
+-Icon bzw. mit »Strg + C« kopiert.}
+	\item {Im WYSIWYG-Editor TinyMCE kann der zuvor kopierte MS-Word-Text über
+das »Einfügen - Icon« bzw. mit »Strg + V« eingefügt werden. (Weiters
+besteht die Möglichkeit, den Text unformatiert oder als Text formatiert
+einzufügen.)}
+\end{enumerate}
+
+\subsection{Zusätzliche Funktionen (TinyMCE)}
+\label{tinyfeatures}
+
+Der Editor TinyMCE beinhaltet noch eine Reihe weiterer zusätzlicher Funktionen wie
+zum Beispiel das Wechseln zwischen WYSIWYG- und HTML-Ansicht, das Einfügen
+von Tabellen bzw. von diversen Sonderzeichen.
+
+\section{Inhalte öffentlich zugänglich machen}
+\label{inhaltepublizieren}
+
+In XIMS erstellte Objekte bzw. veränderte Versionen von bereits publizierten
+Objekten sind nicht automatisch für die Öffentlichkeit sichtbar. Objekte müssen
+explizit veröffentlicht werden!
+Das Zusammenspiel zwischen Content Management und Präsentation für die
+Öffentlichkeit zeigt die folgende Darstellung.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/xims-zusammenspiel.png}
+	\caption{XIMS Zusammenspiel
+Inhalteverwaltung und Präsentation}
+	\label{fig:xims-zusammenspiel}
+\end{figure}
+
+Das Objekt (Dokument, Ordner, Datei, Bild, etc.), welches in XIMS erstellt worden
+ist, existiert vorerst nur in der XIMS-Datenbank (1). Erst wenn das Objekt
+veröffentlicht wird (»veröffentlichen« bzw. »publish«) (2), wird dieses in Form
+einer XML-Datei in das Dateisystem des Webservers kopiert (3) und ist von diesem
+Zeitpunkt an öffentlich sichtbar.
+An der LFU ist XIMS bzw. AxKit so konfiguriert, dass der Site Root »/uniweb«
+öffentlich unter der Adresse http://www.uibk.ac.at/ zu erreichen ist. Insofern spiegeln
+die Locations der XIMS Container unter /uniweb die URLs unter
+http://www.uibk.ac.at/ wider, d.h. Objekte in XIMS unter dem »Pfad«
+/uniweb/fakultaeten/xxx sind öffentlich (wenn über XIMS veröffentlicht) unter
+http://www.uibk.ac.at/fakultaeten/xxx verfügbar.
+
+\subsection{Objekte veröffentlichen (Publish)}
+\label{publizieren}
+
+Objekte können durch das Klicken auf das -Icon veröffentlicht werden. Beim
+erstmaligen Publizieren eines erstellten Objekts erscheint folgendes Dialogfenster,
+das ein »Veröffentlichen« oder ein »Abbrechen« zur Auswahl stellt.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.7\textwidth]{./images/XI5S-publish.png}
+	\caption{Dialog zum Veröffentlichen von Objekten}
+	\label{fig:xims-publish}
+\end{figure}
+
+Bricht man den Publikationsvorgang ab (Abbrechen), ist das Objekt weiterhin nur in
+der XIMS-Datenbank präsent und nicht öffentlich zugänglich.
+Nach dem Klicken des »Veröffentlichen«-Buttons erscheint eine Erfolgsmeldung,
+die bestätigt, dass das Objekt erfolgreich veröffentlicht wurde und als XML-Datei im
+Dateisystem vorliegt und somit öffentlich erreichbar ist.
+
+\subsection{Wiederveröffentlichen (Republish)}
+\label{republish}
+
+Wurden bei einem vormals veröffentlichten Objekt Änderungen vorgenommen (siehe
+Punkt ), müssen dessen Inhalte nochmals veröffentlicht
+(»Wiederveröffentlichen« oder »Republish«) werden. Getätigte Änderungen (vor
+dem Wiederveröffentlichen) werden in dem Fall wiederum nur in der XIMSDatenbank
+gespeichert, sind jedoch noch nicht im Dateisystem aktualisiert.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.8\textwidth]{./images/XI5S-republish.png}
+	\caption{Dialog zum erneuten Veröffentlichen von Objekten}
+	\label{fig:xims-republish}
+\end{figure}
+
+Bricht man den Publikationsvorgang ab (»Abbrechen«), ist das Objekt weiterhin in
+nicht aktualisierter Form veröffentlicht.
+»Veröffentlichen rückgängig machen« (Unpublish) macht eine vormalige
+Veröffentlichung rückgängig und löscht die öffentlich zugängliche Version des
+Objekts im Dateisystem und das Objekt ist ab diesem Zeitpunkt nur mehr in der
+XIMS-Datenbank gespeichert (siehe dazu auch Punkt 5.3).
+»Wiederveröffentlichen« (Republish) aktualisiert die Version des Objekts im
+Dateisystem des Webservers. Somit sind die Versionen in der Datenbank wie auch
+im Dateisystem des Webservers identisch (siehe dazu Hinweis unter Punkt 5.4).
+
+\subsection{Löschen und Verschieben veröffentlichter Objekte}
+\label{deletepublished}
+
+In bestimmten Fällen ist es gewünscht, veröffentlichte Objekte nicht mehr öffentlich
+zur Verfügung zu stellen. Ein Szenario ist beispielsweise, dass eine PDF-Datei,
+welches zum Download angeboten wurde, nicht mehr öffentlich zur Verfügung
+stehen soll. Das entsprechende Objekt muss daher aus dem Dateisystem des
+Webservers gelöscht werden. Das geschieht mit Hilfe der Funktion
+»Veröffentlichen rückgängig machen« (Unpublish). Ein Löschen der Datei im
+XIMS ist per se nicht notwendig.
+
+Um Inkonsistenzen der XIMS-Objekte zu vermeiden, ist das System mit einem
+»Sicherungsmechanismus« ausgestattet:
+Nachdem Objekte veröffentlicht wurden, verhindert XIMS das Verschieben bzw.
+Löschen ebensolcher, selbst wenn man grundsätzlich die notwendigen Rechte dafür
+hat (siehe Punkt 6).
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/publishednotpublished.png}
+	\caption{Veröffentlichtes und unveröffentlichtes Objekt in der XIMS-Containeransicht}
+	\label{fig:publishednotpublished}
+\end{figure}
+
+Um nun ein veröffentlichtes Objekt verschieben bzw. löschen zu können, muss die
+Veröffentlichung dieses Objekts zuerst rückgängig gemacht werden (siehe Punkt
+5.2). Durch das Zurücknehmen der Veröffentlichung ist das Objekt nur noch in der
+XIMS-Datenbank vorhanden. Es ist wieder möglich, das Objekt zu verschieben (mit
+Hilfe des »Verschieben-Icons«) bzw. zu löschen (»Löschen-Icon«).
+
+\subsection{Vorschau von Objekten im veröffentlichtem Zustand}
+\label{preview}
+
+Die Darstellung von Dokumenten im XIMS variiert teilweise von der Darstellung des
+Dokuments im veröffentlichten Zustand. Um als Redakteur eine Vorstellung zu
+bekommen, wie ein Dokument im veröffentlichten Zustand aussehen wird, bietet
+XIMS eine Veröffentlichungsvorschau an.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/veroeffentlichungsvorschau.png}
+	\caption{Veröffentlichungsvorschau}
+	\label{fig:veroeffentlichungsvorschau}
+\end{figure}
+
+Der Link »Veröffentlichungsvorschau« (Publishing Preview) öffnet ein neues
+Fenster in dem der Inhalt des Dokuments integriert in das LFU-Design dargestellt
+wird. Dies entspricht der Darstellung des Dokuments, wie es die Benutzer (nach dem
+eigentlichen Veröffentlichungsvorgang) öffentlich präsentiert bekommen.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/veroeffentlichungsvorschau-live.png}
+	\caption{Veröffentlichungsvorschau: Zeigt das Dokument im eigentlichen Design ohne
+zu veröffentlichen}
+	\label{fig:veroeffentlichungsvorschau-live}
+\end{figure}
+
+\begin{Hinweis}Objekte, die in der Veröffentlichungsvorschau betrachtet werden, zeigen in der
+Darstellung bereits alle Veränderungen. Dabei ist zu beachten, dass die
+Veröffentlichungsvorschau das Objekt nicht veröffentlicht. Da es sich um eine
+reine Vorschau handelt, existiert das Objekt in der veränderten Version weiterhin
+nur in der XIMS-Datenbank. Um die Veränderungen für die Öffentlichkeit sichtbar
+zu machen, müssen Objekte veröffentlicht bzw. wiederveröffentlicht werden.
+\end{Hinweis}
+
+\section{Berechtigungsmechanismus in XIMS}
+\label{berechtigungen}
+
+XIMS verfügt über ein umfangreiches Berechtigungssystem. Dieses ermöglicht eine
+sehr feingranulare Steuerung von Berechtigungen. Berechtigungen können auf
+Basis einzelner Benutzer bzw. Rollen (z.B. zur Verwaltung von Benutzergruppen)
+vergeben werden. Berechtigungen regeln die Privilegien auf XIMS-Objekte.
+
+Ein Benutzer kann beispielsweise die Berechtigung besitzen, bestimmte Dokumente
+zu lesen, ein anderer Benutzer hingegen kann Objekte editieren bzw. aus dem
+System löschen.
+
+Für jedes einzelne in XIMS verwaltete Objekt sind eigene Zugriffsrechte in einer
+sogenannten Access-Control-List (ACL) gespeichert. Mit einem Klick auf das -Icon
+des gewünschten Objekts können bestehende Berechtigungen von Benutzern bzw.
+Rollen gesichtet bzw. verändert werden. Hat ein Benutzer das »GRANT«-Recht
+(Verwaltungsrecht), so darf dieser Benutzer auch bestehende Berechtigungen
+verändern bzw. neue hinzufügen.
+
+\begin{Hinweis}Die Berechtigungen werden für das jeweilige, einzelne Objekt durchgesetzt;
+jemanden bloß aus einem übergeordneten Verzeichnis auszusperren ist also
+nicht ausreichend: Die darunter liegende Objekte könnten trotzdem (z.B. über die
+Suche) direkt angesprungen werden, wenn ihre eigene ACL dies zulässt!
+\end{Hinweis}
+
+\subsection{Berechtigungen eines Benutzers bzw einer Rolle}
+\label{berechtigungen-benutzer}
+
+\paragraph{Bestehende Berechtigungen verwalten}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/bestehendeberechtigungen.png}
+	\caption{Bestehende Berechtigungen verwalten}
+	\label{fig:permissions}
+\end{figure}
+
+Um bestehende Berechtigungen eines Benutzers zu sichten bzw. zu verändern, folgt
+man dem Link »Rechte verwalten« (Manage Privileges). Daraufhin folgt ein Dialog
+mit zwei unterschiedlichen Bereichen (siehe Abb. 45). Der obere Bereich (1) dient
+zur Steuerung der Berechtigungen für den entsprechenden Benutzer bzw. der
+entsprechenden Rolle. Rollen sind i.d.R mit dem UIBK-Präfix gekennzeichnet. Im
+unteren Bereich (2) können die zuvor explizit dem Benutzer bzw. der Rolle
+zugewiesenen Berechtigungen (welches ein Aufscheinen des Benutzers bzw. der
+Rolle in der Berechtigungstabelle des Objektes zu Folge hatte) wieder entfernt
+werden. D.h. über den »Rechte entfernen«-Button wird der Benutzer bzw. die
+Rolle aus der Berechtigungstabelle (siehe Abb. 44) des Objektes vollkommen
+entfernt und verliert alle damit verbundenen Berechtigungen.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/benutzerrechteverwalten.png}
+	\caption{Verwalten von Benutzer- bzw. Rollenprivilegien}
+	\label{fig:permissionadmin}
+\end{figure}
+
+Der obere Bereich (1) untergliedert sich in drei unterschiedliche Arten von
+Privilegien: Standardrechte, Veröffentlichungsrechte und Verwaltungsrechte
+(siehe auch Punkt 6.3 - 6.5).
+Standardrechte sind übliche Berechtigungen, wie das Recht zu lesen bzw. zu
+schreiben. Das Veröffentlichungsrecht ermächtigt einen Benutzer bzw. eine Rolle,
+das Objekt zu veröffentlichen. Das Verwaltungsrecht gewährt einem Benutzer bzw.
+einer Rolle das Recht, anderen Personen Privilegien für ein Objekt einzuräumen
+bzw. wegzunehmen. In den Abschnitten 6.3 - 6.5 wird auf die Bedeutung der
+einzelnen Rechte genauer eingegangen.
+Die Veränderungen der Privilegien werden erst durch das Drücken des
+»Speichern«-Buttons wirksam.
+Im unteren Bereich (2) können einem Benutzer bzw. der Rolle sämtliche Rechte auf
+das Objekt genommen werden. D.h. durch das Drücken des »Rechte entfernen«-
+Buttons (Revoke Grants) wird der Benutzer bzw. die Rolle aus der »Access Control
+List« (ACL) entfernt und scheint somit nicht mehr in der Liste der BenutzerInnen auf,
+welche explizite Rechte auf das Objekt zugewiesen bekommen haben.
+
+\begin{Hinweis}Wenn Sie einer Rolle, z.B.: UIBK:ALL, alle Rechte nehmen wollen, löschen Sie
+bitte die Rolle mit »Rechte entfernen« komplett aus der ACL. Wenn Sie die
+Rolle belassen und stattdessen alle Privilegien entfernen, sperren Sie damit alle
+Rollenmitglieder aus -- im Falle von UIBK:ALL vermutlich auch sich selbst!
+\end{Hinweis}
+
+Um Benutzern bzw. Rollen, die bisher noch keine expliziten Rechte für ein Objekt
+haben, Privilegien zu erteilen, muss der Benutzer bzw. die Rolle zuerst ausfindig
+gemacht werden. Zu diesem Zweck bietet XIMS in der Berechtigungsvergabe die
+Möglichkeit an, nach Benutzern bzw. Rollen zu suchen.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/benutzersuchen.png}
+	\caption{Benutzer bzw. Rollen ausfindig machen}
+	\label{fig:benutzersuchen}
+\end{figure}
+
+\textbf{Suche nach Benutzern:}
+
+Um nach einzelnen Benutzern zu suchen, ist die Benutzerkennung in das
+Eingabefeld einzugeben (z.B. C102XX). Mit einem anschließenden Klick auf den
+»Suchen«-Button, sucht XIMS nach dem besagten User und listet diesen auf. In
+weiterer Folge können dem Benutzer über den Link »Neue Rechte vergeben«
+gewünschte Privilegien eingeräumt werden.
+
+\textbf{Suche nach Rollen:}
+
+Um nach bestehenden Rollen zu suchen, gibt man den Namen der Rolle (i.d.R.
+beginnend mit »UIBK:«) in das Suchfeld ein (beispielsweise UIBK:ZID) und wählt im
+Auswahlfeld »Rolle« (anstatt »BenutzerInnen«) aus. Nach einem anschließenden
+Klick auf »Suchen« listet XIMS alle Rollen auf, die den Suchbegriff im Namen
+enthalten. Gewünschte Privilegien auf gefundene Rollen können analog zur Vergabe
+von Privilegien für Benutzer vergeben werden.
+
+\subsection{Rollenverwaltung}
+\label{rollenverwaltung}
+
+Um Benutzer zu einer Rolle hinzufügen oder zu entfernen kann die Rollenverwaltung
+verwendet werden. Der jeweilige Rollenadministrator kann sich mit seiner
+Benutzerkennung (z.B. C102XX) unter http://xims.uibk.ac.at/roles einloggen.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/rollenverwaltung.png}
+	\caption{Login Rollenverwaltung}
+	\label{fig:rollenverwaltung}
+\end{figure}
+
+\subsection{Standardrechte (Basic Privileges)}
+\label{standardrechte}
+
+Standardrechte sind grundlegende Privilegien, die XIMS zur Beschränkung des
+Zugriffs auf Objekte zu vergeben hat. Sie sind ähnlich Dateisystemrechten auf
+Betriebssystemebene (vgl. Windows/Unix-Zugriffsrechte auf Dateien bzw.
+Verzeichnisse)
+
+\paragraph{View (Lesen)}
+
+Leserecht für Benutzer/Rolle.
+
+\paragraph{Write (Schreiben)}
+
+Schreibrechte für Benutzer/Rolle für ein Objekt. Dadurch können beispielsweise der
+Titel bzw. Inhalt verändert und geschrieben werden.
+
+\paragraph{Create (Erstellen)}
+
+Benutzer/Rolle darf ein neues Objekt in einem Container erstellen.
+
+\paragraph{Delete (Löschen)}
+
+Benutzer/Rolle darf Objekte löschen.
+
+\paragraph{Move (Verschieben)}
+
+Benutzer/Rolle darf ein Objekt verschieben.
+
+\subsection{Veröffentlichungsrechte (Publishing Privileges)}
+\label{pubrechte}
+
+Ein Benutzer bzw. eine Rolle hat das Recht Veröffentlichungsfunktionen
+(»veröffentlichen«, »wiederveröffentlichen«, »veröffentlichen
+rückgängig machen«; siehe Punkt ) auszuführen.
+
+\subsection{Verwaltungsrechte (Grant Privileges)}
+\label{verwrechte}
+
+Besitzen Benutzer bzw. Rollen das Verwaltungsrecht (Grant Privilege), sind diese in
+der Lage, anderen Benutzern bzw. Rollen explizite Privilegien für Objekte
+einzuräumen, d.h. Benutzer bzw. Rollen mit Verwaltungsrecht können Privilegien an
+andere Benutzer bzw. Rollen vergeben.
+
+\section{Spezielle Funktionen}
+\label{specfeatures}
+
+\subsection{Links zum Dokument (Document Links)}
+\label{doclinks}
+
+Bei den so genannten »Links zum Dokument« handelt es sich um weiterführende
+Links zum Thema eines Dokuments. Links zum Dokument werden am Ende des
+Inhaltsbereichs dargestellt.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/linkszumdokument.png}
+	\caption{Links zum Dokument werden am Ende des Inhaltsbereichs dargestellt}
+	\label{fig:dokumentlinks-live}
+\end{figure}
+
+\paragraph{Links zum Dokument erstellen}
+
+»Links zum Dokument« lassen sich -- wie der Name bereits vermuten lässt -- speziell
+zu einem Dokument erstellen. Um einen »Link zum Dokument« zu erstellen, muss
+zuerst in die Vollansicht des gewünschten Dokuments gewechselt werden.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstellelinkzumdokument.png}
+	\caption{Links zum Dokument werden über die Vollansicht des Dokuments erstellt}
+	\label{fig:dokumentlinks}
+\end{figure}
+
+Zu beachten ist, dass »Links zum Dokument« nur erstellt werden können, wenn der
+aktuelle Benutzer über das »Create«-Recht für das entsprechende Dokument verfügt.
+»Links zum Dokument« können einerseits auf andere in XIMS erzeugte Objekte
+(interne Links) und andererseits auf externe Webseiten (außerhalb der Domäne
+\url{http://www.uibk.ac.at}) verweisen.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstellelinkzumdokument2.png}
+	\caption{Dialog zum Erstellen von »Links zum Dokument«}
+	\label{fig:dokumentlinks2}
+\end{figure}
+
+\textbf{Interne Links}
+
+Für interne Links muss der Zielpfad im Eingabefeld Location relativ zum Dokument
+eingegeben werden, d.h. ein Verweis auf ein Dokument mit der Location
+»hallo.html«, welches sich im selben Container als das Dokument zu dem der Link
+erstellt wird befindet, ist als Location für den »Link zum Dokument« hallo.html
+einzugeben.
+
+\textbf{Externe Links}
+
+Für externe »Links zum Dokument« ist es zwingend erforderlich die vollständige URI
+im Eingabefeld Location mit vorangestelltem http:// einzugeben (z.B.:
+\url{http://www.orf.at}).
+Bezüglich einer Beschreibung der Eingabefelder »Titel«, »Schlagworte«,
+»Zusammenfassung«, »Objekt als neu markieren« und »Zugriffsrechte
+erstellen« wird auf den Punkt verwiesen.
+
+\paragraph{Editieren von »Links zum Dokument«}
+
+Ein Klick auf das »Bearbeiten-Icon« öffnet die Editiermaske zum Verändern eines
+»Links zum Dokument«.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/bearbeitenlinkzumdokument.png}
+	\caption{Jeder »Link zum Dokument« kann über die gewohnten Icons bearbeitet werden}
+	\label{fig:editdokumentlink}
+\end{figure}
+
+Weiters können für jeden »Link zum Dokument« die verschiedenen Rechte, die XIMS
+anbietet, vergeben bzw. geändert werden. Die Löschen-Funktion (rotes Kreuz)
+ermöglicht das Löschen von »Links zum Dokument«.
+
+\subsection{DepartmentRoot Navigation}
+\label{depnav}
+
+Usability-Studien haben gezeigt, dass Benutzer, die Navigation auf Webseiten am
+oberen bzw. im linken Bereich des Browser-Fensters suchen. Aus diesem Grund ist
+die grundlegende Navigation des LFU-Designs auch auf diese Erkenntnis
+ausgerichtet. Neue Besucher auf Department Root Seiten werden die Department
+Links zur Hauptnavigation rasch finden. Die Department Root Speziallinks sind im
+Gegensatz dazu auf häufig wiederkehrende Besucher ausgerichtet und sollen zum
+schnelleren Auffinden relevanter bzw. häufig veränderter Inhalte dienen.
+
+\subsubsection{Department Links}
+\label{deplinks}
+
+Department Links stellen die grundsätzliche Navigation der jeweiligen
+Organisationseinheit dar. Durch diese Navigation soll es möglich sein, durch die
+wichtigsten Bereiche bzw. Seiten navigieren zu können.
+Zur Erstellung der Department Links sind im Wesentlichen folgende Schritte
+notwendig:
+
+\begin{itemize}
+	\item {Erstellen eines Verzeichnisses (siehe Punkt ) mit der Location
+»departmentlinks«. Die Location des Verzeichnisses muss zwingend
+»departmentlinks« heißen.}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstelledepartmentlinksfolder.png}
+	\caption{Erstellen des Verzeichnisses »departmentlinks«}
+	\label{fig:createdeplinkfolder}
+\end{figure}
+	
+	\item {Im nächsten Schritt müssen im soeben erstellten Verzeichnis mit der Location
+»departmentlinks« all jene URLLink-Objekte erstellt werden, die als
+Navigation bzw. Departement Links zur Verfügung stehen sollen. Die Anleitung
+zum Erstellen von URLLink-Objekten kann unter Punkt 3.1.5 nachgelesen
+werden. Die Location der Links muss relativ zum Site Root sein. Um zum
+Beispiel einen Verweis auf das XIMS-Objekt mit dem Pfad »/uniweb/service/
+c102« zu erstellen, muss im Eingabefeld Location des URLLink-Objektes
+»/service/c102/« eingegeben werden. Für das XIMS-Objekt
+»/uniweb/geschichte/personal/index.html« die Location
+»/geschichte/personal/«.}
+	
+	\item {Der nächste Schritt ist das Veröffentlichen des departmentlinks-
+Verzeichnisses mitsamt den darin erstellten Links. Die konkrete
+Vorgehensweise für die Veröffentlichung von Objekten wird unter Punkt
+beschrieben.}
+
+\begin{Hinweis}Es genügt, das Verzeichnis »departmentlinks« zu veröffentlichen. Die darin
+enthaltenen URL-Links werden mit entsprechender Option automatisch mit
+veröffentlicht.
+\end{Hinweis}
+
+	\item {Danach muss im Department Root Container ein Portlet mit der Location
+»departmentlinks\_portlet« erstellt werden.}
+
+\begin{Hinweis}
+Das Portlet (sowohl Location als auch der Titel) muss unbedingt
+»departmentlinks\_portlet« heißen. Außerdem muss die Checkbox der
+Zusammenfassung angeklickt sein.
+\end{Hinweis}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/erstellendepartmentlinksportlet.png}
+	\caption{Erstellen des Department Links Portlets: »departmentlinks\_portlet«}
+	\label{fig:createdeplinkportlet}
+\end{figure}
+
+	\item {Im nächsten Schritt muss das erstellte Portlet veröffentlicht werden (siehe
+Punkt ).}
+	\item {In weiterer Folge muss das »departmentlinks\_portlet« dem Department
+Root zugewiesen werden. Dazu muss das - Icon des Department Root
+Verzeichnisses angeklickt werden, um Änderungen am Department Root
+durchführen zu können.}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/zuweisendepartmentlinksportlet.png}
+	\caption{Zuweisen des Department Links Portlet zum Departement Root}
+	\label{fig:deplinkportletzuweisen}
+\end{figure}
+
+	\item {Der letzte Schritt ist das (Re)Publizieren des editierten Department Root
+Ordners (siehe Punkt ).}
+\end{itemize} 
+
+\subsubsection{Department Speziallinks}
+\label{depspeclinks}
+
+Die Erstellung der Department Speziallinks erfolgt analog zum Erstellen der
+Department Links. Der Unterschied beschränkt sich auf die unterschiedliche
+Bezeichnung der Location des Department-Speziallinks-Verzeichnisses und des
+zugehörigen Portlets. Insofern wird auf Punkt verwiesen. Für die Department
+Speziallinks muss die Location des Department Speziallink Verzeichnisses
+»speciallinks« lauten. Ebenfalls muss das Department Speziallink Portlet die
+Location als auch den Titel »speciallinks\_portlet« besitzen und auf das
+Verzeichnis »speciallinks« (mit den gewünschten Links als Inhalt) verweisen.
+
+\subsection{Department Images}
+\label{depimg}
+
+Das Einfügen eines Department Images hat das Ziel, die Individualität eines
+Webauftritts einer Organisationseinheit zusätzlich zu betonen und sich vom
+Standard-Design ein wenig zu differenzieren.
+Das Department Image wird ähnlich wie die Department Links bzw. das Department
+Links Portlet dem Department Root zugewiesen.
+Ein Klick auf das - Icon des Department Root Containers öffnet folgendes
+Fenster:
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/zuweisendepartmentimage.png}
+	\caption{Zuweisen des Department Images zum Department Root}
+	\label{fig:depimagezuweisen}
+\end{figure}
+
+Die Bilderleiste wird vom Büro für Öffentlichkeitsarbeit und Kulturservice eingebaut.
+Bitte senden Sie die drei Bilder (entweder in Originalgröße oder angepasster Größe)
+an webmaster@uibk.ac.at. Als weitere Option kann die Bilderleiste auch gänzlich
+entfallen. Wenden Sie sich in diesem Fall bitte ebenfalls an webmaster@uibk.ac.at.
+Siehe auch: http://www.uibk.ac.at/hilfe/hp\_erstellung/module.html
+
+\subsection{Zweisprachigkeit (Deutsch/Englisch)}
+\label{zweisprachigkeit}
+
+\paragraph{Allgemeines zur Sprachentscheidung}
+
+Mit Hilfe von XIMS können Inhalte auch mehrsprachig verwaltet werden. Prinzipiell
+wird die Sprache, in der das Dokument vom Web-Server ausgeliefert wird, über die
+Language-Negotiation und anhand des »Accept-Language«-Headers des
+anfordernden Browsers entschieden. Hat zum Beispiel ein Benutzer in seinem
+Browser Deutsch als präferierte Sprache eingestellt, wird dieser Benutzer die
+Webseiten, sofern in deutsch verfügbar, in Deutsch ausgeliefert bekommen.
+Selbiges gilt für Benutzer mit voreingestellter Sprache Englisch (in dem Fall
+bekommt der Benutzer die Inhalte in englisch präsentiert). Verlangt der Browser des
+Benutzers die Inhalte in einer Sprache -- und NUR in dieser Sprache (z.B.
+Spanisch), in der die Inhalte i.d.R. nicht verfügbar sind, so wird standardmäßig
+versucht eine englische Version des Inhalts auszuliefern (ist auch eine englische
+Version nicht vorhanden -- jedoch andere Sprachversionen -- wird eine Liste der
+vorhandenen Sprachen des Dokuments angezeigt). Das LFU-Design ist jedoch
+grundsätzlich auf Zweisprachigkeit (Deutsch/Englisch) ausgerichtet.
+
+\paragraph{Dokumente zweisprachig anbieten}
+
+Um die Sprache von Dokumenten mittels Link im rechten oberen Fensterbereich
+wechseln zu können, müssen Sie die Inhalte in deutsch und in englisch vorbereiten.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/sprachewechseln.png}
+	\caption{Wechseln der Sprache ist nur möglich, sofern das Dokument in englisch und
+deutsch vorhanden ist}
+	\label{fig:sprachewechseln}
+\end{figure}
+
+Die Location eines Dokuments in englisch und deutsch muss prinzipiell identisch
+sein. Die Unterscheidung zwischen den Sprachen geschieht durch besondere
+Dateiendungen (».html.de« bzw. ».html.en«), d.h. Dokumente in deutscher
+Sprache bekommen das ».html.de«-Suffix bzw. Dokumente in englisch das
+».html.en«-Suffix. Wenn man also ein Dokument mit der Location »sfs.html« zweisprachig anbieten will, muss das deutsche Dokument »sfs.html.de« und das
+englische Pendant dazu »sfs.html.en« heißen.
+
+\begin{Hinweis}Prinzipiell funktioniert die Bereitstellung von Index-Dokumenten in zwei Sprachen
+auf die gleiche Weise (z.B. index.html.de). Jedoch ist dabei darauf zu
+achten, dass die Option »Verhindere Autoindex beim
+veröffentlichen« für die entsprechenden Container-Objekte angekreuzt sein
+muss, da andernfalls bei Fehlschlagen der Language-Negotiation der von XIMS
+automatisch erzeugte Dokumenten-Index dargestellt wird (siehe auch ).
+\end{Hinweis}
+
+\paragraph{SimpleDocBook (sDocBookXML) Dokumente zweisprachig anbieten}
+
+Zusätzlich zu Document-Objekten (».html«-Endung) können auch sDocBookXMLObjekte
+(».sdbk«-Endung) in zwei Sprachvarianten (Deutsch/Englisch) angeboten
+werden. Das Prozedere um dies zu erreichen ist sehr ähnlich dem des Erstellens
+von zweisprachigen Dokumenten. Das Wechseln zwischen der Sprachen erfolgt
+ebenfalls wie bei »normalen« Dokumenten über den »Deutsch/English«-Schalter
+rechts oben.
+
+Die Location eines sDocBookXML-Objekts muss ebenso wie bei Dokumenten für
+das deutsche und englische SimpleDocBook Dokument prinzipiell identisch sein. Die
+Unterscheidung zwischen den Sprachen geschieht wiederum durch besondere
+Dateiendungen (».sdbk.de« bzw. ».sdbk.en«), d.h. sDocBookXML-Objekte in
+deutscher Sprache bekommen das ».sdbk.de«-Suffix bzw. sDocBookXML-Objekte in
+englisch das ».sdbk.en«-Suffix. Wenn man also ein SimpleDocBook mit der
+Location »example-docbook.sdbk« zweisprachig anbieten will, muss die deutsche
+Fassung »example-docbook.sdbk.de« und das englische Pendant dazu
+»example-docbook.sdbk.en« heißen. Gibt es das SimpleDocBook Dokument nur in
+einer Sprachvariante, so sollte auf das Sprachsuffix gänzlich verzichtet werden.
+
+\begin{Hinweis}Da die XSL Stylesheets, über die sDocBookXML-Objekte an der Universität
+Innsbruck gerendert werden, auf den offiziellen DocBook XSL Stylesheets
+basieren, ist bei der Erstellung eines deutschen SimpleDocBooks auf folgendes
+zu achten:
+Die offizielle DocBook XSL Distribution verwendet bei keiner expliziten
+Spezifikation der Inhaltssprache über das »lang« Attribut des »article«
+Elements standardmäßig die Sprache Englisch. So werden lokalisierte
+Überschriften bzw. Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
+»Inhaltsverzeichnis«) entsprechend ohne explizite Sprachangabe in Englisch
+präsentiert. Aus diesem Grund ist in jedem Fall, ob nun in einer englischen
+Version vorhanden oder nicht, bei einem SimpleDocBook Dokument in Deutsch
+das öffnende Wurzelelement »article« zwingend folgendermaßen
+auszubilden: <article lang="de">. Analog ist es empfehlenswert für
+englische SimpleDocBooks <article lang="en"> zu verwenden.
+Auf diese Weise wechseln im Falle einer Sprachumschaltung Standardtexte
+ebenfalls in die entsprechende Sprache.
+\end{Hinweis}
+
+\paragraph{»Zweisprachigkeit« von Department Links}
+
+Wenn Sie Homepage-Inhalte Ihres Instituts bzw. Ihrer Organisationseinheit in zwei
+Sprachen (Deutsch und Englisch) anbieten wollen, besteht die Möglichkeit, eine
+»zweisprachige« Navigation (Department Links) zu erstellen.
+
+Die folgenden Informationen für die Erstellung einer zusätzlichen englischsprachigen
+Navigation für Ihre XIMS-basierte Homepage setzen das Wissen über die
+Handhabung von »Department Links« voraus. Hier werden nur die zusätzlichen
+Anleitungsschritte für zusätzliche Department Links in englisch erläutert. Für
+grundlegende Informationen zum Thema Department Links wird auf Punkt
+verwiesen.
+Ihre Homepage verfügt bereits über ein departmentlinks-Verzeichnis (inklusive
+URLLinks) und ein Department Links-Portlet. Nun erstellen Sie für die
+englischsprachige Navigation gleichermaßen diese Objekte, jedoch mit
+unterschiedlicher Benennung: Verzeichnis »departmentlinks\_en«; Portlet
+»departmentlinks\_portlet\_en«. Im departmentlinks\_en-Verzeichnis müssen
+die URLLinks ebenfalls neu erstellt werden.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/deplink_en.png}
+	\caption{Im Verzeichnis »departmentlinks\_en« müssen die englischsprachigen
+URLLinks erstellt werden}
+	\label{fig:deplinks_en}
+\end{figure}
+
+Dem Department Root des Instituts bzw. der Organisationseinheit kann nun das
+zweite Portlet »departmentlinks\_portlet\_en« (welches auf das Verzeichnis
+»departmentlinks\_en« zeigt) zugewiesen werden.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/zuweisenportletno2.png}
+	\caption{Zuweisen des zweiten Portlets mit den englischen Department Links zum
+Department Root}
+	\label{fig:zuweisenportlet}
+\end{figure}
+
+Die Auswahl der Department Links bzw. der Navigationsbox in der gewünschten
+Sprache erfolgt nach folgenden Kriterien:
+
+\begin{itemize}
+	\item {Für Dateien mit der Erweiterung ».de« (html.de) werden die Department Links
+aus dem Portlet »departmentlinks\_portlet« bzw. für Dateien mit der
+Erweiterung ».en« (html.en) die Department Links aus dem Portlet
+»departmentlinks\_portlet\_en« gewählt.}
+\item {Für Dateien ohne Erweiterung wird versucht dem Benutzer am besten gerecht
+zu werden und es werden entsprechend dessen Einstellungen die Seiten
+zusammen mit den passenden Department Links dargestellt. Ist die Sprache,
+die der Benutzer über seinen Browser verlangt, nicht vorhanden, wird die
+englische Version (falls vorhanden) präsentiert.}
+\end{itemize}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/departmentlinkszweisprachig.png}
+	\caption{Department Links und Inhalt entsprechend der voreingestellten Sprache}
+	\label{fig:deplinkszweisprachig}
+\end{figure}
+
+\subsection{Erstellen weiterer Objekte}
+\label{weitereobjekte}
+
+Verfügt man über die notwendigen Rechte, die über die des Standardusers
+hinausgehen, hat man zusätzlich auch die Möglichkeit weitere Objekte zu erstellen:
+\begin{itemize}
+\item {\textbf{NewsItem}}
+\item	{\textbf{DepartmentRoot}: Der Begriff »Department Root« beschreibt die Startseite
+einer Organisationseinheit und entspricht einem Ordner in einem Dateisystem.
+Das Department Root hat einige Eigenschaften, die auf dessen »Kinderobjekte«
+(untergeordnete Webseiten einer Organisationseinheit) weitervererbt werden.}
+\item {\textbf{XSLStylesheet}}
+\item {\textbf{SymbolicLink}: Entspricht einem symbolischen Link unter UNIX.}
+\item {\textbf{AxPointPresentation}: Ein XML Format für einfache PDF-Präsentationen.
+Mehr Informationen dazu finden Sie im AxPoint Presentation Howto.
+Zusätzliche Informationen über die Hintergründe von AxPointPresentations gibt
+es in einem Artikel des XIMS Co-Entwicklers Kip Hampton: \url{http://www.xml.com/
+pub/a/2002/06/19/perl-xml.html}}
+	\item {\textbf{AnonDiscussionForum}: Ist ein anonymes Diskussionsforum. Mehr
+Informationen dazu erhalten Sie im Dokument Anonymes Diskussionsforum
+Howto.}
+	\item {\textbf{Portal}: Nach einem Portlet ist ein Portal gewissermaßen der nächste Schritt.
+Im Grunde genommen ist ein Portal nichts anderes als eine Seite, die nur
+Referenzen auf Portlets enthält. Solche Seiten werden vor allem auf Startseiten
+einer Website gefunden.}
+\end{itemize}
+\section{Weiterführende Informationen}
+\label{infos}
+
+Weitere Informationen bzw. Auskunft über XIMS-Kurse finden Sie auf unseren
+Webseiten:
+
+\begin{itemize}
+	\item {Uni Innsbruck: http://www.uibk.ac.at}
+	\item {Büro für Öffentlichkeitsarbeit und Kulturservice:
+http://www.uibk.ac.at/public-relations/}
+\end{itemize}
+
+\subsection{Support}
+\label{support}
+
+\begin{itemize}
+	\item {XIMS an der Uni Innsbruck: http://www.uibk.ac.at/zid/systeme/xims/}
+	\item {ZID Kurse: http://www.uibk.ac.at/zid/kurse/}
+\end{itemize}
+
+Das XIMS-Support-Team des ZID steht Ihnen unter xims-support@uibk.ac.at gerne
+zur Verfügung.
+
+\subsection{FAQ}
+\label{faq}
+
+FAQ = Frequently Asked Questions. Es folgt eine Sammlung von häufigen Fragen
+von Benutzern und den dazugehörigen Antworten.
+
+\subsubsection{Allgemein}
+\label{faq-allg}
+
+\paragraph{Wie kann ich etwas aus der Zwischenablage einfügen?}
+
+Durch »Shift+Insert« bzw. »Umschalt+Einfügen« wird der aktuelle Inhalt der
+Zwischenablage eingefügt.
+
+\paragraph{Wie kann ich den WYSIWYG-Editor wechseln?}
+
+Beim Erstellen von neuen Dokumenten bzw. beim Editieren von bestehenden
+Dokumenten findet man im oberen Bereich des Browserfensters folgende
+sinngemäße Zeile: »Erstelle Document 'XYZ' in '/uniweb/test' mit ...« (siehe
+Abbildung). Dort ist auch das Auswahlfeld für die Selektion des Editors zu finden.
+Sofern das Dokument nicht bereits verändert wurde, kann durch Auswählen des
+entsprechenden Editors zu diesem gewechselt werden.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/wysiwyg-change.png}
+	\caption{Wechseln des Editors}
+	\label{fig:wysiwygchange}
+\end{figure}
+
+\subsubsection{eWebEditPro WYSIWYG-Editor}
+\label{faq-ewebeditpro}
+
+\paragraph{Warum entstehen nach betätigen der Enter(Eingabe)-Taste doppelte
+Zeilenabstände?}
+
+Durch »Enter« wird ein neuer Absatz (HTML-Tag: <p>) erzeugt.
+Einen einfachen Zeilenumbruch (HTML-Tag: <br>) erhält man mit der
+Tastenkombination »Shift+Enter«. (vgl.: MSWord)
+
+\paragraph{Nach dem Einfügen von Text aus MS-Office Anwendungen werden Schriftarten
+oder Formatierungen anders dargestellt}
+
+Das liegt mit hoher Wahrscheinlichkeit an den Formatvorlagen, bzw.
+-vorlagenzuweisungen im Quelldokument. formatvorlage. Wenn z.B. die
+Formatvorlage »Plaintext« im Quelldokument nicht mit der Standardschriftart
+»Courier« dargestellt wird, kommt es in der XIMS-Version zu optischen
+Diskrepanzen, da dort für die jeweilige Formatvorlage die Standardschriftart
+verwendet wird.
+
+Behebung des Problems:
+In den Quelldokumenten Standardformatvorlagen bzw. -formatvorlagenwerte
+verwenden.
+
+\paragraph{Beim Abspeichern oder Abrechen der Dokument-Bearbeitung kommt es zur
+sinngemäßen Fehlermeldung: »Inhalt zu groß«}
+
+Das Limit für die Zeichenanzahl pro Dokument ist auf 262.145 Zeichen gesetzt.
+Größere Dokumente müssen aufgeteilt werden.
+Bevor Sie das Dokumente aufteilen, überlegen Sie sich bitte, ob es nicht sinnvoller
+wäre, den Inhalt als File z.B. in Form eines PDF-Dokuments einzubringen.
+
+\paragraph{Wo kann der Installer für den eWebEditPro Klienten heruntergeladen werden?}
+
+Hier: http://xims.uibk.ac.at/ximsroot/wepro/clientinstall/ewebeditproclient.exe
+
+\subsubsection{TinyMCE WYSIWYG-Editor}
+\label{faq-tinymce}
+
+\paragraph{Nachdem mein Dokument mit TinyMCE geladen wurde, kann ich den
+WYSIWYG Editor nicht mehr wechseln. Es kommt die sinngemäße
+Fehlermeldung (obwohl der Inhalt nicht verändert wurde): »Der Body wurde
+verändert. Bitte verwenden Sie 'Speichern/Abbrechen'!«2}
+
+Durch Copy/Paste kann es auf Windows Systemen dazu kommen, dass Windowsspezifische
+Zeichen mitkopiert werden. Die Windows-1252 Zeichenkodierung nutzt
+den lt. Standard (ISO-8859-1) nicht zu verwendenden Adressraum von 8X-9X (HEX)
+für spezielle, aber häufiger auftretende Zeichen (wie etwa das Euro Zeichen,
+spezielle Anführungszeichen, etc). Siehe http://en.wikipedia.org/wiki/Windows-1252
+
+TinyMCE ignoriert solche speziellen Zeichen beim Laden des Dokuments. D.h. das
+Dokument wurde im Unterschied zum Originaldokument, welches Zeichen außerhalb
+des Standards enthält, zu Gunsten der Zeichenketten-Encoding-Standards um
+einige wenige Zeichen verändert (im Dokument sind nur noch Standard-konforme Zeichen vorhanden). In diesem Sinne ist es i.d.R. das Beste, per »Abbrechen« zur
+XIMS-Container-Ansicht zurückzukehren, das Dokument zu kopieren (Backup), es
+erneut zu öffnen und über den »Speichern«-Knopf abzuspeichern. Nach erneutem
+Öffnen des Dokuments sollten Sie nun wiederum den WYSIWYG Editor wie unter
+Punkt 2 (FAQ) beschrieben wechseln können.
+
+\paragraph{Probleme beim Speichern durch Skype-Addon}
+
+Skype scheint standardmäßig ein Addon zu installieren, um Telefonnummern in
+HTML-Seiten »aktiv« zu machen. In der Kombination IE7, TinyMCE und Skype mit
+dieser Funktion wurden Probleme gemeldet. Das Plugin fügt eigenen Code in die
+HTML-Seite ein, der in der Folge das Speichern fehlschlagen lässt.
+
+(Fehlermeldung: Document body could not be converted to a well balanced string.
+Please consult the User's Reference for information on well-balanced document
+bodies.)
+
+\subsubsection{Uni-Design}
+\label{faq-unidesign}
+
+\paragraph{Statt meiner Indexseite wird der Ordnerinhalt dargestellt, was kann ich
+dagegen tun?}
+
+Dies tritt eigentlich nur bei mehrsprachigen Indexseiten auf; dort genau dann, wenn
+die Language-Negotiation (d. h. der Server sucht die Sprache nach den Präferenzen
+die der Browser mitteilt aus) fehlschlägt. Der Server liefert dann die von XIMS
+automatisch generierte Indexseite aus. Es sollte für den betreffenden Ordner die
+Option »Verhindere Autoindex beim Veröffentlichen« gewählt und der Ordner neu
+publiziert werden. Es wird dann bei einem Fehlschlag - so vorhanden - die englische,
+sonst eine Liste der vorhandenen Varianten angezeigt.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/autoindex.png}
+	\caption{Verhindere Auto-Index}
+	\label{fig:disableautoindex}
+\end{figure}
+
+\paragraph{Warum wird meine Seite im optimierten Design (1024x768) nicht richtig
+angezeigt bzw. rutscht das mittlere Contentfeld nach unten?}
+
+Falls Bilder bzw. Tabellen im Content eingebaut sind, prüfen Sie, ob diese die
+Maximalgröße möglicherweise überschritten haben.
+Konkrete Gründe dafür können u.a. die folgenden sein:
+
+\begin{itemize}
+	\item {Ein Bild mit einer Breite von mehr als 575 Pixeln,}
+	\item {Eine Tabelle mit einer Breite von mehr als 575 Pixeln,}
+	\item {Inhalte eines <pre>-Tags, die nicht bei 575 Pixeln umbrechen,}
+	\item {Eine mit einem nowrap versehene Zeichenkette, die ~80 Zeichen
+überschreitet.}
+\end{itemize}
+
+Ist dies nicht der Fall, könnte im Content sehr lange, ausgeschriebene Links bzw.
+sehr lange Wörter oder viele Leerzeichen hintereinander stehend der Grund für die
+nicht korrekte Anzeige sein. Ist dies der Fall, trennen Sie die Links oder Wörter mit
+einem Minus (-) bzw. entfernen einige Leerzeichen.
+
+Wenn aus inhaltlichen Gründen eine Umgehung dieser genannten Gründe nicht
+gangbar ist, gibt es die Möglichkeit diese Inhalte, wie z.B. breitere Bilder, oder nichtumbrechen-
+dürfende Beispielscodefragmente in <pre>-Tags als Link, der sich in
+einem eigenen Fenster öffnet darzustellen.
+Dafür sind die folgenden Schritte notwendig:
+
+\begin{enumerate}
+	\item {Erstellen und publizieren des Zieldokuments}
+	\item {Einen Link im Ausgangsdokument erstellen und im HTML-Quelltext den Link
+wie folgt bearbeiten:
+\begin{verbatim}
+<a onclick="newWindow=window.open(
+'<URL des Zieldokuments>?style=plain',
+'null',
+'resizable=no,
+scrollbars=no,
+width=<Breite des Zieldokumentfensters>,
+height=<Höhe des Zieldokumentfensters>'
+);
+newWindow.focus()" href="javascript:;"
+onfocus="if(this.blur)this.blur()"> <Titel des Zieldokuments>
+</a>
+\end{verbatim}
+}
+\end{enumerate}
+
+\end{document}

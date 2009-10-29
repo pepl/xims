@@ -1,0 +1,580 @@
+/*
+# Copyright (c) 2002-2009 The XIMS Project.
+# See the file "LICENSE" for information on usage and redistribution
+# of this file, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+*/
+
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+    font-weight: bold;
+}
+
+#titlelogo {
+    width: 100%;
+    margin-top: 2px;
+    background-color: #eeeeee;
+    border: 0;
+}
+
+#titlelogo h1 {
+    font-size: 14pt;
+    color:#004080;
+    margin-bottom: 2px;
+}
+
+#titlelogo .title {
+    vertical-align: bottom;
+}
+
+#titlelogo .logo { 
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -521px;
+    padding: 0px 0px 0px 0px;
+    width: 50px;
+    height: 40px;
+    position:relative;
+    z-index:24;
+}
+
+#titlelogo .logo a {
+    display: none;
+}
+
+#navopt {
+    width: 100%;
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -840px;
+    height: 20px;
+}
+
+#navopt .locbar {
+   width: 59%;
+}
+
+#navopt .date_opt {
+   text-align: right;
+   color: #004080;
+   font-size: 10px;
+   font-family: Arial, Helvetica, sans-serif;
+}
+
+#subheader {
+    width: 100%;
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -860px;
+    height: 42px;
+}
+
+.qsearch {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -860px;
+    text-align: right;
+    width: 500px;
+    height: 42px;
+}
+
+.qsearch div {
+    padding-right: 5px;
+}
+
+.qsearch .search {
+    background-color: #eeeeee;
+}
+
+.qsearch label {
+    padding: 0px 5px 0px 0px;
+}
+
+#start_here {
+    margin-right: 5px;
+}
+
+
+td.navback, td.navup {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -902px;
+}
+td.navfwd {
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -944px;
+}
+
+#MDME {
+    margin: -3px 0px 0px 0px;
+}
+
+#tbody {
+    margin-top: 1px;
+    width: 98.7%;
+    border: 1px solid black;
+}
+
+#tbody tr.trbody td, #tbody tr.trlinksanno td {
+    padding: 1px;
+}
+
+table.footer {
+    width: 98.7%;
+}
+
+table.footer td {
+    padding: 1px 2px 2px 2px;
+}
+
+div.edit {
+    padding: 5px;
+}
+
+div.edit input, div.edit textarea {
+    margin: 2px 5px 3px 2px;
+}
+
+td.bluebg {
+    padding: 2px;
+}
+
+#objPublish table, #objAcl table {
+    border-collapse: separate;
+    border-spacing: 5px;
+} 
+
+#objPublish input, #objAcl input {
+    margin: 2px 5px 3px 2px;
+}
+
+table.pagenav {
+    width: 98.7%;
+    margin-top: 10px;
+    padding: 3px;
+    border: thin solid #C1C1C1;
+    background: #F9F9F9;
+    font-size: small;
+}
+
+table.pagenav td {
+    padding: 2px;
+}
+
+#department_title {
+    font-family:helvetica, arial, sans-serif;
+    font-size:10pt;
+    color: #A0A0A0;
+}
+
+#searchresulttable {
+    margin-left:5px;
+    margin-right:5px;
+}
+
+#searchresulttable .searchresultrow td.title {
+    background: #eeeeee;
+    border-bottom: 1px solid #808080;
+    padding-top: 2px;
+    padding-bottom: 10px;
+}
+
+#searchresulttable .location_path {
+    font-size: 9pt;
+    color: #000000;
+    padding-left: 10px;
+}
+
+#searchresulttable .abstract {
+    font-size: 9pt;
+    color: #808080;
+    padding-left: 10px;
+}
+
+/* styles for test_location event */
+input.focused {
+    background-color: #ffc;
+    border: 1px solid Maroon;
+}
+
+.loading {
+    cursor: wait;
+}
+/* end of styles for test_location event */
+
+/* styles for inline-popups */
+div#xims_ilp {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -165px;
+    height: 180px;
+    width: 330px;
+    z-index: 150;
+    background-color: White;
+    border: 2px solid #333333;
+}
+
+div#xims_ilp_windowbg div#xims_ilp_winlabel div#xims_ilp_close {
+    border-left: 1px solid #333333;
+    color: Black;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 0.8em;
+    float: right;
+    display: inline;
+    padding: 2px;
+    cursor: pointer;
+}
+
+#xims_ilp_windowbg {
+    border-bottom: 2px solid #333333;
+    background-color: #CED3D6;
+}
+
+#xims_ilp_winlabel {
+    display:inline;
+    left: 0px;
+    color: Maroon;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 2px;
+}
+
+#xims_ilp_content {
+    padding: 10px;
+    clear: both;
+    overflow: auto;
+}
+
+#xims_ilp_fadebg {
+    display: none;
+    background-color: #EEEEEE;
+    position:absolute;
+    z-index:100;
+    overflow:hidden;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    filter:alpha(opacity=80);
+    -moz-opacity:0.80;
+    -khtml-opacity:0.80;
+    opacity:0.80;
+}
+
+/* ie6 z-index hack (see conditional comment)*/
+#xims_ilp_fadebg iframe {
+    display:none;
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:-1;
+    filter:mask();
+    width:3000px;
+    height:3000px;
+}
+/* end styles for test_location event */
+
+.listitem_even {
+    background-color: #f6f0f0;
+}
+
+.listitem_odd {
+    background-color: #fcfcff;
+}
+
+tr.objrow:hover {
+    background-color: #EEEEEE;
+    font-weight: bold;
+}
+
+.sprite-spacer {
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    padding: 5px 0px 0px 18px;
+    margin: 0px 0px 0px 6px;
+}
+.sprite-status-spacer {
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    padding: 0px 0px 0px 22px;
+    margin: 0px 0px 0px 0px;
+}
+.sprite-list {
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    padding: 1px 0px 0px 20px;
+    margin-left: 12px;
+}
+.sprite-list span {
+    display: none;
+}
+.sprite-list_AnonDiscussionForum {
+    background-position: -37px -306px;
+}
+.sprite-list_arrow {
+    background-position: -37px -288px;
+}
+.sprite-list_AXPML {
+    background-position: -37px -504px;
+}
+.sprite-list_Binary {
+    background-position: -37px -270px;
+}
+.sprite-list_bullet {
+    background-position: -37px -252px;
+}
+.sprite-list_Container {
+    background-position: -37px -234px;
+}
+.sprite-list_CSS {
+    background-position: -37px -216px;
+}
+.sprite-list_DepartmentRoot {
+    background-position: -37px -198px;
+}
+.sprite-list_DocBookXML {
+    background-position: -37px -162px;
+}
+.sprite-list_DOC {
+    background-position: -37px -486px;
+}
+.sprite-list_ECMA {
+    background-position: -37px -468px;
+}
+.sprite-list_Email {
+    background-position: -37px -450px;
+}
+.sprite-list_GIF {
+    background-position: -37px -0px;
+}
+.sprite-list_GNU-Zip {
+    background-position: -37px -36px;
+}
+.sprite-list_HTML {
+    background-position: -37px -216px;
+}
+.sprite-list_Icon {
+    background-position: -37px -432px;
+}
+.sprite-list_JPEG {
+    background-position: -37px -0px;
+}
+.sprite-list_PDF {
+    background-position: -37px -18px;
+}
+.sprite-list_PJPEG {
+    background-position: -37px -0px;
+}
+.sprite-list_PNG {
+    background-position: -37px -0px;
+}
+.sprite-list_Portlet {
+    background-position: -37px -378px;
+}
+.sprite-list_PPT {
+    background-position: -37px -414px;
+}
+.sprite-list_Questionnaire {
+    background-position: -37px -396px;
+}
+.sprite-list_ReferenceLibrary {
+    background-position: -37px -180px;
+}
+.sprite-list_sDocBookXML {
+    background-position: -37px -162px;
+}
+.sprite-list_SimpleDB {
+    background-position: -37px -144x;
+}
+.sprite-list_SiteRoot {
+    background-position: -37px -126px;
+}
+.sprite-list_SymbolicLink {
+    background-position: -37px -378px;
+}
+.sprite-list_TAN_List {
+    background-position: -37px -108px;
+}
+.sprite-list_Text {
+    background-position: -37px -90px;
+}
+.sprite-list_TIFF {
+    background-position: -37px -0px;
+}
+.sprite-list_URL {
+    background-position: -37px -360px;
+}
+.sprite-list_VLibrary {
+    background-position: -37px -180px;
+}
+.sprite-list_XLS {
+    background-position: -37px -342px;
+}
+.sprite-list_XML {
+    background-position: -37px -72px;
+}
+.sprite-list_XSLT {
+    background-position: -37px -324px;
+}
+.sprite-list_XSP {
+    background-position: -37px -54px;
+}
+.sprite-list_ZIP {
+    background-position: -37px -36px;
+}
+
+.sprite-option_purge {
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -620px;
+    padding: 0px 5px 0px 5px;
+    margin-left: 5px;
+    border: 0;
+    width: 37px;
+}
+.sprite-option_purge:hover {
+    cursor: pointer;
+}
+.sprite-option_delete {
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -700px;
+    border: 0;
+    width: 37px;
+}    
+.sprite-option_delete:hover {
+    cursor: pointer;
+}
+.sprite-option_purge span, .sprite-option_delete span {
+    padding-left: 10000px;
+}
+.sprite-option_edit { 
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -680px;
+    padding: 0px 0px 0px 20px;
+    margin-left: 5px;
+    text-decoration: none;
+    position:relative;
+    z-index:24;
+}
+.sprite-option_copy { 
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -720px;
+    padding: 0px 0px 0px 20px;
+    margin-left: 0px;
+    text-decoration: none;
+    position:relative;
+    z-index:24;
+}
+.sprite-option_move { 
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -660px;
+    padding: 0px 0px 0px 20px;
+    text-decoration: none;
+    position:relative;
+    z-index:24;
+}
+.sprite-option_acl { 
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -740px;
+    padding: 0px 0px 0px 20px;
+    text-decoration: none;
+    position:relative;
+    z-index:24;
+}
+.sprite-option_undelete {
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -600px;
+    padding: 0px 0px 0px 20px;
+    text-decoration: none;
+    position:relative;
+    z-index:24;
+}
+.sprite-option_pub { 
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    background-position: 0px -640px;
+    padding: 0px 0px 0px 20px;
+    text-decoration: none;
+    margin-left: 3px;
+    position:relative;
+    z-index:24;
+}
+.sprite-option_edit:hover, .sprite-option_copy:hover, .sprite-option_move:hover, .sprite-option_acl:hover, .sprite-option_undelete:hover, .sprite-option_pub:hover {
+    z-index:25;
+}
+.sprite-option_edit span, .sprite-option_copy span, .sprite-option_move span, .sprite-option_acl span, .sprite-option_undelete span, .sprite-option_pub span {
+    display: none;
+}
+.sprite-option_edit:hover span, .sprite-option_copy:hover span, .sprite-option_move:hover span, .sprite-option_acl:hover span, .sprite-option_undelete:hover span, .sprite-option_pub:hover span {
+    display: block;
+    position: absolute;
+    top:2em; left:2em;
+    border:1px solid #000000;
+    color: #000000;
+    background-color: #ffffe0;
+    text-align: center;
+    font-weight: normal;
+    font-size: smaller;
+    padding: 3px;
+    opacity: 0.90;
+}
+.sprite-option_acl:hover span, .sprite-option_undelete:hover span, .sprite-option_pub:hover span {
+    display: block;
+    position: absolute;
+    top:2em; left:-4em;
+    border:1px solid #000000;
+    color: #000000;
+    background-color: #ffffe0;
+    text-align: center;
+    font-weight: normal;
+    font-size: smaller;
+    padding: 3px;
+    opacity: 0.90;
+}
+.cttobject_options {
+    padding-left: 10px;
+}
+
+#subheader div.cttobject_status {
+    margin-top: 4px;
+}
+
+div.cttobject_status {
+    display: inline;
+}
+
+.ctt_status {
+    width: 86px;
+    padding-left: 2px;
+}
+.ctt_position {
+    text-align: center;
+}
+.ctt_df {
+    width: 34px;
+}
+.ctt_lm, .ctt_cl {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -1049px;
+}
+.ctt_cl {
+    text-align: right;
+}
+
+.ctt_loctitle {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -987px;
+    background-color: #eeeeee;
+}
+.ctt_loctitledel {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -1028px;
+    background-color: #c6c6c6;
+}
+.ctt_loctitleindex {
+    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
+    background-position: 0px -1006px;
+    background-color: #eeeeee;
+}
+
