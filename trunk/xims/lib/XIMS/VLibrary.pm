@@ -727,17 +727,10 @@ sub _vlitems_byfilter_sql {
         $tables     .= ', cilib_meta m ';
         $conditions .= "AND d.ID = m.document_id ";
     }
-    if ( $criteria{subjects} ne '' ) {
-        XIMS::Debug( 6, "Subject filter" );
-        $tables     .= ', cilib_subjectmap sm ';
-        $conditions .= " AND " . $criteria{subjects};
-        push @values, @{ $params{subjects} };
-    }
-    if ( $criteria{keywords} ne '' ) {
-        XIMS::Debug( 6, "Keyword filter" );
-        $tables     .= ', cilib_keywordmap km ';
-        $conditions .= " AND " . $criteria{keywords};
-        push @values, @{ $params{keywords} };
+    if ( $criteria{vlprop} ne '' ) {
+         XIMS::Debug( 6, "Property filter" );
+         $conditions .=  $criteria{vlprop};
+         push @values, @{ $params{vlprop} };
     }
     if ( $criteria{object_type_id} ne '' ) {
         XIMS::Debug( 6, "OT filter" );
@@ -761,8 +754,6 @@ sub _vlitems_byfilter_sql {
         $conditions .= " AND " . $criteria{status};
         push @values, $params{status};
     }
-
-
     if ( $criteria{chronicle} ne ''
         || ( defined $order and $order eq 'm.date_from_timestamp ASC' ) )
     {
