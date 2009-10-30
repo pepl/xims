@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::CGI::VLibrary -- A .... doing bla, bla, bla. (short)
+XIMS::CGI::VLibrary
 
 =head1 VERSION
 
@@ -13,7 +13,7 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+The VLibrary CGI methods
 
 =head1 SUBROUTINES/METHODS
 
@@ -919,26 +919,107 @@ sub event_filter_create {
 
 =head2 event_filter()
 
- The following criteria can be filtered:
-     subjects (by subject_ids coma seperated)
-     keywords (by keyword_id coma seperated)
-     authors (by author_ids coma seperated)
-     mediatype (as text, just one type possible)
-     chronicle (chronicle_from - chronicle_to)
-     fulltext (with querybuilder)
+Supported Parameters:
+
+=head3 filter criteria
+
+=over
+
+=item sid, kid, aid, pid
+
+vlsubjects (sid), vlkeywords (kid), vlauthors (aid) and vlpublications (pid):
+
+multiple ids comma separated get ORed  (e.g.: ...sid=1,2;...)
+
+multiple parameters get ANDed (e.g.: ...sid=1;sid=2;...)
+
+=item mt
+
+mediatype as text, just one type possible
+
+=item pbl
+
+publisher
+
+=item cf, ct
+
+chronicle (chronicle_from - chronicle_to)
+
+=item sto
+
+status operator
+
+=item vls
+
+fulltext (with querybuilder)
+
+=back
+
+=head3 Order and pagination
+
+=over
+
+=item order
+
+=over
+
+=item chrono
+
+chronicle date from
+
+=item alpha
+
+Title
+
+=item loctn
+
+Location
+
+=item create
+
+creation date
+
+=item modify
+
+ modification date
+
+=item dc.date
+
+meta.dc_date
+
+=back
+
+=item page
+
+Display page number page
+
+=item rowlimit
+
+How much results to display on one page
+
+=item pagerowlimit
+
+Added later for consistency with other parts of the system. Used only if
+rowlimit is unset; thence rowlimit overrides pagerowlimit. Some things depend
+on this behavior, so please don't change it.
+
+=back
+
+=head3 Trivia (old comments from the code)
+
+This event could replace the events: subject, author, keyword, vlsearch,
+vlchronicle, keyword
+
+In the %criteria-hash are the SQL-Conditions as a string. Only date, fulltext
+and mediatype conditions are with parameters in the %params-list are the
+values for parameters for the date and fulltext conditions
+
+still half-baked, would be nice to move the whole SQL into Vlibrary-object and
+just call vlitems_byfilter_granted which does the SQL-things.
+
+Ugly.
 
 =cut
-
-#this event could replace the events: subject, author, keyword, vlsearch, vlchronicle, keyword
-#
-# in the %criteria-hash are the SQL-Conditions as a string.
-# Only date, fulltext and mediatype conditions are with parameters
-# in the %params-list are the values for parameters for the date
-# and fulltext conditions
-#
-# still half-baked, would be nice to move the whole SQL into
-# Vlibrary-object and just call vlitems_byfilter_granted which does
-# the SQL-things. Quick and dirty, I know :-/
 
 
 sub event_filter {
@@ -953,24 +1034,26 @@ sub event_filter {
     my %criteria = ();
     my %params   = ();
 
-    # subjects
-    my $subject_ids = $self->param('sid');
-    if ( defined $subject_ids and length $subject_ids ) {
-        XIMS::Debug( 6, "subject param '$subject_ids'" );
-        my @subject_ids = split(',',$subject_ids);
-        $criteria{subjects} =
-          " sm.document_id = d.id AND sm.subject_id IN (" . join( ',', map { '?' } @subject_ids ) . ')';
-          $params{subjects} = \@subject_ids;
-    }
+    # properties: vlsubject, vlauthor, vlkeyword, vlpublication
+    foreach ( ['sid', 'subject'],
+              ['aid', 'author'],
+              ['kid', 'keyword'],
+              ['pid', 'publication'] ) {
+        my ( $par, $p ) = @{$_};
 
-    # keywords
-    my $keyword_ids = $self->param('kid');
-    if ( defined $keyword_ids and length $keyword_ids ) {
-        XIMS::Debug( 6, "keyword param '$keyword_ids'" );
-        my @keyword_ids = split(',',$keyword_ids);
-        $criteria{keywords} =
-          " km.document_id = d.id AND km.keyword_id IN (" . join( ',', map { '?' } @keyword_ids ) . ')';
-        $params{keywords} = \@keyword_ids;
+        foreach my $prop_ids ( $self->param($par) ) {
+            next unless defined $prop_ids and length $prop_ids;
+
+            XIMS::Debug( 6, "$p param '$prop_ids'" );
+
+            my @prop_ids = split( ',', $prop_ids );
+            $criteria{vlprop}
+                .= " AND EXISTS (SELECT 1 FROM cilib_${p}map "
+                    ."WHERE cilib_${p}map.document_id = d.id AND cilib_${p}map.${p}_id IN ("
+                    . join( ',', map {'?'} @prop_ids ) . '))';
+
+            push @{ $params{vlprop} }, @prop_ids;
+        }
     }
 
     # object_type
@@ -982,9 +1065,6 @@ sub event_filter {
           " d.object_type_id IN (" . join( ',', map { '?' } @object_type_ids ) . ')';
         $params{object_type_id} = \@object_type_ids;
     }
-
-    # authors
-    # not implemented yet
 
     # mediatype
     my $mediatype = $self->param('mt');
