@@ -1,10 +1,11 @@
 % -*- coding:iso-8859-1 -*-
 % 2do:
-% Referenzen setzen
-% Tabellen korrigieren
-% Umbrüche korrigeren
+% Referenzen setzen (p47ff, deletepublised)
 % Icons einfügen
-% Overfull Boxes
+% Referenzen überprüfen
+% Umbrüche korrigeren?
+% Kontrolllesen
+
 \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
 \documentclass[fontsize=11pt]{scrartcl}
 \usepackage[latin1]{inputenc}
@@ -164,9 +165,9 @@ sondern als gekürzte Darstellung der XIMS Basisfunktionalität.
 \label{quick-startseite}
 
 Nachdem erfolgreicher Anmeldung wird die benutzerspezifische XIMS-Startseite
-angezeigt. Je nach Rollenzugehörigkeit2 stehen verschiedene Lesezeichen (1) zur
-Verfügung. Lesezeichen sollen die Navigation zum jeweiligen DepartmentRoot
-vereinfachen.
+angezeigt. Je nach Rollenzugehörigkeit\footnote{Siehe Punkt \ref{rollenverwaltung}}
+stehen verschiedene Lesezeichen (1) zur Verfügung. Lesezeichen sollen die Navigation zum jeweiligen DepartmentRoot
+vereinfachen. 
 
 \begin{figure}[!ht]
 	\centering
@@ -210,18 +211,18 @@ Die unter (4) gezeigten Verwaltungsoptionen im Detail:
 
 (A) Editieren: Öffnet den Editor (vom Objekttyp abhängig!)
 (B) Kopieren: Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
-(C) Verschieben5: Öffnet ein Menü zum Verschieben des Objekts
+(C) Verschieben\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Öffnet ein Menü zum Verschieben des Objekts
 (D) Publizieren: Öffnet das Menü zum Veröffentlichen von Objekten
 (E) Rechte verwalten: Öffnet die Rechteverwaltung
-(F) Löschen6: Löscht das Objekt (siehe Objekte löschen und »Papierkorb«)
+(F) Löschen\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Löscht das Objekt (siehe Objekte löschen und »Papierkorb«)
 
 \subsubsection{Erstellen von Objekten}
 \label{quick-erstellen}
 
-Mit Hilfe des Erstellen-Menüs (5) können verschiedene Objekttypen erstellt werden.
+Mit Hilfe des Erstellen-Menüs (5) können verschiedene Objekttypen\footnote{Abhängig von den Benutzerrechten} erstellt werden.
 Die Standardobjekttypen lauten:
 
-Dokument (Document), Datei (File), Ordner (Folder), Bild (Image), Text und URLLink.
+Dokument (Document), Datei (File), Ordner (Folder), Bild (Image), Text und URLLink\footnote{Siehe Punkt \ref{urllinks}}.
 Eine Datei kann prinzipiell jede binäre Datei sein (z.B. ein PDF-Datei, eine MS-Word-
 Datei, ...), einzig Bilder sollten stets über den Menüpunkt Bild (Image) erstellt
 werden. Nur so ist sichergestellt, dass die Bilder später problemlos in den
@@ -243,7 +244,7 @@ Der Dialog zum Erstellen eines Dokuments gleicht dem zum Editieren eines
 Dokuments.
 Im Pflichtfeld Location muss der künftige Dateinamen des zu erstellenden
 Dokuments eingetragen werden. Wird das Dokument veröffentlicht (siehe dazu
-Punkt ), so findet man den Eintrag der Location in dem URL wieder. Deshalb sollte
+Punkt \ref{quick-publizieren}), so findet man den Eintrag der Location in dem URL wieder. Deshalb sollte
 zum einen eine möglichst selbsterklärende und leicht zu merkende Bezeichnung der
 Location vergeben werden, zum anderen bestehen deshalb gewisse
 Beschränkungen für den Feldinhalt. So sind beispielsweise im Feld Location keine
@@ -270,7 +271,7 @@ klickt man auf den »Abbrechen«-Button.
 
 \begin{Hinweis}Navigieren Sie nicht mit der »Vor«- und »Zurück«-Taste ihres Browsers aus dem
 Editor, weil das bearbeitete Objekt ansonsten für andere Benutzer gesperrt wird.
-Siehe »Gesperrte Objekte«.
+Siehe Punkt \ref{gesperrteobjekte} »Gesperrte Objekte«.
 \end{Hinweis}
 
 \subsubsection{Veröffentlichen von Objekten}
@@ -298,7 +299,8 @@ Wurden bei einem bereits veröffentlichten Objekt Änderungen vorgenommen, muss
 das Objekt »wiederveröffentlicht« werden, um die aktualisierte Version öffentlich
 abrufbar zu machen.
 Will man hingegen, dass ein zuvor publiziertes Objekt nicht mehr allgemein
-zugänglich ist, wählt man die Option »Veröffentlichen rückgängig machen«.
+zugänglich ist, wählt man die Option »Veröffentlichen rückgängig machen«\footnote{Nachdem die Veröffentlichung rückgängig gemacht wurde stehen Optionen wie
+beispielsweise „verschieben“ oder „löschen“ wieder zur Verfügung.}.
 
 \begin{figure}[!ht]
 	\centering
@@ -423,7 +425,7 @@ abzumelden.
 
 Diese Option, die nur im Bearbeitungsmodus und mit
 den entsprechenden Rechten des angemeldeten
-Benutzers sichtbar ist, wird unter Punkt 3 ausführlich
+Benutzers sichtbar ist, wird unter Punkt \ref{erstelleneditieren} ausführlich
 beschrieben.
 
 \paragraph{Suchfunktion}
@@ -499,12 +501,12 @@ Version kennt XIMS vier verschiedene Objektstati.
 
 \begin{tabular}{|c|p{30em}|}
   \hline
-  bild & Das Objekt ist als neu markiert. \\
+  bild & \label{new}Das Objekt ist als neu markiert. \\
   \hline
-  bild & Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man
+  bild & Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man \newline
   zur veröffentlichten Ansicht des Objekts. \\
   \hline
-  bild & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten
+  bild & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten \newline
   Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
   man zur aktuell veröffentlichten Ansicht des Objekts. Erläuterungen dazu
   siehe Punkt . \\
@@ -513,7 +515,7 @@ Version kennt XIMS vier verschiedene Objektstati.
   desselben Objekts durch einen anderen XIMS-User ergeben, oder weil
   man bewusst vermeiden will, dass das Objekt von anderen Benutzern
   bearbeitet werden kann. Durch Klicken auf das Schloss kann die
-  Sperrung aufgehoben werden. Erläuterungen dazu siehe Punkt 3.1.1. \\
+  Sperrung aufgehoben werden. Erläuterungen dazu siehe Punkt \ref{gesperrteobjekte} \\
   \hline
 \end{tabular}
 \caption{Status-Icons}
@@ -525,15 +527,15 @@ zur Verfügung, der auf individuelle Bedürfnisse selbst angepasst
 werden kann.
 Über die Spalte »Pos« können Objekte in der Inhaltsansicht eines Containers nach
 vorne gereiht werden. Die Möglichkeit spezielle Positionen zu vergeben spielt bei
-den Department Links (siehe auch Punkt 7.2) und im Zusammenhang mit dem
-Autoindex (siehe auch Punkt 3.1.2) eine wichtige Rolle.
+den Department Links (siehe auch Punkt \ref{deplinks}) und im Zusammenhang mit dem
+Autoindex (siehe auch Punkt \ref{autoindex}) eine wichtige Rolle.
 
 \paragraph{Titel (Title)}
 
 Der Titel des Objekts soll eine für sich sprechende Bezeichnung des Objekts sein.
 Das Icon vor dem Titel des Objekts lässt auf dessen Dateityp (PDF-Dokument, MSWord-
 Dokument, etc.) schließen.
-In diesem Zusammenhang wird auf Punkt 3.1.1 verwiesen, der die wesentlichen
+In diesem Zusammenhang wird auf Punkt \ref{location} verwiesen, der die wesentlichen
 Unterschiede zwischen Titel und Location aufzeigt.
 
 \paragraph{Zuletzt geändert (Last modified)}
@@ -559,7 +561,7 @@ Objekte zu ermöglichen.
   bild & Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
   gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
   verändern.
-  Siehe dazu Punkt : »Bearbeiten von Objekten«. \\
+  Siehe dazu Punkt \ref{erstelleneditieren}: »Erstellen/Editieren«. \\
   \hline
   bild & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
   in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
@@ -569,7 +571,7 @@ Objekte zu ermöglichen.
   bild & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
   Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
   veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
-  rückgängig gemacht werden. (Siehe dazu Punkt ). \\
+  rückgängig gemacht werden. (Siehe dazu Punkt \ref{inhaltepublizieren}). \\
   \hline
   bild & Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
   gelangt man in eine Maske, die zum einen Auskunft über die
@@ -578,7 +580,7 @@ Objekte zu ermöglichen.
   \hline
   bild & Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
   (Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
-  (Siehe auch Punkte 9 und 5.3). \\
+  (Siehe auch Punkt \ref{delete}). \\
   \hline
 \end{tabular}
 \caption{Options-Icons}
@@ -605,7 +607,7 @@ Unter Weitere:
 \end{itemize}
 
 Neben diesen sieben Objekttypen bietet XIMS je nach Benutzerrechten noch die
-Möglichkeit zum Erstellen einer Reihe weiterer Objekttypen, die unter Punkt 7.5 kurz
+Möglichkeit zum Erstellen einer Reihe weiterer Objekttypen, die unter Punkt \ref{weitereobjekte} kurz
 angeführt werden.
 
 \subsection{Erstellen/Editieren}
@@ -630,7 +632,7 @@ Editiermaske öffnet.
 \label{dokumente}
 
 Ein neues Dokument kann auf zwei Arten erstellt werden. Einerseits mit Hilfe von
-WYSIWYG-Editoren (TinyMCE Editor oder eWebEditPro - siehe auch Punkt 4),
+WYSIWYG-Editoren (TinyMCE Editor oder eWebEditPro - siehe auch Punkt \ref{wysiwig}),
 andererseits mit Hilfe des »Plain Textarea« Editors. Letzterer ermöglicht das
 direkte Bearbeiten des Quellcodes eines Dokuments.
 Im Fenster für das Erstellen eines Dokuments gibt es folgende Eingabe- bzw.
@@ -647,7 +649,7 @@ Auswahlfelder:
 \label{location}
 
 Bei Dokumenten entspricht die Location dem Dateinamen des zu erstellenden
-Dokuments. Wird das Dokument veröffentlicht (siehe dazu Punkt ), so findet man
+Dokuments. Wird das Dokument veröffentlicht (siehe dazu Punkt \ref{publizieren}), so findet man
 den Eintrag der Location in dem URL wieder. Deshalb sollte zum einen eine
 möglichst selbsterklärende und leicht zu merkende Bezeichnung der Location
 vergeben werden, zum anderen bestehen deshalb gewisse Beschränkungen für den
@@ -660,8 +662,7 @@ vom Objekttyp und Datenformat automatisch hinzugefügt.
   Das Feld »Location« ist ein Pflichtfeld!
 \end{Hinweis}
 
-Die unter Punkt 3.1.1 angeführten Grafiken sollen zusätzlich bildlich den Begriff der
-Location erläutern.
+Abbildung \ref{fig:bsppubliziert} soll zusätzlich bildlich den Begriff der Location erläutern.
 
 \paragraph{Titel}
 \label{title}
@@ -760,7 +761,7 @@ Suchergebnissen die Zusammenfassung unter dem Titel auf.
 \label{markasnew}
 
 Durch dieses Attribut wird das Objekt mit einem Icon versehen. Dieses Icon
-kennzeichnet neu erstellte Dokumente in XIMS (siehe auch Punkt 2.4). Bei der
+kennzeichnet neu erstellte Dokumente in XIMS (siehe auch Punkt \ref{new}). Bei der
 Verwendung der XIMS-Suche kann gezielt nach »als neu markierte Objekte« gesucht
 werden.
 
@@ -795,8 +796,7 @@ Nicht nur der Bodybereich kann verändert werden, sondern auch die Einträge in
 Location, Titel, Schlagworte, Zusammenfassung und die Option »Objekt als
 neu markieren«.
 
-\begin{Hinweis}Ist ein Objekt publiziert, kann die Location nicht verändert werden (siehe Abb.
-20). Um die Location eines veröffentlichten Objekts verändern zu können,
+\begin{Hinweis}Ist ein Objekt publiziert, kann die Location nicht verändert werden (siehe Abbildung \ref{fig:xhtmlintinymce}). Um die Location eines veröffentlichten Objekts verändern zu können,
 muss dieses zuerst depubliziert werden.
 \end{Hinweis}
 
@@ -804,6 +804,7 @@ Durch Klicken des »Speichern«-Buttons werden Änderungen gespeichert und man
 kommt automatisch in die Vollansicht des Dokuments zurück.
 
 \textbf{Gesperrte Objekte}
+\label{gesperrteobjekte}
 
 Nach Veränderung eines Objektes ist es zwingend erforderlich das veränderte
 Dokument zu speichern (Speichern) oder die gemachten Änderungen zu verwerfen
@@ -838,13 +839,16 @@ Siehe Punkt~\ref{title}.
 Siehe Punkt~\ref{markasnew}.
 
 \paragraph{Verhindere Autoindex beim Veröffentlichen:}
+\label{autoindex}
 
 Auf eine Anfrage nach einem Verzeichnis (z.B.: http://www.uibk.ac.at/zid/) liefert der
 Webserver normalerweise ein sogenanntes Indexdokument aus. XIMS kann beim
 Veröffentlichen automatisch ein solches Dokument mit einer einfachen Liste des
 Verzeichnisinhalts zu erstellen. Dieses Standardverhalten kann mit der Option
 »Verhindere Autoindex beim Veröffentlichen« wenn nötig unterbunden
-werden.12 In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; es
+werden.\footnote{Wir empfehlen, den Autoindex abzuschalten, falls Sie mehrsprachige Indexdokumente (z.B.:
+index.html.de und index.html.en) verwenden wollen, es kann sonst zu Fehlern bei der
+Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; es
 muss die Location »index« erhalten und wird dann vom Webserver automatisch
 verwendet.
 
@@ -857,7 +861,7 @@ ausgeliefert, auch wenn ein Autoindex erstellt wurde.
 Ist in einem Verzeichnis kein Indexdokument vorhanden und publiziert, gibt der
 Webserver auf eine Anfrage nach einem Verzeichnis die Fehlermeldung
 »Forbidden« zurück -- sinngemäß: das Auflisten des Verzeichnisinhalts ist
-verboten.
+verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 
 \begin{Hinweis}Bloß zu verhindern, dass ein Verzeichnis aufgelistet wird, ist kein taugliches
 Mittel, um Dokumente zu »verstecken« oder gar unzugänglich zu machen!
@@ -881,6 +885,7 @@ zeigt den von XIMS generierten Autoindex.}
 \end{figure}
 
 \paragraph{Zugriffsrechte erteilen}
+\label{zugriffsrechte}
 
 Über diese Funktion können die Berechtigungen für das Objekt konfiguriert werden.
 XIMS »vererbt« standardmäßig die Einstellungen von den Elternobjekten.
@@ -902,7 +907,7 @@ markieren« bzw. »Verhindere Autoindex beim Veröffentlichen« geändert
 werden. Außerdem besteht die Möglichkeit die Kriterien für die standardmäßige
 Sortierung der Kindobjekte des Verzeichnisses festzulegen (nach Position, Titel,
 Änderungsdatum).
-Bitte beachten Sie an dieser Stelle Punkt 3.1.1 »Gesperrte Objekte«.
+Bitte beachten Sie an dieser Stelle Punkt \ref{gesperrteobjekte} »Gesperrte Objekte«.
 
 \begin{figure}[!ht]
 	\centering
@@ -934,7 +939,6 @@ Der Titel (in unserem Beispiel Sonnenuntergang) entspricht dem Namen des Bildes,
 unter welchem das Bild in der Containeransicht aufscheint.
 
 \paragraph{Bild (Image)}
-
 Dieses Eingabefeld dient zur Angabe des Verzeichnispfades wo das Bild am lokalen
 Rechner zu finden ist (in unserem Beispiel unter G:\textbackslash{}service\textbackslash{}bilder\textbackslash{}sun.jpg).
 
@@ -943,28 +947,29 @@ Der Durchsuchen-Button erleichtert die Angabe des absoluten Dateipfades durch
 
 \paragraph{Schlagworte}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{keywords}
 
 \paragraph{Zusammenfassung}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{abstract}
 
 \paragraph{Zugriffsrechte erteilen}
 
-Siehe Punkt 3.1.2
+Siehe Punkt \ref{zugriffsrechte}
 
 \paragraph{Hinaufladen}
+\label{upload}
 
 Das Klicken des Hinaufladen-Buttons speichert die ausgewählte Datei im XIMS und
 man wird zur Containeransicht weitergeleitet.
 
 \paragraph{Abbrechen}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{cancel}
 
 \paragraph{Editieren eines Bildes (Image)}
 
-Es wird auf Punkt 3.1.4 verwiesen, da alle wesentlichen Editiermöglichkeiten
+Es wird auf Punkt \ref{edit} verwiesen, da alle wesentlichen Editiermöglichkeiten
 übereinstimmen.
 
 \subsubsection{Dateien (Files)}
@@ -986,30 +991,30 @@ Datei zu generieren (z.B.: G:\textbackslash{}docs\textbackslash{}anmeldung.pdf).
 
 \paragraph{Titel}
 
-Siehe Punkt 3.1.3
+Siehe Punkt \ref{title}
 
 \paragraph{Datei}
 
-Siehe Punkt 3.1.3
+Siehe Punkt \ref{dateien}
 
 \paragraph{Schlagworte}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{keywords}
 
 \paragraph{Zusammenfassung}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{abstract}
 
 \paragraph{Zugriffsrechte erteilen}
 
-Siehe Punkt 3.1.2
+Siehe Punkt \ref{zugriffsrechte}
 
 \paragraph{Hinaufladen (Upload)}
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{upload}
 
 \paragraph{Abbrechen}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{cancel}
 
 \paragraph{Editieren einer Datei (File)}
 Es können Titel, Schlagworte und Zusammenfassung der Datei geändert
@@ -1048,26 +1053,26 @@ RFC 2396 gültiger URI ist zulässig.
 
 \paragraph{Titel}
 
-Siehe Punkt 3.1.3
+Siehe Punkt \ref{title}
 
 \paragraph{Schlagworte}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{keywords}
 
 \paragraph{Zusammenfassung}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{abstract}
 
 \paragraph{Zugriffsrechte erteilen}
 
-Siehe Punkt 3.1.2
+Siehe Punkt \ref{zugriffsrechte}
 
 \paragraph{Speichern}
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{save}
 
 \paragraph{Abbrechen}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{cancel}
 
 \paragraph{Editieren eines URL-Links}
 
@@ -1092,11 +1097,11 @@ Links).
 
 \paragraph{Location}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{location}
 
 \paragraph{Titel}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{title}
 
 \paragraph{Ziel (Target)}
 
@@ -1114,7 +1119,7 @@ Dokumente, auf.
 
 \paragraph{Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen}
 
-Siehe Punkt 3.1.2
+Siehe Punkt \ref{zugriffsrechte} sowie Punkt \ref{rollenverwaltung}
 
 \paragraph{Zusätzliche Einstellmöglichkeiten für Portlets}
 
@@ -1126,7 +1131,7 @@ bzw. den XIMS-Support verwiesen.
 
 \paragraph{Editieren eines Portlets}
 
-Siehe Punkt 3.1.1.
+Siehe Punkt \ref{erstelleneditieren}
 
 \subsubsection{DepartmentRoots}
 \label{departmentroots}
@@ -1167,7 +1172,7 @@ auch auf allen untergeordneten Webseiten der Organisationseinheit wirksam.
 Ist noch kein Department Root Container vorhanden bzw. vom
 XIMS-Support-Team eingerichtet worden, muss das DepartmentRoot"-Objekt
 erstellt werden. Dies erfolgt in gleicher Weise wie etwa das Erstellen
-eines Verzeichnisses (siehe Punkt ).
+eines Verzeichnisses (siehe Punkt \ref{erstelleneditieren}).
 
 \begin{Hinweis}Eine besondere Bedeutung hat im Department Root-Kontext die
 Zusammenfassung (Abstract). Mit Hilfe des Zusammenfassung Feldes kann
@@ -1198,7 +1203,7 @@ Dem DepartmentRoot kann hier ein spezielles JavaScript zugewiesen werden.
 \paragraph{Bild}
 
 Dem DepartmentRoot kann hier ein spezielles Department-Image zugewiesen
-werden. Siehe dazu
+werden. Siehe dazu Punkt \ref{depimg}.
 
 \paragraph{RSS-Feed}
 
@@ -1247,10 +1252,10 @@ Untermenge von DocBook XML, welche besonders für kleinere Dokumente
 \end{figure}
 
 \paragraph{Location}
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{location}
 
 \paragraph{Titel}
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{title}
 
 \paragraph{Body}
 
@@ -1279,23 +1284,23 @@ XIMS einpflegen.
 
 \paragraph{Schlagworte}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{keywords}
 
 \paragraph{Zusammenfassung}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{abstract}
 
 \paragraph{Zugriffsrechte erteilen}
 
-Siehe Punkt 3.1.2
+Siehe Punkt \ref{zugriffsrechte}
 
 \paragraph{Speichern}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{save}
 
 \paragraph{Abbrechen}
 
-Siehe Punkt 3.1.1
+Siehe Punkt \ref{cancel}
 
 \begin{figure}[!ht]
 	\centering
@@ -1306,7 +1311,7 @@ Siehe Punkt 3.1.1
 
 \paragraph{Editieren eines sDocBookXML Objekts}
 
-Siehe Punkt 3.1.1. 
+Siehe Punkt \ref{erstelleneditieren}. 
 
 Da kein WYSIWYG-Editor zur Verfügung steht, empfiehlt es sich,
 die Änderungen am sDocBookXML-Objekt mit einem externen Editor wie z.B. dem
@@ -1369,7 +1374,7 @@ bekannten »F« für »fett«).
 \subsection{Einfügen eines Bildes (mit TinyMCE)}
 \label{insimage}
 
-Wurde ein Bild wie in beschrieben im Container erstellt bzw. ist es bereits an
+Wurde ein Bild wie in Punkt \ref{upload} beschrieben im Container erstellt bzw. ist es bereits an
 anderer Stelle ins XIMS hochgeladen worden, ist das Einfügen in das Dokument ein
 Leichtes. Im Folgenden werden die grundlegenden Schritte beschrieben:
 
@@ -1556,7 +1561,7 @@ Dateisystem vorliegt und somit öffentlich erreichbar ist.
 \label{republish}
 
 Wurden bei einem vormals veröffentlichten Objekt Änderungen vorgenommen (siehe
-Punkt ), müssen dessen Inhalte nochmals veröffentlicht
+Punkt \ref{icons}), müssen dessen Inhalte nochmals veröffentlicht
 (»Wiederveröffentlichen« oder »Republish«) werden. Getätigte Änderungen (vor
 dem Wiederveröffentlichen) werden in dem Fall wiederum nur in der XIMSDatenbank
 gespeichert, sind jedoch noch nicht im Dateisystem aktualisiert.
@@ -1573,10 +1578,10 @@ nicht aktualisierter Form veröffentlicht.
 »Veröffentlichen rückgängig machen« (Unpublish) macht eine vormalige
 Veröffentlichung rückgängig und löscht die öffentlich zugängliche Version des
 Objekts im Dateisystem und das Objekt ist ab diesem Zeitpunkt nur mehr in der
-XIMS-Datenbank gespeichert (siehe dazu auch Punkt 5.3).
+XIMS-Datenbank gespeichert.
 »Wiederveröffentlichen« (Republish) aktualisiert die Version des Objekts im
 Dateisystem des Webservers. Somit sind die Versionen in der Datenbank wie auch
-im Dateisystem des Webservers identisch (siehe dazu Hinweis unter Punkt 5.4).
+im Dateisystem des Webservers identisch (siehe Abbildung \ref{fig:xims-zusammenspiel}).
 
 \subsection{Löschen und Verschieben veröffentlichter Objekte}
 \label{deletepublished}
