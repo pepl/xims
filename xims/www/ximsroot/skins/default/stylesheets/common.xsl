@@ -995,7 +995,7 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a class="sprite-option_edit">
+            <a class="sprite-option sprite-option_edit">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
@@ -1013,7 +1013,7 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
-            <a class="sprite-option_copy">
+            <a class="sprite-option sprite-option_copy">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
@@ -1042,7 +1042,7 @@
     </xsl:variable>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a class="sprite-option_move">
+            <a class="sprite-option sprite-option_move">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
@@ -1060,7 +1060,7 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
-            <a class="sprite-option_pub">
+            <a class="sprite-option sprite-option_pub">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
@@ -1078,7 +1078,7 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a class="sprite-option_acl">
+            <a class="sprite-option sprite-option_acl">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
@@ -1087,7 +1087,7 @@
             </a>
         </xsl:when>
         <xsl:when test="user_privileges/delete and marked_deleted = '1'">
-            <a class="sprite-option_undelete">
+            <a class="sprite-option sprite-option_undelete">
                 <xsl:attribute name="href">
                     <xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/>
                     <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if>
@@ -1119,7 +1119,7 @@
                     <input name="hd" type="hidden" value="{$hd}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
-                <button class="sprite-option_purge"
+                <button class="sprite-option sprite-option_purge"
                     name="delete{$id}"
                     title="{$l_purge}"
                     ><span><xsl:value-of select="$l_purge"/>&#xa0;</span></button>
@@ -1138,7 +1138,7 @@
                     <input name="hd" type="hidden" value="{$hd}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
-                <button class="sprite-option_delete"
+                <button class="sprite-option sprite-option_delete"
                     name="delete{$id}"
                     title="{$l_delete}"
                     ><span><xsl:value-of select="$l_delete"/>&#xa0;</span></button>
