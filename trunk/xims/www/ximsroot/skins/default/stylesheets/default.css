@@ -426,6 +426,16 @@ tr.objrow:hover {
     background-position: -37px -36px;
 }
 
+.sprite-option {
+    display: inline-block;
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    padding: 0px 0px 0px 20px;
+    margin-left: 0px;
+    text-decoration: none;
+    position:relative;
+    z-index:24;
+}
+  
 .sprite-option_purge {
     display: inline-block;
     background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
@@ -450,59 +460,22 @@ tr.objrow:hover {
     padding-left: 10000px;
 }
 .sprite-option_edit { 
-    display: inline-block;
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     background-position: 0px -680px;
-    padding: 0px 0px 0px 20px;
-    text-decoration: none;
-    position:relative;
-    z-index:24;
 }
 .sprite-option_copy { 
-    display: inline-block;
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     background-position: 0px -720px;
-    padding: 0px 0px 0px 20px;
-    margin-left: 0px;
-    text-decoration: none;
-    position:relative;
-    z-index:24;
 }
 .sprite-option_move {
-    display: inline-block;
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     background-position: 0px -660px;
-    padding: 0px 0px 0px 20px;
-    text-decoration: none;
-    position:relative;
-    z-index:24;
 }
 .sprite-option_acl { 
-    display: inline-block;
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     background-position: 0px -740px;
-    padding: 0px 0px 0px 20px;
-    text-decoration: none;
-    position:relative;
-    z-index:24;
 }
 .sprite-option_undelete {
-    display: inline-block;
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     background-position: 0px -600px;
-    padding: 0px 0px 0px 20px;
-    text-decoration: none;
-    position:relative;
-    z-index:24;
 }
 .sprite-option_pub { 
-    display: inline-block;
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     background-position: 0px -640px;
-    padding: 0px 0px 0px 20px;
-    text-decoration: none;
-    position:relative;
-    z-index:24;
 }
 .sprite-option_edit:hover, .sprite-option_copy:hover, .sprite-option_move:hover, .sprite-option_acl:hover, .sprite-option_undelete:hover, .sprite-option_pub:hover {
     z-index:25;
