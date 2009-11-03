@@ -493,22 +493,6 @@
 		</xsl:choose>
 	</xsl:template>
 	
-<!--	<xsl:template name="cttobject.dataformat">
-		<xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
-		<xsl:choose>
-			<xsl:when test="marked_deleted=1">
-				<xsl:attribute name="bgcolor">#c6c6c6</xsl:attribute>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
-			</xsl:otherwise>
-		</xsl:choose>
-		<span class="sprite-list sprite-list_{$dfname}">
-			<span>
-				<xsl:value-of select="$dfname"/>
-			</span>&#xa0;</span>
-	</xsl:template>-->
-	
 	<xsl:template name="cttobject.last_modified">
 		<!--<img src="{$ximsroot}images/spacer_white.gif" width="9" border="0" alt=""/>-->
 		<span>

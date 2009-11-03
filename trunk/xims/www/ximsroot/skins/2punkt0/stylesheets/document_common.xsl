@@ -163,7 +163,7 @@
 						<xsl:when test="marked_deleted != '1' 
                           and user_privileges/write 
                           and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-							<a href="{$goxims_content}?id={@id};edit=1" class="sprite-option_edit">
+							<a href="{$goxims_content}?id={@id};edit=1" class="sprite-option sprite-option_edit">
 								<span>
 									<xsl:value-of select="$l_Edit"/>
 								</span>
@@ -177,7 +177,7 @@
 						<xsl:when test="marked_deleted != '1' 
                           and (user_privileges/publish|user_privileges/publish_all) 
                           and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-							<a href="{$goxims_content}?id={@id};publish_prompt=1" class="sprite-option_pub">
+							<a href="{$goxims_content}?id={@id};publish_prompt=1" class="sprite-option sprite-option_pub">
 								<span>
 									<xsl:value-of select="$i18n/l/Publishing_options"/>
 								</span>
@@ -189,7 +189,7 @@
 					</xsl:choose>
 					<xsl:choose>
 						<xsl:when test="user_privileges/grant|user_privileges/grant_all">
-							<a href="{$goxims_content}?id={@id};obj_acllist=1" class="sprite-option_acl">
+							<a href="{$goxims_content}?id={@id};obj_acllist=1" class="sprite-option sprite-option_acl">
 								<span>
 									<xsl:value-of select="$i18n/l/Access_control"/>
 								</span>

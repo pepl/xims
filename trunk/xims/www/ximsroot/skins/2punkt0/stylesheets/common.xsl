@@ -246,39 +246,6 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
     </tr>
 -->
 	</xsl:template>
-	<!--	<xsl:template name="common-head">
-		<xsl:param name="mode">create</xsl:param>
-		<xsl:param name="calendar" select="false()"/>
-		<xsl:param name="htmlarea" select="false()"/>
-		<xsl:param name="tinymce" select="true()"/>
-		<xsl:param name="jquery" select="true()"/>
-		<head>
-			<title>
-			[common-head]&#160;
-				<xsl:if test="$mode='create'">
-					<xsl:value-of select="$i18n/l/create"/>
-				</xsl:if>
-				<xsl:if test="$mode='edit'">
-					<xsl:value-of select="$i18n/l/edit"/>
-				</xsl:if>
-            &#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
-        </title>
-			<xsl:call-template name="css"/>
-			<xsl:if test="$calendar">
-				<xsl:call-template name="jscalendar_scripts"/>
-			</xsl:if>
-			<xsl:if test="$htmlarea">
-				<xsl:call-template name="htmlarea_scripts"/>
-			</xsl:if>
-			<xsl:if test="$tinymce">
-				<xsl:call-template name="tinymce_scripts"/>
-			</xsl:if>
-			<xsl:if test="$jquery">
-				<script src="{$jquery}" type="text/javascript" language="javascript"/>
-				<script src="{$jquery_dir}jquery-ui" type="text/javascript" language="javascript"/>
-			</xsl:if>
-		</head>
-	</xsl:template>-->
 	<xsl:template name="table-create">
 		<div id="create-title">
 			<h1>
@@ -1080,15 +1047,34 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
-				<a>
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:attribute>
-					<img src="{$skimages}status_locked.png" width="26" height="19" border="0" alt="{$l_Unlock}" title="{$l_Release_lock}."/>
+				<a class="sprite-option sprite-locked">
+					<xsl:attribute name="href">
+						<xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'">
+						<xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1">
+						<xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+					</xsl:attribute>
+					<span>
+					<xsl:value-of select="$l_Release_lock"/>
+					</span>
+										&#160;
 				</a>
 			</xsl:when>
 			<xsl:when test="locked_by_id != '' and locked_time != ''">
-				<img src="{$skimages}status_locked.png" width="26" height="19" border="0" alt="{$l_Locked}">
-					<xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/><xsl:apply-templates select="locked_time" mode="datetime"/><xsl:value-of select="$l_by"/><xsl:call-template name="lockerfullname"/>.</xsl:attribute>
-				</img>
+			<a class="sprite-option sprite-locked">
+				<xsl:attribute name="title">
+				<xsl:value-of select="$l_Object_locked"/>
+					<xsl:apply-templates select="locked_time" mode="datetime"/>
+					<xsl:value-of select="$l_by"/>&#160;
+					<xsl:call-template name="lockerfullname"/>.
+				</xsl:attribute>
+				<span>
+					<xsl:value-of select="$l_Object_locked"/>
+					<xsl:apply-templates select="locked_time" mode="datetime"/>
+					<xsl:value-of select="$l_by"/>&#160;
+					<xsl:call-template name="lockerfullname"/>.
+				</span>
+				&#160;
+			</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="cttobject.status.spacer"/>
