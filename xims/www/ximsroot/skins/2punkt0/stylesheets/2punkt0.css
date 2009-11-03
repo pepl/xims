@@ -3568,6 +3568,9 @@ height:
     background-position: 0 -580px;
     padding: 0 5px 0 20px !important;
 }
+.sprite-locked {
+    background-position: 0 -800px;
+}
 .sprite-option_purge {
     background-position: 0 -620px;
 	border: 0;
@@ -3595,12 +3598,19 @@ height:
     background-position: 0 -640px;
 }
 
+/*
 .sprite-option_edit:focus, .sprite-option_copy:focus, .sprite-option_move:focus, .sprite-option_acl:focus, .sprite-option_purge:focus, .sprite-option_delete:focus, .sprite-option_undelete:focus, .sprite-option_pub:focus, .sprite-status_pub:focus, .sprite-status_pub_async:focus, .sprite-new:focus, .sprite-navback:focus, .sprite-navup:focus, .sprite-navfwd:focus {
+
+*/
+.sprite-option:focus {
     z-index: 25;
 	cursor: pointer;
 }
 
+/*
 .sprite-option_edit span, .sprite-option_copy span, .sprite-option_move span, .sprite-option_acl span, .sprite-option_undelete span, .sprite-option_pub span, .sprite-status_pub span, .sprite-status_pub_async span, .sprite-new span, .sprite-navback span, .sprite-navup span, .sprite-navfwd span {
+*/
+.sprite-option span{
     /* display: none; */
     position: absolute;
     top: 0;
@@ -3608,8 +3618,11 @@ height:
     /* text-indent: 999px; */
 }
 
+/*
 .sprite-option_edit:focus span, .sprite-option_copy:focus span, .sprite-option_move:focus span, .sprite-option_acl:focus span, .sprite-option_undelete:focus span, .sprite-option_pub:focus span, .sprite-status_pub_async:focus span, .sprite-status_pub:focus span {
-    display: block;
+*/    
+.sprite-option:focus span{
+	display: block;
     position: absolute;
     top: 2em;
     left: -4em;
