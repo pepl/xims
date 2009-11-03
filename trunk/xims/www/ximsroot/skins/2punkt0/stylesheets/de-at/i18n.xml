@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l>
+<create>Erstelle</create>
+<edit>Bearbeite</edit>
+<in>in</in>
+<cancel>Abbrechen</cancel>
+<save>Speichern</save>
+<upload>Hinaufladen</upload>
+<target>Ziel</target>
+<Target>Ziel</Target>
+<browse_target>Ziel suchen</browse_target>
+<Location>Location</Location>
+<location>location</location>
+<Title>Titel</Title>
+<File>Datei</File>
+<Image>Bild</Image>
+<Lead>Lead</Lead>
+<replace>ersetzen</replace>
+<bodyfromfile_create>Body von Datei erstellen</bodyfromfile_create>
+<bodyfromfile_edit>Body von Datei aktualisieren</bodyfromfile_edit>
+<add_portlet>Portlet hinzufügen</add_portlet>
+<create_portlet>Ein neues Portlet erstellen</create_portlet>
+<delete>Löschen</delete>
+<purge>Endgültig löschen</purge>
+<Keywords>Schlagworte</Keywords>
+<Abstract>Zusammenfassung</Abstract>
+<Notes>Notizen</Notes>
+<Description>Beschreibung</Description>
+<Valid_from>Gültig ab</Valid_from><!--Gültig von -->
+<Valid_to>Gültig bis</Valid_to>
+<Valid_from_default>Nicht gesetzt.</Valid_from_default>
+<Valid_from_default_creation_timestamp>Wenn das Datum nicht hier gesetzt wird, wird beim Speichern das Erstelldatum für 'gültig ab' verwendet.</Valid_from_default_creation_timestamp>
+<NamedDateFormat>%a., %d. %B %Y, %H:%M</NamedDateFormat>
+<Date_selector>Datumsauswahl</Date_selector>
+<Stylesheet>Stylesheet</Stylesheet>
+<logout>abmelden</logout>
+<login>anmelden</login>
+<switch_to_browse>zum Ansichts Modus</switch_to_browse>
+<switch_to_edit>zum Editier Modus</switch_to_edit>
+<Back>Zurück</Back>
+<Forward>Vorwärts</Forward>
+<Up>Eine Ebene nach oben</Up>
+<Create>Erstellen</Create>
+<Edit>Bearbeiten</Edit>
+<Move>Verschieben</Move>
+<Copy>Kopieren</Copy>
+<Publishing_options>Optionen zum Publizieren</Publishing_options>
+<Access_control>Zugriffskontrolle/Rechteverwaltung</Access_control>
+<New>Neu</New>
+<Published>Veröffentlicht</Published>
+<published>veröffentlicht</published>
+<Object_marked_new>Dieses Objekt ist als neu markiert</Object_marked_new>
+<Object_last_published>Zuletzt publiziert am</Object_last_published>
+<Object_modified>Seit der letzten Veröffentlichung von</Object_modified>
+<Object_locked>Dieses Objekt wurde gesperrt um</Object_locked>
+<changed>geändert</changed>
+<by>von</by>
+<at_place>unter</at_place>
+<at_time>um</at_time>
+<Locked>Gesperrt</Locked>
+<locked>gesperrt</locked>
+<Unlock>Entsperren</Unlock>
+<Release_lock>Klicken Sie hier um das Objekt zu entsperren</Release_lock>
+<Search>Suchen</Search>
+<From_here>Ab hier</From_here>
+<Treeview>Baumansicht</Treeview>
+<Defaultview>Standardansicht</Defaultview>
+<Publishingpreview>Veröffentlichungsvorschau</Publishingpreview>
+<Opens_in_new_window>Öffnet in neuem Fenster</Opens_in_new_window>
+<See_changes_latest_edit>Änderungen der letzten Bearbeitung anzeigen</See_changes_latest_edit>
+<Printview>Druckansicht</Printview>
+<Metadata>Metadaten für</Metadata>
+<Dataformat>Datenformat</Dataformat>
+<Size>Größe</Size>
+<Owned_by>Verantwortlich</Owned_by>
+<owned_by>verantwortlich</owned_by>
+<Created_by>Erstellt von</Created_by>
+<created_by>erstellt von</created_by>
+<Last_modified_by>Zuletzt geändert von</Last_modified_by>
+<last_modified_by>zuletzt geändert von</last_modified_by>
+<Last_published_by>Zuletzt publiziert von</Last_published_by>
+<Confirm_publishing>Veröffentlichen bestätigen</Confirm_publishing>
+<Publishing_success>Veröffentlichen erfolgreich</Publishing_success>
+<position_object>Objekt positionieren</position_object>
+<Position_object>Objektposition anpassen in</Position_object>
+<Choose_position>Eine neue Position auswählen für</Choose_position>
+<close_window>Fenster schließen</close_window>
+<selected>ausgewählt</selected>
+<Omit_autoindex>Verhindere Autoindex beim Veröffentlichen:</Omit_autoindex>
+<Yes>Ja</Yes>
+<No>Nein</No>
+<Status>Status</Status>
+<Sort_pos_asc>Nach Position in aufsteigender Reihenfolge sortieren</Sort_pos_asc>
+<Sort_title_asc>Nach Titel in aufsteigender Reihenfolge sortieren</Sort_title_asc>
+<Sort_lm_asc>Nach Änderungsdatum in aufsteigender Reihenfolge sortieren</Sort_lm_asc>
+<Sort_pos_desc>Nach Position in absteigender Reihenfolge sortieren</Sort_pos_desc>
+<Sort_title_desc>Nach Titel in absteigender Reihenfolge sortieren</Sort_title_desc>
+<Sort_lm_desc>Nach Änderungsdatum in absteigender Reihenfolge sortieren</Sort_lm_desc>
+<Position>Position</Position>
+<Pos_short>Pos</Pos_short>
+<Last_Modification_Date>Datum der letzten Änderung</Last_Modification_Date>
+<ascending>aufsteigend</ascending>
+<descending>absteigend</descending>
+<Sort_children_default>Kriterien für die standardmäßige Sortierung der Kindobjekte dieses Containers:</Sort_children_default>
+<Options>Optionen</Options>
+<Undelete>Löschen rückgängig machen</Undelete>
+<Priv_grant_options>Zugriffsrechte erteilen</Priv_grant_options>
+<Copy_parent_privs>Zugriffsrechtestruktur des Elternobjekts kopieren</Copy_parent_privs>
+<Grant_myself_only>Nur mir selbst Rechte erteilen</Grant_myself_only>
+<Grant_default_roles>Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen</Grant_default_roles>
+<Mark_new>Objekt als neu markieren</Mark_new>
+<Try_to_well-balance>Versuchen, einen wohlgeformten Body herzustellen. (Bei nicht wohlgeformtem Body erscheint eine Fehlermeldung.)</Try_to_well-balance>
+<Body_content_changed>Der Inhalt von 'Body' wurde geändert.\nBitte benutzen Sie 'Speichern' oder 'Abbrechen' um diese Seite zu verlassen.</Body_content_changed>
+<Test_body_xml>XML von Body testen</Test_body_xml>
+<Prettyprint>Prettyprint</Prettyprint>
+<Publish_ref_objects>Von diesem Objekt verlinkte XIMS-Objekte automatisch mitveröffentlichen</Publish_ref_objects>
+<Preview_image>Bildvorschau</Preview_image>
+<Browse_image>Nach Bild durchsuchen</Browse_image>
+<Browse_stylesheet>Nach Stylesheet durchsuchen</Browse_stylesheet>
+<Document_links>Links zum Dokument</Document_links>
+<Add_link>Link hinzufügen</Add_link>
+<Annotation>Annotation</Annotation>
+<Add_annotation>Annotation hinzufügen</Add_annotation>
+<!-- Begin common_obj_user* -->
+<Manage_objectprivs>Rechte verwalten für Objekt</Manage_objectprivs>
+<Manage_privs>Rechte verwalten</Manage_privs>
+<Grant_newprivs>Neue Rechte vergeben</Grant_newprivs>
+<Currently_showing_privs>Zur Zeit werden bereits vergebene Rechte angezeigt.</Currently_showing_privs>
+<Click>Klicken Sie</Click>
+<here>hier</here>
+<lookup>Suchen</lookup>
+<to_show_existing_privs>um die bereits vergebenen Rechte anzuzeigen</to_show_existing_privs>
+<Show_existing_privs>Bereits vergebene Rechte anzeigen</Show_existing_privs>
+<Privgrant_usr_lookup_mask>Um nach Rollen/BenutzerInnen zur Rechtevergabe zu suchen, benutzen Sie die Eingabemaske</Privgrant_usr_lookup_mask>
+<Users>BenutzerInnen</Users>
+<Roles>Rollen</Roles>
+<Username>BenutzerInnenname</Username>
+<Name>Name</Name>
+<Usertype>Nutzertyp</Usertype>
+<Account_status>Account Status</Account_status>
+<No_user_found>Keine Rolle/BenutzerIn gefunden. Bitte versuchen Sie es noch einmal!</No_user_found>
+<enabled>aktiv</enabled>
+<disabled>gesperrt</disabled>
+<Privs_updated>Rechte aktualisiert</Privs_updated>
+<Choose_another_user>Andere BenutzerIn/Rolle auswählen</Choose_another_user>
+<For_user_role>für BenutzerIn/Rolle</For_user_role>
+<Basicprivs>Standardrechte</Basicprivs>
+<Publishingprivs>Veröffentlichungsrechte</Publishingprivs>
+<Grantprivs>Verwaltungsrechte</Grantprivs>
+<Revoke_objectgrants>Entferne alle Rechte von Objekt</Revoke_objectgrants>
+<Revoke_grants>Rechte entfernen</Revoke_grants>
+<!-- End common_obj_user* -->
+<!-- Begin common_contentbrowse* -->
+<Browse_for>Suche</Browse_for>
+<Browse_to>Gehe zu</Browse_to>
+<Object>Objekt</Object>
+<to_store_back>um zu speichern</to_store_back>
+<!-- End common_contentbrowse* -->
+<!-- Begin common_search_result -->
+<Search_for>Suche nach</Search_for>
+<Previous_page>Vorige Seite</Previous_page>
+<Next_page>Nächste Seite</Next_page>
+<Page>Seite</Page>
+<Last_modified>Zuletzt geändert</Last_modified>
+<No_results>Keine Treffer</No_results>
+<Results>Ergebnisse</Results>
+<of>von</of>
+<for>nach</for>
+<!-- End common_search_result -->
+<!-- Begin common_error -->
+<Error>Fehler</Error>
+<Error_details>Details zum Fehler</Error_details>
+<!-- End common_error -->
+<!-- Begin common_sitemap -->
+<Treeview_from>Baumansicht von</Treeview_from>
+<!-- End common_sitemap -->
+<!-- Begin common_move_browse -->
+<Move_object>Verschiebe Objekt</Move_object>
+<from>von</from>
+<to>nach</to>
+<!-- End  common_move_browse -->
+<!-- Begin anondiscussionforum* -->
+<Create_topic>Neues Thema erstellen</Create_topic>
+<Topic>Thema</Topic>
+<Created>Erstellt</Created>
+<Author>Autor&#x2009;/&#x2009;-in</Author>
+<Coauthor>Co-Autor&#x2009;/&#x2009;-in</Coauthor>
+<Replies>Antworten</Replies>
+<Last_reply>Letzte Antwort</Last_reply>
+<Topic_overview>Themenübersicht</Topic_overview>
+<reply>Antworten</reply>
+<Previous_replies>Bisherige Antworten</Previous_replies>
+<Email>E-Mail</Email>
+<Text>Text</Text>
+<Discussionforum>Diskussionsforum</Discussionforum>
+<In_reply_to>In Antwort auf</In_reply_to>
+<!-- End anondiscussionforum* -->
+<!-- Begin file|image_default -->
+<View_download>Betrachten / Herunterladen</View_download>
+<!-- End file|image_default -->
+<!-- Begin css_default -->
+<Validate_CSS>CSS Validieren</Validate_CSS>
+<!-- End css_default -->
+<!-- Begin users_common -->
+<Account_status>Account Status</Account_status>
+<created>erstellt</created>
+<User>BenutzerIn</User>
+<Role>Rolle</Role>
+<!-- End users_common -->
+<!-- Begin users_default -->
+<Change_password>Change Password</Change_password>
+<Role_membership>Role Membership</Role_membership>
+<!-- End users_default -->
+<!-- Begin users_create_update -->
+<Grant_role>Rolle zuweisen</Grant_role>
+<!-- End users_create_update-->
+<!-- Begin user_bookmarks -->
+<Path>Pfad</Path>
+<Bookmarks>Lesezeichen</Bookmarks>
+<Bookmark>Lesezeichen</Bookmark>
+<default_bookmark>Standardlesezeichen</default_bookmark>
+<Set_as>Setze als</Set_as>
+<set_as>setze als</set_as>
+<!-- End user_bookmarks-->
+<via_role>über die Rolle</via_role>
+<personal>persönlich</personal>
+<using>mit</using>
+<you_searched_for>Sie suchten nach</you_searched_for>
+<toggle_hls>Suchbegriff (nicht) hervorheben</toggle_hls>
+<Schema>Schema</Schema>
+<CSS>CSS</CSS>
+<Browse_css>Nach CSS durchsuchen</Browse_css>
+<JavaScript>JavaScript</JavaScript>
+<Browse_script>Nach JavaScript durchsuchen</Browse_script>
+<!-- Begin AxPoint -->
+<Download_PDF>Als PDF herunterladen</Download_PDF>
+<print_version>Druckversion</print_version>
+<!-- End AxPoint -->
+<or>oder</or>
+<Please_read_object>Bitte beachten Sie das folgende XIMS Objekt</Please_read_object>
+<Object_available_at>Diese Objekt ist verfügbar unter</Object_available_at>
+<More>Weitere</More>
+<PageRowLimit>Anzahl der Einträge pro Seite</PageRowLimit>
+<IlpDefaultWinlabel>XIMS Hinweis!</IlpDefaultWinlabel>
+<IlpProvideLocationFirst>Sie haben noch keine 'Location' eingegeben. Bitte geben Sie diese jetzt ein!</IlpProvideLocationFirst>
+<IlpLocationWouldChange>Nach dem speichern würde sich die 'Location' wie folgt ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
+<IlpLocationExists>Sie haben eine 'Location' eingegeben, die im Container bereits existiert. Die 'Location' muss eindeutig sein! Bitte geben Sie eine andere 'Location' ein.</IlpLocationExists>
+<IlpNoLocationProvided>Das Feld 'Location' ist leer. Bitte geben Sie eine 'Location' ein.</IlpNoLocationProvided>
+<IlpDirtyLocation>Das Feld 'Location' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyLocation>
+<IlpButtonChange>Bearbeiten!</IlpButtonChange>
+<IlpButtonOK>OK</IlpButtonOK>
+<IlpButtonEdit>Bearbeiten!</IlpButtonEdit>
+<IlpButtonIgnore>Ignorieren!</IlpButtonIgnore>
+<IlpButtonAcceptSuggestion>Vorschlag übernehmen!</IlpButtonAcceptSuggestion>
+<IlpDirtyTitle>Das Feld 'Titel' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyTitle>
+<LocationWarning1>Die 'Location' ist länger als </LocationWarning1>
+<LocationWarning2>Zeichen. Umbenennen in </LocationWarning2>
+<minify>Beim Publizieren verkleinern</minify>
+<Send>Abschicken</Send>
+<Include_images>Bilder einschließen</Include_images>
+<Preview>Vorschau</Preview>
+<Browse_feed>Nach RSS-Feed durchsuchen</Browse_feed>
+<Help>Hilfe</Help>
+<Systeminfo>Systeminfo</Systeminfo>
+<Manual>Anleitung</Manual>
+<stepManual>Xims: Schritt für Schritt Anleitung</stepManual>
+<FAQ>FAQ</FAQ>
+<FAQ_long>Häufig gestellte Fragen</FAQ_long>
+<MailToSupport>Email an Xims-Support</MailToSupport>
+<Document>Dokument</Document>
+<Folder>Ordner</Folder>
+<File>Datei</File>
+<Image>Bild</Image>
+<Text>Text</Text>
+<URLLink>URL-Link</URLLink>
+<AnonDiscussionForum>AnonDiscussionForum</AnonDiscussionForum>
+<AxPointPresentation>AxPointPresentation</AxPointPresentation>
+<CSS>CSS</CSS>
+<DepartmentRoot>Department Root</DepartmentRoot>
+<JavaScript>JavaScript</JavaScript>
+<NewsItem>News Item</NewsItem>
+<Portlet>Portlet</Portlet>
+<Questionaire>Questionaire</Questionaire>
+<SQLReport>SQL Report</SQLReport>
+<SymbolicLink>Symbolischer Link</SymbolicLink>
+<TAN_List>TAN List</TAN_List>
+<XML>XML</XML>
+<XSLStylesheet>XSL Stylesheet</XSLStylesheet>
+<sDocBookXML>sDocBookXML</sDocBookXML>
+<YouAreIn>Sie befinden sich in: </YouAreIn>
+<Menu>Menu</Menu>
+<Editor>Editor</Editor>
+<UnzipContents>Inhalte entpacken</UnzipContents>
+<OverwriteUnzip>Überschreibe vorhandene Dateien beim entpacken</OverwriteUnzip>
+<Documentation>Dokumentation</Documentation>
+<Body>Body</Body>
+<TableOfContents>Inhaltsangabe</TableOfContents>
+<ConfDeletion1>Löschen von</ConfDeletion1>
+<ConfDeletion2>bestätigen</ConfDeletion2>
+<ID>ID</ID>
+<Done>Fertig</Done>
+</l>
