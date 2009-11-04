@@ -1914,8 +1914,7 @@ em {
 }
 
 #titlelogo .logo {
-	background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top
-		left;
+	background-repeat: no-repeat top left;
 	background-position: 0 -521px;
 	padding: 0;
 	width: 50px;
@@ -1949,8 +1948,7 @@ em {
 
 #subheader {
 	width: 100%;
-	background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top
-		left;
+	background-repeat: repeat-x top left;
 	background-position: 0 -860px;
 	height: 42px;
 }
@@ -2183,7 +2181,7 @@ tr.objrow:hover {
 /*
 url for sprite image
 */
-#titlelogo, #header-logo, #subheader, .sprite-spacer, .sprite-status-spacer, .sprite-del-spacer, .sprite-status_pub, .sprite-status_pub_async, .sprite-new, .sprite-list, .sprite-option {
+#titlelogo .logo, #header-logo, #subheader, .sprite-spacer, .sprite-status-spacer, .sprite-del-spacer, .sprite-status_pub, .sprite-status_pub_async, .sprite-new, .sprite-list, .sprite-option {
     background: url(/ximsroot/skins/default/images/sprite.gif);
 }
 
