@@ -38,7 +38,6 @@ em {
     width: 50px;
     height: 40px;
     position:relative;
-    z-index:24;
 }
 
 #titlelogo .logo a {
@@ -293,24 +292,83 @@ tr.objrow:hover {
     font-weight: bold;
 }
 
-.sprite-spacer {
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
-    padding: 5px 0px 0px 20px;
-    display:inline-block;
+/* sprite icons */
+.sprite, .sprite-list {
+     background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+     display: inline-block;
 }
-.sprite-status-spacer {
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
-    padding: 0px 0px 0px 22px;
-    margin: 0px 0px 0px 0px;
+
+.sprite span, .sprite-list span{
+   position: absolute;
+   top: 0;
+   left: -9999em;
+   background-color: #ffffe0;
+}
+
+.sprite {
+    padding: 0px 0px 0px 20px;
+    margin-left: 0px;
+    text-decoration: none;
 }
 .sprite-list {
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     padding: 1px 0px 0px 20px;
     margin-left: 12px;
 }
-.sprite-list span {
-    display: none;
+
+/* spacers */
+.sprite-spacer {
+    padding: 5px 0px 0px 20px;
 }
+.sprite-status-spacer {
+    padding: 0px 0px 0px 22px;
+}
+
+/* begin sprite status icons */
+.sprite-status_pub {
+    background-position: 2px -782px;
+    padding: 0 0 0 22px;
+}
+.sprite-status_pub_async {
+    background-position: 0 -762px;
+    padding: 0 0 1px 22px;
+}
+.sprite-status_new {
+    background-position: 0 -580px;
+    padding: 0 0 0 22px;
+}
+.sprite-status_locked {
+    background-position: 0 -800px;
+}
+/* end sprite status icons */
+
+/* begin option icons */
+.sprite-option_purge {
+    background-position: 0px -620px;
+}
+.sprite-option_delete {
+    background-position: 0px -700px;
+}    
+.sprite-option_edit { 
+    background-position: 0px -680px;
+}
+.sprite-option_copy { 
+    background-position: 0px -720px;
+}
+.sprite-option_move {
+    background-position: 0px -660px;
+}
+.sprite-option_acl { 
+    background-position: 0px -740px;
+}
+.sprite-option_undelete {
+    background-position: 0px -600px;
+}
+.sprite-option_pub { 
+    background-position: 0px -640px;
+}
+/* end option icons */
+
+/* begin data format icons */
 .sprite-list_AnonDiscussionForum {
     background-position: -37px -306px;
 }
@@ -425,90 +483,8 @@ tr.objrow:hover {
 .sprite-list_ZIP {
     background-position: -37px -36px;
 }
-
-.sprite-option {
-    display: inline-block;
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
-    padding: 0px 0px 0px 20px;
-    margin-left: 0px;
-    text-decoration: none;
-    position:relative;
-    z-index:24;
-}
-  
-.sprite-option_purge {
-    display: inline-block;
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
-    background-position: 0px -620px;
-    padding: 0px 5px 0px 5px;
-    border: 0;
-    width: 37px;
-}
-.sprite-option_purge:hover {
-    cursor: pointer;
-}
-.sprite-option_delete {
-    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
-    background-position: 0px -700px;
-    border: 0;
-    width: 37px;
-}    
-.sprite-option_delete:hover {
-    cursor: pointer;
-}
-.sprite-option_purge span, .sprite-option_delete span {
-    padding-left: 10000px;
-}
-.sprite-option_edit { 
-    background-position: 0px -680px;
-}
-.sprite-option_copy { 
-    background-position: 0px -720px;
-}
-.sprite-option_move {
-    background-position: 0px -660px;
-}
-.sprite-option_acl { 
-    background-position: 0px -740px;
-}
-.sprite-option_undelete {
-    background-position: 0px -600px;
-}
-.sprite-option_pub { 
-    background-position: 0px -640px;
-}
-.sprite-option_edit:hover, .sprite-option_copy:hover, .sprite-option_move:hover, .sprite-option_acl:hover, .sprite-option_undelete:hover, .sprite-option_pub:hover {
-    z-index:25;
-}
-.sprite-option_edit span, .sprite-option_copy span, .sprite-option_move span, .sprite-option_acl span, .sprite-option_undelete span, .sprite-option_pub span {
-    display: none;
-}
-.sprite-option_edit:hover span, .sprite-option_copy:hover span, .sprite-option_move:hover span, .sprite-option_acl:hover span, .sprite-option_undelete:hover span, .sprite-option_pub:hover span {
-    display: block;
-    position: absolute;
-    top:2em; left:2em;
-    border:1px solid #000000;
-    color: #000000;
-    background-color: #ffffe0;
-    text-align: center;
-    font-weight: normal;
-    font-size: smaller;
-    padding: 3px;
-    opacity: 0.90;
-}
-.sprite-option_acl:hover span, .sprite-option_undelete:hover span, .sprite-option_pub:hover span {
-    display: block;
-    position: absolute;
-    top:2em; left:-4em;
-    border:1px solid #000000;
-    color: #000000;
-    background-color: #ffffe0;
-    text-align: center;
-    font-weight: normal;
-    font-size: smaller;
-    padding: 3px;
-    opacity: 0.90;
-}
+/* end data format icons */
+ 
 .cttobject_options {
     padding-left: 10px;
 }
@@ -538,7 +514,6 @@ div.cttobject_status {
 .ctt_cl {
     text-align: right;
 }
-
 .ctt_loctitle {
     background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
     background-position: 0px -987px;

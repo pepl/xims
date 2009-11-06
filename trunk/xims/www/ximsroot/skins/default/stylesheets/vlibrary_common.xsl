@@ -484,7 +484,7 @@ function post_async(poststr) {
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
       <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-        <a class="sprite-option sprite-option_edit thickbox">
+        <a class="sprite sprite-option_edit thickbox">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
             <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
