@@ -224,8 +224,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Status}"
-                                            title="{$i18n/l/Status}"
-                                            />
+                                            title="{$i18n/l/Status}"/>
                                 </td>
                                 <td>
                                     <a href="{$location}?sb=position;order=asc;m={$m}">
@@ -234,8 +233,7 @@
                                                 height="20"
                                                 border="0"
                                                 alt="{$i18n/l/Sort_pos_asc}"
-                                                title="{$i18n/l/Sort_pos_asc}"
-                                                />
+                                                title="{$i18n/l/Sort_pos_asc}"/>
                                     </a>
                                 </td>
                             </xsl:if>
@@ -246,24 +244,21 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_title_desc}"
-                                            title="{$i18n/l/Sort_title_desc}"
-                                            />
+                                            title="{$i18n/l/Sort_title_desc}"/>
                                 </a>
                             </td>
-                            <td width="100%" background="{$skimages}titlecolumn_bg_bright.png">
+                            <td width="100%" style="background:url({$skimages}titlecolumn_bg_bright.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif"
                                         width="50"
                                         height="1"
                                         border="0"
-                                        alt=""
-                                        />
+                                        alt=""/>
                             </td>
                             <td width="23">
                                 <img src="{$skimages}titlecolumn_rightcorner_bright.png"
                                         width="23"
                                         height="20"
-                                        alt=""
-                                        />
+                                        alt=""/>
                             </td>
                             <td width="124">
                                 <a href="{$location}?sb=date;order=desc;m={$m}">
@@ -272,8 +267,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_lm_desc}"
-                                            title="{$i18n/l/Sort_lm_desc}"
-                                            />
+                                            title="{$i18n/l/Sort_lm_desc}"/>
                                 </a>
                             </td>
                             <xsl:call-template name="th-size"/>
@@ -300,8 +294,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Status}"
-                                            title="{$i18n/l/Status}"
-                                            />
+                                            title="{$i18n/l/Status}"/>
                                 </td>
                                 <td>
                                     <a href="{$location}?sb=position;order=asc;m={$m}">
@@ -322,11 +315,10 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_title_asc}"
-                                            title="{$i18n/l/Sort_title_asc}"
-                                            />
+                                            title="{$i18n/l/Sort_title_asc}"/>
                                 </a>
                             </td>
-                            <td width="100%" background="{$skimages}titlecolumn_bg_bright.png">
+                            <td width="100%" style="background:url({$skimages}titlecolumn_bg_bright.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif" width="50" height="1" border="0" alt=""/>
                             </td>
                             <td width="23">
@@ -339,8 +331,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_lm_desc}"
-                                            title="{$i18n/l/Sort_lm_desc}"
-                                            />
+                                            title="{$i18n/l/Sort_lm_desc}"/>
                                 </a>
                             </td>
                             <xsl:call-template name="th-size"/>
@@ -369,8 +360,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Status}"
-                                            title="{$i18n/l/Status}"
-                                            />
+                                            title="{$i18n/l/Status}"/>
                                 </td>
                                 <td>
                                     <a href="{$location}?sb=position;order=asc;m={$m}">
@@ -379,8 +369,7 @@
                                                 height="20"
                                                 border="0"
                                                 alt="{$i18n/l/Sort_pos_asc}"
-                                                title="{$i18n/l/Sort_pos_asc}"
-                                                />
+                                                title="{$i18n/l/Sort_pos_asc}"/>
                                     </a>
                                 </td>
                             </xsl:if>
@@ -391,22 +380,21 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_title_asc}"
-                                            title="{$i18n/l/Sort_title_asc}"
-                                            />
+                                            title="{$i18n/l/Sort_title_asc}"/>
                                 </a>
                             </td>
-                            <td width="100%" background="{$skimages}titlecolumn_bg.png">
+                            <td width="100%" style="background:url({$skimages}titlecolumn_bg.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif"
                                         width="50"
                                         height="1"
                                         border="0"
-                                        alt=" "/></td>
+                                        alt=" "/>
+                            </td>
                             <td width="23">
                                 <img src="{$skimages}titlecolumn_rightcorner.png"
                                         width="23"
                                         height="20"
-                                        alt=""
-                                        />
+                                        alt=""/>
                             </td>
                             <td width="124">
                                 <a href="{$location}?sb=date;order=desc;m={$m}">
@@ -415,8 +403,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_lm_desc}"
-                                            title="{$i18n/l/Sort_lm_desc}"
-                                            />
+                                            title="{$i18n/l/Sort_lm_desc}"/>
                                 </a>
                             </td>
                             <xsl:call-template name="th-size"/>
@@ -446,8 +433,7 @@
                                             height="20"
                                             border="0"
                                             alt = "{$i18n/l/Status}"
-                                            title="{$i18n/l/Status}"
-                                            />
+                                            title="{$i18n/l/Status}"/>
                                 </td>
                                 <td>
                                     <a href="{$location}?sb=position;order=asc;m={$m}">
@@ -456,8 +442,7 @@
                                                 height="20"
                                                 border="0"
                                                 alt="{$i18n/l/Sort_pos_asc}"
-                                                title="{$i18n/l/Sort_pos_asc}"
-                                                />
+                                                title="{$i18n/l/Sort_pos_asc}"/>
                                     </a>
                                 </td>
                             </xsl:if>
@@ -468,24 +453,21 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_title_asc}"
-                                            title="{$i18n/l/Sort_title_asc}"
-                                            />
+                                            title="{$i18n/l/Sort_title_asc}"/>
                                 </a>
                             </td>
-                            <td width="100%" background="{$skimages}titlecolumn_bg.png">
+                            <td width="100%" style="background:url({$skimages}titlecolumn_bg.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif"
                                         width="50"
                                         height="1"
                                         border="0"
-                                        alt=""
-                                        />
+                                        alt=""/>
                             </td>
                             <td width="23">
                                 <img src="{$skimages}titlecolumn_rightcorner.png"
                                         width="23"
                                         height="20"
-                                        alt=""
-                                        />
+                                        alt=""/>
                             </td>
                             <td width="124">
                                 <a href="{$location}?sb=date;order=asc;m={$m}">
@@ -494,8 +476,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_lm_asc}"
-                                            title="{$i18n/l/Sort_lm_asc}"
-                                            />
+                                            title="{$i18n/l/Sort_lm_asc}"/>
                                 </a>
                             </td>
                             <xsl:call-template name="th-size"/>
@@ -530,8 +511,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Status}"
-                                            title="{$i18n/l/Status}"
-                                            />
+                                            title="{$i18n/l/Status}"/>
                                 </td>
                                 <td nowrap="nowrap">
                                     <a href="{$location}?sb=position;order=desc;m={$m}">
@@ -540,8 +520,7 @@
                                                 height="20"
                                                 border="0"
                                                 alt="{$i18n/l/Sort_pos_desc}"
-                                                title="{$i18n/l/Sort_pos_desc}"
-                                                />
+                                                title="{$i18n/l/Sort_pos_desc}"/>
                                     </a>
                                 </td>
                             </xsl:if>
@@ -552,11 +531,10 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_title_asc}"
-                                            title="{$i18n/l/Sort_title_asc}"
-                                            />
+                                            title="{$i18n/l/Sort_title_asc}"/>
                                 </a>
                             </td>
-                            <td width="100%" height="20" background="{$skimages}titlecolumn_bg.png">
+                            <td width="100%" height="20" style="background:url({$skimages}titlecolumn_bg.png);">
                                 <xsl:text>&#160;</xsl:text>
                             </td>
                             <td width="23">
@@ -573,8 +551,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_lm_desc}"
-                                            title="{$i18n/l/Sort_lm_desc}"
-                                            />
+                                            title="{$i18n/l/Sort_lm_desc}"/>
                                 </a>
                             </td>
                             <xsl:call-template name="th-size"/>
@@ -598,8 +575,7 @@
                                             height="20"
                                             border="0"
                                             alt = "{$i18n/l/Status}"
-                                            title="{$i18n/l/Status}"
-                                            />
+                                            title="{$i18n/l/Status}"/>
                                 </td>
                                 <td>
                                     <a href="{$location}?sb=position;order=asc;m={$m}">
@@ -608,8 +584,7 @@
                                                 height="20"
                                                 border="0"
                                                 alt="{$i18n/l/Sort_pos_asc}"
-                                                title="{$i18n/l/Sort_pos_asc}"
-                                                />
+                                                title="{$i18n/l/Sort_pos_asc}"/>
                                     </a>
                                 </td>
                             </xsl:if>
@@ -620,24 +595,21 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_title_asc}"
-                                            title="{$i18n/l/Sort_title_asc}"
-                                            />
+                                            title="{$i18n/l/Sort_title_asc}"/>
                                 </a>
                             </td>
-                            <td width="100%" background="{$skimages}titlecolumn_bg.png">
+                            <td width="100%" style="background:url({$skimages}titlecolumn_bg.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif"
                                         width="50"
                                         height="1"
                                         border="0"
-                                        alt=""
-                                        />
+                                        alt=""/>
                             </td>
                             <td width="23">
                                 <img src="{$skimages}titlecolumn_rightcorner.png"
                                         width="23"
                                         height="20"
-                                        alt=""
-                                        />
+                                        alt=""/>
                             </td>
                             <td width="124">
                                 <a href="{$location}?sb=date;order=desc;m={$m}">
@@ -646,8 +618,7 @@
                                             height="20"
                                             border="0"
                                             alt="{$i18n/l/Sort_lm_desc}"
-                                            title="{$i18n/l/Sort_lm_desc}"
-                                            />
+                                            title="{$i18n/l/Sort_lm_desc}"/>
                                 </a>
                             </td>
                             <xsl:call-template name="th-size"/>
@@ -673,8 +644,7 @@
                 height="20"
                 border="0"
                 alt="{$i18n/l/Size}"
-                title="{$i18n/l/Size} {$i18n/l/in} kB"
-                />
+                title="{$i18n/l/Size} {$i18n/l/in} kB"/>
     </td>
 </xsl:template>
 
@@ -684,8 +654,7 @@
                 width="221"
                 height="20"
                 alt="{$i18n/l/Options}"
-                title="{$i18n/l/Options}"
-                />
+                title="{$i18n/l/Options}"/>
     </td>
 </xsl:template>
 
@@ -696,7 +665,7 @@
     <xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
     <xsl:variable name="dfname" select="$df/name"/>
     <xsl:variable name="dfmime" select="$df/mime_type"/>
-    <tr height="20" class="objrow">
+    <tr class="objrow">
         <xsl:if test="$m='e'">
             <td class="ctt_status">
                 <xsl:call-template name="cttobject.status"/>

@@ -346,12 +346,8 @@
                 <input type="image"
                     src="{$sklangimages}search.png"
                     name="submit"
-                    width="65"
-                    height="14"
                     alt="{$Search}"
-                    title="{$Search}"
-                    border="0"
-                />
+                    title="{$Search}"/>
                 <input type="hidden" name="search" value="1"/>
             </div>
         </form>
