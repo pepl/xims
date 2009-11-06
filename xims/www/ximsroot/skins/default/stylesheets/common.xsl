@@ -14,8 +14,10 @@
 
 
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dyn="http://exslt.org/dynamic"
-	xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="dyn">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+                xmlns:dyn="http://exslt.org/dynamic"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="dyn">
 
 	<xsl:import href="../../../stylesheets/common.xsl" />
 	<xsl:import href="common_footer.xsl" />
@@ -23,10 +25,16 @@
 	<xsl:import href="common_metadata.xsl" />
 	<xsl:import href="common_localized.xsl" />
 	<xsl:import href="common_jscalendar_scripts.xsl" />
-	<xsl:import href="common_htmlarea_scripts.xsl" />
 	<xsl:import href="common_tinymce_scripts.xsl" />
-	<!--<xsl:output method="html" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>-->
-	<xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" indent="no"/>
+
+	<xsl:output method="xml"
+                    omit-xml-declaration="yes"
+                    encoding="utf-8"
+                    media-type="text/html"
+                    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+                    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                    indent="no"/>
+
 	<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 	<xsl:variable name="currobjmime" select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/mime_type"/>
 	<!--
@@ -58,39 +66,39 @@
 	<xsl:variable name="l_Object_locked" select="$i18n/l/Object_locked" />
 
 	<xsl:template name="cancelaction">
-		<table border="0" align="center" width="98%">
-			<tr>
-				<td>
-					<xsl:call-template name="cancelcreateform" />
-				</td>
-			</tr>
-		</table>
-		<!-- inline popup hidden HTML code -->
-		<xsl:call-template name="inlinepopup">
-			<xsl:with-param name="winlabel" select="$i18n/l/IlpDefaultWinlabel" />
-			<!--
-				optional parameter to show a close button <xsl:with-param
-				name="showclosebutton" select="true()"/>
-			-->
-		</xsl:call-template>
+          <table border="0" align="center" width="98%">
+            <tr>
+              <td>
+                <xsl:call-template name="cancelcreateform" />
+              </td>
+            </tr>
+          </table>
+          <!-- inline popup hidden HTML code -->
+          <xsl:call-template name="inlinepopup">
+            <xsl:with-param name="winlabel" select="$i18n/l/IlpDefaultWinlabel" />
+            <!--
+                optional parameter to show a close button <xsl:with-param
+                name="showclosebutton" select="true()"/>
+            -->
+          </xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="canceledit">
-		<table border="0" align="center" width="98%">
-			<tr>
-				<td>
-					<xsl:call-template name="cancelform" />
-				</td>
-			</tr>
-		</table>
-		<!-- inline popup hidden HTML code -->
-		<xsl:call-template name="inlinepopup">
-			<xsl:with-param name="winlabel" select="$i18n/l/IlpDefaultWinlabel" />
-			<!--
-				optional parameter to show a close button <xsl:with-param
-				name="showclosebutton" select="true()"/>
-			-->
-		</xsl:call-template>
+          <table border="0" align="center" width="98%">
+            <tr>
+              <td>
+                <xsl:call-template name="cancelform" />
+              </td>
+            </tr>
+          </table>
+          <!-- inline popup hidden HTML code -->
+          <xsl:call-template name="inlinepopup">
+            <xsl:with-param name="winlabel" select="$i18n/l/IlpDefaultWinlabel" />
+            <!--
+                optional parameter to show a close button <xsl:with-param
+                name="showclosebutton" select="true()"/>
+            -->
+          </xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="cancelform">
@@ -254,10 +262,10 @@
 <!-- with the following parameters different options can be integratetd into the HTML HEAD
     currently available:
         calendar: Integration of jscalendar (not included in xims, install seperately)
-        htmlarea: Integration of the WYSIWYG Editor Htmlarea included in xims-contrib
+        tinymce
+        jquery
 -->
     <xsl:param name="calendar" select="false()" />
-    <xsl:param name="htmlarea" select="false()" />
     <xsl:param name="tinymce" select="false()" />
     <xsl:param name="jquery" select="false()" />
     <head>
@@ -269,9 +277,6 @@
         <xsl:call-template name="css"/>
         <xsl:if test="$calendar">
             <xsl:call-template name="jscalendar_scripts" />
-        </xsl:if>
-        <xsl:if test="$htmlarea">
-            <xsl:call-template name="htmlarea_scripts"/>
         </xsl:if>
         <xsl:if test="$tinymce">
             <xsl:call-template name="tinymce_scripts"/>
@@ -898,90 +903,134 @@
     </xsl:variable>
 
     <div class="cttobject_status">
-        <xsl:choose>
-            <xsl:when test="marked_new= '1'">
-				<span class="sprite-option sprite-new">
-				<span>
-						<xsl:value-of select="$l_Object_marked_new"/>
-				</span>
-				&#160;
-				</span>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:call-template name="cttobject.status.spacer"/>
-            </xsl:otherwise>
-        </xsl:choose>
-        <xsl:choose>
-            <xsl:when test="published = '1'">
-                <a href="{$published_path}" target="_blank">
-                        <xsl:choose>
-                            <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-							<xsl:attribute name="class">sprite-option sprite-status_pub</xsl:attribute>
-							&#xa0;
-							<span>
-								<xsl:value-of select="$l_Object_last_published"/>&#160;
-									<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;
-									<xsl:value-of select="$l_by"/>&#160;
-									<xsl:call-template name="lastpublisherfullname"/>&#160;
-									<xsl:value-of select="$l_at_place"/>&#160;
-									<xsl:value-of select="$published_path"/>
-							</span>
-                            </xsl:when>
-                            <xsl:otherwise>
-							<xsl:attribute name="class">sprite-option sprite-status_pub_async</xsl:attribute>
-								&#xa0;
-								<span>
-								<xsl:value-of select="$l_Object_modified"/>&#160;
-									<xsl:call-template name="lastpublisherfullname"/>&#160;
-									<xsl:value-of select="$l_at_time"/>&#160;
-									<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;
-									<xsl:value-of select="$l_changed"/>.
-								</span>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                </a>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:call-template name="cttobject.status.spacer"/>
-            </xsl:otherwise>
-        </xsl:choose>
-        <xsl:choose>
-			<xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
-				<a class="sprite-option sprite-locked">
-					<xsl:attribute name="href">
-						<xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'">
-						<xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1">
-						<xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
-					</xsl:attribute>
-					<span>
-					<xsl:value-of select="$l_Release_lock"/>
-					</span>
-										&#160;
-				</a>
-			</xsl:when>
-			<xsl:when test="locked_by_id != '' and locked_time != ''">
-			<a class="sprite-option sprite-locked">
-				<xsl:attribute name="title">
-				<xsl:value-of select="$l_Object_locked"/>
-					<xsl:apply-templates select="locked_time" mode="datetime"/>
-					<xsl:value-of select="$l_by"/>&#160;
-					<xsl:call-template name="lockerfullname"/>.
-				</xsl:attribute>
-				<span>
-					<xsl:value-of select="$l_Object_locked"/>
-					<xsl:apply-templates select="locked_time" mode="datetime"/>
-					<xsl:value-of select="$l_by"/>&#160;
-					<xsl:call-template name="lockerfullname"/>.
-				</span>
-				&#160;
-			</a>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="cttobject.status.spacer"/>
-			</xsl:otherwise>
-		</xsl:choose>
+      <xsl:choose>
+        <xsl:when test="marked_new= '1'">
+          <span class="sprite sprite-status_new" title="{$l_Object_marked_new}">
+            <span>
+              <xsl:value-of select="$l_Object_marked_new"/>
+            </span>
+            &#160;
+          </span>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="cttobject.status.spacer"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:choose>
+        <xsl:when test="published = '1'">          
+          <a href="{$published_path}" target="_blank">
+            <xsl:choose>
+              <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
+                <xsl:attribute name="class">sprite sprite-status_pub</xsl:attribute>                           
+                <xsl:attribute name="title">
+                  <xsl:value-of select="$l_Object_last_published"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$l_by"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:call-template name="lastpublisherfullname"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$l_at_place"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$published_path"/>
+                </xsl:attribute>
+                &#xa0;
+                <span>
+                  <xsl:value-of select="$l_Object_last_published"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$l_by"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:call-template name="lastpublisherfullname"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$l_at_place"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$published_path"/>
+                </span>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="class">sprite sprite-status_pub_async</xsl:attribute>
+                <xsl:attribute name="title">
+                  <xsl:value-of select="$l_Object_modified"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:call-template name="lastpublisherfullname"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$l_at_time"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$l_changed"/>
+                </xsl:attribute>			
+                &#xa0;
+                <span> 
+                  <xsl:value-of select="$l_Object_modified"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:call-template name="lastpublisherfullname"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$l_at_time"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
+                  <xsl:text> </xsl:text>
+                  <xsl:value-of select="$l_changed"/>
+                </span>
+              </xsl:otherwise>
+            </xsl:choose>
+          </a>   
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="cttobject.status.spacer"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:choose>
+        <xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
+          <a class="sprite sprite-status_locked"
+             title="{$l_Release_lock}">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/>
+              <xsl:if test="$currobjmime='application/x-container'">
+                <xsl:value-of select="concat(';page=',$page)"/>
+              </xsl:if>
+              <xsl:if test="$currobjmime='application/x-container' and $defsorting != 1">
+                <xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/>
+              </xsl:if>
+            </xsl:attribute>
+            <span>
+              <xsl:value-of select="$l_Release_lock"/>
+            </span>
+            &#160;
+          </a>
+        </xsl:when>
+        <xsl:when test="locked_by_id != '' and locked_time != ''">
+          <a class="sprite sprite-status_locked">
+            <xsl:attribute name="title">
+              <xsl:value-of select="$l_Object_locked"/>
+              <xsl:text> </xsl:text>
+              <xsl:apply-templates select="locked_time" mode="datetime"/>
+              <xsl:text> </xsl:text>
+              <xsl:value-of select="$l_by"/>
+              <xsl:text> </xsl:text>
+              <xsl:call-template name="lockerfullname"/>.
+            </xsl:attribute>
+            <span>
+              <xsl:value-of select="$l_Object_locked"/>
+              <xsl:text> </xsl:text>
+              <xsl:apply-templates select="locked_time" mode="datetime"/>
+              <xsl:text> </xsl:text>
+              <xsl:value-of select="$l_by"/>
+              <xsl:text> </xsl:text>
+              <xsl:call-template name="lockerfullname"/>.
+            </span>
+            &#160;
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="cttobject.status.spacer"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </div>
-</xsl:template>
+  </xsl:template>
 
 <xsl:template name="cttobject.options">
     <span class="cttobject_options">
@@ -995,158 +1044,167 @@
 </xsl:template>
 
 <xsl:template name="cttobject.options.edit">
-    <xsl:variable name="id" select="@id"/>
-    <xsl:choose>
-        <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a class="sprite-option sprite-option_edit">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
-                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
-                </xsl:attribute>
-                &#xa0;<span><xsl:value-of select="$l_Edit"/></span>
-            </a>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:call-template name="cttobject.options.spacer"/>
-        </xsl:otherwise>
-    </xsl:choose>
+  <xsl:variable name="id" select="@id"/>
+  <xsl:choose>
+    <xsl:when test="marked_deleted != '1' 
+                and user_privileges/write 
+                and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+      <a class="sprite sprite-option_edit"
+         title="{$l_Edit}">
+        <xsl:attribute name="href">
+          <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
+          <xsl:if test="$currobjmime='application/x-container'">
+            <xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/>
+          </xsl:if>
+        </xsl:attribute>
+        &#xa0;
+        <span><xsl:value-of select="$l_Edit"/></span>
+      </a>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="cttobject.options.spacer"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template name="cttobject.options.copy">
-    <xsl:variable name="id" select="@id"/>
-    <xsl:choose>
-        <xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
-            <a class="sprite-option sprite-option_copy">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/>
-                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
-                </xsl:attribute>
-                &#xa0;<span><xsl:value-of select="$l_Copy"/></span>
-            </a>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:call-template name="cttobject.options.spacer"/>
-        </xsl:otherwise>
-    </xsl:choose>
+  <xsl:variable name="id" select="@id"/>
+  <xsl:choose>
+    <xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
+      <a class="sprite sprite-option_copy"
+         title="{$l_Copy}">
+        <xsl:attribute name="href">
+          <xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/>
+          <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+        </xsl:attribute>
+        &#xa0;<span>
+        <xsl:value-of select="$l_Copy"/></span>
+      </a>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="cttobject.options.spacer"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template name="cttobject.options.move">
-    <xsl:variable name="parentid" select="@parent_id"/>
-    <xsl:variable name="id" select="@id"/>
-    <xsl:variable name="to">
-        <xsl:choose>
-            <xsl:when test="$currobjmime='application/x-container'">
-                <xsl:value-of select="/document/context/object/@id"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="/document/context/object/parents/object[@document_id=$parentid]/@id"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
+  <xsl:variable name="parentid" select="@parent_id"/>
+  <xsl:variable name="id" select="@id"/>
+  <xsl:variable name="to">
     <xsl:choose>
-        <xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a class="sprite-option sprite-option_move">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/>
-                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
-                </xsl:attribute>
-                &#xa0;<span><xsl:value-of select="$l_Move"/></span>
-            </a>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:call-template name="cttobject.options.spacer"/>
-        </xsl:otherwise>
+      <xsl:when test="$currobjmime='application/x-container'">
+        <xsl:value-of select="/document/context/object/@id"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="/document/context/object/parents/object[@document_id=$parentid]/@id"/>
+      </xsl:otherwise>
     </xsl:choose>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="marked_deleted != '1' 
+                and user_privileges/move and published != '1'  
+                and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+      <a class="sprite sprite-option_move"
+         title="{$l_Move}">
+        <xsl:attribute name="href">
+          <xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/>
+          <xsl:if test="$currobjmime='application/x-container'">
+            <xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/>
+          </xsl:if>
+        </xsl:attribute>
+        &#xa0;
+        <span><xsl:value-of select="$l_Move"/></span>
+      </a>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="cttobject.options.spacer"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template name="cttobject.options.publish">
-    <xsl:variable name="id" select="@id"/>
-    <xsl:choose>
-        <xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
-            <a class="sprite-option sprite-option_pub">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/>
-                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
-                </xsl:attribute>
-                &#xa0;<span><xsl:value-of select="$l_Publishing_options"/></span>
-            </a>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:call-template name="cttobject.options.spacer"/>
-        </xsl:otherwise>
-    </xsl:choose>
+  <xsl:variable name="id" select="@id"/>
+  <xsl:choose>
+    <xsl:when test="marked_deleted != '1'
+                and (user_privileges/publish|user_privileges/publish_all)  
+                and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
+      <a class="sprite sprite-option_pub"
+         title="{$l_Publishing_options}">
+        <xsl:attribute name="href">
+          <xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/>
+          <xsl:if test="$currobjmime='application/x-container'">
+            <xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/>
+          </xsl:if>
+        </xsl:attribute>
+        &#xa0;
+        <span><xsl:value-of select="$l_Publishing_options"/></span>
+      </a>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="cttobject.options.spacer"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
-<xsl:template name="cttobject.options.acl_or_undelete">
+  <xsl:template name="cttobject.options.acl_or_undelete">
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
-        <xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <a class="sprite-option sprite-option_acl">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/>
-                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
-                </xsl:attribute>
-                &#xa0;<span><xsl:value-of select="$l_Access_control"/></span>
-            </a>
+        <xsl:when test="marked_deleted != '1' 
+                   and (user_privileges/grant|user_privileges/grant_all) 
+                   and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+          <a class="sprite sprite-option_acl"
+             title="{$l_Access_control}">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/>
+              <xsl:if test="$currobjmime='application/x-container'">
+              <xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
+            </xsl:attribute>
+            &#xa0;<span><xsl:value-of select="$l_Access_control"/></span>
+          </a>
         </xsl:when>
         <xsl:when test="user_privileges/delete and marked_deleted = '1'">
-            <a class="sprite-option sprite-option_undelete">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/>
-                    <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if>
-                </xsl:attribute>
-                &#xa0;<span><xsl:value-of select="$l_Undelete"/></span>
-            </a>
+          <a class="sprite sprite-option_undelete"
+             title="{$l_Undelete}">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/>
+              <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if>
+            </xsl:attribute>
+            &#xa0;<span><xsl:value-of select="$l_Undelete"/></span>
+          </a>
         </xsl:when>
         <xsl:otherwise>
-            <xsl:call-template name="cttobject.options.spacer"/>
+          <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
-</xsl:template>
+  </xsl:template>
 
-<xsl:template name="cttobject.options.purge_or_delete">
+ <xsl:template name="cttobject.options.purge_or_delete">
     <xsl:variable name="id" select="@id"/>
-    <xsl:choose>
+      <xsl:choose>
         <xsl:when test="user_privileges/delete and marked_deleted = '1'">
-            <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
-            <!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
-            <form style="margin:0px; display: inline;" name="delete"
-                    method="GET"
-                    action="{$xims_box}{$goxims_content}">
-                <input type="hidden" name="delete_prompt" value="1"/>
-                <input type="hidden" name="id" value="{$id}"/>
-                <xsl:if test="$currobjmime='application/x-container'">
-                    <input name="sb" type="hidden" value="{$sb}"/>
-                    <input name="page" type="hidden" value="{$page}"/>
-                    <input name="order" type="hidden" value="{$order}"/>
-                    <input name="hd" type="hidden" value="{$hd}"/>
-                    <input name="r" type="hidden" value="{/document/context/object/@id}"/>
-                </xsl:if>
-                <button class="sprite-option sprite-option_purge"
-                    name="delete{$id}"
-                    title="{$l_purge}"
-                    ><span><xsl:value-of select="$l_purge"/>&#xa0;</span></button>
-            </form>
+           <a class="sprite sprite-option_purge"
+              title="{$l_purge}">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/>
+              <xsl:if test="$currobjmime='application/x-container'">
+                <xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/>
+              </xsl:if>
+            </xsl:attribute>
+            &#xa0;<span><xsl:value-of select="$l_purge"/></span>
+          </a>
         </xsl:when>
         <xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <form style="margin:0px; display: inline;" name="trashcan"
-                    method="GET"
-                    action="{$xims_box}{$goxims_content}">
-                <input type="hidden" name="trashcan_prompt" value="1"/>
-                <input type="hidden" name="id" value="{$id}"/>
-                <xsl:if test="$currobjmime='application/x-container'">
-                    <input name="sb" type="hidden" value="{$sb}"/>
-                    <input name="page" type="hidden" value="{$page}"/>
-                    <input name="order" type="hidden" value="{$order}"/>
-                    <input name="hd" type="hidden" value="{$hd}"/>
-                    <input name="r" type="hidden" value="{/document/context/object/@id}"/>
-                </xsl:if>
-                <button class="sprite-option sprite-option_delete"
-                    name="delete{$id}"
-                    title="{$l_delete}"
-                    ><span><xsl:value-of select="$l_delete"/>&#xa0;</span></button>
-            </form>
-        </xsl:when>
+          <a class="sprite sprite-option_delete"
+              title="{$l_delete}">
+            <xsl:attribute name="href">
+              <xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/>
+              <xsl:if test="$currobjmime='application/x-container'">
+                <xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/>
+              </xsl:if>
+            </xsl:attribute>
+            &#xa0;<span><xsl:value-of select="$l_delete"/></span>
+          </a>
+        </xsl:when>     
         <xsl:otherwise>
             <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
@@ -1154,12 +1212,13 @@
 </xsl:template>
 
 <xsl:template name="cttobject.options.spacer">
-    <span class="sprite-spacer">&#xa0;</span>
+    <span class="sprite sprite-spacer">&#xa0;</span>
 </xsl:template>
 
 <xsl:template name="cttobject.status.spacer">
-    <span class="sprite-status-spacer">&#xa0;</span>
+    <span class="sprite sprite-status-spacer">&#xa0;</span>
 </xsl:template>
+
 	<xsl:template name="cttobject.del.spacer">
 		<span class="sprite-del-spacer">&#xa0;</span>
 	</xsl:template>
