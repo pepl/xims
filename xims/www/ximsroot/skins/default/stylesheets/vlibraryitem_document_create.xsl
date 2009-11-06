@@ -22,7 +22,7 @@
           <xsl:call-template name="table-create"/>
           <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}"
                 name="eform" 
-                method="POST" 
+                method="post" 
                 enctype="multipart/form-data">
             <input type="hidden" 
                    name="objtype" 

@@ -273,7 +273,7 @@
         </ul>
     </div>
     <noscript>
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET">
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="get">
             <td width="126" nowrap="nowrap">
                 <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="objtype">
                     <xsl:choose>
@@ -313,7 +313,7 @@
 <xsl:template name="header.cttobject.search">
     <xsl:variable name="Search" select="$i18n/l/Search"/>
     <td class="qsearch">
-        <form method="GET" name="quicksearch">
+        <form method="get" name="quicksearch">
             <xsl:attribute name="action">
                 <xsl:choose>
                     <xsl:when test="$absolute_path != ''">

@@ -21,7 +21,7 @@
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
 
-            <form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="GET" style="margin-top: 0px; margin-left: 5px;">
+            <form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get" style="margin-top: 0px; margin-left: 5px;">
                 <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
                     <tr>
                         <td align="center">

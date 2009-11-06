@@ -17,7 +17,7 @@
     <body>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
                 <table border="0" width="95%">
                     <xsl:call-template name="tr-location-edit"/>
                     <xsl:call-template name="tr-target-edit"/>

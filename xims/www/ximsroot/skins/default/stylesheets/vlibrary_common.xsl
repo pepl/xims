@@ -207,7 +207,7 @@
 
     <form style="margin-bottom: 0px;"
           action="{$xims_box}{$goxims_content}{$absolute_path}"
-          method="GET"
+          method="get"
           name="vlib_search">
       <strong><xsl:value-of select="$Search"/></strong>
       <xsl:text>&#160;</xsl:text>
@@ -345,7 +345,7 @@
             class="vlsearchswitchcell">
           <form style="margin-bottom: 0px;"
                 action="{$xims_box}{$goxims_content}{$absolute_path}"
-                method="GET"
+                method="get"
                 name="vlib_search">
             Chronik von
             <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
@@ -470,7 +470,7 @@ function handleResponse() {
 
 function post_async(poststr) {
     xmlhttp.onreadystatechange = handleResponse;
-    xmlhttp.open('POST'
+    xmlhttp.open('post'
                  , '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>'
                  , true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

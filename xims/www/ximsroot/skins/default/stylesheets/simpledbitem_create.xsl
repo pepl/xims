@@ -19,7 +19,7 @@
         <div class="edit">
             <xsl:call-template name="table-create"/>
             <xsl:call-template name="error_msg"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" enctype="multipart/form-data">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
                     <xsl:apply-templates select="/document/member_properties/member_property">

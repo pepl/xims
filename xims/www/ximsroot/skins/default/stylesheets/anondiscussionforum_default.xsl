@@ -28,7 +28,7 @@
 
         <br />
 
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" style="margin-left:5px; margin-bottom: 0px;">
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="get" style="margin-left:5px; margin-bottom: 0px;">
         <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
             <xsl:if test="user_privileges/create">
                 <input type="submit" name="create" value="{$i18n/l/Create_topic}" class="control" /><br /><br />
@@ -217,7 +217,7 @@
         </td>
         <td valign="bottom">
         <xsl:if test="user_privileges/delete">
-            <form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
+            <form style="margin:0px;" name="delete" method="get" action="{$xims_box}{$goxims_content}">
                 <input type="hidden" name="delete_prompt" value="1"/>
                 <input type="hidden" name="id" value="{@id}"/>
                 <input type="image" src="{$skimages}option_delete.png" border="0" width="37" height="19" title="delete" alt="delete"/>

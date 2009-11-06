@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+U<?xml version="1.0" encoding="utf-8" ?>
 <!--
 # Copyright (c) 2002-2009 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
@@ -21,7 +21,7 @@
     <body>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit_xml"/>
                     <xsl:if test="$bxepresent=1">

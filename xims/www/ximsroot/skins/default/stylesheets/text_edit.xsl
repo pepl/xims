@@ -19,7 +19,7 @@
           <xsl:call-template name="table-edit"/>
           <form action="{$xims_box}{$goxims_content}?id={@id}"
                 name="eform"
-                method="POST"
+                method="post"
                 enctype="multipart/form-data">
             <table border="0" 
                    width="98%">

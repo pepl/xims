@@ -50,7 +50,7 @@
 <xsl:template name="create_bookmark">
     <h2><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$i18n/l/Bookmark"/></h2>
     <p>
-        <form action="{$xims_box}{$goxims}/bookmark" name="eform" method="GET">
+        <form action="{$xims_box}{$goxims}/bookmark" name="eform" method="get">
             <xsl:value-of select="$i18n/l/Path"/>: <input type="text" name="path" size="40" class="text"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>

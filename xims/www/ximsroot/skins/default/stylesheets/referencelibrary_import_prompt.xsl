@@ -17,7 +17,7 @@
     <body>
         <div class="edit">
             <xsl:call-template name="table-import"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST" enctype="multipart/form-data">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" enctype="multipart/form-data">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-importsourcetype"/>
                     <xsl:call-template name="tr-body-import"/>

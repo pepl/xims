@@ -3,7 +3,7 @@
 # Copyright (c) 2002-2009 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id: newsitem_edit_htmlarea.xsl 1589 2006-10-11 09:38:47Z pepl $
+# $Id: $
 -->
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -20,7 +20,7 @@
     <body>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-title-edit"/>
                     <xsl:call-template name="tr-leadimage-edit"/>

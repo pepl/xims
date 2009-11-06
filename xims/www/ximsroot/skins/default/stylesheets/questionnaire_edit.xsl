@@ -19,7 +19,7 @@
     <body>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST" name="eform">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="post" name="eform">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-location-edit"/>
                     <xsl:call-template name="tr-questionnaire-edit"/>

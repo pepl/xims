@@ -21,7 +21,7 @@
         <script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
                 <table border="0" width="98%">
                     <xsl:call-template name="reftypes_select"/>
                     <xsl:call-template name="markednew"/>
@@ -41,7 +41,7 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
-        <form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="GET" style="display:none">
+        <form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="get" style="display:none">
             <input type="hidden" name="id" value="{@id}"/>
             <input type="hidden" name="change_reference_type" value="1"/>
             <input type="hidden" name="reference_type_id" value=""/>

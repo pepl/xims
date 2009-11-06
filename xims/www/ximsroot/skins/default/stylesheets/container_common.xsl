@@ -808,7 +808,7 @@ href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=ye
             <!-- the form is needed, so we can write the new position back without reloading this site from the positioning window -->
             <form name="reposition{@id}"
                     style="margin:0px;"
-                    method="GET"
+                    method="get"
                     action="{$xims_box}{$goxims_content}">
                 <input type="hidden"
                         name="m"
