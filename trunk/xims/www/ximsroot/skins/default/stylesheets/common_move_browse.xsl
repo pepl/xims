@@ -22,7 +22,7 @@
   <body>
     <xsl:call-template name="header"/>
     <div class="edit">
-        <form action="{$xims_box}{$goxims_content}" method="GET">
+        <form action="{$xims_box}{$goxims_content}" method="get">
             <xsl:value-of select="$i18n/l/Move_object"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/from"/> '<xsl:value-of select="$parent_path"/>'
             <xsl:value-of select="$i18n/l/to"/>:
             <input type="text" size="60" name="to">

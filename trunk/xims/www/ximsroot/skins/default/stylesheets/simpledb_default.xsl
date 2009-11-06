@@ -338,7 +338,7 @@
   <xsl:template name="member.createwidget">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" 
           style="margin-bottom: 0; display: inline"
-          method="GET"
+          method="get"
           id="member_creator"
           name="member_creator">
       <input type="image"
@@ -362,7 +362,7 @@
   <xsl:template name="map_item_properties">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" 
           style="margin-bottom: 0; display: inline"
-          method="GET"
+          method="get"
           id="map_item_properties"
           name="map_item_properties">
       <input type="submit"

@@ -132,7 +132,7 @@
         <table width="100%" border="0" style="margin: 0px;" id="vlsearchswitch">
             <tr>
                 <td valign="top" width="50%" align="center" class="vlsearchswitchcell">
-                    <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET" name="vlib_search">
+                    <form style="margin-bottom: 0px;" action="{$xims_box}{$goxims_content}{$absolute_path}" method="get" name="vlib_search">
                         Chronik von
                         <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt" type="text" name="chronicle_from" size="10" maxlength="200" value="{$chronicle_from}" />
                         bis

@@ -23,7 +23,7 @@
             <body onload="timeoutWYSIWYGChange(2);">
                 <div class="edit">
                     <xsl:call-template name="table-edit"/>
-                    <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
+                    <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
                         <table border="0" width="98%">
                             <xsl:call-template name="tr-locationtitle-edit_doc"/>
                             <xsl:call-template name="tr-body-edit_tinymce"/>

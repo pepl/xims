@@ -407,7 +407,7 @@
               <xsl:when test="user_privileges/delete and published != '1' 
                               and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                 <form style="margin:0px;" name="delete"
-                      method="GET"
+                      method="get"
                       action="{$xims_box}{$goxims_content}">
                   <input type="hidden" 
                          name="delete_prompt" 
@@ -516,7 +516,7 @@
                           and published != '1' 
                           and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                 <form style="margin:0px;" name="delete"
-                      method="GET"
+                      method="get"
                       action="{$xims_box}{$goxims_content}">
                   <input type="hidden" 
                          name="delete_prompt" 

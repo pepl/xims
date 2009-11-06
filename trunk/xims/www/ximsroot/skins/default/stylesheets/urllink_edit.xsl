@@ -24,7 +24,7 @@
           <xsl:call-template name="table-edit"/>
           <form action="{$xims_box}{$goxims_content}?id={@id}" 
                 name="eform" 
-                method="POST">
+                method="post">
             <table border="0" 
                    width="98%">
               <xsl:call-template name="tr-locationtitle-edit_urllink"/>

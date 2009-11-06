@@ -58,7 +58,7 @@
                   <table cellpadding="0" cellspacing="0" border="0">
                   <tr align="center">
                    <td>
-                    <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="GET">
+                    <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="get">
                         <input class="control" name="obj_acllist" type="submit" value="{$i18n/l/Choose_another_user}"/>
                         <input name="id" type="hidden" value="{@id}"/>
                         <xsl:call-template name="rbacknav"/>

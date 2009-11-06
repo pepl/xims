@@ -107,9 +107,9 @@ $Id$
   <xsl:template name="cancelform">
     <xsl:param name="with_save" select="'no'" />
     <!--
-        method GET is needed, because goxims does not handle a PUTed 'id'
+        method get is needed, because goxims does not handle a PUTed 'id'
     -->
-    <form action="{$xims_box}{$goxims_content}" name="cform" method="GET"
+    <form action="{$xims_box}{$goxims_content}" name="cform" method="get"
           style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">
       <input type="hidden" name="id" value="{@id}" />
       <xsl:if test="$with_save = 'yes'">
@@ -125,7 +125,7 @@ $Id$
   <xsl:template name="cancelcreateform">
     <xsl:param name="with_save" select="'no'" />
     <form action="{$xims_box}{$goxims_content}{$absolute_path}"
-          method="POST">
+          method="post">
       <xsl:if test="$with_save = 'yes'">
         <xsl:call-template name="save_jsbutton" />
       </xsl:if>
@@ -149,7 +149,7 @@ $Id$
     <xsl:variable name="object_type_id" select="object_type_id" />
     <xsl:variable name="parent_id" select="@parent_id" />
     <form name="userConfirm" action="{$xims_box}{$goxims_content}"
-          method="GET">
+          method="get">
       <input class="control" name="exit" type="submit" value="Done" />
       <xsl:choose>
         <xsl:when test="$r != ''">
@@ -1630,7 +1630,7 @@ $Id$
         function wfcheck() {
             var xmlhttp = getXMLHTTPObject();
             var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?test_wellformedness=1')"/>";
-            xmlhttp.open("POST",url,true);
+            xmlhttp.open("post",url,true);
             xmlhttp.onreadystatechange=function() {
                 if (xmlhttp.readyState==4) {
                     if (xmlhttp.status!=200) {
@@ -1662,7 +1662,7 @@ $Id$
         function prettyprint() {
             var xmlhttp = getXMLHTTPObject();
             var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?', $ppmethod, '=1')"/>";
-            xmlhttp.open("POST",url,true);
+            xmlhttp.open("post",url,true);
             xmlhttp.onreadystatechange=function() {
                 if (xmlhttp.readyState==4) {
                     if (xmlhttp.status!=200) {
@@ -1961,7 +1961,7 @@ $Id$
                 }
             }
         }
-        xmlhttp.open("GET",url,true);
+        xmlhttp.open("get",url,true);
         xmlhttp.setRequestHeader
         (
             'Content-Type',

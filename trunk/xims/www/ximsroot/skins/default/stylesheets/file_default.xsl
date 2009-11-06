@@ -28,7 +28,7 @@
                             </td>
                         </tr>
                     </table>
-                    <form action="{$xims_box}{$goxims_content}{$parent_path}" method="POST">
+                    <form action="{$xims_box}{$goxims_content}{$parent_path}" method="post">
                         <input type="submit" name="cancel" value="Cancel" class="control"/>
                     </form>
                 </p>

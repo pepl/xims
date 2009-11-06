@@ -41,7 +41,7 @@
   <body>
     <p align="right"><a href="#" onClick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
     <p>
-    <form action="{$xims_box}{$goxims_content}" method="POST" name="selectform">
+    <form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
         <p>
             <xsl:value-of select="$i18n/l/Browse_to"/>:
             <br/>&#xa0;

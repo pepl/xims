@@ -188,10 +188,10 @@
                 </xsl:choose>
                 <xsl:choose>
                     <xsl:when test="user_privileges/delete">
--->                        <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
-                        <!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
+-->                        <!-- note: get seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
+                        <!-- <form style="margin:0px;" name="delete" method="post" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
                         <form style="margin:0px;" name="delete"
-                              method="GET"
+                              method="get"
                               action="{$xims_box}{$goxims_content}">
                             <input type="hidden" name="purge_prompt" value="1"/>
                             <input type="hidden" name="id" value="{@id}"/>

@@ -93,7 +93,7 @@
 
 <xsl:template name="reference_type.createwidget">
     <xsl:apply-templates select="/document/reference_types/reference_type" mode="descriptions"/>
-    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="GET" id="reftype_creator" name="reftype_creator">
+    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="get" id="reftype_creator" name="reftype_creator">
         <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="reftype" id="reftype">
             <xsl:apply-templates select="/document/reference_types/reference_type" mode="selectoptions">
                 <xsl:sort select="name" order="ascending"/>
@@ -340,7 +340,7 @@
 </xsl:template>
 
 <xsl:template name="reflib_exportwidget">
-    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="GET" id="export" name="export">
+    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="get" id="export" name="export">
         <xsl:if test="$reflibsearch != ''">
             <input type="hidden" name="reflibsearch" value="{$reflibsearch}"/>
         </xsl:if>
@@ -362,7 +362,7 @@
 </xsl:template>
 
 <xsl:template name="reflib_citationview">
-    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="GET" id="citation_view" name="citation_view">
+    <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="display: inline; margin-bottom: 0;" method="get" id="citation_view" name="citation_view">
         <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="style" id="style">
             <option value="cv_defaultstyle" selected="selected">default style</option>
             <option value="cv_printstyle">print style</option>

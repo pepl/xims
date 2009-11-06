@@ -74,7 +74,7 @@
         <div class="edit">
           <form action="{$xims_box}{$goxims_content}?id={@id}"
                 name="eform" 
-                method="POST">
+                method="post">
             <div style="position: absolute; right: 11px;">
               <input type="submit" name="send_as_mail" value="{$i18n/l/Send}" class="control"/>  
               <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C"/>

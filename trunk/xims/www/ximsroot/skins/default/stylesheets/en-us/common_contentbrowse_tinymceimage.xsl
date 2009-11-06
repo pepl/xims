@@ -13,7 +13,7 @@
 <xsl:output method="html" encoding="utf-8"/>
 
 <xsl:template name="selectform">
-    <form action="{$xims_box}{$goxims_content}" method="POST" name="selectform">
+    <form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
         <table>
             <tr>
                 <td>

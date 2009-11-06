@@ -29,7 +29,7 @@
     </xsl:template>
 
    <xsl:template match="/document/context/user">
-     <form id="objAcl" action="{$xims_box}{$goxims_content}" method="GET">
+     <form id="objAcl" action="{$xims_box}{$goxims_content}" method="get">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
           <tr>
             <td align="center">
