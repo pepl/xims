@@ -432,6 +432,24 @@ sub event_unpublish {
     return 0;
 }
 
+=head2 default_grants()
+
+Calls CGI::default_grants() (see there for details) with the 'dontgrantpublic'
+parameter set. This eventually skips the copying the public users privileges
+from the ancesting VLibrary so that freshly created, unpublished VLibraryItems
+do not appear in the library's public view. VlibraryItems grant and revoke the
+VIEW privilege to the public user as part of the publication process.
+
+    $self->default_grants( $ctxt, $grantowneronly, $grantdefaultroles )
+
+=cut
+
+sub default_grants {
+    XIMS::Debug( 5, "called" );
+    # $ctxt, $grantowneronly, $grantdefaultroles, $dontgrantpublic
+    $_[0]->SUPER::default_grants( $_[1], $_[2], $_[3], 1 );
+}
+
 
 =head2 private methods
 
