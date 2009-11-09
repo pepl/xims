@@ -9,34 +9,6 @@
 	<!--start from ../common.xsl-->
 
 
-	<xsl:template name="script_head">
-		<xsl:param name="jquery" select="false()"/>
-		<xsl:param name="fg-menu" select="false()"/>
-		<xsl:param name="data-tables" select="false()"/>
-		<xsl:param name="calendar" select="false()"/>
-		<xsl:if test="$jquery">
-			<script src="{$jquery_dir}jquery" type="text/javascript"/>
-			<script src="{$jquery_dir}jquery-ui" type="text/javascript"/>
-			<script src="{$jquery_dir}jquery-ui-i18n.js" type="text/javascript"/>
-		</xsl:if>
-		<xsl:if test="$fg-menu">
-			<script language="javascript" src="{$jquery_dir}fg-menu/fg.menu.js" type="text/javascript"/>
-		</xsl:if>
-		<xsl:if test="$calendar">
-			<xsl:call-template name="jscalendar_scripts"/>
-			<script type="text/javascript">
-				var calendarSelector = '<xsl:value-of select="$i18n/l/Date_selector"/>';
-				var imageFolder = '<xsl:value-of select="$skimages"/>';
-			</script>
-			</xsl:if>
-			<script src="{$ximsroot}scripts/default.js" type="text/javascript" language="Javascript">
-				<xsl:text>&#160;</xsl:text>
-			</script>
-			<xsl:if test="$data-tables">
-				<script language="javascript" src="{$jquery_dir}dataTables-1.5/jquery.dataTables.min.js" type="text/javascript"/>
-			</xsl:if>
-		
-	</xsl:template>
 	<!--end from ../common.xsl	-->
 	<xsl:template name="header">
 		<xsl:param name="create" select="false()"/>
@@ -193,7 +165,7 @@
 	<xsl:template name="header.cttobject.createwidget">
 		<xsl:param name="parent_id"/>
 		<div class="create-widget">
-			<a href="#object-types" class="flyout create-widget fg-button fg-button-icon-right ui-state-default ui-corner-all" id="flyout" tabindex="0" >
+			<a href="#object-types" class="flyout create-widget fg-button fg-button-icon-right ui-state-default ui-corner-all" tabindex="0" >
 				<span class="ui-icon ui-icon-triangle-1-s"/>
 				<xsl:value-of select="$i18n/l/Create"/>
 			</a>
@@ -235,7 +207,7 @@
 			</div>
 		</div>
 		    <noscript>
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="GET">
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="get">
             <!--<td width="126" nowrap="nowrap">-->
                 <select name="objtype">
                     <xsl:choose>
@@ -266,7 +238,7 @@
 	<xsl:template name="header.cttobject.search">
 		<xsl:variable name="Search" select="$i18n/l/Search"/>
 		<div id="sh-search" class="qsearch ui-widget-content ui-corner-all">
-			<form method="GET" name="quicksearch">
+			<form method="get" name="quicksearch">
 				<xsl:attribute name="action"><xsl:choose><xsl:when test="$absolute_path != ''"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($xims_box,$goxims,'/user')"/></xsl:otherwise></xsl:choose></xsl:attribute>
 				<label for="start_here">
 					<xsl:value-of select="$i18n/l/From_here"/>
@@ -370,7 +342,7 @@
 	<xsl:template name="help-widget">
 		<div id="help">
 			<div class="help-widget">
-				<a href="#help-types" class="flyout help-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" id="flyout" tabindex="0">
+				<a href="#help-types" class="flyout help-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" tabindex="0">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Help"/></xsl:attribute>
 					<span class="ui-icon ui-icon-help"/>
 					<xsl:value-of select="$i18n/l/Help"/>
@@ -467,7 +439,7 @@
 	<xsl:template name="menu-widget">
 		<div id="menu">
 			<div class="menu-widget">
-				<a href="#menu-types" class="flyout menu-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" id="flyout" tabindex="0">
+				<a href="#menu-types" class="flyout menu-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" tabindex="0">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Menu"/></xsl:attribute>
 					<span class="ui-icon ui-icon-gear"/>
 					<xsl:value-of select="$i18n/l/Menu"/>
@@ -495,7 +467,7 @@
 								</li>
 								<li>
 									<a href="{$goxims_content}{$absolute_path}?reason=logout" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-										<span class="ui-icon ui-icon-home"/>
+										<span class="ui-icon ui-icon-power"/>
 										<span class="text">
 											<xsl:value-of select="$i18n/l/logout"/>
 										</span>
@@ -503,6 +475,14 @@
 								</li>
 							</xsl:otherwise>
 						</xsl:choose>
+						<!--<li>
+							<a href="" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
+							<span class="ui-icon ui-icon-bookmark"/>
+							<span class="text">
+								<xsl:value-of select="$i18n/l/default_bookmark"/>
+							</span>
+							</a>
+						</li>-->
 					</ul>
 				</div>
 			</div>

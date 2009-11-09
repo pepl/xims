@@ -33,7 +33,7 @@
 						</xsl:call-template>
 					</div>
 					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
-                <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" id="create-edit-form">
+                <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" id="create-edit-form">
                     <input type="hidden" name="objtype" value="{$objtype}"/>
 
                         <xsl:call-template name="tr-locationtitle-create"/>

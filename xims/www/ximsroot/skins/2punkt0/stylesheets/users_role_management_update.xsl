@@ -14,59 +14,31 @@
 
 <xsl:template match="/document">
     <html>
-        <head>
-            <title>
-                <xsl:value-of select="$i18n_users/l/User_Updated"/> - XIMS
-            </title>
-            <xsl:call-template name="css"/>
-        </head>
+    <xsl:call-template name="head_default">
+			<xsl:with-param name="mode">user</xsl:with-param>
+		</xsl:call-template>
         <body>
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
-        </xsl:call-template>
+				</xsl:call-template>
+				<div class="table-container">
+        <form name="userConfirm" action="{$xims_box}{$goxims_users}" method="get">
 
-        <form name="userConfirm" action="{$xims_box}{$goxims_users}" method="GET">
-        <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-          <tr background="{$skimages}generic_tablebg_1x20.png">
-            <td>&#160;</td>
-          </tr>
-          <tr>
-            <td align="center">
+                <h1 class="bluebg"><xsl:value-of select="$i18n_users/l/User_Updated"/></h1>
 
-            <br />
-            <!-- begin widget table -->
-            <table width="200" cellpadding="2" cellspacing="0" border="0">
-              <tr>
-                <td class="bluebg"><xsl:value-of select="$i18n_users/l/User_Updated"/></td>
-              </tr>
-              <tr>
-                <td>&#160;</td>
-              </tr>
-              <tr>
-                <td><xsl:call-template name="message"/></td>
-              </tr>
-              <tr>
-                <td>&#160;</td>
-              </tr>
-              <tr>
-                <td align="center">
+                <p><xsl:call-template name="message"/></p>
                     <input type="hidden" name="explicit_only" value="1"/>
                     <input type="hidden" name="name" value="{$name}"/>
                     <input type="hidden" name="manage_roles" value="1"/>
                     <xsl:call-template name="doneform"/>
-                </td>
-              </tr>
-            </table>
-            <!-- end widget table -->
-            <br />
-
-            </td>
-          </tr>
-        </table>
         </form>
-        <xsl:call-template name="script_bottom"/>
+        </div>
         </body>
     </html>
+</xsl:template>
+
+<xsl:template name="title-userpage">
+	<xsl:value-of select="$i18n_users/l/User_Updated"/> - XIMS
 </xsl:template>
 
 </xsl:stylesheet>

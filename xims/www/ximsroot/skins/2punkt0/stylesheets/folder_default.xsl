@@ -12,14 +12,6 @@
 		<xsl:value-of select="count(/document/context/object/children/object[marked_deleted=1])"/>
 	</xsl:variable>
 	<xsl:template match="/document/context/object">
-		<!--<xsl:param name="createwidget">true</xsl:param>
-		<xsl:param name="parent_id"/>
-		<xsl:variable name="dataformat">
-			<xsl:value-of select="data_format_id"/>
-		</xsl:variable>
-		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
-		<xsl:variable name="dfname" select="$df/name"/>
-		<xsl:variable name="dfmime" select="$df/mime_type"/>-->
 		<html>
 			<xsl:call-template name="head_default"/>
 			<body>
@@ -29,77 +21,15 @@
 				</xsl:call-template>
 				<div id="main-content">
 					<xsl:call-template name="options-menu-bar"/>
-					<!--<div id="tab-container" class="ui-corner-top">
-						<div id="tab-cell1">
-							<xsl:call-template name="cttobject.dataformat">
-								<xsl:with-param name="dfname" select="$dfname"/>
-							</xsl:call-template>
-							<xsl:value-of select="title"/>
-						</div>
-						<div id="tab-cell3">
-							<xsl:call-template name="cttobject.options"/>
-							<xsl:call-template name="cttobject.options.send_email"/>
-						</div>
-						<div id="tab-cell2">
-							<xsl:call-template name="cttobject.status"/>
-						</div>
-						<div id="create">
-						<xsl:if test="/document/context/object/user_privileges/create
-                            and $createwidget = 'true'
-                            and /document/object_types/object_type[can_create]">
-							<xsl:call-template name="header.cttobject.createwidget">
-								<xsl:with-param name="parent_id">
-									<xsl:value-of select="$parent_id"/>
-								</xsl:with-param>
-							</xsl:call-template>
-						</xsl:if>
-					</div>
-					</div>-->
 					<div id="right-empty-div-cell">&#160;</div>
 					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
 						<xsl:call-template name="childrentable"/>
 						<xsl:call-template name="pagenavtable"/>
 					</div>
 				</div>
-				<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/defcontmin.js" type="text/javascript">
-					<xsl:text>&#160;</xsl:text>
-				</script>-->
 			</body>
 		</html>
 	</xsl:template>
-	
-<!--	<xsl:template name="head_default">
-		<head>
-			<title>
-				<xsl:call-template name="title"/>
-			</title>
-			<xsl:call-template name="css">
-				<xsl:with-param name="jquery-ui-smoothness">true</xsl:with-param>
-				<xsl:with-param name="fg-menu">true</xsl:with-param>
-			</xsl:call-template>
-			<xsl:call-template name="script_head">
-				<xsl:with-param name="jquery">true</xsl:with-param>
-				<xsl:with-param name="fg-menu">true</xsl:with-param>
-				--><!--<xsl:with-param name="data-tables">false</xsl:with-param>--><!--
-			</xsl:call-template>
-			<script language="JavaScript" type="text/javascript">
-				//var langloc = '<xsl:value-of select="concat($ximsroot,'jquery/dataTables-1.5/language/de.txt')"/>';
-        $(document).ready(function(){ 
-						setARIARoles();
-						initCreateMenu();
-						initHelpMenu();
-						initMenuMenu();
-						//initTabs();
-						//initObjTable();
-						//IE hack							
-						jQuery.each(jQuery.browser, function(i) {
-							if($.browser.msie){
-							}
-						});  
-        });
-        </script>
-		</head>
-	</xsl:template>-->
 	
 	<xsl:template name="deleted_objects">
 		<xsl:choose>

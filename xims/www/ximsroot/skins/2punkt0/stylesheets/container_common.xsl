@@ -480,7 +480,7 @@
 					<xsl:value-of select="$position"/>
 				</a>
 				<!-- the form is needed, so we can write the new position back without reloading this site from the positioning window -->
-				<form name="reposition{@id}" style="margin:0px;" method="GET" action="{$xims_box}{$goxims_content}">
+				<form name="reposition{@id}" method="get" action="{$xims_box}{$goxims_content}">
 					<input type="hidden" name="m" value="{$m}"/>
 					<input type="hidden" name="id" value="{@id}"/>
 					<input type="hidden" name="reposition" value="yes"/>

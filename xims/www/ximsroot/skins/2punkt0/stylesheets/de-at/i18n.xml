@@ -299,4 +299,30 @@
 <ConfDeletion2>bestätigen</ConfDeletion2>
 <ID>ID</ID>
 <Done>Fertig</Done>
+<ManageContent>Inhalte verwalten</ManageContent>
+<Your>Ihre</Your>
+<The_fpl>Die</The_fpl>
+<The_m>Der</The_m>
+<The_n>Das</The_n>
+<lastObjMod>zuletzt geänderten Objekte</lastObjMod>
+<lastObjModByYou>letzten erstellten oder geänderten Objekte</lastObjModByYou>
+<Welcome>Willkommen</Welcome>
+<Settings>Einstellungen</Settings>
+<ManageBookmarks>Lesezeichen verwalten</ManageBookmarks>
+<ChangePassword>Passwort ändern</ChangePassword>
+<ManagePersonalSettings>Persönliche Einstellungen verwalten</ManagePersonalSettings>
+<UpdateEmailAdress>Emailadresse aktualisieren</UpdateEmailAdress>
+<AdmOptions>Verwaltungsoptionen</AdmOptions>
+<AsMemberAdmin>Als Mitglied der Admin-Rolle haben Sie folgende administrative Optionen:</AsMemberAdmin>
+<ManageUserRoles>BenutzerInnen und Rollen verwalten</ManageUserRoles>
+<Notice>Hinweis</Notice>
+<NoticeDefBookmarks>BenutzerIn-Standard-Lesezeichen haben Vorrang gegenüber Rollen-Standard-Lesezeichen.</NoticeDefBookmarks>
+<BackToHome>Zurück zu Ihrer persönlichen Startseite</BackToHome>
+<ChangingPassword>Passwort ändern</ChangingPassword>
+<ChangePwdFor>Passwort ändern für Nutzer</ChangePwdFor>
+<OldPwd>Altes System-Passwort</OldPwd>
+<NewPwd>Neues System-Passwort</NewPwd>
+<ConfirmPwd>Passwort bestätigen</ConfirmPwd>
+<Objecttype>Objekttyp</Objecttype>
+<update>aktualisieren</update>
 </l>

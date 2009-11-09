@@ -19,7 +19,8 @@
 	<xsl:import href="common_htmlarea_scripts.xsl"/>
 	<xsl:import href="common_tinymce_scripts.xsl"/>
 	<!--<xsl:output method="html" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>-->
-	<xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" indent="no"/>
+	<!--<xsl:output method="html" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>-->
+	<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 	<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 	<xsl:variable name="currobjmime" select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/mime_type"/>
 	<!--
@@ -52,10 +53,9 @@
 	<xsl:template name="cancelform">
 		<xsl:param name="with_save" select="'no'"/>
 		<!--
-			method GET is needed, because goxims does not handle a PUTed 'id'
+			method get is needed, because goxims does not handle a PUTed 'id'
 		-->
-		<!--<form action="{$xims_box}{$goxims_content}" name="cform" method="GET" style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">-->
-		<form class="cancelsave-form" action="{$xims_box}{$goxims_content}" name="cform" method="GET">
+		<form class="cancelsave-form" action="{$xims_box}{$goxims_content}" name="cform" method="get">
 			<input type="hidden" name="id" value="{@id}"/>
 			<xsl:if test="$with_save = 'yes'">
 				<xsl:call-template name="save_jsbutton"/>
@@ -93,7 +93,7 @@
 	<!--	end legacy-->
 	<xsl:template name="cancelcreateform">
 		<xsl:param name="with_save" select="'no'"/>
-		<form class="cancelsave-form" action="{$xims_box}{$goxims_content}{$absolute_path}" method="POST">
+		<form class="cancelsave-form" action="{$xims_box}{$goxims_content}{$absolute_path}" method="post">
 			<xsl:if test="$with_save = 'yes'">
 				<xsl:call-template name="save_jsbutton"/>
 			</xsl:if>
@@ -107,21 +107,21 @@
 		</form>
 	</xsl:template>
 	<xsl:template name="save_jsbutton">
-		<button class="ui-state-default ui-corner-all fg-button" type="submit" name="submit_eform" accesskey="S" onClick="document.eform.store.click(); return false">
+		<button class="ui-state-default ui-corner-all fg-button" type="submit" name="submit_eform" accesskey="S" onclick="document.eform.store.click(); return false">
 			<span class="text">
 				<xsl:value-of select="$i18n/l/save"/>
 			</span>
 		</button>
 		<!--		
 	<script type="text/javascript">
-/*document.write('<input type="submit" name="submit_eform" value="{$i18n/l/save}" onClick="document.eform.store.click(); return false" class="control"/>');*/
-document.write('<button class="ui-state-default ui-corner-all fg-button" type="submit" name="submit_eform" accesskey="C" onClick="document.eform.store.click(); return false"><span class="text"><xsl:value-of select="$i18n/l/save"/></span></button>');
+/*document.write('<input type="submit" name="submit_eform" value="{$i18n/l/save}" onclick="document.eform.store.click(); return false" class="control"/>');*/
+document.write('<button class="ui-state-default ui-corner-all fg-button" type="submit" name="submit_eform" accesskey="C" onclick="document.eform.store.click(); return false"><span class="text"><xsl:value-of select="$i18n/l/save"/></span></button>');
 		</script>-->
 	</xsl:template>
 	<xsl:template name="exitredirectform">
 		<xsl:variable name="object_type_id" select="object_type_id"/>
 		<xsl:variable name="parent_id" select="@parent_id"/>
-		<form name="userConfirm" action="{$xims_box}{$goxims_content}" method="GET" style="display: inline">
+		<form name="userConfirm" action="{$xims_box}{$goxims_content}" method="get">
 			<input class="ui-state-default ui-corner-all fg-button" name="exit" type="submit">
 				<xsl:attribute name="value"><xsl:value-of select="$i18n/l/Done"/></xsl:attribute>
 			</input>
@@ -176,7 +176,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 					<xsl:value-of select="$i18n/l/Copy_parent_privs"/>
 				</label>
 				<xsl:text>&#160;&#160;</xsl:text>
-				<input name="owneronly" type="radio" value="true" onClick="document.eform.defaultroles.disabled = true;" onBlur="document.eform.defaultroles.disabled = false;" id="radio-grantmyself" class="radio-button"/>
+				<input name="owneronly" type="radio" value="true" onclick="document.eform.defaultroles.disabled = true;" onblur="document.eform.defaultroles.disabled = false;" id="radio-grantmyself" class="radio-button"/>
 				<label for="radio-grantmyself">
 					<xsl:value-of select="$i18n/l/Grant_myself_only"/>
 				</label>
@@ -508,7 +508,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			<xsl:call-template name="ui-resizable"/>
 			<div id="bodymain">
 				<div id="bodycon">
-					<textarea name="body" id="body" rows="20" cols="90" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;" class="resizable ui-widget-content">
+					<textarea name="body" id="body" rows="20" cols="90" onchange="document.getElementById('xims_wysiwygeditor').disabled = true;" class="resizable ui-widget-content">
 					&#160;
 				</textarea>
 				</div>
@@ -547,7 +547,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</div>
 	</xsl:template>
 	<xsl:template name="ui-resizable">
-		<script type="text/javascript" language="javascript">
+		<script type="text/javascript">
 				$(function() {
 					$(".resizable").resizable();
 				});
@@ -960,7 +960,6 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			</div>
 		</div>
 	</xsl:template>
-	
 	<xsl:template name="cttobject.status">
 		<xsl:variable name="objecttype">
 			<xsl:value-of select="object_type_id"/>
@@ -1000,10 +999,10 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="marked_new= '1'">
-				<span class="sprite-option sprite-new">
-				<span>
+				<span class="sprite sprite-new">
+					<span>
 						<xsl:value-of select="$l_Object_marked_new"/>
-				</span>
+					</span>
 				&#160;
 				</span>
 			</xsl:when>
@@ -1016,7 +1015,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 				<a href="{$published_path}" target="_blank">
 					<xsl:choose>
 						<xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-							<xsl:attribute name="class">sprite-option sprite-status_pub</xsl:attribute>
+							<xsl:attribute name="class">sprite sprite-status_pub</xsl:attribute>
 							&#xa0;
 							<span>
 								<xsl:value-of select="$l_Object_last_published"/>&#160;
@@ -1028,7 +1027,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 							</span>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:attribute name="class">sprite-option sprite-status_pub_async</xsl:attribute>
+							<xsl:attribute name="class">sprite sprite-status_pub_async</xsl:attribute>
 								&#xa0;
 								<span>
 								<xsl:value-of select="$l_Object_modified"/>&#160;
@@ -1047,30 +1046,23 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
-				<a class="sprite-option sprite-locked">
-					<xsl:attribute name="href">
-						<xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'">
-						<xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1">
-						<xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
-					</xsl:attribute>
+				<a class="sprite sprite-locked">
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:attribute>
 					<span>
-					<xsl:value-of select="$l_Release_lock"/>
+						<xsl:value-of select="$l_Release_lock"/>
 					</span>
 										&#160;
 				</a>
 			</xsl:when>
 			<xsl:when test="locked_by_id != '' and locked_time != ''">
-			<a class="sprite-option sprite-locked">
-				<xsl:attribute name="title">
-				<xsl:value-of select="$l_Object_locked"/>
-					<xsl:apply-templates select="locked_time" mode="datetime"/>
-					<xsl:value-of select="$l_by"/>&#160;
+				<a class="sprite sprite-locked">
+					<xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/><xsl:apply-templates select="locked_time" mode="datetime"/><xsl:value-of select="$l_by"/>&#160;
 					<xsl:call-template name="lockerfullname"/>.
 				</xsl:attribute>
-				<span>
-					<xsl:value-of select="$l_Object_locked"/>
-					<xsl:apply-templates select="locked_time" mode="datetime"/>
-					<xsl:value-of select="$l_by"/>&#160;
+					<span>
+						<xsl:value-of select="$l_Object_locked"/>
+						<xsl:apply-templates select="locked_time" mode="datetime"/>
+						<xsl:value-of select="$l_by"/>&#160;
 					<xsl:call-template name="lockerfullname"/>.
 				</span>
 				&#160;
@@ -1094,7 +1086,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="sprite-option sprite-option_edit">
+				<a class="sprite sprite-option_edit">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
           &#xa0;
           <span>
@@ -1111,7 +1103,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
-				<a class="sprite-option sprite-option_copy">
+				<a class="sprite sprite-option_copy">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
           &#xa0;
           <span>
@@ -1139,7 +1131,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="sprite-option sprite-option_move">
+				<a class="sprite sprite-option_move">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
                 &#xa0;<span>
 						<xsl:value-of select="$l_Move"/>
@@ -1155,7 +1147,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
-				<a class="sprite-option sprite-option_pub">
+				<a class="sprite sprite-option_pub">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
                 &#xa0;
                 <span>
@@ -1168,12 +1160,11 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
 	<xsl:template name="cttobject.options.acl_or_undelete">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="sprite-option sprite-option_acl">
+				<a class="sprite sprite-option_acl">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
                 &#xa0;<span>
 						<xsl:value-of select="$l_Access_control"/>
@@ -1181,7 +1172,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 				</a>
 			</xsl:when>
 			<xsl:when test="user_privileges/delete and marked_deleted = '1'">
-				<a class="sprite-option sprite-option_undelete">
+				<a class="sprite sprite-option_undelete">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
                 &#xa0;<span>
 						<xsl:value-of select="$l_Undelete"/>
@@ -1197,43 +1188,22 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete and marked_deleted = '1'">
-				<!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
-				<!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
-				<form name="delete" method="GET" action="{$xims_box}{$goxims_content}" id="delete-form">
-					<input type="hidden" name="delete_prompt" value="1"/>
-					<input type="hidden" name="id" value="{$id}"/>
-					<xsl:if test="$currobjmime='application/x-container'">
-						<input name="sb" type="hidden" value="{$sb}"/>
-						<input name="page" type="hidden" value="{$page}"/>
-						<input name="order" type="hidden" value="{$order}"/>
-						<input name="hd" type="hidden" value="{$hd}"/>
-						<input name="r" type="hidden" value="{/document/context/object/@id}"/>
-					</xsl:if>
-					<!--					<button class="sprite-option sprite-option_purge" name="delete{$id}" title="{$l_purge}">
-						<span>
-							<xsl:value-of select="$l_purge"/>&#xa0;</span>
-					</button>-->
-					<input type="submit" class="sprite-option sprite-option_purge" name="delete{$id}" title="{$l_purge}" value=""/>
-				</form>
+				<a class="sprite sprite-option_purge" title="{$l_purge}">
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+          &#xa0;<span>
+						<xsl:value-of select="$l_purge"/>
+					</span>
+				</a>
 			</xsl:when>
-			<xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<form name="trashcan" method="GET" action="{$xims_box}{$goxims_content}" id="delete-form">
-					<input type="hidden" name="trashcan_prompt" value="1"/>
-					<input type="hidden" name="id" value="{$id}"/>
-					<xsl:if test="$currobjmime='application/x-container'">
-						<input name="sb" type="hidden" value="{$sb}"/>
-						<input name="page" type="hidden" value="{$page}"/>
-						<input name="order" type="hidden" value="{$order}"/>
-						<input name="hd" type="hidden" value="{$hd}"/>
-						<input name="r" type="hidden" value="{/document/context/object/@id}"/>
-					</xsl:if>
-					<!--<button class="sprite-option sprite-option_delete" name="delete{$id}" title="{$l_delete}">
-						<span>
-							<xsl:value-of select="$l_delete"/>&#xa0;
-						</span>
-					</button>-->
-					<input type="submit" class="sprite-option sprite-option_delete" name="trashcan{$id}" title="{$l_delete}" value=""/>
-				</form>
+			<xsl:when test="user_privileges/delete and published != '1'  
+                      and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+				<a class="sprite sprite-option_delete" title="{$l_delete}">
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,
+                                           ';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+          &#xa0;<span>
+						<xsl:value-of select="$l_delete"/>
+					</span>
+				</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="cttobject.options.spacer"/>
@@ -1251,14 +1221,6 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 	</xsl:template>
 	<xsl:template name="cttobject.dataformat">
 		<xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
-		<xsl:choose>
-			<xsl:when test="marked_deleted=1">
-				<xsl:attribute name="bgcolor">#c6c6c6</xsl:attribute>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
-			</xsl:otherwise>
-		</xsl:choose>
 		<span class="sprite-list sprite-list_{$dfname}">
 			<span>
 				<xsl:value-of select="$dfname"/>
@@ -1269,7 +1231,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			<div id="toggle_highlight">
 				<form>
 					<xsl:value-of select="$i18n/l/you_searched_for"/> '<xsl:value-of select="$hls"/>'.
-                <input type="button" value="{$i18n/l/toggle_hls}" onClick="toggleHighlight(getParamValue('hls'))"/>
+                <input type="button" value="{$i18n/l/toggle_hls}" onclick="toggleHighlight(getParamValue('hls'))"/>
 				</form>
 			</div>
 		</xsl:if>
@@ -1290,7 +1252,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</a>
 	</xsl:template>
 	<xsl:template name="xmlhttpjs">
-    function getXMLHTTPObject() {
+		<!--    function getXMLHTTPObject() {
         var xmlhttp=false;
         /*@cc_on @*/
         /*@if (@_jscript_version &gt;= 5)
@@ -1312,16 +1274,16 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
             xmlhttp = new XMLHttpRequest();
         }
         return xmlhttp;
-    }
-</xsl:template>
+    }-->
+	</xsl:template>
 	<xsl:template name="wfcheckjs">
 		<script type="text/javascript">
 			<xsl:call-template name="xmlhttpjs"/>
-
-        function wfcheck() {
+				var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?test_wellformedness=1')"/>";
+<!--        function wfcheck() {
             var xmlhttp = getXMLHTTPObject();
             var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?test_wellformedness=1')"/>";
-            xmlhttp.open("POST",url,true);
+            xmlhttp.open("post",url,true);
             xmlhttp.onreadystatechange=function() {
                 if (xmlhttp.readyState==4) {
                     if (xmlhttp.status!=200) {
@@ -1339,18 +1301,18 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
             );
             xmlhttp.send('test_wellformedness=1&amp;body='+encodeURIComponent(document.eform.body.value));
             return false;
-        }
-    </script>
+        }-->
+		</script>
 	</xsl:template>
 	<xsl:template name="prettyprintjs">
 		<xsl:param name="ppmethod" select="'htmltidy'"/>
 		<script type="text/javascript">
 			<xsl:call-template name="xmlhttpjs"/>
-
-        function prettyprint() {
+					var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?', $ppmethod, '=1')"/>";
+        <!--function prettyprint() {
             var xmlhttp = getXMLHTTPObject();
             var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?', $ppmethod, '=1')"/>";
-            xmlhttp.open("POST",url,true);
+            xmlhttp.open("post",url,true);
             xmlhttp.onreadystatechange=function() {
                 if (xmlhttp.readyState==4) {
                     if (xmlhttp.status!=200) {
@@ -1368,24 +1330,22 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
             );
             xmlhttp.send('<xsl:value-of select="$ppmethod"/>=1&amp;body='+encodeURIComponent(document.eform.body.value));
             return false;
-        }
-    </script>
+        }-->
+		</script>
 	</xsl:template>
 	<xsl:template name="testlocationjs">
 		<xsl:param name="event"/>
 		<xsl:param name="obj_type"/>
-		<script>
+		<script type="text/javascript">
 			<!-- returns objtype query param value -->
-
-    function getObjTypeFromQuery() {
+			<!--    function getObjTypeFromQuery() {
         var str = document.location.search;
         var searchToken = "objtype=";
         var fromPos = str.indexOf(searchToken) + searchToken.length;
         var subStr = str.substring(fromPos, str.length);
         return(subStr.substring(0, subStr.indexOf(";")));
-    }
-
-	<!-- called for events create and edit -->
+    }-->
+			<!-- called for events create and edit -->
 			<xsl:choose>
 				<xsl:when test="$event='create'">
             var obj = getObjTypeFromQuery();
@@ -1508,7 +1468,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 					</xsl:when>
 					<xsl:when test="$mode='user'">
 						<xsl:call-template name="title-userpage"/>
-						<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/userpages.css" type="text/css"/>
+						<!-- <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/userpages.css" type="text/css"/> -->
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:call-template name="title"/>
@@ -1520,6 +1480,12 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 				<xsl:with-param name="fg-menu">true</xsl:with-param>
 				<xsl:with-param name="questionnaire" select="$questionnaire"/>
 				<xsl:with-param name="ap-pres" select="$ap-pres"/>
+				<xsl:with-param name="user">
+					<xsl:if test="$mode='user'">true</xsl:if>
+				</xsl:with-param>
+				<xsl:with-param name="calendar">
+					<xsl:value-of select="$calendar"/>
+				</xsl:with-param>
 			</xsl:call-template>
 			<xsl:call-template name="script_head">
 				<xsl:with-param name="jquery">true</xsl:with-param>
@@ -1527,8 +1493,6 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 				<xsl:with-param name="calendar">
 					<xsl:value-of select="$calendar"/>
 				</xsl:with-param>
-				<!--<xsl:with-param name="fg-menu">true</xsl:with-param>-->
-				<!--<xsl:with-param name="tinymce" select="true"/>-->
 			</xsl:call-template>
 		</head>
 	</xsl:template>
@@ -1566,6 +1530,8 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<xsl:param name="fg-menu" select="false()"/>
 		<xsl:param name="questionnaire" select="false()"/>
 		<xsl:param name="ap-pres" select="false()"/>
+		<xsl:param name="user" select="false()"/>
+		<xsl:param name="calendar" select="false()"/>
 		<!--<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/defcontmin.css" type="text/css"/>-->
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/2punkt0.css" type="text/css"/>
 		<xsl:if test="$jquery-ui-smoothness">
@@ -1579,6 +1545,12 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</xsl:if>
 		<xsl:if test="$ap-pres">
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/axpointpresentation.css" type="text/css"/>
+		</xsl:if>
+		<xsl:if test="$user">
+			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/userpages.css" type="text/css"/>
+		</xsl:if>
+		<xsl:if test="$calendar">
+		<link rel="stylesheet" type="text/css" media="all" href="{$ximsroot}jscalendar-1.0/calendar-blue.css" title="winter" />
 		</xsl:if>
 	</xsl:template>
 	<xsl:template name="script_head">
@@ -1595,22 +1567,20 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			<script language="javascript" src="{$jquery_dir}fg-menu/fg.menu.js" type="text/javascript"/>
 		</xsl:if>
 		<xsl:if test="$calendar">
-			<xsl:call-template name="jscalendar_scripts"/>
 			<script type="text/javascript">
 				var calendarSelector = '<xsl:value-of select="$i18n/l/Date_selector"/>';
 				var imageFolder = '<xsl:value-of select="$skimages"/>';
 			</script>
+			<xsl:call-template name="jscalendar_scripts"/>
 		</xsl:if>
-		<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0.js" type="text/javascript" language="Javascript">
+		<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0.js" type="text/javascript">
 			<xsl:text>&#160;</xsl:text>
 		</script>
-		<script src="{$ximsroot}scripts/default.js" type="text/javascript" language="Javascript">
+		<script src="{$ximsroot}scripts/default.js" type="text/javascript">
 			<xsl:text>&#160;</xsl:text>
 		</script>
-		<!--<xsl:if test="$data-tables">
-				<script language="javascript" src="{$jquery_dir}dataTables-1.5/jquery.dataTables.min.js" type="text/javascript"/>
-			</xsl:if>-->
 	</xsl:template>
+	
 	<xsl:template name="script_bottom">
 		<!-- defmin.js generated by xims_minimize_jscss.pl
     <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
@@ -1619,5 +1589,17 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<script src="{$ximsroot}skins/{$currentskin}/scripts/defmin.js" type="text/javascript">
 			<xsl:text>&#160;</xsl:text>
 		</script>
+	</xsl:template>
+	<xsl:template name="bookmark_link">
+		<xsl:choose>
+			<xsl:when test="content_id != ''">
+				<a href="{$xims_box}{$goxims_content}{content_id}">
+					<xsl:value-of select="content_id"/>
+				</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<a href="{$xims_box}{$goxims_content}/">/root</a>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
