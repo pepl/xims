@@ -254,6 +254,82 @@ function initAccordion(){
 */
 }
 
+    function getXMLHTTPObject() {
+        var xmlhttp=false;
+        /*@cc_on @*/
+        /*@if (@_jscript_version &gt;= 5)
+        // JScript gives us Conditional compilation, we can cope with old IE versions.
+        // and security blocked creation of the objects.
+        try {
+            xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+        }
+        catch (e) {
+            try {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch (E) {
+                xmlhttp = false;
+            }
+        }
+        @end @*/
+        if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+            xmlhttp = new XMLHttpRequest();
+        }
+        return xmlhttp;
+    }
+	
+	function wfcheck() {
+            var xmlhttp = getXMLHTTPObject();
+            //var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?test_wellformedness=1')"/>";
+            xmlhttp.open("post",url,true);
+            xmlhttp.onreadystatechange=function() {
+                if (xmlhttp.readyState==4) {
+                    if (xmlhttp.status!=200) {
+                        alert("Parse Failure. Could not check well-formedness.")
+                    }
+                    else {
+                        alert(xmlhttp.responseText + '\n');
+                    }
+                }
+            }
+            xmlhttp.setRequestHeader
+            (
+                'Content-Type',
+                'application/x-www-form-urlencoded; charset=UTF-8'
+            );
+            xmlhttp.send('test_wellformedness=1&amp;body='+encodeURIComponent(document.eform.body.value));
+            return false;
+        }
+		
+function prettyprint() {
+            var xmlhttp = getXMLHTTPObject();
+            //var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?', $ppmethod, '=1')"/>";
+            xmlhttp.open("post",url,true);
+            xmlhttp.onreadystatechange=function() {
+                if (xmlhttp.readyState==4) {
+                    if (xmlhttp.status!=200) {
+                        alert("Parse Failure. Could not pretty print.")
+                    }
+                    else {
+                        document.eform.body.value=xmlhttp.responseText;
+                    }
+                }
+            }
+            xmlhttp.setRequestHeader
+            (
+                'Content-Type',
+                'application/x-www-form-urlencoded; charset=UTF-8'
+            );
+            xmlhttp.send('<xsl:value-of select="$ppmethod"/>=1&amp;body='+encodeURIComponent(document.eform.body.value));
+            return false;
+        }
 
+    function getObjTypeFromQuery() {
+        var str = document.location.search;
+        var searchToken = "objtype=";
+        var fromPos = str.indexOf(searchToken) + searchToken.length;
+        var subStr = str.substring(fromPos, str.length);
+        return(subStr.substring(0, subStr.indexOf(";")));
+    }
 
  
