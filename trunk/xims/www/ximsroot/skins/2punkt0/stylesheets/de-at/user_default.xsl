@@ -16,7 +16,9 @@
 
 <xsl:template match="/document/context/session/user">
     <html>
-        <xsl:call-template name="head_default"/>
+        <xsl:call-template name="head_default">
+					<xsl:with-param name="mode">user</xsl:with-param>
+        </xsl:call-template>
         <body>
             <xsl:call-template name="header">
                 <xsl:with-param name="noncontent">true</xsl:with-param>
@@ -68,34 +70,14 @@
                 </table>
 
             <h2>Einstellungen</h2>
-                <table width="400">
-                    <tr>
-                        <td>
-                            <p>
-                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;<a href="{$xims_box}{$goxims}/user?bookmarks=1">Lesezeichen verwalten</a>
-                            </p>
-                        </td>
-                        <td>
-                            <xsl:if test="system_privileges/change_password = '1'">
-                                <p>
-                                    <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;<a href="{$xims_box}{$goxims}/user?passwd=1">Passwort ändern</a>
-                                </p>
-                            </xsl:if>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p>
-                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;Persönliche Einstellungen verwalten
-                            </p>
-                        </td>
-                        <td>
-                            <p>
-                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;E-Mail Adresse aktualisieren
-                            </p>
-                        </td>
-                    </tr>
-                </table>
+							<ul id="settinglist">
+									<li><a href="{$xims_box}{$goxims}/user?bookmarks=1">Lesezeichen verwalten</a></li>
+								<xsl:if test="system_privileges/change_password = '1'">
+									<li><a href="{$xims_box}{$goxims}/user?passwd=1">Passwort ändern</a></li>
+									<li>Persönliche Einstellungen verwalten</li>
+									<li>E-Mail Adresse aktualisieren</li>
+								</xsl:if>
+							</ul>
 
             <!-- check sysprivs here and xsl:choose -->
             <xsl:if test="admin = '1'">
@@ -103,8 +85,8 @@
                 <p>
                     <!-- check sysprivs here and xsl:choose -->
                     Als Mitglied der Admin-Rolle haben Sie folgende administrative Optionen:
-                    <ul>
-                        <li class="linklist"><a href="{$xims_box}{$goxims_users}">BenutzerInnen und Rollen verwalten</a></li>
+                    <ul id="adminoptlist">
+                        <li><a href="{$xims_box}{$goxims_users}">BenutzerInnen und Rollen verwalten</a></li>
                     </ul>
                 </p>
             </xsl:if>

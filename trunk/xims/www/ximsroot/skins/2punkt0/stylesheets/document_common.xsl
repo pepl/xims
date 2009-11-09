@@ -54,37 +54,6 @@
 		</div>
 	</xsl:template>
 	<xsl:template name="trytobalance">
-		<!--		<tr>
-			<td colspan="3">
-				<xsl:value-of select="$i18n/l/Try_to_well-balance"/>
-				<input name="trytobalance" type="radio" value="true" checked="checked" onchange="javascript:createCookie('xims_trytobalancewell','true',90);"/>
-				<xsl:value-of select="$i18n/l/Yes"/>
-				<input name="trytobalance" type="radio" value="false" onchange="javascript:createCookie('xims_trytobalancewell','false',90);"/>
-				<xsl:value-of select="$i18n/l/No"/>
-			</td>
-		</tr>
-		-->
-		<!-- set checked attribute for trytobalance-input-element according to cookie -->
-		<!--
-		<script type="text/javascript">
-			<xsl:text>selTryToBalance(document.eform.trytobalance, readCookie('xims_trytobalancewell'));</xsl:text>
-		</script>
-	</xsl:template>
-	<xsl:template name="setdefaulteditor">
-		<script type="text/javascript" language="Javascript" src="{$ximsroot}scripts/setdefaulteditor.js"/>
-		<script type="text/javascript" language="Javascript">
-			
-			var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
-
-    </script>
-		<form name="editor_selector" id="editor_selector">
-			<select name="xims_wysiwygeditor" id="xims_wysiwygeditor" onchange="javascript:return checkBodyFromSel(this.value);">
-				<xsl:copy-of select="$editoroptions"/>
-			</select>
-		</form>
-		<script type="text/javascript">
-      setSel(document.getElementById('xims_wysiwygeditor'), readCookie('xims_wysiwygeditor'));
-    </script>-->
 		<div id="tr-trytobal">
 			<fieldset>
 				<!--<div id="label-trytobal">-->
@@ -115,7 +84,7 @@
 			var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
 
     </script>
-		<form name="editor_selector" id="editor_selector">
+		<form name="editor_selector" id="editor_selector" action="">
 			<select name="xims_wysiwygeditor" id="xims_wysiwygeditor" onchange="javascript:return checkBodyFromSel(this.value);">
 				<xsl:copy-of select="$editoroptions"/>
 			</select>
@@ -163,7 +132,7 @@
 						<xsl:when test="marked_deleted != '1' 
                           and user_privileges/write 
                           and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-							<a href="{$goxims_content}?id={@id};edit=1" class="sprite-option sprite-option_edit">
+							<a href="{$goxims_content}?id={@id};edit=1" class="sprite sprite-option_edit">
 								<span>
 									<xsl:value-of select="$l_Edit"/>
 								</span>
@@ -177,7 +146,7 @@
 						<xsl:when test="marked_deleted != '1' 
                           and (user_privileges/publish|user_privileges/publish_all) 
                           and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-							<a href="{$goxims_content}?id={@id};publish_prompt=1" class="sprite-option sprite-option_pub">
+							<a href="{$goxims_content}?id={@id};publish_prompt=1" class="sprite sprite-option_pub">
 								<span>
 									<xsl:value-of select="$i18n/l/Publishing_options"/>
 								</span>
@@ -189,7 +158,7 @@
 					</xsl:choose>
 					<xsl:choose>
 						<xsl:when test="user_privileges/grant|user_privileges/grant_all">
-							<a href="{$goxims_content}?id={@id};obj_acllist=1" class="sprite-option sprite-option_acl">
+							<a href="{$goxims_content}?id={@id};obj_acllist=1" class="sprite sprite-option_acl">
 								<span>
 									<xsl:value-of select="$i18n/l/Access_control"/>
 								</span>

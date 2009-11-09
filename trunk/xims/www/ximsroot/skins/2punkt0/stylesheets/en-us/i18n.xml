@@ -284,7 +284,6 @@
 <Menu>Menu</Menu>
 <Editor>Editor</Editor>
 <UnzipContents>Unzip Contents</UnzipContents>
-<UnzipContents>Unzip Contents</UnzipContents>
 <OverwriteUnzip>Overwrite existing objects when unzipping</OverwriteUnzip>
 <Documentation>Documentation</Documentation>
 <Body>Body</Body>
@@ -293,4 +292,30 @@
 <ConfDeletion2></ConfDeletion2>
 <ID>ID</ID>
 <Done>Done</Done>
+<ManageContent>Inhalte verwalten</ManageContent>
+<Your>Your</Your>
+<The_fpl>The</The_fpl>
+<The_m>The</The_m>
+<The_n>The</The_n>
+<lastObjMod>last modified objects</lastObjMod>
+<lastObjModByYou>last objects created or modified by you</lastObjModByYou>
+<Welcome>Welcome</Welcome>
+<Settings>Settings</Settings>
+<ManageBookmarks>Manage bookmarks</ManageBookmarks>
+<ChangePassword>Change password</ChangePassword>
+<ManagePersonalSettings>Manage personal settings</ManagePersonalSettings>
+<UpdateEmailAdress>Update email adress</UpdateEmailAdress>
+<AdmOptions>Administrative Options</AdmOptions>
+<AsMemberAdmin>As a member of the admins role you have the following administrative options:</AsMemberAdmin>
+<ManageUserRoles>Manage users and roles</ManageUserRoles>
+<Notice>Notice</Notice>
+<NoticeDefBookmarks>User Default Bookmarks take precedence over Role Default Bookmarks.</NoticeDefBookmarks>
+<BackToHome>Back to your personal start page</BackToHome>
+<ChangingPassword>Changing Password</ChangingPassword>
+<ChangePwdFor>Update password for user</ChangePwdFor>
+<OldPwd>Old system password</OldPwd>
+<NewPwd>New system password</NewPwd>
+<ConfirmPwd>Confirm password</ConfirmPwd>
+<Objecttype>Objecttype</Objecttype>
+<update>update</update>
 </l>

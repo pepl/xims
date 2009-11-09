@@ -1,3 +1,4 @@
+/*
 body, html, div {
     margin: 0 0 0 0;
     padding: 0;
@@ -23,6 +24,7 @@ body, html, div {
     font: bold 11pt/11pt helvetica, arial, sans-serif;
     margin-top:6px;
 }
+*/
 
 #content {
     font: 10pt/16pt helvetica, arial, sans-serif;
@@ -58,8 +60,10 @@ body, html, div {
     margin: 0 0 5px 10px;
     list-style-type: none;
 }
-
-#bookmarklist li {
+{
+    background: url(/ximsroot/skins/default/images/sprite.gif);
+}
+#bookmarklist li, #settinglist li, #adminoptlist li, span.bookmarklink  {
     background: url(/ximsroot/images/icons/list_SymbolicLink.gif);
     background-repeat:no-repeat;
     background-position:0 0;
@@ -73,4 +77,34 @@ hr {
     color: #eeeeee;
     height: 1px;
     shade: no-shade;
+}
+
+.objlastmod{
+	display: inline-block;
+	margin-right: 10px;
+}
+
+#button-forms form{
+	display: inline;
+}
+#label-oldpwd, #label-newpwd, #label-confirmpwd{
+	width: 150px;
+	display: inline-block;
+}
+#input-oldpwd, #input-newpwd, #input-confirmpwd{
+	display: inline-block;
+}
+
+.input-label-acc{
+	width: 160px;
+	display: inline-block;
+}
+#table-syspriv th{
+	vertical-align: top;
+}
+#table-syspriv span.cboxitem{
+	width: 160px !important;
+}
+#op_webdav span.cboxitem{
+	width: 160px !important;
 }

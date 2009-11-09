@@ -35,76 +35,69 @@
 
     <xsl:template match="/document">
         <html>
-            <xsl:call-template name="head_default"/>
+            <xsl:call-template name="head_default">
+								<xsl:with-param name="mode">user</xsl:with-param>
+            </xsl:call-template>
             <body>
                 <xsl:call-template name="header">
                     <xsl:with-param name="noncontent">true</xsl:with-param>
                 </xsl:call-template>
 
-                <table width="100%" cellpadding="2" cellspacing="0" border="0">
-                    <tr>
-                        <td class="bluebg" align="center">
+                <div id="table-container">
+                        <h1 class="bluebg">
                             <xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of
-                                select="$i18n_users/l/Objecttypeprivs"/>
-                        </td>
-                    </tr>
-                    <xsl:call-template name="create_manage_accounts"/>
-                </table>
+                                select="$i18n_users/l/Objecttypeprivs"/></h1>
 
-                <table width="100%" cellpadding="2" cellspacing="0" border="0">
-                    <tr>
-                        <td valign="top" colspan="2" align="center">
-                            <h1><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of
-                                select="$i18n_users/l/Objecttypeprivs"/> - <xsl:value-of select="$name"/></h1>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="top">
+                    <!--<xsl:call-template name="create_manage_accounts"/>-->
+
+
+                           <!-- <h1><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of
+                                select="$i18n_users/l/Objecttypeprivs"/> - <xsl:value-of select="$name"/></h1>-->
+
+												<div id="op_create">
                             <xsl:call-template name="objecttypeprivlist"/>
-                        </td>
-                        <td valign="top">
+                        </div>    
+												<div id="op_webdav">
                             <xsl:call-template name="dav_otprivileges"/>
-                        </td>
-                    </tr>
-                </table>
-                <xsl:call-template name="script_bottom"/>
+                        </div>
+
+                </div>
             </body>
         </html>
     </xsl:template>
 
     <xsl:template name="objecttypeprivlist">
+
         <h2><xsl:value-of select="$i18n_users/l/Objecttypeprivs_objectCreation"/></h2>
         <xsl:if test="/document/objecttypelist/object_type[grantee_id = $name]">
-            <h3>Explicit <xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></h3>
+            <h3><xsl:value-of select="$i18n_users/l/Explicit_pl"/>&#160;<xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></h3>
             <ul>
                 <xsl:apply-templates
                     select="/document/objecttypelist/object_type[grantee_id = $name]" mode="delete"
                 />
             </ul>
         </xsl:if>
-
+				<br/>
         <xsl:if test="/document/objecttypelist/object_type[grantee_id != $name]">
-            <h3>Implicit (Role) <xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></h3>
+            <h3><xsl:value-of select="$i18n_users/l/Implicit_pl"/>&#160;(<xsl:value-of select="$i18n/l/Role"/>) <xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></h3>
             <ul>
                 <xsl:apply-templates
                     select="/document/objecttypelist/object_type[grantee_id != $name]"/>
             </ul>
         </xsl:if>
-
+        
+        <br/>
         <xsl:if test="/document/objecttypelist/object_type[not(can_create)]">
             <h3>
                 <xsl:value-of select="$i18n_users/l/Add_objecttypepriv"/>
             </h3>
-            <form name="create_objecttypepriv" action="{$xims_box}{$goxims_users}" method="GET">
-                <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
-                    name="objtype">
-                    <xsl:apply-templates
-                        select="/document/objecttypelist/object_type[not(can_create)]" mode="option"
-                    />
+            <form name="create_objecttypepriv" action="{$xims_box}{$goxims_users}" method="get">
+            <label for="op-select-ot"><xsl:value-of select="$i18n/l/Objecttype"/> :</label>
+                <select name="objtype" id="op-select-ot">
+                    <xsl:apply-templates select="/document/objecttypelist/object_type[not(can_create)]" mode="option"/>
                 </select>
                 <xsl:text>&#160;</xsl:text>
-                <input type="image" name="addpriv" src="{$sklangimages}create.png" width="65"
-                    height="14" alt="{$i18n/l/Create}" title="{$i18n/l/Create}" border="0"/>
+                <input name="addpriv" type="submit" title="{$i18n/l/Create}" class="ui-state-default ui-corner-all fg-button"><xsl:attribute name="value"><xsl:value-of select="$i18n/l/Create"/></xsl:attribute></input>
                 <input name="objecttypeprivs" type="hidden" value="1"/>
                 <input name="name" type="hidden" value="{$name}"/>
                 <input name="sort-by" type="hidden" value="{$sort-by}"/>
@@ -112,6 +105,7 @@
                 <input name="userquery" type="hidden" value="{$userquery}"/>
             </form>
         </xsl:if>
+        <br/><br/>
     </xsl:template>
 
     <xsl:template match="object_type">
@@ -146,10 +140,12 @@
             </xsl:choose>
         </xsl:variable>
         <li>
-            <xsl:value-of select="$fullname"/>&#160; <a
-                href="{$xims_box}{$goxims}/users?name={$name};objecttypeprivs=1;delpriv=1;grantor_id={grantor_id};object_type_id={@id};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
-                <img src="{$skimages}option_purge.png" border="0" width="37" height="19"
-                    alt="{$l_purge}" title="{$l_purge}"/>
+            <xsl:value-of select="$fullname"/>&#160; 
+            <a class="sprite sprite-option_purge" href="{$xims_box}{$goxims}/users?name={$name};objecttypeprivs=1;delpriv=1;grantor_id={grantor_id};object_type_id={@id};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+							<xsl:attribute name="title"><xsl:value-of select="$i18n/l/purge"/></xsl:attribute>
+                <!--<img src="{$skimages}option_purge.png" border="0" width="37" height="19"
+                    alt="{$l_purge}" title="{$l_purge}"/>-->&#160;
+                    <span><xsl:value-of select="$i18n/l/purge"/></span>
             </a>
         </li>
     </xsl:template>
@@ -176,75 +172,66 @@
         <h2>
             <xsl:value-of select="$i18n_users/l/DAV_OTPrivileges"/>
         </h2>
-        <form name="dav_ot_privs" action="{$xims_box}{$goxims_users}" method="GET">
+        <form name="dav_ot_privs" action="{$xims_box}{$goxims_users}" method="get">
             <input name="objecttypeprivs" type="hidden" value="1"/>
             <input name="name" type="hidden" value="{$name}"/>
             <input name="sort-by" type="hidden" value="{$sort-by}"/>
             <input name="order-by" type="hidden" value="{$order-by}"/>
             <input name="userquery" type="hidden" value="{$userquery}"/>
 
-            <table>
-                <tr>
-                    <td>
-                        <table cellpadding="2" cellspacing="0" border="0">
-                            <tr>
-                                <td>
                                     <span class="cboxitem">
-                                        <input type="checkbox" name="dav_otprivs_Folder">
+                                        <input type="checkbox" name="dav_otprivs_Folder" class="checkbox" id="op-cb-bin">
                                           <xsl:if test="/document/context/user/dav_otprivileges/Folder = 1">
                                             <xsl:attribute name="checked">checked</xsl:attribute>
                                           </xsl:if>
                                         </input>
-                                        <xsl:value-of select="$i18n_users/l/DAV_Container_Binary"/>
+                                        <label for="op-cb-bin"><xsl:value-of select="$i18n_users/l/DAV_Container_Binary"/></label>
                                     </span>
-                                </td>
-                                <td>
+
                                     <span class="cboxitem">
-                                        <input type="checkbox" name="dav_otprivs_Text">
+                                        <input type="checkbox" name="dav_otprivs_Text" class="checkbox" id="op-cb-text">
                                             <xsl:if test="/document/context/user/dav_otprivileges/Text = 1">
                                                 <xsl:attribute name="checked">checked</xsl:attribute>
                                             </xsl:if>
                                         </input>
-                                        <xsl:value-of select="$i18n_users/l/DAV_Text"/>
+                                        <label for="op-cb-text"><xsl:value-of select="$i18n_users/l/DAV_Text"/></label>
                                     </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
+                                <br/>
+                                
                                     <span class="cboxitem">
-                                        <input type="checkbox" name="dav_otprivs_XML">
+                                        <input type="checkbox" name="dav_otprivs_XML" class="checkbox" id="op-cb-xml">
                                            <xsl:if test="/document/context/user/dav_otprivileges/XML = 1">
                                                 <xsl:attribute name="checked">checked</xsl:attribute>
                                             </xsl:if>
                                         </input>
-                                        <xsl:value-of select="$i18n_users/l/DAV_XML"/>
+                                        <label for="op-cb-xml"><xsl:value-of select="$i18n_users/l/DAV_XML"/></label>
                                     </span>
-                                </td>
-                                <td>
+
                                     <span class="cboxitem">
-                                        <input type="checkbox" name="dav_otprivs_Document">
+                                        <input type="checkbox" name="dav_otprivs_Document" class="checkbox" id="op-cb-doc">
                                             <xsl:if test="/document/context/user/dav_otprivileges/Document = 1">
                                                 <xsl:attribute name="checked">checked</xsl:attribute>
                                             </xsl:if>
-                                        </input> Document </span>
-                                </td>
-                            </tr>
+                                        </input> <label for="op-cb-doc">Document</label></span>
+                                <br/>
                             <xsl:call-template name="dav_ot_tr"/>
-                        </table>
-                    </td>
-                </tr>
-            </table>
 
-            <input type="submit" name="dav_otprivs_update" value="Update"/>
+ <br clear="all"/>
+ <br/>
+ <p>
+            <input type="submit" name="dav_otprivs_update" value="Update" class="ui-state-default ui-corner-all fg-button">
+							<xsl:attribute name="value"><xsl:value-of select="$i18n/l/update"></xsl:value-of></xsl:attribute>
+            </input>
+            </p>
         </form>
     </xsl:template>
 
     <xsl:template name="dav_ot_tr">
         <xsl:for-each select="exslt:node-set($non_grouped_davots)/object_type[position() mod 2 = 1]">
-            <tr>
+           
                 <xsl:apply-templates
                     select=". | following-sibling::object_type[position() &lt; 2]" mode="dav"/>
-            </tr>
+             <br/>
         </xsl:for-each>
 
     </xsl:template>
@@ -252,17 +239,17 @@
     <xsl:template match="object_type" mode="dav">
         <xsl:variable name="otxpath"
             select="concat('$root/document/context/user/dav_otprivileges/',name,'=1')"/>
-        <td>
             <span class="cboxitem">
-                <input type="checkbox" name="dav_otprivs_{name}">
+                <input type="checkbox" name="dav_otprivs_{name}" class="checkbox" id="op-cb-{name}">
                     <xsl:if test="dyn:evaluate($otxpath)">
                         <xsl:attribute name="checked">checked</xsl:attribute>
                     </xsl:if>
                 </input>
-                <xsl:value-of select="name"/>
+                <label for="op-cb-{name}"><xsl:value-of select="name"/></label>
             </span>
-        </td>
     </xsl:template>
+    
+    <xsl:template name="title-userpage"><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of select="$i18n/l/Users"/>&#160;<xsl:value-of select="$i18n/l/Roles"/>&#160;</xsl:template>
 
 
 </xsl:stylesheet>

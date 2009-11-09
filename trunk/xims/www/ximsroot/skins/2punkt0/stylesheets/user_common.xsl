@@ -15,14 +15,23 @@
     <xsl:apply-templates select="context/session/user"/>
 </xsl:template>
 
-<!--<xsl:template name="head_default">
-    <head>
-        <title><xsl:value-of select="name" /> - XIMS</title>
-        <xsl:call-template name="css"/>
-        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/userpages.css" type="text/css"/>
-        <xsl:call-template name="script_head"/>
-    </head>
-</xsl:template>-->
+    <xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|status_checked_timestamp" mode="date">
+    <xsl:value-of select="./day"/>
+    <xsl:text>.</xsl:text>
+    <xsl:value-of select="./month"/>
+    <xsl:text>.</xsl:text>
+    <xsl:value-of select="./year"/>
+</xsl:template>
 
-
+    <xsl:template match="last_modification_timestamp|date|lastaccess|creation_timestamp|locked_time|last_publication_timestamp|descendant_last_modification_timestamp|valid_from_timestamp|valid_to_timestamp|status_checked_timestamp" mode="datetime">
+    <xsl:value-of select="./day"/>
+    <xsl:text>.</xsl:text>
+    <xsl:value-of select="./month"/>
+    <xsl:text>.</xsl:text>
+    <xsl:value-of select="./year"/>
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="./hour"/>
+    <xsl:text>:</xsl:text>
+    <xsl:value-of select="./minute"/>
+</xsl:template>
 </xsl:stylesheet>

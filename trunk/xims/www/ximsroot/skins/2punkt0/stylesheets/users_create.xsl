@@ -16,102 +16,72 @@
 
 <xsl:template match="/document">
     <html>
-        <head>
-            <title>
-                <xsl:value-of select="$i18n_users/l/Create_account"/> - XIMS
-            </title>
-            <xsl:call-template name="css"/>
-            <style type="text/css">span.cboxitem { width:180px;}</style>
-        </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+    <xsl:call-template name="head_default"><xsl:with-param name="mode">user</xsl:with-param></xsl:call-template>
+    
+        <body>
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
+        
+        <div id="table-container">
 
-        <form name="userAdd" action="{$xims_box}{$goxims_users}" method="POST">
-        <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-            <tr background="{$skimages}generic_tablebg_1x20.png">
-              <td>&#160;</td>
-            </tr>
-            <tr>
-              <td align="center">
+        <form name="userAdd" action="{$xims_box}{$goxims_users}" method="post">
 
-              <br />
-              <!-- begin widget table -->
-              <table cellpadding="2" cellspacing="0" border="0">
                 <xsl:if test="/document/context/session/warning_msg != ''">
-                    <tr>
-                        <td colspan="2" align="center">
                             <div style="margin-bottom: 5px">
                                 <xsl:call-template name="message"/>
                             </div>
-                        </td>
-                    </tr>
                 </xsl:if>
-                <tr>
-                  <td align="center" class="bluebg" colspan="2"><xsl:value-of select="$i18n_users/l/Create_account"/></td>
-                </tr>
-                <tr>
-                  <td colspan="2"><xsl:call-template name="marked_mandatory"/></td>
-                </tr>
-                <tr>
-                  <td>
-                      <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                      <span class="compulsory"><xsl:value-of select="$i18n/l/Username"/>:</span>
-                  </td>
-                  <td><input size="30" maxlength="30" name="name" type="text" value="{$name}"/></td>
-                </tr>
-                <tr>
-                  <td>
-                      <span><xsl:value-of select="$i18n_users/l/Password"/>:</span>
-                  </td>
-                  <td><input size="30" maxlength="32" name="password1" type="password" value=""/></td>
-                </tr>
-                <tr>
-                  <td>
-                      <span><xsl:value-of select="$i18n_users/l/Confirm_Password"/>:</span>
-                  </td>
-                  <td><input size="30" maxlength="32" name="password2" type="password" value=""/></td>
-                </tr>
 
+                  <h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Create_account"/></h1>
+										<p>
+                  <div class="input-label-acc"><label for="acc-name"> <xsl:value-of select="$i18n/l/Username"/>*:</label></div>
+                  <input size="30" maxlength="30" name="name" type="text" value="{$name}" id="acc-name"/>
+</p><p>
+									<div class="input-label-acc"><label for="acc-pwd"><xsl:value-of select="$i18n_users/l/Password"/>:</label></div>
+                  <input size="30" maxlength="32" name="password1" type="password" value="" id="acc-pwd"/>
+</p><p>
+                   <div class="input-label-acc"><label for="acc-confpwd"><xsl:value-of select="$i18n_users/l/Confirm_Password"/>:</label></div>
+                  <input size="30" maxlength="32" name="password2" type="password" value="" id="acc-confpwd"/>
+</p>
                 <xsl:call-template name="usermeta"/>
+                <br/>
                 <xsl:call-template name="system_privileges"/>
 
-                <tr>
-                  <td><xsl:value-of select="$i18n_users/l/Account_is_Role"/>:</td>
-                  <td>
-                      <input name="object_type" type="radio" value="role">
+<br/>
+                <fieldset>
+                <legend>
+									<div class="input-label-acc"><xsl:value-of select="$i18n_users/l/Account_is_Role"/>:</div></legend>
+                      <input name="object_type" type="radio" value="role" class="radio-button" id="acc-isrole-true">
                         <xsl:if test="$object_type = 'role'">
                           <xsl:attribute name="checked">checked</xsl:attribute>
                         </xsl:if>
-                      </input><xsl:value-of select="$i18n/l/Yes"/>
-                      <input name="object_type" type="radio" value="user">
+                      </input>
+                      <label for="acc-isrole-true"><xsl:value-of select="$i18n/l/Yes"/></label>
+                      <input name="object_type" type="radio" value="user" class="radio-button" id="acc-isrole-false">
                         <xsl:if test="$object_type != 'role'">
                           <xsl:attribute name="checked">checked</xsl:attribute>
                         </xsl:if>
-                      </input><xsl:value-of select="$i18n/l/No"/>
-                  </td>
-                </tr>
+                      </input>
+                      <label for="acc-isrole-false"><xsl:value-of select="$i18n/l/No"/></label>
+                </fieldset>
+                                          
+
 
                 <xsl:call-template name="user_isadmin"/>
                 <xsl:call-template name="account_enabled"/>
-
+<br/>
                 <xsl:call-template name="exitform">
                     <xsl:with-param name="action" select="'create_update'"/>
                 </xsl:call-template>
 
-              </table>
-              <!-- end widget table -->
-              <br />
-
-              </td>
-            </tr>
-        </table>
         </form>
-        <xsl:call-template name="script_bottom"/>
+        </div>
         </body>
     </html>
 </xsl:template>
+
+<xsl:template name="title-userpage"><xsl:value-of select="$i18n_users/l/Create_account"/> - XIMS</xsl:template>
 
 </xsl:stylesheet>
 

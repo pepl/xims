@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="common.xsl"/>
-<xsl:import href="common_header.xsl"/>
+<!--<xsl:import href="common_header.xsl"/>-->
 
 <xsl:variable name="object_type_id">
     <xsl:value-of select="/document/context/object/object_type_id"/>
@@ -30,7 +30,7 @@
         </head>-->
         <body>
         <xsl:call-template name="header">
-          <!--<xsl:with-param name="noncontent">true</xsl:with-param>-->
+          <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
 
 
@@ -40,8 +40,8 @@
 
                 <p><xsl:call-template name="message"/></p>
 <br/><br/>
-                <div>
-                    <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="GET" style="display: inline">
+                <div id="button-forms">
+                    <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="get">
                         <input class="ui-state-default ui-corner-all fg-button" name="obj_acllist" type="submit" value="{$i18n/l/Choose_another_user}"/>
                         <input name="id" type="hidden" value="{@id}"/>
                         <xsl:call-template name="rbacknav"/>
@@ -50,7 +50,6 @@
                        <xsl:call-template name="exitredirectform"/>
             </div>
 </div>
-        <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

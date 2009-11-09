@@ -13,7 +13,7 @@ table {
     border-spacing: 0;
 }
 
-fieldset, img {
+fieldset, img, table {
     border: 0;
 }
 
@@ -58,10 +58,8 @@ input, textarea, select {
     font-weight: inherit;
 }
 
-input, textarea, select { *
-
-font-size:
-    100%;
+input, textarea, select {
+	font-size:100%;
 }
 
 legend {
@@ -177,7 +175,6 @@ p {
 }
 
 pre {
-    visible: false;
     margin: 0;
     font-size: 10pt;
     font-family: "Courier New";
@@ -210,42 +207,20 @@ dd {
 }
 
 a:link {
-    visible: false;
     color: #123853;
 }
 
 a:visited {
-    visible: false;
     color: #123853;
 }
 
 a:hover {
-    visible: false;
     color: #222;
 }
 
 span.pseudolink {
-    visible: false;
     color: #123853;
     text-decoration: underline;
-}
-
-img {
-    border: 0;
-}
-
-img.rightfloat {
-    caption: Float Right;
-    float: right;
-    padding: 10px;
-    padding-right: 0;
-}
-
-img.leftfloat {
-    caption: Float Left;
-    float: left;
-    padding: 10px;
-    padding-left: 0;
 }
 
 caption {
@@ -255,14 +230,7 @@ caption {
     font-weight: bold;
 }
 
-table {
-    border: 0;
-}
-
 th {
-    /*
-background-color: #ced3d6;
-*/
     font-family: helvetica, arial, sans-serif;
     font-size: 10pt;
     padding-left: 2px;
@@ -272,53 +240,6 @@ background-color: #ced3d6;
 td {
     font-family: helvetica, arial, sans-serif;
     font-size: 10pt;
-}
-
-td.grey {
-    background-color: #eee;
-}
-
-td.darkgrey {
-    background-color: #999;
-}
-
-td.orange, td.orange1 {
-    background-color: #feebda;
-}
-
-td.lightorange, td.orange2 {
-    background-color: #fff6ee;
-}
-
-td.darkorange, td.orange3 {
-    background-color: #f98516;
-}
-
-td.blue {
-    background-color: #e1e7ea;
-}
-
-td.darkblue {
-    background-color: #123853;
-}
-
-td.red {
-    background-color: #f9e8e8;
-}
-
-td.darkred {
-    background-color: #dd6e6e;
-}
-
-td.lightblue {
-    visible: false;
-    background-color: #ced3d6;
-    font-family: helvetica, arial, sans-serif;
-    font-size: 10pt;
-    font-weight: bold;
-    border: 1px solid #888;
-    padding-left: 2px;
-    padding-right: 2px;
 }
 
 thead {
@@ -341,58 +262,57 @@ tt {
     font-family: courier;
 }
 
-td.bluebg {
-    visible: false;
-    background-color: #123853;
-    color: #fff;
-}
 h1.bluebg {
-    visible: false;
     background-color: #123853;
     color: #fff;
 	font-size: 12pt;
 }
 h1.redbg {
-    visible: false;
     background-color: maroon;
     color: #fff;
 	font-size: 12pt;
 }
 
+#table-container h1{
+	font-size: 12pt;
+	font-weight: bold;
+}
+#table-container h2{
+	font-size: 12pt;
+	font-weight: bold;
+}
+#table-container h3{
+	font-size: 10pt;
+	font-weight: bold;
+}
+
 td.pathbg {
-    visible: false;
     padding-left: 20px;
     font-family: helvetica, arial, sans-serif;
     font-size: 10pt;
 }
 
 a.nodeco {
-    visible: false;
     text-decoration: none;
 }
 
 a.nodeco:visited {
-    visible: false;
     text-decoration: none;
 }
 
 a.textonlyLink:link {
-    visible: false;
     color: #fff;
 }
 
 a.textonlyLink:visited {
-    visible: false;
     color: #fff;
 }
 
 a.textonlyLink:hover {
-    visible: false;
     color: #ccc;
 }
 
 p.printzitat {
-    visible: false;
     margin-top: 8px;
     margin-bottom: 8px;
     margin-left: 8px;
@@ -411,7 +331,6 @@ p.printzitat {
 }
 
 td.links {
-    visible: false;
     padding-left: 3px;
     vertical-align: top;
     line-height: 120%;
@@ -428,7 +347,6 @@ input.qsfield {
 }
 
 .stdlinks {
-    visible: false;
     width: 128px;
     margin-top: 10px;
     padding-top: 4px;
@@ -441,7 +359,6 @@ input.qsfield {
 }
 
 .deptlinks {
-    visible: false;
     width: 128px;
     margin-top: 10px;
     padding-top: 4px;
@@ -454,7 +371,6 @@ input.qsfield {
 }
 
 .documentlinks {
-    visible: false;
     width: 128px;
     margin-top: 10px;
     padding-top: 4px;
@@ -498,10 +414,6 @@ div.section {
     padding-left: 6px;
 }
 
-div.footer-nav {
-    border-top: 1px solid #ccc;
-}
-
 div.legal {
     /*
 float: right;
@@ -509,13 +421,7 @@ float: right;
 	text-align:right;
 }
 
-div.footer {
-    visible: false;
-    margin-top: 24px;
-}
-
 .metafooter {
-    visible: false;
     color: #a9a9a9;
     font-family: helvetica, arial, sans-serif;
     font-size: 8pt;
@@ -524,227 +430,25 @@ div.footer {
 }
 
 p.copy {
-    visible: false;
     color: #a9a9a9;
     font-size: 8pt;
     margin-top: 8px;
     text-align: center;
 }
 
-li.linklist, ul.linklist {
-    equivClass: DFLists;
-    caption: Link List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_SymbolicLink.gif");
-    text-indent: -5px;
-}
-
-li.externallinklist, ul.externallinklist, li.list_URL {
-    equivClass: DFLists;
-    caption: External Link List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_URL.gif");
-    text-indent: -5px;
-}
-
-li.documentlist, ul.documentlist {
-    equivClass: DFLists;
-    caption: Document List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_HTML.gif");
-    text-indent: -5px;
-}
-
-li.list_HTML {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_HTML.gif");
-    text-indent: -5px;
-}
-
-li.pdflist, ul.pdflist {
-    equivClass: DFLists;
-    caption: PDF List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_PDF.gif");
-    text-indent: -5px;
-}
-
-li.list_PDF {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_PDF.gif");
-    text-indent: -5px;
-}
-
-li.wordlist, ul.wordlist {
-    equivClass: DFLists;
-    caption: MS-Word List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_DOC.gif");
-    text-indent: -5px;
-}
-
-li.wordlist, li.list_DOC, ul.wordlist {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_DOC.gif");
-    text-indent: -5px;
-}
-
-li.excellist, ul.excellist {
-    equivClass: DFLists;
-    caption: MS-Excel List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_XLS.gif");
-    text-indent: -5px;
-}
-
-li.list_XLS {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_XLS.gif");
-    text-indent: -5px;
-}
-
-li.pptlist, ul.pptlist {
-    equivClass: DFLists;
-    caption: MS-Powerpoint List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_PPT.gif");
-    text-indent: -5px;
-}
-
-li.list_PPT {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_PPT.gif");
-    text-indent: -5px;
-}
-
-li.folderlist, ul.folderlist {
-    equivClass: DFLists;
-    caption: Folder List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_Container.gif");
-    text-indent: -5px;
-}
-
-li.list_Container {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_Container.gif");
-    text-indent: -5px;
-}
-
-li.bulletlist, ul.bulletlist {
-    equivClass: DFLists;
-    caption: Bullet List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_bullet.gif");
-    text-indent: -5px;
-}
-
-li.arrowlist, ul.arrowlist {
-    equivClass: DFLists;
-    caption: Arrow List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_arrow.gif");
-    text-indent: -5px;
-}
-
-li.imagelist, ul.imagelist {
-    equivClass: DFLists;
-    caption: Image List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_PNG.gif");
-    text-indent: -5px;
-}
-
-li.list_GIF, li.list_PNG, li.list_JPG, li.list_TIFF {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_PNG.gif");
-    text-indent: -5px;
-}
-
-li.sdocbooklist, ul.sdocbooklist {
-    equivClass: DFLists;
-    caption: sDocBook List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_sDocBookXML.gif");
-    text-indent: -5px;
-}
-
-li.list_sDocBookXML {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_sDocBookXML.gif");
-    text-indent: -5px;
-}
-
-li.list_AXPML {
-    equivClass: DFLists;
-    visible: false;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_AXPML.gif");
-    text-indent: -5px;
-}
-
-li.emaillist, ul.emaillist {
-    equivClass: DFLists;
-    caption: Email List;
-    padding-left: 8px;
-    line-height: 150%;
-    list-style-image: url("/ximsroot/images/icons/list_Email.gif");
-    text-indent: -5px;
-}
-
 .forumbox {
-    visible: false;
     border: 1px solid #888;
     padding-left: 2px;
     padding-right: 2px;
 }
 
 .forumhead {
-    visible: false;
     background-color: #ced3d6;
     font-family: helvetica, arial, sans-serif;
     font-size: 10pt;
 }
 
 .forumcontent {
-    visible: false;
     vertical-align: top;
     font-family: helvetica, arial, sans-serif;
     font-size: 10pt;
@@ -757,7 +461,6 @@ li.emaillist, ul.emaillist {
 }
 
 .foruminput {
-    visible: false;
     border-top: #333 solid 1px;
     border-bottom: #333 solid 1px;
     border-right: #333 solid 1px;
@@ -767,7 +470,6 @@ li.emaillist, ul.emaillist {
 }
 
 .documenttitle {
-    visible: false;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 6px;
@@ -776,7 +478,6 @@ li.emaillist, ul.emaillist {
 }
 
 .documentquote {
-    visible: false;
     margin-top: 6px;
     margin-bottom: 6px;
     margin-left: 6px;
@@ -796,108 +497,47 @@ li.emaillist, ul.emaillist {
 }
 
 .marginless {
-    visible: false;
     margin-bottom: 0;
     margin-top: 0;
     margin-left: 0;
     margin-right: 0;
 }
-.0left10top {
-
-visible:false;
-
-margin-left:
-    0;
-
-margin-top:
-    10px;
-}
-.10left {
-
-visible:false;
-
-margin-left:
-    10px;
-}
 
 .deptlink {
-    visible: false;
     margin-bottom: 0;
     padding-bottom: 8px;
 }
 
 .documentlink {
-    visible: false;
     margin-bottom: 0;
     padding-bottom: 8px;
 }
 
 .stdlink {
-    visible: false;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
 a.doclink {
-    visible: false;
     text-decoration: none;
 }
 
 a.doclink:visited {
-    visible: false;
     text-decoration: none;
-}
-
-a.logout {
-    visible: false;
-    color: maroon;
-    text-decoration: none;
-}
-
-a.logout:visited {
-    visible: false;
-    color: maroon;
-    text-decoration: none;
-}
-
-a.headerlink:link {
-    visible: false;
-    color: #fff;
-}
-
-a.headerlink:visited {
-    visible: false;
-    color: #fff;
-}
-
-a.headerlink:hover {
-    visible: false;
-    color: #ccc;
 }
 
 div.edit {
-/*
-    visible: false;
-    background-color: #ced3d6;
-    border: 1px solid;
-    padding: 5px 1px 1px 1px;
-    margin-top: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-*/
 	background-color: #808080;
 	width: 100%;
 }
-
-p.bodyfollow {
-    caption: First Line Indent;
-    font-family: helvetica, arial, sans-serif;
-    font-size: 10pt;
-    text-indent: 10pt;
+#op_create{
+	float: left;
+}
+#op_webdav{
+	float: right;
 }
 
 p.blockquote {
-    caption: Blockquote;
     font-family: helvetica, arial, sans-serif;
     font-size: 9pt;
     padding-left: 20pt;
@@ -905,69 +545,23 @@ p.blockquote {
     text-align: justify;
 }
 
-p.footertext {
-    visible: false;
-    caption: Footer;
-    font-family: helvetica, arial, sans-serif;
-    font-size: 8pt;
-    padding-left: 10pt;
-}
-
-input.text, input.readonlytext {
-    visible: false;
-    border-top: #333 solid 1px;
-    border-bottom: #333 solid 1px;
-    border-right: #333 solid 1px;
-    border-left: #333 solid 1px;
-    font-size: 10pt;
-    font-family: verdana, helvetica, sans-serif;
-}
-
 input.readonlytext {
     background-color: #ccc;
 }
 
-textarea.text {
-    visible: false;
-    border-top: #333 solid 1px;
-    border-bottom: #333 solid 1px;
-    border-right: #333 solid 1px;
-    border-left: #333 solid 1px;
+textarea.text, input.text, input.readonlytext  {
+    border: #333 solid 1px;
     font-size: 10pt;
     font-family: verdana, helvetica, sans-serif;
 }
 
-input.control {
-    visible: false;
-    background-color: #b1b5b8;
-    margin-left: 5px;
-    border-top: #333 solid 1px;
-    border-bottom: #333 solid 1px;
-    border-right: #333 solid 1px;
-    border-left: #333 solid 1px;
-    font-family: verdana, helvetica, sans-serif;
-}
-
 .pathinfo {
-    visible: false;
     height: 20px;
     background-color: #eee;
     padding-left: 10px;
 }
 
-table.footer {
-    visible: false;
-    width: 98.7%;
-    border: 1px solid #c0c0c0;
-    color: #000;
-    background: #eee;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    padding: .5px;
-}
-
 .error_msg {
-    visible: false;
     background-color: maroon;
     color: white;
     border: 1px solid;
@@ -976,7 +570,6 @@ table.footer {
 }
 
 .warning_msg {
-    visible: false;
     background-color: yellow;
     color: black;
     border: 1px solid;
@@ -985,7 +578,6 @@ table.footer {
 }
 
 .message {
-    visible: false;
     background-color: green;
     color: white;
     border: 0 solid;
@@ -1002,25 +594,18 @@ table.footer {
 }
 
 .compulsory {
-    visible: false;
     color: maroon;
 }
 
 .highlighted {
-    equivClass: Louds;
-    caption: Highlighted;
     background-color: yellow;
 }
 
 .important {
-    equivClass: Louds;
-    caption: Important;
     color: #dd6e6e;
 }
 
 .warning {
-    equivClass: Louds;
-    caption: Warning;
     font-weight: bold;
     color: black;
     background-color: yellow;
@@ -1029,7 +614,6 @@ table.footer {
 }
 
 .action {
-    visible: false;
     background-color: #ced3d6;
     border: #000 1px solid;
     padding: 10px;
@@ -1037,10 +621,6 @@ table.footer {
 }
 
 span.cboxitem {
-    visible: false;
-    /*
-background-color: #eee;
-*/
     border-color: silver;
     border-width: 1px 1px 1px 1px;
     border-style: solid;
@@ -1069,853 +649,12 @@ background-color: #eee;
     color: #103852;
 }
 
-p.MsoNormal, li.MsoNormal, div.MsoNormal {
-    visible: false;
-    localeRef: mnuNorm;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoHeading7, li.MsoHeading7, div.MsoHeading7 {
-    visible: false;
-    margin-top: 12.0pt;
-    margin-right: 0;
-    margin-bottom: 3.0pt;
-    margin-left: 0;
-    font-size: 12.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoHeading8, li.MsoHeading8, div.MsoHeading8 {
-    visible: false;
-    margin-top: 12.0pt;
-    margin-right: 0;
-    margin-bottom: 3.0pt;
-    margin-left: 0;
-    font-size: 12.0pt;
-    font-family: helvetica, arial, sans-serif;
-    font-style: italic;
-}
-
-p.MsoHeading9, li.MsoHeading9, div.MsoHeading9 {
-    visible: false;
-    margin-top: 12.0pt;
-    margin-right: 0;
-    margin-bottom: 3.0pt;
-    margin-left: 0;
-    font-size: 11.0pt;
-    font-family: Arial;
-}
-
-p.MsoIndex1, li.MsoIndex1, div.MsoIndex1 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 10.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex2, li.MsoIndex2, div.MsoIndex2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 20.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex3, li.MsoIndex3, div.MsoIndex3 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 30.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex4, li.MsoIndex4, div.MsoIndex4 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 40.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex5, li.MsoIndex5, div.MsoIndex5 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 50.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex6, li.MsoIndex6, div.MsoIndex6 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 60.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex7, li.MsoIndex7, div.MsoIndex7 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 70.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex8, li.MsoIndex8, div.MsoIndex8 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 80.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex9, li.MsoIndex9, div.MsoIndex9 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 1.25in;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc1, li.MsoToc1, div.MsoToc1 {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc2, li.MsoToc2, div.MsoToc2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 10.0pt;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc3, li.MsoToc3, div.MsoToc3 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 20.0pt;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc4, li.MsoToc4, div.MsoToc4 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 30.0pt;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc5, li.MsoToc5, div.MsoToc5 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 40.0pt;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc6, li.MsoToc6, div.MsoToc6 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 50.0pt;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc7, li.MsoToc7, div.MsoToc7 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 60.0pt;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc8, li.MsoToc8, div.MsoToc8 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 70.0pt;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc9, li.MsoToc9, div.MsoToc9 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 80.0pt;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoNormalIndent, li.MsoNormalIndent, div.MsoNormalIndent {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .5in;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoFootnoteText, li.MsoFootnoteText, div.MsoFootnoteText {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoCommentText, li.MsoCommentText, div.MsoCommentText {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoHeader, li.MsoHeader, div.MsoHeader {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoFooter, li.MsoFooter, div.MsoFooter {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndexHeading, li.MsoIndexHeading, div.MsoIndexHeading {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: Arial;
-    font-weight: bold;
-}
-
-p.MsoCaption, li.MsoCaption, div.MsoCaption {
-    visible: false;
-    localeRef: mnuCapt;
-    margin-top: 6.0pt;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: 0;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-    font-weight: bold;
-}
-
-p.MsoTof, li.MsoTof, div.MsoTof {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 20.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -20.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoEnvelopeAddress, li.MsoEnvelopeAddress, div.MsoEnvelopeAddress {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 2.0in;
-    margin-bottom: .0001pt;
-    font-size: 12.0pt;
-    font-family: Arial;
-}
-
-p.MsoEnvelopeReturn, li.MsoEnvelopeReturn, div.MsoEnvelopeReturn {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: Arial;
-}
-
-span.MsoFootnoteReference {
-    visible: false;
-    vertical-align: super;
-}
-
-span.MsoEndnoteReference {
-    visible: false;
-    vertical-align: super;
-}
-
-p.MsoEndnoteText, li.MsoEndnoteText, div.MsoEndnoteText {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToa, li.MsoToa, div.MsoToa {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 10.0pt;
-    margin-bottom: .0001pt;
-    text-indent: -10.0pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoMacroText, li.MsoMacroText, div.MsoMacroText {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: "Courier New";
-}
-
-p.MsoToaHeading, li.MsoToaHeading, div.MsoToaHeading {
-    visible: false;
-    margin-top: 6.0pt;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-bottom: .0001pt;
-    font-size: 12.0pt;
-    font-family: Arial;
-    font-weight: bold;
-}
-
-p.MsoList, li.MsoList, div.MsoList {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .25in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet, li.MsoListBullet, div.MsoListBullet {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .25in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber, li.MsoListNumber, div.MsoListNumber {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .25in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoList2, li.MsoList2, div.MsoList2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .5in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoList3, li.MsoList3, div.MsoList3 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .75in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoList4, li.MsoList4, div.MsoList4 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 1.0in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoList5, li.MsoList5, div.MsoList5 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 1.25in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet2, li.MsoListBullet2, div.MsoListBullet2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .5in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet3, li.MsoListBullet3, div.MsoListBullet3 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .75in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet4, li.MsoListBullet4, div.MsoListBullet4 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 1.0in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet5, li.MsoListBullet5, div.MsoListBullet5 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 1.25in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber2, li.MsoListNumber2, div.MsoListNumber2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .5in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber3, li.MsoListNumber3, div.MsoListNumber3 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .75in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber4, li.MsoListNumber4, div.MsoListNumber4 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 1.0in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber5, li.MsoListNumber5, div.MsoListNumber5 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 1.25in;
-    margin-bottom: .0001pt;
-    text-indent: -.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoTitle, li.MsoTitle, div.MsoTitle {
-    visible: false;
-    localeRef: mnuTtl;
-    margin-top: 12.0pt;
-    margin-right: 0;
-    margin-bottom: 3.0pt;
-    margin-left: 0;
-    text-align: center;
-    font-size: 16.0pt;
-    font-family: Arial;
-    font-weight: bold;
-}
-
-p.MsoClosing, li.MsoClosing, div.MsoClosing {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 3.0in;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoSignature, li.MsoSignature, div.MsoSignature {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 3.0in;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyText, li.MsoBodyText, div.MsoBodyText {
-    visible: false;
-    localeRef: mnuBT;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: 0;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: .25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue, li.MsoListContinue, div.MsoListContinue {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: .25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue2, li.MsoListContinue2, div.MsoListContinue2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: .5in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue3, li.MsoListContinue3, div.MsoListContinue3 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: .75in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue4, li.MsoListContinue4, div.MsoListContinue4 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: 1.0in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue5, li.MsoListContinue5, div.MsoListContinue5 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: 1.25in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoMessageHeader, li.MsoMessageHeader, div.MsoMessageHeader {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: .75in;
-    margin-bottom: .0001pt;
-    text-indent: -.75in;
-    background: #CCC;
-    border: none;
-    padding: 0;
-    font-size: 12.0pt;
-    font-family: Arial;
-}
-
-p.MsoSubtitle, li.MsoSubtitle, div.MsoSubtitle {
-    visible: false;
-    localeRef: mnuSttl;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 3.0pt;
-    margin-left: 0;
-    text-align: center;
-    font-size: 12.0pt;
-    font-family: Arial;
-}
-
-p.MsoSalutation, li.MsoSalutation, div.MsoSalutation {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoDate, li.MsoDate, div.MsoDate {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextFirstIndent, li.MsoBodyTextFirstIndent, div.MsoBodyTextFirstIndent {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: 0;
-    text-indent: 10.5pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextFirstIndent2, li.MsoBodyTextFirstIndent2, div.MsoBodyTextFirstIndent2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: .25in;
-    text-indent: 10.5pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoNoteHeading, li.MsoNoteHeading, div.MsoNoteHeading {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyText2, li.MsoBodyText2, div.MsoBodyText2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: 0;
-    line-height: 200%;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyText3, li.MsoBodyText3, div.MsoBodyText3 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: 0;
-    font-size: 8.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextIndent2, li.MsoBodyTextIndent2, div.MsoBodyTextIndent2 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: .25in;
-    line-height: 200%;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextIndent3, li.MsoBodyTextIndent3, div.MsoBodyTextIndent3 {
-    visible: false;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 6.0pt;
-    margin-left: .25in;
-    font-size: 8.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBlockText, li.MsoBlockText, div.MsoBlockText {
-    visible: false;
-    margin-top: 0;
-    margin-right: 1.0in;
-    margin-bottom: 6.0pt;
-    margin-left: 1.0in;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    background: navy;
-    font-size: 10.0pt;
-    font-family: Tahoma;
-}
-
-p.MsoPlainText, li.MsoPlainText, div.MsoPlainText {
-    visible: false;
-    localeRef: mnuPlainT;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: "Courier New";
-}
-
-p.MsoAutoSig, li.MsoAutoSig, div.MsoAutoSig {
-    visible: false;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.H4, li.H4, div.H4 {
-    visible: false;
-    mso-style-name: H4;
-    margin: 0;
-    margin-bottom: .0001pt;
-    font-size: 20.0pt;
-    font-family: "Century Gothic";
-}
 @page Section1 {
-
-visible:false;
-
-size:
-    8.5in 11.0in;
-
-margin:
-    1.0in 1.25in 1.0in 1.25in;
+	size: 8.5in 11.0in;
+	margin: 1.0in 1.25in 1.0in 1.25in;
 }
 
 div.Section1 {
-    visible: false;
     page: Section1;
 }
 
@@ -1931,10 +670,9 @@ em {
 /*
 url for sprite image
 */
-#titlelogo, #header-logo, #subheader, .sprite-spacer, .sprite-status-spacer, .sprite-del-spacer, .sprite-status_pub, .sprite-status_pub_async, .sprite-new, .sprite-list, .sprite-option {
+#titlelogo, #header-logo, #subheader, .sprite-spacer, .sprite-status-spacer, .sprite-del-spacer, .sprite-status_pub, .sprite-status_pub_async, .sprite-new, .sprite-list, .sprite {
     background: url(/ximsroot/skins/default/images/sprite.gif);
 }
-
 
 #titlelogo {
 	background-repeat: repeat-x;
@@ -1946,7 +684,7 @@ url for sprite image
 }
 
 #header-logo{
-    background-repeat: no-repeat top left;
+    background-repeat: no-repeat;
     background-position: 0 -521px;
     padding: 0;
     width: 50px;
@@ -2045,14 +783,9 @@ url for sprite image
 	left:0 !important;
 }
 
-/*
-#sh-search button span.text{
-	margin-left:15px;
-}
-*/
 
 #subheader {
-	background-repeat: repeat-x top left;
+	background-repeat: repeat-x;
     background-position: 0 -860px;
     height: 42px;
     clear: both;
@@ -2077,10 +810,6 @@ url for sprite image
 }
 
 #navup {
-    /*
-     background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
-     background-position: 0 -902px;
-     */
     width: 41px;
     text-align: left;
 }
@@ -2090,11 +819,9 @@ url for sprite image
     text-align: left;
 }
 
-
 #navback img, #navup img, #navfwd img { 
 	margin-top: 7px;
 }
-
 
 #main-content {
     background-color: #808080;
@@ -2135,7 +862,6 @@ url for sprite image
 
 #table-container {
     background-color: #FFFFFF;
-    width: *; /*98.7%; /*100%;*/
 	clear:both;
 	padding:12px;
 	margin: 0px 10px 10px 10px;
@@ -2143,13 +869,6 @@ url for sprite image
 .edit #table-container{
 	background-color: #CED3D6 !important;
 }
-/*
-.edit h1{
-	font-size: 12pt;
-	margin: 0 5px 0 5px;
-	font-weight: bold;
-}
-*/
 
 #create-edit-form div{
 	margin-top: 10px;
@@ -2179,17 +898,7 @@ url for sprite image
 	display: inline;
 	margin:0px; 
 }
-/*
-div#confirm-dialog{
-	margin: 0 auto;
-	width: 450px;
-}
-*/
-/*
-.publish-dialog div#confirm-buttons{
-	text-align: center;
-}
-*/
+
 .publish-dialog .checkbox{
 	float: right;
 	text-align: right;
@@ -2200,9 +909,6 @@ div#confirm-dialog{
 }
 .publish-dialog div{
 	clear: both;
-	/*
-margin-bottom:10px;
-*/
 	padding-bottom: 10px;
 }
 
@@ -2316,17 +1022,8 @@ div.help-widget, div.menu-widget{
 #linksanno {
 	border:thin solid #C1C1C1;
 	padding:2px;
-	/*
-clear: both;
-    clear:both;
-	width: 100%;
-	border: 1px solid #C0C0C0;
-*/
 }
 #links{
-	/*
-float:left;
-*/
 	width: 50%;
 	height: 100%;
 	border: 1px solid #C0C0C0;
@@ -2340,9 +1037,6 @@ float:left;
 #add-link{
 	display:inline;
 	margin-top: 5px;
-/*
-	float:right;
-*/
 }
 #link-list {
     clear: both;
@@ -2397,18 +1091,6 @@ table.footer td {
     padding: 1px 2px 2px 2px;
 }
 
-/*
-div.edit {
-    padding: 5px;
-}
-*/
-
-/*
-div.edit input, div.edit textarea {
-    margin: 2px 5px 3px 2px;
-}
-*/
-
 td.bluebg {
     padding: 2px;
 }
@@ -2428,15 +1110,9 @@ margin-top: 5px;
 }
 
 #metadata-options {
-/*
-    width: 100%;
-*/
 	margin-top: 5px;
 	border:thin solid #C1C1C1;
 	background: #F9F9F9;
-/*
-	font-size:small;
-*/
 	padding:2px;
 	clear: both;
 }
@@ -2613,7 +1289,6 @@ a.create-widget {
     display: table-cell;
     white-space: nowrap;
     text-align: right;
-    width: 150;
 }
 
 #tab-title {
@@ -2954,11 +1629,6 @@ img.news-image{
 	clear:both;
 }
 
-/*
-textarea#body{
-	width: 100%; 
-}
-*/
 textarea#input-abstract, textarea#input-lead, textarea#input-image-description, textarea#input-description{
 	font-family: 'Courier New','Verdana'; 
 	font-size: 10pt; 
@@ -3073,9 +1743,8 @@ select#xims_wysiwygeditor{
     cursor: pointer;
     position: relative;
     text-align: left;
-    zoom: 1;
+    display:inline-block;
     padding-right: 2.1em !important;
-    width:
 }
 
 .th-icon-right .ui-icon {
@@ -3187,9 +1856,6 @@ tr.objrow, tr.objrow td {
     cursor: pointer;
     position: relative;
     text-align: left;
-    /*
-zoom: 1;
-*/
 	display: inline-block;
 }
 
@@ -3213,13 +1879,13 @@ button.fg-button, input.fg-button {
 
 .fg-button:focus, .fg-button:hover,.fg-button:active{
 	border: 1px solid #999999; 
-	background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x; 
+	background: #dadada url("/ximsroot/jquery/themes/smoothness/images/ui-bg_glass_75_dadada_1x400.png") 50% 50% repeat-x;
 	font-weight: normal; 
 	color: #212121; 
 	outline: none;
 }
 .fg-button:focus ui-icon, .fg-button:hover ui-icon, .fg-button:active ui-icon{
-background-image: url(images/ui-icons_454545_256x240.png); 
+background-image: url("/ximsroot/jquery/themes/smoothness/images/ui-icons_454545_256x240.png"); 
 }
 
 /* removes extra button width in IE */
@@ -3251,7 +1917,7 @@ background-image: url(images/ui-icons_454545_256x240.png);
 
 /* solo icon buttons must have block properties for the text-indent to work */
 .fg-button.ui-state-loading .ui-icon {
-    background: url(spinner_bar.gif) no-repeat 0 0;
+    background: url("/ximsroot/jquery/fg-menu/spinner_bar.gif") no-repeat 0 0;
 }
 
 .ui-icon {
@@ -3263,117 +1929,11 @@ background-image: url(images/ui-icons_454545_256x240.png);
 	float: none !important; 
 }
 
-
-#accordion{
-	width:800px;
-}
-
-#accordion a{
-	display: block !important;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-#accordion div{
-		display: none;
-	}
-
-#accordion span.text{
-		margin-left: 20px;
-	}
-
 #tabs {
     width: 98.7%;
     margin-right: 5px;
     margin-left: 5px;
 }
-
-div#xims_ilp {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -165px;
-    height: 180px;
-    width: 330px;
-    z-index: 150;
-    background-color: White;
-    border: 2px solid #333;
-}
-
-div#xims_ilp_windowbg div#xims_ilp_winlabel div#xims_ilp_close {
-    border-left: 1px solid #333;
-    color: Black;
-    text-align: center;
-    vertical-align: middle;
-    font-weight: bold;
-    font-size: .8em;
-    float: right;
-    display: inline;
-    padding: 2px;
-    cursor: pointer;
-}
-
-#xims_ilp_windowbg {
-    border-bottom: 2px solid #333;
-    background-color: #CED3D6;
-}
-
-#xims_ilp_winlabel {
-    display: inline;
-    left: 0;
-    color: Maroon;
-    font-weight: bold;
-    text-align: center;
-    padding: 5px 2px;
-}
-
-#xims_ilp_content {
-    padding: 10px;
-    clear: both;
-    overflow: auto;
-}
-
-#xims_ilp_fadebg {
-    display: none;
-    background-color: #EEE;
-    position: absolute;
-    z-index: 100;
-    overflow: hidden;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    filter: alpha( opacity = 80);
-
--moz-opacity:
-    .80;
-
--khtml-opacity:
-    .80;
-
-opacity:
-    .80;
-}
-
-#xims_ilp_fadebg iframe {
-    display: none;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    filter: mask();
-
-width:
-    3000px;
-
-height:
-    3000px;
-}
-
-
 
 /*
 .sprite-navback {
@@ -3409,7 +1969,7 @@ height:
 */
 
 .sprite-list {
-    background-repeat: no-repeat top left;
+    background-repeat: no-repeat;
     padding: 1px 0 0 20px;
     margin-left: 12px;
 }
@@ -3493,7 +2053,7 @@ height:
     background-position: -37px -162px;
 }
 .sprite-list_SimpleDB {
-    background-position: -37px -144x;
+    background-position: -37px -144px;
 }
 .sprite-list_SiteRoot {
     background-position: -37px -126px;
@@ -3533,8 +2093,8 @@ height:
 }
 
 
-.sprite-option{
-	background-repeat: no-repeat top left;
+.sprite{
+	background-repeat: no-repeat;
 	padding: 0 0 0 20px;
     text-decoration: none;
 	display:inline-block;
@@ -3542,17 +2102,17 @@ height:
 }
 
 .sprite-spacer {
-    background-repeat: no-repeat top left;
+    background-repeat: no-repeat;
 	padding: 0 0 0 20px;
 	display:inline-block;
 }
 .sprite-status-spacer {
-	background-repeat: no-repeat top left;
+	background-repeat: no-repeat;
     padding: 0 0 0 22px;
 	display:inline-block;
 }
 .sprite-del-spacer {
-	background-repeat: no-repeat top left;
+	background-repeat: no-repeat;
     padding: 0 0 0 28px; 
 	display:inline-block;
 }
@@ -3598,30 +2158,21 @@ height:
     background-position: 0 -640px;
 }
 
-/*
-.sprite-option_edit:focus, .sprite-option_copy:focus, .sprite-option_move:focus, .sprite-option_acl:focus, .sprite-option_purge:focus, .sprite-option_delete:focus, .sprite-option_undelete:focus, .sprite-option_pub:focus, .sprite-status_pub:focus, .sprite-status_pub_async:focus, .sprite-new:focus, .sprite-navback:focus, .sprite-navup:focus, .sprite-navfwd:focus {
 
-*/
-.sprite-option:focus {
+.sprite:focus, .sprite:hover {
     z-index: 25;
 	cursor: pointer;
 }
 
-/*
-.sprite-option_edit span, .sprite-option_copy span, .sprite-option_move span, .sprite-option_acl span, .sprite-option_undelete span, .sprite-option_pub span, .sprite-status_pub span, .sprite-status_pub_async span, .sprite-new span, .sprite-navback span, .sprite-navup span, .sprite-navfwd span {
-*/
-.sprite-option span{
+.sprite span{
     /* display: none; */
     position: absolute;
     top: 0;
     left: -9999em;
     /* text-indent: 999px; */
 }
-
-/*
-.sprite-option_edit:focus span, .sprite-option_copy:focus span, .sprite-option_move:focus span, .sprite-option_acl:focus span, .sprite-option_undelete:focus span, .sprite-option_pub:focus span, .sprite-status_pub_async:focus span, .sprite-status_pub:focus span {
-*/    
-.sprite-option:focus span{
+    
+.sprite:focus span, .sprite:hover span{
 	display: block;
     position: absolute;
     top: 2em;

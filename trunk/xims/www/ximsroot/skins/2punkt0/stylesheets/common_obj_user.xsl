@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <xsl:import href="common.xsl"/>
-    <xsl:import href="common_header.xsl"/>
+    <!--<xsl:import href="common_header.xsl"/>-->
 
     <xsl:param name="userid"/>
     <xsl:param name="newgrant"/>
@@ -18,24 +18,18 @@
     <xsl:template match="/document/context/object">
         <html>
         <xsl:call-template name="head_default">
-        <xsl:with-param name="mode">mg-acl</xsl:with-param>
+					<xsl:with-param name="mode">mg-acl</xsl:with-param>
         </xsl:call-template>
-            <!--<head>
-                <title><xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>' - XIMS</title>
-                <xsl:call-template name="css"/>
-            </head>-->
             <body>
                 <xsl:call-template name="header"/>
                 <xsl:apply-templates select="/document/context/user"/>
-                <xsl:call-template name="script_bottom"/>
             </body>
         </html>
     </xsl:template>
 
    <xsl:template match="/document/context/user">
    <div id="table-container">
-     <!--<form id="objAcl" action="{$xims_box}{$goxims_content}" method="GET">-->
-     <form action="{$xims_box}{$goxims_content}" method="GET">
+     <form action="{$xims_box}{$goxims_content}" method="get">
 
                 <h1 class="bluebg">
                   <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>'

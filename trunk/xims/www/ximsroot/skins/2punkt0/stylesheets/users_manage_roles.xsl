@@ -16,29 +16,22 @@
 
 <xsl:template match="/document">
     <html>
-        <head>
-            <title>
-                <xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>' - XIMS
-            </title>
-            <xsl:call-template name="css"/>
-        </head>
+    <xsl:call-template name="head_default">
+			<xsl:with-param name="mode">user</xsl:with-param>
+    </xsl:call-template>
+
         <body>
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
 
-        <br/>
-        <table align="center" colspan="2" cellpadding="2" cellspacing="0" border="0">
-          <tr>
-            <td align="center" class="bluebg"><xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'</td>
-          </tr>
-          <tr>
-            <td>
-                <a href="{$xims_box}{$goxims_users}?name={$name};grant_role=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<a href="{$xims_box}{$goxims_users}?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/go_back"/></a>
-            </td>
-          </tr>
-        </table>
-
+					<div id="table-container">
+            <h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'</h1>
+							
+							<p>
+									<a href="{$xims_box}{$goxims_users}?name={$name};grant_role=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<a href="{$xims_box}{$goxims_users}?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/go_back"/></a>
+									</p>
+				<p>
         <xsl:choose>
             <xsl:when test="$explicit_only = '1'">
                 <a href="{$xims_box}{$goxims_users}?name={$name};manage_roles=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Show_implicitly_granted"/></a>
@@ -47,9 +40,9 @@
                 <a href="{$xims_box}{$goxims_users}?name={$name};manage_roles=1;explicit_only=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Show_explicitly_granted"/></a>
             </xsl:otherwise>
         </xsl:choose>
-        <br/><br/>
+        </p><br/>
         <xsl:apply-templates select="userlist"/>
-        <xsl:call-template name="script_bottom"/>
+        </div>
         </body>
     </html>
 
@@ -63,6 +56,10 @@
         </xsl:if>
     </td>
     <!-- end options bar -->
+</xsl:template>
+
+<xsl:template name="title-userpage">
+<xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>' - XIMS
 </xsl:template>
 
 </xsl:stylesheet>

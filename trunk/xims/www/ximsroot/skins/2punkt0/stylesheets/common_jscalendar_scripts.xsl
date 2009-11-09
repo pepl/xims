@@ -13,7 +13,7 @@
     <!-- The DHTML / JavaScript Calendar © Dynarch.com, 2003-2005
          http://www.dynarch.com/projects/calendar/
     -->
-    <link rel="stylesheet" type="text/css" media="all" href="{$ximsroot}jscalendar-1.0/calendar-blue.css" title="winter" />
+    <!--<link rel="stylesheet" type="text/css" media="all" href="{$ximsroot}jscalendar-1.0/calendar-blue.css" title="winter" />-->
     <script type="text/javascript" src="{$ximsroot}jscalendar-1.0/calendar.js"><xsl:text>&#160;</xsl:text></script>
     <script type="text/javascript">
         <xsl:attribute name="src">
@@ -31,6 +31,6 @@
         </xsl:attribute>
         <xsl:text>&#160;</xsl:text>
     </script>
-    <script type="text/javascript" src="{$ximsroot}jscalendar-1.0/calendar-setup.js"><xsl:text>&#160;</xsl:text></script>
+    <!--<script type="text/javascript" src="{$ximsroot}jscalendar-1.0/calendar-setup.js"><xsl:text>&#160;</xsl:text></script>-->
 </xsl:template>
 </xsl:stylesheet>

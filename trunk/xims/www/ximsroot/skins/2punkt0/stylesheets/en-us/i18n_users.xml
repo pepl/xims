@@ -53,4 +53,8 @@
 <DAV_Text>Text types</DAV_Text>
 <DAV_XML>XML types</DAV_XML>
 <Change_DAV_OTPrivs_Mask>Change WebDAV Objecttype Privilege Mask</Change_DAV_OTPrivs_Mask>
+<Explicit>Explicit</Explicit>
+<Implicit>Implicit</Implicit>
+<Explicit_pl>Explicit</Explicit_pl>
+<Implicit_pl>Implicit</Implicit_pl>
 </l>
