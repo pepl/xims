@@ -1681,11 +1681,24 @@ sub init_store_object {
 
 =head3 Parameter
 
+    $ctxt:              context object
+
+    $grantowneronly:    if 1, grant the current user only; otherwise the parent
+                        objects grants are copied
+
+    $grantdefaultroles: if this and grantowneronly are 1, additionally grant
+                        current users default roles
+
+    $dontgrantpublic:   if 1, skip the public user while copying the parents grants
+
 =head3 Returns
 
 =head3 Description
 
-    $self->default_grants(...)
+    $self->default_grants( $ctxt, $grantowneronly, $grantdefaultroles, $dontgrantpublic );
+
+    Typically called on storing a new object to set the initial state of its
+    ACL.
 
 =cut
 
@@ -1695,6 +1708,7 @@ sub default_grants {
     my $ctxt              = shift;
     my $grantowneronly    = shift;
     my $grantdefaultroles = shift;
+    my $dontgrantpublic   = shift;
 
     my $retval = undef;
 
@@ -1728,6 +1742,13 @@ sub default_grants {
             $ctxt->data_provider->getObjectPriv(
             content_id => $ctxt->parent->id() );
         foreach my $priv (@object_privs) {
+
+            # conditionally skip the public user
+            next
+                if defined $dontgrantpublic
+                    and $dontgrantpublic == 1
+                    and $priv->grantee_id() == XIMS::PUBLICUSERID();
+
             $ctxt->object->grant_user_privileges(
                 grantee  => $priv->grantee_id(),
                 grantor  => $ctxt->session->user(),
