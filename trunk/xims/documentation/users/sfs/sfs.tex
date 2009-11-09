@@ -1,10 +1,7 @@
 % -*- coding:iso-8859-1 -*-
 % 2do:
-% Referenzen setzen (p47ff, deletepublised)
-% Icons einfügen
-% Referenzen überprüfen
-% Umbrüche korrigeren?
 % Kontrolllesen
+% Umbrüche korrigeren?
 
 \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
 \documentclass[fontsize=11pt]{scrartcl}
@@ -67,7 +64,7 @@ breaklinks               % Links »überstehen« Zeilenumbruch
  
 
 \title{XIMS Schritt für Schritt Anleitung}
-\author{XIMS-Support}
+\author{XIMS-Support@uibk.ac.at}
 \date{}
 
 
@@ -77,7 +74,6 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 \begin{document}
 
 \maketitle
-
 \setcounter{tocdepth}{3}
 
 \tableofcontents
@@ -126,10 +122,9 @@ Objekte.
 
 
 XIMS wurde am Zentralen Informatikdienst der Universität Innsbruck entwickelt und
-ist als Open Source freigegeben worden (http://xims.info/download). Für allgemeine
+ist als Open Source freigegeben worden (\url{http://xims.info/download}). Für allgemeine
 Fragen und Fragen zur Benutzung wenden Sie sich bitte an das XIMS Support
-Team, für technische Fragen, Bug-Meldungen oder gewünschte Features bitte an
-xims-devel@lists.sourceforge.net.
+Team, für technische Fragen, Bug-Meldungen oder gewünschte Features bitte an xims-devel@lists.sourceforge.net.
 
 
 
@@ -137,12 +132,12 @@ xims-devel@lists.sourceforge.net.
 \subsection{Anmeldung}
 \label{anmeldung}
 
-XIMS ist an der LFU Innsbruck unter der Adresse http://xims.uibk.ac.at zu erreichen.
+XIMS ist an der LFU Innsbruck unter der Adresse \url{http://xims.uibk.ac.at} zu erreichen.
 Um Inhalte über XIMS verwalten zu können, benötigt man einen gültigen
 Benutzerzugang (Account). LFU-Mitarbeiter erlangen mit der Akkreditierung über die
 Personalabteilung bereits standardmäßig einen Zugang zu XIMS. Durch die Eingabe
 von Benutzername (i.d.R. beginnend mit »c«) und entsprechendem Passwort (selbes
-Passwort wie für das Mail-System) in der XIMS-Anmeldemaske (siehe Abb. 1)
+Passwort wie für das Mail-System) in der XIMS-Anmeldemaske (siehe Abb. \ref{fig:xims-login})
 erlangen XIMS-Benutzer Zugang zum Inhalte-Management-System.
 
 \begin{figure}[ht!]
@@ -177,20 +172,22 @@ vereinfachen.
 \end{figure}
 
 
-Mittels Klick auf das gewünschte Zielobjekt (via Lesezeichen oder zuletzt geänderte
-Objekte) navigiert man zur Containeransicht.
+Mittels Klick auf das gewünschte Zielobjekt (via Lesezeichen oder »zuletzt geänderte
+Objekte«) navigiert man zur Containeransicht.
 
 \subsubsection{Containeransicht}
 \label{quick-containeransicht}
 
 Die Containeransicht gibt einen Überblick über alle bereits vorhandenen Objekte und
 bietet verschiedene Optionen zur Objektverwaltung an.
-(1) zeigt den derzeitigen Objektstatus an (publiziert, nicht publiziert, ...)
-(2) listet die Objekte jeweils mit einem vom Objekttyp abhängigen Icon
-(3) zeigt das Datum der letzten Änderung
-(4) listet die zur Verfügung stehenden Optionen4 (editieren, kopieren,
+\begin{compactitem}
+\item (1) zeigt den derzeitigen Objektstatus an (publiziert, nicht publiziert, ...)
+\item (2) listet die Objekte jeweils mit einem vom Objekttyp abhängigen Icon
+\item (3) zeigt das Datum der letzten Änderung
+\item (4) listet die zur Verfügung stehenden Optionen (editieren, kopieren,
 verschieben, publizieren, ...)
-(5) Menü zum Erstellen neuer Objekte
+\item (5) Menü zum Erstellen neuer Objekte
+\end{compactitem}
 
 \begin{figure}[!ht]
 	\centering
@@ -209,12 +206,14 @@ Die unter (4) gezeigten Verwaltungsoptionen im Detail:
 	\label{fig:optionsicons}
 \end{figure}
 
-(A) Editieren: Öffnet den Editor (vom Objekttyp abhängig!)
-(B) Kopieren: Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
-(C) Verschieben\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Öffnet ein Menü zum Verschieben des Objekts
-(D) Publizieren: Öffnet das Menü zum Veröffentlichen von Objekten
-(E) Rechte verwalten: Öffnet die Rechteverwaltung
-(F) Löschen\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Löscht das Objekt (siehe Objekte löschen und »Papierkorb«)
+\begin{compactitem}
+\item (A) Editieren: Öffnet den Editor (vom Objekttyp abhängig!)
+\item (B) Kopieren: Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
+\item (C) Verschieben\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Öffnet ein Menü zum Verschieben des Objekts
+\item (D) Publizieren: Öffnet das Menü zum Veröffentlichen von Objekten
+\item (E) Rechte verwalten: Öffnet die Rechteverwaltung
+\item (F) Löschen\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Löscht das Objekt (siehe Objekte löschen und »Papierkorb«)
+\end{compactitem}
 
 \subsubsection{Erstellen von Objekten}
 \label{quick-erstellen}
@@ -495,23 +494,22 @@ geklickt wird.
 Der Status gibt Auskunft über den derzeitigen Zustand des Objekts. In der aktuellen
 Version kennt XIMS vier verschiedene Objektstati.
 
-%tobefixed!
 \begin{table}[!ht]
 \centering
 
 \begin{tabular}{|c|p{30em}|}
   \hline
-  bild & \label{new}Das Objekt ist als neu markiert. \\
+  \includegraphics[scale=0.7]{./images/icon-new.png} & \label{new}Das Objekt ist als neu markiert. \\
   \hline
-  bild & Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man \newline
+  \includegraphics[scale=0.7]{./images/icon-published.png} & Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man \newline
   zur veröffentlichten Ansicht des Objekts. \\
   \hline
-  bild & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten \newline
+  \includegraphics[scale=0.7]{./images/icon-modified.png} & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten \newline
   Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
   man zur aktuell veröffentlichten Ansicht des Objekts. Erläuterungen dazu
   siehe Punkt . \\
   \hline
-  bild & Das Objekt ist gesperrt. Eine Sperrung kann sich durch Editieren
+  \includegraphics[scale=0.7]{./images/icon-locked.png} & Das Objekt ist gesperrt. Eine Sperrung kann sich durch Editieren
   desselben Objekts durch einen anderen XIMS-User ergeben, oder weil
   man bewusst vermeiden will, dass das Objekt von anderen Benutzern
   bearbeitet werden kann. Durch Klicken auf das Schloss kann die
@@ -553,32 +551,31 @@ Sofern der angemeldete Benutzer über die entsprechenden Berechtigungen verfügt,
 werden verschiedene Optionen angeboten, um das Verwalten der entsprechenden
 Objekte zu ermöglichen.
 
-%tobefixed!
 \begin{table}[!ht]
 \centering
 \begin{tabular}{|c|p{30em}|}
   \hline
-  bild & Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
+  \includegraphics[scale=0.7]{./images/icon-edit.png} & Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
   gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
   verändern.
   Siehe dazu Punkt \ref{erstelleneditieren}: »Erstellen/Editieren«. \\
   \hline
-  bild & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
+  \includegraphics[scale=0.7]{./images/icon-move.png} & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
   in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
   leichtes Verschieben des Objekts in einen anderen Container
   ermöglicht. \\
   \hline
-  bild & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
+  \includegraphics[scale=0.7]{./images/icon-publish.png} & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
   Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
   veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
   rückgängig gemacht werden. (Siehe dazu Punkt \ref{inhaltepublizieren}). \\
   \hline
-  bild & Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
+  \includegraphics[scale=0.7]{./images/icon-acl.png} & Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
   gelangt man in eine Maske, die zum einen Auskunft über die
   derzeitigen Zugriffsrechte für das Objekt gibt und zum anderen ein
   Editieren der Zugriffsrechte ermöglicht. \\
   \hline
-  bild & Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
+  \includegraphics[scale=0.7]{./images/icon-del.png} & Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
   (Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
   (Siehe auch Punkt \ref{delete}). \\
   \hline
@@ -796,7 +793,7 @@ Nicht nur der Bodybereich kann verändert werden, sondern auch die Einträge in
 Location, Titel, Schlagworte, Zusammenfassung und die Option »Objekt als
 neu markieren«.
 
-\begin{Hinweis}Ist ein Objekt publiziert, kann die Location nicht verändert werden (siehe Abbildung \ref{fig:xhtmlintinymce}). Um die Location eines veröffentlichten Objekts verändern zu können,
+\begin{Hinweis}Ist ein Objekt publiziert, kann die Location nicht verändert werden (siehe Abb. \ref{fig:xhtmlintinymce}). Um die Location eines veröffentlichten Objekts verändern zu können,
 muss dieses zuerst depubliziert werden.
 \end{Hinweis}
 
@@ -841,7 +838,7 @@ Siehe Punkt~\ref{markasnew}.
 \paragraph{Verhindere Autoindex beim Veröffentlichen:}
 \label{autoindex}
 
-Auf eine Anfrage nach einem Verzeichnis (z.B.: http://www.uibk.ac.at/zid/) liefert der
+Auf eine Anfrage nach einem Verzeichnis (z.B.: \url{http://www.uibk.ac.at/zid/}) liefert der
 Webserver normalerweise ein sogenanntes Indexdokument aus. XIMS kann beim
 Veröffentlichen automatisch ein solches Dokument mit einer einfachen Liste des
 Verzeichnisinhalts zu erstellen. Dieses Standardverhalten kann mit der Option
@@ -1034,12 +1031,12 @@ editieren, so kann das Feld »Datei ersetzen« leer bleiben.
 \label{urllinks}
 
 Über den Objekttyp URLLink können sowohl externe (d.h. Links außerhalb
-der Domäne http://www.uibk.ac.at) als auch interne Links erstellt
+der Domäne \url{http://www.uibk.ac.at}) als auch interne Links erstellt
 werden. Hinzu kommt, dass diesem Objekttyp bei der Erstellung von
 Departmentlinks eine besondere Rolle zukommt (siehe Punkt 7.1 und
 7.2). Bei internen Links ist zu beachten, dass diese absolut zum
 Site-Root anzugeben sind (i.d.R. absolut zu /uniweb). Alternativ kann
-auch die offizielle URL der Seite (z.B. http://www.uibk.ac.at/zid),
+auch die offizielle URL der Seite (z.B. \url{http://www.uibk.ac.at/zid}),
 welche verlinkt werden soll, angegeben werden. Externe Links müssen
 zwingend mit dem http://- bzw. https://-Prefix angegeben werden.
 
@@ -1076,7 +1073,7 @@ Siehe Punkt \ref{cancel}
 
 \paragraph{Editieren eines URL-Links}
 
-Hier wird auf Punkt 3.1.2 verwiesen, da alle wesentlichen Editiermöglichkeiten
+Hier wird auf Punkt \ref{edit} verwiesen, da alle wesentlichen Editiermöglichkeiten
 übereinstimmen.
 
 \subsubsection{Portlets}
@@ -1147,7 +1144,7 @@ bzw. der »Department Infotext« oder ein für die Organisationseinheit bzw. für da
 Institut spezifisches XSLT-Stylesheet für eine angepasste Darstellung
 veröffentlichter Seiten.
 
-Die folgende Abbildung zeigt wie ein individualisierter Department Root mit
+Abbildung \ref{fig:departmentrootzid} zeigt wie ein individualisierter Department Root mit
 »Department Links«, »Department Image«, »Department Titel«, »Department Infotext«
 und »Department Speziallinks« aussehen könnte. Die individualisierten Elemente sind
 auch auf allen untergeordneten Webseiten der Organisationseinheit wirksam.
@@ -1531,11 +1528,11 @@ veröffentlicht wird (»veröffentlichen« bzw. »publish«) (2), wird dieses in Form
 einer XML-Datei in das Dateisystem des Webservers kopiert (3) und ist von diesem
 Zeitpunkt an öffentlich sichtbar.
 An der LFU ist XIMS bzw. AxKit so konfiguriert, dass der Site Root »/uniweb«
-öffentlich unter der Adresse http://www.uibk.ac.at/ zu erreichen ist. Insofern spiegeln
+öffentlich unter der Adresse \url{http://www.uibk.ac.at/} zu erreichen ist. Insofern spiegeln
 die Locations der XIMS Container unter /uniweb die URLs unter
-http://www.uibk.ac.at/ wider, d.h. Objekte in XIMS unter dem »Pfad«
+\url{http://www.uibk.ac.at/} wider, d.h. Objekte in XIMS unter dem »Pfad«
 /uniweb/fakultaeten/xxx sind öffentlich (wenn über XIMS veröffentlicht) unter
-http://www.uibk.ac.at/fakultaeten/xxx verfügbar.
+\url{http://www.uibk.ac.at/fakultaeten/xxx} verfügbar.
 
 \subsection{Objekte veröffentlichen (Publish)}
 \label{publizieren}
@@ -1581,7 +1578,7 @@ Objekts im Dateisystem und das Objekt ist ab diesem Zeitpunkt nur mehr in der
 XIMS-Datenbank gespeichert.
 »Wiederveröffentlichen« (Republish) aktualisiert die Version des Objekts im
 Dateisystem des Webservers. Somit sind die Versionen in der Datenbank wie auch
-im Dateisystem des Webservers identisch (siehe Abbildung \ref{fig:xims-zusammenspiel}).
+im Dateisystem des Webservers identisch (siehe Abb. \ref{fig:xims-zusammenspiel}).
 
 \subsection{Löschen und Verschieben veröffentlichter Objekte}
 \label{deletepublished}
@@ -1598,7 +1595,7 @@ Um Inkonsistenzen der XIMS-Objekte zu vermeiden, ist das System mit einem
 »Sicherungsmechanismus« ausgestattet:
 Nachdem Objekte veröffentlicht wurden, verhindert XIMS das Verschieben bzw.
 Löschen ebensolcher, selbst wenn man grundsätzlich die notwendigen Rechte dafür
-hat (siehe Punkt 6).
+hat (siehe Punkt \ref{gesperrteobjekte}).
 
 \begin{figure}[!ht]
 	\centering
@@ -1608,12 +1605,11 @@ hat (siehe Punkt 6).
 \end{figure}
 
 Um nun ein veröffentlichtes Objekt verschieben bzw. löschen zu können, muss die
-Veröffentlichung dieses Objekts zuerst rückgängig gemacht werden (siehe Punkt
-5.2). Durch das Zurücknehmen der Veröffentlichung ist das Objekt nur noch in der
+Veröffentlichung dieses Objekts zuerst rückgängig gemacht werden (siehe Punkt \ref{inhaltepublizieren}). Durch das Zurücknehmen der Veröffentlichung ist das Objekt nur noch in der
 XIMS-Datenbank vorhanden. Es ist wieder möglich, das Objekt zu verschieben (mit
 Hilfe des »Verschieben-Icons«) bzw. zu löschen (»Löschen-Icon«).
 
-\subsection{Vorschau von Objekten im veröffentlichtem Zustand}
+\subsection{Vorschau auf Objekte in veröffentlichtem Zustand}
 \label{preview}
 
 Die Darstellung von Dokumenten im XIMS variiert teilweise von der Darstellung des
@@ -1674,7 +1670,7 @@ nicht ausreichend: Die darunter liegende Objekte könnten trotzdem (z.B. über die
 Suche) direkt angesprungen werden, wenn ihre eigene ACL dies zulässt!
 \end{Hinweis}
 
-\subsection{Berechtigungen eines Benutzers bzw einer Rolle}
+\subsection{Berechtigungen eines Benutzers bzw. einer Rolle}
 \label{berechtigungen-benutzer}
 
 \paragraph{Bestehende Berechtigungen verwalten}
@@ -1688,14 +1684,14 @@ Suche) direkt angesprungen werden, wenn ihre eigene ACL dies zulässt!
 
 Um bestehende Berechtigungen eines Benutzers zu sichten bzw. zu verändern, folgt
 man dem Link »Rechte verwalten« (Manage Privileges). Daraufhin folgt ein Dialog
-mit zwei unterschiedlichen Bereichen (siehe Abb. 45). Der obere Bereich (1) dient
+mit zwei unterschiedlichen Bereichen (siehe Abb. \ref{fig:permissionadmin}). Der obere Bereich (1) dient
 zur Steuerung der Berechtigungen für den entsprechenden Benutzer bzw. der
 entsprechenden Rolle. Rollen sind i.d.R mit dem UIBK-Präfix gekennzeichnet. Im
 unteren Bereich (2) können die zuvor explizit dem Benutzer bzw. der Rolle
 zugewiesenen Berechtigungen (welches ein Aufscheinen des Benutzers bzw. der
 Rolle in der Berechtigungstabelle des Objektes zu Folge hatte) wieder entfernt
 werden. D.h. über den »Rechte entfernen«-Button wird der Benutzer bzw. die
-Rolle aus der Berechtigungstabelle (siehe Abb. 44) des Objektes vollkommen
+Rolle aus der Berechtigungstabelle (siehe Abb. \ref{fig:permissions}) des Objektes vollkommen
 entfernt und verliert alle damit verbundenen Berechtigungen.
 
 \begin{figure}[!ht]
@@ -1707,13 +1703,12 @@ entfernt und verliert alle damit verbundenen Berechtigungen.
 
 Der obere Bereich (1) untergliedert sich in drei unterschiedliche Arten von
 Privilegien: Standardrechte, Veröffentlichungsrechte und Verwaltungsrechte
-(siehe auch Punkt 6.3 - 6.5).
+(siehe auch Punkt \ref{zugriffsrechte}).
 Standardrechte sind übliche Berechtigungen, wie das Recht zu lesen bzw. zu
 schreiben. Das Veröffentlichungsrecht ermächtigt einen Benutzer bzw. eine Rolle,
 das Objekt zu veröffentlichen. Das Verwaltungsrecht gewährt einem Benutzer bzw.
 einer Rolle das Recht, anderen Personen Privilegien für ein Objekt einzuräumen
-bzw. wegzunehmen. In den Abschnitten 6.3 - 6.5 wird auf die Bedeutung der
-einzelnen Rechte genauer eingegangen.
+bzw. wegzunehmen.
 Die Veränderungen der Privilegien werden erst durch das Drücken des
 »Speichern«-Buttons wirksam.
 Im unteren Bereich (2) können einem Benutzer bzw. der Rolle sämtliche Rechte auf
@@ -1762,7 +1757,7 @@ von Privilegien für Benutzer vergeben werden.
 
 Um Benutzer zu einer Rolle hinzufügen oder zu entfernen kann die Rollenverwaltung
 verwendet werden. Der jeweilige Rollenadministrator kann sich mit seiner
-Benutzerkennung (z.B. C102XX) unter http://xims.uibk.ac.at/roles einloggen.
+Benutzerkennung (z.B. C102XX) unter \url{http://xims.uibk.ac.at/roles} einloggen.
 
 \begin{figure}[!ht]
 	\centering
@@ -1805,7 +1800,7 @@ Benutzer/Rolle darf ein Objekt verschieben.
 
 Ein Benutzer bzw. eine Rolle hat das Recht Veröffentlichungsfunktionen
 (»veröffentlichen«, »wiederveröffentlichen«, »veröffentlichen
-rückgängig machen«; siehe Punkt ) auszuführen.
+rückgängig machen«; siehe Punkt \ref{publizieren}) auszuführen.
 
 \subsection{Verwaltungsrechte (Grant Privileges)}
 \label{verwrechte}
@@ -1873,7 +1868,7 @@ im Eingabefeld Location mit vorangestelltem http:// einzugeben (z.B.:
 \url{http://www.orf.at}).
 Bezüglich einer Beschreibung der Eingabefelder »Titel«, »Schlagworte«,
 »Zusammenfassung«, »Objekt als neu markieren« und »Zugriffsrechte
-erstellen« wird auf den Punkt verwiesen.
+erstellen« wird auf den Punkt \ref{title} verwiesen.
 
 \paragraph{Editieren von »Links zum Dokument«}
 
@@ -1912,7 +1907,7 @@ Zur Erstellung der Department Links sind im Wesentlichen folgende Schritte
 notwendig:
 
 \begin{itemize}
-	\item {Erstellen eines Verzeichnisses (siehe Punkt ) mit der Location
+	\item {Erstellen eines Verzeichnisses mit der Location
 »departmentlinks«. Die Location des Verzeichnisses muss zwingend
 »departmentlinks« heißen.}
 
@@ -1926,7 +1921,7 @@ notwendig:
 	\item {Im nächsten Schritt müssen im soeben erstellten Verzeichnis mit der Location
 »departmentlinks« all jene URLLink-Objekte erstellt werden, die als
 Navigation bzw. Departement Links zur Verfügung stehen sollen. Die Anleitung
-zum Erstellen von URLLink-Objekten kann unter Punkt 3.1.5 nachgelesen
+zum Erstellen von URLLink-Objekten kann unter Punkt \ref{urllinks} nachgelesen
 werden. Die Location der Links muss relativ zum Site Root sein. Um zum
 Beispiel einen Verweis auf das XIMS-Objekt mit dem Pfad »/uniweb/service/
 c102« zu erstellen, muss im Eingabefeld Location des URLLink-Objektes
@@ -1936,8 +1931,7 @@ c102« zu erstellen, muss im Eingabefeld Location des URLLink-Objektes
 	
 	\item {Der nächste Schritt ist das Veröffentlichen des departmentlinks-
 Verzeichnisses mitsamt den darin erstellten Links. Die konkrete
-Vorgehensweise für die Veröffentlichung von Objekten wird unter Punkt
-beschrieben.}
+Vorgehensweise für die Veröffentlichung von Objekten wird unter Punkt \ref{inhaltepublizieren} beschrieben.}
 
 \begin{Hinweis}Es genügt, das Verzeichnis »departmentlinks« zu veröffentlichen. Die darin
 enthaltenen URL-Links werden mit entsprechender Option automatisch mit
@@ -1960,8 +1954,7 @@ Zusammenfassung angeklickt sein.
 	\label{fig:createdeplinkportlet}
 \end{figure}
 
-	\item {Im nächsten Schritt muss das erstellte Portlet veröffentlicht werden (siehe
-Punkt ).}
+	\item {Im nächsten Schritt muss das erstellte Portlet veröffentlicht werden.}
 	\item {In weiterer Folge muss das »departmentlinks\_portlet« dem Department
 Root zugewiesen werden. Dazu muss das - Icon des Department Root
 Verzeichnisses angeklickt werden, um Änderungen am Department Root
@@ -1975,7 +1968,7 @@ durchführen zu können.}
 \end{figure}
 
 	\item {Der letzte Schritt ist das (Re)Publizieren des editierten Department Root
-Ordners (siehe Punkt ).}
+Ordners.}
 \end{itemize} 
 
 \subsubsection{Department Speziallinks}
@@ -1984,7 +1977,7 @@ Ordners (siehe Punkt ).}
 Die Erstellung der Department Speziallinks erfolgt analog zum Erstellen der
 Department Links. Der Unterschied beschränkt sich auf die unterschiedliche
 Bezeichnung der Location des Department-Speziallinks-Verzeichnisses und des
-zugehörigen Portlets. Insofern wird auf Punkt verwiesen. Für die Department
+zugehörigen Portlets. Insofern wird auf Punkt \ref{deplinks} verwiesen. Für die Department
 Speziallinks muss die Location des Department Speziallink Verzeichnisses
 »speciallinks« lauten. Ebenfalls muss das Department Speziallink Portlet die
 Location als auch den Titel »speciallinks\_portlet« besitzen und auf das
@@ -2012,7 +2005,7 @@ Die Bilderleiste wird vom Büro für Öffentlichkeitsarbeit und Kulturservice einge
 Bitte senden Sie die drei Bilder (entweder in Originalgröße oder angepasster Größe)
 an webmaster@uibk.ac.at. Als weitere Option kann die Bilderleiste auch gänzlich
 entfallen. Wenden Sie sich in diesem Fall bitte ebenfalls an webmaster@uibk.ac.at.
-Siehe auch: http://www.uibk.ac.at/hilfe/hp\_erstellung/module.html
+Siehe auch: \url{http://www.uibk.ac.at/hilfe/hp\_erstellung/module.html}
 
 \subsection{Zweisprachigkeit (Deutsch/Englisch)}
 \label{zweisprachigkeit}
@@ -2059,7 +2052,7 @@ auf die gleiche Weise (z.B. index.html.de). Jedoch ist dabei darauf zu
 achten, dass die Option »Verhindere Autoindex beim
 veröffentlichen« für die entsprechenden Container-Objekte angekreuzt sein
 muss, da andernfalls bei Fehlschlagen der Language-Negotiation der von XIMS
-automatisch erzeugte Dokumenten-Index dargestellt wird (siehe auch ).
+automatisch erzeugte Dokumenten-Index dargestellt wird (siehe auch \ref{autoindex}).
 \end{Hinweis}
 
 \paragraph{SimpleDocBook (sDocBookXML) Dokumente zweisprachig anbieten}
@@ -2110,8 +2103,7 @@ Die folgenden Informationen für die Erstellung einer zusätzlichen englischsprach
 Navigation für Ihre XIMS-basierte Homepage setzen das Wissen über die
 Handhabung von »Department Links« voraus. Hier werden nur die zusätzlichen
 Anleitungsschritte für zusätzliche Department Links in englisch erläutert. Für
-grundlegende Informationen zum Thema Department Links wird auf Punkt
-verwiesen.
+grundlegende Informationen zum Thema Department Links wird auf Punkt \ref{deplinks} verwiesen.
 Ihre Homepage verfügt bereits über ein departmentlinks-Verzeichnis (inklusive
 URLLinks) und ein Department Links-Portlet. Nun erstellen Sie für die
 englischsprachige Navigation gleichermaßen diese Objekte, jedoch mit
@@ -2194,17 +2186,17 @@ Weitere Informationen bzw. Auskunft über XIMS-Kurse finden Sie auf unseren
 Webseiten:
 
 \begin{itemize}
-	\item {Uni Innsbruck: http://www.uibk.ac.at}
+	\item {Uni Innsbruck: \url{http://www.uibk.ac.at}}
 	\item {Büro für Öffentlichkeitsarbeit und Kulturservice:
-http://www.uibk.ac.at/public-relations/}
+\url{http://www.uibk.ac.at/public-relations/}}
 \end{itemize}
 
 \subsection{Support}
 \label{support}
 
 \begin{itemize}
-	\item {XIMS an der Uni Innsbruck: http://www.uibk.ac.at/zid/systeme/xims/}
-	\item {ZID Kurse: http://www.uibk.ac.at/zid/kurse/}
+	\item {XIMS an der Uni Innsbruck: \url{http://www.uibk.ac.at/zid/systeme/xims/}}
+	\item {ZID Kurse: \url{http://www.uibk.ac.at/zid/kurse/}}
 \end{itemize}
 
 Das XIMS-Support-Team des ZID steht Ihnen unter xims-support@uibk.ac.at gerne
@@ -2229,7 +2221,7 @@ Zwischenablage eingefügt.
 Beim Erstellen von neuen Dokumenten bzw. beim Editieren von bestehenden
 Dokumenten findet man im oberen Bereich des Browserfensters folgende
 sinngemäße Zeile: »Erstelle Document 'XYZ' in '/uniweb/test' mit ...« (siehe
-Abbildung). Dort ist auch das Auswahlfeld für die Selektion des Editors zu finden.
+Abb. \ref{fig:dokumentwysiwyg}). Dort ist auch das Auswahlfeld für die Selektion des Editors zu finden.
 Sofern das Dokument nicht bereits verändert wurde, kann durch Auswählen des
 entsprechenden Editors zu diesem gewechselt werden.
 
@@ -2274,7 +2266,7 @@ wäre, den Inhalt als File z.B. in Form eines PDF-Dokuments einzubringen.
 
 \paragraph{Wo kann der Installer für den eWebEditPro Klienten heruntergeladen werden?}
 
-Hier: http://xims.uibk.ac.at/ximsroot/wepro/clientinstall/ewebeditproclient.exe
+Hier: \url{http://xims.uibk.ac.at/ximsroot/wepro/clientinstall/ewebeditproclient.exe}
 
 \subsubsection{TinyMCE WYSIWYG-Editor}
 \label{faq-tinymce}
@@ -2282,13 +2274,13 @@ Hier: http://xims.uibk.ac.at/ximsroot/wepro/clientinstall/ewebeditproclient.exe
 \paragraph{Nachdem mein Dokument mit TinyMCE geladen wurde, kann ich den
 WYSIWYG Editor nicht mehr wechseln. Es kommt die sinngemäße
 Fehlermeldung (obwohl der Inhalt nicht verändert wurde): »Der Body wurde
-verändert. Bitte verwenden Sie 'Speichern/Abbrechen'!«2}
+verändert. Bitte verwenden Sie 'Speichern/Abbrechen'!«}
 
 Durch Copy/Paste kann es auf Windows Systemen dazu kommen, dass Windowsspezifische
 Zeichen mitkopiert werden. Die Windows-1252 Zeichenkodierung nutzt
 den lt. Standard (ISO-8859-1) nicht zu verwendenden Adressraum von 8X-9X (HEX)
 für spezielle, aber häufiger auftretende Zeichen (wie etwa das Euro Zeichen,
-spezielle Anführungszeichen, etc). Siehe http://en.wikipedia.org/wiki/Windows-1252
+spezielle Anführungszeichen, etc). Siehe \url{http://en.wikipedia.org/wiki/Windows-1252}
 
 TinyMCE ignoriert solche speziellen Zeichen beim Laden des Dokuments. D.h. das
 Dokument wurde im Unterschied zum Originaldokument, welches Zeichen außerhalb
@@ -2296,8 +2288,7 @@ des Standards enthält, zu Gunsten der Zeichenketten-Encoding-Standards um
 einige wenige Zeichen verändert (im Dokument sind nur noch Standard-konforme Zeichen vorhanden). In diesem Sinne ist es i.d.R. das Beste, per »Abbrechen« zur
 XIMS-Container-Ansicht zurückzukehren, das Dokument zu kopieren (Backup), es
 erneut zu öffnen und über den »Speichern«-Knopf abzuspeichern. Nach erneutem
-Öffnen des Dokuments sollten Sie nun wiederum den WYSIWYG Editor wie unter
-Punkt 2 (FAQ) beschrieben wechseln können.
+Öffnen des Dokuments sollten Sie nun wiederum den WYSIWYG Editor wechseln können.
 
 \paragraph{Probleme beim Speichern durch Skype-Addon}
 
