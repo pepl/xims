@@ -38,7 +38,11 @@
 
 <xsl:template name="tr-file-edit">
     <tr>
-        <td valign="top"><xsl:value-of select="$i18n/l/File"/> <xsl:value-of select="$i18n/l/replace"/></td>
+        <td valign="top">
+           <xsl:value-of select="$i18n/l/File"/>
+           <xsl:text> </xsl:text>
+           <xsl:value-of select="$i18n/l/replace"/>
+        </td>
         <td colspan="2">
             <input tabindex="30" type="file" name="file" size="49" class="text"/>
             <xsl:text>&#160;</xsl:text>
