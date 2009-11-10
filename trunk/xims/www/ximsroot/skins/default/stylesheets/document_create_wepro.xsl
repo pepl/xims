@@ -45,8 +45,8 @@
         <script src="{$ximsroot}wepro/ewebeditpro.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <base href="{$xims_box}{$goxims_content}{$parent_path}/" />
             <script type="text/javascript">
+	    
             function setEWProperties(sEditorName) {
-                eWebEditPro.instances[sEditorName].editor.setProperty(&apos;BaseURL&apos;, &apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>&apos;);
                 eWebEditPro.instances[sEditorName].editor.MediaFile().setProperty(&apos;TransferMethod&apos;,&apos;<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'/')"/>?contentbrowse=1;style=ewebeditimage;otfilter=Image&apos;);
             }
         </script>
@@ -66,6 +66,8 @@
             var parentID=&apos;<xsl:apply-templates select="@parent_id"/>&apos;;
             var documentID=&apos;<xsl:apply-templates select="@id"/>&apos;;
             var sEditorName = &apos;body&apos;;
+            <!-- set baseURL for editing on ID-bases -->
+            eWebEditPro.parameters.baseURL = &quot;<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')"/>&quot;;
             eWebEditPro.create(sEditorName, &apos;99.5%&apos;, &apos;450&apos;);
             eWebEditPro.onready = &apos;setEWProperties(sEditorName)&apos;;
             </script>
