@@ -93,9 +93,12 @@
             }
             else{
                 var hyperlinkvalue;
+		]]>
+		var hyperlinkprefix = &apos;<xsl:value-of select="concat($goxims_content, substring-before($absolute_path, $parent_path_nosite))"/>&apos;;
+		<![CDATA[
                 var pastevalue;
                 var targetvalue;
-                var targetvaluepaste
+                var targetvaluepaste;
                 targetvalue = document.selectform.Target.options[document.selectform.Target.selectedIndex].value;
                 if (targetvalue == "") {
                     targetvaluepaste = "";
@@ -103,9 +106,14 @@
                 else {
                     targetvaluepaste = "target=" + targetvalue;
                 }
-
                 hyperlinkvalue = document.selectform.httpLink.value
-                pastevalue = '<a href="' + hyperlinkvalue + '" ' + targetvaluepaste +'>' + document.selectform.linktext.value + '</a>';
+		if ( hyperlinkvalue.search(/^http:\/\//) == -1 ) {
+		    if ( hyperlinkvalue.search(/^\//) != -1 ) {
+			hyperlinkvalue = hyperlinkprefix + hyperlinkvalue;
+		    }
+		}
+		// pastevalue according to ewebeditpro5's expectations
+		pastevalue = '<a href="' + hyperlinkvalue + '" ' + targetvaluepaste +'>' + document.selectform.linktext.value + '</a>';
                 window.opener.eWebEditPro[objQuery["editorName"]].pasteHTML(pastevalue);
                 window.close();
             }
