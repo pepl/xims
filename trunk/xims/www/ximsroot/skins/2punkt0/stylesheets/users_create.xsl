@@ -23,12 +23,12 @@
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
         
-        <div id="table-container">
+        <div id="content-container">
 
         <form name="userAdd" action="{$xims_box}{$goxims_users}" method="post">
 
                 <xsl:if test="/document/context/session/warning_msg != ''">
-                            <div style="margin-bottom: 5px">
+                            <div>
                                 <xsl:call-template name="message"/>
                             </div>
                 </xsl:if>

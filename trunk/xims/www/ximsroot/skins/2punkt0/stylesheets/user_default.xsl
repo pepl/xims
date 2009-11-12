@@ -27,23 +27,23 @@
             <xsl:call-template name="header">
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
-            <div id="content">
+            <div id="content-container">
 
             <h1>
                 <xsl:value-of select="$i18n/l/Welcome"/>&#160;<xsl:value-of select="firstname" />&#xa0;<xsl:value-of select="lastname" />!
             </h1>
 
             <h2><xsl:value-of select="$i18n/l/ManageContent"/></h2>
-                <div>
+                <!--<div>-->
                     <xsl:value-of select="$i18n/l/Your"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/>:
-                    <ul id="bookmarklist">
+                   <ul id="bookmarklist">
                         <xsl:apply-templates select="bookmarks/bookmark">
                             <xsl:sort select="stdhome" order="descending"/>
                             <xsl:sort select="content_id" order="ascending"/>
                         </xsl:apply-templates>
                     </ul>
-                </div>
-                
+                <!--</div>-->
+                <br/>
                 <div class="objlastmod">
 									<xsl:value-of select="$i18n/l/Your"/>&#160;<xsl:value-of select="count(/document/userobjectlist/objectlist/object)"/>&#160;<xsl:value-of select="$i18n/l/lastObjModByYou"/>
 									<xsl:choose>
@@ -66,17 +66,18 @@
                                 </xsl:otherwise>
                             </xsl:choose>
                 </div>
-
+<br/><br/>
             <h2><xsl:value-of select="$i18n/l/Settings"/></h2>
 							<ul id="settinglist">
-									<li><a href="{$xims_box}{$goxims}/user?bookmarks=1"><xsl:value-of select="$i18n/l/ManageBookmarks"/></a></li>
+									<li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?bookmarks=1"><xsl:value-of select="$i18n/l/ManageBookmarks"/></a></li>
 								<xsl:if test="system_privileges/change_password = '1'">
-									<li><a href="{$xims_box}{$goxims}/user?passwd=1"><xsl:value-of select="$i18n/l/ChangePassword"/></a></li>
-									<li><xsl:value-of select="$i18n/l/ManagePersonalSettings"/></li>
-									<li><xsl:value-of select="$i18n/l/UpdateEmailAdress"/></li>
+									<li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?passwd=1"><xsl:value-of select="$i18n/l/ChangePassword"/></a></li>
+									<li class="sprite sprite-list_SymbolicLink"><xsl:value-of select="$i18n/l/ManagePersonalSettings"/></li>
+									<li class="sprite sprite-list_SymbolicLink"><xsl:value-of select="$i18n/l/UpdateEmailAdress"/></li>
 								</xsl:if>
 							</ul>
 
+            <br/><br/>
             <!-- check sysprivs here and xsl:choose -->
             <xsl:if test="admin = '1'">
                 <h2><xsl:value-of select="$i18n/l/AdmOptions"/></h2>
@@ -84,7 +85,7 @@
                     <!-- check sysprivs here and xsl:choose -->
                     <xsl:value-of select="$i18n/l/AsMemberAdmin"/>
                     <ul id="adminoptlist">
-                        <li><a href="{$xims_box}{$goxims_users}"><xsl:value-of select="$i18n/l/ManageUserRoles"/></a></li>
+                        <li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims_users}"><xsl:value-of select="$i18n/l/ManageUserRoles"/></a></li>
                     </ul>
                 </p>
             </xsl:if>
@@ -95,7 +96,7 @@
 </xsl:template>
 
 <xsl:template match="objectlist">
-    <table class="obj-table">
+    <table id="obj-table">
     <thead>
     <tr>
 					<th>&#160;</th>
@@ -121,7 +122,7 @@
 </xsl:template>
 
 <xsl:template match="bookmark">
-    <li>
+    <li class="sprite sprite-list_SymbolicLink">
         <xsl:choose>
             <xsl:when test="content_id != ''">
                 <a href="{$xims_box}{$goxims_content}{content_id}"><xsl:value-of select="content_id"/></a>

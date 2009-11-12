@@ -31,7 +31,7 @@
 			<xsl:call-template name="head_default"/>
 			<body>
 				<xsl:if test="substring($hls,2,1) != ':'">
-					<xsl:attribute name="onLoad">stringHighlight(getParamValue('hls'))</xsl:attribute>
+					<xsl:attribute name="onload">stringHighlight(getParamValue('hls'))</xsl:attribute>
 				</xsl:if>
 				<!-- poor man's stylechooser -->
 				<xsl:choose>
@@ -47,7 +47,7 @@
 				</xsl:if>
 				<div id="main-content" class="ui-corner-all">
 					<xsl:call-template name="options-menu-bar"/>
-					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 						<div id="docbody">
 							<xsl:call-template name="pre-body-hook"/>
 							<span id="body">
@@ -59,12 +59,29 @@
 										<xsl:value-of select="$i18n/l/Document_links"/>
 									</strong>
 									</p>
+								<!--<p>-->
+								<table>
+								<thead>
+									<tr>
+										<th><xsl:value-of select="$i18n/l/Status"/></th>
+										<th><xsl:value-of select="$i18n/l/Position"/></th>
+										<th><xsl:value-of select="$i18n/l/Title"/></th>
+										<th><xsl:value-of select="$i18n/l/Options"/></th>
+									</tr>
+								</thead>
+									<tbody>
+										<tr>
+											<xsl:apply-templates select="children/object" mode="link">
+												<xsl:sort select="position" data-type="number"/>
+											</xsl:apply-templates>
+										</tr>
+									</tbody>
+								</table>
+									
+									<!--&#160;
+								</p-->
 								<p>
-									<xsl:apply-templates select="children/object" mode="link">
-										<xsl:sort select="position" data-type="number"/>
-									</xsl:apply-templates>
-								</p>
-								<p>
+								<br/>
 									<xsl:if test="$m='e' and user_privileges/create">
 										<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
 											<xsl:value-of select="$i18n/l/Add_link"/>

@@ -20,7 +20,7 @@
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
-<div id="table-container">
+<div id="content-container">
         <form name="userEdit" action="{$xims_box}{$goxims}/user" method="post">
 
               <p>
@@ -49,7 +49,7 @@
 													&#160;
                         <input name="cancel" type="button" class="ui-state-default ui-corner-all fg-button" onclick="javascript:history.go(-1)">
 													<xsl:attribute name="value"><xsl:value-of select="$i18n/l/cancel"/></xsl:attribute></input>
-                        <a href="{$xims_box}{$goxims}/user" class="ui-state-default ui-corner-all fg-button"><xsl:value-of select="$i18n/l/cancel"/></a>
+                        <!--<a href="{$xims_box}{$goxims}/user" class="ui-state-default ui-corner-all fg-button"><xsl:value-of select="$i18n/l/cancel"/></a>-->
         </form>
         </div>
         </body>

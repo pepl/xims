@@ -115,19 +115,114 @@
 		<xsl:variable name="objecttype">
 			<xsl:value-of select="object_type_id"/>
 		</xsl:variable>
+		<xsl:variable name="id" select="@id"/>
 		<xsl:if test="/document/data_formats/data_format[@id=$dataformat]/name='URL' 
                or /document/data_formats/data_format[@id=$dataformat]/name='SymbolicLink'">
-			<div class="line">
-				<span class="sp-stat_title">
-					<xsl:call-template name="cttobject.status"/>&#160;
-				<xsl:call-template name="cttobject.position"/>&#160;
-				<a>
+			<tr>
+				<td width="30">
+					<xsl:call-template name="cttobject.status"/>
+				</td>
+				<td align="center">
+					<xsl:call-template name="cttobject.position"/>
+				</td>
+				<td>
+					<a>
 						<xsl:attribute name="href"><xsl:choose><xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='URL'"><xsl:value-of select="location"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($goxims_content,symname_to_doc_id,'?sb=',$sb,';order=',$order,';m=',$m)"/></xsl:otherwise></xsl:choose></xsl:attribute>
 						<xsl:value-of select="title"/>
 					</a>
-					<!--<xsl:if test="$m='e'">-->
-				</span>
-				<span class="sp-options">
+				</td>
+				<xsl:if test="$m='e'">
+					<td align="right">
+						<xsl:choose>
+							<xsl:when test="marked_deleted != '1' 
+                          and user_privileges/write 
+                          and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+								<a href="{$goxims_content}?id={@id};edit=1" class="sprite sprite-option_edit">
+								<span>
+									<xsl:value-of select="$l_Edit"/>
+								</span>
+								&#160;
+							</a>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="cttobject.options.spacer"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:choose>
+							<xsl:when test="marked_deleted != '1' 
+                          and (user_privileges/publish|user_privileges/publish_all) 
+                          and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+								<a href="{$goxims_content}?id={@id};publish_prompt=1" class="sprite sprite-option_pub">
+								<span>
+									<xsl:value-of select="$i18n/l/Publishing_options"/>
+								</span>
+								&#160;
+							</a>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="cttobject.options.spacer"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:choose>
+							<xsl:when test="user_privileges/grant|user_privileges/grant_all">
+								<a href="{$goxims_content}?id={@id};obj_acllist=1" class="sprite sprite-option_acl">
+								<span>
+									<xsl:value-of select="$i18n/l/Access_control"/>
+								</span>
+								&#160;
+							</a>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="cttobject.options.spacer"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:choose>
+							<xsl:when test="user_privileges/delete and published != '1' 
+                              and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+							<a class="sprite sprite-option_purge">
+								<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/></xsl:attribute>
+								<span><xsl:value-of select="$i18n/l/purge"/></span>
+								&#160;
+							</a>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="cttobject.del.spacer"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</td>
+				</xsl:if>
+			</tr>
+		</xsl:if>
+	</xsl:template>
+	
+	<!--<xsl:template match="children/object" mode="link">
+		<xsl:variable name="dataformat">
+			<xsl:value-of select="data_format_id"/>
+		</xsl:variable>
+		<xsl:variable name="objecttype">
+			<xsl:value-of select="object_type_id"/>
+		</xsl:variable>
+		<xsl:variable name="id" select="@id"/>
+		<xsl:if test="/document/data_formats/data_format[@id=$dataformat]/name='URL' 
+               or /document/data_formats/data_format[@id=$dataformat]/name='SymbolicLink'">
+			<div class="line">
+				--><!--<span class="sp-stat_title">--><!--
+					<xsl:call-template name="cttobject.status"/>&#160;
+					<xsl:call-template name="cttobject.position"/>&#160;
+				<a>
+						<xsl:attribute name="href">
+							<xsl:choose><xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='URL'">
+								<xsl:value-of select="location"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat($goxims_content,symname_to_doc_id,'?sb=',$sb,';order=',$order,';m=',$m)"/>
+								</xsl:otherwise></xsl:choose>
+						</xsl:attribute>
+						<xsl:value-of select="title"/>
+					</a>
+					--><!--<xsl:if test="$m='e'">--><!--
+				--><!--</span>
+				<span class="sp-options">--><!--
 					<xsl:choose>
 						<xsl:when test="marked_deleted != '1' 
                           and user_privileges/write 
@@ -171,22 +266,20 @@
 					<xsl:choose>
 						<xsl:when test="user_privileges/delete and published != '1' 
                               and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-							<form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
-								<input type="hidden" name="delete_prompt" value="1"/>
-								<input type="hidden" name="id" value="{@id}"/>
-								<!--<input type="image" name="del{@id}" src="{$skimages}option_purge.png" border="0" width="37" height="19" alt="{$i18n/l/purge}" title="{$i18n/l/purge}"/>-->
-								<input type="image" name="del{@id}" src="{$skimages}option_purge.png" border="0" alt="{$i18n/l/purge}" title="{$i18n/l/purge}"/>
-							</form>
+							<a class="sprite sprite-option_purge">
+								<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/></xsl:attribute>
+								<span><xsl:value-of select="$i18n/l/purge"/></span>
+							</a>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:call-template name="cttobject.del.spacer"/>
 						</xsl:otherwise>
 					</xsl:choose>
-				</span>
-				<!--</xsl:if>-->
+				--><!--</span>--><!--
+				--><!--</xsl:if>--><!--
 			</div>
 		</xsl:if>
-	</xsl:template>
+	</xsl:template>-->
 	
 	<xsl:template match="children/object" mode="comment">
 		<xsl:variable name="objecttype">

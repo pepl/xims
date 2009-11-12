@@ -28,7 +28,7 @@
     </xsl:template>
 
    <xsl:template match="/document/context/user">
-   <div id="table-container">
+   <div id="content-container">
      <form action="{$xims_box}{$goxims_content}" method="get">
 
                 <h1 class="bluebg">

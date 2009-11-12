@@ -32,7 +32,7 @@
 							<xsl:with-param name="with_save">yes</xsl:with-param>
 						</xsl:call-template>
 					</div>
-					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
                 <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" id="create-edit-form">
                     <input type="hidden" name="objtype" value="{$objtype}"/>
 

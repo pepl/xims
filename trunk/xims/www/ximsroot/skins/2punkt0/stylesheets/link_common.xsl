@@ -14,7 +14,7 @@
 <xsl:template name="browse_target">
     <div id="tr-target">
     <div id="label-target"><label for="input-target">
-				<span class="compulsory"><xsl:value-of select="$i18n/l/target"/></span>
+				<xsl:value-of select="$i18n/l/target"/> *
     </label></div>
             <input type="text" name="target" size="60" value="{symname_to_doc_id}" class="text" id="input-target"/>
             <xsl:text>&#160;</xsl:text>

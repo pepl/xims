@@ -27,7 +27,7 @@
 						<xsl:with-param name="with_save">yes</xsl:with-param>
 					</xsl:call-template>
 					</div>
-					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 						<form id="create-edit-form" action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post">
 						<input type="hidden" name="objtype" value="{$objtype}"/>
 						<xsl:call-template name="tr-locationtitle-create"/>
@@ -58,18 +58,6 @@
 </xsl:template>
 
 	<xsl:template name="tr-body-create_tinymce">
-		<!--<tr>
-			<td colspan="3">
-            Body
-            <xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
-				<br/>
-				<textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;">
-					<xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text>
-				</textarea>
-				<xsl:call-template name="jsorigbody"/>
-			</td>
-		</tr>-->
 		<div>
             <label for="body">Body</label>
             <xsl:text>&#160;</xsl:text>

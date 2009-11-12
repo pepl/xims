@@ -24,7 +24,7 @@
 						<xsl:call-template name="options-menu-bar">
 							<xsl:with-param name="createwidget">false</xsl:with-param>
              </xsl:call-template>
-						<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+						<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 							<div id="docbody">
                         <span id="body">
                 <xsl:choose>
@@ -69,7 +69,7 @@
     </xsl:template>
 
     <xsl:template match="title">
-    <div style="background-color: #123853;color:white">
+    <div>
         <!--<td colspan="3" style="background-color: #123853;color:white">-->
             <xsl:apply-templates/>
         <!--</td>-->

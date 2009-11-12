@@ -17,21 +17,21 @@
 <xsl:template match="/document/context/object">
     <html>
       <xsl:call-template name="head_default"/>
-      <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+      <body>
         <xsl:call-template name="header">
           <xsl:with-param name="nooptions">true</xsl:with-param>
           <xsl:with-param name="nostatus">true</xsl:with-param>
         </xsl:call-template>
 
-        <br/>
+        <div id="content-container">
         <xsl:call-template name="forum"/>
-        <xsl:call-template name="script_bottom"/>
+        </div>
       </body>
     </html>
 </xsl:template>
 
 <xsl:template name="forum">
-    <p class="10left">
+    <p>
         <xsl:if test="parents/object[@document_id=/document/context/object/@parent_id]/object_type_id = object_type_id">
             <xsl:value-of select="$i18n/l/In_reply_to"/>
             '<a href="{concat($xims_box,$goxims_content,$parent_path)}">
@@ -49,7 +49,7 @@
         </a>
     </p>
 
-    <table width="620" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
+    <table class="forumbox">
         <tr>
             <td class="forumhead">
                 <xsl:value-of select="title"/>
@@ -70,7 +70,7 @@
                 </xsl:choose>
                 )
             </td>
-            <td class="forumhead" align="right">
+            <td class="forumhead">
                 <xsl:apply-templates select="creation_time" mode="datetime"/>
             </td>
         </tr>
@@ -82,13 +82,13 @@
     </table>
 
     <br />
-    <p class="10left">
+    <p>
         <a href="#reply"><xsl:value-of select="$i18n/l/reply"/></a>
     </p>
 
     <br/>
     <xsl:if test="../../objectlist/object">
-        <p class="10left">
+        <p>
             <xsl:value-of select="$i18n/l/Previous_replies"/>:<br/>
             <table>
                 <xsl:apply-templates select="/document/objectlist/object"/>
@@ -108,7 +108,7 @@
       <xsl:value-of select="object_type_id"/>
     </xsl:variable>
     <tr>
-        <td class="10left">
+        <td>
           <img src="{$ximsroot}images/spacer_white.gif"
                alt="spacer"
                width="{20*(number(@level)-ceiling(number(/document/objectlist/object/@level)))+1}"
@@ -148,34 +148,31 @@
           method="POST"
           onSubmit="return checkFields()">
       <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-      <table border="0" width="620"
-             style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px"
-             cellpadding="3"
-             cellspacing="0">
+      <table class="forumbox">
         <tr>
-          <td valign="top" class="forumhead" colspan="2"><xsl:value-of select="$i18n/l/reply"/></td>
+          <td class="forumhead" colspan="2"><xsl:value-of select="$i18n/l/reply"/></td>
         </tr>
         <tr>
-          <td valign="middle" class="forumcontent"><span class="compulsory"><xsl:value-of select="$i18n/l/Title"/></span>:</td>
+          <td class="forumcontent"><xsl:value-of select="$i18n/l/Title"/> *</td>
           <td><input class="foruminput" type="text" name="title" size="60" value="Re: {title}"/></td>
         </tr>
         <tr>
-          <td valign="middle" class="forumcontent"><span class="compulsory"><xsl:value-of select="$i18n/l/Author"/></span>:</td>
-          <td><input class="foruminput" type="text" name="author" size="30"/></td>
+          <td class="forumcontent"><xsl:value-of select="$i18n/l/Author"/> *</td>
+          <td><input class="foruminput" type="text" name="author" size="60"/></td>
         </tr>
         <tr>
-          <td valign="middle" class="forumcontent"><xsl:value-of select="$i18n/l/Email"/>:</td>
-          <td><input class="foruminput" type="text" name="email" size="30"/></td>
+          <td class="forumcontent"><xsl:value-of select="$i18n/l/Email"/>:</td>
+          <td><input class="foruminput" type="text" name="email" size="60"/></td>
         </tr>
         <tr>
-          <td valign="top" class="forumcontent" style="padding-top:3px;"><span class="compulsory"><xsl:value-of select="$i18n/l/Text"/></span>:</td>
+          <td class="forumcontent"><xsl:value-of select="$i18n/l/Text"/> *</td>
           <td>
-            <textarea class="foruminput" name="body" rows="10" cols="50"></textarea>
+            <textarea class="foruminput" name="body" rows="10" cols="60"></textarea>
           </td>
         </tr>
       </table>
       <br />
-      <p style="margin-left:240px;">
+      <p>
         <xsl:call-template name="saveaction"/>
       </p>
     </form>

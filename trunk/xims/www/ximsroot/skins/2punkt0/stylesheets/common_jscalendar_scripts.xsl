@@ -31,6 +31,6 @@
         </xsl:attribute>
         <xsl:text>&#160;</xsl:text>
     </script>
-    <!--<script type="text/javascript" src="{$ximsroot}jscalendar-1.0/calendar-setup.js"><xsl:text>&#160;</xsl:text></script>-->
+    <script type="text/javascript" src="{$ximsroot}jscalendar-1.0/calendar-setup.js"><xsl:text>&#160;</xsl:text></script>
 </xsl:template>
 </xsl:stylesheet>

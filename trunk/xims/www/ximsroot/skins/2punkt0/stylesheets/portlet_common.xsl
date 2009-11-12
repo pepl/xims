@@ -254,7 +254,7 @@
 					<xsl:value-of select="$i18n_portlet/l/Add_documentlinks"/>
 				</label>
 			</div>
-			<input type="checkbox" name="documentlinks" id="input-add-doclinks">
+			<input type="checkbox" name="documentlinks" id="input-add-doclinks" class="checkbox">
 				<xsl:if test="body/content[documentlinks=1]">
 					<xsl:attribute name="checked">checked</xsl:attribute>
 				</xsl:if>
@@ -390,15 +390,9 @@
 							<xsl:attribute name="checked">checked</xsl:attribute>
 						</xsl:if>
 					</input>
+					<br/><br/>
 			</div>
-			
-<!--			<tr>
-				--><!--<td>Extra filters:</td>--><!--
-				<td colspan="2">
-					<xsl:value-of select="$i18n_portlet/l/Filter_object_types"/>:
-        </td>
-			</tr>-->
-
+		
 <!--		 reactivate after Portlet stuff is refactored and cleaned-up
         <td>
             <textarea name="extra_filters" rows="30" cols="45">
@@ -413,7 +407,7 @@
             </textarea>
         </td>-->
         
-
+		
 		<div class="div-row">
 		<p><xsl:value-of select="$i18n_portlet/l/Filter_object_types"/>:</p>
 			<xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[position() mod 1 = 0]"/>
@@ -421,17 +415,7 @@
 		<!-- Nodes outside the node-set cannot be checked, therefore we have to check the filtered object-types via JavaScript -->
 		<xsl:apply-templates select="body/content/object-type"/>
 		<script type="text/javascript">
-                var inputs = document.getElementsByTagName("input");
-                var re = new RegExp("filter_ot_");
-                var el;
-                for (var i = inputs.length - 1; i > 0; --i ) {
-                    re.test(inputs[i].name);
-                    if (RegExp.rightContext.length > 0) {
-                        el = document.getElementById("ot_" + RegExp.rightContext)
-                        if ( el )
-                            el.checked = 1;
-                    }
-                }
+				object_type_filter();
             </script>
             
      </div>

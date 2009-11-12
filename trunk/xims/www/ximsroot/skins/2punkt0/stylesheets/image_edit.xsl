@@ -23,7 +23,7 @@
 							<xsl:with-param name="with_save">yes</xsl:with-param>
 						</xsl:call-template>
 					</div>
-					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 					<form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST" enctype="multipart/form-data" id="create-edit-form">
 			
 							<xsl:call-template name="tr-location-edit"/>
@@ -48,7 +48,7 @@
 	</xsl:template>
 	
 	<xsl:template name="preview-image">
-		<p style="padding-left:20px;">
+		<p>
 			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}')">
 				<xsl:value-of select="$i18n/l/Preview_image"/>
 			</a>

@@ -11,15 +11,12 @@
 ]>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dyn="http://exslt.org/dynamic" xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="dyn">
 	<xsl:import href="../../../stylesheets/common.xsl"/>
-	<xsl:import href="common_footer.xsl"/>
+	<!--<xsl:import href="common_footer.xsl"/>-->
 	<xsl:import href="common_header.xsl"/>
 	<xsl:import href="common_metadata.xsl"/>
 	<xsl:import href="common_localized.xsl"/>
 	<xsl:import href="common_jscalendar_scripts.xsl"/>
-	<xsl:import href="common_htmlarea_scripts.xsl"/>
 	<xsl:import href="common_tinymce_scripts.xsl"/>
-	<!--<xsl:output method="html" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>-->
-	<!--<xsl:output method="html" omit-xml-declaration="yes" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>-->
 	<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 	<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 	<xsl:variable name="currobjmime" select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/mime_type"/>
@@ -603,7 +600,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 				<a href="javascript:openDocWindow('Notes')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Notes"/></xsl:attribute>(?)</a>
 				<br/>
-				<textarea tabindex="50" name="notes" rows="3" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333  solid 1px;">
+				<textarea name="notes" rows="3" cols="90" id="input-notes">
 					<xsl:apply-templates select="notes"/>
 				</textarea>
 			</td>
@@ -796,7 +793,8 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<script type="text/javascript">
         var current_datestring = "<xsl:value-of select="$timestamp_string"/>";
         var current_date;
-        if ( current_datestring.length > 0 ) {
+        //if ( current_datestring.length > 0 ) {
+        if ( current_datestring.length ) {
             current_date = Date.parseDate(current_datestring, "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
             document.getElementById("show_vft<xsl:value-of select="$formfield_id"/>").innerHTML = current_date;
         }
@@ -933,31 +931,36 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
 		<xsl:variable name="dfname" select="$df/name"/>
 		<xsl:variable name="dfmime" select="$df/mime_type"/>
-		<div id="tab-container" class="ui-corner-top">
-			<div id="tab-cell1">
+		<!--<div id="tab-container" class="ui-corner-top">-->
+		<div id="options-menu-bar" class="ui-corner-top">
+			<div id="options">
+				<!--<div id="tab-cell1">-->
 				<xsl:call-template name="cttobject.dataformat">
 					<xsl:with-param name="dfname" select="$dfname"/>
 				</xsl:call-template>
-				<xsl:value-of select="title"/>
-			</div>
-			<div id="tab-cell3">
+				<span id="object-title">
+					<xsl:value-of select="title"/>
+				</span>
+				<!--</div>
+			<div id="tab-cell3">-->
 				<xsl:call-template name="cttobject.options"/>
 				<xsl:call-template name="cttobject.options.send_email"/>
-			</div>
-			<div id="tab-cell2">
+				<!--</div>
+			<div id="tab-cell2">-->
 				<xsl:call-template name="cttobject.status"/>
+				<!--</div>-->
 			</div>
-			<div id="create">
-				<xsl:if test="/document/context/object/user_privileges/create
+			<!--<div id="create">-->
+			<xsl:if test="/document/context/object/user_privileges/create
                             and $createwidget = 'true'
                             and /document/object_types/object_type[can_create]">
-					<xsl:call-template name="header.cttobject.createwidget">
-						<xsl:with-param name="parent_id">
-							<xsl:value-of select="$parent_id"/>
-						</xsl:with-param>
-					</xsl:call-template>
-				</xsl:if>
-			</div>
+				<xsl:call-template name="header.cttobject.createwidget">
+					<xsl:with-param name="parent_id">
+						<xsl:value-of select="$parent_id"/>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
+			<!--</div>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="cttobject.status">
@@ -1309,6 +1312,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<script type="text/javascript">
 			<xsl:call-template name="xmlhttpjs"/>
 					var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?', $ppmethod, '=1')"/>";
+					var ppmethod = "<xsl:value-of select="$ppmethod"/>";
         <!--function prettyprint() {
             var xmlhttp = getXMLHTTPObject();
             var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?', $ppmethod, '=1')"/>";
@@ -1480,9 +1484,6 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 				<xsl:with-param name="fg-menu">true</xsl:with-param>
 				<xsl:with-param name="questionnaire" select="$questionnaire"/>
 				<xsl:with-param name="ap-pres" select="$ap-pres"/>
-				<xsl:with-param name="user">
-					<xsl:if test="$mode='user'">true</xsl:if>
-				</xsl:with-param>
 				<xsl:with-param name="calendar">
 					<xsl:value-of select="$calendar"/>
 				</xsl:with-param>
@@ -1530,12 +1531,21 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<xsl:param name="fg-menu" select="false()"/>
 		<xsl:param name="questionnaire" select="false()"/>
 		<xsl:param name="ap-pres" select="false()"/>
-		<xsl:param name="user" select="false()"/>
 		<xsl:param name="calendar" select="false()"/>
 		<!--<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/defcontmin.css" type="text/css"/>-->
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/2punkt0.css" type="text/css"/>
+		<!-- <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/rest.css" type="text/css"/>
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/common.css" type="text/css"/>
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/sprites.css" type="text/css"/>
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/menu.css" type="text/css"/>
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/content.css" type="text/css"/>-->
 		<xsl:if test="$jquery-ui-smoothness">
-			<link rel="stylesheet" href="{$jquery_dir}themes/smoothness/ui.all.css" type="text/css"/>
+			<!--<link rel="stylesheet" href="{$jquery_dir}themes/smoothness/ui.all.css" type="text/css"/>-->
+			<link rel="stylesheet" href="{$jquery_dir}themes/smoothness/ui.theme.css" type="text/css"/>
+			<link rel="stylesheet" href="{$jquery_dir}themes/smoothness/ui.dialog.css" type="text/css"/>
+			<link rel="stylesheet" href="{$jquery_dir}themes/smoothness/ui.resizable.css" type="text/css"/>
+			<link rel="stylesheet" href="{$jquery_dir}themes/smoothness/ui.core.css" type="text/css"/>
+			<!--<link rel="stylesheet" href="{$jquery_dir}themes/smoothness/ui.datepicker.css" type="text/css"/>-->
 		</xsl:if>
 		<xsl:if test="$fg-menu">
 			<link rel="stylesheet" href="{$jquery_dir}fg-menu/fg.menu.css" type="text/css"/>
@@ -1546,11 +1556,8 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<xsl:if test="$ap-pres">
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/axpointpresentation.css" type="text/css"/>
 		</xsl:if>
-		<xsl:if test="$user">
-			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/userpages.css" type="text/css"/>
-		</xsl:if>
 		<xsl:if test="$calendar">
-		<link rel="stylesheet" type="text/css" media="all" href="{$ximsroot}jscalendar-1.0/calendar-blue.css" title="winter" />
+			<link rel="stylesheet" type="text/css" media="all" href="{$ximsroot}jscalendar-1.0/calendar-blue.css" title="winter"/>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template name="script_head">
@@ -1564,7 +1571,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			<script src="{$jquery_dir}jquery-ui-i18n.js" type="text/javascript"/>
 		</xsl:if>
 		<xsl:if test="$fg-menu">
-			<script language="javascript" src="{$jquery_dir}fg-menu/fg.menu.js" type="text/javascript"/>
+			<script language="javascript" src="{$jquery_dir}fg-menu/fg.menu-min.js" type="text/javascript"/>
 		</xsl:if>
 		<xsl:if test="$calendar">
 			<script type="text/javascript">
@@ -1579,8 +1586,8 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		<script src="{$ximsroot}scripts/default.js" type="text/javascript">
 			<xsl:text>&#160;</xsl:text>
 		</script>
+		<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0-all-min.js" type="text/javascript"/>-->
 	</xsl:template>
-	
 	<xsl:template name="script_bottom">
 		<!-- defmin.js generated by xims_minimize_jscss.pl
     <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
@@ -1601,5 +1608,41 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 				<a href="{$xims_box}{$goxims_content}/">/root</a>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="create_bookmark">
+		<xsl:param name="admin" select="false()"/>
+		<h2>
+			<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$i18n/l/Bookmark"/>
+		</h2>
+		<p>
+			<form action="{$xims_box}{$goxims}/bookmark" name="eform">
+				<p>
+					<label for="input-path">
+						<xsl:value-of select="$i18n/l/Path"/>
+					</label>: 
+            <input type="text" name="path" size="40" class="text" id="input-path"/>
+					<xsl:text>&#160;</xsl:text>
+					<a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>
+					<xsl:text>&#160;</xsl:text>
+					<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path')" class="doclink">
+						<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Object"/>
+					</a>
+				</p>
+				<p>
+					<label for="cb-stdbm">
+						<xsl:value-of select="$i18n/l/Set_as"/>&#160;
+							<xsl:value-of select="$i18n/l/default_bookmark"/>
+					</label>: 
+            <input type="checkbox" class="checkbox" name="stdhome" value="1" id="cb-stdbm"/>
+					<a href="javascript:openDocWindow('DefaultBookmark')" class="doclink">(?)</a>
+					<xsl:text>&#160;</xsl:text>
+				</p>
+				<xsl:if test="$admin">
+					<input type="hidden" name="name" value="{$name}"/>
+					<input name="userquery" type="hidden" value="{$userquery}"/>
+				</xsl:if>
+				<input type="submit" class="ui-state-default ui-corner-all fg-button" name="create" value="{$i18n/l/create}"/>
+			</form>
+		</p>
 	</xsl:template>
 </xsl:stylesheet>
