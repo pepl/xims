@@ -15,14 +15,14 @@
 		<html>
 			<xsl:call-template name="head_default"/>
 			<body>
-				<script language="javascript" type="text/javascript" src="{$ximsroot}scripts/search_filter.js"/>
+				<!--<script language="javascript" type="text/javascript" src="{$ximsroot}scripts/search_filter.js"/>-->
 				<xsl:call-template name="header">
 					<xsl:with-param name="createwidget">true</xsl:with-param>
 				</xsl:call-template>
 				<div id="main-content">
 					<xsl:call-template name="options-menu-bar"/>
 					<div id="right-empty-div-cell">&#160;</div>
-					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 						<xsl:call-template name="childrentable"/>
 						<xsl:call-template name="pagenavtable"/>
 					</div>

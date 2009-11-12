@@ -19,7 +19,7 @@
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
             
-            <div id="table-container">
+            <div id="content-container">
             <h1 class="redbg">
                 <xsl:value-of select="$i18n/l/Error"/></h1>
                 <p>

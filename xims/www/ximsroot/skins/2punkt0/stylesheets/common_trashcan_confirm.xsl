@@ -32,7 +32,7 @@
 				<xsl:call-template name="header">
 					<!--<xsl:with-param name="noncontent">true</xsl:with-param>-->
 				</xsl:call-template>
-				<div id="table-container">
+				<div id="content-container">
 					<form action="{$xims_box}{$goxims_content}" method="GET">
 						<h1 class="bluebg">Löschen des Objekts bestätigen</h1>
 						<p>

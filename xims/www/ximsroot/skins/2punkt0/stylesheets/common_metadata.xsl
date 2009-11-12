@@ -44,29 +44,6 @@
     </p>
 </xsl:template>
 
-<!--<xsl:template name="user-metadata">
-        <tr>
-            <td valign="top">
-                <div>
-                    <xsl:value-of select="$i18n/l/Created_by"/>&#160;<xsl:call-template name="creatorfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="creation_timestamp" mode="datetime"/>
-                </div>
-                <div>
-                    <xsl:value-of select="$i18n/l/Owned_by"/>&#160;<xsl:call-template name="ownerfullname"/>
-                </div>
-            </td>
-            <td>&#160;</td>
-            <td align="right" valign="top">
-                <div>
-                    <xsl:value-of select="$i18n/l/Last_modified_by"/>&#160;<xsl:call-template name="modifierfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
-                </div>
-                <div>
-                    <xsl:if test="published=1">
-                        <xsl:value-of select="$i18n/l/Last_published_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
-                    </xsl:if>
-                </div>
-            </td>
-        </tr>
-</xsl:template>-->
 <xsl:template name="user-metadata">
                 <div id="user-metadata-create">
                     <xsl:value-of select="$i18n/l/Created_by"/>&#160;<xsl:call-template name="creatorfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="creation_timestamp" mode="datetime"/>

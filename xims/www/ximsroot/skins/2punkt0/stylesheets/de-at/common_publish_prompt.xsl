@@ -16,10 +16,9 @@
 			</xsl:call-template>
 			<body onLoad="disableIt(document.forms[1].autopublish,'objids');">
 				<xsl:call-template name="header">
-					<!--<xsl:with-param name="noncontent">true</xsl:with-param>-->
 				</xsl:call-template>
 				
-				<div id="table-container" class="publish-dialog">
+				<div id="content-container" class="publish-dialog"> 
 					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="GET">
 						
 						<h1 class="bluebg">Optionen zum Veröffentlichen</h1><!-- für das Objekt '<xsl:value-of select="title"/>'</h1>-->
@@ -34,8 +33,7 @@
 								</a>
 							</xsl:if>
 						</p>
-						
-						<!-- warn about ungranded children -->
+
 						<xsl:if test="message">
 							<p>
 							 Warnung: Das Objekt '<xsl:value-of select="title"/>' hat folgenden Abhängigkeiten und Sie haben daher nicht die erforderlichen Rechte zum Veröffentlichen des Objekts:
@@ -45,9 +43,7 @@
 							Diese Objekte werden während des Veröffentlichens übersprungen.
 						</p>
 						</xsl:if>
-						<!-- end warning -->
-						
-						<!-- autoindex -->
+
 						<xsl:if test="contains( attributes/text(), 'autoindex=1' )">
 							<p>
 								<strong>Hinweis: Die Autoindexoption ist für diesen Container gesetzt.</strong>
@@ -59,7 +55,6 @@
 								 auswählen wird eine Index-Datei erstellt.
 							</p>
 						</xsl:if>
-						<!-- end autoindex -->
 						
 						<p>
             Klicken Sie
@@ -78,8 +73,6 @@
                                         'Abbrechen' um zur vorigen Seite zu gelangen.
 </p>
 
-						<!-- references -->
-							<!-- begin link table -->
              <xsl:if test="/document/objectlist/object">
 							<br/>
 											<div>Die folgenden <strong>verwandten Objekte</strong> (Kinder, Links) wurden gefunden:</div>
@@ -103,7 +96,6 @@
 													</xsl:otherwise>
 												</xsl:choose>
 							</xsl:if>
-							<!-- end link table -->
 						
 						<br/>
 							<div>
@@ -117,8 +109,6 @@
                                         <input type="checkbox" name="verbose_result" value="1" id="verbose_result" class="checkbox"/>
 						</div>
 
-						
-<!-- begin buttons table -->
 						<div id="confirm-buttons">
 						<br/>
 							<input name="publish" type="submit" class="ui-state-default ui-corner-all fg-button">
@@ -140,7 +130,6 @@
 							</xsl:if>
 							<input name="default" type="button" value="Abbrechen" onClick="javascript:history.go(-1)" class="ui-state-default ui-corner-all fg-button"/>
 						</div>
-						<!-- end buttons table -->
 					</form>
 				</div>
 				

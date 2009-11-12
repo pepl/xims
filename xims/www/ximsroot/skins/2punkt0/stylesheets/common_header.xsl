@@ -27,8 +27,10 @@
 		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
 		<xsl:variable name="dfname" select="$df/name"/>
 		<xsl:variable name="dfmime" select="$df/mime_type"/>
-		<div id="navopt">
-			<div class="locbar">
+		
+		<!--<div id="navopt">-->
+		<div id="path-logo">
+			<div id="locbar">
 				<xsl:if test="$nopath='false' and $noncontent ='false'">
 					<xsl:value-of select="$i18n/l/YouAreIn"/>
 					<xsl:choose>
@@ -53,48 +55,50 @@
 					</xsl:choose>
 				</xsl:if>
 			</div>
-			<div id="header-logo" class="logo">
+			
+			<!--<div id="header-logo" class="logo">-->
+			<div id="header-logo">
 				<a href="http://xims.info/">
 					<span>XIMS</span>
 				</a>
 			</div>
 		</div>
+		
 		<div id="access-container">
 			<ol id="accesslist">
-				<li>
+<!--				<li>
 					Jump to: <a href="#mainmenu">Main Menu (Home, Logout)</a>
 				</li>
 				<li>
 					<a href="#subheader">Navigate and search</a>
 				</li>
 				<li>
-					<a href="#tab-container">Edit Menu</a>
+					<a href="#options-menu-bar">Edit Menu</a>
 				</li>
 				<li>
-					<a href="#table-container">Content area</a>
-				</li>
+					<a href="#options-menu-bar">Content area</a>
+				</li>-->
 			</ol>
 		</div>
-		<div id="titlelogo">
-			<div id="header-tr">
+		
+		<!--<div id="titlelogo">-->
+		<div id="menu-bar">
+			<!--<div id="header-tr">-->
 				<xsl:call-template name="header.arrownavigation"/>
 				<xsl:call-template name="menu-widget"/>
 				<xsl:call-template name="help-widget"/>
-				<div class="empty-div-cell">
+				<!--<div class="empty-div-cell">
 					<label for="input-search" class="hidden">
 						<xsl:value-of select="$i18n/l/Search_for"/>
 					</label>
-				</div>
-				<div class="header-td-right">
-					<xsl:call-template name="header.cttobject.search"/>
-				</div>
-				<!--<div id="header-logo" class="logo">
-					<a href="http://xims.info/">&#xa0;<span>XIMS</span>
-					</a>
 				</div>-->
-			</div>
+				<!--<div class="header-td-right">-->
+					<xsl:call-template name="header.cttobject.search"/>
+				<!--</div>-->
+			<!--</div>-->
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="subheader_noncontent">
 		<table id="subheader">
 			<tr>
@@ -164,13 +168,14 @@
 	
 	<xsl:template name="header.cttobject.createwidget">
 		<xsl:param name="parent_id"/>
-		<div class="create-widget">
+		<div id="create-widget">
 			<a href="#object-types" class="flyout create-widget fg-button fg-button-icon-right ui-state-default ui-corner-all" tabindex="0" >
 				<span class="ui-icon ui-icon-triangle-1-s"/>
 				<xsl:value-of select="$i18n/l/Create"/>
 			</a>
 			<div id="object-types" class="hidden-content">
 				<ul>
+				<li><ul></ul></li>
 					<xsl:choose>
 						<xsl:when test="/document/context/object/@id = 1">
 							<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"/>
@@ -189,6 +194,7 @@
 									<xsl:value-of select="$i18n/l/More"/>
 								</a>
 								<ul>
+								<li><ul></ul></li>
 									<!-- Only show basic object types on first page: TODO Select from object type properties and not from OT names or IDs!
                                         Do not display object types that either are not fully implemented or that are not meant to be created directly.
                                         We may consider adding an object type property for the latter types.
@@ -235,21 +241,34 @@
         </form>
     </noscript>
 	</xsl:template>
+	
 	<xsl:template name="header.cttobject.search">
 		<xsl:variable name="Search" select="$i18n/l/Search"/>
-		<div id="sh-search" class="qsearch ui-widget-content ui-corner-all">
+		<!--<div id="menu-search" class="qsearch ui-widget-content ui-corner-all">-->
+		
+		<div id="menu-search" class="ui-widget-content ui-corner-all">
 			<form method="get" name="quicksearch">
-				<xsl:attribute name="action"><xsl:choose><xsl:when test="$absolute_path != ''"><xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($xims_box,$goxims,'/user')"/></xsl:otherwise></xsl:choose></xsl:attribute>
+				<xsl:attribute name="action">
+					<xsl:choose>
+						<xsl:when test="$absolute_path != ''">
+							<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($xims_box,$goxims,'/user')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
 				<label for="start_here">
 					<xsl:value-of select="$i18n/l/From_here"/>
 				</label>
-				<input id="start_here" type="checkbox" class="start_here ui-corner-all" name="start_here" value="1">
+				<input id="start_here" type="checkbox" class="checkbox" name="start_here" value="1">
 					<xsl:if test="$start_here != ''">
 						<xsl:attribute name="checked">true</xsl:attribute>
 					</xsl:if>
 				</input>
-				<!--<label for="input-search" class="hidden"><xsl:value-of select="$i18n/l/Search_for" /></label>-->
-				<input type="text" class="search ui-corner-all" id="input-search" name="s" size="17" maxlength="200">
+				
+				<!--<input type="text" class="search ui-corner-all" id="input-search" name="s" size="17" maxlength="200">-->
+				<input type="text" class="ui-corner-all" id="input-search" name="s" size="17" maxlength="200">
 					<xsl:choose>
 						<xsl:when test="$s != ''">
 							<xsl:attribute name="value"><xsl:value-of select="$s"/></xsl:attribute>
@@ -274,6 +293,7 @@
 			</form>
 		</div>
 	</xsl:template>
+	
 	<xsl:template match="object_type">
 		<xsl:variable name="parent_id" select="parent_id"/>
 		<xsl:variable name="sorting">
@@ -340,8 +360,8 @@
 	</xsl:template>
 	<!--Help Widget-->
 	<xsl:template name="help-widget">
-		<div id="help">
-			<div class="help-widget">
+		<!--<div id="help">-->
+			<div id="help-widget">
 				<a href="#help-types" class="flyout help-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" tabindex="0">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Help"/></xsl:attribute>
 					<span class="ui-icon ui-icon-help"/>
@@ -387,8 +407,9 @@
 						</li>
 					</ul>
 				</div>
+				<label for="input-search" class="hidden"><xsl:value-of select="$i18n/l/Search_for" /></label>
 			</div>
-			</div>
+			<!--</div>-->
 			<noscript>
 <!--				<ul>
 						<li>-->
@@ -437,8 +458,8 @@
 	</xsl:template>
 	<!--Menu Widget-->
 	<xsl:template name="menu-widget">
-		<div id="menu">
-			<div class="menu-widget">
+		<!--<div id="menu">-->
+			<div id="menu-widget">
 				<a href="#menu-types" class="flyout menu-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" tabindex="0">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Menu"/></xsl:attribute>
 					<span class="ui-icon ui-icon-gear"/>
@@ -485,7 +506,7 @@
 						</li>-->
 					</ul>
 				</div>
-			</div>
+			<!--</div>-->
 </div>			
 			<noscript>
 					<!--<ul>-->

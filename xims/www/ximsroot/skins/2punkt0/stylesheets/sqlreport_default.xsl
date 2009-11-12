@@ -25,7 +25,7 @@
             
                       <div id="main-content" class="ui-corner-all">
 						<xsl:call-template name="options-menu-bar"/>
-						<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+						<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 						<xsl:if test="abstract/text() != ''">
 							<div><strong><xsl:apply-templates select="abstract"/></strong></div>
                 </xsl:if>

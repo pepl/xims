@@ -34,7 +34,7 @@
         </xsl:call-template>
 
 
-            <div id="table-container">
+            <div id="content-container">
 
                 <h1 class="bluebg"><xsl:value-of select="$i18n/l/Privs_updated"/></h1>
 

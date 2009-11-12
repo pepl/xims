@@ -30,7 +30,7 @@
 							<xsl:with-param name="with_save">yes</xsl:with-param>
 						</xsl:call-template>
 					</div>
-					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
           <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" id="create-edit-form">
             <input type="hidden" name="objtype" value="{$objtype}"/>
 
@@ -39,29 +39,11 @@
               <xsl:call-template name="tr-abstract-create"/>
               <xsl:call-template name="markednew"/>
               <xsl:call-template name="grantowneronly"/>
-              
+              <br/><br/>
               <xsl:call-template name="extra_properties"/>
-              <div style="clear:both">
+              <br clear="all"/><br/>
+
               <xsl:call-template name="contentfilters"/>
-              </div>
-								
-<!--								<div id="accordion" class="ui-accordion ui-widget">
-									<a href="#" class="ui-accordion-header"><span class="text">Extra Properties</span></a>
-									<div class="ui-accordion-content ui-widget-content">
-										<xsl:call-template name="extra_properties"/>
-									</div>
-									<a href="#" class="ui-accordion-header "><span class="text">Tree depth</span></a>
-									<div class="ui-accordion-content ui-widget-content">
-										<xsl:call-template name="tree_depth"/>
-									</div>
-									<a href="#" class="ui-accordion-header ui-corner-all"><span class="text"></span>Contentfilters</a>
-									<div class="ui-accordion-content ui-widget-content ">
-										<xsl:call-template name="contentfilters"/>
-									</div>
-								</div>-->
-                  <!--<xsl:call-template name="extra_properties"/>
-                  <xsl:call-template name="tree_depth"/>
-                  <xsl:call-template name="contentfilters"/>-->
 
             <xsl:call-template name="saveaction"/>
           </form>

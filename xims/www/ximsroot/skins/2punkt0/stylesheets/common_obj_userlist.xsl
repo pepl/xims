@@ -41,7 +41,7 @@
 					<!--<xsl:with-param name="nopath">true</xsl:with-param>-->
         </xsl:call-template>
         
-        <div id="table-container">
+        <div id="content-container">
           <h1 class="bluebg">
             <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>'</h1>
 
@@ -103,7 +103,7 @@
           <!-- end filter widget table -->
 				<!--</div>
 				
-				<div id="table-container">-->
+				<div id="content-container">-->
         <table  id="obj-table">
           <xsl:choose>
             <xsl:when test="granteelist/user or /document/userlist/user">

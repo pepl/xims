@@ -30,7 +30,7 @@
 						</xsl:call-template>
 					</div>
 				
-<div id="table-container" class="ui-corner-bottom ui-corner-tr">				
+<div id="content-container" class="ui-corner-bottom ui-corner-tr">				
 					
 					<form action="{$xims_box}{$goxims_content}" method="GET" id="create-edit-form" name="eform">
 						<xsl:value-of select="$i18n/l/from"/> '<xsl:value-of select="$parent_path"/>'

@@ -535,7 +535,7 @@
     <xsl:param name="save">Save</xsl:param>
 
                     <input name="{$action}" type="submit" class="ui-state-default ui-corner-all fg-button">
-												<xsl:attribute name="value"><xsl:value-of select="$i18n/l/cancel"/></xsl:attribute> 
+												<xsl:attribute name="value"><xsl:value-of select="$i18n/l/save"/></xsl:attribute> 
                     </input>
                     <xsl:choose>
                         <xsl:when test="@id != ''">
@@ -567,6 +567,7 @@
 <xsl:template name="title-userpage">
 <xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of select="$i18n/l/Users"/>/<xsl:value-of select="$i18n/l/Roles"/> - XIMS
 </xsl:template>
+
 
 </xsl:stylesheet>
 

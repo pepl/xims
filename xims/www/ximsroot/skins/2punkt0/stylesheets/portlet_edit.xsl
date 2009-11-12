@@ -28,7 +28,7 @@
 							<xsl:with-param name="with_save">yes</xsl:with-param>
 						</xsl:call-template>
 					</div>
-					<div id="table-container" class="ui-corner-bottom ui-corner-tr">
+					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
           <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST" id="create-edit-form">
                 
               <xsl:call-template name="tr-locationtitletarget-edit"/>
@@ -36,9 +36,11 @@
 							<xsl:call-template name="add_documentlinks"/>
               <xsl:call-template name="tr-abstract-edit"/>
               <xsl:call-template name="markednew"/>
-
+								<br/><br/>
                   <xsl:call-template name="extra_properties"/>
                  <!-- <xsl:call-template name="contentoptions"/>-->
+                 
+                 <br clear="all"/><br/>
                   <xsl:call-template name="contentfilters"/>
 
 

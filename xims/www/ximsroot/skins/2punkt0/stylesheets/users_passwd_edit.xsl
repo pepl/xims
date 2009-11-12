@@ -22,7 +22,7 @@
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
 
-<div id="table-container">
+<div id="content-container">
         <form name="userEdit" action="{$xims_box}{$goxims_users}" method="post">
 
               <p>

@@ -25,7 +25,7 @@
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
 
-					<div id="table-container">
+					<div id="content-container">
             <h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'</h1>
 							
 							<p>
