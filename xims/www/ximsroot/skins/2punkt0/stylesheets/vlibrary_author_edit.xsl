@@ -35,7 +35,7 @@
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
           <form action="{$xims_box}{$goxims_content}"
               name="eform"
-              method="GET">
+              method="get">
           <input type="hidden" name="id" id="id" value="{@id}"/>
           <xsl:apply-templates select="/document/context/object/children"/>
         </form>
@@ -185,7 +185,7 @@
              value="{$i18n/l/save}" 
              class="control" 
              accesskey="S"/>
-      <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C" onClick="self.close();"/>
+      <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C" onclick="self.close();"/>
     </p>
   </xsl:template>
 

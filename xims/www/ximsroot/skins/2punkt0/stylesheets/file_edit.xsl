@@ -28,7 +28,7 @@
 						</xsl:call-template>
 					</div>
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST" enctype="multipart/form-data" id="create-edit-form">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" enctype="multipart/form-data" id="create-edit-form">
 
                     <xsl:call-template name="tr-location-edit"/>
                     <xsl:call-template name="tr-title-edit"/>

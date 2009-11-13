@@ -14,12 +14,12 @@
 		<html>
 			<xsl:call-template name="head">
 			</xsl:call-template>
-			<body onLoad="disableIt(document.forms[1].autopublish,'objids');">
+			<body onload="disableIt(document.forms[1].autopublish,'objids');">
 				<xsl:call-template name="header">
 				</xsl:call-template>
 				
 				<div id="content-container" class="publish-dialog"> 
-					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="GET">
+					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get">
 						
 						<h1 class="bluebg">Optionen zum Veröffentlichen</h1><!-- für das Objekt '<xsl:value-of select="title"/>'</h1>-->
 						
@@ -128,7 +128,7 @@
 								<input name="unpublish" type="submit" value="Veröffentlichen rückgängig machen" class="ui-state-default ui-corner-all fg-button"/>
 								&#160;
 							</xsl:if>
-							<input name="default" type="button" value="Abbrechen" onClick="javascript:history.go(-1)" class="ui-state-default ui-corner-all fg-button"/>
+							<input name="default" type="button" value="Abbrechen" onclick="javascript:history.go(-1)" class="ui-state-default ui-corner-all fg-button"/>
 						</div>
 					</form>
 				</div>

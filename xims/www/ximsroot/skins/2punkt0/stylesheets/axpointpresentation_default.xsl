@@ -18,7 +18,7 @@
         <xsl:call-template name="head_default">
 					<xsl:with-param name="ap-pres">true</xsl:with-param>
         </xsl:call-template>
-        <body onLoad="stringHighlight(getParamValue('hls'))">
+        <body onload="stringHighlight(getParamValue('hls'))">
             <xsl:call-template name="header"/>
             <xsl:call-template name="toggle_hls"/>
             

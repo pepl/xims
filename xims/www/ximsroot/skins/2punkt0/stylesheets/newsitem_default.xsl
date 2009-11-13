@@ -18,7 +18,7 @@
         <xsl:call-template name="head_default">
 					<xsl:with-param name="calendar">true</xsl:with-param>
 				</xsl:call-template>
-        <body onLoad="stringHighlight(getParamValue('hls'))">
+        <body onload="stringHighlight(getParamValue('hls'))">
             <!-- poor man's stylechooser -->
             <xsl:choose>
                 <xsl:when test="$printview != '0'">

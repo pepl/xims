@@ -326,7 +326,7 @@
 							<xsl:when test="user_privileges/delete 
                           and published != '1' 
                           and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-								<form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
+								<form style="margin:0px;" name="delete" method="get" action="{$xims_box}{$goxims_content}">
 									<input type="hidden" name="delete_prompt" value="1"/>
 									<input type="hidden" name="id" value="{@id}"/>
 									<input type="image" name="del{@id}" src="{$skimages}option_purge.png" border="0" width="37" height="19" alt="{$i18n/l/purge}" title="{$i18n/l/purge}"/>

@@ -32,7 +32,7 @@
 				
 <div id="content-container" class="ui-corner-bottom ui-corner-tr">				
 					
-					<form action="{$xims_box}{$goxims_content}" method="GET" id="create-edit-form" name="eform">
+					<form action="{$xims_box}{$goxims_content}" method="get" id="create-edit-form" name="eform">
 						<xsl:value-of select="$i18n/l/from"/> '<xsl:value-of select="$parent_path"/>'
             <label for="input-to"><xsl:value-of select="$i18n/l/to"/></label>:
             <input type="text" size="60" name="to" id="input-to">

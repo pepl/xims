@@ -16,12 +16,12 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head"/>
-        <body onLoad="disableIt(document.forms[1].autopublish,'objids');">
+        <body onload="disableIt(document.forms[1].autopublish,'objids');">
             <xsl:call-template name="header">
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
 
-            <form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="GET" style="margin-top: 0px; margin-left: 5px;">
+            <form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get" style="margin-top: 0px; margin-left: 5px;">
                 <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
                     <tr>
                         <td align="center">
@@ -125,7 +125,7 @@
                                                                             (De)Select all
                                                                         </td>
                                                                         <td>
-                                                                            <input type="checkbox" name="selector" value="1" onClick="switcher(this,'objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0;"/>
+                                                                            <input type="checkbox" name="selector" value="1" onclick="switcher(this,'objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0;"/>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -193,7 +193,7 @@
                                                     </td>
                                                 </xsl:if>
                                                 <td>
-                                                    <input name="default" type="button" value="Cancel" onClick="javascript:history.go(-1)" class="control"/>
+                                                    <input name="default" type="button" value="Cancel" onclick="javascript:history.go(-1)" class="control"/>
                                                 </td>
                                             </tr>
                                         </table>

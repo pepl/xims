@@ -18,7 +18,7 @@
 		</xsl:variable>
     <html>
         <xsl:call-template name="head_default"/>
-        <body onLoad="stringHighlight(getParamValue('hls'))">
+        <body onload="stringHighlight(getParamValue('hls'))">
             <xsl:call-template name="header"/>
             <xsl:call-template name="toggle_hls"/>
             

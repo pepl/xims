@@ -39,9 +39,9 @@
     </script>
   </head>
   <body>
-    <p align="right"><a href="#" onClick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
+    <p align="right"><a href="#" onclick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
     <p>
-    <form action="{$xims_box}{$goxims_content}" method="POST" name="selectform">
+    <form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
         <p>
             <xsl:value-of select="$i18n/l/Browse_to"/>:
             <br/>&#xa0;
@@ -86,7 +86,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="$otfilter = '' or contains( $otfilter ,/document/object_types/object_type[@id=$objecttype]/name )">
-                (<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onClick="storeBack('{$target_path}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
+                (<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
             </xsl:if>
     </td></tr>
 </xsl:template>

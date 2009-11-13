@@ -32,7 +32,7 @@
 						</xsl:call-template>
 					</div>
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST" id="create-edit-form">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" id="create-edit-form">
 
                     <xsl:call-template name="tr-locationtitle-edit_xml"/>
                     <xsl:if test="$bxepresent=1">

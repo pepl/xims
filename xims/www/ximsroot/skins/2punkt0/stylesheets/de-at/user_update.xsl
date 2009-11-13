@@ -25,7 +25,7 @@
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
 
-        <form name="userConfirm" action="{$xims_box}{$goxims}/user" method="GET">
+        <form name="userConfirm" action="{$xims_box}{$goxims}/user" method="get">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
           <tr background="{$skimages}generic_tablebg_1x20.png">
             <td>&#160;</td>

@@ -14,12 +14,12 @@
     <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head-create"/>
-        <body onLoad="document.eform.name.focus()">
+        <body onload="document.eform.name.focus()">
         <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" 
               name="eform" 
-              method="POST" 
+              method="post" 
               style="margin-top:0px;">
             <input type="hidden" name="objtype" value="{$objtype}"/>
             <table border="0" width="98%">

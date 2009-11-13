@@ -30,8 +30,8 @@
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
         <form action="{$xims_box}{$goxims_content}"
               name="eform"
-              method="GET"
-              onSubmit="window.opener.document.location.reload();self.close();">
+              method="get"
+              onsubmit="window.opener.document.location.reload();self.close();">
           <input type="hidden" name="id" id="id" value="{@id}"/>
           <xsl:apply-templates select="/document/context/vlsubjectinfo"/>
           <xsl:apply-templates select="/document/context/vlkeywordinfo"/>

@@ -32,7 +32,7 @@
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
           <form action="{$xims_box}{$goxims_content}"
                 name="eform"
-                method="GET">
+                method="get">
             <input type="hidden" 
                    name="id" 
                    id="id" 
@@ -108,7 +108,7 @@
              value="{$i18n/l/cancel}"
              class="control"
              accesskey="C"
-             onClick="self.close();"/>
+             onclick="self.close();"/>
     </p>
   </xsl:template>
 

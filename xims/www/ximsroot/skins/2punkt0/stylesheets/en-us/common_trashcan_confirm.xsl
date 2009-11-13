@@ -25,7 +25,7 @@
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
 
-        <form action="{$xims_box}{$goxims_content}" method="GET" style="margin-top: 0px; margin-left: 5px;">
+        <form action="{$xims_box}{$goxims_content}" method="get" style="margin-top: 0px; margin-left: 5px;">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
           <tr>
             <td align="center">
@@ -68,7 +68,7 @@
                                name="default"
                                type="button"
                                value="Cancel"
-                               onClick="javascript:history.go(-1)"
+                               onclick="javascript:history.go(-1)"
                         />
                       </td>
                     </tr>

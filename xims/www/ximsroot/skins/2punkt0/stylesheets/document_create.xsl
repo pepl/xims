@@ -19,7 +19,7 @@
     <xsl:with-param name="mode">create</xsl:with-param>
     </xsl:call-template>
     
-    <body onLoad="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.title.focus();">
+    <body onload="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.title.focus();">
 				<xsl:call-template name="header">
 					<xsl:with-param name="create">true</xsl:with-param>				
 				</xsl:call-template>

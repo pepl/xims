@@ -53,7 +53,7 @@
                  name="create_mapping"
                  value="{$i18n_vlib/l/Create_mapping}"
                  class="control"
-                 onClick="createMapping('{$mo}', '{$i18n_vlib/l/select_name}')"/>
+                 onclick="createMapping('{$mo}', '{$i18n_vlib/l/select_name}')"/>
           <xsl:text>&#160;</xsl:text>
         </xsl:if>
         <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','{$popupsizes[name()=$mo]/@x}','{$popupsizes[name()=$mo]/@y}')"> 
@@ -85,7 +85,7 @@
         <xsl:text>&#160;</xsl:text>
         <input type="button"
                value="&lt;--"
-               onClick="return addVLProperty( 'keyword' );"/>
+               onclick="return addVLProperty( 'keyword' );"/>
         <xsl:text>&#160;</xsl:text>
         <xsl:apply-templates select="/document/context/vlkeywords"/>
       </td>
@@ -111,7 +111,7 @@
         <xsl:text>&#160;</xsl:text>
         <input type="button"
                value="&lt;--"
-               onClick="return addVLProperty( 'subject' );"/>
+               onclick="return addVLProperty( 'subject' );"/>
         <xsl:text>&#160;</xsl:text>
         <xsl:apply-templates select="/document/context/vlsubjects"/>
       </td>
@@ -137,7 +137,7 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <input type="button" value="&lt;--" onClick="return addVLProperty( 'author' );"/>
+        <input type="button" value="&lt;--" onclick="return addVLProperty( 'author' );"/>
         <xsl:text>&#160;</xsl:text>
         <xsl:apply-templates select="/document/context/vlauthors"/>
       </td>
@@ -161,11 +161,11 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <input type="button" value="&lt;--" onClick="return addVLProperty( 'keyword' );"/>
+        <input type="button" value="&lt;--" onclick="return addVLProperty( 'keyword' );"/>
         <xsl:text>&#160;</xsl:text>
         <xsl:apply-templates select="/document/context/vlkeywords"/>
         <xsl:text>&#160;</xsl:text>
-        <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onClick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for', document.eform.svlkeyword);"/>
+        <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onclick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for', document.eform.svlkeyword);"/>
       </td>
     </tr>
   </xsl:template>
@@ -187,7 +187,7 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('VLSubject')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <input type="button" value="&lt;--" onClick="return addVLProperty( 'subject' );"/>
+        <input type="button" value="&lt;--" onclick="return addVLProperty( 'subject' );"/>
         <xsl:text>&#160;</xsl:text>
         <xsl:apply-templates select="/document/context/vlsubjects"/>
         <xsl:text>&#160;</xsl:text>
