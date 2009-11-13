@@ -52,7 +52,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>
             <br/>
-            <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onChange="document.getElementById('xims_wysiwygeditor').disabled = true;">
+            <textarea tabindex="30" name="body" id="body" style="width: 100%" rows="24" cols="32" onchange="document.getElementById('xims_wysiwygeditor').disabled = true;">
                 <xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text>
             </textarea>
             <xsl:call-template name="jsorigbody"/>

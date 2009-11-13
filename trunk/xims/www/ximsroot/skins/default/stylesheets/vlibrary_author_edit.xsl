@@ -185,7 +185,7 @@
              value="{$i18n/l/save}" 
              class="control" 
              accesskey="S"/>
-      <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C" onClick="self.close();"/>
+      <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C" onclick="self.close();"/>
     </p>
   </xsl:template>
 

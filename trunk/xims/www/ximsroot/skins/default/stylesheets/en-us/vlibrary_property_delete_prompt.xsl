@@ -90,7 +90,7 @@
                                    id="author_delete"
                                    value="Confirm"
                                    class="control"
-                                   onClick="document.objectdeletion.submit; window.opener.document.location.reload();"
+                                   onclick="document.objectdeletion.submit; window.opener.document.location.reload();"
                                    accesskey="S"/>
                           </td>
                           <td>
@@ -99,7 +99,7 @@
                                    value="{$i18n/l/cancel}"
                                    class="control"
                                    accesskey="C"
-                                   onClick="self.close();"/>
+                                   onclick="self.close();"/>
                           </td>
                         </tr>
                       </table>

@@ -31,7 +31,7 @@
         <form action="{$xims_box}{$goxims_content}"
               name="eform"
               method="get"
-              onSubmit="window.opener.document.location.reload();self.close();">
+              onsubmit="window.opener.document.location.reload();self.close();">
           <input type="hidden" name="id" id="id" value="{@id}"/>
           <xsl:apply-templates select="/document/context/vlsubjectinfo"/>
           <xsl:apply-templates select="/document/context/vlkeywordinfo"/>

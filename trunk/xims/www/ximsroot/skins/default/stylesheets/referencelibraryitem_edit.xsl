@@ -56,7 +56,7 @@
         <tr>
             <td valign="top"><xsl:value-of select="$i18n_reflib/l/ChangeRefType"/></td>
             <td colspan="2">
-                <select name="reftypes_select" id="reftypes_select" onChange="return submitReferenceTypeUpdate(this.value);">
+                <select name="reftypes_select" id="reftypes_select" onchange="return submitReferenceTypeUpdate(this.value);">
                     <xsl:apply-templates select="/document/reference_types/reference_type"/>
                 </select>
             </td>

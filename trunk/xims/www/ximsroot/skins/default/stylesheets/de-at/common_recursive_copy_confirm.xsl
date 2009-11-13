@@ -71,7 +71,7 @@
                         <input type="hidden" name="copy" value="1"/>
                       </td>
                       <td>
-                        <input name="default" type="button" value="Cancel" onClick="javascript:history.go(-1)"  class="control"/>
+                        <input name="default" type="button" value="Cancel" onclick="javascript:history.go(-1)"  class="control"/>
                       </td>
                     </tr>
                   </table>

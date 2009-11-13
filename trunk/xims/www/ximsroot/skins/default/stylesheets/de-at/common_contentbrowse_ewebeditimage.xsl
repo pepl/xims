@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input class="control" type="button" value="Store Back" onClick="insertfile();"/>
+                    <input class="control" type="button" value="Store Back" onclick="insertfile();"/>
                 </td>
             </tr>
             <tr>

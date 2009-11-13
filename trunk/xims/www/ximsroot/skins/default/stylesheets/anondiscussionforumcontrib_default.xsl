@@ -146,7 +146,7 @@
     <form name="eform"
           action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib"
           method="post"
-          onSubmit="return checkFields()">
+          onsubmit="return checkFields()">
       <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
       <table border="0" width="620"
              style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px"

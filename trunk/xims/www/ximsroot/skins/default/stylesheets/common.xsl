@@ -139,7 +139,7 @@ $Id$
   <xsl:template name="save_jsbutton">
     <script type="text/javascript">
       document.write(
-      '<input type="submit" name="submit_eform" value="{$i18n/l/save}" onClick="document.eform.store.click(); return false" class="control" />'
+      '<input type="submit" name="submit_eform" value="{$i18n/l/save}" onclick="document.eform.store.click(); return false" class="control" />'
       );
     </script>
   </xsl:template>
@@ -216,8 +216,8 @@ $Id$
         <input name="owneronly"
                type="radio" 
                value="true"
-               onClick="document.eform.defaultroles.disabled = true;" 
-               onBlur="document.eform.defaultroles.disabled = false;" />
+               onclick="document.eform.defaultroles.disabled = true;" 
+               onblur="document.eform.defaultroles.disabled = false;" />
         <xsl:value-of select="$i18n/l/Grant_myself_only" />
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('PrivilegeGrantOptions')" class="doclink">
@@ -1372,7 +1372,7 @@ $Id$
       <div id="toggle_highlight">
         <form>
           <xsl:value-of select="$i18n/l/you_searched_for"/> '<xsl:value-of select="$hls"/>'.
-          <input type="button" value="{$i18n/l/toggle_hls}" onClick="toggleHighlight(getParamValue('hls'))"/>
+          <input type="button" value="{$i18n/l/toggle_hls}" onclick="toggleHighlight(getParamValue('hls'))"/>
         </form>
       </div>
     </xsl:if>

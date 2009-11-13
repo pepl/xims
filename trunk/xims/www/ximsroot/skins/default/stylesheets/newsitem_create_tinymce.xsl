@@ -17,7 +17,7 @@
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head_default"/>
-    <body onLoad="document.eform['abstract'].value=''; document.eform.title.focus()">
+    <body onload="document.eform['abstract'].value=''; document.eform.title.focus()">
         <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data">

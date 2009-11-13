@@ -608,7 +608,7 @@
                     <input name="userquery" type="hidden" value="{$userquery}"/>
                 </td>
                 <td>
-                    <input class="control" name="c" type="submit" value="Cancel" onClick="javascript:history.go(-1)"/>
+                    <input class="control" name="c" type="submit" value="Cancel" onclick="javascript:history.go(-1)"/>
                 </td>
             </tr>
         </table>

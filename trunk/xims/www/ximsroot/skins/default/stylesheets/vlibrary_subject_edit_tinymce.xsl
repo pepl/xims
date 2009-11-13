@@ -108,7 +108,7 @@
              value="{$i18n/l/cancel}"
              class="control"
              accesskey="C"
-             onClick="self.close();"/>
+             onclick="self.close();"/>
     </p>
   </xsl:template>
 

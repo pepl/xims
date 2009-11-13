@@ -16,7 +16,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body onLoad="stringHighlight(getParamValue('hls'))">
+        <body onload="stringHighlight(getParamValue('hls'))">
             <!-- poor man's stylechooser -->
             <xsl:choose>
                 <xsl:when test="$printview != '0'">

@@ -16,7 +16,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png" onLoad="disableIt(document.forms[1].autopublish,'objids');">
+        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png" onload="disableIt(document.forms[1].autopublish,'objids');">
             <xsl:call-template name="header">
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
@@ -125,7 +125,7 @@
                                                                             Alle Aus/Abwählen
                                                                         </td>
                                                                         <td>
-                                                                            <input type="checkbox" name="selector" value="1" onClick="switcher(this,'objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0;"/>
+                                                                            <input type="checkbox" name="selector" value="1" onclick="switcher(this,'objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0;"/>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -193,7 +193,7 @@
                                                     </td>
                                                 </xsl:if>
                                                 <td>
-                                                    <input name="default" type="button" value="Abbrechen" onClick="javascript:history.go(-1)" class="control"/>
+                                                    <input name="default" type="button" value="Abbrechen" onclick="javascript:history.go(-1)" class="control"/>
                                                 </td>
                                             </tr>
                                         </table>
