@@ -19,7 +19,7 @@
         <div class="edit">
             <xsl:call-template name="table-edit"/>
             <xsl:call-template name="error_msg"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
                 <table border="0" width="98%">
                     <xsl:apply-templates select="/document/member_properties/member_property">
                         <xsl:sort select="position" order="ascending" data-type="number"/>

@@ -37,7 +37,7 @@
     <xsl:call-template name="scripts"/>
   </head>
   <body onload="createThumbs();">
-    <p align="right"><a href="#" onClick="popupClose()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
+    <p align="right"><a href="#" onclick="popupClose()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
     <p><xsl:call-template name="selectform"/> </p>
     <xsl:call-template name="script_bottom"/>
   </body>
@@ -67,7 +67,7 @@
                     <img src="{$xims_box}{$goxims_content}{$target_path}/{location}" width="50" height="50"/>
                     <img src="{$ximsroot}images/spacer_white.gif" name="spacer" width="20" height="10"/>
                     <xsl:value-of select="title"/>
-                    (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onClick="storeBack('{$target_path_nosite}/{location}', '{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
+                    (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onclick="storeBack('{$target_path_nosite}/{location}', '{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
                 </xsl:if>
             </xsl:otherwise>
         </xsl:choose>

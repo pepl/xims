@@ -145,8 +145,8 @@
     <a name="reply"/>
     <form name="eform"
           action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib"
-          method="POST"
-          onSubmit="return checkFields()">
+          method="post"
+          onsubmit="return checkFields()">
       <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
       <table class="forumbox">
         <tr>

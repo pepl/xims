@@ -27,10 +27,10 @@
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <!-- note: GET seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
-            <!-- <form style="margin:0px;" name="delete" method="POST" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onSubmit="return confirmDelete()"> -->
+            <!-- note: get seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
+            <!-- <form style="margin:0px;" name="delete" method="post" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onsubmit="return confirmDelete()"> -->
             <form style="margin:0px; display: inline;" name="delete"
-                    method="GET"
+                    method="get"
                     action="{$xims_box}{$goxims_content}">
                 <input type="hidden" name="delete_prompt" value="1"/>
                 <input type="hidden" name="id" value="{$id}"/>
@@ -91,7 +91,7 @@
             <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
             <xsl:if test="/document/context/vlauthors/author/id">
                 <xsl:text>&#160;</xsl:text>
-                <input type="button" value="&lt;--" onClick="return addVLProperty( 'author' );"/>
+                <input type="button" value="&lt;--" onclick="return addVLProperty( 'author' );"/>
                 <xsl:text>&#160;</xsl:text>
                 <xsl:apply-templates select="/document/context/vlauthors"/>
             </xsl:if>
@@ -127,7 +127,7 @@
             <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
             <xsl:if test="/document/context/vlauthors/author/id">
                 <xsl:text>&#160;</xsl:text>
-                <input type="button" value="&lt;--" onClick="return addVLProperty( 'editor' );"/>
+                <input type="button" value="&lt;--" onclick="return addVLProperty( 'editor' );"/>
                 <xsl:text>&#160;</xsl:text>
                 <xsl:apply-templates select="/document/context/vlauthors"><xsl:with-param name="svlauthor" select="'svleditor'"/></xsl:apply-templates>
             </xsl:if>
@@ -157,7 +157,7 @@
                 <a href="javascript:openDocWindow('VLSerial')" class="doclink">(?)</a>
                 <xsl:if test="/document/context/vlserials/serial/@id">
                     <xsl:text>&#160;</xsl:text>
-                    <input type="button" value="&lt;--" onClick="return addVLProperty( 'serial' );"/>
+                    <input type="button" value="&lt;--" onclick="return addVLProperty( 'serial' );"/>
                     <xsl:text>&#160;</xsl:text>
                     <xsl:apply-templates select="/document/context/vlserials"/>
                 </xsl:if>

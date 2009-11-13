@@ -27,7 +27,7 @@
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
 
-        <form name="recursiveobjectdeletion" action="{$xims_box}{$goxims_content}?id={@id}" method="GET" style="margin-top: 0px; margin-left: 5px;">
+        <form name="recursiveobjectdeletion" action="{$xims_box}{$goxims_content}?id={@id}" method="get" style="margin-top: 0px; margin-left: 5px;">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee" >
           <tr>
             <td align="center">
@@ -72,7 +72,7 @@
                         <xsl:call-template name="rbacknav"/>
                       </td>
                       <td>
-                        <input name="default" type="button" value="Cancel" onClick="javascript:history.go(-2)"  class="control"/>
+                        <input name="default" type="button" value="Cancel" onclick="javascript:history.go(-2)"  class="control"/>
                       </td>
                     </tr>
                   </table>

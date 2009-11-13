@@ -18,7 +18,7 @@
         <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <div class="edit">
             <xsl:call-template name="table-create"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" enctype="multipart/form-data">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <input type="hidden" name="reftype" value="{$reftype}"/>
                 <table border="0" width="98%">

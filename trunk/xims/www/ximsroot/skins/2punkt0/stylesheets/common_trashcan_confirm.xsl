@@ -33,7 +33,7 @@
 					<!--<xsl:with-param name="noncontent">true</xsl:with-param>-->
 				</xsl:call-template>
 				<div id="content-container">
-					<form action="{$xims_box}{$goxims_content}" method="GET">
+					<form action="{$xims_box}{$goxims_content}" method="get">
 						<h1 class="bluebg">Löschen des Objekts bestätigen</h1>
 						<p>
                         Sie sind dabei das Objekt '<xsl:value-of select="title"/>' zu löschen.

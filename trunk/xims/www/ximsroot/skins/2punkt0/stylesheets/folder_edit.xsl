@@ -27,7 +27,7 @@
 						</xsl:call-template>
 					</div>
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST" id="create-edit-form">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" id="create-edit-form">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="markednew"/>

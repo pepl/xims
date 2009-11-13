@@ -26,7 +26,7 @@
 			</p>
 			<p>
                             <label for="input-position"><xsl:value-of select="$i18n/l/Position"/></label>
-                            <!--<select name="new_position" onChange="storeBack(options[selectedIndex].value)" class="select" id="input-position">-->
+                            <!--<select name="new_position" onchange="storeBack(options[selectedIndex].value)" class="select" id="input-position">-->
                             <select name="new_position" class="select" id="input-position">
                                 <xsl:call-template name="loop-options">
                                     <xsl:with-param name="iter"><xsl:value-of select="1"/></xsl:with-param>

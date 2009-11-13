@@ -17,7 +17,7 @@
     <html>
       <xsl:call-template name="head_default"/>
       <base href="{$xims_box}{$goxims_content}{$absolute_path}/"/>
-      <body onLoad="stringHighlight(getParamValue('hls'))">
+      <body onload="stringHighlight(getParamValue('hls'))">
         <xsl:call-template name="header"/>
         <xsl:call-template name="toggle_hls"/>
         <table align="center"

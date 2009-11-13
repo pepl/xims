@@ -19,7 +19,7 @@
     <xsl:call-template name="head_default">
     <xsl:with-param name="mode">create</xsl:with-param>
     </xsl:call-template>
-    <body onLoad="document.eform.name.focus()">
+    <body onload="document.eform.name.focus()">
 				<xsl:call-template name="header">
 					<xsl:with-param name="create">true</xsl:with-param>				
 				</xsl:call-template>
@@ -33,7 +33,7 @@
 						</xsl:call-template>
 					</div>
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" id="create-edit-form">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" id="create-edit-form">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
 
                     <xsl:call-template name="tr-locationtitle-create"/>

@@ -207,7 +207,7 @@
     </fieldset>
     <p>
       <input type="submit"
-             onClick="window.opener.refresh('author');self.close();return false;"
+             onclick="window.opener.refresh('author');self.close();return false;"
              value="OK, {$i18n/l/close_window}"
              class="control"
              accesskey="S"/>
@@ -215,7 +215,7 @@
       <!-- The simple solution history.go(-1) would lead to a stale -->
       <!-- second entry, if we wanted tho fix a freshly created author. -->
       <input type="submit"
-             onClick="location.replace('{$xims_box}{$goxims_content}' +
+             onclick="location.replace('{$xims_box}{$goxims_content}' +
                       '?id={/document/context/object/@id}' +
                       ';property_edit=1;property=author;property_id={@id}'); return false;"
              value="{$i18n/l/Back}" class="control" accesskey="B"/> 

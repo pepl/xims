@@ -28,7 +28,7 @@
         <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST" enctype="multipart/form-data">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" enctype="multipart/form-data">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit_urllink"/>
                     <xsl:call-template name="tr-vlsubjects-edit"/>
@@ -90,8 +90,8 @@
 
 <xsl:template name="cancelform">
     <xsl:param name="with_save" select="'no'"/>
-    <!-- method GET is needed, because goxims does not handle a PUTed 'id' -->
-    <form action="{$xims_box}{$goxims_content}" name="cform" method="GET" style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">
+    <!-- method get is needed, because goxims does not handle a PUTed 'id' -->
+    <form action="{$xims_box}{$goxims_content}" name="cform" method="get" style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">
         <input type="hidden" name="id" value="{@id}"/>
         <input type="hidden" name="close_thickbox" value="1"/>
         <xsl:if test="$with_save = 'yes'">

@@ -13,7 +13,7 @@
 <xsl:output method="html" encoding="utf-8"/>
 
 <xsl:template name="selectform">
-    <form action="{$xims_box}{$goxims_content}" method="POST" name="selectform">
+    <form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
         <table>
             <tr>
                 <td>
@@ -64,7 +64,7 @@
                         <option value="_parent">Parent Window (_parent)</option>
                         <option value="_top">Browser Window (_top)</option>
                     </select>
-                    <input class="control" type="button" value="Store Back" onClick="inserthyperlink();"/>
+                    <input class="control" type="button" value="Store Back" onclick="inserthyperlink();"/>
                 </td>
             </tr>
             <tr>

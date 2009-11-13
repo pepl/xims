@@ -17,7 +17,7 @@
   <xsl:template match="/document/context/object">
     <html>
       <xsl:call-template name="head-create_discussionforum"/>
-      <body onLoad="document.eform.body.value='';document.eform.title.focus()"
+      <body onload="document.eform.body.value='';document.eform.title.focus()"
             margintop="0"
             marginleft="0"
             marginwidth="0"
@@ -40,7 +40,7 @@
 </xsl:template>
 
 <xsl:template name="forum">
-    <form action="{$xims_box}{$goxims_content}{$parent_path}?objtype={$objtype}" name="eform" method="POST" onSubmit="return checkFields();" style="margin-top:0px;" >
+    <form action="{$xims_box}{$goxims_content}{$parent_path}?objtype={$objtype}" name="eform" method="post" onsubmit="return checkFields();" style="margin-top:0px;" >
       <input type="hidden" name="objtype" value="{$objtype}"/>
       <table border="0" width="620" style="border: 1px solid #888888; margin-left: 10px; margin-top: 10px; padding: 0px" cellpadding="3" cellspacing="0">
         <tr>

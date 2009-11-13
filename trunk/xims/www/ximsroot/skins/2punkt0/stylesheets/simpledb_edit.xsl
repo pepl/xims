@@ -23,10 +23,10 @@
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-edit"/>
-    <body onLoad="checkPropertyType(document.eform.sdbp_type)">
+    <body onload="checkPropertyType(document.eform.sdbp_type)">
         <div class="edit">
             <xsl:call-template name="table-edit"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="POST">
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
                 <table border="0" width="98%">
                     <xsl:call-template name="tr-locationtitle-edit"/>
                     <xsl:call-template name="tr-stylesheet-edit"/>
@@ -59,7 +59,7 @@
                                                 <td colspan="2">
                                                     <input type="hidden" name="property_id" value="{$property_id}"/>
                                                     <input type="submit" name="update_property_mapping" value="{$i18n_simpledb/l/Save_changes}" class="control"/>
-                                                    <input type="button" name="discard" value="{$i18n_simpledb/l/Stop_editing}" onClick="window.location.href='{$xims_box}{$goxims_content}{$absolute_path}?edit=1'; return true;" class="control"/>
+                                                    <input type="button" name="discard" value="{$i18n_simpledb/l/Stop_editing}" onclick="window.location.href='{$xims_box}{$goxims_content}{$absolute_path}?edit=1'; return true;" class="control"/>
                                                 </td>
                                             </tr>
                                         </xsl:when>
@@ -118,7 +118,7 @@
                     <input type="text" name="sdbp_type" value="{/document/member_properties/member_property[@id=$property_id]/type}" size="40" readonly="readonly" class="readonlytext"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <select id="sdbp_type" tabindex="51" name="sdbp_type" onChange="checkPropertyType(this)">
+                    <select id="sdbp_type" tabindex="51" name="sdbp_type" onchange="checkPropertyType(this)">
                         <option value="string">String</option>
                         <option value="stringoptions">String options</option>
                         <option value="textarea">Textarea</option>
@@ -152,7 +152,7 @@
                 </xsl:for-each>
             </select>
             <xsl:text> </xsl:text>
-            <input type="button" value="&lt;--" title="{$i18n_simpledb/l/Add_to_selection}" onClick="addSelection(sdbp_regex_add,sdbp_regex_select);" />
+            <input type="button" value="&lt;--" title="{$i18n_simpledb/l/Add_to_selection}" onclick="addSelection(sdbp_regex_add,sdbp_regex_select);" />
             <xsl:text> </xsl:text>
             <input id="sdbp_regex_add" tabindex="52" type="text" name="sdbp_regex_add" class="text" size="40" />
             <xsl:text> </xsl:text>
@@ -270,7 +270,7 @@
                     <td>
                         <xsl:if test="/document/context/object/user_privileges/delete">
                             <xsl:text> </xsl:text>
-                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onClick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
                                 <input
                                     type="image"
                                     name="property_delete{@id}"

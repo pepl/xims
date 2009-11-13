@@ -13,7 +13,7 @@
 <xsl:output method="html" encoding="utf-8"/>
 
 <xsl:template name="selectform">
-    <form action="{$xims_box}{$goxims_content}" method="POST" name="selectform">
+    <form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
         <table>
             <tr>
                 <td>
@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input class="control" type="button" value="Store Back" onClick="insertfile();"/>
+                    <input class="control" type="button" value="Store Back" onclick="insertfile();"/>
                 </td>
             </tr>
             <tr>

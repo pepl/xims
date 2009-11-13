@@ -19,7 +19,7 @@
 			<xsl:with-param name="calendar">true</xsl:with-param>
 			<xsl:with-param name="mode">create</xsl:with-param>
 			</xsl:call-template>
-			<!--<body onLoad="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.title.focus();">-->
+			<!--<body onload="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.title.focus();">-->
 			<body>
 				<xsl:call-template name="header">
 					<xsl:with-param name="create">true</xsl:with-param>
@@ -35,7 +35,7 @@
 					</div>
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="POST" enctype="multipart/form-data" id="create-edit-form">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data" id="create-edit-form">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
 
                     <xsl:call-template name="tr-title-create"/>
