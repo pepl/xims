@@ -64,7 +64,7 @@
                         <option value="_parent">Parent Window (_parent)</option>
                         <option value="_top">Browser Window (_top)</option>
                     </select>
-                    <input class="control" type="button" value="Store Back" onClick="inserthyperlink();"/>
+                    <input class="control" type="button" value="Store Back" onclick="inserthyperlink();"/>
                 </td>
             </tr>
             <tr>

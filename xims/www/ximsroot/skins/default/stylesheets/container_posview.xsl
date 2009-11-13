@@ -27,7 +27,7 @@
                             Container '<xsl:value-of select="parents/object[@id=/document/context/object/@parent_id]/title"/>'.
                         </td>
                         <td valign="top">
-                            <select name="new_position" onChange="storeBack(options[selectedIndex].value)">
+                            <select name="new_position" onchange="storeBack(options[selectedIndex].value)">
                                 <xsl:call-template name="loop-options">
                                     <xsl:with-param name="iter"><xsl:value-of select="1"/></xsl:with-param>
                                 </xsl:call-template>

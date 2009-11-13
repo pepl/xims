@@ -19,7 +19,7 @@
 
     <p>
         <xsl:if test="user_privileges/create">
-          <form action="{$xims_box}{$goxims_content}" method="GET" style="margin-bottom: 0;">
+          <form action="{$xims_box}{$goxims_content}" method="get" style="margin-bottom: 0;">
             <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
             <input type="hidden" name="id" value="{@id}" />
             <input type="submit" name="create" value="{$i18n/l/Create_topic}" class="control"/><br /><br />
@@ -66,12 +66,12 @@
             <!-- end sort by date -->
         </xsl:choose>
         <td align="left" valign="middle">
-            <a href="#" title="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;subject=RE:{title}" target="hiddenIframe" onClick="this.href=this.title;">
+            <a href="#" title="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;subject=RE:{title}" target="hiddenIframe" onclick="this.href=this.title;">
                 <xsl:value-of select="attributes/author"/>
             </a>
             <xsl:choose>
                 <xsl:when test="attributes/coemail">,
-                    <a href="#" title="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;coemail=1;subject=RE:{title}" target="hiddenIframe" onClick="this.href=this.title;">
+                    <a href="#" title="{$xims_box}{$goxims_content}{$absolute_path}/{location}?mt=1;coemail=1;subject=RE:{title}" target="hiddenIframe" onclick="this.href=this.title;">
                         <xsl:value-of select="attributes/coauthor"/>
                     </a>
                 </xsl:when>
@@ -89,7 +89,7 @@
         </td>
         <td valign="bottom">
             <xsl:if test="user_privileges/delete">
-                <form style="margin:0px;" name="delete" method="GET" action="{$xims_box}{$goxims_content}">
+                <form style="margin:0px;" name="delete" method="get" action="{$xims_box}{$goxims_content}">
                     <input type="hidden" name="delete_prompt" value="1"/>
                     <input type="hidden" name="id" value="{@id}"/>
                     <input type="image" src="{$skimages}option_delete.png" border="0" width="37" height="19" title="delete" alt="delete"/>

@@ -34,7 +34,7 @@
             <a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
             (<xsl:choose>
                 <xsl:when test="attributes/email">
-                    <a href="#" title="{$goxims_content}?id={@id};mt=1;subject={title}" target="hiddenIframe" onClick="this.href=this.title;"><xsl:value-of select="attributes/author"/></a>
+                    <a href="#" title="{$goxims_content}?id={@id};mt=1;subject={title}" target="hiddenIframe" onclick="this.href=this.title;"><xsl:value-of select="attributes/author"/></a>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="attributes/author"/>

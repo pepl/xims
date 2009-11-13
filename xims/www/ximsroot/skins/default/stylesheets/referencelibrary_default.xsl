@@ -99,7 +99,7 @@
                 <xsl:sort select="name" order="ascending"/>
             </xsl:apply-templates>
         </select>
-        (<a href="javascript:void(0);" style="text-decoration:none;" onmouseover="fixedtooltip(getRefTypeDescription(document.reftype_creator.reftype.options[document.reftype_creator.reftype.selectedIndex].value), this, event, '200px')" onMouseout="delayhidetip()">?</a>)
+        (<a href="javascript:void(0);" style="text-decoration:none;" onmouseover="fixedtooltip(getRefTypeDescription(document.reftype_creator.reftype.options[document.reftype_creator.reftype.selectedIndex].value), this, event, '200px')" onmouseout="delayhidetip()">?</a>)
             <input type="image"
                     name="create"
                     src="{$sklangimages}create.png"

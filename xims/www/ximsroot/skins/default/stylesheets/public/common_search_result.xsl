@@ -124,7 +124,7 @@
     <table id="searchform" width="100%">
       <tr>
         <td>
-          <form method="POST" name="quicksearch" action="{$xims_box}{$goxims_content}{$absolute_path}">
+          <form method="post" name="quicksearch" action="{$xims_box}{$goxims_content}{$absolute_path}">
             <xsl:value-of select="$i18n/l/Search_for"/><xsl:text> </xsl:text>
             <input class="inputtext" type="text" name="s" size="17" maxlength="200">
               <xsl:choose>

@@ -336,7 +336,7 @@
 <xsl:template name="abstract">
     <xsl:param name="referencenumber"/>
     <xsl:if test="normalize-space(abstract) != ''">
-        &#xa0;<a href="#" onClick="blocking('abstract{$referencenumber}'); return false;">Toggle Abstract</a>
+        &#xa0;<a href="#" onclick="blocking('abstract{$referencenumber}'); return false;">Toggle Abstract</a>
         <div id="abstract{$referencenumber}" class="reflib_abstract" style="display: none"><xsl:apply-templates select="abstract"/></div>
     </xsl:if>
 </xsl:template>

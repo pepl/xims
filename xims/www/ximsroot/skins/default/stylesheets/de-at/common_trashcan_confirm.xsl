@@ -70,7 +70,7 @@
                                name="default"
                                type="button"
                                value="Abbrechen"
-                               onClick="javascript:history.go(-1)"
+                               onclick="javascript:history.go(-1)"
                         />
                       </td>
                     </tr>

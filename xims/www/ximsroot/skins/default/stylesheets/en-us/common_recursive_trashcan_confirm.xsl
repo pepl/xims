@@ -69,7 +69,7 @@
                         <xsl:call-template name="rbacknav"/>
                       </td>
                       <td>
-                        <input name="default" type="button" value="Cancel" onClick="javascript:history.go(-2)"  class="control"/>
+                        <input name="default" type="button" value="Cancel" onclick="javascript:history.go(-2)"  class="control"/>
                       </td>
                     </tr>
                   </table>

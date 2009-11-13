@@ -68,7 +68,7 @@
                                name="default"
                                type="button"
                                value="Cancel"
-                               onClick="javascript:history.go(-1)"
+                               onclick="javascript:history.go(-1)"
                         />
                       </td>
                     </tr>

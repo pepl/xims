@@ -17,7 +17,7 @@
       <xsl:call-template name="common-head">
         <xsl:with-param name="mode">create</xsl:with-param>
       </xsl:call-template>
-      <body onLoad="document.eform.name.focus();">
+      <body onload="document.eform.name.focus();">
         <div class="edit">
           <xsl:call-template name="table-create"/>
           <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}"

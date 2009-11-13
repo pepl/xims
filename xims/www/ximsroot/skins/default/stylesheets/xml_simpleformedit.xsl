@@ -88,7 +88,7 @@
                                                     <input type="hidden" name="eid" value="{$eid}"/>
                                                     <input type="hidden" name="seid" value="1"/>
                                                     <input type="submit" name="simpleformedit" value="{$i18n_xml/l/Save_changes}" class="control"/>
-                                                    <input type="button" name="discard" value="{$i18n_xml/l/Stop_editing}" onClick="window.location.href='{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1'; return true;" class="control"/>
+                                                    <input type="button" name="discard" value="{$i18n_xml/l/Stop_editing}" onclick="window.location.href='{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1'; return true;" class="control"/>
                                                 </td>
                                             </tr>
                                         </xsl:when>
@@ -229,7 +229,7 @@
                         <td>
                             <xsl:if test="/document/context/object/user_privileges/delete">
                                 <xsl:text> </xsl:text>
-                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete" onClick="javascript:rv=confirm('{$i18n_xml/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete'; return false">
+                                <a href="{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete" onclick="javascript:rv=confirm('{$i18n_xml/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?simpleformedit=1;eid={@id};seid=delete'; return false">
                                     <input
                                         type="image"
                                         name="eidelete{@id}"
