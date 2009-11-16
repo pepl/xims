@@ -138,11 +138,11 @@ $Id$
 
   <xsl:template name="save_jsbutton">
     <script type="text/javascript">
-<xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
       document.write(
-      '<input type="submit" name="submit_eform" value="{$i18n/l/save}" onclick="document.eform.store.click(); return false" class="control" />'
+        '<input type="submit" name="submit_eform" value="{$i18n/l/save}" onclick="document.eform.store.click(); return false" class="control" />'
       );
-<xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
+      <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
     </script>
   </xsl:template>
 
@@ -608,9 +608,11 @@ $Id$
 
 
   <xsl:template name="jsorigbody">
-    <script type="text/javascript">
+    <xsl:call-template name="mk-inline-js"> 
+      <xsl:with-param name="code">  
       var origbody = document.getElementById('body').value;
-    </script>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:template>
 
 
@@ -881,18 +883,16 @@ $Id$
     </input>
     <span id="show_vft{$formfield_id}"><xsl:value-of select="$timestamp_string"/></span>
     <xsl:text>&#160;</xsl:text>
-    <img
-      src="{$skimages}calendar.gif"
-      id="f_trigger_vft{$formfield_id}"
-      style="cursor: pointer;"
-      alt="{$i18n/l/Date_selector}"
-      title="{$i18n/l/Date_selector}"
-      onmouseover="this.style.background='red';"
-      onmouseout="this.style.background=''"
-    />
-    <script type="text/javascript">
-      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+    <img src="{$skimages}calendar.gif"
+         id="f_trigger_vft{$formfield_id}"
+         style="cursor: pointer;"
+         alt="{$i18n/l/Date_selector}"
+         title="{$i18n/l/Date_selector}"
+         onmouseover="this.style.background='red';"
+         onmouseout="this.style.background=''"/>
 
+    <xsl:call-template name="mk-inline-js">
+      <xsl:with-param name="code">  
         var current_datestring = "<xsl:value-of select="$timestamp_string"/>";
         var current_date;
         if ( current_datestring.length > 0 ) {
@@ -913,8 +913,8 @@ $Id$
             showsTime      :    true,
             timeFormat     :    "24"
         });
-<xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
-    </script>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:template>
 
 
@@ -1385,9 +1385,8 @@ $Id$
 
 
   <xsl:template name="textarearesize_js_css">
-    <script type="text/javascript">
-    <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
-    <xsl:text disable-output-escaping="yes"><![CDATA[
+    <xsl:call-template name="mk-inline-js">
+      <xsl:with-param name="code"><![CDATA[
 
     /*
      * The following code is based on the discussion thread available at
@@ -1475,11 +1474,9 @@ $Id$
 
     document.onmousemove=MM;
     document.onmouseup=MU;
-    document.ondrag=function() { return false; }
-    ]]>
-    </xsl:text>
-    <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
-    </script>
+    document.ondrag=function() { return false; } ]]>
+       </xsl:with-param>
+    </xsl:call-template>
     <style type="text/css">
     #bodymain {
       position:relative;
@@ -1608,7 +1605,6 @@ $Id$
 
 
   <xsl:template name="xmlhttpjs">
-    <xsl:text disable-output-escaping="yes">
     <![CDATA[
     function getXMLHTTPObject() {
         var xmlhttp=false;
@@ -1633,14 +1629,13 @@ $Id$
         }
         return xmlhttp;
     }]]>
-    </xsl:text>
   </xsl:template>
 
 
   <xsl:template name="wfcheckjs">
-    <script type="text/javascript">
-      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
-      <xsl:call-template name="xmlhttpjs"/>
+    <xsl:call-template name="mk-inline-js">
+      <xsl:with-param name="code">
+        <xsl:call-template name="xmlhttpjs"/>
 
         function wfcheck() {
             var xmlhttp = getXMLHTTPObject();
@@ -1664,17 +1659,17 @@ $Id$
             xmlhttp.send('test_wellformedness=1&amp;body='+encodeURIComponent(document.eform.body.value));
             return false;
         }
-      <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
-    </script>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:template>
 
 
   <xsl:template name="prettyprintjs">
     <xsl:param name="ppmethod" select="'htmltidy'"/>
-
-    <script type="text/javascript">
-      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
-      <xsl:call-template name="xmlhttpjs"/>
+    <xsl:call-template name="mk-inline-js">
+      <xsl:with-param name="code">
+      
+       <xsl:call-template name="xmlhttpjs"/>
 
         function prettyprint() {
             var xmlhttp = getXMLHTTPObject();
@@ -1698,8 +1693,8 @@ $Id$
             xmlhttp.send('<xsl:value-of select="$ppmethod"/>=1&amp;body='+encodeURIComponent(document.eform.body.value));
             return false;
         }
-      <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
-    </script>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:template>
 
 
@@ -1707,11 +1702,10 @@ $Id$
     <xsl:param name="event"/>
     <xsl:param name="obj_type"/>
 
-    <script type="text/javascript">
-     <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+    <xsl:call-template name="mk-inline-js">
+      <xsl:with-param name="code">
 
-
-    <xsl:call-template name="xmlhttpjs"/>
+         <xsl:call-template name="xmlhttpjs"/>
 
     <!-- give notice that location needs to be set first -->
     function enterCheckLoc() {
@@ -1728,8 +1722,7 @@ $Id$
         }
         var loc = document.eform.name.value;
         <!-- open il-popup when location has not been entered yet -->
-        <xsl:text disable-output-escaping="yes"><![CDATA[
-        if ( loc.length < 1 ) {]]></xsl:text>
+        <![CDATA[if ( loc.length < 1 ) {]]>
             document.getElementById('xims_ilp_content').innerHTML=notice;
             if ( !badBrowserEditorCombi ) {
                 openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
@@ -1753,7 +1746,7 @@ $Id$
         Hack, for Esker Active X plugin/wepro combis on windows
         inline-popup does not work properly with this software combination
     -->
-     <xsl:text disable-output-escaping="yes"><![CDATA[
+    <![CDATA[
     // returns true for bad setup; false otherwise
     function testBadBrowserEditorCombi() {
         var wysiwygEditor; // which WYSIWYG?
@@ -1786,7 +1779,7 @@ $Id$
             return false;
         }
     }
-    ]]></xsl:text>
+    ]]>
     <!-- we need special handling of Object-Types with WYSIWYG
          components -->
     <xsl:if test="$event = 'create'">
@@ -1820,7 +1813,7 @@ $Id$
         </xsl:choose>
 
         <!-- append suffixes with no lang-extension -->
-        <xsl:text disable-output-escaping="yes"><![CDATA[
+        <![CDATA[
         if ( location.length != 0 && obj.search(/(Document|sDocBookXML)$/i) != -1 ) {
             var searchres = location.search(/.*\.(html|sdbk)(\.[^.]+)?$/);
             if ( searchres == -1 ) {
@@ -1850,11 +1843,11 @@ $Id$
                 }
             }
         }
-        ]]></xsl:text>
+        ]]>
         var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>';
         var query = '?test_location=1;objtype='+ obj +';name='+ encodeURIComponent(location);
         var url = abspath + query;
-        <xsl:text disable-output-escaping="yes"><![CDATA[
+        <![CDATA[
 
         <!-- begin AJAX-stuff here -->
         xmlhttp.onreadystatechange=function() {
@@ -1892,11 +1885,11 @@ $Id$
                         // OK (see if location has been mangled and we don't have an URLLink Object)
                         var objType = getObjTypeFromQuery();
                         if ( objType.toUpperCase() != 'URLLINK' && location != processedLocation ) {
-                            //we would change location on save so report this to user ]]></xsl:text>
+                            //we would change location on save so report this to user ]]>
                             var text = "<xsl:value-of select="$i18n/l/IlpLocationWouldChange"/>";
                             var btnIgnore = "<xsl:value-of select="$i18n/l/IlpButtonIgnore"/>";
                             var btnChange = "<xsl:value-of select="$i18n/l/IlpButtonChange"/>";
-                            notice = '<pre style="color: Silver">'+ location +"</pre>";
+                   <![CDATA[ notice = '<pre style="color: Silver">'+ location +"</pre>";
                             notice += '<pre style="color: Maroon;">'+ processedLocation +"</pre>";
                             notice += "<br/>"+ text;
                             controlHtml = '<br/><br/>\
@@ -1912,7 +1905,7 @@ $Id$
                         }
                         break;
                     case "1":
-                        // loc exists
+                        // loc exists ]]>
                         var text = "<xsl:value-of select="$i18n/l/IlpLocationExists"/>";
                         var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
                         <![CDATA[
@@ -1992,9 +1985,8 @@ $Id$
         );
         xmlhttp.send(null);
     }
-    <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
-
-    </script>
+      </xsl:with-param>  
+    </xsl:call-template>
   </xsl:template>
 
 
@@ -2058,12 +2050,14 @@ $Id$
   <xsl:template name="jquery-listitems-bg">
     <xsl:param name="pick"/>
     <xsl:if test="$pick">
-      <script type="text/javascript">
-        $(function() {
-        $("<xsl:value-of select="$pick"/>:odd").addClass("listitem_odd");
-        $("<xsl:value-of select="$pick"/>:even").addClass("listitem_even");
-        });
-      </script>
+      <xsl:call-template name="mk-inline-js">
+        <xsl:with-param name="code">
+          $(function() {
+              $("<xsl:value-of select="$pick"/>:odd").addClass("listitem_odd");
+              $("<xsl:value-of select="$pick"/>:even").addClass("listitem_even");
+          });
+        </xsl:with-param>
+      </xsl:call-template>
     </xsl:if>
   </xsl:template>
 
@@ -2133,6 +2127,16 @@ $Id$
            class="doclink">(?)</a>
       </td>
     </tr>
+  </xsl:template>
+
+  <xsl:template name="mk-inline-js">
+    <xsl:param name="code"/>
+
+    <script type="text/javascript">
+      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+      <xsl:value-of disable-output-escaping="yes" select="$code"/> 
+      <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
+    </script>
   </xsl:template>
 
 </xsl:stylesheet>
