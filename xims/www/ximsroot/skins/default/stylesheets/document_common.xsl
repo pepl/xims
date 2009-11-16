@@ -89,12 +89,12 @@
                value="false"
                onchange="javascript:createCookie('xims_trytobalancewell','false',90);"/>
         <xsl:value-of select="$i18n/l/No"/>
+        <!-- set checked attribute for trytobalance-input-element according to cookie -->
+        <script type="text/javascript">
+          <xsl:text>selTryToBalance(document.eform.trytobalance, readCookie('xims_trytobalancewell'));</xsl:text>
+        </script>
       </td>
     </tr>
-    <!-- set checked attribute for trytobalance-input-element according to cookie -->
-    <script type="text/javascript">
-      <xsl:text>selTryToBalance(document.eform.trytobalance, readCookie('xims_trytobalancewell'));</xsl:text>
-    </script>
   </xsl:template>
 
 
@@ -104,18 +104,22 @@
           function which selects 'trytobalance' input form element to a
           given value (e.g. from cookie); see 'document_edit.xsl'
       -->
+      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[
+</xsl:text>
+	<xsl:text disable-output-escaping="yes">
+      <![CDATA[
       function selTryToBalance(selElement, toSelect) {
           if ( !toSelect ) {
               toSelect = 'true';
           }   
           toSelect = toSelect.toLowerCase();
-          for (var i=0; i &lt; selElement.length; i++) {
+          for (var i=0; i < selElement.length; i++) {
               if ( selElement[i].value.toString().toLowerCase() == toSelect ) {
                   selElement[i].checked = true;
               }   
           }   
       }
-
+ 
       function createCookie(name,value,days) {
           if (days) {
               var date = new Date();
@@ -129,18 +133,18 @@
       function readCookie(name) {
           var nameEQ = name + "=";
           var ca = document.cookie.split(';');
-          for (var i=0;i &lt; ca.length;i++) {
+          for (var i=0;i < ca.length;i++) {
               var c = ca[i];
               while (c.charAt(0)==' ') c = c.substring(1,c.length);
               if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
           }
           return null;
       }
-
+      
       function setSel(selObj, toselect) {
           if ( !toselect ) {
-              if ( window.editor ) {
-                  toselect = 'htmlarea';
+              if ( window.tinyMCE ) {
+                  toselect = 'tinymce';
               }
               else {
                   toselect = 'plain';
@@ -178,13 +182,14 @@
           createCookie('xims_wysiwygeditor',selection,90);
 
           if ( hasBodyChanged() ) {
-              document.getElementById('xims_wysiwygeditor').disabled = true;
-              alert("<xsl:value-of select="$i18n/l/Body_content_changed"/>");
+              document.getElementById('xims_wysiwygeditor').disabled = true;]]>
+              alert("</xsl:text><xsl:value-of select="$i18n/l/Body_content_changed"/>");
               return false;
           }
 
 	  <!-- reload with param 'true' in order to fetch (clean) content from
 	  server again; this interfears the least with JS-WYSIWYG editors -->
+          <xsl:text disable-output-escaping="yes"><![CDATA[
           window.location.reload(true);
 
           return true;
@@ -192,12 +197,8 @@
 
       function hasBodyChanged () {
           var currentbody;
-          // check content of HTMLArea editor first
-          if ( window.editor ) {
-              currentbody = window.editor.getHTML();
-          }
-          // then check for TinyMCE editor content
-          else if (window.tinyMCE){
+          // check for TinyMCE editor content
+          if (window.tinyMCE){
               currentbody = tinyMCE.get('body').getContent();
           }
           // eWebEditPro
@@ -218,13 +219,13 @@
           // Plain Textarea
           else {
               var body = document.getElementById('body');
-              if ( body &amp;&amp; body.value ) {
+              if ( body && body.value ) {
                   currentbody = body.value;
               }
           }
 
           // now lets check if there are any changes ;-)
-          if ( currentbody &amp;&amp; currentbody != origbody ) {
+          if ( currentbody && currentbody != origbody ) {
               return true;
           }
           // return false otherwise
@@ -232,20 +233,24 @@
               return false;
           }
       }
-
+      ]]></xsl:text>
       <!--
           Disable possibility of changing WYSIWYG editors for "timeout"
           seconds. This prevents false-positive errors of "hasBodyChanged()"
           due to switching to another editor too fast.
       -->
+      <xsl:text disable-output-escaping="yes"><![CDATA[
       function timeoutWYSIWYGChange(timeout) {
           document.getElementById('xims_wysiwygeditor').disabled = true;
           window.setTimeout("document.getElementById('xims_wysiwygeditor').disabled = false;",timeout*1000);
       }
-
+	]]>
+	</xsl:text>
+    <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>	
     </script>
     <form name="editor_selector" 
           id="editor_selector" 
+          action=""
           style="display: inline; margin: 0px;">
       <select style="font-size: 9px; padding: 0px; background-color: #eeeeee;" 
               name="xims_wysiwygeditor" 

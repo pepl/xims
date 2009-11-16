@@ -24,7 +24,7 @@
         <xsl:call-template name="head_default"/>
         <body>
             <xsl:if test="substring($hls,2,1) != ':'">
-                <xsl:attribute name="onLoad">stringHighlight(getParamValue('hls'))</xsl:attribute>
+                <xsl:attribute name="onload">stringHighlight(getParamValue('hls'))</xsl:attribute>
             </xsl:if>
             <!-- poor man's stylechooser -->
             <xsl:choose>
@@ -42,9 +42,9 @@
                 <tr class="trbody">
                     <td colspan="2">
                       <xsl:call-template name="pre-body-hook"/>
-                      <span id="body">
+                      <div id="body">
                         <xsl:apply-templates select="body"/>
-                      </span>
+                      </div>
                     </td>
                 </tr>
                 <tr class="trlinksanno">

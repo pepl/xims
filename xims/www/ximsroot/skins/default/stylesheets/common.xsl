@@ -109,7 +109,7 @@ $Id$
     <!--
         method get is needed, because goxims does not handle a PUTed 'id'
     -->
-    <form action="{$xims_box}{$goxims_content}" name="cform" method="get"
+    <form action="{$xims_box}{$goxims_content}" name="cform" method="get" id='cform-{$with_save}'
           style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">
       <input type="hidden" name="id" value="{@id}" />
       <xsl:if test="$with_save = 'yes'">
@@ -138,9 +138,11 @@ $Id$
 
   <xsl:template name="save_jsbutton">
     <script type="text/javascript">
+<xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
       document.write(
       '<input type="submit" name="submit_eform" value="{$i18n/l/save}" onclick="document.eform.store.click(); return false" class="control" />'
       );
+<xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
     </script>
   </xsl:template>
 
@@ -889,6 +891,8 @@ $Id$
       onmouseout="this.style.background=''"
     />
     <script type="text/javascript">
+      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+
         var current_datestring = "<xsl:value-of select="$timestamp_string"/>";
         var current_date;
         if ( current_datestring.length > 0 ) {
@@ -909,6 +913,7 @@ $Id$
             showsTime      :    true,
             timeFormat     :    "24"
         });
+<xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
     </script>
   </xsl:template>
 
@@ -1381,6 +1386,9 @@ $Id$
 
   <xsl:template name="textarearesize_js_css">
     <script type="text/javascript">
+    <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+    <xsl:text disable-output-escaping="yes"><![CDATA[
+
     /*
      * The following code is based on the discussion thread available at
      * http://www.webdeveloper.com/forum/showthread.php?t=64005
@@ -1411,18 +1419,18 @@ $Id$
       nt=t;
       nw=w;
       nh=h;
-      if(dragsrc.id.indexOf("U")&gt;=0) {
+      if(dragsrc.id.indexOf("U")>=0) {
         //move the right
-        if((nw+dx)&gt;minw) nw+=dx;
+        if((nw+dx)>minw) nw+=dx;
         else nw=minw;
       }
-      if(dragsrc.id.indexOf("B")&gt;=0) {
+      if(dragsrc.id.indexOf("B")>=0) {
         //move the bottom
-        if((nh+dy)&gt;minh) nh+=dy;
+        if((nh+dy)>minh) nh+=dy;
         else nh=minh;
       }
-      if(nw&lt;minw) { nl=l+w-minw; nw=minw; }
-      if(nh&lt;minh) { nt=t+h-minh; nh=minh; }
+      if(nw<minw) { nl=l+w-minw; nw=minw; }
+      if(nh<minh) { nt=t+h-minh; nh=minh; }
       window.status="("+(nl)+", "+(nt)+") ["+(nw)+"X"+(nh)+"]";
       document.getElementById("bodycon").style.width=nw+"px";
       document.getElementById("bodycon").style.height=nh+"px";
@@ -1468,6 +1476,9 @@ $Id$
     document.onmousemove=MM;
     document.onmouseup=MU;
     document.ondrag=function() { return false; }
+    ]]>
+    </xsl:text>
+    <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
     </script>
     <style type="text/css">
     #bodymain {
@@ -1597,10 +1608,12 @@ $Id$
 
 
   <xsl:template name="xmlhttpjs">
+    <xsl:text disable-output-escaping="yes">
+    <![CDATA[
     function getXMLHTTPObject() {
         var xmlhttp=false;
         /*@cc_on @*/
-        /*@if (@_jscript_version &gt;= 5)
+        /*@if (@_jscript_version >= 5)
         // JScript gives us Conditional compilation, we can cope with old IE versions.
         // and security blocked creation of the objects.
         try {
@@ -1615,16 +1628,18 @@ $Id$
             }
         }
         @end @*/
-        if (!xmlhttp &amp;&amp; typeof XMLHttpRequest!='undefined') {
+        if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
             xmlhttp = new XMLHttpRequest();
         }
         return xmlhttp;
-    }
+    }]]>
+    </xsl:text>
   </xsl:template>
 
 
   <xsl:template name="wfcheckjs">
     <script type="text/javascript">
+      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
       <xsl:call-template name="xmlhttpjs"/>
 
         function wfcheck() {
@@ -1649,6 +1664,7 @@ $Id$
             xmlhttp.send('test_wellformedness=1&amp;body='+encodeURIComponent(document.eform.body.value));
             return false;
         }
+      <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
     </script>
   </xsl:template>
 
@@ -1657,6 +1673,7 @@ $Id$
     <xsl:param name="ppmethod" select="'htmltidy'"/>
 
     <script type="text/javascript">
+      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
       <xsl:call-template name="xmlhttpjs"/>
 
         function prettyprint() {
@@ -1681,6 +1698,7 @@ $Id$
             xmlhttp.send('<xsl:value-of select="$ppmethod"/>=1&amp;body='+encodeURIComponent(document.eform.body.value));
             return false;
         }
+      <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
     </script>
   </xsl:template>
 
@@ -1689,7 +1707,10 @@ $Id$
     <xsl:param name="event"/>
     <xsl:param name="obj_type"/>
 
-    <script>
+    <script type="text/javascript">
+     <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+
+
     <xsl:call-template name="xmlhttpjs"/>
 
     <!-- give notice that location needs to be set first -->
@@ -1707,7 +1728,8 @@ $Id$
         }
         var loc = document.eform.name.value;
         <!-- open il-popup when location has not been entered yet -->
-        if ( loc.length &lt; 1 ) {
+        <xsl:text disable-output-escaping="yes"><![CDATA[
+        if ( loc.length < 1 ) {]]></xsl:text>
             document.getElementById('xims_ilp_content').innerHTML=notice;
             if ( !badBrowserEditorCombi ) {
                 openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
@@ -1731,6 +1753,7 @@ $Id$
         Hack, for Esker Active X plugin/wepro combis on windows
         inline-popup does not work properly with this software combination
     -->
+     <xsl:text disable-output-escaping="yes"><![CDATA[
     // returns true for bad setup; false otherwise
     function testBadBrowserEditorCombi() {
         var wysiwygEditor; // which WYSIWYG?
@@ -1749,21 +1772,21 @@ $Id$
             // we have no IE, Opera, Safari
             browserRegexp.exec(browser);
             var revision = RegExp.$1;
-            if ( revision &gt; 1.5 ) {
+            if ( revision > 1.5 ) {
                 if ( browser.search(/Windows.*/) != -1 ) {
                     // we have the Windows platform
                     badBrowser = true;
                 }
             }
         }
-        if ( wysiwygEditor &amp;&amp; badBrowser ) {
+        if ( wysiwygEditor && badBrowser ) {
             return true;
         }
         else {
             return false;
         }
     }
-
+    ]]></xsl:text>
     <!-- we need special handling of Object-Types with WYSIWYG
          components -->
     <xsl:if test="$event = 'create'">
@@ -1797,7 +1820,8 @@ $Id$
         </xsl:choose>
 
         <!-- append suffixes with no lang-extension -->
-        if ( location.length != 0 &amp;&amp; obj.search(/(Document|sDocBookXML)$/i) != -1 ) {
+        <xsl:text disable-output-escaping="yes"><![CDATA[
+        if ( location.length != 0 && obj.search(/(Document|sDocBookXML)$/i) != -1 ) {
             var searchres = location.search(/.*\.(html|sdbk)(\.[^.]+)?$/);
             if ( searchres == -1 ) {
                 // handle .html and .sdbk
@@ -1826,15 +1850,16 @@ $Id$
                 }
             }
         }
-
+        ]]></xsl:text>
         var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>';
         var query = '?test_location=1;objtype='+ obj +';name='+ encodeURIComponent(location);
         var url = abspath + query;
+        <xsl:text disable-output-escaping="yes"><![CDATA[
 
         <!-- begin AJAX-stuff here -->
         xmlhttp.onreadystatechange=function() {
             // show that something is loading in background
-            if (xmlhttp.readyState &lt; 4) {
+            if (xmlhttp.readyState < 4) {
                 document.body.className = 'loading';
             }
             if (xmlhttp.readyState==4) {
@@ -1856,22 +1881,21 @@ $Id$
                 var notice;
                 var controlHtml;
                 var badBrowserEditorCombi = testBadBrowserEditorCombi();
-                <!-- choose response according to statusCode. remember: 
+                /* choose response according to statusCode. remember: 
                     0 => Location (is) OK
                     1 => Location already exists (in container)
                     2 => No location provided (or location is not convertible)
                     3 => Dirty (no sane) location (location contains hilarious characters)
-                     -->
+                 */   
                 switch (statusCode) {
                     case "0":
                         // OK (see if location has been mangled and we don't have an URLLink Object)
                         var objType = getObjTypeFromQuery();
-                        if ( objType.toUpperCase() != 'URLLINK' &amp;&amp; location != processedLocation ) {
-                            //we would change location on save so report this to user
+                        if ( objType.toUpperCase() != 'URLLINK' && location != processedLocation ) {
+                            //we would change location on save so report this to user ]]></xsl:text>
                             var text = "<xsl:value-of select="$i18n/l/IlpLocationWouldChange"/>";
                             var btnIgnore = "<xsl:value-of select="$i18n/l/IlpButtonIgnore"/>";
                             var btnChange = "<xsl:value-of select="$i18n/l/IlpButtonChange"/>";
-                            <![CDATA[
                             notice = '<pre style="color: Silver">'+ location +"</pre>";
                             notice += '<pre style="color: Maroon;">'+ processedLocation +"</pre>";
                             notice += "<br/>"+ text;
@@ -1879,7 +1903,6 @@ $Id$
                             <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnChange +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>&#160;\
                             <input type="button" class="control" value="'+ btnIgnore +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');return false;"/>&#160;';
                             notice += controlHtml;
-                            ]]>
                             // reset notice if ILP would not work properly
                             if ( badBrowserEditorCombi ) {
                                 notice = location+"\n";
@@ -1969,6 +1992,8 @@ $Id$
         );
         xmlhttp.send(null);
     }
+    <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
+
     </script>
   </xsl:template>
 
