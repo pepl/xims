@@ -62,7 +62,7 @@
             <xsl:call-template name="create_menu_css"/>
             <script src="http://simile.mit.edu/timeline/api/timeline-api.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="http://simile.mit.edu/timeline/examples/examples.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script>
+            <script type="text/javascript">
                 var tl;
                 function onLoad() {
                     var eventSource = new Timeline.DefaultEventSource();
