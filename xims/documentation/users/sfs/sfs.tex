@@ -1,7 +1,9 @@
 % -*- coding:iso-8859-1 -*-
 % 2do:
-% Kontrolllesen
-% Umbrüche korrigeren?
+% Kontrolllesen 18ff
+% Frutiger? Font wählen
+% Hinweis anpassen
+% Umbrüche korrigieren?
 
 \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
 \documentclass[fontsize=11pt]{scrartcl}
@@ -9,6 +11,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{%
   graphicx,
+  charter,
   longtable,
   fixltx2e,
   mparhack,
@@ -17,7 +20,7 @@
   ragged2e,
   setspace,
   pifont,
-  lmodern,
+  %lmodern,
 }
 
 \usepackage[english,ngerman]{babel}
@@ -64,6 +67,7 @@ breaklinks               % Links »überstehen« Zeilenumbruch
  
 
 \title{XIMS Schritt für Schritt Anleitung}
+\subtitle{Version: RC2}
 \author{XIMS-Support@uibk.ac.at}
 \date{}
 
@@ -86,8 +90,7 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 \section{Allgemeines zum System}
 \label{allgemeines}
 
-XIMS (eXtensible Information Management System) ist ein Web-Content-
-Management- und Informationssystem, das vor allem auf die Anforderungen und
+XIMS (eXtensible Information Management System) ist ein Web-Content-Management- und Informationssystem, das vor allem auf die Anforderungen und
 Bedürfnisse von Universitäten und ähnlichen Institutionen zugeschnitten ist.
 
 Daraus ergeben sich unter anderem folgende Entwicklungsziele, die XIMS zu
@@ -104,7 +107,8 @@ Zusammenhang mit XSLT).
 	\item Delegierbarkeit von Berechtigungen für dezentrale Verwaltung von Inhalten und
 Benutzern.
 	\item Unterstützung mehrsprachiger Inhalte.
-\end{compactitem}    
+\end{compactitem}
+\bigskip
 
 Neben den genannten Entwicklungszielen bietet die folgende Liste eine Auswahl von
 nützlichen XIMS Features:
@@ -114,7 +118,7 @@ nützlichen XIMS Features:
 (Stichwort Kurznamen).
 	\item Übersichtliche Navigation durch den Inhalt (Verwendung eines »Breadcrumb-
 Navigations-Pfades«).
-	\item Flexible Suchmöglichkeiten unterstützt durch Google
+	\item Flexible Suchmöglichkeiten unterstützt durch Google.
 	\item Möglichkeit der Generierung von Dublin Core Metadaten für XIMS Inhalte und
 Objekte.
 %\end{itemize}
@@ -135,7 +139,7 @@ Team, für technische Fragen, Bug-Meldungen oder gewünschte Features bitte an xim
 XIMS ist an der LFU Innsbruck unter der Adresse \url{http://xims.uibk.ac.at} zu erreichen.
 Um Inhalte über XIMS verwalten zu können, benötigt man einen gültigen
 Benutzerzugang (Account). LFU-Mitarbeiter erlangen mit der Akkreditierung über die
-Personalabteilung bereits standardmäßig einen Zugang zu XIMS. Durch die Eingabe
+Personalabteilung automatisch einen Zugang zu XIMS. Durch die Eingabe
 von Benutzername (i.d.R. beginnend mit »c«) und entsprechendem Passwort (selbes
 Passwort wie für das Mail-System) in der XIMS-Anmeldemaske (siehe Abb. \ref{fig:xims-login})
 erlangen XIMS-Benutzer Zugang zum Inhalte-Management-System.
@@ -159,7 +163,7 @@ sondern als gekürzte Darstellung der XIMS Basisfunktionalität.
 \subsubsection{Startseite mit Lesezeichen}
 \label{quick-startseite}
 
-Nachdem erfolgreicher Anmeldung wird die benutzerspezifische XIMS-Startseite
+Nach erfolgreicher Anmeldung wird die benutzerspezifische XIMS-Startseite
 angezeigt. Je nach Rollenzugehörigkeit\footnote{Siehe Punkt \ref{rollenverwaltung}}
 stehen verschiedene Lesezeichen (1) zur Verfügung. Lesezeichen sollen die Navigation zum jeweiligen DepartmentRoot
 vereinfachen. 
@@ -188,6 +192,7 @@ bietet verschiedene Optionen zur Objektverwaltung an.
 verschieben, publizieren, ...)
 \item (5) Menü zum Erstellen neuer Objekte
 \end{compactitem}
+\bigskip
 
 \begin{figure}[!ht]
 	\centering
@@ -212,7 +217,7 @@ Die unter (4) gezeigten Verwaltungsoptionen im Detail:
 \item (C) Verschieben\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Öffnet ein Menü zum Verschieben des Objekts
 \item (D) Publizieren: Öffnet das Menü zum Veröffentlichen von Objekten
 \item (E) Rechte verwalten: Öffnet die Rechteverwaltung
-\item (F) Löschen\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Löscht das Objekt (siehe Objekte löschen und »Papierkorb«)
+\item (F) Löschen\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Löscht das Objekt (siehe Punkt \ref{delete}: Objekte löschen und »Papierkorb«)
 \end{compactitem}
 
 \subsubsection{Erstellen von Objekten}
@@ -299,7 +304,7 @@ das Objekt »wiederveröffentlicht« werden, um die aktualisierte Version öffentlic
 abrufbar zu machen.
 Will man hingegen, dass ein zuvor publiziertes Objekt nicht mehr allgemein
 zugänglich ist, wählt man die Option »Veröffentlichen rückgängig machen«\footnote{Nachdem die Veröffentlichung rückgängig gemacht wurde stehen Optionen wie
-beispielsweise „verschieben“ oder „löschen“ wieder zur Verfügung.}.
+beispielsweise »verschieben« oder »löschen« wieder zur Verfügung.}.
 
 \begin{figure}[!ht]
 	\centering
@@ -323,7 +328,7 @@ XIMS Inhalte-Management-Systems.
 
 Für jeden Benutzer sind so genannte Lesezeichen (Bookmarks) konfiguriert. Die
 Lesezeichen sind in Abhängigkeit zur Rollenzugehörigkeit gesetzt und können über
-Einstellungen => Lesezeichen verwalten verändert werden. Auf diese Weise
+»Einstellungen« => »Lesezeichen verwalten« verändert werden. Auf diese Weise
 können Sie auch das Standardlesezeichen (default Bookmark) ändern. LFUMitarbeiter
 haben zumindest ein Standardlesezeichen zum XIMS-Testordner
 gesetzt.
@@ -336,10 +341,8 @@ gesetzt.
 
 Über die Lesezeichen gelangen Sie am schnellsten zu den Inhalten Ihrer
 Organisationseinheit. Sollte das Lesezeichen zu Ihren Inhalten noch nicht bestehen,
-können Sie dieses über Einstellungen => Lesezeichen verwalten erstellen. Indem Sie auf eines Ihrer Lesezeichen klicken, gelangen Sie zur so genannten
-Containeransicht10. Diese Ansicht zeigt die Inhalte eines Container-Objekts und
-unterteilt sich grundlegend in zwei verschiedene Bereiche: den Navigationsbereich
-(2.2) und den Inhalt des Containers (2.3).
+können Sie dieses über »Einstellungen« => »Lesezeichen verwalten« erstellen. Indem Sie auf eines Ihrer Lesezeichen klicken, gelangen Sie zur so genannten
+Containeransicht.
 
 \begin{figure}[!ht]
   \centering
@@ -351,15 +354,7 @@ unterteilt sich grundlegend in zwei verschiedene Bereiche: den Navigationsbereic
 \subsection{Navigation}
 \label{navigation}
 
-Der XIMS-Navigationsbereich besteht aus den folgenden Elementen:
-\begin{itemize}
-	\item Ansichts- bzw. Bearbeitungsmodus [1]
-	\item Aktueller Pfad (Navigationspfad bzw. Breadcrumb-Pfad) [2]
-	\item Navigationspfeile [3]
-	\item Login-Informationen [4]
-	\item Element zum Erstellen von neuen Objekten [5]
-	\item Suchfunktion [6]
-\end{itemize}
+Der XIMS-Navigationsbereich besteht unter anderem aus den folgenden Elementen.
 
 \paragraph{Aktueller Pfad (Navigations-/Breadcrumb-Pfad)}
 \label{breadcrumb}
@@ -506,8 +501,7 @@ Version kennt XIMS vier verschiedene Objektstati.
   \hline
   \includegraphics[scale=0.7]{./images/icon-modified.png} & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten \newline
   Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
-  man zur aktuell veröffentlichten Ansicht des Objekts. Erläuterungen dazu
-  siehe Punkt . \\
+  man zur aktuell veröffentlichten Ansicht des Objekts. \\
   \hline
   \includegraphics[scale=0.7]{./images/icon-locked.png} & Das Objekt ist gesperrt. Eine Sperrung kann sich durch Editieren
   desselben Objekts durch einen anderen XIMS-User ergeben, oder weil
