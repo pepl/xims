@@ -50,10 +50,9 @@
             <xsl:call-template name="css"/>
             <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script type="text/javascript">
-                <xsl:comment>
-                    <![CDATA[
-                        function disableIt(obj,ename) {
+            <xsl:call-template name="mk-inline-js">
+              <xsl:with-param name="code">            
+              <![CDATA[ function disableIt(obj,ename) {
                             var objids = window.document.forms[1].elements[ename];
                             if (!objids) {
                                 return;
@@ -72,9 +71,10 @@
                                 return true;
                             }
                         }
+
                         function switcher(selector,ename){
                             var ids = window.document.forms[1].elements[ename];
-                            xstate = selector.checked ? 1 : 0;
+                            xstate = selector.checked ? true : false;
                             if ( ids.length ) {
                                 var i;
                                 for (i = 0; i < ids.length; i++) {
@@ -90,6 +90,7 @@
                             }
                             return xstate;
                         }
+
                         function isChecked(ename){
                             var ids = window.document.forms[1].elements[ename];
                             if ( ids.length ) {
@@ -106,11 +107,9 @@
                                 }
                             }
                             return false;
-                        }
-
-                    ]]>
-                </xsl:comment>
-            </script>
+                        } ]]>
+                </xsl:with-param>
+            </xsl:call-template>
         </head>
 </xsl:template>
 

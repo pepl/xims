@@ -11,12 +11,12 @@
 <!-- $Id$ -->
 <xsl:import href="common.xsl"/>
 <xsl:import href="../common_publish_prompt.xsl"/>
-<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head"/>
-        <body onload="disableIt(document.forms[1].autopublish,'objids');">
+        <body style="margintop:0; marginleft:0; marginwidth:0; marginheight:0; background:url('{$skimages}body_bg.png')" onload="disableIt(document.forms[1].autopublish,'objids');">
             <xsl:call-template name="header">
                 <xsl:with-param name="noncontent">true</xsl:with-param>
             </xsl:call-template>
@@ -133,7 +133,7 @@
                                                                             Auto(re)publish selected objects besides the current object?
                                                                         </td>
                                                                         <td>
-                                                                            <input type="checkbox" name="autopublish" value="1" disabled="true"/>
+                                                                            <input type="checkbox" name="autopublish" value="1" disabled="disabled"/>
                                                                         </td>
                                                                     </tr>
                                                                 </xsl:when>
@@ -220,18 +220,18 @@
             <input type="checkbox" name="objids" value="{@id}">
                 <xsl:choose>
                     <xsl:when test="string-length(location) &lt;= 0">
-                        <xsl:attribute name="disabled">true</xsl:attribute>
+                        <xsl:attribute name="disabled">disabled</xsl:attribute>
                     </xsl:when>
                     <xsl:when test="published = '1' and
 concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &gt; concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-                        <xsl:attribute name="checked">true</xsl:attribute>
+                        <xsl:attribute name="checked">checked</xsl:attribute>
                     </xsl:when>
                     <xsl:when test="published = '1' and
 concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-                        <xsl:attribute name="disabled">true</xsl:attribute>
+                        <xsl:attribute name="disabled">disabled</xsl:attribute>
                     </xsl:when>
                     <xsl:when test="published != '1'">
-                        <xsl:attribute name="onClick">isChecked('objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0</xsl:attribute>
+                        <xsl:attribute name="onclick">isChecked('objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0</xsl:attribute>
                     </xsl:when>
                 </xsl:choose>
             </input>
