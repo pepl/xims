@@ -799,7 +799,7 @@ sub event_unpublish {
             grantee_id => XIMS::PUBLICUSERID(),
             content_id => $object->id()
         );
-        $privs_object->delete();
+        $privs_object->delete() if $privs_object;
     }
     else {
         return $self->event_access_denied($ctxt);
