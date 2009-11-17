@@ -20,8 +20,12 @@
   ragged2e,
   setspace,
   pifont,
-  %lmodern,
 }
+
+% Grotesk: Frutiger
+\renewcommand*{\sfdefault}{lfrx}
+% Dicktengleich: Bera
+\usepackage[scaled=.87]{beramono}
 
 \usepackage[english,ngerman]{babel}
 \usepackage[neveradjust]{paralist}
@@ -60,11 +64,24 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 
 \usepackage{ellipsis}
 
+\definecolor{uibkorange}{HTML}{F89019} % Studium
+\definecolor{uibkgruen}{HTML}{74A629} % Forschung
+\definecolor{uibkblau}{HTML}{002241} % Uibkversität
+\definecolor{uibkcyan}{HTML}{419AB9} % Fakultäten
+\definecolor{uibkviolett}{HTML}{5E4683} % Internationales
+\definecolor{uibkrot}{HTML}{CB0900} % iPoint
+
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\color{uibkrot}\sffamily\bfseries}
 \newenvironment{Hinweis}
-{\bigskip\begin{addmargin}[-2\parindent]{0\parindent}\sffamily\textcolor{red}{\rule{1ex}{1ex}\textbf{
-        Hinweis: }}}
-{\hspace{\stretch{1}}\end{addmargin}\bigskip}
+{\bigskip\noindent%
+ \reversemarginpar\marginnote[\rule{1ex}{1ex} Hinweis:]{}%
+ \begin{em}}
+{\end{em}\hspace{\stretch{1}}\bigskip}
  
+
+\addtokomafont{sectioning}{\color{uibkcyan}}
+
 
 \title{XIMS Schritt für Schritt Anleitung}
 \subtitle{Version: RC2}
@@ -334,9 +351,8 @@ haben zumindest ein Standardlesezeichen zum XIMS-Testordner
 gesetzt.
 
 \begin{Hinweis}
-  Nutzen Sie den XIMS-Testordner um sich mit dem System vertraut zu
-  machen. Dort können Sie Objekte erstellen und das allgemeine
-  Verhalten von XIMS testen.
+  Nutzen Sie den XIMS-Testordner um sich mit dem System vertraut zu machen. Dort
+  können Sie Objekte erstellen und das allgemeine Verhalten von XIMS testen.
 \end{Hinweis}
 
 Über die Lesezeichen gelangen Sie am schnellsten zu den Inhalten Ihrer
