@@ -84,7 +84,7 @@ sub remove {
         grantee_id => XIMS::PUBLICUSERID(),
         content_id => $self->{Object}->id()
     );
-    $privs_object->delete();
+    $privs_object->delete() if $privs_object;
 
     # unpublish published children
     my @children = $self->{Object}->children_granted( User => $self->{User}, published => 1 );

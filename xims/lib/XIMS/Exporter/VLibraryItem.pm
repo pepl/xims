@@ -85,7 +85,7 @@ sub remove {
         grantee_id => XIMS::PUBLICUSERID(),
         content_id => $self->{Object}->id()
     );
-    $privs_object->delete();
+    $privs_object->delete() if $privs_object;
 
     # unpublish all published image children
     my $image_ot_id = XIMS::ObjectType->new( name => 'Image' )->id();
