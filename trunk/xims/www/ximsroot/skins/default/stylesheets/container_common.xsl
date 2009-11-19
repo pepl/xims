@@ -249,7 +249,7 @@
                             </td>
                             <td width="100%" style="background:url({$skimages}titlecolumn_bg_bright.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif"
-                                        width="50"
+                                        width="300"
                                         height="1"
                                         border="0"
                                         alt=""/>
@@ -319,10 +319,18 @@
                                 </a>
                             </td>
                             <td width="100%" style="background:url({$skimages}titlecolumn_bg_bright.png);">
-                                <img src="{$ximsroot}images/spacer_white.gif" width="50" height="1" border="0" alt=""/>
+                                <img src="{$ximsroot}images/spacer_white.gif" 
+                                     width="300" 
+                                     height="1" 
+                                     border="0" 
+                                     alt=""/>
                             </td>
                             <td width="23">
-                                <img src="{$skimages}titlecolumn_rightcorner_bright.png" width="23" height="20" alt="" title="" />
+                                <img src="{$skimages}titlecolumn_rightcorner_bright.png" 
+                                     width="23" 
+                                     height="20" 
+                                     alt="" 
+                                     title="" />
                             </td>
                             <td width="124">
                                 <a href="{$location}?sb=date;order=desc;m={$m}">
@@ -385,7 +393,7 @@
                             </td>
                             <td width="100%" style="background:url({$skimages}titlecolumn_bg.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif"
-                                        width="50"
+                                        width="300"
                                         height="1"
                                         border="0"
                                         alt=" "/>
@@ -458,7 +466,7 @@
                             </td>
                             <td width="100%" style="background:url({$skimages}titlecolumn_bg.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif"
-                                        width="50"
+                                        width="300"
                                         height="1"
                                         border="0"
                                         alt=""/>
@@ -535,7 +543,11 @@
                                 </a>
                             </td>
                             <td width="100%" height="20" style="background:url({$skimages}titlecolumn_bg.png);">
-                                <xsl:text>&#160;</xsl:text>
+                                <img src="{$ximsroot}images/spacer_white.gif"
+                                     width="300"
+                                     height="1"
+                                     border="0"
+                                     alt=""/>
                             </td>
                             <td width="23">
                                 <img src="{$skimages}titlecolumn_rightcorner.png"
@@ -600,7 +612,7 @@
                             </td>
                             <td width="100%" style="background:url({$skimages}titlecolumn_bg.png);">
                                 <img src="{$ximsroot}images/spacer_white.gif"
-                                        width="50"
+                                        width="300"
                                         height="1"
                                         border="0"
                                         alt=""/>
