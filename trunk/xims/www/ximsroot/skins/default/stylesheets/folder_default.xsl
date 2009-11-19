@@ -36,6 +36,18 @@
                 <xsl:call-template name="create_menu_js"/>
                 -->
                 <script src="{$ximsroot}skins/{$currentskin}/scripts/defcontmin.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+                <!--  index-line hovering for His B0rkedness, IE 6 -->
+                <xsl:comment>[if lte IE 6]&gt;
+                    &lt;script type="text/javascript"&gt;
+                         $(function() {
+                             $('.objrow').hover(function(){
+                                 $(this).children('td').addClass('objrow-over');
+                             }, function() {
+                                $(this).children('td').removeClass('objrow-over');
+                             });
+                         });
+                     &lt;/script&gt;
+                 &lt;![endif]</xsl:comment>
             </body>
         </html>
     </xsl:template>

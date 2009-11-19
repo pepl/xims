@@ -287,22 +287,27 @@ div#xims_ilp_windowbg div#xims_ilp_winlabel div#xims_ilp_close {
     background-color: #fcfcff;
 }
 
-tr.objrow:hover {
-    background-color: #EEEEEE;
-    font-weight: bold;
+tr.objrow {
+    /* line spacing */
+     height: 21px;
+}
+
+.objrow:hover , .objrow:focus, .objrow:hover td, .objrow:focus td, .objrow-over {
+    /* index line */
+    background-color: #ffff80 !important;
 }
 
 /* sprite icons */
 .sprite, .sprite-list {
-     background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
-     display: inline-block;
+    background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
+    display: inline-block;
 }
 
 .sprite span, .sprite-list span{
-   position: absolute;
-   top: 0;
-   left: -9999em;
-   background-color: #ffffe0;
+    position: absolute;
+    top: 0;
+    left: -9999em;
+    background-color: #ffffe0;
 }
 
 .sprite {
@@ -496,7 +501,6 @@ tr.objrow:hover {
 div.cttobject_status {
     display: inline;
 }
-
 .ctt_status {
     width: 86px;
     padding-left: 2px;
@@ -507,26 +511,21 @@ div.cttobject_status {
 .ctt_df {
     width: 34px;
 }
-.ctt_lm, .ctt_cl {
-    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
-    background-position: 0px -1049px;
-}
 .ctt_cl {
     text-align: right;
+    background-color: #eeeeee;
 }
 .ctt_loctitle {
-    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
-    background-position: 0px -987px;
     background-color: #eeeeee;
 }
 .ctt_loctitledel {
-    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
-    background-position: 0px -1028px;
     background-color: #c6c6c6;
 }
 .ctt_loctitleindex {
-    background: url(/ximsroot/skins/default/images/sprite.gif) repeat-x top left;
-    background-position: 0px -1006px;
+    border-bottom: maroon 1px solid;
     background-color: #eeeeee;
+}
+.ctt_df, .ctt_loctitle, .ctt_loctitledel, .ctt_lm, .ctt_cl, .ctt_position {
+        border-bottom: 1px solid #C0C0C0;
 }
 
