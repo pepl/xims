@@ -16,69 +16,60 @@
         <xsl:call-template name="head_default"/>
         <body>
             <xsl:call-template name="header"/>
-            <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-                <tr>
-                    <td bgcolor="#ffffff">
-                        <span id="body">
+            <div id="main-content">
+							<xsl:call-template name="options-menu-bar"/>
+							<div id="content-container">
+								<div id="docbody">
                             <h1><xsl:value-of select="title"/> (<xsl:value-of select="/document/reference_types/reference_type[@id=/document/context/object/reference_type_id]/name"/>)</h1>
-                                <xsl:if test="abstract != ''">
-                                    <div id="abstract">
-                                        <xsl:value-of select="$i18n/l/Abstract"/>: <xsl:apply-templates select="abstract"/>
-                                    </div>
-                                </xsl:if>
-                                <xsl:if test="notes != ''">
-                                    <div id="notes">
-                                        <xsl:value-of select="$i18n/l/Notes"/>: <xsl:apply-templates select="notes"/>
-                                    </div>
-                                </xsl:if>
-                                <table id="reference_values">
-                                    <xsl:apply-templates select="reference_values/reference_value">
-                                        <xsl:sort select="/document/reference_properties/reference_property[@id=current()/property_id]/position" order="ascending" data-type="number"/>
-                                    </xsl:apply-templates>
-                                </table>
-                                <div id="authors">
-                                    <xsl:value-of select="$i18n_vlib/l/authors"/>:<br/>
+                            
+                            <p>
+                                    <strong><xsl:value-of select="$i18n_vlib/l/authors"/></strong>:<br/>
                                     <xsl:apply-templates select="authorgroup/author">
                                         <xsl:sort select="position" order="ascending" data-type="number"/>
                                     </xsl:apply-templates>
-                                </div>
+                                </p>
                                 <xsl:if test="editorgroup/author">
-                                    <div id="editors">
-                                        <xsl:value-of select="$i18n_vlib/l/editors"/>:<br/>
+                                    <p>
+                                        <strong><xsl:value-of select="$i18n_vlib/l/editors"/></strong>:<br/>
                                         <xsl:apply-templates select="editorgroup/author">
                                             <xsl:sort select="position" order="ascending" data-type="number"/>
                                         </xsl:apply-templates>
-                                    </div>
+                                    </p>
                                 </xsl:if>
                                 <xsl:if test="serial != ''">
-                                    <div id="serials">
-                                        Journal:<br/>
+                                    <p>
+                                        <strong>Journal</strong>:<br/>
                                         <xsl:apply-templates select="serial"/>
-                                    </div>
+                                    </p>
                                 </xsl:if>
-                        </span>
-                    </td>
-                </tr>
-            </table>
-            <table align="center" width="98.7%" class="footer">
-                <xsl:call-template name="user-metadata"/>
-                <xsl:call-template name="footer"/>
-            </table>
-            <xsl:call-template name="script_bottom"/>
+                                <xsl:if test="abstract != ''">
+                                    <p>
+                                        <strong><xsl:value-of select="$i18n/l/Abstract"/></strong>: <xsl:apply-templates select="abstract"/>
+                                    </p>
+                                </xsl:if>
+                                <xsl:if test="notes != ''">
+                                    <p>
+                                        <strong><xsl:value-of select="$i18n/l/Notes"/></strong>: <xsl:apply-templates select="notes"/>
+                                    </p>
+                                </xsl:if>
+
+                                    <xsl:apply-templates select="reference_values/reference_value">
+                                        <xsl:sort select="/document/reference_properties/reference_property[@id=current()/property_id]/position" order="ascending" data-type="number"/>
+                                    </xsl:apply-templates>
+          		</div>
+							</div>
+            </div>
         </body>
     </html>
 </xsl:template>
 
 <xsl:template match="reference_value">
     <xsl:variable name="property_id" select="property_id"/>
-    <tr class="reference_value">
-        <td>
-            <xsl:value-of select="/document/reference_properties/reference_property[@id=$property_id]/name"/>:
-        </td>
-        <td>
+    <p>
+				<xsl:call-template name="get-prop-name"><xsl:with-param name="id" select="$property_id"/></xsl:call-template>:&#160;
+            <!--<xsl:value-of select="/document/reference_properties/reference_property[@id=$property_id]/name"/>:-->
             <xsl:value-of select="value"/>
-        </td>
-    </tr>
+    </p>
 </xsl:template>
 
 </xsl:stylesheet>

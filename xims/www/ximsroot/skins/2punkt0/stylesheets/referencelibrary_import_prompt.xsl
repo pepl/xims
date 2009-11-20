@@ -15,28 +15,42 @@
 <html>
     <xsl:call-template name="head_default"/>
     <body>
-        <div class="edit">
-            <xsl:call-template name="table-import"/>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" enctype="multipart/form-data">
-                <table border="0" width="98%">
+					<xsl:call-template name="header"/>	
+
+			<div class="edit">
+				<div id="tab-container" class="ui-corner-top">
+					<div id="create-title"><h1><xsl:value-of select="$i18n/l/ImportItem"/>&#160;'<xsl:value-of select="title"/>'</h1></div>
+				</div>
+				<div class="cancel-save">
+					<xsl:call-template name="cancelcreateform">
+						<xsl:with-param name="with_save">yes</xsl:with-param>
+						</xsl:call-template>
+				</div>
+		    <div id="content-container" class="ui-corner-bottom ui-corner-tr">
+            <!--<xsl:call-template name="table-import"/>-->
+            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" enctype="multipart/form-data" id="create-edit-form">
+
                     <xsl:call-template name="tr-importsourcetype"/>
+                    
                     <xsl:call-template name="tr-body-import"/>
                     <xsl:call-template name="tr-bodyfromfile-import"/>
-                </table>
+
                 <xsl:call-template name="import"/>
             </form>
         </div>
-        <br />
-        <xsl:call-template name="canceledit"/>
-        <xsl:call-template name="script_bottom"/>
+        <div class="cancel-save">
+					<xsl:call-template name="cancelcreateform">
+						<xsl:with-param name="with_save">yes</xsl:with-param>
+						</xsl:call-template>
+				</div>
+			</div>
     </body>
 </html>
 </xsl:template>
 
 <xsl:template name="tr-importsourcetype">
-    <tr>
-        <td valign="top" colspan="3">Input Format:
-            <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="importformat">
+    <div><label for="importformat">Format</label>:&#160;
+            <select name="importformat" id="importformat">
                 <option value="BibTeX">BibTeX</option>
                 <option value="RIS">RIS</option>
                 <option value="Endnote">Endnote</option>
@@ -46,47 +60,29 @@
                 <option value="COPAC">COPAC</option>
             </select>
             <a href="javascript:openDocWindow('ReferenceLibraryItem Import Source Type')" class="doclink">(?)</a>
-        </td>
-        </tr>
+		</div>
 </xsl:template>
 
 <xsl:template name="tr-body-import">
-    <tr>
-        <td colspan="3">
-            Input import file body,
+            <div id="bodymain">
+            <label for="body">Body</label>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('ReferenceLibraryItem Import')" class="doclink">(?)</a>
             <br/>
-
-            <xsl:call-template name="textarearesize_js_css"/>
-            <div id="bodymain">
+            <xsl:call-template name="ui-resizable"/>
                 <div id="bodycon">
-                    <textarea tabindex="30" name="body" id="body" rows="15" cols="90">&#160;</textarea>
-                    <!-- TOP DRAG BAR -->
-                    <div id="T" class="brd"></div>
-                    <!-- LEFT DRAG BAR -->
-                    <div id="L" class="brd"></div>
-                    <!-- BOTTOM DRAG BAR -->
-                    <div id="B" class="brd edg h" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
-                    <div id="BR" class="brd edg h" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
-                    <!-- RIGHT DRAG BAR -->
-                    <!-- When ID "R" is used here, MSIE won't scale the right drag bar correctly, using "U" therefore -->
-                    <div id="U" class="brd edg v" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
-                    <div id="UB" class="brd edg nw" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
+                    <textarea name="body" id="body" rows="15" cols="90" class="resizable ui-widget-content">&#160;</textarea>
                 </div>
             </div>
-        </td>
-    </tr>
 </xsl:template>
 
 <xsl:template name="tr-bodyfromfile-import">
-    <tr>
-        <td valign="top" colspan="2">or import references from file:
-            <input tabindex="30" type="file" name="file" size="49" class="text"/>
+    <div>
+        <label for="file"><xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n/l/ImportFromFile"/></label>&#160;
+            <input type="file" name="file" size="49" class="text" id="file"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('ReferenceLibraryItem Import')" class="doclink">(?)</a>
-        </td>
-    </tr>
+    </div>
 </xsl:template>
 
 <xsl:template name="import">
@@ -95,10 +91,10 @@
         <input name="sb" type="hidden" value="date"/>
         <input name="order" type="hidden" value="desc"/>
     </xsl:if>
-    <input type="submit" name="import" value="{$i18n_vlib/l/Import}" class="control" accesskey="S"/>
+    <input type="submit" name="import" value="{$i18n_vlib/l/Import}" class="control hidden" accesskey="S"/>
 </xsl:template>
 
-<xsl:template name="table-import">
+<!--<xsl:template name="table-import">
     <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0" style="margin: 0px; padding: 2px">
         <tr>
             <td valign="top">
@@ -111,10 +107,18 @@
             </td>
         </tr>
     </table>
-</xsl:template>
+</xsl:template>-->
 
 <xsl:template name="title">
-    Import items into &#160;'<xsl:value-of select="title"/>' (<xsl:value-of select="$absolute_path"/>) - XIMS
+    <xsl:value-of select="$i18n/l/ImportItem"/>&#160;'<xsl:value-of select="title"/>' - XIMS
+</xsl:template>
+
+<xsl:template name="save_jsbutton">
+		<button class="ui-state-default ui-corner-all fg-button" type="submit" name="submit_eform" accesskey="S" onclick="document.eform.import.click(); return false">
+			<span class="text">
+				<xsl:value-of select="$i18n/l/save"/>
+			</span>
+		</button>
 </xsl:template>
 
 </xsl:stylesheet>

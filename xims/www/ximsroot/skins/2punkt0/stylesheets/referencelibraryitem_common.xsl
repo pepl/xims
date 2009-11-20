@@ -16,22 +16,18 @@
 <xsl:variable name="daterefpropid" select="/document/reference_properties/reference_property[name='date']/@id"/>
 <xsl:variable name="btitlerefpropid" select="/document/reference_properties/reference_property[name='btitle']/@id"/>
 
-<xsl:output method="html"
-            encoding="utf-8"
-            media-type="text/html"
+<xsl:output method="xml" encoding="utf-8" media-type="text/html"
             doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
             doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
             indent="no"/>
 
-<xsl:template name="cttobject.options.purge_or_delete">
+<!--<xsl:template name="cttobject.options.purge_or_delete">
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
         <xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <!-- note: get seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
-            <!-- <form style="margin:0px;" name="delete" method="post" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onsubmit="return confirmDelete()"> -->
-            <form style="margin:0px; display: inline;" name="delete"
-                    method="get"
-                    action="{$xims_box}{$goxims_content}">
+            --><!-- note: get seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( --><!--
+            --><!-- <form style="margin:0px;" name="delete" method="post" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onsubmit="return confirmDelete()"> --><!--
+            <form name="delete" method="get" action="{$xims_box}{$goxims_content}">
                 <input type="hidden" name="delete_prompt" value="1"/>
                 <input type="hidden" name="id" value="{$id}"/>
                 <xsl:if test="$currobjmime='application/x-container'">
@@ -50,124 +46,173 @@
             <xsl:call-template name="cttobject.options.spacer"/>
         </xsl:otherwise>
     </xsl:choose>
-</xsl:template>
+</xsl:template>-->
 
 
 <xsl:template match="reference_property">
     <xsl:variable name="propid" select="@id"/>
-    <tr>
-        <td>
-            <xsl:value-of select="name"/>:
-        </td>
-        <td>
-            <input type="text" class="text" name="{name}" size="30" tabindex="{position() + 40}" value="{/document/context/object/reference_values/reference_value[property_id=$propid]/value}"></input>
-        </td>
-        <td>
-            <xsl:value-of select="description"/>
-        </td>
-    </tr>
+    <xsl:variable name="propname"><xsl:call-template name="get-prop-name"><xsl:with-param name="id" select="$propid"/></xsl:call-template></xsl:variable>
+    <div class="ref-property">
+    <div class="label-prop">
+            <label><xsl:attribute name="for">input-<xsl:value-of select="$propid"/></xsl:attribute><xsl:value-of select="$propname"/></label>
+    </div>
+            <input type="text" class="text" name="{name}" size="50"  value="{/document/context/object/reference_values/reference_value[property_id=$propid]/value}">
+							<xsl:attribute name="onfocus">javascript:initPropDescription('#prop-desc_<xsl:value-of select="$propid"/>', '#input-<xsl:value-of select="$propid"/>');</xsl:attribute>
+							<xsl:attribute name="onblur">javascript:destroyInfoBox('#prop-desc_<xsl:value-of select="$propid"/>');</xsl:attribute>
+							<xsl:attribute name="id">input-<xsl:value-of select="$propid"/></xsl:attribute></input>
+							<div class="ui-state-highlight ui-corner-all prop-desc" id="prop-desc_{$propid}">
+								<p>
+									<span class="ui-icon ui-icon-info"/><strong><xsl:value-of select="$propname"/></strong><br/>
+									<xsl:value-of select="description"/>
+								</p>
+							</div>
+           <!-- <xsl:value-of select="description"/>-->
+    </div>
+</xsl:template>
+
+<xsl:template name="get-prop-name">
+<xsl:param name="id" select="$id"/>
+	<xsl:choose>
+		<xsl:when test="$id=1"><xsl:value-of select="$i18n/l/rl_title"/></xsl:when>
+		<xsl:when test="$id=2"><xsl:value-of select="$i18n/l/rl_btitle"/></xsl:when>
+		<xsl:when test="$id=3"><xsl:value-of select="$i18n/l/rl_date"/></xsl:when>
+		<xsl:when test="$id=4"><xsl:value-of select="$i18n/l/rl_chron"/></xsl:when>
+		<xsl:when test="$id=5"><xsl:value-of select="$i18n/l/rl_ssn"/></xsl:when>
+		<xsl:when test="$id=6"><xsl:value-of select="$i18n/l/rl_quarter"/></xsl:when>
+		<xsl:when test="$id=7"><xsl:value-of select="$i18n/l/rl_volume"/></xsl:when>
+		<xsl:when test="$id=8"><xsl:value-of select="$i18n/l/rl_part"/></xsl:when>
+		<xsl:when test="$id=9"><xsl:value-of select="$i18n/l/rl_issue"/></xsl:when>
+		<xsl:when test="$id=10"><xsl:value-of select="$i18n/l/rl_spage"/></xsl:when>
+		<xsl:when test="$id=11"><xsl:value-of select="$i18n/l/rl_epage"/></xsl:when>
+		<xsl:when test="$id=12"><xsl:value-of select="$i18n/l/rl_pages"/></xsl:when>
+		<xsl:when test="$id=13"><xsl:value-of select="$i18n/l/rl_artnum"/></xsl:when>
+		<xsl:when test="$id=14"><xsl:value-of select="$i18n/l/rl_isbn"/></xsl:when>
+		<xsl:when test="$id=15"><xsl:value-of select="$i18n/l/rl_coden"/></xsl:when>
+		<xsl:when test="$id=16"><xsl:value-of select="$i18n/l/rl_sici"/></xsl:when>
+		<xsl:when test="$id=17"><xsl:value-of select="$i18n/l/rl_place"/></xsl:when>
+		<xsl:when test="$id=18"><xsl:value-of select="$i18n/l/rl_pub"/></xsl:when>
+		<xsl:when test="$id=19"><xsl:value-of select="$i18n/l/rl_edition"/></xsl:when>
+		<xsl:when test="$id=20"><xsl:value-of select="$i18n/l/rl_tpages"/></xsl:when>
+		<xsl:when test="$id=21"><xsl:value-of select="$i18n/l/rl_series"/></xsl:when>
+		<xsl:when test="$id=22"><xsl:value-of select="$i18n/l/rl_issn"/></xsl:when>
+		<xsl:when test="$id=23"><xsl:value-of select="$i18n/l/rl_bici"/></xsl:when>
+		<xsl:when test="$id=24"><xsl:value-of select="$i18n/l/rl_co"/></xsl:when>
+		<xsl:when test="$id=25"><xsl:value-of select="$i18n/l/rl_inst"/></xsl:when>
+		<xsl:when test="$id=26"><xsl:value-of select="$i18n/l/rl_advisor"/></xsl:when>
+		<xsl:when test="$id=27"><xsl:value-of select="$i18n/l/rl_degree"/></xsl:when>
+		<xsl:when test="$id=28"><xsl:value-of select="$i18n/l/rl_identifier"/></xsl:when>
+		<xsl:when test="$id=29"><xsl:value-of select="$i18n/l/rl_status"/></xsl:when>
+		<xsl:when test="$id=30"><xsl:value-of select="$i18n/l/rl_conf_venu"/></xsl:when>
+		<xsl:when test="$id=31"><xsl:value-of select="$i18n/l/rl_conf_date"/></xsl:when>
+		<xsl:when test="$id=32"><xsl:value-of select="$i18n/l/rl_conf_title"/></xsl:when>
+		<xsl:when test="$id=33"><xsl:value-of select="$i18n/l/rl_conf_sponsor"/></xsl:when>
+		<xsl:when test="$id=34"><xsl:value-of select="$i18n/l/rl_conf_url"/></xsl:when>
+		<xsl:when test="$id=35"><xsl:value-of select="$i18n/l/rl_url"/></xsl:when>
+		<xsl:when test="$id=36"><xsl:value-of select="$i18n/l/rl_access_timestamp"/></xsl:when>
+		<xsl:when test="$id=37"><xsl:value-of select="$i18n/l/rl_citekey"/></xsl:when>
+		<xsl:when test="$id=38"><xsl:value-of select="$i18n/l/rl_url2"/></xsl:when>
+		<xsl:when test="$id=39"><xsl:value-of select="$i18n/l/rl_workgroup"/></xsl:when>
+		<xsl:when test="$id=41"><xsl:value-of select="$i18n/l/rl_project"/></xsl:when>
+		<xsl:when test="$id=45"><xsl:value-of select="$i18n/l/rl_quality_criterion"/></xsl:when>
+		<xsl:otherwise>error</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template name="tr-vlauthors">
-    <xsl:if test="@id != '' and authorgroup/author/id">
-        <tr>
-            <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/></td>
-            <td colspan="2">
-                <xsl:apply-templates select="authorgroup/author" mode="edit">
-                    <xsl:sort select="./position"
-                              order="ascending"
-                              data-type="number"/>
-                </xsl:apply-templates>
-            </td>
-        </tr>
-    </xsl:if>
-    <tr>
-        <td valign="top">
-            <xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/>
-        </td>
-        <td colspan="2">
-            <input tabindex="40" type="text" name="vlauthor" size="50" value="" class="text"/>
+<div class="ui-widget-content ui-corner-all" id="vlauthors">
+<h2><xsl:value-of select="$i18n_vlib/l/authors"/></h2>
+    <div>
+            <div id="label-authors"><label for="vlauthor"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/></label></div>
+            <input type="text" name="vlauthor" size="50" value="" class="text" id="vlauthor">
+							<xsl:attribute name="onfocus">javascript:initAuthDescription('#auth-desc','#vlauthor');</xsl:attribute>
+							<xsl:attribute name="onblur">javascript:destroyInfoBox('#auth-desc');</xsl:attribute>
+            </input>
             <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
+            <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>            
             <xsl:if test="/document/context/vlauthors/author/id">
                 <xsl:text>&#160;</xsl:text>
-                <input type="button" value="&lt;--" onclick="return addVLProperty( 'author' );"/>
-                <xsl:text>&#160;</xsl:text>
                 <xsl:apply-templates select="/document/context/vlauthors"/>
-            </xsl:if>
+            </xsl:if>      
             <xsl:if test="@id != ''">
                 <xsl:text>&#160;</xsl:text>
-                <input type="submit" name="create_author_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
-            </xsl:if>
-            <table style="position: absolute; display: inline; padding: 0px; margin: 0px 0px 0px 10px; line-height: 1em;"><tr><td>
-            <xsl:value-of select="$i18n_vlib/l/AuthorStringFormat"/>.<br/><xsl:value-of select="$i18n_vlib/l/Split_by_semicolon"/>.
-            </td></tr></table>
-        </td>
-    </tr>
+                <input type="submit" name="create_author_mapping" value="{$i18n_vlib/l/Create_mapping}" class="ui-state-default ui-corner-all fg-button"/>
+            </xsl:if>         
+            <div class="ui-state-highlight ui-corner-all auth-desc" id="auth-desc">
+								<p>
+									<span class="ui-icon ui-icon-info"/><strong><xsl:value-of select="$i18n_vlib/l/authors"/></strong><br/>
+									<xsl:value-of select="$i18n_vlib/l/AuthorStringFormat"/>.<br/><xsl:value-of select="$i18n_vlib/l/Split_by_semicolon"/>
+								</p>
+							</div>   
+            <!--<xsl:value-of select="$i18n_vlib/l/AuthorStringFormat"/>.<br/><xsl:value-of select="$i18n_vlib/l/Split_by_semicolon"/>.-->
+        </div>    
+                <xsl:if test="@id != '' and authorgroup/author/id">
+        <div>
+            <div class="default-label"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/authors"/><xsl:text>&#160;</xsl:text></div>
+                <xsl:apply-templates select="authorgroup/author" mode="edit">
+                    <xsl:sort select="./position" order="ascending" data-type="number"/>
+                </xsl:apply-templates>
+        </div>
+    </xsl:if>
+    </div>
 </xsl:template>
 
 <xsl:template name="tr-vleditors">
-    <xsl:if test="@id != '' and editorgroup/author/id">
-        <tr>
-            <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/editors"/></td>
-            <td colspan="2">
-                <xsl:apply-templates select="editorgroup/author" mode="edit">
-                    <xsl:sort select="./position"
-                              order="ascending"
-                              data-type="number"/>
-                </xsl:apply-templates>
-            </td>
-        </tr>
-    </xsl:if>
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/editors"/></td>
-        <td colspan="2">
-            <input tabindex="40" type="text" name="vleditor" size="50" value="" class="text"/>
+<div class="ui-widget-content ui-corner-all" id="vleditors">
+<h2><xsl:value-of select="$i18n_vlib/l/editors"/></h2>
+    <div>
+        <div id="label-editors"><label for="vleditor"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/editors"/></label></div>
+            <input type="text" name="vleditor" size="50" value="" class="text" id="vleditor"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
             <xsl:if test="/document/context/vlauthors/author/id">
-                <xsl:text>&#160;</xsl:text>
-                <input type="button" value="&lt;--" onclick="return addVLProperty( 'editor' );"/>
                 <xsl:text>&#160;</xsl:text>
                 <xsl:apply-templates select="/document/context/vlauthors"><xsl:with-param name="svlauthor" select="'svleditor'"/></xsl:apply-templates>
             </xsl:if>
             <xsl:if test="@id != ''">
                 <xsl:text>&#160;</xsl:text>
-                <input type="submit" name="create_editor_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
+                <input type="submit" name="create_editor_mapping" value="{$i18n_vlib/l/Create_mapping}" class="ui-state-default ui-corner-all fg-button"/>
             </xsl:if>
-        </td>
-    </tr>
+        </div>
+     <xsl:if test="@id != '' and editorgroup/author/id">
+            <div>
+							<div class="default-label"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/editors"/></div>
+                <xsl:apply-templates select="editorgroup/author" mode="edit">
+                    <xsl:sort select="./position" order="ascending" data-type="number"/>
+                </xsl:apply-templates>
+        </div>
+    </xsl:if>
+    </div>
 </xsl:template>
 
 <xsl:template name="tr-vlserials">
-    <xsl:if test="/document/reference_types/reference_type/name = 'Article' and @id != '' and serial/@id">
-        <tr>
-            <td valign="top"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/Serial"/></td>
-            <td colspan="2">
-                <xsl:apply-templates select="serial" mode="edit"/>
-            </td>
-        </tr>
-    </xsl:if>
+<div class="ui-widget-content ui-corner-all" id="vlserials">
+<h2><xsl:value-of select="$i18n_vlib/l/Serial"/></h2>
+
     <xsl:if test="/document/reference_types/reference_type/name = 'Article' and not(serial)">
-        <tr>
-            <td valign="top"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/Serial"/></td>
-            <td colspan="2">
-                <input tabindex="40" type="text" name="vlserial" size="50" value="" class="text"/>
+        <div>
+            <div id="label-serials"><label for="vlserial"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/Serial"/></label></div>
+                <input type="text" name="vlserial" size="50" value="" class="text" id="vlserial"/>
                 <xsl:text>&#160;</xsl:text>
                 <a href="javascript:openDocWindow('VLSerial')" class="doclink">(?)</a>
                 <xsl:if test="/document/context/vlserials/serial/@id">
-                    <xsl:text>&#160;</xsl:text>
-                    <input type="button" value="&lt;--" onclick="return addVLProperty( 'serial' );"/>
                     <xsl:text>&#160;</xsl:text>
                     <xsl:apply-templates select="/document/context/vlserials"/>
                 </xsl:if>
                 <xsl:if test="@id != ''">
                     <xsl:text>&#160;</xsl:text>
-                    <input type="submit" name="create_serial_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
+                    <input type="submit" name="create_serial_mapping" value="{$i18n_vlib/l/Create_mapping}" class="ui-state-default ui-corner-all fg-button"/>
                 </xsl:if>
-            </td>
-        </tr>
+        </div>
     </xsl:if>
+        <xsl:if test="/document/reference_types/reference_type/name = 'Article' and @id != '' and serial/@id">
+        <div>
+            <div class="default-label"><xsl:value-of select="$i18n_vlib/l/Currently_mapped"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/Serial"/></div>
+
+                <xsl:apply-templates select="serial" mode="edit"/>
+
+        </div>
+    </xsl:if>
+    </div>
 </xsl:template>
 
 <xsl:template name="head-create">
@@ -187,33 +232,19 @@
 </xsl:template>
 
 <xsl:template name="table-create">
-    <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0">
-        <tr>
-            <td valign="top">
-                <xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>
-            </td>
-            <td align="right" valign="top">
-                <xsl:call-template name="cancelcreateform">
-                    <xsl:with-param name="with_save">yes</xsl:with-param>
-                </xsl:call-template>
-            </td>
-        </tr>
-    </table>
+<div id="create-title">
+    <h1>
+			<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>
+			</h1>
+			</div>
 </xsl:template>
 
 <xsl:template name="table-edit">
-    <table border="0" align="center" width="98%" cellpadding="0" cellspacing="0">
-        <tr>
-            <td valign="top">
-                <xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
-            </td>
-            <td align="right" valign="top">
-                <xsl:call-template name="cancelform">
-                    <xsl:with-param name="with_save">yes</xsl:with-param>
-                </xsl:call-template>
-            </td>
-        </tr>
-    </table>
+    <div id="edit-title">
+    <h1>
+                <xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;'<!--<xsl:value-of select="title"/>--><xsl:value-of select="/document/context/object/reference_values/reference_value[property_id=1]/value"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
+            </h1>
+			</div>
 </xsl:template>
 
 <xsl:template match="authorgroup/author|editorgroup/author" mode="edit">
@@ -284,17 +315,67 @@
 
 <xsl:template match="vlauthors">
     <xsl:param name="svlauthor" select="'svlauthor'"/>
-    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="{$svlauthor}">
-        <xsl:apply-templates select="/document/context/vlauthors/author">
-            <xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
-                      order="ascending"/>
-        </xsl:apply-templates>
-    </select>
+    <a class="fg-button fg-button-icon-right ui-widget ui-corner-all ui-state-default" tabindex="0">
+			<xsl:choose>
+				<xsl:when test="$svlauthor='svlauthor'">
+					<xsl:attribute name="id">flat-authors</xsl:attribute>
+					<xsl:attribute name="href">#authors</xsl:attribute>
+					<span class="ui-icon ui-icon-triangle-1-s"/>
+			<xsl:value-of select="$i18n_vlib/l/authors"/>
+				</xsl:when>
+				<xsl:when test="$svlauthor='svleditor'">
+					<xsl:attribute name="id">flat-editors</xsl:attribute>
+					<xsl:attribute name="href">#editors</xsl:attribute>
+					<span class="ui-icon ui-icon-triangle-1-s"/>
+					<xsl:value-of select="$i18n_vlib/l/editors"/>
+				</xsl:when>
+			</xsl:choose>
+			<!--<span class="ui-icon ui-icon-triangle-1-s"/>
+			<xsl:value-of select="$i18n_vlib/l/authors"/>-->
+    </a>
+    <div class="hidden-content">
+    <xsl:choose>
+				<xsl:when test="$svlauthor='svlauthor'">
+					<xsl:attribute name="id">authors</xsl:attribute>
+				</xsl:when>
+				<xsl:when test="$svlauthor='svleditor'">
+					<xsl:attribute name="id">editors</xsl:attribute>
+				</xsl:when>
+			</xsl:choose>
+    <ul>
+				 <xsl:choose>
+					<xsl:when test="$svlauthor='svlauthor'">
+						<xsl:apply-templates select="/document/context/vlauthors/author" mode="author">						
+							<xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
+						</xsl:apply-templates>
+					</xsl:when>
+					<xsl:when test="$svlauthor='svleditor'">
+						<xsl:apply-templates select="/document/context/vlauthors/author" mode="editor">						
+							<xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
+						</xsl:apply-templates>
+					</xsl:when>
+				</xsl:choose>
+		</ul>
+    </div>
 </xsl:template>
 
-<xsl:template match="vlauthors/author">
+<xsl:template match="vlauthors/author" mode="author">
     <xsl:variable name="fullname"><xsl:call-template name="authorfullname"/></xsl:variable>
-    <option value="{$fullname}"><xsl:value-of select="$fullname"/></option>
+    <xsl:variable name="property">author</xsl:variable>
+    <li>
+					<a href="javascript:addProperty('{$property}','{$fullname}')">
+    <!--<option value="{$fullname}">--><xsl:value-of select="$fullname"/><!--</option>-->
+    </a>
+    </li>
+</xsl:template>
+<xsl:template match="vlauthors/author" mode="editor">
+    <xsl:variable name="fullname"><xsl:call-template name="authorfullname"/></xsl:variable>
+    <xsl:variable name="property">editor</xsl:variable>
+    <li>
+					<a href="javascript:addProperty('{$property}','{$fullname}')">
+    <!--<option value="{$fullname}">--><xsl:value-of select="$fullname"/><!--</option>-->
+    </a>
+    </li>
 </xsl:template>
 
 <xsl:template name="authorfullname">
@@ -303,16 +384,38 @@
 
 <xsl:template match="vlserials">
     <xsl:param name="svlserial" select="'svlserial'"/>
-    <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="{$svlserial}">
+<!--    <select name="{$svlserial}">
         <xsl:apply-templates select="/document/context/vlserials/serial">
             <xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                       order="ascending"/>
         </xsl:apply-templates>
-    </select>
+    </select>-->
+    
+    <a class="fg-button fg-button-icon-right ui-widget ui-corner-all ui-state-default" tabindex="0">
+					<xsl:attribute name="id">flat-serials</xsl:attribute>
+					<xsl:attribute name="href">#serials</xsl:attribute>
+			<span class="ui-icon ui-icon-triangle-1-s"/>
+			<xsl:value-of select="$i18n_vlib/l/Serial"/>
+    </a>
+    <div class="hidden-content">
+					<xsl:attribute name="id">serials</xsl:attribute>
+    <ul>
+						<xsl:apply-templates select="/document/context/vlserials/serial">						
+							<xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
+						</xsl:apply-templates>
+		</ul>
+    </div>
 </xsl:template>
 
 <xsl:template match="vlserials/serial">
-    <option value="{title}"><xsl:value-of select="title"/></option>
+    <!--<option value="{title}"><xsl:value-of select="title"/></option>-->
+    <xsl:variable name="title"><xsl:value-of select="title"/></xsl:variable> 
+    <xsl:variable name="property">serial</xsl:variable>
+    <li>
+					<a href="javascript:addProperty('{$property}','{$title}')">
+    <!--<option value="{$fullname}">--><xsl:value-of select="$title"/><!--</option>-->
+    </a>
+    </li>
 </xsl:template>
 
 <xsl:template name="th-size">
@@ -321,26 +424,29 @@
 
 
 <xsl:template name="tr-abstract">
-    <tr>
-        <td valign="top" colspan="3">
-            <xsl:value-of select="$i18n/l/Abstract"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Reflib.Abstract')" class="doclink">(?)</a>
-            <br />
-            <textarea tabindex="50" name="abstract" rows="5" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333  solid 1px;">
-                <xsl:apply-templates select="abstract"/>
-            </textarea>
-        </td>
-    </tr>
+		<div id="tr-abstract">
+			<div id="label-abstract">
+				<label for="input-abstract">
+					<xsl:value-of select="$i18n/l/Abstract"/>
+				</label>
+				<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('Reflib.Abstract')" class="doclink">
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/></xsl:attribute>(?)</a>
+			</div>
+			<br/>
+			<textarea id="input-abstract" name="abstract" rows="3" cols="79">
+				<xsl:apply-templates select="abstract"/>
+			</textarea>
+		</div>
 </xsl:template>
 
-<xsl:template name="head_default">
+<!--<xsl:template name="head_default">
     <head>
         <title><xsl:call-template name="title"/></title>
         <xsl:call-template name="css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
     </head>
-</xsl:template>
+</xsl:template>-->
 
 <xsl:template name="cttobject.content_length"/>
 <xsl:template name="cttobject.options.copy"/>
