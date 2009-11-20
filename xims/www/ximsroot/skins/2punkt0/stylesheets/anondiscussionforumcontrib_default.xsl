@@ -10,7 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <xsl:import href="common.xsl"/>
-    <xsl:import href="../../../stylesheets/anondiscussionforum_common.xsl"/>
+    <xsl:import href="anondiscussionforum_common.xsl"/>
 
 <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
@@ -31,15 +31,18 @@
 </xsl:template>
 
 <xsl:template name="forum">
+	<h1 id="create-title" class="small-headings">
+		<xsl:value-of select="$i18n/l/Topic"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$i18n/l/Discussionforum"/>&#160;'<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/title"/>'
+		</h1>
     <p>
         <xsl:if test="parents/object[@document_id=/document/context/object/@parent_id]/object_type_id = object_type_id">
             <xsl:value-of select="$i18n/l/In_reply_to"/>
             '<a href="{concat($xims_box,$goxims_content,$parent_path)}">
                 <xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/title"/>
             </a>'
-            <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
+            &#160;&#160;
             |
-            <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="5" height="10"/>
+            &#160;&#160;
         </xsl:if>
         <a>
             <xsl:attribute name="href">
@@ -47,11 +50,14 @@
                 <xsl:call-template name="path2topics"/>
             </xsl:attribute><xsl:value-of select="$i18n/l/Topic_overview"/>
         </a>
+        &#160;&#160;
+        |
+        &#160;&#160;
+        <a href="#reply"><xsl:value-of select="$i18n/l/reply"/></a>
     </p>
 
-    <table class="forumbox">
-        <tr>
-            <td class="forumhead">
+    <div class="forumbox">
+            <div class="forumhead">
                 <xsl:value-of select="title"/>
                 (
                 <xsl:choose>
@@ -69,34 +75,36 @@
                     </xsl:when>
                 </xsl:choose>
                 )
-            </td>
-            <td class="forumhead">
+								&#160;
                 <xsl:apply-templates select="creation_time" mode="datetime"/>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" class="forumcontent">
+            </div>
+        <div>
                 <xsl:apply-templates select="body"/>
-            </td>
-        </tr>
-    </table>
+        </div>
+    </div>
 
     <br />
-    <p>
-        <a href="#reply"><xsl:value-of select="$i18n/l/reply"/></a>
-    </p>
+
 
     <br/>
     <xsl:if test="../../objectlist/object">
         <p>
             <xsl:value-of select="$i18n/l/Previous_replies"/>:<br/>
-            <table>
+            <!--<table>-->
                 <xsl:apply-templates select="/document/objectlist/object"/>
-            </table>
+            <!--</table>-->
         </p>
     </xsl:if>
 
-    <xsl:call-template name="replyform"/>
+    <!--<xsl:call-template name="replyform"/>-->
+    <xsl:call-template name="write-topic">
+			<xsl:with-param name="reply">true</xsl:with-param>
+		</xsl:call-template>
+		<div class="cancel-save">
+						<xsl:call-template name="cancelcreateform">
+							<xsl:with-param name="with_save">yes</xsl:with-param>
+						</xsl:call-template>
+					</div>
 
 </xsl:template>
 
@@ -107,19 +115,12 @@
     <xsl:variable name="objecttype">
       <xsl:value-of select="object_type_id"/>
     </xsl:variable>
-    <tr>
-        <td>
-          <img src="{$ximsroot}images/spacer_white.gif"
-               alt="spacer"
-               width="{20*(number(@level)-ceiling(number(/document/objectlist/object/@level)))+1}"
-               height="10"
-               />
-          <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif"
-               alt=""
-               width="20"
-               height="18"
-               />
-          <a href="{$goxims_content}?id={@id}"><xsl:value-of select="title"/></a>
+               <p>
+          <a href="{$goxims_content}?id={@id}">
+						<xsl:attribute name="class">
+							sprite <xsl:value-of select="concat('sprite-list_',/document/data_formats/data_format[@id=$dataformat]/name)"/>
+						</xsl:attribute>
+          <xsl:value-of select="title"/></a>
           (<xsl:choose>
             <xsl:when test="attributes/email">
               <a href="mailto:{attributes/email}"><xsl:value-of select="attributes/author"/></a>
@@ -130,18 +131,17 @@
           </xsl:choose>
           ,
           <xsl:apply-templates select="creation_timestamp" mode="datetime"/>)
-        </td>
-        <td valign="bottom" height="25">
               <xsl:if test="/document/context/object/user_privileges/delete">
-                  <a href="{$goxims_content}?id={@id};delete_prompt=1;">
-                      <img src="{$skimages}option_delete.png" border="0" width="37" height="19" title="{$i18n/l/delete}" alt="{$i18n/l/delete}"/>
+                  &#160;<a href="{$goxims_content}?id={@id};delete_prompt=1;" class="sprite sprite-option_delete" title="{$i18n/l/delete}">
+                  <span><xsl:value-of select="$i18n/l/delete"/></span>
                   </a>
           </xsl:if>
-        </td>
-    </tr>
+          <br/>
+          
+          </p>
 </xsl:template>
 
-<xsl:template name="replyform">
+<!--<xsl:template name="replyform">
     <a name="reply"/>
     <form name="eform"
           action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib"
@@ -176,7 +176,12 @@
         <xsl:call-template name="saveaction"/>
       </p>
     </form>
-</xsl:template>
+    <div class="cancel-save">
+						<xsl:call-template name="cancelcreateform">
+							<xsl:with-param name="with_save">yes</xsl:with-param>
+						</xsl:call-template>
+					</div>
+</xsl:template>-->
 
 <xsl:template match="body">
     <xsl:call-template name="br-replace">

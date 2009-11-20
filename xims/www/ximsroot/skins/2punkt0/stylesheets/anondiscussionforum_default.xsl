@@ -8,7 +8,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="common.xsl"/>
-<xsl:import href="../../../stylesheets/anondiscussionforum_common.xsl"/>
+<xsl:import href="anondiscussionforum_common.xsl"/>
 
 <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
@@ -18,7 +18,7 @@
     <body>
         <xsl:call-template name="header"/>
         
-        <div id="main-content" class="ui-corner-all">
+        <div id="main-content">
 						<xsl:call-template name="options-menu-bar"/>
 						<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 							<div id="docbody">
@@ -35,12 +35,20 @@
         <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="get">
         <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
             <xsl:if test="user_privileges/create">
-                <input type="submit" name="create" value="{$i18n/l/Create_topic}" class="control" /><br /><br />
+                <!--<input type="submit" name="create" value="{$i18n/l/Create_topic}" class="control" /><br /><br />-->
+                <button type="submit" name="create" class="ui-state-default ui-corner-all fg-button" >
+									<xsl:value-of select="$i18n/l/Create_topic"/>
+                </button>
             </xsl:if>
         </form>
-
+			<br /><br />
+				
+				<!--<xsl:variable name="topics"><xsl:value-of select="count(children/object)"/></xsl:variable>-->
+				<xsl:if test="count(children/object)">
         <xsl:call-template name="forumtable"/>
-                        </span>
+                       
+				</xsl:if>
+				 </span>
 							</div>
            <div id="metadata-options">
 							<div id="user-metadata">
