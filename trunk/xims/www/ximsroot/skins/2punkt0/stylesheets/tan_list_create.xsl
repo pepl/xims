@@ -18,7 +18,7 @@
     <xsl:call-template name="head_default">
     <xsl:with-param name="mode">create</xsl:with-param>
     </xsl:call-template>
-    <body onload="document.eform['abstract'].value=''; document.eform.name.focus();">
+    <body onload="document.eform['abstract'].value='';">
 				<xsl:call-template name="header">
 					<xsl:with-param name="create">true</xsl:with-param>				
 				</xsl:call-template>
@@ -58,7 +58,7 @@
 
 <xsl:template name="tr-tannumber-create">
     <div id="tr-tan-number">
-        <div id="label-tan-number"><span class="compulsory"><label for="input-tan-number"><xsl:value-of select="$i18n_qn/l/TAN_number"/></label></span></div>
+        <div id="label-tan-number"><label for="input-tan-number"><xsl:value-of select="$i18n_qn/l/TAN_number"/></label> *</div>
         <input type="text" name="number" size="10" class="text" id="input-tan-number"/>
     </div>
 </xsl:template>
