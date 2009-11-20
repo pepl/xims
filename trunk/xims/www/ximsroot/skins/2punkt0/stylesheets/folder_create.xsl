@@ -17,7 +17,7 @@
     <xsl:call-template name="head_default">
 			<xsl:with-param name="mode">create</xsl:with-param>
     </xsl:call-template>
-    <body onload="document.eform.name.focus()">
+    <body>
 				<xsl:call-template name="header">
 					<xsl:with-param name="create">true</xsl:with-param>				
 				</xsl:call-template>

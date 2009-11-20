@@ -52,7 +52,7 @@
 						</xsl:call-template>
 					</div>
         </div>
-        <xsl:call-template name="script_bottom"/>
+        
     </body>
 </html>
 </xsl:template>

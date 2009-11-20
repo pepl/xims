@@ -37,7 +37,7 @@
 					</form>
 				</div>
 					<div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
+						<xsl:call-template name="cancelform">
 							<xsl:with-param name="with_save">yes</xsl:with-param>
 						</xsl:call-template>
 					</div>

@@ -47,6 +47,7 @@
                             <xsl:call-template name="prettyprint">
                                 <xsl:with-param name="ppmethod">prettyprintxml</xsl:with-param>
                             </xsl:call-template>
+                            &#160;
                        </div>
                     <xsl:call-template name="tr-stylesheet-edit"/>
                     <xsl:call-template name="tr-schema-edit"/>
@@ -68,7 +69,7 @@
 						</xsl:call-template>
 					</div>
         </div>
-        <xsl:call-template name="script_bottom"/>
+        <!--<xsl:call-template name="script_bottom"/>-->
     </body>
 </html>
 </xsl:template>
