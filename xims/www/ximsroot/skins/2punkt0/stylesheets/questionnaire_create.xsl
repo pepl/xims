@@ -18,7 +18,7 @@
     <xsl:call-template name="head_default">
 			<xsl:with-param name="mode">create</xsl:with-param>
     </xsl:call-template>
-    <body onload="document.eform['abstract'].value=''; document.eform.name.focus();">
+    <body onload="document.eform['abstract'].value='';">
       	<xsl:call-template name="header">
 					<xsl:with-param name="create">true</xsl:with-param>
       	</xsl:call-template>
@@ -35,9 +35,10 @@
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" id="create-edit-form">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
 
-                    <xsl:call-template name="tr-location-create"/>
-                    <!--<xsl:call-template name="tr-questionnaire-create"/>-->
-                     <xsl:call-template name="questionnaire_title_edit" />
+									<xsl:call-template name="tr-locationtitle-create"/>
+                    <!--<xsl:call-template name="tr-location-create"/>
+                    --><!--<xsl:call-template name="tr-questionnaire-create"/>--><!--
+                     <xsl:call-template name="questionnaire_title_edit" />-->
 										<xsl:call-template name="questionnaire_comment_edit" />
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-abstract-create"/>
