@@ -75,7 +75,7 @@
 		<!-- begin toc -->
 		<div class="toc">
 			<a name="toc">
-				<h2>Table of Contents</h2>
+				<h2><xsl:value-of select="$i18n/l/TableOfContents"/></h2>
 			</a>
 			<xsl:apply-templates select="($docbookroot/article/section)" mode="toc"/>
 		</div>
