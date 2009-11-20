@@ -15,19 +15,7 @@
 			<xsl:call-template name="head_default">
 				<xsl:with-param name="mode">delete</xsl:with-param>
 			</xsl:call-template>
-			<!--<head>
-				<title>
-                Löschen von <xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' bestätigen - XIMS
-            </title>
-				<xsl:call-template name="css">
-					<xsl:with-param name="jquery-ui-smoothness">true</xsl:with-param>
-					<xsl:with-param name="fg-menu">true</xsl:with-param>
-				</xsl:call-template>
-				<xsl:call-template name="script_head">
-					<xsl:with-param name="jquery">true</xsl:with-param>
-					<xsl:with-param name="fg-menu">true</xsl:with-param>
-				</xsl:call-template>
-			</head>-->
+
 			<body>
 				<xsl:call-template name="header">
 					<!--<xsl:with-param name="noncontent">true</xsl:with-param>
@@ -35,21 +23,18 @@
 				</xsl:call-template>
 				<div id="content-container">
 					<form name="objectdeletion" action="{$xims_box}{$goxims_content}" method="get">
-						<h1 class="bluebg">Löschen des Objekts bestätigen</h1>
-						<p>
-                      Sie sind dabei das Objekt '<xsl:value-of select="title"/>' zu löschen.
-                  </p>
-						<p>
-							<strong>Dies ist eine <em>endgültige</em> Aktion und kann nicht rückgängig gemacht werden!</strong>
-						</p>
-						<p>
-                      Klicken Sie auf 'Bestätigen' um fortzufahren, oder auf 'Abbrechen' um zurück zur vorigen Seite zu gelangen.
-                  </p>
+						<h1 class="bluebg"><xsl:value-of select="$i18n/l/DeleteConfirm"/></h1>
+						<p><xsl:value-of select="$i18n/l/AboutDeletion1"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/AboutDeletion2"/></p>
+						<p><strong><xsl:value-of select="$i18n/l/WarnNoUndo"/></strong></p>
+						<p><xsl:value-of select="$i18n/l/ClickCancelConf"/></p>
 						<div id="confirm-buttons">
-							<input class="ui-state-default ui-corner-all fg-button" name="delete" type="submit" value="Bestätigen"/>
+							<input class="ui-state-default ui-corner-all fg-button" name="delete" type="submit">
+							<xsl:attribute name="value"><xsl:value-of select="$i18n/l/Confirm"/></xsl:attribute>
+							</input>
 							<input name="id" type="hidden" value="{$id}"/>
                         &#160;
-                        <input type="button" value="Abbrechen" class="ui-state-default ui-corner-all fg-button" name="default" onclick="javascript:history.go(-1)"/>
+                        <input type="button" class="ui-state-default ui-corner-all fg-button" name="default" onclick="javascript:history.go(-1)">
+                        <xsl:attribute name="value"><xsl:value-of select="$i18n/l/cancel"/></xsl:attribute></input>
 						</div>
 					</form>
 				</div>
