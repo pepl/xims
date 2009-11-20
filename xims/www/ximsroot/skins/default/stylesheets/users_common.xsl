@@ -21,8 +21,6 @@
 
 <xsl:variable name="i18n_users" select="document(concat($currentuilanguage,'/i18n_users.xml'))"/>
 
-<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-
 <xsl:template name="head_default">
     <head>
         <title><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of select="$i18n/l/Users"/>/<xsl:value-of select="$i18n/l/Roles"/> - XIMS</title>
@@ -41,9 +39,9 @@
 <xsl:template match="userlist">
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <!-- begin app sort order by nav -->
-      <tr background="{$skimages}generic_tablebg_1x20.png">
-        <td background="{$skimages}generic_tablebg_1x20.png" width="20">&#160;</td>
-        <td background="{$skimages}generic_tablebg_1x20.png">
+      <tr style="background:url('{$skimages}generic_tablebg_1x20.png');">
+        <td width="20">&#160;</td>
+        <td>
           <xsl:choose>
             <xsl:when test="$sort-by='id'">
               <a href="{$xims_box}{$goxims_users}?sort-by=id;order-by={$order-by-opposite};userquery={$userquery}">ID</a>
@@ -53,7 +51,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
-        <td background="{$skimages}generic_tablebg_1x20.png">
+        <td>
           <xsl:choose>
             <xsl:when test="$sort-by='name'">
               <a href="{$xims_box}{$goxims_users}?sort-by=name;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n/l/Username"/></a>
@@ -63,7 +61,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
-        <td background="{$skimages}generic_tablebg_1x20.png">
+        <td>
           <xsl:choose>
             <xsl:when test="$sort-by='lastname'">
               <a href="{$xims_box}{$goxims_users}?sort-by=lastname;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Lastname"/></a>
@@ -73,7 +71,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
-        <td background="{$skimages}generic_tablebg_1x20.png">
+        <td>
           <xsl:choose>
             <xsl:when test="$sort-by='system_privs_mask'">
               <a href="{$xims_box}{$goxims_users}?sort-by=system_privs_mask;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/System_privileges"/></a>
@@ -83,7 +81,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
-        <td background="{$skimages}generic_tablebg_1x20.png">
+        <td>
           <xsl:choose>
             <xsl:when test="$sort-by='admin'">
               <a href="{$xims_box}{$goxims_users}?sort-by=admin;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Administrator"/></a>
@@ -93,7 +91,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
-        <td background="{$skimages}generic_tablebg_1x20.png">
+        <td>
           <xsl:choose>
             <xsl:when test="$sort-by='enabled'">
               <a href="{$xims_box}{$goxims_users}?sort-by=enabled;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n/l/Account_status"/></a>
@@ -103,7 +101,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </td>
-        <td background="{$skimages}generic_tablebg_1x20.png" width="500">
+        <td width="500">
           <xsl:value-of select="$i18n/l/Options"/>
         </td>
       </tr>
@@ -227,7 +225,7 @@
 </xsl:template>
 
 <xsl:template match="user">
-  <tr>
+  <tr class="objrow">
    <!-- user/role bgcolor -->
    <xsl:if test="object_type='1'">
      <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
@@ -281,7 +279,7 @@
     <tr bgcolor="#eeeeee">
         <td align="center">
             <div>
-                <form name="userfilter" style="margin: 0">
+                <form name="userfilter" style="margin: 0" action="">
                     <a href="{$xims_box}{$goxims_users}?create=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Create_account"/></a>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n_users/l/update_existing_account"/>:
                     <input name="userquery" type="text">
                         <xsl:attribute name="value">
@@ -293,8 +291,7 @@
                     </input>
                     <input type="submit"
                      class="control"
-                     value="{$i18n/l/lookup}"
-                    />
+                     value="{$i18n/l/lookup}"/>
                 </form>
             </div>
         </td>

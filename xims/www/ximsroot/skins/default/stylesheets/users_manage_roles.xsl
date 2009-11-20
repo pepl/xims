@@ -21,6 +21,7 @@
                 <xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>' - XIMS
             </title>
             <xsl:call-template name="css"/>
+            <xsl:call-template name="script_head"/>
         </head>
         <body>
         <xsl:call-template name="header">
@@ -28,7 +29,7 @@
         </xsl:call-template>
 
         <br/>
-        <table align="center" colspan="2" cellpadding="2" cellspacing="0" border="0">
+        <table align="center" cellpadding="2" cellspacing="0" border="0">
           <tr>
             <td align="center" class="bluebg"><xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'</td>
           </tr>
@@ -50,6 +51,17 @@
         <br/><br/>
         <xsl:apply-templates select="userlist"/>
         <xsl:call-template name="script_bottom"/>
+        <xsl:comment>[if lte IE 6]&gt;
+                    &lt;script type="text/javascript"&gt;
+                         $(function() {
+                             $('.objrow').hover(function(){
+                                 $(this).children('td').addClass('objrow-over');
+                             }, function() {
+                                $(this).children('td').removeClass('objrow-over');
+                             });
+                         });
+                     &lt;/script&gt;
+                 &lt;![endif]</xsl:comment>
         </body>
     </html>
 

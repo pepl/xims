@@ -103,8 +103,11 @@
                     />
                 </select>
                 <xsl:text>&#160;</xsl:text>
-                <input type="image" name="addpriv" src="{$sklangimages}create.png" width="65"
-                    height="14" alt="{$i18n/l/Create}" title="{$i18n/l/Create}" border="0"/>
+                <input type="image" 
+                       name="addpriv" 
+                       src="{$sklangimages}create.png"
+                       alt="{$i18n/l/Create}" 
+                       title="{$i18n/l/Create}" />
                 <input name="objecttypeprivs" type="hidden" value="1"/>
                 <input name="name" type="hidden" value="{$name}"/>
                 <input name="sort-by" type="hidden" value="{$sort-by}"/>
