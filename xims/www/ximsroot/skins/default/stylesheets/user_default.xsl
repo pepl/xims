@@ -26,11 +26,11 @@
 
 <xsl:template match="object">
     <tr>
-        <td><xsl:call-template name="cttobject.dataformat"/></td>
-        <td><xsl:call-template name="cttobject.locationtitle"><xsl:with-param name="link_to_id" select="true()"/></xsl:call-template></td>
+        <td class="ctt_df"><xsl:call-template name="cttobject.dataformat"/></td>
+        <td class="ctt_loctitle"><xsl:call-template name="cttobject.locationtitle"><xsl:with-param name="link_to_id" select="true()"/></xsl:call-template></td>
         <td class="ctt_lm"><xsl:call-template name="cttobject.last_modified"/> </td>
     </tr>
-</xsl:template>
+</xsl:template> 
 
 <xsl:template match="bookmark">
     <li>

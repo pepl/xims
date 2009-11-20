@@ -300,7 +300,7 @@ tr.objrow {
 /* sprite icons */
 .sprite, .sprite-list {
     background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
-    display: inline-block;
+    text-decoration: none;
 }
 
 .sprite span, .sprite-list span{
@@ -311,8 +311,9 @@ tr.objrow {
 }
 
 .sprite {
-    padding: 0px 0px 0px 20px;
+    padding: 1px 0px 0px 20px;
     margin-left: 0px;
+    display: inline-block;
     text-decoration: none;
 }
 .sprite-list {
@@ -434,9 +435,6 @@ tr.objrow {
 .sprite-list_PNG {
     background-position: -37px -0px;
 }
-.sprite-list_Portlet {
-    background-position: -37px -378px;
-}
 .sprite-list_PPT {
     background-position: -37px -414px;
 }
@@ -455,7 +453,7 @@ tr.objrow {
 .sprite-list_SiteRoot {
     background-position: -37px -126px;
 }
-.sprite-list_SymbolicLink {
+.sprite-list_SymbolicLink, .sprite-list_Portlet, .sprite-list_Bookmark {
     background-position: -37px -378px;
 }
 .sprite-list_TAN_List {
