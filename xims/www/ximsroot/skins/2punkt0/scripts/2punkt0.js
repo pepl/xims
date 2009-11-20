@@ -14,167 +14,130 @@ function trim(str){
 }
 
 function setARIARoles(){
-    $('#titlelogo').attr('role', 'menubar')
-    $('#create').attr('role', 'menu');
+    $('#menu-bar').attr('role', 'menubar');
+    /*
+	$('#create').attr('role', 'menu');
     $('#create').attr('aria-expanded', false);
     $('#create li').attr('role', 'menuitem');
-    $('#help').attr('role', 'menu');
-    $('#help').attr('aria-expanded', false);
-    $('#help li').attr('role', 'menuitem');
-    $('#menu').attr('role', 'menu');
-    $('#menu').attr('aria-expanded', false);
-    $('#menu li').attr('role', 'menuitem');
-    $('#subheader img').attr('role', 'button');
-    $('.hidden').attr('aria-hidden', true);
-    $(':hidden').attr('aria-hidden', true);
+	*/
+	$('#create-widget').attr('role', 'menu');
+    $('#create-widget').attr('aria-expanded', false);
+    $('#create-widget li').attr('role', 'menuitem');
+	
+    $('#help-widget').attr('role', 'menu');
+    $('#help-widget').attr('aria-expanded', false);
+    $('#help-widget li').attr('role', 'menuitem');
+	
+    $('#menu-widget').attr('role', 'menu');
+    $('#menu-widget').attr('aria-expanded', false);
+    $('#menu-widget li').attr('role', 'menuitem');
+	
+	$('#flat-authors').attr('role', 'menu');
+    $('#flat-authorst').attr('aria-expanded', false);
+    $('#flat-authors li').attr('role', 'menuitem');
+	
+	
+    $('#menu-bar img').attr('role', 'button');
+    //$('.hidden').attr('aria-hidden', true);
+	//$('.hidden-content').attr('aria-hidden', true);
+    //$(':hidden').attr('aria-hidden', true);
     $('.popuplink').attr('aria-haspopup', true);
     $("a[target='_blank']").attr('aria-haspopup', true);
 }
 
-function initCreateMenu(){
-    // BUTTONS
-    $('.create-widget.fg-button').focus(function(){
-        $(this).removeClass('ui-state-default').addClass('ui-state-focus');
-    });
-    // MENU               
+function initCreateMenu(){        
     $('.create-widget.flyout').menu({
         content: $('.create-widget.flyout').next().html(),
+		maxHeight: 300,
+		directionH: 'right', //horizontal direction in which the menu will open, to the right or left
+		directionV: 'down',	//vertical direction in which the menu will open, up or down
+		detectH: false, // horizontal collision detection
+		detectV: false, // vertical collision detection
         flyOut: true
     });
 }
 
-function initHelpMenu(){
-    // BUTTONS
-    $('.help-widget.fg-button').focus(function(){
-        $(this).removeClass('ui-state-default').addClass('ui-state-focus');
-    });
-    // MENU               
+function initHelpMenu(){             
     $('.help-widget.flyout').menu({
         content: $('.help-widget.flyout').next().html(),
         flyOut: true
     });
 }
 
-function initMenuMenu(){
-    // BUTTONS
-    $('.menu-widget.fg-button').focus(function(){
-        $(this).removeClass('ui-state-default').addClass('ui-state-focus');
-    });
-    // MENU               
+function initMenuMenu(){            
     $('.menu-widget.flyout').menu({
         content: $('.menu-widget.flyout').next().html(),
         flyOut: true
     });
 }
-
-function initTabs(){
-    $("#tabs").tabs().find(".ui-tabs-nav").sortable({
-        axis: 'x'
-    });
+function initAuthorsDD(){
+	$('#flat-authors').menu({
+		content: $('#flat-authors').next().html(), // grab content from this page
+	}); 
+}
+function initEditorsDD(){
+	$('#flat-editors').menu({
+		content: $('#flat-editors').next().html(), // grab content from this page
+	}); 
+}
+function initSerialsDD(){
+	$('#flat-serials').menu({
+		content: $('#flat-serials').next().html(), // grab content from this page
+	}); 
 }
 
-function initObjTable(){
-    $.fn.dataTableExt.oSort['date-euro-asc'] = function(a, b){
-        a = a.replace(/&lt;(.|\n)*?&gt;/g, "").toLowerCase();
-        b = b.replace(/&lt;(.|\n)*?&gt;/g, "").toLowerCase();
-        if (trim(a) != '') {
-            var frDatea = trim(a).split(' ');
-            var frTimea = frDatea[1].split(':');
-            var frDatea2 = frDatea[0].split('.');
-            var x = (frDatea2[2] + frDatea2[1] + frDatea2[0] + frTimea[0] + frTimea[1]) * 1;
-        }
-        else {
-            var x = 10000000000000; // = l'an 1000 ...
-        }
-        
-        if (trim(b) != '') {
-            var frDateb = trim(b).split(' ');
-            var frTimeb = frDateb[1].split(':');
-            frDateb = frDateb[0].split('.');
-            var y = (frDateb[2] + frDateb[1] + frDateb[0] + frTimeb[0] + frTimeb[1]) * 1;
-        }
-        else {
-            var y = 10000000000000;
-        }
-        var z = ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        return z;
-    };
-    
-    $.fn.dataTableExt.oSort['date-euro-desc'] = function(a, b){
-        a = a.replace(/&lt;(.|\n)*?&gt;/g, "").toLowerCase();
-        b = b.replace(/&lt;(.|\n)*?&gt;/g, "").toLowerCase();
-        if (trim(a) != '') {
-            var frDatea = trim(a).split(' ');
-            var frTimea = frDatea[1].split(':');
-            var frDatea2 = frDatea[0].split('.');
-            var x = (frDatea2[2] + frDatea2[1] + frDatea2[0] + frTimea[0] + frTimea[1]) * 1;
-        }
-        else {
-            var x = 10000000000000;
-        }
-        
-        if (trim(b) != '') {
-            var frDateb = trim(b).split(' ');
-            var frTimeb = frDateb[1].split(':');
-            frDateb = frDateb[0].split('.');
-            var y = (frDateb[2] + frDateb[1] + frDateb[0] + frTimeb[0] + frTimeb[1]) * 1;
-        }
-        else {
-            var y = 10000000000000;
-        }
-        var z = ((x < y) ? 1 : ((x > y) ? -1 : 0));
-        return z;
-    };
-    
-    /*
-     * html sorting (ignore html tags)
-     */
-    $.fn.dataTableExt.oSort['html-string-asc'] = function(a, b){
-        var x = a.replace(/&lt;(.|\n)*?&gt;/g, "").toLowerCase();
-        var y = b.replace(/&lt;(.|\n)*?&gt;/g, "").toLowerCase();
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    };
-    
-    $.fn.dataTableExt.oSort['html-string-desc'] = function(a, b){
-        var x = a.replace(/&lt;(.|\n)*?&gt;/g, "").toLowerCase();
-        var y = b.replace(/&lt;(.|\n)*?&gt;/g, "").toLowerCase();
-        return ((x < y) ? 1 : ((x > y) ? -1 : 0));
-    };
-    //TABLE
-    oTable = $('#obj-table').dataTable({
-        "sDom": '<"top"lf><"thetable"rt><"bottom"ip>',
-        "sPaginationType": "full_numbers",
-        "bLengthChange": true,
-        "bStateSave": true,
-        "bProcessing": true,
-        "bAutoWidth": false,
-        "aaSorting": [[4, "asc"]],
-        "oLanguage": {
-            "sUrl": langloc
-        },
-        "fnDrawCallback": function(){ //set arrows
-            $('th.sorting a').find('span').attr('class', 'ui-icon ui-icon-triangle-2-n-s');
-            $('th.sorting_asc a').find('span').attr('class', 'ui-icon ui-icon-triangle-1-n');
-            $('th.sorting_desc a').find('span').attr('class', 'ui-icon ui-icon-triangle-1-s');
-        },
-        "aoColumns": [{
-            "bSortable": false
-        }, null, //{ "sType": "numeric" },
-        {
-            "bSortable": false
-        }, {
-            "sType": "html-string"
-        }, {
-            "sType": "date-euro"
-        }, {
-            "bSortable": false
-        }, //
-        {
-            "bSortable": false
-        }, ]
-    });
-    
+function addProperty( property, fullname ) {
+    original = eval( "document.eform.vl" + property );
+    newvalue = fullname;
+    if ( original.value.length > 0 ) {
+        values = original.value.split(';');
+        values.push(newvalue);
+        original.value = values.join(';');
+    }
+    else {
+        original.value = newvalue;
+    }
 }
+
+
+function initPropDescription(property){
+	var pos = findPos($(property).prev());
+	var inputfield = property.substr(property.indexOf('_')+1);
+	inputfield = 'input-'+inputfield; 
+	var offset = document.getElementById(inputfield).offsetWidth;
+	$(property).css('left',pos[0]+offset+10);
+	$(property).css('top',pos[1]);
+	$(property).css('display', 'block');
+}
+function destroyInfoBox(self){
+	$(self).css('display', 'none');
+}
+function initAuthDescription(auth_desc, inputfield){
+	var neighbour = $(auth_desc).prev();
+	while (neighbour && (neighbour.type == 'hidden' || neighbour.hasClass('hidden-content'))){
+		neighbour = neighbour.prev();
+	}
+	var pos = findPos(neighbour);
+	var offset = getTotalWidth(neighbour); 
+
+	$(auth_desc).css('left',pos[0]+offset+10);
+	$(auth_desc).css('top',pos[1]);
+	$(auth_desc).css('display', 'block');
+}
+
+function getTotalWidth(obj){
+	return obj.width() + 
+		parseInt(obj.css('margin-left').replace("px", "")) + 
+		parseInt(obj.css('margin-right').replace("px", "")) + 
+		parseInt(obj.css('padding-left').replace("px", "")) + 
+		parseInt(obj.css('padding-right').replace("px", ""));
+	
+}
+
+function findPos(obj) {    
+        var position = $(obj).offset();
+	    return [position.left, position.top];
+	}
 
 $(document).ready(function(){
     setARIARoles();
@@ -182,82 +145,33 @@ $(document).ready(function(){
     initCreateMenu();
     initHelpMenu();
     initMenuMenu();
-	$('.help-widget, .create-widget, .menu-widget').css('display', 'block');
-    initfgButtons();
-    //inituiDatepicker();
-    var calendarIcon = imageFolder + 'calendar.gif';
-    $.datepicker.setDefaults($.datepicker.regional['de']);
-    
-    $('#input-validfrom').datepicker({
-        showOn: 'button',
-        buttonImage: calendarIcon,
-        buttonText: calendarSelector,
-        buttonImageOnly: true,
-        showMonthAfterYear: false,
-        dateFormat: 'DD, d MM, yy'
-    });
-    
-    $('#input-validto').datepicker({
-        showOn: 'button',
-        buttonImage: calendarIcon,
-        buttonText: calendarSelector,
-        buttonImageOnly: true,
-        showMonthAfterYear: false,
-        dateFormat: 'DD, d MM, yy'
-    });
-    $('#input-validfrom').next('img').attr('role', 'aria-button');
-    $('#input-validto').next('img').attr('role', 'aria-button');
-    
-    initAccordion();
-    
-    //initTabs();
-    //initObjTable();
+	initAuthorsDD();
+	initEditorsDD();
+	initSerialsDD();
+	
+	$('#help-widget, #create-widget, #menu-widget').css('display', 'inline-block');
+	$('.fg-button').focus(
+		function(){ $(this).removeClass('ui-state-default').addClass('ui-state-focus'); }
+		//,
+		//function(){ $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
+	);
+	$('.fg-button').hover(
+		function(){ $(this).removeClass('ui-state-default').addClass('ui-state-focus'); },
+		function(){ $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
+	); 
+
     //IE hack							
     jQuery.each(jQuery.browser, function(i){
         if ($.browser.msie) {
         }
     });
-    $(':hidden').attr('display', '');
-    $(':hidden').attr('position', 'absolute');
-    $(':hidden').attr('left', '-10000px');
     
 });
-function initfgButtons(){
-
-    $("button.fg-button").focus(function(){
-        $(this).addClass("ui-state-hover");
-    });
-}
-
-function inituiDatepicker(){
-    $.datepicker.setDefaults($.datepicker.regional['de']);
-    $('.hasDatepicker').datepicker({
-        showOn: 'button',
-        buttonImage: 'http://testlx1.uibk.ac.at/ximsroot/skins/default/images/calendar.gif',
-        buttonImageOnly: true,
-        showMonthAfterYear: false
-    });
-    
-}
-
-function initAccordion(){
-	$("#accordion").accordion({
-		autoHeight: false,
-		collapsible: true
-
-	});
-/*
-        $('#accordion .head').click(function(){
-            $(this).next().toggle('blind');
-            return false;
-        }).next().hide();
-*/
-}
 
     function getXMLHTTPObject() {
         var xmlhttp=false;
         /*@cc_on @*/
-        /*@if (@_jscript_version &gt;= 5)
+        /*@if (@_jscript_version >= 5)
         // JScript gives us Conditional compilation, we can cope with old IE versions.
         // and security blocked creation of the objects.
         try {
@@ -280,7 +194,6 @@ function initAccordion(){
 	
 	function wfcheck() {
             var xmlhttp = getXMLHTTPObject();
-            //var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?test_wellformedness=1')"/>";
             xmlhttp.open("post",url,true);
             xmlhttp.onreadystatechange=function() {
                 if (xmlhttp.readyState==4) {
@@ -303,7 +216,6 @@ function initAccordion(){
 		
 function prettyprint() {
             var xmlhttp = getXMLHTTPObject();
-            //var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?', $ppmethod, '=1')"/>";
             xmlhttp.open("post",url,true);
             xmlhttp.onreadystatechange=function() {
                 if (xmlhttp.readyState==4) {
@@ -320,7 +232,7 @@ function prettyprint() {
                 'Content-Type',
                 'application/x-www-form-urlencoded; charset=UTF-8'
             );
-            xmlhttp.send('<xsl:value-of select="$ppmethod"/>=1&amp;body='+encodeURIComponent(document.eform.body.value));
+            xmlhttp.send(ppmethod+'=1&body='+encodeURIComponent(document.eform.body.value));
             return false;
         }
 
@@ -331,5 +243,20 @@ function prettyprint() {
         var subStr = str.substring(fromPos, str.length);
         return(subStr.substring(0, subStr.indexOf(";")));
     }
+
+function object_type_filter(){
+	var inputs = document.getElementsByTagName("input");
+    var re = new RegExp("filter_ot_");
+    var el;
+    for (var i = inputs.length - 1; i > 0; --i ) {
+    	re.test(inputs[i].name);
+        if (RegExp.rightContext.length > 0) {
+        	el = document.getElementById("ot_" + RegExp.rightContext)
+            if ( el )
+            	el.checked = 1;
+         }
+	}
+}
+
 
  
