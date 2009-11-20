@@ -283,6 +283,7 @@
 <YouAreIn>You are in: </YouAreIn>
 <Menu>Menu</Menu>
 <Editor>Editor</Editor>
+<RSSFeed>RSS Feed</RSSFeed>
 <UnzipContents>Unzip Contents</UnzipContents>
 <OverwriteUnzip>Overwrite existing objects when unzipping</OverwriteUnzip>
 <Documentation>Documentation</Documentation>
@@ -319,4 +320,68 @@
 <Objecttype>Objecttype</Objecttype>
 <update>update</update>
 <NoBMs>No Bookmarks created.</NoBMs>
+<Import>Import</Import>
+<DeleteConfirm>Confirm Object Deletion</DeleteConfirm>
+<AboutDeletion1>You are about to delete the object</AboutDeletion1>
+<AboutDeletion2>from the system.</AboutDeletion2>
+<WarnNoUndo>This is a permanent action that cannot be undone!</WarnNoUndo>
+<ClickCancelConf>Click 'Confirm' to continue, or 'Cancel' to return to the previous screen.</ClickCancelConf>
+<Confirm>Confirm</Confirm>
+<isCurrently>currently</isCurrently>
+<NOT>NOT</NOT>
+<ObjectHasDependencies>The object has the following dependencies that you do not have the correct permissions to publish</ObjectHasDependencies>
+<ObjSkipping>These objects will be skipped during publishing.</ObjSkipping>
+<HasAutoindex>The autoindex-option is set for this container.</HasAutoindex>
+<!-- start reflib / vlib-->
+<Assign>Assign</Assign>
+<Insert>Insert</Insert>
+<CreateRef>New Reference</CreateRef>
+<ViewCit>View Citations</ViewCit>
+<ExpMODS>Export MODS file</ExpMODS>
+<ImportItem>Import item into</ImportItem>
+<ImportFromFile>import references from file</ImportFromFile>
+<rl_title>Title</rl_title>
+<rl_btitle>Book title</rl_btitle>
+<rl_date>Date of publication.</rl_date>
+<rl_chron>Chronology </rl_chron>
+<rl_ssn>Season</rl_ssn>
+<rl_quarter>Quarter</rl_quarter>
+<rl_volume>Volume designation</rl_volume>
+<rl_part>Part</rl_part>
+<rl_issue>Issue</rl_issue>
+<rl_spage>Starting page number</rl_spage>
+<rl_epage>Ending page number</rl_epage>
+<rl_pages>Pages</rl_pages>
+<rl_artnum>Article number</rl_artnum>
+<rl_isbn>ISBN</rl_isbn>
+<rl_coden>CODEN</rl_coden>
+<rl_sici>SICI</rl_sici>
+<rl_place>Place of publication</rl_place>
+<rl_pub>Publisher name</rl_pub>
+<rl_edition>Statement of the edition</rl_edition>
+<rl_tpages>Total pages</rl_tpages>
+<rl_series>Title of a series</rl_series>
+<rl_issn>ISSN</rl_issn>
+<rl_bici>BICI</rl_bici>
+<rl_co>Country of publication</rl_co>
+<rl_inst>Institution that issued the disseration</rl_inst>
+<rl_advisor>Disseration advisor</rl_advisor>
+<rl_degree>Degree conferred</rl_degree>
+<rl_identifier>Identifier</rl_identifier>
+<rl_status>Status</rl_status>
+<rl_conf_venu>Conference venue</rl_conf_venu>
+<rl_conf_date>Date of the conference</rl_conf_date>
+<rl_conf_title>Title of the conference</rl_conf_title>
+<rl_conf_sponsor>Conference sponsor</rl_conf_sponsor>
+<rl_conf_url>URL of the conference webpage</rl_conf_url>
+<rl_url>URL of the resource</rl_url>
+<rl_access_timestamp>Last access time (URL)</rl_access_timestamp>
+<rl_citekey>Citation Key</rl_citekey>
+<rl_url2>Alternative URL of the resource</rl_url2>
+<rl_citekey>Citation Key</rl_citekey>
+<rl_workgroup>Workgroup</rl_workgroup>
+<rl_project>Project(s)</rl_project>
+<rl_quality_criterion>Quality criterion</rl_quality_criterion>
+
+<!-- end reflib / vlib-->
 </l>

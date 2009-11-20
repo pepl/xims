@@ -290,6 +290,7 @@
 <YouAreIn>Sie befinden sich in: </YouAreIn>
 <Menu>Menu</Menu>
 <Editor>Editor</Editor>
+<RSSFeed>RSS-Feed</RSSFeed>
 <UnzipContents>Inhalte entpacken</UnzipContents>
 <OverwriteUnzip>Überschreibe vorhandene Dateien beim entpacken</OverwriteUnzip>
 <Documentation>Dokumentation</Documentation>
@@ -326,4 +327,79 @@
 <Objecttype>Objekttyp</Objecttype>
 <update>aktualisieren</update>
 <NoBMs>Keine Lesezeichen erstellt.</NoBMs>
+<Import>Importieren</Import>
+<DeleteConfirm>Löschen des Objekts bestätigen</DeleteConfirm>
+<AboutDeletion1>Sie sind dabei das Objekt</AboutDeletion1>
+<AboutDeletion2>zu löschen.</AboutDeletion2>
+<WarnNoUndo>Dies ist eine endgültige Aktion und kann nicht rückgängig gemacht werden!</WarnNoUndo>
+<ClickCancelConf>Klicken Sie auf 'Bestätigen' um fortzufahren, oder 'Abbrechen' um zur vorigen Seite zu gelangen.</ClickCancelConf>
+<Confirm>Bestätigen</Confirm>
+<isCurrently>ist derzeit</isCurrently>
+<NOT>NICHT</NOT>
+<ObjectHasDependencies>Das Objekt hat folgenden Abhängigkeiten und Sie haben daher nicht die erforderlichen Rechte zum Veröffentlichen des Objekts</ObjectHasDependencies>
+<ObjSkipping>Diese Objekte werden während des Veröffentlichens übersprungen.</ObjSkipping>
+<HasAutoindex>Die Autoindexoption ist für diesen Container gesetzt.</HasAutoindex>
+<!-- start reflib / vlib-->
+<Assign>Zuweisen</Assign>
+<Insert>Einfügen</Insert>
+<CreateRef>Neue Referenz</CreateRef>
+<ViewCit>Zeige Referenzen</ViewCit>
+<ExpMODS>Exportiere MODS Datei</ExpMODS>
+<ImportItem>Importiere Eintrag nach</ImportItem>
+<ImportFromFile>importiere Eintrag aus Datei</ImportFromFile>
+<!--<rl_title>Titel</rl_title>
+<rl_date>Datum der Veröffentlichung</rl_date>
+<rl_conf_title>Titel der Konderenz</rl_conf_title>
+<rl_conf_sponsor>Sponsor der Konferenz</rl_conf_sponsor>
+<rl_conf_url>URL der Konferenz</rl_conf_url>
+<rl_url>URL der Quelle</rl_url>
+<rl_url2>Alternative URL der Quelle</rl_url2>
+<rl_citekey>Verweisschlüssel (Citation Key)</rl_citekey>
+<rl_access_timestamp>Letzter Zugriff (URL)</rl_access_timestamp>
+<rl_workgroup>Arbeitsgruppe</rl_workgroup>
+<rl_project>Projekt(e)</rl_project>
+<rl_quality_criterion>Qualitätskriterium</rl_quality_criterion>-->
+<rl_title>Title</rl_title>
+<rl_btitle>Book title</rl_btitle>
+<rl_date>Date of publication.</rl_date>
+<rl_chron>Chronology </rl_chron>
+<rl_ssn>Season</rl_ssn>
+<rl_quarter>Quarter</rl_quarter>
+<rl_volume>Volume designation</rl_volume>
+<rl_part>Part</rl_part>
+<rl_issue>Issue</rl_issue>
+<rl_spage>Starting page number</rl_spage>
+<rl_epage>Ending page number</rl_epage>
+<rl_pages>Pages</rl_pages>
+<rl_artnum>Article number</rl_artnum>
+<rl_isbn>ISBN</rl_isbn>
+<rl_coden>CODEN</rl_coden>
+<rl_sici>SICI</rl_sici>
+<rl_place>Place of publication</rl_place>
+<rl_pub>Publisher name</rl_pub>
+<rl_edition>Statement of the edition</rl_edition>
+<rl_tpages>Total pages</rl_tpages>
+<rl_series>Title of a series</rl_series>
+<rl_issn>ISSN</rl_issn>
+<rl_bici>BICI</rl_bici>
+<rl_co>Country of publication</rl_co>
+<rl_inst>Institution that issued the disseration</rl_inst>
+<rl_advisor>Disseration advisor</rl_advisor>
+<rl_degree>Degree conferred</rl_degree>
+<rl_identifier>Identifier</rl_identifier>
+<rl_status>Status</rl_status>
+<rl_conf_venu>Conference venue</rl_conf_venu>
+<rl_conf_date>Date of the conference</rl_conf_date>
+<rl_conf_title>Title of the conference</rl_conf_title>
+<rl_conf_sponsor>Conference sponsor</rl_conf_sponsor>
+<rl_conf_url>URL of the conference webpage</rl_conf_url>
+<rl_url>URL of the resource</rl_url>
+<rl_access_timestamp>Last access time (URL)</rl_access_timestamp>
+<rl_citekey>Citation Key</rl_citekey>
+<rl_url2>Alternative URL of the resource</rl_url2>
+<rl_citekey>Citation Key</rl_citekey>
+<rl_workgroup>Workgroup</rl_workgroup>
+<rl_project>Project(s)</rl_project>
+<rl_quality_criterion>Quality criterion</rl_quality_criterion>
+<!-- end reflib / vlib-->
 </l>
