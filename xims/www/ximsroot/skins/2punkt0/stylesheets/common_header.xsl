@@ -6,10 +6,7 @@
 # $Id: common_header.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
-	<!--start from ../common.xsl-->
 
-
-	<!--end from ../common.xsl	-->
 	<xsl:template name="header">
 		<xsl:param name="create" select="false()"/>
 		<xsl:param name="noncontent">false</xsl:param>
@@ -28,7 +25,6 @@
 		<xsl:variable name="dfname" select="$df/name"/>
 		<xsl:variable name="dfmime" select="$df/mime_type"/>
 		
-		<!--<div id="navopt">-->
 		<div id="path-logo">
 			<div id="locbar">
 				<xsl:if test="$nopath='false' and $noncontent ='false'">
@@ -56,7 +52,6 @@
 				</xsl:if>
 			</div>
 			
-			<!--<div id="header-logo" class="logo">-->
 			<div id="header-logo">
 				<a href="http://xims.info/">
 					<span>XIMS</span>
@@ -66,7 +61,7 @@
 		
 		<div id="access-container">
 			<ol id="accesslist">
-<!--				<li>
+				<li>
 					Jump to: <a href="#mainmenu">Main Menu (Home, Logout)</a>
 				</li>
 				<li>
@@ -77,39 +72,30 @@
 				</li>
 				<li>
 					<a href="#options-menu-bar">Content area</a>
-				</li>-->
+				</li>
 			</ol>
 		</div>
-		
-		<!--<div id="titlelogo">-->
+
 		<div id="menu-bar">
-			<!--<div id="header-tr">-->
 				<xsl:call-template name="header.arrownavigation"/>
 				<xsl:call-template name="menu-widget"/>
 				<xsl:call-template name="help-widget"/>
-				<!--<div class="empty-div-cell">
-					<label for="input-search" class="hidden">
-						<xsl:value-of select="$i18n/l/Search_for"/>
-					</label>
-				</div>-->
-				<!--<div class="header-td-right">-->
 					<xsl:call-template name="header.cttobject.search"/>
-				<!--</div>-->
-			<!--</div>-->
+
 		</div>
 	</xsl:template>
 	
-	<xsl:template name="subheader_noncontent">
+<!--	<xsl:template name="subheader_noncontent">
 		<table id="subheader">
 			<tr>
 				<td>
-					<!--<xsl:call-template name="message"/>-->
+					--><!--<xsl:call-template name="message"/>--><!--
 				</td>
 				<xsl:call-template name="header.cttobject.search"/>
 			</tr>
 		</table>
-	</xsl:template>
-	<xsl:template name="subheader_nonavigation">
+	</xsl:template>-->
+<!--	<xsl:template name="subheader_nonavigation">
 		<table id="subheader">
 			<tr>
 				<td>
@@ -119,16 +105,16 @@
 		</table>
 	</xsl:template>
 	<xsl:template name="subheader">
-		<!--<xsl:param name="createwidget">false</xsl:param>-->
+		--><!--<xsl:param name="createwidget">false</xsl:param>--><!--
 		<xsl:param name="parent_id"/>
 		<xsl:param name="noarrownavigation">false</xsl:param>
-		<!--<xsl:param name="nooptions">false</xsl:param>
-		<xsl:param name="nostatus">false</xsl:param>-->
-		<!--<div id="subheader" class="container">-->
+		--><!--<xsl:param name="nooptions">false</xsl:param>
+		<xsl:param name="nostatus">false</xsl:param>--><!--
+		--><!--<div id="subheader" class="container">--><!--
 		<div id="subheader">
 			<div id="subheader-tr">
 				<xsl:call-template name="header.arrownavigation"/>
-				<!--<div class="empty-div-cell"><span>&#160;</span></div>-->
+				--><!--<div class="empty-div-cell"><span>&#160;</span></div>--><!--
 				<div class="sh-empty-div-cell">
 					<label for="input-search" class="hidden">
 						<xsl:value-of select="$i18n/l/Search_for"/>
@@ -137,7 +123,7 @@
 				<xsl:call-template name="header.cttobject.search"/>
 			</div>
 		</div>
-	</xsl:template>
+	</xsl:template>-->
 	<xsl:template name="header.arrownavigation">
 		<div id="navback">
 			<a href="javascript:history.go(-1)">
@@ -175,7 +161,6 @@
 			</a>
 			<div id="object-types" class="hidden-content">
 				<ul>
-				<li><ul></ul></li>
 					<xsl:choose>
 						<xsl:when test="/document/context/object/@id = 1">
 							<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"/>
@@ -194,7 +179,6 @@
 									<xsl:value-of select="$i18n/l/More"/>
 								</a>
 								<ul>
-								<li><ul></ul></li>
 									<!-- Only show basic object types on first page: TODO Select from object type properties and not from OT names or IDs!
                                         Do not display object types that either are not fully implemented or that are not meant to be created directly.
                                         We may consider adding an object type property for the latter types.
@@ -209,6 +193,7 @@
 							</li>
 						</xsl:otherwise>
 					</xsl:choose>
+					<li><ul></ul></li>
 				</ul>
 			</div>
 		</div>
@@ -244,8 +229,6 @@
 	
 	<xsl:template name="header.cttobject.search">
 		<xsl:variable name="Search" select="$i18n/l/Search"/>
-		<!--<div id="menu-search" class="qsearch ui-widget-content ui-corner-all">-->
-		
 		<div id="menu-search" class="ui-widget-content ui-corner-all">
 			<form method="get" name="quicksearch">
 				<xsl:attribute name="action">
@@ -266,8 +249,6 @@
 						<xsl:attribute name="checked">true</xsl:attribute>
 					</xsl:if>
 				</input>
-				
-				<!--<input type="text" class="search ui-corner-all" id="input-search" name="s" size="17" maxlength="200">-->
 				<input type="text" class="ui-corner-all" id="input-search" name="s" size="17" maxlength="200">
 					<xsl:choose>
 						<xsl:when test="$s != ''">
@@ -287,9 +268,7 @@
 						<xsl:value-of select="$Search"/>
 					</span>
 				</button>
-				<!--<input type="image" src="{$sklangimages}search.png" name="submit" width="65" height="14" alt="{$Search}" title="{$Search}" border="0"/>-->
 				<input type="hidden" name="search" value="1"/>
-				<!--</div>-->
 			</form>
 		</div>
 	</xsl:template>
@@ -311,12 +290,6 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<!--
-		<xsl:variable name="fullname_i18n"/>
-		<xsl:value-of select="/document/object_types/object_type[@id=$parent_id]/name"/>
-		<fullname_i18n><xsl:value-of select="concat('$i18n/l/',$fullname)"/></fullname_i18n>
-			<xsl:value-of select="concat($i18n/l/,$fullname)"/>
-		</xsl:variable>-->
 		<li>
 			<a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype={$fullname};page={$page};r={/document/context/object/@id}{$sorting}">
 				<xsl:value-of select="$fullname"/>
@@ -360,7 +333,6 @@
 	</xsl:template>
 	<!--Help Widget-->
 	<xsl:template name="help-widget">
-		<!--<div id="help">-->
 			<div id="help-widget">
 				<a href="#help-types" class="flyout help-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" tabindex="0">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Help"/></xsl:attribute>
@@ -409,56 +381,39 @@
 				</div>
 				<label for="input-search" class="hidden"><xsl:value-of select="$i18n/l/Search_for" /></label>
 			</div>
-			<!--</div>-->
 			<noscript>
-<!--				<ul>
-						<li>-->
-							<a href="http://xims.info/documentation/" target="_blank"> <!--class="fg-button fg-button-icon-left ui-state-default ui-corner-all">-->
+							<a href="http://xims.info/documentation/" target="_blank">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Systeminfo"/></xsl:attribute>
-								<!--<span class="ui-icon ui-icon-info"/>-->
 								<span class="text">
 									<xsl:value-of select="$i18n/l/Systeminfo"/>
 								</span>
 							</a>
 							&#160;&#160;
-<!--						</li>
-						<li>-->
-							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank"> <!--class="fg-button fg-button-icon-left ui-state-default ui-corner-all">-->
+							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/stepManual"/></xsl:attribute>
-								<!--<span class="ui-icon ui-icon-document"/>-->
 								<span class="text">
 									<xsl:value-of select="$i18n/l/Manual"/>
 								</span>
 							</a>
 							&#160;&#160;
-<!--						</li>
-						<li>-->
-							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank"> <!--class="fg-button fg-button-icon-left ui-state-default ui-corner-all">-->
+							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/FAQ_long"/></xsl:attribute>
-								<!--<span class="ui-icon ui-icon-lightbulb"/>-->
 								<span class="text">
 									<xsl:value-of select="$i18n/l/FAQ"/>
 								</span>
 							</a>
 							&#160;&#160;
-<!--						</li>
-						<li>-->
-							<a href="mailto:xims-support@uibk.ac.at"> <!--class="fg-button fg-button-icon-left ui-state-default ui-corner-all">-->
+							<a href="mailto:xims-support@uibk.ac.at">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/MailToSupport"/></xsl:attribute>
-								<!--<span class="ui-icon ui-icon-mail-closed"/>-->
 								<span class="text">
 									<xsl:value-of select="$i18n/l/MailToSupport"/>
 								</span>
 							</a>
 							&#160;&#160;
-<!--						</li>
-					</ul>-->
 			</noscript>
-		<!--</div>-->
 	</xsl:template>
 	<!--Menu Widget-->
 	<xsl:template name="menu-widget">
-		<!--<div id="menu">-->
 			<div id="menu-widget">
 				<a href="#menu-types" class="flyout menu-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" tabindex="0">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Menu"/></xsl:attribute>
@@ -496,54 +451,33 @@
 								</li>
 							</xsl:otherwise>
 						</xsl:choose>
-						<!--<li>
-							<a href="" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-							<span class="ui-icon ui-icon-bookmark"/>
-							<span class="text">
-								<xsl:value-of select="$i18n/l/default_bookmark"/>
-							</span>
-							</a>
-						</li>-->
 					</ul>
 				</div>
-			<!--</div>-->
 </div>			
 			<noscript>
-					<!--<ul>-->
 						<xsl:choose>
 							<xsl:when test="/document/context/session/public_user = '1'">
-								<!--<li>-->
-									<a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}"> <!--class="fg-button fg-button-icon-left ui-state-default ui-corner-all">-->
+									<a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}">
 										<span class="text">
 											<xsl:value-of select="$i18n/l/login"/>
 										</span>
-									</a>
-									&#160;&#160;
-								<!--</li>-->
+									</a>&#160;&#160;
 							</xsl:when>
 							<xsl:otherwise>
-								<!--<li>-->
-									<a href="{$xims_box}{$goxims}/user"> <!--class="fg-button fg-button-icon-left ui-state-default ui-corner-all">-->
-										<!--<span class="ui-icon ui-icon-home"/>-->
+									<a href="{$xims_box}{$goxims}/user">
 										<span class="text">
 											<xsl:value-of select="/document/context/session/user/name"/>
 										</span>
 									</a>
 									&#160;&#160;
-								<!--</li>
-								<li>-->
-									<a href="{$goxims_content}{$absolute_path}?reason=logout"> <!--class="fg-button fg-button-icon-left ui-state-default ui-corner-all">-->
-										<!--<span class="ui-icon ui-icon-home"/>-->
+									<a href="{$goxims_content}{$absolute_path}?reason=logout">
 										<span class="text">
 											<xsl:value-of select="$i18n/l/logout"/>
 										</span>
 									</a>
 									&#160;&#160;&#160;&#160;
-								<!--</li>-->
 							</xsl:otherwise>
 						</xsl:choose>
-					<!--</ul>-->
 			</noscript>
-		<!--</div>-->
 	</xsl:template>
 </xsl:stylesheet>
