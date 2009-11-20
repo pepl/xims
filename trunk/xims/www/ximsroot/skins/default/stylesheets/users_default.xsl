@@ -37,6 +37,17 @@
             </tr>
         </table>
         <xsl:call-template name="script_bottom"/>
+              <xsl:comment>[if lte IE 6]&gt;
+                    &lt;script type="text/javascript"&gt;
+                         $(function() {
+                             $('.objrow').hover(function(){
+                                 $(this).children('td').addClass('objrow-over');
+                             }, function() {
+                                $(this).children('td').removeClass('objrow-over');
+                             });
+                         });
+                     &lt;/script&gt;
+                 &lt;![endif]</xsl:comment>
     </body>
 </html>
 </xsl:template>

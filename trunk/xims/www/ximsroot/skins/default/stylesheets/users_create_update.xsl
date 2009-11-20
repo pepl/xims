@@ -22,7 +22,7 @@
 
     <form name="userConfirm" action="{$xims_box}{$goxims_users}" method="get">
     <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-        <tr background="{$skimages}generic_tablebg_1x20.png">
+      <tr style="background:url('{$skimages}generic_tablebg_1x20.png');">
         <td>&#160;</td>
         </tr>
         <tr>

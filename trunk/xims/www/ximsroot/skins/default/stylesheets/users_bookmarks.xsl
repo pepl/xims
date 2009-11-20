@@ -6,7 +6,8 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="common.xsl"/>
 <xsl:import href="users_common.xsl"/>
@@ -49,8 +50,8 @@
 
 <xsl:template name="create_bookmark">
     <h2><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$i18n/l/Bookmark"/></h2>
-    <p>
         <form action="{$xims_box}{$goxims}/bookmark" name="eform" method="get">
+          <p> 
             <xsl:value-of select="$i18n/l/Path"/>: <input type="text" name="path" size="40" class="text"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>
@@ -67,19 +68,27 @@
             <input name="order-by" type="hidden" value="{$order-by}"/>
             <input name="userquery" type="hidden" value="{$userquery}"/>
             <input type="submit" class="control" name="create" value="{$i18n/l/create}"/>
+          </p>
         </form>
-    </p>
 </xsl:template>
 
-<xsl:template match="bookmarklist">
-            <h2><xsl:value-of select="$i18n/l/Bookmarks"/></h2>
-            <table cellpadding="3">
-                <xsl:apply-templates select="bookmark">
-                    <xsl:sort select="stdhome" order="descending"/>
-                    <xsl:sort select="content_id" order="ascending"/>
-                </xsl:apply-templates>
-            </table>
-</xsl:template>
+  <xsl:template match="bookmarklist">
+    <h2><xsl:value-of select="$i18n/l/Bookmarks"/></h2>
+    <table cellpadding="3">
+      <xsl:choose>
+        <xsl:when test="count(bookmark)&gt;0">
+          <xsl:apply-templates select="bookmark">
+            <xsl:sort select="stdhome" order="descending"/>
+            <xsl:sort select="content_id" order="ascending"/>
+          </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+           <tr><td colspan="2"><xsl:value-of select="$i18n/l/No_results"/></td></tr>
+        </xsl:otherwise>
+      </xsl:choose>
+    </table>
+    <br />
+  </xsl:template>
 
 <xsl:template match="bookmark">
     <tr>

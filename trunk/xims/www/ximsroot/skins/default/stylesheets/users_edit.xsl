@@ -21,7 +21,7 @@
             <xsl:call-template name="css"/>
             <style type="text/css">span.cboxitem { width:180px;}</style>
         </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body style="margintop:0; marginleft:0; marginwidth:0; marginheight:0; background:url('{$skimages}body_bg.png');">
         <xsl:call-template name="header">
             <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
@@ -34,7 +34,7 @@
 <xsl:template match="user">
     <form name="userEdit" action="{$xims_box}{$goxims_users}" method="post">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-            <tr background="{$skimages}generic_tablebg_1x20.png">
+            <tr style="background:url('{$skimages}generic_tablebg_1x20.png');">
               <td>&#160;</td>
             </tr>
             <tr>

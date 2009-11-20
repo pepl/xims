@@ -9,7 +9,6 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 <xsl:import href="common.xsl"/>
-<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 
 <xsl:template match="/document">
     <html>
@@ -27,7 +26,7 @@
 
         <form name="userConfirm" action="{$xims_box}{$goxims}/user" method="get">
         <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-          <tr background="{$skimages}generic_tablebg_1x20.png">
+          <tr style="background:url('{$skimages}generic_tablebg_1x20.png');">
             <td>&#160;</td>
           </tr>
           <tr>
