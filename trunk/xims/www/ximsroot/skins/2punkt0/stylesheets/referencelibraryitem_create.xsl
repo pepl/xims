@@ -13,31 +13,48 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <xsl:call-template name="head-create"/>
+    <xsl:call-template name="head_default">
+			<xsl:with-param name="mode">create</xsl:with-param>
+			<xsl:with-param name="reflib">true</xsl:with-param>
+    </xsl:call-template>
     <body>
         <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+        <xsl:call-template name="header">
+					<xsl:with-param name="containerpath">true</xsl:with-param>
+        </xsl:call-template>
         <div class="edit">
-            <xsl:call-template name="table-create"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data">
+        <div id="tab-container" class="ui-corner-top">
+        <xsl:call-template name="table-create"/>
+        </div>
+        <div class="cancel-save">
+					<xsl:call-template name="cancelcreateform">
+                    <xsl:with-param name="with_save">yes</xsl:with-param>
+                </xsl:call-template>
+        </div>
+            <div id="content-container" class="ui-corner-bottom ui-corner-tr">
+            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data" id="create-edit-form">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <input type="hidden" name="reftype" value="{$reftype}"/>
-                <table border="0" width="98%">
                     <xsl:call-template name="markednew"/>
                     <xsl:call-template name="tr-vlauthors"/>
                     <xsl:call-template name="tr-vleditors"/>
                     <xsl:call-template name="tr-vlserials"/>
+                    <div id="reference-properties" class="ui-widget-content ui-corner-all">
                     <xsl:apply-templates select="/document/reference_properties/reference_property">
                         <xsl:sort select="position" order="ascending" data-type="number"/>
                     </xsl:apply-templates>
                     <xsl:call-template name="tr-abstract"/>
                     <xsl:call-template name="tr-notes"/>
-                </table>
+                    </div>
                 <xsl:call-template name="saveaction"/>
             </form>
+            		</div>
+             <div class="cancel-save">
+            <xsl:call-template name="cancelcreateform">
+							<xsl:with-param name="with_save">yes</xsl:with-param>
+						</xsl:call-template>
+						</div>
         </div>
-        <br />
-        <xsl:call-template name="cancelaction"/>
-        <xsl:call-template name="script_bottom"/>
     </body>
 </html>
 </xsl:template>
