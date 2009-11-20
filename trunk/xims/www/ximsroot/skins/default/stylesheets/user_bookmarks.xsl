@@ -6,7 +6,8 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:variable name="stdhome">
     <xsl:choose>
@@ -18,8 +19,8 @@
 
 <xsl:template name="create_bookmark">
     <h2><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$i18n/l/Bookmark"/></h2>
-    <p>
         <form action="{$xims_box}{$goxims}/bookmark" name="eform">
+            <p>
             <xsl:value-of select="$i18n/l/Path"/>: <input type="text" name="path" size="40" class="text"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>
@@ -32,33 +33,48 @@
             <xsl:text>&#160;</xsl:text>
             <br/>
             <input type="submit" class="control" name="create" value="{$i18n/l/create}"/>
+            </p>
         </form>
-    </p>
 </xsl:template>
 
 
-<xsl:template match="bookmarks">
-    <h2><xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>
+  <xsl:template match="bookmarks">
+    <h2><xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>   
     <table cellpadding="3">
-        <xsl:apply-templates select="bookmark[owner_id=/document/context/session/user/name]">
-            <xsl:sort select="stdhome" order="descending"/>
-            <xsl:sort select="content_id" order="ascending"/>
-        </xsl:apply-templates>
+      <xsl:choose>
+        <xsl:when test="count(bookmark[owner_id=/document/context/session/user/name])&gt;0">  
+          <xsl:apply-templates select="bookmark[owner_id=/document/context/session/user/name]">
+              <xsl:sort select="stdhome" order="descending"/>
+              <xsl:sort select="content_id" order="ascending"/>
+           </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+           <tr><td colspan="2"><xsl:value-of select="$i18n/l/No_results"/></td></tr>
+        </xsl:otherwise>
+      </xsl:choose>
     </table>
-
     <h2><xsl:value-of select="$i18n/l/Role"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>
     <table cellpadding="3">
-        <xsl:apply-templates select="bookmark[owner_id!=/document/context/session/user/name]">
+      <xsl:choose>
+        <xsl:when test="count(bookmark[owner_id!=/document/context/session/user/name])&gt;0">
+          <xsl:apply-templates select="bookmark[owner_id!=/document/context/session/user/name]">
             <xsl:sort select="stdhome" order="descending"/>
             <xsl:sort select="content_id" order="ascending"/>
-        </xsl:apply-templates>
+          </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+           <tr><td colspan="2"><xsl:value-of select="$i18n/l/No_results"/></td></tr>
+        </xsl:otherwise>
+      </xsl:choose>
     </table>
-</xsl:template>
+  </xsl:template>
 
 <xsl:template match="bookmark[owner_id=/document/context/session/user/name]">
     <tr>
-        <td width="400" valign="top">
-            <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="SymbolicLink" title="SymbolicLink"/>&#160;
+       <td width="400" valign="top">
+         <span class="sprite-list sprite-list_SymbolicLink">
+           <span>SymbolicLink</span>&#xa0;
+         </span>
             <xsl:call-template name="bookmark_link"/>
         </td>
         <td valign="top">
@@ -72,16 +88,12 @@
             </xsl:choose>
         </td>
         <td>
+
             &#160;
-            <a href="{$xims_box}{$goxims}/bookmark?id={id};delete=1">
-                <img
-                    src="{$skimages}option_purge.png"
-                    border="0"
-                    width="37"
-                    height="19"
-                    alt="{$l_purge}"
-                    title="{$l_purge}"
-                />
+            <a href="{$xims_box}{$goxims}/bookmark?id={id};delete=1" 
+               class="sprite sprite-option_purge" 
+               title="{$l_purge}">
+               &#xa0;<span><xsl:value-of select="$l_purge"/></span>
             </a>
         </td>
     </tr>
@@ -90,7 +102,9 @@
 <xsl:template match="bookmark[owner_id!=/document/context/session/user/name]">
     <tr>
         <td width="400" valign="top">
-            <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="SymbolicLink" title="SymbolicLink"/>&#160;
+            <span class="sprite-list sprite-list_SymbolicLink">
+              <span>SymbolicLink</span>&#xa0;
+            </span>
             <xsl:call-template name="bookmark_link"/>
         </td>
         <td valign="top">
