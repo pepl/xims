@@ -95,7 +95,7 @@
 		<xsl:param name="currentpage"/>
 		<xsl:param name="url"/>
 		<xsl:if test="$totalpages &gt; 1">
-			<div id="pagenav">
+			<div class="pagenav">
 				<div>
 					<xsl:if test="$currentpage &gt; 1">
 						<a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/>
@@ -181,9 +181,9 @@
 	</xsl:template>
 	<xsl:template name="pagenavtable">
 		<xsl:variable name="navurl">
-			<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?m=',$m)"/>
+			<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>
 			<xsl:if test="$defsorting != 1">
-				<xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/>
+				<xsl:value-of select="concat('?sb=',$sb,';order=',$order)"/>
 			</xsl:if>
 			<xsl:if test="$pagerowlimit != $searchresultrowlimit">
 				<xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit)"/>
@@ -198,6 +198,7 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
+	
 	<xsl:template name="childrentable">
 		<xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
 		<table id="obj-table">
@@ -250,7 +251,7 @@
 							<xsl:choose>
 								<xsl:when test="$order='asc'">
 									<th id="th-title" class="sorting">
-										<a href="{$location}?sb=title;order=desc" class="th-icon-right">
+										<a href="{$location}?sb=title;order=desc;page={$page}" class="th-icon-right">
 											<span class="ui-icon ui-icon-triangle-1-n"/>
 											<xsl:value-of select="$i18n/l/Title"/>&#160;						
 										</a>
@@ -258,7 +259,7 @@
 								</xsl:when>
 								<xsl:otherwise>
 									<th id="th-title" class="sorting">
-										<a href="{$location}?sb=title;order=asc" class="th-icon-right">
+										<a href="{$location}?sb=title;order=asc;page={$page}" class="th-icon-right">
 											<span class="ui-icon ui-icon-triangle-1-s"/>
 											<xsl:value-of select="$i18n/l/Title"/>&#160;						
 										</a>
@@ -268,7 +269,7 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<th id="th-title" class="sorting">
-								<a href="{$location}?sb=title;order=asc" class="th-icon-right">
+								<a href="{$location}?sb=title;order=asc;page={$page}" class="th-icon-right">
 									<span class="ui-icon ui-icon-triangle-2-n-s"/>
 									<xsl:value-of select="$i18n/l/Title"/>&#160;						
 								</a>
@@ -457,68 +458,9 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<span>
-		
 			<xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:value-of select="$l_location"/>: <xsl:value-of select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/>: <xsl:call-template name="ownerfullname"/></xsl:attribute>
-			
 			<a>
-			
-				<xsl:attribute name="href">
-					<xsl:choose>
-					
-						<xsl:when test="$dfmime='application/x-container' and not($link_to_id)">
-							<xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/>
-							<xsl:if test="$defsorting != 1">
-								<xsl:value-of select="concat('?sb=',$sb,';order=',$order)"/>
-							</xsl:if>
-						</xsl:when>
-						
-						<xsl:when test="$dfmime='application/x-container' and $link_to_id">
-							<xsl:value-of select="concat($goxims_content,'?id=',@id)"/>
-						</xsl:when>
-						
-						<xsl:when test="$dfname='URL'">
-							<xsl:choose>
-							
-								<xsl:when test="symname_to_doc_id != ''">
-									<xsl:value-of select="concat($goxims_content, symname_to_doc_id)"/>
-									<xsl:if test="$defsorting != 1">
-										<xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/>
-									</xsl:if>
-								</xsl:when>
-								
-								<xsl:when test="starts-with(location,'/')">
-									<!--  Treat links relative to '/' as relative to the current SiteRoot -->
-									<xsl:value-of select="concat($goxims_content, '/', /document/context/object/parents/object[@parent_id=1]/location, location)"/>
-								</xsl:when>
-								
-								<xsl:otherwise>								
-								<xsl:value-of select="location"/>
-								</xsl:otherwise>
-								
-							</xsl:choose>
-						</xsl:when>
-						
-						<xsl:when test="marked_deleted=1 or $link_to_id">
-							<xsl:value-of select="concat($goxims_content,'?id=',@id)"/>
-						</xsl:when>
-						
-						<xsl:otherwise>
-							<xsl:choose>						
-								<xsl:when test="$search">
-								<xsl:variable name="location_path" select="location_path"/>
-									<xsl:value-of select="concat($goxims_content,$location_path)"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/>
-								</xsl:otherwise>
-							</xsl:choose>
-							
-								
-						</xsl:otherwise>
-						
-					</xsl:choose>
-				</xsl:attribute>
-				
+				<xsl:attribute name="href"><xsl:choose><xsl:when test="$dfmime='application/x-container' and not($link_to_id)"><xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat('?sb=',$sb,';order=',$order)"/></xsl:if></xsl:when><xsl:when test="$dfmime='application/x-container' and $link_to_id"><xsl:value-of select="concat($goxims_content,'?id=',@id)"/></xsl:when><xsl:when test="$dfname='URL'"><xsl:choose><xsl:when test="symname_to_doc_id != ''"><xsl:value-of select="concat($goxims_content, symname_to_doc_id)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:when><xsl:when test="starts-with(location,'/')"><!--  Treat links relative to '/' as relative to the current SiteRoot --><xsl:value-of select="concat($goxims_content, '/', /document/context/object/parents/object[@parent_id=1]/location, location)"/></xsl:when><xsl:otherwise><xsl:value-of select="location"/></xsl:otherwise></xsl:choose></xsl:when><xsl:when test="marked_deleted=1 or $link_to_id"><xsl:value-of select="concat($goxims_content,'?id=',@id)"/></xsl:when><xsl:otherwise><xsl:choose><xsl:when test="$search"><xsl:variable name="location_path" select="location_path"/><xsl:value-of select="concat($goxims_content,$location_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/></xsl:otherwise></xsl:choose></xsl:otherwise></xsl:choose></xsl:attribute>
 				<xsl:value-of select="title"/>
 			</a>
 		</span>

@@ -45,12 +45,11 @@
 				<xsl:if test="substring($hls,2,1) != ':'">
 					<xsl:call-template name="toggle_hls"/>
 				</xsl:if>
-				<div id="main-content" class="ui-corner-all">
+				<div id="main-content">
 					<xsl:call-template name="options-menu-bar"/>
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 						<div id="docbody">
 							<xsl:call-template name="pre-body-hook"/>
-							<span id="body">
 								<xsl:apply-templates select="body"/>
 								
 								<div id="links">
@@ -59,7 +58,6 @@
 										<xsl:value-of select="$i18n/l/Document_links"/>
 									</strong>
 									</p>
-								<!--<p>-->
 								<table>
 								<thead>
 									<tr>
@@ -77,9 +75,6 @@
 										</tr>
 									</tbody>
 								</table>
-									
-									<!--&#160;
-								</p-->
 								<p>
 								<br/>
 									<xsl:if test="$m='e' and user_privileges/create">
@@ -89,7 +84,6 @@
 									</xsl:if>
 								</p>
 							</div>
-							</span>
 						</div>
 						
 						<div id="metadata-options">
