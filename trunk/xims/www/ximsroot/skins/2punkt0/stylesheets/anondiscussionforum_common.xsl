@@ -56,7 +56,6 @@
           <div class="forumhead">
 						<xsl:choose>
 							<xsl:when test="$reply"><xsl:value-of select="$i18n/l/reply"/></xsl:when>
-							<!--<xsl:otherwise><xsl:value-of select="$i18n/l/Create_topic"/></xsl:otherwise>-->
 						</xsl:choose>
 						</div>
         <xsl:if test="$reply">
@@ -99,15 +98,9 @@
           <div class="forumcontent"><label for="input-text"><xsl:value-of select="$i18n/l/Text"/></label> *</div>          
             <textarea class="foruminput" name="body" rows="10" cols="57" id="input-text"></textarea>
         </div>
-      <!--</table>-->
         <xsl:call-template name="saveaction"/>
     </form>
 </div>
-    <!--<div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>-->
 </xsl:template>
 
 </xsl:stylesheet>
