@@ -70,10 +70,10 @@
   </xsl:template>
 
 <xsl:template match="bookmark[owner_id=/document/context/session/user/name]">
-    <tr>
+    <tr class="objrow">
        <td width="400" valign="top">
-         <span class="sprite-list sprite-list_SymbolicLink">
-           <span>SymbolicLink</span>&#xa0;
+         <span class="sprite-list sprite-list_Bookmark">
+           <span>Bookmark</span>&#xa0;
          </span>
             <xsl:call-template name="bookmark_link"/>
         </td>
@@ -87,23 +87,21 @@
                 </xsl:otherwise>
             </xsl:choose>
         </td>
-        <td>
-
-            &#160;
+        <td>&#160;
             <a href="{$xims_box}{$goxims}/bookmark?id={id};delete=1" 
-               class="sprite sprite-option_purge" 
-               title="{$l_purge}">
-               &#xa0;<span><xsl:value-of select="$l_purge"/></span>
+               class="sprite-list sprite-option_purge"
+               title="{$l_purge}">&#160;
+               <span><xsl:value-of select="$l_purge"/></span>
             </a>
         </td>
     </tr>
 </xsl:template>
 
 <xsl:template match="bookmark[owner_id!=/document/context/session/user/name]">
-    <tr>
+    <tr class="objrow">
         <td width="400" valign="top">
-            <span class="sprite-list sprite-list_SymbolicLink">
-              <span>SymbolicLink</span>&#xa0;
+            <span class="sprite-list sprite-list_Bookmark">
+              <span>Bookmark</span>&#xa0;
             </span>
             <xsl:call-template name="bookmark_link"/>
         </td>
