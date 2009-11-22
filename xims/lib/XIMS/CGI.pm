@@ -645,11 +645,58 @@ Methods called directly by (or override to methods in) CGI::XMLApplication
 
 =head3 Parameter
 
+    $ctxt : Application context object instance
+
 =head3 Returns
+
+File system path to selected XSL stylesheet to be used for request response
+rendering.
 
 =head3 Description
 
-    $self->selectStylesheet(...)
+Selects stylesheet based on application context property settings, object type
+of the current object, availability of language specific stylesheets and request
+parameters. 
+
+If the current request handle a content object, it's object type fullname
+will be used as the first part of the stylesheet name (style prefix) unless 
+$ctxt->properties->application->styleprefix() has a value and thus overrides.
+
+The second part of the stylesheet name (style suffix) defaults to 'default' and
+can be overriden via $ctxt->properties->application->style(). The style suffix 
+will be set depending on the current event. Therefore, for Document object 
+default event requests, the chosen stylesheet name will be 'document_default.xsl'
+
+Based on current language, skin and public user requests different stylesheet paths
+will be selected.
+
+The base stylesheet path is 
+
+XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/'
+
+If the current request is served for the public user and the current object has
+a stylesheet directory assigned, the presence of a corresponding stylesheet file
+under that path is checked and used in case. The stylesheet base path for such cases
+will be
+
+XIMS::PUBROOT() . $stylesheet->location_path() . '/';
+
+For publich user requests there the current object does not have a stylesheet 
+directory assigned, the following stylesheet base path will be used:
+
+XIMS::XIMSROOT() . '/skins/' . $ctxt->session->skin . '/stylesheets/public/'
+
+In both public and non-public user cases, the presence of a stylesheet file in a
+language specific subdirectory of the stylesheet base path will be checked and
+used in case. E.g. if a './en-us/document_default.xsl' file exists it will be used
+in favor of './document_default.xsl' relative to the stylesheet base path.
+
+Stylesheets in language specific subdirectories should only be used if it is not
+possible to provide a complete I18N implementation via the stylesheets in the 
+stylesheet base path. Because of historic reasons, there currently are still a lot
+of stylesheets in the language specific subdirectories, which actually should be 
+migrated into it's parent directories to keep the total number of stylesheet files
+low.
 
 =cut
 
