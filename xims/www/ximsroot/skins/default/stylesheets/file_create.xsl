@@ -76,7 +76,7 @@
 
 <xsl:template name="uploadaction">
     <input type="hidden" name="id" value="{/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id}"/>
-    <input type="submit" name="store" value="{$i18n/l/upload}" class="control"/>
+    <input type="submit" name="store" value="{$i18n/l/save}" class="control"/>
 </xsl:template>
 
 </xsl:stylesheet>
