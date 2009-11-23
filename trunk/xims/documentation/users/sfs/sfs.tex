@@ -1,9 +1,7 @@
 % -*- coding:iso-8859-1 -*-
 % 2do:
-% Kontrolllesen 18ff
-% Frutiger? Font wählen
-% Hinweis anpassen
 % Umbrüche korrigieren?
+% Icons einfügen/beschreiben
 
 \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
 \documentclass[fontsize=11pt]{scrartcl}
@@ -79,7 +77,6 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 
 
 \title{XIMS Schritt für Schritt Anleitung}
-\subtitle{Version: RC2}
 \author{XIMS-Support@uibk.ac.at}
 \date{\today}
 
@@ -341,7 +338,7 @@ XIMS Inhalte-Management-Systems.
 Für jeden Benutzer sind so genannte Lesezeichen (Bookmarks) konfiguriert. Die
 Lesezeichen sind in Abhängigkeit zur Rollenzugehörigkeit gesetzt und können über
 »Einstellungen« => »Lesezeichen verwalten« verändert werden. Auf diese Weise
-können Sie auch das Standardlesezeichen (default Bookmark) ändern. LFUMitarbeiter
+können Sie auch das Standardlesezeichen (default Bookmark) ändern. LFU-Mitarbeiter
 haben zumindest ein Standardlesezeichen zum XIMS-Testordner
 gesetzt.
 
@@ -698,7 +695,7 @@ für Schritt«) auf.
 	\label{fig:dokumentinxims}
 \end{figure}
 
-Nach dem Veröffentlichen im Siteroot »uniweb« sieht das Dokument wie folgt aus:
+Abbildung \ref{fig:bsppubliziert} zeigt das Dokument nach dem Veröffentlichen im Siteroot »uniweb«.
 
 \begin{figure}[!ht]
 	\centering
@@ -813,7 +810,7 @@ Dokument zu speichern (Speichern) oder die gemachten Änderungen zu verwerfen
 (Abbrechen) bevor man in die Containeransicht wechselt. Versucht man stattdessen
 über den Zurück-Button des Browsers in die Containeransicht zu gelangen ohne zu
 speichern bzw. zu verwerfen, ist das Dokument automatisch für andere Benutzer
-gesperrt . XIMS betrachtet ein solches Dokument als im Zustand »in Bearbeitung«
+gesperrt . XIMS betrachtet ein solches Dokument als »in Bearbeitung«
 befindlich und sperrt es deshalb für andere Benutzer, weil ein zeitgleiches Editieren
 eines Dokuments durch mehrere Benutzer nicht möglich ist.
 
@@ -827,7 +824,7 @@ auch für das Titel-Feld übernommen.
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/erstellefolder.png}
-	\caption{Erstellung eines Ordners}
+	\caption{Erstellen eines Ordners}
 	\label{fig:erstellefolder}
 \end{figure}
 
@@ -840,7 +837,7 @@ Siehe Punkt~\ref{title}.
 \paragraph{Objekt als neu markieren}
 Siehe Punkt~\ref{markasnew}.
 
-\paragraph{Verhindere Autoindex beim Veröffentlichen:}
+\paragraph{Verhindere Autoindex beim Veröffentlichen}
 \label{autoindex}
 
 Auf eine Anfrage nach einem Verzeichnis (z.B.: \url{http://www.uibk.ac.at/zid/}) liefert der
@@ -850,9 +847,7 @@ Verzeichnisinhalts zu erstellen. Dieses Standardverhalten kann mit der Option
 »Verhindere Autoindex beim Veröffentlichen« wenn nötig unterbunden
 werden.\footnote{Wir empfehlen, den Autoindex abzuschalten, falls Sie mehrsprachige Indexdokumente (z.B.:
 index.html.de und index.html.en) verwenden wollen, es kann sonst zu Fehlern bei der
-Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; es
-muss die Location »index« erhalten und wird dann vom Webserver automatisch
-verwendet.
+Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die Location muss »index« lauten, der Webserver verwendet es dann automatisch.
 
 \begin{Hinweis}Ein Objekt mit der Location »index« (z.B. index.html) wird vom Webserver
 gegenüber dem automatisch erstellten Index vorgezogen, d.h. sobald ein Objekt
@@ -861,7 +856,7 @@ ausgeliefert, auch wenn ein Autoindex erstellt wurde.
 \end{Hinweis}
 
 Ist in einem Verzeichnis kein Indexdokument vorhanden und publiziert, gibt der
-Webserver auf eine Anfrage nach einem Verzeichnis die Fehlermeldung
+Webserver auf eine Anfrage die Fehlermeldung
 »Forbidden« zurück -- sinngemäß: das Auflisten des Verzeichnisinhalts ist
 verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 
@@ -921,8 +916,7 @@ Bitte beachten Sie an dieser Stelle Punkt \ref{gesperrteobjekte} »Gesperrte Obje
 \subsubsection{Bilder (Images)}
 \label{bilder}
 
-Um eine Bild-Datei (Image) in XIMS zu erstellen, d.h. ein Bild vom lokalen Rechner
-in das XIMS zu importieren, kann man entweder die Durchsuchen-Funktion
+Um eine Bild-Datei (Image) in XIMS zu erstellen, d.h. ein Bild vom lokalen Rechner zu importieren, kann man entweder die Durchsuchen-Funktion
 verwenden oder den Dateipfad im lokalen Dateisystem direkt eingeben. Über die
 Durchsuchen-Funktion vermeidet man falsche Pfadangaben durch Tippfehler und
 sie ist der komfortablere Weg um den Pfad zur gewünschten Bild-Datei zu
@@ -937,11 +931,11 @@ generieren (z.B.: G:\textbackslash{}service\textbackslash{}bilder\textbackslash{
 
 \paragraph{Titel}
 
-Der Titel (in unserem Beispiel Sonnenuntergang) entspricht dem Namen des Bildes,
-unter welchem das Bild in der Containeransicht aufscheint.
+Der Titel (in unserem Beispiel Sonnenaufgang) entspricht dem Namen des Bildes,
+unter dem das Bild in der Containeransicht aufscheint.
 
 \paragraph{Bild (Image)}
-Dieses Eingabefeld dient zur Angabe des Verzeichnispfades wo das Bild am lokalen
+Dieses Eingabefeld dient zur Angabe des Verzeichnispfades unter dem das Bild am lokalen
 Rechner zu finden ist (in unserem Beispiel unter G:\textbackslash{}service\textbackslash{}bilder\textbackslash{}sun.jpg).
 
 Der Durchsuchen-Button erleichtert die Angabe des absoluten Dateipfades durch
@@ -959,10 +953,10 @@ Siehe Punkt \ref{abstract}
 
 Siehe Punkt \ref{zugriffsrechte}
 
-\paragraph{Hinaufladen}
+\paragraph{Speichern}
 \label{upload}
 
-Das Klicken des Hinaufladen-Buttons speichert die ausgewählte Datei im XIMS und
+Das Klicken des Speichern-Buttons speichert die ausgewählte Datei im XIMS und
 man wird zur Containeransicht weitergeleitet.
 
 \paragraph{Abbrechen}
@@ -978,7 +972,7 @@ Es wird auf Punkt \ref{edit} verwiesen, da alle wesentlichen Editiermöglichkeite
 \label{dateien}
 
 Um eine binäre Datei (MS-Word Dokument, PDF-Datei, etc.) zu erstellen, d.h. die
-Datei vom lokalen Rechner in das XIMS zu importieren, kann man entweder die
+Datei vom lokalen Rechner zu importieren, kann man entweder die
 Durchsuchen-Funktion verwenden oder den Dateipfad im lokalen Dateisystem direkt
 eingeben. Über die Durchsuchen-Funktion vermeidet man falsche Pfadangaben
 durch Tippfehler und sie ist der komfortablere Weg um den Pfad zur gewünschten
@@ -1011,7 +1005,7 @@ Siehe Punkt \ref{abstract}
 
 Siehe Punkt \ref{zugriffsrechte}
 
-\paragraph{Hinaufladen (Upload)}
+\paragraph{Speichern}
 Siehe Punkt \ref{upload}
 
 \paragraph{Abbrechen}
@@ -1038,8 +1032,7 @@ editieren, so kann das Feld »Datei ersetzen« leer bleiben.
 Über den Objekttyp URLLink können sowohl externe (d.h. Links außerhalb
 der Domäne \url{http://www.uibk.ac.at}) als auch interne Links erstellt
 werden. Hinzu kommt, dass diesem Objekttyp bei der Erstellung von
-Departmentlinks eine besondere Rolle zukommt (siehe Punkt 7.1 und
-7.2). Bei internen Links ist zu beachten, dass diese absolut zum
+Departmentlinks eine besondere Rolle zukommt (siehe Punkt \ref{deplinks}). Bei internen Links ist zu beachten, dass diese absolut zum
 Site-Root anzugeben sind (i.d.R. absolut zu /uniweb). Alternativ kann
 auch die offizielle URL der Seite (z.B. \url{http://www.uibk.ac.at/zid}),
 welche verlinkt werden soll, angegeben werden. Externe Links müssen
@@ -1086,9 +1079,7 @@ Hier wird auf Punkt \ref{edit} verwiesen, da alle wesentlichen Editiermöglichkei
 
 Ein Portlet kann als eine spezielle Sicht auf eine bestimmte Datenmenge bezeichnet
 werden. Bei Webseiten erscheinen Portlets normalerweise in Form von Boxen neben
-dem eigentlichen Inhalt der Seite. Beispielsweise kann eine Seitennavigation ein
-solches Portlet darstellen (siehe dazu auch Punkt -- Erstellen von Department
-Links).
+dem eigentlichen Inhalt der Seite. Eine Seitennavigation kann zum Beispiel ein Portlet darstellen (siehe dazu auch Punkt \ref{deplinks}).
 
 \begin{figure}[!ht]
 	\centering
@@ -1128,7 +1119,7 @@ Siehe Punkt \ref{zugriffsrechte} sowie Punkt \ref{rollenverwaltung}
 Portlets sind ein mächtiges Werkzeug von XIMS. Sie schaffen zusätzlich zur
 Auflistung der Objekttitel eine Reihe anderer Möglichkeiten, z.B. können
 Containerinhalte gefiltert nach speziellen Attributen bzw. Objekttypen dargestellt
-werden. Für genauere Informationen bezüglich Portlets wird auf die XIMSSchulungen
+werden. Für genauere Informationen bezüglich Portlets wird auf die XIMS-Schulungen
 bzw. den XIMS-Support verwiesen.
 
 \paragraph{Editieren eines Portlets}
@@ -1220,7 +1211,7 @@ Service, ...) ausgeblendet.
 
 Zusätzlich zu den Einstellungen die man beim Erstellen eines DepartmentRoot
 machen kann, kann man beim Editieren dem DepartmentRoot Portlets hinzufügen.
-Nähere Informationen dazu finden sich im Punkt »DepartmentRoot Navigation«.
+Nähere Informationen dazu finden sich im Punkt \ref{depnav}.
 
 \subsubsection{sDocBookXML Objekte}
 \label{sdocbookxml}
@@ -1360,8 +1351,8 @@ periodisch von uns gelöscht!
 
 Beim Betrachten des WYSIWYG-Editors TinyMCE fällt die Ähnlichkeit zur MS-Word-
 Oberfläche auf. Viele der Icons und vertraute Funktionen finden sich auch in
-eWebEditPro. Will man beispielsweise einen Text fett darstellen, so muss dieser nur
-mit der Maus markiert und auf das -Icon geklickt werden.
+TinyMCE. Will man beispielsweise einen Text fett darstellen, so muss dieser nur
+mit der Maus markiert und auf das B-Icon geklickt werden.
 Da TinyMCE ein englischsprachiges Programm ist, mögen einige Schaltflächen
 etwas ungewohnt erscheinen (beispielsweise steht »B« für »bold« im Gegensatz zum
 bekannten »F« für »fett«).
@@ -1383,7 +1374,7 @@ Leichtes. Im Folgenden werden die grundlegenden Schritte beschrieben:
 \begin{enumerate}
 	\item {Der Cursor muss sich an der Stelle befinden, an der das Bild eingefügt
 werden soll.}
-	\item {Durch Klicken auf das -Icon öffnet sich der Eigenschaften-Dialog. Über
+	\item {Durch Klicken auf das Bild-Icon öffnet sich der Eigenschaften-Dialog. Über
 diesen Dialog können die Breite, Höhe, Randbreite, Ausrichtung, horizontaler
 und vertikaler Abstand und der Titel für jedes Bild angegeben werden.}
 
@@ -1395,7 +1386,7 @@ Dokumenten verändern}
 	\label{fig:tinymceimageprop}
 \end{figure}
 
-	\item {Durch Klicken auf das - Icon öffnet sich der Durchsuchen-Dialog. An
+	\item {Durch Klicken auf das Durchsuchen-Icon öffnet sich der Durchsuchen-Dialog. An
 dieser Stelle können Sie den Pfad zum Bild bzw. dessen Titel
 eingeben. Alternativ besteht die Möglichkeit im XIMS-Verzeichnisbaum
 nach dem gewünschten Bild zu suchen. Mit Betätigen des Buttons »Store
@@ -1409,7 +1400,7 @@ Back« wird das Bild an der Cursor-Position eingefügt.}
 	\label{fig:searchimage}
 \end{figure}
 
-\begin{Hinweis}Vermeiden Sie Bilder mit einer größeren Breite als 600 Pixel, da dadurch das
+\begin{Hinweis}Vermeiden Sie Bilder mit einer größeren Breite als 600 Pixel, weil dadurch das
 LFU-Design beeinträchtigt wird.
 \end{Hinweis}
 
@@ -1425,7 +1416,7 @@ Hyperlink erstellt.
 
 \begin{enumerate}
 	\item {Der Text der zum Hyperlink werden soll muss markiert sein.}
-	\item {Durch klicken des - Icon öffnet sich der Dialog zum Erstellen/Editieren
+	\item {Durch Klicken des Link-Icons öffnet sich der Dialog zum Erstellen/Editieren
 eines Hyperlinks.}
 
 \begin{figure}[!ht]
@@ -1435,7 +1426,7 @@ eines Hyperlinks.}
 	\label{fig:hyperlinkdialog}
 \end{figure}
 
-	\item {Durch klicken auf das -Icon öffnet sich der Durchsuchen-Dialog.}
+	\item {Ein Klick auf das Durchsuchen-Icon öffnet den Durchsuchen-Dialog.}
 	
 	\begin{figure}[!ht]
 	\centering
@@ -1444,9 +1435,8 @@ eines Hyperlinks.}
 	\label{fig:linkerstellendialog}
 \end{figure}
 
-	\item {Das Linkziel kann analog zur Auswahl eines Bildes erstellt werden (Siehe
-Punkt 4.2). Im Feld »Enter a title« kann der gewünschte Linktext, falls
-abweichend vom Linkziel, eingegeben werden.
+	\item {Das Linkziel kann analog zur Auswahl eines Bildes erstellt werden. Im Feld »Enter a title« kann der gewünschte Linktext, falls
+abweichend vom Linkziel, eingegeben werden.}
 
 \begin{Hinweis}Es besteht natürlich nicht nur die Möglichkeit eine URL einzufügen, sondern es
 kann auch auf andere Objekte wie beispielsweise Dateien u.ä. verlinkt werden.
@@ -1496,7 +1486,7 @@ Schritte notwendig.
 
 \begin{enumerate}
 	\item {Der markierte Text bzw. Textausschnitt in MS-Word wird mit Klick auf das
--Icon bzw. mit »Strg + C« kopiert.}
+Copy-Icon bzw. mit »Strg + C« kopiert.}
 	\item {Im WYSIWYG-Editor TinyMCE kann der zuvor kopierte MS-Word-Text über
 das »Einfügen - Icon« bzw. mit »Strg + V« eingefügt werden. (Weiters
 besteht die Möglichkeit, den Text unformatiert oder als Text formatiert
@@ -1535,14 +1525,14 @@ Zeitpunkt an öffentlich sichtbar.
 An der LFU ist XIMS bzw. AxKit so konfiguriert, dass der Site Root »/uniweb«
 öffentlich unter der Adresse \url{http://www.uibk.ac.at/} zu erreichen ist. Insofern spiegeln
 die Locations der XIMS Container unter /uniweb die URLs unter
-\url{http://www.uibk.ac.at/} wider, d.h. Objekte in XIMS unter dem »Pfad«
+\url{http://www.uibk.ac.at/} wieder, d.h. Objekte in XIMS unter dem »Pfad«
 /uniweb/fakultaeten/xxx sind öffentlich (wenn über XIMS veröffentlicht) unter
 \url{http://www.uibk.ac.at/fakultaeten/xxx} verfügbar.
 
 \subsection{Objekte veröffentlichen (Publish)}
 \label{publizieren}
 
-Objekte können durch das Klicken auf das -Icon veröffentlicht werden. Beim
+Objekte können durch das Klicken auf das Publish-Icon veröffentlicht werden. Beim
 erstmaligen Publizieren eines erstellten Objekts erscheint folgendes Dialogfenster,
 das ein »Veröffentlichen« oder ein »Abbrechen« zur Auswahl stellt.
 
@@ -1565,7 +1555,7 @@ Dateisystem vorliegt und somit öffentlich erreichbar ist.
 Wurden bei einem vormals veröffentlichten Objekt Änderungen vorgenommen (siehe
 Punkt \ref{icons}), müssen dessen Inhalte nochmals veröffentlicht
 (»Wiederveröffentlichen« oder »Republish«) werden. Getätigte Änderungen (vor
-dem Wiederveröffentlichen) werden in dem Fall wiederum nur in der XIMSDatenbank
+dem Wiederveröffentlichen) werden in dem Fall wiederum nur in der XIMS-Datenbank
 gespeichert, sind jedoch noch nicht im Dateisystem aktualisiert.
 
 \begin{figure}[!ht]
@@ -1590,7 +1580,7 @@ im Dateisystem des Webservers identisch (siehe Abb. \ref{fig:xims-zusammenspiel}
 
 In bestimmten Fällen ist es gewünscht, veröffentlichte Objekte nicht mehr öffentlich
 zur Verfügung zu stellen. Ein Szenario ist beispielsweise, dass eine PDF-Datei,
-welches zum Download angeboten wurde, nicht mehr öffentlich zur Verfügung
+welche zum Download angeboten wurde, nicht mehr öffentlich zur Verfügung
 stehen soll. Das entsprechende Objekt muss daher aus dem Dateisystem des
 Webservers gelöscht werden. Das geschieht mit Hilfe der Funktion
 »Veröffentlichen rückgängig machen« (Unpublish). Ein Löschen der Datei im
@@ -1663,7 +1653,7 @@ zu lesen, ein anderer Benutzer hingegen kann Objekte editieren bzw. aus dem
 System löschen.
 
 Für jedes einzelne in XIMS verwaltete Objekt sind eigene Zugriffsrechte in einer
-sogenannten Access-Control-List (ACL) gespeichert. Mit einem Klick auf das -Icon
+sogenannten Access-Control-List (ACL) gespeichert. Mit einem Klick auf das Berechtigungen-Icon
 des gewünschten Objekts können bestehende Berechtigungen von Benutzern bzw.
 Rollen gesichtet bzw. verändert werden. Hat ein Benutzer das »GRANT«-Recht
 (Verwaltungsrecht), so darf dieser Benutzer auch bestehende Berechtigungen
@@ -1731,7 +1721,7 @@ Rollenmitglieder aus -- im Falle von UIBK:ALL vermutlich auch sich selbst!
 Um Benutzern bzw. Rollen, die bisher noch keine expliziten Rechte für ein Objekt
 haben, Privilegien zu erteilen, muss der Benutzer bzw. die Rolle zuerst ausfindig
 gemacht werden. Zu diesem Zweck bietet XIMS in der Berechtigungsvergabe die
-Möglichkeit an, nach Benutzern bzw. Rollen zu suchen.
+Möglichkeit nach Benutzern bzw. Rollen zu suchen.
 
 \begin{figure}[!ht]
 	\centering
@@ -1811,7 +1801,7 @@ rückgängig machen«; siehe Punkt \ref{publizieren}) auszuführen.
 \label{verwrechte}
 
 Besitzen Benutzer bzw. Rollen das Verwaltungsrecht (Grant Privilege), sind diese in
-der Lage, anderen Benutzern bzw. Rollen explizite Privilegien für Objekte
+der Lage anderen Benutzern bzw. Rollen explizite Privilegien für Objekte
 einzuräumen, d.h. Benutzer bzw. Rollen mit Verwaltungsrecht können Privilegien an
 andere Benutzer bzw. Rollen vergeben.
 
@@ -1861,15 +1851,15 @@ aktuelle Benutzer über das »Create«-Recht für das entsprechende Dokument verfügt
 \textbf{Interne Links}
 
 Für interne Links muss der Zielpfad im Eingabefeld Location relativ zum Dokument
-eingegeben werden, d.h. ein Verweis auf ein Dokument mit der Location
-»hallo.html«, welches sich im selben Container als das Dokument zu dem der Link
-erstellt wird befindet, ist als Location für den »Link zum Dokument« hallo.html
+eingegeben werden. D.h. für einen Verweis auf ein Dokument mit der Location
+»hallo.html« (welches sich im selben Container wie das Dokument zu dem der Link
+erstellt wird befindet) ist als Location für den »Link zum Dokument« »hallo.html«
 einzugeben.
 
 \textbf{Externe Links}
 
 Für externe »Links zum Dokument« ist es zwingend erforderlich die vollständige URI
-im Eingabefeld Location mit vorangestelltem http:// einzugeben (z.B.:
+im Eingabefeld »Location« mit vorangestelltem http:// einzugeben (z.B.:
 \url{http://www.orf.at}).
 Bezüglich einer Beschreibung der Eingabefelder »Titel«, »Schlagworte«,
 »Zusammenfassung«, »Objekt als neu markieren« und »Zugriffsrechte
@@ -1887,14 +1877,13 @@ Ein Klick auf das »Bearbeiten-Icon« öffnet die Editiermaske zum Verändern eines
 	\label{fig:editdokumentlink}
 \end{figure}
 
-Weiters können für jeden »Link zum Dokument« die verschiedenen Rechte, die XIMS
-anbietet, vergeben bzw. geändert werden. Die Löschen-Funktion (rotes Kreuz)
+Weiters können für jeden »Link zum Dokument« verschiedenen Rechte vergeben bzw. verändert werden. Die Löschen-Funktion (rotes Kreuz)
 ermöglicht das Löschen von »Links zum Dokument«.
 
 \subsection{DepartmentRoot Navigation}
 \label{depnav}
 
-Usability-Studien haben gezeigt, dass Benutzer, die Navigation auf Webseiten am
+Usability-Studien haben gezeigt, dass Benutzer die Navigation auf Webseiten am
 oberen bzw. im linken Bereich des Browser-Fensters suchen. Aus diesem Grund ist
 die grundlegende Navigation des LFU-Designs auch auf diese Erkenntnis
 ausgerichtet. Neue Besucher auf Department Root Seiten werden die Department
@@ -1906,7 +1895,7 @@ schnelleren Auffinden relevanter bzw. häufig veränderter Inhalte dienen.
 \label{deplinks}
 
 Department Links stellen die grundsätzliche Navigation der jeweiligen
-Organisationseinheit dar. Durch diese Navigation soll es möglich sein, durch die
+Organisationseinheit dar. Diese Navigation ermöglicht es, durch die
 wichtigsten Bereiche bzw. Seiten navigieren zu können.
 Zur Erstellung der Department Links sind im Wesentlichen folgende Schritte
 notwendig:
@@ -1979,7 +1968,7 @@ Ordners.}
 \subsubsection{Department Speziallinks}
 \label{depspeclinks}
 
-Die Erstellung der Department Speziallinks erfolgt analog zum Erstellen der
+Das Erstellen der Department Speziallinks erfolgt analog zum Erstellen der
 Department Links. Der Unterschied beschränkt sich auf die unterschiedliche
 Bezeichnung der Location des Department-Speziallinks-Verzeichnisses und des
 zugehörigen Portlets. Insofern wird auf Punkt \ref{deplinks} verwiesen. Für die Department
@@ -1996,8 +1985,7 @@ Webauftritts einer Organisationseinheit zusätzlich zu betonen und sich vom
 Standard-Design ein wenig zu differenzieren.
 Das Department Image wird ähnlich wie die Department Links bzw. das Department
 Links Portlet dem Department Root zugewiesen.
-Ein Klick auf das - Icon des Department Root Containers öffnet folgendes
-Fenster:
+Abbildung \ref{fig:} zeigt wie ein Department Image einem DepartmentRoot zugewiesen werden kann.
 
 \begin{figure}[!ht]
 	\centering
@@ -2040,8 +2028,8 @@ wechseln zu können, müssen Sie die Inhalte in deutsch und in englisch vorbereite
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/sprachewechseln.png}
-	\caption{Wechseln der Sprache ist nur möglich, sofern das Dokument in englisch und
-deutsch vorhanden ist}
+	\caption{Das Wechseln der Sprache ist nur möglich, wenn das Dokument in englisch und
+deutsch vorhanden ist!}
 	\label{fig:sprachewechseln}
 \end{figure}
 
@@ -2055,22 +2043,20 @@ englische Pendant dazu »sfs.html.en« heißen.
 \begin{Hinweis}Prinzipiell funktioniert die Bereitstellung von Index-Dokumenten in zwei Sprachen
 auf die gleiche Weise (z.B. index.html.de). Jedoch ist dabei darauf zu
 achten, dass die Option »Verhindere Autoindex beim
-veröffentlichen« für die entsprechenden Container-Objekte angekreuzt sein
+Veröffentlichen« für die entsprechenden Container-Objekte angekreuzt sein
 muss, da andernfalls bei Fehlschlagen der Language-Negotiation der von XIMS
-automatisch erzeugte Dokumenten-Index dargestellt wird (siehe auch \ref{autoindex}).
+automatisch erzeugte Dokumenten-Index dargestellt wird (siehe auch Punkt \ref{autoindex}).
 \end{Hinweis}
 
 \paragraph{SimpleDocBook (sDocBookXML) Dokumente zweisprachig anbieten}
 
 Zusätzlich zu Document-Objekten (».html«-Endung) können auch sDocBookXMLObjekte
 (».sdbk«-Endung) in zwei Sprachvarianten (Deutsch/Englisch) angeboten
-werden. Das Prozedere um dies zu erreichen ist sehr ähnlich dem des Erstellens
-von zweisprachigen Dokumenten. Das Wechseln zwischen der Sprachen erfolgt
-ebenfalls wie bei »normalen« Dokumenten über den »Deutsch/English«-Schalter
-rechts oben.
+werden. Das Prozedere ist dem des Erstellens von zweisprachigen Dokumenten sehr ähnlich. Das Wechseln zwischen den Sprachen erfolgt
+ebenfalls wie bei »normalen« Dokumenten über den »Deutsch/English«-Schalter am oberen, rechten Bildschirmrand.
 
-Die Location eines sDocBookXML-Objekts muss ebenso wie bei Dokumenten für
-das deutsche und englische SimpleDocBook Dokument prinzipiell identisch sein. Die
+Die Location eines sDocBookXML-Objekts muss wie bei Dokumenten für
+das deutsche und englische SimpleDocBook Dokument identisch sein. Die
 Unterscheidung zwischen den Sprachen geschieht wiederum durch besondere
 Dateiendungen (».sdbk.de« bzw. ».sdbk.en«), d.h. sDocBookXML-Objekte in
 deutscher Sprache bekommen das ».sdbk.de«-Suffix bzw. sDocBookXML-Objekte in
@@ -2086,12 +2072,8 @@ basieren, ist bei der Erstellung eines deutschen SimpleDocBooks auf folgendes
 zu achten:
 Die offizielle DocBook XSL Distribution verwendet bei keiner expliziten
 Spezifikation der Inhaltssprache über das »lang« Attribut des »article«
-Elements standardmäßig die Sprache Englisch. So werden lokalisierte
-Überschriften bzw. Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
-»Inhaltsverzeichnis«) entsprechend ohne explizite Sprachangabe in Englisch
-präsentiert. Aus diesem Grund ist in jedem Fall, ob nun in einer englischen
-Version vorhanden oder nicht, bei einem SimpleDocBook Dokument in Deutsch
-das öffnende Wurzelelement »article« zwingend folgendermaßen
+Elements standardmäßig die Sprache Englisch. So werden Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
+»Inhaltsverzeichnis«) in Englisch präsentiert, wenn keine explizite Sprachvorgabe erfolgt. Es empfiehlt sich daher bei einem SimpleDocBook Dokument in deutscher Sprache das öffnende Wurzelelement »article« zwingend folgendermaßen
 auszubilden: <article lang="de">. Analog ist es empfehlenswert für
 englische SimpleDocBooks <article lang="en"> zu verwenden.
 Auf diese Weise wechseln im Falle einer Sprachumschaltung Standardtexte
@@ -2101,13 +2083,12 @@ ebenfalls in die entsprechende Sprache.
 \paragraph{»Zweisprachigkeit« von Department Links}
 
 Wenn Sie Homepage-Inhalte Ihres Instituts bzw. Ihrer Organisationseinheit in zwei
-Sprachen (Deutsch und Englisch) anbieten wollen, besteht die Möglichkeit, eine
+Sprachen (Deutsch und Englisch) anbieten wollen, besteht die Möglichkeit eine
 »zweisprachige« Navigation (Department Links) zu erstellen.
 
 Die folgenden Informationen für die Erstellung einer zusätzlichen englischsprachigen
 Navigation für Ihre XIMS-basierte Homepage setzen das Wissen über die
-Handhabung von »Department Links« voraus. Hier werden nur die zusätzlichen
-Anleitungsschritte für zusätzliche Department Links in englisch erläutert. Für
+Handhabung von »Department Links« voraus. In diesem Abschnitt werden nur die Anleitungsschritte für die zusätzlichen englischen Department Links erläutert. Für
 grundlegende Informationen zum Thema Department Links wird auf Punkt \ref{deplinks} verwiesen.
 Ihre Homepage verfügt bereits über ein departmentlinks-Verzeichnis (inklusive
 URLLinks) und ein Department Links-Portlet. Nun erstellen Sie für die
@@ -2124,7 +2105,7 @@ URLLinks erstellt werden}
 	\label{fig:deplinks_en}
 \end{figure}
 
-Dem Department Root des Instituts bzw. der Organisationseinheit kann nun das
+Dem Department Root der Organisationseinheit kann nun das
 zweite Portlet »departmentlinks\_portlet\_en« (welches auf das Verzeichnis
 »departmentlinks\_en« zeigt) zugewiesen werden.
 
@@ -2161,8 +2142,7 @@ englische Version (falls vorhanden) präsentiert.}
 \subsection{Erstellen weiterer Objekte}
 \label{weitereobjekte}
 
-Verfügt man über die notwendigen Rechte, die über die des Standardusers
-hinausgehen, hat man zusätzlich auch die Möglichkeit weitere Objekte zu erstellen:
+Verfügt man über Rechte, die über die des Standardbenutzers hinausgehen, hat man zusätzlich auch die Möglichkeit folgende weitere Objekte zu erstellen:
 \begin{itemize}
 \item {\textbf{NewsItem}}
 \item	{\textbf{DepartmentRoot}: Der Begriff »Department Root« beschreibt die Startseite
@@ -2224,9 +2204,8 @@ Zwischenablage eingefügt.
 \paragraph{Wie kann ich den WYSIWYG-Editor wechseln?}
 
 Beim Erstellen von neuen Dokumenten bzw. beim Editieren von bestehenden
-Dokumenten findet man im oberen Bereich des Browserfensters folgende
-sinngemäße Zeile: »Erstelle Document 'XYZ' in '/uniweb/test' mit ...« (siehe
-Abb. \ref{fig:dokumentwysiwyg}). Dort ist auch das Auswahlfeld für die Selektion des Editors zu finden.
+Dokumenten findet man im oberen Bereich des Browserfensters folgende Zeile: »Erstelle Dokument 'XYZ' in '/uniweb/test' mit ...« (siehe
+Abb. \ref{fig:dokumentwysiwyg}). Dort ist auch das Auswahlfeld für den Editor zu finden.
 Sofern das Dokument nicht bereits verändert wurde, kann durch Auswählen des
 entsprechenden Editors zu diesem gewechselt werden.
 
@@ -2251,13 +2230,13 @@ Tastenkombination »Shift+Enter«. (vgl.: MSWord)
 oder Formatierungen anders dargestellt}
 
 Das liegt mit hoher Wahrscheinlichkeit an den Formatvorlagen, bzw.
--vorlagenzuweisungen im Quelldokument. formatvorlage. Wenn z.B. die
+-vorlagenzuweisungen im Quelldokument. Wenn z.B. die
 Formatvorlage »Plaintext« im Quelldokument nicht mit der Standardschriftart
 »Courier« dargestellt wird, kommt es in der XIMS-Version zu optischen
-Diskrepanzen, da dort für die jeweilige Formatvorlage die Standardschriftart
+Diskrepanzen, weil dort für die jeweilige Formatvorlage die Standardschriftart
 verwendet wird.
 
-Behebung des Problems:
+Lösung:
 In den Quelldokumenten Standardformatvorlagen bzw. -formatvorlagenwerte
 verwenden.
 
