@@ -46,7 +46,8 @@
 </xsl:template>
 
 <xsl:template name="scripts">
-    <script type="text/javascript">
+  <xsl:call-template name="mk-inline-js">
+     <xsl:with-param name="code">
         <![CDATA[
         var agt = navigator.userAgent.toLowerCase();
         var is_ie = ((agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1));
@@ -98,7 +99,8 @@
 	    if (tinyMCEPopup) tinyMCEPopup.close();
 	    else window.close();
 	}
-    </script>
+    </xsl:with-param>
+  </xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>

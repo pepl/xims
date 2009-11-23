@@ -249,4 +249,5 @@
 <Include_images>Include images</Include_images>
 <Preview>Preview</Preview>
 <Browse_feed>Browse for RSS-Feed.</Browse_feed>
+<warn_big_image>Images of this file size are in few cases expedient in webpages.</warn_big_image>
 </l>

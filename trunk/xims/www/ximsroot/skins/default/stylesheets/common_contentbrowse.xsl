@@ -30,12 +30,14 @@
       </xsl:choose>
     - XIMS</title>
     <xsl:call-template name="css"/>
-    <script type="text/javascript">
+    <xsl:call-template name="mk-inline-js">
+    <xsl:with-param name="code"> 
     function storeBack(target) {
         window.opener.document.<xsl:value-of select="$sbfield"/>.value=target;
         window.close();
     }
-
+    </xsl:with-param>
+    </xsl:call-template>
     </script>
   </head>
   <body>

@@ -38,7 +38,7 @@
   </head>
   <body onload="createThumbs();">
     <p align="right"><a href="#" onclick="popupClose()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
-    <p><xsl:call-template name="selectform"/> </p>
+    <xsl:call-template name="selectform"/>
     <xsl:call-template name="script_bottom"/>
   </body>
 </html>
@@ -56,17 +56,25 @@
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
     <tr><td>
-        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" name = "spacer" width="{10*@level}" height="10"/>
+        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" class="spacer" width="{10*@level}" height="10"/>
         <xsl:choose>
             <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
-                <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" name="icon" width="20" height="18"/>
+                <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" class="icon" alt="" width="20" height="18"/>
                 <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};editorname={$editorname}"><xsl:value-of select="title"/></a>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:if test="/document/object_types/object_type[@id=$objecttype]/name = $otfilter">
-                    <img src="{$xims_box}{$goxims_content}{$target_path}/{location}" width="50" height="50"/>
-                    <img src="{$ximsroot}images/spacer_white.gif" name="spacer" width="20" height="10"/>
+                    <img src="{$xims_box}{$goxims_content}{$target_path}/{location}" width="50" alt="" title="{location}" height="50"/>
+                    <img src="{$ximsroot}images/spacer_white.gif" class="spacer" alt="" width="20" height="10"/>
                     <xsl:value-of select="title"/>
+                    <xsl:text>,&#160;</xsl:text>
+                    <span>
+                      <xsl:if test="number(content_length) &gt; $big_image_threshold">
+		        <xsl:attribute name="class">warning</xsl:attribute>
+                        <xsl:attribute name="title"><xsl:value-of select="$i18n/l/warn_big_image"/></xsl:attribute>
+                      </xsl:if>
+                    <xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>KiB.
+                    </span>
                     (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onclick="storeBack('{$target_path_nosite}/{location}', '{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
                 </xsl:if>
             </xsl:otherwise>
@@ -75,9 +83,9 @@
 </xsl:template>
 
 <xsl:template name="scripts">
-    <script type="text/javascript">
+  <xsl:call-template name="mk-inline-js">
+    <xsl:with-param name="code">
       <![CDATA[
-
 function popupClose() {
     if (tinyMCEPopup) tinyMCEPopup.close();
     else window.close();
@@ -120,7 +128,7 @@ function insertfile() {
 
         function createThumbs() {
             for (i=0;i< document.images.length;i++) {
-                if ((document.images[i].name != "spacer")&&(document.images[i].name != "icon")){
+                if ((document.images[i].className != "spacer")&&(document.images[i].className != "icon")){
                     if (isIexplore()) {
                         imgWidth = document.images[i].width;
                         imgHeigth = document.images[i].height;
@@ -137,7 +145,8 @@ function insertfile() {
         return false;
         }
       ]]>
-    </script>
+    </xsl:with-param>
+  </xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>
