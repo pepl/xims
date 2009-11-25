@@ -53,6 +53,7 @@
 			</h1>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="trytobalance">
 		<div id="tr-trytobal">
 			<fieldset>
@@ -70,11 +71,12 @@
 					<xsl:value-of select="$i18n/l/No"/>
 				</label>
 			</fieldset>
-		</div>
+		
 		<!-- set checked attribute for trytobalance-input-element according to cookie -->
 		<script type="text/javascript">
 			<xsl:text>selTryToBalance(document.eform.trytobalance, readCookie('xims_trytobalancewell'));</xsl:text>
 		</script>
+		</div>
 	</xsl:template>
 	
 	<xsl:template name="setdefaulteditor">
