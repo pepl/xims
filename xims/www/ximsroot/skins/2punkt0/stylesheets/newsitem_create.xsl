@@ -43,10 +43,11 @@
                     <xsl:call-template name="tr-body-create">
                         <xsl:with-param name="with_origbody" select="'yes'"/>
                     </xsl:call-template>
-
+										<div>
                             <xsl:call-template name="testbodysxml"/>
                             <xsl:call-template name="prettyprint"/>
-
+                            &#160;
+										</div>
                     <xsl:call-template name="trytobalance"/>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-valid_from"/>
