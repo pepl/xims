@@ -18,29 +18,10 @@
 
 <xsl:template match="/document/context/object">
 <html>
-  <head>
-    <title><xsl:value-of select="$i18n/l/Browse_for"/>
-      <xsl:choose>
-        <xsl:when test="$otfilter != ''">
-          '<xsl:value-of select="$otfilter"/>'
-        </xsl:when>
-        <xsl:otherwise>
-          '<xsl:value-of select="$i18n/l/Object"/>'
-        </xsl:otherwise>
-      </xsl:choose>
-    - XIMS</title>
-    <xsl:call-template name="css"/>
-    <script type="text/javascript">
-    function storeBack(target) {
-        window.opener.document.<xsl:value-of select="$sbfield"/>.value=target;
-        window.close();
-    }
-
-    </script>
-  </head>
+	<xsl:call-template name="head_default"/>
   <body>
     <p align="right"><a href="#" onclick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
-    <p>
+	<div id="content-container">
     <form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
         <p>
             <xsl:value-of select="$i18n/l/Browse_to"/>:
@@ -56,11 +37,31 @@
         </p>
         <input type="hidden" name="id" value="{@id}"/>
     </form>
-    </p>
-    <xsl:call-template name="script_bottom"/>
+</div>
+        <xsl:call-template name="mk-inline-js">
+			<xsl:with-param name="code">
+    function storeBack(target) {
+        window.opener.document.<xsl:value-of select="$sbfield"/>.value=target;
+        window.close();
+    }
+			</xsl:with-param>
+    </xsl:call-template>
   </body>
 
 </html>
+</xsl:template>
+
+<xsl:template name="title">
+<xsl:value-of select="$i18n/l/Browse_for"/>
+      <xsl:choose>
+        <xsl:when test="$otfilter != ''">
+          '<xsl:value-of select="$otfilter"/>'
+        </xsl:when>
+        <xsl:otherwise>
+          '<xsl:value-of select="$i18n/l/Object"/>'
+        </xsl:otherwise>
+      </xsl:choose>
+    - XIMS
 </xsl:template>
 
 <xsl:template match="targetparents/object|target/object">

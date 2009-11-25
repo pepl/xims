@@ -339,6 +339,10 @@
 <ObjectHasDependencies>Das Objekt hat folgenden Abhängigkeiten und Sie haben daher nicht die erforderlichen Rechte zum Veröffentlichen des Objekts</ObjectHasDependencies>
 <ObjSkipping>Diese Objekte werden während des Veröffentlichens übersprungen.</ObjSkipping>
 <HasAutoindex>Die Autoindexoption ist für diesen Container gesetzt.</HasAutoindex>
+<Path_to_img>Pfad zum Bild</Path_to_img>
+<Search_objTree_img>Oder den XIMS Objektbaum nach einem Bild durchsuchen</Search_objTree_img>
+<Search_objTree_obj>Oder den XIMS Objektbaum nach einem Objekt durchsuchen</Search_objTree_obj>
+<Opt_sel_link>Link-Ziel (optional)</Opt_sel_link>
 <!-- start reflib / vlib-->
 <Assign>Zuweisen</Assign>
 <Insert>Einfügen</Insert>
