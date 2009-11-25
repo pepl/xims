@@ -36,10 +36,11 @@
               <xsl:call-template name="tr-body-edit">
                 <xsl:with-param name="with_origbody" select="'yes'"/>
               </xsl:call-template>
-              
-                  <xsl:call-template name="testbodysxml"/>
-                  <xsl:call-template name="prettyprint"/>
-               
+              <div>
+                            <xsl:call-template name="testbodysxml"/>
+                            <xsl:call-template name="prettyprint"/>
+                            &#160;
+										</div>
               <xsl:call-template name="trytobalance"/>
               <xsl:call-template name="tr-keywords-edit"/>
               <xsl:call-template name="tr-abstract-edit"/>
