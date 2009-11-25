@@ -14,7 +14,9 @@
 	</xsl:variable>
 	<xsl:template match="/document/context/object">
 		<html>
-			<xsl:call-template name="head_default"/>
+			<xsl:call-template name="head_default">
+				<xsl:with-param name="mode">edit</xsl:with-param>
+			</xsl:call-template>
 			<body onload="timeoutWYSIWYGChange(2);">
 				<xsl:call-template name="header"/>
 				<div class="edit">
@@ -47,14 +49,16 @@
 						</xsl:call-template>
 					</div>
 				</div>
-				<xsl:call-template name="script_bottom"/>
+				<!--<xsl:call-template name="script_bottom"/>-->
 				<xsl:call-template name="tinymce_scripts"/>
 			</body>
 		</html>
 	</xsl:template>
-	<xsl:template name="title">
+	
+<!--	<xsl:template name="title">
 		<xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
-    </xsl:template>
+  </xsl:template>-->
+    
 	<xsl:template name="tr-body-edit_tinymce">
 		<div>
 			<label for="body">Body</label>
