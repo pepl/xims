@@ -38,7 +38,6 @@
     }
     </xsl:with-param>
     </xsl:call-template>
-    </script>
   </head>
   <body>
     <p align="right"><a href="#" onclick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
