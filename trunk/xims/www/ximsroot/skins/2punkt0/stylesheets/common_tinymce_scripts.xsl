@@ -10,38 +10,36 @@
 	<xsl:template name="tinymce_scripts">
 		<xsl:call-template name="tinymce_load" />
 		<!-- <xsl:call-template name="jqtinymce_load" /> -->
-		<script language="javascript" type="text/javascript">
-			var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'tinymce/jscripts/tiny_mce/tiny_mce.js')" />';
-			var origbody = null;
-			var editor = null;
-			// language
-			var lang = '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)" />';
-			// document_base_url
-			var baseUrl = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')" />';
-			// filebrowse browseurl
-			var brUrl = '<xsl:value-of select="concat( $xims_box,$goxims_content,'?id=',/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id,'&amp;contentbrowse=1&amp;to=',/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id,'&amp;')" />';
-			// content_css
-			var css = '<xsl:choose>
-				<xsl:when test="css_id != ''">
-					<xsl:value-of select="concat($xims_box,$goxims_content,css_id,'?plain=1')" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="concat($ximsroot,$defaultcss)" />
-				</xsl:otherwise>
-			</xsl:choose>';
-		</script>
-		<!--
-			###################### tinymce.init() MOVED TO tinymce_script.js
-			###############################
-		-->
+		<xsl:call-template name="mk-inline-js">
+			<xsl:with-param name="code">
+					var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'tinymce/jscripts/tiny_mce/tiny_mce.js')" />';
+					var origbody = null;
+					var editor = null;
+					// language
+					var lang = '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)" />';
+					// document_base_url
+					var baseUrl = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path,'/')" />';
+					// filebrowse browseurl
+					var brUrl = '<xsl:value-of select="concat( $xims_box,$goxims_content,'?id=',/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id,'&amp;contentbrowse=1&amp;to=',/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id,'&amp;')" />';
+					// content_css
+					var css = '<xsl:choose>
+						<xsl:when test="css_id != ''">
+							<xsl:value-of select="concat($xims_box,$goxims_content,css_id,'?plain=1')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($ximsroot,$defaultcss)" />
+						</xsl:otherwise>
+					</xsl:choose>';			
+			</xsl:with-param>
+		</xsl:call-template>
 
-		<script language="javascript" type="text/javascript"
-			src="{$ximsroot}scripts/tinymce_script.js"></script>
+		<script language="javascript" type="text/javascript" src="{$ximsroot}scripts/tinymce_script.js"></script>
 	</xsl:template>
 
 
 	<xsl:template name="jsorigbody">
-		<script type="text/javascript">
+		<xsl:call-template name="mk-inline-js">
+			<xsl:with-param name="code">
 			if (document.readyState != 'complete') {
 				if (window.tinyMCE) {
 					//var f = function() { origbody = window.tinyMCE.getContent(); }
@@ -60,17 +58,16 @@
 			else {
 				origbody = tinyMCE.get('body').getContent();
 			}
-    </script>
+    </xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 	<!-- <xsl:template name="jqtinymce_load">
 		<script language="javascript" type="text/javascript"
 			src="{$ximsroot}tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
 	</xsl:template> -->
 	<xsl:template name="tinymce_load">
-		<script language="javascript" type="text/javascript"
-			src="{$ximsroot}tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
-		<script language="javascript" type="text/javascript"
-			src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js" />	
+		<script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
+		<script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js" />	
 	</xsl:template>
 	<xsl:template name="tinymce_simple">
 		<script language="javascript" type="text/javascript">
