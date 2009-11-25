@@ -152,7 +152,6 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</xsl:if>
 		<input type="submit" name="store" value="{$i18n/l/save}" class="control hidden" accesskey="S"/>
 	</xsl:template>
-	
 	<xsl:template name="saveedit">
 		<input type="hidden" name="id" value="{@id}"/>
 		<xsl:if test="/document/object_types/object_type[@id=/document/context/object/object_type_id]/redir_to_self='0'">
@@ -161,7 +160,6 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 		</xsl:if>
 		<input type="submit" name="store" value="{$i18n/l/save}" class="control hidden" accesskey="S"/>
 	</xsl:template>
-	
 	<xsl:template name="grantowneronly">
 		<div id="tr-grantowneronly">
 			<fieldset>
@@ -1239,7 +1237,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 	<xsl:template name="testbodysxml">
 		<xsl:call-template name="wfcheckjs"/>
 		<a href="javascript:void()" onclick="return wfcheck();">
-			<img src="{$skimages}option_wfcheck.png" border="0" alt="{$i18n/l/Test_body_xml}" title="{$i18n/l/Test_body_xml}" align="left" width="32" height="19"/>
+			<img src="{$skimages}option_wfcheck.png" alt="{$i18n/l/Test_body_xml}" title="{$i18n/l/Test_body_xml}" width="32" height="19"/>
 		</a>
 	</xsl:template>
 	<xsl:template name="prettyprint">
@@ -1248,7 +1246,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			<xsl:with-param name="ppmethod" select="$ppmethod"/>
 		</xsl:call-template>
 		<a href="javascript:void()" onclick="return prettyprint();">
-			<img src="{$skimages}option_prettyprint.png" border="0" alt="{$i18n/l/Prettyprint}" title="{$i18n/l/Prettyprint}" align="left" width="32" height="19"/>
+			<img src="{$skimages}option_prettyprint.png" alt="{$i18n/l/Prettyprint}" title="{$i18n/l/Prettyprint}" width="32" height="19"/>
 		</a>
 	</xsl:template>
 	<xsl:template name="xmlhttpjs">
@@ -1341,6 +1339,7 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			</td>
 		</tr>
 	</xsl:template>
+	
 	<xsl:template name="mk-tr-checkbox">
 		<xsl:param name="title-i18n" select="''"/>
 		<xsl:param name="title" select="$title-i18n"/>
@@ -1368,6 +1367,17 @@ document.write('<button class="ui-state-default ui-corner-all fg-button" type="s
 			</td>
 		</tr>
 	</xsl:template>
+	
+	  <xsl:template name="mk-inline-js">
+    <xsl:param name="code"/>
+
+    <script type="text/javascript">
+      <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+      <xsl:value-of disable-output-escaping="yes" select="$code"/> 
+      <xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
+    </script>
+  </xsl:template>
+  
 	<!--	Templates from stylesheets/common.xsl-->
 	<xsl:template name="head_default">
 		<xsl:param name="mode"/>
