@@ -18,75 +18,6 @@
 	<xsl:call-template name="tr-leadimage">
 		<xsl:with-param name="mode">create</xsl:with-param>
 	</xsl:call-template>
-	
-	<!--    <tr>
-        <td valign="top" colspan="3">
-            <xsl:value-of select="$i18n/l/Lead"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
-            <br />
-            <textarea tabindex="25" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)"><xsl:text>&#160;</xsl:text></textarea>
-            <script type="text/javascript">document.getElementsByName("abstract")[0].value = '';</script>
-            <xsl:text>&#160;</xsl:text><span id="charcount"><xsl:text>&#160;</xsl:text></span>
-            <xsl:call-template name="charcountcheck"/>
-        </td>
-    </tr>
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n/l/Image"/></td>
-        <td colspan="2">
-            <input tabindex="26" type="file" name="imagefile" size="40" class="text"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
-      </td>
-    </tr>
-    <tr>
-        <td valign="top">
-            <xsl:value-of select="$i18n/l/Image"/>
-            <xsl:text>&#160;</xsl:text>
-            <xsl:value-of select="$i18n/l/Title"/>
-        </td>
-        <td colspan="2">
-            <input tabindex="27" type="text" name="imagetitle" size="40" class="text"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('ImageTitle')" class="doclink">(?)</a>
-      </td>
-    </tr>
-    <tr>
-        <td valign="top" colspan="3">
-            <xsl:value-of select="$i18n/l/Image"/>
-            <xsl:text>&#160;</xsl:text>
-            <xsl:value-of select="$i18n/l/Description"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('ImageDescription')" class="doclink">(?)</a>
-            <br/>
-            <textarea tabindex="28" name="imagedescription" rows="2" cols="100" class="text"><xsl:text>&#160;</xsl:text></textarea>
-            <script type="text/javascript">document.getElementsByName("imagedescription")[0].value = '';</script>
-      </td>
-    </tr>
-<tr>
-         <td valign="top">
-            <xsl:value-of select="$i18n/l/Image"/>
-            <xsl:text>&#160;</xsl:text>
-            <xsl:value-of select="$i18n/l/target"/>
-         </td>
-        <td colspan="2">
-            <input tabindex="29" type="text" name="imagefolder" size="40" class="text">
-         
-                <xsl:attribute name="value">
-                    <xsl:for-each select="/document/context/object/parents/object[@document_id != 1]">
-                        <xsl:text>/</xsl:text>
-                        <xsl:value-of select="location"/>
-                    </xsl:for-each><xsl:text>/images</xsl:text>
-                </xsl:attribute>
-            </input>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};to={$parentid};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder')" class="doclink"><xsl:value-of select="$i18n/l/browse_target"/></a>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('NewsItemImage')" class="doclink">(?)</a>
-        </td>
-    </tr>
-    -->
-
 </xsl:template>
 
 <xsl:template name="tr-leadimage">
@@ -100,7 +31,7 @@
 				<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
 			<br/>
-			<textarea id="input-lead" name="lead" rows="3" cols="71" onKeyUp="keyup(this)">
+			<textarea id="input-lead" name="lead" rows="3" cols="79" onkeyup="keyup(this)">
 				<xsl:apply-templates select="abstract"/>
 			</textarea>
 			<script type="text/javascript">document.getElementsByName("lead")[0].value = '';</script>
@@ -134,7 +65,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('ImageDescription')" class="doclink">(?)</a>
             <br/>
-            <textarea name="imagedescription" rows="3" cols="71" class="text" id="input-image-description"><xsl:text>&#160;</xsl:text></textarea>
+            <textarea name="imagedescription" rows="3" cols="79" class="text" id="input-image-description"><xsl:text>&#160;</xsl:text></textarea>
             <script type="text/javascript">document.getElementsByName("imagedescription")[0].value = '';</script>
       </div>
 
@@ -167,61 +98,18 @@
 <xsl:call-template name="tr-leadimage">
 <xsl:with-param name="mode">edit</xsl:with-param>
 </xsl:call-template>
-<!--    <tr>
-        <td valign="top" colspan="3">
-            <xsl:value-of select="$i18n/l/Lead"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
-            <br />
-            <textarea tabindex="25" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)">
-            <xsl:choose>
-                <xsl:when test="string-length(abstract) &gt; 0">
-                    <xsl:apply-templates select="abstract"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:text>&#160;</xsl:text>
-                </xsl:otherwise>
-            </xsl:choose>
-            </textarea>
-            <xsl:text>&#160;</xsl:text><span id="charcount"><xsl:text>&#160;</xsl:text></span>
-            <xsl:call-template name="charcountcheck"/>
-        </td>
-    </tr>
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n/l/Image"/></td>
-        <td colspan="2">
-            <input tabindex="26" type="text" name="image" size="40" value="{image_id}" class="text"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={$parentid};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
-        </td>
-    </tr>-->
 </xsl:template>
 
 <xsl:template name="charcountcheck">
     <script type="text/javascript">
-        maxKeys = 390; // Should this be a config.xsl value?
-
-        function txtshow( txt2show ) {
-            var viewer = document.getElementById("charcount");
-            viewer.innerHTML=txt2show;
-        }
-
-        function keyup( what ) {
-            var str = new String( what.value );
-            var len = str.length;
-            var showstr = len + " <xsl:value-of select="$i18n_news/l/of"/> " + maxKeys + " <xsl:value-of select="$i18n_news/l/Characters_entered"/>";
-            if ( len &gt; maxKeys ) {
-                alert( "<xsl:value-of select="$i18n_news/l/Charlimit_reached"/>" );
-                what.value = what.value.substring(0,maxKeys);
-                return false;
-            }
-            txtshow( showstr );
-        }
-
-        keyup( document.getElementsByName("abstract")[0] );
+    var str_of  = '<xsl:value-of select="$i18n_news/l/of"/>';
+    var str_entered = '<xsl:value-of select="$i18n_news/l/Characters_entered"/>';
+    var str_charlimit  = '<xsl:value-of select="$i18n_news/l/Charlimit_reached"/>';
+    var maxKeys = 390; // Should this be a config.xsl value?
+    
+    //keyup( document.getElementsByName("abstract")[0] );
     </script>
+
 </xsl:template>
 
 </xsl:stylesheet>

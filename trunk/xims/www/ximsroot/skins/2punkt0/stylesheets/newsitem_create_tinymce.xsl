@@ -62,12 +62,4 @@
 </html>
 </xsl:template>
 
-<!--<xsl:template name="title">
-    <xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
-</xsl:template>
-
-<xsl:template name="script_head">
-    <xsl:call-template name="jscalendar_scripts"/>
-</xsl:template>-->
-
 </xsl:stylesheet>
