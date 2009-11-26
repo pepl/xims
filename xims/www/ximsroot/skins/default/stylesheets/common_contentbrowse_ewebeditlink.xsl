@@ -35,7 +35,6 @@
         </xsl:if>
     </xsl:variable>
     <tr><td>
-        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{10*@level}" height="10"/>
         <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>
         <xsl:choose>
             <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
@@ -52,7 +51,8 @@
 </xsl:template>
 
 <xsl:template name="scripts">
-    <script type="text/javascript">
+  <xsl:call-template name="mk-inline-js">
+    <xsl:with-param name="code"> 
       <![CDATA[
         var objQuery = new Object();
         var selectedText;
@@ -135,7 +135,8 @@
             document.selectform.linktext.value=linktext;
         }
       ]]>
-    </script>
+    </xsl:with-param>
+  </xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>
