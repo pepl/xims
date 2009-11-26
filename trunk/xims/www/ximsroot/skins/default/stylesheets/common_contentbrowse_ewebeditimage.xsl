@@ -34,9 +34,7 @@
   </head>
   <body>
     <p align="right"><a href="#" onclick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
-    <p>
-        <xsl:call-template name="selectform"/>
-    </p>
+    <xsl:call-template name="selectform"/>
     <xsl:call-template name="script_bottom"/>
   </body>
 </html>
@@ -54,7 +52,6 @@
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
     <tr><td>
-        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" width="{10*@level}" height="10"/>
         <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>
             <xsl:choose>
                 <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
@@ -65,13 +62,22 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="$otfilter = '' or /document/object_types/object_type[@id=$objecttype]/name = $otfilter">
+            <xsl:text>,&#160;</xsl:text>
+                    <span>
+                      <xsl:if test="number(content_length) &gt; $big_image_threshold">
+                        <xsl:attribute name="style">background:yellow</xsl:attribute>
+                        <xsl:attribute name="title"><xsl:value-of select="$i18n/l/warn_big_image"/></xsl:attribute>
+                      </xsl:if>
+                    <xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>KiB.
+                    </span>
                 (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onclick="storeBack('{$goxims_content}{$target_path}/{location}','{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
             </xsl:if>
     </td></tr>
 </xsl:template>
 
 <xsl:template name="scripts">
-    <script type="text/javascript">
+  <xsl:call-template name="mk-inline-js">
+    <xsl:with-param name="code">
       <![CDATA[
         function insertfile() {
             window.opener.eWebEditPro.instances["body"].insertMediaFile(document.selectform.imgpath.value,false,document.selectform.imgtext.value,"IMAGE",0,0);
@@ -93,7 +99,8 @@
             document.selectform.imgtext.value=imgtext;
         }
       ]]>
-    </script>
+    </xsl:with-param>
+  </xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>
