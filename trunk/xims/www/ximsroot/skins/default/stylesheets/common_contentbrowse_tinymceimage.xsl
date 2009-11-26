@@ -55,8 +55,8 @@
     <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
-    <tr><td>
-        <img src="{$ximsroot}images/spacer_white.gif" alt="spacer" class="spacer" width="{10*@level}" height="10"/>
+    <tr>
+      <td>
         <xsl:choose>
             <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
                 <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" class="icon" alt="" width="20" height="18"/>
