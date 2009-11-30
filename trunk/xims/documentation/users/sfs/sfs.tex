@@ -1,14 +1,13 @@
 % -*- coding:iso-8859-1 -*-
 % 2do:
 % Umbrüche korrigieren?
-% Icons einfügen/beschreiben
 
 \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
 \documentclass[fontsize=11pt]{scrartcl}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{%
-  graphicx,
+	graphicx,
   longtable,
   fixltx2e,
   mparhack,
@@ -19,6 +18,10 @@
   pifont,
   bera,
 }
+
+% Glossar
+%\usepackage{glossary}
+%\makeglossary
 
 \usepackage[english,ngerman]{babel}
 \usepackage[neveradjust]{paralist}
@@ -95,6 +98,11 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 \newpage
 \listoffigures
 \newpage
+
+%\glossary{name={test},description={Mein Name ist Hase und ich weiß von nichts.}}
+%\renewcommand{\glossaryname}{Glossar}
+%\printglossary
+%\newpage
 
 \section{Allgemeines zum System}
 \label{allgemeines}
@@ -624,7 +632,7 @@ Berechtigungen des angemeldeten Benutzers.
 \end{figure}
 
 Objekte können prinzipiell nur im Bearbeitungsmodus editiert bzw. verändert werden.
-Um ein Objekt zu editieren, klickt man auf das Edit-Icon wodurch sich die
+Um ein Objekt zu editieren, klickt man auf das »Bearbeiten-Icon« wodurch sich die
 Editiermaske öffnet.
 
 \subsubsection{Dokumente}
@@ -779,7 +787,7 @@ Einträge und leitet zur Containeransicht des Eltern-Containers weiter.
 \paragraph{Editieren eines Dokuments}
 \label{edit}
 
-Ein bereits erstelltes Dokument zeigt sich nach einem Klick auf das Edit-Icon in der
+Ein bereits erstelltes Dokument zeigt sich nach einem Klick auf das »Bearbeiten-Icon« in der
 Editiermaske. Abhängig des vom Benutzer bevorzugten Editors zum Bearbeiten von
 XHTML-Dokumenten (WYSIWYG oder Plain Textarea) zeigt XIMS die
 entsprechende Editiermaske.
@@ -1315,7 +1323,7 @@ sDocBookXML Objekts einzufügen.
 \subsection{Objekte löschen und »Papierkorb«}
 \label{delete}
 
-Objekte können mit dem Icon gelöscht werden, wenn sie unveröffentlicht sind
+Objekte können mit dem »Löschen-Icon« gelöscht werden, wenn sie unveröffentlicht sind
 und die entsprechenden Privilegien in der ACL vergeben wurden.
 
 Das Objekt wird im ersten Schritt nur als gelöscht markiert, es verbleibt vorerst noch
@@ -1352,7 +1360,7 @@ periodisch von uns gelöscht!
 Beim Betrachten des WYSIWYG-Editors TinyMCE fällt die Ähnlichkeit zur MS-Word-
 Oberfläche auf. Viele der Icons und vertraute Funktionen finden sich auch in
 TinyMCE. Will man beispielsweise einen Text fett darstellen, so muss dieser nur
-mit der Maus markiert und auf das B-Icon geklickt werden.
+mit der Maus markiert und auf das »Fett-Icon« geklickt werden.
 Da TinyMCE ein englischsprachiges Programm ist, mögen einige Schaltflächen
 etwas ungewohnt erscheinen (beispielsweise steht »B« für »bold« im Gegensatz zum
 bekannten »F« für »fett«).
@@ -1374,7 +1382,7 @@ Leichtes. Im Folgenden werden die grundlegenden Schritte beschrieben:
 \begin{enumerate}
 	\item {Der Cursor muss sich an der Stelle befinden, an der das Bild eingefügt
 werden soll.}
-	\item {Durch Klicken auf das Bild-Icon öffnet sich der Eigenschaften-Dialog. Über
+	\item {Durch Klicken auf das »Bild einfügen/verändern-Icon« öffnet sich der Eigenschaften-Dialog. Über
 diesen Dialog können die Breite, Höhe, Randbreite, Ausrichtung, horizontaler
 und vertikaler Abstand und der Titel für jedes Bild angegeben werden.}
 
@@ -1386,7 +1394,7 @@ Dokumenten verändern}
 	\label{fig:tinymceimageprop}
 \end{figure}
 
-	\item {Durch Klicken auf das Durchsuchen-Icon öffnet sich der Durchsuchen-Dialog. An
+	\item {Durch Klicken auf das »Durchsuchen-Icon« öffnet sich der Durchsuchen-Dialog. An
 dieser Stelle können Sie den Pfad zum Bild bzw. dessen Titel
 eingeben. Alternativ besteht die Möglichkeit im XIMS-Verzeichnisbaum
 nach dem gewünschten Bild zu suchen. Mit Betätigen des Buttons »Store
@@ -1416,7 +1424,7 @@ Hyperlink erstellt.
 
 \begin{enumerate}
 	\item {Der Text der zum Hyperlink werden soll muss markiert sein.}
-	\item {Durch Klicken des Link-Icons öffnet sich der Dialog zum Erstellen/Editieren
+	\item {Durch Klicken des »Link einfügen/verändern-Icons« öffnet sich der Dialog zum Erstellen/Editieren
 eines Hyperlinks.}
 
 \begin{figure}[!ht]
@@ -1426,7 +1434,7 @@ eines Hyperlinks.}
 	\label{fig:hyperlinkdialog}
 \end{figure}
 
-	\item {Ein Klick auf das Durchsuchen-Icon öffnet den Durchsuchen-Dialog.}
+	\item {Ein Klick auf das »Durchsuchen-Icon« öffnet den Durchsuchen-Dialog.}
 	
 	\begin{figure}[!ht]
 	\centering
@@ -1486,9 +1494,9 @@ Schritte notwendig.
 
 \begin{enumerate}
 	\item {Der markierte Text bzw. Textausschnitt in MS-Word wird mit Klick auf das
-Copy-Icon bzw. mit »Strg + C« kopiert.}
+»Kopieren-Icon« bzw. mit »Strg + C« kopiert.}
 	\item {Im WYSIWYG-Editor TinyMCE kann der zuvor kopierte MS-Word-Text über
-das »Einfügen - Icon« bzw. mit »Strg + V« eingefügt werden. (Weiters
+das »Einfügen-Icon« bzw. mit »Strg + V« eingefügt werden. (Weiters
 besteht die Möglichkeit, den Text unformatiert oder als Text formatiert
 einzufügen.)}
 \end{enumerate}
@@ -1532,7 +1540,7 @@ die Locations der XIMS Container unter /uniweb die URLs unter
 \subsection{Objekte veröffentlichen (Publish)}
 \label{publizieren}
 
-Objekte können durch das Klicken auf das Publish-Icon veröffentlicht werden. Beim
+Objekte können durch das Klicken auf das »Publizieren-Icon« veröffentlicht werden. Beim
 erstmaligen Publizieren eines erstellten Objekts erscheint folgendes Dialogfenster,
 das ein »Veröffentlichen« oder ein »Abbrechen« zur Auswahl stellt.
 
@@ -1653,7 +1661,7 @@ zu lesen, ein anderer Benutzer hingegen kann Objekte editieren bzw. aus dem
 System löschen.
 
 Für jedes einzelne in XIMS verwaltete Objekt sind eigene Zugriffsrechte in einer
-sogenannten Access-Control-List (ACL) gespeichert. Mit einem Klick auf das Berechtigungen-Icon
+sogenannten Access-Control-List (ACL) gespeichert. Mit einem Klick auf das »Zugriffskontrolle/Rechteverwaltung-Icon«
 des gewünschten Objekts können bestehende Berechtigungen von Benutzern bzw.
 Rollen gesichtet bzw. verändert werden. Hat ein Benutzer das »GRANT«-Recht
 (Verwaltungsrecht), so darf dieser Benutzer auch bestehende Berechtigungen
@@ -1950,7 +1958,7 @@ Zusammenfassung angeklickt sein.
 
 	\item {Im nächsten Schritt muss das erstellte Portlet veröffentlicht werden.}
 	\item {In weiterer Folge muss das »departmentlinks\_portlet« dem Department
-Root zugewiesen werden. Dazu muss das - Icon des Department Root
+Root zugewiesen werden. Dazu muss das »Bearbeiten-Icon« des Department Root
 Verzeichnisses angeklickt werden, um Änderungen am Department Root
 durchführen zu können.}
 
