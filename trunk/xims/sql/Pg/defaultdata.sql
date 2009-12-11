@@ -222,7 +222,7 @@ INSERT INTO ci_users_roles ( id, name, lastname, object_type, system_privs_mask,
 
 \echo ...add an implicit role for everyone BUT the public user
 INSERT INTO ci_users_roles ( id, name, lastname, object_type, system_privs_mask, enabled ) 
-       VALUES ( USR_SEQ.NEXTVAL, 'authenticated', 'Authenticated users', 1, 0, 1);
+       VALUES ( nextval('ci_users_roles_id_seq'), 'authenticated', 'Authenticated users', 1, 0, 1);
 
 -- grant roles
 \echo inserting into ci_roles_granted...
