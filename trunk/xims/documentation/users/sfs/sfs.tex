@@ -1,6 +1,7 @@
 % -*- coding:iso-8859-1; TeX-PDF-mode:t -*-
 % 2do:
-% Umbrüche korrigieren?
+% Index ausbauen
+% Silbentrennung ausbauen
 
 \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
 \documentclass[fontsize=11pt,liststotoc,idxtotoc]{scrartcl}
@@ -18,10 +19,6 @@
   pifont,
   bera,
 }
-
-% Glossar
-%\usepackage{glossary}
-%\makeglossary
 
 \usepackage[english,ngerman]{babel}
 \usepackage[neveradjust]{paralist}
@@ -103,11 +100,6 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 
 \tableofcontents
 \newpage
-
-%\glossary{name={test},description={Mein Name ist Hase und ich weiß von nichts.}}
-%\renewcommand{\glossaryname}{Glossar}
-%\printglossary
-%\newpage
 
 \section{Allgemeines zum System}
 \label{allgemeines}
@@ -196,7 +188,7 @@ für Schritt Anleitung gedacht, sondern als gekürzte Darstellung der
 Nach erfolgreicher Anmeldung wird die benutzerspezifische
 \otherterm{XIMS}-Startseite angezeigt. Je nach
 Rollenzugehörigkeit\footnote{Siehe Punkt \ref{rollenverwaltung}} stehen
-verschiedene \ximsterm{Lesezeichen} (1) zur Verfügung. Lesezeichen sollen die Navigation
+verschiedene \otherterm{Lesezeichen} (1) zur Verfügung. Lesezeichen sollen die Navigation
 zum jeweiligen \ximsterm{DepartmentRoot} vereinfachen.
 
 \begin{figure}[!ht]
@@ -217,7 +209,7 @@ Die \ximstermdef{Containeransicht} gibt einen Überblick über alle bereits vorhan
 bietet verschiedene Optionen zur Objektverwaltung an.
 \begin{compactitem}
 \item (1) zeigt den derzeitigen Objektstatus an (publiziert, nicht publiziert, ...)
-\item (2) listet die Objekte jeweils mit einem vom Objekttyp abhängigen Icon
+\item (2) listet die Objekte jeweils mit einem vom \ximsterm{Objekttyp} abhängigen Icon
 \item (3) zeigt das Datum der letzten Änderung
 \item (4) listet die zur Verfügung stehenden Optionen (editieren, kopieren,
 verschieben, publizieren, ...)
@@ -243,7 +235,7 @@ Die unter (4) gezeigten \ximsterm{Verwaltungsoptionen} im Detail:
 \end{figure}
 
 \begin{compactitem}
-\item (A) \otherterm{Editieren}: Öffnet den Editor (vom Objekttyp abhängig!)
+\item (A) \otherterm{Editieren}: Öffnet den Editor (vom \ximsterm{Objekttyp} abhängig!)
 \item (B) \otherterm{Kopieren}: Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
 \item (C) \otherterm{Verschieben}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Öffnet ein Menü zum Verschieben des Objekts
 \item (D) \otherterm{Publizieren}: Öffnet das Menü zum Veröffentlichen von Objekten
@@ -254,7 +246,7 @@ Die unter (4) gezeigten \ximsterm{Verwaltungsoptionen} im Detail:
 \subsubsection{Erstellen von Objekten}
 \label{quick-erstellen}
 
-Mit Hilfe des Erstellen-Menüs (5) können verschiedene Objekttypen\footnote{Abhängig von den Benutzerrechten} erstellt werden.
+Mit Hilfe des Erstellen-Menüs (5) können verschiedene \ximsterm{Objekttyp}en\footnote{Abhängig von den Benutzerrechten} erstellt werden.
 Die Standardobjekttypen lauten:
 
 Dokument (Document), Datei (File), Ordner (Folder), Bild (Image), Text und URLLink\footnote{Siehe Punkt \ref{urllinks}}.
@@ -285,7 +277,7 @@ zum einen eine möglichst selbsterklärende und leicht zu merkende Bezeichnung der
 Beschränkungen für den Feldinhalt. So sind beispielsweise im Feld \ximsterm{Location} keine
 Umlaute, Sonder- oder Leerzeichen erlaubt.
 Die Dateiendung (.doc, .pdf, .html, etc.) wird vom System beim Speichern abhängig
-vom Objekttyp und Datenformat automatisch hinzugefügt.
+vom \ximsterm{Objekttyp} und Datenformat automatisch hinzugefügt.
 Der Titel, in unserem Beispiel »Schritt für Schritt«, entspricht dem Namen des
 Dokuments, unter welchem dieses Dokument zukünftig in der \ximsterm{Containeransicht}
 aufscheinen wird.
@@ -306,7 +298,7 @@ klickt man auf den »Abbrechen«-Button.
 
 \begin{Hinweis}Navigieren Sie nicht mit der »Vor«- und »Zurück«-Taste ihres Browsers aus dem
 Editor, weil das bearbeitete Objekt ansonsten für andere Benutzer gesperrt wird.
-Siehe Punkt \ref{gesperrteobjekte} »\ximsterm{Gesperrte Objekte}«.
+Siehe Punkt \ref{gesperrteobjekte} »Gesperrte Objekte«.
 \end{Hinweis}
 
 \subsubsection{Veröffentlichen von Objekten}
@@ -315,7 +307,7 @@ Siehe Punkt \ref{gesperrteobjekte} »\ximsterm{Gesperrte Objekte}«.
 Ein in \otherterm{XIMS} erstelltes Objekt ist der Öffentlichkeit nicht sofort zugänglich. Es befindet
 sich zuerst lediglich auf dem \otherterm{XIMS}-Server. Um es öffentlich abrufbar zu machen,
 muss es veröffentlicht werden. Beim erstmaligen Publizieren eines neu erstellten
-Objekts erscheint folgendes Dialogfenster, das ein »Veröffentlichen« oder
+Objekts erscheint folgendes \otherterm{Dialogfenster}, das ein »Veröffentlichen« oder
 »Abbrechen« zur Auswahl stellt.
 
 \begin{figure}[!ht]
@@ -327,7 +319,7 @@ Objekts erscheint folgendes Dialogfenster, das ein »Veröffentlichen« oder
 
 
 Bricht man den Vorgang an dieser Stelle ab, ist das Objekt weiterhin nur in der
-\otherterm{XIMS}-Datenbank präsent, nicht aber am Webserver.
+\otherterm{XIMS}-Datenbank präsent, nicht aber am \otherterm{Webserver}.
 Nach einem Klick auf den »Veröffentlichen«-Button erscheint eine Erfolgsmeldung,
 die bestätigt dass das Objekt nun öffentlich erreichbar ist.
 Wurden bei einem bereits veröffentlichten Objekt Änderungen vorgenommen, muss
@@ -347,7 +339,7 @@ beispielsweise »verschieben« oder »löschen« wieder zur Verfügung.}.
 \section{Startseite und allgemeiner Aufbau}
 \label{startseite}
 
-Nach erfolgreicher Anmeldung gelangt man zur benutzerspezifischen \ximsterm{Startseite} des
+Nach erfolgreicher Anmeldung gelangt man zur benutzerspezifischen Startseite des
 \otherterm{XIMS} Inhalte-Management-Systems.
 
 \begin{figure}[!ht]
@@ -357,10 +349,10 @@ Nach erfolgreicher Anmeldung gelangt man zur benutzerspezifischen \ximsterm{Star
   \label{fig:ximsstartseite2}
 \end{figure}
 
-Für jeden Benutzer sind so genannte \ximsterm{Lesezeichen} (Bookmarks) konfiguriert. Die
+Für jeden Benutzer sind so genannte \otherterm{Lesezeichen} (Bookmarks) konfiguriert. Die
 Lesezeichen sind in Abhängigkeit zur Rollenzugehörigkeit gesetzt und können über
 »Einstellungen« => »Lesezeichen verwalten« verändert werden. Auf diese Weise
-können Sie auch das Standardlesezeichen (default Bookmark) ändern. LFU-Mitarbeiter
+können Sie auch das \otherterm{Standardlesezeichen} (default Bookmark) ändern. LFU-Mitarbeiter
 haben zumindest ein Standardlesezeichen zum \otherterm{XIMS}-Testordner
 gesetzt.
 
@@ -369,10 +361,10 @@ gesetzt.
   können Sie Objekte erstellen und das allgemeine Verhalten von \otherterm{XIMS} testen.
 \end{Hinweis}
 
-Über die \ximstermdef{Lesezeichen} gelangen Sie am schnellsten zu den Inhalten Ihrer
+Über die \othertermdef{Lesezeichen} gelangen Sie am schnellsten zu den Inhalten Ihrer
 Organisationseinheit. Sollte das Lesezeichen zu Ihren Inhalten noch nicht bestehen,
 können Sie dieses über »Einstellungen« => »Lesezeichen verwalten« erstellen. Indem Sie auf eines Ihrer Lesezeichen klicken, gelangen Sie zur so genannten
-Containeransicht.
+\ximsterm{Containeransicht}.
 
 \begin{figure}[!ht]
   \centering
@@ -384,7 +376,7 @@ Containeransicht.
 \subsection{Navigation}
 \label{navigation}
 
-Der \otherterm{XIMS}-Navigationsbereich besteht unter anderem aus den folgenden Elementen.
+Der \otherterm{XIMS}-\ximsterm{Navigationsbereich} besteht unter anderem aus den folgenden Elementen.
 
 \paragraph{Aktueller Pfad (Navigations-/Breadcrumb-Pfad)}
 \label{breadcrumb}
@@ -397,12 +389,12 @@ Der \otherterm{XIMS}-Navigationsbereich besteht unter anderem aus den folgenden 
 \end{figure}
 
 
-Der Navigationspfad zeigt den Pfad vom »Site
+Der \ximstermdef{Navigationspfad} zeigt den Pfad vom »Site
 Root« (an der LFU Innsbruck heißt der Site Root
 uniweb) bis zum aktuellen Objekt an.
 Das Anklicken eines Teilpfades ermöglicht ein
 schnelles Wechseln in einen übergeordneten
-Container.
+\ximsterm{Container}.
 Die Pfadfragmente (z.B. uniweb) entsprechen dabei
 dem »\ximsterm{Location}«-Attribut des Containers.
 
@@ -416,7 +408,7 @@ dem »\ximsterm{Location}«-Attribut des Containers.
 	\label{fig:navigationspfeile}
 \end{figure}
 
-Die Navigationspfeile ermöglichen ein schnelles
+Die \ximstermdef{Navigationspfeil}e ermöglichen ein schnelles
 Bewegen innerhalb des Systems: einen Schritt
 zurück (back), eine Ebene höher im
 Verzeichnisbaum (one level up), oder einen Schritt
@@ -447,12 +439,12 @@ abzumelden.
 	\label{fig:erstellenbutton}
 \end{figure}
 
-Diese Option, die nur im Bearbeitungsmodus und mit
+Diese Option, die nur mit
 den entsprechenden Rechten des angemeldeten
 Benutzers sichtbar ist, wird unter Punkt \ref{erstelleneditieren} ausführlich
 beschrieben.
 
-\paragraph{Suchfunktion}
+\paragraph{\otherterm{Suchfunktion}}
 \label{suche}
 
 \begin{figure}[!ht]
@@ -492,7 +484,7 @@ markiert wurden.
 \label{containeransicht}
 
 Die Ansicht über den Containerinhalt bietet einen Überblick der im jeweiligen
-Container enthaltenen Objekte. Die Objekte (Dateien, Ordner, HTML-Seiten, etc)
+\ximsterm{Container} enthaltenen Objekte. Die Objekte (Dateien, Ordner, HTML-Seiten, etc)
 werden tabellarisch aufgelistet und können nach einem beliebigen Kriterium sortiert
 werden (i.d.R. aufsteigend nach der Positionsnummer).
 
@@ -516,7 +508,7 @@ geklickt wird.
 
 \paragraph{Status}
 
-Der Status gibt Auskunft über den derzeitigen Zustand des Objekts. In der aktuellen
+Der \ximstermdef{Objektstatus} gibt Auskunft über den derzeitigen Zustand des Objekts. In der aktuellen
 Version kennt \otherterm{XIMS} vier verschiedene Objektstati.
 
 \begin{table}[!ht]
@@ -547,10 +539,10 @@ Version kennt \otherterm{XIMS} vier verschiedene Objektstati.
 Die Spalte »Pos« (Position) stellt einen Positionierungs- bzw. Gewichtungsmechanismus
 zur Verfügung, der auf individuelle Bedürfnisse selbst angepasst
 werden kann.
-Über die Spalte »Pos« können Objekte in der Inhaltsansicht eines Containers nach
+Über die Spalte »Pos« können Objekte in der Inhaltsansicht eines \ximsterm{Container}s nach
 vorne gereiht werden. Die Möglichkeit spezielle Positionen zu vergeben spielt bei
 den Department Links (siehe auch Punkt \ref{deplinks}) und im Zusammenhang mit dem
-Autoindex (siehe auch Punkt \ref{autoindex}) eine wichtige Rolle.
+\ximsterm{Autoindex} (siehe auch Punkt \ref{autoindex}) eine wichtige Rolle.
 
 \paragraph{Titel (Title)}
 
@@ -571,7 +563,7 @@ Diese Spalte gibt die Größe in Kilobyte bei »Nicht-Container-Objekten« an.
 
 \paragraph{Options (Optionen)}
 
-Sofern der angemeldete Benutzer über die entsprechenden Berechtigungen verfügt,
+Sofern der angemeldete Benutzer über die entsprechenden \otherterm{Berechtigung}en verfügt,
 werden verschiedene Optionen angeboten, um das Verwalten der entsprechenden
 Objekte zu ermöglichen.
 
@@ -610,7 +602,7 @@ Objekte zu ermöglichen.
 \section{Objekte manipulieren}
 \label{objektemanipulieren}
 
-Standardmäßig stehen zumindest die folgenden sieben Objekttypen zur Auswahl:
+Standardmäßig stehen zumindest die folgenden sieben \ximsterm{Objekttyp}en zur Auswahl:
 
 \begin{itemize}
 	\item Dokument (Document)
@@ -624,19 +616,19 @@ Unter Weitere:
 
 \begin{itemize}
 	\item \ximsterm{sDocBookXML}
-	\item Portlet
+	\item \ximsterm{Portlet}
 \end{itemize}
 
-Neben diesen sieben Objekttypen bietet \otherterm{XIMS} je nach Benutzerrechten noch die
+Neben diesen sieben \ximsterm{Objekttyp}en bietet \otherterm{XIMS} je nach Benutzerrechten noch die
 Möglichkeit zum Erstellen einer Reihe weiterer Objekttypen, die unter Punkt \ref{weitereobjekte} kurz
 angeführt werden.
 
 \subsection{Erstellen/Editieren}
 \label{erstelleneditieren}
 
-Im Bearbeitungsmodus kann man über ein Auswahlmenü unterschiedliche
-Objekttypen erstellen. Die Auswahl an Objekttypen ist abhängig von den
-Berechtigungen des angemeldeten Benutzers.
+Über ein Auswahlmenü kann man unterschiedliche
+\ximsterm{Objekttyp}en erstellen. Die Auswahl an Objekttypen ist abhängig von den
+\otherterm{Berechtigung}en des angemeldeten Benutzers.
 
 \begin{figure}[!ht]
 	\centering
@@ -645,7 +637,6 @@ Berechtigungen des angemeldeten Benutzers.
 	\label{fig:erstellenmenu2}
 \end{figure}
 
-Objekte können prinzipiell nur im Bearbeitungsmodus editiert bzw. verändert werden.
 Um ein Objekt zu editieren, klickt man auf das »Bearbeiten-Icon« wodurch sich die
 Editiermaske öffnet.
 
@@ -653,9 +644,9 @@ Editiermaske öffnet.
 \label{dokumente}
 
 Ein neues Dokument kann auf zwei Arten erstellt werden. Einerseits mit Hilfe von
-WYSIWYG-Editoren (TinyMCE Editor oder eWebEditPro - siehe auch Punkt \ref{wysiwig}),
+WYSIWYG-Editoren (\otherterm{TinyMCE} Editor oder \otherterm{eWebEditPro} - siehe auch Punkt \ref{wysiwig}),
 andererseits mit Hilfe des »Plain Textarea« Editors. Letzterer ermöglicht das
-direkte Bearbeiten des Quellcodes eines Dokuments.
+direkte Bearbeiten des \otherterm{Quellcode}s eines Dokuments.
 Im Fenster für das Erstellen eines Dokuments gibt es folgende Eingabe- bzw.
 Auswahlfelder:
 
@@ -677,7 +668,7 @@ vergeben werden, zum anderen bestehen deshalb gewisse Beschränkungen für den
 Feldinhalt. So sind beispielsweise im Feld \ximsterm{Location} keine Umlaute, Sonder- oder
 Leerzeichen erlaubt.
 Die Dateiendung (.doc, .pdf, .html, etc.) wird vom System beim Speichern abhängig
-vom Objekttyp und Datenformat automatisch hinzugefügt.
+vom \ximsterm{Objekttyp} und Datenformat automatisch hinzugefügt.
 
 \begin{Hinweis}
   Das Feld »\ximsterm{Location}« ist ein Pflichtfeld!
@@ -689,7 +680,7 @@ Abbildung \ref{fig:bsppubliziert} soll zusätzlich bildlich den Begriff der \xims
 \label{title}
 
 Der Titel, in unserem Beispiel »Schritt für Schritt«, entspricht dem Namen des
-Dokuments, unter welchem dieses Dokument zukünftig in der Containeransicht
+Dokuments, unter welchem dieses Dokument zukünftig in der \ximsterm{Containeransicht}
 aufscheinen wird. Zudem wird der Titel auch im <title> Tag des HTML-Headers
 ausgewiesen und entsprechend vom Browser im Fenstertitel angezeigt.
 
@@ -731,16 +722,16 @@ Abbildung \ref{fig:bsppubliziert} zeigt das Dokument nach dem Veröffentlichen im
 
 Der Body beinhaltet den »eigentlichen« Inhalt des Dokuments.
 Unabhängig vom Browser oder Betriebssystem steht für die Erzeugung des Bodys
-der WYSIWYG-Editor TinyMCE zur Verfügung. Dieser bietet »MS-Word-ähnliche
+der WYSIWYG-Editor \otherterm{TinyMCE} zur Verfügung. Dieser bietet »MS-Word-ähnliche
 Funktionalität« um Inhalte zu erstellen.
 Alternativ kann der Body in Form von »wohlgeformtem« (wellformed) XHTML-Code
 im »Plain Textarea« Editor eingegeben werden. Vor dem Abspeichern kann über
 die »XML von Body testen«-Funktion getestet werden, ob der Body wohlgeformt
-ist. Über die Funktion »Prettyprint« (Icon neben »XML von Body testen«) wird
+ist. Über die Funktion »\othertermdef{Prettyprint}« (Icon neben »XML von Body testen«) wird
 der XHTML-Text in der Darstellung übersichtlicher formatiert bzw. entsprechend
 eingerückt.
 Falls die Option »Versuchen, einen wohlgeformten Body herzustellen« (Try
-to form body well) auf »Ja« gesetzt wurde, versucht Tidy, ungültigen Code beim
+to form body well) auf »Ja« gesetzt wurde, versucht \othertermdef{Tidy}, ungültigen Code beim
 Abspeichern »wohlzuformen«, d.h. alle Elemente werden auf Vorhandensein von
 Start- und ein Endtag geprüft bzw. die korrekte Verschachtelung von einzelnen Tags
 überprüft. Außerdem müssen die Tags klein geschrieben sein und das Body-
@@ -757,8 +748,9 @@ Gelingt es Tidy nicht, den Body zu säubern, muss der Inhalt noch einmal manuell
 \end{figure}
 
 \begin{Hinweis}Mit der Funktion »Versuchen, einen wohlgeformten Body
-herzustellen« verändert Tidy die Whitespace-Informationen. Nach dem
-Speichern des Dokuments und somit nach getaner Arbeit von Tidy, werden
+herzustellen« verändert \otherterm{Tidy} die Whitespace-Informationen. Nach dem
+Speichern des Dokuments und somit nach getaner Arbeit von 
+, werden
 Einrückungen oder Umbrüche nicht mehr denen im Originaldokument
 entsprechen!
 \end{Hinweis}
@@ -766,9 +758,9 @@ entsprechen!
 \paragraph{Schlagworte (Keywords)}
 \label{keywords}
 
-Die Liste der das Dokument beschreibenden Schlagworte soll durch Semikolons
+Die Liste der das Dokument beschreibenden \otherterm{Schlagwort}e soll durch Semikolons
 getrennt angeführt werden (beispielsweise: Antrag; Benutzungsantrag;
-Studierende). Die Schlagworte scheinen bei veröffentlichten Dokumenten als
+Studierende). Die \othertermdef{Schlagwort}e scheinen bei veröffentlichten Dokumenten als
 Metainformation auf. Über die \otherterm{XIMS}-Suche kann gezielt nach ihnen gesucht werden.
 
 \paragraph{Zusammenfassung (Abstract)}
@@ -790,15 +782,15 @@ werden.
 \label{save}
 
 Das Klicken des Speichern-Buttons speichert das erstellte Dokument und leitet zur
-Containeransicht des Eltern-Containers weiter.
+\ximsterm{Containeransicht} des Eltern-Containers weiter.
 
 \paragraph{Abbrechen (Cancel)}
 \label{cancel}
 
 Das Klicken des Cancel-Buttons verwirft alle bei der Dokumenterstellung gemachten
-Einträge und leitet zur Containeransicht des Eltern-Containers weiter.
+Einträge und leitet zur \ximsterm{Containeransicht} des Eltern-Containers weiter.
 
-\paragraph{Editieren eines Dokuments}
+\paragraph{\otherterm{Editieren} eines Dokuments}
 \label{edit}
 
 Ein bereits erstelltes Dokument zeigt sich nach einem Klick auf das »Bearbeiten-Icon« in der
@@ -814,7 +806,7 @@ entsprechende Editiermaske.
 \end{figure}
 
 Nicht nur der Bodybereich kann verändert werden, sondern auch die Einträge in
-\ximsterm{Location}, Titel, Schlagworte, Zusammenfassung und die Option »Objekt als
+\ximsterm{Location}, Titel, \otherterm{Schlagwort}e, Zusammenfassung und die Option »Objekt als
 neu markieren«.
 
 \begin{Hinweis}Ist ein Objekt publiziert, kann die \ximsterm{Location} nicht verändert werden (siehe Abb. \ref{fig:xhtmlintinymce}). Um die \ximsterm{Location} eines veröffentlichten Objekts verändern zu können,
@@ -829,11 +821,11 @@ kommt automatisch in die Vollansicht des Dokuments zurück.
 
 Nach Veränderung eines Objektes ist es zwingend erforderlich das veränderte
 Dokument zu speichern (Speichern) oder die gemachten Änderungen zu verwerfen
-(Abbrechen) bevor man in die Containeransicht wechselt. Versucht man stattdessen
+(Abbrechen) bevor man in die \ximsterm{Containeransicht} wechselt. Versucht man stattdessen
 über den Zurück-Button des Browsers in die Containeransicht zu gelangen ohne zu
 speichern bzw. zu verwerfen, ist das Dokument automatisch für andere Benutzer
 gesperrt . \otherterm{XIMS} betrachtet ein solches Dokument als »in Bearbeitung«
-befindlich und sperrt es deshalb für andere Benutzer, weil ein zeitgleiches Editieren
+befindlich und sperrt es deshalb für andere Benutzer, weil ein zeitgleiches \otherterm{Editieren}
 eines Dokuments durch mehrere Benutzer nicht möglich ist.
 
 \subsubsection{Verzeichnisse/Ordner (Folder)}
@@ -859,14 +851,14 @@ Siehe Punkt~\ref{title}.
 \paragraph{Objekt als neu markieren}
 Siehe Punkt~\ref{markasnew}.
 
-\paragraph{Verhindere Autoindex beim Veröffentlichen}
+\paragraph{Verhindere \ximstermdef{Autoindex} beim Veröffentlichen}
 \label{autoindex}
 
 Auf eine Anfrage nach einem Verzeichnis (z.B.: \url{http://www.uibk.ac.at/zid/}) liefert der
 Webserver normalerweise ein sogenanntes Indexdokument aus. \otherterm{XIMS} kann beim
 Veröffentlichen automatisch ein solches Dokument mit einer einfachen Liste des
 Verzeichnisinhalts zu erstellen. Dieses Standardverhalten kann mit der Option
-»Verhindere Autoindex beim Veröffentlichen« wenn nötig unterbunden
+»Verhindere \ximsterm{Autoindex} beim Veröffentlichen« wenn nötig unterbunden
 werden.\footnote{Wir empfehlen, den Autoindex abzuschalten, falls Sie mehrsprachige Indexdokumente (z.B.:
 index.html.de und index.html.en) verwenden wollen, es kann sonst zu Fehlern bei der
 Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss »index« lauten, der Webserver verwendet es dann automatisch.
@@ -874,7 +866,7 @@ Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst
 \begin{Hinweis}Ein Objekt mit der \ximsterm{Location} »index« (z.B. index.html) wird vom Webserver
 gegenüber dem automatisch erstellten Index vorgezogen, d.h. sobald ein Objekt
 mit der \ximsterm{Location} »index« in dem Container existiert, wird dieses Dokument
-ausgeliefert, auch wenn ein Autoindex erstellt wurde.
+ausgeliefert, auch wenn ein \ximsterm{Autoindex} erstellt wurde.
 \end{Hinweis}
 
 Ist in einem Verzeichnis kein Indexdokument vorhanden und publiziert, gibt der
@@ -882,8 +874,7 @@ Webserver auf eine Anfrage die Fehlermeldung
 »Forbidden« zurück -- sinngemäß: das Auflisten des Verzeichnisinhalts ist
 verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 
-\begin{Hinweis}Bloß zu verhindern, dass ein Verzeichnis aufgelistet wird, ist kein taugliches
-Mittel, um Dokumente zu »verstecken« oder gar unzugänglich zu machen!
+\begin{Hinweis}Einfach nur zu verhindern dass ein Verzeichnis aufgelistet wird, ist kein taugliches Mittel, um Dokumente zu »verstecken« oder gar unzugänglich zu machen!
 \end{Hinweis}
 
 \begin{figure}[!ht]
@@ -899,14 +890,14 @@ Mittel, um Dokumente zu »verstecken« oder gar unzugänglich zu machen!
 		\includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex_publiziert.png}
 	\caption{Die veröffentlichte Version desselben Ordners. Da kein Objekt mit der
 \ximsterm{Location} »index« enthalten ist, wird der Ordnerinhalt angezeigt. Die Darstellung im Bild
-zeigt den von \otherterm{XIMS} generierten Autoindex.}
+zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
 	\label{fig:ordnerohneindexpubliziert}
 \end{figure}
 
 \paragraph{Zugriffsrechte erteilen}
 \label{zugriffsrechte}
 
-Über diese Funktion können die Berechtigungen für das Objekt konfiguriert werden.
+Über diese Funktion können die \othertermdef{Berechtigung}en für das Objekt konfiguriert werden.
 \otherterm{XIMS} »vererbt« standardmäßig die Einstellungen von den Elternobjekten.
 »Nur mir selbst Rechte erteilen«:
 Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
@@ -922,7 +913,7 @@ Standard Rollen erteilen« wird derzeit nicht verwendet!
 \paragraph{Editieren eines Verzeichnisses (Folders)}
 
 Es können die \ximsterm{Location}, der Titel und die Optionen »Objekt als neu
-markieren« bzw. »Verhindere Autoindex beim Veröffentlichen« geändert
+markieren« bzw. »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« geändert
 werden. Außerdem besteht die Möglichkeit die Kriterien für die standardmäßige
 Sortierung der Kindobjekte des Verzeichnisses festzulegen (nach Position, Titel,
 Änderungsdatum).
@@ -954,7 +945,7 @@ generieren (z.B.: G:\textbackslash{}service\textbackslash{}bilder\textbackslash{
 \paragraph{Titel}
 
 Der Titel (in unserem Beispiel Sonnenaufgang) entspricht dem Namen des Bildes,
-unter dem das Bild in der Containeransicht aufscheint.
+unter dem das Bild in der \ximsterm{Containeransicht} aufscheint.
 
 \paragraph{Bild (Image)}
 Dieses Eingabefeld dient zur Angabe des Verzeichnispfades unter dem das Bild am lokalen
@@ -979,7 +970,7 @@ Siehe Punkt \ref{zugriffsrechte}
 \label{upload}
 
 Das Klicken des Speichern-Buttons speichert die ausgewählte Datei im \otherterm{XIMS} und
-man wird zur Containeransicht weitergeleitet.
+man wird zur \ximsterm{Containeransicht} weitergeleitet.
 
 \paragraph{Abbrechen}
 
@@ -1035,7 +1026,7 @@ Siehe Punkt \ref{upload}
 Siehe Punkt \ref{cancel}
 
 \paragraph{Editieren einer Datei (File)}
-Es können Titel, Schlagworte und Zusammenfassung der Datei geändert
+Es können Titel, \otherterm{Schlagwort}e und Zusammenfassung der Datei geändert
 werden. Soll die Datei durch eine andere ersetzt werden, kann man mit
 Hilfe des »Durchsuchen«-Dialoges den Pfad zur neuen Datei angeben bzw.
 diesen direkt ins Eingabefeld eintippen. Will man lediglich den Titel
@@ -1051,7 +1042,7 @@ editieren, so kann das Feld »Datei ersetzen« leer bleiben.
 \subsubsection{URL-Links}
 \label{urllinks}
 
-Über den Objekttyp URLLink können sowohl externe (d.h. Links außerhalb
+Über den \ximsterm{Objekttyp} URLLink können sowohl externe (d.h. Links außerhalb
 der Domäne \url{http://www.uibk.ac.at}) als auch interne Links erstellt
 werden. Hinzu kommt, dass diesem Objekttyp bei der Erstellung von
 Departmentlinks eine besondere Rolle zukommt (siehe Punkt \ref{deplinks}). Bei internen Links ist zu beachten, dass diese absolut zum
@@ -1099,7 +1090,7 @@ Hier wird auf Punkt \ref{edit} verwiesen, da alle wesentlichen Editiermöglichkei
 \subsubsection{Portlets}
 \label{portlets}
 
-Ein Portlet kann als eine spezielle Sicht auf eine bestimmte Datenmenge bezeichnet
+Ein \ximstermdef{Portlet} kann als eine spezielle Sicht auf eine bestimmte Datenmenge bezeichnet
 werden. Bei Webseiten erscheinen Portlets normalerweise in Form von Boxen neben
 dem eigentlichen Inhalt der Seite. Eine Seitennavigation kann zum Beispiel ein Portlet darstellen (siehe dazu auch Punkt \ref{deplinks}).
 
@@ -1121,11 +1112,11 @@ Siehe Punkt \ref{title}
 \paragraph{Ziel (Target)}
 
 Als Ziel wird der Pfad jenes Verzeichnisses bzw. jener Datenmenge angegeben, auf
-das bzw. die das Portlet seine spezielle Sicht richten soll.
+das bzw. die das \ximsterm{Portlet} seine spezielle Sicht richten soll.
 Die »Ziel Suchen« (Browse for Target)-Funktionalität erleichtert das exakte
 Bestimmen dieses Pfades.
 
-\begin{Hinweis}Über ein Portlet kann zum Beispiel eine Box mit einer Linkliste als Inhalt einfach
+\begin{Hinweis}Über ein \ximsterm{Portlet} kann zum Beispiel eine Box mit einer Linkliste als Inhalt einfach
 erstellt werden. \otherterm{XIMS} durchsucht hierfür den Inhalt eines Containers (z.B. eines
 Verzeichnisses) und listet den entsprechenden Inhalt (z.B. eine Reihe von
 Dokumenten), dargestellt als Liste mit Links verweisend auf die entsprechenden
@@ -1136,15 +1127,15 @@ Dokumente, auf.
 
 Siehe Punkt \ref{zugriffsrechte} sowie Punkt \ref{rollenverwaltung}
 
-\paragraph{Zusätzliche Einstellmöglichkeiten für Portlets}
+\paragraph{Zusätzliche Einstellmöglichkeiten für \ximsterm{Portlet}s}
 
 Portlets sind ein mächtiges Werkzeug von \otherterm{XIMS}. Sie schaffen zusätzlich zur
 Auflistung der Objekttitel eine Reihe anderer Möglichkeiten, z.B. können
-Containerinhalte gefiltert nach speziellen Attributen bzw. Objekttypen dargestellt
-werden. Für genauere Informationen bezüglich Portlets wird auf die \otherterm{XIMS}-Schulungen
+Containerinhalte gefiltert nach speziellen Attributen bzw. \ximsterm{Objekttyp}en dargestellt
+werden. Für genauere Informationen bezüglich \ximsterm{Portlet}s wird auf die \otherterm{XIMS}-Schulungen
 bzw. den \otherterm{XIMS}-Support verwiesen.
 
-\paragraph{Editieren eines Portlets}
+\paragraph{Editieren eines \ximsterm{Portlet}s}
 
 Siehe Punkt \ref{erstelleneditieren}
 
@@ -1155,7 +1146,7 @@ Der Begriff »Department Root« beschreibt die Startseite einer Organisationseinhe
 und entspricht einer erweiterten Version eines \otherterm{XIMS}-Ordners mit besonderen
 Eigenschaften. Ein »Department Root« definiert einige Eigenschaften, die auf
 »Kinderobjekte« (untergeordnete Webseiten einer Organisationseinheit) weitervererbt
-werden. Zu diesen Eigenschaften zählen »Portlets« der Organisationseinheit -- wie
+werden. Zu diesen Eigenschaften zählen »\ximsterm{Portlet}s« der Organisationseinheit -- wie
 zum Beispiel das »Department Link Portlet«, ein für die Organisationseinheit bzw. für
 das Institut spezifisches Bild (»Department Image«), wie auch der »Department Titel«
 bzw. der »Department Infotext« oder ein für die Organisationseinheit bzw. für das
@@ -1232,7 +1223,7 @@ Service, ...) ausgeblendet.
 \paragraph{Editieren eines \ximsterm{DepartmentRoot}s}
 
 Zusätzlich zu den Einstellungen die man beim Erstellen eines \ximsterm{DepartmentRoot}
-machen kann, kann man beim Editieren dem \ximsterm{DepartmentRoot} Portlets hinzufügen.
+machen kann, kann man beim Editieren dem \ximsterm{DepartmentRoot} \ximsterm{Portlet}s hinzufügen.
 Nähere Informationen dazu finden sich im Punkt \ref{depnav}.
 
 \subsubsection{\ximsterm{sDocBookXML} Objekte}
@@ -1277,7 +1268,7 @@ Siehe Punkt \ref{title}
 Anders als beim Erstellen eines Dokuments gibt es hier keinen WYSIWYG-Editor
 zum Schreiben eines \ximsterm{sDocBookXML}-Artikels. Daher empfiehlt es sich, das
 \ximsterm{sDocBookXML}-Dokument mit Hilfe eines externen Editors zu erstellen und den
-Quellcode anschließend in das Body-Textfeld zu kopieren.
+\otherterm{Quellcode} anschließend in das Body-Textfeld zu kopieren.
 
 Ein externer Editor mit Unterstützung für \ximsterm{sDocBookXML} ist zum Beispiel XMLmind.
 Dieser steht zum kostenlosen Download zur Verfügung. Ein Tutorial zu XMLmind ist
@@ -1371,7 +1362,7 @@ periodisch von uns gelöscht!
 \subsection{Allgemeines}
 \label{allgemeines-wysiwig}
 
-Beim Betrachten des WYSIWYG-Editors TinyMCE fällt die Ähnlichkeit zur MS-Word-
+Beim Betrachten des WYSIWYG-Editors \otherterm{TinyMCE} fällt die Ähnlichkeit zur MS-Word-
 Oberfläche auf. Viele der Icons und vertraute Funktionen finden sich auch in
 TinyMCE. Will man beispielsweise einen Text fett darstellen, so muss dieser nur
 mit der Maus markiert und auf das »Fett-Icon« geklickt werden.
@@ -1434,7 +1425,7 @@ Wird in den WYSIWYG Editoren eine »http://«-Adresse im Fließtext eingegeben,
 wird diese vom Editor automatisch als \otherterm{URL} erkannt und in weiterer Folge als
 Hyperlink erstellt.
 
-\paragraph{Hyperlink unter Anleitung erstellen (TinyMCE)}
+\paragraph{Hyperlink unter Anleitung erstellen (\otherterm{TinyMCE})}
 
 \begin{enumerate}
 \item {Der Text der zum Hyperlink werden soll muss markiert sein.}
@@ -1472,7 +1463,7 @@ Hyperlink erstellt.
     Hyperlink im Editor.}
 \end{enumerate}
 
-\paragraph{Interne Links in Dokumenten (TinyMCE)}
+\paragraph{Interne Links in Dokumenten (\otherterm{TinyMCE})}
 
 \begin{figure}[!ht]
 	\centering
@@ -1500,23 +1491,23 @@ später verwiesen werden.}
 Im Feld »Adresse« kann nun auf das soeben erstelle Lesezeichen Bezug genommen
 werden, in diesem Fall z.B. mit \#seitenende.
 
-\subsection{Importieren von MS Word-Text in TinyMCE}
+\subsection{Importieren von MS Word-Text in \otherterm{TinyMCE}}
 \label{importword}
 
-Der WYSIWYG-Editor TinyMCE ist in der Lage, Texte aus MS Word zu importieren
+Der WYSIWYG-Editor \otherterm{TinyMCE} ist in der Lage, Texte aus MS Word zu importieren
 und dabei die Formatierungen weitgehend beizubehalten. Hierfür sind folgende
 Schritte notwendig.
 
 \begin{enumerate}
 	\item {Der markierte Text bzw. Textausschnitt in MS-Word wird mit Klick auf das
 »Kopieren-Icon« bzw. mit »Strg + C« kopiert.}
-	\item {Im WYSIWYG-Editor TinyMCE kann der zuvor kopierte MS-Word-Text über
+	\item {Im WYSIWYG-Editor \otherterm{TinyMCE} kann der zuvor kopierte MS-Word-Text über
 das »Einfügen-Icon« bzw. mit »Strg + V« eingefügt werden. (Weiters
 besteht die Möglichkeit, den Text unformatiert oder als Text formatiert
 einzufügen.)}
 \end{enumerate}
 
-\subsection{Zusätzliche Funktionen (TinyMCE)}
+\subsection{Zusätzliche Funktionen (\otherterm{TinyMCE})}
 \label{tinyfeatures}
 
 Der Editor TinyMCE beinhaltet noch eine Reihe weiterer zusätzlicher Funktionen wie
@@ -1955,11 +1946,11 @@ enthaltenen URL-Links werden mit entsprechender Option automatisch mit
 veröffentlicht.
 \end{Hinweis}
 
-	\item {Danach muss im Department Root Container ein Portlet mit der \ximsterm{Location}
+	\item {Danach muss im Department Root Container ein \ximsterm{Portlet} mit der \ximsterm{Location}
 »departmentlinks\_portlet« erstellt werden.}
 
 \begin{Hinweis}
-Das Portlet (sowohl \ximsterm{Location} als auch der Titel) muss unbedingt
+Das \ximsterm{Portlet} (sowohl \ximsterm{Location} als auch der Titel) muss unbedingt
 »departmentlinks\_portlet« heißen. Außerdem muss die Checkbox der
 Zusammenfassung angeklickt sein.
 \end{Hinweis}
@@ -1980,7 +1971,7 @@ durchführen zu können.}
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/zuweisendepartmentlinksportlet.png}
-	\caption{Zuweisen des Department Links Portlet zum Departement Root}
+	\caption{Zuweisen des Department Links \ximsterm{Portlet} zum Departement Root}
 	\label{fig:deplinkportletzuweisen}
 \end{figure}
 
@@ -1994,9 +1985,9 @@ Ordners.}
 Das Erstellen der Department Speziallinks erfolgt analog zum Erstellen der
 Department Links. Der Unterschied beschränkt sich auf die unterschiedliche
 Bezeichnung der \ximsterm{Location} des Department-Speziallinks-Verzeichnisses und des
-zugehörigen Portlets. Insofern wird auf Punkt \ref{deplinks} verwiesen. Für die Department
+zugehörigen \ximsterm{Portlet}s. Insofern wird auf Punkt \ref{deplinks} verwiesen. Für die Department
 Speziallinks muss die \ximsterm{Location} des Department Speziallink Verzeichnisses
-»speciallinks« lauten. Ebenfalls muss das Department Speziallink Portlet die
+»speciallinks« lauten. Ebenfalls muss das Department Speziallink \ximsterm{Portlet} die
 \ximsterm{Location} als auch den Titel »speciallinks\_portlet« besitzen und auf das
 Verzeichnis »speciallinks« (mit den gewünschten Links als Inhalt) verweisen.
 
@@ -2007,7 +1998,7 @@ Das Einfügen eines Department Images hat das Ziel, die Individualität eines
 Webauftritts einer Organisationseinheit zusätzlich zu betonen und sich vom
 Standard-Design ein wenig zu differenzieren.
 Das Department Image wird ähnlich wie die Department Links bzw. das Department
-Links Portlet dem Department Root zugewiesen.
+Links \ximsterm{Portlet} dem Department Root zugewiesen.
 Abbildung \ref{fig:} zeigt wie ein Department Image einem \ximsterm{DepartmentRoot} zugewiesen werden kann.
 
 \begin{figure}[!ht]
@@ -2065,7 +2056,7 @@ englische Pendant dazu »sfs.html.en« heißen.
 
 \begin{Hinweis}Prinzipiell funktioniert die Bereitstellung von Index-Dokumenten in zwei Sprachen
 auf die gleiche Weise (z.B. index.html.de). Jedoch ist dabei darauf zu
-achten, dass die Option »Verhindere Autoindex beim
+achten, dass die Option »Verhindere \ximsterm{Autoindex} beim
 Veröffentlichen« für die entsprechenden Container-Objekte angekreuzt sein
 muss, da andernfalls bei Fehlschlagen der Language-Negotiation der von \otherterm{XIMS}
 automatisch erzeugte Dokumenten-Index dargestellt wird (siehe auch Punkt \ref{autoindex}).
@@ -2114,7 +2105,7 @@ Navigation für Ihre \otherterm{XIMS}-basierte Homepage setzen das Wissen über di
 Handhabung von »Department Links« voraus. In diesem Abschnitt werden nur die Anleitungsschritte für die zusätzlichen englischen Department Links erläutert. Für
 grundlegende Informationen zum Thema Department Links wird auf Punkt \ref{deplinks} verwiesen.
 Ihre Homepage verfügt bereits über ein departmentlinks-Verzeichnis (inklusive
-URLLinks) und ein Department Links-Portlet. Nun erstellen Sie für die
+URLLinks) und ein Department Links-\ximsterm{Portlet}. Nun erstellen Sie für die
 englischsprachige Navigation gleichermaßen diese Objekte, jedoch mit
 unterschiedlicher Benennung: Verzeichnis »departmentlinks\_en«; Portlet
 »departmentlinks\_portlet\_en«. Im departmentlinks\_en-Verzeichnis müssen
@@ -2129,13 +2120,13 @@ URLLinks erstellt werden}
 \end{figure}
 
 Dem Department Root der Organisationseinheit kann nun das
-zweite Portlet »departmentlinks\_portlet\_en« (welches auf das Verzeichnis
+zweite \ximsterm{Portlet} »departmentlinks\_portlet\_en« (welches auf das Verzeichnis
 »departmentlinks\_en« zeigt) zugewiesen werden.
 
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/zuweisenportletno2.png}
-	\caption{Zuweisen des zweiten Portlets mit den englischen Department Links zum
+	\caption{Zuweisen des zweiten \ximsterm{Portlet}s mit den englischen Department Links zum
 Department Root}
 	\label{fig:zuweisenportlet}
 \end{figure}
@@ -2146,7 +2137,7 @@ Sprache erfolgt nach folgenden Kriterien:
 \begin{itemize}
 	\item {Für Dateien mit der Erweiterung ».de« (html.de) werden die Department Links
 aus dem Portlet »departmentlinks\_portlet« bzw. für Dateien mit der
-Erweiterung ».en« (html.en) die Department Links aus dem Portlet
+Erweiterung ».en« (html.en) die Department Links aus dem \ximsterm{Portlet}
 »departmentlinks\_portlet\_en« gewählt.}
 \item {Für Dateien ohne Erweiterung wird versucht dem Benutzer am besten gerecht
 zu werden und es werden entsprechend dessen Einstellungen die Seiten
@@ -2182,7 +2173,7 @@ pub/a/2002/06/19/perl-xml.html}}
 	\item {\textbf{\ximsterm{AnonDiscussionForum}}: Ist ein anonymes Diskussionsforum. Mehr
 Informationen dazu erhalten Sie im Dokument Anonymes Diskussionsforum
 Howto.}
-	\item {\textbf{\ximsterm{Portal}}: Nach einem Portlet ist ein Portal gewissermaßen der nächste Schritt.
+	\item {\textbf{\ximsterm{Portal}}: Nach einem \ximsterm{Portlet} ist ein Portal gewissermaßen der nächste Schritt.
 Im Grunde genommen ist ein Portal nichts anderes als eine Seite, die nur
 Referenzen auf Portlets enthält. Solche Seiten werden vor allem auf Startseiten
 einer Website gefunden.}
@@ -2240,7 +2231,7 @@ entsprechenden Editors zu diesem gewechselt werden.
 	\label{fig:wysiwygchange}
 \end{figure}
 
-\subsubsection{eWebEditPro WYSIWYG-Editor}
+\subsubsection{\otherterm{eWebEditPro} WYSIWYG-Editor}
 \label{faq-ewebeditpro}
 
 \paragraph{Warum entstehen nach betätigen der Enter(Eingabe)-Taste doppelte
@@ -2272,11 +2263,11 @@ Größere Dokumente müssen aufgeteilt werden.
 Bevor Sie das Dokumente aufteilen, überlegen Sie sich bitte, ob es nicht sinnvoller
 wäre, den Inhalt als File z.B. in Form eines PDF-Dokuments einzubringen.
 
-\paragraph{Wo kann der Installer für den eWebEditPro Klienten heruntergeladen werden?}
+\paragraph{Wo kann der Installer für den \otherterm{eWebEditPro} Klienten heruntergeladen werden?}
 
 Hier: \url{http://xims.uibk.ac.at/ximsroot/wepro/clientinstall/ewebeditproclient.exe}
 
-\subsubsection{TinyMCE WYSIWYG-Editor}
+\subsubsection{\otherterm{TinyMCE} WYSIWYG-Editor}
 \label{faq-tinymce}
 
 \paragraph{Nachdem mein Dokument mit TinyMCE geladen wurde, kann ich den
@@ -2319,7 +2310,7 @@ Dies tritt eigentlich nur bei mehrsprachigen Indexseiten auf; dort genau dann, w
 die Language-Negotiation (d. h. der Server sucht die Sprache nach den Präferenzen
 die der Browser mitteilt aus) fehlschlägt. Der Server liefert dann die von \otherterm{XIMS}
 automatisch generierte Indexseite aus. Es sollte für den betreffenden Ordner die
-Option »Verhindere Autoindex beim Veröffentlichen« gewählt und der Ordner neu
+Option »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« gewählt und der Ordner neu
 publiziert werden. Es wird dann bei einem Fehlschlag - so vorhanden - die englische,
 sonst eine Liste der vorhandenen Varianten angezeigt.
 
