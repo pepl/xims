@@ -14,8 +14,8 @@
 
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:exslt="http://exslt.org/common"
+                xmlns="http://www.w3.org/1999/xhtml"
                 extension-element-prefixes="exslt">
 
   <xsl:import href="vlibrary_common.xsl"/>

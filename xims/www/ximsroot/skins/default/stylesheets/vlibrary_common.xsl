@@ -8,10 +8,10 @@
 
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:date="http://exslt.org/dates-and-times"
-                xmlns:exsl="http://exslt.org/common"
-                extension-element-prefixes="exsl date">
+                xmlns:exslt="http://exslt.org/common"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="exslt date">
 
   <xsl:import href="common.xsl"/>
 
@@ -32,7 +32,7 @@
   </xsl:variable>
 
   <xsl:variable name="popupsizes"
-                select="exsl:node-set($popupsizes-rtf)/*"/>
+                select="exslt:node-set($popupsizes-rtf)/*"/>
 
   <xsl:param name="colms" select="3"/>
   <xsl:param name="vls"/>
