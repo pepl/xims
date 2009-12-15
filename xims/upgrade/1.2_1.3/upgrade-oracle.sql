@@ -124,3 +124,9 @@ INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEX
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'M4V', 'video/x-m4v', 'm4v' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'MOV', 'video/quicktime', 'mov' )
 /
+
+PROMPT DROP BITMAP INDEX an rebuild
+DROP INDEX CTT_MARKED_DELETED_I;
+CREATE INDEX CTT_MARKED_DELETED_I
+ ON CI_CONTENT ( MARKED_DELETED  )
+/

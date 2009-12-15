@@ -82,3 +82,8 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( ci_object_types_id_seq_nval(), 'Event', 0, 1, 1, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_mailable ) 
        VALUES ( ci_object_types_id_seq_nval(), 'NewsLetter', 0, 1, 1, 0, 1 );
+
+-- update flags from NULL to 0
+UPDATE CI_CONTENT SET marked_new = 0     WHERE marked_new     IS NULL;
+UPDATE CI_CONTENT SET marked_deleted = 0 WHERE marked_deleted IS NULL;
+UPDATE CI_CONTENT SET published = 0      WHERE published      IS NULL;
