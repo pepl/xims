@@ -318,7 +318,7 @@ CREATE  INDEX ctt_creation_timestamp_i
    )
 /
 
-CREATE  BITMAP INDEX ctt_marked_deleted_i
+CREATE  INDEX ctt_marked_deleted_i
  ON ci_content
   ( marked_deleted  )
   PCTFREE    10
