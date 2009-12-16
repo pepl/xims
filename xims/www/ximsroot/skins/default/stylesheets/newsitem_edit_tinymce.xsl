@@ -48,6 +48,7 @@
 
 <xsl:template name="script_head">
     <xsl:call-template name="jscalendar_scripts"/>
+    <script language="javascript" src="{$jquery}" type="text/javascript"/>
 </xsl:template>
 
 </xsl:stylesheet>
