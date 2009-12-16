@@ -116,7 +116,8 @@
 </xsl:template>
 
 <xsl:template name="charcountcheck">
-    <script type="text/javascript">
+    <xsl:call-template name="mk-inline-js">
+      <xsl:with-param name="code">
         maxKeys = 390; // Should this be a config.xsl value?
 
         function txtshow( txt2show ) {
@@ -137,7 +138,8 @@
         }
 
         keyup( document.getElementsByName("abstract")[0] );
-    </script>
+    </xsl:with-param>
+    </xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>
