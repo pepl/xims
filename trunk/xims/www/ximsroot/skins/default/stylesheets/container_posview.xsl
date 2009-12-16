@@ -18,8 +18,8 @@
         <xsl:call-template name="head_default"/>
         <body>
             <p align="right"><a href="javascript:window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
-            <p>
-            <form name="repos">
+            
+            <form name="repos" action="">
                 <table cellpadding="10">
                     <tr>
                         <td valign="top">
@@ -36,7 +36,7 @@
                     </tr>
                 </table>
             </form>
-            </p>
+            
             <xsl:call-template name="script_bottom"/>
             <script type="text/javascript">
                 function storeBack(value) {
