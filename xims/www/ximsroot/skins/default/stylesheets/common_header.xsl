@@ -274,7 +274,6 @@
     </div>
     <noscript>
         <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="get">
-            <td width="126" nowrap="nowrap">
                 <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="objtype">
                     <xsl:choose>
                         <xsl:when test="/document/context/object/@id = 1">
@@ -288,8 +287,6 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </select>
-            </td>
-            <td width="80" style="padding-top: 4">
                 <xsl:text>&#160;</xsl:text>
                 <input type="image"
                     name="create"
@@ -305,7 +302,6 @@
                     <input name="sb" type="hidden" value="{$sb}"/>
                     <input name="order" type="hidden" value="{$order}"/>
                 </xsl:if>
-            </td>
         </form>
     </noscript>
 </xsl:template>
