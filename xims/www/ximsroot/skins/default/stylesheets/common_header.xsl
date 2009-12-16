@@ -172,7 +172,7 @@
                     <td width="80"><xsl:text>&#160;</xsl:text></td>
                 </xsl:otherwise>
             </xsl:choose>
-            <td width="629">
+            <td>
                 <xsl:call-template name="message"/>
             </td>
             <xsl:call-template name="header.cttobject.search"/>
