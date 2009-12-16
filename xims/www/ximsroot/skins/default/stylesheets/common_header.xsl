@@ -293,11 +293,8 @@
                 <input type="image"
                     name="create"
                     src="{$sklangimages}create.png"
-                    width="65"
-                    height="14"
                     alt="{$i18n/l/Create}"
-                    title="{$i18n/l/Create}"
-                    border="0" />
+                    title="{$i18n/l/Create}" />
                 <input name="page" type="hidden" value="{$page}"/>
                 <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 <xsl:if test="$defsorting != 1">
