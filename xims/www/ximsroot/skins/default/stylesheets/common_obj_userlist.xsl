@@ -49,8 +49,8 @@
           <tr bgcolor="#eeeeee">
           <td align="center">
           <!-- filter widget table -->
+          <form name="userfilter" style="margin: 0" action="">
               <table cellpadding="0" cellspacing="0" border="0">
-              <form name="userfilter" style="margin: 0">
               <tr>
                 <td colspan="4" align="center">
                     <xsl:choose>
@@ -104,9 +104,9 @@
                   <xsl:text>&#160;</xsl:text>
                   <a href="javascript:openDocWindow('grantuserlookup')" class="doclink">(?)</a>
                 </td>
-              </tr>
-              </form>
+              </tr>              
               </table>
+              </form>
           <!-- end filter widget table -->
           </td>
         </tr>
