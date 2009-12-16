@@ -27,22 +27,12 @@
         <xsl:variable name="end"><xsl:apply-templates select="meta/date_to_timestamp" mode="RFC822" /></xsl:variable>
         <event
             start="{$start}"
-            title="{title}"
             eventID="{@id}"
             >
             <xsl:if test="$start != $end">
                 <xsl:attribute name="isDuration">true</xsl:attribute>
                 <xsl:attribute name="end"><xsl:value-of select="$end"/></xsl:attribute>
             </xsl:if>
-            <xsl:choose>
-              <xsl:when test="abstract != ''">
-                <xsl:apply-templates select="abstract" mode="escape"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="title" mode="escape"/>
-              </xsl:otherwise>
-            </xsl:choose>
-            <!--image="uri"-->
         </event>
     </xsl:template>
 
