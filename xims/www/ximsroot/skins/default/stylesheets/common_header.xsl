@@ -156,6 +156,8 @@
                         <xsl:if test="$nostatus='false'">
                             <xsl:call-template name="cttobject.status"/>
                         </xsl:if>
+                    </td>
+                    <td width="126" nowrap="nowrap">
                         <xsl:if test="/document/context/object/user_privileges/create
                             and $createwidget = 'true'
                             and /document/object_types/object_type[can_create]">
