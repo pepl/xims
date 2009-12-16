@@ -57,7 +57,7 @@ function defineLayout()
 {
 // Set Page position
 mdme.style.position="absolute";
-mdme.style.left= PagePositionLEFT+"px";
+//mdme.style.left= PagePositionLEFT+"px";
 mdme.style.top= PagePositionTOP+"px";
 mdme.style.zIndex=50;
 // Toggle visibility
