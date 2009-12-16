@@ -21,7 +21,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
             <br />
-            <textarea tabindex="25" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)"><xsl:text>&#160;</xsl:text></textarea>
+            <textarea tabindex="25" name="abstract" rows="5" cols="100" class="text" onkeyup="keyup(this)"><xsl:text>&#160;</xsl:text></textarea>
             <script type="text/javascript">document.getElementsByName("abstract")[0].value = '';</script>
             <xsl:text>&#160;</xsl:text><span id="charcount"><xsl:text>&#160;</xsl:text></span>
             <xsl:call-template name="charcountcheck"/>
