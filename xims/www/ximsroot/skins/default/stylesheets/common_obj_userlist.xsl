@@ -120,8 +120,8 @@
 
               <!-- begin app sort order by nav -->
               <tr>
-                <td width="20" background="{$skimages}generic_tablebg_1x20.png">&#160;</td>
-                <td background="{$skimages}generic_tablebg_1x20.png">
+                <td width="20">&#160;</td>
+                <td>
                   <xsl:choose>
                     <xsl:when test="$sort-by='id'">
                       <a>
@@ -155,7 +155,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </td>
-                <td background="{$skimages}generic_tablebg_1x20.png">
+                <td>
                   <xsl:choose>
                     <xsl:when test="$sort-by='name'">
                       <a>
@@ -189,7 +189,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </td>
-                <td background="{$skimages}generic_tablebg_1x20.png">
+                <td>
                   <xsl:choose>
                     <xsl:when test="$sort-by='fullname'">
                       <a>
@@ -223,7 +223,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </td>
-                <td background="{$skimages}generic_tablebg_1x20.png">
+                <td>
                   <xsl:choose>
                     <xsl:when test="$sort-by='enabled'">
                       <a>
@@ -257,7 +257,7 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </td>
-                <td background="{$skimages}generic_tablebg_1x20.png" width="250" align="right">
+                <td width="250" align="right">
                     <img src="{$sklangimages}options.png"
                             width="189"
                             height="20"
