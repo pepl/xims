@@ -19,12 +19,12 @@
         <body>
             <p align="right"><a href="javascript:window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
             
-            <form name="repos" action="">
+           <!-- <form name="repos" action="">
                 <table cellpadding="10">
                     <tr>
                         <td valign="top">
                             <xsl:value-of select="$i18n/l/Choose_position"/><br/>'<xsl:value-of select="title"/>' <br/><xsl:value-of select="$i18n/l/in"/>
-                            Container '<xsl:value-of select="parents/object[@id=/document/context/object/@parent_id]/title"/>'.
+                            Container '<xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/title"/>'.                            
                         </td>
                         <td valign="top">
                             <select name="new_position" onchange="storeBack(options[selectedIndex].value)">
@@ -35,7 +35,26 @@
                         </td>
                     </tr>
                 </table>
+            </form> -->
+            <form name="repos" action="javascript:storeBack(document.repos.new_position.selectedIndex + 1)">
+            	<p>
+              	<xsl:value-of select="$i18n/l/Choose_position"/>&#160;<strong>'<xsl:value-of select="title"/>'</strong>&#160;<xsl:value-of select="$i18n/l/in"/>
+                Container '<xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/title"/>':
+							</p>
+							<p>
+                <label for="input-position"><xsl:value-of select="$i18n/l/Position"/></label>
+                <select name="new_position" class="select" id="input-position">
+                    <xsl:call-template name="loop-options">
+                        <xsl:with-param name="iter"><xsl:value-of select="1"/></xsl:with-param>
+                    </xsl:call-template>
+                </select>
+                <input type="submit" name="submit">
+								<xsl:attribute name="value"><xsl:value-of select="$i18n/l/save"/></xsl:attribute>
+                </input>
+                </p>
             </form>
+            
+            
             
             <xsl:call-template name="script_bottom"/>
             <script type="text/javascript">
