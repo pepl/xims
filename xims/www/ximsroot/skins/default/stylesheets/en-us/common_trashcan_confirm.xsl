@@ -20,7 +20,7 @@
             </title>
             <xsl:call-template name="css"/>
         </head>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+        <body background="{$skimages}body_bg.png">
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
