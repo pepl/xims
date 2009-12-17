@@ -202,14 +202,12 @@
             </div>
         </xsl:if>
         <xsl:call-template name="last_modified"/>
-        <span id="vlstatus_options">
             <xsl:call-template name="status"/>
             <xsl:if test="$m='e'">
                 <span class="vloptions">
                     <xsl:call-template name="cttobject.options"/>
                 </span>
             </xsl:if>
-        </span>
         <div class="vlabstract">
             <xsl:apply-templates select="abstract"/>
         </div>
@@ -282,11 +280,8 @@
                         <input type="image"
                                 src="{$skimages}go.png"
                                 name="submit"
-                                width="25"
-                                height="14"
                                 alt="{$i18n/l/search}"
                                 title="{$i18n/l/search}"
-                                border="0"
                                 style="vertical-align: text-bottom;"
                         />
                     </form>
