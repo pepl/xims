@@ -21,9 +21,9 @@
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
                     <td colspan="2">
-                        <span id="body">
+                        
                             <xsl:apply-templates select="body"/>
-                        </span>
+                  
                     </td>
                 </tr>
             </table>
