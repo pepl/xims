@@ -13,7 +13,7 @@
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head_default"/>
-    <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+    <body background="{$skimages}body_bg.png">
         <xsl:call-template name="header">
           <xsl:with-param name="nocreatewidget">true</xsl:with-param>
         </xsl:call-template>
@@ -159,7 +159,7 @@
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
 
-    <tr height="25">
+    <tr>
         <xsl:choose>
 <!-- begin sort by name -->
             <xsl:when test="$sb='name'">
@@ -215,11 +215,9 @@
         </td>
         <td valign="bottom">
         <xsl:if test="user_privileges/delete">
-            <form style="margin:0px;" name="delete" method="get" action="{$xims_box}{$goxims_content}">
-                <input type="hidden" name="delete_prompt" value="1"/>
-                <input type="hidden" name="id" value="{@id}"/>
-                <input type="image" src="{$skimages}option_delete.png" border="0" width="37" height="19" title="delete" alt="delete"/>
-            </form>
+            <a class="sprite sprite-option_purge" title="{$i18n/l/purge}" href="{$goxims_content}?id={@id};delete_prompt=1">
+				          &#xa0;<span><xsl:value-of select="$i18n/l/purge"/></span>
+				    </a>
         </xsl:if>
         </td>
     </tr>
