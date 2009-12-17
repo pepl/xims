@@ -406,7 +406,7 @@
 				          <xsl:attribute name="href">
 				            <xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/>
 				          </xsl:attribute>
-				          &#xa0;<span><xsl:value-of select="{$i18n/l/purge}"/></span>
+				          &#xa0;<span><xsl:value-of select="$i18n/l/purge"/></span>
 				        </a>
               </xsl:when>
               <xsl:otherwise>
