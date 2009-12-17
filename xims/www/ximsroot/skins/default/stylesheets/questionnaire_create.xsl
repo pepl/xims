@@ -48,10 +48,8 @@
 </xsl:template>
 
 <xsl:template name="tr-questionnaire-create">
-    <tr>
         <xsl:call-template name="questionnaire_title_edit" />
         <xsl:call-template name="questionnaire_comment_edit" />
-    </tr>
 </xsl:template>
 
 <!-- Questionnaire template rules -->
