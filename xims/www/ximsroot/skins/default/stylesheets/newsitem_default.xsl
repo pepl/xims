@@ -27,7 +27,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:call-template name="toggle_hls"/>
-            <span id="body">
+            
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
                     <td>
@@ -112,7 +112,7 @@
                     </td>
                 </tr>
             </table>
-            </span>
+            
             <table align="center" width="98.7%" class="footer">
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="document-options"/>
