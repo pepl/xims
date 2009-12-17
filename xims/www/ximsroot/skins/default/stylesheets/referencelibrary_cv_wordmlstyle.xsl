@@ -12,9 +12,6 @@
     xmlns:wx="http://schemas.microsoft.com/office/word/2003/auxHint"
 >
 
-<xsl:output method="xml"
-    encoding="utf-8"/>
-
 <xsl:variable name="preprint_id" select="/document/reference_types/reference_type[name='Preprint']/@id"/>
 
 <xsl:key name="year" match="/document/context/object/children/object" use="substring(reference_values/reference_value[property_id=3]/value,1, 4)"/>

@@ -13,14 +13,6 @@
 <xsl:import href="common.xsl"/>
 <xsl:import href="referencelibraryitem_common.xsl"/>
 
-<xsl:output method="xml"
-    encoding="utf-8"
-    media-type="text/html"
-    omit-xml-declaration="yes"
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-    indent="no"/>
-
 <xsl:variable name="preprint_id" select="/document/reference_types/reference_type[name='Preprint']/@id"/>
 
 <xsl:key name="year" match="/document/context/object/children/object" use="substring(reference_values/reference_value[property_id=3]/value,1, 4)"/>
