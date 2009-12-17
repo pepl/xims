@@ -997,7 +997,7 @@ $Id$
           <xsl:value-of select="concat($publishingroot,$object_path)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat($gopublic_content,$object_path)"/>
+          <xsl:value-of select="concat($xims_box,$gopublic_content,$object_path)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -1357,6 +1357,7 @@ $Id$
   <xsl:template name="cttobject.del.spacer">
     <span class="sprite-del-spacer">&#xa0;</span>
   </xsl:template>
+
   <xsl:template name="cttobject.dataformat">
     <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
     <xsl:choose>
@@ -1372,6 +1373,7 @@ $Id$
         <xsl:value-of select="$dfname"/>
     </span>&#xa0;</span>
   </xsl:template>
+
   <xsl:template name="toggle_hls">
     <xsl:if test="$hls != ''">
       <div id="toggle_highlight">
