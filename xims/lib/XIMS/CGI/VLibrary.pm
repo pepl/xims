@@ -961,31 +961,38 @@ fulltext (with querybuilder)
 
 =item order
 
+Change the default sort order by putting I<asc> or I<desc> after the keyword.
+Comma separate keywords to sort by more than one attribute.
+
+Example:
+
+    order=dc.date,alpha+desc
+
 =over
 
 =item chrono
 
-chronicle date from
+chronicle date from (default asc)
 
 =item alpha
 
-Title
+Title (default asc)
 
 =item loctn
 
-Location
+Location (default desc)
 
 =item create
 
-creation date
+creation date (default desc)
 
 =item modify
 
- modification date
+ modification date (default desc)
 
 =item dc.date
 
-meta.dc_date
+meta.dc_date (default desc)
 
 =back
 

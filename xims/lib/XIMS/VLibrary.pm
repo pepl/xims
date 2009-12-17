@@ -567,30 +567,24 @@ sub vlitems_byfilter {
     my $criteria       = delete $args{criteria};
     my $params         = delete $args{params};
     my $filter_granted = delete $args{filter_granted};
+   
+    my $order;
+    my %p2c = (
+        'alpha'   => [ "c.title ",                       "ASC" ],
+        'chrono'  => [ "m.date_from_timestamp ",         "ASC" ],
+        'dc.date' => [ "m.dc_date ",                     "DESC" ],
+        'create'  => [ "c.creation_timestamp ",          "DESC" ],
+        'modify'  => [ "c.last_modification_timestamp ", "DESC" ],
+        'loctn'   => [ "d.location ",                    "DESC" ],
+    );
+    my $oopts = join( '|', keys(%p2c) );
 
-    my $order = delete $args{order};
-    if ( $order eq "alpha" ) {
-        $order = "c.title ASC";
-    }
-    elsif ( $order eq "chrono" ) {
-        $order = "m.date_from_timestamp ASC";
-    }
-     elsif ( $order eq "dc.date" ) {
-        $order = "m.dc_date DESC";
-    }
-    elsif ( $order eq "create" ) {
-        $order = "c.creation_timestamp DESC";
-    }
-    elsif ( $order eq "modify" ) {
-        $order = "c.last_modification_timestamp DESC";
-    }
-    # 'location' might trigger XSS-warnings.
-    elsif ( $order eq "loctn" ) {
-        $order = "d.location DESC";
-    }
-    else {
-        # Whatever else in may be: ignore it.
-        $order = undef;
+    foreach ( split( ',', delete $args{order} ) ) {
+        my ( $o, $odir ) = /($oopts)(?:\s+(desc|asc))?/i;
+        next unless length $o;
+        $order .= ', ' if length $order;
+        $order .= $p2c{lc($o)}[0];
+        $order .= $odir ? $odir : $p2c{lc($o)}[1];
     }
 
     my $limit  = delete $args{limit};
@@ -721,7 +715,7 @@ sub _vlitems_byfilter_sql {
     if (   $criteria{mediatype} ne ''
         || $criteria{chronicle} ne ''
         || $criteria{publisher} ne ''
-        || ( defined $order and $order =~ /^m\./ ) )
+        || ( defined $order and $order =~ /m\./ ) )
     {
         XIMS::Debug( 6, "Mediatype or Chronicle filter" );
         $tables     .= ', cilib_meta m ';
@@ -755,7 +749,7 @@ sub _vlitems_byfilter_sql {
         push @values, $params{status};
     }
     if ( $criteria{chronicle} ne ''
-        || ( defined $order and $order eq 'm.date_from_timestamp ASC' ) )
+        || ( defined $order and $order =~ /m.date_from_timestamp/ ) )
     {
         XIMS::Debug( 6, "Chronicle filter" );
         $properties .= ", m.date_from_timestamp, m.date_to_timestamp"
@@ -772,11 +766,10 @@ sub _vlitems_byfilter_sql {
     }
 
     # SELECT DISTINCT requires the order item to be on the select list.
-    my $attr;
-    if ( ($attr) = split(q{ }, $order) and not $properties =~ /$attr/ ) {
-        $properties .= ", $attr";
+    foreach my $attr ( $order =~ m/([\w.]+)(?:\s(?:asc|desc))?/gi ) {
+      $properties .= ", $attr" unless $properties =~ /$attr/;     
     }
-
+    
     if ( $filter_granted and not $self->User->admin() ) {
         my @userids = ( $self->User->id(), $self->User->role_ids() );
         $tables .= ', ci_object_privs_granted p';
@@ -969,8 +962,10 @@ sub _vlitems_byproperty {
     return unless $propertyid;
 
     # TODO think of fetching the whole object data here for performance
-    my $sql =
-        'SELECT d.id AS id FROM cilib_'
+
+    my $sql = 'SELECT d.id AS id FROM cilib_'
+      # UIBK  hint to even out buggy optimizer decisions (Oracle)
+      #  'SELECT  /*+ FIRST_ROWS(2000) */ d.id AS id FROM cilib_'
       . $property
       . 'map m, cilib_'
       . $property
