@@ -42,6 +42,7 @@
                                         <td valign="top">
                                             <div class="newsdate" id="newsdate">
                                                 <script type="text/javascript">
+                                                		
                                                     current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
                                                     document.getElementById("newsdate").innerHTML = current_date;
                                                 </script>
@@ -57,6 +58,7 @@
                                         <td valign="top" colspan="2">
                                             <div class="newsdate" id="newsdate">
                                                 <script type="text/javascript">
+                                                		var Date = new Date();
                                                     current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
                                                     document.getElementById("newsdate").innerHTML = current_date;
                                                 </script>
@@ -117,10 +119,20 @@
                 <xsl:call-template name="footer"/>
             </table>
             <xsl:call-template name="script_bottom"/>
-            <xsl:call-template name="jscalendar_scripts"/>
         </body>
     </html>
 </xsl:template>
+
+<xsl:template name="head_default">
+		<head>
+			<title>
+				<xsl:call-template name="title"/>
+			</title>
+			<xsl:call-template name="css"/>
+			<xsl:call-template name="script_head"/>
+			<xsl:call-template name="jscalendar_scripts"/>
+		</head>
+	</xsl:template>
 
 </xsl:stylesheet>
 
