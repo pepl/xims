@@ -184,9 +184,7 @@
   </xsl:template>
 
   <xsl:template name="status">
-    <span class="simpledb_status">
       <xsl:call-template name="cttobject.status"/>
-    </span>
   </xsl:template>
 
   <xsl:template name="simpledbmembertitle">
