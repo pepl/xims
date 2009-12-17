@@ -18,7 +18,7 @@
 <xsl:template match="/document/context/object">
     <html>
         <xsl:call-template name="head_default"/>
-        <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
+        <body background="{$ximsroot}skins/{$currentskin}/images/body_bg.png">
             <xsl:call-template name="header"/>
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
@@ -41,17 +41,17 @@
     <xsl:call-template name="questionnaire_info" />
     <xsl:call-template name="questionnaire_statistics" />
     <xsl:call-template name="questionnaire_download" />
-    <h2 style="margin-bottom: 5px">
+    
     <xsl:choose>
         <xsl:when test="$show_questions =  'none'">
-            <a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
+            <h2 style="margin-bottom: 5px"><a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a></h2>
         </xsl:when>
         <xsl:when test="$show_questions =  'top'">
-            <a href="?show_questions=none" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
-            <xsl:call-template name="top_question" />
+            <h2 style="margin-bottom: 5px"><a href="?show_questions=none" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
+            <xsl:call-template name="top_question" /></h2>
         </xsl:when>
     </xsl:choose>
-    </h2>
+    
 </xsl:template>
 
 <xsl:template name="questionnaire_info">
