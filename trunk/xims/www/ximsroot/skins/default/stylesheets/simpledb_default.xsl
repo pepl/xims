@@ -159,14 +159,12 @@
         <span style="font-size: 0.8em">(id: <xsl:value-of select="@document_id"/>)</span>
       </div>
       <xsl:call-template name="last_modified"/>
-      <span class="simpledbitem_status_options">
         <xsl:call-template name="status"/>
         <xsl:if test="$m='e'">
           <span class="simpledbitem_options">
             <xsl:call-template name="cttobject.options"/>
           </span>
         </xsl:if>
-      </span>
       <xsl:if test="$abstract != ''">
         <div class="simpledbabstract">
           <xsl:value-of select="$abstract"/>
