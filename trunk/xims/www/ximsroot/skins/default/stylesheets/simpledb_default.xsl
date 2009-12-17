@@ -152,7 +152,6 @@
     <xsl:variable name="abstract" 
                   select="normalize-space(abstract)"/>
     <div class="simpledb_childrenlistitem"
-         name="simpledbchildrenlistitem"
          id="simpledbchildrenlistitem{position()}">
       <div class="simpledb_membertitle">
         <xsl:call-template name="simpledbmembertitle"/>
@@ -267,11 +266,8 @@
               <input type="image"
                      src="{$skimages}go.png"
                      name="submit"
-                     width="25"
-                     height="14"
                      alt="{$i18n/l/search}"
                      title="{$i18n/l/search}"
-                     border="0"
                      style="vertical-align: text-bottom;"
                      />
             </form>
@@ -337,11 +333,8 @@
       <input type="image"
              name="create"
              src="{$sklangimages}create.png"
-             width="65"
-             height="14"
              alt="{$i18n/l/Create}"
-             title="{$i18n/l/Create}"
-             border="0" />
+             title="{$i18n/l/Create}" />
       <input name="page" type="hidden" value="{$page}"/>
       <input name="r" type="hidden" value="{/document/context/object/@id}"/>
       <input name="objtype" type="hidden" value="SimpleDBItem"/>
