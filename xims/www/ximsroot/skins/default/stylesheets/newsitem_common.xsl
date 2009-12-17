@@ -89,7 +89,7 @@
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
             <br />
-            <textarea tabindex="25" name="abstract" rows="5" cols="100" class="text" onKeyUp="keyup(this)">
+            <textarea tabindex="25" name="abstract" rows="5" cols="100" class="text" onkeyup="keyup(this)">
             <xsl:choose>
                 <xsl:when test="string-length(abstract) &gt; 0">
                     <xsl:apply-templates select="abstract"/>
