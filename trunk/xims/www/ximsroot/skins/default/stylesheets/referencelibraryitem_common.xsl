@@ -16,13 +16,6 @@
 <xsl:variable name="daterefpropid" select="/document/reference_properties/reference_property[name='date']/@id"/>
 <xsl:variable name="btitlerefpropid" select="/document/reference_properties/reference_property[name='btitle']/@id"/>
 
-<xsl:output method="html"
-            encoding="utf-8"
-            media-type="text/html"
-            doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-            doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-            indent="no"/>
-
 <xsl:template name="cttobject.options.purge_or_delete">
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>

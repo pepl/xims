@@ -11,8 +11,6 @@
 	<xsl:import href="common.xsl"/>
 	<!--<xsl:import href="../questionnaire_default.xsl"/>-->
 
-	<xsl:output method="html" media-type="text/html" encoding="utf-8"/>
-
 	<xsl:template match="/document">
 		<xsl:apply-templates select="context/object"/>
 	</xsl:template>
