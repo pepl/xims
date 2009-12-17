@@ -19,7 +19,6 @@
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
                     <td bgcolor="#ffffff">
-                        <span id="body">
                             <h1><xsl:value-of select="title"/> (<xsl:value-of select="/document/reference_types/reference_type[@id=/document/context/object/reference_type_id]/name"/>)</h1>
                                 <xsl:if test="abstract != ''">
                                     <div id="abstract">
@@ -56,7 +55,6 @@
                                         <xsl:apply-templates select="serial"/>
                                     </div>
                                 </xsl:if>
-                        </span>
                     </td>
                 </tr>
             </table>
