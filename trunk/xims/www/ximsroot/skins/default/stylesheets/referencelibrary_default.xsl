@@ -102,12 +102,9 @@
         (<a href="javascript:void(0);" style="text-decoration:none;" onmouseover="fixedtooltip(getRefTypeDescription(document.reftype_creator.reftype.options[document.reftype_creator.reftype.selectedIndex].value), this, event, '200px')" onmouseout="delayhidetip()">?</a>)
             <input type="image"
                     name="create"
-                    src="{$sklangimages}create.png"
-                    width="65"
-                    height="14"
+                    src="{$sklangimages}create.png"                    
                     alt="{$i18n/l/Create}"
-                    title="{$i18n/l/Create}"
-                    border="0" />
+                    title="{$i18n/l/Create}"/>
             <input name="page" type="hidden" value="{$page}"/>
             <input name="r" type="hidden" value="{/document/context/object/@id}"/>
             <input name="objtype" type="hidden" value="ReferenceLibraryItem"/>
@@ -163,7 +160,7 @@
     <xsl:variable name="date" select="reference_values/reference_value[property_id=$daterefpropid]/value"/>
     <xsl:variable name="btitle" select="reference_values/reference_value[property_id=$btitlerefpropid]/value"/>
     <xsl:variable name="serial_id" select="serial_id"/>
-    <div class="vlchildrenlistitem" name="vlchildrenlistitem">
+    <div class="vlchildrenlistitem">
         <div class="reflib_authortitle">
             <xsl:choose>
                 <xsl:when test="authorgroup/author">
@@ -229,9 +226,7 @@
 </xsl:template>
 
 <xsl:template name="status">
-    <span class="vlstatus">
         <xsl:call-template name="cttobject.status"/>
-    </span>
 </xsl:template>
 
 <xsl:template name="reftitle">
@@ -352,11 +347,8 @@
         <input type="image"
                 name="export"
                 src="{$skimages}go.png"
-                width="25"
-                height="14"
                 alt="{$i18n/l/search}"
                 title="{$i18n/l/search}"
-                border="0"
                 style="vertical-align: text-bottom;" />
     </form>
 </xsl:template>
@@ -379,11 +371,8 @@
         <input type="image"
                 name="citations"
                 src="{$skimages}go.png"
-                width="25"
-                height="14"
                 alt="{$i18n/l/search}"
                 title="{$i18n/l/search}"
-                border="0"
                 style="vertical-align: text-bottom;" />
     </form>
 </xsl:template>
