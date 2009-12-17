@@ -80,8 +80,8 @@
                     <input tabindex="{position()+20}" name="simpledb_{name}" type="radio" value="0">
                       <xsl:if test="$propvalue != '1'">
                         <xsl:attribute name="checked">checked</xsl:attribute>
-                      </xsl:if><xsl:value-of select="$i18n/l/No"/>
-                    </input>
+                      </xsl:if>
+                    </input><xsl:value-of select="$i18n/l/No"/>
                 </xsl:when>
                 <xsl:when test="type = 'textarea'">
                     <textarea tabindex="{position()+20}" class="text" name="simpledb_{name}" rows="5" cols="38" wrap="virtual" onKeyUp="keyup(this)">

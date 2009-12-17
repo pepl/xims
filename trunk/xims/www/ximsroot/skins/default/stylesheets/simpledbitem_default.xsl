@@ -18,7 +18,7 @@
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
                     <td bgcolor="#ffffff">
-                        <span id="body">
+                        <!-- <span id="body"> -->
                             <h1><xsl:value-of select="title"/></h1>
                                 <div id="abstract">
                                     <xsl:apply-templates select="abstract"/>
@@ -28,7 +28,7 @@
                                         <xsl:sort select="/document/member_properties/member_property[@id = current()/property_id]/position" order="ascending" data-type="number"/>
                                     </xsl:apply-templates>
                                 </table>
-                        </span>
+                       <!-- </span> -->
                     </td>
                 </tr>
             </table>
