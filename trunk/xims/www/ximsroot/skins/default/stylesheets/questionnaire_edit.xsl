@@ -343,7 +343,7 @@
             <span><xsl:value-of select="$i18n_qn/l/Intro"/></span>
         </td>
         <td>
-            <textarea type="text" tabindex="10" name="questionnaire_intro" cols="50" rows="3" class="text">
+            <textarea tabindex="10" name="questionnaire_intro" cols="50" rows="3" class="text">
                 <xsl:value-of select="body/questionnaire/intro"/>
             </textarea>
         </td>
@@ -547,10 +547,7 @@
                 <input type="hidden" name="tanlist_{@id}_title" value="{.}" />&#xa0;
                 <input type="image"
                        src="{$skimages}option_delete.png"
-                       style="vertical-align: bottom"
-                       border="0"
-                       width="37"
-                       height="19"
+                       style="vertical-align: bottom"                       
                        alt="{$i18n_qn/l/Remove_TAN_List}"
                        title="{$i18n_qn/l/Remove_TAN_List}"
                        value="{$i18n_qn/l/Remove_TAN_List}"
