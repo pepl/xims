@@ -402,10 +402,7 @@
             <xsl:choose>
               <xsl:when test="user_privileges/delete and published != '1' 
                               and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-                <a class="sprite sprite-option_purge" title="{$i18n/l/purge}">
-				          <xsl:attribute name="href">
-				            <xsl:value-of select="concat($goxims_content,'?id=',{@id},';delete_prompt=1')"/>
-				          </xsl:attribute>
+                <a class="sprite sprite-option_purge" title="{$i18n/l/purge}" href="{$goxims_content}?id={@id};delete_prompt=1">
 				          &#xa0;<span><xsl:value-of select="$i18n/l/purge"/></span>
 				        </a>
               </xsl:when>
