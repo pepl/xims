@@ -18,8 +18,6 @@
 <xsl:param name="property_id"/>
 <xsl:param name="message" select="/document/context/session/message"/>
 
-<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-
 <xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-edit"/>
@@ -260,7 +258,6 @@
                             <img src="{$skimages}option_edit.png"
                                 alt="{$l_Edit}"
                                 title="{$l_Edit}"
-                                border="0"
                                 name="eiedit{@id}"
                                 width="32"
                                 height="19"
@@ -275,9 +272,6 @@
                                     type="image"
                                     name="property_delete{@id}"
                                     src="{$skimages}option_delete.png"
-                                    border="0"
-                                    width="37"
-                                    height="19"
                                     alt="{$l_delete}"
                                     title="{$l_delete}"
                                 />
