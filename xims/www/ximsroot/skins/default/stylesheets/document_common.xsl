@@ -404,7 +404,7 @@
                               and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
                 <a class="sprite sprite-option_purge" title="{$i18n/l/purge}">
 				          <xsl:attribute name="href">
-				            <xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/>
+				            <xsl:value-of select="concat($goxims_content,'?id=',{@id},';delete_prompt=1')"/>
 				          </xsl:attribute>
 				          &#xa0;<span><xsl:value-of select="$i18n/l/purge"/></span>
 				        </a>
