@@ -28,12 +28,8 @@
                     <xsl:call-template name="tr-body-create_tinymce"/>
                     <xsl:call-template name="tr-keywords-create"/>
                     <xsl:call-template name="tr-valid_from"/>
-                    <xsl:call-template name="tr-valid_to"/>
-                    <tr>
-                        <td colspan="3">
-                            <xsl:call-template name="markednew"/>
-                        </td>
-                    </tr>
+                    <xsl:call-template name="tr-valid_to"/>                  
+                    <xsl:call-template name="markednew"/>                   
                     <xsl:call-template name="grantowneronly"/>
                 </table>
                 <xsl:call-template name="saveaction"/>
