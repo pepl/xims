@@ -13,7 +13,7 @@
     <xsl:template match="/document/context/object">
         <html>
             <xsl:call-template name="head_default"/>
-            <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
+            <body background="{$skimages}body_bg.png">
                 <xsl:call-template name="header">
                     <xsl:with-param name="createwidget">false</xsl:with-param>
                 </xsl:call-template>
@@ -66,9 +66,11 @@
     </xsl:template>
 
     <xsl:template match="title">
+    	<tr>
         <td colspan="3" style="background-color: #123853;color:white">
             <xsl:apply-templates/>
         </td>
+      </tr>
     </xsl:template>
 
     <xsl:template name="infos">
