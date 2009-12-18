@@ -102,10 +102,11 @@
                 <p>
                     <!-- check sysprivs here and xsl:choose -->
                     Als Mitglied der Admin-Rolle haben Sie folgende administrative Optionen:
+                </p>
                     <ul>
                         <li class="linklist"><a href="{$xims_box}{$goxims_users}">BenutzerInnen und Rollen verwalten</a></li>
                     </ul>
-                </p>
+                
             </xsl:if>
 
         </div>
