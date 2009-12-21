@@ -10,38 +10,40 @@
 $().ready(function(){
 
     $("#body").tinymce({
-		theme : 'advanced',
-		plugins : 'table,contextmenu,advhr,searchreplace,inlinepopups',
-		
-		theme_advanced_buttons1_add_before: 'cut,copy,paste,separator,search,replace,separator',
-        theme_advanced_buttons3_add_before : 'tablecontrols,separator',
-		theme_advanced_toolbar_location : 'top',
-        theme_advanced_toolbar_align : 'left',
-        theme_advanced_path_location : 'bottom',
-        theme_advanced_resizing : true,
-        theme_advanced_resize_horizontal : false,
-		
-		language : lang,
-		document_base_url : baseUrl,
-		auto_cleanup_word : true,
-    	mode : 'exact',
-        elements : 'body',
-        dialog_type : "modal",
-        
-        entity_encoding : 'raw',
-       
-        content_css :  css,                           
-        file_browser_callback : 'filebrowse',
-        remove_linebreaks : 'false',
-        cleanup : 'true',
-        cleanup_on_startup : 'false',
-        apply_source_formatting : 'true'
     
+        // General options
+        theme: "advanced",
+        plugins: 'table,contextmenu,advhr,searchreplace,inlinepopups,safari,xhtmlxtras,paste',
+        // Theme options
+        theme_advanced_buttons1: 'cut,copy,paste,pastetext,pasteword,search,replace,separator,undo,redo,separator,anchor,link,unlink,separator,hr,image,separator,numlist,bullist,outdent,indent,blockquote,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,visualaid,code,help',
+        theme_advanced_buttons2: 'removeformat,cleanup,styleselect,formatselect,separator,bold,italic,underline,separator,sup,sub,separator,charmap',
+        theme_advanced_buttons3: 'tablecontrols,|,cite,ins,del,abbr,acronym',
+        theme_advanced_toolbar_location: "top",
+        theme_advanced_toolbar_align: "left",
+        theme_advanced_statusbar_location: "bottom",
+        theme_advanced_path_location: 'bottom',
+        theme_advanced_resizing: true,
+        theme_advanced_resize_horizontal: false,
+        theme_advanced_styles: 'Highlighted Background=highlighted;Important=important;Border=warn;Indent Both=blockquote;Indent First Line=firstline_indent;Small Caps=small-caps;Table Light=bg_light;Table Dark=bg_dark;Table Border=bg_border;Table Header=bg_header;List Icon Folder=folderlist;List Icon PDF=pdflist;List Icon MS-Word=wordlist;List Icon MS-Excel=excellist;List Icon MS-Powerpoint=pptlist;List Icon Bild=imagelist;List Icon Document=documentlist;List Icon Email=emaillist',
+        button_tile_map: true,
+        convert_urls : false,
+        language: lang, 
+        document_base_url: baseUrl, 
+        auto_cleanup_word: true,
+        entity_encoding: 'raw',
+        file_browser_callback: 'filebrowse',
+        trim_span_elements: true,
+        remove_linebreaks: 'false',
+        cleanup_on_startup: 'false',
+        paste_strip_class_attributes: 'mso',
+        paste_remove_spans: true,
+        paste_convert_middot_lists: true,
+        cleanup: 'true',
+        extended_valid_elements: "+*:*[*],iframe[*],#td[*],tr[*],-ol[start|type|compact]",
+        apply_source_formatting: 'true'
     });
         
 });
-
-
 
 /*
  * Custom file-browse dialog (XIMS file-browse-url)
