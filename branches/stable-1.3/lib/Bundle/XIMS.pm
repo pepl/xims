@@ -59,6 +59,7 @@ CSS::Minifier::XS -
 MIME::Lite::HTML -
 Email::Valid -
 Archive::Zip -
+File::Slurp -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
 # Net::LDAP -
