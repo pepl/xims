@@ -1,0 +1,13 @@
+-- Copyright (c) 2002-2006 The XIMS Project.
+-- See the file "LICENSE" for information and conditions for use, reproduction,
+-- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+-- $Id$
+
+PROMPT Creating Table 'CI_MIME_TYPE_ALIASES'
+-- DROP TABLE CI_MIME_TYPE_ALIASES;
+CREATE TABLE CI_MIME_TYPE_ALIASES
+ (ID NUMBER NOT NULL
+ ,DATA_FORMAT_ID NUMBER NOT NULL
+ ,MIME_TYPE VARCHAR2(40) NOT NULL 
+ )
+/

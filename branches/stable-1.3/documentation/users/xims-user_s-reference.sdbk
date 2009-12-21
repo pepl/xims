@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article>
+    <title>XIMS User&#39;s Reference</title>
+
+    <articleinfo>
+        <authorgroup>
+            <author>
+                <firstname>Michael</firstname>
+
+                <surname>Kröll</surname>
+
+                <affiliation>
+                    <orgname></orgname>
+                </affiliation>
+
+                <authorblurb>
+                    <para><email>michael.kroell@uibk.ac.at</email></para>
+                </authorblurb>
+            </author>
+
+            <author>
+                <firstname>Hansjörg</firstname>
+
+                <surname>Pehofer</surname>
+
+                <affiliation>
+                    <orgname>University of Innsbruck</orgname>
+                </affiliation>
+
+                <authorblurb>
+                    <para><email>hansjoerg.pehofer@uibk.ac.at</email></para>
+                </authorblurb>
+            </author>
+        </authorgroup>
+
+        <revhistory>
+            <revision>
+                <revnumber>$Revision$</revnumber>
+
+                <date>$Date$</date>
+
+                <revremark></revremark>
+            </revision>
+        </revhistory>
+
+        <legalnotice>
+            <para>Copyright © 2004-2006</para>
+        </legalnotice>
+    </articleinfo>
+
+    <section>
+        <title>Overview</title>
+
+        <section>
+            <title>Introduction</title>
+
+            <para>XIMS is an Open Source Information/Content Management System that primarily provides facilities to create and manage web sites. For a
+            project-description, -history and features of XIMS consult <ulink url="http://xims.info/about.html">http://xims.info/about.html</ulink></para>
+        </section>
+    </section>
+
+    <section>
+        <title>Linking Objects</title>
+
+        <section>
+            <title>Linking Containers</title>
+
+            <para>For linking containers use a trailing slash in the URL to avoid redirects. If you want to link to a possibly existing directory index, do not
+            include a reference to the index itself, for example <literal>index.html</literal> in the URL</para>
+
+            <example>
+                <title>Examples for linking Containers</title>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>Wrong: <literal>/zid/services</literal></para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Wrong <literal>/zid/services/index.html</literal></para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Correct: <literal>/zid/services/</literal></para>
+                    </listitem>
+                </itemizedlist>
+
+                <para></para>
+            </example>
+        </section>
+
+        <section>
+            <title>Relative or absolute links?</title>
+
+            <para>For choosig the format of the URL to use for linking XIMS objects consider the following two different cases:</para>
+
+            <orderedlist>
+                <listitem>
+                    <para>The parent of the referenced object is the same or a child of the referencing object.</para>
+                </listitem>
+
+                <listitem>
+                    <para>The referenced object is in a different branch of the hierarchy tree.</para>
+                </listitem>
+            </orderedlist>
+
+            <para>For case (1) use links relative to the referencing object. For example let us say the object <literal>/somesite/somedepartment/staff.html</literal>
+            wants to link to the object <literal>/somesite/somedepartment/manuals/rtfm.html</literal> . Here, the href-attribute (i.e. the link URI) should say
+            <literal>manuals/rtfm.html.</literal></para>
+
+            <para>For case (2) use links relative to the root of the current <emphasis> <link linkend="site">site</link> </emphasis> the object is located in.
+            For example let us say the object <literal>/somesite/somedepartment/cooperations.html</literal> wants to link to the object <literal>/somesite/someotherdepartment/index.html</literal>
+            . In that case the link URI should say <literal>/someotherdepartment/.</literal></para>
+
+            <para>Note: Using the optional WYSIWYG-Editor&#39;s link adding facility, the link URLs are generated in the correct way.</para>
+        </section>
+    </section>
+
+    <section>
+        <title>Field Reference</title>
+
+        <abstract>
+            <para>The following will provide brief descriptions of the most common fields you will encounter in XIMS.</para>
+        </abstract>
+
+        <section>
+            <title><literal>Location</literal></title>
+
+            <para>Roughly spoken, the <literal>location</literal> is the filename for your object. Once it gets published, expect it to show up in the
+            <acronym>URL</acronym> for your Object, so choose a telling and rememberable name for it.</para>
+
+            <para>However, depending on which kind of object you are working on, XIMS handles the <literal>location</literal> differently. This will be
+            discussed below.</para>
+
+            <para>Giving a <literal>location</literal> is always mandatory.</para>
+
+            <section>
+                <title><systemitem>Location</systemitem> for document-like objects</title>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>Document (XHTML documents)</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>XML, XSLStylesheet, sDocBookXML, AxPointPresentation (XML documents)</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Text, CSS, JavaScript (Text documents)</para>
+                    </listitem>
+                </itemizedlist>
+
+                <para>The suffix will be automatically added according to the type of object you are working on.</para>
+
+                <example>
+                    <title>Example:</title>
+
+                    <para>If you are in folder <filename>/xims/foo/</filename>, give your brand new <emphasis>Document</emphasis> the <literal>location</literal>
+                    &#39; <userinput>bar</userinput> &#39; to get <filename>/xims/foo/bar.html</filename> .</para>
+                </example>
+            </section>
+
+            <section>
+                <title><literal>Location</literal> for file and image objects</title>
+
+                <para>In case you are uploading/changing a file, the name of your file will <emphasis>be</emphasis> the <literal>location</literal> , so there
+                is no extra &#39; <literal>Location</literal> &#39; field. Instead you will see an upload-widget in the dialog, which allows you to choose a
+                file from your local filesystem. XIMS trusts your browser to send the correct mime-type. The filename will be used <emphasis>unmodified</emphasis>
+                as the <literal>location</literal> .</para>
+            </section>
+
+            <section>
+                <title><literal>Location</literal> for URLLink objects</title>
+
+                <para>URLLinks are different kind of animal: they don&#39;t get published into the filesystem. The location behaves a bit differently with
+                URLLinks: The location is used as the <emphasis>target</emphasis> of the link. Any valid <acronym>URL</acronym> is valid, be it local or
+                external.</para>
+            </section>
+        </section>
+
+        <section>
+            <title>Title</title>
+
+            <para>Give a &#39;title&#39; (displayname) for your object</para>
+
+            <para>The title will be displayed in:</para>
+
+            <itemizedlist>
+                <listitem>
+                    <para>the list of folder children while browsing folders</para>
+                </listitem>
+
+                <listitem>
+                    <para>the <acronym>HTML</acronym> -document-title your browser presents</para>
+                </listitem>
+            </itemizedlist>
+
+            <section>
+                <title>SiteRoot URL/Path</title>
+
+                <para>The value of the <literal>SiteRoot URL</literal> should be the location where the published content inside the SiteRoot will be available
+                after its publication. It will be used by the user interface for linking to the location of the published objects. For example, let us assume we
+                have an object with the XIMS path <filename>/xims/documentation/xims-user&#39;s-reference.xml</filename>. If the Siteroot with the location
+                <filename>/xims</filename> has a <literal>SiteRoot URL</literal> of <literal>http://xims.info</literal>, users will be directed to
+                <literal>http://xims.info/documentation/xims-user&#39;s-reference.xml</literal> if <literal><varname>$resolvereltositeroots</varname></literal>
+                in <filename>www/ximsroot/stylesheets/config.xsl</filename> is &#39;1&#39;, to <literal>http://xims.info<filename>/xims</filename>/documentation/xims-user&#39;s-reference.xml</literal>
+                if it is &#39;0&#39;. Note that per default, <varname>$resolvereltositeroots</varname> is set to &#39;1&#39;. The <literal>SiteRoot URL</literal>
+                can also be a relative URI, like <literal>/ximspubroot</literal> for example. Most users who use absolute <literal>SiteRoot URLs</literal> and
+                do virtual hosts will want <varname>$resolvereltositeroots</varname> to be &#39;1&#39;. During site development they can use a relative
+                <application><literal>SiteRoot URL</literal></application> like <literal>/ximspubroot/xims</literal> for example and later change it to the
+                absolute one with going online. <literal>SiteRoot URLs</literal> must not have a trailing slash.</para>
+            </section>
+        </section>
+
+        <section>
+            <title><literal>Body</literal></title>
+
+            <para>Appears in document-related input masks only - and contains their actual &#39;content&#39;.</para>
+
+            <section>
+                <title><literal>Body</literal> in Document objects</title>
+
+                <para>Depending on your XIMS configuration platform, your browser and a configuration cookie, you will be presented a selection of of body
+                editor interfaces:</para>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>WYSIWYG-Editing using <ulink url="http://sourceforge.net/projects/itools-htmlarea/">HTMLArea</ulink></para>
+                    </listitem>
+
+                    <listitem>
+                        <para>WYSIWYG-Editing using <ulink url="http://www.ektron.com/ewebeditpro.aspx">eWebeditPro</ulink></para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Using other browsers on other platforms, you are currently tied to using a plain textfield for content input. You are expected to
+                        enter your content as a well-balanced <ulink url="http://www.w3.org/TR/xhtml1/"> <acronym>X(HT)ML</acronym> (strict)</ulink> document
+                        fragment! That means, that you have to convert your existing <acronym>HTML</acronym> -files into <acronym>XHTML</acronym>. If you are
+                        typing or pasting non-well-balanced HTML-content, XIMS uses <ulink url="http://www.w3.org/People/Raggett/tidy/"> tidy</ulink> to
+                        &#34;form&#34; your your input &#34;well&#34;, which should be succesful in most cases. In case you receive a failure notice, you will
+                        have to &#34;form&#34; your content &#34;well&#34; manually. Note that tidy will change the whitespace in the content body!</para>
+                    </listitem>
+                </itemizedlist>
+            </section>
+
+            <section>
+                <title><literal>Body</literal> in simpleDocBookXML and AxPointPresentation objects</title>
+
+                <para>Same as above, but you can&#39;t use the <acronym>WYSYWIG</acronym> editor in either case. You might want to write your article in an
+                external editor, like xmlmind.com&#39;s <ulink url="http://www.xmlmind.com/xmleditor">XXE</ulink> for example, and paste it in.</para>
+
+                <para>Note that:</para>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>Your article must be well-formed <acronym>XML</acronym> .</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>You have to omit the declarations and <acronym>PI</acronym> &#39;s. Required are the document-node&#39;s start and ending tags --
+                        and everything between them of course :)</para>
+                    </listitem>
+                </itemizedlist>
+            </section>
+
+            <section>
+                <title>Body in XML- and XSLStylesheets objects</title>
+
+                <para>The full XML file should be entered into the body field. Note that the encoding of the document must the compatible to the XIMS database
+                encoding. If you get error messages, ask your system administrator about the correct database encoding to use.</para>
+            </section>
+        </section>
+
+        <section>
+            <title><literal>Keywords</literal></title>
+
+            <para>Give a &#39;;&#39;-separated list of <literal>keywords</literal> . These will appear as meta-information of the published document (META-tags)
+            and can be explicitly searched for using the XIMS search engine.</para>
+        </section>
+
+        <section>
+            <title><literal>Abstract</literal></title>
+
+            <para>A short summary describing your object&#39;s content. XHTML-Tags can be used, the content must be well-balanced however.</para>
+        </section>
+
+        <section>
+            <title><literal>Privilege grant options</literal></title>
+
+            <para>With the default setting <literal>Copy privilege-grants of parent,</literal> the privileges of the parent object get copied to the newly
+            created object. Selecting <literal>Additionally, grant view privileges to default roles</literal> adds view privileges to the &#34;default
+            roles&#34;. With <literal>Grant to myself only</literal>, no one else but the creator gets granted privileges on the newly created object. For other
+            users it will be invisible until the creator changes the object&#39;s privileges later.</para>
+        </section>
+
+        <section>
+            <title>Omit <literal>autoindex</literal> for this <literal>container</literal> during <literal>publishing</literal></title>
+
+            <para>Per default, XIMS generates a simple index document for you. (That practically means: if the public webserver gets a request for the container
+            you published, it will serve a short summary of the published objects in this folder) This index is generated during the publishing-process of the
+            container.</para>
+
+            <para>In some cases (having hand-maintained, multilingual indexfiles in example) this is <emphasis>not</emphasis> desirable. Check this option to
+            avoid the creation, or to remove an existing <literal>autoindex</literal>.</para>
+        </section>
+
+        <section>
+            <title><literal>Minify</literal> on publishing</title>
+
+            <para>This option is present in JavaScript and CSS objects.
+            When set, the Exporter tries to remove un-necessary
+            whitespace and comments (while not breaking the logic) in
+            order to reduce size. This works best with very clean code,
+            but still may fail in some cases. When using this option,
+            please carefully test the resulting code.</para>
+
+        </section>
+        
+        <section>
+            <title>Mark object as new</title>
+
+            <para>Sets a flag to mark objects as new to emphase changes made. If set, a <literal>NEW!</literal> icon is shown in the folderlistings. The
+            <command>N:xx</command> search command lists objects flagged as new only.</para>
+        </section>
+
+        <section>
+            <title><literal>Publish</literal> / <literal>Republish</literal> / <literal>Unpublish</literal></title>
+
+            <para>Per default, your objects exist in the XIMS database only. The filesystem-like view presented to you is only virtual.</para>
+
+            <para>If you &#34;(Re)Publish&#34; an object it will copied to the web server&#39;s filesystem for public delivery.</para>
+        </section>
+
+        <section>
+            <title><literal>Search</literal> Field</title>
+
+            <para>The <literal>Search</literal> field takes search queries and some special search macros. The query term is limited to maximum 55 characters.</para>
+
+            <section>
+                <title>Keyword Search</title>
+
+                <para>Give one or more keywords. If you enter more than one word, the search will be ANDed - returning documents containing both of the words
+                you gave.</para>
+
+                <para>Valid operators at the time are:</para>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>AND</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>OR</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>( )</para>
+                    </listitem>
+                </itemizedlist>
+
+                <para>This way one can issue more complex queries like: &#34;<userinput>foo AND ( bar OR b0rk )</userinput>&#34;.</para>
+            </section>
+
+            <section>
+                <title>M:&#60;days&#62;</title>
+
+                <para>Returns objects that have been modified in the last &#60;days&#62;.</para>
+
+                <para>If the number of days is ommited, 1 is assumed.</para>
+            </section>
+
+            <section>
+                <title>m:&#60;days&#62;</title>
+
+                <para>Returns objects marked new that have been modified in the last &#60;days&#62;.</para>
+
+                <para>If the number of days is ommited, 1 is assumed.</para>
+            </section>
+
+            <section>
+                <title>N:&#60;days&#62;</title>
+
+                <para>Lookup objects by creation time.</para>
+
+                <para>If the number of days is ommited, 1 is assumed.</para>
+            </section>
+
+            <section>
+                <title>n:&#60;days&#62;</title>
+
+                <para>Lookup objects marked new by creation time.</para>
+
+                <para>If the number of days is ommited, 1 is assumed.</para>
+            </section>
+
+            <section>
+                <title>I:[DocumentID]</title>
+
+                <para>Lookup objects per <link linkend="majorid">Document ID</link>.</para>
+            </section>
+
+            <section>
+                <title>i:[ID]</title>
+
+                <para>Lookup objects per <link linkend="minorid">ID</link>.</para>
+            </section>
+
+            <section>
+                <title>!U:[ID | /path/to/object]</title>
+
+                <para>Unlock objects; The <link linkend="minorid">ID</link> or the object&#39;s path must be given.</para>
+            </section>
+        </section>
+    </section>
+
+    <section>
+        <title>Objecttypes Reference</title>
+
+        <section>
+            <title>Document-likes</title>
+
+            <para></para>
+
+            <section>
+                <title>Document</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>NewsItem</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>XML</title>
+
+                <para>Use this object-type together with <em>XSLStylesheet</em>. Create first a schema as XML-object-type and publish it. Then create the XML-file and link it to the schema. The XML-file has to be linked to the XSLStylesheet by your local XIMS-Support.</para>
+
+                <para>The <ulink url="howtos/simpleformedit-howto.sdbk">SimpleFormEdit Howto</ulink> describes these steps. If you do not want to use XML together with SimpleFormEdit, you may omit the restrictions.</para>
+                
+                <section>
+                    <title>SimpleFormEdit</title>
+
+                    <para>See the <ulink url="howtos/simpleformedit-howto.sdbk">SimpleFormEdit Howto</ulink> for an example usage.</para>
+                </section>
+            </section>
+
+            <section>
+                <title>sDocBookXML</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>AxPointPresentation</title>
+
+                <para>See the <ulink url="howtos/axpointpresentation-howto.sdbk">AxPointPresentation Howto</ulink> for an
+                example usage.</para>
+            </section>
+
+            <section>
+                <title>XSLStylesheet</title>
+
+                <para>There are different applications for this object-type:</para>
+                <itemizedlist>
+                    <listitem>Layout of the department.</listitem>
+                    <listitem>Layout of a published SimpleDB or ReferenceLibrary: See the <ulink url="howtos/simpledb-howto-ger.sdbk">SimpleDB Howto</ulink> for an example usage.</listitem>
+                    <listitem>Combined with the XML-object-type: See the <ulink url="howtos/simpleformedit-howto.sdbk">SimpleFormEdit Howto</ulink> for an example usage.</listitem>
+                </itemizedlist>
+            </section>
+
+            <section>
+                <title>Text</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>CSS</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>JavaScript</title>
+
+                <para></para>
+            </section>
+        </section>
+
+        <section>
+            <title>Containers</title>
+
+            <para></para>
+
+            <section>
+                <title>Folder</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>DepartmentRoot</title>
+
+                <para>See the <ulink url="howtos/departmentroot-howto.sdbk">DepartmentRoot Howto</ulink> for an example
+                usage.</para>
+            </section>
+
+            <section>
+                <title>SiteRoot</title>
+
+                <para></para>
+            </section>
+        </section>
+
+        <section>
+            <title>File-likes</title>
+
+            <para></para>
+
+            <section>
+                <title>File</title>
+
+                <para></para>
+            </section>
+
+            <section>
+                <title>Image</title>
+
+                <para></para>
+            </section>
+        </section>
+
+        <section>
+            <title>Dynamic content</title>
+
+            <para></para>
+
+            <section>
+                <title>AnonDiscussionForum</title>
+
+                <para>See the <ulink url="howtos/anondiscussionforum-howto.sdbk">Anonymous Discussion Forum HowTo</ulink>
+                for an example usage.</para>
+            </section>
+
+            <section>
+                <title>Questionnaire</title>
+
+                <para>There is <ulink url="howtos/questionnaire-howto-ger.sdbk">Questionnaire-Howto</ulink> in German.</para>
+            </section>
+
+            <section>
+                <title>VLibrary</title>
+
+                <para>Vlibraries are basic Digital Library repositories.</para>
+            </section>
+
+            <section>
+                <title>SQLReport</title>
+
+                <para>SQLReports allow to integrate data from remote RDBMS into XIMS systems.</para>
+            </section>
+
+            <section>
+                <title>Reference Library</title>
+
+                <para>Reference Libraries store bibliographic data. Reference Library items can be imported and exported using <literal>BibTex</literal>,
+                <literal>MODS</literal>, <literal>Endnote</literal> and other formats.</para>
+
+                <section>
+                    <title id="RefLibSearch">Searching Reference Libraries</title>
+
+                    <para>Regular search terms will be used searched for in the <literal>lastname</literal> field of reference items. If you enter more than one
+                    term, the terms will be ANDed - returning reference entries from both authors. Using a <literal>field:value</literal> syntax, it is possible
+                    to look for content in Reference Library property fields. Boolean operators &#34;AND&#34; and &#34;OR&#34; as well as grouping expressions
+                    using parentheses can be used for complex queries. Per default, search terms will be used using an inexact match algorithms which can
+                    potentially lead to ambigous results for authors who share parts of their lastnames. To find authors using an exact match algorithm, use the
+                    <literal>lastname:value</literal>, <literal>firstname:value</literal>, and/or <literal>author_id:value</literal> lookup keys.</para>
+
+                    <para><example><title>Reference Library Search examples</title><itemizedlist><listitem><para>workgroup:1234 (date:2005 OR
+                    preprint_submitdate:2005) project:googol</para></listitem><listitem><para>Zweistein serial:&#34;Phys. Rev. Letters&#34; date:1999</para></listitem></itemizedlist></example></para>
+                </section>
+            </section>
+
+            <section>
+                <title>SimpleDB</title>
+
+                <para>The SimpleDB object can be used to manage simple two-dimensional data structures. Using the web-interface, it is possible to set up a
+                simple database using &#34;String&#34;, &#34;String options&#34;, &#34;Textarea&#34;, &#34;Boolean&#34;, &#34;Integer&#34;, &#34;Float&#34;, and
+                &#34;Datetime&#34; datatypes.</para>
+                
+                <para>See the <ulink url="howtos/simpledb-howto-ger.sdbk">SimpleDB Howto</ulink> for an example usage.</para>
+            </section>
+        </section>
+    </section>
+
+    <section>
+        <title>ACL-Reference</title>
+
+        <para></para>
+
+        <section>
+            <title>Privileges</title>
+
+            <para></para>
+
+            <section>
+                <title>Basic Privileges</title>
+
+                <para></para>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>View</para>
+
+                        <para>A user or role may view the object.</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Copy</para>
+
+                        <para>A user or role may copy the object.</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Write</para>
+
+                        <para>A user or role may write into the object, i.e. change its location, content, title or other metadata.</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Create</para>
+
+                        <para>A user or Role has the right to create a new object in this container.</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Delete</para>
+
+                        <para>A user or Role has the right to delete the object from the xims database.</para>
+                    </listitem>
+
+                    <listitem>
+                        <para>Move</para>
+
+                        <para>A user or Role has the right to move the object into another container.</para>
+                    </listitem>
+                </itemizedlist>
+            </section>
+
+            <section>
+                <title>Publishing Privileges</title>
+
+                <para></para>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>Publish</para>
+
+                        <para>A user or role has the right to publish, republish and unpublish the object</para>
+                    </listitem>
+                </itemizedlist>
+            </section>
+
+            <section>
+                <title>Grant Rights</title>
+
+                <para></para>
+
+                <itemizedlist>
+                    <listitem>
+                        <para>Grant</para>
+
+                        <para>A user or role has the right to grant another user or role rights on this object.</para>
+                    </listitem>
+                </itemizedlist>
+            </section>
+        </section>
+    </section>
+
+    <section>
+        <title>User-Interface-Reference</title>
+
+        <para></para>
+
+        <section>
+            <title>Symbols</title>
+
+            <para></para>
+
+            <section>
+                <title>Option-Icons</title>
+
+                <para></para>
+
+                <table>
+                    <title></title>
+
+                    <tgroup cols="2">
+                        <tbody>
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/option_edit.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Edit</entry>
+                            </row>
+
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/option_copy.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Copy</entry>
+                            </row>
+
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/option_move.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Move</entry>
+                            </row>
+
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/option_pub.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>(Un/Re)-Publish</entry>
+                            </row>
+
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/option_acl.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Edit ACL</entry>
+                            </row>
+
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/option_delete.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Delete</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </section>
+
+            <section>
+                <title>Status-Icons</title>
+
+                <para></para>
+
+                <table>
+                    <title></title>
+
+                    <tgroup cols="2">
+                        <tbody>
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/status_markednew.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Object is marked as new</entry>
+                            </row>
+
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/status_pub.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Object is published. Onclick-Action: Go to published version</entry>
+                            </row>
+
+                            <row>
+                                <entry><mediaobject><imageobject><imagedata fileref="images/status_locked.png" format="PNG" /></imageobject></mediaobject></entry>
+
+                                <entry>Object is locked. Onclick-Action: Unlock if user owns lock</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            </section>
+        </section>
+    </section>
+
+    <appendix>
+        <title>A mini-glossary</title>
+
+        <para id="site">site - In XIMS installations first level containers (where the parent is the root folder <literal>/</literal> ) are referred to as
+        <literal>site</literal> . For example, the object with the path <literal>/uniweb/zid/index.html</literal> would be located in the site <quote>uniweb</quote>
+        .</para>
+
+        <para id="minorid">ID - ID of the language-dependent part of the XIMS object. This ID may be used for unlocking an object using the <command>!U:ID</command>
+        search macro. The ID can also be seen in the URL while editing objects for example.</para>
+
+        <para id="majorid">Document ID - ID of the language-independent part of the XIMS object.</para>
+    </appendix>
+</article>

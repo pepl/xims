@@ -1,0 +1,23 @@
+-- Copyright (c) 2002-2006 The XIMS Project.
+-- See the file "LICENSE" for information and conditions for use, reproduction,
+-- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+-- $Id$
+
+PROMPT Creating Primary Key on 'CI_MIME_TYPE_ALIASES'
+ALTER TABLE CI_MIME_TYPE_ALIASES
+ ADD (CONSTRAINT MTA_PK PRIMARY KEY 
+  (ID))
+/
+
+PROMPT Creating Unique Constraint for MIME_TYPE on 'CI_MIME_TYPE_ALIASES'
+ALTER TABLE CI_MIME_TYPE_ALIASES
+ ADD (CONSTRAINT MTA_UNQ UNIQUE 
+  (MIME_TYPE))
+/
+
+PROMPT Creating Foreign Key on 'CI_MIME_TYPE_ALIASES'
+ALTER TABLE CI_MIME_TYPE_ALIASES ADD (CONSTRAINT 
+ MTA_USE_FK FOREIGN KEY 
+  (DATA_FORMAT_ID) REFERENCES CI_DATA_FORMATS 
+  (ID) ON DELETE CASCADE)
+/
