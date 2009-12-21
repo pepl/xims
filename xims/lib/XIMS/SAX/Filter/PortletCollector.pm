@@ -140,7 +140,7 @@ sub handle_data {
             push(
                 @{$cols}, qw( id document_id parent_id object_type_id
                     data_format_id symname_to_doc_id location location_path
-                    title position)
+                    title position content_length)
             );
             $childrenargs{properties} = $cols;
 
