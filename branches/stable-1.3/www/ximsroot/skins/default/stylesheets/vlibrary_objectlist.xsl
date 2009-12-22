@@ -8,8 +8,8 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common"
-                xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:dyn="http://exslt.org/dynamic"
+                xmlns="http://www.w3.org/1999/xhtml"
                 extension-element-prefixes="exslt dyn">
 
     <xsl:import href="container_common.xsl"/>
@@ -272,17 +272,17 @@
 </xsl:template>
 
 <xsl:template match="children/object" mode="divlist">
-    <div class="vlchildrenlistitem" name="vlchildrenlistitem">
+    <div class="vlchildrenlistitem">
         <xsl:apply-templates select="title"/>
         <xsl:apply-templates select="authorgroup"/>
         <xsl:call-template name="last_modified"/>
         <xsl:call-template name="size"/>
-        <span id="vlstatus_options">
+        <div class="vlstatus_options">
             <xsl:call-template name="status"/>
             <xsl:if test="$m='e'">
                 <xsl:call-template name="cttobject.options"/>
             </xsl:if>
-        </span>
+        </div>
         <xsl:call-template name="urllink_status"/>
         <xsl:call-template name="meta"/>
         <xsl:apply-templates select="abstract"/>
@@ -409,9 +409,9 @@
 </xsl:template>
 
 <xsl:template name="status">
-    <span class="vlstatus">
+   <!-- <span class="vlstatus"> -->
         <xsl:call-template name="cttobject.status"/>
-    </span>
+   <!-- </span> -->
 </xsl:template>
 
 <xsl:template name="cttobject.options">

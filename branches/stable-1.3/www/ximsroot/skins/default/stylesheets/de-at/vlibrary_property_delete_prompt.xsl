@@ -12,7 +12,7 @@
   <xsl:import href="common.xsl"/>
   <xsl:import href="../vlibrary_common.xsl"/>
   
-  <xsl:output method="html" encoding="utf-8"/>
+  <xsl:output method="xml" encoding="utf-8"/>
   
   <xsl:param name="property_id"/>
   <xsl:param name="property"/>

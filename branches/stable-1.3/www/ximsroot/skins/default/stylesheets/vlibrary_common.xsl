@@ -63,21 +63,12 @@
     <link rel="stylesheet" href="{$ximsroot}stylesheets/reset.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}stylesheets/default.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css"/>
-    <link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/thickbox.css" type="text/css"/>
     <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
     <xsl:call-template name="create_menu_css"/>
   </xsl:template>
 
   <xsl:template name="script_head">
     <script src="{$jquery}" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <script src="{$ximsroot}scripts/jquery/thickbox.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <script type="text/javascript">
-      var tb_pathToImage='<xsl:value-of select="concat($ximsroot,'images/loadingAnimation.gif')"/>';
-      function tb_remove_reload () {
-        tb_remove();
-        document.location.reload();
-      }
-    </script>
   </xsl:template>
 
   <xsl:template name="script_bottom">
@@ -106,7 +97,7 @@
 
   <xsl:template name="item_div">
     <xsl:param name="mo" />
-    <div class="vliteminfo" name="vliteminfo" align="center">
+    <div class="vliteminfo" align="center">
       <div>
         <xsl:call-template name="property_link">
           <xsl:with-param name="mo" select="$mo"/>
@@ -208,7 +199,8 @@
     <form style="margin-bottom: 0px;"
           action="{$xims_box}{$goxims_content}{$absolute_path}"
           method="get"
-          name="vlib_search">
+          name="vlib_search"
+          id="vlib_search_fulltext">
       <strong><xsl:value-of select="$Search"/></strong>
       <xsl:text>&#160;</xsl:text>
       <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
@@ -226,13 +218,9 @@
       <input type="image"
              src="{$skimages}go.png"
              name="submit"
-             width="25"
-             height="14"
              alt="{$Search}"
              title="{$Search}"
-             border="0"
-             style="vertical-align: text-bottom;"
-             />
+             style="vertical-align: text-bottom;"/>
       <input type="hidden"
              name="start_here"
              value="1"/>
@@ -313,7 +301,7 @@
     <xsl:param name="mo"/>
     <table width="100%"
            border="0"
-           id="vlsearchswitch">
+           class="vlsearchswitch">
       <tr>
         <td valign="top"
             width="50%"
@@ -337,7 +325,7 @@
     <table width="100%"
            border="0"
            style="margin: 0px;"
-           id="vlsearchswitch">
+           class="vlsearchswitch">
       <tr>
         <td valign="top"
             width="50%"
@@ -346,7 +334,8 @@
           <form style="margin-bottom: 0px;"
                 action="{$xims_box}{$goxims_content}{$absolute_path}"
                 method="get"
-                name="vlib_search">
+                name="vlib_search"
+                id="vlib_search_chronicle">
             Chronik von
             <input style="background: #eeeeee; font-family: helvetica; font-size: 10pt"
                    type="text"
@@ -365,11 +354,8 @@
             <input type="image"
                    src="{$skimages}go.png"
                    name="submit"
-                   width="25"
-                   height="14"
                    alt=""
                    title=""
-                   border="0"
                    style="vertical-align: text-bottom;"
                    />
             <input type="hidden" name="start_here" value="1"/>
@@ -478,25 +464,6 @@ function post_async(poststr) {
     xmlhttp.setRequestHeader("Connection", "close");
     xmlhttp.send(poststr);
 }
-  </xsl:template>
-
-  <xsl:template name="cttobject.options.edit">
-    <xsl:variable name="id" select="@id"/>
-    <xsl:choose>
-      <xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-        <a class="sprite sprite-option_edit thickbox">
-          <xsl:attribute name="href">
-            <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
-            <xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if>
-            <xsl:text>;KeepThis=true;TB_iframe=true;height=600;width=800;modal=true</xsl:text>
-          </xsl:attribute>
-          &#xa0;<span><xsl:value-of select="$l_Edit"/></span>
-        </a>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="cttobject.options.spacer"/>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>

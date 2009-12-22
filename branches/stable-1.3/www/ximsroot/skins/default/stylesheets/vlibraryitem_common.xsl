@@ -381,7 +381,6 @@
                   name="bibliosource"
                   cols="60"
                   rows="5"
-                  length="2048"
                   class="text">
           <xsl:value-of select="meta/bibliosource"/>
         </textarea>
@@ -410,7 +409,8 @@
              title="Date selector"
              onmouseover="this.style.background='red';"
              onmouseout="this.style.background=''" />
-        <script type="text/javascript">
+        <xsl:call-template name="mk-inline-js">
+           <xsl:with-param name="code">
           Calendar.setup({
           inputField     :    "date_from",
           ifFormat       :    "%Y-%m-%d",
@@ -418,7 +418,8 @@
           align          :    "Tl",
           singleClick    :    true
           });
-        </script>
+           </xsl:with-param>
+        </xsl:call-template>
         bis
         <input tabindex="20"
                type="text"
@@ -490,9 +491,9 @@
             alt="{$i18n/l/Date_selector}"
             title="{$i18n/l/Date_selector}"
             onmouseover="this.style.background='red';"
-            onmouseout="this.style.background=''"
-            />
-        <script type="text/javascript">
+            onmouseout="this.style.background=''"/>
+        <xsl:call-template name="mk-inline-js">
+           <xsl:with-param name="code">
           var current_datestring = "<xsl:value-of select="$chronicle_from_date"/>";
           var current_date;
           if ( current_datestring.length > 0 ) {
@@ -509,7 +510,8 @@
           showsTime      :    true,
           timeFormat     :    "24"
           });
-        </script>
+           </xsl:with-param>
+        </xsl:call-template>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('chronicle_from')"
            class="doclink">(?)</a>
@@ -550,7 +552,8 @@
             title="{$i18n/l/Date_selector}"
             onmouseover="this.style.background='red';"
             onmouseout="this.style.background=''"/>
-        <script type="text/javascript">
+         <xsl:call-template name="mk-inline-js">
+           <xsl:with-param name="code">
 var current_datestring = "<xsl:value-of select="$chronicle_to_date"/>";
 var current_date;
 if ( current_datestring.length &gt; 0 ) {
@@ -567,7 +570,8 @@ Calendar.setup({ inputField     :    "chronicle_to_date",
                  showsTime      :    true,
                  timeFormat     :    "24"
                });
-        </script>
+          </xsl:with-param>
+        </xsl:call-template>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('chronicle_to')" class="doclink">(?)</a>
       </td>
@@ -609,7 +613,8 @@ Calendar.setup({ inputField     :    "chronicle_to_date",
              title="{$i18n/l/Date_selector}"
              onmouseover="this.style.background='red';"
              onmouseout="this.style.background=''" />
-        <script type="text/javascript">
+         <xsl:call-template name="mk-inline-js">
+           <xsl:with-param name="code">
           var current_datestring = "<xsl:value-of select="$dc_date"/>";
           var current_date;
           if ( current_datestring.length > 0 ) {
@@ -626,7 +631,8 @@ Calendar.setup({ inputField     :    "chronicle_to_date",
             showsTime      :    true,
             timeFormat     :    "24"
           });
-        </script>
+          </xsl:with-param>
+        </xsl:call-template>
       </td>
     </tr>
   </xsl:template>

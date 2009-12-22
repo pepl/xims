@@ -35,17 +35,17 @@
     margin-bottom: 5px;
 }
 
-#vlsearchswitch ul {
+.vlsearchswitch ul {
     margin-top: 0px;
     padding-left: 25px;
     padding-bottom: 5px;
 }
 
-#vlsearchswitch li {
+.vlsearchswitch li {
     list-style-type: disc;
 }
 
-#vlsearchswitch form {
+.vlsearchswitch form {
     padding-bottom: 5px;
 }
 
@@ -139,16 +139,15 @@ td.vliteminfo {
 
 }
 
-#vlstatus_options {
-    margin-left: 30px;
-
+.vlstatus_options {
+    margin-left: 415px;
 }
 
-#vlstatus_options img {
+.vlstatus_options img {
     vertical-align: text-bottom;
 }
 
-#vlstatus_options input {
+.vlstatus_options input {
     vertical-align: text-bottom;
 }
 

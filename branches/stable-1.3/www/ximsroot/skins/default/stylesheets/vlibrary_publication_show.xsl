@@ -7,17 +7,11 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:exslt="http://exslt.org/common">
+                xmlns:exslt="http://exslt.org/common"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="exslt">
 
   <xsl:import href="common.xsl"/>
-
-  <xsl:output method="xml"
-              encoding="utf-8"
-              media-type="text/html"
-              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-              doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-              omit-xml-declaration="yes"
-              indent="yes"/>
 
   <xsl:variable name="i18n_vlib"
                 select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
@@ -35,9 +29,9 @@
       </head>
       <body>
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
-          <form action="%200"
+          <form action=""
                 name="eform"
-                method="">
+                method="get">
             <input type="hidden" name="id" id="id" value="{@id}"/>
             <xsl:apply-templates select="/document/context/object/children"/>
           </form>

@@ -14,7 +14,7 @@
   
   <xsl:template name="tr_set-body-edit">
     <xsl:call-template name="tr-body-edit_tinymce"/> 
-    <script type="text/javascript">timeoutWYSIWYGChange(3);</script>
+    <tr><td><script type="text/javascript">timeoutWYSIWYGChange(3);</script></td></tr>
   </xsl:template>
 
   <xsl:template name="head">
@@ -22,7 +22,7 @@
       <xsl:with-param name="mode">edit</xsl:with-param>
       <xsl:with-param name="tinymce" select="true()" />
       <xsl:with-param name="calendar" select="true()" />
-      <xsl:with-param name="jquery" select="true()" />
+      <xsl:with-param name="with-jquery" select="true()" />
     </xsl:call-template>
   </xsl:template>
   

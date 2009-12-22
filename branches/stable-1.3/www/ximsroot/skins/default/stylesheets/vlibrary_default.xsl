@@ -159,7 +159,7 @@
         </xsl:copy>
       </xsl:for-each>
     </xsl:variable>
-    <div class="vliteminfo" name="vliteminfo" align="center">
+    <div class="vliteminfo" align="center">
       <div>
         <xsl:call-template name="property_link">
           <xsl:with-param name="mo" select="'subject'"/>
