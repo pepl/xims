@@ -12,8 +12,6 @@
   <xsl:import href="common.xsl"/>
   <xsl:import href="../vlibrary_common.xsl"/>
 
-  <xsl:output method="html" encoding="utf-8"/>
-
   <xsl:param name="property_id"/>
   <xsl:param name="property"/>
   <xsl:param name="display_name"/>
@@ -29,10 +27,7 @@
               type="text/css" />
       </head>
 
-      <body margintop="0"
-            marginleft="0"
-            marginwidth="0"
-            marginheight="0"
+      <body style="margin: 0px;"
             background="{$skimages}body_bg.png">
 
         <form name="objectdeletion"
@@ -113,11 +108,12 @@
             </tr>
           </table>
         </form>
-        <script type="text/javascript" language="javascript">
-          <xsl:call-template name="xmlhttpjs"/>
-          <xsl:call-template name="post_async_js"/>
-        </script>
-        <xsl:call-template name="script_bottom"/>
+        <xsl:call-template name="mk-inline-js">
+          <xsl:with-param name="code">
+            <xsl:call-template name="xmlhttpjs"/>
+            <xsl:call-template name="post_async_js"/>
+          </xsl:with-param>
+        </xsl:call-template>
       </body>
     </html>
   </xsl:template>
