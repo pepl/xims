@@ -110,12 +110,7 @@ sub event_store {
         $self->sendError( $ctxt, $error_message );
         return 0;
     }
-    elsif ( $self->param('close_thickbox') ) {
-        XIMS::Debug( 4, "closing thickbox" );
-        return $self->close_thickbox(1);
-    }
     else {
-        XIMS::Debug( 4, "redirecting" );
         $self->redirect( $self->redirect_path( $ctxt ) );
         return 1;
     }

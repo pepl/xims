@@ -13,15 +13,13 @@
 
 <xsl:template match="/document/context/object">
 <html>
-    <head>
     <xsl:call-template name="common-head">
         <xsl:with-param name="mode">create</xsl:with-param>
         <xsl:with-param name="calendar" select="true()" />
     </xsl:call-template>
-    <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript" ></script>
-    </head>
     <body onload="document.eform['abstract'].value=''; document.eform.name.focus();">
-        <div class="edit">
+     <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript" ></script>
+     <div class="edit">
             <xsl:call-template name="table-create"/>
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="objtype" value="{$objtype}"/>

@@ -5,15 +5,15 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: vlibraryitem_document_default.xsl 1442 2006-03-26 18:51:16Z pepl $
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" 
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
  
   <xsl:import href="common.xsl"/>
   <xsl:import href="vlibraryitem_docbookxml_default.xsl"/>
   <xsl:import href="document_common.xsl"/>
   <xsl:import href="document_default.xsl"/>
   
-  <xsl:output method="html" encoding="utf-8"/>
-
   <xsl:template name="pre-body-hook">
     <xsl:call-template name="div-vlitemmeta"/>
   </xsl:template>

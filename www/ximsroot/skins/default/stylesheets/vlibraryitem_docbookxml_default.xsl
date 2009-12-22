@@ -15,8 +15,14 @@
 
   <xsl:template match="/document/context/object">
     <html>
-      <xsl:call-template name="head_default"/>
-      <base href="{$xims_box}{$goxims_content}{$absolute_path}/"/>
+      <head>
+        <title>
+          <xsl:call-template name="title"/>
+        </title>
+        <xsl:call-template name="css"/>
+        <xsl:call-template name="script_head"/>
+        <base href="{$xims_box}{$goxims_content}{$absolute_path}/"/>
+      </head>
       <body onload="stringHighlight(getParamValue('hls'))">
         <xsl:call-template name="header"/>
         <xsl:call-template name="toggle_hls"/>
@@ -25,7 +31,7 @@
                style="border: 1px solid; margin-top: 0px; padding: 0.5px">
           <tr>
             <td bgcolor="#ffffff">
-              <span id="body">
+              <div id="body">
                 <xsl:call-template name="div-vlitemmeta"/>
                 <h1><xsl:value-of select="title"/></h1>
                 <xsl:choose>
@@ -37,7 +43,7 @@
                     <xsl:apply-templates select="$docbookroot"/>
                   </xsl:otherwise>
                 </xsl:choose>
-              </span>
+              </div>
             </td><!-- end #ffffff -->
           </tr>
         </table>

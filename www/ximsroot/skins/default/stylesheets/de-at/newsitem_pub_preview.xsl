@@ -15,7 +15,7 @@
 <xsl:import href="public/common.xsl"/>
 <xsl:param name="request.uri"/>
 
-<xsl:output method="html" encoding="utf-8"/>
+<xsl:output method="xml" encoding="utf-8"/>
 
 <xsl:template match="/document/context/object">
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
@@ -23,8 +23,8 @@
           <xsl:call-template name="meta"/>
           <title><xsl:value-of select="title"/></title>
           <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-          <script src="/scripts/default.js" type="text/javascript">
-          </script>
+          <script src="/scripts/default.js" type="text/javascript" />
+          <script src="http://www.uibk.ac.at/scripts/default.js" type="text/javascript" />
     </head>
 
     <body margintop="0" marginleft="0" marginwidth="0" marginheight="0">

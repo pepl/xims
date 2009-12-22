@@ -31,7 +31,7 @@
     <xsl:call-template name="common-head">
       <xsl:with-param name="mode">edit</xsl:with-param>
       <xsl:with-param name="calendar" select="true()" />
-      <xsl:with-param name="jquery" select="true()" />
+      <xsl:with-param name="with-jquery" select="true()" />
     </xsl:call-template>
   </xsl:template>
 
@@ -83,8 +83,8 @@
         </div>
         <br />
         <xsl:call-template name="canceledit"/>
-        <script type="text/javascript" language="javascript">
-          <xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
+        <xsl:call-template name="mk-inline-js">
+	  <xsl:with-param name="code">
           <xsl:call-template name="xmlhttpjs"/>          
 function mkHandleMapResponse(xmlhttp, property) {
     var mapped_properties = 'mapped_' +  property + 's';
@@ -125,10 +125,8 @@ function refresh( property ) {
 
 } 
 
-<xsl:text disable-output-escaping="yes">
-  //]]&gt;
-</xsl:text>
-        </script>
+</xsl:with-param>
+</xsl:call-template>
         <script src="{$ximsroot}scripts/vlibrary_edit.js" 
                 type="text/javascript">
           <xsl:text>&#160;</xsl:text>

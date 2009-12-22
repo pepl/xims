@@ -18,13 +18,6 @@
         <xsl:with-param name="calendar" select="true()" />
     </xsl:call-template>
     <body>
-        <!-- TODO: 
-            * post_async is currently not loaded
-            * should be moved to a script-bottom template together with vlibrary_edit.js
-            * post_async should post with OBJECT_ID and not LOCATION_PATH
-            * JQuery API should be used
-            * when adding or deleting a property the iframed (thickbox) page should be reloaded
-        -->
         <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
@@ -41,15 +34,14 @@
                     <xsl:call-template name="tr-coverage"/>
                     <xsl:call-template name="tr-audience"/>
                     <xsl:call-template name="tr-legalnotice"/>
-                    <xsl:call-template name="tr-bibliosource"/>
+                    <xsl:call-template name="tr-bibliosource"/>               
                     <xsl:call-template name="markednew"/>
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>
-        </div>
-        <br />
-        <xsl:call-template name="canceledit"/>
-        <xsl:call-template name="script_bottom"/>
+            </div>
+            <br />
+            <xsl:call-template name="canceledit"/>
     </body>
 </html>
 </xsl:template>
@@ -80,25 +72,35 @@
     </tr>
     <xsl:call-template name="tr-title-edit"/>
 </xsl:template>
-    
-    
-<xsl:template name="saveedit">
-    <input type="hidden" name="id" value="{@id}"/>
-    <input type="hidden" name="close_thickbox" value="1"/>
-    <input type="submit" name="store" value="{$i18n/l/save}" class="control" accesskey="S"/>
+
+<xsl:template match="keywordset/keyword|subjectset/subject">
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="{$i18n/l/Opens_in_new_window}"><xsl:value-of select="name"/></a>
+    <xsl:text> </xsl:text>
+    <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};remove_mapping=1;property={name()};property_id={id}" title="{i18n_vlib/l/Delete_mapping}">(x)</a>
+    <xsl:if test="position()!=last()"><xsl:text>, </xsl:text></xsl:if>
 </xsl:template>
 
-<xsl:template name="cancelform">
-    <xsl:param name="with_save" select="'no'"/>
-    <!-- method get is needed, because goxims does not handle a PUTed 'id' -->
-    <form action="{$xims_box}{$goxims_content}" name="cform" method="get" style="margin-top:0px; margin-bottom:0px; margin-left:-5px; margin-right:0px;">
-        <input type="hidden" name="id" value="{@id}"/>
-        <input type="hidden" name="close_thickbox" value="1"/>
-        <xsl:if test="$with_save = 'yes'">
-            <xsl:call-template name="save_jsbutton"/>
-        </xsl:if>
-        <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C"/>
-    </form>
+<xsl:template match="vlsubjects">
+    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="svlsubject">
+        <xsl:apply-templates select="/document/context/vlsubjects/subject">
+            <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                      order="ascending"/>
+        </xsl:apply-templates>
+    </select>
+</xsl:template>
+
+<xsl:template match="vlkeywords">
+    <select style="background: #eeeeee; font-face: helvetica; font-size: 10pt" name="svlkeyword">
+        <xsl:apply-templates select="/document/context/vlkeywords/keyword">
+            <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
+                      order="ascending"/>
+        </xsl:apply-templates>
+    </select>
+</xsl:template>
+
+
+<xsl:template match="vlsubjects/subject|vlkeywords/keyword">
+    <option value="{name}"><xsl:value-of select="name"/></option>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -290,7 +290,7 @@ $Id$
     -->
     <xsl:param name="calendar" select="false()" />
     <xsl:param name="tinymce" select="false()" />
-    <xsl:param name="jquery" select="false()" />
+    <xsl:param name="with-jquery" select="false()" />
     <head>
       <title>
         <xsl:if test="$mode='create'">
@@ -308,14 +308,14 @@ $Id$
         <xsl:text> - XIMS</xsl:text>
       </title>
       <xsl:call-template name="css"/>
+      <xsl:if test="$with-jquery">
+        <script src="{$jquery}" type="text/javascript"/>
+      </xsl:if>
       <xsl:if test="$calendar">
         <xsl:call-template name="jscalendar_scripts" />
       </xsl:if>
       <xsl:if test="$tinymce">
         <xsl:call-template name="tinymce_scripts"/>
-      </xsl:if>
-      <xsl:if test="$jquery">
-        <script src="{$jquery}" type="text/javascript"/>
       </xsl:if>
     </head>
   </xsl:template>

@@ -552,47 +552,9 @@ sub event_cancel {
             $self->sendError( $ctxt, __"Object could not be unlocked!" );
             return 0;
         }
-        if ( $self->param('close_thickbox') ) {
-            XIMS::Debug( 4, "closing thickbox" );
-            return $self->close_thickbox();
-        }
-        else {
-            XIMS::Debug( 4, "redirecting" );
-            $self->redirect( $self->redirect_path($ctxt) );
-        }
+        XIMS::Debug( 4, "redirecting" );
+        $self->redirect( $self->redirect_path($ctxt) );
     }
-
-    return 0;
-}
-
-=head2 close_thickbox()
-
-=head3 Parameter
-
-    $refresh_parent            : Boolean flag to refresh parent window when closing thickbox window
-
-
-=head3 Returns
-
-HTML Document snippet to close thickbox window
-
-=head3 Description
-
-=cut
-
-sub close_thickbox {
-    my ($self, $refresh_parent) = @_;
-
-    if ( $refresh_parent ) {
-        $refresh_parent = '_reload';
-    }
-    else {
-        $refresh_parent = '';
-    }
-
-    $self->skipSerialization(1);
-    print $self->header( -type => 'text/html', -charset => 'UTF-8' );
-    printf('<html><body onload="self.parent.tb_remove%s();"></body></html>', $refresh_parent);
 
     return 0;
 }
@@ -1267,6 +1229,8 @@ sub clean_userquery {
     $userquery =~ s/\s+$//;
     $userquery =~ s/[ ;,<>`´|?]+//g;
 
+    # uc usernames uibk 
+    # return uc($userquery);
     return $userquery;
 }
 

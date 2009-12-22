@@ -7,18 +7,12 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:exslt="http://exslt.org/common">
+                xmlns:exslt="http://exslt.org/common"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="exslt">
 
   <xsl:import href="vlibrary_subject_edit.xsl"/>
   <xsl:import href="common_tinymce_scripts.xsl"/>
-
-  <xsl:output method="xml"
-              encoding="utf-8"
-              media-type="text/html"
-              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-              doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-              omit-xml-declaration="yes"
-              indent="yes"/>
 
   <xsl:template match="/document/context/object">
     <html>
@@ -27,6 +21,7 @@
           <xsl:value-of select="concat($i18n/l/edit, ' ', $i18n/l/subjects)"/>
         </title>
         <xsl:call-template name="css"/>
+        <xsl:call-template name="script_head"/>
       </head>
       <body>
         <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
@@ -42,6 +37,7 @@
         </div>
         <xsl:call-template name="script_bottom"/>
         <xsl:call-template name="tinymce_load"/>
+    <xsl:call-template name="jqtinymce_load"/>
         <xsl:call-template name="tinymce_simple"/>
       </body>
     </html>
