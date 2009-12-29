@@ -21,9 +21,9 @@
                                                  $goxims_content,
                                                  '?id=',
                                                  /document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id,
-                                                 '&amp;contentbrowse=1&amp;to=',
+                                                 ';contentbrowse=1;to=',
                                                  /document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id,
-                                                 '&amp;')"/>';	    
+                                                 ';')"/>';	    
       // content_css 
       var css = '<xsl:choose> 	 
                    <xsl:when test="css_id != ''">
