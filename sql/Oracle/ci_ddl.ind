@@ -318,21 +318,6 @@ CREATE  INDEX ctt_creation_timestamp_i
    )
 /
 
-CREATE  INDEX ctt_marked_deleted_i
- ON ci_content
-  ( marked_deleted  )
-  PCTFREE    10
-  INITRANS   2
-  MAXTRANS   255
- STORAGE (
-   INITIAL     102400
-   NEXT        102400
-   PCTINCREASE 0
-   MINEXTENTS  1
-   MAXEXTENTS  121
-   )
-/
-
 CREATE  INDEX doc_position_i
  ON ci_documents
   ( position  )
