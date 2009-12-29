@@ -1,0 +1,16 @@
+# -*-org-*- $Id:$
+
+Notes of things to be done before this branch can be released
+
+* Bugs from sf.net
+
+  See: http://sourceforge.net/tracker/?atid=432505&group_id=42250&func=browse
+
+* Postgres
+
+** CTT_MARKED_DELETED_I
+   Performance improved significantly after dropping this index on Oracle 
+   (@ 330k Rows in ci_content). One should check how Postgres behaves 
+   after the NULL -> 0 switch. 
+
+
