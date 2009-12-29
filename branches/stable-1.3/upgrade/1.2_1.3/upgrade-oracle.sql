@@ -125,8 +125,8 @@ INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEX
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'MOV', 'video/quicktime', 'mov' )
 /
 
-PROMPT DROP BITMAP INDEX an rebuild
+-- Performance improved significantly after dropping this index
+-- (@ 330k rows in ci_content)
+PROMPT DROP BITMAP INDEX 
 DROP INDEX CTT_MARKED_DELETED_I;
-CREATE INDEX CTT_MARKED_DELETED_I
- ON CI_CONTENT ( MARKED_DELETED  )
 /
