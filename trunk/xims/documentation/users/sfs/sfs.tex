@@ -1822,6 +1822,9 @@ andere Benutzer bzw. Rollen vergeben.
 \section{Spezielle Funktionen}
 \label{specfeatures}
 
+Für den Fall dass der XIMS-Standardfunktionsumfang nicht ausreicht, bietet XIMS eine Reihe 
+weiterer Funktionen an, die dem fortgeschrittenen Webbeauftragten zusätzlichen Anpassungsfreiraum einräumen.
+
 \subsection{Links zum Dokument (Document Links)}
 \label{doclinks}
 
@@ -1978,6 +1981,44 @@ durchführen zu können.}
 	\item {Der letzte Schritt ist das (Re)Publizieren des editierten Department Root
 Ordners.}
 \end{itemize} 
+
+\subsubsection{SubDepartment Links (Unternavigation)}
+\label{subdeplinks}
+ 
+Um eine Unternavigation zu erstellen, wird im Grunde mittels DepartmentLinks auf Container verlinkt, die wiederum DepartmentLinks enthalten. Auf diese Weise enthält das eigentliche DepartmentRoot die Hauptnavigation (im Ordner departmentlinks) und die darin enthaltenen DepartmentRoots - auch Subdepartmentroots genannt - enthalten ihrerseits jeweils die Unternavigation des jeweiligen Punktes der Hauptnavigation.
+
+\paragraph{Voraussetzungen}
+
+Um eine Subnavigation erstellen zu können muss zuerst ein DepartmentRoot (i.d.R. bereits vorhanden) und in weiterer Folge weitere darin enthaltene DepartmentRoots erstellt werden. Ebenso ist es möglich eine bestehende Struktur in XIMS entsprechend den veränderten Anforderungen anzupassen (es besteht die Möglichkeit bestehende Ordner in DepartmentRoots umzuwandeln). 
+
+\begin{Hinweis}Der Benutzer muss entsprechende Berechtigungen zum Erstellen von DepartmentRoots haben. Wenden Sie sich ggf. bitte an \href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}.
+\end{Hinweis}
+
+\paragraph{Vorgehensweise}
+
+Abbildung \ref{fig:subdeplinks} zeigt die Hauptnavigation und die Unternavigation bei aktivem Hauptnavigationseintrag. Es wird immer nur die Unternavigation des aktuellen Hauptnavigationseintrages dargestellt.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[scale=0.7]{./images/subdeplinks.png}
+	\caption{Beispiel: Hauptnavigation und Unternavigation}
+	\label{fig:subdeplinks}
+\end{figure}
+
+Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner departmentlinks die Hauptnavigation, analog dazu ist in den jeweiligen Ordnern mit Unternavigation ein Ordner subdepartmentlinks enthalten. Der Ordner (welcher zwingend die Location 'subdepartmentlinks' haben muss) enthält somit die Unternavigationspunkte für den Hauptnavigationseintrag des DepartmentRoots.
+
+\begin{compactitem}
+\item{Erstellen des DepartmentRoots, welches die Hauptnavigation (DepartmentLinks) enthalten wird. Dieses DepartmentRoot besteht in den allermeisten Fällen bereits.}
+\item{Work in Progress}
+\item{Work in Progress}
+\item{Work in Progress}
+\item{Work in Progress}
+\item{Work in Progress}
+\end{compactitem}
+
+\paragraph{Beispiel}
+
+Hier kommt ein Beispiel ;)
 
 \subsubsection{Department Speziallinks}
 \label{depspeclinks}
