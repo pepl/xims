@@ -185,9 +185,9 @@ sub new {
             }
         }
 
-        $self->marked_deleted(0) unless delete $args{marked_deleted};
-        $self->marked_new(0) unless delete $args{marked_deleted};
-        $self->published(0) unless delete $args{published};
+        $self->marked_deleted( delete $args{marked_deleted} ? 1 : 0 );
+        $self->marked_new(     delete $args{marked_new}     ? 1 : 0 );
+        $self->published(      delete $args{published}      ? 1 : 0 );
 
         if ( scalar( keys(%args) ) > 0 ) {
             # make sure those two ids come first, since things like body()
@@ -1864,6 +1864,15 @@ sub clone {
     delete $clonedata{document_id};
     delete $clonedata{path};
 
+    # Prima facie, clones shan't be published or locked
+    $clonedata{published}            = 0;
+
+    $clonedata{locked_by_id}         = undef;
+    $clonedata{locked_by_firstname}  = undef;
+    $clonedata{locked_by_middlename} = undef;
+    $clonedata{locked_by_lastname}   = undef;
+    $clonedata{locked_time}          = undef;
+
     if ( defined $parent_id or defined $target_id ) {
         if ( defined $parent_id ) {
             $clonedata{parent_id} = $parent_id;
@@ -1986,18 +1995,6 @@ sub clone {
         $priv->{content_id} = $clone->id();
         $clonepriv = XIMS::ObjectPriv->new->data( %{$priv} );
         $clonepriv->create();
-    }
-
-    if ( $clone->published() ) {
-
-        # set clone to unpublished
-        $clone->unpublish();
-    }
-
-    if ( $clone->locked() ) {
-
-        # unlock clone
-        $clone->unlock();
     }
 
     if ($scope_subtree) {
