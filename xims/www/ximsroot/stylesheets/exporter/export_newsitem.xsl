@@ -10,6 +10,7 @@
                 >
 
     <xsl:import href="../common.xsl"/>
+    <xsl:import href="common_export.xsl"/>
 
     <xsl:output method="xml"/>
 
@@ -35,6 +36,9 @@
                 <story>
                     <xsl:apply-templates select="body"/>
                 </story>
+                <path>
+                  <xsl:apply-templates select="." mode="path-element"/>
+                </path>
                 <keywords><xsl:value-of select="keywords"/></keywords>
                 <image url="{image_id/location_path}" alt="{image_id/title}" longdesc="{image_id/abstract}"/>
                 <last_publication_timestamp><xsl:apply-templates select="last_publication_timestamp"/></last_publication_timestamp>

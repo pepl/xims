@@ -6,11 +6,11 @@
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                >
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:import href="../common.xsl"/>
-
+    <xsl:import href="common_export.xsl"/>
+    
     <xsl:output method="xml"/>
 
     <xsl:template match="/document">
@@ -52,6 +52,11 @@
                     <dc:language>en</dc:language>
                 </rdf:Description>
             </rdf:RDF>
+            
+            <path>
+              <xsl:apply-templates select="." mode="path-element"/>
+            </path>
+         
             <body>
                 <xsl:apply-templates select="body"/>
             </body>
