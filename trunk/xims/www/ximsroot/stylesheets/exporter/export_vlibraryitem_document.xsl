@@ -6,10 +6,10 @@
 # $Id: export_document.xsl,v 1.10 2005/08/11 15:16:13 pepl Exp $
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                >
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:import href="../common.xsl"/>
+    <xsl:import href="common_export.xsl"/>    
 
     <xsl:output method="xml"/>
 
@@ -56,6 +56,10 @@
                 </rdf:Description>
             </rdf:RDF>
 
+	    <path>
+              <xsl:apply-templates select="." mode="path-element"/>
+            </path>
+	    
             <body>
                 <xsl:apply-templates select="body"/>
             </body>
