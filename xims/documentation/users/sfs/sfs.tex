@@ -2,6 +2,7 @@
 % 2do:
 % Index ausbauen
 % Silbentrennung ausbauen
+% Beispiel bei Subdepartmentlinks
 
 \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
 \documentclass[fontsize=11pt,liststotoc,idxtotoc]{scrartcl}
@@ -2009,12 +2010,22 @@ Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner departmentlinks 
 
 \begin{compactitem}
 \item{Erstellen des DepartmentRoots, welches die Hauptnavigation (DepartmentLinks) enthalten wird. Dieses DepartmentRoot besteht in den allermeisten Fällen bereits.}
-\item{Work in Progress}
-\item{Work in Progress}
-\item{Work in Progress}
-\item{Work in Progress}
-\item{Work in Progress}
+\item{Erstellen des DepartmentRoots, welches die Unternavigation (SubdepartmentLinks) enthalten wird. Zum Beispiel 'mitarbeiter', 'forschung' oder 'links'.}
+\item{Erstellen des Ordners 'departmentlinks' im DepartmentRoot der Hauptnavigation. Dieser Ordner existiert in den meisten Fällen bereits (Wenn Sie schon eine Hauptnavigation haben ist eine Änderung nicht erforderlich!)}
+\item{Erstellen des Ordners 'subdepartmentlinks' in den DepartmentRoots der Unternavigation.}
+\item{Erstellen der URLLink Objekte im 'departmentlinks' Ordner der Hauptnavigation. Die URLLinks müssen auf die soeben erstellten DepartmentRoots der Unternavigation verweisen.}
+\item{Erstellen eines Portlets mit Locaton 'departmentlinks_portlet' im DepartmentRoot der Hauptnavigation. Dieses Portlet muss auf den Ordner 'departmentlinks' zeigen und existiert in den meisten Fällen bereits.}
+\item{Erstellen der URLLink Objekte in den jeweiligen 'subdepartmentlinks' Ordnern. Diese URLLink Objekte müssen auf jene Dokumente zielen, die durch einen Klick auf den jeweiligen Unternavigationspunkt angezeigt werden sollen.}
+\item{Erstellen eines Portlets mit Locaton 'subdepartmentlinks_portlet' im DepartmentRoot der Unternavigation. Dieses Portlet muss auf den Ordner 'subdepartmentlinks' der jeweiligen Unternavigation zeigen.}
+\item{Zuweisen der Portlets zu den entsprechenden DepartmentRoots.}
+\item{Erstellen eines Dokumentes 'index.html' in den DepartmentRoots der Unternavigation, welches beim Klick auf die Unternavigation als Übersichtsseite angezeigt wird.}
+\item{(Wieder)veröffentlichen der neu erstellten bzw. veränderten Objekte.}
 \end{compactitem}
+
+\begin{Hinweis}
+Bei URLLink Objekten ist immer die 'Location' des Zielobjektes anzugeben. Bei URLLinks der Hauptnavigation muss ein Slash angehängt werden, weil auf einen Ordner verwiesen wird, dadurch das jeweilige Index Dokument angezeigt wird und in weiterer Folge die Unternavigation aufklappt.
+\end{Hinweis}
+
 
 \paragraph{Beispiel}
 
