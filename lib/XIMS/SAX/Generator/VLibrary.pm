@@ -96,7 +96,8 @@ sub prepare {
 
     my %encargs;
     if ( $ctxt->properties->application->style() eq 'subject_show'
-         or $ctxt->properties->application->style() eq 'subject_view' ) {
+         or $ctxt->properties->application->style() eq 'subject_view'
+         or $ctxt->properties->application->style() eq 'objectlist' ) {
         $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
         push(
             @{ $self->{FilterList} },
@@ -163,7 +164,9 @@ sub prepare {
             $doc_data->{context}->{vlkeywordinfo} =
               { keyword => $ctxt->object->vlkeywordinfo_granted() };
         }
-
+        elsif ( $ctxt->properties->application->style() =~ /browse/ ) {    
+            $self->_set_children( $ctxt, $doc_data, \%object_types, \%data_formats );
+        }
     }
 
     if ( $ctxt->objectlist() ) {
@@ -218,6 +221,7 @@ sub prepare {
     }
 
     $ctxt->properties->content->getformatsandtypes( 1 );
+
     $self->_set_formats_and_types( $ctxt, $doc_data, \%object_types, \%data_formats );
 
     return $doc_data;
