@@ -205,14 +205,14 @@ Objekte«) navigiert man zur \ximsterm{Containeransicht}.
 
 Die \ximstermdef{Containeransicht} gibt einen Überblick über alle bereits vorhandenen Objekte und
 bietet verschiedene Optionen zur Objektverwaltung an.
-\begin{compactitem}
-\item (1) zeigt den derzeitigen Objektstatus an (publiziert, nicht publiziert, ...)
-\item (2) listet die Objekte jeweils mit einem vom \ximsterm{Objekttyp} abhängigen Icon
-\item (3) zeigt das Datum der letzten Änderung
-\item (4) listet die zur Verfügung stehenden Optionen (editieren, kopieren,
+\begin{description}
+\item[(1)] zeigt den derzeitigen Objektstatus an (publiziert, nicht publiziert, ...)
+\item[(2)] listet die Objekte jeweils mit einem vom \ximsterm{Objekttyp} abhängigen Icon
+\item[(3)] zeigt das Datum der letzten Änderung
+\item[(4)] listet die zur Verfügung stehenden Optionen (editieren, kopieren,
 verschieben, publizieren, ...)
-\item (5) Menü zum Erstellen neuer Objekte
-\end{compactitem}
+\item[(5)] Menü zum Erstellen neuer Objekte
+\end{description}
 \bigskip
 
 \begin{figure}[!ht]
@@ -232,14 +232,14 @@ Die unter (4) gezeigten \ximsterm{Verwaltungsoptionen} im Detail:
 	\label{fig:optionsicons}
 \end{figure}
 
-\begin{compactitem}
-\item (A) \otherterm{Editieren}: Öffnet den Editor (vom \ximsterm{Objekttyp} abhängig!)
-\item (B) \otherterm{Kopieren}: Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
-\item (C) \otherterm{Verschieben}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Öffnet ein Menü zum Verschieben des Objekts
-\item (D) \otherterm{Publizieren}: Öffnet das Menü zum Veröffentlichen von Objekten
-\item (E) \otherterm{Rechte verwalten}: Öffnet die Rechteverwaltung
-\item (F) \otherterm{Löschen}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}: Löscht das Objekt (siehe Punkt \ref{delete}: Objekte löschen und »Papierkorb«)
-\end{compactitem}
+\begin{description}
+\item[(A) \otherterm{Editieren}]: Öffnet den Editor (vom \ximsterm{Objekttyp} abhängig!)
+\item[(B) \otherterm{Kopieren}]: Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
+\item[(C) \otherterm{Verschieben}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}]: Öffnet ein Menü zum Verschieben des Objekts
+\item[(D) \otherterm{Publizieren}]: Öffnet das Menü zum Veröffentlichen von Objekten
+\item[(E) \otherterm{Rechte verwalten}]: Öffnet die Rechteverwaltung
+\item[(F) \otherterm{Löschen}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}]: Löscht das Objekt (siehe Punkt \ref{delete}: Objekte löschen und »Papierkorb«)
+\end{description}
 
 \subsubsection{Erstellen von Objekten}
 \label{quick-erstellen}
@@ -348,7 +348,7 @@ Nach erfolgreicher Anmeldung gelangt man zur benutzerspezifischen Startseite des
 
 Für jeden Benutzer sind so genannte \otherterm{Lesezeichen} (Bookmarks) konfiguriert. Die
 Lesezeichen sind in Abhängigkeit zur Rollenzugehörigkeit gesetzt und können über
-»Einstellungen« \rightarrow »Lesezeichen verwalten« verändert werden. Auf diese Weise
+»Einstellungen« $\rightarrow$ »Lesezeichen verwalten« verändert werden. Auf diese Weise
 können Sie auch das \otherterm{Standardlesezeichen} (default Bookmark) ändern. UIBK-Mitarbeiter
 haben zumindest ein Standardlesezeichen zum \otherterm{XIMS}-Testordner
 gesetzt.
@@ -360,7 +360,7 @@ gesetzt.
 
 Über die \othertermdef{Lesezeichen} gelangen Sie am schnellsten zu den Inhalten Ihrer
 Organisationseinheit. Sollte das Lesezeichen zu Ihren Inhalten noch nicht bestehen,
-können Sie dieses über »Einstellungen« \rightarrow »Lesezeichen verwalten« erstellen. Indem Sie auf eines Ihrer Lesezeichen klicken, gelangen Sie zur so genannten
+können Sie dieses über »Einstellungen« $\rightarrow$ »Lesezeichen verwalten« erstellen. Indem Sie auf eines Ihrer Lesezeichen klicken, gelangen Sie zur so genannten
 \ximsterm{Containeransicht}.
 
 \begin{figure}[!ht]
@@ -465,17 +465,17 @@ auch effektivere Suche ermöglichen:
   verwenden Sie folgenden Suchausdruck: zid AND ( antrag OR dokument)
 \end{Hinweis}
 
-\begin{itemize}
-	\item M:<Tage> Finde Objekte, die in den letzen <Tagen>
+\begin{description}
+	\item[M:<Tage>] Finde Objekte, die in den letzen <Tagen>
 verändert wurden. <Tage> muss nicht unbedingt
 angeben werden, der Vorgabewert ist 1.
-	\item N:<Tage> Finde Objekte, die in den letzen <Tagen>
+	\item[N:<Tage>] Finde Objekte, die in den letzen <Tagen>
 erstellt wurden. <Tage> muss nicht unbedingt
 angeben werden, der Vorgabewert ist 1.
-	\item m:<Tage>, n:<Tage> Wie oben, aber schränke die
+	\item[m:<Tage>], n:<Tage> Wie oben, aber schränke die
 Suche zusätzlich auf Objekte ein, die als neu
 markiert wurden.
-\end{itemize}
+\end{description}
 
 \subsection{Ansicht von Containerinhalten}
 \label{containeransicht}
@@ -663,7 +663,7 @@ möglichst selbsterklärende und leicht zu merkende Bezeichnung der \ximsterm{Loca
 vergeben werden, zum anderen bestehen deshalb gewisse Beschränkungen für den
 Feldinhalt. So sind beispielsweise im Feld \ximsterm{Location} keine Umlaute, Sonder- oder
 Leerzeichen erlaubt.
-Die Dateiendung (.doc, .pdf, .html, etc.) wird vom System beim Speichern abhängig
+Die Dateiendung (\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom System beim Speichern abhängig
 vom \ximsterm{Objekttyp} und Datenformat automatisch hinzugefügt.
 
 \begin{Hinweis}
@@ -692,7 +692,7 @@ automatisch übernommen.
 
 In unserem Beispiel befindet sich der Benutzer im Verzeichnis
 \path{/uniweb/test/christian/sfs} und erstellt ein neues Dokument mit der \ximsterm{Location}
-»sfs« und dem Titel »Schritt für Schritt«.
+\path{sfs} und dem Titel »Schritt für Schritt«.
 Das erstellte Dokument ist in \otherterm{XIMS} im Verzeichnis \path{/uniweb/test/christian/sfs}
 zu finden und scheint unter dem Namen des Titels (in unserem Beispiel »Schritt
 für Schritt«) auf.
@@ -854,11 +854,11 @@ Verzeichnisinhalts erstellen. Dieses Standardverhalten kann mit der Option
 »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« wenn nötig unterbunden
 werden.\footnote{Wir empfehlen, den Autoindex abzuschalten, falls Sie mehrsprachige Indexdokumente (z.B.:
 \nolinkurl{index.html.de} und \nolinkurl{index.html.en}) verwenden wollen, es kann sonst zu Fehlern bei der
-Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss »index« lauten, der Webserver verwendet es dann automatisch.
+Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss \path{index} lauten, der Webserver verwendet es dann automatisch.
 
-\begin{Hinweis}Ein Objekt mit der \ximsterm{Location} »index« (z.B. \nolinkurl{index.html}) wird vom Webserver
+\begin{Hinweis}Ein Objekt mit der \ximsterm{Location} \path{index} (z.B. \nolinkurl{index.html}) wird vom Webserver
 gegenüber dem automatisch erstellten Index vorgezogen, d.h. sobald ein Objekt
-mit der \ximsterm{Location} »index« in dem Container existiert, wird dieses Dokument
+mit der \ximsterm{Location} \path{index} in dem Container existiert, wird dieses Dokument
 ausgeliefert, auch wenn ein \ximsterm{Autoindex} erstellt wurde.
 \end{Hinweis}
 
@@ -874,7 +874,7 @@ verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 	\centering
 		\includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex.png}
 	\caption{\otherterm{XIMS} Ansicht eines Ordners mit Inhalt. Keines dieser Objekte hat die \ximsterm{Location}
-»index«!}
+\path{index}!}
 	\label{fig:ordnerohneindex}
 \end{figure}
 
@@ -882,7 +882,7 @@ verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 	\centering
 		\includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex_publiziert.png}
 	\caption{Die veröffentlichte Version desselben Ordners. Da kein Objekt mit der
-\ximsterm{Location} »index« enthalten ist, wird der Ordnerinhalt angezeigt. Die Darstellung im Bild
+\ximsterm{Location} \path{index} enthalten ist, wird der Ordnerinhalt angezeigt. Die Darstellung im Bild
 zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
 	\label{fig:ordnerohneindexpubliziert}
 \end{figure}
@@ -893,14 +893,14 @@ zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
 Über diese Funktion können die \othertermdef{Berechtigung}en für das Objekt konfiguriert werden.
 \otherterm{XIMS} »vererbt« standardmäßig die Einstellungen von den Elternobjekten.
 
-\begin{itemize}
-	\item »Nur mir selbst Rechte erteilen«:
+\begin{description}
+	\item[Nur mir selbst Rechte erteilen]:
 Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
 gelesen bzw. verändert werden.
-	\item »Zusätzlich Leserechte für Mitglieder der Standard Rollen
-erteilen« (Grant VIEW privilege of your default roles):
+	\item[Zusätzlich Leserechte für Mitglieder der Standard Rollen
+erteilen (Grant VIEW privilege of your default roles)]:
 Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
-\end{itemize}
+\end{description}
 
 \begin{Hinweis}Die Funktion »Zusätzlich Leserechte für Mitglieder der
 Standard Rollen erteilen« wird derzeit nicht verwendet!
@@ -1904,8 +1904,8 @@ notwendig:
 
 \begin{itemize}
 	\item {Erstellen eines Verzeichnisses mit der \ximsterm{Location}
-»departmentlinks«. Die \ximsterm{Location} des Verzeichnisses muss zwingend
-»departmentlinks« heißen.}
+\path{departmentlinks}. Die \ximsterm{Location} des Verzeichnisses muss zwingend
+\path{departmentlinks} heißen.}
 
 \begin{figure}[!ht]
 	\centering
@@ -1990,19 +1990,19 @@ Abbildung~\ref{fig:subdeplinks} zeigt die Hauptnavigation und die Unternavigatio
 	\label{fig:subdeplinks}
 \end{figure}
 
-Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner departmentlinks die Hauptnavigation, analog dazu ist in den jeweiligen Ordnern mit Unternavigation ein Ordner subdepartmentlinks enthalten. Der Ordner (welcher zwingend die Location »subdepartmentlinks« haben muss) enthält somit die Unternavigationspunkte für den Hauptnavigationseintrag des \ximsterm{DepartmentRoot}s.
+Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner \path{departmentlinks} die Hauptnavigation, analog dazu ist in den jeweiligen Ordnern mit Unternavigation ein Ordner \path{subdepartmentlinks} enthalten. Der Ordner (welcher zwingend die Location \path{subdepartmentlinks} haben muss) enthält somit die Unternavigationspunkte für den Hauptnavigationseintrag des \ximsterm{DepartmentRoot}s.
 
 \begin{compactitem}
 \item{Erstellen des \ximsterm{DepartmentRoot}s, welches die Hauptnavigation (DepartmentLinks) enthalten wird. Dieses \ximsterm{DepartmentRoot} besteht in den allermeisten Fällen bereits.}
-\item{Erstellen des \ximsterm{DepartmentRoot}s, welches die Unternavigation (SubdepartmentLinks) enthalten wird. Zum Beispiel »mitarbeiter«, »forschung« oder »links«.}
-\item{Erstellen des Ordners »departmentlinks« im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieser Ordner existiert in den meisten Fällen bereits (Wenn Sie schon eine Hauptnavigation haben ist eine Änderung nicht erforderlich!)}
-\item{Erstellen des Ordners »subdepartmentlinks« in den \ximsterm{DepartmentRoot}s der Unternavigation.}
-\item{Erstellen der \ximsterm{URLLink} Objekte im »departmentlinks« Ordner der Hauptnavigation. Die \ximsterm{URLLink}s müssen auf die soeben erstellten \ximsterm{DepartmentRoot}s der Unternavigation verweisen.}
-\item{Erstellen eines Portlets mit Location »departmentlinks\_portlet« im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieses Portlet muss auf den Ordner »departmentlinks« zeigen und existiert in den meisten Fällen bereits.}
-\item{Erstellen der \ximsterm{URLLink} Objekte in den jeweiligen »subdepartmentlinks« Ordnern. Diese \ximsterm{URLLink} Objekte müssen auf jene Dokumente zielen, die durch einen Klick auf den jeweiligen Unternavigationspunkt angezeigt werden sollen.}
-\item{Erstellen eines Portlets mit Locaton »subdepartmentlinks\_portlet« im \ximsterm{DepartmentRoot} der Unternavigation. Dieses Portlet muss auf den Ordner »subdepartmentlinks« der jeweiligen Unternavigation zeigen.}
+\item{Erstellen des \ximsterm{DepartmentRoot}s, welches die Unternavigation (SubdepartmentLinks) enthalten wird. Zum Beispiel \path{mitarbeiter}, \path{forschung} oder \path{links}.}
+\item{Erstellen des Ordners \path{departmentlinks} im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieser Ordner existiert in den meisten Fällen bereits (Wenn Sie schon eine Hauptnavigation haben ist eine Änderung nicht erforderlich!)}
+\item{Erstellen des Ordners \path{subdepartmentlinks} in den \ximsterm{DepartmentRoot}s der Unternavigation.}
+\item{Erstellen der \ximsterm{URLLink} Objekte im \path{departmentlinks} Ordner der Hauptnavigation. Die \ximsterm{URLLink}s müssen auf die soeben erstellten \ximsterm{DepartmentRoot}s der Unternavigation verweisen.}
+\item{Erstellen eines Portlets mit Location \path{departmentlinks\_portlet} im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieses Portlet muss auf den Ordner \path{departmentlinks} zeigen und existiert in den meisten Fällen bereits.}
+\item{Erstellen der \ximsterm{URLLink} Objekte in den jeweiligen \path{subdepartmentlinks} Ordnern. Diese \ximsterm{URLLink} Objekte müssen auf jene Dokumente zielen, die durch einen Klick auf den jeweiligen Unternavigationspunkt angezeigt werden sollen.}
+\item{Erstellen eines Portlets mit Locaton \path{subdepartmentlinks\_portlet} im \ximsterm{DepartmentRoot} der Unternavigation. Dieses Portlet muss auf den Ordner \path{subdepartmentlinks} der jeweiligen Unternavigation zeigen.}
 \item{Zuweisen der Portlets zu den entsprechenden \ximsterm{DepartmentRoot}s.}
-\item{Erstellen eines Dokumentes »index.html« in den \ximsterm{DepartmentRoot}s der Unternavigation, welches beim Klick auf die Unternavigation als Übersichtsseite angezeigt wird.}
+\item{Erstellen eines Dokumentes \nolinkurl{index.html} in den \ximsterm{DepartmentRoot}s der Unternavigation, welches beim Klick auf die Unternavigation als Übersichtsseite angezeigt wird.}
 \item{(Wieder)veröffentlichen der neu erstellten bzw. veränderten Objekte.}
 \end{compactitem}
 
@@ -2018,9 +2018,9 @@ Department Links. Der Unterschied beschränkt sich auf die unterschiedliche
 Bezeichnung der \ximsterm{Location} des Department-Speziallinks-Verzeichnisses und des
 zugehörigen \ximsterm{Portlet}s. Insofern wird auf Punkt \ref{deplinks} verwiesen. Für die Department
 Speziallinks muss die \ximsterm{Location} des Department Speziallink Verzeichnisses
-»speciallinks« lauten. Ebenfalls muss das Department Speziallink \ximsterm{Portlet} die
-\ximsterm{Location} als auch den Titel »speciallinks\_portlet« besitzen und auf das
-Verzeichnis »speciallinks« (mit den gewünschten Links als Inhalt) verweisen.
+\path{speciallinks} lauten. Ebenfalls muss das Department Speziallink \ximsterm{Portlet} die
+\ximsterm{Location} als auch den Titel \path{speciallinks\_portlet} besitzen und auf das
+Verzeichnis \path{speciallinks} (mit den gewünschten Links als Inhalt) verweisen.
 
 \subsection{Department Images}
 \label{depimg}
@@ -2135,11 +2135,11 @@ Die folgenden Informationen für die Erstellung einer zusätzlichen englischsprach
 Navigation für Ihre \otherterm{XIMS}-basierte Homepage setzen das Wissen über die
 Handhabung von »Department Links« voraus. In diesem Abschnitt werden nur die Anleitungsschritte für die zusätzlichen englischen Department Links erläutert. Für
 grundlegende Informationen zum Thema Department Links wird auf Punkt \ref{deplinks} verwiesen.
-Ihre Homepage verfügt bereits über ein departmentlinks-Verzeichnis (inklusive
+Ihre Homepage verfügt bereits über ein \path{departmentlinks}-Verzeichnis (inklusive
 URLLinks) und ein Department Links-\ximsterm{Portlet}. Nun erstellen Sie für die
 englischsprachige Navigation gleichermaßen diese Objekte, jedoch mit
-unterschiedlicher Benennung: Verzeichnis »departmentlinks\_en«; Portlet
-»departmentlinks\_portlet\_en«. Im departmentlinks\_en-Verzeichnis müssen
+unterschiedlicher Benennung: Verzeichnis \path{departmentlinks\_en}; Portlet
+\path{departmentlinks\_portlet\_en}. Im \path{departmentlinks\_en}-Verzeichnis müssen
 die \ximsterm{URLLink}s ebenfalls neu erstellt werden.
 
 \begin{figure}[!ht]
@@ -2151,8 +2151,8 @@ URLLinks erstellt werden}
 \end{figure}
 
 Dem \ximsterm{DepartmentRoot} der Organisationseinheit kann nun das
-zweite \ximsterm{Portlet} »departmentlinks\_portlet\_en« (welches auf das Verzeichnis
-»departmentlinks\_en« zeigt) zugewiesen werden.
+zweite \ximsterm{Portlet} \path{departmentlinks\_portlet\_en} (welches auf das Verzeichnis
+\path{departmentlinks\_en} zeigt) zugewiesen werden.
 
 \begin{figure}[!ht]
 	\centering
@@ -2167,9 +2167,9 @@ Sprache erfolgt nach folgenden Kriterien:
 
 \begin{itemize}
 	\item {Für Dateien mit der Erweiterung \nolinkurl{.de} (\nolinkurl{html.de}) werden die Department Links
-aus dem Portlet »departmentlinks\_portlet« bzw. für Dateien mit der
+aus dem Portlet \path{departmentlinks\_portlet} bzw. für Dateien mit der
 Erweiterung \nolinkurl{.en} (\nolinkurl{html.en}) die Department Links aus dem \ximsterm{Portlet}
-»departmentlinks\_portlet\_en« gewählt.}
+\path{departmentlinks\_portlet\_en} gewählt.}
 \item {Für Dateien ohne Erweiterung wird versucht dem Benutzer am besten gerecht
 zu werden und es werden entsprechend dessen Einstellungen die Seiten
 zusammen mit den passenden Department Links dargestellt. Ist die Sprache,
@@ -2188,27 +2188,27 @@ englische Version (falls vorhanden) präsentiert.}
 \label{weitereobjekte}
 
 Verfügt man über Rechte, die über die des Standardbenutzers hinausgehen, hat man zusätzlich auch die Möglichkeit folgende weitere Objekte zu erstellen:
-\begin{itemize}
-\item {\textbf{\ximsterm{NewsItem}}}
-\item	{\textbf{\ximsterm{DepartmentRoot}}: Der Begriff »DepartmentRoot« beschreibt die Startseite
+\begin{description}
+\item[\ximsterm{NewsItem}]
+\item[\ximsterm{DepartmentRoot}]: Der Begriff »DepartmentRoot« beschreibt die Startseite
 einer Organisationseinheit und entspricht einem Ordner in einem Dateisystem.
 Das \ximsterm{DepartmentRoot} hat einige Eigenschaften, die auf dessen »Kinderobjekte«
-(untergeordnete Webseiten einer Organisationseinheit) weitervererbt werden.}
-\item {\textbf{\ximsterm{XSLStylesheet}}}
-\item {\textbf{\ximsterm{SymbolicLink}}: Entspricht einem symbolischen Link unter UNIX.}
-\item {\textbf{\ximsterm{AxPointPresentation}}: Ein XML Format für einfache PDF-Präsentationen.
+(untergeordnete Webseiten einer Organisationseinheit) weitervererbt werden.
+\item[\ximsterm{XSLStylesheet}]
+\item[\ximsterm{SymbolicLink}]: Entspricht einem symbolischen Link unter UNIX.
+\item[\ximsterm{AxPointPresentation}]: Ein XML Format für einfache PDF-Präsentationen.
 Mehr Informationen dazu finden Sie im »AxPoint Presentation Howto«.
 Zusätzliche Informationen über die Hintergründe von AxPointPresentations gibt
 es in einem Artikel des \otherterm{XIMS} Co-Entwicklers Kip Hampton: \url{http://www.xml.com/
-pub/a/2002/06/19/perl-xml.html}}
-	\item {\textbf{\ximsterm{AnonDiscussionForum}}: Ist ein anonymes Diskussionsforum. Mehr
+pub/a/2002/06/19/perl-xml.html}
+\item[\ximsterm{AnonDiscussionForum}]: Ist ein anonymes Diskussionsforum. Mehr
 Informationen dazu erhalten Sie im Dokument Anonymes Diskussionsforum
-Howto.}
-	\item {\textbf{\ximsterm{Portal}}: Nach einem \ximsterm{Portlet} ist ein Portal gewissermaßen der nächste Schritt.
+Howto.
+\item[\ximsterm{Portal}]: Nach einem \ximsterm{Portlet} ist ein Portal gewissermaßen der nächste Schritt.
 Im Grunde genommen ist ein Portal nichts anderes als eine Seite, die nur
 Referenzen auf Portlets enthält. Solche Seiten werden vor allem auf Startseiten
-einer Website gefunden.}
-\end{itemize}
+einer Website gefunden.
+\end{description}
 \section{Weiterführende Informationen}
 \label{infos}
 
