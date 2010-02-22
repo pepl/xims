@@ -233,12 +233,12 @@ Die unter (4) gezeigten \ximsterm{Verwaltungsoptionen} im Detail:
 \end{figure}
 
 \begin{description}
-\item[(A) \otherterm{Editieren}]: Öffnet den Editor (vom \ximsterm{Objekttyp} abhängig!)
-\item[(B) \otherterm{Kopieren}]: Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
-\item[(C) \otherterm{Verschieben}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}]: Öffnet ein Menü zum Verschieben des Objekts
-\item[(D) \otherterm{Publizieren}]: Öffnet das Menü zum Veröffentlichen von Objekten
-\item[(E) \otherterm{Rechte verwalten}]: Öffnet die Rechteverwaltung
-\item[(F) \otherterm{Löschen}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}]: Löscht das Objekt (siehe Punkt \ref{delete}: Objekte löschen und »Papierkorb«)
+\item[(A) \otherterm{Editieren}:] Öffnet den Editor (vom \ximsterm{Objekttyp} abhängig!)
+\item[(B) \otherterm{Kopieren}:] Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
+\item[(C) \otherterm{Verschieben}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}:] Öffnet ein Menü zum Verschieben des Objekts
+\item[(D) \otherterm{Publizieren}:] Öffnet das Menü zum Veröffentlichen von Objekten
+\item[(E) \otherterm{Rechte verwalten}:] Öffnet die Rechteverwaltung
+\item[(F) \otherterm{Löschen}\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.}:] Löscht das Objekt (siehe Punkt \ref{delete}: Objekte löschen und »Papierkorb«)
 \end{description}
 
 \subsubsection{Erstellen von Objekten}
@@ -472,7 +472,7 @@ angeben werden, der Vorgabewert ist 1.
 	\item[N:<Tage>] Finde Objekte, die in den letzen <Tagen>
 erstellt wurden. <Tage> muss nicht unbedingt
 angeben werden, der Vorgabewert ist 1.
-	\item[m:<Tage>], n:<Tage> Wie oben, aber schränke die
+	\item[m:<Tage>, n:<Tage>] Wie oben, aber schränke die
 Suche zusätzlich auf Objekte ein, die als neu
 markiert wurden.
 \end{description}
@@ -894,11 +894,11 @@ zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
 \otherterm{XIMS} »vererbt« standardmäßig die Einstellungen von den Elternobjekten.
 
 \begin{description}
-	\item[Nur mir selbst Rechte erteilen]:
+	\item[Nur mir selbst Rechte erteilen:]
 Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
 gelesen bzw. verändert werden.
 	\item[Zusätzlich Leserechte für Mitglieder der Standard Rollen
-erteilen (Grant VIEW privilege of your default roles)]:
+erteilen (Grant VIEW privilege of your default roles):]
 Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
 \end{description}
 
@@ -1998,9 +1998,9 @@ Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner \path{department
 \item{Erstellen des Ordners \path{departmentlinks} im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieser Ordner existiert in den meisten Fällen bereits (Wenn Sie schon eine Hauptnavigation haben ist eine Änderung nicht erforderlich!)}
 \item{Erstellen des Ordners \path{subdepartmentlinks} in den \ximsterm{DepartmentRoot}s der Unternavigation.}
 \item{Erstellen der \ximsterm{URLLink} Objekte im \path{departmentlinks} Ordner der Hauptnavigation. Die \ximsterm{URLLink}s müssen auf die soeben erstellten \ximsterm{DepartmentRoot}s der Unternavigation verweisen.}
-\item{Erstellen eines Portlets mit Location \path{departmentlinks\_portlet} im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieses Portlet muss auf den Ordner \path{departmentlinks} zeigen und existiert in den meisten Fällen bereits.}
+\item{Erstellen eines Portlets mit Location \path{departmentlinks_portlet} im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieses Portlet muss auf den Ordner \path{departmentlinks} zeigen und existiert in den meisten Fällen bereits.}
 \item{Erstellen der \ximsterm{URLLink} Objekte in den jeweiligen \path{subdepartmentlinks} Ordnern. Diese \ximsterm{URLLink} Objekte müssen auf jene Dokumente zielen, die durch einen Klick auf den jeweiligen Unternavigationspunkt angezeigt werden sollen.}
-\item{Erstellen eines Portlets mit Locaton \path{subdepartmentlinks\_portlet} im \ximsterm{DepartmentRoot} der Unternavigation. Dieses Portlet muss auf den Ordner \path{subdepartmentlinks} der jeweiligen Unternavigation zeigen.}
+\item{Erstellen eines Portlets mit Locaton \path{subdepartmentlinks_portlet} im \ximsterm{DepartmentRoot} der Unternavigation. Dieses Portlet muss auf den Ordner \path{subdepartmentlinks} der jeweiligen Unternavigation zeigen.}
 \item{Zuweisen der Portlets zu den entsprechenden \ximsterm{DepartmentRoot}s.}
 \item{Erstellen eines Dokumentes \nolinkurl{index.html} in den \ximsterm{DepartmentRoot}s der Unternavigation, welches beim Klick auf die Unternavigation als Übersichtsseite angezeigt wird.}
 \item{(Wieder)veröffentlichen der neu erstellten bzw. veränderten Objekte.}
@@ -2019,7 +2019,7 @@ Bezeichnung der \ximsterm{Location} des Department-Speziallinks-Verzeichnisses u
 zugehörigen \ximsterm{Portlet}s. Insofern wird auf Punkt \ref{deplinks} verwiesen. Für die Department
 Speziallinks muss die \ximsterm{Location} des Department Speziallink Verzeichnisses
 \path{speciallinks} lauten. Ebenfalls muss das Department Speziallink \ximsterm{Portlet} die
-\ximsterm{Location} als auch den Titel \path{speciallinks\_portlet} besitzen und auf das
+\ximsterm{Location} als auch den Titel \path{speciallinks_portlet} besitzen und auf das
 Verzeichnis \path{speciallinks} (mit den gewünschten Links als Inhalt) verweisen.
 
 \subsection{Department Images}
@@ -2119,8 +2119,8 @@ Die offizielle DocBook XSL Distribution verwendet bei keiner expliziten
 Spezifikation der Inhaltssprache über das »lang« Attribut des »article«
 Elements standardmäßig die Sprache Englisch. So werden Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
 »Inhaltsverzeichnis«) in Englisch präsentiert, wenn keine explizite Sprachvorgabe erfolgt. Es empfiehlt sich daher bei einem SimpleDocBook Dokument in deutscher Sprache das öffnende Wurzelelement »article« zwingend folgendermaßen
-auszubilden: <article lang="de"">. Analog ist es empfehlenswert für
-englische SimpleDocBooks <article lang=""en""> zu verwenden.
+auszubilden: <article lang="{}de"{}>. Analog ist es empfehlenswert für
+englische SimpleDocBooks <article lang="{}en"{}> zu verwenden.
 Auf diese Weise wechseln im Falle einer Sprachumschaltung Standardtexte
 ebenfalls in die entsprechende Sprache.
 \end{Hinweis}
@@ -2138,8 +2138,8 @@ grundlegende Informationen zum Thema Department Links wird auf Punkt \ref{deplin
 Ihre Homepage verfügt bereits über ein \path{departmentlinks}-Verzeichnis (inklusive
 URLLinks) und ein Department Links-\ximsterm{Portlet}. Nun erstellen Sie für die
 englischsprachige Navigation gleichermaßen diese Objekte, jedoch mit
-unterschiedlicher Benennung: Verzeichnis \path{departmentlinks\_en}; Portlet
-\path{departmentlinks\_portlet\_en}. Im \path{departmentlinks\_en}-Verzeichnis müssen
+unterschiedlicher Benennung: Verzeichnis \path{departmentlinks_en}; Portlet
+\path{departmentlinks_portlet_en}. Im \path{departmentlinks_en}-Verzeichnis müssen
 die \ximsterm{URLLink}s ebenfalls neu erstellt werden.
 
 \begin{figure}[!ht]
@@ -2151,8 +2151,8 @@ URLLinks erstellt werden}
 \end{figure}
 
 Dem \ximsterm{DepartmentRoot} der Organisationseinheit kann nun das
-zweite \ximsterm{Portlet} \path{departmentlinks\_portlet\_en} (welches auf das Verzeichnis
-\path{departmentlinks\_en} zeigt) zugewiesen werden.
+zweite \ximsterm{Portlet} \path{departmentlinks_portlet_en} (welches auf das Verzeichnis
+\path{departmentlinks_en} zeigt) zugewiesen werden.
 
 \begin{figure}[!ht]
 	\centering
@@ -2167,9 +2167,9 @@ Sprache erfolgt nach folgenden Kriterien:
 
 \begin{itemize}
 	\item {Für Dateien mit der Erweiterung \nolinkurl{.de} (\nolinkurl{html.de}) werden die Department Links
-aus dem Portlet \path{departmentlinks\_portlet} bzw. für Dateien mit der
+aus dem Portlet \path{departmentlinks_portlet} bzw. für Dateien mit der
 Erweiterung \nolinkurl{.en} (\nolinkurl{html.en}) die Department Links aus dem \ximsterm{Portlet}
-\path{departmentlinks\_portlet\_en} gewählt.}
+\path{departmentlinks_portlet_en} gewählt.}
 \item {Für Dateien ohne Erweiterung wird versucht dem Benutzer am besten gerecht
 zu werden und es werden entsprechend dessen Einstellungen die Seiten
 zusammen mit den passenden Department Links dargestellt. Ist die Sprache,
@@ -2190,21 +2190,21 @@ englische Version (falls vorhanden) präsentiert.}
 Verfügt man über Rechte, die über die des Standardbenutzers hinausgehen, hat man zusätzlich auch die Möglichkeit folgende weitere Objekte zu erstellen:
 \begin{description}
 \item[\ximsterm{NewsItem}]
-\item[\ximsterm{DepartmentRoot}]: Der Begriff »DepartmentRoot« beschreibt die Startseite
+\item[\ximsterm{DepartmentRoot}:] Der Begriff »DepartmentRoot« beschreibt die Startseite
 einer Organisationseinheit und entspricht einem Ordner in einem Dateisystem.
 Das \ximsterm{DepartmentRoot} hat einige Eigenschaften, die auf dessen »Kinderobjekte«
 (untergeordnete Webseiten einer Organisationseinheit) weitervererbt werden.
 \item[\ximsterm{XSLStylesheet}]
-\item[\ximsterm{SymbolicLink}]: Entspricht einem symbolischen Link unter UNIX.
-\item[\ximsterm{AxPointPresentation}]: Ein XML Format für einfache PDF-Präsentationen.
+\item[\ximsterm{SymbolicLink}:] Entspricht einem symbolischen Link unter UNIX.
+\item[\ximsterm{AxPointPresentation}:] Ein XML Format für einfache PDF-Präsentationen.
 Mehr Informationen dazu finden Sie im »AxPoint Presentation Howto«.
 Zusätzliche Informationen über die Hintergründe von AxPointPresentations gibt
 es in einem Artikel des \otherterm{XIMS} Co-Entwicklers Kip Hampton: \url{http://www.xml.com/
 pub/a/2002/06/19/perl-xml.html}
-\item[\ximsterm{AnonDiscussionForum}]: Ist ein anonymes Diskussionsforum. Mehr
+\item[\ximsterm{AnonDiscussionForum}:] Ist ein anonymes Diskussionsforum. Mehr
 Informationen dazu erhalten Sie im Dokument Anonymes Diskussionsforum
 Howto.
-\item[\ximsterm{Portal}]: Nach einem \ximsterm{Portlet} ist ein Portal gewissermaßen der nächste Schritt.
+\item[\ximsterm{Portal}:] Nach einem \ximsterm{Portlet} ist ein Portal gewissermaßen der nächste Schritt.
 Im Grunde genommen ist ein Portal nichts anderes als eine Seite, die nur
 Referenzen auf Portlets enthält. Solche Seiten werden vor allem auf Startseiten
 einer Website gefunden.
