@@ -388,7 +388,7 @@ Der \otherterm{XIMS}-\ximsterm{Navigationsbereich} besteht unter anderem aus den
 
 Der \ximstermdef{Navigationspfad} zeigt den Pfad vom
 »\ximsterm{SiteRoot}« (an der Uni Innsbruck heißt der
-\ximsterm{SiteRoot} uniweb) bis zum aktuellen Objekt an. Das Anklicken
+\ximsterm{SiteRoot} \path{uniweb}) bis zum aktuellen Objekt an. Das Anklicken
 eines Teilpfades ermöglicht ein schnelles Wechseln in einen
 übergeordneten \ximsterm{Container}. Die Pfadfragmente (z.B. \path{uniweb})
 entsprechen dabei dem »\ximsterm{Location}«-Attribut des Containers.
@@ -704,7 +704,7 @@ für Schritt«) auf.
 	\label{fig:dokumentinxims}
 \end{figure}
 
-Abbildung~\ref{fig:bsppubliziert} zeigt das Dokument nach dem Veröffentlichen im \ximsterm{Siteroot} »uniweb«.
+Abbildung~\ref{fig:bsppubliziert} zeigt das Dokument nach dem Veröffentlichen im \ximsterm{SiteRoot} \path{uniweb}.
 
 \begin{figure}[!ht]
 	\centering
@@ -898,8 +898,7 @@ zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
 Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
 gelesen bzw. verändert werden.
 	\item[Zusätzlich Leserechte für Mitglieder der Standard Rollen
-erteilen (Grant VIEW privilege of your default roles):]
-Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
+erteilen:] (Grant VIEW privilege of your default roles) Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
 \end{description}
 
 \begin{Hinweis}Die Funktion »Zusätzlich Leserechte für Mitglieder der
@@ -1178,7 +1177,7 @@ eines Verzeichnisses (siehe Punkt \ref{erstelleneditieren}).
 
 \begin{Hinweis}Eine besondere Bedeutung hat im \ximsterm{DepartmentRoot}-Kontext die
 Zusammenfassung (Abstract). Mit Hilfe des Zusammenfassung Feldes kann
-der »Department Infotext« gesetzt werden. Umgeben mit dem <span>-Tag und
+der »Department Infotext« gesetzt werden. Umgeben mit dem \texttt{<span>}-Tag und
 in Verbindung mit dem lang-Attribut repräsentiert der so gekapselte Text den
 »Department Infotext« in deutscher bzw. englischer Sprache.
 \end{Hinweis}
@@ -1274,7 +1273,7 @@ Grundsätzlich gilt, dass ein \ximsterm{sDocBookXML}-Dokument zum einen in wohlge
 XML vorliegen muss und zum anderen keine Deklarationen oder Processing
 Instructions (PIs) im Body des \ximsterm{sDocBookXML}-Dokuments aufscheinen dürfen. Alle
 Elemente von \ximsterm{sDocBookXML}-Dokumenten müssen zwingend Kind-Elemente des
-Wurzelelements <article> sein.
+Wurzelelements \texttt{<article>} sein.
 
 \begin{Hinweis}Sollte das \ximsterm{sDocBookXML} Dokument wohlgeformt sein, jedoch Elemente
 enthalten, welche nicht in der Simplified DocBook XML DTD definiert sind, so
@@ -1466,7 +1465,7 @@ müssen zuerst Lesezeichen (»Anchors«) definiert werden, auf die später verwiesen
 werden kann. Um ein solches Lesezeichen zu setzen, markieren Sie den
 gewünschten Text, zu welchem später verwiesen werden soll und klicken dann auf
 das Lesezeichen Symbol. Später können Sie beim Erstellen von Hyperlinks das
-Linkziel als \#Name-des-Ankers angeben.
+Linkziel als \texttt{#Name-des-Ankers} angeben.
 
 \begin{figure}[!ht]
 	\centering
@@ -1477,7 +1476,7 @@ später verwiesen werden.}
 \end{figure}
 
 Im Feld »Adresse« kann nun auf das soeben erstelle Lesezeichen Bezug genommen
-werden, in diesem Fall z.B. mit \#seitenende.
+werden, in diesem Fall z.B. mit \texttt{seitenende}.
 
 \subsection{Importieren von MS-Word-Text in \otherterm{TinyMCE}}
 \label{importword}
@@ -1893,13 +1892,13 @@ Links zur Hauptnavigation rasch finden. Die Department Root Speziallinks sind im
 Gegensatz dazu auf häufig wiederkehrende Besucher ausgerichtet und sollen zum
 schnelleren Auffinden relevanter bzw. häufig veränderter Inhalte dienen.
 
-\subsubsection{Department Links}
+\subsubsection{DepartmentLinks}
 \label{deplinks}
 
-Department Links stellen die grundsätzliche Navigation der jeweiligen
+DepartmentLinks stellen die grundsätzliche Navigation der jeweiligen
 Organisationseinheit dar. Diese Navigation ermöglicht es, durch die
 wichtigsten Bereiche bzw. Seiten navigieren zu können.
-Zur Erstellung der Department Links sind im Wesentlichen folgende Schritte
+Zur Erstellung der DepartmentLinks sind im Wesentlichen folgende Schritte
 notwendig:
 
 \begin{itemize}
@@ -1910,13 +1909,13 @@ notwendig:
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/create-departmentlinksfolder.png}
-	\caption{Erstellen des Verzeichnisses »departmentlinks«}
+	\caption{Erstellen des Verzeichnisses \path{departmentlinks}}
 	\label{fig:createdeplinkfolder}
 \end{figure}
 	
 	\item {Im nächsten Schritt müssen im soeben erstellten Verzeichnis mit der \ximsterm{Location}
-»departmentlinks« all jene \ximsterm{URLLink}-Objekte erstellt werden, die als
-Navigation bzw. Departement Links zur Verfügung stehen sollen. Die Anleitung
+\path{departmentlinks} all jene \ximsterm{URLLink}-Objekte erstellt werden, die als
+Navigation bzw. DepartementLinks zur Verfügung stehen sollen. Die Anleitung
 zum Erstellen von \ximsterm{URLLink}-Objekten kann unter Punkt \ref{urllinks} nachgelesen
 werden. Die \ximsterm{Location} der Links muss relativ zum \ximsterm{SiteRoot} sein. Um zum
 Beispiel einen Verweis auf das \otherterm{XIMS}-Objekt mit dem Pfad \path{/uniweb/service/
@@ -1928,17 +1927,17 @@ c102} zu erstellen, muss im Eingabefeld \ximsterm{Location} des \ximsterm{URLLin
 	\item {Der nächste Schritt ist das Veröffentlichen des departmentlinks-Verzeichnisses mitsamt den darin erstellten Links. Die konkrete
 Vorgehensweise für die Veröffentlichung von Objekten wird unter Punkt \ref{inhaltepublizieren} beschrieben.}
 
-\begin{Hinweis}Es genügt, das Verzeichnis »departmentlinks« zu veröffentlichen. Die darin
+\begin{Hinweis}Es genügt, das Verzeichnis \path{departmentlinks} zu veröffentlichen. Die darin
 enthaltenen \ximsterm{URLLink}s werden mit entsprechender Option automatisch mit
 veröffentlicht.
 \end{Hinweis}
 
 	\item {Danach muss im \ximsterm{DepartmentRoot} Container ein \ximsterm{Portlet} mit der \ximsterm{Location}
-»departmentlinks\_portlet« erstellt werden.}
+\path{departmentlinks_portlet} erstellt werden.}
 
 \begin{Hinweis}
 Das \ximsterm{Portlet} (sowohl \ximsterm{Location} als auch der Titel) muss unbedingt
-»departmentlinks\_portlet« heißen. Außerdem muss die Checkbox der
+\path{departmentlinks_portlet} heißen. Außerdem muss die Checkbox der
 Zusammenfassung angeklickt sein.
 \end{Hinweis}
 
@@ -1970,7 +1969,7 @@ Ordners.}
 \subsubsection{SubDepartment Links (Unternavigation)}
 \label{subdeplinks}
  
-Um eine Unternavigation zu erstellen, wird im Grunde mittels DepartmentLinks auf Container verlinkt, die wiederum DepartmentLinks enthalten. Auf diese Weise enthält das eigentliche \ximsterm{DepartmentRoot} die Hauptnavigation (im Ordner departmentlinks) und die darin enthaltenen \ximsterm{DepartmentRoot}s - auch Subdepartmentroots genannt - enthalten ihrerseits jeweils die Unternavigation des jeweiligen Punktes der Hauptnavigation.
+Um eine Unternavigation zu erstellen, wird im Grunde mittels DepartmentLinks auf Container verlinkt, die wiederum DepartmentLinks enthalten. Auf diese Weise enthält das eigentliche \ximsterm{DepartmentRoot} die Hauptnavigation (im Ordner \path{departmentlinks}) und die darin enthaltenen \ximsterm{DepartmentRoot}s - auch Subdepartmentroots genannt - enthalten ihrerseits jeweils die Unternavigation des jeweiligen Punktes der Hauptnavigation.
 
 \paragraph{Voraussetzungen}
 
@@ -2116,11 +2115,10 @@ Innsbruck gerendert werden, auf den offiziellen DocBook XSL Stylesheets
 basieren, ist bei der Erstellung eines deutschen SimpleDocBooks auf folgendes
 zu achten:
 Die offizielle DocBook XSL Distribution verwendet bei keiner expliziten
-Spezifikation der Inhaltssprache über das »lang« Attribut des »article«
-Elements standardmäßig die Sprache Englisch. So werden Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
-»Inhaltsverzeichnis«) in Englisch präsentiert, wenn keine explizite Sprachvorgabe erfolgt. Es empfiehlt sich daher bei einem SimpleDocBook Dokument in deutscher Sprache das öffnende Wurzelelement »article« zwingend folgendermaßen
-auszubilden: <article lang="{}de"{}>. Analog ist es empfehlenswert für
-englische SimpleDocBooks <article lang="{}en"{}> zu verwenden.
+Spezifikation der Inhaltssprache über das \texttt{lang}-Attribut des \texttt{article}-Elements standardmäßig die Sprache Englisch. So werden Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
+»Inhaltsverzeichnis«) in Englisch präsentiert, wenn keine explizite Sprachvorgabe erfolgt. Es empfiehlt sich daher bei einem SimpleDocBook Dokument in deutscher Sprache das öffnende Wurzelelement \texttt{article} zwingend folgendermaßen
+auszubilden: \texttt{<article lang="{}de"{}>}. Analog ist es empfehlenswert für
+englische SimpleDocBooks \texttt{<article lang="{}en"{}>} zu verwenden.
 Auf diese Weise wechseln im Falle einer Sprachumschaltung Standardtexte
 ebenfalls in die entsprechende Sprache.
 \end{Hinweis}
@@ -2145,7 +2143,7 @@ die \ximsterm{URLLink}s ebenfalls neu erstellt werden.
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/deplink_en.png}
-	\caption{Im Verzeichnis »departmentlinks\_en« müssen die englischsprachigen
+	\caption{Im Verzeichnis \path{departmentlinks_en} müssen die englischsprachigen
 URLLinks erstellt werden}
 	\label{fig:deplinks_en}
 \end{figure}
@@ -2268,8 +2266,8 @@ entsprechenden Editors zu diesem gewechselt werden.
 \paragraph{Warum entstehen nach betätigen der Enter(Eingabe)-Taste doppelte
 Zeilenabstände?}
 
-Durch »Enter« wird ein neuer Absatz (HTML-Tag: <p>) erzeugt.
-Einen einfachen Zeilenumbruch (HTML-Tag: <br>) erhält man mit der
+Durch »Enter« wird ein neuer Absatz (HTML-Tag: \texttt{<p>}) erzeugt.
+Einen einfachen Zeilenumbruch (HTML-Tag: \texttt{<br>}) erhält man mit der
 Tastenkombination »Shift+Enter«. (vgl.: MS-Word)
 
 \paragraph{Nach dem Einfügen von Text aus MS-Office Anwendungen werden Schriftarten
@@ -2362,7 +2360,7 @@ Konkrete Gründe dafür können u.a. die folgenden sein:
 \begin{itemize}
 	\item {Ein Bild mit einer Breite von mehr als 575 Pixeln,}
 	\item {Eine Tabelle mit einer Breite von mehr als 575 Pixeln,}
-	\item {Inhalte eines <pre>-Tags, die nicht bei 575 Pixeln umbrechen,}
+	\item {Inhalte eines \texttt{<pre>}-Tags, die nicht bei 575 Pixeln umbrechen,}
 	\item {Eine mit einem nowrap versehene Zeichenkette, die ~80 Zeichen
 überschreitet.}
 \end{itemize}
@@ -2373,7 +2371,7 @@ nicht korrekte Anzeige sein. Ist dies der Fall, trennen Sie die Links oder Wörte
 einem Minus (-) bzw. entfernen einige Leerzeichen.
 
 Wenn aus inhaltlichen Gründen eine Umgehung dieser genannten Gründe nicht
-gangbar ist, gibt es die Möglichkeit diese Inhalte, wie z.B. breitere Bilder, oder Beispielscodefragmente (die nicht umbrechen dürfen) in <pre>-Tags als Link, der sich in
+gangbar ist, gibt es die Möglichkeit diese Inhalte, wie z.B. breitere Bilder, oder Beispielscodefragmente (die nicht umbrechen dürfen) in \texttt{<pre>}-Tags als Link, der sich in
 einem eigenen Fenster öffnet darzustellen.
 Dafür sind die folgenden Schritte notwendig:
 
