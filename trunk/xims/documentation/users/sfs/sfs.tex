@@ -200,13 +200,13 @@ zum jeweiligen \ximsterm{DepartmentRoot} vereinfachen.
 Mittels Klick auf das gewünschte Zielobjekt (via Lesezeichen oder »zuletzt geänderte
 Objekte«) navigiert man zur \ximsterm{Containeransicht}.
 
-\subsubsection{Containeransicht}
+\subsubsection{\ximsterm{Containeransicht}}
 \label{quick-containeransicht}
 
 Die \ximstermdef{Containeransicht} gibt einen Überblick über alle bereits vorhandenen Objekte und
 bietet verschiedene Optionen zur Objektverwaltung an.
 \begin{description}
-\item[(1)] zeigt den derzeitigen Objektstatus an (publiziert, nicht publiziert, ...)
+\item[(1)] zeigt den derzeitigen \ximsterm{Objektstatus} an (publiziert, nicht publiziert, ...)
 \item[(2)] listet die Objekte jeweils mit einem vom \ximsterm{Objekttyp} abhängigen Icon
 \item[(3)] zeigt das Datum der letzten Änderung
 \item[(4)] listet die zur Verfügung stehenden Optionen (editieren, kopieren,
@@ -218,7 +218,7 @@ verschieben, publizieren, ...)
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=1.00\textwidth]{./images/XI5S-containeransicht.png}
-	\caption{Containeransicht}
+	\caption{\ximsterm{Containeransicht}}
 	\label{fig:containeransicht}
 \end{figure}
 
@@ -244,7 +244,7 @@ Die unter (4) gezeigten \ximsterm{Verwaltungsoptionen} im Detail:
 \subsubsection{Erstellen von Objekten}
 \label{quick-erstellen}
 
-Mit Hilfe des Erstellen-Menüs (5) können verschiedene \ximsterm{Objekttyp}en\footnote{Abhängig von den Benutzerrechten} erstellt werden.
+Mit Hilfe des Erstellen-Menüs (5) können verschiedene \ximstermdef{Objekttyp}en\footnote{Abhängig von den Benutzerrechten} erstellt werden.
 Die Standardobjekttypen lauten:
 
 Dokument (Document), Datei (File), Ordner (Folder), Bild (Image), Text und URLLink\footnote{Siehe Punkt \ref{urllinks}}.
@@ -366,7 +366,7 @@ können Sie dieses über »Einstellungen« $\rightarrow$ »Lesezeichen verwalten« ers
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=\textwidth]{./images/containeransicht.png}
-  \caption{\otherterm{XIMS} Container-Ansicht}
+  \caption{\otherterm{XIMS} \ximsterm{Containeransicht}}
   \label{fig:containeransicht2}
 \end{figure}
 
@@ -387,11 +387,11 @@ Der \otherterm{XIMS}-\ximsterm{Navigationsbereich} besteht unter anderem aus den
 
 
 Der \ximstermdef{Navigationspfad} zeigt den Pfad vom
-»\ximsterm{SiteRoot}« (an der Uni Innsbruck heißt der
+»\ximstermdef{SiteRoot}« (an der Uni Innsbruck heißt der
 \ximsterm{SiteRoot} \path{uniweb}) bis zum aktuellen Objekt an. Das Anklicken
 eines Teilpfades ermöglicht ein schnelles Wechseln in einen
 übergeordneten \ximsterm{Container}. Die Pfadfragmente (z.B. \path{uniweb})
-entsprechen dabei dem »\ximsterm{Location}«-Attribut des Containers.
+entsprechen dabei dem »\ximsterm{Location}«-Attribut des \ximsterm{Container}s.
 
 \paragraph{Navigationspfeile}
 \label{navigationspfeile}
@@ -481,7 +481,7 @@ markiert wurden.
 \label{containeransicht}
 
 Die Ansicht über den Containerinhalt bietet einen Überblick der im jeweiligen
-\ximsterm{Container} enthaltenen Objekte. Die Objekte (Dateien, Ordner, HTML-Seiten, etc)
+\ximstermdef{Container} enthaltenen Objekte. Die Objekte (Dateien, Ordner, HTML-Seiten, etc)
 werden tabellarisch aufgelistet und können nach einem beliebigen Kriterium sortiert
 werden (i.d.R. aufsteigend nach der Positionsnummer).
 
@@ -506,7 +506,7 @@ geklickt wird.
 \paragraph{Status}
 
 Der \ximstermdef{Objektstatus} gibt Auskunft über den derzeitigen Zustand des Objekts. In der aktuellen
-Version kennt \otherterm{XIMS} vier verschiedene Objektstatus.
+Version kennt \otherterm{XIMS} vier verschiedene \ximsterm{Objektstatus}.
 
 \begin{table}[!ht]
 \centering
@@ -538,7 +538,7 @@ zur Verfügung, der auf individuelle Bedürfnisse selbst angepasst
 werden kann.
 Über die Spalte »Pos« können Objekte in der Inhaltsansicht eines \ximsterm{Container}s nach
 vorne gereiht werden. Die Möglichkeit spezielle Positionen zu vergeben spielt bei
-den Department Links (siehe auch Punkt \ref{deplinks}) und im Zusammenhang mit dem
+den DepartmentLinks (siehe auch Punkt \ref{deplinks}) und im Zusammenhang mit dem
 \ximsterm{Autoindex} (siehe auch Punkt \ref{autoindex}) eine wichtige Rolle.
 
 \paragraph{Titel (Title)}
@@ -574,7 +574,7 @@ Objekte zu ermöglichen.
   \hline
   \includegraphics[scale=0.7]{./images/icon-move.png} & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
   in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
-  leichtes Verschieben des Objekts in einen anderen Container
+  leichtes Verschieben des Objekts in einen anderen \ximsterm{Container}
   ermöglicht. \\
   \hline
   \includegraphics[scale=0.7]{./images/icon-publish.png} & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
@@ -718,7 +718,7 @@ Abbildung~\ref{fig:bsppubliziert} zeigt das Dokument nach dem Veröffentlichen im
 
 Der Body beinhaltet den »eigentlichen« Inhalt des Dokuments.
 Unabhängig vom Browser oder Betriebssystem steht für die Erzeugung des Bodys
-der WYSIWYG-Editor \otherterm{TinyMCE} zur Verfügung. Dieser bietet »MS-Word-ähnliche
+der WYSIWYG-Editor \othertermdef{TinyMCE} zur Verfügung. Dieser bietet »MS-Word-ähnliche
 Funktionalität« um Inhalte zu erstellen.
 Alternativ kann der Body in Form von »wohlgeformtem« (wellformed) XHTML-Code
 im »Plain Textarea« Editor eingegeben werden. Vor dem Abspeichern kann über
@@ -852,13 +852,13 @@ Webserver normalerweise ein sogenanntes Indexdokument aus. \otherterm{XIMS} kann
 Veröffentlichen automatisch ein solches Dokument mit einer einfachen Liste des
 Verzeichnisinhalts erstellen. Dieses Standardverhalten kann mit der Option
 »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« wenn nötig unterbunden
-werden.\footnote{Wir empfehlen, den Autoindex abzuschalten, falls Sie mehrsprachige Indexdokumente (z.B.:
+werden.\footnote{Wir empfehlen, den \ximsterm{Autoindex} abzuschalten, falls Sie mehrsprachige Indexdokumente (z.B.:
 \nolinkurl{index.html.de} und \nolinkurl{index.html.en}) verwenden wollen, es kann sonst zu Fehlern bei der
 Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss \path{index} lauten, der Webserver verwendet es dann automatisch.
 
 \begin{Hinweis}Ein Objekt mit der \ximsterm{Location} \path{index} (z.B. \nolinkurl{index.html}) wird vom Webserver
 gegenüber dem automatisch erstellten Index vorgezogen, d.h. sobald ein Objekt
-mit der \ximsterm{Location} \path{index} in dem Container existiert, wird dieses Dokument
+mit der \ximsterm{Location} \path{index} in dem \ximsterm{Container} existiert, wird dieses Dokument
 ausgeliefert, auch wenn ein \ximsterm{Autoindex} erstellt wurde.
 \end{Hinweis}
 
@@ -1077,7 +1077,7 @@ Siehe Punkt \ref{save}
 
 Siehe Punkt \ref{cancel}
 
-\paragraph{Editieren eines URL-Links}
+\paragraph{Editieren eines URLLinks}
 
 Hier wird auf Punkt \ref{edit} verwiesen, da alle wesentlichen Editiermöglichkeiten
 übereinstimmen.
@@ -1112,7 +1112,7 @@ Die »Ziel Suchen« (Browse for Target)-Funktionalität erleichtert das exakte
 Bestimmen dieses Pfades.
 
 \begin{Hinweis}Über ein \ximsterm{Portlet} kann zum Beispiel eine Box mit einer Linkliste als Inhalt einfach
-erstellt werden. \otherterm{XIMS} durchsucht hierfür den Inhalt eines Containers (z.B. eines
+erstellt werden. \otherterm{XIMS} durchsucht hierfür den Inhalt eines \ximsterm{Container}s (z.B. eines
 Verzeichnisses) und listet den entsprechenden Inhalt (z.B. eine Reihe von
 Dokumenten), dargestellt als Liste mit Links verweisend auf die entsprechenden
 Dokumente, auf.
@@ -1142,23 +1142,23 @@ und entspricht einer erweiterten Version eines \otherterm{XIMS}-Ordners mit beso
 Eigenschaften. Ein »DepartmentRoot« definiert einige Eigenschaften, die auf
 »Kinderobjekte« (untergeordnete Webseiten einer Organisationseinheit) weitervererbt
 werden. Zu diesen Eigenschaften zählen »\ximsterm{Portlet}s« der Organisationseinheit -- wie
-zum Beispiel das »Department Link Portlet«, ein für die Organisationseinheit bzw. für
-das Institut spezifisches Bild (»Department Image«), wie auch der »Department Titel«
+zum Beispiel das »DepartmentLink-Portlet«, ein für die Organisationseinheit bzw. für
+das Institut spezifisches Bild (»DepartmentImage«), wie auch der »Department Titel«
 bzw. der »Department Infotext« oder ein für die Organisationseinheit bzw. für das
 Institut spezifisches \otherterm{XSLT}-Stylesheet für eine angepasste Darstellung
 veröffentlichter Seiten.
 
-Abbildung~\ref{fig:departmentrootzid} zeigt wie ein individualisierter Department Root mit
-»Department Links«, »Department Image«, »Department Titel«, »Department Infotext«
-und »Department Speziallinks« aussehen könnte. Die individualisierten Elemente sind
+Abbildung~\ref{fig:departmentrootzid} zeigt wie ein individualisierter DepartmentRoot mit
+»DepartmentLinks«, »DepartmentImage«, »Department Titel«, »Department Infotext«
+und »DepartmentSpeziallinks« aussehen könnte. Die individualisierten Elemente sind
 auch auf allen untergeordneten Webseiten der Organisationseinheit wirksam.
 
 \begin{itemize}
 	\item {[1] Department Titel}
 	\item {[2] Department Info}
-	\item {[3] Department Image}
-	\item {[4] Department Links}
-	\item {[5] Department Speziallinks}
+	\item {[3] DepartmentImage}
+	\item {[4] DepartmentLinks}
+	\item {[5] DepartmentSpeziallinks}
 \end{itemize}
 
 \begin{figure}[!ht]
@@ -1203,7 +1203,7 @@ Dem \ximsterm{DepartmentRoot} kann hier ein spezielles JavaScript zugewiesen wer
 
 \paragraph{Bild}
 
-Dem \ximsterm{DepartmentRoot} kann hier ein spezielles Department-Image zugewiesen
+Dem \ximsterm{DepartmentRoot} kann hier ein spezielles DepartmentImage zugewiesen
 werden. Siehe dazu Punkt \ref{depimg}.
 
 \paragraph{RSS-Feed}
@@ -1221,7 +1221,7 @@ Zusätzlich zu den Einstellungen die man beim Erstellen eines \ximsterm{Departmen
 machen kann, kann man beim Editieren dem \ximsterm{DepartmentRoot} \ximsterm{Portlet}s hinzufügen.
 Nähere Informationen dazu finden sich unter Punkt \ref{depnav}.
 
-\subsubsection{\ximsterm{sDocBookXML} Objekte}
+\subsubsection{\ximstermdef{sDocBookXML} Objekte}
 \label{sdocbookxml}
 
 \begin{quotation}
@@ -1331,7 +1331,7 @@ Objekte grau hinterlegt und mit zwei Optionen dargestellt:
 \end{itemize}
 
 \begin{Hinweis}Dies kann fehlschlagen, wenn zwischenzeitlich ein Objekt mit der selben
-\ximsterm{Location} im Container angelegt wurde, in diesem Fall muss das neuere Objekt
+\ximsterm{Location} im \ximsterm{Container} angelegt wurde, in diesem Fall muss das neuere Objekt
 zuerst umbenannt werden.
 \end{Hinweis}
 
@@ -1367,7 +1367,7 @@ bekannten »F« für »fett«).
 \subsection{Einfügen eines Bildes (mit TinyMCE)}
 \label{insimage}
 
-Wurde ein Bild wie unter Punkt \ref{upload} beschrieben im Container erstellt bzw. ist es bereits an
+Wurde ein Bild wie unter Punkt \ref{upload} beschrieben im \ximsterm{Container} erstellt bzw. ist es bereits an
 anderer Stelle ins \otherterm{XIMS} hochgeladen worden, ist das Einfügen in das Dokument ein
 Leichtes. Im Folgenden werden die grundlegenden Schritte beschrieben:
 
@@ -1422,7 +1422,7 @@ Hyperlink erstellt.
   \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.5\textwidth]{./images/insertlink.png}
-    \caption{Hyperlink Dialogfenster}
+    \caption{Hyperlink \otherterm{Dialogfenster}}
     \label{fig:hyperlinkdialog}
   \end{figure}
 
@@ -1525,7 +1525,7 @@ einer XML-Datei in das Dateisystem des Webservers kopiert (3) und ist von diesem
 Zeitpunkt an öffentlich sichtbar.
 An der Uni Innsbruck ist \otherterm{XIMS} bzw. AxKit so konfiguriert, dass der \ximsterm{SiteRoot} \path{/uniweb}
 öffentlich unter der Adresse \url{http://www.uibk.ac.at/} zu erreichen ist. Insofern spiegeln
-die \ximsterm{Location}s der \otherterm{XIMS} Container unter \path{/uniweb} die URLs unter
+die \ximsterm{Location}s der \otherterm{XIMS} \ximsterm{Container} unter \path{/uniweb} die URLs unter
 \url{http://www.uibk.ac.at/} wieder, d.h. Objekte in \otherterm{XIMS} unter dem »Pfad«
 \path{/uniweb/fakultaeten/xxx} sind öffentlich (wenn über \otherterm{XIMS} veröffentlicht) unter
 \nolinkurl{http://www.uibk.ac.at/fakultaeten/xxx} verfügbar.
@@ -1534,7 +1534,7 @@ die \ximsterm{Location}s der \otherterm{XIMS} Container unter \path{/uniweb} die
 \label{publizieren}
 
 Objekte können durch das Klicken auf das »Publizieren-Icon« veröffentlicht werden. Beim
-erstmaligen Publizieren eines erstellten Objekts erscheint folgendes Dialogfenster,
+erstmaligen Publizieren eines erstellten Objekts erscheint folgendes \otherterm{Dialogfenster},
 das ein »Veröffentlichen« oder ein »Abbrechen« zur Auswahl stellt.
 
 \begin{figure}[!ht]
@@ -1778,7 +1778,7 @@ Titel bzw. Inhalt verändert und geschrieben werden.
 
 \paragraph{Create (Erstellen)}
 
-Benutzer/Rolle darf ein neues Objekt in einem Container erstellen.
+Benutzer/Rolle darf ein neues Objekt in einem \ximsterm{Container} erstellen.
 
 \paragraph{Delete (Löschen)}
 
@@ -1853,7 +1853,7 @@ aktuelle Benutzer über das »Create«-Recht für das entsprechende Dokument verfügt
 
 Für interne Links muss der Zielpfad im Eingabefeld \ximsterm{Location} relativ zum Dokument
 eingegeben werden. D.h. für einen Verweis auf ein Dokument mit der \ximsterm{Location}
-\nolinkurl{hallo.html} (welches sich im selben Container wie das Dokument zu dem der Link
+\nolinkurl{hallo.html} (welches sich im selben \ximsterm{Container} wie das Dokument zu dem der Link
 erstellt wird befindet) ist als \ximsterm{Location} für den »Link zum Dokument« \nolinkurl{hallo.html}
 einzugeben.
 
@@ -1887,8 +1887,7 @@ ermöglicht das Löschen von »Links zum Dokument«.
 Usability-Studien haben gezeigt, dass Benutzer die Navigation auf Webseiten am
 oberen bzw. im linken Bereich des Browser-Fensters suchen. Aus diesem Grund ist
 die grundlegende Navigation des UIBK-Designs auch auf diese Erkenntnis
-ausgerichtet. Neue Besucher auf Department Root Seiten werden die Department
-Links zur Hauptnavigation rasch finden. Die Department Root Speziallinks sind im
+ausgerichtet. Neue Besucher auf DepartmentRoot Seiten werden die DepartmentLinks zur Hauptnavigation rasch finden. Die DepartmentSpeziallinks sind im
 Gegensatz dazu auf häufig wiederkehrende Besucher ausgerichtet und sollen zum
 schnelleren Auffinden relevanter bzw. häufig veränderter Inhalte dienen.
 
@@ -1932,7 +1931,7 @@ enthaltenen \ximsterm{URLLink}s werden mit entsprechender Option automatisch mit
 veröffentlicht.
 \end{Hinweis}
 
-	\item {Danach muss im \ximsterm{DepartmentRoot} Container ein \ximsterm{Portlet} mit der \ximsterm{Location}
+	\item {Danach muss im \ximsterm{DepartmentRoot} \ximsterm{Container} ein \ximsterm{Portlet} mit der \ximsterm{Location}
 \path{departmentlinks_portlet} erstellt werden.}
 
 \begin{Hinweis}
@@ -1944,7 +1943,7 @@ Zusammenfassung angeklickt sein.
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/create-departmentlinksportlet.png}
-	\caption{Erstellen des Department Links Portlets: »departmentlinks\_portlet«}
+	\caption{Erstellen des DepartmentLinks-Portlets: »departmentlinks\_portlet«}
 	\label{fig:createdeplinkportlet}
 \end{figure}
 
@@ -1958,7 +1957,7 @@ Zusammenfassung angeklickt sein.
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/zuweisendepartmentlinksportlet.png}
-	\caption{Zuweisen des Department Links \ximsterm{Portlet} zum Departement Root}
+	\caption{Zuweisen des DepartmentLinks \ximsterm{Portlet} zum DepartementRoot}
 	\label{fig:deplinkportletzuweisen}
 \end{figure}
 
@@ -1966,10 +1965,10 @@ Zusammenfassung angeklickt sein.
 Ordners.}
 \end{itemize} 
 
-\subsubsection{SubDepartment Links (Unternavigation)}
+\subsubsection{SubDepartmentLinks (Unternavigation)}
 \label{subdeplinks}
  
-Um eine Unternavigation zu erstellen, wird im Grunde mittels DepartmentLinks auf Container verlinkt, die wiederum DepartmentLinks enthalten. Auf diese Weise enthält das eigentliche \ximsterm{DepartmentRoot} die Hauptnavigation (im Ordner \path{departmentlinks}) und die darin enthaltenen \ximsterm{DepartmentRoot}s - auch Subdepartmentroots genannt - enthalten ihrerseits jeweils die Unternavigation des jeweiligen Punktes der Hauptnavigation.
+Um eine Unternavigation zu erstellen, wird im Grunde mittels DepartmentLinks auf \ximsterm{Container} verlinkt, die wiederum DepartmentLinks enthalten. Auf diese Weise enthält das eigentliche \ximsterm{DepartmentRoot} die Hauptnavigation (im Ordner \path{departmentlinks}) und die darin enthaltenen \ximsterm{DepartmentRoot}s - auch Subdepartmentroots genannt - enthalten ihrerseits jeweils die Unternavigation des jeweiligen Punktes der Hauptnavigation.
 
 \paragraph{Voraussetzungen}
 
@@ -2009,32 +2008,30 @@ Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner \path{department
 Bei \ximsterm{URLLink} Objekten ist immer die »Location« des Zielobjektes anzugeben. Bei \ximsterm{URLLink}s der Hauptnavigation muss ein Slash angehängt werden, weil auf einen Ordner verwiesen wird, wodurch das jeweilige Index Dokument angezeigt wird und in weiterer Folge die Unternavigation aufklappt.
 \end{Hinweis}
 
-\subsubsection{Department Speziallinks}
+\subsubsection{DepartmentSpeziallinks}
 \label{depspeclinks}
 
-Das Erstellen der Department Speziallinks erfolgt analog zum Erstellen der
-Department Links. Der Unterschied beschränkt sich auf die unterschiedliche
-Bezeichnung der \ximsterm{Location} des Department-Speziallinks-Verzeichnisses und des
-zugehörigen \ximsterm{Portlet}s. Insofern wird auf Punkt \ref{deplinks} verwiesen. Für die Department
-Speziallinks muss die \ximsterm{Location} des Department Speziallink Verzeichnisses
-\path{speciallinks} lauten. Ebenfalls muss das Department Speziallink \ximsterm{Portlet} die
+Das Erstellen der DepartmentSpeziallinks erfolgt analog zum Erstellen der
+DepartmentLinks. Der Unterschied beschränkt sich auf die unterschiedliche
+Bezeichnung der \ximsterm{Location} des DepartmentSpeziallinks-Verzeichnisses und des
+zugehörigen \ximsterm{Portlet}s. Insofern wird auf Punkt \ref{deplinks} verwiesen. Für die DepartmentSpeziallinks muss die \ximsterm{Location} des DepartmentSpeziallink-Verzeichnisses
+\path{speciallinks} lauten. Ebenfalls muss das DepartmentSpeziallink \ximsterm{Portlet} die
 \ximsterm{Location} als auch den Titel \path{speciallinks_portlet} besitzen und auf das
 Verzeichnis \path{speciallinks} (mit den gewünschten Links als Inhalt) verweisen.
 
 \subsection{Department Images}
 \label{depimg}
 
-Das Einfügen eines Department Images hat das Ziel, die Individualität eines
+Das Einfügen eines DepartmentImages hat das Ziel, die Individualität eines
 Webauftritts einer Organisationseinheit zusätzlich zu betonen und sich vom
 Standard-Design ein wenig zu differenzieren.
-Das Department Image wird ähnlich wie die Department Links bzw. das Department
-Links \ximsterm{Portlet} dem \ximsterm{DepartmentRoot} zugewiesen.
-Abbildung~\ref{fig:depimagezuweisen} zeigt wie ein Department Image einem \ximsterm{DepartmentRoot} zugewiesen werden kann.
+Das DepartmentImage wird ähnlich wie die DepartmentLinks bzw. das DepartmentLinks-\ximsterm{Portlet} dem \ximsterm{DepartmentRoot} zugewiesen.
+Abbildung~\ref{fig:depimagezuweisen} zeigt wie ein DepartmentImage einem \ximsterm{DepartmentRoot} zugewiesen werden kann.
 
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/zuweisendepartmentimage.png}
-	\caption{Zuweisen des Department Images zum \ximsterm{DepartmentRoot}}
+	\caption{Zuweisen des DepartmentImages zum \ximsterm{DepartmentRoot}}
 	\label{fig:depimagezuweisen}
 \end{figure}
 
@@ -2123,18 +2120,18 @@ Auf diese Weise wechseln im Falle einer Sprachumschaltung Standardtexte
 ebenfalls in die entsprechende Sprache.
 \end{Hinweis}
 
-\paragraph{»Zweisprachigkeit« von Department Links}
+\paragraph{»Zweisprachigkeit« von DepartmentLinks}
 
 Wenn Sie Homepage-Inhalte Ihres Instituts bzw. Ihrer Organisationseinheit in zwei
 Sprachen (Deutsch und Englisch) anbieten wollen, besteht die Möglichkeit eine
-»zweisprachige« Navigation (Department Links) zu erstellen.
+»zweisprachige« Navigation (DepartmentLinks) zu erstellen.
 
 Die folgenden Informationen für die Erstellung einer zusätzlichen englischsprachigen
 Navigation für Ihre \otherterm{XIMS}-basierte Homepage setzen das Wissen über die
-Handhabung von »Department Links« voraus. In diesem Abschnitt werden nur die Anleitungsschritte für die zusätzlichen englischen Department Links erläutert. Für
-grundlegende Informationen zum Thema Department Links wird auf Punkt \ref{deplinks} verwiesen.
+Handhabung von »DepartmentLinks« voraus. In diesem Abschnitt werden nur die Anleitungsschritte für die zusätzlichen englischen DepartmentLinks erläutert. Für
+grundlegende Informationen zum Thema DepartmentLinks wird auf Punkt \ref{deplinks} verwiesen.
 Ihre Homepage verfügt bereits über ein \path{departmentlinks}-Verzeichnis (inklusive
-URLLinks) und ein Department Links-\ximsterm{Portlet}. Nun erstellen Sie für die
+URLLinks) und ein DepartmentLinks-\ximsterm{Portlet}. Nun erstellen Sie für die
 englischsprachige Navigation gleichermaßen diese Objekte, jedoch mit
 unterschiedlicher Benennung: Verzeichnis \path{departmentlinks_en}; Portlet
 \path{departmentlinks_portlet_en}. Im \path{departmentlinks_en}-Verzeichnis müssen
@@ -2155,22 +2152,22 @@ zweite \ximsterm{Portlet} \path{departmentlinks_portlet_en} (welches auf das Ver
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/zuweisenportletno2.png}
-	\caption{Zuweisen des zweiten \ximsterm{Portlet}s mit den englischen Department Links zum
+	\caption{Zuweisen des zweiten \ximsterm{Portlet}s mit den englischen DepartmentLinks zum
 DepartmentRoot}
 	\label{fig:zuweisenportlet}
 \end{figure}
 
-Die Auswahl der Department Links bzw. der Navigationsbox in der gewünschten
+Die Auswahl der DepartmentLinks bzw. der Navigationsbox in der gewünschten
 Sprache erfolgt nach folgenden Kriterien:
 
 \begin{itemize}
-	\item {Für Dateien mit der Erweiterung \nolinkurl{.de} (\nolinkurl{html.de}) werden die Department Links
+	\item {Für Dateien mit der Erweiterung \nolinkurl{.de} (\nolinkurl{html.de}) werden die DepartmentLinks
 aus dem Portlet \path{departmentlinks_portlet} bzw. für Dateien mit der
-Erweiterung \nolinkurl{.en} (\nolinkurl{html.en}) die Department Links aus dem \ximsterm{Portlet}
+Erweiterung \nolinkurl{.en} (\nolinkurl{html.en}) die DepartmentLinks aus dem \ximsterm{Portlet}
 \path{departmentlinks_portlet_en} gewählt.}
 \item {Für Dateien ohne Erweiterung wird versucht dem Benutzer am besten gerecht
 zu werden und es werden entsprechend dessen Einstellungen die Seiten
-zusammen mit den passenden Department Links dargestellt. Ist die Sprache,
+zusammen mit den passenden DepartmentLinks dargestellt. Ist die Sprache,
 die der Benutzer über seinen Browser verlangt nicht vorhanden, wird die
 englische Version (falls vorhanden) präsentiert.}
 \end{itemize}
@@ -2178,7 +2175,7 @@ englische Version (falls vorhanden) präsentiert.}
 \begin{figure}[!ht]
 	\centering
 		\includegraphics[width=\textwidth]{./images/departmentlinkszweisprachig.png}
-	\caption{Department Links und Inhalt entsprechend der voreingestellten Sprache}
+	\caption{DepartmentLinks und Inhalt entsprechend der voreingestellten Sprache}
 	\label{fig:deplinkszweisprachig}
 \end{figure}
 
@@ -2202,7 +2199,7 @@ pub/a/2002/06/19/perl-xml.html}
 \item[\ximsterm{AnonDiscussionForum}:] Ist ein anonymes Diskussionsforum. Mehr
 Informationen dazu erhalten Sie im Dokument Anonymes Diskussionsforum
 Howto.
-\item[\ximsterm{Portal}:] Nach einem \ximsterm{Portlet} ist ein Portal gewissermaßen der nächste Schritt.
+\item[\ximstermdef{Portal}:] Nach einem \ximsterm{Portlet} ist ein Portal gewissermaßen der nächste Schritt.
 Im Grunde genommen ist ein Portal nichts anderes als eine Seite, die nur
 Referenzen auf Portlets enthält. Solche Seiten werden vor allem auf Startseiten
 einer Website gefunden.
@@ -2314,7 +2311,7 @@ TinyMCE ignoriert solche speziellen Zeichen beim Laden des Dokuments. D.h. das
 Dokument wurde im Unterschied zum Originaldokument, welches Zeichen außerhalb
 des Standards enthält, zu Gunsten der Zeichenketten-Encoding-Standards um
 einige wenige Zeichen verändert (im Dokument sind nur noch Standard-konforme Zeichen vorhanden). In diesem Sinne ist es i.d.R. das Beste, per »Abbrechen« zur
-\otherterm{XIMS}-Container-Ansicht zurückzukehren, das Dokument zu kopieren (Backup), es
+\otherterm{XIMS}-Containeransicht zurückzukehren, das Dokument zu kopieren (Backup), es
 erneut zu öffnen und über den »Speichern«-Knopf abzuspeichern. Nach erneutem
 Öffnen des Dokuments sollten Sie nun wiederum den WYSIWYG-Editor wechseln können.
 
