@@ -37,6 +37,7 @@
     <xsl:call-template name="scripts"/>
   </head>
   <body onload="createThumbs();">
+    <xsl:comment><xsl:value-of select="$absolute_path"/></xsl:comment>
     <p align="right"><a href="#" onclick="popupClose()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
     <xsl:call-template name="selectform"/>
     <xsl:call-template name="script_bottom"/>
@@ -104,7 +105,7 @@ function insertfile() {
      
         function storeBack(target, imgtext) {
       ]]>
-            var re = new RegExp("<xsl:value-of select="$absolute_path_nosite"/>/");
+            var re = new RegExp("^<xsl:value-of select="$absolute_path_nosite"/>/");
       <![CDATA[
             if (re.test(target) && RegExp.rightContext.length > 0) {
                 document.selectform.imgpath.value=RegExp.rightContext;
