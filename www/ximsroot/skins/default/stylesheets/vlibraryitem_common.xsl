@@ -165,7 +165,11 @@
         <xsl:text>&#160;</xsl:text>
         <xsl:apply-templates select="/document/context/vlkeywords"/>
         <xsl:text>&#160;</xsl:text>
-        <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control" onclick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for', document.eform.svlkeyword);"/>
+        <input type="submit" 
+               name="create_mapping" 
+               value="{$i18n_vlib/l/Create_mapping}" 
+               class="control" 
+               onclick="return submitOnValue(document.eform.vlkeyword, 'Please fill in a value for Keywords', document.eform.svlkeyword);"/>
       </td>
     </tr>
   </xsl:template>
@@ -191,7 +195,11 @@
         <xsl:text>&#160;</xsl:text>
         <xsl:apply-templates select="/document/context/vlsubjects"/>
         <xsl:text>&#160;</xsl:text>
-        <input type="submit" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="control"/>
+        <input type="submit" 
+               name="create_mapping" 
+               value="{$i18n_vlib/l/Create_mapping}" 
+               class="control" 
+               onclick="return submitOnValue(document.eform.vlsubject, 'Please fill in a value for Subjects', document.eform.svlsubject);"/>
       </td>
     </tr>
   </xsl:template>
