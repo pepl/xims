@@ -25,20 +25,27 @@
 \usepackage{makeidx}
 \makeindex
 
+\definecolor{uibkorange}{HTML}{F89019} % Studium
+\definecolor{uibkgruen}{HTML}{74A629} % Forschung
+\definecolor{uibkblau}{HTML}{002241} % Uibkversität
+\definecolor{uibkcyan}{HTML}{419AB9} % Fakultäten
+\definecolor{uibkviolett}{HTML}{5E4683} % Internationales
+\definecolor{uibkrot}{HTML}{CB0900} % iPoint
+
 \usepackage[%
 breaklinks               % Links »überstehen« Zeilenumbruch
-%,backref                 % Backlinks im Literaturverzeichnis
+,backref                 % Backlinks im Literaturverzeichnis
 ,colorlinks              % Links erhalten Farben statt Kästen
-% ,citecolor=myblue        % Farbe für Zitate
-% ,linkcolor=myblue     % beeinflusst Inhaltsverzeichnis und Seitenzahlen
-% ,urlcolor=myblue         % Farbe für URLs
+,citecolor=black      % Farbe für Zitate
+,linkcolor=black     % beeinflusst Inhaltsverzeichnis und Seitenzahlen
+,urlcolor=black         % Farbe für URLs
 ,citecolor=black       % Farbe für Zitate
 ,linkcolor=black       % beeinflusst Inhaltsverzeichnis und Seitenzahlen
 ,urlcolor=black 
 ,bookmarks               % Erzeugung von Bookmarks für PDF-Viewer
 ,bookmarksnumbered       % Nummerierung der Bookmarks
 ,hyperfootnotes=false    % Keine Links auf Fußnoten
-,hyperindex=false        % Vorerst keine Hyperlinks im Index, 
+%,hyperindex=false        % Vorerst keine Hyperlinks im Index, 
                          % siehe http://wwwmath.uni-muenster.de/u/mollerh/data/Hyper.pdf
 ,pdffitwindow
 ,pdflang=de
@@ -57,20 +64,12 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 {hyperref}               % PDF automatisch mit Links versehen und weitere
 % Hypertext-Funktionalität ermöglichen
 
-\definecolor{uibkorange}{HTML}{F89019} % Studium
-\definecolor{uibkgruen}{HTML}{74A629} % Forschung
-\definecolor{uibkblau}{HTML}{002241} % Uibkversität
-\definecolor{uibkcyan}{HTML}{419AB9} % Fakultäten
-\definecolor{uibkviolett}{HTML}{5E4683} % Internationales
-\definecolor{uibkrot}{HTML}{CB0900} % iPoint
 
 \usepackage{marginnote}
 \renewcommand*{\marginfont}{\color{uibkrot}\sffamily\bfseries}
 
 \newenvironment{Hinweis}
-{\bigskip\noindent%
- \reversemarginpar\marginnote[\rule{1ex}{1ex} Hinweis:]{}%
- \begin{em}}
+{\bigskip\reversemarginpar\marginnote[Hinweis:]{}\begin{em}\noindent\ignorespaces}
 {\end{em}\hspace{\stretch{1}}\bigskip}
  
 \newcommand{\ximsterm}[1]{\emph{#1}\index{#1@\emph{#1}}}
@@ -79,7 +78,7 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 \newcommand{\othertermdef}[1]{#1\index{#1|textbf}}
 
 \addtokomafont{sectioning}{\color{uibkcyan}}
-
+\addtokomafont{sectionentrypagenumber}{\color{black}}
 \usepackage{ellipsis}
 
 \title{XIMS Schritt für Schritt Anleitung}
@@ -293,9 +292,11 @@ Ist der Editiervorgang abgeschlossen, so können die Änderungen mit einem Klick
 auf den »Speichern«-Button gespeichert werden. Um die Änderungen zu verwerfen
 klickt man auf den »Abbrechen«-Button.
 
-\begin{Hinweis}Navigieren Sie nicht mit der »Vor«- und »Zurück«-Taste ihres Browsers aus dem
-Editor, weil das bearbeitete Objekt ansonsten für andere Benutzer gesperrt wird.
-Siehe Punkt \ref{gesperrteobjekte} »Gesperrte Objekte«.
+\begin{Hinweis}
+  Navigieren Sie nicht mit der »Vor«- und »Zurück«-Taste ihres
+  Browsers aus dem Editor, weil das bearbeitete Objekt ansonsten für
+  andere Benutzer gesperrt wird. Siehe Punkt \ref{gesperrteobjekte}
+  »Gesperrte Objekte«.
 \end{Hinweis}
 
 \subsubsection{Veröffentlichen von Objekten}
@@ -354,8 +355,9 @@ haben zumindest ein Standardlesezeichen zum \otherterm{XIMS}-Testordner
 gesetzt.
 
 \begin{Hinweis}
-  Nutzen Sie den \otherterm{XIMS}-Testordner um sich mit dem System vertraut zu machen. Dort
-  können Sie Objekte erstellen und das allgemeine Verhalten von \otherterm{XIMS} testen.
+  Nutzen Sie den \otherterm{XIMS}-Testordner um sich mit dem System
+  vertraut zu machen. Dort können Sie Objekte erstellen und das
+  allgemeine Verhalten von \otherterm{XIMS} testen.
 \end{Hinweis}
 
 Über die \othertermdef{Lesezeichen} gelangen Sie am schnellsten zu den Inhalten Ihrer
@@ -460,9 +462,10 @@ auch effektivere Suche ermöglichen:
 	\item ()
 \end{itemize}
 
-\begin{Hinweis}Um beispielsweise nach einem Objekt, welches die
-  Begriffe »zid« und »antrag«/""»dokument« beinhaltet, zu suchen,
-  verwenden Sie folgenden Suchausdruck: zid AND (antrag OR dokument)
+\begin{Hinweis}
+  Um beispielsweise nach einem Objekt, welches die Begriffe »zid« und
+  »antrag«/""»dokument« beinhaltet, zu suchen, verwenden Sie folgenden
+  Suchausdruck: zid AND (antrag OR dokument)
 \end{Hinweis}
 
 \begin{description}
@@ -742,10 +745,11 @@ Gelingt es Tidy nicht, den Body zu säubern, muss der Inhalt noch einmal manuell
 	\label{fig:xmlvonbodytesten}
 \end{figure}
 
-\begin{Hinweis}Mit der Funktion »Versuchen, einen wohlgeformten Body
-herzustellen« verändert \otherterm{Tidy} die Whitespace-Informationen. Nach dem
-Speichern des Dokuments werden Einrückungen oder Umbrüche nicht mehr denen im Originaldokument
-entsprechen!
+\begin{Hinweis}
+  Mit der Funktion »Versuchen, einen wohlgeformten Body herzustellen«
+  verändert \otherterm{Tidy} die Whitespace-Informationen. Nach dem
+  Speichern des Dokuments werden Einrückungen oder Umbrüche nicht mehr
+  denen im Originaldokument entsprechen!
 \end{Hinweis}
 
 \paragraph{Schlagworte (Keywords)}
@@ -802,8 +806,11 @@ Nicht nur der Bodybereich kann verändert werden, sondern auch die Einträge in
 \ximsterm{Location}, Titel, \otherterm{Schlagwort}e, Zusammenfassung und die Option »Objekt als
 neu markieren«.
 
-\begin{Hinweis}Ist ein Objekt publiziert, kann die \ximsterm{Location} nicht verändert werden (siehe Abb.~\ref{fig:xhtmlintinymce}). Um die \ximsterm{Location} eines veröffentlichten Objekts verändern zu können,
-muss dieses zuerst depubliziert werden.
+\begin{Hinweis}
+  Ist ein Objekt publiziert, kann die \ximsterm{Location} nicht
+  verändert werden (siehe Abb.~\ref{fig:xhtmlintinymce}). Um die
+  \ximsterm{Location} eines veröffentlichten Objekts verändern zu
+  können, muss dieses zuerst depubliziert werden.
 \end{Hinweis}
 
 Durch Klicken des »Speichern«-Buttons werden Änderungen gespeichert und man
@@ -856,10 +863,13 @@ werden.\footnote{Wir empfehlen, den \ximsterm{Autoindex} abzuschalten, falls Sie
 \nolinkurl{index.html.de} und \nolinkurl{index.html.en}) verwenden wollen, es kann sonst zu Fehlern bei der
 Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss \path{index} lauten, der Webserver verwendet es dann automatisch.
 
-\begin{Hinweis}Ein Objekt mit der \ximsterm{Location} \path{index} (z.B. \nolinkurl{index.html}) wird vom Webserver
-gegenüber dem automatisch erstellten Index vorgezogen, d.h. sobald ein Objekt
-mit der \ximsterm{Location} \path{index} in dem \ximsterm{Container} existiert, wird dieses Dokument
-ausgeliefert, auch wenn ein \ximsterm{Autoindex} erstellt wurde.
+\begin{Hinweis}
+  Ein Objekt mit der \ximsterm{Location} \path{index} (z.B.
+  \nolinkurl{index.html}) wird vom Webserver gegenüber dem automatisch
+  erstellten Index vorgezogen, d.h. sobald ein Objekt mit der
+  \ximsterm{Location} \path{index} in dem \ximsterm{Container}
+  existiert, wird dieses Dokument ausgeliefert, auch wenn ein
+  \ximsterm{Autoindex} erstellt wurde.
 \end{Hinweis}
 
 Ist in einem Verzeichnis kein Indexdokument vorhanden und publiziert, gibt der
@@ -867,7 +877,10 @@ Webserver auf eine Anfrage die Fehlermeldung
 »Forbidden« zurück -- sinngemäß: das Auflisten des Verzeichnisinhalts ist
 verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 
-\begin{Hinweis}Einfach nur zu verhindern dass ein Verzeichnis aufgelistet wird, ist kein taugliches Mittel, um Dokumente zu »verstecken« oder gar unzugänglich zu machen!
+\begin{Hinweis}
+  Einfach nur zu verhindern dass ein Verzeichnis aufgelistet wird, ist
+  kein taugliches Mittel, um Dokumente zu »verstecken« oder gar
+  unzugänglich zu machen!
 \end{Hinweis}
 
 \begin{figure}[!ht]
@@ -901,8 +914,9 @@ gelesen bzw. verändert werden.
 erteilen:] (Grant VIEW privilege of your default roles) Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
 \end{description}
 
-\begin{Hinweis}Die Funktion »Zusätzlich Leserechte für Mitglieder der
-Standard Rollen erteilen« wird derzeit nicht verwendet!
+\begin{Hinweis}
+  Die Funktion »Zusätzlich Leserechte für Mitglieder der Standard
+  Rollen erteilen« wird derzeit nicht verwendet!
 \end{Hinweis}
 
 \paragraph{Editieren eines Verzeichnisses (Folders)}
@@ -1111,11 +1125,13 @@ das bzw. die das \ximsterm{Portlet} seine spezielle Sicht richten soll.
 Die »Ziel Suchen« (Browse for Target)-Funktionalität erleichtert das exakte
 Bestimmen dieses Pfades.
 
-\begin{Hinweis}Über ein \ximsterm{Portlet} kann zum Beispiel eine Box mit einer Linkliste als Inhalt einfach
-erstellt werden. \otherterm{XIMS} durchsucht hierfür den Inhalt eines \ximsterm{Container}s (z.B. eines
-Verzeichnisses) und listet den entsprechenden Inhalt (z.B. eine Reihe von
-Dokumenten), dargestellt als Liste mit Links verweisend auf die entsprechenden
-Dokumente, auf.
+\begin{Hinweis}
+  Über ein \ximsterm{Portlet} kann zum Beispiel eine Box mit einer
+  Linkliste als Inhalt einfach erstellt werden. \otherterm{XIMS}
+  durchsucht hierfür den Inhalt eines \ximsterm{Container}s (z.B.
+  eines Verzeichnisses) und listet den entsprechenden Inhalt (z.B.
+  eine Reihe von Dokumenten), dargestellt als Liste mit Links
+  verweisend auf die entsprechenden Dokumente, auf.
 \end{Hinweis}
 
 \paragraph{Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen}
@@ -1175,11 +1191,13 @@ Ist noch kein \ximsterm{DepartmentRoot}-Container vorhanden bzw. vom
 erstellt werden. Dies erfolgt in gleicher Weise wie etwa das Erstellen
 eines Verzeichnisses (siehe Punkt \ref{erstelleneditieren}).
 
-\begin{Hinweis}Eine besondere Bedeutung hat im \ximsterm{DepartmentRoot}-Kontext die
-Zusammenfassung (Abstract). Mit Hilfe des Zusammenfassung Feldes kann
-der »Department Infotext« gesetzt werden. Umgeben mit dem \texttt{<span>}-Tag und
-in Verbindung mit dem lang-Attribut repräsentiert der so gekapselte Text den
-»Department Infotext« in deutscher bzw. englischer Sprache.
+\begin{Hinweis}
+  Eine besondere Bedeutung hat im \ximsterm{DepartmentRoot}-Kontext
+  die Zusammenfassung (Abstract). Mit Hilfe des Zusammenfassung Feldes
+  kann der »Department Infotext« gesetzt werden. Umgeben mit dem
+  \texttt{<span>}-Tag und in Verbindung mit dem lang-Attribut
+  repräsentiert der so gekapselte Text den »Department Infotext« in
+  deutscher bzw. englischer Sprache.
 \end{Hinweis}
 
 \begin{figure}[!ht]
@@ -1275,12 +1293,14 @@ Instructions (PIs) im Body des \ximsterm{sDocBookXML}-Dokuments aufscheinen dürf
 Elemente von \ximsterm{sDocBookXML}-Dokumenten müssen zwingend Kind-Elemente des
 Wurzelelements \texttt{<article>} sein.
 
-\begin{Hinweis}Sollte das \ximsterm{sDocBookXML} Dokument wohlgeformt sein, jedoch Elemente
-enthalten, welche nicht in der Simplified DocBook XML DTD definiert sind, so
-werden diese Elemente zwar von \otherterm{XIMS} »akzeptiert«, jedoch in der veröffentlichten
-Version nicht dargestellt. Solche Elemente existieren dann nur im Quelldokument
-im \otherterm{XIMS}. Aus diesem Grund sollte man nur valide \ximsterm{sDocBookXML}-Dokumente ins
-\otherterm{XIMS} einpflegen.
+\begin{Hinweis}
+  Sollte das \ximsterm{sDocBookXML} Dokument wohlgeformt sein, jedoch
+  Elemente enthalten, welche nicht in der Simplified DocBook XML DTD
+  definiert sind, so werden diese Elemente zwar von \otherterm{XIMS}
+  »akzeptiert«, jedoch in der veröffentlichten Version nicht
+  dargestellt. Solche Elemente existieren dann nur im Quelldokument im
+  \otherterm{XIMS}. Aus diesem Grund sollte man nur valide
+  \ximsterm{sDocBookXML}-Dokumente ins \otherterm{XIMS} einpflegen.
 \end{Hinweis}
 
 \paragraph{Schlagworte}
@@ -1330,19 +1350,21 @@ Objekte grau hinterlegt und mit zwei Optionen dargestellt:
 	\item Löschen rückgängig machen;
 \end{itemize}
 
-\begin{Hinweis}Dies kann fehlschlagen, wenn zwischenzeitlich ein Objekt mit der selben
-\ximsterm{Location} im \ximsterm{Container} angelegt wurde, in diesem Fall muss das neuere Objekt
-zuerst umbenannt werden.
+\begin{Hinweis}
+  Dies kann fehlschlagen, wenn zwischenzeitlich ein Objekt mit der
+  selben \ximsterm{Location} im \ximsterm{Container} angelegt wurde,
+  in diesem Fall muss das neuere Objekt zuerst umbenannt werden.
 \end{Hinweis}
 
 \begin{itemize}
 	\item Endgültig löschen
 \end{itemize}
 
-\begin{Hinweis}Bitte löschen Sie Objekte, die Sie nicht mehr benötigen ganz! Die
-Papierkorbfunktion ist lediglich als Sicherheit gedacht. Die gelöschten Objekte
-nehmen weiterhin Ressourcen in der Datenbank in Anspruch und werden daher
-periodisch von uns gelöscht!
+\begin{Hinweis}
+  Bitte löschen Sie Objekte, die Sie nicht mehr benötigen ganz! Die
+  Papierkorbfunktion ist lediglich als Sicherheit gedacht. Die
+  gelöschten Objekte nehmen weiterhin Ressourcen in der Datenbank in
+  Anspruch und werden daher periodisch von uns gelöscht!
 \end{Hinweis}
 
 \section{Dokumente mit einem WYSIWYG-Editor bearbeiten}
@@ -1400,8 +1422,9 @@ Back«-Buttons wird das Bild an der Cursor-Position eingefügt.}
 	\label{fig:searchimage}
 \end{figure}
 
-\begin{Hinweis}Vermeiden Sie Bilder mit einer größeren Breite als 600 Pixel, weil dadurch das
-UIBK-Design beeinträchtigt wird.
+\begin{Hinweis}
+  Vermeiden Sie Bilder mit einer größeren Breite als 600 Pixel, weil
+  dadurch das UIBK-Design beeinträchtigt wird.
 \end{Hinweis}
 
 \subsection{Einfügen eines Hyperlinks}
@@ -1438,7 +1461,8 @@ Hyperlink erstellt.
 \item {Das Linkziel kann analog zur Auswahl eines Bildes erstellt werden. Im Feld »Enter a title« kann der gewünschte Linktext, falls
     abweichend vom Linkziel, eingegeben werden.
 
-    \begin{Hinweis}Es besteht natürlich nicht nur die Möglichkeit eine URL
+    \begin{Hinweis}
+      Es besteht natürlich nicht nur die Möglichkeit eine URL
       einzufügen, sondern es kann auch auf andere Objekte wie
       beispielsweise Dateien u.ä. verlinkt werden.
     \end{Hinweis}
@@ -1632,12 +1656,15 @@ zu veröffentlichen}
 	\label{fig:veroeffentlichungsvorschau-live}
 \end{figure}
 
-\begin{Hinweis}Objekte, die in der Veröffentlichungsvorschau betrachtet werden, zeigen in der
-Darstellung bereits alle Veränderungen. Dabei ist zu beachten, dass die
-Veröffentlichungsvorschau das Objekt nicht veröffentlicht. Da es sich um eine
-reine Vorschau handelt, existiert das Objekt in der veränderten Version weiterhin
-nur in der \otherterm{XIMS}-Datenbank. Um die Veränderungen für die Öffentlichkeit sichtbar
-zu machen, müssen Objekte veröffentlicht bzw. wiederveröffentlicht werden.
+\begin{Hinweis}
+  Objekte, die in der Veröffentlichungsvorschau betrachtet werden,
+  zeigen in der Darstellung bereits alle Veränderungen. Dabei ist zu
+  beachten, dass die Veröffentlichungsvorschau das Objekt nicht
+  veröffentlicht. Da es sich um eine reine Vorschau handelt, existiert
+  das Objekt in der veränderten Version weiterhin nur in der
+  \otherterm{XIMS}-Datenbank. Um die Veränderungen für die
+  Öffentlichkeit sichtbar zu machen, müssen Objekte veröffentlicht
+  bzw. wiederveröffentlicht werden.
 \end{Hinweis}
 
 \section{Berechtigungsmechanismus in \otherterm{XIMS}}
@@ -1659,10 +1686,12 @@ Rollen gesichtet bzw. verändert werden. Hat ein Benutzer das »GRANT«-Recht
 (Verwaltungsrecht), so darf dieser Benutzer auch bestehende Berechtigungen
 verändern bzw. neue hinzufügen.
 
-\begin{Hinweis}Die Berechtigungen werden für das jeweilige, einzelne Objekt durchgesetzt;
-jemanden bloß aus einem übergeordneten Verzeichnis auszusperren ist also
-nicht ausreichend: Die darunter liegenden Objekte könnten trotzdem (z.B. über die
-Suche) direkt angesprungen werden, wenn ihre eigene ACL dies zulässt!
+\begin{Hinweis}
+  Die Berechtigungen werden für das jeweilige, einzelne Objekt
+  durchgesetzt; jemanden bloß aus einem übergeordneten Verzeichnis
+  auszusperren ist also nicht ausreichend: Die darunter liegenden
+  Objekte könnten trotzdem (z.B. über die Suche) direkt angesprungen
+  werden, wenn ihre eigene ACL dies zulässt!
 \end{Hinweis}
 
 \subsection{Berechtigungen eines Benutzers bzw. einer Rolle}
@@ -1710,10 +1739,12 @@ Buttons (Revoke Grants) wird der Benutzer bzw. die Rolle aus der »Access Control
 List« (ACL) entfernt und scheint somit nicht mehr in der Liste der Benutzer auf,
 welche explizite Rechte auf das Objekt zugewiesen bekommen haben.
 
-\begin{Hinweis}Wenn Sie einer Rolle, z.B.: UIBK:ALL, alle Rechte nehmen wollen, löschen Sie
-bitte die Rolle mit »Rechte entfernen« komplett aus der ACL. Wenn Sie die
-Rolle belassen und stattdessen alle Privilegien entfernen, sperren Sie damit alle
-Rollenmitglieder aus -- im Falle von UIBK:ALL vermutlich auch sich selbst!
+\begin{Hinweis}
+  Wenn Sie einer Rolle, z.B.: UIBK:ALL, alle Rechte nehmen wollen,
+  löschen Sie bitte die Rolle mit »Rechte entfernen« komplett aus der
+  ACL. Wenn Sie die Rolle belassen und stattdessen alle Privilegien
+  entfernen, sperren Sie damit alle Rollenmitglieder aus -- im Falle
+  von UIBK:ALL vermutlich auch sich selbst!
 \end{Hinweis}
 
 Um Benutzern bzw. Rollen, die bisher noch keine expliziten Rechte für ein Objekt
@@ -1926,18 +1957,19 @@ c102} zu erstellen, muss im Eingabefeld \ximsterm{Location} des \ximsterm{URLLin
 	\item {Der nächste Schritt ist das Veröffentlichen des departmentlinks-Verzeichnisses mitsamt den darin erstellten Links. Die konkrete
 Vorgehensweise für die Veröffentlichung von Objekten wird unter Punkt \ref{inhaltepublizieren} beschrieben.}
 
-\begin{Hinweis}Es genügt das Verzeichnis \path{departmentlinks} zu veröffentlichen. Die darin
-enthaltenen \ximsterm{URLLink}s werden mit entsprechender Option automatisch mit
-veröffentlicht.
+\begin{Hinweis}
+  Es genügt das Verzeichnis \path{departmentlinks} zu veröffentlichen.
+  Die darin enthaltenen \ximsterm{URLLink}s werden mit entsprechender
+  Option automatisch mit veröffentlicht.
 \end{Hinweis}
 
 	\item {Danach muss im \ximsterm{DepartmentRoot} \ximsterm{Container} ein \ximsterm{Portlet} mit der \ximsterm{Location}
 \path{departmentlinks_portlet} erstellt werden.}
 
 \begin{Hinweis}
-Das \ximsterm{Portlet} (sowohl \ximsterm{Location} als auch der Titel) muss unbedingt
-\path{departmentlinks_portlet} heißen. Außerdem muss die Checkbox der
-Zusammenfassung angeklickt sein.
+  Das \ximsterm{Portlet} (sowohl \ximsterm{Location} als auch der
+  Titel) muss unbedingt \path{departmentlinks_portlet} heißen.
+  Außerdem muss die Checkbox der Zusammenfassung angeklickt sein.
 \end{Hinweis}
 
 \begin{figure}[!ht]
@@ -1974,7 +2006,10 @@ Um eine Unternavigation zu erstellen, wird im Grunde mittels \ximsterm{Departmen
 
 Um eine Subnavigation erstellen zu können muss zuerst ein \ximsterm{DepartmentRoot} (i.d.R. bereits vorhanden) und in weiterer Folge weitere darin enthaltene \ximsterm{DepartmentRoot}s erstellt werden. Ebenso ist es möglich eine bestehende Struktur in XIMS entsprechend den veränderten Anforderungen anzupassen (es besteht die Möglichkeit bestehende Ordner in \ximsterm{DepartmentRoot}s umzuwandeln). 
 
-\begin{Hinweis}Der Benutzer muss entsprechende Berechtigungen zum Erstellen von \ximsterm{DepartmentRoot}s haben. Wenden Sie sich ggf. bitte an \href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}.
+\begin{Hinweis}
+  Der Benutzer muss entsprechende Berechtigungen zum Erstellen von
+  \ximsterm{DepartmentRoot}s haben. Wenden Sie sich ggf. bitte an
+  \href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}.
 \end{Hinweis}
 
 \paragraph{Vorgehensweise}
@@ -2005,7 +2040,11 @@ Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner \path{department
 \end{compactitem}
 
 \begin{Hinweis}
-Bei \ximsterm{URLLink} Objekten ist immer die »Location« des Zielobjektes anzugeben. Bei \ximsterm{URLLink}s der Hauptnavigation muss ein Slash angehängt werden, weil auf einen Ordner verwiesen wird, wodurch das jeweilige Index Dokument angezeigt wird und in weiterer Folge die Unternavigation aufklappt.
+  Bei \ximsterm{URLLink} Objekten ist immer die »Location« des
+  Zielobjektes anzugeben. Bei \ximsterm{URLLink}s der Hauptnavigation
+  muss ein Slash angehängt werden, weil auf einen Ordner verwiesen
+  wird, wodurch das jeweilige Index Dokument angezeigt wird und in
+  weiterer Folge die Unternavigation aufklappt.
 \end{Hinweis}
 
 \subsubsection{DepartmentSpeziallinks}
@@ -2081,12 +2120,15 @@ Sprache bekommen das \nolinkurl{.html.de}-Suffix bzw. Dokumente in englisch das
 \nolinkurl{.html.en}-Suffix. Wenn man also ein Dokument mit der \ximsterm{Location} \nolinkurl{sfs.html} zweisprachig anbieten will, muss das deutsche Dokument \nolinkurl{sfs.html.de} und das
 englische Pendant dazu \nolinkurl{sfs.html.en} heißen.
 
-\begin{Hinweis}Prinzipiell funktioniert die Bereitstellung von Index-Dokumenten in zwei Sprachen
-auf die gleiche Weise (z.B. \nolinkurl{index.html.de}). Jedoch ist dabei darauf zu
-achten, dass die Option »Verhindere \ximsterm{Autoindex} beim
-Veröffentlichen« für die entsprechenden Container-Objekte angekreuzt sein
-muss, da andernfalls bei Fehlschlagen der Language-Negotiation der von \otherterm{XIMS}
-automatisch erzeugte Dokumenten-Index dargestellt wird (siehe auch Punkt \ref{autoindex}).
+\begin{Hinweis}
+  Prinzipiell funktioniert die Bereitstellung von Index-Dokumenten in
+  zwei Sprachen auf die gleiche Weise (z.B.
+  \nolinkurl{index.html.de}). Jedoch ist dabei darauf zu achten, dass
+  die Option »Verhindere \ximsterm{Autoindex} beim Veröffentlichen«
+  für die entsprechenden Container-Objekte angekreuzt sein muss, da
+  andernfalls bei Fehlschlagen der Language-Negotiation der von
+  \otherterm{XIMS} automatisch erzeugte Dokumenten-Index dargestellt
+  wird (siehe auch Punkt \ref{autoindex}).
 \end{Hinweis}
 
 \paragraph{SimpleDocBook (\ximsterm{sDocBookXML}) Dokumente zweisprachig anbieten}
@@ -2107,17 +2149,23 @@ Fassung \nolinkurl{example-docbook.sdbk.de} und das englische Pendant dazu
 \nolinkurl{example-docbook.sdbk.en} heißen. Gibt es das SimpleDocBook Dokument nur in
 einer Sprachvariante, so sollte auf das Sprachsuffix gänzlich verzichtet werden.
 
-\begin{Hinweis}Da die XSL Stylesheets, über die \ximsterm{sDocBookXML}-Objekte an der Universität
-Innsbruck gerendert werden, auf den offiziellen DocBook XSL Stylesheets
-basieren, ist bei der Erstellung eines deutschen SimpleDocBooks auf folgendes
-zu achten:
-Die offizielle DocBook XSL Distribution verwendet bei keiner expliziten
-Spezifikation der Inhaltssprache über das \texttt{lang}-Attribut des \texttt{article}-Elements standardmäßig die Sprache Englisch. So werden Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
-»Inhaltsverzeichnis«) in Englisch präsentiert, wenn keine explizite Sprachvorgabe erfolgt. Es empfiehlt sich daher bei einem SimpleDocBook Dokument in deutscher Sprache das öffnende Wurzelelement \texttt{article} zwingend folgendermaßen
-auszubilden: \texttt{<article lang="{}de"{}>}. Analog ist es empfehlenswert für
-englische SimpleDocBooks \texttt{<article lang="{}en"{}>} zu verwenden.
-Auf diese Weise wechseln im Falle einer Sprachumschaltung Standardtexte
-ebenfalls in die entsprechende Sprache.
+\begin{Hinweis}
+  Da die XSL Stylesheets, über die \ximsterm{sDocBookXML}-Objekte an
+  der Universität Innsbruck gerendert werden, auf den offiziellen
+  DocBook XSL Stylesheets basieren, ist bei der Erstellung eines
+  deutschen SimpleDocBooks auf folgendes zu achten: Die offizielle
+  DocBook XSL Distribution verwendet bei keiner expliziten
+  Spezifikation der Inhaltssprache über das \texttt{lang}-Attribut des
+  \texttt{article}-Elements standardmäßig die Sprache Englisch. So
+  werden Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
+  »Inhaltsverzeichnis«) in Englisch präsentiert, wenn keine explizite
+  Sprachvorgabe erfolgt. Es empfiehlt sich daher bei einem
+  SimpleDocBook Dokument in deutscher Sprache das öffnende
+  Wurzelelement \texttt{article} zwingend folgendermaßen auszubilden:
+  \texttt{<article lang="{}de"{}>}. Analog ist es empfehlenswert für
+  englische SimpleDocBooks \texttt{<article lang="{}en"{}>} zu
+  verwenden. Auf diese Weise wechseln im Falle einer Sprachumschaltung
+  Standardtexte ebenfalls in die entsprechende Sprache.
 \end{Hinweis}
 
 \paragraph{»Zweisprachigkeit« von DepartmentLinks}
