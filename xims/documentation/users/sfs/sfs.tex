@@ -64,12 +64,12 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 {hyperref}               % PDF automatisch mit Links versehen und weitere
 % Hypertext-Funktionalität ermöglichen
 
-
+\usepackage{float}
 \usepackage{marginnote}
 \renewcommand*{\marginfont}{\color{uibkrot}\sffamily\bfseries}
 
 \newenvironment{Hinweis}
-{\bigskip\reversemarginpar\marginnote[Hinweis:]{}\begin{em}\noindent\ignorespaces}
+{\bigskip\reversemarginpar\marginnote[\raggedleft{Hinweis:}]{}\begin{em}\noindent\ignorespaces}
 {\end{em}\hspace{\stretch{1}}\bigskip}
  
 \newcommand{\ximsterm}[1]{\emph{#1}\index{#1@\emph{#1}}}
@@ -79,12 +79,29 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 
 \addtokomafont{sectioning}{\color{uibkcyan}}
 \addtokomafont{sectionentrypagenumber}{\color{black}}
+\addtokomafont{caption}{\small}
+\addtokomafont{captionlabel}{\small}
+
+\setlength{\skip\footins}{1.05\baselineskip}
+\setkomafont{footnotelabel}{\bfseries}
+\deffootnote[0em]{0pt}{1.0em}{\thefootnotemark~}
+\makeatletter
+\renewcommand*\footnoterule{%
+  \kern-4.9\p@% Platz unter der Linie + Liniendicke
+  \ifx\@textbottom\relax\else\vskip \z@ \@plus.05fil\fi
+  \hrule\@width.4\columnwidth
+  \kern 4.5\p@}% Platz unter der Linie
+\makeatother
+
+
 \usepackage{ellipsis}
 
 \title{XIMS Schritt für Schritt Anleitung}
 \author{\href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}}
 \date{\today}
 
+\widowpenalty=300
+\clubpenalty=300
 
 \hyphenation{De-part-ment-Root}
 \hyphenation{De-part-ment-Links}
@@ -106,232 +123,247 @@ Web-Content-Management- und Informationssystem, das vor allem auf die
 Anforderungen und Bedürfnisse von Universitäten und ähnlichen
 Institutionen zugeschnitten ist.
 
-Daraus ergeben sich unter anderem folgende Entwicklungsziele, die \otherterm{XIMS} zu
-erfüllen versucht:
+Daraus ergeben sich unter anderem folgende Entwicklungsziele, die
+\otherterm{XIMS} zu erfüllen versucht:
 \begin{compactitem}
-%\begin{itemize}
-	\item Einfache Einbringungsmöglichkeiten, um die Verwaltung der Inhalte möglichst
-unabhängig von technischem Know-how zu ermöglichen.
-	\item Granulares Berechtigungssystem bzw. Rollenmanagement, um die Aufgaben
-und Verantwortungsbereiche verschiedener Benutzer zu verwalten.
-	\item Flexible Gestaltungsmöglichkeit der zu präsentierenden Inhalte durch Trennung
-von Formatierung und Inhalt (realisiert durch die Verwendung von XML in
-Zusammenhang mit \otherterm{XSLT}).
-	\item Delegierbarkeit von Berechtigungen für dezentrale Verwaltung von Inhalten und
-Benutzern.
-	\item Unterstützung mehrsprachiger Inhalte.
+\item Einfache Einbringungsmöglichkeiten, um die Verwaltung der
+  Inhalte möglichst unabhängig von technischem Know-how zu
+  ermöglichen.
+\item Granulares Berechtigungssystem bzw. Rollenmanagement, um die
+  Aufgaben und Verantwortungsbereiche verschiedener Benutzer zu
+  verwalten.
+\item Flexible Gestaltungsmöglichkeit der zu präsentierenden Inhalte
+  durch Trennung von Formatierung und Inhalt (realisiert durch die
+  Verwendung von XML in Zusammenhang mit \otherterm{XSLT}).
+\item Delegierbarkeit von Berechtigungen für dezentrale Verwaltung von
+  Inhalten und Benutzern.
+\item Unterstützung mehrsprachiger Inhalte.
 \end{compactitem}
-\bigskip
 
 Neben den genannten Entwicklungszielen bietet die folgende Liste eine Auswahl von
 nützlichen \otherterm{XIMS} Features:
 \begin{compactitem}
-%\begin{itemize}
-	\item Klare Strukturierung von Inhalten durch sprechende, leicht merkbare Adressen
-(Stichwort \ximsterm{Kurznamen}).
-	\item Übersichtliche Navigation durch den Inhalt (Verwendung eines »Breadcrumb-
-Navigations-Pfades«).
-	\item Flexible Suchmöglichkeiten unterstützt durch Google.
-	\item Möglichkeit der Generierung von Dublin Core Metadaten für \otherterm{XIMS} Inhalte und
-Objekte.
-%\end{itemize}
+\item Klare Strukturierung von Inhalten durch sprechende, leicht
+  merkbare Adressen (Stichwort \ximsterm{Kurznamen}).
+\item Übersichtliche Navigation durch den Inhalt (Verwendung eines
+  »Breadcrumb- Navigations-Pfades«).
+%\item Flexible Suchmöglichkeiten unterstützt durch Google.
+\item Möglichkeit der Generierung von Dublin Core Metadaten für
+  \otherterm{XIMS} Inhalte und Objekte.
 \end{compactitem}    
 
-
-\otherterm{XIMS} wurde am Zentralen Informatikdienst der Universität Innsbruck
-entwickelt und ist als Open Source freigegeben worden
-(\url{http://xims.info/download}). Für allgemeine Fragen und Fragen zur
-Benutzung wenden Sie sich bitte an den \otherterm{XIMS}-Support, für
-technische Fragen, Bug-Meldungen oder gewünschte Features bitte an
+\otherterm{XIMS} wurde am Zentralen Informatikdienst der Universität
+Innsbruck entwickelt und ist als freie Software veröffentlicht worden
+(\url{http://xims.info/download}). Für allgemeine Fragen und Fragen
+zur Benutzung wenden Sie sich bitte an den \otherterm{XIMS}-Support,
+für technische Fragen, Bug-Meldungen oder gewünschte Features bitte an
 \href{mailto:xims-devel@lists.sourceforge.net}{\nolinkurl{xims-devel@lists.sourceforge.net}}.
-
-
 
 
 \subsection{Anmeldung}
 \label{anmeldung}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.00\textwidth]{./images/xims-login.png}
+  \caption{\otherterm{XIMS} Anmeldemaske}
+  \label{fig:xims-login}
+\end{figure}
+
 \otherterm{XIMS} ist an der Uni Innsbruck unter der Adresse
 \url{http://xims.uibk.ac.at} zu erreichen. Um Inhalte über
 \otherterm{XIMS} verwalten zu können, benötigt man einen gültigen
-\otherterm{Benutzerzugang} (Account). UIBK-Mitarbeiter erlangen mit der
-Akkreditierung über die Personalabteilung automatisch einen Zugang zu
-\otherterm{XIMS}. Durch die Eingabe von Benutzername (i.d.R. beginnend
-mit »c«) und entsprechendem Passwort (im Normalfall selbes Passwort
-wie für das Mail-System) in der \otherterm{XIMS}-Anmeldemaske (siehe
-Abb.~\ref{fig:xims-login}) erlangen \otherterm{XIMS}-Benutzer Zugang
-zum Inhalte-Management-System.
-
-\begin{figure}[ht!]
-	\centering
-		\includegraphics[width=1.00\textwidth]{./images/xims-login.png}
-	\caption{\otherterm{XIMS} Anmeldemaske}
-	\label{fig:xims-login}
-\end{figure}
-
+\otherterm{Benutzerzugang} (Account). UIBK"=Mitarbeiter/"=innen
+erlangen mit der Akkreditierung über die Personalabteilung automatisch
+einen Zugang zu \otherterm{XIMS}. Durch die Eingabe des Benutzernamens
+(beginnt i.\,d.\,R. mit »c«) und des Passworts (normalerweise selbes
+Passwort wie am Mail-System) in der \otherterm{XIMS}-Anmeldemaske
+(siehe Abb.~\ref{fig:xims-login}) erlangen \otherterm{XIMS}-Benutzer
+Zugang zum System.
 
 \subsection{Schnelleinstieg -­ \otherterm{XIMS} in 5 Seiten}
 \label{schnelleinstieg}
 
-Der folgende Schnelleinstieg in \otherterm{XIMS} soll den Benutzer in die Lage
-versetzen einfache Veränderungen an Webseiten via \otherterm{XIMS} vorzunehmen.
-Der Schnelleinstieg ist nicht als Ersatz für die restlichen Kapitel der Schritt
-für Schritt Anleitung gedacht, sondern als gekürzte Darstellung der
-\otherterm{XIMS} Basisfunktionalität.
+Der folgende Schnelleinstieg in \otherterm{XIMS} soll Benutzer/-innen
+in die Lage versetzen, einfache Veränderungen an Webseiten in
+\otherterm{XIMS} vorzunehmen. Der Schnelleinstieg ist als gekürzte
+Darstellung der Grundfunktionen gedacht und kann die
+Auseinandersetzung mit den restlichen Kapiteln der
+Schritt"=für"=Schritt"=Anleitung nicht ersetzen.
 
 \subsubsection{Startseite mit Lesezeichen}
 \label{quick-startseite}
 
-Nach erfolgreicher Anmeldung wird die benutzerspezifische
-\otherterm{XIMS}-Startseite angezeigt. Je nach
-Rollenzugehörigkeit\footnote{Siehe Punkt \ref{rollenverwaltung}} stehen
-verschiedene \otherterm{Lesezeichen} (1) zur Verfügung. Lesezeichen sollen die Navigation
-zum jeweiligen \ximsterm{DepartmentRoot} vereinfachen.
-
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[width=1.00\textwidth]{./images/ximsstartseite.png}
-	\caption{Benutzerspezifische \otherterm{XIMS} Startseite}
-	\label{fig:ximsstartseite}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.00\textwidth]{./images/ximsstartseite.png}
+  \caption{Benutzerspezifische \otherterm{XIMS} Startseite}
+  \label{fig:ximsstartseite}
 \end{figure}
 
-
-Mittels Klick auf das gewünschte Zielobjekt (via Lesezeichen oder »zuletzt geänderte
-Objekte«) navigiert man zur \ximsterm{Containeransicht}.
+Nach erfolgreicher Anmeldung wird die persönliche
+\otherterm{XIMS}-Startseite angezeigt. Abhängig von den vergebenen
+Rollen\footnote{Siehe Punkt \ref{rollenverwaltung}} stehen
+verschiedene \otherterm{Lesezeichen} und Links auf eine Auswahl der
+zuletzt erstellten oder geänderten Objekte zur Verfügung.
 
 \subsubsection{\ximsterm{Containeransicht}}
 \label{quick-containeransicht}
 
-Die \ximstermdef{Containeransicht} gibt einen Überblick über alle bereits vorhandenen Objekte und
-bietet verschiedene Optionen zur Objektverwaltung an.
-\begin{description}
-\item[(1)] zeigt den derzeitigen \ximsterm{Objektstatus} an (publiziert, nicht publiziert, ...)
-\item[(2)] listet die Objekte jeweils mit einem vom \ximsterm{Objekttyp} abhängigen Icon
-\item[(3)] zeigt das Datum der letzten Änderung
-\item[(4)] listet die zur Verfügung stehenden Optionen (editieren, kopieren,
-verschieben, publizieren, ...)
-\item[(5)] Menü zum Erstellen neuer Objekte
-\end{description}
-\bigskip
-
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[width=1.00\textwidth]{./images/XI5S-containeransicht.png}
-	\caption{\ximsterm{Containeransicht}}
-	\label{fig:containeransicht}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.00\textwidth]{./images/XI5S-containeransicht.png}
+  \caption{\ximsterm{Containeransicht}}
+  \label{fig:containeransicht}
 \end{figure}
 
+Die \ximstermdef{Containeransicht} gibt einen Überblick über die
+vorhandenen Objekte und bietet verschiedene Möglichkeiten zu deren
+Verwaltung an:
+\begin{description}
+\item[(1)] zeigt den derzeitigen \ximsterm{Objektstatus} an
+  (publiziert, nicht publiziert, \dots)
+\item[(2)] zeigt ein Icon für den \ximsterm{Objekttyp} sowie den Titel
+  des Objekts
+\item[(3)] zeigt das Datum der letzten Änderung
+\item[(4)] zeigt möglichen Operationen (editieren, kopieren,
+  verschieben, publizieren, \dots)
+\item[(5)] das Menü zum Erstellen neuer Objekte
+\end{description}
+
+\clearpage %XXX
 
 Die unter (4) gezeigten \ximsterm{Verwaltungsoptionen} im Detail:
 
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[width=0.4\textwidth]{./images/XI5S-optionsicons.png}
-	\caption{Verwaltungsoptionen für Objekte}
-	\label{fig:optionsicons}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{./images/XI5S-optionsicons.png}
+  \caption{Verwaltungsoptionen für Objekte}
+  \label{fig:optionsicons}
 \end{figure}
 
 \begin{description}
-\item[(A) \otherterm{Editieren}:] Öffnet den Editor (vom \ximsterm{Objekttyp} abhängig!)
-\item[(B) \otherterm{Kopieren}:] Stellt vom gewählten Objekt eine Kopie her (Bsp: Copy of Test)
-\item[(C) \otherterm{Verschieben}:]\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.} Öffnet ein Menü zum Verschieben des Objekts
-\item[(D) \otherterm{Publizieren}:] Öffnet das Menü zum Veröffentlichen von Objekten
-\item[(E) \otherterm{Rechte verwalten}:] Öffnet die Rechteverwaltung
-\item[(F) \otherterm{Löschen}:]\footnote{Steht nur zur Verfügung wenn das Objekt noch nicht publiziert ist.} Löscht das Objekt (siehe Punkt \ref{delete}: Objekte löschen und »Papierkorb«)
+\item[(A) \otherterm{Editieren}] Öffnet eine Bearbeitungsansicht
+  (z.\,B. den Editor bei Dokumenten)
+\item[(B) \otherterm{Kopieren}] Stellt vom gewählten Objekt eine Kopie
+  her (Bsp: Copy~of~Test)
+\item[(C) \otherterm{Verschieben}\footnote{Steht nur zur Verfügung
+    wenn das Objekt \emph{nicht} publiziert ist.}] Öffnet ein Menü zum
+  Verschieben des Objekts
+\item[(D) \otherterm{Publizieren}] Öffnet das Menü zum Veröffentlichen
+  von Objekten
+\item[(E) \otherterm{Rechte verwalten}] Öffnet die Rechteverwaltung
+\item[(F) \otherterm{Löschen}\footnote{Steht nur zur Verfügung wenn
+    das Objekt \emph{nicht} publiziert ist.}] Löscht das Objekt (siehe
+  Punkt \ref{delete}: Objekte löschen und »Papierkorb«)
 \end{description}
 
 \subsubsection{Erstellen von Objekten}
 \label{quick-erstellen}
 
-Mit Hilfe des Erstellen-Menüs (5) können verschiedene \ximstermdef{Objekttyp}en\footnote{Abhängig von den Benutzerrechten} erstellt werden.
-Die Standardobjekttypen lauten:
+Mit Hilfe des Erstellen-Menüs (5) können verschiedene
+\ximstermdef{Objekttyp}en\footnote{Abhängig von den Benutzerrechten}
+erstellt werden. Die Standardobjekttypen lauten:
 
-Dokument (Document), Datei (File), Ordner (Folder), Bild (Image), Text und URLLink\footnote{Siehe Punkt \ref{urllinks}}.
-Eine Datei kann prinzipiell jede binäre Datei sein (z.B. ein PDF-Datei, eine MS-Word-Datei, ...), einzig Bilder sollten stets über den Menüpunkt Bild (Image) erstellt
-werden. Nur so ist sichergestellt, dass die Bilder später problemlos in den
-verschiedenen Bild-Einfügen-Dialogen aufgefunden werden können.
+Dokument (\ximsterm{Document}), Datei (\ximsterm{File}), Ordner
+(\ximsterm{Folder}), Bild (\ximsterm{Image}), \ximsterm{Text} und
+\ximsterm{URLLink}\footnote{Siehe Punkt \ref{urllinks}}.
+\ximsterm{File} kann prinzipiell jede\footnote{Zumeist wird es sich um
+  binäre Dateitypen handeln. In Ausnahmefällen kann es aber auch
+  sinnvoll sein zu tricksen und z.\,B. HTML-Dateien als
+  \ximsterm{File} mit der Endung \path{.htm} am System vorbeizumogeln}
+Datei sein (z.\,B. ein PDF-Datei, eine MS-Word-Datei, ...) -- einzig
+Bilder sollten stets über den Menüpunkt Bild (Image) erstellt werden,
+denn nur so ist sichergestellt, dass die Bilder später problemlos in
+den verschiedenen Bild-Einfügen-Dialogen aufgefunden werden können.
 
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[width=0.25\textwidth]{./images/XI5S-erstellen-menu.png}
-	\caption{Erstellen-Menü}
-	\label{fig:erstellenmenu}
+\begin{figure}[!ht] 
+  \centering
+  \includegraphics[width=0.25\textwidth]{./images/XI5S-erstellen-menu.png}
+  \caption{Erstellen-Menü}
+  \label{fig:erstellenmenu}
 \end{figure}
 
-Ein Klick auf den jeweiligen Menüpunkt öffnet den Dialog zum Erstellen des Objekts.
+Ein Klick auf den jeweiligen Menüpunkt öffnet den Dialog zum Erstellen
+des Objekts. Dieser ähnelt dem Dialog zum Bearbeiten eines Dokuments
+und wird im folgenden Abschnitt beschrieben.
 
 \subsubsection{Editieren von Objekten}
 \label{quick-editieren}
 
-Der Dialog zum Erstellen eines Dokuments gleicht dem zum Editieren eines
-Dokuments.
-Im Pflichtfeld \ximsterm{Location} muss der künftige Dateiname des zu erstellenden
-Dokuments eingetragen werden. Wird das Dokument veröffentlicht (siehe dazu
-Punkt \ref{quick-publizieren}), so findet man den Eintrag der \ximsterm{Location} in dem \otherterm{URL} wieder. Deshalb sollte
-zum einen eine möglichst selbsterklärende und leicht zu merkende Bezeichnung der
-\ximsterm{Location} vergeben werden, zum anderen bestehen deshalb gewisse
-Beschränkungen für den Feldinhalt. So sind beispielsweise im Feld \ximsterm{Location} keine
-Umlaute, Sonder- oder Leerzeichen erlaubt.
-Die Dateiendung (\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom System beim Speichern abhängig
-vom \ximsterm{Objekttyp} und Datenformat automatisch hinzugefügt.
-Der Titel, in unserem Beispiel »Schritt für Schritt«, entspricht dem Namen des
-Dokuments, unter welchem dieses Dokument zukünftig in der \ximsterm{Containeransicht}
-aufscheinen wird.
+Im Pflichtfeld \ximsterm{Location} muss der künftige Dateiname des
+neuen Dokuments eingetragen werden. Wird das Dokument
+veröffentlicht,\footnote{Siehe dazu Punkt \ref{quick-publizieren}.} so
+findet man den Eintrag der \ximsterm{Location} in der \otherterm{URL}
+wieder. Deshalb sollte zum einen eine möglichst selbsterklärende und
+leicht zu merkende Bezeichnung der \ximsterm{Location} vergeben
+werden, zum anderen bestehen deshalb gewisse Beschränkungen für den
+Feldinhalt. So sind beispielsweise im Feld \ximsterm{Location} keine
+Umlaute, Sonder- oder Leerzeichen erlaubt. Die Dateiendung
+(\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom System beim
+Speichern abhängig vom \ximsterm{Objekttyp} und Datenformat
+automatisch hinzugefügt.
+
+Der \ximsterm{Titel}, in unserem Beispiel »Schritt für Schritt«, wird
+später in der Containeransicht aufscheinen. Beim \ximsterm{Objekttyp}
+\ximsterm{Document} wird aus diesem Feld das HTML-Element
+\texttt{<title>} erzeugt, der Titel erscheint im publizierten Dokument
+in der Titelleiste des Browserfensters.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=1.00\textwidth]{./images/XI5S-dokument-tinymce.png}
-	\caption{Dokument im TinyMCE Editor}
-	\label{fig:XI5S-dokument-tinymce}
+  \centering
+  \includegraphics[width=1.00\textwidth]{./images/XI5S-dokument-tinymce.png}
+  \caption{Dokument im TinyMCE Editor}
+  \label{fig:XI5S-dokument-tinymce}
 \end{figure}
 
-
-Die Benutzeroberfläche des \otherterm{TinyMCE}-Editor ähnelt der von MS-Word. Die
-verschiedenen Bedienelemente sind größtenteils analog zu MS-Word zu verwenden.
-Ist der Editiervorgang abgeschlossen, so können die Änderungen mit einem Klick
-auf den »Speichern«-Button gespeichert werden. Um die Änderungen zu verwerfen
-klickt man auf den »Abbrechen«-Button.
+Die Benutzeroberfläche des \otherterm{TinyMCE}-Editor ähnelt jener von
+MS-Word, Die verschiedenen Bedienelemente sind größtenteils analog
+verwendbar. Ist der Editiervorgang abgeschlossen, so können die
+Änderungen mit einem Klick auf den »Speichern«-Button gespeichert
+oder mit »Abbrechen« verworfen werden.
 
 \begin{Hinweis}
   Navigieren Sie nicht mit der »Vor«- und »Zurück«-Taste ihres
   Browsers aus dem Editor, weil das bearbeitete Objekt ansonsten für
-  andere Benutzer gesperrt wird. Siehe Punkt \ref{gesperrteobjekte}
-  »Gesperrte Objekte«.
+  andere Benutzer gesperrt wird.\footnote{Siehe Punkt \ref{gesperrteobjekte}
+  »Gesperrte Objekte«.}
 \end{Hinweis}
+
+
 
 \subsubsection{Veröffentlichen von Objekten}
 \label{quick-publizieren}
 
-Ein in \otherterm{XIMS} erstelltes Objekt ist der Öffentlichkeit nicht sofort zugänglich. Es befindet
-sich zuerst lediglich auf dem \otherterm{XIMS}-Server. Um es öffentlich abrufbar zu machen,
-muss es veröffentlicht werden. Beim erstmaligen \otherterm{Publizieren} eines neu erstellten
-Objekts erscheint folgendes \otherterm{Dialogfenster} (siehe Abb.~\ref{fig:XI5S-publish}), das ein »Veröffentlichen« oder
+Ein in \otherterm{XIMS} erstelltes Objekt ist der Öffentlichkeit nicht
+sofort zugänglich. Es befindet sich zuerst lediglich in
+\otherterm{XIMS} selbst. Um es über den öffentlichen Webserver
+abrufbar zu machen, muss es zuerst in einem eigenen Schritt
+veröffentlicht werden. Beim erstmaligen \otherterm{Publizieren} eines
+neu erstellten Objekts erscheint folgendes \otherterm{Dialogfenster}
+(siehe Abb.~\ref{fig:XI5S-publish}), das »Veröffentlichen« oder
 »Abbrechen« zur Auswahl stellt.
 
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[width=0.60\textwidth]{./images/XI5S-publish.png}
-	\caption{Veröffentlichen eines Objekts}
-	\label{fig:XI5S-publish}
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./images/XI5S-publish.png}
+  \caption{Veröffentlichen eines Objekts}
+  \label{fig:XI5S-publish}
 \end{figure}
 
+Wurden an einem veröffentlichten Objekt Änderungen vorgenommen, so
+muss das Objekt »wiederveröffentlicht« werden, um die aktualisierte
+Version auf den Webserver zu schreiben. Die Operation »Veröffentlichen
+rückgängig machen« nimmt ein Objekt wieder aus dem öffentlichen
+Bereich.\footnote{Nachdem die Veröffentlichung rückgängig gemacht
+  wurde, stehen Optionen wie beispielsweise »verschieben« oder
+  »löschen« wieder zur Verfügung.}.
 
-Bricht man den Vorgang an dieser Stelle ab, ist das Objekt weiterhin nur in der
-\otherterm{XIMS}-Datenbank präsent, nicht aber am \otherterm{Webserver}.
-Nach einem Klick auf den »Veröffentlichen«-Button erscheint eine Erfolgsmeldung,
-die bestätigt dass das Objekt nun öffentlich erreichbar ist.
-Wurden bei einem bereits veröffentlichten Objekt Änderungen vorgenommen, muss
-das Objekt »wiederveröffentlicht« werden, um die aktualisierte Version öffentlich
-abrufbar zu machen.
-Will man hingegen, dass ein zuvor publiziertes Objekt nicht mehr allgemein
-zugänglich ist, wählt man die Option »Veröffentlichen rückgängig machen«\footnote{Nachdem die Veröffentlichung rückgängig gemacht wurde, stehen Optionen wie
-beispielsweise »verschieben« oder »löschen« wieder zur Verfügung.}.
-
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[width=0.80\textwidth]{./images/XI5S-republish.png}
-	\caption{Dialog Wiederveröffentlichen/Veröffentlichen rückgängig machen}
-	\label{fig:XI5S-republish}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.70\textwidth]{./images/XI5S-republish.png}
+  \caption{Dialog Wiederveröffentlichen/Veröffentlichen rückgängig machen}
+  \label{fig:XI5S-republish}
 \end{figure}
 
 \section{Startseite und allgemeiner Aufbau}
@@ -392,7 +424,7 @@ Der \ximstermdef{Navigationspfad} zeigt den Pfad vom
 »\ximstermdef{SiteRoot}« (an der Uni Innsbruck heißt der
 \ximsterm{SiteRoot} \path{uniweb}) bis zum aktuellen Objekt an. Das Anklicken
 eines Teilpfades ermöglicht ein schnelles Wechseln in einen
-übergeordneten \ximsterm{Container}. Die Pfadfragmente (z.B. \path{uniweb})
+übergeordneten \ximsterm{Container}. Die Pfadfragmente (z.\,B. \path{uniweb})
 entsprechen dabei dem »\ximsterm{Location}«-Attribut des \ximsterm{Container}s.
 
 \paragraph{Navigationspfeile}
@@ -763,7 +795,7 @@ Metainformation auf. Über die \otherterm{XIMS}-Suche kann gezielt nach ihnen ges
 \paragraph{Zusammenfassung (Abstract)}
 \label{abstract}
 
-Die Zusammenfassung stellt eine kurze Beschreibung des Dokuments dar (z.B.:
+Die Zusammenfassung stellt eine kurze Beschreibung des Dokuments dar (z.\,B.:
 »ZID-Benutzungsantrag für Studierende«). I.d.R. scheint bei den
 Suchergebnissen die Zusammenfassung unter dem Titel auf.
 
@@ -854,17 +886,17 @@ Siehe Punkt~\ref{markasnew}.
 \paragraph{Verhindere \ximstermdef{Autoindex} beim Veröffentlichen}
 \label{autoindex}
 
-Auf eine Anfrage nach einem Verzeichnis (z.B.: \url{http://www.uibk.ac.at/zid/}) liefert der
+Auf eine Anfrage nach einem Verzeichnis (z.\,B.: \url{http://www.uibk.ac.at/zid/}) liefert der
 Webserver normalerweise ein sogenanntes Indexdokument aus. \otherterm{XIMS} kann beim
 Veröffentlichen automatisch ein solches Dokument mit einer einfachen Liste des
 Verzeichnisinhalts erstellen. Dieses Standardverhalten kann mit der Option
 »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« wenn nötig unterbunden
-werden.\footnote{Wir empfehlen, den \ximsterm{Autoindex} abzuschalten, falls Sie mehrsprachige Indexdokumente (z.B.:
+werden.\footnote{Wir empfehlen, den \ximsterm{Autoindex} abzuschalten, falls Sie mehrsprachige Indexdokumente (z.\,B.:
 \nolinkurl{index.html.de} und \nolinkurl{index.html.en}) verwenden wollen, es kann sonst zu Fehlern bei der
 Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss \path{index} lauten, der Webserver verwendet es dann automatisch.
 
 \begin{Hinweis}
-  Ein Objekt mit der \ximsterm{Location} \path{index} (z.B.
+  Ein Objekt mit der \ximsterm{Location} \path{index} (z.\,B.
   \nolinkurl{index.html}) wird vom Webserver gegenüber dem automatisch
   erstellten Index vorgezogen, d.h. sobald ein Objekt mit der
   \ximsterm{Location} \path{index} in dem \ximsterm{Container}
@@ -874,7 +906,7 @@ Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst
 
 Ist in einem Verzeichnis kein Indexdokument vorhanden und publiziert, gibt der
 Webserver auf eine Anfrage die Fehlermeldung
-»Forbidden« zurück -- sinngemäß: das Auflisten des Verzeichnisinhalts ist
+»Forbidden« zurück -- sinngemäß: das Auf"|listen des Verzeichnisinhalts ist
 verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 
 \begin{Hinweis}
@@ -942,7 +974,7 @@ Um eine Bild-Datei (Image) in \otherterm{XIMS} zu erstellen, d.h. ein Bild vom l
 verwenden oder den Dateipfad im lokalen Dateisystem direkt eingeben. Über die
 Durchsuchen-Funktion vermeidet man falsche Pfadangaben durch Tippfehler und
 sie ist der komfortablere Weg um den Pfad zur gewünschten Bild-Datei zu
-generieren (z.B.: \path{G:\service\bilder\sun.jpg}).
+generieren (z.\,B.: \path{G:\service\bilder\sun.jpg}).
 
 \begin{figure}[!ht]
 	\centering
@@ -998,7 +1030,7 @@ Datei vom lokalen Rechner zu importieren, kann man entweder die
 Durchsuchen-Funktion verwenden oder den Dateipfad im lokalen Dateisystem direkt
 eingeben. Über die Durchsuchen-Funktion vermeidet man falsche Pfadangaben
 durch Tippfehler und sie ist der komfortablere Weg um den Pfad zur gewünschten
-Datei zu generieren (z.B.: \path{G:\docs\anmeldung.pdf}).
+Datei zu generieren (z.\,B.: \path{G:\docs\anmeldung.pdf}).
 
 \begin{figure}[!ht]
 	\centering
@@ -1056,7 +1088,7 @@ der Domäne \url{http://www.uibk.ac.at}) als auch interne Links erstellt
 werden. Hinzu kommt, dass diesem Objekttyp bei der Erstellung von
 \ximsterm{DepartmentLinks} eine besondere Rolle zukommt (siehe Punkt \ref{deplinks}). Bei internen Links ist zu beachten, dass diese absolut zum
 \ximsterm{SiteRoot} anzugeben sind (i.d.R. absolut zu \path{/uniweb}). Alternativ kann
-auch die offizielle \otherterm{URL} der Seite (z.B. \url{http://www.uibk.ac.at/zid}),
+auch die offizielle \otherterm{URL} der Seite (z.\,B. \url{http://www.uibk.ac.at/zid}),
 welche verlinkt werden soll, angegeben werden. Externe Links müssen
 zwingend mit dem \nolinkurl{http://}- bzw. \nolinkurl{https://}-Prefix angegeben werden.
 
@@ -1128,8 +1160,8 @@ Bestimmen dieses Pfades.
 \begin{Hinweis}
   Über ein \ximsterm{Portlet} kann zum Beispiel eine Box mit einer
   Linkliste als Inhalt einfach erstellt werden. \otherterm{XIMS}
-  durchsucht hierfür den Inhalt eines \ximsterm{Container}s (z.B.
-  eines Verzeichnisses) und listet den entsprechenden Inhalt (z.B.
+  durchsucht hierfür den Inhalt eines \ximsterm{Container}s (z.\,B.
+  eines Verzeichnisses) und listet den entsprechenden Inhalt (z.\,B.
   eine Reihe von Dokumenten), dargestellt als Liste mit Links
   verweisend auf die entsprechenden Dokumente, auf.
 \end{Hinweis}
@@ -1141,7 +1173,7 @@ Siehe Punkt \ref{zugriffsrechte} sowie Punkt \ref{rollenverwaltung}
 \paragraph{Zusätzliche Einstellmöglichkeiten für \ximsterm{Portlet}s}
 
 Portlets sind ein mächtiges Werkzeug von \otherterm{XIMS}. Sie schaffen zusätzlich zur
-Auflistung der Objekttitel eine Reihe anderer Möglichkeiten, z.B. können
+Auf"|listung der Objekttitel eine Reihe anderer Möglichkeiten, z.\,B. können
 Containerinhalte gefiltert nach speziellen Attributen bzw. \ximsterm{Objekttyp}en dargestellt
 werden. Für genauere Informationen bezüglich \ximsterm{Portlet}s wird auf die \otherterm{XIMS}-Schulungen
 bzw. den \otherterm{XIMS}-Support verwiesen.
@@ -1254,7 +1286,7 @@ strukturierte Dokumente mit Hilfe von XML zu schreiben. Docbook XML
 eignet sich besonders für Bücher und Artikel über
 Computerhardware/-software sowie sonstige technische Dokumentationen.
 Docbook XML verfolgt das Konzept, Dokumente unabhängig vom später
-publizierten Medium (z.B. Internetseite, gedrucktes Buch) zu
+publizierten Medium (z.\,B. Internetseite, gedrucktes Buch) zu
 erstellen. Für die spätere Konvertierung in das entsprechende
 Endformat wird \otherterm{XSLT} verwendet. In \otherterm{XIMS} können Simplified Docbook XML
 Objekte (\ximsterm{sDocBookXML}) erstellt werden. Simplified DocBook XML bzw. die
@@ -1396,7 +1428,7 @@ Leichtes. Im Folgenden werden die grundlegenden Schritte beschrieben:
 \begin{enumerate}
 	\item {Der Cursor muss sich an der Stelle befinden, an der das Bild eingefügt
 werden soll.}
-	\item {Durch Klicken auf das »Bild einfügen/verändern-Icon« öffnet sich der Eigenschaften-Dialog. Über
+	\item {Durch Klicken auf das »Bild einfügen/verändern-Icon« öffnet sich der Ei"-gen"-schaf"-ten-Dia"-log. Über
 diesen Dialog können die Breite, Höhe, Randbreite, Ausrichtung, horizontaler
 und vertikaler Abstand und der Titel für jedes Bild angegeben werden.}
 
@@ -1480,7 +1512,7 @@ Hyperlink erstellt.
 	\centering
 		\includegraphics[width=0.4\textwidth]{./images/tinycontextimage.png}
 	\caption{TinyMCE: Im Kontext-Menü können Links
-eingefügt/verändert/entfernt werden.}
+eingefügt/"-verändert/"-entfernt werden.}
 	\label{fig:tinycontextimage}
 \end{figure}
 
@@ -1500,7 +1532,7 @@ später verwiesen werden.}
 \end{figure}
 
 Im Feld »Adresse« kann nun auf das soeben erstelle Lesezeichen Bezug genommen
-werden, in diesem Fall z.B. mit \texttt{seitenende} (siehe Abb.~\ref{fig:tinyankerdialog}).
+werden, in diesem Fall z.\,B. mit \texttt{seitenende} (siehe Abb.~\ref{fig:tinyankerdialog}).
 
 \subsection{Importieren von MS-Word-Text in \otherterm{TinyMCE}}
 \label{importword}
@@ -1672,7 +1704,7 @@ zu veröffentlichen}
 
 \otherterm{XIMS} verfügt über ein umfangreiches Berechtigungssystem. Dieses ermöglicht eine
 sehr feingranulare Steuerung von Berechtigungen. Berechtigungen können auf
-Basis einzelner Benutzer bzw. Rollen (z.B. zur Verwaltung von Benutzergruppen)
+Basis einzelner Benutzer bzw. Rollen (z.\,B. zur Verwaltung von Benutzergruppen)
 vergeben werden. Berechtigungen regeln die Privilegien auf \otherterm{XIMS}-Objekte.
 
 Ein Benutzer kann beispielsweise die Berechtigung besitzen, bestimmte Dokumente
@@ -1690,7 +1722,7 @@ verändern bzw. neue hinzufügen.
   Die Berechtigungen werden für das jeweilige, einzelne Objekt
   durchgesetzt; jemanden bloß aus einem übergeordneten Verzeichnis
   auszusperren ist also nicht ausreichend: Die darunter liegenden
-  Objekte könnten trotzdem (z.B. über die Suche) direkt angesprungen
+  Objekte könnten trotzdem (z.\,B. über die Suche) direkt angesprungen
   werden, wenn ihre eigene ACL dies zulässt!
 \end{Hinweis}
 
@@ -1740,7 +1772,7 @@ List« (ACL) entfernt und scheint somit nicht mehr in der Liste der Benutzer auf,
 welche explizite Rechte auf das Objekt zugewiesen bekommen haben.
 
 \begin{Hinweis}
-  Wenn Sie einer Rolle, z.B.: UIBK:ALL, alle Rechte nehmen wollen,
+  Wenn Sie einer Rolle, z.\,B.: UIBK:ALL, alle Rechte nehmen wollen,
   löschen Sie bitte die Rolle mit »Rechte entfernen« komplett aus der
   ACL. Wenn Sie die Rolle belassen und stattdessen alle Privilegien
   entfernen, sperren Sie damit alle Rollenmitglieder aus -- im Falle
@@ -1762,7 +1794,7 @@ Möglichkeit nach Benutzern bzw. Rollen zu suchen.
 \textbf{Suche nach Benutzern:}
 
 Um nach einzelnen Benutzern zu suchen, ist die Benutzerkennung in das
-Eingabefeld einzugeben (z.B. C102XX). Mit einem anschließenden Klick auf den
+Eingabefeld einzugeben (z.\,B. C102XX). Mit einem anschließenden Klick auf den
 »Suchen«-Button, sucht \otherterm{XIMS} nach dem besagten Benutzer und listet diesen auf. In
 weiterer Folge können dem Benutzer über den Link »Neue Rechte vergeben«
 gewünschte Privilegien eingeräumt werden.
@@ -1781,7 +1813,7 @@ von Privilegien für Benutzer vergeben werden.
 
 Um Benutzer zu einer Rolle hinzufügen oder zu entfernen kann die Rollenverwaltung
 verwendet werden. Der jeweilige Rollenadministrator kann sich mit seiner
-Benutzerkennung (z.B. C102XX) unter \url{http://xims.uibk.ac.at/roles} einloggen.
+Benutzerkennung (z.\,B. C102XX) unter \url{http://xims.uibk.ac.at/roles} einloggen.
 
 \begin{figure}[!ht]
 	\centering
@@ -1891,7 +1923,7 @@ einzugeben.
 \subparagraph{Externe Links}
 
 Für externe »Links zum Dokument« ist es zwingend erforderlich die vollständige URI
-im Eingabefeld »\ximsterm{Location}« mit vorangestelltem \nolinkurl{http://} einzugeben (z.B.:
+im Eingabefeld »\ximsterm{Location}« mit vorangestelltem \nolinkurl{http://} einzugeben (z.\,B.:
 \url{http://www.orf.at}).
 Bezüglich einer Beschreibung der Eingabefelder »Titel«, »Schlagworte«,
 »Zusammenfassung«, »Objekt als neu markieren« und »Zugriffsrechte
@@ -1920,7 +1952,7 @@ oberen bzw. im linken Bereich des Browser-Fensters suchen. Aus diesem Grund ist
 die grundlegende Navigation des UIBK-Designs auch auf diese Erkenntnis
 ausgerichtet. Neue Besucher auf DepartmentRoot Seiten werden die \ximsterm{DepartmentLinks} zur Hauptnavigation rasch finden. Die \ximstermdef{DepartmentSpeziallinks} sind im
 Gegensatz dazu auf häufig wiederkehrende Besucher ausgerichtet und sollen zum
-schnelleren Auffinden relevanter bzw. häufig veränderter Inhalte dienen.
+schnelleren Auf"|finden relevanter bzw. häufig veränderter Inhalte dienen.
 
 \subsubsection{DepartmentLinks}
 \label{deplinks}
@@ -2000,7 +2032,7 @@ Ordners.}
 \subsubsection{\ximstermdef{SubDepartmentLinks} (Unternavigation)}
 \label{subdeplinks}
  
-Um eine Unternavigation zu erstellen, wird im Grunde mittels \ximsterm{DepartmentLinks} auf \ximsterm{Container} verlinkt, die wiederum DepartmentLinks enthalten. Auf diese Weise enthält das eigentliche \ximsterm{DepartmentRoot} die Hauptnavigation (im Ordner \path{departmentlinks}) und die darin enthaltenen \ximsterm{DepartmentRoot}s - auch Subdepartmentroots genannt - enthalten ihrerseits jeweils die Unternavigation des jeweiligen Punktes der Hauptnavigation.
+Um eine Unternavigation zu erstellen, wird im Grunde mittels \ximsterm{DepartmentLinks} auf \ximsterm{Container} verlinkt, die wiederum DepartmentLinks enthalten. Auf diese Weise enthält das eigentliche \ximsterm{DepartmentRoot} die Hauptnavigation (im Ordner \path{departmentlinks}) und die darin enthaltenen \ximsterm{DepartmentRoot}s -- auch Subdepartmentroots genannt -- enthalten ihrerseits jeweils die Unternavigation des jeweiligen Punktes der Hauptnavigation.
 
 \paragraph{Voraussetzungen}
 
@@ -2093,7 +2125,7 @@ Browser Deutsch als präferierte Sprache eingestellt, wird dieser Benutzer die
 Webseiten, sofern in deutsch verfügbar, in Deutsch ausgeliefert bekommen.
 Selbiges gilt für Benutzer mit voreingestellter Sprache Englisch (in dem Fall
 bekommt der Benutzer die Inhalte in englisch präsentiert). Verlangt der Browser des
-Benutzers die Inhalte in einer Sprache -- und NUR in dieser Sprache (z.B.
+Benutzers die Inhalte in einer Sprache -- und NUR in dieser Sprache (z.\,B.
 Spanisch), in der die Inhalte i.d.R. nicht verfügbar sind, so wird standardmäßig
 versucht eine englische Version des Inhalts auszuliefern (ist auch eine englische
 Version nicht vorhanden -- jedoch andere Sprachversionen -- wird eine Liste der
@@ -2122,7 +2154,7 @@ englische Pendant dazu \nolinkurl{sfs.html.en} heißen.
 
 \begin{Hinweis}
   Prinzipiell funktioniert die Bereitstellung von Index-Dokumenten in
-  zwei Sprachen auf die gleiche Weise (z.B.
+  zwei Sprachen auf die gleiche Weise (z.\,B.
   \nolinkurl{index.html.de}). Jedoch ist dabei darauf zu achten, dass
   die Option »Verhindere \ximsterm{Autoindex} beim Veröffentlichen«
   für die entsprechenden Container-Objekte angekreuzt sein muss, da
@@ -2157,7 +2189,7 @@ einer Sprachvariante, so sollte auf das Sprachsuffix gänzlich verzichtet werden.
   DocBook XSL Distribution verwendet bei keiner expliziten
   Spezifikation der Inhaltssprache über das \texttt{lang}-Attribut des
   \texttt{article}-Elements standardmäßig die Sprache Englisch. So
-  werden Standardtexte wie z.B. »Table of Contents« (zu Deutsch:
+  werden Standardtexte wie z.\,B. »Table of Contents« (zu Deutsch:
   »Inhaltsverzeichnis«) in Englisch präsentiert, wenn keine explizite
   Sprachvorgabe erfolgt. Es empfiehlt sich daher bei einem
   SimpleDocBook Dokument in deutscher Sprache das öffnende
@@ -2319,14 +2351,14 @@ Tastenkombination »Shift+Enter«. (vgl.: MS-Word)
 oder Formatierungen anders dargestellt}
 
 Das liegt mit hoher Wahrscheinlichkeit an den Formatvorlagen, bzw.
--vorlagenzuweisungen im Quelldokument. Wenn z.B. die
+-vorlagenzuweisungen im Quelldokument. Wenn z.\,B. die
 Formatvorlage »Plaintext« im Quelldokument nicht mit der Standardschriftart
 »Courier« dargestellt wird, kommt es in der \otherterm{XIMS}-Version zu optischen
 Diskrepanzen, weil dort für die jeweilige Formatvorlage die Standardschriftart
 verwendet wird.
 
 Lösung:
-In den Quelldokumenten Standardformatvorlagen bzw. -formatvorlagenwerte
+In den Quelldokumenten Standardformatvorlagen bzw. "=formatvorlagenwerte
 verwenden.
 
 \paragraph{Beim Abspeichern oder Abrechen der Dokument-Bearbeitung kommt es zur
@@ -2335,7 +2367,7 @@ sinngemäßen Fehlermeldung: »Inhalt zu groß«}
 Das Limit für die Zeichenanzahl pro Dokument ist auf 262.145 Zeichen gesetzt.
 Größere Dokumente müssen aufgeteilt werden.
 Bevor Sie das Dokumente aufteilen, überlegen Sie sich bitte, ob es nicht sinnvoller
-wäre, den Inhalt als Datei z.B. in Form eines PDF-Dokuments einzubringen.
+wäre, den Inhalt als Datei z.\,B. in Form eines PDF-Dokuments einzubringen.
 
 \paragraph{Wo kann der Installer für den \otherterm{eWebEditPro} Klienten heruntergeladen werden?}
 
@@ -2385,7 +2417,7 @@ die Language-Negotiation (d. h. der Server sucht die Sprache nach den Präferenze
 die der Browser mitteilt aus) fehlschlägt. Der Server liefert dann die von \otherterm{XIMS}
 automatisch generierte Indexseite aus. Es sollte für den betreffenden Ordner die
 Option »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« gewählt und der Ordner neu
-publiziert werden. Es wird dann bei einem Fehlschlag - so vorhanden - die englische,
+publiziert werden. Es wird dann bei einem Fehlschlag -- so vorhanden -- die englische,
 sonst eine Liste der vorhandenen Varianten angezeigt.
 
 \begin{figure}[!ht]
@@ -2416,7 +2448,7 @@ nicht korrekte Anzeige sein. Ist dies der Fall, trennen Sie die Links oder Wörte
 einem Minus (-) bzw. entfernen einige Leerzeichen.
 
 Wenn aus inhaltlichen Gründen eine Umgehung dieser genannten Gründe nicht
-gangbar ist, gibt es die Möglichkeit diese Inhalte, wie z.B. breitere Bilder, oder Beispielscodefragmente (die nicht umbrechen dürfen) in \texttt{<pre>}-Tags als Link, der sich in
+gangbar ist, gibt es die Möglichkeit diese Inhalte, wie z.\,B. breitere Bilder, oder Beispielscodefragmente (die nicht umbrechen dürfen) in \texttt{<pre>}-Tags als Link, der sich in
 einem eigenen Fenster öffnet darzustellen.
 Dafür sind die folgenden Schritte notwendig:
 
