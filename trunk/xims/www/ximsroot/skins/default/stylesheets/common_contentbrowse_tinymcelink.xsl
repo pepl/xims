@@ -78,7 +78,7 @@
 
         function storeBack(target, linktext) {
       ]]>
-            var re = new RegExp("<xsl:value-of select="$absolute_path_nosite"/>/");
+            var re = new RegExp("^<xsl:value-of select="$absolute_path_nosite"/>/");
             var re_gopublic = new RegExp("<xsl:value-of select="concat($xims_box,$gopublic_content)"/>/");
       <![CDATA[
             if (re.test(target) && RegExp.rightContext.length > 0 && !target.match(re_gopublic)) {
