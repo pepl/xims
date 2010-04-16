@@ -452,6 +452,15 @@ sub _absrel_urlmangle {
         }
     }
 
+    # XXX fixup hack: remove exeeding '../'
+    my $level = $doclevels - 1;
+    $body =~ s/(src|href)=("|') # src or href attribute with = and starting quote
+               (\.\.\/){$level} # these already step up to the root
+               (?:\.\.\/)+      # thence these are too much
+              /$1 . '=' . $2
+               . $3 x $level
+              /egx;
+
     return $body;
 }
 
