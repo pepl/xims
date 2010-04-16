@@ -1,0 +1,29 @@
+$Id$
+
+Debian 3.1 (Sarge) specific notes for installing XIMS
+-----------------------------------------------
+
+Installing the following packages will cover the needed
+prequisites mentioned at step (0) by the INSTALL file.
+You should be able to install them by copy-and-pasting
+the following line:
+
+aptitude install apache libxml2 libxslt1 libxml2-utils libxml2-dev xml-core tidy libterm-readline-perl-perl libxml-libxml-perl libxml-libxslt-perl axkit axkit-xsp-webutils libclass-methodmaker-perl libcgi-xmlapplication-perl libtime-piece-perl libapache-dbi-perl libterm-readkey-perl libtext-diff-perl libarchive-zip-perl libtext-template-perl
+
+If you are planning to use PostgreSQL as database back-end
+you may want to install the following packages:
+
+aptitude install postgresql postgresql-contrib libdbd-pg-perl
+
+Note that PostgreSQL is configured to use the "identd" authentication method
+ for local connections per default. You might want to change that by allowing password-
+based authentication methods through adding lines like
+local   xims        xims                                            md5
+local   xims        ximsrun                                         md5
+to your pg_hba.conf.
+
+For Oracle, you will have to install Oracle and DBD::Oracle manually.
+
+After having installed these packages successfully,
+proceed with step (1) of the INSTALL file.
+

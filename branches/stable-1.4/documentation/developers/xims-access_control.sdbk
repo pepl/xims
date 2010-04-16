@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article lang="de">
+  <title>Access Control for xims</title>
+  <articleinfo>
+    <author>
+      <firstname>Christian</firstname>
+      <surname>Glahn</surname>
+      <affiliation>
+        <address format="linespecific">christian.glahn@uibk.ac.at</address>
+      </affiliation>
+    </author>
+  </articleinfo>
+  <section>
+    <title>Introduction</title>
+    <para>If many user of different motivations, skillevel or
+    institutional position work together with a content management
+    system, the system must check for each single data access, if the
+    current user has the right to do such operation. For operations
+    like delete or store, the reasons for such control is obvious: Not
+    every user should be able to modify any data stored inside the
+    system.</para>
+    <para>In case of XIMS there are many varieties of possible
+    operations to describe a user's relation to the data. This
+    starts with a simple 'read' access privilege telling the
+    system if a user is allowed or not.</para>
+    <para>This document will cover access control in XIMS. There will
+    be two main sections in this document: One will describe the
+    privileges and what they describe in case of the three major
+    object types known in XIMS: container, text document and binary
+    document. The second one (?)</para>
+  </section>
+  <section>
+    <title>The Privileges</title>
+    <para>XIMS implements the pivileges as bit-mask stored for each
+    object and role. All privileges are stored as 32-bit
+    integer.</para>
+    <para>The following list shows the object privileges currently
+    defined. The symbolic names for the numerical values are stored in
+    <function>XIMS::Privileges</function> (contained in
+    <function>XIMS.pm</function>)</para>
+    <itemizedlist>
+      <listitem>
+        <para>VIEW (Access) (0x1)</para>
+      </listitem>
+      <listitem>
+        <para>WRITE (0x2)</para>
+      </listitem>
+      <listitem>
+        <para>DELETE (0x4)</para>
+      </listitem>
+      <listitem>
+        <para>PUBLISH (0x8)</para>
+      </listitem>
+      <listitem>
+        <para>ATTRIBUTES (0x10)</para>
+      </listitem>
+      <listitem>
+        <para>TRANSLATE (0x100)</para>
+      </listitem>
+      <listitem>
+        <para>CREATE (0x200)</para>
+      </listitem>
+      <listitem>
+        <para>MOVE (0x400)</para>
+      </listitem>
+      <listitem>
+        <para>LINK (0x800)</para>
+      </listitem>
+      <listitem>
+        <para>PUBLISH_ALL (0x1000)</para>
+      </listitem>
+      <listitem>
+        <para>ATTRIBUTES_ALL (0x2000)</para>
+      </listitem>
+      <listitem>
+        <para>DELETE_ALL (0x10000)</para>
+      </listitem>
+      <listitem>
+        <para>GRANT (0x1000000)</para>
+      </listitem>
+      <listitem>
+        <para>GRANT_ALL (0x2000000)</para>
+      </listitem>
+      <listitem>
+        <para>OWNER (0x40000000)</para>
+      </listitem>
+      <listitem>
+        <para>MODIFY (0x43012F17) (combination of VIEW, WRITE, DELETE,
+        ATTRIBUTES, TRANSLATE, CREATE, MOVE, LINK, ATTRIBUTES_ALL,
+        DELETE_ALL, GRANT, GRANT_ALL, and OWNER)</para>
+      </listitem>
+      <listitem>
+        <para>MASTER (0x80000000)</para>
+      </listitem>
+    </itemizedlist>
+    <para>It should be possible to grant '0' privilege masks
+    to users or roles. This would simply mean the explicit exclusion
+    of this role or user.</para>
+    <para>There are some leaks, where currently the numerical value is
+    not assigned to a certain privilege. This is because I tried to
+    cluster the privileges. It shows that this list is not considered
+    to be complete.</para>
+    <para>There are some privileges that have the
+    <emphasis>_ALL</emphasis> suffix. These privileges are ment to be
+    document-wide while the others are just content related. For
+    example a user who wants to delete an entire subtree of a folder,
+    but has just the ordinary 'DELETE' privilege, can't do
+    so since this would require the removal of the major document
+    object (stored in <function>ci_documents</function>).</para>
+    <para>The grant-right is somewhat more complicated: If a user
+    wants to grant a certain right to another user, the grantor needs
+    to have the right he wants to grant! This is to avoid users
+    granting privileges to others they don't own themselves. Any
+    ACL-implementation should follow this to avoid security
+    leaks.</para>
+    <para>The last two privileges are more symbolic roles in the
+    content. They are not defined as 'real' roles, so XIMS can
+    implement multiple ownership and general administrative privileges
+    on subtrees. The owner flag shows that the current user is the
+    owner of the current document. This should be a workaround for the
+    missing document-owner. This flag implies 0x0300031f (which is a
+    combination of the xxx-privileges) on all content, which means the
+    owner is entitled to perform simple operations on the
+    document.</para>
+    <para>The master flag shows, that the user is the master of an
+    entire subtree. This implies a privilege mask of 0x0301331d. The
+    master flag is for administrative reasons mainly. A
+    'master' has also the right to grant/revoke privileges not
+    owned by the master himself. As well the 'master' is
+    allowed to delete an entire subtree regardless of the rights the
+    user has on any child in the subtree.</para>
+    <para>Since the master is generally not responsible for the
+    content he is not allowed to edit the content</para>
+  </section>
+  <section>
+    <title>Roles and Users</title>
+    <para>XIMS implements a cascaded user/role system. This allows
+    fine-grained privilege settings for users and roles. The role
+    system in XIMS is level specific. A role is more specific, the
+    more direct the user inherits it. This allows users to have
+    differnt roles on the same inheritation level. On a certain level
+    all roles are equally significant. This means that all privileges
+    granted to one of these roles for a certain object are available
+    to the user unless a more significant role level defines
+    <emphasis>other</emphasis> privileges.</para>
+    <para>For example: If the role of a user has full access to an
+    object, but the user himself is explicitly not allowed to access
+    it, he will be denied as a consequence of this
+    implementation.</para>
+    <para>If XIMS can't find privileges neither for the user nor
+    for his roles, the user is assumed to be part of the dummy role
+    'world'. This role is similar to 'other' in Unix
+    systems. No user is directly granded to this role, but all
+    implicitly belong to it. This implicit dummy role is required,
+    since otherwise this role would overide the privileges of more
+    significant roles of the user.</para>
+  </section>
+  <section>
+    <title>Access Control Implementation</title>
+    <para>The following section describes the algorithms, how access
+    control is implemented in XIMS.</para>
+    <para>The access control in xims has four stages:</para>
+    <itemizedlist>
+      <listitem>
+        <para>System Access</para>
+      </listitem>
+      <listitem>
+        <para>General Access Check</para>
+      </listitem>
+      <listitem>
+        <para>Operation Control</para>
+      </listitem>
+      <listitem>
+        <para>Display Control</para>
+      </listitem>
+    </itemizedlist>
+    <para>Each stage represents the different level the system handles
+    the object and user data at. While all access control is
+    orientated on cascaded role definitions (see there) (?).</para>
+    <section>
+      <title>System Access</title>
+      <para>The first stage of access control in XIMS takes place when a
+      client tries to access the system. At this stage the system simply
+      checks if the client is allowed to access any XIMS data.</para>
+      <para>The basic operation on this stage are login, logout and
+      session validation, implemented in the separate mod_perl module
+      <function>Apache::AuthXIMS</function>.</para>
+      <section>
+        <title>Algorithm</title>
+        <para>At the start of each request the system checks for a
+        session-id that has to be stored in a cookie. If the cookie is
+        available and if it is valid for the clients host, access will be
+        granted, otherwise the request will be rejected.</para>
+        <para>In case a session-id is found, it is tested if the parameter
+        'logout' can be found in the <function>GET</function>
+        querystring the session-id cookie is unset and the user-request is
+        rejected.</para>
+        <para>If no session-id is availablem the only possible data
+        allowed is (POSTed) login data. If such data is available, the
+        password will be validated by the configured authentication
+        method: currently this could be either <function>IMAP</function>,
+        <function>LDAP</function> or <function>internal db-stored
+        password</function>.</para>
+        <para>After authentication is successfully passed, XIMS will test
+        if the username is available in the system.</para>
+        <para>If the user succeeds, as a second step the session-id is
+        send as cookie to the client while he will be redirected to his
+        preset default bookmark (the item in the
+        <function>ci_bookmarks</function> table where the default-flag is
+        set). This default behaviour changes, if an 'askpath'
+        cookie is found during authentication. In such a case the user
+        will be send to the requested object, which allows client side
+        bookmarking objects stored in XIMS like ordinary web pages. (needs
+        more explanation)</para>
+        <para>If neither 'askpath' nor the default bookmark are
+        found, the user is sent to the configured ximsDefaultStartPath.
+        This behaviour is ment to be changed to a redirection to a user
+        information page.</para>
+        <para>All rejected requests will be send to the default login
+        page.</para>
+      </section>
+    </section>
+    <section>
+      <title>General Access Check</title>
+      <para>This is a simple test, if a user is allowed to access a
+      certain object. While this test is as well general and affects all
+      operations on the object this is implemented in the
+      <function>event_init</function> function in the
+      <function>XIMS::CGI</function> class. (?)</para>
+      <section>
+        <title>Algorithm</title>
+        <para>It is tested if the user or one of his roles has
+        the access privilege on the object. All privileges of roles on the
+        same inheritation level, will be ORed, so a user will not lose
+        privileges for any of his roles on the same level. This is only done
+        for roles on the same inheritation level, so one can define exclusive
+        privileges for special roles or users. This is nessecary for example
+        to create exclusive lockouts like "all but not my
+        secretary".</para>
+        <para>At this stage all privileges for a certain
+        object and user are loaded, but only the access privilege is tested
+        for. These privileges are bound to the object. For document-like
+        objects it is irrelevant if this information is set to the user or the
+        object, while container have a more complex structure and require to
+        have the privileges set seperately for each containing object.</para>
+      </section>
+    </section>
+    <section>
+      <title>Operation Control</title>
+      <para>Due operation control XIMS tests if a user has the
+      permission for a requested operation. Since this test is related to
+      the operational event it should be implemented there.</para>
+      <section>
+        <title>Algorithm</title>
+        <para>First after the basic event initialization it
+        should be tested if the user has the required privilege(s). If this
+        privilege can not be found and the user is not administrator, a
+        message should be set and operation execution skipped.</para>
+        <para>If the privilege is set or the current user has
+        administrative privileges the operation should be executed.</para>
+      </section>
+    </section>
+    <section>
+      <title>Display Control</title>
+      <para>While all other stages of access-control are required for
+      all objects, the display control stage is only needed for
+      container objects, because in that case the child objects are
+      loaded to be displayed. The concept of XIMS is not to show data
+      that is actually not accessable for the user. This affects even
+      the DOM.</para>
+      <para>Since this information has to be evaluated partly by the
+      stylesheet, there has to be a simple implementation of a
+      "display access control" inside the XSLT
+      stylesheet.</para>
+      <para>This means if a certain user or one of his roles does not
+      have the access privilege for an object, the object should not
+      appear in the DOM.</para>
+      <section>
+        <title>Algorithm</title>
+        <para>After all child objects of a given parent are loaded, the
+        privileges for each of these objects have to be loaded for the
+        user like it is done on General Access Check level. Each child
+        the user has no access privileges for should not be added to the
+        DOM later being rendered to the client.</para>
+        <para>The stylesheet has to decide, whether certain Operation
+        Widgets / Buttons should be displayed or not.</para>
+        <para>The Algorithm differs slightly for parent objects. Since
+        these objects are relevant for the path, they must appear in the
+        DOM. After the parent objects are loaded all the privileges for
+        the user must be loaded and set to the DOM. The stylesheet has
+        to avoid offering a link for this object.</para>
+      </section>
+      <section>
+        <title>Display Control and Stylesheets</title>
+        <para>Display Control is not only application related. A part of
+        the display control has to done by the stylesheet. Usually this
+        is related with operations which are related to the user
+        interface.</para>
+        <para>For this, <emphasis>XIMS</emphasis> provides the
+        privileges available to the current user in the administrative
+        DOMs . This is split into parts: The user part, which holds the
+        system-privileges, kept in
+        <function>/document/context/session/user/privilege</function>.</para>
+        <para>The second part are the user privileges for a certain
+        object. This information is kept in the
+        <function>privilege</function> section in the object. Therefore
+        each object has this section in administrative mode.</para>
+        <para>Inside the privilege-section each privilege owned by the
+        user is presented by an empty tag where the tag name is the
+        lowercase version of the privilege. E.g. XIMS::Privileges::VIEW
+        will be found as <function>object/privilege/view</function> in
+        the DOM presentation of the object.</para>
+      </section>
+    </section>
+  </section>
+</article>
