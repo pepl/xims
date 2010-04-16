@@ -89,20 +89,15 @@ sub event_store {
               Text::Iconv->new( "UTF-8", XIMS::DBENCODING() )->convert($body);
         }
 
-        # The HTMLArea WYSIWG-editor in combination with MSIE translates
-        # relative paths in 'href' and 'src' attributes to their
-        # '/goxims/content'-absolute path counterparts. Since we do not
-        # want '/goxims/content' references. which will very likely
-        # breaks after the content has been published, we have to mangle
-        # with the 'href' and 'src' attributes.
-        my $absolute_path =
-          defined $object->id()
-          ? $object->location_path()
-          : ( $ctxt->parent->location_path() . '/' . $object->location() );
+        # fix /goxims/content/-links in href- and src attributes
+        my $absolute_path_nosite = 
+          defined $object->id() 
+          ? $object->location_path_relative() 
+          : ($ctxt->parent->location_path_relative() . '/' . $object->location() );
         $body =
           $self->_absrel_urlmangle( $ctxt, $body,
             '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE(),
-            $absolute_path );
+            $absolute_path_nosite );
 
         my $oldbody = $object->body();
         if ( $trytobalance eq 'true' and $object->body($body) ) {
@@ -224,27 +219,30 @@ sub _set_wysiwyg_editor {
     return $ed;
 }
 
+# TODO: try to use XIMS::CGI::Document's version of this
 sub _absrel_urlmangle {
-    my $self          = shift;
-    my $ctxt          = shift;
-    my $body          = shift;
+    my $self = shift;
+    my $ctxt = shift;
+    my $body = shift;
     my $goximscontent = shift;
-    my $absolute_path = shift;
+    my $absolute_path_nosite = shift;
 
-    my $doclevels = split( '/', $absolute_path ) - 1;
-    my $docrepstring = '../' x ( $doclevels - 1 );
-    while ( $body =~ /(src|href)=("|')$goximscontent([^("|')]+)/g ) {
-        my $dir = $3;
+    my @size = split('/', $absolute_path_nosite);
+    my $doclevels = scalar(@size) - 1;
+    my $docrepstring = '../'x($doclevels-1);
+    while ( $body =~ /(src|href)=("|')$goximscontent(\/[^\/]+)(\/[^("|')]+)/g ) {
+        my $site = $3;
+        my $dir = $4;
         $dir =~ s#[^/]+$##;
-
-        #warn "gotabs, dir: $absolute_path, $dir";
-        if ( $absolute_path =~ $dir ) {
-            my $levels = split( '/', $dir ) - 1;
-            my $repstring = '../' x ( $doclevels - $levels - 1 );
-            $body =~ s/(src|href)=("|')$goximscontent$dir/$1=$2$repstring/;
+        #warn "gotabs, site: $site, dir: $absolute_path_nosite, $dir";
+        if ( $absolute_path_nosite =~ $dir ) {
+            my @size = split('/', $dir);
+            my $levels = scalar(@size) - 1;
+            my $repstring = '../'x($doclevels-$levels-1);
+            $body =~ s/(src|href)=("|')$goximscontent$site$dir/$1=$2$repstring/;
         }
         else {
-            $body =~ s#(src|href)=("|')$goximscontent/#$1=$2$docrepstring#;
+            $body =~ s#(src|href)=("|')$goximscontent$site/#$1=$2$docrepstring#;
         }
     }
 
