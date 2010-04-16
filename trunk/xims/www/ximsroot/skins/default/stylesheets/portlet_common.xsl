@@ -286,16 +286,18 @@
             <table>
                 <tr>
                     <td valign="top">
-                        <xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[position() mod 2 != 0]"/>
+                        <xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[position() mod 2 != 0 and name=fullname]"/>
                     </td>
                     <td valign="top">
-                        <xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[position() mod 2 = 0]"/>
+                        <xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[position() mod 2 = 0 and name=fullname]"/>
                     </td>
                 </tr>
             </table>
             <!-- Nodes outside the node-set cannot be checked, therefore we have to check the filtered object-types via JavaScript -->
             <xsl:apply-templates select="body/content/object-type"/>
-            <script type="text/javascript">
+            <xsl:call-template name="mk-inline-js">
+              <xsl:with-param name="code">
+              <![CDATA[
                 var inputs = document.getElementsByTagName("input");
                 var re = new RegExp("filter_ot_");
                 var el;
@@ -306,8 +308,10 @@
                         if ( el )
                             el.checked = 1;
                     }
-                }
-            </script>
+                } 
+              ]]>
+	      </xsl:with-param>
+            </xsl:call-template> 
         </td>
     </tr>
     </table>
