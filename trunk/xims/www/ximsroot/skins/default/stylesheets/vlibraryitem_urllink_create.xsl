@@ -26,7 +26,9 @@
             <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                 <table border="0" width="98%">
-                    <xsl:call-template name="tr-locationtitle-create"/>
+                    <xsl:call-template name="tr-location-create">
+                      <xsl:with-param name="testlocation" select="false()"/>
+                    </xsl:call-template>
                     <xsl:call-template name="tr-subtitle"/>
                     <xsl:call-template name="tr-vlsubjects-create"/>
                     <xsl:call-template name="tr-publisher"/>
