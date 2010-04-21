@@ -284,14 +284,13 @@
 <head>
 <title><xsl:call-template name="title"/></title>
 	<xsl:call-template name="css"/>
-	<xsl:call-template name="script_head"/>      
-				<!--<link href="http://www2.uibk.ac.at/stylesheets/jquery/galleria.css" rel="stylesheet" type="text/css" media="screen"/> -->
-				<link href="http://www2.uibk.ac.at/stylesheets/jquery/uibk/jquery-ui-latest.css" rel="stylesheet" type="text/css" media="screen"/>
-				<script type="text/javascript" src="http://www2.uibk.ac.at/scripts/jquery/jquery-latest.js"></script>
-				<script type="text/javascript" src="http://www2.uibk.ac.at/scripts/jquery/jquery-ui-latest.js"></script>
-				<script type="text/javascript" src="http://www2.uibk.ac.at/scripts/jquery/jquery.galleria.min.js"></script>
-				
-				<script type="text/javascript" src="{$ximsroot}skins/{$currentskin}/scripts/galleria.js"> 
+	<xsl:call-template name="script_head"/>
+	<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.8.css" type="text/css" media="screen"/>
+	<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js"></script>
+	<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery.galleria.js"></script>
+	
+	<script type="text/javascript" src="{$ximsroot}scripts/galleria.js"> 
 	
 	</script>
 	<style>
