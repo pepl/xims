@@ -90,7 +90,7 @@ sub event_store {
         # check if we should expand a zip file
         if ( $self->param( 'unzip' )
                 and length $fh
-                and $self->uploadInfo($fh)->{'Content-Type'} eq 'application/zip' ) {
+                and ($self->uploadInfo($fh)->{'Content-Type'} eq 'application/zip' or $self->uploadInfo($fh)->{'Content-Type'} eq 'application/x-zip-compressed')) {
 
             my $overwrite = $self->param( 'overwrite' );
             $overwrite = 1 if $overwrite;

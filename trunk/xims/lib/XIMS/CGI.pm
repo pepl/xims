@@ -2193,7 +2193,7 @@ sub event_move_browse {
 
         $ctxt->properties->content->getchildren->level(1);
         $ctxt->properties->content->getchildren->objecttypes(
-            [qw(Folder DepartmentRoot)] );
+            [qw(Folder DepartmentRoot Gallery)] );
         $ctxt->properties->content->getchildren->objectid($to);
         $ctxt->properties->application->style("move_browse");
     }

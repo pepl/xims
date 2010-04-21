@@ -2145,6 +2145,205 @@ use vars qw( @ISA );
 
 1;
 
+=head1 XIMS::Exporter::Gallery
+
+lowlevel class for folder objs.
+
+=cut
+
+package XIMS::Exporter::Gallery;
+
+use vars qw( @ISA );
+@ISA = qw( XIMS::Exporter::XMLChunk );
+use File::Path;
+use strict;
+
+
+
+=head2 create()
+
+=head3 Parameter
+
+    $param->{-path}   : (mandatory)
+    $param->{-folder} : (mandatory)
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+$self->create( $param );
+
+=cut
+
+sub create {
+    XIMS::Debug( 5, "called" );
+    my ( $self, %param ) = @_;
+
+    my $retval;
+
+    my $new_path = $self->{Exportfile} || $self->{Basedir} . "/" . $self->{Object}->location();
+
+    if ( -d $new_path ) {
+        XIMS::Debug( 4, "Directory '$new_path' exists, no need to create." );
+    }
+    else {
+        # create new folder.
+        XIMS::Debug( 4, "Creating directory '$new_path'" );
+
+        eval {
+            mkdir( $new_path, 0755 ) ||  die $!;
+        };
+
+        if ( $@ ) {
+            my $err = $@;
+            XIMS::Debug( 3, "Error creating directory '$new_path': $err" );
+            return;
+        }
+    }
+
+    if ( not exists $param{mkdironly} ) {
+        #
+        # generate metadata
+        #
+
+        # delete children cache so that autoindex and container.xml will be
+        # up-to-date
+        delete $self->{Provider}->{ocache}->{kids};
+
+        # first, the object DOM
+        my $raw_dom = $self->generate_dom();
+
+        unless ( $raw_dom ) {
+            XIMS::Debug( 2, "metadata cannot be generated" );
+            return;
+        }
+
+        # then, transform it...
+
+        my $transd_dom = $self->transform_dom( $raw_dom );
+
+        unless ( $transd_dom ) {
+            XIMS::Debug( 2, "transformation failed" );
+            return;
+        }
+
+        # build the path
+
+        my $meta_path = $new_path . '/' . $self->{Object}->location() . '.container.xml';
+        XIMS::Debug( 4, "metadata file is $meta_path" );
+
+        # write the file...
+        my $meta_fh = IO::File->new( $meta_path, 'w' );
+
+        if ( defined $meta_fh ) {
+            binmode( $meta_fh, ':utf8' );
+            print $meta_fh $transd_dom->toString();
+            $meta_fh->close;
+            XIMS::Debug( 4, "metadata-dom written" );
+        }
+        else {
+            XIMS::Debug( 2, "Error writing file '$meta_path': $!" );
+            return;
+        }
+
+        # auto-indexing
+        # MUST come after any children were published above since
+        # publishing states may have changed in this session.
+
+        my $autoindex = $self->{Object}->attribute_by_key( 'autoindex' );
+        # if attribute is not explictly set to 0, we do autoindexing
+        if ( not defined $autoindex or $autoindex == 1 ) {
+            my $idx_generator =  XIMS::Exporter::AutoIndexer->new( Provider   => $self->{Provider},
+                                                                   Basedir    => $self->{Basedir},
+                                                                   User       => $self->{User},
+                                                                   Object     => $self->{Object},
+                                                                   Options    => {norecurse => 1},
+                                                                   Ancestors  => $self->{Ancestors},
+                                                               );
+            $idx_generator->create();
+        }
+        elsif ( $autoindex == 0 ) {
+            my $autoindex_file = $new_path . '/' . XIMS::AUTOINDEXFILENAME();
+            eval { unlink $autoindex_file } if -f $autoindex_file;
+        }
+    }
+
+    # mark the folder as published
+    XIMS::Debug( 4, "toggling publish state of the object" );
+    $self->toggle_publish_state( '1' );
+
+
+    return 1;
+}
+
+=head2    remove()
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+$self->remove();
+
+=cut
+
+sub remove {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $param ) = @_;
+
+    my $kill_path = $self->{Basedir} . "/" . $self->{Object}->location();
+
+    if ( defined $self->{Children} and scalar @{$self->{Children}} ) {
+        my $helper = XIMS::Exporter::Helper->new();
+        foreach my $kind ( @{$self->{Children}} ) {
+            my $reaper = $helper->exporterclass(
+                         Provider   => $self->{Provider},
+                         Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
+                         User       => $self->{User},
+                         Object     => $kind
+                        );
+            return unless ($reaper and $reaper->remove());
+        }
+    }
+
+    # kill the meta file
+    unlink $kill_path . '/' . $self->{Object}->location . ".container.xml";
+
+    # kill the autoindex if exists
+    if ( -f $kill_path . '/' . XIMS::AUTOINDEXFILENAME() ) {
+        unlink $kill_path . '/' . XIMS::AUTOINDEXFILENAME();
+    }
+
+    # and now, remove AxKit's stylecache dir...
+    if ( -d $kill_path . '/.xmlstyle_cache' ) {
+        eval {
+            File::Path::rmtree( $kill_path . '/.xmlstyle_cache' ) || die $!;
+        };
+        if ( $@ ) {
+            my $err = $@;
+            XIMS::Debug( 2, "Error deleting cach dir: $err" );
+        }
+    }
+
+    # finally, drop the dir.
+    rmdir( $kill_path ) || do { XIMS::Debug( 2, "can't remove directory '$kill_path' " . $! ); return; };
+
+
+    # mark the folder as not published.
+    XIMS::Debug( 4, "marking folder as unpublished again :)" );
+    $self->toggle_publish_state( '0' );
+
+    return 1;
+}
+
+
+1;
 __END__
 
 =head1 DIAGNOSTICS
