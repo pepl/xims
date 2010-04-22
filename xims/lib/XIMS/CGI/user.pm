@@ -25,6 +25,7 @@ use strict;
 use base qw( XIMS::CGI );
 use XIMS::User;
 use XIMS::Bookmark;
+use XIMS::UserPrefs;
 use XIMS::DepartmentRoot;
 use XIMS::Object;
 use XIMS::ObjectPriv;
@@ -212,9 +213,57 @@ sub event_bookmarks {
     return 0;
 }
 
+=head2 event_prefs()
 
+=cut
 
+sub event_prefs {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+	warn("\nevent_prefs\n");
+    $ctxt->properties->application->style( 'prefs' );
 
+    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+    $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
+
+    return 0;
+}
+
+=head2 event_userprefs()
+
+=cut
+
+sub event_userprefs {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+	warn('\nevent_userprefs\n');
+    $ctxt->properties->application->style( 'prefs' );
+
+    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+    $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
+
+    return 0;
+}
+
+#=head2 event_prefsupdate()
+#
+#=cut
+#
+#sub event_prefs_update {
+#    XIMS::Debug( 5, "called" );
+#    my ( $self, $ctxt ) = @_;
+#    
+#    my $user = $ctxt->session->user();
+#    
+#    my $userPrefs = XIMS::UserPrefs->new(id => $user->id(), profile_type => $self->param('profile_type'), skin => $self->param('skin'), publish_at_save => $self-param('publish_at_save'), containerview_show => $self->param('containerview_show'));
+#	$userPrefs->updateObject();
+##    $ctxt->properties->application->style( 'prefs' );
+##
+##    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+##    $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
+#
+#    return 0;
+#}
 
 =head2 event_newwebsite()
 

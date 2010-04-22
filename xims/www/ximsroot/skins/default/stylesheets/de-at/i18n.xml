@@ -257,4 +257,14 @@
 <Preview>Vorschau</Preview>
 <Browse_feed>Nach RSS-Feed durchsuchen</Browse_feed>
 <warn_big_image>Bilder dieser Dateigröße sind in Webseiten nur in Ausnahmefällen sinnvoll.</warn_big_image>
+<!-- user pages -->
+<Personal_Settings>Persönliche Einstellungen</Personal_Settings>
+<Profile_type>Profiltyp</Profile_type>
+<Standard>Standard</Standard>
+<Professional>Profi</Professional>
+<Expert>Experte</Expert>
+<Skin>Skin</Skin>
+<ContainerView>Container Ansicht</ContainerView>
+<Pub_on_save>Objekte beim speichern automatisch veröffentlichen</Pub_on_save>
+<!-- end user pages -->
 </l>

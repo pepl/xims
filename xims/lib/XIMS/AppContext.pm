@@ -35,6 +35,7 @@ our @Fields = (
     'objectlist_info', # used for objectlist metadata.
     'userobjectlist', # used for content-object-listings with user context
     'bookmarklist', # used for bookmarklisting during user/role-management
+    'userprefslist', # used for userprefslisting during user/role-management
     'objecttypelist', # used for objecttypelisting during user/role- object-type priv management
     'parent', # needed during object creation
     'session',

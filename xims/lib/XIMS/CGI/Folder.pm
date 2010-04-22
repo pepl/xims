@@ -209,7 +209,8 @@ sub get_display_params {
     my %sortbymap = (
         date     => 'last_modification_timestamp',
         position => 'position',
-        title    => 'title'
+        title    => 'title',
+        location    => 'location'
     );
 
     my $order = $sortbymap{$defaultsortby} . ' ' . $defaultsort;

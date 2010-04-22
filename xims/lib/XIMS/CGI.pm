@@ -416,6 +416,13 @@ sub event_store {
             XIMS::Debug( 2, "update failed" );
             $self->sendError( $ctxt, __"Update of object failed." );
             return 0;
+        } 
+        else{
+        	#publish on save option
+        	if($self->param('pubonsave') eq 'on'){
+        		#TODO: check user rights (usertype)
+        		$self->event_publish($ctxt);
+        	}
         }
         $self->redirect( $self->redirect_path($ctxt) );
         return 1;
@@ -458,7 +465,11 @@ sub event_store {
             return 0;
         }
     }
-
+    #publish on save option
+    if($self->param('pubonsave') eq 'on'){
+    	#TODO: check user rights (usertype)
+        $self->event_publish($ctxt);
+    }
     XIMS::Debug( 4, "redirecting" );
     $self->redirect( $self->redirect_path($ctxt) );
     return 1;
@@ -3029,9 +3040,25 @@ sub event_obj_acllist {
                 my @granted_user_ids = map { $_->grantee_id() } @object_privs;
                 my @granted_users
                     = map { XIMS::User->new( id => $_ ) } @granted_user_ids;
-
+                
                 #warn "acluser" . Dumper( \@granted_users );
                 $ctxt->userlist( \@granted_users );
+                
+                foreach my $user_id(@granted_user_ids){            
+	                if ( my $context_user = XIMS::User->new( id => $user_id ) ) {
+	
+	                    # second parameter to object_privileges forces check for
+	                    # explicit grants to user only
+	                    my %oprivs
+	                        = $context_user->object_privileges( $object, 1 );
+	
+	                    # xml serialization does not like undefined values
+	                    if ( grep { defined $_ } values %oprivs ) {
+	                        $context_user->{object_privileges} = {%oprivs};
+	                    }
+	                    $ctxt->user($context_user);
+	                }
+            	}
                 $ctxt->properties->application->style('obj_userlist');
             }
 

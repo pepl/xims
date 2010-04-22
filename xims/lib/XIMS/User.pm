@@ -21,6 +21,7 @@ use strict;
 use XIMS;
 use base qw( XIMS::AbstractClass Class::Accessor );
 use XIMS::Bookmark;
+use XIMS::UserPrefs;
 use Digest::MD5 qw( md5_hex );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
@@ -162,6 +163,35 @@ sub system_privileges {
     return ();
 }
 
+=head2 userprefs()
+
+=cut
+
+sub userprefs {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+    my %args = @_;
+
+    my @userid            = ( $self->id() );
+    #my @roles_granted_ids = map { $_->id() } $self->roles_granted();
+    #my $explicit_only     = delete $args{explicit_only};
+    #push @userid, @roles_granted_ids unless $explicit_only;
+
+    my %params;
+    $params{id}   = \@userid;
+    $params{profile_type}    = $args{stdhome} if exists $args{stdhome};
+    $params{skin} = $args{skin} if exists $args{skin};
+    $params{publish_at_save} = $args{publish_at_save} if exists $args{publish_at_save};
+    $params{containerview_show} = $args{containerview_show} if exists $args{containerview_show};
+
+    my @userprefs_data = $self->data_provider->getUserPrefs(%params);
+    my @userprefs = map { XIMS::UserPrefs->new->data( %{$_} ) } @userprefs_data;
+
+    #warn "bookmarks" . Dumper( \@bookmarks);
+    #return wantarray ? @userprefs : $userprefs[0];
+    return $userprefs[0];
+}
+
 =head2 dav_otprivileges()
 
 =cut
@@ -232,6 +262,7 @@ sub bookmarks {
     #warn "bookmarks" . Dumper( \@bookmarks);
     return wantarray ? @bookmarks : $bookmarks[0];
 }
+
 
 =head2 role_ids()
 

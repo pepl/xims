@@ -43,7 +43,7 @@
                         <th>Ihre <xsl:value-of select="count(/document/userobjectlist/objectlist/object)"/> letzten erstellten oder geänderten Objekte</th>
                         <th>Die <xsl:value-of select="count(/document/objectlist/object)"/> zuletzt geänderten Objekte</th>
 					</tr>
-					<tr>
+                    <tr>
                         <td valign="top">
                             <xsl:choose>
                                 <xsl:when test="/document/userobjectlist/objectlist/object">
@@ -86,7 +86,7 @@
                     <tr>
                         <td>
                             <p>
-                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;Persönliche Einstellungen verwalten
+                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/><a href="{$xims_box}{$goxims}/user?prefs=1">&#160;Persönliche Einstellungen verwalten</a>
                             </p>
                         </td>
                         <td>
@@ -122,6 +122,14 @@
         </div>
         </body>
     </html>
+</xsl:template>
+
+<xsl:template match="object">
+    <tr>
+        <td class="ctt_df"><xsl:call-template name="cttobject.dataformat"/></td>
+        <td class="ctt_loctitle"><xsl:call-template name="cttobject.locationtitle"><xsl:with-param name="link_to_id" select="true()"/></xsl:call-template></td>
+        <td class="ctt_lm"><xsl:call-template name="cttobject.last_modified"/> </td>
+    </tr>
 </xsl:template>
 
 </xsl:stylesheet>
