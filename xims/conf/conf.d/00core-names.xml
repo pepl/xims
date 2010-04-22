@@ -42,6 +42,10 @@
                 <item>user.url</item>
                 <item>user.object_type</item>
                 <item>user.dav_otprivs_mask</item>
+				<item>user.profile_type</item>
+                <item>user.skin</item>
+                <item>user.publish_at_save</item>
+                <item>user.containerview_show</item>
             </User>
             <Content>
                 <item>content.binfile</item>
@@ -52,7 +56,7 @@
                 <item>content.locked_time</item>
                 <item>content.abstract</item>
                 <item>content.body</item>
-                <item>content.title</item>
+                <item>content.title</item>i
                 <item>content.keywords</item>
                 <item>content.status</item>
                 <item>content.status_checked_timestamp</item>
