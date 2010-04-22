@@ -10,8 +10,9 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="common.xsl"/>
-<xsl:import href="../user_common.xsl"/>
 <xsl:import href="../user_default.xsl"/>
+<xsl:import href="../user_common.xsl"/>
+
 
 <xsl:template match="/document/context/session/user">
     <html>
@@ -26,7 +27,7 @@
                 Welcome <xsl:value-of select="firstname" />&#xa0;<xsl:value-of select="lastname" />!
             </h1>
 
-            <h2>Manage content</h2>
+            <h2>Manage Content</h2>
                 <div>
                     Your <xsl:value-of select="$i18n/l/Bookmarks"/>:
                     <ul id="bookmarklist">
@@ -100,7 +101,6 @@
             <xsl:if test="admin = '1'">
                 <h2>Administrative Options</h2>
                 <p>
-                    <!-- check sysprivs here and xsl:choose -->
                     As a member of the admins role you have the following administrative options:
                 </p>
                     <ul>
@@ -108,9 +108,18 @@
                     </ul>
                 
             </xsl:if>
-
+<br/><br/>
+             <xsl:if test="system_privileges/gen_website">
+             <h2>Additional tasks</h2>
+                    <ul>
+                        <li class="linklist">
+                        	<a href="{$xims_box}{$goxims}/user?newwebsite=1">
+								Create Departmentroot
+							</a>
+						</li>
+                    </ul>
+             </xsl:if>
         </div>
-        <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>
