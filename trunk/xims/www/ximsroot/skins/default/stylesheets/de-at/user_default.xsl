@@ -10,8 +10,9 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="common.xsl"/>
-<xsl:import href="../user_common.xsl"/>
 <xsl:import href="../user_default.xsl"/>
+<xsl:import href="../user_common.xsl"/>
+
 
 <xsl:template match="/document/context/session/user">
     <html>
@@ -41,8 +42,8 @@
                     <tr>
                         <th>Ihre <xsl:value-of select="count(/document/userobjectlist/objectlist/object)"/> letzten erstellten oder geänderten Objekte</th>
                         <th>Die <xsl:value-of select="count(/document/objectlist/object)"/> zuletzt geänderten Objekte</th>
-                    </tr>
-                    <tr>
+					</tr>
+					<tr>
                         <td valign="top">
                             <xsl:choose>
                                 <xsl:when test="/document/userobjectlist/objectlist/object">
@@ -100,7 +101,6 @@
             <xsl:if test="admin = '1'">
                 <h2>Verwaltungsoptionen</h2>
                 <p>
-                    <!-- check sysprivs here and xsl:choose -->
                     Als Mitglied der Admin-Rolle haben Sie folgende administrative Optionen:
                 </p>
                     <ul>
@@ -108,7 +108,17 @@
                     </ul>
                 
             </xsl:if>
-
+<br/><br/>
+             <xsl:if test="system_privileges/gen_website">
+             <h2>Weitere Aufgaben</h2>
+                    <ul>
+                        <li class="linklist">
+                        	<a href="{$xims_box}{$goxims}/user?newwebsite=1">
+								Departmentroot anlegen
+							</a>
+						</li>
+                    </ul>
+             </xsl:if>
         </div>
         </body>
     </html>

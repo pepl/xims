@@ -12,6 +12,9 @@
 
 <xsl:import href="container_common.xsl"/>
 
+<!--<xsl:import href="user_common.xsl"/>-->
+<!--<xsl:import href="common.xsl"/>-->
+
 <xsl:template match="/document">
     <xsl:apply-templates select="context/session/user"/>
 </xsl:template>

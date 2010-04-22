@@ -37,6 +37,7 @@ sub list () { qw( CHANGE_PASSWORD         GRANT_ROLE           RESET_PASSWORD
                   CHANGE_ROLE_FULLNAME    CHANGE_USER_FULLNAME CHANGE_ROLE_NAME
                   CHANGE_USER_NAME        CREATE_USER          DELETE_USER
                   CHANGE_DAV_OTPRIVS_MASK CHANGE_SYSPRIVS_MASK SET_ADMIN_EQU
+                  GEN_WEBSITE
               );
 }
 
@@ -58,6 +59,14 @@ to/from this role.
 =cut
 
 sub GRANT_ROLE () { 0x00000002 }
+
+=head3 GEN_WEBSITE
+
+Generate a new XIMS-Departmentroot with Departmentlinks and Speciallinks
+
+=cut
+
+sub GEN_WEBSITE () { 0x00000100 }
 
 =head2 0x1000 - 0x800000: helpdesk-related user/role-management
 
@@ -169,6 +178,9 @@ undocumented.
 =cut
 
 sub SET_ADMIN_EQU () { 0x20000000 }
+
+
+
 
 1;
 
