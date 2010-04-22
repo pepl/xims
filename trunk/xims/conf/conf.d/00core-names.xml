@@ -10,6 +10,7 @@
             <item>ObjectType</item>
             <item>UserPriv</item>
             <item>Bookmark</item>
+	    <item>UserPrefs</item>
             <item>DataFormat</item>
             <item>Language</item>
             <item>ObjectPriv</item>
@@ -186,6 +187,13 @@
                 <item>bookmark.owner_id</item>
                 <item>bookmark.stdhome</item>
             </Bookmark>
+	    <UserPrefs>
+                <item>userprefs.id</item>
+                <item>userprefs.profile_type</item>
+                <item>userprefs.skin</item>
+                <item>userprefs.publish_at_save</item>
+		<item>userprefs.containerview_show</item>
+            </UserPrefs>
             <DataFormat>
                 <item>dataformat.mime_type</item>
                 <item>dataformat.id</item>

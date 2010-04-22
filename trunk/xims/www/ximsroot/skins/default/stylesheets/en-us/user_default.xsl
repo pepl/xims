@@ -86,7 +86,7 @@
                     <tr>
                         <td>
                             <p>
-                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/>&#160;Manage personal preferences
+                                <img src="{$ximsroot}images/icons/list_SymbolicLink.gif" border="0" alt="" title=""/><a href="{$xims_box}{$goxims}/user?prefs=1">&#160;Manage personal preferences</a>
                             </p>
                         </td>
                         <td>
@@ -122,6 +122,14 @@
         </div>
         </body>
     </html>
+</xsl:template>
+
+<xsl:template match="object">
+    <tr>
+        <td class="ctt_df"><xsl:call-template name="cttobject.dataformat"/></td>
+        <td class="ctt_loctitle"><xsl:call-template name="cttobject.locationtitle"><xsl:with-param name="link_to_id" select="true()"/></xsl:call-template></td>
+        <td class="ctt_lm"><xsl:call-template name="cttobject.last_modified"/> </td>
+    </tr>
 </xsl:template>
 
 </xsl:stylesheet>

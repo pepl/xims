@@ -183,9 +183,14 @@ sub handler {
     XIMS::Debug( 6, "setting serverurl to $serverurl" );
     $ctxt->session->serverurl( $serverurl );
 
-    # for now there is no user/browser based skin selection. the default
-    # values are used.
-    $ctxt->session->skin( XIMS::DEFAULT_SKIN() );
+    # now we have a user based skin selection.
+    #$ctxt->session->skin( XIMS::DEFAULT_SKIN() );
+    if($ctxt->session->user->userprefs){
+    	$ctxt->session->skin( $ctxt->session->user->userprefs->skin());
+    }
+    else{
+    	$ctxt->session->skin(XIMS::DEFAULT_SKIN() );
+    }
 
     # set UILanguage
     $ctxt->session->uilanguage( $langpref );

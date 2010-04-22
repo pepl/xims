@@ -21,6 +21,7 @@
             <item name="document" value="ci_documents"/>
             <item name="objecttype" value="ci_object_types"/>
             <item name="userpriv" value="ci_roles_granted"/>
+	    <item name="userprefs" value="ci_user_prefs"/>
             <item name="objectpriv" value="ci_object_privs_granted"/>
             <item name="objecttypepriv" value="ci_object_type_privs"/>
             <item name="dataformat" value="ci_data_formats"/>

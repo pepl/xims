@@ -250,4 +250,14 @@
 <Preview>Preview</Preview>
 <Browse_feed>Browse for RSS-Feed.</Browse_feed>
 <warn_big_image>Images of this file size are in few cases expedient in webpages.</warn_big_image>
+<!-- user pages -->
+<Personal_Settings>Personal Settings</Personal_Settings>
+<Profile_type>Profile type</Profile_type>
+<Standard>Standard</Standard>
+<Professional>Professional</Professional>
+<Expert>Expert</Expert>
+<Skin>Skin</Skin>
+<ContainerView>Container View</ContainerView>
+<Pub_on_save>Automatically publish object at save</Pub_on_save>
+<!-- enduser pages -->
 </l>
