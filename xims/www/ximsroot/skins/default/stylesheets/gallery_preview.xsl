@@ -41,6 +41,15 @@
                 <xsl:call-template name="footer"/>
             </table>
             <xsl:call-template name="script_bottom"/>
+			<script type="text/javascript">
+					function scaleimg(){
+						var height = $('.replaced').height();
+						var width = $('.replaced').width();					
+						$('.replaced').css('width', <xsl:value-of select="$img-width"/>);
+						$('.replaced').css('height', <xsl:value-of select="$img-width"/> * height / width);
+						//alert($('.replaced').width() + ' x ' + $('.replaced').height());
+					}
+        </script>
         </body>
     </html>
 </xsl:template>
@@ -286,6 +295,7 @@
 	<xsl:call-template name="css"/>
 	<xsl:call-template name="script_head"/>
 	<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.8.css" type="text/css" media="screen"/>
+	<link rel="stylesheet" href="{$ximsroot}stylesheets/gallery.css" type="text/css" media="screen"/>
 	<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery-1.4.2.js"></script>
 	<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js"></script>
 	<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery.galleria.js"></script>
@@ -294,16 +304,30 @@
 	
 	</script>
 	<style>
-	/*.galleria{list-style:none;width:600px;height:50px}*/
-.galleria li{display:block;width:40px;height:40px;overflow:hidden;float:left;margin:0 10px 10px 0}
-.galleria li a{display:none}
-.galleria li div{position:absolute;display:none;top:0;left:40px}
-.galleria li div img{cursor:pointer}
-.galleria li.active div img,.galleria li.active div{display:block}
-.galleria li img.thumb{cursor:pointer;top:auto;left:auto;display:block;width:auto;height:auto}
-.galleria li .caption{display:block;padding-top:.5em}
-* html .galleria li div span{width:400px} /* MSIE bug */
-
+	#main_image{
+		width: <xsl:value-of select="$img-width+20"/>px;
+		height: <xsl:value-of select="$img-height +200"/>px;
+	}
+	/*#main_image img{
+		width: <xsl:value-of select="$img-width"/>px;
+	}*/
+	<xsl:if test="$showcaption=0">
+	.caption{
+		display:none;
+	}
+	</xsl:if>
+	
+	.scroll-pane { 
+		width: <xsl:value-of select="$img-width+20"/>px; 
+	 }
+	.scroll-pane.half-width { 
+		width: <xsl:value-of select="900 - $img-width"/>px !important; 
+	}
+	.scroll-content {
+		width: <xsl:value-of select="$scroll-content-width"/>px; 
+	}
+	</style>
+	<!--<style>
 	#main_image{
 	width: <xsl:value-of select="$img-width+20"/>px;
 	height: <xsl:value-of select="$img-height +200"/>px;
@@ -354,7 +378,7 @@
 		.scroll-bar-wrap .ui-slider-handle { top:.2em; height: 1.5em; }
 		.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
 
-	</style>
+	</style>-->
 	
     </head>
     
