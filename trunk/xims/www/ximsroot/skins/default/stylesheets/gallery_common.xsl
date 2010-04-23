@@ -23,12 +23,12 @@
 		<xsl:if test="/document/context/object/attributes/imgwidth = 800"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	</input>
 	<label for="imgwidth-800">800 x 600</label><br/>
-	<input type="radio" id="imgwidth-600" name="imgwidth" class="radio-button" value="600">
-		<xsl:if test="/document/context/object/attributes/imgwidth = 600"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input><label for="imgwidth-600">600 x 450</label><br/>
+	<input type="radio" id="imgwidth-640" name="imgwidth" class="radio-button" value="640">
+		<xsl:if test="/document/context/object/attributes/imgwidth = 640"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	</input><label for="imgwidth-640">640 x 480</label><br/>
 	<input type="radio" id="imgwidth-400" name="imgwidth" class="radio-button" value="400">
 		<xsl:if test="/document/context/object/attributes/imgwidth = 400"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input><label for="imgwidth-400">400 x 200</label><br/>
+	</input><label for="imgwidth-400">400 x 300</label><br/>
 	<!--<input type="radio" id="imgwidth-200" name="imgwidth" class="radio-button" value="200">
 		<xsl:if test="/document/context/object/attributes/imgwidth = 200"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	</input><label for="imgwidth-200">200 x 150</label>-->
