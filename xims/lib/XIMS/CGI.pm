@@ -2403,6 +2403,8 @@ sub event_copy {
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+    
+    $self->expand_attributes($ctxt);
 
     my $current_user_object_priv
         = $ctxt->session->user->object_privmask( $ctxt->object );
@@ -2494,6 +2496,8 @@ sub event_publish_prompt {
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+    
+    $self->expand_attributes($ctxt);
 
     my $current_user_object_priv
         = $ctxt->session->user->object_privmask( $ctxt->object );

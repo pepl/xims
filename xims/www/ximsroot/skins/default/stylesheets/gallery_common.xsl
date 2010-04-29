@@ -24,7 +24,7 @@
 	</input>
 	<label for="imgwidth-800">800 x 600</label><br/>
 	<input type="radio" id="imgwidth-640" name="imgwidth" class="radio-button" value="640">
-		<xsl:if test="/document/context/object/attributes/imgwidth = 640"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		<xsl:if test="/document/context/object/attributes/imgwidth = 640 or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	</input><label for="imgwidth-640">640 x 480</label><br/>
 	<input type="radio" id="imgwidth-400" name="imgwidth" class="radio-button" value="400">
 		<xsl:if test="/document/context/object/attributes/imgwidth = 400"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
@@ -42,7 +42,7 @@
 	<td valign="top">Position der Thumbnails:</td>
 	<td colspan="2">
 	<input type="radio" id="thumbpos-top" name="thumbpos" class="radio-button" value="top">
-		<xsl:if test="/document/context/object/attributes/thumbpos = 'top'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		<xsl:if test="/document/context/object/attributes/thumbpos = 'top' or /document/context/object/attributes =''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	</input><label for="thumbpos-top">oben</label><br/>
 	<input type="radio" id="thumbpos-bottom" name="thumbpos" class="radio-button" value="bottom">
 		<xsl:if test="/document/context/object/attributes/thumbpos = 'bottom'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
@@ -62,7 +62,7 @@
 <td colspan="3">
 <label for="showcaption">Zeige Bildbeschreibung an</label> 
 <input type="checkbox" id="showcaption" name="showcaption" class="checkbox">
-	<xsl:if test="/document/context/object/attributes/showcaption = 1"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	<xsl:if test="/document/context/object/attributes/showcaption = 1 or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 </input><br/>
 </td>
 </tr>
@@ -73,7 +73,7 @@
 <td colspan="3">
 <label for="shownav">Zeige Navigation an</label>
 <input type="checkbox" id="shownav" name="shownavigation" class="checkbox">
-	<xsl:if test="/document/context/object/attributes/shownavigation = 1"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	<xsl:if test="/document/context/object/attributes/shownavigation = 1 or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 </input>
 </td>
 </tr>
