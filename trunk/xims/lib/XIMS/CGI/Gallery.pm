@@ -92,6 +92,8 @@ sub event_preview {
 sub event_view {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+    
+    $self->expand_attributes($ctxt);
 
     return $self->event_edit( $ctxt );
 }
