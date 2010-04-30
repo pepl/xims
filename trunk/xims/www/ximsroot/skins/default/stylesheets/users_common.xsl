@@ -538,6 +538,23 @@
     </tr>
 </xsl:template>
 
+<xsl:template name="profile_type">
+    <tr>
+      <td><xsl:value-of select="$i18n/l/Profile_type"/>:</td>
+      <td>
+		<input type="radio" id="profiletype_std" class="radio-button" name="profile_type" value="standard">
+		<xsl:if test="profile_type = 'standard'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		</input> <label for="profiletype_std"><xsl:value-of select="$i18n/l/Standard"/></label> 
+		<input type="radio" id="profiletype_prof" class="radio-button" name="profile_type" value="professional">
+		<xsl:if test="profile_type = 'professional'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		</input> <label for="profiletype_std"><xsl:value-of select="$i18n/l/Professional"/></label> 
+		<input type="radio" id="profiletype_exp" class="radio-button" name="profile_type" value="expert">
+		<xsl:if test="profile_type = 'expert'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		</input> <label for="profiletype_std"><xsl:value-of select="$i18n/l/Expert"/></label> 
+      </td>
+    </tr>
+</xsl:template>
+
 <xsl:template name="user_isadmin">
     <tr>
       <td><xsl:value-of select="$i18n_users/l/User_is_Administrator"/>:</td>

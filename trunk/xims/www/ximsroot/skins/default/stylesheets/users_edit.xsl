@@ -68,6 +68,9 @@
                   <xsl:if test="/document/context/session/user/system_privileges/change_sysprivs_mask = 1">
                       <xsl:call-template name="system_privileges"/>
                   </xsl:if>
+				  <xsl:if test="/document/context/session/user/system_privileges/set_admin_equ = 1">
+                      <xsl:call-template name="profile_type"/>
+                  </xsl:if>
                   <xsl:if test="/document/context/session/user/system_privileges/set_admin_equ = 1">
                       <xsl:call-template name="user_isadmin"/>
                   </xsl:if>

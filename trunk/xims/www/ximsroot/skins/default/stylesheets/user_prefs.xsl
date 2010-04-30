@@ -25,17 +25,6 @@
                 </h1>
 
                 <form name="userEdit" action="{$xims_box}{$goxims}/userprefs" method="post" id="create-edit-form">
-            <strong><xsl:value-of select="$i18n/l/Profile_type"/></strong><br/>
-							<input type="radio" id="profiletype_std" class="radio-button" name="profile_type" value="standard">
-							<xsl:if test="userprefs/userprefs/profile_type = 'standard'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-							</input> <label for="profiletype_std"><xsl:value-of select="$i18n/l/Standard"/></label> <br/>
-							<input type="radio" id="profiletype_prof" class="radio-button" name="profile_type" value="professional">
-							<xsl:if test="userprefs/userprefs/profile_type = 'professional'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-							</input> <label for="profiletype_std"><xsl:value-of select="$i18n/l/Professional"/></label> <br/>
-							<input type="radio" id="profiletype_exp" class="radio-button" name="profile_type" value="expert">
-							<xsl:if test="userprefs/userprefs/profile_type = 'expert'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-							</input> <label for="profiletype_std"><xsl:value-of select="$i18n/l/Expert"/></label> <br/>
-							<br />
             
             <strong><xsl:value-of select="$i18n/l/Skin"/></strong><br/>
             <input type="radio" id="skin_def" class="radio-button" name="skin" value="default">
@@ -46,20 +35,34 @@
 						</input> <label for="skin_2p0">2punkt0</label> <br/>
             
             <br/> 
-            
-            <strong><xsl:value-of select="$i18n/l/Publish"/></strong><br/>
+            <xsl:if test="userprefs/userprefs/profile_type = 'expert'">
+            <strong><xsl:value-of select="$i18n/l/publish"/></strong><br/>
 							<label for="publish_at_save"><xsl:value-of select="$i18n/l/Pub_on_save"/></label> 
 							<input type="checkbox" name="publish_at_save" id="publish_at_save" class="checkbox"><xsl:if test="userprefs/userprefs/publish_at_save = '1'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
 							<br />
 							<br/> 
+			</xsl:if>
+			<xsl:if test="userprefs/userprefs/profile_type = 'expert'">		
+            	<strong><xsl:value-of select="$i18n/l/ContainerView"/></strong><br/>
+					<input type="radio" id="conview_title" class="radio-button" name="containerview_show" value="title">
+						<xsl:if test="userprefs/userprefs/containerview_show = 'title'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input> 
+					<label for="conview_title"><xsl:value-of select="$i18n/l/Title"/></label> <br/>
+					<input type="radio" id="conview_loc" class="radio-button" name="containerview_show" value="location">
+						<xsl:if test="userprefs/userprefs/containerview_show = 'location'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input> 
+					<label for="conview_loc"><xsl:value-of select="$i18n/l/Location"/></label> 
+					<br/>
+					<br />
+			</xsl:if>	
 						
-            <strong><xsl:value-of select="$i18n/l/ContainerView"/></strong><br/>
-							<input type="radio" id="conview_title" class="radio-button" name="containerview_show" value="title"><xsl:if test="userprefs/userprefs/containerview_show = 'title'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input> <label for="conview_title"><xsl:value-of select="$i18n/l/Title"/></label> <br/>
-						<input type="radio" id="conview_loc" class="radio-button" name="containerview_show" value="location"><xsl:if test="userprefs/userprefs/containerview_show = 'location'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input> <label for="conview_loc"><xsl:value-of select="$i18n/l/Location"/></label> <br/>
-							<br />
-							
 							 <br/><br/>
-									 <input type="hidden" name="id"><xsl:attribute name="value"><xsl:value-of select="userprefs/userprefs/id"/></xsl:attribute></input>
+		<input type="hidden" name="profile_type"><xsl:attribute name="value"><xsl:value-of select="userprefs/userprefs/profile_type"/></xsl:attribute></input>
+		<input type="hidden" name="id"><xsl:attribute name="value"><xsl:value-of select="userprefs/userprefs/id"/></xsl:attribute></input>
                         <button name="create" type="submit">
 														<xsl:value-of select="$i18n/l/save"/>                     
                         </button>
