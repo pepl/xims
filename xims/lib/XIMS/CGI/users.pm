@@ -307,7 +307,13 @@ sub event_update {
             }
             $user->system_privs_mask( $system_privs_mask );
         }
-
+		
+		if ( $privmask & XIMS::Privileges::System::SET_ADMIN_EQU() ) {
+            if ( defined $self->param('profile_type')) {
+                $user->profile_type( $self->param('profile_type') );
+            }
+        }
+        
         if ( $privmask & XIMS::Privileges::System::SET_ADMIN_EQU() ) {
             # kinda weird to do it this way, but
             # it avoids Perl's "0 is undef" madness
