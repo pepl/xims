@@ -79,4 +79,61 @@
 </tr>
 </xsl:template>
 
+<xsl:template name="header.cttobject.createwidget">
+    <xsl:param name="parent_id"/>
+    <div id="MDME" style="display:none">
+        <ul>
+            <li><xsl:value-of select="$i18n/l/Create"/>
+                <ul>
+                    <xsl:choose>
+                        <xsl:when test="/document/context/object/@id = 1">
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"/>
+                        </xsl:when>
+                        <xsl:when test="$parent_id != ''">
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]">
+                                <xsl:sort select="name"/>
+                            </xsl:apply-templates>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and @id = '3']">
+                                <xsl:sort select="name"/>
+                            </xsl:apply-templates>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <noscript>
+        <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="get">
+                <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="objtype">
+                    <xsl:choose>
+                        <xsl:when test="/document/context/object/@id = 1">
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]" mode="form"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+			    <!-- Do not show object types which contain "Item" in their name with the only exception of "NewsItem"! -->
+                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and not(contains(name,'Item') and not(substring-before(name, 'Item')='News')) and parent_id = $parent_id]" mode="form">
+			        <xsl:sort select="name"/>
+			    </xsl:apply-templates>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </select>
+                <xsl:text>&#160;</xsl:text>
+                <input type="image"
+                    name="create"
+                    src="{$sklangimages}create.png"
+                    alt="{$i18n/l/Create}"
+                    title="{$i18n/l/Create}" />
+                <input name="page" type="hidden" value="{$page}"/>
+                <input name="r" type="hidden" value="{/document/context/object/@id}"/>
+                <xsl:if test="$defsorting != 1">
+                    <input name="sb" type="hidden" value="{$sb}"/>
+                    <input name="order" type="hidden" value="{$order}"/>
+                </xsl:if>
+        </form>
+    </noscript>
+</xsl:template>
+
 </xsl:stylesheet>
