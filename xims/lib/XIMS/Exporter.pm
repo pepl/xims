@@ -2277,7 +2277,7 @@ sub create {
             return;
         }
         
-        my $meta_path2 = $new_path . '/galleryindex.html';# . $self->{Object}->location() . '.container.xml';
+        my $meta_path2 = $new_path . '/galleryindex.html';
         XIMS::Debug( 4, "index file is $meta_path2" );
         # write the file...
         my $meta_fh2 = IO::File->new( $meta_path2, 'w' );
@@ -2294,15 +2294,6 @@ sub create {
         }
         ###
     }
-
-    my $idx_generator =  XIMS::Exporter::OUIndexer->new( Provider   => $self->{Provider},
-                                                         Basedir    => $self->{Basedir},
-                                                         Object     => $self->{Object},
-                                                         User       => $self->{User},
-                                                         Stylesheet => XIMS::XIMSROOT() . "/stylesheets/exporter/export_department_ou.xsl",
-                                                       );
-    XIMS::Debug( 5, "done" );
-    return $idx_generator->create();
 
     # mark the folder as published
     XIMS::Debug( 4, "toggling publish state of the object" );

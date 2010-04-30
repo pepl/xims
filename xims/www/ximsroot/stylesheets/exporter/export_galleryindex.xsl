@@ -34,7 +34,12 @@
             <xsl:value-of select="data_format_id"/>
         </xsl:variable>
         <page>
-            <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="ou.xml"/>
+            <xi:include xmlns:xi="http://www.w3.org/2001/XInclude">
+							<xsl:attribute name="href"><xsl:call-template name="pathinfoparent_nosite"/>/ou.xml</xsl:attribute>
+            </xi:include>
+            <gallery>
+								<xsl:copy-of select="attributes"/>
+						</gallery>
             <rdf:RDF xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                      xmlns:dc  = "http://purl.org/dc/elements/1.1/"
                      xmlns:dcq = "http://purl.org/dc/qualifiers/1.0/">
@@ -65,6 +70,9 @@
                     <!--           <dc:language></dc:language> -->
                 </rdf:Description>
             </rdf:RDF>
+            <!--<path>
+              <xsl:apply-templates select="." mode="path-element"/>
+            </path>-->
             <body>
                 <h1><xsl:value-of select="title"/></h1>
                 <p><xsl:value-of select="abstract"/></p>
