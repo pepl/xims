@@ -10,6 +10,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="folder_default.xsl"/>
+<xsl:import href="gallery_common.xsl"/>
 
 <!--<xsl:param name="scaletowidth" select="'400'"/>-->
 <xsl:param name="thumbnail-pos" select="/document/context/object/attributes/thumbpos"/>
@@ -27,7 +28,9 @@
     <html>
         <xsl:call-template name="head_default"/>
         <body onload="stringHighlight(getParamValue('hls'))" background="{$skimages}body_bg.png">
-            <xsl:call-template name="header"/>
+            <xsl:call-template name="header">
+							<xsl:with-param name="createwidget">true</xsl:with-param>
+						</xsl:call-template>
             <xsl:call-template name="toggle_hls"/>
             <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
                 <tr>
@@ -40,7 +43,8 @@
                 <xsl:call-template name="user-metadata"/>
                 <xsl:call-template name="footer"/>
             </table>
-            <xsl:call-template name="script_bottom"/>
+            <!--<xsl:call-template name="script_bottom"/>-->
+            <script src="{$ximsroot}skins/{$currentskin}/scripts/defcontmin.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 			<script type="text/javascript">
 					function scaleimg(){
 						var height = $('.replaced').height();
@@ -54,111 +58,9 @@
     </html>
 </xsl:template>
 
-
-<xsl:template name="header.cttobject.createwidget">
-    <xsl:param name="parent_id"/>
-    <div id="MDME" style="display:none">
-        <ul>
-            <li><xsl:value-of select="$i18n/l/Create"/>
-                <ul>
-                    <xsl:choose>
-                        <xsl:when test="/document/context/object/@id = 1">
-                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"/>
-                        </xsl:when>
-                        <xsl:when test="$parent_id != ''">
-                            <xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]">
-                                <xsl:sort select="name"/>
-                            </xsl:apply-templates>
-                        </xsl:when>
-                        <xsl:otherwise>
-<!--                            <li><xsl:value-of select="$i18n/l/More"/>
-                                <ul>
-                                    <xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'AnonDiscussionForumContrib' or ( contains(name,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]">
-                                        <xsl:sort select="name"/>
-                                    </xsl:apply-templates>
-                                </ul>
-                            </li>-->
-                            <xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]">
-                                <xsl:sort select="name"/>
-                            </xsl:apply-templates>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    <!--<div style="float:right"><a href="{$xims_box}{$goxims_content}{$absolute_path}">Container--><!--<xsl:value-of select="$i18n/l/Preview"/>--><!--</a></div>-->
-    <noscript>
-        <form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0;" method="get">
-                <select style="background: #eeeeee; font-family: helvetica; font-size: 10pt" name="objtype">
-                    <xsl:choose>
-                        <xsl:when test="/document/context/object/@id = 1">
-                            <xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]" mode="form"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-			    <!-- Do not show object types which contain "Item" in their name with the only exception of "NewsItem"! -->
-                            <xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11') and parent_id = $parent_id]" mode="form">
-			        <xsl:sort select="name"/>
-			    </xsl:apply-templates>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </select>
-                <xsl:text>&#160;</xsl:text>
-                <input type="image"
-                    name="create"
-                    src="{$sklangimages}create.png"
-                    alt="{$i18n/l/Create}"
-                    title="{$i18n/l/Create}" />
-                <input name="page" type="hidden" value="{$page}"/>
-                <input name="r" type="hidden" value="{/document/context/object/@id}"/>
-                <xsl:if test="$defsorting != 1">
-                    <input name="sb" type="hidden" value="{$sb}"/>
-                    <input name="order" type="hidden" value="{$order}"/>
-                </xsl:if>
-        </form>
-    </noscript>
-</xsl:template>
-
 <xsl:template name="message">
 <div style="float:right"><a href="{$xims_box}{$goxims_content}{$absolute_path}">Container<!--<xsl:value-of select="$i18n/l/Preview"/>--></a></div>
 </xsl:template>
-
-	<xsl:template name="create-widget">
-	<xsl:param name="mode" select="false()"/>
-	<xsl:param name="parent_id"/>
-		 
-		<!-- Default Create-Widget (Container View) -->
-
-		<div id="create-widget">
-			<a href="#object-types" class="flyout create-widget fg-button fg-button-icon-right ui-state-default ui-corner-all" tabindex="0">
-				<span class="ui-icon ui-icon-triangle-1-s"/>
-				<xsl:value-of select="$i18n/l/Create"/>
-			</a>
-			<div id="object-types" class="hidden-content">
-				<ul>
-					<xsl:choose>
-						<xsl:when test="/document/context/object/@id = 1">
-							<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"/>
-						</xsl:when>
-						<xsl:when test="$parent_id != ''">
-							<xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]" mode="fo-menu">
-								<xsl:sort select="name"/>
-							</xsl:apply-templates>
-						</xsl:when>
-						<xsl:otherwise>
-							<!--<xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]" mode="fo-menu">-->
-							<xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]" mode="fo-menu">
-								<xsl:sort select="name"/>
-							</xsl:apply-templates>
-						</xsl:otherwise>
-					</xsl:choose>
-				</ul>
-			</div>
-			&#160;<a href="{$xims_box}{$goxims_content}{$absolute_path}" class="button"><xsl:value-of select="$i18n/l/Container_View"/></a>
-		</div>
-		
-		
-		</xsl:template>
 		
 		<xsl:template name="view-content">
 		<h1><xsl:value-of select="/document/context/object/title"/></h1>
@@ -292,7 +194,9 @@
 <xsl:template name="head_default">
 <head>
 <title><xsl:call-template name="title"/></title>
+<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/defcontmin.css" type="text/css"/>
 	<xsl:call-template name="css"/>
+	
 	<xsl:call-template name="script_head"/>
 	<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.8.css" type="text/css" media="screen"/>
 	<link rel="stylesheet" href="{$ximsroot}stylesheets/gallery.css" type="text/css" media="screen"/>
