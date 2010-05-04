@@ -1,31 +1,15 @@
 /**
- * @author c10209
+ * @author susanne tober
  */
-	
-	function showNext(){
-	}
+
 	$(document).ready(function(){
-	
-		/*
-		$('.seek-prev').button({
-			icons: {primary: 'ui-icon-seek-prev'},
-      text: false
-		});
-		$('.seek-next').button({
-			icons: {primary: 'ui-icon-seek-next'},
-      text: false
-		});
-*/
 		
 		$('.gallery_demo_unstyled').addClass('gallery_demo'); // adds new class name to maintain degradability
 		
 		$('ul.gallery_demo').galleria({
 			history   : true, // activates the history object for bookmarking, back-button etc.
 			clickNext : true, // helper for making the image clickable
-			insert    : '#main_image', // the containing selector for our main image
-			/*onThumb: function(){
-				scaleimg();
-			},	*/	
+			insert    : '#main_image', // the containing selector for our main image	
 			onImage	  : function(){
 				scaleimg();
 			}	

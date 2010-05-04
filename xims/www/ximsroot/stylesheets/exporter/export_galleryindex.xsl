@@ -94,7 +94,7 @@
 		</div>
 		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
 			<div class="scroll-bar"></div>
-		</div>	
+		</div>
 	</div>
 	<br clear="all"/>
 	<div id="main_image">
@@ -109,19 +109,15 @@
 	</xsl:if>
 	
 	<xsl:if test="$thumbnail-pos='left'">
-	<div class="div-left scroll-pane ui-widget ui-widget-header ui-corner-all half-width">
+	<div class="div-left scroll-pane ui-widget ui-widget-header ui-corner-all">
 			
 			<div class="scroll-content">
 				<ul class="gallery_demo_unstyled">
 				<xsl:apply-templates select="object"/>
 				</ul>
-		</div>
-		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-			<div class="scroll-bar"></div>
-		</div>
-	
+		</div>	
 	</div>
-	<div id="main_image"  class="div-right half-width">
+	<div id="main_image">
 		<xsl:if test="$shownav = 1">
 				<p class="nav">
 					<a href="#" onclick="$.galleria.prev(); return false;">&lt;&lt; <!--<xsl:value-of select="$i18n/l/Back"/>--></a> | 
@@ -189,7 +185,7 @@
 	<xsl:if test="position() = 1"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
 	<img src="{location}">
 	<xsl:attribute name="alt"><xsl:value-of select="title"/></xsl:attribute>
-	<xsl:attribute name="title"><xsl:value-of select="abstract"/></xsl:attribute>
+	<xsl:attribute name="title"><xsl:value-of select="title"/><xsl:if test="$showcaption = '1' and abstract != ''"> : <xsl:value-of select="substring(abstract,0,200)"/></xsl:if></xsl:attribute>
 	</img></li>
 	</xsl:if>
 </xsl:template>

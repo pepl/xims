@@ -54,10 +54,6 @@ sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
 
-#    $self->expand_bodydeptinfo( $ctxt );
-    $self->resolve_content( $ctxt, [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID FEED_ID ) ] );
-    $self->expand_attributes($ctxt);
-
     return $self->SUPER::event_edit( $ctxt );
 }
 
@@ -76,9 +72,6 @@ sub event_preview {
     $self->param( 'request.uri', $ctxt->object->location_path_relative() );
 
     $ctxt->properties->application->style("preview");
-
-    # hmmm, we are guessing there... :-|
-    #print $self->header('-charset' => 'ISO-8859-1' );
 
     return 0;
 }
@@ -161,8 +154,6 @@ sub event_store {
     }
     
     my $shownav = $self->param('shownavigation');
-    warn "\nshownav param: ".$self->param('shownavigation');
-    warn "\nshownav var: ".$shownav;
     if ( defined $shownav and $shownav eq 'on' ) {
         $object->attribute( shownavigation => '1' );
     }
@@ -171,8 +162,6 @@ sub event_store {
     }
     
     my $showcaption = $self->param('showcaption');
-    warn "\nshowcaption param: ".$self->param('showcaption');
-    warn "\nshowcaption var: ".$showcaption;
     if ( defined $showcaption and $showcaption eq 'on' ) {
         $object->attribute( showcaption => '1' );
     }
