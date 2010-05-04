@@ -12,15 +12,12 @@
 <xsl:import href="folder_default.xsl"/>
 <xsl:import href="gallery_common.xsl"/>
 
-<!--<xsl:param name="scaletowidth" select="'400'"/>-->
 <xsl:param name="thumbnail-pos" select="/document/context/object/attributes/thumbpos"/>
 <xsl:variable name="img-count" select="count(/document/context/object/children/object[published=1])"/>
 
 <xsl:variable name="scroll-content-width" select="$img-count * 50 + 50"/>
-<!--<xsl:variable name="img-width" select="/document/context/object/imgwidth"/>
-<xsl:variable name="img-heigth" select="/document/context/object/imgheight"/>-->
 <xsl:variable name="img-width" select="/document/context/object/attributes/imgwidth"/>
-<xsl:variable name="img-height" select="$img-width * 0.75 "/>
+<xsl:variable name="img-height" select="floor($img-width * 0.75)"/>
 <xsl:variable name="shownav" select="/document/context/object/attributes/shownavigation"/>
 <xsl:variable name="showcaption" select="/document/context/object/attributes/showcaption"/>
 
@@ -106,19 +103,15 @@
 	</xsl:if>
 	
 	<xsl:if test="$thumbnail-pos='left'">
-	<div class="div-left scroll-pane ui-widget ui-widget-header ui-corner-all half-width">
+	<div class="div-left scroll-pane ui-widget ui-widget-header ui-corner-all">
 			
 			<div class="scroll-content">
 				<ul class="gallery_demo_unstyled">
 				<xsl:apply-templates select="/document/context/object/children/object"/>
 				</ul>
 		</div>
-		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-			<div class="scroll-bar"></div>
-		</div>
-	
 	</div>
-	<div id="main_image"  class="div-right half-width">
+	<div id="main_image">
 		<xsl:if test="$shownav = 1">
 				<p class="nav">
 					<a href="#" onclick="$.galleria.prev(); return false;">&lt;&lt; <xsl:value-of select="$i18n/l/Back"/></a> | 
@@ -208,82 +201,39 @@
 	
 	</script>
 	<style>
+	.div-left{
+		float: left;
+	}
 	#main_image{
-		width: <xsl:value-of select="$img-width+20"/>px;
-		height: <xsl:value-of select="$img-height +200"/>px;
+				float:left;
+			width: <xsl:value-of select="$img-width+20"/>px;
+			height: <xsl:value-of select="$img-height +100"/>px;
+			}
+			#main_image img{
+				width: <xsl:value-of select="$img-width"/>px;
+			}	
+			.scroll-pane { 
+				width: <xsl:value-of select="$img-width+20"/>px; 
+			}
+<xsl:if test="$thumbnail-pos='left'">
+	.galleria li{
+		float: none !important;
 	}
-	/*#main_image img{
-		width: <xsl:value-of select="$img-width"/>px;
-	}*/
-	<xsl:if test="$showcaption=0">
-	.caption{
-		display:none;
-	}
-	</xsl:if>
-	
-	.scroll-pane { 
-		width: <xsl:value-of select="$img-width+20"/>px; 
-	 }
-	.scroll-pane.half-width { 
-		width: <xsl:value-of select="900 - $img-width"/>px !important; 
+	.scroll-pane{
+		overflow: scroll !important;
+		width: 80px !important;
+		height: <xsl:value-of select="$img-height + 20"/>px !important;		
+		margin-top: 2em;
 	}
 	.scroll-content {
-		width: <xsl:value-of select="$scroll-content-width"/>px; 
+		width: 60px !important;
+		margin-left: 0 !important;
 	}
-	</style>
-	<!--<style>
-	#main_image{
-	width: <xsl:value-of select="$img-width+20"/>px;
-	height: <xsl:value-of select="$img-height +200"/>px;
-	text-align:center;
-	margin-left:10px;
-	}
-	#main_image img{
-		width: <xsl:value-of select="$img-width"/>px;
-	}
-	.thumb{
-	height:40px !important;
-	}
-	.thumb-nav{
-		margin-right:10px;
-		padding-top:10px;
-	}
-	.galleria li.active {
-		border: black solid 3px;
-	}
-	.galleria{
-		margin:10px;
-	}
-	.caption{
-		height: 100px;
-		margin-top: 10px;
-	}	
-	.ui-widget-header{
-		background: none !important;
-	}
-	.hidden{
-		display: none;
-	}
-	<xsl:if test="$showcaption=0">
-	.caption{
-		display:none;
-	}
-	</xsl:if>
-	
-	.scroll-pane { overflow: auto; width: <xsl:value-of select="$img-width+20"/>px; float:left; }
-	.scroll-pane.half-width { width: <xsl:value-of select="900 - $img-width"/>px !important; margin-top: 40px}
-		/*.scroll-content { width: 2440px; float: left; }*/
-		.scroll-content {width: <xsl:value-of select="$scroll-content-width"/>px; float: left; }
-		.scroll-content-item { width: 100px; height: 100px; float: left; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; }
-		* html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
-		.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
-		.scroll-bar-wrap .ui-slider { background: none; border:0; height: 2em; margin: 0 auto;  }
-		.scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 100%; height: 100%; margin: 0 auto; }
-		.scroll-bar-wrap .ui-slider-handle { top:.2em; height: 1.5em; }
-		.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
-
-	</style>-->
-	
+</xsl:if>
+			.scroll-content {
+				width: <xsl:value-of select="$scroll-content-width"/>px;				
+				}
+	</style>	
     </head>
     
 </xsl:template>
