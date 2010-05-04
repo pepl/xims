@@ -351,7 +351,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
+							<a href="" target="_blank" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/stepManual"/></xsl:attribute>
 								<span class="ui-icon ui-icon-document"/>
 								<span class="text">
@@ -360,7 +360,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
+							<a href="" target="_blank" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/FAQ_long"/></xsl:attribute>
 								<span class="ui-icon ui-icon-lightbulb"/>
 								<span class="text">
@@ -369,7 +369,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="mailto:xims-support@uibk.ac.at" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
+							<a href="" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/MailToSupport"/></xsl:attribute>
 								<span class="ui-icon ui-icon-mail-closed"/>
 								<span class="text">
