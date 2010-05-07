@@ -22,7 +22,6 @@
         </xsl:call-template>
 <div id="content-container">
         <form name="userEdit" action="{$xims_box}{$goxims}/user" method="post">
-
               <p>
                 <xsl:call-template name="message"/>
               </p>
@@ -51,7 +50,13 @@
 													<xsl:attribute name="value"><xsl:value-of select="$i18n/l/cancel"/></xsl:attribute></input>
                         <!--<a href="{$xims_box}{$goxims}/user" class="ui-state-default ui-corner-all fg-button"><xsl:value-of select="$i18n/l/cancel"/></a>-->
         </form>
-        </div>
+        <br/>
+                <p class="back">
+                    <a href="{$xims_box}{$goxims}/user"><xsl:value-of select="$i18n/l/BackToHome"/></a>
+                </p>
+
+            </div>
+			<xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

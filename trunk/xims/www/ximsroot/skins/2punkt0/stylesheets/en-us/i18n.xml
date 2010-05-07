@@ -12,8 +12,10 @@
 <Location>Location</Location>
 <location>location</location>
 <Title>Title</Title>
+<Subtitle>Subtitel</Subtitle>
 <File>File</File>
-<Image>Image</Image>
+<Images>Image</Images>
+<Image>Images</Image>
 <Lead>Lead</Lead>
 <replace>replace</replace>
 <bodyfromfile_create>Create body from file</bodyfromfile_create>
@@ -101,14 +103,15 @@
 <Last_Modification_Date>Last Modification Date</Last_Modification_Date>
 <ascending>ascending</ascending>
 <descending>descending</descending>
-<Sort_children_default>Per default, sort children of this container by </Sort_children_default>
+<Sort_children_default>Per default, sort by </Sort_children_default>
 <Options>Options</Options>
 <Undelete>Undelete</Undelete>
 <Priv_grant_options>Privilege Grant Options</Priv_grant_options>
 <Copy_parent_privs>Copy privilege-grants from parent</Copy_parent_privs>
 <Grant_myself_only>Grant to myself only</Grant_myself_only>
 <Grant_default_roles>Additionally, grant view privileges to default roles</Grant_default_roles>
-<Mark_new>Mark object as new:</Mark_new>
+<Mark_new>Mark object as new</Mark_new>
+<Pub_on_save>Publish on save</Pub_on_save>
 <Try_to_well-balance>Try to form body well. (If body is not well-balanced an error message will be displayed otherwise.)</Try_to_well-balance>
 <Body_content_changed>The content of the body has been changed.\nPlease use 'Save' or 'Cancel' to exit this page.</Body_content_changed>
 <Test_body_xml>Test body's XML</Test_body_xml>
@@ -121,6 +124,9 @@
 <Add_link>Add Link</Add_link>
 <Annotation>Annotation</Annotation>
 <Add_annotation>Add Annotation</Add_annotation>
+<Process_XSP>XSP process body per default</Process_XSP>
+<Show_XSP_processed>Show body XSP processed</Show_XSP_processed>
+<Not_Show_XSP_processed>Do not XSP process body</Not_Show_XSP_processed>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Manage Object Privileges</Manage_objectprivs>
 <Manage_privs>Manage Privileges</Manage_privs>
@@ -181,6 +187,7 @@
 <!-- End  common_move_browse -->
 <!-- Begin anondiscussionforum* -->
 <Create_topic>Create topic</Create_topic>
+<New_topic>New topic</New_topic>
 <Topic>Topic</Topic>
 <Created>Created</Created>
 <Author>Author</Author>
@@ -207,6 +214,11 @@
 <User>User</User>
 <Role>Role</Role>
 <!-- End users_common -->
+<!-- Begin users_default -->
+<Change_password>Change password</Change_password>
+<Role_membership>Role membership</Role_membership>
+<GenerateWebsite>Generate new website</GenerateWebsite>
+<!-- End users_default -->
 <!-- Begin user_bookmarks -->
 <Path>Path</Path>
 <Bookmarks>Bookmarks</Bookmarks>
@@ -323,15 +335,29 @@
 <Import>Import</Import>
 <DeleteConfirm>Confirm Object Deletion</DeleteConfirm>
 <AboutDeletion1>You are about to delete the object</AboutDeletion1>
+<AboutDeletion1_User>You are about to delete the user</AboutDeletion1_User>
 <AboutDeletion2>from the system.</AboutDeletion2>
 <WarnNoUndo>This is a permanent action that cannot be undone!</WarnNoUndo>
 <ClickCancelConf>Click 'Confirm' to continue, or 'Cancel' to return to the previous screen.</ClickCancelConf>
 <Confirm>Confirm</Confirm>
+<!-- start publish interaction -->
+<Publish>Publish</Publish>
+<Republish>Republish</Republish>
+<Unpublish>Unpublish</Unpublish>
 <isCurrently>currently</isCurrently>
 <NOT>NOT</NOT>
+<under>under</under>
 <ObjectHasDependencies>The object has the following dependencies that you do not have the correct permissions to publish</ObjectHasDependencies>
 <ObjSkipping>These objects will be skipped during publishing.</ObjSkipping>
 <HasAutoindex>The autoindex-option is set for this container.</HasAutoindex>
+<IndexIfPublish>An index file will be generated if you choose 'Publish'</IndexIfPublish>
+<IndexIfRepublish>An index file will be generated if you choose 'Republish'</IndexIfRepublish>
+<toExpCurrObj>to export the current object</toExpCurrObj>
+<toRemoveFromLiveServer>'Unpublish' to remove the object from the live server</toRemoveFromLiveServer>
+<toReturnPrev>to return to the previous screen</toReturnPrev>
+<UpdateDepend>Update dependencies (related Portlets, Auto-Indices, ...)</UpdateDepend>
+<ShowDetailsOfPub>Show verbose result of publishing process</ShowDetailsOfPub>
+<!-- end publish interaction -->
 <Path_to_img>Path to image</Path_to_img>
 <Search_objTree_img>Or search for image in the XIMS object tree</Search_objTree_img>
 <Opt_sel_link>Link target (optional)</Opt_sel_link>
@@ -387,4 +413,12 @@
 <rl_quality_criterion>Quality criterion</rl_quality_criterion>
 
 <!-- end reflib / vlib-->
+<!-- userpages -->
+<SelectSkin>Select a skin</SelectSkin>
+<!--  end userpages -->
+<Email_To>To</Email_To>
+<Email_Reply-To>Reply-To</Email_Reply-To>
+<Email_Subject>Subject</Email_Subject>
+<Email_Send>Send</Email_Send>
+<Container_View>Container view</Container_View>
 </l>

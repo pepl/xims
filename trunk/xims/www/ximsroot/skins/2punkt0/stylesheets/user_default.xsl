@@ -72,31 +72,42 @@
 									<li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?bookmarks=1"><xsl:value-of select="$i18n/l/ManageBookmarks"/></a></li>
 								<xsl:if test="system_privileges/change_password = '1'">
 									<li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?passwd=1"><xsl:value-of select="$i18n/l/ChangePassword"/></a></li>
-									<li class="sprite sprite-list_SymbolicLink"><xsl:value-of select="$i18n/l/ManagePersonalSettings"/></li>
 									<li class="sprite sprite-list_SymbolicLink"><xsl:value-of select="$i18n/l/UpdateEmailAdress"/></li>
 								</xsl:if>
+								<li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?prefs=1"><xsl:value-of select="$i18n/l/ManagePersonalSettings"/></a></li>
 							</ul>
 
-            <br/><br/>
+            
             <!-- check sysprivs here and xsl:choose -->
             <xsl:if test="admin = '1'">
+            	<br/>
                 <h2><xsl:value-of select="$i18n/l/AdmOptions"/></h2>
                 <p>
                     <!-- check sysprivs here and xsl:choose -->
                     <xsl:value-of select="$i18n/l/AsMemberAdmin"/>
-                    <ul id="adminoptlist">
+                </p>
+                    <ul id="adminlist">
                         <li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims_users}"><xsl:value-of select="$i18n/l/ManageUserRoles"/></a></li>
                     </ul>
-                </p>
+                
             </xsl:if>
+            
+             <xsl:if test="system_privileges/gen_website">
+             	<br/>
+             <h2>Weitere Aufgaben</h2>
+                    <ul>
+                        <li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?newwebsite=1"><xsl:value-of select="$i18n/l/GenerateWebsite"/></a></li>
+                    </ul>
+             </xsl:if>
 
         </div>
+        <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>
 
 <xsl:template match="objectlist">
-    <table id="obj-table">
+    <table class="obj-table">
     <thead>
     <tr>
 					<th>&#160;</th>

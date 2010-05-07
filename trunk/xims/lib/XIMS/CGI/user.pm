@@ -51,7 +51,6 @@ sub registerEvents {
           passwd
           passwd_update
           prefs
-          prefs_update
           bookmarks
           newwebsite
           gen_website
@@ -222,48 +221,13 @@ sub event_prefs {
     my ( $self, $ctxt ) = @_;
 	warn("\nevent_prefs\n");
     $ctxt->properties->application->style( 'prefs' );
+    $ctxt->session->message( __"User's preferences updated successfully." );
 
     $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
     $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
 
     return 0;
 }
-
-=head2 event_userprefs()
-
-=cut
-
-sub event_userprefs {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-	warn('\nevent_userprefs\n');
-    $ctxt->properties->application->style( 'prefs' );
-
-    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
-    $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
-
-    return 0;
-}
-
-#=head2 event_prefsupdate()
-#
-#=cut
-#
-#sub event_prefs_update {
-#    XIMS::Debug( 5, "called" );
-#    my ( $self, $ctxt ) = @_;
-#    
-#    my $user = $ctxt->session->user();
-#    
-#    my $userPrefs = XIMS::UserPrefs->new(id => $user->id(), profile_type => $self->param('profile_type'), skin => $self->param('skin'), publish_at_save => $self-param('publish_at_save'), containerview_show => $self->param('containerview_show'));
-#	$userPrefs->updateObject();
-##    $ctxt->properties->application->style( 'prefs' );
-##
-##    $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
-##    $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
-#
-#    return 0;
-#}
 
 =head2 event_newwebsite()
 
@@ -343,28 +307,6 @@ sub event_gen_website {
 		my $deptrootid = $importer->import($deptroot);
 		if ($deptrootid) {
 			$message .= "<p>Departmentroot created.</p>";
-#			# Set ci_departmentroot_properties.generate_stats to 1
-#			my $doc_id = $deptroot->document_id();
-#			if($doc_id){
-#				my $engine = $deptroot->data_provider->{Driver}->{dbh};
-#				unless (
-#					$engine->do_insert(
-#						table  => 'ci_departmentroot_properties',
-#						values => {
-#							'document_id'    => $doc_id,
-#							'generate_stats' => 1
-#						}
-#					) == 1
-#				  )
-#				{
-#					warn "Unable to set departmentroot properties!\n";
-#				}
-#			}
-#			else {
-#				$ctxt->properties->application->style( 'passwd' );
-#				$self->sendError( $ctxt,"No Document ID");
-#			}
-#		}
 		
 		#create Home - Document
 		my $document = XIMS::Document->new(
@@ -404,9 +346,6 @@ sub event_gen_website {
 			$message .= &set_default_bookmark($role, $deptroot);
 		}
 		$message .= &publish_deptroot_rec($deptroot, $user);
-		
-		&remove_user_privileges('UIBK:ALL', $deptroot);
-		&remove_user_privileges('ci00', $deptroot);
 		
 #		$ctxt->properties->application->style( 'newwebsite' );
 		$message .= "<p><strong>New website successfully generated!</strong></p>";
