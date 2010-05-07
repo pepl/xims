@@ -9,50 +9,26 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:import href="view_common.xsl"/>
 <xsl:import href="simpledb_common.xsl"/>
-<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
- doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-<xsl:template match="/document/context/object">
-    <html>
-        <xsl:call-template name="head_default"/>
-        <body>
-            <xsl:call-template name="header"/>
-            <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-                <tr>
-                    <td bgcolor="#ffffff">
-                        <span id="body">
-                            <h1><xsl:value-of select="title"/></h1>
-                                <div id="abstract">
-                                    <xsl:apply-templates select="abstract"/>
-                                </div>
-                                <table>
-                                    <xsl:apply-templates select="member_values/member_value">
-                                        <xsl:sort select="/document/member_properties/member_property[@id = current()/property_id]/position" order="ascending" data-type="number"/>
-                                    </xsl:apply-templates>
-                                </table>
-                        </span>
-                    </td>
-                </tr>
-            </table>
-            <table align="center" width="98.7%" class="footer">
-                <xsl:call-template name="user-metadata"/>
-                <xsl:call-template name="footer"/>
-            </table>
-            <xsl:call-template name="script_bottom"/>
-        </body>
-    </html>
+
+<xsl:param name="simpledb">true</xsl:param>
+
+<xsl:template name="view-content">
+<div id="docbody">
+					<p><xsl:apply-templates select="abstract"/></p>
+							<xsl:apply-templates select="member_values/member_value">
+									<xsl:sort select="/document/member_properties/member_property[@id = current()/property_id]/position" order="ascending" data-type="number"/>
+							</xsl:apply-templates>
+				</div>
 </xsl:template>
 
 <xsl:template match="member_value">
     <xsl:variable name="property_id" select="property_id"/>
-    <tr>
-        <td>
+    <p>
             <xsl:value-of select="/document/member_properties/member_property[@id=$property_id]/name"/>:
-        </td>
-        <td>
             <xsl:value-of select="value"/>
-        </td>
-    </tr>
+    </p>
 </xsl:template>
 
 </xsl:stylesheet>

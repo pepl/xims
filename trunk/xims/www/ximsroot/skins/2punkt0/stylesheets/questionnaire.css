@@ -1,3 +1,21 @@
+.question-options span{
+	display: inline;
+	padding-left: 16px;
+	cursor: pointer;
+}
+.question-options{
+	float: left;
+}
+#question-comment{
+	margin-left: 170px;
+}
+#question{
+	padding: 2px;
+}
+#question > div{
+	margin-bottom: 10px;
+}
+
 .qu-edit-title {
   font-size: 16px;
   font-weight: bold;
@@ -7,11 +25,11 @@
   font-size: 16px;
   font-weight: bold;
 }
-
+/*
 .qn-edit-title {  }
 
 .qn-edit-comment {  }
-
+*/
 .numbering {
   color: black;
   font-weight: bold;

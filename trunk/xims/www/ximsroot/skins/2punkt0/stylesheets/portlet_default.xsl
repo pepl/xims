@@ -8,47 +8,23 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-    <xsl:import href="common.xsl"/>
-    <xsl:output method="html" encoding="utf-8"/>
-
-    <xsl:template match="/document/context/object">
-        <html>
-            <xsl:call-template name="head_default"/>
-            <body>
-                <xsl:call-template name="header"/>
-<!--                    <xsl:with-param name="createwidget">false</xsl:with-param>
-                </xsl:call-template>-->
-
-                <!-- he portlet description should be shown here -->
-<div id="main-content" class="ui-corner-all">
-						<xsl:call-template name="options-menu-bar">
-							<xsl:with-param name="createwidget">false</xsl:with-param>
-             </xsl:call-template>
-						<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-							<div id="docbody">
-                        <span id="body">
-                <xsl:choose>
-                    <xsl:when test="children/object/level">
-                        <xsl:call-template name="leveledchildrentable"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:call-template name="childrentable"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-                							</span></div>
-           <div id="metadata-options">
-							<div id="user-metadata">
-								<xsl:call-template name="user-metadata"/>
-							</div>
-							<div id="document-options">
-<!--								<xsl:call-template name="document-options"/>-->
-							</div>
-						</div>
-					</div>
-				</div>
-                <xsl:call-template name="script_bottom"/>
-            </body>
-        </html>
+                
+    <xsl:import href="view_common.xsl"/>
+    
+    <xsl:variable name="i18n_portlet" select="document(concat($currentuilanguage,'/i18n_portlet.xml'))"/>
+    
+    <xsl:template name="view-content">
+    <!-- the portlet description should be shown here -->
+    <div id="docbody">
+			<xsl:choose>
+					<xsl:when test="children/object/level">
+							<xsl:call-template name="leveledchildrentable"/>
+					</xsl:when>
+					<xsl:otherwise>
+							<xsl:call-template name="childrentable"/>
+					</xsl:otherwise>
+			</xsl:choose>
+			</div>
     </xsl:template>
 
     <xsl:template name="leveledchildrentable">
@@ -61,27 +37,27 @@
     </xsl:template>
 
     <xsl:template match="children/object" mode="ptable">
-                    <xsl:apply-templates select="title"/>
-                    <xsl:call-template name="infos"/>
+			<div class="deptportlets">
+				<xsl:apply-templates select="title"/>
+				<xsl:call-template name="infos"/>
 
-                    <xsl:apply-templates select="abstract"/>
-                    <xsl:apply-templates select="body"/>
+				<xsl:apply-templates select="abstract"/>
+				<xsl:apply-templates select="body"/>
+			</div>
     </xsl:template>
 
     <xsl:template match="title">
-    <div>
-        <!--<td colspan="3" style="background-color: #123853;color:white">-->
-            <xsl:apply-templates/>
-        <!--</td>-->
-        </div>
+				<p>
+        <strong><xsl:apply-templates/></strong>
+        </p>
     </xsl:template>
 
     <xsl:template name="infos">
         <xsl:variable name="data_format_id">
             <xsl:value-of select="data_format_id"/>
         </xsl:variable>
-        <div>
-                <strong>Location: </strong>
+        <p>
+                Location:
                 <xsl:choose>
                     <!-- this should test against the object type name -->
                     <xsl:when test="/document/data_formats/data_format[@id=$data_format_id]/name ='URL'">
@@ -91,96 +67,30 @@
                         <a href="{$goxims_content}{location_path}"><xsl:apply-templates select="location"/></a>
                     </xsl:otherwise>
                 </xsl:choose>
-        </div>
+                <xsl:choose>
+                  <xsl:when test="owned_by_lastname">
+                        <br/><xsl:value-of select="$i18n_portlet/l/Owner"/>: <xsl:call-template name="ownerfullname"/>
+                  </xsl:when>
+                  <xsl:when test="created_by_lastname">
+                        <br/><xsl:value-of select="$i18n_portlet/l/Creator"/>: <xsl:call-template name="creatorfullname"/>
+                  </xsl:when>
+                  <xsl:when test="last_modified_by_lastname">
+                        <br/><xsl:value-of select="$i18n_portlet/l/Last_modifier"/>: <xsl:call-template name="modifierfullname"/>
+                  </xsl:when>
+                  <xsl:when test="creation_timestamp != ''">
+                        <br/><xsl:value-of select="$i18n_portlet/l/Creation_timestamp"/>: <xsl:apply-templates select="creation_timestamp" mode="datetime"/>
+                    </xsl:when>
+                    <xsl:when test="last_modification_timestamp">
+                        <br/><xsl:value-of select="$i18n_portlet/l/Last_modification_timestamp"/>: <xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
+                    </xsl:when>
+								</xsl:choose>
+        </p>
     </xsl:template>
-    
-<!--    <xsl:template name="infos">
-        <xsl:variable name="data_format_id">
-            <xsl:value-of select="data_format_id"/>
-        </xsl:variable>
-        INFOS: 
-        <tr>
-            <td width="33%">
-                <strong>Location:</strong>
-            </td>
-            <td width="33%">
-                <xsl:choose>
-                    <xsl:when test="owned_by_fullname">
-                        <strong>Owner Name:</strong>
-                    </xsl:when>
-                    <xsl:when test="last_modified_by_fullname">
-                        <strong>Last Modifier Name:</strong>
-                    </xsl:when>
-                    <xsl:when test="created_by_fullname">
-                        <strong>Creator Name:</strong>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text> </xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </td>
-            <td width="33%">
-                <xsl:choose>
-                    <xsl:when test="last_modification_timestamp">
-                        <strong>Last Modification Time</strong>
-                    </xsl:when>
-                    <xsl:when test="creation_time">
-                        <strong>Creation Time</strong>
-                    </xsl:when>
-
-                    <xsl:otherwise>
-                        <xsl:text> </xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <xsl:choose>
-                    --><!-- this should test against the object type name --><!--
-                    <xsl:when test="/document/data_formats/data_format[@id=$data_format_id]/name ='URL'">
-                        <a href="{location}"><xsl:apply-templates select="location"/></a>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <a href="{$goxims_content}{location_path}"><xsl:apply-templates select="location"/></a>
-                    </xsl:otherwise>
-                </xsl:choose>
-
-            </td>
-            <td>
-                <xsl:choose>
-                    <xsl:when test="owned_by_fullname">
-                        <xsl:apply-templates select="owned_by_fullname"/>
-                    </xsl:when>
-                    <xsl:when test="last_modified_by_fullname">
-                        <xsl:apply-templates select="last_modified_by_fullname"/>
-                    </xsl:when>
-                    <xsl:when test="created_by_fullname">
-                        <xsl:apply-templates select="created_by_fullname"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text> </xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
-
-            </td>
-            <td>
-                <xsl:choose>
-                    <xsl:when test="last_modification_timestamp">
-                        <xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
-                    </xsl:when>
-                    <xsl:when test="creation_time">
-                        <xsl:apply-templates select="creation_time" mode="datetime"/>
-                    </xsl:when>
-                </xsl:choose>
-            </td>
-        </tr>
-    </xsl:template>-->
 
     <xsl:template match="abstract">
-        <div id="tr-abstract">
+        <p>
                 <xsl:apply-templates/>
-        </div>
+        </p>
     </xsl:template>
 
     <xsl:template match="body">

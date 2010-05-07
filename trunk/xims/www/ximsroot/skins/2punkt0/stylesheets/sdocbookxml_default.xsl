@@ -6,22 +6,16 @@
 # $Id: sdocbookxml_default.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
-	<xsl:import href="common.xsl"/>
+
+	<xsl:import href="view_common.xsl"/>
+	
 	<xsl:param name="section">0</xsl:param>
 	<xsl:param name="section-view">false</xsl:param>
 	<xsl:param name="_uri" select="concat($goxims_content,$absolute_path)"/>
 	<xsl:variable name="docbookroot" select="/document/context/object/body"/>
-	<xsl:template match="/document/context/object">
-		<html>
-			<xsl:call-template name="head_default"/>
-			<body onload="stringHighlight(getParamValue('hls'))">
-				<xsl:call-template name="header"/>
-				<xsl:call-template name="toggle_hls"/>
-				<div id="main-content" class="ui-corner-all">
-					<xsl:call-template name="options-menu-bar"/>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-						<div id="docbody">
-							<span id="body">
+
+	<xsl:template name="view-content">
+							<div id="docbody">
 								<!--<xsl:apply-templates select="body"/>-->
 								<xsl:choose>
 									<xsl:when test="$section > 0 and $section-view='true'">
@@ -31,23 +25,9 @@
 										<xsl:apply-templates select="$docbookroot"/>
 									</xsl:otherwise>
 								</xsl:choose>
-							</span>
 							<!--                   macht nur schmarrn...     
 <xsl:call-template name="body_display_format_switcher"/>-->
 						</div>
-						<div id="metadata-options">
-							<div id="user-metadata">
-								<xsl:call-template name="user-metadata"/>
-							</div>
-							<div id="document-options">
-								<!--								<xsl:call-template name="document-options"/>-->
-							</div>
-						</div>
-					</div>
-				</div>
-				<xsl:call-template name="script_bottom"/>
-			</body>
-		</html>
 	</xsl:template>
 	
 	<xsl:template match="article">
@@ -74,9 +54,9 @@
 		<!-- end frontmatter -->
 		<!-- begin toc -->
 		<div class="toc">
-			<a name="toc">
-				<h2><xsl:value-of select="$i18n/l/TableOfContents"/></h2>
-			</a>
+			<h2><a name="toc">
+				<xsl:value-of select="$i18n/l/TableOfContents"/>
+			</a></h2>
 			<xsl:apply-templates select="($docbookroot/article/section)" mode="toc"/>
 		</div>
 		<!-- end toc -->
@@ -117,7 +97,7 @@
 	
 	<xsl:template match="section">
 		<div class="section">
-			<xsl:attribute name="id"><xsl:choose><xsl:when test="@label"><xsl:value-of select="@label"/></xsl:when><xsl:otherwise><xsl:value-of select="translate(title, ' -)(?:&#xA;', '')"/></xsl:otherwise></xsl:choose></xsl:attribute>
+			<!--<xsl:attribute name="id"><xsl:choose><xsl:when test="@label"><xsl:value-of select="@label"/></xsl:when><xsl:otherwise><xsl:value-of select="translate(title, ' -)(?:&#xA;', '')"/></xsl:otherwise></xsl:choose></xsl:attribute>-->
 			<xsl:element name="h{number( count(ancestor-or-self::section) + 1)}">
 				<a name="{translate(title, ' -)(?:&#xA;', '')}">
 					<xsl:value-of select="title"/>
@@ -135,6 +115,7 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
+	
 	<xsl:template match="section" mode="toc">
 		<div class="toc-item" id="{generate-id()}">
 			<xsl:choose>
@@ -160,7 +141,7 @@
 					</xsl:choose>
 				</xsl:when>
 				<xsl:otherwise>
-					<a href="#{translate(title, ' -)(?:&#xA;', '')}">
+					<a href="#{translate(title, ' -)(?:&#xA;&#x2026;.', '')}">
 						<xsl:value-of select="title"/>
 					</a>
 				</xsl:otherwise>
@@ -186,6 +167,7 @@
                         </div>
 		</div>
 	</xsl:template>
+	
 	<!-- end header2 template -->
 	<!-- begin footer template -->
 	<xsl:template name="dkbfooter">
@@ -236,7 +218,8 @@
 	</xsl:template>
 	<!-- end footer template -->
 	<!-- end named XSL templates -->
-	<!-- begin core sdocbook elements -->
+	
+<!-- begin core sdocbook elements -->
 	<xsl:template match="para">
 		<p>
 			<xsl:apply-templates/>
@@ -257,22 +240,26 @@
 			<xsl:apply-templates/>
 		</li>
 	</xsl:template>
+	
 	<xsl:template match="ulink">
 		<a href="{@url}">
 			<xsl:apply-templates/>
 		</a>
 	</xsl:template>
+	
 	<xsl:template match="xref">
 		<a href="#{@linkend}">
 			<xsl:apply-templates/>
 		</a>
 	</xsl:template>
+	
 	<!-- seems correct for sdocbook -->
 	<xsl:template match="email">
 		<a href="mailto:{.}">
 			<xsl:value-of select="."/>
 		</a>
 	</xsl:template>
+	
 	<xsl:template match="programlisting">
 		<div class="programlisting">
 			<pre>
@@ -280,55 +267,68 @@
 			</pre>
 		</div>
 	</xsl:template>
+	
 	<xsl:template match="filename | userinput | computeroutput | literal">
 		<code>
 			<xsl:apply-templates/>
 		</code>
 	</xsl:template>
+	
 	<xsl:template match="literallayout">
 		<pre>
 			<xsl:apply-templates/>
 		</pre>
 	</xsl:template>
+	
 	<xsl:template match="emphasis">
 		<em>
 			<xsl:apply-templates/>
 		</em>
 	</xsl:template>
+	
 	<xsl:template match="blockquote">
 		<blockquote>
 			<xsl:apply-templates/>
 		</blockquote>
 	</xsl:template>
+	
 	<xsl:template match="inlinemediaobject">
 		<span class="mediaobject">
 			<xsl:apply-templates/>
 		</span>
 	</xsl:template>
+	
 	<xsl:template match="mediaobject">
 		<div class="mediaobject">
 			<xsl:apply-templates/>
 		</div>
 	</xsl:template>
+	
 	<xsl:template match="imageobject">
 		<img src="{imagedata/@fileref}"/>
 	</xsl:template>
+	
 	<xsl:template match="caption">
 		<div class="{name(.)}">
 			<xsl:apply-templates/>
 		</div>
 	</xsl:template>
+	
 	<xsl:template match="note|important|warning|caution|tip">
-		<div class="{name(.)}">
-			<h3 class="title">
-				<a>
-					<xsl:attribute name="name"><xsl:call-template name="object.id"/></xsl:attribute>
-				</a>
-				<xsl:value-of select="concat(translate(substring(name(.),1,1),'niwct','NIWCT'),substring(name(.),2,string-length(name(.)-1)))"/>
-			</h3>
+		<!--<div class="{name(.)}">-->
+			<!--<h3 class="title">-->
+			<br/><br/><em>
+				<!--<a>-->
+					<!--<xsl:attribute name="name"><xsl:call-template name="object.id"/></xsl:attribute>-->
+				<!--</a>-->
+				<!-- eieieieieieieieieiei -->
+				<xsl:value-of select="concat(translate(substring(name(.),1,1),'niwct','NIWCT'),substring(name(.),2,string-length(name(.)-1)))"/>: 
+				</em>
+			<!--</h3>-->
 			<xsl:apply-templates/>
-		</div>
+		<!--</div>-->
 	</xsl:template>
+	
 	<!--the following is a slightly adapted excerpt of Norman Walsh's table.xsl -->
 	<xsl:template match="table">
 		<xsl:apply-templates select="tgroup"/>
@@ -353,8 +353,11 @@
 			</xsl:if>
 		</table>
 	</xsl:template>
+	
 	<xsl:template match="colspec"/>
+	
 	<xsl:template match="spanspec"/>
+	
 	<xsl:template match="thead|tfoot">
 		<xsl:element name="{name(.)}">
 			<xsl:if test="@align">

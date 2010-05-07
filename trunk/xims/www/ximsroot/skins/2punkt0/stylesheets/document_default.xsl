@@ -6,8 +6,12 @@
 # $Id: document_default.xsl 2192 2009-01-10 20:07:32Z pepl $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
-	<xsl:import href="common.xsl"/>
+
+	<xsl:import href="view_common.xsl"/>
 	<xsl:import href="document_common.xsl"/>
+	<!-- parameter to allow loading of css-styles needed to match  xims- with public-layout-->
+	<xsl:param name="sitestyle" select="true()"/>
+	
 	<!-- firstlevel folders are considered to be 'sites' -->
 	<xsl:variable name="site_location">
 		<xsl:choose>
@@ -17,88 +21,43 @@
 		</xsl:choose>
 	</xsl:variable>
 	
-	<xsl:template match="/document/context/object">
-		<xsl:param name="createwidget">false</xsl:param>
-		<xsl:param name="parent_id"/>
-		<xsl:variable name="dataformat">
-			<xsl:value-of select="data_format_id"/>
-		</xsl:variable>
-		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
-		<xsl:variable name="dfname" select="$df/name"/>
-		<!--<xsl:variable name="dfmime" select="$df/mime_type"/>-->
-		
-		<html>
-			<xsl:call-template name="head_default"/>
-			<body>
-				<xsl:if test="substring($hls,2,1) != ':'">
-					<xsl:attribute name="onload">stringHighlight(getParamValue('hls'))</xsl:attribute>
-				</xsl:if>
-				<!-- poor man's stylechooser -->
-				<xsl:choose>
-					<xsl:when test="$printview != '0'">
-						<xsl:call-template name="document-metadata"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:call-template name="header"/>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:if test="substring($hls,2,1) != ':'">
-					<xsl:call-template name="toggle_hls"/>
-				</xsl:if>
-				<div id="main-content">
-					<xsl:call-template name="options-menu-bar"/>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-						<div id="docbody">
-							<xsl:call-template name="pre-body-hook"/>
-								<xsl:apply-templates select="body"/>
-								
-								<div id="links">
-								<p>
-									<strong>
-										<xsl:value-of select="$i18n/l/Document_links"/>
-									</strong>
-									</p>
-								<table>
-								<thead>
-									<tr>
-										<th><xsl:value-of select="$i18n/l/Status"/></th>
-										<th><xsl:value-of select="$i18n/l/Position"/></th>
-										<th><xsl:value-of select="$i18n/l/Title"/></th>
-										<th><xsl:value-of select="$i18n/l/Options"/></th>
-									</tr>
-								</thead>
-									<tbody>
-										<tr>
-											<xsl:apply-templates select="children/object" mode="link">
-												<xsl:sort select="position" data-type="number"/>
-											</xsl:apply-templates>
-										</tr>
-									</tbody>
-								</table>
-								<p>
-								<br/>
-									<xsl:if test="$m='e' and user_privileges/create">
-										<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
-											<xsl:value-of select="$i18n/l/Add_link"/>
-										</a>
-									</xsl:if>
-								</p>
-							</div>
-						</div>
-						
-						<div id="metadata-options">
-							<div id="user-metadata">
-								<xsl:call-template name="user-metadata"/>
-							</div>
-							<div id="document-options">
-								<xsl:call-template name="document-options"/>
-							</div>
-						</div>
+	<xsl:template name="view-content">
+	<div id="content">
+				<div id="docbody">
+					<xsl:call-template name="pre-body-hook"/>
+					<xsl:apply-templates select="body"/>
+				</div>	
+				<div id="links">
+					<p>
+						<strong><xsl:value-of select="$i18n/l/Document_links"/></strong>
+					</p>
+					<xsl:if test="(children/@totalobjects = 1 and children/object/location != '.diff_to_second_last' ) or children/@totalobjects > 1">
+					<table class="link-table">
+						<thead>
+							<tr>
+								<th><xsl:value-of select="$i18n/l/Status"/></th>
+								<th><xsl:value-of select="$i18n/l/Position"/></th>
+								<th><xsl:value-of select="$i18n/l/Title"/></th>
+								<th><xsl:value-of select="$i18n/l/Options"/></th>
+							</tr>
+						</thead>
+						<tbody>
+										<xsl:apply-templates select="children/object" mode="link">
+											<xsl:sort select="position" data-type="number"/>
+										</xsl:apply-templates>
+								</tbody>
+					</table>
+					</xsl:if>
+						<p>
+						<br/>
+							<xsl:if test="user_privileges/create">
+								<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
+									<xsl:value-of select="$i18n/l/Add_link"/>
+								</a>
+							</xsl:if>
+						</p>
 					</div>
-			</div>
-				<xsl:call-template name="script_bottom"/>
-			</body>
-		</html>
+		</div>
 	</xsl:template>
 	
 	<xsl:template match="a">
@@ -130,6 +89,7 @@
 			</xsl:choose>
 		</a>
 	</xsl:template>
+	
 	<xsl:template match="img">
 		<img>
 			<xsl:attribute name="src"><xsl:choose><xsl:when test="starts-with(@src,'/') and not(starts-with(@src,$goxims_content))"><xsl:value-of select="concat($goxims_content,$site_location,@src)"/></xsl:when><xsl:otherwise><xsl:value-of select="@src"/></xsl:otherwise></xsl:choose></xsl:attribute>
@@ -159,6 +119,7 @@
 			</xsl:if>
 		</img>
 	</xsl:template>
+	
 	<xsl:template match="script">
 		<script xmlns="http://browser.wont.parse.cdata.sections.so.we.workaround.here/">
 			<xsl:if test="@src != ''">
@@ -170,6 +131,7 @@
 			<xsl:value-of select="text()"/>
 		</script>
 	</xsl:template>
+	
 	<xsl:template name="pre-body-hook">
 		<!-- Do nothing; derived stylesheets may overwrite this template. -->
 	</xsl:template>

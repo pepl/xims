@@ -22,17 +22,10 @@
 <xsl:template match="/document/context/object">
     <html>
     <xsl:call-template name="head_default"/>
-        <!--<head>
-            <title>
-                <xsl:value-of select="title" /> - XIMS
-            </title>
-            <xsl:call-template name="css"/>
-        </head>-->
         <body>
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
-
 
             <div id="content-container">
 

@@ -35,9 +35,11 @@
 }
 
 
+/*
 .simpledb_membertitle {
     font: bold 1.1em helvetica, arial, sans-serif;
 }
+*/
 
 .simpledb_itemcreate {
     margin: auto;
@@ -59,26 +61,22 @@
 }
 
 #simpledb_options {
-    margin-top: 30px;
+    margin-top: 10px;
 }
-
-#simpledb_itemsearch td {
-    vertical-align: top;
+.simpledb_create_item{
+	float: left;
 }
-
-#simpledb_itemsearch table {
-    width: 100%;
+.simpledb_access_xmlimport{
+	float: right;
 }
-
-#simpledb_itemsearch form {
-    margin-top: 0px;
+#simpledb_resulttitle{
+	float: right;
 }
-
-#simpledb_itemsearch input {
-    background: #eeeeee;
-    color: black;
-    font-family: Helvetica;
-    font-size: 10pt;
+.simpledb_itemsearch_label{
+	float:left;
+}
+.simpledb_itemsearch_form{
+	float:right;
 }
 
 

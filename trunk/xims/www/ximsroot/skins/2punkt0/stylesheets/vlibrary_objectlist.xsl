@@ -12,8 +12,10 @@
                 xmlns:dyn="http://exslt.org/dynamic"
                 extension-element-prefixes="exslt dyn">
 
+		
     <xsl:import href="container_common.xsl"/>
     <xsl:import href="vlibrary_common.xsl"/>
+    <xsl:import href="view_common.xsl"/>
 
     <xsl:param name="filter"/>
     <xsl:param name="sid"/>
@@ -25,6 +27,10 @@
     <xsl:param name="status"/>
     <xsl:param name="cf"/>
     <xsl:param name="ct"/>
+    
+    <xsl:param name="vlib">true</xsl:param>
+<xsl:param name="parent_id"><xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" /></xsl:param>
+<xsl:param name="createwidget">default</xsl:param>
 
     <!-- Keep that in sync with the actually registered filter related params -->
     <xsl:variable name="filterparams">
@@ -142,50 +148,48 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
-    <xsl:template match="/document/context/object">
-      <html>
-        <xsl:call-template name="head_default"/>
-        <body>
-          <xsl:call-template name="header">
-            <xsl:with-param name="createwidget">true</xsl:with-param>
-            <xsl:with-param name="parent_id">
-              <xsl:value-of select="/document/object_types/object_type[name='VLibraryItem']/@id" />
-            </xsl:with-param>
+    
+      <xsl:template name="view-content">
+		  
+            <xsl:copy-of select="$objectdescription"/>
+            
+						<div id="search-filter">
+          <xsl:call-template name="search_switch">
+            <xsl:with-param name="mo" select="'most_recent'"/>
           </xsl:call-template>
-
-          <div id="vlbody">
-            <h1 id="vlchildrenlisttitle">
+          <xsl:call-template name="chronicle_switch" />
+          <br clear="all"/>
+          </div>
+          
+          <div id="vlib-subjects">
+          <h2 id="vlchildrenlisttitle">
               <xsl:value-of select="$objectname"/>
               <span style="font-size: small">
                 <xsl:call-template name="items_page_info"/>
               </span>
-            </h1>
-            <xsl:copy-of select="$objectdescription"/>
-            <xsl:call-template name="search_switch"/>
-            <xsl:call-template name="chronicle_switch" />
+            </h2>
             <xsl:call-template name="childrenlist"/>
-
+</div>
             <xsl:if test="$totalpages &gt; 1">
               <xsl:variable name="pagenav.params">
                 <xsl:choose>
                   <xsl:when test="$subject">
-                    <xsl:value-of select="concat('?subject=1;subject_id=',$subjectID,';m=',$m)"/>
+                    <xsl:value-of select="concat('?subject=1;subject_id=',$subjectID)"/>
                   </xsl:when>
                   <xsl:when test="$author">
-                    <xsl:value-of select="concat('?author=1;author_id=',$author_id,';m=',$m)"/>
+                    <xsl:value-of select="concat('?author=1;author_id=',$author_id)"/>
                   </xsl:when>
                   <xsl:when test="$keyword">
-                    <xsl:value-of select="concat('?keyword=1;keyword_id=',$keyword_id,';m=',$m)"/>
+                    <xsl:value-of select="concat('?keyword=1;keyword_id=',$keyword_id)"/>
                   </xsl:when>
                   <xsl:when test="$publication">
-                    <xsl:value-of select="concat('?publication=1;publication_id=',$publication_id,';m=',$m)"/>
+                    <xsl:value-of select="concat('?publication=1;publication_id=',$publication_id)"/>
                   </xsl:when>
                   <xsl:when test="$filter">
                       <xsl:call-template name="filterparams"/>
                   </xsl:when>
                   <xsl:when test="/document/context/session/searchresultcount != ''">
-                    <xsl:value-of select="concat('?vls=',$vls,';vlsearch=1;start_here=1;m=',$m)"/>
+                    <xsl:value-of select="concat('?vls=',$vls,';vlsearch=1;start_here=1')"/>
                   </xsl:when>
                 </xsl:choose>
                 <xsl:if test="$pagerowlimit != $searchresultrowlimit">
@@ -201,21 +205,10 @@
                                 select="concat($xims_box
                                         ,$goxims_content
                                         ,$absolute_path
-                                        ,$pagenav.params)"/>
+                                        ,$pagenav.params,';')"/>
               </xsl:call-template>
             </xsl:if>
-          </div>
-
-          <table align="center" width="98.7%" class="footer">
-            <xsl:call-template name="footer"/>
-          </table>
-          <xsl:call-template name="jquery-listitems-bg">
-            <xsl:with-param name="pick" select="'div.vlchildrenlistitem'"/>
-          </xsl:call-template>
-          <xsl:call-template name="script_bottom"/>
-        </body>
-      </html>
-    </xsl:template>
+  </xsl:template>
 
 <xsl:template name="cttobject.content_length">
     <xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>
@@ -272,17 +265,21 @@
 </xsl:template>
 
 <xsl:template match="children/object" mode="divlist">
-    <div class="vlchildrenlistitem" name="vlchildrenlistitem">
+    <div class="vlchildrenlistitem">
         <xsl:apply-templates select="title"/>
+        <xsl:call-template name="state-toolbar"/>
+        <xsl:call-template name="options-toolbar" >
+					<xsl:with-param name="copy-disabled" select="true()"/>
+					<xsl:with-param name="move-disabled" select="true()"/>
+					<xsl:with-param name="email-disabled" select="true()"/>
+        </xsl:call-template>
         <xsl:apply-templates select="authorgroup"/>
         <xsl:call-template name="last_modified"/>
         <xsl:call-template name="size"/>
-        <span id="vlstatus_options">
+        <!--<span class="vlstatus_options">
             <xsl:call-template name="status"/>
-            <xsl:if test="$m='e'">
                 <xsl:call-template name="cttobject.options"/>
-            </xsl:if>
-        </span>
+        </span>-->
         <xsl:call-template name="urllink_status"/>
         <xsl:call-template name="meta"/>
         <xsl:apply-templates select="abstract"/>
@@ -298,13 +295,12 @@
     <xsl:variable name="location" select="../location"/>
     <xsl:variable name="hlsstring" select="concat('?hls=',$vls)"/>
 
-    <div class="vltitle">
+    <div class="vltitle div-left">
         <xsl:call-template name="cttobject.dataformat">
             <xsl:with-param name="dfname" select="$dfname"/>
         </xsl:call-template>
         &#xa0;
-        <a  title="{$location}"
-            >
+        <a  title="{$location}">
             <xsl:attribute name="href">
                 <xsl:choose>
                     <xsl:when test="$dfname = 'URL'"><xsl:value-of select="$location"/></xsl:when>
@@ -316,20 +312,10 @@
     </div>
 </xsl:template>
 
-<xsl:template name="cttobject.dataformat">
-    <xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
-
-    <img src="{$ximsroot}images/icons/list_{$dfname}.gif"
-        border="0"
-        alt="{$dfname}"
-        title="{$dfname}"
-    />
-</xsl:template>
-
 <xsl:template match="authorgroup">
     <xsl:variable name="author_count" select="count(author/lastname)"/>
     <xsl:if test="$author_count &gt; 0">
-        <div class="vlauthorgroup">
+        <div class="vlauthorgroup block">
             <strong>
                 <xsl:if test="$author_count = 1">
                     <xsl:value-of select="$i18n_vlib/l/author"/>
@@ -390,38 +376,24 @@
 </xsl:template>
 
 <xsl:template name="last_modified">
-    <span class="vllastmodified">
+<div class="block">
         <strong>
             <xsl:value-of select="$i18n/l/Last_modified"/>:
         </strong>
         <xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
-    </span>
+    </div>
 </xsl:template>
 
 <xsl:template name="size">
     <xsl:if test="number(content_length) &gt; 0">
-        <span class="vlsize">
-            <strong>, <xsl:value-of select="$i18n/l/Size"/>:</strong>
-            <xsl:call-template name="cttobject.content_length"/>
-            kb
-        </span>
+        <div class="block">
+            ,<xsl:text> </xsl:text><strong><xsl:value-of select="$i18n/l/Size"/>:</strong><xsl:text> </xsl:text>
+            <xsl:call-template name="cttobject.content_length"/>kb
+        </div>
     </xsl:if>
 </xsl:template>
 
-<xsl:template name="status">
-    <span class="vlstatus">
-        <xsl:call-template name="cttobject.status"/>
-    </span>
-</xsl:template>
-
-<xsl:template name="cttobject.options">
-    <span class="vloptions">
-        <xsl:call-template name="cttobject.options.edit"/>
-        <xsl:call-template name="cttobject.options.publish"/>
-        <xsl:call-template name="cttobject.options.acl_or_undelete"/>
-        <xsl:call-template name="cttobject.options.purge_or_delete"/>
-    </span>
-</xsl:template>
+<xsl:template name="button.options.send_email"/>
 
 <xsl:template name="meta">
   <xsl:if test="count(meta/date_from_timestamp/*) &gt; 0 or count(meta/date_to_timestamp/*) &gt; 0">

@@ -11,8 +11,6 @@
   <xsl:import href="vlibraryitem_docbookxml_default.xsl"/>
   <xsl:import href="document_common.xsl"/>
   <xsl:import href="document_default.xsl"/>
-  
-  <xsl:output method="html" encoding="utf-8"/>
 
   <xsl:template name="pre-body-hook">
     <xsl:call-template name="div-vlitemmeta"/>

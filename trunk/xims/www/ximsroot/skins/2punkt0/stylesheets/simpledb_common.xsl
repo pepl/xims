@@ -11,54 +11,38 @@
         xmlns:str="http://exslt.org/strings"
         extension-element-prefixes="str" exclude-result-prefixes="str">
 
-<xsl:import href="common.xsl"/>
-<xsl:import href="common_jscalendar_scripts.xsl"/>
-
 <xsl:param name="error_msg"/>
+<xsl:param name="simpledb" select="true()"/>
 <xsl:variable name="i18n_simpledb" select="document(concat($currentuilanguage,'/i18n_simpledb.xml'))"/>
 
-<xsl:output method="xml"
-            encoding="utf-8"
-            media-type="text/html"
-            doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-            doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-            indent="no"/>
-
-<xsl:template name="cttobject.options.purge_or_delete">
-    <xsl:variable name="id" select="@id"/>
-    <xsl:choose>
-        <xsl:when test="user_privileges/delete and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-            <!-- note: get seems to be neccessary here as long we are mixing Apache::args, CGI::param, and Apache::Request::param :-( -->
-            <!-- <form style="margin:0px;" name="delete" method="post" action="{$xims_box}{$goxims_content}{$absolute_path}/{location}" onsubmit="return confirmDelete()"> -->
-            <form style="margin:0px; display: inline;" name="delete"
-                    method="get"
-                    action="{$xims_box}{$goxims_content}">
-                <input type="hidden" name="delete_prompt" value="1"/>
-                <input type="hidden" name="id" value="{$id}"/>
-                <xsl:if test="$currobjmime='application/x-container'">
-                    <input name="sb" type="hidden" value="{$sb}"/>
-                    <input name="page" type="hidden" value="{$page}"/>
-                    <input name="order" type="hidden" value="{$order}"/>
-                    <input name="r" type="hidden" value="{/document/context/object/@id}"/>
-                </xsl:if>
-                <button class="sprite sprite-option_purge"
-                    name="delete{$id}"
-                    title="{$l_purge}"
-                    ><span><xsl:value-of select="$l_purge"/>&#xa0;</span></button>
-            </form>
-        </xsl:when>
-        <xsl:otherwise>
-            <xsl:call-template name="cttobject.options.spacer"/>
-        </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
+	<xsl:template name="cttobject.options.purge_or_delete">
+		<xsl:variable name="id" select="@id"/>
+		<xsl:choose>
+			<xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+				<a class="sprite sprite-option_delete" title="{$l_delete}">
+					<xsl:attribute name="href">
+						<xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/>
+						<xsl:if test="$currobjmime='application/x-container'">
+							<xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/>
+						</xsl:if>
+					</xsl:attribute>
+          &#xa0;<span>
+						<xsl:value-of select="$l_delete"/>
+					</span>
+				</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="cttobject.options.spacer"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 
 <xsl:template match="member_property">
     <xsl:variable name="propid" select="@id"/>
     <xsl:variable name="propvalue" select="/document/context/object/member_values/member_value[property_id=$propid]/value"/>
-    <tr>
-        <td>
+    <div>
+        <div class="simpledb-property">
             <span>
                 <xsl:attribute name="class">
                     <xsl:choose>
@@ -66,10 +50,12 @@
                         <xsl:otherwise>text</xsl:otherwise>
                     </xsl:choose>
                 </xsl:attribute>
-                <xsl:value-of select="name"/>:
+                <xsl:choose>
+									<xsl:when test="type = 'boolean'"><xsl:value-of select="name"/>:</xsl:when>
+									<xsl:otherwise><label for="simpledb_{name}"><xsl:value-of select="name"/></label>:</xsl:otherwise>
+								</xsl:choose>
             </span>
-        </td>
-        <td>
+        </div>
             <xsl:choose>
                 <xsl:when test="type = 'datetime'">
                     <xsl:call-template name="jscalendar-selector">
@@ -79,7 +65,7 @@
                     </xsl:call-template>
                 </xsl:when>
                 <xsl:when test="type = 'stringoptions'">
-                    <select tabindex="{position()+20}" name="simpledb_{name}">
+                    <select name="simpledb_{name}" id="simpledb_{name}">
                         <option value=""> </option>
                         <xsl:for-each select="str:split(substring-before(substring-after(regex,'^('),')$'), '|')">
                             <option value="{translate(.,'\','')}"><xsl:if test="$propvalue = translate(./text(),'\','')"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="translate(.,'\','')"/></option>
@@ -87,19 +73,13 @@
                     </select>
                 </xsl:when>
                 <xsl:when test="type = 'boolean'">
-                    <input tabindex="{position()+20}" name="simpledb_{name}" type="radio" value="1">
-                      <xsl:if test="$propvalue = '1'">
-                        <xsl:attribute name="checked">checked</xsl:attribute>
-                      </xsl:if>
-                    </input><xsl:value-of select="$i18n/l/Yes"/>
-                    <input tabindex="{position()+20}" name="simpledb_{name}" type="radio" value="0">
-                      <xsl:if test="$propvalue != '1'">
-                        <xsl:attribute name="checked">checked</xsl:attribute>
-                      </xsl:if><xsl:value-of select="$i18n/l/No"/>
-                    </input>
+                    <input name="simpledb_{name}" id="simpledb_{name}-true" type="radio" value="1" class="radio-button">
+                      <xsl:if test="$propvalue = '1'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input><label for="simpledb_{name}-true"><xsl:value-of select="$i18n/l/Yes"/></label>
+                    <input name="simpledb_{name}" id="simpledb_{name}-false" type="radio" value="0" class="radio-button">
+                      <xsl:if test="$propvalue != '1'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input><label for="simpledb_{name}-false"><xsl:value-of select="$i18n/l/No"/></label>
                 </xsl:when>
                 <xsl:when test="type = 'textarea'">
-                    <textarea tabindex="{position()+20}" class="text" name="simpledb_{name}" rows="5" cols="38" wrap="virtual" onKeyUp="keyup(this)">
+                    <textarea class="text" name="simpledb_{name}" id="simpledb_{name}" rows="5" cols="38" wrap="virtual" onkeyup="keyup(this)">
                         <xsl:if test="$propvalue != ''">
                             <xsl:value-of select="$propvalue"/>
                         </xsl:if>
@@ -109,31 +89,25 @@
                     </script>
                 </xsl:when>
                 <xsl:otherwise>
-                    <input type="text"
-                           class="text"
-                           name="simpledb_{name}"
-                           size="40"
-                           tabindex="{position()+20}"
-                           value="{$propvalue}">
+                    <input type="text" name="simpledb_{name}" id="simpledb_{name}" size="40" value="{$propvalue}">
                         <xsl:if test="regex != ''">
-                            <xsl:attribute name="onBlur">testValue('<xsl:value-of select="regex"/>',this,'<xsl:value-of select="$i18n_simpledb/l/Invalid_Data"/>');</xsl:attribute>
+                            <xsl:attribute name="onblur">testValue('<xsl:value-of select="regex"/>',this,'<xsl:value-of select="$i18n_simpledb/l/Invalid_Data"/>');</xsl:attribute>
                         </xsl:if>
                     </input>
                 </xsl:otherwise>
             </xsl:choose>
-        </td>
-        <td style="width: 100%">
+        <xsl:if test="description !=''">
             <xsl:value-of select="description"/>
             <!--
             <xsl:call-template name="br-replace">
                 <xsl:with-param name="word" select="description"/>
             </xsl:call-template>
             -->
-        </td>
-    </tr>
+        </xsl:if>
+    </div>
 </xsl:template>
 
-<xsl:template name="head-create">
+<!--<xsl:template name="head-create">
     <head>
         <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
         <xsl:call-template name="css"/>
@@ -148,34 +122,32 @@
         <title><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
         <xsl:call-template name="css"/>
         <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <xsl:call-template name="jscalendar_scripts"/>
+        --><!--<xsl:call-template name="jscalendar_scripts"/>--><!--
         <xsl:call-template name="jstextarea_keyupcheck"/>
     </head>
-</xsl:template>
+</xsl:template>-->
 
 <xsl:template name="th-size">
     <td></td>
 </xsl:template>
 
-<xsl:template name="tr-abstract-edit">
-    <tr>
-        <td valign="top" colspan="3">
-            <xsl:value-of select="$i18n/l/Abstract"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('SimpleDB.Abstract')" class="doclink">(?)</a>
-            <br />
-            <textarea tabindex="50" name="abstract" rows="5" cols="90" style="font-family: 'Courier New','Verdana'; font-size: 10pt; border:#333333  solid 1px;">
-                 <xsl:choose>
-                    <xsl:when test="string-length(abstract) &gt; 0">
-                        <xsl:apply-templates select="abstract"/>
-                     </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>&#160;</xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </textarea>
-        </td>
-    </tr>
+<xsl:template name="tr-abstract">
+		<div id="tr-abstract">
+			<div id="label-abstract">
+				<label for="input-abstract">
+					<xsl:value-of select="$i18n/l/Abstract"/>
+				</label>
+				<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('SimpleDB.Abstract')" class="doclink">
+					<xsl:attribute name="title">
+						<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/>
+					</xsl:attribute>(?)</a>
+			</div>
+			<br/>
+			<textarea id="input-abstract" name="abstract" rows="3" cols="79">
+				<xsl:apply-templates select="abstract"/>
+			</textarea>
+		</div>
 </xsl:template>
 
 <xsl:template name="jstextarea_keyupcheck">

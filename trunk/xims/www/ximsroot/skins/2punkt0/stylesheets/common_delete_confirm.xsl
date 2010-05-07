@@ -23,7 +23,7 @@
 				</xsl:call-template>
 				<div id="content-container">
 					<form name="objectdeletion" action="{$xims_box}{$goxims_content}" method="get">
-						<h1 class="bluebg"><xsl:value-of select="$i18n/l/DeleteConfirm"/></h1>
+						<h1><xsl:value-of select="$i18n/l/DeleteConfirm"/></h1>
 						<p><xsl:value-of select="$i18n/l/AboutDeletion1"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/AboutDeletion2"/></p>
 						<p><strong><xsl:value-of select="$i18n/l/WarnNoUndo"/></strong></p>
 						<p><xsl:value-of select="$i18n/l/ClickCancelConf"/></p>
