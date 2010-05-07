@@ -12,8 +12,10 @@
 <Location>Location</Location>
 <location>location</location>
 <Title>Titel</Title>
+<Subtitle>Untertitel</Subtitle>
 <File>Datei</File>
 <Image>Bild</Image>
+<Images>Bilder</Images>
 <Lead>Lead</Lead>
 <replace>ersetzen</replace>
 <bodyfromfile_create>Body von Datei erstellen</bodyfromfile_create>
@@ -101,7 +103,7 @@
 <Last_Modification_Date>Datum der letzten Änderung</Last_Modification_Date>
 <ascending>aufsteigend</ascending>
 <descending>absteigend</descending>
-<Sort_children_default>Kriterien für die standardmäßige Sortierung der Kindobjekte dieses Containers:</Sort_children_default>
+<Sort_children_default>Standardmäßige Sortierung nach </Sort_children_default>
 <Options>Optionen</Options>
 <Undelete>Löschen rückgängig machen</Undelete>
 <Priv_grant_options>Zugriffsrechte erteilen</Priv_grant_options>
@@ -109,6 +111,7 @@
 <Grant_myself_only>Nur mir selbst Rechte erteilen</Grant_myself_only>
 <Grant_default_roles>Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen</Grant_default_roles>
 <Mark_new>Objekt als neu markieren</Mark_new>
+<Pub_on_save>Beim Speichern veröffentlichen</Pub_on_save>
 <Try_to_well-balance>Versuchen, einen wohlgeformten Body herzustellen. (Bei nicht wohlgeformtem Body erscheint eine Fehlermeldung.)</Try_to_well-balance>
 <Body_content_changed>Der Inhalt von 'Body' wurde geändert.\nBitte benutzen Sie 'Speichern' oder 'Abbrechen' um diese Seite zu verlassen.</Body_content_changed>
 <Test_body_xml>XML von Body testen</Test_body_xml>
@@ -121,6 +124,9 @@
 <Add_link>Link hinzufügen</Add_link>
 <Annotation>Annotation</Annotation>
 <Add_annotation>Annotation hinzufügen</Add_annotation>
+<Process_XSP>Body standardmäßig XSP verarbeiten</Process_XSP>
+<Show_XSP_processed>Zeige XSP verarbeiteten Body</Show_XSP_processed>
+<Not_Show_XSP_processed>Body nicht XSP verarbeiteten</Not_Show_XSP_processed>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Rechte verwalten für Objekt</Manage_objectprivs>
 <Manage_privs>Rechte verwalten</Manage_privs>
@@ -132,18 +138,18 @@
 <to_show_existing_privs>um die bereits vergebenen Rechte anzuzeigen</to_show_existing_privs>
 <Show_existing_privs>Bereits vergebene Rechte anzeigen</Show_existing_privs>
 <Privgrant_usr_lookup_mask>Um nach Rollen/BenutzerInnen zur Rechtevergabe zu suchen, benutzen Sie die Eingabemaske</Privgrant_usr_lookup_mask>
-<Users>BenutzerInnen</Users>
+<Users>Benutzer</Users>
 <Roles>Rollen</Roles>
-<Username>BenutzerInnenname</Username>
+<Username>Benutzername</Username>
 <Name>Name</Name>
 <Usertype>Nutzertyp</Usertype>
 <Account_status>Account Status</Account_status>
-<No_user_found>Keine Rolle/BenutzerIn gefunden. Bitte versuchen Sie es noch einmal!</No_user_found>
+<No_user_found>Keine Rolle/Benutzer gefunden. Bitte versuchen Sie es noch einmal!</No_user_found>
 <enabled>aktiv</enabled>
 <disabled>gesperrt</disabled>
 <Privs_updated>Rechte aktualisiert</Privs_updated>
-<Choose_another_user>Andere BenutzerIn/Rolle auswählen</Choose_another_user>
-<For_user_role>für BenutzerIn/Rolle</For_user_role>
+<Choose_another_user>Andere Benutzer/Rolle auswählen</Choose_another_user>
+<For_user_role>für Benutzer/Rolle</For_user_role>
 <Basicprivs>Standardrechte</Basicprivs>
 <Publishingprivs>Veröffentlichungsrechte</Publishingprivs>
 <Grantprivs>Verwaltungsrechte</Grantprivs>
@@ -181,6 +187,7 @@
 <!-- End  common_move_browse -->
 <!-- Begin anondiscussionforum* -->
 <Create_topic>Neues Thema erstellen</Create_topic>
+<New_topic>Neues Thema</New_topic>
 <Topic>Thema</Topic>
 <Created>Erstellt</Created>
 <Author>Autor&#x2009;/&#x2009;-in</Author>
@@ -204,12 +211,13 @@
 <!-- Begin users_common -->
 <Account_status>Account Status</Account_status>
 <created>erstellt</created>
-<User>BenutzerIn</User>
+<User>Benutzer</User>
 <Role>Rolle</Role>
 <!-- End users_common -->
 <!-- Begin users_default -->
-<Change_password>Change Password</Change_password>
-<Role_membership>Role Membership</Role_membership>
+<Change_password>Passwort ändern</Change_password>
+<Role_membership>Rollenmitgliedschaft</Role_membership>
+<GenerateWebsite>Neue Webseite generieren</GenerateWebsite>
 <!-- End users_default -->
 <!-- Begin users_create_update -->
 <Grant_role>Rolle zuweisen</Grant_role>
@@ -315,7 +323,7 @@
 <UpdateEmailAdress>Emailadresse aktualisieren</UpdateEmailAdress>
 <AdmOptions>Verwaltungsoptionen</AdmOptions>
 <AsMemberAdmin>Als Mitglied der Admin-Rolle haben Sie folgende administrative Optionen:</AsMemberAdmin>
-<ManageUserRoles>BenutzerInnen und Rollen verwalten</ManageUserRoles>
+<ManageUserRoles>Benutzer und Rollen verwalten</ManageUserRoles>
 <Notice>Hinweis</Notice>
 <NoticeDefBookmarks>BenutzerIn-Standard-Lesezeichen haben Vorrang gegenüber Rollen-Standard-Lesezeichen.</NoticeDefBookmarks>
 <BackToHome>Zurück zu Ihrer persönlichen Startseite</BackToHome>
@@ -330,15 +338,30 @@
 <Import>Importieren</Import>
 <DeleteConfirm>Löschen des Objekts bestätigen</DeleteConfirm>
 <AboutDeletion1>Sie sind dabei das Objekt</AboutDeletion1>
+<AboutDeletion1_User>Sie sind dabei den Account</AboutDeletion1_User>
 <AboutDeletion2>zu löschen.</AboutDeletion2>
 <WarnNoUndo>Dies ist eine endgültige Aktion und kann nicht rückgängig gemacht werden!</WarnNoUndo>
 <ClickCancelConf>Klicken Sie auf 'Bestätigen' um fortzufahren, oder 'Abbrechen' um zur vorigen Seite zu gelangen.</ClickCancelConf>
 <Confirm>Bestätigen</Confirm>
+<!-- start publish interaction -->
+<Publish>Veröffentlichen</Publish>
+<Republish>Wiederveröffentlichen</Republish>
+<Unpublish>Veröffentlichen rückgängig machen</Unpublish>
 <isCurrently>ist derzeit</isCurrently>
 <NOT>NICHT</NOT>
+<under>unter</under>
 <ObjectHasDependencies>Das Objekt hat folgenden Abhängigkeiten und Sie haben daher nicht die erforderlichen Rechte zum Veröffentlichen des Objekts</ObjectHasDependencies>
-<ObjSkipping>Diese Objekte werden während des Veröffentlichens übersprungen.</ObjSkipping>
-<HasAutoindex>Die Autoindexoption ist für diesen Container gesetzt.</HasAutoindex>
+<ObjSkipping>Diese Objekte werden während des Veröffentlichens übersprungen</ObjSkipping>
+<HasAutoindex>Die Autoindexoption ist für diesen Container gesetzt</HasAutoindex>
+<IndexIfPublish>Wenn Sie 'Veröffentlichen' auswählen wird eine Index-Datei erstellt</IndexIfPublish>
+<IndexIfRepublish>Wenn Sie 'Wiederveröffentlichen' auswählen wird eine Index-Datei erstellt</IndexIfRepublish>
+<Click>Klicken Sie</Click>
+<toExpCurrObj>um das aktuelle Objekt zu exportieren</toExpCurrObj>
+<toRemoveFromLiveServer>um das Objekt vom Live Server zu entfernen</toRemoveFromLiveServer>
+<toReturnPrev>um zur vorigen Seite zu gelangen</toReturnPrev>
+<UpdateDepend>Abhängigkeiten aktualisieren (verwandte Portlets, Auto-Indices, ...)</UpdateDepend>
+<ShowDetailsOfPub>Details des Veröffentlichungsvorgangs anzeigen</ShowDetailsOfPub>
+<!-- end publish interaction -->
 <Path_to_img>Pfad zum Bild</Path_to_img>
 <Search_objTree_img>Oder den XIMS Objektbaum nach einem Bild durchsuchen</Search_objTree_img>
 <Search_objTree_obj>Oder den XIMS Objektbaum nach einem Objekt durchsuchen</Search_objTree_obj>
@@ -406,4 +429,12 @@
 <rl_project>Project(s)</rl_project>
 <rl_quality_criterion>Quality criterion</rl_quality_criterion>
 <!-- end reflib / vlib-->
+<!-- userpages -->
+<SelectSkin>Skin auswählen</SelectSkin>
+<!--  end userpages -->
+<Email_To>An</Email_To>
+<Email_Reply-To>Antworten an</Email_Reply-To>
+<Email_Subject>Betreff</Email_Subject>
+<Email_Send>Versende</Email_Send>
+<Container_View>Container Ansicht</Container_View>
 </l>

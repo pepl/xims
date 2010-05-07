@@ -28,7 +28,7 @@
                 </xsl:call-template>
                 <div id="content-container">
 
-                <h1 class="bluebg">
+                <h1>
                     <xsl:value-of select="name"/>s <xsl:value-of select="$i18n/l/Bookmarks"/>
                 </h1>
 
@@ -44,6 +44,7 @@
                 </p>
 
             </div>
+			<xsl:call-template name="script_bottom"/>
             </body>
         </html>
     </xsl:template>

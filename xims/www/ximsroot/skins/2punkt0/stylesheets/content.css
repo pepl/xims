@@ -1,21 +1,39 @@
+/*
+Test design
+*/
+.form-div{
+	/*
+border: solid 1px #808080;
+*/
+	padding: 5px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+.form-div > div{
+	margin-top: 10px;
+}
+.block{
+	clear:both;
+}
+.div-left{
+	float:left;
+}
+.div-right{
+	float:right;
+}
 
 /* main content */
+.indented{
+	margin-left: 20px;
+}
 
 #main-content, div.edit {
   background-color: #808080;
 	width: 100%;
 	clear: both;
-	padding-bottom: 10px;
+	padding-bottom: 10px;	
 }
 
-#tab-container {
-	background-color:#FFFFFF;
-	clear:both;
-	float:left;
-	height:40px;
-	margin:10px 10px 0;
-	white-space:nowrap;
-}
 
 div.edit #tab-container{
 	background-color: #CED3D6 !important;
@@ -26,6 +44,7 @@ div.edit #tab-container{
 	clear:both;
 	padding:12px;
 	margin: 0px 10px 10px 10px;
+	font-size: 0.8em;
 }
 div.edit #content-container {
 	background-color: #CED3D6 !important;
@@ -35,24 +54,26 @@ div.edit #content-container {
 	text-align:justify;
 }
 
-#create-title, #edit-title, #move-title{
-	margin-top: 15px;
-	margin-left: 5px;
-	margin-right: 5px;
+#content-container h1{
+	font-size: 1.5em;	
 }
-#edit-title h1, #create-title h1, #move-title h1{
-	font-weight: bold;
-	font-size: 10pt !important;
-	margin: 0px !important;
+#content-container h2{
+	font-size: 1.2em;	
 }
+#content-container h3{
+	font-size: 1.0em;	
+}
+
+
 
 .cancel-save{
 	height: 40px;
+	font-size: 0.8em;
 }
 .cancelsave-form{
 	display:inline;
 	float: right;
-	margin: 10px 10px 0 0;
+	margin: 10px 10px 10px 0;
 }
 .cancelsave-form button{
 	margin-left: 10px;
@@ -76,6 +97,14 @@ div.edit #content-container {
 }
 #docbody > div{
 	clear:both;
+}
+#links{
+	margin-top:5px;
+	border: 1px solid #C0C0C0;
+	padding: 2px;
+}
+.link-table td{
+	padding: 2px;
 }
 .newslead {
     font-weight: bold;
@@ -101,32 +130,28 @@ div.toc {
     padding: 2px 0 3px 20px;
 }
 div.toc-item {
-    font-size: 12px;
     margin: 0 0 2px 25px;
 }
 
 /* end object view */
 
 /* table */
-#obj-table {
+.obj-table {
     clear: both;
     width: 100%;
     border: none;
     padding: 0px;
+	white-space: nowrap;
 }
-#obj-table th {
+.obj-table th {
     border: thin solid #C1C1C1;
     white-space: nowrap;
     background-color: #ced3d6;
 }
-#obj-table td, #obj-table th {
+.obj-table td, .obj-table th {
     /*white-space: nowrap;*/
     height: 20px !important;
 }
-/*
-tr.objrow, tr.objrow td {
-    height: 20px !important;
-}*/
 #th-size {
     text-align: right;
     width: 75px;
@@ -183,12 +208,23 @@ tr.objrow, tr.objrow td {
     right: .2em;
     margin-left: 0;
 }
+/*
 tr.objrow:hover, tr.objrow:focus {
 	background-color: #ffff80 !important;
 }
 tr.objrow:hover td, tr.objrow:focus td{
 	background-color: #ffff80 !important;
 }
+tr.objrow td:focus{
+	background-color: #ffff80 !important;
+}
+*/
+
+.table_hilite{
+	background-color: #ffff80 !important;
+}
+
+
 .cttobject_options {
     padding-left: 10px;
     display: table-cell;
@@ -231,13 +267,11 @@ tr.objrow:hover td, tr.objrow:focus td{
 	border-bottom: 1px solid #C0C0C0;
 }
 #obj-table .location_path {
-    font-size: 9pt;
     color: #000;
     padding-left: 10px;
 }
 
 #obj-table .abstract {
-    font-size: 9pt;
     color: #808080;
     padding-left: 10px;
 }
@@ -250,6 +284,9 @@ tr.objrow:hover td, tr.objrow:focus td{
 	background-color: #CED3D6;
   border: 1px solid #C0C0C0;
   margin-top: 5px;
+}
+
+#metadata-options{
 }
 
 /* user- and admin-pages */
@@ -276,32 +313,77 @@ tr.objrow:hover td, tr.objrow:focus td{
 }
 
 /* edit- and create-forms */
+.label{
+	/*
+display:inline;
+*/
+	float: left;
+}
+.label-std{
+	width:100px !important;
+	/*display:inline;*/
+	float: left;
+
+	/*
+display: inline-block;
+*/
+}
+.label-med{
+	width:180px !important;
+	float: left;
+	/*
+display:inline;
+display: inline-block;
+	
+*/
+	
+}
+.label-large{
+	width:250px !important;
+	float: left;
+	/*
+display:inline;
+display: inline-block;	
+*/
+
+}
+
 #editor_selector{
 	display: inline;
 	padding: 0 10px 0 10px;
+	
 }
 #xims_wysiwygeditor{
-	font-size: 9px; 
 	background-color: #eeeeee;
+	font-size: 0.8em;
 }
 #create-edit-form > div, #select-form > div , #select-form li{
 	margin-top: 10px;
 }
 #create-edit-form h1{
-	font-size: 12pt;
 	font-weight: bold;
 }
 #create-edit-form h2{
-	font-size: 10pt;
 	font-weight: bold;
+}
+#create-edit-form legend{
+
+display: inline;
+
+	float:left;
+	width: 200px;
 }
 #tr-createportlet-button{
 	text-align:right;	
 }
+/*
 #input-add_portlet{
 	margin-top:5px;
 }
-
+*/
+#contentfilters > div{
+	margin-top: 5px;
+}
 .div-row{
 	clear:both;
 }
@@ -310,15 +392,23 @@ tr.objrow:hover td, tr.objrow:focus td{
 	margin-right: 25px;
 }
 .div-row > div > div{
-	width:150px;
+	width:200px;
 	display:inline;
 	float: left;	
 }
+/*
 #label-created_by_fullname, #label-creation_timestamp, #label-last_modified_by_fullname, #label-last_modification_timestamp,
 #label-last_publication_timestamp, #label-valid_from_timestamp, #label-valid_to_timestamp, #label-owned_by_fullname, 
 #label-marked_new, #label-status, #label-attributes, #label-col_abstract, #label-col_image_id, #label-col_body
 {
-	width:210px;
+	width:240px;
+	display:inline;
+	float: left;	
+}
+*/
+.label-extraprop
+{
+	width:200px;
 	display:inline;
 	float: left;	
 }
@@ -330,7 +420,9 @@ tr.objrow:hover td, tr.objrow:focus td{
 	margin-right: 25px;
 }
 
-#label-location, #label-title, #label-tan-number,#label-keywords,#label-abstract, #label-lead, #label-description, #label-notes,
+/*
+#label-location, #label-title, 
+*/#label-subtitle, #label-tan-number,#label-keywords,#label-abstract, #label-lead, #label-description, #label-notes,
 #label-grantowneronly,#label-trytobal,#label-validfrom,#label-validto,#label-unzip,#label-file,#label-replace, #label-comment,
 #label-bodyfromfile,#label-target,#label-stylesheet, #label-css, #label-javascript, #label-image, #label-rssfeed,
 #label-image, #label-image-title, #label-image-description, #label-image-target,#label-schema,#label-bxeedit, #label-bxeconfig, 
@@ -340,10 +432,14 @@ tr.objrow:hover td, tr.objrow:focus td{
 	display:inline;
 	float: left;
 }
+
 #label-pagerowlimit, #label-pagesize,#label-overwrite{
 	width:250px;
-	display:inline;
+	/*
+display:inline;
 	float: left;
+*/
+display: inline-block;
 }
 #label-defaultsorting,#label-depth,#label-sfeedit-attr,#label-add-doclinks, #label-autoindex, #label-marknew{
 	/*width:150px;*/
@@ -351,42 +447,46 @@ tr.objrow:hover td, tr.objrow:focus td{
 	float: left;
 }
 #label-filter-markednew, #label-filter-published, #label-filter-latest-sortkey, #label-filter-latest{
-	width:220px;
+	width:250px;
 	display:inline;
 	float: left;
 }
 #label-createportlet, .deptportlets-item{
 	width:200px;
-	display:inline;
+	/*
+display:inline;
 	float: left;	
+*/
+display: inline-block;
+}
+.simpledb-property{
+	width: 200px;
+	display: inline;
+	float: left;
+}
+.label-sdbp{
+	width: 160px;
+	display: inline;
+	float: left;
 }
 
-#input-abstract, #input-lead, #input-image-description, #input-description,#input-abstract,#input-notes, #input-intro, #input-exit{
-	/*font-family: 'Courier New','Verdana'; */
-	font-size: 10pt; 
-	border:#333333 solid 1px;
-}
 #input-validfrom, #input-validto{
 	color:#000 !important; 
-	border:0 !important; 
-	background:#CED3D6 !important; 
-	width: 200px;
+	width: 85px;
 }
 
-#buttonBrTarget{
-	display: inline;
-	float: none !important; 
-}
-
+/*
 #tr-filter-published{
 	clear: both;
 }
+*/
 
 hr {
     left: auto;
     color: #eeeeee;
     height: 1px;
 }
+/*
 #label-oldpwd, #label-newpwd, #label-confirmpwd{
 	width: 150px;
 	display: inline-block;
@@ -394,10 +494,13 @@ hr {
 #input-oldpwd, #input-newpwd, #input-confirmpwd{
 	display: inline-block;
 }
+*/
+/*
 .input-label-acc{
 	width: 160px;
 	display: inline-block;
 }
+*/
 #table-syspriv th{
 	vertical-align: top;
 }
@@ -407,13 +510,18 @@ hr {
 #op_webdav span.cboxitem{
 	width: 160px !important;
 }
-#deptportlets{
+.deptportlets, #properties{
 	margin-bottom:20px; 
 	margin-top:5px; 
 	border: 1px solid; 
 	border-color: black;
 	padding: 5px;
-	width: 580px;
+	width: 650px;
+}
+
+#properties > div{
+	clear: both;
+	margin-top: 5px;
 }
 
 .forumhead {
@@ -434,10 +542,17 @@ hr {
 	padding: 10px;
 }
 
+.xdelete{
+	background-color:#b1b5b8;
+	border:#333333 solid 1px;
+	color: maroon;
+	font-weight: bold;
+}
+
 /* end edit- and create-forms */
-´
 
 /* user interaction (like publish, acl, ...) */
+/*
 .publish-dialog .checkbox{
 	float: right;
 	text-align: right;
@@ -450,6 +565,7 @@ hr {
 	clear: both;
 	padding-bottom: 10px;
 }
+*/
 /* end user interaction */
 
 /*needed if data-tables will be reactivated*/

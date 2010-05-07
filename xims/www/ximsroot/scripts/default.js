@@ -140,3 +140,116 @@ function toggleHighlight(hls){
     }
 }
 
+/**
+ * @author c10209
+ */
+
+/*
+   function which selects 'trytobalance' input form element to a
+   given value (e.g. from cookie); see 'document_edit.xsl'
+*/
+      function selTryToBalance(selElement, toSelect) {
+          if ( !toSelect ) {
+              toSelect = 'true';
+          }   
+          toSelect = toSelect.toLowerCase();
+          for (var i=0; i < selElement.length; i++) {
+              if ( selElement[i].value.toString().toLowerCase() == toSelect ) {
+                  selElement[i].checked = true;
+              }   
+          }   
+      }
+
+      function createCookie(name,value,days) {
+          if (days) {
+              var date = new Date();
+              date.setTime(date.getTime()+(days*24*60*60*1000));
+              var expires = "; expires="+date.toGMTString();
+          }
+          else var expires = "";
+          document.cookie = name+"="+value+expires+"; path=/";
+      }
+
+      function readCookie(name) {
+          var nameEQ = name + "=";
+          var ca = document.cookie.split(';');
+          for (var i=0;i < ca.length;i++) {
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1,c.length);
+              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+          }
+          return null;
+      }
+
+      function setSel(selObj, toselect) {
+          if ( !toselect ) {
+              if ( window.editor ) {
+                  toselect = 'htmlarea';
+              }
+              else {
+                  toselect = 'plain';
+              }
+          }
+          toselect = toselect.toLowerCase();
+          opts=selObj.options,
+          i=opts.length;
+          while (i-- > 0) {
+              if(opts[i].value.toLowerCase()==toselect) {
+                  selObj.selectedIndex=i;
+                  return true;
+              }
+          }
+          return false;
+      }
+
+      function checkBodyFromSel (selection) {
+
+          createCookie('xims_wysiwygeditor',selection,90);
+
+          if ( hasBodyChanged() ) {
+              document.getElementById('xims_wysiwygeditor').disabled = true;
+              alert(bodyContentChanged);
+              return false;
+          }
+
+/*
+	  reload with param 'true' in order to fetch (clean) content from
+	  server again; this interfears the least with JS-WYSIWYG editors
+*/
+          window.location.reload(true);
+
+          return true;
+      }
+
+      function hasBodyChanged () {
+          var currentbody;
+
+          // check for TinyMCE editor content
+          if (window.tinyMCE){
+              currentbody = tinyMCE.get('body').getContent();
+          }
+          // Plain Textarea
+          else {
+              var body = document.getElementById('body');
+              if ( body && body.value ) {
+                  currentbody = body.value;
+              }
+          }
+          // now lets check if there are any changes ;-)
+          if ( currentbody && currentbody != origbody ) {
+              return true;
+          }
+          // return false otherwise
+          else {
+              return false;
+          }
+      }
+/*
+          Disable possibility of changing WYSIWYG editors for "timeout"
+          seconds. This prevents false-positive errors of "hasBodyChanged()"
+          due to switching to another editor too fast.
+*/
+      function timeoutWYSIWYGChange(timeout) {
+          document.getElementById('xims_wysiwygeditor').disabled = true;
+          window.setTimeout("document.getElementById('xims_wysiwygeditor').disabled = false;",timeout*1000);
+      }

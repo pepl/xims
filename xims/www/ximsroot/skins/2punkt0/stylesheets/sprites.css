@@ -1,5 +1,5 @@
-.sprite, .sprite-spacer, .sprite-status-spacer, .sprite-del-spacer, .sprite-status_pub, .sprite-status_pub_async, .sprite-new, .sprite-list{
-    background: url(/ximsroot/skins/default/images/sprite.gif);
+.sprite, .sprite-spacer, .sprite-status-spacer, .sprite-del-spacer, .sprite-status_pub, .sprite-status_pub_async, .sprite-status_none, .sprite-new, .sprite-list{
+    background-image: url(/ximsroot/skins/default/images/sprite.gif) !important;
 }
 
 .sprite-list {
@@ -14,10 +14,10 @@
 
 .sprite{
 	background-repeat: no-repeat;
-	padding: 0 0 0 20px;
-  text-decoration: none;
+	padding: 0 0 0 22px;
+  	text-decoration: none;
 	display:inline-block;
-  position: relative;
+  	position: relative;
 }
 
 .sprite:focus, .sprite:hover {
@@ -36,14 +36,10 @@
 	display: block;
   position: absolute;
   top: 2em;
-  left: -4em;
 	border: 1px solid #000;
   color: #000;
   background-color: #ffffe0;
-  text-align: center;
   font-weight: normal;
-  font-size: smaller;
-  padding: 3px;
 }
 
 /*
@@ -101,15 +97,19 @@
     padding: 0 0 0 22px !important;
 }
 .sprite-status_pub_async {
-    background-position: 0 -762px;
+    background-position: -2px -762px;
+    padding: 0 0 0 22px !important;
+}
+.sprite-status_none {
+    background-position: 0 0;
     padding: 0 0 0 22px !important;
 }
 .sprite-new {
-    background-position: 0 -580px;
-    padding: 0 5px 0 20px !important;
+    background-position: 0 -574px;
+    padding: 0 0 0 22px !important;
 }
 .sprite-locked {
-    background-position: 0 -800px;
+    background-position: -1px -800px;
 }
 .sprite-option_purge {
     background-position: 0 -620px;
@@ -124,7 +124,7 @@
     background-position: 0 -720px;
 }
 .sprite-option_move {
-    background-position: 0 -660px;
+    background-position: -2px -660px;
 }
 .sprite-option_acl {
     background-position: 0 -740px;
@@ -134,6 +134,12 @@
 }
 .sprite-option_pub {
     background-position: 0 -640px;
+}
+.sprite-option_email {
+	background-position: -39px -451px;
+}
+.sprite-option_none {
+	background-position: 0 0;
 }
 
 .sprite-list_AnonDiscussionForum {
@@ -171,6 +177,9 @@
 }
 .sprite-list_Email {
     background-position: -37px -450px;
+}
+.sprite-list_Gallery {
+    background-position: -37px -560px;
 }
 .sprite-list_GIF {
     background-position: -37px -0px;

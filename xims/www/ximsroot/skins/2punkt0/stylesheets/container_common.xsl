@@ -201,11 +201,9 @@
 	
 	<xsl:template name="childrentable">
 		<xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
-		<table id="obj-table">
+		<table class="obj-table">
 			<tbody>
-				<!--<thead>-->
 				<tr>
-					<!--<xsl:if test="$m='e'">-->
 					<th id="th-status">
 						<a class="th-icon-right">
 							<xsl:value-of select="$i18n/l/Status"/>
@@ -242,7 +240,6 @@
 							</th>
 						</xsl:otherwise>
 					</xsl:choose>
-					<!--</xsl:if>-->
 					<th id="th-titel-icon">
 						&#160;
 					</th>
@@ -307,7 +304,6 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:call-template name="th-size"/>
-					<!--<xsl:if test="$m='e'">-->
 					<xsl:call-template name="th-options"/>
 					<!--</xsl:if>-->
 				</tr>
@@ -390,18 +386,21 @@
 			</tbody>
 		</table>
 	</xsl:template>
+	
 	<xsl:template name="th-size">
 		<th id="th-size">
 			<xsl:value-of select="$i18n/l/Size"/>&#160;(kB)&#160;
 			<!--<img src="{$sklangimages}size.png" width="80" height="20" border="0" alt="{$i18n/l/Size}" title="{$i18n/l/Size} {$i18n/l/in} kB"/>-->
 		</th>
 	</xsl:template>
+	
 	<xsl:template name="th-options">
 		<th id="th-options">
 			<xsl:value-of select="$i18n/l/Options"/>
 			<!--<img src="{$sklangimages}options.png" width="221" height="20" alt="{$i18n/l/Options}" title="{$i18n/l/Options}"/>-->
 		</th>
 	</xsl:template>
+	
 	<xsl:template match="children/object">
 		<!--<xsl:variable name="dataformat">
 			<xsl:value-of select="data_format_id"/>
@@ -411,7 +410,8 @@
 		<xsl:variable name="dfmime" select="$df/mime_type"/>-->
 		<tr class="objrow">
 			<td class="ctt_status">
-				<xsl:call-template name="cttobject.status"/>
+				<!--<xsl:call-template name="cttobject.status"/>-->
+				<xsl:call-template name="state-toolbar"/>
 			</td>
 			<td class="ctt_position">
 				<xsl:call-template name="cttobject.position"/>
@@ -437,10 +437,12 @@
 				</xsl:call-template>
 			</td>
 			<td class="ctt_options">
-				<xsl:call-template name="cttobject.options"/>
+				<!--<xsl:call-template name="cttobject.options"/>-->
+				<xsl:call-template name="options-toolbar"/>
 			</td>
 		</tr>
 	</xsl:template>
+	
 	<xsl:template name="cttobject.locationtitle">
 		<xsl:param name="search" select="false()"/>
 		<xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
@@ -460,11 +462,56 @@
 		<span>
 			<xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:value-of select="$l_location"/>: <xsl:value-of select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/>: <xsl:call-template name="ownerfullname"/></xsl:attribute>
 			<a>
-				<xsl:attribute name="href"><xsl:choose><xsl:when test="$dfmime='application/x-container' and not($link_to_id)"><xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat('?sb=',$sb,';order=',$order)"/></xsl:if></xsl:when><xsl:when test="$dfmime='application/x-container' and $link_to_id"><xsl:value-of select="concat($goxims_content,'?id=',@id)"/></xsl:when><xsl:when test="$dfname='URL'"><xsl:choose><xsl:when test="symname_to_doc_id != ''"><xsl:value-of select="concat($goxims_content, symname_to_doc_id)"/><xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:when><xsl:when test="starts-with(location,'/')"><!--  Treat links relative to '/' as relative to the current SiteRoot --><xsl:value-of select="concat($goxims_content, '/', /document/context/object/parents/object[@parent_id=1]/location, location)"/></xsl:when><xsl:otherwise><xsl:value-of select="location"/></xsl:otherwise></xsl:choose></xsl:when><xsl:when test="marked_deleted=1 or $link_to_id"><xsl:value-of select="concat($goxims_content,'?id=',@id)"/></xsl:when><xsl:otherwise><xsl:choose><xsl:when test="$search"><xsl:variable name="location_path" select="location_path"/><xsl:value-of select="concat($goxims_content,$location_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/></xsl:otherwise></xsl:choose></xsl:otherwise></xsl:choose></xsl:attribute>
-				<xsl:value-of select="title"/>
+				<xsl:attribute name="href">
+					<xsl:choose>
+						<xsl:when test="$dfmime='application/x-container' and not($link_to_id)">
+							<xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/>
+							<xsl:if test="$defsorting != 1">
+								<xsl:value-of select="concat('?sb=',$sb,';order=',$order)"/>
+							</xsl:if>
+						</xsl:when>
+						<xsl:when test="$dfmime='application/x-container' and $link_to_id">
+							<xsl:value-of select="concat($goxims_content,'?id=',@id)"/>
+						</xsl:when>
+						<xsl:when test="$dfname='URL'">
+							<xsl:choose>
+								<xsl:when test="symname_to_doc_id != ''">
+									<xsl:value-of select="concat($goxims_content, symname_to_doc_id)"/>
+									<xsl:if test="$defsorting != 1">
+										<xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/>
+									</xsl:if>
+								</xsl:when>
+								<xsl:when test="starts-with(location,'/')">
+									<!--  Treat links relative to '/' as relative to the current SiteRoot -->
+									<xsl:value-of select="concat($goxims_content, '/', /document/context/object/parents/object[@parent_id=1]/location, location)"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="location"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:when test="marked_deleted=1">
+							<xsl:value-of select="concat($goxims_content,'?id=',@id)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:choose>
+								<xsl:when test="$search or $link_to_id">
+									<xsl:variable name="location_path" select="location_path"/>
+									<xsl:value-of select="concat($goxims_content,$location_path)"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
+
+				</xsl:attribute>		
+	<xsl:value-of select="title"/>
 			</a>
 		</span>
 	</xsl:template>
+	
 	<xsl:template name="cttobject.position">
 		<xsl:variable name="position">
 			<xsl:value-of select="position"/>
@@ -476,7 +523,6 @@
 				</a>
 				<!-- the form is needed, so we can write the new position back without reloading this site from the positioning window -->
 				<form name="reposition{@id}" method="get" action="{$xims_box}{$goxims_content}">
-					<!--<input type="hidden" name="m" value="{$m}"/>-->
 					<input type="hidden" name="id" value="{@id}"/>
 					<input type="hidden" name="reposition" value="yes"/>
 					<input type="hidden" name="new_position" value="{$position}"/>
@@ -487,13 +533,14 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	<xsl:template name="cttobject.last_modified">
-		<!--<img src="{$ximsroot}images/spacer_white.gif" width="9" border="0" alt=""/>-->
 		<span>
 			<xsl:attribute name="title"><xsl:value-of select="$l_last_modified_by"/>: <xsl:call-template name="modifierfullname"/></xsl:attribute>
 			<xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
 		</span>
 	</xsl:template>
+	
 	<xsl:template name="cttobject.content_length">
 		<xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
 		<xsl:param name="dfmime" select="/document/data_formats/data_format[@id=current()/data_format_id]/mime_type"/>
@@ -502,7 +549,6 @@
             and $dfname!='URL'
             and $dfname!='SymbolicLink' ">
 			<xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>
-			<!--<img src="{$ximsroot}images/spacer_white.gif" width="9" border="0" alt=""/>-->
 		</xsl:if>
 	</xsl:template>
 	<xsl:template name="tr-pagerowlimit-edit">
