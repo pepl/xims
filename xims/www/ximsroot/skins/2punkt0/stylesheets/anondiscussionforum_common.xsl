@@ -5,9 +5,8 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: anondiscussionforum_common.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
+
 <xsl:param name="sb" select="'date'"/>
 <xsl:param name="order" select="'desc'"/>
 
@@ -25,8 +24,11 @@
 </xsl:template>
 
 <xsl:template name="script_bottom">
-    <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>
+		<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0.js" type="text/javascript"/>-->
+		<!--<script src="{$ximsroot}scripts/default.js" type="text/javascript"/>-->
+    <!--<script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+    <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>-->
     <script src="{$ximsroot}scripts/anondiscussionforum.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 </xsl:template>
 
@@ -38,9 +40,7 @@
   </xsl:if>
   
   <div class="forumbox">
-    <form name="eform"
-          method="post"
-          onSubmit="return checkFields()">
+    <form name="eform" method="post" onsubmit="return checkFields()">
 					<xsl:attribute name="action">
 						<xsl:choose>
 							<xsl:when test="$reply">

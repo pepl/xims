@@ -10,8 +10,11 @@
                 xmlns:exslt="http://exslt.org/common"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+		
     <xsl:import href="container_common.xsl"/>
+    
     <xsl:import href="referencelibraryitem_common.xsl"/>
+    <xsl:import href="view_common.xsl"/>
 
     <xsl:param name="onepage"/>
     <xsl:param name="date"/>
@@ -21,6 +24,7 @@
     <xsl:param name="reference_type_id"/>
     <xsl:param name="workgroup_id"/>
     <xsl:param name="reflibsearch"/>
+    <xsl:param name="reflib">true</xsl:param>
 
     <xsl:variable name="objectitems_count"><xsl:choose><xsl:when test="/document/context/object/children/@totalobjects"><xsl:value-of select="/document/context/object/children/@totalobjects"/></xsl:when><xsl:otherwise>0</xsl:otherwise></xsl:choose></xsl:variable>
    
@@ -29,23 +33,17 @@
     <xsl:variable name="totalpages" select="ceiling($objectitems_count div $objectitems_rowlimit)"/>
 
     <!--<xsl:variable name="subjectcolumns" select="'3'"/>-->
-
-    <xsl:template match="/document/context/object">
-        <xsl:variable name="pagenavurl">
+    
+    <xsl:variable name="pagenavurl">
 					<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id)"/>
 					<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch)"/></xsl:if>
 				</xsl:variable>
-        <html>
-            <xsl:call-template name="head_default"><xsl:with-param name="reflib">true</xsl:with-param></xsl:call-template>
-            <body>
-                <xsl:call-template name="header"/>
-                <div id="main-content">
-									<xsl:call-template name="options-menu-bar"/>
-									<div id="content-container" class="ui-corner-bottom ui-corner-tr">
+				
+    <xsl:template name="view-content">
 									<xsl:call-template name="reflib.options"/>
 										
-										<div id="docbody">
-<div id="search-filter">
+								<div id="docbody">
+									<div id="search-filter">
                     <div id="reflib_resulttitle">
                                     <xsl:if test="$date != '' or $author_id != '' or $reference_type_id != '' or $serial_id != '' or $author_lname != ''">
                                         <strong>Filtered View</strong>:
@@ -67,7 +65,7 @@
 
                     <xsl:call-template name="reflib.authorsearch"/>
                     &#160;
-                    </div>
+                  </div>
                     <xsl:call-template name="pagenav">
                         <xsl:with-param name="totalitems" select="$objectitems_count"/>
                         <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
@@ -82,12 +80,7 @@
                         <xsl:with-param name="url" select="$pagenavurl"/>
                     </xsl:call-template>
                 </div>
-                <!--<xsl:call-template name="script_bottom"/>-->
-                <!--<script src="{$ximsroot}skins/{$currentskin}/scripts/tooltip.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>-->
-                </div>
-                </div>
-            </body>
-        </html>
+
     </xsl:template>
 
 <xsl:template name="reference_type.createwidget">
@@ -133,34 +126,9 @@
     <option value="{@id}"><xsl:value-of select="name"/></option>
 </xsl:template>
 
-<!--<xsl:template match="reference_type" mode="descriptions">
+<xsl:template match="reference_type" mode="descriptions">
     <div id="reftype{@id}" style="display: none;"><xsl:value-of select="description"/></div>
 </xsl:template>
-
-<xsl:template name="head_default">
-    <head>
-        <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
-        <xsl:call-template name="css"/>
-        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
-        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
-        <script src="{$jquery}" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <xsl:call-template name="jquery-listitems-bg">
-          <xsl:with-param name="pick" select="'div.vlchildrenlistitem'"/>
-        </xsl:call-template>
-
-        <style type="text/css">
-          #fixedtipdiv{
-              position:absolute;
-              padding: 2px;
-              border:1px solid black;
-              font: normal 10pt helvetica, arial, sans-serif;
-              line-height: 18px;
-              z-index: 100;
-          }
-        </style>
-    </head>
-</xsl:template>-->
 
 <xsl:template name="childrenlist">
     <div id="vlchildrenlist">
@@ -190,9 +158,11 @@
         </div>
         <div class="reflib_published">
             <strong><xsl:value-of select="$i18n/l/Published"/></strong>:
+            <xsl:if test="$date != ''">
             <a href="{$xims_box}{$goxims_content}{$absolute_path}?date={$date}">
                 <xsl:value-of select="$date"/>
             </a>
+            </xsl:if>
             <xsl:if test="$serial_id != '' or $btitle != ''">&#160;
                 <strong><xsl:value-of select="$i18n/l/in"/></strong>:
                 <xsl:choose>
@@ -229,21 +199,21 @@
 </xsl:template>
 
 <xsl:template name="last_modified">
-    <!--<span class="vllastmodified">-->
         <strong>
             <xsl:value-of select="$i18n/l/Last_modified"/>:
         </strong>
         <xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>
-    <!--</span>-->
 </xsl:template>
 
 <xsl:template name="reftitle">
+	<xsl:param name="reftitle"><xsl:value-of select="reference_values/reference_value[property_id=$titlerefpropid]/value"/></xsl:param>
+<xsl:if test="$reftitle != ''">
     <span class="reftitle">
-        <a  title="{location}"
-            href="{$xims_box}{$goxims_content}{$absolute_path}/{location}">
-            <xsl:value-of select="reference_values/reference_value[property_id=$titlerefpropid]/value"/>
+        <a  title="{location}" href="{$xims_box}{$goxims_content}{$absolute_path}/{location}">
+            <xsl:value-of select="$reftitle"/>
         </a>
     </span>
+    </xsl:if>
 </xsl:template>
 
 <xsl:template name="items_page_info">
@@ -287,7 +257,7 @@
 															<xsl:otherwise>
 																<xsl:attribute name="value">[Example: <em>zoller serial:"Phys. Rev" date:2005</em>]</xsl:attribute>
 																<xsl:attribute name="onfocus">document.rlsearch.reflibsearch.value=&apos;&apos;;</xsl:attribute>
-																<xsl:attribute name="aria-label"><xsl:value-of select="$i18n/l/Search"/></xsl:attribute>
+																<!--<xsl:attribute name="aria-label"><xsl:value-of select="$i18n/l/Search"/></xsl:attribute>-->
 															</xsl:otherwise>
 														</xsl:choose>
                         </input>
@@ -311,10 +281,9 @@
 			<div><xsl:value-of select="$i18n/l/CreateRef"/>&#160;&#160;</div>
 			<xsl:call-template name="reference_type.createwidget"/> 
 			<div>&#160;&#160;<xsl:value-of select="$i18n/l/or"/>&#160;&#160;</div>
-			<div><a href="{$xims_box}{$goxims_content}{$absolute_path}?import_prompt=1" class="ui-state-default ui-corner-all fg-button"><xsl:value-of select="$i18n/l/Import"/></a></div>
+			<div><a href="{$xims_box}{$goxims_content}{$absolute_path}?import_prompt=1" class="button"><xsl:value-of select="$i18n/l/Import"/></a></div>
 			&#160;
 		</div>	
-<!--<br clear="all"/>-->
  <div id="reflib-options">
     
       <xsl:call-template name="reflib_citationview"/>
@@ -322,7 +291,6 @@
        <xsl:call-template name="reflib_exportwidget"/>
       &#160;
     </div>
-   <!-- <br clear="all"/>-->
 </xsl:template>
 
 <xsl:template name="reflib_exportwidget">

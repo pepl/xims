@@ -9,82 +9,25 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
+<xsl:import href="view_common.xsl"/>
 
 <xsl:param name="msie" select="0"/>
+<xsl:param name="ap-pres">true</xsl:param>
 
-<xsl:template match="/document/context/object">
-    <html>
-        <xsl:call-template name="head_default">
-					<xsl:with-param name="ap-pres">true</xsl:with-param>
-        </xsl:call-template>
-        <body onload="stringHighlight(getParamValue('hls'))">
-            <xsl:call-template name="header"/>
-            <xsl:call-template name="toggle_hls"/>
-            
-          <div id="main-content" class="ui-corner-all">
-						<xsl:call-template name="options-menu-bar"/>
-						<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-							<div id="docbody">
-                        <span id="body">
-                             <xsl:choose>
-                                <xsl:when test="$msie=0">
-                                    <xsl:apply-templates select="body"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <pre>
-                                        <xsl:apply-templates select="body"/>
-                                  </pre>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </span>
+<xsl:template name="view-content">
+	<div id="docbody">
+	 <xsl:choose>
+			<xsl:when test="$msie=0">
+					<xsl:apply-templates select="body"/>
+			</xsl:when>
+			<xsl:otherwise>
+					<pre>
+							<xsl:apply-templates select="body"/>
+				</pre>
+			</xsl:otherwise>
+	</xsl:choose>
 							</div>
-           <div id="metadata-options">
-							<div id="user-metadata">
-								<xsl:call-template name="user-metadata"/>
-							</div>
-							<div id="document-options">
-								<xsl:call-template name="axpointpresentation-options"/>
-							</div>
-						</div>
-					</div>
-				</div>            
-<!--            
-            <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-                <tr>
-                    <td bgcolor="#ffffff" colspan="2">
-                        <span id="body">
-                            <xsl:choose>
-                                <xsl:when test="$msie=0">
-                                    <xsl:apply-templates select="body"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <pre>
-                                        <xsl:apply-templates select="body"/>
-                                    </pre>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </span>
-                    </td>
-                </tr>
-            </table>
-            <table align="center" width="98.7%" class="footer">
-                <xsl:call-template name="user-metadata"/>
-                <xsl:call-template name="axpointpresentation-options"/>
-                <xsl:call-template name="footer"/>
-            </table>-->
-            <xsl:call-template name="script_bottom"/>
-        </body>
-    </html>
 </xsl:template>
-
-<!--<xsl:template name="head_default">
-    <head>
-        <title><xsl:call-template name="title"/></title>
-        <xsl:call-template name="css"/>
-        <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/axpointpresentation.css" type="text/css"/>
-    </head>
-</xsl:template>-->
 
 <xsl:template name="axpointpresentation-options">
     <tr>
@@ -94,14 +37,6 @@
         </td>
     </tr>
 </xsl:template>
-
-<!--<xsl:template name="footer">
-    <tr>
-        <td colspan="3" align="right">
-            <a href="http://xims.info/documentation/" target="_blank">Systeminfo</a>
-        </td>
-    </tr>
-</xsl:template>-->
 
 <xsl:template match="background|email|metadata|organisation|point|slide|slideset|slideshow|speaker|subtitle|text|logo|source-code|source_code|i|b|colour|color|table|row|col|line|rect|circle|ellipse">
     <xsl:copy>

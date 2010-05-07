@@ -9,82 +9,59 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
+<xsl:import href="view_common.xsl"/>
 
 <xsl:variable name="i18n_qn" select="document(concat($currentuilanguage,'/i18n_questionnaire.xml'))" />
 
 <xsl:param name="show_questions" select="'none'" />
 
-<xsl:template match="/document/context/object">
-    <html>
-        <xsl:call-template name="head_default"/>
-        <body>
-            <xsl:call-template name="header"/>
-
-            <div id="main-content" class="ui-corner-all">
-					<xsl:call-template name="options-menu-bar"/>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-						<div id="docbody">
-							<span id="body">
-                      <xsl:apply-templates select="body"/>
-             </span>
-						</div>
-
-						<div id="metadata-options">
-							<div id="user-metadata">
-								<xsl:call-template name="user-metadata"/>
-							</div>
-							<div id="document-options">
-<!--								<xsl:call-template name="document-options"/>-->
-							</div>
-						</div>
-					</div>
-			</div>
-            <xsl:call-template name="script_bottom"/>
-        </body>
-    </html>
+<xsl:template name="view-content">
+		<div id="docbody">
+							<xsl:apply-templates select="body"/>
+		</div>
 </xsl:template>
 
 <xsl:template match="questionnaire">
     <xsl:call-template name="questionnaire_title" />
-    <xsl:call-template name="questionnaire_info" />
-    <xsl:call-template name="questionnaire_statistics" />
-    <xsl:call-template name="questionnaire_download" />
-    <h2>
-    <xsl:choose>
+    <div id="properties">
+			<xsl:call-template name="questionnaire_info" />
+			<xsl:call-template name="questionnaire_statistics" />
+			<xsl:call-template name="questionnaire_download" />
+    </div>
+        <xsl:choose>
         <xsl:when test="$show_questions =  'none'">
-            <a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
+            <h2><a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a></h2>
         </xsl:when>
         <xsl:when test="$show_questions =  'top'">
-            <a href="?show_questions=none" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
+            <h2><a href="?show_questions=none" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a></h2><br/>
             <xsl:call-template name="top_question" />
         </xsl:when>
     </xsl:choose>
-    </h2>
+    
 </xsl:template>
 
 <xsl:template name="questionnaire_info">
-    <div style="border: solid 1 black">
+    <p>
         <xsl:value-of select="$i18n_qn/l/Question_number" />: <xsl:value-of select="count(question)" /><br />
         <xsl:if test="count(tanlist) &gt; 0">
             <strong><xsl:value-of select="$i18n_qn/l/TAN_lists_assigned" />:</strong><br />
             <xsl:for-each select="tanlist">
-                <xsl:value-of select="." /><br />
+                <xsl:call-template name="cttobject.options.spacer"/><xsl:value-of select="." /><br />
             </xsl:for-each>
         </xsl:if>
-    </div>
+    </p>
 </xsl:template>
 
 <xsl:template name="questionnaire_statistics">
-    <div style="border: solid 1 black">
+    <p>
         <xsl:value-of select="$i18n_qn/l/Questionnaires_answered_number" />: <xsl:value-of select="@total_answered" /><br/>
         <xsl:value-of select="$i18n_qn/l/Questionnaires_valid_number" />: <xsl:value-of select="@valid_answered" />
-    </div>
+    </p>
 </xsl:template>
 
 <xsl:template name="questionnaire_download">
     <xsl:if test="@total_answered > 0">
-        <h2 style="margin-bottom: 5px"><xsl:value-of select="$i18n_qn/l/Results" /></h2>
+        <h2><xsl:value-of select="$i18n_qn/l/Results" /></h2>
         <table>
             <tr>
                 <td>

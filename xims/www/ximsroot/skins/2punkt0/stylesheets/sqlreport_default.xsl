@@ -11,22 +11,16 @@
 
 <xsl:import href="common_search_result.xsl"/>
 
+<xsl:import href="view_common.xsl"/>
+
 <xsl:variable name="pagesize"><xsl:value-of select="document(concat($xims_home,'/conf/conf.d/sqlreportconfig.xml'))/Config/General/SQLReportPagesize"/></xsl:variable>
 
 <xsl:param name="navparam"/>
 <xsl:param name="onepage"/>
 <xsl:variable name="totalpages" select="ceiling($objectitems_count div $pagesize)"/>
 
-<xsl:template match="/document/context/object">
-    <html>
-        <xsl:call-template name="head_default"/>
-        <body>
-            <xsl:call-template name="header"/>
-            
-                      <div id="main-content" class="ui-corner-all">
-						<xsl:call-template name="options-menu-bar"/>
-						<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-						<xsl:if test="abstract/text() != ''">
+<xsl:template name="view-content">
+<xsl:if test="abstract/text() != ''">
 							<div><strong><xsl:apply-templates select="abstract"/></strong></div>
                 </xsl:if>
 							<div id="docbody">
@@ -41,24 +35,11 @@
                                 <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
                                 <xsl:with-param name="currentpage" select="$page"/>
                                 <xsl:with-param name="url"
-                                                select="concat($xims_box,$goxims_content,$absolute_path,'?m=',$m,';',$navparam)"/>
+                                                select="concat($xims_box,$goxims_content,$absolute_path,'?',$navparam)"/>
                             </xsl:call-template>
 							 </div>
             </xsl:if>
-							
-           <div id="metadata-options">
-							<div id="user-metadata">
-								<xsl:call-template name="user-metadata"/>
-							</div>
-							<div id="document-options">
-<!--								<xsl:call-template name="document-options"/>-->
-							</div>
-						</div>
-					</div>
-				</div>
-            <xsl:call-template name="script_bottom"/>
-        </body>
-    </html>
 </xsl:template>
+
 </xsl:stylesheet>
 

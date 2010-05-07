@@ -6,8 +6,8 @@
   <keyword_list>Schlagwörter</keyword_list>
   <subject>Thema</subject>
   <subjects>Themen</subjects>
-  <author>Autor&#x2009;/&#x2009;-in</author>
-  <authors>Autorinnen und Autoren</authors>
+  <author>Autor / -in</author>
+  <authors>Autor / -innen</authors>
   <unmapped>derzeit nicht zugeordnete</unmapped>
   <select_name>Bitte wählen Sie einen Namen!</select_name>
   <firstname>Vorname</firstname>
@@ -40,6 +40,9 @@
   <AuthorStringFormat>Autoreneingabeformat: Vorname (opt: 2.Vorname) Nachname (opt:, Suffix). Mehrere Nachnamen müssen durch Anführungszeichen zusammengefasst werden.</AuthorStringFormat>
   <chronicle_from>Chronik von</chronicle_from>
   <chronicle_to>Chronik bis</chronicle_to>
+  <chronicle>Chronik</chronicle>
+  <from>von</from>
+  <to>bis</to>
   <fill_in>Auswahl einfüllen</fill_in>
   <manage_subjects>Themen verwalten</manage_subjects>
   <manage_authors>Autorinnen und Autoren verwalten</manage_authors>

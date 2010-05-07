@@ -40,6 +40,9 @@
   <AuthorStringFormat>Author Format: Firstname (opt: Middlename) Lastname (opt:, Suffix). Wrap multiple lastnames inside double quotes</AuthorStringFormat>
   <chronicle_from>Chronicle from</chronicle_from>
   <chronicle_to>Chronicle to</chronicle_to>
+  <chronicle>Chronicle</chronicle>
+  <from>von</from>
+  <to>bis</to>
   <fill_in>Fill in selection</fill_in>
   <manage_subjects>Manage subjects</manage_subjects>
   <manage_authors>Manage authors</manage_authors>

@@ -42,7 +42,7 @@
         </xsl:call-template>
         
         <div id="content-container">
-          <h1 class="bluebg">
+          <h1>
             <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>'</h1>
 
           <!-- filter widget table -->

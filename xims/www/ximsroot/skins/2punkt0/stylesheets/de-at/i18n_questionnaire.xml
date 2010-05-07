@@ -2,6 +2,7 @@
 <l>
     <!-- Begin Questionnaire -->
     <Question>Frage</Question>
+    <Questions>Fragen</Questions>
     <Answer>Antwort</Answer>
     <Answers>Antworten</Answers>
     <Example_Answers>(Beispiels-)Antworten</Example_Answers>
