@@ -70,13 +70,15 @@
 			</fieldset>
 			<!-- set checked attribute for trytobalance-input-element according to cookie -->
 			<script type="text/javascript">
+			$().ready(function(){
 			selTryToBalance(document.eform.trytobalance, readCookie('xims_trytobalancewell'));
+			});
 		</script>
 		</div>
 	</xsl:template>
 	
 	<xsl:template name="setdefaulteditor">
-		<script type="text/javascript" language="Javascript" src="{$ximsroot}scripts/setdefaulteditor.js"/>
+		<!--<script type="text/javascript" language="Javascript" src="{$ximsroot}scripts/setdefaulteditor.js"/>-->
 		<script type="text/javascript" language="Javascript">
 			var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
     </script>
@@ -85,7 +87,9 @@
 				<xsl:copy-of select="$editoroptions"/>
 			</select>
 			<script type="text/javascript">
-      setSel(document.getElementById('xims_wysiwygeditor'), readCookie('xims_wysiwygeditor'));
+      $().ready(function(){
+				setSel(document.getElementById('xims_wysiwygeditor'), readCookie('xims_wysiwygeditor'));
+				});
     </script>
 		</form>
 	</xsl:template>
