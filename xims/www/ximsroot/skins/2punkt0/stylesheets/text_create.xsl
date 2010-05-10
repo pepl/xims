@@ -11,7 +11,7 @@
 
   <xsl:import href="javascript_create.xsl"/>
   
-  <xsl:template name="tr-minify"/>
+  <xsl:template name="form-minify"/>
   
 </xsl:stylesheet>
 

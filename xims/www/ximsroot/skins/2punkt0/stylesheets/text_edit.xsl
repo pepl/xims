@@ -9,11 +9,10 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
- <!-- <xsl:import href="edit_common.xsl"/>-->
   <xsl:import href="javascript_edit.xsl"/>
   
 
-  <xsl:template name="tr-minify"/>
+  <xsl:template name="form-minify"/>
   
 </xsl:stylesheet>
 
