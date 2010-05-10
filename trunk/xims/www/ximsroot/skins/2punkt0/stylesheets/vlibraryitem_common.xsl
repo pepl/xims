@@ -371,41 +371,7 @@
 	<div>
 	<label for="input-bibliosource">Bibliosource</label><br/>
 		<textarea rows="3" cols="74" id="input-bibliosource" name="input-bibliosource"><xsl:value-of select="meta/bibliosource"/></textarea>
-		<!--<xsl:call-template name="mk-textarea">
-			<xsl:with-param name="title" select="'Bibliosource'"/>
-			<xsl:with-param name="name" select="'bibliosource'"/>
-			<xsl:with-param name="xpath" select="'meta/bibliosource'"/>
-			<xsl:with-param name="length" select="2048"/>
-			<xsl:with-param name="cols" select="79"/>
-			<xsl:with-param name="rows" select="5"/>
-		</xsl:call-template>-->
 			</div>
-	</xsl:template>
-
-	
-	<xsl:template name="tr-date-create">
-		<tr>
-			<td valign="top">Zeitraum</td>
-			<td colspan="2">
-        von
-        <input tabindex="20" type="text" name="date_from" size="10" class="text" maxlength="10"/>
-        (JJJJ-MM-TT)
-        <img src="{$ximsroot}jscalendar-1.0/img.gif" id="f_trigger_c" style="cursor: pointer; border: 1px solid red;" title="Date selector" onmouseover="this.style.background='red';" onmouseout="this.style.background=''"/>
-				<script type="text/javascript">
-          Calendar.setup({
-          inputField     :    "date_from",
-          ifFormat       :    "%Y-%m-%d",
-          button         :    "f_trigger_c",
-          align          :    "Tl",
-          singleClick    :    true
-          });
-        </script>
-        bis
-        <input tabindex="20" type="text" name="date_to" size="10" class="text" maxlength="10"/>
-        (JJJJ-MM-TT)<xsl:text>&#160;</xsl:text>
-				<!-- <a href="javascript:openDocWindow('Date')" class="doclink">(?)</a> -->
-			</td>
-		</tr>
 	</xsl:template>
 	
 	<xsl:template name="tr-publisher">
@@ -415,18 +381,6 @@
 			<xsl:with-param name="xpath" select="'meta/publisher'"/>
 		</xsl:call-template>
 	</xsl:template>
-	
-<!--	<xsl:template name="tr-date-edit">
-		<xsl:variable name="date_from" select="concat(meta/date_from_timestamp/year,'-',meta/date_from_timestamp/month,'-',meta/date_from_timestamp/day)"/>
-		<tr>
-			<td valign="top">Datum</td>
-			<td colspan="2">
-				<input tabindex="20" type="text" name="date" size="10" class="text" maxlength="10" value="{$date_from}"/>
-        (JJJJ-MM-TT)<xsl:text>&#160;</xsl:text>
-				--><!-- <a href="javascript:openDocWindow('Date')" class="doclink">(?)</a> --><!--
-			</td>
-		</tr>
-	</xsl:template>-->
 	
 	<xsl:template name="form-date">
 		<xsl:variable name="date_from" select="concat(meta/date_from_timestamp/year,'-',meta/date_from_timestamp/month,'-',meta/date_from_timestamp/day)"/>
@@ -446,46 +400,7 @@
 			</xsl:call-template>
 		</div>
 	</xsl:template>
-	
-	<!--<xsl:template name="tr-chronicle_from">
-		<xsl:variable name="chronicle_from_date_tmp" select="concat(meta/date_from_timestamp/year,'-',meta/date_from_timestamp/month,'-',meta/date_from_timestamp/day)"/>
-		<xsl:variable name="chronicle_from_date">
-			<xsl:if test="$chronicle_from_date_tmp != '-'">
-				<xsl:value-of select="$chronicle_from_date_tmp"/>
-			</xsl:if>
-		</xsl:variable>
-		<div>
-			<div class="label-std">
-				<xsl:value-of select="$i18n_vlib/l/chronicle_from"/>
-			</div>
-				<input tabindex="40" type="text" name="chronicle_from_date" id="chronicle_from_date" class="text" size="10" value="{$chronicle_from_date}"/>
-				<xsl:text>&#160;</xsl:text>
-				<img src="{$skimages}calendar.gif" id="f_trigger_vft" style="cursor: pointer;" alt="{$i18n/l/Date_selector}" title="{$i18n/l/Date_selector}" onmouseover="this.style.background='red';" onmouseout="this.style.background=''"/>
-					<xsl:call-template name="mk-inline-js">
-						<xsl:with-param name="code">
-							var current_datestring = "<xsl:value-of select="$chronicle_from_date"/>";
-          var current_date;
-          if ( current_datestring.length > 0 ) {
-          current_date = Date.parseDate(current_datestring, "%Y-%m-%d").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-          }
-          Calendar.setup({
-          inputField     :    "chronicle_from_date",
-          ifFormat       :    "%Y-%m-%d",
-          displayArea    :    "show_vft",
-          daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-          button         :    "f_trigger_vft",
-          align          :    "Tl",
-          singleClick    :    true,
-          showsTime      :    true,
-          timeFormat     :    "24"
-          });
-						</xsl:with-param>
-					</xsl:call-template>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('chronicle_from')" class="doclink">(?)</a>
-		</div>
-	</xsl:template>-->
-	
+
 	<xsl:template name="form-chronicle_from">
 	<xsl:variable name="chronicle_from_date_tmp" select="concat(meta/date_from_timestamp/year,'-',meta/date_from_timestamp/month,'-',meta/date_from_timestamp/day)"/>
 		<xsl:variable name="chronicle_from_date">
@@ -560,43 +475,6 @@
 		</div>
 	</xsl:template>
 	
-<!--	<xsl:template name="tr-chronicle_to">
-		<xsl:variable name="chronicle_to_date_tmp" select="concat(meta/date_to_timestamp/year,'-',meta/date_to_timestamp/month,'-',meta/date_to_timestamp/day)"/>
-		<xsl:variable name="chronicle_to_date">
-			<xsl:if test="$chronicle_to_date_tmp != '-'">
-				<xsl:value-of select="$chronicle_to_date_tmp"/>
-			</xsl:if>
-		</xsl:variable>
-		<div>
-			<div class="label-std">
-				<xsl:value-of select="$i18n_vlib/l/chronicle_to"/>
-			</div>
-				<input tabindex="40" type="text" name="chronicle_to_date" id="chronicle_to_date" class="text" size="10" value="{$chronicle_to_date}"/>
-				<xsl:text>&#160;</xsl:text>
-				<img src="{$skimages}calendar.gif" id="t_trigger_vft" style="cursor: pointer;" alt="{$i18n/l/Date_selector}" title="{$i18n/l/Date_selector}" onmouseover="this.style.background='red';" onmouseout="this.style.background=''"/>
-				<script type="text/javascript">
-var current_datestring = "<xsl:value-of select="$chronicle_to_date"/>";
-var current_date;
-if ( current_datestring.length &gt; 0 ) {
-  current_date = Date.parseDate(current_datestring, "%Y-%m-%d").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-}
-
-Calendar.setup({ inputField     :    "chronicle_to_date",
-                 ifFormat       :    "%Y-%m-%d",
-                 displayArea    :    "show_vft",
-                 daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-                 button         :    "t_trigger_vft",
-                 align          :    "Tl",
-                 singleClick    :    true,
-                 showsTime      :    true,
-                 timeFormat     :    "24"
-               });
-        </script>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('chronicle_to')" class="doclink">(?)</a>
-		</div>
-	</xsl:template>-->
-	
 	<xsl:template name="form-dc_date">
 		<!--<xsl:variable name="date_from" select="concat(meta/date_from_timestamp/year,'-',meta/date_from_timestamp/month,'-',meta/date_from_timestamp/day)"/>-->
 		<div>
@@ -616,49 +494,6 @@ Calendar.setup({ inputField     :    "chronicle_to_date",
 			</xsl:call-template>
 		</div>
 	</xsl:template>
-	
-<!--	<xsl:template name="tr-dc_date">
-		<xsl:variable name="dc_date_tmp" select="concat(meta/dc_date/year,
-                                 '-',
-                                 meta/dc_date/month,
-                                 '-',
-                                 meta/dc_date/day)"/>
-		<xsl:variable name="dc_date">
-			<xsl:if test="$dc_date_tmp != '- -'">
-				<xsl:value-of select="$dc_date_tmp"/>
-			</xsl:if>
-		</xsl:variable>
-		<div>
-			<div id="label-validfrom">
-				<label for="dc_date">
-					<xsl:value-of select="$i18n/l/Date_selector"/>
-				</label>
-			</div>
-			<input type="text" name="dc_date" id="dc_date" class="text" size="10" value="{$dc_date}"/>
-			<xsl:text>&#160;</xsl:text>
-			<img src="{$skimages}calendar.gif" id="f_trigger_vft" style="cursor: pointer;" alt="{$i18n/l/Date_selector}" title="{$i18n/l/Date_selector}" onmouseover="this.style.background='red';" onmouseout="this.style.background=''"/>
-			<xsl:call-template name="mk-inline-js">
-				<xsl:with-param name="code">
-                  var current_datestring = "<xsl:value-of select="$dc_date"/>";
-          var current_date;
-          if ( current_datestring.length > 0 ) {
-            current_date = Date.parseDate(current_datestring, "%Y-%m-%d").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-          }
-          Calendar.setup({
-            inputField     :    "dc_date",
-            ifFormat       :    "%Y-%m-%d",
-            displayArea    :    "show_vft",
-            daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-            button         :    "f_trigger_vft",
-            align          :    "Tl",
-            singleClick    :    true,
-            showsTime      :    true,
-            timeFormat     :    "24"
-          });
-        </xsl:with-param>
-			</xsl:call-template>
-		</div>
-	</xsl:template>-->
 	
 	<xsl:template name="form-locationtitlesubtitle-edit">
 	<div class="form-div div-left">

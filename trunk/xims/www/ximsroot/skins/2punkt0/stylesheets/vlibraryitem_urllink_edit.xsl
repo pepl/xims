@@ -29,59 +29,8 @@
 		<xsl:with-param name="mo" select="'keyword'"/>
 	</xsl:call-template>
 	
-	<!--<xsl:call-template name="form-vlsubjects-edit"/>
-	<xsl:call-template name="form-vlkeywords-edit"/>-->
-	
-	
 	<xsl:call-template name="form-obj-specific"/>
 </xsl:template>
-
-<!--<xsl:template name="form-keywords"/>-->
-
-
-<!--<xsl:template match="/document/context/object">
-<html>
-    <xsl:call-template name="common-head">
-        <xsl:with-param name="mode">edit</xsl:with-param>
-        <xsl:with-param name="calendar" select="true()" />
-    </xsl:call-template>
-    <body>
-        --><!-- TODO: 
-            * post_async is currently not loaded
-            * should be moved to a script-bottom template together with vlibrary_edit.js
-            * post_async should post with OBJECT_ID and not LOCATION_PATH
-            * JQuery API should be used
-            * when adding or deleting a property the iframed (thickbox) page should be reloaded
-        --><!--
-        <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <div class="edit">
-            <xsl:call-template name="heading"><xsl:with-param name="mode">edit</xsl:with-param></xsl:call-template>
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" enctype="multipart/form-data">
-                <table border="0" width="98%">
-                    <xsl:call-template name="form-locationtitle-edit_urllink"/>
-                    <xsl:call-template name="tr-vlsubjects-edit"/>
-                    <xsl:call-template name="tr-publisher"/>
-                    <xsl:call-template name="tr-chronicle_from"/>
-                    <xsl:call-template name="tr-chronicle_to"/>
-                    <xsl:call-template name="tr-vlkeywords-edit"/>
-                    <xsl:call-template name="tr-abstract-edit"/>
-                    <xsl:call-template name="tr-mediatype"/>
-                    <xsl:call-template name="tr-coverage"/>
-                    <xsl:call-template name="tr-audience"/>
-                    <xsl:call-template name="tr-legalnotice"/>
-                    <xsl:call-template name="tr-bibliosource"/>
-                    <xsl:call-template name="markednew"/>
-                    <xsl:call-template name="publish-on-save"/>
-                </table>
-                <xsl:call-template name="saveedit"/>
-            </form>
-        </div>
-        <br />
-        <xsl:call-template name="canceledit"/>
-        <xsl:call-template name="script_bottom"/>
-    </body>
-</html>
-</xsl:template>-->
 
 <xsl:template name="tr-locationtitle-edit_urllink">
     <div class="form-div div-left">
@@ -107,8 +56,4 @@
     </div>
 </xsl:template>
 
-
-	
-	
-	
 </xsl:stylesheet>

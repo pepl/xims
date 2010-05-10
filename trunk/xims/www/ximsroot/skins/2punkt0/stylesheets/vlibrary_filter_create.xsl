@@ -16,12 +16,6 @@
   <xsl:template match="/document/context/object">
     <html>
 			<xsl:call-template name="head_default"> <xsl:with-param name="vlib">true</xsl:with-param></xsl:call-template>
-      <!--<head>
-        <title><xsl:value-of select="$i18n_vlib/l/filter_create"/></title>
-        <xsl:call-template name="css"/>
-        <script src="{$ximsroot}scripts/filter_create.js" type="text/javascript" />
-        <xsl:call-template name="jscalendar_scripts" />
-      </head>-->
       <body>
       <div id="content-container" style="width:600px">
         <form action="{$xims_box}{$goxims_content}"
@@ -50,7 +44,6 @@
         </form>
         <xsl:call-template name="script_bottom"/>
         <script src="{$ximsroot}scripts/filter_create.js" type="text/javascript" />
-       <!-- <xsl:call-template name="jscalendar_scripts" />-->
         </div>
       </body>
     </html>
@@ -178,72 +171,6 @@
     </div>
     
   </xsl:template>
-
-<!--  <xsl:template name="vlib_filter_tr-chronicle_from">
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n_vlib/l/chronicle_from"/></td>
-        <td colspan="2">
-            <input tabindex="40" type="text" name="chronicle_from_date" id="chronicle_from_date" size="10"  />
-            <xsl:text>&#160;</xsl:text>
-            <img
-              src="{$skimages}calendar.gif"
-              id="f_trigger_vft"
-              style="cursor: pointer;"
-              alt="{$i18n/l/Date_selector}"
-              title="{$i18n/l/Date_selector}"
-              onmouseover="this.style.background='red';"
-              onmouseout="this.style.background=''"
-            />
-            <script type="text/javascript">
-                var current_date;
-                Calendar.setup({
-                    inputField     :    "chronicle_from_date",
-                    ifFormat       :    "%Y-%m-%d",
-                    displayArea    :    "show_vft",
-                    daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-                    button         :    "f_trigger_vft",
-                    align          :    "Tl",
-                    singleClick    :    true,
-                    showsTime      :    true,
-                    timeFormat     :    "24"
-                });
-            </script>
-        </td>
-    </tr>
-  </xsl:template>
-
-  <xsl:template name="vlib_filter_tr-chronicle_to">
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n_vlib/l/chronicle_to"/></td>
-        <td colspan="2">
-            <input tabindex="40" type="text" name="chronicle_to_date" id="chronicle_to_date" size="10" value="" />
-            <xsl:text>&#160;</xsl:text>
-            <img
-              src="{$skimages}calendar.gif"
-              id="t_trigger_vft"
-              style="cursor: pointer;"
-              alt="{$i18n/l/Date_selector}"
-              title="{$i18n/l/Date_selector}"
-              onmouseover="this.style.background='red';"
-              onmouseout="this.style.background=''"
-            />
-            <script type="text/javascript">
-                var current_date;
-                Calendar.setup({
-                    inputField     :    "chronicle_to_date",
-                    ifFormat       :    "%Y-%m-%d",
-                    displayArea    :    "show_vft",
-                    daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-                    button         :    "t_trigger_vft",
-                    align          :    "Tl",
-                    singleClick    :    true,
-                    showsTime      :    true,
-                    timeFormat     :    "24"
-                });
-            </script>
-        </td>
-    </tr>
-  </xsl:template>-->
 
   <xsl:template name="vlib_filter_buttons">
     <div class="cancelsave-form">

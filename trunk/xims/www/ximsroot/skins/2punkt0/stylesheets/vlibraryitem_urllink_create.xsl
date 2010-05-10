@@ -20,68 +20,12 @@
 	<div class="form-div block">
 	<xsl:call-template name="form-subtitle"/>	
 	<xsl:call-template name="tr-publisher"/>
-<!--	<xsl:call-template name="tr-chronicle_from"/>-->
 	<xsl:call-template name="form-chronicle_from"/>
-	<!--<xsl:call-template name="tr-chronicle_to"/>-->
 	<xsl:call-template name="form-chronicle_to"/>
 	</div>
-	
-	<!--For consistency with other VLib-Objects we deactivate theese fields in create-mode-->
-	
-	<!--<div class="form-div block">
-	<xsl:call-template name="tr-vlsubjects-create"/>
-	<xsl:call-template name="tr-vlkeywords-create"/>
-	</div>-->
-	<!--<xsl:call-template name="form-keywordabstract"/>
-	<xsl:call-template name="tr-mediatype"/>
-	<xsl:call-template name="tr-coverage"/>
-	<xsl:call-template name="tr-audience"/>
-	<xsl:call-template name="tr-legalnotice"/>
-	<xsl:call-template name="tr-bibliosource"/>               -->
 </xsl:template>
 
 <xsl:template name="keywords"/>
-
-<!--<xsl:template match="/document/context/object">
-<html>
-    <head>
-    <xsl:call-template name="common-head">
-        <xsl:with-param name="mode">create</xsl:with-param>
-        <xsl:with-param name="calendar" select="true()" />
-    </xsl:call-template>
-    <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript" ></script>
-    </head>
-    <body onload="document.eform['abstract'].value=''; document.eform.name.focus();">
-        <div class="edit">
-           <xsl:call-template name="heading"><xsl:with-param name="mode">create</xsl:with-param></xsl:call-template>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="objtype" value="{$objtype}"/>
-                <table border="0" width="98%">
-                    <xsl:call-template name="form-locationtitle-create"/>
-                    <xsl:call-template name="tr-subtitle"/>
-                    <xsl:call-template name="tr-vlsubjects-create"/>
-                    <xsl:call-template name="tr-publisher"/>
-                    <xsl:call-template name="tr-chronicle_from"/>
-                    <xsl:call-template name="tr-chronicle_to"/>
-                    <xsl:call-template name="tr-vlkeywords-create"/>
-                    <xsl:call-template name="tr-abstract-create"/>
-                    <xsl:call-template name="tr-mediatype"/>
-                    <xsl:call-template name="tr-coverage"/>
-                    <xsl:call-template name="tr-audience"/>
-                    <xsl:call-template name="tr-legalnotice"/>
-                    <xsl:call-template name="tr-bibliosource"/>               
-                    <xsl:call-template name="markednew"/>
-                    <xsl:call-template name="publish-on-save"/>
-                </table>
-                <xsl:call-template name="saveaction"/>
-            </form>
-        </div>
-        <br />
-        <xsl:call-template name="cancelaction"/>
-        <xsl:call-template name="script_bottom"/>
-    </body>
-</html>
-</xsl:template>-->
 
 <xsl:template name="tr-subject-create">
     <div>

@@ -10,8 +10,7 @@
 	<xsl:import href="vlibraryitem_common.xsl"/>
 	<xsl:import href="edit_common.xsl"/>
 	<xsl:import href="document_common.xsl"/>
-	
-	<xsl:param name="calendar">true</xsl:param>
+
 	<xsl:param name="selEditor" select="true()"/>
 	<xsl:param name="vlib" select="true()"/>
 	

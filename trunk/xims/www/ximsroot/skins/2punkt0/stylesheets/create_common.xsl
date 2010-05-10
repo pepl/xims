@@ -15,7 +15,6 @@
 	<xsl:variable name="usertype" select="/document/context/session/user/preferences/usertype"/>-->
 	<xsl:param name="pubonsave"><xsl:value-of select="/document/context/session/user/publish_at_save"/></xsl:param>
 	<xsl:param name="usertype"><xsl:value-of select="/document/context/session/user/profile_type"/></xsl:param>
-	<xsl:param name="calendar" select="false()"/>	
 	<xsl:param name="tinymce" select="false()"/>	
 	<xsl:param name="selEditor" select="false()"/>	
 	<xsl:param name="testlocation" select="true()"/>
@@ -24,7 +23,6 @@
 		<html>
 			<xsl:call-template name="head_default">
 				<xsl:with-param name="mode">create</xsl:with-param>
-				<xsl:with-param name="calendar" select="$calendar"/>
 			</xsl:call-template>
 			<body>
 				<xsl:if test="selEditor">

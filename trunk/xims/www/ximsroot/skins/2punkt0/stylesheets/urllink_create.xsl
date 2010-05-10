@@ -9,7 +9,6 @@
 
 	<xsl:import href="create_common.xsl"/>
 	
-	<!--<xsl:param name="calendar">true</xsl:param>-->
 	<xsl:param name="testlocation">false</xsl:param>
 	<xsl:param name="search-location">true</xsl:param>
 	
