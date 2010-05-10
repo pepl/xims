@@ -233,7 +233,7 @@ sub event_store {
     else {
         $ctxt->object()
             ->body( "<questionnaire><title>"
-                . XIMS::decode( $self->param('questionnaire_title') )
+                . XIMS::decode( $self->param('title') )
                 . "</title><comment>"
                 . XIMS::decode( $self->param('questionnaire_comment') )
                 . "</comment></questionnaire>" );
@@ -242,7 +242,7 @@ sub event_store {
     $object->body( $body, dontbalance => 1 );
     XIMS::Debug( 6, "body set, len: " . length($body) );
     $ctxt->object()
-        ->title( XIMS::decode( $self->param('questionnaire_title') ) );
+        ->title( XIMS::decode( $self->param('title') ) );
     return $self->SUPER::event_store($ctxt);
 }
 
