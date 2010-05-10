@@ -6,8 +6,10 @@
 # $Id: portlet_common.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exslt="http://exslt.org/common" xmlns="http://www.w3.org/1999/xhtml">
+
 	<xsl:import href="common.xsl"/>
 	<xsl:import href="link_common.xsl"/>
+	
 	<xsl:variable name="i18n_portlet" select="document(concat($currentuilanguage,'/i18n_portlet.xml'))"/>
 	<!-- think of an object-type property "independent" instead of filtering object_types by name -->
 	<xsl:variable name="filtered_ots">
@@ -18,43 +20,45 @@
 			</xsl:copy>
 		</xsl:for-each>
 	</xsl:variable>
+	
 	<xsl:template name="extra_properties">
+	<div class="form-div block">
 	<h2>Extra Properties</h2>
 		<p>
 			<xsl:value-of select="$i18n_portlet/l/Extra_Properties"/>
 		</p>
 		<div class="div-row">
 			<div id="tr-created_by_fullname">
-				<div id="label-created_by_fullname">
-					<label for="input-created_by_fullname">
+				<div class="label-extraprop">
+					<label for="ep_created_by_fullname">
 						<xsl:value-of select="$i18n_portlet/l/Creator"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_created_by_fullname" id="created_by_fullname" class="checkbox">
+				<input type="checkbox" name="col_created_by_fullname" id="ep_created_by_fullname" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'created_by_firstname']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
 			<div id="tr-owned_by_fullname">
-				<div id="label-owned_by_fullname">
-					<label for="input-owned_by_fullname">
+				<div class="label-extraprop">
+					<label for="ep_owned_by_fullname">
 						<xsl:value-of select="$i18n_portlet/l/Owner"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_owned_by_fullname" class="checkbox">
+				<input type="checkbox" name="col_owned_by_fullname" class="checkbox" id="ep_owned_by_fullname">
 					<xsl:if test="body/content/column[@name = 'owned_by_firstname']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
 			<div id="tr-last_modified_by_fullname">
-				<div id="label-last_modified_by_fullname">
-					<label for="input-last_modified_by_fullname">
+				<div class="label-extraprop">
+					<label for="ep_last_modified_by_fullname">
 						<xsl:value-of select="$i18n_portlet/l/Last_modifier"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_last_modified_by_fullname" id="last_modified_by_fullname" class="checkbox">
+				<input type="checkbox" name="col_last_modified_by_fullname" id="ep_last_modified_by_fullname" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'last_modified_by_firstname']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
@@ -63,8 +67,8 @@
 		</div>
 		<div class="div-row">
 			<div id="tr-creation_timestamp">
-				<div id="label-creation_timestamp">
-					<label for="input-creation_timestamp">
+				<div class="label-extraprop">
+					<label for="creation_timestamp">
 						<xsl:value-of select="$i18n_portlet/l/Creation_timestamp"/>
 					</label>
 				</div>
@@ -75,24 +79,24 @@
 				</input>
 			</div>
 			<div id="tr-last_publication_timestamp">
-				<div id="label-last_publication_timestamp">
-					<label for="input-last_publication_timestamp">
+				<div class="label-extraprop">
+					<label for="last_publication_timestamp">
 						<xsl:value-of select="$i18n_portlet/l/Publication_timestamp"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_last_publication_timestamp" id="last_publication_timestamp" class="checkbox">
+				<input type="checkbox" name="last_publication_timestamp" id="last_publication_timestamp" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'last_publication_timestamp']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
 			<div id="tr-last_modification_timestamp">
-				<div id="label-last_modification_timestamp">
-					<label for="input-last_modification_timestamp">
+				<div class="label-extraprop">
+					<label for="last_modification_timestamp">
 						<xsl:value-of select="$i18n_portlet/l/Last_modification_timestamp"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_last_modification_timestamp" id="last_modification_timestamp" class="checkbox">
+				<input type="checkbox" name="last_modification_timestamp" id="last_modification_timestamp" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'last_modification_timestamp']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
@@ -101,24 +105,24 @@
 		</div>
 		<div class="div-row">
 			<div id="tr-valid_from_timestamp">
-				<div id="label-valid_from_timestamp">
-					<label for="input-valid_from_timestamp">
+				<div class="label-extraprop">
+					<label for="valid_from_timestamp">
 						<xsl:value-of select="$i18n_portlet/l/Valid_from_timestamp"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_valid_from_timestamp" id="valid_from_timestamp" class="checkbox">
+				<input type="checkbox" name="valid_from_timestamp" id="valid_from_timestamp" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'valid_from_timestamp']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
 			<div id="tr-valid_to_timestamp">
-				<div id="label-valid_to_timestamp">
-					<label for="input-valid_to_timestamp">
+				<div class="label-extraprop">
+					<label for="valid_to_timestamp">
 						<xsl:value-of select="$i18n_portlet/l/Valid_to_timestamp"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_valid_to_timestamp" id="valid_to_timestamp" class="checkbox">
+				<input type="checkbox" name="valid_to_timestamp" id="valid_to_timestamp" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'valid_to_timestamp']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
@@ -127,36 +131,36 @@
 		</div>
 		<div class="div-row">
 			<div id="tr-col_abstract">
-				<div id="label-col_abstract">
-					<label for="input-col_abstract">
+				<div class="label-extraprop">
+					<label for="ep_abstract">
 						<xsl:value-of select="$i18n/l/Abstract"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_abstract" id="col_abstract" class="checkbox">
+				<input type="checkbox" name="col_abstract" id="ep_abstract" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'abstract']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
 			<div id="tr-marked_new">
-				<div id="label-marked_new">
-					<label for="input-marked_new">
+				<div class="label-extraprop">
+					<label for="ep_marked_new">
 						<xsl:value-of select="$i18n_portlet/l/Marked_new"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_marked_new" id="marked_new" class="checkbox">
+				<input type="checkbox" name="col_marked_new" id="ep_marked_new" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'marked_new']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
 			<div id="tr-status">
-				<div id="label-status">
-					<label for="input-status">
+				<div class="label-extraprop">
+					<label for="ep_status">
 						<xsl:value-of select="$i18n/l/Status"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_status" id="status" class="checkbox">
+				<input type="checkbox" name="col_status" id="ep_status" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'status']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
@@ -165,55 +169,56 @@
 		</div>
 		<div class="div-row">
 			<div id="tr-attributes">
-				<div id="label-attributes">
-					<label for="input-attributes">
+				<div class="label-extraprop">
+					<label for="ep_attributes">
 						<xsl:value-of select="$i18n_portlet/l/Attributes"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_attributes" id="attributes" class="checkbox">
+				<input type="checkbox" name="col_attributes" id="ep_attributes" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'attributes']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
 			<div id="tr-col_image_id">
-				<div id="label-col_image_id">
-					<label for="input-col_image_id">
+				<div class="label-extraprop">
+					<label for="ep_image_id">
 						<xsl:value-of select="$i18n/l/Image"/>
 					</label>
 				</div>
-				<input type="checkbox" name="col_image_id" id="col_image_id" class="checkbox">
+				<input type="checkbox" name="col_image_id" id="ep_image_id" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'image_id']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
-			<div id="tr-col_body">
-				<div id="label-col_body">
-					<label for="input-col_body">
+			<div id="tr-ep_body">
+				<div class="label-extraprop">
+					<label for="ep_body">
 					 Body
 					</label>
 				</div>
-				<input type="checkbox" name="col_body" id="col_body" class="checkbox">
+				<input type="checkbox" name="col_body" id="ep_body" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'body']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 			</div>
 		</div>
+<br clear="all"/>		
+		</div>
 	</xsl:template>
+	
 	<xsl:template name="tree_depth">
 		<div id="tr-depth">
-			<div id="label-depth">
+			<div class="label">
 				<label for="select-depth">
 					<xsl:value-of select="$i18n_portlet/l/How_deep"/>
 				</label>
 			</div>
-			<select name="depth" id="depth" class="select">
+			<select name="depth" id="select-depth" class="select">
 				<option value="1">
-					<!--<xsl:if test="body/content[depth ='1']">-->
-					<xsl:attribute name="selected">selected</xsl:attribute>
-					<!--</xsl:if>-->1</option>
+					<xsl:attribute name="selected"><xsl:text>selected</xsl:text></xsl:attribute>1</option>
 				<option value="2">
 					<xsl:if test="body/content[depth =2]">
 						<xsl:attribute name="selected">selected</xsl:attribute>
@@ -247,9 +252,10 @@
                 <label for="radio-f_depth-false"><xsl:value-of select="$i18n/l/No"/></label>-->
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="add_documentlinks">
 		<div id="tr-add-doclinks">
-			<div id="label-add-doclinks">
+			<div class="label">
 				<label for="input-add-doclinks">
 					<xsl:value-of select="$i18n_portlet/l/Add_documentlinks"/>
 				</label>
@@ -264,7 +270,7 @@
 	
 	<xsl:template name="filter_latest">
 	<div id="tr-filter-latest">
-		<div id="label-filter-latest">
+		<div class="label-large">
 			<label for="input-filter-latest">
 				<xsl:value-of select="$i18n_portlet/l/Filter_latest"/>:
 				</label>
@@ -343,7 +349,7 @@
 			</div>
 		
 		<div id="tr-filter-latest-sortkey">
-			<div id="label-filter-latest-sortkey">
+			<div class="label-large">
 			<label for="input-filter-latest-sortkey">
 				<xsl:value-of select="$i18n_portlet/l/Filter_latest_sortkey"/>:
 				</label>
@@ -366,12 +372,12 @@
 	
 	<xsl:template name="contentfilters">
 	
-		<div id="contentfilters">
+		<div class="form-div block">
 		<h2>Contentfilters</h2>
 			<xsl:call-template name="filter_latest"/>
 			
 			<div id="tr-filter-markednew">
-				<div id="label-filter-markednew"><label for="input-filter-markednew">
+				<div class="label-large"><label for="input-filter-markednew">
 					<xsl:value-of select="$i18n_portlet/l/Filter_marked_new"/>:
         </label></div>
 					<input type="checkbox" name="filternews" id="input-filter-markednew" class="checkbox">
@@ -381,7 +387,7 @@
 					</input>
 			</div>
 			<div id="tr-filter-published">
-				<div id="label-filter-published"><label for="input-filter-published">
+				<div class="label-large"><label for="input-filter-published">
 					<xsl:value-of select="$i18n_portlet/l/Filter_published"/>:
         </label>
 				</div>
@@ -407,40 +413,71 @@
             </textarea>
         </td>-->
         
-		
-		<div class="div-row">
 		<p><xsl:value-of select="$i18n_portlet/l/Filter_object_types"/>:</p>
-			<xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[position() mod 1 = 0]"/>
+		<div class="div-row">
+			<xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type" mode="contentfilter"/>
 		</div>
+		&#160;<br/>
 		<!-- Nodes outside the node-set cannot be checked, therefore we have to check the filtered object-types via JavaScript -->
-		<xsl:apply-templates select="body/content/object-type"/>
-		<script type="text/javascript">
-				object_type_filter();
-            </script>
-            
+		<xsl:apply-templates select="body/content/object-type" mode="contentfilter"/>
+		            &#160;<br/>
      </div>
+		<xsl:call-template name="mk-inline-js">
+			<xsl:with-param name="code">
+				var inputs = document.getElementsByTagName("input");
+    var re = new RegExp("filter_ot_");
+    var el;
+    for (var i = inputs.length - 1; i &gt; 0; --i ) {
+    	re.test(inputs[i].name);
+        if (RegExp.rightContext.length &gt; 0) {
+        	el = document.getElementById("ot_" + RegExp.rightContext)
+            if ( el )
+            	//el.checked = 1;
+            	el.checked = 'checked';
+         }
+	}
+			</xsl:with-param>
+		</xsl:call-template>
+<!--		<script type="text/javascript">
+				//object_type_filter();
+				
+            </script>-->
 	</xsl:template>
 
-	<xsl:template match="object_type">
+	<xsl:template match="object_type" mode="contentfilter">
+	 <!-- testlx1-special-workaround for double database entries for SimpleDBItem and ReferenceLibrary -->
+	<xsl:if test="@id != '44' and @id !='41' and @id !='42' and @id !='43'">
 		<div>
-			<xsl:attribute name="id">tr-<xsl:value-of select="fullname"/></xsl:attribute>
+			<!--<xsl:attribute name="id">tr-<xsl:value-of select="fullname"/></xsl:attribute>-->
 			<div>
-				<xsl:attribute name="id">label-<xsl:value-of select="fullname"/></xsl:attribute>
+				<!--<xsl:attribute name="id">label-<xsl:value-of select="fullname"/></xsl:attribute>-->
 				<label for="ot_{fullname}">
 					<xsl:value-of select="fullname"/>
 				</label>
 			</div>
 			<input type="checkbox" name="ot_{fullname}" id="ot_{fullname}" class="checkbox"/>
 		</div>
+		</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="object-type">
-		<input type="hidden" name="filter_ot_{@fullname}"/>
+	<xsl:template match="object-type" mode="contentfilter">
+		<input type="hidden" name="filter_ot_{@name}"/>
 	</xsl:template>
+	
 	<xsl:template match="*" mode="filter">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<xsl:apply-templates mode="filter"/>
 		</xsl:copy>
+	</xsl:template>
+
+<xsl:template name="form-keywords"/>
+
+<xsl:template name="form-obj-specific">
+		<div class="form-div block">
+		<h2>Objekt-spezifische Optionen</h2>
+			<xsl:call-template name="tree_depth"/>
+			<xsl:call-template name="add_documentlinks"/>
+		</div>
 	</xsl:template>
 </xsl:stylesheet>
