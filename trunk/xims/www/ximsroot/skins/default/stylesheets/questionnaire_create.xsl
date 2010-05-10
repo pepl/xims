@@ -60,7 +60,7 @@
             <span class="compulsory"><xsl:value-of select="$i18n/l/Title"/></span>
         </td>
         <td>
-            <input type="text" tabindex="10" name="questionnaire_title" size="40" class="text" value="{body/questionnaire/title}"/>
+            <input type="text" tabindex="10" name="title" size="40" class="text" value="{body/questionnaire/title}"/>
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Title')" class="doclink">(?)</a>
         </td>

@@ -681,7 +681,7 @@ sub form_to_xml {
 
     my $questionnaire_document = XML::LibXML::Document->new();
     my $questionnaire = XML::LibXML::Element->new( "questionnaire" );
-    $questionnaire->appendTextChild( "title", $params{'questionnaire_title'} ) if $params{'questionnaire_title'};
+    $questionnaire->appendTextChild( "title", $params{'title'} ) if $params{'title'};
     $questionnaire->appendTextChild( "comment", $params{'questionnaire_comment'} ) if $params{'questionnaire_comment'};
     $questionnaire->appendTextChild( "intro", $params{'questionnaire_intro'} ) if $params{'questionnaire_intro'};
     $questionnaire->appendTextChild( "exit", $params{'questionnaire_exit'} ) if $params{'questionnaire_exit'};
