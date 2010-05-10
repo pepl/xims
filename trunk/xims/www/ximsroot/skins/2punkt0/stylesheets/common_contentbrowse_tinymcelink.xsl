@@ -53,7 +53,7 @@
                     </select>
             </div>
             
-             <div>  <input class="ui-state-default ui-corner-all fg-button" type="button" value="Store Back" onclick="inserthyperlink();"/> </div>
+             <div>  <button type="button" onclick="inserthyperlink();">Store Back</button> </div>
 
             <div><xsl:value-of select="$i18n/l/Search_objTree_obj"/>
             </div>
