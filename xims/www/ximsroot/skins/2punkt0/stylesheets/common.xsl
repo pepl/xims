@@ -15,7 +15,6 @@
 	<xsl:import href="common_head.xsl"/>
 	<xsl:import href="common_metadata.xsl"/>
 	<xsl:import href="common_localized.xsl"/>
-	<!--<xsl:import href="common_jscalendar_scripts.xsl"/>-->
 	<xsl:import href="common_tinymce_scripts.xsl"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 	<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
@@ -979,6 +978,7 @@
 			</a>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="tr-image-edit">
 		<div id="tr-image">
 			<div class="label-std">
@@ -996,50 +996,7 @@
 			</a>
 		</div>
 	</xsl:template>
-	
-	<xsl:template name="jscalendar-selector">
-		<xsl:param name="timestamp_string"/>
-		<xsl:param name="formfield_id"/>
-		<xsl:param name="default_value" select="'creation_timestamp'"/>
-		<input type="hidden" name="{$formfield_id}" id="{$formfield_id}">
-			<xsl:attribute name="value"><xsl:value-of select="$timestamp_string"/></xsl:attribute>
-		</input>
-		<span id="show_vft{$formfield_id}">
-			<xsl:value-of select="$timestamp_string"/>
-		</span>
-		<xsl:text>&#160;</xsl:text>
-		<img src="{$skimages}calendar.gif" id="f_trigger_vft{$formfield_id}" style="cursor: pointer;" alt="{$i18n/l/Date_selector}" title="{$i18n/l/Date_selector}" onmouseover="this.style.background='red';" onmouseout="this.style.background=''"/>
-		<script type="text/javascript">
-        var current_datestring = "<xsl:value-of select="$timestamp_string"/>";
-        var current_date;
-        //if ( current_datestring.length > 0 ) {
-        if ( current_datestring.length ) {
-            current_date = Date.parseDate(current_datestring, "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-            document.getElementById("show_vft<xsl:value-of select="$formfield_id"/>").innerHTML = current_date;
-        }
-        else {
-            document.getElementById("show_vft<xsl:value-of select="$formfield_id"/>").innerHTML = "<xsl:choose>
-				<xsl:when test="default_value='creation_timestamp'">
-					<xsl:value-of select="$i18n/l/Valid_from_default_creation_timestamp"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$i18n/l/Valid_from_default"/>
-				</xsl:otherwise>
-			</xsl:choose>"
-        }
-        Calendar.setup({
-            inputField     :    "<xsl:value-of select="$formfield_id"/>",
-            ifFormat       :    "%Y-%m-%d %H:%M",
-            displayArea    :    "show_vft<xsl:value-of select="$formfield_id"/>",
-            daFormat       :    "<xsl:value-of select="$i18n/l/NamedDateFormat"/>",
-            button         :    "f_trigger_vft<xsl:value-of select="$formfield_id"/>",
-            align          :    "Tl",
-            singleClick    :    true,
-            showsTime      :    true,
-            timeFormat     :    "24"
-        });
-    </script>
-	</xsl:template>
+
 	
 	<xsl:template name="ui-datepicker">
 		<xsl:param name="formfield_id"/>
@@ -1969,7 +1926,6 @@
 	<!--	Templates from stylesheets/common.xsl-->
 	<xsl:template name="script_bottom">
 		<xsl:param name="tinymce" select="false()"/>
-		<xsl:param name="calendar" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="reflib" select="false()"/>

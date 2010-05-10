@@ -11,7 +11,6 @@
 			<xsl:param name="createwidget">false</xsl:param>
 			<xsl:param name="sitestyle" select="false()"/>
 			<xsl:param name="ap-pres" select="false()"/>
-			<xsl:param name="calendar" select="false()"/>
 			<xsl:param name="reflib" select="false()"/>
 			<xsl:param name="vlib" select="false()"/>
 			<xsl:param name="simpledb" select="false()"/>
@@ -30,7 +29,6 @@
 			<xsl:call-template name="head_default">
 				<xsl:with-param name="sitestyle" select="$sitestyle"/>
 				<xsl:with-param name="ap-pres" select="$ap-pres"/>
-				<xsl:with-param name="calendar" select="$calendar"/>
 				<xsl:with-param name="reflib" select="$reflib"/>
 				<xsl:with-param name="vlib" select="$vlib"/>
 				<xsl:with-param name="simpledb" select="$simpledb"/>
@@ -67,7 +65,6 @@
 					</div>
 			</div>
 				<xsl:call-template name="script_bottom">
-				<xsl:with-param name="calendar" select="$calendar"/>
 				<xsl:with-param name="simpledb" select="$simpledb"/>
 				<xsl:with-param name="reflib" select="$reflib"/>
 				<xsl:with-param name="vlib" select="$vlib"/>

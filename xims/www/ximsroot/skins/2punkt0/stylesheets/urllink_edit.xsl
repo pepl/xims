@@ -10,7 +10,6 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
   <xsl:import href="edit_common.xsl"/>
-  <!--<xsl:param name="calendar">true</xsl:param>-->
   
   	<xsl:template name="edit-content">
 			<xsl:call-template name="form-locationtitle-edit"/>
@@ -18,8 +17,6 @@
 			<xsl:call-template name="form-marknew-pubonsave"/>
 
 			<xsl:call-template name="form-metadata"/>
-			
-			<!--<xsl:call-template name="form-grant"/>-->
 	</xsl:template>
 
   <xsl:template name="form-location-edit">

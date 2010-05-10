@@ -285,9 +285,6 @@
 					<xsl:value-of select="/document/object_types/object_type[@id=$parent_id]/name"/>::<xsl:value-of select="name"/>
 				</xsl:when>
 				<xsl:otherwise>
-				<xsl:if test="name = 'SimpleDB' or name = 'ReferenceLibrary' or name = 'Questionnaire' or name = 'TAN_List' or name = 'BidokEntry' or name = 'BidokIndex'">
-				[ooo]
-				</xsl:if>
 				<xsl:value-of select="name"/>
 				</xsl:otherwise>
 			</xsl:choose>

@@ -15,24 +15,11 @@
   
    <xsl:param name="selEditor" select="true()"/>
   <xsl:param name="tinymce" select="true()"/>	
-  <!-- <xsl:param name="calendar">true</xsl:param>
-  
-	<xsl:param name="selEditor" select="true()"/>-->
 
   <xsl:template name="set-body-edit">
     <xsl:call-template name="form-body-edit_tinymce"/> 
     <xsl:call-template name="jsorigbody"/>
     <script type="text/javascript">timeoutWYSIWYGChange(3);</script>
   </xsl:template>
-
-<!--  <xsl:template name="head">
-    <xsl:call-template name="head_default">
-				<xsl:with-param name="mode">edit</xsl:with-param>
-
-      <xsl:with-param name="tinymce" select="true()" />
-      <xsl:with-param name="calendar" select="true()" />
-      <xsl:with-param name="jquery" select="true()" />
-    </xsl:call-template>
-  </xsl:template>-->
   
 </xsl:stylesheet>

@@ -9,7 +9,6 @@
 	
 	<xsl:template name="head_default">
 		<xsl:param name="mode"/>
-		<xsl:param name="calendar" select="false()"/>
 		<xsl:param name="questionnaire" select="false()"/>
 		<xsl:param name="ap-pres" select="false()"/>
 		<xsl:param name="reflib" select="false()"/>
@@ -35,7 +34,6 @@
 					</xsl:when>
 					<xsl:when test="$mode='user'">
 						<xsl:call-template name="title-userpage"/>
-						<!-- <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/userpages.css" type="text/css"/> -->
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:call-template name="title"/>
@@ -45,17 +43,13 @@
 			<xsl:call-template name="css">
 				<xsl:with-param name="questionnaire" select="$questionnaire"/>
 				<xsl:with-param name="ap-pres" select="$ap-pres"/>
-				<xsl:with-param name="calendar" select="$calendar"/>
 				<xsl:with-param name="reflib" select="$reflib"/>
 				<xsl:with-param name="vlib" select="$vlib"/>
 				<xsl:with-param name="simpledb" select="$simpledb"/>
 				<xsl:with-param name="sitestyle" select="false()"/>
 			</xsl:call-template>
-			<xsl:call-template name="script_head">
-				<xsl:with-param name="calendar" select="$calendar"/>
-			</xsl:call-template>
+			<xsl:call-template name="script_head"/>
 		</head>
-		<!--sitestyle (common): <xsl:value-of select="$sitestyle"/> <br/>-->
 	</xsl:template>
 
 <!--Title-->
@@ -84,7 +78,6 @@
 		<xsl:template name="css">
 		<xsl:param name="questionnaire" select="false()"/>
 		<xsl:param name="ap-pres" select="false()"/>
-		<xsl:param name="calendar" select="false()"/>
 		<xsl:param name="reflib" select="false()"/>
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
@@ -108,29 +101,14 @@
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/simpledb.css" type="text/css"/>
 		</xsl:if>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/min.css" type="text/css"/>
-		<!-- uibk special start -->
-		<xsl:if test="$sitestyle=true">
-			<link rel="stylesheet" href="http://www2.uibk.ac.at/stylesheets/css/07/formats.css" type="text/css"/>
-		</xsl:if>
-		<!-- uibk special end -->
+
 	</xsl:template>
 	
 		<xsl:template name="script_head">
-		<xsl:param name="calendar" select="false()"/>
 		<script src="{$ximsroot}scripts/jquery/jquery-1.4.2.js" type="text/javascript"/>
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js" type="text/javascript"/>
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
 		<script src="{$ximsroot}scripts/jquery/fg.menu.js" type="text/javascript"/>
-		<xsl:if test="$calendar">
-			<script type="text/javascript">
-				var calendarSelector = '<xsl:value-of select="$i18n/l/Date_selector"/>';
-				var imageFolder = '<xsl:value-of select="$skimages"/>';
-			</script>
-			<xsl:call-template name="jscalendar_scripts"/>
-		</xsl:if>
-		<!--<xsl:if test="$vlib">
-			<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
-		</xsl:if>-->
 	</xsl:template>
 </xsl:stylesheet>
 

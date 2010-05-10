@@ -14,7 +14,6 @@
 
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 
-<xsl:param name="calendar" select="false()"/>
 	<xsl:param name="vlib" select="true()"/>
 
 <xsl:template name="edit-content">
