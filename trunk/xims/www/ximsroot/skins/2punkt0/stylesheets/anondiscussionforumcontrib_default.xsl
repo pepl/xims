@@ -9,31 +9,14 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-    <xsl:import href="common.xsl"/>
+    <xsl:import href="view_common.xsl"/>
     <xsl:import href="anondiscussionforum_common.xsl"/>
-
-<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-
-<xsl:template match="/document/context/object">
-    <html>
-      <xsl:call-template name="head_default"/>
-      <body>
-        <xsl:call-template name="header">
-          <xsl:with-param name="nooptions">true</xsl:with-param>
-          <xsl:with-param name="nostatus">true</xsl:with-param>
-        </xsl:call-template>
-
-        <div id="content-container">
-        <xsl:call-template name="forum"/>
-        </div>
-      </body>
-    </html>
-</xsl:template>
+    
+    <xsl:template name="view-content">
+			<xsl:call-template name="forum"/>
+    </xsl:template>
 
 <xsl:template name="forum">
-	<h1 id="create-title" class="small-headings">
-		<xsl:value-of select="$i18n/l/Topic"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$i18n/l/Discussionforum"/>&#160;'<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/title"/>'
-		</h1>
     <p>
         <xsl:if test="parents/object[@document_id=/document/context/object/@parent_id]/object_type_id = object_type_id">
             <xsl:value-of select="$i18n/l/In_reply_to"/>
@@ -90,10 +73,9 @@
     <xsl:if test="../../objectlist/object">
         <p>
             <xsl:value-of select="$i18n/l/Previous_replies"/>:<br/>
-            <!--<table>-->
+            </p>
                 <xsl:apply-templates select="/document/objectlist/object"/>
-            <!--</table>-->
-        </p>
+    
     </xsl:if>
 
     <!--<xsl:call-template name="replyform"/>-->
@@ -116,6 +98,9 @@
       <xsl:value-of select="object_type_id"/>
     </xsl:variable>
                <p>
+               <xsl:call-template name="level-spacer">
+									<xsl:with-param name="level" select="@level"/>
+								</xsl:call-template>
           <a href="{$goxims_content}?id={@id}">
 						<xsl:attribute name="class">
 							sprite <xsl:value-of select="concat('sprite-list_',/document/data_formats/data_format[@id=$dataformat]/name)"/>
@@ -133,7 +118,7 @@
           <xsl:apply-templates select="creation_timestamp" mode="datetime"/>)
               <xsl:if test="/document/context/object/user_privileges/delete">
                   &#160;<a href="{$goxims_content}?id={@id};delete_prompt=1;" class="sprite sprite-option_delete" title="{$i18n/l/delete}">
-                  <span><xsl:value-of select="$i18n/l/delete"/></span>
+                  <span><xsl:value-of select="$i18n/l/delete"/></span>&#160;
                   </a>
           </xsl:if>
           <br/>
@@ -141,52 +126,46 @@
           </p>
 </xsl:template>
 
-<!--<xsl:template name="replyform">
-    <a name="reply"/>
-    <form name="eform"
-          action="{$xims_box}{$goxims_content}{$absolute_path}?objtype=AnonDiscussionForumContrib"
-          method="post"
-          onsubmit="return checkFields()">
-      <input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-      <table class="forumbox">
-        <tr>
-          <td class="forumhead" colspan="2"><xsl:value-of select="$i18n/l/reply"/></td>
-        </tr>
-        <tr>
-          <td class="forumcontent"><xsl:value-of select="$i18n/l/Title"/> *</td>
-          <td><input class="foruminput" type="text" name="title" size="60" value="Re: {title}"/></td>
-        </tr>
-        <tr>
-          <td class="forumcontent"><xsl:value-of select="$i18n/l/Author"/> *</td>
-          <td><input class="foruminput" type="text" name="author" size="60"/></td>
-        </tr>
-        <tr>
-          <td class="forumcontent"><xsl:value-of select="$i18n/l/Email"/>:</td>
-          <td><input class="foruminput" type="text" name="email" size="60"/></td>
-        </tr>
-        <tr>
-          <td class="forumcontent"><xsl:value-of select="$i18n/l/Text"/> *</td>
-          <td>
-            <textarea class="foruminput" name="body" rows="10" cols="60"></textarea>
-          </td>
-        </tr>
-      </table>
-      <br />
-      <p>
-        <xsl:call-template name="saveaction"/>
-      </p>
-    </form>
-    <div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-</xsl:template>-->
+<xsl:template name="level-spacer">
+<xsl:param name="level" select="@level"/>
+<xsl:call-template name="cttobject.status.spacer"/>
+<xsl:if test="$level > 1">
+	<xsl:call-template name="level-spacer">
+		<xsl:with-param name="level" select="($level) -1"/>
+	</xsl:call-template>
+</xsl:if>
+</xsl:template>
 
 <xsl:template match="body">
     <xsl:call-template name="br-replace">
         <xsl:with-param name="word" select="."/>
     </xsl:call-template>
 </xsl:template>
+
+<!-- this objecttype can not be published, edited, etc. -> so we have to overwrite the options-menu -->
+	<xsl:template name="options-menu-bar">
+		<xsl:param name="createwidget" select="$createwidget"/>
+		<!--<xsl:param name="mode"/>-->
+		<xsl:param name="parent_id"/>
+		<xsl:variable name="dataformat">
+			<xsl:value-of select="data_format_id"/>
+		</xsl:variable>
+		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
+		<xsl:variable name="dfname" select="$df/name"/>
+		<xsl:variable name="dfmime" select="$df/mime_type"/>
+		<!--<div id="tab-container" class="ui-corner-top">-->
+		<div id="options-menu-bar" class="ui-corner-top">
+			<div id="options">
+				<xsl:call-template name="cttobject.dataformat">
+					<xsl:with-param name="dfname" select="$dfname"/>
+				</xsl:call-template>
+				<h1>
+					<xsl:value-of select="$i18n/l/Topic"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$i18n/l/Discussionforum"/>&#160;'<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/title"/>'
+				</h1>
+				<xsl:call-template name="button.state.publish"/>
+				&#160;&#160;&#160;
+			</div>
+		</div>
+	</xsl:template>
 
 </xsl:stylesheet>

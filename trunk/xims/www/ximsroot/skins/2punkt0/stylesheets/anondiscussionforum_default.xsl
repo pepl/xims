@@ -29,7 +29,6 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
-	
 	<xsl:template name="forumtable">
 		<table class="obj-table">
 			<thead>
