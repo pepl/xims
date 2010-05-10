@@ -8,15 +8,14 @@
 <xsl:stylesheet version="1.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
-
-<xsl:import href="common.xsl"/>
+        
 <xsl:import href="file_create.xsl"/>
 
 <xsl:template name="tr-file-create">
 <div id="tr-file">
 	<div id="label-file"><label for="input-file">
-			<span class="compulsory"><xsl:value-of select="$i18n/l/Image"/></span>
-	</label></div>
+			<xsl:value-of select="$i18n/l/Image"/>
+	</label>&#160;*</div>
             <input type="file" name="file" size="49" class="text input" id="input-file" />
             <xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
