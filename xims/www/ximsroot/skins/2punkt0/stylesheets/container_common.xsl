@@ -6,6 +6,7 @@
 # $Id: container_common.xsl 2216 2009-06-17 12:16:25Z haensel $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
+
 	<xsl:param name="onepage" select="0"/>
 	<xsl:param name="pagerowlimit" select="$searchresultrowlimit"/>
 	<xsl:variable name="pagesperpagenav" select="10"/>
@@ -26,8 +27,9 @@
 	<xsl:variable name="l_position_object" select="$i18n/l/position_object"/>
 	<xsl:variable name="l_last_modified_by" select="$i18n/l/last_modified_by"/>
 	<xsl:template name="autoindex">
+	<div class="form-div block">
 		<div id="tr-autoindex">
-			<div id="label-autoindex">
+		<div class="label-large">
 				<label for="cb-autoindex">
 					<xsl:value-of select="$i18n/l/Omit_autoindex"/>
 				</label>
@@ -40,23 +42,22 @@
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('autoindex')" class="doclink">(?)</a>
 		</div>
+		</div>
 	</xsl:template>
+	
 	<xsl:template name="defaultsorting">
 		<div id="tr-defaultsorting">
-			<fieldset>
-				<legend>
-					<div id="label-defaultsorting">
+				<div class="label-large">
 						<label for="select-defaultsorting">
 							<xsl:value-of select="$i18n/l/Sort_children_default"/>
 						</label>
-					</div>
-				</legend>
+				</div>
 				<select name="defaultsortby" id="select-defaultsorting" class="select">
 					<option value="position">
 						<xsl:value-of select="$i18n/l/Position"/>
 					</option>
-					<option value="title">
-						<xsl:if test="attributes/defaultsortby = 'title'">
+					<option value="titlelocation">
+						<xsl:if test="attributes/defaultsortby = 'titlelocation'">
 							<xsl:attribute name="selected">selected</xsl:attribute>
 						</xsl:if>
 						<xsl:value-of select="$i18n/l/Title"/>
@@ -86,9 +87,9 @@
 				</label>
 				<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('defaultsorting')" class="doclink">(?)</a>
-			</fieldset>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="pagenav">
 		<xsl:param name="totalitems"/>
 		<xsl:param name="itemsperpage"/>
@@ -98,14 +99,14 @@
 			<div class="pagenav">
 				<div>
 					<xsl:if test="$currentpage &gt; 1">
-						<a href="{$url};page={number($currentpage)-1}">&lt; <xsl:value-of select="$i18n/l/Previous_page"/>
+						<a href="{$url}page={number($currentpage)-1};">&lt; <xsl:value-of select="$i18n/l/Previous_page"/>
 						</a>
 					</xsl:if>
 					<xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
                 |
               </xsl:if>
 					<xsl:if test="$currentpage &lt; $totalpages">
-						<a href="{$url};page={number($currentpage)+1}">&gt; <xsl:value-of select="$i18n/l/Next_page"/>
+						<a href="{$url}page={number($currentpage)+1};">&gt; <xsl:value-of select="$i18n/l/Next_page"/>
 						</a>
 					</xsl:if>
 				</div>
@@ -120,6 +121,18 @@
 			</div>
 		</xsl:if>
 	</xsl:template>
+
+<xsl:template name="form-stylemedia">
+	<div class="block form-div">
+		<h2>Style &amp; Media / Multimedia</h2>
+		<xsl:call-template name="form-stylesheet"/>
+		<xsl:call-template name="form-css"/>
+		<xsl:call-template name="form-script"/>
+		<xsl:call-template name="form-image"/>
+		<xsl:call-template name="form-feed"/>
+	</div>
+</xsl:template>	
+	
 	<xsl:template name="pageslinks">
 		<xsl:param name="page"/>
 		<xsl:param name="current"/>
@@ -146,19 +159,19 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:if test="$page = $first_in_list - 1">
-			<a href="{$url};page=1">1</a> ...
+			<a href="{$url}page=1;">1</a> ...
   </xsl:if>
 		<xsl:if test="$page &gt;= $first_in_list">
 			<xsl:choose>
 				<xsl:when test="$page = $current">
 					<strong>
-						<a href="{$url};page={$page}">
+						<a href="{$url}page={$page};">
 							<xsl:value-of select="$page"/>
 						</a>
 					</strong>
 				</xsl:when>
 				<xsl:when test="$page &lt;= $last_in_list">
-					<a href="{$url};page={$page}">
+					<a href="{$url}page={$page};">
 						<xsl:value-of select="$page"/>
 					</a>
 				</xsl:when>
@@ -174,19 +187,20 @@
 			</xsl:call-template>
 		</xsl:if>
 		<xsl:if test="$page = $last_in_list + 1 and $last_in_list &lt; $total">
-    ... <a href="{$url};page={$total}">
+    ... <a href="{$url}page={$total};">
 				<xsl:value-of select="$total"/>
 			</a>
 		</xsl:if>
 	</xsl:template>
+	
 	<xsl:template name="pagenavtable">
 		<xsl:variable name="navurl">
-			<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>
+			<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>?
 			<xsl:if test="$defsorting != 1">
-				<xsl:value-of select="concat('?sb=',$sb,';order=',$order)"/>
+				<xsl:value-of select="concat('sb=',$sb,';order=',$order,';')"/>
 			</xsl:if>
 			<xsl:if test="$pagerowlimit != $searchresultrowlimit">
-				<xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit)"/>
+				<xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,';')"/>
 			</xsl:if>
 		</xsl:variable>
 		<xsl:if test="$totalpages &gt; 1">
@@ -227,7 +241,6 @@
 											<xsl:value-of select="$i18n/l/Pos_short"/>&#160;						
 										</a>
 									</th>
-									<!--</xsl:apply-templates>-->
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
@@ -250,15 +263,26 @@
 									<th id="th-title" class="sorting">
 										<a href="{$location}?sb=title;order=desc;page={$page}" class="th-icon-right">
 											<span class="ui-icon ui-icon-triangle-1-n"/>
-											<xsl:value-of select="$i18n/l/Title"/>&#160;						
+											<xsl:choose>
+												<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Title"/>&#160;	</xsl:when>
+												<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="$i18n/l/Location"/>&#160;	</xsl:when>
+											</xsl:choose>
 										</a>
 									</th>
 								</xsl:when>
 								<xsl:otherwise>
 									<th id="th-title" class="sorting">
-										<a href="{$location}?sb=title;order=asc;page={$page}" class="th-icon-right">
+									<a class="th-icon-right">
+									
+										<xsl:choose>
+											<xsl:when test="$containerview_show = 'title'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=title;order=asc;page=',$page)"/></xsl:attribute></xsl:when>
+											<xsl:when test="$containerview_show = 'location'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=location;order=asc;page=',$page)"/></xsl:attribute></xsl:when>
+										</xsl:choose>
 											<span class="ui-icon ui-icon-triangle-1-s"/>
-											<xsl:value-of select="$i18n/l/Title"/>&#160;						
+											<xsl:choose>
+												<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Title"/>&#160;	</xsl:when>
+												<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="$i18n/l/Location"/>&#160;	</xsl:when>
+											</xsl:choose>
 										</a>
 									</th>
 								</xsl:otherwise>
@@ -305,112 +329,59 @@
 					</xsl:choose>
 					<xsl:call-template name="th-size"/>
 					<xsl:call-template name="th-options"/>
-					<!--</xsl:if>-->
 				</tr>
-				<!--</thead>-->
-				<!--<tbody>-->
-				<xsl:choose>
-					<xsl:when test="$sb='title'">
-						<xsl:choose>
-							<xsl:when test="$order='asc'">
-								<xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
-                                                                                             or marked_deleted = 0 )]">
-									<!-- as long as lower-first is not implemented, we probably have to use lowercase the title here -->
-									<xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
-								</xsl:apply-templates>
-							</xsl:when>
-							<xsl:when test="$order='desc'">
-								<xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
-                                                                                             or marked_deleted = 0 )]">
-									<!-- as long as lower-first is not implemented, we probably have to use lowercase the title here -->
-									<xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="descending"/>
-								</xsl:apply-templates>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:when>
-					<xsl:when test="$sb='position'">
-						<xsl:choose>
-							<xsl:when test="$order='asc'">
-								<xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
-                                                                                             or marked_deleted = 0 )]">
-									<xsl:sort select="position" order="ascending" data-type="number"/>
-								</xsl:apply-templates>
-							</xsl:when>
-							<xsl:when test="$order='desc'">
-								<xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
-                                                                                             or marked_deleted = 0 )]">
-									<xsl:sort select="position" order="descending" data-type="number"/>
-								</xsl:apply-templates>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:when>
-					<xsl:when test="$sb='date'">
-						<xsl:choose>
-							<xsl:when test="$order='asc'">
-								<xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
-                                                                                             or marked_deleted = 0 )]">
-									<xsl:sort select="concat(last_modification_timestamp/year
-                                                    ,last_modification_timestamp/month
-                                                    ,last_modification_timestamp/day
-                                                    ,last_modification_timestamp/hour
-                                                    ,last_modification_timestamp/minute
-                                                    ,last_modification_timestamp/second)" order="ascending"/>
-								</xsl:apply-templates>
-							</xsl:when>
-							<xsl:when test="$order='desc'">
-								<xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
-                                                                                             or marked_deleted = 0 )]">
-									<xsl:sort select="concat(last_modification_timestamp/year
-                                                    ,last_modification_timestamp/month
-                                                    ,last_modification_timestamp/day
-                                                    ,last_modification_timestamp/hour
-                                                    ,last_modification_timestamp/minute
-                                                    ,last_modification_timestamp/second)" order="descending"/>
-								</xsl:apply-templates>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:when>
-				</xsl:choose>
-				<!--</xsl:choose>-->
-				<!--<xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
-                                                                                             or marked_deleted = 0 )]">
-					-->
-				<!-- as long as lower-first is not implemented, we probably have to use lowercase the title here -->
-				<!--
-					<xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
-				</xsl:apply-templates>-->
-				<!--<xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd 
-                                                                                             or marked_deleted = 0 )]">
-									<xsl:sort select="position" order="ascending" data-type="number"/>
-									</xsl:apply-templates>-->
+				<xsl:call-template name="get-children"/>
 			</tbody>
 		</table>
+	</xsl:template>
+	
+	<xsl:template name="get-children">
+		<xsl:variable name="ord">
+			<xsl:choose>
+				<xsl:when test="$order='asc'">ascending</xsl:when>
+				<xsl:otherwise>descending</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$sb='title'">
+				<!-- <xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd or marked_deleted = 0 )]"> -->
+				<!-- show also objects in trashcan -->
+				<!-- as long as lower-first is not implemented, we probably have to use lowercase the title here -->
+				<!--susanne: no need to sort here: objects are already sorted by the db-query-->
+				<xsl:apply-templates select="children/object[user_privileges/view]"><!--<xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="{$ord}"/>--></xsl:apply-templates>
+				<!--<xsl:apply-templates select="children/object[user_privileges/view]"><xsl:sort select="title" order="{$ord}"/></xsl:apply-templates>-->
+			</xsl:when>
+			<xsl:when test="$sb='position'">
+				<xsl:apply-templates select="children/object[user_privileges/view]"><xsl:sort select="position" order="{$ord}" data-type="number"/></xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="$sb='date'">
+				<xsl:apply-templates select="children/object[user_privileges/view]">
+									<xsl:sort select="concat(last_modification_timestamp/year
+                                                    ,last_modification_timestamp/month
+                                                    ,last_modification_timestamp/day
+                                                    ,last_modification_timestamp/hour
+                                                    ,last_modification_timestamp/minute
+                                                    ,last_modification_timestamp/second)" order="{$ord}"/>
+				</xsl:apply-templates>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="th-size">
 		<th id="th-size">
 			<xsl:value-of select="$i18n/l/Size"/>&#160;(kB)&#160;
-			<!--<img src="{$sklangimages}size.png" width="80" height="20" border="0" alt="{$i18n/l/Size}" title="{$i18n/l/Size} {$i18n/l/in} kB"/>-->
 		</th>
 	</xsl:template>
 	
 	<xsl:template name="th-options">
 		<th id="th-options">
 			<xsl:value-of select="$i18n/l/Options"/>
-			<!--<img src="{$sklangimages}options.png" width="221" height="20" alt="{$i18n/l/Options}" title="{$i18n/l/Options}"/>-->
 		</th>
 	</xsl:template>
 	
 	<xsl:template match="children/object">
-		<!--<xsl:variable name="dataformat">
-			<xsl:value-of select="data_format_id"/>
-		</xsl:variable>
-		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
-		<xsl:variable name="dfname" select="$df/name"/>
-		<xsl:variable name="dfmime" select="$df/mime_type"/>-->
 		<tr class="objrow">
 			<td class="ctt_status">
-				<!--<xsl:call-template name="cttobject.status"/>-->
 				<xsl:call-template name="state-toolbar"/>
 			</td>
 			<td class="ctt_position">
@@ -418,13 +389,10 @@
 			</td>
 			<td class="ctt_df">
 				<xsl:call-template name="cttobject.dataformat">
-					<!--<xsl:with-param name="dfname" select="$dfname"/>-->
 				</xsl:call-template>
 			</td>
 			<td class="ctt_loctitle">
 				<xsl:call-template name="cttobject.locationtitle">
-					<!--<xsl:with-param name="dfname" select="$dfname"/>
-					<xsl:with-param name="dfmime" select="$dfmime"/>-->
 				</xsl:call-template>
 			</td>
 			<td class="ctt_lm">
@@ -432,12 +400,9 @@
 			</td>
 			<td class="ctt_cl">
 				<xsl:call-template name="cttobject.content_length">
-					<!--<xsl:with-param name="dfname" select="$dfname"/>
-					<xsl:with-param name="dfmime" select="$dfmime"/>-->
 				</xsl:call-template>
 			</td>
 			<td class="ctt_options">
-				<!--<xsl:call-template name="cttobject.options"/>-->
 				<xsl:call-template name="options-toolbar"/>
 			</td>
 		</tr>
@@ -551,16 +516,5 @@
 			<xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template name="tr-pagerowlimit-edit">
-		<div id="tr-pagerowlimit">
-			<div id="label-pagerowlimit">
-				<label for="input-pagerowlimit">
-					<xsl:value-of select="$i18n/l/PageRowLimit"/>
-				</label>
-			</div>
-			<input type="text" name="pagerowlimit" size="2" maxlength="2" value="{attributes/pagerowlimit}" class="text input" id="input-pagerowlimit"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>
-		</div>
-	</xsl:template>
+	
 </xsl:stylesheet>

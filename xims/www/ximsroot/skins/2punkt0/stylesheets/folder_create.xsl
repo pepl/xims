@@ -9,48 +9,21 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
+<xsl:import href="create_common.xsl"/>
 <xsl:import href="container_common.xsl"/>
 
-<xsl:template match="/document/context/object">
-<html>
-    <xsl:call-template name="head_default">
-			<xsl:with-param name="mode">create</xsl:with-param>
-    </xsl:call-template>
-    <body>
-				<xsl:call-template name="header">
-					<xsl:with-param name="create">true</xsl:with-param>				
-				</xsl:call-template>
-        <div class="edit">
-            <div id="tab-container" class="ui-corner-top">
-						<xsl:call-template name="table-create"/>
-					</div>
-					<div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" id="create-edit-form">
-                <input type="hidden" name="objtype" value="{$objtype}"/>
-                
-                    <xsl:call-template name="tr-locationtitle-create"/>
-                    <xsl:call-template name="markednew"/>
-                    <xsl:call-template name="autoindex"/>
-                    <xsl:call-template name="grantowneronly"/>
-
-                <xsl:call-template name="saveaction"/>
-            </form>
-            </div>
-					<div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-				</div>
-        <xsl:call-template name="script_bottom"/>
-    </body>
-    </html>
+<xsl:template name="create-content">
+	<xsl:variable name="id" select="@id"/>
+	<xsl:call-template name="form-locationtitle-create"/>
+	<xsl:call-template name="form-marknew-pubonsave"/>
+	<xsl:call-template name="form-obj-specific"/>
+	<xsl:call-template name="form-grant"/>
 </xsl:template>
 
+<xsl:template name="form-obj-specific">
+		<div class="form-div block">
+		<h2>Objekt-spezifische Optionen</h2>
+			<xsl:call-template name="autoindex"/>
+		</div>
+	</xsl:template>
 </xsl:stylesheet>

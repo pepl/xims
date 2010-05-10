@@ -9,57 +9,18 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
+<xsl:import href="create_common.xsl"/>
 <xsl:import href="container_common.xsl"/>
-<xsl:import href="departmentroot_common.xsl"/>
 <xsl:variable name="parentid" select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
 
-<xsl:template match="/document/context/object">
-<html>
-    <xsl:call-template name="head_default">
-    <xsl:with-param name="mode">create</xsl:with-param>
-    </xsl:call-template>
-    <body onload="document.eform.name.focus()">
-				<xsl:call-template name="header">
-					<xsl:with-param name="create">true</xsl:with-param>				
-				</xsl:call-template>
-        <div class="edit">
-            <div id="tab-container" class="ui-corner-top">
-						<xsl:call-template name="table-create"/>
-					</div>
-					<div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" id="create-edit-form">
-                <input type="hidden" name="objtype" value="{$objtype}"/>
-
-                    <xsl:call-template name="tr-locationtitle-create"/>
-                    <xsl:call-template name="tr-stylesheet-create"/>
-                    <xsl:call-template name="tr-css-create"/>
-                    <xsl:call-template name="tr-script-create"/>
-                    <!--<xsl:call-template name="tr-imagedepartmentroot-create"/>-->
-                    <xsl:call-template name="tr-image-create"/>
-                    <xsl:call-template name="tr-feed-create"/>
-                    <xsl:call-template name="tr-abstract-create"/>
-                    <xsl:call-template name="markednew"/>
-                    <xsl:call-template name="autoindex"/>
-                    <xsl:call-template name="grantowneronly"/>
-
-                 <xsl:call-template name="saveaction"/>
-            </form>
-        </div>
-        <div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-        </div>
-        <xsl:call-template name="script_bottom"/>
-    </body>
-</html>
+<xsl:template name="create-content">
+	<xsl:call-template name="form-locationtitle-create"/>
+	<xsl:call-template name="form-marknew-pubonsave"/>
+	<xsl:call-template name="form-stylemedia"/>
+	<xsl:call-template name="form-keywordabstract"/>
+	<xsl:call-template name="form-obj-specific"/>
+	<xsl:call-template name="form-grant"/>
+	<br clear="all"/>
 </xsl:template>
 
 <!--<xsl:template name="tr-imagedepartmentroot-create">
@@ -72,5 +33,26 @@
             <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?contentbrowse=1;to={$parentid};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
         </div>
 </xsl:template>-->
+
+<xsl:template name="form-stylemedia">
+<div class="block form-div">
+<h2>Style &amp; Media / Multimedia</h2>
+	<xsl:call-template name="form-stylesheet"/>
+	<xsl:call-template name="form-css"/>
+	<xsl:call-template name="form-script"/>
+	<!--<xsl:call-template name="tr-imagedepartmentroot-create"/>-->
+	<xsl:call-template name="form-image"/>
+	<xsl:call-template name="form-feed"/>
+</div>
+</xsl:template>
+
+<xsl:template name="form-obj-specific">
+		<div class="form-div block">
+		<h2>Objekt-spezifische Optionen</h2>
+			<xsl:call-template name="autoindex"/>
+		</div>
+	</xsl:template>
+
+<xsl:template name="form-keywords"/>
 
 </xsl:stylesheet>
