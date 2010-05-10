@@ -11,7 +11,6 @@
 	<xsl:import href="document_common.xsl"/>
 	<xsl:import href="newsitem_common.xsl"/>
 	
-	<!-- <xsl:param name="calendar" select="true()"/> -->
 	<xsl:param name="selEditor" select="true()"/>
 	
 	<xsl:template name="edit-content">
@@ -22,6 +21,5 @@
 		<xsl:call-template name="form-metadata"/>
 		<xsl:call-template name="expandrefs"/>
 	</xsl:template>
-	
-	<!--<xsl:template name="form-location-edit"/>-->
+
 </xsl:stylesheet>

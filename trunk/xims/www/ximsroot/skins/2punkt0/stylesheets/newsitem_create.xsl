@@ -11,7 +11,6 @@
 <xsl:import href="document_common.xsl"/>
 <xsl:import href="newsitem_common.xsl"/>
 
-<xsl:param name="calendar" select="true()"/>	
 <xsl:param name="selEditor" select="true()"/>
 
 <xsl:template name="create-content">
