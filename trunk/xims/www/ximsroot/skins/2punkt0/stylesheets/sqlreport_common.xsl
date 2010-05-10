@@ -10,13 +10,13 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
+<!--<xsl:import href="common.xsl"/>-->
 
     <xsl:variable name="i18n_sqlrep" select="document(concat($currentuilanguage,'/i18n_sqlrep.xml'))"/>
 
 <xsl:template name="skeys">
     <div id="tr-skeys">
-        <div id="label-skeys">
+        <div class="label-med">
             <label for="input-skeys"><xsl:value-of select="$i18n_sqlrep/l/Search_keys"/></label>
         </div>
             <input name="skeys" type="text" value="{attributes/skeys}" class="text" size="60" id="input-skeys"/>
@@ -29,7 +29,7 @@
 
 <xsl:template name="pagesize">
     <div id="tr-pagesize">
-        <div id="label-pagesize"><label for="input-pagesize">
+        <div class="label-med"><label for="input-pagesize">
             <xsl:value-of select="$i18n_sqlrep/l/Pagesize"/></label></div>
             <input name="pagesize" type="text" value="{attributes/pagesize}" class="text" size="5" id="input-pagesize"/>
             <xsl:text>&#160;</xsl:text>
@@ -41,7 +41,7 @@
 
 <xsl:template name="dbdsn">
     <div id="tr-dbdsn">
-        <div id="label-dbdsn">
+        <div class="label-med">
             <label for="input-dbdsn"><xsl:value-of select="$i18n_sqlrep/l/Database_DSN"/></label>
         </div>
             <input name="dbdsn" type="text" value="{attributes/dbdsn}" class="text" size="60" id="input-dbdsn"/>
@@ -54,7 +54,7 @@
 
 <xsl:template name="dbuser">
     <div id="tr-dbuser">
-        <div id="label-dbuser">
+        <div class="label-med">
             <label for="input-dbuser"><xsl:value-of select="$i18n_sqlrep/l/Database_User"/></label>
         </div>
             <input name="dbuser" type="text" value="{attributes/dbuser}" class="text" size="60" id="input-dbuser" />
@@ -67,7 +67,7 @@
 
 <xsl:template name="dbpwd">
     <div id="tr-dbpwd">
-        <div id="label-dbpwd">
+        <div class="label-med">
             <label for="input-dbpwd"><xsl:value-of select="$i18n_sqlrep/l/Database_Password"/></label>
         </div>
             <input name="dbpwd" type="password" value="{attributes/dbpwd}" class="text" size="60" id="input-dbpwd"/>
@@ -78,4 +78,21 @@
         </div>
 </xsl:template>
 
+<xsl:template name="form-obj-specific">
+		<div class="form-div block">
+		<h2>Objekt-spezifische Optionen</h2>
+			<xsl:call-template name="pagesize"/>
+			<xsl:call-template name="skeys"/>
+			<xsl:call-template name="dbdsn"/>
+			<xsl:call-template name="dbuser"/>
+			<xsl:call-template name="dbpwd"/>
+		</div>
+	</xsl:template>
+	
+<xsl:template name="form-bodyfromfile-create"/>
+<xsl:template name="form-bodyfromfile-edit"/>
+<xsl:template name="form-minify"/>
+<xsl:template name="testbodysxml"/>
+<xsl:template name="prettyprint"/>
+<xsl:template name="trytobalance"/>
 </xsl:stylesheet>
