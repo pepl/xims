@@ -10,28 +10,17 @@
         xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="vlibrary_common.xsl"/>
+<xsl:import href="create_common.xsl"/>
 
-<xsl:template match="/document/context/object">
-<html>
-    <xsl:call-template name="head-create"/>
-    <body onload="document.eform.body.value=''; document.eform['abstract'].value=''; document.eform.name.focus();">
-        <div class="edit">
-            <xsl:call-template name="table-create"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" enctype="multipart/form-data">
+<xsl:template name="create-content">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
-                <table border="0" width="98%">
-                    <xsl:call-template name="tr-location-create"/>
-                    <xsl:call-template name="tr-body-create"/>
-                    <xsl:call-template name="tr-bodyfromfile-create"/>
-                    <xsl:call-template name="markednew"/>
-                </table>
-                <xsl:call-template name="saveaction"/>
-            </form>
-        </div>
-        <br />
-        <xsl:call-template name="cancelaction"/>
-        <xsl:call-template name="script_bottom"/>
-    </body>
-</html>
+                    <xsl:call-template name="form-locationtitle-create"/>
+                    <xsl:call-template name="form-marknew-pubonsave"/>
+                    <xsl:call-template name="form-body-create"/>
+                    <!--<xsl:call-template name="tr-bodyfromfile-create"/>-->
 </xsl:template>
+
+<xsl:template name="trytobalance"/>
+<xsl:template name="form-minify"/>
+
 </xsl:stylesheet>
