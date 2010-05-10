@@ -9,11 +9,6 @@
 
 <xsl:import href="vlibraryitem_common.xsl"/>
 
-<xsl:output method="xml"
-            encoding="UTF-8"
-            media-type="text/html"
-            indent="no"/>
-
 <xsl:template match="/">
   <xsl:apply-templates select="/document/context/*[local-name() != 'session']"/>
 </xsl:template>

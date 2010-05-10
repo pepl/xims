@@ -5,25 +5,12 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: vlibrary_publications.xsl 1442 2006-03-26 18:51:16Z pepl $
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:exslt="http://exslt.org/common">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dyn="http://exslt.org/dynamic" xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="dyn">
 
   <xsl:import href="common.xsl"/>
   
-  <xsl:output method="xml"
-              encoding="utf-8"
-              media-type="text/html"
-              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-              doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-              omit-xml-declaration="yes"
-              indent="yes"/>
-  
-  <xsl:variable name="i18n_vlib"
-                select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
-  
-  <xsl:variable name="i18n"
-                select="document(concat($currentuilanguage,'/i18n.xml'))"/>
+  <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
+  <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 
   <xsl:template match="/document/context/object">
     <html>
@@ -32,12 +19,11 @@
           <xsl:value-of select="$i18n_vlib/l/keyword"/>
         </title>
         <xsl:call-template name="css"/>
+        <xsl:call-template name="script_head"/>
       </head>
       <body>
-        <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
-          <form action="%200"
-                name="eform"
-                method="%200">
+        <div id="content-container">
+          <form action="" name="eform" method="get" id="create-edit-form">
             <input type="hidden" name="id" id="id" value="{@id}"/>
             <xsl:apply-templates select="/document/context/object/children"/>
           </form>
@@ -49,66 +35,32 @@
   
 
   <xsl:template match="children/object">
-    <fieldset>
-      <legend>
-        <xsl:value-of select="$i18n_vlib/l/keyword"/>
-      </legend>
-      <table>
-        <tr>
-          <td>
+        <h1><xsl:value-of select="$i18n_vlib/l/keyword"/></h1>
+        <div>
+			<div class="label-std">
             <label for="vlkeyword_name">
-              Name
+             <xsl:value-of select="$i18n/l/Name"/>
             </label>
-          </td>
-          <td colspan="2">
-            <input tabindex="40"
-                   readonly="readonly"
-                   style="background-color:#eeeeee;"
-                   type="text" 
-                   id="vlkeyword_name" 
-                   name="vlkeyword_name" 
-                   size="25" 
-                   value="{name}" 
-                   class="text" 
-                   title="{$i18n_vlib/l/name}"/>
-          </td>
-        </tr>
-        <tr>
-          <td>
+          </div>
+            <input readonly="readonly" type="text" id="vlkeyword_name" name="vlkeyword_name" size="40" value="{name}" />
+        </div>
+        <div>
+			<div class="label-std">
             <label for="vlkeyword_description">
               <xsl:value-of select="$i18n_vlib/l/description"/>
             </label>
-          </td>
-          <td colspan="2">
-            <textarea tabindex="40"
-                      readonly="readonly"
-                      id="vlkeyword_description" 
-                      name="vlkeyword_description"
-                      style="background-color:#eeeeee;"
-                      cols="40"
-                      rows="3"
-                      class="text" 
-                      title="{$i18n_vlib/l/description}">
-              <xsl:value-of select="description"/>
-            </textarea>
-          </td> 
-        </tr>
-      </table>
-    </fieldset>
+          </div>
+            <textarea readonly="readonly" id="vlkeyword_description" cols="38" rows="10">
+							<xsl:apply-templates select="description"/>
+						</textarea>
+          </div> 
+        <br/>
     <p>
-      <input type="submit"
-             onclick="window.opener.refresh('keyword');self.close();return false;"
-             value="OK, {$i18n/l/close_window}"
-             class="control"
-             accesskey="S"/>
-      
+      <input type="submit" onclick="window.opener.refresh('keyword');self.close();return false;" value="OK, {$i18n/l/close_window}" class="ui-corner-all fg-button ui-state-default" accesskey="S"/>
+      &#160;
       <!-- The simple solution history.go(-1) would lead to a stale -->
       <!-- second entry, if we wanted tho fix a freshly created keyword. -->
-      <input type="submit"
-             onclick="location.replace('{$xims_box}{$goxims_content}' +
-                      '?id={/document/context/object/@id}' +
-                      ';property_edit=1;property=keyword;property_id={@id}'); return false;"
-             value="{$i18n/l/Back}" class="control" accesskey="B"/> </p>
-  </xsl:template>
+      <input type="submit" onclick="location.replace('{$xims_box}{$goxims_content}' + '?id={/document/context/object/@id}' + ';property_edit=1;property=keyword;property_id={@id}'); return false;" value="{$i18n/l/Back}" class="ui-corner-all fg-button ui-state-default" accesskey="B"/> </p>
 
+  </xsl:template>
 </xsl:stylesheet>

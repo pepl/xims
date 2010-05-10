@@ -9,33 +9,14 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-    <xsl:import href="common.xsl"/>
-
-    <xsl:template match="/document/context/object">
-    <html>
-        <xsl:call-template name="head-create"/>
-        <body onload="document.eform.name.focus()">
-        <div class="edit">
-            <xsl:call-template name="table-create"/>
-            <form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" 
-              name="eform" 
-              method="post" 
-              style="margin-top:0px;">
-            <input type="hidden" name="objtype" value="{$objtype}"/>
-            <table border="0" width="98%">
-                <xsl:call-template name="tr-locationtitle-create"/>
-                <xsl:call-template name="markednew"/>
-                <!-- <xsl:call-template name="autoindex"/> -->
-                <input name="autoindex" type="hidden" value="false"/>
-                <xsl:call-template name="grantowneronly"/>
-            </table>
-            <xsl:call-template name="saveaction"/>
-            </form>
-        </div>
-        <br />
-        <xsl:call-template name="cancelaction"/>
-           <xsl:call-template name="script_bottom"/>
-        </body>
-    </html>
+    <xsl:import href="create_common.xsl"/>
+    
+    <xsl:template name="create-content">
+			<xsl:call-template name="form-locationtitle-create"/>
+      <xsl:call-template name="form-marknew-pubonsave"/>
+			<!-- <xsl:call-template name="autoindex"/> -->
+			<input name="autoindex" type="hidden" value="false"/>
+			<xsl:call-template name="form-grant"/>
     </xsl:template>
+
 </xsl:stylesheet>

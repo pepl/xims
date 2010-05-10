@@ -48,7 +48,7 @@
                 <div class="controls" id="controls">
                 </div>
                 <xsl:call-template name="script_bottom"/>
-                <xsl:call-template name="create_menu_js"/>
+                <!--<xsl:call-template name="create_menu_js"/>-->
             </body>
         </html>
     </xsl:template>
@@ -59,7 +59,8 @@
         <head>
             <title><xsl:value-of select="title" /> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - XIMS</title>
             <xsl:call-template name="css"/>
-            <xsl:call-template name="create_menu_css"/>
+            <xsl:call-template name="script_head"/>
+            <!--<xsl:call-template name="create_menu_css"/>-->
             <script src="http://simile.mit.edu/timeline/api/timeline-api.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script src="http://simile.mit.edu/timeline/examples/examples.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
             <script>

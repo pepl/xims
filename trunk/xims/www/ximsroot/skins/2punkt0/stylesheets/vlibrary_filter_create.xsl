@@ -10,73 +10,82 @@
                 xmlns:exslt="http://exslt.org/common">
   <xsl:import href="common.xsl"/>
   <xsl:import href="vlibraryitem_common.xsl"/>
-  <xsl:output method="xml"
-              encoding="utf-8"
-              media-type="text/html"
-              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-              doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-              omit-xml-declaration="yes"
-              indent="yes"/>
+  
+ 
 
   <xsl:template match="/document/context/object">
     <html>
-      <head>
+			<xsl:call-template name="head_default"> <xsl:with-param name="vlib">true</xsl:with-param></xsl:call-template>
+      <!--<head>
         <title><xsl:value-of select="$i18n_vlib/l/filter_create"/></title>
         <xsl:call-template name="css"/>
         <script src="{$ximsroot}scripts/filter_create.js" type="text/javascript" />
         <xsl:call-template name="jscalendar_scripts" />
-      </head>
+      </head>-->
       <body>
-        <div style="margin:0.66em;padding:0.33em;background-color:#eeeeee;">
+      <div id="content-container" style="width:600px">
         <form action="{$xims_box}{$goxims_content}"
               name="eform"
               method="get"
-              onsubmit="window.opener.document.location.reload();self.close();">
+              onsubmit="window.opener.document.location.reload();self.close();"
+              id="create-edit-form">
+              <h1><xsl:value-of select="$i18n_vlib/l/filter_create"/></h1>
           <input type="hidden" name="id" id="id" value="{@id}"/>
           <xsl:apply-templates select="/document/context/vlsubjectinfo"/>
+          <br></br>
           <xsl:apply-templates select="/document/context/vlkeywordinfo"/>
-          <div style="position:relative; width:250px; float:left">
+          
+          <div class="div-left">
             <xsl:apply-templates select="/document/object_types"/>
             <xsl:apply-templates select="/document/context/vlmediatypeinfo"/>
             <xsl:call-template name="vlib_filter_search" />
           </div>
-          <xsl:call-template name="vlib_filter_buttons" />
+          <div class="div-left">
           <xsl:call-template name="vlib_filter_chronicle" />
+          </div>
+          <br clear="all"/>
+          <xsl:call-template name="vlib_filter_buttons" />
+          
           <div style="clear:both" />
         </form>
-        </div>
         <xsl:call-template name="script_bottom"/>
+        <script src="{$ximsroot}scripts/filter_create.js" type="text/javascript" />
+       <!-- <xsl:call-template name="jscalendar_scripts" />-->
+        </div>
       </body>
     </html>
   </xsl:template>
+  
+  <xsl:template name="title">
+		<xsl:value-of select="$i18n_vlib/l/filter_create"/>
+  </xsl:template>
 
   <xsl:template match="vlsubjectinfo">
-    <fieldset>
-      <legend>
-        <xsl:value-of select="$i18n_vlib/l/subject_list"/>
-      </legend>
-      <table>
-        <tr>
-          <td>
-            <label for="vlsubjects_available"><xsl:value-of select="$i18n_vlib/l/available"/></label><br />
-            <select id="subject1" name="vlsubjects_available" size="10" ondblclick="add_item('subject');" style="width:280px">
+        <h2><xsl:value-of select="$i18n_vlib/l/subject_list"/></h2>
+      <div>
+          <div class="div-left">
+            <label for="subject1"><xsl:value-of select="$i18n_vlib/l/available"/></label><br />
+            <select id="subject1" name="vlsubjects_available" size="10" ondblclick="add_item('subject');">
                 <xsl:apply-templates select="subject" >
                   <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                     order="ascending"/>
                 </xsl:apply-templates>
             </select>
-          </td>
-          <td style="vertical-align:top; padding-top:20px;">
-            <button type="button" onclick="add_item('subject');"><xsl:text>&#160;&gt;&#160;</xsl:text></button><br />
-            <button type="button" onclick="remove_item('subject');"><xsl:text>&#160;&lt;&#160;</xsl:text></button>
-          </td>
-          <td>
+          </div>
+         <div class="div-left" style="margin:20px">
+						 <a class="button arrow-right" href="javascript:add_item('subject')"><xsl:text>&#160;&gt;&#160;</xsl:text></a><br /><br />
+						 <a class="button arrow-left" href="javascript:remove_item('subject')"><xsl:text>&#160;&gt;&#160;</xsl:text></a>
+            <!--<button type="button" onclick="add_item('subject');"><xsl:text>&#160;&gt;&#160;</xsl:text></button><br />
+            <button type="button" onclick="remove_item('subject');"><xsl:text>&#160;&lt;&#160;</xsl:text></button>-->
+          </div>
+          <div class="div-left">
             <label for="vlsubjects_selected"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
-            <select id="subject2" name="vlsubjects_selected" size="10" ondblclick="remove_item('subject');" style="width:280px" />
-          </td>
-        </tr>
-      </table>
-    </fieldset>
+            <select id="subject2" name="vlsubjects_selected" size="10" ondblclick="remove_item('subject');" >
+            </select>
+          </div>
+      </div>
+      <br clear="all"/>
+   <!-- </fieldset>-->
   </xsl:template>
 
   <xsl:template match="subject">
@@ -84,32 +93,29 @@
   </xsl:template>
 
   <xsl:template match="vlkeywordinfo">
-    <fieldset>
-      <legend>
-        <xsl:value-of select="$i18n_vlib/l/keywords"/>
-      </legend>
-      <table>
-        <tr>
-          <td>
-            <label for="vlkeywords_available"><xsl:value-of select="$i18n_vlib/l/available"/></label><br />
-            <select id="keyword1" name="vlkeywords_available" size="10" ondblclick="add_item('keyword');" style="width:280px">
+        <h2><xsl:value-of select="$i18n_vlib/l/keywords"/></h2>
+      <div>
+          <div class="div-left">
+            <label for="keyword1"><xsl:value-of select="$i18n_vlib/l/available"/></label><br />
+            <select id="keyword1" name="vlkeywords_available" size="10" ondblclick="add_item('keyword');">
                 <xsl:apply-templates select="keyword" >
                   <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                     order="ascending"/>
                 </xsl:apply-templates>
             </select>
-          </td>
-          <td style="vertical-align:top; padding-top:20px;">
-            <button type="button" onclick="add_item('keyword');"><xsl:text>&#160;&gt;&#160;</xsl:text></button><br />
-            <button type="button" onclick="remove_item('keyword');"><xsl:text>&#160;&lt;&#160;</xsl:text></button>
-          </td>
-          <td>
+           </div>
+         <div class="div-left" style="margin:20px">
+						<a class="button arrow-right" href="javascript:add_item('keyword')"><xsl:text>&#160;&gt;&#160;</xsl:text></a><br /><br />
+						<a class="button arrow-left" href="javascript:remove_item('keyword')"><xsl:text>&#160;&gt;&#160;</xsl:text></a>
+            <!--<button type="button" onclick="add_item('keyword');"><xsl:text>&#160;&gt;&#160;</xsl:text></button><br />
+            <button type="button" onclick="remove_item('keyword');"><xsl:text>&#160;&lt;&#160;</xsl:text></button>-->
+          </div>
+          <div class="div-left">
             <label for="vlkeywords_selected"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
-            <select id="keyword2" name="vlkeywords_selected" size="10" ondblclick="remove_item('keyword');" style="width:280px" />
-          </td>
-        </tr>
-      </table>
-    </fieldset>
+            <select id="keyword2" name="vlkeywords_selected" size="10" ondblclick="remove_item('keyword');" />
+          </div>
+      </div>
+      <br clear="all"/>
   </xsl:template>
 
   <xsl:template match="keyword">
@@ -117,34 +123,36 @@
   </xsl:template>
 
   <xsl:template match="vlmediatypeinfo">
-    <fieldset style="position:relative;width:250px; display:block">
-      <legend>
+   <div class="block">
+      <div class="label-std"><label for="input-vlmediatype">
         <xsl:value-of select="$i18n_vlib/l/mediatype"/>
-      </legend>
-      <select name="vlmediatype_selected" size="1" >
+      </label></div>
+      <!--<select name="vlmediatype_selected" size="1" >-->
+       <select name="vlmediatype_selected" id="input-vlmediatype">
         <option />
         <xsl:apply-templates select="mediatype" />
       </select>
-    </fieldset>
-  </xsl:template>
+      </div>
+   </xsl:template>
 
   <xsl:template match="mediatype">
     <option value="{mediatype}"><xsl:value-of select="concat(mediatype,' (',object_count,')')" /></option>
   </xsl:template>
 
   <xsl:template match="/document/object_types">
-    <fieldset style="position:relative;width:250px; display:block">
-      <legend>
+   <div class="block">
+      <div class="label-std"><label for="input-vlobjecttype">
         <xsl:value-of select="$i18n_vlib/l/subject"/>
-      </legend>
-      <select name="vlobjecttype_selected" size="1" >
+      </label></div>
+      <!--<select name="vlobjecttype_selected" id="input-vlobjecttype" size="1" >-->
+      <select name="vlobjecttype_selected" id="input-vlobjecttype">
         <option />
         <xsl:apply-templates select="object_type[parent_id=/document/object_types/object_type[name='VLibraryItem']/@id]" >
           <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
             order="ascending"/>
         </xsl:apply-templates>
       </select>
-    </fieldset>
+      </div>
   </xsl:template>
 
   <xsl:template match="object_type">
@@ -152,27 +160,26 @@
   </xsl:template>
 
   <xsl:template name="vlib_filter_search">
-    <fieldset style="width:250px; position:relative; display:block;">
-      <legend>
+  <div class="block">
+      <div class="label-std"><label for="vls">
         <xsl:value-of select="$i18n_vlib/l/Fulltext_search"/>
-      </legend>
-      <input name="vls" />
-    </fieldset>
+      </label></div>
+      <input name="vls" type="text" id="vls" />
+  </div>
   </xsl:template>
 
   <xsl:template name="vlib_filter_chronicle">
-    <fieldset style="position:relative; float:right; width:200px;">
-      <legend>
+    <div class="form-div block">
+      <h2>
         <xsl:value-of select="$i18n_vlib/l/chronicle_filter"/>
-      </legend>
-      <table>
-        <xsl:call-template name="vlib_filter_tr-chronicle_from" />
-        <xsl:call-template name="vlib_filter_tr-chronicle_to" />
-      </table>
-    </fieldset>
+      </h2>
+        <xsl:call-template name="form-chronicle_from" />
+        <xsl:call-template name="form-chronicle_to" />
+    </div>
+    
   </xsl:template>
 
-  <xsl:template name="vlib_filter_tr-chronicle_from">
+<!--  <xsl:template name="vlib_filter_tr-chronicle_from">
     <tr>
         <td valign="top"><xsl:value-of select="$i18n_vlib/l/chronicle_from"/></td>
         <td colspan="2">
@@ -236,13 +243,13 @@
             </script>
         </td>
     </tr>
-  </xsl:template>
+  </xsl:template>-->
 
   <xsl:template name="vlib_filter_buttons">
-    <div style="position:relative; float: right; width:110px; text-align:center; padding-top:10px;">
-      <input type="button" name="filter_store" value="{$i18n/l/save}" class="control" accesskey="S" onclick="alert(createFilterParams());" /><br />
-      <input type="button" name="filter_activate" value="{$i18n_vlib/l/activate}" class="control" accesskey="A" onclick="opener.location = '{$xims_box}{$goxims_content}{$absolute_path}?filter=1;' + createFilterParams() ; //window.close();" /><br />
-      <input type="button" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C" onclick="window.close();" />
+    <div class="cancelsave-form">
+      <button name="filter_store" class="control" accesskey="S" onclick="alert(createFilterParams());" ><xsl:value-of select="$i18n/l/save"/></button>
+      <button name="filter_activate" class="control" accesskey="A" onclick="opener.location.href='{$xims_box}{$goxims_content}{$absolute_path}'+createFilterParams() ; //window.close();" ><xsl:value-of select="$i18n_vlib/l/activate"/></button>
+      <button name="cancel" class="control" accesskey="C" onclick="window.close();" ><xsl:value-of select="$i18n/l/cancel"/></button>
     </div>
   </xsl:template>
 
