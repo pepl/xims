@@ -57,7 +57,7 @@
                 <input type="text" name="imgtext" size="60" id="input-title"/>
 							</div>
 
-                 <div>  <input class="ui-state-default ui-corner-all fg-button" type="button" value="Store Back" onclick="insertfile();"/> </div>
+                 <div><button type="button" onclick="insertfile();">Store Back</button> </div>
 
             <div><xsl:value-of select="$i18n/l/Search_objTree_img"/>
             </div>
@@ -164,69 +164,6 @@ function storeBack(target, imgtext) {
         }
 	</xsl:with-param>
 </xsl:call-template>
- <!--   <script type="text/javascript">
-      <![CDATA[
-
-function popupClose() {
-    if (tinyMCEPopup) tinyMCEPopup.close();
-    else window.close();
-}
-
-function insertfile() {
-    var URL = document.selectform.imgpath.value;
-    var win = tinyMCEPopup.getWindowArg("window");
-    var title = document.selectform.imgtext.value;
-    win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
-    win.document.getElementById("alt").value = title;
-    // for image browsers: update image dimensions
-    tinyMCEPopup.close();
-}
-
-     
-        function storeBack(target, imgtext) {
-      ]]>
-            var re = new RegExp("<xsl:value-of select="$absolute_path_nosite"/>/");
-      <![CDATA[
-            if (re.test(target) && RegExp.rightContext.length > 0) {
-                document.selectform.imgpath.value=RegExp.rightContext;
-            }
-            else {
-      ]]>
-                --><!-- /goxims/content/siteroot will be converted to a relative path during saving --><!--
-                document.selectform.imgpath.value='<xsl:value-of select="concat($goxims_content,'/',/document/context/object/parents/object[@parent_id=1]/location)"/>'+target;
-      <![CDATA[
-            }
-            document.selectform.imgtext.value=imgtext;
-        }
-
-        function isIexplore() {
-            agt = navigator.userAgent.toLowerCase();
-            if ((agt.indexOf("msie") != -1) && (agt.indexOf("opera") == -1))
-                return true
-            else
-                return false;
-        }
-
-        function createThumbs() {
-            for (i=0;i< document.images.length;i++) {
-                if ((document.images[i].name != "spacer")&&(document.images[i].name != "icon")){
-                    if (isIexplore()) {
-                        imgWidth = document.images[i].width;
-                        imgHeigth = document.images[i].height;
-                        rel = imgWidth/imgHeigth;
-                        document.images[i].height = 50;
-                        document.images[i].width = 50 * rel;
-                    }
-                    else {
-                        document.images[i].height = 50;
-                        document.images[i].width = 50;
-                    }
-                }
-            }
-        return false;
-        }
-      ]]>
-    </script>-->
 </xsl:template>
 
 </xsl:stylesheet>

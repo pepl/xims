@@ -12,9 +12,11 @@
 <xsl:import href="common.xsl"/>
 
 <xsl:variable name="target_path"><xsl:call-template name="targetpath"/></xsl:variable>
+<xsl:variable name="target_path_abs"><xsl:call-template name="targetpath_abs"/></xsl:variable>
 <xsl:param name="otfilter"/>
 <xsl:param name="notfilter"/>
 <xsl:param name="sbfield"/>
+<xsl:param name="urllink" />
 
 <xsl:template match="/document/context/object">
 <html>
@@ -26,26 +28,27 @@
         <p>
             <xsl:value-of select="$i18n/l/Browse_to"/>:
             <br/>&#xa0;
+            
             <xsl:apply-templates select="targetparents/object[@id !='1']"/>
             <xsl:apply-templates select="target/object"/>
-
-            <table>
+<br />
                 <xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
                     <xsl:sort select="title" order="ascending" case-order="lower-first"/>
                 </xsl:apply-templates>
-            </table>
+          
         </p>
         <input type="hidden" name="id" value="{@id}"/>
     </form>
 </div>
-        <xsl:call-template name="mk-inline-js">
-			<xsl:with-param name="code">
-    function storeBack(target) {
-        window.opener.document.<xsl:value-of select="$sbfield"/>.value=target;
-        window.close();
-    }
-			</xsl:with-param>
-    </xsl:call-template>
+					<xsl:call-template name="mk-inline-js">
+					<xsl:with-param name="code">
+				function storeBack(target) {
+						window.opener.document.<xsl:value-of select="$sbfield"/>.value=target;
+						window.close();
+				}
+					</xsl:with-param>
+				</xsl:call-template>
+        
   </body>
 
 </html>
@@ -75,9 +78,11 @@
     <xsl:variable name="objecttype">
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
-    <tr><td>
-        <img src="{$ximsroot}images/spacer_white.gif" alt="" width="{10*@level}" height="10"/>
-        <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>
+    <!--<p>-->
+			<xsl:call-template name="cttobject.options.spacer"/>
+			<xsl:call-template name="cttobject.dataformat"/>
+       <!-- <img src="{$ximsroot}images/spacer_white.gif" alt="" width="{10*@level}" height="10"/>-->
+       <!-- <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>-->
             <xsl:choose>
                 <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
                     <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield}"><xsl:value-of select="title"/></a>
@@ -87,9 +92,18 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="$otfilter = '' or contains( $otfilter ,/document/object_types/object_type[@id=$objecttype]/name )">
-                (<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
+							<xsl:choose>
+								<xsl:when test="$urllink != ''">
+									(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path_abs}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
+								</xsl:when>
+								<xsl:otherwise>
+								(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
+								</xsl:otherwise>
+							</xsl:choose>
+                
             </xsl:if>
-    </td></tr>
+<!--    </p>-->
+<br />
 </xsl:template>
 
 </xsl:stylesheet>
