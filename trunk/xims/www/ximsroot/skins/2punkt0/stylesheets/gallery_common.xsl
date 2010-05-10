@@ -58,7 +58,7 @@
 <div>
 	Position der Thumnails:<br/>
 	<input type="radio" id="thumbpos-top" name="thumbpos" class="radio-button" value="top">
-		<xsl:if test="/document/context/object/attributes/thumbpos = 'top'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+		<xsl:if test="/document/context/object/attributes/thumbpos = 'top' or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	</input><label for="thumbpos-top">oben</label><br/>
 	<input type="radio" id="thumbpos-bottom" name="thumbpos" class="radio-button" value="bottom">
 		<xsl:if test="/document/context/object/attributes/thumbpos = 'bottom'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
@@ -75,7 +75,7 @@
 <xsl:template name="show-caption">
 <div>
 <label for="showcaption">Zeige Bildbeschreibung an</label> <input type="checkbox" id="showcaption" name="showcaption" class="checkbox">
-	<xsl:if test="/document/context/object/attributes/showcaption = 1"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	<xsl:if test="/document/context/object/attributes/showcaption = 1 or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 </input><br/>
 (Wird aus der Zusammenfassung / Abstract des BildObjekts generiert)
 </div>
@@ -84,7 +84,7 @@
 <xsl:template name="show-nav">
 <div>
 <label for="shownavigation">Zeige Navigation an</label> <input type="checkbox" id="shownavigation" name="shownavigation" class="checkbox">
-	<xsl:if test="/document/context/object/attributes/shownavigation = 1"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	<xsl:if test="/document/context/object/attributes/shownavigation = 1 or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 </input><br/>
 </div>
 </xsl:template>
