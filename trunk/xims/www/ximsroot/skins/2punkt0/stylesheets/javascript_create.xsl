@@ -19,5 +19,7 @@
 		<xsl:call-template name="form-grant"/>
   </xsl:template>
 
+	<xsl:template name="testbodysxml"/>
+	<xsl:template name="prettyprint"/>
 </xsl:stylesheet>
 

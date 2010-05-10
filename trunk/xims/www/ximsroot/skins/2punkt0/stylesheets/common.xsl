@@ -15,7 +15,7 @@
 	<xsl:import href="common_head.xsl"/>
 	<xsl:import href="common_metadata.xsl"/>
 	<xsl:import href="common_localized.xsl"/>
-	<xsl:import href="common_jscalendar_scripts.xsl"/>
+	<!--<xsl:import href="common_jscalendar_scripts.xsl"/>-->
 	<xsl:import href="common_tinymce_scripts.xsl"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 	<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
@@ -630,6 +630,9 @@
 			<xsl:call-template name="trytobalance"/>
 		</div>
 	</xsl:template>
+	
+	<xsl:template name="trytobalance"/>
+	
 	<xsl:template name="ui-resizable">
 		<script type="text/javascript">
 				$(function() {
