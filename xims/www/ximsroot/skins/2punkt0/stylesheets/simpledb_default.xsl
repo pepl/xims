@@ -39,7 +39,6 @@
 								<div id="docbody">
 							<xsl:call-template name="simpledb.options"/>
 							<xsl:if test="/document/member_properties/member_property[1]">
-									<br clear="all"/><br/>
 								<div id="simpledb_resulttitle">
 									<div>
 										<xsl:if test="$searchstring != ''">
@@ -54,7 +53,6 @@
 										<xsl:call-template name="items_page_info"/>
 									</div>
 								</div>
-								<br clear="all"/><br/>
 								<xsl:call-template name="simpledb.itemsearch"/>
 								<xsl:call-template name="pagenav">
 									<xsl:with-param name="totalitems" select="$objectitems_count"/>
@@ -66,7 +64,6 @@
                                              '?searchstring=',
                                              $searchstring)"/>
 								</xsl:call-template>
-								<br clear="all"/><br/>
 								<xsl:call-template name="childrenlist"/>
 								<xsl:call-template name="pagenav">
 									<xsl:with-param name="totalitems" select="$objectitems_count"/>
@@ -168,7 +165,7 @@
 	
 	<xsl:template name="simpledb.itemsearch">
 		<div id="simpledb_itemsearch">
-			<div class="simpledb_itemsearch_label">
+			<div>
 				<label for="searchstring">
 					<xsl:value-of select="$i18n/l/Search_for"/>
 					<xsl:text>&#160;</xsl:text>
@@ -180,7 +177,7 @@
               <br/>
 				<xsl:value-of select="$i18n_simpledb/l/or_by_field_value"/>&#160;:
             </div>
-			<div class="simpledb_itemsearch_form">
+			<div>
 				<form action="{$xims_box}{$goxims_content}{$absolute_path}">
 					<input type="text" name="searchstring" id="searchstring" size="17" maxlength="200">
 						<xsl:if test="$searchstring != ''">
@@ -190,7 +187,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text>&#160;</xsl:text>
-					<button type="submit" name="submit"><xsl:value-of select="$i18n/l/Search"/></button>
+					<input type="image" src="{$skimages}go.png" name="submit" alt="{$i18n/l/Search}" title="{$i18n/l/search}"/>
 				</form>
 			</div>
 		</div>
@@ -198,7 +195,7 @@
 	
 	<xsl:template name="simpledb.options">
 		<div id="simpledb_options">
-			<div class="simpledb_create_item">
+			<div>
 				<xsl:if test="/document/context/object/user_privileges/create 
                           and /document/member_properties/member_property[1]">
 					<div class="simpledb_itemcreate">
@@ -235,7 +232,7 @@
 	
 	<xsl:template name="member.createwidget">
 		<form action="{$xims_box}{$goxims_content}{$absolute_path}" style="margin-bottom: 0; display: inline" method="get" id="member_creator" name="member_creator">
-			<button type="submit" name="create"><xsl:value-of select="$i18n/l/Create"/></button>
+			<input type="image" name="create" src="{$sklangimages}create.png" alt="{$i18n/l/Create}" title="{$i18n/l/Create}"/>
 			<input name="page" type="hidden" value="{$page}"/>
 			<input name="r" type="hidden" value="{/document/context/object/@id}"/>
 			<input name="objtype" type="hidden" value="SimpleDBItem"/>

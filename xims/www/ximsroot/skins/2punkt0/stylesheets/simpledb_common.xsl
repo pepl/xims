@@ -43,7 +43,7 @@
     <xsl:variable name="propvalue" select="/document/context/object/member_values/member_value[property_id=$propid]/value"/>
     <div>
         <div class="simpledb-property">
-            <span>
+            <!--<span>
                 <xsl:attribute name="class">
                     <xsl:choose>
                         <xsl:when test="mandatory='1'">compulsory</xsl:when>
@@ -54,7 +54,13 @@
 									<xsl:when test="type = 'boolean'"><xsl:value-of select="name"/>:</xsl:when>
 									<xsl:otherwise><label for="simpledb_{name}"><xsl:value-of select="name"/></label>:</xsl:otherwise>
 								</xsl:choose>
-            </span>
+            </span>-->
+                <xsl:choose>
+									<xsl:when test="type = 'boolean'"><xsl:value-of select="name"/>:</xsl:when>
+									<xsl:otherwise><label for="simpledb_{name}"><xsl:value-of select="name"/></label>:</xsl:otherwise>
+									</xsl:choose>
+                        <xsl:if test="mandatory='1'">&#160;*</xsl:if>
+								
         </div>
             <xsl:choose>
                 <xsl:when test="type = 'datetime'">
