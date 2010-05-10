@@ -7,6 +7,6 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="common.xsl"/>
-    <xsl:import href="text_create.xsl"/>
+    <xsl:import href="javascript_create.xsl"/>
 </xsl:stylesheet>
 
