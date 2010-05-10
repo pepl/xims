@@ -18,7 +18,6 @@
 <xsl:template name="create-content">
 	<xsl:call-template name="form-locationtitle-create"/>
 	<xsl:call-template name="form-marknew-pubonsave"/>
-	<!--<xsl:call-template name="form-stylemedia"/>-->
 	<xsl:call-template name="form-keywordabstract"/>
 	<xsl:call-template name="form-obj-specific"/>
 	<xsl:call-template name="form-grant"/>

@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
-<!--<xsl:param name="view" select="container"/>-->
-
-<xsl:template name="form-stylemedia">
-<div class="block form-div">
-<h2>Style &amp; Media / Multimedia</h2>
-	<!--<xsl:call-template name="form-stylesheet"/>
-	<xsl:call-template name="form-css"/>
-	<xsl:call-template name="form-script"/>-->
-	<!--<xsl:call-template name="tr-imagedepartmentroot-create"/>-->
-	<!--<xsl:call-template name="form-image"/>
-	<xsl:call-template name="form-feed"/>-->
-</div>
-</xsl:template>
-
 <xsl:template name="form-obj-specific">
 		<div class="form-div block">
 		<h2>Objekt-spezifische Optionen</h2>
-			<!--<xsl:call-template name="autoindex"/>-->
 			<xsl:call-template name="defaultsorting"/>
 			<xsl:call-template name="image-size"/>
 			<xsl:call-template name="thumbnail-pos"/>
@@ -47,13 +32,10 @@
 		<xsl:if test="/document/context/object/attributes/imgwidth = 400"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	</input>
 	<label for="imgwidth-400">400 x 300</label><br/>
-	<!--<input type="radio" id="imgwidth-200" name="imgwidth" class="radio-button" value="200">
-		<xsl:if test="/document/context/object/attributes/imgwidth = 200"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input><label for="imgwidth-200">200 x 150</label>-->
 </div>
 </xsl:template>
 
-<!--Position of thrumbnails-->
+<!--Position of thumbnails-->
 <xsl:template name="thumbnail-pos">
 <div>
 	Position der Thumnails:<br/>
