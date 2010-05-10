@@ -9,9 +9,6 @@
 
 	<xsl:import href="view_common.xsl"/>
 	<xsl:import href="document_default.xsl"/>
-	<xsl:import href="common_jscalendar_scripts.xsl"/>
-	
-	<xsl:param name="calendar">true</xsl:param>
 	
 	<xsl:template name="view-content">
 	<div id="docbody">
