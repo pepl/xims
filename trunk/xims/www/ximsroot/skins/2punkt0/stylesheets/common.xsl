@@ -492,6 +492,7 @@
 			</div>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="form-bodyfromfile-create">
 		<div id="tr-bodyfromfile">
 			<div id="label-bodyfromfile">
@@ -525,6 +526,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
+	
 	<xsl:template name="form-body-create">
 		<xsl:param name="with_origbody" select="'no'"/>
 		<xsl:param name="mode" select="html"/>
@@ -566,21 +568,24 @@
 			<xsl:call-template name="trytobalance"/>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="testbodysxml">
 		<xsl:call-template name="wfcheckjs"/>
 		<a href="javascript:void()" onclick="return wfcheck();">
 			<img src="{$skimages}option_wfcheck.png" alt="{$i18n/l/Test_body_xml}" title="{$i18n/l/Test_body_xml}" width="32" height="19"/>
 		</a>
 	</xsl:template>
+	
 	<xsl:template name="prettyprint">
 		<xsl:param name="ppmethod" select="'htmltidy'"/>
 		<xsl:call-template name="prettyprintjs">
 			<xsl:with-param name="ppmethod" select="$ppmethod"/>
 		</xsl:call-template>
-		<a href="javascript:prettyprint('body')">
+		<a href="javascript:prettyprint('#body')">
 			<img src="{$skimages}option_prettyprint.png" alt="{$i18n/l/Prettyprint}" title="{$i18n/l/Prettyprint}" width="32" height="19"/>
 		</a>
 	</xsl:template>
+	
 	<xsl:template name="form-body-edit">
 		<xsl:param name="with_origbody" select="'no'"/>
 		<xsl:param name="mode" select="html"/>
@@ -988,6 +993,7 @@
 			</a>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="jscalendar-selector">
 		<xsl:param name="timestamp_string"/>
 		<xsl:param name="formfield_id"/>
@@ -1031,6 +1037,7 @@
         });
     </script>
 	</xsl:template>
+	
 	<xsl:template name="ui-datepicker">
 		<xsl:param name="formfield_id"/>
 		<xsl:param name="input_id"/>
@@ -1083,6 +1090,7 @@
 		<input type="hidden" name="{$formfield_id}" id="{$formfield_id}">
 		</input>
 	</xsl:template>
+	
 	<xsl:template name="form-valid_from">
 		<div id="tr-validfrom">
 			<div class="label-std">
@@ -1113,6 +1121,7 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="form-valid_to">
 		<div>
 			<div class="label-std">
@@ -1143,6 +1152,7 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_to"/></xsl:attribute>(?)</a>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="form-pagerowlimit-edit">
 		<div id="tr-pagerowlimit">
 			<div class="label-large">
@@ -1786,7 +1796,7 @@
 	<xsl:template name="testlocationjs">
 		<xsl:param name="event"/>
 		<xsl:param name="obj_type"/>
-		<script type="text/javascript" src="{$ximsroot}json/json-min.js"/>
+		<script type="text/javascript" src="{$ximsroot}scripts/json-min.js"/>
 		<script type="text/javascript" src="{$ximsroot}scripts/test_location.js"/>
 		<script type="text/javascript">
 			<!-- called for events create and edit -->
