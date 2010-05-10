@@ -6,54 +6,55 @@
 # $Id: urllink_create.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
-	<xsl:import href="common.xsl"/>
-	<xsl:template match="/document/context/object">
-		<html>
-			<xsl:call-template name="head_default">
-				<xsl:with-param name="calendar">true</xsl:with-param>
-				<xsl:with-param name="mode" select="create"/>
-			</xsl:call-template>
-			<body onload="document.eform['abstract'].value=''; document.eform.name.focus();">
-				<xsl:call-template name="header">
-					<xsl:with-param name="create">true</xsl:with-param>				
-				</xsl:call-template>
-				<div class="edit">
-					<div id="tab-container" class="ui-corner-top">
-						<xsl:call-template name="table-create"/>
-					</div>
-					<div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-						<form action="{$xims_box}{$goxims_content}{$absolute_path}?objtype={$objtype}" name="eform" method="post" id="create-edit-form">
-							<input type="hidden" name="objtype" value="{$objtype}"/>
-							<xsl:call-template name="tr-location-create">
-								<xsl:with-param name="testlocation" select="false()"/>
-							</xsl:call-template>
-							<xsl:call-template name="tr-title-create"/>
-							<xsl:call-template name="tr-keywords-create"/>
-							<xsl:call-template name="tr-abstract-create"/>
-							<xsl:call-template name="tr-valid_from"/>
-							<xsl:call-template name="tr-valid_to"/>
-							<xsl:call-template name="markednew"/>
-							<xsl:call-template name="grantowneronly"/>
-							
-							<xsl:call-template name="saveaction"/>
-						</form>
-					</div>
-					<div class="cancel-save">
-						<xsl:call-template name="cancelcreateform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-				</div>
-				<xsl:call-template name="script_bottom"/>
-			</body>
-		</html>
+
+	<xsl:import href="create_common.xsl"/>
+	
+	<!--<xsl:param name="calendar">true</xsl:param>-->
+	<xsl:param name="testlocation">false</xsl:param>
+	<xsl:param name="search-location">true</xsl:param>
+	
+		<xsl:template name="create-content">
+		<xsl:call-template name="form-locationtitle-create"/>
+
+			<xsl:call-template name="form-marknew-pubonsave"/>
+
+			<xsl:call-template name="form-metadata"/>
+			
+			<xsl:call-template name="form-grant"/>
 	</xsl:template>
-<!--	<xsl:template name="title">
-		<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
-</xsl:template>-->
-</xsl:stylesheet>
+
+	<xsl:template name="form-location-create">
+		<xsl:param name="testlocation" select="true()"/>
+		<div>
+			<div class="label-std">
+				<label for="input-location">
+					<xsl:value-of select="$i18n/l/Location"/>
+				</label>
+			</div>
+			<input type="text" name="name" size="60" class="text" id="input-location">
+				<xsl:if test="$testlocation">
+					<xsl:attribute name="onchange">return testlocation();</xsl:attribute>
+				</xsl:if>
+			</input>
+			<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('Location')" class="doclink">
+				<xsl:attribute name="title">
+					<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/>
+				</xsl:attribute>(?)</a>
+				<xsl:text>&#160;</xsl:text>
+            <a href=" javascript:genericWindow('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.name;urllink=1')" class="button" id="buttonBrTarget">
+                <xsl:value-of select="$i18n/l/browse_target"/>
+            </a>
+		</div>	
+		</xsl:template>
+		
+		<xsl:template name="form-metadata">
+  <div class="form-div block">
+		<h2>Meta Data</h2>
+		<xsl:call-template name="form-keywords"/>
+		<xsl:call-template name="form-abstract"/>
+			<xsl:call-template name="form-valid_from"/>
+			<xsl:call-template name="form-valid_to"/>
+  </div>
+  </xsl:template>
+	</xsl:stylesheet>

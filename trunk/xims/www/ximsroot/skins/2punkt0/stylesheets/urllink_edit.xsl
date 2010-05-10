@@ -9,63 +9,24 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-  <xsl:import href="common.xsl"/>
+  <xsl:import href="edit_common.xsl"/>
+  <!--<xsl:param name="calendar">true</xsl:param>-->
+  
+  	<xsl:template name="edit-content">
+			<xsl:call-template name="form-locationtitle-edit"/>
 
-  <xsl:template match="/document/context/object">
-    <html>
-      <!--<xsl:call-template name="common-head">
-        <xsl:with-param name="mode" 
-                        select="'edit'"/>
-        <xsl:with-param name="calendar" 
-                        select="true()"/>
-      </xsl:call-template>-->
-      <xsl:call-template name="head_default">
-					<xsl:with-param name="calendar">true</xsl:with-param>
-      </xsl:call-template>
-      <body>
-        <xsl:call-template name="header"/>
-        <div class="edit">
-            <div id="tab-container" class="ui-corner-top">
-						<xsl:call-template name="table-edit"/>
-					</div>
-					<div class="cancel-save">
-						<xsl:call-template name="cancelform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-          <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" id="create-edit-form">
-            
-              <xsl:call-template name="tr-location-edit_urllink"/>
-              <xsl:call-template name="tr-title-edit"/>
-              <xsl:call-template name="tr-keywords-edit"/>
-              <xsl:call-template name="tr-abstract-edit"/>
-              <xsl:call-template name="tr-valid_from"/>
-              <xsl:call-template name="tr-valid_to"/>
-              <xsl:call-template name="markednew"/>
-            
-            <xsl:call-template name="saveedit"/>
-          </form>
-        </div>
-					<div class="cancel-save">
-						<xsl:call-template name="cancelform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-				</div>
-        <xsl:call-template name="script_bottom"/>
-      </body>
-    </html>
-  </xsl:template>
+			<xsl:call-template name="form-marknew-pubonsave"/>
 
+			<xsl:call-template name="form-metadata"/>
+			
+			<!--<xsl:call-template name="form-grant"/>-->
+	</xsl:template>
 
-  <xsl:template name="tr-location-edit_urllink">
+  <xsl:template name="form-location-edit">
     <div id="tr-location">
-    <div id="label-location"><label for="input-location">
-				<span class="compulsory">
+    <div class="label-std"><label for="input-location">
           <xsl:value-of select="$i18n/l/Location"/>
-        </span>    
-    </label></div> 
+    </label>&#160;*</div> 
         <input type="text" class="text" name="name" size="60" id="input-location">
           <xsl:choose>
             <xsl:when test="string-length(symname_to_doc_id) > 0 ">
@@ -82,12 +43,19 @@
         </input>   
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
-       <!-- <xsl:call-template name="marked_mandatory"/>-->
+        <xsl:text>&#160;</xsl:text>
+            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.name;urllink=1')" class="button" id="buttonBrTarget"><xsl:value-of select="$i18n/l/browse_target"/></a>
       </div>
   </xsl:template>
-
-	<xsl:template name="title">
-		<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
-</xsl:template>
+  
+  <xsl:template name="form-metadata">
+  <div class="form-div block">
+		<h2>Meta Data</h2>
+		<xsl:call-template name="form-keywords"/>
+		<xsl:call-template name="form-abstract"/>
+			<xsl:call-template name="form-valid_from"/>
+			<xsl:call-template name="form-valid_to"/>
+  </div>
+  </xsl:template>
   
 </xsl:stylesheet>
