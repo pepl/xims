@@ -140,10 +140,6 @@ function toggleHighlight(hls){
     }
 }
 
-/**
- * @author c10209
- */
-
 /*
    function which selects 'trytobalance' input form element to a
    given value (e.g. from cookie); see 'document_edit.xsl'
