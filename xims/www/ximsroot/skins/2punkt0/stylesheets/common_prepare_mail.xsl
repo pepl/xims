@@ -5,23 +5,9 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: document_edit.xsl 1902 2008-01-25 12:17:28Z haensel $
 -->
-
-
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
                 
-  <xsl:import href="common.xsl"/>
-
-  <xsl:output method="xml"
-              encoding="utf-8"
-              media-type="text/html"
-              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-              doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-              omit-xml-declaration="yes"
-              indent="yes"/>
-
-  <!-- XXX c&p :-( -->
+  <xsl:import href="create_common.xsl"/>
 
   <xsl:variable name="objecttype">
     <xsl:value-of select="/document/context/object/object_type_id"/>
@@ -65,40 +51,14 @@
   </xsl:variable>
 
 
-  <xsl:template match="/document/context/object">
-    <html>
-      <xsl:call-template name="common-head">
-        <xsl:with-param name="mode" select="'prepare-mail'"/>
-      </xsl:call-template>
-      <body>
-        <div class="edit">
-          <form action="{$xims_box}{$goxims_content}?id={@id}"
-                name="eform" 
-                method="post">
-            <div style="position: absolute; right: 11px;">
-              <input type="submit" name="send_as_mail" value="{$i18n/l/Send}" class="control"/>  
-              <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="control" accesskey="C"/>
-            </div>
-            <table border="0" 
-                   width="98%">
-              <xsl:call-template name="mk-tr-textfield">
-                <xsl:with-param name="title" select="'To'"/>
-              </xsl:call-template>
-              <xsl:call-template name="mk-tr-textfield">
-                <xsl:with-param name="title" select="'Reply-To'"/>
-              </xsl:call-template>
-              <xsl:call-template name="mk-tr-textfield">
-                <xsl:with-param name="title" select="'Subject'"/>
-              </xsl:call-template>
-              <xsl:call-template name="mk-tr-checkbox">
-                <xsl:with-param name="title-i18n" select="'Include_images'"/>
-                <xsl:with-param name="title" select="'mailer_include_images'"/>
-              </xsl:call-template>
-            </table>
-          </form>
-        </div>
-        <br />
-        <div style="margin: auto; text-align: center;">
+<xsl:template name="create-content">
+<div class="form-div block">
+	<xsl:call-template name="form-nl-to"/>
+	<xsl:call-template name="form-nl-replyto"/>
+<xsl:call-template name="form-nl-subject"/>
+<xsl:call-template name="form-includeimages"/>
+</div>              
+              <div style="margin: auto; text-align: center;">
           <p><xsl:value-of select="$i18n/l/Preview"/>:</p>
           <iframe name="Mail Preview" 
                   src="{$published_path}"
@@ -111,9 +71,103 @@
             <p>No iframes?</p>
           </iframe>
         </div>      
-        <xsl:call-template name="script_bottom"/>
-      </body>
-    </html>
-  </xsl:template>
+</xsl:template>
+
+<xsl:template name="title-create">
+	<xsl:value-of select="$i18n/l/Email_Send"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
+</xsl:template>
+
+	<xsl:template name="heading">
+		<!--<xsl:param name="mode"/>
+		<xsl:param name="selEditor" select="false()"/>-->
+		<div id="tab-container" class="ui-corner-top">
+			<h1>
+						<xsl:value-of select="$i18n/l/Email_Send"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>
+			</h1>
+		</div>
+	</xsl:template>
+
+<xsl:template name="cancelcreateform">
+		<div class="cancel-save">
+			<form class="cancelsave-form" action="{$xims_box}{$goxims_content}{$absolute_path}" method="post">
+			<xsl:call-template name="save_jsbutton"/>			
+			<!--<button type="submit" name="send_as_mail" value="{$i18n/l/Send}" accesskey="S">
+				<xsl:value-of select="$i18n/l/Send"/>
+			</button> -->
+				<xsl:call-template name="rbacknav"/>
+				<button type="submit" name="cancel_create" accesskey="C">
+					<span class="text">
+						<xsl:value-of select="$i18n/l/cancel"/>
+					</span>
+				</button>
+			</form>
+			&#160;<br/>
+		</div>
+	</xsl:template>
+	
+	<xsl:template name="save_jsbutton">
+		<button class="save-button-js hidden" type="submit" name="submit_eform" accesskey="S" onclick="document.eform.send_as_mail.click(); return false">
+			<span class="text">
+				<xsl:value-of select="$i18n/l/Email_Send"/>
+			</span>
+		</button>
+	</xsl:template>
+	
+	<xsl:template name="saveedit">
+		<!--<input type="hidden" name="id" value="{@id}"/>
+		<xsl:if test="/document/object_types/object_type[@id=/document/context/object/object_type_id]/redir_to_self='0'">
+			<input name="sb" type="hidden" value="date"/>
+			<input name="order" type="hidden" value="desc"/>
+		</xsl:if>
+		<input type="submit" name="store" value="{$i18n/l/save}" class="save-button" accesskey="S"/>-->
+		<button type="submit" name="send_as_mail" class="save-button" accesskey="S">
+				<xsl:value-of select="$i18n/l/Send"/>
+			</button> 
+	</xsl:template>
+
+<xsl:template name="form-nl-to">
+<div>
+	<div class="label-std"><label for="input-nl-to"><xsl:value-of select="$i18n/l/Email_To"/></label></div>
+	<input id="input-nl-to" name="to" size="60" type="text" class="text"/>
+	<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('To')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/To"/></xsl:attribute>(?)</a>
+				</div>
+</xsl:template>
+
+<xsl:template name="form-nl-replyto">
+<div>
+	<div class="label-std"><label for="input-nl-replyto"><xsl:value-of select="$i18n/l/Email_Reply-To"/></label></div>
+	<input id="input-nl-replayto" name="reply-to" size="60" type="text" class="text"/>
+	<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('Reply-To')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Reply-To"/></xsl:attribute>(?)</a>
+				</div>
+</xsl:template>
+
+<xsl:template name="form-nl-subject">
+<div>
+	<div class="label-std"><label for="input-nl-subject"><xsl:value-of select="$i18n/l/Email_Subject"/></label></div>
+	<input id="input-nl-subject" name="subject" size="60" type="text" class="text"/>
+	<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('Subject')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Subject"/></xsl:attribute>(?)</a>
+				</div>
+</xsl:template>
+
+<xsl:template name="form-includeimages">
+		<div>
+				<div class="label">
+					<label for="input-include_images"><xsl:value-of select="$i18n/l/Include_images"/></label>
+				</div>
+				<input name="mailer_include_images" type="checkbox" id="input-include_images" class="checkbox">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+				</input>
+				<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('Include_images')" class="doclink">
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Include_images"/></xsl:attribute>
+					(?)</a>
+		</div>
+	</xsl:template>
   
 </xsl:stylesheet>

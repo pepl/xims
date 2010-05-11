@@ -22,7 +22,7 @@ It is based on XIMS::CGI.
 package XIMS::CGI::Document;
 
 use strict;
-use base qw( XIMS::CGI );
+use base qw( XIMS::CGI XIMS::CGI::Mailable);
 use Text::Iconv;
 use Encode;
 use Text::Template;
@@ -52,6 +52,8 @@ sub registerEvents {
                                 'test_wellformedness',
                                 'pub_preview',
                                 'bxeconfig',
+                                'prepare_mail', 
+                                'send_as_mail',
                                 @_
                                 );
 }
