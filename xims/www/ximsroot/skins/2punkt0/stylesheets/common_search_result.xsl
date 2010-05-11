@@ -22,9 +22,6 @@
         <xsl:call-template name="head_default"/>
         <body>
             <xsl:call-template name="header">
-                <xsl:with-param name="nooptions">true</xsl:with-param>
-                <xsl:with-param name="nostatus">true</xsl:with-param>
-                <xsl:with-param name="nopath">true</xsl:with-param>
             </xsl:call-template>
 					
 					<div id="content-container">
@@ -32,19 +29,11 @@
 					<p>
 					<xsl:apply-templates select="/document/context/session/message"></xsl:apply-templates>       
 					</p>     
-<!--<table id="searchresulttable">-->
-            <table id="obj-table">
+            <table class="obj-table">
                 <xsl:call-template name="tableheader"/>
-                <!--<xsl:apply-templates select="/document/objectlist/object">
-                    <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute)" order="descending"/>
-                </xsl:apply-templates>-->
-
             </table>
 
             <xsl:if test="$totalpages">
-                <!--<table style="margin-left:5px; margin-right:10px; margin-top: 10px; margin-bottom: 10px; width: 99%; padding: 3px; border: thin solid #C1C1C1; background: #F9F9F9 font-size: small;" border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td>-->
                             <xsl:call-template name="pagenav">
                                 <xsl:with-param name="totalitems" select="/document/context/session/searchresultcount"/>
                                 <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
@@ -52,11 +41,9 @@
                                 <xsl:with-param name="url"
                                                 select="concat($xims_box,$goxims_content,$absolute_path,'?s=',$s,';search=1;start_here=',$start_here,';m=',$m)"/>
                             </xsl:call-template>
-                        <!--</td>
-                    </tr>
-                </table>-->
             </xsl:if>
             </div>
+            <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>
@@ -74,18 +61,6 @@
 								<xsl:value-of select="$i18n/l/Status"/>
 							</a>
 						</th>
-<!-- score -->
-    <!--
-    <td width="47">
-            <img src="{$skimages}score.png"
-                    width="47"
-                    height="20"
-                    border="0"
-                    alt="Score"
-                    title="Score: higher numbers represent a better match for your query"
-            />
-    </td>
-    -->
     <!-- title-icon / dataformat-->
     <th id="th-titel-icon">
 						&#160;
@@ -210,32 +185,24 @@
     <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
     </xsl:variable>
-
-    <!--<tr class="searchresultrow" height="20">-->
     	<tr class="objrow">
 <!-- status -->
 			<td class="ctt_status">
 				<xsl:call-template name="cttobject.status"/>
 			</td>
-<!-- score -->
-<!--
-        <td width="47" align="right">
-                <xsl:value-of select="score_1__s"/>
-        </td>
--->
 <!-- dataformat icon -->
 			<td class="ctt_df">
 				<xsl:call-template name="cttobject.dataformat"/>
 			</td>
 
 <!-- title, location_path, abstract -->
-			<td class="ctt_loctitle">
+			<td class="ctt_loctitle" style="white-space:normal;">
 				<xsl:call-template name="cttobject.locationtitle">
 						<xsl:with-param name="search">true</xsl:with-param>
 						<xsl:with-param name="location_path"><xsl:value-of select="location_path"/></xsl:with-param>
 				</xsl:call-template>
             <div class="location_path">
-                <xsl:value-of select="location_path"/>
+                <p><xsl:value-of select="location_path"/></p>
             </div>
             <div class="abstract">
                 <xsl:value-of select="abstract"/>

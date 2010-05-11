@@ -14,44 +14,25 @@
         <xsl:value-of select="$i18n/l/Metadata"/> <xsl:value-of select="$absolute_path"/>
     </p>
     <p>
-        <table align="center" width="98.7%" style="border: 1px solid; margin-top: 0px; padding: 0.5px">
-            <tr>
-                <td valign="top"><xsl:value-of select="$i18n/l/Title"/></td>
-                <td><xsl:apply-templates select="title"/></td>
-            </tr>
-            <tr>
-                <td valign="top"><xsl:value-of select="$i18n/l/abstract"/></td>
-                <td> <xsl:apply-templates select="abstract"/></td>
-            </tr>
-            <tr>
-                <td valign="top"><xsl:value-of select="$i18n/l/keywords"/></td>
-                <td><xsl:apply-templates select="keywords" /></td>
-            </tr>
-            <tr>
-                <td valign="top"><xsl:value-of select="$i18n/l/Dataformat"/></td>
-                <td>
-                    <xsl:value-of select="data_format/name" />-<xsl:value-of select="object_type/name" />&#160;
-                    <xsl:value-of select="data_format/mime_type" />
-                </td>
-            </tr>
-            <tr>
-                <td valign="top"><xsl:value-of select="$i18n/l/Size"/></td>
-                <td>
-                    <xsl:value-of select="format-number(lob_length , ',###,##0')"/>&#160;Bytes
-                </td>
-            </tr>
-        </table>
+                <xsl:value-of select="$i18n/l/Title"/>: <xsl:apply-templates select="title"/>
+            <br/>
+                <xsl:value-of select="$i18n/l/abstract"/>: <xsl:apply-templates select="abstract"/>
+            <br/>
+                <xsl:value-of select="$i18n/l/keywords"/>: <xsl:apply-templates select="keywords" />
+            <br/>
+                <xsl:value-of select="$i18n/l/Dataformat"/>: <xsl:value-of select="data_format/name" />-<xsl:value-of select="object_type/name" />&#160;<xsl:value-of select="data_format/mime_type" />
+            <br/>
+                <xsl:value-of select="$i18n/l/Size"/>: <xsl:value-of select="format-number(lob_length , ',###,##0')"/>&#160;Bytes
     </p>
 </xsl:template>
 
 <xsl:template name="user-metadata">
+	<div id="user-metadata">
                 <div id="user-metadata-create">
                     <xsl:value-of select="$i18n/l/Created_by"/>&#160;<xsl:call-template name="creatorfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="creation_timestamp" mode="datetime"/>
                 <br />
                     <xsl:value-of select="$i18n/l/Owned_by"/>&#160;<xsl:call-template name="ownerfullname"/>
                 </div>
-
-
                 <div id="user-metadata-publish">
                     <xsl:value-of select="$i18n/l/Last_modified_by"/>&#160;<xsl:call-template name="modifierfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="last_modification_timestamp" mode="datetime"/>                
                 <br />
@@ -59,6 +40,8 @@
                         <xsl:value-of select="$i18n/l/Last_published_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
                     </xsl:if>
                 </div>
+                <br clear="all"/>
+  </div>
 </xsl:template>
 
 <xsl:template name="document-metadata">
