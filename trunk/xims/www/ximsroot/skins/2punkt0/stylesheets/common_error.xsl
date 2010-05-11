@@ -35,10 +35,7 @@
               </xsl:if>
               <br/>
             <p>
-            <input type="button" class="ui-state-default ui-corner-all fg-button" onclick="javascript:history.go(-1)">
-            <xsl:attribute name="value"><xsl:value-of select="$i18n/l/Back"/></xsl:attribute>
-            </input>
-                <!--<a href="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/Back"/></a>-->
+            <button type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/Back"/></button>
             </p>
             </div>
             <xsl:call-template name="script_bottom"/>

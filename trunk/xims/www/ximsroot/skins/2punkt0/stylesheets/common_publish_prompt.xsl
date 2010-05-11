@@ -7,6 +7,7 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 	<!-- $Id: common_publish_prompt.xsl 2188 2009-01-03 18:24:00Z pepl $ -->
+	<xsl:import href="common.xsl"/>
 	<xsl:param name="id"/>
 	<xsl:variable name="objecttype">
 		<xsl:value-of select="/document/context/object/object_type_id"/>
@@ -48,11 +49,13 @@
 				
 				<div id="content-container" class="publish-dialog"> 
 					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get">
-						<h1 class="bluebg"><xsl:value-of select="$i18n/l/Publishing_options"/></h1><!-- für das Objekt '<xsl:value-of select="title"/>'</h1>-->
+						<h1 class="bluebg"><xsl:value-of select="$i18n/l/Publishing_options"/></h1>
 						<p>
-							<strong><xsl:value-of select="$i18n/l/Status"/>: <xsl:value-of select="$i18n/l/Object"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/isCurrently"/><xsl:if test="published!='1'"><xsl:value-of select="$i18n/l/NOT"/>
-								</xsl:if><xsl:value-of select="$i18n/l/published"/></strong><br/>
-							<xsl:if test="published='1'">unter <br/>
+							<strong><xsl:value-of select="$i18n/l/Status"/>: <xsl:value-of select="$i18n/l/Object"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/isCurrently"/>&#160;<xsl:if test="published!='1'"><xsl:value-of select="$i18n/l/NOT"/>
+								&#160;</xsl:if><xsl:value-of select="$i18n/l/published"/></strong><br/>
+							<xsl:if test="published='1'">
+								<xsl:value-of select="$i18n/l/under"/> 
+								<br/>
 								<a href="{$published_path}" target="_new">
 									<xsl:value-of select="$published_path"/>
 								</a>
@@ -61,7 +64,6 @@
 
 						<xsl:if test="message">
 							<p>
-							 <!--Warnung: Das Objekt '<xsl:value-of select="title"/>' hat folgenden Abhängigkeiten und Sie haben daher nicht die erforderlichen Rechte zum Veröffentlichen des Objekts:-->
 							 <xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/ObjectHasDependencies"/>:
               <xsl:call-template name="csv2ul">
 									<xsl:with-param name="list" select="message"/>
@@ -72,32 +74,23 @@
 
 						<xsl:if test="contains( attributes/text(), 'autoindex=1' )">
 							<p>
-								<strong><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/HasAutoindex"/></strong>
-								<xsl:value-of select="$i18n/l/Notice"/>Wenn Sie 
+								<strong><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/HasAutoindex"/></strong>.&#160;
 								<xsl:choose>
-									<xsl:when test="published='1'">'<xsl:value-of select="$i18n/l/Notice"/>Wiederveröffentlichen'</xsl:when>
-									<xsl:otherwise>'<xsl:value-of select="$i18n/l/Notice"/>Veröffentlichen'</xsl:otherwise>
-								</xsl:choose>
-								 <xsl:value-of select="$i18n/l/Notice"/>auswählen wird eine Index-Datei erstellt.
+									<xsl:when test="published='1'"><xsl:value-of select="$i18n/l/IndexIfRepublish"/></xsl:when>
+									<xsl:otherwise><xsl:value-of select="$i18n/l/IndexIfPublish"/></xsl:otherwise>
+								</xsl:choose>.
 							</p>
 						</xsl:if>
 						
 						<p>
-            Klicken Sie
-                                        <xsl:choose>
-								<xsl:when test="published='1'">
-                                                'Wiederveröffentlichen'
-                                            </xsl:when>
-								<xsl:otherwise>
-                                                'Veröffentlichen'
-                                            </xsl:otherwise>
-							</xsl:choose>
-                                        um das aktuelle Objekt zu exportieren oder
-                                        <xsl:if test="published='1'">
-                                            'Veröffentlichen rückgängig machen' um das Objekt vom Live Server zu entfernen oder
-                                        </xsl:if>
-                                        'Abbrechen' um zur vorigen Seite zu gelangen.
-</p>
+            <xsl:value-of select="$i18n/l/Click"/>&#160;
+            <xsl:choose>
+								<xsl:when test="published='1'">'<xsl:value-of select="$i18n/l/Republish"/>'</xsl:when>
+								<xsl:otherwise>'<xsl:value-of select="$i18n/l/Publish"/>'</xsl:otherwise>
+						</xsl:choose>
+            &#160;<xsl:value-of select="$i18n/l/toExpCurrObj"/>
+            <xsl:if test="published='1'">,&#160;'<xsl:value-of select="$i18n/l/Unpublish"/>'&#160;<xsl:value-of select="$i18n/l/toRemoveFromLiveServer"/></xsl:if>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;'<xsl:value-of select="$i18n/l/cancel"/>'&#160;<xsl:value-of select="$i18n/l/toReturnPrev"/>.
+					</p>
 
              <xsl:if test="/document/objectlist/object">
 							<br/>
@@ -123,47 +116,49 @@
 												</xsl:choose>
 							</xsl:if>
 						<br/>
-							<div>
-							<br/>
-                                        <label for="update_dependencies">Abhängigkeiten aktualisieren (verwandte Portlets, Auto-Indices, ...)</label> 
-                                        <input type="checkbox" name="update_dependencies" value="1" checked="checked" id="update_dependencies" class="checkbox"/>
-              </div>
-
-						<div>
-                                       <label for="verbose_result">Details des Veröffentlichungsvorgangs anzeigen</label>
-                                        <input type="checkbox" name="verbose_result" value="1" id="verbose_result" class="checkbox"/>
-						</div>
-
+			<div>
+				<br/>
+        <label for="update_dependencies"><xsl:value-of select="$i18n/l/UpdateDepend"/></label> 
+        <input type="checkbox" name="update_dependencies" value="1" checked="checked" id="update_dependencies" class="checkbox"/>
+      </div>
+<br clear="all"/>
+			<div>
+					<label for="verbose_result"><xsl:value-of select="$i18n/l/ShowDetailsOfPub"/></label>
+					<input type="checkbox" name="verbose_result" value="1" id="verbose_result" class="checkbox"/>
+			</div>
+			
+<br clear="all"/>
 						<div id="confirm-buttons">
 						<br/>
-							<input name="publish" type="submit" class="ui-state-default ui-corner-all fg-button">
+							<button name="publish" type="submit">
 								<xsl:choose>
 									<xsl:when test="published='1'">
-										<xsl:attribute name="value">Wiederveröffentlichen</xsl:attribute>
+										<xsl:value-of select="$i18n/l/Republish"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:attribute name="value">Veröffentlichen</xsl:attribute>
+										<xsl:value-of select="$i18n/l/Publish"/>
 									</xsl:otherwise>
 								</xsl:choose>
-							</input>
+							</button>
 							<input name="id" type="hidden" value="{$id}"/>
 							<!--<xsl:call-template name="rbacknav"/>-->
 							&#160;
 							<xsl:if test="published='1'">
-								<input name="unpublish" type="submit" value="Veröffentlichen rückgängig machen" class="ui-state-default ui-corner-all fg-button"/>
+								<button name="unpublish" type="submit"><xsl:value-of select="$i18n/l/Unpublish"/></button>
+								
 								&#160;
 							</xsl:if>
-							<input name="default" type="button" value="Abbrechen" onclick="javascript:history.go(-1)" class="ui-state-default ui-corner-all fg-button"/>
+							<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 						</div>
 					</form>
 				</div>
-				
+				<xsl:call-template name="script_bottom"/>
 			</body>
 		</html>
 	</xsl:template>
 	
 	<xsl:template match="/document/objectlist/object">
-		<div>
+		<p>
 				<input type="checkbox" name="objids" value="{@id}" class="checkbox" id="objid-{@id}">
 					<xsl:choose>
 						<xsl:when test="string-length(location) &lt;= 0">
@@ -187,8 +182,9 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
 					<xsl:attribute name="href"><xsl:choose><xsl:when test="not(starts-with(location_path,'/')) and not(starts-with(location_path,$goxims_content))"><xsl:value-of select="concat($goxims_content,$parent_path,'/',location_path)"/></xsl:when><xsl:when test="starts-with(location_path,'/') and not(starts-with(location_path,$goxims_content))"><xsl:value-of select="concat($goxims_content,location_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="location_path"/></xsl:otherwise></xsl:choose></xsl:attribute>
 					<xsl:value-of select="location_path"/>
 				</a>
-				<!--<div style="margin-top: 3px; margin-bottom: 8px;">-->
-				<div>
+				</label>
+				<br/>
+				<span class="indented">
 					<xsl:choose>
 						<xsl:when test="string-length(location) &lt;= 0">
 							<xsl:text>Dies ist kein XIMS Objekt oder konnte nicht aufgelöst werden.</xsl:text>
@@ -205,11 +201,9 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
 							<xsl:text>Dieses Objekt wurde seit seiner letzten Veröffentlichung um </xsl:text>
 							<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/> geändert
                 </xsl:otherwise>
-					</xsl:choose>
-				</div>
-</label>
-			
-		</div>
+					</xsl:choose>			
+					</span>
+		</p>
 	</xsl:template>
 	
 	<xsl:template name="head">
