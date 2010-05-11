@@ -60,7 +60,7 @@
 </div>              
               <div style="margin: auto; text-align: center;">
           <p><xsl:value-of select="$i18n/l/Preview"/>:</p>
-          <iframe name="Mail Preview" 
+          <iframe name="MailPreview" 
                   src="{$published_path}"
                   width="750px" 
                   height="500px" 
@@ -138,7 +138,7 @@
 <xsl:template name="form-nl-replyto">
 <div>
 	<div class="label-std"><label for="input-nl-replyto"><xsl:value-of select="$i18n/l/Email_Reply-To"/></label></div>
-	<input id="input-nl-replayto" name="reply-to" size="60" type="text" class="text"/>
+	<input id="input-nl-replyto" name="reply-to" size="60" type="text" class="text"/>
 	<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Reply-To')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Reply-To"/></xsl:attribute>(?)</a>
