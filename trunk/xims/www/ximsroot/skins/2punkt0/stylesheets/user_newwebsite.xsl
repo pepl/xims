@@ -27,80 +27,71 @@
             </xsl:call-template>
             <div id="content-container">
             <xsl:value-of select="/document/context/session/message" disable-output-escaping="yes"/>
-            
-            
-           <form name="userEdit" action="{$xims_box}{$goxims}/user" method="post" id="create-edit-form" style="margin: 10px;">
-           	<h1>
-            	<xsl:value-of select="$i18n/l/GenerateWebsite"/>!
+            <h1>
+            <xsl:value-of select="$i18n/l/GenerateWebsite"/>!
             </h1>
-           	<table cellspacing="2" cellpadding="2">
-           <tr >
-           	<td>
+            
+           <form name="userEdit" action="{$xims_box}{$goxims}/user" method="post" id="create-edit-form">
+           <div  class="form-div block">
+           <div>
+           <div class="label-std">
            <label for="input-path"><xsl:value-of select="$i18n/l/Path"/> :</label>
-           </td>
-		   <td>
-           <input id="input-path" type="text" size="40" name="path"/>
-		   </td>
-           </tr>
+           </div>
+           <input id="input-path" type="text" size="40" value="/uniweb/" name="path"/>
+           </div>
                      
-           <tr>
-           <td>
+           <div>
+           <div class="label-std">
            <label for="input-title"><xsl:value-of select="$i18n/l/Title"/> :</label>
-           </td>
-		   <td>
+           </div>
            <input id="input-title" type="text" size="40" name="title"/>
-		   </td>
-           </tr>
+           </div>
            
-           <tr>
-           <td>
+           <div>
+           <div class="label-std">
            <label for="input-shortname"><xsl:value-of select="$i18n/l/Shortname"/> :</label>
-           </td>
-		   <td>
+           </div>
            <input id="input-shortname" type="text" size="40" name="shortname"/>
-		   </td>
-           </tr>
+           </div>
            
-           <tr>
-           <td>
+           <div>
+           <div class="label-std">
            <label for="input-owner"><xsl:value-of select="$i18n/l/SiteAdmin"/> :</label>
-           </td>
-		   <td>
+           </div>
            <input id="input-owner" type="text" size="40" name="owner"/>
-		   </td>
-           </tr>
+           </div>
            
-           <tr>
-           <td>
-           <label for="input-role"><xsl:value-of select="$i18n/l/Role"/> :</label>
-           </td>
-		   <td>
+           <div>
+           <div class="label-std">
+           <label for="input-role"><xsl:value-of select="$i18n/l/Role"/>  :</label>
+           </div>
            <input id="input-role" type="text" size="40" name="role"/>
-		   </td>
-           </tr>
-          
-		   
-           <tr>
-           <td>
+           </div>
+           
+           <div>
+           <div class="label-std">
            <label for="input-grantees"><xsl:value-of select="$i18n/l/FurtherGrantees"/> :</label>
-           </td>
-		   <td>
+           </div>
            <input id="input-grantees" type="text" size="40" name="grantees"/>
-		   </td>
-           </tr>
-           
-            </table>
-           
-           
+           <br clear="all"/>
+           </div>
+
             <div>
+           <div class="label">
            <label for="input-nobm"><xsl:value-of select="$i18n/l/NoStdBookmark"/></label>
+           </div>
            <input id="input-nobm" type="checkbox" size="40" name="nobm" class="checkbox"/>
            </div>
            
+           </div>
            <br/><br/>
-                        <button name="gen_website" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
+                        <button name="gen_website" type="submit">
+														<xsl:value-of select="$i18n/l/save"/>                     
+                        </button>
 													&#160;
-                        <button name="cancel" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>           
+                        <button name="cancel" type="button" onclick="javascript:history.go(-1)">
+													<xsl:value-of select="$i18n/l/cancel"/></button>
+           
             </form>
             
             </div>

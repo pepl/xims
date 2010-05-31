@@ -7,12 +7,15 @@
 <save>Speichern</save>
 <upload>Hinaufladen</upload>
 <target>Ziel</target>
+<Target>Ziel</Target>
 <browse_target>Ziel suchen</browse_target>
 <Location>Location</Location>
 <location>location</location>
 <Title>Titel</Title>
+<Subtitle>Untertitel</Subtitle>
 <File>Datei</File>
 <Image>Bild</Image>
+<Images>Bilder</Images>
 <Lead>Lead</Lead>
 <replace>ersetzen</replace>
 <bodyfromfile_create>Body von Datei erstellen</bodyfromfile_create>
@@ -83,7 +86,7 @@
 <position_object>Objekt positionieren</position_object>
 <Position_object>Objektposition anpassen in</Position_object>
 <Choose_position>Eine neue Position auswählen für</Choose_position>
-<close_window>Fenster schliessen</close_window>
+<close_window>Fenster schließen</close_window>
 <selected>ausgewählt</selected>
 <Omit_autoindex>Verhindere Autoindex beim Veröffentlichen:</Omit_autoindex>
 <Yes>Ja</Yes>
@@ -96,10 +99,11 @@
 <Sort_title_desc>Nach Titel in absteigender Reihenfolge sortieren</Sort_title_desc>
 <Sort_lm_desc>Nach Änderungsdatum in absteigender Reihenfolge sortieren</Sort_lm_desc>
 <Position>Position</Position>
+<Pos_short>Pos</Pos_short>
 <Last_Modification_Date>Datum der letzten Änderung</Last_Modification_Date>
 <ascending>aufsteigend</ascending>
 <descending>absteigend</descending>
-<Sort_children_default>Kriterien für die standardmäßige Sortierung der Kindobjekte dieses Containers:</Sort_children_default>
+<Sort_children_default>Standardmäßige Sortierung nach </Sort_children_default>
 <Options>Optionen</Options>
 <Undelete>Löschen rückgängig machen</Undelete>
 <Priv_grant_options>Zugriffsrechte erteilen</Priv_grant_options>
@@ -107,6 +111,7 @@
 <Grant_myself_only>Nur mir selbst Rechte erteilen</Grant_myself_only>
 <Grant_default_roles>Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen</Grant_default_roles>
 <Mark_new>Objekt als neu markieren</Mark_new>
+<Pub_on_save>Beim Speichern veröffentlichen</Pub_on_save>
 <Try_to_well-balance>Versuchen, einen wohlgeformten Body herzustellen. (Bei nicht wohlgeformtem Body erscheint eine Fehlermeldung.)</Try_to_well-balance>
 <Body_content_changed>Der Inhalt von 'Body' wurde geändert.\nBitte benutzen Sie 'Speichern' oder 'Abbrechen' um diese Seite zu verlassen.</Body_content_changed>
 <Test_body_xml>XML von Body testen</Test_body_xml>
@@ -119,6 +124,9 @@
 <Add_link>Link hinzufügen</Add_link>
 <Annotation>Annotation</Annotation>
 <Add_annotation>Annotation hinzufügen</Add_annotation>
+<Process_XSP>Body standardmäßig XSP verarbeiten</Process_XSP>
+<Show_XSP_processed>Zeige XSP verarbeiteten Body</Show_XSP_processed>
+<Not_Show_XSP_processed>Body nicht XSP verarbeiteten</Not_Show_XSP_processed>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Rechte verwalten für Objekt</Manage_objectprivs>
 <Manage_privs>Rechte verwalten</Manage_privs>
@@ -128,11 +136,13 @@
 <here>hier</here>
 <lookup>Suchen</lookup>
 <to_show_existing_privs>um die bereits vergebenen Rechte anzuzeigen</to_show_existing_privs>
+<Show_existing_privs>Bereits vergebene Rechte anzeigen</Show_existing_privs>
 <Privgrant_usr_lookup_mask>Um nach Rollen/BenutzerInnen zur Rechtevergabe zu suchen, benutzen Sie die Eingabemaske</Privgrant_usr_lookup_mask>
 <Users>BenutzerInnen</Users>
 <Roles>Rollen</Roles>
 <Username>BenutzerInnenname</Username>
 <Name>Name</Name>
+<Usertype>Nutzertyp</Usertype>
 <Account_status>Account Status</Account_status>
 <No_user_found>Keine Rolle/BenutzerIn gefunden. Bitte versuchen Sie es noch einmal!</No_user_found>
 <enabled>aktiv</enabled>
@@ -177,6 +187,7 @@
 <!-- End  common_move_browse -->
 <!-- Begin anondiscussionforum* -->
 <Create_topic>Neues Thema erstellen</Create_topic>
+<New_topic>Neues Thema</New_topic>
 <Topic>Thema</Topic>
 <Created>Erstellt</Created>
 <Author>Autor&#x2009;/&#x2009;-in</Author>
@@ -204,8 +215,13 @@
 <Role>Rolle</Role>
 <!-- End users_common -->
 <!-- Begin users_default -->
-<Change_password>Change Password</Change_password>
-<Role_membership>Role Membership</Role_membership>
+<Change_password>Passwort ändern</Change_password>
+<Role_membership>Rollenmitgliedschaft</Role_membership>
+<GenerateWebsite>Neue Webseite generieren</GenerateWebsite>
+<Shortname>Kurzname</Shortname>
+<SiteAdmin>Webbeauftragter</SiteAdmin>
+<FurtherGrantees>Weitere Bevollmächtigte</FurtherGrantees>
+<NoStdBookmark>Kein Standardlesezeichen anlegen</NoStdBookmark>
 <!-- End users_default -->
 <!-- Begin users_create_update -->
 <Grant_role>Rolle zuweisen</Grant_role>
@@ -239,7 +255,7 @@
 <PageRowLimit>Anzahl der Einträge pro Seite</PageRowLimit>
 <IlpDefaultWinlabel>XIMS Hinweis!</IlpDefaultWinlabel>
 <IlpProvideLocationFirst>Sie haben noch keine 'Location' eingegeben. Bitte geben Sie diese jetzt ein!</IlpProvideLocationFirst>
-<IlpLocationWouldChange>Hinweis! Nach dem speichern würde sich die 'Location' wie folgt ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
+<IlpLocationWouldChange>Nach dem speichern würde sich die 'Location' wie folgt ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
 <IlpLocationExists>Sie haben eine 'Location' eingegeben, die im Container bereits existiert. Die 'Location' muss eindeutig sein! Bitte geben Sie eine andere 'Location' ein.</IlpLocationExists>
 <IlpNoLocationProvided>Das Feld 'Location' ist leer. Bitte geben Sie eine 'Location' ein.</IlpNoLocationProvided>
 <IlpDirtyLocation>Das Feld 'Location' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyLocation>
@@ -267,4 +283,173 @@
 <ContainerView>Container Ansicht</ContainerView>
 <Pub_on_save>Objekte beim speichern automatisch veröffentlichen</Pub_on_save>
 <!-- end user pages -->
+<Help>Hilfe</Help>
+<Systeminfo>Systeminfo</Systeminfo>
+<Manual>Anleitung</Manual>
+<stepManual>Xims: Schritt für Schritt Anleitung</stepManual>
+<FAQ>FAQ</FAQ>
+<FAQ_long>Häufig gestellte Fragen</FAQ_long>
+<MailToSupport>Email an Xims-Support</MailToSupport>
+<Document>Dokument</Document>
+<Folder>Ordner</Folder>
+<File>Datei</File>
+<Image>Bild</Image>
+<Text>Text</Text>
+<URLLink>URL-Link</URLLink>
+<AnonDiscussionForum>AnonDiscussionForum</AnonDiscussionForum>
+<AxPointPresentation>AxPointPresentation</AxPointPresentation>
+<CSS>CSS</CSS>
+<DepartmentRoot>Department Root</DepartmentRoot>
+<JavaScript>JavaScript</JavaScript>
+<NewsItem>News Item</NewsItem>
+<Portlet>Portlet</Portlet>
+<Questionaire>Questionaire</Questionaire>
+<SQLReport>SQL Report</SQLReport>
+<SymbolicLink>Symbolischer Link</SymbolicLink>
+<TAN_List>TAN List</TAN_List>
+<XML>XML</XML>
+<XSLStylesheet>XSL Stylesheet</XSLStylesheet>
+<sDocBookXML>sDocBookXML</sDocBookXML>
+<YouAreIn>Sie befinden sich in: </YouAreIn>
+<Menu>Menu</Menu>
+<Editor>Editor</Editor>
+<RSSFeed>RSS-Feed</RSSFeed>
+<UnzipContents>Inhalte entpacken</UnzipContents>
+<OverwriteUnzip>Überschreibe vorhandene Dateien beim entpacken</OverwriteUnzip>
+<Documentation>Dokumentation</Documentation>
+<Body>Body</Body>
+<TableOfContents>Inhaltsangabe</TableOfContents>
+<ConfDeletion1>Löschen von</ConfDeletion1>
+<ConfDeletion2>bestätigen</ConfDeletion2>
+<ID>ID</ID>
+<Done>Fertig</Done>
+<ManageContent>Inhalte verwalten</ManageContent>
+<Your>Ihre</Your>
+<The_fpl>Die</The_fpl>
+<The_m>Der</The_m>
+<The_n>Das</The_n>
+<lastObjMod>zuletzt geänderten Objekte</lastObjMod>
+<lastObjModByYou>letzten erstellten oder geänderten Objekte</lastObjModByYou>
+<Welcome>Willkommen</Welcome>
+<Settings>Einstellungen</Settings>
+<ManageBookmarks>Lesezeichen verwalten</ManageBookmarks>
+<ChangePassword>Passwort ändern</ChangePassword>
+<ManagePersonalSettings>Persönliche Einstellungen verwalten</ManagePersonalSettings>
+<UpdateEmailAdress>Emailadresse aktualisieren</UpdateEmailAdress>
+<AdmOptions>Verwaltungsoptionen</AdmOptions>
+<AsMemberAdmin>Als Mitglied der Admin-Rolle haben Sie folgende administrative Optionen:</AsMemberAdmin>
+<ManageUserRoles>Benutzer und Rollen verwalten</ManageUserRoles>
+<Notice>Hinweis</Notice>
+<NoticeDefBookmarks>BenutzerIn-Standard-Lesezeichen haben Vorrang gegenüber Rollen-Standard-Lesezeichen.</NoticeDefBookmarks>
+<BackToHome>Zurück zu Ihrer persönlichen Startseite</BackToHome>
+<ChangingPassword>Passwort ändern</ChangingPassword>
+<ChangePwdFor>Passwort ändern für Nutzer</ChangePwdFor>
+<OldPwd>Altes System-Passwort</OldPwd>
+<NewPwd>Neues System-Passwort</NewPwd>
+<ConfirmPwd>Passwort bestätigen</ConfirmPwd>
+<Objecttype>Objekttyp</Objecttype>
+<update>aktualisieren</update>
+<NoBMs>Keine Lesezeichen erstellt.</NoBMs>
+<Import>Importieren</Import>
+<DeleteConfirm>Löschen des Objekts bestätigen</DeleteConfirm>
+<AboutDeletion1>Sie sind dabei das Objekt</AboutDeletion1>
+<AboutDeletion1_User>Sie sind dabei den Account</AboutDeletion1_User>
+<AboutDeletion2>zu löschen.</AboutDeletion2>
+<WarnNoUndo>Dies ist eine endgültige Aktion und kann nicht rückgängig gemacht werden!</WarnNoUndo>
+<ClickCancelConf>Klicken Sie auf 'Bestätigen' um fortzufahren, oder 'Abbrechen' um zur vorigen Seite zu gelangen.</ClickCancelConf>
+<Confirm>Bestätigen</Confirm>
+<!-- start publish interaction -->
+<Publish>Veröffentlichen</Publish>
+<Republish>Wiederveröffentlichen</Republish>
+<Unpublish>Veröffentlichen rückgängig machen</Unpublish>
+<isCurrently>ist derzeit</isCurrently>
+<NOT>NICHT</NOT>
+<under>unter</under>
+<ObjectHasDependencies>Das Objekt hat folgenden Abhängigkeiten und Sie haben daher nicht die erforderlichen Rechte zum Veröffentlichen des Objekts</ObjectHasDependencies>
+<ObjSkipping>Diese Objekte werden während des Veröffentlichens übersprungen</ObjSkipping>
+<HasAutoindex>Die Autoindexoption ist für diesen Container gesetzt</HasAutoindex>
+<IndexIfPublish>Wenn Sie 'Veröffentlichen' auswählen wird eine Index-Datei erstellt</IndexIfPublish>
+<IndexIfRepublish>Wenn Sie 'Wiederveröffentlichen' auswählen wird eine Index-Datei erstellt</IndexIfRepublish>
+<Click>Klicken Sie</Click>
+<toExpCurrObj>um das aktuelle Objekt zu exportieren</toExpCurrObj>
+<toRemoveFromLiveServer>um das Objekt vom Live Server zu entfernen</toRemoveFromLiveServer>
+<toReturnPrev>um zur vorigen Seite zu gelangen</toReturnPrev>
+<UpdateDepend>Abhängigkeiten aktualisieren (verwandte Portlets, Auto-Indices, ...)</UpdateDepend>
+<ShowDetailsOfPub>Details des Veröffentlichungsvorgangs anzeigen</ShowDetailsOfPub>
+<!-- end publish interaction -->
+<Path_to_img>Pfad zum Bild</Path_to_img>
+<Search_objTree_img>Oder den XIMS Objektbaum nach einem Bild durchsuchen</Search_objTree_img>
+<Search_objTree_obj>Oder den XIMS Objektbaum nach einem Objekt durchsuchen</Search_objTree_obj>
+<Opt_sel_link>Link-Ziel (optional)</Opt_sel_link>
+<!-- start reflib / vlib-->
+<Assign>Zuweisen</Assign>
+<Insert>Einfügen</Insert>
+<CreateRef>Neue Referenz</CreateRef>
+<ViewCit>Zeige Referenzen</ViewCit>
+<ExpMODS>Exportiere MODS Datei</ExpMODS>
+<ImportItem>Importiere Eintrag nach</ImportItem>
+<ImportFromFile>importiere Eintrag aus Datei</ImportFromFile>
+<!--<rl_title>Titel</rl_title>
+<rl_date>Datum der Veröffentlichung</rl_date>
+<rl_conf_title>Titel der Konderenz</rl_conf_title>
+<rl_conf_sponsor>Sponsor der Konferenz</rl_conf_sponsor>
+<rl_conf_url>URL der Konferenz</rl_conf_url>
+<rl_url>URL der Quelle</rl_url>
+<rl_url2>Alternative URL der Quelle</rl_url2>
+<rl_citekey>Verweisschlüssel (Citation Key)</rl_citekey>
+<rl_access_timestamp>Letzter Zugriff (URL)</rl_access_timestamp>
+<rl_workgroup>Arbeitsgruppe</rl_workgroup>
+<rl_project>Projekt(e)</rl_project>
+<rl_quality_criterion>Qualitätskriterium</rl_quality_criterion>-->
+<rl_title>Title</rl_title>
+<rl_btitle>Book title</rl_btitle>
+<rl_date>Date of publication.</rl_date>
+<rl_chron>Chronology </rl_chron>
+<rl_ssn>Season</rl_ssn>
+<rl_quarter>Quarter</rl_quarter>
+<rl_volume>Volume designation</rl_volume>
+<rl_part>Part</rl_part>
+<rl_issue>Issue</rl_issue>
+<rl_spage>Starting page number</rl_spage>
+<rl_epage>Ending page number</rl_epage>
+<rl_pages>Pages</rl_pages>
+<rl_artnum>Article number</rl_artnum>
+<rl_isbn>ISBN</rl_isbn>
+<rl_coden>CODEN</rl_coden>
+<rl_sici>SICI</rl_sici>
+<rl_place>Place of publication</rl_place>
+<rl_pub>Publisher name</rl_pub>
+<rl_edition>Statement of the edition</rl_edition>
+<rl_tpages>Total pages</rl_tpages>
+<rl_series>Title of a series</rl_series>
+<rl_issn>ISSN</rl_issn>
+<rl_bici>BICI</rl_bici>
+<rl_co>Country of publication</rl_co>
+<rl_inst>Institution that issued the disseration</rl_inst>
+<rl_advisor>Disseration advisor</rl_advisor>
+<rl_degree>Degree conferred</rl_degree>
+<rl_identifier>Identifier</rl_identifier>
+<rl_status>Status</rl_status>
+<rl_conf_venu>Conference venue</rl_conf_venu>
+<rl_conf_date>Date of the conference</rl_conf_date>
+<rl_conf_title>Title of the conference</rl_conf_title>
+<rl_conf_sponsor>Conference sponsor</rl_conf_sponsor>
+<rl_conf_url>URL of the conference webpage</rl_conf_url>
+<rl_url>URL of the resource</rl_url>
+<rl_access_timestamp>Last access time (URL)</rl_access_timestamp>
+<rl_citekey>Citation Key</rl_citekey>
+<rl_url2>Alternative URL of the resource</rl_url2>
+<rl_citekey>Citation Key</rl_citekey>
+<rl_workgroup>Workgroup</rl_workgroup>
+<rl_project>Project(s)</rl_project>
+<rl_quality_criterion>Quality criterion</rl_quality_criterion>
+<!-- end reflib / vlib-->
+<!-- userpages -->
+<SelectSkin>Skin auswählen</SelectSkin>
+<!--  end userpages -->
+<Email_To>An</Email_To>
+<Email_Reply-To>Antworten an</Email_Reply-To>
+<Email_Subject>Betreff</Email_Subject>
+<Email_Send>Versende</Email_Send>
+<Container_View>Container Ansicht</Container_View>
 </l>
