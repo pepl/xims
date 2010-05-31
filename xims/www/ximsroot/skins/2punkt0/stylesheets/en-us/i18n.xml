@@ -218,6 +218,10 @@
 <Change_password>Change password</Change_password>
 <Role_membership>Role membership</Role_membership>
 <GenerateWebsite>Generate new website</GenerateWebsite>
+<Shortname>Shortname</Shortname>
+<SiteAdmin>Site administrator</SiteAdmin>
+<FurtherGrantees>Further grantees</FurtherGrantees>
+<NoStdBookmark>Do not create default bookmark</NoStdBookmark>
 <!-- End users_default -->
 <!-- Begin user_bookmarks -->
 <Path>Path</Path>

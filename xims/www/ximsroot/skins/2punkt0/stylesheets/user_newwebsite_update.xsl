@@ -28,7 +28,7 @@
         <xsl:value-of select="/document/context/session/message" disable-output-escaping="yes"/>
 <br/><br/>
                         <button name="exit" type="submit">
-							<xsl:value-of select="$i18n/l/Done"/>                     
+														<xsl:value-of select="$i18n/l/Done"/>                     
                         </button>
         </form>
         </div>

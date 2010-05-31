@@ -218,6 +218,10 @@
 <Change_password>Passwort ändern</Change_password>
 <Role_membership>Rollenmitgliedschaft</Role_membership>
 <GenerateWebsite>Neue Webseite generieren</GenerateWebsite>
+<Shortname>Kurzname</Shortname>
+<SiteAdmin>Webbeauftragter</SiteAdmin>
+<FurtherGrantees>Weitere Bevollmächtigte</FurtherGrantees>
+<NoStdBookmark>Kein Standardlesezeichen anlegen</NoStdBookmark>
 <!-- End users_default -->
 <!-- Begin users_create_update -->
 <Grant_role>Rolle zuweisen</Grant_role>
