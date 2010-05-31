@@ -369,22 +369,30 @@ Bereich.\footnote{Nachdem die Veröffentlichung rückgängig gemacht
 \section{Startseite und allgemeiner Aufbau}
 \label{startseite}
 
-Nach erfolgreicher Anmeldung gelangt man zur benutzerspezifischen Startseite des
-\otherterm{XIMS} Content-Management-Systems.
+Nach erfolgreicher Anmeldung gelangt man zur persönlichen Startseite
+im \otherterm{XIMS} Content-Management-System.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=1.00\textwidth]{./images/ximsstartseite.png}
+  \includegraphics[width=0.90\textwidth]{./images/ximsstartseite.png}
   \caption{Benutzerspezifische \otherterm{XIMS} Startseite}
   \label{fig:ximsstartseite2}
 \end{figure}
 
-Für jeden Benutzer sind so genannte \otherterm{Lesezeichen} (Bookmarks) konfiguriert. Die
-Lesezeichen sind in Abhängigkeit zur Rollenzugehörigkeit gesetzt und können über
-»Einstellungen« $\rightarrow$ »Lesezeichen verwalten« verändert werden. Auf diese Weise
-können Sie auch das \otherterm{Standardlesezeichen} (default Bookmark) ändern. UIBK-Mitarbeiter
-haben zumindest ein Standardlesezeichen zum \otherterm{XIMS}-Testordner
-gesetzt.
+Für alle Benutzer/-innen sind \otherterm{Lesezeichen} (Bookmarks)
+konfiguriert.\footnote{Universitäts-Mitarbeiter/-innen bekommen
+  automatisch in eine Mitarbeiter/-innen-Rolle zugewiesen; über diese
+  sind sie berechtigt, im {XIMS}-Testordner Objekte zu erstellen und
+  erhalten ein entsprechendes Lesezeichen.} Diese Lesezeichen hängen
+entweder von Rollen ab oder können oder können über »Lesezeichen
+verwalten« gesetzt, gelöscht und verändert werden. Dort kann auch das
+\othertermdef{Standardlesezeichen} (default Bookmark) gewählt werden.
+Das \otherterm{Standardlesezeichen} bewirkt eine automatische
+Weiterleitung von der Einstiegsadresse
+\url{https://xims.uibk.ac.at/goxims/defaultbookmark} aus auf das
+gewählte Ziel.
+
+
 
 \begin{Hinweis}
   Nutzen Sie den \otherterm{XIMS}-Testordner um sich mit dem System
@@ -392,14 +400,16 @@ gesetzt.
   allgemeine Verhalten von \otherterm{XIMS} testen.
 \end{Hinweis}
 
-Über die \othertermdef{Lesezeichen} gelangen Sie am schnellsten zu den Inhalten Ihrer
-Organisationseinheit. Sollte das Lesezeichen zu Ihren Inhalten noch nicht bestehen,
-können Sie dieses über »Einstellungen« $\rightarrow$ »Lesezeichen verwalten« erstellen. Indem Sie auf eines Ihrer Lesezeichen klicken, gelangen Sie zur so genannten
-\ximsterm{Containeransicht}.
+Typischerweise bekommen Sie über die Rolle Ihrer Organisationseinheit
+automatisch ein \othertermdef{Lesezeichen} zu deren Verzeichnis. Unter »Lesezeichen
+verwalten« können Sie beliebige weitere Lesezeichen erstellen, um
+schnell und bequem auf oft benötigte Objekte zugreifen zu können.
+
+Verzeichnisse erscheinen in der \ximsterm{Containeransicht}:
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=\textwidth]{./images/containeransicht.png}
+  \includegraphics[width=0.90\textwidth]{./images/containeransicht.png}
   \caption{\otherterm{XIMS} \ximsterm{Containeransicht}}
   \label{fig:containeransicht2}
 \end{figure}
@@ -413,175 +423,195 @@ Der \otherterm{XIMS}-\ximsterm{Navigationsbereich} besteht unter anderem aus den
 \label{breadcrumb}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[scale=0.7]{./images/navigationspfad.png}
-	\caption{Navigations-/Breadcrumb-Pfad}
-	\label{fig:navigationspfad}
+  \centering
+  \includegraphics[scale=0.7]{./images/navigationspfad.png}
+  \caption{Navigations-/Breadcrumb-Pfad}
+  \label{fig:navigationspfad}
 \end{figure}
 
 
 Der \ximstermdef{Navigationspfad} zeigt den Pfad vom
-»\ximstermdef{SiteRoot}« (an der Uni Innsbruck heißt der
-\ximsterm{SiteRoot} \path{uniweb}) bis zum aktuellen Objekt an. Das Anklicken
-eines Teilpfades ermöglicht ein schnelles Wechseln in einen
-übergeordneten \ximsterm{Container}. Die Pfadfragmente (z.\,B. \path{uniweb})
-entsprechen dabei dem »\ximsterm{Location}«-Attribut des \ximsterm{Container}s.
+»\ximstermdef{SiteRoot}« (für \url{http://www.uibk.ac.at/} heißt das
+\ximsterm{SiteRoot} \path{uniweb}) bis zum aktuellen Objekt an. Das
+Anklicken eines Teilpfades ermöglicht ein schnelles Wechseln in einen
+übergeordneten \ximsterm{Container}. Die Pfadfragmente (z.\,B.
+\path{uniweb}) entsprechen dabei dem »\ximsterm{Location}«-Attribut
+des \ximsterm{Container}s.
 
 \paragraph{Navigationspfeile}
 \label{navigationspfeile}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[scale=0.7]{./images/navigationspfeile.png}
-	\caption{Navigationspfeile}
-	\label{fig:navigationspfeile}
+  \centering
+  \includegraphics[scale=0.7]{./images/navigationspfeile.png}
+  \caption{Navigationspfeile}
+  \label{fig:navigationspfeile}
 \end{figure}
 
-Die \ximstermdef{Navigationspfeil}e ermöglichen ein schnelles
-Bewegen innerhalb des Systems: einen Schritt
-zurück (back), eine Ebene höher im
-Verzeichnisbaum (one level up), oder einen Schritt
-vorwärts (forward).
+Die \ximstermdef{Navigationspfeil}e ermöglichen ein schnelles Bewegen
+innerhalb des Systems: einen Schritt zurück (back), eine Ebene höher
+im Verzeichnisbaum (one level up), oder einen Schritt vorwärts
+(forward).
 
 \paragraph{Login-Informationen}
 \label{logininfo}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[scale=0.7]{./images/logininfo.png}
-	\caption{Login-Informationen}
-	\label{fig:logininfo}
+  \centering
+  \includegraphics[scale=0.7]{./images/logininfo.png}
+  \caption{Login-Informationen}
+  \label{fig:logininfo}
 \end{figure}
 
-Die Login-Informationen beinhalten das aktuelle
-Datum, den Namen des angemeldeten Benutzers
-und die Möglichkeit sich über »logout« vom System
-abzumelden.
+Die Login-Informationen beinhalten das aktuelle Datum, den Namen des
+angemeldeten Benutzers und die Möglichkeit sich über »logout« vom
+System abzumelden.
 
 \paragraph{Element zum Erstellen von neuen Objekten}
 \label{newobject}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[scale=0.7]{./images/button-create.png}
-	\caption{Element zum Erstellen von neuen Objekten}
-	\label{fig:erstellenbutton}
+  \centering
+  \includegraphics[scale=0.7]{./images/button-create.png}
+  \caption{Element zum Erstellen von neuen Objekten}
+  \label{fig:erstellenbutton}
 \end{figure}
 
-Diese Option, die nur mit
-den entsprechenden Rechten des angemeldeten
-Benutzers sichtbar ist, wird unter Punkt \ref{erstelleneditieren} ausführlich
-beschrieben.
+Diese Option wird unter Punkt \ref{erstelleneditieren} ausführlich
+beschrieben.\footnote{Die Option ist nur sichtbar, wenn die nötigen
+  Rechte zum Erstellen (\ximsterm{Objekttypprivilegien}) vergeben
+  wurden. Falls sie fehlt, wurde Ihnen möglicherweise versehentlich
+  keine Rolle zugewiesen; wenden Sie sich bitte an
+  \href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}}
 
 \paragraph{\otherterm{Suchfunktion}}
 \label{suche}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[scale=0.7]{./images/suche.png}
-	\caption{Suchfunktion}
-	\label{fig:suchfunktion}
+  \centering
+  \includegraphics[scale=0.7]{./images/suche.png}
+  \caption{Suchfunktion}
+  \label{fig:suchfunktion}
 \end{figure}
 
-Der Suchbegriff kann aus einem oder mehreren
-Wörtern bestehen und bis zu 55 Zeichen lang sein.
-Es gibt drei Operatoren, die eine komplexere wie
-auch effektivere Suche ermöglichen:
+Ein Suchausdruck kann aus einem oder mehreren Wörtern bestehen und bis
+zu 55 Zeichen lang sein. Begriffe können auch wie üblich mit Klammern
+und Operatoren zu komplexeren Ausdrücken zusammengefügt werden:
 
 \begin{itemize}
-	\item AND
-	\item OR
-	\item ()
+\item AND
+\item OR
+\item ()
 \end{itemize}
 
 \begin{Hinweis}
-  Um beispielsweise nach einem Objekt, welches die Begriffe »zid« und
-  »antrag«/""»dokument« beinhaltet, zu suchen, verwenden Sie folgenden
-  Suchausdruck: zid AND (antrag OR dokument)
+  Um beispielsweise nach einem Objekt, welches die Begriffe »zid«
+  sowie einen der Begriffe »antrag« oder »dokument« beinhaltet zu
+  finden, können Sie folgenden Suchausdruck verwenden: \texttt{zid AND
+    (antrag OR dokument)}
 \end{Hinweis}
 
+Folgende Ausdrücke dürfen nur alleine stehen:
+
 \begin{description}
-	\item[M:<Tage>] Finde Objekte, die in den letzen <Tagen>
-verändert wurden. <Tage> muss nicht unbedingt
-angeben werden, der Vorgabewert ist 1.
-	\item[N:<Tage>] Finde Objekte, die in den letzen <Tagen>
-erstellt wurden. <Tage> muss nicht unbedingt
-angeben werden, der Vorgabewert ist 1.
-	\item[m:<Tage>, n:<Tage>] Wie oben, aber schränke die
-Suche zusätzlich auf Objekte ein, die als neu
-markiert wurden.
+\item[M:<Tage>] Finde Objekte, die in den letzen <Tagen> verändert
+  wurden. <Tage> muss nicht unbedingt angeben werden, der Vorgabewert
+  ist 1.
+\item[N:<Tage>] Finde Objekte, die in den letzen <Tagen> erstellt
+  wurden. <Tage> muss nicht unbedingt angeben werden, der Vorgabewert
+  ist 1.
+\item[m:<Tage>, n:<Tage>] Wie oben, aber schränke die Suche zusätzlich
+  auf Objekte ein, die als neu markiert wurden.
 \end{description}
+
+Die Option »Ab hier« schränkt die Suche auf Objekte ein, die sich in
+der Verzeichnishierarchie unterhalb des aktuellen Objektes befinden.
 
 \subsection{Ansicht von Containerinhalten}
 \label{containeransicht}
 
-Die Ansicht über den Containerinhalt bietet einen Überblick der im jeweiligen
-\ximstermdef{Container} enthaltenen Objekte. Die Objekte (Dateien, Ordner, HTML-Seiten, etc.)
-werden tabellarisch aufgelistet und können nach einem beliebigen Kriterium sortiert
-werden (i.d.R. aufsteigend nach der Positionsnummer).
+Die Ansicht über den Containerinhalt bietet einen Überblick der im
+jeweiligen \ximstermdef{Container} enthaltenen Objekte. Die Objekte
+(Dateien, Ordner, HTML-Seiten, etc.) werden tabellarisch aufgelistet
+und können nach verschiedenen Kriterien auf und absteigend sortiert
+werden, indem auf die Überschrift der jeweiligen Spalte (»Pos«,
+»Title« oder »Last Modified«) geklickt wird. (Standarddarstellung ist
+aufsteigend nach der Positionsnummer).
 
 Die Tabelle mit den Objekten setzt sich aus folgenden Spalten zusammen:
 
 \begin{itemize}
-	\item Status
-	\item Position (Pos)
-	\item Titel (Title)
-	\item Zuletzt geändert (Last Modified)
-	\item Größe des Objekts (Size)
-	\item Optionen zum Verwalten der Objekte (Options)
+\item Status
+\item Position (Pos)
+\item Titel (Title)
+\item Zuletzt geändert (Last Modified)
+\item Größe des Objekts (Size)
+\item Optionen zum Verwalten der Objekte (Options)
 \end{itemize}
 
-Jedes Objekt entspricht einer Zeile in der Tabelle. Zudem ist eine auf- bzw.
-absteigende Sortierung möglich, indem auf »Pos«, »Title« oder »Last Modified«
-geklickt wird.
+Jedem Objekt entspricht eine Zeile in der Tabelle, sind viele Objekte
+in Container vorhanden, wird die Ansicht paginiert und eine
+entsprechende Navigation erscheint im Seitenfuß.
 
 \subsection{Icons in \otherterm{XIMS}}
 \label{icons}
 
 \paragraph{Status}
 
-Der \ximstermdef{Objektstatus} gibt Auskunft über den derzeitigen Zustand des Objekts. In der aktuellen
-Version kennt \otherterm{XIMS} vier verschiedene \ximsterm{Objektstatus}.
+Der \ximstermdef{Objektstatus} gibt Auskunft über den derzeitigen
+Zustand des Objekts. In der aktuellen Version kennt \otherterm{XIMS}
+vier verschiedene \ximsterm{Objektstatus}.
 
 \begin{table}[!ht]
+%\begin{minipage}{\textwidth}
 \centering
 
 \begin{tabular}{|c|p{30em}|}
   \hline
-  \includegraphics[scale=0.7]{./images/icon-new.png} & \label{new}Das Objekt ist als neu markiert. \\
+  \includegraphics[scale=0.7]{./images/icon-new.png} & 
+  \label{new}Das Objekt ist als neu markiert. \\
   \hline
-  \includegraphics[scale=0.7]{./images/icon-published.png} & Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man
+  \includegraphics[scale=0.7]{./images/icon-published.png} & 
+  Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man
   zur veröffentlichten Ansicht des Objekts. \\
   \hline
-  \includegraphics[scale=0.7]{./images/icon-modified.png} & Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten
+  \includegraphics[scale=0.7]{./images/icon-modified.png} & 
+  Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten
   Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
   man zur aktuell veröffentlichten Ansicht des Objekts. \\
   \hline
-  \includegraphics[scale=0.7]{./images/icon-locked.png} & Das Objekt ist gesperrt. Eine Sperrung kann sich durch Editieren
-  desselben Objekts durch einen anderen \otherterm{XIMS}-Benutzer ergeben, oder weil
-  man bewusst vermeiden will, dass das Objekt von anderen Benutzern
-  bearbeitet werden kann. Durch Klicken auf das Schloss kann die
-  Sperrung aufgehoben werden. Erläuterungen dazu siehe Punkt \ref{gesperrteobjekte} \\
+  \includegraphics[scale=0.7]{./images/icon-locked.png} & 
+  Das Objekt ist gesperrt, üblicherweise, weil jemand anderer das Objekt gerade
+  bearbeitet.\footnotemark \\
   \hline
 \end{tabular}
+%\end{minipage}
 \caption{Status-Icons}
 \end{table}
+\footnotetext{Eigene Sperren (entstanden z.B. dadurch dass
+    ein Editiervorgang nicht durch Speichern oder Abbrechen
+    beendet wurde) können durch Klicken auf das Schloss, »fremde«
+    Sperren \emph{nur} dur das Kommando \texttt{!U:<Id> oder !U:<Pfad>} im Suchfeld, aufgehoben
+    werden.  Weitere Erläuterungen dazu siehe Punkt \ref{gesperrteobjekte}}
 \paragraph{Position}
 
-Die Spalte »Pos« (Position) stellt einen Positionierungs- bzw. Gewichtungsmechanismus
-zur Verfügung, der auf individuelle Bedürfnisse selbst angepasst
-werden kann.
-Über die Spalte »Pos« können Objekte in der Inhaltsansicht eines \ximsterm{Container}s nach
-vorne gereiht werden. Die Möglichkeit spezielle Positionen zu vergeben spielt bei
-den \ximsterm{DepartmentLinks} (siehe auch Punkt \ref{deplinks}) und im Zusammenhang mit dem
-\ximsterm{Autoindex} (siehe auch Punkt \ref{autoindex}) eine wichtige Rolle.
+Die Spalte »Pos« (Position) stellt einen Positionierungs- bzw.
+Gewichtungsmechanismus zur Verfügung, der auf individuelle Bedürfnisse
+selbst angepasst werden kann. Über die Spalte »Pos« können Objekte in
+der Inhaltsansicht eines \ximsterm{Container}s nach vorne gereiht
+werden. Die Möglichkeit spezielle Positionen zu vergeben spielt bei
+den \ximsterm{DepartmentLinks} (siehe auch Punkt \ref{deplinks}) und
+im Zusammenhang mit dem \ximsterm{Autoindex} (siehe auch Punkt
+\ref{autoindex}) eine wichtige Rolle.
 
 \paragraph{Titel (Title)}
 
-Der Titel des Objekts soll eine für sich sprechende Bezeichnung des Objekts sein.
-Das Icon vor dem Titel des Objekts lässt auf dessen Dateityp (PDF-Dokument, MS-Word-Dokument, etc.) schließen.
-In diesem Zusammenhang wird auf Punkt \ref{location} verwiesen, der die wesentlichen
-Unterschiede zwischen Titel und \ximsterm{Location} aufzeigt.
+Der Titel des Objekts soll eine für sich sprechende Bezeichnung des
+Objekts sein. Das Icon vor dem Titel des Objekts lässt auf dessen
+Dateityp (PDF-Dokument, MS-Word-Dokument, etc.) schließen. In diesem
+Zusammenhang wird auf Punkt \ref{location} verwiesen, der die
+wesentlichen Unterschiede zwischen Titel und \ximsterm{Location}
+aufzeigt.
 
 \paragraph{Zuletzt geändert (Last modified)}
 
@@ -590,44 +620,44 @@ Die Spalte »Zuletzt geändert« gibt über das Datum und die Uhrzeit der letzten
 
 \paragraph{Größe (Size)}
 
-Diese Spalte gibt die Größe in Kilobyte bei »Nicht-Container-Objekten« an.
+Diese Spalte gibt die Größe in Kilobyte an.\footnote{Bei Containern
+  wird keine Größe angezeigt.}
 
 \paragraph{Options (Optionen)}
 
-Sofern der angemeldete Benutzer über die entsprechenden \otherterm{Berechtigung}en verfügt,
-werden verschiedene Optionen angeboten, um das Verwalten der entsprechenden
-Objekte zu ermöglichen.
+Abhängig von den \otherterm{Berechtigung}en auf das jeweilige Objekt
+werden verschiedene Optionen zur Verwaltung angeboten:
 
 \begin{table}[!ht]
-\centering
-\begin{tabular}{|c|p{30em}|}
-  \hline
-  \includegraphics[scale=0.7]{./images/icon-edit.png} & Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
-  gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
-  verändern.
-  Siehe dazu Punkt \ref{erstelleneditieren}: »Erstellen/Editieren«. \\
-  \hline
-  \includegraphics[scale=0.7]{./images/icon-move.png} & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
-  in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
-  leichtes Verschieben des Objekts in einen anderen \ximsterm{Container}
-  ermöglicht. \\
-  \hline
-  \includegraphics[scale=0.7]{./images/icon-publish.png} & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
-  Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
-  veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
-  rückgängig gemacht werden. (Siehe dazu Punkt \ref{inhaltepublizieren}). \\
-  \hline
-  \includegraphics[scale=0.7]{./images/icon-acl.png} & Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
-  gelangt man in eine Maske, die zum einen Auskunft über die
-  derzeitigen Zugriffsrechte für das Objekt gibt und zum anderen ein
-  Editieren der Zugriffsrechte ermöglicht. \\
-  \hline
-  \includegraphics[scale=0.7]{./images/icon-del.png} & Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
-  (Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
-  (Siehe auch Punkt \ref{delete}). \\
-  \hline
-\end{tabular}
-\caption{Options-Icons}
+  \centering
+  \begin{tabular}{|c|p{30em}|}
+    \hline
+    \includegraphics[scale=0.7]{./images/icon-edit.png} & Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
+    gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
+    verändern.
+    Siehe dazu Punkt \ref{erstelleneditieren}: »Erstellen/Editieren«. \\
+    \hline
+    \includegraphics[scale=0.7]{./images/icon-move.png} & Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
+    in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
+    leichtes Verschieben des Objekts in einen anderen \ximsterm{Container}
+    ermöglicht. \\
+    \hline
+    \includegraphics[scale=0.7]{./images/icon-publish.png} & Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
+    Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
+    veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
+    rückgängig gemacht werden. (Siehe dazu Punkt \ref{inhaltepublizieren}). \\
+    \hline
+    \includegraphics[scale=0.7]{./images/icon-acl.png} & Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
+    gelangt man in eine Maske, die zum einen Auskunft über die
+    derzeitigen Zugriffsrechte für das Objekt gibt und zum anderen ein
+    Editieren der Zugriffsrechte ermöglicht. \\
+    \hline
+    \includegraphics[scale=0.7]{./images/icon-del.png} & Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
+    (Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
+    (Siehe auch Punkt \ref{delete}). \\
+    \hline
+  \end{tabular}
+  \caption{Options-Icons}
 \end{table}
 
 \section{Objekte manipulieren}
