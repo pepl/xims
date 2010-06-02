@@ -1,3 +1,7 @@
+1.4
+  - New object type "Gallery" added: A folder-like object which can only contain 
+    images. When published a Image Gallery is is created by Javascript (based on 
+    Galleria an jQuery)
 1.2
   - New Apache::AxKit::Provider::XIMSGoPublic module that can be used to proxy and
     cache XIMS objects that are published via gopublic. Using the gopublic-cache- 

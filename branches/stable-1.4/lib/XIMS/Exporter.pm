@@ -2145,6 +2145,332 @@ use vars qw( @ISA );
 
 1;
 
+=head1 XIMS::Exporter::Gallery
+
+lowlevel class for folder objs.
+
+=cut
+
+package XIMS::Exporter::Gallery;
+
+use vars qw( @ISA );
+@ISA = qw( XIMS::Exporter::XMLChunk );
+use File::Path;
+use strict;
+
+use XIMS::SAX::Filter::ContentIDPathResolver;
+use XIMS::SAX::Filter::Attributes;
+
+sub set_sax_filters {
+    XIMS::Debug( 5, "called" );
+    my $self  = shift;
+    my @filter = ();
+
+    push @filter, XIMS::SAX::Filter::ContentIDPathResolver->new( Provider => $self->{Provider},
+                                                                 ResolveContent => [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID FEED_ID) ],
+                                                               );
+
+    push @filter, XIMS::SAX::Filter::Attributes->new();
+    XIMS::Debug( 5, "done" );
+    return @filter;
+}
+
+=head2 create()
+
+=head3 Parameter
+
+    $param->{-path}   : (mandatory)
+    $param->{-folder} : (mandatory)
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+$self->create( $param );
+
+=cut
+
+sub create {
+    XIMS::Debug( 5, "called" );
+    my ( $self, %param ) = @_;
+
+    my $retval;
+
+    my $new_path = $self->{Exportfile} || $self->{Basedir} . "/" . $self->{Object}->location();
+
+    if ( -d $new_path ) {
+        XIMS::Debug( 4, "Directory '$new_path' exists, no need to create." );
+    }
+    else {
+        # create new folder.
+        XIMS::Debug( 4, "Creating directory '$new_path'" );
+
+        eval {
+            mkdir( $new_path, 0755 ) ||  die $!;
+        };
+
+        if ( $@ ) {
+            my $err = $@;
+            XIMS::Debug( 3, "Error creating directory '$new_path': $err" );
+            return;
+        }
+    }
+
+    if ( not exists $param{mkdironly} ) {
+        #
+        # generate metadata
+        #
+
+        # delete children cache so that autoindex and container.xml will be
+        # up-to-date
+        delete $self->{Provider}->{ocache}->{kids};
+
+        # first, the object DOM
+        my $raw_dom = $self->generate_dom();
+
+        unless ( $raw_dom ) {
+            XIMS::Debug( 2, "metadata cannot be generated" );
+            return;
+        }
+
+        # then, transform it...
+
+        my $transd_dom = $self->transform_dom( $raw_dom );
+
+        unless ( $transd_dom ) {
+            XIMS::Debug( 2, "transformation failed" );
+            return;
+        }
+
+        # build the path
+
+        my $meta_path = $new_path . '/' . $self->{Object}->location() . '.container.xml';
+        XIMS::Debug( 4, "metadata file is $meta_path" );
+
+        # write the file...
+        my $meta_fh = IO::File->new( $meta_path, 'w' );
+
+        if ( defined $meta_fh ) {
+            binmode( $meta_fh, ':utf8' );
+            print $meta_fh $transd_dom->toString();
+            $meta_fh->close;
+            XIMS::Debug( 4, "metadata-dom written" );
+        }
+        else {
+            XIMS::Debug( 2, "Error writing file '$meta_path': $!" );
+            return;
+        }
+        ########## gallery index exp ########
+        # first, the object DOM
+        my $raw_dom2 = $self->generate_dom_gallery();
+
+        unless ( $raw_dom2 ) {
+            XIMS::Debug( 2, "metadata cannot be generated" );
+            return;
+        }
+        my $transd_dom2 = $self->transform_dom_gallery( $raw_dom2 );
+        
+        unless ( $transd_dom2 ) {
+            XIMS::Debug( 2, "transformation failed" );
+            return;
+        }
+        
+        my $meta_path2 = $new_path . '/galleryindex.html';
+        XIMS::Debug( 4, "index file is $meta_path2" );
+        # write the file...
+        my $meta_fh2 = IO::File->new( $meta_path2, 'w' );
+
+        if ( defined $meta_fh2 ) {
+            binmode( $meta_fh2, ':utf8' );
+            print $meta_fh2 $transd_dom2->toString();
+            $meta_fh2->close;
+            XIMS::Debug( 4, "metadata-dom written" );
+        }
+        else {
+            XIMS::Debug( 2, "Error writing file '$meta_path2': $!" );
+            return;
+        }
+        ###
+    }
+
+    # mark the folder as published
+    XIMS::Debug( 4, "toggling publish state of the object" );
+    $self->toggle_publish_state( '1' );
+
+
+    return 1;
+}
+
+=head2    remove()
+
+=head3 Parameter
+
+
+=head3 Returns
+
+    $retval : undef on error
+
+=head3 Description
+
+$self->remove();
+
+=cut
+
+sub remove {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $param ) = @_;
+
+    my $kill_path = $self->{Basedir} . "/" . $self->{Object}->location();
+
+    if ( defined $self->{Children} and scalar @{$self->{Children}} ) {
+        my $helper = XIMS::Exporter::Helper->new();
+        foreach my $kind ( @{$self->{Children}} ) {
+            my $reaper = $helper->exporterclass(
+                         Provider   => $self->{Provider},
+                         Basedir    => $self->{Basedir} . '/' . $self->{Object}->location,
+                         User       => $self->{User},
+                         Object     => $kind
+                        );
+            return unless ($reaper and $reaper->remove());
+        }
+    }
+
+    # kill the meta file
+    unlink $kill_path . '/' . $self->{Object}->location . ".container.xml";
+
+    # kill the autoindex if exists
+    if ( -f $kill_path . '/' . XIMS::AUTOINDEXFILENAME() ) {
+        unlink $kill_path . '/' . XIMS::AUTOINDEXFILENAME();
+    }
+
+    # and now, remove AxKit's stylecache dir...
+    if ( -d $kill_path . '/.xmlstyle_cache' ) {
+        eval {
+            File::Path::rmtree( $kill_path . '/.xmlstyle_cache' ) || die $!;
+        };
+        if ( $@ ) {
+            my $err = $@;
+            XIMS::Debug( 2, "Error deleting cach dir: $err" );
+        }
+    }
+
+    # finally, drop the dir.
+    rmdir( $kill_path ) || do { XIMS::Debug( 2, "can't remove directory '$kill_path' " . $! ); return; };
+
+
+    # mark the folder as not published.
+    XIMS::Debug( 4, "marking folder as unpublished again :)" );
+    $self->toggle_publish_state( '0' );
+
+    return 1;
+}
+
+
+=head2    transform_dom()
+
+=head3 Parameter
+
+    $dom: the DOM to be transformed.
+
+=head3 Returns
+
+    $retval : the transformed DOM, undef on error
+
+=head3 Description
+
+$self->transform_dom( $dom );
+
+This is a helper function that transforms a DOM into another one
+by using XSLT.
+
+=cut
+
+sub transform_dom_gallery {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $dom ) = @_;
+
+    my $stylesheet = $self->{Stylesheet};
+    if ( defined $stylesheet and -f $stylesheet and -r $stylesheet ) {
+        my $xsl_dom;
+        my $style;
+        my $parser = XML::LibXML->new();
+        my $xslt   = XML::LibXSLT->new();
+
+        XIMS::Debug( 4, "filename is $stylesheet" );
+        eval {
+            $xsl_dom  = $parser->parse_file( $stylesheet );
+        };
+        if ( $@ ) {
+            XIMS::Debug( 3, "Could not parse stylesheet file: ". $@ );
+            return;
+        }
+
+        eval {
+            $style = $xslt->parse_stylesheet( $xsl_dom );
+            # $style = $xslt->parse_stylesheet_file( $file );
+        };
+        if( $@ ) {
+            XIMS::Debug( 2, "Error in Stylesheet: ". $@ );
+            return;
+        }
+
+        my $transformed_dom;
+        eval {
+            $transformed_dom = $style->transform( $dom );
+        };
+        if( $@ ) {
+            XIMS::Debug( 3, "Broken Transformation: ". $@ );
+            return;
+        }
+        XIMS::Debug( 4, "Transformation done" );
+        return $transformed_dom;
+    }
+    else {
+        #
+        # in case no stylesheet file has given the function simply
+        # returns the untransformed DOM
+        #
+        XIMS::Debug( 4, "dom has not been transformed" );
+        return $dom;
+    }
+    return;
+}
+
+sub generate_dom_gallery {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    # temporarily set department id to document for object roots to trick the
+    # auto index to point to the correct ou.xml
+    my $department_id = $self->{Object}->department_id();
+    if ( $self->{Object}->object_type->is_objectroot() ) {
+        $self->{Object}->department_id( $self->{Object}->document_id() ) ;
+    }
+
+    my $dom = $self->SUPER::generate_dom( @_ );
+
+    # set back
+    $self->{Object}->department_id( $department_id ) ;
+
+    return unless $dom;
+
+    # after a second thought, i guess it would be better to convert the DOM
+    # with an exporter stylesheet instead of letting a stylesheet called from
+    # AxKit do the work. why? because of having ONE common schema for dumb
+    # end-userstylesheet-designers making things easier for them.
+    # exporter_document_autoindex.xsl should create a file quite similar to
+    # the result of exporter_document.xsl
+
+    $self->{Stylesheet} = XIMS::XIMSROOT() . '/stylesheets/exporter/export_galleryindex.xsl'; # . XIMS::AUTOINDEXEXPORTSTYLESHEET();
+    warn "\n gallery locationpath : ".$self->{Object}->location_path();
+    $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/.galleryindex.html'; # . XIMS::AUTOINDEXFILENAME();
+
+    return $dom;
+}
+
+1;
 __END__
 
 =head1 DIAGNOSTICS

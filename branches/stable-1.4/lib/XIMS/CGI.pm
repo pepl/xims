@@ -2157,7 +2157,7 @@ sub event_move_browse {
 
         $ctxt->properties->content->getchildren->level(1);
         $ctxt->properties->content->getchildren->objecttypes(
-            [qw(Folder DepartmentRoot)] );
+            [qw(Folder DepartmentRoot Gallery)] );
         $ctxt->properties->content->getchildren->objectid($to);
         $ctxt->properties->application->style("move_browse");
     }
@@ -2356,6 +2356,8 @@ sub event_copy {
 sub event_publish_prompt {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+    
+    $self->expand_attributes($ctxt);
 
     my $current_user_object_priv
         = $ctxt->session->user->object_privmask( $ctxt->object );
@@ -2447,6 +2449,8 @@ sub event_publish_prompt {
 sub event_publish {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+    
+    $self->expand_attributes($ctxt);
 
     my $current_user_object_priv
         = $ctxt->session->user->object_privmask( $ctxt->object );
