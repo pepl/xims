@@ -68,7 +68,7 @@
 </xsl:template>
 
 <xsl:template match="targetparents/object|target/object">
-  / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield}"><xsl:value-of select="location"/></a>
+  / <a class="" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield};urllink={$urllink}"><xsl:value-of select="location"/></a>
 </xsl:template>
 
     <xsl:template match="targetchildren/object">
@@ -85,7 +85,7 @@
        <!-- <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>-->
             <xsl:choose>
                 <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
-                    <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield}"><xsl:value-of select="title"/></a>
+                    <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield};urllink={$urllink}"><xsl:value-of select="title"/></a>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="title"/>

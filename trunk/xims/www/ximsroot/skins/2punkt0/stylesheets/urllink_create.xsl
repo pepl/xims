@@ -28,7 +28,7 @@
 			<div class="label-std">
 				<label for="input-location">
 					<xsl:value-of select="$i18n/l/Location"/>
-				</label>
+				</label>&#160;*
 			</div>
 			<input type="text" name="name" size="60" class="text" id="input-location">
 				<xsl:if test="$testlocation">

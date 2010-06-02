@@ -114,6 +114,22 @@
 		</xsl:for-each>/<xsl:value-of select="/document/context/object/target/object/location"/>
 	</xsl:template>
 	
+	<!-- used in urllink-contentbrowse, returns the absolute path of target
+	  only working as long as the title of the siteroot is named something like "http://www.uibk.ac.at"-->
+	<xsl:template name="targetpath_abs">
+		<xsl:for-each select="/document/context/object/targetparents/object[@document_id != 1]">
+			<xsl:choose>
+				<xsl:when test="@document_id = 2">
+					<xsl:value-of select="title"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>/</xsl:text>
+					<xsl:value-of select="location"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>/<xsl:value-of select="/document/context/object/target/object/location"/>
+	</xsl:template>
+	
 	<xsl:template name="targetpath_nosite">
 		<xsl:for-each select="/document/context/object/targetparents/object[@parent_id &gt; 1]">
 			<xsl:text>/</xsl:text>

@@ -77,6 +77,10 @@
         </input>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
+        <xsl:text>&#160;</xsl:text>
+            <a href=" javascript:genericWindow('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.name;urllink=1')" id="buttonBrTarget">
+                <xsl:value-of select="$i18n/l/browse_target"/>
+            </a>
       </td>
       <td align="right" 
           valign="top">
