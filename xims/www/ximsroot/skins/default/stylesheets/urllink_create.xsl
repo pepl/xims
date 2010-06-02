@@ -51,4 +51,42 @@
       </body>
     </html>
   </xsl:template>
+  
+  <xsl:template name="tr-location-create">
+    <xsl:param name="testlocation" select="true()"/>
+    <tr>
+      <td valign="top">
+        <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
+        <span class="compulsory"><xsl:value-of select="$i18n/l/Location"/></span>
+      </td>
+      <td>
+        <input tabindex="10" 
+               type="text" 
+               name="name" 
+               size="40" 
+               class="text"
+               onfocus="this.className='text focused'"
+               onblur="this.className='text';">
+          <xsl:if test="$testlocation">
+            <xsl:attribute name="onchange">return testlocation();</xsl:attribute>
+          </xsl:if>
+        </input>
+        <xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
+        <!-- location-testing AJAX code -->
+        <xsl:if test="$testlocation">
+          <xsl:call-template name="testlocationjs">
+            <xsl:with-param name="event" select="'create'"/>
+          </xsl:call-template>
+        </xsl:if>        
+        <xsl:text>&#160;</xsl:text>
+            <a href=" javascript:genericWindow('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.name;urllink=1')" id="buttonBrTarget">
+                <xsl:value-of select="$i18n/l/browse_target"/>
+            </a>
+      </td>
+      <td align="right" valign="top">
+        <xsl:call-template name="marked_mandatory"/>
+      </td>
+    </tr>
+  </xsl:template>
 </xsl:stylesheet>
