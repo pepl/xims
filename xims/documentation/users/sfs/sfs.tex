@@ -15,6 +15,7 @@
   setspace,
   pifont,
   bera,
+  fancyvrb,
 }
 
 \usepackage[english,ngerman]{babel}
@@ -660,213 +661,270 @@ werden verschiedene Optionen zur Verwaltung angeboten:
   \caption{Options-Icons}
 \end{table}
 
+\clearpage
+
 \section{Objekte manipulieren}
 \label{objektemanipulieren}
 
-Standardmäßig stehen zumindest die folgenden sieben \ximsterm{Objekttyp}en zur Auswahl:
+Standardmäßig stehen die folgenden sieben \ximsterm{Objekttyp}en zur
+Auswahl\footnote{Falls nicht, wurde Ihnen möglicherweise versehentlich
+  keine Rolle zugewiesen; wenden Sie sich bitte an
+  \href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}}:
 
 \begin{itemize}
-	\item Dokument (Document)
-	\item Datei (File)
-	\item Ordner (Folder)
-	\item Bild (Image)
-	\item \ximsterm{URLLink}
+\item Dokument (Document)
+\item Datei (File)
+\item Ordner (Folder)
+\item Bild (Image)
+\item \ximsterm{URLLink}
 \end{itemize}
 
-Unter Weitere:
+Im Untermenü »Weitere«:
 
 \begin{itemize}
-	\item \ximsterm{sDocBookXML}
-	\item \ximsterm{Portlet}
+\item \ximsterm{sDocBookXML}
+\item \ximsterm{Portlet}
 \end{itemize}
 
-Neben diesen sieben \ximsterm{Objekttyp}en bietet \otherterm{XIMS} je nach Benutzerrechten noch die
-Möglichkeit zum Erstellen einer Reihe weiterer Objekttypen, die unter Punkt \ref{weitereobjekte} kurz
-angeführt werden.
+XIMS kennt neben diesen sieben noch eine Reihe weiterer
+\ximsterm{Objekttyp}en, nach Bedarf werden für deren Erstellung
+nötige, spezielle Berechtigungen (\ximsterm{Objekttypprivilegien})
+vergeben. Einige dieser \ximsterm{Objekttyp}en werden unter dem Punkt
+\ref{weitereobjekte} kurz angeführt.
 
 \subsection{Erstellen/Editieren}
 \label{erstelleneditieren}
 
-Über ein Auswahlmenü kann man unterschiedliche
-\ximsterm{Objekttyp}en erstellen. Die Auswahl an Objekttypen ist abhängig von den
-\otherterm{Berechtigung}en des angemeldeten Benutzers.
+Über ein Auswahlmenü können Objekte unterschiedlicher Typen erstellt
+werden. Die Einträge im Menü werden von den beschriebenen
+Berechtigungen bestimmt.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics{./images/XI5S-erstellen-menu.png}
-	\caption{Erstellen-Menü}
-	\label{fig:erstellenmenu2}
+  \centering
+  \includegraphics[scale=0.8]{./images/XI5S-erstellen-menu.png}
+  \caption{Erstellen-Menü}
+  \label{fig:erstellenmenu2}
 \end{figure}
 
-Um ein Objekt zu editieren, klickt man auf das »Bearbeiten-Icon« wodurch sich die
-Editiermaske öffnet.
+Um ein Objekt zu editieren, klickt man auf das »Bearbeiten-Icon« und
+gelangt so in die Editiermaske.
 
 \subsubsection{Dokumente}
 \label{dokumente}
 
-Ein neues Dokument kann auf zwei Arten erstellt werden. Einerseits mit Hilfe von
-WYSIWYG-Editoren (\otherterm{TinyMCE} Editor oder \otherterm{eWebEditPro} - siehe auch Punkt \ref{wysiwig}),
-andererseits mit Hilfe des »Plain Textarea« Editors. Letzterer ermöglicht das
-direkte Bearbeiten des \otherterm{Quellcode}s eines Dokuments.
-Im Fenster für das Erstellen eines Dokuments gibt es folgende Eingabe- bzw.
-Auswahlfelder:
+Ein neues Dokument kann im Webinterface auf zwei Wegen erstellt
+werden: Entweder mit Hilfe von WYSIWYG-Editoren (\otherterm{TinyMCE}
+Editor oder \otherterm{eWebEditPro} -- siehe auch Punkt \ref{wysiwig})
+oder aber mit Hilfe des »Plain Textarea« Editors. Letzterer ermöglicht
+das direkte Bearbeiten des \otherterm{Quellcode}s eines Dokuments. 
+
+Im Fenster für das Erstellen eines Dokuments gibt es folgende Eingabe-
+bzw. Auswahlfelder:
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/tinymce-full.png}
-	\caption{Erstellen eines Dokuments mit Hilfe eines WYSIWYG-Editors}
-	\label{fig:dokumentwysiwyg}
+  \centering
+  \includegraphics[width=0.9\textwidth]{./images/tinymce-full.png}
+  \caption{Erstellen eines Dokuments mit Hilfe eines WYSIWYG-Editors}
+  \label{fig:dokumentwysiwyg}
 \end{figure}
 
 \paragraph{\ximstermdef{Location}}
 \label{location}
 
-Bei Dokumenten entspricht die \ximsterm{Location} dem Dateinamen des zu erstellenden
-Dokuments. Wird das Dokument veröffentlicht (siehe dazu Punkt \ref{publizieren}), so findet man
-den Eintrag der \ximsterm{Location} in dem \otherterm{URL} wieder. Deshalb sollte zum einen eine
-möglichst selbsterklärende und leicht zu merkende Bezeichnung der \ximsterm{Location}
-vergeben werden, zum anderen bestehen deshalb gewisse Beschränkungen für den
-Feldinhalt. So sind beispielsweise im Feld \ximsterm{Location} keine Umlaute, Sonder- oder
-Leerzeichen erlaubt.
-Die Dateiendung (\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom System beim Speichern abhängig
-vom \ximsterm{Objekttyp} und Datenformat automatisch hinzugefügt.
+Bei Dokumenten entspricht die \ximsterm{Location} dem Dateinamen des
+zu erstellenden Dokuments. Wird das Dokument veröffentlicht (siehe
+dazu Punkt \ref{publizieren}), so findet man die \ximsterm{Location}
+in der \otherterm{URL} wieder. Die \ximsterm{Location} sollte deshalb
+zum einen möglichst prägnant, selbsterklärend und leicht zu merken
+sein,\footnote{Auch Suchmaschinen messen der URL als auch dem Titel
+  eine besonders große Bedeutung zu.} zum anderen bestehen aus dem
+selben Grund auch Beschränkungen für den Feldinhalt: So sind hier
+beispielsweise keine Umlaute, Sonder- oder Leerzeichen erlaubt. Die
+Dateiendung (\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom
+System beim Speichern abhängig vom \ximsterm{Objekttyp} und
+Datenformat automatisch hinzugefügt. Abbildung~\ref{fig:bsppubliziert}
+soll den Begriff \ximsterm{Location} zusätzlich bildlich erläutern.
+
 
 \begin{Hinweis}
   Das Feld »\ximsterm{Location}« ist ein Pflichtfeld!
 \end{Hinweis}
 
-Abbildung~\ref{fig:bsppubliziert} soll zusätzlich bildlich den Begriff der \ximsterm{Location} erläutern.
 
 \paragraph{Titel}
 \label{title}
 
-Der Titel, in unserem Beispiel »Schritt für Schritt«, entspricht dem Namen des
-Dokuments, unter welchem dieses Dokument zukünftig in der \ximsterm{Containeransicht}
-aufscheinen wird. Zudem wird der Titel auch im \texttt{<title>} Tag des HTML-Headers
-ausgewiesen und entsprechend vom Browser im Fenstertitel angezeigt.
+Der Titel, in unserem Beispiel »Schritt für Schritt«, entspricht dem
+Namen des Dokuments, unter welchem dieses Dokument zukünftig in der
+\ximsterm{Containeransicht} aufscheinen wird. Zudem wird der Titel
+auch im \texttt{<title>} Tag des HTML-Headers ausgewiesen und
+entsprechend vom Browser im Fenstertitel angezeigt.
 
-Für den Fall, dass kein Titel angegeben wird, wird die \ximsterm{Location} auch für den Titel
-automatisch übernommen.
+Für den Fall, dass kein Titel angegeben wird, wird die
+\ximsterm{Location} auch für den Titel automatisch übernommen.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/tinymce.png}
-	\caption{Unterscheidung: \ximsterm{Location}/Titel}
-	\label{fig:unterscheidunglocationtitel}
+  \centering
+  \includegraphics[width=0.9\textwidth]{./images/tinymce.png}
+  \caption{Unterscheidung: \ximsterm{Location}/Titel}
+  \label{fig:unterscheidunglocationtitel}
 \end{figure}
 
-In unserem Beispiel befindet sich der Benutzer im Verzeichnis
-\path{/uniweb/test/christian/sfs} und erstellt ein neues Dokument mit der \ximsterm{Location}
-\path{sfs} und dem Titel »Schritt für Schritt«.
-Das erstellte Dokument ist in \otherterm{XIMS} im Verzeichnis \path{/uniweb/test/christian/sfs}
-zu finden und scheint unter dem Namen des Titels (in unserem Beispiel »Schritt
-für Schritt«) auf.
+In unserem Beispiel befinden wir uns im Verzeichnis
+\path{/uniweb/test/christian/sfs} und erstellen ein neues Dokument mit
+der \ximsterm{Location} \path{sfs} und dem Titel »Schritt für
+Schritt«. Das erstellte Dokument ist in \otherterm{XIMS} im
+Verzeichnis \path{/uniweb/test/christian/sfs} zu finden und scheint
+unter dem Namen des Titels (in unserem Beispiel »Schritt für Schritt«)
+auf.
 
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/container-short.png}
-	\caption{Ansicht des Dokuments im \otherterm{XIMS}}
-	\label{fig:dokumentinxims}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{./images/container-short.png}
+  \caption{Ansicht des Dokuments im \otherterm{XIMS}}
+  \label{fig:dokumentinxims}
 \end{figure}
 
-Abbildung~\ref{fig:bsppubliziert} zeigt das Dokument nach dem Veröffentlichen im \ximsterm{SiteRoot} \path{uniweb}.
+Abbildung~\ref{fig:bsppubliziert} zeigt das Dokument nach dem
+Veröffentlichen auf der Universitätswebseite.
 
-\begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/bsp-publiziert.png}
-	\caption{Beispieldokument publiziert}
-	\label{fig:bsppubliziert}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{./images/bsp-publiziert.png}
+  \caption{Beispieldokument publiziert}
+  \label{fig:bsppubliziert}
+\end{figure}
+
+Das \ximsterm{SiteRoot} \path{uniweb} und »Home« in der
+Brotkrümelnavigation repräsentieren \url{http://www.uibk.ac.at/},
+darunter verlaufen die Pfade genau parallel. Hier zur Verdeutlichung
+nochmals die Location-Pfade zum Beispieldokument aus den Abbildungen:
+
+\begin{figure}[H]
+  \begin{Verbatim}[commandchars=\\\{\},fontsize=\footnotesize]
+Sie befinden sich in:                                 \textbf{\textit{home}}>\textbf{test}>\textbf{christian}>\textbf{sfs}>\textbf{sfs.html}
+Öffentliche URL:                     \textbf{\textit{http://www.uibk.ac.at}}/\textbf{test}/\textbf{christian}/\textbf{sfs}/\textbf{sfs.html}
+In XIMS:     https://xims.uibk.ac.at/goxims/content/\textbf{\textit{uniweb}}/\textbf{test}/\textbf{christian}/\textbf{sfs}/\textbf{sfs.html}
+  \end{Verbatim}
+  \caption{Detail: Pfade zum Beispieldokument}
 \end{figure}
 
 \paragraph{Body}
 \label{body}
 
-Der Body beinhaltet den »eigentlichen« Inhalt des Dokuments.
-Unabhängig vom Browser oder Betriebssystem steht für die Erzeugung des Bodys
-der WYSIWYG-Editor \othertermdef{TinyMCE} zur Verfügung. Dieser bietet »MS-Word-ähnliche
-Funktionalität« um Inhalte zu erstellen.
-Alternativ kann der Body in Form von »wohlgeformtem« (wellformed) XHTML-Code
-im »Plain Textarea« Editor eingegeben werden. Vor dem Abspeichern kann über
-die »XML von Body testen«-Funktion getestet werden, ob der Body wohlgeformt
-ist. Über die Funktion »\othertermdef{Prettyprint}« (Icon neben »XML von Body testen«) wird
-der XHTML-Text in der Darstellung übersichtlicher formatiert bzw. entsprechend
-eingerückt.
-Falls die Option »Versuchen, einen wohlgeformten Body herzustellen« (Try
-to form body well) auf »Ja« gesetzt wurde, versucht \othertermdef{Tidy}, ungültigen Code beim
-Abspeichern »wohlzuformen«, d.h. alle Elemente werden auf Vorhandensein von
-Start- und ein Endtag geprüft bzw. die korrekte Verschachtelung von einzelnen Tags
-überprüft. Außerdem müssen die Tags klein geschrieben sein und das Body-Dokument muss genau ein Wurzelelement haben. Weitere Vorgaben entnehmen Sie
-bitte der XHTML-Spezifikation.
-Gelingt es Tidy nicht, den Body zu säubern, muss der Inhalt noch einmal manuell
+Der \ximstermdef{Body} beinhaltet den »eigentlichen« Inhalt des
+Dokuments. Unabhängig vom Browser oder Betriebssystem steht für die
+Erzeugung des \ximsterm{Body}s der WYSIWYG-Editor
+\othertermdef{TinyMCE} zur Verfügung. Dieser bietet, in Anlehnung an
+Textverarbeitungen wie MS-Word, Funktionen um formatierten Text zu
+erstellen. Alternativ kann der \ximsterm{Body} als »wohlgeformtes«
+(wellformed) XHTML-Code\footnote{Eigentlich nur der Inhalt des
+  HTML-\texttt{<body>}-Elementes, daher auch der Name des Feldes. Das
+  Element \texttt{<head>} wird erst von den XSLT-Stylesheets am
+  Webserver erzeugt. Die Stylesheets greifen dazu unter anderem auf
+  den Titel und Metadate zum Dokument zurück.} direkt in den »Plain
+Textarea« Editor eingegeben werden. Vor dem Abspeichern kann über die
+»XML von Body testen«-Funktion getestet werden, ob der \ximsterm{Body}
+wohlgeformt ist. Über die Funktion »\othertermdef{Prettyprint}« (Icon
+neben »XML von Body testen«) wird der XHTML-Text in der Darstellung
+übersichtlicher formatiert bzw. entsprechend eingerückt. Falls die
+Option »Versuchen, einen wohlgeformten Body herzustellen« (Try to form
+body well) auf »Ja« gesetzt wurde, versucht XIMS mit dem Programm
+\othertermdef{HTML-Tidy}, ungültigen Code vor dem Abspeichern
+»wohlzuformen«.\footnote{Zum Beispiel wird überprüft, ob alle Elemente
+  korrekte Start- und Endtags haben und richtig ineinander
+  verschachtelt sind. Weitere Vorgaben entnehmen Sie bitte der
+  XHTML-Spezifikation.} Gelingt es \otherterm{HTML-Tidy} nicht, den
+\ximsterm{Body} zu säubern, muss der Inhalt noch einmal manuell
 überarbeitet werden.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/xmlvonbodytesten.png}
-	\caption{Funktion »XML von Body testen«}
-	\label{fig:xmlvonbodytesten}
+  \centering
+  \includegraphics[width=0.9\textwidth]{./images/xmlvonbodytesten.png}
+  \caption{Funktion »XML von \ximsterm{Body} testen«}
+  \label{fig:xmlvonbodytesten}
 \end{figure}
 
 \begin{Hinweis}
-  Mit der Funktion »Versuchen, einen wohlgeformten Body herzustellen«
-  verändert \otherterm{Tidy} die Whitespace-Informationen. Nach dem
-  Speichern des Dokuments werden Einrückungen oder Umbrüche nicht mehr
-  denen im Originaldokument entsprechen!
+  Mit der Funktion »Versuchen, einen wohlgeformten \ximsterm{Body}
+  herzustellen« verändert \otherterm{HTML-Tidy} die
+  Whitespace-Informationen. Nach dem Speichern des Dokuments werden
+  Einrückungen oder Umbrüche nicht mehr denen im Originaldokument
+  entsprechen!
 \end{Hinweis}
 
-\paragraph{Schlagworte (Keywords)}
+\paragraph{Schlagwörter (Keywords)}
 \label{keywords}
 
-Die Liste der das Dokument beschreibenden \otherterm{Schlagwort}e soll durch Semikolons
-getrennt angeführt werden (beispielsweise: Antrag; Benutzungsantrag;
-Studierende). Die \othertermdef{Schlagwort}e scheinen bei veröffentlichten Dokumenten als
-Metainformation auf. Über die \otherterm{XIMS}-Suche kann gezielt nach ihnen gesucht werden.
+Die Liste der das Dokument beschreibenden \otherterm{Schlagwörter}
+soll durch Beistriche getrennt und in Kleinschreibung angeführt werden
+(beispielsweise: \texttt{antrag, benutzungsantrag, studierende}). Bei
+der Auswahl empfielt es sich, zu überlegen, mit welchen Suchbegriffen
+jemand versuchen könnte das fragliche Dokument zu finden. Die
+gewählten Begriffe sollten möglichst auch im Dokument selbst verwendet
+worden sein.
+
+\othertermdef{Schlagwörter} scheinen bei veröffentlichten Dokumenten
+als Metainformation auf. Über die \otherterm{XIMS}-Suche kann gezielt
+nach ihnen gesucht werden.
+
+Mehr als zehn \otherterm{Schlagwörter} anzugeben ist nicht sinnvoll.
 
 \paragraph{Zusammenfassung (Abstract)}
 \label{abstract}
 
-Die Zusammenfassung stellt eine kurze Beschreibung des Dokuments dar (z.\,B.:
-»ZID-Benutzungsantrag für Studierende«). I.d.R. scheint bei den
-Suchergebnissen die Zusammenfassung unter dem Titel auf.
+Die Zusammenfassung soll eine kurze und prägnante Beschreibung des
+Dokumentes enthalten. Sie scheint in der Regel unterhalb des Titels in
+Suchergebnissen auf. Auch hier sollte man beim Erstellen versuchen,
+sich in eine Person zu versetzen, die Informationen im fraglichen
+Dokument benötigt.
+
+Die Zusammenfassung sollte, wenn möglich, relevante Stichwörter aus
+dem Dokument enthalten und nicht mehr als 150 Zeichen oder 30 Wörter
+lang sein.
 
 \paragraph{Objekt als neu markieren (Mark object as new)}
 \label{markasnew}
 
-Durch dieses Attribut wird das Objekt mit einem Icon versehen. Dieses Icon
-kennzeichnet neu erstellte Dokumente in \otherterm{XIMS} (siehe auch Punkt \ref{new}). Bei der
-Verwendung der \otherterm{XIMS}-Suche kann gezielt nach »als neu markierte Objekte« gesucht
-werden.
+\otherterm{XIMS} kann kann gezielt nach »als neu markierte Objekte«
+suchen werden. Auch im Umgang mit Portlets und Filtern kann dieses
+Attribut praktisch sein. Optisch ist die Markierung durch ein Icon
+erkennbar (siehe Punkt \ref{new}).
 
 \paragraph{Speichern (Save)}
 \label{save}
 
-Das Klicken des »Speichern«-Buttons speichert das erstellte Dokument und leitet zur
-\ximsterm{Containeransicht} des Eltern-Containers weiter.
+Nach Klicken des »Speichern«-Buttons speichert \otherterm{XIMS} das
+Dokument in der Datenbank. Sie gelangen anschließend zur
+Standardansicht des Dokumentes.
 
 \paragraph{Abbrechen (Cancel)}
 \label{cancel}
 
-Das Klicken des »Cancel«-Buttons verwirft alle bei der Dokumenterstellung gemachten
-Einträge und leitet zur \ximsterm{Containeransicht} des Eltern-Containers weiter.
+Nach Klicken des »Cancel«-Buttons verwirft \otherterm{XIMS} alle
+Änderungen. Sie gelangen anschließend zur \ximsterm{Containeransicht}
+des Eltern-Containers.
+
 
 \paragraph{\otherterm{Editieren} eines Dokuments}
 \label{edit}
 
-Ein bereits erstelltes Dokument zeigt sich nach einem Klick auf das »Bearbeiten-Icon« in der
-Editiermaske. Abhängig des vom Benutzer bevorzugten Editors zum Bearbeiten von
-XHTML-Dokumenten (WYSIWYG oder Plain Textarea) zeigt \otherterm{XIMS} die
-entsprechende Editiermaske.
+Ein bereits erstelltes Dokument zeigt sich nach einem Klick auf das
+»Bearbeiten-Icon« in der Editiermaske, die im Wesentlichen der
+Erstellen-Maske gleicht. Gleichzeitig wird der Schreibzugriff auf das
+Dokument für Andere gesperrt.
+
+Abhängig von der Editorwahl (TinyMCE, eWebEditPro oder Plain Textarea)
+zeigt \otherterm{XIMS} eine entsprechende Editiermaske.\footnote{Am
+  oberen Rand befindet sich ein Drop-Down-Menu für die Editorwahl.}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/editdoktiny.png}
-	\caption{Editieren eines XHTML Dokuments im TinyMCE-Editor}
-	\label{fig:xhtmlintinymce}
+  \centering
+  \includegraphics[width=0.9\textwidth]{./images/editdoktiny.png}
+  \caption{Editieren eines XHTML Dokuments im TinyMCE-Editor}
+  \label{fig:xhtmlintinymce}
 \end{figure}
 
-Nicht nur der Bodybereich kann verändert werden, sondern auch die Einträge in
-\ximsterm{Location}, Titel, \otherterm{Schlagwort}e, Zusammenfassung und die Option »Objekt als
-neu markieren«.
 
 \begin{Hinweis}
   Ist ein Objekt publiziert, kann die \ximsterm{Location} nicht
@@ -875,20 +933,15 @@ neu markieren«.
   können, muss dieses zuerst depubliziert werden.
 \end{Hinweis}
 
-Durch Klicken des »Speichern«-Buttons werden Änderungen gespeichert und man
-kommt automatisch in die Vollansicht des Dokuments zurück.
+Durch Klicken des »Speichern«-Buttons werden Änderungen gespeichert,
+das Dokument entsperrt und man gelangt automatisch in die
+Standardansicht des Dokuments zurück.
 
 \subparagraph{Gesperrte Objekte}
 \label{gesperrteobjekte}
 
-Nach Veränderung eines Objektes ist es zwingend erforderlich das veränderte
-Dokument zu speichern (Speichern) oder die gemachten Änderungen zu verwerfen
-(Abbrechen) bevor man in die \ximsterm{Containeransicht} wechselt. Versucht man stattdessen
-über den »Zurück«-Button des Browsers in die Containeransicht zu gelangen ohne zu
-speichern bzw. zu verwerfen, ist das Dokument automatisch für andere Benutzer
-gesperrt . \otherterm{XIMS} betrachtet ein solches Dokument als »in Bearbeitung«
-befindlich und sperrt es deshalb für andere Benutzer, weil ein zeitgleiches \otherterm{Editieren}
-eines Dokuments durch mehrere Benutzer nicht möglich ist.
+Die Editiermaske darf nur über »Speichern« oder »Abbrechen« verlassen
+werden, weil das Dokument sonst für Andere gesperrt beleibt.
 
 \subsubsection{Verzeichnisse/Ordner (Folder)}
 \label{ordner}
@@ -898,10 +951,10 @@ erforderlich. Wird kein Eintrag im Feld Titel gemacht, wird der \ximsterm{Locati
 auch für das Titel-Feld übernommen.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/create-folder.png}
-	\caption{Erstellen eines Ordners}
-	\label{fig:erstellefolder}
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-folder.png}
+  \caption{Erstellen eines Ordners}
+  \label{fig:erstellefolder}
 \end{figure}
 
 \paragraph{\ximsterm{Location}}
@@ -922,8 +975,8 @@ Veröffentlichen automatisch ein solches Dokument mit einer einfachen Liste des
 Verzeichnisinhalts erstellen. Dieses Standardverhalten kann mit der Option
 »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« wenn nötig unterbunden
 werden.\footnote{Wir empfehlen, den \ximsterm{Autoindex} abzuschalten, falls Sie mehrsprachige Indexdokumente (z.\,B.:
-\nolinkurl{index.html.de} und \nolinkurl{index.html.en}) verwenden wollen, es kann sonst zu Fehlern bei der
-Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss \path{index} lauten, der Webserver verwendet es dann automatisch.
+  \nolinkurl{index.html.de} und \nolinkurl{index.html.en}) verwenden wollen, es kann sonst zu Fehlern bei der
+  Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss \path{index} lauten, der Webserver verwendet es dann automatisch.
 
 \begin{Hinweis}
   Ein Objekt mit der \ximsterm{Location} \path{index} (z.\,B.
@@ -946,20 +999,20 @@ verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 \end{Hinweis}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex.png}
-	\caption{\otherterm{XIMS} Ansicht eines Ordners mit Inhalt. Keines dieser Objekte hat die \ximsterm{Location}
-\texttt{index}!}
-	\label{fig:ordnerohneindex}
+  \centering
+  \includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex.png}
+  \caption{\otherterm{XIMS} Ansicht eines Ordners mit Inhalt. Keines dieser Objekte hat die \ximsterm{Location}
+    \texttt{index}!}
+  \label{fig:ordnerohneindex}
 \end{figure}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex_publiziert.png}
-	\caption{Die veröffentlichte Version desselben Ordners. Da kein Objekt mit der
-\ximsterm{Location} \texttt{index} enthalten ist, wird der Ordnerinhalt angezeigt. Die Darstellung im Bild
-zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
-	\label{fig:ordnerohneindexpubliziert}
+  \centering
+  \includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex_publiziert.png}
+  \caption{Die veröffentlichte Version desselben Ordners. Da kein Objekt mit der
+    \ximsterm{Location} \texttt{index} enthalten ist, wird der Ordnerinhalt angezeigt. Die Darstellung im Bild
+    zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
+  \label{fig:ordnerohneindexpubliziert}
 \end{figure}
 
 \paragraph{Zugriffsrechte erteilen}
@@ -969,11 +1022,11 @@ zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
 \otherterm{XIMS} »vererbt« standardmäßig die Einstellungen von den Elternobjekten.
 
 \begin{description}
-	\item[Nur mir selbst Rechte erteilen:]
-Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
-gelesen bzw. verändert werden.
-	\item[Zusätzlich Leserechte für Mitglieder der Standard Rollen
-erteilen:] (Grant VIEW privilege of your default roles) Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
+\item[Nur mir selbst Rechte erteilen:]
+  Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
+  gelesen bzw. verändert werden.
+\item[Zusätzlich Leserechte für Mitglieder der Standard Rollen
+  erteilen:] (Grant VIEW privilege of your default roles) Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
 \end{description}
 
 \begin{Hinweis}
@@ -991,10 +1044,10 @@ Sortierung der Kindobjekte des Verzeichnisses festzulegen (nach Position, Titel,
 Bitte beachten Sie an dieser Stelle Punkt \ref{gesperrteobjekte} »Gesperrte Objekte«.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/edit-folder.png}
-	\caption{Editieren eines Verzeichnisses (nicht publiziert)}
-	\label{fig:editierefolder}
+  \centering
+  \includegraphics[width=\textwidth]{./images/edit-folder.png}
+  \caption{Editieren eines Verzeichnisses (nicht publiziert)}
+  \label{fig:editierefolder}
 \end{figure}
 
 \subsubsection{Bilder (Images)}
@@ -1007,10 +1060,10 @@ sie ist der komfortablere Weg um den Pfad zur gewünschten Bild-Datei zu
 generieren (z.\,B.: \path{G:\service\bilder\sun.jpg}).
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/create-image.png}
-	\caption{Erstellen einer Bild-Datei in \otherterm{XIMS}}
-	\label{fig:erstellebild}
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-image.png}
+  \caption{Erstellen einer Bild-Datei in \otherterm{XIMS}}
+  \label{fig:erstellebild}
 \end{figure}
 
 \paragraph{Titel}
@@ -1025,7 +1078,7 @@ Rechner zu finden ist (in unserem Beispiel unter \path{G:\service\bilder\sun.jpg
 Der Durchsuchen-Button erleichtert die Angabe des absoluten Dateipfades durch
 Öffnen eines Dateiauswahl-Dialoges.
 
-\paragraph{Schlagworte}
+\paragraph{Schlagwörter}
 
 Siehe Punkt \ref{keywords}
 
@@ -1063,10 +1116,10 @@ durch Tippfehler und sie ist der komfortablere Weg um den Pfad zur gewünschten
 Datei zu generieren (z.\,B.: \path{G:\docs\anmeldung.pdf}).
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/create-file.png}
-	\caption{Erstellen einer Datei}
-	\label{fig:erstelledatei}
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-file.png}
+  \caption{Erstellen einer Datei}
+  \label{fig:erstelledatei}
 \end{figure}
 
 \paragraph{Titel}
@@ -1077,7 +1130,7 @@ Siehe Punkt \ref{title}
 
 Siehe Punkt \ref{dateien}
 
-\paragraph{Schlagworte}
+\paragraph{Schlagwörter}
 
 Siehe Punkt \ref{keywords}
 
@@ -1097,17 +1150,17 @@ Siehe Punkt \ref{upload}
 Siehe Punkt \ref{cancel}
 
 \paragraph{Editieren einer Datei (File)}
-Es können Titel, \otherterm{Schlagwort}e und Zusammenfassung der Datei geändert
+Es können Titel, \otherterm{Schlagwörter} und Zusammenfassung der Datei geändert
 werden. Soll die Datei durch eine andere ersetzt werden, kann man mit
 Hilfe des »Durchsuchen«-Dialoges den Pfad zur neuen Datei angeben bzw.
 diesen direkt ins Eingabefeld eintippen. Will man lediglich den Titel
 editieren, so kann das Feld »Datei ersetzen« leer bleiben.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/edit-file.png}
-	\caption{Editieren einer Datei (nicht publiziert)}
-	\label{fig:editieredatei}
+  \centering
+  \includegraphics[width=\textwidth]{./images/edit-file.png}
+  \caption{Editieren einer Datei (nicht publiziert)}
+  \label{fig:editieredatei}
 \end{figure}
 
 \subsubsection{\ximstermdef{URLLink}s}
@@ -1134,7 +1187,7 @@ RFC 2396 gültiger URI ist zulässig.
 
 Siehe Punkt \ref{title}
 
-\paragraph{Schlagworte}
+\paragraph{Schlagwörter}
 
 Siehe Punkt \ref{keywords}
 
@@ -1166,10 +1219,10 @@ werden. Bei Webseiten erscheinen Portlets normalerweise in Form von Boxen neben
 dem eigentlichen Inhalt der Seite. Eine Seitennavigation kann zum Beispiel ein Portlet darstellen (siehe dazu auch Punkt \ref{deplinks}).
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/create-portlet.png}
-	\caption{Erstellen eines Portlets}
-	\label{fig:erstelleportlet}
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-portlet.png}
+  \caption{Erstellen eines Portlets}
+  \label{fig:erstelleportlet}
 \end{figure}
 
 \paragraph{\ximsterm{Location}}
@@ -1232,20 +1285,20 @@ und »DepartmentSpeziallinks« aussehen könnte. Die individualisierten Elemente si
 auch auf allen untergeordneten Webseiten der Organisationseinheit wirksam.
 
 \begin{itemize}
-	\item {[1] Department Titel}
-	\item {[2] Department Info}
-	\item {[3] DepartmentImage}
-	\item {[4] DepartmentLinks}
-	\item {[5] DepartmentSpeziallinks}
+\item {[1] Department Titel}
+\item {[2] Department Info}
+\item {[3] DepartmentImage}
+\item {[4] DepartmentLinks}
+\item {[5] DepartmentSpeziallinks}
 \end{itemize}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/departmentroot-zid.png}
-	\caption{DepartmentRoot mit adaptierbaren Elementen}
-	\label{fig:departmentrootzid}
+  \centering
+  \includegraphics[width=\textwidth]{./images/departmentroot-zid.png}
+  \caption{DepartmentRoot mit adaptierbaren Elementen}
+  \label{fig:departmentrootzid}
 \end{figure}
-	
+
 \paragraph{Erstellen eines \ximsterm{DepartmentRoot}-Objekts}
 
 Ist noch kein \ximsterm{DepartmentRoot}-Container vorhanden bzw. vom
@@ -1263,10 +1316,10 @@ eines Verzeichnisses (siehe Punkt \ref{erstelleneditieren}).
 \end{Hinweis}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/create-departmentroot.png}
-	\caption{Erstellen eines \ximsterm{DepartmentRoot}}
-	\label{fig:erstellendepartmentroot}
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-departmentroot.png}
+  \caption{Erstellen eines \ximsterm{DepartmentRoot}}
+  \label{fig:erstellendepartmentroot}
 \end{figure}
 
 \paragraph{Stylesheet}
@@ -1305,9 +1358,9 @@ Nähere Informationen dazu finden sich unter Punkt \ref{depnav}.
 \label{sdocbookxml}
 
 \begin{quotation}
-	»DocBook is an XML/SGML vocabulary particularly well suited to books and papers
-about computer hardware and software (though it is by no means limited to these
-applications).« Homepage des DocBook Technical Committee
+  »DocBook is an XML/SGML vocabulary particularly well suited to books and papers
+  about computer hardware and software (though it is by no means limited to these
+  applications).« Homepage des DocBook Technical Committee
 \end{quotation}
 
 Unter DocBook versteht man XML-Dokumente, welche den Regeln einer
@@ -1326,10 +1379,10 @@ Untermenge von DocBook XML, welche besonders für kleinere Dokumente
 (Artikel, White Papers u.ä.) gedacht ist.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/create-sdocbookxml.png}
-	\caption{Erstellen eines Simplified Docbook XML Objekts}
-	\label{fig:erstelledocbookxml}
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-sdocbookxml.png}
+  \caption{Erstellen eines Simplified Docbook XML Objekts}
+  \label{fig:erstelledocbookxml}
 \end{figure}
 
 \paragraph{\ximsterm{Location}}
@@ -1351,7 +1404,7 @@ dort ebenfalls verfügbar.
 
 Grundsätzlich gilt, dass ein \ximsterm{sDocBookXML}-Dokument zum einen in wohlgeformtem
 XML vorliegen muss und zum anderen keine Deklarationen oder Processing
-Instructions (PIs) im Body des \ximsterm{sDocBookXML}-Dokuments aufscheinen dürfen. Alle
+Instructions (PIs) im \ximsterm{Body} des \ximsterm{sDocBookXML}-Dokuments aufscheinen dürfen. Alle
 Elemente von \ximsterm{sDocBookXML}-Dokumenten müssen zwingend Kind-Elemente des
 Wurzelelements \texttt{<article>} sein.
 
@@ -1365,7 +1418,7 @@ Wurzelelements \texttt{<article>} sein.
   \ximsterm{sDocBookXML}-Dokumente ins \otherterm{XIMS} einpflegen.
 \end{Hinweis}
 
-\paragraph{Schlagworte}
+\paragraph{Schlagwörter}
 
 Siehe Punkt \ref{keywords}
 
@@ -1386,10 +1439,10 @@ Siehe Punkt \ref{save}
 Siehe Punkt \ref{cancel}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/sdocbookxmlerstellt.png}
-	\caption{Das erstellte \ximsterm{sDocBookXML} Objekt in der Vollansicht}
-	\label{fig:sdocbookxmlerstellt}
+  \centering
+  \includegraphics[width=\textwidth]{./images/sdocbookxmlerstellt.png}
+  \caption{Das erstellte \ximsterm{sDocBookXML} Objekt in der Vollansicht}
+  \label{fig:sdocbookxmlerstellt}
 \end{figure}
 
 \paragraph{Editieren eines \ximsterm{sDocBookXML} Objekts}
@@ -1409,7 +1462,7 @@ Objekte in diesem Container« eingeblendet. In dieser Ansicht werden die gelöscht
 Objekte grau hinterlegt und mit zwei Optionen dargestellt:
 
 \begin{itemize}
-	\item Löschen rückgängig machen;
+\item Löschen rückgängig machen;
 \end{itemize}
 
 \begin{Hinweis}
@@ -1419,7 +1472,7 @@ Objekte grau hinterlegt und mit zwei Optionen dargestellt:
 \end{Hinweis}
 
 \begin{itemize}
-	\item Endgültig löschen
+\item Endgültig löschen
 \end{itemize}
 
 \begin{Hinweis}
@@ -1955,7 +2008,7 @@ einzugeben.
 Für externe »Links zum Dokument« ist es zwingend erforderlich die vollständige URI
 im Eingabefeld »\ximsterm{Location}« mit vorangestelltem \nolinkurl{http://} einzugeben (z.\,B.:
 \url{http://www.orf.at}).
-Bezüglich einer Beschreibung der Eingabefelder »Titel«, »Schlagworte«,
+Bezüglich einer Beschreibung der Eingabefelder »Titel«, »\otherterm{Schlagwörter}«,
 »Zusammenfassung«, »Objekt als neu markieren« und »Zugriffsrechte
 erstellen« wird auf den Punkt \ref{title} verwiesen.
 
@@ -2408,7 +2461,7 @@ Hier: \url{http://xims.uibk.ac.at/ximsroot/wepro/clientinstall/ewebeditproclient
 
 \paragraph{Nachdem mein Dokument mit TinyMCE geladen wurde, kann ich den
 WYSIWYG Editor nicht mehr wechseln. Es kommt die sinngemäße
-Fehlermeldung (obwohl der Inhalt nicht verändert wurde): »Der Body wurde
+Fehlermeldung (obwohl der Inhalt nicht verändert wurde): »Der \ximsterm{Body} wurde
 verändert. Bitte verwenden Sie 'Speichern/Abbrechen'!«}
 
 Durch Copy/Paste kann es auf Windows Systemen dazu kommen, dass windowsspezifische
