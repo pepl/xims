@@ -20,7 +20,8 @@
 
 \usepackage[english,ngerman]{babel}
 \usepackage[neveradjust]{paralist}
-\usepackage[babel,german=guillemets-italics]{csquotes} 
+%\usepackage[babel,german=guillemets-italics]{csquotes} 
+\usepackage[babel,german=guillemets]{csquotes}
 \usepackage{microtype}
 
 \usepackage{makeidx}
@@ -32,6 +33,36 @@
 \definecolor{uibkcyan}{HTML}{419AB9} % Fakultäten
 \definecolor{uibkviolett}{HTML}{5E4683} % Internationales
 \definecolor{uibkrot}{HTML}{CB0900} % iPoint
+
+
+\usepackage{float}
+\usepackage{marginnote}
+\renewcommand*{\marginfont}{\color{uibkrot}\sffamily\bfseries}
+
+\newenvironment{Hinweis}
+{\bigskip\reversemarginpar\marginnote[\raggedleft{Hinweis:}]{}\begin{em}\noindent\ignorespaces}
+{\end{em}\hspace{\stretch{1}}\bigskip}
+ 
+\newcommand{\ximsterm}[1]{\emph{#1}\index{#1@\emph{#1}}}
+\newcommand{\ximstermdef}[1]{\emph{#1}\index{#1@\emph{#1}|textbf}}
+\newcommand{\otherterm}[1]{#1\index{#1}}
+\newcommand{\othertermdef}[1]{#1\index{#1|textbf}}
+
+\addtokomafont{sectioning}{\color{uibkcyan}}
+\addtokomafont{sectionentrypagenumber}{\color{black}}
+\addtokomafont{caption}{\small}
+\addtokomafont{captionlabel}{\small}
+
+\setlength{\skip\footins}{1.05\baselineskip}
+\setkomafont{footnotelabel}{\bfseries}
+\deffootnote[0em]{0pt}{1.0em}{\thefootnotemark~}
+\makeatletter
+\renewcommand*\footnoterule{%
+  \kern-4.9\p@% Platz unter der Linie + Liniendicke
+  \ifx\@textbottom\relax\else\vskip \z@ \@plus.05fil\fi
+  \hrule\@width.4\columnwidth
+  \kern 4.5\p@}% Platz unter der Linie
+\makeatother
 
 \usepackage[%
 breaklinks               % Links »überstehen« Zeilenumbruch
@@ -64,36 +95,6 @@ breaklinks               % Links »überstehen« Zeilenumbruch
 ] 
 {hyperref}               % PDF automatisch mit Links versehen und weitere
 % Hypertext-Funktionalität ermöglichen
-
-\usepackage{float}
-\usepackage{marginnote}
-\renewcommand*{\marginfont}{\color{uibkrot}\sffamily\bfseries}
-
-\newenvironment{Hinweis}
-{\bigskip\reversemarginpar\marginnote[\raggedleft{Hinweis:}]{}\begin{em}\noindent\ignorespaces}
-{\end{em}\hspace{\stretch{1}}\bigskip}
- 
-\newcommand{\ximsterm}[1]{\emph{#1}\index{#1@\emph{#1}}}
-\newcommand{\ximstermdef}[1]{\emph{#1}\index{#1@\emph{#1}|textbf}}
-\newcommand{\otherterm}[1]{#1\index{#1}}
-\newcommand{\othertermdef}[1]{#1\index{#1|textbf}}
-
-\addtokomafont{sectioning}{\color{uibkcyan}}
-\addtokomafont{sectionentrypagenumber}{\color{black}}
-\addtokomafont{caption}{\small}
-\addtokomafont{captionlabel}{\small}
-
-\setlength{\skip\footins}{1.05\baselineskip}
-\setkomafont{footnotelabel}{\bfseries}
-\deffootnote[0em]{0pt}{1.0em}{\thefootnotemark~}
-\makeatletter
-\renewcommand*\footnoterule{%
-  \kern-4.9\p@% Platz unter der Linie + Liniendicke
-  \ifx\@textbottom\relax\else\vskip \z@ \@plus.05fil\fi
-  \hrule\@width.4\columnwidth
-  \kern 4.5\p@}% Platz unter der Linie
-\makeatother
-
 
 \usepackage{ellipsis}
 
@@ -1449,6 +1450,70 @@ Siehe Punkt \ref{cancel}
 
 Siehe Punkt \ref{erstelleneditieren}. 
 
+\subsubsection{Bildergalerie (\ximstermdef{Gallery})}
+\label{gallery}
+
+Der Objekttyp Gallery \ximsterm{Gallery} ist prinzipiell eine besondere Form eines Ordners. In einer \ximsterm{Gallery} 
+können Bilder abgelegt werden, die dann mittels Javascript als Bildergalerie dargestellt werden.
+Standardmäßig wird die Gallery im XIMS in der Container Ansicht angezeigt. Wie von Folder und 
+Departmentroot gewohnt können von hier aus über das Erstellen-Menu weitere Bilder hinzugefügt werden. 
+Rechts neben dem Erstellen-Menu befindet sich ein Link zur Vorschau-Ansicht.
+In der Vorschau-Ansicht (siehe Abbildung \ref{fig:gallery-preview}) werden alle im Gallery-Container 
+veröffentlichten Bilder als Bildergalerie (wie nach der Veröffentlichung) angezeigt. Auch von hier aus 
+lassen sich neue Bilder erstellen.
+Um innerhalb der Bildergalerie zu navigieren gibt es mehrer Möglichkeiten: Durch Klick auf ein Thumbnail 
+wird jeweilige Bild in der definierten Größe dargestellt. Oberhalb des gerade betrachteten Bildes 
+befinden sich Navigationspfeile, durch die man zum jeweils vorherigen oder nächsten Bild gelangt. Zudem führt
+ein Klick auf das Hauptbild zur Anzeige des jeweils nächsten.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\textwidth]{./images/gallery-preview.png}
+  \caption{Die \ximsterm{Gallery} in der Vorschauansicht, hier in 640x480, Thumbnail-Leiste oben, eingeblendeter Navigation und Bildbeschreibung}
+  \label{fig:gallery-preview}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-gallery.png}
+  \caption{Erstellen einer \ximsterm{Gallery}}
+  \label{fig:create-gallery}
+\end{figure}
+
+\paragraph{\ximsterm{Location}}
+Siehe Punkt \ref{location}.
+
+\paragraph{Titel}
+Siehe Punkt \ref{title}. Der Titel erscheint als Überschrift über der Bildergalerie.
+
+\paragraph{Zusammenfassung}
+Siehe Punkt \ref{abstract}. Die Zusammenfassung lässt sich für eine kurze Beschreibung der Bildergalerie 
+nutzen. Hier eingegebener Text erscheint unter der Überschrift.
+
+\paragraph{Objekt als neu markieren}
+Siehe Punkt \ref{abstract}.
+
+\paragraph{Sortierung}
+Wie bei einem Ordner kann hier die Sortierung der enthaltenen Objekte festgelegt und dabei zwischen 
+Position, Titel und Änderungsdatum gewählt werden. Die gewählte Sortierung wird sowohl für die Container-Ansicht 
+als auch für die Galerie-Darstellung übernommen. 
+
+\paragraph{Größe der Bilder}
+Für die Darstellung der Bilder gibt es drei Auswahlmöglichkeiten bezüglich der Größe: 800x600, 640x480 oder 400x300. Das aktuell betrachtete Bild wird auf die gewählte Breite skaliert, die Höhe proportional angepasst (keine Verzerrung). Kleine Bilder werden entsprechend vergrößert und können »pixelig« werden. Die Größe sollte also entsprechend der Qualität der Ausgangsbilder gewählt werden.
+
+\paragraph{Position der Thumbnails}
+Die Position der Thumbnails relativ zum aktuell betrachteten Bild. Die Auswahlmöglichkeiten sind oben, unten, links und keine Thumbnails.
+
+\paragraph{Bildbeschreibung}
+Die Bildbeschreibung wird aus der Zusammenfassung eines Image generiert und erscheint dann jeweils unter dem aktuell betrachteten Bild. Auf Wunsch kann die Beschreibung ausgeblendet werden. Dies gilt für alle Bilder einer \ximsterm{Gallery}.
+
+\paragraph{Navigation}
+Die Navigation erzeugt Links zum jeweils vorherigen und nächsten Bild. Sie befindet sich immer oberhalb des aktuell betrachten Bildes und kann ausgeblendet werden.
+
+\paragraph{Zugriffsrechte}
+Siehe Punkt \ref{zugriffsrechte}.
+
+
 \subsection{Objekte löschen und »Papierkorb«}
 \label{delete}
 
@@ -1512,15 +1577,29 @@ Leichtes. Im Folgenden werden die grundlegenden Schritte beschrieben:
 	\item {Der Cursor muss sich an der Stelle befinden, an der das Bild eingefügt
 werden soll.}
 	\item {Durch Klicken auf das »Bild einfügen/verändern-Icon« öffnet sich der Ei"-gen"-schaf"-ten-Dia"-log. Über
-diesen Dialog können die Breite, Höhe, Randbreite, Ausrichtung, horizontaler
-und vertikaler Abstand und der Titel für jedes Bild angegeben werden.}
+diesen Dialog kann dem Bild eine Beschreibung und ein Titel gegeben werden (Abbildung \ref{fig:tinymceimageprop1}) sowie die Ausrichtung,  Breite, Höhe, Randbreite, horizontaler und vertikaler Abstand (Abbildung \ref{fig:tinymceimageprop2}) für jedes Bild angegeben werden.}
+
+%\begin{figure}[!ht]
+%	\centering
+%		\includegraphics[width=0.55\textwidth]{./images/tinymce-imagepopup-solo.png}
+%	\caption{Eigenschaften von Bildern in
+%Dokumenten verändern}
+%	\label{fig:tinymceimageprop}
+%\end{figure}
 
 \begin{figure}[!ht]
 	\centering
-		\includegraphics[width=0.55\textwidth]{./images/tinymce-imagepopup-solo.png}
+		\includegraphics[width=0.75\textwidth]{./images/tinymce-image-adv-1.png}
 	\caption{Eigenschaften von Bildern in
 Dokumenten verändern}
-	\label{fig:tinymceimageprop}
+	\label{fig:tinymceimageprop1}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.75\textwidth]{./images/tinymce-image-adv-2.png}
+	\caption{Erweiterte Eigenschaften von Bildern}
+	\label{fig:tinymceimageprop2}
 \end{figure}
 
 	\item {Durch Klicken auf das »Durchsuchen-Icon« öffnet sich der Durchsuchen-Dialog. An
