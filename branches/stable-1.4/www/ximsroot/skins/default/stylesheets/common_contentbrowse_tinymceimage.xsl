@@ -98,6 +98,7 @@ function insertfile() {
     var title = document.selectform.imgtext.value;
     win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
     win.document.getElementById("alt").value = title;
+	win.document.getElementById("title").value = title;
     // for image browsers: update image dimensions
     tinyMCEPopup.close();
 }
