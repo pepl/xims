@@ -14,28 +14,24 @@
 
 <xsl:template name="form-keywords"/>
 
-<!--Position of thrumbnails-->
+<!--Position of thumbnails-->
 <xsl:template name="image-size">
 <tr>
-	<td valign="top">Größe der Bilder:</td>
+	<td valign="top"><xsl:value-of select="$i18n/l/ImageSize"/>:</td>
 	<td colspan="2">
-	<input type="radio" id="imgwidth-800" name="imgwidth" class="radio-button" value="800">
-		<xsl:if test="/document/context/object/attributes/imgwidth = 800"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	<input type="radio" id="imgwidth-large" name="imgwidth" class="radio-button" value="large">
+		<xsl:if test="/document/context/object/attributes/imgwidth = 'large' or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	</input>
-	<label for="imgwidth-800">800 x 600</label><br/>
+	<label for="imgwidth-large"><xsl:value-of select="$i18n/l/large"/> (<xsl:value-of select="$i18n/l/Width"/> ca. 600px)</label><br/>
 	
-	<input type="radio" id="imgwidth-640" name="imgwidth" class="radio-button" value="640">
-		<xsl:if test="/document/context/object/attributes/imgwidth = 640 or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	<input type="radio" id="imgwidth-medium" name="imgwidth" class="radio-button" value="medium">
+		<xsl:if test="/document/context/object/attributes/imgwidth = 'medium'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 	</input>
-	<label for="imgwidth-640">640 x 480</label><br/>
+	<label for="imgwidth-medium"><xsl:value-of select="$i18n/l/medium"/> (<xsl:value-of select="$i18n/l/Width"/> ca. 400px)</label><br/>
 	
-	<input type="radio" id="imgwidth-400" name="imgwidth" class="radio-button" value="400">
-		<xsl:if test="/document/context/object/attributes/imgwidth = 400"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input>
-	<label for="imgwidth-400">400 x 300</label><br/>
-	<!--<input type="radio" id="imgwidth-200" name="imgwidth" class="radio-button" value="200">
-		<xsl:if test="/document/context/object/attributes/imgwidth = 200"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input><label for="imgwidth-200">200 x 150</label>-->
+	<input type="radio" id="imgwidth-small" name="imgwidth" class="radio-button" value="small">
+		<xsl:if test="/document/context/object/attributes/imgwidth = 'small'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	</input><label for="imgwidth-small"><xsl:value-of select="$i18n/l/small"/> (<xsl:value-of select="$i18n/l/Width"/> ca. 200px)</label>
 	</td>
 </tr>
 </xsl:template>
@@ -43,20 +39,20 @@
 <!--Position of thrumbnails-->
 <xsl:template name="thumbnail-pos">
 <tr>
-	<td valign="top">Position der Thumbnails:</td>
+	<td valign="top"><xsl:value-of select="$i18n/l/ThumbPosition"/></td>
 	<td colspan="2">
 	<input type="radio" id="thumbpos-top" name="thumbpos" class="radio-button" value="top">
 		<xsl:if test="/document/context/object/attributes/thumbpos = 'top' or /document/context/object/attributes =''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input><label for="thumbpos-top">oben</label><br/>
+	</input><label for="thumbpos-top"><xsl:value-of select="$i18n/l/top"/></label><br/>
 	<input type="radio" id="thumbpos-bottom" name="thumbpos" class="radio-button" value="bottom">
 		<xsl:if test="/document/context/object/attributes/thumbpos = 'bottom'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input><label for="thumbpos-bottom">unten</label><br/>
+	</input><label for="thumbpos-bottom"><xsl:value-of select="$i18n/l/bottom"/></label><br/>
 	<input type="radio" id="thumbpos-left" name="thumbpos" class="radio-button" value="left">
 		<xsl:if test="/document/context/object/attributes/thumbpos = 'left'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input><label for="thumbpos-left">links</label><br/>
+	</input><label for="thumbpos-left"><xsl:value-of select="$i18n/l/left"/></label><br/>
 	<input type="radio" id="thumbpos-no" name="thumbpos" class="radio-button" value="no">
 		<xsl:if test="/document/context/object/attributes/thumbpos = 'no'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-	</input><label for="thumbpos-no">keine Thumbnails</label>
+	</input><label for="thumbpos-no"><xsl:value-of select="$i18n/l/noThumb"/></label>
 	</td>
 </tr>
 </xsl:template>
@@ -64,7 +60,7 @@
 <xsl:template name="show-caption">
 <tr>
 <td colspan="3">
-<label for="showcaption">Zeige Bildbeschreibung an</label> 
+<label for="showcaption"><xsl:value-of select="$i18n/l/ShowCaption"/></label> 
 <input type="checkbox" id="showcaption" name="showcaption" class="checkbox">
 	<xsl:if test="/document/context/object/attributes/showcaption = 1 or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 </input><br/>
@@ -75,7 +71,7 @@
 <xsl:template name="show-nav">
 <tr>
 <td colspan="3">
-<label for="shownav">Zeige Navigation an</label>
+<label for="shownav"><xsl:value-of select="$i18n/l/ShowNavigation"/></label>
 <input type="checkbox" id="shownav" name="shownavigation" class="checkbox">
 	<xsl:if test="/document/context/object/attributes/shownavigation = 1 or /document/context/object/attributes = ''"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 </input>
