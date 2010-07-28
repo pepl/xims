@@ -16,7 +16,7 @@
 		});
 		
 		//scrollpane parts
-		var scrollPane = $('.scroll-pane');
+		/* var scrollPane = $('.scroll-pane');
 		var scrollContent = $('.scroll-content');
 		
 		//build slider
@@ -80,4 +80,6 @@
 		});
 		//init scrollbar size
 		setTimeout(sizeScrollbar,10);//safari wants a timeout
+
+*/
 	});
