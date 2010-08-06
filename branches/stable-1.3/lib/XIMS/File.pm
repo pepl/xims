@@ -26,6 +26,17 @@ use base qw( XIMS::Object );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 content_field()
+
+  Force 'binfile'. The body of XIMS::File objects should never go into a clob
+  or text column.
+
+=cut
+
+sub content_field { return 'binfile';}
+
+
+
 1;
 
 __END__
