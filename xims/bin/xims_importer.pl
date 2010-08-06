@@ -29,7 +29,7 @@ my $skippattern = qr{
 }x;
 
 my %args;
-getopts('hfd:u:p:m:', \%args);
+getopts('hafd:u:p:m:', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "File System Importer Tool" );
@@ -58,7 +58,10 @@ die "Cannot import from symlink directory '$path'\n" if -l $path and -d $path;
 # untaint the path
 $path = $1 if $path =~ /^(.*)$/;
 
-my $importer = XIMS::Importer::FileSystem->new( User => $user, Parent => $parent );
+my $importer = XIMS::Importer::FileSystem->new( User => $user,
+                                                Parent => $parent,
+                                                ArchiveMode =>  $args{a}
+               );
 
 my $successful = 0;
 my $failed = 0;
@@ -84,7 +87,7 @@ foreach my $file ( @files ) {
         $total--;
         next;
     }
-    
+
     $file =~ s/$dirname\/// if length $dirname;
     if ( $importer->import( $file, $args{f} ) ) {
         print "'$displaydir$file' imported successfully.\n";
@@ -119,9 +122,9 @@ sub skipfile {
 sub usage {
     return qq*
 
-  Usage: $0 [-h][-d][-f][-u username -p password] -m xims-mount-path path-to-import
+  Usage: $0 [-h][-d][-f][-a][-u username -p password] -m xims-mount-path path-to-import
         -m The XIMS path to import to.
-
+        -a Archive mode. Treat .html as file and keep the location's capitalisation.
         -u The username to connect to XIMS. If not specified,
            you will be asked for it interactively.
         -p The password of the XIMS user. If not specified,
@@ -143,7 +146,7 @@ xims_importer.pl - imports large numbers of documents
 
 =head1 SYNOPSIS
 
-xims_importer.pl [-h][-d][-f][-u username -p password] -m xims-mount-path path-to-import
+xims_importer.pl [-h][-d][-f][-a][-u username -p password] -m xims-mount-path path-to-import
 
 Options:
   -help            brief help message
@@ -160,6 +163,10 @@ Print a brief help message and exits.
 =item B<-man>
 
 Prints the manual page and exits.
+
+=item B<-a>
+
+ Archive mode. Treat .html as file and keep the location's capitalisation.
 
 =item B<-l>
 

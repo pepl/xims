@@ -96,7 +96,7 @@ sub parent_by_location {
 
     $plocation = '/root' unless ( defined $plocation and $plocation );
 
-    return XIMS::Object->new( path => lc($plocation) );
+    return XIMS::Object->new( path => $plocation );
 }
 
 =head2 resolve_location()
