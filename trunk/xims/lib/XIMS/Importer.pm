@@ -1,4 +1,5 @@
 
+
 =head1 NAME
 
 XIMS::Importer
@@ -59,8 +60,9 @@ sub new {
     $data{User}   = $param{User}   if defined $param{User};
 
     # optional parameters
-    $data{ObjectType} = $param{ObjectType} if defined $param{ObjectType};
-    $data{DataFormat} = $param{DataFormat} if defined $param{DataFormat};
+    $data{ObjectType}  = $param{ObjectType}  if defined $param{ObjectType};
+    $data{DataFormat}  = $param{DataFormat}  if defined $param{DataFormat};
+    $data{ArchiveMode} = $param{ArchiveMode} if defined $param{ArchiveMode};
 
     # Virtual chroot for absolute FS paths
     $data{Chroot} = $param{Chroot} if defined $param{Chroot};
@@ -362,6 +364,12 @@ sub resolve_suffix {
             $suffixmap{$_}->{suffix} = $_
         } qw(en de es it fr);
 
+        if ($self->{ArchiveMode}) {
+            # in ArchiveMode, import HTML as XIMS::File instead of
+            # XIMS::Document
+            $dataformatmap{ $htmldf->id() } = $file_ot;
+        }
+
         $self->{dataformatmap} = \%dataformatmap;
         $self->{suffixmap}     = \%suffixmap;
     }
@@ -515,10 +523,11 @@ sub clean_location {
                     ([$badchars])     # more flexible :)
                   /
                     $escapes{$1}
-                  /segx;              # *coff*
-    return XIMS::Config::LowerCaseLocations()
+                  /segx;    # *coff*
+    return ( not $self->{ArchiveMode} and XIMS::Config::LowerCaseLocations() )
         ? lc($location)
         : $location;
+
 }
 
 1;
