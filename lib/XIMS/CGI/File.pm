@@ -243,6 +243,21 @@ sub import_from_zip {
 }
 
 
+=head2 body_ref_objects();
+
+=head3 Description
+
+   Overwrites the respective method in XIMS::CGI. It just return the empty
+   list and never attempts to parse a XIMS:File's body. (Which should be
+   treated as binary, be it in text format or whatever-have-you)
+
+=cut
+
+sub body_ref_objects {return ();}
+
+1;
+
+
 1;
 
 __END__
