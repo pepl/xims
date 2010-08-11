@@ -5,22 +5,6 @@
 # $Id$
 */
 
-/*
-a:link, span.MsoHyperlink {
-    visible:false;
-    color:blue;
-    text-decoration:underline;
-    text-underline:single;
-}
-
-a:visited, span.MsoHyperlinkFollowed {
-    visible:false;
-    color:purple;
-    text-decoration:underline;
-    text-underline:single;
-}
-*/
-
 /**************************************************************************/
 /* Begin: GENERAL FORMATS */
 
@@ -34,7 +18,7 @@ body {
     margin-right:0px;
     margin-top:0px;
     font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
+    font-size:0.75em;
 }
 
 
@@ -48,8 +32,6 @@ address {
     margin-top:0px;
     margin-bottom:0px;
     padding:0px;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
 }
 
 big {
@@ -57,16 +39,13 @@ big {
     margin-right:0px;
     margin-bottom:12px;
     page-break-after:avoid;
-    font-size:12pt;
-    font-family:helvetica, arial, sans-serif;
+    font-size:1.5em;
     font-weight:bold;
 }
 
 blockquote {
     padding-left:20px;
     padding-right:20px;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
     text-align:justify;
 }
 
@@ -76,8 +55,7 @@ h1 {
     margin-right:0px;
     margin-bottom:18px;
     page-break-after:avoid;
-    font-size:18pt;
-    font-family:helvetica, arial, sans-serif;
+    font-size:1.5em;
     font-weight:bold;
 }
 
@@ -87,8 +65,7 @@ h2 {
     margin-right:0px;
     margin-bottom:14px;
     page-break-after:avoid;
-    font-size:16pt;
-    font-family:helvetica, arial, sans-serif;
+    font-size:1.4em;
     font-weight:bold;
 }
 
@@ -97,8 +74,7 @@ h3 {
     margin-right:0px;
     margin-bottom:12px;
     page-break-after:avoid;
-    font-size:14pt;
-    font-family:helvetica, arial, sans-serif;
+    font-size:1.3em;
     font-weight:bold;
 }
 
@@ -107,8 +83,7 @@ h4 {
     margin-right:0px;
     margin-bottom:12px;
     page-break-after:avoid;
-    font-size:12pt;
-    font-family:helvetica, arial, sans-serif;
+    font-size:1.1em;
     font-weight:bold;
 }
 
@@ -116,8 +91,7 @@ h5 {
     margin-left:0px;
     margin-right:0px;
     margin-bottom:10px;
-    font-size:10pt;
-    font-family:helvetica, arial, sans-serif;
+    font-size:1em;
     font-weight:bold;
 }
 
@@ -125,8 +99,7 @@ h6 {
     margin-left:0px;
     margin-right:0px;
     margin-bottom:10px;
-    font-size:10pt;
-    font-family:helvetica, arial, sans-serif;
+    font-size:1em;
     font-style:italic;
 }
 
@@ -134,14 +107,11 @@ p {
     margin-top:0px;
     margin-bottom:10px;
     padding:0px;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
 }
 
 pre {
     visible: false;
     margin:0px;
-    font-size:10pt;
     font-family:"Courier New";
 }
 
@@ -150,8 +120,7 @@ small {
     margin-right:0px;
     margin-bottom:12px;
     page-break-after:avoid;
-    font-size:8pt;
-    font-family:helvetica, arial, sans-serif;
+    font-size:0.8em;
 }
 
 
@@ -165,15 +134,11 @@ dl {
 
 dt {
     page-break-after:avoid;
-    font-size:10pt;
-    font-family:helvetica, arial, sans-serif;
 }
 
 dd {
     margin-bottom:10px;
     page-break-after:avoid;
-    font-size:10pt;
-    font-family:helvetica, arial, sans-serif;
 }
 
 /* Hyperlink elements */
@@ -209,27 +174,11 @@ img {
     border: 0px;
 }
 
-/* nathalie sequeira */
-img.rightfloat {
-    caption:Float Right;
-    float:right;
-    padding:10px;
-    padding-right:0;
-}
-img.leftfloat {
-    caption:Float Left;
-    float:left;
-    padding:10px;
-    padding-left:0;
-}
-
 /* Table elements */
 /* f�r col, colgroup, tbody und tr wurden keine Styles definiert. */
 
 caption {
     page-break-after:avoid;
-    font-size:10pt;
-    font-family:helvetica, arial, sans-serif;
     font-weight:bold;
 }
 
@@ -239,16 +188,8 @@ table {
 
 th {
     background-color:#ced3d6;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
-/*	border:1px solid #888888; */
     padding-left:2px;
     padding-right:2px;
-}
-
-td {
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
 }
 
 td.grey {
@@ -301,8 +242,6 @@ td.lightblue {
 
 thead {
     background-color:#ced3d6;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
     font-weight:bold;
     padding-left:2px;
     padding-right:2px;
@@ -310,8 +249,6 @@ thead {
 
 tfoot {
     page-break-after:avoid;
-    font-size:10pt;
-    font-family:helvetica, arial, sans-serif;
     font-style:italic;
 }
 
@@ -389,9 +326,7 @@ p.printzitat {
     margin-right:8px;
     padding:10px;
     line-height:120%;
-    font-family:helvetica, arial, sans-serif;
     border:1px solid #999999;
-    font-size:10pt;
 }
 
 .printzitatContent {
@@ -417,7 +352,7 @@ form.qsearch {
 
 input.qsfield {
     width:100px;
-    font-size:9pt;
+    font-size:0.9em;
 }
 
 
@@ -431,8 +366,6 @@ input.qsfield {
     padding-left:4px;
     padding-bottom:4px;
     border:1px solid #999999;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
     line-height:100%;
 }
 
@@ -444,8 +377,6 @@ input.qsfield {
     padding-left:4px;
     padding-bottom:4px;
     border:1px solid #123853;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
     line-height:100%;
 }
 
@@ -457,8 +388,6 @@ input.qsfield {
     padding-left:4px;
     padding-bottom:4px;
     border:1px solid #123853;
-    font-family: helvetica, arial, sans-serif;
-    font-size:10pt;
     line-height:100%;
 }
 
@@ -514,8 +443,7 @@ div.footer {
 .metafooter {
     visible: false;
     color: #a9a9a9;
-    font-family: helvetica, arial, sans-serif;
-    font-size: 8pt;
+    font-size: 0.8em;
     margin-top: 32px;
     text-align:center;
 }
@@ -533,27 +461,18 @@ p.copy  {
 /* list element formats */
 
 li.linklist, ul.linklist {
-    equivClass: DFLists;
-    caption:Link List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_SymbolicLink.gif");
     text-indent:-5px;
 }
-
 li.externallinklist, ul.externallinklist, li.list_URL {
-    equivClass: DFLists;
-    caption:External Link List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_URL.gif");
-
     text-indent:-5px;
 }
-
 li.documentlist, ul.documentlist {
-    equivClass: DFLists;
-    caption:Document List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_HTML.gif");
@@ -561,174 +480,56 @@ li.documentlist, ul.documentlist {
 }
 
 /* ewebeditpro can not handle the double li.* entries, so we have to move this to an extra class */
-li.list_HTML {
-    equivClass: DFLists;
-    visible:false;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image:url("/ximsroot/images/icons/list_HTML.gif");
-    text-indent:-5px;
-}
-
-
-li.pdflist, ul.pdflist {
-    equivClass: DFLists;
-    caption:PDF List;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image: url("/ximsroot/images/icons/list_PDF.gif");
-    text-indent:-5px;
-}
-
-li.list_PDF {
-    equivClass: DFLists;
-    visible:false;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image: url("/ximsroot/images/icons/list_PDF.gif");
-    text-indent:-5px;
-}
-
 
 li.wordlist, ul.wordlist {
-    equivClass: DFLists;
-    caption:MS-Word List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_DOC.gif");
     text-indent:-5px;
 }
-
-li.wordlist, li.list_DOC, ul.wordlist {
-    equivClass: DFLists;
-    visible:false;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image:url("/ximsroot/images/icons/list_DOC.gif");
-    text-indent:-5px;
-}
-
 li.excellist, ul.excellist {
-    equivClass: DFLists;
-    caption:MS-Excel List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_XLS.gif");
     text-indent:-5px;
 }
-
-li.list_XLS {
-    equivClass: DFLists;
-    visible:false;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image:url("/ximsroot/images/icons/list_XLS.gif");
-    text-indent:-5px;
-}
-
 li.pptlist, ul.pptlist {
-    equivClass: DFLists;
-    caption:MS-Powerpoint List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_PPT.gif");
     text-indent:-5px;
 }
-
-li.list_PPT {
-    equivClass: DFLists;
-    visible:false;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image:url("/ximsroot/images/icons/list_PPT.gif");
-    text-indent:-5px;
-}
-
 li.folderlist, ul.folderlist {
-    equivClass: DFLists;
-    caption:Folder List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_Container.gif");
     text-indent:-5px;
 }
-
-li.list_Container {
-    equivClass: DFLists;
-    visible:false;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image:url("/ximsroot/images/icons/list_Container.gif");
-    text-indent:-5px;
-}
-
 li.bulletlist, ul.bulletlist {
-    equivClass: DFLists;
-    caption:Bullet List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_bullet.gif");
     text-indent:-5px;
 }
-
 li.arrowlist, ul.arrowlist {
-    equivClass: DFLists;
-    caption:Arrow List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_arrow.gif");
     text-indent:-5px;
 }
-
 li.imagelist, ul.imagelist {
-    equivClass: DFLists;
-    caption:Image List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_PNG.gif");
     text-indent:-5px;
 }
-
-li.list_GIF, li.list_PNG, li.list_JPG, li.list_TIFF {
-    equivClass: DFLists;
-    visible:false;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image:url("/ximsroot/images/icons/list_PNG.gif");
-    text-indent:-5px;
-}
-
-
 li.sdocbooklist, ul.sdocbooklist {
-    equivClass: DFLists;
-    caption:sDocBook List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_sDocBookXML.gif");
     text-indent:-5px;
 }
-
-li.list_sDocBookXML {
-    equivClass: DFLists;
-    visible:false;
-    padding-left:8px;
-    line-height:150%;
-    list-style-image:url("/ximsroot/images/icons/list_sDocBookXML.gif");
-    text-indent:-5px;
-}
-
-li.list_AXPML {
-       equivClass: DFLists;
-       visible:false;
-       padding-left:8px;
-       line-height:150%;
-       list-style-image:url("/ximsroot/images/icons/list_AXPML.gif");
-       text-indent:-5px;
-}
-
 li.emaillist, ul.emaillist {
-    equivClass: DFLists;
-    caption:Email List;
     padding-left:8px;
     line-height:150%;
     list-style-image:url("/ximsroot/images/icons/list_Email.gif");
@@ -747,15 +548,11 @@ li.emaillist, ul.emaillist {
 .forumhead {
     visible:false;
     background-color:#ced3d6;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
 }
 
 .forumcontent	{
     visible:false;
     vertical-align:top;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
     line-height:120%;
     text-align:left;
     padding-left:15px;
@@ -770,7 +567,6 @@ li.emaillist, ul.emaillist {
     border-bottom:#333333 solid 1px;
     border-right:#333333 solid 1px;
     border-left:#333333 solid 1px;
-    font-family:verdana, helvetica, sans-serif;
     width:470px;
 }
 
@@ -787,8 +583,7 @@ li.emaillist, ul.emaillist {
     margin-top:0px;
     margin-bottom:0px;
     margin-left:6px;
-    font-family:helvetica, arial, sans-serif;
-    font-size:18pt;
+    font-size:1.5em;
 }
 
 .documentquote {
@@ -799,7 +594,6 @@ li.emaillist, ul.emaillist {
     margin-right:6px;
     padding:6px;
     line-height:120%;
-    font-family:helvetica, arial, sans-serif;
     border:1px solid #c0c0c0;
 }
 
@@ -854,8 +648,6 @@ li.emaillist, ul.emaillist {
     margin-bottom: 0px;
     padding-bottom: 0px;
 }
-
-
 /* a.doclink for xims-quick-ref */
 a.doclink {
     visible:false;
@@ -895,8 +687,6 @@ a.headerlink:hover {
     color: #cccccc;
 }
 
-
-
 /* formating paragraphs */
 
 div.edit {
@@ -911,15 +701,11 @@ div.edit {
 
 p.bodyfollow {
     caption:First Line Indent;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
     text-indent:10pt;
 }
 
 p.blockquote {
     caption:Blockquote;
-    font-family:helvetica, arial, sans-serif;
-    font-size:9pt;
     padding-left:20pt;
     padding-right:20pt;
     text-align:justify;
@@ -928,8 +714,7 @@ p.blockquote {
 p.footertext {
     visible:false;
     caption:Footer;
-    font-family:helvetica, arial, sans-serif;
-    font-size:8pt;
+    font-size:0,8em;
     padding-left:10pt;
 }
 
@@ -943,8 +728,6 @@ input.text, input.readonlytext {
     border-bottom:#333333 solid 1px;
     border-right:#333333 solid 1px;
     border-left:#333333 solid 1px;
-    font-size:10pt;
-    font-family:verdana, helvetica, sans-serif;
 }
 
 input.readonlytext {
@@ -957,8 +740,6 @@ textarea.text {
     border-bottom:#333333 solid 1px;
     border-right:#333333 solid 1px;
     border-left:#333333 solid 1px;
-    font-size:10pt;
-    font-family:verdana, helvetica, sans-serif;
 }
 
 input.control {
@@ -1072,8 +853,6 @@ span.cboxitem {
     border-style:solid;
     width:100px;
     float:left;
-    font-family:helvetica, arial, sans-serif;
-    font-size:9pt;
 }
 
 #toggle_highlight {
@@ -1089,7 +868,6 @@ span.cboxitem {
 }
 
 #toggle_highlight input {
-    font-size:9pt;
     background: #CED3D7;
     border: 1px solid #A2A6AA;
     color: #103852;
@@ -1097,861 +875,4 @@ span.cboxitem {
 
 /* End: FORMATS (XIMS-SITES) */
 /**************************************************************************/
-
-
-
-/**************************************************************************/
-/* Begin: FORMATS (eWebeditPro) */
-
-
-p.MsoNormal, li.MsoNormal, div.MsoNormal  {
-    visible: false;
-    localeRef:mnuNorm;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoHeading7, li.MsoHeading7, div.MsoHeading7 {
-    visible:false;
-    margin-top:12.0pt;
-    margin-right:0in;
-    margin-bottom:3.0pt;
-    margin-left:0in;
-    font-size:12.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoHeading8, li.MsoHeading8, div.MsoHeading8 {
-    visible:false;
-    margin-top:12.0pt;
-    margin-right:0in;
-    margin-bottom:3.0pt;
-    margin-left:0in;
-    font-size:12.0pt;
-    font-family: helvetica, arial, sans-serif;
-    font-style:italic;
-}
-
-p.MsoHeading9, li.MsoHeading9, div.MsoHeading9 {
-    visible:false;
-    margin-top:12.0pt;
-    margin-right:0in;
-    margin-bottom:3.0pt;
-    margin-left:0in;
-    font-size:11.0pt;
-    font-family:Arial;
-}
-
-p.MsoIndex1, li.MsoIndex1, div.MsoIndex1 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:10.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex2, li.MsoIndex2, div.MsoIndex2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:20.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex3, li.MsoIndex3, div.MsoIndex3 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:30.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex4, li.MsoIndex4, div.MsoIndex4 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:40.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex5, li.MsoIndex5, div.MsoIndex5 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:50.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex6, li.MsoIndex6, div.MsoIndex6 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:60.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex7, li.MsoIndex7, div.MsoIndex7 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:70.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex8, li.MsoIndex8, div.MsoIndex8 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:80.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndex9, li.MsoIndex9, div.MsoIndex9 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:1.25in;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc1, li.MsoToc1, div.MsoToc1 {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc2, li.MsoToc2, div.MsoToc2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:10.0pt;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc3, li.MsoToc3, div.MsoToc3 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:20.0pt;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc4, li.MsoToc4, div.MsoToc4 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:30.0pt;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc5, li.MsoToc5, div.MsoToc5 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:40.0pt;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc6, li.MsoToc6, div.MsoToc6 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:50.0pt;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc7, li.MsoToc7, div.MsoToc7 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:60.0pt;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc8, li.MsoToc8, div.MsoToc8 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:70.0pt;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToc9, li.MsoToc9, div.MsoToc9 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:80.0pt;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoNormalIndent, li.MsoNormalIndent, div.MsoNormalIndent {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.5in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoFootnoteText, li.MsoFootnoteText, div.MsoFootnoteText {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoCommentText, li.MsoCommentText, div.MsoCommentText {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoHeader, li.MsoHeader, div.MsoHeader {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoFooter, li.MsoFooter, div.MsoFooter {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoIndexHeading, li.MsoIndexHeading, div.MsoIndexHeading {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family:Arial;
-    font-weight:bold;
-}
-
-p.MsoCaption, li.MsoCaption, div.MsoCaption {
-    visible: false;
-    localeRef:mnuCapt;
-    margin-top:6.0pt;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:0in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-    font-weight:bold;
-}
-
-p.MsoTof, li.MsoTof, div.MsoTof {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:20.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-20.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoEnvelopeAddress, li.MsoEnvelopeAddress, div.MsoEnvelopeAddress {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:2.0in;
-    margin-bottom:.0001pt;
-    font-size:12.0pt;
-    font-family:Arial;
-}
-
-p.MsoEnvelopeReturn, li.MsoEnvelopeReturn, div.MsoEnvelopeReturn {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family:Arial;
-}
-
-span.MsoFootnoteReference {
-    visible:false;
-    vertical-align:super;
-}
-
-span.MsoEndnoteReference {
-    visible:false;
-    vertical-align:super;
-}
-
-p.MsoEndnoteText, li.MsoEndnoteText, div.MsoEndnoteText {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoToa, li.MsoToa, div.MsoToa {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:10.0pt;
-    margin-bottom:.0001pt;
-    text-indent:-10.0pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoMacroText, li.MsoMacroText, div.MsoMacroText {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family:"Courier New";
-}
-
-p.MsoToaHeading, li.MsoToaHeading, div.MsoToaHeading {
-    visible:false;
-    margin-top:6.0pt;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:0in;
-    margin-bottom:.0001pt;
-    font-size:12.0pt;
-    font-family:Arial;
-    font-weight:bold;
-}
-
-p.MsoList, li.MsoList, div.MsoList {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.25in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet, li.MsoListBullet, div.MsoListBullet {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.25in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber, li.MsoListNumber, div.MsoListNumber {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.25in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoList2, li.MsoList2, div.MsoList2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.5in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoList3, li.MsoList3, div.MsoList3 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.75in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoList4, li.MsoList4, div.MsoList4 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:1.0in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoList5, li.MsoList5, div.MsoList5 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:1.25in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet2, li.MsoListBullet2, div.MsoListBullet2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.5in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet3, li.MsoListBullet3, div.MsoListBullet3 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.75in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet4, li.MsoListBullet4, div.MsoListBullet4 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:1.0in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListBullet5, li.MsoListBullet5, div.MsoListBullet5 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:1.25in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber2, li.MsoListNumber2, div.MsoListNumber2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.5in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber3, li.MsoListNumber3, div.MsoListNumber3 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.75in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber4, li.MsoListNumber4, div.MsoListNumber4 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:1.0in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListNumber5, li.MsoListNumber5, div.MsoListNumber5 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:1.25in;
-    margin-bottom:.0001pt;
-    text-indent:-.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoTitle, li.MsoTitle, div.MsoTitle {
-    visible: false;
-    localeRef:mnuTtl;
-    margin-top:12.0pt;
-    margin-right:0in;
-    margin-bottom:3.0pt;
-    margin-left:0in;
-    text-align:center;
-    font-size:16.0pt;
-    font-family:Arial;
-    font-weight:bold;
-}
-
-p.MsoClosing, li.MsoClosing, div.MsoClosing {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:3.0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoSignature, li.MsoSignature, div.MsoSignature {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:3.0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyText, li.MsoBodyText, div.MsoBodyText {
-    visible: false;
-    localeRef:mnuBT;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:0in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue, li.MsoListContinue, div.MsoListContinue {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue2, li.MsoListContinue2, div.MsoListContinue2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:.5in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue3, li.MsoListContinue3, div.MsoListContinue3 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:.75in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue4, li.MsoListContinue4, div.MsoListContinue4 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:1.0in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoListContinue5, li.MsoListContinue5, div.MsoListContinue5 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:1.25in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoMessageHeader, li.MsoMessageHeader, div.MsoMessageHeader {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:0in;
-    margin-left:.75in;
-    margin-bottom:.0001pt;
-    text-indent:-.75in;
-    background:#CCCCCC;
-    border:none;
-    padding:0in;
-    font-size:12.0pt;
-    font-family:Arial;
-}
-
-p.MsoSubtitle, li.MsoSubtitle, div.MsoSubtitle {
-    visible: false;
-    localeRef:mnuSttl;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:3.0pt;
-    margin-left:0in;
-    text-align:center;
-    font-size:12.0pt;
-    font-family:Arial;
-}
-
-p.MsoSalutation, li.MsoSalutation, div.MsoSalutation {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoDate, li.MsoDate, div.MsoDate {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextFirstIndent, li.MsoBodyTextFirstIndent, div.MsoBodyTextFirstIndent {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:0in;
-    text-indent:10.5pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextFirstIndent2, li.MsoBodyTextFirstIndent2, div.MsoBodyTextFirstIndent2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:.25in;
-    text-indent:10.5pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoNoteHeading, li.MsoNoteHeading, div.MsoNoteHeading {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyText2, li.MsoBodyText2, div.MsoBodyText2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:0in;
-    line-height:200%;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyText3, li.MsoBodyText3, div.MsoBodyText3 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:0in;
-    font-size:8.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextIndent2, li.MsoBodyTextIndent2, div.MsoBodyTextIndent2 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:.25in;
-    line-height:200%;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBodyTextIndent3, li.MsoBodyTextIndent3, div.MsoBodyTextIndent3 {
-    visible:false;
-    margin-top:0in;
-    margin-right:0in;
-    margin-bottom:6.0pt;
-    margin-left:.25in;
-    font-size:8.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoBlockText, li.MsoBlockText, div.MsoBlockText {
-    visible:false;
-    margin-top:0in;
-    margin-right:1.0in;
-    margin-bottom:6.0pt;
-    margin-left:1.0in;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    background:navy;
-    font-size:10.0pt;
-    font-family:Tahoma;
-}
-
-p.MsoPlainText, li.MsoPlainText, div.MsoPlainText {
-    visible: false;
-    localeRef:mnuPlainT;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family:"Courier New";
-}
-
-p.MsoAutoSig, li.MsoAutoSig, div.MsoAutoSig {
-    visible:false;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:10.0pt;
-    font-family: helvetica, arial, sans-serif;
-}
-
-p.H4, li.H4, div.H4 {
-    visible:false;
-    mso-style-name:H4;
-    margin:0in;
-    margin-bottom:.0001pt;
-    font-size:20.0pt;
-    font-family:"Century Gothic";
-}
-
-@page Section1 {
-    visible: false;
-    size:8.5in 11.0in;
-    margin:1.0in 1.25in 1.0in 1.25in;
-}
-
-div.Section1 {
-    visible:false;
-    page:Section1;
-}
-
-
-/* End: FORMATS (XIMS-EDITOR) */
-/**************************************************************************/
-
 
