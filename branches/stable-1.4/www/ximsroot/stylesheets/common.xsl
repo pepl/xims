@@ -106,7 +106,7 @@
 		</xsl:for-each>
 	</xsl:template>
 	
-	<!-- is used in common_move.xsl, common_contentbrowse.xsl, common_contentbrowse_ewebeditimage.xsl -->
+	<!-- is used in common_move.xsl, common_contentbrowse.xsl -->
 	<xsl:template name="targetpath">
 		<xsl:for-each select="/document/context/object/targetparents/object[@document_id != 1]">
 			<xsl:text>/</xsl:text>
