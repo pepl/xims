@@ -1744,44 +1744,6 @@ $Id$
         return(subStr.substring(0, subStr.indexOf(";")));
     }
 
-    <!--
-        Hack, for Esker Active X plugin/wepro combis on windows
-        inline-popup does not work properly with this software combination
-    -->
-    <![CDATA[
-    // returns true for bad setup; false otherwise
-    function testBadBrowserEditorCombi() {
-        var wysiwygEditor; // which WYSIWYG?
-        var badBrowser = false; // do we have a "bad" browser?
-        // get wysiwyg info
-        if (document.getElementById('xims_wysiwygeditor')) {
-            wysiwygEditor = readCookie('xims_wysiwygeditor');
-            if ( wysiwygEditor != 'wepro' ) {
-                wysiwygEditor = false;
-            }
-        }
-        // get browser info
-        var browser = navigator.userAgent; 
-        var browserRegexp = /.*Mozilla\/5\.0.*rv:(1\.[0-9]).+(Firefox)?.*$/;
-        if ( browser.search(/(MSIE|Opera|Safari).*/) == -1 ) {
-            // we have no IE, Opera, Safari
-            browserRegexp.exec(browser);
-            var revision = RegExp.$1;
-            if ( revision > 1.5 ) {
-                if ( browser.search(/Windows.*/) != -1 ) {
-                    // we have the Windows platform
-                    badBrowser = true;
-                }
-            }
-        }
-        if ( wysiwygEditor && badBrowser ) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    ]]>
     <!-- we need special handling of Object-Types with WYSIWYG
          components -->
     <xsl:if test="$event = 'create'">
