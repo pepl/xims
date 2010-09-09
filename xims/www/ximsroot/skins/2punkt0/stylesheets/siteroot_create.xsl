@@ -11,15 +11,19 @@
 
 <xsl:import href="departmentroot_create.xsl"/>
 
-<xsl:template name="tr-title-create">
-    <tr>
-        <td valign="top">SiteRoot URL/<xsl:value-of select="$i18n/l/Path"/></td>
-        <td colspan="2">
-            <input tabindex="20" type="text" name="title" size="60" class="text"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('SiteRootURL')" class="doclink">(?)</a>
-        </td>
-    </tr>
+<xsl:template name="form-title">
+	<xsl:param name="testlocation" select="false()"/>
+	<div id="tr-title">
+		<div class="label-std">
+			<label for="input-title">
+				SiteRoot URL&#160;*
+			</label>
+		</div>
+		<input type="text" name="title" size="60" class="text" id="input-title" value="{title}">
+		</input>
+		<xsl:text>&#160;</xsl:text>
+		<a href="javascript:openDocWindow('SiteRootURL/Path')" class="doclink">
+			<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;SiteRootURL</xsl:attribute>(?)</a>
+	</div>
 </xsl:template>
-
 </xsl:stylesheet>
