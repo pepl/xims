@@ -1,6 +1,6 @@
 /*
  * Styles for the XIMS-Gallery 
- * author:Ssusanne Tober
+ * author:Susanne Tober
  * */
 .galleria li{
 	display:block;
@@ -10,20 +10,6 @@
 	float:left;
 	margin:0 10px 10px 0
 	}
-.galleria li a{
-	display:none
-	}
-.galleria li div{
-	position:absolute;
-	display:none;top:0;
-	left:40px
-	}
-.galleria li div img{
-	cursor:pointer
-	}
-.galleria li.active div img,.galleria li.active div{
-	display:block
-	}
 .galleria li img.thumb{
 	cursor:pointer;
 	top:auto;
@@ -32,23 +18,13 @@
 	width:auto;
 	height:auto
 	}
-.galleria li .caption{
-	display:block;padding-top:.5em
-	}
-	* html .galleria li div span{
-		width:400px
-	} /* MSIE bug */
-
 #main_image{
 	text-align:center;
 	margin-left:10px;
+	margin-top: 2em;
 	}
 .thumb{
 	height:40px !important;
-	}
-.thumb-nav{
-		margin-right:10px;
-		padding-top:10px;
 	}
 .galleria li.active {
 		border: black solid 3px;
@@ -64,29 +40,18 @@
 .ui-widget-header{
 		background: none !important;
 	}
-.hidden{
-		display: none;
-	}
-	<xsl:if test="$showcaption=0">
-	.caption{
-		display:none;
-	}
-	</xsl:if>
-	
 .scroll-pane { 
-		overflow: auto; 
-		width: <xsl:value-of select="$img-width+20"/>px; 
-		float:left; }
-.scroll-pane.half-width { 
-	margin-top: 40px
-	}
+		border: 1px solid #AAAAAA;
+}
 .scroll-content { 
 	float: left; 
 	}
-.scroll-content-item { width: 100px; height: 100px; float: left; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; }
-* html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
-.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
-.scroll-bar-wrap .ui-slider { background: none; border:0; height: 2em; margin: 0 auto;  }
-.scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 100%; height: 100%; margin: 0 auto; }
-.scroll-bar-wrap .ui-slider-handle { top:.2em; height: 1.5em; }
-.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
+.div-left{
+	float: left;
+	}
+.div-right{
+	float:right;
+	}
+.hidden{
+	display: none;
+}

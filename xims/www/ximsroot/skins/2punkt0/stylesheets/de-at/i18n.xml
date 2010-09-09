@@ -310,6 +310,7 @@
 <TableOfContents>Inhaltsangabe</TableOfContents>
 <ConfDeletion1>Löschen von</ConfDeletion1>
 <ConfDeletion2>bestätigen</ConfDeletion2>
+<CopyChildren>Alle Kindobjekte mitkopieren</CopyChildren>
 <ID>ID</ID>
 <Done>Fertig</Done>
 <ManageContent>Inhalte verwalten</ManageContent>
@@ -345,6 +346,8 @@
 <AboutDeletion1_User>Sie sind dabei den Account</AboutDeletion1_User>
 <AboutDeletion2>zu löschen.</AboutDeletion2>
 <WarnNoUndo>Dies ist eine endgültige Aktion und kann nicht rückgängig gemacht werden!</WarnNoUndo>
+<ChildObjectsFound>Kindobjekte gefunden</ChildObjectsFound>
+<alsoDeleted>die ebenfalls gelöscht würden</alsoDeleted>
 <ClickCancelConf>Klicken Sie auf 'Bestätigen' um fortzufahren, oder 'Abbrechen' um zur vorigen Seite zu gelangen.</ClickCancelConf>
 <Confirm>Bestätigen</Confirm>
 <!-- start publish interaction -->
@@ -370,6 +373,20 @@
 <Search_objTree_img>Oder den XIMS Objektbaum nach einem Bild durchsuchen</Search_objTree_img>
 <Search_objTree_obj>Oder den XIMS Objektbaum nach einem Objekt durchsuchen</Search_objTree_obj>
 <Opt_sel_link>Link-Ziel (optional)</Opt_sel_link>
+<!-- Gallery -->
+<ImageSize>Größe der Bilder</ImageSize>
+<Width>Breite</Width>
+<small>klein</small>
+<medium>mittel</medium>
+<large>groß</large>
+<ThumbPosition>Position der Thumbnail-Leiste</ThumbPosition>
+<top>oben</top>
+<bottom>unten</bottom>
+<left>links</left>
+<noThumbs>keine Thumbnails</noThumbs>
+<ShowCaption>Zeige Bildbeschreibung an</ShowCaption>
+<ShowNavigation>Zeige Navigation an</ShowNavigation>
+<!-- end Gallery -->
 <!-- start reflib / vlib-->
 <Assign>Zuweisen</Assign>
 <Insert>Einfügen</Insert>
@@ -435,6 +452,7 @@
 <!-- end reflib / vlib-->
 <!-- userpages -->
 <SelectSkin>Skin auswählen</SelectSkin>
+<whatToShow>was soll angezeigt werden</whatToShow>
 <!--  end userpages -->
 <Email_To>An</Email_To>
 <Email_Reply-To>Antworten an</Email_Reply-To>

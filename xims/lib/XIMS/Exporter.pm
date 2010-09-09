@@ -2293,6 +2293,38 @@ sub create {
             return;
         }
         ###
+        
+        ########## image index exp ########
+        # first, the object DOM
+        my $raw_dom2 = $self->generate_dom_galleryimages();
+
+        unless ( $raw_dom2 ) {
+            XIMS::Debug( 2, "metadata cannot be generated" );
+            return;
+        }
+        my $transd_dom2 = $self->transform_dom_gallery( $raw_dom2 );
+
+        unless ( $transd_dom2 ) {
+            XIMS::Debug( 2, "transformation failed" );
+            return;
+        }
+        
+        my $meta_path2 = $new_path . '/images.htm';
+        XIMS::Debug( 4, "index file is $meta_path2" );
+        # write the file...
+        my $meta_fh2 = IO::File->new( $meta_path2, 'w' );
+
+        if ( defined $meta_fh2 ) {
+            binmode( $meta_fh2, ':utf8' );
+            print $meta_fh2 $transd_dom2->toString();
+            $meta_fh2->close;
+            XIMS::Debug( 4, "metadata-dom written" );
+        }
+        else {
+            XIMS::Debug( 2, "Error writing file '$meta_path2': $!" );
+            return;
+        }
+        ###
     }
 
     # mark the folder as published
@@ -2466,6 +2498,38 @@ sub generate_dom_gallery {
     $self->{Stylesheet} = XIMS::XIMSROOT() . '/stylesheets/exporter/export_galleryindex.xsl'; # . XIMS::AUTOINDEXEXPORTSTYLESHEET();
     warn "\n gallery locationpath : ".$self->{Object}->location_path();
     $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/.galleryindex.html'; # . XIMS::AUTOINDEXFILENAME();
+
+    return $dom;
+}
+
+sub generate_dom_galleryimages {
+    XIMS::Debug( 5, "called" );
+    my $self = shift;
+
+    # temporarily set department id to document for object roots to trick the
+    # auto index to point to the correct ou.xml
+    my $department_id = $self->{Object}->department_id();
+    if ( $self->{Object}->object_type->is_objectroot() ) {
+        $self->{Object}->department_id( $self->{Object}->document_id() ) ;
+    }
+
+    my $dom = $self->SUPER::generate_dom( @_ );
+
+    # set back
+    $self->{Object}->department_id( $department_id ) ;
+
+    return unless $dom;
+
+    # after a second thought, i guess it would be better to convert the DOM
+    # with an exporter stylesheet instead of letting a stylesheet called from
+    # AxKit do the work. why? because of having ONE common schema for dumb
+    # end-userstylesheet-designers making things easier for them.
+    # exporter_document_autoindex.xsl should create a file quite similar to
+    # the result of exporter_document.xsl
+
+    $self->{Stylesheet} = XIMS::XIMSROOT() . '/stylesheets/exporter/export_galleryimages.xsl'; # . XIMS::AUTOINDEXEXPORTSTYLESHEET();
+    warn "\n gallery locationpath : ".$self->{Object}->location_path();
+    $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/.images.htm'; # . XIMS::AUTOINDEXFILENAME();
 
     return $dom;
 }
