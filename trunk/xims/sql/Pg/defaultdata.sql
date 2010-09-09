@@ -45,10 +45,6 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'SymbolicLink', 0, 1, 0, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'AnonDiscussionForum', 1, 1, 0, 1 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'AnonDiscussionForumContrib', 0, 1, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'NewsItem', 0, 1, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'Annotation', 0, 0, 0, 0 );
@@ -143,8 +139,6 @@ INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'XSP', 'text/xml', 'xsp');
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'ECMA', 'text/javascript','js' );
-INSERT INTO ci_data_formats ( id, name, mime_type )
-       VALUES ( nextval('ci_data_formats_id_seq'), 'AnonDiscussionForum', 'application/x-container' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'Portlet', 'text/xml', 'ptlt' );
 INSERT INTO ci_data_formats ( id, name, mime_type )
@@ -301,9 +295,6 @@ INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
        VALUES ( 5, 2, 7 );
 -- SymbolicLink
-INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
-       VALUES ( 5, 2, 12 );
--- AnonDiscussionForum
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id )
        VALUES ( 5, 2, 13 );
 -- Text

@@ -22,6 +22,10 @@
             <body>
                 <div class="edit">
                     <xsl:call-template name="table-edit"/>
+					<p style="color:maroon"><b>Lieber XIMS-Nutzer,<br/>bitte beachten Sie, dass der eWebEditPro 
+					mit Ende Oktober nicht mehr zur Verfügung steht. Ab diesem Zeitpunkt wird Xims nur noch den 
+					Editor TinyMCE unterstützen, für den wir aktuell neue Features und Formatierungsmöglichkeiten 
+					entwickeln.<br/>Das Xims-Support Team</b></p>
                     <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
                         <table border="0" width="98%">
                             <xsl:call-template name="tr-locationtitle-edit_doc"/>

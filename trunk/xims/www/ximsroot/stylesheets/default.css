@@ -1,4 +1,4 @@
-/*
+﻿/*
 # Copyright (c) 2002-2009 The XIMS Project.
 # See the file "LICENSE" for information on usage and redistribution
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
@@ -337,7 +337,7 @@ tt {
 /**************************************************************************/
 /* Begin: FORMATS (UNISITES) */
 /* Formats for the uni-header, the uni-search, standardLinks, departmentLinks, documentLinks, */
-/* the content, the uni-footer, the list elements and the uni-forum */
+/* the content, the uni-footer, the list elements */
 
 
 /* uni-header */
@@ -735,44 +735,6 @@ li.emaillist, ul.emaillist {
     text-indent:-5px;
 }
 
-/* formats for the uni-forum */
-
-.forumbox {
-    visible:false;
-    border:1px solid #888888;
-    padding-left:2px;
-    padding-right:2px;
-}
-
-.forumhead {
-    visible:false;
-    background-color:#ced3d6;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
-}
-
-.forumcontent	{
-    visible:false;
-    vertical-align:top;
-    font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
-    line-height:120%;
-    text-align:left;
-    padding-left:15px;
-    padding-right:0px;
-    padding-top:10px;
-    padding-bottom:10px;
-}
-
-.foruminput {
-    visible:false;
-    border-top:#333333 solid 1px;
-    border-bottom:#333333 solid 1px;
-    border-right:#333333 solid 1px;
-    border-left:#333333 solid 1px;
-    font-family:verdana, helvetica, sans-serif;
-    width:470px;
-}
 
 /* End: FORMATS (UNISITES) */
 /**************************************************************************/
