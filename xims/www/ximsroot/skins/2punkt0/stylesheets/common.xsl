@@ -46,6 +46,7 @@
 	<xsl:variable name="l_Release_lock" select="$i18n/l/Release_lock"/>
 	<xsl:variable name="l_Locked" select="$i18n/l/Locked"/>
 	<xsl:variable name="l_Object_locked" select="$i18n/l/Object_locked"/>
+	
 	<xsl:template name="cancelform">
 		<xsl:param name="with_save" select="'yes'"/>
 		<!-- method get is needed, because goxims does not handle a PUTed 'id' -->
@@ -63,12 +64,13 @@
 			&#160;<br/>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="cancelform-copy">
 		<div class="cancel-save cancelsave-form">
 			<button type="submit" name="submit_eform" accesskey="S" onclick="document.eform.store.click(); return false">
 				<xsl:value-of select="$i18n/l/save"/>
 			</button>
-			<button class="save-button-js hidden" type="submit" name="submit_eform" accesskey="C" onclick="document.cform.cancel.click(); return false">
+			<button class="save-button-js" type="submit" name="submit_eform" accesskey="C" onclick="document.cform.cancel.click(); return false">
 				<xsl:value-of select="$i18n/l/cancel"/>
 			</button>
 		</div>
@@ -77,6 +79,7 @@
 		<br/>
 		&#160;
 	</xsl:template>
+	
 	<xsl:template name="cancelcreateform">
 		<xsl:param name="with_save" select="'yes'"/>
 		<div class="cancel-save">
@@ -92,6 +95,7 @@
 			&#160;<br/>
 		</div>
 	</xsl:template>
+	
 	<!--	legacy-->
 	<xsl:template name="cancelaction">
 		<xsl:call-template name="cancelcreateform">
@@ -114,11 +118,13 @@
 		</xsl:call-template>
 	</xsl:template>
 	<!--	end legacy-->
+	
 	<xsl:template name="save_jsbutton">
-		<button class="save-button-js hidden" type="submit" name="submit_eform" accesskey="S" onclick="$('#store').click(); return false">
+		<button class="save-button-js" type="submit" name="submit_eform" accesskey="S" onclick="$('#store').click(); return false">
 			<xsl:value-of select="$i18n/l/save"/>
 		</button>
 	</xsl:template>
+	
 	<xsl:template name="exitredirectform">
 		<xsl:variable name="object_type_id" select="object_type_id"/>
 		<xsl:variable name="parent_id" select="@parent_id"/>
@@ -163,8 +169,9 @@
 			<input name="sb" type="hidden" value="date"/>
 			<input name="order" type="hidden" value="desc"/>
 		</xsl:if>
-		<input type="submit" name="store" value="{$i18n/l/save}" class="save-button" accesskey="S" id="store"/>
+		<input type="submit" name="store" value="{$i18n/l/save}" class="save-button hidden" accesskey="S" id="store"/>
 	</xsl:template>
+	
 	<xsl:template name="form-grant">
 		<div id="tr-grantowneronly" class="form-div block">
 			<h2>
@@ -209,8 +216,8 @@
 					(?)</a>
 		</div>
 	</xsl:template>
-	<xsl:template name="publish-on-save">		
-			<div class="block">
+	<xsl:template name="publish-on-save">
+		<div class="block">
 			<xsl:if test="$usertype = 'expert'">
 				<div class="label">
 					<label for="input-pubonsave">
@@ -226,9 +233,8 @@
 				<a href="javascript:openDocWindow('pubonsave')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Pub_on_save"/></xsl:attribute>
 					(?)</a>
-					</xsl:if>
-			</div>
-		
+			</xsl:if>
+		</div>
 	</xsl:template>
 	<xsl:template name="form-marknew-pubonsave">
 		<div class="form-div ui-corner-all div-right">
@@ -491,7 +497,6 @@
 			</div>
 		</div>
 	</xsl:template>
-	
 	<xsl:template name="form-bodyfromfile-create">
 		<div id="tr-bodyfromfile">
 			<div id="label-bodyfromfile">
@@ -521,11 +526,10 @@
 	<xsl:template name="jsorigbody">
 		<xsl:call-template name="mk-inline-js">
 			<xsl:with-param name="code">
-         var origbody = document.getElementById('body').value; //'<xsl:value-of select="$bodycontent"/>';
+         var origbody = document.getElementById('body').value; 
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
 	<xsl:template name="form-body-create">
 		<xsl:param name="with_origbody" select="'no'"/>
 		<xsl:param name="mode" select="html"/>
@@ -567,14 +571,12 @@
 			<xsl:call-template name="trytobalance"/>
 		</div>
 	</xsl:template>
-	
 	<xsl:template name="testbodysxml">
 		<xsl:call-template name="wfcheckjs"/>
 		<a href="javascript:void()" onclick="return wfcheck();">
 			<img src="{$skimages}option_wfcheck.png" alt="{$i18n/l/Test_body_xml}" title="{$i18n/l/Test_body_xml}" width="32" height="19"/>
 		</a>
 	</xsl:template>
-	
 	<xsl:template name="prettyprint">
 		<xsl:param name="ppmethod" select="'htmltidy'"/>
 		<xsl:call-template name="prettyprintjs">
@@ -584,7 +586,6 @@
 			<img src="{$skimages}option_prettyprint.png" alt="{$i18n/l/Prettyprint}" title="{$i18n/l/Prettyprint}" width="32" height="19"/>
 		</a>
 	</xsl:template>
-	
 	<xsl:template name="form-body-edit">
 		<xsl:param name="with_origbody" select="'no'"/>
 		<xsl:param name="mode" select="html"/>
@@ -629,9 +630,7 @@
 			<xsl:call-template name="trytobalance"/>
 		</div>
 	</xsl:template>
-	
 	<xsl:template name="trytobalance"/>
-	
 	<xsl:template name="ui-resizable">
 		<script type="text/javascript">
 				$(function() {
@@ -978,7 +977,6 @@
 			</a>
 		</div>
 	</xsl:template>
-	
 	<xsl:template name="tr-image-edit">
 		<div id="tr-image">
 			<div class="label-std">
@@ -996,8 +994,6 @@
 			</a>
 		</div>
 	</xsl:template>
-
-	
 	<xsl:template name="ui-datepicker">
 		<xsl:param name="formfield_id"/>
 		<xsl:param name="input_id"/>
@@ -1050,7 +1046,6 @@
 		<input type="hidden" name="{$formfield_id}" id="{$formfield_id}">
 		</input>
 	</xsl:template>
-	
 	<xsl:template name="form-valid_from">
 		<div id="tr-validfrom">
 			<div class="label-std">
@@ -1081,7 +1076,6 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
 		</div>
 	</xsl:template>
-	
 	<xsl:template name="form-valid_to">
 		<div>
 			<div class="label-std">
@@ -1112,7 +1106,6 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_to"/></xsl:attribute>(?)</a>
 		</div>
 	</xsl:template>
-	
 	<xsl:template name="form-pagerowlimit-edit">
 		<div id="tr-pagerowlimit">
 			<div class="label-large">
@@ -1349,9 +1342,23 @@
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
 				<a class="button option-acl">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:attribute name="id">option-acl_<xsl:value-of select="$id"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllight=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 					<xsl:value-of select="$l_Access_control"/>
 				</a>
+				<script type="text/javascript">
+	$(document).ready(function() {
+
+				$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({ 
+					content: function(response) {
+//$.get('<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_aclight=1')"/>', response);					
+					$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllight=1')"/>', response);
+					return "Loading...";
+				}
+				});
+				});
+
+	</script>
 			</xsl:when>
 			<xsl:when test="user_privileges/delete and marked_deleted = '1'">
 				<a class="button option-undelete">
@@ -1780,7 +1787,6 @@
 		var textLocFirst = "<xsl:value-of select="$i18n/l/IlpProvideLocationFirst"/>";
 			</script>
 	</xsl:template>
-
 	<xsl:template name="form-minify">
 		<div>
 			<div class="label">
@@ -1808,7 +1814,6 @@
       </script>
 		</xsl:if>
 	</xsl:template>
-
 	<xsl:template name="mk-textfield">
 		<xsl:param name="title-i18n" select="''"/>
 		<xsl:param name="title" select="$title-i18n"/>
@@ -1891,30 +1896,7 @@
 			</td>
 		</tr>
 	</xsl:template>
-	<xsl:template name="mk-ui-button">
-		<xsl:param name="icon">
-			<xsl:value-of select="$icon"/>
-		</xsl:param>
-		<xsl:param name="text">
-			<xsl:value-of select="$text"/>
-		</xsl:param>
-		<xsl:param name="type">
-			<xsl:value-of select="$type"/>
-		</xsl:param>
-		<xsl:param name="name">
-			<xsl:value-of select="$name"/>
-		</xsl:param>
-		<xsl:param name="title">
-			<xsl:value-of select="$title"/>
-		</xsl:param>
-		<button>
-			<xsl:attribute name="class"><xsl:value-of select="$icon"/></xsl:attribute>
-			<xsl:attribute name="type"><xsl:value-of select="$type"/></xsl:attribute>
-			<xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
-			<xsl:attribute name="title"><xsl:value-of select="$title"/></xsl:attribute>
-			<xsl:value-of select="$text"/>
-		</button>
-	</xsl:template>
+
 	<xsl:template name="mk-inline-js">
 		<xsl:param name="code"/>
 		<script type="text/javascript">
@@ -1929,6 +1911,13 @@
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="reflib" select="false()"/>
+		<!--	test-->
+		<!--<script src="{$ximsroot}scripts/jquery/jquery-1.4.2.js" type="text/javascript"/>-->
+		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js" type="text/javascript"/>-->
+		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m2.js" type="text/javascript"/>-->
+		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
+		<!--<script src="{$ximsroot}scripts/jquery/fg.menu.js" type="text/javascript"/>-->
+		<!--end test-->
 		<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>
 		<xsl:if test="$tinymce">
 			<xsl:call-template name="tinymce_scripts"/>
@@ -1951,10 +1940,10 @@
     </script>
 		</xsl:if>
 		<xsl:if test="$reflib">
+		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
 			<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"/>
 		</xsl:if>
 	</xsl:template>
-	
 	<xsl:template match="/document/context/object/parents/object">
 		<xsl:param name="no_navigation_at_all">false</xsl:param>
 		<xsl:variable name="thispath">
@@ -1966,7 +1955,6 @@
 			</a>
 		</xsl:if>
 	</xsl:template>
-
 	<!-- used in urllink-contentbrowse, returns the absolute path of target
 	  only working as long as the title of the siteroot is named something like "http://www.uibk.ac.at"-->
 	<xsl:template name="targetpath_abs">
@@ -2009,7 +1997,7 @@
 				<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>
 				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path')" class="doclink">
+				<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path',600,400)" class="doclink">
 					<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Object"/>
 				</a>
 			</p>
