@@ -75,15 +75,14 @@
       </div>
 <br/>
     <p>
-      <input type="submit"
+      <button type="submit"
              onclick="window.opener.refresh('publication');self.close();return false;"
-             value="OK, {$i18n/l/close_window}"
-             class="ui-corner-all fg-button ui-state-default"
-             accesskey="S"/>
+             class="button"
+             accesskey="S">OK, <xsl:value-of select="$i18n/l/close_window"/></button>
       &#160;
       <!-- The simple solution history.go(-1) would lead to a stale -->
       <!-- second entry, if we wanted tho fix a freshly created publication. -->
-      <input type="submit" onclick="location.replace('{$xims_box}{$goxims_content}' + '?id={/document/context/object/@id}' + ';property_edit=1;property=publication;property_id={@id}'); return false;" value="{$i18n/l/Back}" class="ui-corner-all fg-button ui-state-default" accesskey="B"/> </p>
+      <button type="submit" onclick="location.replace('{$xims_box}{$goxims_content}' + '?id={/document/context/object/@id}' + ';property_edit=1;property=publication;property_id={@id}'); return false;" class="button" accesskey="B"><xsl:value-of select="$i18n/l/Back"/></button> </p>
   </xsl:template>
 
 </xsl:stylesheet>

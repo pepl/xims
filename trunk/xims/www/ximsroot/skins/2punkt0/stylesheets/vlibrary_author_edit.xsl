@@ -21,7 +21,7 @@
 				<xsl:call-template name="css"/>
 				<xsl:call-template name="script_head"/>
 			</head>
-			<body>
+			<body style="width:auto;">
 				<div id="content-container">
 					<form action="{$xims_box}{$goxims_content}" name="eform" method="get" id="create-edit-form">
 						<input type="hidden" name="id" id="id" value="{@id}"/>
@@ -101,8 +101,8 @@
     <p>
 			<input type="hidden" name="vlauthor_id" id="vlauthor_id" value="{@id}"/>
 			<input type="hidden" name="property" id="property" value="author"/>
-			<input type="submit" name="property_store" value="{$i18n/l/save}" class="ui-corner-all fg-button ui-state-default" accesskey="S"/>&#160;
-      <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="ui-corner-all fg-button ui-state-default" accesskey="C" onclick="self.close();"/>
+			<button type="submit" name="property_store" class="button" accesskey="S"><xsl:value-of select="$i18n/l/save"/></button>&#160;
+      <button type="submit" name="cancel" class="button" accesskey="C" onclick="self.close();"><xsl:value-of select="$i18n/l/cancel"/></button>
 		</p>
   </xsl:template>
 

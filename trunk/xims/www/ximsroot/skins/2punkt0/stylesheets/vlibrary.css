@@ -19,7 +19,7 @@
 #search-filter > div{
 	float:left;
 	margin-left:10px;
-	margin-right:10px;
+	margin-right:5px;
 	}
 	
 #vlib-subjects{
@@ -199,4 +199,9 @@ border-left: dotted 1px #a0a0a0;
     vertical-align: text-bottom;
 }
 */
+
+.ui-autocomplete-input + button{
+	height: 1.4em;
+	top: 4px;
+}
 
