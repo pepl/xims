@@ -1,22 +1,38 @@
 /**
- * @author susanne tober
+ * @author c10209
  */
-
+	
+	function showNext(){
+	}
 	$(document).ready(function(){
+	
+		/*
+		$('.seek-prev').button({
+			icons: {primary: 'ui-icon-seek-prev'},
+      text: false
+		});
+		$('.seek-next').button({
+			icons: {primary: 'ui-icon-seek-next'},
+      text: false
+		});
+*/
 		
 		$('.gallery_demo_unstyled').addClass('gallery_demo'); // adds new class name to maintain degradability
 		
 		$('ul.gallery_demo').galleria({
 			history   : true, // activates the history object for bookmarking, back-button etc.
 			clickNext : true, // helper for making the image clickable
-			insert    : '#main_image', // the containing selector for our main image	
+			insert    : '#main_image', // the containing selector for our main image
+			/*onThumb: function(){
+				scaleimg();
+			},	*/	
 			onImage	  : function(){
 				scaleimg();
 			}	
 		});
 		
 		//scrollpane parts
-		var scrollPane = $('.scroll-pane');
+		/* var scrollPane = $('.scroll-pane');
 		var scrollContent = $('.scroll-content');
 		
 		//build slider
@@ -80,4 +96,6 @@
 		});
 		//init scrollbar size
 		setTimeout(sizeScrollbar,10);//safari wants a timeout
+
+*/
 	});
