@@ -21,8 +21,6 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'XSPScript', 0, 0, 1, 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'URLLink', 0, 1, 0, 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'SymbolicLink', 0, 1, 0, 0 );
-INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'AnonDiscussionForum', 1, 1, 0, 1 );
-INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'AnonDiscussionForumContrib', 0, 1, 0, 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'NewsItem', 0, 1, 1, 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'Annotation', 0, 0, 0, 0);
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'Portlet', 0, 1, 1, 0 );
@@ -71,7 +69,6 @@ INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEX
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'BZip', 'application/x-bzip2','bz2' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'XSP', 'text/xml', 'xsp');
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'ECMA', 'text/javascript','js' );
-INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'AnonDiscussionForum', 'application/x-container' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'Portlet', 'text/xml', 'ptlt' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'DepartmentRoot', 'application/x-container' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'SiteRoot', 'application/x-container' );
@@ -162,8 +159,6 @@ INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALU
 -- XSLStylesheet
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 5, 2, 7 );
 -- SymbolicLink
-INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 5, 2, 12 );
--- AnonDiscussionForum
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 5, 2, 13 );
 -- Text
 INSERT INTO CI_OBJECT_TYPE_PRIVS ( grantee_id, grantor_id, object_type_id ) VALUES ( 5, 2, 20 );

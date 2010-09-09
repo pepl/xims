@@ -167,8 +167,7 @@
                         jerboaa, 2007-07-19: Do not show object types which contain "Item" in their name with the only exception
 	                     of "NewsItem"! 
                     -->
-          <!--susanne 2010-03-02: AnonDiscussionForum will not be supported anymore. Until Objecttype is deleted from database, we have to exclude it manually-->
-					<xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or contains(fullname,'AnonDiscussionForum') or name = 'BidokEntry' or name = 'BidokIndex' or ( contains(fullname,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]" mode="fo-menu">
+					<xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'BidokEntry' or name = 'BidokIndex' or ( contains(fullname,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]" mode="fo-menu">
 						<xsl:sort select="name"/>
 					</xsl:apply-templates>
 				</ul>
@@ -186,7 +185,7 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<!-- Do not show object types which contain "Item" in their name with the only exception of "NewsItem"! -->
-							<xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and name != 'AnonDiscussionForumContrib' and not(contains(name,'Item') and not(substring-before(name, 'Item')='News')) and parent_id = $parent_id]" mode="form">
+							<xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and not(contains(name,'Item') and not(substring-before(name, 'Item')='News')) and parent_id = $parent_id]" mode="form">
 								<xsl:sort select="name"/>
 							</xsl:apply-templates>
 						</xsl:otherwise>
@@ -206,32 +205,6 @@
 			</form>
 		</noscript>
 		</xsl:when>
-		
-	<!--	Forum -->
-	<xsl:when test="$mode='forum'">
-			<div id="create-widget">
-				<button class="button">				
-				<xsl:value-of select="$i18n/l/Create"/>
-			</button>
-				<div id="object-types" class="hidden-content">
-					<ul>
-						<li>
-							<a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype=AnonDiscussionForumContrib">
-								<xsl:value-of select="$i18n/l/New_topic"/>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<noscript>
-				<form action="{$xims_box}{$goxims_content}{$absolute_path}" method="get">
-					<input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-					<button type="submit" name="create" class="button">
-						<xsl:value-of select="$i18n/l/Create_topic"/>
-					</button>
-				</form>
-			</noscript>
-	</xsl:when>
 	</xsl:choose>	
 	</xsl:template>
 	

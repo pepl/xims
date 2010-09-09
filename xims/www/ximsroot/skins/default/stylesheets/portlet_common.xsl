@@ -17,7 +17,7 @@
 
 <!-- think of an object-type property "independent" instead of filtering object_types by name -->
 <xsl:variable name="filtered_ots">
-    <xsl:for-each select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'AnonDiscussionForumContrib' and name != 'Annotation' and name != 'VlibraryItem' and name != 'DocBookXML']">
+    <xsl:for-each select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'Annotation' and name != 'VlibraryItem' and name != 'DocBookXML']">
         <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
         <xsl:copy>
             <xsl:copy-of select="@*|*"/>

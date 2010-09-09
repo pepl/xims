@@ -185,23 +185,6 @@
 <from>from</from>
 <to>to</to>
 <!-- End  common_move_browse -->
-<!-- Begin anondiscussionforum* -->
-<Create_topic>Create topic</Create_topic>
-<New_topic>New topic</New_topic>
-<Topic>Topic</Topic>
-<Created>Created</Created>
-<Author>Author</Author>
-<Coauthor>Co-Author</Coauthor>
-<Replies>Replies</Replies>
-<Last_reply>Last Reply</Last_reply>
-<Topic_overview>Overview of Topics</Topic_overview>
-<reply>reply</reply>
-<Previous_replies>Previous Replies</Previous_replies>
-<Email>e-mail</Email>
-<Text>Text</Text>
-<Discussionforum>Discussion Forum</Discussionforum>
-<In_reply_to>In reply to</In_reply_to>
-<!-- End anondiscussionforum* -->
 <!-- Begin file|image_default -->
 <View_download>View / Download</View_download>
 <!-- End file|image_default -->
@@ -282,7 +265,6 @@
 <Image>Image</Image>
 <Text>Text</Text>
 <URLLink>URL-Link</URLLink>
-<AnonDiscussionForum>AnonDiscussionForum</AnonDiscussionForum>
 <AxPointPresentation>AxPointPresentation</AxPointPresentation>
 <CSS>CSS</CSS>
 <DepartmentRoot>Department Root</DepartmentRoot>
@@ -365,6 +347,20 @@
 <Path_to_img>Path to image</Path_to_img>
 <Search_objTree_img>Or search for image in the XIMS object tree</Search_objTree_img>
 <Opt_sel_link>Link target (optional)</Opt_sel_link>
+<!-- Gallery -->
+<ImageSize>Image Size</ImageSize>
+<Width>Width</Width>
+<small>small</small>
+<medium>medium</medium>
+<large>large</large>
+<ThumbPosition>Position of Thumbnails</ThumbPosition>
+<top>top</top>
+<bottom>bottom</bottom>
+<left>left</left>
+<noThumbs>no Thumbnails</noThumbs>
+<ShowCaption>Show image caption</ShowCaption>
+<ShowNavigation>Show Navigation</ShowNavigation>
+<!-- end Gallery -->
 <!-- start reflib / vlib-->
 <Assign>Assign</Assign>
 <Insert>Insert</Insert>

@@ -13,7 +13,7 @@
 	<xsl:variable name="i18n_portlet" select="document(concat($currentuilanguage,'/i18n_portlet.xml'))"/>
 	<!-- think of an object-type property "independent" instead of filtering object_types by name -->
 	<xsl:variable name="filtered_ots">
-		<xsl:for-each select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'AnonDiscussionForumContrib' and name != 'Annotation' and name != 'VLibraryItem' and name != 'DocBookXML']">
+		<xsl:for-each select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'Annotation' and name != 'VLibraryItem' and name != 'DocBookXML']">
 			<xsl:sort select="translate(fullname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending" data-type="text"/>
 			<xsl:copy>
 				<xsl:copy-of select="@*|*"/>

@@ -185,23 +185,6 @@
 <from>von</from>
 <to>nach</to>
 <!-- End  common_move_browse -->
-<!-- Begin anondiscussionforum* -->
-<Create_topic>Neues Thema erstellen</Create_topic>
-<New_topic>Neues Thema</New_topic>
-<Topic>Thema</Topic>
-<Created>Erstellt</Created>
-<Author>Autor&#x2009;/&#x2009;-in</Author>
-<Coauthor>Co-Autor&#x2009;/&#x2009;-in</Coauthor>
-<Replies>Antworten</Replies>
-<Last_reply>Letzte Antwort</Last_reply>
-<Topic_overview>Themenübersicht</Topic_overview>
-<reply>Antworten</reply>
-<Previous_replies>Bisherige Antworten</Previous_replies>
-<Email>E-Mail</Email>
-<Text>Text</Text>
-<Discussionforum>Diskussionsforum</Discussionforum>
-<In_reply_to>In Antwort auf</In_reply_to>
-<!-- End anondiscussionforum* -->
 <!-- Begin file|image_default -->
 <View_download>Betrachten / Herunterladen</View_download>
 <!-- End file|image_default -->
@@ -285,7 +268,6 @@
 <Image>Bild</Image>
 <Text>Text</Text>
 <URLLink>URL-Link</URLLink>
-<AnonDiscussionForum>AnonDiscussionForum</AnonDiscussionForum>
 <AxPointPresentation>AxPointPresentation</AxPointPresentation>
 <CSS>CSS</CSS>
 <DepartmentRoot>Department Root</DepartmentRoot>

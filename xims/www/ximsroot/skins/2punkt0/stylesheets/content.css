@@ -438,25 +438,6 @@ hr {
 	clear: both;
 	margin-top: 5px;
 }
-
-.forumhead {
-    background-color: #ced3d6;
-    margin-bottom: 10px;
-}
-.forumcontent {
-	width: 150px;
-	display: inline;
-	float: left;
-}
-.foruminput {
-    border:#333333 solid 1px;
-    margin-bottom: 10px;
-}
-.forumbox{
-	border: 1px #888888 solid;
-	padding: 10px;
-}
-
 .xdelete{
 	background-color:#b1b5b8;
 	border:#333333 solid 1px;
