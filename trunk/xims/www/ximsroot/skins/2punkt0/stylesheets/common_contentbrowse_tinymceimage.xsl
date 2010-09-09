@@ -49,15 +49,15 @@
 <xsl:template name="selectform">
     <form action="{$xims_box}{$goxims_content}" method="post" name="selectform" id="select-form">
         <div>
-					<div id="label-image"><label for="input-image"><xsl:value-of select="$i18n/l/Path_to_img"/></label></div>
+					<div class="label-std"><label for="input-image"><xsl:value-of select="$i18n/l/Path_to_img"/></label></div>
 					<input type="text" name="imgpath" size="60" id="input-image"/>
 				</div>
 							<div>
-                <div id="label-title"><label for="input-title"><xsl:value-of select="$i18n/l/Title"/></label></div>
+                <div class="label-std"><label for="input-title"><xsl:value-of select="$i18n/l/Title"/></label></div>
                 <input type="text" name="imgtext" size="60" id="input-title"/>
 							</div>
 
-                 <div><button type="button" onclick="insertfile();">Store Back</button> </div>
+                 <div><button type="button" onclick="insertfile();" class="button" >Store Back</button> </div>
 
             <div><xsl:value-of select="$i18n/l/Search_objTree_img"/>
             </div>

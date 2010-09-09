@@ -21,7 +21,7 @@
 <xsl:template match="/document/context/object">
 <html>
 	<xsl:call-template name="head_default"/>
-  <body>
+  <body  style="width:auto !important;">
     <p align="right"><a href="#" onclick="window.close()"><xsl:value-of select="$i18n/l/close_window"/></a></p>
 	<div id="content-container">
     <form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
