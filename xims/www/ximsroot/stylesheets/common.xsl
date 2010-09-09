@@ -139,6 +139,14 @@
 		</xsl:if>
 	</xsl:template>
 	
+	<xsl:template name="departmentpath">
+		<!--<xsl:value-of select="/document/context/object/parents/object[@id = department_id]/location"/>-->
+		<xsl:for-each select="/document/context/object/parents/object[@parent_id &gt; 1 and ( @document_id &lt; /document/context/object/department_id or @document_id = /document/context/object/department_id) ]">
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="location"/>
+		</xsl:for-each>
+	</xsl:template>
+	
 	<xsl:template match="/document/context/object/parents/object">
 		<xsl:param name="no_navigation_at_all">false</xsl:param>
 		<xsl:variable name="thispath">
