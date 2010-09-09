@@ -37,8 +37,8 @@
 						<xsl:call-template name="tr-property_properties"/>
 					<div>
 						<input type="hidden" name="property_id" value="{$property_id}"/>
-						<input type="submit" name="update_property_mapping" value="{$i18n_simpledb/l/Save_changes}" class="ui-state-default ui-corner-all fg-button"/>&#160;
-													<input type="button" name="discard" value="{$i18n_simpledb/l/Stop_editing}" onclick="window.location.href='{$xims_box}{$goxims_content}{$absolute_path}?edit=1'; return true;" class="ui-state-default ui-corner-all fg-button"/>
+						<button type="submit" name="update_property_mapping" class="button"><xsl:value-of select="$i18n_simpledb/l/Save_changes"/></button>&#160;
+						<button type="button" name="discard" onclick="window.location.href='{$xims_box}{$goxims_content}{$absolute_path}?edit=1'; return true;" class="button"><xsl:value-of select="$i18n_simpledb/l/Stop_editing"/></button>
 					</div>
 				</xsl:when>
 				<xsl:otherwise>
@@ -47,7 +47,7 @@
 					</div>
 					<xsl:call-template name="tr-property_properties"/>
 					<div>
-						<input type="submit" name="create_property_mapping" value="{$i18n_simpledb/l/Create_property}" class="ui-state-default ui-corner-all fg-button" accesskey="c"/>
+						<button type="submit" name="create_property_mapping" class="button" accesskey="c"><xsl:value-of select="$i18n_simpledb/l/Create_property"/></button>
 					</div>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -127,15 +127,14 @@
 					</xsl:for-each>
 				</select>
 				<xsl:text> </xsl:text>
-				<!--<input type="button" value="&lt;- -" title="{$i18n_simpledb/l/Add_to_selection}" onclick="addSelection(sdbp_regex_add,sdbp_regex_select);" class="ui-state-default ui-corner-all fg-button"/>-->
-				<a href="javascript:addSelection($('#sdbp_regex_add'),$('#sdbp_regex_select'));" class="ui-state-default ui-corner-all fg-button fg-button-icon-solo" title="{$i18n_simpledb/l/Add_to_selection}"><!--onclick="addSelection(sdbp_regex_add,sdbp_regex_select);">-->
+				<a href="javascript:addSelection($('#sdbp_regex_add'),$('#sdbp_regex_select'));" class="button" title="{$i18n_simpledb/l/Add_to_selection}"><!--onclick="addSelection(sdbp_regex_add,sdbp_regex_select);">-->
 				<span class="ui-icon ui-icon-circle-arrow-w"></span>
 				</a>
 				
 				<xsl:text> </xsl:text>
 				<input id="sdbp_regex_add" type="text" name="sdbp_regex_add" class="text" size="40"/>
 				<xsl:text> </xsl:text>
-				<input type="button" value="{$i18n_simpledb/l/Remove_selected}" onclick="removeSelection(sdbp_regex_select);" class="ui-state-default ui-corner-all fg-button"/>
+				<button type="button" onclick="removeSelection(sdbp_regex_select);" class="button"><xsl:value-of select="$i18n_simpledb/l/Remove_selected"/></button>
 		</div>
 		
 		<div>

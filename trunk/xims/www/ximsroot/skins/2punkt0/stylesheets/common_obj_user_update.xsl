@@ -35,7 +35,7 @@
 <br/><br/>
                 <div id="button-forms">
                     <form name="userConfirm" action="{$xims_box}{$goxims_content}" method="get">
-                        <input class="ui-state-default ui-corner-all fg-button" name="obj_acllist" type="submit" value="{$i18n/l/Choose_another_user}"/>
+                        <button class="button" name="obj_acllist" type="submit"><xsl:value-of select="$i18n/l/Choose_another_user"/></button>
                         <input name="id" type="hidden" value="{@id}"/>
                         <xsl:call-template name="rbacknav"/>
                     </form>

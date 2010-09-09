@@ -10,6 +10,7 @@
 	<xsl:param name="onepage" select="0"/>
 	<xsl:param name="pagerowlimit" select="$searchresultrowlimit"/>
 	<xsl:variable name="pagesperpagenav" select="10"/>
+	<xsl:variable name="containerview_show" select="title"/>
 	<xsl:variable name="totalpages">
 		<xsl:choose>
 			<xsl:when test="$onepage &gt; 0">

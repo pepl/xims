@@ -11,8 +11,22 @@ font-family: helvetica, arial, sans-serif !important;
 .ui-state-default, .ui-widget-content .ui-state-default{
 	border: 1px solid #999999 !important;
 }
-.ui-button{
+/*
+.button .ui-button .ui-state-default{
+	background: none repeat-x scroll 50% 50% #EEEEEE !important;
 }
+*/	
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+	background: none repeat-x scroll 50% 50% #EEEEEE !important;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover{
+	background: none repeat-x scroll 50% 50% #d0d0d0 !important;
+}
+/*
+.button .ui-button .ui-state-focus, .button .ui-button .ui-state-hover{
+	background: none repeat-x scroll 50% 50% #d0d0d0 !important;
+}
+*/
 
 .ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text{
 	padding: 0.2em !important;
@@ -24,88 +38,21 @@ font-family: helvetica, arial, sans-serif !important;
 	padding: 0.2em 0.4em 0.2em 1.8em !important;
 }
 
-
-/* fg-menu and fg-buttons */
-
-.fg-button-icon-left .text{
-	margin-left: 20px;
-}
-
-.fg-button {
-  padding: .4em 1em;
- text-decoration: none !important;
-  cursor: pointer;
-  position: relative;
-  text-align: left;
-	display: inline-block;
-	font-size: 1em;
-}
-
-.fg-button .ui-icon {
-    position: absolute;
-    top: 50%;
-    margin-top: -8px;
-    left: 50%;
-    margin-left: -8px;
-}
-
-a.fg-button {
-    float: left;
-}
-
-button.fg-button, input.fg-button {
-  width: auto;
-  overflow: visible;
-	padding: 2px !important;
-}
-
-.fg-button:focus, .fg-button:hover, .fg-button:active{
-	border: 1px solid #999999; 
-	background-color: #dadada;
-	font-weight: normal; 
-	color: #212121; 
-	outline: none;
-}
-.fg-button:focus ui-icon, .fg-button:hover ui-icon, .fg-button:active ui-icon{
-	background-image: url("/ximsroot/jquery/themes/smoothness/images/ui-icons_454545_256x240.png"); 
-}
-
-/* removes extra button width in IE */
-.fg-button-icon-left {
-    padding-left: 2.1em;
-}
-.fg-button-icon-right {
-    padding-right: 2.1em;
-}
-.fg-button-icon-left .ui-icon {
-    right: auto;
-    left: .2em;
-    margin-left: 0;
-}
-.fg-button-icon-right .ui-icon {
-    left: auto;
-    right: .2em;
-    margin-left: 0;
-}
-.fg-button-icon-solo {
-    display: block;
-    width: 8px;
-    text-indent: -9999px;
-}
-
-/* make drop-down-menu scrollable*/
-/*.fg-menu-container{
-	max-height:250px;
-	overflow-y:scroll;
-}*/
 ul.ui-widget-content{
 	max-height:250px;
+	width: 160px;;
 	overflow-y: auto;
+	overflow-x: hidden;
+	position: absolute !important;
+	z-index:3;
 }
-
-/* solo icon buttons must have block properties for the text-indent to work */
-.fg-button.ui-state-loading .ui-icon {
-    background: url("/ximsroot/jquery/fg-menu/spinner_bar.gif") no-repeat 0 0;
+a.more.ui-state-default{
+	border: none;
+	background:none;
+}
+a.more > .ui-button-text{
+	padding: 0px !important;
+	text-align: left;
 }
 
 .positionHelper{

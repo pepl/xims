@@ -82,8 +82,9 @@
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="sitestyle" select="false()"/>
-		<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.8.css" type="text/css"/>
-		<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/fg.menu.css" type="text/css"/>
+		<!--<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.8.css" type="text/css"/>-->
+		<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.9m2.css" type="text/css"/>
+		<!--<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/fg.menu.css" type="text/css"/>-->
 		<xsl:if test="$questionnaire">
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" type="text/css"/>
 		</xsl:if>
@@ -106,9 +107,10 @@
 	
 		<xsl:template name="script_head">
 		<script src="{$ximsroot}scripts/jquery/jquery-1.4.2.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/jquery/fg.menu.js" type="text/javascript"/>
+		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js" type="text/javascript"/>-->
+		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m2.js" type="text/javascript"/>
+		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/jquery/fg.menu.js" type="text/javascript"/>-->
 	</xsl:template>
 </xsl:stylesheet>
 

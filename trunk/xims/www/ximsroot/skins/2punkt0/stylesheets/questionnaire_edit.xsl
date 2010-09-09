@@ -519,9 +519,9 @@
 			<xsl:value-of select="translate($position_long_point,'.','x')"/>
 		</xsl:variable>
         &#160;
-            <input type="submit" value="{$i18n_qn/l/Add_Subquestion}" onclick="eform.edit.value='add_question';eform.qid.value='{$position_long}';return true;" class="ui-state-default ui-corner-all fg-button"/>
+            <button type="submit" onclick="eform.edit.value='add_question';eform.qid.value='{$position_long}';return true;" class="button"><xsl:value-of select="$i18n_qn/l/Add_Subquestion"/></button>
             &#160;
-            <input type="submit" value="{$i18n_qn/l/Add_Answer}" onclick="eform.edit.value='add_answer';eform.qid.value='{$position_long}';return true;" class="ui-state-default ui-corner-all fg-button"/>
+            <button type="submit" onclick="eform.edit.value='add_answer';eform.qid.value='{$position_long}';return true;" class="button"><xsl:value-of select="$i18n_qn/l/Add_Answer"/></button>
 	</xsl:template>
 	<xsl:template name="numbering">
 		<xsl:variable name="position_long_point">
