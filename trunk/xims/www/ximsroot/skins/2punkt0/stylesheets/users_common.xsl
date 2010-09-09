@@ -294,7 +294,7 @@
                             </xsl:choose>
                         </xsl:attribute>
                     </input>&#160;
-                    <input type="submit" class="ui-state-default ui-corner-all fg-button" value="{$i18n/l/lookup}"/>
+                    <button type="submit" class="button"><xsl:value-of select="$i18n/l/lookup"/></button>
                     </p>
                 </form>
             </div>
@@ -533,27 +533,22 @@
 <xsl:template name="exitform">
     <xsl:param name="action"/>
     <xsl:param name="save">Save</xsl:param>
-
-                    <input name="{$action}" type="submit" class="ui-state-default ui-corner-all fg-button">
-												<xsl:attribute name="value"><xsl:value-of select="$i18n/l/save"/></xsl:attribute> 
-                    </input>
-                    <xsl:choose>
-                        <xsl:when test="@id != ''">
-                            <input name="id" type="hidden" value="{@id}"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:if test="$name != ''">
-                                <input name="name" type="hidden" value="{$name}"/>
-                            </xsl:if>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <input name="sort-by" type="hidden" value="{$sort-by}"/>
-                    <input name="order-by" type="hidden" value="{$order-by}"/>
-                    <input name="userquery" type="hidden" value="{$userquery}"/>
+			<button name="{$action}" type="submit" class="button"><xsl:value-of select="$i18n/l/save"/></button>
+			<xsl:choose>
+					<xsl:when test="@id != ''">
+							<input name="id" type="hidden" value="{@id}"/>
+					</xsl:when>
+					<xsl:otherwise>
+							<xsl:if test="$name != ''">
+									<input name="name" type="hidden" value="{$name}"/>
+							</xsl:if>
+					</xsl:otherwise>
+			</xsl:choose>
+			<input name="sort-by" type="hidden" value="{$sort-by}"/>
+			<input name="order-by" type="hidden" value="{$order-by}"/>
+			<input name="userquery" type="hidden" value="{$userquery}"/>
 &#160;
-                    <input class="ui-state-default ui-corner-all fg-button" name="c" type="submit" onclick="javascript:history.go(-1)">
-											<xsl:attribute name="value"><xsl:value-of select="$i18n/l/cancel"/></xsl:attribute>                    
-                    </input>
+			<button class="button" name="c" type="submit" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 
 </xsl:template>
 
