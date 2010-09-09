@@ -2144,7 +2144,7 @@ sub event_contentbrowse {
         my @otherot = split '\s*,\s*', $otfilter; # in case we want to filter
                                                   # a comma separated list of
                                                   # object types
-        push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', @otherot );
+        push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', 'Gallery', @otherot );
     }
     elsif ( defined $notfilter and length $notfilter > 0 ) {
         my @otherot = split '\s*,\s*', $notfilter;
@@ -2970,7 +2970,6 @@ sub event_obj_acllist {
     my $dp       = $ctxt->data_provider();
     $ctxt->properties->application->styleprefix('common');
     $ctxt->properties->application->style('error');
-
     if ( $user and $objprivs and $object ) {
 
         # The acllist event will work only if there is a user, an object, and
@@ -3064,6 +3063,147 @@ sub event_obj_acllist {
 	                }
             	}
                 $ctxt->properties->application->style('obj_userlist');
+            }
+
+        }
+        else {
+            XIMS::Debug( 2,
+                      "user "
+                    . $user->name()
+                    . " denied to list privileges on object" );
+            $self->sendError( $ctxt,
+                              __x( "user {name} denied to list privileges on object",
+                                   name => $user->name(),
+                               )
+                          );
+        }
+    }
+    else {
+        XIMS::Debug( 3, "anonymous granting rejected" );
+    }
+
+    return 0;
+}
+
+=head2 event_obj_acllight()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_obj_acllight(...)
+
+=cut
+
+sub event_obj_acllight {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my $user     = $ctxt->session->user();
+    my $object   = $ctxt->object();
+    my $objprivs = $user->object_privmask($object);
+    my $dp       = $ctxt->data_provider();
+    $ctxt->properties->application->styleprefix('common');
+    $ctxt->properties->application->style('error');
+warn("\n acl light\n");
+    if ( $user and $objprivs and $object ) {
+
+        # The acllist event will work only if there is a user, an object, and
+        # a minimal privilege mask found.
+        #
+        # Before one can really see the privileges for an object, he has to
+        # have a grant privilege (XIMS::Privilege::GRANT or
+        # XIMS::Privilege::GRANT_ALL) for it. (Optionally, a system privilege
+        # may do the same trick.)
+
+        if (   $objprivs & XIMS::Privileges::GRANT()
+            || $objprivs & XIMS::Privileges::GRANT_ALL() )
+        {
+            XIMS::Debug( 6, "ACL check passed (" . $user->name() . ")" );
+
+            # get the existing grants on the object
+            my @object_privs = map { XIMS::ObjectPriv->new->data( %{$_} ) }
+                $dp->getObjectPriv( content_id => $object->id() );
+
+            if ( my $user_id = $self->param("userid") ) {
+                if ( my $context_user = XIMS::User->new( id => $user_id ) ) {
+
+                    # second parameter to object_privileges forces check for
+                    # explicit grants to user only
+                    my %oprivs
+                        = $context_user->object_privileges( $object, 1 );
+
+                    # xml serialization does not like undefined values
+                    if ( grep { defined $_ } values %oprivs ) {
+                        $context_user->{object_privileges} = {%oprivs};
+                    }
+                    $ctxt->user($context_user);
+                    $ctxt->properties->application->style('obj_user');
+                }
+                else {
+                    XIMS::Debug( 3, "No such user!" );
+                    $self->sendError( $ctxt,
+                        __"Sorry, there is no such user!" );
+                }
+            }
+            elsif ( my $userquery = $self->param('userquery') ) {
+                my %args;
+                if ( $self->param('usertype') eq 'user' ) {
+                    $args{object_type} = 0;
+                }
+                else {
+                    $args{object_type} = 1;
+                }
+                $userquery = $self->clean_userquery($userquery);
+                $args{name} = $userquery
+                    if ( defined $userquery and length $userquery );
+                my @big_user_data_list = $dp->getUser(%args);
+                my @granted_user_ids = map { $_->grantee_id() } @object_privs;
+                my @user_data_list   = ();
+                foreach my $record (@big_user_data_list) {
+                    next
+                        if grep { $_ == $record->{'user.id'} }
+                        @granted_user_ids;
+                    push @user_data_list, $record;
+                }
+                my @user_list
+                    = map { XIMS::User->new->data( %{$_} ) } @user_data_list;
+                $ctxt->userlist( \@user_list );
+                $ctxt->properties->application->style('obj_acl');
+                XIMS::Debug( 6, "Search for user/role returned  @user_list" );
+            }
+            else {
+
+                # this will fetch only the users that have one or more grants
+                # on the current obj.
+                my @granted_user_ids = map { $_->grantee_id() } @object_privs;
+                my @granted_users
+                    = map { XIMS::User->new( id => $_ ) } @granted_user_ids;
+                
+                #warn "acluser" . Dumper( \@granted_users );
+                #$ctxt->userlist( \@granted_users );
+                
+                foreach my $user_id(@granted_user_ids){                            	
+	                if ( my $context_user = XIMS::User->new( id => $user_id ) ) {
+						warn "\n User: ".$context_user->name();
+	                    # second parameter to object_privileges forces check for
+	                    # explicit grants to user only
+	                    my %oprivs
+	                        = $context_user->object_privileges( $object, 1 );
+	
+	                    # xml serialization does not like undefined values
+	                    if ( grep { defined $_ } values %oprivs ) {
+	                        $context_user->{object_privileges} = {%oprivs};
+	                    }
+warn "oprivs: ".%oprivs;
+	                    #$ctxt->user($context_user);
+	                }
+            	}
+            	$ctxt->userobjectlist( \@granted_users );
+            	$ctxt->userlist( \@granted_users );
+                $ctxt->properties->application->style('obj_acl_light');
             }
 
         }
