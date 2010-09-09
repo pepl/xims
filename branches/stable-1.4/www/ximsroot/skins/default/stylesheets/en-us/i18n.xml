@@ -250,4 +250,18 @@
 <Preview>Preview</Preview>
 <Browse_feed>Browse for RSS-Feed.</Browse_feed>
 <warn_big_image>Images of this file size are in few cases expedient in webpages.</warn_big_image>
+<!-- Gallery -->
+<ImageSize>Image Size</ImageSize>
+<Width>Width</Width>
+<small>small</small>
+<medium>medium</medium>
+<large>large</large>
+<ThumbPosition>Position of Thumbnails</ThumbPosition>
+<top>top</top>
+<bottom>bottom</bottom>
+<left>left</left>
+<noThumbs>no Thumbnails</noThumbs>
+<ShowCaption>Show image caption</ShowCaption>
+<ShowNavigation>Show Navigation</ShowNavigation>
+<!-- end Gallery -->
 </l>
