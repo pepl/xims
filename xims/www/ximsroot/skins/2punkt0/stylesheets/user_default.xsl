@@ -32,7 +32,7 @@
             <h1>
                 <xsl:value-of select="$i18n/l/Welcome"/>&#160;<xsl:value-of select="firstname" />&#xa0;<xsl:value-of select="lastname" />!
             </h1>
-
+<div style="float:left">
             <h2><xsl:value-of select="$i18n/l/ManageContent"/></h2>
                 <!--<div>-->
                     <xsl:value-of select="$i18n/l/Your"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/>:
@@ -67,6 +67,9 @@
                             </xsl:choose>
                 </div>
 <br/><br/>
+</div>
+
+<br clear="all"/>
             <h2><xsl:value-of select="$i18n/l/Settings"/></h2>
 							<ul id="settinglist">
 									<li class="sprite sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?bookmarks=1"><xsl:value-of select="$i18n/l/ManageBookmarks"/></a></li>

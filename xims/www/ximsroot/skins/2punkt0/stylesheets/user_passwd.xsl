@@ -42,13 +42,9 @@
                     <input name="password2" type="password" value="" id="input-confirmpwd"/><br/>
                     </p>
 <br/><br/>
-                        <input name="passwd_update" type="submit" class="ui-state-default ui-corner-all fg-button">
-														<xsl:attribute name="value"><xsl:value-of select="$i18n/l/save"/></xsl:attribute>                        
-                        </input>
+                        <button name="passwd_update" type="submit" class="button"><xsl:value-of select="$i18n/l/save"/></button>
 													&#160;
-                        <input name="cancel" type="button" class="ui-state-default ui-corner-all fg-button" onclick="javascript:history.go(-1)">
-													<xsl:attribute name="value"><xsl:value-of select="$i18n/l/cancel"/></xsl:attribute></input>
-                        <!--<a href="{$xims_box}{$goxims}/user" class="ui-state-default ui-corner-all fg-button"><xsl:value-of select="$i18n/l/cancel"/></a>-->
+                        <button name="cancel" type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
         </form>
         <br/>
                 <p class="back">

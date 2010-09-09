@@ -97,7 +97,7 @@
                     <xsl:apply-templates select="/document/objecttypelist/object_type[not(can_create)]" mode="option"/>
                 </select>
                 <xsl:text>&#160;</xsl:text>
-                <input name="addpriv" type="submit" title="{$i18n/l/Create}" class="ui-state-default ui-corner-all fg-button"><xsl:attribute name="value"><xsl:value-of select="$i18n/l/Create"/></xsl:attribute></input>
+                <button name="addpriv" type="submit" title="{$i18n/l/Create}" class="button"><xsl:value-of select="$i18n/l/Create"/></button>
                 <input name="objecttypeprivs" type="hidden" value="1"/>
                 <input name="name" type="hidden" value="{$name}"/>
                 <input name="sort-by" type="hidden" value="{$sort-by}"/>
@@ -219,9 +219,7 @@
  <br clear="all"/>
  <br/>
  <p>
-            <input type="submit" name="dav_otprivs_update" value="Update" class="ui-state-default ui-corner-all fg-button">
-							<xsl:attribute name="value"><xsl:value-of select="$i18n/l/update"></xsl:value-of></xsl:attribute>
-            </input>
+            <button type="submit" name="dav_otprivs_update" value="Update" class="button"><xsl:value-of select="$i18n/l/update"/></button>
             </p>
         </form>
     </xsl:template>
