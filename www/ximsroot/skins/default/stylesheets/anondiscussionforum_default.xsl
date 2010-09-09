@@ -215,7 +215,7 @@
         </td>
         <td valign="bottom">
         <xsl:if test="user_privileges/delete">
-            <a class="sprite sprite-option_purge" title="{$i18n/l/purge}" href="{$goxims_content}?id={@id};delete_prompt=1">
+            <a class="xims-sprite sprite-option_purge" title="{$i18n/l/purge}" href="{$goxims_content}?id={@id};delete_prompt=1">
 				          &#xa0;<span><xsl:value-of select="$i18n/l/purge"/></span>
 				    </a>
         </xsl:if>
