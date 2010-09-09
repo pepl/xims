@@ -11,20 +11,12 @@
 
 
   <xsl:import href="common.xsl"/>
-<!--  <xsl:import href="common_header.xsl"/>-->
 
   <xsl:param name="sort-by">id</xsl:param>
   <xsl:param name="order-by">ascending</xsl:param>
   <xsl:param name="userquery"/>
   <xsl:param name="usertype">user</xsl:param>
   <xsl:param name="id"/>
-
-<!--<xsl:variable name="order-by-opposite">
-  <xsl:choose>
-    <xsl:when test="$order-by='ascending'">descending</xsl:when>
-    <xsl:otherwise>ascending</xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>-->
 
 <xsl:template match="/document">
     <xsl:apply-templates select="context"/>
@@ -38,15 +30,14 @@
 
         <body>
         <xsl:call-template name="header">
-					<!--<xsl:with-param name="nopath">true</xsl:with-param>-->
         </xsl:call-template>
         
         <div id="content-container">
-          <h1>
+          <h1 class="bluebg">
             <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>'</h1>
 
           <!-- filter widget table -->
-              <form name="userfilter">
+              <form name="userfilter" action="">
 								<p>
                     <xsl:choose>
                         <xsl:when test="$userquery = ''">
@@ -69,9 +60,9 @@
                  <p>
                     <xsl:value-of select="$i18n/l/Privgrant_usr_lookup_mask"/>:
 											<br/>
-									<label for="userquery" class="hidden"><xsl:value-of select="$i18n/l/Name"/>&#160;<xsl:value-of select="$i18n/l/of"/>&#160;<xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n/l/Role"/>&#160;</label>
-                  <input name="userquery" type="text" value="{$userquery}" id="userquery"/>
-                  <label for="usertype" class="hidden"><xsl:value-of select="$i18n/l/Usertype"/></label>
+									<label for="userquery" class=""><xsl:value-of select="$i18n/l/Name"/>&#160;<xsl:value-of select="$i18n/l/of"/>&#160;<xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n/l/Role"/>&#160;</label>&#160;
+                  <input name="userquery" type="text" value="{$userquery}" id="userquery"/>&#160;&#160;
+                  <label for="usertype" class=""><xsl:value-of select="$i18n/l/Usertype"/></label>&#160;
                   <select name="usertype" id="usertype">
                     <option value="role">
                       <xsl:if test="$usertype='role'">
@@ -92,10 +83,7 @@
                   <input name="order-by" type="hidden" value="{$order-by}"/>
                   <xsl:call-template name="rbacknav"/>
 									&#160;
-                  <input type="submit"
-                         class="ui-state-default ui-corner-all fg-button"
-                         value="{$i18n/l/lookup}"
-                  />
+                  <button type="submit" ><xsl:value-of select="$i18n/l/lookup"/></button>
                   <xsl:text>&#160;</xsl:text>
                   <a href="javascript:openDocWindow('grantuserlookup')" class="doclink">(?)</a>
               </p>
@@ -104,7 +92,8 @@
 				<!--</div>
 				
 				<div id="content-container">-->
-        <table  id="obj-table">
+				
+        <table  class="obj-table">
           <xsl:choose>
             <xsl:when test="granteelist/user or /document/userlist/user">
               <!-- we got users or roles -->
@@ -340,7 +329,7 @@
                   </xsl:choose>
                 </th>
                 
-                <th id="th-options">
+                <th id="th-options-acl">
                     <xsl:value-of select="$i18n/l/Options"/>
                 </th>
               </tr>
@@ -438,7 +427,9 @@
           </xsl:choose>
           
         </table>
-        </div>
+        
+        
+                </div>
 				<!--</div>-->
         <xsl:call-template name="script_bottom"/>
         </body>
@@ -447,9 +438,12 @@
 </xsl:template>
 
 <xsl:template match="/document/context/granteelist/user|/document/userlist/user">
-  <tr>
+  <tr class="objrow">
+  
    <!-- user/role bgcolor -->
-   <xsl:if test="object_type='role'">
+   <!--<xsl:if test="object_type='role'">-->
+  <!-- user is role if objecttype = 1 -->
+   <xsl:if test="object_type='1'">
      <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
    </xsl:if>
 
@@ -459,28 +453,67 @@
    <xsl:apply-templates select="enabled"/>
 
    <!-- begin options bar -->
-   <td>
-         <xsl:choose>
-           <xsl:when test="$userquery != ''">
-             <a>
-               <xsl:attribute name="href">
-                 <xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';newgrant=1;id=',/document/context/object/@id)"/>
-                 <xsl:call-template name="rbacknav_qs"/>
-               </xsl:attribute>
-               <xsl:value-of select="$i18n/l/Grant_newprivs"/>
-             </a>
-           </xsl:when>
-           <xsl:otherwise>
-             <a>
+<td>
+<a>
                <xsl:attribute name="href">
                  <xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/>
                  <xsl:call-template name="rbacknav_qs"/>
                </xsl:attribute>
                <xsl:value-of select="$i18n/l/Manage_privs"/>
              </a>
-           </xsl:otherwise>
-         </xsl:choose>
-   </td>
+             
+<div class="buttonset">
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_view_',@id)"/></xsl:attribute>
+		<xsl:if test="object_privileges/view">
+                       <xsl:attribute name="checked">checked</xsl:attribute>
+                     </xsl:if>
+		</input>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_view_',@id)"/></xsl:attribute>View</label>
+			
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_write_',@id)"/></xsl:attribute>
+		<xsl:if test="object_privileges/write">
+                       <xsl:attribute name="checked">checked</xsl:attribute>
+                     </xsl:if>
+		</input>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_write_',@id)"/></xsl:attribute>Write</label>
+			
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_create_',@id)"/></xsl:attribute>
+		<xsl:if test="object_privileges/create">
+                       <xsl:attribute name="checked">checked</xsl:attribute>
+                     </xsl:if>
+		</input>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_create_',@id)"/></xsl:attribute>Create</label>
+			
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_delete_',@id)"/></xsl:attribute>
+		<xsl:if test="object_privileges/delete">
+                       <xsl:attribute name="checked">checked</xsl:attribute>
+                     </xsl:if>
+		</input>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_delete_',@id)"/></xsl:attribute>Delete</label>
+			
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_copy_',@id)"/></xsl:attribute>
+		<xsl:if test="object_privileges/copy">
+                       <xsl:attribute name="checked">checked</xsl:attribute>
+                     </xsl:if>
+		</input>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_copy_',@id)"/></xsl:attribute>Copy</label>
+			
+		<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_publish_',@id)"/></xsl:attribute>
+		<xsl:if test="object_privileges/grant">
+                       <xsl:attribute name="checked">checked</xsl:attribute>
+                     </xsl:if>
+		</input>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_publish_',@id)"/></xsl:attribute>Publish</label>
+			
+		<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_grant_',@id)"/></xsl:attribute>
+		<xsl:if test="object_privileges/publish">
+                       <xsl:attribute name="checked">checked</xsl:attribute>
+                     </xsl:if>
+		</input>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_grant_',@id)"/></xsl:attribute>Grant</label>
+	</div>
+
+</td>
    <!-- end options bar -->
   </tr>
 </xsl:template>

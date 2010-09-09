@@ -148,12 +148,12 @@
 </table>
 <br/><br/>
                   <div>
-                        <input class="ui-state-default ui-corner-all fg-button" name="obj_aclgrant" type="submit" value="{$i18n/l/save}" />
+                        <button class="button" name="obj_aclgrant" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
                         <input name="userid" type="hidden" value="{$userid}"/>
                         <input name="id" type="hidden" value="{/document/context/object/@id}"/>
                         <xsl:call-template name="rbacknav"/>
                         &#160;
-                        <input class="ui-state-default ui-corner-all fg-button" name="cancel" type="submit" value="{$i18n/l/cancel}"/>
+                        <button class="button" name="cancel" type="submit"><xsl:value-of select="$i18n/l/cancel"/></button>
                   </div>
 
               <!-- begin revoke  -->
@@ -165,9 +165,9 @@
                 </h1>
 
                       <div>
-                        <input class="ui-state-default ui-corner-all fg-button" name="obj_aclrevoke" type="submit" value="{$i18n/l/Revoke_grants}"/>
+                        <button class="button" name="obj_aclrevoke" type="submit"><xsl:value-of select="$i18n/l/Revoke_grants"/></button>
 													&#160;
-                        <input class="ui-state-default ui-corner-all fg-button" name="cancel" type="submit" value="{$i18n/l/cancel}"/>
+                        <button class="button" name="cancel" type="submit"><xsl:value-of select="$i18n/l/cancel"/></button>
                       </div>
                       </xsl:if>
               <!-- end revoke  -->

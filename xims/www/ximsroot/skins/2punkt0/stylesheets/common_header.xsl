@@ -119,48 +119,63 @@
 		 
 		<!-- Default Create-Widget (Container View) -->
 		<xsl:when test="$mode='default'">
-
 		<div id="create-widget">
-			<a href="#object-types" class="flyout create-widget fg-button fg-button-icon-right ui-state-default ui-corner-all" tabindex="0">
-				<span class="ui-icon ui-icon-triangle-1-s"/>
+			<button>				
 				<xsl:value-of select="$i18n/l/Create"/>
-			</a>
-			<div id="object-types" class="hidden-content">
-				<ul>
+			</button>
+				<!--<ul>-->
 					<xsl:choose>
 						<xsl:when test="/document/context/object/@id = 1">
-							<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"/>
+						<ul>
+							<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"  mode="fo-menu"/>
+							</ul>
 						</xsl:when>
+						
+						<xsl:otherwise>
+						
+						<xsl:choose>
+						
 						<xsl:when test="$parent_id != ''">
+						<ul>
 							<xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]" mode="fo-menu">
 								<xsl:sort select="name"/>
 							</xsl:apply-templates>
+</ul>						
 						</xsl:when>
+						
 						<xsl:otherwise>
+						<ul>
 							<xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]" mode="fo-menu">
 								<xsl:sort select="name"/>
 							</xsl:apply-templates>
 							<li>
-								<a href="#">
+								<a href="#" class="more">
 									<xsl:value-of select="$i18n/l/More"/>
 								</a>
-								<ul>
-									<!-- Only show basic object types on first page: TODO Select from object type properties and not from OT names or IDs!
-                                        Do not display object types that either are not fully implemented or that are not meant to be created directly.
-                                        We may consider adding an object type property for the latter types.
-                                        jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
-                                        jerboaa, 2007-07-19: Do not show object types which contain "Item" in their name with the only exception
-					                     of "NewsItem"! 
-                                    -->
-									<xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'AnonDiscussionForumContrib' or name = 'BidokEntry' or name = 'BidokIndex' or ( contains(name,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]" mode="fo-menu">
-										<xsl:sort select="name"/>
-									</xsl:apply-templates>
-								</ul>
 							</li>
+							
+<!--						</xsl:otherwise>
+						</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>-->
+				</ul>
+				<ul class="more">
+					<!-- Only show basic object types on first page: TODO Select from object type properties and not from OT names or IDs!
+                        Do not display object types that either are not fully implemented or that are not meant to be created directly.
+                        We may consider adding an object type property for the latter types.
+                        jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
+                        jerboaa, 2007-07-19: Do not show object types which contain "Item" in their name with the only exception
+	                     of "NewsItem"! 
+                    -->
+          <!--susanne 2010-03-02: AnonDiscussionForum will not be supported anymore. Until Objecttype is deleted from database, we have to exclude it manually-->
+					<xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or contains(fullname,'AnonDiscussionForum') or name = 'BidokEntry' or name = 'BidokIndex' or ( contains(fullname,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]" mode="fo-menu">
+						<xsl:sort select="name"/>
+					</xsl:apply-templates>
+				</ul>
+										</xsl:otherwise>
+						</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>
-				</ul>
-			</div>
 		</div>
 		<noscript>
 			<form action="{$xims_box}{$goxims_content}{$absolute_path}?" method="get">
@@ -178,11 +193,9 @@
 					</xsl:choose>
 				</select>
 				<xsl:text>&#160;</xsl:text>
-				<input type="submit" class="ui-state-default ui-corner-all fg-button">
-					<xsl:attribute name="value">
+				<button type="submit" class="button">
 						<xsl:value-of select="$i18n/l/create"/>
-					</xsl:attribute>
-				</input>
+				</button>
 				<input name="create" type="hidden" value="1"/>
 				<input name="page" type="hidden" value="{$page}"/>
 				<input name="r" type="hidden" value="{/document/context/object/@id}"/>
@@ -197,10 +210,9 @@
 	<!--	Forum -->
 	<xsl:when test="$mode='forum'">
 			<div id="create-widget">
-				<a href="#object-types" class="flyout create-widget fg-button fg-button-icon-right ui-state-default ui-corner-all" tabindex="0">
-					<span class="ui-icon ui-icon-triangle-1-s"/>
-					<xsl:value-of select="$i18n/l/Create"/>
-				</a>
+				<button class="button">				
+				<xsl:value-of select="$i18n/l/Create"/>
+			</button>
 				<div id="object-types" class="hidden-content">
 					<ul>
 						<li>
@@ -214,7 +226,7 @@
 			<noscript>
 				<form action="{$xims_box}{$goxims_content}{$absolute_path}" method="get">
 					<input type="hidden" name="objtype" value="AnonDiscussionForumContrib"/>
-					<button type="submit" name="create" class="ui-state-default ui-corner-all fg-button">
+					<button type="submit" name="create" class="button">
 						<xsl:value-of select="$i18n/l/Create_topic"/>
 					</button>
 				</form>
@@ -260,13 +272,7 @@
 					</xsl:choose>
 				</input>
 				<xsl:text>&#160;</xsl:text>
-				<xsl:call-template name="mk-ui-button">
-					<xsl:with-param name="icon">icon-search</xsl:with-param>
-					<xsl:with-param name="text"><xsl:value-of select="$Search"/></xsl:with-param>
-					<xsl:with-param name="name">submit</xsl:with-param>
-					<xsl:with-param name="type">submit</xsl:with-param>
-					<xsl:with-param name="title">$Search</xsl:with-param>
-				</xsl:call-template>
+				<button class="button-search" type="submit"><xsl:value-of select="$Search"/></button>
 				<input type="hidden" name="search" value="1"/>
 			</form>
 		</div>
@@ -337,152 +343,37 @@
 		</xsl:if>
 	</xsl:template>
 	-->
-	<!--Help Widget-->
+
 	
-	<xsl:template name="help-widget">
-		<div id="help-widget">
-			<a href="#help-types" class="flyout help-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" tabindex="0">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/Help"/>
-				</xsl:attribute>
-				<span class="ui-icon ui-icon-help"/>
-				<xsl:value-of select="$i18n/l/Help"/>
-			</a>
-			<div id="help-types" class="hidden-content">
-				<ul>
-					<li>
-						<a href="http://xims.info/documentation/" target="_blank" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-							<xsl:attribute name="title">
-								<xsl:value-of select="$i18n/l/Systeminfo"/>
-							</xsl:attribute>
-							<span class="ui-icon ui-icon-info"/>
-							<span class="text">
-								<xsl:value-of select="$i18n/l/Systeminfo"/>
-							</span>
-						</a>
-					</li>
-					<li>
-						<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-							<xsl:attribute name="title">
-								<xsl:value-of select="$i18n/l/stepManual"/>
-							</xsl:attribute>
-							<span class="ui-icon ui-icon-document"/>
-							<span class="text">
-								<xsl:value-of select="$i18n/l/Manual"/>
-							</span>
-						</a>
-					</li>
-					<li>
-						<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-							<xsl:attribute name="title">
-								<xsl:value-of select="$i18n/l/FAQ_long"/>
-							</xsl:attribute>
-							<span class="ui-icon ui-icon-lightbulb"/>
-							<span class="text">
-								<xsl:value-of select="$i18n/l/FAQ"/>
-							</span>
-						</a>
-					</li>
-					<li>
-						<a href="mailto:xims-support@uibk.ac.at" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-							<xsl:attribute name="title">
-								<xsl:value-of select="$i18n/l/MailToSupport"/>
-							</xsl:attribute>
-							<span class="ui-icon ui-icon-mail-closed"/>
-							<span class="text">
-								<xsl:value-of select="$i18n/l/MailToSupport"/>
-							</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<label for="input-search" class="hidden">
-				<xsl:value-of select="$i18n/l/Search_for"/>
-			</label>
-		</div>
-		<noscript>
-			<a href="http://xims.info/documentation/" target="_blank">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/Systeminfo"/>
-				</xsl:attribute>
-				<span class="text">
-					<xsl:value-of select="$i18n/l/Systeminfo"/>
-				</span>
-			</a>
-							&#160;&#160;
-							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/stepManual"/>
-				</xsl:attribute>
-				<span class="text">
-					<xsl:value-of select="$i18n/l/Manual"/>
-				</span>
-			</a>
-							&#160;&#160;
-							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/FAQ_long"/>
-				</xsl:attribute>
-				<span class="text">
-					<xsl:value-of select="$i18n/l/FAQ"/>
-				</span>
-			</a>
-							&#160;&#160;
-							<a href="mailto:xims-support@uibk.ac.at">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/MailToSupport"/>
-				</xsl:attribute>
-				<span class="text">
-					<xsl:value-of select="$i18n/l/MailToSupport"/>
-				</span>
-			</a>
-							&#160;&#160;
-			</noscript>
-	</xsl:template>
 	<!--Menu Widget-->
 	<xsl:template name="menu-widget">
-		<div id="menu-widget">
-			<a href="#menu-types" class="flyout menu-widget fg-button fg-button-icon-left ui-state-default ui-widget ui-corner-all" tabindex="0">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/Menu"/>
-				</xsl:attribute>
-				<span class="ui-icon ui-icon-gear"/>
-				<xsl:value-of select="$i18n/l/Menu"/>
-			</a>
-			<div id="menu-types" class="hidden-content">
-				<ul>
+	<div id="menu-widget">
+			<button><xsl:value-of select="$i18n/l/Menu"/></button>
+				<ul style="position:absolute !important; width: 150px">
 					<xsl:choose>
 						<xsl:when test="/document/context/session/public_user = '1'">
 							<li>
-								<a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-									<span class="text">
+								<a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}">
 										<xsl:value-of select="$i18n/l/login"/>
-									</span>
 								</a>
 							</li>
 						</xsl:when>
 						<xsl:otherwise>
 							<li>
-								<a href="{$xims_box}{$goxims}/user" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-									<span class="ui-icon ui-icon-home"/>
-									<span class="text">
+								<a href="{$xims_box}{$goxims}/user">
 										<xsl:value-of select="/document/context/session/user/name"/>
-									</span>
 								</a>
 							</li>
 							<li>
-								<a href="{$goxims_content}{$absolute_path}?reason=logout" class="fg-button fg-button-icon-left ui-state-default ui-corner-all">
-									<span class="ui-icon ui-icon-power"/>
-									<span class="text">
+								<a href="{$goxims_content}{$absolute_path}?reason=logout">
 										<xsl:value-of select="$i18n/l/logout"/>
-									</span>
 								</a>
 							</li>
 						</xsl:otherwise>
 					</xsl:choose>
 				</ul>
 			</div>
-		</div>
+
 		<noscript>
 			<xsl:choose>
 				<xsl:when test="/document/context/session/public_user = '1'">
@@ -508,5 +399,114 @@
 							</xsl:otherwise>
 			</xsl:choose>
 		</noscript>
+	</xsl:template>
+
+	<!--Help Widget-->	
+	<xsl:template name="help-widget">
+
+		<div id="help-widget">
+			<button><xsl:value-of select="$i18n/l/Help"/></button>
+			<ul style="position:absolute !important; width: 150px">
+					<li>
+						<a href="http://xims.info/documentation/" target="_blank">
+							<xsl:attribute name="title">
+								<xsl:value-of select="$i18n/l/Systeminfo"/>
+							</xsl:attribute>
+								<xsl:value-of select="$i18n/l/Systeminfo"/>
+						</a>
+					</li>
+					<li>
+						<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank">
+							<xsl:attribute name="title">
+								<xsl:value-of select="$i18n/l/stepManual"/>
+							</xsl:attribute>
+								<xsl:value-of select="$i18n/l/Manual"/>
+						</a>
+					</li>
+					<li>
+						<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank">
+							<xsl:attribute name="title">
+								<xsl:value-of select="$i18n/l/FAQ_long"/>
+							</xsl:attribute>
+								<xsl:value-of select="$i18n/l/FAQ"/>
+						</a>
+					</li>
+					<li>
+						<a href="http://www.uibk.ac.at/zid/systeme/xims/" target="_blank">
+							<xsl:attribute name="title">
+								Xims an der Universität Innsbruck
+							</xsl:attribute>
+								Xims UIBK
+						</a>
+					</li>
+					<li>
+						<a href="http://cabal.uibk.ac.at/webredaktion/webstyleguide/" target="_blank">
+							<xsl:attribute name="title">
+								Webstyleguide der Webredaktion
+							</xsl:attribute>
+								Webstyleguide
+						</a>
+					</li>
+					<li>
+						<a href="mailto:xims-support@uibk.ac.at">
+							<xsl:attribute name="title">
+								<xsl:value-of select="$i18n/l/MailToSupport"/>
+							</xsl:attribute>
+								<xsl:value-of select="$i18n/l/MailToSupport"/>
+						</a>
+					</li>
+				</ul>
+</div>
+		<noscript>
+			<form action="{$xims_box}{$goxims_content}{$absolute_path}?" method="get">
+			<select>
+				<option><xsl:value-of select="$i18n/l/Help"/></option>
+				<option>
+			<a href="http://xims.info/documentation/" target="_blank">
+				<xsl:attribute name="title">
+					<xsl:value-of select="$i18n/l/Systeminfo"/>
+				</xsl:attribute>
+				<span class="text">
+					<xsl:value-of select="$i18n/l/Systeminfo"/>
+				</span>
+			</a>
+							&#160;&#160;
+							</option>
+							<option>
+							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank">
+				<xsl:attribute name="title">
+					<xsl:value-of select="$i18n/l/stepManual"/>
+				</xsl:attribute>
+				<span class="text">
+					<xsl:value-of select="$i18n/l/Manual"/>
+				</span>
+			</a>
+							&#160;&#160;
+							</option>
+							<option>
+							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank">
+				<xsl:attribute name="title">
+					<xsl:value-of select="$i18n/l/FAQ_long"/>
+				</xsl:attribute>
+				<span class="text">
+					<xsl:value-of select="$i18n/l/FAQ"/>
+				</span>
+			</a>
+							&#160;&#160;
+							</option>
+							<option>
+							<a href="mailto:xims-support@uibk.ac.at">
+				<xsl:attribute name="title">
+					<xsl:value-of select="$i18n/l/MailToSupport"/>
+				</xsl:attribute>
+				<span class="text">
+					<xsl:value-of select="$i18n/l/MailToSupport"/>
+				</span>
+			</a>
+							&#160;&#160;
+							</option>
+							</select>
+							</form>
+			</noscript>
 	</xsl:template>
 </xsl:stylesheet>

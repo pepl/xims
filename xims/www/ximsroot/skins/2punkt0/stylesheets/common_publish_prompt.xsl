@@ -216,11 +216,9 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
             <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>-->
 			<xsl:call-template name="css">
 				<xsl:with-param name="jquery-ui-smoothness">true</xsl:with-param>
-				<xsl:with-param name="fg-menu">true</xsl:with-param>
 			</xsl:call-template>
 			<xsl:call-template name="script_head">
 				<xsl:with-param name="jquery">true</xsl:with-param>
-				<xsl:with-param name="fg-menu">true</xsl:with-param>
 			</xsl:call-template>
 			<script type="text/javascript">
 				<xsl:comment><![CDATA[

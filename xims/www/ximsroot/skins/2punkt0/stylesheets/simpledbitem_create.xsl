@@ -9,8 +9,6 @@
 
 	<xsl:import href="create_common.xsl"/>
 	<xsl:import href="simpledb_common.xsl"/>
-	
-<xsl:param name="calendar" select="true()"/>
 
 	<xsl:template name="create-content">
 		<xsl:apply-templates select="/document/member_properties/member_property">
