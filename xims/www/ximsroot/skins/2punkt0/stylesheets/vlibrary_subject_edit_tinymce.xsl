@@ -40,7 +40,7 @@
 
   <xsl:template match="children/object">
 
-        <xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/subject)"/>
+        <h1><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/subject)"/></h1>
           <div>
 			<div class="label-std">
 				<label for="vlsubject_name"><xsl:value-of select="$i18n/l/Name"/></label>
@@ -59,8 +59,8 @@
     <p>
       <input type="hidden" name="vlsubject_id" id="vlsubject_id" value="{@id}"/>
 			<input type="hidden" name="property" id="property" value="subject"/>
-			<input type="submit" name="property_store" value="{$i18n/l/save}" class="ui-corner-all fg-button ui-state-default" accesskey="S"/>&#160;
-      <input type="submit" name="cancel" value="{$i18n/l/cancel}" class="ui-corner-all fg-button ui-state-default" accesskey="C" onclick="self.close();"/>
+			<button type="submit" name="property_store" class="button" accesskey="S"><xsl:value-of select="$i18n/l/save"/></button>&#160;
+      <button type="submit" name="cancel" class="button" accesskey="C" onclick="self.close();"><xsl:value-of select="$i18n/l/cancel"/></button>
     </p>
   </xsl:template>
 

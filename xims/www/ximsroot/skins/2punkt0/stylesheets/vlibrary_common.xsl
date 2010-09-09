@@ -121,10 +121,8 @@
 
   <xsl:template name="switch_vlib_views_action">
     <xsl:param name="mo" />
-    <div>
-      <a href="#vlib-views" id="flat-vlib-views" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" tabindex="0"><span class="ui-icon ui-icon-triangle-1-s"/><xsl:value-of select="$i18n_vlib/l/Switch_to"/></a>
-        <div id="vlib-views" class="hidden-content">
-          <ul>
+      <button id="vlib-menu"><xsl:value-of select="$i18n_vlib/l/Switch_to"/></button>  
+          <ul style="position:absolute !important">
             <xsl:if test="$mo != 'subject'">
               <li>
                 <a href="{$xims_box}{$goxims_content}{$absolute_path}?">
@@ -161,9 +159,6 @@
               </li>
             </xsl:if>
           </ul>
-        </div>
-        
-    </div>
     <xsl:text>&#160;</xsl:text>
   </xsl:template>
 
@@ -181,20 +176,9 @@
       </input>
       <xsl:text>&#160;</xsl:text>
 
-        <!--<button type="submit" name="submit">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Search"/></xsl:attribute>
-					<span class="ui-icon ui-icon-search"/>
-					<span class="text">
+       <button type="submit" name="submit" class="button-search">
 						<xsl:value-of select="$i18n/l/Search"/>
-					</span>
-				</button>-->
-				<xsl:call-template name="mk-ui-button">
-					<xsl:with-param name="icon">icon-search</xsl:with-param>
-					<xsl:with-param name="text"><xsl:value-of select="$i18n/l/Search"/></xsl:with-param>
-					<xsl:with-param name="name">submit</xsl:with-param>
-					<xsl:with-param name="type">submit</xsl:with-param>
-					<xsl:with-param name="title">$i18n/l/Search</xsl:with-param>
-				</xsl:call-template>
+				</button>
       <input type="hidden" name="start_here" value="1"/>
       <input type="hidden" name="vlsearch" value="1"/>
       </form>
@@ -296,20 +280,9 @@
             <label for="input-to"><xsl:value-of select="$i18n/l/to"/></label><xsl:text>&#160;</xsl:text>
             <input type="text" name="chronicle_to" size="10" maxlength="200" value="{$chronicle_to}" id="input-to"/>
             <xsl:text>&#160;</xsl:text>
-          <!--<button class="ui-state-default ui-corner-all fg-button fg-button-icon-left" type="submit" name="submit">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Search"/></xsl:attribute>
-					<span class="ui-icon ui-icon-search"/>
-					<span class="text">
+			<button class="button-search" type="submit" name="submit">
 						<xsl:value-of select="$i18n/l/Search"/>
-					</span>
-				</button>-->
-				<xsl:call-template name="mk-ui-button">
-					<xsl:with-param name="icon">icon-search</xsl:with-param>
-					<xsl:with-param name="text"><xsl:value-of select="$i18n/l/Search"/></xsl:with-param>
-					<xsl:with-param name="name">submit</xsl:with-param>
-					<xsl:with-param name="type">submit</xsl:with-param>
-					<xsl:with-param name="title">$i18n/l/Search</xsl:with-param>
-				</xsl:call-template>
+				</button>
             <input type="hidden" name="start_here" value="1"/>
             <input type="hidden" name="vlchronicle" value="1"/>
           </form>

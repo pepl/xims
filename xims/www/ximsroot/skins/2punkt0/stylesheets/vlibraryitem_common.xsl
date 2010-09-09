@@ -47,8 +47,7 @@
 					<xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
 				</span>
 				<xsl:text>&#160;</xsl:text>
-			<!--<input type="button" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="ui-state-default ui-corner-all fg-button" onclick="createMapping('{$mo}', '{$i18n_vlib/l/select_name}')"/>-->
-				<input type="button" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="ui-state-default ui-corner-all fg-button" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"/>
+				<button type="button" name="create_mapping" class="button" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
 				<xsl:text>&#160;</xsl:text>
 			</xsl:if>
 			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','{$popupsizes[name()=$mo]/@x}','{$popupsizes[name()=$mo]/@y}')">
@@ -60,7 +59,7 @@
 		</div>
 	</xsl:template>
 	
-		<xsl:template name="form-vlproperties">
+	<xsl:template name="form-vlproperties">
 		<xsl:param name="mo"/>
 		<div class="form-div block">
 		<div class="block">
@@ -68,7 +67,7 @@
 				<xsl:value-of select="$i18n_vlib/l/Currently_mapped"/>
 				<xsl:text>&#160;</xsl:text>
 				<xsl:value-of select="$i18n_vlib/l/*[name()=concat($mo,'s')]"/>:
-      </div>
+			</div>
 			<div id="mapped_{$mo}s">
 				<xsl:choose>
 					<xsl:when test="$mo='author'">
@@ -97,9 +96,7 @@
 					<xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
 				</span>
 				<xsl:text>&#160;</xsl:text>
-			<!--<input type="button" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="ui-state-default ui-corner-all fg-button" onclick="createMapping('{$mo}', '{$i18n_vlib/l/select_name}')"/>-->
 				<button type="button" name="create_mapping" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
-				<!--<input type="button" name="create_mapping" value="{$i18n_vlib/l/Create_mapping}" class="ui-state-default ui-corner-all fg-button" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"/>-->
 				<xsl:text>&#160;</xsl:text>
 			</xsl:if>
 			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','{$popupsizes[name()=$mo]/@x}','{$popupsizes[name()=$mo]/@y}')">
