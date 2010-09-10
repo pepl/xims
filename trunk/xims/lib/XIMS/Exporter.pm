@@ -1999,38 +1999,6 @@ sub create {
 1;
 
 
-=head1 XIMS::Exporter::AnonDiscussionForum
-
-lowlevel class for AnonDiscussionForum objs.
-
-=cut
-
-package XIMS::Exporter::AnonDiscussionForum;
-
-
-
-use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
-
-
-1;
-
-=head1 XIMS::Exporter::AnonDiscussionForumContrib
-
-lowlevel class for AnonDiscussionForumContrib objs.
-
-=cut
-
-package XIMS::Exporter::AnonDiscussionForumContrib;
-
-
-use vars qw( @ISA );
-@ISA = qw( XIMS::Exporter::XMLChunk );
-
-
-1;
-
-
 =head1 XIMS::Exporter::AxPointPresentation
 
 lowlevel class for AxPointPresentation objs.
