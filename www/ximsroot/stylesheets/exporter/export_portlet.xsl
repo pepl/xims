@@ -13,6 +13,7 @@
                 >
 
     <xsl:import href="../common.xsl"/>
+    <xsl:import href="common_export.xsl"/>
 
     <xsl:output method="xml" indent="yes"/>
 
@@ -33,7 +34,10 @@
             </xsl:for-each>
         </xsl:variable>
 
-        <portlet id="{@id}">
+        <portlet id="{@id}" parent_id="{@parent_id}" document_id="{@document_id}">
+	    <path>
+              <xsl:apply-templates select="." mode="path-element"/>
+            </path>
             <departmentinfo><xsl:value-of select="department_id"/>/ou.xml</departmentinfo>
             <location_path><xsl:value-of select="$absolute_path_nosite"/></location_path>
             <title><xsl:value-of select="title"/></title>
