@@ -37,6 +37,7 @@ use Text::Iconv;
 use Time::Piece;
 use Locale::TextDomain ('info.xims');
 use POSIX qw(LC_ALL setlocale);
+use JSON::XS;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -70,7 +71,7 @@ sub registerEvents {
         'trashcan_prompt', 'trashcan',       'delete',
         'delete_prompt',   'undelete',       'trashcan_content',
         'error',           'prettyprintxml', 'htmltidy',
-        'test_location',
+        'test_location', 'test_title',
         @_
     );
 }
@@ -214,6 +215,122 @@ sub event_test_location {
     return 0;
 }
 
+=head2 event_test_title()
+
+=head3 Description
+
+Runtime event which takes the title tests it and creates a valid location.
+
+Event 'test_title' is called via AJAX.
+It takes and returns a JSON-Objects. The JSON-Object sent contains the 
+object-type and title. 
+The returned object contains 
+- a status code, 
+- a human readable reason, 
+- the generated location, 
+- the chars valid for a location,
+- maximum length of the location and
+- a trimmed location (max length)
+
+For now, there are four different response codes:
+    0 =E<gt> Location (is) OK
+    1 =E<gt> Location already exists (in container)
+    2 =E<gt> No location provided (or location is not convertible)
+    3 =E<gt> Dirty (no sane) location (location contains hilarious characters)
+
+The test calls 'init_store_object' and traverses routines for cleaning/testing
+the location.
+
+=cut
+sub event_test_title {
+	XIMS::Debug( 5, "called" );
+	my ( $self, $ctxt ) = @_;
+
+	my ( $retval, $location );
+	if ( defined $ctxt->object() ) {
+		( $retval, $location ) = $self->init_store_object($ctxt);
+	}
+
+	print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
+	$self->skipSerialization(1);
+
+	XIMS::Debug( 4, "retval is: '$retval'; location is: '$location'" );
+	warn "\n\nretval is: '$retval'; location is: '$location'\n\n";
+	
+	# fill $response_blurb according to $retval
+	my $response_blurb;
+	if ( defined $retval and $retval != 0 ) {
+		if ( $retval == 1 ) {
+			$response_blurb = "Location '$location' already exists!";
+		}
+		elsif ( $retval == 2 ) {
+			$response_blurb = "NO or BAD location provided!";
+		}
+		elsif ( $retval == 3 ) {
+			$response_blurb = "Location '$location' NOT valid!";
+		}
+		else {
+			XIMS::Debug( 4, "Return value, '$retval',  not known!" );
+			$response_blurb = "Return value not known!";
+		}
+	}
+	else {
+		$response_blurb = "Location '$location' 0K!";
+	}
+	my $suggLength = XIMS::CONFIG->LocationMaxLength();
+	
+	warn "\n\nsuggested length is: '$suggLength'\n\n";
+	
+	# trim location can be problematic with adding '_2' before if location already exist
+	# thinking about better solution... :-)
+	
+#	#test length of location (minus suffix .html, .sdbk, .html.de, ...) against suggLength
+#		#if > make suggestion for alternative location
+#
+#		
+#		my @locArray = split(/\./, $location);
+#    
+#    	my $returnLoc = "";
+#    	my $currElem;
+#    
+#    	$currElem = pop(@locArray);
+#	    #TODO: file extensions to be continued
+#		if ($currElem =~ /(html|sdbk)/){
+#	        $returnLoc = "." . $currElem;
+#	    }
+#	    else {
+#	    
+#	        if ($currElem =~ /(de|en|es|it|fr)/){
+#	            $returnLoc += "." . $currElem;
+#	            
+#	            $currElem = pop(@locArray);
+#	            if ($currElem =~ /(html|sdbk)/){
+#	                $returnLoc = "." . $currElem . $returnLoc;
+#	            }
+#	            else {
+#	                push(@locArray, $currElem);
+#	            }
+#	        }
+#	        else {
+#	            push(@locArray, $currElem);
+#	        }
+#	    }
+#	 	my $suggLocation = substr(join('.',@locArray),0,$suggLength) . $returnLoc;
+		my $suggLocation = $location;
+		
+	my $json = JSON::XS->new->encode ({
+		'status' => $retval,
+		'location' => $location,
+		'reason' => $response_blurb,
+		'valChars' => XIMS::CONFIG->LocationValidChars(),
+		'suggLength' => $suggLength, 
+		'suggLocation' => $suggLocation
+	});
+	warn "\njson: $json \n";
+	print $json;	
+
+	return 0;
+}
 =head2 event_dbhpanic()
 
 =head3 Parameter
@@ -1311,6 +1428,7 @@ sub init_store_object {
                                             # by libxml2 (???)
     # do we have an 'test_location' AJAX event?
     my $is_event_test_location = $self->param('test_location');
+    my $is_event_test_title = $self->param('test_title');
 
     # $location will be part of the URI, converting to iso-8859-1 is a first
     # step before clean_location() to ensure browser compatibility
@@ -1398,7 +1516,7 @@ sub init_store_object {
                 XIMS::Debug( 2, "dirty location" );
                 # only send error for events other than 'test_location'
                 # return 3 (dirty location) otherwise
-                if ( not defined $is_event_test_location ) {
+                if ( not (defined $is_event_test_location or defined $is_event_test_title)){
                     $self->sendError( $ctxt,
                         __"Failed to clean the location / filename. Please supply a sane filename!"
                     );
@@ -1445,7 +1563,7 @@ sub init_store_object {
 
                 # only send error for events other than 'test_location'
                 # return 1 (location already exists) otherwise
-                if ( not defined $is_event_test_location ) {
+                if ( not (defined $is_event_test_location or defined $is_event_test_title) ) {
                     $self->sendError( $ctxt,
                         __x("Location '{location}' already exists in container.", location => $location) );
                     return 0;
@@ -1459,7 +1577,7 @@ sub init_store_object {
         XIMS::Debug( 6, "got location: $location " );
 
         # positively exit for 'test_location' events, here
-        if ( defined $is_event_test_location ) {
+        if ( (defined $is_event_test_location or defined $is_event_test_title) ) {
             return (0, $location);
         }
         $object->location($location);
@@ -1469,7 +1587,7 @@ sub init_store_object {
 
         # only send error for events other than 'test_location'
         # return 2 (no location) otherwise
-        if ( not defined $is_event_test_location ) {
+        if ( not (defined $is_event_test_location or defined $is_event_test_title) ) {
             $self->sendError( $ctxt, __"Please supply a valid location!" );
             return 0;
         }
