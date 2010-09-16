@@ -261,7 +261,7 @@ function testtitle(){
     location = appendSuffixes(location);
 
 	var jsonQuery = {
-        test_location: "1",
+        test_title: "1",
         objtype: obj,
         name: location
     };
