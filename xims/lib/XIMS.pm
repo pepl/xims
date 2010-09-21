@@ -35,6 +35,7 @@ our $_CONFIG_;
 our $_DATAPROVIDER_;
 our $_OBJECT_TYPES_;
 our $_DATA_FORMATS_;
+our $_LANGUAGES_;
 our $_DEBUGLEVEL_;
 
 BEGIN {
@@ -57,8 +58,13 @@ BEGIN {
         $ot->{fullname} = _getOTFullName( $ot, $_OBJECT_TYPES_ );
     }
 
+    my @langs = $dp->languages();
+    foreach my $lang (@langs) {
+        $_LANGUAGES_->{ $lang->id() } = $lang;
+    }
+
     # Decide the debug level here, at compile time. This allows perl to
-    # `inline´ XIMS::DEBUGLEVEL() for really fast access.
+    # `inlineÂ´ XIMS::DEBUGLEVEL() for really fast access.
     $_DEBUGLEVEL_ = $ENV{XIMSDEBUGLEVEL} || $_CONFIG_->DebugLevel();
 
     ## no critic (ProhibitNestedSubs)
@@ -119,6 +125,14 @@ Returns the list of data formats.
 =cut
 
 sub DATA_FORMATS () { $_DATA_FORMATS_ }
+
+=head2 LANGUAGES()
+
+Returns the list of languages.
+
+=cut
+
+sub LANGUAGES () { $_LANGUAGES_ }
 
 =head2 HOME()
 
@@ -966,6 +980,7 @@ sub dav_otprivmask_to_hash {
 
     return \%privs;
 }
+
 
 1;
 

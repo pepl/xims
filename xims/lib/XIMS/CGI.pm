@@ -1479,30 +1479,30 @@ sub init_store_object {
                 # format's default value
                 my $suffix = $object->data_format->suffix();
                 XIMS::Debug( 5, "suffix is: $suffix");
+                # temp. hack until multi-language support is implemented to
+                # allow simple content-negotiation using .lang suffixes
+                if ( defined $suffix and length $suffix ) {
+                    my $rexp = ".*\.$suffix\.("
+                             . join('|', ( map {$_->code()} $ctxt->data_provider->languages()), $suffix )
+                             . ')$';
 
-                # temp. hack until multi-language support is implemented
-                # to allow simple content-negotiation using .lang
-                # suffixes
-                if (    defined $suffix
-                    and length $suffix
-                    and not(
-                        (       $suffix eq 'html'
-                            and $location
-                            =~ /.*\.html\.(de|en|es|it|fr|html)$/
-                        )
-                        or (    $suffix eq 'sdbk'
-                            and $location
-                            =~ /.*\.sdbk\.(de|en|es|it|fr|sdbk)$/ )
-                    )
-                    )
-                {
-                    # the following snippet homogenizes doc-suffixes:
-                    # eg. location 'test' becomes 'test.html' and
-                    #     location 'test.html' REMAINS 'test.html'!
-                    $location =~ s/\.(?:$suffix)$//;
-                    $location .= "." . $suffix;
-                    XIMS::Debug( 6,
-                        "exchange done, location is now $location" );
+                    unless ( $location =~ /$rexp/ ) {
+                        # the following snippet homogenizes doc-suffixes:
+                        # eg. location 'test' becomes 'test.html' and
+                        #     location 'test.html' REMAINS 'test.html'!
+                        $location =~ s/\.(?:$suffix)//;
+                        $location .= "." . $suffix;
+                        XIMS::Debug( 6,
+                                     "exchange done, location is now $location" );
+                    }
+                    else {
+                        # for transition, set language_id according to location
+                        # set language if known suffix
+                        if ( my @lg =grep { $_->{code} eq $1 } $ctxt->data_provider->languages()) {
+                            #$ctxt->object->{Language} = $lg[0]; # needed?
+                            $object->language_id( $lg[0]->id() );
+                        }
+                    }
                 }
             }
             # be more restrictive for valid locations (\w is too resilient)
@@ -2262,7 +2262,7 @@ sub event_contentbrowse {
         my @otherot = split '\s*,\s*', $otfilter; # in case we want to filter
                                                   # a comma separated list of
                                                   # object types
-        push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', 'Gallery', @otherot );
+        push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', 'Gallery', 'VLibrary', @otherot );
     }
     elsif ( defined $notfilter and length $notfilter > 0 ) {
         my @otherot = split '\s*,\s*', $notfilter;
