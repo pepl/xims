@@ -143,7 +143,8 @@ sub event_store {
         # to their '/goxims/content'-absolute path counterparts. Since we do not want '/goxims/content' references. which will
         # very likely break after the content has been published, we have to mangle with the 'href' and 'src' attributes.
         my $absolute_path_nosite = defined $object->id() ? $object->location_path_relative() : ($ctxt->parent->location_path_relative() . '/' . $object->location());
-        $body = $self->_absrel_urlmangle( $ctxt, $body, '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE(), $absolute_path_nosite );
+        #$body = $self->_absrel_urlmangle( $ctxt, $body, '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE(), $absolute_path_nosite );
+        $body = $self->_absrel_urlmangle( $ctxt, $body, '/' . XIMS::GOXIMS() , XIMS::CONTENTINTERFACE(), $absolute_path_nosite );
 
         # kill xml:lang attributes until we make correct use of them
         $body =~ s/ xml:lang="[^"]+"//g; #"
@@ -430,7 +431,10 @@ sub _absrel_urlmangle {
     my $self = shift;
     my $ctxt = shift;
     my $body = shift;
-    my $goximscontent = shift;
+    my $goxims = shift;
+    my $content = shift;
+    #my $goximscontent = shift;
+    my $goximscontent = $goxims.$content;
     my $absolute_path_nosite = shift;
 
     my @size = split('/', $absolute_path_nosite);
@@ -449,6 +453,23 @@ sub _absrel_urlmangle {
         }
         else {
             $body =~ s#(src|href)=("|')$goximscontent$site/#$1=$2$docrepstring#;
+        }
+    }
+    
+    # Firefox ignores tinyMCE's baseurl when pasting a relative link in the editor and adds leading "content/site/"
+    $content =~ s/^\///;# remove leading slash
+    while ( $body =~ /(src|href)=("|')$content(\/[^\/]+)(\/[^("|')]+)/g ) {
+        my $site = $3;
+        my $dir = $4;
+        $dir =~ s#[^/]+$##;
+        if ( $absolute_path_nosite =~ $dir ) {
+            my @size = split('/', $dir);
+            my $levels = scalar(@size) - 1;
+            my $repstring = '../'x($doclevels-$levels-1);
+            $body =~ s/(src|href)=("|')$content$site$dir/$1=$2$repstring/;
+        }
+        else {
+            $body =~ s#(src|href)=("|')$content$site/#$1=$2$docrepstring#;
         }
     }
 
