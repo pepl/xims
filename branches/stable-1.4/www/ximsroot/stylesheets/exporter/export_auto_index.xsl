@@ -20,7 +20,8 @@
 
     <xsl:variable name="puburl">
       <xsl:apply-templates select="/document/context/object/parents" mode="puburl"/>
-      <xsl:value-of select="location"/>
+      <xsl:value-of select="/document/context/object/location"/>
+      <xsl:text>/</xsl:text>
     </xsl:variable>
 
     <xsl:template match="/document/context/object">
@@ -85,7 +86,7 @@
                     </div>
                   </div> 
                  
-                  <ul>
+                  <ul id="autoindex-item-list">
                     <xsl:apply-templates select="children/object[published=1]" mode="item">
                       <xsl:sort select="position"
                                 order="ascending"
