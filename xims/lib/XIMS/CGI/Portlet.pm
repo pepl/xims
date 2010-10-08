@@ -305,10 +305,22 @@ sub generate_body {
     if ( $self->param( "filternews" ) ) {
         $body .= qq{<marked_new>1</marked_new>\n};
     }
+
     if ( $self->param( "filterpublished" ) ) {
         $body .= qq{<published>1</published>\n};
     }
 
+    if ( $self->param( 'filterlocation' )) {
+        $body .= '<location>'
+              . XIMS::xml_escape( $self->param( 'filterlocation' ) )
+              . "</location>\n";
+    }
+
+    if ( $self->param( 'filtertitle' )) {
+        $body .= '<title>'
+              . XIMS::xml_escape( $self->param( 'filtertitle' ) )
+              . "</title>\n";
+    }
 
     if ( $self->param( "extra_filters" ) ) {
         XIMS::Debug( 5, "add additional xims filter!" );
