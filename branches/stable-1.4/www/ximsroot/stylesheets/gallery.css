@@ -8,7 +8,23 @@
 	height:40px;
 	overflow:hidden;
 	float:left;
-	margin:0 10px 10px 0
+	margin:0 10px 10px 0;
+	background: url("") !important;
+	padding: 0px !important;
+	}
+.galleria li a{
+	display:none
+	}
+.galleria li div{
+	position:absolute;
+	display:none;top:0;
+	left:40px
+	}
+.galleria li div img{
+	cursor:pointer
+	}
+.galleria li.active div img,.galleria li.active div{
+	display:block
 	}
 .galleria li img.thumb{
 	cursor:pointer;
