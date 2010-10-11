@@ -55,7 +55,7 @@
             <gallery>
 				<xsl:copy-of select="attributes"/>
 				<styles>
-					<link>/stylesheets/gallery.css</link>
+					<!--<link>/stylesheets/gallery.css</link>-->
 					<style>
 						#main_image{
 							width: <xsl:value-of select="$img-width+20"/>px;
@@ -69,10 +69,12 @@
 							width: <xsl:value-of select="$img-width+20"/>px; 
 					<xsl:choose>
 						<xsl:when test="$thumbnail-pos='left'">						
-							overflow-y: scroll;
+							overflow-y: scroll !important;
+							overflow-x: auto !important;
 						</xsl:when>
 						<xsl:otherwise>
-							overflow-x: scroll;
+							overflow-x: scroll !important;
+							overflow-y: auto !important;
 						</xsl:otherwise>
 					</xsl:choose>							
 						}
@@ -93,7 +95,6 @@
 							float:left;
 						}
 						.scroll-content {
-							/*width: 60px !important;*/
 							margin-left: 0 !important;
 						}
 						#main_image{
@@ -223,10 +224,9 @@
 	</div>
 	<br clear="all"/>
 	</xsl:if>
-	<!-- Scripts for Gallery -->
 	
-	<!--<script type="text/javascript" src="/scripts/jquery/jquery-latest.js"/>
-	<script type="text/javascript" src="/scripts/jquery/jquery-ui-latest.js"/>-->
+	<br/>
+	<!-- Scripts for Gallery -->
 	<script type="text/javascript" src="/scripts/jquery/jquery.galleria.js"/>
 	<script type="text/javascript" src="/scripts/galleria.js"/>
 	<script type="text/javascript">
