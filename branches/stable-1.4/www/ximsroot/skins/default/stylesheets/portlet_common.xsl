@@ -262,6 +262,30 @@
         </td>
     </tr>
     <tr>
+      <td>
+        Title:
+      </td>
+      <td>
+        <input name="filtertitle" 
+               type="text"
+               size="30"
+               maxlength="50"
+               value="{body/filter/title/text()}"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Location:
+      </td>
+      <td>
+        <input name="filterlocation" 
+               type="text"
+               size="30"
+               maxlength="50"
+               value="{body/filter/location/text()}"/>
+      </td>
+    </tr>
+    <tr>
         <!--<td>Extra filters:</td>-->
         <td colspan="2">
             <xsl:value-of select="$i18n_portlet/l/Filter_object_types"/>:
