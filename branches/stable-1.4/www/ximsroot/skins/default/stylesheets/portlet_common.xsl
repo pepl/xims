@@ -263,10 +263,11 @@
     </tr>
     <tr>
       <td>
-        Title:
+        <xsl:value-of select="$i18n_portlet/l/Filter_location"/>:
       </td>
       <td>
         <input name="filtertitle" 
+               class="text"
                type="text"
                size="30"
                maxlength="50"
@@ -275,10 +276,11 @@
     </tr>
     <tr>
       <td>
-        Location:
+        <xsl:value-of select="$i18n_portlet/l/Filter_title"/>:
       </td>
       <td>
         <input name="filterlocation" 
+               class="text"
                type="text"
                size="30"
                maxlength="50"
