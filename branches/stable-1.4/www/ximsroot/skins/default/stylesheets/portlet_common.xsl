@@ -263,7 +263,7 @@
     </tr>
     <tr>
       <td>
-        <xsl:value-of select="$i18n_portlet/l/Filter_location"/>:
+        <xsl:value-of select="$i18n_portlet/l/Filter_title"/>:
       </td>
       <td>
         <input name="filtertitle" 
@@ -276,7 +276,7 @@
     </tr>
     <tr>
       <td>
-        <xsl:value-of select="$i18n_portlet/l/Filter_title"/>:
+        <xsl:value-of select="$i18n_portlet/l/Filter_location"/>:
       </td>
       <td>
         <input name="filterlocation" 
