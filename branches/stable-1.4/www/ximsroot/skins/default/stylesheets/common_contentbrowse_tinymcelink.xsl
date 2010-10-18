@@ -46,7 +46,7 @@
 					</xsl:when>
 					<xsl:otherwhise>
 						<a href="#" onclick="storeBack('{$gopublic}{$target_path}/{location}', '{title}');"><xsl:value-of select="$i18n/l/here"/></a>
-					</xsl:otherwise>
+					</xsl:otherwhise>
 				</xsl:choose>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
         </xsl:if>
     </td></tr>
