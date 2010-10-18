@@ -79,7 +79,7 @@
     </xsl:variable>
     <tr><td>
         <img src="{$ximsroot}images/spacer_white.gif" alt="" width="{10*@level}" height="10"/>
-        <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>
+        <img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}" width="20" height="18"/>
             <xsl:choose>
                 <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
                     <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};sbfield={$sbfield};urllink={$urllink}"><xsl:value-of select="title"/></a>
@@ -90,13 +90,20 @@
             </xsl:choose>
             <xsl:if test="$otfilter = '' or contains( $otfilter ,/document/object_types/object_type[@id=$objecttype]/name )">
                 <xsl:choose>
-								<xsl:when test="$urllink != ''">
-									(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path_abs}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
-								</xsl:when>
-								<xsl:otherwise>
+					<xsl:when test="$urllink != ''">
+						(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path_abs}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:choose>
+							<xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
+								(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path}/{location}/');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
+							</xsl:when>
+							<xsl:otherwise>
 								(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
-								</xsl:otherwise>
-							</xsl:choose>
+							</xsl:otherwise>
+						</xsl:choose>						
+					</xsl:otherwise>
+				</xsl:choose>
             </xsl:if>
     </td></tr>
 </xsl:template>
