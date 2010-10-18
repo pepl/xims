@@ -2097,7 +2097,7 @@ sub event_contentbrowse {
         my @otherot = split '\s*,\s*', $otfilter; # in case we want to filter
                                                   # a comma separated list of
                                                   # object types
-        push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', 'VLibrary','Gallery' @otherot );
+        push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', 'VLibrary','Gallery', @otherot );
     }
     elsif ( defined $notfilter and length $notfilter > 0 ) {
         my @otherot = split '\s*,\s*', $notfilter;
