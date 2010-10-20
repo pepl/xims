@@ -53,8 +53,7 @@ sub registerEvents {
 sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
-$self->resolve_content( $ctxt, [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID FEED_ID ) ] );
-    $self->expand_attributes($ctxt);
+
     return $self->SUPER::event_edit( $ctxt );
 }
 
@@ -77,21 +76,6 @@ sub event_preview {
     return 0;
 }
 
-# hmmm, really needed?
-
-=head2 event_view()
-
-=cut
-
-sub event_view {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-    
-    $self->expand_attributes($ctxt);
-
-    return $self->event_edit( $ctxt );
-}
-
 =head2 event_store()
 
 =cut
@@ -106,14 +90,6 @@ sub event_store {
 
     my $object = $ctxt->object();
 
-#    my $autoindex = $self->param('autoindex');
-#    if ( defined $autoindex and $autoindex eq 'false' ) {
-#        XIMS::Debug( 6, "autoindex: $autoindex" );
-#        $object->attribute( autoindex => '0' );
-#    }
-#    else {
-#        $object->attribute( autoindex => '1' );
-#    }
     $object->attribute( autoindex => '0' );
 
     my $pagerowlimit = $self->param('pagerowlimit');
@@ -175,25 +151,6 @@ sub event_store {
 
 # END RUNTIME EVENTS
 # #############################################################################
-
-#=head2 expand_bodydeptinfo()
-#
-#=cut
-#
-#sub expand_bodydeptinfo {
-#    my $self = shift;
-#    my $ctxt = shift;
-#
-#    eval "require XIMS::SAX::Filter::DepartmentExpander;";
-#    if ( $@ ) {
-#        XIMS::Debug( 2, "could not load department-expander: $@" );
-#        return 0;
-#    }
-#    my $filter = XIMS::SAX::Filter::DepartmentExpander->new( Object   => $ctxt->object(),
-#                                                             User     => $ctxt->session->user(), );
-#    $ctxt->sax_filter( [] ) unless defined $ctxt->sax_filter();
-#    push @{$ctxt->sax_filter()}, $filter;
-#}
 
 1;
 
