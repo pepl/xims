@@ -23,8 +23,6 @@ package XIMS::Gallery;
 
 use strict;
 use base qw( XIMS::Folder );
-#use XIMS::Portlet;
-#use XIMS::URLLink;
 use XIMS::DataFormat;
 use XIMS::Importer::Object;
 use XIMS::Importer::Object::URLLink;
