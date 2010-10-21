@@ -1697,103 +1697,39 @@ $Id$
 
     <!-- give notice that location needs to be set first -->
     function enterCheckLoc() {
-        var badBrowserEditorCombi = testBadBrowserEditorCombi();
         var notice = "<xsl:value-of select="$i18n/l/IlpProvideLocationFirst"/>";
         var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
         notice += <![CDATA[ '<br/><br/>\
                   <input type="button" id="xims_ilp_btn_select" value="'+ btnOK +'" class="control" \
                   onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
-                  ]]>
-        // reset notice if ILP would not work properly
-        if ( badBrowserEditorCombi ) {
-            notice = "You have not entered a Location, yet!\nPlease enter one now!";
-        }
+                  ]]>      
         var loc = document.eform.name.value;
         <!-- open il-popup when location has not been entered yet -->
         <![CDATA[if ( loc.length < 1 ) {]]>
             document.getElementById('xims_ilp_content').innerHTML=notice;
-            if ( !badBrowserEditorCombi ) {
-                openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
-            }
-            else {
-                alert(notice);
-            }
+            openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
         }
     }
-
-    <!-- returns objtype query param value -->
-    function getObjTypeFromQuery() {
-        var str = document.location.search;
-        var searchToken = "objtype=";
-        var fromPos = str.indexOf(searchToken) + searchToken.length;
-        var subStr = str.substring(fromPos, str.length);
-        return(subStr.substring(0, subStr.indexOf(";")));
-    }
-
-    <!-- we need special handling of Object-Types with WYSIWYG
-         components -->
-    <xsl:if test="$event = 'create'">
-        <!-- do we have an object with a possible WYSIWYG editor somewhere -->
-        var obj = getObjTypeFromQuery();
-        var found = obj.search(/(.*Document)/);
-        if ( found != -1 ) {
-        <!-- give notice - after 30 secs - that location needs to be set first 
-             (i.o. not to loose content), if not done already -->
-             window.setTimeout("enterCheckLoc()", 30*1000);
-        }
-        else {
-            <!-- we have event create but no WYSIWYG editor somewhere -->
-            document.eform.name.focus();
-        }
-    </xsl:if>
 
     <!-- main function for testlocation event handling -->
     function testlocation() {
         // get XML-Http-Request-Object
         var xmlhttp = getXMLHTTPObject();
         var location = document.eform.name.value;
-        <!-- called for events create and edit -->
-        <xsl:choose>
-            <xsl:when test="$event='create'">
-            var obj = getObjTypeFromQuery();
-            </xsl:when>
-            <xsl:otherwise>
-            var obj = '<xsl:value-of select="$obj_type"/>';
-            </xsl:otherwise>
-        </xsl:choose>
+        var obj    = '<xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/>'; 
+        var suffix = '<xsl:value-of select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/suffix"/>';
 
-        <!-- append suffixes with no lang-extension -->
+        <!-- append suffixes with no lang-extension;
+             lang-extensions in the pattern should be taken from 
+             /document/languages in the future -->
         <![CDATA[
-        if ( location.length != 0 && obj.search(/(Document|sDocBookXML)$/i) != -1 ) {
-            var searchres = location.search(/.*\.(html|sdbk)(\.[^.]+)?$/);
-            if ( searchres == -1 ) {
-                // handle .html and .sdbk
-                if ( obj.search(/Document$/i) != -1 ) {
-                    location += '.html';
-                }
-                else {
-                    location += '.sdbk';
-                }
-            }
-        }
-        else {
-            var searchres = location.search(/.*(\.[^.]+)$/);
-            if ( searchres == -1 ) {
-                // append mime-type suffixes
-                switch (obj) {
-                    case "AxPointPresentation": location += '.axp';  break;
-                    case "CSS":                 location += '.css';  break;
-                    case "JavaScript":          location += '.js';   break;
-                    case "Portlet":             location += '.ptlt'; break;
-                    case "TAN_List":            location += '.tls';  break;
-                    case "Text":                location += '.txt';  break;
-                    case "SQLReport":           location += '.html'; break;
-                    case "XSLStylesheet":       location += '.xsl';  break;
-                    case "XML":                 location += '.xml';  break;
-                }
-            }
-        }
+ 	//var pattern = new RegExp( '.*\\.' + suffix + '(\\.(de|en|it|es|fr))?$');
+	//if (location.length != 0 &&  ! location.match(pattern)) {
+        //    //alert( pattern + ' ' + location + '+' + suffix );
+        //    location += suffix;
+	//}
         ]]>
+
         var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>';
         var query = '?test_location=1;objtype='+ obj +';name='+ encodeURIComponent(location);
         var url = abspath + query;
@@ -1823,7 +1759,7 @@ $Id$
 
                 var notice;
                 var controlHtml;
-                var badBrowserEditorCombi = testBadBrowserEditorCombi();
+            
                 /* choose response according to statusCode. remember: 
                     0 => Location (is) OK
                     1 => Location already exists (in container)
@@ -1833,7 +1769,7 @@ $Id$
                 switch (statusCode) {
                     case "0":
                         // OK (see if location has been mangled and we don't have an URLLink Object)
-                        var objType = getObjTypeFromQuery();
+                        var objType = ']]><xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/><![CDATA[';
                         if ( objType.toUpperCase() != 'URLLINK' && location != processedLocation ) {
                             //we would change location on save so report this to user ]]>
                             var text = "<xsl:value-of select="$i18n/l/IlpLocationWouldChange"/>";
@@ -1847,11 +1783,6 @@ $Id$
                             <input type="button" class="control" value="'+ btnIgnore +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');return false;"/>&#160;';
                             notice += controlHtml;
                             // reset notice if ILP would not work properly
-                            if ( badBrowserEditorCombi ) {
-                                notice = location+"\n";
-                                notice += processedLocation+"\n\n";
-                                notice += "Note!\nLocation would change (as indicated above) upon saving!";
-                            }
                         }
                         break;
                     case "1":
@@ -1863,10 +1794,6 @@ $Id$
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
-                        // reset notice if ILP would not work properly
-                        if ( badBrowserEditorCombi ) {
-                            notice = "Location already exists in current Container!";
-                        }
                         break;
                     case "2":
                         // no loc
@@ -1877,10 +1804,6 @@ $Id$
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
-                        // reset notice if ILP would not work properly
-                        if ( badBrowserEditorCombi ) {
-                            notice = "No Location provided\nPlease enter one now!";
-                        }
                         break;
                     case "3":
                         // dirty loc
@@ -1891,10 +1814,6 @@ $Id$
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
-                        // reset notice if ILP would not work properly
-                        if ( badBrowserEditorCombi ) {
-                            notice = "Location contains invalid characters!\nValid characters are 0-9a-zA-Z, '-' and '_'.";
-                        }
                         break;
                     default:
                         // debug message
@@ -1906,24 +1825,16 @@ $Id$
                         ]]>
                         notice = text+controlHtml;
                         // reset notice if ILP would not work properly
-                        if ( badBrowserEditorCombi ) {
-                            notice = text;
-                        }
                     break;
                 }
                 // set content for ILP
                 document.getElementById('xims_ilp_content').innerHTML=notice;
-                <!-- debug
+                <!-- debug -->
                 //alert("reason = "+defaultReason+"\nstatuscode = "+statusCode+"\nlocation = "+processedLocation);
-                -->
+                
                 // report notice/error if set
                 if (notice) {
-                    if ( !badBrowserEditorCombi ) {
-                        openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
-                    }
-                    else {
-                        alert(notice);
-                    }
+                   openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
                 }
             }
         }
