@@ -43,7 +43,9 @@
                     <td colspan="2">
                       <xsl:call-template name="pre-body-hook"/>
                       <div id="body">
+                      	<div id="content">
                         <xsl:apply-templates select="body"/>
+						</div>
                       </div>
                     </td>
                 </tr>
