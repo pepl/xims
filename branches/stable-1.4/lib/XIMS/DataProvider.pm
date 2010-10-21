@@ -600,6 +600,26 @@ sub data_formats {
     return @out;
 }
 
+=head2 languages()
+
+=cut
+
+sub languages {
+    my $self = shift;
+    my %args = @_;
+    my $cache;
+    $cache = 1 unless scalar keys %args > 0;
+    no strict 'refs';
+    if ( defined $cache and defined *{"XIMS::LANGUAGES"}{CODE} ) {
+        return values %{ XIMS::LANGUAGES() };
+    }
+    my @data = $self->getLanguage(%args);
+    require XIMS::Language;
+    my @out = map { XIMS::Language->new->data( %{$_} ) } @data;
+    return @out;
+}
+
+
 ## use critic
 
 =pod
