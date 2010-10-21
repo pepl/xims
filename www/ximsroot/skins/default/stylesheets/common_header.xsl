@@ -430,8 +430,8 @@
                name="email{$id}"
                width="18"
                height="19"
-               title="Generate Spam"
-               alt="Generate Spam"/>
+               title="Yes, we spam!"
+               alt="Yes, we spam!"/>
         </a>
     </xsl:if>
   </xsl:template>
