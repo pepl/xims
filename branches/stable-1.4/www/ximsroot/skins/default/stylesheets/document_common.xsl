@@ -525,24 +525,9 @@
 	      <xsl:attribute name="onchange">this.className='text'; return testlocation();</xsl:attribute>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="substring-after(location, '.html') = '.de' or
-                            substring-after(location, '.html') = '.en' or
-                            substring-after(location, '.html') = '.es' or
-                            substring-after(location, '.html') = '.fr' or
-                            substring-after(location, '.html') = '.it' or
-                            substring-after(location, '.html') = '.html'">
-              <xsl:attribute name="value">
-                <xsl:value-of select="location"/>
-              </xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:attribute name="value">
-                <xsl:value-of select="substring-before(location, 
-                                                       concat('.', /document/data_formats/data_format[@id=/document/context/object/data_format_id]/suffix))"/>
-              </xsl:attribute>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:attribute name="value">
+            <xsl:value-of select="location"/>
+          </xsl:attribute>
         </input>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
