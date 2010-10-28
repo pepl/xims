@@ -412,6 +412,10 @@ sub _set_wysiwyg_editor {
     if ( $plain or defined $editor and $editor eq 'plain' ) {
         $editor = undef;
     }
+    elsif ($editor eq 'wepro') { 
+        # we just dumped eWebEditPro, now change the remaining cookies
+        $editor = 'tinymce';
+    }
     elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
         $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
         if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
