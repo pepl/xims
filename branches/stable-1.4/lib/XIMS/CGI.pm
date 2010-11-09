@@ -686,16 +686,18 @@ sub selectStylesheet {
         . $ctxt->session->skin
         . '/stylesheets/';
 
+
+    # Emulate request.uri CGI param, set by
+    # Apache::AxKit::Plugin::AddXSLParams::Request ($request.uri is
+    # used by public/*.xsl stylesheets)
+    $self->param( 'request.uri',
+                  $ctxt->object->location_path_relative() );
+    $self->param( 'request.uri.query', query_string());
+
     my $gotpubuilangstylesheet;
 
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
     if ( defined $publicusername or $ctxt->properties->application->usepubui() ) {
-
-        # Emulate request.uri CGI param, set by
-        # Apache::AxKit::Plugin::AddXSLParams::Request ($request.uri is
-        # used by public/*.xsl stylesheets)
-        $self->param( 'request.uri',
-            $ctxt->object->location_path_relative() );
 
         my $stylesheet = $ctxt->object->stylesheet();
 
