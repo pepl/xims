@@ -690,8 +690,10 @@ sub selectStylesheet {
     # Emulate request.uri CGI param, set by
     # Apache::AxKit::Plugin::AddXSLParams::Request ($request.uri is
     # used by public/*.xsl stylesheets)
-    $self->param( 'request.uri',
-                  $ctxt->object->location_path_relative() );
+    if ( defined  $ctxt->object ) {
+        $self->param( 'request.uri',
+                      $ctxt->object->location_path_relative() );
+    }
     $self->param( 'request.uri.query', query_string());
 
     my $gotpubuilangstylesheet;
