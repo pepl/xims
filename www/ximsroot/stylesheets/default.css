@@ -18,7 +18,7 @@ body {
     margin-right:0px;
     margin-top:0px;
     font-family:helvetica, arial, sans-serif;
-    font-size:0.75em;
+    font-size:0.8em;
 }
 
 
@@ -233,7 +233,6 @@ td.lightblue {
     visible:false;
     background-color:#ced3d6;
     font-family:helvetica, arial, sans-serif;
-    font-size:10pt;
     font-weight:bold;
     border:1px solid #888888;
     padding-left:2px;
