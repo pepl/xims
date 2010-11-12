@@ -100,14 +100,34 @@
     </xsl:template>
 
    <xsl:template match="children/object" mode="rdf-li">
-     <span rel="rdf:li" resource="{concat($puburl, location)}"></span>
+     <span rel="rdf:li">
+       <xsl:attribute name="resource">
+         <xsl:choose>
+           <xsl:when test="starts-with(location, '/') or starts-with(location, 'http://')">
+	     <xsl:value-of select="location"/>
+           </xsl:when>
+           <xsl:otherwise>
+              <xsl:value-of select="concat($puburl, location)"/>
+           </xsl:otherwise>
+         </xsl:choose>
+       </xsl:attribute>
+     </span>
    </xsl:template>
 
     <xsl:template match="children/object" mode="item">
       <xsl:variable name="dataformat">
         <xsl:value-of select="data_format_id"/>
       </xsl:variable>
-      <xsl:variable name="item-puburl" select="concat($puburl, location)"/>
+      <xsl:variable name="item-puburl">
+        <xsl:choose>
+           <xsl:when test="starts-with(location, '/') or starts-with(location, 'http://')">
+             <xsl:value-of select="location"/>
+           </xsl:when>
+           <xsl:otherwise>
+              <xsl:value-of select="concat($puburl, location)"/>
+           </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
 
       <li class="list_{/document/data_formats/data_format[@id=$dataformat]/name}"
           about="{$item-puburl}">
@@ -115,16 +135,17 @@
           <span property="rss:title"><xsl:value-of select="title"/></span>
         </a>
         <span property="rss:link" content="{$item-puburl}" />
-        <span property="dc:date">
-          <xsl:attribute name="content">
-            <xsl:apply-templates select="last_modification_timestamp" mode="ISO8601"/>
-          </xsl:attribute>
-        </span>
-        <span property="dc:format" content="{/document/data_formats/data_format[@id=$dataformat]/mime_type}" />
-        <xsl:if test="string-length(normalize-space(keywords)) &gt; 0">
-          <span property="dc:subject" content="{translate(keywords, ';', ',')}" />
+        <xsl:if test="/document/data_formats/data_format[@id=$dataformat]/name != 'URL'">
+          <span property="dc:date">
+            <xsl:attribute name="content">
+              <xsl:apply-templates select="last_modification_timestamp" mode="ISO8601"/>
+            </xsl:attribute>
+          </span>
+          <span property="dc:format" content="{/document/data_formats/data_format[@id=$dataformat]/mime_type}" />
+          <xsl:if test="string-length(normalize-space(keywords)) &gt; 0">
+            <span property="dc:subject" content="{translate(keywords, ';', ',')}" />
+          </xsl:if>
         </xsl:if>
-        
         <xsl:if test="string-length(normalize-space(abstract)) &gt; 0">
           <p property="rss:description">
             <xsl:value-of select="abstract"/>
