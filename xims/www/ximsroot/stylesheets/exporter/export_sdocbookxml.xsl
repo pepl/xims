@@ -9,6 +9,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="../common.xsl"/>
+<xsl:import href="common_export.xsl"/>
 
 <xsl:output method="xml"/>
 
@@ -55,6 +56,9 @@
                 <dc:language></dc:language>
             </rdf:Description>
         </rdf:RDF>
+        <path>
+           <xsl:apply-templates select="." mode="path-element"/>
+        </path>
       <xsl:apply-templates select="body/article"/>
     </article>
 </xsl:template>
