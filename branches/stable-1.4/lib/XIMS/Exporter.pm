@@ -2373,8 +2373,12 @@ sub remove {
     unlink $kill_path . '/' . $self->{Object}->location . ".container.xml";
 
     # kill the autoindex if exists
-    if ( -f $kill_path . '/' . XIMS::AUTOINDEXFILENAME() ) {
-        unlink $kill_path . '/' . XIMS::AUTOINDEXFILENAME();
+    if ( -f $kill_path . '/' . "galleryindex.html" ) {
+        unlink $kill_path . '/' . "galleryindex.html";
+    }
+    # kill the images.htm if exists
+    if ( -f $kill_path . '/' . "images.htm") {
+        unlink $kill_path . '/' . "images.htm";
     }
 
     # and now, remove AxKit's stylecache dir...
