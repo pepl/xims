@@ -10,95 +10,60 @@
         xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="referencelibraryitem_common.xsl"/>
+<xsl:import href="edit_common.xsl"/>
 
 <xsl:variable name="i18n_reflib" select="document(concat($currentuilanguage,'/i18n_reflibrary.xml'))"/>
 
-<xsl:template match="/document/context/object">
-<html>
-    <!--<xsl:call-template name="head-edit"/>-->
-    <xsl:call-template name="head_default">
-			<xsl:with-param name="reflib">true</xsl:with-param>
-    </xsl:call-template>
-    <body>
-        <script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        
-        <xsl:call-template name="header"/>
-        <div class="edit">
-        <div id="tab-container" class="ui-corner-top">	
-            <xsl:call-template name="table-edit"/>
-         </div>
-         <div class="cancel-save">
-            <xsl:call-template name="cancelform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-						</div>
-         <div id="content-container" class="ui-corner-bottom ui-corner-tr">
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" id="create-edit-form">
-            
-            <xsl:call-template name="reftypes_list"/>
-            <br clear="left"/>
-                    <xsl:call-template name="markednew"/>
-                    <xsl:call-template name="tr-vlauthors"/>
-  
-                    
-                    <xsl:call-template name="tr-vleditors"/>
-                    <xsl:call-template name="tr-vlserials"/>
-                    <div id="reference-properties" class="ui-widget-content ui-corner-all">
-                    <xsl:apply-templates select="/document/reference_properties/reference_property">
-                        <xsl:sort select="position" order="ascending" data-type="number"/>
-                    </xsl:apply-templates>
-                    .
-                    </div>
+<xsl:template name="edit-content">
+	<xsl:call-template name="reftypes_list"/>
+	<br clear="left"/>
+	<xsl:call-template name="markednew"/>
+	<!--<xsl:call-template name="tr-vlauthors"/>-->
+	<xsl:call-template name="form-vlproperties">
+		<xsl:with-param name="mo" select="'author'"/>
+		<xsl:with-param name="mode" select="'rl'"/>
+	</xsl:call-template>
+	<xsl:call-template name="form-vlproperties">
+		<xsl:with-param name="mo" select="'editor'"/>
+		<xsl:with-param name="mode" select="'rl'"/>
+	</xsl:call-template>
+	<xsl:call-template name="form-vlproperties">
+		<xsl:with-param name="mo" select="'serial'"/>
+		<xsl:with-param name="mode" select="'rl'"/>
+	</xsl:call-template>
 
-                    <!-- Add Fulltext (->XIMS::File object as child ?) -->
-                    <xsl:call-template name="tr-abstract"/>
-                    <xsl:call-template name="tr-notes"/>
-    
-                <xsl:call-template name="saveedit"/>
-            </form>
-        </div>
-        <!--<xsl:call-template name="canceledit"/>-->
-        <form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="get" style="display:none">
-            <input type="hidden" name="id" value="{@id}"/>
-            <input type="hidden" name="change_reference_type" value="1"/>
-            <input type="hidden" name="reference_type_id" value=""/>
-            <xsl:call-template name="rbacknav"/>
-        </form>
+		<xsl:apply-templates select="/document/reference_properties/reference_property">
+			<xsl:sort select="position" order="ascending" data-type="number"/>
+		</xsl:apply-templates>
+	
 
-        <div class="cancel-save">
-            <xsl:call-template name="cancelform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-						</div>
-				</div>
-        <!--<xsl:call-template name="script_bottom"/>-->
-    </body>
-</html>
+	<!-- Add Fulltext (->XIMS::File object as child ?) -->
+	<xsl:call-template name="tr-abstract"/>
+	<xsl:call-template name="tr-notes"/>
+	
+	<form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="get" style="display:none">
+		<input type="hidden" name="id" value="{@id}"/>
+		<input type="hidden" name="change_reference_type" value="1"/>
+		<input type="hidden" name="reference_type_id" value=""/>
+		<xsl:call-template name="rbacknav"/>
+	</form>
+	
+	<script type="text/javascript" language="javascript">
+      var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
+			var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
+    </script>					
+	<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+	<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 </xsl:template>
-
-<!--    <xsl:template name="reftypes_select">
-        <div>
-            <xsl:value-of select="$i18n_reflib/l/ChangeRefType"/> &#160;
-                <select name="reftypes_select" id="reftypes_select" onchange="return submitReferenceTypeUpdate(this.value);">
-                    <xsl:apply-templates select="/document/reference_types/reference_type"/>
-                </select>
-        </div>
-    </xsl:template>-->
     
-    <xsl:template name="reftypes_list">
-    		<div id="change-reftype">
-    		<div><xsl:value-of select="$i18n_reflib/l/ChangeRefType"/> &#160;</div>
-		<a class="flyout create-widget fg-button fg-button-icon-right ui-state-default ui-corner-all" tabindex="0" href="#ref-types">
-			<span class="ui-icon ui-icon-triangle-1-s"/>
-			<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>
-		</a> 
-		<div id="ref-types" class="hidden-content">
-			<ul>
-					<xsl:apply-templates select="/document/reference_types/reference_type" mode="getoptions"/>
-			</ul>
-			</div>
-    <!--<xsl:apply-templates select="/document/reference_types/reference_type" mode="descriptions"/>-->
+<xsl:template name="reftypes_list">
+    		<div id="create-widget">
+			<button>				
+				<xsl:value-of select="$i18n_reflib/l/ChangeRefType"/>
+			</button>
+			<ul style="position:absolute !important;">
+				<xsl:apply-templates select="/document/reference_types/reference_type" mode="getoptions"/>
+			</ul>	
     </div>
     </xsl:template>
     
@@ -114,5 +79,35 @@
             <xsl:value-of select="name"/>
         </option>
     </xsl:template>
+
+<xsl:template match="authorgroup/author|editorgroup/author">
+    <xsl:variable name="current_pos" select="number(position)"/>
+    <xsl:variable name="role">
+        <xsl:choose>
+            <xsl:when test="name(..) = 'authorgroup'">0</xsl:when>
+            <xsl:otherwise>1</xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="date" select="/document/context/object/reference_values/reference_value[property_id=/document/reference_properties/reference_property[name='date']/@id]/value"/>
+    <xsl:variable name="title" select="/document/context/object/reference_values/reference_value[property_id=/document/reference_properties/reference_property[name='title']/@id]/value"/>
+    <xsl:if test="$current_pos!=1">
+        <xsl:text> </xsl:text>
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos - 1};date={$date};title={$title}"
+           title="{i18n/l/Reposition}">&lt;</a>
+        <xsl:text> </xsl:text>
+    </xsl:if>
+    <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="{$i18n/l/Opens_in_new_window}">
+        <xsl:call-template name="authorfullname"/>
+    </a>
+    <xsl:text> </xsl:text>
+    <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}"
+       title="{i18n_vlib/l/Delete_mapping}"><span class="xdelete"> x </span></a>
+    <xsl:if test="position()!=last()">
+        <xsl:text> </xsl:text>
+        <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos + 1};date={$date};title={$title}"
+           title="{i18n/l/Reposition}">&gt;</a>
+        <xsl:text>, </xsl:text>
+    </xsl:if>
+</xsl:template>
 
 </xsl:stylesheet>
