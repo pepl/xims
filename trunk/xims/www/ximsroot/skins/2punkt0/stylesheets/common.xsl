@@ -404,10 +404,10 @@
 			</a>
 			<!-- ui-dialog -->
 			<div id="dialog">
-				<xsl:attribute name="title"><xsl:value-of select="IlpDefaultWinlabel"/></xsl:attribute>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/IlpDefaultWinlabel"/></xsl:attribute>
 			</div>
 			<div id="location-dialog">
-				<xsl:attribute name="title"><xsl:value-of select="IlpDefaultWinlabel"/></xsl:attribute>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/IlpDefaultWinlabel"/></xsl:attribute>
 			</div>
 			<!-- location-testing AJAX code -->
 			<xsl:if test="$testlocation">
