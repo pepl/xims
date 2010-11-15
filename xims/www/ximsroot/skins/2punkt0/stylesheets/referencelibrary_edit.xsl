@@ -9,62 +9,33 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
+<xsl:import href="edit_common.xsl"/>
 
-<xsl:template match="/document/context/object">
-<html>
-    <xsl:call-template name="head_default">
-			<xsl:with-param name="reflib">true</xsl:with-param>
-    </xsl:call-template>
-    <body>
-			<xsl:call-template name="header"/>
-        <div class="edit">
-					<div id="tab-container" class="ui-corner-top">
-            <xsl:call-template name="table-edit"/>
-          </div>
-          <div class="cancel-save">
-						<xsl:call-template name="cancelform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
-            <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post" id="create-edit-form">
-
-                    <xsl:call-template name="tr-locationtitle-edit"/>
-                    <xsl:call-template name="tr-stylesheet-edit"/>
-                    <xsl:call-template name="markednew"/>
-
-                <xsl:call-template name="saveedit"/>
-            </form>
-        </div>
-        <div class="cancel-save">
-						<xsl:call-template name="cancelform">
-							<xsl:with-param name="with_save">yes</xsl:with-param>
-						</xsl:call-template>
-					</div>
-					</div>
-    </body>
-</html>
+<xsl:template name="edit-content">
+		<xsl:call-template name="form-locationtitle-edit"/>
+		<xsl:call-template name="form-marknew-pubonsave"/>
+		<xsl:call-template name="form-stylesheet-edit"/>
+		<br clear="all"/>
 </xsl:template>
 
-
-<xsl:template name="tr-stylesheet-edit">
+<xsl:template name="form-stylesheet-edit">
 <xsl:variable name="parentid" select="parents/object[/document/context/object/@parent_id=@document_id]/@id"/>
-<div id="tr-stylesheet">
-			<div id="label-stylesheet">
+<div class="form-div div-left">
+	<div>
+			<div class="label-std">
 				<label for="input-stylesheet">
 					<xsl:value-of select="$i18n/l/Stylesheet"/>
 				</label>
 			</div>
-			<input type="text" name="stylesheet" size="60" value="{style_id}" class="text" id="input-stylesheet"/>
+			<input type="text" name="stylesheet" size="60" value="{style_id}" id="input-stylesheet"/>
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>
 			<xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=Folder;sbfield=eform.stylesheet')" class="doclink"><xsl:value-of select="$i18n/l/Browse_stylesheet"/>&#160;(<xsl:value-of select="$i18n/l/Folder"/>)</a>
     </div>
+</div>
 </xsl:template>
 
 </xsl:stylesheet>

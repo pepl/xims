@@ -25,6 +25,7 @@
     <xsl:param name="workgroup_id"/>
     <xsl:param name="reflibsearch"/>
     <xsl:param name="reflib">true</xsl:param>
+	<xsl:param name="createwidget">default</xsl:param>
 
     <xsl:variable name="objectitems_count"><xsl:choose><xsl:when test="/document/context/object/children/@totalobjects"><xsl:value-of select="/document/context/object/children/@totalobjects"/></xsl:when><xsl:otherwise>0</xsl:otherwise></xsl:choose></xsl:variable>
    
@@ -34,19 +35,18 @@
 
     <!--<xsl:variable name="subjectcolumns" select="'3'"/>-->
     
-    <xsl:variable name="pagenavurl">
-					<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id)"/>
-					<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch)"/></xsl:if>
-				</xsl:variable>
+	<xsl:variable name="pagenavurl">
+		<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id)"/>
+		<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch)"/></xsl:if>
+	</xsl:variable>
 				
-    <xsl:template name="view-content">
-									<xsl:call-template name="reflib.options"/>
-										
-								<div id="docbody">
-									<div id="search-filter">
-                    <div id="reflib_resulttitle">
-                                    <xsl:if test="$date != '' or $author_id != '' or $reference_type_id != '' or $serial_id != '' or $author_lname != ''">
-                                        <strong>Filtered View</strong>:
+	<xsl:template name="view-content">
+		<xsl:call-template name="reflib.options"/>
+			<div id="docbody">
+				<div id="search-filter">
+					<div id="reflib_resulttitle">
+						<xsl:if test="$date != '' or $author_id != '' or $reference_type_id != '' or $serial_id != '' or $author_lname != ''">
+							<strong>Filtered View</strong>:
                                         <xsl:if test="$date != ''">
                                             <span class="reflib_filter">Date '<xsl:value-of select="$date"/>'</span></xsl:if>
                                         <xsl:if test="$serial_id != ''"><xsl:if test="$date != ''">, </xsl:if>
@@ -58,9 +58,9 @@
                                         <xsl:if test="$author_lname != ''"><xsl:if test="$date != '' or $serial_id != '' or $author_id != ''">, </xsl:if>
                                             <span class="reflib_filter">Author lastname '<xsl:value-of select="$author_lname"/>'</span></xsl:if>.
                                         <a href="{$xims_box}{$goxims_content}{$absolute_path}">Reset filter</a>
-                                    </xsl:if>
+						</xsl:if>
                                 &#160;&#160;&#160;
-                                        <xsl:call-template name="items_page_info"/>
+						<xsl:call-template name="items_page_info"/>
                     </div>
 
                     <xsl:call-template name="reflib.authorsearch"/>
@@ -83,22 +83,20 @@
 
     </xsl:template>
 
-<xsl:template name="reference_type.createwidget">
-		<div>
-		<a class="flyout create-widget fg-button fg-button-icon-right ui-state-default ui-corner-all" tabindex="0" href="#ref-types">
-			<span class="ui-icon ui-icon-triangle-1-s"/>
-			<xsl:value-of select="$i18n/l/Create"/>
-		</a> 
-		<div id="ref-types" class="hidden-content">
-			<ul>
-					<xsl:apply-templates select="/document/reference_types/reference_type" mode="getoptions"/>
+<xsl:template name="create-widget">
+		<div id="create-widget">
+			<button>				
+				<xsl:value-of select="$i18n/l/Create"/>
+			</button>
+			<ul style="position:absolute !important;">
+				<li><a href="{$xims_box}{$goxims_content}{$absolute_path}?import_prompt=1"><xsl:value-of select="$i18n/l/Import"/>...</a></li>
+				<xsl:apply-templates select="/document/reference_types/reference_type" mode="getoptions"/>
 			</ul>
-			</div>
-    <!--<xsl:apply-templates select="/document/reference_types/reference_type" mode="descriptions"/>-->
     <noscript>
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="get" id="reftype_creator" name="reftype_creator">
 				
         <select name="reftype" id="reftype">
+        	<option><a href="{$xims_box}{$goxims_content}{$absolute_path}?import_prompt=1"><xsl:value-of select="$i18n/l/Import"/>...</a></option>
             <xsl:apply-templates select="/document/reference_types/reference_type" mode="selectoptions">
                 <xsl:sort select="name" order="ascending"/>
             </xsl:apply-templates>
@@ -188,9 +186,16 @@
         
         <div>
         <xsl:call-template name="last_modified"/>
-        <xsl:call-template name="cttobject.status"/>
+        
+        <xsl:call-template name="state-toolbar"/>
+				<xsl:call-template name="options-toolbar">
+					<xsl:with-param name="email-disabled" select="true()"/>
+					<xsl:with-param name="copy-disabled" select="true()"/>
+					<xsl:with-param name="move-disabled" select="true()"/>
+				</xsl:call-template>
+        <!--<xsl:call-template name="cttobject.status"/>
         <xsl:call-template name="cttobject.options"/>
-
+-->
        </div>
         <div class="vlabstract">
             <xsl:apply-templates select="abstract"/>
@@ -242,54 +247,37 @@
 </xsl:template>
 
 <xsl:template name="reflib.authorsearch">
-    <div id="reflib_authorsearch">
-<form action="{$xims_box}{$goxims_content}{$absolute_path}" name="rlsearch">
-                       <label for="reflibsearch"><xsl:value-of select="$i18n/l/Search"/></label>&#160;&#160;
-											<!--:<br/>Example: <em>zoller serial:"Phys. Rev" date:2005</em>-->
-                        <input type="text" name="reflibsearch" id="reflibsearch" size="42" maxlength="200">
-                            <xsl:if test="$reflibsearch != ''">
-                                <xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
-														</xsl:if>
-														<xsl:choose>
-															<xsl:when test="$reflibsearch != ''">
-																<xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:attribute name="value">[Example: <em>zoller serial:"Phys. Rev" date:2005</em>]</xsl:attribute>
-																<xsl:attribute name="onfocus">document.rlsearch.reflibsearch.value=&apos;&apos;;</xsl:attribute>
-																<!--<xsl:attribute name="aria-label"><xsl:value-of select="$i18n/l/Search"/></xsl:attribute>-->
-															</xsl:otherwise>
-														</xsl:choose>
-                        </input>
-                        <xsl:text>&#160;</xsl:text>
-                        
-                        <button class="ui-state-default ui-corner-all fg-button fg-button-icon-left" type="submit" name="submit" title="{$i18n/l/Search}">
-					<span class="ui-icon ui-icon-search"/>
-					<span class="text">
-						<xsl:value-of select="$i18n/l/Search"/>
-					</span>
-				</button>
-				&#160;&#160;<a href="javascript:openDocWindow('SearchingReferenceLibraries')" class="doclink">(?)</a>
-                    </form>
-                    
-                    </div>
+	<div id="reflib_authorsearch">
+		<form action="{$xims_box}{$goxims_content}{$absolute_path}" name="rlsearch">
+			<label for="reflibsearch"><xsl:value-of select="$i18n/l/Search"/></label>&#160;&#160;
+			<input type="text" name="reflibsearch" id="reflibsearch" size="42" maxlength="200">
+				<xsl:if test="$reflibsearch != ''">
+					<xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
+				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="$reflibsearch != ''">
+						<xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:attribute name="value">[Example: <em>zoller serial:"Phys. Rev" date:2005</em>]</xsl:attribute>
+						<xsl:attribute name="onfocus">document.rlsearch.reflibsearch.value=&apos;&apos;;</xsl:attribute>
+					</xsl:otherwise>
+				</xsl:choose>
+			</input>
+			<xsl:text>&#160;</xsl:text>
+			<button class="button-search" type="submit" name="submit" title="{$i18n/l/Search}">
+				<xsl:value-of select="$i18n/l/Search"/>
+			</button>
+			&#160;&#160;<a href="javascript:openDocWindow('SearchingReferenceLibraries')" class="doclink">(?)</a>
+		</form>
+	</div>
 </xsl:template>
 
 <xsl:template name="reflib.options">
-   
-    <div id="new-ref">
-			<div><xsl:value-of select="$i18n/l/CreateRef"/>&#160;&#160;</div>
-			<xsl:call-template name="reference_type.createwidget"/> 
-			<div>&#160;&#160;<xsl:value-of select="$i18n/l/or"/>&#160;&#160;</div>
-			<div><a href="{$xims_box}{$goxims_content}{$absolute_path}?import_prompt=1" class="button"><xsl:value-of select="$i18n/l/Import"/></a></div>
-			&#160;
-		</div>	
- <div id="reflib-options">
-    
-      <xsl:call-template name="reflib_citationview"/>
-
-       <xsl:call-template name="reflib_exportwidget"/>
-      &#160;
+	<div id="reflib-options">
+		<xsl:call-template name="reflib_citationview"/>
+		<xsl:call-template name="reflib_exportwidget"/>
+		&#160;
     </div>
 </xsl:template>
 
@@ -305,7 +293,7 @@
         <input type="hidden" name="serial_id" value="{$serial_id}"/>
         <input type="hidden" name="date" value="{$date}"/>
         <input type="hidden" name="style" value="export_mods"/>
-        <input type="submit" class="ui-state-default ui-corner-all fg-button" name="export" value="ok"/>
+        <button type="submit" class="button" name="export">ok</button>
     </form>
     &#160;
     </div> 
@@ -327,7 +315,7 @@
         <input type="hidden" name="author_id" value="{$author_id}"/>
         <input type="hidden" name="serial_id" value="{$serial_id}"/>
         <input type="hidden" name="date" value="{$date}"/>
-        <input type="submit" class="ui-state-default ui-corner-all fg-button" name="citations" value="ok"/>
+        <button type="submit" class="button" name="citations">ok</button>
     </form>
     &#160;
     </div>

@@ -10,19 +10,13 @@
         xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="referencelibraryitem_common.xsl"/>
+<xsl:import href="view_common.xsl"/>
 
-<xsl:template match="/document/context/object">
-    <html>
-        <xsl:call-template name="head_default"/>
-        <body>
-            <xsl:call-template name="header"/>
-            <div id="main-content">
-							<xsl:call-template name="options-menu-bar"/>
-							<div id="content-container">
-								<div id="docbody">
-                            <h1><xsl:value-of select="title"/> (<xsl:value-of select="/document/reference_types/reference_type[@id=/document/context/object/reference_type_id]/name"/>)</h1>
-                            
-                            <p>
+<xsl:variable name="createwidget">false</xsl:variable>
+<!--<xsl:variable name="parent_id">false</xsl:variable>-->
+
+<xsl:template name="view-content">
+	<p>
                                     <strong><xsl:value-of select="$i18n_vlib/l/authors"/></strong>:<br/>
                                     <xsl:apply-templates select="authorgroup/author">
                                         <xsl:sort select="position" order="ascending" data-type="number"/>
@@ -56,11 +50,6 @@
                                     <xsl:apply-templates select="reference_values/reference_value">
                                         <xsl:sort select="/document/reference_properties/reference_property[@id=current()/property_id]/position" order="ascending" data-type="number"/>
                                     </xsl:apply-templates>
-          		</div>
-							</div>
-            </div>
-        </body>
-    </html>
 </xsl:template>
 
 <xsl:template match="reference_value">
