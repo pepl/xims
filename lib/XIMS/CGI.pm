@@ -3403,7 +3403,7 @@ sub body_ref_objects {
         $p =~ s/\?.*$//;    # strip querystring
         next unless length $p;
         next if $paths_seen{$p};
-        if (   $p =~ m|^https?://|
+        if ( $p =~ m/^[a-z][-+.a-z1-9]+:/ # uri schema part
             or $p =~ m|^#|
             or $p =~ m|\{[^\}]*\}| )
         {
