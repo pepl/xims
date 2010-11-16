@@ -364,10 +364,7 @@
 			<xsl:if test="published = '0'">
 				<!-- location-testing AJAX code -->
 				<xsl:if test="$testlocation">
-					<xsl:call-template name="testlocationjs">
-						<xsl:with-param name="event" select="'edit'"/>
-						<xsl:with-param name="obj_type" select="/document/object_types/object_type[@id=$objecttype]/fullname"/>
-					</xsl:call-template>
+					<xsl:call-template name="testlocationjs"/>
 				</xsl:if>
 			</xsl:if>
 			<!--<xsl:call-template name="marked_mandatory"/>-->
@@ -411,9 +408,7 @@
 			</div>
 			<!-- location-testing AJAX code -->
 			<xsl:if test="$testlocation">
-				<xsl:call-template name="testlocationjs">
-					<xsl:with-param name="event" select="'create'"/>
-				</xsl:call-template>
+				<xsl:call-template name="testlocationjs" />
 			</xsl:if>
 		</div>
 	</xsl:template>
@@ -489,10 +484,7 @@
 				</div>
 				<xsl:if test="not(published = 1)">
 					<!-- location-testing AJAX code -->
-					<xsl:call-template name="testlocationjs">
-						<xsl:with-param name="event" select="'edit'"/>
-						<xsl:with-param name="obj_type" select="/document/object_types/object_type[@id=$objecttype]/fullname"/>
-					</xsl:call-template>
+					<xsl:call-template name="testlocationjs"/>
 				</xsl:if>
 			</div>
 		</div>
@@ -1761,16 +1753,11 @@
 		</script>
 	</xsl:template>
 	<xsl:template name="testlocationjs">
-		<xsl:param name="event"/>
-		<xsl:param name="obj_type"/>
 		<script type="text/javascript" src="{$ximsroot}scripts/json-min.js"/>
 		<script type="text/javascript" src="{$ximsroot}scripts/test_location.js"/>
 		<script type="text/javascript">
-			<!-- called for events create and edit -->
-			var obj = '';
-				<xsl:if test="$event='edit'">
-            obj = '<xsl:value-of select="$obj_type"/>';
-			</xsl:if>
+		var obj    = '<xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/>';
+		var suffix = '<xsl:value-of select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/suffix"/>';
 		var locWarnText1 = "<xsl:value-of select="$i18n/l/LocationWarning1"/>";
 		var locWarnText2 = "<xsl:value-of select="$i18n/l/LocationWarning2"/>";
 		var locWarnButton = "<xsl:value-of select="$i18n/l/Yes"/>";

@@ -71,7 +71,7 @@ sub registerEvents {
         'trashcan_prompt', 'trashcan',       'delete',
         'delete_prompt',   'undelete',       'trashcan_content',
         'error',           'prettyprintxml', 'htmltidy',
-        'test_location', 'test_title',
+        'test_title',   'test_location',
         @_
     );
 }
@@ -174,12 +174,13 @@ the location.
 
 =cut
 
-sub event_test_location {
+sub event_test_location2 {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my ($retval, $location);
     if ( defined $ctxt->object() ) {
+    	XIMS::Debug( 4, "object: ".$ctxt->object() );
         ($retval, $location) = $self->init_store_object( $ctxt );
     }
 
@@ -215,11 +216,11 @@ sub event_test_location {
     return 0;
 }
 
-=head2 event_test_title()
+=head2 event_test_location()
 
 =head3 Description
 
-Runtime event which takes the title tests it and creates a valid location.
+Runtime event which creates a valid location.
 
 Event 'test_title' is called via AJAX.
 It takes and returns a JSON-Objects. The JSON-Object sent contains the 
@@ -242,20 +243,19 @@ The test calls 'init_store_object' and traverses routines for cleaning/testing
 the location.
 
 =cut
-sub event_test_title {
+sub event_test_location {
 	XIMS::Debug( 5, "called" );
-	my ( $self, $ctxt ) = @_;
+    my ( $self, $ctxt ) = @_;
 
-	my ( $retval, $location );
-	if ( defined $ctxt->object() ) {
-		( $retval, $location ) = $self->init_store_object($ctxt);
-	}
+    my ($retval, $location);
+    if ( defined $ctxt->object() ) {
+        ($retval, $location) = $self->init_store_object( $ctxt );
+    }
 
 	print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
 	$self->skipSerialization(1);
 
 	XIMS::Debug( 4, "retval is: '$retval'; location is: '$location'" );
-	warn "\n\nretval is: '$retval'; location is: '$location'\n\n";
 	
 	# fill $response_blurb according to $retval
 	my $response_blurb;
@@ -331,6 +331,7 @@ sub event_test_title {
 
 	return 0;
 }
+
 =head2 event_dbhpanic()
 
 =head3 Parameter
@@ -1428,7 +1429,6 @@ sub init_store_object {
                                             # by libxml2 (???)
     # do we have an 'test_location' AJAX event?
     my $is_event_test_location = $self->param('test_location');
-    my $is_event_test_title = $self->param('test_title');
 
     # $location will be part of the URI, converting to iso-8859-1 is a first
     # step before clean_location() to ensure browser compatibility
@@ -1465,16 +1465,15 @@ sub init_store_object {
     }
 
     if ( defined $location and length $location ) {
-        if ( not $ctxt->properties->application->preservelocation )
-        {   # some object types, like URLLink for example need the
+        if ( not $ctxt->properties->application->preservelocation ){
+        	# some object types, like URLLink for example need the
             # location to be untouched
-            $location
-                = ( split /[\\|\/]/, $location )[-1];    # should always work
+            $location = ( split /[\\|\/]/, $location )[-1];    # should always work
             XIMS::Debug( 4, "will now clean location: '$location'" );
-            $location = XIMS::Importer::clean_location( 1, $location );
+            $location = XIMS::Importer::clean_location( $self, $location );
             XIMS::Debug( 4, "location is now: $location");
-            unless ( $ctxt->properties->application->keepsuffix )
-            {   # some object type, like File or Image for example
+            unless ( $ctxt->properties->application->keepsuffix ){
+            	# some object type, like File or Image for example
                 # don't want filesuffixes to be overridden by our data
                 # format's default value
                 my $suffix = $object->data_format->suffix();
@@ -1482,27 +1481,23 @@ sub init_store_object {
                 # temp. hack until multi-language support is implemented to
                 # allow simple content-negotiation using .lang suffixes
                 if ( defined $suffix and length $suffix ) {
-                    my $rexp = ".*\.$suffix\.("
-                             . join('|', ( map {$_->code()} $ctxt->data_provider->languages()), $suffix )
-                             . ')$';
-
-                    unless ( $location =~ /$rexp/ ) {
+					my $langpattern = join('|', ( map {$_->code()} $ctxt->data_provider->languages()), $suffix );
+					unless ( $location =~ /.*\.$suffix(\.($langpattern))?$/ ) {
                         # the following snippet homogenizes doc-suffixes:
                         # eg. location 'test' becomes 'test.html' and
                         #     location 'test.html' REMAINS 'test.html'!
-                        $location =~ s/\.(?:$suffix)//;
-                        $location .= "." . $suffix;
-                        XIMS::Debug( 6,
-                                     "exchange done, location is now $location" );
+                        $location  =~ s/\.(?:$suffix|$langpattern)\b//g;
+                        $location .= ".$suffix";
+                        XIMS::Debug( 6, "exchange done, location is now $location" );
                     }
-                    else {
-                        # for transition, set language_id according to location
-                        # set language if known suffix
-                        if ( my @lg =grep { $_->{code} eq $1 } $ctxt->data_provider->languages()) {
-                            #$ctxt->object->{Language} = $lg[0]; # needed?
-                            $object->language_id( $lg[0]->id() );
-                        }
-                    }
+#                    else {
+#                        # for transition, set language_id according to location
+#                        # set language if known suffix
+#                        if ( my @lg =grep { $_->{code} eq $1 } $ctxt->data_provider->languages()) {
+#                            #$ctxt->object->{Language} = $lg[0]; # needed?
+#                            $object->language_id( $lg[0]->id() );
+#                        }
+#                    }#end else
                 }
             }
             # be more restrictive for valid locations (\w is too resilient)
@@ -1516,7 +1511,7 @@ sub init_store_object {
                 XIMS::Debug( 2, "dirty location" );
                 # only send error for events other than 'test_location'
                 # return 3 (dirty location) otherwise
-                if ( not (defined $is_event_test_location or defined $is_event_test_title)){
+                if ( not defined $is_event_test_location){
                     $self->sendError( $ctxt,
                         __"Failed to clean the location / filename. Please supply a sane filename!"
                     );
@@ -1526,8 +1521,9 @@ sub init_store_object {
                     return (3, "$location");
                 }
             }
-        }
-
+        }#end do not preserve location
+        
+		XIMS::Debug( 4, "check for published object" );
         if (    ( $location ne $object->location() )
             and $object->published()
             and not $object->object_type->publish_gopublic()
@@ -1547,6 +1543,7 @@ sub init_store_object {
         # check if the same location already exists in the current container
         # (and its a different object)
         if ( defined $parent ) {
+        	 XIMS::Debug( 4, "check for existing location" );
             my @children = $parent->children(
                 location       => $location,
                 marked_deleted => 0
@@ -1563,7 +1560,7 @@ sub init_store_object {
 
                 # only send error for events other than 'test_location'
                 # return 1 (location already exists) otherwise
-                if ( not (defined $is_event_test_location or defined $is_event_test_title) ) {
+                if ( not defined $is_event_test_location ) {
                     $self->sendError( $ctxt,
                         __x("Location '{location}' already exists in container.", location => $location) );
                     return 0;
@@ -1572,12 +1569,12 @@ sub init_store_object {
                     return (1, $location);
                 }
             }
-        }
+        }#end if(defined $parent)
 
-        XIMS::Debug( 6, "got location: $location " );
+        XIMS::Debug( 5, "got location: $location " );
 
         # positively exit for 'test_location' events, here
-        if ( (defined $is_event_test_location or defined $is_event_test_title) ) {
+        if ( defined $is_event_test_location ) {
             return (0, $location);
         }
         $object->location($location);
@@ -1587,7 +1584,7 @@ sub init_store_object {
 
         # only send error for events other than 'test_location'
         # return 2 (no location) otherwise
-        if ( not (defined $is_event_test_location or defined $is_event_test_title) ) {
+        if ( not defined $is_event_test_location ) {
             $self->sendError( $ctxt, __"Please supply a valid location!" );
             return 0;
         }
