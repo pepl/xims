@@ -36,7 +36,7 @@
                     <input name="order" type="hidden" value="{$order}"/>
                     <input name="r" type="hidden" value="{/document/context/object/@id}"/>
                 </xsl:if>
-                <button class="sprite sprite-option_purge"
+                <button class="xims-sprite sprite-option_purge"
                     name="delete{$id}"
                     title="{$l_purge}"
                     ><span><xsl:value-of select="$l_purge"/>&#xa0;</span></button>

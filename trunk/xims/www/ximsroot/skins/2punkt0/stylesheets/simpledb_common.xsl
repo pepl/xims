@@ -19,7 +19,7 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="sprite sprite-option_delete" title="{$l_delete}">
+				<a class="xims-sprite sprite-option_delete" title="{$l_delete}">
 					<xsl:attribute name="href">
 						<xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/>
 						<xsl:if test="$currobjmime='application/x-container'">

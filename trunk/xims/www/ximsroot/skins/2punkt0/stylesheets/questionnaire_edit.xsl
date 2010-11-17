@@ -139,7 +139,7 @@
                 &#160;&#160;&#160;
                             <xsl:choose>
 				<xsl:when test="(name() = 'question') and (name(..) = 'questionnaire') and not(@edit)">
-					<!--<a class="sprite sprite-option_edit" href="javascript:eform.edit.value='edit_question';eform.qid.value='{$position_long}';return true;">
+					<!--<a class="xims-sprite sprite-option_edit" href="javascript:eform.edit.value='edit_question';eform.qid.value='{$position_long}';return true;">
 						<span>
 							<xsl:value-of select="$i18n/l/Edit"/>
 						</span>&#160;
@@ -415,7 +415,7 @@
 				<li>
 					<xsl:value-of select="."/>
 					<input type="hidden" name="tanlist_{@id}_title" value="{.}"/>&#xa0;
-							<a class="sprite sprite-option_delete" onclick="eform.edit.value='remove_tanlist';eform.qid.value={@id};return true;">
+							<a class="xims-sprite sprite-option_delete" onclick="eform.edit.value='remove_tanlist';eform.qid.value={@id};return true;">
 						<span>
 							<xsl:value-of select="$i18n_qn/l/Remove_TAN_List"/>
 						</span>

@@ -225,11 +225,11 @@ a.more > .ui-button-text{
 }
 
 /* options-toolbar */
-.ui-icon.sprite { 
+.ui-icon.xims-sprite { 
 	width: 16px; height: 16px; 
 	background-image: url(http://testlx1.uibk.ac.at/ximsroot/skins/default/images/sprite.gif) !important; 
 }
-.ui-icon.sprite.sprite-status_pub, .ui-icon.sprite.sprite-status_pub_async, .ui-icon.sprite.sprite-new{
+.ui-icon.xims-sprite.sprite-status_pub, .ui-icon.xims-sprite.sprite-status_pub_async, .ui-icon.xims-sprite.sprite-new{
 	margin-left: -11px !important;
 }
 .ui-button-icon-only.status_pub, .ui-button-icon-only.status_pub_async, .ui-button-icon-only.status_disabled{

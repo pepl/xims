@@ -88,7 +88,7 @@
         </td>
         <td>
             &#160;
-            <a class="sprite sprite-option_purge" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+            <a class="xims-sprite sprite-option_purge" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
              <span><xsl:value-of select="$i18n/l/purge"/></span>&#160;</a>
         </td>
     </tr>

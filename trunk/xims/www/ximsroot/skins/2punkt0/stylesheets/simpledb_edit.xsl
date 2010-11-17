@@ -252,14 +252,14 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			&#160;&#160;
-			<a class="sprite sprite-option_edit" href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1;property_id={@id}">
+			<a class="xims-sprite sprite-option_edit" href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1;property_id={@id}">
 				<span><xsl:value-of select="$l_Edit"/></span>
 				<!--<img src="{$skimages}option_edit.png" alt="{$l_Edit}" title="{$l_Edit}" name="eiedit{@id}" width="32" height="19"/>-->
 				&#160;
 			</a>
 			<xsl:if test="/document/context/object/user_privileges/delete">
 				<xsl:text> </xsl:text>
-				<a class="sprite sprite-option_delete" href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
+				<a class="xims-sprite sprite-option_delete" href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
 					<span><xsl:value-of select="$l_delete"/></span>
 					<!--<input type="image" name="property_delete{@id}" src="{$skimages}option_delete.png" alt="{$l_delete}" title="{$l_delete}"/>-->
 					&#160;

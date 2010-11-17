@@ -44,9 +44,9 @@
 <xsl:template name="options">
    <!-- begin options bar -->
    <td>
-   <a class="sprite sprite-option_edit" href="{$xims_box}{$goxims_users}?edit=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><span><xsl:value-of select="$i18n/l/edit"/></span>&#160;</a>
+   <a class="xims-sprite sprite-option_edit" href="{$xims_box}{$goxims_users}?edit=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><span><xsl:value-of select="$i18n/l/edit"/></span>&#160;</a>
    <a href="{$xims_box}{$goxims_users}?passwd=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Change_password"/></a>&#160;
-   <a class="sprite sprite-option_purge" href="{$xims_box}{$goxims_users}?remove=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><span><xsl:value-of select="$i18n/l/delete"/></span>&#160;</a>
+   <a class="xims-sprite sprite-option_purge" href="{$xims_box}{$goxims_users}?remove=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><span><xsl:value-of select="$i18n/l/delete"/></span>&#160;</a>
    <a href="{$xims_box}{$goxims_users}?name={name};manage_roles=1;explicit_only=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Role_membership"/></a>&#160;
    <a href="{$xims_box}{$goxims_users}?name={name};bookmarks=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Bookmarks"/></a>&#160;
    <a href="{$xims_box}{$goxims_users}?name={name};objecttypeprivs=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></a>&#160;
