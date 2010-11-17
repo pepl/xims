@@ -71,7 +71,7 @@ sub registerEvents {
         'trashcan_prompt', 'trashcan',       'delete',
         'delete_prompt',   'undelete',       'trashcan_content',
         'error',           'prettyprintxml', 'htmltidy',
-        'test_title',   'test_location',
+        'test_location',
         @_
     );
 }
@@ -681,47 +681,9 @@ sub event_cancel {
             $self->sendError( $ctxt, __"Object could not be unlocked!" );
             return 0;
         }
-        if ( $self->param('close_thickbox') ) {
-            XIMS::Debug( 4, "closing thickbox" );
-            return $self->close_thickbox();
-        }
-        else {
-            XIMS::Debug( 4, "redirecting" );
-            $self->redirect( $self->redirect_path($ctxt) );
-        }
+        XIMS::Debug( 4, "redirecting" );
+        $self->redirect( $self->redirect_path($ctxt) );
     }
-
-    return 0;
-}
-
-=head2 close_thickbox()
-
-=head3 Parameter
-
-    $refresh_parent            : Boolean flag to refresh parent window when closing thickbox window
-
-
-=head3 Returns
-
-HTML Document snippet to close thickbox window
-
-=head3 Description
-
-=cut
-
-sub close_thickbox {
-    my ($self, $refresh_parent) = @_;
-
-    if ( $refresh_parent ) {
-        $refresh_parent = '_reload';
-    }
-    else {
-        $refresh_parent = '';
-    }
-
-    $self->skipSerialization(1);
-    print $self->header( -type => 'text/html', -charset => 'UTF-8' );
-    printf('<html><body onload="self.parent.tb_remove%s();"></body></html>', $refresh_parent);
 
     return 0;
 }
@@ -853,16 +815,20 @@ sub selectStylesheet {
         . $ctxt->session->skin
         . '/stylesheets/';
 
+
+    # Emulate request.uri CGI param, set by
+    # Apache::AxKit::Plugin::AddXSLParams::Request ($request.uri is
+    # used by public/*.xsl stylesheets)
+    if ( defined  $ctxt->object ) {
+        $self->param( 'request.uri',
+                      $ctxt->object->location_path_relative() );
+    }
+    $self->param( 'request.uri.query', query_string());
+
     my $gotpubuilangstylesheet;
 
     my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
     if ( defined $publicusername or $ctxt->properties->application->usepubui() ) {
-
-        # Emulate request.uri CGI param, set by
-        # Apache::AxKit::Plugin::AddXSLParams::Request ($request.uri is
-        # used by public/*.xsl stylesheets)
-        $self->param( 'request.uri',
-            $ctxt->object->location_path_relative() );
 
         my $stylesheet = $ctxt->object->stylesheet();
 
@@ -2259,7 +2225,7 @@ sub event_contentbrowse {
         my @otherot = split '\s*,\s*', $otfilter; # in case we want to filter
                                                   # a comma separated list of
                                                   # object types
-        push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', 'Gallery', 'VLibrary', @otherot );
+        push @{$objecttypes}, ( 'Folder', 'DepartmentRoot', 'VLibrary', 'Gallery', @otherot );
     }
     elsif ( defined $notfilter and length $notfilter > 0 ) {
         my @otherot = split '\s*,\s*', $notfilter;
@@ -3718,7 +3684,7 @@ sub body_ref_objects {
         $p =~ s/\?.*$//;    # strip querystring
         next unless length $p;
         next if $paths_seen{$p};
-        if (   $p =~ m|^https?://|
+        if ( $p =~ m/^[a-z][-+.a-z1-9]+:/ # uri schema part
             or $p =~ m|^#|
             or $p =~ m|\{[^\}]*\}| )
         {
