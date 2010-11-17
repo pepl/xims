@@ -85,7 +85,7 @@
         <div class="deptportlets-item">
             <a href="{$goxims_content}{location_path}"><xsl:value-of select="title"/></a>
             </div>
-            <a class="sprite sprite-option_delete" href="{$goxims_content}{$absolute_path}?portlet_id={id};rem_portlet=1">
+            <a class="xims-sprite sprite-option_delete" href="{$goxims_content}{$absolute_path}?portlet_id={id};rem_portlet=1">
 							<span><xsl:value-of select="$i18n/l/delete"/></span>&#160;
             </a>
     </div>

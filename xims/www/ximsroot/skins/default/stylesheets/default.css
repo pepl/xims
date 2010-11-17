@@ -298,19 +298,19 @@ tr.objrow {
 }
 
 /* sprite icons */
-.sprite, .sprite-list {
+.xims-sprite, .sprite-list {
     background: url(/ximsroot/skins/default/images/sprite.gif) no-repeat top left;
     text-decoration: none;
 }
 
-.sprite span, .sprite-list span{
+.xims-sprite span, .sprite-list span{
     position: absolute;
     top: 0;
     left: -9999em;
     background-color: #ffffe0;
 }
 
-.sprite {
+.xims-sprite {
     padding: 1px 0px 0px 20px;
     margin-left: 0px;
     display: inline-block;

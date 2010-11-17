@@ -1179,7 +1179,7 @@
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="marked_new= '1'">
-				<span class="sprite sprite-new">
+				<span class="xims-sprite sprite-new">
 					<span>
 						<xsl:value-of select="$l_Object_marked_new"/>
 					</span>
@@ -1195,14 +1195,14 @@
 				<a href="{$published_path}" target="_blank">
 					<xsl:choose>
 						<xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-							<xsl:attribute name="class">sprite sprite-status_pub</xsl:attribute>
+							<xsl:attribute name="class">xims-sprite sprite-status_pub</xsl:attribute>
 							&#xa0;
 							<span>
 								<xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="$published_path"/>
 							</span>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:attribute name="class">sprite sprite-status_pub_async</xsl:attribute>
+							<xsl:attribute name="class">xims-sprite sprite-status_pub_async</xsl:attribute>
 								&#xa0;
 								<span>
 								<xsl:value-of select="$l_Object_modified"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_changed"/>.
@@ -1217,7 +1217,7 @@
 		</xsl:choose>
 		<xsl:choose>
 			<xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
-				<a class="sprite sprite-locked">
+				<a class="xims-sprite sprite-locked">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:attribute>
 					<span>
 						<xsl:value-of select="$l_Release_lock"/>
@@ -1226,7 +1226,7 @@
 				</a>
 			</xsl:when>
 			<xsl:when test="locked_by_id != '' and locked_time != ''">
-				<a class="sprite sprite-locked">
+				<a class="xims-sprite sprite-locked">
 					<xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/>&#160;<xsl:apply-templates select="locked_time" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;
 					<xsl:call-template name="lockerfullname"/>.
 				</xsl:attribute>
@@ -1494,7 +1494,7 @@
 	<xsl:template name="button.state.new">
 		<xsl:choose>
 			<xsl:when test="marked_new= '1'">
-				<span class="sprite sprite-new">
+				<span class="xims-sprite sprite-new">
 					<span>
 						<xsl:value-of select="$l_Object_marked_new"/>
 					</span>
@@ -1539,7 +1539,7 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="sprite sprite-option_edit">
+				<a class="xims-sprite sprite-option_edit">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
           &#xa0;
           <span>
@@ -1556,7 +1556,7 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
-				<a class="sprite sprite-option_copy">
+				<a class="xims-sprite sprite-option_copy">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
           &#xa0;
           <span>
@@ -1584,7 +1584,7 @@
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="sprite sprite-option_move">
+				<a class="xims-sprite sprite-option_move">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
                 &#xa0;<span>
 						<xsl:value-of select="$l_Move"/>
@@ -1600,7 +1600,7 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
-				<a class="sprite sprite-option_pub">
+				<a class="xims-sprite sprite-option_pub">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
                 &#xa0;
                 <span>
@@ -1617,7 +1617,7 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="sprite sprite-option_acl">
+				<a class="xims-sprite sprite-option_acl">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
                 &#xa0;<span>
 						<xsl:value-of select="$l_Access_control"/>
@@ -1625,7 +1625,7 @@
 				</a>
 			</xsl:when>
 			<xsl:when test="user_privileges/delete and marked_deleted = '1'">
-				<a class="sprite sprite-option_undelete">
+				<a class="xims-sprite sprite-option_undelete">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
                 &#xa0;<span>
 						<xsl:value-of select="$l_Undelete"/>
@@ -1641,7 +1641,7 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete and marked_deleted = '1'">
-				<a class="sprite sprite-option_purge" title="{$l_purge}">
+				<a class="xims-sprite sprite-option_purge" title="{$l_purge}">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
           &#xa0;<span>
 						<xsl:value-of select="$l_purge"/>
@@ -1649,7 +1649,7 @@
 				</a>
 			</xsl:when>
 			<xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="sprite sprite-option_delete" title="{$l_delete}">
+				<a class="xims-sprite sprite-option_delete" title="{$l_delete}">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/><!--trashcan_prompt does not check wether the object has any children--><!--		<xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan=1')"/>--><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
           &#xa0;<span>
 						<xsl:value-of select="$l_delete"/>
