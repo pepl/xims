@@ -48,7 +48,7 @@
                         </dcq:modified>
                     </dc:date>
                     <dc:format><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/mime_type"/></dc:format>
-                    <!-- better than a deliberate lie... -->
+                    <!-- better than a blatant lie... -->
                     <dc:language><xsl:value-of select="substring-after(location, 'html.')"/></dc:language>
                 </rdf:Description>
             </rdf:RDF>
