@@ -159,21 +159,6 @@
       }
 
       function checkBodyFromSel (selection) {
-          /* we do not allow ewebeditpro to be set as default editor
-           * via cookie on unsupported platforms
-           */
-          if ( selection == 'wepro' ) {
-              var useragent = navigator.userAgent;
-              if ( useragent.indexOf("Windows") != -1  ) {
-                  createCookie('xims_wysiwygeditor',selection,90);
-                  location.reload();
-                  return true;
-              }
-              else {
-                  alert("'eWebEditPro' is not available on your platform!\nPlease select another editor!");
-                  return false;
-              }
-          }
 
           createCookie('xims_wysiwygeditor',selection,90);
 
@@ -196,21 +181,6 @@
           // check for TinyMCE editor content
           if (window.tinyMCE){
               currentbody = tinyMCE.get('body').getContent();
-          }
-          // eWebEditPro
-          else if ( window.eWebEditPro ) {
-              /* although on unsupported platforms the wepro-cookie
-               * should never be set (see 'checkBodyFromSel()' above), we
-               * ckeck anyway to be on the save side ;-)
-               */
-              var useragent = navigator.userAgent;
-              if ( useragent.indexOf("Windows") == -1 ) {
-                  alert("Uuups! eWebEditPro is unsupported on your platform!\n");
-                  return false;
-              }
-              else {
-                  return eWebEditPro.isChanged();
-              }
           }
           // Plain Textarea
           else {
@@ -402,7 +372,7 @@
             <xsl:choose>
               <xsl:when test="user_privileges/delete and published != '1' 
                               and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-                <a class="sprite sprite-option_purge" title="{$i18n/l/purge}" href="{$goxims_content}?id={@id};delete_prompt=1">
+                <a class="xims-sprite sprite-option_purge" title="{$i18n/l/purge}" href="{$goxims_content}?id={@id};delete_prompt=1">
 				          &#xa0;<span><xsl:value-of select="$i18n/l/purge"/></span>
 				        </a>
               </xsl:when>

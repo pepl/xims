@@ -991,7 +991,7 @@ $Id$
     <div class="cttobject_status">
       <xsl:choose>
         <xsl:when test="marked_new= '1'">
-          <span class="sprite sprite-status_new" title="{$l_Object_marked_new}">
+          <span class="xims-sprite sprite-status_new" title="{$l_Object_marked_new}">
             <span>
               <xsl:value-of select="$l_Object_marked_new"/>
             </span>
@@ -1018,7 +1018,7 @@ $Id$
                                      last_publication_timestamp/hour,
                                      last_publication_timestamp/minute,
                                      last_publication_timestamp/second)">
-                <xsl:attribute name="class">sprite sprite-status_pub</xsl:attribute>                           
+                <xsl:attribute name="class">xims-sprite sprite-status_pub</xsl:attribute>                           
                 <xsl:attribute name="title">
                   <xsl:value-of select="$l_Object_last_published"/>
                   <xsl:text> </xsl:text>
@@ -1048,7 +1048,7 @@ $Id$
                 </span>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:attribute name="class">sprite sprite-status_pub_async</xsl:attribute>
+                <xsl:attribute name="class">xims-sprite sprite-status_pub_async</xsl:attribute>
                 <xsl:attribute name="title">
                   <xsl:value-of select="$l_Object_modified"/>
                   <xsl:text> </xsl:text>
@@ -1082,7 +1082,7 @@ $Id$
       </xsl:choose>
       <xsl:choose>
         <xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
-          <a class="sprite sprite-status_locked"
+          <a class="xims-sprite sprite-status_locked"
              title="{$l_Release_lock}">
             <xsl:attribute name="href">
               <xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/>
@@ -1100,7 +1100,7 @@ $Id$
           </a>
         </xsl:when>
         <xsl:when test="locked_by_id != '' and locked_time != ''">
-          <a class="sprite sprite-status_locked">
+          <a class="xims-sprite sprite-status_locked">
             <xsl:attribute name="title">
               <xsl:value-of select="$l_Object_locked"/>
               <xsl:text> </xsl:text>
@@ -1148,7 +1148,7 @@ $Id$
       <xsl:when test="marked_deleted != '1' 
                       and user_privileges/write 
                       and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-        <a class="sprite sprite-option_edit"
+        <a class="xims-sprite sprite-option_edit"
            title="{$l_Edit}">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/>
@@ -1173,7 +1173,7 @@ $Id$
       <xsl:when test="marked_deleted != '1' 
                   and user_privileges/copy 
                   and /document/context/object/user_privileges/create">
-        <a class="sprite sprite-option_copy"
+        <a class="xims-sprite sprite-option_copy"
            title="{$l_Copy}">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/>
@@ -1210,7 +1210,7 @@ $Id$
       <xsl:when test="marked_deleted != '1' 
                       and user_privileges/move and published != '1'  
                       and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-        <a class="sprite sprite-option_move"
+        <a class="xims-sprite sprite-option_move"
            title="{$l_Move}">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/>
@@ -1236,7 +1236,7 @@ $Id$
       <xsl:when test="marked_deleted != '1'
                       and (user_privileges/publish|user_privileges/publish_all)  
                       and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
-        <a class="sprite sprite-option_pub"
+        <a class="xims-sprite sprite-option_pub"
            title="{$l_Publishing_options}">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/>
@@ -1262,7 +1262,7 @@ $Id$
       <xsl:when test="marked_deleted != '1' 
                       and (user_privileges/grant|user_privileges/grant_all) 
                       and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-        <a class="sprite sprite-option_acl"
+        <a class="xims-sprite sprite-option_acl"
            title="{$l_Access_control}">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/>
@@ -1274,7 +1274,7 @@ $Id$
         </a>
       </xsl:when>
       <xsl:when test="user_privileges/delete and marked_deleted = '1'">
-        <a class="sprite sprite-option_undelete"
+        <a class="xims-sprite sprite-option_undelete"
            title="{$l_Undelete}">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/>
@@ -1297,7 +1297,7 @@ $Id$
     <xsl:variable name="id" select="@id"/>
     <xsl:choose>
       <xsl:when test="user_privileges/delete and marked_deleted = '1'">
-        <a class="sprite sprite-option_purge"
+        <a class="xims-sprite sprite-option_purge"
            title="{$l_purge}">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/>
@@ -1311,7 +1311,7 @@ $Id$
       </xsl:when>
       <xsl:when test="user_privileges/delete and published != '1'  
                       and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-        <a class="sprite sprite-option_delete"
+        <a class="xims-sprite sprite-option_delete"
            title="{$l_delete}">
           <xsl:attribute name="href">
             <xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/>
@@ -1331,17 +1331,17 @@ $Id$
 
 
   <xsl:template name="cttobject.options.spacer">
-    <span class="sprite sprite-spacer">&#xa0;</span>
+    <span class="xims-sprite sprite-spacer">&#xa0;</span>
   </xsl:template>
 
 
   <xsl:template name="cttobject.status.spacer">
-    <span class="sprite sprite-status-spacer">&#xa0;</span>
+    <span class="xims-sprite sprite-status-spacer">&#xa0;</span>
   </xsl:template>
 
 
   <xsl:template name="cttobject.del.spacer">
-    <span class="sprite-del-spacer">&#xa0;</span>
+    <span class="xims-sprite-del-spacer">&#xa0;</span>
   </xsl:template>
 
   <xsl:template name="cttobject.dataformat">
@@ -1697,141 +1697,39 @@ $Id$
 
     <!-- give notice that location needs to be set first -->
     function enterCheckLoc() {
-        var badBrowserEditorCombi = testBadBrowserEditorCombi();
         var notice = "<xsl:value-of select="$i18n/l/IlpProvideLocationFirst"/>";
         var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
         notice += <![CDATA[ '<br/><br/>\
                   <input type="button" id="xims_ilp_btn_select" value="'+ btnOK +'" class="control" \
                   onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
-                  ]]>
-        // reset notice if ILP would not work properly
-        if ( badBrowserEditorCombi ) {
-            notice = "You have not entered a Location, yet!\nPlease enter one now!";
-        }
+                  ]]>      
         var loc = document.eform.name.value;
         <!-- open il-popup when location has not been entered yet -->
         <![CDATA[if ( loc.length < 1 ) {]]>
             document.getElementById('xims_ilp_content').innerHTML=notice;
-            if ( !badBrowserEditorCombi ) {
-                openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
-            }
-            else {
-                alert(notice);
-            }
+            openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
         }
     }
-
-    <!-- returns objtype query param value -->
-    function getObjTypeFromQuery() {
-        var str = document.location.search;
-        var searchToken = "objtype=";
-        var fromPos = str.indexOf(searchToken) + searchToken.length;
-        var subStr = str.substring(fromPos, str.length);
-        return(subStr.substring(0, subStr.indexOf(";")));
-    }
-
-    <!--
-        Hack, for Esker Active X plugin/wepro combis on windows
-        inline-popup does not work properly with this software combination
-    -->
-    <![CDATA[
-    // returns true for bad setup; false otherwise
-    function testBadBrowserEditorCombi() {
-        var wysiwygEditor; // which WYSIWYG?
-        var badBrowser = false; // do we have a "bad" browser?
-        // get wysiwyg info
-        if (document.getElementById('xims_wysiwygeditor')) {
-            wysiwygEditor = readCookie('xims_wysiwygeditor');
-            if ( wysiwygEditor != 'wepro' ) {
-                wysiwygEditor = false;
-            }
-        }
-        // get browser info
-        var browser = navigator.userAgent; 
-        var browserRegexp = /.*Mozilla\/5\.0.*rv:(1\.[0-9]).+(Firefox)?.*$/;
-        if ( browser.search(/(MSIE|Opera|Safari).*/) == -1 ) {
-            // we have no IE, Opera, Safari
-            browserRegexp.exec(browser);
-            var revision = RegExp.$1;
-            if ( revision > 1.5 ) {
-                if ( browser.search(/Windows.*/) != -1 ) {
-                    // we have the Windows platform
-                    badBrowser = true;
-                }
-            }
-        }
-        if ( wysiwygEditor && badBrowser ) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    ]]>
-    <!-- we need special handling of Object-Types with WYSIWYG
-         components -->
-    <xsl:if test="$event = 'create'">
-        <!-- do we have an object with a possible WYSIWYG editor somewhere -->
-        var obj = getObjTypeFromQuery();
-        var found = obj.search(/(.*Document)/);
-        if ( found != -1 ) {
-        <!-- give notice - after 30 secs - that location needs to be set first 
-             (i.o. not to loose content), if not done already -->
-             window.setTimeout("enterCheckLoc()", 30*1000);
-        }
-        else {
-            <!-- we have event create but no WYSIWYG editor somewhere -->
-            document.eform.name.focus();
-        }
-    </xsl:if>
 
     <!-- main function for testlocation event handling -->
     function testlocation() {
         // get XML-Http-Request-Object
         var xmlhttp = getXMLHTTPObject();
         var location = document.eform.name.value;
-        <!-- called for events create and edit -->
-        <xsl:choose>
-            <xsl:when test="$event='create'">
-            var obj = getObjTypeFromQuery();
-            </xsl:when>
-            <xsl:otherwise>
-            var obj = '<xsl:value-of select="$obj_type"/>';
-            </xsl:otherwise>
-        </xsl:choose>
+        var obj    = '<xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/>'; 
+        var suffix = '<xsl:value-of select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/suffix"/>';
 
-        <!-- append suffixes with no lang-extension -->
+        <!-- append suffixes with no lang-extension;
+             lang-extensions in the pattern should be taken from 
+             /document/languages in the future -->
         <![CDATA[
-        if ( location.length != 0 && obj.search(/(Document|sDocBookXML)$/i) != -1 ) {
-            var searchres = location.search(/.*\.(html|sdbk)(\.[^.]+)?$/);
-            if ( searchres == -1 ) {
-                // handle .html and .sdbk
-                if ( obj.search(/Document$/i) != -1 ) {
-                    location += '.html';
-                }
-                else {
-                    location += '.sdbk';
-                }
-            }
-        }
-        else {
-            var searchres = location.search(/.*(\.[^.]+)$/);
-            if ( searchres == -1 ) {
-                // append mime-type suffixes
-                switch (obj) {
-                    case "AxPointPresentation": location += '.axp';  break;
-                    case "CSS":                 location += '.css';  break;
-                    case "JavaScript":          location += '.js';   break;
-                    case "Portlet":             location += '.ptlt'; break;
-                    case "TAN_List":            location += '.tls';  break;
-                    case "Text":                location += '.txt';  break;
-                    case "SQLReport":           location += '.html'; break;
-                    case "XSLStylesheet":       location += '.xsl';  break;
-                    case "XML":                 location += '.xml';  break;
-                }
-            }
-        }
+ 	//var pattern = new RegExp( '.*\\.' + suffix + '(\\.(de|en|it|es|fr))?$');
+	//if (location.length != 0 &&  ! location.match(pattern)) {
+        //    //alert( pattern + ' ' + location + '+' + suffix );
+        //    location += suffix;
+	//}
         ]]>
+
         var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>';
         var query = '?test_location=1;objtype='+ obj +';name='+ encodeURIComponent(location);
         var url = abspath + query;
@@ -1861,7 +1759,7 @@ $Id$
 
                 var notice;
                 var controlHtml;
-                var badBrowserEditorCombi = testBadBrowserEditorCombi();
+            
                 /* choose response according to statusCode. remember: 
                     0 => Location (is) OK
                     1 => Location already exists (in container)
@@ -1871,7 +1769,7 @@ $Id$
                 switch (statusCode) {
                     case "0":
                         // OK (see if location has been mangled and we don't have an URLLink Object)
-                        var objType = getObjTypeFromQuery();
+                        var objType = ']]><xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/><![CDATA[';
                         if ( objType.toUpperCase() != 'URLLINK' && location != processedLocation ) {
                             //we would change location on save so report this to user ]]>
                             var text = "<xsl:value-of select="$i18n/l/IlpLocationWouldChange"/>";
@@ -1885,11 +1783,6 @@ $Id$
                             <input type="button" class="control" value="'+ btnIgnore +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');return false;"/>&#160;';
                             notice += controlHtml;
                             // reset notice if ILP would not work properly
-                            if ( badBrowserEditorCombi ) {
-                                notice = location+"\n";
-                                notice += processedLocation+"\n\n";
-                                notice += "Note!\nLocation would change (as indicated above) upon saving!";
-                            }
                         }
                         break;
                     case "1":
@@ -1901,10 +1794,6 @@ $Id$
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
-                        // reset notice if ILP would not work properly
-                        if ( badBrowserEditorCombi ) {
-                            notice = "Location already exists in current Container!";
-                        }
                         break;
                     case "2":
                         // no loc
@@ -1915,10 +1804,6 @@ $Id$
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
-                        // reset notice if ILP would not work properly
-                        if ( badBrowserEditorCombi ) {
-                            notice = "No Location provided\nPlease enter one now!";
-                        }
                         break;
                     case "3":
                         // dirty loc
@@ -1929,10 +1814,6 @@ $Id$
                         <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
                         ]]>
                         notice = text+controlHtml;
-                        // reset notice if ILP would not work properly
-                        if ( badBrowserEditorCombi ) {
-                            notice = "Location contains invalid characters!\nValid characters are 0-9a-zA-Z, '-' and '_'.";
-                        }
                         break;
                     default:
                         // debug message
@@ -1944,24 +1825,16 @@ $Id$
                         ]]>
                         notice = text+controlHtml;
                         // reset notice if ILP would not work properly
-                        if ( badBrowserEditorCombi ) {
-                            notice = text;
-                        }
                     break;
                 }
                 // set content for ILP
                 document.getElementById('xims_ilp_content').innerHTML=notice;
-                <!-- debug
+                <!-- debug -->
                 //alert("reason = "+defaultReason+"\nstatuscode = "+statusCode+"\nlocation = "+processedLocation);
-                -->
+                
                 // report notice/error if set
                 if (notice) {
-                    if ( !badBrowserEditorCombi ) {
-                        openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
-                    }
-                    else {
-                        alert(notice);
-                    }
+                   openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
                 }
             }
         }
