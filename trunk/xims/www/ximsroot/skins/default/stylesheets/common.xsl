@@ -538,7 +538,7 @@ $Id$
       </td>
       <td>
         <!-- strip suffix; leave it, if it's a sdbk with lang-extension -->
-        <input tabindex="10" type="text" name="name" size="40">
+        <input tabindex="10" type="text" name="name" size="40" value="{location}">
           <xsl:choose>
             <xsl:when test="published = '1'">
               <xsl:attribute name="readonly">readonly</xsl:attribute>
@@ -548,20 +548,6 @@ $Id$
               <xsl:attribute name="class">text</xsl:attribute>
               <xsl:attribute name="onfocus">this.className='text focused'</xsl:attribute>
               <xsl:attribute name="onblur">this.className='text'; return testlocation();</xsl:attribute>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="substring-after(location, '.sdbk') = '.de' or
-                            substring-after(location, '.sdbk') = '.en' or
-                            substring-after(location, '.sdbk') = '.es' or
-                            substring-after(location, '.sdbk') = '.fr' or
-                            substring-after(location, '.sdbk') = '.it' or
-                            substring-after(location, '.sdbk') = '.sdbk'">
-              <xsl:attribute name="value"><xsl:value-of select="location"/></xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:attribute name="value"><xsl:value-of select="substring-before(location, concat('.', /document/data_formats/data_format
-              [@id=/document/context/object/data_format_id]/suffix))"/></xsl:attribute>
             </xsl:otherwise>
           </xsl:choose>
         </input>
