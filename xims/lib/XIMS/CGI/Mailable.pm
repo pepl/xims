@@ -138,7 +138,7 @@ sub event_send_as_mail {
         return 0;
     }
 
-    my $subject = Encode::encode( "MIME-Header", XIMS::utf8_sanitize( $subject ) );
+    $subject = Encode::encode( "MIME-Header", XIMS::utf8_sanitize( $subject ) );
 
     my $reply_to = Email::Valid->address( $self->param('reply-to') );
 
