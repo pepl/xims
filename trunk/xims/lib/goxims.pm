@@ -42,8 +42,6 @@ use XIMS::CGI::DepartmentRoot;
 use XIMS::CGI::Document;
 use XIMS::CGI::Portlet;
 use XIMS::CGI::Questionnaire;
-use XIMS::CGI::AnonDiscussionForum;
-use XIMS::CGI::AnonDiscussionForumContrib;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
