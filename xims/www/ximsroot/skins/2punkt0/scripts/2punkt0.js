@@ -401,7 +401,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_edit'
 			}
 		});
-	 $('.option-edit span:first-child').addClass('sprite');
+	 $('.option-edit span:first-child').addClass('xims-sprite');
 		
 	$('.option-copy').button({
 			text: false,
@@ -409,7 +409,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_copy'
 			}
 		});
-	$('.option-copy span:first-child').addClass('sprite');
+	$('.option-copy span:first-child').addClass('xims-sprite');
 		
 	$('.option-move').button({
 			text: false,
@@ -417,7 +417,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_move'
 			}
 		});
-	$('.option-move span:first-child').addClass('sprite');
+	$('.option-move span:first-child').addClass('xims-sprite');
 		
 	$('.option-publish').button({
 			text: false,
@@ -425,7 +425,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_pub'
 			}
 		});
-	$('.option-publish span:first-child').addClass('sprite');
+	$('.option-publish span:first-child').addClass('xims-sprite');
 		
 	$('.option-acl').button({
 			text: false,
@@ -433,7 +433,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_acl'
 			}
 		});
-	$('.option-acl span:first-child').addClass('sprite');
+	$('.option-acl span:first-child').addClass('xims-sprite');
 		
 		
 	$('.option-delete').button({
@@ -442,7 +442,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_delete'
 			}
 		});
-	$('.option-delete span:first-child').addClass('sprite');
+	$('.option-delete span:first-child').addClass('xims-sprite');
 		
 	$('.option-purge').button({
 			text: false,
@@ -450,7 +450,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_purge'
 			}
 		});
-	$('.option-purge span:first-child').addClass('sprite');
+	$('.option-purge span:first-child').addClass('xims-sprite');
 		
 	$('.option-undelete').button({
 			text: false,
@@ -466,7 +466,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_email'
 			}
 		});
-	$('.option-send_mail span:first-child').addClass('sprite');
+	$('.option-send_mail span:first-child').addClass('xims-sprite');
 	
 	$('.option-disabled').button({
 			text: false,
@@ -475,7 +475,7 @@ function initOptionsButtons(){
 			}
 		});	
 	$('.option-disabled').button('disable');
-	$('.option-disabled span:first-child').addClass('sprite');
+	$('.option-disabled span:first-child').addClass('xims-sprite');
 	
 	$('.status-pub').button({
 			text: false,
@@ -483,21 +483,21 @@ function initOptionsButtons(){
 				primary: 'sprite-status_pub'
 			}
 		});
-	$('.status-pub span:first-child').addClass('sprite');
+	$('.status-pub span:first-child').addClass('xims-sprite');
 	$('.status-pub_async').button({
 			text: false,
 			icons: {
 				primary: 'sprite-status_pub_async'
 			}
 		});
-	$('.status-pub_async span:first-child').addClass('sprite');
+	$('.status-pub_async span:first-child').addClass('xims-sprite');
 	$('.status-locked').button({
 			text: false,
 			icons: {
 				primary: 'sprite-locked'
 			}
 		});
-	$('.status-locked span:first-child').addClass('sprite');
+	$('.status-locked span:first-child').addClass('xims-sprite');
 	
 	$('.status-disabled').button({
 			text: false,
@@ -506,7 +506,7 @@ function initOptionsButtons(){
 			}
 		});
 	$('.status-disabled').button('disable');
-	$('.status-disabled span:first-child').addClass('sprite');
+	$('.status-disabled span:first-child').addClass('xims-sprite');
 	
 	
 	$('.up').button({
