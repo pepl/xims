@@ -192,15 +192,18 @@ a.more > .ui-button-text{
     height: 40px;
 	margin: 10px 10px 0px 10px;
 	clear: both;
-	white-space: nowrap;
 	font-size: 0.8em;
 }
 
-#options {
-  display: inline-block;
+#objtype-title{
+	display: inline-block;
 	float: left;
-	white-space: nowrap;
-	margin-top: 10px;   
+	margin-top: 10px;
+}
+#options {
+	display: inline-block;
+	float: left;
+	margin-top: 10px;
 }
 
 #create-widget{
@@ -208,7 +211,7 @@ a.more > .ui-button-text{
 	position: relative;
 	float: left;
 	margin-top:8px;
-    white-space: nowrap;
+	white-space: nowrap;
 	display:none;
 }
 #object-types {
@@ -246,10 +249,8 @@ a.more > .ui-button-text{
 	float:left;
 	height:40px;
 	margin:10px 10px 0;
-	white-space:nowrap;
 	font-size: 0.8em;
-}
-#tab-container{
+	max-width: 790px;
 	padding-top: 15px;
 	padding-left: 5px;
 	padding-right: 5px;

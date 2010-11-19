@@ -1120,13 +1120,15 @@
 		<xsl:variable name="dfname" select="$df/name"/>
 		<xsl:variable name="dfmime" select="$df/mime_type"/>
 		<div id="options-menu-bar" class="ui-corner-top">
-			<div id="options">
+			<div id="objtype-title">
 				<xsl:call-template name="cttobject.dataformat">
 					<xsl:with-param name="dfname" select="$dfname"/>
 				</xsl:call-template>
 				<h1>
 					<xsl:value-of select="title"/>
 				</h1>
+			</div>
+			<div id="options">
 				<xsl:call-template name="state-toolbar"/>
 				<xsl:call-template name="options-toolbar">
 					<xsl:with-param name="email-disabled" select="false()"/>
