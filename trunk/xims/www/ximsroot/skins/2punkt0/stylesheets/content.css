@@ -134,15 +134,12 @@ div.toc-item {
     width: 100%;
     border: none;
     padding: 0px;
-	white-space: nowrap;
 }
 .obj-table th {
     border: thin solid #C1C1C1;
-    white-space: nowrap;
     background-color: #ced3d6;
 }
 .obj-table td, .obj-table th {
-    /*white-space: nowrap;*/
     height: 20px !important;
 }
 #th-size {
@@ -212,33 +209,29 @@ div.toc-item {
     vertical-align: middle;
 }
 .ctt_status {
-    padding-left: 2px;
-    white-space: nowrap;
+	padding-left: 2px;
 }
 .ctt_position {
-    text-align: center;
-    white-space: nowrap;
+	text-align: center;
 }
 .ctt_df {
 		background-color: #eeeeee;
 }
 .ctt_lm {
-    white-space: nowrap;
 	padding-left: 10px;
 }
 .ctt_cl {
-    text-align: right;
+	text-align: right;
 	padding-right: 10px;
 }
 .ctt_options {
-    text-align: left;
-    white-space: nowrap;
+	text-align: left;
 }
 .ctt_loctitle {
 	background-color: #eeeeee;
 }
 .ctt_loctitledel {
-    background-color: #eeeeee;
+	background-color: #eeeeee;
 }
 .ctt_loctitleindex {
 	background-color: #eeeeee;
