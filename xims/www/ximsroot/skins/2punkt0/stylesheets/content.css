@@ -144,25 +144,25 @@ div.toc-item {
 }
 #th-size {
     text-align: right;
-    width: 75px;
+    width: 69px;
 }
 #th-pos {
-    width: 55px;
+    width: 56px;
 }
 #th-titel-icon {
-    width: 51px;
+    width: 31px;
 }
 #th-status {
-    width: 86px;
+    width: 96px;
 }
 #th-title {
-    width: 100%;
+    /*width: 100%;*/
 }
 #th-lastmod {
-    width: 124px;
+    width: 126px;
 }
 #th-options {
-	width: 180px;
+	width: 194px;
 }
 #th-topic{	
 }
