@@ -75,6 +75,10 @@
 }
 */
 
+.ui-icon{
+	display: inline-block !important;
+}
+
 /* from now on only positions */
 .sprite-spacer {
   background-repeat: no-repeat;
