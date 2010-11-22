@@ -237,7 +237,7 @@ div.toc-item {
 	background-color: #eeeeee;
 	border-bottom: 1px solid #800000 !important;
 }
-.ctt_df, .ctt_loctitle, .ctt_loctitledel, .ctt_loctitleindex, .ctt_lm{
+.ctt_df, .ctt_loctitle, .ctt_loctitledel, .ctt_loctitleindex, .ctt_lm,.ctt_position , .ctt_cl {
 	border-bottom: 1px solid #C0C0C0;
 }
 #obj-table .location_path {
@@ -248,6 +248,10 @@ div.toc-item {
 #obj-table .abstract {
     color: #808080;
     padding-left: 10px;
+}
+
+.objrow:hover, .objrow:hover td, .objrow:focus, .objrow:focus td{
+	background-color: #FFFF80 !important;
 }
 
 /* end table */
