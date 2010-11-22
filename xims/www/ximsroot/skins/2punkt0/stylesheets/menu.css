@@ -199,6 +199,8 @@ a.more > .ui-button-text{
 	display: inline-block;
 	float: left;
 	margin-top: 10px;
+	max-width: 600px;
+	margin-left: 12px;
 }
 #options {
 	display: inline-block;
