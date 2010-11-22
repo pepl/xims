@@ -154,11 +154,6 @@ a.more > .ui-button-text{
 	float:right;
 }
 
-#menu-search button span.ui-icon{
-	left:0 !important;
-}
-
-
 /* accessible menu-list */
 #accesslist li {
     display: inline;
