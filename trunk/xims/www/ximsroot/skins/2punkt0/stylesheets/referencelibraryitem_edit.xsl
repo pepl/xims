@@ -9,16 +9,15 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="referencelibraryitem_common.xsl"/>
 <xsl:import href="edit_common.xsl"/>
+<xsl:import href="referencelibraryitem_common.xsl"/>
 
+<xsl:param name="reflib">true</xsl:param>
 <xsl:variable name="i18n_reflib" select="document(concat($currentuilanguage,'/i18n_reflibrary.xml'))"/>
 
 <xsl:template name="edit-content">
 	<xsl:call-template name="reftypes_list"/>
-	<br clear="left"/>
-	<xsl:call-template name="markednew"/>
-	<!--<xsl:call-template name="tr-vlauthors"/>-->
+	<xsl:call-template name="form-marknew-pubonsave"/>
 	<xsl:call-template name="form-vlproperties">
 		<xsl:with-param name="mo" select="'author'"/>
 		<xsl:with-param name="mode" select="'rl'"/>
@@ -38,8 +37,7 @@
 	
 
 	<!-- Add Fulltext (->XIMS::File object as child ?) -->
-	<xsl:call-template name="tr-abstract"/>
-	<xsl:call-template name="tr-notes"/>
+	<xsl:call-template name="form-abstractnotes"/>
 	
 	<form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="get" style="display:none">
 		<input type="hidden" name="id" value="{@id}"/>
@@ -47,13 +45,14 @@
 		<input type="hidden" name="reference_type_id" value=""/>
 		<xsl:call-template name="rbacknav"/>
 	</form>
-	
+
 	<script type="text/javascript" language="javascript">
-      var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
-			var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
-    </script>					
+		var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
+		var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
+	</script>					
 	<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 	<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+
 </xsl:template>
     
 <xsl:template name="reftypes_list">
@@ -93,20 +92,23 @@
     <xsl:if test="$current_pos!=1">
         <xsl:text> </xsl:text>
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos - 1};date={$date};title={$title}"
-           title="{i18n/l/Reposition}">&lt;</a>
+           title="{i18n/l/Reposition}"><!--&lt;--><span class="ui-icon ui-icon-triangle-1-w ui-icon-small"/></a>
         <xsl:text> </xsl:text>
     </xsl:if>
     <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="{$i18n/l/Opens_in_new_window}">
         <xsl:call-template name="authorfullname"/>
     </a>
-    <xsl:text> </xsl:text>
-    <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}"
-       title="{i18n_vlib/l/Delete_mapping}"><span class="xdelete"> x </span></a>
+    <xsl:text> </xsl:text>    
     <xsl:if test="position()!=last()">
         <xsl:text> </xsl:text>
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos + 1};date={$date};title={$title}"
-           title="{i18n/l/Reposition}">&gt;</a>
-        <xsl:text>, </xsl:text>
+           title="{i18n/l/Reposition}"><!--&gt;--><span class="ui-icon ui-icon-triangle-1-e ui-icon-small"/></a>
+	</xsl:if>
+	<a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}">
+       	<xsl:attribute name="title"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>: <xsl:call-template name="authorfullname"/></xsl:attribute>
+		<!--<span class="xdelete"> x </span></a>-->
+		<span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"></span></a>
+	<xsl:if test="position()!=last()"><xsl:text> | </xsl:text>
     </xsl:if>
 </xsl:template>
 

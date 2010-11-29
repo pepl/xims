@@ -39,33 +39,28 @@
 		<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id)"/>
 		<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch)"/></xsl:if>
 	</xsl:variable>
-				
 	<xsl:template name="view-content">
-		<xsl:call-template name="reflib.options"/>
-			<div id="docbody">
-				<div id="search-filter">
-					<div id="reflib_resulttitle">
-						<xsl:if test="$date != '' or $author_id != '' or $reference_type_id != '' or $serial_id != '' or $author_lname != ''">
-							<strong>Filtered View</strong>:
-                                        <xsl:if test="$date != ''">
-                                            <span class="reflib_filter">Date '<xsl:value-of select="$date"/>'</span></xsl:if>
-                                        <xsl:if test="$serial_id != ''"><xsl:if test="$date != ''">, </xsl:if>
-                                            <span class="reflib_filter">Serial '<xsl:value-of select="/document/context/vlserials/serial[id=$serial_id]/title"/>'</span></xsl:if>
-                                        <xsl:if test="$reference_type_id != ''"><xsl:if test="$date != '' or $serial_id != ''">, </xsl:if>
-                                            <span class="reflib_filter">Reference Type '<xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>'</span></xsl:if>
-                                        <xsl:if test="$author_id != ''"><xsl:if test="$date != '' or $serial_id != '' or $reference_type_id != ''">, </xsl:if>
-                                            <span class="reflib_filter">Author '<xsl:value-of select="concat(children/object/authorgroup/author[id=$author_id]/firstname, ' ', children/object/authorgroup/author[id=$author_id]/lastname)" />'</span></xsl:if>
-                                        <xsl:if test="$author_lname != ''"><xsl:if test="$date != '' or $serial_id != '' or $author_id != ''">, </xsl:if>
-                                            <span class="reflib_filter">Author lastname '<xsl:value-of select="$author_lname"/>'</span></xsl:if>.
-                                        <a href="{$xims_box}{$goxims_content}{$absolute_path}">Reset filter</a>
-						</xsl:if>
-                                &#160;&#160;&#160;
-						<xsl:call-template name="items_page_info"/>
-                    </div>
-
-                    <xsl:call-template name="reflib.authorsearch"/>
-                    &#160;
-                  </div>
+		<div id="search-filter">
+			<xsl:call-template name="reflib.authorsearch"/>
+			<xsl:call-template name="reflib.options"/>			
+		</div>
+		<div id="reflib_resulttitle">
+			<xsl:if test="$date != '' or $author_id != '' or $reference_type_id != '' or $serial_id != '' or $author_lname != ''">
+				<strong>Filtered View</strong>:
+                            <xsl:if test="$date != ''">
+                                <span class="reflib_filter">Date '<xsl:value-of select="$date"/>'</span></xsl:if>
+                            <xsl:if test="$serial_id != ''"><xsl:if test="$date != ''">, </xsl:if>
+                                <span class="reflib_filter">Serial '<xsl:value-of select="/document/context/vlserials/serial[id=$serial_id]/title"/>'</span></xsl:if>
+                            <xsl:if test="$reference_type_id != ''"><xsl:if test="$date != '' or $serial_id != ''">, </xsl:if>
+                                <span class="reflib_filter">Reference Type '<xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>'</span></xsl:if>
+                            <xsl:if test="$author_id != ''"><xsl:if test="$date != '' or $serial_id != '' or $reference_type_id != ''">, </xsl:if>
+                                <span class="reflib_filter">Author '<xsl:value-of select="concat(children/object/authorgroup/author[id=$author_id]/firstname, ' ', children/object/authorgroup/author[id=$author_id]/lastname)" />'</span></xsl:if>
+                            <xsl:if test="$author_lname != ''"><xsl:if test="$date != '' or $serial_id != '' or $author_id != ''">, </xsl:if>
+                                <span class="reflib_filter">Author lastname '<xsl:value-of select="$author_lname"/>'</span></xsl:if>.
+                            <a href="{$xims_box}{$goxims_content}{$absolute_path}">Reset filter</a>
+			</xsl:if>
+			<xsl:call-template name="items_page_info"/>
+        </div>
                     <xsl:call-template name="pagenav">
                         <xsl:with-param name="totalitems" select="$objectitems_count"/>
                         <xsl:with-param name="itemsperpage" select="$objectitems_rowlimit"/>
@@ -79,7 +74,6 @@
                         <xsl:with-param name="currentpage" select="$page"/>
                         <xsl:with-param name="url" select="$pagenavurl"/>
                     </xsl:call-template>
-                </div>
 
     </xsl:template>
 
@@ -249,8 +243,8 @@
 <xsl:template name="reflib.authorsearch">
 	<div id="reflib_authorsearch">
 		<form action="{$xims_box}{$goxims_content}{$absolute_path}" name="rlsearch">
-			<label for="reflibsearch"><xsl:value-of select="$i18n/l/Search"/></label>&#160;&#160;
-			<input type="text" name="reflibsearch" id="reflibsearch" size="42" maxlength="200">
+			<label for="reflibsearch"><strong><xsl:value-of select="$i18n/l/Search"/></strong></label>&#160;&#160;
+			<input type="text" name="reflibsearch" id="reflibsearch" size="30" maxlength="200">
 				<xsl:if test="$reflibsearch != ''">
 					<xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
 				</xsl:if>
@@ -258,10 +252,10 @@
 					<xsl:when test="$reflibsearch != ''">
 						<xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
 					</xsl:when>
-					<xsl:otherwise>
+					<!--<xsl:otherwise>
 						<xsl:attribute name="value">[Example: <em>zoller serial:"Phys. Rev" date:2005</em>]</xsl:attribute>
 						<xsl:attribute name="onfocus">document.rlsearch.reflibsearch.value=&apos;&apos;;</xsl:attribute>
-					</xsl:otherwise>
+					</xsl:otherwise>-->
 				</xsl:choose>
 			</input>
 			<xsl:text>&#160;</xsl:text>
@@ -284,7 +278,6 @@
 <xsl:template name="reflib_exportwidget">
  <div id="expmods">
     <form action="{$xims_box}{$goxims_content}{$absolute_path}" method="get" id="export" name="export">
-    <xsl:value-of select="$i18n/l/ExpMODS"/>&#160;
         <xsl:if test="$reflibsearch != ''">
             <input type="hidden" name="reflibsearch" value="{$reflibsearch}"/>
         </xsl:if>
@@ -293,9 +286,8 @@
         <input type="hidden" name="serial_id" value="{$serial_id}"/>
         <input type="hidden" name="date" value="{$date}"/>
         <input type="hidden" name="style" value="export_mods"/>
-        <button type="submit" class="button" name="export">ok</button>
+        <button type="submit" class="button" name="export"><xsl:value-of select="$i18n/l/ExpMODS"/></button>
     </form>
-    &#160;
     </div> 
 </xsl:template>
 

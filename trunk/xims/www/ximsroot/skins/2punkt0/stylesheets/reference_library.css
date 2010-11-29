@@ -45,11 +45,15 @@
 	display: inline-block;
 }
 #reflib_resulttitle{
-    float:right;
-    display: inline-block;
+	display: inline-block;
+	margin-bottom: 10px;
+	width:100%;
+}
+#itemsinfo{
+	display: inline-block;
+	float:right;
 }
 #reflib_authorsearch{
-    clear:both;
     display: inline-block;
 }
 #search-filter{
@@ -83,8 +87,7 @@
 	float:left;
 }
 #reflib-options{
-	clear: both;
-	margin-bottom: 10px;
+	float:right;
 	}
 		
 
@@ -164,3 +167,12 @@
     background: #f0f0f0;
     color: black;
 }
+
+.ui-icon-small{
+	height: 12px !important;
+}
+.ui-autocomplete-input + button{
+	height: 1.4em;
+	top: 4px;
+}
+
