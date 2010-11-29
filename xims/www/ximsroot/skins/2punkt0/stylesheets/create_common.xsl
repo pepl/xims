@@ -18,11 +18,17 @@
 	<xsl:param name="tinymce" select="false()"/>	
 	<xsl:param name="selEditor" select="false()"/>	
 	<xsl:param name="testlocation" select="true()"/>
+	<xsl:param name="simpledb" select="false()"/>
+	<xsl:param name="reflib" select="false()"/>
+	<xsl:param name="vlib" select="false()"/>
 	
 	<xsl:template match="/document/context/object">
 		<html>
 			<xsl:call-template name="head_default">
 				<xsl:with-param name="mode">create</xsl:with-param>
+				<xsl:with-param name="reflib" select="$reflib"/>
+				<xsl:with-param name="vlib" select="$vlib"/>
+				<xsl:with-param name="simpledb" select="$simpledb"/>
 			</xsl:call-template>
 			<body>
 				<xsl:if test="selEditor">
@@ -52,6 +58,9 @@
 				<xsl:call-template name="script_bottom">
 					<xsl:with-param name="tinymce" select="$tinymce"/>
 					<xsl:with-param name="testlocation" select="$testlocation"/>
+					<xsl:with-param name="simpledb" select="$simpledb"/>
+					<xsl:with-param name="reflib" select="$reflib"/>
+					<xsl:with-param name="vlib" select="$vlib"/>
 				</xsl:call-template>
 			</body>
 		</html>
