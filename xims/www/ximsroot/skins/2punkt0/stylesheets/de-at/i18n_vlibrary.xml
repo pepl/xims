@@ -17,6 +17,8 @@
   <orgauthor>ist Organisation</orgauthor>
   <editor>Herausgeber</editor>
   <editors>Herausgeber</editors>
+  <journal>Journal</journal>
+  <journals>Journale</journals>
   <publication>Publikation</publication>
   <publications>Publikationen</publications>
   <publication_volume>Ausgabe</publication_volume>
@@ -35,6 +37,8 @@
   <Currently_mapped>Dzt. zugewiesene</Currently_mapped>
   <Assign_new>Zuweisung neuer</Assign_new>
   <Serial>Reihe/Journal</Serial>
+  <serial>Reihe/Journal</serial>
+  <serials>Reihe/Journal</serials>
   <Import>Importieren</Import>
   <Split_by_semicolon>Mehrere Einträge durch ein Semikolon (;) trennen</Split_by_semicolon>
   <AuthorStringFormat>Autoreneingabeformat: Vorname (opt: 2.Vorname) Nachname (opt:, Suffix). Mehrere Nachnamen müssen durch Anführungszeichen zusammengefasst werden.</AuthorStringFormat>

@@ -9,7 +9,9 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="common.xsl"/>
+<!--<xsl:import href="common.xsl"/>-->
+<xsl:import href="libraryitem_common.xsl"/>
+
 <xsl:param name="reftype"><xsl:value-of select="/document/context/object/reference_type_id"/></xsl:param>
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 <xsl:variable name="titlerefpropid" select="/document/reference_properties/reference_property[name='title']/@id"/>
@@ -230,7 +232,7 @@
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
     </head>
 </xsl:template>
-
+<!--
 <xsl:template name="table-create">
 <div id="create-title">
     <h1>
@@ -242,11 +244,11 @@
 <xsl:template name="table-edit">
     <div id="edit-title">
     <h1>
-                <xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;'<!--<xsl:value-of select="title"/>--><xsl:value-of select="/document/context/object/reference_values/reference_value[property_id=1]/value"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
+                <xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;'<xsl:value-of select="/document/context/object/reference_values/reference_value[property_id=1]/value"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
             </h1>
 			</div>
 </xsl:template>
-
+-->
 <xsl:template match="authorgroup/author|editorgroup/author" mode="edit">
     <xsl:variable name="current_pos" select="number(position)"/>
     <xsl:variable name="role">
@@ -313,109 +315,18 @@
        title="{i18n_vlib/l/Delete_mapping}">(x)</a>
 </xsl:template>
 
-<xsl:template match="vlauthors">
-    <xsl:param name="svlauthor" select="'svlauthor'"/>
-    <a class="fg-button fg-button-icon-right ui-widget ui-corner-all ui-state-default" tabindex="0">
-			<xsl:choose>
-				<xsl:when test="$svlauthor='svlauthor'">
-					<xsl:attribute name="id">flat-authors</xsl:attribute>
-					<xsl:attribute name="href">#authors</xsl:attribute>
-					<span class="ui-icon ui-icon-triangle-1-s"/>
-			<xsl:value-of select="$i18n_vlib/l/authors"/>
-				</xsl:when>
-				<xsl:when test="$svlauthor='svleditor'">
-					<xsl:attribute name="id">flat-editors</xsl:attribute>
-					<xsl:attribute name="href">#editors</xsl:attribute>
-					<span class="ui-icon ui-icon-triangle-1-s"/>
-					<xsl:value-of select="$i18n_vlib/l/editors"/>
-				</xsl:when>
-			</xsl:choose>
-			<!--<span class="ui-icon ui-icon-triangle-1-s"/>
-			<xsl:value-of select="$i18n_vlib/l/authors"/>-->
-    </a>
-    <div class="hidden-content">
-    <xsl:choose>
-				<xsl:when test="$svlauthor='svlauthor'">
-					<xsl:attribute name="id">authors</xsl:attribute>
-				</xsl:when>
-				<xsl:when test="$svlauthor='svleditor'">
-					<xsl:attribute name="id">editors</xsl:attribute>
-				</xsl:when>
-			</xsl:choose>
-    <ul>
-				 <xsl:choose>
-					<xsl:when test="$svlauthor='svlauthor'">
-						<xsl:apply-templates select="/document/context/vlauthors/author" mode="author">						
-							<xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
-						</xsl:apply-templates>
-					</xsl:when>
-					<xsl:when test="$svlauthor='svleditor'">
-						<xsl:apply-templates select="/document/context/vlauthors/author" mode="editor">						
-							<xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
-						</xsl:apply-templates>
-					</xsl:when>
-				</xsl:choose>
-		</ul>
-    </div>
-</xsl:template>
-
-<xsl:template match="vlauthors/author" mode="author">
-    <xsl:variable name="fullname"><xsl:call-template name="authorfullname"/></xsl:variable>
-    <xsl:variable name="property">author</xsl:variable>
-    <li>
-					<a href="javascript:addProperty('{$property}','{$fullname}')">
-    <!--<option value="{$fullname}">--><xsl:value-of select="$fullname"/><!--</option>-->
-    </a>
-    </li>
-</xsl:template>
-<xsl:template match="vlauthors/author" mode="editor">
-    <xsl:variable name="fullname"><xsl:call-template name="authorfullname"/></xsl:variable>
-    <xsl:variable name="property">editor</xsl:variable>
-    <li>
-					<a href="javascript:addProperty('{$property}','{$fullname}')">
-    <!--<option value="{$fullname}">--><xsl:value-of select="$fullname"/><!--</option>-->
-    </a>
-    </li>
-</xsl:template>
-
 <xsl:template name="authorfullname">
     <xsl:value-of select="firstname"/><xsl:if test="middlename !=''"><xsl:text> </xsl:text><xsl:value-of select="middlename"/></xsl:if><xsl:text> </xsl:text><xsl:value-of select="lastname"/><xsl:if test="suffix !=''">, <xsl:value-of select="suffix"/></xsl:if>
 </xsl:template>
 
 <xsl:template match="vlserials">
     <xsl:param name="svlserial" select="'svlserial'"/>
-<!--    <select name="{$svlserial}">
+    <select name="{$svlserial}" id="{$svlserial}">
         <xsl:apply-templates select="/document/context/vlserials/serial">
             <xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
                       order="ascending"/>
         </xsl:apply-templates>
-    </select>-->
-    
-    <a class="fg-button fg-button-icon-right ui-widget ui-corner-all ui-state-default" tabindex="0">
-					<xsl:attribute name="id">flat-serials</xsl:attribute>
-					<xsl:attribute name="href">#serials</xsl:attribute>
-			<span class="ui-icon ui-icon-triangle-1-s"/>
-			<xsl:value-of select="$i18n_vlib/l/Serial"/>
-    </a>
-    <div class="hidden-content">
-					<xsl:attribute name="id">serials</xsl:attribute>
-    <ul>
-						<xsl:apply-templates select="/document/context/vlserials/serial">						
-							<xsl:sort select="translate(lastname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
-						</xsl:apply-templates>
-		</ul>
-    </div>
-</xsl:template>
-
-<xsl:template match="vlserials/serial">
-    <!--<option value="{title}"><xsl:value-of select="title"/></option>-->
-    <xsl:variable name="title"><xsl:value-of select="title"/></xsl:variable> 
-    <xsl:variable name="property">serial</xsl:variable>
-    <li>
-					<a href="javascript:addProperty('{$property}','{$title}')">
-    <!--<option value="{$fullname}">--><xsl:value-of select="$title"/><!--</option>-->
-    </a>
-    </li>
+    </select>
 </xsl:template>
 
 <xsl:template name="th-size">
@@ -423,7 +334,15 @@
 </xsl:template>
 
 
-<xsl:template name="tr-abstract">
+<xsl:template name="form-keywordabstract">
+		<div class="form-div ui-corner-all block">
+			<h2>Meta Data</h2>
+			<xsl:call-template name="form-keywords"/>
+			<xsl:call-template name="form-abstract"/>
+		</div>
+	</xsl:template>
+	
+<xsl:template name="form-abstract">
 		<div id="tr-abstract">
 			<div id="label-abstract">
 				<label for="input-abstract">
@@ -447,6 +366,8 @@
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
     </head>
 </xsl:template>-->
+
+<xsl:template name="publish-on-save"/>
 
 <xsl:template name="cttobject.content_length"/>
 <xsl:template name="cttobject.options.copy"/>

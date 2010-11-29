@@ -17,6 +17,8 @@
   <orgauthor>is Organisation</orgauthor>
   <editor>Editor</editor>
   <editors>Editors</editors>
+  <journal>Journal</journal>
+  <journals>Journals</journals>
   <publications>Publications</publications>
   <publication>publications</publication>
   <publication_volume>Volume</publication_volume>
@@ -35,6 +37,8 @@
   <Currently_mapped>Currently mapped</Currently_mapped>
   <Assign_new>Assign new</Assign_new>
   <Serial>Serial/Journal</Serial>
+  <serial>Serial/Journal</serial>
+  <serials>Serial/Journal</serials>
   <Import>Import</Import>
   <Split_by_semicolon>Split multiple entries by a semicolon (;)</Split_by_semicolon>
   <AuthorStringFormat>Author Format: Firstname (opt: Middlename) Lastname (opt:, Suffix). Wrap multiple lastnames inside double quotes</AuthorStringFormat>

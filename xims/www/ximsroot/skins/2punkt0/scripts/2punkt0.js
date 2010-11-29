@@ -781,6 +781,16 @@ $('.button').hover(
 		button_type: "button",
 		input_size: '43'
 	});
+	$("#svleditor").combobox({
+		input_id: "vleditor",
+		button_type: "button",
+		input_size: '43'
+	});
+	$("#svlserial").combobox({
+		input_id: "vlserial",
+		button_type: "button",
+		input_size: '43'
+	});
 
 $('a.more').removeClass('ui-state-default');
 

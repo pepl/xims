@@ -310,6 +310,13 @@
 			<xsl:call-template name="form-abstract"/>
 		</div>
 	</xsl:template>
+	<xsl:template name="form-abstractnotes">
+		<div class="form-div ui-corner-all block">
+			<h2>Meta Data</h2>			
+			<xsl:call-template name="form-abstract"/>
+			<xsl:call-template name="form-notes"/>
+		</div>
+	</xsl:template>
 	<xsl:template name="form-locationtitle-create">
 		<div class="form-div ui-corner-all div-left">
 			<xsl:call-template name="form-title"/>
@@ -660,7 +667,7 @@
 			</textarea>
 		</div>
 	</xsl:template>
-	<xsl:template name="tr-notes">
+	<xsl:template name="form-notes">
 		<div id="tr-notes">
 			<div id="label-notes">
 				<label for="input-notes">
@@ -671,7 +678,7 @@
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Notes"/></xsl:attribute>(?)</a>
 			</div>
 			<br/>
-			<textarea name="notes" rows="3" cols="79" id="input-notes">
+			<textarea name="notes" rows="3" cols="74" id="input-notes">
 				<xsl:apply-templates select="notes"/>
 			</textarea>
 		</div>
@@ -1925,11 +1932,11 @@
 				var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
 				</xsl:otherwise>
 				</xsl:choose>      
-			var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
-    </script>
+				var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
+		</script>
 		</xsl:if>
 		<xsl:if test="$reflib">
-		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
+			<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
 			<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"/>
 		</xsl:if>
 	</xsl:template>
