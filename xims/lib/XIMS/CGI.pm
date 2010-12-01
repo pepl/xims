@@ -3221,7 +3221,7 @@ warn("\n acl light\n");
                         $context_user->{object_privileges} = {%oprivs};
                     }
                     $ctxt->user($context_user);
-                    $ctxt->properties->application->style('obj_user');
+                    $ctxt->properties->application->style('obj_acl_light');
                 }
                 else {
                     XIMS::Debug( 3, "No such user!" );

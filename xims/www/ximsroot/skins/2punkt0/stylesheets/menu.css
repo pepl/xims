@@ -16,12 +16,21 @@ font-family: helvetica, arial, sans-serif !important;
 	background: none repeat-x scroll 50% 50% #EEEEEE !important;
 }
 */	
+
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
-	background: none repeat-x scroll 50% 50% #EEEEEE !important;
+	background: none repeat-x scroll 50% 50% #EEEEEE;
 }
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover{
-	background: none repeat-x scroll 50% 50% #d0d0d0 !important;
+.ui-state-active{
+	background: none repeat-x scroll 50% 50% #FFFFFF;
 }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-active .ui-state-hover{
+	background: none repeat-x scroll 50% 50% #d0d0d0;
+}
+/*
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
+	background: none repeat-x scroll 50% 50% #FFFFFF;
+}
+*/
 /*
 .button .ui-button .ui-state-focus, .button .ui-button .ui-state-hover{
 	background: none repeat-x scroll 50% 50% #d0d0d0 !important;
@@ -57,6 +66,19 @@ a.more > .ui-button-text{
 
 .positionHelper{
 	font-size: 0.8em;
+}
+
+/* Buttonset */
+.ui-buttonset label{
+	width: 60px;
+}
+/*
+.ui-buttonset label.ui-state-active{
+	background: none repeat-x scroll 50% 50% #FFFFFF;
+}
+*/
+.ui-buttonset label.ui-state-active .ui-button-text{
+	font-weight: bold;
 }
 
 /* common header */
