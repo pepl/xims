@@ -1344,19 +1344,27 @@
 			<xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
 				<a class="button option-acl">
 					<xsl:attribute name="id">option-acl_<xsl:value-of select="$id"/></xsl:attribute>
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllight=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 					<xsl:value-of select="$l_Access_control"/>
 				</a>
 				<script type="text/javascript">
-	$(document).ready(function() {
+				$(document).ready(function() {
 
-				$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({ 
-					content: function(response) {
-//$.get('<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_aclight=1')"/>', response);					
-					$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllight=1')"/>', response);
-					return "Loading...";
-				}
-				});
+					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({ 
+						content: function(response) {				
+						$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1;tooltip=1')"/>', response);
+						return "Loading...";
+					}
+					});
+					/*
+					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({
+						content: function(response){
+							$('#ui-tooltip-1 .ui-tooltip-content').load('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/> .obj-table', response);
+							
+						return "Loading...";
+						}
+					});					
+					*/
 				});
 
 	</script>

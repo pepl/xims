@@ -16,11 +16,12 @@
 <xsl:param name="reflib">true</xsl:param>
 
 <xsl:template name="create-content">
-	<input type="hidden" name="objtype" value="{$objtype}"/>
-                <input type="hidden" name="reftype" value="{$reftype}"/>
-                    <xsl:call-template name="form-marknew-pubonsave"/>
+	<!--<input type="hidden" name="objtype" value="{$objtype}"/>-->
+	<input type="hidden" name="reftype" value="{$reftype}"/>
+	
+	<xsl:call-template name="form-marknew-pubonsave"/>
 					
-					<xsl:call-template name="form-vlproperties">
+	<xsl:call-template name="form-vlproperties">
 		<xsl:with-param name="mo" select="'author'"/>
 		<xsl:with-param name="mode" select="'rl'"/>
 	</xsl:call-template>
@@ -39,10 +40,10 @@
 
 	<xsl:call-template name="form-abstractnotes"/>
 	
-	<script type="text/javascript" language="javascript">
+	<!--<script type="text/javascript" language="javascript">
 		var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
 		var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
-	</script>					
+	</script>	-->				
 	<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 	<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 	</xsl:template>

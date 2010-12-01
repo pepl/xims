@@ -17,12 +17,15 @@
   <xsl:param name="userquery"/>
   <xsl:param name="usertype">user</xsl:param>
   <xsl:param name="id"/>
+  <xsl:param name="tooltip"/>
 
 <xsl:template match="/document">
     <xsl:apply-templates select="context"/>
 </xsl:template>
 
 <xsl:template match="/document/context">
+<xsl:choose>
+<xsl:when test="$tooltip= ''">
     <html>
           <xsl:call-template name="head_default">
 				<xsl:with-param name="mode">mg-acl</xsl:with-param>
@@ -91,8 +94,7 @@
           <!-- end filter widget table -->
 				<!--</div>
 				
-				<div id="content-container">-->
-				
+				<div id="content-container">-->		
         <table  class="obj-table">
           <xsl:choose>
             <xsl:when test="granteelist/user or /document/userlist/user">
@@ -156,8 +158,7 @@
                       </a>
                     </xsl:otherwise>
                   </xsl:choose>
-                </th>
-                
+                </th>				
                 <th id="th-role" class="sorting">
                   <xsl:choose>
                     <xsl:when test="$sort-by='name'">
@@ -214,7 +215,8 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </th>
-                
+
+				
                 <th id="th-name" class="sorting">
                   <xsl:choose>
                     <xsl:when test="$sort-by='fullname'">
@@ -271,7 +273,6 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </th>
-                
                 <th id="th-accstat" class="sorting">
                   <xsl:choose>
                     <xsl:when test="$sort-by='enabled'">
@@ -328,7 +329,6 @@
                     </xsl:otherwise>
                   </xsl:choose>
                 </th>
-                
                 <th id="th-options-acl">
                     <xsl:value-of select="$i18n/l/Options"/>
                 </th>
@@ -336,8 +336,6 @@
               </thead>
 	
 							<tbody>
-
-              <!-- this *truly* bites -->
               <xsl:choose>
                 <xsl:when test="$sort-by='id'">
                   <xsl:choose>
@@ -428,12 +426,138 @@
           
         </table>
         
-        
                 </div>
-				<!--</div>-->
         <xsl:call-template name="script_bottom"/>
         </body>
     </html>
+</xsl:when>
+<xsl:otherwise>
+	        <table  class="obj-table">
+          <xsl:choose>
+            <xsl:when test="granteelist/user or /document/userlist/user">
+              <!-- we got users or roles -->
+
+              <!-- begin app sort order by nav -->
+              <thead>
+              <tr>				
+                <th id="th-role" class="sorting">
+                  <xsl:choose>
+                    <xsl:when test="$sort-by='name'">
+                    <xsl:choose>
+												<xsl:when test="$order-by='ascending'">						
+                      <a class="th-icon-right">
+                        <xsl:attribute name="href">
+                          <xsl:value-of select="concat($goxims_content,
+                                                       $absolute_path,
+                                                       '?obj_acllist=1;sort-by=name',
+                                                       ';order-by=descending',
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
+                                                      )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
+                        </xsl:attribute>
+                        <span class="ui-icon ui-icon-triangle-1-n"/>
+                        <xsl:value-of select="$i18n/l/Username"/>
+                      </a>
+                      </xsl:when>
+                      <xsl:otherwise>
+												<a class="th-icon-right">
+                        <xsl:attribute name="href">
+                          <xsl:value-of select="concat($goxims_content,
+                                                       $absolute_path,
+                                                       '?obj_acllist=1;sort-by=name',
+                                                       ';order-by=ascending',
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
+                                                      )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
+                        </xsl:attribute>
+                        <span class="ui-icon ui-icon-triangle-1-s"/>
+                        <xsl:value-of select="$i18n/l/Username"/>
+                      </a>                      
+                      </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <a class="th-icon-right">
+                        <xsl:attribute name="href">
+                          <xsl:value-of select="concat($goxims_content,
+                                                       $absolute_path,
+                                                       '?obj_acllist=1;sort-by=name',
+                                                       ';order-by=ascending',
+                                                       ';userquery=', $userquery,
+                                                       ';usertype=', $usertype
+                                                      )"/>
+                          <xsl:call-template name="rbacknav_qs"/>
+                        </xsl:attribute>
+                        <span class="ui-icon ui-icon-triangle-2-n-s"/>
+                        <xsl:value-of select="$i18n/l/Username"/>
+                      </a>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </th>
+                <th id="th-options-acl">
+                    <xsl:value-of select="$i18n/l/Options"/>
+                </th>
+              </tr>
+              </thead>
+	
+			<tbody>
+              <xsl:choose>
+                <xsl:when test="$sort-by='id'">
+                  <xsl:choose>
+                    <xsl:when test="$order-by='ascending'">
+                      <xsl:for-each select="granteelist/user|/document/userlist/user">
+                        <xsl:sort select="@id"
+                                  order="ascending"
+                                  data-type="number"/>
+                        <xsl:apply-templates select="."/>
+                      </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:for-each select="granteelist/user|/document/userlist/user">
+                        <xsl:sort select="@id"
+                                  order="descending"
+                                  data-type="number"/>
+                        <xsl:apply-templates select="."/>
+                      </xsl:for-each>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+                <xsl:when test="$sort-by='name'">
+                  <xsl:choose>
+                    <xsl:when test="$order-by='ascending'">
+                      <xsl:for-each select="granteelist/user|/document/userlist/user">
+                        <xsl:sort select="name"
+                                  order="ascending"/>
+                        <xsl:apply-templates select="."/>
+                      </xsl:for-each>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:for-each select="granteelist/user|/document/userlist/user">
+                        <xsl:sort select="name"
+                                  order="descending"/>
+                        <xsl:apply-templates select="."/>
+                      </xsl:for-each>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:when>
+              </xsl:choose>
+			</tbody>
+            </xsl:when>
+            <xsl:otherwise>
+            <tbody>
+                <!-- we got no users or roles -->
+                <tr><td align="center"><p class="messagewarning"><xsl:value-of select="$i18n/l/No_user_found"/></p></td></tr>
+														
+						</tbody>
+            </xsl:otherwise>
+          </xsl:choose>
+          
+        </table>
+</xsl:otherwise>
+</xsl:choose>
+
 
 </xsl:template>
 
@@ -447,71 +571,36 @@
      <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
    </xsl:if>
 
+ <xsl:if test="$tooltip= ''">
    <td><xsl:value-of select="@id"/></td>
+ </xsl:if>
    <xsl:apply-templates select="name"/>
+
+<xsl:if test="$tooltip= ''">
    <td><xsl:call-template name="userfullname"/></td>
    <xsl:apply-templates select="enabled"/>
-
+</xsl:if>
    <!-- begin options bar -->
 <td>
-<a>
+<!--<a>
                <xsl:attribute name="href">
                  <xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/>
                  <xsl:call-template name="rbacknav_qs"/>
                </xsl:attribute>
                <xsl:value-of select="$i18n/l/Manage_privs"/>
-             </a>
-             
+             </a>-->
+<script type="text/javascript">
+	//$(document).ready(function() {
+	$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
+			function(data){
+				$('#buttonset_<xsl:value-of select="@id"/>').html(data).buttonset();
+			});
+	//});
+	</script>
 <div class="buttonset">
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_view_',@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/view">
-                       <xsl:attribute name="checked">checked</xsl:attribute>
-                     </xsl:if>
-		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_view_',@id)"/></xsl:attribute>View</label>
-			
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_write_',@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/write">
-                       <xsl:attribute name="checked">checked</xsl:attribute>
-                     </xsl:if>
-		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_write_',@id)"/></xsl:attribute>Write</label>
-			
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_create_',@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/create">
-                       <xsl:attribute name="checked">checked</xsl:attribute>
-                     </xsl:if>
-		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_create_',@id)"/></xsl:attribute>Create</label>
-			
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_delete_',@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/delete">
-                       <xsl:attribute name="checked">checked</xsl:attribute>
-                     </xsl:if>
-		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_delete_',@id)"/></xsl:attribute>Delete</label>
-			
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_copy_',@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/copy">
-                       <xsl:attribute name="checked">checked</xsl:attribute>
-                     </xsl:if>
-		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_copy_',@id)"/></xsl:attribute>Copy</label>
-			
-		<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_publish_',@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/grant">
-                       <xsl:attribute name="checked">checked</xsl:attribute>
-                     </xsl:if>
-		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_publish_',@id)"/></xsl:attribute>Publish</label>
-			
-		<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_grant_',@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/publish">
-                       <xsl:attribute name="checked">checked</xsl:attribute>
-                     </xsl:if>
-		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_grant_',@id)"/></xsl:attribute>Grant</label>
+<xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/></xsl:attribute>
 	</div>
+	
 
 </td>
    <!-- end options bar -->
