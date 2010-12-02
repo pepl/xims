@@ -46,6 +46,7 @@ sub registerEvents {
           publish_prompt
           unpublish
           obj_acllist
+          obj_acllight
           obj_aclgrant
           obj_aclrevoke
           )
