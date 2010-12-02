@@ -39,7 +39,7 @@ sub registerEvents {
     return $self->SUPER::registerEvents(
         (
             'create',       'edit',
-            'store',        'obj_acllist',
+            'store',        'obj_acllist',	'obj_acllight',
             'obj_aclgrant', 'obj_aclrevoke',
             'publish',      'publish_prompt',
             'unpublish',    'test_wellformedness',

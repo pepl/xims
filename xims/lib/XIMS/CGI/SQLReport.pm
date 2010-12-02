@@ -48,6 +48,7 @@ sub registerEvents {
           edit
           store
           obj_acllist
+          obj_acllight
           obj_aclgrant
           obj_aclrevoke
           publish

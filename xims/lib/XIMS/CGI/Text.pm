@@ -43,6 +43,7 @@ sub registerEvents {
                                 'obj_acllist',
                                 'obj_aclgrant',
                                 'obj_aclrevoke',
+                                'obj_acllight',
                                 @_
                                 );
 }
