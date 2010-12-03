@@ -1,13 +1,18 @@
+/*
 .ui-widget{
 	font-family: helvetica, arial, sans-serif !important;
 	font-size: 1em !important;
 }
-.ui-widget{
-	/*
-font-family: helvetica, arial, sans-serif !important;
 */
-	font-size: 1em !important;
+.ui-widget{
+	font-family: helvetica, arial, sans-serif;
+	font-size: 1em ;
 }
+/*
+.ui-widget-content{
+	font-size: 0.8em
+}
+*/
 .ui-state-default, .ui-widget-content .ui-state-default{
 	border: 1px solid #999999 !important;
 }
@@ -69,6 +74,9 @@ a.more > .ui-button-text{
 }
 
 /* Buttonset */
+.ui-buttonset{
+	white-space: nowrap;
+}
 .ui-buttonset label{
 	width: 60px;
 }
@@ -79,6 +87,10 @@ a.more > .ui-button-text{
 */
 .ui-buttonset label.ui-state-active .ui-button-text{
 	font-weight: bold;
+}
+
+.ui-tooltip-content{
+	font-size: 0.8em;
 }
 
 /* common header */

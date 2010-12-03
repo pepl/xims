@@ -589,18 +589,26 @@
                </xsl:attribute>
                <xsl:value-of select="$i18n/l/Manage_privs"/>
              </a>-->
-<script type="text/javascript">
-	//$(document).ready(function() {
-	$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
-			function(data){
-				$('#buttonset_<xsl:value-of select="@id"/>').html(data).buttonset();
-			});
-	//});
-	</script>
-<div class="buttonset">
-<xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/></xsl:attribute>
+
+<div>
+<xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/></xsl:attribute>
 	</div>
-	
+<script type="text/javascript">
+	$(document).ready(function() {
+		if($('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html() == ''){
+		//alert("neu laden: "+<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>);
+			$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
+				function(data){
+					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html(data)
+					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').buttonset();
+			});
+		}
+		else{
+			//alert("schon da: "+<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>+"\n"+$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html());
+		}
+		
+	});
+	</script>	
 
 </td>
    <!-- end options bar -->

@@ -393,7 +393,7 @@ function getTotalWidth(obj){
 
 function initOptionsButtons(){
 	 
-	$(".buttonset").buttonset();
+	//$(".buttonset").buttonset();
 
 	$('.option-edit').button({
 			text: false,
