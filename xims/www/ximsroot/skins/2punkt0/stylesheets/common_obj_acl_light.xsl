@@ -25,54 +25,54 @@
 
 <xsl:template match="/document/context/user">
 
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_view_',@id)"/></xsl:attribute>
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_view_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
 		<xsl:if test="object_privileges/view">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_view_',@id)"/></xsl:attribute>View</label>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_view_',@id,'_',/document/context/object/@id)"/></xsl:attribute>View</label>
 			
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_write_',@id)"/></xsl:attribute>
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_write_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
 		<xsl:if test="object_privileges/write">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_write_',@id)"/></xsl:attribute>Write</label>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_write_',@id,'_',/document/context/object/@id)"/></xsl:attribute>Write</label>
 			
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_create_',@id)"/></xsl:attribute>
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_create_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
 		<xsl:if test="object_privileges/create">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_create_',@id)"/></xsl:attribute>Create</label>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_create_',@id,'_',/document/context/object/@id)"/></xsl:attribute>Create</label>
 			
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_delete_',@id)"/></xsl:attribute>
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_delete_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
 		<xsl:if test="object_privileges/delete">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_delete_',@id)"/></xsl:attribute>Delete</label>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_delete_',@id,'_',/document/context/object/@id)"/></xsl:attribute>Delete</label>
 			
-<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_copy_',@id)"/></xsl:attribute>
+<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_copy_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
 		<xsl:if test="object_privileges/copy">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_copy_',@id)"/></xsl:attribute>Copy</label>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_copy_',@id,'_',/document/context/object/@id)"/></xsl:attribute>Copy</label>
 			
-		<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_publish_',@id)"/></xsl:attribute>
+		<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_publish_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
 		<xsl:if test="object_privileges/grant">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_publish_',@id)"/></xsl:attribute>Publish</label>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_publish_',@id,'_',/document/context/object/@id)"/></xsl:attribute>Publish</label>
 			
-		<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_grant_',@id)"/></xsl:attribute>
+		<input type="checkbox"><xsl:attribute name="id"><xsl:value-of select="concat('acl_grant_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
 		<xsl:if test="object_privileges/publish">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
-			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_grant_',@id)"/></xsl:attribute>Grant</label>
+			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_grant_',@id,'_',/document/context/object/@id)"/></xsl:attribute>Grant</label>
 
 </xsl:template>
 

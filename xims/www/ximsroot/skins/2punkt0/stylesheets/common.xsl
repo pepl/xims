@@ -1350,12 +1350,16 @@
 				<script type="text/javascript">
 				$(document).ready(function() {
 
-					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({ 
+					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip(
+						{ 
 						content: function(response) {				
 						$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1;tooltip=1')"/>', response);
 						return "Loading...";
-					}
-					});
+						}
+						},
+						{position: {offset: "-600 50"}},
+						{width: "530"}
+					);
 					/*
 					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({
 						content: function(response){
