@@ -39,27 +39,20 @@
           <h1 class="bluebg">
             <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>'</h1>
 
-          <!-- filter widget table -->
-              <form name="userfilter" action="">
-								<p>
+		<p>
                     <xsl:choose>
                         <xsl:when test="$userquery = ''">
                             <xsl:value-of select="$i18n/l/Currently_showing_privs"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <!--<xsl:value-of select="$i18n/l/Click"/>
-                            <xsl:text>&#160;</xsl:text>
-                            <a href="{$goxims_content}{$absolute_path}?obj_acllist=1">
-                                <xsl:value-of select="$i18n/l/here"/>
-                            </a>
-                            <xsl:text>&#160;</xsl:text>
-                            <xsl:value-of select="$i18n/l/to_show_existing_privs"/>.-->
                             <a href="{$goxims_content}{$absolute_path}?obj_acllist=1">
                                 <xsl:value-of select="$i18n/l/Show_existing_privs"/>
                             </a>
                         </xsl:otherwise>
                     </xsl:choose>
                  </p>
+				 <!-- filter widget  -->
+              <form name="userfilter" action="">
                  <p>
                     <xsl:value-of select="$i18n/l/Privgrant_usr_lookup_mask"/>:
 											<br/>
@@ -91,11 +84,9 @@
                   <a href="javascript:openDocWindow('grantuserlookup')" class="doclink">(?)</a>
               </p>
               </form>
-          <!-- end filter widget table -->
-				<!--</div>
-				
-				<div id="content-container">-->		
-        <table  class="obj-table">
+          <!-- end filter widget  -->
+			<p> </p>	
+        <table  class="obj-table acl-table">
           <xsl:choose>
             <xsl:when test="granteelist/user or /document/userlist/user">
               <!-- we got users or roles -->
@@ -567,9 +558,9 @@
    <!-- user/role bgcolor -->
    <!--<xsl:if test="object_type='role'">-->
   <!-- user is role if objecttype = 1 -->
-   <xsl:if test="object_type='1'">
+   <!--<xsl:if test="object_type='1'">
      <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
-   </xsl:if>
+   </xsl:if>-->
 
  <xsl:if test="$tooltip= ''">
    <td><xsl:value-of select="@id"/></td>
@@ -582,13 +573,7 @@
 </xsl:if>
    <!-- begin options bar -->
 <td>
-<!--<a>
-               <xsl:attribute name="href">
-                 <xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/>
-                 <xsl:call-template name="rbacknav_qs"/>
-               </xsl:attribute>
-               <xsl:value-of select="$i18n/l/Manage_privs"/>
-             </a>-->
+	<form action="{$xims_box}{$goxims_content}" method="get">
 
 <div>
 <xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/></xsl:attribute>
@@ -596,20 +581,25 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		if($('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html() == ''){
-		//alert("neu laden: "+<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>);
 			$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
 				function(data){
 					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html(data)
 					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').buttonset();
 			});
-		}
-		else{
-			//alert("schon da: "+<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>+"\n"+$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html());
-		}
-		
+		}		
 	});
 	</script>	
-
+	 <xsl:if test="$tooltip= ''">
+	<button class="button" name="obj_aclgrant" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
+	<input name="userid" type="hidden" >
+		<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>
+	</input>
+	<input name="id" type="hidden" value="{/document/context/object/@id}"/>
+	<xsl:call-template name="rbacknav"/>
+	&#160;
+	<button class="button" name="obj_aclrevoke" type="submit"><xsl:value-of select="$i18n/l/Revoke_grants"/></button>
+	</xsl:if>
+	</form>
 </td>
    <!-- end options bar -->
   </tr>
@@ -620,7 +610,7 @@
 </xsl:template>
 
 <xsl:template match="enabled">
-  <td>
+  <td class="ctt_accstatus">
    <xsl:choose>
      <xsl:when test="text()='1'">
        <xsl:value-of select="$i18n/l/enabled"/>

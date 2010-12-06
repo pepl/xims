@@ -201,6 +201,13 @@ div.toc-item {
 .table_hilite{
 	background-color: #ffff80 !important;
 }
+.acl-table tbody tr{
+	height:3em; 
+	border-bottom:1px solid #C0C0C0
+}
+.acl-table .ctt_accstatus{
+	text-align: center;
+}
 
 
 .cttobject_options {
