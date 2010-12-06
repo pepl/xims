@@ -43,6 +43,7 @@
                        <xsl:call-template name="exitredirectform"/>
             </div>
 </div>
+<xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

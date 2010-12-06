@@ -76,9 +76,10 @@ a.more > .ui-button-text{
 /* Buttonset */
 .ui-buttonset{
 	white-space: nowrap;
+	display: inline-block;
 }
 .ui-buttonset label{
-	width: 60px;
+	width: 56px;
 }
 /*
 .ui-buttonset label.ui-state-active{
