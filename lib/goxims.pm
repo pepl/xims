@@ -34,7 +34,12 @@ use XIMS::User;
 use XIMS::Session;
 use Apache::AuthXIMS;
 use Time::Piece;
+
+use Locale::Messages qw(bind_textdomain_filter bind_textdomain_codeset turn_utf_8_on);
+use Locale::TextDomain ('info.xims');
 use POSIX qw(setlocale LC_ALL);
+use URI::Escape qw(uri_escape_utf8);
+
 
 # preload commonly used and publish_gopublic objecttypes
 use XIMS::CGI::SiteRoot;
@@ -42,10 +47,15 @@ use XIMS::CGI::DepartmentRoot;
 use XIMS::CGI::Document;
 use XIMS::CGI::Portlet;
 use XIMS::CGI::Questionnaire;
-use XIMS::CGI::AnonDiscussionForum;
-use XIMS::CGI::AnonDiscussionForumContrib;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+
+BEGIN {
+    bind_textdomain_filter( 'info.xims', \&turn_utf_8_on );
+    bind_textdomain_codeset( 'info.xims', 'utf-8' );
+}
+
+
 
 #use Data::Dumper;
 #use Time::HiRes;
@@ -134,8 +144,11 @@ sub handler {
         # using the ximsPublic role
         unless ( $ctxt->data_provider() ) {
             $r->custom_response( SERVER_ERROR,
-                XIMS::PUBROOT_URL()
-                  . "/500.xsp?reason=A%20database%20connection%20problem%20occured."
+                                 XIMS::PUBROOT_URL()
+                               . '/500.xsp?reason='
+                               . uri_escape_utf8(
+                                   __"A database connection problem occured."
+                               )
             );
             return SERVER_ERROR;
         }
@@ -169,10 +182,13 @@ sub handler {
 
         unless ( $session and $ctxt->session($session) ) {
             $r->custom_response( SERVER_ERROR,
-                XIMS::PUBROOT_URL()
-                  . "/500.xsp?reason=Could%20not%20create%20session." );
+                                 XIMS::PUBROOT_URL()
+                               . '/500.xsp?reason='
+                               . uri_escape_utf8( __"Could not create session." )
+            );
             return SERVER_ERROR;
         }
+
     }
 
     # set some session information
@@ -183,6 +199,7 @@ sub handler {
     XIMS::Debug( 6, "setting serverurl to $serverurl" );
     $ctxt->session->serverurl( $serverurl );
 
+    
     # for now there is no user/browser based skin selection. the default
     # values are used.
     $ctxt->session->skin( XIMS::DEFAULT_SKIN() );
@@ -221,11 +238,17 @@ sub handler {
         if ($@) {
             XIMS::Debug( 2, "could not load object class $object_class: $@" );
             $r->custom_response( SERVER_ERROR,
-                XIMS::PUBROOT_URL()
-                  . "/500.xsp?reason=Could%20not%20load%20object%20class%20$object_class."
+                                 XIMS::PUBROOT_URL()
+                               . '/500.xsp?reason='
+                               . uri_escape_utf8(
+                                   __x("Could not load object class {classname}.",
+                                       classname => $object_class,
+                                   )
+                                 )
             );
             return SERVER_ERROR;
         }
+
         ## use critic
         # rebless the object
         XIMS::Debug( 4, "reblessing object to " . $object_class );
@@ -269,8 +292,13 @@ sub handler {
     if ($@) {
         XIMS::Debug( 2, "could not load application-class $app_class: $@" );
         $r->custom_response( SERVER_ERROR,
-            XIMS::PUBROOT_URL()
-              . "/500.xsp?reason=Could%20not%20load%20application%20class%20$app_class."
+                             XIMS::PUBROOT_URL()
+                           . '/500.xsp?reason='
+                           . uri_escape_utf8(
+                               __x("Could not load application class {classname}.",
+                                   classname => $app_class,
+                               )
+                             )
         );
         return SERVER_ERROR;
     }

@@ -178,7 +178,6 @@
 ../lib/XIMS/Mailer.pm
 ../lib/XIMS/AnonDiscussionForum.pm
 ../lib/XIMS/JavaScript.pm
-../lib/XIMS/I18N.pm
 ../lib/XIMS/VLibAuthor.pm
 ../lib/XIMS/AxPointPresentation.pm
 ../lib/XIMS/DataProvider.pm
