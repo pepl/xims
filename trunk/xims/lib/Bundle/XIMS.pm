@@ -47,6 +47,7 @@ XML::Schematron -
 Apache::DBI -
 CSS::Tiny -
 Term::ReadKey -
+Text::Iconv -
 Text::Diff -
 DBIx::XHTML_Table -
 XML::Generator::DBI -
@@ -60,6 +61,7 @@ MIME::Lite::HTML -
 Email::Valid -
 Archive::Zip -
 File::Slurp -
+Locale::TextDomain -
 
 # DBD::Pg 1.31 - PostgreSQL database driver for the DBI module
 # Net::LDAP -
