@@ -3,14 +3,12 @@
 #
 # See the file LICENSE for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-
-
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: $Id:$\n"
 "Report-Msgid-Bugs-To: <xims-devel@lists.sourceforge.net>\n"
-"POT-Creation-Date: 2009-07-24 13:41+0200\n"
+"POT-Creation-Date: 2010-12-09 14:27+0100\n"
 "PO-Revision-Date: 2009-07-27 11:08+0200\n"
 "Last-Translator: \"Hansjörg Pehofer\" <hansjoerg.pehofer@uibk.ac.at>\n"
 "Language-Team: <xims-devel@lists.sourceforge.net>\n"
@@ -19,17 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
-#: ../lib/XIMS/CGI/Document.pm:188
+#: ../lib/XIMS/CGI/Document.pm:189
 msgid "Document body could not be converted to a well balanced string."
-msgstr "Der Versuch, einen Fehler im »body«-Abschnitt des Dokumentes zu beheben, schlug fehl."
+msgstr ""
+"Der Versuch, einen Fehler im »body«-Abschnitt des Dokumentes zu beheben, "
+"schlug fehl."
 
-#: ../lib/XIMS/CGI/Document.pm:506
+#: ../lib/XIMS/CGI/Document.pm:540
 msgid "Could not get template"
 msgstr "Die Vorlage konnte nicht geholt werden."
 
 #: ../lib/XIMS/CGI/TAN_List.pm:137 ../lib/XIMS/CGI/SimpleDBItem.pm:139
 #: ../lib/XIMS/CGI/AnonDiscussionForumContrib.pm:154
-#: ../lib/XIMS/CGI/ReferenceLibraryItem.pm:188
+#: ../lib/XIMS/CGI/ReferenceLibraryItem.pm:188 ../lib/XIMS/CGI.pm:417
 msgid "Update of object failed."
 msgstr "Das Objekt konnte nicht aktualisiert werden."
 
@@ -42,27 +42,27 @@ msgid "TAN-List could not be created."
 msgstr "Die TAN-Liste konnte nicht angelegt werden."
 
 #: ../lib/XIMS/CGI/TAN_List.pm:168
-#: ../lib/XIMS/CGI/AnonDiscussionForumContrib.pm:164
+#: ../lib/XIMS/CGI/AnonDiscussionForumContrib.pm:164 ../lib/XIMS/CGI.pm:427
 msgid "Creation of object failed."
 msgstr "Das Objekt konnte nicht angelegt werden."
 
-#: ../lib/XIMS/CGI/Portlet.pm:134 ../lib/XIMS/CGI/SymbolicLink.pm:138
+#: ../lib/XIMS/CGI/Portlet.pm:149 ../lib/XIMS/CGI/SymbolicLink.pm:138
 msgid "Could not find or set target"
 msgstr "Das Zielobjekt konnte nicht gefunden oder gesetzt werden."
 
-#: ../lib/XIMS/CGI/Portlet.pm:140 ../lib/XIMS/CGI/SymbolicLink.pm:144
+#: ../lib/XIMS/CGI/Portlet.pm:158 ../lib/XIMS/CGI/SymbolicLink.pm:144
 msgid "Will not store a self-referencing link"
 msgstr "Ein Link, des auf sich selbst zeigt, kann nicht gespeichert werden."
 
-#: ../lib/XIMS/CGI/Portlet.pm:146 ../lib/XIMS/CGI/SymbolicLink.pm:150
+#: ../lib/XIMS/CGI/Portlet.pm:164 ../lib/XIMS/CGI/SymbolicLink.pm:150
 msgid "No target specified!"
 msgstr "Kein Ziel angegeben!"
 
-#: ../lib/XIMS/CGI/Portlet.pm:188
+#: ../lib/XIMS/CGI/Portlet.pm:205
 msgid "bad formed filter conditions: "
 msgstr "Ungültige Filterregeln: "
 
-#: ../lib/XIMS/CGI/Portlet.pm:191
+#: ../lib/XIMS/CGI/Portlet.pm:208
 msgid "filter xml looks ok"
 msgstr "Filterregeln OK."
 
@@ -76,12 +76,16 @@ msgstr "SimpleDBItem konnte nicht importiert werden."
 
 #: ../lib/XIMS/CGI/SimpleDBItem.pm:217
 msgid "Test regex did not compile. Please update SimpleDB field definition."
-msgstr "Ein regulärer Ausdruck konnte nicht kompiliert werden. Bitte passen Sie die entsprechende SimpleDB Feld-Definition an."
+msgstr ""
+"Ein regulärer Ausdruck konnte nicht kompiliert werden. Bitte passen Sie die "
+"entsprechende SimpleDB Feld-Definition an."
 
 #: ../lib/XIMS/CGI/SimpleDBItem.pm:223
 #, perl-brace-format
 msgid "Value '{value}' of '{name}' does not match input pattern '{pattern}'."
-msgstr "Das Eingabemuster »{pattern}« für das Feld »{name}« lässt den Wert »{value}« nicht zu."
+msgstr ""
+"Das Eingabemuster »{pattern}« für das Feld »{name}« lässt den Wert »{value}« "
+"nicht zu."
 
 #: ../lib/XIMS/CGI/VLibrary.pm:121
 msgid "Copying VLibraries is not implemented."
@@ -91,40 +95,41 @@ msgstr "Das Kopieren von VLibrary-Objekten ist nicht möglich."
 msgid "Viewing of a subject is only available for public use."
 msgstr "Diese Ansicht ist nur über gopublic zugänglich."
 
-#: ../lib/XIMS/CGI/VLibrary.pm:529
-msgid "Missing property_id."
+#: ../lib/XIMS/CGI/VLibrary.pm:530
+#, fuzzy
+msgid "Missing property_id"
 msgstr "property_id nicht gesetzt."
 
-#: ../lib/XIMS/CGI/VLibrary.pm:607
+#: ../lib/XIMS/CGI/VLibrary.pm:608
 msgid "Property: Update record failed."
 msgstr "Property: Der Datensatz konnte nicht aktualisiert werden."
 
-#: ../lib/XIMS/CGI/VLibrary.pm:626
+#: ../lib/XIMS/CGI/VLibrary.pm:627
 msgid "Creation failed."
 msgstr "Anlegen schlug fehl."
 
-#: ../lib/XIMS/CGI/VLibrary.pm:838 ../lib/XIMS/CGI/VLibrary.pm:1052
-#: ../lib/XIMS/CGI/user.pm:103 ../lib/XIMS/CGI.pm:3545
+#: ../lib/XIMS/CGI/VLibrary.pm:839 ../lib/XIMS/CGI/VLibrary.pm:1148
+#: ../lib/XIMS/CGI/user.pm:103 ../lib/XIMS/CGI.pm:3603
 msgid "QueryBuilder-Driver could not be found!"
 msgstr "Der Anfrage-Treiber konnte nicht gefunden werden!"
 
-#: ../lib/XIMS/CGI/VLibrary.pm:867 ../lib/XIMS/CGI/VLibrary.pm:1129
-#: ../lib/XIMS/CGI.pm:3606
+#: ../lib/XIMS/CGI/VLibrary.pm:868 ../lib/XIMS/CGI/VLibrary.pm:1225
+#: ../lib/XIMS/CGI.pm:3664
 msgid "Query returned no objects!"
 msgstr "Die Anfrage ergab keine Treffer"
 
-#: ../lib/XIMS/CGI/VLibrary.pm:889 ../lib/XIMS/CGI/VLibrary.pm:1074
-#: ../lib/XIMS/CGI.pm:3639
+#: ../lib/XIMS/CGI/VLibrary.pm:890 ../lib/XIMS/CGI/VLibrary.pm:1170
+#: ../lib/XIMS/CGI.pm:3698
 msgid "Please specify a valid query!"
 msgstr "Bitte stellen Sie eine gültige Anfrage"
 
-#: ../lib/XIMS/CGI/VLibrary.pm:895 ../lib/XIMS/CGI/VLibrary.pm:1081
-#: ../lib/XIMS/CGI.pm:3645
+#: ../lib/XIMS/CGI/VLibrary.pm:896 ../lib/XIMS/CGI/VLibrary.pm:1177
+#: ../lib/XIMS/CGI.pm:3704
 msgid "Please keep your queries between 2 and 30 characters!"
 msgstr "Suchanfragen müssen zwischen 2 und 30 Zeichen lang sein!"
 
-#: ../lib/XIMS/CGI/VLibrary.pm:1358 ../lib/XIMS/CGI/Mailable.pm:69
-#: ../lib/XIMS/CGI/Mailable.pm:112
+#: ../lib/XIMS/CGI/VLibrary.pm:1454 ../lib/XIMS/CGI/Mailable.pm:69
+#: ../lib/XIMS/CGI/Mailable.pm:115 ../lib/XIMS/CGI.pm:333
 #, perl-brace-format
 msgid ""
 "This object is locked by {firstname} {lastname} since {locked_time}. Please "
@@ -133,7 +138,7 @@ msgstr ""
 "Dieses Objekt wurde von {firstname} {lastname} um {locked_time} gesperrt. "
 "Bitte vesuchen Sie es später erneut."
 
-#: ../lib/XIMS/CGI/VLibrary.pm:1369
+#: ../lib/XIMS/CGI/VLibrary.pm:1465 ../lib/XIMS/CGI.pm:344
 msgid "Obtained lock. Please use 'Save' or 'Cancel' to release the lock!"
 msgstr ""
 "Das Objekt ist für andere gesperrt. »Speichern« und »Abbrechen« heben die "
@@ -161,7 +166,9 @@ msgstr "Das Schema konnte nicht geparst werden."
 msgid ""
 "The schema does not meet the simpleformedit validation checks. Please update "
 "the schema as described in the documentation."
-msgstr "Das Schema erfüllt nicht die Voraussetzungen zur Formularerstellung. Bitte passen Sie es, wie in der Dokumentation beschrieben, an."
+msgstr ""
+"Das Schema erfüllt nicht die Voraussetzungen zur Formularerstellung. Bitte "
+"passen Sie es, wie in der Dokumentation beschrieben, an."
 
 #: ../lib/XIMS/CGI/XML.pm:430
 msgid "Could not parse body."
@@ -199,7 +206,9 @@ msgstr ""
 #: ../lib/XIMS/CGI/AnonDiscussionForumContrib.pm:259
 msgid ""
 "This object can not be published directly, please publish the related forum."
-msgstr "Dieses Objekt kann nickt direkt veröffentlicht werden. Bitte veröffentlichen Sie das entsprechende Forum."
+msgstr ""
+"Dieses Objekt kann nickt direkt veröffentlicht werden. Bitte veröffentlichen "
+"Sie das entsprechende Forum."
 
 #: ../lib/XIMS/CGI/File.pm:108
 msgid "Unpacking file failed"
@@ -264,7 +273,7 @@ msgstr "Das MODS-Format der Eingabedatei konnte nicht geparst werden."
 msgid "Imported {num_imported} of {num_total} items"
 msgstr "{num_imported} von insgesamt {num_total} Einträgen importiert."
 
-#: ../lib/XIMS/CGI/user.pm:95 ../lib/XIMS/CGI.pm:3532
+#: ../lib/XIMS/CGI/user.pm:95 ../lib/XIMS/CGI.pm:3590
 msgid ""
 "Search mechanism has not yet been implemented for non DBI based datastores!"
 msgstr ""
@@ -273,7 +282,8 @@ msgstr ""
 msgid "Password updated successfully."
 msgstr "Das Passwort wurde aktualisiert."
 
-#: ../lib/XIMS/CGI/user.pm:180 ../lib/XIMS/CGI/users.pm:423
+#: ../lib/XIMS/CGI/user.pm:180 ../lib/XIMS/CGI/users.pm:199
+#: ../lib/XIMS/CGI/users.pm:423
 msgid "Passwords did not match."
 msgstr "Die Passwörter stimmen nicht überein."
 
@@ -285,13 +295,13 @@ msgstr "Falsches Passwort."
 msgid "Error: Forgot password confirmation."
 msgstr "Fehler: Fehlende Passwortbestätigung."
 
-#: ../lib/XIMS/CGI/users.pm:199
-msgid "Error: Password mismatch."
-msgstr ""
-
 #: ../lib/XIMS/CGI/users.pm:207
 msgid "Error: An account with that name already exists."
 msgstr "Fehler: Ein Konto dieses Namens existiert bereits."
+
+#: ../lib/XIMS/CGI/users.pm:219
+msgid "Error: Missing required field."
+msgstr ""
 
 #: ../lib/XIMS/CGI/users.pm:234
 #, perl-brace-format
@@ -318,7 +328,7 @@ msgstr "Das Konto »{name}« existiert nicht."
 msgid "User '{name}' updated successfully."
 msgstr "Das Konto »{name}« wurde aktualisiert."
 
-#: ../lib/XIMS/CGI/users.pm:349
+#: ../lib/XIMS/CGI/users.pm:349 ../lib/XIMS/CGI/users.pm:808
 #, perl-brace-format
 msgid "Update failed for user '{name}'."
 msgstr "Fehler beim Aktualisieren des Kontos »{name}«"
@@ -391,11 +401,6 @@ msgstr "Das Objekttyp-Privileg konnte nicht gefunden werden."
 #: ../lib/XIMS/CGI/users.pm:776
 msgid "Could not delete Objecttype privilege."
 msgstr "Das Objekttyp-Privileg konnte nicht entfernt werden."
-
-#: ../lib/XIMS/CGI/users.pm:808
-#, perl-brace-format
-msgid "Update failed for user '{name}."
-msgstr ""
 
 #: ../lib/XIMS/CGI/SimpleDB.pm:182
 msgid "At least one property must be specified to be part of the title!"
@@ -510,11 +515,14 @@ msgstr ""
 msgid "Could not unset default bookmark!"
 msgstr "Standardlesezeichen konnte nicht entfernt werden."
 
-#: ../lib/XIMS/CGI/bookmark.pm:186
-msgid "Could not find object with path"
+#: ../lib/XIMS/CGI/bookmark.pm:187
+#, fuzzy, perl-brace-format
+msgid "Could not find object with path '{path}'!"
 msgstr ""
+"Es konnte kein gesperrtes, der Suchanfrage entsprechendes Objekt gefunden "
+"werden."
 
-#: ../lib/XIMS/CGI/bookmark.pm:211
+#: ../lib/XIMS/CGI/bookmark.pm:215
 msgid "Could not delete bookmark."
 msgstr "Lesezeichen konnte nicht entfernt werden."
 
@@ -526,50 +534,54 @@ msgstr "Ihre TAN ist nicht gültig!"
 msgid ""
 "Already answered questionnaires cannot be edited! You can copy the "
 "questionnaire and edit the copy."
-msgstr "Questionaires, für die bereits Antworten vorliegen, können nicht mehr verändert werden. Sie können eine Kopie anlegen und diese anpassen."
+msgstr ""
+"Questionaires, für die bereits Antworten vorliegen, können nicht mehr "
+"verändert werden. Sie können eine Kopie anlegen und diese anpassen."
 
 #: ../lib/XIMS/CGI/Questionnaire.pm:172
 msgid "Published Questionnaires can not be edited! Unpublish first"
-msgstr "Veröffentlichte Questionaires können nicht verändert werden! Sie müssen das Objekt erst de-publizieren."
+msgstr ""
+"Veröffentlichte Questionaires können nicht verändert werden! Sie müssen das "
+"Objekt erst de-publizieren."
 
-#: ../lib/XIMS/CGI/Questionnaire.pm:522
+#: ../lib/XIMS/CGI/Questionnaire.pm:528
 msgid "Could not create temporary ZIP file"
 msgstr "Konnte die temporäre ZIP-Datei nicht anlegen."
 
-#: ../lib/XIMS/CGI/Questionnaire.pm:531
+#: ../lib/XIMS/CGI/Questionnaire.pm:537
 msgid "Could not write temporary ZIP file"
 msgstr "Konnte nicht in die temporäre ZIP-Datei schreiben."
 
-#: ../lib/XIMS/CGI/Questionnaire.pm:606
+#: ../lib/XIMS/CGI/Questionnaire.pm:612
 msgid "Could not find or execute htmldoc."
 msgstr "»htmldoc« konnte nicht ausgeführt werden."
 
-#: ../lib/XIMS/CGI/Questionnaire.pm:631
+#: ../lib/XIMS/CGI/Questionnaire.pm:637
 msgid "Could not create PDF file!"
 msgstr "Konnte PDF-Datei nicht anlegen!"
 
-#: ../lib/XIMS/CGI/Mailable.pm:56 ../lib/XIMS/CGI/Mailable.pm:99
+#: ../lib/XIMS/CGI/Mailable.pm:56 ../lib/XIMS/CGI/Mailable.pm:102
 msgid "Object must be published!"
 msgstr "Das Objekt muss veröffentlicht sein."
 
-#: ../lib/XIMS/CGI/Mailable.pm:125
+#: ../lib/XIMS/CGI/Mailable.pm:132
 msgid "No valid email address supplied!"
 msgstr "Eine gültige E-Mail-Adresse muss angegeben werden!"
 
-#: ../lib/XIMS/CGI/Mailable.pm:132
+#: ../lib/XIMS/CGI/Mailable.pm:139
 msgid "Please supply a meaningful subject"
 msgstr "Bitte geben Sie eine aussagekräftigen Betreff an!"
 
-#: ../lib/XIMS/CGI/Mailable.pm:137
+#: ../lib/XIMS/CGI/Mailable.pm:144
 msgid "Please keep the subject below 60 characters"
 msgstr "Suchanfragen müssen zwischen 2 und 30 Zeichen lang sein!"
 
-#: ../lib/XIMS/CGI/Mailable.pm:215
+#: ../lib/XIMS/CGI/Mailable.pm:223
 #, perl-brace-format
 msgid "Mail size {size} exceeds hard limit of {limit}."
 msgstr "Die Nachrichtengröße von {size} übersteigt die Obergrenze von {limit}."
 
-#: ../lib/XIMS/CGI/Mailable.pm:228
+#: ../lib/XIMS/CGI/Mailable.pm:236
 msgid "Mail-sending failed!"
 msgstr "Der Mailversand schlug fehl."
 
@@ -590,19 +602,26 @@ msgid "Will not delete last associated subject."
 msgstr "Das letzte zugewiesene Thema kann nicht entfernt werden."
 
 #: ../lib/XIMS/CGI/AnonDiscussionForum.pm:87
+#, perl-brace-format
 msgid "Object '{title}' together with {num} related objects published."
-msgstr "Das Objekt »{title}« wurde zusammen mit {num} abhängigen Objekten veröffentlicht "
+msgstr ""
+"Das Objekt »{title}« wurde zusammen mit {num} abhängigen Objekten "
+"veröffentlicht "
 
 #: ../lib/XIMS/CGI/AxPointPresentation.pm:133
 msgid ""
 "Required module not found. You need to have XML::SAX, XML::SAX::Writer, and "
 "XML::Handler::AxPoint installed to create a PDF presentation."
-msgstr "Ein benötigtes Perl-Modul wurde nicht gefunden. Um eine PDF-Präsentation zu erstellen müssen XML::SAX, XML::SAX::Writer und XML::Handler::AxPoint installiert sein."
+msgstr ""
+"Ein benötigtes Perl-Modul wurde nicht gefunden. Um eine PDF-Präsentation zu "
+"erstellen müssen XML::SAX, XML::SAX::Writer und XML::Handler::AxPoint "
+"installiert sein."
 
 #: ../lib/XIMS/CGI/AxPointPresentation.pm:152
 msgid ""
 "The directory where the presentation file resides in, has to be published."
-msgstr "Das Verzeichnis, in dem die Präsentation liegt muss veröffentlicht werden."
+msgstr ""
+"Das Verzeichnis, in dem die Präsentation liegt muss veröffentlicht werden."
 
 #: ../lib/XIMS/CGI/AxPointPresentation.pm:175
 #, perl-brace-format
@@ -611,7 +630,8 @@ msgid ""
 "has to be published before the PDF file can be created!"
 msgstr ""
 "Die PDF-Datei konnte nicht erstellt werden: »{err}« \n"
-"Beachten Sie, dass jedes referzierte Bild veröffentlicht werden muss, befor die PDF-Datei erzeugt werden kann!"
+"Beachten Sie, dass jedes referzierte Bild veröffentlicht werden muss, befor "
+"die PDF-Datei erzeugt werden kann!"
 
 #: ../lib/XIMS/CGI/AxPointPresentation.pm:185
 msgid "PDF creation has not been succesful."
@@ -619,7 +639,9 @@ msgstr "Die PDF-Erstellung schlug fehl."
 
 #: ../lib/XIMS/CGI/SQLReport.pm:351
 msgid "Please specify explict query properties, do not use '*'."
-msgstr "Bitte geben Sie eine explizite SELECT-Liste an, ›*‹ darf nicht verwendet werden."
+msgstr ""
+"Bitte geben Sie eine explizite SELECT-Liste an, ›*‹ darf nicht verwendet "
+"werden."
 
 #: ../lib/XIMS/CGI/SQLReport.pm:414 ../lib/XIMS/CGI/SQLReport.pm:423
 msgid "Invalid Stylesheet: "
@@ -631,14 +653,18 @@ msgstr "Die Transformation schlug fehl: "
 
 #: ../lib/XIMS/CGI/SQLReport.pm:502
 msgid "Tablenames need schema prefix. Please edit the SQLReport SQL query."
-msgstr "Tabellennamen müssen mit dem Schema-Prefix angegeben werden. Bitte ändern Sie die Anfrage in Ihrem SQLReport entsprechend."
+msgstr ""
+"Tabellennamen müssen mit dem Schema-Prefix angegeben werden. Bitte ändern "
+"Sie die Anfrage in Ihrem SQLReport entsprechend."
 
 #: ../lib/XIMS/CGI/SQLReport.pm:517
 #, perl-brace-format
 msgid ""
 "Schema {name} not granted. Please edit the SQLReport SQL query or get role "
 "grants for XIMS:SQLReportSchema:{name}."
-msgstr "Fehlende Rechte für das Schema {name}. Bitte ändern Sie die Anfrage in Ihrem SQLReport oder lassen Sie Sich die entprechenden Rechte erteilen."
+msgstr ""
+"Fehlende Rechte für das Schema {name}. Bitte ändern Sie die Anfrage in Ihrem "
+"SQLReport oder lassen Sie Sich die entprechenden Rechte erteilen."
 
 #: ../lib/XIMS/CGI/SQLReport.pm:548
 msgid "Could not connect to database: "
@@ -648,130 +674,154 @@ msgstr "Konnte nicht zur Datenbank verbinden: "
 msgid ""
 "Could not connect to database using the SQLReportAgentUser. Please check "
 "your sqlreportconfig.xml"
-msgstr "Konnte mit dem SQLReportAgentUser nicht zur Datenbank verbinden. Bitte überprüfen Sie Ihre sqlreportconfig.xml"
+msgstr ""
+"Konnte mit dem SQLReportAgentUser nicht zur Datenbank verbinden. Bitte "
+"überprüfen Sie Ihre sqlreportconfig.xml"
 
 #: ../lib/XIMS/CGI/NewsItem.pm:190
 msgid "Setting location failed."
 msgstr "Die Location konnte nicht gesetzt werden."
 
-#: ../lib/XIMS/CGI.pm:1353
+#: ../lib/XIMS/CGI.pm:113
+msgid "Specify an object type to create an object!"
+msgstr ""
+
+#: ../lib/XIMS/CGI.pm:135
+msgid "Can't find the object class: "
+msgstr ""
+
+#: ../lib/XIMS/CGI.pm:232
+#, fuzzy
+msgid "Can not connect to database server."
+msgstr "Konnte nicht zur Datenbank verbinden: "
+
+#: ../lib/XIMS/CGI.pm:252
+msgid "Access Denied"
+msgstr ""
+
+#: ../lib/XIMS/CGI.pm:456
+msgid "failed to set default grants"
+msgstr ""
+
+#: ../lib/XIMS/CGI.pm:552
+#, fuzzy
+msgid "Object could not be unlocked!"
+msgstr "Das Objekt »{title}« wurde veröffentlicht."
+
+#: ../lib/XIMS/CGI.pm:1359
 msgid "Failed to clean the location / filename. Please supply a sane filename!"
-msgstr "Der Versuch, die Location (also den Dateinamen) zu säubern, schlug fehl. Bitte geben Sie einen brauchbaren Dateinnamen an! (a-z, 1-9, -, .)"
+msgstr ""
+"Der Versuch, die Location (also den Dateinamen) zu säubern, schlug fehl. "
+"Bitte geben Sie einen brauchbaren Dateinnamen an! (a-z, 1-9, -, .)"
 
-#: ../lib/XIMS/CGI.pm:1374
+#: ../lib/XIMS/CGI.pm:1380
 msgid "Cannot rename this published object, please unpublish it first!"
-msgstr "Veröffentlichte Objekte können nicht umbenannt werden, bitte de-publizieren Sie es zuerst."
+msgstr ""
+"Veröffentlichte Objekte können nicht umbenannt werden, bitte de-publizieren "
+"Sie es zuerst."
 
-#: ../lib/XIMS/CGI.pm:1400
+#: ../lib/XIMS/CGI.pm:1406
 #, perl-brace-format
 msgid "Location '{location}' already exists in container."
-msgstr "Ein Objekt mit der Location (Dateiname) »{location}« existiert in diesem Verzeichnis bereits."
+msgstr ""
+"Ein Objekt mit der Location (Dateiname) »{location}« existiert in diesem "
+"Verzeichnis bereits."
 
-#: ../lib/XIMS/CGI.pm:1423
+#: ../lib/XIMS/CGI.pm:1429
 msgid "Please supply a valid location!"
 msgstr "Bitte geben Sie eine gültige Location an!"
 
-#: ../lib/XIMS/CGI.pm:1786
+#: ../lib/XIMS/CGI.pm:1838
 #, perl-brace-format
 msgid ""
 "An object with the location '{location}' already exists in container. Please "
 "rename or move that object before undeleting this one."
 msgstr ""
 "Ein Objekt mit der Location (dem Dateinamen) »{location}« existiert in\n"
-"diesem Verzeichnis bereits. Bitte verschieben oder benennen Sie jenes Objekt um, bevor Sie das aktuelle Objekt aus dem Papierkorb zurückholen."
+"diesem Verzeichnis bereits. Bitte verschieben oder benennen Sie jenes Objekt "
+"um, bevor Sie das aktuelle Objekt aus dem Papierkorb zurückholen."
 
-#: ../lib/XIMS/CGI.pm:1799
+#: ../lib/XIMS/CGI.pm:1851
 msgid "Object could not be undeleted!"
 msgstr "Das Objekt »{title}« wurde veröffentlicht."
 
-#: ../lib/XIMS/CGI.pm:1834
+#: ../lib/XIMS/CGI.pm:1886
 msgid "Can't move a published object to the trashcan, please unpublish first"
-msgstr "Ein veröffentlichtes Objekt kann nicht in den Papierkorb verschoben werden. Bitte de-publizieren Sie es zuerst."
+msgstr ""
+"Ein veröffentlichtes Objekt kann nicht in den Papierkorb verschoben werden. "
+"Bitte de-publizieren Sie es zuerst."
 
-#: ../lib/XIMS/CGI.pm:1852 ../lib/XIMS/CGI.pm:1896
+#: ../lib/XIMS/CGI.pm:1904 ../lib/XIMS/CGI.pm:1948
 msgid "Moving to the trashcan failed."
 msgstr "Das Verschieben in den Papierkorb schlug fehl."
 
-#: ../lib/XIMS/CGI.pm:1934
+#: ../lib/XIMS/CGI.pm:1986
 msgid "Can't delete a published object, please unpublish first"
-msgstr "Das Objekt »{title}« enthält veröffentlichte (publizierte) Verzeichnisse. Bitte de-publizieren Sie diese zuerst."
+msgstr ""
+"Das Objekt »{title}« enthält veröffentlichte (publizierte) Verzeichnisse. "
+"Bitte de-publizieren Sie diese zuerst."
 
-#: ../lib/XIMS/CGI.pm:1952 ../lib/XIMS/CGI.pm:2008
+#: ../lib/XIMS/CGI.pm:2004 ../lib/XIMS/CGI.pm:2060
 msgid "Delete failed."
 msgstr "Das Objekt konnte nicht angelegt werden."
 
-#: ../lib/XIMS/CGI.pm:1977
-#, perl-brace-format
-msgctxt "This Container has x children over y level(s) in the hierarchy"
-msgid "This Container has 1 child"
-msgid_plural "This Container has {number} children"
-msgstr[0] "Dieses Verzeichnis hat ein Kindobjekt"
-msgstr[1] "Dieses Verzeichnis hat {number} Kindobjekte"
-
-#: ../lib/XIMS/CGI.pm:1985
-#, perl-brace-format
-msgctxt "This Container has x children over y level(s) in the hierarchy"
-msgid "over one level in the hierarchy"
-msgid_plural "over {number} levels in the hierarchy"
-msgstr[0] "in einer Hierarchieebene."
-msgstr[1] "in {number} Hierarchieebenen."
-
-#: ../lib/XIMS/CGI.pm:1996
+#: ../lib/XIMS/CGI.pm:2048
 msgid "Privilege mismatch."
 msgstr "Fehlende Berechtigung."
 
-#: ../lib/XIMS/CGI.pm:2105 ../lib/XIMS/CGI.pm:2155
+#: ../lib/XIMS/CGI.pm:2157 ../lib/XIMS/CGI.pm:2207
 msgid "Where to move?"
 msgstr "Wohin soll verschoben werden?"
 
-#: ../lib/XIMS/CGI.pm:2118 ../lib/XIMS/CGI.pm:2219
+#: ../lib/XIMS/CGI.pm:2170 ../lib/XIMS/CGI.pm:2271
 msgid "Moving published objects has not been implemented yet."
 msgstr "Publizierte Objekte können nicht verschoben werden."
 
-#: ../lib/XIMS/CGI.pm:2168
+#: ../lib/XIMS/CGI.pm:2220
 msgid "Invalid target path!"
 msgstr "Ungültiger Zielpfad."
 
-#: ../lib/XIMS/CGI.pm:2175
+#: ../lib/XIMS/CGI.pm:2227
 msgid "Target and source are the same. (Why would you want doing that?)"
 msgstr "Start- und Zielpfad sind identisch."
 
-#: ../lib/XIMS/CGI.pm:2185
+#: ../lib/XIMS/CGI.pm:2237
 msgid "Target is not a valid container"
 msgstr "Das Ziel ist kein gültiges Verzeichnis."
 
-#: ../lib/XIMS/CGI.pm:2198
+#: ../lib/XIMS/CGI.pm:2250
 #, perl-brace-format
 msgid "Location '{location}' already exists in the target container."
 msgstr "Die Location »{location}« existiert bereits im Zielverzeichnis."
 
-#: ../lib/XIMS/CGI.pm:2269
+#: ../lib/XIMS/CGI.pm:2321
 msgid "copy failed!"
 msgstr "Das Kopieren schlug fehl."
 
-#: ../lib/XIMS/CGI.pm:2444
+#: ../lib/XIMS/CGI.pm:2500
+#, perl-brace-format
 msgid "Object '{title}' together with one related object published."
 msgid_plural ""
 "Object '{title}' together with {published} related object published."
 msgstr[0] "Das Objekt »{title}« wurde veröffentlicht."
 msgstr[1] "Das Objekt »{title}« wurde veröffentlicht."
 
-#: ../lib/XIMS/CGI.pm:2453 ../lib/XIMS/CGI.pm:2536
+#: ../lib/XIMS/CGI.pm:2509 ../lib/XIMS/CGI.pm:2592
 #, perl-brace-format
 msgid "Object '{title}' published."
 msgstr "Das Objekt »{title}« wurde veröffentlicht."
 
-#: ../lib/XIMS/CGI.pm:2469
+#: ../lib/XIMS/CGI.pm:2525
 #, perl-brace-format
 msgid "Object '{title}' not published."
 msgstr "Das Objekt »{title}« konnte nicht veröffentlicht werden."
 
-#: ../lib/XIMS/CGI.pm:2512
+#: ../lib/XIMS/CGI.pm:2568
 #, perl-brace-format
 msgid "Publishing object '{title}' failed."
 msgstr "Das Objekt »{title}« konnte nicht veröffentlicht werden."
 
-#: ../lib/XIMS/CGI.pm:2586
+#: ../lib/XIMS/CGI.pm:2642
 #, perl-brace-format
 msgid ""
 "Object '{title}' contains published container objects. Please unpublish "
@@ -780,68 +830,101 @@ msgstr ""
 "Das Objekt »{title}« enthält veröffentlichte (publizierte) Verzeichnisse. "
 "Bitte de-publizieren Sie diese zuerst."
 
-#: ../lib/XIMS/CGI.pm:2621 ../lib/XIMS/CGI.pm:2691
+#: ../lib/XIMS/CGI.pm:2677 ../lib/XIMS/CGI.pm:2747
 #, perl-brace-format
 msgid "Object '{title}' unpublished."
 msgstr "Das Objekt »{title}« wurde de-publiziert."
 
-#: ../lib/XIMS/CGI.pm:2636 ../lib/XIMS/CGI.pm:2675
+#: ../lib/XIMS/CGI.pm:2692 ../lib/XIMS/CGI.pm:2731
 #, perl-brace-format
 msgid "Object '{title}' not unpublished."
 msgstr "Das Objekt »{title}« konnte nicht de-publiziert werden."
 
-#: ../lib/XIMS/CGI.pm:2846
+#: ../lib/XIMS/CGI.pm:2902
 msgid "Parse Failure. Could not prettyprint."
 msgstr "Das Parsen schlug fehl, es konnte daher nicht neu formatiert werden."
 
-#: ../lib/XIMS/CGI.pm:2911
+#: ../lib/XIMS/CGI.pm:2967
 msgid "Sorry, there is no such user!"
 msgstr "Dieses Konto existiert nicht."
 
-#: ../lib/XIMS/CGI.pm:2960
+#: ../lib/XIMS/CGI.pm:3016
 #, perl-brace-format
 msgid "user {name} denied to list privileges on object"
 msgstr "{name} darf sich die Rechte nicht anzeigen lassen."
 
-#: ../lib/XIMS/CGI.pm:3042
+#: ../lib/XIMS/CGI.pm:3098
 #, perl-brace-format
 msgid "Privileges changed successfully for user/role '{name}'."
 msgstr "Rechte für Konto/Rolle »{name}« erfolgreich geändert."
 
-#: ../lib/XIMS/CGI.pm:3117
+#: ../lib/XIMS/CGI.pm:3173
 #, perl-brace-format
 msgid "Privileges successfully revoked for user/role '{name}'."
 msgstr "Rechte für Konto/Rolle »{name}« erfolgreich entfernt."
 
-#: ../lib/XIMS/CGI.pm:3255
+#: ../lib/XIMS/CGI.pm:3311
 #, perl-brace-format
 msgid "{search} is an invalid command!"
 msgstr "»{search}« ist kein gültiges Kommando!"
 
-#: ../lib/XIMS/CGI.pm:3267
+#: ../lib/XIMS/CGI.pm:3323
 msgid "unlock failed"
 msgstr "Das Entsperren schlug fehl."
 
-#: ../lib/XIMS/CGI.pm:3274
+#: ../lib/XIMS/CGI.pm:3330
 msgid "Insufficient privileges, you cannot remove the lock"
 msgstr "Sie haben nicht die nötigen Rechte um diese Sperre aufzuheben."
 
-#: ../lib/XIMS/CGI.pm:3281
+#: ../lib/XIMS/CGI.pm:3337
 msgid "Could not find a locked object with that search string"
-msgstr "Es konnte kein gesperrtes, der Suchanfrage entsprechendes Objekt gefunden werden."
+msgstr ""
+"Es konnte kein gesperrtes, der Suchanfrage entsprechendes Objekt gefunden "
+"werden."
 
-#: ../lib/XIMS/CGI.pm:3615
+#: ../lib/XIMS/CGI.pm:3673
 #, perl-brace-format
 msgid "Query returned one object."
 msgid_plural "Query returned {count} objects."
 msgstr[0] "Die Anfrage lieferte ein Objekt."
 msgstr[1] "Die Anfrage lieferte {count} Objekte."
 
-#: ../lib/XIMS/CGI.pm:3620
+#: ../lib/XIMS/CGI.pm:3679
 #, perl-brace-format
 msgid " Displaying objects {lower} to {upper}."
 msgstr " Angezeigt werden die Objekte {lower} bis {upper}."
 
-#: ../lib/XIMS/CGI.pm:3721
+#: ../lib/XIMS/CGI.pm:3780
 msgid "Use the options to undelete or purge objects."
-msgstr "Verwenden Sie die Optionen, um Objekte aus dem Papierkorb zurückzuholen oder endgültig zu löschen."
+msgstr ""
+"Verwenden Sie die Optionen, um Objekte aus dem Papierkorb zurückzuholen oder "
+"endgültig zu löschen."
+
+#: ../lib/goxims.pm:150
+msgid "A database connection problem occured."
+msgstr "Es besteht ein Problem mit der Datenbankverbindung."
+
+#: ../lib/goxims.pm:187
+#, fuzzy
+msgid "Could not create session."
+msgstr "Es konnte keine neue Session angelegt werden."
+
+#: ../lib/goxims.pm:244
+#, fuzzy, perl-brace-format
+msgid "Could not load object class {classname}."
+msgstr "Die Objektklasse »{classname}« konnte nicht geladen werden."
+
+#: ../lib/goxims.pm:298
+#, perl-brace-format
+msgid "Could not load application class {classname}."
+msgstr "Die Applikationsklasse »{classname}« konnte nicht geladen werden."
+
+#~ msgid "This Container has 1 child"
+#~ msgid_plural "This Container has {number} children"
+#~ msgstr[0] "Dieses Verzeichnis hat ein Kindobjekt"
+#~ msgstr[1] "Dieses Verzeichnis hat {number} Kindobjekte"
+
+#~ msgid "over one level in the hierarchy"
+#~ msgid_plural "over {number} levels in the hierarchy"
+#~ msgstr[0] "in einer Hierarchieebene."
+#~ msgstr[1] "in {number} Hierarchieebenen."
