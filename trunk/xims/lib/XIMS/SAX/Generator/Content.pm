@@ -60,9 +60,15 @@ sub prepare {
 
     if ( $ctxt->session() ) {
         $doc_data->{context}->{session} = { $ctxt->session->data() };
-        $doc_data->{context}->{session}->{user}
-            = { $ctxt->session->user->data() }
-            if defined $ctxt->session->user;
+        if (defined $ctxt->session->user){
+	        $doc_data->{context}->{session}->{user} = { $ctxt->session->user->data() };
+	        # add the user's preferences.
+    		$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
+        }
+            
+#        $doc_data->{context}->{session}->{user}
+#            = { $ctxt->session->user->data() }
+#            if defined $ctxt->session->user;
         my $publicusername
             = $ctxt->apache()->dir_config('ximsPublicUserName');
         $doc_data->{context}->{session}->{public_user} = 1
@@ -143,6 +149,8 @@ sub prepare {
 
     if ( $ctxt->user() ) {
         $doc_data->{context}->{user} = $ctxt->user();
+        # add the user's preferences.
+		$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
     }
 
     return $doc_data;

@@ -83,6 +83,17 @@ COMMENT ON COLUMN ci_users_roles.object_type
         IS '0 => user, 1 => role'
 ;
 
+\echo creating table  'ci_user_prefs'
+CREATE TABLE CI_USER_PREFS 
+(
+  ID NUMBER(6, 0) NOT NULL 
+, PROFILE_TYPE VARCHAR2(20 BYTE) DEFAULT 'standard' NOT NULL 
+, SKIN VARCHAR2(20 BYTE) DEFAULT 'default' NOT NULL 
+, PUBLISH_AT_SAVE NUMBER(1, 0) DEFAULT 0 NOT NULL 
+, CONTAINERVIEW_SHOW VARCHAR2(20 BYTE) DEFAULT 'title' NOT NULL 
+)
+; 
+
 
 \echo creating table 'ci_roles_granted'
 CREATE TABLE ci_roles_granted

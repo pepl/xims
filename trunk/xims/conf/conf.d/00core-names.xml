@@ -10,7 +10,7 @@
             <item>ObjectType</item>
             <item>UserPriv</item>
             <item>Bookmark</item>
-	    <item>UserPrefs</item>
+	    	<item>UserPrefs</item>
             <item>DataFormat</item>
             <item>Language</item>
             <item>ObjectPriv</item>
@@ -28,6 +28,13 @@
                 <item>session.last_access_timestamp</item>
                 <item>session.salt</item>
             </Session>
+			<UserPrefs>
+                <item>userprefs.id</item>
+                <item>userprefs.profile_type</item>
+                <item>userprefs.skin</item>
+                <item>userprefs.publish_at_save</item>
+				<item>userprefs.containerview_show</item>
+            </UserPrefs>
             <User>
                 <item>user.password</item>
                 <item>user.enabled</item>
@@ -42,10 +49,6 @@
                 <item>user.url</item>
                 <item>user.object_type</item>
                 <item>user.dav_otprivs_mask</item>
-				<item>user.profile_type</item>
-                <item>user.skin</item>
-                <item>user.publish_at_save</item>
-                <item>user.containerview_show</item>
             </User>
             <Content>
                 <item>content.binfile</item>
@@ -190,14 +193,7 @@
                 <item>bookmark.content_id</item>
                 <item>bookmark.owner_id</item>
                 <item>bookmark.stdhome</item>
-            </Bookmark>
-	    <UserPrefs>
-                <item>userprefs.id</item>
-                <item>userprefs.profile_type</item>
-                <item>userprefs.skin</item>
-                <item>userprefs.publish_at_save</item>
-		<item>userprefs.containerview_show</item>
-            </UserPrefs>
+            </Bookmark>	    	
             <DataFormat>
                 <item>dataformat.mime_type</item>
                 <item>dataformat.id</item>

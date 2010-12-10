@@ -2,23 +2,31 @@
 -- See the file "LICENSE" for information and conditions for use, reproduction,
 -- and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 -- $Id$
-CREATE OR REPLACE VIEW ci_users_roles (
-   id,
-   object_type,
-   name,
-   lastname,
-   middlename,
-   firstname,
-   enabled,
-   email,
-   url,
-   password,
-   system_privs_mask )
-AS
-SELECT id, utype, name, last_name, middle_name, first_name, CASE WHEN enabled='Y' THEN 1 ELSE 0 END, 
-email, url, current_pwd, sys_privs_mask
-                FROM C10200.SEC$USERS
-                WITH READ ONLY
+CREATE OR REPLACE VIEW CI_USERS_ROLES AS SELECT a.id ,
+    a.utype AS object_type ,
+    a.name ,
+    a.full_name ,
+    a.last_name   AS lastname ,
+    a.middle_name AS middlename ,
+    a.first_name  AS firstname ,
+    CASE
+      WHEN a.enabled='Y'
+      THEN 1
+      ELSE 0
+    END AS enabled ,
+    a.email ,
+    a.url ,
+    b.current_pwd    AS password ,
+    c.sys_privs_mask AS system_privs_mask ,
+    c.dav_otprivs_mask ,
+    a.xadmin AS admin 
+  FROM SEC$USERS a
+  LEFT OUTER JOIN LOCAL_SEC$USERS_CURRENT_PWD b
+  ON (a.id = b.id)
+  LEFT OUTER JOIN local_privmasks c
+  ON (a.id = c.id)
+WITH READ ONLY;
+
 /
 CREATE OR REPLACE VIEW ci_roles_granted (
    id,

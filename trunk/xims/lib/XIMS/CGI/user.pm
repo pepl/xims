@@ -219,7 +219,6 @@ sub event_bookmarks {
 sub event_prefs {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-	warn("\nevent_prefs\n");
     $ctxt->properties->application->style( 'prefs' );
     $ctxt->session->message( __"User's preferences updated successfully." );
 

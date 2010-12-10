@@ -60,9 +60,9 @@ sub new {
 
     if ( scalar( keys(%args)) > 0 ) {
         if ( scalar( keys( %args ) ) > 0 ) {
-            my $real_privs = $self->data_provider->getUserPrefs( %args );
-            if ( defined( $real_privs )) {
-               $self->data( %{$real_privs} );
+            my $real_prefs = $self->data_provider->getUserPrefs( %args );
+            if ( defined( $real_prefs )) {
+               $self->data( %{$real_prefs} );
             }
             else {
                 return;
