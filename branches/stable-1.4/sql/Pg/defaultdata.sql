@@ -23,6 +23,8 @@ INSERT INTO ci_languages ( id, fullname, code )
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'Folder', 1, 1, 0, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Gallery', 1, 1, 0, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'Document', 0, 1, 1, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
        VALUES ( nextval('ci_object_types_id_seq'), 'Image', 0, 0, 0, 0 );
@@ -125,6 +127,8 @@ INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'TAR', 'application/x-tar', 'tar' );
 INSERT INTO ci_data_formats ( id, name, mime_type )
        VALUES ( nextval('ci_data_formats_id_seq'), 'Container', 'application/x-container' );
+INSERT INTO ci_data_formats ( id, name, mime_type )
+       VALUES ( nextval('ci_data_formats_id_seq'), 'Gallery', 'application/x-container' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'PJPEG', 'image/pjpeg', 'jpg' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
@@ -332,11 +336,11 @@ UPDATE ci_object_types SET is_davgetable = 1 WHERE id IN (SELECT id from ci_obje
 \echo Setting ci_object_types.davprivval
 UPDATE ci_object_types SET davprivval = 0;
 -- Container and Binary types
-UPDATE ci_object_types SET davprivval = 1 WHERE name IN ('DepartmentRoot', 'File', 'Folder', 'Image', 'SiteRoot');
+UPDATE ci_object_types SET davprivval = 1 WHERE name IN ('DepartmentRoot', 'File', 'Folder', 'Image', 'SiteRoot','Gallery');
 -- Text based types
 UPDATE ci_object_types SET davprivval = 2 WHERE name IN ('CSS', 'JavaScript', 'Text');
 -- XML types
-UPDATE ci_object_types SET davprivval = 4 WHERE name IN ('AxPointPresentation', 'DocBookXML', 'XML', 'XSLStylesheet', 'XSPScript', 'sDocBookXML');
+UPDATE ci_object_types SET davprivval = 4 WHERE name IN ('AxPointPresentation', 'DocBookXML', 'XML', 'XSLStylesheet', 'XSPScript', 'sDocBookXML','Gallery');
 
 UPDATE ci_object_types SET davprivval = 8 WHERE name = 'Document';
 UPDATE ci_object_types SET davprivval = 16 WHERE name = 'NewsItem';
