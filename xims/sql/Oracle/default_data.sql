@@ -40,6 +40,7 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'SQLReport', 0, 1, 1 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id ) VALUES ( OBT_SEQ.NEXTVAL, 'Event', 0, 1, 1, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_mailable ) VALUES ( OBT_SEQ.NEXTVAL, 'NewsLetter', 0, 1, 1, 0, 1 );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic ) VALUES ( OBT_SEQ.NEXTVAL, 'Gallery', 1, 1, 0, 0 );
 
 
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'Text', 'text/plain', 'txt' );
@@ -60,6 +61,7 @@ INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEX
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'ZIP', 'application/x-zip-compressed', 'zip' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'TAR', 'application/x-tar', 'tar' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'Container', 'application/x-container' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type ) VALUES ( DFM_SEQ.NEXTVAL, 'Gallery', 'application/x-container' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'PJPEG', 'image/pjpeg', 'jpg' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'AXPML', 'text/xml', 'axp' );
 INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) VALUES ( DFM_SEQ.NEXTVAL, 'sDocBookXML', 'text/xml', 'sdbk' );
@@ -174,12 +176,12 @@ INSERT INTO CI_OBJECT_PRIVS_GRANTED ( privilege_mask, grantee_id, grantor_id, co
 
 -- Setting is_ci_object_types.davgetable
 UPDATE ci_object_types SET is_davgetable = 0;
-UPDATE ci_object_types SET is_davgetable = 1 WHERE id IN (SELECT id from ci_object_types WHERE name IN ('Annotation', 'AxPointPresentation', 'CSS', 'DepartmentRoot', 'DocBookXML', 'Document', 'File', 'Folder', 'Image', 'JavaScript', 'NewsItem', 'Portal', 'Portlet', 'Questionnaire', 'SQLReport', 'SiteRoot', 'Text', 'XML', 'XSLStylesheet', 'XSPScript', 'sDocBookXML','Event'));
+UPDATE ci_object_types SET is_davgetable = 1 WHERE id IN (SELECT id from ci_object_types WHERE name IN ('Annotation', 'AxPointPresentation', 'CSS', 'DepartmentRoot', 'DocBookXML', 'Document', 'File', 'Folder', 'Image', 'JavaScript', 'NewsItem', 'Portal', 'Portlet', 'Questionnaire', 'SQLReport', 'SiteRoot', 'Text', 'XML', 'XSLStylesheet', 'XSPScript', 'sDocBookXML','Event','Gallery'));
 
 -- Setting ci_object_types.davprivval
 UPDATE ci_object_types SET davprivval = 0;
 -- Container and Binary types
-UPDATE ci_object_types SET davprivval = 1 WHERE name IN ('DepartmentRoot', 'File', 'Folder', 'Image', 'SiteRoot');
+UPDATE ci_object_types SET davprivval = 1 WHERE name IN ('DepartmentRoot', 'File', 'Folder', 'Image', 'SiteRoot','Gallery');
 -- Text based types
 UPDATE ci_object_types SET davprivval = 2 WHERE name IN ('CSS', 'JavaScript', 'Text');
 -- XML types
