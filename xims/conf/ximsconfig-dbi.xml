@@ -8,6 +8,7 @@
             <item name="session.last_access_timestamp" value="now()"/>
             <item name="document.id" value="ci_documents_id_seq_nval()"/>
             <item name="bookmark.id" value="ci_bookmarks_id_seq_nval()"/>
+			<item name="userprefs.id" value="ci_user_prefs_id_seq_nval()"/>
             <item name="language.id" value="ci_languages_id_seq_nval()"/>
             <item name="objecttype.id" value="ci_object_types_id_seq_nval()"/>
             <item name="dataformat.id" value="ci_data_formats_id_seq_nval()"/>
@@ -21,7 +22,7 @@
             <item name="document" value="ci_documents"/>
             <item name="objecttype" value="ci_object_types"/>
             <item name="userpriv" value="ci_roles_granted"/>
-	    <item name="userprefs" value="ci_user_prefs"/>
+			<item name="userprefs" value="ci_user_prefs"/>
             <item name="objectpriv" value="ci_object_privs_granted"/>
             <item name="objecttypepriv" value="ci_object_type_privs"/>
             <item name="dataformat" value="ci_data_formats"/>

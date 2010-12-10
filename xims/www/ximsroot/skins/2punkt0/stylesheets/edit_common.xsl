@@ -11,10 +11,8 @@
 	<xsl:variable name="bodycontent">
 		<xsl:call-template name="body"/>
 	</xsl:variable>
-	<!--<xsl:variable name="pubonsave" select="/document/context/session/user/preferences/pubonsave"/>
-	<xsl:variable name="usertype" select="/document/context/session/user/preferences/usertype"/>-->
-	<xsl:param name="pubonsave" ><xsl:value-of select="/document/context/session/user/publish_at_save"/></xsl:param>
-	<xsl:param name="usertype"><xsl:value-of select="/document/context/session/user/profile_type"/></xsl:param>
+	<xsl:param name="pubonsave" ><xsl:value-of select="/document/context/session/user/userprefs/publish_at_save"/></xsl:param>
+	<xsl:param name="usertype"><xsl:value-of select="/document/context/session/user/userprefs/profile_type"/></xsl:param>
 	<xsl:param name="tinymce" select="false()"/>	
 	<xsl:param name="selEditor" select="false()"/>	
 	<xsl:param name="testlocation" select="true()"/>
