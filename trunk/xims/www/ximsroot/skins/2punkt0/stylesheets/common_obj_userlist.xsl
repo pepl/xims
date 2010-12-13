@@ -416,7 +416,10 @@
           </xsl:choose>
           
         </table>
-        
+		<form action="{$xims_box}{$goxims_content}" method="get">
+			<button type="submit" name="cancel"><xsl:value-of select="$i18n/l/Cancel"/></button>
+			bla
+		</form>
                 </div>
         <xsl:call-template name="script_bottom"/>
         </body>
@@ -545,10 +548,9 @@
             </xsl:otherwise>
           </xsl:choose>
           
-        </table>
+        </table>		
 </xsl:otherwise>
 </xsl:choose>
-
 
 </xsl:template>
 

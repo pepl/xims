@@ -282,14 +282,17 @@ div.toc-item {
 #button-forms form{
 	display: inline;
 }
+/*
 #bookmarklist, #settinglist, #adminlist {
     padding: 0;
     margin: 0 0 5px 10px;
     list-style-type: none;
 }
+
 #bookmarklist li, #settinglist li, #adminlist li  {
     display: block !important;
 }
+*/
 #op_create{
 	float: left;
 }
@@ -449,4 +452,7 @@ hr {
 	font-weight: bold;
 }
 
+.clear{
+	clear:both;
+}
 /* end edit- and create-forms */

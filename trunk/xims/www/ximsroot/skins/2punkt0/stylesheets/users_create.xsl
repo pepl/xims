@@ -15,33 +15,30 @@
 <xsl:param name="name"/>
 
 <xsl:template match="/document">
-    <html>
-    <xsl:call-template name="head_default"><xsl:with-param name="mode">user</xsl:with-param></xsl:call-template>
-    
-        <body>
-        <xsl:call-template name="header">
-          <xsl:with-param name="noncontent">true</xsl:with-param>
-        </xsl:call-template>
-        
-        <div id="content-container">
+	<html>
+	<xsl:call-template name="head_default"><xsl:with-param name="mode">user</xsl:with-param></xsl:call-template>
+	<body>
+		<xsl:call-template name="header">
+			<xsl:with-param name="noncontent">true</xsl:with-param>
+		</xsl:call-template>
+		
+		<div id="content-container">
+			<form name="userAdd" action="{$xims_box}{$goxims_users}" method="post">
+				<xsl:if test="/document/context/session/warning_msg != ''">
+					<div>
+						<xsl:call-template name="message"/>
+					</div>
+				</xsl:if>
 
-        <form name="userAdd" action="{$xims_box}{$goxims_users}" method="post">
-
-                <xsl:if test="/document/context/session/warning_msg != ''">
-                            <div>
-                                <xsl:call-template name="message"/>
-                            </div>
-                </xsl:if>
-
-                  <h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Create_account"/></h1>
-										<p>
-                  <div class="input-label-acc"><label for="acc-name"> <xsl:value-of select="$i18n/l/Username"/>*:</label></div>
-                  <input size="30" maxlength="30" name="name" type="text" value="{$name}" id="acc-name"/>
+				<h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Create_account"/></h1>
+			<p>
+				<div class="label-med"><label for="acc-name"> <xsl:value-of select="$i18n/l/Username"/>*:</label></div>
+				<input size="30" maxlength="30" name="name" type="text" value="{$name}" id="acc-name"/>
 </p><p>
-									<div class="input-label-acc"><label for="acc-pwd"><xsl:value-of select="$i18n_users/l/Password"/>:</label></div>
+									<div class="label-med"><label for="acc-pwd"><xsl:value-of select="$i18n_users/l/Password"/>:</label></div>
                   <input size="30" maxlength="32" name="password1" type="password" value="" id="acc-pwd"/>
 </p><p>
-                   <div class="input-label-acc"><label for="acc-confpwd"><xsl:value-of select="$i18n_users/l/Confirm_Password"/>:</label></div>
+                   <div class="label-med"><label for="acc-confpwd"><xsl:value-of select="$i18n_users/l/Confirm_Password"/>:</label></div>
                   <input size="30" maxlength="32" name="password2" type="password" value="" id="acc-confpwd"/>
 </p>
                 <xsl:call-template name="usermeta"/>
@@ -51,7 +48,7 @@
 <br/>
                 <fieldset>
                 <legend>
-									<div class="input-label-acc"><xsl:value-of select="$i18n_users/l/Account_is_Role"/>:</div></legend>
+					<div class="label-med"><xsl:value-of select="$i18n_users/l/Account_is_Role"/>:</div></legend>
                       <input name="object_type" type="radio" value="role" class="radio-button" id="acc-isrole-true">
                         <xsl:if test="$object_type = 'role'">
                           <xsl:attribute name="checked">checked</xsl:attribute>
@@ -77,6 +74,7 @@
 
         </form>
         </div>
+		<xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>

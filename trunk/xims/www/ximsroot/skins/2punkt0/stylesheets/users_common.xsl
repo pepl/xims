@@ -31,67 +31,109 @@
 </xsl:variable>
 
 <xsl:template match="userlist">
-    <table>
-    <thead>
-      <!-- begin app sort order by nav -->
-      <tr>
-        <th>
-          <xsl:choose>
-            <xsl:when test="$sort-by='id'">
-              <a href="{$xims_box}{$goxims_users}?sort-by=id;order-by={$order-by-opposite};userquery={$userquery}">ID</a>
+	<table class="obj-table acl-table">
+		<thead>
+		<!-- begin app sort order by nav -->
+		<tr>
+		<th>
+			<xsl:choose>
+				<xsl:when test="$sort-by='id'">
+					<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=id;order-by={$order-by-opposite};userquery={$userquery}">ID
+						<xsl:choose>
+						<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
+						<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+						</xsl:choose>
+					</a>
             </xsl:when>
             <xsl:otherwise>
-              <a href="{$xims_box}{$goxims_users}?sort-by=id;order-by={$order-by};userquery={$userquery}">ID</a>
+              <a  class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=id;order-by={$order-by};userquery={$userquery}">ID
+			  <span class="ui-icon ui-icon-triangle-2-n-s"/>
+			  </a>
             </xsl:otherwise>
           </xsl:choose>
         </th>
         <th>
           <xsl:choose>
             <xsl:when test="$sort-by='name'">
-              <a href="{$xims_box}{$goxims_users}?sort-by=name;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n/l/Username"/></a>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="{$xims_box}{$goxims_users}?sort-by=name;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Username"/></a>
+              <a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=name;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n/l/Username"/>
+				<xsl:choose>
+						<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
+						<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+				</xsl:choose>
+			  </a>
+			</xsl:when>
+			<xsl:otherwise>
+				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=name;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Username"/>
+					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+				</a>
             </xsl:otherwise>
           </xsl:choose>
         </th>
         <th>
           <xsl:choose>
             <xsl:when test="$sort-by='lastname'">
-              <a href="{$xims_box}{$goxims_users}?sort-by=lastname;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Lastname"/></a>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="{$xims_box}{$goxims_users}?sort-by=lastname;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Lastname"/></a>
+              <a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=lastname;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Lastname"/>
+				<xsl:choose>
+					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
+					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+					</xsl:choose>
+				</a>
+			</xsl:when>
+			<xsl:otherwise>
+			<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=lastname;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Lastname"/>
+				<span class="ui-icon ui-icon-triangle-2-n-s"/>
+			</a>
             </xsl:otherwise>
           </xsl:choose>
         </th>
         <th>
           <xsl:choose>
             <xsl:when test="$sort-by='system_privs_mask'">
-              <a href="{$xims_box}{$goxims_users}?sort-by=system_privs_mask;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/System_privileges"/></a>
+				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=system_privs_mask;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/System_privileges"/>
+				<xsl:choose>
+					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
+					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+				</xsl:choose>
+				</a>
             </xsl:when>
             <xsl:otherwise>
-              <a href="{$xims_box}{$goxims_users}?sort-by=system_privs_mask;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/System_privileges"/></a>
+				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=system_privs_mask;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/System_privileges"/>
+					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+				</a>
             </xsl:otherwise>
           </xsl:choose>
         </th>
         <th>
           <xsl:choose>
             <xsl:when test="$sort-by='admin'">
-              <a href="{$xims_box}{$goxims_users}?sort-by=admin;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Administrator"/></a>
+				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=admin;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Administrator"/>
+				<xsl:choose>
+					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
+					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+				</xsl:choose>
+				</a>
             </xsl:when>
             <xsl:otherwise>
-              <a href="{$xims_box}{$goxims_users}?sort-by=admin;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Administrator"/></a>
+				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=admin;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Administrator"/>
+					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+				</a>
             </xsl:otherwise>
           </xsl:choose>
         </th>
         <th>
           <xsl:choose>
             <xsl:when test="$sort-by='enabled'">
-              <a href="{$xims_box}{$goxims_users}?sort-by=enabled;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n/l/Account_status"/></a>
+				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=enabled;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n/l/Account_status"/>
+				<xsl:choose>
+					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
+					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+				</xsl:choose>
+				</a>
             </xsl:when>
-            <xsl:otherwise>
-              <a href="{$xims_box}{$goxims_users}?sort-by=enabled;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Account_status"/></a>
+	            <xsl:otherwise>
+					<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=enabled;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Account_status"/>
+						<span class="ui-icon ui-icon-triangle-2-n-s"/>
+					</a>
             </xsl:otherwise>
           </xsl:choose>
         </th>
@@ -223,11 +265,11 @@
 </xsl:template>
 
 <xsl:template match="user">
-  <tr>
+  <tr class="objrow">
    <!-- user/role bgcolor -->
-   <xsl:if test="object_type='1'">
+   <!--<xsl:if test="object_type='1'">
      <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
-   </xsl:if>
+   </xsl:if>-->
 
    <td><xsl:value-of select="@id"/></td>
    <!-- sometimes turning tree-shaped data into tabular is yucky -->
@@ -306,7 +348,7 @@
 
 <table id="table-syspriv">
 		<tr>
-			<th><xsl:value-of select="$i18n_users/l/User_self-management"/>:</th>
+			<th width="180"><xsl:value-of select="$i18n_users/l/User_self-management"/>:</th>
 			<td>
 <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_PASSWORD" id="cb-acc-cp" class="checkbox">
@@ -480,22 +522,22 @@
  
 <xsl:template name="usermeta">
 <p>
-<div class="input-label-acc"><label for="acc-lastname"><xsl:value-of select="$i18n_users/l/Lastname"/>*:</label></div><input size="30" maxlength="30" name="lastname" type="text" value="{lastname}" id="acc-lastname"/>
+<div class="label-med"><label for="acc-lastname"><xsl:value-of select="$i18n_users/l/Lastname"/>*:</label></div><input size="30" maxlength="30" name="lastname" type="text" value="{lastname}" id="acc-lastname"/>
 </p><p>
-<div class="input-label-acc"><label for="acc-middlename"><xsl:value-of select="$i18n_users/l/Middlename"/>:</label></div><input size="30" maxlength="30" name="middlename" type="text" value="{middlename}" id="acc-middlename"/>
+<div class="label-med"><label for="acc-middlename"><xsl:value-of select="$i18n_users/l/Middlename"/>:</label></div><input size="30" maxlength="30" name="middlename" type="text" value="{middlename}" id="acc-middlename"/>
 </p><p>
-<div class="input-label-acc"><label for="acc-firstname"><xsl:value-of select="$i18n_users/l/Firstname"/>:</label></div><input size="30" maxlength="30" name="firstname" type="text" value="{firstname}" id="acc-firstname"/>
+<div class="label-med"><label for="acc-firstname"><xsl:value-of select="$i18n_users/l/Firstname"/>:</label></div><input size="30" maxlength="30" name="firstname" type="text" value="{firstname}" id="acc-firstname"/>
 </p><p>
-<div class="input-label-acc"><label for="acc-email"><xsl:value-of select="$i18n/l/Email"/>:</label></div><input size="30" maxlength="80" name="email" type="text" value="{email}" id="acc-email"/>
+<div class="label-med"><label for="acc-email"><xsl:value-of select="$i18n/l/Email"/>:</label></div><input size="30" maxlength="80" name="email" type="text" value="{email}" id="acc-email"/>
 </p><p>
-<div class="input-label-acc"><label for="acc-url">URL:</label></div><input size="30" maxlength="80" name="url" type="text" value="{url}" id="acc-url"/>
+<div class="label-med"><label for="acc-url">URL:</label></div><input size="30" maxlength="80" name="url" type="text" value="{url}" id="acc-url"/>
 </p>
 </xsl:template>
 
 <xsl:template name="user_isadmin">
     <fieldset>
     <legend>
-      <div class="input-label-acc"><xsl:value-of select="$i18n_users/l/User_is_Administrator"/>:</div></legend>
+      <div class="label-med"><xsl:value-of select="$i18n_users/l/User_is_Administrator"/>:</div></legend>
           <input name="admin" type="radio" value="true" class="radio-button" id="acc-isadmin-true">
             <xsl:if test="admin = '1'">
               <xsl:attribute name="checked">checked</xsl:attribute>
@@ -514,7 +556,7 @@
 <xsl:template name="account_enabled">
     <fieldset>
     <legend>
-      <div class="input-label-acc"><xsl:value-of select="$i18n_users/l/Account_is_Enabled"/>:</div></legend>
+      <div class="label-med"><xsl:value-of select="$i18n_users/l/Account_is_Enabled"/>:</div></legend>
           <input name="enabled" type="radio" value="true" class="radio-button" id="acc-isact-true">
             <xsl:if test="enabled = '1' or $enabled = 'true'">
               <xsl:attribute name="checked">checked</xsl:attribute>

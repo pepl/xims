@@ -43,6 +43,7 @@
         </p><br/>
         <xsl:apply-templates select="userlist"/>
         </div>
+		<xsl:call-template name="script_bottom"/>
         </body>
     </html>
 
@@ -50,9 +51,10 @@
 
 <xsl:template name="options">
     <!-- begin options bar -->
-    <td width="250" align="left">
+    <!--<td width="250" align="left">-->
+	<td>
         <xsl:if test="$explicit_only = '1'">
-            <a href="{$xims_box}{$goxims_users}?name={$name};role={name};revoke_role=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Revoke_Role_Grant"/></a>
+            <a class="button" href="{$xims_box}{$goxims_users}?name={$name};role={name};revoke_role=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Revoke_Role_Grant"/></a>
         </xsl:if>
     </td>
     <!-- end options bar -->

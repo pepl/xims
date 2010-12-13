@@ -29,14 +29,20 @@
                 </h1>
             <xsl:call-template name="create_manage_accounts"/>
 
-        <table>
+       <!-- <table>
             <tr>
-                <td>
+                <td>-->
                     <xsl:apply-templates select="userlist"/>
-                </td>
+            <!--    </td>
             </tr>
-        </table>
+        </table>-->
         </div>
+		<xsl:call-template name="script_bottom"/>
+		<script type="text/javascript">
+		   	$(document).ready(function(){
+			$('.buttonset').buttonset();
+			});
+	 </script>
     </body>
 </html>
 </xsl:template>
@@ -44,14 +50,18 @@
 <xsl:template name="options">
    <!-- begin options bar -->
    <td>
-   <a class="xims-sprite sprite-option_edit" href="{$xims_box}{$goxims_users}?edit=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><span><xsl:value-of select="$i18n/l/edit"/></span>&#160;</a>
-   <a href="{$xims_box}{$goxims_users}?passwd=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Change_password"/></a>&#160;
+   	<div class="buttonset">
+   <a class="xims-sprite sprite-option_edit" href="{$xims_box}{$goxims_users}?edit=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/edit"/>&#160;</a>
+   <a href="{$xims_box}{$goxims_users}?passwd=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Change_password"/></a>
    <a class="xims-sprite sprite-option_purge" href="{$xims_box}{$goxims_users}?remove=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><span><xsl:value-of select="$i18n/l/delete"/></span>&#160;</a>
-   <a href="{$xims_box}{$goxims_users}?name={name};manage_roles=1;explicit_only=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Role_membership"/></a>&#160;
-   <a href="{$xims_box}{$goxims_users}?name={name};bookmarks=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Bookmarks"/></a>&#160;
-   <a href="{$xims_box}{$goxims_users}?name={name};objecttypeprivs=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></a>&#160;
+   <a href="{$xims_box}{$goxims_users}?name={name};manage_roles=1;explicit_only=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Role_membership"/></a>
+   <a href="{$xims_box}{$goxims_users}?name={name};bookmarks=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Bookmarks"/></a>
+   <a href="{$xims_box}{$goxims_users}?name={name};objecttypeprivs=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></a>
+   </div>
    </td>
    <!-- end options bar -->
+   
+  
 </xsl:template>
 
 </xsl:stylesheet>

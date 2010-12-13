@@ -2001,11 +2001,11 @@
 				<label for="input-path">
 					<xsl:value-of select="$i18n/l/Path"/>
 				</label>: 
-            <input type="text" name="path" size="40" class="text" id="input-path"/>
+			<input type="text" name="path" size="40" class="text" id="input-path"/>
 				<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>
 				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path',600,400)" class="doclink">
+				<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path',600,400)" class="button">
 					<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Object"/>
 				</a>
 			</p>
@@ -2014,7 +2014,7 @@
 					<xsl:value-of select="$i18n/l/Set_as"/>&#160;
 							<xsl:value-of select="$i18n/l/default_bookmark"/>
 				</label>: 
-            <input type="checkbox" class="checkbox" name="stdhome" value="1" id="cb-stdbm"/>
+				<input type="checkbox" class="checkbox" name="stdhome" value="1" id="cb-stdbm"/>
 				<a href="javascript:openDocWindow('DefaultBookmark')" class="doclink">(?)</a>
 				<xsl:text>&#160;</xsl:text>
 			</p>
@@ -2026,5 +2026,11 @@
 				<xsl:value-of select="$i18n/l/Create"/>
 			</button>
 		</form>
+	</xsl:template>
+	
+	<xsl:template name="back-to-home">
+		<p class="back">
+			<span class="ui-icon ui-icon-home"></span><a href="{$xims_box}{$goxims}/user"><xsl:value-of select="$i18n/l/BackToHome"/></a>
+		</p>
 	</xsl:template>
 </xsl:stylesheet>
