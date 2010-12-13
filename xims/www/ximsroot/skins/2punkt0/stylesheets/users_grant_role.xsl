@@ -13,43 +13,31 @@
 <xsl:import href="users_common.xsl"/>
 
 <xsl:template match="/document">
-    <html>
-        <head>
-            <title>
-                <xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'
-            </title>
-            <xsl:call-template name="css"/>
-        </head>
-        <body>
-        <xsl:call-template name="header">
-          <xsl:with-param name="noncontent">true</xsl:with-param>
-        </xsl:call-template>
-
-        <br/>
-        <table align="center" colspan="2" cellpadding="2" cellspacing="0" border="0">
-          <tr>
-            <td align="center" class="bluebg"><xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'</td>
-          </tr>
-          <tr>
-            <td>
-                <a href="{$xims_box}{$goxims_users}?name={$name};manage_roles=1;explicit_only=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Manage_Existing_Roles"/></a>
-            </td>
-          </tr>
-        </table>
-        <br/><br/>
-        <xsl:apply-templates select="userlist"/>
-        <xsl:call-template name="script_bottom"/>
-        </body>
-    </html>
-
+	<html>
+		<xsl:call-template name="head_default">
+				<xsl:with-param name="mode">mg-acl</xsl:with-param>
+		</xsl:call-template>
+		<body>
+			<xsl:call-template name="header">
+				<xsl:with-param name="noncontent">true</xsl:with-param>
+			</xsl:call-template>
+			<div id="content-container">
+				<h1 class="bluebg">
+					<xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'
+				</h1>
+				<a href="{$xims_box}{$goxims_users}?name={$name};manage_roles=1;explicit_only=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Manage_Existing_Roles"/></a>
+	
+				<xsl:apply-templates select="userlist"/>
+			</div>
+			<xsl:call-template name="script_bottom"/>
+		</body>
+	</html>
 </xsl:template>
 
 <xsl:template name="options">
-   <!-- begin options bar -->
-   <td width="250" align="left">
-        <a href="{$xims_box}{$goxims_users}?name={$name};role={name};grant_role_update=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>
-   </td>
-   <!-- end options bar -->
+	<td>
+		<a class="button" href="{$xims_box}{$goxims_users}?name={$name};role={name};grant_role_update=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Grant_Role"/></a>
+	</td>
 </xsl:template>
 
 </xsl:stylesheet>

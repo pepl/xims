@@ -200,7 +200,7 @@ strong {
 
 em {
     font-style: italic;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 h1.bluebg {

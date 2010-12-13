@@ -33,38 +33,34 @@
     </xsl:variable>
 
 
-    <xsl:template match="/document">
-        <html>
-            <xsl:call-template name="head_default">
-								<xsl:with-param name="mode">user</xsl:with-param>
-            </xsl:call-template>
-            <body>
-                <xsl:call-template name="header">
-                    <xsl:with-param name="noncontent">true</xsl:with-param>
-                </xsl:call-template>
+	<xsl:template match="/document">
+		<html>
+			<xsl:call-template name="head_default">
+				<xsl:with-param name="mode">user</xsl:with-param>
+			</xsl:call-template>
+			<body>
+				<xsl:call-template name="header">
+					<xsl:with-param name="noncontent">true</xsl:with-param>
+				</xsl:call-template>
 
-                <div id="content-container">
-                        <h1 class="bluebg">
-                            <xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of
-                                select="$i18n_users/l/Objecttypeprivs"/></h1>
-
-                    <!--<xsl:call-template name="create_manage_accounts"/>-->
-
-
-                           <!-- <h1><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of
-                                select="$i18n_users/l/Objecttypeprivs"/> - <xsl:value-of select="$name"/></h1>-->
-
-												<div id="op_create">
-                            <xsl:call-template name="objecttypeprivlist"/>
-                        </div>    
-												<div id="op_webdav">
-                            <xsl:call-template name="dav_otprivileges"/>
-                        </div>
-
-                </div>
-            </body>
-        </html>
-    </xsl:template>
+				<div id="content-container">
+					<h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></h1>
+					<div id="op_create">
+						<xsl:call-template name="objecttypeprivlist"/>
+					</div>    
+					<div id="op_webdav">
+							<xsl:call-template name="dav_otprivileges"/>
+					</div>
+					<div class="clear">
+					<p class="back">
+						<a href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Back"/></a>
+					</p>
+					</div>
+				</div>
+				<xsl:call-template name="script_bottom"/>
+			</body>
+		</html>
+	</xsl:template>
 
     <xsl:template name="objecttypeprivlist">
 
@@ -141,11 +137,9 @@
         </xsl:variable>
         <li>
             <xsl:value-of select="$fullname"/>&#160; 
-            <a class="sprite sprite-option_purge" href="{$xims_box}{$goxims}/users?name={$name};objecttypeprivs=1;delpriv=1;grantor_id={grantor_id};object_type_id={@id};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
-							<xsl:attribute name="title"><xsl:value-of select="$i18n/l/purge"/></xsl:attribute>
-                <!--<img src="{$skimages}option_purge.png" border="0" width="37" height="19"
-                    alt="{$l_purge}" title="{$l_purge}"/>-->&#160;
-                    <span><xsl:value-of select="$i18n/l/purge"/></span>
+            <a class="button option-delete" href="{$xims_box}{$goxims}/users?name={$name};objecttypeprivs=1;delpriv=1;grantor_id={grantor_id};object_type_id={@id};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/delete"/></xsl:attribute>
+				<xsl:value-of select="$i18n/l/delete"/>
             </a>
         </li>
     </xsl:template>

@@ -34,42 +34,42 @@
            <form name="userEdit" action="{$xims_box}{$goxims}/user" method="post" id="create-edit-form">
            <div  class="form-div block">
            <div>
-           <div class="label-std">
+           <div class="label-med">
            <label for="input-path"><xsl:value-of select="$i18n/l/Path"/> :</label>
            </div>
            <input id="input-path" type="text" size="40" value="/uniweb/" name="path"/>
            </div>
                      
            <div>
-           <div class="label-std">
+           <div class="label-med">
            <label for="input-title"><xsl:value-of select="$i18n/l/Title"/> :</label>
            </div>
            <input id="input-title" type="text" size="40" name="title"/>
            </div>
            
            <div>
-           <div class="label-std">
+           <div class="label-med">
            <label for="input-shortname"><xsl:value-of select="$i18n/l/Shortname"/> :</label>
            </div>
            <input id="input-shortname" type="text" size="40" name="shortname"/>
            </div>
            
            <div>
-           <div class="label-std">
+           <div class="label-med">
            <label for="input-owner"><xsl:value-of select="$i18n/l/SiteAdmin"/> :</label>
            </div>
            <input id="input-owner" type="text" size="40" name="owner"/>
            </div>
            
            <div>
-           <div class="label-std">
+           <div class="label-med">
            <label for="input-role"><xsl:value-of select="$i18n/l/Role"/>  :</label>
            </div>
            <input id="input-role" type="text" size="40" name="role"/>
            </div>
            
            <div>
-           <div class="label-std">
+           <div class="label-med">
            <label for="input-grantees"><xsl:value-of select="$i18n/l/FurtherGrantees"/> :</label>
            </div>
            <input id="input-grantees" type="text" size="40" name="grantees"/>

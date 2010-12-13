@@ -46,6 +46,7 @@
                 </p>
 
             </div>
+			<xsl:call-template name="script_bottom"/>
             </body>
         </html>
 
@@ -71,7 +72,7 @@
 </xsl:template>
 
 <xsl:template match="bookmark">
-    <tr>
+    <tr class="objrow">
         <td>
             <span class="bookmarklink"><xsl:call-template name="bookmark_link"/></span>
         </td>
@@ -87,9 +88,9 @@
             </xsl:choose>
         </td>
         <td>
-            &#160;
-            <a class="xims-sprite sprite-option_purge" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
-             <span><xsl:value-of select="$i18n/l/purge"/></span>&#160;</a>
+            &#160;&#160;
+            <a class="button option-delete" title="{$l_delete}" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+             <xsl:value-of select="$i18n/l/delete"/>&#160;</a>
         </td>
     </tr>
 </xsl:template>

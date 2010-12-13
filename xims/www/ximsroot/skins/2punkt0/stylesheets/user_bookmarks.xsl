@@ -39,9 +39,7 @@
                 <p>
 									<xsl:value-of select="$i18n/l/Notice"/>:&#160;<xsl:value-of select="$i18n/l/NoticeDefBookmarks"/></p>
 <br/>
-                <p class="back">
-                    <a href="{$xims_box}{$goxims}/user"><xsl:value-of select="$i18n/l/BackToHome"/></a>
-                </p>
+                <xsl:call-template name="back-to-home"/>
 
             </div>
 			<xsl:call-template name="script_bottom"/>
@@ -58,7 +56,7 @@
 					<xsl:when test="$countUserBM">
     <table id="obj-table">
     <thead>
-					<tr>
+					<tr >
 						<th><xsl:value-of select="$i18n/l/Path"/></th>
 						<th>&#160;</th>
 						<th><xsl:value-of select="$i18n/l/Options"/></th>
@@ -102,10 +100,9 @@
 </xsl:template>
 
 <xsl:template match="bookmark[owner_id=/document/context/session/user/name]">
-    <tr>
+    <tr class="objrow">
         <td>
-            <!--<span class="bookmarklink"><xsl:call-template name="bookmark_link"/></span>-->
-            <span class="xims-sprite sprite-list_SymbolicLink"><xsl:call-template name="bookmark_link"/></span>
+            <span class="sprite-list sprite-list_SymbolicLink"><xsl:call-template name="bookmark_link"/></span>
         </td>
         <td>
 					&#160;
@@ -119,15 +116,15 @@
             </xsl:choose>
         </td>
         <td>
-        &#160;<a class="xims-sprite sprite-option_purge" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1">&#160;<span><xsl:value-of select="$i18n/l/purge"/></span>&#160;</a>
+        &#160;&#160;<a class="button option-delete" title="{$l_delete}" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1">&#160;<xsl:value-of select="$i18n/l/delete"/>&#160;</a>
         </td>
     </tr>
 </xsl:template>
 
 <xsl:template match="bookmark[owner_id!=/document/context/session/user/name]">
-    <tr>
+    <tr class="objrow">
         <td>
-            <span class="xims-sprite sprite-list_SymbolicLink"><xsl:call-template name="bookmark_link"/></span>
+            <span class="sprite-list sprite-list_SymbolicLink"><xsl:call-template name="bookmark_link"/></span>
         </td>
         <td>
 					&#160;
