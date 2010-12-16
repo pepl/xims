@@ -515,53 +515,63 @@ Ein Klick auf das »Bearbeiten-Icon« öffnet die Editiermaske zum Verändern eines
 	\label{fig:editdokumentlink}
 \end{figure}
 
-Weiters können für jeden »Link zum Dokument« verschiedenen Rechte vergeben bzw. verändert werden. Die Löschen-Funktion (rotes Kreuz)
+Weiters können für jeden »Link zum Dokument« verschiedenen Rechte
+vergeben bzw. verändert werden. Die Löschen-Funktion (rotes Kreuz)
 ermöglicht das Löschen von »Links zum Dokument«.
 
 \subsection{\ximsterm{DepartmentRoot} Navigation}
 \label{depnav}
 
-Usability-Studien haben gezeigt, dass Benutzer die Navigation auf Webseiten am
-oberen bzw. im linken Bereich des Browser-Fensters suchen. Aus diesem Grund ist
-die grundlegende Navigation des UIBK-Designs auch auf diese Erkenntnis
-ausgerichtet. Neue Besucher auf DepartmentRoot Seiten werden die \ximsterm{DepartmentLinks} zur Hauptnavigation rasch finden. Die \ximstermdef{DepartmentSpeziallinks} sind im
-Gegensatz dazu auf häufig wiederkehrende Besucher ausgerichtet und sollen zum
-schnelleren Auf"|finden relevanter bzw. häufig veränderter Inhalte dienen.
+Usability-Studien haben gezeigt, dass Benutzer die Navigation auf
+Webseiten am oberen bzw. im linken Bereich des Browser-Fensters
+suchen. Aus diesem Grund ist die grundlegende Navigation des
+UIBK-Designs auch auf diese Erkenntnis ausgerichtet. Neue Besucher auf
+DepartmentRoot Seiten werden die \ximsterm{DepartmentLinks} zur
+Hauptnavigation rasch finden. Die \ximstermdef{DepartmentSpeziallinks}
+sind im Gegensatz dazu auf häufig wiederkehrende Besucher ausgerichtet
+und sollen zum schnelleren Auf"|finden relevanter bzw. häufig
+veränderter Inhalte dienen.
 
 \subsubsection{DepartmentLinks}
 \label{deplinks}
 
-\ximstermdef{DepartmentLinks} stellen die grundsätzliche Navigation der jeweiligen
-Organisationseinheit dar. Diese Navigation ermöglicht es, durch die
-wichtigsten Bereiche bzw. Seiten navigieren zu können.
-Zur Erstellung der \ximsterm{DepartmentLinks} sind im Wesentlichen folgende Schritte
-notwendig:
+\ximstermdef{DepartmentLinks} stellen die grundsätzliche Navigation
+der jeweiligen Organisationseinheit dar. Diese Navigation ermöglicht
+es, durch die wichtigsten Bereiche bzw. Seiten navigieren zu können.
+Zur Erstellung der \ximsterm{DepartmentLinks} sind im Wesentlichen
+folgende Schritte notwendig:
 
 \begin{itemize}
-	\item {Erstellen eines Verzeichnisses mit der \ximsterm{Location}
-\path{departmentlinks}. Die \ximsterm{Location} des Verzeichnisses muss zwingend
-\path{departmentlinks} heißen.}
+\item {Erstellen eines Verzeichnisses mit der \ximsterm{Location}
+    \path{departmentlinks}. Die \ximsterm{Location} des Verzeichnisses
+    muss zwingend \path{departmentlinks} heißen.}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/create-departmentlinksfolder.png}
-	\caption{Erstellen des Verzeichnisses \texttt{departmentlinks}}
-	\label{fig:createdeplinkfolder}
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-departmentlinksfolder.png}
+  \caption{Erstellen des Verzeichnisses \texttt{departmentlinks}}
+  \label{fig:createdeplinkfolder}
 \end{figure}
 	
-	\item {Im nächsten Schritt müssen im soeben erstellten Verzeichnis mit der \ximsterm{Location}
-\path{departmentlinks} all jene \ximsterm{URLLink}-Objekte erstellt werden, die als
-Navigation bzw. DepartementLinks zur Verfügung stehen sollen. Die Anleitung
-zum Erstellen von \ximsterm{URLLink}-Objekten kann unter Punkt \ref{urllinks} nachgelesen
-werden. Die \ximsterm{Location} der Links muss relativ zum \ximsterm{SiteRoot} sein. Um zum
-Beispiel einen Verweis auf das \otherterm{XIMS}-Objekt mit dem Pfad \path{/uniweb/service/
-c102} zu erstellen, muss im Eingabefeld \ximsterm{Location} des \ximsterm{URLLink}-Objektes
-\path{/service/c102/} eingegeben werden. Für das \otherterm{XIMS}-Objekt
-\path{/uniweb/geschichte/personal/index.html} die \ximsterm{Location}
-\path{/geschichte/personal/}.}
+\item {Im nächsten Schritt müssen im soeben erstellten Verzeichnis mit
+    der \ximsterm{Location} \path{departmentlinks} all jene
+    \ximsterm{URLLink}-Objekte erstellt werden, die als Navigation
+    bzw. DepartementLinks zur Verfügung stehen sollen. Die Anleitung
+    zum Erstellen von \ximsterm{URLLink}-Objekten kann unter Punkt
+    \ref{urllinks} nachgelesen werden. Die \ximsterm{Location} der
+    Links muss relativ zum \ximsterm{SiteRoot} sein. Um zum Beispiel
+    einen Verweis auf das \otherterm{XIMS}-Objekt mit dem Pfad
+    \path{/uniweb/service/ c102} zu erstellen, muss im Eingabefeld
+    \ximsterm{Location} des \ximsterm{URLLink}-Objektes
+    \path{/service/c102/} eingegeben werden. Für das
+    \otherterm{XIMS}-Objekt
+    \path{/uniweb/geschichte/personal/index.html} die
+    \ximsterm{Location} \path{/geschichte/personal/}.}
 	
-	\item {Der nächste Schritt ist das Veröffentlichen des departmentlinks-Verzeichnisses mitsamt den darin erstellten Links. Die konkrete
-Vorgehensweise für die Veröffentlichung von Objekten wird unter Punkt \ref{inhaltepublizieren} beschrieben.}
+\item {Der nächste Schritt ist das Veröffentlichen des
+    departmentlinks-Verzeichnisses mitsamt den darin erstellten Links.
+    Die konkrete Vorgehensweise für die Veröffentlichung von Objekten
+    wird unter Punkt \ref{inhaltepublizieren} beschrieben.}
 
 \begin{Hinweis}
   Es genügt das Verzeichnis \path{departmentlinks} zu veröffentlichen.
@@ -569,48 +579,67 @@ Vorgehensweise für die Veröffentlichung von Objekten wird unter Punkt \ref{inhal
   Option automatisch mit veröffentlicht.
 \end{Hinweis}
 
-	\item {Danach muss im \ximsterm{DepartmentRoot} \ximsterm{Container} ein \ximsterm{Portlet} mit der \ximsterm{Location}
-\path{departmentlinks_portlet} erstellt werden.}
+\item {Danach muss im \ximsterm{DepartmentRoot} \ximsterm{Container}
+    ein \ximsterm{Portlet} mit der \ximsterm{Location}
+    \path{departmentlinks_portlet} erstellt werden.}
 
 \begin{Hinweis}
   Das \ximsterm{Portlet} (sowohl \ximsterm{Location} als auch der
-  Titel) muss unbedingt \path{departmentlinks_portlet} heißen.
+  Titel) muss unbedingt \path{departmentlinks_portlet} heißen. Das
+  zuvor erstellte Verzeichnis \path{departmentlinks} muss im Feld
+  »Ziel« eingetragen werden. (z.\,B. bequem über »Ziel suchen«.)
   Außerdem muss die Checkbox der Zusammenfassung angeklickt sein.
 \end{Hinweis}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/create-departmentlinksportlet.png}
-	\caption{Erstellen des DepartmentLinks-Portlets: »departmentlinks\_portlet«}
-	\label{fig:createdeplinkportlet}
+  \centering
+  \includegraphics[width=\textwidth]{./images/create-departmentlinksportlet.png}
+  \caption{Erstellen des DepartmentLinks-Portlets:
+    »departmentlinks\_portlet«}
+  \label{fig:createdeplinkportlet}
 \end{figure}
 
-	\item {Im nächsten Schritt muss das erstellte Portlet veröffentlicht werden.}
-	\item {In weiterer Folge muss das »departmentlinks\_portlet«
-            dem \ximsterm{DepartmentRoot} zugewiesen werden. Dazu muss das
-            »Bearbeiten-Icon« des \ximsterm{DepartmentRoot}-Verzeichnisses
-            angeklickt werden, um Änderungen am \ximsterm{DepartmentRoot}
-            durchführen zu können.}
+\item {Im nächsten Schritt muss das erstellte Portlet veröffentlicht
+    werden.}
+\item {In weiterer Folge muss das »departmentlinks\_portlet« dem
+    \ximsterm{DepartmentRoot} zugewiesen werden. Dazu muss das
+    »Bearbeiten-Icon« des \ximsterm{DepartmentRoot}-Verzeichnisses
+    angeklickt werden, um Änderungen am \ximsterm{DepartmentRoot}
+    durchführen zu können.}
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[width=\textwidth]{./images/zuweisendepartmentlinksportlet.png}
-	\caption{Zuweisen des DepartmentLinks \ximsterm{Portlet} zum DepartementRoot}
-	\label{fig:deplinkportletzuweisen}
+  \centering
+  \includegraphics[width=\textwidth]{./images/zuweisendepartmentlinksportlet.png}
+  \caption{Zuweisen des DepartmentLinks \ximsterm{Portlet} zum
+    DepartementRoot}
+  \label{fig:deplinkportletzuweisen}
 \end{figure}
 
-	\item {Der letzte Schritt ist das (Re)\otherterm{Publizieren} des editierten \ximsterm{DepartmentRoot}
-Ordners.}
+\item {Der letzte Schritt ist das (Re)\otherterm{Publizieren} des
+    editierten \ximsterm{DepartmentRoot} Ordners.}
 \end{itemize} 
 
 \subsubsection{\ximstermdef{SubDepartmentLinks} (Unternavigation)}
 \label{subdeplinks}
  
-Um eine Unternavigation zu erstellen, wird im Grunde mittels \ximsterm{DepartmentLinks} auf \ximsterm{Container} verlinkt, die wiederum DepartmentLinks enthalten. Auf diese Weise enthält das eigentliche \ximsterm{DepartmentRoot} die Hauptnavigation (im Ordner \path{departmentlinks}) und die darin enthaltenen \ximsterm{DepartmentRoot}s -- auch Subdepartmentroots genannt -- enthalten ihrerseits jeweils die Unternavigation des jeweiligen Punktes der Hauptnavigation.
+Um eine Unternavigation zu erstellen, wird im Grunde mittels
+\ximsterm{DepartmentLinks} auf \ximsterm{Container} verlinkt, die
+wiederum DepartmentLinks enthalten. Auf diese Weise enthält das
+eigentliche \ximsterm{DepartmentRoot} die Hauptnavigation (im Ordner
+\path{departmentlinks}) und die darin enthaltenen
+\ximsterm{DepartmentRoot}s -- auch Subdepartmentroots genannt --
+enthalten ihrerseits jeweils die Unternavigation des jeweiligen
+Punktes der Hauptnavigation.
 
 \paragraph{Voraussetzungen}
 
-Um eine Subnavigation erstellen zu können muss zuerst ein \ximsterm{DepartmentRoot} (i.d.R. bereits vorhanden) und in weiterer Folge weitere darin enthaltene \ximsterm{DepartmentRoot}s erstellt werden. Ebenso ist es möglich eine bestehende Struktur in XIMS entsprechend den veränderten Anforderungen anzupassen (es besteht die Möglichkeit bestehende Ordner in \ximsterm{DepartmentRoot}s umzuwandeln). 
+Um eine Subnavigation erstellen zu können muss zuerst ein
+\ximsterm{DepartmentRoot} (i.d.R. bereits vorhanden) und in weiterer
+Folge weitere darin enthaltene \ximsterm{DepartmentRoot}s erstellt
+werden. Ebenso ist es möglich eine bestehende Struktur in XIMS
+entsprechend den veränderten Anforderungen anzupassen (es besteht die
+Möglichkeit bestehende Ordner in \ximsterm{DepartmentRoot}s
+umzuwandeln).
 
 \begin{Hinweis}
   Der Benutzer muss entsprechende Berechtigungen zum Erstellen von
@@ -620,28 +649,63 @@ Um eine Subnavigation erstellen zu können muss zuerst ein \ximsterm{DepartmentRo
 
 \paragraph{Vorgehensweise}
 
-Abbildung~\ref{fig:subdeplinks} zeigt die Hauptnavigation und die Unternavigation bei aktivem Hauptnavigationseintrag. Es wird immer nur die Unternavigation des aktuellen Hauptnavigationseintrages dargestellt.
+Abbildung~\ref{fig:subdeplinks} zeigt die Hauptnavigation und die
+Unternavigation bei aktivem Hauptnavigationseintrag. Es wird immer nur
+die Unternavigation des aktuellen Hauptnavigationseintrages
+dargestellt.
 
 \begin{figure}[!ht]
-	\centering
-		\includegraphics[scale=0.7]{./images/subdeplinks.png}
-	\caption{Beispiel: Hauptnavigation und Unternavigation}
-	\label{fig:subdeplinks}
+  \centering
+  \includegraphics[scale=0.7]{./images/subdeplinks.png}
+  \caption{Beispiel: Hauptnavigation und Unternavigation}
+  \label{fig:subdeplinks}
 \end{figure}
 
-Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner \path{departmentlinks} die Hauptnavigation, analog dazu ist in den jeweiligen Ordnern mit Unternavigation ein Ordner \path{subdepartmentlinks} enthalten. Der Ordner (welcher zwingend die Location \path{subdepartmentlinks} haben muss) enthält somit die Unternavigationspunkte für den Hauptnavigationseintrag des \ximsterm{DepartmentRoot}s.
+Wie in Punkt \ref{deplinks} beschrieben befindet sich im Ordner
+\path{departmentlinks} die Hauptnavigation, analog dazu ist in den
+jeweiligen Ordnern mit Unternavigation ein Ordner
+\path{subdepartmentlinks} enthalten. Der Ordner (welcher zwingend die
+Location \path{subdepartmentlinks} haben muss) enthält somit die
+Unternavigationspunkte für den Hauptnavigationseintrag des
+\ximsterm{DepartmentRoot}s.
 
 \begin{compactitem}
-\item{Erstellen des \ximsterm{DepartmentRoot}s, welches die Hauptnavigation (\ximsterm{DepartmentLinks}) enthalten wird. Dieses \ximsterm{DepartmentRoot} besteht in den allermeisten Fällen bereits.}
-\item{Erstellen des \ximsterm{DepartmentRoot}s, welches die Unternavigation (\ximsterm{SubDepartmentLinks}) enthalten wird. Zum Beispiel \path{mitarbeiter}, \path{forschung} oder \path{links}.}
-\item{Erstellen des Ordners \path{departmentlinks} im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieser Ordner existiert in den meisten Fällen bereits (Wenn Sie schon eine Hauptnavigation haben ist eine Änderung nicht erforderlich!)}
-\item{Erstellen des Ordners \path{subdepartmentlinks} in den \ximsterm{DepartmentRoot}s der Unternavigation.}
-\item{Erstellen der \ximsterm{URLLink} Objekte im \path{departmentlinks} Ordner der Hauptnavigation. Die \ximsterm{URLLink}s müssen auf die soeben erstellten \ximsterm{DepartmentRoot}s der Unternavigation verweisen.}
-\item{Erstellen eines Portlets mit Location \path{departmentlinks_portlet} im \ximsterm{DepartmentRoot} der Hauptnavigation. Dieses Portlet muss auf den Ordner \path{departmentlinks} zeigen und existiert in den meisten Fällen bereits.}
-\item{Erstellen der \ximsterm{URLLink} Objekte in den jeweiligen \path{subdepartmentlinks} Ordnern. Diese \ximsterm{URLLink} Objekte müssen auf jene Dokumente zielen, die durch einen Klick auf den jeweiligen Unternavigationspunkt angezeigt werden sollen.}
-\item{Erstellen eines Portlets mit Locaton \path{subdepartmentlinks_portlet} im \ximsterm{DepartmentRoot} der Unternavigation. Dieses Portlet muss auf den Ordner \path{subdepartmentlinks} der jeweiligen Unternavigation zeigen.}
-\item{Zuweisen der Portlets zu den entsprechenden \ximsterm{DepartmentRoot}s.}
-\item{Erstellen eines Dokumentes \nolinkurl{index.html} in den \ximsterm{DepartmentRoot}s der Unternavigation, welches beim Klick auf die Unternavigation als Übersichtsseite angezeigt wird.}
+\item{Erstellen des \ximsterm{DepartmentRoot}s, welches die
+    Hauptnavigation (\ximsterm{DepartmentLinks}) enthalten wird.
+    Dieses \ximsterm{DepartmentRoot} besteht in den allermeisten
+    Fällen bereits.}
+\item{Erstellen des \ximsterm{DepartmentRoot}s, welches die
+    Unternavigation (\ximsterm{SubDepartmentLinks}) enthalten wird.
+    Zum Beispiel \path{mitarbeiter}, \path{forschung} oder
+    \path{links}.}
+\item{Erstellen des Ordners \path{departmentlinks} im
+    \ximsterm{DepartmentRoot} der Hauptnavigation. Dieser Ordner
+    existiert in den meisten Fällen bereits (Wenn Sie schon eine
+    Hauptnavigation haben ist eine Änderung nicht erforderlich!)}
+\item{Erstellen des Ordners \path{subdepartmentlinks} in den
+    \ximsterm{DepartmentRoot}s der Unternavigation.}
+\item{Erstellen der \ximsterm{URLLink} Objekte im
+    \path{departmentlinks} Ordner der Hauptnavigation. Die
+    \ximsterm{URLLink}s müssen auf die soeben erstellten
+    \ximsterm{DepartmentRoot}s der Unternavigation verweisen.}
+\item{Erstellen eines Portlets mit Location
+    \path{departmentlinks_portlet} im \ximsterm{DepartmentRoot} der
+    Hauptnavigation. Dieses Portlet muss auf den Ordner
+    \path{departmentlinks} zeigen und existiert in den meisten Fällen
+    bereits.}
+\item{Erstellen der \ximsterm{URLLink} Objekte in den jeweiligen
+    \path{subdepartmentlinks} Ordnern. Diese \ximsterm{URLLink}
+    Objekte müssen auf jene Dokumente zielen, die durch einen Klick
+    auf den jeweiligen Unternavigationspunkt angezeigt werden sollen.}
+\item{Erstellen eines Portlets mit Locaton
+    \path{subdepartmentlinks_portlet} im \ximsterm{DepartmentRoot} der
+    Unternavigation. Dieses Portlet muss auf den Ordner
+    \path{subdepartmentlinks} der jeweiligen Unternavigation zeigen.}
+\item{Zuweisen der Portlets zu den entsprechenden
+    \ximsterm{DepartmentRoot}s.}
+\item{Erstellen eines Dokumentes \nolinkurl{index.html} in den
+    \ximsterm{DepartmentRoot}s der Unternavigation, welches beim Klick
+    auf die Unternavigation als Übersichtsseite angezeigt wird.}
 \item{(Wieder)veröffentlichen der neu erstellten bzw. veränderten Objekte.}
 \end{compactitem}
 
@@ -719,12 +783,15 @@ deutsch vorhanden ist!}
 	\label{fig:sprachewechseln}
 \end{figure}
 
-Die \ximsterm{Location} eines Dokuments in englisch und deutsch muss prinzipiell identisch
-sein. Die Unterscheidung zwischen den Sprachen geschieht durch besondere
-Dateiendungen (\nolinkurl{.html.de} bzw. \nolinkurl{.html.en}), d.h. Dokumente in deutscher
-Sprache bekommen das \nolinkurl{.html.de}-Suffix bzw. Dokumente in englisch das
-\nolinkurl{.html.en}-Suffix. Wenn man also ein Dokument mit der \ximsterm{Location} \nolinkurl{sfs.html} zweisprachig anbieten will, muss das deutsche Dokument \nolinkurl{sfs.html.de} und das
-englische Pendant dazu \nolinkurl{sfs.html.en} heißen.
+Die \ximsterm{Location} eines Dokuments in englisch und deutsch muss
+prinzipiell identisch sein. Die Unterscheidung zwischen den Sprachen
+geschieht durch besondere Dateiendungen (\nolinkurl{.html.de} bzw.
+\nolinkurl{.html.en}), d.h. Dokumente in deutscher Sprache bekommen
+das \nolinkurl{.html.de}-Suffix bzw. Dokumente in englisch das
+\nolinkurl{.html.en}-Suffix. Wenn man also ein Dokument mit der
+\ximsterm{Location} \nolinkurl{sfs.html} zweisprachig anbieten will,
+muss das deutsche Dokument \nolinkurl{sfs.html.de} und das englische
+Pendant dazu \nolinkurl{sfs.html.en} heißen.
 
 \begin{Hinweis}
   Prinzipiell funktioniert die Bereitstellung von Index-Dokumenten in
