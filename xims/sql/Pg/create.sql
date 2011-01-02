@@ -86,11 +86,11 @@ COMMENT ON COLUMN ci_users_roles.object_type
 \echo creating table  'ci_user_prefs'
 CREATE TABLE CI_USER_PREFS 
 (
-  ID NUMBER(6, 0) NOT NULL 
-, PROFILE_TYPE VARCHAR2(20 BYTE) DEFAULT 'standard' NOT NULL 
-, SKIN VARCHAR2(20 BYTE) DEFAULT 'default' NOT NULL 
-, PUBLISH_AT_SAVE NUMBER(1, 0) DEFAULT 0 NOT NULL 
-, CONTAINERVIEW_SHOW VARCHAR2(20 BYTE) DEFAULT 'title' NOT NULL 
+  ID SERIAL PRIMARY KEY
+, PROFILE_TYPE VARCHAR(20) DEFAULT 'standard' NOT NULL 
+, SKIN VARCHAR(20) DEFAULT 'default' NOT NULL 
+, PUBLISH_AT_SAVE INTEGER DEFAULT 0 NOT NULL 
+, CONTAINERVIEW_SHOW VARCHAR(20) DEFAULT 'title' NOT NULL 
 )
 ; 
 
@@ -443,6 +443,13 @@ CREATE FUNCTION ci_quest_results_id_seq_nval() RETURNS INTEGER
     LANGUAGE 'plpgsql'
 ;
 
+CREATE FUNCTION ci_user_prefs_id_seq_nval() RETURNS INTEGER
+    AS 'BEGIN
+          RETURN nextval(\'ci_user_prefs_id_seq\');
+        END;'
+    LANGUAGE 'plpgsql'
+;
+
 -- we have a user 'xims' who OWNS the db and its
 -- objects, having full control over them.
 -- ximsrun is the user XIMS connects as at runtime,
@@ -470,6 +477,7 @@ GRANT SELECT
       ,ci_users_roles
       ,ci_users_roles_id_seq
       ,ci_questionnaire_results_id_seq
+      ,ci_user_prefs
    TO ximsrun
 ;
 
@@ -481,6 +489,7 @@ GRANT UPDATE
       ,ci_sessions_id_seq
       ,ci_users_roles_id_seq
       ,ci_questionnaire_results_id_seq
+      ,ci_user_prefs
    TO ximsrun
 ;
 
@@ -495,6 +504,7 @@ GRANT INSERT, UPDATE, DELETE
       ,ci_roles_granted
       ,ci_sessions
       ,ci_users_roles
+      ,ci_user_prefs
    TO ximsrun
 ;
 
