@@ -39,10 +39,10 @@
 
 
 <xsl:template match="member_property">
-    <xsl:variable name="propid" select="@id"/>
-    <xsl:variable name="propvalue" select="/document/context/object/member_values/member_value[property_id=$propid]/value"/>
-    <div>
-        <div class="simpledb-property">
+	<xsl:variable name="propid" select="@id"/>
+	<xsl:variable name="propvalue" select="/document/context/object/member_values/member_value[property_id=$propid]/value"/>
+	<div>
+		<div class="label-std">
             <!--<span>
                 <xsl:attribute name="class">
                     <xsl:choose>
@@ -55,21 +55,38 @@
 									<xsl:otherwise><label for="simpledb_{name}"><xsl:value-of select="name"/></label>:</xsl:otherwise>
 								</xsl:choose>
             </span>-->
-                <xsl:choose>
-									<xsl:when test="type = 'boolean'"><xsl:value-of select="name"/>:</xsl:when>
-									<xsl:otherwise><label for="simpledb_{name}"><xsl:value-of select="name"/></label>:</xsl:otherwise>
-									</xsl:choose>
-                        <xsl:if test="mandatory='1'">&#160;*</xsl:if>
+			
+			<xsl:choose>
+				<xsl:when test="type = 'boolean'"><xsl:value-of select="name"/>:</xsl:when>
+				<xsl:otherwise><label for="simpledb_{name}"><xsl:value-of select="name"/></label>:</xsl:otherwise>
+			</xsl:choose>
+			<xsl:if test="mandatory='1'">&#160;*</xsl:if>
+			
 								
         </div>
             <xsl:choose>
+            	
                 <xsl:when test="type = 'datetime'">
-                    <xsl:call-template name="jscalendar-selector">
+                    <!--<xsl:call-template name="jscalendar-selector">
                         <xsl:with-param name="timestamp_string" select="$propvalue"/>
                         <xsl:with-param name="formfield_id" select="concat('simpledb_',name)"/>
                         <xsl:with-param name="default_value" select="'none'"/>
-                    </xsl:call-template>
+                    </xsl:call-template>-->
+					
+					<!--<input type="text" id="input-date" size="20" name="simpledb_{name}">
+						<xsl:if test="$propvalue != ''"><xsl:value-of select="$propvalue"/></xsl:if>
+					</input>-->
+					<xsl:call-template name="ui-datepicker">
+						<xsl:with-param name="formfield_id" select="concat('simpledb_',name)"></xsl:with-param>
+						<xsl:with-param name="input_id" >input-date</xsl:with-param>
+						<xsl:with-param name="xml_node"><xsl:value-of select="/document/context/object/member_values/member_value[property_id=$propid]/value"/></xsl:with-param>
+						<xsl:with-param name="buttontext">Datum</xsl:with-param>
+						<xsl:with-param name="mode">datetime</xsl:with-param>
+						<xsl:with-param name="range">false</xsl:with-param>
+					</xsl:call-template>
+					<input type="text" id="input-date" size="20" name="input-date" readonly="readonly"><xsl:value-of select="$propvalue"/></input>
                 </xsl:when>
+				
                 <xsl:when test="type = 'stringoptions'">
                     <select name="simpledb_{name}" id="simpledb_{name}">
                         <option value=""> </option>
@@ -95,22 +112,18 @@
                     </script>
                 </xsl:when>
                 <xsl:otherwise>
-                    <input type="text" name="simpledb_{name}" id="simpledb_{name}" size="40" value="{$propvalue}">
+                    <input type="text" name="simpledb_{name}" id="simpledb_{name}" size="60" value="{$propvalue}">
                         <xsl:if test="regex != ''">
                             <xsl:attribute name="onblur">testValue('<xsl:value-of select="regex"/>',this,'<xsl:value-of select="$i18n_simpledb/l/Invalid_Data"/>');</xsl:attribute>
                         </xsl:if>
                     </input>
                 </xsl:otherwise>
             </xsl:choose>
-        <xsl:if test="description !=''">
-            <xsl:value-of select="description"/>
-            <!--
-            <xsl:call-template name="br-replace">
-                <xsl:with-param name="word" select="description"/>
-            </xsl:call-template>
-            -->
-        </xsl:if>
-    </div>
+			
+		<xsl:if test="description !=''">
+			<em>&#160;<xsl:value-of select="description"/></em>
+		</xsl:if>
+	</div>
 </xsl:template>
 
 <!--<xsl:template name="head-create">
@@ -136,7 +149,7 @@
 <xsl:template name="th-size">
     <td></td>
 </xsl:template>
-
+<!--
 <xsl:template name="tr-abstract">
 		<div id="tr-abstract">
 			<div id="label-abstract">
@@ -154,7 +167,7 @@
 				<xsl:apply-templates select="abstract"/>
 			</textarea>
 		</div>
-</xsl:template>
+</xsl:template>-->
 
 <xsl:template name="jstextarea_keyupcheck">
     <script type="text/javascript">
@@ -180,9 +193,12 @@
     </xsl:if>
 </xsl:template>
 
-
+<!---
 <xsl:template name="cttobject.content_length"/>
 <xsl:template name="cttobject.options.copy"/>
-<xsl:template name="cttobject.options.move"/>
+<xsl:template name="cttobject.options.move"/>-->
+<xsl:template name="button.options.copy"/>
+<xsl:template name="button.options.move"/>
+
 
 </xsl:stylesheet>

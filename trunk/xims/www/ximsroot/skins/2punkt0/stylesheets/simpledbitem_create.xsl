@@ -14,6 +14,6 @@
 		<xsl:apply-templates select="/document/member_properties/member_property">
 			<xsl:sort select="position" order="ascending" data-type="number"/>
 		</xsl:apply-templates>
-		<xsl:call-template name="tr-abstract"/>
+		<xsl:call-template name="form-abstract"/>
 	</xsl:template>
 </xsl:stylesheet>
