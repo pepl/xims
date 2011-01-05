@@ -39,7 +39,14 @@
 		<xsl:otherwise><xsl:value-of select="$img-count * 50 + 50"/></xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
-    
+<xsl:variable name="defaultsortby" select="/document/context/object/attributes/defaultsortby"/>
+<xsl:variable name="defaultsort">
+        <xsl:choose>
+                <xsl:when test="/document/context/object/attributes/defaultsort = 'desc'">descending</xsl:when>
+                <xsl:otherwise>ascending</xsl:otherwise>
+        </xsl:choose>
+</xsl:variable>
+
 	<xsl:template match="/document">
         <xsl:apply-templates select="context/object"/>
     </xsl:template>
@@ -149,7 +156,9 @@
 			
 		<div class="scroll-content">
 			<ul class="gallery_demo_unstyled">
-				<xsl:apply-templates select="object"/>
+				<xsl:apply-templates select="object">
+					<xsl:sort select="*[name() = $defaultsortby]" order="*[name() = $defaultsortby]"/>
+				</xsl:apply-templates>
 			</ul>
 		</div>
 	</div>
@@ -169,7 +178,9 @@
 			
 			<div class="scroll-content">
 				<ul class="gallery_demo_unstyled">
-				<xsl:apply-templates select="object"/>
+				<xsl:apply-templates select="object">
+					<xsl:sort select="*[name() = $defaultsortby]" order="*[name() = $defaultsortby]"/>
+				</xsl:apply-templates>
 				</ul>
 		</div>	
 	</div>
@@ -197,7 +208,9 @@
 			
 			<div class="scroll-content">
 				<ul class="gallery_demo_unstyled">
-				<xsl:apply-templates select="object"/>
+				<xsl:apply-templates select="object">
+					<xsl:sort select="*[name() = $defaultsortby]" order="*[name() = $defaultsortby]"/>
+				</xsl:apply-templates>
 				</ul>
 		</div>
 	</div>
@@ -218,7 +231,9 @@
 			
 			<div class="scroll-content">
 				<ul class="gallery_demo_unstyled">
-				<xsl:apply-templates select="object"/>
+				<xsl:apply-templates select="object">
+					<xsl:sort select="*[name() = $defaultsortby]" order="*[name() = $defaultsortby]"/>
+				</xsl:apply-templates>
 				</ul>
 		</div>
 	</div>
