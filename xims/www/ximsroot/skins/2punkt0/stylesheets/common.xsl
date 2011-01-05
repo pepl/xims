@@ -993,12 +993,14 @@
 			</a>
 		</div>
 	</xsl:template>
+<!--
 	<xsl:template name="ui-datepicker">
 		<xsl:param name="formfield_id"/>
 		<xsl:param name="input_id"/>
 		<xsl:param name="xml_node"/>
 		<xsl:param name="buttontext"/>
 		<xsl:param name="mode"/>
+		<xsl:param name="range">true</xsl:param>
 		<xsl:param name="date_lang">
 			<xsl:choose>
 				<xsl:when test="$currentuilanguage = 'de-at'">de</xsl:when>
@@ -1007,7 +1009,7 @@
 		</xsl:param>
 		<xsl:call-template name="mk-inline-js">
 			<xsl:with-param name="code">
-			$(document).ready(function(){
+			$(function() {
 				var id = '<xsl:value-of select="$input_id"/>';
 				$.datepicker.setDefaults($.datepicker.regional['<xsl:value-of select="$date_lang"/>']);
 				$("#"+id).datepicker({
@@ -1024,7 +1026,7 @@
 				</xsl:choose>						
 						$(this).datepicker("hide");
 						},
-					beforeShow: customRange
+					<xsl:if test="$range = 'true'">beforeShow: customRange</xsl:if>
 				});
 				/* surprisingly date is set to "today" although is should be null */
 			
@@ -1034,9 +1036,16 @@
 						$("#"+id).val('<xsl:value-of select="$i18n/l/Valid_from_default"/>');
 					</xsl:when>
 					<xsl:otherwise>
-						<!--<xsl:value-of select="$xml_node/year"/>-->
+						<xsl:choose>
+						<xsl:when test="not(name(node()[1]))">
 						$("#"+id).datepicker('setDate', new Date(<xsl:value-of select="$xml_node/year"/>, <xsl:value-of select="$xml_node/month"/>-1, <xsl:value-of select="$xml_node/day"/>));
 						//$("#"+id).val('<xsl:value-of select="$i18n/l/Valid_from_default"/>');
+						</xsl:when>
+						<xsl:otherwise>
+							alert("xmlnode: "+'<xsl:value-of select="$xml_node"/>');
+							$("#"+id).datepicker('setDate', '<xsl:value-of select="$xml_node"/>');
+						</xsl:otherwise>
+						</xsl:choose>
 					</xsl:otherwise>
 				</xsl:choose>
 				});
@@ -1045,6 +1054,44 @@
 		<input type="hidden" name="{$formfield_id}" id="{$formfield_id}">
 		</input>
 	</xsl:template>
+	-->
+
+	<xsl:template name="ui-datepicker">
+		<xsl:param name="formfield_id"/>
+		<xsl:param name="input_id"/>
+		<xsl:param name="xml_node"/>
+		<xsl:param name="buttontext"/>
+		<xsl:param name="mode"/>
+		<xsl:param name="range">true</xsl:param>
+		<xsl:param name="date_lang">
+			<xsl:choose>
+				<xsl:when test="$currentuilanguage = 'de-at'">de</xsl:when>
+				<xsl:otherwise>en</xsl:otherwise>
+			</xsl:choose>
+		</xsl:param>
+		<xsl:call-template name="mk-inline-js">
+			<xsl:with-param name="code">
+				var id = '<xsl:value-of select="$input_id"/>';
+				var date_lang = '<xsl:value-of select="$date_lang"/>';
+				var button_image = '<xsl:value-of select="$skimages"/>calendar.gif';
+				var button_text = '<xsl:value-of select="$buttontext"/>';
+				var formfield_id = '<xsl:value-of select="$formfield_id"/>';
+				var value, year, month, day;
+				<xsl:choose>
+					<xsl:when test="not(name(node()[1]))">
+						year = <xsl:value-of select="$xml_node/year"/>;
+						month = <xsl:value-of select="$xml_node/month"/>;
+						day = <xsl:value-of select="$xml_node/day"/>;
+					</xsl:when>
+					<xsl:otherwise>
+						value = '<xsl:value-of select="$xml_node"/>';
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:with-param>
+		</xsl:call-template>
+		<input type="hidden" name="{$formfield_id}" id="{$formfield_id}"></input>
+	</xsl:template>
+	
 	<xsl:template name="form-valid_from">
 		<div id="tr-validfrom">
 			<div class="label-std">
@@ -1919,19 +1966,21 @@
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="reflib" select="false()"/>
-		<!--	test-->
-		<!--<script src="{$ximsroot}scripts/jquery/jquery-1.4.2.js" type="text/javascript"/>-->
-		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js" type="text/javascript"/>-->
-		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m2.js" type="text/javascript"/>-->
+		<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>-->
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
-		<!--<script src="{$ximsroot}scripts/jquery/fg.menu.js" type="text/javascript"/>-->
-		<!--end test-->
-		<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/default.js" type="text/javascript"/>
+		<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0.js" type="text/javascript"/>
+		
 		<xsl:if test="$tinymce">
 			<xsl:call-template name="tinymce_scripts"/>
 		</xsl:if>
 		<xsl:if test="$simpledb">
 			<script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"/>
+			<script>
+				$(document).ready(function(){
+					initDatepicker();
+				});
+			</script>
 		</xsl:if>
 		<xsl:if test="$vlib">
 			<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
@@ -1952,6 +2001,7 @@
 			<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"/>
 		</xsl:if>
 	</xsl:template>
+	
 	<xsl:template match="/document/context/object/parents/object">
 		<xsl:param name="no_navigation_at_all">false</xsl:param>
 		<xsl:variable name="thispath">

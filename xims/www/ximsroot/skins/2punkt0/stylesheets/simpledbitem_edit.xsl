@@ -18,5 +18,6 @@
 					<xsl:sort select="position" order="ascending" data-type="number"/>
 				</xsl:apply-templates>
 		<xsl:call-template name="form-abstract"/>
+		<xsl:call-template name="script_bottom"/>
 	</xsl:template>
 </xsl:stylesheet>

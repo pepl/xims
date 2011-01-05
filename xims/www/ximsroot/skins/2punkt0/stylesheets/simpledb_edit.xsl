@@ -21,7 +21,8 @@
 		<xsl:call-template name="form-pagerowlimit-edit"/>
 				</div>
 
-		<div id="properties" class="form-div block">
+		<!--<div id="properties" class="form-div block">-->
+			<div  class="form-div block">
 			<xsl:if test="$message != ''">
 				<div>
 					<span class="message">
@@ -220,52 +221,59 @@
 					<xsl:value-of select="$i18n_vlib/l/Currently_mapped"/>:</strong>
 			</div>
 			<div>
-				<ul style="margin-top: 0px">
+				<!--<ul style="margin-top: 0px">-->
+				<table class="obj-table">
+					<tbody>
+						<tr>
+							<th id="th-pos"><xsl:value-of select="$i18n/l/Position"/></th>
+							<th><xsl:value-of select="$i18n/l/Name"/></th>
+							<th><xsl:value-of select="$i18n/l/Options"/></th>
+						</tr>
 					<xsl:apply-templates select="/document/member_properties/member_property" mode="entry">
 						<xsl:sort select="position" order="ascending" data-type="number"/>
 						<xsl:sort select="name" order="ascending"/>
 					</xsl:apply-templates>
-				</ul>
+					</tbody>
+				</table>
+				<!--</ul>-->
 			</div>
 		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="member_property" mode="entry">
-		<li>
+		<!--<li>-->
+		<tr class="objrow">
+			<td>
 			<xsl:value-of select="position"/>
 			<xsl:text> </xsl:text>
+			</td>
+			<td>
 			<xsl:choose>
-				<xsl:when test="mandatory = 1 and part_of_title=1">
+				<xsl:when test="part_of_title=1">
 					<strong>
-						<span class="compulsory">
 							<xsl:value-of select="name"/>
-						</span>
 					</strong>
-				</xsl:when>
-				<xsl:when test="mandatory = 1">
-					<span class="compulsory">
-						<xsl:value-of select="name"/>
-					</span>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="name"/>
 				</xsl:otherwise>
 			</xsl:choose>
+			<xsl:if test="mandatory = 1">&#160;*</xsl:if>
 			&#160;&#160;
-			<a class="xims-sprite sprite-option_edit" href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1;property_id={@id}">
-				<span><xsl:value-of select="$l_Edit"/></span>
-				<!--<img src="{$skimages}option_edit.png" alt="{$l_Edit}" title="{$l_Edit}" name="eiedit{@id}" width="32" height="19"/>-->
-				&#160;
+			</td>
+			<td>
+			<a class="button option-edit" href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1;property_id={@id}">
+				<xsl:value-of select="$l_Edit"/>
 			</a>
 			<xsl:if test="/document/context/object/user_privileges/delete">
 				<xsl:text> </xsl:text>
-				<a class="xims-sprite sprite-option_delete" href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
-					<span><xsl:value-of select="$l_delete"/></span>
-					<!--<input type="image" name="property_delete{@id}" src="{$skimages}option_delete.png" alt="{$l_delete}" title="{$l_delete}"/>-->
-					&#160;
+				<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
+					<xsl:value-of select="$l_delete"/>
 				</a>
 			</xsl:if>
-		</li>
+			</td>
+		</tr>
+		<!--</li>-->
 	</xsl:template>
 	
 	<xsl:template name="tr-stylesheet-edit">

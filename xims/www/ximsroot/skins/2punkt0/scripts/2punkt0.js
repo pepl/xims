@@ -550,7 +550,7 @@ function aclTooltip(){
 		} 
 	});
 }
-    function getXMLHTTPObject() {
+function getXMLHTTPObject() {
         var xmlhttp=false;
         /*@cc_on @*/
         /*@if (@_jscript_version >= 5)
@@ -574,7 +574,7 @@ function aclTooltip(){
         return xmlhttp;
     }
 	
-	function wfcheck() {
+function wfcheck() {
             var xmlhttp = getXMLHTTPObject();
             xmlhttp.open("post",url,true);
             xmlhttp.onreadystatechange=function() {
@@ -683,7 +683,41 @@ function customRange(input){
 
 }
 
-
+function initDatepicker() {
+	if (typeof(date_lang) !== 'undefined') {
+		$.datepicker.setDefaults($.datepicker.regional[date_lang]);
+		
+		$("#" + id).datepicker({
+			showOn: 'button',
+			buttonImage: button_image,
+			buttonImageOnly: true,
+			buttonText: button_text,
+			altField: "#" + formfield_id,
+			altFormat: 'yy-mm-dd',
+			onSelect: function(date){
+				//date = $(this).datepicker('getDate');	
+				//alert("date : "+date);
+				//$("#"+formfield_id).val(date.print("%Y-%m-%d %H:%M"));
+				$(this).datepicker("hide");
+			},
+			beforeShow: customRange
+		});
+		if (!((year && month && day) || value)) {
+			$("#" + id).datepicker('setDate', null);
+		//$("#"+id).val('<xsl:value-of select="$i18n/l/Valid_from_default"/>');
+		}
+		else {
+			if (year && month && day) {
+				$("#" + id).datepicker('setDate', new Date(year, month - 1, day));
+			}
+			else {
+				//alert("value : "+value);
+				$("#" + id).datepicker('setDate', new Date(value.substr(0, 3), value.substr(5, 6), value.substr(8, 9)));
+			}
+		}
+		
+	}
+};
 
 $(document).ready(function(){
 
@@ -705,27 +739,11 @@ $(document).ready(function(){
     initCreateMenu();
     initHelpMenu();
     initMenuMenu();
-	
-	/*initAuthorsDD();
-	initEditorsDD();
-	initSerialsDD();*/
-	//initVLibViews();
+
 	initVLibMenu();
 	
 	$('#help-widget, #create-widget, #menu-widget').css('display', 'inline-block');
 	
-	/*
-$('.obj-table a').focusin(
-		function(){
-			$(this).parents('tr').children('td').addClass('table_hilite');
-		}
-	);
-	$('.obj-table a').focusout(
-		function(){
-			$(this).parents('tr').children('td').removeClass('table_hilite');
-		}
-	);
-*/
 $('.obj-table tr').focusin(
 		function(){
 			$(this).children('td').addClass('table_hilite');
@@ -792,7 +810,8 @@ $('.button').hover(
 		input_size: '43'
 	});
 
-$('a.more').removeClass('ui-state-default');
+	$('a.more').removeClass('ui-state-default');
+
 
     //IE hack							
     jQuery.each(jQuery.browser, function(i){
@@ -832,10 +851,10 @@ Date.prototype.print = function (str) {
 		ir = 12;
 	var min = this.getMinutes();
 	var sec = this.getSeconds();
-	s["%a"] = Calendar._SDN[w]; // abbreviated weekday name [FIXME: I18N]
-	s["%A"] = Calendar._DN[w]; // full weekday name
-	s["%b"] = Calendar._SMN[m]; // abbreviated month name [FIXME: I18N]
-	s["%B"] = Calendar._MN[m]; // full month name
+	s["%a"] = $.datepicker.regional[date_lang].dayNamesShort[w]; //Calendar._SDN[w]; // abbreviated weekday name [FIXME: I18N]
+	s["%A"] = $.datepicker.regional[date_lang].dayNames[w]; //Calendar._DN[w]; // full weekday name
+	s["%b"] = $.datepicker.regional[date_lang].monthNamesShort[w]; //Calendar._SMN[m]; // abbreviated month name [FIXME: I18N]
+	s["%B"] = $.datepicker.regional[date_lang].monthNames[w]; //Calendar._MN[m]; // full month name
 	// FIXME: %c : preferred date and time representation for the current locale
 	s["%C"] = 1 + Math.floor(y / 100); // the century number
 	s["%d"] = (d < 10) ? ("0" + d) : d; // the day of the month (range 01 to 31)
@@ -868,9 +887,9 @@ Date.prototype.print = function (str) {
 	s["%%"] = "%";		// a literal '%' character
 
 	var re = /%./g;
-	if (!Calendar.is_ie5 && !Calendar.is_khtml)
+	//if (!Calendar.is_ie5 && !Calendar.is_khtml)
 		return str.replace(re, function (par) { return s[par] || par; });
-
+/*
 	var a = str.match(re);
 	for (var i = 0; i < a.length; i++) {
 		var tmp = s[a[i]];
@@ -881,7 +900,28 @@ Date.prototype.print = function (str) {
 	}
 
 	return str;
+	*/
 };
+
+/** Returns the number of day in the year. */
+Date.prototype.getDayOfYear = function() {
+	var now = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0);
+	var then = new Date(this.getFullYear(), 0, 0, 0, 0, 0);
+	var time = now - then;
+	return Math.floor(time / Date.DAY);
+};
+
+/** Returns the number of the week in year, as defined in ISO 8601. */
+Date.prototype.getWeekNumber = function() {
+	var d = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0);
+	var DoW = d.getDay();
+	d.setDate(d.getDate() - (DoW + 6) % 7 + 3); // Nearest Thu
+	var ms = d.valueOf(); // GMT
+	d.setMonth(0);
+	d.setDate(4); // Thu in Week 1
+	return Math.round((ms - d.valueOf()) / (7 * 864e5)) + 1;
+};
+
 
 
 

@@ -27,7 +27,7 @@ function checkPropertyType ( select ) {
         }
     }
 }
-
+/*
 function addSelection( from, to ) {
     if ( from.value == '' ) { return false; }
     from.value = from.value.replace(/\|/g, '_'); // check for the separator
@@ -41,15 +41,23 @@ function addSelection( from, to ) {
     }
     storeSelections( to );
     from.value = "";
+}*/
+function addSelection( from, to ) {
+    if ( from.val() == '' ) { return false; }
+    from.val(from.val().replace(/\|/g, '_')); // check for the separator
+
+    to.append($("<option>"+from.val()+"</option>")); 
+    storeSelections( to );
+    from.val("");
 }
 
 function removeSelection( from ) {
     from.options[from.selectedIndex] = null;
     storeSelections( from );
 }
-
+/*
 function storeSelections( from ) {
-    /* Stores options of a select-element into a hidden field */
+    // Stores options of a select-element into a hidden field 
     to = document.eform.sdbp_regex;
     to.value = '';
     for ( index = 0; index < from.length; index++ ) {
@@ -59,6 +67,19 @@ function storeSelections( from ) {
         }
     }
     to.value = '^(' + to.value + ')$';
+}*/
+function storeSelections( from ) {
+    // Stores options of a select-element into a hidden field 
+    to = $('#sdbp_regex');
+    to.val('');
+    for ( index = 0; index < from.children().length; index++ ) {
+		alert(index + ": "+$(from.children()[index]).text());
+        to.val(to.val() + escapeRegex( $(from.children()[index]).text() ));
+        if ( from.children().length > 1 && index != from.children().length - 1 ) {
+            to.val(to.val() + "|");
+        }
+    }
+    to.val('^(' + to.val() + ')$');
 }
 
 function escapeRegex( s ) {
