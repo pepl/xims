@@ -154,19 +154,4 @@
       </li>
     </xsl:template>
 
-    <xsl:template match="/document/context/object/parents/object" mode="puburl">
-      <xsl:variable name="dataformat">
-        <xsl:value-of select="data_format_id"/>
-      </xsl:variable>
-      <xsl:choose>
-        <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/name='SiteRoot'">
-          <xsl:value-of select="title"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="location"/>
-        </xsl:otherwise>
-      </xsl:choose> 
-      <xsl:text>/</xsl:text>
-  </xsl:template>
-
 </xsl:stylesheet>
