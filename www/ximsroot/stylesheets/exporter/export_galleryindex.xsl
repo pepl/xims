@@ -322,7 +322,7 @@
         <xsl:otherwise>
           <!-- ascending sort order -->
           <xsl:choose>
-            <xsl:when test="$defaultsortby='date'">
+            <xsl:when test="/document/context/object/attributes/defaultsortby='date'">
               <xsl:apply-templates select="object">
                 <xsl:sort select="last_modification_timestamp/year" 
                           data-type="number"
@@ -344,7 +344,7 @@
                           order="ascending"/>
               </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="$defaultsortby='title'">
+            <xsl:when test="/document/context/object/attributes/defaultsortby='title'">
               <xsl:apply-templates select="object">
                 <xsl:sort select="title" 
                           order="ascending"
