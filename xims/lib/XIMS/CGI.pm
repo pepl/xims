@@ -243,6 +243,7 @@ The test calls 'init_store_object' and traverses routines for cleaning/testing
 the location.
 
 =cut
+
 sub event_test_location {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
