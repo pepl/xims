@@ -274,7 +274,7 @@
 
 
   <xsl:template name="ul-gallery_demo_unstyled">
-    <ul class="gallery_demo_unstyled">
+    <ul xmlns:dc="http://purl.org/dc/elements/1.1/" class="gallery_demo_unstyled">
       <xsl:choose>        
         <xsl:when test="/document/context/object/attributes/defaultsort/text()='desc'">
           <!-- descending sort order -->
