@@ -123,7 +123,7 @@
             <span class="reflib_referencetype">
             	<!-- start dirtyness ... (plural of Thesis is not Thesiss) -->
 				<xsl:choose>
-					<xsl:when test="$reference_type_id=3">Diploma Theses</xsl:when>
+					<xsl:when test="$reference_type_id=17">Diploma Theses</xsl:when>
             		<xsl:otherwise><xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s</xsl:otherwise>
 				</xsl:choose>
 				<!-- end dirtyness... not really -->
