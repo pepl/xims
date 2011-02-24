@@ -164,8 +164,8 @@
 	<div id="main_image">
 		<xsl:if test="$shownav = 1">
 			<p class="nav">
-				<a href="#" onclick="$.galleria.prev(); return false;">&lt;&lt; <!--<xsl:value-of select="$i18n/l/Back"/>--></a> | 
-				<a href="#" onclick="$.galleria.next(); return false;"><!--<xsl:value-of select="$i18n/l/Forward"/>--> &gt;&gt;</a>
+				<a href="#" onclick="$.galleria.prev(); return false;">&#171;</a> | 
+				<a href="#" onclick="$.galleria.next(); return false;">&#187;</a>
 			</p>
 		</xsl:if>
 	</div>
@@ -186,8 +186,8 @@
 	<div id="main_image">
 		<xsl:if test="$shownav = 1">
 				<p class="nav">
-					<a href="#" onclick="$.galleria.prev(); return false;">&lt;&lt; <!--<xsl:value-of select="$i18n/l/Back"/>--></a> | 
-					<a href="#" onclick="$.galleria.next(); return false;"><!--<xsl:value-of select="$i18n/l/Forward"/>--> &gt;&gt;</a>
+					<a href="#" onclick="$.galleria.prev(); return false;">&#171;</a> | 
+					<a href="#" onclick="$.galleria.next(); return false;">&#187;</a>
 				</p>
 			</xsl:if>
 	</div>
@@ -198,8 +198,8 @@
 	<div id="main_image">
 		<xsl:if test="$shownav = 1">
 				<p class="nav">
-					<a href="#" onclick="$.galleria.prev(); return false;">&lt;&lt; <!--<xsl:value-of select="$i18n/l/Back"/>--></a> | 
-					<a href="#" onclick="$.galleria.next(); return false;"><!--<xsl:value-of select="$i18n/l/Forward"/>--> &gt;&gt;</a>
+					<a href="#" onclick="$.galleria.prev(); return false;">&#171;</a> | 
+					<a href="#" onclick="$.galleria.next(); return false;">&#187;</a>
 				</p>
 			</xsl:if>
 	</div>	
@@ -220,8 +220,8 @@
 		<div id="main_image">
 			<xsl:if test="$shownav=1">
 				<p class="nav">
-					<a href="#" onclick="$.galleria.prev(); return false;">&lt;&lt; <!--<xsl:value-of select="$i18n/l/Back"/>--></a> | 
-					<a href="#" onclick="$.galleria.next(); return false;"><!--<xsl:value-of select="$i18n/l/Forward"/>--> &gt;&gt;</a>
+					<a href="#" onclick="$.galleria.prev(); return false;">&#171;</a> | 
+					<a href="#" onclick="$.galleria.next(); return false;">&#187;</a>
 				</p>
 			</xsl:if>
 		</div>
