@@ -120,7 +120,14 @@
     <!-- Hmm, there must be a better way instead of doing that xsl:if here... -->
     <xsl:if test="/document/context/object/children/object[reference_values/reference_value[property_id=3 and starts-with(value,$date)] and reference_type_id = $reference_type_id]">
         <h3>
-            <span class="reflib_referencetype"><xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s</span>
+            <span class="reflib_referencetype">
+            	<!-- start dirtyness ... (plural of Thesis is not Thesiss) -->
+				<xsl:choose>
+					<xsl:when test="$reference_type_id=3">Diploma Theses</xsl:when>
+            		<xsl:otherwise><xsl:value-of select="/document/reference_types/reference_type[@id=$reference_type_id]/name"/>s</xsl:otherwise>
+				</xsl:choose>
+				<!-- end dirtyness... not really -->
+			</span>
         </h3>
         <ul class="reflib_citelist">
             <xsl:for-each select="/document/context/object/children/object[reference_values/reference_value[property_id=3 and starts-with(value,$date)] and reference_type_id = $reference_type_id]">
