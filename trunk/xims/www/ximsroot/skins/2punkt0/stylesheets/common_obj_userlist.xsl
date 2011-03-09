@@ -583,7 +583,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		if($('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html() == ''){
-			$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
+			$.get('<xsl:value-of select="concat($goxims_content,'?obj_acllight=1;userid=',@id,';id=',/document/context/object/@id)"/>',
 				function(data){
 					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').html(data)
 					$('#buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/>').buttonset();
