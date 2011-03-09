@@ -1400,7 +1400,7 @@
 					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip(
 						{ 
 						content: function(response) {				
-						$.get('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1;tooltip=1')"/>', response);
+						$.get('<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1;tooltip=1')"/>', response);
 						return "Loading...";
 						}
 						},
@@ -1410,7 +1410,7 @@
 					/*
 					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({
 						content: function(response){
-							$('#ui-tooltip-1 .ui-tooltip-content').load('http://testlx1.uibk.ac.at<xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/> .obj-table', response);
+							$('#ui-tooltip-1 .ui-tooltip-content').load('<xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/> .obj-table', response);
 							
 						return "Loading...";
 						}
