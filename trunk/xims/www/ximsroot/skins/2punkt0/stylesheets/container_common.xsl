@@ -61,7 +61,7 @@
 						<xsl:if test="attributes/defaultsortby = 'titlelocation'">
 							<xsl:attribute name="selected">selected</xsl:attribute>
 						</xsl:if>
-						<xsl:value-of select="$i18n/l/Title"/>
+						<xsl:value-of select="$i18n/l/Title"/>						
 					</option>
 					<option value="date">
 						<xsl:if test="attributes/defaultsortby = 'date'">
@@ -293,7 +293,10 @@
 							<th id="th-title" class="sorting">
 								<a href="{$location}?sb=title;order=asc;page={$page}" class="th-icon-right">
 									<span class="ui-icon ui-icon-triangle-2-n-s"/>
-									<xsl:value-of select="$i18n/l/Title"/>&#160;						
+									<xsl:choose>
+										<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Title"/>&#160;	</xsl:when>
+										<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="$i18n/l/Location"/>&#160;	</xsl:when>
+									</xsl:choose>
 								</a>
 							</th>
 						</xsl:otherwise>
@@ -426,7 +429,11 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<span>
-			<xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:value-of select="$l_location"/>: <xsl:value-of select="location"/>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/>: <xsl:call-template name="ownerfullname"/></xsl:attribute>
+			<xsl:attribute name="title">id: <xsl:value-of select="@id"/>, 
+			<xsl:choose>
+					<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Location"/>: <xsl:value-of select="location"/></xsl:when>
+					<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="$i18n/l/Title"/>: <xsl:value-of select="title"/></xsl:when>
+				</xsl:choose>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/>: <xsl:call-template name="ownerfullname"/></xsl:attribute>
 			<a>
 				<xsl:attribute name="href">
 					<xsl:choose>
@@ -472,8 +479,11 @@
 						</xsl:otherwise>
 					</xsl:choose>
 
-				</xsl:attribute>		
-	<xsl:value-of select="title"/>
+				</xsl:attribute>	
+				<xsl:choose>
+					<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="title"/></xsl:when>
+					<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="location"/></xsl:when>
+				</xsl:choose>	
 			</a>
 		</span>
 	</xsl:template>
