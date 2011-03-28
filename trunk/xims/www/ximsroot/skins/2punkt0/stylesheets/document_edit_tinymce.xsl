@@ -11,7 +11,7 @@
 	<xsl:import href="document_common.xsl"/>
 	
 	<xsl:param name="tinymce" select="true()"/>	
-	<xsl:param name="selEditor" select="true"/>	
+	<xsl:param name="selEditor" select="true()"/>	
 	
 	<xsl:template name="edit-content">
 		<xsl:call-template name="form-locationtitle-edit"/>
