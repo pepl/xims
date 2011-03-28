@@ -17,7 +17,11 @@
     </xsl:choose>
 </xsl:variable>
 
+<xsl:param name="tooltip"/>
+
     <xsl:template match="/document/context/session/user">
+    		<xsl:choose>
+	<xsl:when test="$tooltip= ''">
         <html>
             <xsl:call-template name="head_default">
 								<xsl:with-param name="mode">user</xsl:with-param>
@@ -45,7 +49,16 @@
 			<xsl:call-template name="script_bottom"/>
             </body>
         </html>
-    </xsl:template>
+    
+</xsl:when>
+	<xsl:otherwise>
+			<xsl:apply-templates select="bookmarks/bookmark" mode="linklist">
+				<xsl:sort select="stdhome" order="descending"/>
+				<xsl:sort select="content_id" order="ascending"/>
+			</xsl:apply-templates>		
+	</xsl:otherwise>
+	</xsl:choose>
+	</xsl:template>
 
 <xsl:template match="bookmarks">
 	<xsl:variable name="countUserBM" select="count(/document/context/session/user/bookmarks/bookmark[owner_id=/document/context/session/user/name])"/>
@@ -145,5 +158,11 @@
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>-->
+
+<xsl:template match="bookmark" mode="linklist">
+    <li class="ui-menu-item" role="menuitem">
+        <xsl:call-template name="bookmark_link"/>
+    </li>
+</xsl:template>
 
 </xsl:stylesheet>

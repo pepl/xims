@@ -216,7 +216,7 @@ function initCreateMenu(){
 				secondary: "ui-icon-triangle-1-e"
 			}
 		}).each(function() {
-			$('ul.more').menu({
+			$('#create-widget ul.more').menu({
 				select: function(event, ui) {
 					$(this).hide();
 					window.location = ui.item.children('a').attr('href');
@@ -224,7 +224,7 @@ function initCreateMenu(){
 				input: $(this)
 			}).hide();
 		}).click(function(event) {
-			var menu = $('ul.more');
+			var menu = $('#create-widget ul.more');
 			if (menu.is(":visible")) {
 				menu.hide();
 				return false;
@@ -301,7 +301,42 @@ function initMenuMenu(){
 				menu.hide();
 			});
 			return false;
-		})
+		});
+	
+	//load bookmarks			
+			$.get('/goxims/user?bookmarks=1;tooltip=1', function(data){
+				$('#bm-links').html(data)
+			});	
+	$("#menu-widget a.more").button({
+			icons: {
+				primary: null,
+				secondary: "ui-icon-triangle-1-e"
+			}
+		}).each(function() {
+			$('#menu-widget ul.more').menu({
+				select: function(event, ui) {
+					$(this).hide();
+					window.location = ui.item.children('a').attr('href');
+				},
+				input: $(this)
+			}).hide();
+		}).click(function(event) {
+				var menu = $('#menu-widget ul.more');
+				if (menu.is(":visible")) {
+					menu.hide();
+					return false;
+				}
+				menu.menu("deactivate").show().css({top:0, left:0}).position({
+					my: "left top",
+					at: "right top",
+					of: this
+				});
+				$(document).one("click", function() {
+					menu.hide();
+				});
+				return false;		
+			});
+		
 }
 
 function initVLibMenu(){

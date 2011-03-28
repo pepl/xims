@@ -123,56 +123,47 @@
 			<button>				
 				<xsl:value-of select="$i18n/l/Create"/>
 			</button>
-				<!--<ul>-->
 					<xsl:choose>
 						<xsl:when test="/document/context/object/@id = 1">
-						<ul>
-							<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"  mode="fo-menu"/>
+							<ul>
+								<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"  mode="fo-menu"/>
 							</ul>
 						</xsl:when>
 						
 						<xsl:otherwise>
-						
-						<xsl:choose>
-						
-						<xsl:when test="$parent_id != ''">
-						<ul>
-							<xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]" mode="fo-menu">
-								<xsl:sort select="name"/>
-							</xsl:apply-templates>
-</ul>						
-						</xsl:when>
-						
-						<xsl:otherwise>
-						<ul>
-							<xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]" mode="fo-menu">
-								<xsl:sort select="name"/>
-							</xsl:apply-templates>
-							<li>
-								<a href="#" class="more">
-									<xsl:value-of select="$i18n/l/More"/>
-								</a>
-							</li>
-							
-<!--						</xsl:otherwise>
-						</xsl:choose>
-						</xsl:otherwise>
-					</xsl:choose>-->
-				</ul>
-				<ul class="more">
-					<!-- Only show basic object types on first page: TODO Select from object type properties and not from OT names or IDs!
-                        Do not display object types that either are not fully implemented or that are not meant to be created directly.
-                        We may consider adding an object type property for the latter types.
-                        jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
-                        jerboaa, 2007-07-19: Do not show object types which contain "Item" in their name with the only exception
-	                     of "NewsItem"! 
-                    -->
-					<xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'BidokEntry' or name = 'BidokIndex' or ( contains(fullname,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]" mode="fo-menu">
-						<xsl:sort select="name"/>
-					</xsl:apply-templates>
-				</ul>
-										</xsl:otherwise>
-						</xsl:choose>
+							<xsl:choose>
+								<xsl:when test="$parent_id != ''">
+									<ul>
+										<xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]" mode="fo-menu">
+											<xsl:sort select="name"/>
+										</xsl:apply-templates>
+									</ul>						
+								</xsl:when>						
+								<xsl:otherwise>
+									<ul>
+										<xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]" mode="fo-menu">
+											<xsl:sort select="name"/>
+										</xsl:apply-templates>
+										<li>
+											<a href="#" class="more">
+												<xsl:value-of select="$i18n/l/More"/>
+											</a>
+										</li>
+									</ul>
+									<ul class="more">
+										<!-- Only show basic object types on first page: TODO Select from object type properties and not from OT names or IDs!
+					                        Do not display object types that either are not fully implemented or that are not meant to be created directly.
+					                        We may consider adding an object type property for the latter types.
+					                        jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
+					                        jerboaa, 2007-07-19: Do not show object types which contain "Item" in their name with the only exception
+						                     of "NewsItem"! 
+					                    -->
+										<xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'BidokEntry' or name = 'BidokIndex' or ( contains(fullname,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]" mode="fo-menu">
+											<xsl:sort select="name"/>
+										</xsl:apply-templates>
+									</ul>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>
 		</div>
@@ -319,7 +310,7 @@
 
 	
 	<!--Menu Widget-->
-	<xsl:template name="menu-widget">
+	<xsl:template name="menu-widget">			
 	<div id="menu-widget">
 			<button><xsl:value-of select="$i18n/l/Menu"/></button>
 				<ul style="position:absolute !important; width: 150px">
@@ -338,6 +329,11 @@
 								</a>
 							</li>
 							<li>
+								<a href="#" class="more" id="get-bm">
+									<xsl:value-of select="$i18n/l/Bookmarks"/>
+								</a>
+							</li>
+							<li>
 								<a href="{$goxims_content}{$absolute_path}?reason=logout">
 										<xsl:value-of select="$i18n/l/logout"/>
 								</a>
@@ -345,7 +341,9 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</ul>
+				<ul class="more" id="bm-links"></ul>
 			</div>
+
 
 		<noscript>
 			<xsl:choose>
