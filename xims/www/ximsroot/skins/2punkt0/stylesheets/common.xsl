@@ -263,6 +263,7 @@
     </tr>
 -->
 	</xsl:template>
+	
 	<xsl:template name="heading">
 		<xsl:param name="mode"/>
 		<xsl:param name="selEditor" select="false()"/>
@@ -270,7 +271,7 @@
 			<h1>
 				<xsl:choose>
 					<xsl:when test="$mode='create'">
-						<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>
+						<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;
 						<xsl:if test="$selEditor">
 							<xsl:value-of select="$i18n/l/using"/>
 							<xsl:text>&#160;</xsl:text>
@@ -282,7 +283,7 @@
 						</xsl:if>
 					</xsl:when>
 					<xsl:when test="$mode='edit'">
-						<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
+						<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;
 						<xsl:if test="$selEditor">
 							<xsl:value-of select="$i18n/l/using"/>
 							<xsl:text>&#160;</xsl:text>
@@ -303,6 +304,7 @@
 			</h1>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="form-keywordabstract">
 		<div class="form-div ui-corner-all block">
 			<h2>Meta Data</h2>

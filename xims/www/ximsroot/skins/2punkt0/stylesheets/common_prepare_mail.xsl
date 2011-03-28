@@ -78,11 +78,9 @@
 </xsl:template>
 
 	<xsl:template name="heading">
-		<!--<xsl:param name="mode"/>
-		<xsl:param name="selEditor" select="false()"/>-->
 		<div id="tab-container" class="ui-corner-top">
 			<h1>
-						<xsl:value-of select="$i18n/l/Email_Send"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>
+				<xsl:value-of select="$i18n/l/Email_Send"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;
 			</h1>
 		</div>
 	</xsl:template>

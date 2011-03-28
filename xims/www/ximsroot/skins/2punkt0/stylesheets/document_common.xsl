@@ -10,8 +10,8 @@
 	<xsl:import href="container_common.xsl"/>
 
 	<xsl:param name="printview" select="'0'"/>
-	<xsl:param name="selEditor" select="false()"/>
-	
+	<!--<xsl:param name="selEditor" select="false()"/>-->
+	<!--
 	<xsl:template name="heading">
 		<xsl:param name="mode"/>
 		<div id="tab-container" class="ui-corner-top">
@@ -49,7 +49,7 @@
 			</h1>
 			<xsl:call-template name="setdefaulteditor"/>
 		</div>
-	</xsl:template>
+	</xsl:template>-->
 	
 	<xsl:template name="trytobalance">
 		<div id="tr-trytobal">

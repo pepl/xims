@@ -30,12 +30,12 @@
 				<xsl:with-param name="simpledb" select="$simpledb"/>
 			</xsl:call-template>
 			<body>
-				<xsl:if test="selEditor">
+				<xsl:if test="$selEditor">
 					<xsl:attribute name="onload">timeoutWYSIWYGChange(2);</xsl:attribute>
 				</xsl:if>
 				<xsl:call-template name="header"/>
 				<div class="edit">
-					<xsl:call-template name="heading"><xsl:with-param name="mode">edit</xsl:with-param></xsl:call-template>
+					<xsl:call-template name="heading"><xsl:with-param name="mode">edit</xsl:with-param><xsl:with-param name="selEditor" select="$selEditor"></xsl:with-param></xsl:call-template>
 					<xsl:call-template name="cancelform"/>
 					
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
