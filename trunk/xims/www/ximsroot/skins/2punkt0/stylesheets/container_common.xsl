@@ -258,7 +258,7 @@
 						&#160;
 					</th>
 					<xsl:choose>
-						<xsl:when test="$sb='title'">
+						<xsl:when test="$sb='title' or $sb='location'">
 							<xsl:choose>
 								<xsl:when test="$order='asc'">
 									<th id="th-title" class="sorting">
