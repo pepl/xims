@@ -42,6 +42,9 @@ div.edit #tab-container{
 	margin: 0px 10px 10px 10px;
 	font-size: 0.8em;
 }
+.xims-content {
+	font-size: 0.8em !important;
+}
 div.edit #content-container {
 	background-color: #CED3D6 !important;
 }
@@ -80,6 +83,9 @@ div.edit #content-container {
 #docbody{
 	border: 1px solid #C0C0C0;
 	padding: 2px;
+}
+#docbody pre{
+	overflow-x:scroll;
 }
 #metadata-options {
 	margin-top: 5px;
