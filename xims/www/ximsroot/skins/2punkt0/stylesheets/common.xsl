@@ -1968,6 +1968,7 @@
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="reflib" select="false()"/>
+		<xsl:param name="questionnaire" select="false()"/>
 		<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>-->
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
 		<script src="{$ximsroot}scripts/default.js" type="text/javascript"/>
@@ -2001,6 +2002,9 @@
 		<xsl:if test="$reflib">
 			<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
 			<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"/>
+		</xsl:if>
+		<xsl:if test="$questionnaire">
+			<script src="{$ximsroot}scripts/questionnaire.js" type="text/javascript"/>
 		</xsl:if>
 	</xsl:template>
 	

@@ -65,6 +65,7 @@
 					<xsl:with-param name="simpledb" select="$simpledb"/>
 					<xsl:with-param name="reflib" select="$reflib"/>
 					<xsl:with-param name="vlib" select="$vlib"/>
+					<xsl:with-param name="questionnaire" select="$questionnaire"/>
 				</xsl:call-template>
 				<!--<script type="text/javascript" language="javascript">
       var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
