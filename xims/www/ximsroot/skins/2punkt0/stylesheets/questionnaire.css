@@ -1,18 +1,25 @@
-.question-options span{
+/*.question-options span{
 	display: inline;
 	padding-left: 16px;
 	cursor: pointer;
-}
+}*/
 .question-options{
 	float: left;
 }
+.question-main{
+	float: left;
+}
+/*
 #question-comment{
 	margin-left: 170px;
 }
-#question{
+*/
+.question{
 	padding: 2px;
+	clear: both;
+	margin-bottom:2px;
 }
-#question > div{
+.question > div{
 	margin-bottom: 10px;
 }
 
@@ -33,8 +40,11 @@
 .numbering {
   color: black;
   font-weight: bold;
+  vertical-align: top;
  }
-
+.label-question{
+	vertical-align: top;
+}
 .question-table {
   border: thin black solid;
   background-color: #FFFFFF
