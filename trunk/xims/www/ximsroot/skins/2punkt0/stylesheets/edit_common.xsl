@@ -19,6 +19,7 @@
 	<xsl:param name="simpledb" select="false()"/>
 	<xsl:param name="reflib" select="false()"/>
 	<xsl:param name="vlib" select="false()"/>
+	<xsl:param name="questionnaire" select="false()"/>
 	
 	
 	<xsl:template match="/document/context/object">
@@ -28,6 +29,7 @@
 				<xsl:with-param name="reflib" select="$reflib"/>
 				<xsl:with-param name="vlib" select="$vlib"/>
 				<xsl:with-param name="simpledb" select="$simpledb"/>
+				<xsl:with-param name="questionnaire" select="$questionnaire"/>
 			</xsl:call-template>
 			<body>
 				<xsl:if test="$selEditor">
