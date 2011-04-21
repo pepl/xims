@@ -131,54 +131,39 @@
 		<div class="question-options">
 			<xsl:choose>
 				<xsl:when test="$position > 1">
-				<!--<span class="ui-icon ui-icon-triangle-1-n" onclick="eform.edit.value='move_up';eform.qid.value='{$position_long}'; eform.submit(); return true;">&#xa0;</span>-->
-				<a class="button up" href="javascript:eform.edit.value='move_up';eform.qid.value='{$position_long}'; eform.submit(); return true;">&#xa0;</a>
+				<a class="button up" href="#{$position_long}" onclick="eform.edit.value='move_up';eform.qid.value='{$position_long}'; eform.submit(); return true;">&#xa0;</a>
 				</xsl:when>
 				<xsl:otherwise>
-					<!--<xsl:call-template name="ui-icon.spacer"/>-->
 					<a class="button option-disabled">&#160;</a>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:choose>
 				<xsl:when test="position() != last()">
-					<!--<span class="ui-icon ui-icon-triangle-1-s" onclick="eform.edit.value='move_down';eform.qid.value='{$position_long}'; eform.submit(); return true;">&#xa0;</span>-->
-					<a class="button down" href="javascript:eform.edit.value='move_down';eform.qid.value='{$position_long}'; eform.submit(); return true;">&#xa0;</a>
+					<a class="button down" href="#{$position_long}" onclick="eform.edit.value='move_down';eform.qid.value='{$position_long}'; eform.submit(); return true;">&#xa0;</a>
 				</xsl:when>
 				<xsl:otherwise>
-					<!--<xsl:call-template name="ui-icon-button.spacer"/>-->
 					<a class="button option-disabled">&#160;</a>
 				</xsl:otherwise>
 			</xsl:choose>
                 &#160;&#160;&#160;
                             <xsl:choose>
 				<xsl:when test="(name() = 'question') and (name(..) = 'questionnaire') and not(@edit)">
-					<!--<a class="xims-sprite sprite-option_edit" href="javascript:eform.edit.value='edit_question';eform.qid.value='{$position_long}';return true;">
-						<span>
-							<xsl:value-of select="$i18n/l/Edit"/>
-						</span>&#160;
-															</a>-->
-				<a class="button option-edit" href="javascript:eform.edit.value='edit_question';eform.qid.value='{$position_long}';return true;">
-							<xsl:value-of select="$i18n/l/Edit"/>
-															</a>
+				<a class="button option-edit" href="#{$position_long}" name="{$position_long}" onclick="eform.edit.value='edit_question';eform.qid.value='{$position_long}';eform.submit();return true;">
+						<xsl:value-of select="$i18n/l/Edit"/>
+					</a>
 				</xsl:when>
 				<xsl:otherwise>
-					<!--<xsl:call-template name="cttobject.options.spacer"/>-->
 					<a class="button option-disabled">&#160;</a>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:if test="(name() = 'question')">
-				<a class="button option-copy" href="javascript:eform.edit.value='copy_question';eform.qid.value='{$position_long}';return true;">
-					<span>
+				<a class="button option-copy" href="#" onclick="eform.edit.value='copy_question';eform.qid.value='{$position_long}';eform.submit();return true;">
 						<xsl:value-of select="$i18n/l/Copy"/>
-					</span>&#160;
-															</a>
+				</a>
 			</xsl:if>
-			<a class="button option-delete" href="javascript:eform.edit.value='delete_node';eform.qid.value='{$position_long}';return true;">
-				<span>
-					<xsl:value-of select="$i18n/l/Delete"/>
-				</span>&#160;
-															</a>
-			<!--<xsl:call-template name="numbering"/>-->
+			<a class="button option-delete" href="#" onclick="eform.edit.value='delete_node';eform.qid.value='{$position_long}';eform.submit();return true;">
+					<xsl:value-of select="$i18n/l/delete"/>
+			</a>
 		</div>
 	</xsl:template>
 		
@@ -424,9 +409,8 @@
 		<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={parents/object[@document_id=current()/@parent_id]/@id};contentbrowse=1;otfilter=TAN_List;sbfield=eform.TAN_List')" class="button">
 				<xsl:value-of select="$i18n_qn/l/browse_TAN_List"/>
 			</a>&#xa0;	
-		<input type="text" name="TAN_List" id="TAN_List" size="40" class="text" readonly="readonly" onblur="$('#addtanlist').removeAttr('disabled')"/>&#xa0;
+		<input type="text" name="TAN_List" id="TAN_List" size="40" class="text" />&#xa0;
 			<button type="submit" onclick="eform.edit.value='add_tanlist';eform.qid.value=eform.TAN_List.value;return true;" id="add_tanlist" >
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
 				<xsl:value-of select="$i18n_qn/l/Add_TAN_List"/>
 			</button>
 		</div>
