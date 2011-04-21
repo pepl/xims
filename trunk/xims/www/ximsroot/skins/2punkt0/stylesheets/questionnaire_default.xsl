@@ -5,15 +5,14 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: questionnaire_default.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="view_common.xsl"/>
 
 <xsl:variable name="i18n_qn" select="document(concat($currentuilanguage,'/i18n_questionnaire.xml'))" />
 
 <xsl:param name="show_questions" select="'none'" />
+<xsl:param name="questionnaire" select="true()"/>
 
 <xsl:template name="view-content">
 		<div id="docbody">
@@ -28,15 +27,19 @@
 			<xsl:call-template name="questionnaire_statistics" />
 			<xsl:call-template name="questionnaire_download" />
     </div>
-        <xsl:choose>
-        <xsl:when test="$show_questions =  'none'">
-            <h2><a href="?show_questions=top" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a></h2>
-        </xsl:when>
-        <xsl:when test="$show_questions =  'top'">
-            <h2><a href="?show_questions=none" class="text" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a></h2><br/>
-            <xsl:call-template name="top_question" />
-        </xsl:when>
-    </xsl:choose>
+    <xsl:choose>
+    <xsl:when test="$show_questions =  'none'">
+		<a href="?show_questions=top" class="button" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
+    </xsl:when>
+    <xsl:when test="$show_questions =  'top'">
+		<a href="?show_questions=none" class="button" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
+		<br/>
+		<h2><xsl:value-of select="$i18n_qn/l/Questions" /></h2>
+		<xsl:call-template name="question_title" />
+		<xsl:call-template name="comment" />
+		<xsl:apply-templates select="child::question"/>
+    </xsl:when>
+</xsl:choose>
     
 </xsl:template>
 
@@ -109,38 +112,19 @@
     <h1>Questionnaire '<xsl:value-of select="title" />'</h1>
 </xsl:template>
 
-<xsl:template name="questionnaire_comment">
-    <xsl:if test="comment!=''"><pre><xsl:value-of select="comment" /></pre></xsl:if>
-</xsl:template>
-
 <xsl:template match="question" name="top_question">
-    <table >
-        <tr>
-            <xsl:call-template name="question_type" />
-            <td>
-                <table>
-                    <xsl:choose>
-                        <xsl:when test="@alignment='Left'">
-                            <xsl:call-template name="question_left" />
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <!-- default alignment of question is 'Top' -->
-                            <xsl:call-template name="question_top" />
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </table>
-            </td>
-        </tr>
-    </table>
+	<div class="ui-widget-content ui-corner-all question">
+		<xsl:call-template name="question_title" />
+		<xsl:call-template name="comment" />
+		<xsl:apply-templates select="child::answer"/>
+		<xsl:apply-templates select="child::question"/>
+		<br/>
+	</div>
 </xsl:template>
 
 <!-- Answer template -->
 <xsl:template match="answer">
-    <table >
-        <tr>
-            <xsl:call-template name="question_type" />
-            <td>
-                <table >
+			<xsl:call-template name="comment" />
                     <xsl:choose>
                         <xsl:when test="@type = 'Select'">
                             <xsl:call-template name="answer_select" />
@@ -157,135 +141,76 @@
                             </xsl:choose>
                         </xsl:otherwise>
                     </xsl:choose>
-                </table>
-            </td>
-        </tr>
-    </table>
-</xsl:template>
-
-<!-- Template for the question type, default value is 'none' -->
-<xsl:template name="question_type">
-    <xsl:if test="name(..) != 'questionnaire'">
-        <xsl:if test="(../@type = 'Checkbox' or ../@type = 'Radio') and (name(..) = 'question')">
-            <td>
-                <input type="{../@type}" name="{../@id}" />
-            </td>
-        </xsl:if>
-    </xsl:if>
 </xsl:template>
 
 <xsl:template name="question_title">
     <xsl:variable name="position_long_point">
         <xsl:number level="multiple" count="question | answer" />
     </xsl:variable>
+	<p>
         <strong>
             <xsl:if test="name()='question'">
                 <xsl:value-of select="$position_long_point" />.)
             </xsl:if>
             <xsl:value-of select="title" />
         </strong>
+	</p>
 </xsl:template>
 
 <xsl:template name="question_left">
-    <tr>
-        <td>
             <xsl:call-template name="question_title" />
-        </td>
-        <td>
             <xsl:apply-templates select="child::question | child::answer"/>
-        </td>
-    </tr>
 </xsl:template>
 
-<xsl:template name="question_top">
-    <tr>
-        <td>
-            <xsl:call-template name="question_title" />
-            <xsl:call-template name="answer_comment" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <xsl:apply-templates select="child::question | child::answer"/>
-        </td>
-    </tr>
-</xsl:template>
-
-<xsl:template name="question_comment">
-    <xsl:if test="comment!=''">
-        <tr>
-            <td colspan="{count(question)+count(answer)}">
-                <pre><xsl:value-of select="comment" /></pre>
-            </td>
-        </tr>
-    </xsl:if>
-</xsl:template>
-
-
-<!-- Answer template rules -->
 <xsl:template name="answer_select">
-    <tr>
-        <td>
+    <p>
             <select name="{concat('answer_',@id)}">
                 <xsl:for-each select="title">
                     <option><xsl:value-of select="." /></option>
                 </xsl:for-each>
             </select>
-        </td>
-    </tr>
+    </p>
 </xsl:template>
 
 <xsl:template name="answer_horizontal">
-    <tr>
+    <p>
         <xsl:choose>
             <xsl:when test="@type = 'Text'">
                 <xsl:choose>
                     <xsl:when test="count(title) > 0">
                         <xsl:for-each select="title">
-                            <td>
                                 <xsl:value-of select="." />
-                            </td>
-                            <td>
-                                <input type="{../@type}" name="{concat('answer_',../@id)}" />
-                            </td>
+                            &#160;
+                                <input type="{../@type}" name="{concat('answer_',../@id)}" />&#160;&#160;
                         </xsl:for-each>
                     </xsl:when>
                     <xsl:otherwise>
-                        <td colspan="2">
-                            <input type="{@type}" name="{concat('answer_',@id)}" />
-                        </td>
+                            <input type="{@type}" name="{concat('answer_',@id)}" />&#160;&#160;
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
             <xsl:when test="@type = 'Textarea'">
-                <td>
                     <xsl:choose>
                         <xsl:when test="count(title) > 0">
-                            <xsl:for-each select="title">
+                            <xsl:for-each select="title">&#160;
                                 <textarea name="{concat('answer_',../@id)}" cols="50" rows="6">
                                     <xsl:value-of select="." />
-                                </textarea>
+                                </textarea>&#160;&#160;
                             </xsl:for-each>
                         </xsl:when>
                         <xsl:otherwise>
-                            <textarea name="{concat('answer_',@id)}" cols="50" rows="6">
-                            </textarea>
+                            <textarea name="{concat('answer_',@id)}" cols="50" rows="6"><xsl:value-of select="." />
+                            </textarea>&#160;&#160;
                         </xsl:otherwise>
                     </xsl:choose>
-                </td>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:for-each select="title">
-                    <td>
-                        <input type="{../@type}" name="{concat('answer_',../@id)}" value="{.}" />
-                    </td>
-                    <td>
-                        <xsl:value-of select="." />
-                    </td>
+					<input type="{../@type}" name="{concat('answer_',../@id)}" value="{.}" />&#160;<xsl:value-of select="." />&#160;&#160;
                 </xsl:for-each>
             </xsl:otherwise>
         </xsl:choose>
-    </tr>
+    </p>
 </xsl:template>
 
 <xsl:template name="answer_vertical">
@@ -294,22 +219,15 @@
             <xsl:choose>
                 <xsl:when test="count(title) > 0">
                     <xsl:for-each select="title">
-                        <tr>
-                            <td>
-                                <xsl:value-of select="." />
-                            </td>
-                            <td>
-                                <input type="{../@type}" name="{concat('answer_',../@id)}" />
-                            </td>
-                        </tr>
+                        <p>
+                                <xsl:value-of select="." />&#160;<input type="{../@type}" name="{concat('answer_',../@id)}" />
+                        </p>
                     </xsl:for-each>
                 </xsl:when>
                 <xsl:otherwise>
-                    <tr>
-                        <td colspan="2">
+                    <p>
                             <input type="{@type}" name="{concat('answer_',@id)}" />
-                        </td>
-                    </tr>
+                    </p>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:when>
@@ -317,48 +235,35 @@
             <xsl:choose>
                 <xsl:when test="count(title) > 0">
                     <xsl:for-each select="title">
-                        <tr>
-                            <td colspan="2">
+                        <p>
                                 <textarea name="{concat('answer_',../@id)}" cols="50" rows="6">
                                     <xsl:value-of select="." />
                                 </textarea>
-                            </td>
-                        </tr>
+                        </p>
                     </xsl:for-each>
                 </xsl:when>
                 <xsl:otherwise>
-                    <tr>
-                        <td colspan="2">
+                    <p>
                             <textarea name="{concat('answer_',@id)}" cols="50" rows="6">
                             </textarea>
-                        </td>
-                    </tr>
+                    </p>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:when>
         <xsl:otherwise>
             <xsl:for-each select="title">
-                <tr>
-                    <td>
-                        <input type="{../@type}" name="{concat('answer_',../@id)}" value="{.}" />
-                    </td>
-                    <td>
-                        <xsl:value-of select="." />
-                    </td>
-                </tr>
+                <p>
+                        <input type="{../@type}" name="{concat('answer_',../@id)}" value="{.}" />&#160;<xsl:value-of select="." />
+                </p>
             </xsl:for-each>
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
 
-<xsl:template name="answer_comment">
-    <xsl:if test="comment != ''">
-        <tr>
-            <td>
-                <pre><xsl:value-of select="comment" /></pre>
-            </td>
-        </tr>
-    </xsl:if>
+<xsl:template name="comment">
+	<xsl:if test="comment != ''">
+		<pre><xsl:value-of select="comment" /></pre><br/>
+	</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>
