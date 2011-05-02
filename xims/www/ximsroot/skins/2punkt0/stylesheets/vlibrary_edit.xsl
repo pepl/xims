@@ -11,41 +11,17 @@
 
 <xsl:import href="edit_common.xsl"/>
 
-<!--<xsl:template match="/document/context/object">
-<html>
-    <xsl:call-template name="head-edit"/>
-    <body>
-        <div class="edit">
-            <xsl:if test="$edit != ''">
-                <xsl:call-template name="heading"><xsl:with-param name="mode">edit</xsl:with-param></xsl:call-template>
-                <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
-                        <xsl:call-template name="form-locationtitle-edit"/>
-                        <xsl:call-template name="form-marknew-pubonsave"/>
-                        <xsl:call-template name="tr-stylesheet-edit"/>
-                        <xsl:call-template name="tr-pagerowlimit-edit"/>
-                    <xsl:call-template name="saveedit"/>
-                </form>
-            </xsl:if>
-
-        </div>
-        <br />
-        <xsl:call-template name="canceledit"/>
-        <xsl:call-template name="script_bottom"/>
-    </body>
-</html>
-</xsl:template>-->
-
 <xsl:template name="edit-content">
 	<xsl:call-template name="form-locationtitle-edit"/>
 	<xsl:call-template name="form-marknew-pubonsave"/>
 	<div class="form-div block">
-		<xsl:call-template name="tr-stylesheet-edit"/>
+		<xsl:call-template name="form-stylesheet-edit"/>
 		<xsl:call-template name="tr-pagerowlimit-edit"/>
 	</div>
 </xsl:template>
 
 
-<xsl:template name="tr-stylesheet-edit">
+<xsl:template name="form-stylesheet-edit">
 
 <xsl:variable name="parentid" select="parents/object[/document/context/object/@parent_id=@document_id]/@id"/>
 <div>
@@ -54,7 +30,9 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=Folder;sbfield=eform.stylesheet')" class="button"><xsl:value-of select="$i18n/l/Browse_stylesheet"/>&#160;(<xsl:value-of select="$i18n/l/Folder" />)</a>
+        <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
+        	<xsl:value-of select="$i18n/l/Browse_stylesheet"/>&#160;(<xsl:value-of select="$i18n/l/Folder" />)
+		</a>
 </div>
 </xsl:template>
 

@@ -85,7 +85,7 @@ div.edit #content-container {
 	padding: 2px;
 }
 #docbody pre{
-	overflow-x:scroll;
+	overflow-x:auto;
 }
 #metadata-options {
 	margin-top: 5px;

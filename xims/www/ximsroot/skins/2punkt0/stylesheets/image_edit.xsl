@@ -7,26 +7,17 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
-	<!--<xsl:import href="edit_common.xsl"/>-->
 	<xsl:import href="file_edit.xsl"/>
 	
-<!--	<xsl:template name="edit-content">
-		<xsl:call-template name="tr-title-edit"/>
-		<xsl:call-template name="tr-location-edit"/>
-		<xsl:call-template name="tr-image-edit"/>
-		<xsl:call-template name="form-marknew-pubonsave"/>
-		<xsl:call-template name="tr-keywords-edit"/>
-		<xsl:call-template name="tr-abstract-edit"/>
-		
-		<xsl:call-template name="publish-on-save"/>
-	</xsl:template>-->
 	
 	<xsl:template name="preview-image">
+		<div class="form-div ui-corner-all block">
 		<p>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}')">
+			<a class="button" href="javascript:createImageDialog('{$xims_box}{$goxims_content}{$absolute_path}','default-dialog','{$i18n/l/Preview_image}')">
 				<xsl:value-of select="$i18n/l/Preview_image"/>
 			</a>
 		</p>
+		</div>
 	</xsl:template>
 	
 	<xsl:template name="form-file-edit">

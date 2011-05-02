@@ -27,6 +27,7 @@
 	<xsl:variable name="l_owned_by" select="$i18n/l/owned_by"/>
 	<xsl:variable name="l_position_object" select="$i18n/l/position_object"/>
 	<xsl:variable name="l_last_modified_by" select="$i18n/l/last_modified_by"/>
+	
 	<xsl:template name="autoindex">
 	<div class="form-div block">
 		<div id="tr-autoindex">
@@ -494,9 +495,12 @@
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="/document/context/object/user_privileges/write=1">
-				<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};posview=yes;sbfield=reposition{@id}.new_position')" title="{$l_position_object}">
+				<a class="positioning"
+					title="{$l_position_object}" 
+					href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};posview=yes;sbfield=reposition{@id}.new_position','default-dialog','{$l_position_object}')">
 					<xsl:value-of select="$position"/>
 				</a>
+				
 				<!-- the form is needed, so we can write the new position back without reloading this site from the positioning window -->
 				<form name="reposition{@id}" method="get" action="{$xims_box}{$goxims_content}">
 					<input type="hidden" name="id" value="{@id}"/>

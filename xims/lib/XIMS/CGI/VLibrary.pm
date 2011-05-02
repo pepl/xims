@@ -452,6 +452,8 @@ sub event_publication {
 =cut
 
 sub event_property_edit {
+	XIMS::Debug( 5, "called" );
+	warn "\n\n property_edit \n\n";
     my ( $self, $ctxt ) = @_;
 
     unless ( $self->_privcheck_lock($ctxt) ) {
@@ -547,6 +549,7 @@ sub event_property_store {
 
     my $object = $ctxt->object();
     my $property = $self->param('property');
+    my $objid = $self->param('objid');
 
     if ( $property !~ /^(subject|author|publication|keyword)$/ ) {
         return $self->simple_response(
@@ -579,8 +582,8 @@ sub event_property_store {
         }
     }
 
-    #use Data::Dumper;
-    #warn Dumper(\%fields);
+    use Data::Dumper;
+    warn Dumper(\%fields);
 
     if ( $fields{'id'} ) {
         # create new object by id if set
@@ -598,9 +601,7 @@ sub event_property_store {
             if ( $vlibproperty->update == 1 ) {
                 _update_or_publish($ctxt);    # update the VLibrary's timestamps
                 XIMS::Debug( 6, "$class: Update record successful." );
-                $self->redirect( $self->redirect_path($ctxt)
-                      . "?property_show=1;property=${property};property_id="
-                      . $vlibproperty->id() );
+			$self->redirect( $self->redirect_path($ctxt)."?".$property."s=1");
             }
             else {
                 XIMS::Debug( 3, "$class: Update record failed." );
@@ -612,9 +613,8 @@ sub event_property_store {
             if ( $vlibproperty->create() ) {
                 _update_or_publish($ctxt);    # update the VLibrary's timestamps
                 XIMS::Debug( 6, "$class: Update record successful." );
-                $self->redirect( $self->redirect_path($ctxt)
-                      . "?property_show=1;property=${property};property_id="
-                      . $vlibproperty->id() );
+                warn "\n\n".$objid." - ".$self->redirect_path( $ctxt, $objid )."\n\n";
+			$self->redirect( $self->redirect_path( $ctxt, $objid )."?edit=1" );
             }
             else {
                 XIMS::Debug( 3, "could not create $class" );

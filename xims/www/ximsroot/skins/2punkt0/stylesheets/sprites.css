@@ -78,6 +78,12 @@
 .ui-icon{
 	display: inline-block !important;
 }
+.ui-button-icon-only {
+    width: 1.8em;
+}
+.ui-state-default.button-delete .ui-icon{
+	background-image: url("../../../stylesheets/jquery/images/ui-icons_800000_256x240.png");
+}
 
 /* from now on only positions */
 .sprite-spacer {
@@ -97,11 +103,11 @@
     padding: 0 0 0 28px; 
 }
 .sprite-status_pub {
-    background-position: 0 -782px;
+    background-position: -1px -782px;
     padding: 0 0 0 22px !important;
 }
 .sprite-status_pub_async {
-    background-position: -2px -762px;
+    background-position: -3px -763px;
     padding: 0 0 0 22px !important;
 }
 .sprite-status_none {
@@ -119,7 +125,7 @@
     background-position: 0 -620px;
 }
 .sprite-option_delete {
-    background-position: 0 -700px;
+    background-position: 1px -702px;
 }
 .sprite-option_edit {
     background-position: 0 -680px;
