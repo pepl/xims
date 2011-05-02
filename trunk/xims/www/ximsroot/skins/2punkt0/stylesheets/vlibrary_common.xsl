@@ -26,7 +26,7 @@
   <xsl:variable name="popupsizes-rtf">
     <subject     x="910" y="500"/>
     <author      x="620" y="320"/>
-    <keyword     x="550" y="200"/>
+    <keyword     x="550" y="340"/>
     <publication x="600" y="260"/>
     <delete      x="550" y="340"/>
   </xsl:variable>
@@ -227,32 +227,11 @@
 				<xsl:call-template name="vl-button.options.edit">
 					<xsl:with-param name="mo" select="$mo"/>
 				</xsl:call-template>
-        <!--<a href="javascript:genericWindow(
-                     '{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};',
-                     '{$popupsizes[name()=$mo]/@x}',
-                     '{$popupsizes[name()=$mo]/@y}')">
-          <img src="{$skimages}option_edit.png"
-               alt="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
-               title="{$i18n_vlib/l/edit} {$i18n_vlib/l/*[name() = $mo]}"
-               border="0"
-               name="edit{id}"
-               width="32"
-               height="19"/>
-        </a>-->
         <xsl:if test="object_count = 0">
         <xsl:text>&#160;</xsl:text>
         <xsl:call-template name="vl-button.options.delete">
 					<xsl:with-param name="mo" select="$mo"/>
 				</xsl:call-template>
-          <!--<a href="javascript:genericWindow(
-                       '{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={$display_name}',
-                       '{$popupsizes[name()='delete']/@x}',
-                       '{$popupsizes[name()='delete']/@y}')">
-            <img src="{$skimages}option_delete.png"
-                 alt="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"
-                 title="{$i18n_vlib/l/delete} {$i18n_vlib/l/*[name() = $mo]}"
-                 class="delete"/>
-          </a>-->
         </xsl:if>
       </xsl:if>
     </span>
@@ -346,22 +325,21 @@
 
   </xsl:template>
   
-  <xsl:template name="vl-button.options.edit">
-  <xsl:param name="mo"/>	
-		<xsl:variable name="id" select="@id"/>		
-		
-				<a class="button option-edit" href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};','{$popupsizes[name()=$mo]/@x}','{$popupsizes[name()=$mo]/@y}')">
-                     <xsl:attribute name="title"><xsl:value-of select="$l_Edit"/></xsl:attribute><xsl:value-of select="$l_Edit"/>
-                    	</a>
-                     	</xsl:template>
-                     	
-  <xsl:template name="vl-button.options.delete">
-  <xsl:param name="mo"/>	
-		<xsl:variable name="id" select="@id"/>		
-		
-				<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={name}">
-                     <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute><xsl:value-of select="$l_delete"/>
-                    	</a>
-                     	</xsl:template>
+ <xsl:template name="vl-button.options.edit">
+	<xsl:param name="mo"/>	
+	<xsl:param name="property"><xsl:value-of select="$i18n_vlib/l/*[name()=$mo]"/></xsl:param>
+	<xsl:variable name="id" select="@id"/>				
+	<a class="button option-edit" href="javascript:createDialog('{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};','default-dialog','{$i18n/l/edit} {$property}')">
+		<xsl:value-of select="$l_Edit"/>
+	</a>
+</xsl:template>
+
+<xsl:template name="vl-button.options.delete">
+	<xsl:param name="mo"/>	
+	<xsl:variable name="id" select="@id"/>		
+	<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={name}">
+		<xsl:value-of select="$l_delete"/>
+	</a>
+</xsl:template>
 
 </xsl:stylesheet>

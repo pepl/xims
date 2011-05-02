@@ -21,8 +21,7 @@
 		<xsl:call-template name="form-pagerowlimit-edit"/>
 				</div>
 
-		<!--<div id="properties" class="form-div block">-->
-			<div  class="form-div block">
+		<div  class="form-div block">
 			<xsl:if test="$message != ''">
 				<div>
 					<span class="message">
@@ -241,7 +240,6 @@
 	</xsl:template>
 	
 	<xsl:template match="member_property" mode="entry">
-		<!--<li>-->
 		<tr class="objrow">
 			<td>
 			<xsl:value-of select="position"/>
@@ -273,13 +271,12 @@
 			</xsl:if>
 			</td>
 		</tr>
-		<!--</li>-->
 	</xsl:template>
-	
-	<xsl:template name="tr-stylesheet-edit">
+
+	<xsl:template name="form-stylesheet">
 		<xsl:variable name="parentid" select="parents/object[/document/context/object/@parent_id=@document_id]/@id"/>
 		<div id="tr-stylesheet">
-			<div id="label-stylesheet">
+			<div class="label-std">
 				<label for="input-stylesheet">
 					<xsl:value-of select="$i18n/l/Stylesheet"/>
 				</label>
@@ -287,24 +284,12 @@
 			<input type="text" name="stylesheet" size="60" value="{style_id}" class="text" id="input-stylesheet"/>
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/>
-				</xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=Folder;sbfield=eform.stylesheet')" class="doclink">
-				<!-- <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet')" class="doclink"> -->
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_stylesheet"/>
 			</a>
 		</div>
 	</xsl:template>
-	<!--<xsl:template name="tr-pagerowlimit-edit">
-    <tr>
-        <td valign="top"><xsl:value-of select="$i18n_simpledb/l/PageRowLimit"/></td>
-        <td colspan="2">
-            <input tabindex="35" type="text" name="pagerowlimit" size="2" maxlength="2" value="{attributes/pagerowlimit}" class="text"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>
-        </td>
-    </tr>
-</xsl:template>-->
+	
 </xsl:stylesheet>

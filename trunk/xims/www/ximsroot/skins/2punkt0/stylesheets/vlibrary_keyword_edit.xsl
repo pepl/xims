@@ -11,30 +11,16 @@
 	
 	<xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 	<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
-	
+	<xsl:param name="objid"/>
 	<xsl:template match="/document/context/object">
-		<html>
-			<head>
-				<title>
-					<xsl:value-of select="concat($i18n/l/edit, ' ', $i18n/l/keywords)"/>
-				</title>
-				<xsl:call-template name="css"/>
-				<xsl:call-template name="script_head"/>
-			</head>
-			<body style="width:auto;">
-				<div id="content-container">
-					<form action="{$xims_box}{$goxims_content}" name="eform" method="get" id="create-edit-form">
+					<form action="{$xims_box}{$goxims_content}" name="eform" method="get" id="property-form">						
 						<input type="hidden" name="id" id="id" value="{@id}"/>
+						<xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
 						<xsl:apply-templates select="/document/context/object/children"/>
 					</form>
-				</div>
-				<xsl:call-template name="script_bottom"/>
-			</body>
-		</html>
 	</xsl:template>
 	
 	<xsl:template match="children/object">
-		<h1><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/keyword)"/></h1>
 		<div>
 			<div class="label-std">
 				<label for="vlkeyword_name">
@@ -43,6 +29,7 @@
 			</div>
 			<input type="text" id="vlkeyword_name" name="vlkeyword_name" size="40" value="{name}"/>
 		</div>
+		<br/>
 		<div>
 			<div class="label-std">
 				<label for="vlkeyword_description">
@@ -54,12 +41,13 @@
 			</textarea>
 		</div>
 		<br/>
-		<p>
-			<input type="hidden" name="vlkeyword_id" id="vlkeyword_id" value="{@id}"/>
-			<input type="hidden" name="property" id="property" value="keyword"/>
-			<button type="submit" name="property_store" class="button" accesskey="S"><xsl:value-of select="$i18n/l/save"/></button>&#160;
-      <button type="submit" name="cancel" class="button" accesskey="C" onclick="self.close();"><xsl:value-of select="$i18n/l/cancel"/></button>
-		</p>
+		<div>
+		<input type="hidden" name="vlkeyword_id" id="vlkeyword_id" value="{@id}"/>
+		<input type="hidden" name="property" id="property" value="keyword"/>
+		<input type="hidden" name="property_store" id="property_store" />
+		<button type="submit" name="property_store" class="button" accesskey="S" onclick="closeDialog('default-dialog');"><xsl:value-of select="$i18n/l/save"/></button>&#160;
+		<button type="button" name="cancel" class="button" accesskey="C" onclick="closeDialog('default-dialog');"><xsl:value-of select="$i18n/l/cancel"/></button>
+		</div>
 	</xsl:template>
 	
 </xsl:stylesheet>

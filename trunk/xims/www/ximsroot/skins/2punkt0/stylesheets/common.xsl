@@ -14,6 +14,7 @@
 	<xsl:import href="common_header.xsl"/>
 	<xsl:import href="common_head.xsl"/>
 	<xsl:import href="common_metadata.xsl"/>
+	<xsl:import href="common_footer.xsl"/>
 	<xsl:import href="common_localized.xsl"/>
 	<xsl:import href="common_tinymce_scripts.xsl"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
@@ -685,41 +686,7 @@
 			</textarea>
 		</div>
 	</xsl:template>
-	<xsl:template name="tr-stylesheet-create">
-		<xsl:variable name="parentid" select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
-		<div id="tr-stylesheet">
-			<div class="label-std">
-				<label for="input-stylesheet">
-					<xsl:value-of select="$i18n/l/Stylesheet"/>
-				</label>
-			</div>
-			<input type="text" name="stylesheet" size="60" value="" class="text" id="input-stylesheet"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_stylesheet"/>
-			</a>
-		</div>
-	</xsl:template>
-	<xsl:template name="tr-stylesheet-edit">
-		<div id="tr-stylesheet">
-			<div class="label-std">
-				<label for="input-stylesheet">
-					<xsl:value-of select="$i18n/l/Stylesheet"/>
-				</label>
-			</div>
-			<input type="text" name="stylesheet" size="60" value="{style_id}" class="text" id="input-stylesheet"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_stylesheet"/>
-			</a>
-		</div>
-	</xsl:template>
+
 	<xsl:template name="form-stylesheet">
 		<xsl:variable name="curr_id">
 			<xsl:choose>
@@ -743,11 +710,12 @@
 			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_stylesheet"/>
 			</a>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="form-css">
 		<xsl:variable name="curr_id">
 			<xsl:choose>
@@ -770,46 +738,12 @@
 			<a href="javascript:openDocWindow('CSS')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/CSS"/></xsl:attribute>(?)</a>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=CSS;sbfield=eform.css')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=CSS,Folder;sbfield=eform.css','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_css"/>
 			</a>
 		</div>
 	</xsl:template>
-	<xsl:template name="tr-css-create">
-		<xsl:variable name="parentid" select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
-		<div id="tr-css">
-			<div class="label-std">
-				<label for="input-css">
-					<xsl:value-of select="$i18n/l/CSS"/>
-				</label>
-			</div>
-			<input type="text" name="css" size="60" value="" class="text" id="input-css"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('CSS')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/CSS"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=CSS;sbfield=eform.css')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_css"/>
-			</a>
-		</div>
-	</xsl:template>
-	<xsl:template name="tr-css-edit">
-		<div id="tr-css">
-			<div class="label-std">
-				<label for="input-css">
-					<xsl:value-of select="$i18n/l/CSS"/>
-				</label>
-			</div>
-			<input type="text" name="css" size="60" value="{css_id}" class="text" id="input-css"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('CSS')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/CSS"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=CSS;sbfield=eform.css')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_css"/>
-			</a>
-		</div>
-	</xsl:template>
+
 	<xsl:template name="form-script">
 		<xsl:variable name="curr_id">
 			<xsl:choose>
@@ -832,46 +766,12 @@
 			<a href="javascript:openDocWindow('JavaScript')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/JavaScript"/></xsl:attribute>(?)</a>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=JavaScript;sbfield=eform.script')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=JavaScript,Folder;sbfield=eform.script','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_script"/>
 			</a>
 		</div>
 	</xsl:template>
-	<xsl:template name="tr-script-create">
-		<xsl:variable name="parentid" select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
-		<div id="tr-javascript">
-			<div class="label-std">
-				<label for="input-javascript">
-					<xsl:value-of select="$i18n/l/JavaScript"/>
-				</label>
-			</div>
-			<input type="text" name="script" size="60" value="" class="text" id="input-javascript"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('JavaScript')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/JavaScript"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=JavaScript;sbfield=eform.script')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_script"/>
-			</a>
-		</div>
-	</xsl:template>
-	<xsl:template name="tr-script-edit">
-		<div id="tr-javascript">
-			<div class="label-std">
-				<label for="input-javascript">
-					<xsl:value-of select="$i18n/l/JavaScript"/>
-				</label>
-			</div>
-			<input type="text" name="script" size="60" value="{script_id}" class="text" id="input-javascript"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('JavaScript')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/JavaScript"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=JavaScript;sbfield=eform.script')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_script"/>
-			</a>
-		</div>
-	</xsl:template>
+	
 	<xsl:template name="form-feed">
 		<xsl:variable name="curr_id">
 			<xsl:choose>
@@ -894,46 +794,12 @@
 			<a href="javascript:openDocWindow('Portlet')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/RSSFeed"/></xsl:attribute>(?)</a>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=Portlet;sbfield=eform.feed')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Portlet,Folder;sbfield=eform.feed','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_feed"/>
 			</a>
 		</div>
 	</xsl:template>
-	<xsl:template name="tr-feed-create">
-		<xsl:variable name="parentid" select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
-		<div id="tr-rssfeed">
-			<div class="label-std">
-				<label for="input-rssfeed">
-					<xsl:value-of select="$i18n/l/RSSFeed"/>
-				</label>
-			</div>
-			<input type="text" name="feed" size="60" value="" class="text" id="input-rssfeed"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Portlet')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/RSSFeed"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=Portlet;sbfield=eform.feed')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_feed"/>
-			</a>
-		</div>
-	</xsl:template>
-	<xsl:template name="tr-feed-edit">
-		<div id="tr-rssfeed">
-			<div class="label-std">
-				<label for="input-rssfeed">
-					<xsl:value-of select="$i18n/l/RSSFeed"/>
-				</label>
-			</div>
-			<input type="text" name="feed" size="60" value="{feed_id}" class="text" id="input-rssfeed"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Portlet')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/RSSFeed"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Portlet;sbfield=eform.feed')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_feed"/>
-			</a>
-		</div>
-	</xsl:template>
+	
 	<xsl:template name="form-image">
 		<xsl:variable name="curr_id">
 			<xsl:choose>
@@ -956,45 +822,12 @@
 			<a href="javascript:openDocWindow('Image')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Image"/></xsl:attribute>(?)</a>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=Image;sbfield=eform.image')" class="button">
+			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=Image;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_image"/>
 			</a>
 		</div>
 	</xsl:template>
-	<xsl:template name="tr-image-create">
-		<div id="tr-image">
-			<div class="label-std">
-				<label for="input-image">
-					<xsl:value-of select="$i18n/l/Image"/>
-				</label>
-			</div>
-			<input type="text" name="image" size="60" value="" class="text" id="input-image"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Image')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Image"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?contentbrowse=1;to={$parentid};otfilter=Image;sbfield=eform.image')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_image"/>
-			</a>
-		</div>
-	</xsl:template>
-	<xsl:template name="tr-image-edit">
-		<div id="tr-image">
-			<div class="label-std">
-				<label for="input-image">
-					<xsl:value-of select="$i18n/l/Image"/>
-				</label>
-			</div>
-			<input type="text" name="image" size="60" value="{image_id}" class="text" id="input-image"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Image')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Image"/></xsl:attribute>(?)</a>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Image;sbfield=eform.image')" class="doclink">
-				<xsl:value-of select="$i18n/l/Browse_image"/>
-			</a>
-		</div>
-	</xsl:template>
+
 <!--
 	<xsl:template name="ui-datepicker">
 		<xsl:param name="formfield_id"/>
@@ -1962,52 +1795,56 @@
 			<xsl:text disable-output-escaping="yes">//]]&gt;</xsl:text>
 		</script>
 	</xsl:template>
-	<!--	Templates from stylesheets/common.xsl-->
-	<xsl:template name="script_bottom">
-		<xsl:param name="tinymce" select="false()"/>
-		<xsl:param name="simpledb" select="false()"/>
-		<xsl:param name="vlib" select="false()"/>
-		<xsl:param name="reflib" select="false()"/>
-		<xsl:param name="questionnaire" select="false()"/>
-		<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>-->
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/default.js" type="text/javascript"/>
-		<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0.js" type="text/javascript"/>
-		
-		<xsl:if test="$tinymce">
-			<xsl:call-template name="tinymce_scripts"/>
-		</xsl:if>
-		<xsl:if test="$simpledb">
-			<script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"/>
-			<script>
-				$(document).ready(function(){
-					initDatepicker();
-				});
-			</script>
-		</xsl:if>
-		<xsl:if test="$vlib">
-			<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
-			<script type="text/javascript" language="javascript">
-				<xsl:choose>
-					<xsl:when test="(/document/context/object/object_type_id = '45') or (/document/context/object/object_type_id = '11')">
-				var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id)"/>';
-				</xsl:when>
-					<xsl:otherwise>
-				var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
-				</xsl:otherwise>
-				</xsl:choose>      
-				var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
-		</script>
-		</xsl:if>
-		<xsl:if test="$reflib">
-			<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
-			<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"/>
-		</xsl:if>
-		<xsl:if test="$questionnaire">
-			<script src="{$ximsroot}scripts/questionnaire.js" type="text/javascript"/>
-		</xsl:if>
-	</xsl:template>
 	
+	<!--	Templates from stylesheets/common.xsl-->
+<xsl:template name="script_bottom">
+	<xsl:param name="tinymce" select="false()"/>
+	<xsl:param name="simpledb" select="false()"/>
+	<xsl:param name="vlib" select="false()"/>
+	<xsl:param name="reflib" select="false()"/>
+	<xsl:param name="questionnaire" select="false()"/>
+	
+	<!-- container for dialog, i.e. browse for object-->
+	<div id="default-dialog"></div>
+	
+	<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>-->
+	<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
+	<script src="{$ximsroot}scripts/default.js" type="text/javascript"/>
+	<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0.js" type="text/javascript"/>
+	
+	<xsl:if test="$tinymce">
+		<xsl:call-template name="tinymce_scripts"/>
+	</xsl:if>
+	<xsl:if test="$simpledb">
+		<script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"/>
+		<script>
+			$(document).ready(function(){
+				initDatepicker();
+			});
+		</script>
+	</xsl:if>
+	<xsl:if test="$vlib">
+		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
+		<script type="text/javascript" language="javascript">
+			<xsl:choose>
+				<xsl:when test="(/document/context/object/object_type_id = '45') or (/document/context/object/object_type_id = '11')">
+			var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id)"/>';
+			</xsl:when>
+				<xsl:otherwise>
+			var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
+			</xsl:otherwise>
+			</xsl:choose>      
+			var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
+	</script>
+	</xsl:if>
+	<xsl:if test="$reflib">
+		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"/>
+	</xsl:if>
+	<xsl:if test="$questionnaire">
+		<script src="{$ximsroot}scripts/questionnaire.js" type="text/javascript"/>
+	</xsl:if>
+</xsl:template>	
 	<xsl:template match="/document/context/object/parents/object">
 		<xsl:param name="no_navigation_at_all">false</xsl:param>
 		<xsl:variable name="thispath">
@@ -2061,9 +1898,9 @@
 				<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>
 				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path',600,400)" class="button">
-					<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Object"/>
-				</a>
+				<a href="javascript:createDialog('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path','default-dialog','{$i18n/l/Browse_for} {$i18n/l/Object}')" class="button">
+				<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Object"/>
+			</a>
 			</p>
 			<p>
 				<label for="cb-stdbm">

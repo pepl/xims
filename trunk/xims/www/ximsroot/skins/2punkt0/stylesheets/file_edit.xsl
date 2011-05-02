@@ -25,9 +25,9 @@
 	</xsl:template>
 	
 	<xsl:template name="edit-content">
-	<xsl:call-template name="form-titlelocationfile-edit"/>
-		
+		<xsl:call-template name="form-titlelocationfile-edit"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
+		<xsl:call-template name="preview-image"/>
 		<xsl:call-template name="form-keywordabstract"/>
 		<!--<xsl:call-template name="form-grant"/>-->
 	</xsl:template>
@@ -39,4 +39,6 @@
 		<xsl:call-template name="form-file-edit"/>
 	</div>
 	</xsl:template>
+	
+	<xsl:template name="preview-image"/>
 </xsl:stylesheet>

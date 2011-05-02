@@ -11,9 +11,9 @@
   
   <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
   <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
-
+  <xsl:param name="objid"/>
 	<xsl:template match="/document/context/object">
-		<html>
+		<!--<html>
 			<head>
 				<title>
 					<xsl:value-of select="concat($i18n/l/edit, ' ', $i18n/l/keywords)"/>
@@ -22,20 +22,21 @@
 				<xsl:call-template name="script_head"/>
 			</head>
 			<body style="width:auto;">
-				<div id="content-container">
+				<div id="content-container">-->
 					<form action="{$xims_box}{$goxims_content}" name="eform" method="get" id="create-edit-form">
 						<input type="hidden" name="id" id="id" value="{@id}"/>
+						<xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
 						<xsl:apply-templates select="/document/context/object/children"/>
 					</form>
-				</div>
+				<!--</div>
 				<xsl:call-template name="script_bottom"/>
 			</body>
-		</html>
+		</html>-->
 	</xsl:template>
   
   
   <xsl:template match="children/object">
-		<h1><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/author)"/></h1>
+		<!--<h1><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/author)"/></h1>-->
 		
     <div>
       <div class="label-std">
@@ -101,8 +102,8 @@
     <p>
 			<input type="hidden" name="vlauthor_id" id="vlauthor_id" value="{@id}"/>
 			<input type="hidden" name="property" id="property" value="author"/>
-			<button type="submit" name="property_store" class="button" accesskey="S"><xsl:value-of select="$i18n/l/save"/></button>&#160;
-      <button type="submit" name="cancel" class="button" accesskey="C" onclick="self.close();"><xsl:value-of select="$i18n/l/cancel"/></button>
+	    <button type="submit" name="property_store" class="button" accesskey="S" onclick="closeDialog('default-dialog');"><xsl:value-of select="$i18n/l/save"/></button>&#160;
+		<button type="button" name="cancel" class="button" accesskey="C" onclick="closeDialog('default-dialog');"><xsl:value-of select="$i18n/l/cancel"/></button>
 		</p>
   </xsl:template>
 

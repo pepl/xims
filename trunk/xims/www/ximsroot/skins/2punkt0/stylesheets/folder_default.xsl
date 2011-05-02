@@ -18,6 +18,7 @@
 	<xsl:template name="view-content">
 		<xsl:call-template name="childrentable"/>
 		<xsl:call-template name="pagenavtable"/>
+		
 	</xsl:template>
 	
 </xsl:stylesheet>

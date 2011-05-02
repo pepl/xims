@@ -1,9 +1,9 @@
 /**
- * @author suse
+ * @author Susanne Tober
  */
 
-(function($) {
-		$.widget("ui.combobox", {
+	(function( $ ) {
+		$.widget( "ui.combobox", {
 			options: {
 				input_id: '',
 				button_type: 'button',
@@ -11,68 +11,104 @@
 				readonly: false
 			},
 			_create: function() {
-				var self = this;
+				var self = this,
+					select = this.element.hide(),
+					selected = select.children( ":selected" );
+					//value = selected.val() ? selected.text() : "";
+					//alert("selected: "+selected.val());
 				var options = self.options;
-				var select = this.element.hide();
-				var input = $("<input id = '"+options.input_id+"' name = '"+options.input_id+"' size='"+options.input_size+"' >").insertAfter(select).autocomplete({
-						source: function(request, response) {
-							var matcher = new RegExp(request.term, "i");
-							response(select.children("option").map(function() {
-								var text = $(this).text();
-								if (!request.term || matcher.test(text))
-									return {
-										id: $(this).val(),
-										label: text.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + request.term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>"),
-										value: text
-									};
-							}));
-						},
+				//var input = this.input = $( "<input>" )
+				var input = $("<input id = '"+options.input_id+"' name = '"+options.input_id+"' size='"+options.input_size+"' >")
+					.insertAfter( select )
+					//.val( value )
+					.autocomplete({
 						delay: 0,
-						select: function(e, ui) {
-							if (!ui.item) {
-								// remove invalid value, as it didn't match anything
-								$(this).val("");
-								return false;
-							}
-							$(this).focus();
-							select.val(ui.item.id);
-							self._trigger("selected", null, {
-								item: select.find("[value='" + ui.item.id + "']")
-							});
-							
+						minLength: 0,
+						source: function( request, response ) {
+							var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+							response( select.children( "option" ).map(function() {
+								var text = $( this ).text();
+								if ( this.value && ( !request.term || matcher.test(text) ) )
+									return {
+										label: text.replace(
+											new RegExp(
+												"(?![^&;]+;)(?!<[^<>]*)(" +
+												$.ui.autocomplete.escapeRegex(request.term) +
+												")(?![^<>]*>)(?![^&;]+;)", "gi"
+											), "<strong>$1</strong>" ),
+										value: text,
+										option: this
+									};
+							}) );
 						},
-						minLength: 0
-					}).addClass("ui-widget ui-widget-content");	 //.addClass("ui-widget ui-widget-content ui-corner-left");	
-					if(options.readonly){
-						input.attr("readonly", "readonly");
-					}
-				//$("<button type='"+options.button_type+"'>&nbsp;</button>").insertAfter(input).button({
-				$("<button type='button'>&nbsp;</button>").insertAfter(input).button({
-					icons: {
-						primary: "ui-icon-triangle-1-s"
-					},
-					text: false
-				}).removeClass("ui-corner-all").addClass("ui-corner-right ui-button-icon").position({
-					my: "left center",
-					at: "right center",
-					of: input,
-					offset: "-1 0"
-				}).css("top", "").click(function() {
-					// close if already visible
-					if (input.autocomplete("widget").is(":visible")) {
-						input.autocomplete("close");
-						return false;
-					}
-					// pass empty string as value to search for, displaying all results
-					input.autocomplete("search", "");
-					//input.focus();
-					return false;
-				});
-				
+						select: function( event, ui ) {
+							ui.item.option.selected = true;
+							self._trigger( "selected", event, {
+								item: ui.item.option
+							});
+						},
+						change: function( event, ui ) {
+							if ( !ui.item ) {
+								var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
+									valid = false;
+								select.children( "option" ).each(function() {
+									if ( $( this ).text().match( matcher ) ) {
+										this.selected = valid = true;
+										return false;
+									}
+								});
+								if ( !valid ) {
+									// remove invalid value, as it didn't match anything
+									$( this ).val( "" );
+									select.val( "" );
+									input.data( "autocomplete" ).term = "";
+									return false;
+								}
+							}
+						}
+					})
+					.addClass( "ui-widget ui-widget-content" );
+
+				input.data( "autocomplete" )._renderItem = function( ul, item ) {
+					return $( "<li></li>" )
+						.data( "item.autocomplete", item )
+						.append( "<a>" + item.label + "</a>" )
+						.appendTo( ul );
+				};
+
+				this.button = $( "<button type='button'>&nbsp;</button>" )
+					.attr( "tabIndex", -1 )
+					.attr( "title", "Show All Items" )
+					.insertAfter( input )
+					.button({
+						icons: {
+							primary: "ui-icon-triangle-1-s"
+						},
+						text: false
+					})
+					.removeClass( "ui-corner-all" )
+					.addClass( "ui-corner-right ui-button-icon" )
+					.click(function() {
+						// close if already visible
+						if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+							input.autocomplete( "close" );
+							return;
+						}
+
+						// pass empty string as value to search for, displaying all results
+						input.autocomplete( "search", "" );
+						input.focus();
+					});
+			},
+
+			destroy: function() {
+				this.input.remove();
+				this.button.remove();
+				this.element.show();
+				$.Widget.prototype.destroy.call( this );
 			}
 		});
-
-	})(jQuery);
+	})( jQuery );
 
 
 function createMapping ( property, value, text ) {
@@ -98,6 +134,7 @@ function removeMapping ( property, property_id ) {
 		property_id: property_id
 	};
 	post_async(jsonQuery, property);
+	
 }
 
 function deleteProperty( property, property_id ){
@@ -122,7 +159,9 @@ function deleteProperty( property, property_id ){
 function post_async(jsonQuery, property) {
 	
 	$.post(abspath, jsonQuery, function(data){ 		
-								mkHandleMapResponse(data, property)}, "html" );		
+								mkHandleMapResponse(data, property);
+								initOptionsButtons();
+								}, "html" );		
 }
 
 function refresh( property ) {
@@ -132,7 +171,7 @@ function refresh( property ) {
 
 function mkHandleMapResponse(data, property) {
     var mapped_properties = 'mapped_' +  property + 's';
-	$('#' + mapped_properties).html(data); 
+	$('#' + mapped_properties).html(data); 	
 }
 	
 function trim(str){
@@ -575,6 +614,12 @@ function initOptionsButtons(){
 				primary: 'ui-icon-search'
 			}
 		});
+	/*$('.button-delete').button({
+			text: false,
+			icons: {
+				primary: 'ui-icon-closethick'
+			}
+		});*/
 }
 
 function aclTooltip(){
@@ -754,6 +799,89 @@ function initDatepicker() {
 	}
 };
 
+function createImageDialog(url, dialogid, title){
+	dialogid= "#"+dialogid;
+	$(dialogid).dialog({
+		autoOpen: false,
+		modal: true,
+		title: title,
+		width: 420
+	});
+	$(dialogid).html('<image src="'+url+'" width="400px" />');
+		
+	$(dialogid).addClass('xims-content');		
+	$(dialogid).dialog('open');
+}
+
+function createTinyMCEDialog(url, dialogid, title, txtareaid){
+	dialogid = "#"+dialogid;
+	var textareaid = "#"+txtareaid;
+	$.get(url, function(data){
+		$(dialogid).dialog({
+			autoOpen: false,
+			modal: true,
+			title: title,
+			width: '500px',
+			open: function() {
+                $(textareaid).tinymce({
+		            theme:'advanced',
+		            mode:'none',
+					language: lang,
+					plugins : 'paste,inlinepopups',
+			theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink,code,help",
+			theme_advanced_buttons2 : "",
+			theme_advanced_buttons3 : "",
+			theme_advanced_toolbar_location : "top",
+			theme_advanced_toolbar_align : "left",
+			theme_advanced_statusbar_location : "bottom",
+			theme_advanced_path_location : 'bottom',
+			theme_advanced_resizing : true,
+			entity_encoding : 'raw'
+		        });
+            },
+			beforeclose: function(event,ui){
+				tinyMCE.execCommand('mceRemoveControl',false,txtareaid);
+			}
+			}).html(data).addClass('xims-content').dialog('open');
+
+		$(".button").button();
+		
+		});
+}
+
+				
+function createDialog(url, dialogid, title){
+	dialogid = "#"+dialogid;
+	$.get(url, function(data){
+		$(dialogid).dialog({
+			autoOpen: false,
+			modal: true,
+			title: title,
+			width: 'auto',
+			close: function(ev, ui) { $(this).close(); $(dialogid).html('')}
+			}).html(data).addClass('xims-content').dialog('open');
+
+		$(".button").button();
+
+	});
+}
+
+function reloadDialog(url, dialogid){
+	dialogid = "#"+dialogid;
+	$.get(url, function(data){		
+		$(dialogid).html(data);
+	});
+}
+
+function closeDialog(dialogid){
+	//dialogid = '#'+dialogid;
+	//alert("close1");
+	$('#'+dialogid).dialog('close');
+	//alert("close2");
+	$('#'+dialogid).dialog('destroy');
+	//alert("close3");
+}
+
 $(document).ready(function(){
 
 /*$(function(){*/
@@ -778,6 +906,7 @@ $(document).ready(function(){
 	initVLibMenu();
 	
 	$('#help-widget, #create-widget, #menu-widget').css('display', 'inline-block');
+
 	
 $('.obj-table tr').focusin(
 		function(){
@@ -846,6 +975,7 @@ $('.button').hover(
 	});
 
 	$('a.more').removeClass('ui-state-default');
+	$('.ui-dialog').addClass('xims-content');
 
 
     //IE hack							

@@ -11,7 +11,7 @@
   <xsl:import href="common_tinymce_scripts.xsl"/>
 
   <xsl:template match="/document/context/object">
-    <html>
+    <!--<html>
       <head>
         <title>
           <xsl:value-of select="concat($i18n/l/edit, ' ', $i18n/l/subjects)"/>
@@ -20,7 +20,7 @@
         <xsl:call-template name="script_head"/>
       </head>
       <body>
-        <div id="content-container">
+        <div id="content-container">-->
           <form action="{$xims_box}{$goxims_content}"
                 name="eform"
                 method="get" id="create-edit-form">
@@ -30,23 +30,25 @@
                    value="{@id}"/>
             <xsl:apply-templates select="/document/context/object/children"/>
           </form>
-        </div>
+        <!--</div>
         <xsl:call-template name="script_bottom"/>
         <xsl:call-template name="tinymce_load"/>
         <xsl:call-template name="tinymce_simple"/>
       </body>
-    </html>
+    </html>-->
+		<!--<xsl:call-template name="tinymce_load"/>-->
+        <!--<xsl:call-template name="tinymce_simple"/>-->
   </xsl:template>
 
   <xsl:template match="children/object">
 
-        <h1><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/subject)"/></h1>
-          <div>
+        <!--<h1><xsl:value-of select="concat($i18n/l/edit, ' ', $i18n_vlib/l/subject)"/></h1>
+          <div>-->
 			<div class="label-std">
 				<label for="vlsubject_name"><xsl:value-of select="$i18n/l/Name"/></label>
 			</div>
       <input type="text" id="vlsubject_name" name="vlsubject_name" size="40" value="{name}" />
-    </div>
+    <!--</div>-->
     <div>
 			<div class="label-std">
         <label for="vlsubject_description"><xsl:value-of select="$i18n_vlib/l/description"/></label>

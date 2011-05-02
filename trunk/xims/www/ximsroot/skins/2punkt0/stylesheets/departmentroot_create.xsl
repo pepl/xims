@@ -23,24 +23,12 @@
 	<br clear="all"/>
 </xsl:template>
 
-<!--<xsl:template name="tr-imagedepartmentroot-create">
-    <div id="tr-image">
-        <div id="label-image"><label for="input-image"><xsl:value-of select="$i18n/l/Image"/></label></div>
-            <input type="text" name="image" size="60" value="" class="text" id="input-image"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('DepartmentImage')" class="doclink">(?)</a>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:genericWindow('{$xims_box}{$goxims_content}{$absolute_path}?contentbrowse=1;to={$parentid};otfilter=Image;sbfield=eform.image')" class="doclink"><xsl:value-of select="$i18n/l/Browse_image"/></a>
-        </div>
-</xsl:template>-->
-
 <xsl:template name="form-stylemedia">
 <div class="block form-div">
-<h2>Style &amp; Media / Multimedia</h2>
+<h2>Style &amp; Media</h2>
 	<xsl:call-template name="form-stylesheet"/>
 	<xsl:call-template name="form-css"/>
 	<xsl:call-template name="form-script"/>
-	<!--<xsl:call-template name="tr-imagedepartmentroot-create"/>-->
 	<xsl:call-template name="form-image"/>
 	<xsl:call-template name="form-feed"/>
 </div>

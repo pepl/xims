@@ -103,7 +103,7 @@
 				<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('NewsItemImage')" class="doclink">(?)</a>
 				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={$parentid};to={$parentid};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder')" class="button">
+				<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};to={$parentid};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder','default-dialog','{$i18n/l/browse_target}')" class="button">
 					<xsl:value-of select="$i18n/l/browse_target"/>
 				</a>
 			</div>

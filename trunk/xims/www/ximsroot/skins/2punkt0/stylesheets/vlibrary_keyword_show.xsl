@@ -21,7 +21,7 @@
         <xsl:call-template name="css"/>
         <xsl:call-template name="script_head"/>
       </head>
-      <body>
+      <body  style="width:auto;">
         <div id="content-container">
           <form action="" name="eform" method="get" id="create-edit-form">
             <input type="hidden" name="id" id="id" value="{@id}"/>

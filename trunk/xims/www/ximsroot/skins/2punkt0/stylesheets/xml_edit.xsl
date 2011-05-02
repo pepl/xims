@@ -50,7 +50,7 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Schema')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./schema_id};otfilter=XML;sbfield=eform.schema')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_schema"/></a>
+		<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./schema_id};otfilter=XML;sbfield=eform.schema','default-dialog','{$i18n_xml/l/Browse_schema}')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_schema"/></a>
     </div>
 </xsl:template>
 
@@ -61,7 +61,7 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('BXE Config')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-        <a href="javascript:genericWindow('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./attributes/bxeconfig_id};otfilter=XML;sbfield=eform.bxeconfig')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_BXEconfig"/></a>
+        <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./attributes/bxeconfig_id};otfilter=XML;sbfield=eform.bxeconfig','default-dialog','{$i18n_xml/l/Browse_BXEconfig}')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_BXEconfig"/></a>
     </div>
 <div id="tr-bxexpath">
     <div class="label-std"><label for="input-bxexpath"><xsl:value-of select="$i18n_xml/l/BXE_XPath"/></label></div>

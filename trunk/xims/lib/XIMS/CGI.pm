@@ -278,9 +278,9 @@ sub event_test_location {
 	else {
 		$response_blurb = "Location '$location' 0K!";
 	}
-	my $suggLength = XIMS::CONFIG->LocationMaxLength();
+	#my $suggLength = XIMS::CONFIG->LocationMaxLength();
 	
-	warn "\n\nsuggested length is: '$suggLength'\n\n";
+	#warn "\n\nsuggested length is: '$suggLength'\n\n";
 	
 	# trim location can be problematic with adding '_2' before if location already exist
 	# thinking about better solution... :-)
@@ -323,8 +323,8 @@ sub event_test_location {
 		'status' => $retval,
 		'location' => $location,
 		'reason' => $response_blurb,
-		'valChars' => XIMS::CONFIG->LocationValidChars(),
-		'suggLength' => $suggLength, 
+		#'valChars' => XIMS::CONFIG->LocationValidChars(),
+		#'suggLength' => $suggLength, 
 		'suggLocation' => $suggLocation
 	});
 	warn "\njson: $json \n";
