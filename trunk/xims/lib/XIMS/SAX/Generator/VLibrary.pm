@@ -84,6 +84,8 @@ sub prepare {
 
     $doc_data->{context}->{session} = { $ctxt->session->data() };
     $doc_data->{context}->{session}->{user} = { $ctxt->session->user->data() };
+    # add the user's preferences.
+    		$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
 
     $doc_data->{context}->{object} = { $ctxt->object->data() };
 
