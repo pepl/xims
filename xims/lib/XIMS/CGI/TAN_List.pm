@@ -73,6 +73,22 @@ sub event_default {
     return 0;
 }
 
+=head2 event_edit()
+
+=cut
+
+sub event_edit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
+
+    return 0 if $self->SUPER::event_edit( $ctxt );
+
+    $self->expand_attributes( $ctxt );
+
+    return 0;
+}
+
+
 =head2 event_download()
 
 =cut
