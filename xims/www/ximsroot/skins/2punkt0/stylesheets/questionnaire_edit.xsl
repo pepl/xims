@@ -521,4 +521,8 @@
 		</a>
     &#160;
 </xsl:template>
+
+<!-- as Questionnaire can not be reedited when published, automatic publishing makes no sense-->
+<xsl:template name="publish-on-save"/>
+
 </xsl:stylesheet>
