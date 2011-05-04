@@ -422,7 +422,6 @@ display: inline;
 
 #input-validfrom, #input-validto{
 	color:#000 !important; 
-	width: 85px;
 }
 hr {
     left: auto;

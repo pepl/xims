@@ -890,7 +890,7 @@
 		</input>
 	</xsl:template>
 	-->
-
+<!--
 	<xsl:template name="ui-datepicker">
 		<xsl:param name="formfield_id"/>
 		<xsl:param name="input_id"/>
@@ -926,7 +926,8 @@
 		</xsl:call-template>
 		<input type="hidden" name="{$formfield_id}" id="{$formfield_id}"></input>
 	</xsl:template>
-	
+	-->
+	<!--
 	<xsl:template name="form-valid_from">
 		<div id="tr-validfrom">
 			<div class="label-std">
@@ -957,6 +958,102 @@
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
 		</div>
 	</xsl:template>
+	-->
+	<xsl:template name="ui-datepicker">
+		<xsl:param name="date_lang">
+			<xsl:choose>
+				<xsl:when test="$currentuilanguage = 'de-at'">de</xsl:when>
+				<xsl:otherwise>en</xsl:otherwise>
+			</xsl:choose>
+		</xsl:param>
+		<xsl:call-template name="mk-inline-js">
+			<xsl:with-param name="code">
+				var date_lang = '<xsl:value-of select="$date_lang"/>';
+				var button_image = '<xsl:value-of select="$skimages"/>calendar.gif';
+				$(document).ready(function(){
+					initDatepicker();
+				});
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>	
+	<xsl:template name="ui-datetimepicker">
+		<xsl:param name="date_lang">
+			<xsl:choose>
+				<xsl:when test="$currentuilanguage = 'de-at'">de</xsl:when>
+				<xsl:otherwise>en</xsl:otherwise>
+			</xsl:choose>
+		</xsl:param>
+		<xsl:call-template name="mk-inline-js">
+			<xsl:with-param name="code">
+				var date_lang = '<xsl:value-of select="$date_lang"/>';
+				var button_image = '<xsl:value-of select="$skimages"/>calendar.gif';
+				$(document).ready(function(){
+					initDateTimepicker();
+				});
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>	
+	<xsl:template name="form-valid_from">
+		<div id="tr-validfrom">
+			<div class="label-std">
+				<label for="input-validfrom">
+					<xsl:value-of select="$i18n/l/Valid_from"/>
+				</label>
+			</div>
+			<input type="text" id="input-validfrom" name="valid_from_timestamp" readonly="readonly" class="input" size="12">
+				<xsl:choose>
+					<xsl:when test="valid_from_timestamp != ''">
+						<xsl:attribute name="value"><xsl:apply-templates select="valid_from_timestamp" mode="datetime-ISO-8601"/></xsl:attribute>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:attribute name="value"><xsl:value-of select="$i18n/l/Valid_from_default"/></xsl:attribute>
+					</xsl:otherwise>
+				</xsl:choose>
+			</input>
+			<xsl:call-template name="ui-datetimepicker">
+			</xsl:call-template>
+			<script type="text/javascript">
+				$(document).ready(function(){					
+					$('#input-validfrom').datetimepicker({buttonText: '<xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$i18n/l/Valid_from"/>'});
+				});
+				
+			</script>
+			
+			<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('Valid_from')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
+		</div>
+	</xsl:template>
+
+	<xsl:template name="form-valid_to">
+		<div>
+			<div class="label-std">
+				<label for="input-validto">
+					<xsl:value-of select="$i18n/l/Valid_to"/>
+				</label>
+			</div>
+			<input type="text" id="input-validto" readonly="readonly" class="input" name="valid_to_timestamp" size="12">
+				<xsl:choose>
+					<xsl:when test="valid_to_timestamp != ''">
+						<xsl:attribute name="value"><xsl:apply-templates select="valid_to_timestamp" mode="datetime-ISO-8601"/></xsl:attribute>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:attribute name="value"><xsl:value-of select="$i18n/l/Valid_from_default"/></xsl:attribute>
+					</xsl:otherwise>
+				</xsl:choose>
+			</input>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$('#input-validto').datetimepicker({buttonText: '<xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$i18n/l/Valid_to"/>'});
+				});
+				
+			</script>
+			<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('Valid_to')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_to"/></xsl:attribute>(?)</a>
+		</div>
+	</xsl:template>
+	<!--	
 	<xsl:template name="form-valid_to">
 		<div>
 			<div class="label-std">
@@ -986,7 +1083,7 @@
 			<a href="javascript:openDocWindow('Valid_to')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_to"/></xsl:attribute>(?)</a>
 		</div>
-	</xsl:template>
+	</xsl:template>-->
 	<xsl:template name="form-pagerowlimit-edit">
 		<div id="tr-pagerowlimit">
 			<div class="label-large">
@@ -1726,8 +1823,7 @@
 			</div>
 			<input type="text" size="{$size}" name="{$name}" value="{dyn:evaluate($xpath)}" class="text" maxlength="{$maxlength}" id="input-{$name}"/>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)
-        </a>
+			<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)</a>
 		</div>
 	</xsl:template>
 	<xsl:template name="mk-textarea">
@@ -1805,7 +1901,7 @@
 	<xsl:param name="questionnaire" select="false()"/>
 	
 	<!-- container for dialog, i.e. browse for object-->
-	<div id="default-dialog"></div>
+	<div id="default-dialog" style="max-height:400px;max-width:800px"></div>
 	
 	<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>-->
 	<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
