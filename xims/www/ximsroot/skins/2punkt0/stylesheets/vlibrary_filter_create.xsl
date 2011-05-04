@@ -135,7 +135,7 @@
   <xsl:template match="/document/object_types">
    <div class="block">
       <div class="label-std"><label for="input-vlobjecttype">
-        <xsl:value-of select="$i18n_vlib/l/subject"/>
+        <xsl:value-of select="$i18n/l/Objecttype"/>
       </label></div>
       <!--<select name="vlobjecttype_selected" id="input-vlobjecttype" size="1" >-->
       <select name="vlobjecttype_selected" id="input-vlobjecttype">
