@@ -764,10 +764,6 @@ function customRange(input){
 }
 
 function initDatepicker() {
-	/*if (typeof(date_lang) !== 'undefined') {
-		$.datepicker.setDefaults($.datepicker.regional[date_lang]);
-		$.timepicker.setDefaults($.datepicker.regional[date_lang]);
-	}*/
 	$.datepicker.setDefaults({ 
 		dateFormat: 'yy-mm-dd', 
 		showOn: 'button',
@@ -895,12 +891,8 @@ function reloadDialog(url, dialogid){
 }
 
 function closeDialog(dialogid){
-	//dialogid = '#'+dialogid;
-	//alert("close1");
 	$('#'+dialogid).dialog('close');
-	//alert("close2");
 	$('#'+dialogid).dialog('destroy');
-	//alert("close3");
 }
 
 $(document).ready(function(){
