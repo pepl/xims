@@ -67,16 +67,7 @@
             <xsl:choose>
             	
                 <xsl:when test="type = 'datetime'">
-                    <!--<xsl:call-template name="jscalendar-selector">
-                        <xsl:with-param name="timestamp_string" select="$propvalue"/>
-                        <xsl:with-param name="formfield_id" select="concat('simpledb_',name)"/>
-                        <xsl:with-param name="default_value" select="'none'"/>
-                    </xsl:call-template>-->
-					
-					<!--<input type="text" id="input-date" size="20" name="simpledb_{name}">
-						<xsl:if test="$propvalue != ''"><xsl:value-of select="$propvalue"/></xsl:if>
-					</input>-->
-					<xsl:call-template name="ui-datepicker">
+					<xsl:call-template name="ui-datetimepicker">
 						<xsl:with-param name="formfield_id" select="concat('simpledb_',name)"></xsl:with-param>
 						<xsl:with-param name="input_id" >input-date</xsl:with-param>
 						<xsl:with-param name="xml_node"><xsl:value-of select="/document/context/object/member_values/member_value[property_id=$propid]/value"/></xsl:with-param>
@@ -84,7 +75,13 @@
 						<xsl:with-param name="mode">datetime</xsl:with-param>
 						<xsl:with-param name="range">false</xsl:with-param>
 					</xsl:call-template>
-					<input type="text" id="input-date" size="20" name="input-date" readonly="readonly"><xsl:value-of select="$propvalue"/></input>
+					<input type="text" id="input-date" name="simpledb_{name}" readonly="readonly" size="12"><xsl:attribute name="value"><xsl:value-of select="$propvalue"/></xsl:attribute></input>
+					<script type="text/javascript">
+				$(document).ready(function(){					
+					$('#input-date').datetimepicker({buttonText: '<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="name"/>'});
+				});
+				
+			</script>
                 </xsl:when>
 				
                 <xsl:when test="type = 'stringoptions'">

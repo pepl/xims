@@ -764,9 +764,17 @@ function customRange(input){
 }
 
 function initDatepicker() {
-	if (typeof(date_lang) !== 'undefined') {
+	/*if (typeof(date_lang) !== 'undefined') {
 		$.datepicker.setDefaults($.datepicker.regional[date_lang]);
-		
+		$.timepicker.setDefaults($.datepicker.regional[date_lang]);
+	}*/
+	$.datepicker.setDefaults({ 
+		dateFormat: 'yy-mm-dd', 
+		showOn: 'button',
+		buttonImage: button_image,
+		buttonImageOnly: true
+	});
+		/*
 		$("#" + id).datepicker({
 			showOn: 'button',
 			buttonImage: button_image,
@@ -795,8 +803,19 @@ function initDatepicker() {
 				$("#" + id).datepicker('setDate', new Date(value.substr(0, 3), value.substr(5, 6), value.substr(8, 9)));
 			}
 		}
-		
+		*/
+}
+
+function initDateTimepicker() {
+	if (typeof(date_lang) !== 'undefined') {
+		$.timepicker.setDefaults($.timepicker.regional[date_lang]);
 	}
+	$.timepicker.setDefaults({ 
+		dateFormat: 'yy-mm-dd', 
+		showOn: 'button',
+		buttonImage: button_image,
+		buttonImageOnly: true		
+	});
 };
 
 function createImageDialog(url, dialogid, title){
@@ -858,6 +877,8 @@ function createDialog(url, dialogid, title){
 			modal: true,
 			title: title,
 			width: 'auto',
+			maxWidth: 800,
+			maxHeight: 400,
 			close: function(ev, ui) { $(this).close(); $(dialogid).html('')}
 			}).html(data).addClass('xims-content').dialog('open');
 
@@ -883,8 +904,15 @@ function closeDialog(dialogid){
 }
 
 $(document).ready(function(){
-
-/*$(function(){*/
+	
+	if (typeof(date_lang) !== 'undefined') {
+		$.datepicker.setDefaults($.datepicker.regional[date_lang]);
+	}
+	$.datepicker.setDefaults({ 
+		dateFormat: 'yy-mm-dd', 
+		showOn: 'button',
+		buttonImageOnly: true		
+	});
 	
     setARIARoles();
 	

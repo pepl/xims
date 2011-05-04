@@ -331,7 +331,7 @@
 		<xsl:variable name="date_from" select="concat(meta/date_from_timestamp/year,'-',meta/date_from_timestamp/month,'-',meta/date_from_timestamp/day)"/>
 		<div>
 			<div class="label-std"><label for="input-date">Datum</label></div>
-				<input type="text" name="date" id="input-date" size="10" class="text" />
+				<input type="text" name="date" id="input-date" size="10" readonly="readonly" />
         <!--(JJJJ-MM-TT)--><xsl:text>&#160;</xsl:text>
         <input id="date_from" type="hidden"></input>
 				<!-- <a href="javascript:openDocWindow('Date')" class="doclink">(?)</a> -->
@@ -345,38 +345,32 @@
 			</xsl:call-template>
 		</div>
 	</xsl:template>
-
+	
 	<xsl:template name="form-chronicle_from">
-	<xsl:variable name="chronicle_from_date_tmp" select="concat(meta/date_from_timestamp/year,'-',meta/date_from_timestamp/month,'-',meta/date_from_timestamp/day)"/>
-		<xsl:variable name="chronicle_from_date">
-			<xsl:if test="$chronicle_from_date_tmp != '--'">
-				<xsl:value-of select="$chronicle_from_date_tmp"/>
-			</xsl:if>
-		</xsl:variable>
-		<div>
+		<div id="tr-validfrom">
 			<div class="label-std">
 				<label for="input-validfrom">
 					<xsl:value-of select="$i18n_vlib/l/chronicle_from"/>
 				</label>
 			</div>
-			<input type="text" id="input-validfrom" readonly="readonly" class="input">
+			<input type="text" id="input-validfrom" name="chronicle_from_date" readonly="readonly" class="input" size="8">
 				<xsl:choose>
-					<xsl:when test="$chronicle_from_date != ''">
-						<xsl:attribute name="value"><xsl:apply-templates select="meta/date_from_timestamp" mode="date"/></xsl:attribute>
+					<xsl:when test="meta/date_from_timestamp != ''">
+						<xsl:attribute name="value"><xsl:apply-templates select="meta/date_from_timestamp" mode="date-ISO-8601"/></xsl:attribute>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:attribute name="value"><xsl:value-of select="$i18n/l/Valid_from_default"/></xsl:attribute>
 					</xsl:otherwise>
 				</xsl:choose>
 			</input>
-			<xsl:call-template name="ui-datepicker">
-				<xsl:with-param name="input_id" select="'input-validfrom'"/>
-				<xsl:with-param name="formfield_id" select="'chronicle_from_date'"/>
-				<xsl:with-param name="xml_node" select="meta/date_from_timestamp"/>
-				<xsl:with-param name="buttontext">
-					<xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$i18n_vlib/l/chronicle_from"/>
-				</xsl:with-param>
-			</xsl:call-template>
+			<xsl:call-template name="ui-datepicker"/>
+			<script type="text/javascript">
+				$(document).ready(function(){					
+					$('#input-validfrom').datepicker({buttonText: '<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$i18n_vlib/l/chronicle_from"/>'});
+				});
+				
+			</script>
+			
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Valid_from')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
@@ -384,59 +378,58 @@
 	</xsl:template>
 	
 	<xsl:template name="form-chronicle_to">
-		<xsl:variable name="chronicle_to_date_tmp" select="concat(meta/date_to_timestamp/year,'-',meta/date_to_timestamp/month,'-',meta/date_to_timestamp/day)"/>
-		<xsl:variable name="chronicle_to_date">
-			<xsl:if test="$chronicle_to_date_tmp != '--'">
-				<xsl:value-of select="$chronicle_to_date_tmp"/>
-			</xsl:if>
-		</xsl:variable>
-		<div>
+		<div id="tr-validto">
 			<div class="label-std">
 				<label for="input-validto">
 					<xsl:value-of select="$i18n_vlib/l/chronicle_to"/>
 				</label>
 			</div>
-			<input type="text" id="input-validto" readonly="readonly" class="input">
+			<input type="text" id="input-validto" name="chronicle_to_date" readonly="readonly" class="input" size="8">
 				<xsl:choose>
-					<xsl:when test="chronicle_to_date != ''">
-						<xsl:attribute name="value"><xsl:apply-templates select="chronicle_to_date" mode="date"/></xsl:attribute>
+					<xsl:when test="meta/date_to_timestamp != ''">
+						<xsl:attribute name="value"><xsl:apply-templates select="meta/date_to_timestamp" mode="date-ISO-8601"/></xsl:attribute>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:attribute name="value"><xsl:value-of select="$i18n/l/Valid_from_default"/></xsl:attribute>
 					</xsl:otherwise>
 				</xsl:choose>
 			</input>
-			<xsl:call-template name="ui-datepicker">
-				<xsl:with-param name="input_id" select="'input-validto'"/>
-				<xsl:with-param name="formfield_id" select="'chronicle_to_date'"/>
-				<xsl:with-param name="xml_node" select="meta/date_to_timestamp"/>
-				<xsl:with-param name="buttontext">
-					<xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$i18n_vlib/l/chronicle_to"/>
-				</xsl:with-param>
-			</xsl:call-template>
+			<xsl:call-template name="ui-datepicker"/>
+			<script type="text/javascript">
+				$(document).ready(function(){					
+					$('#input-validto').datepicker({buttonText: '<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$i18n_vlib/l/chronicle_to"/>'});
+				});
+				
+			</script>
+			
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Valid_to')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_to"/></xsl:attribute>(?)</a>
+			<a href="javascript:openDocWindow('Valid_from')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
 		</div>
 	</xsl:template>
-	
+
 	<xsl:template name="form-dc_date">
-		<!--<xsl:variable name="date_from" select="concat(meta/date_from_timestamp/year,'-',meta/date_from_timestamp/month,'-',meta/date_from_timestamp/day)"/>-->
 		<div>
 			<div class="label-std"><label for="input-dc_date"><xsl:value-of select="$i18n/l/Date_selector"/></label></div>
-				<input type="text" name="input-dc_date" id="input-dc_date" size="10" class="text" />
-        <!--(JJJJ-MM-TT)--><xsl:text>&#160;</xsl:text>
-        <!--<input id="dc_date" name="dc_date" type="hidden"></input>-->
-				<!-- <a href="javascript:openDocWindow('Date')" class="doclink">(?)</a> -->
-				<xsl:call-template name="ui-datepicker">
-				<xsl:with-param name="input_id" select="'input-dc_date'"/>
-				<xsl:with-param name="formfield_id" select="'dc_date'"/>
-				<xsl:with-param name="xml_node" select="meta/dc_date"/>
-				<xsl:with-param name="buttontext">
-					<xsl:value-of select="$i18n/l/Edit"/>&#160;Datum<!--<xsl:value-of select="$i18n_vlib/l/chronicle_from"/>-->
-				</xsl:with-param>
-				<xsl:with-param name="mode" >date</xsl:with-param>
+				<input type="text" name="dc_date" id="input-dc_date" size="8" readonly="readonly" >
+					<xsl:choose>
+					<xsl:when test="meta/dc_date != ''">
+						<xsl:attribute name="value"><xsl:apply-templates select="meta/dc_date" mode="date-ISO-8601"/></xsl:attribute>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:attribute name="value"><xsl:value-of select="$i18n/l/Valid_from_default"/></xsl:attribute>
+					</xsl:otherwise>
+				</xsl:choose>
+				</input>
+				<xsl:text>&#160;</xsl:text>
+			<xsl:call-template name="ui-datepicker">
 			</xsl:call-template>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$('#input-dc_date').datepicker({buttonText: '<xsl:value-of select="$i18n/l/Edit"/>&#160;Datum', dateFormat: 'yy-mm-dd'});
+				});
+				
+			</script>
 		</div>
 	</xsl:template>
 	
@@ -462,8 +455,6 @@
 		<h2>Meta Data</h2>
 		<xsl:call-template name="form-abstract"/>
 		<xsl:call-template name="tr-publisher"/>
-	<!--<xsl:call-template name="tr-chronicle_from"/>
-	<xsl:call-template name="tr-chronicle_to"/>-->
 	<xsl:choose>
 		<xsl:when test="$mode = 'chronicle'">
 			<xsl:call-template name="form-chronicle_from"/>

@@ -101,7 +101,12 @@
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/simpledb.css" type="text/css"/>
 		</xsl:if>
-		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/min.css" type="text/css"/>
+		<!--<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/min.css" type="text/css"/>-->
+		<!-- debugging mode -->
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/common.css" type="text/css"/>
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/content.css" type="text/css"/>
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/sprites.css" type="text/css"/>
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/menu.css" type="text/css"/>
 
 	</xsl:template>
 	
@@ -110,8 +115,9 @@
 		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js" type="text/javascript"/>-->
 		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m2.js" type="text/javascript"/>-->
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m3.js" type="text/javascript"/>
-		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/jquery/fg.menu.js" type="text/javascript"/>-->
+		<script src="{$ximsroot}scripts/jquery/jquery-ui-timepicker-addon.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
+		<!--<script src="{$ximsroot}scripts/jquery/fg.menu.js" type="text/javascript"/>-->
 	</xsl:template>
 </xsl:stylesheet>
 
