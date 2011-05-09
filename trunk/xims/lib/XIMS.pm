@@ -273,6 +273,11 @@ sub RESOLVERELTOSITEROOTS     { return $_CONFIG_->ResolveRelToSiteRoots(); }
 
 sub SEARCHRESULTROWLIMIT      { return $_CONFIG_->SearchResultRowLimit(); }
 
+sub DEFAULTUSERPREFSSKIN      { return $_CONFIG_->DefaultUserPrefsSkin(); }
+sub DEFAULTUSERPREFSPROFILE      { return $_CONFIG_->DefaultUserPrefsProfile(); }
+sub DEFAULTUSERPREFSCONTAINERVIEW      { return $_CONFIG_->DefaultUserPrefsContainerview(); }
+sub DEFAULTUSERPREFSPUBONSAVE      { return $_CONFIG_->DefaultUserPrefsPubOnSave(); }
+
 sub UILANGUAGES {
     my %rv;
     foreach ( $_CONFIG_->UILanguages() ) {

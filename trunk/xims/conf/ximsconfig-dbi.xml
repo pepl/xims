@@ -8,7 +8,6 @@
             <item name="session.last_access_timestamp" value="now()"/>
             <item name="document.id" value="ci_documents_id_seq_nval()"/>
             <item name="bookmark.id" value="ci_bookmarks_id_seq_nval()"/>
-			<item name="userprefs.id" value="ci_user_prefs_id_seq_nval()"/>
             <item name="language.id" value="ci_languages_id_seq_nval()"/>
             <item name="objecttype.id" value="ci_object_types_id_seq_nval()"/>
             <item name="dataformat.id" value="ci_data_formats_id_seq_nval()"/>

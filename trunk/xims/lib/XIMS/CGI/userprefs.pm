@@ -64,21 +64,20 @@ sub event_init {
     my $userprefs;
     if ( not $create ) {
        my $id = $ctxt->session->user->id();
-        warn("\nnew user prefs with id $id \n");
 
         $userprefs = XIMS::UserPrefs->new();
         $userprefs->id($user->id());
-		$userprefs->profile_type($user->profile_type());
-	    $userprefs->skin($user->skin());
-	    $userprefs->publish_at_save($user->publish_at_save());
-	    $userprefs->containerview_show($user->containerview_show());
+		$userprefs->profile_type($user->userprefs->profile_type());
+	    $userprefs->skin($user->userprefs->skin());
+	    $userprefs->publish_at_save($user->userprefs->publish_at_save());
+	    $userprefs->containerview_show($user->userprefs->containerview_show());
 #        if ( not $ctxt->session->user->admin() ) {
 #            return $self->sendEvent('access_denied')
 #              if $userprefs->id() != $ctxt->session->user->id();
 #        }
     }
     else {
-    	warn("\nnew user prefs\n");
+    	#warn("\nnew user prefs\n");
         $userprefs = XIMS::UserPrefs->new();
     }
 
@@ -128,7 +127,6 @@ sub event_setdefault {
     my $default_userprefs
         = $user->userprefs( profile_type => 'standard', skin => 'default', publish_at_save => 0, containerview_show => 'title' );
     if ($default_userprefs) {
-        #$default_userprefs->stdhome(undef);
         if ( not $default_userprefs->update() ) {
             XIMS::Debug( 3, "could not unset default userprefs" );
             $self->sendError( $ctxt, __ "Could not unset default userprefs!" );
@@ -136,7 +134,6 @@ sub event_setdefault {
         }
     }
 
-    #$bookmark->stdhome(1);
     $userprefs->update();
 
     $self->redirect( $self->redirect_path($ctxt) );
@@ -178,38 +175,12 @@ sub event_create {
     my $publish_at_save = 0;
     	if($self->param('publish_at_save') eq 'on'){$publish_at_save = 1;}
     my $containerview_show = $self->param('containerview_show');
-#    if ( $stdhome and $stdhome == 1 ) {
-#        my $default_bookmark =
-#          $user->bookmarks( explicit_only => 1, stdhome => 1 );
-#        if ($default_bookmark) {
-#            $default_bookmark->stdhome(undef);
-#            if ( not $default_bookmark->update() ) {
-#                XIMS::Debug( 3, "could not unset default bookmark" );
-#                $self->sendError( $ctxt, __"Could not unset default bookmark!" );
-#                return 0;
-#            }
-#        }
-#    }
 
     $userprefs->profile_type($profile_type);
     $userprefs->skin($skin);
     $userprefs->publish_at_save($publish_at_save);
     $userprefs->containerview_show($containerview_show);
 
-#    my $path = $self->param('path');
-#    my $object = XIMS::Object->new( path => $path );
-#
-#    if ( not defined $object ) {
-#        XIMS::Debug( 3, "could not find object with path '$path'!" );
-#        $self->sendError( $ctxt, 
-#                          __x("Could not find object with path '{path}'!",
-#                              path => $path
-#                          )
-#        );
-#        return 0;
-#    }
-
-    #$userprefs->content_id( $object->id() );
     if($id){
     	warn "\nUpdate user's preferences\n";
     	$userprefs->update();    	
@@ -257,9 +228,12 @@ sub redirect_path {
 
     my $uri   = Apache::URI->parse( $ctxt->apache() );
     my $query = $uri->query();
-
-    # get rid of event identifiers
-    $query =~ s/(delete|create|setdefault)=([^(;|&)]+)//g;
+    my $port = $uri->port();
+    warn "port : ".$port;
+    #somehow magically the port is 82... why???
+    $uri->port(80);
+    $port = $uri->port();
+    warn "port : ".$port;
 
     if ( $query =~ /name=([^(;|&)]+)/ ) {
         $uri->path( XIMS::GOXIMS() . '/users' );
@@ -270,7 +244,6 @@ sub redirect_path {
         $uri->query("prefs=1;$query");
     }
 
-    #warn "redirecting to ". $uri->unparse();
     return $uri->unparse();
 }
 
