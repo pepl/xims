@@ -75,6 +75,12 @@ sub new {
     return $self;
 }
 
+sub create {
+    my $self = shift;
+    my $ret = $self->data_provider->createUserPrefs( $self->data());
+    return $ret;
+}
+
 1;
 
 __END__

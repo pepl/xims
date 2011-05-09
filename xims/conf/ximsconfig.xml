@@ -215,7 +215,17 @@
         # Do not change unless you know what you are doing!
         -->
         <ContentInterface>content</ContentInterface>
+		
+		<!--
+		# Default UserPreferences
+		-->
+		<DefaultUserPrefsSkin>default</DefaultUserPrefsSkin>
+		<DefaultUserPrefsProfile>standard</DefaultUserPrefsProfile>
+		<DefaultUserPrefsContainerview>title</DefaultUserPrefsContainerview>
+		<DefaultUserPrefsPubOnSave>0</DefaultUserPrefsPubOnSave>
+		
     </General>
     <!-- Relative to $xims_home/conf -->
     <Include>conf.d</Include>
+	
 </Config>

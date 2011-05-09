@@ -182,9 +182,24 @@ sub userprefs {
     $params{containerview_show} = $args{containerview_show} if exists $args{containerview_show};
 
     my @userprefs_data = $self->data_provider->getUserPrefs(%params);
-    my @userprefs = map { XIMS::UserPrefs->new->data( %{$_} ) } @userprefs_data;
 
-    return $userprefs[0];
+	#if user's preferences dont't exist, create default prefernces
+    if(not defined @userprefs_data){
+    	my $userprefs = XIMS::UserPrefs->new();
+    	$userprefs->profile_type(XIMS->DefaultUserPrefsProfile());
+    	$userprefs->skin(XIMS->DefaultUserPrefsSkin());
+    	$userprefs->publish_at_save(XIMS->DefaultUserPrefsPubOnSave());
+    	$userprefs->containerview_show(XIMS->DefaultUserPrefsContainerview());
+    	$userprefs->id($self->id());
+    	$userprefs->create();
+    	return $userprefs;
+    }
+    else{
+    	my @userprefs = map { XIMS::UserPrefs->new->data( %{$_} ) } @userprefs_data;
+    	return $userprefs[0];
+    }
+
+    
 }
 
 =head2 dav_otprivileges()
