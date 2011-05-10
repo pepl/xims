@@ -167,7 +167,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 		</div>
-		<noscript>
+		<!--<noscript>
 			<form action="{$xims_box}{$goxims_content}{$absolute_path}?" method="get">
 				<select name="objtype">
 					<xsl:choose>
@@ -175,7 +175,6 @@
 							<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]" mode="form"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<!-- Do not show object types which contain "Item" in their name with the only exception of "NewsItem"! -->
 							<xsl:apply-templates select="/document/object_types/object_type[can_create and name != 'Portal' and name != 'Annotation' and not(contains(name,'Item') and not(substring-before(name, 'Item')='News')) and parent_id = $parent_id]" mode="form">
 								<xsl:sort select="name"/>
 							</xsl:apply-templates>
@@ -194,7 +193,7 @@
 					<input name="order" type="hidden" value="{$order}"/>
 				</xsl:if>
 			</form>
-		</noscript>
+		</noscript>-->
 		</xsl:when>
 	</xsl:choose>	
 	</xsl:template>
@@ -341,10 +340,10 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</ul>
-				<ul class="more" id="bm-links"></ul>
+				<ul class="more" id="bm-links"><li></li></ul>
 			</div>
 
-
+<!--
 		<noscript>
 			<xsl:choose>
 				<xsl:when test="/document/context/session/public_user = '1'">
@@ -369,7 +368,7 @@
 									&#160;&#160;&#160;&#160;
 							</xsl:otherwise>
 			</xsl:choose>
-		</noscript>
+		</noscript>-->
 	</xsl:template>
 
 	<!--Help Widget-->	
@@ -407,7 +406,7 @@
 							<xsl:attribute name="title">
 								Xims an der Universität Innsbruck
 							</xsl:attribute>
-								Xims UIBK
+							Xims UIBK
 						</a>
 					</li>
 					<li>
@@ -428,6 +427,7 @@
 					</li>
 				</ul>
 </div>
+<!--
 		<noscript>
 			<form action="{$xims_box}{$goxims_content}{$absolute_path}?" method="get">
 			<select>
@@ -478,6 +478,6 @@
 							</option>
 							</select>
 							</form>
-			</noscript>
+			</noscript>-->
 	</xsl:template>
 </xsl:stylesheet>
