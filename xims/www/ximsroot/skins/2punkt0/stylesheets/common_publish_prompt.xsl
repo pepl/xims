@@ -105,7 +105,7 @@
 														</div>
 														<div>
                                  <label for="autopublish">Ausgewählte Objekte automatisch (wieder)veröffentlichen?</label> 
-																<input type="checkbox" name="autopublish" id="autopublish" value="1" disabled="true" class="checkbox"/>
+																<input type="checkbox" name="autopublish" id="autopublish" value="1" disabled="disabled" class="checkbox"/>
 														</div>
 													</xsl:when>
 													<xsl:otherwise>
@@ -162,18 +162,18 @@
 				<input type="checkbox" name="objids" value="{@id}" class="checkbox" id="objid-{@id}">
 					<xsl:choose>
 						<xsl:when test="string-length(location) &lt;= 0">
-							<xsl:attribute name="disabled">true</xsl:attribute>
+							<xsl:attribute name="disabled">disabled</xsl:attribute>
 						</xsl:when>
 						<xsl:when test="published = '1' and
 concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &gt; concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-							<xsl:attribute name="checked">true</xsl:attribute>
+							<xsl:attribute name="checked">checked</xsl:attribute>
 						</xsl:when>
 						<xsl:when test="published = '1' and
 concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-							<xsl:attribute name="disabled">true</xsl:attribute>
+							<xsl:attribute name="disabled">disabled</xsl:attribute>
 						</xsl:when>
 						<xsl:when test="published != '1'">
-							<xsl:attribute name="onClick">isChecked('objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0</xsl:attribute>
+							<xsl:attribute name="onclick">isChecked('objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0</xsl:attribute>
 						</xsl:when>
 					</xsl:choose>
 				</input>
