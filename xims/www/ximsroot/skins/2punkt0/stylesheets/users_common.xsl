@@ -20,9 +20,9 @@
 <xsl:param name="object_type">user</xsl:param>
 
 <xsl:variable name="i18n_users" select="document(concat($currentuilanguage,'/i18n_users.xml'))"/>
-
+<!--
 <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
-
+-->
 <xsl:variable name="order-by-opposite">
   <xsl:choose>
     <xsl:when test="$order-by='ascending'">descending</xsl:when>
@@ -316,7 +316,7 @@
 
 <xsl:template name="create_manage_accounts">
             <div>
-                <form name="userfilter">
+                <form name="userfilter" action="">
                 <p>
                     <a href="{$xims_box}{$goxims_users}?create=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
 											<xsl:value-of select="$i18n_users/l/Create_account"/>
@@ -343,7 +343,6 @@
 </xsl:template>
 
 <xsl:template name="system_privileges">
-<br/>
       <p><xsl:value-of select="$i18n_users/l/System_privileges"/>:</p>
 
 <table id="table-syspriv">
@@ -358,7 +357,6 @@
                       </input>
                       <label for="cb-acc-cp"><xsl:value-of select="$i18n_users/l/Change_Password"/></label>
                   </span>
-<!--</td><td>-->
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_GRANT_ROLE" id="cb-acc-gr" class="checkbox">
                           <xsl:if test="system_privileges/grant_role = 1">
@@ -383,8 +381,6 @@
                       </input>
                       <label for="cb-acc-rp"><xsl:value-of select="$i18n_users/l/Reset_Password"/></label>
                   </span>
-<!--              </td>
-              <td>-->
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_SET_STATUS" id="cb-acc-ss" class="checkbox">
                           <xsl:if test="system_privileges/set_status = 1">
@@ -393,8 +389,6 @@
                       </input>
                       <label for="cb-acc-ss"><xsl:value-of select="$i18n_users/l/Set_Status"/></label>
                   </span>
-<!--              </td>
-              <td>-->
               <br/>
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CREATE_ROLE" id="cb-acc-cr" class="checkbox">
@@ -404,8 +398,6 @@
                       </input>
                       <label for="cb-acc-cr"><xsl:value-of select="$i18n_users/l/Create_Role"/></label>
                   </span>
-<!--              </td>
-              <td>-->
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_DELETE_ROLE" id="cb-acc-dr" class="checkbox">
                           <xsl:if test="system_privileges/delete_role = 1">
@@ -414,8 +406,6 @@
                       </input>
                       <label for="cb-acc-dr"><xsl:value-of select="$i18n_users/l/Delete_Role"/></label>
                   </span>
-<!--              </td>
-              <td>-->
               <br/>
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_ROLE_FULLNAME" id="cb-acc-crf" class="checkbox">
@@ -425,8 +415,6 @@
                       </input>
                       <label for="cb-acc-crf"><xsl:value-of select="$i18n_users/l/Change_Role_Fullname"/></label>
                   </span>
-<!--              </td>
-              <td>-->
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_USER_FULLNAME" id="cb-acc-cuf" class="checkbox">
                           <xsl:if test="system_privileges/change_user_fullname = 1">
@@ -435,8 +423,6 @@
                       </input>
                       <label for="cb-acc-cuf"><xsl:value-of select="$i18n_users/l/Change_User_Fullname"/></label>
                   </span>
-<!--              </td>
-              <td>-->
               <br/>
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_ROLE_NAME" id="cb-acc-crn" class="checkbox">
@@ -446,8 +432,6 @@
                       </input>
                       <label for="cb-acc-crn"><xsl:value-of select="$i18n_users/l/Change_Rolename"/></label>
                   </span>
-<!--              </td>
-              <td>-->
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CHANGE_USER_NAME" id="cb-acc-cun" class="checkbox">
                           <xsl:if test="system_privileges/change_user_name = 1">
@@ -456,8 +440,6 @@
                       </input>
                       <label for="cb-acc-cun"><xsl:value-of select="$i18n_users/l/Change_Username"/></label>
                   </span>
-<!--              </td>
-              <td>-->
               <br/>
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_CREATE_USER" id="cb-acc-cu" class="checkbox">
@@ -467,8 +449,6 @@
                       </input>
                       <label for="cb-acc-cu"><xsl:value-of select="$i18n_users/l/Create_User"/></label>
                   </span>
-<!--              </td>
-              <td>-->
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_DELETE_USER" id="cb-acc-du" class="checkbox">
                           <xsl:if test="system_privileges/delete_user = 1">
@@ -477,8 +457,6 @@
                       </input>
                       <label for="cb-acc-du"><xsl:value-of select="$i18n_users/l/Delete_User"/></label>
                   </span>
-<!--              </td>
-            <td>-->
             <br/>
               <span class="cboxitem">
                 <input type="checkbox" name="system_privs_CHANGE_DAV_OTPRIVS_MASK" id="cb-acc-cdo" class="checkbox">
@@ -504,8 +482,6 @@
                       </input>
                       <label for="cb-acc-csp"><xsl:value-of select="$i18n_users/l/Change_Sysprivs_Mask"/></label>
                   </span>
-<!--              </td>
-              <td>-->
                  <span class="cboxitem">
                       <input type="checkbox" name="system_privs_SET_ADMIN_EQU" id="cb-acc-sae" class="checkbox">
                           <xsl:if test="system_privileges/set_admin_equ = 1">
@@ -521,23 +497,34 @@
 </xsl:template>
  
 <xsl:template name="usermeta">
-<p>
-<div class="label-med"><label for="acc-lastname"><xsl:value-of select="$i18n_users/l/Lastname"/>*:</label></div><input size="30" maxlength="30" name="lastname" type="text" value="{lastname}" id="acc-lastname"/>
-</p><p>
-<div class="label-med"><label for="acc-middlename"><xsl:value-of select="$i18n_users/l/Middlename"/>:</label></div><input size="30" maxlength="30" name="middlename" type="text" value="{middlename}" id="acc-middlename"/>
-</p><p>
-<div class="label-med"><label for="acc-firstname"><xsl:value-of select="$i18n_users/l/Firstname"/>:</label></div><input size="30" maxlength="30" name="firstname" type="text" value="{firstname}" id="acc-firstname"/>
-</p><p>
-<div class="label-med"><label for="acc-email"><xsl:value-of select="$i18n/l/Email"/>:</label></div><input size="30" maxlength="80" name="email" type="text" value="{email}" id="acc-email"/>
-</p><p>
-<div class="label-med"><label for="acc-url">URL:</label></div><input size="30" maxlength="80" name="url" type="text" value="{url}" id="acc-url"/>
-</p>
+	<div class="form-div">
+		<div>
+			<div class="label-med"><label for="acc-lastname"><xsl:value-of select="$i18n_users/l/Lastname"/>*:</label></div>
+			<input size="30" maxlength="30" name="lastname" type="text" value="{lastname}" id="acc-lastname"/>
+		</div>
+		<div>
+			<div class="label-med"><label for="acc-middlename"><xsl:value-of select="$i18n_users/l/Middlename"/>:</label></div>
+			<input size="30" maxlength="30" name="middlename" type="text" value="{middlename}" id="acc-middlename"/>
+		</div>
+		<div>
+			<div class="label-med"><label for="acc-firstname"><xsl:value-of select="$i18n_users/l/Firstname"/>:</label></div>
+			<input size="30" maxlength="30" name="firstname" type="text" value="{firstname}" id="acc-firstname"/>
+		</div>
+		<div>
+			<div class="label-med"><label for="acc-email"><!--<xsl:value-of select="$i18n/l/Email"/>-->Email:</label></div>
+			<input size="30" maxlength="80" name="email" type="text" value="{email}" id="acc-email"/>
+		</div>
+		<div>
+			<div class="label-med"><label for="acc-url">URL:</label></div>
+			<input size="30" maxlength="80" name="url" type="text" value="{url}" id="acc-url"/>
+		</div>
+	</div>
 </xsl:template>
 
 <xsl:template name="user_isadmin">
-    <fieldset>
-    <legend>
-      <div class="label-med"><xsl:value-of select="$i18n_users/l/User_is_Administrator"/>:</div></legend>
+	<div>
+	<fieldset>
+      <legend class="label-med"><xsl:value-of select="$i18n_users/l/User_is_Administrator"/>:</legend>
           <input name="admin" type="radio" value="true" class="radio-button" id="acc-isadmin-true">
             <xsl:if test="admin = '1'">
               <xsl:attribute name="checked">checked</xsl:attribute>
@@ -550,13 +537,14 @@
             </xsl:if>
           </input>
            <label for="acc-isadmin-false"><xsl:value-of select="$i18n/l/No"/></label>
-    </fieldset>
+	</fieldset>
+	</div>
 </xsl:template>
 
 <xsl:template name="account_enabled">
-    <fieldset>
-    <legend>
-      <div class="label-med"><xsl:value-of select="$i18n_users/l/Account_is_Enabled"/>:</div></legend>
+	<div>
+	<fieldset>
+		<legend class="label-med"><xsl:value-of select="$i18n_users/l/Account_is_Enabled"/>:</legend><!--</div>-->
           <input name="enabled" type="radio" value="true" class="radio-button" id="acc-isact-true">
             <xsl:if test="enabled = '1' or $enabled = 'true'">
               <xsl:attribute name="checked">checked</xsl:attribute>
@@ -570,6 +558,7 @@
           </input>
           <label for="acc-isact-false"><xsl:value-of select="$i18n/l/No"/></label>
     </fieldset>
+	</div>
 </xsl:template>
 
 <xsl:template name="exitform">

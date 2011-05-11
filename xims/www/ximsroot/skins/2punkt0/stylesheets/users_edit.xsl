@@ -13,7 +13,7 @@
 <xsl:import href="users_common.xsl"/>
 
 <xsl:template match="/document">
-    <html>
+    <!--<html>
         <head>
             <title>
                 <xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$i18n/l/User"/> - XIMS
@@ -24,67 +24,66 @@
         <body margintop="0" marginleft="0" marginwidth="0" marginheight="0" background="{$skimages}body_bg.png">
         <xsl:call-template name="header">
             <xsl:with-param name="noncontent">true</xsl:with-param>
-        </xsl:call-template>
+        </xsl:call-template>-->
+		<html>
+	<xsl:call-template name="head_default"><xsl:with-param name="mode">user</xsl:with-param></xsl:call-template>
+	<body>
+		<xsl:call-template name="header">
+			<xsl:with-param name="noncontent">true</xsl:with-param>
+		</xsl:call-template>
+		
+		<div id="content-container">
+			<h1 class="bluebg"><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$i18n/l/User"/><!--<xsl:value-of select="$i18n_users/l/Edit_account"/>--></h1>
         <xsl:apply-templates select="/document/context/user"/>
-        <xsl:call-template name="script_bottom"/>
+		 </div>
+		<xsl:call-template name="script_bottom"/>
         </body>
+        <!--<xsl:call-template name="script_bottom"/>
+        </body>-->
     </html>
 </xsl:template>
 
 <xsl:template match="user">
     <form name="userEdit" action="{$xims_box}{$goxims_users}" method="post">
-        <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-            <tr background="{$skimages}generic_tablebg_1x20.png">
-              <td>&#160;</td>
-            </tr>
-            <tr>
-              <td align="center">
 
-              <br />
-              <!-- begin widget table -->
-              <table cellpadding="2" cellspacing="0" border="0">
-                <tr>
-                  <td align="center" class="bluebg" colspan="2">
-                      <xsl:value-of select="$i18n/l/Edit"/>&#160;<xsl:value-of select="$i18n/l/User"/>
-                  </td>
-                </tr>
-                <tr>
-                  <td>ID:</td>
-                  <td><xsl:value-of select="@id"/></td>
-                </tr>
+				<div class="form-div block">
+					<div>
+                <div class="label-med">ID:</div>
+                <xsl:value-of select="@id"/>
+                </div>
 
-                  <xsl:if test="/document/context/session/user/system_privileges/change_user_name = 1">
-                      <tr>
-                          <td>
-                              <img src="{$ximsroot}images/spacer_white.gif" alt="*"/>
-                              <span class="compulsory"><xsl:value-of select="$i18n/l/Username"/></span>:</td>
-                          <td><input size="30" maxlength="30" name="name" type="text" value="{name}"/></td>
-                      </tr>
-                  </xsl:if>
+                  
+                      <div>
+                <div class="label-med"><label for="name"><xsl:value-of select="$i18n/l/Username"/></label>*:</div>
+                  <input size="30" maxlength="30" id="name" name="name" type="text" value="{name}">
+                  	<xsl:if test="/document/context/session/user/system_privileges/change_user_name != 1">
+                  		<xsl:attribute name="readonly">readonly</xsl:attribute>
+					</xsl:if>
+                  </input>
+				</div>
+                  
 
                   <xsl:if test="/document/context/session/user/system_privileges/change_user_fullname = 1">
                       <xsl:call-template name="usermeta"/>
                   </xsl:if>
+				  </div>
+				  <div class="form-div">
                   <xsl:if test="/document/context/session/user/system_privileges/change_sysprivs_mask = 1">
                       <xsl:call-template name="system_privileges"/>
                   </xsl:if>
+				  </div>
+				  <div class="form-div">
                   <xsl:if test="/document/context/session/user/system_privileges/set_admin_equ = 1">
                       <xsl:call-template name="user_isadmin"/>
                   </xsl:if>
                   <xsl:if test="/document/context/session/user/system_privileges/set_status = 1">
                       <xsl:call-template name="account_enabled"/>
                   </xsl:if>
+				  </div>
                 <xsl:call-template name="exitform">
                     <xsl:with-param name="action" select="'update'"/>
                 </xsl:call-template>
 
-              </table>
-              <!-- end widget table -->
-              <br />
-
-              </td>
-            </tr>
-        </table>
     </form>
 </xsl:template>
 

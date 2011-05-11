@@ -20,12 +20,12 @@
 			<xsl:with-param name="mode">user</xsl:with-param>
     </xsl:call-template>
 
-        <body>
+	<body>
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
 
-					<div id="content-container">
+		<div id="content-container">
             <h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Role_Membership"/> '<xsl:value-of select="$name"/>'</h1>
 							
 							<p>
@@ -44,7 +44,7 @@
         <xsl:apply-templates select="userlist"/>
         </div>
 		<xsl:call-template name="script_bottom"/>
-        </body>
+	</body>
     </html>
 
 </xsl:template>
