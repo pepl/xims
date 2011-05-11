@@ -77,7 +77,7 @@ function Timepicker() {
 		alwaysSetTime: true,
 		separator: ' ',
 		altFieldTimeOnly: true,
-		showTimepicker: true,
+		showTimepicker: true
 	};
 	$.extend(this._defaults, this.regional['']);
 }
