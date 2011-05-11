@@ -18,167 +18,146 @@
 <xsl:variable name="totalpages" select="ceiling($objectitems_count div $searchresultrowlimit)"/>
 
 <xsl:template match="/document/context/object">
-    <html>
-        <xsl:call-template name="head_default"/>
-        <body>
-            <xsl:call-template name="header">
-            </xsl:call-template>
-					
-					<div id="content-container">
-					<h1 class="bluebg"><xsl:value-of select="$i18n/l/Search_for"/>&#160;'<xsl:value-of select="$s"/>'</h1>
-					<p>
-					<xsl:apply-templates select="/document/context/session/message"></xsl:apply-templates>       
-					</p>     
-            <table class="obj-table">
-                <xsl:call-template name="tableheader"/>
-            </table>
-
-            <xsl:if test="$totalpages">
-                            <xsl:call-template name="pagenav">
-                                <xsl:with-param name="totalitems" select="/document/context/session/searchresultcount"/>
-                                <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
-                                <xsl:with-param name="currentpage" select="$page"/>
-                                <xsl:with-param name="url"
-                                                select="concat($xims_box,$goxims_content,$absolute_path,'?s=',$s,';search=1;start_here=',$start_here,';m=',$m)"/>
-                            </xsl:call-template>
-            </xsl:if>
-            </div>
-            <xsl:call-template name="script_bottom"/>
-        </body>
-    </html>
+	<html>
+		<xsl:call-template name="head_default"/>
+		<body>
+			<xsl:call-template name="header" />
+			<div id="content-container">
+				<h1 class="bluebg"><xsl:value-of select="$i18n/l/Search_for"/>&#160;'<xsl:value-of select="$s"/>'</h1>
+				<p><xsl:apply-templates select="/document/context/session/message"></xsl:apply-templates></p>
+			<table class="obj-table">
+				<xsl:call-template name="tableheader"/>
+			</table>
+			<xsl:if test="$totalpages">
+				<xsl:call-template name="pagenav">
+					<xsl:with-param name="totalitems" select="/document/context/session/searchresultcount"/>
+					<xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
+					<xsl:with-param name="currentpage" select="$page"/>
+					<xsl:with-param name="url" select="concat($xims_box,$goxims_content,$absolute_path,'?s=',$s,';search=1;start_here=',$start_here,';')"/>
+				</xsl:call-template>
+			</xsl:if>
+		</div>
+		<xsl:call-template name="script_bottom"/>
+	</body>
+	</html>
 </xsl:template>
-    
+
 <xsl:template name="title">
-    <xsl:value-of select="$i18n/l/Search_for"/> '<xsl:value-of select="$s"/>' - XIMS
+	<xsl:value-of select="$i18n/l/Search_for"/> '<xsl:value-of select="$s"/>' - XIMS
 </xsl:template>
 
 <xsl:template name="tableheader">
 <xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
-    <tr>
-<!-- status -->
-    <th id="th-status">
-							<a class="th-icon-right">
-								<xsl:value-of select="$i18n/l/Status"/>
-							</a>
-						</th>
-    <!-- title-icon / dataformat-->
-    <th id="th-titel-icon">
-						&#160;
-		</th>
-<!-- title -->
-   <xsl:choose>
-						<xsl:when test="$sb='title'">
-							<xsl:choose>
-								<xsl:when test="$order='asc'">
-									<th id="th-title" class="sorting">
-										<a href="{$location}?s={$s};search=1;sb=title;order=desc" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-n"/>
-											<xsl:value-of select="$i18n/l/Title"/>&#160;						
-										</a>
-									</th>
-								</xsl:when>
-								<xsl:otherwise>
-									<th id="th-title" class="sorting">
-										<a href="{$location}?s={$s};search=1;sb=title;order=asc" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-s"/>
-											<xsl:value-of select="$i18n/l/Title"/>&#160;						
-										</a>
-									</th>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:when>
-						<xsl:otherwise>
-							<th id="th-title" class="sorting">
-								<a href="{$location}?s={$s};search=1;sb=title;order=asc" class="th-icon-right">
-									<span class="ui-icon ui-icon-triangle-2-n-s"/>
-									<xsl:value-of select="$i18n/l/Title"/>&#160;						
-								</a>
-							</th>
-						</xsl:otherwise>
-					</xsl:choose>
-<!-- last modified -->
-    				<xsl:choose>
-						<xsl:when test="$sb='date'">
-							<xsl:choose>
-								<xsl:when test="$order='asc'">
-									<th id="th-lastmod" class="sorting">
-										<a href="{$location}?s={$s};search=1;sb=date;order=desc" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-n"/>
-											<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
-										</a>
-									</th>
-								</xsl:when>
-								<xsl:otherwise>
-									<th id="th-lastmod" class="sorting">
-										<a href="{$location}?s={$s};search=1;sb=date;order=asc" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-s"/>
-											<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
-										</a>
-									</th>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:when>
-						<xsl:otherwise>
-							<th id="th-lastmod" class="sorting">
-								<a href="{$location}?s={$s};search=1;sb=date;order=desc" class="th-icon-right">
-									<span class="ui-icon ui-icon-triangle-2-n-s"/>
-									<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
-								</a>
-							</th>
-						</xsl:otherwise>
-					</xsl:choose>
-<!-- size -->
-    <xsl:call-template name="th-size"/>
-    </tr>
-    
-    <xsl:choose>
-					<xsl:when test="$sb='title'">
-						<xsl:choose>
-							<xsl:when test="$order='asc'">
-							<xsl:apply-templates select="/document/objectlist/object">
-                    <xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
-                </xsl:apply-templates>
-							</xsl:when>
-							<xsl:when test="$order='desc'">
-								<xsl:apply-templates select="/document/objectlist/object">
-									<!-- as long as lower-first is not implemented, we probably have to use lowercase the title here -->
-									<xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="descending"/>
-								</xsl:apply-templates>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:when>
-
-					<xsl:when test="$sb='date'">
-						<xsl:choose>
-							<xsl:when test="$order='asc'">
-								<xsl:apply-templates select="/document/objectlist/object">
-									<xsl:sort select="concat(last_modification_timestamp/year
-                                                    ,last_modification_timestamp/month
-                                                    ,last_modification_timestamp/day
-                                                    ,last_modification_timestamp/hour
-                                                    ,last_modification_timestamp/minute
-                                                    ,last_modification_timestamp/second)" order="ascending"/>
-								</xsl:apply-templates>
-							</xsl:when>
-							<xsl:when test="$order='desc'">
-								<xsl:apply-templates select="/document/objectlist/object">
-									<xsl:sort select="concat(last_modification_timestamp/year
-                                                    ,last_modification_timestamp/month
-                                                    ,last_modification_timestamp/day
-                                                    ,last_modification_timestamp/hour
-                                                    ,last_modification_timestamp/minute
-                                                    ,last_modification_timestamp/second)" order="descending"/>
-								</xsl:apply-templates>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:when>
-					
-					<xsl:otherwise>
+	<tr>
+	<!-- status -->
+	<th id="th-status">
+		<a class="th-icon-right">
+			<xsl:value-of select="$i18n/l/Status"/>
+		</a>
+	</th>
+	<!-- title-icon / dataformat-->
+	<th id="th-titel-icon">&#160;</th>
+	<!-- title -->
+	<xsl:choose>
+		<xsl:when test="$sb='title'">
+			<xsl:choose>
+				<xsl:when test="$order='asc'">
+					<th id="th-title" class="sorting">
+						<a href="{$location}?s={$s};search=1;sb=title;order=desc" class="th-icon-right">
+							<span class="ui-icon ui-icon-triangle-1-n"/>
+							<xsl:value-of select="$i18n/l/Title"/>&#160;						
+						</a>
+					</th>
+				</xsl:when>
+				<xsl:otherwise>
+					<th id="th-title" class="sorting">
+						<a href="{$location}?s={$s};search=1;sb=title;order=asc" class="th-icon-right">
+							<span class="ui-icon ui-icon-triangle-1-s"/>
+							<xsl:value-of select="$i18n/l/Title"/>&#160;						
+						</a>
+					</th>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:when>
+		<xsl:otherwise>
+			<th id="th-title" class="sorting">
+				<a href="{$location}?s={$s};search=1;sb=title;order=asc" class="th-icon-right">
+					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+					<xsl:value-of select="$i18n/l/Title"/>&#160;						
+				</a>
+			</th>
+		</xsl:otherwise>
+	</xsl:choose>
+	<!-- last modified -->
+	<xsl:choose>
+		<xsl:when test="$sb='date'">
+			<xsl:choose>
+				<xsl:when test="$order='asc'">
+					<th id="th-lastmod" class="sorting">
+						<a href="{$location}?s={$s};search=1;sb=date;order=desc" class="th-icon-right">
+							<span class="ui-icon ui-icon-triangle-1-n"/>
+							<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
+						</a>
+					</th>
+				</xsl:when>
+				<xsl:otherwise>
+					<th id="th-lastmod" class="sorting">
+						<a href="{$location}?s={$s};search=1;sb=date;order=asc" class="th-icon-right">
+							<span class="ui-icon ui-icon-triangle-1-s"/>
+							<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
+						</a>
+					</th>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:when>
+		<xsl:otherwise>
+			<th id="th-lastmod" class="sorting">
+				<a href="{$location}?s={$s};search=1;sb=date;order=desc" class="th-icon-right">
+					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+					<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
+				</a>
+			</th>
+		</xsl:otherwise>
+	</xsl:choose>
+	<!-- size -->
+	<xsl:call-template name="th-size"/>
+	</tr>
+	<xsl:choose>
+		<xsl:when test="$sb='title'">
+			<xsl:choose>
+				<xsl:when test="$order='asc'">
+				<xsl:apply-templates select="/document/objectlist/object">
+					<xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
+				</xsl:apply-templates>
+				</xsl:when>
+				<xsl:when test="$order='desc'">
 					<xsl:apply-templates select="/document/objectlist/object">
-                    <xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute)" order="descending"/>
-                </xsl:apply-templates>
-					</xsl:otherwise>
-				</xsl:choose>
+						<!-- as long as lower-first is not implemented, we probably have to use lowercase the title here -->
+						<xsl:sort select="translate(title,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="descending"/>
+					</xsl:apply-templates>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:when>
+		<xsl:when test="$sb='date'">
+			<xsl:choose>
+				<xsl:when test="$order='asc'">
+					<xsl:apply-templates select="/document/objectlist/object">
+						<xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="ascending"/>
+					</xsl:apply-templates>
+				</xsl:when>
+				<xsl:when test="$order='desc'">
+					<xsl:apply-templates select="/document/objectlist/object">
+						<xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second)" order="descending"/>
+					</xsl:apply-templates>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:when>					
+		<xsl:otherwise>
+			<xsl:apply-templates select="/document/objectlist/object">
+				<xsl:sort select="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute)" order="descending"/>
+			</xsl:apply-templates>
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template match="objectlist/object">
