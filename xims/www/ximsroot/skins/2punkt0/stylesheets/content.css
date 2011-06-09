@@ -144,6 +144,7 @@ div.toc-item {
 .obj-table th {
     border: thin solid #C1C1C1;
     background-color: #ced3d6;
+	white-space: nowrap;
 }
 .obj-table td, .obj-table th {
     height: 20px !important;

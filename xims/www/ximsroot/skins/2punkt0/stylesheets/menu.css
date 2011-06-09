@@ -273,6 +273,7 @@ a.more > .ui-button-text{
 .toolbar {
 	display: inline;
 	margin: 0 5px 0 5px;
+	white-space: nowrap;
 }
 
 #tab-container {
