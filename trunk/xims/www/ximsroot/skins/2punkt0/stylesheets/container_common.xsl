@@ -348,7 +348,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$sb='title'">
+			<xsl:when test="$sb='title' or $sb='location'">
 				<!-- <xsl:apply-templates select="children/object[user_privileges/view and ( marked_deleted &gt; $hd or marked_deleted = 0 )]"> -->
 				<!-- show also objects in trashcan -->
 				<!-- as long as lower-first is not implemented, we probably have to use lowercase the title here -->

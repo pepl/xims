@@ -188,6 +188,11 @@ sub get_display_params {
     my $defaultsortby = $ctxt->object->attribute_by_key('defaultsortby');
     my $defaultsort   = $ctxt->object->attribute_by_key('defaultsort');
 
+    # only sort by title 
+    if($defaultsortby eq 'titlelocation') {
+    	$defaultsortby = $ctxt->session->user->userprefs->containerview_show() || '';
+    }
+
     # maybe put that into config values
     $defaultsortby ||= 'position';
     $defaultsort   ||= 'asc';
@@ -212,7 +217,7 @@ sub get_display_params {
         title    => 'title',
         location    => 'location'
     );
-
+	XIMS::Debug(5,"defaultsortby: ".$defaultsortby.", defaultsort: ".$defaultsort);
     my $order = $sortbymap{$defaultsortby} . ' ' . $defaultsort;
 
     my $style = $self->param('style');
@@ -236,7 +241,7 @@ sub get_display_params {
         $offset ||= 0;
         $offset = $offset * $limit;
     }
-
+	XIMS::Debug(5,"offset: ".$offset.", limit: ".$limit.", order: ".$order.", style: ".$style);
     return (
         {
             offset => $offset,
