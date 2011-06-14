@@ -729,13 +729,12 @@ function keyup( what ) {
             var str = what.value;
             var len = str.length;
             var showstr = len + " " + str_of + " " + maxKeys + " " + str_entered;
-            if ( len > maxKeys ) {
-                alert( str_charlimit );
-                what.value = what.value.substring(0,maxKeys);
+            if ( len >= (maxKeys) ) {
+				$("#charcount").html(showstr+' -- '+str_charlimit);
+                what.value = what.value.substring(0,maxKeys-1);
                 return false;
             }
 			$("#charcount").html(showstr);
-            //txtshow( showstr );
         }
 
 function customRange(input){
