@@ -39,10 +39,9 @@
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
 			<br/>
-			<textarea id="input-lead" name="lead" rows="3" cols="74" onkeyup="keyup(this)">
+			<textarea id="input-lead" name="lead" rows="3" cols="74" maxlength="390" onkeyup="keyup(this)">
 				<xsl:apply-templates select="abstract"/>
 			</textarea>
-			<!--<script type="text/javascript">document.getElementsByName("lead")[0].value = '';</script>-->
 			<xsl:text>&#160;</xsl:text>
 			<span id="charcount">
 				<xsl:text>&#160;</xsl:text>
@@ -117,8 +116,6 @@
     var str_entered = '<xsl:value-of select="$i18n_news/l/Characters_entered"/>';
     var str_charlimit  = '<xsl:value-of select="$i18n_news/l/Charlimit_reached"/>';
     var maxKeys = 390; // Should this be a config.xsl value?
-    
-    //keyup( document.getElementsByName("abstract")[0] );
     </script>
 	</xsl:template>
 	
