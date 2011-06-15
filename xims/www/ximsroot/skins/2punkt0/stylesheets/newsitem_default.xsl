@@ -10,77 +10,95 @@
 	<xsl:import href="view_common.xsl"/>
 	<xsl:import href="document_default.xsl"/>
 	
+	<xsl:param name="date_lang">
+			<xsl:choose>
+				<xsl:when test="$currentuilanguage = 'de-at'">de</xsl:when>
+				<xsl:otherwise>en</xsl:otherwise>
+			</xsl:choose>
+		</xsl:param>
+	
 	<xsl:template name="view-content">
+		<xsl:call-template name="mk-inline-js">
+			<xsl:with-param name="code">
+				var date_lang = '<xsl:value-of select="$date_lang"/>';
+			</xsl:with-param>
+		</xsl:call-template>
 	<div id="docbody">
-							<xsl:choose>
-								<xsl:when test="string-length(image_id)">
-									<div>
-										<img src="{$goxims_content}{image_id}" width="170" height="130" alt="{image_id}" title="{image_id}" class="news-image"/>
-										<div class="newsdate" id="newsdate">
-											<script type="text/javascript">
-												current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-												document.getElementById("newsdate").innerHTML = current_date;
-											</script>
-										</div>
-										<div class="newslead">
-											<xsl:apply-templates select="abstract"/>
-										</div>
-									</div>
-								</xsl:when>
-								<xsl:otherwise>
-									<div class="newsdate" id="newsdate">
-										<script type="text/javascript">
-                        current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
-                        document.getElementById("newsdate").innerHTML = current_date;
+		<xsl:choose>
+			<xsl:when test="string-length(image_id)">
+				<div>
+					<img src="{$goxims_content}{image_id}" width="170" height="130" alt="{image_id}" title="{image_id}" class="news-image"/>
+					<div class="newsdate" id="newsdate">
+						<script type="text/javascript">
+							$(document).ready(function(){
+							current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
+							$("#newsdate").html(current_date);
+							});
+						</script>
+					</div>
+					<div class="newslead">
+						<xsl:apply-templates select="abstract"/>
+					</div>
+				</div>
+			</xsl:when>
+			<xsl:otherwise>
+				<div class="newsdate" id="newsdate">
+					<script type="text/javascript">
+						$(document).ready(function(){
+						current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
+						$("#newsdate").html(current_date);
+						});
                     </script>
-									</div>
-									<div class="newslead">
-										<xsl:apply-templates select="abstract"/>
-									</div>
-								</xsl:otherwise>
-							</xsl:choose>
-							<div id="body-content">
-								<xsl:apply-templates select="body"/>
-							</div>
-							<div id="links">
-								<p>
-									<strong>
-										<xsl:value-of select="$i18n/l/Document_links"/>
-									</strong>
-								</p>
-								<table class="link-table">
-									<thead>
-										<tr>
-											<th>
-												<xsl:value-of select="$i18n/l/Status"/>
-											</th>
-											<th>
-												<xsl:value-of select="$i18n/l/Position"/>
-											</th>
-											<th>
-												<xsl:value-of select="$i18n/l/Title"/>
-											</th>
-											<th>
-												<xsl:value-of select="$i18n/l/Options"/>
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										<xsl:apply-templates select="children/object" mode="link">
-											<xsl:sort select="position" data-type="number"/>
-										</xsl:apply-templates>
-									</tbody>
-								</table>
-								<p>
-									<br/>
-									<xsl:if test="user_privileges/create">
-										<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
-											<xsl:value-of select="$i18n/l/Add_link"/>
-										</a>
-									</xsl:if>
-								</p>
-							</div>
-						</div>
+				</div>
+				<div class="newslead">
+					<xsl:apply-templates select="abstract"/>
+				</div>
+			</xsl:otherwise>
+		</xsl:choose>
+		<div id="body-content">
+			<xsl:apply-templates select="body"/>
+		</div>
+		<xsl:call-template name="documentlinks"/>
+		<!--
+		<div id="links">
+			<p>
+				<strong>
+					<xsl:value-of select="$i18n/l/Document_links"/>
+				</strong>
+			</p>
+			<table class="link-table">
+				<thead>
+					<tr>
+						<th>
+							<xsl:value-of select="$i18n/l/Status"/>
+						</th>
+						<th>
+							<xsl:value-of select="$i18n/l/Position"/>
+						</th>
+						<th>
+							<xsl:value-of select="$i18n/l/Title"/>
+						</th>
+						<th>
+							<xsl:value-of select="$i18n/l/Options"/>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:apply-templates select="children/object" mode="link">
+						<xsl:sort select="position" data-type="number"/>
+					</xsl:apply-templates>
+				</tbody>
+			</table>
+			<p>
+				<br/>
+				<xsl:if test="user_privileges/create">
+					<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
+						<xsl:value-of select="$i18n/l/Add_link"/>
+					</a>
+				</xsl:if>
+			</p>
+		</div>-->
+	</div>
 	</xsl:template>
 	
 </xsl:stylesheet>

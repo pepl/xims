@@ -117,7 +117,7 @@
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m3.js" type="text/javascript"/>
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-timepicker-addon.js" type="text/javascript"/>
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
-		<!--<script src="{$ximsroot}scripts/jquery/fg.menu.js" type="text/javascript"/>-->
+		<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/datetime.js" type="text/javascript"/>-->
 	</xsl:template>
 </xsl:stylesheet>
 
