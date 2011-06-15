@@ -27,38 +27,42 @@
 					<xsl:call-template name="pre-body-hook"/>
 					<xsl:apply-templates select="body"/>
 				</div>	
-				<div id="links">
-					<p>
-						<strong><xsl:value-of select="$i18n/l/Document_links"/></strong>
-					</p>
-					<xsl:if test="(children/@totalobjects = 1 and children/object/location != '.diff_to_second_last' ) or children/@totalobjects > 1">
-					<table class="link-table">
-						<thead>
-							<tr>
-								<th><xsl:value-of select="$i18n/l/Status"/></th>
-								<th><xsl:value-of select="$i18n/l/Position"/></th>
-								<th><xsl:value-of select="$i18n/l/Title"/></th>
-								<th><xsl:value-of select="$i18n/l/Options"/></th>
-							</tr>
-						</thead>
-						<tbody>
-										<xsl:apply-templates select="children/object" mode="link">
-											<xsl:sort select="position" data-type="number"/>
-										</xsl:apply-templates>
-								</tbody>
-					</table>
-					</xsl:if>
-						<p>
-						<br/>
-							<xsl:if test="user_privileges/create">
-								<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
-									<xsl:value-of select="$i18n/l/Add_link"/>
-								</a>
-							</xsl:if>
-						</p>
-					</div>
+				<xsl:call-template name="documentlinks"/>
 		</div>
 	</xsl:template>
+	
+	<xsl:template name="documentlinks">
+		<div id="links">
+			<p>
+				<strong><xsl:value-of select="$i18n/l/Document_links"/></strong>
+			</p>
+			<xsl:if test="(children/@totalobjects = 1 and children/object/location != '.diff_to_second_last' ) or children/@totalobjects > 1">
+			<table class="link-table">
+				<thead>
+					<tr>
+						<th><xsl:value-of select="$i18n/l/Status"/></th>
+						<th><xsl:value-of select="$i18n/l/Position"/></th>
+						<th><xsl:value-of select="$i18n/l/Title"/></th>
+						<th><xsl:value-of select="$i18n/l/Options"/></th>
+					</tr>
+				</thead>
+				<tbody>
+								<xsl:apply-templates select="children/object" mode="link">
+									<xsl:sort select="position" data-type="number"/>
+								</xsl:apply-templates>
+						</tbody>
+			</table>
+			</xsl:if>
+			<p>
+			<br/>
+				<xsl:if test="user_privileges/create">
+					<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
+						<xsl:value-of select="$i18n/l/Add_link"/>
+					</a>
+				</xsl:if>
+			</p>
+			</div>
+		</xsl:template>
 	
 	<xsl:template match="a">
 		<a>

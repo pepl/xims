@@ -39,7 +39,7 @@
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
 			<br/>
-			<textarea id="input-lead" name="lead" rows="3" cols="74" maxlength="390" onkeyup="keyup(this)">
+			<textarea id="input-lead" name="abstract" rows="3" cols="74" maxlength="390" onkeyup="keyup(this)">
 				<xsl:apply-templates select="abstract"/>
 			</textarea>
 			<xsl:text>&#160;</xsl:text>
