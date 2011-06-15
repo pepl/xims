@@ -874,7 +874,7 @@ function createDialog(url, dialogid, title){
 			width: 'auto',
 			maxWidth: 800,
 			maxHeight: 400,
-			close: function(ev, ui) { $(this).close(); $(dialogid).html('')}
+			close: function(ev, ui) {$(dialogid).html('')}
 			}).html(data).addClass('xims-content').dialog('open');
 
 		$(".button").button();
