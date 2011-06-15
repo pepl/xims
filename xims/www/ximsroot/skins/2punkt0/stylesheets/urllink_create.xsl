@@ -30,11 +30,7 @@
 					<xsl:value-of select="$i18n/l/Location"/>
 				</label>&#160;*
 			</div>
-			<input type="text" name="name" size="60" class="text" id="input-location">
-				<xsl:if test="$testlocation">
-					<xsl:attribute name="onchange">return testlocation();</xsl:attribute>
-				</xsl:if>
-			</input>
+			<input type="text" name="name" size="60" class="text" id="input-location"></input>
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Location')" class="doclink">
 				<xsl:attribute name="title">
