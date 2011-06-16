@@ -55,6 +55,8 @@
 							<div>
                 <div class="label-std"><label for="input-title"><xsl:value-of select="$i18n/l/Title"/></label></div>
                 <input type="text" name="imgtext" size="60" id="input-title"/>
+				<input type="hidden" name="imgwidth" value="" id="input-imgwidth"/>
+				<input type="hidden" name="imgheight" value="" id="input-imgheight"/>
 							</div>
 
                  <div><button type="button" onclick="insertfile();" class="button" >Store Back</button> </div>
@@ -121,7 +123,10 @@ function insertfile() {
     var title = document.selectform.imgtext.value;
     win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
     win.document.getElementById("alt").value = title;
+	win.document.getElementById("title").value = title;
     // for image browsers: update image dimensions
+	win.document.getElementById("width").value = document.selectform.imgwidth.value;
+	win.document.getElementById("height").value = document.selectform.imgheight.value;
     tinyMCEPopup.close();
 }
 function storeBack(target, imgtext) {
@@ -134,6 +139,10 @@ function storeBack(target, imgtext) {
                 document.selectform.imgpath.value='<xsl:value-of select="concat($goxims_content,'/',/document/context/object/parents/object[@parent_id=1]/location)"/>'+target;
             }
             document.selectform.imgtext.value=imgtext;
+			var img = new Image();
+    		img.src = '<xsl:value-of select="concat($goxims_content,'/',/document/context/object/parents/object[@parent_id=1]/location)"/>'+target;
+			document.selectform.imgwidth.value=img.width;
+			document.selectform.imgheight.value=img.height;
         }
 
         function isIexplore() {
