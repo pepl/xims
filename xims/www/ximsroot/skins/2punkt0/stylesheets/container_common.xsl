@@ -430,9 +430,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<span>
-			<xsl:attribute name="title">id: <xsl:value-of select="@id"/>, 
-			<xsl:choose>
-					<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Location"/>: <xsl:value-of select="location"/></xsl:when>
+			<xsl:attribute name="title">id: <xsl:value-of select="@id"/>, <xsl:choose><xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Location"/>: <xsl:value-of select="location"/></xsl:when>
 					<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="$i18n/l/Title"/>: <xsl:value-of select="title"/></xsl:when>
 				</xsl:choose>, <xsl:value-of select="$l_created_by"/>: <xsl:call-template name="creatorfullname"/>, <xsl:value-of select="$l_owned_by"/>: <xsl:call-template name="ownerfullname"/></xsl:attribute>
 			<a>
@@ -479,7 +477,6 @@
 							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>
-
 				</xsl:attribute>	
 				<xsl:choose>
 					<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="title"/></xsl:when>

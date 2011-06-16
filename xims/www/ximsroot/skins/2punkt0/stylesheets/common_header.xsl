@@ -220,7 +220,7 @@
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
-				<input type="text" class="ui-corner-all" id="input-search" name="s" size="17" maxlength="200">
+				<input type="text" id="input-search" name="s" size="17" maxlength="200">
 					<xsl:choose>
 						<xsl:when test="$s != ''">
 							<xsl:attribute name="value">
