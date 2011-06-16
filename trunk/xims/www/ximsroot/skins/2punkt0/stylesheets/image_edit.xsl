@@ -11,7 +11,7 @@
 	
 	
 	<xsl:template name="preview-image">
-		<div class="form-div ui-corner-all block">
+		<div class="form-div block">
 		<p>
 			<a class="button" href="javascript:createImageDialog('{$xims_box}{$goxims_content}{$absolute_path}','default-dialog','{$i18n/l/Preview_image}')">
 				<xsl:value-of select="$i18n/l/Preview_image"/>
