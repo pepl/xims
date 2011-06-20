@@ -186,6 +186,7 @@
 					<xsl:with-param name="email-disabled" select="true()"/>
 					<xsl:with-param name="copy-disabled" select="true()"/>
 					<xsl:with-param name="move-disabled" select="true()"/>
+					<xsl:with-param name="forcepurge" select="true()"/>
 				</xsl:call-template>
         <!--<xsl:call-template name="cttobject.status"/>
         <xsl:call-template name="cttobject.options"/>

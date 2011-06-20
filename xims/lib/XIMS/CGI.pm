@@ -1290,6 +1290,7 @@ sub redirect_path {
     my $bodyonly = $self->param("bodyonly");
     my $plain    = $self->param("plain");
     my $page     = $self->param("page");
+    my $showtrashcan     = $self->param("showtrashcan");
     my $params;
 
     # preserve some selected params
@@ -1322,6 +1323,10 @@ sub redirect_path {
     if ( defined $page ) {
         $params .= ";" if length $page;
         $params .= "page=$page";
+    }
+    if ( defined $showtrashcan ) {
+        $params .= ";" if length $showtrashcan;
+        $params .= "showtrashcan=$showtrashcan";
     }
 
     if ( not defined $uri ) {
@@ -2516,13 +2521,19 @@ sub event_publish_prompt {
         }
     }
     elsif ( $dfmime_type eq 'application/x-container' ) {
-        my @non_container_ot
-            = $ctxt->data_provider->object_types( is_fs_container => '0' );
-        my @ids = map { $_->id() } @non_container_ot;
+#        my @non_container_ot
+#            = $ctxt->data_provider->object_types( is_fs_container => '0' );
+#        my @ids = map { $_->id() } @non_container_ot;
+#        @objects = $ctxt->object->children_granted(
+#            object_type_id => \@ids,
+#            marked_deleted => 0
+#        );    # get non-container objects only
+		#let's try to publish recursivly
+		#my @ots = $ctxt->data_provider->object_types();
+        #my @ids = map { $_->id() } @ots;
         @objects = $ctxt->object->children_granted(
-            object_type_id => \@ids,
-            marked_deleted => 0
-        );    # get non-container objects only
+            marked_deleted => 0 
+        );    # get even non-container objects 
     }
 
     if ( scalar @objects ) {
@@ -2539,8 +2550,7 @@ sub event_publish_prompt {
             my @role_ids = ( $user->role_ids(), $user->id() );
             foreach my $object (@objects) {
                 next
-                    unless ( defined $object and $object->id() )
-                    ;    # skip unresolved references
+                    unless ( defined $object and $object->id() );    # skip unresolved references
                 my $objectpriv = XIMS::ObjectPriv->new(
                     content_id => $object->id(),
                     grantee_id => \@role_ids
@@ -3755,7 +3765,13 @@ sub autopublish {
     my $no_dependencies_update = shift;
 
     my $published;
+    my @childids = {};
+    warn "\n\nobjids : ".$objids."\n\n";
+    foreach my $oid ( @{$objids} ) {
+    	warn "\n\noid : ".$oid."\n\n";
+    }
     foreach my $id ( @{$objids} ) {
+    	#warn "\n\nid : ".$id."\n\n";
         next unless defined $id;
         my $object
             = XIMS::Object->new( id => $id, User => $ctxt->session->user() );
@@ -3771,6 +3787,25 @@ sub autopublish {
                 {
                     XIMS::Debug( 4, $method . "ed object with id $id" );
                     $published++;
+                    #recursive publishing
+                    if($object->data_format->mime_type() eq 'application/x-container'){
+                    	my @children = {$object->children(marked_deleted => 0)};
+				        foreach my $child ( @children ){	
+				        	#next unless ( defined $child and $child->id() );    # skip unresolved references			        	
+                    		use Data::Dumper;
+                    		warn "\n\nchild : ".Dumper($child);
+                    		
+				        	#XIMS::Debug( 4, "reblessing object to " . $child->object_type->fullname() );
+        					bless $child, 'XIMS::Object';#.$child->object_type->fullname();;
+				        	warn "\nchild : ".$child->id();
+				        	push(@childids, $child->id())
+				        }
+				        if(scalar @childids){
+				        		$self->autopublish( $ctxt, $exporter, 'publish', \@childids,$no_dependencies_update );
+				        }
+                    	
+                    }
+                    
                 }
                 else {
                     XIMS::Debug( 3, "could not $method object with id $id" );

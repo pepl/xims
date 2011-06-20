@@ -237,6 +237,12 @@ a.more > .ui-button-text{
 	float: left;
 	margin-top: 10px;
 }
+#trash {
+	display: inline-block;
+	float: left;
+	margin-top: 10px;
+	padding-right:12px;
+}
 
 #create-widget{
 	padding-right: 12px;	

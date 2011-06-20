@@ -79,6 +79,7 @@
 			<xsl:call-template name="state-toolbar"/>
 			<xsl:call-template name="options-toolbar">
 				<xsl:with-param name="email-disabled" select="false()"/>
+				<xsl:with-param name="forcepurge" select="true()"/>
 			</xsl:call-template>
 			<xsl:call-template name="last_modified"/>
 			<xsl:if test="$abstract != ''">
