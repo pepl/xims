@@ -43,6 +43,7 @@ sub registerEvents {
             'obj_aclgrant', 'obj_aclrevoke',
             'publish',      'publish_prompt',
             'unpublish',    'test_wellformedness',
+            'showtrashcan',
             @_
         )
     );
@@ -72,12 +73,45 @@ sub event_default {
     $ctxt->properties->content->getchildren->offset(
         $display_params->{offset} );
     $ctxt->properties->content->getchildren->order( $display_params->{order} );
+    $ctxt->properties->content->getchildren->showtrash( $display_params->{showtrashcan} );
 
     # not needed ATM, kept for reference.
     #     if ( defined $display_params->{style} ) {
     #         $ctxt->properties->application->style($display_params->{style});
     #     }
 
+    # This prevents the loading of XML::Filter::CharacterChunk and thus saving
+    # some ms...
+    $ctxt->properties->content->escapebody(1);
+
+    return 0;
+}
+
+=head2 event_showtrashcan()
+
+=cut
+
+sub event_showtrashcan {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    return 0 if $self->SUPER::event_default($ctxt);
+
+    $ctxt->properties->content->getformatsandtypes(1);
+
+    my $display_params = $self->get_display_params($ctxt);
+
+    $ctxt->properties->content->getchildren->limit( $display_params->{limit} );
+    $ctxt->properties->content->getchildren->offset($display_params->{offset} );
+    $ctxt->properties->content->getchildren->order( $display_params->{order} );
+    $ctxt->properties->content->getchildren->showtrash( $display_params->{showtrashcan} );
+
+    # not needed ATM, kept for reference.
+    #     if ( defined $display_params->{style} ) {
+    #         $ctxt->properties->application->style($display_params->{style});
+    #     }
+
+	$ctxt->properties->application->style( "trashcan");
     # This prevents the loading of XML::Filter::CharacterChunk and thus saving
     # some ms...
     $ctxt->properties->content->escapebody(1);
@@ -241,13 +275,17 @@ sub get_display_params {
         $offset ||= 0;
         $offset = $offset * $limit;
     }
-	XIMS::Debug(5,"offset: ".$offset.", limit: ".$limit.", order: ".$order.", style: ".$style);
+    my $showtrashcan = $self->param('showtrashcan');
+    $showtrashcan ||= 0;
+
+	XIMS::Debug(5,"offset: ".$offset.", limit: ".$limit.", order: ".$order.", showtrashcan: ".$showtrashcan);
     return (
         {
             offset => $offset,
             limit  => $limit,
             order  => $order,
             style  => $style,
+            showtrashcan => $showtrashcan,
         }
     );
 }

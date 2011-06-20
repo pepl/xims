@@ -328,12 +328,25 @@ sub _set_children {
                 . join( ',', map {'?'} @object_type_ids ) . ")";
             push @values, @object_type_ids;
         }
+        #TEST
+        my $showtrash = 0;
+        $showtrash = $ctxt->properties->content->getchildren->showtrash();
+        warn "\n\n show traschcan: ".$showtrash."\n\n";
+        if($showtrash) {
+        	$conditions .= " AND c.marked_deleted = 1";
+        }
+        else {
+        	$conditions .= " AND c.marked_deleted = 0";
+        }
+        #END TEST
 
         my $countsql
             = "SELECT count(distinct c.id) AS cid FROM $tables WHERE $conditions";
         my $countdata = $object->data_provider->driver->dbh->fetch_select(
             sql => [ $countsql, @values ] );
         $child_count = $countdata->[0]->{cid};
+        
+warn "\n\n Kinder: ".$child_count."\n\n";
 
         if ( defined $child_count and $child_count > 0 ) {
             my $sql  = "SELECT $properties FROM $tables WHERE $conditions";

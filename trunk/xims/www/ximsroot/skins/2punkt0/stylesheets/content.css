@@ -159,6 +159,9 @@ div.toc-item {
 #th-titel-icon {
     width: 31px;
 }
+#th-selection{
+	width: 10px;
+}
 #th-status {
     width: 96px;
 }

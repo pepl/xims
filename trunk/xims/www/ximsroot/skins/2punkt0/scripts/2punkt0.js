@@ -532,7 +532,7 @@ function initOptionsButtons(){
 				primary: 'sprite-option_undelete'
 			}
 		});
-	$('.option-undelete span:first-child').addClass('sprite');
+	$('.option-undelete span:first-child').addClass('xims-sprite');
 	
 	$('.option-send_mail').button({
 			text: false,
@@ -582,6 +582,13 @@ function initOptionsButtons(){
 	$('.status-disabled').button('disable');
 	$('.status-disabled span:first-child').addClass('xims-sprite');
 	
+	$('.option-trashcan').button({
+			text: false,
+			icons: {
+				primary: 'sprite-option_trashcan'
+			}
+		});
+	$('.option-trashcan span:first-child').addClass('xims-sprite');
 	
 	$('.up').button({
 			text: false,

@@ -24,6 +24,7 @@
 <create_portlet>Create Portlet</create_portlet>
 <delete>Delete</delete>
 <purge>Purge</purge>
+<Trashcan>Trashcan</Trashcan>
 <Keywords>Keywords</Keywords>
 <Abstract>Abstract</Abstract>
 <Notes>Notes</Notes>

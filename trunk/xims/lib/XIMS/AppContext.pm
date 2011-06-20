@@ -107,7 +107,7 @@ sub new {
 
 package GetChildren;
 use base qw(Class::Accessor);
-__PACKAGE__->mk_accessors(qw(objectid objecttypes level limit offset order addinfo columns));
+__PACKAGE__->mk_accessors(qw(objectid objecttypes level limit offset order addinfo columns showtrash));
                     # objectid    to get targetchildren for contentbrowsing
                     # objecttypes to filter specific objecttypes (useful for browsing for special objecttypes)
                     # level       to get more flexible containerviews or sitemaps

@@ -121,8 +121,11 @@
 .sprite-locked {
     background-position: -1px -800px;
 }
+.sprite-option_trashcan {
+    background-position: 1px -54px;
+}
 .sprite-option_purge {
-    background-position: 0 -620px;
+    background-position: 1px -622px;
 }
 .sprite-option_delete {
     background-position: 1px -702px;

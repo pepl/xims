@@ -1105,6 +1105,7 @@
 		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
 		<xsl:variable name="dfname" select="$df/name"/>
 		<xsl:variable name="dfmime" select="$df/mime_type"/>
+		<xsl:variable name="showtrashcan" select="false()"/>
 		<div id="options-menu-bar" class="ui-corner-top">
 			<div id="objtype-title">
 				<xsl:call-template name="cttobject.dataformat">
@@ -1112,19 +1113,45 @@
 				</xsl:call-template>
 				<h1>
 					<xsl:value-of select="title"/>
+					<xsl:if test="$showtrashcan">
+						&#160;-&#160;<xsl:value-of select="$i18n/l/Trashcan"/>
+					</xsl:if>
 				</h1>
 			</div>
 			<div id="options">
-				<xsl:call-template name="state-toolbar"/>
-				<xsl:call-template name="options-toolbar">
-					<xsl:with-param name="email-disabled" select="false()"/>
-				</xsl:call-template>
+				<xsl:if test="not ($showtrashcan) and not (marked_deleted = 1)">
+					<xsl:call-template name="state-toolbar"/>
+					<xsl:call-template name="options-toolbar">
+						<xsl:with-param name="email-disabled" select="false()"/>
+					</xsl:call-template>
+				</xsl:if>
 			</div>
 			<xsl:if test="/document/context/object/user_privileges/create and $createwidget != 'false'">
 				<xsl:call-template name="create-widget">
 					<xsl:with-param name="mode" select="$createwidget"/>
 					<xsl:with-param name="parent_id" select="$parent_id"/>
 				</xsl:call-template>
+			</xsl:if>
+			<xsl:if test="$currobjmime='application/x-container' and not(object_type_id = 39 or object_type_id = 37 or object_type_id = 24)">
+				<div id="trash">
+					<xsl:choose>
+						<xsl:when test="$showtrashcan">
+							<a href="{$xims_box}{$goxims_content}{$absolute_path}" class="button"><xsl:value-of select="$i18n/l/Container_View"/></a>
+						</xsl:when>
+						<xsl:otherwise>
+				<a class="button option-trashcan">
+					<xsl:attribute name="href">
+						<xsl:value-of select="concat($goxims_content,'?id=',@id,';showtrashcan=1;r=',/document/context/object/@id)"/>
+						<xsl:value-of select="concat(';page=',$page)"/>
+						<xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
+					</xsl:attribute>
+					<span>
+						<xsl:value-of select="$i18n/l/Trashcan"/>
+					</span>
+				</a>
+				</xsl:otherwise>
+				</xsl:choose>
+				</div>
 			</xsl:if>
 		</div>
 	</xsl:template>
@@ -1234,22 +1261,44 @@
 		<xsl:param name="copy-disabled" select="false()"/>
 		<xsl:param name="move-disabled" select="false()"/>
 		<xsl:param name="email-disabled" select="true()"/>
+		<!-- some objecttypes like simpledb_item have no trashcan option -->
+		<xsl:param name="forcepurge" select="false()"/>
+		<xsl:param name="showtrashcan" select="false()"/>
+		
 		<div class="toolbar">
-			<xsl:call-template name="button.options.edit"/>
-			<xsl:if test="not($copy-disabled)">
-				<xsl:call-template name="button.options.copy"/>
-			</xsl:if>
-			<xsl:if test="not($move-disabled)">
-				<xsl:call-template name="button.options.move"/>
-			</xsl:if>
-			<xsl:call-template name="button.options.publish"/>
-			<xsl:call-template name="button.options.acl_or_undelete"/>
-			<xsl:call-template name="button.options.purge_or_delete"/>
-			<xsl:if test="not($email-disabled)">
-				<xsl:call-template name="button.options.send_email"/>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$showtrashcan or (marked_deleted = 1)">
+					<xsl:call-template name="button.options.undelete"/>
+					<xsl:call-template name="button.options.purge"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="button.options.edit"/>
+					<xsl:if test="not($copy-disabled)">
+						<xsl:call-template name="button.options.copy"/>
+					</xsl:if>
+					<xsl:if test="not($move-disabled)">
+						<xsl:call-template name="button.options.move"/>
+					</xsl:if>
+					<xsl:call-template name="button.options.publish"/>
+					<xsl:call-template name="button.options.acl"/>
+					<xsl:choose>
+						<xsl:when test="$forcepurge">
+							<xsl:call-template name="button.options.purge"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="button.options.delete"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:if test="not($email-disabled)">
+						<xsl:call-template name="button.options.send_email"/>
+					</xsl:if>
+				</xsl:otherwise>
+				</xsl:choose>
+
+			
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="button.options.edit">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
@@ -1363,6 +1412,63 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<xsl:template name="button.options.acl">
+		<xsl:variable name="id" select="@id"/>
+		<xsl:choose>
+			<xsl:when test="(user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
+				<a class="button option-acl">
+					<xsl:attribute name="id">option-acl_<xsl:value-of select="$id"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:value-of select="$l_Access_control"/>
+				</a>
+				<script type="text/javascript">
+				$(document).ready(function() {
+
+					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip(
+						{ 
+						content: function(response) {				
+						$.get('<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1;tooltip=1')"/>', response);
+						return "Loading...";
+						}
+						},
+						{position: {offset: "-600 50"}},
+						{width: "530"}
+					);
+					/*
+					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({
+						content: function(response){
+							$('#ui-tooltip-1 .ui-tooltip-content').load('<xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/> .obj-table', response);
+							
+						return "Loading...";
+						}
+					});					
+					*/
+				});
+
+	</script>
+			</xsl:when>
+			<xsl:otherwise>
+				<a class="button option-disabled">&#160;</a>
+			</xsl:otherwise>
+			</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="button.options.undelete">
+		<xsl:variable name="id" select="@id"/>
+		<xsl:choose>
+			<xsl:when test="user_privileges/delete">
+				<a class="button option-undelete">
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:value-of select="$l_Undelete"/>
+				</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<a class="button option-disabled">&#160;</a>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<xsl:template name="button.options.purge_or_delete">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
@@ -1383,6 +1489,22 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<xsl:template name="button.options.purge">
+		<xsl:variable name="id" select="@id"/>
+		<xsl:choose>
+			<xsl:when test="user_privileges/delete">
+				<a class="button option-purge" title="{$l_purge}">
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:value-of select="$l_purge"/>
+				</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<a class="button option-disabled">&#160;</a>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<xsl:template name="button.options.delete">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
@@ -1397,6 +1519,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	<xsl:template name="button.options.send_email">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>

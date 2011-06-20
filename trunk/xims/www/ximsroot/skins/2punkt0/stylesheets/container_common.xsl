@@ -27,6 +27,7 @@
 	<xsl:variable name="l_owned_by" select="$i18n/l/owned_by"/>
 	<xsl:variable name="l_position_object" select="$i18n/l/position_object"/>
 	<xsl:variable name="l_last_modified_by" select="$i18n/l/last_modified_by"/>
+	<xsl:param name="showtrashcan" select="false()"></xsl:param>
 	
 	<xsl:template name="autoindex">
 	<div class="form-div block">
@@ -220,6 +221,7 @@
 		<table class="obj-table">
 			<tbody>
 				<tr>
+					<xsl:if test="not ($showtrashcan)">
 					<th id="th-status">
 						<a class="th-icon-right">
 							<xsl:value-of select="$i18n/l/Status"/>
@@ -255,6 +257,7 @@
 							</th>
 						</xsl:otherwise>
 					</xsl:choose>
+					</xsl:if>
 					<th id="th-titel-icon">
 						&#160;
 					</th>
@@ -386,12 +389,14 @@
 	
 	<xsl:template match="children/object">
 		<tr class="objrow">
+			<xsl:if test="not ($showtrashcan)">
 			<td class="ctt_status">
 				<xsl:call-template name="state-toolbar"/>
 			</td>
 			<td class="ctt_position">
 				<xsl:call-template name="cttobject.position"/>
 			</td>
+			</xsl:if>
 			<td class="ctt_df">
 				<xsl:call-template name="cttobject.dataformat">
 				</xsl:call-template>
