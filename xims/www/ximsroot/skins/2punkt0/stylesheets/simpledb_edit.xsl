@@ -32,7 +32,7 @@
 			<xsl:choose>
 				<xsl:when test="$property_id != ''">
 					<div>
-						<strong><xsl:value-of select="$i18n_simpledb/l/Edit_property"/>&#160;'<xsl:value-of select="/document/member_properties/member_property[@id=$property_id]/name"/>'</strong>
+						<h2><xsl:value-of select="$i18n_simpledb/l/Edit_property"/>&#160;'<xsl:value-of select="/document/member_properties/member_property[@id=$property_id]/name"/>'</h2>
 					</div>
 						<xsl:call-template name="tr-property_properties"/>
 					<div>
@@ -43,7 +43,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<div>
-						<strong><xsl:value-of select="$i18n_simpledb/l/Create_property"/>:</strong>
+						<h2><xsl:value-of select="$i18n_simpledb/l/Create_property"/>:</h2>
 					</div>
 					<xsl:call-template name="tr-property_properties"/>
 					<div>
