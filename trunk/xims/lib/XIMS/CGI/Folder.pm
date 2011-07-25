@@ -24,6 +24,10 @@ package XIMS::CGI::Folder;
 use strict;
 use base qw( XIMS::CGI );
 
+use Locale::TextDomain ('info.xims');
+
+#
+
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 # #############################################################################
@@ -41,9 +45,13 @@ sub registerEvents {
             'create',       'edit',
             'store',        'obj_acllist',	'obj_acllight',
             'obj_aclgrant', 'obj_aclrevoke',
-            'publish',      'publish_prompt',
-            'unpublish',    'test_wellformedness',
-            'showtrashcan',
+            'publish',      'publish_prompt', 'unpublish',
+            'test_wellformedness', 'showtrashcan', 
+            'deletemultiple_prompt','deletemultiple', 'undeletemultiple',
+            'trashcanmultiple_prompt', 'trashcanmultiple', 
+            'publishmultiple_prompt', 'publishmultiple', 'unpublishmultiple',
+            'movemultiple_browse', 'movemultiple',
+            'aclmultiple_prompt','aclgrantmultiple','aclrevokemultiple',
             @_
         )
     );
@@ -187,6 +195,562 @@ sub event_store {
     return $self->SUPER::event_store($ctxt);
 }
 
+=head2 event_deletemultiple()
+
+=cut
+
+sub event_deletemultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    my @ids = $self->param('multiselect');
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
+    		$obj->delete(User => $ctxt->session->user);
+    	}
+    	else{
+    		warn "geht nicht : ".$obj->location();
+    	}
+    }
+    XIMS::Debug( 4, "redirecting to the container" );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
+=head2 event_deletemultiple_prompt()
+
+=cut
+
+sub event_deletemultiple_prompt {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    my @objects;
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	#warn $obj->location()." \t- ".$ctxt->session->user->object_privmask( $obj )." - ".XIMS::Privileges::DELETE();
+    	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
+    		push(@objects, $obj);
+    	}
+#    	else{
+#    		warn "geht nicht : ".$obj->location();
+#    	}
+    }
+    if ( scalar @objects ) {
+    	$ctxt->objectlist( \@objects );
+    }
+    $ctxt->properties->content->getformatsandtypes(1);
+    $ctxt->properties->application->styleprefix('common');
+    $ctxt->properties->application->style('deletemultiple_confirm');
+}
+
+=head2 event_trashcanmultiple_prompt()
+
+=cut
+
+sub event_trashcanmultiple_prompt {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    my @objects;
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	#warn $obj->location()." \t- ".$ctxt->session->user->object_privmask( $obj )." - ".XIMS::Privileges::DELETE();
+    	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
+    		push(@objects, $obj);
+    	}
+#    	else{
+#    		warn "geht nicht : ".$obj->location();
+#    	}
+    }
+    if ( scalar @objects ) {
+    	$ctxt->objectlist( \@objects );
+    }
+    $ctxt->properties->content->getformatsandtypes(1);
+    $ctxt->properties->application->styleprefix('common');
+    $ctxt->properties->application->style('trashcanmultiple_confirm');
+}
+
+=head2 event_trashcanmultiple()
+
+=cut
+
+sub event_trashcanmultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
+    		$obj->trashcan();
+    	}
+    	else{
+    		warn "geht nicht : ".$obj->location();
+    	}
+    }
+	XIMS::Debug( 4, "redirecting to the container" );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
+=head2 event_undeletemultiple()
+
+=cut
+
+sub event_undeletemultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    my @objects;
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE()){
+    		$obj->undelete();
+    	}
+    	else{
+    		warn "geht nicht : ".$obj->location();
+    	}
+    }
+	XIMS::Debug( 4, "redirecting to the container" );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
+=head2 event_publishnmultiple_prompt()
+
+=cut
+
+sub event_publishmultiple_prompt {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    my @objects;
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	#warn $obj->location()." \t- ".$ctxt->session->user->object_privmask( $obj )." - ".XIMS::Privileges::DELETE();
+#    	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
+#    		push(@objects, $obj);
+#    	}
+    	if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
+    		push(@objects, $obj);
+    	}
+#    	else{
+#    		warn "geht nicht : ".$obj->location();
+#    	}
+    }
+    if ( scalar @objects ) {
+    	$ctxt->objectlist( \@objects );
+    }
+    $ctxt->properties->content->getformatsandtypes(1);
+    $ctxt->properties->application->styleprefix('common');
+    $ctxt->properties->application->style('publishmultiple_prompt');
+}
+=head2 event_publishmultiple()
+
+=cut
+
+sub event_publishmultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    my @objects;
+#    foreach(@ids){
+#    	my $obj = new XIMS::Object('id' => $_);
+#    	if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
+#    		#$obj->trashcan();
+#    		#return $self->SUPER::event_publish($ctxt);
+#    		$published = $self->autopublish( $ctxt, $exporter, 'publish', $obj->children_granted(marked_deleted => undef),
+#				$no_dependencies_update, $self->param("recpublish") );
+#    	}
+#    	else{
+#    		warn "geht nicht : ".$obj->location();
+#    	}
+#    }
+require XIMS::Exporter;
+	my $exporter = XIMS::Exporter->new(
+		Provider => $ctxt->data_provider,
+		Basedir  => XIMS::PUBROOT(),
+		User     => $ctxt->session->user
+	);
+my $no_dependencies_update = 1;
+	if ( defined $self->param("update_dependencies")
+		and $self->param("update_dependencies") == 1 )
+	{
+		$no_dependencies_update = undef;
+	}
+#my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objects,
+#				$no_dependencies_update, $self->param("recpublish") );
+				my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'publish', \@ids,
+				$no_dependencies_update, $self->param("recpublish") );
+	XIMS::Debug( 4, "redirecting to the container" );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+=head2 event_unpublishnmultiple()
+
+=cut
+
+sub event_unpublishmultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    my @objects;
+	require XIMS::Exporter;
+	my $exporter = XIMS::Exporter->new(
+		Provider => $ctxt->data_provider,
+		Basedir  => XIMS::PUBROOT(),
+		User     => $ctxt->session->user
+	);
+	my $no_dependencies_update = 1;
+	if ( defined $self->param("update_dependencies")
+		and $self->param("update_dependencies") == 1 )
+	{
+		$no_dependencies_update = undef;
+	}
+#my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objects,
+#				$no_dependencies_update, $self->param("recpublish") );
+foreach ( @ids ) {
+		warn $_;
+	}
+				my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@ids,
+				$no_dependencies_update, $self->param("recpublish") );
+	XIMS::Debug( 4, "redirecting to the container" );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
+=head2 event_move_browsemultiple()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_move_browsemultiple(...)
+
+=cut
+
+sub event_movemultiple_browse {
+	XIMS::Debug( 5, "called" );
+	my ( $self, $ctxt ) = @_;
+
+	$ctxt->properties->application->styleprefix("common");
+	$ctxt->properties->application->style("error");
+	
+	my @ids = $self->param('multiselect');
+    my @objects;
+    my $to = $self->param("to");
+    if ( not( $to =~ /^\d+$/ ) ) {
+		XIMS::Debug( 3, "Where to move?" );
+		#$ctxt->session->error_msg( __ "Where to move?" );
+		return 0;
+	}
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);    	
+    	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::MOVE())){    		
+    		push(@objects, $obj);
+    	}
+    }
+    $ctxt->properties->content->getchildren->level(1);
+	$ctxt->properties->content->getchildren->objecttypes(
+			[qw(Folder DepartmentRoot Gallery)] );	
+	
+	if ( scalar @objects ) {
+		$ctxt->objectlist( \@objects );
+	}
+	$ctxt->properties->content->getformatsandtypes(1);
+	$ctxt->properties->content->getchildren->objectid($to);
+	$ctxt->properties->application->style("movemultiple_browse");
+	
+	return 0;
+}
+
+=head2 event_movemultiple()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_movemultiple(...)
+
+=cut
+
+sub event_movemultiple {
+	XIMS::Debug( 5, "called" );
+	my ( $self, $ctxt ) = @_;
+
+	#my $object = $ctxt->object();
+
+	$ctxt->properties->application->styleprefix("common");
+	$ctxt->properties->application->style("error");
+
+#	my $current_user_object_priv =
+#	  $ctxt->session->user->object_privmask($object);
+#	return $self->event_access_denied($ctxt)
+#	  unless $current_user_object_priv & XIMS::Privileges::MOVE();
+
+	#if ( not $object->published() ) {
+		my $to = $self->param("to");
+		warn "\n\nTarget : ".$to;
+		if ( not( length $to ) ) {
+			XIMS::Debug( 3, "Where to move?" );
+			#$ctxt->session->error_msg( __ "Where to move?" );
+			return 0;
+		}
+		my $target;
+		if (
+			not(
+				$target = XIMS::Object->new(
+					path => $to,
+					User => $ctxt->session->user
+				)
+				and $target->id()
+			)
+		  )
+		{
+			$ctxt->session->error_msg( __ "Invalid target path!" );
+			return 0;
+		}
+		if ( $target->object_type->is_fs_container() ) {
+			XIMS::Debug( 4, "we got a valid target" );
+		}
+		else {
+			XIMS::Debug( 3, "Target is not a valid container" );
+			$ctxt->session->error_msg( __ "Target is not a valid container" );
+			return 0;
+		}
+	my @ids = $self->param('multiselect');
+    foreach(@ids){
+    	my $object = new XIMS::Object('id' => $_);
+    	
+    	if ( $object->document_id() == $target->document_id() ) {
+			XIMS::Debug( 2, "target and source are the same" );			
+			$ctxt->session->error_msg( __ "Target and source are the same. (Why would you want doing that?)");
+			return 0;
+		}
+    	
+		my @children = $target->children(
+			location       => $object->location(),
+			marked_deleted => 0
+		);
+		if ( scalar @children > 0 and defined $children[0] ) {
+			XIMS::Debug( 2,"object with same location already exists in the target container"
+			);
+			$self->sendError(
+				$ctxt,
+				__x("Location '{location}' already exists in the target container.",
+					location => $object->location()
+				)
+			);
+			return 0;
+		}
+
+		if ( not $object->move( target => $target->document_id ) ) {
+			$ctxt->session->error_msg("move failed!");
+			return 0;
+		}
+#		else {
+#			XIMS::Debug( 4, "move ok, redirecting to the parent" );
+#			$self->redirect(
+#				$self->redirect_path( $ctxt, $object->parent->id() ) );
+#			return 0;
+#		}
+    }#end foreach
+#	}
+#	else {
+#		XIMS::Debug( 3, "attempt to move published object" );
+#		#$ctxt->session->error_msg(__ "Moving published objects has not been implemented yet." );
+#		return 0;
+#	}
+	XIMS::Debug( 4, "move ok, redirecting to the parent" );
+			$self->redirect(
+				$self->redirect_path( $ctxt, $target->id() ) );
+	return 0;
+}
+
+=head2 event_aclmultiple_prompt()
+
+=cut
+
+sub event_aclmultiple_prompt {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    my @objects;
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	#warn $obj->location()." \t- ".$ctxt->session->user->object_privmask( $obj )." - ".XIMS::Privileges::DELETE();
+    	if($ctxt->session->user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+    		push(@objects, $obj);
+    	}
+#    	else{
+#    		warn "geht nicht : ".$obj->location();
+#    	}
+    }
+    if ( scalar @objects ) {
+    	$ctxt->objectlist( \@objects );
+    }
+    $ctxt->properties->content->getformatsandtypes(1);
+    $ctxt->properties->application->styleprefix('common');
+    $ctxt->properties->application->style('aclmultiple_prompt');
+}
+
+=head2 event_aclgrantmultiple()
+
+=cut
+
+sub event_aclgrantmultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+	my @grantees;
+	foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
+	    my $grantee = XIMS::User->new( name => $_ );
+	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
+	        unless $grantee and $grantee->id();
+	    push @grantees, $grantee;
+	}
+	my $recgrant = $self->param('recacl');
+    my @ids = $self->param('multiselect');
+    #my @objects;
+    
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	#recursive
+    	if ( $recgrant ) {
+    		my $path;
+		    my $desc_privmask;
+		    my @descendants = $obj->descendants_granted(
+		        User           => $ctxt->session->user,
+		        marked_deleted => 0
+		    );
+		    foreach my $desc (@descendants) {
+				push(@ids, $desc->id());
+#			        $desc_privmask = $ctxt->session->user->object_privmask($desc);
+#			        $path          = $desc->location_path();
+#			        if ( $desc_privmask & XIMS::Privileges::GRANT() ) {
+#			            push(@ids, $desc->id());
+#			        }
+#			        else {
+#			            warn "Insufficient privileges to grant privileges on '$path'.\n";
+#			        }
+			}
+		}
+    	#end recursive
+    	if($ctxt->session->user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+    		# build the privilege mask
+			my $bitmask = 0;
+			foreach my $priv ( XIMS::Privileges::list() ) {
+				my $lcname = 'acl_' . lc($priv);
+				if ( $self->param($lcname) ) {
+					{
+						## no critic (ProhibitNoStrict)
+						no strict 'refs';
+						$bitmask += &{"XIMS::Privileges::$priv"}();
+						## use strict
+					}
+				}
+			}
+			# store the set to the database
+			foreach(@grantees){
+				my $gid = $_->id();
+				my $boolean = $obj->grant_user_privileges(
+					grantee        => $gid,
+					privilege_mask => $bitmask,
+					grantor        => $ctxt->session->user()
+				);
+				if ($boolean) {
+					XIMS::Debug( 5, "ACL privs changed for (" . $_->name() . ")" );
+					#$ctxt->properties->application->style('obj_user_update');
+#					my $granted = XIMS::User->new( id => $uid );
+#					$ctxt->session->message(
+#						__x("Privileges changed successfully for user/role '{name}'.",
+#							name => $granted->name(),
+#						)
+#					);
+				}
+				else {
+					XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for ". $_->name() );
+				}
+			}
+			#$ctxt->properties->application->style('obj_user_update');
+    	}
+    	else{
+    		warn "geht nicht : ".$obj->location();
+    	}
+    }
+	XIMS::Debug( 4, "redirecting to the container" );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
+=head2 event_aclrevokemultiple()
+
+=cut
+
+sub event_aclrevokemultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+	my @grantees;
+	foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
+	    my $grantee = XIMS::User->new( name => $_ );
+	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
+	        unless $grantee and $grantee->id();
+	    push @grantees, $grantee;
+	}
+    my @ids = $self->param('multiselect');
+    my @objects;
+    foreach(@ids){
+    	my $obj = new XIMS::Object('id' => $_);
+    	if($ctxt->session->user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+
+			foreach(@grantees){
+				my $gid = $_->id();
+				
+				# revoke the privs
+				my $privs_object = XIMS::ObjectPriv->new(
+					grantee_id => $gid,
+					content_id => $obj->id()
+				);
+				
+				my $boolean = ($privs_object and $privs_object->delete());
+				if ($boolean) {
+					XIMS::Debug( 5, "ACL privs changed for (" . $_->name() . ")" );
+					#$ctxt->properties->application->style('obj_user_update');
+#					my $granted = XIMS::User->new( id => $uid );
+#					$ctxt->session->message(
+#						__x("Privileges changed successfully for user/role '{name}'.",
+#							name => $granted->name(),
+#						)
+#					);
+				}
+				else {
+					XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for ". $_->name() );
+				}
+			}
+			#$ctxt->properties->application->style('obj_user_update');
+    	}
+    	else{
+    		warn "geht nicht : ".$obj->location();
+    	}
+    }
+	XIMS::Debug( 4, "redirecting to the container" );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
 # END RUNTIME EVENTS
 # #############################################################################
 
@@ -251,7 +815,7 @@ sub get_display_params {
         title    => 'title',
         location    => 'location'
     );
-	XIMS::Debug(5,"defaultsortby: ".$defaultsortby.", defaultsort: ".$defaultsort);
+	#XIMS::Debug(5,"defaultsortby: ".$defaultsortby.", defaultsort: ".$defaultsort);
     my $order = $sortbymap{$defaultsortby} . ' ' . $defaultsort;
 
     my $style = $self->param('style');
@@ -278,7 +842,7 @@ sub get_display_params {
     my $showtrashcan = $self->param('showtrashcan');
     $showtrashcan ||= 0;
 
-	XIMS::Debug(5,"offset: ".$offset.", limit: ".$limit.", order: ".$order.", showtrashcan: ".$showtrashcan);
+	#XIMS::Debug(5,"offset: ".$offset.", limit: ".$limit.", order: ".$order.", showtrashcan: ".$showtrashcan);
     return (
         {
             offset => $offset,
