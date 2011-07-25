@@ -38,7 +38,6 @@
         <div id="content-container">
           <h1 class="bluebg">
             <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>'</h1>
-
 		<p>
                     <xsl:choose>
                         <xsl:when test="$userquery = ''">

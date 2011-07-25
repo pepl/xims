@@ -183,6 +183,7 @@
 <!-- End common_sitemap -->
 <!-- Begin common_move_browse -->
 <Move_object>Move Object</Move_object>
+<Move_objects>Move Objects</Move_objects>
 <from>from</from>
 <to>to</to>
 <!-- End  common_move_browse -->
@@ -323,6 +324,7 @@
 <Import>Import</Import>
 <DeleteConfirm>Confirm Object Deletion</DeleteConfirm>
 <AboutDeletion1>You are about to delete the object</AboutDeletion1>
+<AboutDeletionMultiple>Your are about to delete the following objects</AboutDeletionMultiple>
 <AboutDeletion1_User>You are about to delete the user</AboutDeletion1_User>
 <AboutDeletion2>from the system.</AboutDeletion2>
 <WarnNoUndo>This is a permanent action that cannot be undone!</WarnNoUndo>

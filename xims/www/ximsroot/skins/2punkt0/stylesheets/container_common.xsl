@@ -27,7 +27,6 @@
 	<xsl:variable name="l_owned_by" select="$i18n/l/owned_by"/>
 	<xsl:variable name="l_position_object" select="$i18n/l/position_object"/>
 	<xsl:variable name="l_last_modified_by" select="$i18n/l/last_modified_by"/>
-	<xsl:param name="showtrashcan" select="false()"></xsl:param>
 	
 	<xsl:template name="autoindex">
 	<div class="form-div block">
@@ -216,11 +215,126 @@
 		</xsl:if>
 	</xsl:template>
 	
+	<xsl:template name="multi-select-action" >
+		<div>
+			<div>
+				<p><input type="checkbox" id="select-all" name="select-all" onclick="selectAllObjects('multiselect')"></input>&#160;Alle markieren</p>
+			</div>
+			<div>
+				<xsl:call-template name="options-toolbar-multiple"/>
+			</div>
+		</div>
+		<!--</form>-->
+	</xsl:template>
+	
+	<xsl:template name="options-toolbar-multiple">
+		<xsl:param name="move-disabled" select="false()"/>
+		<xsl:param name="email-disabled" select="true()"/>
+		<!-- some objecttypes like simpledb_item have no trashcan option -->
+		<xsl:param name="forcepurge" select="false()"/>
+		
+		<div class="toolbar">
+			Sammelaktion für ausgewählte Objekte &#160;
+			<xsl:choose>
+				<xsl:when test="$showtrashcan or (marked_deleted = 1)">
+					<xsl:call-template name="button.options.undelete-multiple"/>
+					<xsl:call-template name="button.options.purge-multiple"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="not($move-disabled)">
+						<xsl:call-template name="button.options.move-multiple"/>
+					</xsl:if>
+					<xsl:call-template name="button.options.publish-multiple"/>
+					<xsl:call-template name="button.options.acl-multiple"/>
+					<xsl:choose>
+						<xsl:when test="$forcepurge">
+							<xsl:call-template name="button.options.purge-multiple"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="button.options.delete-multiple"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:otherwise>
+				</xsl:choose>
+		</div>
+	</xsl:template>
+	
+	<xsl:template name="button.options.move-multiple">
+		<xsl:variable name="parentid" select="@parent_id"/>
+		<xsl:variable name="id" select="@id"/>
+		<xsl:variable name="to">
+			<xsl:choose>
+				<xsl:when test="$currobjmime='application/x-container'">
+					<xsl:value-of select="/document/context/object/@id"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="/document/context/object/parents/object[@document_id=$parentid]/@id"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+				<button class="button option-move" title="{$l_Move}" type="submit" name="movemultiple_browse" value="1">
+					<xsl:value-of select="$l_Move"/>
+				</button>
+				<input type="hidden" name="to" value="{$to}"/>
+	</xsl:template>
+	<xsl:template name="button.options.publish-multiple">
+		<xsl:variable name="id" select="@id"/>
+				<button class="button option-publish" title="{$l_Publishing_options}" type="submit" name="publishmultiple_prompt" value="1">
+					<xsl:value-of select="$l_Publishing_options"/>
+				</button>
+	</xsl:template>
+	
+	<xsl:template name="button.options.acl-multiple">
+		<xsl:variable name="id" select="@id"/>
+				<button class="button option-acl" title="{$l_Access_control}" type="submit" name="aclmultiple_prompt" value="1">
+					<xsl:value-of select="$l_Access_control"/>
+				</button>
+	</xsl:template>
+	
+	<xsl:template name="button.options.undelete-multiple">
+		<xsl:variable name="id" select="@id"/>
+				<button class="button option-undelete" title="{$l_Undelete}" type="submit" name="undeletemultiple" value="1">
+					<xsl:value-of select="$l_Undelete"/>
+				</button>
+	</xsl:template>
+	
+	<xsl:template name="button.options.purge-multiple">
+		<xsl:variable name="id" select="@id"/>
+				<button class="button option-purge" title="{$l_purge}" type="submit" name="deletemultiple_prompt" value="1">
+					<xsl:value-of select="$l_purge"/>
+				</button>
+	</xsl:template>
+	
+	<xsl:template name="button.options.delete-multiple">
+		<xsl:variable name="id" select="@id"/>
+				<button class="button option-delete" title="{$l_delete}" type="submit" name="trashcanmultiple_prompt" value="1">
+					<xsl:value-of select="$l_delete"/>
+				</button>
+	</xsl:template>
+	
 	<xsl:template name="childrentable">
 		<xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
+		<!--<form action="{$xims_box}{$goxims_content}?id={@id}" name="msform" method="post" id="create-edit-form" enctype="multipart/form-data">
+			-->
+		<form method="get" name="multi">
+		<xsl:attribute name="action">
+					<xsl:choose>
+						<xsl:when test="$absolute_path != ''">
+							<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($xims_box,$goxims,'/user')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+					
+			<!--<input type="hidden" value="1" name="multiselect"/>-->
 		<table class="obj-table">
 			<tbody>
 				<tr>
+					<th id="th-selection">
+						<!--<xsl:value-of select="$i18n/l/Selection"/>-->
+					</th>
 					<xsl:if test="not ($showtrashcan)">
 					<th id="th-status">
 						<a class="th-icon-right">
@@ -341,6 +455,8 @@
 				<xsl:call-template name="get-children"/>
 			</tbody>
 		</table>
+		<xsl:call-template name="multi-select-action" />
+		</form>
 	</xsl:template>
 	
 	<xsl:template name="get-children">
@@ -389,6 +505,9 @@
 	
 	<xsl:template match="children/object">
 		<tr class="objrow">
+			<td class="ctt_select">
+				<xsl:call-template name="cttobj.selectbox"/>
+			</td>
 			<xsl:if test="not ($showtrashcan)">
 			<td class="ctt_status">
 				<xsl:call-template name="state-toolbar"/>
@@ -416,6 +535,10 @@
 				<xsl:call-template name="options-toolbar"/>
 			</td>
 		</tr>
+	</xsl:template>
+	
+	<xsl:template name="cttobj.selectbox">
+		<input type="checkbox" name="multiselect" value="{@id}"></input>
 	</xsl:template>
 	
 	<xsl:template name="cttobject.locationtitle">
@@ -504,11 +627,11 @@
 				</a>
 				
 				<!-- the form is needed, so we can write the new position back without reloading this site from the positioning window -->
-				<form name="reposition{@id}" method="get" action="{$xims_box}{$goxims_content}">
+				<!--<form name="reposition{@id}" method="get" action="{$xims_box}{$goxims_content}">
 					<input type="hidden" name="id" value="{@id}"/>
 					<input type="hidden" name="reposition" value="yes"/>
 					<input type="hidden" name="new_position" value="{$position}"/>
-				</form>
+				</form>-->
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$position"/>
