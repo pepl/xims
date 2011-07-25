@@ -78,6 +78,19 @@
 			<xsl:call-template name="help-widget"/>
 			<xsl:call-template name="header.cttobject.search"/>
 		</div>
+		<div class="xims-content">
+			<p>&#160;
+				<xsl:if test="/document/context/session/message">
+					<xsl:value-of select="/document/context/session/message"/>
+				</xsl:if>	
+				<xsl:if test="/document/context/session/warning_msg">
+					<xsl:value-of select="/document/context/session/warning_msg"/>
+				</xsl:if>
+				<xsl:if test="/document/context/session/error_msg">
+					<xsl:value-of select="/document/context/session/error_msg"/>
+				</xsl:if>
+			</p>
+		</div>
 	</xsl:template>
 
 	<xsl:template name="header.arrownavigation">

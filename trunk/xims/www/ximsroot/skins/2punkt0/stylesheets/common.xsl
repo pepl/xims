@@ -298,6 +298,9 @@
 					<xsl:when test="$mode='move'">
 						<xsl:value-of select="$i18n/l/Move_object"/> '<xsl:value-of select="title"/>' 
 					</xsl:when>
+					<xsl:when test="$mode='movemultiple'">
+						<xsl:value-of select="$i18n/l/Move_objects"/> 
+					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="title"/>
 					</xsl:otherwise>
@@ -1105,7 +1108,7 @@
 		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
 		<xsl:variable name="dfname" select="$df/name"/>
 		<xsl:variable name="dfmime" select="$df/mime_type"/>
-		<xsl:variable name="showtrashcan" select="false()"/>
+		<xsl:variable name="showtrashcan" select="$showtrashcan"/>
 		<div id="options-menu-bar" class="ui-corner-top">
 			<div id="objtype-title">
 				<xsl:call-template name="cttobject.dataformat">
@@ -1263,7 +1266,7 @@
 		<xsl:param name="email-disabled" select="true()"/>
 		<!-- some objecttypes like simpledb_item have no trashcan option -->
 		<xsl:param name="forcepurge" select="false()"/>
-		<xsl:param name="showtrashcan" select="false()"/>
+		<!--<xsl:param name="showtrashcan" select="false()"/>-->
 		
 		<div class="toolbar">
 			<xsl:choose>
@@ -1545,6 +1548,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	<xsl:template name="state-toolbar">
 		<div class="toolbar">
 			<xsl:call-template name="button.state.new"/>

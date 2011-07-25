@@ -52,20 +52,19 @@
 					</xsl:call-template>
 					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
 					
-					<xsl:call-template name="view-content"/>
+						<xsl:call-template name="view-content"/>
 
-						<div id="metadata-options">
-								<xsl:call-template name="user-metadata"/>
-								<xsl:if test="$objtype='Document' or $objtype='NewsItem'">
-							<div id="document-options">
-								<xsl:call-template name="document-options"/>
-							</div>
+						<!--<div id="metadata-options">
+							<xsl:call-template name="user-metadata"/>
+							<xsl:if test="$objtype='Document' or $objtype='NewsItem'">
+								<div id="document-options">
+									<xsl:call-template name="document-options"/>
+								</div>
 							</xsl:if>
-							<br clear="all"/>
-						</div>
+						</div>-->
 						
 					</div>
-			</div>
+				</div>
 				<xsl:call-template name="script_bottom">
 				<xsl:with-param name="simpledb" select="$simpledb"/>
 				<xsl:with-param name="reflib" select="$reflib"/>

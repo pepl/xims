@@ -637,6 +637,14 @@ function aclTooltip(){
 		} 
 	});
 }
+function selectAllObjects(){
+	$("#select-all").bind("click", function(){
+		var checked = $(this).attr("checked");
+		$("input[name=multiselect]").each(function() {
+			$(this).attr("checked",checked);
+		});
+	});
+}
 function getXMLHTTPObject() {
         var xmlhttp=false;
         /*@cc_on @*/
@@ -873,6 +881,7 @@ function createTinyMCEDialog(url, dialogid, title, txtareaid){
 				
 function createDialog(url, dialogid, title){
 	dialogid = "#"+dialogid;
+	alert(dialogid);
 	$.get(url, function(data){
 		$(dialogid).dialog({
 			autoOpen: false,
@@ -911,6 +920,8 @@ $(document).ready(function(){
 		showOn: 'button',
 		buttonImageOnly: true		
 	});
+	
+	selectAllObjects();
 	
     setARIARoles();
 	

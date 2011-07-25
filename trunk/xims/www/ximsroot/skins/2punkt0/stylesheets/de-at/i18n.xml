@@ -183,6 +183,7 @@
 <!-- End common_sitemap -->
 <!-- Begin common_move_browse -->
 <Move_object>Verschiebe Objekt</Move_object>
+<Move_objects>Verschiebe Objekte</Move_objects>
 <from>von</from>
 <to>nach</to>
 <!-- End  common_move_browse -->
@@ -325,7 +326,9 @@
 <NoBMs>Keine Lesezeichen erstellt.</NoBMs>
 <Import>Importieren</Import>
 <DeleteConfirm>Löschen des Objekts bestätigen</DeleteConfirm>
+<DeleteConfirmMultiple>Löschen von mehreren Objekten bestätigen</DeleteConfirmMultiple>
 <AboutDeletion1>Sie sind dabei das Objekt</AboutDeletion1>
+<AboutDeletionMultiple>Sie sind dabei die folgenden Objekte zu löschen</AboutDeletionMultiple>
 <AboutDeletion1_User>Sie sind dabei den Account</AboutDeletion1_User>
 <AboutDeletion2>zu löschen.</AboutDeletion2>
 <WarnNoUndo>Dies ist eine endgültige Aktion und kann nicht rückgängig gemacht werden!</WarnNoUndo>
