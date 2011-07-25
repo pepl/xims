@@ -331,7 +331,6 @@ sub _set_children {
         #TEST
         my $showtrash = 0;
         $showtrash = $ctxt->properties->content->getchildren->showtrash();
-        warn "\n\n show traschcan: ".$showtrash."\n\n";
         if($showtrash) {
         	$conditions .= " AND c.marked_deleted = 1";
         }
@@ -345,8 +344,6 @@ sub _set_children {
         my $countdata = $object->data_provider->driver->dbh->fetch_select(
             sql => [ $countsql, @values ] );
         $child_count = $countdata->[0]->{cid};
-        
-warn "\n\n Kinder: ".$child_count."\n\n";
 
         if ( defined $child_count and $child_count > 0 ) {
             my $sql  = "SELECT $properties FROM $tables WHERE $conditions";
