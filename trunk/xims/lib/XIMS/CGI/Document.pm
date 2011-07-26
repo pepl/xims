@@ -418,6 +418,10 @@ sub _set_wysiwyg_editor {
         # we just dumped eWebEditPro, now change the remaining cookies
         $editor = 'tinymce';
     }
+	elsif ($editor eq 'codemirror') { 
+        # if codemirror is set, use default/undefined editor instead (codemirror is included in tinymce)
+        $editor = undef;
+    }
     elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
         $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
         if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
