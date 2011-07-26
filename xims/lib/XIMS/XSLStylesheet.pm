@@ -29,7 +29,8 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 
 
-=head2    my $xslstylesheet = XIMS::XSLStylesheet->new( %args )
+#=head2    my $xslstylesheet = XIMS::XSLStylesheet->new( %args )
+=head2    XIMS::XSLStylesheet->new( %args )
 
 =head3 Parameter
 
