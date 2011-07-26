@@ -54,14 +54,14 @@
 					
 						<xsl:call-template name="view-content"/>
 
-						<!--<div id="metadata-options">
+						<div id="metadata-options">
 							<xsl:call-template name="user-metadata"/>
 							<xsl:if test="$objtype='Document' or $objtype='NewsItem'">
 								<div id="document-options">
 									<xsl:call-template name="document-options"/>
 								</div>
-							</xsl:if>
-						</div>-->
+						</xsl:if>
+						</div>
 						
 					</div>
 				</div>
