@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::sDocBookXML;
 
 use strict;
-use base qw( XIMS::Document );
+use base qw( XIMS::XML );
 use XIMS::DataFormat;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
@@ -37,18 +37,18 @@ our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head3 Returns
 
-    $docbookxml: XIMS::sDocBookXML instance
+    $docbookxml: instance of XIMS::sDocBookXML
 
 =head3 Description
 
-Constructor
+Fetches existing objects or creates a new instance of XIMS::XSLStylesheet
+for object creation.
 
 =cut
 
-
 sub new {
     my $proto = shift;
-    my $class = ref( $proto ) || $proto;
+    my $class = ref($proto) || $proto;
     my %args = @_;
 
     if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
@@ -59,7 +59,6 @@ sub new {
 }
 
 1;
-
 
 __END__
 
