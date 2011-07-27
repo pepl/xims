@@ -910,6 +910,22 @@ function closeDialog(dialogid){
 	$('#'+dialogid).dialog('destroy');
 }
 
+function searchFilter(){
+	$('#input-search').keyup(function(){
+		var searchtext = $('#input-search').val();
+		$('.objrow').each(function(index){
+			var re = new RegExp(searchtext, 'g');
+			var text = ($(this).find('.ctt_loctitle > span > a')).html() || ($(this).find('.ctt_loctitleindex > span > a')).html();
+			if(text && text.match(re, 'gi')){
+				$(this).show();
+			}
+			else{
+				$(this).hide();
+			}
+		});
+	});
+}
+
 $(document).ready(function(){
 	
 	if (typeof(date_lang) !== 'undefined') {
@@ -1013,6 +1029,8 @@ $('.button').hover(
 
 	$('a.more').removeClass('ui-state-default');
 	$('.ui-dialog').addClass('xims-content');
+	
+	searchFilter();				
 
 
     //IE hack							
