@@ -8,7 +8,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
 	<xsl:import href="edit_common_codemirror.xsl"/>
-    <xsl:import href="codemirror_xml_script.xsl"/>
+    <xsl:import href="codemirror_xsl_script.xsl"/>
 	<xsl:import href="codemirror_common.xsl"/>
 	
 	<xsl:param name="codemirror" select="true()"/>	
