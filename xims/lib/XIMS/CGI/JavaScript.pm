@@ -23,11 +23,6 @@ package XIMS::CGI::JavaScript;
 
 use strict;
 use base qw( XIMS::CGI XIMS::CGI::Text );
-#use CSS::Tiny;
-#use Text::Iconv;
-#use Encode;
-#use Text::Template;
-#use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -39,19 +34,19 @@ sub registerEvents {
 	
 	my $self = shift;
 	$self->SUPER::registerEvents(
-                                'create',
-                                'edit',
-								'store',
-								'publish',
-                                'publish_prompt',
-                                'unpublish',
-								'obj_acllist',
-                                'obj_acllight',
-                                'obj_aclgrant',
-                                'obj_aclrevoke',
-								'pub_preview',
-                                @_
-                                );
+			'create',
+			'edit',
+			'store',
+			'publish',
+			'publish_prompt',
+			'unpublish',
+			'obj_acllist',
+			'obj_acllight',
+			'obj_aclgrant',
+			'obj_aclrevoke',
+			'pub_preview',
+			@_
+			);
 }
 
 =head2 event_edit()
