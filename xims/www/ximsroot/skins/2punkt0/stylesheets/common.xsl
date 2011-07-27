@@ -2022,6 +2022,7 @@
 	<!--	Templates from stylesheets/common.xsl-->
 <xsl:template name="script_bottom">
 	<xsl:param name="tinymce" select="false()"/>
+    <xsl:param name="codemirror" select="false()"/>
 	<xsl:param name="simpledb" select="false()"/>
 	<xsl:param name="vlib" select="false()"/>
 	<xsl:param name="reflib" select="false()"/>
@@ -2038,6 +2039,11 @@
 	<xsl:if test="$tinymce">
 		<xsl:call-template name="tinymce_scripts"/>
 	</xsl:if>
+	
+	<xsl:if test="$codemirror">
+		<xsl:call-template name="codemirror_scripts"/>
+	</xsl:if>
+	
 	<xsl:if test="$simpledb">
 		<script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"/>
 		<script>
