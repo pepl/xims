@@ -10,6 +10,7 @@
 	<xsl:import href="codemirror_common.xsl"/>
     <xsl:import href="codemirror_xsp_script.xsl"/>
     <xsl:import href="create_common_codemirror.xsl"/>
+    <xsl:import href="xspscript_common.xsl"/>
 
 	<xsl:param name="codemirror" select="true()"/>	
 	<xsl:param name="selEditor" select="true()"/>	
@@ -19,6 +20,7 @@
 		<xsl:call-template name="form-locationtitle-create"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
 		<xsl:call-template name="form-body-create_codemirror"/>
+        <xsl:call-template name="processxsp"/>
 		<xsl:call-template name="form-keywordabstract"/>
 		<xsl:call-template name="expandrefs"/>
 		<xsl:call-template name="form-grant"/>
@@ -37,5 +39,7 @@
 
 <xsl:template name="trytobalance"/>
 <xsl:template name="form-minify"/>
+<xsl:template name="prettyprint"/>
+<xsl:template name="testbodysxml"/>
 </xsl:stylesheet>
 
