@@ -10,6 +10,7 @@
 	<xsl:import href="edit_common_codemirror.xsl"/>
     <xsl:import href="codemirror_xsp_script.xsl"/>
 	<xsl:import href="codemirror_common.xsl"/>
+    <xsl:import href="xspscript_common.xsl"/>
 	
 	<xsl:param name="codemirror" select="true()"/>	
 	<xsl:param name="selEditor" select="true()"/>	
@@ -18,6 +19,7 @@
 		<xsl:call-template name="form-locationtitle-edit"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
 		<xsl:call-template name="form-body-edit_codemirror"/>
+        <xsl:call-template name="processxsp"/>
 		<xsl:call-template name="form-keywordabstract"/>
 		<xsl:call-template name="expandrefs"/>
 	</xsl:template>
@@ -35,5 +37,10 @@
 			</textarea>
 		</div>
 	</xsl:template>
+    
+<xsl:template name="trytobalance"/>
+<xsl:template name="form-minify"/>
+<xsl:template name="prettyprint"/>
+<xsl:template name="testbodysxml"/>
 	
 </xsl:stylesheet>
