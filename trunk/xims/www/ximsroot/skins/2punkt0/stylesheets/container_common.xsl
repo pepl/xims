@@ -380,19 +380,25 @@
 							<xsl:choose>
 								<xsl:when test="$order='asc'">
 									<th id="th-title" class="sorting">
-										<a href="{$location}?sb=title;order=desc;page={$page}" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-n"/>
-											<xsl:choose>
-												<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Title"/>&#160;	</xsl:when>
-												<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="$i18n/l/Location"/>&#160;	</xsl:when>
-											</xsl:choose>
-										</a>
+										<xsl:choose>
+											<xsl:when test="$containerview_show = 'title'">
+												<a href="{$location}?sb=title;order=desc;page={$page}" class="th-icon-right">
+													<span class="ui-icon ui-icon-triangle-1-n"/>
+													<xsl:value-of select="$i18n/l/Title"/>&#160;	
+												</a>
+											</xsl:when>
+											<xsl:when test="$containerview_show = 'location'">
+												<a href="{$location}?sb=location;order=desc;page={$page}" class="th-icon-right">
+													<span class="ui-icon ui-icon-triangle-1-n"/>
+													<xsl:value-of select="$i18n/l/Location"/>&#160;	
+												</a>
+											</xsl:when>
+										</xsl:choose>
 									</th>
 								</xsl:when>
 								<xsl:otherwise>
 									<th id="th-title" class="sorting">
-									<a class="th-icon-right">
-									
+									<a class="th-icon-right">									
 										<xsl:choose>
 											<xsl:when test="$containerview_show = 'title'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=title;order=asc;page=',$page)"/></xsl:attribute></xsl:when>
 											<xsl:when test="$containerview_show = 'location'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=location;order=asc;page=',$page)"/></xsl:attribute></xsl:when>
@@ -409,13 +415,20 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<th id="th-title" class="sorting">
-								<a href="{$location}?sb=title;order=asc;page={$page}" class="th-icon-right">
-									<span class="ui-icon ui-icon-triangle-2-n-s"/>
-									<xsl:choose>
-										<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Title"/>&#160;	</xsl:when>
-										<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="$i18n/l/Location"/>&#160;	</xsl:when>
-									</xsl:choose>
-								</a>
+								<xsl:choose>
+									<xsl:when test="$containerview_show = 'title'">
+										<a href="{$location}?sb=title;order=asc;page={$page}" class="th-icon-right">
+											<span class="ui-icon ui-icon-triangle-2-n-s"/>
+											<xsl:value-of select="$i18n/l/Title"/>&#160;
+										</a>
+									</xsl:when>
+									<xsl:when test="$containerview_show = 'location'">
+										<a href="{$location}?sb=location;order=asc;page={$page}" class="th-icon-right">
+											<span class="ui-icon ui-icon-triangle-2-n-s"/>
+											<xsl:value-of select="$i18n/l/Location"/>&#160;	
+										</a>
+									</xsl:when>
+								</xsl:choose>
 							</th>
 						</xsl:otherwise>
 					</xsl:choose>
