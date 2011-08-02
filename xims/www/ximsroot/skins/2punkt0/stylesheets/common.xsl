@@ -1600,15 +1600,14 @@
 						<xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
 							<xsl:attribute name="class">button status-pub</xsl:attribute>
 							<span>
-								<xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;
-								<xsl:value-of select="$published_path"/>
+								<xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="$published_path"/>
 							</span>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="class">button status-pub_async</xsl:attribute>
 							<span>
 								<xsl:value-of select="$l_Object_modified"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_changed"/>.
-								</span>
+							</span>
 						</xsl:otherwise>
 					</xsl:choose>
 				</a>
@@ -1643,8 +1642,7 @@
 			</xsl:when>
 			<xsl:when test="locked_by_id != '' and locked_time != ''">
 				<a class="button status-locked">
-					<xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/>&#160;<xsl:apply-templates select="locked_time" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;
-					<xsl:call-template name="lockerfullname"/>.
+					<xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/>&#160;<xsl:apply-templates select="locked_time" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lockerfullname"/>.
 				</xsl:attribute>
 					<xsl:value-of select="$l_Object_locked"/>&#160;<xsl:apply-templates select="locked_time" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lockerfullname"/>.
 				</a>
