@@ -23,9 +23,11 @@
 	margin-left:10px;
 	margin-top: 2em;
 	}
+	/* height: auto should do it
 .thumb{
 	height:40px !important;
 	}
+	*/
 .galleria li.active {
 		border: black solid 3px;
 	}
