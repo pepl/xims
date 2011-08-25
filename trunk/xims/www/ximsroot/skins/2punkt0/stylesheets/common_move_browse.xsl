@@ -39,7 +39,7 @@
 								</xsl:choose>
 							</input>
 							<xsl:text> </xsl:text>
-							<input type="submit" value="{$i18n/l/Move_object}" class="control hidden" name="store"/>
+							<input type="submit" value="{$i18n/l/Move_object}" class="control hidden" name="store" id="store" />
 							<br/>
 							<br/>
 							<xsl:value-of select="$i18n/l/browse_target"/>:
