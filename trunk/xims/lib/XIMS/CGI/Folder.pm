@@ -346,6 +346,7 @@ sub event_publishmultiple_prompt {
     if ( scalar @objects ) {
     	$ctxt->objectlist( \@objects );
     }
+    XIMS::Debug( 4, "container - id:".$ctxt->object->id );
     $ctxt->properties->content->getformatsandtypes(1);
     $ctxt->properties->application->styleprefix('common');
     $ctxt->properties->application->style('publishmultiple_prompt');
@@ -399,7 +400,7 @@ my $no_dependencies_update = 1;
 sub event_unpublishmultiple {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-
+	XIMS::Debug( 4, "container - id:".$ctxt->object->id );
     my @ids = $self->param('multiselect');
     my @objects;
 	require XIMS::Exporter;
@@ -414,14 +415,14 @@ sub event_unpublishmultiple {
 	{
 		$no_dependencies_update = undef;
 	}
-#my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objects,
-#				$no_dependencies_update, $self->param("recpublish") );
-foreach ( @ids ) {
-		warn $_;
-	}
-				my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@ids,
-				$no_dependencies_update, $self->param("recpublish") );
-	XIMS::Debug( 4, "redirecting to the container" );
+	#my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objects,
+	#				$no_dependencies_update, $self->param("recpublish") );
+	foreach ( @ids ) {
+			warn $_;
+		}
+	my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@ids,
+		$no_dependencies_update, $self->param("recpublish") );
+	XIMS::Debug( 4, "redirecting to the container - id:".$ctxt->object->id );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
 }
@@ -613,86 +614,112 @@ sub event_aclmultiple_prompt {
 sub event_aclgrantmultiple {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-
-	my @grantees;
-	foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
-	    my $grantee = XIMS::User->new( name => $_ );
-	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
-	        unless $grantee and $grantee->id();
-	    push @grantees, $grantee;
-	}
-	my $recgrant = $self->param('recacl');
-    my @ids = $self->param('multiselect');
-    #my @objects;
-    
-    foreach(@ids){
-    	my $obj = new XIMS::Object('id' => $_);
-    	#recursive
-    	if ( $recgrant ) {
-    		my $path;
-		    my $desc_privmask;
-		    my @descendants = $obj->descendants_granted(
-		        User           => $ctxt->session->user,
-		        marked_deleted => 0
-		    );
-		    foreach my $desc (@descendants) {
-				push(@ids, $desc->id());
-#			        $desc_privmask = $ctxt->session->user->object_privmask($desc);
-#			        $path          = $desc->location_path();
-#			        if ( $desc_privmask & XIMS::Privileges::GRANT() ) {
-#			            push(@ids, $desc->id());
-#			        }
-#			        else {
-#			            warn "Insufficient privileges to grant privileges on '$path'.\n";
-#			        }
+	
+	if($self->param('grantees')){
+		my @grantees;
+		foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
+		    my $grantee = XIMS::User->new( name => $_ );
+			#unless $grantee and $grantee->id();
+			if($grantee and $grantee-id()){	
+				push @grantees, $grantee;
+			}
+			else{
+				XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n");
 			}
 		}
-    	#end recursive
-    	if($ctxt->session->user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
-    		# build the privilege mask
-			my $bitmask = 0;
-			foreach my $priv ( XIMS::Privileges::list() ) {
-				my $lcname = 'acl_' . lc($priv);
-				if ( $self->param($lcname) ) {
-					{
-						## no critic (ProhibitNoStrict)
-						no strict 'refs';
-						$bitmask += &{"XIMS::Privileges::$priv"}();
-						## use strict
-					}
+		unless (scalar @grantees){
+			$ctxt->properties->application->styleprefix('common');
+			$ctxt->properties->application->style('error');
+			XIMS::Debug( 2, "none of provided grantees found" );
+			$self->sendError( $ctxt, __ "None of your provided grantees could befound." );
+			return 0;
+		}
+		
+		my $recgrant = $self->param('recacl');
+	    my @ids = $self->param('multiselect');
+	    my $user = $ctxt->session->user();
+	    #my @objects;
+	    
+	    my $obj;
+	    #recursive
+		if ( $recgrant ) {
+			my @org_ids = @ids;
+			foreach(@org_ids){
+				$obj = new XIMS::Object('id' => $_);
+			    my @descendants = $obj->descendants_granted(
+			        User           => $user,
+			        marked_deleted => 0
+			    );
+			    foreach my $desc (@descendants) {
+			    	if($user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+						push(@ids, $desc->id());
+			    	}
 				}
 			}
+			warn "\n\norg_ids: ".scalar @org_ids." -- ids: ".scalar @ids."\n";
+		}
+	    #end recursive
+	    
+	    # build the privilege mask
+		my $bitmask = 0;
+		foreach my $priv ( XIMS::Privileges::list() ) {
+			my $lcname = 'acl_' . lc($priv);
+			if ( $self->param($lcname) ) {
+				{
+					## no critic (ProhibitNoStrict)
+					no strict 'refs';
+					$bitmask += &{"XIMS::Privileges::$priv"}();
+					## use strict
+				}
+			}
+		}
+	
+		my $id_iterator = XIMS::Iterator::Object->new( \@ids, 1 );
+		while ( my $obj = $id_iterator->getNext() ) {
+			#warn "\n object : ".obj->location();
 			# store the set to the database
 			foreach(@grantees){
 				my $gid = $_->id();
+				#my $gid = $_;
 				my $boolean = $obj->grant_user_privileges(
 					grantee        => $gid,
 					privilege_mask => $bitmask,
-					grantor        => $ctxt->session->user()
+					grantor        => $user
 				);
 				if ($boolean) {
-					XIMS::Debug( 5, "ACL privs changed for (" . $_->name() . ")" );
-					#$ctxt->properties->application->style('obj_user_update');
-#					my $granted = XIMS::User->new( id => $uid );
-#					$ctxt->session->message(
-#						__x("Privileges changed successfully for user/role '{name}'.",
-#							name => $granted->name(),
-#						)
-#					);
+					XIMS::Debug( 6, "ACL privs changed for (" . $_->name() . ")" );
+					#XIMS::Debug( 6, "ACL privs changed for user ( id: " . $_ . ")" );
+	#					#$ctxt->properties->application->style('obj_user_update');
+	##					my $granted = XIMS::User->new( id => $uid );
+	##					$ctxt->session->message(
+	##						__x("Privileges changed successfully for user/role '{name}'.",
+	##							name => $granted->name(),
+	##						)
+	##					);
+	#				}
+	#				else {
+	#					XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for ". $_->name() );
+	#					#XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for user with id ". $_ );
+	#				}
 				}
 				else {
 					XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for ". $_->name() );
+					#XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for user with id ". $_ );
 				}
 			}
-			#$ctxt->properties->application->style('obj_user_update');
-    	}
-    	else{
-    		warn "geht nicht : ".$obj->location();
-    	}
-    }
-	XIMS::Debug( 4, "redirecting to the container" );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
-    return 0;
+		}
+	    XIMS::Debug( 3, "all privileges granted." );
+		XIMS::Debug( 4, "redirecting to the container" );
+	    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+	    return 0;
+	}
+	else{
+		$ctxt->properties->application->styleprefix('common');
+		$ctxt->properties->application->style('error');
+		XIMS::Debug( 2, "no grantee(s) provided" );
+		$self->sendError( $ctxt, __ "Please provide at least one grantee." );
+		return 0;
+	}
 }
 
 =head2 event_aclrevokemultiple()
@@ -703,20 +730,54 @@ sub event_aclrevokemultiple {
 	XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
+	if($self->param('grantees')){
 	my @grantees;
 	foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
 	    my $grantee = XIMS::User->new( name => $_ );
-	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
-	        unless $grantee and $grantee->id();
-	    push @grantees, $grantee;
+#	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
+#	        unless $grantee and $grantee->id();
+#	    push @grantees, $grantee;
+		if($grantee and $grantee-id()){	
+				push @grantees, $grantee;
+			}
+			else{
+				XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n");
+			}
+		}
+		unless (scalar @grantees){
+			$ctxt->properties->application->styleprefix('common');
+			$ctxt->properties->application->style('error');
+			XIMS::Debug( 2, "none of provided grantees found" );
+			$self->sendError( $ctxt, __ "None of your provided grantees could befound." );
+			return 0;
+		}
+	my $recgrant = $self->param('recacl');
+	my @ids = $self->param('multiselect');
+	my $user = $ctxt->session->user();
+	
+	my $obj;
+	#recursive
+	if ( $recgrant ) {
+		my @org_ids = @ids;
+		foreach(@org_ids){
+			$obj = new XIMS::Object('id' => $_);
+		    my @descendants = $obj->descendants_granted(
+		        User           => $user,
+		        marked_deleted => 0
+		    );
+		    foreach my $desc (@descendants) {
+		    	if($user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+					push(@ids, $desc->id());
+		    	}
+			}
+		}
+		#warn "\n\norg_ids: ".scalar @org_ids." -- ids: ".scalar @ids."\n";
 	}
-    my @ids = $self->param('multiselect');
-    my @objects;
-    foreach(@ids){
-    	my $obj = new XIMS::Object('id' => $_);
-    	if($ctxt->session->user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+    #end recursive
 
-			foreach(@grantees){
+	my $id_iterator = XIMS::Iterator::Object->new( \@ids );
+	while ( my $obj = $id_iterator->getNext() ) {
+		foreach(@grantees){
 				my $gid = $_->id();
 				
 				# revoke the privs
@@ -741,14 +802,18 @@ sub event_aclrevokemultiple {
 				}
 			}
 			#$ctxt->properties->application->style('obj_user_update');
-    	}
-    	else{
-    		warn "geht nicht : ".$obj->location();
-    	}
     }
 	XIMS::Debug( 4, "redirecting to the container" );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
+    }
+	else{
+		$ctxt->properties->application->styleprefix('common');
+		$ctxt->properties->application->style('error');
+		XIMS::Debug( 2, "no grantee(s) provided" );
+		$self->sendError( $ctxt, __ "Please provide at least one grantee." );
+		return 0;
+	}
 }
 
 # END RUNTIME EVENTS
