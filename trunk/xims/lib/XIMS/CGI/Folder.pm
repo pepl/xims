@@ -620,7 +620,7 @@ sub event_aclgrantmultiple {
 		foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
 		    my $grantee = XIMS::User->new( name => $_ );
 			#unless $grantee and $grantee->id();
-			if($grantee and $grantee-id()){	
+			if($grantee and $grantee->id()){	
 				push @grantees, $grantee;
 			}
 			else{
@@ -632,6 +632,27 @@ sub event_aclgrantmultiple {
 			$ctxt->properties->application->style('error');
 			XIMS::Debug( 2, "none of provided grantees found" );
 			$self->sendError( $ctxt, __ "None of your provided grantees could befound." );
+			return 0;
+		}
+		
+		# build the privilege mask
+		my $bitmask = 0;
+		foreach my $priv ( XIMS::Privileges::list() ) {
+			my $lcname = 'acl_' . lc($priv);
+			if ( $self->param($lcname) ) {
+				{
+					## no critic (ProhibitNoStrict)
+					no strict 'refs';
+					$bitmask += &{"XIMS::Privileges::$priv"}();
+					## use strict
+				}
+			}
+		}
+		unless ($bitmask){
+			$ctxt->properties->application->styleprefix('common');
+			$ctxt->properties->application->style('error');
+			XIMS::Debug( 2, "No privileges provides" );
+			$self->sendError( $ctxt, __ "Please provide at least one privilege." );
 			return 0;
 		}
 		
@@ -660,19 +681,7 @@ sub event_aclgrantmultiple {
 		}
 	    #end recursive
 	    
-	    # build the privilege mask
-		my $bitmask = 0;
-		foreach my $priv ( XIMS::Privileges::list() ) {
-			my $lcname = 'acl_' . lc($priv);
-			if ( $self->param($lcname) ) {
-				{
-					## no critic (ProhibitNoStrict)
-					no strict 'refs';
-					$bitmask += &{"XIMS::Privileges::$priv"}();
-					## use strict
-				}
-			}
-		}
+	    
 	
 		my $id_iterator = XIMS::Iterator::Object->new( \@ids, 1 );
 		while ( my $obj = $id_iterator->getNext() ) {
