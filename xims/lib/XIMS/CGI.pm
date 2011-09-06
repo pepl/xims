@@ -1256,9 +1256,11 @@ sub redirect_path {
 	if ( defined $r ) {
 		if ( $r =~ /^\d+$/ ) {
 			$redirectpath = $dp->location_path( id => $r );
+			warn "\nredirectpath: ".$redirectpath;
 		}
 		else {
 			$uri = Apache::URI->parse( $ctxt->apache(), $r );
+			warn "uri: ".$uri;
 		}
 	}
 	elsif ( defined $id ) {
@@ -3383,17 +3385,21 @@ sub event_obj_aclgrant {
 
 			# build the privilege mask
 			my $bitmask = 0;
-
 			foreach my $priv ( XIMS::Privileges::list() ) {
 				my $lcname = 'acl_' . lc($priv);
-				if ( $self->param($lcname) ) {
-					{
+				if ( $self->param($lcname) ) {					
 						## no critic (ProhibitNoStrict)
 						no strict 'refs';
 						$bitmask += &{"XIMS::Privileges::$priv"}();
 						## use strict
-					}
-				}
+				}				
+			}
+			unless ($bitmask){
+				$ctxt->properties->application->styleprefix('common');
+				$ctxt->properties->application->style('error');
+				XIMS::Debug( 2, "No privileges provides" );
+				$self->sendError( $ctxt, __ "Please provide at least one privilege." );
+				return 0;
 			}
 
 			# store the set to the database
@@ -3791,7 +3797,7 @@ sub autopublish {
 	my $no_dependencies_update = shift;
 	my $recpublish             = shift;
 
-	my $published;
+	my $published = 0;
 	my $user = $ctxt->session->user();
 	foreach ( @{$objids} ) {
 		warn $_;
@@ -3820,7 +3826,7 @@ sub autopublish {
 					}
 				}
 				#recursive publishing
-				if ( $object->data_format->mime_type() eq 'application/x-container' and ($recpublish or $method eq 'unpublish'){
+				if ( ($object->data_format->mime_type() eq 'application/x-container') and ($recpublish or ($method eq 'unpublish'))){
 					my %options;
 					my $privmask;
 					my %param = ( User => $user, marked_deleted => 0 );
@@ -3875,19 +3881,19 @@ sub autopublish {
 					XIMS::Debug( 3, "could not $method object with id $id" );
 					next;
 					}
-				}
+				}#end if method unpublish
 				
-			}
+			}#end if check for privileges
 			else {
 				XIMS::Debug( 3, "no privileges to $method object with id $id" );
 				next;
 			}
-		}
+		}# end if object
 		else {
 			XIMS::Debug( 3, "could not find an object with id $id" );
 			next;
 		}
-	}
+	}# end foreach objids
 	return $published;
 }
 
