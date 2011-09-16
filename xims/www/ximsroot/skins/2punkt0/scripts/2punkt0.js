@@ -881,7 +881,6 @@ function createTinyMCEDialog(url, dialogid, title, txtareaid){
 				
 function createDialog(url, dialogid, title){
 	dialogid = "#"+dialogid;
-	alert(dialogid);
 	$.get(url, function(data){
 		$(dialogid).dialog({
 			autoOpen: false,
@@ -1072,8 +1071,8 @@ Date.prototype.print = function (str) {
 	var sec = this.getSeconds();
 	s["%a"] = $.datepicker.regional[date_lang].dayNamesShort[w]; //Calendar._SDN[w]; // abbreviated weekday name [FIXME: I18N]
 	s["%A"] = $.datepicker.regional[date_lang].dayNames[w]; //Calendar._DN[w]; // full weekday name
-	s["%b"] = $.datepicker.regional[date_lang].monthNamesShort[w]; //Calendar._SMN[m]; // abbreviated month name [FIXME: I18N]
-	s["%B"] = $.datepicker.regional[date_lang].monthNames[w]; //Calendar._MN[m]; // full month name
+	s["%b"] = $.datepicker.regional[date_lang].monthNamesShort[m]; //Calendar._SMN[m]; // abbreviated month name [FIXME: I18N]
+	s["%B"] = $.datepicker.regional[date_lang].monthNames[m]; //Calendar._MN[m]; // full month name
 	// FIXME: %c : preferred date and time representation for the current locale
 	s["%C"] = 1 + Math.floor(y / 100); // the century number
 	s["%d"] = (d < 10) ? ("0" + d) : d; // the day of the month (range 01 to 31)
