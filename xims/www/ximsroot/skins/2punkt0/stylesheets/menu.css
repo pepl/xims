@@ -16,6 +16,10 @@
 .ui-state-default, .ui-widget-content .ui-state-default{
 	border: 1px solid #999999 !important;
 }
+
+a.button{
+	color: #555555;
+}
 /*
 .button .ui-button .ui-state-default{
 	background: none repeat-x scroll 50% 50% #EEEEEE !important;
