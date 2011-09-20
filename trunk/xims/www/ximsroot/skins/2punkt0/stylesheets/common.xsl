@@ -69,6 +69,7 @@
 	<xsl:template name="cancelform-copy">
 		<div class="cancel-save cancelsave-form">
 			<button type="submit" name="submit_eform" accesskey="S" onclick="document.eform.store.click(); return false">
+			<!--<button type="submit" name="submit_eform" accesskey="S" onclick="$('#store').click();return false">-->
 				<xsl:value-of select="$i18n/l/save"/>
 			</button>
 			<button class="save-button-js" type="submit" name="submit_eform" accesskey="C" onclick="document.cform.cancel.click(); return false">
@@ -384,7 +385,7 @@
 		</div>
 	</xsl:template>
 	<xsl:template name="form-location-create">
-		<xsl:param name="testlocation" select="true()"/>
+		<!--<xsl:param name="testlocation" select="true()"/>-->
 		<xsl:variable name="objecttype">
 			<xsl:value-of select="object_type_id"/>
 		</xsl:variable>
@@ -398,7 +399,7 @@
 				<xsl:if test="$testlocation">
 					<xsl:attribute name="onchange">return testlocation();</xsl:attribute>
 				</xsl:if>
-				<!--make location-field readonly if object is a newsletter-->
+				<!--make location-field readonly if object is a newsitem-->
 				<xsl:if test="$objecttype = '15'">
 					<xsl:attribute name="readonly">readonly</xsl:attribute>
 					<xsl:attribute name="class">readonlytext</xsl:attribute>
@@ -1388,7 +1389,7 @@
 						return "Loading...";
 						}
 						},
-						{position: {offset: "-600 50"}},
+						{position: {offset: "-630 50"}},
 						{width: "530"}
 					);
 					/*
@@ -1435,9 +1436,12 @@
 						return "Loading...";
 						}
 						},
-						{position: {offset: "-600 50"}},
+						/*{position: {offset: "-550 100"}},*/
+						{position: {my: "center top", at: "right bottom"}},
 						{width: "530"}
 					);
+					/*$( "#ui-tooltip-<xsl:value-of select="$id"/>" ).position({ my: "left top", at: "right bottom", of:  "#option-acl_<xsl:value-of select="$id"/>" });
+					*/
 					/*
 					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({
 						content: function(response){
@@ -2149,8 +2153,9 @@
 	</xsl:template>
 	
 	<xsl:template name="back-to-home">
-		<p class="back">
+		<!--<p class="back">
 			<span class="ui-icon ui-icon-home"></span><a href="{$xims_box}{$goxims}/user"><xsl:value-of select="$i18n/l/BackToHome"/></a>
-		</p>
+		</p>-->
+		<a class="button" href="{$xims_box}{$goxims}/user"><xsl:value-of select="$i18n/l/cancel"/></a>
 	</xsl:template>
 </xsl:stylesheet>

@@ -12,6 +12,7 @@
 <xsl:import href="newsitem_common.xsl"/>
 
 <xsl:param name="selEditor" select="true()"/>
+<xsl:param name="testlocation" select="false()"/>
 
 <xsl:template name="create-content">
 	<xsl:call-template name="form-locationtitle-create"/>
