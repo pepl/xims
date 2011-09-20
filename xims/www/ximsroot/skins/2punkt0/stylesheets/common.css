@@ -75,12 +75,8 @@ body {
     background-color: #fff;
     color: black;
     font-family: helvetica, arial, sans-serif;
-    width: 1005px;
     margin: 0 auto;
 	font-size: 100.01%;
-	/*
-font-size: 0.625em;
-*/
 }
 
 address {
