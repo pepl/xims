@@ -24,7 +24,8 @@
     <xsl:param name="reference_type_id"/>
     <xsl:param name="workgroup_id"/>
     <xsl:param name="reflibsearch"/>
-    <xsl:param name="reflib">true</xsl:param>
+    <!--<xsl:param name="reflib">true</xsl:param>-->
+	<xsl:param name="reflib" select="true()"/>
 	<xsl:param name="createwidget">default</xsl:param>
 
     <xsl:variable name="objectitems_count"><xsl:choose><xsl:when test="/document/context/object/children/@totalobjects"><xsl:value-of select="/document/context/object/children/@totalobjects"/></xsl:when><xsl:otherwise>0</xsl:otherwise></xsl:choose></xsl:variable>
@@ -39,6 +40,8 @@
 		<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id)"/>
 		<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch)"/></xsl:if>
 	</xsl:variable>
+	
+	<!--<xsl:variable name="reflib" select="true()"/>-->
 	<xsl:template name="view-content">
 		<div id="search-filter">
 			<xsl:call-template name="reflib.authorsearch"/>
@@ -142,8 +145,7 @@
                         <xsl:sort select="position" order="ascending" data-type="number"/>
                     </xsl:apply-templates>
                 </xsl:when>
-                <xsl:otherwise>
-                    Anonymous</xsl:otherwise>
+                <xsl:otherwise>Anonymous</xsl:otherwise>
             </xsl:choose>:
             <xsl:call-template name="reftitle"/>
             (<a href="{$xims_box}{$goxims_content}{$absolute_path}?reference_type_id={current()/reference_type_id}"><xsl:value-of select="/document/reference_types/reference_type[@id=current()/reference_type_id]/name"/></a>)
@@ -182,15 +184,12 @@
         <xsl:call-template name="last_modified"/>
         
         <xsl:call-template name="state-toolbar"/>
-				<xsl:call-template name="options-toolbar">
-					<xsl:with-param name="email-disabled" select="true()"/>
-					<xsl:with-param name="copy-disabled" select="true()"/>
-					<xsl:with-param name="move-disabled" select="true()"/>
-					<xsl:with-param name="forcepurge" select="true()"/>
-				</xsl:call-template>
-        <!--<xsl:call-template name="cttobject.status"/>
-        <xsl:call-template name="cttobject.options"/>
--->
+		<xsl:call-template name="options-toolbar">
+			<xsl:with-param name="email-disabled" select="true()"/>
+			<xsl:with-param name="copy-disabled" select="true()"/>
+			<xsl:with-param name="move-disabled" select="true()"/>
+			<xsl:with-param name="forcepurge" select="true()"/>
+		</xsl:call-template>
        </div>
         <div class="vlabstract">
             <xsl:apply-templates select="abstract"/>

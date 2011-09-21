@@ -16,20 +16,21 @@
 
 <xsl:import href="common.xsl"/>
 <xsl:import href="../../../stylesheets/common.xsl"/>
-<xsl:import href="common_jscalendar_scripts.xsl"/>
+<xsl:import href="edit_common.xsl"/>
+<!--<xsl:import href="common_jscalendar_scripts.xsl"/>-->
 
 <xsl:param name="eid"/>
 <xsl:param name="message" select="/document/context/session/message"/>
 
-<xsl:variable name="schema_path">
-    <xsl:choose>
+<xsl:variable name="schema_path">http://www.uibk.ac.at/test/neuertest1/xml-schema.xml
+    <!--<xsl:choose>
         <xsl:when test="contains($publishingroot,':')">
             <xsl:value-of select="concat($publishingroot,'/',substring-after(substring-after(/document/context/object/schema_id,'/'),'/'))"/>
         </xsl:when>
         <xsl:otherwise>
             <xsl:value-of select="concat($xims_box,'/ximspubroot',/document/context/object/schema_id)"/>
         </xsl:otherwise>
-    </xsl:choose>
+    </xsl:choose>-->
 </xsl:variable>
 
 <xsl:variable name="schema" select="document($schema_path)"/>
@@ -48,20 +49,21 @@
     </xsl:for-each>
 </xsl:variable>
 
-<xsl:template match="/document/context/object">
+<xsl:template name="edit-content" >
+<!--<xsl:template match="/document/context/object">
 <html>
     <xsl:call-template name="head-edit"/>
     <body>
         <div class="edit">
             <xsl:call-template name="table-edit"/>
             <form action="{$xims_box}{$goxims_content}?id={@id}" name="eform" method="post">
-                <table border="0" width="98%">
-                    <xsl:call-template name="tr-locationtitle-edit_xml"/>
-                    <xsl:call-template name="tr-keywords-edit"/>
+                <table border="0" width="98%">-->
+                    <xsl:call-template name="form-locationtitle-edit_xml"/>
+					<xsl:call-template name="form-marknew-pubonsave"/>
+                    <!--<xsl:call-template name="tr-keywords-edit"/>
                     <xsl:call-template name="tr-abstract-edit"/>
-                    <xsl:call-template name="markednew"/>
-                    <tr>
-                        <td colspan="3">
+                    <xsl:call-template name="markednew"/>-->
+                    <div class="form-div block">
                             <div style="border: 1px solid black; padding: 5px;">
                                 <table>
                                     <xsl:if test="$message != ''">
@@ -126,9 +128,11 @@
                                     </tr>
                                 </table>
                             </div>
-                        </td>
-                    </tr>
+                    </div>
+					
+		<xsl:call-template name="form-keywordabstract"/>
 
+<!--
                 </table>
                 <xsl:call-template name="saveedit"/>
             </form>
@@ -137,7 +141,7 @@
         <xsl:call-template name="canceledit"/>
         <xsl:call-template name="script_bottom"/>
     </body>
-</html>
+</html>-->
 </xsl:template>
 
 <xsl:template match="/document/context/object/body//*">
@@ -258,10 +262,10 @@
         <td>
             <xsl:choose>
                 <xsl:when test="s:datatype = 'datetime'">
-                    <xsl:call-template name="jscalendar-selector">
+                    <!--<xsl:call-template name="jscalendar-selector">
                         <xsl:with-param name="timestamp_string" select="$existing_value"/>
                         <xsl:with-param name="formfield_id" select="concat('sfe_',@name)"/>
-                    </xsl:call-template>
+                    </xsl:call-template>-->
                 </xsl:when>
                 <xsl:when test="s:datatype = 'stringoptions'">
                     <select tabindex="{position()+20}" name="sfe_{@name}">
@@ -298,10 +302,10 @@
         <td>
             <xsl:choose>
                 <xsl:when test="s:datatype = 'datetime'">
-                    <xsl:call-template name="jscalendar-selector">
+                    <!--<xsl:call-template name="jscalendar-selector">
                         <xsl:with-param name="timestamp_string" select="$currentdatetime"/>
                         <xsl:with-param name="formfield_id" select="concat('sfe_',@name)"/>
-                    </xsl:call-template>
+                    </xsl:call-template>-->
                 </xsl:when>
                 <xsl:when test="s:datatype = 'stringoptions'">
                     <select tabindex="{position()+20}" name="sfe_{@name}">
@@ -327,7 +331,7 @@
     <head>
         <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
         <xsl:call-template name="css"/>
-        <xsl:call-template name="jscalendar_scripts"/>
+        <!--<xsl:call-template name="jscalendar_scripts"/>-->
     </head>
 </xsl:template>
 

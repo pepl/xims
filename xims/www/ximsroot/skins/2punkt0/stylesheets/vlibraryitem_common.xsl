@@ -12,6 +12,13 @@
 	
 	<xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 	
+	<xsl:output method="xml"
+                encoding="utf-8"
+                media-type="application/xhtml+xml"
+                doctype-system="http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"
+                doctype-public="-//W3C//DTD XHTML Basic 1.1//EN"
+        indent="no"/>
+		
 	<xsl:template name="form-vlproperties">
 		<xsl:param name="mo"/>
 		<xsl:param name="property"><xsl:value-of select="$i18n_vlib/l/*[name()=$mo]"/></xsl:param>

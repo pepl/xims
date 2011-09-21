@@ -327,6 +327,7 @@
 <Import>Importieren</Import>
 <DeleteConfirm>Löschen des Objekts bestätigen</DeleteConfirm>
 <DeleteConfirmMultiple>Löschen von mehreren Objekten bestätigen</DeleteConfirmMultiple>
+<AboutDeletionUser>Sie sind dabei den Account</AboutDeletionUser>
 <AboutDeletion1>Sie sind dabei das Objekt</AboutDeletion1>
 <AboutDeletionMultiple>Sie sind dabei die folgenden Objekte zu löschen</AboutDeletionMultiple>
 <AboutDeletion1_User>Sie sind dabei den Account</AboutDeletion1_User>
@@ -435,6 +436,9 @@
 <rl_workgroup>Workgroup</rl_workgroup>
 <rl_project>Project(s)</rl_project>
 <rl_quality_criterion>Quality criterion</rl_quality_criterion>
+<rl_preprint_identifier>Preprint identifier</rl_preprint_identifier>
+<rl_thesis_inprocess>Thesis in process</rl_thesis_inprocess>
+<rl_preprint_submitdate>Preprint submit date</rl_preprint_submitdate>
 <!-- end reflib / vlib-->
 <!-- userpages -->
 <SelectSkin>Skin auswählen</SelectSkin>

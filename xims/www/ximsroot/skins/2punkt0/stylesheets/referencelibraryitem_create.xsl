@@ -16,35 +16,17 @@
 <xsl:param name="reflib">true</xsl:param>
 
 <xsl:template name="create-content">
-	<!--<input type="hidden" name="objtype" value="{$objtype}"/>-->
 	<input type="hidden" name="reftype" value="{$reftype}"/>
 	
 	<xsl:call-template name="form-marknew-pubonsave"/>
-					
-	<xsl:call-template name="form-vlproperties">
-		<xsl:with-param name="mo" select="'author'"/>
-		<xsl:with-param name="mode" select="'rl'"/>
-	</xsl:call-template>
-	<xsl:call-template name="form-vlproperties">
-		<xsl:with-param name="mo" select="'editor'"/>
-		<xsl:with-param name="mode" select="'rl'"/>
-	</xsl:call-template>
-	<xsl:call-template name="form-vlproperties">
-		<xsl:with-param name="mo" select="'serial'"/>
-		<xsl:with-param name="mode" select="'rl'"/>
-	</xsl:call-template>
-	
-	<xsl:apply-templates select="/document/reference_properties/reference_property">
-		<xsl:sort select="position" order="ascending" data-type="number"/>
+
+	<xsl:apply-templates select="/document/reference_properties/reference_property[@id=1]">
 	</xsl:apply-templates>
 
 	<xsl:call-template name="form-abstractnotes"/>
 	
-	<!--<script type="text/javascript" language="javascript">
-		var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
-		var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
-	</script>	-->				
-	<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
+	<input type="hidden" name="proceed_to_edit" value="1"/>
+
 	<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 	</xsl:template>
 	

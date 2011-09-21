@@ -153,5 +153,10 @@
     </div>
   </xsl:template>
 
-
+<xsl:template name="button.options.copy"/>
+<xsl:template name="button.options.move"/>
+<xsl:template name="button.options.delete">
+	<xsl:call-template name="button.options.purge"/>
+</xsl:template>
+<xsl:template name="button.options.send_email"/>
 </xsl:stylesheet>
