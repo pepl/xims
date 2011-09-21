@@ -12,6 +12,8 @@
 <!--<xsl:import href="common.xsl"/>-->
 <xsl:import href="libraryitem_common.xsl"/>
 
+<xsl:param name="reflib" select="true()"/>
+
 <xsl:param name="reftype"><xsl:value-of select="/document/context/object/reference_type_id"/></xsl:param>
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 <xsl:variable name="titlerefpropid" select="/document/reference_properties/reference_property[name='title']/@id"/>
@@ -52,24 +54,24 @@
 
 
 <xsl:template match="reference_property">
-    <xsl:variable name="propid" select="@id"/>
-    <xsl:variable name="propname"><xsl:call-template name="get-prop-name"><xsl:with-param name="id" select="$propid"/></xsl:call-template></xsl:variable>
-    <div class="ref-property">
-    <div class="label-prop">
-            <label><xsl:attribute name="for">input-<xsl:value-of select="$propid"/></xsl:attribute><xsl:value-of select="$propname"/></label>
-    </div>
-            <input type="text" class="text" name="{name}" size="50"  value="{/document/context/object/reference_values/reference_value[property_id=$propid]/value}">
-							<xsl:attribute name="onfocus">javascript:initPropDescription('#prop-desc_<xsl:value-of select="$propid"/>', '#input-<xsl:value-of select="$propid"/>');</xsl:attribute>
-							<xsl:attribute name="onblur">javascript:destroyInfoBox('#prop-desc_<xsl:value-of select="$propid"/>');</xsl:attribute>
-							<xsl:attribute name="id">input-<xsl:value-of select="$propid"/></xsl:attribute></input>
-							<div class="ui-state-highlight ui-corner-all prop-desc" id="prop-desc_{$propid}">
-								<p>
-									<span class="ui-icon ui-icon-info"/><strong><xsl:value-of select="$propname"/></strong><br/>
-									<xsl:value-of select="description"/>
-								</p>
-							</div>
-           <!-- <xsl:value-of select="description"/>-->
-    </div>
+	<xsl:variable name="propid" select="@id"/>
+	<xsl:variable name="propname"><xsl:call-template name="get-prop-name"><xsl:with-param name="id" select="$propid"/></xsl:call-template></xsl:variable>
+	<div class="ref-property">
+		<div class="label-prop">
+			<label><xsl:attribute name="for">input-<xsl:value-of select="$propid"/></xsl:attribute><xsl:value-of select="$propname"/></label>
+		</div>
+		<input type="text" class="text" name="{name}" size="50"  value="{/document/context/object/reference_values/reference_value[property_id=$propid]/value}">
+			<xsl:attribute name="onfocus">javascript:initPropDescription('#prop-desc_<xsl:value-of select="$propid"/>', '#input-<xsl:value-of select="$propid"/>');</xsl:attribute>
+			<xsl:attribute name="onblur">javascript:destroyInfoBox('#prop-desc_<xsl:value-of select="$propid"/>');</xsl:attribute>
+			<xsl:attribute name="id">input-<xsl:value-of select="$propid"/></xsl:attribute></input>
+		<div class="ui-state-highlight ui-corner-all prop-desc" id="prop-desc_{$propid}">
+			<p>
+				<span class="ui-icon ui-icon-info"/><strong><xsl:value-of select="$propname"/></strong><br/>
+				<xsl:value-of select="description"/>
+			</p>
+		</div>
+		<!-- <xsl:value-of select="description"/>-->
+	</div>
 </xsl:template>
 
 <xsl:template name="get-prop-name">
@@ -114,7 +116,11 @@
 		<xsl:when test="$id=37"><xsl:value-of select="$i18n/l/rl_citekey"/></xsl:when>
 		<xsl:when test="$id=38"><xsl:value-of select="$i18n/l/rl_url2"/></xsl:when>
 		<xsl:when test="$id=39"><xsl:value-of select="$i18n/l/rl_workgroup"/></xsl:when>
+		<xsl:when test="$id=40"><xsl:value-of select="$i18n/l/rl_preprint_identifier"/></xsl:when>
 		<xsl:when test="$id=41"><xsl:value-of select="$i18n/l/rl_project"/></xsl:when>
+		<xsl:when test="$id=42"><xsl:value-of select="$i18n/l/rl_preprint_submitdate"/></xsl:when>
+		<xsl:when test="$id=43"><xsl:value-of select="$i18n/l/rl_thesis_inprocess"/></xsl:when>
+		<!--<xsl:when test="$id=44"><xsl:value-of select="$i18n/l/rl_preprint_identifier"/></xsl:when>-->
 		<xsl:when test="$id=45"><xsl:value-of select="$i18n/l/rl_quality_criterion"/></xsl:when>
 		<xsl:otherwise>error</xsl:otherwise>
 	</xsl:choose>
@@ -311,8 +317,11 @@
 <xsl:template match="serial" mode="edit">
     <xsl:value-of select="title"/>
     <xsl:text> </xsl:text>
-    <a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_serial_mapping=1;serial_id={@id}"
-       title="{i18n_vlib/l/Delete_mapping}">(x)</a>
+	<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_serial_mapping=1;serial_id={@id}">
+		<xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>
+	</a>
+    <!--<a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_serial_mapping=1;serial_id={@id}"
+       title="{i18n_vlib/l/Delete_mapping}">(x)</a>-->
 </xsl:template>
 
 <xsl:template name="authorfullname">
@@ -369,8 +378,9 @@
 
 <xsl:template name="publish-on-save"/>
 
+<!--
 <xsl:template name="cttobject.content_length"/>
 <xsl:template name="cttobject.options.copy"/>
-<xsl:template name="cttobject.options.move"/>
+<xsl:template name="cttobject.options.move"/>-->
 
 </xsl:stylesheet>

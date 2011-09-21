@@ -16,7 +16,7 @@
 <xsl:variable name="i18n_reflib" select="document(concat($currentuilanguage,'/i18n_reflibrary.xml'))"/>
 
 <xsl:template name="edit-content">
-	<xsl:call-template name="reftypes_list"/>
+	<!--<xsl:call-template name="reftypes_list"/>-->
 	<xsl:call-template name="form-marknew-pubonsave"/>
 	<xsl:call-template name="form-vlproperties">
 		<xsl:with-param name="mo" select="'author'"/>
@@ -39,12 +39,12 @@
 	<!-- Add Fulltext (->XIMS::File object as child ?) -->
 	<xsl:call-template name="form-abstractnotes"/>
 	
-	<form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="get" style="display:none">
+	<!--<form action="{$xims_box}{$goxims_content}" name="reftypechangeform" method="get" style="display:none">
 		<input type="hidden" name="id" value="{@id}"/>
 		<input type="hidden" name="change_reference_type" value="1"/>
 		<input type="hidden" name="reference_type_id" value=""/>
 		<xsl:call-template name="rbacknav"/>
-	</form>
+	</form>-->
 
 	<script type="text/javascript" language="javascript">
 		var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
@@ -54,7 +54,7 @@
 	<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
 
 </xsl:template>
-    
+    <!--
 <xsl:template name="reftypes_list">
     		<div id="create-widget">
 			<button>				
@@ -78,7 +78,7 @@
             <xsl:value-of select="name"/>
         </option>
     </xsl:template>
-
+-->
 <xsl:template match="authorgroup/author|editorgroup/author">
     <xsl:variable name="current_pos" select="number(position)"/>
     <xsl:variable name="role">
@@ -104,10 +104,9 @@
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos + 1};date={$date};title={$title}"
            title="{i18n/l/Reposition}"><!--&gt;--><span class="ui-icon ui-icon-triangle-1-e ui-icon-small"/></a>
 	</xsl:if>
-	<a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}">
-       	<xsl:attribute name="title"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>: <xsl:call-template name="authorfullname"/></xsl:attribute>
-		<!--<span class="xdelete"> x </span></a>-->
-		<span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"></span></a>
+	<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}">
+		<xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>: <xsl:call-template name="authorfullname"/>
+	</a>
 	<xsl:if test="position()!=last()"><xsl:text> | </xsl:text>
     </xsl:if>
 </xsl:template>

@@ -189,7 +189,13 @@ sub event_store {
         $self->sendError( $ctxt, __"Update of object failed." );
         return 0;
     }
-    $self->redirect( $self->redirect_path( $ctxt ) );
+    my $rdpath = $self->redirect_path($ctxt);
+
+    if ( $self->param('proceed_to_edit') == 1 ) {
+        $rdpath .=
+          ( $self->redirect_path($ctxt) =~ /\?/ ) ? ';edit=1' : '?edit=1';
+    }
+    $self->redirect( $rdpath );
     return 1;
 }
 
@@ -399,6 +405,8 @@ sub event_create_author_mapping {
 
     $self->param('vleditor', undef);
     $self->create_author_mapping( $ctxt );
+    warn "\n\nObject ID : ".$ctxt->object->id();
+    warn "\n\nRedPath : ".$self->redirect_path( $ctxt, $ctxt->object->id() );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
     return 1;
 }
