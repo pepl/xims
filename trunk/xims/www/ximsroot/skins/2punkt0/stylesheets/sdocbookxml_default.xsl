@@ -99,7 +99,8 @@
 		<div class="section">
 			<!--<xsl:attribute name="id"><xsl:choose><xsl:when test="@label"><xsl:value-of select="@label"/></xsl:when><xsl:otherwise><xsl:value-of select="translate(title, ' -)(?:&#xA;', '')"/></xsl:otherwise></xsl:choose></xsl:attribute>-->
 			<xsl:element name="h{number( count(ancestor-or-self::section) + 1)}">
-				<a name="{translate(title, ' -)(?:&#xA;', '')}">
+				<!--<a name="{translate(title, ' -)(?:&#xA;', '')}">-->
+				<a name="{translate(title, ' -)(?:&amp;&#xA;&#x2026;.,&quot;', '')}">
 					<xsl:value-of select="title"/>
 				</a>
 			</xsl:element>
@@ -141,7 +142,8 @@
 					</xsl:choose>
 				</xsl:when>
 				<xsl:otherwise>
-					<a href="#{translate(title, ' -)(?:&#xA;&#x2026;.', '')}">
+					<!--<a href="#{translate(title, ' -)(?:&#xA;&#x2026;.', '')}">-->
+						<a href="#{translate(title, ' -)(?:&amp;&#xA;&#x2026;.,&quot;', '')}">
 						<xsl:value-of select="title"/>
 					</a>
 				</xsl:otherwise>
@@ -173,7 +175,6 @@
 	<xsl:template name="dkbfooter">
 		<xsl:if test="$section-view='true'">
 			<div class="footer-nav">
-				<!-- it sucks that we have to use a table here but CSS is still a "future technology" i guess :-( -->
 				<div class="div-left">
 							<xsl:choose>
 								<xsl:when test="$section > 0">
