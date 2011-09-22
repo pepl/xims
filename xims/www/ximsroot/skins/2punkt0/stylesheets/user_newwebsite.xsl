@@ -27,7 +27,7 @@
             </xsl:call-template>
             <div id="content-container">
             <xsl:value-of select="/document/context/session/message" disable-output-escaping="yes"/>
-            <h1>
+            <h1 class="bluebg">
             <xsl:value-of select="$i18n/l/GenerateWebsite"/>!
             </h1>
             
