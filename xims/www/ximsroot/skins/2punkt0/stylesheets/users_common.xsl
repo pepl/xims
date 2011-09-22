@@ -318,7 +318,7 @@
             <div>
                 <form name="userfilter" action="">
                 <p>
-                    <a href="{$xims_box}{$goxims_users}?create=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+                    <a class="button" href="{$xims_box}{$goxims_users}?create=1;sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
 											<xsl:value-of select="$i18n_users/l/Create_account"/>
 									</a>&#160;
 									</p>
@@ -563,8 +563,9 @@
 
 <xsl:template name="exitform">
     <xsl:param name="action"/>
-    <xsl:param name="save">Save</xsl:param>
-			<button name="{$action}" type="submit" class="button"><xsl:value-of select="$i18n/l/save"/></button>
+    <xsl:param name="save"><xsl:value-of select="$i18n/l/save"/></xsl:param>
+			<!--<button name="{$action}" type="submit" class="button"><xsl:value-of select="$i18n/l/save"/></button>-->
+			<button name="{$action}" type="submit" class="button"><xsl:value-of select="$save"/></button>
 			<xsl:choose>
 					<xsl:when test="@id != ''">
 							<input name="id" type="hidden" value="{@id}"/>
