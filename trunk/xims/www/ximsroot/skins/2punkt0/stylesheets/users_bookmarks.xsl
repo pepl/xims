@@ -41,9 +41,10 @@
 									<xsl:with-param name="admin">true</xsl:with-param>
                 </xsl:call-template>
 <br/><br/>
-                <p class="back">
+<button name="cancel" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+                <!--<p class="back">
                     <a href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Back"/></a>
-                </p>
+                </p>-->
 
             </div>
 			<xsl:call-template name="script_bottom"/>
