@@ -28,7 +28,9 @@
                     <xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of select="$i18n/l/Users"/>/<xsl:value-of select="$i18n/l/Roles"/>
                 </h1>
             <xsl:call-template name="create_manage_accounts"/>
-                    <xsl:apply-templates select="userlist"/>
+            <xsl:apply-templates select="userlist"/>
+			<br/>
+			<xsl:call-template name="back-to-home"/>
         </div>
 		<xsl:call-template name="script_bottom"/>
     </body>
