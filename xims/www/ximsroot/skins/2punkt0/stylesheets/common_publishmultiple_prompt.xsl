@@ -127,7 +127,7 @@
 						</xsl:choose>-->
 						<xsl:value-of select="$i18n/l/Publish"/>
 					</button>
-					<input name="id" type="hidden" value="{$id}"/>
+					<input name="id" type="hidden" value="{@id}"/>
 					<!--<xsl:call-template name="rbacknav"/>-->
 					&#160;
 					<!--<xsl:if test="published='1'">-->
