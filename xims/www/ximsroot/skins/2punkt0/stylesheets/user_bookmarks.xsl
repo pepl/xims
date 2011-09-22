@@ -32,7 +32,7 @@
                 </xsl:call-template>
                 <div id="content-container">
 
-                <h1>
+                <h1 class="bluebg">
                     <xsl:value-of select="name"/>s <xsl:value-of select="$i18n/l/Bookmarks"/>
                 </h1>
 
