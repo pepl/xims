@@ -24,7 +24,7 @@
 		<form name="userEdit" action="{$xims_box}{$goxims_users}" method="post">
 	
 			<p><xsl:call-template name="message"/></p>
-			<h1 class="bluebg"><xsl:value-of select="$i18n_users/l/ChangePwdFor"/> '<xsl:value-of select="$name"/>'</h1>
+			<h1 class="bluebg"><xsl:value-of select="$i18n/l/ChangePwdFor"/> '<xsl:value-of select="$name"/>'</h1>
 	
 			<div class="form-div">
 				<div>
