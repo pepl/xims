@@ -272,6 +272,7 @@
 					<xsl:with-param name="copy-disabled" select="true()"/>
 					<xsl:with-param name="move-disabled" select="true()"/>
 					<xsl:with-param name="email-disabled" select="true()"/>
+					<xsl:with-param name="forcepurge" select="true()"/>
         </xsl:call-template>
         <xsl:apply-templates select="authorgroup"/>
         <xsl:call-template name="last_modified"/>
