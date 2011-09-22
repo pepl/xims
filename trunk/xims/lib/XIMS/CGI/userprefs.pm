@@ -241,7 +241,7 @@ sub redirect_path {
     }
     else {
         $uri->path( XIMS::GOXIMS() . '/user' );
-        $uri->query("prefs=1;$query");
+        #$uri->query("prefs=1;$query");
     }
 
     return $uri->unparse();
