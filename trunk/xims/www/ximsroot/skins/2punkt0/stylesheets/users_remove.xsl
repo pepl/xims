@@ -14,48 +14,42 @@
 
 <xsl:template match="/document">
     <html>
-        <head>
+    	<xsl:call-template name="head_default"><xsl:with-param name="mode">user</xsl:with-param></xsl:call-template>
+        <!--<head>
             <title>
                 <xsl:value-of select="$i18n_users/l/Confirm_User_Deletion"/> - XIMS
             </title>
             <xsl:call-template name="css"/>
-        </head>
+        </head>-->
         <body>
         <xsl:call-template name="header">
           <xsl:with-param name="noncontent">true</xsl:with-param>
         </xsl:call-template>
-
+		
+		<div id="content-container">
         <form name="userRemove" action="{$xims_box}{$goxims_users}" method="post">
-        <table width="99%" cellpadding="0" cellspacing="0" border="0" bgcolor="#eeeeee">
-            <tr background="{$skimages}generic_tablebg_1x20.png">
-              <td>&#160;</td>
-            </tr>
-            <tr>
-              <td align="center">
+                  <h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Confirm_User_Deletion"/></h1>
+	<p><xsl:value-of select="$i18n/l/AboutDeletionUser"/> '<xsl:value-of select="$name"/>' <xsl:value-of select="$i18n/l/AboutDeletion2"/>.</p>
+            <p>
+                <strong><xsl:value-of select="$i18n/l/WarnNoUndo"/></strong>
+            </p>
+            <p>
+            <xsl:value-of select="$i18n/l/ClickCancelConf"/>
+            </p>
 
-              <br />
-              <!-- begin widget table -->
-              <table width="300" cellpadding="2" cellspacing="0" border="0">
-                <tr>
-                  <td class="bluebg"><xsl:value-of select="$i18n_users/l/Confirm_User_Deletion"/></td>
-                </tr>
-                <tr>
-                  <td>&#160;</td>
-                </tr>
+        <xsl:call-template name="exitform">
+            <xsl:with-param name="action" select="'remove_update'"/>
+            <xsl:with-param name="save" select="$i18n/l/Confirm"/>
+        </xsl:call-template>
 
-                <xsl:call-template name="confirm_user_deletion"/>
-
-              </table>
-              <!-- end widget table -->
-
-              </td>
-            </tr>
-        </table>
         </form>
+		</div>
         <xsl:call-template name="script_bottom"/>
         </body>
     </html>
 </xsl:template>
+
+<xsl:template name="title-userpage"><xsl:value-of select="$i18n_users/l/Confirm_User_Deletion"/> - XIMS</xsl:template>
 
 </xsl:stylesheet>
 
