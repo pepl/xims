@@ -11,6 +11,7 @@
 
 
   <xsl:import href="common.xsl"/>
+  <xsl:import href="common_acl.xsl"/>
 
   <xsl:param name="sort-by">id</xsl:param>
   <xsl:param name="order-by">ascending</xsl:param>
@@ -38,7 +39,11 @@
         <div id="content-container">
           <h1 class="bluebg">
             <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>'</h1>
-		<p>
+			
+			<xsl:call-template name="grant-form">
+				<xsl:with-param name="multiple" select="false()"/>
+			</xsl:call-template>
+		<!--<p>
                     <xsl:choose>
                         <xsl:when test="$userquery = ''">
                             <xsl:value-of select="$i18n/l/Currently_showing_privs"/>
@@ -49,8 +54,9 @@
                             </a>
                         </xsl:otherwise>
                     </xsl:choose>
-                 </p>
+                 </p>-->
 				 <!-- filter widget  -->
+				 <!--
               <form name="userfilter" action="">
                  <p>
                     <xsl:value-of select="$i18n/l/Privgrant_usr_lookup_mask"/>:
@@ -82,9 +88,13 @@
                   <xsl:text>&#160;</xsl:text>
                   <a href="javascript:openDocWindow('grantuserlookup')" class="doclink">(?)</a>
               </p>
-              </form>
+              </form>-->
           <!-- end filter widget  -->
 			<p> </p>	
+		
+		<!--<p><xsl:value-of select="$i18n/l/Currently_showing_privs"/></p>-->
+		<br/>
+		<h2>Derzeit vergebene Rechte bearbeiten</h2>
         <table  class="obj-table acl-table">
           <xsl:choose>
             <xsl:when test="granteelist/user or /document/userlist/user">
