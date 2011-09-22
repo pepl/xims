@@ -38,7 +38,8 @@
 				</div>
 			</div>
 			<button name="passwd_update" type="submit" class="button"><xsl:value-of select="$i18n/l/save"/></button>&#160;
-			<button name="cancel" type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+			<xsl:call-template name="back-to-home"/>
+			<!--<button name="cancel" type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>-->
 		</form>
         <!--<br/>
                 <p class="back">
