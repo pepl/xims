@@ -468,7 +468,9 @@
 				<xsl:call-template name="get-children"/>
 			</tbody>
 		</table>
+		<xsl:if test="children/@totalobjects &gt; 0">
 		<xsl:call-template name="multi-select-action" />
+		</xsl:if>
 		</form>
 	</xsl:template>
 	
