@@ -44,7 +44,7 @@
 				</xsl:call-template>
 
 				<div id="content-container">
-					<h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of select="$i18n_users/l/Objecttypeprivs"/></h1>
+					<h1 class="bluebg"><xsl:value-of select="$i18n_users/l/Managing"/>&#160;<xsl:value-of select="$i18n_users/l/Objecttypeprivs"/>&#160;<xsl:value-of select="$i18n/l/of"/>&#160;<xsl:value-of select="$userquery"/></h1>
 					<div id="op_create">
 						<xsl:call-template name="objecttypeprivlist"/>
 					</div>    
