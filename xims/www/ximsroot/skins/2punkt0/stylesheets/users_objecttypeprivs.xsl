@@ -52,12 +52,7 @@
 							<xsl:call-template name="dav_otprivileges"/>
 					</div>
 					<br class="clear"/>
-					<!--<div class="clear">
-					<p class="back">
-						<a href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Back"/></a>
-					</p>
-					</div>-->
-					<button name="cancel" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+					<a class="button" href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/cancel"/></a>
 				</div>
 				<xsl:call-template name="script_bottom"/>
 			</body>
