@@ -60,14 +60,13 @@
 </div>              
               <div style="margin: auto; text-align: center;">
           <p><xsl:value-of select="$i18n/l/Preview"/>:</p>
-          <iframe name="MailPreview" 
-                  src="{$published_path}"
-                  width="750px" 
+          <iframe name="MailPreview" id="mailpreview" src="{$published_path}">
+                  <!--width="850px" 
                   height="500px" 
                   scrolling="yes" 
                   marginheight="2" 
                   marginwidth="2" 
-                  frameborder="1">
+                  frameborder="1">-->
             <p>No iframes?</p>
           </iframe>
         </div>      

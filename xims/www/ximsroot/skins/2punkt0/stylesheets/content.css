@@ -464,4 +464,12 @@ hr {
 .clear{
 	clear:both;
 }
+#mailpreview{
+	width: 850px; 
+	height:500px; 
+	overflow: auto; 
+	margin: 2px 2px 2px 2px;
+	border:1px solid;
+	background-color:"#ffffff";
+} 
 /* end edit- and create-forms */

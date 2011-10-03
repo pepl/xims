@@ -1539,12 +1539,8 @@
                       ]/is_mailable = '1'
                   and published = '1'">
 				<a class="button option-send_mail">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';prepare_mail=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,
-                                           ';order=',$order,
-                                           ';page=',$page,
-                                           ';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-				Generate SPAM
-				<!--<img src="{$skimages}option_email.png" border="0" name="email{$id}" width="18" height="19" title="Generate Spam" alt="Generate Spam"/>-->
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';prepare_mail=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:value-of select="$i18n/l/Send"/>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
