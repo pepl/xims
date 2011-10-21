@@ -54,6 +54,7 @@ sub registerEvents {
           revoke_role
           bookmarks
           objecttypeprivs
+          prefs
           )
         );
 }
@@ -701,6 +702,40 @@ sub event_bookmarks {
         $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
         $self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
         $ctxt->properties->application->style( 'bookmarks' );
+    }
+    else {
+        XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
+        $self->sendError( $ctxt, __x("User '{name}' does not exist.", name => $uname) );
+    }
+    return 0;
+}
+
+=head2 event_prefs()
+
+=cut
+
+sub event_prefs {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    # fixme
+    #unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::XXX() ) {
+    #    return $self->event_access_denied( $ctxt );
+    #}
+
+    my $uname = $self->param('name');
+    my $user = XIMS::User->new( name => $uname );
+
+    if ( $user and $user->id() ) {
+    	$ctxt->user($user);
+    	$ctxt->userprefslist($user);
+        #my @bookmarks = $user->bookmarks( explicit_only => 1 );
+        #$ctxt->bookmarklist( \@bookmarks );
+        #$self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+        #$self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
+        $ctxt->properties->application->style( 'prefs' );
+        $self->resolve_content( $ctxt, [ qw( CONTENT_ID ) ] );
+    	$self->resolve_user( $ctxt, [ qw( OWNER_ID ) ] );
     }
     else {
         XIMS::Debug( 3, "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );

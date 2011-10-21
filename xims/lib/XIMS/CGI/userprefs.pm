@@ -157,6 +157,7 @@ sub event_create {
 
     my $uname = $self->param('name');
     if ( $user->admin() and $uname ) {
+    	warn "\n\n pref set by admin";
         $user = XIMS::User->new( name => $uname );
         if ( not( $user and $user->id() ) ) {
             XIMS::Debug( 3,

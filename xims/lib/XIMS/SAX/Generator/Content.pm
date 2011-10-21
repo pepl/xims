@@ -63,6 +63,9 @@ sub prepare {
         if (defined $ctxt->session->user){
 	        $doc_data->{context}->{session}->{user} = { $ctxt->session->user->data() };
 	        # add the user's preferences.
+	        unless($ctxt->session->user->userprefs()){
+	        	warn "\n\n new userprefs created";
+	        }
     		$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
         }
             
@@ -150,6 +153,9 @@ sub prepare {
     if ( $ctxt->user() ) {
         $doc_data->{context}->{user} = $ctxt->user();
         # add the user's preferences.
+		unless($ctxt->session->user->userprefs()){
+			warn "\n\n new userprefs created";
+		}
 		$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
     }
 

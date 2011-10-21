@@ -444,6 +444,10 @@
 <!-- userpages -->
 <SelectSkin>Skin auswählen</SelectSkin>
 <whatToShow>was soll angezeigt werden</whatToShow>
+<Profiletype>Profiltyp</Profiletype>
+<Standard>Standard</Standard>
+<Expert>Experte</Expert>
+<Webadmin>Web-Admin</Webadmin>
 <!--  end userpages -->
 <Email_To>An</Email_To>
 <Email_Reply-To>Antworten an</Email_Reply-To>

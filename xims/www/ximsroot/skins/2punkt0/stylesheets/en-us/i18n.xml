@@ -425,6 +425,10 @@
 <!-- userpages -->
 <SelectSkin>Select a skin</SelectSkin>
 <whatToShow>what do you want to be shown</whatToShow>
+<Profiletype>Profile type</Profiletype>
+<Standard>Standard</Standard>
+<Expert>Expert</Expert>
+<Webadmin>Web admin</Webadmin>
 <!--  end userpages -->
 <Email_To>To</Email_To>
 <Email_Reply-To>Reply-To</Email_Reply-To>

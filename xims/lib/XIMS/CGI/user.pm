@@ -24,6 +24,7 @@ package XIMS::CGI::user;
 use strict;
 use base qw( XIMS::CGI );
 use XIMS::User;
+use XIMS::UserPrefs;
 use XIMS::Bookmark;
 use XIMS::UserPrefs;
 use XIMS::DepartmentRoot;
@@ -252,17 +253,25 @@ sub event_newwebsite {
 sub event_gen_website {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
+    
+    my $user = $ctxt->session->user();
 
 #    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::ADMIN() ) {
 #        return $self->event_access_denied( $ctxt );
 #    }
-    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GEN_WEBSITE() ) {
+
+# we don't take the system privileges (at the moment)
+#    unless ( $ctxt->session->user->system_privs_mask() & XIMS::Privileges::System::GEN_WEBSITE() ) {
+#        return $self->event_access_denied( $ctxt );
+#    }
+
+    unless ( ($ctxt->session->user->system_privs_mask() & XIMS::Privileges::ADMIN()) || ( $user->userprefs->profile_type() eq 'webadmin' )) {
         return $self->event_access_denied( $ctxt );
     }
     
     my $message = "";
     
-    my $user = $ctxt->session->user();
+    #my $user = $ctxt->session->user();
     
 	my $parent_folder = $self->param('path'); #$args{m};	
 	my $location = $self->param('shortname'); #$args{l};	
@@ -323,14 +332,14 @@ sub event_gen_website {
 		}
 		#print "Successfully created 'index.html'.\n";
 	
-		$document->title('Home');
+		$document->title($title);
 		$document->abstract($title);
 		
 		$message .= "<p>Document '".$document->title()."' created.</p>";
 		#end create Home document
 		
 		#departmentlinks & speciallinks
-		$message .= &add_link( 'department', 'Home', $document, $deptroot, $user, $title );
+		$message .= &add_link( 'department', $title, $document, $deptroot, $user, $title );
 		$message .= &add_link( 'special', 'A sample Bookmark', $document, $deptroot, $user, $title );
 		
 		# set grants
@@ -347,7 +356,7 @@ sub event_gen_website {
 		$message .= &publish_deptroot_rec($deptroot, $user);
 		
 #		$ctxt->properties->application->style( 'newwebsite' );
-		$message .= "<p><strong>New website successfully generated!</strong></p>";
+		$message .= "<p><strong>New website <a href='content".$parent_folder.$location."'>".$title."</a> successfully generated!</strong></p>";
 #		$ctxt->session->message($message );
 		$ctxt->properties->application->style( 'newwebsite_update' );
         $ctxt->session->message($message);
