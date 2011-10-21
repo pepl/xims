@@ -79,6 +79,11 @@ sub prepare {
         $doc_data->{context}->{user} = $ctxt->user();
         $doc_data->{context}->{user}->{system_privileges} = {$ctxt->user->system_privileges()} if $ctxt->user->system_privs_mask() > 0;
         $doc_data->{context}->{user}->{dav_otprivileges} = {$ctxt->user->dav_otprivileges()} if $ctxt->user->dav_otprivs_mask() > 0;
+        # add the user's preferences.
+        unless(defined $ctxt->user->userprefs()){
+	        	warn "\n\n new userprefs created";
+	        }
+	    $doc_data->{context}->{user}->{userprefs} = { $ctxt->user->userprefs->data() };
         my @object_types = $ctxt->data_provider->object_types();
         $doc_data->{object_types} = { object_type => \@object_types };
     }

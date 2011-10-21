@@ -220,7 +220,7 @@
 	</xsl:template>
 	<xsl:template name="publish-on-save">
 		<div class="block">
-			<xsl:if test="$usertype = 'expert'">
+			<xsl:if test="$usertype = 'expert' or $usertype = 'webadmin'">
 				<div class="label">
 					<label for="input-pubonsave">
 						<xsl:value-of select="$i18n/l/Pub_on_save"/>
@@ -2044,7 +2044,8 @@
 	
 	<xsl:if test="$simpledb">
 		<script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"/>
-		<script>
+		<script type="text/javascript">
+			var button_image = '<xsl:value-of select="$skimages"/>calendar.gif';
 			$(document).ready(function(){
 				initDatepicker();
 			});

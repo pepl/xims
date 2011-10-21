@@ -95,7 +95,8 @@
                 
             </xsl:if>
             
-             <xsl:if test="system_privileges/gen_website">
+             <!--<xsl:if test="system_privileges/gen_website">-->
+			 <xsl:if test="admin = '1' or userprefs/profile_type = 'webadmin'">
              	<br/>
              <h2>Weitere Aufgaben</h2>
                     <ul>
