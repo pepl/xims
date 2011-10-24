@@ -362,4 +362,242 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+ <!-- this is a simple template which converts                  -->
+    <!-- a given token into a url-encoded string                   -->
+    <!--  the converted string is returned after conversion        -->
+    <!--  note: any occurence of the percent sign is left          -->
+    <!--        untouched                                          -->
+    <xsl:template name="url_encode">
+      <xsl:param name="token"/>
+	<xsl:choose>
+	<!-- substitute all characters with special meaning -->
+	    <!-- U+0020   SPACE -->
+	    <xsl:when test="contains($token, ' ')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, ' '),'%20', substring-after($token, ' '))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+0022 &#34; QUOTATION MARK -->
+	    <xsl:when test="contains($token, '&#34;')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '&#34;'),'%22', substring-after($token, '&#34;'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+0023 # NUMBER SIGN -->
+	    <xsl:when test="contains($token, '#')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '#'),'%23', substring-after($token, '#'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+0024 $ DOLLAR SIGN -->
+	    <xsl:when test="contains($token, '$')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '$'),'%24', substring-after($token, '$'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+0026 &#38; AMPERSAND -->
+	    <xsl:when test="contains($token, '&#38;')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '&#38;'),'%26', substring-after($token, '&#38;'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+0027 &#39; APOSTROPHE -->
+	    <xsl:when test='contains($token, "&#39;")'>
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select='concat(substring-before($token, "&#39;"), "%27", substring-after($token, "&#39;"))'/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+002B + PLUS SIGN -->
+	    <xsl:when test="contains($token, '+')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '+'),'%2B', substring-after($token, '+'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+002C , COMMA -->
+	    <xsl:when test="contains($token, ',')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, ','),'%2C', substring-after($token, ','))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+002F / SOLIDUS -->
+	    <xsl:when test="contains($token, '/')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '/'),'%2F', substring-after($token, '/'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+003A : COLON -->
+	    <xsl:when test="contains($token, ':')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, ':'),'%3A', substring-after($token, ':'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+003B ; SEMICOLON -->
+	    <xsl:when test="contains($token, ';')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, ';'),'%3B', substring-after($token, ';'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+003C &#60; LESS-THAN SIGN -->
+	    <xsl:when test="contains($token, '&#60;')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '&#60;'),'%3C', substring-after($token, '&#60;'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+003D = EQUALS SIGN -->
+	    <xsl:when test="contains($token, '=')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '='),'%3D', substring-after($token, '='))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+003E &#62; GREATER-THAN SIGN -->
+	    <xsl:when test="contains($token, '&#62;')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '&#62;'),'%3E', substring-after($token, '&#62;'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+003F ? QUESTION MARK -->
+	    <xsl:when test="contains($token, '?')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '?'),'%3F', substring-after($token, '?'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+0040 @ COMMERCIAL AT -->
+	    <xsl:when test="contains($token, '@')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '@'),'%40', substring-after($token, '@'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+005B [ LEFT SQUARE BRACKET -->
+	    <xsl:when test="contains($token, '[')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '['),'%5B', substring-after($token, '['))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+005C \ REVERSE SOLIDUS -->
+	    <xsl:when test="contains($token, '\')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '\'),'%5C', substring-after($token, '\'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+005D ] RIGHT SQUARE BRACKET -->
+	    <xsl:when test="contains($token, ']')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, ']'),'%5D', substring-after($token, ']'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+005E ^ CIRCUMFLEX ACCENT -->
+	    <xsl:when test="contains($token, '^')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '^'),'%5E', substring-after($token, '^'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+0060 ` GRAVE ACCENT -->
+	    <xsl:when test="contains($token, '`')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '`'),'%60', substring-after($token, '`'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+007B { LEFT CURLY BRACKET -->
+	    <xsl:when test="contains($token, '{')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '{'),'%7B', substring-after($token, '{'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+007C | VERTICAL LINE -->
+	    <xsl:when test="contains($token, '|')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '|'),'%7C', substring-after($token, '|'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+007D } RIGHT CURLY BRACKET -->
+	    <xsl:when test="contains($token, '}')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '}'),'%7D', substring-after($token, '}'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+007E ~ TILDE -->
+	    <xsl:when test="contains($token, '~')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '~'),'%7E', substring-after($token, '~'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	  <!-- substitute all (uppercase and lowercase) umlauts -->
+	    <!-- U+00C4 Ä LATIN CAPITAL LETTER A WITH DIAERESIS -->
+	    <xsl:when test="contains($token, 'Ä')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, 'Ä'),'%C4', substring-after($token, 'Ä'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+00D6 Ö LATIN CAPITAL LETTER O WITH DIAERESIS -->
+	    <xsl:when test="contains($token, 'Ö')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, 'Ö'),'%D6', substring-after($token, 'Ö'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+00DC Ü LATIN CAPITAL LETTER U WITH DIAERESIS -->
+	    <xsl:when test="contains($token, 'Ü')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, 'Ü'),'%DC', substring-after($token, 'Ü'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+00DF ß LATIN SMALL LETTER SHARP S -->
+	    <xsl:when test="contains($token, 'ß')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, 'ß'),'%DF', substring-after($token, 'ß'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+00E4 ä LATIN SMALL LETTER A WITH DIAERESIS -->
+	    <xsl:when test="contains($token, 'ä')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, 'ä'),'%E4', substring-after($token, 'ä'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+00E9 é LATIN SMALL LETTER E WITH ACUTE -->
+	    <xsl:when test="contains($token, 'é')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, 'é'),'%E9', substring-after($token, 'é'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+00F6 ö LATIN SMALL LETTER O WITH DIAERESIS -->
+	    <xsl:when test="contains($token, 'ö')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, 'ö'),'%F6', substring-after($token, 'ö'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+00FC ü LATIN SMALL LETTER U WITH DIAERESIS -->
+	    <xsl:when test="contains($token, 'ü')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, 'ü'),'%FC', substring-after($token, 'ü'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	<!-- substitute a few space characters like carriage return, etc. -->
+	    <!-- U+000A 
+ LINE FEED (LF) -->
+	    <xsl:when test="contains($token, '
+')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '
+'),'%0A', substring-after($token, '
+'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	    <!-- U+000D 
+ CARRIAGE RETURN (CR) -->
+	    <xsl:when test="contains($token, '
+')">
+	      <xsl:call-template name="url_encode">
+		  <xsl:with-param name="token" select="concat(substring-before($token, '
+'),'%0D', substring-after($token, '
+'))"/>
+	      </xsl:call-template>
+	    </xsl:when>
+	  <!-- if all special characters have been replaced -->
+	    <!-- return $token -->
+	    <xsl:otherwise>
+		<xsl:value-of select="$token"/>
+	    </xsl:otherwise>
+	</xsl:choose>
+    </xsl:template>
+
 </xsl:stylesheet>
