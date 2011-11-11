@@ -17,10 +17,9 @@
 			</xsl:call-template>
 
 			<body>
-				<xsl:call-template name="header">
-				</xsl:call-template>
+				<xsl:call-template name="header"/>
 				<div id="content-container">
-					<h1 class="bluebg"><xsl:value-of select="$i18n/l/Manage_objectprivs"/></h1>
+					<h1 class="bluebg"><xsl:value-of select="$i18n/l/Manage_objectprivsMultiple"/></h1>
 						<xsl:call-template name="grant-form">
 							<xsl:with-param name="multiple" select="true()"/>
 						</xsl:call-template>						

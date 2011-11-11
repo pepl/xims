@@ -50,12 +50,12 @@ sup {
 sub {
     vertical-align: text-bottom;
 }
-
+/*
 input, textarea, select {
     font-family: inherit;
     font-weight: inherit;
 	font-size: inherit;
-}
+}*/
 
 legend {
     color: #000;

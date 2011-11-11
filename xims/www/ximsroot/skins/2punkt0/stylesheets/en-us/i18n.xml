@@ -129,11 +129,17 @@
 <Process_XSP>XSP process body per default</Process_XSP>
 <Show_XSP_processed>Show body XSP processed</Show_XSP_processed>
 <Not_Show_XSP_processed>Do not XSP process body</Not_Show_XSP_processed>
+<SelectAll>Select all</SelectAll>
+<MultiSelectAction>Grouped action for selected objects</MultiSelectAction>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Manage Object Privileges</Manage_objectprivs>
+<Manage_objectprivsMultiple>Manage Objects Privileges</Manage_objectprivsMultiple>
 <Manage_privs>Manage Privileges</Manage_privs>
 <Grant_newprivs>Grant Privileges</Grant_newprivs>
 <Currently_showing_privs>Currently showing existing privileges.</Currently_showing_privs>
+<ACLNotice>For selected objects which are not listed here, you do not have the rights to grant.</ACLNotice>
+<GrantRecursive>Grant / revoke recursive?</GrantRecursive>
+<SeparateUsers>separate multiple users /role by comma</SeparateUsers>
 <Click>Click</Click>
 <here>here</here>
 <lookup>Lookup</lookup>
@@ -187,6 +193,9 @@
 <Move_objects>Move Objects</Move_objects>
 <from>from</from>
 <to>to</to>
+<AboutMove>You are about to move the following object</AboutMove>
+<AboutMoveMultiple>You are about to move the following objects</AboutMoveMultiple>
+<MoveNotice>For selected objects which are not listed here, you do not have the rights to move or the object is currently published.</MoveNotice>
 <!-- End  common_move_browse -->
 <!-- Begin file|image_default -->
 <View_download>View / Download</View_download>
@@ -328,6 +337,7 @@
 <AboutDeletionMultiple>Your are about to delete the following objects</AboutDeletionMultiple>
 <AboutDeletion1_User>You are about to delete the user</AboutDeletion1_User>
 <AboutDeletion2>from the system.</AboutDeletion2>
+<DeletionNotice>For selected objects which are not listed here, you do not have the rights to delete or the object is currently published.</DeletionNotice>
 <WarnNoUndo>This is a permanent action that cannot be undone!</WarnNoUndo>
 <ChildObjectsFound>Child objects found</ChildObjectsFound>
 <alsoDeleted>which would be deleted, too</alsoDeleted>
@@ -337,6 +347,9 @@
 <Publish>Publish</Publish>
 <Republish>Republish</Republish>
 <Unpublish>Unpublish</Unpublish>
+<AboutPublishMultiple>You are about to (re-)publish the following objects</AboutPublishMultiple>
+<PublishingNotice>For selected objects which are not listed here, you do not have the rights to publish.</PublishingNotice>
+<RecUnpublishNotice>When Unpublishing, all child objects will be unpublished automatically.</RecUnpublishNotice>
 <isCurrently>currently</isCurrently>
 <NOT>NOT</NOT>
 <under>under</under>

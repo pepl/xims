@@ -7,6 +7,18 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 	
+	<xsl:variable name="supportmail_body">
+		<xsl:text>
+			%0D%0A%0D%0A
+			Wichtige Hinweise für den Support:%0D%0A
+			Benutzerkennung: </xsl:text><xsl:value-of select="/document/context/session/user/name"/><xsl:text>%0D%0A
+			Kontext: </xsl:text>
+			<xsl:choose>
+				<xsl:when test="/document/context/object/location_path != ''"><xsl:value-of select="/document/context/object/location_path"/></xsl:when>
+				<xsl:when test="/document/context/object/parents/object[last()]/location_path !=''"><xsl:value-of select="/document/context/object/parents/object[last()]/location_path"/></xsl:when>
+				<xsl:otherwise>?</xsl:otherwise>
+			</xsl:choose>
+	</xsl:variable>
 	<xsl:template name="header">
 		<xsl:param name="create" select="false()"/>
 		<xsl:param name="noncontent">false</xsl:param>
@@ -24,6 +36,7 @@
 		<xsl:variable name="df" select="/document/data_formats/data_format[@id=$dataformat]"/>
 		<xsl:variable name="dfname" select="$df/name"/>
 		<xsl:variable name="dfmime" select="$df/mime_type"/>
+		
 		<div id="path-logo">
 			<div id="locbar">
 				<xsl:if test="$nopath='false' and $noncontent ='false'">
@@ -355,8 +368,6 @@
 				</ul>
 				<ul class="more" id="bm-links"><li></li></ul>
 			</div>
-
-<!--
 		<noscript>
 			<xsl:choose>
 				<xsl:when test="/document/context/session/public_user = '1'">
@@ -381,7 +392,7 @@
 									&#160;&#160;&#160;&#160;
 							</xsl:otherwise>
 			</xsl:choose>
-		</noscript>-->
+		</noscript>
 	</xsl:template>
 
 	<!--Help Widget-->	
@@ -423,7 +434,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="http://cabal.uibk.ac.at/webredaktion/webstyleguide/" target="_blank">
+						<a href="http://www.uibk.ac.at/webredaktion/webstyleguide/" target="_blank">
 							<xsl:attribute name="title">
 								Webstyleguide der Webredaktion
 							</xsl:attribute>
@@ -431,7 +442,11 @@
 						</a>
 					</li>
 					<li>
-						<a href="mailto:xims-support@uibk.ac.at">
+						<!--<a href="mailto:xims-support@uibk.ac.at?body=">-->
+						<a>
+							<xsl:attribute name="href">
+								mailto:xims-support@uibk.ac.at?body=<xsl:call-template name="url_encode"><xsl:with-param name="token" select="$supportmail_body"/></xsl:call-template>
+							</xsl:attribute>
 							<xsl:attribute name="title">
 								<xsl:value-of select="$i18n/l/MailToSupport"/>
 							</xsl:attribute>
@@ -440,7 +455,7 @@
 					</li>
 				</ul>
 </div>
-<!--
+
 		<noscript>
 			<form action="{$xims_box}{$goxims_content}{$absolute_path}?" method="get">
 			<select>
@@ -491,6 +506,6 @@
 							</option>
 							</select>
 							</form>
-			</noscript>-->
+			</noscript>
 	</xsl:template>
 </xsl:stylesheet>

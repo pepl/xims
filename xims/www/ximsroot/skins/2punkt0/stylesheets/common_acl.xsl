@@ -15,18 +15,17 @@
 			<xsl:choose>
 			<xsl:when test="$multiple">
 				<xsl:apply-templates select="/document/objectlist/object" />
-				<p>Hinweis: Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, 
-					fehlt Ihnen die Berechtigung zur Rechtevergabe.</p>
+				<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/ACLNotice"/></p>
 				<br class="clear"/><br/>
 			</xsl:when>	
 			<xsl:otherwise>
 				<input type="hidden" name="multiselect" value="{/document/context/object/@id}"/>
 			</xsl:otherwise>
 			</xsl:choose>
-			<h2>Rechte neu vergeben</h2>
+			<h2><xsl:value-of select="$i18n/l/Grant_newprivs"/></h2>
 		<xsl:if test="$multiple or (not($multiple) and /document/object_types/object_type[@id=/document/context/object/object_type_id]/is_fs_container)">				
 		<p>
-			<label for="recacl">Rechte rekursiv vergeben / entziehen?</label> 
+			<label for="recacl"><xsl:value-of select="$i18n/l/GrantRecursive"/></label> 
 			<input type="checkbox" name="recacl" id="recacl" value="1" class="checkbox"/>
 		</p>
 		</xsl:if>
@@ -34,7 +33,7 @@
 		<p>
 			<label for="grantees" class=""><xsl:value-of select="$i18n/l/Name"/>&#160;<xsl:value-of select="$i18n/l/of"/>&#160;<xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n/l/Role"/>&#160;</label>&#160;
 			<input name="grantees" type="text" value="" id="grantees"/>&#160;&#160;
-			(mehrere Benutzer / Rollen durch Komma getrennt eingeben)
+			(<xsl:value-of select="$i18n/l/SeparateUsers"/>)
 		</p>
 	
 		<xsl:call-template name="acl-checkboxes"/>	
