@@ -89,7 +89,7 @@ div.edit #content-container {
 }
 #metadata-options {
 	margin-top: 5px;
-	border:thin solid #C1C1C1;
+	border: 1px solid #C1C1C1;
 	background: #F9F9F9;
 	padding:2px;
 	clear: both;
@@ -135,6 +135,11 @@ div.toc-item {
 /* end object view */
 
 /* table */
+#multi{
+	border: 1px solid #C1C1C1;
+	background: #F9F9F9;
+	padding:2px;
+}
 .obj-table {
     clear: both;
     width: 100%;
@@ -142,7 +147,7 @@ div.toc-item {
     padding: 0px;
 }
 .obj-table th {
-    border: thin solid #C1C1C1;
+    border: 1px solid #C1C1C1;
     background-color: #ced3d6;
 	white-space: nowrap;
 }
@@ -160,7 +165,7 @@ div.toc-item {
     width: 31px;
 }
 #th-selection{
-	width: 10px;
+	width: 15px;
 }
 #th-status {
     width: 96px;
@@ -172,7 +177,7 @@ div.toc-item {
     width: 126px;
 }
 #th-options {
-	width: 194px;
+	width: 165px;
 }
 #th-topic{	
 }
@@ -273,10 +278,15 @@ div.toc-item {
 
 /* end table */
 
+/* multiple select action*/
+.multi-select-action{
+	padding: 5px 0 0 1px;
+}
+/* end multiple select action*/
 
 /* pagination */
 .pagenav {
-    border: thin solid #C1C1C1;
+    border: 1px solid #C1C1C1;
     background-color: #ced3d6;
   margin-top: 5px;
 }

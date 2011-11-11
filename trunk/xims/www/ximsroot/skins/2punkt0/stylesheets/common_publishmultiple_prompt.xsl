@@ -49,22 +49,9 @@
 				<div id="content-container" class="publish-dialog"> 
 					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get">
 						<h1 class="bluebg"><xsl:value-of select="$i18n/l/Publishing_options"/></h1>
-						<!--<p>
-							<strong><xsl:value-of select="$i18n/l/Status"/>: <xsl:value-of select="$i18n/l/Object"/> '<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/isCurrently"/>&#160;<xsl:if test="published!='1'"><xsl:value-of select="$i18n/l/NOT"/>
-								&#160;</xsl:if><xsl:value-of select="$i18n/l/published"/></strong><br/>
-							<xsl:if test="published='1'">
-								<xsl:value-of select="$i18n/l/under"/> 
-								<br/>
-								<a href="{$published_path}" target="_new">
-									<xsl:value-of select="$published_path"/>
-								</a>
-							</xsl:if>
-						</p>-->
-						<!--<p><xsl:value-of select="$i18n/l/AboutPublishMultiple"/></p>-->
-						<p>Sie sind dabei die folgenden Objekte zu (de-)publizieren</p>
+						<p><xsl:value-of select="$i18n/l/AboutPublishMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
-						<p>Hinweis: Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, 
-							fehlen Ihnen die Berechtigung zum Publizieren.</p>
+						<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/PublishingNotice"/></p>
 
 						<!--<xsl:if test="message">
 							<p>
@@ -89,7 +76,7 @@
 								<label for="recpublish">Ausgewählte Objekte rekursiv veröffentlichen?</label> 
 								<input type="checkbox" name="recpublish" id="recpublish" value="1" class="checkbox"/>
 								<input type="hidden" name="autopublish" id="autopublish" value="1"/><br/>
-								(Hinweis: Bei "Veröffentlichen rückgangig machen" werden automatisch alle Kindobjekte depubliziert.)
+								(<xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/RecUnpublishNotice"/>)
 							</p>							
 				<br/>
 			<p>
@@ -105,36 +92,20 @@
 			
 			<br clear="all"/>
 			<p>
-            <xsl:value-of select="$i18n/l/Click"/>&#160;
-            <!--<xsl:choose>
-								<xsl:when test="published='1'">'<xsl:value-of select="$i18n/l/Republish"/>'</xsl:when>
-								<xsl:otherwise>'<xsl:value-of select="$i18n/l/Publish"/>'</xsl:otherwise>
-						</xsl:choose>-->
-						'<xsl:value-of select="$i18n/l/Publish"/>'
-            &#160;<xsl:value-of select="$i18n/l/toExpCurrObj"/>
-            <xsl:if test="published='1'">,&#160;'<xsl:value-of select="$i18n/l/Unpublish"/>'&#160;<xsl:value-of select="$i18n/l/toRemoveFromLiveServer"/></xsl:if>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;'<xsl:value-of select="$i18n/l/cancel"/>'&#160;<xsl:value-of select="$i18n/l/toReturnPrev"/>.
-					</p>
+				<xsl:value-of select="$i18n/l/Click"/>&#160;
+					'<xsl:value-of select="$i18n/l/Publish"/>'&#160;<xsl:value-of select="$i18n/l/toExpCurrObj"/>
+				<xsl:if test="published='1'">,&#160;'<xsl:value-of select="$i18n/l/Unpublish"/>'&#160;<xsl:value-of select="$i18n/l/toRemoveFromLiveServer"/></xsl:if>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;'<xsl:value-of select="$i18n/l/cancel"/>'&#160;<xsl:value-of select="$i18n/l/toReturnPrev"/>.
+			</p>
 			<div id="confirm-buttons">
 				<br/>
 					<button name="publishmultiple" type="submit">
-						<!--<xsl:choose>
-							<xsl:when test="published='1'">
-								<xsl:value-of select="$i18n/l/Republish"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$i18n/l/Publish"/>
-							</xsl:otherwise>
-						</xsl:choose>-->
 						<xsl:value-of select="$i18n/l/Publish"/>
 					</button>
 					<input name="id" type="hidden" value="{@id}"/>
-					<!--<xsl:call-template name="rbacknav"/>-->
 					&#160;
-					<!--<xsl:if test="published='1'">-->
 						<button name="unpublishmultiple" type="submit"><xsl:value-of select="$i18n/l/Unpublish"/></button>
 						
 						&#160;
-					<!--</xsl:if>-->
 					<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 				</div>
 			</form>
@@ -148,7 +119,6 @@
 		<xsl:variable name="dataformat">
 			<xsl:value-of select="data_format_id"/>
 		</xsl:variable>
-		<!--<xsl:if test="published != 1">-->
 			<p>
 				<xsl:call-template name="cttobject.dataformat">
 					<xsl:with-param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
@@ -156,110 +126,5 @@
 				(<xsl:value-of select="location_path"/>) <xsl:call-template name="button.state.publish"/>
 			</p>
 			<input type="hidden" name="multiselect" value="{@id}"/>
-		<!--</xsl:if>-->
 	</xsl:template>	
-	
-	<!--<xsl:template name="head">
-		<head>
-			<title>
-				<xsl:value-of select="$i18n/l/Confirm_publishing"/> - XIMS
-            </title>
-			<xsl:call-template name="css">
-				<xsl:with-param name="jquery-ui-smoothness">true</xsl:with-param>
-			</xsl:call-template>
-			<xsl:call-template name="script_head">
-				<xsl:with-param name="jquery">true</xsl:with-param>
-			</xsl:call-template>
-			<script type="text/javascript">
-				<xsl:comment><![CDATA[
-                        function disableIt(obj,ename) {
-                            var objids = window.document.forms[1].elements[ename];
-                            if (!objids) {
-                                return;
-                            }
-                            if ( objids.length ) {
-                                var i;
-                                for (i = 0; i < objids.length; i++) {
-                                    if ( !(objids[i].disabled) ) {
-                                        obj.disabled = false;
-                                        return true;
-                                    }
-                                }
-                            }
-                            else if ( !(objids.disabled) ) {
-                                obj.disabled = false;
-                                return true;
-                            }
-                        }
-                        function switcher(selector,ename){
-                            var ids = window.document.forms[1].elements[ename];
-                            xstate = selector.checked ? 1 : 0;
-                            if ( ids.length ) {
-                                var i;
-                                for (i = 0; i < ids.length; i++) {
-                                    if ( !(ids[i].disabled) ) {
-                                        ids[i].checked = xstate;
-                                    }
-                                }
-                            }
-                            else {
-                                if ( !(ids.disabled) ) {
-                                    ids.checked = xstate;
-                                }
-                            }
-                            return xstate;
-                        }
-                        function isChecked(ename){
-                            var ids = window.document.forms[1].elements[ename];
-                            if ( ids.length ) {
-                                var i;
-                                for (i = 0; i < ids.length; i++) {
-                                    if (ids[i].checked ) {
-                                        return true;
-                                    }
-                                }
-                            }
-                            else {
-                                if (ids.checked ) {
-                                    return true;
-                                }
-                            }
-                            return false;
-                        }
-
-                    ]]></xsl:comment>
-			</script>
-		</head>
-	</xsl:template>-->
-<!--	
-	<xsl:template name="csv2ul">
-		<xsl:param name="list"/>
-		<ul>
-			<xsl:call-template name="csv2li">
-				<xsl:with-param name="list" select="$list"/>
-			</xsl:call-template>
-		</ul>
-	</xsl:template>
-	<xsl:template name="csv2li">
-		<xsl:param name="list"/>
-		<xsl:variable name="item" select="substring-before($list, ',')"/>
-		<xsl:variable name="rest" select="substring-after($list, ',')"/>
-		<xsl:choose>
-			<xsl:when test="$item">
-				<li>
-					<xsl:value-of select="$item"/>
-				</li>
-			</xsl:when>
-			<xsl:otherwise>
-				<li>
-					<xsl:value-of select="$list"/>
-				</li>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:if test="$rest">
-			<xsl:call-template name="csv2li">
-				<xsl:with-param name="list" select="$rest"/>
-			</xsl:call-template>
-		</xsl:if>
-	</xsl:template>-->
 </xsl:stylesheet>

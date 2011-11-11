@@ -129,11 +129,17 @@
 <Process_XSP>Body standardmäßig XSP verarbeiten</Process_XSP>
 <Show_XSP_processed>Zeige XSP verarbeiteten Body</Show_XSP_processed>
 <Not_Show_XSP_processed>Body nicht XSP verarbeiteten</Not_Show_XSP_processed>
+<SelectAll>Alle auswählen</SelectAll>
+<MultiSelectAction>Sammelaktion für ausgewählte Objekte</MultiSelectAction>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Rechte verwalten für Objekt</Manage_objectprivs>
+<Manage_objectprivsMultiple>Rechte verwalten für Objekte</Manage_objectprivsMultiple>
 <Manage_privs>Rechte verwalten</Manage_privs>
 <Grant_newprivs>Neue Rechte vergeben</Grant_newprivs>
 <Currently_showing_privs>Zur Zeit werden bereits vergebene Rechte angezeigt.</Currently_showing_privs>
+<ACLNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlt Ihnen die Berechtigung zur Rechtevergabe.</ACLNotice>
+<GrantRecursive>Rechte rekursiv vergeben / entziehen?</GrantRecursive>
+<SeparateUsers>mehrere Benutzer / Rollen durch Komma getrennt eingeben</SeparateUsers>
 <Click>Klicken Sie</Click>
 <here>hier</here>
 <lookup>Suchen</lookup>
@@ -187,6 +193,9 @@
 <Move_objects>Verschiebe Objekte</Move_objects>
 <from>von</from>
 <to>nach</to>
+<AboutMove>Sie sind dabei das folgende Objekt zu verschieben</AboutMove>
+<AboutMoveMultiple>Sie sind dabei die folgenden Objekte zu verschieben</AboutMoveMultiple>
+<MoveNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlen Ihnen die Berechtigung zum Verschieben oder diese sind derzeit publiziert.</MoveNotice>
 <!-- End  common_move_browse -->
 <!-- Begin file|image_default -->
 <View_download>Betrachten / Herunterladen</View_download>
@@ -333,6 +342,7 @@
 <AboutDeletionMultiple>Sie sind dabei die folgenden Objekte zu löschen</AboutDeletionMultiple>
 <AboutDeletion1_User>Sie sind dabei den Account</AboutDeletion1_User>
 <AboutDeletion2>zu löschen.</AboutDeletion2>
+<DeletionNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlen Ihnen entweder die Berechtigung zum Löschen oder das jeweilige Objekt ist derzeit publiziert.</DeletionNotice>
 <WarnNoUndo>Dies ist eine endgültige Aktion und kann nicht rückgängig gemacht werden!</WarnNoUndo>
 <ChildObjectsFound>Kindobjekte gefunden</ChildObjectsFound>
 <alsoDeleted>die ebenfalls gelöscht würden</alsoDeleted>
@@ -342,6 +352,9 @@
 <Publish>Veröffentlichen</Publish>
 <Republish>Wiederveröffentlichen</Republish>
 <Unpublish>Veröffentlichen rückgängig machen</Unpublish>
+<AboutPublishMultiple>Sie sind dabei die folgenden Objekte zu (de-)publizieren</AboutPublishMultiple>
+<PublishingNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlen Ihnen die Berechtigung zum Publizieren.</PublishingNotice>
+<RecUnpublishNotice>Bei "Veröffentlichen rückgangig machen" werden automatisch alle Kindobjekte depubliziert.</RecUnpublishNotice>
 <isCurrently>ist derzeit</isCurrently>
 <NOT>NICHT</NOT>
 <under>unter</under>

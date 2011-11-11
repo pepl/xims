@@ -24,8 +24,7 @@
 
 						<p><xsl:value-of select="$i18n/l/AboutDeletionMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
-						<p>Hinweis: Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, 
-							fehlen Ihnen entweder die Berechtigung zum Löschen oder das jeweilige Objekt ist derzeit publiziert.</p>
+						<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/DeletionNotice"/></p>
 							<p><strong><xsl:value-of select="$i18n/l/WarnNoUndo"/></strong></p>
 						<p><xsl:value-of select="$i18n/l/ClickCancelConf"/></p>
 						<div id="confirm-buttons">

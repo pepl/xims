@@ -26,35 +26,24 @@
 			</xsl:call-template>
 			<body>
 				<xsl:call-template name="header"/>
-				<div class="edit">
-					<xsl:call-template name="heading"><xsl:with-param name="mode">movemultiple</xsl:with-param></xsl:call-template>
-					<xsl:call-template name="cancelform"/>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
+				<div id="content-container">
+					<h1 class="bluebg"><xsl:value-of select="$i18n/l/Move_objects"/></h1>
 						<form action="{$xims_box}{$goxims_content}" method="get" id="create-edit-form" name="eform">
-							<p>Sie sind dabei die folgenden Objekte zu verschieben</p>
+							<p><xsl:value-of select="$i18n/l/AboutMoveMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
-						<p>Hinweis: Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, 
-							fehlen Ihnen die Berechtigung zum Verschieben oder diese sind derzeit publiziert.</p>
+						<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/MoveNotice"/></p>
 
 						<xsl:value-of select="$i18n/l/from"/> '<xsl:value-of select="location_path"/>'
 						<label for="input-to">
 							<xsl:value-of select="$i18n/l/to"/>
 						</label>:
 						<input type="text" size="60" name="to" id="input-to">
-								<!--<xsl:choose>
-									<xsl:when test="$target_path != $absolute_path">
-										
-											<xsl:value-of select="$target_path"/>
-										
-									</xsl:when>
-								</xsl:choose>-->
 							<xsl:attribute name="value">
 								<xsl:value-of select="$target_path"/>
 							</xsl:attribute>
 						</input>
 						<xsl:text> </xsl:text>
-							<!--<input type="submit" value="{$i18n/l/Move_object}" class="control hidden" name="store"/>-->
-						<input type="submit" value="{$i18n/l/Move_object}" class="control hidden" name="movemultiple" id="movemultiple"/>
+						<button type="submit" name="movemultiple" id="movemultiple"><xsl:value-of select="$i18n/l/Move_objects"/></button>
 						<br/>
 						<br/>
 						<xsl:value-of select="$i18n/l/browse_target"/>:
@@ -67,15 +56,12 @@
 							</xsl:apply-templates>
 						</div>
 						<input type="hidden" name="id" value="{@id}"/>
-						<!--<input type="hidden" name="movemultiple" value="1"/>-->
 						<input type="hidden" name="sb" value="position"/>
 						<input type="hidden" name="order" value="desc"/>
 						</form>
+						<br/>
+						<button type="button" name="default" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 					</div>
-
-					<xsl:call-template name="cancelform-copy"/>
-
-				</div>
 				<xsl:call-template name="script_bottom"/>
 			</body>
 		</html>
@@ -100,7 +86,6 @@
       / <a class="">
 			<xsl:attribute name="href">
 				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';movemultiple_browse=1;to=',@id,';',$selected)"/>
-				<!--<xsl:call-template name="rbacknav_qs"/>-->
 			</xsl:attribute>
 			<xsl:value-of select="location"/>
 		</a>
@@ -116,39 +101,6 @@
 			<xsl:value-of select="title"/>
 		</a>
 		<br/>
-	</xsl:template>
-
-	<xsl:template name="cancelform">
-		<!--<xsl:param name="with_save" select="'yes'"/>-->
-		
-		<div class="cancel-save">
-			<form class="cancelsave-form" action="{$xims_box}{$goxims_content}" name="cform" method="get">
-				<input type="hidden" name="id" value="{@id}"/>
-				<button type="submit" name="submit" accesskey="S" onclick="$('#movemultiple').click()">
-					<xsl:value-of select="$i18n/l/save"/>
-				</button>
-				<xsl:call-template name="rbacknav"/>
-				<button type="submit" name="cancel" accesskey="C">
-					<xsl:value-of select="$i18n/l/cancel"/>
-				</button>
-			</form>
-			&#160;<br/>
-		</div>
-	</xsl:template>
-	
-	<xsl:template name="cancelform-copy">
-		<div class="cancel-save cancelsave-form">
-			<button type="submit" name="submit" accesskey="S" onclick="$('#movemultiple').click()">
-					<xsl:value-of select="$i18n/l/save"/>
-				</button>
-			<button class="save-button-js" type="submit" name="submit_eform" accesskey="C" onclick="document.cform.cancel.click(); return false">
-				<xsl:value-of select="$i18n/l/cancel"/>
-			</button>
-		</div>
-		&#160;
-		<br/>
-		<br/>
-		&#160;
 	</xsl:template>
 	
 </xsl:stylesheet>

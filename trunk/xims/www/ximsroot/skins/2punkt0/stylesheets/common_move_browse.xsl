@@ -20,16 +20,14 @@
 			</xsl:call-template>
 			<body>
 				<xsl:call-template name="header"/>
-				<div class="edit">
-					<xsl:call-template name="heading"><xsl:with-param name="mode">move</xsl:with-param></xsl:call-template>
-						<xsl:call-template name="cancelform"/>
-					<div id="content-container" class="ui-corner-bottom ui-corner-tr">
+					<div id="content-container">
+					<h1 class="bluebg"><xsl:value-of select="$i18n/l/Move_object"/> '<xsl:value-of select="title"/>'</h1>
 						<form action="{$xims_box}{$goxims_content}" method="get" id="create-edit-form" name="eform">
 							<xsl:value-of select="$i18n/l/from"/> '<xsl:value-of select="$parent_path"/>'
-            <label for="input-to">
+							<label for="input-to">
 								<xsl:value-of select="$i18n/l/to"/>
 							</label>:
-            <input type="text" size="60" name="to" id="input-to">
+							<input type="text" size="60" name="to" id="input-to">
 								<xsl:choose>
 									<xsl:when test="$target_path != $absolute_path">
 										<xsl:attribute name="value">
@@ -39,12 +37,12 @@
 								</xsl:choose>
 							</input>
 							<xsl:text> </xsl:text>
-							<input type="submit" value="{$i18n/l/Move_object}" class="control hidden" name="store" id="store" />
+							<button type="submit" name="store" id="store"><xsl:value-of select="$i18n/l/Move_object"/></button>
 							<br/>
 							<br/>
 							<xsl:value-of select="$i18n/l/browse_target"/>:
-                <br/>&#xa0;
-            <xsl:apply-templates select="targetparents/object[@document_id !=1]"/>
+							<br/>&#xa0;
+							<xsl:apply-templates select="targetparents/object[@document_id !=1]"/>
 							<xsl:apply-templates select="target/object"/>
 							<div>
 								<xsl:apply-templates select="targetchildren/object[@id != /document/context/object/@id and marked_deleted !='1']">
@@ -56,11 +54,9 @@
 							<input type="hidden" name="sb" value="position"/>
 							<input type="hidden" name="order" value="desc"/>
 						</form>
+						<br/>
+						<button type="button" name="default" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 					</div>
-
-						<xsl:call-template name="cancelform-copy"/>
-
-				</div>
 				<xsl:call-template name="script_bottom"/>
 			</body>
 		</html>
@@ -70,7 +66,6 @@
       / <a class="">
 			<xsl:attribute name="href">
 				<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id,';move_browse=1;to=',@id)"/>
-				<!--<xsl:call-template name="rbacknav_qs"/>-->
 			</xsl:attribute>
 			<xsl:value-of select="location"/>
 		</a>

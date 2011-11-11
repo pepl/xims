@@ -216,15 +216,13 @@
 	</xsl:template>
 	
 	<xsl:template name="multi-select-action" >
-		<div>
-			<div>
-				<p><input type="checkbox" id="select-all" name="select-all" onclick="selectAllObjects('multiselect')"></input>&#160;Alle markieren</p>
-			</div>
-			<div>
+		<div class="multi-select-action">
+				<p><input type="checkbox" id="select-all" name="select-all" onclick="selectAllObjects('multiselect')"></input>&#160;<xsl:value-of select="$i18n/l/SelectAll"/></p>
+				<div>
+					<xsl:value-of select="$i18n/l/MultiSelectAction"/>&#160;
 				<xsl:call-template name="options-toolbar-multiple"/>
-			</div>
+				</div>
 		</div>
-		<!--</form>-->
 	</xsl:template>
 	
 	<xsl:template name="options-toolbar-multiple">
@@ -234,7 +232,6 @@
 		<xsl:param name="forcepurge" select="false()"/>
 		
 		<div class="toolbar">
-			Sammelaktion für ausgewählte Objekte &#160;
 			<xsl:choose>
 				<xsl:when test="$showtrashcan or (marked_deleted = 1)">
 					<xsl:call-template name="button.options.undelete-multiple"/>
