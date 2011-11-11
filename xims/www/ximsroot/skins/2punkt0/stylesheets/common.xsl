@@ -1370,7 +1370,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template name="button.options.acl_or_undelete">
+	<!--<xsl:template name="button.options.acl_or_undelete">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
@@ -1389,18 +1389,9 @@
 						return "Loading...";
 						}
 						},
-						{position: {offset: "-630 50"}},
+						{position: {my: "center top", at: "center bottom"}},
 						{width: "530"}
 					);
-					/*
-					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({
-						content: function(response){
-							$('#ui-tooltip-1 .ui-tooltip-content').load('<xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/> .obj-table', response);
-							
-						return "Loading...";
-						}
-					});					
-					*/
 				});
 
 	</script>
@@ -1415,7 +1406,7 @@
 				<a class="button option-disabled">&#160;</a>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template>-->
 	
 	<xsl:template name="button.options.acl">
 		<xsl:variable name="id" select="@id"/>
@@ -1428,7 +1419,6 @@
 				</a>
 				<script type="text/javascript">
 				$(document).ready(function() {
-
 					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip(
 						{ 
 						content: function(response) {				
@@ -1436,21 +1426,9 @@
 						return "Loading...";
 						}
 						},
-						/*{position: {offset: "-550 100"}},*/
-						{position: {my: "center top", at: "right bottom"}},
-						{width: "530"}
+						{width: "530"},
+						{position: {offset: "-300 10", my: "right top", at: "left bottom",collision: "fit", of: '#option-acl_<xsl:value-of select="$id"/>'}}
 					);
-					/*$( "#ui-tooltip-<xsl:value-of select="$id"/>" ).position({ my: "left top", at: "right bottom", of:  "#option-acl_<xsl:value-of select="$id"/>" });
-					*/
-					/*
-					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip({
-						content: function(response){
-							$('#ui-tooltip-1 .ui-tooltip-content').load('<xsl:value-of select="concat($goxims_content,'?obj_acllist=1;userid=',@id,';id=',/document/context/object/@id)"/> .obj-table', response);
-							
-						return "Loading...";
-						}
-					});					
-					*/
 				});
 
 	</script>
