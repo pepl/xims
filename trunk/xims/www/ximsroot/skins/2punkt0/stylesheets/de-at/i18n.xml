@@ -131,6 +131,7 @@
 <Not_Show_XSP_processed>Body nicht XSP verarbeiteten</Not_Show_XSP_processed>
 <SelectAll>Alle auswählen</SelectAll>
 <MultiSelectAction>Sammelaktion für ausgewählte Objekte</MultiSelectAction>
+<NoObjects>Keine Objekte ausgewählt.</NoObjects>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Rechte verwalten für Objekt</Manage_objectprivs>
 <Manage_objectprivsMultiple>Rechte verwalten für Objekte</Manage_objectprivsMultiple>
