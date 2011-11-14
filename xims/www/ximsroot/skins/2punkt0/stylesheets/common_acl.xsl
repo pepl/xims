@@ -55,9 +55,7 @@
 	
 	</form>
 	<br/>
-					<form action="{$xims_box}{$goxims_content}" method="get">
-						<p><button type="submit" name="cancel"><xsl:value-of select="$i18n/l/cancel"/></button></p>
-					</form>
+		<a class="button" href="{$xims_box}{$goxims_content}?id={@id}"><xsl:value-of select="$i18n/l/cancel"/></a>
 	</xsl:template>	
 	
 	<xsl:template name="acl-checkboxes">

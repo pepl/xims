@@ -20,9 +20,18 @@
 				<xsl:call-template name="header"/>
 				<div id="content-container">
 					<h1 class="bluebg"><xsl:value-of select="$i18n/l/Manage_objectprivsMultiple"/></h1>
+					<xsl:choose>
+					<xsl:when test="not(/document/objectlist)">
+						<p><xsl:value-of select="$i18n/l/NoObjects"/></p>
+						<br/>
+						<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+					</xsl:when>
+					<xsl:otherwise>
 						<xsl:call-template name="grant-form">
 							<xsl:with-param name="multiple" select="true()"/>
-						</xsl:call-template>						
+						</xsl:call-template>	
+					</xsl:otherwise>
+					</xsl:choose>					
 				</div>
 				
 				<xsl:call-template name="script_bottom"/>

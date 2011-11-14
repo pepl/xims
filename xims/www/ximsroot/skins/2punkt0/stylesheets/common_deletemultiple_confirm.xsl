@@ -16,12 +16,17 @@
 			</xsl:call-template>
 
 			<body>
-				<xsl:call-template name="header">
-				</xsl:call-template>
+				<xsl:call-template name="header"/>
 				<div id="content-container">
+					<h1 class="bluebg"><xsl:value-of select="$i18n/l/DeleteConfirmMultiple"/></h1>
+					<xsl:choose>
+					<xsl:when test="not(/document/objectlist)">
+						<p><xsl:value-of select="$i18n/l/NoObjects"/></p>
+						<br/>
+						<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+					</xsl:when>
+					<xsl:otherwise>
 					<form action="{$xims_box}{$goxims_content}" method="get">
-						<h1 class="bluebg"><xsl:value-of select="$i18n/l/DeleteConfirmMultiple"/></h1>
-
 						<p><xsl:value-of select="$i18n/l/AboutDeletionMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
 						<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/DeletionNotice"/></p>
@@ -33,10 +38,12 @@
 							</button>
 							<input name="id" type="hidden" value="{@id}"/>
 							<!--<input type="hidden" name="forcetrash" value="1"/>-->
-                        &#160;
-                        <button type="button" name="default" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+						&#160;
+						<button type="button" name="default" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 						</div>
 					</form>
+					</xsl:otherwise>
+					</xsl:choose>
 				</div>
 				<xsl:call-template name="script_bottom"/>
 			</body>

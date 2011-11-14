@@ -47,8 +47,15 @@
 				<xsl:call-template name="header"/>
 				
 				<div id="content-container" class="publish-dialog"> 
-					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get">
-						<h1 class="bluebg"><xsl:value-of select="$i18n/l/Publishing_options"/></h1>
+				<h1 class="bluebg"><xsl:value-of select="$i18n/l/Publishing_options"/></h1>
+					<xsl:choose>
+					<xsl:when test="not(/document/objectlist)">
+						<p><xsl:value-of select="$i18n/l/NoObjects"/></p>
+						<br/>
+						<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+					</xsl:when>
+					<xsl:otherwise>
+					<form name="objPublish" id="objPublish" action="{$xims_box}{$goxims_content}" method="get">						
 						<p><xsl:value-of select="$i18n/l/AboutPublishMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
 						<p><xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/PublishingNotice"/></p>
@@ -103,12 +110,13 @@
 					</button>
 					<input name="id" type="hidden" value="{@id}"/>
 					&#160;
-						<button name="unpublishmultiple" type="submit"><xsl:value-of select="$i18n/l/Unpublish"/></button>
-						
-						&#160;
+					<button name="unpublishmultiple" type="submit"><xsl:value-of select="$i18n/l/Unpublish"/></button>
+					&#160;
 					<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 				</div>
 			</form>
+			</xsl:otherwise>
+			</xsl:choose>			
 		</div>
 		<xsl:call-template name="script_bottom"/>
 	</body>

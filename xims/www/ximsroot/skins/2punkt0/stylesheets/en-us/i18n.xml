@@ -131,6 +131,7 @@
 <Not_Show_XSP_processed>Do not XSP process body</Not_Show_XSP_processed>
 <SelectAll>Select all</SelectAll>
 <MultiSelectAction>Grouped action for selected objects</MultiSelectAction>
+<NoObjects>No objects selected.</NoObjects>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Manage Object Privileges</Manage_objectprivs>
 <Manage_objectprivsMultiple>Manage Objects Privileges</Manage_objectprivsMultiple>

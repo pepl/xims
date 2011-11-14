@@ -28,6 +28,12 @@
 				<xsl:call-template name="header"/>
 				<div id="content-container">
 					<h1 class="bluebg"><xsl:value-of select="$i18n/l/Move_objects"/></h1>
+					
+				<xsl:choose>
+					<xsl:when test="not(/document/objectlist)">
+						<p><xsl:value-of select="$i18n/l/NoObjects"/></p>
+					</xsl:when>
+					<xsl:otherwise>
 						<form action="{$xims_box}{$goxims_content}" method="get" id="create-edit-form" name="eform">
 							<p><xsl:value-of select="$i18n/l/AboutMoveMultiple"/></p>
 						<xsl:apply-templates select="/document/objectlist/object" />
@@ -59,6 +65,8 @@
 						<input type="hidden" name="sb" value="position"/>
 						<input type="hidden" name="order" value="desc"/>
 						</form>
+					</xsl:otherwise>
+				</xsl:choose>
 						<br/>
 						<button type="button" name="default" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 					</div>
