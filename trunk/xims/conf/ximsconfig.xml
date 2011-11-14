@@ -224,6 +224,13 @@
 		<DefaultUserPrefsContainerview>title</DefaultUserPrefsContainerview>
 		<DefaultUserPrefsPubOnSave>0</DefaultUserPrefsPubOnSave>
 		
+		<!--
+		# Maximum Number of objects that can be processed 
+		# by a multiple object action or recursion
+		# (publish, move, delete, grant privileges)
+		-->
+		<RecMaxObjects>1500</RecMaxObjects>
+		
     </General>
     <!-- Relative to $xims_home/conf -->
     <Include>conf.d</Include>
