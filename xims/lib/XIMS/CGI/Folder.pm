@@ -361,34 +361,44 @@ sub event_publishmultiple {
 
     my @ids = $self->param('multiselect');
     my @objects;
-#    foreach(@ids){
-#    	my $obj = new XIMS::Object('id' => $_);
-#    	if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
-#    		#$obj->trashcan();
-#    		#return $self->SUPER::event_publish($ctxt);
-#    		$published = $self->autopublish( $ctxt, $exporter, 'publish', $obj->children_granted(marked_deleted => undef),
-#				$no_dependencies_update, $self->param("recpublish") );
-#    	}
-#    	else{
-#    		warn "geht nicht : ".$obj->location();
-#    	}
-#    }
-require XIMS::Exporter;
-	my $exporter = XIMS::Exporter->new(
-		Provider => $ctxt->data_provider,
-		Basedir  => XIMS::PUBROOT(),
-		User     => $ctxt->session->user
-	);
-my $no_dependencies_update = 1;
-	if ( defined $self->param("update_dependencies")
-		and $self->param("update_dependencies") == 1 )
-	{
-		$no_dependencies_update = undef;
+	require XIMS::Exporter;
+		my $exporter = XIMS::Exporter->new(
+			Provider => $ctxt->data_provider,
+			Basedir  => XIMS::PUBROOT(),
+			User     => $ctxt->session->user
+		);
+	my $no_dependencies_update = 1;
+		if ( defined $self->param("update_dependencies")
+			and $self->param("update_dependencies") == 1 )
+		{
+			$no_dependencies_update = undef;
+		}
+	my $obj;
+	my @org_ids = @ids;
+	my $user = $ctxt->session->user;
+	foreach(@org_ids){
+		$obj = new XIMS::Object('id' => $_);
+		my @descendants = $obj->descendants_granted(
+			        User           => $user,
+			        marked_deleted => 0
+			    );
+		XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
+	    if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
+		    foreach my $desc (@descendants) {
+		    	if($user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
+					push(@ids, $desc->id());
+		    	}
+			}
+	    }
+	    else{
+	    	$ctxt->properties->application->styleprefix('common');
+			$ctxt->properties->application->style('error');
+			XIMS::Debug( 2, "to many objects in recursion" );
+			$self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
+			return 0;
+	    }
 	}
-#my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objects,
-#				$no_dependencies_update, $self->param("recpublish") );
-				my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'publish', \@ids,
-				$no_dependencies_update, $self->param("recpublish") );
+	my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'publish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
 	XIMS::Debug( 4, "redirecting to the container" );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
@@ -417,11 +427,38 @@ sub event_unpublishmultiple {
 	}
 	#my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objects,
 	#				$no_dependencies_update, $self->param("recpublish") );
-	foreach ( @ids ) {
-			warn $_;
-		}
-	my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@ids,
-		$no_dependencies_update, $self->param("recpublish") );
+#	foreach ( @ids ) {
+#			warn $_;
+#		}
+	#
+	my $obj;
+	my @org_ids = @ids;
+	my $user = $ctxt->session->user;
+	foreach(@org_ids){
+		$obj = new XIMS::Object('id' => $_);
+		my @descendants = $obj->descendants_granted(
+			        User           => $user,
+			        marked_deleted => 0
+			    );
+		XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
+	    if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
+		    foreach my $desc (@descendants) {
+		    	if($user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
+					push(@ids, $desc->id());
+		    	}
+			}
+	    }
+	    else{
+	    	$ctxt->properties->application->styleprefix('common');
+			$ctxt->properties->application->style('error');
+			XIMS::Debug( 2, "to many objects in recursion" );
+			$self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
+			return 0;
+	    }
+	}
+	
+	#
+	my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
 	XIMS::Debug( 4, "redirecting to the container - id:".$ctxt->object->id );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
@@ -671,13 +708,22 @@ sub event_aclgrantmultiple {
 			        User           => $user,
 			        marked_deleted => 0
 			    );
-			    foreach my $desc (@descendants) {
-			    	if($user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
-						push(@ids, $desc->id());
-			    	}
-				}
+			    XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
+			    if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
+				    foreach my $desc (@descendants) {
+				    	if($user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+							push(@ids, $desc->id());
+				    	}
+					}
+			    }
+			    else{
+			    	$ctxt->properties->application->styleprefix('common');
+					$ctxt->properties->application->style('error');
+					XIMS::Debug( 2, "to many objects in recursion" );
+					$self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
+					return 0;
+			    }
 			}
-			warn "\n\norg_ids: ".scalar @org_ids." -- ids: ".scalar @ids."\n";
 		}
 	    #end recursive
 	    
@@ -774,11 +820,21 @@ sub event_aclrevokemultiple {
 		        User           => $user,
 		        marked_deleted => 0
 		    );
-		    foreach my $desc (@descendants) {
-		    	if($user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
-					push(@ids, $desc->id());
-		    	}
+		    XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
+			if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
+			    foreach my $desc (@descendants) {
+			    	if($user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+						push(@ids, $desc->id());
+			    	}
+				}
 			}
+		    else{
+		    	$ctxt->properties->application->styleprefix('common');
+				$ctxt->properties->application->style('error');
+				XIMS::Debug( 2, "to many objects in recursion" );
+				$self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
+				return 0;
+		    }
 		}
 		#warn "\n\norg_ids: ".scalar @org_ids." -- ids: ".scalar @ids."\n";
 	}

@@ -278,6 +278,8 @@ sub DEFAULTUSERPREFSPROFILE      { return $_CONFIG_->DefaultUserPrefsProfile(); 
 sub DEFAULTUSERPREFSCONTAINERVIEW      { return $_CONFIG_->DefaultUserPrefsContainerview(); }
 sub DEFAULTUSERPREFSPUBONSAVE      { return $_CONFIG_->DefaultUserPrefsPubOnSave(); }
 
+sub RECMAXOBJECTS      { return $_CONFIG_->RecMaxObjects(); }
+
 sub UILANGUAGES {
     my %rv;
     foreach ( $_CONFIG_->UILanguages() ) {
