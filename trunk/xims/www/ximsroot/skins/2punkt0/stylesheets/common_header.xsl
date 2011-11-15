@@ -445,7 +445,7 @@
 						<!--<a href="mailto:xims-support@uibk.ac.at?body=">-->
 						<a>
 							<xsl:attribute name="href">
-								mailto:xims-support@uibk.ac.at?body=<xsl:call-template name="url_encode"><xsl:with-param name="token" select="$supportmail_body"/></xsl:call-template>
+								mailto:xims-support@uibk.ac.at?body=<xsl:value-of select="str:encode-uri($supportmail_body)"/></xsl:value-of>
 							</xsl:attribute>
 							<xsl:attribute name="title">
 								<xsl:value-of select="$i18n/l/MailToSupport"/>
