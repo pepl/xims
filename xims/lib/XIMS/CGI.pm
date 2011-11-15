@@ -514,6 +514,16 @@ sub event_store {
 	return $self->event_access_denied($ctxt) unless defined($r_type);
 
 	my $object = $ctxt->object();
+	
+	my $markednew = $self->param('markednew');
+    if ( defined $markednew and $markednew eq 'on' ) {
+        $object->data( marked_new => '1' );
+    }
+    else {
+        $object->data( marked_new => '0' );
+    }
+
+	
 
 	if ( not $ctxt->parent() ) {
 
@@ -3831,6 +3841,7 @@ sub autopublish {
 					my $privmask;
 					my %param = ( User => $user, marked_deleted => 0 );
 					my @descendants = reverse sort { $a->{level} <=> $b->{level} } $object->descendants_granted(%param);
+					
 					$options{no_dependencies_update} = 1 if scalar @descendants > 0;
 					my $path;
 					my %seencontainers;
