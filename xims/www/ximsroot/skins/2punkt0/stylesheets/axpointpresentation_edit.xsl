@@ -9,15 +9,11 @@
 
 	<xsl:import href="edit_common.xsl"/>
 	
-	<xsl:param name="bxepresent"/>
 	<xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
 	
 	<xsl:template name="edit-content">
 		<xsl:call-template name="form-locationtitle-edit_xml"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
-		<xsl:if test="$bxepresent=1">
-			<xsl:call-template name="bxe-edit"/>
-		</xsl:if>
 		<xsl:call-template name="form-body-edit">
 			<xsl:with-param name="method" select="xml"/>
 		</xsl:call-template>
@@ -25,15 +21,6 @@
 	</xsl:template>
 	
 	<xsl:template name="trytobalance"/>
-<xsl:template name="form-minify"/>
+	<xsl:template name="form-minify"/>
 	
-	<xsl:template name="bxe-edit">
-	<div class="form-div block">
-		<div id="tr-bxeedit">
-			<a href="?id={@id};edit=bxe">
-				<xsl:value-of select="$i18n_xml/l/edit_with_BXE"/>
-			</a>
-		</div>
-	</div>
-	</xsl:template>
 </xsl:stylesheet>
