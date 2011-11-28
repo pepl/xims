@@ -25,10 +25,7 @@
 	<xsl:if test="schema_id and attributes/sfe = '1'">
 			<xsl:call-template name="sfe-edit"/>
 	</xsl:if>
-<!--	<xsl:call-template name="form-body-edit">
-		<xsl:with-param name="mode">xml</xsl:with-param>
-	</xsl:call-template>-->
-    <xsl:call-template name="form-body-edit_codemirror"/>
+	<xsl:call-template name="form-body-edit_codemirror"/>
 	<xsl:call-template name="form-keywordabstract"/>
 	<xsl:call-template name="form-stylesheet"/>
 
@@ -83,15 +80,15 @@
 </xsl:template>
 
 <xsl:template name="sfe-edit">
-     <div id="tr-sfeedit">
-        <a href="{$xims_box}{$goxims_content}?id={@id};simpleformedit=1"><xsl:value-of select="$i18n_xml/l/Edit_with_SFE"/></a>
+     <div class="form-div block">
+        <a href="{$xims_box}{$goxims_content}?id={@id};simpleformedit=1" class="button"><xsl:value-of select="$i18n_xml/l/Edit_with_SFE"/></a>
         </div>
 </xsl:template>
 
 <xsl:template name="sfe-attribute-edit">
     <div id="tr-sfeedit-attr">
         <fieldset>
-            <legend class="label-large"><!--<div id="label-sfeedit-attr">--><xsl:value-of select="$i18n_xml/l/Link_to_edit_with_SFE"/><!--</div>--></legend>
+            <legend class="label-large"><xsl:value-of select="$i18n_xml/l/Link_to_edit_with_SFE"/></legend>
             <input name="sfe" type="radio" value="true" class="radio-button" id="input-sfeedit-true">
               <xsl:if test="attributes/sfe = '1'">
                 <xsl:attribute name="checked">checked</xsl:attribute>
