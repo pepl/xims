@@ -145,8 +145,8 @@
 					<a class="button option-disabled">&#160;</a>
 				</xsl:otherwise>
 			</xsl:choose>
-                &#160;&#160;&#160;
-                            <xsl:choose>
+			&#160;&#160;&#160;
+			<xsl:choose>
 				<xsl:when test="(name() = 'question') and (name(..) = 'questionnaire') and not(@edit)">
 				<a class="button option-edit" href="#{$position_long}" name="{$position_long}" onclick="eform.edit.value='edit_question';eform.qid.value='{$position_long}';eform.submit();return true;">
 						<xsl:value-of select="$i18n/l/Edit"/>

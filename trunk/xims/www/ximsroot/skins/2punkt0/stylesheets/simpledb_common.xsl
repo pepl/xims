@@ -69,16 +69,16 @@
                 <xsl:when test="type = 'datetime'">
 					<xsl:call-template name="ui-datetimepicker">
 						<xsl:with-param name="formfield_id" select="concat('simpledb_',name)"></xsl:with-param>
-						<xsl:with-param name="input_id" >input-date</xsl:with-param>
+						<xsl:with-param name="input_id" select="concat('simpledb_',name)"></xsl:with-param>
 						<xsl:with-param name="xml_node"><xsl:value-of select="/document/context/object/member_values/member_value[property_id=$propid]/value"/></xsl:with-param>
 						<xsl:with-param name="buttontext">Datum</xsl:with-param>
 						<xsl:with-param name="mode">datetime</xsl:with-param>
 						<xsl:with-param name="range">false</xsl:with-param>
 					</xsl:call-template>
-					<input type="text" id="input-date" name="simpledb_{name}" readonly="readonly" size="12"><xsl:attribute name="value"><xsl:value-of select="$propvalue"/></xsl:attribute></input>
+					<input type="text" id="simpledb_{name}" name="simpledb_{name}" readonly="readonly" size="14"><xsl:attribute name="value"><xsl:value-of select="$propvalue"/></xsl:attribute></input>
 					<script type="text/javascript">
 				$(document).ready(function(){					
-					$('#input-date').datetimepicker({buttonText: '<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="name"/>'});
+					$('#<xsl:value-of select="concat('simpledb_',name)"/>').datetimepicker({buttonText: '<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="name"/>'});
 				});
 				
 			</script>

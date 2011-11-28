@@ -52,7 +52,6 @@ sub registerEvents {
                                 'obj_aclrevoke',
                                 'test_wellformedness',
                                 'pub_preview',
-                                'bxeconfig',
                                 'prepare_mail', 
                                 'send_as_mail',
                                 @_
@@ -520,43 +519,6 @@ sub save_PUT_data {
     else {
         return 0;
     }
-}
-
-=head2 event_bxeconfig()
-
-=cut
-
-sub event_bxeconfig {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my $object = $ctxt->object();
-    my $otname = lc $object->object_type->name();
-
-    my $templatepath = XIMS::XIMSROOT() . '/templates/bxe/';
-    my $templatefile = 'config-' . $otname . '.tmpl';
-    if ( not -f $templatepath . $templatefile ) {
-        $templatefile = $templatepath . 'config-generic.tmpl';
-    }
-
-    my $template = Text::Template->new(TYPE => 'FILE',  SOURCE => $templatefile );
-    if ( not $template ) {
-        XIMS::Debug( 2, "could not get template" );
-        $self->sendError( $ctxt, __"Could not get template" );
-        return 0;
-    }
-
-    my %vars = ( validationfile  => XIMS::XIMSROOT_URL() . '/schemata/' . $otname . '.xml',
-                 css             => XIMS::XIMSROOT_URL() . '/stylesheets/' . $otname . '.css',
-                 exitdestination => '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE() . '?id=' . $object->id() . ';edit=1',
-                 xmlfile         => '/' . XIMS::GOXIMS() . XIMS::CONTENTINTERFACE() . '?id=' . $object->id() . ';plain=1' );
-    my $text = $template->fill_in( HASH => \%vars );
-
-    print $self->header( -Content_type => 'text/xml; charset=UTF-8' );
-    print $text;
-
-    $self->skipSerialization(1);
-    return 0;
 }
 
 sub _getln {

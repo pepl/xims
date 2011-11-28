@@ -398,8 +398,8 @@ display: inline;
 */#label-subtitle, #label-tan-number,#label-keywords,#label-abstract, #label-lead, #label-description, #label-notes,
 #label-grantowneronly,#label-trytobal,#label-validfrom,#label-validto,#label-unzip,#label-file,#label-replace, #label-comment,
 #label-bodyfromfile,#label-target,#label-stylesheet, #label-css, #label-javascript, #label-image, #label-rssfeed,
-#label-image, #label-image-title, #label-image-description, #label-image-target,#label-schema,#label-bxeedit, #label-bxeconfig, 
-#label-bxexpath, #label-sfeedit,#label-qu-comment,#label-skeys, #label-dbdsn, #label-dbpwd, #label-dbuser,#label-empty,
+#label-image, #label-image-title, #label-image-description, #label-image-target,#label-schema,
+#label-sfeedit,#label-qu-comment,#label-skeys, #label-dbdsn, #label-dbpwd, #label-dbuser,#label-empty,
 #label-intro, #label-exit{
 	width:150px;
 	display:inline;

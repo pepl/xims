@@ -49,8 +49,7 @@ sub registerEvents {
           unpublish
           test_wellformedness
           pub_preview
-          bxeconfig
-          #simpleformedit
+          simpleformedit
           unescapebody
           )
         );
@@ -67,22 +66,8 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
 
-    # the request method 'PUT' is only used by BXE to save XML-code
-    if ( $self->request_method() eq 'PUT' ) {
-        XIMS::Debug( 5, "BXE is putting XML-data for saving." );
-        if ( $self->save_PUT_data($ctxt) ) {
-            print $self->header(-status => '204');
-        }
-        else {
-            print $self->header();
-        }
-        $self->skipSerialization(1);
-        return 0;
-    }
-    else {
-        $self->SUPER::event_default( $ctxt );
-        $ctxt->properties->content->escapebody( 1 );
-    }
+    $self->SUPER::event_default( $ctxt );
+    $ctxt->properties->content->escapebody( 1 );
 }
 
 =head2 event_unescapebody()
@@ -136,7 +121,7 @@ sub event_edit {
     my ( $self, $ctxt) = @_;
 
     # expand the attributes to XML-nodes
-    #$self->expand_attributes( $ctxt );
+    $self->expand_attributes( $ctxt );
 
 	$ctxt->properties->content->escapebody( 1 );
 
@@ -148,19 +133,10 @@ sub event_edit {
     my $ed = $self->_set_wysiwyg_editor( $ctxt );
     $ctxt->properties->application->style( "edit" . $ed );
 	# $ctxt->properties->application->style( "edit" );
-
-    #if ( XIMS::XMLEDITOR() eq 'bxe' ) {
-    #   $self->param( -name=>"bxepresent", -value=>"1" );
-    #}
-
-    #if ( $self->param( "edit" ) eq "bxe" ) {
-    #    $ctxt->properties->application->style( "edit_bxe" );
-    #}
 	
-	# resolve document_ids to location_path after attributes have been expanded,
-    # because bxeconfig_id is stored in the attributes
-    #$self->resolve_content( $ctxt, [ qw( STYLE_ID CSS_ID SCHEMA_ID BXECONFIG_ID ) ] );
-	$self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
+	# resolve document_ids to location_path after attributes have been expanded
+    $self->resolve_content( $ctxt, [ qw( STYLE_ID CSS_ID SCHEMA_ID ) ] );
+	#$self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
     
 	return 0;
 }
@@ -179,38 +155,6 @@ sub event_store {
                     and defined $ctxt->object();
 
     my $object = $ctxt->object();
-
-    # BXE Config.xml template document_id is stored as an attribute
-    my $bxeconfig = $self->param( 'bxeconfig' );
-    if ( defined $bxeconfig and length $bxeconfig ) {
-         XIMS::Debug( 6, "bxeconfig: $bxeconfig" );
-        my $bxeconfigobj;
-        if ( $bxeconfig =~ /^\d+$/
-             and $bxeconfigobj = XIMS::Object->new( id => $bxeconfig )
-             and ( $bxeconfigobj->object_type->name() eq 'XML' ) ) {
-            $object->attribute( bxeconfig_id => $bxeconfigobj->id() );
-        }
-        elsif ( $bxeconfigobj = XIMS::Object->new( path => $bxeconfig )
-                and ( $bxeconfigobj->object_type->name() eq 'XML' ) ) {
-            $object->attribute( bxeconfig_id => $bxeconfigobj->id() );
-        }
-        else {
-            XIMS::Debug( 3, "could not set attribute bxeconfig_id" );
-        }
-    }
-    else {
-        $object->attribute( bxeconfig_id => undef );
-    }
-
-    # The Node that is edited in BXE is stored as an attribute
-    my $bxexpath = $self->param( 'bxexpath' );
-    if ( defined $bxexpath and length $bxexpath ) {
-        XIMS::Debug( 6, "bxexpath: $bxexpath" );
-        $object->attribute( bxexpath => $bxexpath );
-        }
-    else {
-        $object->attribute( bxexpath => undef );
-    }
 
     my $sfe  = $self->param( 'sfe' );
     if ( defined $sfe ) {
@@ -307,44 +251,6 @@ sub save_PUT_data {
     else {
         return 0;
     }
-}
-
-=head2 event_bxeconfig()
-
-creates the config file for BXE
-
-=cut
-
-sub event_bxeconfig {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    # get body from config template
-    my $config_template = XIMS::XML->new( id => $ctxt->object->attribute_by_key( 'bxeconfig_id' ));
-
-    # replace placeholders
-    my $config_body = $config_template->body();
-    my $XML_File = "/goxims/content?id=".$ctxt->object->id().";plain=1";
-    my $RNG_File = "/goxims/content?id=".$ctxt->object->schema_id().";plain=1";
-    my $CSS_File = "/goxims/content?id=".$ctxt->object->css_id().";plain=1";
-    my $Exit_dest = "/goxims/content?id=".$ctxt->object->id().";edit=1";
-    $config_body =~ s/\{\$xmlfile\}/$XML_File/;
-    $config_body =~ s/\{\$validationfile\}/$RNG_File/;
-    $config_body =~ s/\{\$css\}/$CSS_File/;
-    $config_body =~ s/\{\$exitdestination\}/$Exit_dest/;
-
-    # return xml
-    my $df = XIMS::DataFormat->new( id => $config_template->data_format_id() );
-    my $mime_type = $df->mime_type;
-
-    my $charset;
-    if ( !($charset = XIMS::DBENCODING() )) { $charset = "UTF-8"; }
-    print $self->header( -Content_type => $mime_type."; charset=".$charset );
-    print $config_body;
-    $self->skipSerialization(1);
-
-    return 0;
-
 }
 
 

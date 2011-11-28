@@ -11,15 +11,11 @@
 
 <xsl:import href="edit_common.xsl"/>
 
-<xsl:param name="bxepresent" />
 <xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
 
 <xsl:template name="edit-content">
 	<xsl:call-template name="form-locationtitle-edit_xml"/>
 	<xsl:call-template name="form-marknew-pubonsave"/>
-	<xsl:if test="$bxepresent=1 and (./schema_id) and (./css_id) and (./attributes/bxeconfig_id) and (./attributes/bxexpath)">
-			<xsl:call-template name="bxe-edit"/>
-	</xsl:if>
 	<xsl:if test="schema_id and attributes/sfe = '1'">
 			<xsl:call-template name="sfe-edit"/>
 	</xsl:if>
@@ -30,7 +26,6 @@
 	<xsl:call-template name="form-stylesheet"/>
 	<xsl:call-template name="tr-schema-edit"/>
 	<xsl:call-template name="form-css"/>
-	<xsl:call-template name="tr-bxeconfig-edit"/>
 	<xsl:if test="schema_id">
 			<xsl:call-template name="sfe-attribute-edit"/>
 	</xsl:if>
@@ -52,30 +47,6 @@
         <xsl:text>&#160;</xsl:text>
 		<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./schema_id};otfilter=XML;sbfield=eform.schema','default-dialog','{$i18n_xml/l/Browse_schema}')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_schema"/></a>
     </div>
-</xsl:template>
-
-<xsl:template name="tr-bxeconfig-edit">
-<div id="tr-bxeconfig">
-    <div class="label-std"><label for="input-bxeconfig"><xsl:value-of select="$i18n_xml/l/BXEConfig"/></label></div>
-        <input type="text" name="bxeconfig" size="60" value="{./attributes/bxeconfig_id}" class="text" id="input-bxeconfig"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('BXE Config')" class="doclink">(?)</a>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./attributes/bxeconfig_id};otfilter=XML;sbfield=eform.bxeconfig','default-dialog','{$i18n_xml/l/Browse_BXEconfig}')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_BXEconfig"/></a>
-    </div>
-<div id="tr-bxexpath">
-    <div class="label-std"><label for="input-bxexpath"><xsl:value-of select="$i18n_xml/l/BXE_XPath"/></label></div>
-        <input type="text" name="bxexpath" size="60" value="{./attributes/bxexpath}" class="text" id="input-bxexpath"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('BXE Config')" class="doclink">(?)</a>
-        <xsl:text>&#160;</xsl:text>
-    </div>
-</xsl:template>
-
-<xsl:template name="bxe-edit">
-        <div id="tr-bxeedit">
-            <a href="{$xims_box}{$goxims_content}?id={@id};edit=bxe"><xsl:value-of select="$i18n_xml/l/edit_with_BXE"/></a>
-        </div>
 </xsl:template>
 
 <xsl:template name="sfe-edit">

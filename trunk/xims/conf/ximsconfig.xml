@@ -84,13 +84,6 @@
         <DefaultXHTMLEditor>tinymce</DefaultXHTMLEditor>
 
         <!--
-        # Currently 'bxe' is the only implemented XML editor which can be activated
-        # here after installation to $ximsroot/bxe
-        # You can download BXE from http://www.bitfluxeditor.org.
-        -->
-        <XMLEditor>bxe</XMLEditor>
-
-        <!--
         # Source IP of the mailable object types' request agent session
         -->
         <RequestAgentSourceIP>127.0.0.1</RequestAgentSourceIP>

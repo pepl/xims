@@ -65,24 +65,7 @@ sub event_default {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
 
-    # the request method 'PUT' is only used by BXE to save XML-code
-    if ( $self->request_method() eq 'PUT' ) {
-        XIMS::Debug( 4, "BXE is putting XML-data for saving." );
-        if ( $self->save_PUT_data($ctxt) ) {
-            print $self->header(-status => '204');
-        }
-        else {
-            print $self->header();
-        }
-        $self->skipSerialization(1);
-        return 0;
-    }
-    else {
-        if ( $self->user_agent('MSIE') ) {
-            $self->param( 'msie', 1 );
-        }
-        return $self->SUPER::event_default( $ctxt );
-    }
+    return $self->SUPER::event_default( $ctxt );
 }
 
 =head2 event_edit()
@@ -98,14 +81,6 @@ sub event_edit {
     return 0 if $ctxt->properties->application->style() eq 'error';
 
     $ctxt->properties->application->style( "edit" );
-
-    if ( XIMS::XMLEDITOR() eq 'bxe' ) {
-        $self->param( "bxepresent", "1" );
-    }
-
-    if ( $self->param( "edit" ) eq "bxe" ) {
-        $ctxt->properties->application->style( "edit_bxe" );
-    }
 
     return 0;
 }

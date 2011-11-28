@@ -33,7 +33,8 @@
     </xsl:choose>
 </xsl:variable>
 
-<xsl:variable name="schema" select="document($schema_path)"/>
+<!--<xsl:variable name="schema" select="document($schema_path)"/>-->
+<xsl:variable name="schema" select="document('http://www.uibk.ac.at/test/neuertest1/xml.xml')"/>
 <xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
 
 <xsl:variable name="currentdatetime"><xsl:apply-templates select="/document/context/session/date" mode="ISO8601-MinNoT"/></xsl:variable>
