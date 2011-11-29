@@ -10,14 +10,16 @@
 	<xsl:variable name="supportmail_body">
 		<xsl:text>
 			%0D%0A%0D%0A
-			Wichtige Hinweise für den Support:%0D%0A
-			Benutzerkennung: </xsl:text><xsl:value-of select="/document/context/session/user/name"/><xsl:text>%0D%0A
-			Kontext: </xsl:text>
-			<xsl:choose>
-				<xsl:when test="/document/context/object/location_path != ''"><xsl:value-of select="/document/context/object/location_path"/></xsl:when>
-				<xsl:when test="/document/context/object/parents/object[last()]/location_path !=''"><xsl:value-of select="/document/context/object/parents/object[last()]/location_path"/></xsl:when>
-				<xsl:otherwise>?</xsl:otherwise>
-			</xsl:choose>
+			-----%0D%0A
+		</xsl:text>
+		<xsl:value-of select="$i18n/l/NoticeSupport"/>:%0D%0A
+		<xsl:value-of select="$i18n/l/Name"/>: <xsl:value-of select="/document/context/session/user/name"/>%0D%0A
+		<xsl:value-of select="$i18n/l/Context"/>:
+		<xsl:choose>
+			<xsl:when test="/document/context/object/location_path != ''"><xsl:value-of select="/document/context/object/location_path"/></xsl:when>
+			<xsl:when test="/document/context/object/parents/object[last()]/location_path !=''"><xsl:value-of select="/document/context/object/parents/object[last()]/location_path"/></xsl:when>
+			<xsl:otherwise>?</xsl:otherwise>
+		</xsl:choose>
 	</xsl:variable>
 	<xsl:template name="header">
 		<xsl:param name="create" select="false()"/>
@@ -91,6 +93,7 @@
 			<xsl:call-template name="help-widget"/>
 			<xsl:call-template name="header.cttobject.search"/>
 		</div>
+		<!--
 		<div class="xims-content">
 			<p>&#160;
 				<xsl:if test="/document/context/session/message">
@@ -103,7 +106,7 @@
 					<xsl:value-of select="/document/context/session/error_msg"/>
 				</xsl:if>
 			</p>
-		</div>
+		</div>-->
 	</xsl:template>
 
 	<xsl:template name="header.arrownavigation">
@@ -396,6 +399,8 @@
 	</xsl:template>
 
 	<!--Help Widget-->	
+	<!-- customize the items in this widget to fit your needs -->
+	<!-- items and links should be listed in a config file (i18n problem ... ) -->
 	<xsl:template name="help-widget">
 
 		<div id="help-widget">
@@ -442,10 +447,9 @@
 						</a>
 					</li>
 					<li>
-						<!--<a href="mailto:xims-support@uibk.ac.at?body=">-->
 						<a>
 							<xsl:attribute name="href">
-								mailto:xims-support@uibk.ac.at?body=<xsl:value-of select="str:encode-uri($supportmail_body)"/></xsl:value-of>
+								mailto:<xsl:value-of select="$supportmailaddress"/>?body=<xsl:value-of select="str:encode-uri($supportmail_body)"/>
 							</xsl:attribute>
 							<xsl:attribute name="title">
 								<xsl:value-of select="$i18n/l/MailToSupport"/>
