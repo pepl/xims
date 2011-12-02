@@ -7,35 +7,11 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
-	<xsl:import href="codemirror_common.xsl"/>
-    <xsl:import href="codemirror_xsl_script.xsl"/>
-    <xsl:import href="create_common_codemirror.xsl"/>
-
-	<xsl:param name="codemirror" select="true()"/>	
-	<xsl:param name="selEditor" select="true()"/>	
+	<xsl:import href="xslstylesheet_create.xsl"/>
+	<xsl:import href="codemirror_scripts.xsl"/>
 	
-	<xsl:template name="create-content">
-		<input type="hidden" name="objtype" value="{$objtype}"/>
-		<xsl:call-template name="form-locationtitle-create"/>
-		<xsl:call-template name="form-marknew-pubonsave"/>
-		<xsl:call-template name="form-body-create_codemirror"/>
-		<xsl:call-template name="form-keywordabstract"/>
-		<xsl:call-template name="expandrefs"/>
-		<xsl:call-template name="form-grant"/>
-	</xsl:template>
-    
-    <xsl:template name="form-body-create_codemirror">
-		<div class="block form-div">
-            <h2><label for="body">Body</label>
-            <xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('Body')" class="doclink">(?)</a></h2>
-				<textarea name="body" id="body" rows="20" cols="90" onchange="document.getElementById('xims_wysiwygeditor').disabled = true;">
-				</textarea>
-		</div>
-		<xsl:call-template name="jsorigbody"/>
-	</xsl:template>
-
-<xsl:template name="trytobalance"/>
-<xsl:template name="form-minify"/>
+	<xsl:param name="codemirror" select="true()"/>	
+	<xsl:param name="cm_mode">xml</xsl:param>
+	<!--<xsl:param name="selEditor" select="true()"/>-->
 </xsl:stylesheet>
 
