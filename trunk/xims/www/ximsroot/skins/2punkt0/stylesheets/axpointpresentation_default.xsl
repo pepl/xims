@@ -21,8 +21,8 @@
 					<xsl:apply-templates select="body"/>
 			</xsl:when>
 			<xsl:otherwise>
-					<pre>
-							<xsl:apply-templates select="body"/>
+				<pre>
+					<xsl:apply-templates select="body"/>
 				</pre>
 			</xsl:otherwise>
 	</xsl:choose>
