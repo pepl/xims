@@ -13,7 +13,8 @@
 	</xsl:variable>
 	<xsl:param name="pubonsave"><xsl:value-of select="/document/context/session/user/userprefs/publish_at_save"/></xsl:param>
 	<xsl:param name="usertype"><xsl:value-of select="/document/context/session/user/userprefs/profile_type"/></xsl:param>
-	<xsl:param name="tinymce" select="false()"/>	
+	<xsl:param name="tinymce" select="false()"/>
+	<xsl:param name="codemirror" select="false()"/>
 	<xsl:param name="selEditor" select="false()"/>	
 	<xsl:param name="testlocation" select="true()"/>
 	<xsl:param name="simpledb" select="false()"/>
@@ -55,6 +56,7 @@
 				</div>
 				<xsl:call-template name="script_bottom">
 					<xsl:with-param name="tinymce" select="$tinymce"/>
+					<xsl:with-param name="codemirror" select="$codemirror"/>
 					<xsl:with-param name="testlocation" select="$testlocation"/>
 					<xsl:with-param name="simpledb" select="$simpledb"/>
 					<xsl:with-param name="reflib" select="$reflib"/>

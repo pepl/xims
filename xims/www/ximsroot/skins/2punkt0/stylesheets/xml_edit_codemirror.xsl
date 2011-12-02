@@ -7,91 +7,11 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="edit_common_codemirror.xsl"/>
-<xsl:import href="codemirror_common.xsl"/>
-<xsl:import href="codemirror_xml_script.xsl"/>
+<xsl:import href="xml_edit.xsl"/>
+<xsl:import href="codemirror_scripts.xsl"/>
 
 <xsl:param name="codemirror" select="true()"/>	
-<xsl:param name="selEditor" select="true()"/>
-<xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
-
-<xsl:template name="edit-content">
-	<xsl:call-template name="form-locationtitle-edit_xml"/>
-	<xsl:call-template name="form-marknew-pubonsave"/>
-	<xsl:if test="schema_id and attributes/sfe = '1'">
-			<xsl:call-template name="sfe-edit"/>
-	</xsl:if>
-	<xsl:call-template name="form-body-edit_codemirror"/>
-	<xsl:call-template name="form-keywordabstract"/>
-	<xsl:call-template name="form-stylesheet"/>
-
-	<xsl:call-template name="tr-schema-edit"/>
-	<xsl:call-template name="form-css"/>
-	<xsl:if test="schema_id">
-			<xsl:call-template name="sfe-attribute-edit"/>
-	</xsl:if>
-	
-	
-</xsl:template>
-
-<xsl:template name="trytobalance"/>
-<xsl:template name="form-minify"/>
-
-<xsl:template name="tr-schema-edit">
-<div id="tr-schema">
-    <div class="label-std"><label for="input-schema">
-			<xsl:value-of select="$i18n/l/Schema"/>
-    </label></div>
-        <input type="text" name="schema" size="60" value="{./schema_id}" class="text" id="input-schema"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('Schema')" class="doclink">(?)</a>
-        <xsl:text>&#160;</xsl:text>
-		<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./schema_id};otfilter=XML;sbfield=eform.schema','default-dialog','{$i18n_xml/l/Browse_schema}')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_schema"/></a>
-    </div>
-</xsl:template>
-
-<xsl:template name="sfe-edit">
-     <div class="form-div block">
-        <a href="{$xims_box}{$goxims_content}?id={@id};simpleformedit=1" class="button"><xsl:value-of select="$i18n_xml/l/Edit_with_SFE"/></a>
-        </div>
-</xsl:template>
-
-<xsl:template name="sfe-attribute-edit">
-    <div id="tr-sfeedit-attr">
-        <fieldset>
-            <legend class="label-large"><xsl:value-of select="$i18n_xml/l/Link_to_edit_with_SFE"/></legend>
-            <input name="sfe" type="radio" value="true" class="radio-button" id="input-sfeedit-true">
-              <xsl:if test="attributes/sfe = '1'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-            </input>
-            <label for="input-sfeedit-true"><xsl:value-of select="$i18n/l/Yes"/></label>
-            
-            <input name="sfe" type="radio" value="false" class="radio-button" id="input-sfeedit-false">
-              <xsl:if test="attributes/sfe!= '1'">
-                <xsl:attribute name="checked">checked</xsl:attribute>
-              </xsl:if>
-            </input>
-            <label for="input-sfeedit-false"><xsl:value-of select="$i18n/l/No"/></label>
-            
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('sfe')" class="doclink">(?)</a>
-            </fieldset>
-        </div>
-</xsl:template>
-
-<xsl:template name="form-body-edit_codemirror">
-		<div class="block form-div">
-            <h2><label for="body">Body</label>
-            <xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Body')" class="doclink">
-			<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/>
-				</xsl:attribute>(?)</a></h2>
-			<textarea name="body" id="body" rows="20" cols="90">
-				<xsl:value-of select="$bodycontent"/>
-			</textarea>
-		</div>
-</xsl:template>
+<xsl:param name="cm_mode">xml</xsl:param>
+<!--<xsl:param name="selEditor" select="true()"/>-->
 
 </xsl:stylesheet>

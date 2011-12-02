@@ -139,7 +139,7 @@ var CodeMirror = (function(){
     frame.style.display = "block";
 
     var div = this.wrapping = createHTMLElement("div");
-    div.style.position = "relative";
+    //div.style.position = "relative";
     div.className = "CodeMirror-wrapping";
     div.style.width = options.width;
     div.style.height = (options.height == "dynamic") ? options.minHeight + "px" : options.height;

@@ -559,15 +559,15 @@
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>
 			</h2>
 			<xsl:call-template name="ui-resizable"/>
-			<div id="bodymain">
-				<div id="bodycon">
-					<textarea name="body" id="body" rows="20" cols="90" onchange="document.getElementById('xims_wysiwygeditor').disabled = true;" class="resizable ui-widget-content ui-resizable">
+			<!--<div id="bodymain">
+				<div id="bodycon">-->
+					<textarea name="body" id="body" rows="20" cols="90" onchange="document.getElementById('xims_wysiwygeditor').disabled = true;" >
 						<xsl:if test="$mode = 'html'">
 							<xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text>
 						</xsl:if>
 					</textarea>
-				</div>
-			</div>
+				<!--</div>
+			</div>-->
 			<xsl:call-template name="form-bodyfromfile-create"/>
 			<xsl:call-template name="form-minify"/>
 			<xsl:call-template name="testbodysxml"/>
@@ -592,6 +592,7 @@
 			<img src="{$skimages}option_prettyprint.png" alt="{$i18n/l/Prettyprint}" title="{$i18n/l/Prettyprint}" width="32" height="19"/>
 		</a>
 	</xsl:template>
+	
 	<xsl:template name="form-body-edit">
 		<xsl:param name="with_origbody" select="'no'"/>
 		<xsl:param name="mode" select="html"/>
@@ -613,9 +614,10 @@
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>
 			</h2>
 			<xsl:call-template name="ui-resizable"/>
-			<div id="bodymain">
-				<div id="bodycon">
-					<textarea name="body" id="body" rows="20" cols="90" class="resizable ui-widget-content">
+			<!--<div id="bodymain">-->
+				<!--<div id="bodycon" class="resizable">-->
+					<!--<textarea name="body" id="body" rows="20" cols="90" class="resizable ui-widget-content">-->
+					<textarea name="body" id="body" rows="20" cols="90">
 						<xsl:choose>
 							<xsl:when test="string-length(body) &gt; 0">
 								<xsl:apply-templates select="body"/>
@@ -625,8 +627,8 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</textarea>
-				</div>
-			</div>
+				<!--</div>-->
+			<!--</div>-->
 			<xsl:call-template name="form-bodyfromfile-create"/>
 			<xsl:call-template name="form-minify"/>
 			<xsl:call-template name="testbodysxml"/>
@@ -636,14 +638,18 @@
 			<xsl:call-template name="trytobalance"/>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="trytobalance"/>
+	
 	<xsl:template name="ui-resizable">
 		<script type="text/javascript">
 				$(function() {
 					$(".resizable").resizable();
+					$(".CodeMirror-wrapping").resizable();
 				});
 		</script>
 	</xsl:template>
+	
 	<xsl:template name="form-keywords">
 		<div id="tr-keywords">
 			<div class="label-std">
