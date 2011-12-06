@@ -19,10 +19,10 @@ function checkPropertyType ( select ) {
     if ( select.options ) {
         if ( select.options[select.selectedIndex].value == 'stringoptions' ) {
             document.getElementById("tr-regex").style.display="none";
-            document.getElementById("tr-stringoptions").style.display="table-row";
+            document.getElementById("tr-stringoptions").style.display="block";
         }
         else {
-            document.getElementById("tr-regex").style.display="table-row";
+            document.getElementById("tr-regex").style.display="block";
             document.getElementById("tr-stringoptions").style.display="none";
         }
     }
@@ -73,7 +73,7 @@ function storeSelections( from ) {
     to = $('#sdbp_regex');
     to.val('');
     for ( index = 0; index < from.children().length; index++ ) {
-		alert(index + ": "+$(from.children()[index]).text());
+		//alert(index + ": "+$(from.children()[index]).text());
         to.val(to.val() + escapeRegex( $(from.children()[index]).text() ));
         if ( from.children().length > 1 && index != from.children().length - 1 ) {
             to.val(to.val() + "|");
