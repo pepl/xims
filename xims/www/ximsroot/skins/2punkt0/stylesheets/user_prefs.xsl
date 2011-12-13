@@ -34,17 +34,39 @@
 				</input>
 				<label for="skin_2p0">2punkt0</label> <br/>
 				<br/> -->
-				<input type="hidden" name="skin"><xsl:attribute name="value"><xsl:value-of select="userprefs/skin"/></xsl:attribute></input>
-				<strong><xsl:value-of select="$i18n/l/Publish"/></strong><br/>
-				<label for="publish_at_save"><xsl:value-of select="$i18n/l/Pub_on_save"/></label> 
-				<input type="checkbox" name="publish_at_save" id="publish_at_save" class="checkbox"><xsl:if test="userprefs/publish_at_save = '1'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
-				<br /><br/>
-				<strong><xsl:value-of select="$i18n/l/Container_View"/></strong><br/>
-				<xsl:value-of select="$i18n/l/whatToShow"/>? <br />
-				<input type="radio" id="conview_title" class="radio-button" name="containerview_show" value="title"><xsl:if test="userprefs/containerview_show = 'title'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input> <label for="conview_title"><xsl:value-of select="$i18n/l/Title"/></label> <br/>
-				<input type="radio" id="conview_loc" class="radio-button" name="containerview_show" value="location"><xsl:if test="userprefs/containerview_show = 'location'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input> <label for="conview_loc"><xsl:value-of select="$i18n/l/Location"/></label> <br/>
 				
-				<br/><br/>
+				<input type="hidden" name="skin"><xsl:attribute name="value"><xsl:value-of select="userprefs/skin"/></xsl:attribute></input>
+				
+				<xsl:choose>
+					<xsl:when test="userprefs/profile_type = 'expert' or userprefs/profile_type = 'webadmin'">
+						<input type="hidden" name="skin"><xsl:attribute name="value"><xsl:value-of select="userprefs/skin"/></xsl:attribute></input>
+						<strong><xsl:value-of select="$i18n/l/Publish"/></strong><br/>
+						<label for="publish_at_save"><xsl:value-of select="$i18n/l/Pub_on_save"/></label> 
+						<input type="checkbox" name="publish_at_save" id="publish_at_save" class="checkbox"><xsl:if test="userprefs/publish_at_save = '1'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
+					
+						<br /><br/>
+					
+					</xsl:when>
+					<xsl:otherwise>
+						<input type="hidden" name="publish_at_save" value=""/>
+					</xsl:otherwise>
+				</xsl:choose>
+				
+				<xsl:choose>
+					<xsl:when test="userprefs/profile_type = 'expert' or userprefs/profile_type = 'webadmin'">
+						<strong><xsl:value-of select="$i18n/l/Container_View"/></strong><br/>
+						<xsl:value-of select="$i18n/l/whatToShow"/>? <br />
+						<input type="radio" id="conview_title" class="radio-button" name="containerview_show" value="title"><xsl:if test="userprefs/containerview_show = 'title'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input> <label for="conview_title"><xsl:value-of select="$i18n/l/Title"/></label> <br/>
+						<input type="radio" id="conview_loc" class="radio-button" name="containerview_show" value="location"><xsl:if test="userprefs/containerview_show = 'location'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input> <label for="conview_loc"><xsl:value-of select="$i18n/l/Location"/></label> <br/>
+						
+						<br/><br/>
+						
+					</xsl:when>
+					<xsl:otherwise>
+						<input type="hidden" name="containerview_show" value="title"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				
 				
 					<strong><xsl:value-of select="$i18n/l/Profiletype"/></strong><br/>
 				<input type="radio" id="proftype_std" class="radio-button" name="profile_type" value="standard">
