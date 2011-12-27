@@ -14,7 +14,12 @@
     <xsl:template name="view-content">
     <xsl:call-template name="object-metadata"/>
     <div>
-    <a href="{$goxims_content}{$absolute_path}"><xsl:value-of select="$i18n/l/View_download"/></a>&#160;<xsl:value-of select="$objtype"/>
+    <a href="{$goxims_content}{$absolute_path}"><xsl:value-of select="$i18n/l/View_download"/></a>&#160;<!--<xsl:value-of select="$objtype"/>-->
+	<xsl:call-template name="objtype_name">
+		<xsl:with-param name="ot_name">
+			<xsl:value-of select="$objtype"/>
+		</xsl:with-param>
+	</xsl:call-template>
     </div>
     </xsl:template>
     

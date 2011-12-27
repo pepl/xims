@@ -39,6 +39,15 @@
 		<xsl:variable name="dfname" select="$df/name"/>
 		<xsl:variable name="dfmime" select="$df/mime_type"/>
 		
+		<!--
+			Warnung - Testsystem - UIBK
+		-->
+		<div style="color: red; font-weight: bold; text-align: center;">
+			<p>Achtung Testsystem! Es kann zu unangekündigten Änderungen und Ausfällen kommen.<br/>
+				Dieses System arbeitet gegen die Produktiv-Daten. Alle Änderungen werden für die Webseiten der Uni übernommen.
+			</p>
+		</div>
+		<!-- End Warnung Testsystem - UIBK -->
 		<div id="path-logo">
 			<div id="locbar">
 				<xsl:if test="$nopath='false' and $noncontent ='false'">
@@ -279,8 +288,8 @@
 		</xsl:variable>
 		<xsl:variable name="fullname">
 			<xsl:choose>
-				<xsl:when test="$parent_id != ''">
-					<xsl:value-of select="/document/object_types/object_type[@id=$parent_id]/name"/>::<xsl:value-of select="name"/>
+				<xsl:when test="$parent_id != ''">					
+						<xsl:value-of select="/document/object_types/object_type[@id=$parent_id]/name"/>::<xsl:value-of select="name"/>
 				</xsl:when>
 				<xsl:otherwise>
 				<xsl:value-of select="name"/>
@@ -289,7 +298,12 @@
 		</xsl:variable>
 		<li>
 			<a href="{$xims_box}{$goxims_content}{$absolute_path}?create=1;objtype={$fullname};page={$page};r={/document/context/object/@id}{$sorting}">
-				<xsl:value-of select="$fullname"/>
+				<!--<xsl:value-of select="$fullname"/>-->
+				<xsl:call-template name="objtype_name">
+					<xsl:with-param name="ot_name">
+						<xsl:value-of select="name"/>
+					</xsl:with-param>
+				</xsl:call-template>
 			</a>
 		</li>
 	</xsl:template>
@@ -306,7 +320,12 @@
 			</xsl:choose>
 		</xsl:variable>
 		<option value="{$fullname}">
-			<xsl:value-of select="$fullname"/>
+			<!--<xsl:value-of select="$fullname"/>-->
+			<xsl:call-template name="objtype_name">
+				<xsl:with-param name="ot_name">
+					<xsl:value-of select="/document/object_types/object_type[@id=$parent_id]/name"/>::<xsl:value-of select="name"/>
+				</xsl:with-param>
+			</xsl:call-template>
 		</option>
 	</xsl:template>
 	

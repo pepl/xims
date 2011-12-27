@@ -10,46 +10,6 @@
 	<xsl:import href="container_common.xsl"/>
 
 	<xsl:param name="printview" select="'0'"/>
-	<!--<xsl:param name="selEditor" select="false()"/>-->
-	<!--
-	<xsl:template name="heading">
-		<xsl:param name="mode"/>
-		<div id="tab-container" class="ui-corner-top">
-			<h1>
-				<xsl:choose>
-					<xsl:when test="$mode='create'">
-						<xsl:value-of select="$i18n/l/create"/>
-						<xsl:text>&#160;</xsl:text>
-						<xsl:value-of select="$objtype"/>
-						<xsl:text>&#160;</xsl:text>
-						<xsl:value-of select="$i18n/l/in"/>
-						<xsl:text>&#160;</xsl:text>
-						<xsl:value-of select="$absolute_path"/>
-						<xsl:text>&#160;</xsl:text>
-					</xsl:when>
-					<xsl:when test="$mode='edit'">
-						<xsl:value-of select="$i18n/l/edit"/>
-						<xsl:text>&#160;</xsl:text>
-						<xsl:value-of select="$objtype"/>
-						<xsl:text>&#160;'</xsl:text>
-						<xsl:value-of select="title"/>
-						<xsl:text>'&#160;</xsl:text>
-						<xsl:value-of select="$i18n/l/in"/>
-						<xsl:text>&#160;</xsl:text>
-						<xsl:value-of select="$parent_path"/>
-						<xsl:text>&#160;</xsl:text>
-					</xsl:when>
-				</xsl:choose>
-				<xsl:value-of select="$i18n/l/using"/>
-				<xsl:text>&#160;</xsl:text>
-				<label for="xims_wysiwygeditor">
-					<xsl:value-of select="$i18n/l/Editor"/>
-				</label>
-				<xsl:text>&#160;</xsl:text>
-			</h1>
-			<xsl:call-template name="setdefaulteditor"/>
-		</div>
-	</xsl:template>-->
 	
 	<xsl:template name="trytobalance">
 		<div id="tr-trytobal">

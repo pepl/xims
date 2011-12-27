@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <l>
+<Folder>Folder</Folder>
+<Document>Document</Document>
+<Image>Image</Image>
+<File>File</File>
+<XML>XML</XML>
+<Departmentroot>Departmentroot</Departmentroot>
+<XSLStylesheet>XSLStylesheet</XSLStylesheet>
+<AxPointPresentation>AxPointPresentation</AxPointPresentation>
+<sDocBookXML>sDocBookXML</sDocBookXML>
+<XSPScript>XSPScript</XSPScript>
+<URLLink>URL Link</URLLink>
+<SymbolicLink>Symbolic Link</SymbolicLink>
+<AnonDiscussionForum>AnonDiscussionForum</AnonDiscussionForum>
+<AnonDiscussionForumContrib>AnonDiscussionForumContrib</AnonDiscussionForumContrib>
+<NewsItem>NewsItem</NewsItem>
+<Annotation>Kommentar</Annotation>
+<Portlet>Portlet</Portlet>
+<Portal>Portal</Portal>
+<SiteRoot>Site Root</SiteRoot>
+<Text>Text</Text>
+<CSS>CSS</CSS>
+<Questionnaire>Questionnaire</Questionnaire>
+<TAN_List>TAN List</TAN_List>
+<VLibrary>VLibrary</VLibrary>
+<VLibraryItem>VLibraryItem</VLibraryItem>
+<DocBookXML>DocBookXML</DocBookXML>
+<Javascript>Javascript</Javascript>
+<SQLReport>SQL Report</SQLReport>
+<Lehrbuch_Zivilrecht>Lehrbuch Zivilrecht</Lehrbuch_Zivilrecht>
+<ReferenceLibrary>Reference Library</ReferenceLibrary>
+<ReferenceLibraryItem>Reference Library Item</ReferenceLibraryItem>
+<SimpleDB>SimpleDB</SimpleDB>
+<SimpleDBItem>SimpleDB Item</SimpleDBItem>
+<Event>Event</Event>
+<NewsLetter>Newsletter</NewsLetter>
+<Gallery>Gallery</Gallery>
+<NewsItem2>NewsItem2</NewsItem2>
 <create>Create</create>
 <edit>Edit</edit>
 <in>in</in>
@@ -138,6 +175,7 @@
 <Manage_privs>Manage Privileges</Manage_privs>
 <Grant_newprivs>Grant Privileges</Grant_newprivs>
 <Currently_showing_privs>Currently showing existing privileges.</Currently_showing_privs>
+<Edit_current_privs>Edit existing privileges</Edit_current_privs>
 <ACLNotice>For selected objects which are not listed here, you do not have the rights to grant.</ACLNotice>
 <GrantRecursive>Grant / revoke recursive?</GrantRecursive>
 <SeparateUsers>separate multiple users /role by comma</SeparateUsers>
@@ -323,6 +361,7 @@
 <AdmOptions>Administrative Options</AdmOptions>
 <AsMemberAdmin>As a member of the admins role you have the following administrative options:</AsMemberAdmin>
 <ManageUserRoles>Manage users and roles</ManageUserRoles>
+<Additional_tasks>Additional tasks</Additional_tasks>
 <Notice>Notice</Notice>
 <NoticeDefBookmarks>User Default Bookmarks take precedence over Role Default Bookmarks.</NoticeDefBookmarks>
 <BackToHome>Back to your personal start page</BackToHome>

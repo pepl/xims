@@ -62,6 +62,10 @@ div.edit #content-container {
 #content-container h3{
 	font-size: 1.0em;	
 }
+
+#content ul {
+    padding-left: 40px;
+}
 .cancel-save{
 	height: 40px;
 	font-size: 0.8em;
@@ -97,7 +101,7 @@ div.edit #content-container {
 #docbody > div{
 	clear:both;
 }
-#links{
+#links, #validity{
 	margin-top:5px;
 	border: 1px solid #C0C0C0;
 	padding: 2px;

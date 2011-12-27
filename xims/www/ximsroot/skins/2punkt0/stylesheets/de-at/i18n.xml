@@ -1,5 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <l>
+<!-- objecttypes -->
+<Folder>Ordner</Folder>
+<Document>Dokument</Document>
+<Image>Bild</Image>
+<File>Datei</File>
+<XML>XML-Datei</XML>
+<Departmentroot>Departmentroot</Departmentroot>
+<XSLStylesheet>XSLStylesheet</XSLStylesheet>
+<AxPointPresentation>AxPointPresentation</AxPointPresentation>
+<sDocBookXML>sDocBookXML</sDocBookXML>
+<XSPScript>XSPScript</XSPScript>
+<URLLink>URL Link</URLLink>
+<SymbolicLink>Symbolischer Link</SymbolicLink>
+<NewsItem>NewsItem</NewsItem>
+<Annotation>Kommentar</Annotation>
+<Portlet>Portlet</Portlet>
+<Portal>Portal</Portal>
+<SiteRoot>Site Root</SiteRoot>
+<Text>Text Datei</Text>
+<CSS>CSS Datei</CSS>
+<Questionnaire>Fragebogen</Questionnaire>
+<TAN_List>TAN Liste</TAN_List>
+<VLibrary>VLibrary</VLibrary>
+<VLibraryItem>VLibraryItem</VLibraryItem>
+<DocBookXML>DocBookXML</DocBookXML>
+<Javascript>Javascript Datei</Javascript>
+<SQLReport>SQL Report</SQLReport>
+<ReferenceLibrary>Reference Library</ReferenceLibrary>
+<ReferenceLibraryItem>Reference Library Item</ReferenceLibraryItem>
+<SimpleDB>SimpleDB</SimpleDB>
+<SimpleDBItem>SimpleDB Item</SimpleDBItem>
+<Event>Event</Event>
+<NewsLetter>Newsletter</NewsLetter>
+<Gallery>Bildergalerie</Gallery>
+<NewsItem2>NewsItem2</NewsItem2>
+<!-- end objecttypes -->
 <create>Erstelle</create>
 <edit>Bearbeite</edit>
 <in>in</in>
@@ -138,6 +174,7 @@
 <Manage_privs>Rechte verwalten</Manage_privs>
 <Grant_newprivs>Neue Rechte vergeben</Grant_newprivs>
 <Currently_showing_privs>Zur Zeit werden bereits vergebene Rechte angezeigt.</Currently_showing_privs>
+<Edit_current_privs>Derzeit vergebene Rechte bearbeiten</Edit_current_privs>
 <ACLNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlt Ihnen die Berechtigung zur Rechtevergabe.</ACLNotice>
 <GrantRecursive>Rechte rekursiv vergeben / entziehen?</GrantRecursive>
 <SeparateUsers>mehrere Benutzer / Rollen durch Komma getrennt eingeben</SeparateUsers>
@@ -326,6 +363,7 @@
 <AdmOptions>Verwaltungsoptionen</AdmOptions>
 <AsMemberAdmin>Als Mitglied der Admin-Rolle haben Sie folgende administrative Optionen:</AsMemberAdmin>
 <ManageUserRoles>Benutzer und Rollen verwalten</ManageUserRoles>
+<Additional_tasks>Weitere Aufgaben</Additional_tasks>
 <Notice>Hinweis</Notice>
 <NoticeDefBookmarks>BenutzerIn-Standard-Lesezeichen haben Vorrang gegenüber Rollen-Standard-Lesezeichen.</NoticeDefBookmarks>
 <BackToHome>Zurück zu Ihrer persönlichen Startseite</BackToHome>

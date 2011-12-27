@@ -225,7 +225,13 @@
 
 <xsl:template name="head-create">
     <head>
-        <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
+        <title><xsl:value-of select="$i18n/l/create"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
+		<xsl:call-template name="objtype_name">
+			<xsl:with-param name="ot_name">
+				<xsl:value-of select="$objtype"/>
+			</xsl:with-param>
+		</xsl:call-template>
+		&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
         <xsl:call-template name="css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
     </head>
@@ -233,28 +239,18 @@
 
 <xsl:template name="head-edit">
     <head>
-        <title><xsl:value-of select="$l_Edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
+        <title><xsl:value-of select="$l_Edit"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
+		<xsl:call-template name="objtype_name">
+			<xsl:with-param name="ot_name">
+				<xsl:value-of select="$objtype"/>
+			</xsl:with-param>
+		</xsl:call-template>
+		&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
         <xsl:call-template name="css"/>
         <link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/reference_library.css" type="text/css"/>
     </head>
 </xsl:template>
-<!--
-<xsl:template name="table-create">
-<div id="create-title">
-    <h1>
-			<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/>
-			</h1>
-			</div>
-</xsl:template>
 
-<xsl:template name="table-edit">
-    <div id="edit-title">
-    <h1>
-                <xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;(<xsl:value-of select="/document/reference_types/reference_type[@id=$reftype]/name"/>)&#160;'<xsl:value-of select="/document/context/object/reference_values/reference_value[property_id=1]/value"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/>
-            </h1>
-			</div>
-</xsl:template>
--->
 <xsl:template match="authorgroup/author|editorgroup/author" mode="edit">
     <xsl:variable name="current_pos" select="number(position)"/>
     <xsl:variable name="role">

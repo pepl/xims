@@ -40,6 +40,8 @@
           <h1 class="bluebg">
             <xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="$absolute_path"/>'</h1>
 			
+			<br/>
+			
 			<xsl:call-template name="grant-form">
 				<xsl:with-param name="multiple" select="false()"/>
 			</xsl:call-template>
@@ -90,11 +92,11 @@
               </p>
               </form>-->
           <!-- end filter widget  -->
-			<p> </p>	
+			<br/><br/>
 		
 		<!--<p><xsl:value-of select="$i18n/l/Currently_showing_privs"/></p>-->
 		<br/>
-		<h2>Derzeit vergebene Rechte bearbeiten</h2>
+		<h2><xsl:value-of select="$i18n/l/Edit_current_privs"/></h2>
         <table  class="obj-table acl-table">
           <xsl:choose>
             <xsl:when test="granteelist/user or /document/userlist/user">
@@ -427,7 +429,9 @@
         </table>
 		<br/>
 		<form action="{$xims_box}{$goxims_content}" method="get">
-			<p><button type="submit" name="cancel"><xsl:value-of select="$i18n/l/cancel"/></button></p>
+			<p>
+				<a class="button" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id}"><xsl:value-of select="$i18n/l/cancel"/></a>
+			</p>
 		</form>
 	</div>
         <xsl:call-template name="script_bottom"/>
@@ -601,6 +605,7 @@
 	});
 	</script>	
 	 <xsl:if test="$tooltip= ''">
+	 	&#160;
 	<button class="button" name="obj_aclgrant" type="submit"><xsl:value-of select="$i18n/l/save"/></button>
 	<input name="userid" type="hidden" >
 		<xsl:attribute name="value"><xsl:value-of select="@id"/></xsl:attribute>

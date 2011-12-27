@@ -100,7 +100,7 @@
              <!--<xsl:if test="system_privileges/gen_website">-->
 			 <xsl:if test="admin = '1' or userprefs/profile_type = 'webadmin'">
              	<br/>
-             <h2>Weitere Aufgaben</h2>
+             <h2><xsl:value-of select="$i18n/l/Additional_tasks"/></h2>
                     <ul>
                         <li><a href="{$xims_box}{$goxims}/user?newwebsite=1"><xsl:value-of select="$i18n/l/GenerateWebsite"/></a></li>
                     </ul>
