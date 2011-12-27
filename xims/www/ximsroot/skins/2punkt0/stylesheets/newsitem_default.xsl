@@ -29,6 +29,7 @@
 				<div>
 					<img src="{$goxims_content}{image_id}" width="170" height="130" alt="{image_id}" title="{image_id}" class="news-image"/>
 					<div class="newsdate" id="newsdate">
+						<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>
 						<script type="text/javascript">
 							$(document).ready(function(){
 							current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
@@ -43,12 +44,13 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<div class="newsdate" id="newsdate">
+					<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>
 					<script type="text/javascript">
 						$(document).ready(function(){
 						current_date = Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>");
 						$("#newsdate").html(current_date);
 						});
-                    </script>
+					</script>
 				</div>
 				<div class="newslead">
 					<xsl:apply-templates select="abstract"/>
@@ -58,46 +60,23 @@
 		<div id="body-content">
 			<xsl:apply-templates select="body"/>
 		</div>
-		<xsl:call-template name="documentlinks"/>
-		<!--
-		<div id="links">
+		
+		<div id="validity">
 			<p>
-				<strong>
-					<xsl:value-of select="$i18n/l/Document_links"/>
-				</strong>
-			</p>
-			<table class="link-table">
-				<thead>
-					<tr>
-						<th>
-							<xsl:value-of select="$i18n/l/Status"/>
-						</th>
-						<th>
-							<xsl:value-of select="$i18n/l/Position"/>
-						</th>
-						<th>
-							<xsl:value-of select="$i18n/l/Title"/>
-						</th>
-						<th>
-							<xsl:value-of select="$i18n/l/Options"/>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<xsl:apply-templates select="children/object" mode="link">
-						<xsl:sort select="position" data-type="number"/>
-					</xsl:apply-templates>
-				</tbody>
-			</table>
-			<p>
+				<xsl:value-of select="$i18n/l/Valid_from"/>&#160;&#09;<span id="valid_from_datetime"><xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/></span>
 				<br/>
-				<xsl:if test="user_privileges/create">
-					<a href="{$goxims_content}{$absolute_path}?create=1;objtype=URLLink">
-						<xsl:value-of select="$i18n/l/Add_link"/>
-					</a>
-				</xsl:if>
-			</p>
-		</div>-->
+				<xsl:value-of select="$i18n/l/Valid_to"/>&#160;&#09;<span id="valid_to_datetime"><xsl:apply-templates select="valid_to_timestamp" mode="ISO8601-MinNoT"/></span>
+			</p>		
+					<script type="text/javascript">
+						$(document).ready(function(){
+						$("#valid_from_datetime").html(Date.parseDate("<xsl:apply-templates select="valid_from_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>"));			
+						$("#valid_to_datetime").html(Date.parseDate("<xsl:apply-templates select="valid_to_timestamp" mode="ISO8601-MinNoT"/>", "%Y-%m-%d %H:%M").print("<xsl:value-of select="$i18n/l/NamedDateFormat"/>"));
+						});
+					</script>
+		</div>
+		
+		<xsl:call-template name="documentlinks"/>
+		
 	</div>
 	</xsl:template>
 	
