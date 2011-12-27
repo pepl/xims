@@ -37,5 +37,6 @@
   <xsl:variable name="defaultcss">skins/<xsl:value-of select="$currentskin"/>/stylesheets/default.css</xsl:variable>
   <xsl:variable name="resolvereltositeroots">1</xsl:variable>
   <xsl:variable name="jquery"><xsl:value-of select="$ximsroot"/>scripts/jquery/jquery.js</xsl:variable>
+  <xsl:variable name="supportmailaddress">xims-support@uibk.ac.at</xsl:variable>
 
 </xsl:stylesheet>

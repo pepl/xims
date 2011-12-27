@@ -73,13 +73,25 @@
 </xsl:template>
 
 <xsl:template name="title-create">
-	<xsl:value-of select="$i18n/l/Email_Send"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
+	<xsl:value-of select="$i18n/l/Email_Send"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
+	<xsl:call-template name="objtype_name">
+		<xsl:with-param name="ot_name">
+			<xsl:value-of select="$objtype"/>
+		</xsl:with-param>
+	</xsl:call-template>
+	&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
 </xsl:template>
 
 	<xsl:template name="heading">
 		<div id="tab-container" class="ui-corner-top">
 			<h1>
-				<xsl:value-of select="$i18n/l/Email_Send"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;
+				<xsl:value-of select="$i18n/l/Email_Send"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
+				<xsl:call-template name="objtype_name">
+					<xsl:with-param name="ot_name">
+						<xsl:value-of select="$objtype"/>
+					</xsl:with-param>
+				</xsl:call-template>
+				&#160;'<xsl:value-of select="title"/>'&#160;
 			</h1>
 		</div>
 	</xsl:template>

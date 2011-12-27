@@ -19,6 +19,13 @@
 	<xsl:import href="common_tinymce_scripts.xsl"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
 	<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
+	
+	<xsl:variable name="objtypeid" select="/document/context/object/object_type_id"/>
+	<xsl:variable name="objtypename" select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/>
+	<!--<xsl:param name="objtype_name">
+		<xsl:value-of select="$i18n/l/ots/ot[@id=$objtypeid]"/>
+	</xsl:param>-->
+	
 	<xsl:variable name="currobjmime" select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/mime_type"/>
 	<!--
 		save those strings in variables as they are called per object in
@@ -47,6 +54,21 @@
 	<xsl:variable name="l_Release_lock" select="$i18n/l/Release_lock"/>
 	<xsl:variable name="l_Locked" select="$i18n/l/Locked"/>
 	<xsl:variable name="l_Object_locked" select="$i18n/l/Object_locked"/>
+	
+	<xsl:template name="objtype_name">
+		<xsl:param name="ot_id"/>
+		<xsl:param name="ot_name"/>
+		<xsl:choose>
+			<xsl:when test="$ot_id != ''">
+		<xsl:value-of select="$i18n/l/ots/ot[@id=$ot_id]"/>
+		</xsl:when>
+		<xsl:when test="$ot_name != ''">
+		<xsl:value-of select="$i18n/l/*[name()=$ot_name]"/>
+		</xsl:when>
+		</xsl:choose>
+		<!--<xsl:value-of select="concat($i18n, concat('/l/',$objtypename))"/>-->
+		<!--<xsl:value-of select="document(concat($currentuilanguage,'/i18n.xml/l/')),$objtypename"/>-->
+	</xsl:template>
 	
 	<xsl:template name="cancelform">
 		<xsl:param name="with_save" select="'yes'"/>
@@ -273,7 +295,12 @@
 			<h1>
 				<xsl:choose>
 					<xsl:when test="$mode='create'">
-						<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;
+						<xsl:value-of select="$i18n/l/create"/>&#160;<!--<xsl:value-of select="$objtype"/>&#160;-->
+						<xsl:call-template name="objtype_name">
+							<xsl:with-param name="ot_name">
+								<xsl:value-of select="$objtype"/>
+							</xsl:with-param>
+						</xsl:call-template>&#160;
 						<xsl:if test="$selEditor">
 							<xsl:value-of select="$i18n/l/using"/>
 							<xsl:text>&#160;</xsl:text>
@@ -285,7 +312,13 @@
 						</xsl:if>
 					</xsl:when>
 					<xsl:when test="$mode='edit'">
-						<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;
+						<xsl:value-of select="$i18n/l/edit"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
+						<xsl:call-template name="objtype_name">
+							<xsl:with-param name="ot_name">
+								<xsl:value-of select="$objtype"/>
+							</xsl:with-param>
+						</xsl:call-template>
+						&#160;'<xsl:value-of select="title"/>'&#160;
 						<xsl:if test="$selEditor">
 							<xsl:value-of select="$i18n/l/using"/>
 							<xsl:text>&#160;</xsl:text>

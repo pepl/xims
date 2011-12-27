@@ -71,6 +71,7 @@ sub registerEvents {
 		'trashcan_prompt', 'trashcan',       'delete',
 		'delete_prompt',   'undelete',       'trashcan_content',
 		'error',           'prettyprintxml', 'htmltidy',
+		'aclgrantmultiple', 'aclrevokemultiple',
 		'test_location',   @_
 	);
 }
@@ -3447,6 +3448,240 @@ sub event_obj_aclgrant {
 	}
 
 	return 0;
+}
+
+=head2 event_aclgrantmultiple()
+
+=cut
+
+sub event_aclgrantmultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+	
+	if($self->param('grantees')){
+		my @grantees;
+		foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
+		    my $grantee = XIMS::User->new( name => $_ );
+			#unless $grantee and $grantee->id();
+			if($grantee and $grantee->id()){	
+				push @grantees, $grantee;
+			}
+			else{
+				XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n");
+			}
+		}
+		unless (scalar @grantees){
+			$ctxt->properties->application->styleprefix('common');
+			$ctxt->properties->application->style('error');
+			XIMS::Debug( 2, "none of provided grantees found" );
+			$self->sendError( $ctxt, __ "None of your provided grantees could befound." );
+			return 0;
+		}
+		
+		# build the privilege mask
+		my $bitmask = 0;
+		foreach my $priv ( XIMS::Privileges::list() ) {
+			my $lcname = 'acl_' . lc($priv);
+			if ( $self->param($lcname) ) {
+				{
+					## no critic (ProhibitNoStrict)
+					no strict 'refs';
+					$bitmask += &{"XIMS::Privileges::$priv"}();
+					## use strict
+				}
+			}
+		}
+		unless ($bitmask){
+			$ctxt->properties->application->styleprefix('common');
+			$ctxt->properties->application->style('error');
+			XIMS::Debug( 2, "No privileges provides" );
+			$self->sendError( $ctxt, __ "Please provide at least one privilege." );
+			return 0;
+		}
+		
+		my $recgrant = $self->param('recacl');
+	    my @ids = $self->param('multiselect');
+	    my $user = $ctxt->session->user();
+	    #my @objects;
+	    
+	    my $obj;
+	    #recursive
+		if ( $recgrant ) {
+			my @org_ids = @ids;
+			foreach(@org_ids){
+				$obj = new XIMS::Object('id' => $_);
+			    my @descendants = $obj->descendants_granted(
+			        User           => $user,
+			        marked_deleted => 0
+			    );
+			    XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
+			    if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
+				    foreach my $desc (@descendants) {
+				    	if($user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+							push(@ids, $desc->id());
+				    	}
+					}
+			    }
+			    else{
+			    	$ctxt->properties->application->styleprefix('common');
+					$ctxt->properties->application->style('error');
+					XIMS::Debug( 2, "to many objects in recursion" );
+					$self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
+					return 0;
+			    }
+			}
+		}
+	    #end recursive
+	    
+	    
+	
+		my $id_iterator = XIMS::Iterator::Object->new( \@ids, 1 );
+		while ( my $obj = $id_iterator->getNext() ) {
+			#warn "\n object : ".obj->location();
+			# store the set to the database
+			foreach(@grantees){
+				my $gid = $_->id();
+				#my $gid = $_;
+				my $boolean = $obj->grant_user_privileges(
+					grantee        => $gid,
+					privilege_mask => $bitmask,
+					grantor        => $user
+				);
+				if ($boolean) {
+					XIMS::Debug( 6, "ACL privs changed for (" . $_->name() . ")" );
+					#XIMS::Debug( 6, "ACL privs changed for user ( id: " . $_ . ")" );
+	#					#$ctxt->properties->application->style('obj_user_update');
+	##					my $granted = XIMS::User->new( id => $uid );
+	##					$ctxt->session->message(
+	##						__x("Privileges changed successfully for user/role '{name}'.",
+	##							name => $granted->name(),
+	##						)
+	##					);
+	#				}
+	#				else {
+	#					XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for ". $_->name() );
+	#					#XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for user with id ". $_ );
+	#				}
+				}
+				else {
+					XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for ". $_->name() );
+					#XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for user with id ". $_ );
+				}
+			}
+		}
+	    XIMS::Debug( 3, "all privileges granted." );
+		XIMS::Debug( 4, "redirecting to the container" );
+	    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+	    return 0;
+	}
+	else{
+		$ctxt->properties->application->styleprefix('common');
+		$ctxt->properties->application->style('error');
+		XIMS::Debug( 2, "no grantee(s) provided" );
+		$self->sendError( $ctxt, __ "Please provide at least one grantee." );
+		return 0;
+	}
+}
+
+sub event_aclrevokemultiple {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+	if($self->param('grantees')){
+	my @grantees;
+	foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
+	    my $grantee = XIMS::User->new( name => $_ );
+	    warn "\n\ngrantee : ".$grantee->name();
+#	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
+#	        unless $grantee and $grantee->id();
+#	    push @grantees, $grantee;
+		if($grantee and $grantee->id()){	
+				push @grantees, $grantee;
+			}
+			else{
+				XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n");
+			}
+		}
+		unless (scalar @grantees){
+			$ctxt->properties->application->styleprefix('common');
+			$ctxt->properties->application->style('error');
+			XIMS::Debug( 2, "none of provided grantees found" );
+			$self->sendError( $ctxt, __ "None of your provided grantees could befound." );
+			return 0;
+		}
+	my $recgrant = $self->param('recacl');
+	my @ids = $self->param('multiselect');
+	my $user = $ctxt->session->user();
+	
+	my $obj;
+	#recursive
+	if ( $recgrant ) {
+		my @org_ids = @ids;
+		foreach(@org_ids){
+			$obj = new XIMS::Object('id' => $_);
+		    my @descendants = $obj->descendants_granted(
+		        User           => $user,
+		        marked_deleted => 0
+		    );
+		    XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
+			if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
+			    foreach my $desc (@descendants) {
+			    	if($user->object_privmask( $obj )& (XIMS::Privileges::GRANT() || XIMS::Privileges::GRANT_ALL())){
+						push(@ids, $desc->id());
+			    	}
+				}
+			}
+		    else{
+		    	$ctxt->properties->application->styleprefix('common');
+				$ctxt->properties->application->style('error');
+				XIMS::Debug( 2, "to many objects in recursion" );
+				$self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
+				return 0;
+		    }
+		}
+		#warn "\n\norg_ids: ".scalar @org_ids." -- ids: ".scalar @ids."\n";
+	}
+    #end recursive
+
+	my $id_iterator = XIMS::Iterator::Object->new( \@ids, 1 );
+	while ( my $obj = $id_iterator->getNext() ) {
+		foreach(@grantees){
+				my $gid = $_->id();
+				
+				# revoke the privs
+				my $privs_object = XIMS::ObjectPriv->new(
+					grantee_id => $gid,
+					content_id => $obj->id()
+				);
+				
+				my $boolean = ($privs_object and $privs_object->delete());
+				if ($boolean) {
+					XIMS::Debug( 5, "ACL privs changed for (" . $_->name() . ")" );
+					#$ctxt->properties->application->style('obj_user_update');
+#					my $granted = XIMS::User->new( id => $uid );
+#					$ctxt->session->message(
+#						__x("Privileges changed successfully for user/role '{name}'.",
+#							name => $granted->name(),
+#						)
+#					);
+				}
+				else {
+					XIMS::Debug( 2, "ACL grant failure on ". $obj->document_id . " for ". $_->name() );
+				}
+			}
+			#$ctxt->properties->application->style('obj_user_update');
+    }
+	XIMS::Debug( 4, "redirecting to the container" );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+    }
+	else{
+		$ctxt->properties->application->styleprefix('common');
+		$ctxt->properties->application->style('error');
+		XIMS::Debug( 2, "no grantee(s) provided" );
+		$self->sendError( $ctxt, __ "Please provide at least one grantee." );
+		return 0;
+	}
 }
 
 =head2 event_obj_aclrevoke()

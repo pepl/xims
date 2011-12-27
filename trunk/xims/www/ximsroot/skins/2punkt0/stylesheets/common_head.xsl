@@ -54,16 +54,34 @@
 
 <!--Title-->
 	<xsl:template name="title-create">
-		<xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
+		<xsl:value-of select="$i18n/l/create"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
+		<xsl:call-template name="objtype_name">
+			<xsl:with-param name="ot_name">
+				<xsl:value-of select="$objtype"/>
+			</xsl:with-param>
+		</xsl:call-template>
+		&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS
 	</xsl:template>
 	<xsl:template name="title-edit">
-		<xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS
+		<xsl:value-of select="$i18n/l/edit"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
+		<xsl:call-template name="objtype_name">
+			<xsl:with-param name="ot_name">
+				<xsl:value-of select="$objtype"/>
+			</xsl:with-param>
+		</xsl:call-template>
+		&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS
 	</xsl:template>
 	<xsl:template name="title-move">
 		<xsl:value-of select="$i18n/l/Move_object"/>&#160;<xsl:value-of select="location"/> - XIMS
 	</xsl:template>
 	<xsl:template name="title-delete">
-		<xsl:value-of select="$i18n/l/ConfDeletion1"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/ConfDeletion2"/>&#160; - XIMS
+		<xsl:value-of select="$i18n/l/ConfDeletion1"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
+		<xsl:call-template name="objtype_name">
+			<xsl:with-param name="ot_name">
+				<xsl:value-of select="$objtype"/>
+			</xsl:with-param>
+		</xsl:call-template>
+		&#160;'<xsl:value-of select="title"/>'&#160;<xsl:value-of select="$i18n/l/ConfDeletion2"/>&#160; - XIMS
 	</xsl:template>
 	<xsl:template name="title-mg-acl">
 		<xsl:value-of select="$i18n/l/Manage_objectprivs"/> '<xsl:value-of select="object/title"/>' - XIMS
@@ -107,6 +125,18 @@
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/content.css" type="text/css"/>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/sprites.css" type="text/css"/>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/menu.css" type="text/css"/>
+		
+		<!-- UIBK -->
+		<link type="text/css" href="http://www2.uibk.ac.at/stylesheets/css/10/formats.css" rel="stylesheet"/>
+		<style type="text/css">
+			#content {
+				width:695px;
+				font-family:Verdana,Helvetica,Arial,sans-serif;
+				font-weight:normal;
+				padding:0px;
+				font-size:0.9375em}
+		</style>
+		<!-- END UIBK -->
 
 	</xsl:template>
 	
