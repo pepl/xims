@@ -23,12 +23,6 @@
 			</xsl:otherwise>
 			</xsl:choose>
 			<h2><xsl:value-of select="$i18n/l/Grant_newprivs"/></h2>
-		<xsl:if test="$multiple or (not($multiple) and /document/object_types/object_type[@id=/document/context/object/object_type_id]/is_fs_container)">				
-		<p>
-			<label for="recacl"><xsl:value-of select="$i18n/l/GrantRecursive"/></label> 
-			<input type="checkbox" name="recacl" id="recacl" value="1" class="checkbox"/>
-		</p>
-		</xsl:if>
 		
 		<p>
 			<label for="grantees" class=""><xsl:value-of select="$i18n/l/Name"/>&#160;<xsl:value-of select="$i18n/l/of"/>&#160;<xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n/l/Role"/>&#160;</label>&#160;
@@ -38,8 +32,16 @@
 	
 		<xsl:call-template name="acl-checkboxes"/>	
 		
+		<br/><br/>
+		<xsl:if test="$multiple or (not($multiple) and /document/object_types/object_type[@id=/document/context/object/object_type_id]/is_fs_container)">				
+		<p>
+			<label for="recacl"><xsl:value-of select="$i18n/l/GrantRecursive"/></label> 
+			<input type="checkbox" name="recacl" id="recacl" value="1" class="checkbox"/>
+		</p>
+		</xsl:if>
+		<p>
 		<button class="button" type="submit">
-			<xsl:attribute name="name">aclgrantmultiple</xsl:attribute>
+					<xsl:attribute name="name">aclgrantmultiple</xsl:attribute>
 			<xsl:value-of select="$i18n/l/save"/>
 		</button>
 		<input name="userid" type="hidden" >
@@ -52,10 +54,11 @@
 			<xsl:attribute name="name">aclrevokemultiple</xsl:attribute>
 			<xsl:value-of select="$i18n/l/Revoke_grants"/>
 		</button>
-	
+		
+		&#160;
+		<a class="button" href="{$xims_box}{$goxims_content}?id={/document/context/object/@id}"><xsl:value-of select="$i18n/l/cancel"/></a>
+	</p>
 	</form>
-	<br/>
-		<a class="button" href="{$xims_box}{$goxims_content}?id={@id}"><xsl:value-of select="$i18n/l/cancel"/></a>
 	</xsl:template>	
 	
 	<xsl:template name="acl-checkboxes">
