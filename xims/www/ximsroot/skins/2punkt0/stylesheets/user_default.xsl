@@ -69,16 +69,18 @@
 <br/><br/>
 </div>
 
-<br clear="all"/>
-            <h2><xsl:value-of select="$i18n/l/Settings"/></h2>
-							<ul id="settinglist">
-									<li class="sprite-list sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?bookmarks=1"><xsl:value-of select="$i18n/l/ManageBookmarks"/></a></li>
-								<xsl:if test="system_privileges/change_password = '1'">
-									<li class="sprite-list sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?passwd=1"><xsl:value-of select="$i18n/l/ChangePassword"/></a></li>
-									<li class="sprite-list sprite-list_SymbolicLink"><xsl:value-of select="$i18n/l/UpdateEmailAdress"/></li>
-								</xsl:if>
-								<li class="sprite-list sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?prefs=1"><xsl:value-of select="$i18n/l/ManagePersonalSettings"/></a></li>
-							</ul>
+	<br clear="all"/>
+	<h2><xsl:value-of select="$i18n/l/Settings"/></h2>
+	<ul id="settinglist">
+		<li><a href="{$xims_box}{$goxims}/user?bookmarks=1"><xsl:value-of select="$i18n/l/ManageBookmarks"/></a></li>
+		<xsl:if test="system_privileges/change_password = '1'">
+			<li><a href="{$xims_box}{$goxims}/user?passwd=1"><xsl:value-of select="$i18n/l/ChangePassword"/></a></li>
+			<li><xsl:value-of select="$i18n/l/UpdateEmailAdress"/></li>
+		</xsl:if>
+		<xsl:if test="userprefs/profile_type != 'standard'">
+		<li><a href="{$xims_box}{$goxims}/user?prefs=1"><xsl:value-of select="$i18n/l/ManagePersonalSettings"/></a></li>
+		</xsl:if>
+	</ul>
 
             
             <!-- check sysprivs here and xsl:choose -->
@@ -90,7 +92,7 @@
                     <xsl:value-of select="$i18n/l/AsMemberAdmin"/>
                 </p>
                     <ul id="adminlist">
-                        <li class="sprite-list sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims_users}"><xsl:value-of select="$i18n/l/ManageUserRoles"/></a></li>
+                        <li><a href="{$xims_box}{$goxims_users}"><xsl:value-of select="$i18n/l/ManageUserRoles"/></a></li>
                     </ul>
                 
             </xsl:if>
@@ -100,7 +102,7 @@
              	<br/>
              <h2>Weitere Aufgaben</h2>
                     <ul>
-                        <li class="sprite-list sprite-list_SymbolicLink"><a href="{$xims_box}{$goxims}/user?newwebsite=1"><xsl:value-of select="$i18n/l/GenerateWebsite"/></a></li>
+                        <li><a href="{$xims_box}{$goxims}/user?newwebsite=1"><xsl:value-of select="$i18n/l/GenerateWebsite"/></a></li>
                     </ul>
              </xsl:if>
 
@@ -137,7 +139,7 @@
 </xsl:template>
 
 <xsl:template match="bookmark">
-    <li class="sprite-list sprite-list_SymbolicLink">
+	<li>
         <xsl:choose>
             <xsl:when test="content_id != ''">
                 <a href="{$xims_box}{$goxims_content}{content_id}"><xsl:value-of select="content_id"/></a>
