@@ -22,8 +22,9 @@
 	</xsl:variable>
 	
 	<xsl:template name="view-content">
-	<div id="content">
-				<div id="docbody">
+		<div id="docbody">
+			<div id="content">
+				
 					<xsl:call-template name="pre-body-hook"/>
 					<xsl:apply-templates select="body"/>
 				</div>	
