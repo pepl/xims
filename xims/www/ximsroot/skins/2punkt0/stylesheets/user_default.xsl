@@ -55,6 +55,7 @@
                                 </xsl:otherwise>
                             </xsl:choose>
                 </div>
+				<!-- deactivated because this information mighty confuse the normal users
                 <div class="objlastmod">
                   <xsl:value-of select="$i18n/l/The_fpl"/>&#160;<xsl:value-of select="count(/document/objectlist/object)"/>&#160;<xsl:value-of select="$i18n/l/lastObjMod"/>
                   <xsl:choose>
@@ -66,6 +67,7 @@
                                 </xsl:otherwise>
                             </xsl:choose>
                 </div>
+				-->
 <br/><br/>
 </div>
 

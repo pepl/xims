@@ -91,9 +91,11 @@ sub event_default {
     # fill $ctxt->objectlist with the 5 last modified objects readable by the user
     # we do not want to see the auto-generated .diff_to_second_last here
     my $object = XIMS::Object->new( User => $ctxt->session->user() );
-    my @lmobjects = $object->find_objects_granted( criteria => "title <> '.diff_to_second_last'",
-                                                   limit => 5 );
-    $ctxt->objectlist( \@lmobjects );
+    
+    #deactivated because this information mighty confuse the normal users
+#    my @lmobjects = $object->find_objects_granted( criteria => "title <> '.diff_to_second_last'",
+#                                                   limit => 5 );
+#    $ctxt->objectlist( \@lmobjects );
 
     # fill $ctxt->userobjectlist with the 5 objects most recently created or modified by the user
     my $qbdriver;
