@@ -68,14 +68,14 @@
 			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_move_',@id,'_',/document/context/object/@id)"/></xsl:attribute>Move</label>
 					
 		<input type="checkbox" name="acl_publish"><xsl:attribute name="id"><xsl:value-of select="concat('acl_publish_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/grant">
+		<xsl:if test="object_privileges/publish">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
 			<label><xsl:attribute name="for"><xsl:value-of select="concat('acl_publish_',@id,'_',/document/context/object/@id)"/></xsl:attribute>Publish</label>
 			
 		<input type="checkbox" name="acl_grant"><xsl:attribute name="id"><xsl:value-of select="concat('acl_grant_',@id,'_',/document/context/object/@id)"/></xsl:attribute>
-		<xsl:if test="object_privileges/publish">
+		<xsl:if test="object_privileges/grant">
                        <xsl:attribute name="checked">checked</xsl:attribute>
                      </xsl:if>
 		</input>
