@@ -11,6 +11,7 @@
     <!--$Id: export_auto_index.xsl 2188 2009-01-03 18:24:00Z pepl $-->
 
     <xsl:import href="../common.xsl"/>
+	<xsl:import href="common_export.xsl"/>
 
     <xsl:output method="xml"/>
 
@@ -139,6 +140,9 @@
                     <dc:format><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/mime_type"/></dc:format>
                 </rdf:Description>
             </rdf:RDF>
+			<path>
+              <xsl:apply-templates select="." mode="path-element"/>
+            </path>
             <body>
                 <h1><xsl:value-of select="title"/></h1>
                 <p><xsl:value-of select="abstract"/></p>
