@@ -409,6 +409,7 @@
 <Path_to_img>Path to image</Path_to_img>
 <Search_objTree_img>Or search for image in the XIMS object tree</Search_objTree_img>
 <Opt_sel_link>Link target (optional)</Opt_sel_link>
+<StoreBack>Store Back</StoreBack>
 <!-- Gallery -->
 <ImageSize>Image Size</ImageSize>
 <Width>Width</Width>
