@@ -691,7 +691,7 @@
 				</label>
 				<!--<br/>-->
 			</div>
-			<input type="text" name="keywords" size="60" class="text" id="input-keywords"/>
+			<input type="text" name="keywords" size="60" class="text" value="{keywords}" id="input-keywords"/>
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Keywords')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Keywords"/></xsl:attribute>(?)</a>
@@ -1532,7 +1532,7 @@
 	<xsl:template name="button.options.delete">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
-			<xsl:when test="user_privileges/delete">
+			<xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
 				<a class="button option-delete" title="{$l_delete}">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/><!--trashcan_prompt does not check wether the object has any children--><!--		<xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan=1')"/>--><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 					<xsl:value-of select="$l_delete"/>
