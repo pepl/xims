@@ -347,3 +347,8 @@ span.cboxitem {
     border: 1px solid #A2A6AA;
     color: #103852;
 }
+
+ul.no-list-style{
+	list-style-type: none;
+	padding-left: 0px;
+}

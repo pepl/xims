@@ -59,14 +59,14 @@
 				<input type="hidden" name="imgheight" value="" id="input-imgheight"/>
 							</div>
 
-                 <div><button type="button" onclick="insertfile();" class="button" >Store Back</button> </div>
+                 <div><button onclick="insertfile();" class="button" ><xsl:value-of select="$i18n/l/StoreBack"/></button> </div>
 
             <div><xsl:value-of select="$i18n/l/Search_objTree_img"/>
             </div>
                     <xsl:apply-templates select="targetparents/object[@id !='1']"/>
                     <xsl:apply-templates select="target/object"/>
                     <div>
-                    <ul>
+                    <ul class="no-list-style">
                         <xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
                             <xsl:sort select="title" order="ascending" case-order="lower-first"/>
                         </xsl:apply-templates>
@@ -90,10 +90,10 @@
         <xsl:value-of select="object_type_id"/>
     </xsl:variable>
     <li>
-    <span class="sprite-spacer">&#160;</span>
+    <!--<span class="sprite-spacer">&#160;</span>-->
         <xsl:choose>
             <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
-            <span class="xims-sprite sprite-list_{/document/data_formats/data_format[@id=$dataformat]/name}"><span><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/name"/></span>&#160;</span>
+            <span class="xims-sprite sprite-list sprite-list_{/document/data_formats/data_format[@id=$dataformat]/name}"><span><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/name"/></span>&#160;</span>
                 <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};editorname={$editorname}"><xsl:value-of select="title"/></a>
             </xsl:when>
             <xsl:otherwise>

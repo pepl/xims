@@ -3,7 +3,7 @@
 # Copyright (c) 2002-2011 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
-# $Id: common_contentbrowse_htmlarealink.xsl 1442 2006-03-26 18:51:16Z pepl $
+# $Id: common_contentbrowse_tinymcelink.xsl 1442 2006-03-26 18:51:16Z pepl $
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -53,14 +53,14 @@
                     </select>
             </div>
             
-             <div>  <button type="button" onclick="inserthyperlink();">Store Back</button> </div>
+             <div>  <button type="button" onclick="inserthyperlink();"><xsl:value-of select="$i18n/l/StoreBack"/></button> </div>
 
             <div><xsl:value-of select="$i18n/l/Search_objTree_obj"/>
             </div>
                     <xsl:apply-templates select="targetparents/object[@id !='1']"/>
                     <xsl:apply-templates select="target/object"/>
                     <div>
-                    <ul>
+                    <ul class="no-list-style">
                         <xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
                             <xsl:sort select="title" order="ascending" case-order="lower-first"/>
                         </xsl:apply-templates>
@@ -105,9 +105,9 @@
         </xsl:if>
     </xsl:variable>
     <li>
-       <span class="sprite-spacer">&#160;</span>
+       <!--<span class="sprite-spacer">&#160;</span>-->
         <!--<img src="{$ximsroot}images/icons/list_{/document/data_formats/data_format[@id=$dataformat]/name}.gif" alt="" width="20" height="18"/>-->
-        <span class="xims-sprite sprite-list_{/document/data_formats/data_format[@id=$dataformat]/name}"><span><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/name"/></span>&#160;</span>
+        <span class="xims-sprite sprite-list sprite-list_{/document/data_formats/data_format[@id=$dataformat]/name}"><span><xsl:value-of select="/document/data_formats/data_format[@id=$dataformat]/name"/></span>&#160;</span>
         <xsl:choose>
             <xsl:when test="/document/data_formats/data_format[@id=$dataformat]/mime_type = 'application/x-container'">
                 <a href="{$xims_box}{$goxims_content}?id={/document/context/object/@id};contentbrowse=1;to={@id};otfilter={$otfilter};notfilter={$notfilter};style={$style};editorname={$editorname}"><xsl:value-of select="title"/></a>

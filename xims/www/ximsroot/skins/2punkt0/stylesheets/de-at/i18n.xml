@@ -415,6 +415,7 @@
 <Search_objTree_img>Oder den XIMS Objektbaum nach einem Bild durchsuchen</Search_objTree_img>
 <Search_objTree_obj>Oder den XIMS Objektbaum nach einem Objekt durchsuchen</Search_objTree_obj>
 <Opt_sel_link>Link-Ziel (optional)</Opt_sel_link>
+<StoreBack>Übernehmen</StoreBack>
 <!-- Gallery -->
 <ImageSize>Größe der Bilder</ImageSize>
 <Width>Breite</Width>
