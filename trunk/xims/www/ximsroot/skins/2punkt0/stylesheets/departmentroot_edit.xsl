@@ -9,6 +9,7 @@
 
 	<xsl:import href="edit_common.xsl"/>
 	<xsl:import href="container_common.xsl"/>
+	<xsl:import href="departmentroot_common.xsl"/>
 	
 	<xsl:template name="edit-content">
 		<xsl:call-template name="form-locationtitle-edit"/>
@@ -84,6 +85,16 @@
 			<xsl:call-template name="form-pagerowlimit-edit"/>
 			<xsl:call-template name="defaultsorting"/>
 			<xsl:call-template name="tr-deptportlets-edit"/>
+			<!-- start uibk-design extras -->
+		    <xsl:if test="contains($absolute_path, 'uniweb') or contains($absolute_path, 'cabal')">
+				<!-- show only to webadmins -->
+				<xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin'">
+					<xsl:call-template name="select-faculty"/>
+					<xsl:call-template name="select_category"/>
+				</xsl:if>
+			</xsl:if>
+		    <!-- end uibk-design extras -->
+
 		</div>
 	</xsl:template>
 

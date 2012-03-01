@@ -11,6 +11,7 @@
 
 <xsl:import href="create_common.xsl"/>
 <xsl:import href="container_common.xsl"/>
+<xsl:import href="departmentroot_common.xsl"/>
 <xsl:variable name="parentid" select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
 
 <xsl:template name="create-content">
@@ -38,6 +39,15 @@
 		<div class="form-div block">
 		<h2>Objekt-spezifische Optionen</h2>
 			<xsl:call-template name="autoindex"/>
+			<!-- start uibk-design extras -->
+		    <xsl:if test="contains($absolute_path, 'uniweb') or contains($absolute_path, 'cabal')">
+		    	<xsl:call-template name="select-faculty"/>
+				<!-- show only to webadmins -->
+				<xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin'">
+					<xsl:call-template name="select_category"/>
+				</xsl:if>
+			</xsl:if>
+		    <!-- end uibk-design extras -->
 		</div>
 	</xsl:template>
 
