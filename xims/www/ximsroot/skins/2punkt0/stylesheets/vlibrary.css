@@ -122,7 +122,8 @@ border-left: dotted 1px #a0a0a0;
 	border: dotted 1px #a0a0a0;
 	float:left; 
 	height: 110px; 
-	width: 220px
+	width: 220px;
+	list-style: none outside none;
 }
 
 

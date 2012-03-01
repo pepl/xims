@@ -99,7 +99,7 @@
                       <xsl:if test="$propvalue != '1'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input><label for="simpledb_{name}-false"><xsl:value-of select="$i18n/l/No"/></label>
                 </xsl:when>
                 <xsl:when test="type = 'textarea'">
-                    <textarea class="text" name="simpledb_{name}" id="simpledb_{name}" rows="5" cols="38" wrap="virtual" onkeyup="keyup(this)">
+                    <textarea class="text" name="simpledb_{name}" id="simpledb_{name}" rows="5" cols="38" onkeyup="keyup(this)">
                         <xsl:if test="$propvalue != ''">
                             <xsl:value-of select="$propvalue"/>
                         </xsl:if>
@@ -123,48 +123,9 @@
 	</div>
 </xsl:template>
 
-<!--<xsl:template name="head-create">
-    <head>
-        <title><xsl:value-of select="$i18n/l/create"/>&#160;<xsl:value-of select="$objtype"/>&#160;<xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$absolute_path"/> - XIMS </title>
-        <xsl:call-template name="css"/>
-        <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        <xsl:call-template name="jscalendar_scripts"/>
-        <xsl:call-template name="jstextarea_keyupcheck"/>
-    </head>
-</xsl:template>
-
-<xsl:template name="head-edit">
-    <head>
-        <title><xsl:value-of select="$i18n/l/edit"/>&#160;<xsl:value-of select="$objtype"/>&#160;'<xsl:value-of select="title"/>' <xsl:value-of select="$i18n/l/in"/>&#160;<xsl:value-of select="$parent_path"/> - XIMS</title>
-        <xsl:call-template name="css"/>
-        <script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-        --><!--<xsl:call-template name="jscalendar_scripts"/>--><!--
-        <xsl:call-template name="jstextarea_keyupcheck"/>
-    </head>
-</xsl:template>-->
-
 <xsl:template name="th-size">
     <td></td>
 </xsl:template>
-<!--
-<xsl:template name="tr-abstract">
-		<div id="tr-abstract">
-			<div id="label-abstract">
-				<label for="input-abstract">
-					<xsl:value-of select="$i18n/l/Abstract"/>
-				</label>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('SimpleDB.Abstract')" class="doclink">
-					<xsl:attribute name="title">
-						<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/>
-					</xsl:attribute>(?)</a>
-			</div>
-			<br/>
-			<textarea id="input-abstract" name="abstract" rows="3" cols="79">
-				<xsl:apply-templates select="abstract"/>
-			</textarea>
-		</div>
-</xsl:template>-->
 
 <xsl:template name="jstextarea_keyupcheck">
     <script type="text/javascript">
@@ -190,10 +151,6 @@
     </xsl:if>
 </xsl:template>
 
-<!---
-<xsl:template name="cttobject.content_length"/>
-<xsl:template name="cttobject.options.copy"/>
-<xsl:template name="cttobject.options.move"/>-->
 <xsl:template name="button.options.copy"/>
 <xsl:template name="button.options.move"/>
 
