@@ -78,6 +78,12 @@ a.button{
 	margin-left: 2px;
 	cursor: default !important;
 }
+.ui-buttonset label.ui-state-default .ui-button-text{
+	text-decoration: line-through;
+}
+.ui-buttonset label.ui-state-active .ui-button-text{
+	text-decoration: none;
+}
 
 ul.ui-widget-content{
 	max-height:250px;
@@ -136,7 +142,7 @@ a.more > .ui-button-text{
 	white-space:nowrap;
 	margin-top:20px;
 	margin-left:10px;
-	font-size: 0.7em;
+	font-size: 0.8em;
 }
 
 #header-logo{
