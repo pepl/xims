@@ -55,10 +55,11 @@
 	</xsl:template>
 	
 	<xsl:template name="document-options">
+		<!-- deactivated until it is working proper
 		<a href="javascript:previewWindow('{$xims_box}{$goxims_content}{$absolute_path}?pub_preview=1')">
 			<xsl:value-of select="$i18n/l/Publishingpreview"/>&#xa0;<span class="ui-icon ui-icon-newwin" title="{$i18n/l/Opens_in_new_window}"></span>
-		</a>
-		<xsl:if test="children/object[location='.diff_to_second_last']">
+		</a>-->
+		<xsl:if test="children/object[location='.diff_to_second_last'] and /document/context/seccion/user/userprefs/profile_type != 'standard'">
           &#xa0;
           <a href="javascript:diffWindow('{$xims_box}{$goxims_content}{$absolute_path}/.diff_to_second_last?bodyonly=1;pre=1')">
 			<xsl:value-of select="$i18n/l/See_changes_latest_edit"/>&#xa0;<span class="ui-icon ui-icon-newwin" title="{$i18n/l/Opens_in_new_window}"></span>
