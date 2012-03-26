@@ -13,7 +13,7 @@
 <xsl:template name="selectform">
     <form action="{$xims_box}{$goxims_content}" method="post" name="selectform" id="select-form">
         <div>
-					<div id="label-location"><label for="input-path"><xsl:value-of select="$i18n/l/Path"/></label></div>
+					<div id="label-location" class="label-std"><label for="input-path"><xsl:value-of select="$i18n/l/Path"/></label></div>
 					<input type="text" name="httpLink" size="60" id="input-path">
 						<xsl:choose>
                             <xsl:when test="$target_path = $absolute_path_nosite">
@@ -29,8 +29,8 @@
 					</input>
 				</div>
             <div>
-                <div id="label-title"><label for="input-title"><xsl:value-of select="$i18n/l/Title"/></label></div>
-                <input type="text" name="imgtext" size="60" id="input-title">
+                <div id="label-title"  class="label-std"><label for="input-title"><xsl:value-of select="$i18n/l/Title"/></label></div>
+                <input type="text" name="linktext" size="60" id="input-title">
 									<xsl:choose>
 										<xsl:when test="@id != /document/context/object/target/object/@id">
 												<xsl:attribute name="value">
