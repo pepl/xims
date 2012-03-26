@@ -197,30 +197,32 @@
 	</xsl:template>
 	
 	<xsl:template name="form-grant">
-		<div id="tr-grantowneronly" class="form-div block">
-			<h2>
-				<xsl:value-of select="$i18n/l/Priv_grant_options"/>
-			</h2>
-			<input name="owneronly" type="radio" value="false" checked="checked" id="radio-cp-par-privs" class="radio-button"/>
-			<label for="radio-cp-par-privs">
-				<xsl:value-of select="$i18n/l/Copy_parent_privs"/>
-			</label>
-			<br/>
-			<input name="owneronly" type="radio" value="true" onclick="document.eform.defaultroles.disabled = true;" onblur="document.eform.defaultroles.disabled = false;" id="radio-grantmyself" class="radio-button"/>
-			<label for="radio-grantmyself">
-				<xsl:value-of select="$i18n/l/Grant_myself_only"/>
-			</label>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('PrivilegeGrantOptions')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Priv_grant_options"/></xsl:attribute>
-					(?)</a>
-			<br/>
-			<xsl:text>&#160;</xsl:text>
-			<label for="checkb-defaultroles">
-				<xsl:value-of select="$i18n/l/Grant_default_roles"/>
-			</label>
-			<input name="defaultroles" type="checkbox" value="true" id="checkb-defaultroles" class="checkbox"/>
-		</div>
+		<xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin' or /document/context/session/user/userprefs/profile_type = 'expert'">
+			<div id="tr-grantowneronly" class="form-div block">
+				<h2>
+					<xsl:value-of select="$i18n/l/Priv_grant_options"/>
+				</h2>
+				<input name="owneronly" type="radio" value="false" checked="checked" id="radio-cp-par-privs" class="radio-button"/>
+				<label for="radio-cp-par-privs">
+					<xsl:value-of select="$i18n/l/Copy_parent_privs"/>
+				</label>
+				<br/>
+				<input name="owneronly" type="radio" value="true" onclick="document.eform.defaultroles.disabled = true;" onblur="document.eform.defaultroles.disabled = false;" id="radio-grantmyself" class="radio-button"/>
+				<label for="radio-grantmyself">
+					<xsl:value-of select="$i18n/l/Grant_myself_only"/>
+				</label>
+				<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('PrivilegeGrantOptions')" class="doclink">
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Priv_grant_options"/></xsl:attribute>
+						(?)</a>
+				<br/>
+				<xsl:text>&#160;</xsl:text>
+				<label for="checkb-defaultroles">
+					<xsl:value-of select="$i18n/l/Grant_default_roles"/>
+				</label>
+				<input name="defaultroles" type="checkbox" value="true" id="checkb-defaultroles" class="checkbox"/>
+			</div>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template name="markednew">
 		<div>
