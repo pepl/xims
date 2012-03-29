@@ -568,15 +568,14 @@
 </xsl:template>
 
 <xsl:template match="/document/context/granteelist/user|/document/userlist/user">
-  <tr class="objrow">
-  
-   <!-- user/role bgcolor -->
-   <!--<xsl:if test="object_type='role'">-->
-  <!-- user is role if objecttype = 1 -->
-   <!--<xsl:if test="object_type='1'">
-     <xsl:attribute name="bgcolor">#eeeeee</xsl:attribute>
-   </xsl:if>-->
-
+	<!-- uibk special: hide privs granted to UIBK:WEBADMIN from normal users
+		we don't wan't users to manipulate or delete privs granted to our admins
+		change UIBK:WEBADMIN to the admin-role or user in your instance
+	-->
+	<xsl:if test="not(name = 'UIBK:WEBADMIN' and not (/document/context/session/user/admin = 1 or /document/context/session/user/userprefs/profile_type = 'webadmin'))">
+	<!-- end uibk special -->
+	<tr class="objrow">
+	
  <xsl:if test="$tooltip= ''">
    <td><xsl:value-of select="@id"/></td>
  </xsl:if>
@@ -619,6 +618,9 @@
 </td>
    <!-- end options bar -->
   </tr>
+  <!-- uibk scecial -->
+  </xsl:if> 
+  <!-- end uibk special --> 
 </xsl:template>
 
 <xsl:template match="lastname|name">
