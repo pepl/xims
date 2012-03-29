@@ -187,6 +187,7 @@
                 <item>objecttype.is_davgetable</item>
                 <item>objecttype.is_mailable</item>
                 <item>objecttype.davprivval</item>
+				<item>objecttype.menu_level</item>
             </ObjectType>
             <Bookmark>
                 <item>bookmark.id</item>
