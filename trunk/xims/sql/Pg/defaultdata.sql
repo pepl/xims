@@ -20,70 +20,70 @@ INSERT INTO ci_languages ( id, fullname, code )
 \echo inserting into ci_object_types...
 
 
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Folder', 1, 1, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Gallery', 1, 1, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Document', 0, 1, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Image', 0, 0, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'File', 0, 0, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'XML', 0, 1, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot )
-       VALUES ( nextval('ci_object_types_id_seq'), 'DepartmentRoot', 1, 1, 0, 0, 1 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'XSLStylesheet', 0, 0, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'AxPointPresentation', 0, 0, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'sDocBookXML', 0, 0, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'XSPScript', 0, 0, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'URLLink', 0, 1, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'SymbolicLink', 0, 1, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'NewsItem', 0, 1, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Annotation', 0, 0, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Portlet', 0, 1, 0, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Portal', 0, 0, 1, 0, 1 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot )
-       VALUES ( nextval('ci_object_types_id_seq'), 'SiteRoot', 1, 1, 0, 0, 1 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Text', 0, 1, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'CSS', 0, 1, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Questionnaire', 0, 0, 1, 1 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'TAN_List', 0, 0, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot )
-       VALUES ( nextval('ci_object_types_id_seq'), 'VLibrary', 1, 1, 1, 1, 1 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'VLibraryItem', 0, 1, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
-       VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
-       VALUES ( nextval('ci_object_types_id_seq'), 'URLLink', 0, 1, 0, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Document', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 0, 1, 0 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'JavaScript', 0, 1, 1, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Folder', 1, 1, 0, 0, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Gallery', 1, 1, 0, 0, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Document', 0, 1, 1, 0, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Image', 0, 0, 0, 0, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'File', 0, 0, 0, 0, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'XML', 0, 1, 1, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'DepartmentRoot', 1, 1, 0, 0, 1, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'XSLStylesheet', 0, 0, 1, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'AxPointPresentation', 0, 0, 1, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'sDocBookXML', 0, 0, 1, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'XSPScript', 0, 0, 1, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'URLLink', 0, 1, 0, 0, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'SymbolicLink', 0, 1, 0, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'NewsItem', 0, 1, 1, 0, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Annotation', 0, 0, 0, 0, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Portlet', 0, 1, 0, 0, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Portal', 0, 0, 1, 0, 1, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'SiteRoot', 1, 1, 0, 0, 1, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Text', 0, 1, 1, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'CSS', 0, 1, 1, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Questionnaire', 0, 0, 1, 1, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'TAN_List', 0, 0, 1, 0, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'VLibrary', 1, 1, 1, 1, 1, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'VLibraryItem', 0, 1, 1, 0, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'URLLink', 0, 1, 0, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Document', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 0, 1, 0, 0 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'JavaScript', 0, 1, 1, 0, 2 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_gopublic )
-       VALUES ( nextval('ci_object_types_id_seq'), 'SQLReport', 0, 1, 1 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Event', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ) );
-INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_mailable ) 
-       VALUES ( nextval('ci_object_types_id_seq'), 'NewsLetter', 0, 1, 1, 0, 1 );
+       VALUES ( nextval('ci_object_types_id_seq'), 'SQLReport', 0, 1, 1, 2 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Event', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_mailable, menu_level ) 
+       VALUES ( nextval('ci_object_types_id_seq'), 'NewsLetter', 0, 1, 1, 0, 1, 1 );
 
 \echo inserting into ci_data_formats...
 

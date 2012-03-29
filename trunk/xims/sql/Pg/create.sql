@@ -57,6 +57,7 @@ CREATE TABLE ci_object_types
  ,is_davgetable    SMALLINT DEFAULT 0
  ,davprivval       NUMERIC(32,0)
  ,is_mailable      SMALLINT DEFAULT 0
+ ,menu_level       NUMBER(1,0) DEFAULT 0
  )
 ;
 
