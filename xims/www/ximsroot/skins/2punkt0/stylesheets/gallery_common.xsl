@@ -3,7 +3,7 @@
 
 <xsl:template name="form-obj-specific">
 		<div class="form-div block">
-		<h2>Objekt-spezifische Optionen</h2>
+		<h2><xsl:value-of select="$i18n/l/ExtraOptions"/></h2>
 			<xsl:call-template name="defaultsorting"/>
 			<xsl:call-template name="image-size"/>
 			<xsl:call-template name="thumbnail-pos"/>

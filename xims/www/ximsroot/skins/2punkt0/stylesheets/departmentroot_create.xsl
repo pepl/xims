@@ -26,7 +26,7 @@
 
 <xsl:template name="form-stylemedia">
 <div class="block form-div">
-<h2>Style &amp; Media</h2>
+<h2><xsl:value-of select="$i18n/l/LayoutOptions"/></h2>
 	<xsl:call-template name="form-stylesheet"/>
 	<xsl:call-template name="form-css"/>
 	<xsl:call-template name="form-script"/>
@@ -37,8 +37,10 @@
 
 <xsl:template name="form-obj-specific">
 		<div class="form-div block">
-		<h2>Objekt-spezifische Optionen</h2>
+		<h2><xsl:value-of select="$i18n/l/ExtraOptions"/></h2>
 			<xsl:call-template name="autoindex"/>
+			<xsl:call-template name="form-pagerowlimit-edit"/>
+			<xsl:call-template name="defaultsorting"/>
 			<!-- start uibk-design extras -->
 		    <xsl:if test="contains($absolute_path, 'uniweb') or contains($absolute_path, 'cabal')">
 		    	<xsl:call-template name="select-faculty"/>

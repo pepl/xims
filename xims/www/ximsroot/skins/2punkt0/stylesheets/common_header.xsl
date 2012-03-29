@@ -100,7 +100,7 @@
 			<xsl:call-template name="header.arrownavigation"/>
 			<xsl:call-template name="menu-widget"/>
 			<xsl:call-template name="help-widget"/>
-			<xsl:call-template name="header.cttobject.search"/>
+			<xsl:call-template name="header.search"/>
 		</div>
 		<!--
 		<div class="xims-content">
@@ -236,7 +236,7 @@
 	</xsl:choose>	
 	</xsl:template>
 	
-	<xsl:template name="header.cttobject.search">
+	<xsl:template name="header.search">
 		<xsl:variable name="Search" select="$i18n/l/Search"/>
 		<div id="menu-search" class="ui-widget-content ui-corner-all">
 			<form method="get" name="quicksearch">

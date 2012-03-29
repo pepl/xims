@@ -29,7 +29,7 @@
 	<xsl:variable name="l_last_modified_by" select="$i18n/l/last_modified_by"/>
 	
 	<xsl:template name="autoindex">
-	<div class="form-div block">
+	<!--<div class="form-div block">-->
 		<div id="tr-autoindex">
 		<div class="label-large">
 				<label for="cb-autoindex">
@@ -44,7 +44,7 @@
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('autoindex')" class="doclink">(?)</a>
 		</div>
-		</div>
+		<!--</div>-->
 	</xsl:template>
 	
 	<xsl:template name="defaultsorting">
@@ -126,7 +126,7 @@
 
 <xsl:template name="form-stylemedia">
 	<div class="block form-div">
-		<h2>Style &amp; Media / Multimedia</h2>
+		<h2><xsl:value-of select="$i18n/l/LayoutOptions"/></h2>
 		<xsl:call-template name="form-stylesheet"/>
 		<xsl:call-template name="form-css"/>
 		<xsl:call-template name="form-script"/>
