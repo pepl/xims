@@ -81,10 +81,10 @@
 	<xsl:if test="$otfilter = '' or contains( $otfilter ,/document/object_types/object_type[@id=$objecttype]/name )">
 		<xsl:choose>
 			<xsl:when test="$urllink != ''">
-				(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path_nosite}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
+				(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="javascript:storeBack('{$target_path_nosite}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
 			</xsl:when>
 			<xsl:otherwise>
-			(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="#" onclick="storeBack('{$target_path}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
+			(<xsl:value-of select="$i18n/l/Click"/>&#xa0;<a href="javascript:storeBack('{$target_path}/{location}');"><xsl:value-of select="$i18n/l/here"/></a>&#xa0;<xsl:value-of select="$i18n/l/to_store_back"/>)
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:if>
