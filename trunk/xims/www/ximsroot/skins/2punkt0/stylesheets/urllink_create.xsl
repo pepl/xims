@@ -27,7 +27,10 @@
 		<div>
 			<div class="label-std">
 				<label for="input-location">
-					<xsl:value-of select="$i18n/l/Location"/>
+					<!-- Location is now 'Pfad' in german translation - 
+					 <xsl:value-of select="$i18n/l/Location"/>
+					 -->
+					 Location
 				</label>&#160;*
 			</div>
 			<input type="text" name="name" size="60" class="text" id="input-location"></input>
@@ -45,7 +48,7 @@
 		
 		<xsl:template name="form-metadata">
   <div class="form-div block">
-		<h2>Meta Data</h2>
+		<h2><xsl:value-of select="$i18n/l/Metadata"/></h2>
 		<xsl:call-template name="form-keywords"/>
 		<xsl:call-template name="form-abstract"/>
 			<xsl:call-template name="form-valid_from"/>

@@ -13,7 +13,8 @@
 	<xsl:variable name="i18n_portlet" select="document(concat($currentuilanguage,'/i18n_portlet.xml'))"/>
 	<!-- think of an object-type property "independent" instead of filtering object_types by name -->
 	<xsl:variable name="filtered_ots">
-		<xsl:for-each select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'Annotation' and name != 'VLibraryItem' and name != 'DocBookXML']">
+		<!--<xsl:for-each select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'Annotation' and name != 'VLibraryItem' and name != 'DocBookXML']">-->
+		<xsl:for-each select="/document/object_types/object_type[name != 'Portlet' and name != 'Portal' and name != 'Annotation' and name != 'DocBookXML']">
 			<xsl:sort select="translate(fullname,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending" data-type="text"/>
 			<xsl:copy>
 				<xsl:copy-of select="@*|*"/>
@@ -22,8 +23,8 @@
 	</xsl:variable>
 	
 	<xsl:template name="extra_properties">
-	<div class="form-div block">
-	<h2>Extra Properties</h2>
+	<!--<div class="form-div block">
+	<h2>Extra Properties</h2>-->
 		<p>
 			<xsl:value-of select="$i18n_portlet/l/Extra_Properties"/>
 		</p>
@@ -195,7 +196,7 @@
 			<div id="tr-ep_body">
 				<div class="label-extraprop">
 					<label for="ep_body">
-					 Body
+					 <xsl:value-of select="$i18n/l/Body"/>
 					</label>
 				</div>
 				<input type="checkbox" name="col_body" id="ep_body" class="checkbox">
@@ -206,7 +207,7 @@
 			</div>
 		</div>
 <br clear="all"/>		
-		</div>
+		<!--</div>-->
 	</xsl:template>
 	
 	<xsl:template name="tree_depth">
@@ -373,30 +374,26 @@
 	<xsl:template name="contentfilters">
 	
 		<div class="form-div block">
-		<h2>Contentfilters</h2>
+		<h2><xsl:value-of select="$i18n/l/FilterCriteria"/></h2>
+			<xsl:call-template name="extra_properties"/>
 			<xsl:call-template name="filter_latest"/>
 			
 			<div id="tr-filter-markednew">
-				<div class="label-large"><label for="input-filter-markednew">
-					<xsl:value-of select="$i18n_portlet/l/Filter_marked_new"/>:
-        </label></div>
-					<input type="checkbox" name="filternews" id="input-filter-markednew" class="checkbox">
-						<xsl:if test="body/filter[marked_new=1]">
-							<xsl:attribute name="checked">checked</xsl:attribute>
-						</xsl:if>
-					</input>
+				<div class="label-large"><label for="input-filter-markednew"><xsl:value-of select="$i18n_portlet/l/Filter_marked_new"/>:</label></div>
+				<input type="checkbox" name="filternews" id="input-filter-markednew" class="checkbox">
+					<xsl:if test="body/filter[marked_new=1]">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
+				</input>
 			</div>
 			<div id="tr-filter-published">
-				<div class="label-large"><label for="input-filter-published">
-					<xsl:value-of select="$i18n_portlet/l/Filter_published"/>:
-        </label>
-				</div>
-					<input type="checkbox" name="filterpublished" id="input-filter-published" class="checkbox">
-						<xsl:if test="body/filter[published=1]">
-							<xsl:attribute name="checked">checked</xsl:attribute>
-						</xsl:if>
-					</input>
-					<br/><br/>
+				<div class="label-large"><label for="input-filter-published"><xsl:value-of select="$i18n_portlet/l/Filter_published"/>:</label></div>
+				<input type="checkbox" name="filterpublished" id="input-filter-published" class="checkbox">
+					<xsl:if test="body/filter[published=1]">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
+				</input>
+				<br/>
 			</div>
 		
 <!--		 reactivate after Portlet stuff is refactored and cleaned-up
@@ -415,7 +412,7 @@
         
 		<p><xsl:value-of select="$i18n_portlet/l/Filter_object_types"/>:</p>
 		<div class="div-row">
-			<xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type" mode="contentfilter"/>
+			<xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[can_create]" mode="contentfilter"/>
 		</div>
 		&#160;<br/>
 		<!-- Nodes outside the node-set cannot be checked, therefore we have to check the filtered object-types via JavaScript -->
@@ -445,19 +442,28 @@
 	</xsl:template>
 
 	<xsl:template match="object_type" mode="contentfilter">
-	 <!-- testlx1-special-workaround for double database entries for SimpleDBItem and ReferenceLibrary -->
-	<xsl:if test="@id != '44' and @id !='41' and @id !='42' and @id !='43'">
 		<div>
-			<!--<xsl:attribute name="id">tr-<xsl:value-of select="fullname"/></xsl:attribute>-->
 			<div>
-				<!--<xsl:attribute name="id">label-<xsl:value-of select="fullname"/></xsl:attribute>-->
 				<label for="ot_{fullname}">
-					<xsl:value-of select="fullname"/>
+					
+					<xsl:if test="parent_id != ''">
+						<xsl:variable name="parent_id" select="parent_id"/>
+						<xsl:call-template name="objtype_name">
+							<xsl:with-param name="ot_name">
+								<xsl:value-of select="exslt:node-set($filtered_ots)/object_type[@id=$parent_id]/name"/>
+							</xsl:with-param>
+						</xsl:call-template><xsl:text>::</xsl:text>
+					</xsl:if>
+					<xsl:call-template name="objtype_name">
+					<xsl:with-param name="ot_name">
+						<xsl:value-of select="name"/>
+					</xsl:with-param>
+					</xsl:call-template>
+					
 				</label>
 			</div>
 			<input type="checkbox" name="ot_{fullname}" id="ot_{fullname}" class="checkbox"/>
 		</div>
-		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="object-type" mode="contentfilter">
@@ -475,7 +481,7 @@
 
 <xsl:template name="form-obj-specific">
 		<div class="form-div block">
-		<h2>Objekt-spezifische Optionen</h2>
+		<h2><xsl:value-of select="$i18n/l/ExtraOptions"/></h2>
 			<xsl:call-template name="tree_depth"/>
 			<xsl:call-template name="add_documentlinks"/>
 		</div>

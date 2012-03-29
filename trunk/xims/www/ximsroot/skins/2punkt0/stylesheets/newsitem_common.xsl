@@ -121,7 +121,7 @@
 	
 		<xsl:template name="form-metadata">
   <div class="form-div block">
-		<h2>Meta Data</h2>
+		<h2><xsl:value-of select="$i18n/l/Metadata"/></h2>
 		<xsl:call-template name="form-keywords"/>
 			<xsl:call-template name="form-valid_from"/>
 			<xsl:call-template name="form-valid_to"/>

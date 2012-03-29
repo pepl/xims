@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <l>
 <!-- objecttypes -->
 <Folder>Ordner</Folder>
@@ -6,35 +6,35 @@
 <Image>Bild</Image>
 <File>Datei</File>
 <XML>XML-Datei</XML>
-<Departmentroot>Departmentroot</Departmentroot>
-<XSLStylesheet>XSLStylesheet</XSLStylesheet>
+<DepartmentRoot>DepartmentRoot</DepartmentRoot>
+<XSLStylesheet>XSL-Stylesheet</XSLStylesheet>
 <AxPointPresentation>AxPointPresentation</AxPointPresentation>
-<sDocBookXML>sDocBookXML</sDocBookXML>
-<XSPScript>XSPScript</XSPScript>
-<URLLink>URL Link</URLLink>
+<sDocBookXML>simpleDocBook</sDocBookXML>
+<XSPScript>XSP-Script</XSPScript>
+<URLLink>URL-Link</URLLink>
 <SymbolicLink>Symbolischer Link</SymbolicLink>
-<NewsItem>NewsItem</NewsItem>
+<NewsItem>Newseintrag</NewsItem>
 <Annotation>Kommentar</Annotation>
 <Portlet>Portlet</Portlet>
 <Portal>Portal</Portal>
 <SiteRoot>Site Root</SiteRoot>
-<Text>Text Datei</Text>
-<CSS>CSS Datei</CSS>
+<Text>Text-Datei</Text>
+<CSS>CSS-Datei</CSS>
 <Questionnaire>Fragebogen</Questionnaire>
-<TAN_List>TAN Liste</TAN_List>
+<TAN_List>TAN-Liste</TAN_List>
 <VLibrary>VLibrary</VLibrary>
 <VLibraryItem>VLibraryItem</VLibraryItem>
 <DocBookXML>DocBookXML</DocBookXML>
-<Javascript>Javascript Datei</Javascript>
-<SQLReport>SQL Report</SQLReport>
-<ReferenceLibrary>Reference Library</ReferenceLibrary>
-<ReferenceLibraryItem>Reference Library Item</ReferenceLibraryItem>
+<Javascript>Javascript-Datei</Javascript>
+<SQLReport>SQL-Report</SQLReport>
+<ReferenceLibrary>ReferenceLibrary</ReferenceLibrary>
+<ReferenceLibraryItem>ReferenceLibraryItem</ReferenceLibraryItem>
 <SimpleDB>SimpleDB</SimpleDB>
-<SimpleDBItem>SimpleDB Item</SimpleDBItem>
+<SimpleDBItem>SimpleDBItem</SimpleDBItem>
 <Event>Event</Event>
 <NewsLetter>Newsletter</NewsLetter>
 <Gallery>Bildergalerie</Gallery>
-<NewsItem2>NewsItem2</NewsItem2>
+<NewsItem2>NewsItem mit Sprachkürzel</NewsItem2>
 <!-- end objecttypes -->
 <create>Erstelle</create>
 <edit>Bearbeite</edit>
@@ -45,8 +45,8 @@
 <target>Ziel</target>
 <Target>Ziel</Target>
 <browse_target>Ziel suchen</browse_target>
-<Location>Location</Location>
-<location>location</location>
+<Location>Pfad</Location>
+<location>Pfad</location>
 <Title>Titel</Title>
 <Subtitle>Untertitel</Subtitle>
 <File>Datei</File>
@@ -57,7 +57,10 @@
 <bodyfromfile_create>Body von Datei erstellen</bodyfromfile_create>
 <bodyfromfile_edit>Body von Datei aktualisieren</bodyfromfile_edit>
 <add_portlet>Portlet hinzufügen</add_portlet>
-<create_portlet>Ein neues Portlet erstellen</create_portlet>
+<create_portlet>Ein neues Portlet hinzufügen</create_portlet>
+<DepartmentrootPortlets>DepartmentRoot Portlets</DepartmentrootPortlets>
+<addedPortlets>derzeit zugewiesene Portlets</addedPortlets>
+<FilterCriteria>Filterkriterien</FilterCriteria>
 <delete>Löschen</delete>
 <purge>Endgültig löschen</purge>
 <Trashcan>Papierkorb</Trashcan>
@@ -109,7 +112,9 @@
 <Opens_in_new_window>Öffnet in neuem Fenster</Opens_in_new_window>
 <See_changes_latest_edit>Änderungen der letzten Bearbeitung anzeigen</See_changes_latest_edit>
 <Printview>Druckansicht</Printview>
-<Metadata>Metadaten für</Metadata>
+<Metadata>Metadaten</Metadata>
+<LayoutOptions>Layout-Optionen</LayoutOptions>
+<ExtraOptions>Zusatzoptionen</ExtraOptions>
 <Dataformat>Datenformat</Dataformat>
 <Size>Größe</Size>
 <Owned_by>Verantwortlich</Owned_by>
@@ -151,7 +156,7 @@
 <Mark_new>Objekt als neu markieren</Mark_new>
 <Pub_on_save>Beim Speichern veröffentlichen</Pub_on_save>
 <Try_to_well-balance>Versuchen, einen wohlgeformten Body herzustellen. (Bei nicht wohlgeformtem Body erscheint eine Fehlermeldung.)</Try_to_well-balance>
-<Body_content_changed>Der Inhalt von 'Body' wurde geändert.\nBitte benutzen Sie 'Speichern' oder 'Abbrechen' um diese Seite zu verlassen.</Body_content_changed>
+<Body_content_changed>Der Body wurde geändert.\nBitte benutzen Sie 'Speichern' oder 'Abbrechen' um diese Seite zu verlassen.</Body_content_changed>
 <Test_body_xml>XML von Body testen</Test_body_xml>
 <Prettyprint>Prettyprint</Prettyprint>
 <Publish_ref_objects>Von diesem Objekt verlinkte XIMS-Objekte automatisch mitveröffentlichen</Publish_ref_objects>
@@ -287,18 +292,18 @@
 <More>Weitere</More>
 <PageRowLimit>Anzahl der Einträge pro Seite</PageRowLimit>
 <IlpDefaultWinlabel>XIMS Hinweis!</IlpDefaultWinlabel>
-<IlpProvideLocationFirst>Sie haben noch keine 'Location' eingegeben. Bitte geben Sie diese jetzt ein!</IlpProvideLocationFirst>
-<IlpLocationWouldChange>Nach dem speichern würde sich die 'Location' wie folgt ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
-<IlpLocationExists>Sie haben eine 'Location' eingegeben, die im Container bereits existiert. Die 'Location' muss eindeutig sein! Bitte geben Sie eine andere 'Location' ein.</IlpLocationExists>
-<IlpNoLocationProvided>Das Feld 'Location' ist leer. Bitte geben Sie eine 'Location' ein.</IlpNoLocationProvided>
-<IlpDirtyLocation>Das Feld 'Location' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyLocation>
+<IlpProvideLocationFirst>Sie haben noch keinen 'Pfad' eingegeben. Bitte geben Sie diese jetzt ein!</IlpProvideLocationFirst>
+<IlpLocationWouldChange>Nach dem speichern würde sich der 'Pfad' wie folgt ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
+<IlpLocationExists>Sie haben einen 'Pfad' eingegeben, die im Container bereits existiert. Der 'Pfad' muss eindeutig sein! Bitte geben Sie einen anderen 'Pfad' ein.</IlpLocationExists>
+<IlpNoLocationProvided>Das Feld 'Pfad' ist leer. Bitte geben Sie einen 'Pfad' ein.</IlpNoLocationProvided>
+<IlpDirtyLocation>Das Feld 'Pfad' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyLocation>
 <IlpButtonChange>Bearbeiten!</IlpButtonChange>
 <IlpButtonOK>OK</IlpButtonOK>
 <IlpButtonEdit>Bearbeiten!</IlpButtonEdit>
 <IlpButtonIgnore>Ignorieren!</IlpButtonIgnore>
 <IlpButtonAcceptSuggestion>Vorschlag übernehmen!</IlpButtonAcceptSuggestion>
 <IlpDirtyTitle>Das Feld 'Titel' enthält ungültige Zeichen! Gültige Zeichen sind: 'a-zA-Z0-9', Minus ('-') und Underscore ('_').</IlpDirtyTitle>
-<LocationWarning1>Die 'Location' ist länger als </LocationWarning1>
+<LocationWarning1>Der 'Pfad' ist länger als </LocationWarning1>
 <LocationWarning2>Zeichen. Umbenennen in </LocationWarning2>
 <minify>Beim Publizieren verkleinern</minify>
 <Send>Abschicken</Send>
@@ -314,25 +319,6 @@
 <MailToSupport>Email an Xims-Support</MailToSupport>
 <NoticeSupport>Wichtige Hinweise für den Support</NoticeSupport>
 <Context>Kontext</Context>
-<Document>Dokument</Document>
-<Folder>Ordner</Folder>
-<File>Datei</File>
-<Image>Bild</Image>
-<Text>Text</Text>
-<URLLink>URL-Link</URLLink>
-<AxPointPresentation>AxPointPresentation</AxPointPresentation>
-<CSS>CSS</CSS>
-<DepartmentRoot>Department Root</DepartmentRoot>
-<JavaScript>JavaScript</JavaScript>
-<NewsItem>News Item</NewsItem>
-<Portlet>Portlet</Portlet>
-<Questionaire>Questionaire</Questionaire>
-<SQLReport>SQL Report</SQLReport>
-<SymbolicLink>Symbolischer Link</SymbolicLink>
-<TAN_List>TAN List</TAN_List>
-<XML>XML</XML>
-<XSLStylesheet>XSL Stylesheet</XSLStylesheet>
-<sDocBookXML>sDocBookXML</sDocBookXML>
 <YouAreIn>Sie befinden sich in: </YouAreIn>
 <Menu>Menu</Menu>
 <Editor>Editor</Editor>

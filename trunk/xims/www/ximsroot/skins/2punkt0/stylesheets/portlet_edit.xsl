@@ -15,7 +15,6 @@
 	<xsl:call-template name="form-marknew-pubonsave"/>				
 	<xsl:call-template name="form-keywordabstract"/>
 	<xsl:call-template name="form-obj-specific"/>
-	<xsl:call-template name="extra_properties"/>
 	<xsl:call-template name="contentfilters"/>
 	<br clear="all"/>
 	</xsl:template>

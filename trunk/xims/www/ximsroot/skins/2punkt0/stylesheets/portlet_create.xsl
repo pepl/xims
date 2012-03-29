@@ -20,7 +20,7 @@
 		<xsl:call-template name="form-grant"/>
 		
 		<xsl:call-template name="form-obj-specific"/>
-		<xsl:call-template name="extra_properties"/>
+		
 		<xsl:call-template name="contentfilters"/>
 		<br clear="all"/>
 	</xsl:template>

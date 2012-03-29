@@ -141,6 +141,9 @@
 	</xsl:template>
 	
 		<xsl:template name="script_head">
+		<script type="text/javascript">
+			var ximsroot = '<xsl:value-of select="$ximsroot"/>';
+		</script>
 		<script src="{$ximsroot}scripts/jquery/jquery-1.4.2.js" type="text/javascript"/>
 		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js" type="text/javascript"/>-->
 		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m2.js" type="text/javascript"/>-->

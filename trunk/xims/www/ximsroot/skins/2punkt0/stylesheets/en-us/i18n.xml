@@ -10,7 +10,7 @@
 <AxPointPresentation>AxPointPresentation</AxPointPresentation>
 <sDocBookXML>sDocBookXML</sDocBookXML>
 <XSPScript>XSPScript</XSPScript>
-<URLLink>URL Link</URLLink>
+<URLLink>URL-Link</URLLink>
 <SymbolicLink>Symbolic Link</SymbolicLink>
 <AnonDiscussionForum>AnonDiscussionForum</AnonDiscussionForum>
 <AnonDiscussionForumContrib>AnonDiscussionForumContrib</AnonDiscussionForumContrib>
@@ -32,7 +32,7 @@
 <ReferenceLibrary>Reference Library</ReferenceLibrary>
 <ReferenceLibraryItem>Reference Library Item</ReferenceLibraryItem>
 <SimpleDB>SimpleDB</SimpleDB>
-<SimpleDBItem>SimpleDB Item</SimpleDBItem>
+<SimpleDBItem>SimpleDBItem</SimpleDBItem>
 <Event>Event</Event>
 <NewsLetter>Newsletter</NewsLetter>
 <Gallery>Gallery</Gallery>
@@ -59,6 +59,9 @@
 <bodyfromfile_edit>Update body from file</bodyfromfile_edit>
 <add_portlet>Add Portlet</add_portlet>
 <create_portlet>Create Portlet</create_portlet>
+<DepartmentrootPortlets>DepartmentRoot Portlets</DepartmentrootPortlets>
+<addedPortlets>derzeit zugewiesene Portlets</addedPortlets>
+<FilterCriteria>Filter Criteria</FilterCriteria>
 <delete>Delete</delete>
 <purge>Purge</purge>
 <Trashcan>Trashcan</Trashcan>
@@ -110,7 +113,9 @@
 <Opens_in_new_window>Opens in new Window</Opens_in_new_window>
 <See_changes_latest_edit>See the changes of the latest edit</See_changes_latest_edit>
 <Printview>Printview</Printview>
-<Metadata>Metadata for</Metadata>
+<Metadata>Metadata</Metadata>
+<LayoutOptions>Layout Options</LayoutOptions>
+<ExtraOptions>Extra Options</ExtraOptions>
 <Dataformat>Dataformat</Dataformat>
 <Size>Size</Size>
 <Owned_by>Owned by</Owned_by>
