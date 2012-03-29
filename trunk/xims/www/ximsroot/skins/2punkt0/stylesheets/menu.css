@@ -86,7 +86,7 @@ a.button{
 }
 
 ul.ui-widget-content{
-	max-height:250px;
+	max-height:300px;
 	width: 160px;;
 	overflow-y: auto;
 	overflow-x: hidden;

@@ -179,7 +179,8 @@
 								</xsl:when>						
 								<xsl:otherwise>
 									<ul>
-										<xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]" mode="fo-menu">
+										<!--<xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]" mode="fo-menu">-->
+										<xsl:apply-templates select="/document/object_types/object_type[can_create and menu_level = '1']" mode="fo-menu">
 											<xsl:sort select="name"/>
 										</xsl:apply-templates>
 										<li>
@@ -195,8 +196,10 @@
 					                        jokar, 2006-05-03: parameter parent_id, to prevent the diret creation of e.g. VLibraryItem::Document-s
 					                        jerboaa, 2007-07-19: Do not show object types which contain "Item" in their name with the only exception
 						                     of "NewsItem"! 
+											susanne, 2012-03-29: Done! Finally :)
 					                    -->
-										<xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'BidokEntry' or name = 'BidokIndex' or ( contains(fullname,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]" mode="fo-menu">
+										<!--<xsl:apply-templates select="/document/object_types/object_type[can_create and not(@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11' or name = 'Portal' or name = 'Annotation' or name = 'BidokEntry' or name = 'BidokIndex' or ( contains(fullname,'Item') and not(substring-before(name, 'Item')='News') ) or name = 'SiteRoot' or parent_id != $parent_id)]" mode="fo-menu">-->
+										<xsl:apply-templates select="/document/object_types/object_type[can_create and menu_level = '2']" mode="fo-menu">	
 											<xsl:sort select="name"/>
 										</xsl:apply-templates>
 									</ul>
