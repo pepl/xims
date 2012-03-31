@@ -41,7 +41,8 @@ sub prepare {
     $doc_data->{context}->{session}->{user}->{bookmarks} = { bookmark => \@bookmarks };
     
     # add the user's preferences.
-	$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
+    my $userprefs = $ctxt->session->user->userprefs;
+	$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() } if defined $userprefs;
 
     my @object_types = $ctxt->data_provider->object_types();
     my @data_formats = $ctxt->data_provider->data_formats();

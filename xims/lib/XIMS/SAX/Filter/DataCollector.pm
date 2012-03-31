@@ -143,10 +143,12 @@ Accessor for the "content" node.
 sub get_content {
     my $self = shift;
     unless ( defined $self->{Content} ) {
-        my ($content)
-            = grep { $_->nodeName eq "content" }
-            $self->get_data_fragment->childNodes;
-        $self->{Content} = $content;
+        if ( $self->get_data_fragment ) {
+            my ($content)
+                = grep { $_->nodeName eq "content" }
+                $self->get_data_fragment->childNodes;
+            $self->{Content} = $content;
+        }
     }
     return $self->{Content};
 }
