@@ -13,6 +13,17 @@ function confirmDelete(){
     }
 }
 
+function genericWindow(url, width, height){
+    var height = (height == null) ? "400" : height;
+    var width = (width == null) ? "400" : width;
+    
+    newWindow = window.open(url, "displayWindow", "resizable=yes,scrollbars=yes,width=" +
+    width +
+    ",height=" +
+    height +
+    ",screenX=100,screenY=300");
+}
+
 function previewWindow(url){
     newWindow = window.open(url, "displayWindow", "resizable=yes,scrollbars=yes,width=800,height=600,screenX=10,screenY=10");
 }
