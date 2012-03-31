@@ -13,13 +13,11 @@ $().ready(function(){
     
         // General options
 		theme: "advanced",
-		skin: "uibk",
-        plugins: 'table,contextmenu,advhr,searchreplace,inlinepopups,safari,xhtmlxtras,paste,advimage,clearbr,uibkextras,caption,inoutdent2ndline',
+        plugins: 'table,contextmenu,advhr,searchreplace,inlinepopups,safari,xhtmlxtras,paste,advimage',
         // Theme options
         theme_advanced_buttons1: 'cut,copy,paste,pastetext,pasteword,search,replace,separator,undo,redo,separator,anchor,link,unlink,separator,'+
-			'image,clearbr,caption,separator,justifyleft,justifycenter,justifyright,justifyfull,indent2ndline,outdent2ndline,separator,numlist,bullist,outdent,indent,blockquote,separator,visualaid,code,help',
-        theme_advanced_buttons2: 'styleselect,formatselect,removeformat,cleanup,separator,bold,italic,underline,separator,sup,sub,separator,charmap,separator,advhr,separator,'+
-			'uibkextras_New,uibkextras_ArrowBlack,uibkextras_ArrowOrange,uibkextras_MsWord,uibkextras_MsExcel,uibkextras_MsPPT,uibkextras_PDF,uibkextras_Image,uibkextras_Document,uibkextras_Intranet,uibkextras_Email,uibkextras_ExternalLink',
+			'image,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,numlist,bullist,outdent,indent,blockquote,separator,visualaid,code,help',
+        theme_advanced_buttons2: 'styleselect,formatselect,removeformat,cleanup,separator,bold,italic,underline,separator,sup,sub,separator,charmap,separator,advhr,separator,',
         theme_advanced_buttons3: 'table,row_props,cell_props,row_before,row_after,delete_row,col_before,col_after,delete_col,split_cells,merge_cells,separator,cite,abbr,acronym',
         theme_advanced_toolbar_location: "top",
         theme_advanced_toolbar_align: "left",
@@ -49,46 +47,8 @@ $().ready(function(){
 
 		//Layout
 		body_id : "content", //change body-id, so uibk-css-file can be applied		
-		content_css: 'http://cabal.uibk.ac.at/stylesheets/css/10/formats.css',
+		content_css: css
 		
-		//Plugins
-        uibkextras_ressourceUrl: 'https://www.uibk.ac.at/images/10/icons/',
-        uibkextras_iconNames: 'ArrowBlack=list_arrowblack.gif,ArrowOrange=list_arroworange.gif,New=list_new.gif,MsWord=list_word.gif,MsExcel=list_excel.gif,MsPPT=list_ppt.gif,Document=list_document_generic.gif,EMail=list_email.gif,PDF=list_pdf.gif,Folder=list_folder.gif,Image=list_png.gif,Email=list_email.gif,Intranet=list_intranet.gif,ExternalLink=externallink.gif',
-		formats: {
-			'indent2ndline': [
-				{selector : 'p', attributes : {'class' : 'indent'}}
-				],
-			'outdent2ndline': [
-				{selector : 'p', attributes : {'class' : 'outdent'}}
-				]
-			},
-		// Style formats
-		style_formats : [
-			{title : 'Schriftfarbe rot', inline : 'span', classes: 'red'},
-			{title : 'Schriftfarbe orange', inline : 'span', classes: 'orange'},
-			{title : 'Schriftfarbe blau', inline : 'span', classes: 'blue'},
-			{title : 'Texthintergrund', inline : 'span', classes: 'highlighted'},
-			{title : 'groﬂe Schrift', inline : 'span', classes: 'big'},
-			{title : 'kleine Schrift', inline : 'span', classes: 'small'},
-			{title : 'Tabelleninhalt blau', inline : 'td', classes: 'table_blue'},
-			{title : 'Tabelleninhalt hellblau', selector : 'td', classes: 'table_blue_light'},
-			{title : 'Tabelleninhalt dunkelblau', selector : 'td', classes: 'table_blue_dark'},
-			{title : 'Tabelleninhalt orange', selector : 'td', classes: 'table_orange'},
-			{title : 'Tabelleninhalt hellorange', selector : 'td', classes: 'table_orange_light'},
-			{title : 'Tabelleninhalt dunkelorange', selector : 'td', classes: 'table_orange_dark'},
-			{title : 'Umrahmung blau', selector : 'p', classes: 'border_blue'},
-			{title : 'Umrahmung orange', selector : 'p', classes: 'border_orange'},
-			{title : 'Umrahmung schwarz', selector : 'p', classes: 'border_black'},		
-			{title : 'Liste MsWord', selector : 'li', classes: 'wordlist'},
-			{title : 'Liste MsExcel', selector : 'li', classes: 'excellist'},
-			{title : 'Liste MsPowerpoint', selector : 'li', classes: 'pptlist'},
-			{title : 'Liste PDF', selector : 'li', classes: 'pdflist'},
-			{title : 'Liste Image', selector : 'li', classes: 'imagelist'},
-			{title : 'Liste Document', selector : 'li', classes: 'documentlist'},
-			{title : 'Liste Intranet', selector : 'li', classes: 'intranetlist'},
-			{title : 'Liste Email', selector : 'li', classes: 'emaillist'},
-			{title : 'Liste Externer Link', selector : 'li', classes: 'externallinklist'}		
-		]
     });
         
 });
