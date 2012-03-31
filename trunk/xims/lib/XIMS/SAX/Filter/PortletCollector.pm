@@ -240,7 +240,7 @@ sub get_objecttypes {
         @tags = $content->getChildrenByTagName("object-type");
     }
     else {
-        @tags = grep { $_->nodeName eq "object-type" } $fragment->childNodes;
+        @tags = grep { $_->nodeName eq "object-type" } $fragment->childNodes if defined $fragment;
     }
 
     if ( scalar @tags ) {
@@ -259,7 +259,7 @@ sub get_direct_filter {
     my $fragment = $self->get_data_fragment;
     my %retval;
     my @fields = XIMS::Object::fields();
-    my ($filter) = grep { $_->nodeName eq "filter" } $fragment->childNodes;
+    my ($filter) = grep { $_->nodeName eq "filter" } $fragment->childNodes if defined $fragment;
     if ($filter) {
         my @cnodes = $filter->childNodes;
         foreach my $node (@cnodes) {
