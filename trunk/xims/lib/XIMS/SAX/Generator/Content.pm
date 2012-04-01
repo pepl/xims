@@ -88,6 +88,7 @@ sub prepare {
         # remove that filter.
         my %encargs;
         $encargs{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
+
         if ( not $ctxt->properties->content->escapebody() ) {
             push(
                 @{ $self->{FilterList} },

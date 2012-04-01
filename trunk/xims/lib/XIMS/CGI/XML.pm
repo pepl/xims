@@ -68,6 +68,7 @@ sub event_default {
 
     $self->SUPER::event_default( $ctxt );
     $ctxt->properties->content->escapebody( 1 );
+    return 0;
 }
 
 =head2 event_unescapebody()
