@@ -58,21 +58,9 @@
             <a href="javascript:openDocWindow('ReferenceLibraryItem Import')" class="doclink">(?)</a>
             <br/>
 
-            <xsl:call-template name="textarearesize_js_css"/>
             <div id="bodymain">
                 <div id="bodycon">
                     <textarea tabindex="30" name="body" id="body" rows="15" cols="90">&#160;</textarea>
-                    <!-- TOP DRAG BAR -->
-                    <div id="T" class="brd"></div>
-                    <!-- LEFT DRAG BAR -->
-                    <div id="L" class="brd"></div>
-                    <!-- BOTTOM DRAG BAR -->
-                    <div id="B" class="brd edg h" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
-                    <div id="BR" class="brd edg h" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
-                    <!-- RIGHT DRAG BAR -->
-                    <!-- When ID "R" is used here, MSIE won't scale the right drag bar correctly, using "U" therefore -->
-                    <div id="U" class="brd edg v" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
-                    <div id="UB" class="brd edg nw" onmousedown="MD(event, this)" onmouseup="MU(event, this)"></div>
                 </div>
             </div>
         </td>
