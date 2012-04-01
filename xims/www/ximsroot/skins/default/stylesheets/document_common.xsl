@@ -15,11 +15,7 @@
   <xsl:param name="printview" select="'0'"/>
 
   <xsl:template name="table-create">
-    <table border="0" 
-           align="center" 
-           width="98%" 
-           cellpadding="0" 
-           cellspacing="0">
+    <table width="98%">
       <tr>
         <td valign="top">
           <xsl:value-of select="$i18n/l/create"/>
@@ -44,11 +40,7 @@
   </xsl:template>
   
   <xsl:template name="table-edit">
-    <table border="0" 
-           align="center"
-           width="98%" 
-           cellpadding="0" 
-           cellspacing="0">
+    <table width="98%"> 
       <tr>
         <td valign="top">
           <xsl:value-of select="$i18n/l/edit"/>

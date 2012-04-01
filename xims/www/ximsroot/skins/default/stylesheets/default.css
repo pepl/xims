@@ -129,6 +129,10 @@ table.footer td {
     padding: 1px 2px 2px 2px;
 }
 
+#bodymain {
+    font-size: 1.25em;
+}
+
 div.edit {
     padding: 5px;
 }
