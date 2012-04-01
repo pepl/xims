@@ -150,72 +150,6 @@ sub event_init {
 
 =head3 Description
 
-Runtime event which (pre)tests validity of the provided location.
-
-Event 'test_location' is, and ONLY is, called via AJAX (for the time being).
-Basically, it prints a plain text response, which contains a status code,
-the possible mangled location (l) and a human readable reason (reason). The
-whole text string is designed to be easily parsable. Example response-text:
-
-s="3";l="test÷xyz.html";reason="Location, 'test÷xyz.html', NOT valid!";
-
-For now, there are four different response codes:
-    0 =E<gt> Location (is) OK
-    1 =E<gt> Location already exists (in container)
-    2 =E<gt> No location provided (or location is not convertible)
-    3 =E<gt> Dirty (no sane) location (location contains hilarious characters)
-
-The test calls 'init_store_object' and traverses routines for cleaning/testing
-the location.
-
-=cut
-
-sub event_test_location2 {
-	XIMS::Debug( 5, "called" );
-	my ( $self, $ctxt ) = @_;
-
-	my ( $retval, $location );
-	if ( defined $ctxt->object() ) {
-		XIMS::Debug( 4, "object: " . $ctxt->object() );
-		( $retval, $location ) = $self->init_store_object($ctxt);
-	}
-
-	print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
-	$self->skipSerialization(1);
-
-	XIMS::Debug( 4, "retval is: '$retval'; location is: '$location'" );
-
-	# fill $response_blurb according to $retval
-	my $response_blurb;
-	if ( defined $retval and $retval != 0 ) {
-		if ( $retval == 1 ) {
-			$response_blurb = "Location, '$location', already exists!";
-		}
-		elsif ( $retval == 2 ) {
-			$response_blurb = "NO or BAD location provided!";
-		}
-		elsif ( $retval == 3 ) {
-			$response_blurb = "Location, '$location', NOT valid!";
-		}
-		else {
-			XIMS::Debug( 4, "Return value, '$retval',  not known!" );
-			$response_blurb = "Return value not known!";
-		}
-	}
-	else {
-		$response_blurb = "Location, '$location', 0K!";
-	}
-
-	# finally print some "parsable" response
-	print "s=##$retval##;l=##$location##;reason=##$response_blurb##;";
-
-	return 0;
-}
-
-=head2 event_test_location()
-
-=head3 Description
-
 Runtime event which creates a valid location.
 
 Event 'test_title' is called via AJAX.
@@ -249,7 +183,11 @@ sub event_test_location {
 		( $retval, $location ) = $self->init_store_object($ctxt);
 	}
 
-	print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
+    #print $self->header(-Content_type => 'application/json; charset=UTF-8');
+    print $self->header(
+        -type    => 'application/json',
+        -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+    );
 	$self->skipSerialization(1);
 
 	XIMS::Debug( 4, "retval is: '$retval'; location is: '$location'" );
@@ -275,43 +213,6 @@ sub event_test_location {
 		$response_blurb = "Location '$location' 0K!";
 	}
 
-	#my $suggLength = XIMS::CONFIG->LocationMaxLength();
-
-# trim location can be problematic with adding '_2' before if location already exist
-# thinking about better solution... :-)
-
-#	#test length of location (minus suffix .html, .sdbk, .html.de, ...) against suggLength
-#		#if > make suggestion for alternative location
-#
-#
-#		my @locArray = split(/\./, $location);
-#
-#    	my $returnLoc = "";
-#    	my $currElem;
-#
-#    	$currElem = pop(@locArray);
-#	    #TODO: file extensions to be continued
-#		if ($currElem =~ /(html|sdbk)/){
-#	        $returnLoc = "." . $currElem;
-#	    }
-#	    else {
-#
-#	        if ($currElem =~ /(de|en|es|it|fr)/){
-#	            $returnLoc += "." . $currElem;
-#
-#	            $currElem = pop(@locArray);
-#	            if ($currElem =~ /(html|sdbk)/){
-#	                $returnLoc = "." . $currElem . $returnLoc;
-#	            }
-#	            else {
-#	                push(@locArray, $currElem);
-#	            }
-#	        }
-#	        else {
-#	            push(@locArray, $currElem);
-#	        }
-#	    }
-#	 	my $suggLocation = substr(join('.',@locArray),0,$suggLength) . $returnLoc;
 	my $suggLocation = $location;
 
 	my $json = JSON::XS->new->encode(

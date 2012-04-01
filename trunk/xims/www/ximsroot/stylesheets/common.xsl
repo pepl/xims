@@ -363,4 +363,27 @@
 		</xsl:choose>
 	</xsl:template>
 
+    <xsl:template name="testlocationjs">
+        <script type="text/javascript" src="{$ximsroot}scripts/json-min.js"/>
+        <script type="text/javascript" src="{$ximsroot}scripts/test_location.js"/>
+        <script type="text/javascript">
+        var obj    = '<xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/>';
+        var suffix = '<xsl:value-of select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/suffix"/>';
+        var locWarnText1 = "<xsl:value-of select="$i18n/l/LocationWarning1"/>";
+        var locWarnText2 = "<xsl:value-of select="$i18n/l/LocationWarning2"/>";
+        var locWarnButton = "<xsl:value-of select="$i18n/l/Yes"/>";
+        var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>';
+
+        var notice = "";
+        var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
+        var btnIgnore = "<xsl:value-of select="$i18n/l/IlpButtonAcceptSuggestion"/>";
+        var btnChange = "<xsl:value-of select="$i18n/l/IlpButtonChange"/>";
+        var textChange = "<xsl:value-of select="$i18n/l/IlpLocationWouldChange"/>";
+        var textExists = "<xsl:value-of select="$i18n/l/IlpLocationExists"/>";
+        var textDirtyLoc = "<xsl:value-of select="$i18n/l/IlpDirtyLocation"/>";
+        var textNoLoc = "<xsl:value-of select="$i18n/l/IlpNoLocationProvided"/>";
+        var textLocFirst = "<xsl:value-of select="$i18n/l/IlpProvideLocationFirst"/>";
+        </script>
+    </xsl:template>
+
 </xsl:stylesheet>

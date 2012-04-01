@@ -431,6 +431,7 @@ $Id$
                name="name" 
                size="40" 
                class="text"
+               id="input-location"
                onfocus="this.className='text focused'"
                onblur="this.className='text';">
           <xsl:if test="$testlocation">
@@ -439,6 +440,7 @@ $Id$
         </input>
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
+        <div id="location-dialog" title="{$i18n/l/IlpDefaultWinlabel}" />
         <!-- location-testing AJAX code -->
         <xsl:if test="$testlocation">
           <xsl:call-template name="testlocationjs">
@@ -467,7 +469,7 @@ $Id$
         <span class="compulsory"><xsl:value-of select="$i18n/l/Location"/></span>
       </td>
       <td>
-        <input tabindex="10" type="text" name="name" size="40" value="{location}">
+        <input tabindex="10" type="text" name="name" size="40" value="{location}" id="input-location">
           <xsl:choose>
             <xsl:when test="$publish_gopublic = '0' and published = '1'">
               <xsl:attribute name="readonly">readonly</xsl:attribute>
@@ -539,7 +541,7 @@ $Id$
       </td>
       <td>
         <!-- strip suffix; leave it, if it's a sdbk with lang-extension -->
-        <input tabindex="10" type="text" name="name" size="40" value="{location}">
+        <input tabindex="10" type="text" name="name" size="40" value="{location}" id="input-location">
           <xsl:choose>
             <xsl:when test="published = '1'">
               <xsl:attribute name="readonly">readonly</xsl:attribute>
@@ -1476,172 +1478,6 @@ $Id$
     </xsl:call-template>
   </xsl:template>
 
-
-  <xsl:template name="testlocationjs">
-    <xsl:param name="event"/>
-    <xsl:param name="obj_type"/>
-
-    <xsl:call-template name="mk-inline-js">
-      <xsl:with-param name="code">
-
-         <xsl:call-template name="xmlhttpjs"/>
-
-    <!-- give notice that location needs to be set first -->
-    function enterCheckLoc() {
-        var notice = "<xsl:value-of select="$i18n/l/IlpProvideLocationFirst"/>";
-        var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
-        notice += <![CDATA[ '<br/><br/>\
-                  <input type="button" id="xims_ilp_btn_select" value="'+ btnOK +'" class="control" \
-                  onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
-                  ]]>      
-        var loc = document.eform.name.value;
-        <!-- open il-popup when location has not been entered yet -->
-        <![CDATA[if ( loc.length < 1 ) {]]>
-            document.getElementById('xims_ilp_content').innerHTML=notice;
-            openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
-        }
-    }
-
-    <!-- main function for testlocation event handling -->
-    function testlocation() {
-        // get XML-Http-Request-Object
-        var xmlhttp = getXMLHTTPObject();
-        var location = document.eform.name.value;
-        var obj    = '<xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/>'; 
-        var suffix = '<xsl:value-of select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/suffix"/>';
-
-        <!-- append suffixes with no lang-extension;
-             lang-extensions in the pattern should be taken from 
-             /document/languages in the future -->
-        <![CDATA[
- 	//var pattern = new RegExp( '.*\\.' + suffix + '(\\.(de|en|it|es|fr))?$');
-	//if (location.length != 0 &&  ! location.match(pattern)) {
-        //    //alert( pattern + ' ' + location + '+' + suffix );
-        //    location += suffix;
-	//}
-        ]]>
-
-        var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>';
-        var query = '?test_location=1;objtype='+ obj +';name='+ encodeURIComponent(location);
-        var url = abspath + query;
-        <![CDATA[
-
-        <!-- begin AJAX-stuff here -->
-        xmlhttp.onreadystatechange=function() {
-            // show that something is loading in background
-            if (xmlhttp.readyState < 4) {
-                document.body.className = 'loading';
-            }
-            if (xmlhttp.readyState==4) {
-                if (xmlhttp.status!=200) {
-                    alert("AJAX-request 'test_location' failed!")
-                }
-                else {
-                    // loading is done ;-)
-                    document.body.className = '';
-                    responseString = xmlhttp.responseText;
-                }
-                // evaluate response
-                var myPattern = /s=##([^##]+)##;l=##([^##]*)##;reason=##([^##]+)##/; //location might be empty in response
-                myPattern.exec(responseString);
-                var statusCode = RegExp.$1;
-                var processedLocation = RegExp.$2;
-                var defaultReason = RegExp.$3;
-
-                var notice;
-                var controlHtml;
-            
-                /* choose response according to statusCode. remember: 
-                    0 => Location (is) OK
-                    1 => Location already exists (in container)
-                    2 => No location provided (or location is not convertible)
-                    3 => Dirty (no sane) location (location contains hilarious characters)
-                 */   
-                switch (statusCode) {
-                    case "0":
-                        // OK (see if location has been mangled and we don't have an URLLink Object)
-                        var objType = ']]><xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/><![CDATA[';
-                        if ( objType.toUpperCase() != 'URLLINK' && location != processedLocation ) {
-                            //we would change location on save so report this to user ]]>
-                            var text = "<xsl:value-of select="$i18n/l/IlpLocationWouldChange"/>";
-                            var btnIgnore = "<xsl:value-of select="$i18n/l/IlpButtonIgnore"/>";
-                            var btnChange = "<xsl:value-of select="$i18n/l/IlpButtonChange"/>";
-                   <![CDATA[ notice = '<pre style="color: Silver">'+ location +"</pre>";
-                            notice += '<pre style="color: Maroon;">'+ processedLocation +"</pre>";
-                            notice += "<br/>"+ text;
-                            controlHtml = '<br/><br/>\
-                            <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnChange +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>&#160;\
-                            <input type="button" class="control" value="'+ btnIgnore +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');return false;"/>&#160;';
-                            notice += controlHtml;
-                            // reset notice if ILP would not work properly
-                        }
-                        break;
-                    case "1":
-                        // loc exists ]]>
-                        var text = "<xsl:value-of select="$i18n/l/IlpLocationExists"/>";
-                        var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
-                        <![CDATA[
-                        controlHtml = '<br/><br/>\
-                        <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
-                        ]]>
-                        notice = text+controlHtml;
-                        break;
-                    case "2":
-                        // no loc
-                        var text = "<xsl:value-of select="$i18n/l/IlpNoLocationProvided"/>";
-                        var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
-                        <![CDATA[
-                        controlHtml = '<br/><br/>\
-                        <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
-                        ]]>
-                        notice = text+controlHtml;
-                        break;
-                    case "3":
-                        // dirty loc
-                        var text = "<xsl:value-of select="$i18n/l/IlpDirtyLocation"/>";
-                        var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
-                        <![CDATA[
-                        controlHtml = '<br/><br/>\
-                        <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
-                        ]]>
-                        notice = text+controlHtml;
-                        break;
-                    default:
-                        // debug message
-                        var text = "Unknown response code of event 'test_location'!";
-                        var btnOK = "<xsl:value-of select="$i18n/l/IlpButtonOK"/>";
-                        <![CDATA[
-                        controlHtml = '<br/><br/>\
-                        <input type="button" id="xims_ilp_btn_select" class="control" value="'+ btnOK +'" onclick="openCloseInlinePopup(\'close\', \'xims_ilp_fadebg\', \'xims_ilp\');document.eform.name.focus();return false;"/>';
-                        ]]>
-                        notice = text+controlHtml;
-                        // reset notice if ILP would not work properly
-                    break;
-                }
-                // set content for ILP
-                document.getElementById('xims_ilp_content').innerHTML=notice;
-                <!-- debug -->
-                //alert("reason = "+defaultReason+"\nstatuscode = "+statusCode+"\nlocation = "+processedLocation);
-                
-                // report notice/error if set
-                if (notice) {
-                   openCloseInlinePopup('open', 'xims_ilp_fadebg', 'xims_ilp');
-                }
-            }
-        }
-        xmlhttp.open("get",url,true);
-        xmlhttp.setRequestHeader
-        (
-            'Content-Type',
-            'application/x-www-form-urlencoded; charset=UTF-8'
-        );
-        xmlhttp.send(null);
-    }
-      </xsl:with-param>  
-    </xsl:call-template>
-  </xsl:template>
-
-
   <xsl:template name="create_menu_js">
     <script src="{$ximsroot}skins/{$currentskin}/scripts/create_menu_expander.js" 
             type="text/javascript">
@@ -1793,6 +1629,8 @@ $Id$
 
   <xsl:template name="script_bottom">
     <!-- defmin.js generated by xims_minimize_jscss.pl -->
+    <script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m3.js" type="text/javascript"/>
+    <script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
     <script src="{$ximsroot}skins/{$currentskin}/scripts/defmin.js" type="text/javascript">
         <xsl:text>&#160;</xsl:text>
     </script>
