@@ -534,3 +534,24 @@ div.cttobject_status {
         border-bottom: 1px solid #D6D6D6;
 }
 
+.ui-dialog {
+    font-family: helvetica, arial, sans-serif;
+    font-size: 1em;
+    border: 2px solid #000000;
+    padding: 2px;
+    background: #eeeeee;
+}
+.ui-dialog-titlebar {
+    background: #ffffff;
+}
+.ui-dialog-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.ui-dialog-content {
+    padding: 5px;
+}
+.ui-dialog-titlebar-close {
+    position: absolute;
+    right: 0;
+}

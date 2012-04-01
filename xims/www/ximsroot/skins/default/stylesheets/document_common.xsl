@@ -505,7 +505,7 @@
       </td>
       <td>
         <!-- strip the suffix -->
-        <input tabindex="10" type="text" name="name" size="40">
+        <input tabindex="10" type="text" name="name" size="40" id="input-location">
           <xsl:choose>
             <xsl:when test="published = '1'">
               <xsl:attribute name="readonly">readonly</xsl:attribute>
