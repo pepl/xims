@@ -27,18 +27,6 @@ use XIMS::DataFormat;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-sub new {
-    my $proto = shift;
-    my $class = ref( $proto ) || $proto;
-    my %args = @_;
-
-    if ( not ( defined($args{path}) or defined($args{id}) or defined($args{document_id}) ) ) {
-        $args{data_format_id} = XIMS::DataFormat->new( name => 'CSS' )->id() unless defined $args{data_format_id};
-    }
-
-    return $class->SUPER::new( %args );
-}
-
 
 =head2    XIMS::CSS->new( %args )
 
