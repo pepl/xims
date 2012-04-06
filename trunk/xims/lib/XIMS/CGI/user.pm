@@ -279,9 +279,13 @@ sub event_gen_website {
 	my $location = $self->param('shortname'); #$args{l};	
 	my $title         = $self->param('title'); #$args{t};
 	my $path_deptroot = $parent_folder . $location;
-	my $role = XIMS::User->new( name => $self->param('role') ); #$args{r} );
+	my $role;
+	if($self->param('role')){
+		$role = XIMS::User->new( name => $self->param('role') ); #$args{r} );
+		warn "\n\nparam: ".$self->param('role')." -  role: ".$role->name;
 		$self->sendError( $ctxt,"Could not find role '". $self->param('role') ."'.") 
 			unless $role and $role->id();
+	}
 	my $owner = XIMS::User->new( name => $self->param('owner')); #$args{o} );
 		$self->sendError( $ctxt,"Could not find user '". $self->param('owner') ."'.") 
 			unless $owner and $owner->id();
@@ -541,18 +545,20 @@ sub defaultgrants {
 		warn "Could not grant privileges to " . $grantee->name() . " .\n";
 	}
 	}
-
-	if (
-		$object->grant_user_privileges(
-			grantee  => $role,
-			grantor  => $user,
-			privmask => XIMS::Privileges::VIEW
-		)
-	  )
-	{
-	}
-	else {
-		warn "Could not grant privileges to " . $role->name() . " .\n";
+	
+	if($role){
+		if (
+			$object->grant_user_privileges(
+				grantee  => $role,
+				grantor  => $user,
+				privmask => XIMS::Privileges::VIEW
+			)
+		  )
+		{
+		}
+		else {
+			warn "Could not grant privileges to " . $role->name() . " .\n";
+		}
 	}
 }
 
