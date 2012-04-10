@@ -168,6 +168,8 @@
 <Add_link>Add Link</Add_link>
 <Annotation>Annotation</Annotation>
 <Add_annotation>Add Annotation</Add_annotation>
+<NoAbstractProvided>No abstract provided</NoAbstractProvided>
+<NoKeywordsProvided>No keywords provided</NoKeywordsProvided>
 <Process_XSP>XSP process body per default</Process_XSP>
 <Show_XSP_processed>Show body XSP processed</Show_XSP_processed>
 <Not_Show_XSP_processed>Do not XSP process body</Not_Show_XSP_processed>

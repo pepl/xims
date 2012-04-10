@@ -167,6 +167,8 @@
 <Add_link>Link hinzufügen</Add_link>
 <Annotation>Annotation</Annotation>
 <Add_annotation>Annotation hinzufügen</Add_annotation>
+<NoAbstractProvided>Keine Zusammenfassung angegeben</NoAbstractProvided>
+<NoKeywordsProvided>Keine Schlagworte angegeben</NoKeywordsProvided>
 <Process_XSP>Body standardmäßig XSP verarbeiten</Process_XSP>
 <Show_XSP_processed>Zeige XSP verarbeiteten Body</Show_XSP_processed>
 <Not_Show_XSP_processed>Body nicht XSP verarbeiteten</Not_Show_XSP_processed>
