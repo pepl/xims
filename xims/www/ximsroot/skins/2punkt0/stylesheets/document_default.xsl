@@ -23,12 +23,13 @@
 	
 	<xsl:template name="view-content">
 		<div id="docbody">
+			
 			<div id="content">
-				
 					<xsl:call-template name="pre-body-hook"/>
 					<xsl:apply-templates select="body"/>
 				</div>	
 				<xsl:call-template name="documentlinks"/>
+				<xsl:call-template name="summary_keywords"/>
 		</div>
 	</xsl:template>
 	
@@ -63,6 +64,39 @@
 				</xsl:if>
 			</p>
 			</div>
+		</xsl:template>
+		
+	<xsl:template name="summary_keywords">
+		<div class="docbox">
+			<p>
+				<strong><xsl:value-of select="$i18n/l/Abstract"/>:</strong>
+			</p>
+			<xsl:choose>
+				<xsl:when test="abstract">
+					<p>
+						<xsl:value-of select="abstract"/>
+					</p>
+				</xsl:when>
+				<xsl:otherwise>
+					<p><span class="warning_msg"><xsl:value-of select="$i18n/l/NoAbstractProvided"/></span></p>
+				</xsl:otherwise>
+			</xsl:choose>			
+		</div>
+		<div class="docbox">
+			<p>
+				<strong><xsl:value-of select="$i18n/l/Keywords"/>:</strong>
+			</p>
+			<xsl:choose>
+				<xsl:when test="keywords">
+					<p>
+						<xsl:value-of select="keywords"/>
+					</p>
+				</xsl:when>
+				<xsl:otherwise>
+					<p><span class="warning_msg"><xsl:value-of select="$i18n/l/NoKeywordsProvided"/></span></p>
+				</xsl:otherwise>
+			</xsl:choose>			
+		</div>
 		</xsl:template>
 	
 	<xsl:template match="a">
