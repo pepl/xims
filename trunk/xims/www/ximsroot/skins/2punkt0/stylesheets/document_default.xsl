@@ -72,7 +72,7 @@
 				<strong><xsl:value-of select="$i18n/l/Abstract"/>:</strong>
 			</p>
 			<xsl:choose>
-				<xsl:when test="abstract">
+				<xsl:when test="abstract != ''">
 					<p>
 						<xsl:value-of select="abstract"/>
 					</p>
@@ -87,7 +87,7 @@
 				<strong><xsl:value-of select="$i18n/l/Keywords"/>:</strong>
 			</p>
 			<xsl:choose>
-				<xsl:when test="keywords">
+				<xsl:when test="keywords != ''">
 					<p>
 						<xsl:value-of select="keywords"/>
 					</p>
