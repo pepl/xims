@@ -329,9 +329,11 @@
 		<table class="obj-table">
 			<tbody>
 				<tr>
+					<xsl:if test="/document/context/session/user/userprefs/profile_type != 'standard'">
 					<th id="th-selection">
 						<!--<xsl:value-of select="$i18n/l/Selection"/>-->
 					</th>
+					</xsl:if>
 					<xsl:if test="not ($showtrashcan)">
 					<th id="th-status">
 						<a class="th-icon-right">
@@ -465,8 +467,10 @@
 				<xsl:call-template name="get-children"/>
 			</tbody>
 		</table>
-		<xsl:if test="children/@totalobjects &gt; 0">
-		<xsl:call-template name="multi-select-action" />
+		<xsl:if test="/document/context/session/user/userprefs/profile_type != 'standard'">
+			<xsl:if test="children/@totalobjects &gt; 0">
+				<xsl:call-template name="multi-select-action" />
+			</xsl:if>
 		</xsl:if>
 		</form>
 	</xsl:template>
@@ -517,9 +521,11 @@
 	
 	<xsl:template match="children/object">
 		<tr class="objrow">
-			<td class="ctt_select">
-				<xsl:call-template name="cttobj.selectbox"/>
-			</td>
+			<xsl:if test="/document/context/session/user/userprefs/profile_type != 'standard'">
+				<td class="ctt_select">
+					<xsl:call-template name="cttobj.selectbox"/>
+				</td>
+			</xsl:if>
 			<xsl:if test="not ($showtrashcan)">
 			<td class="ctt_status">
 				<xsl:call-template name="state-toolbar"/>

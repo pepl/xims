@@ -33,11 +33,13 @@
 		<xsl:call-template name="acl-checkboxes"/>	
 		
 		<br/><br/>
-		<xsl:if test="$multiple or (not($multiple) and /document/object_types/object_type[@id=/document/context/object/object_type_id]/is_fs_container)">				
-		<p>
-			<label for="recacl"><xsl:value-of select="$i18n/l/GrantRecursive"/></label> 
-			<input type="checkbox" name="recacl" id="recacl" value="1" class="checkbox"/>
-		</p>
+		<xsl:if test="/document/context/session/user/userprefs/profile_type != 'standard'">
+			<xsl:if test="$multiple or (not($multiple) and /document/object_types/object_type[@id=/document/context/object/object_type_id]/is_fs_container)">				
+			<p>
+				<label for="recacl"><xsl:value-of select="$i18n/l/GrantRecursive"/></label> 
+				<input type="checkbox" name="recacl" id="recacl" value="1" class="checkbox"/>
+			</p>
+			</xsl:if>
 		</xsl:if>
 		<p>
 		<button class="button" type="submit">
