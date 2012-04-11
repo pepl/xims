@@ -85,7 +85,7 @@
 						<xsl:value-of select="$i18n_portlet/l/Publication_timestamp"/>
 					</label>
 				</div>
-				<input type="checkbox" name="last_publication_timestamp" id="last_publication_timestamp" class="checkbox">
+				<input type="checkbox" name="col_last_publication_timestamp" id="last_publication_timestamp" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'last_publication_timestamp']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
@@ -97,7 +97,7 @@
 						<xsl:value-of select="$i18n_portlet/l/Last_modification_timestamp"/>
 					</label>
 				</div>
-				<input type="checkbox" name="last_modification_timestamp" id="last_modification_timestamp" class="checkbox">
+				<input type="checkbox" name="col_last_modification_timestamp" id="last_modification_timestamp" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'last_modification_timestamp']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
@@ -111,7 +111,7 @@
 						<xsl:value-of select="$i18n_portlet/l/Valid_from_timestamp"/>
 					</label>
 				</div>
-				<input type="checkbox" name="valid_from_timestamp" id="valid_from_timestamp" class="checkbox">
+				<input type="checkbox" name="col_valid_from_timestamp" id="valid_from_timestamp" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'valid_from_timestamp']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
@@ -123,7 +123,7 @@
 						<xsl:value-of select="$i18n_portlet/l/Valid_to_timestamp"/>
 					</label>
 				</div>
-				<input type="checkbox" name="valid_to_timestamp" id="valid_to_timestamp" class="checkbox">
+				<input type="checkbox" name="col_valid_to_timestamp" id="valid_to_timestamp" class="checkbox">
 					<xsl:if test="body/content/column[@name = 'valid_to_timestamp']">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
