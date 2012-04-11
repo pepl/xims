@@ -102,12 +102,14 @@
 								<label for="selector">Alle Aus/Abwählen</label>		
 								<input type="hidden" name="autopublish" id="autopublish" value="1"/>							
 							</p>
-							<p>
-								<!--<label for="autopublish">Ausgewählte Objekte automatisch (wieder)veröffentlichen?</label> 
-								<input type="checkbox" name="autopublish" id="autopublish" value="1" disabled="disabled" class="checkbox"/>-->
-								<label for="recpublish">Ausgewählte Objekte rekursiv veröffentlichen?</label> 
-								<input type="checkbox" name="recpublish" id="recpublish" value="1" class="checkbox"/>
-							</p>
+							<xsl:if test="/document/context/session/user/userprefs/profile_type != 'standard'">
+								<p>
+									<!--<label for="autopublish">Ausgewählte Objekte automatisch (wieder)veröffentlichen?</label> 
+									<input type="checkbox" name="autopublish" id="autopublish" value="1" disabled="disabled" class="checkbox"/>-->
+									<label for="recpublish">Ausgewählte Objekte rekursiv veröffentlichen?</label> 
+									<input type="checkbox" name="recpublish" id="recpublish" value="1" class="checkbox"/>
+								</p>
+							</xsl:if>
 						</xsl:when>
 						<xsl:otherwise>
 							<p>
