@@ -25,7 +25,7 @@
 					 -->
 					 Location
     </label>&#160;*</div> 
-        <input type="text" class="text" name="name" size="60" id="input-location">
+        <input type="text" class="text" name="name" size="60" id="input-location" onchange="checkLangSuffix()">
           <xsl:choose>
             <xsl:when test="string-length(symname_to_doc_id) > 0 ">
               <xsl:attribute name="value">
@@ -42,9 +42,47 @@
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
         <xsl:text>&#160;</xsl:text>
-            <a href=" javascript:createDialog('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
-                <xsl:value-of select="$i18n/l/browse_target"/>
-            </a>
+		<!--<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">-->
+		<!-- uibk special ??? 
+			when adding a navigation link show parent conatiner instead of the departmentlinks folder
+		-->
+			<a class="button" id="buttonBrTarget">
+				<xsl:attribute name="href">
+					<xsl:choose>
+						<xsl:when test="/document/context/object/parents/object[position() = last()]/title = 'departmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'subdepartmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'speciallinks'">
+							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[position() = (last() - 1)]/@id"/>;contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
+						</xsl:when>
+						<xsl_otherwise>
+							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
+						</xsl_otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+				<xsl:value-of select="$i18n/l/browse_target"/>
+			</a>
+			<!-- end uibk special -->
+		<xsl:text>&#160;</xsl:text>
+		<a class="button warn" id="content-lang-notice" style="display:none;" href="javascript:openLangDialog()">Hinweis</a>
+		<div id="dialog-lang" title="{$i18n/l/Notice}">
+			<p><xsl:value-of select="$i18n/l/WarnLangSuffix"/></p>
+		</div>
+		<script type="text/javascript">
+			function openLangDialog(){
+				$( '#dialog-lang' ).dialog('open');
+			}
+			function checkLangSuffix(){
+				var arr = $('#input-location').val().split('.');
+				if($.inArray(arr[arr.length -1], ['de','en','fr','ru','es','it']) != -1){
+					$('#content-lang-notice').show();
+					}
+				else {
+					$('#content-lang-notice').hide();
+				}
+			}
+			$(document).ready(function(){
+				$( "#dialog-lang" ).dialog({ autoOpen: false });
+				checkLangSuffix();
+			});
+		</script>	
       </div>
   </xsl:template>
   

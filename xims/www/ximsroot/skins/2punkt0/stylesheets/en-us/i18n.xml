@@ -176,6 +176,7 @@
 <SelectAll>Select all</SelectAll>
 <MultiSelectAction>Grouped action for selected objects</MultiSelectAction>
 <NoObjects>No objects selected.</NoObjects>
+<WarnLangSuffix>Do you really want to link the language specific version of the document? In most cases it makes more sense to omit the suffix, so the document is presentated automatically in the user's prefered language.</WarnLangSuffix>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Manage Object Privileges</Manage_objectprivs>
 <Manage_objectprivsMultiple>Manage Objects Privileges</Manage_objectprivsMultiple>
