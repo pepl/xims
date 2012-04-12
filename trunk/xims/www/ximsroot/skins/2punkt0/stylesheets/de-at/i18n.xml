@@ -175,6 +175,7 @@
 <SelectAll>Alle auswählen</SelectAll>
 <MultiSelectAction>Sammelaktion für ausgewählte Objekte</MultiSelectAction>
 <NoObjects>Keine Objekte ausgewählt.</NoObjects>
+<WarnLangSuffix>Wollen Sie wirklich die sprachspezifische Version des Dokuments verlinken? In den meisten Fällen ist es sinnvoller die Sprachendung wegzulassen, da dann automatisch das Dokument in der vom Besucher gewählten Sprache angezeigt wird.</WarnLangSuffix>
 <!-- Begin common_obj_user* -->
 <Manage_objectprivs>Rechte verwalten für Objekt</Manage_objectprivs>
 <Manage_objectprivsMultiple>Rechte verwalten für Objekte</Manage_objectprivsMultiple>
