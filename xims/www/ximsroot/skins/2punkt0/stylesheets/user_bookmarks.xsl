@@ -5,8 +5,9 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: user_bookmarks.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" 
+				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+				xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="user_common.xsl"/>
 
@@ -67,7 +68,7 @@
     <h2><xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>
     <xsl:choose>
 					<xsl:when test="$countUserBM">
-    <table id="obj-table">
+    <table class="obj-table">
     <thead>
 					<tr >
 						<th><xsl:value-of select="$i18n/l/Path"/></th>
@@ -91,7 +92,7 @@
     <h2><xsl:value-of select="$i18n/l/Role"/>&#160;<xsl:value-of select="$i18n/l/Bookmarks"/></h2>
     <xsl:choose>
 					<xsl:when test="$countRoleBM">
-    <table id="obj-table">
+    <table class="obj-table">
     <thead>
 					<tr>
 						<th><xsl:value-of select="$i18n/l/Path"/></th>
