@@ -71,6 +71,27 @@ sub event_default {
     return 0;
 }
 
+=head2 event_init()
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->event_init(...)
+
+=cut
+
+sub event_init {
+	my $self = shift;
+	my $ctxt = shift;
+	
+	$ctxt->properties->application->keepsuffix( 1 );
+
+	$self->SUPER::event_init($ctxt);
+	return 0;
+}
 =head2 event_store()
 
 =cut
