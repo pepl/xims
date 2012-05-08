@@ -410,8 +410,9 @@
             </textarea>
         </td>-->
         
-		<p><xsl:value-of select="$i18n_portlet/l/Filter_object_types"/>:</p>
+		
 		<div class="div-row">
+			<p><xsl:value-of select="$i18n_portlet/l/Filter_object_types"/>:</p>
 			<xsl:apply-templates select="exslt:node-set($filtered_ots)/object_type[can_create]" mode="contentfilter"/>
 		</div>
 		&#160;<br/>
