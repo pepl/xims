@@ -62,22 +62,19 @@
 			$('#input-file').change(function(){
 			checkZIP()});
 			$('#input-unzip').change(function(){
+			alert("changed");
 			checkUnzip()});
 		});
 			function checkZIP(){
-				//if($('#input-file').val().match('.zip'+'$')=='.zip'){
 				if($('#input-file').val().match(/\.zip/i)=='.zip'){
-					//alert('ZIP File !');
 					$('#tr-unzip').show();
 				}
 				else{ 
-					//alert ('No ZIP File !');
 					$('#tr-unzip').hide();
 					}
 			}
 			function checkUnzip(){
-				if($('#input-unzip').attr('checked') == true){
-					//alert ("checked");
+				if($('#input-unzip').is(':checked')){
 					$('#input-overwrite').removeAttr('disabled');
 				}
 				else{
