@@ -52,9 +52,9 @@
 						<xsl:when test="/document/context/object/parents/object[position() = last()]/title = 'departmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'subdepartmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'speciallinks'">
 							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[position() = (last() - 1)]/@id"/>;contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
 						</xsl:when>
-						<xsl_otherwise>
+						<xsl:otherwise>
 							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id"/>;contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
-						</xsl_otherwise>
+						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
 				<xsl:value-of select="$i18n/l/browse_target"/>
