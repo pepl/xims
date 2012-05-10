@@ -216,9 +216,10 @@
 	</xsl:template>
 	
 	<xsl:template name="multi-select-action" >
-		<div class="multi-select-action">
-				<p><input type="checkbox" id="select-all" name="select-all" onclick="selectAllObjects('multiselect')"></input>&#160;<xsl:value-of select="$i18n/l/SelectAll"/></p>
-				<div>
+		<div class="multi-select-action" >
+			<!--<p><input type="checkbox" id="select-all" name="select-all" onclick="selectAllObjects('multiselect')"></input>&#160;<xsl:value-of select="$i18n/l/SelectAll"/></p>-->
+				<p><input type="checkbox" id="select-all" name="select-all" ></input>&#160;<xsl:value-of select="$i18n/l/SelectAll"/></p>
+				<div style="display:none;">
 					<xsl:value-of select="$i18n/l/MultiSelectAction"/>&#160;
 				<xsl:call-template name="options-toolbar-multiple"/>
 				</div>
@@ -556,7 +557,7 @@
 	</xsl:template>
 	
 	<xsl:template name="cttobj.selectbox">
-		<input type="checkbox" name="multiselect" value="{@id}"></input>
+		<input type="checkbox" name="multiselect" value="{@id}" ></input>
 	</xsl:template>
 	
 	<xsl:template name="cttobject.locationtitle">
