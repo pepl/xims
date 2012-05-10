@@ -187,8 +187,8 @@
 											<a href="#" class="more">
 												<xsl:value-of select="$i18n/l/More"/>
 											</a>
-										</li>
-									</ul>
+										<!--</li>
+									</ul>-->
 									<ul class="more">
 										<!-- Only show basic object types on first page: TODO Select from object type properties and not from OT names or IDs!
 					                        Do not display object types that either are not fully implemented or that are not meant to be created directly.
@@ -203,6 +203,8 @@
 											<xsl:sort select="name"/>
 										</xsl:apply-templates>
 									</ul>
+									</li>
+								</ul>
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:otherwise>
@@ -362,37 +364,50 @@
 	<!--Menu Widget-->
 	<xsl:template name="menu-widget">			
 	<div id="menu-widget">
-			<button><xsl:value-of select="$i18n/l/Menu"/></button>
-				<ul style="position:absolute !important; width: 150px">
-					<xsl:choose>
-						<xsl:when test="/document/context/session/public_user = '1'">
-							<li>
-								<a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}">
-										<xsl:value-of select="$i18n/l/login"/>
-								</a>
-							</li>
-						</xsl:when>
-						<xsl:otherwise>
-							<li>
-								<a href="{$xims_box}{$goxims}/user">
-										<xsl:value-of select="/document/context/session/user/name"/>
-								</a>
-							</li>
-							<li>
-								<a href="#" class="more" id="get-bm">
-									<xsl:value-of select="$i18n/l/Bookmarks"/>
-								</a>
-							</li>
-							<li>
-								<a href="{$goxims_content}{$absolute_path}?reason=logout">
-										<xsl:value-of select="$i18n/l/logout"/>
-								</a>
-							</li>
-						</xsl:otherwise>
-					</xsl:choose>
-				</ul>
-				<ul class="more" id="bm-links"><li></li></ul>
-			</div>
+		<button><xsl:value-of select="$i18n/l/Menu"/></button>
+			<ul style="position:absolute !important; width: 150px">
+				<xsl:choose>
+					<xsl:when test="/document/context/session/public_user = '1'">
+						<li>
+							<a href="{$xims_box}{$goxims}{$contentinterface}{$absolute_path}">
+								<xsl:value-of select="$i18n/l/login"/>
+							</a>
+						</li>
+					</xsl:when>
+					<xsl:otherwise>
+						<li>
+							<a href="{$xims_box}{$goxims}/user">
+								<xsl:value-of select="/document/context/session/user/name"/>
+							</a>
+						</li>
+						<li>
+							<a href="#" class="more" id="get-bm">
+								<xsl:value-of select="$i18n/l/Bookmarks"/>
+							</a>
+							<ul class="more" id="bm-links">
+								<xsl:if test="/document/context/object">
+									<li id="new-bm">
+										<a href="#">
+											<xsl:attribute name="onclick">
+												$.get('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims"/>/bookmark?create=1;path=<xsl:value-of select="/document/context/object/location_path"/>;redir_self=1')
+											</xsl:attribute>
+											<span class="ui-icon ui-icon-star"></span><xsl:value-of select="$i18n/l/SetBMforCurrentObj"/>
+										</a>
+									</li>
+								</xsl:if>
+								<li></li>
+							</ul>
+						</li>
+						<li>
+							<a href="{$goxims_content}{$absolute_path}?reason=logout">
+									<xsl:value-of select="$i18n/l/logout"/>
+							</a>
+						</li>
+					</xsl:otherwise>
+				</xsl:choose>					
+			</ul>
+			<!--<ul class="more" id="bm-links"><li></li></ul>-->
+		</div>
 		<noscript>
 			<xsl:choose>
 				<xsl:when test="/document/context/session/public_user = '1'">
@@ -428,6 +443,7 @@
 		<div id="help-widget">
 			<button><xsl:value-of select="$i18n/l/Help"/></button>
 			<ul style="position:absolute !important; width: 150px">
+					<!--
 					<li>
 						<a href="http://xims.info/documentation/" target="_blank">
 							<xsl:attribute name="title">
@@ -436,6 +452,7 @@
 								<xsl:value-of select="$i18n/l/Systeminfo"/>
 						</a>
 					</li>
+					-->
 					<li>
 						<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank">
 							<xsl:attribute name="title">
@@ -454,18 +471,12 @@
 					</li>
 					<li>
 						<a href="http://www.uibk.ac.at/zid/systeme/xims/" target="_blank">
-							<xsl:attribute name="title">
-								Xims an der Universität Innsbruck
-							</xsl:attribute>
-							Xims UIBK
+							<xsl:attribute name="title">Xims an der Universität Innsbruck</xsl:attribute>Xims UIBK
 						</a>
 					</li>
 					<li>
 						<a href="http://www.uibk.ac.at/webredaktion/webstyleguide/" target="_blank">
-							<xsl:attribute name="title">
-								Webstyleguide der Webredaktion
-							</xsl:attribute>
-								Webstyleguide
+							<xsl:attribute name="title">Webstyleguide der Webredaktion</xsl:attribute>Webstyleguide
 						</a>
 					</li>
 					<li>
@@ -481,7 +492,7 @@
 					</li>
 				</ul>
 </div>
-
+<!--
 		<noscript>
 			<form action="{$xims_box}{$goxims_content}{$absolute_path}?" method="get">
 			<select>
@@ -533,5 +544,6 @@
 							</select>
 							</form>
 			</noscript>
+			-->
 	</xsl:template>
 </xsl:stylesheet>
