@@ -459,7 +459,7 @@
 	<xsl:template name="form-metadata">
 	<xsl:param name="mode"/>
 		<div class="form-div block">
-		<h2>Meta Data</h2>
+		<h2><xsl:value-of select="$i18n/l/Metadata"/></h2>
 		<xsl:call-template name="form-abstract"/>
 		<xsl:call-template name="tr-publisher"/>
 	<xsl:choose>
@@ -477,7 +477,7 @@
 	
 	<xsl:template name="form-obj-specific">
 		<div class="form-div block">
-		<h2>Objekt-spezifische Optionen</h2>
+		<h2><xsl:value-of select="$i18n/l/ExtraOptions"/></h2>
 			<xsl:call-template name="tr-mediatype"/>
 	<xsl:call-template name="tr-coverage"/>
 	<xsl:call-template name="tr-audience"/>
