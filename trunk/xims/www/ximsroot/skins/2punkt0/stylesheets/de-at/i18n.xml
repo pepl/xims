@@ -272,6 +272,7 @@
 <Bookmarks>Lesezeichen</Bookmarks>
 <Bookmark>Lesezeichen</Bookmark>
 <default_bookmark>Standardlesezeichen</default_bookmark>
+<SetBMforCurrentObj>Lesezeichen für aktuelles Objekt setzen</SetBMforCurrentObj>
 <Set_as>Setze als</Set_as>
 <set_as>setze als</set_as>
 <!-- End user_bookmarks-->
@@ -294,7 +295,7 @@
 <Object_available_at>Diese Objekt ist verfügbar unter</Object_available_at>
 <More>Weitere</More>
 <PageRowLimit>Anzahl der Einträge pro Seite</PageRowLimit>
-<IlpDefaultWinlabel>XIMS Hinweis!</IlpDefaultWinlabel>
+<IlpDefaultWinlabel>XIMS Hinweis</IlpDefaultWinlabel>
 <IlpProvideLocationFirst>Sie haben noch keinen 'Pfad' eingegeben. Bitte geben Sie diese jetzt ein!</IlpProvideLocationFirst>
 <IlpLocationWouldChange>Nach dem speichern würde sich der 'Pfad' wie folgt ändern. Wie möchten Sie verfahren?</IlpLocationWouldChange>
 <IlpLocationExists>Sie haben einen 'Pfad' eingegeben, die im Container bereits existiert. Der 'Pfad' muss eindeutig sein! Bitte geben Sie einen anderen 'Pfad' ein.</IlpLocationExists>
