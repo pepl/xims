@@ -87,11 +87,11 @@ a.button{
 
 ul.ui-widget-content{
 	max-height:300px;
-	width: 160px;;
-	overflow-y: auto;
+	min-width: 160px;
+	/*overflow-y: auto;
 	overflow-x: hidden;
 	position: absolute !important;
-	z-index:3;
+	z-index:3;*/
 }
 a.more.ui-state-default{
 	border: none;
@@ -125,6 +125,12 @@ a.more > .ui-button-text{
 
 .ui-tooltip-content{
 	font-size: 0.8em;
+}
+.help-tt{
+	max-width: 200px;
+}
+#bm-links{
+	min-width:300px;
 }
 
 /* common header */

@@ -282,7 +282,8 @@ div.toc-item {
     padding-left: 10px;
 }
 
-.objrow:hover, .objrow:hover td, .objrow:focus, .objrow:focus td{
+.objrow:hover, .objrow:hover td, .objrow:focus, .objrow:focus td, 
+.objrow.selected, .objrow.selected>.ctt_loctitle, .objrow.selected>.ctt_loctitleindex, .objrow.selected, .objrow.selected>.ctt_df{
 	background-color: #FFFF80 !important;
 }
 
