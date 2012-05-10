@@ -193,8 +193,14 @@ sub event_create {
 
     $bookmark->content_id( $object->id() );
     $bookmark->create();
-
-    $self->redirect( $self->redirect_path($ctxt) );
+	
+	#if we create from menu: do not redirect to user's bookmarks page
+	if($self->param('redir_self')){
+		$self->SUPER::redirect( $ctxt );
+	}
+    else {
+    	$self->redirect( $self->redirect_path($ctxt) );
+    }
     return 0;
 }
 
@@ -245,7 +251,9 @@ sub redirect_path {
         $uri->query("bookmarks=1;$query");
     }
 
-    #warn "redirecting to ". $uri->unparse();
+	#somehow magically the port is 82... why???
+    $uri->port(80);
+    warn "redirecting to ". $uri->unparse();
     return $uri->unparse();
 }
 
