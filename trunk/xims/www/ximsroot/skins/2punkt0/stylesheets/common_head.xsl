@@ -15,6 +15,7 @@
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
 		<head>
+			<meta content="IE=edge" http-equiv="X-UA-Compatible">
 			<title>
 				<xsl:choose>
 					<xsl:when test="$mode='create'">
@@ -93,16 +94,14 @@
 		<xsl:value-of select="title"/> - <xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/name"/> - <xsl:call-template name="department_title"/> - XIMS
 	</xsl:template>
 	
-		<xsl:template name="css">
+	<xsl:template name="css">
 		<xsl:param name="questionnaire" select="false()"/>
 		<xsl:param name="ap-pres" select="false()"/>
 		<xsl:param name="reflib" select="false()"/>
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="sitestyle" select="false()"/>
-		<!--<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.8.css" type="text/css"/>-->
-		<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.9m2.css" type="text/css"/>
-		<!--<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/fg.menu.css" type="text/css"/>-->
+		<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.9m7.css" type="text/css"/>
 		<xsl:if test="$questionnaire">
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" type="text/css"/>
 		</xsl:if>
@@ -124,19 +123,7 @@
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/common.css" type="text/css"/>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/content.css" type="text/css"/>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/sprites.css" type="text/css"/>
-		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/menu.css" type="text/css"/>
-		
-		<!-- UIBK -->
-		<link type="text/css" href="http://www2.uibk.ac.at/stylesheets/css/10/formats.css" rel="stylesheet"/>
-		<style type="text/css">
-			#content {
-				width:695px;
-				font-family:Verdana,Helvetica,Arial,sans-serif;
-				font-weight:normal;
-				padding:0px;
-				font-size:0.9375em}
-		</style>
-		<!-- END UIBK -->
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/menu.css" type="text/css"/>		
 
 	</xsl:template>
 	
@@ -144,13 +131,10 @@
 		<script type="text/javascript">
 			var ximsroot = '<xsl:value-of select="$ximsroot"/>';
 		</script>
-		<script src="{$ximsroot}scripts/jquery/jquery-1.4.2.js" type="text/javascript"/>
-		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.8.js" type="text/javascript"/>-->
-		<!--<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m2.js" type="text/javascript"/>-->
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m3.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/jquery/jquery-1.7.2.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m7.js" type="text/javascript"/>
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-timepicker-addon.js" type="text/javascript"/>
 		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
-		<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/datetime.js" type="text/javascript"/>-->
 	</xsl:template>
 </xsl:stylesheet>
 
