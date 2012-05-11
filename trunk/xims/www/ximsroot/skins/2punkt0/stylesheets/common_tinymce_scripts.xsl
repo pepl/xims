@@ -13,7 +13,8 @@
 		<!-- <xsl:call-template name="jqtinymce_load" /> -->
 		<xsl:call-template name="mk-inline-js">
 			<xsl:with-param name="code">
-					var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'tinymce/jscripts/tiny_mce/tiny_mce.js')" />';
+					//var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'tinymce/jscripts/tiny_mce/tiny_mce.js')" />';
+					var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'editors/tinymce/jscripts/tiny_mce/tiny_mce.js')" />';
 					//var origbody = null;
 					var editor = null;
 					// language
@@ -68,8 +69,10 @@
 			src="{$ximsroot}tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
 	</xsl:template> -->
 	<xsl:template name="tinymce_load">
-		<script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
-		<script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js" />	
+		<!--<script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
+		<script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js" />	-->
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce.js" />
 	</xsl:template>
 	
 	<xsl:template name="tinymce_simple">

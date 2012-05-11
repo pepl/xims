@@ -13,9 +13,18 @@
 	</xsl:template>
 	
 	<xsl:template name="codemirror_load">
-			<script language="javascript" type="text/javascript" src="{$ximsroot}scripts/codemirror_ui/lib/CodeMirror/js/codemirror.js"></script>
-			<script language="javascript" type="text/javascript" src="{$ximsroot}scripts/codemirror_ui/js/codemirror-ui.js"></script>
-			<link rel="stylesheet" type="text/css" href="{$ximsroot}scripts/codemirror_ui/css/codemirror-ui.css" />
+		<!--<link rel="stylesheet" type="text/css" href="{$ximsroot}editors/codemirror-ui-0.0.14/css/codemirror-ui.css" />
+		<link rel="stylesheet" type="text/css" href="{$ximsroot}editors/codemirror-ui-0.0.14/lib/CodeMirror-2.0/lib/codemirror.css"/>
+		<link rel="stylesheet" type="text/css" href="{$ximsroot}editors/codemirror-ui-0.0.14/lib/CodeMirror-2.0/mode/{$cm_mode}/{$cm_mode}.css"/>
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/codemirror-ui-0.0.14/lib/CodeMirror-2.0/lib/codemirror.js"></script>
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/codemirror-ui-0.0.14/js/codemirror-ui.js"></script>
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/codemirror-ui-0.0.14/lib/CodeMirror-2.0/mode/{$cm_mode}/{$cm_mode}.js"></script>-->
+		<link rel="stylesheet" type="text/css" href="{$ximsroot}editors/codemirror-ui/css/codemirror-ui.css" />
+		<link rel="stylesheet" type="text/css" href="{$ximsroot}editors/codemirror-ui/lib/CodeMirror-2.0/lib/codemirror.css"/>
+		<link rel="stylesheet" type="text/css" href="{$ximsroot}editors/codemirror-ui/lib/CodeMirror-2.0/mode/{$cm_mode}/{$cm_mode}.css"/>
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/codemirror-ui/lib/CodeMirror-2.0/lib/codemirror.js"></script>
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/codemirror-ui/js/codemirror-ui.js"></script>
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/codemirror-ui/lib/CodeMirror-2.0/mode/{$cm_mode}/{$cm_mode}.js"></script>
 	</xsl:template>
 
 	<xsl:template name="codemirror_init">
@@ -26,17 +35,15 @@
 				var textarea = document.getElementById('body');
 				var editor = new CodeMirrorUI(textarea,
 				{
-					path : '<xsl:value-of select="$ximsroot" />',
+					path : '<xsl:value-of select="$ximsroot" />'  + 'editors/codemirror-ui-0.0.14/js/',
 					searchMode : 'popup'
 				},
 				{
-					height: "250px",
-					parserfile: ["parse<xsl:value-of select="$cm_mode"/>.js"<xsl:if test="$cm_mode = 'js'">,"tokenizejavascript.js"</xsl:if>],
-					stylesheet: [ximsroot + "scripts/codemirror_ui/lib/CodeMirror/css/<xsl:value-of select="$cm_mode"/>colors.css"],
-					path: ximsroot + "scripts/codemirror_ui/lib/CodeMirror/js/",
-					autoMatchParens: true
+					mode: '<xsl:value-of select="$cm_mode"/>',
+					lineNumbers: true,
+					matchBrackets: true
 				});
-				$(".CodeMirror-wrapping").resizable({ handles: 's' });					
+				$(".CodeMirror").resizable({ handles: 's' });					
 			});
 		</script>
 	</xsl:template>
