@@ -127,7 +127,9 @@ function insertfile() {
     // for image browsers: update image dimensions
 	win.document.getElementById("width").value = document.selectform.imgwidth.value;
 	win.document.getElementById("height").value = document.selectform.imgheight.value;
+	win.ImageDialog.showPreviewImage(URL);
     tinyMCEPopup.close();
+	
 }
 function storeBack(target, imgtext) {
             var re = new RegExp("<xsl:value-of select="$absolute_path_nosite"/>/");
