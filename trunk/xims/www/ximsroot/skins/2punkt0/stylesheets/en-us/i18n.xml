@@ -419,6 +419,7 @@
 <Search_objTree_img>Or search for image in the XIMS object tree</Search_objTree_img>
 <Opt_sel_link>Link target (optional)</Opt_sel_link>
 <StoreBack>Store Back</StoreBack>
+<warn_big_image>Images of this file size are in few cases expedient in webpages.</warn_big_image>
 <!-- Gallery -->
 <ImageSize>Image Size</ImageSize>
 <Width>Width</Width>
