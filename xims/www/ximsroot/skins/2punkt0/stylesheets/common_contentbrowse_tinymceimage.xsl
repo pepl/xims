@@ -102,6 +102,14 @@
                     &#160;
                     <!--<span class="sprite-spacer">&#160;</span>-->
                     <xsl:value-of select="title"/>
+					<xsl:text>,&#160;</xsl:text>
+                    <span>
+                      <xsl:if test="number(content_length) &gt; $big_image_threshold">
+						<xsl:attribute name="class">warning</xsl:attribute>
+                        <xsl:attribute name="title"><xsl:value-of select="$i18n/l/warn_big_image"/></xsl:attribute>
+                      </xsl:if>
+                    <xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>KiB.
+                    </span>
                     (<xsl:value-of select="$i18n/l/Click"/>&#160;<a href="#" onclick="storeBack('{$target_path_nosite}/{location}', '{title}');"><xsl:value-of select="$i18n/l/here"/></a>&#160;<xsl:value-of select="$i18n/l/to_store_back"/>)
                 </xsl:if>
             </xsl:otherwise>

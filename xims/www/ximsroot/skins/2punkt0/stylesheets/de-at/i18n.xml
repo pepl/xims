@@ -406,6 +406,7 @@
 <Search_objTree_obj>Oder den XIMS Objektbaum nach einem Objekt durchsuchen</Search_objTree_obj>
 <Opt_sel_link>Link-Ziel (optional)</Opt_sel_link>
 <StoreBack>Übernehmen</StoreBack>
+<warn_big_image>Bilder dieser Dateigröße sind in Webseiten nur in Ausnahmefällen sinnvoll.</warn_big_image>
 <!-- Gallery -->
 <ImageSize>Größe der Bilder</ImageSize>
 <Width>Breite</Width>
