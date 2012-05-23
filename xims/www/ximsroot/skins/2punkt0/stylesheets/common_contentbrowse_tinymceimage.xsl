@@ -34,16 +34,7 @@
 </xsl:template>
 
 <xsl:template name="title">
-	<xsl:value-of select="$i18n/l/Browse_for"/>
-      <xsl:choose>
-        <xsl:when test="$otfilter != ''">
-          '<xsl:value-of select="$otfilter"/>'
-        </xsl:when>
-        <xsl:otherwise>
-          '<xsl:value-of select="$i18n/l/Object"/>'
-        </xsl:otherwise>
-      </xsl:choose>
-    - XIMS
+	<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Image"/> - XIMS
 </xsl:template>
 
 <xsl:template name="selectform">

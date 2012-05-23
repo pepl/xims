@@ -86,6 +86,10 @@
     <xsl:call-template name="scripts"/>
 </xsl:template>
 
+<xsl:template name="title">
+	<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Object"/> - XIMS
+</xsl:template>
+
 <xsl:template name="targetpath">
     <xsl:for-each select="/document/context/object/targetparents/object[@document_id != 1 and @parent_id != 1]">
         <xsl:text>/</xsl:text><xsl:value-of select="location"/>
@@ -149,7 +153,8 @@
             var targetvalue = document.selectform.Target.value;
             win.document.getElementById("href").value = hyperlinkvalue;
             win.document.getElementById("linktitle").value = title;
-            win.document.getElementById("target_list").value = targetvalue;
+			if(win.document.getElementById("target_list"))
+            	win.document.getElementById("target_list").value = targetvalue;
             tinyMCEPopup.close();
         }
 
