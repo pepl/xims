@@ -34,6 +34,15 @@
 					</xsl:choose>';			
 			</xsl:with-param>
 		</xsl:call-template>
+		
+		<script language="javascript" type="text/javascript">
+        tinyMCE_GZ.init({
+                plugins     : 'table,contextmenu,advhr,searchreplace,inlinepopups,safari,xhtmlxtras,paste,advimage',
+                themes      : 'advanced',
+                languages   : 'en,de',
+                disk_cache  : true
+                });
+        </script>
 
 		<script language="javascript" type="text/javascript" src="{$ximsroot}scripts/tinymce_script.js"></script>
 	</xsl:template>
@@ -64,15 +73,16 @@
 		</xsl:call-template>
 	</xsl:template>-->
 	
-	<!-- <xsl:template name="jqtinymce_load">
-		<script language="javascript" type="text/javascript"
-			src="{$ximsroot}tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
-	</xsl:template> -->
 	<xsl:template name="tinymce_load">
-		<!--<script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
-		<script language="javascript" type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce.js" />	-->
+	<!--
 		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
 		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce.js" />
+	-->
+		<!-- ### load minimized tinymce ### -->
+		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
+        <script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_gzip.js"/>
+        <script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_min.js"/>
+
 	</xsl:template>
 	
 	<xsl:template name="tinymce_simple">

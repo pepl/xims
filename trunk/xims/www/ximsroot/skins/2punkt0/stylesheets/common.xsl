@@ -2048,11 +2048,13 @@
 	<!-- container for dialog, i.e. browse for object-->
 	<div id="default-dialog" style="max-height:400px;max-width:800px"></div>
 	
-	<!--<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>-->
+	<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>
+	<!-- debugging mode -->
+	<!--
 	<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
 	<script src="{$ximsroot}scripts/default.js" type="text/javascript"/>
 	<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0.js" type="text/javascript"/>
-	
+	-->
 	<xsl:if test="$tinymce">
 		<xsl:call-template name="tinymce_scripts"/>
 	</xsl:if>
