@@ -32,7 +32,7 @@ INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'TAN_List', 0, 0, 1, 0, 2 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_objectroot, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'VLibrary', 1, 1, 1, 1, 1, 2 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'VLibraryItem', 0, 1, 1, 0, 0 );
-INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'DocBookXML', 0, 1, 1, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem', 0 ) );
+INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'DocBookXML', 0, 1, 1, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem'), 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'URLLink', 0, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, parent_id, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'Document', 0, 1, 1, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level ) VALUES ( OBT_SEQ.NEXTVAL, 'DocBookXML', 0, 0, 1, 0, 0 );
