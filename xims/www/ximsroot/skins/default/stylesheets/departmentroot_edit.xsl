@@ -31,17 +31,6 @@
 		<br clear="all"/>
 	</xsl:template>
 	
-	<xsl:template name="defaultprivmask-edit">
-		<tr>
-			<td valign="top">Default Privilege Mask</td>
-			<td>
-				<input tabindex="30" type="text" name="defaultprivmask" size="40" value="{attributes/defaultprivmask}" class="text"/>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('defaultprivmask')" class="doclink">(?)</a>
-			</td>
-		</tr>
-	</xsl:template>
-	
 	<xsl:template match="objectlist/object">
             <a class="label-large" href="{$goxims_content}{location_path}"><xsl:value-of select="title"/></a>
             <a class="button option-delete" href="{$goxims_content}{$absolute_path}?portlet_id={id};rem_portlet=1">
