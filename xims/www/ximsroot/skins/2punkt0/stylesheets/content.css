@@ -360,6 +360,9 @@ div.toc-item {
 #create-edit-form > div, #select-form > div , #select-form li{
 	margin-top: 10px;
 }
+#select-form li{
+	line-height: 16px;
+}
 #create-edit-form h1{
 	font-weight: bold;
 }
