@@ -45,56 +45,7 @@
 			<xsl:call-template name="grant-form">
 				<xsl:with-param name="multiple" select="false()"/>
 			</xsl:call-template>
-		<!--<p>
-                    <xsl:choose>
-                        <xsl:when test="$userquery = ''">
-                            <xsl:value-of select="$i18n/l/Currently_showing_privs"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <a href="{$goxims_content}{$absolute_path}?obj_acllist=1">
-                                <xsl:value-of select="$i18n/l/Show_existing_privs"/>
-                            </a>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                 </p>-->
-				 <!-- filter widget  -->
-				 <!--
-              <form name="userfilter" action="">
-                 <p>
-                    <xsl:value-of select="$i18n/l/Privgrant_usr_lookup_mask"/>:
-											<br/>
-									<label for="userquery" class=""><xsl:value-of select="$i18n/l/Name"/>&#160;<xsl:value-of select="$i18n/l/of"/>&#160;<xsl:value-of select="$i18n/l/User"/>&#160;<xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n/l/Role"/>&#160;</label>&#160;
-                  <input name="userquery" type="text" value="{$userquery}" id="userquery"/>&#160;&#160;
-                  <label for="usertype" class=""><xsl:value-of select="$i18n/l/Usertype"/></label>&#160;
-                  <select name="usertype" id="usertype">
-                    <option value="role">
-                      <xsl:if test="$usertype='role'">
-                        <xsl:attribute name="selected">selected</xsl:attribute>
-                      </xsl:if>
-                      <xsl:value-of select="$i18n/l/Roles"/>
-                    </option>
-                    <option value="user">
-                      <xsl:if test="$usertype='user'">
-                        <xsl:attribute name="selected">selected</xsl:attribute>
-                      </xsl:if>
-                      <xsl:value-of select="$i18n/l/Users"/>
-                    </option>
-                  </select>
-                  <input name="id" type="hidden" value="{$id}"/>
-                  <input name="obj_acllist" type="hidden" value="1"/>
-                  <input name="sort-by" type="hidden" value="{$sort-by}"/>
-                  <input name="order-by" type="hidden" value="{$order-by}"/>
-                  <xsl:call-template name="rbacknav"/>
-									&#160;
-                  <button type="submit" ><xsl:value-of select="$i18n/l/lookup"/></button>
-                  <xsl:text>&#160;</xsl:text>
-                  <a href="javascript:openDocWindow('grantuserlookup')" class="doclink">(?)</a>
-              </p>
-              </form>-->
-          <!-- end filter widget  -->
 			<br/><br/>
-		
-		<!--<p><xsl:value-of select="$i18n/l/Currently_showing_privs"/></p>-->
 		<br/>
 		<h2><xsl:value-of select="$i18n/l/Edit_current_privs"/></h2>
         <table  class="obj-table acl-table">
