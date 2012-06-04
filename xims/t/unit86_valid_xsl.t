@@ -4,11 +4,13 @@ use strict;
 use File::Find;
 use XML::LibXML;
 
+my $ximshome = $ENV{'XIMS_HOME'} || '/usr/local/xims';
+
 my $parser = XML::LibXML->new();
 $parser->pedantic_parser(1);
 $parser->line_numbers(1);
 
-my $schema = XML::LibXML::RelaxNG->new( location => '/usr/local/xims/t/schemata/xslt.rng' );
+my $schema = XML::LibXML::RelaxNG->new( location => "$ximshome/t/schemata/xslt.rng" );
 
 my @files;
 
@@ -16,7 +18,7 @@ sub wanted {
     push @files, $File::Find::name if /\.xsl$/;
 }
 
-find( \&wanted, '../www');
+find( \&wanted, "$ximshome/www");
 
 foreach my $file (@files) {
     eval{
