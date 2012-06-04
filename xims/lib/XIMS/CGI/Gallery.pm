@@ -46,18 +46,6 @@ sub registerEvents {
 # RUNTIME EVENTS
 
 
-=head2 event_edit()
-
-=cut
-
-sub event_edit {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt) = @_;
-	$self->resolve_content( $ctxt, [ qw( STYLE_ID IMAGE_ID CSS_ID SCRIPT_ID FEED_ID ) ] );
-    $self->expand_attributes($ctxt);
-    return $self->SUPER::event_edit( $ctxt );
-}
-
 =head2 event_preview()
 
 =cut
