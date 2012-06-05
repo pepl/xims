@@ -52,7 +52,6 @@
 			$('#input-file').change(function(){
 			checkZIP()});
 			$('#input-unzip').change(function(){
-			alert("changed");
 			checkUnzip()});
 		});
 			function checkZIP(){
