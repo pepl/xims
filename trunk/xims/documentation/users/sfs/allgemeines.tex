@@ -54,7 +54,7 @@ für technische Fragen, Bug-Meldungen oder gewünschte Features bitte an
 \end{figure}
 
 \otherterm{XIMS} ist an der Uni Innsbruck unter der Adresse
-\url{http://xims.uibk.ac.at} zu erreichen. Um Inhalte über
+\url{https://xims.uibk.ac.at} zu erreichen. Um Inhalte über
 \otherterm{XIMS} verwalten zu können, benötigt man einen gültigen
 \otherterm{Benutzerzugang} (Account). UIBK"=Mitarbeiter/"=innen
 erlangen mit der Akkreditierung über die Personalabteilung automatisch
@@ -95,7 +95,7 @@ zuletzt erstellten oder geänderten Objekte zur Verfügung.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1.00\textwidth]{./images/XI5S-containeransicht.png}
+  \includegraphics[width=1.00\textwidth]{./images/containeransicht1.png}
   \caption{\ximsterm{Containeransicht}}
   \label{fig:containeransicht}
 \end{figure}
@@ -155,14 +155,14 @@ Dokument (\ximsterm{Document}), Datei (\ximsterm{File}), Ordner
   binäre Dateitypen handeln. In Ausnahmefällen kann es aber auch
   sinnvoll sein zu tricksen und z.\,B. HTML-Dateien als
   \ximsterm{File} mit der Endung \path{.htm} am System vorbeizumogeln}
-Datei sein (z.\,B. ein PDF-Datei, eine MS-Word-Datei, ...) -- einzig
+Datei sein (z.\,B. eine PDF-Datei, eine MS-Word-Datei, ...) -- einzig
 Bilder sollten stets über den Menüpunkt Bild (Image) erstellt werden,
 denn nur so ist sichergestellt, dass die Bilder später problemlos in
 den verschiedenen Bild-Einfügen-Dialogen aufgefunden werden können.
 
 \begin{figure}[!ht] 
   \centering
-  \includegraphics[width=0.25\textwidth]{./images/XI5S-erstellen-menu.png}
+  \includegraphics[width=0.25\textwidth]{./images/create-menu.png}
   \caption{Erstellen-Menü}
   \label{fig:erstellenmenu}
 \end{figure}
@@ -174,24 +174,43 @@ und wird im folgenden Abschnitt beschrieben.
 \subsubsection{Editieren von Objekten}
 \label{quick-editieren}
 
-Im Pflichtfeld \ximsterm{Location} muss der künftige Dateiname des
-neuen Dokuments eingetragen werden. Wird das Dokument
-veröffentlicht,\footnote{Siehe dazu Punkt \ref{quick-publizieren}.} so
-findet man den Eintrag der \ximsterm{Location} in der \otherterm{URL}
-wieder. Deshalb sollte zum einen eine möglichst selbsterklärende und
-leicht zu merkende Bezeichnung der \ximsterm{Location} vergeben
-werden, zum anderen bestehen deshalb gewisse Beschränkungen für den
-Feldinhalt. So sind beispielsweise im Feld \ximsterm{Location} keine
-Umlaute, Sonder- oder Leerzeichen erlaubt. Die Dateiendung
-(\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom System beim
-Speichern abhängig vom \ximsterm{Objekttyp} und Datenformat
-automatisch hinzugefügt.
+Jedes Objekt in Xims (mit wenigen Ausnahmen) hat einen \ximsterm{Titel} und 
+%eine \ximsterm{Location}.
+einen \ximsterm{Pfad}.
 
 Der \ximsterm{Titel}, in unserem Beispiel »Schritt für Schritt«, wird
 später in der Containeransicht aufscheinen. Beim \ximsterm{Objekttyp}
 \ximsterm{Document} wird aus diesem Feld das HTML-Element
 \texttt{<title>} erzeugt, der Titel erscheint im publizierten Dokument
 in der Titelleiste des Browserfensters.
+
+%Die \ximsterm{Location} 
+Der Pfad 
+ist der Dateiname eines Objekts. Wird das Dokument
+veröffentlicht,\footnote{Siehe dazu Punkt \ref{quick-publizieren}.} so
+findet man den Eintrag 
+des Pfades
+%der \ximsterm{Location} 
+in der \otherterm{URL}
+wieder. Deshalb sind in diesem Feld nur Kleinbuchstaben und keine
+Umlaute, Sonder- oder Leerzeichen erlaubt. Die Dateiendung
+(\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom System beim
+Speichern abhängig vom \ximsterm{Objekttyp} und Datenformat
+automatisch hinzugefügt.
+
+Sobald Sie die Eingabe eines Titels abgeschlossen haben, wird automatisch 
+%eine \ximsterm{Location} +
+ein Pfad 
+generiert, die diesen Vorgaben entspricht. Aus dem Titel »Schritt für Schritt« wird 
+%die Location 
+der Pfad 
+»schritt-fuer-schritt.html«. 
+%Diese Location 
+Dieser Pfad 
+ist als ein Vorschlag vom System zu sehen und kann von Ihnen noch geändert werden. 
+
+%Deshalb sollte zum einen eine möglichst selbsterklärende und leicht zu merkende Bezeichnung der \ximsterm{Location} vergeben werden, zum anderen bestehen deshalb gewisse Beschränkungen für den Feldinhalt. So sind im Feld \ximsterm{Location} nur Kleinbuchstaben und keine Umlaute, Sonder- oder Leerzeichen erlaubt. Die Dateiendung (\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom System beim Speichern abhängig vom \ximsterm{Objekttyp} und Datenformat automatisch hinzugefügt.
+
 
 \begin{figure}[!ht]
   \centering
@@ -229,7 +248,7 @@ neu erstellten Objekts erscheint folgendes \otherterm{Dialogfenster}
 
 \begin{figure}[ht!]
   \centering
-  \includegraphics[width=0.5\textwidth]{./images/XI5S-publish.png}
+  \includegraphics[width=\textwidth]{./images/XI5S-publish.png}
   \caption{Veröffentlichen eines Objekts}
   \label{fig:XI5S-publish}
 \end{figure}
@@ -244,7 +263,7 @@ Bereich.\footnote{Nachdem die Veröffentlichung rückgängig gemacht
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.70\textwidth]{./images/XI5S-republish.png}
+  \includegraphics[width=\textwidth]{./images/XI5S-republish.png}
   \caption{Dialog Wiederveröffentlichen/Veröffentlichen rückgängig machen}
   \label{fig:XI5S-republish}
 \end{figure}

@@ -1,0 +1,127 @@
+\subsection{FAQ}
+\label{faq}
+
+FAQ = Frequently Asked Questions. Es folgt eine Sammlung von häufigen Fragen
+von Benutzern und den dazugehörigen Antworten.
+
+\subsubsection{Allgemein}
+\label{faq-allg}
+
+\paragraph{Wie kann ich etwas aus der Zwischenablage einfügen?}
+
+Durch »Shift+Insert« bzw. »Umschalt+Einfügen« wird der aktuelle Inhalt der
+Zwischenablage eingefügt.
+
+\paragraph{Wie kann ich den WYSIWYG-Editor wechseln?}
+
+Beim Erstellen von neuen Dokumenten bzw. beim Editieren von bestehenden
+Dokumenten findet man im oberen Bereich des Browserfensters folgende Zeile: »Erstelle Dokument \path{XYZ} in \path{/uniweb/test} mit ...« (siehe
+Abb.~\ref{fig:dokumentwysiwyg}). Dort ist auch das Auswahlfeld für den Editor zu finden.
+Sofern das Dokument nicht bereits verändert wurde, kann durch Auswählen des
+entsprechenden Editors zu diesem gewechselt werden.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/wysiwyg-change.png}
+	\caption{Wechseln des Editors}
+	\label{fig:wysiwygchange}
+\end{figure}
+
+\subsubsection{\otherterm{TinyMCE} WYSIWYG-Editor}
+\label{faq-tinymce}
+
+\paragraph{Nachdem mein Dokument mit TinyMCE geladen wurde, kann ich den
+WYSIWYG Editor nicht mehr wechseln. Es kommt die sinngemäße
+Fehlermeldung (obwohl der Inhalt nicht verändert wurde): »Der \ximsterm{Body} wurde
+verändert. Bitte verwenden Sie 'Speichern/Abbrechen'!«}
+
+Durch Copy/Paste kann es auf Windows Systemen dazu kommen, dass windowsspezifische
+Zeichen mitkopiert werden. Die Windows-1252 Zeichenkodierung nutzt
+den lt. Standard (ISO-8859-1) nicht zu verwendenden Adressraum von 8X-9X (HEX)
+für spezielle, aber häufiger auftretende Zeichen (wie etwa das Euro Zeichen,
+spezielle Anführungszeichen, etc.). Siehe \url{http://en.wikipedia.org/wiki/Windows-1252}
+
+TinyMCE ignoriert solche speziellen Zeichen beim Laden des Dokuments. D.h. das
+Dokument wurde im Unterschied zum Originaldokument, welches Zeichen außerhalb
+des Standards enthält, zu Gunsten der Zeichenketten-Encoding-Standards um
+einige wenige Zeichen verändert (im Dokument sind nur noch Standard-konforme Zeichen vorhanden). In diesem Sinne ist es i.d.R. das Beste, per »Abbrechen« zur
+\otherterm{XIMS}-Containeransicht zurückzukehren, das Dokument zu kopieren (Backup), es
+erneut zu öffnen und über den »Speichern«-Knopf abzuspeichern. Nach erneutem
+Öffnen des Dokuments sollten Sie nun wiederum den WYSIWYG-Editor wechseln können.
+
+\paragraph{Probleme beim Speichern durch Skype-Addon}
+
+Skype scheint standardmäßig ein Addon zu installieren, um Telefonnummern in
+HTML-Seiten »aktiv« zu machen. In der Kombination IE7, TinyMCE und Skype mit
+dieser Funktion wurden Probleme gemeldet. Das Plugin fügt eigenen Code in die
+HTML-Seite ein, der in der Folge das Speichern fehlschlagen lässt.
+
+(Fehlermeldung: Document body could not be converted to a well balanced string.
+Please consult the User's Reference for information on well-balanced document
+bodies.)
+
+\subsubsection{Uni-Design}
+\label{faq-unidesign}
+
+\paragraph{Statt meiner Indexseite wird der Ordnerinhalt dargestellt, was kann ich
+dagegen tun?}
+
+Dies tritt eigentlich nur bei mehrsprachigen Indexseiten auf; dort genau dann, wenn
+die Language-Negotiation (d. h. der Server sucht die Sprache nach den Präferenzen
+die der Browser mitteilt aus) fehlschlägt. Der Server liefert dann die von \otherterm{XIMS}
+automatisch generierte Indexseite aus. Es sollte für den betreffenden Ordner die
+Option »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« gewählt und der Ordner neu
+publiziert werden. Es wird dann bei einem Fehlschlag -- so vorhanden -- die englische,
+sonst eine Liste der vorhandenen Varianten angezeigt.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/autoindex.png}
+	\caption{Verhindere Auto-Index}
+	\label{fig:disableautoindex}
+\end{figure}
+
+\paragraph{Warum wird meine Seite im optimierten Design (1024x768) nicht richtig
+angezeigt bzw. rutscht das mittlere Contentfeld nach unten?}
+
+Falls Bilder bzw. Tabellen im Content eingebaut sind, prüfen Sie, ob diese die
+Maximalgröße möglicherweise überschritten haben.
+Konkrete Gründe dafür können u.a. die folgenden sein:
+
+\begin{itemize}
+	\item {Ein Bild mit einer Breite von mehr als 695 Pixeln,}
+	\item {Eine Tabelle mit einer Breite von mehr als 695 Pixeln,}
+	\item {Inhalte eines \texttt{<pre>}-Tags, die nicht bei 695 Pixeln umbrechen,}
+	\item {Eine mit einem nowrap versehene Zeichenkette, die ~80 Zeichen
+überschreitet.}
+\end{itemize}
+
+Ist dies nicht der Fall, könnte im Content sehr lange, ausgeschriebene Links bzw.
+sehr lange Wörter oder viele Leerzeichen hintereinander stehend der Grund für die
+nicht korrekte Anzeige sein. Ist dies der Fall, trennen Sie die Links oder Wörter mit
+einem Minus (-) bzw. entfernen einige Leerzeichen.
+
+Wenn aus inhaltlichen Gründen eine Umgehung dieser genannten Gründe nicht
+gangbar ist, gibt es die Möglichkeit diese Inhalte, wie z.\,B. breitere Bilder, oder Beispielscodefragmente (die nicht umbrechen dürfen) in \texttt{<pre>}-Tags als Link, der sich in
+einem eigenen Fenster öffnet darzustellen.
+Dafür sind die folgenden Schritte notwendig:
+
+\begin{enumerate}
+	\item {Erstellen und publizieren des Zieldokuments}
+	\item {Einen Link im Ausgangsdokument erstellen und im HTML-Quelltext den Link
+wie folgt bearbeiten:
+\begin{verbatim}
+<a onclick="newWindow=window.open(
+'<URL des Zieldokuments>?style=plain',
+'null',
+'resizable=no,
+scrollbars=no,
+width=<Breite des Zieldokumentfensters>,
+height=<Höhe des Zieldokumentfensters>'
+);
+newWindow.focus()" href="javascript:;"
+onfocus="if(this.blur)this.blur()"> <Titel des Zieldokuments>
+</a>
+\end{verbatim}
+}
+\end{enumerate}

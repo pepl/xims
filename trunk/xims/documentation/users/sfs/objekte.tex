@@ -1,7 +1,7 @@
 \section{Objekte manipulieren}
 \label{objektemanipulieren}
 
-Standardmäßig stehen die folgenden sieben \ximsterm{Objekttyp}en zur
+Standardmäßig stehen die folgenden 14 \ximsterm{Objekttyp}en zur
 Auswahl\footnote{Falls nicht, wurde Ihnen möglicherweise versehentlich
   keine Rolle zugewiesen; wenden Sie sich bitte an
   \href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}}:
@@ -10,18 +10,24 @@ Auswahl\footnote{Falls nicht, wurde Ihnen möglicherweise versehentlich
 \item Dokument (Document)
 \item Datei (File)
 \item Ordner (Folder)
+\item Bildergalerie (Gallery)
 \item Bild (Image)
-\item \ximsterm{URLLink}
+\item \ximsterm{Portlet}
+\item \ximsterm{URL-Link}
 \end{itemize}
 
 Im Untermenü »Weitere«:
 
 \begin{itemize}
-\item \ximsterm{sDocBookXML}
-\item \ximsterm{Portlet}
+\item CSS-Datei
+\item Javascript-Datei
+\item Fragebogen und TAN-Liste
+\item Symbolischer Link
+\item Text-Datei
+\item \ximsterm{simpleDocBook} (\ximsterm{sDocBookXML})
 \end{itemize}
 
-XIMS kennt neben diesen sieben noch eine Reihe weiterer
+XIMS kennt neben diesen 14 noch eine Reihe weiterer
 \ximsterm{Objekttyp}en, nach Bedarf werden für deren Erstellung
 nötige, spezielle Berechtigungen (\ximsterm{Objekttypprivilegien})
 vergeben. Einige dieser \ximsterm{Objekttyp}en werden unter dem Punkt
@@ -30,26 +36,27 @@ vergeben. Einige dieser \ximsterm{Objekttyp}en werden unter dem Punkt
 \subsection{Erstellen/Editieren}
 \label{erstelleneditieren}
 
-Über ein Auswahlmenü können Objekte unterschiedlicher Typen erstellt
+Über ein Auswahlmenü (">Erstellen"<) können Objekte unterschiedlicher Typen erstellt
 werden. Die Einträge im Menü werden von den beschriebenen
-Berechtigungen bestimmt.
+Berechtigungen bestimmt.\\
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[scale=0.8]{./images/XI5S-erstellen-menu.png}
+  %\includegraphics[scale=0.8]{./images/XI5S-erstellen-menu.png}
+  \includegraphics[scale=0.8]{./images/create-menu.png}
   \caption{Erstellen-Menü}
   \label{fig:erstellenmenu2}
 \end{figure}
 
-Um ein Objekt zu editieren, klickt man auf das »Bearbeiten-Icon« und
+Um ein vorhandenes Objekt zu editieren, klickt man auf das »Bearbeiten-Icon« und
 gelangt so in die Editiermaske.
 
 \subsubsection{Dokumente}
 \label{dokumente}
 
 Ein neues Dokument kann im Webinterface auf zwei Wegen erstellt
-werden: Entweder mit Hilfe von WYSIWYG-Editoren (\otherterm{TinyMCE}
-Editor oder \otherterm{eWebEditPro} -- siehe auch Punkt \ref{wysiwig})
+werden: Entweder mit Hilfe von WYSIWYG-Editoren (derzeit wird von XIMS der \otherterm{TinyMCE}
+Editor unterstützt -- siehe auch Punkt \ref{wysiwig})
 oder aber mit Hilfe des »Plain Textarea« Editors. Letzterer ermöglicht
 das direkte Bearbeiten des \otherterm{Quellcode}s eines Dokuments. 
 
@@ -58,31 +65,46 @@ bzw. Auswahlfelder:
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.9\textwidth]{./images/tinymce-full.png}
+  %\includegraphics[width=0.9\textwidth]{./images/tinymce-full.png}
+  \includegraphics[width=\textwidth]{./images/tinymce-full.png}
   \caption{Erstellen eines Dokuments mit Hilfe eines WYSIWYG-Editors}
   \label{fig:dokumentwysiwyg}
 \end{figure}
 
-\paragraph{\ximstermdef{Location}}
+%\paragraph{\ximstermdef{Location}}
+\paragraph{\ximstermdef{Pfad}}
 \label{location}
 
-Bei Dokumenten entspricht die \ximsterm{Location} dem Dateinamen des
+Bei Dokumenten entspricht 
+%die \ximsterm{Location} 
+der Pfad dem Dateinamen des
 zu erstellenden Dokuments. Wird das Dokument veröffentlicht (siehe
-dazu Punkt \ref{publizieren}), so findet man die \ximsterm{Location}
-in der \otherterm{URL} wieder. Die \ximsterm{Location} sollte deshalb
+dazu Punkt \ref{publizieren}), so findet man 
+den Pfad
+%die \ximsterm{Location}
+in der \otherterm{URL} wieder. 
+Der Pfad
+%Die \ximsterm{Location} 
+sollte deshalb
 zum einen möglichst prägnant, selbsterklärend und leicht zu merken
 sein,\footnote{Auch Suchmaschinen messen der URL als auch dem Titel
   eine besonders große Bedeutung zu.} zum anderen bestehen aus dem
 selben Grund auch Beschränkungen für den Feldinhalt: So sind hier
-beispielsweise keine Umlaute, Sonder- oder Leerzeichen erlaubt. Die
+beispielsweise keine Großbuchstaben, Umlaute, Sonder- oder Leerzeichen erlaubt. Die
 Dateiendung (\path{.doc}, \path{.pdf}, \path{.html}, etc.) wird vom
 System beim Speichern abhängig vom \ximsterm{Objekttyp} und
 Datenformat automatisch hinzugefügt. Abbildung~\ref{fig:bsppubliziert}
-soll den Begriff \ximsterm{Location} zusätzlich bildlich erläutern.
+soll den Begriff 
+%\ximsterm{Location} 
+Pfad 
+zusätzlich bildlich erläutern.
 
 
 \begin{Hinweis}
-  Das Feld »\ximsterm{Location}« ist ein Pflichtfeld!
+  Das Feld 
+  ">Pfad"<
+  %»\ximsterm{Location}« 
+  wird nach Eingabe eines Titels automatisch befüllt. Dies ist ein Vorschlag des Systems und kann nach Bedarf noch angepasst werden.
 \end{Hinweis}
 
 
@@ -93,23 +115,26 @@ Der Titel, in unserem Beispiel »Schritt für Schritt«, entspricht dem
 Namen des Dokuments, unter welchem dieses Dokument zukünftig in der
 \ximsterm{Containeransicht} aufscheinen wird. Zudem wird der Titel
 auch im \texttt{<title>} Tag des HTML-Headers ausgewiesen und
-entsprechend vom Browser im Fenstertitel angezeigt.
+entsprechend vom Browser im Fenstertitel angezeigt. Der Titel sollte möglichst prägnant und nicht zu lange gewählt werden.
 
-Für den Fall, dass kein Titel angegeben wird, wird die
-\ximsterm{Location} auch für den Titel automatisch übernommen.
+Für den Fall, dass kein Titel angegeben wird, wird 
+%die \ximsterm{Location} 
+der Pfad
+auch für den Titel automatisch übernommen.
 
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=0.9\textwidth]{./images/tinymce.png}
-  \caption{Unterscheidung: \ximsterm{Location}/Titel}
+  %\caption{Unterscheidung: \ximsterm{Location}/Titel}
+  \caption{Unterscheidung: Pfad/Titel}
   \label{fig:unterscheidunglocationtitel}
 \end{figure}
 
 In unserem Beispiel befinden wir uns im Verzeichnis
-\path{/uniweb/test/christian/sfs} und erstellen ein neues Dokument mit
-der \ximsterm{Location} \path{sfs} und dem Titel »Schritt für
-Schritt«. Das erstellte Dokument ist in \otherterm{XIMS} im
-Verzeichnis \path{/uniweb/test/christian/sfs} zu finden und scheint
+\path{/uniweb/test/institut-xy} und erstellen ein neues Dokument mit
+%der \ximsterm{Location} 
+dem Pfad \path{sfs.html} und dem Titel »Schritt für Schritt«. Das erstellte Dokument ist in \otherterm{XIMS} im
+Verzeichnis \path{/uniweb/test/institut-xy} zu finden und scheint
 unter dem Namen des Titels (in unserem Beispiel »Schritt für Schritt«)
 auf.
 
@@ -133,13 +158,13 @@ Veröffentlichen auf der Universitätswebseite.
 Das \ximsterm{SiteRoot} \path{uniweb} und »Home« in der
 Brotkrümelnavigation repräsentieren \url{http://www.uibk.ac.at/},
 darunter verlaufen die Pfade genau parallel. Hier zur Verdeutlichung
-nochmals die Location-Pfade zum Beispieldokument aus den Abbildungen:
+nochmals die Pfade zum Beispieldokument aus den Abbildungen:
 
 \begin{figure}[H]
   \begin{Verbatim}[commandchars=\\\{\},fontsize=\footnotesize]
-Sie befinden sich in:                                 \textbf{\textit{home}}>\textbf{test}>\textbf{christian}>\textbf{sfs}>\textbf{sfs.html}
-Öffentliche URL:                     \textbf{\textit{http://www.uibk.ac.at}}/\textbf{test}/\textbf{christian}/\textbf{sfs}/\textbf{sfs.html}
-In XIMS:     https://xims.uibk.ac.at/goxims/content/\textbf{\textit{uniweb}}/\textbf{test}/\textbf{christian}/\textbf{sfs}/\textbf{sfs.html}
+Sie befinden sich in:                                 \textbf{\textit{home}}>\textbf{test}>\textbf{institut-xy}>\textbf{sfs.html}
+Öffentliche URL:                     \textbf{\textit{http://www.uibk.ac.at}}/\textbf{test}/\textbf{institut-xy}/\textbf{sfs.html}
+In XIMS:     https://xims.uibk.ac.at/goxims/content/\textbf{\textit{uniweb}}/\textbf{test}/\textbf{institut-xy}/\textbf{sfs.html}
   \end{Verbatim}
   \caption{Detail: Pfade zum Beispieldokument}
 \end{figure}
@@ -157,7 +182,7 @@ erstellen. Alternativ kann der \ximsterm{Body} als »wohlgeformtes«
   HTML-\texttt{<body>}-Elementes, daher auch der Name des Feldes. Das
   Element \texttt{<head>} wird erst von den XSLT-Stylesheets am
   Webserver erzeugt. Die Stylesheets greifen dazu unter anderem auf
-  den Titel und Metadate zum Dokument zurück.} direkt in den »Plain
+  den Titel und Metadaten zum Dokument zurück.} direkt in den »Plain
 Textarea« Editor eingegeben werden. Vor dem Abspeichern kann über die
 »XML von Body testen«-Funktion getestet werden, ob der \ximsterm{Body}
 wohlgeformt ist. Über die Funktion »\othertermdef{Prettyprint}« (Icon
@@ -249,7 +274,7 @@ Ein bereits erstelltes Dokument zeigt sich nach einem Klick auf das
 Erstellen-Maske gleicht. Gleichzeitig wird der Schreibzugriff auf das
 Dokument für Andere gesperrt.
 
-Abhängig von der Editorwahl (TinyMCE, eWebEditPro oder Plain Textarea)
+Abhängig von der Editorwahl (TinyMCE oder Plain Textarea)
 zeigt \otherterm{XIMS} eine entsprechende Editiermaske.\footnote{Am
   oberen Rand befindet sich ein Drop-Down-Menu für die Editorwahl.}
 
@@ -262,9 +287,14 @@ zeigt \otherterm{XIMS} eine entsprechende Editiermaske.\footnote{Am
 
 
 \begin{Hinweis}
-  Ist ein Objekt publiziert, kann die \ximsterm{Location} nicht
-  verändert werden (siehe Abb.~\ref{fig:xhtmlintinymce}). Um die
-  \ximsterm{Location} eines veröffentlichten Objekts verändern zu
+  Ist ein Objekt publiziert, kann 
+  %die \ximsterm{Location} 
+  der Pfad
+  nicht
+  verändert werden (siehe Abb.~\ref{fig:xhtmlintinymce}). Um 
+  %die \ximsterm{Location} 
+  den Pfad
+  eines veröffentlichten Objekts verändern zu
   können, muss dieses zuerst depubliziert werden.
 \end{Hinweis}
 
@@ -276,27 +306,34 @@ Standardansicht des Dokuments zurück.
 \label{gesperrteobjekte}
 
 Die Editiermaske darf nur über »Speichern« oder »Abbrechen« verlassen
-werden, weil das Dokument sonst für Andere gesperrt beleibt.
+werden, weil das Dokument sonst für Andere gesperrt bleibt.
 
 \subsubsection{Verzeichnisse/Ordner (Folder)}
 \label{ordner}
 
-Für das Erstellen eines Verzeichnisses ist nur die Eingabe der \ximsterm{Location}
-erforderlich. Wird kein Eintrag im Feld Titel gemacht, wird der \ximsterm{Location}-Name
+Für das Erstellen eines Verzeichnisses ist nur die Eingabe 
+%der \ximsterm{Location}
+des Pfades
+erforderlich. Wird kein Eintrag im Feld Titel gemacht, wird der 
+%\ximsterm{Location}-Name
+Pfad-Name
 auch für das Titel-Feld übernommen.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=\textwidth]{./images/create-folder.png}
+  \includegraphics[width=\textwidth]{./images/erstellefolder.png}
   \caption{Erstellen eines Ordners}
   \label{fig:erstellefolder}
 \end{figure}
 
-\paragraph{\ximsterm{Location}}
-Siehe Punkt~\ref{location}.
+%\paragraph{\ximsterm{Location}}
+%Siehe Punkt~\ref{location}.
 
 \paragraph{Titel}
 Siehe Punkt~\ref{title}.
+
+\paragraph{Pfad}
+Siehe Punkt~\ref{location}.
 
 \paragraph{Objekt als neu markieren}
 Siehe Punkt~\ref{markasnew}.
@@ -311,13 +348,21 @@ Verzeichnisinhalts erstellen. Dieses Standardverhalten kann mit der Option
 »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« wenn nötig unterbunden
 werden.\footnote{Wir empfehlen, den \ximsterm{Autoindex} abzuschalten, falls Sie mehrsprachige Indexdokumente (z.\,B.:
   \nolinkurl{index.html.de} und \nolinkurl{index.html.en}) verwenden wollen, es kann sonst zu Fehlern bei der
-  Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; die \ximsterm{Location} muss \path{index} lauten, der Webserver verwendet es dann automatisch.
+  Sprachauswahl kommen.} In vielen Fällen ist es sinnvoll ein Indexdokument selbst zu erstellen; 
+  %die \ximsterm{Location} 
+  der Pfad
+  muss \path{index.html} lauten, der Webserver verwendet es dann automatisch.
 
 \begin{Hinweis}
-  Ein Objekt mit der \ximsterm{Location} \path{index} (z.\,B.
-  \nolinkurl{index.html}) wird vom Webserver gegenüber dem automatisch
-  erstellten Index vorgezogen, d.h. sobald ein Objekt mit der
-  \ximsterm{Location} \path{index} in dem \ximsterm{Container}
+  Ein Objekt mit 
+  %der \ximsterm{Location} 
+  dem Pfad \path{index.html} 
+  %(z.\,B. \nolinkurl{index.html}) 
+  wird vom Webserver gegenüber dem automatisch
+  erstellten Index vorgezogen, d.h. sobald ein Objekt mit 
+  %der \ximsterm{Location} 
+  dem Pfad 
+  \path{index.html} in dem \ximsterm{Container}
   existiert, wird dieses Dokument ausgeliefert, auch wenn ein
   \ximsterm{Autoindex} erstellt wurde.
 \end{Hinweis}
@@ -336,47 +381,56 @@ verboten.\footnote{Die Dokumente darunter sind selbstverständlich zugänglich.}
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex.png}
-  \caption{\otherterm{XIMS} Ansicht eines Ordners mit Inhalt. Keines dieser Objekte hat die \ximsterm{Location}
-    \texttt{index}!}
+  \caption{\otherterm{XIMS} Ansicht eines Ordners mit Inhalt. Keines dieser Objekte hat 
+  %die \ximsterm{Location}
+   den Pfad
+    \texttt{index.html}!}
   \label{fig:ordnerohneindex}
 \end{figure}
 
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=\textwidth]{./images/ordnermitinhaltohneindex_publiziert.png}
-  \caption{Die veröffentlichte Version desselben Ordners. Da kein Objekt mit der
-    \ximsterm{Location} \texttt{index} enthalten ist, wird der Ordnerinhalt angezeigt. Die Darstellung im Bild
+  \caption{Die veröffentlichte Version desselben Ordners. Da kein Objekt mit 
+  %der \ximsterm{Location}
+  dem Pfad
+   \texttt{index.html} enthalten ist, wird der Ordnerinhalt angezeigt. Die Darstellung im Bild
     zeigt den von \otherterm{XIMS} generierten \ximsterm{Autoindex}.}
   \label{fig:ordnerohneindexpubliziert}
 \end{figure}
 
-\paragraph{Zugriffsrechte erteilen}
-\label{zugriffsrechte}
-
-Über diese Funktion können die \othertermdef{Berechtigung}en für das Objekt konfiguriert werden.
-\otherterm{XIMS} »vererbt« standardmäßig die Einstellungen von den Elternobjekten.
-
-\begin{description}
-\item[Nur mir selbst Rechte erteilen:]
-  Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
-  gelesen bzw. verändert werden.
-\item[Zusätzlich Leserechte für Mitglieder der Standard Rollen
-  erteilen:] (Grant VIEW privilege of your default roles) Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
-\end{description}
-
-\begin{Hinweis}
-  Die Funktion »Zusätzlich Leserechte für Mitglieder der Standard
-  Rollen erteilen« wird derzeit nicht verwendet!
-\end{Hinweis}
+% Nur im Experten.Modus
+%
+%\paragraph{Zugriffsrechte erteilen}
+%\label{zugriffsrechte}
+%
+%Über diese Funktion können die \othertermdef{Berechtigung}en für das Objekt konfiguriert werden.
+%\otherterm{XIMS} »vererbt« standardmäßig die Einstellungen von den Elternobjekten.
+%
+%\begin{description}
+%\item[Nur mir selbst Rechte erteilen:]
+%  Durch dieses Attribut kann das Objekt ausschließlich vom jeweiligen Besitzer
+%  gelesen bzw. verändert werden.
+%\item[Zusätzlich Leserechte für Mitglieder der Standard Rollen
+%  erteilen:] (Grant VIEW privilege of your default roles) Über dieses Attribut erhalten \otherterm{XIMS}-Standardrollen das Leserecht für dieses Objekt.
+%\end{description}
+%
+%\begin{Hinweis}
+%  Die Funktion »Zusätzlich Leserechte für Mitglieder der Standard
+%  Rollen erteilen« wird derzeit nicht verwendet!
+%\end{Hinweis}
 
 \paragraph{Editieren eines Verzeichnisses (Folders)}
 
-Es können die \ximsterm{Location}, der Titel und die Optionen »Objekt als neu
+Es können 
+%die \ximsterm{Location},
+der Pfad,
+ der Titel und die Optionen »Objekt als neu
 markieren« bzw. »Verhindere \ximsterm{Autoindex} beim Veröffentlichen« geändert
-werden. Außerdem besteht die Möglichkeit die Kriterien für die standardmäßige
+werden. Außerdem besteht die Möglichkeit die Anzahl der Einträge pro Seite und die Kriterien für die standardmäßige
 Sortierung der Kindobjekte des Verzeichnisses festzulegen (nach Position, Titel,
 Änderungsdatum).
-Bitte beachten Sie an dieser Stelle Punkt \ref{gesperrteobjekte} »Gesperrte Objekte«.
+%Bitte beachten Sie an dieser Stelle Punkt \ref{gesperrteobjekte} »Gesperrte Objekte«.
 
 \begin{figure}[!ht]
   \centering
@@ -392,7 +446,7 @@ Um eine Bild-Datei (Image) in \otherterm{XIMS} zu erstellen, d.h. ein Bild vom l
 verwenden oder den Dateipfad im lokalen Dateisystem direkt eingeben. Über die
 Durchsuchen-Funktion vermeidet man falsche Pfadangaben durch Tippfehler und
 sie ist der komfortablere Weg um den Pfad zur gewünschten Bild-Datei zu
-generieren (z.\,B.: \path{G:\service\bilder\sun.jpg}).
+generieren (z.\,B.: \path{D:\Bilder\Beispielbilder\Sonnenuntergang.jpg}).
 
 \begin{figure}[!ht]
   \centering
@@ -402,16 +456,37 @@ generieren (z.\,B.: \path{G:\service\bilder\sun.jpg}).
 \end{figure}
 
 \paragraph{Titel}
-
 Der Titel (in unserem Beispiel Sonnenaufgang) entspricht dem Namen des Bildes,
 unter dem das Bild in der \ximsterm{Containeransicht} aufscheint.
 
-\paragraph{Bild (Image)}
-Dieses Eingabefeld dient zur Angabe des Verzeichnispfades unter dem das Bild am lokalen
-Rechner zu finden ist (in unserem Beispiel unter \path{G:\service\bilder\sun.jpg}.
+\paragraph{Datei (File)}
+\label{datei}
+Dieses Eingabefeld dient zur Angabe des Verzeichnispfades unter dem das Bild / die Datei am lokalen
+Rechner zu finden ist (in unserem Beispiel unter \path{D:\Bilder\Beispielbilder\Sonnenuntergang.jpg}.
 
 Der Durchsuchen-Button erleichtert die Angabe des absoluten Dateipfades durch
 Öffnen eines Dateiauswahl-Dialoges.
+
+\paragraph{ZIP-Archive}
+\label{zip-archives}
+Wollen Sie mehrere Bilder im gleichen Verzeichnis neu erstellen, können Sie diese vorab in ein Archiv im ZIP-Format packen und anschließend in einem Arbeitsschritt in \otherterm{XIMS} hochladen. Wählen Sie dazu wie bei einem einzelnen Bild den ">Durchsuchen"<-Button neben dem Datei-Feld und wählen Sie nun eine ZIP-Datei von Ihrem lokalen Rechner aus. Sobald der Dialog zum Datei hochladen geschlossen wurde, erscheinen nun zwei weitere Optionen
+
+\begin{itemize}
+	\item Inhalte entpacken: Bestätigen Sie diese Option um die Bilder in Ihr XIMS-Verzeichnis zu entpacken. Andernfalls würde die ZIP-Datei selbst hochgeladen und nicht die darin enthaltenen Bilder. 
+	\item Überschreibe vorhandene Dateien beim entpacken. Wenn Sie diese Option aktivieren, werden bereits vorhandene Bilddateien mit 
+	%der gleichen Location 
+	dem gleichen Pfad 
+	durch die neuen ersetzt.
+\end{itemize}
+
+Als 
+%Location
+Pfad
+ und Titel für die hochgeladenen Dateien wird automatisch der Dateiname des Bildes, den es auf Ihrem lokalen Rechner hat, gesetzt.
+
+\begin{Hinweis}
+  Wenn Sie mehrer Bilder in einem ZIP-Archiv zusammenfassen um es in XIMS hochzuladen, achten Sie darauf, dass nur einzelne Bilddateien - keine Ordner oder Unterordner gepackt werden.
+\end{Hinweis}
 
 \paragraph{Schlagwörter}
 
@@ -421,28 +496,27 @@ Siehe Punkt \ref{keywords}
 
 Siehe Punkt \ref{abstract}
 
-\paragraph{Zugriffsrechte erteilen}
-
-Siehe Punkt \ref{zugriffsrechte}
+%\paragraph{Zugriffsrechte erteilen}
+%Siehe Punkt \ref{zugriffsrechte}
 
 \paragraph{Speichern}
 \label{upload}
-
 Das Klicken des »Speichern«-Buttons speichert die ausgewählte Datei im \otherterm{XIMS} und
 man wird zur \ximsterm{Containeransicht} weitergeleitet.
 
 \paragraph{Abbrechen}
-
 Siehe Punkt \ref{cancel}
 
 \paragraph{Editieren eines Bildes (Image)}
-
-Es wird auf Punkt \ref{edit} verwiesen, da alle wesentlichen Editiermöglichkeiten
-übereinstimmen.
+\label{edit-image}
+Es können Titel, \otherterm{Schlagwörter}, Zusammenfassung und bei unveröffentlichten Bildern der Pfad der Datei geändert
+werden. Soll die Datei durch eine andere ersetzt werden, kann man mit
+Hilfe des »Durchsuchen«-Dialoges den Pfad zur neuen Datei angeben bzw.
+diesen direkt ins Eingabefeld eintippen. Will man lediglich den Titel
+editieren, so kann das Feld »Bild ersetzen« leer bleiben.
 
 \subsubsection{Dateien (Files)}
 \label{dateien}
-
 Um eine binäre Datei (MS-Word Dokument, PDF-Datei, etc.) zu erstellen, d.h. die
 Datei vom lokalen Rechner zu importieren, kann man entweder die
 Durchsuchen-Funktion verwenden oder den Dateipfad im lokalen Dateisystem direkt
@@ -450,32 +524,32 @@ eingeben. Über die Durchsuchen-Funktion vermeidet man falsche Pfadangaben
 durch Tippfehler und sie ist der komfortablere Weg um den Pfad zur gewünschten
 Datei zu generieren (z.\,B.: \path{G:\docs\anmeldung.pdf}).
 
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\textwidth]{./images/create-file.png}
-  \caption{Erstellen einer Datei}
-  \label{fig:erstelledatei}
-\end{figure}
+% wie bei image
+%
+%\begin{figure}[!ht]
+%  \centering
+%  \includegraphics[width=\textwidth]{./images/create-file.png}
+%  \caption{Erstellen einer Datei}
+%  \label{fig:erstelledatei}
+%\end{figure}
 
 \paragraph{Titel}
-
 Siehe Punkt \ref{title}
 
 \paragraph{Datei}
-
 Siehe Punkt \ref{dateien}
 
-\paragraph{Schlagwörter}
+\paragraph{ZIP-Archive}
+Siehe Punkt \ref{zip-archives}
 
+\paragraph{Schlagwörter}
 Siehe Punkt \ref{keywords}
 
 \paragraph{Zusammenfassung}
-
 Siehe Punkt \ref{abstract}
 
-\paragraph{Zugriffsrechte erteilen}
-
-Siehe Punkt \ref{zugriffsrechte}
+%\paragraph{Zugriffsrechte erteilen}
+%Siehe Punkt \ref{zugriffsrechte}
 
 \paragraph{Speichern}
 Siehe Punkt \ref{upload}
@@ -485,18 +559,17 @@ Siehe Punkt \ref{upload}
 Siehe Punkt \ref{cancel}
 
 \paragraph{Editieren einer Datei (File)}
-Es können Titel, \otherterm{Schlagwörter} und Zusammenfassung der Datei geändert
-werden. Soll die Datei durch eine andere ersetzt werden, kann man mit
-Hilfe des »Durchsuchen«-Dialoges den Pfad zur neuen Datei angeben bzw.
-diesen direkt ins Eingabefeld eintippen. Will man lediglich den Titel
-editieren, so kann das Feld »Datei ersetzen« leer bleiben.
+Es wird auf Punkt \ref{edit-image} verwiesen, da alle wesentlichen Editiermöglichkeiten
+übereinstimmen.
 
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\textwidth]{./images/edit-file.png}
-  \caption{Editieren einer Datei (nicht publiziert)}
-  \label{fig:editieredatei}
-\end{figure}
+% wie bei image
+%
+%\begin{figure}[!ht]
+%  \centering
+%  \includegraphics[width=\textwidth]{./images/edit-file.png}
+%  \caption{Editieren einer Datei (nicht publiziert)}
+%  \label{fig:editieredatei}
+%\end{figure}
 
 \subsubsection{\ximstermdef{URLLink}s}
 \label{urllinks}
@@ -504,45 +577,47 @@ editieren, so kann das Feld »Datei ersetzen« leer bleiben.
 Über den \ximsterm{Objekttyp} \ximsterm{URLLink} können sowohl externe (d.h. Links außerhalb
 der Domäne \url{http://www.uibk.ac.at}) als auch interne Links erstellt
 werden. Hinzu kommt, dass diesem Objekttyp bei der Erstellung von
-\ximsterm{DepartmentLinks} eine besondere Rolle zukommt (siehe Punkt \ref{deplinks}). Bei internen Links ist zu beachten, dass diese absolut zum
-\ximsterm{SiteRoot} anzugeben sind (i.d.R. absolut zu \path{/uniweb}). Alternativ kann
+\ximsterm{DepartmentLinks} eine besondere Rolle zukommt (siehe Punkt \ref{deplinks}). Bei internen Links ist zu beachten, dass diese absolut zum \ximsterm{SiteRoot} anzugeben sind (i.d.R. absolut zu \path{/uniweb}). Alternativ kann
 auch die offizielle \otherterm{URL} der Seite (z.\,B. \url{http://www.uibk.ac.at/zid}),
 welche verlinkt werden soll, angegeben werden. Externe Links müssen
 zwingend mit dem \nolinkurl{http://}- bzw. \nolinkurl{https://}-Prefix angegeben werden.
 
 \paragraph{\ximsterm{Location}}
+Die \ximsterm{Location} bei \ximsterm{URLLink} Objekten wird anders gehandhabt als 
+%die \ximsterm{Location}
+der Pfad 
+anderer Objekte. Bei \ximsterm{URLLink} Objekten beschreibt die \ximsterm{Location} den Pfad zum Objekt auf welches verwiesen wird.
+Grundsätzlich sind dieselben Regeln wie bei URLs üblich zu beachten. Jeder nach RFC 2396 gültiger URI ist zulässig. Mit dem ">Ziel suchen"<-Button können Sie innerhalb von XIMS nach dem Zielobjekt suchen (siehe Abbildung \ref{fig:urlzielsuchen}) und so falsche Verlinkungen durch Tippfehler vermeiden.
 
-Die \ximsterm{Location} bei \ximsterm{URLLink} Objekten wird anders gehandhabt als die \ximsterm{Location}
-anderer Objekte. Bei \ximsterm{URLLink} Objekten beschreibt die \ximsterm{Location} den Pfad zum
-Objekt auf welches verwiesen wird.
-Grundsätzlich sind dieselben Regeln wie bei URLs üblich zu beachten. Jeder nach
-RFC 2396 gültiger URI ist zulässig.
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\textwidth]{./images/urllink-ziel-suchen.png}
+  \caption{">Ziel suchen"<-Dialog}
+  \label{fig:urlzielsuchen}
+\end{figure}
 
 \paragraph{Titel}
-
 Siehe Punkt \ref{title}
 
 \paragraph{Schlagwörter}
-
 Siehe Punkt \ref{keywords}
 
 \paragraph{Zusammenfassung}
-
 Siehe Punkt \ref{abstract}
 
-\paragraph{Zugriffsrechte erteilen}
+%\paragraph{Zugriffsrechte erteilen}
+%Siehe Punkt \ref{zugriffsrechte}
 
-Siehe Punkt \ref{zugriffsrechte}
+\paragraph{Gültig ab / Gültig bis}
+Bei URL-Links können Sie durch setzen der ">Gültig ab"<- und ">Gültig bis"<-Attribute die Gültigkeit beschränken. Klicken Sie auf das Kalender-Icon neben dem Eingabefeld, öffnet sich ein Kalender als Popup, in dem Sie bequem Datum und Uhrzeit setzen können. Sind die Gültigkeitsattribute nicht bestimmt, ist der URL-Link ab sofort bzw. unbegrenzt gültig. 
 
 \paragraph{Speichern}
 Siehe Punkt \ref{save}
 
 \paragraph{Abbrechen}
-
 Siehe Punkt \ref{cancel}
 
-\paragraph{Editieren eines URLLinks}
-
+\paragraph{Editieren eines URL-Links}
 Hier wird auf Punkt \ref{edit} verwiesen, da alle wesentlichen Editiermöglichkeiten
 übereinstimmen.
 
@@ -555,21 +630,19 @@ dem eigentlichen Inhalt der Seite. Eine Seitennavigation kann zum Beispiel ein P
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=\textwidth]{./images/create-portlet.png}
+  \includegraphics[width=\textwidth]{./images/erstelleportlet.png}
   \caption{Erstellen eines Portlets}
   \label{fig:erstelleportlet}
 \end{figure}
 
-\paragraph{\ximsterm{Location}}
-
-Siehe Punkt \ref{location}
-
 \paragraph{Titel}
-
 Siehe Punkt \ref{title}
 
-\paragraph{Ziel (Target)}
+%\paragraph{\ximsterm{Location}}
+\paragraph{Pfad}
+Siehe Punkt \ref{location}
 
+\paragraph{Ziel (Target)}
 Als Ziel wird der Pfad jenes Verzeichnisses bzw. jener Datenmenge angegeben, auf
 das bzw. die das \ximsterm{Portlet} seine spezielle Sicht richten soll.
 Die »Ziel Suchen« (Browse for Target)-Funktionalität erleichtert das exakte
@@ -584,12 +657,10 @@ Bestimmen dieses Pfades.
   verweisend auf die entsprechenden Dokumente, auf.
 \end{Hinweis}
 
-\paragraph{Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen}
-
-Siehe Punkt \ref{zugriffsrechte} sowie Punkt \ref{rollenverwaltung}
+%\paragraph{Zusätzlich Leserechte für Mitglieder der Standard Rollen erteilen}
+%Siehe Punkt \ref{zugriffsrechte} sowie Punkt \ref{rollenverwaltung}
 
 \paragraph{Zusätzliche Einstellmöglichkeiten für \ximsterm{Portlet}s}
-
 Portlets sind ein mächtiges Werkzeug von \otherterm{XIMS}. Sie schaffen zusätzlich zur
 Auf"|listung der Objekttitel eine Reihe anderer Möglichkeiten, z.\,B. können
 Containerinhalte gefiltert nach speziellen Attributen bzw. \ximsterm{Objekttyp}en dargestellt
@@ -597,12 +668,10 @@ werden. Für genauere Informationen bezüglich \ximsterm{Portlet}s wird auf die \o
 bzw. den \otherterm{XIMS}-Support verwiesen.
 
 \paragraph{Editieren eines \ximsterm{Portlet}s}
-
 Siehe Punkt \ref{erstelleneditieren}
 
 \subsubsection{\ximstermdef{DepartmentRoot}s}
 \label{departmentroots}
-
 Der Begriff »DepartmentRoot« beschreibt die Startseite einer Organisationseinheit
 und entspricht einer erweiterten Version eines \otherterm{XIMS}-Ordners mit besonderen
 Eigenschaften. Ein »DepartmentRoot« definiert einige Eigenschaften, die auf
@@ -613,6 +682,10 @@ das Institut spezifisches Bild (»DepartmentImage«), wie auch der »Department Tit
 bzw. der »Department Infotext« oder ein für die Organisationseinheit bzw. für das
 Institut spezifisches \otherterm{XSLT}-Stylesheet für eine angepasste Darstellung
 veröffentlichter Seiten.
+
+\begin{Hinweis}
+  Der Objekttyp DepartmentRoot ist standardmäßig nicht für alle Nutzer freigeschalten. Wenn Sie mit DepartmentRoots arbeiten wollen und dieser Objekttyp nicht im Erstellen-Menü gelistet ist, wenden Sie sich an den Xims-Support.
+\end{Hinweis}
 
 Abbildung~\ref{fig:departmentrootzid} zeigt wie ein individualisierter DepartmentRoot mit
 »DepartmentLinks«, »DepartmentImage«, »Department Titel«, »Department Infotext«
@@ -658,19 +731,15 @@ eines Verzeichnisses (siehe Punkt \ref{erstelleneditieren}).
 \end{figure}
 
 \paragraph{Stylesheet}
-
 Dem \ximsterm{DepartmentRoot} kann hier ein spezielles Stylesheet zugewiesen werden.
 
 \paragraph{CSS}
-
 Dem \ximsterm{DepartmentRoot} kann hier ein spezielles CSS zugewiesen werden.
 
 \paragraph{JavaScript}
-
 Dem \ximsterm{DepartmentRoot} kann hier ein spezielles JavaScript zugewiesen werden.
 
 \paragraph{Bild}
-
 Dem \ximsterm{DepartmentRoot} kann hier ein spezielles \ximsterm{DepartmentImage} zugewiesen
 werden. Siehe dazu Punkt \ref{depimg}.
 
@@ -678,10 +747,10 @@ werden. Siehe dazu Punkt \ref{depimg}.
 
 Dem \ximsterm{DepartmentRoot} kann hier ein spezieller RSS-Feed zugewiesen werden.
 
-\paragraph{Ausblenden der 3. Spalte für dieses \ximsterm{DepartmentRoot}}
-
-Ist diese Option aktiviert, wird die rechts äußerste Spalte des Unidesigns (Quicklinks,
-Service, ...) ausgeblendet.
+%\paragraph{Ausblenden der 3. Spalte für dieses \ximsterm{DepartmentRoot}}
+%
+%Ist diese Option aktiviert, wird die rechts äußerste Spalte des Unidesigns (Quicklinks,
+%Service, ...) ausgeblendet.
 
 \paragraph{Editieren eines \ximsterm{DepartmentRoot}s}
 
@@ -720,11 +789,14 @@ Untermenge von DocBook XML, welche besonders für kleinere Dokumente
   \label{fig:erstelledocbookxml}
 \end{figure}
 
-\paragraph{\ximsterm{Location}}
-Siehe Punkt \ref{location}
+%\paragraph{\ximsterm{Location}}
+%Siehe Punkt \ref{location}
 
 \paragraph{Titel}
 Siehe Punkt \ref{title}
+
+\paragraph{Pfad}
+Siehe Punkt \ref{location}
 
 \paragraph{Body}
 
@@ -761,9 +833,8 @@ Siehe Punkt \ref{keywords}
 
 Siehe Punkt \ref{abstract}
 
-\paragraph{Zugriffsrechte erteilen}
-
-Siehe Punkt \ref{zugriffsrechte}
+%\paragraph{Zugriffsrechte erteilen}
+%Siehe Punkt \ref{zugriffsrechte}
 
 \paragraph{Speichern}
 
@@ -773,12 +844,12 @@ Siehe Punkt \ref{save}
 
 Siehe Punkt \ref{cancel}
 
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\textwidth]{./images/sdocbookxmlerstellt.png}
-  \caption{Das erstellte \ximsterm{sDocBookXML} Objekt in der Vollansicht}
-  \label{fig:sdocbookxmlerstellt}
-\end{figure}
+%\begin{figure}[!ht]
+%  \centering
+%  \includegraphics[width=\textwidth]{./images/sdocbookxmlerstellt.png}
+%  \caption{Das erstellte \ximsterm{sDocBookXML} Objekt in der Vollansicht}
+%  \label{fig:sdocbookxmlerstellt}
+%\end{figure}
 
 \paragraph{Editieren eines \ximsterm{sDocBookXML} Objekts}
 
@@ -787,9 +858,9 @@ Siehe Punkt \ref{erstelleneditieren}.
 \subsubsection{Bildergalerie (\ximstermdef{Gallery})}
 \label{gallery}
 
-Der Objekttyp Gallery \ximsterm{Gallery} ist prinzipiell eine besondere Form eines Ordners. In einer \ximsterm{Gallery} 
+Der Objekttyp Bildergalerie ist prinzipiell eine besondere Form eines Ordners. In einer Bildergalerie
 können Bilder abgelegt werden, die dann mittels Javascript als Bildergalerie dargestellt werden.
-Standardmäßig wird die Gallery im XIMS in der Container Ansicht angezeigt. Wie von Folder und 
+Standardmäßig wird die Bildergalerie im XIMS in der Container Ansicht angezeigt. Wie von Ordner und 
 Departmentroot gewohnt können von hier aus über das Erstellen-Menu weitere Bilder hinzugefügt werden. 
 Rechts neben dem Erstellen-Menu befindet sich ein Link zur Vorschau-Ansicht.
 In der Vorschau-Ansicht (siehe Abbildung \ref{fig:gallery-preview}) werden alle im Gallery-Container 
@@ -799,14 +870,6 @@ Um innerhalb der Bildergalerie zu navigieren gibt es mehrer Möglichkeiten: Durch
 wird jeweilige Bild in der definierten Größe dargestellt. Oberhalb des gerade betrachteten Bildes 
 befinden sich Navigationspfeile, durch die man zum jeweils vorherigen oder nächsten Bild gelangt. Zudem führt
 ein Klick auf das Hauptbild zur Anzeige des jeweils nächsten.
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\textwidth]{./images/gallery-preview.png}
-  \caption{Die \ximsterm{Gallery} in der Vorschauansicht, hier in 640x480, Thumbnail-Leiste oben, eingeblendeter Navigation und Bildbeschreibung}
-  \label{fig:gallery-preview}
-\end{figure}
-
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=\textwidth]{./images/create-gallery.png}
@@ -814,11 +877,14 @@ ein Klick auf das Hauptbild zur Anzeige des jeweils nächsten.
   \label{fig:create-gallery}
 \end{figure}
 
-\paragraph{\ximsterm{Location}}
-Siehe Punkt \ref{location}.
+%\paragraph{\ximsterm{Location}}
+%Siehe Punkt \ref{location}.
 
 \paragraph{Titel}
 Siehe Punkt \ref{title}. Der Titel erscheint als Überschrift über der Bildergalerie.
+
+\paragraph{Pfad}
+Siehe Punkt \ref{location}.
 
 \paragraph{Zusammenfassung}
 Siehe Punkt \ref{abstract}. Die Zusammenfassung lässt sich für eine kurze Beschreibung der Bildergalerie 
@@ -833,45 +899,50 @@ Position, Titel und Änderungsdatum gewählt werden. Die gewählte Sortierung wird 
 als auch für die Galerie-Darstellung übernommen. 
 
 \paragraph{Größe der Bilder}
-Für die Darstellung der Bilder gibt es drei Auswahlmöglichkeiten bezüglich der Größe: 800x600, 640x480 oder 400x300. Das aktuell betrachtete Bild wird auf die gewählte Breite skaliert, die Höhe proportional angepasst (keine Verzerrung). Kleine Bilder werden entsprechend vergrößert und können »pixelig« werden. Die Größe sollte also entsprechend der Qualität der Ausgangsbilder gewählt werden.
+Für die Darstellung der Bilder gibt es drei Auswahlmöglichkeiten bezüglich der Größe: groß (Breite ca. 600px), mittel (Breite ca. 400px) oder klein (Breite ca. 200px). Das aktuell betrachtete Bild wird auf die gewählte Breite skaliert, die Höhe proportional angepasst (keine Verzerrung). Kleine Bilder werden entsprechend vergrößert und können »pixelig« werden. Die Größe sollte also entsprechend der Qualität der Ausgangsbilder gewählt werden.
 
 \paragraph{Position der Thumbnails}
 Die Position der Thumbnails relativ zum aktuell betrachteten Bild. Die Auswahlmöglichkeiten sind oben, unten, links und keine Thumbnails.
 
 \paragraph{Bildbeschreibung}
-Die Bildbeschreibung wird aus der Zusammenfassung eines Image generiert und erscheint dann jeweils unter dem aktuell betrachteten Bild. Auf Wunsch kann die Beschreibung ausgeblendet werden. Dies gilt für alle Bilder einer \ximsterm{Gallery}.
+Die Bildbeschreibung wird aus der Zusammenfassung eines Bilds generiert und erscheint dann jeweils unter dem aktuell betrachteten Bild. Auf Wunsch kann die Beschreibung ausgeblendet werden. Dies gilt für alle Bilder einer Bildergalerie.
 
 \paragraph{Navigation}
 Die Navigation erzeugt Links zum jeweils vorherigen und nächsten Bild. Sie befindet sich immer oberhalb des aktuell betrachten Bildes und kann ausgeblendet werden.
 
-\paragraph{Zugriffsrechte}
-Siehe Punkt \ref{zugriffsrechte}.
+%\paragraph{Zugriffsrechte}
+%Siehe Punkt \ref{zugriffsrechte}.
 
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\textwidth]{./images/gallery-preview.png}
+  \caption{Die \ximsterm{Gallery} in der Vorschauansicht, hier mit großen Bildern, Thumbnail-Leiste oben, eingeblendeter Navigation und Bildbeschreibung}
+  \label{fig:gallery-preview}
+\end{figure}
 
 \subsection{Objekte löschen und »Papierkorb«}
 \label{delete}
 
-Objekte können mit dem »Löschen-Icon« gelöscht werden, wenn sie unveröffentlicht sind
+Objekte können mit dem ">Löschen"<-Icon gelöscht werden, wenn sie unveröffentlicht sind
 und die entsprechenden Privilegien in der ACL vergeben wurden.
 
 Das Objekt wird im ersten Schritt nur als gelöscht markiert, es verbleibt vorerst noch
-in der Datenbank, sozusagen im Papierkorb. Wenn derartige Objekte in einem
-Ordner vorhanden sind, wird in der Fußzeile ein Link »Zeige alle (\#) gelöschten
-Objekte in diesem Container« eingeblendet. In dieser Ansicht werden die gelöschten
-Objekte grau hinterlegt und mit zwei Optionen dargestellt:
+in der Datenbank. Es befindet sich nun im Papierkorb. Um alle gelöschten Objekte eines Containers anzuzeigen, klicken Sie auf den Papierkorb-Button in der Titelleiste des Containers. Die Papierkorb-Ansicht ähnelt der normalen Container-Ansicht mit einer Tabelle der enthaltenen Objekte. Die möglichen Optionen für das jeweilige Objekt im Papierkorb sind jedoch auf zwei Aktionen beschränkt:
 
 \begin{itemize}
-\item Löschen rückgängig machen;
+	\item Löschen rückgängig machen und 
 \end{itemize}
 
 \begin{Hinweis}
-  Dies kann fehlschlagen, wenn zwischenzeitlich ein Objekt mit der
-  selben \ximsterm{Location} im \ximsterm{Container} angelegt wurde,
+  Dies kann fehlschlagen, wenn zwischenzeitlich ein Objekt mit 
+  %der selben \ximsterm{Location} 
+  dem selben Pfad 
+  im \ximsterm{Container} angelegt wurde,
   in diesem Fall muss das neuere Objekt zuerst umbenannt werden.
 \end{Hinweis}
 
 \begin{itemize}
-\item Endgültig löschen
+	\item Endgültig löschen
 \end{itemize}
 
 \begin{Hinweis}
@@ -880,3 +951,32 @@ Objekte grau hinterlegt und mit zwei Optionen dargestellt:
   gelöschten Objekte nehmen weiterhin Ressourcen in der Datenbank in
   Anspruch und werden daher periodisch von uns gelöscht!
 \end{Hinweis}
+
+\subsection{Kopieren und Verschieben von Objekten}
+\subsubsection{Kopieren}
+Mittels des ">Kopieren"<-Buttons in der Titelleiste eines Objekts oder der Optionen-Leiste in der Container-Ansicht können Sie ein Objekt duplizieren. Die Kopie des Objekts erhält den Titel ">Copy of [Titel]"< und den Pfad ">copy\_of\_[pfad]"<. Sollte das zu kopierende Objekt Kindelemente besitzen -- z.B. ein Ordner, der Objekte enthält -- erscheint ein ein Hinweis und Sie müssen bestätigen ob Sie alle Kindelemente mitkopieren wollen.
+
+\subsubsection{Verschieben}
+Mit der Aktion ">Verschieben"< können Sie ein Objekt in einen anderen Ordner versetzen. Dazu darf das Objekt nicht publiziert sein. Geben Sie zum verschieben den neuen Pfad ein oder navigieren Sie mittels ">Ziel suchen"< zu dem Verzeichnis, in das das Objekt verschoben werden soll.
+
+%\subsection{Sammelaktionen und rekursive Vorgänge}
+%Oft möchte man auf mehrere Objekte die gleiche Aktion anwenden, z.B. einige alte Dokumente in den Papierkorb verschieben oder einen Ordner mitsamt seiner enthaltenen Objekte und Unterordner veröffentlichen. Um nicht den immer wieder gleichen Vorgang auf jedes Objekt einzeln anwenden zu müssen, gibt es Sammelaktionen und die Option, Aktionen rekursiv (gleichzeitig auf alle Kinder- und Kindeskinderobjekte) auszuführen.
+%
+%\subsubsection{Sammelaktionen}
+%In Xims können Sie mehrere Objekte in einem Container gleichzeitig
+%\begin{itemize}
+%	\item verschieben,
+%	\item publizieren bzw. depublizieren,
+%	\item Änderungen in der Rechteverwaltung vornehmen,
+%	\item löschen bzw. wiederherstellen oder endgültig löschen.
+%\end{itemize}
+%Dazu setzen Sie in der Containeransicht das Häkchen vor jeder Zeile des Objekts, das manipuliert werden soll, oder bei ">Alle auswählen"< um alle Objekte in der aktuellen Ansicht zu manipulieren. Anschließend Kicken Sie unterhalb der Tabelle mit den gelisteten Objekten auf den entsprechenden Button um die Aktion zu starten.
+%Nun erscheint je nach gewählter Aktion eine Ansicht, in der Sie bestimmte Optionen setzen können und die Aktion bestätigen müssen oder den Vorgang abbrechen können.
+%In allen Ansichten sehen Sie nochmals eine Liste der Objekte, die Sie vorher ausgewählt haben und auf die die Aktion auch tatsächlich angewendet werden können. Objekte, für die Sie für die gewählte Aktion nicht die nötigen Rechte besitzen oder für die aus anderen Gründen\footnote{z.B. dürfen publizierte Objekte nicht gelöscht oder verschoben werden} die Aktion nicht ausgeführt werden kann, werden vom System automatisch aus der Auswahl entfernt.
+%
+%\subsubsection{Rekursive Vorgänge}
+%Wenn Sie ein oder mehrere Objekte veröffentlichen oder die Rechtevergabe ändern wollen, haben Sie zusätzlich die Option ">Ausgewählte Objekte rekursiv veröffentlichen"<  oder ">Rechte rekursiv vergeben /entziehen"<. Wählen Sie diese Möglichkeit, dann wird die Aktion auf alle Kindobjekte (z.B. alle in einem Ordner enthaltenen Objekte, und Verzeichnisse sowie wiederum deren Unterobjekte und Unterverzeichnisse) ausgeführt.
+%
+%\begin{Hinweis}
+%  Setzen Sie die Rekursion mit Bedacht ein. Überlegen Sie vorab, ob eine Aktion wirklich für alle Kinderobjekte ausgeführt werden soll. Wenn Sie z.B. ein Verzeichnis mit sehr vielen (mehrere Hundert oder gar Tausende) enthaltenen Objekten rekursiv veröffentlichen wollen, wird dies in der Regel sehr lange dauern und es kann sein, dass Ihr Browser nicht mehr reagiert (Timeout). Derzeit ist eine Beschränkung von maximal 1500 Objekten eingerichtet. Sollte es nötig sein, mehr Objekte gleichzeitig zu manipulieren, wenden Sie sich bitte an Ihr Support-Team.
+%\end{Hinweis}
