@@ -20,10 +20,10 @@
             <label for="input-skeys"><xsl:value-of select="$i18n_sqlrep/l/Search_keys"/></label>
         </div>
             <input name="skeys" type="text" value="{attributes/skeys}" class="text" size="60" id="input-skeys"/>
-            <xsl:text>&#160;</xsl:text>
+            <!--<xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('skeys')" class="doclink">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n_sqlrep/l/Search_keys"/></xsl:attribute>
-            (?)</a>
+            (?)</a>-->
         </div>
 </xsl:template>
 
@@ -32,10 +32,10 @@
         <div class="label-med"><label for="input-pagesize">
             <xsl:value-of select="$i18n_sqlrep/l/Pagesize"/></label></div>
             <input name="pagesize" type="text" value="{attributes/pagesize}" class="text" size="5" id="input-pagesize"/>
-            <xsl:text>&#160;</xsl:text>
+            <!--<xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('pagesize')" class="doclink">
 								<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n_sqlrep/l/Pagesize"/></xsl:attribute>
-            (?)</a>
+            (?)</a>-->
         </div>
 </xsl:template>
 
@@ -45,10 +45,10 @@
             <label for="input-dbdsn"><xsl:value-of select="$i18n_sqlrep/l/Database_DSN"/></label>
         </div>
             <input name="dbdsn" type="text" value="{attributes/dbdsn}" class="text" size="60" id="input-dbdsn"/>
-            <xsl:text>&#160;</xsl:text>
+            <!--<xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('dbdsn')" class="doclink">
 							<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n_sqlrep/l/Database_DSN"/></xsl:attribute>
-							(?)</a>
+							(?)</a>-->
         </div>
 </xsl:template>
 
@@ -58,10 +58,10 @@
             <label for="input-dbuser"><xsl:value-of select="$i18n_sqlrep/l/Database_User"/></label>
         </div>
             <input name="dbuser" type="text" value="{attributes/dbuser}" class="text" size="60" id="input-dbuser" />
-            <xsl:text>&#160;</xsl:text>
+            <!--<xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('dbuser')" class="doclink">
 							<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n_sqlrep/l/Database_User"/></xsl:attribute>
-							(?)</a>
+							(?)</a>-->
         </div>
 </xsl:template>
 
@@ -71,10 +71,10 @@
             <label for="input-dbpwd"><xsl:value-of select="$i18n_sqlrep/l/Database_Password"/></label>
         </div>
             <input name="dbpwd" type="password" value="{attributes/dbpwd}" class="text" size="60" id="input-dbpwd"/>
-            <xsl:text>&#160;</xsl:text>
+            <!--<xsl:text>&#160;</xsl:text>
             <a href="javascript:openDocWindow('dbpwd')" class="doclink">
 							<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n_sqlrep/l/Database_Password"/></xsl:attribute>
-							(?)</a>
+							(?)</a>-->
         </div>
 </xsl:template>
 

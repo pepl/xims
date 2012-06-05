@@ -290,11 +290,11 @@
 			<input type="text" name="questionnaire_title" size="60" class="text" id="input-title" value="{body/questionnaire/title}">
 				<xsl:attribute name="onchange">return testtitle();</xsl:attribute>
 			</input>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Title')" class="doclink">
 				<xsl:attribute name="title">
 					<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Title"/>
-				</xsl:attribute>(?)</a>
+				</xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 	
@@ -346,8 +346,8 @@
 				<label for="input-rb-kiosk-no">
 					<xsl:value-of select="$i18n/l/No"/>
 				</label>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('kioskmode')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('kioskmode')" class="doclink">(?)</a>-->
 			</fieldset>
 		</div>
 	</xsl:template>
@@ -372,8 +372,8 @@
 				<label for="input-rb-manan-false">
 					<xsl:value-of select="$i18n/l/No"/>
 				</label>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('mandatoryanswers')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('mandatoryanswers')" class="doclink">(?)</a>-->
 			</fieldset>
 		</div>
 	</xsl:template>

@@ -14,35 +14,25 @@
 	<xsl:template name="create-content">
 	<xsl:call-template name="form-titlefile-create"/>
 	<xsl:call-template name="form-marknew-pubonsave"/>
-		<!--<xsl:call-template name="tr-title-create"/>
-		<xsl:call-template name="tr-file-create"/>-->
-		<!-- TODO                          
-                                2) Hide other form fields
-                                3) Only show overwrite fied when unzip contents has been checked
-                        -->
-		<div id="tr-unzip" style="display: none;" class="block">
-			<span class="sprite-spacer">&#160;&#160;</span>
-			<label for="input-unzip">
-				<xsl:value-of select="$i18n/l/UnzipContents"/>
-			</label>
-			<input type="checkbox" name="unzip" value="1" id="input-unzip" class="checkbox" />
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Unzip Contents')" class="doclink">(?)</a>
-			<span class="sprite-spacer">&#160;&#160;&#160;</span>
-			<label for="input-overwrite">
-				<xsl:value-of select="$i18n/l/OverwriteUnzip"/>
-			</label>
-			<input type="checkbox" name="overwrite" value="1" id="input-overwrite" class="checkbox" disabled="disabled"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Overwrite when unzipping contents')" class="doclink">(?)</a>
-		</div>
+	
+	<div id="tr-unzip" style="display: none;" class="block">
+		<span class="sprite-spacer">&#160;&#160;</span>
+		<label for="input-unzip">
+			<xsl:value-of select="$i18n/l/UnzipContents"/>
+		</label>
+		<input type="checkbox" name="unzip" value="1" id="input-unzip" class="checkbox" />
+		<!--<xsl:text>&#160;</xsl:text>
+		<a href="javascript:openDocWindow('Unzip Contents')" class="doclink">(?)</a>-->
+		<span class="sprite-spacer">&#160;&#160;&#160;</span>
+		<label for="input-overwrite">
+			<xsl:value-of select="$i18n/l/OverwriteUnzip"/>
+		</label>
+		<input type="checkbox" name="overwrite" value="1" id="input-overwrite" class="checkbox" disabled="disabled"/>
+		<!--<xsl:text>&#160;</xsl:text>
+		<a href="javascript:openDocWindow('Overwrite when unzipping contents')" class="doclink">(?)</a>-->
+	</div>
 		
-				<xsl:call-template name="form-keywordabstract"/>
-
-		<!--<xsl:call-template name="tr-keywords-create"/>
-		<xsl:call-template name="tr-abstract-create"/>-->
-		<!--<xsl:call-template name="markednew"/>
-		<xsl:call-template name="publish-on-save"/>-->
+		<xsl:call-template name="form-keywordabstract"/>
 		<xsl:call-template name="form-grant"/>
 		<xsl:call-template name="uploadaction"/>
 	</xsl:template>
@@ -54,8 +44,8 @@
 					<xsl:value-of select="$i18n/l/File"/>
 				</label>&#160;*</div>
 			<input type="file" name="file" size="43" class="text" id="input-file" />
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('File')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('File')" class="doclink">(?)</a>-->
 		</div>
 		<script type="text/javascript">
 		$(document).ready(function(){

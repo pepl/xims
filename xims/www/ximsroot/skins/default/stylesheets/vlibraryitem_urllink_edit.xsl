@@ -49,8 +49,8 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </input>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('Location')" class="doclink">(?)</a>-->
     </div>
     
     </div>

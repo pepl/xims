@@ -42,8 +42,8 @@
 			<xsl:value-of select="$i18n/l/Schema"/>
     </label></div>
         <input type="text" name="schema" size="60" value="{./schema_id}" class="text" id="input-schema"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('Schema')" class="doclink">(?)</a>
+        <!--<xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('Schema')" class="doclink">(?)</a>-->
         <xsl:text>&#160;</xsl:text>
 		<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={./schema_id};otfilter=XML;sbfield=eform.schema','default-dialog','{$i18n_xml/l/Browse_schema}')" class="button"><xsl:value-of select="$i18n_xml/l/Browse_schema"/></a>
     </div>
@@ -73,8 +73,8 @@
             </input>
             <label for="input-sfeedit-false"><xsl:value-of select="$i18n/l/No"/></label>
             
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('sfe')" class="doclink">(?)</a>
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('sfe')" class="doclink">(?)</a>-->
             </fieldset>
         </div>
 </xsl:template>

@@ -28,8 +28,8 @@
 	<xsl:template name="form-body-create_tinymce">
 		<div class="block form-div">
             <h2><label for="body">Body</label>
-            <xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('Body')" class="doclink">(?)</a></h2>
+            <!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('Body')" class="doclink">(?)</a>--></h2>
 				<textarea name="body" id="body" rows="20" cols="90" onchange="document.getElementById('xims_wysiwygeditor').disabled = true;">
 					<xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text>
 				</textarea>

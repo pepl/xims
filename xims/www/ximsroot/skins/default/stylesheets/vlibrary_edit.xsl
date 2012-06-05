@@ -27,8 +27,8 @@
 <div>
     <div class="label-std"><label for="input-stylesheet"><xsl:value-of select="$i18n/l/Stylesheet"/></label></div>
         <input type="text" name="stylesheet" size="60" value="{style_id}" class="text" id="input-stylesheet"/>
-        <xsl:text>&#160;</xsl:text>
-        <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>
+        <!--<xsl:text>&#160;</xsl:text>
+        <a href="javascript:openDocWindow('Stylesheet')" class="doclink">(?)</a>-->
         <xsl:text>&#160;</xsl:text>
         <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
         	<xsl:value-of select="$i18n/l/Browse_stylesheet"/>&#160;(<xsl:value-of select="$i18n/l/Folder" />)
@@ -40,8 +40,8 @@
     <div>
         <div class="label"><label for="input-pagerowlimit"><xsl:value-of select="$i18n/l/PageRowLimit"/></label></div>&#160;
             <input type="text" name="pagerowlimit" size="2" maxlength="2" value="{attributes/pagerowlimit}" class="text" id="input-pagerowlimit"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>-->
     </div>
 </xsl:template>
 

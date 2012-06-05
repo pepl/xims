@@ -12,31 +12,33 @@
 <xsl:import href="common.xsl"/>
 
 <xsl:template name="form-browse_target">
-    <div id="tr-target">
-    <div class="label-std"><label for="input-target">
-				<xsl:value-of select="$i18n/l/target"/> *
-    </label></div>
-            <input type="text" name="target" size="60" value="{symname_to_doc_id}" class="text" id="input-target"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('PortletTarget')" class="doclink">(?)</a>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;otfilter=Folder,DepartmentRoot,SiteRoot;sbfield=eform.target','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
-                <xsl:value-of select="$i18n/l/browse_target"/>
-            </a>
-        </div>
+  <div id="tr-target">
+    <div class="label-std">
+      <label for="input-target">
+      <xsl:value-of select="$i18n/l/target"/> *
+      </label>
+    </div>
+    <input type="text" name="target" size="60" value="{symname_to_doc_id}" class="text" id="input-target"/>
+    <!--<xsl:text>&#160;</xsl:text>
+    <a href="javascript:openDocWindow('PortletTarget')" class="doclink">(?)</a>-->
+    <xsl:text>&#160;</xsl:text>
+    <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;otfilter=Folder,DepartmentRoot,SiteRoot;sbfield=eform.target','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
+        <xsl:value-of select="$i18n/l/browse_target"/>
+    </a>
+  </div>
 </xsl:template>
 
 <xsl:template name="form-locationtitletarget-create">
-<div class="form-div div-left">
-	<xsl:call-template name="form-title"/>
-     <xsl:call-template name="form-location-create"/>
+  <div class="form-div div-left">
+    <xsl:call-template name="form-title"/>
+    <xsl:call-template name="form-location-create"/>
     <xsl:call-template name="form-browse_target"/>
-    </div>
+  </div>
 </xsl:template>
 
 <xsl:template name="form-locationtitletarget-edit">
 <div class="form-div div-left">
-	<xsl:call-template name="form-title"/>
+  <xsl:call-template name="form-title"/>
      <xsl:call-template name="form-location-edit"/>
     <xsl:call-template name="form-browse_target"/>
     </div>

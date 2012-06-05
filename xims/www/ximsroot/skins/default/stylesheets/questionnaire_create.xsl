@@ -28,8 +28,8 @@
             </label>
             </div>
             <input type="text" name="questionnaire_title" size="60" class="text" value="{body/questionnaire/title}" id="input-title"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Title')" class="doclink">(?)</a>
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('Title')" class="doclink">(?)</a>-->
         </div>
 </xsl:template>
 
@@ -45,8 +45,8 @@
           </label>
         </div>
             <input name="questionnaire_comment" size="60" class="text" value="{ body/questionnaire/comment}" id="input-qu-comment"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Comment')" class="doclink">(?)</a>
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('Comment')" class="doclink">(?)</a>-->
         </div>
   </div>
 </xsl:template>

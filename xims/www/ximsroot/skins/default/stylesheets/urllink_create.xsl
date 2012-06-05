@@ -34,11 +34,11 @@
 				</label>&#160;*
 			</div>
 			<input type="text" name="name" size="60" class="text" id="input-location" onchange="checkLangSuffix()"></input>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Location')" class="doclink">
 				<xsl:attribute name="title">
 					<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/>
-				</xsl:attribute>(?)</a>
+				</xsl:attribute>(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
             <!--<a href=" javascript:createDialog('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
                 <xsl:value-of select="$i18n/l/browse_target"/>

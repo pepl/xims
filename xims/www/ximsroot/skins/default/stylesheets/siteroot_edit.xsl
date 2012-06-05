@@ -21,9 +21,9 @@
 		</div>
 		<input type="text" name="title" size="60" class="text" id="input-title" value="{title}">
 		</input>
-		<xsl:text>&#160;</xsl:text>
+		<!--<xsl:text>&#160;</xsl:text>
 		<a href="jjavascript:openDocWindow('SiteRootURL/Path')" class="doclink">
-			<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;SiteRootURL</xsl:attribute>(?)</a>
+			<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;SiteRootURL</xsl:attribute>(?)</a>-->
 	</div>
 </xsl:template>
 </xsl:stylesheet>

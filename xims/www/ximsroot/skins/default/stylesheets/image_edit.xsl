@@ -30,8 +30,8 @@
 				</label>
 			</div>
 			<input type="file" name="file" size="50" class="text" id="input-replace"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 </xsl:stylesheet>

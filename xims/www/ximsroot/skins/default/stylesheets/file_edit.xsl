@@ -19,8 +19,8 @@
 				</label>
 			</div>
 			<input type="file" name="file" size="43" class="text" id="input-replace"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('File')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('File')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 	
