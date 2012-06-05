@@ -366,8 +366,8 @@
 									<xsl:value-of select="$i18n_portlet/l/Valid_from_timestamp"/>
 								</option>
 						</select>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('filter_latest_sortkey')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('filter_latest_sortkey')" class="doclink">(?)</a>-->
 			</div>
 	</xsl:template>
 	

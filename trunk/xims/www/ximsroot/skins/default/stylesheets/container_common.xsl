@@ -41,8 +41,8 @@
 					<xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
 				</xsl:if>
 			</input>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('autoindex')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('autoindex')" class="doclink">(?)</a>-->
 		</div>
 		<!--</div>-->
 	</xsl:template>
@@ -87,8 +87,8 @@
 				<label for="radio-defaultsorting-desc">
 					<xsl:value-of select="$i18n/l/descending"/>
 				</label>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('defaultsorting')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('defaultsorting')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 	

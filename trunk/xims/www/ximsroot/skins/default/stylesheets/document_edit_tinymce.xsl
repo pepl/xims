@@ -25,11 +25,11 @@
 	<xsl:template name="form-body-edit_tinymce">
 		<div class="block form-div">
             <h2><label for="body">Body</label>
-            <xsl:text>&#160;</xsl:text>
+            <!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Body')" class="doclink">
 			<xsl:attribute name="title">
 					<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/>
-				</xsl:attribute>(?)</a></h2>
+				</xsl:attribute>(?)</a>--></h2>
 			<textarea name="body" id="body" rows="20" cols="90">
 				<xsl:value-of select="$bodycontent"/>
 			</textarea>

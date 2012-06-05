@@ -135,8 +135,8 @@
 							<xsl:attribute name="onfocus">javascript:initAuthDescription('#auth-desc','#vlauthor');</xsl:attribute>
 							<xsl:attribute name="onblur">javascript:destroyInfoBox('#auth-desc');</xsl:attribute>
             </input>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>            
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>-->
             <xsl:if test="/document/context/vlauthors/author/id">
                 <xsl:text>&#160;</xsl:text>
                 <xsl:apply-templates select="/document/context/vlauthors"/>
@@ -170,8 +170,8 @@
     <div>
         <div id="label-editors"><label for="vleditor"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/editors"/></label></div>
             <input type="text" name="vleditor" size="50" value="" class="text" id="vleditor"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>-->
             <xsl:if test="/document/context/vlauthors/author/id">
                 <xsl:text>&#160;</xsl:text>
                 <xsl:apply-templates select="/document/context/vlauthors"><xsl:with-param name="svlauthor" select="'svleditor'"/></xsl:apply-templates>
@@ -200,8 +200,8 @@
         <div>
             <div id="label-serials"><label for="vlserial"><xsl:value-of select="$i18n_vlib/l/Assign_new"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$i18n_vlib/l/Serial"/></label></div>
                 <input type="text" name="vlserial" size="50" value="" class="text" id="vlserial"/>
-                <xsl:text>&#160;</xsl:text>
-                <a href="javascript:openDocWindow('VLSerial')" class="doclink">(?)</a>
+                <!--<xsl:text>&#160;</xsl:text>
+                <a href="javascript:openDocWindow('VLSerial')" class="doclink">(?)</a>-->
                 <xsl:if test="/document/context/vlserials/serial/@id">
                     <xsl:text>&#160;</xsl:text>
                     <xsl:apply-templates select="/document/context/vlserials"/>
@@ -353,9 +353,9 @@
 				<label for="input-abstract">
 					<xsl:value-of select="$i18n/l/Abstract"/>
 				</label>
-				<xsl:text>&#160;</xsl:text>
+				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Reflib.Abstract')" class="doclink">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/></xsl:attribute>(?)</a>
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/></xsl:attribute>(?)</a>-->
 			</div>
 			<br/>
 			<textarea id="input-abstract" name="abstract" rows="3" cols="79">

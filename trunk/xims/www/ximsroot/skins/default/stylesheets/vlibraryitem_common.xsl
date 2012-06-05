@@ -74,8 +74,8 @@
 				<xsl:value-of select="$i18n/l/Keywords"/>
 			</div>
 				<input tabindex="40" type="text" name="vlkeyword" size="50" value="" class="text" title="VLKeyword"/>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
 				<input type="button" value="&lt;--" onclick="return addVLProperty( 'keyword' );"/>
 				<xsl:text>&#160;</xsl:text>
@@ -91,8 +91,8 @@
 				<xsl:value-of select="$i18n_vlib/l/subjects"/>
 			</div>
 				<input tabindex="40" type="text" name="vlsubject" size="50" value="" class="text"/>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('VLSubject')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('VLSubject')" class="doclink">(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
 				<input type="button" value="&lt;--" onclick="return addVLProperty( 'subject' );"/>
 				<xsl:text>&#160;</xsl:text>
@@ -110,8 +110,8 @@
 			</td>
 			<td colspan="2">
 				<input tabindex="40" type="text" name="vlauthor" size="50" value="" class="text" title="VLAuthor"/>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('VLAuthor')" class="doclink">(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
 				<input type="button" value="&lt;--" onclick="return addVLProperty( 'author' );"/>
 				<xsl:text>&#160;</xsl:text>
@@ -283,11 +283,11 @@
 				</label>
 			</div>
 			<input type="text" name="subtitle" size="60" class="text" id="input-subtitle" value="{meta/subtitle}"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Title')" class="doclink">
 				<xsl:attribute name="title">
 					<xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Title"/>
-				</xsl:attribute>(?)</a>
+				</xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 	
@@ -378,9 +378,9 @@
 				
 			</script>
 			
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Valid_from')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 	
@@ -409,9 +409,9 @@
 				
 			</script>
 			
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Valid_from')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 

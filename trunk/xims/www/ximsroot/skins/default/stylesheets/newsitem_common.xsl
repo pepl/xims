@@ -36,8 +36,8 @@
 					<xsl:value-of select="$i18n/l/Lead"/>
 				</label>
 			</div>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('Abstract')" class="doclink">(?)</a>-->
 			<br/>
 			<textarea id="input-lead" name="abstract" rows="3" cols="74" maxlength="390" onkeyup="keyup(this)">
 				<xsl:apply-templates select="abstract"/>
@@ -62,8 +62,8 @@
 					</label>
 				</div>
 				<input type="text" name="imagetitle" size="60" class="text" id="input-image-title"/>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('ImageTitle')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('ImageTitle')" class="doclink">(?)</a>-->
 			</div>
 			<div id="tr-image-description">
 				<div id="label-image-description">
@@ -73,8 +73,8 @@
 						<xsl:value-of select="$i18n/l/Description"/>
 					</label>
 				</div>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('ImageDescription')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('ImageDescription')" class="doclink">(?)</a>-->
 				<br/>
 				<textarea name="imagedescription" rows="3" cols="74" class="text" id="input-image-description">
 					<xsl:text>&#160;</xsl:text>
@@ -99,8 +99,8 @@
 						<xsl:text>/images</xsl:text>
 					</xsl:attribute>
 				</input>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('NewsItemImage')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('NewsItemImage')" class="doclink">(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
 				<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};to={$parentid};otfilter=Folder,DepartmentRoot,SiteRoot;contentbrowse=1;sbfield=eform.imagefolder','default-dialog','{$i18n/l/browse_target}')" class="button">
 					<xsl:value-of select="$i18n/l/browse_target"/>

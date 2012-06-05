@@ -282,9 +282,9 @@
 				</label>
 			</div>
 			<input type="text" name="stylesheet" size="60" value="{style_id}" class="text" id="input-stylesheet"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$parentid};contentbrowse=1;to={$parentid};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_stylesheet"/>

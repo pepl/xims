@@ -211,10 +211,10 @@
 				<label for="radio-grantmyself">
 					<xsl:value-of select="$i18n/l/Grant_myself_only"/>
 				</label>
-				<xsl:text>&#160;</xsl:text>
+				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('PrivilegeGrantOptions')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Priv_grant_options"/></xsl:attribute>
-						(?)</a>
+						(?)</a>-->
 				<br/>
 				<xsl:text>&#160;</xsl:text>
 				<label for="checkb-defaultroles">
@@ -236,10 +236,10 @@
 					<xsl:attribute name="checked">checked</xsl:attribute>
 				</xsl:if>
 			</input>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('markednew')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Mark_new"/></xsl:attribute>
-					(?)</a>
+					(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="publish-on-save">
@@ -255,10 +255,10 @@
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
-				<xsl:text>&#160;</xsl:text>
+				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('pubonsave')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Pub_on_save"/></xsl:attribute>
-					(?)</a>
+					(?)</a>-->
 			</xsl:if>
 		</div>
 	</xsl:template>
@@ -395,8 +395,8 @@
 				</xsl:choose>
 			</input>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Location')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>
+			<!--<a href="javascript:openDocWindow('Location')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>-->
 			<a href="#" id="dialog_link" class="ui-state-default ui-corner-all" style="display: none;">
 				<span class="ui-icon ui-icon-newwin"/>
 				<xsl:value-of select="IlpDefaultWinlabel"/>
@@ -440,9 +440,9 @@
 					<xsl:attribute name="class">readonlytext</xsl:attribute>
 				</xsl:if>
 			</input>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Location')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>-->
 			<a href="#" id="dialog_link" class="ui-state-default ui-corner-all" style="display: none;">
 				<span class="ui-icon ui-icon-newwin"/>
 				<xsl:value-of select="IlpDefaultWinlabel"/>
@@ -472,8 +472,8 @@
 			<input type="text" name="title" size="60" class="text" id="input-title" value="{title}">
 			</input>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Title')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Title"/></xsl:attribute>(?)</a>
+			<!--<a href="javascript:openDocWindow('Title')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Title"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="form-locationtitle-edit_xml">
@@ -516,9 +516,9 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</input>
-				<xsl:text>&#160;</xsl:text>
+				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Location')" class="doclink">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>-->
 				<a href="#" id="dialog_link" class="ui-state-default ui-corner-all" style="display: none;">
 					<span class="ui-icon ui-icon-newwin"/>
 					<xsl:value-of select="IlpDefaultWinlabel"/>
@@ -546,9 +546,9 @@
 				</label>
 			</div>
 			<input type="file" name="file" size="50" class="text" id="input-bodyfromfile"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('BodyFile')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/bodyfromfile_create"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/bodyfromfile_create"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="form-bodyfromfile-edit">
@@ -559,9 +559,9 @@
 				</label>
 			</div>
 			<input type="file" name="file" size="50" class="text" id="input-bodyfromfile"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('BodyFile')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/bodyfromfile_edit"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/bodyfromfile_edit"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="jsorigbody">
@@ -589,9 +589,9 @@
 				<label for="body">
 					<xsl:value-of select="$i18n/l/Body"/>
 				</label>
-				<xsl:text>&#160;</xsl:text>
+				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Body')" class="doclink">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>-->
 			</h2>
 			<xsl:call-template name="ui-resizable"/>
 			<!--<div id="bodymain">
@@ -644,9 +644,9 @@
 		<div class="block form-div">
 			<h2>
 				<label for="body">Body</label>
-				<xsl:text>&#160;</xsl:text>
+				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Body')" class="doclink">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>-->
 			</h2>
 			<xsl:call-template name="ui-resizable"/>
 			<!--<div id="bodymain">-->
@@ -695,8 +695,8 @@
 			</div>
 			<input type="text" name="keywords" size="60" class="text" value="{keywords}" id="input-keywords"/>
 			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('Keywords')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Keywords"/></xsl:attribute>(?)</a>
+			<!--<a href="javascript:openDocWindow('Keywords')" class="doclink">
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Keywords"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="form-abstract">
@@ -705,9 +705,9 @@
 				<label for="input-abstract">
 					<xsl:value-of select="$i18n/l/Abstract"/>
 				</label>
-				<xsl:text>&#160;</xsl:text>
+				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Abstract')" class="doclink">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/></xsl:attribute>(?)</a>
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/></xsl:attribute>(?)</a>-->
 			</div>
 			<br/>
 			<textarea id="input-abstract" name="abstract" rows="3" cols="74">
@@ -721,9 +721,9 @@
 				<label for="input-notes">
 					<xsl:value-of select="$i18n/l/Notes"/>
 				</label>
-				<xsl:text>&#160;</xsl:text>
+				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Notes')" class="doclink">
-					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Notes"/></xsl:attribute>(?)</a>
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Notes"/></xsl:attribute>(?)</a>-->
 			</div>
 			<br/>
 			<textarea name="notes" rows="3" cols="74" id="input-notes">
@@ -751,9 +751,9 @@
 				</label>
 			</div>
 			<input type="text" name="stylesheet" size="60" value="{style_id}" class="text" id="input-stylesheet"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Stylesheet')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Stylesheet"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=XSLStylesheet,Folder;sbfield=eform.stylesheet','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_stylesheet"/>
@@ -779,9 +779,9 @@
 				</label>
 			</div>
 			<input type="text" name="css" size="60" value="{css_id}" class="text" id="input-css"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('CSS')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/CSS"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/CSS"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=CSS,Folder;sbfield=eform.css','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_css"/>
@@ -807,9 +807,9 @@
 				</label>
 			</div>
 			<input type="text" name="script" size="60" value="{script_id}" class="text" id="input-javascript"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('JavaScript')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/JavaScript"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/JavaScript"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=JavaScript,Folder;sbfield=eform.script','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_script"/>
@@ -835,9 +835,9 @@
 				</label>
 			</div>
 			<input type="text" name="feed" size="60" value="{feed_id}" class="text" id="input-rssfeed"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Portlet')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/RSSFeed"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/RSSFeed"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={@id};contentbrowse=1;to={@id};otfilter=Portlet,Folder;sbfield=eform.feed','default-dialog','{$i18n/l/Browse_stylesheet}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_feed"/>
@@ -863,9 +863,9 @@
 				</label>
 			</div>
 			<input type="text" name="image" size="60" value="{image_id}" class="text" id="input-image"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Image')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Image"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Image"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=Image;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_image"/>
@@ -1064,9 +1064,9 @@
 				
 			</script>
 			
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Valid_from')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_from"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 
@@ -1093,9 +1093,9 @@
 				});
 				
 			</script>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Valid_to')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_to"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Valid_to"/></xsl:attribute>(?)</a>-->
 		</div>
 	</xsl:template>
 	<!--	
@@ -1137,8 +1137,8 @@
 				</label>
 			</div>
 			<input type="text" name="pagerowlimit" size="2" maxlength="2" value="{attributes/pagerowlimit}" class="text input" id="input-pagerowlimit"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('PageRowLimit')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="options-menu-bar">
@@ -1930,8 +1930,8 @@
 					<xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
 				</xsl:if>
 			</input>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('minify')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('minify')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="jquery-listitems-bg">
@@ -1966,8 +1966,8 @@
 				</label>
 			</div>
 			<input type="text" size="{$size}" name="{$name}" value="{dyn:evaluate($xpath)}" class="text" maxlength="{$maxlength}" id="input-{$name}"/>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="mk-textarea">
@@ -1995,8 +1995,8 @@
 			<textarea name="{$name}" cols="{$cols}" rows="{$rows}" class="text">
 				<xsl:value-of select="dyn:evaluate($xpath)"/>
 			</textarea>
-			<xsl:text>&#160;</xsl:text>
-			<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)</a>
+			<!--<xsl:text>&#160;</xsl:text>
+			<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 	<xsl:template name="mk-tr-checkbox">
@@ -2021,8 +2021,8 @@
 						<xsl:attribute name="checked"><xsl:value-of select="checked"/></xsl:attribute>
 					</xsl:if>
 				</input>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)</a>-->
 			</td>
 		</tr>
 	</xsl:template>
@@ -2144,8 +2144,8 @@
 					<xsl:value-of select="$i18n/l/Path"/>
 				</label>: 
 			<input type="text" name="path" size="40" class="text" id="input-path"/>
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('Bookmark')" class="doclink">(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
 				<a href="javascript:createDialog('{$xims_box}{$goxims_content}{$stdhome}?contentbrowse=1;sbfield=eform.path','default-dialog','{$i18n/l/Browse_for} {$i18n/l/Object}')" class="button">
 				<xsl:value-of select="$i18n/l/Browse_for"/>&#160;<xsl:value-of select="$i18n/l/Object"/>
@@ -2157,7 +2157,7 @@
 							<xsl:value-of select="$i18n/l/default_bookmark"/>
 				</label>: 
 				<input type="checkbox" class="checkbox" name="stdhome" value="1" id="cb-stdbm"/>
-				<a href="javascript:openDocWindow('DefaultBookmark')" class="doclink">(?)</a>
+				<!--<a href="javascript:openDocWindow('DefaultBookmark')" class="doclink">(?)</a>-->
 				<xsl:text>&#160;</xsl:text>
 			</p>
 			<xsl:if test="$admin">

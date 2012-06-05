@@ -32,15 +32,15 @@
                 <option value="ISI">ISI Web of Science</option>
                 <option value="COPAC">COPAC</option>
             </select>
-            <a href="javascript:openDocWindow('ReferenceLibraryItem Import Source Type')" class="doclink">(?)</a>
+            <!--<a href="javascript:openDocWindow('ReferenceLibraryItem Import Source Type')" class="doclink">(?)</a>-->
 		</div>
 </xsl:template>
 
 <xsl:template name="form-body-import">
             <div id="bodymain">
             <label for="body">Body</label>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('ReferenceLibraryItem Import')" class="doclink">(?)</a>
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('ReferenceLibraryItem Import')" class="doclink">(?)</a>-->
             <br/>
             <xsl:call-template name="ui-resizable"/>
                 <div id="bodycon">
@@ -53,8 +53,8 @@
     <div>
         <label for="file"><xsl:value-of select="$i18n/l/or"/>&#160;<xsl:value-of select="$i18n/l/ImportFromFile"/></label>&#160;
             <input type="file" name="file" size="49" class="text" id="file"/>
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('ReferenceLibraryItem Import')" class="doclink">(?)</a>
+            <!--<xsl:text>&#160;</xsl:text>
+            <a href="javascript:openDocWindow('ReferenceLibraryItem Import')" class="doclink">(?)</a>-->
     </div>
 </xsl:template>
 

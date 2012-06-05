@@ -262,7 +262,7 @@
 			<button class="button-search" type="submit" name="submit" title="{$i18n/l/Search}">
 				<xsl:value-of select="$i18n/l/Search"/>
 			</button>
-			&#160;&#160;<a href="javascript:openDocWindow('SearchingReferenceLibraries')" class="doclink">(?)</a>
+			<!--&#160;&#160;<a href="javascript:openDocWindow('SearchingReferenceLibraries')" class="doclink">(?)</a>-->
 		</form>
 	</div>
 </xsl:template>

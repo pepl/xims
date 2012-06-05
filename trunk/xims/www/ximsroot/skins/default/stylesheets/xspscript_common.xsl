@@ -18,8 +18,8 @@
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>				
-				<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('processxsp')" class="doclink">(?)</a>
+				<!--<xsl:text>&#160;</xsl:text>
+				<a href="javascript:openDocWindow('processxsp')" class="doclink">(?)</a>-->
 				</div>
 		</div>
 	</xsl:template>

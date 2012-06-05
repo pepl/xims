@@ -38,9 +38,9 @@
 					</label> *
 			</div>
 			<input type="text" name="target" size="60" value="{symname_to_doc_id}" class="text" id="input-target"/>
-			<xsl:text>&#160;</xsl:text>
+			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('PortletTarget')" class="doclink">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Target"/></xsl:attribute>(?)</a>
+				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Target"/></xsl:attribute>(?)</a>-->
 			<xsl:text>&#160;</xsl:text>
 			<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.target','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">
 				<xsl:value-of select="$i18n/l/browse_target"/>

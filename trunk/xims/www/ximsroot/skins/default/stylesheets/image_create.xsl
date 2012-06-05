@@ -12,13 +12,15 @@
 <xsl:import href="file_create.xsl"/>
 
 <xsl:template name="tr-file-create">
-<div id="tr-file">
-	<div id="label-file"><label for="input-file">
-			<xsl:value-of select="$i18n/l/Image"/>
-	</label>&#160;*</div>
-            <input type="file" name="file" size="49" class="text input" id="input-file" />
-            <xsl:text>&#160;</xsl:text>
-            <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>
+  <div id="tr-file">
+    <div id="label-file">
+      <label for="input-file">
+      <xsl:value-of select="$i18n/l/Image"/>
+      </label>&#160;*
+    </div>
+    <input type="file" name="file" size="49" class="text input" id="input-file" />
+    <!--<xsl:text>&#160;</xsl:text>
+    <a href="javascript:openDocWindow('Image')" class="doclink">(?)</a>-->
   </div>
 </xsl:template>
 
