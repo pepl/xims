@@ -88,6 +88,7 @@ a.button{
 ul.ui-widget-content{
 	max-height:300px;
 	min-width: 160px;
+	width: 160px;
 	/*overflow-y: auto;
 	overflow-x: hidden;
 	position: absolute !important;
@@ -290,6 +291,7 @@ a.more > .ui-button-text{
 	margin-top:8px;
 	white-space: nowrap;
 	display:none;
+	width: 100px;
 }
 #object-types {
   position: relative;
