@@ -281,7 +281,7 @@ function initHelpMenu(){
 				menu.hide();
 			});
 			return false;
-		})
+		});
 }
 
 function initMenuMenu(){            
@@ -903,6 +903,14 @@ $(document).ready(function(){
     initCreateMenu();
     initHelpMenu();
     initMenuMenu();
+		
+  /* 
+   * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
+  */
+  $("#help-widget a").click( function() {
+    window.open(this.href);
+    return false;
+  });
 
 	initVLibMenu();
 	
