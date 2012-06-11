@@ -131,7 +131,7 @@ INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, depart
 INSERT INTO CI_CONTENT ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id, content_length, published, marked_new, marked_deleted ) VALUES ( CTT_SEQ.NEXTVAL, 1, 'root', 2, 2, 2, 2, 0, 0, 0, 0);
 
 -- add SiteRoot "xims" with SiteRoot URL '/ximspubroot/xims'
-INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, department_id, location, position, location_path ) VALUES ( DOC_SEQ.NEXTVAL, 1, 19, 31, 2, 'xims', 1, '/xims' );
+INSERT INTO CI_DOCUMENTS ( id, parent_id, object_type_id, data_format_id, department_id, location, position, location_path ) VALUES ( DOC_SEQ.NEXTVAL, 1, 17, 31, 2, 'xims', 1, '/xims' );
 INSERT INTO CI_CONTENT ( id, document_id, title, language_id, last_modified_by_id, owned_by_id, created_by_id, content_length, published, marked_new, marked_deleted ) VALUES ( CTT_SEQ.NEXTVAL, 2, '/ximspubroot/xims', 2, 2, 2, 2, 0, 0, 0, 0);
 
 -- add default bookmarks
