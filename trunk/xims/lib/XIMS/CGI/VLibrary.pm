@@ -453,7 +453,7 @@ sub event_publication {
 
 sub event_property_edit {
 	XIMS::Debug( 5, "called" );
-	warn "\n\n property_edit \n\n";
+	#warn "\n\n property_edit \n\n";
     my ( $self, $ctxt ) = @_;
 
     unless ( $self->_privcheck_lock($ctxt) ) {
@@ -585,10 +585,16 @@ sub event_property_store {
     use Data::Dumper;
     warn Dumper(\%fields);
 
-    if ( $fields{'id'} ) {
+#    if ( $fields{'id'} ) {
+#        # create new object by id if set
+#        $vlibproperty = $class->new(
+#            id          => $fields{'id'},
+#        );
+#    }
+    if ( $fields{'property_id'} ) {
         # create new object by id if set
         $vlibproperty = $class->new(
-            id          => $fields{'id'},
+            id          => $fields{'property_id'},
         );
     }
     if ( ref $vlibproperty ) {
