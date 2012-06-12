@@ -255,6 +255,7 @@ sub get_objecttypes {
 =cut
 
 sub get_direct_filter {
+    ## no critic
     my $self     = shift;
     my $fragment = $self->get_data_fragment;
     my %retval;
