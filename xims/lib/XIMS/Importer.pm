@@ -524,7 +524,8 @@ sub clean_location {
                   /
                     $escapes{$1}
                   /segx;    # *coff*
-    return ( not $self->{ArchiveMode} and XIMS::Config::LowerCaseLocations() )
+    return ( not (ref $self and $self->{ArchiveMode}) # sometimes used as a function 
+             and XIMS::Config::LowerCaseLocations() )
         ? lc($location)
         : $location;
 
