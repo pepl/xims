@@ -8,10 +8,13 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dyn="http://exslt.org/dynamic" xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="dyn">
 
   <xsl:import href="common.xsl"/>
-  
+	
+  <xsl:param name="request.uri"/>
   <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
   <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
-  <xsl:param name="objid"/>
+  <xsl:variable name="objid">
+    <xsl:value-of select="substring-after($request.uri.query,'objid=')"/>
+	</xsl:variable>
 	<xsl:template match="/document/context/object">
 		<!--<html>
 			<head>
@@ -102,7 +105,7 @@
     <p>
 			<input type="hidden" name="vlauthor_id" id="vlauthor_id" value="{@id}"/>
 			<input type="hidden" name="property" id="property" value="author"/>
-	    <button type="submit" name="property_store" class="button" accesskey="S" onclick="closeDialog('default-dialog');"><xsl:value-of select="$i18n/l/save"/></button>&#160;
+	    <button type="submit" name="property_store" class="button" accesskey="S"><xsl:value-of select="$i18n/l/save"/></button>&#160;
 		<button type="button" name="cancel" class="button" accesskey="C" onclick="closeDialog('default-dialog');"><xsl:value-of select="$i18n/l/cancel"/></button>
 		</p>
   </xsl:template>
