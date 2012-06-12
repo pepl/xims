@@ -484,6 +484,8 @@ sub event_simpleformedit {
 
 =head2 private functions/methods
 
+=over
+
 =item _updateIDs()
 
 =cut
@@ -546,6 +548,8 @@ sub _set_wysiwyg_editor {
 1;
 
 __END__
+
+=back
 
 =head1 DIAGNOSTICS
 
