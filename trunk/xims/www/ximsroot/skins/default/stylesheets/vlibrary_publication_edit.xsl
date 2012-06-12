@@ -8,12 +8,15 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dyn="http://exslt.org/dynamic" xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="dyn">
 
   <xsl:import href="common.xsl"/>
-
+  <xsl:param name="request.uri"/>
   <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
   <xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
-
+  <xsl:variable name="objid">
+    <xsl:value-of select="substring-after($request.uri.query,'objid=')"/>
+  </xsl:variable>
+	
   <xsl:template match="/document/context/object">
-    <html>
+    <!--<html>
       <head>
         <title>
         <xsl:value-of select="concat($i18n/l/edit, ' ', $i18n/l/publications)"/>
@@ -22,15 +25,16 @@
         <xsl:call-template name="script_head"/>
       </head>
       <body style="width:auto;">
-       <div id="content-container">
+       <div id="content-container">-->
 					<form action="{$xims_box}{$goxims_content}" name="eform" method="get" id="create-edit-form">
 						<input type="hidden" name="id" id="id" value="{@id}"/>
+						<xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
 						<xsl:apply-templates select="/document/context/object/children"/>
 					</form>
-				</div>
+				<!--</div>
         <xsl:call-template name="script_bottom"/>
       </body>
-    </html>
+    </html>-->
   </xsl:template>
   
   <xsl:template match="children/object">

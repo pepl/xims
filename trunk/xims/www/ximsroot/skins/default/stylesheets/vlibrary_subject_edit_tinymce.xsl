@@ -9,7 +9,12 @@
 
   <xsl:import href="vlibrary_subject_edit.xsl"/>
   <xsl:import href="common_tinymce_scripts.xsl"/>
-
+	
+	<xsl:param name="request.uri"/>
+  <xsl:variable name="objid">
+    <xsl:value-of select="substring-after($request.uri.query,'objid=')"/>
+  </xsl:variable>
+	
   <xsl:template match="/document/context/object">
     <!--<html>
       <head>
@@ -28,6 +33,7 @@
                    name="id" 
                    id="id" 
                    value="{@id}"/>
+            <xsl:if test="$objid != ''"><input type="hidden" name="objid" id="objid" value="{$objid}"/></xsl:if>
             <xsl:apply-templates select="/document/context/object/children"/>
           </form>
         <!--</div>
