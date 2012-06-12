@@ -21,9 +21,9 @@ BEGIN WORK;
 
 \echo creating table 'ci_data_formats'
 CREATE TABLE ci_data_formats
- (mime_type  VARCHAR(40) NOT NULL
- ,id         SERIAL      PRIMARY KEY
- ,name       VARCHAR(40) NOT NULL
+ (mime_type  VARCHAR(100) NOT NULL
+ ,id         SERIAL       PRIMARY KEY
+ ,name       VARCHAR(40)  NOT NULL
  ,suffix     VARCHAR(5)
  )
 ;
