@@ -293,3 +293,6 @@ severity   = 4
 [-Perl::Critic::Policy::ControlStructures::ProhibitPostfixControls]
 
 [-Perl::Critic::Policy::ValuesAndExpressions::ProhibitAccessOfPrivateData]
+
+# we have these all over the place (Privmasks!)
+[-Perl::Critic::Policy::Bangs::ProhibitBitwiseOperators]
