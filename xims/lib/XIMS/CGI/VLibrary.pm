@@ -585,16 +585,10 @@ sub event_property_store {
     use Data::Dumper;
     warn Dumper(\%fields);
 
-#    if ( $fields{'id'} ) {
-#        # create new object by id if set
-#        $vlibproperty = $class->new(
-#            id          => $fields{'id'},
-#        );
-#    }
-    if ( $fields{'property_id'} ) {
+    if ( $fields{'id'} ) {
         # create new object by id if set
         $vlibproperty = $class->new(
-            id          => $fields{'property_id'},
+            id          => $fields{'id'},
         );
     }
     if ( ref $vlibproperty ) {
@@ -602,7 +596,6 @@ sub event_property_store {
             next if $_ eq 'id';
             $vlibproperty->$_( $fields{$_} );
         }
-
         if ( $vlibproperty->id() ) {    # update property
             if ( $vlibproperty->update == 1 ) {
                 _update_or_publish($ctxt);    # update the VLibrary's timestamps
