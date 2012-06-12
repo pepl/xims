@@ -122,7 +122,7 @@
   <xsl:template name="switch_vlib_views_action">
     <xsl:param name="mo" />
       <button id="vlib-menu"><xsl:value-of select="$i18n_vlib/l/Switch_to"/></button>  
-          <ul style="position:absolute !important">
+          <ul style="position:absolute !important; z-index: 31;">
             <xsl:if test="$mo != 'subject'">
               <li>
                 <a href="{$xims_box}{$goxims_content}{$absolute_path}?">

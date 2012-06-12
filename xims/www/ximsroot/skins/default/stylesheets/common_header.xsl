@@ -175,7 +175,7 @@
 						<xsl:otherwise>
 							<xsl:choose>
 								<xsl:when test="$parent_id != ''">
-									<ul>
+									<ul style="position:absolute !important; width: 160px">
 										<xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]" mode="fo-menu">
 											<xsl:sort select="name"/>
 										</xsl:apply-templates>
