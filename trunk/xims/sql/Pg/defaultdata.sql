@@ -177,7 +177,20 @@ INSERT INTO ci_data_formats ( id, name, mime_type, suffix )
        VALUES ( nextval('ci_data_formats_id_seq'), 'M4V', 'video/x-m4v', 'm4v' );
 INSERT INTO ci_data_formats ( id, name, mime_type, suffix ) 
        VALUES ( nextval('ci_data_formats_id_seq'), 'MOV', 'video/quicktime', 'mov' );
-
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'ODT', 'application/vnd.oasis.opendocument.text', 'odt' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'ODS', 'application/vnd.oasis.opendocument.spreadsheet', 'ods' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'ODP', 'application/vnd.oasis.opendocument.presentation', 'odp' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'DOCX', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'docx' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'xlsx' );  
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'SLDX', 'application/vnd.openxmlformats-officedocument.presentationml.slide', 'sldx' );
+INSERT INTO CI_DATA_FORMATS ( id, name, mime_type, suffix ) 
+       VALUES ( nextval('ci_data_formats_id_seq'), 'PPTX', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'pptx' );
 
 \echo inserting into ci_mime_type_aliases...
 

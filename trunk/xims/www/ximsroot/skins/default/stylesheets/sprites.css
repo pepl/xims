@@ -181,7 +181,7 @@
 .sprite-list_DocBookXML {
     background-position: -37px -162px;
 }
-.sprite-list_DOC {
+.sprite-list_DOC, .sprite-list_DOCX, sprite-list_ODT {
     background-position: -37px -486px;
 }
 .sprite-list_ECMA {
@@ -220,7 +220,7 @@
 .sprite-list_Portlet {
     background-position: -37px -378px;
 }
-.sprite-list_PPT {
+.sprite-list_PPT, .sprite-list_PPTX, .sprite-list_ODP, .sprite-list_SLDX, .sprite-list_PPS {
     background-position: -37px -414px;
 }
 .sprite-list_Questionnaire {
@@ -256,7 +256,7 @@
 .sprite-list_VLibrary {
     background-position: -37px -180px;
 }
-.sprite-list_XLS {
+.sprite-list_XLS, .sprite-list_XLSX, .sprite-list_ODS {
     background-position: -37px -342px;
 }
 .sprite-list_XML {
