@@ -45,7 +45,7 @@
       <xsl:attribute name="for">
         <xsl:value-of select="concat('acl_view_',@id,'_',/document/context/object/@id)"/>
       </xsl:attribute>
-      View<xsl:value-of select="$i18n/l/PrivView"/>
+      <xsl:value-of select="$i18n/l/PrivView"/>
     </label>
     
     <input type="checkbox" name="acl_write">
