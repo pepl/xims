@@ -11,7 +11,10 @@
 
 <xsl:import href="vlibrary_common.xsl"/>
 <xsl:import href="create_common.xsl"/>
+<xsl:import href="codemirror_scripts.xsl"/>
 
+  <xsl:param name="codemirror" select="true()"/>  
+  <xsl:param name="cm_mode">xml</xsl:param>
 <xsl:template name="create-content">
                 <input type="hidden" name="objtype" value="{$objtype}"/>
                     <xsl:call-template name="form-locationtitle-create"/>
