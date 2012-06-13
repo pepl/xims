@@ -23,7 +23,7 @@
           <!-- Location is now 'Pfad' in german translation - 
 					 <xsl:value-of select="$i18n/l/Location"/>
 					 -->
-					 Location
+					 <xsl:value-of select="$i18n/l/LocationURL"/>
     </label>&#160;*</div> 
         <input type="text" class="text" name="name" size="60" id="input-location" onchange="checkLangSuffix()">
           <xsl:choose>

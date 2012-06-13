@@ -36,6 +36,16 @@
 <Gallery>Bildergalerie</Gallery>
 <NewsItem2>NewsItem mit Sprachkürzel</NewsItem2>
 <!-- end objecttypes -->
+<!-- privileges -->
+<PrivView>Lesen</PrivView>
+<PrivWrite>Bearbeiten</PrivWrite>
+<PrivCreate>Erstellen</PrivCreate>
+<PrivDelete>Löschen</PrivDelete>
+<PrivCopy>Kopieren</PrivCopy>
+<PrivMove>Verschieben</PrivMove>
+<PrivPublish>Publzieren</PrivPublish>
+<PrivGrant>Gewähren</PrivGrant>
+<!-- end privileges -->
 <create>Erstelle</create>
 <edit>Bearbeite</edit>
 <in>in</in>
@@ -47,6 +57,7 @@
 <browse_target>Ziel suchen</browse_target>
 <Location>Pfad</Location>
 <location>Pfad</location>
+<LocationURL>Adresse (URI)</LocationURL>
 <Title>Titel</Title>
 <Subtitle>Untertitel</Subtitle>
 <File>Datei</File>
@@ -500,4 +511,4 @@
 <Email_Subject>Betreff</Email_Subject>
 <Email_Send>Versende</Email_Send>
 <Container_View>Container Ansicht</Container_View>
-</l>
+</lo>
