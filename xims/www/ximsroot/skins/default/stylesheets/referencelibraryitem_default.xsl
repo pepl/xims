@@ -90,7 +90,7 @@
 		<button>				
 			<xsl:value-of select="$i18n_reflib/l/ChangeRefType"/>
 		</button>
-		<ul style="position:absolute !important;">
+		<ul style="position:absolute !important; overflow-y:hidden;">
 			<xsl:apply-templates select="/document/reference_types/reference_type" mode="getoptions"/>
 		</ul>	
 	</div>
