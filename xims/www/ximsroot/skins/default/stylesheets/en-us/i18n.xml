@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <l>
+<!-- objecttypes -->
 <Folder>Folder</Folder>
 <Document>Document</Document>
 <Image>Image</Image>
@@ -37,6 +38,17 @@
 <NewsLetter>Newsletter</NewsLetter>
 <Gallery>Gallery</Gallery>
 <NewsItem2>NewsItem2</NewsItem2>
+<!-- end objecttypes -->
+<!-- privileges -->
+<PrivView>View</PrivView>
+<PrivWrite>Write</PrivWrite>
+<PrivCreate>Create</PrivCreate>
+<PrivDelete>Delete</PrivDelete>
+<PrivCopy>Copy</PrivCopy>
+<PrivMove>Move</PrivMove>
+<PrivPublish>Publish</PrivPublish>
+<PrivGrant>Grant</PrivGrant>
+<!-- end privileges -->
 <create>Create</create>
 <edit>Edit</edit>
 <in>in</in>
@@ -48,6 +60,7 @@
 <browse_target>Browse for target</browse_target>
 <Location>Location</Location>
 <location>location</location>
+<LocationURL>Address (URI)</LocationURL>
 <Title>Title</Title>
 <Subtitle>Subtitel</Subtitle>
 <File>File</File>
