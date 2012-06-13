@@ -7,11 +7,12 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:exslt="http://exslt.org/common">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:exslt="http://exslt.org/common"
+                extension-element-prefixes="exslt">
+                	
   <xsl:import href="common.xsl"/>
   <xsl:import href="vlibraryitem_common.xsl"/>
-  
- 
 
   <xsl:template match="/document/context/object">
     <html>
@@ -66,10 +67,8 @@
             </select>
           </div>
          <div class="div-left" style="margin:20px">
-						 <a class="button arrow-right" href="javascript:add_item('subject')"><xsl:text>&#160;&gt;&#160;</xsl:text></a><br /><br />
-						 <a class="button arrow-left" href="javascript:remove_item('subject')"><xsl:text>&#160;&gt;&#160;</xsl:text></a>
-            <!--<button type="button" onclick="add_item('subject');"><xsl:text>&#160;&gt;&#160;</xsl:text></button><br />
-            <button type="button" onclick="remove_item('subject');"><xsl:text>&#160;&lt;&#160;</xsl:text></button>-->
+          <a class="button arrow-right" href="javascript:add_item('subject')"><xsl:text>&#160;&gt;&#160;</xsl:text></a><br /><br />
+          <a class="button arrow-left" href="javascript:remove_item('subject')"><xsl:text>&#160;&gt;&#160;</xsl:text></a>
           </div>
           <div class="div-left">
             <label for="vlsubjects_selected"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
@@ -78,7 +77,6 @@
           </div>
       </div>
       <br clear="all"/>
-   <!-- </fieldset>-->
   </xsl:template>
 
   <xsl:template match="subject">
@@ -98,10 +96,8 @@
             </select>
            </div>
          <div class="div-left" style="margin:20px">
-						<a class="button arrow-right" href="javascript:add_item('keyword')"><xsl:text>&#160;&gt;&#160;</xsl:text></a><br /><br />
-						<a class="button arrow-left" href="javascript:remove_item('keyword')"><xsl:text>&#160;&gt;&#160;</xsl:text></a>
-            <!--<button type="button" onclick="add_item('keyword');"><xsl:text>&#160;&gt;&#160;</xsl:text></button><br />
-            <button type="button" onclick="remove_item('keyword');"><xsl:text>&#160;&lt;&#160;</xsl:text></button>-->
+          <a class="button arrow-right" href="javascript:add_item('keyword')"><xsl:text>&#160;&gt;&#160;</xsl:text></a><br /><br />
+          <a class="button arrow-left" href="javascript:remove_item('keyword')"><xsl:text>&#160;&gt;&#160;</xsl:text></a>
           </div>
           <div class="div-left">
             <label for="vlkeywords_selected"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
