@@ -55,20 +55,26 @@
 	<xsl:variable name="l_Locked" select="$i18n/l/Locked"/>
 	<xsl:variable name="l_Object_locked" select="$i18n/l/Object_locked"/>
 	
-	<xsl:template name="objtype_name">
-		<xsl:param name="ot_id"/>
-		<xsl:param name="ot_name"/>
-		<xsl:choose>
-			<xsl:when test="$ot_id != ''">
-		<xsl:value-of select="$i18n/l/ots/ot[@id=$ot_id]"/>
-		</xsl:when>
-		<xsl:when test="$ot_name != ''">
-		<xsl:value-of select="$i18n/l/*[name()=$ot_name]"/>
-		</xsl:when>
-		</xsl:choose>
-		<!--<xsl:value-of select="concat($i18n, concat('/l/',$objtypename))"/>-->
-		<!--<xsl:value-of select="document(concat($currentuilanguage,'/i18n.xml/l/')),$objtypename"/>-->
-	</xsl:template>
+  <xsl:template name="objtype_name">
+    <xsl:param name="ot_id"/>
+    <xsl:param name="ot_name"/>
+    <xsl:choose>
+      <xsl:when test="$ot_id != ''">
+    <xsl:value-of select="$i18n/l/ots/ot[@id=$ot_id]"/>
+    </xsl:when>
+    <xsl:when test="$ot_name != ''">
+      <xsl:choose>
+        <!-- VLibrary Special -->
+        <xsl:when test="contains($ot_name, '::')">
+          <xsl:value-of select="$i18n/l/*[name()=substring-before($ot_name,'::')]"/>::<xsl:value-of select="$i18n/l/*[name()=substring-after($ot_name,'::')]"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$i18n/l/*[name()=$ot_name]"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 	
 	<xsl:template name="cancelform">
 		<xsl:param name="with_save" select="'yes'"/>
