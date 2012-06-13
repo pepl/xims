@@ -1475,7 +1475,7 @@
 						}
 						},
 						{width: "530"},
-						{position: {offset: "-300 10", my: "right top", at: "left bottom",collision: "fit", of: '#option-acl_<xsl:value-of select="$id"/>'}}
+						{position: {offset: "-370 10", my: "right top", at: "left bottom",collision: "fit", of: '#option-acl_<xsl:value-of select="$id"/>'}}
 					);
 				});
 
