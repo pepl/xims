@@ -1183,7 +1183,8 @@
 					<xsl:with-param name="parent_id" select="$parent_id"/>
 				</xsl:call-template>
 			</xsl:if>
-			<xsl:if test="$currobjmime='application/x-container' and not(object_type_id = 39 or object_type_id = 37 or object_type_id = 24)">
+			<!-- do not show trashcan for ReferenceLibrary, SimpleDB and VLibrary -->
+			<xsl:if test="$currobjmime='application/x-container' and not(object_type_id = 31 or object_type_id = 33 or object_type_id = 24)">
 				<div id="trash">
 					<xsl:choose>
 						<xsl:when test="$showtrashcan">
