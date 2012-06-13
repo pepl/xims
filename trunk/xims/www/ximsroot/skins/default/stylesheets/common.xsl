@@ -2060,7 +2060,7 @@
 	<!--
 	<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
 	<script src="{$ximsroot}scripts/default.js" type="text/javascript"/>
-	<script src="{$ximsroot}skins/{$currentskin}/scripts/2punkt0.js" type="text/javascript"/>
+	<script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"/>
 	-->
 	<xsl:if test="$tinymce">
 		<xsl:call-template name="tinymce_scripts"/>
