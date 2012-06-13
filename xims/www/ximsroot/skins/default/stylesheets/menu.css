@@ -301,6 +301,7 @@ a.more > .ui-button-text{
 
 .ui-autocomplete{
 	font-size: 0.8em !important;
+	overflow-y: auto;
 }
 .ui-datepicker{
 	font-size: 0.8em !important;
