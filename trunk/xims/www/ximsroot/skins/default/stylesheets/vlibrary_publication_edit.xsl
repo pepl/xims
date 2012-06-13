@@ -82,7 +82,7 @@
 			<input type="hidden" name="vlpublication_id" id="vlpublication_id" value="{@id}"/>
 			<input type="hidden" name="property" id="property" value="publication"/>
 			<button type="submit" name="property_store" class="button" accesskey="S"><xsl:value-of select="$i18n/l/save"/></button>&#160;
-      <button type="submit" name="cancel" class="button" accesskey="C" onclick="self.close();"><xsl:value-of select="$i18n/l/cancel"/></button>
+      <button type="submit" name="cancel" class="button" accesskey="C" onclick="closeDialog('default-dialog');"><xsl:value-of select="$i18n/l/cancel"/></button>
 		</p>
   </xsl:template>
 </xsl:stylesheet>
