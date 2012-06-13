@@ -11,7 +11,10 @@
 
 <xsl:import href="vlibraryitem_common.xsl"/>
 <xsl:import href="edit_common.xsl"/>
+<xsl:import href="codemirror_scripts.xsl"/>
 
+  <xsl:param name="codemirror" select="true()"/>  
+  <xsl:param name="cm_mode">xml</xsl:param>
 <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 
 	<xsl:param name="vlib" select="true()"/>
