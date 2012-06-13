@@ -148,7 +148,6 @@
         <xsl:if test="count(meta/date_to_timestamp/*) &gt; 0">
           <li><strong>Chronicle to:</strong> <xsl:apply-templates select="meta/date_to_timestamp"  mode="datetime"/></li>
         </xsl:if>
-        <li>&#160;</li>
       </ul>
     </div>
   </xsl:template>
