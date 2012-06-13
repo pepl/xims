@@ -91,7 +91,7 @@
 </xsl:template>
 
 <xsl:template name="questionnaire_title">
-    <h1>Questionnaire '<xsl:value-of select="title" />'</h1>
+    <h1><xsl:value-of select="$i18n/l/Questionnaire"/> '<xsl:value-of select="title" />'</h1>
 </xsl:template>
 
 <xsl:template match="question" name="top_question">
