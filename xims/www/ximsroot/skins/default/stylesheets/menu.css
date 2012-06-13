@@ -112,17 +112,21 @@ a.more > .ui-button-text{
 	white-space: nowrap;
 	display: inline-block;
 }
+/*
 .ui-buttonset label{
 	width: 56px;
 }
+*/
 /*
 .ui-buttonset label.ui-state-active{
 	background: none repeat-x scroll 50% 50% #FFFFFF;
 }
 */
+/*
 .ui-buttonset label.ui-state-active .ui-button-text{
 	font-weight: bold;
 }
+*/
 
 .ui-tooltip-content{
 	font-size: 0.8em;
