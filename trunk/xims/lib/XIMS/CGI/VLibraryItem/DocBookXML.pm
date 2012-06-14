@@ -25,6 +25,7 @@ use strict;
 use base qw( XIMS::CGI::VLibraryItem );
 use XIMS::CGI::XML;
 use XIMS::Importer::Object::VLibraryItem::DocBookXML;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -74,14 +75,14 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "not a well formed string" );
-            $self->sendError( $ctxt, "Body is not a well formed string. Please consult the User's Reference for information on well-formed DocBookXML Documents." );
+            $self->sendError( $ctxt, __"Document body could not be converted to a well balanced string." );
             return 0;
         }
 
         # Validate the body against a DocBook DTD
         if ( not $ctxt->object->validate( string => $body ) ) {
             XIMS::Debug( 2, "Body did not validate." );
-            $self->sendError( $ctxt, "Body did not validate against the DocBook DTD 4.3." );
+            $self->sendError( $ctxt, __"Body did not validate against the DocBook DTD" );
             return 0;
         }
     }
@@ -95,14 +96,14 @@ sub event_store {
                 return 1;
             }
             else {
-                $self->sendError( $ctxt , "Could not import VLibraryItem" );
+                $self->sendError( $ctxt , __"Could not import VLibraryItem" );
                 XIMS::Debug( 2, "Could not import VLibraryItem" );
                 return 0;
             }
         }
         else {
             XIMS::Debug( 2, "No body given" );
-            $self->sendError( $ctxt, "A body is needed for the creation of a VLibraryItem::DocBookXML object." );
+            $self->sendError( $ctxt, __"A body is needed for the creation of a VLibraryItem::DocBookXML object." );
             return 0;
         }
     }

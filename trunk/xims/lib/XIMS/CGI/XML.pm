@@ -190,7 +190,7 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "body is not well-formed" );
-            $self->sendError( $ctxt, __"Document body is not well-formed. Please consult the User's Reference for information on well-formed document bodies." );
+            $self->sendError( $ctxt, __"Document body is not well-formed XML." );
             return 0;
         }
     }

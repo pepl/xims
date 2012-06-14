@@ -24,6 +24,7 @@ package XIMS::CGI::VLibraryItem::URLLink;
 use strict;
 use base qw( XIMS::CGI::VLibraryItem );
 use XIMS::VLibMeta;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -61,7 +62,7 @@ sub event_store {
     
     #check URL
     if ( not( $object->check($self->param('location') ) ) ) {
-        $self->sendError( $ctxt, "The specified URL returns an Error. Please check the location." );
+        $self->sendError( $ctxt, __"The specified URL returns an Error. Please check the location." );
         return 0;
     }
 
@@ -92,7 +93,7 @@ sub event_store {
             $meta->data( date_from_timestamp => $date_from );
         }
         else {
-            $error_message = "$date_from is not a valid date or not in the correct format (YYYY-MM-DD)";
+            $error_message = "$date_from " . __"is not a valid date or not in the correct format (YYYY-MM-DD)";
         }
     }
     my $date_to = $self->param('chronicle_to_date');
@@ -101,7 +102,7 @@ sub event_store {
             $meta->data( date_to_timestamp => $date_to );
         }
         else {
-            $error_message = "$date_to is not a valid date or not in the correct format (YYYY-MM-DD)";
+            $error_message = "$date_to " . __"is not a valid date or not in the correct format (YYYY-MM-DD)";
         }
     }
     $object->vlemeta( $meta );
