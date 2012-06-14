@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
-#: ../lib/XIMS/CGI/Document.pm:189
+#: ../lib/XIMS/CGI/Document.pm:189 ../lib/XIMS/CGI/VLibraryItem/Document.pm
 msgid "Document body could not be converted to a well balanced string."
 msgstr ""
 "Der Versuch, einen Fehler im »body«-Abschnitt des Dokumentes zu beheben, "
@@ -146,8 +146,7 @@ msgstr ""
 
 #: ../lib/XIMS/CGI/XML.pm:208
 msgid ""
-"Document body is not well-formed. Please consult the User's Reference for "
-"information on well-formed document bodies."
+"Document body is not well-formed XML."
 msgstr "Der Dokumentenkörper ist nicht wohlgeformtes (wellformed) XML."
 
 #: ../lib/XIMS/CGI/XML.pm:381
@@ -803,8 +802,8 @@ msgstr "Das Kopieren schlug fehl."
 msgid "Object '{title}' together with one related object published."
 msgid_plural ""
 "Object '{title}' together with {published} related object published."
-msgstr[0] "Das Objekt »{title}« wurde veröffentlicht."
-msgstr[1] "Das Objekt »{title}« wurde veröffentlicht."
+msgstr[0] "Das Objekt »{title}« und ein abhängiges Objekt wurden veröffentlicht."
+msgstr[1] "Das Objekt »{title}« wurde zusammen mit {published} abhängigen Objekten veröffentlicht."
 
 #: ../lib/XIMS/CGI.pm:2509 ../lib/XIMS/CGI.pm:2592
 #, perl-brace-format
@@ -928,3 +927,20 @@ msgstr "Die Applikationsklasse »{classname}« konnte nicht geladen werden."
 #~ msgid_plural "over {number} levels in the hierarchy"
 #~ msgstr[0] "in einer Hierarchieebene."
 #~ msgstr[1] "in {number} Hierarchieebenen."
+
+#: VLibraryItem/DocbookXML.pm
+msgid "Body did not validate against the DocBook DTD"
+msgstr "Der Dokumentenkörper validiert nicht gegen die DocBook-DTD."
+
+#: VLibraryItem/DocbookXML.pm
+#, fuzzy, perl-brace-format
+msgid "Could not import {objecttype}."
+msgstr "{objecttype} konnte nicht importiert werden."
+
+#: VLibraryItem/DocbookXML.pm
+msgid "A body is needed for the creation of this object."
+msgstr "Für die Erstellung dieses Objektes ist ein Dokumentenkörper nötig."
+
+#: VLibraryItem/Document.pm
+msgid "is not a valid date or not in the correct format (YYYY-MM-DD)"
+msgstr "ist kein gültiges Datum oder Datumsformat. (JJJJ-MM-TT)"

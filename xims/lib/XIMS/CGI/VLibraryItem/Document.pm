@@ -19,12 +19,12 @@ This module bla bla
 
 =cut
 
-# $Id $
 package XIMS::CGI::VLibraryItem::Document;
 
 use strict;
 use base qw( XIMS::CGI::VLibraryItem );
 use XIMS::VLibMeta;
+use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -114,10 +114,7 @@ sub event_store {
         }
         else {
             XIMS::Debug( 2, "could not convert to a well balanced string" );
-            $self->sendError( $ctxt, "Document body could not be converted to"
-                                   . "a well balanced string. Please consult "
-                                   . "the User's Reference for information on "
-                                   . "well-balanced document bodies." );
+            $self->sendError( $ctxt, __"Document body could not be converted to a well balanced string." );
             return 0;
         }
     }
@@ -157,7 +154,7 @@ sub event_store {
             else {
                 $error_message =
                   $self->param($_)
-                  . "is not a valid date or not in the correct format (YYYY-MM-DD)";
+                  . __"is not a valid date or not in the correct format (YYYY-MM-DD)";
             }
         }
     }
