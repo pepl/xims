@@ -45,6 +45,7 @@
 <PrivMove>Verschieben</PrivMove>
 <PrivPublish>Publizieren</PrivPublish>
 <PrivGrant>Gewähren</PrivGrant>
+<PrivSendMail>Email senden</PrivSendMail>
 <!-- end privileges -->
 <create>Erstelle</create>
 <edit>Bearbeite</edit>
