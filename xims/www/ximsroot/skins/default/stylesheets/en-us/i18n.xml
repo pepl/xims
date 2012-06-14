@@ -48,6 +48,7 @@
 <PrivMove>Move</PrivMove>
 <PrivPublish>Publish</PrivPublish>
 <PrivGrant>Grant</PrivGrant>
+<PrivSendMail>Send Email</PrivSendMail>
 <!-- end privileges -->
 <create>Create</create>
 <edit>Edit</edit>

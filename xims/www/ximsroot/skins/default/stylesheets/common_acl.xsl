@@ -51,9 +51,7 @@
       </xsl:if>
       <p>
         <button class="button" type="submit">
-          <xsl:attribute name="name">
-            aclgrantmultiple
-          </xsl:attribute>
+          <xsl:attribute name="name">aclgrantmultiple</xsl:attribute>
           <xsl:value-of select="$i18n/l/save"/>
         </button>
         <input name="userid" type="hidden">
@@ -65,9 +63,7 @@
         <xsl:call-template name="rbacknav"/>
         &#160;
         <button class="button" type="submit">
-          <xsl:attribute name="name">
-            aclrevokemultiple
-          </xsl:attribute>
+          <xsl:attribute name="name">aclrevokemultiple</xsl:attribute>
           <xsl:value-of select="$i18n/l/Revoke_grants"/>
         </button>
         
@@ -158,6 +154,22 @@
           <xsl:value-of select="concat('acl_publish_',@id,'_',/document/context/object/@id)"/>
         </xsl:attribute><xsl:value-of select="$i18n/l/PrivPublish"/>
       </label>
+      <!-- 
+           Show SEND_AS_MAIL privilege for mailable
+           objects only.  
+      -->
+      <xsl:if test="/document/object_types/object_type[@id=/document/context/object/object_type_id]/is_mailable = 1">
+      <input type="checkbox" name="acl_send_as_mail">
+        <xsl:attribute name="id">
+          <xsl:value-of select="concat('acl_send_as_mail_',@id,'_',/document/context/object/@id)"/>
+        </xsl:attribute>
+      </input>
+      <label>
+        <xsl:attribute name="for">
+          <xsl:value-of select="concat('acl_send_as_mail_',@id,'_',/document/context/object/@id)"/>
+        </xsl:attribute>Send Email<!--<xsl:value-of select="$i18n/l/PrivSendMail"/>-->
+      </label>
+      </xsl:if>
       
       <input type="checkbox" name="acl_grant">
         <xsl:attribute name="id">
