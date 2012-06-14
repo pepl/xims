@@ -485,22 +485,24 @@ sub set_default_bookmark {
 	my $deptroot = shift;
 	
 	my $message = "";
-
-	my $default_bookmark = $role->bookmarks( explicit_only => 1, stdhome => 1 );
-	if ($default_bookmark) {
-		$default_bookmark->stdhome(undef);
-
-		my $bookmark = XIMS::Bookmark->new->data(
-			owner_id   => $role->id(),
-			stdhome    => 1,
-			content_id => $deptroot->id()
-		);
-		unless ($bookmark->create()){
-			$ctxt->properties->application->style( 'newwebsite' );
-			$self->sendError( $ctxt,"Could not create default bookmark\n");
+	
+	if(defined $role){
+		my $default_bookmark = $role->bookmarks( explicit_only => 1, stdhome => 1 );
+		if ($default_bookmark) {
+			$default_bookmark->stdhome(undef);
+	
+			my $bookmark = XIMS::Bookmark->new->data(
+				owner_id   => $role->id(),
+				stdhome    => 1,
+				content_id => $deptroot->id()
+			);
+			unless ($bookmark->create()){
+				$ctxt->properties->application->style( 'newwebsite' );
+				$self->sendError( $ctxt,"Could not create default bookmark\n");
+			}
+			#print "Successfully set default bookmark.\n";
+			$message .= "<p>Successfully set default bookmark.<p>";
 		}
-		#print "Successfully set default bookmark.\n";
-		$message .= "<p>Successfully set default bookmark.<p>";
 	}
 	return $message;
 }
