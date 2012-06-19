@@ -44,12 +44,12 @@
         <xsl:text>&#160;</xsl:text>
 		<!--<a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id};contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','{$i18n/l/browse_target}')" class="button" id="buttonBrTarget">-->
 		<!-- uibk special ??? 
-			when adding a navigation link show parent conatiner instead of the departmentlinks folder
+			when adding a navigation link or document link show parent container instead of the departmentlinks folder
 		-->
 			<a class="button" id="buttonBrTarget">
 				<xsl:attribute name="href">
 					<xsl:choose>
-						<xsl:when test="/document/context/object/parents/object[position() = last()]/title = 'departmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'subdepartmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'speciallinks'">
+						<xsl:when test="/document/context/object/parents/object[position() = last()]/object_type_id = 2 or /document/context/object/parents/object[position() = last()]/title = 'departmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'subdepartmentlinks' or /document/context/object/parents/object[position() = last()]/title = 'speciallinks'">
 							javascript:createDialog('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/parents/object[position() = (last() - 1)]/@id"/>;contentbrowse=1;sbfield=eform.name;urllink=1','default-dialog','<xsl:value-of select="$i18n/l/browse_target"/>')
 						</xsl:when>
 						<xsl:otherwise>
