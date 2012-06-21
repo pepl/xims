@@ -108,12 +108,11 @@ sub event_store {
     # set the location parameter, so init_store_object sets the right location
     if ( defined $ctxt->parent() ) {
         $self->param( name => $self->param( 'file' ) );
-
+        #warn "Content-Type Upload: " . $self->uploadInfo($fh)->{'Content-Type'} if $self->param( 'unzip' );
         # check if we should expand a zip file
         if ( $self->param( 'unzip' )
                 and length $fh
-                and ($self->uploadInfo($fh)->{'Content-Type'} eq 'application/zip'
-                  or $self->uploadInfo($fh)->{'Content-Type'} eq 'application/x-zip-compressed'
+                and ($self->uploadInfo($fh)->{'Content-Type'} =~ /application\/(?:x-)zip(?:-compressed)?/
                   # Firefox > 3.5.2 :-(
                   or $self->uploadInfo($fh)->{'Content-Type'} =~ /application\/oct(?:et)?-stream/ )) {
 
