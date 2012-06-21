@@ -22,4 +22,6 @@
     <Filter_marked_new>Filter Objects that are marked as new</Filter_marked_new>
     <Filter_published>Filter Objects that are published</Filter_published>
     <Filter_object_types>Filter Objects of a certain object type</Filter_object_types>
+    <Filter_location>Filter Objects of matching location</Filter_location>
+    <Filter_title>Filter Objects of matching title</Filter_title>
 </l>
