@@ -103,22 +103,6 @@
 					</xsl:if>
 				</input>
 			</div>
-			<div>
-				<div class="label-extraprop">
-          <label for="filtertitle">
-            <xsl:value-of select="$i18n_portlet/l/Filter_title"/>
-          </label>
-        </div>
-				<input name="filtertitle" id="filtertitle" class="text" type="text" size="30" maxlength="50" value="{body/filter/title/text()}"/>
-			</div>
-		<div>
-        <div class="label-extraprop">
-          <label for="filterlocation">
-            <xsl:value-of select="$i18n_portlet/l/Filter_location"/>
-          </label>
-        </div>
-        <input name="filterlocation" id="filterlocation" class="text" type="text" size="30" maxlength="50" value="{body/filter/location/text()}"/>
-      </div>
     </div>
 		<div class="div-row">
 			<div id="tr-valid_from_timestamp">
@@ -411,6 +395,22 @@
 				</input>
 				<br/>
 			</div>
+     <div>
+        <div class="label-extraprop">
+          <label for="filtertitle">
+            <xsl:value-of select="$i18n_portlet/l/Filter_title"/>
+          </label>
+        </div>
+        <input name="filtertitle" id="filtertitle" class="text" type="text" size="30" maxlength="50" value="{body/filter/title/text()}"/>
+      </div>
+    <div>
+        <div class="label-extraprop">
+          <label for="filterlocation">
+            <xsl:value-of select="$i18n_portlet/l/Filter_location"/>
+          </label>
+        </div>
+        <input name="filterlocation" id="filterlocation" class="text" type="text" size="30" maxlength="50" value="{body/filter/location/text()}"/>
+      </div>
 		
 <!--		 reactivate after Portlet stuff is refactored and cleaned-up
         <td>
