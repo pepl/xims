@@ -22,4 +22,6 @@
     <Filter_marked_new>Als neu markierte Objekte filtern</Filter_marked_new>
     <Filter_published>Veröffentlichte Objekte filtern</Filter_published>
     <Filter_object_types>Objekte anhand des Objekt-Typs filtern</Filter_object_types>
+    <Filter_location>Objekte anhand des Pfads filtern</Filter_location>
+    <Filter_title>Objekte anhand des Titels filtern</Filter_title>
 </l>
