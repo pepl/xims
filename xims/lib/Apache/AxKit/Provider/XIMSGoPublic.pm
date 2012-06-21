@@ -67,6 +67,21 @@ sub get_dom {
             -text => "ProxyObject has to be configured." );
     }
 
+    # work around lost path_info part 1 of 2 :-/
+    my $l = $r->location();
+    my $p = $r->path_info();
+    my $u = $r->uri();
+    my $workaround = 0;
+
+    unless ("$l$p" eq $u) {
+        #warn "location: $l, path_info: $p, uri: $u\n";
+        $u =~ s!$l!!;
+        #warn "re-setting path_info to: $u\n";
+        $r->path_info($u);
+        $workaround = 1;
+    }
+    # end workaround part 1 of 2   
+
     my $uri = $baseuri . $r->path_info();
     my $proxied_uri = Apache::URI->parse( $r, $uri );
 
@@ -137,6 +152,9 @@ sub get_dom {
     if ( length $r->header_in('X-Forwarded-Host') ) {
         $requesturi->hostname( $r->header_in('X-Forwarded-Host') );
     }
+
+    $requesturi->path($r->location) if $workaround; # work around lost path_info part 2 of 2
+
     my $replacement = $requesturi->unparse();
     $replacement =~ s#/$##;
 
