@@ -34,7 +34,7 @@
 <Event>Event</Event>
 <NewsLetter>Newsletter</NewsLetter>
 <Gallery>Bildergalerie</Gallery>
-<NewsItem2>NewsItem mit Sprachkürzel</NewsItem2>
+<NewsItem2>Newseintrag mit Sprachkürzel</NewsItem2>
 <!-- end objecttypes -->
 <!-- privileges -->
 <PrivView>Lesen</PrivView>
