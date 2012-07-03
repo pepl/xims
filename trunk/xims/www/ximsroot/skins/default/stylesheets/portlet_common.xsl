@@ -219,26 +219,28 @@
 			</div>
 			<select name="depth" id="select-depth" class="select">
 				<option value="1">
-					<xsl:attribute name="selected"><xsl:text>selected</xsl:text></xsl:attribute>1</option>
+					<xsl:if test="body/content/depth =1">
+					      	<xsl:attribute name="selected">selected</xsl:attribute>
+					</xsl:if>1</option>
 				<option value="2">
-					<xsl:if test="body/content[depth =2]">
+					<xsl:if test="body/content/depth =2">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>2</option>
 				<option value="3">
-					<xsl:if test="body/content[depth =3]">
+					<xsl:if test="body/content/depth =3">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>3</option>
 				<option value="4">
-					<xsl:if test="body/content[depth =4]">
+					<xsl:if test="body/content/depth =4">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>4</option>
 				<option value="5">
-					<xsl:if test="body/content[depth =5]">
+					<xsl:if test="body/content/depth =5">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>5</option>
 			</select>
 			<xsl:text> Levels</xsl:text>
-			<!--              <input name="f_depth" type="radio" value="true" id="radio-f_depth-true" class="radio-button">
+			<input name="f_depth" type="radio" value="true" id="radio-f_depth-true" class="radio-button">
                   <xsl:if test="body/content/depth != ''">
                     <xsl:attribute name="checked">checked</xsl:attribute>
                   </xsl:if>
@@ -250,7 +252,7 @@
                     <xsl:attribute name="checked">checked</xsl:attribute>
                   </xsl:if>
                   </input>
-                <label for="radio-f_depth-false"><xsl:value-of select="$i18n/l/No"/></label>-->
+                <label for="radio-f_depth-false"><xsl:value-of select="$i18n/l/No"/></label>
 		</div>
 	</xsl:template>
 	
