@@ -42,7 +42,7 @@
 		<script type="text/javascript" language="Javascript">
 			var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
     </script>
-		<form name="editor_selector" id="editor_selector" action="">
+		<form name="editor_selector" id="editor_selector" action="#">
 			<select name="xims_wysiwygeditor" id="xims_wysiwygeditor" onchange="javascript:return checkBodyFromSel(this.value);">
 				<xsl:copy-of select="$editoroptions"/>
 			</select>
@@ -82,7 +82,7 @@
 					<!--<xsl:call-template name="cttobject.status"/>-->
 					<xsl:call-template name="state-toolbar"/>
 				</td>
-				<td>
+				<td style="text-align:center;">
 					<xsl:call-template name="cttobject.position"/>
 				</td>
 				<td>
