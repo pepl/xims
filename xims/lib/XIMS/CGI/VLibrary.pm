@@ -591,11 +591,18 @@ sub event_property_store {
             id          => $fields{'id'},
         );
     }
+#    if ( $fields{'property_id'} ) {
+#        # create new object by id if set
+#        $vlibproperty = $class->new(
+#            id          => $fields{'property_id'},
+#        );
+#    }
     if ( ref $vlibproperty ) {
         foreach ($vlibproperty->fields()) {
             next if $_ eq 'id';
             $vlibproperty->$_( $fields{$_} );
         }
+warn "\n\nproperty_id: ".$vlibproperty->id();
         if ( $vlibproperty->id() ) {    # update property
             if ( $vlibproperty->update == 1 ) {
                 _update_or_publish($ctxt);    # update the VLibrary's timestamps
@@ -689,13 +696,15 @@ sub event_property_delete {
     if ( defined $vlibproperty and $vlibproperty->delete ) {
         _update_or_publish($ctxt);    # update the VLibrary's timestamps
         XIMS::Debug( 6, "$class $id: deleted!" );
-        return $self->simple_response( '200 OK', "$class deleted." );
+        #return $self->simple_response( '200 OK', "$class deleted." );
+        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
     }
     else {
         XIMS::Debug( 3, "$class $id: deletion failed!" );
-        return $self->simple_response( '409 CONFLICT',
-            "ERROR: $class $id: deletion failed!" );
+        #return $self->simple_response( '409 CONFLICT',
+         #   "ERROR: $class $ctxt, "ERROR: $class $id: deletion failed!");
     }
+    return 0;
 }
 
 =head2 event_publish_prompt()
