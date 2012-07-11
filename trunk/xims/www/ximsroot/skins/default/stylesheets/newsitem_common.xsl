@@ -110,6 +110,13 @@
 		</div>
 	</xsl:template>
 	
+  <xsl:template name="form-image">
+    <div id="tr-image">
+      <div class="label-std"><label for="imagefile"><xsl:value-of select="$i18n/l/Image"/></label></div>
+      <input type="file" name="imagefile" id="imagefile" size="60" class="text"/>
+      </div>
+  </xsl:template>
+	
 	<xsl:template name="charcountcheck">
 		<script type="text/javascript">
     var str_of  = '<xsl:value-of select="$i18n_news/l/of"/>';
