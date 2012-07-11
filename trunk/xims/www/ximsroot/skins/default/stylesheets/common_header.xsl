@@ -46,11 +46,13 @@
 		<!--
 			Warnung - Testsystem - UIBK
 		-->
+		<!--
 		<div style="color: red; font-weight: bold; text-align: center;">
 			<p>Achtung Testsystem! Es kann zu unangekündigten Änderungen und Ausfällen kommen.<br/>
 				Dieses System arbeitet gegen die Produktiv-Daten. Alle Änderungen werden für die Webseiten der Uni übernommen.
 			</p>
 		</div>
+		-->
 		<!-- End Warnung Testsystem - UIBK -->
 		<div id="path-logo">
 			<div id="locbar">
@@ -167,7 +169,7 @@
 			</button>
 					<xsl:choose>
 						<xsl:when test="/document/context/object/@id = 1">
-							<ul>
+							<ul style="z-index:100;">
 								<xsl:apply-templates select="/document/object_types/object_type[can_create and name = 'SiteRoot' ]"  mode="fo-menu"/>
 							</ul>
 						</xsl:when>
@@ -175,14 +177,15 @@
 						<xsl:otherwise>
 							<xsl:choose>
 								<xsl:when test="$parent_id != ''">
-									<ul style="position:absolute !important; width: 160px">
+									<ul style="position:absolute !important; z-index: 100; width: 160px">
 										<xsl:apply-templates select="/document/object_types/object_type[can_create and parent_id = $parent_id]" mode="fo-menu">
 											<xsl:sort select="name"/>
 										</xsl:apply-templates>
 									</ul>						
 								</xsl:when>						
 								<xsl:otherwise>
-									<ul>
+									<ul
+                                                                            style="width:180px; z-index: 100;">
 										<!--<xsl:apply-templates select="/document/object_types/object_type[can_create and (@id = '1' or @id = '2' or @id = '3' or @id = '4' or @id = '20' or @id = '11')]" mode="fo-menu">-->
 										<xsl:apply-templates select="/document/object_types/object_type[can_create and menu_level = '1']" mode="fo-menu">
 											<xsl:sort select="name"/>
@@ -457,7 +460,8 @@
 						</a>
 					</li>
 					-->
-					<li>
+<!--					
+<li>
 						<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank">
 							<xsl:attribute name="title">
 								<xsl:value-of select="$i18n/l/stepManual"/>
@@ -473,10 +477,19 @@
 								<xsl:value-of select="$i18n/l/FAQ"/>
 						</a>
 					</li>
+					-->
 					<li>
-						<a href="http://www.uibk.ac.at/zid/systeme/xims/" target="_blank">
-							<xsl:attribute name="title">Xims an der Universität Innsbruck</xsl:attribute>Xims UIBK
+						<!--<a href="http://www.uibk.ac.at/webredaktion/xims/" target="_blank" >-->
+						 <a href="http://www.uibk.ac.at/webredaktion/xims/" target="_blank">
+
+							<xsl:attribute name="title">XIMS an der Universität Innsbruck</xsl:attribute>XIMS UIBK
 						</a>
+					</li>
+					<li>
+					  <a href="http://www.uibk.ac.at/webredaktion/xims/dokumentation/xims-in-sechs-schritten/" target="_blank">
+					    <xsl:attribute name="title">XIMS in sechs Schritten</xsl:attribute>
+					    Benutzeranleitung
+                                          </a>
 					</li>
 					<li>
 						<a href="http://www.uibk.ac.at/webredaktion/webstyleguide/" target="_blank">
@@ -484,16 +497,24 @@
 						</a>
 					</li>
 					<li>
+					  <a href="https://zid-ts.uibk.ac.at/secure/CreateIssue.jspa?pid=10810&amp;issuetype=6&amp;Create=Erstellen" target="_blank">
+					    <xsl:attribute name="title">Supportanfrage via ZID-Ticketsystem senden</xsl:attribute>
+					    Supportanfrage
+					  </a>
+					</li>
+					<!--
+					<li>
 						<a>
 							<xsl:attribute name="href">
-								mailto:<xsl:value-of select="$supportmailaddress"/>?body=<xsl:value-of select="str:encode-uri($supportmail_body)"/>
-							</xsl:attribute>
+					mailto:<xsl:value-of select="$supportmailaddress"/>?body=<xsl:value-of select="str:encode-uri($supportmail_body)"/>
+						
+	</xsl:attribute>
 							<xsl:attribute name="title">
 								<xsl:value-of select="$i18n/l/MailToSupport"/>
 							</xsl:attribute>
 								<xsl:value-of select="$i18n/l/MailToSupport"/>
 						</a>
-					</li>
+					</li>-->
 				</ul>
 </div>
 <!--
