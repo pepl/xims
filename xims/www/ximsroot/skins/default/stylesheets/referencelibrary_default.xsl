@@ -85,7 +85,7 @@
 			<button>				
 				<xsl:value-of select="$i18n/l/Create"/>
 			</button>
-			<ul style="position:absolute !important; overflow-y: auto;">
+			<ul style="position:absolute !important; overflow-y: auto; z-index:100;">
 				<li><a href="{$xims_box}{$goxims_content}{$absolute_path}?import_prompt=1"><xsl:value-of select="$i18n/l/Import"/>...</a></li>
 				<xsl:apply-templates select="/document/reference_types/reference_type" mode="getoptions"/>
 			</ul>
