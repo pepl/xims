@@ -583,13 +583,13 @@
 			<a>
 				<xsl:attribute name="href">
 					<xsl:choose>
-						<xsl:when test="$dfmime='application/x-container' and not($link_to_id)">
+						<xsl:when test="$dfmime='application/x-container' and not($link_to_id or $search)">
 							<xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/>
 							<xsl:if test="$defsorting != 1">
 								<xsl:value-of select="concat('?sb=',$sb,';order=',$order)"/>
 							</xsl:if>
 						</xsl:when>
-						<xsl:when test="$dfmime='application/x-container' and $link_to_id">
+						<xsl:when test="$dfmime='application/x-container' and ($link_to_id or $search)">
 							<xsl:value-of select="concat($goxims_content,'?id=',@id)"/>
 						</xsl:when>
 						<xsl:when test="$dfname='URL'">
@@ -615,8 +615,7 @@
 						<xsl:otherwise>
 							<xsl:choose>
 								<xsl:when test="$search or $link_to_id">
-									<xsl:variable name="location_path" select="location_path"/>
-									<xsl:value-of select="concat($goxims_content,$location_path)"/>
+									<xsl:value-of select="concat($goxims_content,'?id=',@id)"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:value-of select="concat($goxims_content,$absolute_path,'/',location)"/>
