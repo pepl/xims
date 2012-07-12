@@ -166,9 +166,9 @@
     </xsl:variable>
     	<tr class="objrow">
 <!-- status -->
-			<td class="ctt_status">
-				<xsl:call-template name="cttobject.status"/>
-			</td>
+  <td class="ctt_status">
+    <xsl:call-template name="state-toolbar"/>
+  </td>
 <!-- dataformat icon -->
 			<td class="ctt_df">
 				<xsl:call-template name="cttobject.dataformat"/>
