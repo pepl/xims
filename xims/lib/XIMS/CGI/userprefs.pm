@@ -157,7 +157,7 @@ sub event_create {
 
     my $uname = $self->param('name');
     if ( $user->admin() and $uname ) {
-    	warn "\n\n pref set by admin";
+    	# warn "\n\n pref set by admin";
         $user = XIMS::User->new( name => $uname );
         if ( not( $user and $user->id() ) ) {
             XIMS::Debug( 3,
@@ -183,11 +183,11 @@ sub event_create {
     $userprefs->containerview_show($containerview_show);
 
     if($id){
-    	warn "\nUpdate user's preferences\n";
-    	$userprefs->update();    	
+    	#warn "\nUpdate user's preferences\n";
+    	$userprefs->update();
     }
     else{
-    	warn "\nCreate new user's preferences\n";
+    	# warn "\nCreate new user's preferences\n";
     	$userprefs->create();
     }
 
@@ -230,11 +230,11 @@ sub redirect_path {
     my $uri   = Apache::URI->parse( $ctxt->apache() );
     my $query = $uri->query();
     my $port = $uri->port();
-    warn "port : ".$port;
+    # warn "port : ".$port;
     #somehow magically the port is 82... why???
     $uri->port(80);
     $port = $uri->port();
-    warn "port : ".$port;
+    # warn "port : ".$port;
 
     if ( $query =~ /name=([^(;|&)]+)/ ) {
         $uri->path( XIMS::GOXIMS() . '/users' );

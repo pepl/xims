@@ -1168,11 +1168,11 @@ sub redirect_path {
 	if ( defined $r ) {
 		if ( $r =~ /^\d+$/ ) {
 			$redirectpath = $dp->location_path( id => $r );
-			warn "\nredirectpath: ".$redirectpath;
+			#warn "\nredirectpath: ".$redirectpath;
 		}
 		else {
 			$uri = Apache::URI->parse( $ctxt->apache(), $r );
-			warn "uri: ".$uri;
+			#warn "uri: ".$uri;
 		}
 	}
 	elsif ( defined $id ) {
@@ -3492,7 +3492,7 @@ sub event_aclrevokemultiple {
 	my @grantees;
 	foreach ( split( /\s*,\s*/, $self->param('grantees') ) ) {
 	    my $grantee = XIMS::User->new( name => $_ );
-	    warn "\n\ngrantee : ".$grantee->name();
+	    #warn "\n\ngrantee : ".$grantee->name();
 #	    XIMS::Debug( 4, "Grantee '" . $_ . "' could not be found.\n")
 #	        unless $grantee and $grantee->id();
 #	    push @grantees, $grantee;
@@ -3945,9 +3945,9 @@ sub autopublish {
 
 	my $published = 0;
 	my $user = $ctxt->session->user();
-	foreach ( @{$objids} ) {
-		warn $_;
-	}
+	# foreach ( @{$objids} ) {
+	# 	warn $_;
+	# }
 	foreach my $id ( @{$objids} ) {
 		next unless defined $id;
 		my $object =
@@ -3999,16 +3999,16 @@ sub autopublish {
 								)
 							  )
 							{
-								warn "\nObject '$path' " . $method. "ed successfully.\n";
+								#warn "\nObject '$path' " . $method. "ed successfully.\n";
 								$seencontainers{$dir}++;
 								$published++;
 							}
 							else {
-								warn "\ncould not $method object '$path'.\n";
+								XIMS::Debug(3, "could not $method object '$path'.");
 							}
 						}
 						else {
-							warn "\nno privileges to $method object '$path'.\n";
+							XIMS::Debug(4, "no privileges to $method object '$path'." );
 						}
 					}    #end foreach child
 				}    #end if container

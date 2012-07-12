@@ -200,7 +200,7 @@ sub event_store {
 =cut
 
 sub event_deletemultiple {
-	XIMS::Debug( 5, "called" );
+    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
     my @ids = $self->param('multiselect');
     foreach(@ids){
@@ -209,8 +209,8 @@ sub event_deletemultiple {
     		$obj->delete(User => $ctxt->session->user);
     	}
     	else{
-    		warn "geht nicht : ".$obj->location();
-    	}
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
     }
     XIMS::Debug( 4, "redirecting to the container" );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
@@ -233,9 +233,9 @@ sub event_deletemultiple_prompt {
     	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
     		push(@objects, $obj);
     	}
-#    	else{
-#    		warn "geht nicht : ".$obj->location();
-#    	}
+        else{
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
     }
     if ( scalar @objects ) {
     	$ctxt->objectlist( \@objects );
@@ -261,9 +261,9 @@ sub event_trashcanmultiple_prompt {
     	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
     		push(@objects, $obj);
     	}
-#    	else{
-#    		warn "geht nicht : ".$obj->location();
-#    	}
+        else{
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
     }
     if ( scalar @objects ) {
     	$ctxt->objectlist( \@objects );
@@ -278,20 +278,20 @@ sub event_trashcanmultiple_prompt {
 =cut
 
 sub event_trashcanmultiple {
-	XIMS::Debug( 5, "called" );
+    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my @ids = $self->param('multiselect');
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
     	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
-    		$obj->trashcan();
+            $obj->trashcan();
     	}
-    	else{
-    		warn "geht nicht : ".$obj->location();
-    	}
+        else{
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
     }
-	XIMS::Debug( 4, "redirecting to the container" );
+    XIMS::Debug( 4, "redirecting to the container" );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
 }
@@ -301,7 +301,7 @@ sub event_trashcanmultiple {
 =cut
 
 sub event_undeletemultiple {
-	XIMS::Debug( 5, "called" );
+    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my @ids = $self->param('multiselect');
@@ -309,13 +309,13 @@ sub event_undeletemultiple {
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
     	if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE()){
-    		$obj->undelete();
+            $obj->undelete();
     	}
-    	else{
-    		warn "geht nicht : ".$obj->location();
-    	}
+        else{
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
     }
-	XIMS::Debug( 4, "redirecting to the container" );
+    XIMS::Debug( 4, "redirecting to the container" );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
 }
@@ -325,7 +325,7 @@ sub event_undeletemultiple {
 =cut
 
 sub event_publishmultiple_prompt {
-	XIMS::Debug( 5, "called" );
+    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my @ids = $self->param('multiselect');
@@ -333,15 +333,15 @@ sub event_publishmultiple_prompt {
     foreach(@ids){
     	my $obj = new XIMS::Object('id' => $_);
     	#warn $obj->location()." \t- ".$ctxt->session->user->object_privmask( $obj )." - ".XIMS::Privileges::DELETE();
-#    	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
-#    		push(@objects, $obj);
-#    	}
+        #    	if(not ($obj->published())  and ($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::DELETE())){
+        #    		push(@objects, $obj);
+        #    	}
     	if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
-    		push(@objects, $obj);
+            push(@objects, $obj);
     	}
-#    	else{
-#    		warn "geht nicht : ".$obj->location();
-#    	}
+        else{
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
     }
     if ( scalar @objects ) {
     	$ctxt->objectlist( \@objects );
@@ -356,50 +356,50 @@ sub event_publishmultiple_prompt {
 =cut
 
 sub event_publishmultiple {
-	XIMS::Debug( 5, "called" );
+    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
 
     my @ids = $self->param('multiselect');
     my @objects;
-	require XIMS::Exporter;
-		my $exporter = XIMS::Exporter->new(
-			Provider => $ctxt->data_provider,
-			Basedir  => XIMS::PUBROOT(),
-			User     => $ctxt->session->user
-		);
-	my $no_dependencies_update = 1;
-		if ( defined $self->param("update_dependencies")
-			and $self->param("update_dependencies") == 1 )
-		{
-			$no_dependencies_update = undef;
-		}
-	my $obj;
-	my @org_ids = @ids;
-	my $user = $ctxt->session->user;
-	foreach(@org_ids){
-		$obj = new XIMS::Object('id' => $_);
-		my @descendants = $obj->descendants_granted(
-			        User           => $user,
-			        marked_deleted => 0
+    require XIMS::Exporter;
+    my $exporter = XIMS::Exporter->new(
+        Provider => $ctxt->data_provider,
+        Basedir  => XIMS::PUBROOT(),
+        User     => $ctxt->session->user
+    );
+    my $no_dependencies_update = 1;
+    if ( defined $self->param("update_dependencies")
+             and $self->param("update_dependencies") == 1 )
+        {
+            $no_dependencies_update = undef;
+        }
+    my $obj;
+    my @org_ids = @ids;
+    my $user = $ctxt->session->user;
+    foreach(@org_ids){
+        $obj = new XIMS::Object('id' => $_);
+        my @descendants = $obj->descendants_granted(
+            User           => $user,
+            marked_deleted => 0
 			    );
-		XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
-	    if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
-		    foreach my $desc (@descendants) {
-		    	if($user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
-					push(@ids, $desc->id());
-		    	}
-			}
-	    }
-	    else{
-	    	$ctxt->properties->application->styleprefix('common');
-			$ctxt->properties->application->style('error');
-			XIMS::Debug( 2, "to many objects in recursion" );
-			$self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
-			return 0;
-	    }
-	}
-	my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'publish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
-	XIMS::Debug( 4, "redirecting to the container" );
+        XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
+        if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
+            foreach my $desc (@descendants) {
+                if($user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
+                    push(@ids, $desc->id());
+                }
+            }
+        }
+        else{
+            $ctxt->properties->application->styleprefix('common');
+            $ctxt->properties->application->style('error');
+            XIMS::Debug( 2, "to many objects in recursion" );
+            $self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
+            return 0;
+        }
+    }
+    my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'publish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
+    XIMS::Debug( 4, "redirecting to the container" );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
 }
@@ -408,58 +408,58 @@ sub event_publishmultiple {
 =cut
 
 sub event_unpublishmultiple {
-	XIMS::Debug( 5, "called" );
+    XIMS::Debug( 5, "called" );
     my ( $self, $ctxt ) = @_;
-	XIMS::Debug( 4, "container - id:".$ctxt->object->id );
+    XIMS::Debug( 4, "container - id:".$ctxt->object->id );
     my @ids = $self->param('multiselect');
     my @objects;
-	require XIMS::Exporter;
-	my $exporter = XIMS::Exporter->new(
-		Provider => $ctxt->data_provider,
-		Basedir  => XIMS::PUBROOT(),
-		User     => $ctxt->session->user
-	);
-	my $no_dependencies_update = 1;
-	if ( defined $self->param("update_dependencies")
-		and $self->param("update_dependencies") == 1 )
+    require XIMS::Exporter;
+    my $exporter = XIMS::Exporter->new(
+        Provider => $ctxt->data_provider,
+        Basedir  => XIMS::PUBROOT(),
+        User     => $ctxt->session->user
+    );
+    my $no_dependencies_update = 1;
+    if ( defined $self->param("update_dependencies")
+             and $self->param("update_dependencies") == 1 )
 	{
-		$no_dependencies_update = undef;
+            $no_dependencies_update = undef;
 	}
-	#my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objects,
-	#				$no_dependencies_update, $self->param("recpublish") );
-#	foreach ( @ids ) {
-#			warn $_;
-#		}
-	#
-	my $obj;
-	my @org_ids = @ids;
-	my $user = $ctxt->session->user;
-	foreach(@org_ids){
-		$obj = new XIMS::Object('id' => $_);
-		my @descendants = $obj->descendants_granted(
-			        User           => $user,
-			        marked_deleted => 0
-			    );
-		XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
-	    if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
-		    foreach my $desc (@descendants) {
-		    	if($user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
-					push(@ids, $desc->id());
-		    	}
-			}
-	    }
-	    else{
-	    	$ctxt->properties->application->styleprefix('common');
-			$ctxt->properties->application->style('error');
-			XIMS::Debug( 2, "to many objects in recursion" );
-			$self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
-			return 0;
-	    }
-	}
-	
-	#
-	my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
-	XIMS::Debug( 4, "redirecting to the container - id:".$ctxt->object->id );
+    #my $published = $self->autopublish( $ctxt, $exporter, 'publish', \@objects,
+    #				$no_dependencies_update, $self->param("recpublish") );
+    #	foreach ( @ids ) {
+    #			warn $_;
+    #		}
+    #
+    my $obj;
+    my @org_ids = @ids;
+    my $user = $ctxt->session->user;
+    foreach(@org_ids){
+        $obj = new XIMS::Object('id' => $_);
+        my @descendants = $obj->descendants_granted(
+            User           => $user,
+            marked_deleted => 0
+        );
+        XIMS::Debug( 4, "Number of objects: ".(scalar @descendants + scalar @ids));
+        if((scalar @descendants + scalar @ids) < XIMS::RECMAXOBJECTS()){
+            foreach my $desc (@descendants) {
+                if($user->object_privmask( $obj )& XIMS::Privileges::PUBLISH()){
+                    push(@ids, $desc->id());
+                }
+            }
+        }
+        else{
+            $ctxt->properties->application->styleprefix('common');
+            $ctxt->properties->application->style('error');
+            XIMS::Debug( 2, "to many objects in recursion" );
+            $self->sendError( $ctxt, __x "Current limit is {rec_max_obj}. Please select fewer objects or disable recursion.", rec_max_obj => XIMS::RECMAXOBJECTS() );
+            return 0;
+        }
+    }
+    
+    #
+    my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
+    XIMS::Debug( 4, "redirecting to the container - id:".$ctxt->object->id );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
 }
@@ -545,6 +545,7 @@ sub event_movemultiple {
 			#$ctxt->session->error_msg( __ "Where to move?" );
 			return 0;
 		}
+
 		my $target;
 		if (
 			not(

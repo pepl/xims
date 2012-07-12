@@ -251,9 +251,9 @@ sub redirect_path {
         $uri->query("bookmarks=1;$query");
     }
 
-	#somehow magically the port is 82... why???
+	# XXX somehow magically the port is 82... why???
     $uri->port(80);
-    warn "redirecting to ". $uri->unparse();
+    # warn "redirecting to ". $uri->unparse();
     return $uri->unparse();
 }
 
