@@ -1194,7 +1194,6 @@
 				<a class="button option-trashcan">
 					<xsl:attribute name="href">
 						<xsl:value-of select="concat($goxims_content,'?id=',@id,';showtrashcan=1;r=',/document/context/object/@id)"/>
-						<xsl:value-of select="concat(';page=',$page)"/>
 						<xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
 					</xsl:attribute>
 					<span>
