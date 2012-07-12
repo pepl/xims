@@ -282,7 +282,7 @@ sub event_gen_website {
 	my $role;
 	if($self->param('role')){
 		$role = XIMS::User->new( name => $self->param('role') ); #$args{r} );
-		warn "\n\nparam: ".$self->param('role')." -  role: ".$role->name;
+		#warn "\n\nparam: ".$self->param('role')." -  role: ".$role->name;
 		$self->sendError( $ctxt,"Could not find role '". $self->param('role') ."'.") 
 			unless $role and $role->id();
 	}
@@ -527,7 +527,7 @@ sub defaultgrants {
 		$message .= "<p>Privileges set for ".$owner."</p>"
 	}
 	else {
-		warn "Could not grant privileges to " . $owner->name() . " .\n";
+		XIMS::Debug(4, "Could not grant privileges to " . $owner->name() );
 	}
 	
 	foreach my $grantee_str (split(',',$grantees_list)){
@@ -543,9 +543,9 @@ sub defaultgrants {
 	{
 		$message .= "<p>Privileges set for ".$grantee."</p>"
 	}
-	else {
-		warn "Could not grant privileges to " . $grantee->name() . " .\n";
-	}
+        else {
+            XIMS::Debug(4, "Could not grant privileges to " . $grantee->name() );
+        }
 	}
 	
 	if($role){
@@ -559,7 +559,7 @@ sub defaultgrants {
 		{
 		}
 		else {
-			warn "Could not grant privileges to " . $role->name() . " .\n";
+			XIMS::Debug(4, "Could not grant privileges to " . $role->name() );
 		}
 	}
 }
@@ -601,11 +601,11 @@ sub publish_deptroot_rec {
 		$child = rebless($child);
 		$path  = $child->location_path();
 		if ( $exporter->publish( Object => $child, User => $user ) ) {
-			warn "Object '$path' published successfully.\n";
+			XIMS::Debug(4, "Object '$path' published successfully.");
 			$successful++;
 		}
 		else {
-			warn "could not publish object '$path'.\n";
+			XIMS::Debug(3, "could not publish object '$path'");
 			$failed++;
 		}
 		$total++;
@@ -614,11 +614,11 @@ sub publish_deptroot_rec {
 	$deptroot = rebless($deptroot);
 	if ( $exporter->publish( Object => $deptroot, User => $user ) )
 	{
-		warn "Object '$path' published successfully.\n";
+		XIMS::Debug(4, "Object '$path' published successfully." );
 		$successful++;
 	}
 	else {
-		warn "could not publish object '$path'.\n";
+		XIMS::Debug(3, "could not publish object '$path'.\n" );
 		$failed++;
 	}
 	$total++;

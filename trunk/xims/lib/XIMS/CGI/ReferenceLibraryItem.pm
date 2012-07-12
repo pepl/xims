@@ -405,8 +405,8 @@ sub event_create_author_mapping {
 
     $self->param('vleditor', undef);
     $self->create_author_mapping( $ctxt );
-    warn "\n\nObject ID : ".$ctxt->object->id();
-    warn "\n\nRedPath : ".$self->redirect_path( $ctxt, $ctxt->object->id() );
+    #warn "\n\nObject ID : ".$ctxt->object->id();
+    #warn "\n\nRedPath : ".$self->redirect_path( $ctxt, $ctxt->object->id() );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
     return 1;
 }

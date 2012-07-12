@@ -764,12 +764,12 @@ sub event_objecttypeprivs {
 
     if ( $user and $user->id() ) {
         $ctxt->user($user);
-        warn "\n\nuser exists.... addpriv=".$self->param('addpriv')." ... ot=".$self->param('objtype');
+        # warn "\n\nuser exists.... addpriv=".$self->param('addpriv')." ... ot=".$self->param('objtype');
         #if ( ( defined $self->param('addpriv') or defined $self->param('addpriv.x') )
         #    and my $objtype = $self->param('objtype') )
          if ( defined $self->param('addpriv') and my $objtype = $self->param('objtype') )
         {
-        	warn "\n\nadding new ot priv.";
+        	#warn "\n\nadding new ot priv.";
             my $object_type = XIMS::ObjectType->new( fullname => $objtype );
             return $self->sendError( $ctxt,
                 __"Could not resolve object type name" )
@@ -788,7 +788,7 @@ sub event_objecttypeprivs {
             $otpriv = XIMS::ObjectTypePriv->new();
             $otpriv->data(%data);
             if ( $otpriv->create() ) {
-            	warn "\n\notprivs created.";
+            	#warn "\n\notprivs created.";
                 $self->redirect($self->redirect_path( $ctxt, 'objecttypeprivs' ) );
                 return 0;
             }
@@ -863,7 +863,7 @@ sub event_objecttypeprivs {
         $ctxt->properties->application->style('objecttypeprivs');
     }
     else {
-    	warn "\n\nno user!!!!.";
+    	#warn "\n\nno user!!!!.";
         XIMS::Debug( 3,
             "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
         $self->sendError( $ctxt,
@@ -892,13 +892,13 @@ sub redirect_path {
                  );
 
 my $port = $uri->port();
-    warn "port : ".$port;
-    #somehow magically the port is 82... why???
+    # warn "port : ".$port;
+    # XXX somehow magically the port is 82... why???
     $uri->port(80);
     $port = $uri->port();
-    warn "port : ".$port;
+    # warn "port : ".$port;
     
-    warn "\n\nredirecting to ". $uri->unparse();
+    #warn "\n\nredirecting to ". $uri->unparse();
     return $uri->unparse();
 }
 
