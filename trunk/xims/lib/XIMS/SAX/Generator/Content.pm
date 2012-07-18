@@ -153,11 +153,13 @@ sub prepare {
 
     if ( $ctxt->user() ) {
         $doc_data->{context}->{user} = $ctxt->user();
-        # add the user's preferences.
-		unless($ctxt->session->user->userprefs()){ # Sideeffect!
-		 	XIMS::Debug(4, "New userprefs created");
-		}
-		$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
+        # This caused an error on VLibrary::DocbookXML export. 
+        # It seems not necessary and thence got deactivated. 
+        # Please clean up on next review.
+		# unless($ctxt->session->user->userprefs()){ # Sideeffect!
+		#  	XIMS::Debug(4, "New userprefs created");
+		# }
+		# $doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
     }
 
     return $doc_data;
