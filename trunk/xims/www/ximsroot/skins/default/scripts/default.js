@@ -351,7 +351,7 @@ function initVLibMenu(){
 				at: "left bottom",
 				of: this
 			});
-			*(
+			*/
 			$(document).one("click", function() {
 				menu.hide();
 			});
@@ -976,6 +976,7 @@ $(document).ready(function(){
 	$('.ui-dialog').addClass('xims-content');
 	
 	searchFilter();				
+	
 
 
     //IE hack							
