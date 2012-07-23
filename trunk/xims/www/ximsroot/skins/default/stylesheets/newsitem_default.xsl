@@ -24,6 +24,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	<div id="docbody">
+		<div id="content">
 		<xsl:choose>
 			<xsl:when test="string-length(image_id)">
 				<div>
@@ -76,7 +77,7 @@
 		</div>
 		
 		<xsl:call-template name="documentlinks"/>
-		
+		</div>
 	</div>
 	</xsl:template>
 	
