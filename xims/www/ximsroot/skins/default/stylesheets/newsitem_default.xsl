@@ -58,7 +58,7 @@
 				</div>
 			</xsl:otherwise>
 		</xsl:choose>
-		<div id="body-content">
+		<div id="body-content" style="clear:both;">
 			<xsl:apply-templates select="body"/>
 		</div>
 		
