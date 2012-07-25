@@ -576,12 +576,22 @@ function initOptionsButtons(){
 }
 
 function aclTooltip(){
-	
-	$( ".button option-acl" ).tooltip({ 
-		content: function(response) {
-  			$.getJSON("tooltipcontent.html", response);
-		} 
-	});
+    $('a.option-acl').each(function(){
+      var stroa = 'option-acl_';
+      var currid = $(this).attr('id').substring($(this).attr('id').indexOf('option-acl') + stroa.length );
+      var geturl = 'http://ximstest1.uibk.ac.at/goxims/content/?id='+currid+';obj_acllist=1;tooltip=1';
+      $(this).tooltip(
+        {
+        content: function(response){
+          //var geturl = 'http://ximstest1.uibk.ac.at/goxims/content/?id="'+ currid +'";obj_acllist=1;tooltip=1';
+          $.get(geturl, response);
+            return "Loading...";
+          }
+        },
+        {width: "530"},
+        {position: {offset: "-370 10", my: "right top", at: "left bottom", collision: "fit", of: '#'+stroa+currid}}
+      );
+    });
 }
 
 function getXMLHTTPObject() {
@@ -910,6 +920,8 @@ $(document).ready(function(){
     initCreateMenu();
     initHelpMenu();
     initMenuMenu();
+		
+  aclTooltip();
 		
   /* 
    * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
