@@ -5,7 +5,11 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: newsitem_common.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" 
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:date="http://exslt.org/dates-and-times"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="date">
 
 	<xsl:import href="document_common.xsl"/>
 	
@@ -49,10 +53,10 @@
 			<xsl:call-template name="charcountcheck"/>
 		</div>
 		<xsl:if test="$mode='edit'">
-			<xsl:call-template name="form-image"/>
+			<xsl:call-template name="form-image"><xsl:with-param name="mode">edit</xsl:with-param></xsl:call-template>
 		</xsl:if>
 		<xsl:if test="$mode='create'">
-			<xsl:call-template name="form-image"/>
+			<xsl:call-template name="form-image">><xsl:with-param name="mode">create</xsl:with-param></xsl:call-template>
 			<div>
 				<div class="label-std">
 					<label for="input-image-title">
@@ -109,12 +113,31 @@
 		</xsl:if>
 		</div>
 	</xsl:template>
-	
+
   <xsl:template name="form-image">
+    <xsl:param name="mode">edit</xsl:param>
     <div id="tr-image">
+  <!-- Load image from XIMS -->
+    <xsl:if test="$mode='edit'">
+    <xsl:variable name="curr_id">
+      <xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/@id"/>
+    </xsl:variable>
+    <div class="label-std">
+      <label for="input-image">
+        <xsl:value-of select="$i18n/l/Image"/>
+      </label>
+    </div>
+    <input type="text" name="image" size="60" value="{image_id}" class="text" id="input-image"/>
+    <xsl:text>&#160;</xsl:text>
+    <a href="javascript:createDialog('{$xims_box}{$goxims_content}?id={$curr_id};contentbrowse=1;to={$curr_id};otfilter=Image;sbfield=eform.image','default-dialog','{$i18n/l/Browse_image}')" class="button"><xsl:value-of select="$i18n/l/Browse_image"/></a>
+    </xsl:if>
+    <!-- Upload image -->
+    <xsl:if test="$mode='create'">
       <div class="label-std"><label for="imagefile"><xsl:value-of select="$i18n/l/Image"/></label></div>
       <input type="file" name="imagefile" id="imagefile" size="60" class="text"/>
-      </div>
+      <xsl:text>&#160;</xsl:text>
+    </xsl:if>
+    </div>
   </xsl:template>
 	
 	<xsl:template name="charcountcheck">
