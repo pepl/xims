@@ -1417,43 +1417,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<!--<xsl:template name="button.options.acl_or_undelete">
-		<xsl:variable name="id" select="@id"/>
-		<xsl:choose>
-			<xsl:when test="marked_deleted != '1' and (user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="button option-acl">
-					<xsl:attribute name="id">option-acl_<xsl:value-of select="$id"/></xsl:attribute>
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_Access_control"/>
-				</a>
-				<script type="text/javascript">
-				$(document).ready(function() {
-
-					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip(
-						{ 
-						content: function(response) {				
-						$.get('<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1;tooltip=1')"/>', response);
-						return "Loading...";
-						}
-						},
-						{position: {my: "center top", at: "center bottom"}},
-						{width: "530"}
-					);
-				});
-
-	</script>
-			</xsl:when>
-			<xsl:when test="user_privileges/delete and marked_deleted = '1'">
-				<a class="button option-undelete">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_Undelete"/>
-				</a>
-			</xsl:when>
-			<xsl:otherwise>
-				<a class="button option-disabled">&#160;</a>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>-->
 	
 	<xsl:template name="button.options.acl">
 		<xsl:variable name="id" select="@id"/>
@@ -1464,21 +1427,6 @@
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 					<xsl:value-of select="$l_Access_control"/>
 				</a>
-				<script type="text/javascript">
-				$(document).ready(function() {
-					$( "#option-acl_<xsl:value-of select="$id"/>" ).tooltip(
-						{ 
-						content: function(response) {				
-						$.get('<xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1;tooltip=1')"/>', response);
-						return "Loading...";
-						}
-						},
-						{width: "530"},
-						{position: {offset: "-370 10", my: "right top", at: "left bottom",collision: "fit", of: '#option-acl_<xsl:value-of select="$id"/>'}}
-					);
-				});
-
-	</script>
 			</xsl:when>
 			<xsl:otherwise>
 				<a class="button option-disabled">&#160;</a>
