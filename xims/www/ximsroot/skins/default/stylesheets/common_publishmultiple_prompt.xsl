@@ -80,7 +80,7 @@
 							</p>
 						</xsl:if>-->						
 							<p>
-								<label for="recpublish">Ausgewählte Objekte rekursiv veröffentlichen?</label> 
+								<label for="recpublish"><xsl:value-of select="$i18n/l/PublishRecursive"/></label> 
 								<input type="checkbox" name="recpublish" id="recpublish" value="1" class="checkbox"/>
 								<input type="hidden" name="autopublish" id="autopublish" value="1"/><br/>
 								(<xsl:value-of select="$i18n/l/Notice"/>: <xsl:value-of select="$i18n/l/RecUnpublishNotice"/>)

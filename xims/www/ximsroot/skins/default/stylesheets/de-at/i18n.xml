@@ -196,7 +196,8 @@
 <Currently_showing_privs>Zur Zeit werden bereits vergebene Rechte angezeigt.</Currently_showing_privs>
 <Edit_current_privs>Derzeit vergebene Rechte bearbeiten</Edit_current_privs>
 <ACLNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlt Ihnen die Berechtigung zur Rechtevergabe.</ACLNotice>
-<GrantRecursive>Rechte rekursiv vergeben / entziehen?</GrantRecursive>
+<!-- <GrantRecursive>Rechte rekursiv vergeben / entziehen?</GrantRecursive> -->
+<GrantRecursive>Für ausgewählte Ordner Rechte auch für alle enthaltenen Objekte vergeben /entziehen?</GrantRecursive>
 <SeparateUsers>mehrere Benutzer / Rollen durch Komma getrennt eingeben</SeparateUsers>
 <Click>Klicken Sie</Click>
 <here>hier</here>
@@ -398,6 +399,7 @@
 <AboutPublishMultiple>Sie sind dabei die folgenden Objekte zu (de-)publizieren</AboutPublishMultiple>
 <PublishingNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlen Ihnen die Berechtigung zum Publizieren.</PublishingNotice>
 <RecUnpublishNotice>Bei "Veröffentlichen rückgangig machen" werden automatisch alle Kindobjekte depubliziert.</RecUnpublishNotice>
+<PublishRecursive>In ausgewählten Ordnern auch alle enthaltenen Objekte veröffentlichen?</PublishRecursive>
 <isCurrently>ist derzeit</isCurrently>
 <NOT>NICHT</NOT>
 <under>unter</under>
