@@ -202,7 +202,7 @@ sub _set_wysiwyg_editor {
     elsif ( not( length $editor ) and length XIMS::DEFAULTXHTMLEDITOR() ) {
         $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
         if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
-            $editor = 'htmlarea';
+            $editor = 'tinymce';
         }
         my $cookie = $self->cookie(
             -name    => $cookiename,
