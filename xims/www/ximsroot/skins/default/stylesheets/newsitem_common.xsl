@@ -56,7 +56,7 @@
 			<xsl:call-template name="form-image"><xsl:with-param name="mode">edit</xsl:with-param></xsl:call-template>
 		</xsl:if>
 		<xsl:if test="$mode='create'">
-			<xsl:call-template name="form-image">><xsl:with-param name="mode">create</xsl:with-param></xsl:call-template>
+			<xsl:call-template name="form-image"><xsl:with-param name="mode">create</xsl:with-param></xsl:call-template>
 			<div>
 				<div class="label-std">
 					<label for="input-image-title">
