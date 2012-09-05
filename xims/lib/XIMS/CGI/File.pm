@@ -230,7 +230,8 @@ sub import_from_zip {
         my $fileName = $member->fileName();
         my $status = $member->extractToFileNamed( "$tempdir/$fileName" );
         my $handled_root;
-        if ( $status == AZ_OK ) {
+        #ignore macosx-folder (created when zipping with mac)
+        if ( $status == AZ_OK and not lc($fileName) =~ m/^__macosx\//) {
             # Depending on the ZIP file the initial member may be a document
             # in the root folder - Make sure the root folder will be imported first
             if ( $fileName =~ /\// and not $handled_root ) {
