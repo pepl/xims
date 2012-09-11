@@ -322,7 +322,7 @@
 	<xsl:template name="tr-bibliosource">
 	<div>
 	<label for="input-bibliosource">Bibliosource</label><br/>
-		<textarea rows="3" cols="74" id="input-bibliosource" name="input-bibliosource"><xsl:value-of select="meta/bibliosource"/></textarea>
+		<textarea rows="3" cols="74" id="input-bibliosource" name="bibliosource"><xsl:value-of select="meta/bibliosource"/></textarea>
 			</div>
 	</xsl:template>
 	
