@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l>
+    <Search_keys>Search keys</Search_keys>
+    <Pagesize>Items per Page</Pagesize>
+    <Database_DSN>Database DSN</Database_DSN>
+    <Database_User>Database User</Database_User>
+    <Database_Password>Database Password</Database_Password>
+</l>

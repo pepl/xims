@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<Config>
+    <General>
+        <!--
+        # Values from 0..6, where 6 is the most verbose.
+        # See
+        # http://xims.info/documentation/developers/xims-developer_s-guide.sdbk#DebuglevelReference
+        # for the "Debuglevel Reference"
+        -->
+        <DebugLevel>2</DebugLevel>
+
+        <!-- Absolute path to the Apache document root -->
+        <ApacheDocumentRoot></ApacheDocumentRoot>
+
+        <!-- Database connection information -->
+        <DBUser></DBUser>
+        <DBPassword></DBPassword>
+        <!--- DBI dsn string-->
+        <DBdsn></DBdsn>
+
+        <!-- RDBMS specific DBD session options -->
+        <DBSessionOpt></DBSessionOpt>
+        <!-- RDBMS specific DBD connect options -->
+        <DBDOpt></DBDOpt>
+
+        <!--
+        # Example settings for PostgreSQL
+        <DBUser>ximsrun</DBUser>           # Default value from defaultdata.sql
+        <DBPassword>ximsrun</DBPassword>   # Default value from defaultdata.sql
+        <DBdsn>dbi:Pg:dbname=xims</DBdsn>  # Default value from defaultdata.sql
+        <DBSessionOpt>SET DateStyle TO ISO;SET Client_Encoding TO UNICODE;</DBSessionOpt>
+        <DBDOpt>FetchHashKeyName=NAME_uc;</DBDOpt>
+        -->
+        <!--
+        # Example settings for Oracle
+        <DBdsn>dbi:Oracle:test</DBdsn>
+        <DBSessionOpt>ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS';</DBSessionOpt>
+        <DBDOpt>LongReadLen=67108864;LongTruncOk=1</DBDOpt>
+        -->
+
+        <!-- Set this to your dabase encoding if the database is not encoded in UTF-8 -->
+        <DBEncoding></DBEncoding>
+
+        <!--
+        # Number of found objects displayed per page
+        # Must be in sync with the corresponding value in $ximsroot/stylesheets/config.xsl
+        -->
+        <SearchResultRowLimit>30</SearchResultRowLimit>
+
+        <!--
+            # Session time out limit (in seconds)
+            # 86400 = ONE_DAY
+        -->
+        <SessionTimeout>86400</SessionTimeout>
+
+        <!--
+        # Path to the tidy binary
+        -->
+        <TidyPath></TidyPath>
+        <!--
+        # Options for tidy
+        -->
+        <TidyOptions>-config /usr/local/xims/conf/ximstidy.conf -quiet -f /dev/null</TidyOptions>
+
+        <!--
+        # Path to the htmldoc binary
+        -->
+        <htmldocPath>/usr/bin/htmldoc</htmldocPath>
+
+        <!--
+        # After you installed one of HTMLArea, eWebeditPro,
+        # Xinha, or TinyMCE WYSIWYG-editors, add 'htmlarea', 'wepro', 'xinha', or 'tinymce'
+        # respectively as the default editor which users will get at their first time edit action.
+        # XIMS comes with a customized version of HTMLArea3RC1. The original version can be
+        # grabbed from http://sourceforge.net/projects/itools-htmlarea/
+        # and should be installed to $ximsroot/htmlarea. eWebeditProp can be downloaded from
+        # http://www.ektron.com/ewebeditpro.aspx and should be unpacked to $ximsroot/wepro
+        # Xinha is available at xinha.org and should be unpacked to $ximsroot/xinha, TinyMCE
+        # is available at http://tinymce.moxiecode.com/ and should be unpacked to $ximsroot/tinymce
+        #
+        # Note: 'tinymce' will be used even if DefaultXHTMLEditor is set to 'wepro' when editing
+        # a Document on non-Windows browsers.
+        -->
+        <DefaultXHTMLEditor>tinymce</DefaultXHTMLEditor>
+
+        <!--
+        # Source IP of the mailable object types' request agent session
+        -->
+        <RequestAgentSourceIP>127.0.0.1</RequestAgentSourceIP>
+
+        <!--
+        #  Sizelimit of E-Mails sent by XIMS in  characters (octets)
+        -->
+        <MailSizeLimit>524288</MailSizeLimit>
+
+        <!--
+        # If set to a non-zero value, locations of content objects will be lowercased during save
+        -->
+        <LowerCaseLocations>0</LowerCaseLocations>
+
+        <!--
+        # Array of language-tags of XIMS-known user interface stylesheet directories.
+        # Every item will be tested for preference in a RFC2616 style language negotiation
+        # process following the user agent's language settings.
+        # An item will be used as directory name in
+        # $ximsroot/skins/$defaultskin/stylesheets/$item
+        -->
+        <UILanguages>
+            <item>de-at</item>
+            <item>en-us</item>
+        </UILanguages>
+        <!--
+        # Fallback value if the language negotiation with the user agent
+        # will not be successful.
+        -->
+        <UIFallbackLang>en-us</UIFallbackLang>
+
+        <!--
+        # Name or comma-separated list of names of the authentification module(s).
+        # Modules in a list will be tried consecutively.
+        -->
+        <AuthStyle>XIMS::Auth::Password</AuthStyle>
+        <!--
+        # FQDN of the Server used for LDAP or IMAP authentification
+        -->
+        <AuthServer></AuthServer>
+
+        <!--
+        # Path to an existing XIMS content object users will be redirected after login, if no specific
+        # object has been requested by him and no bookmark could be found.
+        -->
+        <FallbackStartPath>/xims</FallbackStartPath>
+
+        <!--
+        The implicit user for the /gopublic interface; the default
+        value comes from default_data.sql If you are upgrading an
+        existing system, make sure this is set to a useful value!
+        -->
+        <PublicUserID>6</PublicUserID>
+
+        <!--
+        Everyone but the public user has this implicit role. The
+        default value comes from default_data.sql. If you are
+        upgrading an existing system, make sure this is set to a
+        useful value!
+        -->
+        <AuthenticatedUserRoleID>7</AuthenticatedUserRoleID>
+
+        <!--
+        # Optionally set a custom DBI specific QueryBuilder Driver.
+        # 'InterMedia' for example will load XIMS::QueryBuilder::OracleInterMedia
+        # for Oracle.
+        -->
+        <QBDriver></QBDriver>
+
+        <!--
+        # Name of the skin used per default; directory name below $ximsroot/skins/
+        -->
+        <DefaultSkin>default</DefaultSkin>
+
+        <!--
+        # <'0'|'1'>
+        # Set this to '0' if you want to symlink object roots directly under
+        # ApacheDocumentRoot() or to '1', if you are planning to serve multiple
+        # XIMS hosted sites using Apache's virtual hosting features.
+        # See http://xims.info/documentation/admins/managing_multiple_sites_with_xims.sdbk
+        # for further information and examples.
+        # Do not change unless you know what you are doing!
+        -->
+        <ResolveRelToSiteRoots>1</ResolveRelToSiteRoots>
+
+        <!--
+        # Filename of the auto-generated container indices.
+        # If you change that, you have to update the DirectoryIndex directive in ximshttpd.conf
+        -->
+        <AutoIndexFilename>_ottereendex.html</AutoIndexFilename>
+        <!--
+        # Name of the XSL-Stylesheet used to generate AutoindexFilename()
+        -->
+        <AutoindexExportStylesheet>export_auto_index.xsl</AutoindexExportStylesheet>
+
+        <!-- DataProvider Driver; currently only 'DBI' is implemented -->
+        <DBMS>DBI</DBMS>
+
+        <!--
+        # Path relative to ApacheDocumentRoot()
+        # Do not change unless you know what you are doing!
+        -->
+        <XIMSRoot>ximsroot</XIMSRoot>
+
+        <!--
+        # Path to the export directory relative to ApacheDocumentRoot()
+        # Must be in sync with the corresponding value in config.xsl
+        # Do not change unless you know what you are doing!
+        -->
+        <PublicRoot>ximspubroot</PublicRoot>
+
+        <!--
+        # Name of the main XIMS PerlHandler module
+        # Must be in sync with the corresponding value in config.xsl
+        # Do not change unless you know what you are doing!
+        -->
+        <goxims>goxims</goxims>
+
+        <!--
+        # Name of the content interface
+        # Must be in sync with the corresponding value in config.xsl
+        # Do not change unless you know what you are doing!
+        -->
+        <ContentInterface>content</ContentInterface>
+		
+		<!--
+		# Default UserPreferences
+		-->
+		<DefaultUserPrefsSkin>default</DefaultUserPrefsSkin>
+		<DefaultUserPrefsProfile>standard</DefaultUserPrefsProfile>
+		<DefaultUserPrefsContainerview>title</DefaultUserPrefsContainerview>
+		<DefaultUserPrefsPubOnSave>0</DefaultUserPrefsPubOnSave>
+		
+		<!--
+		# Maximum Number of objects that can be processed 
+		# by a multiple object action or recursion
+		# (publish, move, delete, grant privileges)
+		-->
+		<RecMaxObjects>1500</RecMaxObjects>
+		
+    </General>
+    <!-- Relative to $xims_home/conf -->
+    <Include>conf.d</Include>
+	
+</Config>

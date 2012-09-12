@@ -1,0 +1,499 @@
+/*
+Test design
+*/
+.form-div{
+	padding: 5px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+.form-div > div{
+	margin-top: 10px;
+}
+.block{
+	clear:both;
+}
+.div-left{
+	float:left;
+}
+.div-right{
+	float:right;
+}
+
+/* main content */
+.indented{
+	margin-left: 20px;
+}
+
+#main-content, div.edit {
+  background-color: #808080;
+	width: 100%;
+	clear: both;
+	padding-bottom: 10px;	
+}
+
+div.edit #tab-container{
+	background-color: #CED3D6 !important;
+}
+
+#content-container {
+    background-color: #FFFFFF;
+	clear:both;
+	padding:12px;
+	margin: 0px 10px 10px 10px;
+	font-size: 0.8em;
+}
+.xims-content {
+	font-size: 0.8em !important;
+}
+div.edit #content-container {
+	background-color: #CED3D6 !important;
+}
+
+#create-edit-form h2, #create-edit-form h3{
+	border-bottom:1px solid #EEEEEE;
+	text-align:justify;
+}
+
+#create-edit-form h1{
+	font-size: 1.5em;	
+}
+#create-edit-form h2{
+	font-size: 1.2em;	
+}
+#create-edit-form h3{
+	font-size: 1.0em;	
+}
+
+#content ul {
+    padding-left: 40px;
+}
+.cancel-save{
+	height: 40px;
+	font-size: 0.8em;
+}
+.cancelsave-form{
+	display:inline;
+	float: right;
+	margin: 10px 10px 10px 0;
+}
+.cancelsave-form button{
+	margin-left: 10px;
+}
+
+.doclink{
+	text-decoration: none;
+}
+
+/* object view */
+#docbody{
+	border: 1px solid #C0C0C0;
+	padding: 2px;
+}
+.docbox{
+	border: 1px solid #C0C0C0;
+	padding: 2px;
+	margin-top: 2px;
+}
+#docbody pre{
+	overflow-x:auto;
+}
+#metadata-options {
+	margin-top: 5px;
+	border: 1px solid #C1C1C1;
+	background: #F9F9F9;
+	padding:2px;
+	clear: both;
+}
+#docbody > div{
+	clear:both;
+}
+#links, #validity{
+	margin-top:5px;
+	border: 1px solid #C0C0C0;
+	padding: 2px;
+}
+.link-table td{
+	padding: 2px;
+}
+.newslead {
+    font-weight: bold;
+}
+img.news-image{
+	float:left;
+	margin-right:5px;
+	margin-bottom:5px;
+}
+#user-metadata-create {
+    float: left;
+}
+#user-metadata-publish {
+    float: right;
+}
+#document-options {
+    clear: both;
+}
+div.toc {
+    background-color: #efefef;
+    border: 1px solid #ccc;
+    margin: 1px 0 1px 0;
+    padding: 2px 0 3px 20px;
+}
+div.toc-item {
+    margin: 0 0 2px 25px;
+}
+
+/* end object view */
+
+/* table */
+#multi{
+	border: 1px solid #C1C1C1;
+	background: #F9F9F9;
+	padding:2px;
+}
+.obj-table {
+    clear: both;
+    width: 100%;
+    border: none;
+    padding: 0px;
+}
+.obj-table th {
+    border: 1px solid #C1C1C1;
+    background-color: #ced3d6;
+	white-space: nowrap;
+}
+.obj-table td, .obj-table th {
+    height: 20px !important;
+}
+#th-size {
+    text-align: right;
+    width: 69px;
+}
+#th-pos {
+    width: 56px;
+}
+#th-titel-icon {
+    width: 31px;
+}
+#th-selection{
+	width: 15px;
+}
+#th-status {
+    width: 96px;
+}
+#th-title {
+    /*width: 100%;*/
+}
+#th-lastmod {
+    width: 126px;
+}
+#th-options {
+	width: 165px;
+}
+#th-topic{	
+}
+#th-created{
+	width:120px;
+}
+#th-author{
+	width:134px;
+}
+#th-replies{
+	width:50px;
+}
+#th-lastreply{
+	width:134px;
+}
+.th-icon-right {
+    clear: left;
+    padding: 2px 2px 2px 2px;
+    text-decoration: none !important;
+    cursor: pointer;
+    position: relative;
+    text-align: left;
+    display:inline-block;
+    padding-right: 2.1em !important;
+}
+.th-icon-right .ui-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
+    left: 50%;
+    margin-left: -8px;
+    left: auto;
+    right: .2em;
+    margin-left: 0;
+}
+.table_hilite{
+	background-color: #ffff80 !important;
+}
+.acl-table tbody tr{
+	height:3em; 
+	border-bottom:1px solid #C0C0C0
+}
+.acl-table .ctt_accstatus{
+	text-align: center;
+}
+
+
+.cttobject_options {
+    padding-left: 10px;
+    display: table-cell;
+    vertical-align: middle;
+}
+.ctt_status {
+	padding-left: 2px;
+}
+.ctt_position {
+	text-align: center;
+}
+.ctt_df {
+		background-color: #eeeeee;
+}
+.ctt_lm {
+	padding-left: 10px;
+}
+.ctt_cl {
+	text-align: right;
+	padding-right: 10px;
+}
+.ctt_options {
+	text-align: left;
+}
+.ctt_loctitle {
+	background-color: #eeeeee;
+}
+.ctt_loctitledel {
+	background-color: #eeeeee;
+}
+.ctt_loctitleindex {
+	background-color: #eeeeee;
+	border-bottom: 1px solid #800000 !important;
+}
+.ctt_df, .ctt_loctitle, .ctt_loctitledel, .ctt_loctitleindex, .ctt_lm,.ctt_position , .ctt_cl {
+	border-bottom: 1px solid #C0C0C0;
+}
+#obj-table .location_path {
+    color: #000;
+    padding-left: 10px;
+}
+
+#obj-table .abstract {
+    color: #808080;
+    padding-left: 10px;
+}
+
+.objrow:hover, .objrow:hover td, .objrow:focus, .objrow:focus td, 
+.objrow.selected, .objrow.selected>.ctt_loctitle, .objrow.selected>.ctt_loctitleindex, .objrow.selected, .objrow.selected>.ctt_df{
+	background-color: #FFFF80 !important;
+}
+
+/* end table */
+
+/* multiple select action*/
+.multi-select-action{
+	padding: 5px 0 0 1px;
+}
+/* end multiple select action*/
+
+/* pagination */
+.pagenav {
+    border: 1px solid #C1C1C1;
+    background-color: #ced3d6;
+  margin-top: 5px;
+}
+
+#metadata-options{
+}
+
+/* user- and admin-pages */
+.objlastmod{
+	display: inline-block;
+	margin-right: 10px;
+}
+#button-forms form{
+	display: inline;
+}
+/*
+#bookmarklist, #settinglist, #adminlist {
+    padding: 0;
+    margin: 0 0 5px 10px;
+    list-style-type: none;
+}
+
+#bookmarklist li, #settinglist li, #adminlist li  {
+    display: block !important;
+}
+*/
+#op_create{
+	float: left;
+}
+#op_webdav{
+	float: right;
+}
+
+/* edit- and create-forms */
+.label{
+	float: left;
+}
+.label-std{
+	width:100px !important;
+	float: left;
+}
+.label-med{
+	width:180px !important;
+	float: left;
+}
+.label-large{
+	width:250px !important;
+	float: left;
+}
+
+#editor_selector{
+	display: inline;
+	padding: 0 10px 0 10px;
+	
+}
+#xims_wysiwygeditor{
+	background-color: #eeeeee;
+	font-size: 0.8em;
+}
+#create-edit-form > div, #select-form > div , #select-form li{
+	margin-top: 10px;
+}
+#select-form li{
+	line-height: 16px;
+}
+#create-edit-form h1{
+	font-weight: bold;
+}
+#create-edit-form h2{
+	font-weight: bold;
+}
+#create-edit-form legend{
+
+display: inline;
+
+	float:left;
+	width: 200px;
+}
+#tr-createportlet-button{
+	text-align:right;	
+}
+#contentfilters > div{
+	margin-top: 5px;
+}
+.div-row{
+	clear:both;
+}
+.div-row > div{
+	float: left;
+	margin-right: 25px;
+}
+.div-row > div > div{
+	width:200px;
+	display:inline;
+	float: left;	
+}
+.label-extraprop{
+	width:200px;
+	display:inline;
+	float: left;	
+}
+#tr-created_by_fullname, #tr-creation_timestamp, #tr-last_modified_by_fullname, #tr-last_modification_timestamp, 
+#tr-last_publication_timestamp, #tr-valid_from_timestamp, #tr-valid_to_timestamp, #tr-owned_by_fullname, #tr-marked_new, 
+#tr-status, #tr-attributes, #tr-col_abstract, #tr-col_image_id, #tr-col_body
+{
+	float:left;
+	margin-right: 25px;
+}
+
+/*
+#label-location, #label-title, 
+*/#label-subtitle, #label-tan-number,#label-keywords,#label-abstract, #label-lead, #label-description, #label-notes,
+#label-grantowneronly,#label-trytobal,#label-validfrom,#label-validto,#label-unzip,#label-file,#label-replace, #label-comment,
+#label-bodyfromfile,#label-target,#label-stylesheet, #label-css, #label-javascript, #label-image, #label-rssfeed,
+#label-image, #label-image-title, #label-image-description, #label-image-target,#label-schema,
+#label-sfeedit,#label-qu-comment,#label-skeys, #label-dbdsn, #label-dbpwd, #label-dbuser,#label-empty,
+#label-intro, #label-exit{
+	width:150px;
+	display:inline;
+	float: left;
+}
+
+#label-pagerowlimit, #label-pagesize,#label-overwrite{
+	width:250px;
+	display: inline-block;
+}
+#label-defaultsorting,#label-depth,#label-sfeedit-attr,#label-add-doclinks, #label-autoindex, #label-marknew{
+	display:inline;
+	float: left;
+}
+#label-filter-markednew, #label-filter-published, #label-filter-latest-sortkey, #label-filter-latest{
+	width:250px;
+	display:inline;
+	float: left;
+}
+#label-createportlet, .deptportlets-item{
+	width:200px;
+	display: inline-block;
+}
+.simpledb-property{
+	width: 200px;
+	display: inline;
+	float: left;
+}
+.label-sdbp{
+	width: 160px;
+	display: inline;
+	float: left;
+}
+
+#input-validfrom, #input-validto{
+	color:#000 !important; 
+}
+hr {
+    left: auto;
+    color: #eeeeee;
+    height: 1px;
+}
+#table-syspriv th{
+	vertical-align: top;
+}
+#table-syspriv span.cboxitem{
+	width: 160px !important;
+}
+#op_webdav span.cboxitem{
+	width: 160px !important;
+}
+.deptportlets, #properties{
+	margin-bottom:20px; 
+	margin-top:5px; 
+	border: 1px solid; 
+	border-color: black;
+	padding: 5px;
+	width: 650px;
+}
+
+#properties > div{
+	clear: both;
+	margin-top: 5px;
+}
+.xdelete{
+	background-color:#b1b5b8;
+	border:#333333 solid 1px;
+	color: maroon;
+	font-weight: bold;
+}
+
+.clear{
+	clear:both;
+}
+#mailpreview{
+	width: 850px; 
+	height:500px; 
+	overflow: auto; 
+	margin: 2px 2px 2px 2px;
+	border:1px solid;
+	background-color:"#ffffff";
+} 
+/* end edit- and create-forms */

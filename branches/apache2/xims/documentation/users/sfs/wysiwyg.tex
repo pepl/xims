@@ -1,0 +1,171 @@
+\section{Dokumente mit einem WYSIWYG-Editor bearbeiten}
+\label{wysiwig}
+\label{allgemeines-wysiwig}
+
+Beim Betrachten des WYSIWYG-Editors \otherterm{TinyMCE} fällt die Ähnlichkeit zur MS-Word-
+Oberfläche auf. Viele der Icons und vertraute Funktionen finden sich auch in
+TinyMCE. Will man beispielsweise einen Text fett darstellen, so muss dieser nur
+mit der Maus markiert und auf das »Fett-Icon« geklickt werden.
+Da TinyMCE ein englischsprachiges Programm ist, mögen einige Schaltflächen
+etwas ungewohnt erscheinen (beispielsweise steht »B« für »bold« im Gegensatz zum
+bekannten »F« für »fett«).
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=\textwidth]{./images/tinymce-edit.png}
+	\caption{Ansicht des TinyMCE WYSIWYG Editors}
+	\label{fig:tinymceedit}
+\end{figure}
+
+\subsection{Einfügen eines Bildes (mit TinyMCE)}
+\label{insimage}
+
+Wurde ein Bild wie unter Punkt \ref{upload} beschrieben im \ximsterm{Container} erstellt bzw. ist es bereits an
+anderer Stelle ins \otherterm{XIMS} hochgeladen worden, ist das Einfügen in das Dokument ein
+Leichtes. Im Folgenden werden die grundlegenden Schritte beschrieben:
+
+\begin{enumerate}
+	\item {Der Cursor muss sich an der Stelle befinden, an der das Bild eingefügt
+werden soll.}
+	\item {Durch Klicken auf das »Bild einfügen/verändern-Icon« öffnet sich der Ei"-gen"-schaf"-ten-Dia"-log. Über
+diesen Dialog kann dem Bild eine Beschreibung und ein Titel gegeben werden (Abbildung \ref{fig:tinymceimageprop1}) sowie die Ausrichtung,  Breite, Höhe, Randbreite, horizontaler und vertikaler Abstand (Abbildung \ref{fig:tinymceimageprop2}) für jedes Bild angegeben werden.}
+
+%\begin{figure}[!ht]
+%	\centering
+%		\includegraphics[width=0.55\textwidth]{./images/tinymce-imagepopup-solo.png}
+%	\caption{Eigenschaften von Bildern in
+%Dokumenten verändern}
+%	\label{fig:tinymceimageprop}
+%\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.75\textwidth]{./images/tinymce-image-adv-1.png}
+	\caption{Eigenschaften von Bildern in
+Dokumenten verändern}
+	\label{fig:tinymceimageprop1}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.75\textwidth]{./images/tinymce-image-adv-2.png}
+	\caption{Erweiterte Eigenschaften von Bildern}
+	\label{fig:tinymceimageprop2}
+\end{figure}
+
+	\item {Durch Klicken auf das »Durchsuchen-Icon« öffnet sich der Durchsuchen-Dialog. An
+dieser Stelle können Sie den Pfad zum Bild bzw. dessen Titel
+eingeben. Alternativ besteht die Möglichkeit im \otherterm{XIMS}-Verzeichnisbaum
+nach dem gewünschten Bild zu suchen. Mit Betätigen des »Store
+Back«-Buttons wird das Bild an der Cursor-Position eingefügt.}
+\end{enumerate}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.9\textwidth]{./images/suchebild.png}
+	\caption{Auswahldialog zum Einfügen eines Bildes}
+	\label{fig:searchimage}
+\end{figure}
+
+\begin{Hinweis}
+  Vermeiden Sie Bilder mit einer größeren Breite als 600 Pixel, weil
+  dadurch das UIBK-Design beeinträchtigt wird.
+\end{Hinweis}
+
+\subsection{Einfügen eines Hyperlinks}
+\label{inslink}
+
+\paragraph{Automatische Hyperlinkerzeugung}
+Wird in den WYSIWYG Editoren eine \nolinkurl{http://}-Adresse im Fließtext eingegeben,
+wird diese vom Editor automatisch als \otherterm{URL} erkannt und in weiterer Folge als
+Hyperlink erstellt.
+
+\paragraph{Hyperlink unter Anleitung erstellen (\otherterm{TinyMCE})}
+
+\begin{enumerate}
+\item {Der Text der zum Hyperlink werden soll muss markiert sein.}
+\item {Durch Klicken des »Link einfügen/verändern-Icons« öffnet sich
+    der Dialog zum Erstellen/Editieren eines Hyperlinks.}
+
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./images/insertlink.png}
+    \caption{Hyperlink \otherterm{Dialogfenster}}
+    \label{fig:hyperlinkdialog}
+  \end{figure}
+
+\item {Ein Klick auf das »Durchsuchen-Icon« öffnet den Durchsuchen-Dialog.}
+  
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{./images/browselink.png}
+    \caption{Erstellen eines Hyperlinks mit Dialog}
+    \label{fig:linkerstellendialog}
+  \end{figure}
+
+\item {Das Linkziel kann analog zur Auswahl eines Bildes erstellt werden. Im Feld »Enter a title« kann der gewünschte Linktext, falls
+    abweichend vom Linkziel, eingegeben werden.
+
+    \begin{Hinweis}
+      Es besteht natürlich nicht nur die Möglichkeit eine URL
+      einzufügen, sondern es kann auch auf andere Objekte wie
+      beispielsweise Dateien u.ä. verlinkt werden.
+    \end{Hinweis}
+
+    Optional kann auch das Zielfenster (Target) des Hyperlinks angegeben
+    werden. Von dieser Möglichkeit wird jedoch zu Gunsten der Barrierefreiheit
+    abgeraten. Es wird empfohlen dieses Feld leer zu lassen.}
+\item {Nach dem Bestätigen mit dem »Store Back«-Button erscheint der erstellte
+    Hyperlink im Editor.}
+\end{enumerate}
+
+\paragraph{Interne Links in Dokumenten (\otherterm{TinyMCE})}
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.4\textwidth]{./images/tinycontextimage.png}
+	\caption{TinyMCE: Im Kontext-Menü können Links
+eingefügt/"-verändert/"-entfernt werden.}
+	\label{fig:tinycontextimage}
+\end{figure}
+
+Um auf einzelne Abschnitte innerhalb eines Dokuments verlinken zu können,
+müssen zuerst Lesezeichen (»Anchors«) definiert werden, auf die später verwiesen
+werden kann. Um ein solches Lesezeichen zu setzen, markieren Sie den
+gewünschten Text, zu welchem später verwiesen werden soll und klicken dann auf
+das Ankersymbol. Später können Sie beim Erstellen von Hyperlinks das
+Linkziel als \texttt{\#Name-des-Ankers} angeben.
+
+\begin{figure}[!ht]
+	\centering
+		\includegraphics[width=0.5\textwidth]{./images/tinylinkanchor.png}
+	\caption{TincMCE: Auf zuvor gesetzte Lesezeichen kann
+später verwiesen werden.}
+	\label{fig:tinyankerdialog}
+\end{figure}
+
+Im Feld »Adresse« kann nun auf das soeben erstelle Lesezeichen Bezug genommen
+werden, in diesem Fall z.\,B. mit \texttt{seitenende} (siehe Abb.~\ref{fig:tinyankerdialog}).
+
+\subsection{Importieren von MS-Word-Text in \otherterm{TinyMCE}}
+\label{importword}
+
+Der WYSIWYG-Editor \otherterm{TinyMCE} ist in der Lage, Texte aus MS-Word zu importieren
+und dabei die Formatierungen weitgehend beizubehalten. Hierfür sind folgende
+Schritte notwendig.
+
+\begin{enumerate}
+	\item {Der markierte Text bzw. Textausschnitt in MS-Word wird mit Klick auf das
+»Kopieren-Icon« bzw. mit dem Tastaturkürzel »Strg + C« kopiert.}
+	\item {Im WYSIWYG-Editor \otherterm{TinyMCE} kann der zuvor kopierte MS-Word-Text über
+das »Einfügen-Icon« bzw. mit »Strg + V« eingefügt werden. (Weiters
+besteht die Möglichkeit, den Text unformatiert oder als Text formatiert
+einzufügen.)}
+\end{enumerate}
+
+\subsection{Zusätzliche Funktionen (\otherterm{TinyMCE})}
+\label{tinyfeatures}
+
+Der Editor TinyMCE beinhaltet noch eine Reihe weiterer zusätzlicher Funktionen wie
+zum Beispiel das Wechseln zwischen WYSIWYG- und HTML-Ansicht, das Einfügen
+von Tabellen bzw. von diversen Sonderzeichen.

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<Config>
+    <DBI>
+        <PropertyAttributes>
+            <item name="content.id" value="ci_content_id_seq_nval()"/>
+            <item name="user.id" value="ci_users_roles_id_seq_nval()"/>
+            <item name="session.id" value="ci_sessions_id_seq_nval()"/>
+            <item name="session.last_access_timestamp" value="now()"/>
+            <item name="document.id" value="ci_documents_id_seq_nval()"/>
+            <item name="bookmark.id" value="ci_bookmarks_id_seq_nval()"/>
+            <item name="language.id" value="ci_languages_id_seq_nval()"/>
+            <item name="objecttype.id" value="ci_object_types_id_seq_nval()"/>
+            <item name="dataformat.id" value="ci_data_formats_id_seq_nval()"/>
+            <item name="mimetype.id" value="ci_mime_aliases_id_seq_nval()"/>
+            <item name="questionnaireresult.id" value="ci_quest_results_id_seq_nval()"/>
+        </PropertyAttributes>
+        <Tables>
+            <item name="content" value="ci_content"/>
+            <item name="user" value="ci_users_roles"/>
+            <item name="session" value="ci_sessions"/>
+            <item name="document" value="ci_documents"/>
+            <item name="objecttype" value="ci_object_types"/>
+            <item name="userpriv" value="ci_roles_granted"/>
+			<item name="userprefs" value="ci_user_prefs"/>
+            <item name="objectpriv" value="ci_object_privs_granted"/>
+            <item name="objecttypepriv" value="ci_object_type_privs"/>
+            <item name="dataformat" value="ci_data_formats"/>
+            <item name="language" value="ci_languages"/>
+            <item name="mimetype" value="ci_mime_type_aliases"/>
+            <item name="bookmark" value="ci_bookmarks"/>
+            <item name="questionnaireresult" value="ci_questionnaire_results"/>
+        </Tables>
+        <PropertyRelations>
+            <item resourcetype="Object" property="document.id" relates="ci_content.document_id"/>
+        </PropertyRelations>
+    </DBI>
+    <!-- Relative to $xims_home/conf -->
+    <Include>conf-dbi.d</Include>
+</Config>

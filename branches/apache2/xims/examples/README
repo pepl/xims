@@ -1,0 +1,52 @@
+Example Sites
+-------------
+
+This example sites should give an idea how to build sites with XIMS. The
+"Building Sites with XIMS" documents will give detailed step-by-step
+introductions.
+
+The example sites in that directory will each have three files for
+importing, publishing, and configuring the site as well as the actual
+content including CSS- and XSL-Stylesheets in a separate directory.
+
+In the case of simple.examplesite.tld it looks like that:
+|   setup-simple.examplesite.tld.pl          # Script that calls several
+|                                            # scripts in the tools
+|                                            # directory to import, publish,
+|                                            # and assign departmentlinks
+|                                            # as well as pubstylesheets.
+|
+|   simple.examplesite.tld-httpd.conf        # Sample vhost configuration
+|                                            # Link or copy to your conf.d
+|                                            # directory or Include it in
+|                                            # your httpd.conf
+|
+|   simple.examplesite.tld-axkit.conf        # AxKit configuration, included
+|                                              by the vhost configuration
+|
+|
++---simple.examplesite.tld
+    |   about.html            #
+    |   contact.html          # Dummy XHTML content
+    |   index.html            #
+    |   team.html             #
+    |
+    +--- stylesheets
+    |        default.css       # Dummy CSS stylesheet
+    |        default.xsl       # Example stylesheet including some rather
+    |                          # generic templates which would be moved
+    |                          # to a common.xsl in more complex sites
+    |                          # with other stylesheets like a textonly-,
+    |                          # or print-version.
+    |
+    +--- pubstylesheets
+        |   document_publishing_preview.xsl    # Used for document publishing
+        |                                      # preview. This dummy version
+        |                                      # essentially does nothing more
+        |                                      # than importing the stylesheets
+        |                                      # of /stylesheets/default.xsl
+        |
+        +--- en-us
+                document_publishing_preview.xsl
+        +--- de-at
+                document_publishing_preview.xsl
