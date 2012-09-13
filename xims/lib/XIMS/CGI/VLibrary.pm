@@ -1398,6 +1398,8 @@ sub _heuristic_date_parser {
     my $self = shift;
     my $date = shift;
 
+    return undef unless length($date);
+
     my @ts_formats = (
         "%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%d.%m.%Y", "%m/%d/%Y",
         "%m/%d/%y",          "%m.%Y",    "%m.%y",    "%Y-%m",
