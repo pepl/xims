@@ -71,28 +71,28 @@ CREATE TABLE cisimpledb_mempropertymap
 
 CREATE OR REPLACE FUNCTION cisimpledb_members_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cisimpledb_members_id_seq\');
+            RETURN nextval(''cisimpledb_members_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cisimpledb_memprop_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cisimpledb_member_properties_id_seq\');
+            RETURN nextval(''cisimpledb_member_properties_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cisimpledb_mpropva_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cisimpledb_mempropertyvalues_id_seq\');
+            RETURN nextval(''cisimpledb_mempropertyvalues_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cisimpledb_mpropma_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cisimpledb_mempropertymap_id_seq\');
+            RETURN nextval(''cisimpledb_mempropertymap_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;

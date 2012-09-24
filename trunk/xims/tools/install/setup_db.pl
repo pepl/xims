@@ -33,7 +33,6 @@ if ( $args{h} ) {
            'Pg' or 'Oracle' are supported
         -b The name of the database host if you connect to a remote machine (optional for Pg)
         -o The port number of the database listener at the remote machine, omit for default (Pg if -b is needed)
-        -f Path to your copy of 'tablefunc.sql' (Pg only)
         -l Path to the setup_db.pl logfile
         -h prints this screen
 
@@ -88,7 +87,8 @@ if ( $args{u}
     $Conf{DBdsn} = $args{t};
     $Conf{DBhost} = $args{b};
     $Conf{DBport} = $args{o};
-    $Conf{DBPgtablefunc} = $args{f};
+    # Tablefunctions are to be set up with 'CREATE EXTENSION' now.
+    #$Conf{DBPgtablefunc} = $args{f};
     $Conf{log_file} = $args{l};
 }
 else {
@@ -112,20 +112,20 @@ else {
                                   default => '',
                                 } );
             print "\nYou specified a database host. The postmaster on that host\n",
-                  "needs to be started with the \"-i\" option (TCP/IP sockets).\n\n",
-                  "You will have to manually install the table functions into the remote\n",
-                  "'xims' database after its creation through this script.\n",
-                  "This may be achieved with executing a command like the following:\n\n",
-                  "psql -U postgres -d xims -f /path/to/tablefunc.sql\n\n";
+                  "needs to be started with the \"-i\" option (TCP/IP sockets).\n\n";
+                  #"You will have to manually install the table functions into the remote\n",
+                  #"'xims' database after its creation through this script.\n",
+                  #"This may be achieved with executing a command like the following:\n\n",
+                  #"psql -U postgres -d xims -f /path/to/tablefunc.sql\n\n";
         }
-        else {
-            $installer->prompt( { text => 'Path to tablefunc.sql',
-                                  var   => \$Conf{DBPgtablefunc},
-                                  re    => '.+',
-                                  error => 'Please specify a path to your copy of "tablefunc.sql"',
-                                  default => PgFindTableFunc(),
-                                } );
-        }
+        #else {
+        #    $installer->prompt( { text => 'Path to tablefunc.sql',
+        #                          var   => \$Conf{DBPgtablefunc},
+        #                          re    => '.+',
+        #                          error => 'Please specify a path to your copy of "tablefunc.sql"',
+        #                          default => PgFindTableFunc(),
+        #                        } );
+        #}
     }
     $installer->prompt( { text  => "Enter a log file name\n",
                       var   => \$Conf{log_file},
@@ -181,28 +181,29 @@ elsif ( $Conf{DBdsn} eq 'Pg' ) {
 
     unless ( system(@args) == 0 ) {
         $args[-1] = '"' . $args[-1] . '"';
-        die "\n\033[1mSetting up DB failed! Error: $?.\nDo you have psql in your path?\nPlease check your config information or try manually setting up the DB using\n\n" . join(' ',@args) . "\n\nfirst and after that with '-f $Conf{DBPgtablefunc}' instead of setup.sql\033[m\n\n";
+        die "\n\033[1mSetting up DB failed! Error: $?.\nDo you have psql in your path?\nPlease check your config information or try manually setting up the DB using\n\n" . join(' ',@args) . #"\n\nfirst and after that with '-f $Conf{DBPgtablefunc}
+            ' instead of setup.sql\033[m\n\n';
     }
 
-    if ( not ($Conf{DBhost} and length $Conf{DBhost}) ) {
-        # tablefunctions
-        my $tablefunc = $Conf{DBPgtablefunc};
-        if ( $> == 0 ) {
-            $args[-1] =~ s/setup.sql/$tablefunc/;
-            $args[-1] =~ s/$Conf{DBName}/xims/;
-        }
-        else {
-            $args[-1] = $tablefunc;
-            $args[4] = 'xims';
-        }
+    #if ( not ($Conf{DBhost} and length $Conf{DBhost}) ) {
+    #    # tablefunctions
+    #    my $tablefunc = $Conf{DBPgtablefunc};
+    #    if ( $> == 0 ) {
+    #        $args[-1] =~ s/setup.sql/$tablefunc/;
+    #        $args[-1] =~ s/$Conf{DBName}/xims/;
+    #    }
+    #    else {
+    #        $args[-1] = $tablefunc;
+    #        $args[4] = 'xims';
+    #    }
 
-        die "\n\033[1m'tablefunc.sql' could not be found at " . $tablefunc . ". Please run\n\n",
-        join(" ", @args), "\n\n manually with the correct path to your copy of 'tablefunc.sql'\033[m\n\n"
-            unless -f $tablefunc;
+    #    die "\n\033[1m'tablefunc.sql' could not be found at " . $tablefunc . ". Please run\n\n",
+    #    join(" ", @args), "\n\n manually with the correct path to your copy of 'tablefunc.sql'\033[m\n\n"
+    #        unless -f $tablefunc;
 
-        system(@args) == 0
-            or die "\n\033[1mSetting up table functions failed! Error: $?.\nPlease check your config information or try manually setting up the table functions into the XIMS database.\033[m\n\n";
-    }
+    #   system(@args) == 0
+    #        or die "\n\033[1mSetting up table functions failed! Error: $?.\nPlease check your config information or try manually setting up the table functions into the XIMS database.\033[m\n\n";
+    #}
 }
 
 close STDOUT; # forks, we're done
@@ -225,22 +226,22 @@ sub PgUser {
     return 'postgres';
 }
 
-sub PgFindTableFunc {
-    my @guesses = ('/usr/share/postgresql/contrib/tablefunc.sql');
-    my $pgversion = _PgVersion();
-    if ( $pgversion ) {
-        push(@guesses,"/usr/local/pgsql-$pgversion/share/contrib/tablefunc.sql","/usr/pgsql-$pgversion/share/contrib/tablefunc.sql");
-    }
-    foreach ( @guesses ) {
-        return $_ if -f $_;
-    }
-    my $tablefunc;
-    eval {
-        $tablefunc = `locate contrib/tablefunc.sql`;
-        chomp $tablefunc;
-    };
-    return $tablefunc;
-}
+#sub PgFindTableFunc {
+#    my @guesses = ('/usr/share/postgresql/contrib/tablefunc.sql');
+#    my $pgversion = _PgVersion();
+#    if ( $pgversion ) {
+#        push(@guesses,"/usr/local/pgsql-$pgversion/share/contrib/tablefunc.sql","/usr/pgsql-$pgversion/share/contrib/tablefunc.sql");
+#    }
+#    foreach ( @guesses ) {
+#        return $_ if -f $_;
+#    }
+#    my $tablefunc;
+#    eval {
+#       $tablefunc = `locate contrib/tablefunc.sql`;
+#        chomp $tablefunc;
+#    };
+#    return $tablefunc;
+#}
 
 sub _PgVersion {
     my $version;

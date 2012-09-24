@@ -156,64 +156,64 @@ CREATE TABLE cilib_meta
 ;
 
 CREATE OR REPLACE FUNCTION cilib_authors_id_seq_nval() RETURNS INTEGER
-       AS 'BEGIN
-            RETURN nextval(\'cilib_authors_id_seq\');
+       AS 'BEGIN 
+            RETURN nextval(''cilib_authors_id_seq''); 
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cilib_authormap_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cilib_authormap_id_seq\');
+            RETURN nextval(''cilib_authormap_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cilib_keywords_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cilib_keywords_id_seq\');
+            RETURN nextval(''cilib_keywords_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cilib_keywordmap_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cilib_keywordmap_id_seq\');
+            RETURN nextval(''cilib_keywordmap_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cilib_subjects_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cilib_subjects_id_seq\');
+            RETURN nextval(''cilib_subjects_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cilib_subjectmap_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cilib_subjectmap_id_seq\');
+            RETURN nextval(''cilib_subjectmap_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cilib_publications_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cilib_publications_id_seq\');
+            RETURN nextval(''cilib_publications_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cilib_publmap_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cilib_publicationmap_id_seq\');
+            RETURN nextval(''cilib_publicationmap_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cilib_meta_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cilib_meta_id_seq\');
+            RETURN nextval(''cilib_meta_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
