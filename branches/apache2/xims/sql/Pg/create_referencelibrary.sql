@@ -102,7 +102,7 @@ CREATE TABLE cireflib_ref_propertyvalues
  )
 ;
 
-\echo creating table 'cireflib_ref_type_propertymap'
+\echo creatig table 'cireflib_ref_type_propertymap'
 CREATE TABLE cireflib_ref_type_propertymap
  (
  id                  SERIAL            PRIMARY KEY
@@ -114,49 +114,49 @@ CREATE TABLE cireflib_ref_type_propertymap
 
 CREATE OR REPLACE FUNCTION cireflib_reftypes_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_reference_types_id_seq\');
+            RETURN nextval(''cireflib_reference_types_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cireflib_serials_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_serials_id_seq\');
+            RETURN nextval(''cireflib_serials_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cireflib_ref_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_references_id_seq\');
+            RETURN nextval(''cireflib_references_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cireflib_authormap_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_authormap_id_seq\');
+            RETURN nextval(''cireflib_authormap_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cireflib_refprop_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_reference_properties_id_seq\');
+            RETURN nextval(''cireflib_reference_properties_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cireflib_rpv_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_ref_propertyvalues_id_seq\');
+            RETURN nextval(''cireflib_ref_propertyvalues_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE OR REPLACE FUNCTION cireflib_rtpm_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'cireflib_ref_type_propertymap_id_seq\');
+            RETURN nextval(''cireflib_ref_type_propertymap_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;

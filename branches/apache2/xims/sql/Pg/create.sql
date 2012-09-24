@@ -369,7 +369,7 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE ci_questionnaire_results TO ximsru
 \echo creating functions....
 CREATE FUNCTION ci_bookmarks_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_bookmarks_id_seq\');
+            RETURN nextval(''ci_bookmarks_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -377,7 +377,7 @@ CREATE FUNCTION ci_bookmarks_id_seq_nval() RETURNS INTEGER
 
 CREATE FUNCTION ci_content_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_content_id_seq\');
+            RETURN nextval(''ci_content_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -385,7 +385,7 @@ CREATE FUNCTION ci_content_id_seq_nval() RETURNS INTEGER
 
 CREATE FUNCTION ci_data_formats_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_data_formats_id_seq\');
+            RETURN nextval(''ci_data_formats_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -393,7 +393,7 @@ CREATE FUNCTION ci_data_formats_id_seq_nval() RETURNS INTEGER
 
 CREATE FUNCTION ci_documents_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_documents_id_seq\');
+            RETURN nextval(''ci_documents_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -401,7 +401,7 @@ CREATE FUNCTION ci_documents_id_seq_nval() RETURNS INTEGER
 
 CREATE FUNCTION ci_languages_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_languages_id_seq\');
+            RETURN nextval(''ci_languages_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -409,7 +409,7 @@ CREATE FUNCTION ci_languages_id_seq_nval() RETURNS INTEGER
 
 CREATE FUNCTION ci_object_types_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_object_types_id_seq\');
+            RETURN nextval(''ci_object_types_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -417,7 +417,7 @@ CREATE FUNCTION ci_object_types_id_seq_nval() RETURNS INTEGER
 
 CREATE FUNCTION ci_sessions_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_sessions_id_seq\');
+            RETURN nextval(''ci_sessions_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
@@ -425,28 +425,28 @@ CREATE FUNCTION ci_sessions_id_seq_nval() RETURNS INTEGER
 
 CREATE FUNCTION ci_users_roles_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_users_roles_id_seq\');
+            RETURN nextval(''ci_users_roles_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE FUNCTION ci_mime_aliases_id_seq_nval() RETURNS INTEGER
        AS 'BEGIN
-            RETURN nextval(\'ci_mime_type_aliases_id_seq\');
+            RETURN nextval(''ci_mime_type_aliases_id_seq'');
            END;'
        LANGUAGE 'plpgsql'
 ;
 
 CREATE FUNCTION ci_quest_results_id_seq_nval() RETURNS INTEGER
     AS 'BEGIN
-          RETURN nextval(\'ci_questionnaire_results_id_seq\');
+          RETURN nextval(''ci_questionnaire_results_id_seq'');
         END;'
     LANGUAGE 'plpgsql'
 ;
 
 CREATE FUNCTION ci_user_prefs_id_seq_nval() RETURNS INTEGER
     AS 'BEGIN
-          RETURN nextval(\'ci_user_prefs_id_seq\');
+          RETURN nextval(''ci_user_prefs_id_seq'');
         END;'
     LANGUAGE 'plpgsql'
 ;

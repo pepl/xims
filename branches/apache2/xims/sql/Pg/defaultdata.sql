@@ -78,7 +78,7 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'DocBookXML', 0, 0, 1, 0, 0 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
        VALUES ( nextval('ci_object_types_id_seq'), 'JavaScript', 0, 1, 1, 0, 2 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_gopublic )
+INSERT INTO ci_object_types ( id, name, is_fs_container, redir_to_self, publish_gopublic, menu_level )
        VALUES ( nextval('ci_object_types_id_seq'), 'SQLReport', 0, 1, 1, 2 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, parent_id, menu_level )
        VALUES ( nextval('ci_object_types_id_seq'), 'Event', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
