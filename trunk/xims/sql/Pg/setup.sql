@@ -1,8 +1,15 @@
 \connect template1
 
--- drop and recreate users
+-- drop db
+DROP DATABASE xims;
+-- drop users
+DROP USER xims;
+DROP USER ximsrun;
+
+
+-- (re)create users
 \i users.sql
--- drop and recreate database
+-- (re)create database
 \i db.sql
 -- tables, fx, defaultdata
 \i create.sql
