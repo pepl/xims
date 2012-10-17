@@ -23,8 +23,6 @@ INSERT INTO ci_languages ( id, fullname, code )
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
        VALUES ( nextval('ci_object_types_id_seq'), 'Folder', 1, 1, 0, 0, 1 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
-       VALUES ( nextval('ci_object_types_id_seq'), 'Gallery', 1, 1, 0, 0, 1 );
-INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
        VALUES ( nextval('ci_object_types_id_seq'), 'Document', 0, 1, 1, 0, 1 );
 INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
        VALUES ( nextval('ci_object_types_id_seq'), 'Image', 0, 0, 0, 0, 1 );
@@ -84,6 +82,8 @@ INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_
        VALUES ( nextval('ci_object_types_id_seq'), 'Event', 0, 1, 1, 0, (SELECT id FROM CI_OBJECT_TYPES WHERE name = 'VLibraryItem' ), 0 );
 INSERT INTO CI_OBJECT_TYPES ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, is_mailable, menu_level ) 
        VALUES ( nextval('ci_object_types_id_seq'), 'NewsLetter', 0, 1, 1, 0, 1, 1 );
+INSERT INTO ci_object_types ( id, name, is_fs_container, is_xims_data, redir_to_self, publish_gopublic, menu_level )
+       VALUES ( nextval('ci_object_types_id_seq'), 'Gallery', 1, 1, 0, 0, 1 );
 
 \echo inserting into ci_data_formats...
 
