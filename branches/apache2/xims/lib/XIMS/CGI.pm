@@ -23,8 +23,8 @@ methods used in XIMS' CGI classes are implemented here.
 package XIMS::CGI;
 
 use strict;
-use base qw(CGI::XMLApplication);   # 1.1.3; # sub-sub-version is not recognized
-                                    # here and only gives a warning :-/
+use base qw(XIMS::XMLApplication); 
+
 use XIMS;
 use XIMS::DataFormat;
 use XIMS::ObjectType;
@@ -736,8 +736,8 @@ sub selectStylesheet {
 
 	my $gotpubuilangstylesheet;
 
-	my $publicusername = $ctxt->apache()->dir_config('ximsPublicUserName');
-	if ( defined $publicusername or $ctxt->properties->application->usepubui() )
+    if ( $ctxt->session->auth_module eq 'XIMS::Auth::PublicUser'
+      or $ctxt->properties->application->usepubui() )
 	{
 
 		my $stylesheet = $ctxt->object->stylesheet();
