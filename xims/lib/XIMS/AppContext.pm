@@ -22,6 +22,7 @@ This module bla bla
 package XIMS::AppContext;
 
 use strict;
+use Carp;
 use base qw( XIMS::AbstractClass Class::Accessor );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
@@ -70,7 +71,7 @@ sub new {
     }
 
     $self->properties( Properties->new() ) unless $self->properties();
-
+    #$self->apache( FakeApache->new(%args) ) unless $self->apache();
     return $self;
 }
 
@@ -121,6 +122,101 @@ __PACKAGE__->mk_accessors(qw(objectid objecttypes level limit offset order addin
 
 1;
 
+# package FakeApache;
+# # Idea and some code stolen from WebGUI::Session::Plack;
+# use Carp;
+
+# sub new {
+#     my ( $class, %args ) = @_;
+#     my $self = bless {
+#         %args,
+#         pnotes   => {},
+#         connection => FakeApache::Connection->new($args{env}),
+#         server   =>  FakeApache::Server->new($args{env}),
+#         headers_out => Plack::Util::headers( [] ),    # use Plack::Util to manage response headers
+#     }, $class;
+#     return $self;
+# }
+
+# sub args {}
+# sub content {}
+# sub content_type {}
+# sub custom_response {}
+# sub dir_config {}
+# sub get_basic_auth_pw {}
+# sub get_server_port {}
+# sub header_in {}
+# sub header_out {}
+# sub headers_in {}
+# sub is_initial_req {}
+# sub location {}
+# sub log {}
+# sub method {}
+# sub no_cache {}
+# sub note_basic_auth_failure {}
+# sub parsed_uri {}
+# sub path_info {}
+# sub pnotes {}
+# sub print {}
+# sub protocol {}
+# sub send_http_header {}
+# sub server {}
+# sub set_content_length {}
+# sub set_last_modified {}
+# sub status {}
+# sub status_line {}
+# sub uri {}
+
+# our $AUTOLOAD;
+
+# sub AUTOLOAD {
+#     my $what = $AUTOLOAD;
+#     $what =~ s/.*:://;
+#     carp "!!plack->$what(@_)" unless $what eq 'DESTROY';
+# }
+
+# 1;
+
+
+# package FakeApache::Connection;
+# use Carp;
+# sub new {
+#     my ( $class, %args ) = @_;
+#     my $self = bless {}, $class;
+#     return $self;
+# }
+
+# #sub remote_ip {}
+
+# our $AUTOLOAD;
+
+# sub AUTOLOAD {
+#     my $what = $AUTOLOAD;
+#     $what =~ s/.*:://;
+#     carp "!!plack->$what(@_)" unless $what eq 'DESTROY';
+# }
+
+# 1;
+
+# package FakeApache::Server;
+# use Carp;
+# sub new {
+#     my ( $class, %args ) = @_;
+#     my $self = bless {}, $class;
+#     return $self;
+# }
+
+# our $AUTOLOAD;
+
+# sub AUTOLOAD {
+#     my $what = $AUTOLOAD;
+#     $what =~ s/.*:://;
+#     carp "!!plack->$what(@_)" unless $what eq 'DESTROY';
+# }
+
+1;
+
+
 __END__
 
 =head1 DIAGNOSTICS
@@ -147,7 +243,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+copyright (c) 2002-2011 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

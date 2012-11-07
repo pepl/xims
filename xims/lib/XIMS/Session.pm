@@ -28,6 +28,7 @@ our @Fields = (
     qw( error_msg   warning_msg message
         verbose_msg date        serverurl
         skin        uilanguage  searchresultcount
+        auth_module
     )
 );
 

@@ -68,14 +68,13 @@ sub prepare {
 	        }
     		$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
         }
-            
-#        $doc_data->{context}->{session}->{user}
-#            = { $ctxt->session->user->data() }
-#            if defined $ctxt->session->user;
-        my $publicusername
-            = $ctxt->apache()->dir_config('ximsPublicUserName');
+
+        #        $doc_data->{context}->{session}->{user}
+        #            = { $ctxt->session->user->data() }
+        #            if defined $ctxt->session->user;
+
         $doc_data->{context}->{session}->{public_user} = 1
-            if defined $publicusername;
+            if $ctxt->session->auth_module eq 'XIMS::Auth::PublicUser';
     }
 
     # fun with content objects

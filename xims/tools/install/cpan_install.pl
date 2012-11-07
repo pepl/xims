@@ -13,10 +13,10 @@ use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib";
 use XIMS::Installer;
 use Getopt::Std;
 
-eval { require Apache; };
-if ( $@ || $Apache::VERSION < 1.25) {
-    die "\nCould not load Apache. Make sure mod_perl is installed and working!\n\n";
-}
+#eval { require Apache2; };
+#if ( $@ || $Apache2::VERSION < 2) {
+#    die "\nCould not load Apache2. Make sure mod_perl is installed and working!\n\n";
+#}
 
 my %args;
 getopts('hcm:', \%args);

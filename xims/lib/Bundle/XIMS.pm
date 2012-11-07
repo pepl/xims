@@ -25,21 +25,17 @@ XIMS. No DBD::* modules for example.
 
 =head1 CONTENTS
 
+Task::Plack
 DBI - Database independent interface for Perl
 Digest::MD5 -
 Storable -
-XML::LibXML 1.54 -
-XML::LibXSLT 1.49 -
-AxKit 1.51 -
-AxKit::XSP::Param -
-AxKit::XSP::IfParam -
-AxKit::XSP::WebUtils 1.6 -
-Apache::AxKit::Plugin::AddXSLParams::Request -
+XML::LibXML 1.70 -
+XML::LibXSLT 1.70 -
 XML::Parser::PerlSAX -
 XML::SAX::Machines -
 XML::Generator::PerlData -
 XML::Filter::GenericChunk - 0.04
-CGI::XMLApplication 1.1.3 -
+# CGI::XMLApplication 1.1.3 -
 Class::Accessor -
 DBIx::SQLEngine 0.017 -
 Time::Piece -

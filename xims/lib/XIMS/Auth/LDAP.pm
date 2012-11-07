@@ -46,7 +46,7 @@ sub new {
                 my $user = XIMS::User->new( name => $param{Login} );
                 if ( $user and $user->enabled() ne '0' and $user->id ){
                     XIMS::Debug( 4, "user confirmed" );
-                    $self = bless { User => $user}, $class;
+                    $self = bless { User => $user }, $class;
                 }
                 else {
                     XIMS::Debug( 3, "user could not be found or has been disabled" );

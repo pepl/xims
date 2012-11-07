@@ -49,10 +49,12 @@ sub new {
 =cut
 
 sub authenticate {
+    use Data::Dumper;
+    warn Dumper(\@_);
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
-
+ 
     my $username = $args{Username} || $self->{Username};
     my $password = $args{Password} || $self->{Password};
     return unless ( $username and $password );
@@ -70,7 +72,8 @@ sub authenticate {
                                         Password => $password );
             if ( $login ) {
                 XIMS::Debug( 4, "login with authstyle $authmod ok" );
-                return $login->getUserInfo();
+                #return $login->getUserInfo();
+                return $login;
             }
             else {
                 XIMS::Debug( 4, "login with authstyle $authmod failed" );
