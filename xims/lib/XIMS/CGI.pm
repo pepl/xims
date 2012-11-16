@@ -23,7 +23,7 @@ methods used in XIMS' CGI classes are implemented here.
 package XIMS::CGI;
 
 use strict;
-use base qw(XIMS::XMLApplication); 
+use base qw(XIMS::XMLApplication);
 
 use XIMS;
 use XIMS::DataFormat;
@@ -32,7 +32,7 @@ use XIMS::SAX;
 use XIMS::ObjectPriv;
 use XIMS::Importer;
 use XML::LibXML::SAX::Builder;
-use Apache::URI;
+use URI;
 use Text::Iconv;
 use Time::Piece;
 use Locale::TextDomain ('info.xims');
@@ -56,8 +56,6 @@ A list of event_names.
     $self->registerEvents( qw(some additional events) )
 
 Derived classes may use this to register their own events.
-
-    L<CGI::XMLApplication>
 
 =cut
 
@@ -901,11 +899,12 @@ sub sendError {
 	my $ctxt        = shift;
 	my $msg         = shift;
 	my $verbose_msg = shift;
-
+    XIMS::Debug(5, "called '$msg', '$verbose_msg'");
 	$ctxt->session->error_msg($msg);
 	$ctxt->session->verbose_msg($verbose_msg) if defined $verbose_msg;
 	$ctxt->properties->application->styleprefix('common');
 	$ctxt->properties->application->style("error");
+
 	return 0;
 }
 
@@ -1171,8 +1170,7 @@ sub redirect_path {
 			#warn "\nredirectpath: ".$redirectpath;
 		}
 		else {
-			$uri = Apache::URI->parse( $ctxt->apache(), $r );
-			#warn "uri: ".$uri;
+			$uri = URI->new( $self->env->{REQUEST_URI} );
 		}
 	}
 	elsif ( defined $id ) {
@@ -1241,19 +1239,20 @@ sub redirect_path {
 	}
 
 	if ( not defined $uri ) {
-		$uri = Apache::URI->parse( $ctxt->apache() );
-		$uri->path( $ctxt->apache->parsed_uri->rpath() . $redirectpath );
+		$uri = URI->new( $self->env()->{REQUEST_URI} );
+		$uri->path( $self->script_name() . $redirectpath );
 		$uri->query($params);
 	}
 
-	my $frontend_uri =
-	  Apache::URI->parse( $ctxt->apache, $ctxt->session->serverurl() );
-	$uri->scheme( $frontend_uri->scheme() );
-	$uri->hostname( $frontend_uri->hostname() );
-	$uri->port( $frontend_uri->port() );
+    # vermutlich PROXY-bezogen, schaumer spÃ¤terâ€¦
+	# my $frontend_uri =
+	#   URI->new( $ctxt->apache, $ctxt->session->serverurl() );
+	# $uri->scheme( $frontend_uri->scheme() );
+	# $uri->hostname( $frontend_uri->hostname() );
+	# $uri->port( $frontend_uri->port() );
 
-	XIMS::Debug( 4, "redirecting to " . $uri->unparse() );
-	return $uri->unparse();
+	XIMS::Debug( 4, "redirecting to " . $uri->as_string() );
+	return $uri->as_string();
 }
 
 =head2 clean_userquery()
@@ -1278,7 +1277,7 @@ sub clean_userquery {
 	$userquery =~ s/%+/%/g;
 	$userquery =~ s/^\s+//;
 	$userquery =~ s/\s+$//;
-	$userquery =~ s/[ ;,<>`´|?]+//g;
+	$userquery =~ s/[ ;,<>`Â´|?]+//g;
 
 	return $userquery;
 }
@@ -4164,7 +4163,7 @@ sub event_search {
 		use encoding "latin-1";
 		my $allowed =
 		  XIMS::decode(
-			q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~}
+			q{\!a-zA-Z0-9Ã¶Ã¤Ã¼ÃŸÃ–Ã„ÃœÃŸ%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~}
 		  );
 		my $qb = $qbdriver->new(
 			{

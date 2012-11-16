@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::DataFormat;
 
 use strict;
-use base qw( XIMS::AbstractClass Class::Accessor );
+use base qw( XIMS::AbstractClass Class::Accessor::Fast );
 use XIMS::MimeType;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

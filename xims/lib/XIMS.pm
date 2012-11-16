@@ -210,14 +210,14 @@ sub HOME {
 
 =cut
 
-sub GOXIMS                    { return $_CONFIG_->goxims(); }
+sub GOXIMS                    { return '/' . $_CONFIG_->goxims(); }
 
 sub DEBUGLEVEL ()             { $_DEBUGLEVEL_ }
 
-sub PUBROOT_URL               { return "/" . $_CONFIG_->PublicRoot(); }
+sub PUBROOT_URL               { return '/' . $_CONFIG_->PublicRoot(); }
 
 sub PUBROOT                   { return $_CONFIG_->ApacheDocumentRoot()
-                                     . "/"
+                                     . '/'
                                      . $_CONFIG_->PublicRoot();
 }
 sub DEFAULT_SKIN              { return $_CONFIG_->DefaultSkin(); }
@@ -232,10 +232,10 @@ sub TIDYPATH                  { return $_CONFIG_->TidyPath(); }
 
 sub TIDYOPTIONS               { return $_CONFIG_->TidyOptions(); }
 
-sub XIMSROOT_URL              { return "/" . $_CONFIG_->XIMSRoot(); }
+sub XIMSROOT_URL              { return '/' . $_CONFIG_->XIMSRoot(); }
 
 sub XIMSROOT                  { return $_CONFIG_->ApacheDocumentRoot()
-                                     . "/"
+                                     . '/'
                                      . $_CONFIG_->XIMSRoot();
 }
 
@@ -243,7 +243,7 @@ sub AUTHSTYLE                 { return $_CONFIG_->AuthStyle(); }
 
 sub AUTHSERVER                { return $_CONFIG_->AuthServer(); }
 
-sub CONTENTINTERFACE          { return "/" . $_CONFIG_->ContentInterface(); }
+sub CONTENTINTERFACE          { return '/' . $_CONFIG_->ContentInterface(); }
 
 sub DBMS                      { return $_CONFIG_->DBMS(); }
 

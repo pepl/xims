@@ -21,6 +21,10 @@ This module bla bla
 
 use strict;
 
+use Locale::Messages qw(bind_textdomain_filter bind_textdomain_codeset turn_utf_8_on);
+use Locale::TextDomain ('info.xims');
+use POSIX qw(setlocale LC_ALL);
+use URI::Escape qw(uri_escape_utf8);
 
 use XIMS;
 use XIMS::AppContext;
@@ -29,7 +33,12 @@ use XIMS::Object;
 use XIMS::User;
 use XIMS::Auth;
 use XIMS::Session;
-
+# preload commonly used and publish_gopublic objecttypes
+use XIMS::CGI::SiteRoot;
+use XIMS::CGI::DepartmentRoot;
+use XIMS::CGI::Document;
+use XIMS::CGI::Portlet;
+use XIMS::CGI::Questionnaire;
 
 use Plack::Request;
 use Plack::Builder;
@@ -42,7 +51,9 @@ use Data::Dumper;
 
 my $goxims = sub {
     my $env = shift;
+
     my $ctxt = $env->{'xims.appcontext'};
+    my $req = Plack::Request->new($env);
 
     XIMS::Debug( 5, $env->{script_name}. " called from " . $env->{REMOTE_ADDR} );
 
@@ -51,17 +62,16 @@ my $goxims = sub {
     # public user?
 
 
-    # interface: user, users, content, bookmark, defaultbookmark, search_intranet
-    # oder: not_found
-    my $interface_type = getInterface($env);
+    my $interface_type = getInterface($req);
     HTTP::Exception::404->throw unless $interface_type;
 
-    if ($env->{SCRIPT_NAME} eq 'gopublic') {
+    # TODO: handle public user somewhere else
+    if ($req->script_name() =~ /^\/gopublic/) {
         # /gopublic has no interface "user"
         if ( $interface_type eq 'user' ) {
             HTTP::Exception::404->throw();
         }
-        # todo: set up session for public user
+        # was: set up session for public user
     }
     else {
         # we are coming in via /goxims
@@ -77,6 +87,7 @@ my $goxims = sub {
     my $tp = localtime;
     $ctxt->session->date( $tp->ymd() . ' ' . $tp->hms() );
 
+    # TODO: proxy stuff
     #my $serverurl = XIMS::get_server_url( $r );
     #XIMS::Debug( 6, "setting serverurl to $serverurl" );
     #$ctxt->session->serverurl( $serverurl );
@@ -90,28 +101,20 @@ my $goxims = sub {
     	$ctxt->session->skin(XIMS::DEFAULT_SKIN() );
     }
 
-    # set UILanguage
+    # TODO set UILanguage
     #$ctxt->session->uilanguage( $langpref );
     $ctxt->session->uilanguage( 'de-at' );
-    #
+
     # Big fork here
     #
-
     my $app_class    = 'XIMS::CGI::';
     my $object_class = 'XIMS::';
 
     if ( $interface_type eq 'content' ) {
 
         # now we know, that we have to get the content-object
-        $ctxt->object( getObject( $env ) );
+        $ctxt->object( getObject( $req ) );
         if ( not( $ctxt->object() and $ctxt->object->id() ) ) {
-
-            # in this case we could pass the user to a more informative
-            # page, where one can select the defaultbookmark!!
-
-            # emulate default 404 log entry
-     #       $r->log->warn(
-     #           "File does not exist: " . $r->document_root() . $r->uri() );
            HTTP::Exception::404->throw();
        }
 
@@ -123,17 +126,12 @@ my $goxims = sub {
         eval "require $object_class;" if $object_class;
         if ($@) {
             XIMS::Debug( 2, "could not load object class $object_class: $@" );
-            # $r->custom_response( SERVER_ERROR,
-            #                      XIMS::PUBROOT_URL()
-            #                    . '/500.xsp?reason='
-            #                    . uri_escape_utf8(
-            #                        __x("Could not load object class {classname}.",
-            #                            classname => $object_class,
-            #                        )
-            #                      )
-            # );
-            # return SERVER_ERROR;
-            HTTP::Exception::500->throw();
+            HTTP::Exception::500->throw(
+                status_message => __x(
+                    "Could not load object class {classname}.",
+                    classname => $object_class,
+                )
+            )
         }
 
         ## use critic
@@ -144,10 +142,9 @@ my $goxims = sub {
         # find out if we want to create an object!
         # if goxims finds an 'objtype'-param it assumes that it
         # is called to create a new object.
-        my %args    = $env->{args};
-        my $objtype = $args{objtype};
+        my $req = Plack::Request->new($env);
+        my $objtype = $req->param('objtype');
 
-        # my $objtype = $apr->param('objtype');
         my $prefix;
         if ( defined $objtype and length $objtype ) {
             XIMS::Debug( 6, "we are creating a new $objtype" );
@@ -162,13 +159,10 @@ my $goxims = sub {
         $ctxt->properties->application->styleprefix($prefix);
     }    # end 'content' case
 
-    # TODO: think of XIMS::REGISTEREDINTERFACES() here
-    elsif ( $interface_type =~ /users?|bookmark|defaultbookmark|search_intranet/ ) {
+    # every other interface apart from /content that is configured in xims.psgi
+    else {
         $app_class .= $interface_type;
         $ctxt->properties->application->styleprefix($interface_type);
-    }
-    else {
-        HTTP::Exception::404->throw();
     }
 
     ##
@@ -177,21 +171,16 @@ my $goxims = sub {
     ## no critic (ProhibitStringyEval)
     eval "require $app_class";
     if ($@) {
-        # XIMS::Debug( 2, "could not load application-class $app_class: $@" );
-        # $r->custom_response( SERVER_ERROR,
-        #                      XIMS::PUBROOT_URL()
-        #                    . '/500.xsp?reason='
-        #                    . uri_escape_utf8(
-        #                        __x("Could not load application class {classname}.",
-        #                            classname => $app_class,
-        #                        )
-        #                      )
-        # );
-        # return SERVER_ERROR;
-        HTTP::Exception::500->throw();
+        XIMS::Debug( 2, "could not load application-class $app_class: $@" );
+        HTTP::Exception::500->throw(
+            status_message => __x(
+                "Could not load object class {classname}.",
+                classname => $app_class,
+            )
+        );
     }
     ## use critic
-    if ( my $appclass = $app_class->new() ) {
+    if ( my $appclass = $app_class->new($env) ) {
         XIMS::Debug( 4, "application-class $app_class initiated." );
         $appclass->setStylesheetDir( XIMS::XIMSROOT()
               . '/skins/'
@@ -200,26 +189,13 @@ my $goxims = sub {
               . $ctxt->session->uilanguage() );
         my $rv = $appclass->run($ctxt);
         XIMS::Debug( 4, "application-class $app_class successfully run" ) if $rv;
-        # return OK; 
-        #print "boo!", Dumper($rv);
-        #return [ 200, [ 'Content-Type' => 'text/plain' ], [ "Hello from " . $env->{SCRIPT_NAME} ." \n" . Dumper($env) ]];
         return $rv;
     }
 
-    return [404, [ 'Content-Type' => 'text/plain' ], [ "B0rk from " . $env->{SCRIPT_NAME} ." \n" . Dumper($env)]];
-
-
-
-
-    # eval require $app_class
-    # instantiere $appclass
-    # appclass run($env->{'xims.appcontext'});
-      # ok
-    # oder not_found;
-    
-
-   # return [ 200, [ 'Content-Type' => 'text/plain' ], [ "Hello from " . $env->{SCRIPT_NAME} ." \n" . Dumper($env) ] ];
-    };
+    HTTP::Exception::500->throw(
+        status_message => "Server Error.\n\nYou shouldn't have ended here, sorry!"
+    );
+};
 
 my $gopublic = sub {
     my $env = shift;
@@ -238,53 +214,58 @@ my $godav = sub {
 };
 
 
-# change to Plack::App::File for prod
-my $ximsroot = Plack::App::File->new(root => "$ENV{XIMS_HOME}/www/ximsroot");
-my $ximspubroot = Plack::App::File->new(root => "$ENV{XIMS_HOME}/www/ximspubroot");
-
 builder {
+    # enable "ErrorDocument",
+    #     500 => '/ximspubroot/500.xsp',
+    #     404 => '/ximspubroot/404.xsp',
+    #     401 => '/ximspubroot/access.xsp',
+    #     subrequest => 1;
+    enable "HTTPExceptions", rethrow => 1;
 
-    mount "/goxims" => builder {
-        enable "Plack::Middleware::ErrorDocument",
-            500 => '/ximspubroot/500.xsp',
-            404 => '/ximspubroot/404.xsp',
-            401 => '/ximspubroot/access.xsp',
-            subrequest => 1;
-        enable "XIMSAppContext";
-        enable "Auth::Basic", authenticator => \&auth_cb; # bis es was besseres gibt…
-        # enable "Auth::CAS";
-        $goxims;
+    # /goxims
+    mount XIMS::GOXIMS() => builder {
+        enable 'XIMSAppContext';
+        enable 'Auth::Basic', authenticator => \&auth_cb; 
+        # bis es was besseres gibt…
+        # enable "Auth::CAS" ;-)
+        mount XIMS::CONTENTINTERFACE() => builder {$goxims}; # /content
+        mount '/user'            => builder {$goxims};
+        mount '/users'           => builder {$goxims};
+        mount '/bookmark'        => builder {$goxims};
+        mount '/defaultbookmark' => builder {$goxims};
+        mount '/search_intranet' => builder {$goxims};
     };
 
     mount "/gopublic" => builder {
-        enable "Plack::Middleware::ErrorDocument",
-            500 => '/ximspubroot/500.xsp',
-            404 => '/ximspubroot/404.xsp',
-            401 => '/ximspubroot/access.xsp',
-            subrequest => 1;
         enable "XIMSAppContext";
+
         # enable "Auth::PublicUser";
         # enable "Caching::Would::Be::Nice"
-        $gopublic;
+
+        mount '/content'         => builder {$goxims};
     };
 
     mount "/gobaxims" => builder {
-        # enable "Plack::Middleware::ErrorDocument",
-        #     500 => '/ximspubroot/500.xsp',
-        #     404 => '/ximspubroot/404.xsp',
-        #     401 => '/ximspubroot/access.xsp',
-        #     subrequest => 1;
         enable "XIMSAppContext";
         enable "Auth::Basic", authenticator => \&auth_cb;
+
         #enable "XIMS::Session"
-        $gobaxims;
+        #$gobaxims;
+
+        mount '/content'         => builder {$goxims};
+        mount '/user'            => builder {$goxims};
+        mount '/users'           => builder {$goxims};
+        mount '/bookmark'        => builder {$goxims};
+        mount '/defaultbookmark' => builder {$goxims};
+        mount '/search_intranet' => builder {$goxims};
     };
 
     # WebDAV
     mount "/godav" => $godav;
 
     # static files
-    mount "/ximsroot" => $ximsroot;
+    mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );
+    mount XIMS::PUBROOT_URL()     =>  Plack::App::File->new( root => XIMS::PUBROOT() );
 };
 
 
@@ -303,44 +284,23 @@ sub auth_cb{
 }
 
 sub getInterface {
-    my $env = shift;
+    my $req = shift;
 
-    # check to see if we are editing managed content or seeking
-    # one of the meta or admin interfaces
-    my $interface_type;
-    my $pathinfo = $env->{PATH_INFO};
+    my $script_name = $req->script_name();
+    $script_name =~ s!.*/([^/]+)$!$1!;
 
-    if ( $pathinfo =~ s/^(\/)(\w*)// ) {
-        $interface_type = $2;
-        XIMS::Debug( 6, "Using interface type: " . $interface_type );
-    }
-    elsif ( not length $pathinfo or $pathinfo eq "/" ) {
-
-        # if the user only types in '/goxims' or '/goxims/' we don't want to
-        # give a 404. instead we redirect to the default bookmark. i think
-        # this is ok, since the users types in /goxims for login. through this
-        # a user will have the chance to return to the page the system started
-        # with.
-        #
-        # this should not happen, if one types in the interface name but
-        # leaves a required path empty.
-        #
-        $interface_type = "user";
-    }
-
-    $env->{PATH_INFO}=($pathinfo);
-    return $interface_type;
+    return $script_name;
 }
 
-=head2    getObject($r)
+=head2    getObject($req)
 
 =head3 Parameter
 
-    $r:    request-object      (mandatory)
+    $req:    Plack::Request object      (mandatory)
 
 =head3 Returns
 
-    $retval: object
+    $retval: a XIMS::Object
 
 =head3 Description
 
@@ -349,26 +309,24 @@ Watch out: language is hardcoded to de-at here!
 =cut
 
 sub getObject {
-    my $env  = shift;
-    my $user = $env->{'xims.appcontext'}->session->user();
+    my $req  = shift;
+    my $user = $req->env->{'xims.appcontext'}->session->user();
+    my %args;
 
-    my $retval = undef;
+    if ( $req and $user ) {
+        my $pathinfo = $req->path();
 
-    if ( $env and $user ) {
-        my %id_or_path = ( language => 2 );    # de-at ... hardcode == nogood
-        my $pathinfo = $env->{PATH_INFO} || '/';
-        my %args     = $env->{args};
-        my $id       = $args{id};
+        my $id = $req->param('id');
         if ( defined $id and $id > 0 ) {
-            $id_or_path{id} = $id;
+            $args{id} = $id;
         }
         else {
-            $id_or_path{path} = $pathinfo;
+            $args{path} = $pathinfo;
         }
-        $retval = XIMS::Object->new( %id_or_path, User => $user );
+        return XIMS::Object->new( %args, User => $user, language => 2);
     }
 
-    return $retval;
+    return undef;
 }
 
 

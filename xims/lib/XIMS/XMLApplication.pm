@@ -22,14 +22,16 @@ package XIMS::XMLApplication;
 # ################################################################
 use strict;
 
-use CGI;
+
 use Carp;
 #use Data::Dumper;
 
 # ################################################################
 # inheritance
 # ################################################################
-@XIMS::XMLApplication::ISA = qw( CGI );
+use Plack::Request;
+use XIMS;
+use base qw( CGI::PSGI );
 
 # ################################################################
 
@@ -62,6 +64,7 @@ sub new {
     $self->{XML_CGIAPP_HANDLER_}    = [$self->registerEvents()];
     $self->{XML_CGIAPP_STYLESHEET_} = [];
     $self->{XML_CGIAPP_STYLESDIR_}  = '';
+    $self->{REQ} = Plack::Request->new( $self->env() );
 
     return $self;
 }
@@ -250,7 +253,8 @@ sub run {
         if ( my $uri = $self->redirectToURI() ) {
             my %h = $self->setHttpHeader( $ctxt );
             $h{-uri} = $uri;
-            print $self->SUPER::redirect( %h ) . "\n\n";
+
+            return [$self->psgi_redirect( %h ),[]];
         }
         elsif ( not $self->skipSerialization() ) {
             # sometimes it is nessecary to skip the serialization
@@ -263,6 +267,7 @@ sub run {
 }
 
 sub serialization {
+    debug_msg( 10, "serialize");
     # i require both modules here, so one can implement his own
     # serialization
     require XML::LibXML;
@@ -291,9 +296,7 @@ sub serialization {
         # this is a useful feature for DOM debugging
         debug_msg( 10, "attempt to pass the DOM to the client" );
         $header{-type} = 'text/xml';
-        print $self->header( %header  );
-        print $xml_doc->toString();
-        return 0;
+        return [ $self->psgi_header(%header), [$xml_doc->toString()]];
     }
 
     my $stylesheet = $self->getStylesheet( $ctxt );
@@ -418,19 +421,9 @@ sub serialization {
         return -2;
     }
     else {
-        # do the output
-        print $self->header( %header );
-        print $out_string;
         debug_msg( 10, "output printed" );
+        return [ $self->psgi_header(%header), [ $out_string ] ];
     }
-    
-    #return 0;
-    #return [
-    #      '200',
-    #      [ 'Content-Type' => 'text/plain' ],
-    #      [ "Hello World" ], # or IO::Handle-like object
-    #  ];
-    return ['200', ['Content-Type' =>  $style->media_type(), 'Encoding' => $style->output_encoding()],  [$out_string]];
 }
 
 sub panic {
@@ -456,8 +449,7 @@ sub panic {
     }
 
     my $status = $pid < 3 ? 404 : 500; # default is the application error ...
-    print $self->header( -status => $status ) , $str ,"\n";
-
+    return [ $self->pgsi_header(-status => $status), ["$str\n"] ];
 }
 
 1;

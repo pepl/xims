@@ -29,7 +29,7 @@ package XIMS::CGI::defaultbookmark;
 use strict;
 use base qw( XIMS::CGI );
 use XIMS::Object;
-use Apache::URI();
+use URI;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -88,12 +88,13 @@ path_info
 
 =cut
 
+
 sub redirToDefault {
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my $ctxt = shift;
 
-    my $uri  = Apache::URI->parse( $ctxt->apache );
+    my $uri = URI->new( $self->env->{REQUEST_URI} );
     my $path = $uri->path();
 
     my $contentinterface = XIMS::CONTENTINTERFACE();
@@ -111,8 +112,7 @@ sub redirToDefault {
             $bookmark = XIMS::FALLBACKSTARTPATH();
         }
 
-        $path = XIMS::GOXIMS() . $contentinterface . $bookmark;
-        $uri->path($path);
+        $uri->path( XIMS::GOXIMS() . $contentinterface . $bookmark );
     }
 
     # get rid of user login information in the querystring
@@ -120,13 +120,14 @@ sub redirToDefault {
     $query =~ s/userid|password//;
     $uri->query($query);
 
-    my $frontend_uri = Apache::URI->parse( $ctxt->apache, $ctxt->session->serverurl() );
-    $uri->scheme( $frontend_uri->scheme() );
-    $uri->hostname( $frontend_uri->hostname() );
-    $uri->port( $frontend_uri->port() );
+    # Proxy-Zeug;
+    # my $frontend_uri = Apache::URI->parse( $ctxt->apache, $ctxt->session->serverurl() );
+    # $uri->scheme( $frontend_uri->scheme() );
+    # $uri->hostname( $frontend_uri->hostname() );
+    # $uri->port( $frontend_uri->port() );
 
-    XIMS::Debug( 6, "redirecting to " . $uri->unparse() );
-    $self->redirect( $uri->unparse() );
+    XIMS::Debug( 6, "redirecting to " . $uri->as_string() );
+    $self->redirect( $uri->as_string() );
     return 0;
 }
 
