@@ -18,7 +18,7 @@ use XIMS::Session;
 package XIMS::Session;
 
 use strict;
-use base qw( XIMS::AbstractClass Class::Accessor );
+use base qw( XIMS::AbstractClass Class::Accessor::Fast );
 use Digest::MD5;
 use Time::Piece;
 

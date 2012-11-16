@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::VLibPublicationMap;
 
 use strict;
-use base qw( XIMS::AbstractClass Class::Accessor );
+use base qw( XIMS::AbstractClass Class::Accessor::Fast );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};

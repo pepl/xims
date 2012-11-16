@@ -19,7 +19,7 @@ package XIMS::User;
 
 use strict;
 use XIMS;
-use base qw( XIMS::AbstractClass Class::Accessor );
+use base qw( XIMS::AbstractClass Class::Accessor::Fast );
 use XIMS::Bookmark;
 use XIMS::UserPrefs;
 use Digest::MD5 qw( md5_hex );

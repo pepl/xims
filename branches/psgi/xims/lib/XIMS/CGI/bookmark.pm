@@ -236,7 +236,7 @@ sub event_delete {
 sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;
 
-    my $uri   = Apache::URI->parse( $ctxt->apache() );
+    my $uri   = URI->new( $self->env->{REQUEST_URI} );
     my $query = $uri->query();
 
     # get rid of event identifiers
@@ -252,9 +252,9 @@ sub redirect_path {
     }
 
 	# XXX somehow magically the port is 82... why???
-    $uri->port(80);
+    # $uri->port(80);
     # warn "redirecting to ". $uri->unparse();
-    return $uri->unparse();
+    return $uri->as_string();
 }
 
 1;
