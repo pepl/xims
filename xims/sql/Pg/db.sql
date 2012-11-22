@@ -1,5 +1,5 @@
 -- drop db
-DROP DATABASE xims;
+-- DROP DATABASE xims;
 
 -- create db
 -- start over with a clean new db, set its encoding to UNICODE
