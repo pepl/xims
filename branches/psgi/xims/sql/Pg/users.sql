@@ -4,8 +4,8 @@
 -- $Id$
 
 -- drop users
-DROP USER xims;
-DROP USER ximsrun;
+-- DROP USER xims;
+-- DROP USER ximsrun;
 -- create with extended privs and empty password
 CREATE USER xims    WITH NOCREATEUSER   CREATEDB UNENCRYPTED PASSWORD 'xims';
 CREATE USER ximsrun WITH NOCREATEUSER NOCREATEDB UNENCRYPTED PASSWORD 'ximsrun';

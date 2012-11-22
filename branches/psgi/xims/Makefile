@@ -13,7 +13,7 @@
 #
 
 # Set the location of Perl.
-PERL = /usr/bin/perl
+PERL = /home/hp/perl5/perlbrew/perls/perl-5.16.1/bin/perl
 
 #########################
 # build rules           #
