@@ -94,7 +94,7 @@ sub redirToDefault {
     my $self = shift;
     my $ctxt = shift;
 
-    my $uri = URI->new( $self->env->{REQUEST_URI} );
+    my $uri = URI->new( $self->url(-absolute =>1, -path => 1, -query => 1) );
     my $path = $uri->path();
 
     my $contentinterface = XIMS::CONTENTINTERFACE();
@@ -127,7 +127,7 @@ sub redirToDefault {
     # $uri->port( $frontend_uri->port() );
 
     XIMS::Debug( 6, "redirecting to " . $uri->as_string() );
-    $self->redirect( $uri->as_string() );
+    $self->redirect( $uri );
     return 0;
 }
 

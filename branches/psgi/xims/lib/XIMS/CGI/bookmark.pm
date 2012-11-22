@@ -236,7 +236,7 @@ sub event_delete {
 sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;
 
-    my $uri   = URI->new( $self->env->{REQUEST_URI} );
+    my $uri   = URI->new( $self->uri(-absolute => 1, -path => 1, -query => 1) );
     my $query = $uri->query();
 
     # get rid of event identifiers
@@ -251,10 +251,7 @@ sub redirect_path {
         $uri->query("bookmarks=1;$query");
     }
 
-	# XXX somehow magically the port is 82... why???
-    # $uri->port(80);
-    # warn "redirecting to ". $uri->unparse();
-    return $uri->as_string();
+    return $uri;
 }
 
 1;

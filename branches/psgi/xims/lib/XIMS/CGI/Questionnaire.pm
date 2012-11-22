@@ -78,7 +78,7 @@ sub event_default {
 
     # check if user is coming in via /gopublic (if ximsPublicUserName is
     # configured)
-    if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+    if ( $ctxt->session->auth_module() eq 'XIMS::Auth::Public' ) {
         XIMS::Debug( 6, "Answering of Questionnaire started." );
         $self->_default_public($ctxt);
     }

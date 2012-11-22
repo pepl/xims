@@ -227,13 +227,13 @@ sub event_delete {
 sub redirect_path {
     my ( $self, $ctxt, $id ) = @_;
 
-    my $uri   = Apache::URI->parse( $ctxt->apache() );
+    my $uri   = URI->new( $self->url(-absolute=>1, -path => 1, -query => 1) );
     my $query = $uri->query();
-    my $port = $uri->port();
+    # my $port = $uri->port();
     # warn "port : ".$port;
     #somehow magically the port is 82... why???
-    $uri->port(80);
-    $port = $uri->port();
+    #$uri->port(80);
+    #$port = $uri->port();
     # warn "port : ".$port;
 
     if ( $query =~ /name=([^(;|&)]+)/ ) {
@@ -245,7 +245,7 @@ sub redirect_path {
         #$uri->query("prefs=1;$query");
     }
 
-    return $uri->unparse();
+    return $uri;
 }
 
 1;

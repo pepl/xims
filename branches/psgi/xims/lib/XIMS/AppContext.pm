@@ -29,7 +29,6 @@ use base qw( XIMS::AbstractClass Class::Accessor::Fast );
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = (
     'properties',
-    'apache', # to be removed
     'user', # used for user-management
     'userlist', # used for privilege managment
     'object', # used for content-object-management
@@ -122,101 +121,6 @@ __PACKAGE__->mk_accessors(qw(objectid objecttypes level limit offset order addin
                     # properties  to select properties other than the default ones (currently not used)
 
 1;
-
-# package FakeApache;
-# # Idea and some code stolen from WebGUI::Session::Plack;
-# use Carp;
-
-# sub new {
-#     my ( $class, %args ) = @_;
-#     my $self = bless {
-#         %args,
-#         pnotes   => {},
-#         connection => FakeApache::Connection->new($args{env}),
-#         server   =>  FakeApache::Server->new($args{env}),
-#         headers_out => Plack::Util::headers( [] ),    # use Plack::Util to manage response headers
-#     }, $class;
-#     return $self;
-# }
-
-# sub args {}
-# sub content {}
-# sub content_type {}
-# sub custom_response {}
-# sub dir_config {}
-# sub get_basic_auth_pw {}
-# sub get_server_port {}
-# sub header_in {}
-# sub header_out {}
-# sub headers_in {}
-# sub is_initial_req {}
-# sub location {}
-# sub log {}
-# sub method {}
-# sub no_cache {}
-# sub note_basic_auth_failure {}
-# sub parsed_uri {}
-# sub path_info {}
-# sub pnotes {}
-# sub print {}
-# sub protocol {}
-# sub send_http_header {}
-# sub server {}
-# sub set_content_length {}
-# sub set_last_modified {}
-# sub status {}
-# sub status_line {}
-# sub uri {}
-
-# our $AUTOLOAD;
-
-# sub AUTOLOAD {
-#     my $what = $AUTOLOAD;
-#     $what =~ s/.*:://;
-#     carp "!!plack->$what(@_)" unless $what eq 'DESTROY';
-# }
-
-# 1;
-
-
-# package FakeApache::Connection;
-# use Carp;
-# sub new {
-#     my ( $class, %args ) = @_;
-#     my $self = bless {}, $class;
-#     return $self;
-# }
-
-# #sub remote_ip {}
-
-# our $AUTOLOAD;
-
-# sub AUTOLOAD {
-#     my $what = $AUTOLOAD;
-#     $what =~ s/.*:://;
-#     carp "!!plack->$what(@_)" unless $what eq 'DESTROY';
-# }
-
-# 1;
-
-# package FakeApache::Server;
-# use Carp;
-# sub new {
-#     my ( $class, %args ) = @_;
-#     my $self = bless {}, $class;
-#     return $self;
-# }
-
-# our $AUTOLOAD;
-
-# sub AUTOLOAD {
-#     my $what = $AUTOLOAD;
-#     $what =~ s/.*:://;
-#     carp "!!plack->$what(@_)" unless $what eq 'DESTROY';
-# }
-
-1;
-
 
 __END__
 

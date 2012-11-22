@@ -284,9 +284,11 @@ sub event_default {
 	XIMS::Debug( 5, "called" );
 	my ( $self, $ctxt ) = @_;
 
+    my $goxims =  XIMS::CONTENTINTERFACE();
 	# redirect to full path in case object is called via id
-	if ( $self->path_info() eq XIMS::CONTENTINTERFACE()
-		and not $ctxt->object->marked_deleted() )
+	if ( $self->path_info() eq ''
+         and     $self->script_name() =~ /$goxims$/
+         and not $ctxt->object->marked_deleted() )
 	{
 
 		# not needed anymore
@@ -1012,9 +1014,10 @@ sub object_locked {
 =cut
 
 sub redirect {
-	my $self = shift;
+	my ($self, $uri) = @_;
 	XIMS::Debug( 6, "called " . join( ", ", @_ ) );
-	$self->redirectToURI(@_);
+
+    (ref $uri and $uri->isa('URI')) ? $self->redirectToURI($uri->as_string()) : $self->redirectToURI($uri);
 }
 
 =head2 resource_type()
@@ -1170,7 +1173,7 @@ sub redirect_path {
 			#warn "\nredirectpath: ".$redirectpath;
 		}
 		else {
-			$uri = URI->new( $self->env->{REQUEST_URI} );
+			$uri = URI->new( $self->url(-absolute => 1) );
 		}
 	}
 	elsif ( defined $id ) {
@@ -1239,7 +1242,7 @@ sub redirect_path {
 	}
 
 	if ( not defined $uri ) {
-		$uri = URI->new( $self->env()->{REQUEST_URI} );
+		$uri = URI->new();
 		$uri->path( $self->script_name() . $redirectpath );
 		$uri->query($params);
 	}
@@ -1252,7 +1255,7 @@ sub redirect_path {
 	# $uri->port( $frontend_uri->port() );
 
 	XIMS::Debug( 4, "redirecting to " . $uri->as_string() );
-	return $uri->as_string();
+	return $uri
 }
 
 =head2 clean_userquery()

@@ -196,7 +196,7 @@ sub event_subject_view {
 
     # View kind of intro page for the selected subject. Just for public use.
     # call the library with the param subject_view=1
-    if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+    if ( $self->session->auth_module() eq 'XIMS::Auth::Public' ) {
         XIMS::Debug( 5, "Viewing subject" );
 
         #$ctxt->properties->content->escapebody(1);

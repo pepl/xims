@@ -143,7 +143,8 @@ sub event_default {
     if ( defined $serial_id and $serial_id =~ /^\d+$/ ) {
         $childrenargs{serial_id} = $serial_id;
     }
-    if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
+    if ( defined $ctxt->session->auth_module() eq 'XIMS::Auth::Public'
+              or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
         $childrenargs{published} = 1;
     }
 
