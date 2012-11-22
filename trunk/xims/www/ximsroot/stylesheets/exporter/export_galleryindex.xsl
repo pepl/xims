@@ -46,6 +46,10 @@
                       'titlelocation'">
         <xsl:text>title</xsl:text>
       </xsl:when>
+      <xsl:when test="/document/context/object/attributes/defaultsortby =
+                      'date'">
+        <xsl:text>last_modification_timestamp</xsl:text>
+      </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="/document/context/object/attributes/defaultsortby"/>
       </xsl:otherwise>
@@ -170,9 +174,28 @@
 
         <div class="scroll-content">
           <ul class="gallery_demo_unstyled">
-            <xsl:apply-templates select="object">
+          <xsl:choose>
+          <xsl:when test="$defaultsortby='last_modification_timestamp'">
+          <xsl:apply-templates select="./object[published=1]">
+              <xsl:sort select="last_modification_timestamp/year" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/month" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/day" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/hour" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/minute" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/second" order="{$defaultsort}" data-type="number"/>
+            </xsl:apply-templates>
+            </xsl:when>
+            <xsl:when test="$defaultsortby='position'">
+          <xsl:apply-templates select="./object[published=1]">
+              <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}" data-type="number"/>
+            </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+            <xsl:apply-templates select="./object[published=1]">
               <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}"/>
             </xsl:apply-templates>
+            </xsl:otherwise>
+            </xsl:choose>
           </ul>
         </div>
       </div>
@@ -192,9 +215,28 @@
 
         <div class="scroll-content">
           <ul class="gallery_demo_unstyled">
-            <xsl:apply-templates select="object">
+            <xsl:choose>
+          <xsl:when test="$defaultsortby='last_modification_timestamp'">
+          <xsl:apply-templates select="./object[published=1]">
+              <xsl:sort select="last_modification_timestamp/year" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/month" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/day" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/hour" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/minute" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/second" order="{$defaultsort}" data-type="number"/>
+            </xsl:apply-templates>
+            </xsl:when>
+            <xsl:when test="$defaultsortby='position'">
+          <xsl:apply-templates select="./object[published=1]">
+              <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}" data-type="number"/>
+            </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+            <xsl:apply-templates select="./object[published=1]">
               <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}"/>
             </xsl:apply-templates>
+            </xsl:otherwise>
+            </xsl:choose>
           </ul>
         </div>
       </div>
@@ -222,9 +264,28 @@
 
         <div class="scroll-content">
           <ul class="gallery_demo_unstyled">
-            <xsl:apply-templates select="object">
+            <xsl:choose>
+          <xsl:when test="$defaultsortby='last_modification_timestamp'">
+          <xsl:apply-templates select="./object[published=1]">
+              <xsl:sort select="last_modification_timestamp/year" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/month" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/day" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/hour" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/minute" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/second" order="{$defaultsort}" data-type="number"/>
+            </xsl:apply-templates>
+            </xsl:when>
+            <xsl:when test="$defaultsortby='position'">
+          <xsl:apply-templates select="./object[published=1]">
+              <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}" data-type="number"/>
+            </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+            <xsl:apply-templates select="./object[published=1]">
               <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}"/>
             </xsl:apply-templates>
+            </xsl:otherwise>
+            </xsl:choose>
           </ul>
         </div>
       </div>
@@ -245,9 +306,28 @@
 
         <div class="scroll-content">
           <ul class="gallery_demo_unstyled">
-            <xsl:apply-templates select="object">
+            <xsl:choose>
+          <xsl:when test="$defaultsortby='last_modification_timestamp'">
+          <xsl:apply-templates select="./object[published=1]">
+              <xsl:sort select="last_modification_timestamp/year" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/month" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/day" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/hour" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/minute" order="{$defaultsort}" data-type="number"/>
+              <xsl:sort select="last_modification_timestamp/second" order="{$defaultsort}" data-type="number"/>
+            </xsl:apply-templates>
+            </xsl:when>
+            <xsl:when test="$defaultsortby='position'">
+          <xsl:apply-templates select="./object[published=1]">
+              <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}" data-type="number"/>
+            </xsl:apply-templates>
+            </xsl:when>
+            <xsl:otherwise>
+            <xsl:apply-templates select="./object[published=1]">
               <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}"/>
             </xsl:apply-templates>
+            </xsl:otherwise>
+            </xsl:choose>
           </ul>
         </div>
       </div>
