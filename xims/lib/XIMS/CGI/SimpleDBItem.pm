@@ -117,10 +117,10 @@ sub event_store {
         if ( $ctxt->parent() ) {
             if ( $ctxt->object->delete() ) {
                 XIMS::Debug( 4, "Deleted newly created item because of bad property values" );
-                my $uri = Apache::URI->parse( $ctxt->apache() );
-                $uri->path( $ctxt->apache->parsed_uri->rpath() . $ctxt->parent->location_path() );
+                my $uri = URI->new( $self->uri(-absolute => 1, -path => 1, -query => 1) );
+                $uri->path( $self->script_name() . $ctxt->parent->location_path() );
                 $uri->query( $uri->query . ';create=1;objtype=SimpleDBItem;error_msg=' . $ctxt->session->error_msg() );
-                $self->redirect( $uri->unparse() );
+                $self->redirect( $uri->as_string() );
                 return 1;
             }
             return 0;

@@ -220,7 +220,8 @@ builder {
     #     404 => '/ximspubroot/404.xsp',
     #     401 => '/ximspubroot/access.xsp',
     #     subrequest => 1;
-    enable "HTTPExceptions", rethrow => 1;
+    # lästig beim debuggen…
+    # enable "HTTPExceptions", rethrow => 1;
 
     # /goxims
     mount XIMS::GOXIMS() => builder {
@@ -239,7 +240,7 @@ builder {
     mount "/gopublic" => builder {
         enable "XIMSAppContext";
 
-        # enable "Auth::PublicUser";
+        enable "Auth::XIMSPublicUser";
         # enable "Caching::Would::Be::Nice"
 
         mount '/content'         => builder {$goxims};
