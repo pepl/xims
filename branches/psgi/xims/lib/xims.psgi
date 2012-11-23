@@ -102,10 +102,6 @@ my $goxims = sub {
     	$ctxt->session->skin(XIMS::DEFAULT_SKIN() );
     }
 
-    # TODO set UILanguage
-    #$ctxt->session->uilanguage( $langpref );
-    $ctxt->session->uilanguage( 'de-at' );
-
     # Big fork here
     #
     my $app_class    = 'XIMS::CGI::';
@@ -226,7 +222,8 @@ builder {
     # /goxims
     mount XIMS::GOXIMS() => builder {
         enable 'XIMSAppContext';
-        enable 'Auth::Basic', authenticator => \&auth_cb; 
+        enable 'Auth::Basic', authenticator => \&auth_cb;
+        enable 'XIMSUILang';
         # bis es was besseres gibt…
         # enable "Auth::CAS" ;-)
         mount XIMS::CONTENTINTERFACE() => builder {$goxims}; # /content
@@ -241,6 +238,7 @@ builder {
         enable "XIMSAppContext";
 
         enable "Auth::XIMSPublicUser";
+        enable 'XIMSUILang';
         # enable "Caching::Would::Be::Nice"
 
         mount '/content'         => builder {$goxims};
@@ -249,7 +247,7 @@ builder {
     mount "/gobaxims" => builder {
         enable "XIMSAppContext";
         enable "Auth::Basic", authenticator => \&auth_cb;
-
+        enable 'XIMSUILang';
         #enable "XIMS::Session"
         #$gobaxims;
 
