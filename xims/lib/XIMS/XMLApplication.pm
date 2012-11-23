@@ -31,7 +31,7 @@ use Carp;
 # ################################################################
 use Plack::Request;
 use XIMS;
-use base qw( CGI::PSGI );
+use parent qw( CGI::PSGI );
 
 # ################################################################
 
@@ -50,9 +50,6 @@ $XIMS::XMLApplication::VERSION = "1.1.3";
           'Application Error',
          );
 
-# The Debug Level for verbose error messages
-$XIMS::XMLApplication::DEBUG = 10;
-
 # ################################################################
 # methods
 # ################################################################
@@ -65,22 +62,13 @@ sub new {
     $self->{XML_CGIAPP_STYLESHEET_} = [];
     $self->{XML_CGIAPP_STYLESDIR_}  = '';
     $self->{REQ} = Plack::Request->new( $self->env() );
-
+    $self->{RES} = undef;
     return $self;
 }
 
 # ################################################################
 # straight forward coded methods
 
-# application related ############################################
-# both functions are only for backward compatibilty with older scripts
-sub debug_msg {
-    my $level = shift;
-    if ( $level <= $XIMS::XMLApplication::DEBUG && scalar @_ ) {
-        my ($module, undef, $line) = caller(1);
-        warn "[$module; line: $line] ", join(' ', @_) , "\n";
-    }
-}
 
 ##
 # dummy functions
@@ -145,7 +133,7 @@ sub deleteEvent       {
     my $self = shift;
     if ( scalar @_ ){ # delete explicit events
         foreach ( @_ ) {
-            debug_msg( 8, "[XML::CGIApplication] delete event $_" );
+            XIMS::Debug( 6, "delete event $_" );
             $self->delete( $_ );
             $self->delete( $_.'.x' );
             $self->delete( $_.'.y' );
@@ -153,7 +141,7 @@ sub deleteEvent       {
     }
     else { # delete all
         foreach ( @{ $self->{XML_CGIAPP_HANDLER_} } ){
-            debug_msg( 8, "delete event $_" );
+            XIMS::Debug( 6, "delete event $_" );
             $self->delete( $_ );
             $self->delete( $_.'.x' );
             $self->delete( $_.'.y' );
@@ -162,7 +150,7 @@ sub deleteEvent       {
 }
 
 sub sendEvent         {
-    debug_msg( 10, "send event " . $_[1] );
+    XIMS::Debug( 6, "send event " . $_[1] );
     $_[0]->deleteEvent();
     $_[0]->param( -name=>$_[1] , -value=>1 );
 }
@@ -247,27 +235,37 @@ sub run {
 
     $self->event_exit($ctxt);
 
-    # if we allready panic, don't try to render
+    # shortcut if panic
     if ( $sid >= 0 ) {
-        # check if we wanna redirect
+        # redirect?
         if ( my $uri = $self->redirectToURI() ) {
             my %h = $self->setHttpHeader( $ctxt );
             $h{-uri} = $uri;
 
             return [$self->psgi_redirect( %h ),[]];
         }
+        # serialize unless told otherwise
         elsif ( not $self->skipSerialization() ) {
-            # sometimes it is nessecary to skip the serialization
-            # eg. due passing binary data.
-            return $sid = $self->serialization( $ctxt );
+            $sid = $self->serialization( $ctxt );
         }
     }
 
-    $self->panic( $sid, $ctxt );
+    my $res;
+    if ( $sid >= 0
+         and defined $self->{RES}
+         and         $self->{RES}->isa('Plack::Response') ) {
+
+        $res = delete $self->{RES};
+    }
+    else {
+        $res = $self->panic($sid, $ctxt);
+    }
+
+    return $res->finalize();
 }
 
 sub serialization {
-    debug_msg( 10, "serialize");
+    XIMS::Debug( 6, "serialize");
     # i require both modules here, so one can implement his own
     # serialization
     require XML::LibXML;
@@ -281,12 +279,12 @@ sub serialization {
 
     my $xml_doc = $self->getDOM( $ctxt );
     if ( not defined $xml_doc ) {
-        debug_msg( 10, "use old style interface");
+        XIMS::Debug( 6, "use old style interface");
         $xml_doc = $self->requestDOM( $ctxt );
     }
     # if still no document is available
     if ( not defined $xml_doc ) {
-        debug_msg( 10, "no DOM defined; use empty DOM" );
+        XIMS::Debug( 6, "no DOM defined; use empty DOM" );
         $xml_doc = XML::LibXML::Document->new;
         # the following line is to keep xpath.c quiet!
         $xml_doc->setDocumentElement( $xml_doc->createElement( "dummy" ) );
@@ -294,7 +292,7 @@ sub serialization {
 
     if( defined $self->passthru() && $self->passthru() == 1 ) {
         # this is a useful feature for DOM debugging
-        debug_msg( 10, "attempt to pass the DOM to the client" );
+        XIMS::Debug( 6, "attempt to pass the DOM to the client" );
         $header{-type} = 'text/xml';
         return [ $self->psgi_header(%header), [$xml_doc->toString()]];
     }
@@ -306,16 +304,16 @@ sub serialization {
     my $xslt   = XML::LibXSLT->new();
 
     if ( ref( $stylesheet ) ) {
-        debug_msg( 5, "stylesheet is reference"  );
+        XIMS::Debug( 5, "stylesheet is reference"  );
         $xsl_dom = $stylesheet;
     }
     elsif ( -f $stylesheet && -r $stylesheet ) {
-        debug_msg( 5, "filename is $stylesheet" );
+        XIMS::Debug( 5, "filename is $stylesheet" );
         eval {
             $xsl_dom  = $parser->parse_file( $stylesheet );
         };
         if ( $@ ) {
-            debug_msg( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
+            XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
             $self->setPanicMsg( "Corrupted document:\n broken XML\n". $@ );
             return -2;
         }
@@ -324,11 +322,11 @@ sub serialization {
         # first test the new style interface
         my $xslstring = $self->getStylesheetString( $ctxt );
         if ( length $xslstring ) {
-            debug_msg( 5, "stylesheet is xml string"  );
+            XIMS::Debug( 5, "stylesheet is xml string"  );
             eval { $xsl_dom = $parser->parse_string( $xslstring ); };
             if ( $@ || not defined $xsl_dom ) {
                 # the parse failed !!!
-                debug_msg( 3, "Corrupted Stylesheet String:\n". $@ ."\n" );
+                XIMS::Debug( 3, "Corrupted Stylesheet String:\n". $@ ."\n" );
                 $self->setPanicMsg( "Corrupted Stylesheet String:\n". $@ );
                 return -2;
             }
@@ -337,25 +335,25 @@ sub serialization {
             # now test old style interface
             # will be removed with the next major release
 
-            debug_msg( 5, "old style interface to select the stylesheet"  );
+            XIMS::Debug( 5, "old style interface to select the stylesheet"  );
             $stylesheet = $self->selectStylesheet( $ctxt );
             if ( ref( $stylesheet ) ) {
-                debug_msg( 5, "stylesheet is reference"  );
+                XIMS::Debug( 5, "stylesheet is reference"  );
                 $xsl_dom = $stylesheet;
             }
             elsif ( -f $stylesheet && -r $stylesheet ) {
-                debug_msg( 5, "filename is $stylesheet" );
+                XIMS::Debug( 5, "filename is $stylesheet" );
                 eval {
                     $xsl_dom  = $parser->parse_file( $stylesheet );
                 };
                 if ( $@ ) {
-                    debug_msg( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
+                    XIMS::Debug( 3, "Corrupted Stylesheet:\n broken XML\n". $@ );
                     $self->setPanicMsg( "Corrupted document:\n broken XML\n". $@ );
                     return -2;
                 }
             }
             else {
-                debug_msg( 2 , "panic stylesheet file $stylesheet does not exist" );
+                XIMS::Debug( 2 , "panic stylesheet file $stylesheet does not exist" );
                 $self->setPanicMsg( "$stylesheet" );
                 return length $stylesheet ? -2 : -1 ;
             }
@@ -364,10 +362,9 @@ sub serialization {
 
     eval {
         $style = $xslt->parse_stylesheet( $xsl_dom );
-        # $style = $xslt->parse_stylesheet_file( $file );
     };
     if( $@ ) {
-        debug_msg( 3, "Corrupted Stylesheet:\n". $@ ."\n" );
+        XIMS::Debug( 3, "Corrupted Stylesheet:\n". $@ ."\n" );
         $self->setPanicMsg( "Corrupted Stylesheet:\n". $@ );
         return -2;
     }
@@ -395,7 +392,7 @@ sub serialization {
         }
     };
     if( $@ ) {
-        debug_msg( 3, "Broken Transformation:\n". $@ ."\n" );
+        XIMS::Debug( 3, "Broken Transformation:\n". $@ ."\n" );
         $self->setPanicMsg( "Broken Transformation:\n". $@ );
         return -2;
     }
@@ -405,41 +402,45 @@ sub serialization {
     $header{-type}    = $style->media_type;
     $header{-charset} = $style->output_encoding;
 
-    debug_msg( 10, "serialization do output" );
+    XIMS::Debug( 6, "serialization do output" );
     # we want nice xhtml and since the output_string does not the
     # right job
     my $out_string= undef;
 
-    debug_msg( 9, "serialization get output string" );
+    XIMS::Debug( 6, "serialization get output string" );
     eval {
         $out_string =  $style->output_string( $res );
     };
-    debug_msg( 10, "serialization rendered output" );
+    XIMS::Debug( 6, "serialization rendered output" );
     if ( $@ ) {
-        debug_msg( 3, "Corrupted Output:\n", $@ , "\n" );
+        XIMS::Debug( 3, "Corrupted Output:\n", $@ , "\n" );
         $self->setPanicMsg( "Corrupted Output:\n". $@ );
         return -2;
     }
     else {
-        debug_msg( 10, "output printed" );
-        return [ $self->psgi_header(%header), [ $out_string ] ];
+        $self->{RES} = $self->{REQ}->new_response(
+            $self->psgi_header(%header),
+            $out_string
+        );
+        XIMS::Debug( 6, "output set" );
+        return 0;
     }
 }
 
 sub panic {
     my ( $self, $pid ) = @_;
-    return unless $pid < 0;
+    #return unless $pid < 0;
     $pid++;
     $pid*=-1;
 
     my $str = "Application Panic: ";
-    $str = "PANIC $pid :" .  $XIMS::XMLApplication::panic[$pid] ;
+    $str = "PANIC $pid: " .  $XIMS::XMLApplication::panic[$pid] ;
     # this is nice for debugging from logfiles...
     $str  = $self->b( $str ) . "<br />\n";
     $str .= $self->pre( $self->getPanicMsg() );
     $str .= "Please Contact the Systemadminstrator<br />\n";
 
-    debug_msg( 1, "$str" );
+    XIMS::Debug( 1, "$str" );
 
     if ( $XIMS::XMLApplication::Quiet == 1 ) {
         $str = "Application Panic";
@@ -449,7 +450,10 @@ sub panic {
     }
 
     my $status = $pid < 3 ? 404 : 500; # default is the application error ...
-    return [ $self->pgsi_header(-status => $status), ["$str\n"] ];
+    return $self->{REQ}->new_response(
+        $self->psgi_header(-status => $status, -type => 'text/html', -charset => 'UTF-8'), 
+        "$str\n"
+    );
 }
 
 1;

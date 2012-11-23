@@ -23,7 +23,7 @@ object and place them into the stream
 package XIMS::SAX::Filter::Children;
 
 use strict;
-use base qw( XIMS::SAX::Filter::DataCollector );
+use parent qw( XIMS::SAX::Filter::DataCollector );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

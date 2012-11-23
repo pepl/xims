@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::XSPScript;
 
 use strict;
-use base qw( XIMS::XML );
+use parent qw( XIMS::XML );
 use XIMS::DataFormat;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

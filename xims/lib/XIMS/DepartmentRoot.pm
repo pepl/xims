@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::DepartmentRoot;
 
 use strict;
-use base qw( XIMS::Folder );
+use parent qw( XIMS::Folder );
 use XIMS::Portlet;
 use XIMS::URLLink;
 use XIMS::DataFormat;

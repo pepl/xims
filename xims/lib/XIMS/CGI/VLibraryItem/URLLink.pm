@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::VLibraryItem::URLLink;
 
 use strict;
-use base qw( XIMS::CGI::VLibraryItem );
+use parent qw( XIMS::CGI::VLibraryItem );
 use XIMS::VLibMeta;
 use Locale::TextDomain ('info.xims');
 
@@ -117,7 +117,7 @@ sub event_store {
     }
     else {
         XIMS::Debug( 4, "redirecting" );
-        $self->redirect( $self->redirect_path( $ctxt ) );
+        $self->redirect( $self->redirect_uri( $ctxt ) );
         return 1;
     }
 }

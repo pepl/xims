@@ -18,7 +18,7 @@ $Id$
 package XIMS::SAX::Filter::Date;
 
 use strict;
-use base qw( XML::SAX::Base );
+use parent qw( XML::SAX::Base );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

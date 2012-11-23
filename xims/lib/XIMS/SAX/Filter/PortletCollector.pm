@@ -24,7 +24,7 @@ package XIMS::SAX::Filter::PortletCollector;
 
 
 use strict;
-use base qw( XIMS::SAX::Filter::DataCollector );
+use parent qw( XIMS::SAX::Filter::DataCollector );
 use XML::LibXML;
 use XIMS;
 use XIMS::Object;

@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::Importer::Object::ReferenceLibraryItem;
 
 use strict;
-use base qw( XIMS::Importer::Object );
+use parent qw( XIMS::Importer::Object );
 use XIMS::RefLibReferenceProperty;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

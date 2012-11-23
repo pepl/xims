@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::JavaScript;
 
 use strict;
-use base qw( XIMS::CGI XIMS::CGI::Text );
+use parent qw( XIMS::CGI XIMS::CGI::Text );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

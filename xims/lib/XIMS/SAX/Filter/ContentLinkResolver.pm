@@ -24,7 +24,7 @@ therefore we got path-string in *_id elements!
 package XIMS::SAX::Filter::ContentLinkResolver;
 
 use strict;
-use base qw( XML::SAX::Base );
+use parent qw( XML::SAX::Base );
 use XIMS;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

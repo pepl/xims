@@ -15,7 +15,7 @@ package XIMS::Exporter::NewsLetter;
 
 use strict;
 use XIMS::Exporter;
-use base qw( XIMS::Exporter::Document );
+use parent qw( XIMS::Exporter::Document );
 our ($VERSION) = ( q$Revision: 2012 $ =~ /\s+(\d+)\s*$/ );
 
 1;

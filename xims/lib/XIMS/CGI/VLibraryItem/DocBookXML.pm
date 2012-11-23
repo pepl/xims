@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::VLibraryItem::DocBookXML;
 
 use strict;
-use base qw( XIMS::CGI::VLibraryItem );
+use parent qw( XIMS::CGI::VLibraryItem );
 use XIMS::CGI::XML;
 use XIMS::Importer::Object::VLibraryItem::DocBookXML;
 use Locale::TextDomain ('info.xims');
@@ -92,7 +92,7 @@ sub event_store {
             my $importer = XIMS::Importer::Object::VLibraryItem::DocBookXML->new( User => $ctxt->session->user(), Parent => $ctxt->parent() );
             if ( $importer->import( $ctxt->object() ) ) {
                 XIMS::Debug( 4, "Import of VLibraryItem successful, redirecting" );
-                $self->redirect( $self->redirect_path( $ctxt ) );
+                $self->redirect( $self->redirect_uri( $ctxt ) );
                 return 1;
             }
             else {

@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::Importer::FileSystem::File;
 
 use strict;
-use base qw( XIMS::Importer::FileSystem::Binary );
+use parent qw( XIMS::Importer::FileSystem::Binary );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

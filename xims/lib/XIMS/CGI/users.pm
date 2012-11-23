@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::users;
 
 use strict;
-use base qw( XIMS::CGI );
+use parent qw( XIMS::CGI );
 use XIMS::User;
 use XIMS::UserPriv;
 use XIMS::ObjectType;
@@ -789,7 +789,7 @@ sub event_objecttypeprivs {
             $otpriv->data(%data);
             if ( $otpriv->create() ) {
             	#warn "\n\notprivs created.";
-                $self->redirect($self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                $self->redirect($self->redirect_uri( $ctxt, 'objecttypeprivs' ) );
                 return 0;
             }
             else {
@@ -812,7 +812,7 @@ sub event_objecttypeprivs {
 
             if ( $otpriv->delete() ) {
                 $self->redirect(
-                    $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                    $self->redirect_uri( $ctxt, 'objecttypeprivs' ) );
                 return 0;
             }
             else {
@@ -843,7 +843,7 @@ sub event_objecttypeprivs {
                         )
                     );
                     $self->redirect(
-                        $self->redirect_path( $ctxt, 'objecttypeprivs' ) );
+                        $self->redirect_uri( $ctxt, 'objecttypeprivs' ) );
                     return 0;
                 }
                 else {

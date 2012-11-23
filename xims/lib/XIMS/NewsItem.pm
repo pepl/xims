@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::NewsItem;
 
 use strict;
-use base qw( XIMS::Document );
+use parent qw( XIMS::Document );
 use XIMS::Importer::Object;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

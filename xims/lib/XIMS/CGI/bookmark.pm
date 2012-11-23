@@ -22,7 +22,7 @@ XIMS CGI class for managing bookmarks XIMS::CGI::defaultbookmark
 package XIMS::CGI::bookmark;
 
 use strict;
-use base qw( XIMS::CGI::defaultbookmark );
+use parent qw( XIMS::CGI::defaultbookmark );
 use XIMS::User;
 use XIMS::Bookmark;
 use Locale::TextDomain ('info.xims');
@@ -110,7 +110,7 @@ sub event_setdefault {
         $user = XIMS::User->new( name => $uname );
         if ( not( $user and $user->id() ) ) {
             XIMS::Debug( 3,
-                "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
+                         "Attempt to edit non-existent user. POSSIBLE HACK ATTEMPT!" );
             $self->sendError( $ctxt,
                 __x( "User '{name}' does not exist.", name => $uname ) );
             return 0;
@@ -131,7 +131,7 @@ sub event_setdefault {
     $bookmark->stdhome(1);
     $bookmark->update();
 
-    $self->redirect( $self->redirect_path($ctxt) );
+    $self->redirect( $self->redirect_uri($ctxt) );
     return 0;
 }
 
@@ -199,7 +199,7 @@ sub event_create {
 		$self->SUPER::redirect( $ctxt );
 	}
     else {
-    	$self->redirect( $self->redirect_path($ctxt) );
+    	$self->redirect( $self->redirect_uri($ctxt) );
     }
     return 0;
 }
@@ -222,21 +222,21 @@ sub event_delete {
         return 0;
     }
 
-    $self->redirect( $self->redirect_path($ctxt) );
+    $self->redirect( $self->redirect_uri($ctxt) );
     return 0;
 }
 
 # END RUNTIME EVENTS
 # #############################################################################
 
-=head2 redirect_path()
+=head2 redirect_uri()
 
 =cut
 
-sub redirect_path {
+sub redirect_uri {
     my ( $self, $ctxt, $id ) = @_;
 
-    my $uri   = URI->new( $self->uri(-absolute => 1, -path => 1, -query => 1) );
+    my $uri   = URI->new( $self->url(-absolute => 1, -path => 1, -query => 1) );
     my $query = $uri->query();
 
     # get rid of event identifiers

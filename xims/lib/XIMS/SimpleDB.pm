@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::SimpleDB;
 
 use strict;
-use base qw( XIMS::Folder );
+use parent qw( XIMS::Folder );
 use XIMS::DataFormat;
 use XIMS::SimpleDBMemberProperty;
 use XIMS::SimpleDBMemberPropertyMap;

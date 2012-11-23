@@ -23,7 +23,7 @@ package XIMS::Exporter::VLibraryItem::URLLink;
 
 use strict;
 use XIMS::Exporter;
-use base qw( XIMS::Exporter::URLLink );
+use parent qw( XIMS::Exporter::URLLink );
 use XIMS::ObjectType;
 use XIMS::ObjectPriv;
 use XIMS::SAX::Generator::VLibraryItem;

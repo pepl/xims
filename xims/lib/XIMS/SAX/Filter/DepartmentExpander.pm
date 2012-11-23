@@ -26,7 +26,7 @@ package XIMS::SAX::Filter::DepartmentExpander;
 # body, it has to be expanded before it can be published.
 
 use strict;
-use base qw( XML::SAX::Base );
+use parent qw( XML::SAX::Base );
 use XIMS::Portlet;
 use XML::LibXML;
 use XML::Generator::PerlData;

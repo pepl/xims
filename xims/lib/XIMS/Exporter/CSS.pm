@@ -19,7 +19,7 @@ $Id$
 package XIMS::Exporter::CSS;
 
 use strict;
-use base qw( XIMS::Exporter::Text );
+use parent qw( XIMS::Exporter::Text );
 use CSS::Minifier::XS qw(minify);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

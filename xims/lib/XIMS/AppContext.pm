@@ -24,7 +24,7 @@ package XIMS::AppContext;
 use strict;
 use Carp;
 
-use base qw( XIMS::AbstractClass Class::Accessor::Fast );
+use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = (
@@ -78,7 +78,7 @@ sub new {
 1;
 
 package Properties;
-use base qw(Class::Accessor::Fast);
+use parent qw(Class::Accessor::Fast);
 __PACKAGE__->mk_accessors(qw(application content));
 
 sub new {
@@ -90,12 +90,12 @@ sub new {
 1;
 
 package Application;
-use base qw(Class::Accessor::Fast);
+use parent qw(Class::Accessor::Fast);
 __PACKAGE__->mk_accessors(qw(cookie style styleprefix preservelocation keepsuffix usepubui interface));
 1;
 
 package Content;
-use base qw(Class::Accessor::Fast);
+use parent qw(Class::Accessor::Fast);
 __PACKAGE__->mk_accessors(qw(getchildren getformatsandtypes escapebody childrenbybodyfilter siblingscount resolveimage_id objectlistpassthru));
                     # we have to check if childrenbybodyfilter is really needed
                     # currently it is used by portlet.pm only
@@ -107,7 +107,7 @@ sub new {
 1;
 
 package GetChildren;
-use base qw(Class::Accessor::Fast);
+use parent qw(Class::Accessor::Fast);
 __PACKAGE__->mk_accessors(qw(objectid objecttypes level limit offset order addinfo columns showtrash));
                     # objectid    to get targetchildren for contentbrowsing
                     # objecttypes to filter specific objecttypes (useful for browsing for special objecttypes)

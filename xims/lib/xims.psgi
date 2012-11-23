@@ -50,6 +50,7 @@ use Time::Piece;
 use Data::Dumper;
 
 my $goxims = sub {
+    warn "\n" x 3, '=' x 80, "\n";
     my $env = shift;
 
     my $ctxt = $env->{'xims.appcontext'};
@@ -142,7 +143,6 @@ my $goxims = sub {
         # find out if we want to create an object!
         # if goxims finds an 'objtype'-param it assumes that it
         # is called to create a new object.
-        my $req = Plack::Request->new($env);
         my $objtype = $req->param('objtype');
 
         my $prefix;
@@ -187,9 +187,8 @@ my $goxims = sub {
               . $ctxt->session->skin
               . '/stylesheets/'
               . $ctxt->session->uilanguage() );
-        my $rv = $appclass->run($ctxt);
-        XIMS::Debug( 4, "application-class $app_class successfully run" ) if $rv;
-        return $rv;
+
+        return $appclass->run($ctxt);
     }
 
     HTTP::Exception::500->throw(
@@ -222,6 +221,7 @@ builder {
     #     subrequest => 1;
     # lästig beim debuggen…
     # enable "HTTPExceptions", rethrow => 1;
+    enable "ConditionalGET";
 
     # /goxims
     mount XIMS::GOXIMS() => builder {

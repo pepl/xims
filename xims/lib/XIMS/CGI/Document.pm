@@ -22,7 +22,7 @@ It is based on XIMS::CGI.
 package XIMS::CGI::Document;
 
 use strict;
-use base qw( XIMS::CGI XIMS::CGI::Mailable);
+use parent qw( XIMS::CGI XIMS::CGI::Mailable);
 use Text::Iconv;
 use Encode;
 use Text::Template;

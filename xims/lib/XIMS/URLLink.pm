@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::URLLink;
 
 use strict;
-use base qw( XIMS::Object );
+use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 use LWP::UserAgent;
 

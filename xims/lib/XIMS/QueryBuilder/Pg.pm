@@ -23,7 +23,7 @@ This module bla bla
 package XIMS::QueryBuilder::Pg;
 
 use strict;
-use base qw( XIMS::QueryBuilder );
+use parent qw( XIMS::QueryBuilder );
 use XIMS::User;
 use Time::Piece;
 

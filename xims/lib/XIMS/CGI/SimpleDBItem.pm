@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::SimpleDBItem;
 
 use strict;
-use base qw(XIMS::CGI);
+use parent qw(XIMS::CGI);
 use XIMS::SimpleDB;
 use XIMS::SimpleDBMember;
 use XIMS::SimpleDBMemberPropertyValue;
@@ -140,7 +140,7 @@ sub event_store {
         $self->sendError( $ctxt, __"Update of object failed." );
         return 0;
     }
-    $self->redirect( $self->redirect_path( $ctxt ) );
+    $self->redirect( $self->redirect_uri( $ctxt ) );
     return 1;
 }
 

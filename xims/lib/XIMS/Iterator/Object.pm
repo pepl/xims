@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::Iterator::Object;
 
 use strict;
-use base qw( XIMS::Iterator );
+use parent qw( XIMS::Iterator );
 use XIMS::Object;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

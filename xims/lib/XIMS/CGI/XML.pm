@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::XML;
 
 use strict;
-use base qw( XIMS::CGI );
+use parent qw( XIMS::CGI );
 use Text::Iconv;
 use Locale::TextDomain ('info.xims');
 
@@ -452,11 +452,11 @@ sub event_simpleformedit {
         if ( $ctxt->object->body( $root->toString() ) and $ctxt->object->update( User => $ctxt->session->user ) ) {
             my $message;
             if ( $action eq 'delete' ) {
-                $self->redirect( $self->redirect_path( $ctxt ) . '?simpleformedit=1;message=Entry%20deleted' );
+                $self->redirect( $self->redirect_uri( $ctxt ) . '?simpleformedit=1;message=Entry%20deleted' );
                 return 1;
             }
             elsif ( $action =~ /^move/ ) {
-                $self->redirect( $self->redirect_path( $ctxt ) . '?simpleformedit=1;message=Entry%20moved.' );
+                $self->redirect( $self->redirect_uri( $ctxt ) . '?simpleformedit=1;message=Entry%20moved.' );
                 return 1;
             }
             elsif ( $elementid ) {

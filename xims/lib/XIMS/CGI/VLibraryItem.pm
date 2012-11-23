@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::VLibraryItem;
 
 use strict;
-use base qw( XIMS::CGI );
+use parent qw( XIMS::CGI );
 use XIMS::VLibrary;
 use XIMS::VLibAuthor;
 use XIMS::VLibAuthorMap;
@@ -165,7 +165,7 @@ sub event_remove_mapping {
             $self->redirect( $uri );
         }
         else {
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+            $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() )
                   . "?edit=1" );
         }
         return 1;
@@ -219,7 +219,7 @@ sub event_create_mapping {
             $self->redirect( $uri );
         }
         else {
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+            $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() )
                   . "?edit=1" );
         }
 
@@ -262,7 +262,7 @@ sub event_create_mapping_async {
         $self->redirect( $uri );
     }
     else {
-        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+        $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() )
                              . "?show_mapping_async=1;property=$property" );
     }
 
@@ -359,7 +359,7 @@ sub event_remove_mapping_async {
             $self->redirect($uri);
         }
         else {
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+            $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() )
                   . "?show_mapping_async=1;property=$property" );
         }
         return 1;

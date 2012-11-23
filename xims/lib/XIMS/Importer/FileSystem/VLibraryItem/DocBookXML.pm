@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::Importer::FileSystem::VLibraryItem::DocBookXML;
 
 use strict;
-use base qw(XIMS::Importer::FileSystem::XML XIMS::Importer::Object::VLibraryItem::DocBookXML);
+use parent qw(XIMS::Importer::FileSystem::XML XIMS::Importer::Object::VLibraryItem::DocBookXML);
 use File::Basename;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
