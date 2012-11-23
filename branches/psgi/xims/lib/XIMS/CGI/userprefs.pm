@@ -22,8 +22,8 @@ XIMS CGI class for managing userprefs
 package XIMS::CGI::userprefs;
 
 use strict;
-#use base qw( XIMS::CGI::defaultuserprefs );
-use base qw( XIMS::CGI );
+#use parent qw( XIMS::CGI::defaultuserprefs );
+use parent qw( XIMS::CGI );
 use XIMS::Object;
 use XIMS::User;
 use XIMS::UserPrefs;
@@ -136,7 +136,7 @@ sub event_setdefault {
 
     $userprefs->update();
 
-    $self->redirect( $self->redirect_path($ctxt) );
+    $self->redirect( $self->redirect_uri($ctxt) );
     return 0;
 }
 
@@ -191,7 +191,7 @@ sub event_create {
     	$userprefs->create();
     }
 
-    $self->redirect( $self->redirect_path($ctxt) );
+    $self->redirect( $self->redirect_uri($ctxt) );
     return 0;
 }
 
@@ -213,7 +213,7 @@ sub event_delete {
         return 0;
     }
 
-    $self->redirect( $self->redirect_path($ctxt) );
+    $self->redirect( $self->redirect_uri($ctxt) );
     return 0;
 }
 

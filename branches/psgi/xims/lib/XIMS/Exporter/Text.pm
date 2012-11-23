@@ -15,7 +15,7 @@ package XIMS::Exporter::Text;
 
 use strict;
 use XIMS::Exporter;
-use base qw( XIMS::Exporter::Binary );
+use parent qw( XIMS::Exporter::Binary );
 use Data::Dumper;
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

@@ -28,7 +28,7 @@ use strict;
 # use warnings;
 no warnings 'redefine';
 
-use base qw( XIMS::AbstractClass Class::Accessor::Fast );
+use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 use XIMS::ObjectType;
 use XIMS::DataFormat;
 use XIMS::User;

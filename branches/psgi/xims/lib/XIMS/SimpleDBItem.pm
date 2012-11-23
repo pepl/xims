@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::SimpleDBItem;
 
 use strict;
-use base qw( XIMS::Object );
+use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 use XIMS::SimpleDBMember;
 use XIMS::SimpleDBMemberProperty;

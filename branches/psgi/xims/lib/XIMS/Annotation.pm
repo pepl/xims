@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::Annotation;
 
 use strict;
-use base qw( XIMS::Document );
+use parent qw( XIMS::Document );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

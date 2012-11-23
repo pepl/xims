@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::Portal;
 
 use strict;
-use base qw( XIMS::CGI::Folder );
+use parent qw( XIMS::CGI::Folder );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

@@ -23,7 +23,7 @@ methods used in XIMS' CGI classes are implemented here.
 package XIMS::CGI;
 
 use strict;
-use base qw(XIMS::XMLApplication);
+use parent qw(XIMS::XMLApplication);
 
 use XIMS;
 use XIMS::DataFormat;
@@ -181,10 +181,11 @@ sub event_test_location {
 		( $retval, $location ) = $self->init_store_object($ctxt);
 	}
 
-    #print $self->header(-Content_type => 'application/json; charset=UTF-8');
-    print $self->header(
-        -type    => 'application/json',
-        -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+    $self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            -type    => 'application/json',
+            -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+        )
     );
 	$self->skipSerialization(1);
 
@@ -224,7 +225,7 @@ sub event_test_location {
 			'suggLocation' => $suggLocation
 		}
 	);
-	print $json;
+	$self->{RES}->body($json);
 
 	return 0;
 }
@@ -295,7 +296,7 @@ sub event_default {
 		$self->delete('id');
 
 		XIMS::Debug( 4, "redirecting to full path" );
-		$self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
+		$self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) );
 
 		return 1;
 	}
@@ -453,7 +454,7 @@ sub event_store {
 				$self->event_publish($ctxt);
 			}
 		}
-		$self->redirect( $self->redirect_path($ctxt) );
+		$self->redirect( $self->redirect_uri($ctxt) );
 		return 1;
 	}
 	else {
@@ -502,7 +503,7 @@ sub event_store {
 		$self->event_publish($ctxt);
 	}
 	XIMS::Debug( 4, "redirecting" );
-	$self->redirect( $self->redirect_path($ctxt) );
+	$self->redirect( $self->redirect_uri($ctxt) );
 	return 1;
 }
 
@@ -595,7 +596,7 @@ sub event_cancel {
 			return 0;
 		}
 		XIMS::Debug( 4, "redirecting" );
-		$self->redirect( $self->redirect_path($ctxt) );
+		$self->redirect( $self->redirect_uri($ctxt) );
 	}
 
 	return 0;
@@ -631,9 +632,14 @@ sub event_plain {
 
 	my $charset;
 	if ( !( $charset = XIMS::DBENCODING ) ) { $charset = "UTF-8"; }
-	print $self->header(
-		-Content_type => $df->mime_type . "; charset=" . $charset );
-	print $body;
+
+	$self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            -type => $df->mime_type,
+            -charset => $charset,
+        ),
+        Encode::encode("UTF-8", $body)
+    );
 	$self->skipSerialization(1);
 
 	return 0;
@@ -907,6 +913,9 @@ sub sendError {
 	$ctxt->properties->application->styleprefix('common');
 	$ctxt->properties->application->style("error");
 
+    # use Data::Dumper;
+    # warn Dumper ($ctxt);
+
 	return 0;
 }
 
@@ -938,6 +947,7 @@ printed out literally. (No XSLT transformation.)
 
 =cut
 
+
 sub simple_response {
 	my $self   = shift;
 	my $status = shift;
@@ -946,12 +956,14 @@ sub simple_response {
 
 	$type = ( defined $type ) ? $type : 'text/plain';
 
-	print $self->header(
-		-status  => $status,
-		-type    => $type,
-		-charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
-	  ),
-	  $msg, "\n";
+	$self->{RES} = $self->{REQ}->new_response( 
+        $self->psgi_header(
+            -status  => $status,
+            -type    => $type,
+            -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+        ),
+        "$msg\n"
+    );
 
 	$self->skipSerialization(1);
 
@@ -1146,19 +1158,22 @@ sub resolve_user {
 	);
 }
 
-=head2 redirect_path()
+=head2 redirect_uri()
 
 =head3 Parameter
+$ctxt, $id
 
 =head3 Returns
 
+    URI object
+
 =head3 Description
 
-    $self->redirect_path(...)
+    $self->redirect_uri(...)
 
 =cut
 
-sub redirect_path {
+sub redirect_uri {
 	my ( $self, $ctxt, $id ) = @_;
 
 	my $object = $ctxt->object();
@@ -1927,7 +1942,7 @@ sub event_undelete {
 	}
 
 	XIMS::Debug( 4, "redirecting" );
-	$self->redirect( $self->redirect_path($ctxt) );
+	$self->redirect( $self->redirect_uri($ctxt) );
 	return 0;
 }
 
@@ -2023,7 +2038,7 @@ sub event_trashcan {
 	}
 
 	XIMS::Debug( 4, "redirecting to the parent" );
-	$self->redirect( $self->redirect_path( $ctxt, $object->parent->id ) );
+	$self->redirect( $self->redirect_uri( $ctxt, $object->parent->id ) );
 	return 0;
 }
 
@@ -2134,7 +2149,7 @@ sub event_delete {
 	}
 
 	XIMS::Debug( 4, "redirecting to the parent" );
-	$self->redirect( $self->redirect_path( $ctxt, $parent_content_id ) );
+	$self->redirect( $self->redirect_uri( $ctxt, $parent_content_id ) );
 	return 0;
 }
 
@@ -2337,7 +2352,7 @@ sub event_move {
 		else {
 			XIMS::Debug( 4, "move ok, redirecting to the parent" );
 			$self->redirect(
-				$self->redirect_path( $ctxt, $object->parent->id() ) );
+				$self->redirect_uri( $ctxt, $object->parent->id() ) );
 			return 0;
 		}
 	}
@@ -2411,7 +2426,7 @@ sub event_copy {
 			# be sure to show the user the new copy at the first page
 			$self->param( 'sb',    'date' );
 			$self->param( 'order', 'desc' );
-			$self->redirect( $self->redirect_path( $ctxt, $parent->id() ) );
+			$self->redirect( $self->redirect_uri( $ctxt, $parent->id() ) );
 			return 0;
 		}
 	}
@@ -2593,7 +2608,7 @@ sub event_publish {
 			$ctxt->properties->application->style('update');
 		}
 		else {
-			$self->redirect( $self->redirect_path($ctxt) );
+			$self->redirect( $self->redirect_uri($ctxt) );
 			return 1;
 		}
 	}
@@ -2677,7 +2692,7 @@ sub publish_gopublic {
 				$ctxt->properties->application->style('update');
 			}
 			else {
-				$self->redirect( $self->redirect_path($ctxt) );
+				$self->redirect( $self->redirect_uri($ctxt) );
 				return 1;
 			}
 		}
@@ -2753,7 +2768,7 @@ my $no_dependencies_update = 1;
 			$ctxt->properties->application->style('update');
 		}
 		else {
-			$self->redirect( $self->redirect_path($ctxt) );
+			$self->redirect( $self->redirect_uri($ctxt) );
 			return 1;
 		}
 	}
@@ -2826,7 +2841,7 @@ sub unpublish_gopublic {
 				$ctxt->properties->application->style('update');
 			}
 			else {
-				$self->redirect( $self->redirect_path($ctxt) );
+				$self->redirect( $self->redirect_uri($ctxt) );
 				return 1;
 			}
 		}
@@ -2857,18 +2872,21 @@ sub event_test_wellformedness {
 	# if we got no body param, use $object->body
 	my $string = defined $body ? $body : $ctxt->object->body();
 
-	print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
+	$self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header( -type => 'text/plain',
+                            -charset => 'UTF-8' )
+    );
 	$self->skipSerialization(1);
 
 	my $test = $ctxt->object->balanced_string( $string, verbose_msg => 1 );
 
 	if ( $test->isa('XML::LibXML::DocumentFragment') ) {
-		print "Parse ok";
+		$self->{RES}->body("Parse ok\n");
 	}
 	else {
 		$test = XIMS::encode($test);
 		$test ||= "Cowardly refusing to fill an errorstring";
-		print $test;
+        $self->{RES}->body( "$test\n" );
 	}
 
 	return 0;
@@ -2909,7 +2927,11 @@ sub event_htmltidy {
 	# encode back to utf-8 in case
 	$tidiedstring = XIMS::encode($tidiedstring);
 
-	print $self->header( -type => 'text/plain', -charset => 'UTF-8' );
+	$self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header( -type => 'text/plain',
+                            -charset => 'UTF-8'
+        )
+    );
 	$self->skipSerialization(1);
 
 	if ( $self->param('hti') ) {
@@ -2918,10 +2940,10 @@ sub event_htmltidy {
 			$line =~ s/'/\\'/g;
 			$jsstring .= "ns += '$line\\n';\n";
 		}
-		print "var ns='';$jsstring editor.setHTML(ns);";
+		$self->{RES}->body( "var ns='';$jsstring editor.setHTML(ns);" );
 	}
 	else {
-		print $tidiedstring;
+		$self->{RES}->body( "$tidiedstring\n" );
 	}
 
 	return 0;
@@ -2948,10 +2970,12 @@ sub event_prettyprintxml {
 	# if we got no body param, use $object->body
 	my $string = defined $body ? $body : $ctxt->object->body();
 
-	print $self->header(
-		-type    => 'text/plain',
-		-charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
-	);
+    $self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            -type    => 'text/plain',
+            -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+        )
+    );
 	$self->skipSerialization(1);
 
 	my $doc = $ctxt->object->balanced_string($string);
@@ -2967,12 +2991,12 @@ sub event_prettyprintxml {
 		  XIMS::Entities::decode( XIMS::decode( $doc->toString(2) ) );
 		$pprinted =~
 		  s/\n\s*\n/\n/g;    # remove duplicate linebreaks added by toString(2)
-		print $pprinted;
+		$self->{RES}->body($pprinted);
 	}
 	else {
 
 		# set back to body if parsing was unsuccessful
-		print $body;
+		$self->{RES}->body($body);
 		$ctxt->session->message( __ "Parse Failure. Could not prettyprint." );
 	}
 	return 0;
@@ -3474,7 +3498,7 @@ sub event_aclgrantmultiple {
 		}
 	    XIMS::Debug( 3, "all privileges granted." );
 		XIMS::Debug( 4, "redirecting to the container" );
-	    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+	    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
 	    return 0;
 	}
 	else{
@@ -3575,7 +3599,7 @@ sub event_aclrevokemultiple {
 			#$ctxt->properties->application->style('obj_user_update');
     }
 	XIMS::Debug( 4, "redirecting to the container" );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
     }
 	else{
@@ -3738,7 +3762,7 @@ sub event_reposition {
 	$self->param( 'page', $page );
 
 	XIMS::Debug( 4, "redirecting to parent" );
-	$self->redirect( $self->redirect_path( $ctxt, $object->parent->id() ) );
+	$self->redirect( $self->redirect_uri( $ctxt, $object->parent->id() ) );
 	return 0;
 }
 
@@ -4124,7 +4148,7 @@ sub event_search {
 		return 0 if not defined $self->handle_bang_commands( $ctxt, $search );
 
 		# redir to self...
-		$self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
+		$self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) );
 	}
 
 	# length within 2..30 chars

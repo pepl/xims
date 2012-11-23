@@ -27,7 +27,7 @@ redir-to-bookmark-and-fallback-to-default script
 package XIMS::CGI::defaultbookmark;
 
 use strict;
-use base qw( XIMS::CGI );
+use parent qw( XIMS::CGI );
 use XIMS::Object;
 use URI;
 

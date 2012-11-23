@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::Image;
 
 use strict;
-use base qw( XIMS::File );
+use parent qw( XIMS::File );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

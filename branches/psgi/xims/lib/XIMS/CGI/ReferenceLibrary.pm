@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::ReferenceLibrary;
 
 use strict;
-use base qw(XIMS::CGI::Folder);
+use parent qw(XIMS::CGI::Folder);
 use XIMS::VLibAuthor;
 use XIMS::ReferenceLibraryItem;
 use XIMS::RefLibReferenceType;

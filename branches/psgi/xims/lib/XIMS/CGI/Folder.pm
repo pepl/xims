@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::Folder;
 
 use strict;
-use base qw( XIMS::CGI );
+use parent qw( XIMS::CGI );
 
 use Locale::TextDomain ('info.xims');
 
@@ -213,7 +213,7 @@ sub event_deletemultiple {
         }
     }
     XIMS::Debug( 4, "redirecting to the container" );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
 }
 
@@ -292,7 +292,7 @@ sub event_trashcanmultiple {
         }
     }
     XIMS::Debug( 4, "redirecting to the container" );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
 }
 
@@ -316,7 +316,7 @@ sub event_undeletemultiple {
         }
     }
     XIMS::Debug( 4, "redirecting to the container" );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
 }
 
@@ -400,7 +400,7 @@ sub event_publishmultiple {
     }
     my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'publish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
     XIMS::Debug( 4, "redirecting to the container" );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
 }
 =head2 event_unpublishnmultiple()
@@ -460,7 +460,7 @@ sub event_unpublishmultiple {
     #
     my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
     XIMS::Debug( 4, "redirecting to the container - id:".$ctxt->object->id );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
 }
 
@@ -601,7 +601,7 @@ sub event_movemultiple {
 #		else {
 #			XIMS::Debug( 4, "move ok, redirecting to the parent" );
 #			$self->redirect(
-#				$self->redirect_path( $ctxt, $object->parent->id() ) );
+#				$self->redirect_uri( $ctxt, $object->parent->id() ) );
 #			return 0;
 #		}
     }#end foreach
@@ -613,7 +613,7 @@ sub event_movemultiple {
 #	}
 	XIMS::Debug( 4, "move ok, redirecting to the parent" );
 			$self->redirect(
-				$self->redirect_path( $ctxt, $target->id() ) );
+				$self->redirect_uri( $ctxt, $target->id() ) );
 	return 0;
 }
 
@@ -766,7 +766,7 @@ sub event_aclmultiple_prompt {
 #		}
 #	    XIMS::Debug( 3, "all privileges granted." );
 #		XIMS::Debug( 4, "redirecting to the container" );
-#	    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+#	    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
 #	    return 0;
 #	}
 #	else{
@@ -870,7 +870,7 @@ sub event_aclmultiple_prompt {
 #			#$ctxt->properties->application->style('obj_user_update');
 #    }
 #	XIMS::Debug( 4, "redirecting to the container" );
-#    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+#    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
 #    return 0;
 #    }
 #	else{

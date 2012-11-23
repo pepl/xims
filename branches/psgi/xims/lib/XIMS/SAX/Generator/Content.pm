@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::SAX::Generator::Content;
 
 use strict;
-use base qw(XIMS::SAX::Generator XML::Generator::PerlData);
+use parent qw(XIMS::SAX::Generator XML::Generator::PerlData);
 use XIMS::DataProvider;
 use XML::Filter::CharacterChunk;
 use XIMS::SAX::Filter::ContentObjectPropertyResolver;

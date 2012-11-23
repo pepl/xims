@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::AxPointPresentation;
 
 use strict;
-use base qw( XIMS::Document );
+use parent qw( XIMS::Document );
 use XIMS::DataFormat;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

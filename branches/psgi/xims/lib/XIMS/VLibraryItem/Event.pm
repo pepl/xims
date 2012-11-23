@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::VLibraryItem::Event;
 
 use strict;
-use base qw( XIMS::VLibraryItem );
+use parent qw( XIMS::VLibraryItem );
 
 our ($VERSION) = ( q$Revision: 1878 $ =~ /\s+(\d+)\s*$/ );
 

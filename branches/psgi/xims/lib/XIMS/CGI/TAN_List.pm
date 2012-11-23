@@ -23,7 +23,7 @@ group.)
 package XIMS::CGI::TAN_List;
 
 use strict;
-use base qw( XIMS::CGI );
+use parent qw( XIMS::CGI );
 use XIMS::DataFormat;
 use Locale::TextDomain ('info.xims');
 
@@ -154,7 +154,7 @@ sub event_store {
             $self->sendError( $ctxt, __"Update of object failed." );
             return 0;
         }
-        $self->redirect( $self->redirect_path( $ctxt ) );
+        $self->redirect( $self->redirect_uri( $ctxt ) );
         return 1;
     }
     else {
@@ -198,7 +198,7 @@ sub event_store {
     }
 
     XIMS::Debug( 4, "redirecting" );
-    $self->redirect( $self->redirect_path( $ctxt ) );
+    $self->redirect( $self->redirect_uri( $ctxt ) );
     return 1;
 }
 1;

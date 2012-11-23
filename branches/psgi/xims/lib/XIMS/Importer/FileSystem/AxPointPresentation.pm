@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::Importer::FileSystem::AxPointPresentation;
 
 use strict;
-use base qw( XIMS::Importer::FileSystem::XML );
+use parent qw( XIMS::Importer::FileSystem::XML );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

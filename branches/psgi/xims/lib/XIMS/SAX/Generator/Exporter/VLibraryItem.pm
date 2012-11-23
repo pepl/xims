@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::SAX::Generator::Exporter::VLibraryItem;
 
 use strict;
-use base qw(XIMS::SAX::Generator::Exporter XIMS::SAX::Generator::VLibraryItem);
+use parent qw(XIMS::SAX::Generator::Exporter XIMS::SAX::Generator::VLibraryItem);
 
 our ($VERSION) = ( q$Revision: 1549 $ =~ /\s+(\d+)\s*$/ );
 

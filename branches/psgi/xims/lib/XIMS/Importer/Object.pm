@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::Importer::Object;
 
 use strict;
-use base qw( XIMS::Importer );
+use parent qw( XIMS::Importer );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

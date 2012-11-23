@@ -23,7 +23,7 @@ This module bla bla
 package XIMS::QueryBuilder::ReferenceLibrary;
 
 use strict;
-use base qw( XIMS::QueryBuilder );
+use parent qw( XIMS::QueryBuilder );
 use XIMS::User;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

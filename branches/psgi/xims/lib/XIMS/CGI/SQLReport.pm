@@ -22,7 +22,7 @@ It is based on XIMS::CGI.
 package XIMS::CGI::SQLReport;
 
 use strict;
-use base qw(XIMS::CGI);
+use parent qw(XIMS::CGI);
 use Text::Iconv;
 use DBIx::XHTML_Table;
 use XML::Generator::DBI;

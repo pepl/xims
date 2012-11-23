@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::SAX::Generator::Exporter;
 
 use strict;
-use base qw( XIMS::SAX::Generator::Content );
+use parent qw( XIMS::SAX::Generator::Content );
 use XML::Filter::CharacterChunk;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::SiteRoot;
 
 use strict;
-use base qw( XIMS::DepartmentRoot );
+use parent qw( XIMS::DepartmentRoot );
 use XIMS::DataFormat;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

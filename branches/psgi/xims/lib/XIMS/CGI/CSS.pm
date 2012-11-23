@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::CGI::CSS;
 
 use strict;
-use base qw( XIMS::CGI XIMS::CGI::Text );
+use parent qw( XIMS::CGI XIMS::CGI::Text );
 use CSS::Tiny;
 use Text::Iconv;
 use Encode;
