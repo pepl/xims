@@ -16,7 +16,7 @@
 
 <xsl:template name="view-content">
 <div id="docbody"><xsl:comment/>
-					<p><xsl:apply-templates select="abstract"/></p>
+					<p><xsl:comment/><xsl:apply-templates select="abstract"/></p>
 							<xsl:apply-templates select="member_values/member_value">
 									<xsl:sort select="/document/member_properties/member_property[@id = current()/property_id]/position" order="ascending" data-type="number"/>
 							</xsl:apply-templates>

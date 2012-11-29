@@ -38,14 +38,14 @@
 				<xsl:when test="$sort-by='id'">
 					<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=id;order-by={$order-by-opposite};userquery={$userquery}">ID
 						<xsl:choose>
-						<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
-						<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+						<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span></xsl:when>
+						<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span></xsl:otherwise>
 						</xsl:choose>
 					</a>
             </xsl:when>
             <xsl:otherwise>
               <a  class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=id;order-by={$order-by};userquery={$userquery}">ID
-			  <span class="ui-icon ui-icon-triangle-2-n-s"/>
+			  <span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 			  </a>
             </xsl:otherwise>
           </xsl:choose>
@@ -55,14 +55,14 @@
             <xsl:when test="$sort-by='name'">
               <a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=name;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n/l/Username"/>
 				<xsl:choose>
-						<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
-						<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+						<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span></xsl:when>
+						<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span></xsl:otherwise>
 				</xsl:choose>
 			  </a>
 			</xsl:when>
 			<xsl:otherwise>
 				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=name;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Username"/>
-					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+					<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 				</a>
             </xsl:otherwise>
           </xsl:choose>
@@ -72,14 +72,14 @@
             <xsl:when test="$sort-by='lastname'">
               <a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=lastname;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Lastname"/>
 				<xsl:choose>
-					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
-					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span></xsl:when>
+					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span></xsl:otherwise>
 					</xsl:choose>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
 			<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=lastname;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Lastname"/>
-				<span class="ui-icon ui-icon-triangle-2-n-s"/>
+				<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 			</a>
             </xsl:otherwise>
           </xsl:choose>
@@ -89,14 +89,14 @@
             <xsl:when test="$sort-by='system_privs_mask'">
 				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=system_privs_mask;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/System_privileges"/>
 				<xsl:choose>
-					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
-					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span></xsl:when>
+					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span></xsl:otherwise>
 				</xsl:choose>
 				</a>
             </xsl:when>
             <xsl:otherwise>
 				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=system_privs_mask;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/System_privileges"/>
-					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+					<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 				</a>
             </xsl:otherwise>
           </xsl:choose>
@@ -106,14 +106,14 @@
             <xsl:when test="$sort-by='admin'">
 				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=admin;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Administrator"/>
 				<xsl:choose>
-					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
-					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span></xsl:when>
+					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span></xsl:otherwise>
 				</xsl:choose>
 				</a>
             </xsl:when>
             <xsl:otherwise>
 				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=admin;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n_users/l/Administrator"/>
-					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+				<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 				</a>
             </xsl:otherwise>
           </xsl:choose>
@@ -123,14 +123,14 @@
             <xsl:when test="$sort-by='enabled'">
 				<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=enabled;order-by={$order-by-opposite};userquery={$userquery}"><xsl:value-of select="$i18n/l/Account_status"/>
 				<xsl:choose>
-					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"/></xsl:when>
-					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"/></xsl:otherwise>
+					<xsl:when test="$order-by = 'ascending'"><span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span></xsl:when>
+					<xsl:otherwise><span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span></xsl:otherwise>
 				</xsl:choose>
 				</a>
             </xsl:when>
 	            <xsl:otherwise>
 					<a class="th-icon-right" href="{$xims_box}{$goxims_users}?sort-by=enabled;order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Account_status"/>
-						<span class="ui-icon ui-icon-triangle-2-n-s"/>
+						<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 					</a>
             </xsl:otherwise>
           </xsl:choose>

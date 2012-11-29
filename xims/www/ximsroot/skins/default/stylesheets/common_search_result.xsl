@@ -64,7 +64,7 @@
 				<xsl:when test="$order='asc'">
 					<th id="th-title" class="sorting">
 						<a href="{$location}?s={$s};search=1;sb=title;order=desc" class="th-icon-right">
-							<span class="ui-icon ui-icon-triangle-1-n"/>
+							<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 							<xsl:value-of select="$i18n/l/Title"/>&#160;						
 						</a>
 					</th>
@@ -72,7 +72,7 @@
 				<xsl:otherwise>
 					<th id="th-title" class="sorting">
 						<a href="{$location}?s={$s};search=1;sb=title;order=asc" class="th-icon-right">
-							<span class="ui-icon ui-icon-triangle-1-s"/>
+							<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
 							<xsl:value-of select="$i18n/l/Title"/>&#160;						
 						</a>
 					</th>
@@ -82,7 +82,7 @@
 		<xsl:otherwise>
 			<th id="th-title" class="sorting">
 				<a href="{$location}?s={$s};search=1;sb=title;order=asc" class="th-icon-right">
-					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+					<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 					<xsl:value-of select="$i18n/l/Title"/>&#160;						
 				</a>
 			</th>
@@ -95,7 +95,7 @@
 				<xsl:when test="$order='asc'">
 					<th id="th-lastmod" class="sorting">
 						<a href="{$location}?s={$s};search=1;sb=date;order=desc" class="th-icon-right">
-							<span class="ui-icon ui-icon-triangle-1-n"/>
+							<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 							<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
 						</a>
 					</th>
@@ -103,7 +103,7 @@
 				<xsl:otherwise>
 					<th id="th-lastmod" class="sorting">
 						<a href="{$location}?s={$s};search=1;sb=date;order=asc" class="th-icon-right">
-							<span class="ui-icon ui-icon-triangle-1-s"/>
+							<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
 							<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
 						</a>
 					</th>
@@ -113,7 +113,7 @@
 		<xsl:otherwise>
 			<th id="th-lastmod" class="sorting">
 				<a href="{$location}?s={$s};search=1;sb=date;order=desc" class="th-icon-right">
-					<span class="ui-icon ui-icon-triangle-2-n-s"/>
+					<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 					<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
 				</a>
 			</th>
