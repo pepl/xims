@@ -225,7 +225,7 @@
 						</p>
 						<p>
 							<xsl:value-of select="$i18n_qn/l/Comment"/>&#160;
-							<input type="text" tabindex="10" name="answer_{$position_long}_comment" size="40" class="text" value="{comment}"/>
+							<input type="text" tabindex="10" name="answer_{$position_long}_comment" size="40" class="text" value="{comment}"><xsl:comment/></input>
 						</p>
 
 
@@ -244,7 +244,7 @@
 							<button type="button" class="button" onclick="removeSelection(answer_{$position_long}_select);"><xsl:value-of select="$i18n_qn/l/Remove_from_selection"/></button>
 						</p>
 						<p>
-							<input type="text" class="text" size="40" name="answer_{$position_long}_add" value=""/>&#160;
+							<input type="text" class="text" size="40" name="answer_{$position_long}_add" value=""><xsl:comment/></input>&#160;
 							<button type="button" class="button" onclick="addSelection(answer_{$position_long}_add,answer_{$position_long}_select);"><xsl:value-of select="$i18n_qn/l/Add_to_selection"/></button>
 							<input type="hidden" name="answer_{$position_long}_title" value="{$answer_list}"/>
 						</p>
@@ -306,7 +306,7 @@
 				</label>
 			</div>
 			<br/>
-			<textarea type="text" name="questionnaire_intro" cols="74" rows="3" class="text" id="input-intro">
+			<textarea name="questionnaire_intro" cols="74" rows="3" class="text" id="input-intro"><xsl:comment/>
 				<xsl:value-of select="body/questionnaire/intro"/>
 			</textarea>
 		</div>
@@ -320,7 +320,7 @@
 				</label>
 			</div>
 			<br/>
-			<textarea type="text" name="questionnaire_exit" cols="74" rows="3" class="text" id="input-exit">
+			<textarea name="questionnaire_exit" cols="74" rows="3" class="text" id="input-exit"><xsl:comment/>
 				<xsl:value-of select="body/questionnaire/exit"/>
 			</textarea>
 		</div>
@@ -343,7 +343,7 @@
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
-				<label for="input-rb-kiosk-no">
+				<label for="input-rb-kiosk-false">
 					<xsl:value-of select="$i18n/l/No"/>
 				</label>
 				<!--<xsl:text>&#160;</xsl:text>
@@ -392,7 +392,7 @@
 	<xsl:template name="questionnaire_tanlists">
 		<div class="form-div block">
 		<h2>TAN-Lists</h2>
-		<ul>
+		<ul><xsl:comment/>
 			<xsl:for-each select="body/questionnaire/tanlist">
 				<li>
 					<xsl:value-of select="."/>
@@ -444,7 +444,7 @@
 						<xsl:value-of select="$i18n_qn/l/Question"/>
 					</label><!--</div>-->
 								&#160;
-					<textarea name="question_{$position_long}_title" cols="40" rows="2" class="text" id="input-question">
+					<textarea name="question_{$position_long}_title" cols="40" rows="2" class="text" id="input-question"><xsl:comment/>
 						<xsl:value-of select="title"/>
 					</textarea>
 					<!-- some hidden attributes, later they will be editable -->
@@ -484,11 +484,11 @@
 						<xsl:value-of select="$i18n_qn/l/Comment"/>
 					</label> 
                 &#160;
-                    <input type="text" name="question_{$position_long}_comment" size="47" class="text" value="{comment}" id="input-comment"/>
+                    <input type="text" name="question_{$position_long}_comment" size="47" class="text" value="{comment}" id="input-comment" />
 				</p>
 			</xsl:when>
 			<xsl:otherwise>
-				<input type="hidden" name="question_{$position_long}_comment" value="{comment}"/>
+				<input type="hidden" name="question_{$position_long}_comment" value="{comment}" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

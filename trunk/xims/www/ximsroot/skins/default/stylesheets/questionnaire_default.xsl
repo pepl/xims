@@ -29,10 +29,10 @@
     </div>
     <xsl:choose>
     <xsl:when test="$show_questions =  'none'">
-		<a href="?show_questions=top" class="button" type="submit"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
+		<a href="?show_questions=top" class="button"><xsl:value-of select="$i18n_qn/l/show_questions" /></a>
     </xsl:when>
     <xsl:when test="$show_questions =  'top'">
-		<a href="?show_questions=none" class="button" type="submit"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
+		<a href="?show_questions=none" class="button"><xsl:value-of select="$i18n_qn/l/hide_questions" /></a><br/>
 		<br/>
 		<h2><xsl:value-of select="$i18n_qn/l/Questions" /></h2>
 		<xsl:call-template name="question_title" />
