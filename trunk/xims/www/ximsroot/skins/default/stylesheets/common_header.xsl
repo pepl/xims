@@ -67,6 +67,7 @@
 							<xsl:if test="$create!='true'">
                             / <a href="{$goxims_content}{$absolute_path}">
 									<xsl:value-of select="location"/>
+                                    <xsl:comment/>
 								</a>
 							</xsl:if>
 							<xsl:text>&#160;</xsl:text>
