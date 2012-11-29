@@ -16,7 +16,7 @@
               encoding="utf-8"
               media-type="text/html"
               doctype-system="about:legacy-compat"
-              doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+              omit-xml-declaration="yes"
               indent="no"/>
   
   <xsl:param name="sp"/>
