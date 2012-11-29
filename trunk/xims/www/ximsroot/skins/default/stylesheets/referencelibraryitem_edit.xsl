@@ -6,8 +6,8 @@
 # $Id: referencelibraryitem_edit.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns="http://www.w3.org/1999/xhtml">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="edit_common.xsl"/>
 <xsl:import href="referencelibraryitem_common.xsl"/>
@@ -46,7 +46,7 @@
 		<xsl:call-template name="rbacknav"/>
 	</form>-->
 
-	<script type="text/javascript" language="javascript">
+	<script type="text/javascript">
 		var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
 		var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
 	</script>					

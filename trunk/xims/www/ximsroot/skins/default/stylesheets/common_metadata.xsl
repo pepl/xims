@@ -40,7 +40,7 @@
                         <xsl:value-of select="$i18n/l/Last_published_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$i18n/l/at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
                     </xsl:if>
                 </div>
-                <br clear="all"/>
+                <br class="clear"/>
   </div>
 </xsl:template>
 

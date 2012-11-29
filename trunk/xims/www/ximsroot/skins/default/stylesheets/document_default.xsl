@@ -22,7 +22,7 @@
 	</xsl:variable>
 	
 	<xsl:template name="view-content">
-		<div id="docbody">
+		<div id="docbody"><xsl:comment/>
 			
 			<div id="content">
 					<xsl:call-template name="pre-body-hook"/>

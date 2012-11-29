@@ -8,7 +8,7 @@
 <xsl:stylesheet version="1.0" 
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:date="http://exslt.org/dates-and-times"
-                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns="http://www.w3.org/1999/xhtml" 
                 extension-element-prefixes="date">
 
 	<xsl:import href="document_common.xsl"/>
@@ -45,6 +45,7 @@
 			<br/>
 			<textarea id="input-lead" name="abstract" rows="3" cols="74" onkeyup="keyup(this)">
 				<xsl:apply-templates select="abstract"/>
+                <xsl:comment/>
 			</textarea>
 			<xsl:text>&#160;</xsl:text>
 			<span id="charcount">
@@ -134,7 +135,7 @@
     <!-- Upload image -->
     <xsl:if test="$mode='create'">
       <div class="label-std"><label for="imagefile"><xsl:value-of select="$i18n/l/Image"/></label></div>
-      <input type="file" name="imagefile" id="imagefile" size="60" class="text"/>
+      <input type="file" name="imagefile" id="imagefile" class="text"/>
       <xsl:text>&#160;</xsl:text>
     </xsl:if>
     </div>

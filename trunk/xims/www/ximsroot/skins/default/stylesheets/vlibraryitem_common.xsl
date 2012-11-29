@@ -133,7 +133,7 @@
 					<xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" order="ascending"/>
 				</xsl:apply-templates>
 				</div>
-			<br clear="all"/>
+			<br class="clear"/>
 		</div>
 		
 		<div class="block">
@@ -164,7 +164,7 @@
 				</xsl:apply-templates>
 				
 			</div>
-			<br clear="all"/>
+			<br class="clear"/>
 		</div>
 		
 		<div class="block">

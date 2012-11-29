@@ -145,7 +145,8 @@
 			</div>
 			<textarea id="sdbp_description" rows="3" cols="38" name="sdbp_description" class="text">
 				<xsl:apply-templates select="/document/member_properties/member_property[@id=$property_id]/description"/>
-			</textarea>
+		        <xsl:comment/>
+	        </textarea>
 		</div>
 		<div>
 			<div class="label-sdbp">

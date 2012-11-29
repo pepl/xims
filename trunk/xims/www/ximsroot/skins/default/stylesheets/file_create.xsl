@@ -43,7 +43,7 @@
 				<label for="input-file">
 					<xsl:value-of select="$i18n/l/File"/>
 				</label>&#160;*</div>
-			<input type="file" name="file" size="43" class="text" id="input-file" />
+			<input type="file" name="file" class="text" id="input-file" />
 			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('File')" class="doclink">(?)</a>-->
 		</div>

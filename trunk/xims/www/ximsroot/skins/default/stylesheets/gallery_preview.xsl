@@ -70,7 +70,7 @@
 		</div>	
 		</div>
 	<xsl:call-template name="main-img"/>
-	<br clear="all"/>
+	<br class="clear"/>
 	</xsl:if>
 	
 	<xsl:if test="$thumbnail-pos='left'">
@@ -82,7 +82,7 @@
 		</div>
 	</div>
 	<xsl:call-template name="main-img"/>	
-	<br clear="all"/>
+	<br class="clear"/>
 	</xsl:if>
 	
 	
@@ -95,7 +95,7 @@
 				</ul>
 		</div>
 	</div>
-	<br clear="all"/>
+	<br class="clear"/>
 	</xsl:if>
 
 	<xsl:if test="$thumbnail-pos='no'">
@@ -123,7 +123,7 @@
 			</p>
 		</xsl:if>
 	</div>
-	<br clear="all"/>
+	<br class="clear"/>
 </xsl:template>
 
 <xsl:template name="head_default">

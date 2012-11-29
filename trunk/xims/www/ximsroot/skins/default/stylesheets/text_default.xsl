@@ -13,7 +13,7 @@
 <xsl:import href="text_common.xsl"/>
 
 <xsl:template name="view-content">
-	<div id="docbody">
+	<div id="docbody"><xsl:comment/>
 				<xsl:apply-templates select="body"/>
 		<!--<xsl:call-template name="body_display_format_switcher"/>-->
 	</div>

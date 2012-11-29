@@ -41,6 +41,7 @@
 			</div>
 			<textarea id="vlkeyword_description" name="vlkeyword_description" cols="38" rows="3" class="text">
 				<xsl:value-of select="description"/>
+                <xsl:comment/>
 			</textarea>
 		</div>
 		<br/>

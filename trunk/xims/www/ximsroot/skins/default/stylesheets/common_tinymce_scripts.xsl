@@ -6,7 +6,8 @@
 		$Id: common_tinymce_scripts.xsl 2249 2009-08-10 11:29:26Z haensel $
 	-->
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
+	            xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
+                xmlns="http://www.w3.org/1999/xhtml">
 	
 	<xsl:template name="tinymce_scripts">
 		<xsl:call-template name="tinymce_load" />
@@ -35,7 +36,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 		
-		<script language="javascript" type="text/javascript">
+		<script type="text/javascript">
         tinyMCE_GZ.init({
                 plugins     : 'table,contextmenu,advhr,searchreplace,inlinepopups,safari,xhtmlxtras,paste,advimage',
                 themes      : 'advanced',
@@ -44,7 +45,7 @@
                 });
         </script>
 
-		<script language="javascript" type="text/javascript" src="{$ximsroot}scripts/tinymce_script.js"></script>
+		<script type="text/javascript" src="{$ximsroot}scripts/tinymce_script.js"><xsl:comment/></script>
 	</xsl:template>
 
 
@@ -75,37 +76,34 @@
 	
 	<xsl:template name="tinymce_load">
 	<!--
-		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
-		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce.js" />
+		<script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
+		<script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce.js" />
 	-->
 		<!-- ### load minimized tinymce ### -->
-		<script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
-        <script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_gzip.js"/>
-        <script language="javascript" type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_min.js"/>
+		<script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js"><xsl:comment/></script>
+        <script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_gzip.js"><xsl:comment/></script>
+        <script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_min.js"><xsl:comment/></script>
 
 	</xsl:template>
 	
 	<xsl:template name="tinymce_simple">
-		<script language="javascript" type="text/javascript">
-			tinyMCE.init({
-			mode : "textareas",
-			editor_selector : "mceEditor",
-			language : '<xsl:value-of select="substring(/document/context/session/uilanguage,1,2)" />',
-			theme : "advanced",
-			plugins : 'paste,inlinepopups',
-			theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink,code,help",
-			theme_advanced_buttons2 : "",
-			theme_advanced_buttons3 : "",
+		<script  type="text/javascript">
+			tinyMCE.init({ mode : "textareas", editor_selector : "mceEditor",
+			language : '<xsl:value-of
+			select="substring(/document/context/session/uilanguage,1,2)" />',
+			theme : "advanced", plugins : 'paste,inlinepopups',
+			theme_advanced_buttons1 :
+			"bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink,code,help",
+			theme_advanced_buttons2 : "", theme_advanced_buttons3 : "",
 			theme_advanced_toolbar_location : "top",
 			theme_advanced_toolbar_align : "left",
 			theme_advanced_statusbar_location : "bottom",
-			theme_advanced_path_location : 'bottom',
-			theme_advanced_resizing : true,
-			button_tile_map : true,
-			entity_encoding : 'raw'
-			// extended_valid_elements : "a[name|href|target|title|onclick],"
-			// + "img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],"
-			// + "hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]"
+			theme_advanced_path_location : 'bottom', theme_advanced_resizing :
+			true, button_tile_map : true, entity_encoding : 'raw' //
+			extended_valid_elements : "a[name|href|target|title|onclick]," // +
+			"img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],"
+			// +
+			"hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]"
 			})
 		</script>
 	</xsl:template>

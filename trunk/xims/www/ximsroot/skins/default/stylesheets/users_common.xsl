@@ -20,9 +20,7 @@
 <xsl:param name="object_type">user</xsl:param>
 
 <xsl:variable name="i18n_users" select="document(concat($currentuilanguage,'/i18n_users.xml'))"/>
-<!--
-<xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
--->
+
 <xsl:variable name="order-by-opposite">
   <xsl:choose>
     <xsl:when test="$order-by='ascending'">descending</xsl:when>

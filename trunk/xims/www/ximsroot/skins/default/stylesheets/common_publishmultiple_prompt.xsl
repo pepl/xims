@@ -91,13 +91,13 @@
 				<label for="update_dependencies"><xsl:value-of select="$i18n/l/UpdateDepend"/></label> 
 				<input type="checkbox" name="update_dependencies" value="1" checked="checked" id="update_dependencies" class="checkbox"/>
 			</p>
-			<br clear="all"/>
+			<br class="clear"/>
 			<p>
 				<label for="verbose_result"><xsl:value-of select="$i18n/l/ShowDetailsOfPub"/></label>
 				<input type="checkbox" name="verbose_result" value="1" id="verbose_result" class="checkbox"/>
 			</p>
 			
-			<br clear="all"/>
+			<br class="clear"/>
 			<p>
 				<xsl:value-of select="$i18n/l/Click"/>&#160;
 					'<xsl:value-of select="$i18n/l/Publish"/>'&#160;<xsl:value-of select="$i18n/l/toExpCurrObj"/>

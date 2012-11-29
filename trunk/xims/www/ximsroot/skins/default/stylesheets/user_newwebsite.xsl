@@ -73,7 +73,7 @@
            <label for="input-grantees"><xsl:value-of select="$i18n/l/FurtherGrantees"/> :</label>
            </div>
            <input id="input-grantees" type="text" size="40" name="grantees"/>
-           <br clear="all"/>
+           <br class="clear"/>
            </div>
 
             <div>

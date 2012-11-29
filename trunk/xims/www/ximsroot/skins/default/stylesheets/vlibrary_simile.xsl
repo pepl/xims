@@ -16,8 +16,8 @@
     <xsl:output method="html"
                 encoding="utf-8"
                 media-type="text/html"
-                doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-                doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                doctype-system="about:legacy-compat"
+                omit-xml-declaration="yes"
                 indent="no"/>
 
     <xsl:param name="chronicle_from"/>

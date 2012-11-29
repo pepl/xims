@@ -22,7 +22,7 @@
 		<xsl:call-template name="form-obj-specific"/>
 		
 		<xsl:call-template name="contentfilters"/>
-		<br clear="all"/>
+		<br class="clear"/>
 	</xsl:template>
 	
 	<xsl:template name="add-documentlinks"/>

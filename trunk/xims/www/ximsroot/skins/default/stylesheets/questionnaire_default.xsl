@@ -177,11 +177,15 @@
                             <xsl:for-each select="title">&#160;
                                 <textarea name="{concat('answer_',../@id)}" cols="50" rows="6">
                                     <xsl:value-of select="." />
+                                    <xsl:comment/>
                                 </textarea>&#160;&#160;
                             </xsl:for-each>
                         </xsl:when>
                         <xsl:otherwise>
-                            <textarea name="{concat('answer_',@id)}" cols="50" rows="6"><xsl:value-of select="." />
+                            <textarea name="{concat('answer_',@id)}" cols="50"
+                                      rows="6">
+                              <xsl:value-of select="." />
+                              <xsl:comment/>
                             </textarea>&#160;&#160;
                         </xsl:otherwise>
                     </xsl:choose>
@@ -220,6 +224,7 @@
                         <p>
                                 <textarea name="{concat('answer_',../@id)}" cols="50" rows="6">
                                     <xsl:value-of select="." />
+                                    <xsl:comment/>
                                 </textarea>
                         </p>
                     </xsl:for-each>
@@ -227,6 +232,7 @@
                 <xsl:otherwise>
                     <p>
                             <textarea name="{concat('answer_',@id)}" cols="50" rows="6">
+                              <xsl:comment/>
                             </textarea>
                     </p>
                 </xsl:otherwise>

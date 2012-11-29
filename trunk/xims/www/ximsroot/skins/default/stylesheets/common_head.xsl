@@ -15,7 +15,8 @@
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
 		<head>
-			<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+			<!-- <meta content="IE=edge" http-equiv="X-UA-Compatible"/> -->
+            <meta charset="UTF-8"/>
 			<title>
 				<xsl:choose>
 					<xsl:when test="$mode='create'">
@@ -137,7 +138,8 @@
 		<script type="text/javascript">
 			var ximsroot = '<xsl:value-of select="$ximsroot"/>';
 		</script>
-		<script src="{$ximsroot}scripts/jquery/jquery_min.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/jquery/jquery_min.js"
+                type="text/javascript"><xsl:comment></xsl:comment></script>
 		<!-- debuggin mode -->
 		<!--
 		<script src="{$ximsroot}scripts/jquery/jquery-1.7.2.js" type="text/javascript"/>
