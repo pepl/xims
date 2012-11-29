@@ -567,7 +567,7 @@ function initOptionsButtons(){
 				primary: 'ui-icon-closethick'
 			}
 		});*/
-	$('.warn').button({
+	$('a.button.warn').button({
 			text: false,
 			icons: {
 				primary: 'ui-icon-alert'
