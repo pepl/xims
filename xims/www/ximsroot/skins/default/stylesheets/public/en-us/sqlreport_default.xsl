@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <!--
 # Copyright (c) 2002-2011 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
@@ -11,6 +11,10 @@
 <xsl:import href="common.xsl"/>
 <xsl:import href="../sqlreport_default.xsl"/>
 
-<xsl:output method="html" encoding="utf-8" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+<xsl:output method="xml" 
+            encoding="utf-8"
+            doctype-system="about:legacy-compat"
+            omit-xml-declaration="yes"
+            indent="yes"/>
 
 </xsl:stylesheet>

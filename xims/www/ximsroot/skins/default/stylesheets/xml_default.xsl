@@ -16,7 +16,7 @@
 <xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
 
 <xsl:template name="view-content">
-	<div id="docbody">
+	<div id="docbody"><xsl:comment/>
 		<pre>
 				<xsl:apply-templates select="body"/>
 		</pre>

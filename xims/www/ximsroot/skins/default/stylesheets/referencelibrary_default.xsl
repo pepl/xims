@@ -37,8 +37,8 @@
     <!--<xsl:variable name="subjectcolumns" select="'3'"/>-->
     
 	<xsl:variable name="pagenavurl">
-		<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id)"/>
-		<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch)"/></xsl:if>
+		<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?date=',$date,';serial_id=',$serial_id,';author_id=',$author_id,';author_lname=',$author_lname,';workgroup_id=',$workgroup_id,';')"/>
+		<xsl:if test="$reflibsearch != ''"><xsl:value-of select="concat(';reflibsearch=',$reflibsearch,';')"/></xsl:if>
 	</xsl:variable>
 	
 	<!--<xsl:variable name="reflib" select="true()"/>-->
@@ -191,7 +191,7 @@
 			<xsl:with-param name="forcepurge" select="true()"/>
 		</xsl:call-template>
        </div>
-        <div class="vlabstract">
+        <div class="vlabstract"><xsl:comment/>
             <xsl:apply-templates select="abstract"/>
         </div>
     </div>
@@ -244,7 +244,7 @@
 	<div id="reflib_authorsearch">
 		<form action="{$xims_box}{$goxims_content}{$absolute_path}" name="rlsearch">
 			<label for="reflibsearch"><strong><xsl:value-of select="$i18n/l/Search"/></strong></label>&#160;&#160;
-			<input type="text" name="reflibsearch" id="reflibsearch" size="30" maxlength="200">
+			<input type="text" name="reflibsearch" id="reflibsearch" size="45" maxlength="200">
 				<xsl:if test="$reflibsearch != ''">
 					<xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
 				</xsl:if>
@@ -252,10 +252,10 @@
 					<xsl:when test="$reflibsearch != ''">
 						<xsl:attribute name="value"><xsl:value-of select="$reflibsearch"/></xsl:attribute>
 					</xsl:when>
-					<!--<xsl:otherwise>
+					<xsl:otherwise>
 						<xsl:attribute name="value">[Example: <em>zoller serial:"Phys. Rev" date:2005</em>]</xsl:attribute>
 						<xsl:attribute name="onfocus">document.rlsearch.reflibsearch.value=&apos;&apos;;</xsl:attribute>
-					</xsl:otherwise>-->
+					</xsl:otherwise>
 				</xsl:choose>
 			</input>
 			<xsl:text>&#160;</xsl:text>

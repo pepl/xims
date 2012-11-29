@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns="http://www.w3.org/1999/xhtml" 
                 xmlns:exslt="http://exslt.org/common"
                 extension-element-prefixes="exslt">
                 	
@@ -38,7 +38,7 @@
           <div class="div-left">
           <xsl:call-template name="vlib_filter_chronicle" />
           </div>
-          <br clear="all"/>
+          <br class="clear"/>
           <xsl:call-template name="vlib_filter_buttons" />
           
           <div style="clear:both" />
@@ -76,7 +76,7 @@
             </select>
           </div>
       </div>
-      <br clear="all"/>
+      <br class="clear"/>
   </xsl:template>
 
   <xsl:template match="subject">
@@ -104,7 +104,7 @@
             <select id="keyword2" name="vlkeywords_selected" size="10" ondblclick="remove_item('keyword');" />
           </div>
       </div>
-      <br clear="all"/>
+      <br class="clear"/>
   </xsl:template>
 
   <xsl:template match="keyword">

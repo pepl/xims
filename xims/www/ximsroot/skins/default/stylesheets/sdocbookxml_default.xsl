@@ -15,7 +15,7 @@
 	<xsl:variable name="docbookroot" select="/document/context/object/body"/>
 
 	<xsl:template name="view-content">
-							<div id="docbody">
+							<div id="docbody"><xsl:comment/>
 								<!--<xsl:apply-templates select="body"/>-->
 								<xsl:choose>
 									<xsl:when test="$section > 0 and $section-view='true'">

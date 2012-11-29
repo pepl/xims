@@ -44,7 +44,7 @@
 		<xsl:call-template name="form-obj-specific"/>
 
 		<xsl:call-template name="xmlhttpjs"/>
-		<script type="text/javascript" language="javascript">
+		<script type="text/javascript" >
       var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
 			var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
     </script>

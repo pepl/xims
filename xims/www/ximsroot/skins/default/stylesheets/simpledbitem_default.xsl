@@ -6,8 +6,8 @@
 # $Id: simpledbitem_default.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns="http://www.w3.org/1999/xhtml">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="view_common.xsl"/>
 <xsl:import href="simpledb_common.xsl"/>
@@ -15,7 +15,7 @@
 <xsl:param name="simpledb">true</xsl:param>
 
 <xsl:template name="view-content">
-<div id="docbody">
+<div id="docbody"><xsl:comment/>
 					<p><xsl:apply-templates select="abstract"/></p>
 							<xsl:apply-templates select="member_values/member_value">
 									<xsl:sort select="/document/member_properties/member_property[@id = current()/property_id]/position" order="ascending" data-type="number"/>

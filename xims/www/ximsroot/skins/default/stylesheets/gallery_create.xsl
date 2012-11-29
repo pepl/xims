@@ -6,8 +6,8 @@
 # $Id: gallery_create.xsl 2239 2009-08-03 09:35:54Z haensel $
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns="http://www.w3.org/1999/xhtml">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="create_common.xsl"/>
 <xsl:import href="container_common.xsl"/>
@@ -21,7 +21,7 @@
 	<xsl:call-template name="form-keywordabstract"/>
 	<xsl:call-template name="form-obj-specific"/>
 	<xsl:call-template name="form-grant"/>
-	<br clear="all"/>
+	<br class="clear"/>
 </xsl:template>
 
 </xsl:stylesheet>

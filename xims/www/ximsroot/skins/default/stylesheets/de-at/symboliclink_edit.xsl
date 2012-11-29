@@ -6,8 +6,13 @@
 # $Id: symboliclink_edit.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="common.xsl"/>
     <xsl:import href="../symboliclink_edit.xsl"/>
-    <xsl:output method="html" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+    <xsl:output method="xml" 
+                encoding="utf-8"
+                media-type="text/html"
+                doctype-system="about:legacy-compat"
+                omit-xml-declaration="yes"
+                indent="no"/>
 </xsl:stylesheet>

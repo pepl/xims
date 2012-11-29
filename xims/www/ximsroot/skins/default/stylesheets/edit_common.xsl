@@ -69,7 +69,7 @@
 					<xsl:with-param name="vlib" select="$vlib"/>
 					<xsl:with-param name="questionnaire" select="$questionnaire"/>
 				</xsl:call-template>
-				<!--<script type="text/javascript" language="javascript">
+				<!--<script type="text/javascript" >
       var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
       </script>-->
 			</body>
@@ -80,8 +80,8 @@
 	</xsl:template>
 	
 	<xsl:template name="setdefaulteditor">
-		<!--<script type="text/javascript" language="Javascript" src="{$ximsroot}scripts/setdefaulteditor.js"/>-->
-		<script type="text/javascript" language="Javascript">
+		<!--<script type="text/javascript"  src="{$ximsroot}scripts/setdefaulteditor.js"/>-->
+		<script type="text/javascript" >
 			var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
     </script>
 		<form name="editor_selector" id="editor_selector" action="">
