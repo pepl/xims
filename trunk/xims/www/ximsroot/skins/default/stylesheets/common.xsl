@@ -271,6 +271,8 @@
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
+                 <!-- update dependencies as default -->
+                 <input id="update_dependencies" type="hidden" value="1" name="update_dependencies"/>
 				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('pubonsave')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Pub_on_save"/></xsl:attribute>
