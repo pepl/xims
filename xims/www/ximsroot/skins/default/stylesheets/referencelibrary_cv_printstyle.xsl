@@ -13,8 +13,7 @@
     encoding="utf-8"
     media-type="text/html"
     omit-xml-declaration="yes"
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+    doctype-system="about:legacy-compat"
     indent="no"/>
 
 <xsl:template name="url_identifier">

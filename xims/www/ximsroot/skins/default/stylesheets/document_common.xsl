@@ -5,7 +5,9 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: document_common.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" 
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
 	<xsl:import href="container_common.xsl"/>
 
@@ -38,10 +40,10 @@
 	</xsl:template>
 	
 	<xsl:template name="setdefaulteditor">
-		<!--<script type="text/javascript" language="Javascript" src="{$ximsroot}scripts/setdefaulteditor.js"/>-->
-		<script type="text/javascript" language="Javascript">
-			var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
-    </script>
+		<!--<script type="text/javascript"  src="{$ximsroot}scripts/setdefaulteditor.js"/>-->
+		<script type="text/javascript">
+		  var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
+        </script>
 		<form name="editor_selector" id="editor_selector" action="#">
 			<select name="xims_wysiwygeditor" id="xims_wysiwygeditor" onchange="javascript:return checkBodyFromSel(this.value);">
 				<xsl:copy-of select="$editoroptions"/>
@@ -59,12 +61,17 @@
 		<a href="javascript:previewWindow('{$xims_box}{$goxims_content}{$absolute_path}?pub_preview=1')">
 			<xsl:value-of select="$i18n/l/Publishingpreview"/>&#xa0;<span class="ui-icon ui-icon-newwin" title="{$i18n/l/Opens_in_new_window}"></span>
 		</a>-->
-		<xsl:if test="children/object[location='.diff_to_second_last'] and /document/context/session/user/userprefs/profile_type != 'standard'">
+        <xsl:choose>
+		<xsl:when test="children/object[location='.diff_to_second_last'] and /document/context/session/user/userprefs/profile_type != 'standard'">
           &#xa0;
           <a href="javascript:diffWindow('{$xims_box}{$goxims_content}{$absolute_path}/.diff_to_second_last?bodyonly=1;pre=1')">
 			<xsl:value-of select="$i18n/l/See_changes_latest_edit"/>&#xa0;<span class="ui-icon ui-icon-newwin" title="{$i18n/l/Opens_in_new_window}"></span>
 		</a>
-		</xsl:if>
+		</xsl:when>
+        <xsl:otherwise>
+          <xsl:comment/>
+        </xsl:otherwise>
+        </xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="children/object" mode="link">

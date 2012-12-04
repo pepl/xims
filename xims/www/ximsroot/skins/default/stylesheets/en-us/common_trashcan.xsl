@@ -9,7 +9,11 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
     <xsl:import href="common.xsl"/>
-    <xsl:output method="html" encoding="utf-8"/>
+    <xsl:output method="xml" 
+                encoding="utf-8"
+                doctype-system="about:legacy-compat"
+                omit-xml-declaration="yes"
+                indent="no"/>
 
     <xsl:template match="/document/context/object">
         <html>

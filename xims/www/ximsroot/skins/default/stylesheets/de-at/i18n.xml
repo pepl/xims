@@ -500,6 +500,7 @@
 <rl_preprint_identifier>Preprint identifier</rl_preprint_identifier>
 <rl_thesis_inprocess>Thesis in process</rl_thesis_inprocess>
 <rl_preprint_submitdate>Preprint submit date</rl_preprint_submitdate>
+<rl_local_restricted_url>Local restricted URL</rl_local_restricted_url>
 <!-- end reflib / vlib-->
 <!-- userpages -->
 <SelectSkin>Skin auswählen</SelectSkin>

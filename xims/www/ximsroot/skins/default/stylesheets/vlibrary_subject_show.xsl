@@ -50,6 +50,7 @@
       </div>
       <textarea readonly="readonly" id="vlsubject_description" cols="38" rows="10">
         <xsl:apply-templates select="description"/>
+        <xsl:comment/>
       </textarea>
     </div> 
 <br/>

@@ -32,6 +32,7 @@
 				</xsl:attribute>(?)</a>--></h2>
 			<textarea name="body" id="body" rows="20" cols="90">
 				<xsl:value-of select="$bodycontent"/>
+                <xsl:comment/>
 			</textarea>
 		</div>
 	</xsl:template>

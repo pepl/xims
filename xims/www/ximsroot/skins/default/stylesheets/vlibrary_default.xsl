@@ -14,11 +14,9 @@
 
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:exslt="http://exslt.org/common"
+                xmlns="http://www.w3.org/1999/xhtml" 
                 extension-element-prefixes="exslt">
-            <!--    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dyn="http://exslt.org/dynamic" xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="dyn">-->
-
 
   <xsl:import href="vlibrary_common.xsl"/>
   <xsl:import href="view_common.xsl"/>
@@ -49,7 +47,7 @@
   </xsl:variable>
   
   <xsl:template name="view-content">
-		<div>
+		<div><xsl:comment/>
 			<xsl:apply-templates select="abstract"/>
 		</div>
 		<div id="search-filter">
@@ -57,7 +55,7 @@
 				<xsl:with-param name="mo" select="$mo"/>
 			</xsl:call-template>
 			<xsl:call-template name="chronicle_switch" />
-			<br clear="all"/>
+			<br class="clear"/>
     </div>
     
     <xsl:call-template name="vlproperty-list">
@@ -66,7 +64,7 @@
     <!--<div id="vlib-subjects">
       <xsl:apply-templates select="/document/context/vlsubjectinfo"/>
     </div>-->
-    <br clear="all"/>
+    <br class="clear"/>
   </xsl:template>
   
   <xsl:template name="vlproperty-list">
@@ -138,8 +136,9 @@
 		<xsl:when test="$mo = 'publication'"><xsl:apply-templates select="exslt:node-set($sortedproperties)/publication"></xsl:apply-templates></xsl:when>
 	</xsl:choose>
 </ul>
-<br clear="all"/><br/>
-<div class="block"><h2>
+<br class="clear"/><br/>
+<div class="block">
+<h2>
 	<xsl:value-of select="$i18n_vlib/l/unmapped"/>&#160;
 <xsl:choose>
 		<xsl:when test="$mo = 'subject'"><xsl:value-of select="$i18n_vlib/l/subjects"/></xsl:when>
@@ -147,8 +146,9 @@
 		<xsl:when test="$mo = 'author'"><xsl:value-of select="$i18n_vlib/l/authors"/></xsl:when>
 		<xsl:when test="$mo = 'publication'"><xsl:value-of select="$i18n_vlib/l/publications"/></xsl:when>
 	</xsl:choose>
-	</h2></div>
-<ul>
+	</h2>
+	</div>
+<ul><xsl:comment/>
 <xsl:choose>
 		<xsl:when test="$mo = 'subject'"><xsl:apply-templates select="exslt:node-set($unmappedproperties)/subject"></xsl:apply-templates></xsl:when>
 		<xsl:when test="$mo = 'keyword'"><xsl:apply-templates select="exslt:node-set($unmappedproperties)/keyword"></xsl:apply-templates></xsl:when>

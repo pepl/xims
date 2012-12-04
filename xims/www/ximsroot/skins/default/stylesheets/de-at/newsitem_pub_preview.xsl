@@ -23,7 +23,7 @@
           <xsl:call-template name="meta"/>
           <title><xsl:value-of select="title"/></title>
           <link rel="stylesheet" href="{$ximsroot}{$defaultcss}" type="text/css" />
-          <script src="/scripts/default.js" type="text/javascript">
+          <script src="/scripts/default.js" type="text/javascript"><xsl:comment/>
           </script>
     </head>
 

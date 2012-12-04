@@ -16,9 +16,9 @@
  <!-- <xsl:param name="selEditor" select="true()"/>-->
   
   <xsl:template name="create-content">
-		              <xsl:call-template name="form-locationtitle-create"/>
-<br clear="all"/>
-            <input type="hidden" name="proceed_to_edit" value="1"/>
+	<xsl:call-template name="form-locationtitle-create"/>
+    <br class="clear"/>
+    <input type="hidden" name="proceed_to_edit" value="1"/>
   </xsl:template>
 
 </xsl:stylesheet>

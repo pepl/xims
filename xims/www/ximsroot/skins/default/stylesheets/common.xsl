@@ -9,7 +9,11 @@
 	<!ENTITY lc "'aäbcdefghijklmnoöpqrstuüvwxyz'">
 	<!ENTITY uc "'AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ'">
 ]>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dyn="http://exslt.org/dynamic" xmlns="http://www.w3.org/1999/xhtml" xmlns:aaa="http://www.w3.org/2005/07/aaa" extension-element-prefixes="dyn">
+<xsl:stylesheet version="1.0" 
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"              
+                xmlns:dyn="http://exslt.org/dynamic" 
+                xmlns="http://www.w3.org/1999/xhtml" 
+                extension-element-prefixes="dyn">
 	<xsl:import href="../../../stylesheets/common.xsl"/>
 	<xsl:import href="common_header.xsl"/>
 	<xsl:import href="common_head.xsl"/>
@@ -17,7 +21,12 @@
 	<xsl:import href="common_footer.xsl"/>
 	<xsl:import href="common_localized.xsl"/>
 	<xsl:import href="common_tinymce_scripts.xsl"/>
-	<xsl:output method="xml" encoding="utf-8" media-type="text/html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" indent="no"/>
+	<xsl:output method="xml" 
+                encoding="utf-8" 
+                media-type="text/html"
+                indent="no"
+                doctype-system="about:legacy-compat"
+                omit-xml-declaration="yes"/>
 	<xsl:variable name="i18n" select="document(concat($currentuilanguage,'/i18n.xml'))"/>
 	
 	<xsl:variable name="objtypeid" select="/document/context/object/object_type_id"/>
@@ -250,7 +259,8 @@
 	</xsl:template>
 	<xsl:template name="publish-on-save">
 		<div class="block">
-			<xsl:if test="$usertype = 'expert' or $usertype = 'webadmin'">
+          <xsl:choose>
+			<xsl:when test="$usertype = 'expert' or $usertype = 'webadmin'">
 				<div class="label">
 					<label for="input-pubonsave">
 						<xsl:value-of select="$i18n/l/Pub_on_save"/>
@@ -261,11 +271,15 @@
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
+                 <!-- update dependencies as default -->
+                 <input id="update_dependencies" type="hidden" value="1" name="update_dependencies"/>
 				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('pubonsave')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Pub_on_save"/></xsl:attribute>
 					(?)</a>-->
-			</xsl:if>
+			</xsl:when>
+            <xsl:otherwise><xsl:comment/></xsl:otherwise>
+          </xsl:choose>
 		</div>
 	</xsl:template>
 	<xsl:template name="form-marknew-pubonsave">
@@ -316,7 +330,7 @@
 								<xsl:value-of select="$i18n/l/Editor"/>
 							</label>
 							<xsl:text>&#160;</xsl:text>
-							<xsl:call-template name="setdefaulteditor"/>
+							<!-- <xsl:call-template name="setdefaulteditor"/> -->
 						</xsl:if>
 					</xsl:when>
 					<xsl:when test="$mode='edit'">
@@ -334,7 +348,7 @@
 								<xsl:value-of select="$i18n/l/Editor"/>
 							</label>
 							<xsl:text>&#160;</xsl:text>
-							<xsl:call-template name="setdefaulteditor"/>
+							<!-- <xsl:call-template name="setdefaulteditor"/> -->
 						</xsl:if>
 					</xsl:when>
 					<xsl:when test="$mode='move'">
@@ -347,7 +361,10 @@
 						<xsl:value-of select="title"/>
 					</xsl:otherwise>
 				</xsl:choose>
-			</h1>
+		    </h1>
+            <xsl:if test="$selEditor and ($mode='edit' or $mode='create')">
+              <xsl:call-template name="setdefaulteditor"/>
+            </xsl:if>
 		</div>
 	</xsl:template>
 	
@@ -404,16 +421,18 @@
 			<!--<a href="javascript:openDocWindow('Location')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>-->
 			<a href="#" id="dialog_link" class="ui-state-default ui-corner-all" style="display: none;">
-				<span class="ui-icon ui-icon-newwin"/>
+				<span class="ui-icon ui-icon-newwin"><xsl:comment/></span>
 				<xsl:value-of select="IlpDefaultWinlabel"/>
-				<span class="ui-icon ui-icon-alert"/>
+				<span class="ui-icon ui-icon-alert"><xsl:comment/></span>
 			</a>
 			<!-- ui-dialog -->
 			<div id="dialog">
 				<xsl:attribute name="title"><xsl:value-of select="IlpDefaultWinlabel"/></xsl:attribute>
+                  <xsl:comment/>
 			</div>
 			<div id="location-dialog">
 				<xsl:attribute name="title"><xsl:value-of select="IlpDefaultWinlabel"/></xsl:attribute>
+                <xsl:comment/>
 			</div>
 			<!-- we only test locations for unpublished docs -->
 			<xsl:if test="published = '0'">
@@ -450,16 +469,18 @@
 			<a href="javascript:openDocWindow('Location')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>-->
 			<a href="#" id="dialog_link" class="ui-state-default ui-corner-all" style="display: none;">
-				<span class="ui-icon ui-icon-newwin"/>
+				<span class="ui-icon ui-icon-newwin"><xsl:comment/></span>
 				<xsl:value-of select="IlpDefaultWinlabel"/>
-				<span class="ui-icon ui-icon-alert"/>
+				<span class="ui-icon ui-icon-alert"><xsl:comment/></span>
 			</a>
 			<!-- ui-dialog -->
 			<div id="dialog">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/IlpDefaultWinlabel"/></xsl:attribute>
+                <xsl:comment/>
 			</div>
 			<div id="location-dialog">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/IlpDefaultWinlabel"/></xsl:attribute>
+                <xsl:comment/>
 			</div>
 			<!-- location-testing AJAX code -->
 			<xsl:if test="$testlocation">
@@ -526,16 +547,18 @@
 				<a href="javascript:openDocWindow('Location')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Location"/></xsl:attribute>(?)</a>-->
 				<a href="#" id="dialog_link" class="ui-state-default ui-corner-all" style="display: none;">
-					<span class="ui-icon ui-icon-newwin"/>
+					<span class="ui-icon ui-icon-newwin"><xsl:comment/></span>
 					<xsl:value-of select="IlpDefaultWinlabel"/>
-					<span class="ui-icon ui-icon-alert"/>
+					<span class="ui-icon ui-icon-alert"><xsl:comment/></span>
 				</a>
 				<!-- ui-dialog -->
 				<div id="dialog">
 					<xsl:attribute name="title"><xsl:value-of select="IlpDefaultWinlabel"/></xsl:attribute>
+                    <xsl:comment/>
 				</div>
 				<div id="location-dialog">
 					<xsl:attribute name="title"><xsl:value-of select="IlpDefaultWinlabel"/></xsl:attribute>
+                    <xsl:comment/>
 				</div>
 				<xsl:if test="not(published = 1)">
 					<!-- location-testing AJAX code -->
@@ -551,7 +574,7 @@
 					<xsl:value-of select="$i18n/l/bodyfromfile_create"/>
 				</label>
 			</div>
-			<input type="file" name="file" size="50" class="text" id="input-bodyfromfile"/>
+			<input type="file" name="file" class="text" id="input-bodyfromfile"/>
 			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('BodyFile')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/bodyfromfile_create"/></xsl:attribute>(?)</a>-->
@@ -564,7 +587,7 @@
 					<xsl:value-of select="$i18n/l/bodyfromfile_edit"/>
 				</label>
 			</div>
-			<input type="file" name="file" size="50" class="text" id="input-bodyfromfile"/>
+			<input type="file" name="file" class="text" id="input-bodyfromfile"/>
 			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('BodyFile')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/bodyfromfile_edit"/></xsl:attribute>(?)</a>-->
@@ -606,6 +629,7 @@
 						<xsl:if test="$mode = 'html'">
 							<xsl:text>&lt;p&gt;&#160;&lt;/p&gt;</xsl:text>
 						</xsl:if>
+                        <xsl:comment/>
 					</textarea>
 				<!--</div>
 			</div>-->
@@ -620,7 +644,7 @@
 	</xsl:template>
 	<xsl:template name="testbodysxml">
 		<xsl:call-template name="wfcheckjs"/>
-		<a href="javascript:void()" onclick="return wfcheck();">
+		<a href="javascript:void(0)" onclick="return wfcheck();">
 			<img src="{$skimages}option_wfcheck.png" alt="{$i18n/l/Test_body_xml}" title="{$i18n/l/Test_body_xml}" width="32" height="19"/>
 		</a>
 	</xsl:template>
@@ -718,6 +742,7 @@
 			<br/>
 			<textarea id="input-abstract" name="abstract" rows="3" cols="74">
 				<xsl:apply-templates select="abstract"/>
+                <xsl:comment/>
 			</textarea>
 		</div>
 	</xsl:template>
@@ -732,7 +757,7 @@
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Notes"/></xsl:attribute>(?)</a>-->
 			</div>
 			<br/>
-			<textarea name="notes" rows="3" cols="74" id="input-notes">
+			<textarea name="notes" rows="3" cols="74" id="input-notes"><xsl:comment/>
 				<xsl:apply-templates select="notes"/>
 			</textarea>
 		</div>
@@ -1851,8 +1876,8 @@
 		</script>
 	</xsl:template>
 	<xsl:template name="testlocationjs">
-		<script type="text/javascript" src="{$ximsroot}scripts/json-min.js"/>
-		<script type="text/javascript" src="{$ximsroot}scripts/test_location.js"/>
+		<script type="text/javascript" src="{$ximsroot}scripts/json-min.js"><xsl:comment/></script>
+		<script type="text/javascript" src="{$ximsroot}scripts/test_location.js"><xsl:comment/></script>
 		<script type="text/javascript">
 		var obj    = '<xsl:value-of select="/document/object_types/object_type[@id=/document/context/object/object_type_id]/fullname"/>';
 		var suffix = '<xsl:value-of select="/document/data_formats/data_format[@id=/document/context/object/data_format_id]/suffix"/>';
@@ -1948,6 +1973,7 @@
 			</div>
 			<textarea name="{$name}" cols="{$cols}" rows="{$rows}" class="text">
 				<xsl:value-of select="dyn:evaluate($xpath)"/>
+                <xsl:comment/>
 			</textarea>
 			<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('{$title}')" class="doclink">(?)</a>-->
@@ -1982,7 +2008,7 @@
 	</xsl:template>
 
 	<xsl:template name="mk-inline-js">
-		<xsl:param name="code"/>
+	    <xsl:param name="code"/>
 		<script type="text/javascript">
 			<xsl:text disable-output-escaping="yes">//&lt;![CDATA[</xsl:text>
 			<xsl:value-of disable-output-escaping="yes" select="$code"/>
@@ -2000,14 +2026,14 @@
 	<xsl:param name="questionnaire" select="false()"/>
 	
 	<!-- container for dialog, i.e. browse for object-->
-	<div id="default-dialog" style="max-height:400px;max-width:800px"></div>
+	<div id="default-dialog" style="max-height:400px;max-width:800px"><xsl:comment/></div>
 	
-	<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"/>
+	<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"><xsl:comment/></script>
 	<!-- debugging mode -->
 	<!--
-	<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
-	<script src="{$ximsroot}scripts/default.js" type="text/javascript"/>
-	<script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"/>
+	<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"><xsl:comment/></script>
+	<script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:comment/></script>
+	<script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:comment/></script>
 	-->
 	<xsl:if test="$tinymce">
 		<xsl:call-template name="tinymce_scripts"/>
@@ -2018,7 +2044,7 @@
 	</xsl:if>
 	
 	<xsl:if test="$simpledb">
-		<script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/simpledb.js" type="text/javascript"><xsl:comment/></script>
 		<script type="text/javascript">
 			var button_image = '<xsl:value-of select="$skimages"/>calendar.gif';
 			$(document).ready(function(){
@@ -2027,25 +2053,25 @@
 		</script>
 	</xsl:if>
 	<xsl:if test="$vlib">
-		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
-		<script type="text/javascript" language="javascript">
-			<xsl:choose>
-				<xsl:when test="(/document/context/object/object_type_id = '45') or (/document/context/object/object_type_id = '11')">
-			var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id)"/>';
+		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:comment/></script>
+		<script type="text/javascript">
+		  <xsl:choose>
+			<xsl:when test="(/document/context/object/object_type_id = '45') or (/document/context/object/object_type_id = '11')">
+			  var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,'?id=',/document/context/object/@id)"/>';
 			</xsl:when>
-				<xsl:otherwise>
-			var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
+			<xsl:otherwise>
+			  var abspath = '<xsl:value-of select="concat($xims_box,$goxims_content,/document/context/object/location_path)"/>';
 			</xsl:otherwise>
-			</xsl:choose>      
-			var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
-	</script>
+		  </xsl:choose>      
+		  var parentpath = '<xsl:value-of select="concat($xims_box,$goxims_content,$parent_path)"/>';
+	    </script>
 	</xsl:if>
 	<xsl:if test="$reflib">
-		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/vlibrary_edit.js" type="text/javascript"><xsl:comment/></script>
+		<script src="{$ximsroot}scripts/reflibrary.js" type="text/javascript"><xsl:comment/></script>
 	</xsl:if>
 	<xsl:if test="$questionnaire">
-		<script src="{$ximsroot}scripts/questionnaire.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/questionnaire.js" type="text/javascript"><xsl:comment/></script>
 	</xsl:if>
 </xsl:template>	
 	<xsl:template match="/document/context/object/parents/object">

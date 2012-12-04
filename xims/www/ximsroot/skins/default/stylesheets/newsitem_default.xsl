@@ -5,7 +5,9 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: newsitem_default.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" 
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
+                xmlns="http://www.w3.org/1999/xhtml">
 
 	<xsl:import href="view_common.xsl"/>
 	<xsl:import href="document_default.xsl"/>
@@ -23,7 +25,7 @@
 				var date_lang = '<xsl:value-of select="$date_lang"/>';
 			</xsl:with-param>
 		</xsl:call-template>
-	<div id="docbody">
+	<div id="docbody"><xsl:comment/>
 		<div id="content">
 		<xsl:choose>
 			<xsl:when test="string-length(image_id)">
