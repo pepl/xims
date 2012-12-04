@@ -23,7 +23,7 @@
 <xsl:if test="abstract/text() != ''">
 							<div><strong><xsl:apply-templates select="abstract"/></strong></div>
                 </xsl:if>
-							<div id="docbody">
+							<div id="docbody"><xsl:comment/>
                         <span id="body">
                             <xsl:apply-templates select="body"/>
                         </span>

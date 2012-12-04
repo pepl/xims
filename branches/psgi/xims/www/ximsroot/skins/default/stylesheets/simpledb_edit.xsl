@@ -119,7 +119,7 @@
 						<xsl:value-of select="$i18n_simpledb/l/String_options"/>
 					</label>
 				</div>
-				<select id="sdbp_regex_select" name="sdbp_regex_select">
+				<select id="sdbp_regex_select" name="sdbp_regex_select"><xsl:comment/>
 					<xsl:for-each select="str:split(substring-before(substring-after(/document/member_properties/member_property[@id=$property_id]/regex,'^('),')$'), '|')">
 						<option value="{.}">
 							<xsl:value-of select="translate(.,'\','')"/>
@@ -128,11 +128,11 @@
 				</select>
 				<xsl:text> </xsl:text>
 				<a href="javascript:addSelection($('#sdbp_regex_add'),$('#sdbp_regex_select'));" class="button" title="{$i18n_simpledb/l/Add_to_selection}"><!--onclick="addSelection(sdbp_regex_add,sdbp_regex_select);">-->
-				<span class="ui-icon ui-icon-circle-arrow-w"></span>
+				<span class="ui-icon ui-icon-circle-arrow-w"><xsl:comment/></span>
 				</a>
 				
 				<xsl:text> </xsl:text>
-				<input id="sdbp_regex_add" type="text" name="sdbp_regex_add" class="text" size="40"/>
+				<input id="sdbp_regex_add" type="text" name="sdbp_regex_add" class="text" size="40" />
 				<xsl:text> </xsl:text>
 				<button type="button" onclick="removeSelection(sdbp_regex_select);" class="button"><xsl:value-of select="$i18n_simpledb/l/Remove_selected"/></button>
 		</div>
@@ -145,7 +145,8 @@
 			</div>
 			<textarea id="sdbp_description" rows="3" cols="38" name="sdbp_description" class="text">
 				<xsl:apply-templates select="/document/member_properties/member_property[@id=$property_id]/description"/>
-			</textarea>
+		        <xsl:comment/>
+	        </textarea>
 		</div>
 		<div>
 			<div class="label-sdbp">
@@ -153,7 +154,7 @@
 					<xsl:value-of select="$i18n_simpledb/l/Part_of_title"/>
 				</label>
 			</div>
-			<input id="sdbp_part_of_title" type="checkbox" name="sdbp_part_of_title" value="1" size="40" class="checkbox">
+			<input id="sdbp_part_of_title" type="checkbox" name="sdbp_part_of_title" value="1" class="checkbox">
 				<xsl:if test="/document/member_properties/member_property[@id=$property_id]/part_of_title = '1'">
 					<xsl:attribute name="checked">checked</xsl:attribute>
 				</xsl:if>
@@ -166,7 +167,7 @@
 					<xsl:value-of select="$i18n_simpledb/l/Mandatory"/>
 				</label>
 			</div>
-			<input id="sdbp_mandatory" type="checkbox" name="sdbp_mandatory" value="1" size="40" class="checkbox">
+			<input id="sdbp_mandatory" type="checkbox" name="sdbp_mandatory" value="1" class="checkbox">
 				<xsl:if test="/document/member_properties/member_property[@id=$property_id]/mandatory = '1'">
 					<xsl:attribute name="checked">checked</xsl:attribute>
 				</xsl:if>
@@ -179,7 +180,7 @@
 					<xsl:value-of select="$i18n_simpledb/l/gopublic"/>
 				</label>
 			</div>
-			<input id="sdbp_gopublic" type="checkbox" name="sdbp_gopublic" value="1" size="40" class="checkbox">
+			<input id="sdbp_gopublic" type="checkbox" name="sdbp_gopublic" value="1" class="checkbox">
 				<xsl:if test="$property_id = '' or /document/member_properties/member_property[@id=$property_id]/gopublic = '1'">
 					<xsl:attribute name="checked">checked</xsl:attribute>
 				</xsl:if>

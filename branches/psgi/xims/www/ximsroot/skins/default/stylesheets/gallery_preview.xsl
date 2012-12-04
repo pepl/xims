@@ -53,8 +53,8 @@
 						$('.replaced').css('height', <xsl:value-of select="$img-width"/> * height / width);
 					}
         </script>
-		<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery.galleria.js"></script>				
-		<script type="text/javascript" src="{$ximsroot}scripts/galleria.js"></script>
+		<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery.galleria.js"><xsl:comment/></script>				
+		<script type="text/javascript" src="{$ximsroot}scripts/galleria.js"><xsl:comment/></script>
 	</xsl:template>
 	
 	<xsl:template match="/document/context/object/children">
@@ -70,7 +70,7 @@
 		</div>	
 		</div>
 	<xsl:call-template name="main-img"/>
-	<br clear="all"/>
+	<br class="clear"/>
 	</xsl:if>
 	
 	<xsl:if test="$thumbnail-pos='left'">
@@ -82,7 +82,7 @@
 		</div>
 	</div>
 	<xsl:call-template name="main-img"/>	
-	<br clear="all"/>
+	<br class="clear"/>
 	</xsl:if>
 	
 	
@@ -95,7 +95,7 @@
 				</ul>
 		</div>
 	</div>
-	<br clear="all"/>
+	<br class="clear"/>
 	</xsl:if>
 
 	<xsl:if test="$thumbnail-pos='no'">
@@ -123,11 +123,12 @@
 			</p>
 		</xsl:if>
 	</div>
-	<br clear="all"/>
+	<br class="clear"/>
 </xsl:template>
 
 <xsl:template name="head_default">
 <head>
+<meta charset="UTF-8"/>
 <title><xsl:call-template name="title"/></title>
 	<xsl:call-template name="css"/>	
 	<link href="{$ximsroot}stylesheets/gallery.css" rel="stylesheet" type="text/css" media="screen"/>

@@ -59,20 +59,20 @@
                 <th id="th-id" class="sorting">
                   <xsl:choose>
                     <xsl:when test="$sort-by='id'">
-											<xsl:choose>
-												<xsl:when test="$order-by='ascending'">
+					  <xsl:choose>
+						<xsl:when test="$order-by='ascending'">
                       <a class="th-icon-right">
                         <xsl:attribute name="href">
                           <xsl:value-of select="concat($goxims_content,
                                                        $absolute_path,
                                                        '?obj_acllist=1;sort-by=id',
-                                                       ';order-by= descending', 
+                                                       ';order-by=descending', 
                                                        ';userquery=', $userquery,
                                                        ';usertype=', $usertype
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-n"/>
+                        <span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/ID"/>
                       </a>
                       </xsl:when>
@@ -88,7 +88,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-s"/>
+                        <span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/ID"/>
                       </a>
                       </xsl:otherwise>
@@ -106,7 +106,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-2-n-s"/>
+                        <span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/ID"/>
                       </a>
                     </xsl:otherwise>
@@ -128,7 +128,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-n"/>
+                        <span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Username"/>
                       </a>
                       </xsl:when>
@@ -144,7 +144,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-s"/>
+                        <span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Username"/>
                       </a>                      
                       </xsl:otherwise>
@@ -162,7 +162,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-2-n-s"/>
+                        <span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Username"/>
                       </a>
                     </xsl:otherwise>
@@ -186,7 +186,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-n"/>
+                        <span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Name"/>
                       </a>
                       </xsl:when>
@@ -202,7 +202,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-s"/>
+                        <span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Name"/>
                       </a>
                       </xsl:otherwise>
@@ -220,7 +220,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-2-n-s"/>
+                        <span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Name"/>
                       </a>
                     </xsl:otherwise>
@@ -242,7 +242,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-n"/>
+                        <span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Account_status"/>
                       </a>                   
                       </xsl:when>
@@ -258,7 +258,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-s"/>
+                        <span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Account_status"/>
                       </a>
                       </xsl:otherwise>
@@ -276,7 +276,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-2-n-s"/>
+                        <span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Account_status"/>
                       </a>
                     </xsl:otherwise>
@@ -414,7 +414,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-n"/>
+                        <span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Username"/>
                       </a>
                       </xsl:when>
@@ -430,7 +430,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-1-s"/>
+                        <span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Username"/>
                       </a>                      
                       </xsl:otherwise>
@@ -448,7 +448,7 @@
                                                       )"/>
                           <xsl:call-template name="rbacknav_qs"/>
                         </xsl:attribute>
-                        <span class="ui-icon ui-icon-triangle-2-n-s"/>
+                        <span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
                         <xsl:value-of select="$i18n/l/Username"/>
                       </a>
                     </xsl:otherwise>
@@ -528,12 +528,12 @@
 	<tr class="objrow">
 	
  <xsl:if test="$tooltip= ''">
-   <td><xsl:value-of select="@id"/></td>
+   <td><xsl:value-of select="@id"/><xsl:comment/></td>
  </xsl:if>
    <xsl:apply-templates select="name"/>
 
 <xsl:if test="$tooltip= ''">
-   <td><xsl:call-template name="userfullname"/></td>
+   <td><xsl:call-template name="userfullname"/><xsl:comment/></td>
    <xsl:apply-templates select="enabled"/>
 </xsl:if>
    <!-- begin options bar -->
@@ -541,7 +541,7 @@
 	<form action="{$xims_box}{$goxims_content}" method="get">
 
 <div>
-<xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/></xsl:attribute>
+<xsl:attribute name="id">buttonset_<xsl:value-of select="@id"/>_<xsl:value-of select="/document/context/object/@id"/></xsl:attribute><xsl:comment/>
 	</div>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -575,7 +575,7 @@
 </xsl:template>
 
 <xsl:template match="lastname|name">
-   <td><xsl:value-of select="."/></td>
+   <td><xsl:value-of select="."/><xsl:comment/></td>
 </xsl:template>
 
 <xsl:template match="enabled">

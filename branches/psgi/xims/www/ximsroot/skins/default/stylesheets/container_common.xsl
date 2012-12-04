@@ -5,7 +5,9 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: container_common.xsl 2216 2009-06-17 12:16:25Z haensel $
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" 
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+                xmlns="http://www.w3.org/1999/xhtml">
 
 	<xsl:param name="onepage" select="0"/>
 	<xsl:param name="pagerowlimit" select="$searchresultrowlimit"/>
@@ -197,7 +199,7 @@
 	
 	<xsl:template name="pagenavtable">
 		<xsl:variable name="navurl">
-			<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>?
+			<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?')"/>
 			<xsl:if test="$defsorting != 1">
 				<xsl:value-of select="concat('sb=',$sb,';order=',$order,';')"/>
 			</xsl:if>
@@ -333,6 +335,7 @@
 					<xsl:if test="/document/context/session/user/userprefs/profile_type != 'standard'">
 					<th id="th-selection">
 						<!--<xsl:value-of select="$i18n/l/Selection"/>-->
+                       	&#160;
 					</th>
 					</xsl:if>
 					<xsl:if test="not ($showtrashcan)">
@@ -347,7 +350,7 @@
 								<xsl:when test="$order='asc'">
 									<th id="th-pos" class="sorting">
 										<a href="{$location}?sb=position;order=desc;" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-n"/>
+											<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 											<xsl:value-of select="$i18n/l/Pos_short"/>&#160;						
 										</a>
 									</th>
@@ -355,8 +358,8 @@
 								<xsl:otherwise>
 									<th id="th-pos" class="sorting">
 										<a href="{$location}?sb=position;order=asc;" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-s"/>
-											<xsl:value-of select="$i18n/l/Pos_short"/>&#160;						
+											<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
+											<xsl:value-of select="$i18n/l/Pos_short"/>&#160;				
 										</a>
 									</th>
 								</xsl:otherwise>
@@ -365,7 +368,7 @@
 						<xsl:otherwise>
 							<th id="th-pos" class="sorting">
 								<a href="{$location}?sb=position;order=asc;" class="th-icon-right">
-									<span class="ui-icon ui-icon-triangle-2-n-s"/>
+									<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 									<xsl:value-of select="$i18n/l/Pos_short"/>&#160;						
 								</a>
 							</th>
@@ -383,13 +386,13 @@
 										<xsl:choose>
 											<xsl:when test="$containerview_show = 'title'">
 												<a href="{$location}?sb=title;order=desc;page={$page}" class="th-icon-right">
-													<span class="ui-icon ui-icon-triangle-1-n"/>
+													<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 													<xsl:value-of select="$i18n/l/Title"/>&#160;	
 												</a>
 											</xsl:when>
 											<xsl:when test="$containerview_show = 'location'">
 												<a href="{$location}?sb=location;order=desc;page={$page}" class="th-icon-right">
-													<span class="ui-icon ui-icon-triangle-1-n"/>
+													<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 													<xsl:value-of select="$i18n/l/Location"/>&#160;	
 												</a>
 											</xsl:when>
@@ -403,7 +406,7 @@
 											<xsl:when test="$containerview_show = 'title'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=title;order=asc;page=',$page)"/></xsl:attribute></xsl:when>
 											<xsl:when test="$containerview_show = 'location'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=location;order=asc;page=',$page)"/></xsl:attribute></xsl:when>
 										</xsl:choose>
-											<span class="ui-icon ui-icon-triangle-1-s"/>
+											<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
 											<xsl:choose>
 												<xsl:when test="$containerview_show = 'title'"><xsl:value-of select="$i18n/l/Title"/>&#160;	</xsl:when>
 												<xsl:when test="$containerview_show = 'location'"><xsl:value-of select="$i18n/l/Location"/>&#160;	</xsl:when>
@@ -418,14 +421,14 @@
 								<xsl:choose>
 									<xsl:when test="$containerview_show = 'title'">
 										<a href="{$location}?sb=title;order=asc;page={$page}" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-2-n-s"/>
+											<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 											<xsl:value-of select="$i18n/l/Title"/>&#160;
 										</a>
 									</xsl:when>
 									<xsl:when test="$containerview_show = 'location'">
 										<a href="{$location}?sb=location;order=asc;page={$page}" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-2-n-s"/>
-											<xsl:value-of select="$i18n/l/Location"/>&#160;	
+											<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
+											<xsl:value-of select="$i18n/l/Location"/>&#160;
 										</a>
 									</xsl:when>
 								</xsl:choose>
@@ -438,17 +441,15 @@
 								<xsl:when test="$order='asc'">
 									<th id="th-lastmod" class="sorting">
 										<a href="{$location}?sb=date;order=desc" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-n"/>
-											<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
-										</a>
+										  <span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
+										<xsl:value-of select="$i18n/l/Last_modified"/>&#160;</a>
 									</th>
 								</xsl:when>
 								<xsl:otherwise>
 									<th id="th-lastmod" class="sorting">
 										<a href="{$location}?sb=date;order=asc" class="th-icon-right">
-											<span class="ui-icon ui-icon-triangle-1-s"/>
-											<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
-										</a>
+											<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
+											<xsl:value-of select="$i18n/l/Last_modified"/>&#160;</a>
 									</th>
 								</xsl:otherwise>
 							</xsl:choose>
@@ -456,7 +457,7 @@
 						<xsl:otherwise>
 							<th id="th-lastmod" class="sorting">
 								<a href="{$location}?sb=date;order=desc" class="th-icon-right">
-									<span class="ui-icon ui-icon-triangle-2-n-s"/>
+									<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 									<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
 								</a>
 							</th>
@@ -528,9 +529,9 @@
 				</td>
 			</xsl:if>
 			<xsl:if test="not ($showtrashcan)">
-			<td class="ctt_status">
-				<xsl:call-template name="state-toolbar"/>
-			</td>
+			  <td class="ctt_status">
+           		<xsl:call-template name="state-toolbar"/>
+			  </td>
 			<td class="ctt_position">
 				<xsl:call-template name="cttobject.position"/>
 			</td>
@@ -543,10 +544,10 @@
 				<xsl:call-template name="cttobject.locationtitle">
 				</xsl:call-template>
 			</td>
-			<td class="ctt_lm">
+			<td class="ctt_lm"> 
 				<xsl:call-template name="cttobject.last_modified"/>
 			</td>
-			<td class="ctt_cl">
+			<td class="ctt_cl"> 
 				<xsl:call-template name="cttobject.content_length">
 				</xsl:call-template>
 			</td>
@@ -667,12 +668,18 @@
 	<xsl:template name="cttobject.content_length">
 		<xsl:param name="dfname" select="/document/data_formats/data_format[@id=current()/data_format_id]/name"/>
 		<xsl:param name="dfmime" select="/document/data_formats/data_format[@id=current()/data_format_id]/mime_type"/>
-		<!-- find a better way to do this (OT property "hasloblength" for example) -->
-		<xsl:if test="$dfmime !='application/x-container'
+		<!-- find a better way to do this (OT property "hasloblength" for
+             example) -->
+        <xsl:choose>
+		<xsl:when test="$dfmime !='application/x-container'
             and $dfname!='URL'
             and $dfname!='SymbolicLink' ">
 			<xsl:value-of select="format-number(content_length div 1024,'#####0.00')"/>
-		</xsl:if>
+		</xsl:when>
+        <xsl:otherwise>
+          <xsl:comment/> <!-- avoid empty td -->
+        </xsl:otherwise>
+        </xsl:choose>
 	</xsl:template>
 	
 </xsl:stylesheet>

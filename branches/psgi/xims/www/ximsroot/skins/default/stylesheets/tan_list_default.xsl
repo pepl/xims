@@ -9,7 +9,7 @@
 	<xsl:import href="view_common.xsl"/>
 	<xsl:variable name="i18n_qn" select="document(concat($currentuilanguage,'/i18n_questionnaire.xml'))"/>
 	<xsl:template name="view-content">
-		<div id="docbody">
+		<div id="docbody"><xsl:comment/>
 			<xsl:call-template name="tan-list"/>
 		</div>
 	</xsl:template>

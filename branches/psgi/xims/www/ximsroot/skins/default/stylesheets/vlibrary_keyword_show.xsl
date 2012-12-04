@@ -51,8 +51,9 @@
             </label>
           </div>
             <textarea readonly="readonly" id="vlkeyword_description" cols="38" rows="10">
-							<xsl:apply-templates select="description"/>
-						</textarea>
+			  <xsl:apply-templates select="description"/>
+			  <xsl:comment/>
+            </textarea>
           </div> 
         <br/>
     <p>

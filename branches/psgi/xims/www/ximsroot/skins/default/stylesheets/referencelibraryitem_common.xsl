@@ -6,8 +6,8 @@
 # $Id: referencelibraryitem_common.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns="http://www.w3.org/1999/xhtml">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <!--<xsl:import href="common.xsl"/>-->
 <xsl:import href="libraryitem_common.xsl"/>
@@ -20,9 +20,11 @@
 <xsl:variable name="daterefpropid" select="/document/reference_properties/reference_property[name='date']/@id"/>
 <xsl:variable name="btitlerefpropid" select="/document/reference_properties/reference_property[name='btitle']/@id"/>
 
-<xsl:output method="xml" encoding="utf-8" media-type="text/html"
-            doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-            doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+<xsl:output method="xml"
+            encoding="utf-8"
+            media-type="text/html"
+            doctype-system="about:legacy-compat"
+            omit-xml-declaration="yes"
             indent="no"/>
 
 <!--<xsl:template name="cttobject.options.purge_or_delete">
@@ -66,7 +68,7 @@
 			<xsl:attribute name="id">input-<xsl:value-of select="$propid"/></xsl:attribute></input>
 		<div class="ui-state-highlight ui-corner-all prop-desc" id="prop-desc_{$propid}">
 			<p>
-				<span class="ui-icon ui-icon-info"/><strong><xsl:value-of select="$propname"/></strong><br/>
+				<span class="ui-icon ui-icon-info"><xsl:comment/></span><strong><xsl:value-of select="$propname"/></strong><br/>
 				<xsl:value-of select="description"/>
 			</p>
 		</div>
@@ -121,7 +123,8 @@
 		<xsl:when test="$id=42"><xsl:value-of select="$i18n/l/rl_preprint_submitdate"/></xsl:when>
 		<xsl:when test="$id=43"><xsl:value-of select="$i18n/l/rl_thesis_inprocess"/></xsl:when>
 		<!--<xsl:when test="$id=44"><xsl:value-of select="$i18n/l/rl_preprint_identifier"/></xsl:when>-->
-		<xsl:when test="$id=45"><xsl:value-of select="$i18n/l/rl_quality_criterion"/></xsl:when>
+		<xsl:when test="$id=44"><xsl:value-of select="$i18n/l/rl_quality_criterion"/></xsl:when>
+    <xsl:when test="$id=47"><xsl:value-of select="$i18n/l/rl_local_restricted_url"/></xsl:when>
 		<xsl:otherwise>error</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
@@ -358,8 +361,9 @@
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Abstract"/></xsl:attribute>(?)</a>-->
 			</div>
 			<br/>
-			<textarea id="input-abstract" name="abstract" rows="3" cols="79">
+			<textarea id="input-abstract" name="abstract" rows="3" cols="79"><xsl:comment/>
 				<xsl:apply-templates select="abstract"/>
+                <xsl:comment/>
 			</textarea>
 		</div>
 </xsl:template>

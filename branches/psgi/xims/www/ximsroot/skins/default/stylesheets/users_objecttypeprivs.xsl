@@ -5,9 +5,12 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: users_objecttypeprivs.xsl 2246 2009-08-06 11:52:16Z haensel $
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:exslt="http://exslt.org/common" xmlns:dyn="http://exslt.org/dynamic"
-    extension-element-prefixes="dyn" xmlns="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" 
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exslt="http://exslt.org/common"
+                xmlns:dyn="http://exslt.org/dynamic"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="dyn">
 
     <xsl:import href="common.xsl"/>
     <xsl:import href="users_common.xsl"/>
@@ -207,7 +210,7 @@
                                 <br/>
                             <xsl:call-template name="dav_ot_tr"/>
 
- <br clear="all"/>
+ <br class="clear"/>
  <br/>
  <p>
             <button type="submit" name="dav_otprivs_update" value="Update" class="button"><xsl:value-of select="$i18n/l/update"/></button>

@@ -8,7 +8,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exslt="http://exslt.org/common"
-                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns="http://www.w3.org/1999/xhtml" 
                 xmlns:dyn="http://exslt.org/dynamic"
                 extension-element-prefixes="exslt dyn">
 
@@ -158,7 +158,7 @@
             <xsl:with-param name="mo" select="'most_recent'"/>
           </xsl:call-template>
           <xsl:call-template name="chronicle_switch" />
-          <br clear="all"/>
+          <br class="clear"/>
           </div>
           
           <div id="vlib-subjects">

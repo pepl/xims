@@ -11,7 +11,7 @@
 	<xsl:import href="xspscript_common.xsl"/>
 	
 	<xsl:template name="view-content">
-		<div id="docbody">
+		<div id="docbody"><xsl:comment/>
 							<pre>
 								<xsl:apply-templates select="body"/>
 							</pre>

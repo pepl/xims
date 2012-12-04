@@ -15,7 +15,7 @@
 <xsl:param name="ap-pres">true</xsl:param>
 
 <xsl:template name="view-content">
-	<div id="docbody">
+	<div id="docbody"><xsl:comment/>
 	 <xsl:choose>
 			<xsl:when test="$msie=0">
 					<xsl:apply-templates select="body"/>

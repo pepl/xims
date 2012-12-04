@@ -15,7 +15,7 @@
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
 		<head>
-			<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+            <meta charset="UTF-8"/>
 			<title>
 				<xsl:choose>
 					<xsl:when test="$mode='create'">
@@ -53,7 +53,7 @@
 		</head>
 	</xsl:template>
 
-<!--Title-->
+    <!--Title-->
 	<xsl:template name="title-create">
 		<xsl:value-of select="$i18n/l/create"/>&#160;<!--<xsl:value-of select="$objtype"/>-->
 		<xsl:call-template name="objtype_name">
@@ -133,11 +133,17 @@
 
 	</xsl:template>
 	
-		<xsl:template name="script_head">
+	<xsl:template name="script_head">
 		<script type="text/javascript">
 			var ximsroot = '<xsl:value-of select="$ximsroot"/>';
 		</script>
-		<script src="{$ximsroot}scripts/jquery/jquery_min.js" type="text/javascript"/>
+		<script src="{$ximsroot}scripts/jquery/jquery_min.js"
+                type="text/javascript"><xsl:comment></xsl:comment></script>
+        <xsl:comment>
+          <xsl:text disable-output-escaping="yes">[if lt IE 9]&gt;&lt;script src="</xsl:text>
+          <xsl:value-of select="concat($ximsroot,'skins/',$currentskin)"/>
+          <xsl:text disable-output-escaping="yes">/scripts/html5shiv.js"&gt;&lt;/script&gt;&lt;![endif]</xsl:text>
+        </xsl:comment>
 		<!-- debuggin mode -->
 		<!--
 		<script src="{$ximsroot}scripts/jquery/jquery-1.7.2.js" type="text/javascript"/>

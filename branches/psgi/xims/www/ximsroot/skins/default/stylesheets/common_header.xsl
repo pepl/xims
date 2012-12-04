@@ -7,7 +7,7 @@
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns="http://www.w3.org/1999/xhtml" 
                 xmlns:str="http://exslt.org/strings"
                 extension-element-prefixes="str">
 	
@@ -56,7 +56,8 @@
 		<!-- End Warnung Testsystem - UIBK -->
 		<div id="path-logo">
 			<div id="locbar">
-				<xsl:if test="$nopath='false' and $noncontent ='false'">
+              <xsl:choose>
+				<xsl:when test="$nopath='false' and $noncontent ='false'">
 					<xsl:value-of select="$i18n/l/YouAreIn"/>
 					<xsl:choose>
 						<xsl:when test="$containerpath='false'">
@@ -66,6 +67,7 @@
 							<xsl:if test="$create!='true'">
                             / <a href="{$goxims_content}{$absolute_path}">
 									<xsl:value-of select="location"/>
+                                    <xsl:comment/>
 								</a>
 							</xsl:if>
 							<xsl:text>&#160;</xsl:text>
@@ -78,7 +80,9 @@
 							<xsl:text>&#160;</xsl:text>
 						</xsl:otherwise>
 					</xsl:choose>
-				</xsl:if>
+				</xsl:when>
+                <xsl:otherwise><xsl:comment/></xsl:otherwise>
+              </xsl:choose>
 			</div>
 			<div id="header-logo">
 				<a href="http://xims.info/">
@@ -127,7 +131,7 @@
 	<xsl:template name="header.arrownavigation">
 		<div id="navback">
 			<a href="javascript:history.go(-1)">
-				<img src="{$skimages}navigate-back.png" alt="{$i18n/l/Back}" title="{$i18n/l/Back}" name="back"/>
+				<img src="{$skimages}navigate-back.png" alt="{$i18n/l/Back}" title="{$i18n/l/Back}" />
 			</a>
 		</div>
 		<div id="navup">
@@ -398,11 +402,11 @@
 											<xsl:attribute name="onclick">
 												$.get('<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims"/>/bookmark?create=1;path=<xsl:value-of select="/document/context/object/location_path"/>;redir_self=1')
 											</xsl:attribute>
-											<span class="ui-icon ui-icon-star"></span><xsl:value-of select="$i18n/l/SetBMforCurrentObj"/>
+											<span class="ui-icon ui-icon-star"><xsl:comment/></span><xsl:value-of select="$i18n/l/SetBMforCurrentObj"/>
 										</a>
 									</li>
 								</xsl:if>
-								<li></li>
+								<li><xsl:comment/></li>
 							</ul>
 						</li>
 						<li>

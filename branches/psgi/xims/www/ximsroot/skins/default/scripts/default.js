@@ -567,7 +567,7 @@ function initOptionsButtons(){
 				primary: 'ui-icon-closethick'
 			}
 		});*/
-	$('.warn').button({
+	$('a.button.warn').button({
 			text: false,
 			icons: {
 				primary: 'ui-icon-alert'
@@ -579,11 +579,11 @@ function aclTooltip(){
     $('a.option-acl').each(function(){
       var stroa = 'option-acl_';
       var currid = $(this).attr('id').substring($(this).attr('id').indexOf('option-acl') + stroa.length );
-      var geturl = 'http://ximstest1.uibk.ac.at/goxims/content/?id='+currid+';obj_acllist=1;tooltip=1';
+      var geturl = '/goxims/content/?id='+currid+';obj_acllist=1;tooltip=1';
       $(this).tooltip(
         {
         content: function(response){
-          //var geturl = 'http://ximstest1.uibk.ac.at/goxims/content/?id="'+ currid +'";obj_acllist=1;tooltip=1';
+          //var geturl = '/goxims/content/?id="'+ currid +'";obj_acllist=1;tooltip=1';
           $.get(geturl, response);
             return "Loading...";
           }

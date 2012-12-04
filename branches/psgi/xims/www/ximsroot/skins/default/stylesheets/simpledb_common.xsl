@@ -100,9 +100,14 @@
                 </xsl:when>
                 <xsl:when test="type = 'textarea'">
                     <textarea class="text" name="simpledb_{name}" id="simpledb_{name}" rows="5" cols="38" onkeyup="keyup(this)">
-                        <xsl:if test="$propvalue != ''">
+                      <xsl:choose>
+                      <xsl:when test="$propvalue != ''">
                             <xsl:value-of select="$propvalue"/>
-                        </xsl:if>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:comment/>
+                      </xsl:otherwise>
+                      </xsl:choose>
                     </textarea>
                     <script type="text/javascript">
                         keyup( document.getElementsByName("<xsl:value-of select="concat('simpledb_',name)"/>")[0] );

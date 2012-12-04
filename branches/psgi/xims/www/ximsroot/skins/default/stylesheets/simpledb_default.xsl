@@ -5,7 +5,7 @@
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id: simpledb_default.xsl 2241 2009-08-03 14:02:50Z susannetober $
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exslt="http://exslt.org/common" xmlns="http://www.w3.org/1999/xhtml" xmlns:aaa="http://www.w3.org/2005/07/aaa" exclude-result-prefixes="exslt" >
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exslt="http://exslt.org/common" xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="exslt" >
 
 	<xsl:import href="view_common.xsl"/>
 	<xsl:import href="container_common.xsl"/>
@@ -39,7 +39,7 @@
 	<xsl:template name="view-content">
 		<xsl:if test="/document/member_properties/member_property[1]">
 			<div id="simpledb_resulttitle">
-				<div>
+				<div><xsl:comment/>
 					<xsl:if test="$searchstring != ''">
 						<strong><xsl:value-of select="$i18n/l/Search_for"/></strong>:
 						<span class="simpledb_filter">'<xsl:value-of select="$searchstring"/>'</span>.

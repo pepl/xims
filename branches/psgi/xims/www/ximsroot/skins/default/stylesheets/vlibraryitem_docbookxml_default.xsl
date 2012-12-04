@@ -15,7 +15,7 @@
   <xsl:import href="view_common.xsl"/>
   
   <xsl:template name="view-content">
- <div id="docbody">
+ <div id="docbody"><xsl:comment/>
                 <xsl:call-template name="div-vlitemmeta"/>
                 <xsl:choose>
                   <xsl:when test="$section > 0 and $section-view='true'">

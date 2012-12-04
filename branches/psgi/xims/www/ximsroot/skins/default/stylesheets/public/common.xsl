@@ -6,7 +6,8 @@
 # $Id: common.xsl 2188 2009-01-03 18:24:00Z pepl $
 -->
 <xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
+                xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="../common.xsl"/>
 <xsl:import href="../../../../../ximspubroot/stylesheets/include/common.xsl"/>
@@ -14,11 +15,11 @@
 <xsl:import href="../../../../stylesheets/config.xsl"/>
 
 <xsl:output method="xml"
-    encoding="utf-8"
-    media-type="text/html"
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-    doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-    indent="no"/>
+            encoding="utf-8"
+            media-type="text/html"
+            doctype-system="about:legacy-compat"
+            omit-xml-declaration="yes"
+            indent="no"/>
 
 <!-- overwrite goxims_content -->
 <xsl:variable name="goxims_content" select="'/gopublic/content'" />

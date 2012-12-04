@@ -28,7 +28,7 @@
 				</xsl:if>
 			</xsl:if>
 		    <!-- end uibk-design extras -->
-		<br clear="all"/>
+		<br class="clear"/>
 	</xsl:template>
 	
 	<xsl:template match="objectlist/object">
