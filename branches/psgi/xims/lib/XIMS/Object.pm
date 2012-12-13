@@ -3433,7 +3433,7 @@ sub balance_string {
 
     my $tmp_fh = IO::File->new( $tmp, 'w' );
     if ( defined $tmp_fh ) {
-        binmode ( $tmp_fh, ':utf8' );
+        # binmode ( $tmp_fh, ':utf8' );
         print $tmp_fh XIMS::encode($CDATAstring);
         $tmp_fh->close;
         XIMS::Debug( 4, "Temporary file written" );
@@ -3459,25 +3459,24 @@ sub balance_string {
 
         my $parser = XML::LibXML->new();
 
-        # pepl: todo - check if that is still current parse_html_string() behaviour
-        #
-        # parse_html_string() is broken: does not recognize encoding and has
-        # no fallback-encoding, so it croaks at the very first non-ascii-char
-        # adding ctxt->charset = XML_CHAR_ENCODING_UTF8; before returning at
-        # htmlCreateDocParserCtxt() in htmlParser.c gives a workaround
-        # fallback encoding setting
         $CDATAstring = XIMS::encode($CDATAstring);
+        $CDATAstring =~ s/\r//g; # dunno where these CRs come from
         my $doc;
-        eval { $doc = $parser->parse_html_string($CDATAstring); };
+        eval { $doc = $parser->parse_html_string($CDATAstring, { encoding =>'utf-8', 
+                                                                 recover => 1, 
+                                                                 no_blanks => 0,
+                                                                 expand_entities => 1 }
+                      ); 
+        };
         if ($@) {
             XIMS::Debug( 2, "LibXML could not parse string either: $@" );
             return;
         }
         else {
             my $encoding = XIMS::DBEncoding() ? XIMS::DBEncoding() : 'UTF-8';
-            $doc->setEncoding($encoding); # needed. otherwise, toString()
-                                          # produces one-byte numeric entities
-                                          # or double-byte chars !?
+            #$doc->setEncoding($encoding); # needed. otherwise, toString()
+            #                              # produces one-byte numeric entities
+            #                              # or double-byte chars !?
             $wbCDATAstring = XIMS::decode( $doc->toString() );
         }
     }
