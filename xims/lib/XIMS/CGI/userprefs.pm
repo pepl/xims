@@ -22,11 +22,11 @@ XIMS CGI class for managing userprefs
 package XIMS::CGI::userprefs;
 
 use strict;
-#use parent qw( XIMS::CGI::defaultuserprefs );
 use parent qw( XIMS::CGI );
 use XIMS::Object;
 use XIMS::User;
 use XIMS::UserPrefs;
+use XIMS::CGI::defaultbookmark;
 use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision: 2232 $ =~ /\s+(\d+)\s*$/ );
@@ -96,7 +96,7 @@ sub event_default {
 
     XIMS::Debug( 5, "called" );
 
-    $self->redirToDefault($ctxt);    # redir to default userprefs
+    XIMS::CGI::defaultbookmark::redirToDefault( $self, $ctxt );
     return 1;
 }
 
@@ -220,29 +220,22 @@ sub event_delete {
 # END RUNTIME EVENTS
 # #############################################################################
 
-=head2 redirect_path()
+=head2 redirect_uri()
 
 =cut
 
-sub redirect_path {
+sub redirect_uri {
     my ( $self, $ctxt, $id ) = @_;
 
     my $uri   = URI->new( $self->url(-absolute=>1, -path => 1, -query => 1) );
     my $query = $uri->query();
-    # my $port = $uri->port();
-    # warn "port : ".$port;
-    #somehow magically the port is 82... why???
-    #$uri->port(80);
-    #$port = $uri->port();
-    # warn "port : ".$port;
 
     if ( $query =~ /name=([^(;|&)]+)/ ) {
         $uri->path( XIMS::GOXIMS() . '/users' );
-        $uri->query("name=$1;prefs=1;$query");
+        $uri->query("userquery=$1;");
     }
     else {
         $uri->path( XIMS::GOXIMS() . '/user' );
-        #$uri->query("prefs=1;$query");
     }
 
     return $uri;
