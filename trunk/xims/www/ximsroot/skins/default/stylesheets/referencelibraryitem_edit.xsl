@@ -92,7 +92,7 @@
     <xsl:if test="$current_pos!=1">
         <xsl:text> </xsl:text>
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos - 1};date={$date};title={$title}"
-           title="{i18n/l/Reposition}"><!--&lt;--><span class="ui-icon ui-icon-triangle-1-w ui-icon-small"/></a>
+           title="{i18n/l/Reposition}"><!--&lt;--><span class="ui-icon ui-icon-triangle-1-w ui-icon-small"><xsl:comment/></span></a>
         <xsl:text> </xsl:text>
     </xsl:if>
     <a href="{$xims_box}{$goxims_content}{$parent_path}?{name()}=1;{concat(name(),'_id')}={id}" target="_blank" title="{$i18n/l/Opens_in_new_window}">
@@ -102,7 +102,7 @@
     <xsl:if test="position()!=last()">
         <xsl:text> </xsl:text>
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos + 1};date={$date};title={$title}"
-           title="{i18n/l/Reposition}"><!--&gt;--><span class="ui-icon ui-icon-triangle-1-e ui-icon-small"/></a>
+           title="{i18n/l/Reposition}"><!--&gt;--><span class="ui-icon ui-icon-triangle-1-e ui-icon-small"><xsl:comment/></span></a>
 	</xsl:if>
 	<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}">
 		<xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>: <xsl:call-template name="authorfullname"/>

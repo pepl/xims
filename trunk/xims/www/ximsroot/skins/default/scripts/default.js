@@ -59,10 +59,10 @@
 								});
 								if ( !valid ) {
 									// remove invalid value, as it didn't match anything
-									$( this ).val( "" );
-									select.val( "" );
-									input.data( "autocomplete" ).term = "";
-									return false;
+									//$( this ).val( "" );
+									//select.val( "" );
+									//input.data( "autocomplete" ).term = "";
+									//return false;
 								}
 							}
 						}
@@ -926,10 +926,12 @@ $(document).ready(function(){
   /* 
    * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
   */
+  /* 
   $("#help-widget a").click( function() {
     window.open(this.href);
     return false;
   });
+  */
 
 	initVLibMenu();
 	

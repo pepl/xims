@@ -23,6 +23,9 @@ function addVLProperty( property ) {
 
     return true;
 }
+function addVLProperty2( property ) {
+  $("#svl"+property).append('<option value="" selected="selected">'+$("#vl"+property).val()+'</option>');
+}
 
 function submitOnValue ( field, text, selectfield ) {
     if ( field.value.replace(/\s+/g,"").length > 0 ) {
@@ -50,6 +53,14 @@ function submitOnId ( property, text ) {
 }
 
 function createMapping ( property, text ) {
+//test
+alert("neuer eintrag?"+$('#vl'+property).val());
+if($('#svl'+property+' option:selected').text() != $('#vl'+property).val()){
+          alert("neuer eintrag?"+$('#vl'+property).val());
+            //alert("gewählt: "+$('#svl'+property+' option:selected').text());
+            addVLProperty2( property );
+            }
+//end test
     var selectfield = eval("document.eform.svl"  + property);
     if ( selectfield.value > 0 ) {
         post_async("create_mapping_async=1;property=" + property
