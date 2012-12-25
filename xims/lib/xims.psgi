@@ -272,6 +272,8 @@ sub auth_cb{
     my ($username, $password, $env) = @_;
 
     my $login = XIMS::Auth->new( Username => $username, Password => $password )->authenticate();
+    return 0 unless defined $login;
+
     my $user = $login->getUserInfo();
     if ( $user and $user->id() ) {
         $env->{'xims.appcontext'}->session( XIMS::Session->new() );
