@@ -84,7 +84,12 @@ sub new {
     }
     else {
         eval "use $XIMS::SAX::DefaultSAXGenerator";
-        $args{Generator} = $XIMS::SAX::DefaultSAXGenerator->new();
+        if ( not $@ ) {
+            $args{Generator} = $XIMS::SAX::DefaultSAXGenerator->new();
+        }
+        else {
+            die XIMS::Debug( 1, "Could not load $XIMS::SAX::DefaultSAXGenerator" );
+        }
     }
 
     $args{FilterList} ||= [];
