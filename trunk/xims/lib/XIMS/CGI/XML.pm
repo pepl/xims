@@ -168,13 +168,24 @@ sub event_store {
         }
     }
 
-    my $body = $self->param( 'body' );
+    my $body;
+    my $fh = $self->upload( 'file' );
 
-    if ( defined $body and length $body ) {
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
+    if ( defined $fh ) {
+        my $buffer;
+        while ( read($fh, $buffer, 1024) ) {
+            $body .= $buffer;
         }
-
+    }
+    else {
+        $body = $self->param( 'body' );
+        if ( defined $body and length $body ) {
+            if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+                $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
+            }
+        }
+    }
+    if ( defined $body and length $body ) {
         # we have to update the encoding attribute in the xml-decl to match
         # the encoding, the body will be saved in the db. that can't be done
         # parsing the body, doing a setEncoding() followed by a toString()
