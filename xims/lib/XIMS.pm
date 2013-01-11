@@ -150,6 +150,12 @@ sub HOME {
 
 =item GOXIMS()
 
+=item GOPUBLIC()
+
+=item GOBAXIMS()
+
+=item GODAV()
+
 =item DEBUGLEVEL()
 
 =item PUBROOT_URL()
@@ -177,6 +183,10 @@ sub HOME {
 =item AUTHSERVER()
 
 =item CONTENTINTERFACE()
+
+=item PERSONALINTERFACE()
+
+=item USERMANAGEMENTINTERFACE()
 
 =item DBMS()
 
@@ -212,11 +222,17 @@ sub HOME {
 
 sub GOXIMS                    { return '/' . $_CONFIG_->goxims(); }
 
+sub GOPUBLIC                  { return '/' . $_CONFIG_->gopublic(); }
+
+sub GOBAXIMS                  { return '/' . $_CONFIG_->gobaxims(); }
+
+sub GODAV                     { return '/' . $_CONFIG_->godav(); }
+
 sub DEBUGLEVEL ()             { $_DEBUGLEVEL_ }
 
 sub PUBROOT_URL               { return '/' . $_CONFIG_->PublicRoot(); }
 
-sub PUBROOT                   { return $_CONFIG_->ApacheDocumentRoot()
+sub PUBROOT                   { return $_CONFIG_->ServerDocumentRoot()
                                      . '/'
                                      . $_CONFIG_->PublicRoot();
 }
@@ -234,7 +250,7 @@ sub TIDYOPTIONS               { return $_CONFIG_->TidyOptions(); }
 
 sub XIMSROOT_URL              { return '/' . $_CONFIG_->XIMSRoot(); }
 
-sub XIMSROOT                  { return $_CONFIG_->ApacheDocumentRoot()
+sub XIMSROOT                  { return $_CONFIG_->ServerDocumentRoot()
                                      . '/'
                                      . $_CONFIG_->XIMSRoot();
 }
@@ -244,6 +260,10 @@ sub AUTHSTYLE                 { return $_CONFIG_->AuthStyle(); }
 sub AUTHSERVER                { return $_CONFIG_->AuthServer(); }
 
 sub CONTENTINTERFACE          { return '/' . $_CONFIG_->ContentInterface(); }
+
+sub PERSONALINTERFACE         { return '/' . $_CONFIG_->PersonalInterface(); }
+
+sub USERMANAGEMENTINTERFACE   { return '/' . $_CONFIG_->UserManagementInterface(); }
 
 sub DBMS                      { return $_CONFIG_->DBMS(); }
 

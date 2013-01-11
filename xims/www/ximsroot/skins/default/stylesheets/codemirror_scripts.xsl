@@ -33,11 +33,10 @@
 		<xsl:param name="cm_mode"><xsl:value-of select="$cm_mode"/></xsl:param>
 		<script  type="text/javascript">
 			$().ready(function(){
-				var ximsroot = '<xsl:value-of select="$ximsroot" />';
 				var textarea = document.getElementById('body');
 				var editor = new CodeMirrorUI(textarea,
 				{
-					path : '<xsl:value-of select="$ximsroot" />'  + 'editors/codemirror-ui/js/',
+					path : ximsconfig.ximsroot + 'editors/codemirror-ui/js/',
 					searchMode : 'popup'
 				},
 				{
