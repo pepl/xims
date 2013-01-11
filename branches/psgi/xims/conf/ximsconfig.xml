@@ -9,8 +9,8 @@
         -->
         <DebugLevel>2</DebugLevel>
 
-        <!-- Absolute path to the Apache document root -->
-        <ApacheDocumentRoot></ApacheDocumentRoot>
+        <!-- Absolute path to the HTTP servers document root -->
+        <ServerDocumentRoot></ServerDocumentRoot>
 
         <!-- Database connection information -->
         <DBUser></DBUser>
@@ -27,7 +27,7 @@
         # Example settings for PostgreSQL
         <DBUser>ximsrun</DBUser>           # Default value from defaultdata.sql
         <DBPassword>ximsrun</DBPassword>   # Default value from defaultdata.sql
-        <DBdsn>dbi:Pg:dbname=xims</DBdsn>  # Default value from defaultdata.sql
+        <DBdsn>dbi:Pg:dbname=xims;host=127.0.0.1;</DBdsn>  # Default value from defaultdata.sql
         <DBSessionOpt>SET DateStyle TO ISO;</DBSessionOpt>
         <DBDOpt>FetchHashKeyName=NAME_uc;pg_enable_utf8=1;</DBDOpt>
         -->
@@ -83,6 +83,11 @@
         -->
         <DefaultXHTMLEditor>tinymce</DefaultXHTMLEditor>
 
+        <XHTMLEditorOptions>
+          <option value="plain">Plain Textarea</option>
+          <option value="tinymce">TinyMCE Editor</option>
+        </XHTMLEditorOptions>
+
         <!--
         # Source IP of the mailable object types' request agent session
         -->
@@ -92,6 +97,10 @@
         #  Sizelimit of E-Mails sent by XIMS in  characters (octets)
         -->
         <MailSizeLimit>524288</MailSizeLimit>
+
+        <!-- What is considered to be a big image. It will be marked as such in
+        the ImageChooser (~70KiB) -->   
+        <BigImageLimit>71680</BigImageLimit>
 
         <!--
         # If set to a non-zero value, locations of content objects will be lowercased during save
@@ -183,34 +192,51 @@
         <DBMS>DBI</DBMS>
 
         <!--
-        # Path relative to ApacheDocumentRoot()
-        # Do not change unless you know what you are doing!
+            Path relative to ServerDocumentRoot. Do not change unless you know
+            what you are doing; e.g. you will find that 'ximsroot' is still
+            hardcoded in many of the CSS files, etc.
         -->
         <XIMSRoot>ximsroot</XIMSRoot>
 
         <!--
-        # Path to the export directory relative to ApacheDocumentRoot()
-        # Must be in sync with the corresponding value in config.xsl
+        # Path to the export directory relative to ServerDocumentRoot.
         # Do not change unless you know what you are doing!
         -->
         <PublicRoot>ximspubroot</PublicRoot>
 
         <!--
         # Name of the main XIMS PerlHandler module
-        # Must be in sync with the corresponding value in config.xsl
         # Do not change unless you know what you are doing!
         -->
         <goxims>goxims</goxims>
 
+        <!-- The same, but use basic authentication -->
+        <gobaxims>gobaxims</gobaxims>
+
+        <!-- ... for the public user ... -->
+        <gopublic>gopublic</gopublic>
+   
+        <!-- ... and for WebDAV -->
+        <godav>godav</godav>
+
         <!--
-        # Name of the content interface
-        # Must be in sync with the corresponding value in config.xsl
-        # Do not change unless you know what you are doing!
+            Name of the content interface
+            Do not change unless you know what you are doing!
         -->
         <ContentInterface>content</ContentInterface>
+        <!--
+            Name of the interface for users' personal settings
+            Do not change unless you know what you are doing!
+        -->
+        <PersonalInterface>user</PersonalInterface>
+        <!--
+            Name of the interface for managing users
+            Do not change unless you know what you are doing!
+        -->
+        <UserManagementInterface>users</UserManagementInterface>
 		
 		<!--
-		# Default UserPreferences
+		    Default UserPreferences
 		-->
 		<DefaultUserPrefsSkin>default</DefaultUserPrefsSkin>
 		<DefaultUserPrefsProfile>standard</DefaultUserPrefsProfile>

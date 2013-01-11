@@ -299,7 +299,7 @@ function initMenuMenu(){
 			}).hide();
 		}).click(function(event) {
 			//first get bookmarks for submenu
-			$.get('/goxims/user?bookmarks=1;tooltip=1', function(data){
+			$.get(ximsconfig.goxims + ximsconfig.personalinterface + '?bookmarks=1;tooltip=1', function(data){
 				$('#bm-links li[id!="new-bm"]').remove();
 				$('#bm-links').append(data);
 			});
@@ -579,7 +579,7 @@ function aclTooltip(){
     $('a.option-acl').each(function(){
       var stroa = 'option-acl_';
       var currid = $(this).attr('id').substring($(this).attr('id').indexOf('option-acl') + stroa.length );
-      var geturl = '/goxims/content/?id='+currid+';obj_acllist=1;tooltip=1';
+      var geturl = ximsconfig.goxims + ximsconfig.contentinterface + '?id='+currid+';obj_acllist=1;tooltip=1';
       $(this).tooltip(
         {
         content: function(response){

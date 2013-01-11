@@ -30,6 +30,7 @@ package XIMS::Config;
 
 use strict;
 use XML::LibXML;
+use XML::LibXSLT;
 
 our $VERSION = do { my @r = ( q$Revision$ =~ /\d+/g ); 
                     sprintf "%d." . "%02d" x $#r, @r; 
@@ -67,6 +68,7 @@ sub new {
 
     $self->process_file($general);
     $self->process_dbi($dbi);
+    $self->gen_xsl_config($general);
 
     return $self;
 }
@@ -331,6 +333,57 @@ sub process_includes {
 
     return 1;
 }
+
+=head2 gen_xsl_config( $ximsconfig )
+
+Recreates config.xsl from ximsconfig.xml. We check for existence and
+timestamps but do not try to be all too smart. Transform or die.
+
+=cut
+
+
+sub gen_xsl_config {
+    my ($self, $config_in) = @_;
+    my ($stylesheet,$results);
+
+    # check existance and permissions
+    -r $config_in or die "\nConfiguration file '$config_in' is not readable.\nExiting.\n";
+
+    my $xsl_in = $XIMS_HOME . '/conf/xslconfig.xsl';
+    -r $xsl_in or die "\n'Stylesheet  $xsl_in' is not readable.\nExiting.\n";
+
+    my $outdir = $self->ServerDocumentRoot() . '/' . $self->XIMSRoot() . '/stylesheets/';
+    my $config_out = $outdir . 'config.xsl';
+
+    unless(-w $config_out or (not -e $config_out and -w $outdir)) {
+        die "\n'$config_out' is not writable.\n" .
+            "Is '$outdir' really an absolute and writable filesystem path?\n" .
+            "You might want to double-check permissions and settings like 'ServerDocumentRoot' or 'XIMSRoot'.\n" .
+            "Exiting.\n";
+    }
+
+    # check timestamps (yes, it correctly handles a non-existing $config_out)
+    # and recreate if necessary
+    if ( (stat($config_in))[9] > (stat($config_out))[9]
+      or (stat($xsl_in))[9]    > (stat($config_out))[9] ) {
+        my $proc = XML::LibXSLT->new();
+        eval{
+            $stylesheet = $proc->parse_stylesheet_file($xsl_in);
+            $results = $stylesheet->transform_file($config_in);
+        };
+        die "Could not transform xsl-config:\n\n$@\nExiting.\n" if $@;
+
+        eval{
+            $stylesheet->output_file($results, $config_out)
+        };
+        die "Could not write '$config_out':\n\n$@\nExiting.\n" if $@;
+
+        return 1;
+    }
+
+    return 0;
+}
+
 
 1;
 

@@ -1328,8 +1328,8 @@ sub init_store_object {
 	my $parent;
 	my $location = $self->param('name');    # is somehow xml-escaped magically
 	                                        # by libxml2 (???)
-	     # do we have an 'test_location' AJAX event?
-	my $is_event_test_location = $self->param('test_location');
+    # do we have a 'test_location' AJAX event?
+    my $is_event_test_location = $self->param('test_location');
 
 	# $location will be part of the URI, converting to iso-8859-1 is a first
 	# step before clean_location() to ensure browser compatibility

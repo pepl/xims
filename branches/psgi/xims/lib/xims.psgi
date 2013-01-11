@@ -66,10 +66,11 @@ my $goxims = sub {
     my $interface_type = getInterface($req);
     HTTP::Exception::404->throw unless $interface_type;
 
+    my $gp = XIMS::GOPUBLIC();
     # TODO: handle public user somewhere else
-    if ($req->script_name() =~ /^\/gopublic/) {
-        # /gopublic has no interface "user"
-        if ( $interface_type eq 'user' ) {
+    if ($req->script_name() =~ /^$gp/) {
+        # /gopublic has no interface "user" (n.b. it isn't even mounted)
+        if ( $interface_type eq XIMS::PERSONALINTERFACE() ) {
             HTTP::Exception::404->throw();
         }
         # was: set up session for public user
@@ -226,41 +227,42 @@ builder {
         enable 'XIMSUILang';
         # bis es was besseres gibt…
         # enable "Auth::CAS" ;-)
-        mount XIMS::CONTENTINTERFACE() => builder {$goxims}; # /content
-        mount '/user'            => builder {$goxims};
-        mount '/users'           => builder {$goxims};
-        mount '/bookmark'        => builder {$goxims};
-        mount '/defaultbookmark' => builder {$goxims};
-        mount '/search_intranet' => builder {$goxims};
+        mount XIMS::CONTENTINTERFACE()        => builder {$goxims}; # /content
+        mount XIMS::PERSONALINTERFACE()       => builder {$goxims}; # /user
+        mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims}; # /users
+        mount '/userprefs'                    => builder {$goxims};
+        mount '/bookmark'                     => builder {$goxims};
+        mount '/defaultbookmark'              => builder {$goxims};
+        mount '/search_intranet'              => builder {$goxims};
     };
 
-    mount "/gopublic" => builder {
+    mount XIMS::GOPUBLIC() => builder {
         enable "XIMSAppContext";
-
         enable "Auth::XIMSPublicUser";
         enable 'XIMSUILang';
         # enable "Caching::Would::Be::Nice"
 
-        mount '/content'         => builder {$goxims};
+        mount XIMS::CONTENTINTERFACE() => builder {$goxims};
     };
 
-    mount "/gobaxims" => builder {
+    mount XIMS::GOBAXIMS() => builder {
         enable "XIMSAppContext";
         enable "Auth::Basic", authenticator => \&auth_cb;
         enable 'XIMSUILang';
         #enable "XIMS::Session"
         #$gobaxims;
 
-        mount '/content'         => builder {$goxims};
-        mount '/user'            => builder {$goxims};
-        mount '/users'           => builder {$goxims};
-        mount '/bookmark'        => builder {$goxims};
-        mount '/defaultbookmark' => builder {$goxims};
-        mount '/search_intranet' => builder {$goxims};
+        mount XIMS::CONTENTINTERFACE()        => builder {$goxims};
+        mount XIMS::PERSONALINTERFACE()       => builder {$goxims};
+        mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims};
+        mount '/userprefs'                    => builder {$goxims};
+        mount '/bookmark'                     => builder {$goxims};
+        mount '/defaultbookmark'              => builder {$goxims};
+        mount '/search_intranet'              => builder {$goxims};
     };
 
     # WebDAV
-    mount "/godav" => $godav;
+    mount XIMS::GODAV() => $godav;
 
     # static files
     mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );

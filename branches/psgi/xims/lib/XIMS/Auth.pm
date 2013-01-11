@@ -50,7 +50,7 @@ sub new {
 
 sub authenticate {
     use Data::Dumper;
-    warn Dumper(\@_);
+    #warn Dumper(\@_);
     XIMS::Debug( 5, "called" );
     my $self = shift;
     my %args = @_;
