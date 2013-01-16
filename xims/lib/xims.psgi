@@ -220,10 +220,16 @@ builder {
     # enable "HTTPExceptions", rethrow => 1;
     enable "ConditionalGET";
 
+    enable_if { length(XIMS::TRUSTPROXY()) }
+        "Plack::Middleware::XForwardedFor", trust => [split( /,/, XIMS::TRUSTPROXY() )];
+
     # /goxims
     mount XIMS::GOXIMS() => builder {
         enable 'XIMSAppContext';
+        #enable 'Session';
         enable 'Auth::Basic', authenticator => \&auth_cb;
+        #'Auth::Form', authenticator => \&auth_cb;
+
         enable 'XIMSUILang';
         # bis es was besseres gibt…
         # enable "Auth::CAS" ;-)
