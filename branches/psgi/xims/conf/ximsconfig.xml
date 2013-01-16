@@ -12,6 +12,11 @@
         <!-- Absolute path to the HTTP servers document root -->
         <ServerDocumentRoot></ServerDocumentRoot>
 
+        <!-- comma-separated list of IPs or netmasks that can be trusted. -->
+        <!-- Example setting for localhost -->
+        <!-- <trustProxy>127.0.0.1/8</trustProxy> -->
+        <trustProxy></trustProxy>
+
         <!-- Database connection information -->
         <DBUser></DBUser>
         <DBPassword></DBPassword>

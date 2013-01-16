@@ -182,6 +182,8 @@ sub HOME {
 
 =item AUTHSERVER()
 
+=item TRUSTPROXY()
+
 =item CONTENTINTERFACE()
 
 =item PERSONALINTERFACE()
@@ -258,6 +260,8 @@ sub XIMSROOT                  { return $_CONFIG_->ServerDocumentRoot()
 sub AUTHSTYLE                 { return $_CONFIG_->AuthStyle(); }
 
 sub AUTHSERVER                { return $_CONFIG_->AuthServer(); }
+
+sub TRUSTPROXY                { return $_CONFIG_->trustProxy(); }
 
 sub CONTENTINTERFACE          { return '/' . $_CONFIG_->ContentInterface(); }
 
@@ -796,102 +800,6 @@ sub is_notutf8 {
     eval { Encode::decode( 'UTF-8', shift, 1 ); };
     return $@ ? 1 : 0;
 }
-
-
-# =head2 via_proxy_test()
-
-# =head3 Parameter
-
-#     $r: Apache::Request object
-
-# =head3 Returns
-
-#     nothing
-
-# =head3 Description
-
-#     XIMS::via_proxy_test( $r )
-
-# If the Request appears to come from a known proxy, replace the IP-address with
-# the one from the X-Forwarded-For header, and flag the request in pnotes.
-
-# =cut
-
-# sub via_proxy_test {
-#     my $r = shift;
-
-#     if ( $r->dir_config('ximsTrustProxyHeaders')
-#         and my ($ip) = $r->headers_in->{'X-Forwarded-For'} =~ /([^,\s]+)$/ )
-#     {
-#         $r->connection->remote_ip($ip);
-#         XIMS::Debug( 6, "Remote IP taken from X-Forwarded-For-header\n" );
-#     }
-#     $r->pnotes( 'PROXY_TEST' => 1 );
-
-#     return;
-# }
-
-# =head2 get_server_url()
-
-# =head3 Parameter
-
-#     $r: Apache::Request object
-
-# =head3 Returns
-
-#     URL of the current frontend request
-
-# =head3 Description
-
-#     XIMS::get_server_url( $r )
-
-# Determines the server url from the following sources:
-
-# If the ximsServerURL Apache dir config variable has a value, use that.
-
-# If ximsServerURL is I<not> present: Either deduce the value from the
-# X-Forwarded-Host and X-SSL-Connection request headers in case we are
-# configured to trust proxy headers; otherwise use the parsed Apache::URI of the
-# current frontend request as source.
-
-# =cut
-
-# sub get_server_url {
-#     my ($r) = @_;
-
-#     return $r->pnotes('SERVERURL') if defined $r->pnotes('SERVERURL');
-
-#     my $serverurl = $r->dir_config('ximsServerURL');
-#     if ( not defined $serverurl ) {
-#         my $uri = Apache::URI->parse($r);
-#         my $hostinfo;
-#         my $scheme;
-
-#         # test if we are supposed to trust proxy headers, set serverurl and URI
-#         # scheme accordingly
-#         if ($r->dir_config('ximsTrustProxyHeaders') ) {
-#             $hostinfo = ( length $r->headers_in->{'X-Forwarded-Host'} )
-#                       ? $r->headers_in->{'X-Forwarded-Host'}
-#                       : $uri->hostinfo();
-
-#             # check for the custom-set request header 'X-SSL-Connection'
-#             # e.g. in Apache2:
-#             # RequestHeader set "X-SSL-Connection" "yes"
-#             $scheme = ( $r->headers_in->{'X-SSL-Connection'} eq 'yes' )
-#                     ? 'https'
-#                     : $uri->scheme();
-#         }
-#         else {
-#             $hostinfo = $uri->hostinfo();
-#             $scheme   = $uri->scheme();
-#         }
-
-#         $serverurl = $scheme . '://' . $hostinfo;
-#     }
-
-#     $r->pnotes( 'SERVERURL' => $serverurl );
-#     return $serverurl;
-# }
 
 =head1 NAME
 
