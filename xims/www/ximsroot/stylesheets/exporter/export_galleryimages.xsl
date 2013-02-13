@@ -12,25 +12,67 @@
     <xsl:import href="../common.xsl"/>
 
     <xsl:output method="xml"/>
-	<xsl:template match="/document">
-        <xsl:apply-templates select="context/object"/>
+    
+  <xsl:variable name="defaultsortby">
+    <xsl:choose>
+      <xsl:when test="/document/context/object/attributes/defaultsortby = 'titlelocation'">
+        <xsl:text>title</xsl:text>
+      </xsl:when>
+      <xsl:when test="/document/context/object/attributes/defaultsortby = 'date'">
+        <xsl:text>last_modification_timestamp</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="/document/context/object/attributes/defaultsortby"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="defaultsort">
+    <xsl:choose>
+      <xsl:when test="/document/context/object/attributes/defaultsort = 'desc'">descending</xsl:when>
+      <xsl:otherwise>ascending</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+  
+  <xsl:template match="/document">
+    <xsl:apply-templates select="context/object"/>
+  </xsl:template>
+
+  <xsl:template match="/document/context/object">
+    <xsl:variable name="dataformat">
+      <xsl:value-of select="data_format_id"/>
+    </xsl:variable>
+
+    <xsl:apply-templates select="children"/>
+
     </xsl:template>
 
-    <xsl:template match="/document/context/object">
-        <xsl:variable name="dataformat">
-            <xsl:value-of select="data_format_id"/>
-        </xsl:variable>
 
-                <xsl:apply-templates select="children"/>
-
-    </xsl:template>
-
-
-<xsl:template match="/document/context/object/children">
-	<div class="images">
-				<xsl:apply-templates select="object"/>
+  <xsl:template match="/document/context/object/children">
+    <div class="images">
+      <xsl:choose>
+      <xsl:when test="$defaultsortby='last_modification_timestamp'">
+        <xsl:apply-templates select="./object[published=1]">
+          <xsl:sort select="last_modification_timestamp/year" order="{$defaultsort}" data-type="number"/>
+          <xsl:sort select="last_modification_timestamp/month" order="{$defaultsort}" data-type="number"/>
+          <xsl:sort select="last_modification_timestamp/day" order="{$defaultsort}" data-type="number"/>
+          <xsl:sort select="last_modification_timestamp/hour" order="{$defaultsort}" data-type="number"/>
+          <xsl:sort select="last_modification_timestamp/minute" order="{$defaultsort}" data-type="number"/>
+          <xsl:sort select="last_modification_timestamp/second" order="{$defaultsort}" data-type="number"/>
+        </xsl:apply-templates>
+      </xsl:when>
+      <xsl:when test="$defaultsortby='position'">
+        <xsl:apply-templates select="./object[published=1]">
+          <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}" data-type="number"/>
+        </xsl:apply-templates>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="./object[published=1]">
+          <xsl:sort select="*[name() = $defaultsortby]" order="{$defaultsort}"/>
+        </xsl:apply-templates>
+      </xsl:otherwise>
+    </xsl:choose>
 	</div>
-
 </xsl:template>
 
 <xsl:template match="/document/context/object/children/object">
