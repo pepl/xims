@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::SiteRoot;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI::DepartmentRoot );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

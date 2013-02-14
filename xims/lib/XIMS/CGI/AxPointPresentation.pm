@@ -22,7 +22,7 @@ Presentations.
 
 package XIMS::CGI::AxPointPresentation;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI::Document );
 use XIMS::DataFormat;
 use XML::LibXML::SAX;

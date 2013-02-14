@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Auth::IMAP;
 
-use strict;
+use common::sense;
 use XIMS::User;
 use IMAP::Admin;
 

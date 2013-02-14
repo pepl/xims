@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::DataFormat;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 use XIMS::MimeType;
 

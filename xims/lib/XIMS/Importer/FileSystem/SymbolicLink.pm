@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Importer::FileSystem::SymbolicLink;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Importer::FileSystem );
 use XIMS::Object;
 use File::Basename;

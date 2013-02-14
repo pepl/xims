@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Importer::FileSystem::XMLChunk;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XMLChunk);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

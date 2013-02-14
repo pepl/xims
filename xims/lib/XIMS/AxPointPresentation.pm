@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::AxPointPresentation;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Document );
 use XIMS::DataFormat;
 

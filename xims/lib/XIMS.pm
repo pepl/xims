@@ -24,7 +24,7 @@ Always C<require> or C<use> this first in scripts or modules!
 
 package XIMS;
 
-use strict;
+use common::sense;
 use XIMS::Config;
 use Text::Iconv;
 use Encode ();

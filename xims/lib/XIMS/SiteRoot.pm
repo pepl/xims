@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::SiteRoot;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::DepartmentRoot );
 use XIMS::DataFormat;
 

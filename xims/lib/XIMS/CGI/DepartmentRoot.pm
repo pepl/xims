@@ -21,7 +21,7 @@ It is based on XIMS::CGI::Folder.
 
 package XIMS::CGI::DepartmentRoot;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI::Folder );
 use Locale::TextDomain ('info.xims');
 

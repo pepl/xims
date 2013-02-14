@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::SAX::Filter::ContentObjectPropertyResolver;
 
-use strict;
+use common::sense;
 use parent qw( XML::SAX::Base );
 use XIMS::Object;
 

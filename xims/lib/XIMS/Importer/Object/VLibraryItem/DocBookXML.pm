@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Importer::Object::VLibraryItem::DocBookXML;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::Importer::Object::XML);
 use XIMS::VLibAuthor;
 use XIMS::VLibKeyword;

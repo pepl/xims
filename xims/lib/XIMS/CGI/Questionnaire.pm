@@ -21,7 +21,7 @@ This module introduces a simple poll system.
 
 package XIMS::CGI::Questionnaire;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI );
 use XIMS::QuestionnaireResult;
 use File::Spec;

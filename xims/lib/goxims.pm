@@ -22,7 +22,7 @@ This module bla bla
 
 package goxims;
 use Apache::Constants qw(:common);
-use strict;
+use common::sense;
 use Apache;
 use Apache::Request;
 use Apache::URI;

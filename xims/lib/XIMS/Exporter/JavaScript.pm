@@ -17,7 +17,7 @@ $Id$
 
 package XIMS::Exporter::JavaScript;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Exporter::Text );
 use JavaScript::Minifier::XS qw(minify);
 

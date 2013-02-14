@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Auth::Password;
 
-use strict;
+use common::sense;
 use XIMS::User;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

@@ -22,7 +22,7 @@ ci_object_types table.
 =cut
 
 package XIMS::CGI::Mailable;
-use strict;
+use common::sense;
 
 use XIMS::Mailer;
 use Email::Valid;

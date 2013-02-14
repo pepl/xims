@@ -20,7 +20,7 @@ package XIMS::XMLApplication;
 # ################################################################
 # module loading and global variable initializing
 # ################################################################
-use strict;
+use common::sense;
 
 
 use Carp;

@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::SimpleDBItem;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::CGI);
 use XIMS::SimpleDB;
 use XIMS::SimpleDBMember;

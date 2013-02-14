@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::SAX;
 
-use strict;
+use common::sense;
 use XML::LibXML;
 use XML::SAX::Machines qw( :all );
 use XIMS;

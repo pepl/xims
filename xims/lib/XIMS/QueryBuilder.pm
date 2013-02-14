@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::QueryBuilder;
 
-use strict;
+use common::sense;
 
 # use warnings;
 

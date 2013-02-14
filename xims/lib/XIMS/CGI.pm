@@ -22,7 +22,7 @@ methods used in XIMS' CGI classes are implemented here.
 
 package XIMS::CGI;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::XMLApplication);
 
 use XIMS;
@@ -738,7 +738,7 @@ sub selectStylesheet {
 	if ( defined $ctxt->object ) {
 		$self->param( 'request.uri', $ctxt->object->location_path_relative() );
 	}
-	$self->param( 'request.uri.query', query_string() );
+	$self->param( 'request.uri.query', $self->query_string() );
 
 	my $gotpubuilangstylesheet;
 

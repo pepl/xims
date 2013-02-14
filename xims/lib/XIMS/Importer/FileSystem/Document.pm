@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Importer::FileSystem::Document;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Importer::FileSystem::XMLChunk );
 use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implementation changed from 1.52 to 1.54.
                       # With 1.52, node iteration is handled differently and we would call

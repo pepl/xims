@@ -28,7 +28,7 @@ stored in this files.
 
 package XIMS::Config;
 
-use strict;
+use common::sense;
 use XML::LibXML;
 use XML::LibXSLT;
 

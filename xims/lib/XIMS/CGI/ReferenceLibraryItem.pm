@@ -21,7 +21,7 @@ It is based on XIMS::CGI.
 
 package XIMS::CGI::ReferenceLibraryItem;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::CGI);
 use XIMS::ReferenceLibrary;
 use XIMS::RefLibReference;

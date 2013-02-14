@@ -21,7 +21,7 @@ This package defines the set of XIMS system privileges.
 
 package XIMS::Privileges::System;
 
-use strict;
+use common::sense;
 
 # we use `constant functions´ with prototypes as described in perlsub(1).
 ## no critic

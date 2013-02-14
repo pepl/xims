@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::Text;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI );
 use Text::Iconv;
 

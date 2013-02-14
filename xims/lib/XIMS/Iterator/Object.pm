@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Iterator::Object;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Iterator );
 use XIMS::Object;
 

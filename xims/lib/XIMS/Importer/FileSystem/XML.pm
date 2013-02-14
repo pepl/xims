@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Importer::FileSystem::XML;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XML);
 use XML::LibXML;
 

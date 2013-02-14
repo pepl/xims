@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Importer::Object::URLLink;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Importer::Object );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

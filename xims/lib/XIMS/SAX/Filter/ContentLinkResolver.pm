@@ -23,7 +23,7 @@ therefore we got path-string in *_id elements!
 
 package XIMS::SAX::Filter::ContentLinkResolver;
 
-use strict;
+use common::sense;
 use parent qw( XML::SAX::Base );
 use XIMS;
 

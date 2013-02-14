@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::VLibrary;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Folder );
 use XIMS::DataFormat;
 use XIMS::VLibraryItem;

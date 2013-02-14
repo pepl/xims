@@ -22,7 +22,7 @@ group.)
 
 package XIMS::CGI::TAN_List;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI );
 use XIMS::DataFormat;
 use Locale::TextDomain ('info.xims');

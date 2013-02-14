@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Questionnaire;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Object );
 use XIMS::TAN_List;
 use XIMS::QuestionnaireResult;

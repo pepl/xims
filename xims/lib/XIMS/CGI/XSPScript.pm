@@ -21,7 +21,7 @@ It is based on XIMS::CGI::XML.
 
 package XIMS::CGI::XSPScript;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI::XML );
 use Apache;
 use AxKit;

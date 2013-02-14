@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::AppContext;
 
-use strict;
+use common::sense;
 use Carp;
 
 use parent qw( XIMS::AbstractClass Class::Accessor::Fast );

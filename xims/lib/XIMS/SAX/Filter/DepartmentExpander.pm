@@ -25,7 +25,7 @@ package XIMS::SAX::Filter::DepartmentExpander;
 # folders. Since this information is stored within the department's
 # body, it has to be expanded before it can be published.
 
-use strict;
+use common::sense;
 use parent qw( XML::SAX::Base );
 use XIMS::Portlet;
 use XML::LibXML;

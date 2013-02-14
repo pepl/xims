@@ -21,7 +21,7 @@ Exporter subclass for VLibraryItem::Documents.
 
 package XIMS::Exporter::VLibraryItem::Document;
 
-use strict;
+use common::sense;
 use XIMS::Exporter;
 use parent qw( XIMS::Exporter::Document );
 use XIMS::ObjectType;

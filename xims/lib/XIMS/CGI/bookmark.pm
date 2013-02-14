@@ -21,7 +21,7 @@ XIMS CGI class for managing bookmarks XIMS::CGI::defaultbookmark
 
 package XIMS::CGI::bookmark;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI::defaultbookmark );
 use XIMS::User;
 use XIMS::Bookmark;
