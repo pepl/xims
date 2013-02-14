@@ -22,7 +22,7 @@ operations.
 
 package XIMS::Importer::FileSystem;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Importer );
 use XIMS::DataFormat;
 use XIMS::ObjectType;

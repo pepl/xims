@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::ReferenceLibrary;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::CGI::Folder);
 use XIMS::VLibAuthor;
 use XIMS::ReferenceLibraryItem;

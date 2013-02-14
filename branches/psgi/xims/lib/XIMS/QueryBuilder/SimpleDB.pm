@@ -22,7 +22,7 @@ This module bla bla
 #$Id$
 package XIMS::QueryBuilder::SimpleDB;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::QueryBuilder );
 use XIMS::User;
 

@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::Folder;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI );
 
 use Locale::TextDomain ('info.xims');

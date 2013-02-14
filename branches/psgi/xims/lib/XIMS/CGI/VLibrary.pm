@@ -21,7 +21,7 @@ The VLibrary CGI methods
 
 package XIMS::CGI::VLibrary;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::CGI::Folder);
 
 use Time::Piece;

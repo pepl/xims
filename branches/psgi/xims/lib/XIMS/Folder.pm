@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Folder;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 

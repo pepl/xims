@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Installer;
 
-use strict;
+use common::sense;
 use CPAN;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

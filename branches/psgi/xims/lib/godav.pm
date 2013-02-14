@@ -22,7 +22,7 @@ This module bla bla
 
 package godav;
 
-use strict;
+use common::sense;
 use XIMS::Object;
 use XIMS::Folder;
 use XIMS::User;

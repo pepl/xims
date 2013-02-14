@@ -21,7 +21,7 @@ This module provides LDAP authentication for XIMS
 
 package XIMS::Auth::LDAP;
 
-use strict;
+use common::sense;
 use XIMS::User;
 use Net::LDAP qw(LDAP_SUCCESS);
 

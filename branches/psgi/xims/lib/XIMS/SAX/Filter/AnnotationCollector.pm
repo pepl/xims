@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::SAX::Filter::AnnotationCollector;
 
-use strict;
+use common::sense;
 use parent qw( XML::SAX::Base );
 use XML::Generator::PerlData;
 

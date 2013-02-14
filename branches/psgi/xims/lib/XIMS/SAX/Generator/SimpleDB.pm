@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::SAX::Generator::SimpleDB;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::SAX::Generator::Content );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

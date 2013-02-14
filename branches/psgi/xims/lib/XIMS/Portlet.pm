@@ -22,7 +22,7 @@ This module bla bla
 #$Id$
 package XIMS::Portlet;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::SymbolicLink );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

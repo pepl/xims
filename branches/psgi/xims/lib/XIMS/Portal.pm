@@ -22,7 +22,7 @@ This module bla bla
 #$Id$
 package XIMS::Portal;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 

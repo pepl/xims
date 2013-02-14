@@ -17,7 +17,7 @@ $Id$
 
 package XIMS::User;
 
-use strict;
+use common::sense;
 use XIMS;
 use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 use XIMS::Bookmark;

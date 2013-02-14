@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::AbstractClass;
 
-use strict;
+use common::sense;
 use XIMS;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

@@ -23,7 +23,7 @@ it. this filter will expand these conditions to real objects.
 package XIMS::SAX::Filter::PortletCollector;
 
 
-use strict;
+use common::sense;
 use parent qw( XIMS::SAX::Filter::DataCollector );
 use XML::LibXML;
 use XIMS;

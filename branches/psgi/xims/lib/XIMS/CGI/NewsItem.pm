@@ -21,7 +21,7 @@ It is based on XIMS::CGI::NewsItem.
 
 package XIMS::CGI::NewsItem;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI::Document );
 use XIMS::Image;
 use XIMS::Portlet;

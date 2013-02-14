@@ -13,7 +13,7 @@ $Id: Text.pm 2012 2008-05-16 12:23:41Z haensel $
 
 package XIMS::Exporter::NewsLetter;
 
-use strict;
+use common::sense;
 use XIMS::Exporter;
 use parent qw( XIMS::Exporter::Document );
 our ($VERSION) = ( q$Revision: 2012 $ =~ /\s+(\d+)\s*$/ );

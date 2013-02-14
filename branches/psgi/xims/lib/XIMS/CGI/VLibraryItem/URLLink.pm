@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::VLibraryItem::URLLink;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI::VLibraryItem );
 use XIMS::VLibMeta;
 use Locale::TextDomain ('info.xims');

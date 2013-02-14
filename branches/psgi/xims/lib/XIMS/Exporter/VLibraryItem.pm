@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Exporter::VLibraryItem;
 
-use strict;
+use common::sense;
 use XIMS::Exporter;
 use parent qw( XIMS::Exporter::XMLChunk );
 use XIMS::ObjectType;

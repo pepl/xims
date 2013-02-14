@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::NewsItem;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Document );
 use XIMS::Importer::Object;
 

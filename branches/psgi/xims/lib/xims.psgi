@@ -19,7 +19,7 @@ This module bla bla
 
 =cut
 
-use strict;
+use common::sense;
 
 use Locale::Messages qw(bind_textdomain_filter bind_textdomain_codeset turn_utf_8_on);
 use Locale::TextDomain ('info.xims');
@@ -228,8 +228,7 @@ builder {
         enable 'XIMSAppContext';
         #enable 'Session';
         enable 'Auth::Basic', authenticator => \&auth_cb;
-        #'Auth::Form', authenticator => \&auth_cb;
-
+        #enable 'Auth::Form', authenticator => \&auth_cb;
         enable 'XIMSUILang';
         # bis es was besseres gibt…
         # enable "Auth::CAS" ;-)

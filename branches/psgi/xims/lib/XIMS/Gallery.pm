@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Gallery;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Folder );
 #use XIMS::Portlet;
 #use XIMS::URLLink;

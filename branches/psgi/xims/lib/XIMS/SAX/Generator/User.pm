@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::SAX::Generator::User;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::SAX::Generator::Users);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

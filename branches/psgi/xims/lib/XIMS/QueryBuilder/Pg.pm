@@ -22,7 +22,7 @@ This module bla bla
 #$Id$
 package XIMS::QueryBuilder::Pg;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::QueryBuilder );
 use XIMS::User;
 use Time::Piece;

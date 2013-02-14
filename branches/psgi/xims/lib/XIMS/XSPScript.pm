@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::XSPScript;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::XML );
 use XIMS::DataFormat;
 

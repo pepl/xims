@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::JavaScript;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Text XIMS::Object);
 use XIMS::DataFormat;
 

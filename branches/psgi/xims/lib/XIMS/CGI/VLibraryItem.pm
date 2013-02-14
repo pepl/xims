@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::VLibraryItem;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI );
 use XIMS::VLibrary;
 use XIMS::VLibAuthor;

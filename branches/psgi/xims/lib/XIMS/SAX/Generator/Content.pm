@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::SAX::Generator::Content;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::SAX::Generator XML::Generator::PerlData);
 use XIMS::DataProvider;
 use XML::Filter::CharacterChunk;

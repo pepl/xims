@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::users;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI );
 use XIMS::User;
 use XIMS::UserPriv;

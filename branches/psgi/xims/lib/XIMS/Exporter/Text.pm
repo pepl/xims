@@ -13,7 +13,7 @@ $Id$
 
 package XIMS::Exporter::Text;
 
-use strict;
+use common::sense;
 use XIMS::Exporter;
 use parent qw( XIMS::Exporter::Binary );
 use Data::Dumper;

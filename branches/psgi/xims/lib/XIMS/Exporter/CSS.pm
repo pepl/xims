@@ -18,7 +18,7 @@ $Id$
 
 package XIMS::Exporter::CSS;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Exporter::Text );
 use CSS::Minifier::XS qw(minify);
 

@@ -21,7 +21,7 @@ Implements methods as outlined in L<Apache::AxKit::Language>.
 
 package Apache::AxKit::Language::Passthru;
 
-use strict;
+use common::sense;
 use Apache;
 use parent qw( Apache::AxKit::Language );
 

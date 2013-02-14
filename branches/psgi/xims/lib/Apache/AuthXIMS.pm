@@ -21,7 +21,7 @@ session handling for XIMS.
 =cut
 
 package Apache::AuthXIMS;
-use strict;
+use common::sense;
 
 use Apache;
 use Apache::Request ();

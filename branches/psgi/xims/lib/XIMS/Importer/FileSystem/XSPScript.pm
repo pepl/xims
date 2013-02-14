@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Importer::FileSystem::XSPScript;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Importer::FileSystem::XML );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

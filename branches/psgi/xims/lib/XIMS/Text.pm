@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Text;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Object );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

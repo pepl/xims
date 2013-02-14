@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::SAX::Generator::Users;
 
-use strict;
+use common::sense;
 use parent qw(XIMS::SAX::Generator XML::Generator::PerlData);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

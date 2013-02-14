@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::UserPrefs;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 
 our ($VERSION) = ( q$Revision: 2183 $ =~ /\s+(\d+)\s*$/ );

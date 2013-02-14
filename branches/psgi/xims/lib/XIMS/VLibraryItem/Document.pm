@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::VLibraryItem::Document;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::VLibraryItem );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

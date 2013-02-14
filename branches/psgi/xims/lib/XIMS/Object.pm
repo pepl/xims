@@ -23,7 +23,7 @@ see code in the unit tests t/unit??_object_*.t
 
 package XIMS::Object;
 
-use strict;
+use common::sense;
 
 # use warnings;
 no warnings 'redefine';

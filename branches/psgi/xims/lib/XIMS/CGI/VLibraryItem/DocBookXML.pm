@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::CGI::VLibraryItem::DocBookXML;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::CGI::VLibraryItem );
 use XIMS::CGI::XML;
 use XIMS::Importer::Object::VLibraryItem::DocBookXML;

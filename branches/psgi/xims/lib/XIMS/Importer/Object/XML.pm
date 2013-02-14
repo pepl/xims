@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Importer::Object::XML;
 
-use strict;
+use common::sense;
 use parent qw( XIMS::Importer::Object );
 use XIMS::Object;
 use XML::LibXML 1.54; # We have to use 1.54 onward here because the DOM implementation changed from 1.52 to 1.54.

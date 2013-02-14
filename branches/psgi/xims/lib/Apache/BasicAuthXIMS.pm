@@ -23,7 +23,7 @@ A simple HTTP Basic Authentication handler using XIMS::Auth Example.
 
 package Apache::BasicAuthXIMS;
 
-use strict;
+use common::sense;
 
 use Apache;
 use Apache::Constants qw(:common);
