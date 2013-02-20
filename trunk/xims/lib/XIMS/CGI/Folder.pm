@@ -50,7 +50,7 @@ sub registerEvents {
             'deletemultiple_prompt','deletemultiple', 'undeletemultiple',
             'trashcanmultiple_prompt', 'trashcanmultiple', 
             'publishmultiple_prompt', 'publishmultiple', 'unpublishmultiple',
-            'movemultiple_browse', 'movemultiple',
+            'movemultiple_browse', 'movemultiple', 'copymultiple',
             'aclmultiple_prompt','aclgrantmultiple','aclrevokemultiple',
             @_
         )
@@ -191,6 +191,58 @@ sub event_store {
             $object->attribute( defaultsort => $defaultsort );
         }
     }
+    
+    # UIBK special
+    # these Parameters are specific to DepartmentRoots, but handling
+    # them here is still better than practically duplicating in the
+    # whole subroutine...
+    # start patch ;-)
+
+    my $faculty = $self->param( 'faculty' );
+    if ( defined $faculty ) {
+        XIMS::Debug( 6, "faculty: $faculty" );
+        if ($faculty eq 'none') {
+            $object->attribute( faculty => undef );
+        }
+        else {
+            $object->attribute( faculty => $faculty );
+        }
+    }
+
+
+    my $category = $self->param( 'category' );
+    if ( defined $category ) {
+        XIMS::Debug( 6, "category: $category" );
+        if ($category eq 'none') {
+            $object->attribute( category => undef );
+        }
+        else {
+            $object->attribute( category => $category );
+        }
+    }
+
+    my $omit_department_image = $self->param( 'omit_department_image' );
+    if ( defined $omit_department_image and $omit_department_image eq '1' ) {
+        $object->attribute( omit_department_image => $omit_department_image );
+    }
+    elsif ($object->attribute_by_key( 'omit_department_image' )) {
+        $object->attribute( omit_department_image => undef );
+    }
+
+#    my $omit_right_column = $self->param( 'omit_right_column' );
+#    if ( defined $omit_right_column ) {
+#        XIMS::Debug( 6, "omit_right_column: $omit_right_column" );
+#        if ( $omit_right_column == 0 ) {
+#            $object->attribute( omit_right_column => undef );
+#        }
+#        else {
+#            $object->attribute( omit_right_column => $omit_right_column );
+#        }
+#    }
+
+    # end of patch
+    # end UIBK special
+    
 
     return $self->SUPER::event_store($ctxt);
 }
@@ -460,6 +512,33 @@ sub event_unpublishmultiple {
     #
     my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
     XIMS::Debug( 4, "redirecting to the container - id:".$ctxt->object->id );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
+=head2 event_copymultiple()
+
+=cut
+
+sub event_copymultiple {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    foreach(@ids){
+        my $obj = new XIMS::Object('id' => $_);
+        if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::COPY()){
+            $obj->clone( User            => $ctxt->session->user(),
+                        scope_subtree   => 1#,
+                      );
+        }
+        else{
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
+    }
+    XIMS::Debug( 4, "redirecting to the container" );
+    $self->param( 'sb',    'date' );
+    $self->param( 'order', 'desc' );
     $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
 }
@@ -941,6 +1020,8 @@ sub get_display_params {
     }
 
     my %sortbymap = (
+        cdate    => 'creation_timestamp',
+        mdate    => 'last_modification_timestamp',
         date     => 'last_modification_timestamp',
         position => 'position',
         title    => 'title',
