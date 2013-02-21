@@ -13,7 +13,9 @@
 
     <xsl:import href="common.xsl"/>
 
-    <xsl:output method="xml"/>
+    <xsl:output method="xml"
+                media-type="application/mods+xml"/>
+
     <xsl:param name="ptitle"/>
 
     <xsl:variable name="titlerefpropid" select="/document/reference_properties/reference_property[name='title']/@id"/>
