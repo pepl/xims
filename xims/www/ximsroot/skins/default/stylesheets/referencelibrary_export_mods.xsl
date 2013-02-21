@@ -14,6 +14,7 @@
     <xsl:import href="common.xsl"/>
 
     <xsl:output method="xml"
+                omit-xml-declaration="no"
                 media-type="application/mods+xml"/>
 
     <xsl:param name="ptitle"/>
