@@ -32,7 +32,6 @@ function submitOnValue ( field, text, selectfield ) {
         return document.eform.submit();
     }
     else {
-        alert ( text );
         if (selectfield) { selectfield.focus(); }
     }
     return false;
@@ -46,28 +45,18 @@ function submitOnId ( property, text ) {
         return document.eform.submit();
     }
     else {
-        alert ( text );
         if (selectfield) { selectfield.focus(); }
     }
     return false;
 }
 
 function createMapping ( property, text ) {
-//test
-alert("neuer eintrag?"+$('#vl'+property).val());
-if($('#svl'+property+' option:selected').text() != $('#vl'+property).val()){
-          alert("neuer eintrag?"+$('#vl'+property).val());
-            //alert("gewählt: "+$('#svl'+property+' option:selected').text());
-            addVLProperty2( property );
-            }
-//end test
     var selectfield = eval("document.eform.svl"  + property);
     if ( selectfield.value > 0 ) {
         post_async("create_mapping_async=1;property=" + property
                    + ";property_id=" + selectfield.value, property);
     }
     else {
-        alert ( text );
         if (selectfield) { selectfield.focus(); }
     }
     return false;
