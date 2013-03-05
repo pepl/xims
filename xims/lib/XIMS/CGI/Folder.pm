@@ -50,7 +50,7 @@ sub registerEvents {
             'deletemultiple_prompt','deletemultiple', 'undeletemultiple',
             'trashcanmultiple_prompt', 'trashcanmultiple', 
             'publishmultiple_prompt', 'publishmultiple', 'unpublishmultiple',
-            'movemultiple_browse', 'movemultiple',
+            'movemultiple_browse', 'movemultiple', 'copymultiple',
             'aclmultiple_prompt','aclgrantmultiple','aclrevokemultiple',
             @_
         )
@@ -461,6 +461,33 @@ sub event_unpublishmultiple {
     my $published = $self->SUPER::autopublish( $ctxt, $exporter, 'unpublish', \@org_ids, $no_dependencies_update, $self->param("recpublish") );
     XIMS::Debug( 4, "redirecting to the container - id:".$ctxt->object->id );
     $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
+    return 0;
+}
+
+=head2 event_copymultiple()
+
+=cut
+
+sub event_copymultiple {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+
+    my @ids = $self->param('multiselect');
+    foreach(@ids){
+        my $obj = new XIMS::Object('id' => $_);
+        if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::COPY()){
+            $obj->clone( User            => $ctxt->session->user(),
+                        scope_subtree   => 1#,
+                      );
+        }
+        else{
+            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
+        }
+    }
+    XIMS::Debug( 4, "redirecting to the container" );
+    $self->param( 'sb',    'date' );
+    $self->param( 'order', 'desc' );
+    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
     return 0;
 }
 
@@ -941,6 +968,8 @@ sub get_display_params {
     }
 
     my %sortbymap = (
+        cdate    => 'creation_timestamp',
+        mdate    => 'last_modification_timestamp',
         date     => 'last_modification_timestamp',
         position => 'position',
         title    => 'title',

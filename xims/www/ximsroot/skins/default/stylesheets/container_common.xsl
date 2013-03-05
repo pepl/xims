@@ -58,6 +58,9 @@
 				</div>
 				<select name="defaultsortby" id="select-defaultsorting" class="select">
 					<option value="position">
+					<xsl:if test="not(attributes/defaultsortby) or attributes/defaultsortby = 'position'">
+              <xsl:attribute name="selected">selected</xsl:attribute>
+          </xsl:if>
 						<xsl:value-of select="$i18n/l/Position"/>
 					</option>
 					<option value="titlelocation">
@@ -241,6 +244,7 @@
 					<xsl:call-template name="button.options.purge-multiple"/>
 				</xsl:when>
 				<xsl:otherwise>
+				  <xsl:call-template name="button.options.copy-multiple"/>
 					<xsl:if test="not($move-disabled)">
 						<xsl:call-template name="button.options.move-multiple"/>
 					</xsl:if>
@@ -258,6 +262,13 @@
 				</xsl:choose>
 		</div>
 	</xsl:template>
+	
+	<xsl:template name="button.options.copy-multiple">
+    <xsl:variable name="id" select="@id"/>
+        <button class="button option-copy" title="{$l_Copy}" type="submit" name="copymultiple" value="1">
+          <xsl:value-of select="$l_Access_control"/>
+        </button>
+  </xsl:template>
 	
 	<xsl:template name="button.options.move-multiple">
 		<xsl:variable name="parentid" select="@parent_id"/>
