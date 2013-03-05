@@ -23,13 +23,15 @@ function addVLProperty( property ) {
 
     return true;
 }
+function addVLProperty2( property ) {
+  $("#svl"+property).append('<option value="" selected="selected">'+$("#vl"+property).val()+'</option>');
+}
 
 function submitOnValue ( field, text, selectfield ) {
     if ( field.value.replace(/\s+/g,"").length > 0 ) {
         return document.eform.submit();
     }
     else {
-        alert ( text );
         if (selectfield) { selectfield.focus(); }
     }
     return false;
@@ -43,7 +45,6 @@ function submitOnId ( property, text ) {
         return document.eform.submit();
     }
     else {
-        alert ( text );
         if (selectfield) { selectfield.focus(); }
     }
     return false;
@@ -56,7 +57,6 @@ function createMapping ( property, text ) {
                    + ";property_id=" + selectfield.value, property);
     }
     else {
-        alert ( text );
         if (selectfield) { selectfield.focus(); }
     }
     return false;

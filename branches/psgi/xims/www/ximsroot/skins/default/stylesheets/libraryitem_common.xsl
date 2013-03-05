@@ -24,6 +24,7 @@
 	<xsl:template name="form-vlproperties">
 		<xsl:param name="mo"/>
 		<xsl:param name="mode"/>
+		<xsl:param name="property"><xsl:value-of select="$i18n_vlib/l/*[name()=$mo]"/></xsl:param>
 		<div class="form-div block">
 		<div class="block">
 			<div class="label-large">
@@ -46,11 +47,11 @@
 						<xsl:apply-templates select="*[name()=concat($mo, 'set')]/*[name()=$mo]"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				<span id="message_{$mo}"/>
+				<span id="message_{$mo}"><xsl:comment/></span>
 				<xsl:text>&#160;</xsl:text>
 			</div>
 		</div>
-		<xsl:if test="not($mo='serial' and /document/context/object/serial)">
+		<xsl:if test="$mo!='serial' or ($mo='serial' and not(/document/context/object/serial) )">
 		<div>
 			<div class="label-large">
 				<!--<label for="svl{$mo}">-->
@@ -60,7 +61,6 @@
 					<xsl:value-of select="$i18n_vlib/l/*[name()=concat($mo,'s')]"/>
 				</label>
 			</div>
-			<!--<div>-->
 			<xsl:if test="/document/context/*[name()=concat('vl', $mo,'s')] or $mo = 'editor'">
 				<span id="svl{$mo}container">
 					<xsl:choose>
@@ -68,7 +68,12 @@
 							<xsl:apply-templates select="/document/context/*[name()=concat('vl', 'author','s')]" mode="editor"/>
 						</xsl:when>
 						<xsl:otherwise>
+						<xsl:choose>
+            <xsl:when test="/document/context/*[name()=concat('vl', $mo,'s')]">
 							<xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
+							</xsl:when>
+							<xsl:otherwise></xsl:otherwise>
+							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>
 				</span>
@@ -89,7 +94,6 @@
 				<xsl:value-of select="concat($i18n/l/create, ' ', $i18n_vlib/l/*[name()=$mo])"/>
 			</a>
 			</xsl:if>
-			<!--</div>-->
 			<xsl:text>&#160;</xsl:text>
 		</div>
 		</xsl:if>
