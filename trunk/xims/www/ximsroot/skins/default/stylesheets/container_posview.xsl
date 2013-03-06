@@ -14,18 +14,25 @@
     <xsl:param name="sbfield"/>
 
 <xsl:template match="/document/context/object">
-	<form name="repos" action="javascript:storeBack(document.repos.new_position.selectedIndex + 1)">
+	<form name="repos" action="javascript:storeBack(document.repos.new_position.value)">
 		<p>
 			<xsl:value-of select="$i18n/l/Choose_position"/>&#160;<strong>'<xsl:value-of select="title"/>'</strong>&#160;<xsl:value-of select="$i18n/l/in"/>
 			Container '<xsl:value-of select="parents/object[@document_id=/document/context/object/@parent_id]/title"/>':
 		</p>
 		<p>
 			<label for="input-position"><xsl:value-of select="$i18n/l/Position"/></label>
+			    <xsl:choose>
+    <xsl:when test="siblingscount &gt; 50">
+      &#160;<input type="text" name="new_position" id="input-position" size="4"></input>&#160;
+    </xsl:when>
+    <xsl:otherwise>
 			<select name="new_position" class="select" id="input-position">
 			    <xsl:call-template name="loop-options">
 			        <xsl:with-param name="iter"><xsl:value-of select="1"/></xsl:with-param>
 			    </xsl:call-template>
 			</select>
+			</xsl:otherwise>
+    </xsl:choose>
 			<button class="button" type="submit" name="submit">
 				<xsl:value-of select="$i18n/l/save"/>
 			</button>
