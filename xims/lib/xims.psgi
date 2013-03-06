@@ -81,7 +81,7 @@ my $goxims = sub {
              and     $ctxt->session->user->id() ==
                  XIMS::Config::PublicUserID() ) {
             $ctxt->{session}->delete();
-            HTTP::Exception::403->throw();
+            HTTP::Exception::401->throw();
         }
     }
 
@@ -211,13 +211,8 @@ my $godav = sub {
 
 
 builder {
-    # enable "ErrorDocument",
-    #     500 => '/ximspubroot/500.xsp',
-    #     404 => '/ximspubroot/404.xsp',
-    #     401 => '/ximspubroot/access.xsp',
-    #     subrequest => 1;
-    # lästig beim debuggen…
-    # enable "HTTPExceptions", rethrow => 1;
+    enable "ErrorDocument", 401 => XIMS::PUBROOT() . '/access.html';
+    enable "HTTPExceptions";
     enable "ConditionalGET";
 
     enable_if { length(XIMS::TRUSTPROXY()) }
@@ -226,12 +221,8 @@ builder {
     # /goxims
     mount XIMS::GOXIMS() => builder {
         enable 'XIMSAppContext';
-        #enable 'Session';
-        enable 'Auth::Basic', authenticator => \&auth_cb;
-        #enable 'Auth::Form', authenticator => \&auth_cb;
+        enable 'Auth::XIMS';
         enable 'XIMSUILang';
-        # bis es was besseres gibt…
-        # enable "Auth::CAS" ;-)
         mount XIMS::CONTENTINTERFACE()        => builder {$goxims}; # /content
         mount XIMS::PERSONALINTERFACE()       => builder {$goxims}; # /user
         mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims}; # /users
@@ -241,22 +232,21 @@ builder {
         mount '/search_intranet'              => builder {$goxims};
     };
 
+    # /gopublic
     mount XIMS::GOPUBLIC() => builder {
         enable "XIMSAppContext";
-        enable "Auth::XIMSPublicUser";
+        enable "Auth::XIMS::Public";
         enable 'XIMSUILang';
         # enable "Caching::Would::Be::Nice"
 
         mount XIMS::CONTENTINTERFACE() => builder {$goxims};
     };
 
+    # /gobaxims
     mount XIMS::GOBAXIMS() => builder {
         enable "XIMSAppContext";
         enable "Auth::Basic", authenticator => \&auth_cb;
         enable 'XIMSUILang';
-        #enable "XIMS::Session"
-        #$gobaxims;
-
         mount XIMS::CONTENTINTERFACE()        => builder {$goxims};
         mount XIMS::PERSONALINTERFACE()       => builder {$goxims};
         mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims};
@@ -266,12 +256,13 @@ builder {
         mount '/search_intranet'              => builder {$goxims};
     };
 
-    # WebDAV
-    mount XIMS::GODAV() => $godav;
+    # WebDAV, TODO
+    # mount XIMS::GODAV() => $godav;
 
     # static files
     mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );
     mount XIMS::PUBROOT_URL()     =>  Plack::App::File->new( root => XIMS::PUBROOT() );
+    mount '/favicon.ico' => Plack::App::File->new(file => XIMS::XIMSROOT() . '/images/xims_favicon.ico');
 };
 
 
