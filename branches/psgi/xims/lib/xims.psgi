@@ -31,7 +31,6 @@ use XIMS::AppContext;
 use XIMS::DataProvider;
 use XIMS::Object;
 use XIMS::User;
-use XIMS::Auth;
 use XIMS::Session;
 # preload commonly used and publish_gopublic objecttypes
 use XIMS::CGI::SiteRoot;
@@ -245,7 +244,7 @@ builder {
     # /gobaxims
     mount XIMS::GOBAXIMS() => builder {
         enable "XIMSAppContext";
-        enable "Auth::Basic", authenticator => \&auth_cb;
+        enable "Auth::XIMS::Basic";
         enable 'XIMSUILang';
         mount XIMS::CONTENTINTERFACE()        => builder {$goxims};
         mount XIMS::PERSONALINTERFACE()       => builder {$goxims};
@@ -264,23 +263,6 @@ builder {
     mount XIMS::PUBROOT_URL()     =>  Plack::App::File->new( root => XIMS::PUBROOT() );
     mount '/favicon.ico' => Plack::App::File->new(file => XIMS::XIMSROOT() . '/images/xims_favicon.ico');
 };
-
-
-sub auth_cb{
-    my ($username, $password, $env) = @_;
-
-    my $login = XIMS::Auth->new( Username => $username, Password => $password )->authenticate();
-    return 0 unless defined $login;
-
-    my $user = $login->getUserInfo();
-    if ( $user and $user->id() ) {
-        $env->{'xims.appcontext'}->session( XIMS::Session->new() );
-        $env->{'xims.appcontext'}->session->user_id( $user->id() );
-        $env->{'xims.appcontext'}->session->auth_module( ref($login) );
-        return 1;
-    }
-    return 0;
-}
 
 sub getInterface {
     my $req = shift;
