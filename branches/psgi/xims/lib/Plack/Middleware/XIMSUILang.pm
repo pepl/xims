@@ -12,12 +12,13 @@ $Id: $
 package Plack::Middleware::XIMSUILang;
 use parent qw( Plack::Middleware );
 use Plack::Request;
+use HTTP::Throwable::Factory;
 use XIMS;
 use POSIX qw(setlocale LC_ALL);
 
 
 sub call {
-    my($self, $env) = @_;
+    my ( $self, $env ) = @_;
 
     my $langpref = getLanguagePref($env);
 
@@ -27,7 +28,16 @@ sub call {
     else {
         setlocale( LC_ALL, "en_US.UTF-8" );
     }
-    $env->{'xims.appcontext'}->session->uilanguage( $langpref );
+    if ($env->{'xims.appcontext'}->session){
+        $env->{'xims.appcontext'}->session->uilanguage($langpref);
+    }
+    else {
+        HTTP::Throwable::Factory->throw({ 
+            status_code => 500,
+            reason      => 'Internal Server Error',
+            message     => 'Missing Session'
+        });
+    }
 
     my $res = $self->app->($env);
 
