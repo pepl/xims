@@ -2,7 +2,7 @@ package Plack::Middleware::Auth::XIMS;
 use common::sense;
 use parent qw(Plack::Middleware);
 use Plack::Request;
-use XIMS::Auth;
+use XIMS;
 use HTTP::Throwable::Factory;
 
 sub prepare_app {}
@@ -65,6 +65,7 @@ sub call {
 # could also be a CAS-Ticket…
 sub is_login_request {
     my ( $self, $env ) = @_;
+    XIMS::Debug(5, 'called');
     my $req = Plack::Request->new($env);
     return ($req->method eq 'POST' and $req->param('dologin') == 1) ? 1 : undef;
 }
@@ -72,6 +73,7 @@ sub is_login_request {
 # detto
 sub is_logout_request {
     my ( $self, $env ) = @_;
+    XIMS::Debug(5, 'called');
     my $req = Plack::Request->new($env);
     return ($req->method eq 'GET' and $req->param('reason') eq 'logout') ? 1 : undef;
 }
@@ -110,16 +112,13 @@ sub get_session_from_cookie {
 }
 
 
-
-
 sub create_new_session {
     my ( $self, $env ) = @_;
     my $req = Plack::Request->new($env);
     my ( $session_id, $login, $user );
+    XIMS::Debug( 5, 'called' );
 
-    XIMS::Debug( 5, "called" );
-
-    if ( $login = $self->authenticate($env)
+    if ( $login = $self->authenticate($req->param('userid'), $req->param('password'), $env)
         and $user = $login->getUserInfo()
         and $user->id()
        )
@@ -147,18 +146,40 @@ sub unauthorized {
              status_code => 401,
              reason      => 'Unauthorized',
              additional_headers => ['Set-Cookie' => 'session=; path=/; expires=-1Y',
-                                    'X-Reason' => $reason ]
+                                    'X-Reason' => $reason ? $reason : 'none' ]
          });
 
 }
 
-
-# use generic XIMS::Auth
 sub authenticate {
-    my ( $self, $env ) = @_;
-    my $req = Plack::Request->new($env);
-    return XIMS::Auth->new->authenticate( Username => $req->param('userid'),
-                                          Password => $req->param('password'))
+    my ( $self, $username, $password, $env ) = @_;
+    XIMS::Debug(5, 'called');
+
+    return unless ( $username and $password );
+
+    my @authmods = split(',', XIMS::AUTHSTYLE());
+
+    foreach my $authmod ( @authmods ) {
+        XIMS::Debug( 6, "trying authstyle: $authmod" );
+        eval "require $authmod;";
+        if ( $@ ) {
+            XIMS::Debug( 2, "could not load authmod $authmod! reason: $@" );
+        }
+        else {
+            my $login = $authmod->new(  Server   => XIMS::AUTHSERVER(),
+                                        Login    => $username,
+                                        Password => $password );
+            if ( $login ) {
+                XIMS::Debug( 4, "login with authstyle $authmod ok" );
+                return $login;
+            }
+            else {
+                XIMS::Debug( 4, "login with authstyle $authmod failed" );
+            }
+        }
+    }
+    XIMS::Debug( 3, "login failed!" );
+    return;
 }
 
 1;
