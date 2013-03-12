@@ -1,6 +1,6 @@
-package Plack::Middleware::Auth::XIMS::Basic;
+package Plack::Middleware::XIMS::Auth::Basic;
 use common::sense;
-use parent qw(Plack::Middleware::Auth::XIMS);
+use parent qw(Plack::Middleware::XIMS::Auth);
 use Plack::Util::Accessor qw( realm );
 use MIME::Base64;
 

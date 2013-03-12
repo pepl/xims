@@ -1,6 +1,6 @@
-package Plack::Middleware::Auth::XIMS::Public;
+package Plack::Middleware::XIMS::Auth::Public;
 use common::sense;
-use parent qw(Plack::Middleware::Auth::XIMS);
+use parent qw(Plack::Middleware::XIMS::Auth);
 use XIMS::Auth::Public;
 
 # automatically
