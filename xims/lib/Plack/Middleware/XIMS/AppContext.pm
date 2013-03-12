@@ -9,7 +9,7 @@ $Id: $
 
 =cut
 
-package Plack::Middleware::XIMSAppContext;
+package Plack::Middleware::XIMS::AppContext;
 use parent qw( Plack::Middleware );
 use XIMS::AppContext;
 use HTTP::Exception;

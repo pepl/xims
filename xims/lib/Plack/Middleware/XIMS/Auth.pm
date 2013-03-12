@@ -1,4 +1,4 @@
-package Plack::Middleware::Auth::XIMS;
+package Plack::Middleware::XIMS::Auth;
 use common::sense;
 use parent qw(Plack::Middleware);
 use Plack::Request;

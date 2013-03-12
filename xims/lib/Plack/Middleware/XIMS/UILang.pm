@@ -9,7 +9,7 @@ $Id: $
 
 =cut
 
-package Plack::Middleware::XIMSUILang;
+package Plack::Middleware::XIMS::UILang;
 use parent qw( Plack::Middleware );
 use Plack::Request;
 use HTTP::Throwable::Factory;
