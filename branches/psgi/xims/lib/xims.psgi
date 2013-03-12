@@ -43,6 +43,7 @@ use Plack::Request;
 use Plack::Builder;
 use Plack::App::File;
 use Plack::App::Directory;
+use HTTP::Throwable::Factory qw(http_throw http_exception);
 
 use Time::Piece;
 
@@ -55,23 +56,18 @@ my $goxims = sub {
     my $ctxt = $env->{'xims.appcontext'};
     my $req = Plack::Request->new($env);
 
-    XIMS::Debug( 5, $env->{script_name}. " called from " . $env->{REMOTE_ADDR} );
-
-    # sprache einstellen
-
-    # public user?
-
+    XIMS::Debug( 5, "'" . $req->script_name() . "' called from " . $req->address() );
 
     my $interface_type = getInterface($req);
-    HTTP::Exception::404->throw unless $interface_type;
+    http_throw('NotFound') unless $interface_type;
 
     my $gp = XIMS::GOPUBLIC();
     # TODO: handle public user somewhere else
     if ($req->script_name() =~ /^$gp/) {
         # /gopublic has no interface "user" (n.b. it isn't even mounted)
-        if ( $interface_type eq XIMS::PERSONALINTERFACE() ) {
-            HTTP::Exception::404->throw();
-        }
+        # if ( $interface_type eq XIMS::PERSONALINTERFACE() ) {
+        #     HTTP::Exception::404->throw();
+        # }
         # was: set up session for public user
     }
     else {
@@ -80,7 +76,8 @@ my $goxims = sub {
              and     $ctxt->session->user->id() ==
                  XIMS::Config::PublicUserID() ) {
             $ctxt->{session}->delete();
-            HTTP::Exception::401->throw();
+            http_throw('Unauthorized');
+            #HTTP::Exception::401->throw();
         }
     }
 
@@ -112,7 +109,8 @@ my $goxims = sub {
         # now we know, that we have to get the content-object
         $ctxt->object( getObject( $req ) );
         if ( not( $ctxt->object() and $ctxt->object->id() ) ) {
-           HTTP::Exception::404->throw();
+           #HTTP::Exception::404->throw();
+           http_throw('NotFound');
        }
 
         my $ot_fullname = $ctxt->object->object_type->fullname();
@@ -123,12 +121,14 @@ my $goxims = sub {
         eval "require $object_class;" if $object_class;
         if ($@) {
             XIMS::Debug( 2, "could not load object class $object_class: $@" );
-            HTTP::Exception::500->throw(
-                status_message => __x(
-                    "Could not load object class {classname}.",
-                    classname => $object_class,
-                )
-            )
+            http_throw(
+                'InternalServerError' => {
+                    message => __x(
+                        "Could not load object class {classname}.",
+                        classname => $app_class,
+                    )
+                }
+            );
         }
 
         ## use critic
@@ -168,13 +168,16 @@ my $goxims = sub {
     eval "require $app_class";
     if ($@) {
         XIMS::Debug( 2, "could not load application-class $app_class: $@" );
-        HTTP::Exception::500->throw(
-            status_message => __x(
-                "Could not load object class {classname}.",
-                classname => $app_class,
-            )
+        http_throw(
+            'InternalServerError' => {
+                message => __x(
+                    "Could not load object class {classname}.",
+                    classname => $app_class,
+                )
+            }
         );
     }
+
     ## use critic
     if ( my $appclass = $app_class->new($env) ) {
         XIMS::Debug( 4, "application-class $app_class initiated." );
@@ -187,8 +190,9 @@ my $goxims = sub {
         return $appclass->run($ctxt);
     }
 
-    HTTP::Exception::500->throw(
-        status_message => "Server Error.\n\nYou shouldn't have ended here, sorry!"
+    http_throw(
+        'InternalServerError' => {
+            message => "Server Error.\n\nYou shouldn't have ended here, sorry!" }
     );
 };
 
@@ -219,9 +223,9 @@ builder {
 
     # /goxims
     mount XIMS::GOXIMS() => builder {
-        enable 'XIMSAppContext';
-        enable 'Auth::XIMS';
-        enable 'XIMSUILang';
+        enable 'XIMS::AppContext';
+        enable 'XIMS::Auth';
+        enable 'XIMS::UILang';
         mount XIMS::CONTENTINTERFACE()        => builder {$goxims}; # /content
         mount XIMS::PERSONALINTERFACE()       => builder {$goxims}; # /user
         mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims}; # /users
@@ -229,23 +233,24 @@ builder {
         mount '/bookmark'                     => builder {$goxims};
         mount '/defaultbookmark'              => builder {$goxims};
         mount '/search_intranet'              => builder {$goxims};
+        mount '/' => http_exception(Found => { location => XIMS::GOXIMS() . XIMS::PERSONALINTERFACE() });
     };
 
     # /gopublic
     mount XIMS::GOPUBLIC() => builder {
-        enable "XIMSAppContext";
-        enable "Auth::XIMS::Public";
-        enable 'XIMSUILang';
+        enable "XIMS::AppContext";
+        enable "XIMS::Auth::Public";
+        enable 'XIMS::UILang';
         # enable "Caching::Would::Be::Nice"
-
         mount XIMS::CONTENTINTERFACE() => builder {$goxims};
+        mount '/' => http_exception('NotFound');
     };
 
     # /gobaxims
     mount XIMS::GOBAXIMS() => builder {
-        enable "XIMSAppContext";
-        enable "Auth::XIMS::Basic";
-        enable 'XIMSUILang';
+        enable "XIMS::AppContext";
+        enable "XIMS::Auth::Basic";
+        enable 'XIMS::UILang';
         mount XIMS::CONTENTINTERFACE()        => builder {$goxims};
         mount XIMS::PERSONALINTERFACE()       => builder {$goxims};
         mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims};
@@ -253,6 +258,7 @@ builder {
         mount '/bookmark'                     => builder {$goxims};
         mount '/defaultbookmark'              => builder {$goxims};
         mount '/search_intranet'              => builder {$goxims};
+        mount '/' => http_exception(Found => { location => XIMS::GOBAXIMS() . XIMS::PERSONALINTERFACE() });
     };
 
     # WebDAV, TODO
@@ -262,6 +268,12 @@ builder {
     mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );
     mount XIMS::PUBROOT_URL()     =>  Plack::App::File->new( root => XIMS::PUBROOT() );
     mount '/favicon.ico' => Plack::App::File->new(file => XIMS::XIMSROOT() . '/images/xims_favicon.ico');
+
+    # Redirect / -> /goxims
+    mount '/' => http_exception(Found => { location => XIMS::GOXIMS() });
+
+
+
 };
 
 sub getInterface {
