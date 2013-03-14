@@ -47,7 +47,7 @@ use HTTP::Throwable::Factory qw(http_throw http_exception);
 
 use Time::Piece;
 
-use Data::Dumper;
+#use Data::Dumper;
 
 my $goxims = sub {
     warn "\n" x 3, '=' x 80, "\n";
@@ -61,37 +61,10 @@ my $goxims = sub {
     my $interface_type = getInterface($req);
     http_throw('NotFound') unless $interface_type;
 
-    my $gp = XIMS::GOPUBLIC();
-    # TODO: handle public user somewhere else
-    if ($req->script_name() =~ /^$gp/) {
-        # /gopublic has no interface "user" (n.b. it isn't even mounted)
-        # if ( $interface_type eq XIMS::PERSONALINTERFACE() ) {
-        #     HTTP::Exception::404->throw();
-        # }
-        # was: set up session for public user
-    }
-    else {
-        # we are coming in via /goxims
-        if ( defined $ctxt->session()
-             and     $ctxt->session->user->id() ==
-                 XIMS::Config::PublicUserID() ) {
-            $ctxt->{session}->delete();
-            http_throw('Unauthorized');
-            #HTTP::Exception::401->throw();
-        }
-    }
-
     # set some session information
     my $tp = localtime;
     $ctxt->session->date( $tp->ymd() . ' ' . $tp->hms() );
 
-    # TODO: proxy stuff
-    #my $serverurl = XIMS::get_server_url( $r );
-    #XIMS::Debug( 6, "setting serverurl to $serverurl" );
-    #$ctxt->session->serverurl( $serverurl );
-
-    # now we have a user based skin selection.
-    #$ctxt->session->skin( XIMS::DEFAULT_SKIN() );
     if($ctxt->session->user->userprefs){
     	$ctxt->session->skin( $ctxt->session->user->userprefs->skin());
     }
@@ -104,12 +77,10 @@ my $goxims = sub {
     my $app_class    = 'XIMS::CGI::';
     my $object_class = 'XIMS::';
 
-    if ( $interface_type eq 'content' ) {
-
+    if ( "/$interface_type" eq XIMS::CONTENTINTERFACE() ) {
         # now we know, that we have to get the content-object
         $ctxt->object( getObject( $req ) );
         if ( not( $ctxt->object() and $ctxt->object->id() ) ) {
-           #HTTP::Exception::404->throw();
            http_throw('NotFound');
        }
 
@@ -153,17 +124,16 @@ my $goxims = sub {
         }
         $prefix =~ s/::/_/g;
         $ctxt->properties->application->styleprefix($prefix);
-    }    # end 'content' case
-
+    }
+    # end 'content' case
     # every other interface apart from /content that is configured in xims.psgi
     else {
         $app_class .= $interface_type;
         $ctxt->properties->application->styleprefix($interface_type);
     }
-
-    ##
+    #
     # end interface-lookup
-    ##
+    #
     ## no critic (ProhibitStringyEval)
     eval "require $app_class";
     if ($@) {
@@ -190,9 +160,10 @@ my $goxims = sub {
         return $appclass->run($ctxt);
     }
 
+    # something did not work out...
     http_throw(
         'InternalServerError' => {
-            message => "Server Error.\n\nYou shouldn't have ended here, sorry!" }
+            message => "You shouldn't have ended here, sorry!" }
     );
 };
 

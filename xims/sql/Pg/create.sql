@@ -145,6 +145,7 @@ CREATE TABLE ci_sessions
  ,host                  VARCHAR(90)  NOT NULL
  ,last_access_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT now() NOT NULL
  ,salt                  INTEGER
+ ,auth_module           VARCHAR(50)  NOT NULL
  )
 ;
 
