@@ -9,11 +9,11 @@ use MIME::Base64;
 # automatically
 sub is_login_request  { 1 }
 
-#  Do BasicAuth
+#  Do BasicAuths
 sub create_new_session {
     my ( $self, $env ) = @_;
     my ( $session_id, $login, $user );
-    XIMS::Debug(5, 'called');
+    XIMS::Debug( 5, 'called' );
 
     my $auth = $env->{HTTP_AUTHORIZATION}
         or return $self->unauthorized;
@@ -31,12 +31,13 @@ sub create_new_session {
         {
             $env->{'xims.appcontext'}->session(
                 XIMS::Session->new(
-                    'user_id'   => $user->id(),
-                    'user_name' => $user->name(),
-                    'host'      => $env->{REMOTE_ADDR}
+                    'user_id'     => $user->id(),
+                    'user_name'   => $user->name(),
+                    'host'        => $env->{REMOTE_ADDR},
+                    'auth_module' => ref($login)
                 )
             );
-            $env->{'xims.appcontext'}->session->auth_module( ref($login) );
+
             $env->{REMOTE_USER} = $user->name();
             $session_id = $env->{'xims.appcontext'}->session->session_id;
         }
@@ -47,6 +48,9 @@ sub create_new_session {
 sub unauthorized {
     my ( $self, $env, $reason ) = @_;
     XIMS::Debug( 5, 'called' );
+
+    $env->{HTTP_AUTHORIZATION} = undef;
+
     HTTP::Throwable::Factory->throw(
         {   status_code        => 401,
             reason             => 'Unauthorized',

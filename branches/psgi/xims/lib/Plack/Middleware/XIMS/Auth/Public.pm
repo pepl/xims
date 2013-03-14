@@ -15,4 +15,12 @@ sub authenticate {
     return XIMS::Auth::Public->new()
 }
 
+
+# accept public authentication only
+sub has_acceptable_authenticator {
+    my ($self, $session) = @_;
+    return $session->auth_module() eq 'XIMS::Auth::Public' ? 1 : 0;
+}
+
+
 1;

@@ -1,0 +1,2 @@
+\echo Extending ci_sessions
+ALTER TABLE CI_SESSIONS ADD AUTH_MODULE VARCHAR(50) NOT NULL;

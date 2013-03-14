@@ -75,7 +75,7 @@ sub is_logout_request {
     my ( $self, $env ) = @_;
     XIMS::Debug(5, 'called');
     my $req = Plack::Request->new($env);
-    return ($req->method eq 'GET' and $req->param('reason') eq 'logout') ? 1 : undef;
+    return ($req->method eq 'POST' and $req->param('reason') eq 'logout') ? 1 : undef;
 }
 
 
@@ -99,7 +99,10 @@ sub get_session_from_cookie {
 
         # (still) TODO: Think of separately checking for session timeout and
         # display a corresponding message to the user in case
-        if ( $session and $session->validate( $env->{REMOTE_ADDR} ) ) {
+        if (    $session
+            and $session->validate( $env->{REMOTE_ADDR} )
+            and $self->has_acceptable_authenticator( $session ) )
+        {
             XIMS::Debug( 4, "session cookie validated!" );
             $env->{'xims.appcontext'}->session($session);
         }
@@ -108,7 +111,7 @@ sub get_session_from_cookie {
             $session = undef;
         }
     }
-    return $session; # session or undef
+    return $session;    # session or undef
 }
 
 
@@ -118,30 +121,33 @@ sub create_new_session {
     my ( $session_id, $login, $user );
     XIMS::Debug( 5, 'called' );
 
-    if ( $login = $self->authenticate($req->param('userid'), $req->param('password'), $env)
+    if ($login
+        = $self->authenticate( $req->param('userid'), $req->param('password'),
+            $env )
         and $user = $login->getUserInfo()
         and $user->id()
-       )
+        )
     {
         $env->{'xims.appcontext'}->session(
             XIMS::Session->new(
-                'user_id'   => $user->id(),
-                'user_name' => $user->name(),
-                'host'      => $env->{REMOTE_ADDR}
+                'user_id'     => $user->id(),
+                'user_name'   => $user->name(),
+                'host'        => $env->{REMOTE_ADDR},
+                'auth_module' => ref($login)
             )
         );
-        $env->{'xims.appcontext'}->session->auth_module( ref($login) );
+
         $env->{REMOTE_USER} = $user->name();
         $session_id = $env->{'xims.appcontext'}->session->session_id;
     }
 
-    return $session_id; # session-id or undef
+    return $session_id;    # session-id or undef
 }
 
 sub unauthorized {
     my ($self, $env, $reason) = @_;
     XIMS::Debug( 5, "called" );
-
+    $env->{HTTP_AUTHORIZATION} = undef;
     HTTP::Throwable::Factory->throw({
              status_code => 401,
              reason      => 'Unauthorized',
@@ -180,6 +186,13 @@ sub authenticate {
     }
     XIMS::Debug( 3, "login failed!" );
     return;
+}
+
+# accept anything but public authentication
+sub has_acceptable_authenticator {
+    my ($self, $session) = @_;
+    XIMS::Debug(6, "Authmodule is '" . $session->auth_module() . "'");
+    return $session->auth_module() eq 'XIMS::Auth::Public' ? 0 : 1;
 }
 
 1;
