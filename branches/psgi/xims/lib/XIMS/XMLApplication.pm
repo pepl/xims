@@ -293,8 +293,12 @@ sub serialization {
     if( defined $self->passthru() && $self->passthru() == 1 ) {
         # this is a useful feature for DOM debugging
         XIMS::Debug( 6, "attempt to pass the DOM to the client" );
-        $header{-type} = 'text/xml';
-        return [ $self->psgi_header(%header), [$xml_doc->toString()]];
+        $header{-type} = 'application/xml';
+        $self->{RES} = $self->{REQ}->new_response(
+            $self->psgi_header(%header),
+            $xml_doc->toString()
+        );
+        return 0;
     }
 
     my $stylesheet = $self->getStylesheet( $ctxt );

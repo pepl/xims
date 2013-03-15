@@ -71,7 +71,7 @@ sub new {
     }
 
     $self->properties( Properties->new() ) unless $self->properties();
-    #$self->apache( FakeApache->new(%args) ) unless $self->apache();
+
     return $self;
 }
 
