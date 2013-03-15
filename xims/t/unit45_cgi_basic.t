@@ -8,34 +8,29 @@ use XIMS::User;
 use XIMS::Session;
 use XIMS::AppContext;
 use XIMS::CGI;
-use goxims;
-#use Data::Dumper;
-use Apache::FakeRequest;
 
 BEGIN { 
-    plan tests => 10;
+    plan tests => 9;
 }
 
 # set up a dummy context
-
 my $u = XIMS::User->new( id => 1 );
 my $o = XIMS::Object->new( id => 2, User => $u );
 my $s = XIMS::Session->new( user_id => $u->id() );
-my $a = Apache::FakeRequest->new();
+
 ok( $o );
 ok( $u );
 ok( $s );
-ok( $a );
+
 my $ctxt = XIMS::AppContext->new( user => $u,
                                   session => $s,
                                   object => $o,
-                                  apache => $a
                                 );
 
 
 ok( $ctxt );
 
-my $q = XIMS::CGI->new();
+my $q = XIMS::CGI->new({}); # empty $env
 
 ok( $q );
 
@@ -44,7 +39,6 @@ $ctxt = undef;
 $ctxt = XIMS::AppContext->new( user => $u,
                                session => $s,
                                object => $o,
-                               apache => $a
                                 );
 # sendError
 $q->sendError( $ctxt, 'Whoopsie!' );
@@ -58,13 +52,12 @@ $ctxt = undef;
 $ctxt = XIMS::AppContext->new( user => $u,
                                session => $s,
                                object => $o,
-                               apache => $a
                                 );
 
 
 # we should test every case but... :-/ 
 $ctxt->session->skin( 'default' );
-$ctxt->session->uilanguage( goxims::getLanguagePref($a) );
+$ctxt->session->uilanguage( 'de-at' );
 $ret = $q->selectStylesheet( $ctxt );
 
 #warn "select is $ret \n";
