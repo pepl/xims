@@ -4,9 +4,7 @@ XIMS Installation Guide
 -----------------------------------
 
 0) The following basic prerequisites need to be installed and working:
-    * Apache 1.3.x with mod_perl 1.2x
-      (See http://perl.apache.org/docs/1.0/guide/install.html if you do
-      not already have it installed.
+    * Perl (>=5.10.1), preferably unthreaded, and cpanm. 
 
     * libxml2, libxslt (http://www.xmlsoft.org/),
       and Expat (http://sourceforge.net/projects/expat/) C libraries
@@ -17,21 +15,18 @@ XIMS Installation Guide
     * Tidy (http://tidy.sourceforge.net/)
 
     * XIMS currently supports either
-      Oracle (>=8.1.6) or PostgreSQL (>=7.3)
+      Oracle (>=8.1.6) or PostgreSQL (>=9.0)
       as RDBMS backend. You need access to either one and have the
       respective client installed on your XIMS box.
 
-      If you are using PostgreSQL, you have to have the tablefunctions in
-      'contrib/tablefunc' installed.
+      If you are using PostgreSQL, you will need to have the Postgres contrib
+      package as well.
 
-      You can build and install them for your source build PostgreSQL version using
-      'make' and 'make install' in your 'contrib/tablefunc' directory.
-      If you are using a packaged version of PostgreSQL, you will very likely
-      find a postgresql-contrib package for your distribution which you
-      can install using your favourite package manager.
+    * For database access using perl, you'll need either DBD::Oracle or 
+      DBD::Pg (>= 1.31) installed.
 
-    * For database access using perl, you'll need either
-      DBD::Oracle or DBD::Pg (>= 1.31) installed.
+    * A Webserver capable of running PSGI apps. Some pure perl implementations
+      will be installed automatically as they come with Plack as dependencies.
 
 1) Unpack the distribution to /usr/local:
 
@@ -61,6 +56,8 @@ XIMS Installation Guide
 
 2) Check for module dependencies, set up database and
    basic configuration options, run the test suite.
+
+   [This is out of date]
 
     2.1) Update the location of the Perl binary in the Makefile if
          necessary
@@ -94,7 +91,7 @@ XIMS Installation Guide
         /usr/local/xims/conf/ximsconfig.xml for further config
         customizations after finishing "make install".
 
-    2.4) (Re)start the apache server. Check if it prints warnings or errors.
+    2.4) (Re)start the server. Check if it prints warnings or errors.
 
     2.5) Run the test suite
 
@@ -113,6 +110,5 @@ XIMS Installation Guide
 
 Please actually read the file README.
 
-If you have problems, feel free to contact us at
-irc://irc.perl.org/xims or xims-users@lists.sourceforge.net
-for support.
+If you have problems, feel free to contact us at irc://irc.perl.org/xims for
+support.
