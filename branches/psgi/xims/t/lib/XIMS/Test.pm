@@ -28,7 +28,7 @@ use XIMS;
 use XIMS::DataProvider;
 use LWP::UserAgent;
 use HTTP::Cookies;
-use XML::Schematron::LibXSLT;
+use XML::Schematron;
 
 #use Data::Dumper;
 use Sys::Hostname;
@@ -122,7 +122,7 @@ sub cookie_scan {
 sub validate_xml {
     my $self = shift;
     my ( $xml, $schema ) = @_;
-    my $tron = XML::Schematron::LibXSLT->new();
+    my $tron = XML::Schematron->new_with_traits( traits => ['LibXSLT'] );
     $tron->schema($schema);
     my @messages = $tron->verify($xml);
     return @messages;
