@@ -23,7 +23,7 @@ package XIMS::Exporter::VLibraryItem::Document;
 
 use common::sense;
 use XIMS::Exporter;
-use parent qw( XIMS::Exporter::Document );
+use parent -norequire, qw( XIMS::Exporter::Document );
 use XIMS::ObjectType;
 use XIMS::ObjectPriv;
 use XIMS::SAX::Generator::Exporter::VLibraryItem;

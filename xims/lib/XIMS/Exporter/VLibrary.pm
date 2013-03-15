@@ -23,7 +23,7 @@ package XIMS::Exporter::VLibrary;
 
 use common::sense;
 use XIMS::Exporter;
-use parent qw( XIMS::Exporter::Folder );
+use parent -norequire, qw( XIMS::Exporter::Folder );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
