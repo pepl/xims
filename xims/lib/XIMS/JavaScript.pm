@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::JavaScript;
 
-use strict;
-use base qw( XIMS::Text XIMS::Object);
+use common::sense;
+use parent qw( XIMS::Text XIMS::Object);
 use XIMS::DataFormat;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

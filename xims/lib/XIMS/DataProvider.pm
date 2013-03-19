@@ -29,7 +29,7 @@ probably better if they just set those argument and call the Driver directly.
 
 package XIMS::DataProvider;
 
-use strict;
+use common::sense;
 
 # use warnings;
 use XIMS;

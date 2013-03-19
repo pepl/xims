@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::VLibraryItem::Document;
 
-use strict;
-use base qw( XIMS::CGI::VLibraryItem );
+use common::sense;
+use parent qw( XIMS::CGI::VLibraryItem );
 use XIMS::VLibMeta;
 use Locale::TextDomain ('info.xims');
 
@@ -161,11 +161,11 @@ sub event_store {
 
     $object->vlemeta($meta);
 
-    my $rdpath = $self->redirect_path($ctxt);
+    my $rdpath = $self->redirect_uri($ctxt);
 
     if ( $self->param('proceed_to_edit') == 1 ) {
         $rdpath .=
-          ( $self->redirect_path($ctxt) =~ /\?/ ) ? ';edit=1' : '?edit=1';
+          ( $self->redirect_uri($ctxt) =~ /\?/ ) ? ';edit=1' : '?edit=1';
     }
 
     if ($error_message) {

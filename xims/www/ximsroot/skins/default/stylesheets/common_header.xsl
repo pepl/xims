@@ -410,9 +410,19 @@
 							</ul>
 						</li>
 						<li>
-							<a href="{$goxims_content}{$absolute_path}?reason=logout">
+                          <form name="logout" 
+                              method="post"
+                              action="{$goxims_content}{$absolute_path}">
+                            <input type="hidden" name="reason" value="logout"/>
+                            <!-- <input type="submit" name="logout"
+                                 value="{$i18n/l/logout}"/> -->
+                            <a href="javascript:document.logout.submit()">
 									<xsl:value-of select="$i18n/l/logout"/>
 							</a>
+                          </form>
+							<!-- <a href="{$goxims_content}{$absolute_path}?reason=logout"> -->
+							<!-- 		<xsl:value-of select="$i18n/l/logout"/> -->
+							<!-- </a> -->
 						</li>
 					</xsl:otherwise>
 				</xsl:choose>					

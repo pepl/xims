@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::VLibraryItem::URLLink;
 
-use strict;
-use base qw( XIMS::VLibraryItem XIMS::URLLink );
+use common::sense;
+use parent qw( XIMS::VLibraryItem XIMS::URLLink );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

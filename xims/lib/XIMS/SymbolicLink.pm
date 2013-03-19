@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::SymbolicLink;
 
-use strict;
-use base qw( XIMS::Object );
+use common::sense;
+use parent qw( XIMS::Object );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

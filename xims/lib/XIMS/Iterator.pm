@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::Iterator;
 
-use strict;
-use base qw( Array::Iterator );
+use common::sense;
+use parent qw( Array::Iterator );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

@@ -215,10 +215,12 @@ severity   = 3
 
 [Perl::Critic::Policy::TestingAndDebugging::RequireUseStrict]
 severity   = 5
+equivalent_modules = common::sense
 
 # controled from httpd.conf
 [Perl::Critic::Policy::TestingAndDebugging::RequireUseWarnings]
 severity   = 1
+equivalent_modules = common::sense
 
 [Perl::Critic::Policy::ValuesAndExpressions::ProhibitConstantPragma]
 severity   = 4

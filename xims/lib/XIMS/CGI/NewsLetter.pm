@@ -21,8 +21,8 @@ At the moment, a NewsLetter is just a mailable document.
 
 package XIMS::CGI::NewsLetter;
 
-use strict;
-use base qw( XIMS::CGI::Document XIMS::CGI::Mailable );
+use common::sense;
+use parent qw( XIMS::CGI::Document XIMS::CGI::Mailable );
 
 our ($VERSION) = ( q$Revision: 1947 $ =~ /\s+(\d+)\s*$/ );
 

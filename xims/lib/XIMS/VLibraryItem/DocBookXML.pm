@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::VLibraryItem::DocBookXML;
 
-use strict;
-use base qw( XIMS::VLibraryItem XIMS::DocBookXML );
+use common::sense;
+use parent qw( XIMS::VLibraryItem XIMS::DocBookXML );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

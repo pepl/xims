@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::File;
 
-use strict;
-use base qw( XIMS::CGI );
+use common::sense;
+use parent qw( XIMS::CGI );
 
 use XIMS::Importer::FileSystem;
 use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
@@ -49,9 +49,7 @@ sub registerEvents {
            publish
            publish_prompt
            unpublish
-           view_data
-          )
-        );
+           view_data ) );
 }
 
 =head2 event_default()
@@ -64,10 +62,13 @@ sub event_default {
 
     return 0 if $self->SUPER::event_default( $ctxt );
 
-    print $self->header( -type => $ctxt->object->data_format->mime_type() );
-    print $ctxt->object->body();
     $self->skipSerialization(1);
-
+    $self->{RES} = $self->{REQ}->new_response(
+        $self->psgi_header(
+            -type => $ctxt->object->data_format->mime_type()
+        ),
+        $ctxt->object->body()
+    );
     return 0;
 }
 
@@ -125,7 +126,7 @@ sub event_store {
                 #       either by adding param to redirect_path
                 #       or by adding an _update style
                 my $count = $importretval->[0] . '%2F' . ($importretval->[0] + $importretval->[1]);
-                $self->redirect( $self->redirect_path( $ctxt, $ctxt->parent->id() ) .  "?message=" . $count . "%20objects%20imported." );
+                $self->redirect( $self->redirect_uri( $ctxt, $ctxt->parent->id() ) .  "?message=" . $count . "%20objects%20imported." );
                 return 1;
             }
             else {

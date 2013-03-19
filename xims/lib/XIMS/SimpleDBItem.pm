@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::SimpleDBItem;
 
-use strict;
-use base qw( XIMS::Object );
+use common::sense;
+use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 use XIMS::SimpleDBMember;
 use XIMS::SimpleDBMemberProperty;
@@ -144,7 +144,7 @@ sub update {
         foreach my $prop ( sort { $a->position() <=> $b->position() } @title_props ) {
             push (@sorted_values, $data{$prop->id()});
         }
-        if ( defined @sorted_values ) {
+        if ( @sorted_values ) {
             $self->title( join(', ', @sorted_values) );
         }
         else {

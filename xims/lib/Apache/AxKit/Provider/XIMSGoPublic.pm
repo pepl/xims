@@ -33,8 +33,8 @@ Implements methods as outlined in L<Apache::AxKit::Provider>.
 
 package Apache::AxKit::Provider::XIMSGoPublic;
 
-use strict;
-use base qw(Apache::AxKit::Provider);
+use common::sense;
+use parent qw(Apache::AxKit::Provider);
 use Apache::URI;
 use Apache::AxKit::Cache;
 use LWP;

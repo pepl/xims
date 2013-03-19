@@ -135,7 +135,7 @@
 	
 	<xsl:template name="script_head">
 		<script type="text/javascript">
-			var ximsroot = '<xsl:value-of select="$ximsroot"/>';
+            var ximsconfig = <xsl:value-of select="$js-config"/>;
 		</script>
 		<script src="{$ximsroot}scripts/jquery/jquery_min.js"
                 type="text/javascript"><xsl:comment></xsl:comment></script>

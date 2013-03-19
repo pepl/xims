@@ -22,7 +22,7 @@ The importer base class.
 
 package XIMS::Importer;
 
-use strict;
+use common::sense;
 use XIMS::Object;
 use XIMS::ObjectPriv;
 use XIMS::User;

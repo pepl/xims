@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::ReferenceLibraryItem;
 
-use strict;
-use base qw( XIMS::Object );
+use common::sense;
+use parent qw( XIMS::Object );
 use Encode;
 use XIMS::DataFormat;
 use XIMS::ReferenceLibrary;

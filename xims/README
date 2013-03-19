@@ -9,13 +9,13 @@ to "skin" the management interface and content using XSL stylesheets,
 extensibility through user-defined object types.
 For more information visit http://xims.info/
 
-XIMS operates in an Apache/CGI::XMLApplication/AxKit environment, and
-uses the PostgreSQL or Oracle RDBMS for its data repository.
+XIMS operates in an Perl/PSGI environment, and uses the PostgreSQL or Oracle
+RDBMS for its data repository.
 
 
 License
 -------
-XIMS is copyrighted 2002-2006 by The XIMS Project. See the file "LICENSE" for
+XIMS is copyrighted 2002-2013 by The XIMS Project. See the file "LICENSE" for
 information and conditions for use, reproduction, and distribution of this work,
 and for a DISCLAIMER OF ALL WARRANTIES.
 
@@ -40,13 +40,7 @@ XIMS documentation for users, developers, and system administrators.
 
 Release Notes
 -------------
-This is a minor new feature and bug fix release. New features include an
-Apache::AxKit::Provider::XIMSGoPublic module that can be used to proxy and
-cache XIMS objects that are published via gopublic via AxKit and updates to the
-ReferenceLibrary and Vlibrary modules. Bug fixes include the re-enabling of the
-option to delete AnonDiscussionForumContribs through the web-interface and a
-memory consumption bug fix when importing large documents. For a detailed list of
-changes, please review the "Changes" file.
+
 
 
 Changes
@@ -56,9 +50,6 @@ See the file "Changes"
 
 Known Issues
 ------------
-
-Using PostgreSQL 7.3.x, siblings will not be sorted by position in the
-treeview event as they should be. PostgreSQL >= 7.4 fixes this behaviour.
 
 
 Bug Reporting
@@ -71,24 +62,29 @@ Credits
 -------
 
 XIMS was originally developed by:
-Michael Kröll <mk@xims.info>
-Hansjörg Pehofer <haensel@catbull.com>
-Kip Hampton <khampton@totalcinema.com>
-Christian Glahn <christian.glahn@uibk.ac.at>
+Michael Kröll
+Hansjörg Pehofer
+Kip Hampton
+Christian Glahn
 
 XIMS is currently developed and maintained by:
-Michael Kröll <mk@xims.info>
-Hansjörg Pehofer <hansjoerg.pehofer@uibk.ac.at>
+Susanne Tober
+Hansjörg Pehofer
 
 Contributors (Sorted by most recent initial contribution):
-Simon Bailey <simon.bailey@uibk.ac.at>
-Volker Hess <volker.hess@mz.uni-siegen.de>
-Jochen Früwirth <jochen.fruehwirth@mci.edu>
-Joachim Kargl <joachim.kargl@uibk.ac.at>
-Martina Kinzl <martina.kinzl@uibk.ac.at>
-Gregor Retti <gregor.retti@uibk.ac.at>
-Britta Tautermann <britta.tautermann@uibk.ac.at>
-Georg Schönwiese <csab2314@uibk.ac.at>
+Emir Tanriverdi
+Heinrich Reimer
+Christian Dablander
+Severin Gehwolf
+Arntraud Bacher
+Simon Bailey
+Volker Hess 
+Jochen Früwirth
+Joachim Kargl
+Martina Kinzl
+Gregor Retti
+Britta Tautermann
+Georg Schönwiese
 
 Additionally, we would like to thank everyone who supplied valuable feedback!
 

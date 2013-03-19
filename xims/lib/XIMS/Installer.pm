@@ -21,7 +21,7 @@ This module bla bla
 
 package XIMS::Installer;
 
-use strict;
+use common::sense;
 use CPAN;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
@@ -51,7 +51,7 @@ sub new {
                 [ "XML::Generator::PerlData", '' ],
                 [ "XML::Filter::GenericChunk", '0.04' ],
                 [ "CGI::XMLApplication", '1.1.3' ],
-                [ "Class::Accessor", '' ],
+                [ "Class::Accessor::Fast", '' ],
                 [ "DBIx::SQLEngine", '0.017' ],
                 [ "Time::Piece", '' ],
                 [ "XML::Schematron", '' ],

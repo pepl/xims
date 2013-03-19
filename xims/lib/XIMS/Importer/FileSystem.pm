@@ -22,8 +22,8 @@ operations.
 
 package XIMS::Importer::FileSystem;
 
-use strict;
-use base qw( XIMS::Importer );
+use common::sense;
+use parent qw( XIMS::Importer );
 use XIMS::DataFormat;
 use XIMS::ObjectType;
 use XIMS::Object;

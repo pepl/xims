@@ -21,13 +21,14 @@ This module bla bla
 
 package XIMS::AppContext;
 
-use strict;
-use base qw( XIMS::AbstractClass Class::Accessor );
+use common::sense;
+use Carp;
+
+use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = (
     'properties',
-    'apache',
     'user', # used for user-management
     'userlist', # used for privilege managment
     'object', # used for content-object-management
@@ -77,7 +78,7 @@ sub new {
 1;
 
 package Properties;
-use base qw(Class::Accessor);
+use parent qw(Class::Accessor::Fast);
 __PACKAGE__->mk_accessors(qw(application content));
 
 sub new {
@@ -89,12 +90,12 @@ sub new {
 1;
 
 package Application;
-use base qw(Class::Accessor);
-__PACKAGE__->mk_accessors(qw(cookie style styleprefix preservelocation keepsuffix usepubui));
+use parent qw(Class::Accessor::Fast);
+__PACKAGE__->mk_accessors(qw(cookie style styleprefix preservelocation keepsuffix usepubui interface));
 1;
 
 package Content;
-use base qw(Class::Accessor);
+use parent qw(Class::Accessor::Fast);
 __PACKAGE__->mk_accessors(qw(getchildren getformatsandtypes escapebody childrenbybodyfilter siblingscount resolveimage_id objectlistpassthru));
                     # we have to check if childrenbybodyfilter is really needed
                     # currently it is used by portlet.pm only
@@ -106,7 +107,7 @@ sub new {
 1;
 
 package GetChildren;
-use base qw(Class::Accessor);
+use parent qw(Class::Accessor::Fast);
 __PACKAGE__->mk_accessors(qw(objectid objecttypes level limit offset order addinfo columns showtrash));
                     # objectid    to get targetchildren for contentbrowsing
                     # objecttypes to filter specific objecttypes (useful for browsing for special objecttypes)
@@ -147,7 +148,7 @@ Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+copyright (c) 2002-2011 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::VLibraryItem;
 
-use strict;
-use base qw( XIMS::CGI );
+use common::sense;
+use parent qw( XIMS::CGI );
 use XIMS::VLibrary;
 use XIMS::VLibAuthor;
 use XIMS::VLibAuthorMap;
@@ -160,13 +160,12 @@ sub event_remove_mapping {
     if ( $propmapobject->delete() ) {
         # TODO: fix this dirtyness
         if ( index( ref($ctxt->object), 'URLLink' ) > -1 ) {
-            my $uri = Apache::URI->parse( $ctxt->apache() );
-            $uri->path( $ctxt->apache->parsed_uri->rpath() );
+            my $uri = URI->new( $self->uri(-absolute => 1) );
             $uri->query('id='.$ctxt->object->id().';edit=1');
-            $self->redirect( $uri->unparse() );
+            $self->redirect( $uri );
         }
         else {
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+            $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() )
                   . "?edit=1" );
         }
         return 1;
@@ -215,13 +214,12 @@ sub event_create_mapping {
 
         # TODO: fix this dirtyness
         if ( index( ref($object), 'URLLink' ) > -1 ) {
-            my $uri = Apache::URI->parse( $ctxt->apache() );
-            $uri->path( $ctxt->apache->parsed_uri->rpath() );
+            my $uri = URI->new( $self->uri(-absolute => 1) );
             $uri->query('id='.$object->id().';edit=1');
-            $self->redirect( $uri->unparse() );
+            $self->redirect( $uri );
         }
         else {
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+            $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() )
                   . "?edit=1" );
         }
 
@@ -259,13 +257,12 @@ sub event_create_mapping_async {
 
     # TODO: fix this dirtyness
     if ( index( ref($object), 'URLLink' ) > -1 ) {
-        my $uri = Apache::URI->parse( $ctxt->apache() );
-        $uri->path( $ctxt->apache->parsed_uri->rpath() );
+        my $uri = URI->new( $self->uri(-absolute => 1) );
         $uri->query('id='.$object->id().';show_mapping_async=1;property='.$property);
-        $self->redirect( $uri->unparse() );
+        $self->redirect( $uri );
     }
     else {
-        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+        $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() )
                              . "?show_mapping_async=1;property=$property" );
     }
 
@@ -357,13 +354,12 @@ sub event_remove_mapping_async {
     if ( $propmapobject->delete() ) {
         # TODO: fix this dirtyness
         if ( index( ref($ctxt->object), 'URLLink' ) > -1 ) {
-            my $uri = Apache::URI->parse( $ctxt->apache() );
-            $uri->path( $ctxt->apache->parsed_uri->rpath() );
+            my $uri = URI->new( $self->uri(-absolute => 1) );
             $uri->query('id='.$ctxt->object->id().';show_mapping_async=1;property='.$property);
-            $self->redirect( $uri->unparse() );
+            $self->redirect($uri);
         }
         else {
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() )
+            $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() )
                   . "?show_mapping_async=1;property=$property" );
         }
         return 1;

@@ -4,7 +4,6 @@
 # Supports the following targets:
 #
 #   all       - default target checks requirements
-#   check     - checks requirements
 #   install   - installs the XIMS system
 #   test      - runs the test suite
 #   config    - updates XIMS config
@@ -13,16 +12,13 @@
 #
 
 # Set the location of Perl.
-PERL = /usr/bin/perl
+PERL = 
 
 #########################
 # build rules           #
 #########################
 
 all		: check check_done
-
-check		:
-	$(PERL) tools/install/cpan_install.pl -c
 
 check_done		: 
 
@@ -35,7 +31,7 @@ check_done		:
 	@echo ===========================================================
 	@echo
 
-install		: cpan patch_modules db setup defaulttestconf done
+install		: cpan db setup defaulttestconf done
 
 done		: 
 
@@ -63,7 +59,7 @@ config		:
 ##########################
 
 cpan 		:
-	$(PERL) tools/install/cpan_install.pl
+	cpanm --skip-satisfied < perl.deps
 
 patch_modules 		:
 	$(PERL) tools/install/patch_modules.pl

@@ -21,9 +21,9 @@ This module bla bla
 
 package XIMS::Exporter::VLibrary;
 
-use strict;
+use common::sense;
 use XIMS::Exporter;
-use base qw( XIMS::Exporter::Folder );
+use parent -norequire, qw( XIMS::Exporter::Folder );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

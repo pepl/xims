@@ -22,8 +22,8 @@ the Email-feature hidden from `ordinary users' via object type privileges.)
 
 package XIMS::NewsLetter;
 
-use strict;
-use base qw( XIMS::Document );
+use common::sense;
+use parent qw( XIMS::Document );
 
 our ($VERSION) = ( q$Revision: 1785 $ =~ /\s+(\d+)\s*$/ );
 

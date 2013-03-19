@@ -31,9 +31,11 @@ if ( $args{h} ) {
     exit;
 }
 
-unless ( $args{y} and $args{f} and $args{o} and $args{t} and $args{p} ) {
+unless ( $args{f} and $args{o} and $args{t} and $args{p} ) {
     die usage();
 }
+
+$args{y} ||= sprintf('%s/tools/install/yuicompressor-current.jar', $xims_home);
 
 my $yuicompressor = $args{y};
 my $versionpostfix = $args{v};
@@ -42,7 +44,7 @@ $versionpostfix ||= get_timestamp();
 my $type = $args{t};
 
 my $path = $args{p}; #'/uniweb/stylesheets/css/10/';
-my $user = XIMS::User->new( name => 'c10209' );
+my $user = XIMS::User->new( name => 'c10209' ); # TODO: hardcode alarm
 
 ### minimize
 my @files = split(',',$args{f});
@@ -136,8 +138,8 @@ sub get_timestamp {
 sub usage {
     return qq*
 
-  Usage: $0 [-h][-d] -y yuicompressor.jar [-v version_postfix] -f inputfiles -o outputfile -t type
-        -y Path to YUI compressor JAR
+  Usage: $0 [-h][-d] [-y yuicompressor.jar] [-v version_postfix] -f inputfiles -o outputfile -t type
+        -y Path to YUI compressor JAR (defaults to tools/install/yuicompressor-current.jar)
         -v Version postfix ( Used to version minimized files )
         -f comma separated list of input files
         -o outputfile
@@ -158,8 +160,8 @@ xims_minimize_jscss.pl
 
 =head1 SYNOPSIS
 
-xims_minimize_jscss.pl [-h][-d] -y yuicompressor.jar [-v version_postfix] 
-        -y Path to YUI compressor JAR
+xims_minimize_jscss.pl [-h][-d] [-y yuicompressor.jar] [-v version_postfix] 
+        -y Path to YUI compressor JAR (defaults to tools/install/yuicompressor-current.jar)
         -v Version postfix ( Used to version minimized files )
 
         -d For more verbose output, specify the XIMS debug level; default is '1'
@@ -176,7 +178,7 @@ Print a brief help message and exits.
 
 =item B<-y>
 
-Path to YUI compressor JAR - http://developer.yahoo.com/yui/compressor/
+Path to YUI compressor JAR - http://yuilibrary.com/projects/yuicompressor/
 
 =item B<-v>
 

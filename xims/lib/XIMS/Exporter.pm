@@ -65,7 +65,7 @@ exporter.
 
 package XIMS::Exporter;
 
-use strict;
+use common::sense;
 
 use XIMS;
 use XIMS::SAX;
@@ -897,7 +897,7 @@ package XIMS::Exporter::NULL;
 
 
 
-use strict;
+use common::sense;
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Handler );
 
@@ -933,7 +933,7 @@ write/remove XML files to disk.
 package XIMS::Exporter::XMLChunk;
 
 
-use strict;
+use common::sense;
 use vars qw( @ISA );
 
 use XIMS::SAX::Generator::Exporter;
@@ -1219,7 +1219,7 @@ link
 
 package XIMS::Exporter::Binary;
 
-use strict;
+use common::sense;
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::Handler );
 
@@ -1296,7 +1296,7 @@ package XIMS::Exporter::Folder;
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
 use File::Path;
-use strict;
+use common::sense;
 
 
 
@@ -2124,7 +2124,7 @@ package XIMS::Exporter::Gallery;
 use vars qw( @ISA );
 @ISA = qw( XIMS::Exporter::XMLChunk );
 use File::Path;
-use strict;
+use common::sense;
 
 use XIMS::SAX::Filter::ContentIDPathResolver;
 use XIMS::SAX::Filter::Attributes;

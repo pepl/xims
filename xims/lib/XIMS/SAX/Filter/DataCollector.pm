@@ -23,8 +23,8 @@ positions (such as search or portlets)
 
 package XIMS::SAX::Filter::DataCollector;
 
-use strict;
-use base qw( XML::Filter::GenericChunk );
+use common::sense;
+use parent qw( XML::Filter::GenericChunk );
 use XML::Generator::PerlData;
 use XML::LibXML;
 

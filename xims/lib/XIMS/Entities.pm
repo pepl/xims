@@ -38,7 +38,7 @@ This module bla bla
 # modify it under the same terms as Perl itself.
 package XIMS::Entities;
 
-use strict;
+use common::sense;
 
 # require instead of use here because we do not want Encode::decode to be
 # exported and trigger a "method decode redefined" warning

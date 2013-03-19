@@ -21,9 +21,9 @@ This module bla bla
 
 package XIMS::Exporter::VLibraryItem::DocBookXML;
 
-use strict;
+use common::sense;
 use XIMS::Exporter;
-use base qw( XIMS::Exporter::sDocBookXML );
+use parent -norequire, qw( XIMS::Exporter::sDocBookXML );
 use XIMS::ObjectType;
 use XIMS::ObjectPriv;
 use XIMS::SAX::Generator::VLibraryItem;

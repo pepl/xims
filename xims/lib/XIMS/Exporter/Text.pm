@@ -13,10 +13,10 @@ $Id$
 
 package XIMS::Exporter::Text;
 
-use strict;
+use common::sense;
 use XIMS::Exporter;
-use base qw( XIMS::Exporter::Binary );
-use Data::Dumper;
+use parent -norequire, qw( XIMS::Exporter::Binary );
+#use Data::Dumper;
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
 =head2 create()

@@ -27,6 +27,7 @@
                 <item>session.host</item>
                 <item>session.last_access_timestamp</item>
                 <item>session.salt</item>
+                <item>session.auth_module</item>
             </Session>
 			<UserPrefs>
                 <item>userprefs.id</item>

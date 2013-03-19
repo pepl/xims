@@ -22,7 +22,7 @@ defined in XIMS::Privileges::System.
 
 package XIMS::Privileges;
 
-use strict;
+use common::sense;
 
 # we use `constant functions´ with prototypes as described in perlsub(1).
 ## no critic

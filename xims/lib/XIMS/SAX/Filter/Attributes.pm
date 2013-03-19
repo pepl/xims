@@ -21,8 +21,8 @@ This SAX Filter expands semicolon-separated key=value pairs to a nodeset.
 
 package XIMS::SAX::Filter::Attributes;
 
-use strict;
-use base qw( XML::SAX::Base );
+use common::sense;
+use parent qw( XML::SAX::Base );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

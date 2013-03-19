@@ -22,7 +22,7 @@ This module bla bla
 #$Id$
 package XIMS::SAX::Generator;
 
-use strict;
+use common::sense;
 use XIMS;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

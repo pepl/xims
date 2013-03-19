@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::SAX::Generator::User;
 
-use strict;
-use base qw(XIMS::SAX::Generator::Users);
+use common::sense;
+use parent qw(XIMS::SAX::Generator::Users);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -39,10 +39,8 @@ sub prepare {
     # add the user's bookmarks.
     my @bookmarks = $ctxt->session->user->bookmarks();
     $doc_data->{context}->{session}->{user}->{bookmarks} = { bookmark => \@bookmarks };
-    
-    # add the user's preferences.
-    my $userprefs = $ctxt->session->user->userprefs;
-	$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() } if defined $userprefs;
+
+ 	$doc_data->{context}->{session}->{user}->{userprefs} = $ctxt->session->user->userprefs;
 
     my @object_types = $ctxt->data_provider->object_types();
     my @data_formats = $ctxt->data_provider->data_formats();

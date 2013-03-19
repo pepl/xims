@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::SAX::Generator::Content;
 
-use strict;
-use base qw(XIMS::SAX::Generator XML::Generator::PerlData);
+use common::sense;
+use parent qw(XIMS::SAX::Generator XML::Generator::PerlData);
 use XIMS::DataProvider;
 use XML::Filter::CharacterChunk;
 use XIMS::SAX::Filter::ContentObjectPropertyResolver;
@@ -61,21 +61,11 @@ sub prepare {
     if ( $ctxt->session() ) {
         $doc_data->{context}->{session} = { $ctxt->session->data() };
         if (defined $ctxt->session->user){
-	        $doc_data->{context}->{session}->{user} = { $ctxt->session->user->data() };
-	        # add the user's preferences.
-	        unless($ctxt->session->user->userprefs()){ # Sideeffect!
-	         	XIMS::Debug(4, "New userprefs created");
-	        }
-    		$doc_data->{context}->{session}->{user}->{userprefs} = { $ctxt->session->user->userprefs->data() };
+            $doc_data->{context}->{session}->{user} =  $ctxt->session->user;
         }
-            
-#        $doc_data->{context}->{session}->{user}
-#            = { $ctxt->session->user->data() }
-#            if defined $ctxt->session->user;
-        my $publicusername
-            = $ctxt->apache()->dir_config('ximsPublicUserName');
+
         $doc_data->{context}->{session}->{public_user} = 1
-            if defined $publicusername;
+            if $ctxt->session->auth_module eq 'XIMS::Auth::PublicUser';
     }
 
     # fun with content objects
