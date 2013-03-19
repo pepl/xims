@@ -1,9 +1,9 @@
 
-3.0 
+3.0 (in developement)
   - Centralise the configuration
   - Port to PSGI
 
-2.0
+stable-2.0 (branch, no formal release)
   - Bugfixes
   - Completly new UI
   - Standard vs. expert user roles, redesigned user preferences
@@ -13,7 +13,7 @@
   - Dump BitFlux editor
   - AnonDiscussionForum
 
-1.4
+stable-1.4 (branch, no formal release)
   - Bugfixes
   - A new Gallery object type
   - Generalize the handling of language markers  
@@ -21,7 +21,7 @@
   - Dump eWebeditPro
   - Dump Xinha and HTMLArea 
 
-1.3
+stable-1.3 (branch, no formal release)
   - Legions of bugs fixed along the way
   - Dump Xinha and HTMLArea 
   - Extend documentation
