@@ -1,45 +1,52 @@
-# Bundle::LWP
+# This is a simple list of dependancies to be used with cpanm,
+# e.g. cpanm --skip-satisfied < perl.deps
+# Omit --skip-satisfied in case you want cpanm to update all mentioned modules.
+#
+# If you plan to use LDAP validation
+# Net::LDAP
+# If you plan to use IMAP validation
 # IMAP::Admin
 Archive::Zip 
 Array::Iterator 
 CSS::Minifier::XS 
 CSS::Tiny 
 Class::Accessor
-DBD::Pg           
 DBI
-DBIx::SQLEngine
+# If you’re on Oracle, you may deactive this one; 
+DBD::Pg~1.31           
+# DBD::Oracle is best installed manually  
+DBIx::SQLEngine~0.017
 DBIx::XHTML_Table
 Digest::MD5
 Email::Valid 
 File::Slurp 
 HTTP::Exception
-HTTP::Exception
 HTTP::Headers::Util
 HTTP::Request
 HTTP::Throwable
-HTTP::Throwable::Factory
 JSON::XS
 JavaScript::Minifier::XS 
+URI
 LWP
 Locale::TextDomain 
 MIME::Lite::HTML 
-Net::LDAP
 Storable
 Task::Plack
 Term::ReadKey 
 Text::Diff 
 Text::Iconv 
-Text::ParseWords
 Text::Template 
 Time::Piece 
-URI
-XML::Filter::GenericChunk
-XML::Generator::DBI 
-XML::Generator::PerlData
-XML::LibXML
+XML::LibXML~1.70
 XML::LibXML::Iterator 
-XML::LibXSLT
+XML::LibXSLT~1.70
 XML::Parser::PerlSAX
 XML::SAX::Machines 
-XML::Schematron
-
+XML::Generator::DBI 
+XML::Generator::PerlData
+XML::Filter::GenericChunk~0.04
+# If you plan to run all tests
+# XML::Schematron
+# Test::Perl::Critic
+# Test::Pod
+# Test::Pod::Coverage
