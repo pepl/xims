@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article>
+    <title>XIMS Department Root Howto</title>
+
+    <articleinfo>
+        <authorgroup>
+            <author>
+                <firstname>Michael</firstname>
+
+                <surname>Kröll</surname>
+
+                <affiliation>
+                    <orgname>University of Innsbruck</orgname>
+                </affiliation>
+
+                <authorblurb>
+                    <para><email>michael.kroell@uibk.ac.at</email></para>
+                </authorblurb>
+            </author>
+        </authorgroup>
+
+        <revhistory>
+            <revision>
+                <revnumber>$Revision$</revnumber>
+
+                <date>$Date$</date>
+
+                <revremark></revremark>
+            </revision>
+        </revhistory>
+
+        <legalnotice>
+            <para>Copyright © 2002</para>
+        </legalnotice>
+    </articleinfo>
+
+    <section>
+        <title>What is a Department Root?</title>
+
+        <para>A Department Root is a special kind of folder which allows a <ulink url="../xims-user_s-reference.sdbk#site">site</ulink> to be
+        hierarchically organized into several content domains for organizational units. Department Roots hold several properties which are inherited to their
+        child objects. Such properties include the department&#39;s portlets, a department-specific image or -stylesheet to be used for displaying the published
+        objects.</para>
+
+        <para>The following screenshot shows an example of how Department Links, a Department Image and the Department Title can be used in in the published
+        version of a Department Root. All three properties are present on each published child object of the department.</para>
+
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="images/xims-deptroot-properties-screenshot.png" />
+            </imageobject>
+        </mediaobject>
+    </section>
+
+    <section>
+        <title>How to add Department Links</title>
+
+        <para>Department Links are used for navigating through the published version of a department. They can be created by assigning a portlet called
+        <quote>departmentlinks_portlet</quote> to the Department Root. To achieve that, the following steps are neccessary:</para>
+
+        <orderedlist>
+            <listitem>
+                <para>Create a folder with links that should be used for department-wide navigation and publish it.</para>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims-deptroot-add-deptlinks-step_1a.png" />
+                    </imageobject>
+
+                    <caption>
+                        <para>Create a <quote>departmentlinks</quote> folder.</para>
+                    </caption>
+                </mediaobject>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims-deptroot-add-deptlinks-step_1b.png" />
+                    </imageobject>
+
+                    <caption>
+                        <para>Create links in the <quote>departmentlinks</quote> folder.</para>
+                    </caption>
+                </mediaobject>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims-deptroot-add-deptlinks-step_1c.png" />
+                    </imageobject>
+
+                    <caption>
+                        <para>Publish the <quote>departmentlinks</quote> folder and with it the links it contains.</para>
+                    </caption>
+                </mediaobject>
+            </listitem>
+
+            <listitem>
+                <para>Create a portlet called <quote>departmentlinks_portlet </quote> on that folder and publish it.</para>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims-deptroot-add-deptlinks-step_2a.png" />
+                    </imageobject>
+
+                    <caption>
+                        <para>Create the portlet.</para>
+                    </caption>
+                </mediaobject>
+
+                <para>The portlet has to be called <quote>departmentlinks_portlet</quote>! The field <quote>Abstract </quote>has to be clicked on!</para>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims-deptroot-add-deptlinks-step_2b.png" />
+                    </imageobject>
+
+                    <caption>
+                        <para>Publish the portlet.</para>
+                    </caption>
+                </mediaobject>
+            </listitem>
+
+            <listitem>
+                <para>Assign the portlet to the Department Root and publish it.</para>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/xims-deptroot-add-deptlinks-step_3a.png" />
+                    </imageobject>
+
+                    <caption>
+                        <para>Add the <quote>departmentlink-portlet</quote> to the Department Root&#39;s portlets.</para>
+                    </caption>
+                </mediaobject>
+
+                <para>Finally, (re)publish the Department Root.</para>
+            </listitem>
+        </orderedlist>
+    </section>
+
+    <section>
+        <title>How to add a Department Image</title>
+
+        <para>Like a Department Stylesheet, a Department Image can be used to emphasize the individuality of the department&#39;s web-presence apart from a
+        default look and feel. You can assign a Department Image by filling in the appropiate field in the &#34;Edit Department Root&#34; dialogue.</para>
+
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="images/xims-deptroot-add-dept-image.png" />
+            </imageobject>
+        </mediaobject>
+    </section>
+</article>

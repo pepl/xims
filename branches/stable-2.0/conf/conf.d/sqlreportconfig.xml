@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<Config>
+    <General>
+        <!--
+        # Credentials in whichs context the SQLReport query will be executed unless a DBI connect string is
+        # configured for the SQLReport object.
+        # This user needs to have SELECT grants on the database objects refered to in the SQLReport query.
+        -->
+        <SQLReportAgentUser></SQLReportAgentUser>
+        <SQLReportAgentUserPassword></SQLReportAgentUserPassword>
+        <SQLReportPagesize>30</SQLReportPagesize>
+        <!--
+        # If defined, all refered database objects need to exists in a database schema and have to be
+        # referenced explicitly with the schema name (select foo from schemaname.tablename). In addition,
+        # the currently logged in user has to be granted a role corresponding to the schema to execute
+        # the SQLReport query. That role must be called 'XIMS:SQLReportSchema:Schemaname'.
+        -->
+        <SQLReportTestGrantedSchemas>0</SQLReportTestGrantedSchemas>
+    </General>
+</Config>

@@ -1,0 +1,429 @@
+\section{Startseite und allgemeiner Aufbau}
+\label{startseite}
+
+Nach erfolgreicher Anmeldung gelangt man zur persönlichen Startseite
+im \otherterm{XIMS} Content-Management-System.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.90\textwidth]{./images/ximsstartseite.png}
+  \caption{Benutzerspezifische \otherterm{XIMS} Startseite}
+  \label{fig:ximsstartseite2}
+\end{figure}
+
+Für alle Benutzer/-innen sind \otherterm{Lesezeichen} (Bookmarks)
+konfiguriert.\footnote{Universitäts-Mitarbeiter/-innen bekommen
+  automatisch in eine Mitarbeiter/-innen-Rolle zugewiesen; über diese
+  sind sie berechtigt, im {XIMS}-Testordner Objekte zu erstellen und
+  erhalten ein entsprechendes Lesezeichen.} Diese Lesezeichen hängen
+entweder von Rollen ab oder können über »Lesezeichen verwalten« gesetzt, gelöscht und verändert werden. Dort kann auch das
+\othertermdef{Standardlesezeichen} (default Bookmark) gewählt werden.
+Das \otherterm{Standardlesezeichen} bewirkt eine automatische
+Weiterleitung von der Einstiegsadresse
+\url{https://xims.uibk.ac.at/goxims/defaultbookmark} aus auf das
+gewählte Ziel.
+
+
+
+\begin{Hinweis}
+  Nutzen Sie den \otherterm{XIMS}-Testordner um sich mit dem System
+  vertraut zu machen. Dort können Sie Objekte erstellen und das
+  allgemeine Verhalten von \otherterm{XIMS} testen.
+\end{Hinweis}
+
+Typischerweise bekommen Sie über die Rolle Ihrer Organisationseinheit
+automatisch ein \othertermdef{Lesezeichen} zu deren Verzeichnis. Unter »Lesezeichen
+verwalten« können Sie beliebige weitere Lesezeichen erstellen, um
+schnell und bequem auf oft benötigte Objekte zugreifen zu können.
+
+%Verzeichnisse erscheinen in der \ximsterm{Containeransicht}:
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.90\textwidth]{./images/containeransicht.png}
+  \caption{\otherterm{XIMS} \ximsterm{Containeransicht}}
+  \label{fig:containeransicht2}
+\end{figure}
+
+\subsection{Navigation und Menu}
+\label{navigation}
+
+Der \otherterm{XIMS}-\ximsterm{Navigationsbereich} besteht unter anderem aus den folgenden Elementen:
+
+\paragraph{Aktueller Pfad (Navigations-/Breadcrumb-Pfad)}
+\label{breadcrumb}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.7]{./images/navigationspfad.png}
+  \caption{Navigations-/Breadcrumb-Pfad}
+  \label{fig:navigationspfad}
+\end{figure}
+
+
+Der \ximstermdef{Navigationspfad} zeigt den Pfad vom
+»\ximstermdef{SiteRoot}« (für \url{http://www.uibk.ac.at/} heißt das
+\ximsterm{SiteRoot} \path{uniweb}) bis zum aktuellen Objekt an. Das
+Anklicken eines Teilpfades ermöglicht ein schnelles Wechseln in einen
+übergeordneten \ximsterm{Container}. Die Pfadfragmente (z.\,B.
+\path{uniweb}) entsprechen dabei dem 
+%»\ximsterm{Location}«-Attribut
+»\ximsterm{Pfad}«-Attribut
+des \ximsterm{Container}s.
+
+\paragraph{Navigationspfeile}
+\label{navigationspfeile}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.7]{./images/navigationspfeile.png}
+  \caption{Navigationspfeile}
+  \label{fig:navigationspfeile}
+\end{figure}
+
+Die \ximstermdef{Navigationspfeil}e ermöglichen ein schnelles Bewegen
+innerhalb des Systems: einen Schritt zurück (back), eine Ebene höher
+im Verzeichnisbaum (one level up), oder einen Schritt vorwärts
+(forward).
+
+%\paragraph{Login-Informationen}
+%\label{logininfo}
+%
+%\begin{figure}[!ht]
+%  \centering
+%  \includegraphics[scale=0.7]{./images/logininfo.png}
+%  \caption{Login-Informationen}
+%  \label{fig:logininfo}
+%\end{figure}
+%
+%Die Login-Informationen beinhalten das aktuelle Datum, den Namen des
+%angemeldeten Benutzers und die Möglichkeit sich über »logout« vom
+%System abzumelden.
+
+\paragraph{Menü}
+Durch einen Klick auf ">Menü"< gelangen Sie schnell zu den wichtigsten Optionen
+\begin{itemize}
+	\item Persönliche Startseite
+	\item Lesezeichen
+	\item abmelden
+\end{itemize}
+
+\paragraph{Hilfe}
+Ein Klick auf das Hilfe-Menü öffnet eine Link-Auswahlliste zu Anleitungen und Informationen rund um Xims
+\begin{itemize}
+	%\item Systeminfo
+	\item Anleitung: die aktuelle Version der ">Schritt für Schritt"<-Anleitung
+	\item FAQ: Häufig gestellte Fragen zur Benutzung von Xims und die passenden Antworten finden sie im XIMS Benutzer FAQ.
+	\item Xims UIBK: Hier finden Sie wichtige Informationen zu Xims an der Uni Innsbruck sowie weiterführende Links zu speziellen Xims-Funktionen.
+	\item Webredaktion: Die Webredaktion der Universität hat viele nützliche Informationen und Tipps rund um das Erstellen von Webseiten mit Xims zusammengefasst, die Ihnen helfen sollen Ihre Webseiten übersichtlich und optisch ansprechend zu gestalten sowie häufig begangene Anwenderfehler zu vermeiden.
+	\item Email an Xims-Support: Wenn Sie ein Email-Programm wie Outlook oder Thunderbird installiert haben, können Sie über diesen Link direkt eine Email an das Support-Team an der Uni Innsbruck schreiben. Dabei werden automatisch wichtige Informationen wie Ihr Benutzername und das Objekt oder Verzeichnis, an dem Sie gerade arbeiten eingefügt. Lassen Sie diese Informationen am Ende der Email stehen um dem Support-Team eine möglichst schnelle Bearbeitung ohne weitere Rückfragen zu ermöglichen.
+\end{itemize}
+
+\paragraph{\otherterm{Suchfunktion}}
+\label{suche}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.7]{./images/suche.png}
+  \caption{Suchfunktion}
+  \label{fig:suchfunktion}
+\end{figure}
+
+Um ein Objekt innerhalb von Xims zu finden benutzen Sie die Suchfunktion rechts im Menü- und Navigationsbereich. Die Option »Ab hier« schränkt die Suche auf Objekte ein, die sich in der Verzeichnishierarchie unterhalb des aktuellen Objektes befinden.
+Ein Suchausdruck kann aus einem oder mehreren Wörtern bestehen und bis
+zu 55 Zeichen lang sein. Begriffe können auch wie üblich mit Klammern
+und Operatoren zu komplexeren Ausdrücken zusammengefügt werden:
+
+\begin{itemize}
+\item AND
+\item OR
+\item ()
+\end{itemize}
+
+\begin{Hinweis}
+  Um beispielsweise nach einem Objekt, welches die Begriffe »zid«
+  sowie einen der Begriffe »antrag« oder »dokument« beinhaltet zu
+  finden, können Sie folgenden Suchausdruck verwenden: \texttt{zid AND
+    (antrag OR dokument)}
+\end{Hinweis}
+
+Folgende Ausdrücke dürfen nur alleine stehen:
+
+\begin{description}
+\item[M:<Tage>] Finde Objekte, die in den letzen <Tagen> verändert
+  wurden. <Tage> muss nicht unbedingt angeben werden, der Vorgabewert
+  ist 1.
+\item[N:<Tage>] Finde Objekte, die in den letzen <Tagen> erstellt
+  wurden. <Tage> muss nicht unbedingt angeben werden, der Vorgabewert
+  ist 1.
+\item[m:<Tage>, n:<Tage>] Wie oben, aber schränke die Suche zusätzlich
+  auf Objekte ein, die als neu markiert wurden.
+\end{description}
+
+%\paragraph{Element zum Erstellen von neuen Objekten}
+%\label{newobject}
+%
+%\begin{figure}[!ht]
+%  \centering
+%  \includegraphics[scale=0.7]{./images/button-create.png}
+%  \caption{Element zum Erstellen von neuen Objekten}
+%  \label{fig:erstellenbutton}
+%\end{figure}
+%
+%Diese Option wird unter Punkt \ref{erstelleneditieren} ausführlich
+%beschrieben.\footnote{Die Option ist nur sichtbar, wenn die nötigen
+%  Rechte zum Erstellen (\ximsterm{Objekttypprivilegien}) vergeben
+%  wurden. Falls sie fehlt, wurde Ihnen möglicherweise versehentlich
+%  keine Rolle zugewiesen; wenden Sie sich bitte an
+%  \href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}}
+
+\subsection{Ansicht von Objekten}
+
+In der Standard-Ansicht von Objekten in XIMS finden Sie unterhalb des Menü- und Navigationsbereichs den Titel des Objekts mit entsprechendem Icon für den Objekttypen und rechts davon eine Auswahl an möglichen Aktionen, die Sie auf dieses Objekt anwenden können. Darunter sehen Sie den so genannten \ximsterm{Body} bzw. Inhalt des Objekts. Am Ende der Seite befinden sich noch einige nützliche Informationen zum aktuellen Objekt, wie Besitzer oder Datum der letzen Änderung.
+
+\subsection{Ansicht von Containerinhalten}
+\label{containeransicht}
+Spezielle Objekte in XIMS sind die \ximstermdef{Container}, die - wie etwa Ordner im Windows-Explorer - weitere Objekte beinhalten können.
+
+\paragraph{Die Ansicht über den Containerinhalt} bietet einen Überblick der im jeweiligen \ximstermdef{Container} enthaltenen Objekte. Die Objekte
+(Dateien, Ordner, HTML-Seiten, etc.) werden tabellarisch aufgelistet und können nach verschiedenen Kriterien auf- und absteigend sortiert
+werden, indem auf die Überschrift der jeweiligen Spalte (»Pos«, »Titel« oder »Zuletzt geändert«) geklickt wird. (Standarddarstellung ist
+aufsteigend nach der Positionsnummer).
+
+Die Tabelle mit den Objekten setzt sich aus folgenden Spalten zusammen:
+
+\begin{itemize}
+\item Status
+\item Position (Pos)
+\item Titel
+\item Zuletzt geändert 
+\item Größe des Objekts in Kilobyte (Größe (kB))
+\item Optionen zum Verwalten der Objekte (Optionen)
+\end{itemize}
+
+Jedem Objekt entspricht eine Zeile in der Tabelle, sind viele Objekte
+in Container vorhanden, wird die Ansicht paginiert und eine
+entsprechende Navigation erscheint im Seitenfuß.
+
+\paragraph{Element zum Erstellen von neuen Objekten und Papierkorb}
+\label{newobject}
+In der Titelleiste finden bei ordner-ähnlichen Objekten neben den Aktions-Icons zwei weitere Optionen: Das Erstellen-Menü und einen Button zum Papierkorb.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.7]{./images/button-create.png}
+  \caption{Element zum Erstellen von neuen Objekten}
+  \label{fig:erstellenbutton}
+\end{figure}
+
+Das Menü zum Erstellen von Objekten wird unter Punkt \ref{erstelleneditieren} ausführlich
+beschrieben.\footnote{Die Option ist nur sichtbar, wenn die nötigen
+  Rechte zum Erstellen (\ximsterm{Objekttypprivilegien}) vergeben
+  wurden. Falls sie fehlt, wurde Ihnen möglicherweise versehentlich
+  keine Rolle zugewiesen; wenden Sie sich bitte an
+  \href{mailto:XIMS-Support@uibk.ac.at}{\nolinkurl{XIMS-Support@uibk.ac.at}}}
+  
+Durch einen Klick auf den Papierkorb-Button werden Ihnen alle Objekte aufgelistet, die sich vor dem Verschieben in den virtuellen Papierkorb im aktuellen Container befanden. Von der Papierkorb-Ansicht aus können Sie die Objekte entweder wiederherstellen oder endgültig löschen.
+
+\subsection{Icons in \otherterm{XIMS}}
+\label{icons}
+
+\paragraph{Status}
+
+Der \ximstermdef{Objektstatus} gibt Auskunft über den derzeitigen
+Zustand des Objekts. In der aktuellen Version kennt \otherterm{XIMS}
+vier verschiedene \ximsterm{Objektstatus}.
+
+\includegraphics[scale=0.7]{./images/icons_status_new.jpg}  
+  \label{new}Das Objekt ist als neu markiert.
+  
+\includegraphics[scale=0.7]{./images/icons_status_published.jpg}  
+  Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man
+  zur veröffentlichten Ansicht des Objekts.
+  
+\includegraphics[scale=0.7]{./images/icons_status_modified.jpg} 
+  Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten
+  Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
+  man zur aktuell veröffentlichten Ansicht des Objekts.
+
+\includegraphics[scale=0.7]{./images/icons_status_locked.jpg} 
+  Das Objekt ist gesperrt, üblicherweise, weil jemand anderer das Objekt gerade
+  bearbeitet.\footnotemark
+  
+%\begin{table}[!ht]
+%\begin{minipage}{\textwidth}
+%\centering
+%
+%\begin{tabular}{|c|p{30em}|}
+%  \hline
+%  %\includegraphics[scale=0.7]{./images/icon-new.png} & 
+%  \includegraphics[scale=0.7]{./images/icons_status_new.jpg} & 
+%  \label{new}Das Objekt ist als neu markiert. \\
+%  \hline
+%  %\includegraphics[scale=0.7]{./images/icon-published.png} & 
+%  \includegraphics[scale=0.7]{./images/icons_status_published.jpg} & 
+%  Das Objekt ist veröffentlicht. Durch Klicken auf das Symbol gelangt man
+%  zur veröffentlichten Ansicht des Objekts. \\
+%  \hline
+%  %\includegraphics[scale=0.7]{./images/icon-modified.png} & 
+%  \includegraphics[scale=0.7]{./images/icons_status_modified.jpg} & 
+%  Das Objekt ist bereits einmal veröffentlicht worden, jedoch seit der letzten
+%  Publikation wieder editiert worden. Durch Klicken auf das Symbol gelangt
+%  man zur aktuell veröffentlichten Ansicht des Objekts. \\
+%  \hline
+%  %\includegraphics[scale=0.7]{./images/icon-locked.png} & 
+%  \includegraphics[scale=0.7]{./images/icons_status_locked.jpg} & 
+%  Das Objekt ist gesperrt, üblicherweise, weil jemand anderer das Objekt gerade
+%  bearbeitet.\footnotemark \\
+%  \hline
+%\end{tabular}
+%\end{minipage}
+%\caption{Status-Icons}
+%\end{table}
+\footnotetext{Eigene Sperren (entstanden z.B. dadurch dass
+    ein Editiervorgang nicht durch Speichern oder Abbrechen
+    beendet wurde) können durch Klicken auf das Schloss, »fremde«
+    Sperren \emph{nur} dur das Kommando \texttt{!U:<Id> oder !U:<Pfad>} im Suchfeld, aufgehoben
+    werden.  Weitere Erläuterungen dazu siehe Punkt \ref{gesperrteobjekte}}
+
+\paragraph{Position}
+Die Spalte »Pos« (Position) stellt einen Positionierungs- bzw.
+Gewichtungsmechanismus zur Verfügung, der auf individuelle Bedürfnisse
+selbst angepasst werden kann. Über die Spalte »Pos« können Objekte in
+der Inhaltsansicht eines \ximsterm{Container}s nach vorne gereiht
+werden. Die Möglichkeit spezielle Positionen zu vergeben spielt bei
+den \ximsterm{DepartmentLinks} (siehe auch Punkt \ref{deplinks}) und
+im Zusammenhang mit dem \ximsterm{Autoindex} (siehe auch Punkt
+\ref{autoindex}) eine wichtige Rolle.
+Um die Position eines Objekts im Container zu ändern klicken Sie in der Zeile des Objekts auf die vergebene Position. In dem nun geöffneten Popup-Fenster (siehe Abbildung \ref{fig:positionpp}) wählen Sie im Drop-Down-Menü die neue Position aus und klicken anschließend auf ">Speichern"<.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.5]{./images/position-popup.jpg}
+  \caption{Popup für das Ändern der Position eines Objekts im Container}
+  \label{fig:positionpp}
+\end{figure}
+
+%\paragraph{Titel (Title)}
+%Der Titel des Objekts soll eine für sich sprechende Bezeichnung des
+%Objekts sein. Das Icon vor dem Titel des Objekts lässt auf dessen
+%Dateityp (PDF-Dokument, MS-Word-Dokument, etc.) schließen. In diesem
+%Zusammenhang wird auf Punkt \ref{location} verwiesen, der die
+%wesentlichen Unterschiede zwischen Titel und \ximsterm{Location}
+%aufzeigt.
+
+\paragraph{Zuletzt geändert (Last modified)}
+
+Die Spalte »Zuletzt geändert« gibt über das Datum und die Uhrzeit der letzten
+Änderung des Objekts Auskunft.
+
+\paragraph{Größe (Size)}
+
+Diese Spalte gibt die Größe in Kilobyte an.\footnote{Bei Containern
+  wird keine Größe angezeigt.}
+
+\paragraph{Options (Optionen)}
+
+Abhängig von den \otherterm{Berechtigung}en auf das jeweilige Objekt
+werden verschiedene Optionen zur Verwaltung angeboten:
+
+\includegraphics[scale=0.7]{./images/icons_options_edit.jpg}
+    Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
+    gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
+    verändern.
+    Siehe dazu Punkt \ref{erstelleneditieren}: »Erstellen/Editieren«. 
+
+\includegraphics[scale=0.7]{./images/icons_options_copy.jpg} 
+    Kopieren von Objekten: Durch Anklicken des Symbols wird eine Kopie des Objekts im gleichen Container angelegt, in dem sich das Objekt selbst befindet. Der \ximsterm{Titel} des neuen Objekts heißt dann ">Copy of [Originaltitel]"< und 
+    der Pfad 
+    %die \ximsterm{Location}
+     ">copy\_of\_[originalpfad]"<. 
+
+\includegraphics[scale=0.7]{./images/icons_options_move.jpg} 
+    Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
+    in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
+    leichtes Verschieben des Objekts in einen anderen \ximsterm{Container}
+    ermöglicht. 
+
+\includegraphics[scale=0.7]{./images/icons_options_publish.jpg}
+    Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
+    Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
+    veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
+    rückgängig gemacht werden. (Siehe dazu Punkt \ref{inhaltepublizieren}). 
+
+\includegraphics[scale=0.7]{./images/icons_options_acl.jpg}
+    Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
+    gelangt man in eine Maske, die zum einen Auskunft über die
+    derzeitigen Zugriffsrechte für das Objekt gibt und zum anderen ein
+    Editieren der Zugriffsrechte ermöglicht. 
+
+\includegraphics[scale=0.7]{./images/icons_options_trashcan.jpg}
+    Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
+    (Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
+    (Siehe auch Punkt \ref{delete}).
+
+\includegraphics[scale=0.7]{./images/icons_options_undelete.jpg}
+    Objekt Wiederherstellen: Durch Anklicken des Symbols und Bestätigen
+    (Confirm) des folgenden Dialogs kann ein Objekt, das sich im Papierkorb befindet, wieder zurück in seinen ursprüngliches Verzeichnis geschoben werden.
+    (Siehe auch Punkt \ref{delete}). 
+
+\includegraphics[scale=0.7]{./images/icons_options_delete.jpg}
+    Objekt endgültig Löschen: Durch Anklicken des Symbols und Bestätigen
+    (Confirm) des folgenden Dialogs kann ein Objekt, das sich im Papierkorb befindet, endgültig gelöscht werden. Diese Aktion lässt sich nicht mehr rückggängig machen.
+
+%\begin{table}[!ht]
+%  \centering
+%  %\begin{tabular}{|c|p{30em}|}
+%  \begin{tabular}{|c|p{30em}|}
+%    \hline
+%    %\includegraphics[scale=0.7]{./images/icon-edit.png} &
+%    \includegraphics[scale=0.7]{./images/icons_options_edit.jpg}& 
+%    Option zur Bearbeitung von Objekten: Durch Anklicken des Symbols
+%    gelangt man in die Bearbeitungsmaske, die es erlaubt, das Objekt zu
+%    verändern.
+%    Siehe dazu Punkt \ref{erstelleneditieren}: »Erstellen/Editieren«. \\
+%    \hline
+%    \includegraphics[scale=0.7]{./images/icons_options_copy.jpg}& 
+%    Kopieren von Objekten: Durch Anklicken des Symbols wird eine Kopie des Objekts im gleichen Container angelegt, in dem sich das Objekt selbst befindet. Der \ximsterm{Titel} des neuen Objekts heißt dann ">Copy of [Originaltitel]"< und die \ximsterm{Location} ">copy\_of\_[originallocation]"<. \\
+%    \hline
+%    %\includegraphics[scale=0.7]{./images/icon-move.png} & 
+%    \includegraphics[scale=0.7]{./images/icons_options_move.jpg}& 
+%    Verschieben von Objekten: Durch Anklicken des Symbols gelangt man
+%    in eine weitere Maske, die mit Hilfe eines »Durchsuchen« Dialoges ein
+%    leichtes Verschieben des Objekts in einen anderen \ximsterm{Container}
+%    ermöglicht. \\
+%    \hline
+%    %\includegraphics[scale=0.7]{./images/icon-publish.png} & 
+%    \includegraphics[scale=0.7]{./images/icons_options_publish.jpg}& 
+%    Optionen zum Veröffentlichen: Durch Anklicken des Symbols und
+%    Bestätigen (Confirm) des folgenden Dialogs kann ein Objekt
+%    veröffentlicht (publiziert), re-publiziert bzw. die Veröffentlichung
+%    rückgängig gemacht werden. (Siehe dazu Punkt \ref{inhaltepublizieren}). \\
+%    \hline
+%    %\includegraphics[scale=0.7]{./images/icon-acl.png} & 
+%    \includegraphics[scale=0.7]{./images/icons_options_acl.jpg}& 
+%    Zugriffskontrolle/Rechteverwaltung: Durch Anklicken des Symbols
+%    gelangt man in eine Maske, die zum einen Auskunft über die
+%    derzeitigen Zugriffsrechte für das Objekt gibt und zum anderen ein
+%    Editieren der Zugriffsrechte ermöglicht. \\
+%    \hline
+%    %\includegraphics[scale=0.7]{./images/icon-del.png} & 
+%    \includegraphics[scale=0.7]{./images/icons_options_trashcan.jpg}& 
+%    Objekt Löschen: Durch Anklicken des Symbols und Bestätigen
+%    (Confirm) des folgenden Dialogs kann ein Objekt gelöscht werden.
+%    (Siehe auch Punkt \ref{delete}). \\
+%    \hline
+%    %\includegraphics[scale=0.7]{./images/icon-undelete.png} & 
+%     \includegraphics[scale=0.7]{./images/icons_options_undelete.jpg}& 
+%    Objekt Wiederherstellen: Durch Anklicken des Symbols und Bestätigen
+%    (Confirm) des folgenden Dialogs kann ein Objekt, das sich im Papierkorb befindet, wieder zurück in seinen ursprüngliches Verzeichnis geschoben werden.
+%    (Siehe auch Punkt \ref{delete}). \\
+%    \hline
+%    %\includegraphics{./images/icon-purge.png}  & 
+%     \includegraphics[scale=0.7]{./images/icons_options_delete.jpg}& 
+%    Objekt endgültig Löschen: Durch Anklicken des Symbols und Bestätigen
+%    (Confirm) des folgenden Dialogs kann ein Objekt, das sich im Papierkorb befindet, endgültig gelöscht werden. Diese Aktion lässt sich nicht mehr rückggängig machen. \\
+%    \hline
+%  \end{tabular}
+%  \caption{Options-Icons}
+%\end{table}

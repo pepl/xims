@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Michael Kröll (Universität Innsbruck) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="document">
+		<xs:annotation>
+			<xs:documentation>root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="context" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="session">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="last_access_timestamp" type="xs:dateTime"/>
+										<xs:element name="host" type="xs:string"/>
+										<xs:element name="user" type="user"/>
+										<xs:element name="date">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="day" type="xs:integer"/>
+													<xs:element name="month" type="xs:integer"/>
+													<xs:element name="year" type="xs:integer"/>
+													<xs:element name="hour" type="xs:integer"/>
+													<xs:element name="minute" type="xs:integer"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="message" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>non-localized message-text</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="id" type="xs:integer" use="required">
+															<xs:annotation>
+																<xs:documentation>id of localized message</xs:documentation>
+															</xs:annotation>
+														</xs:attribute>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="verbose_msg" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>verbose version of the message-text (Used by body parsing test for example)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="serverurl" type="xs:string"/>
+										<xs:element name="attributes" type="xs:string"/>
+										<xs:element name="user_id" type="xs:integer"/>
+										<xs:element name="session_id" type="xs:integer"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="object" minOccurs="0">
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="object">
+											<xs:sequence minOccurs="0">
+												<xs:element name="children" minOccurs="0">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="object" type="object" minOccurs="0" maxOccurs="unbounded"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="parents" minOccurs="0">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="object" type="object" minOccurs="0" maxOccurs="unbounded"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="granteelist" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>For listing grantees</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="user" type="user" minOccurs="0" maxOccurs="unbounded"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="targetparents" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>For move and content_browse</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="object" type="object" minOccurs="0" maxOccurs="unbounded"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="targetchildren" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>For move and content_browse</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="object" type="object" minOccurs="0" maxOccurs="unbounded"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="content_length" type="xs:integer" minOccurs="0"/>
+												<xs:element name="user_privileges" minOccurs="0">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="view" type="xs:boolean" nillable="1"/>
+															<xs:element name="write" type="xs:boolean" nillable="1"/>
+															<xs:element name="delete" type="xs:boolean" nillable="1"/>
+															<xs:element name="publish" type="xs:boolean" nillable="1"/>
+															<xs:element name="attributes" type="xs:boolean" nillable="1"/>
+															<xs:element name="translate" type="xs:boolean" nillable="1"/>
+															<xs:element name="create" type="xs:boolean" nillable="1"/>
+															<xs:element name="move" type="xs:boolean" nillable="1"/>
+															<xs:element name="link" type="xs:boolean" nillable="1"/>
+															<xs:element name="publish_all" type="xs:boolean" nillable="1"/>
+															<xs:element name="attributes_all" type="xs:boolean" nillable="1"/>
+															<xs:element name="delete_all" type="xs:boolean" nillable="1"/>
+															<xs:element name="grant" type="xs:boolean" nillable="1"/>
+															<xs:element name="grant_all" type="xs:boolean" nillable="1"/>
+															<xs:element name="owner" type="xs:boolean" nillable="1"/>
+															<xs:element name="master" type="xs:boolean" nillable="1"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="siblingscount" minOccurs="0"/>
+												<xs:element name="targetpath" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Used for pointing to the target of Portlets and SymbolicLinks</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="children_count" type="xs:integer" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>The sum of childobjects. Useful for  sitemaps or displaying discussion forum thread information</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="child_last_modified" type="xs:dateTime" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>The most recent modification datetime of the current object's children</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="location_path" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Needed for getting the paths for portlet x:includes</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:extension>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="user" type="user" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>For editing user-settings or privileges</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="objectlist" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="object" type="object" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="userlist" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>For user/role management or looking up users/roles for new grants</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="user" type="user" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="language" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="fullname" type="xs:string"/>
+							<xs:element name="code" type="xs:string"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:integer" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="object-types" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="object-type" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>For id-name resolvement</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="name" type="xs:string"/>
+										<xs:element name="is_fs_container" type="xs:boolean"/>
+										<xs:element name="redir_to_self" type="xs:boolean"/>
+										<xs:element name="can_create" type="xs:boolean" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="id" type="xs:integer" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="data-formats" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="data-format" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>For id-name resolvement</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="name" type="xs:string"/>
+										<xs:element name="suffix" type="xs:string"/>
+										<xs:element name="mime_type" type="xs:string"/>
+									</xs:sequence>
+									<xs:attribute name="id" type="xs:integer" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="user">
+		<xs:sequence>
+			<xs:element name="lastname" type="xs:string"/>
+			<xs:element name="middlename" type="xs:string"/>
+			<xs:element name="firstname" type="xs:string"/>
+			<xs:element name="enabled" type="xs:boolean"/>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="admin" type="xs:boolean"/>
+			<xs:element name="url" type="xs:string"/>
+			<xs:element name="email" type="xs:string" nillable="true"/>
+			<xs:element name="system_privs_mask" type="xs:integer"/>
+			<xs:element name="object_privileges" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For displaying privileges granted to user on object</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="view" type="xs:boolean" nillable="1"/>
+						<xs:element name="write" type="xs:boolean" nillable="1"/>
+						<xs:element name="delete" type="xs:boolean" nillable="1"/>
+						<xs:element name="publish" type="xs:boolean" nillable="1"/>
+						<xs:element name="attributes" type="xs:boolean" nillable="1"/>
+						<xs:element name="translate" type="xs:boolean" nillable="1"/>
+						<xs:element name="create" type="xs:boolean" nillable="1"/>
+						<xs:element name="move" type="xs:boolean" nillable="1"/>
+						<xs:element name="link" type="xs:boolean" nillable="1"/>
+						<xs:element name="publish_all" type="xs:boolean" nillable="1"/>
+						<xs:element name="attributes_all" type="xs:boolean" nillable="1"/>
+						<xs:element name="delete_all" type="xs:boolean" nillable="1"/>
+						<xs:element name="grant" type="xs:boolean" nillable="1"/>
+						<xs:element name="grant_all" type="xs:boolean" nillable="1"/>
+						<xs:element name="owner" type="xs:boolean" nillable="1"/>
+						<xs:element name="master" type="xs:boolean" nillable="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:integer" use="required"/>
+		<xs:attribute name="type_id" type="xs:integer" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="object">
+		<xs:sequence>
+			<xs:element name="data_format_id" type="xs:integer"/>
+			<xs:element name="object_type_id" type="xs:integer"/>
+			<xs:element name="location" type="xs:string"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="language_id" type="xs:integer"/>
+			<xs:element name="marked_new" type="xs:boolean" nillable="1"/>
+			<xs:element name="published" type="xs:boolean"/>
+			<xs:element name="notes" type="xs:string"/>
+			<xs:element name="keywords" type="xs:string"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="attributes" type="xs:string"/>
+				<xs:element name="attribute_list">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:any minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="abstract" nillable="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="body" nillable="1" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="department_id" type="xs:integer"/>
+			<xs:element name="style_id" type="xs:integer"/>
+			<xs:element name="css_id" type="xs:integer"/>
+			<xs:element name="image_id" type="xs:integer"/>
+			<xs:element name="symname_to_doc_id" type="xs:integer"/>
+			<xs:element name="creation_timestamp" type="xs:dateTime"/>
+			<xs:element name="created_by_id" type="xs:string"/>
+			<xs:element name="locked_by_id" type="xs:string"/>
+			<xs:element name="locked_time" type="xs:dateTime"/>
+			<xs:element name="last_modified_by_id" type="xs:string"/>
+			<xs:element name="last_modified_by_lastname" type="xs:string"/>
+			<xs:element name="last_modified_by_middlename" type="xs:string"/>
+			<xs:element name="last_modified_by_firstname" type="xs:string"/>
+			<xs:element name="created_by_lastname" type="xs:string"/>
+			<xs:element name="created_by_middlename" type="xs:string"/>
+			<xs:element name="created_by_firstname" type="xs:string"/>
+			<xs:element name="owned_by_lastname" type="xs:string"/>
+			<xs:element name="owned_by_middlename" type="xs:string"/>
+			<xs:element name="owned_by_firstname" type="xs:string"/>
+			<xs:element name="last_publication_timestamp" type="xs:date"/>
+			<xs:element name="last_published_by_id" type="xs:int"/>
+			<xs:element name="last_published_by_lastname" type="xs:string"/>
+			<xs:element name="last_published_by_middlename" type="xs:string"/>
+			<xs:element name="last_published_by_firstname" type="xs:string"/>
+			<xs:element name="position" type="xs:integer"/>
+			<xs:element name="status" type="xs:string"/>
+			<xs:element name="data_format_name" type="xs:string"/>
+			<xs:element name="marked_deleted" type="xs:integer"/>
+		</xs:sequence>
+		<xs:attribute name="document_id" type="xs:integer" use="required"/>
+		<xs:attribute name="id" type="xs:integer" use="required"/>
+		<xs:attribute name="parent_id" type="xs:integer" use="required"/>
+		<xs:attribute name="level" type="xs:integer" use="optional"/>
+	</xs:complexType>
+</xs:schema>

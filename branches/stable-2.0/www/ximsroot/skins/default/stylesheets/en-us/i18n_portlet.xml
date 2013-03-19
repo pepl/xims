@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l>
+    <Extra_Properties>
+        Besides default properties, you can choose
+        extra properties the Portlet should contain.
+    </Extra_Properties>
+    <Creator>Creator</Creator>
+    <Creation_timestamp>Creation timestamp</Creation_timestamp>
+    <Last_modifier>Last modifier</Last_modifier>
+    <Last_modification_timestamp>Last modification timestamp</Last_modification_timestamp>
+    <Last_publisher>Last publisher</Last_publisher>
+    <Publication_timestamp>Publication timestamp</Publication_timestamp>
+    <Valid_from_timestamp>Valid-From timestamp</Valid_from_timestamp>
+    <Valid_to_timestamp>Valid-To timestamp</Valid_to_timestamp>
+    <Owner>Owner</Owner>
+    <Marked_new>Marked-New Flag</Marked_new>
+    <Attributes>Attributes</Attributes>
+    <How_deep>How deep should the tree get traversed?<!-- (One level per default)--></How_deep>
+    <Add_documentlinks>Should Document Links be included for every object?</Add_documentlinks>
+    <Filter_latest>Filter out the latest 'X' objects</Filter_latest>
+    <Filter_latest_sortkey>Sort latest 'X' objects by</Filter_latest_sortkey>
+    <Filter_marked_new>Filter Objects that are marked as new</Filter_marked_new>
+    <Filter_published>Filter Objects that are published</Filter_published>
+    <Filter_object_types>Filter Objects of a certain object type</Filter_object_types>
+    <Filter_location>Filter Objects of matching location</Filter_location>
+    <Filter_title>Filter Objects of matching title</Filter_title>
+</l>

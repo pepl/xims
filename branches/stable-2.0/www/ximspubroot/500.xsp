@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+# Copyright (c) 2002-2011 The XIMS Project.
+# See the file "LICENSE" for information and conditions for use, reproduction,
+# and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
+# $Id$
+-->
+<xsp:page xmlns:xsp="http://apache.org/xsp/core/v1"
+          xmlns:web="http://axkit.org/NS/xsp/webutils/v1"
+          xmlns:if-param="http://axkit.org/NS/xsp/if-param/v1"
+          xmlns:param="http://axkit.org/NS/xsp/param/v1"
+          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+          xmlns:dc="http://purl.org/dc/elements/1.1/"
+          xmlns:dcq="http://purl.org/dc/qualifiers/1.0/">
+
+
+<page>
+
+<rdf:RDF>
+    <rdf:Description about="">
+        <dc:title>500 Server Error</dc:title>
+        <dc:creator>The XIMS Project</dc:creator>
+        <dc:subject>Server Error</dc:subject>
+        <dc:description></dc:description>
+        <dc:publisher>The XIMS Project</dc:publisher>
+        <dc:contributor>$Author$</dc:contributor>
+        <dc:date>
+            <dcq:created>
+                <rdf:Description>
+                    <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
+                    <rdf:value></rdf:value>
+                </rdf:Description>
+            </dcq:created>
+            <dcq:modified>
+                <rdf:Description>
+                    <dcq:dateScheme rdf:resource="http://www.w3.org/TR/NOTE-datetime">W3CDTF</dcq:dateScheme>
+                    <rdf:value>$Date: </rdf:value>
+                </rdf:Description>
+            </dcq:modified>
+        </dc:date>
+        <dc:format>text/html</dc:format>
+        <dc:language>en-us</dc:language>
+    </rdf:Description>
+</rdf:RDF>
+
+<body>
+
+<xsp:logic>
+if (!<web:is_initial_req/>) {
+</xsp:logic>
+    <h1>Server Error</h1>
+
+    <p>
+        <xsp:logic>
+        if (<param:reason/>) {
+        </xsp:logic>
+           <param:reason/>
+        <xsp:logic>
+        }
+        else {
+        </xsp:logic>
+        <div>
+        An error occured.<br/>
+        Error Details:
+            <div style="margin-top: 0px; padding-top: 0px; font-family: Courier; background-color:#EEEEEE; border: 1px solid #BFBFBF;">
+                <web:error_notes/>
+            </div>
+        </div>
+        <xsp:logic>
+        }
+        </xsp:logic>
+    </p>
+    <p>
+        If the problem persists, please contact <web:server_admin/>.
+    </p>
+<xsp:logic>
+}
+</xsp:logic>
+
+</body>
+
+</page>
+</xsp:page>

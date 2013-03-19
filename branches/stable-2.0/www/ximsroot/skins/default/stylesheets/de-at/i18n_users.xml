@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<l>
+<Lastname>Nachname</Lastname>
+<System_privileges>System Privilegien</System_privileges>
+<Administrator>Administrator</Administrator>
+<Enabled>Aktiv</Enabled>
+<Disabled>Gesperrt</Disabled>
+<Managing>Verwalte</Managing>
+<Change_password>Passwort ändern</Change_password>
+<Role_membership>Rollenmitgliedschaft</Role_membership>
+<Create_account>Account erstellen</Create_account>
+<update_existing_account>bestehenden Account aktualisieren</update_existing_account>
+<Objecttypeprivs>Objekttyp Privilegien</Objecttypeprivs>
+<Add_objecttypepriv>Objekttyp Privileg hinzufügen</Add_objecttypepriv>
+<Middlename>2. Vorname</Middlename>
+<Firstname>Vorname</Firstname>
+<Privilege_Mask>Privilegien Maske</Privilege_Mask>
+<User_self-management>Benutzer Selbstverwaltung</User_self-management>
+<Change_Password>Passwort ändern</Change_Password>
+<Grant_Role>Gewähre Rolle</Grant_Role>
+<Helpdesk_related>Helpdesk bezogen</Helpdesk_related>
+<Reset_Password>Passwort zurücksetzen</Reset_Password>
+<Set_Status>Status ändern</Set_Status>
+<Create_Role>Rolle erstellen</Create_Role>
+<Delete_Role>Rolle löschen</Delete_Role>
+<Change_Role_Fullname>Vollen Namen einer Rolle ändern</Change_Role_Fullname>
+<Change_User_Fullname>Vollen Namen einer Benutzer ändern</Change_User_Fullname>
+<Change_Rolename>Rollennamen ändern</Change_Rolename>
+<Change_Username>Benutzername ändern</Change_Username>
+<Create_User>Benutzer erstellen</Create_User>
+<Delete_User>Benutzer löschen</Delete_User>
+<System_management>System Management</System_management>
+<Change_Sysprivs_Mask>System Privilegien ändern</Change_Sysprivs_Mask>
+<Set_Admin_EQU>Administrator Äquivalenz ändern</Set_Admin_EQU>
+<User_is_Administrator>Benutzer ist Administrator</User_is_Administrator>
+<Account_is_Enabled>Account ist aktiv</Account_is_Enabled>
+<Password>Passwort</Password>
+<Confirm_Password>Password bestätigen</Confirm_Password>
+<Account_is_Role>Account ist eine Rolle</Account_is_Role>
+<User_Updated>Benutzer aktualisiert</User_Updated>
+<Changing_Password>Passwort ändern für</Changing_Password>
+<New_System_Password>Neues Passwort</New_System_Password>
+<Confirm_User_Deletion>Löschen des Benutzers bestätigen</Confirm_User_Deletion>
+<Role_Membership>Rollenmitgliedschaft für</Role_Membership>
+<go_back>zurückgehen</go_back>
+<Show_implicitly_granted>Zeige auch indirekt gewährte Rollen</Show_implicitly_granted>
+<Show_explicitly_granted>Zeige ausschliesslich direkt gewährte Rollen</Show_explicitly_granted>
+<Revoke_Role_Grant>Rollenzuweisung entfernen</Revoke_Role_Grant>
+<Manage_Existing_Roles>Verwalte bestehende Rollen</Manage_Existing_Roles>
+<Objecttypeprivs_objectCreation>Objekttyp Privilegien zum Erstellen von Objekten</Objecttypeprivs_objectCreation>
+<DAV_OTPrivileges>WebDAV Objekttyp Privilegien</DAV_OTPrivileges>
+<DAV_Container_Binary>Container, Binäre Typen</DAV_Container_Binary>
+<DAV_Text>Text Typen</DAV_Text>
+<DAV_XML>XML Typen</DAV_XML>
+<Change_DAV_OTPrivs_Mask>WebDAV Objekttyp Privilegien Maske verändern</Change_DAV_OTPrivs_Mask>
+<Explicit>Explizit</Explicit>
+<Implicit>Implizit</Implicit>
+<Explicit_pl>Explizite</Explicit_pl>
+<Implicit_pl>Implizite</Implicit_pl>
+</l>
+

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN"
+"http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
+<article>
+  <title>Managing Multiple Sites with XIMS</title>
+
+  <articleinfo>
+    <author>
+      <firstname>Michael</firstname>
+
+      <surname>Kröll</surname>
+
+      <affiliation>
+        <orgname>University of Innsbruck</orgname>
+      </affiliation>
+
+      <authorblurb>
+        <para><email>michael.kroell@uibk.ac.at</email></para>
+      </authorblurb>
+    </author>
+
+    <revhistory>
+      <revision>
+        <revnumber>$Revision$</revnumber>
+
+        <date>$Date$</date>
+      </revision>
+    </revhistory>
+
+    <legalnotice>
+      <para>Copyright © 2003-2005</para>
+    </legalnotice>
+  </articleinfo>
+
+  <section>
+    <title>XIMS Publishing Architecture</title>
+
+    <para>The following figure gives a rough overview of the publishing
+    architecure.</para>
+
+    <figure>
+      <title>Publishing Architecture</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../xims-publishing-architecture.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Unpublished objects are present only in the XIMS content repository.
+    By publishing them, they are copied to the filesystem of the web-server.
+    The publishing details shown in the following figure should help to
+    unterstand the logic and data flow during the publishing process.</para>
+
+    <figure>
+      <title>Publishing Details</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/publishing_details.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>For every content object-type exists an Exporter Sub-class there
+    object type specifics can be honored. Such specifics can include the use
+    of special SAX filters for resolving content IDs to paths, resolving
+    links, or including dependent objects. Before the final object
+    serialization to disk, it is possible to transform XML based objects using
+    special export stylesheets. Those stylesheets are located in
+    <filename>XIMS::XIMSROOT() . '/stylesheets/exporter/'</filename>. Through
+    modifying or adding stylesheets there you can control the format of the
+    exported XML files. The stylesheet should expect its input in the <ulink
+    url="../xims-documentschema.png">XIMS document schema</ulink>. To get a
+    more concrete idea using a specific example get the untransformed object
+    during a default event by adding the querystring parameter "passthru=1" to
+    the URL.</para>
+
+    <example>
+      <title></title>
+
+      <para>https://yourbox/goxims/content/xims/foo.html?passthru=1</para>
+    </example>
+
+    <para>In case of the <literal>Document</literal> object-type,
+    <filename>export_document.xsl</filename> transforms the original XML
+    document to the model expected by the stylesheets for the published
+    documents. Example stylesheets which are used by
+    <filename><literal>xims.uibk.ac.at</literal></filename> can be found in
+    <filename>XIMS::PUBROOT() . '/stylesheets/'</filename>. Transforming
+    published documents with <ulink url="http://www.axkit.org/">Apache
+    Axkit</ulink> is the default setup. Alternatively, the export stylesheets
+    could be modified to output HTML directly to the filesystem, resulting in
+    static documents to be served by a non-Apache-AxKit-powered
+    web-server.</para>
+
+    <para>Note: The XML seen here during event_default() is <emphasis>not
+    exactly</emphasis> identical to the one the export stylesheets get to
+    process, because as mentioned before, it could be modified through SAX
+    filters before being transformed.</para>
+  </section>
+
+  <section>
+    <title>SiteRoots and AxKit Config</title>
+
+    <para>SiteRoots are <ulink
+    url="../users/howtos/departmentroot-howto.sdbk">DepartmentRoot</ulink>-like
+    containers there properties for a published web-site can be set in future
+    releases of XIMS. Currently, only SiteRoot-Stylesheet, -Image, and
+    -Portlets can be set and only the SiteRoot-Image and -Portlets are
+    exported during publishing. In the future, SiteRoots will support being
+    configured as virtual root in the user-interface (i.e. users will see
+    /siteroot/ as root container for the path navigation) as well as support
+    other side-wide settings to be inherited by descendant objects.</para>
+
+    <para>Why use SiteRoots now? SiteRoots can already be used to manage the
+    different look and feel of sites managed by one single XIMS installation.
+    This can be achieved by using different XSL-stylesheets associated with
+    different Apache AxKit configuration settings for the various sites. Let
+    us assume that we have got two SiteRoots <filename>/foo</filename> and
+    <filename>/bar</filename> in our XIMS installation with XSL-stylesheets
+    located in <filename>/foo/stylesheets/</filename> and
+    <filename>/bar/stylesheets/</filename> and we want to associate them with
+    two different servers <literal>foo.tld</literal> and
+    <literal>bar.tld</literal>. The servers are configured using Apache's
+    virtual hosts capability similar to the following example:</para>
+
+    <programlisting>NameVirtualHost *
+&lt;VirtualHost *&gt;
+    ServerName foo.tld
+    DocumentRoot /www/ximspubroot/foo
+    Include conf/foo.tld.axkit-conf
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost *&gt;
+    ServerName bar.tld
+    DocumentRoot /www/ximspubroot/bar
+    Include conf/bar.tld.axkit-conf
+&lt;/VirtualHost&gt;</programlisting>
+
+    <para>Using Apache AxKit's configuration mechanisms we couple different
+    stylesheets with the two sites. An example
+    <filename>foo.tld.axkit-conf</filename> <emphasis>could</emphasis> look
+    like the following:</para>
+
+    <programlisting>&lt;Files *.html&gt;
+    SetHandler axkit
+
+    AxAddStyleMap text/xsl Apache::AxKit::Language::LibXSLT
+    AxErrorStylesheet text/xsl /stylesheets/error.xsl
+
+    AxAddPlugin Apache::AxKit::Plugin::Passthru
+    AxAddPlugin Apache::AxKit::StyleChooser::UserAgent
+    AxAddPlugin Apache::AxKit::StyleChooser::QueryString
+
+    AxAddPlugin Apache::AxKit::Plugin::AddXSLParams::Request
+    PerlSetVar AxAddXSLParamGroups "Request-Common HTTPHeaders VerboseURI"
+
+    PerlSetVar AxUAStyleMap "#default =&gt; IE, textonly =&gt; Lynx"
+    &lt;AxMediaType screen&gt;
+        &lt;AxStyleName "#default"&gt;
+            AxAddProcessor text/xsl /stylesheets/default.xsl
+        &lt;/AxStyleName&gt;
+        &lt;AxStyleName print&gt;
+            AxAddProcessor text/xsl /stylesheets/default_print.xsl
+        &lt;/AxStyleName&gt;
+        &lt;AxStyleName textonly&gt;
+            AxAddProcessor text/xsl /stylesheets/default_textonly.xsl
+        &lt;/AxStyleName&gt;
+    &lt;/AxMediaType&gt;
+    #AxDebugLevel 5
+&lt;/Files&gt;</programlisting>
+
+    <para>By editing and publishing
+    <filename>/foo/stylesheets/default.xsl</filename> and the other
+    stylesheets, the two sites can be skinned differently.</para>
+  </section>
+</article>

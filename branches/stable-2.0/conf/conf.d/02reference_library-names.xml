@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<Config>
+    <Names>
+        <ResourceTypes>
+            <item>RefLibReferenceType</item>
+            <item>RefLibSerial</item>
+            <item>RefLibReference</item>
+            <item>RefLibAuthorMap</item>
+            <item>RefLibReferenceProperty</item>
+            <item>RefLibReferencePropertyValue</item>
+            <item>RefLibReferencePropertyMap</item>
+        </ResourceTypes>
+        <Properties>
+            <RefLibReferenceType>
+                <item>reflibreferencetype.id</item>
+                <item>reflibreferencetype.name</item>
+                <item>reflibreferencetype.description</item>
+                <!-- for BookItems or Conference Proceedings -->
+                <!-- ? <item>reflibreferencetype.is_partof</item> -->
+                <!-- ? <item>reflibreferencetype.is_serialitem</item> -->
+            </RefLibReferenceType>
+            <RefLibSerial>
+                <item>reflibserial.id</item>
+                <item>reflibserial.title</item>
+                <item>reflibserial.isbn</item>
+                <item>reflibserial.issn</item>
+                <item>reflibserial.eissn</item>
+                <item>reflibserial.identifier</item>
+                <item>reflibserial.url</item>
+                <item>reflibserial.stitle</item>
+            </RefLibSerial>
+            <RefLibReference>
+                <item>reflibreference.id</item>
+                <item>reflibreference.reference_type_id</item>
+                <item>reflibreference.document_id</item>
+                <item>reflibreference.serial_id</item>
+                <!-- for BookItems or Conference Proceedings -->
+                <!-- ? <item>reflibreference.parent_id</item> -->
+            </RefLibReference>
+            <RefLibAuthorMap>
+                <item>reflibauthormap.id</item>
+                <item>reflibauthormap.reference_id</item>
+                <item>reflibauthormap.author_id</item>
+                <item>reflibauthormap.role</item>
+                <item>reflibauthormap.position</item>
+            </RefLibAuthorMap>
+            <RefLibReferenceProperty>
+                <item>reflibreferenceproperty.id</item>
+                <item>reflibreferenceproperty.name</item>
+                <item>reflibreferenceproperty.description</item>
+                <item>reflibreferenceproperty.position</item>
+            </RefLibReferenceProperty>
+            <RefLibReferencePropertyValue>
+                <item>reflibreferencepropertyvalue.id</item>
+                <item>reflibreferencepropertyvalue.property_id</item>
+                <item>reflibreferencepropertyvalue.reference_id</item>
+                <item>reflibreferencepropertyvalue.value</item>
+            </RefLibReferencePropertyValue>
+            <RefLibReferencePropertyMap>
+                <item>reflibreferencepropertymap.id</item>
+                <item>reflibreferencepropertymap.property_id</item>
+                <item>reflibreferencepropertymap.reference_type_id</item>
+            </RefLibReferencePropertyMap>
+        </Properties>
+    </Names>
+</Config>
