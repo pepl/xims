@@ -21,9 +21,9 @@ This module bla bla
 
 package XIMS::Exporter::VLibraryItem;
 
-use strict;
+use common::sense;
 use XIMS::Exporter;
-use base qw( XIMS::Exporter::XMLChunk );
+use parent -norequire, qw( XIMS::Exporter::XMLChunk );
 use XIMS::ObjectType;
 use XIMS::ObjectPriv;
 use XIMS::SAX::Generator::Exporter::VLibraryItem;

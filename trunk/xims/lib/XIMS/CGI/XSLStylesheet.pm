@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::XSLStylesheet;
 
-use strict;
-use base qw( XIMS::CGI::XML );
+use common::sense;
+use parent qw( XIMS::CGI::XML );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

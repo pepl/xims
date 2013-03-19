@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::SAX::Filter::AnnotationCollector;
 
-use strict;
-use base qw( XML::SAX::Base );
+use common::sense;
+use parent qw( XML::SAX::Base );
 use XML::Generator::PerlData;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::SimpleDB;
 
-use strict;
-use base qw(XIMS::CGI::Folder);
+use common::sense;
+use parent qw(XIMS::CGI::Folder);
 use XIMS::SimpleDBItem;
 use XIMS::SimpleDBMemberPropertyValue;
 use XIMS::SimpleDBMemberProperty;
@@ -105,7 +105,8 @@ sub event_default {
     my $order;
     my %propargs;
     my %childrenargs;
-    if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
+    if ( defined $ctxt->session->auth_module() eq 'XIMS::Auth::Public'
+              or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
         $propargs{gopublic} = 1;
         $childrenargs{gopublic} = 1;
         $childrenargs{published} = 1;
@@ -229,7 +230,7 @@ sub event_create_property_mapping {
     }
 
     if ( $ctxt->object->map_member_property( $property ) ) {
-        $self->redirect( $self->redirect_path( $ctxt ) . '?edit=1;message=Mapping%20created' );
+        $self->redirect( $self->redirect_uri( $ctxt ) . '?edit=1;message=Mapping%20created' );
         return 1;
     }
     else {
@@ -289,7 +290,7 @@ sub event_update_property_mapping {
         }
     }
 
-    $self->redirect( $self->redirect_path( $ctxt ) . '?edit=1;property_id=' . $property_id . ';message=Property%20updated' );
+    $self->redirect( $self->redirect_uri( $ctxt ) . '?edit=1;property_id=' . $property_id . ';message=Property%20updated' );
     return 1;
 }
 
@@ -334,7 +335,7 @@ sub event_delete_property_mapping {
         return $self->sendError( $ctxt, __"Could not delete property " . $property_name . "." );
     }
 
-    $self->redirect( $self->redirect_path( $ctxt ) . '?edit=1;message=Property%20%22' . $property_name . '%22%20deleted' );
+    $self->redirect( $self->redirect_uri( $ctxt ) . '?edit=1;message=Property%20%22' . $property_name . '%22%20deleted' );
     return 1;
 }
 

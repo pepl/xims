@@ -1,3 +1,43 @@
+
+3.0 (in developement)
+  - Centralise the configuration
+  - Port to PSGI
+
+stable-2.0 (branch, no formal release)
+  - Bugfixes
+  - Completly new UI
+  - Standard vs. expert user roles, redesigned user preferences
+  - Support for recursive and batched operations
+  - CodeMirror source editor
+  - Experimental NewsItem2
+  - Dump BitFlux editor
+  - AnonDiscussionForum
+
+stable-1.4 (branch, no formal release)
+  - Bugfixes
+  - A new Gallery object type
+  - Generalize the handling of language markers  
+  - Fixes to XIMS::File
+  - Dump eWebeditPro
+  - Dump Xinha and HTMLArea 
+
+stable-1.3 (branch, no formal release)
+  - Legions of bugs fixed along the way
+  - Dump Xinha and HTMLArea 
+  - Extend documentation
+  - Support some more A/V formats
+  - Add feeds to DepartRoots
+  - Oracle performance improvements
+  - Galleria support
+  - Upload images in ZIP files
+  - Newsletter Objecttype
+  - Minifiers for JS and CSS objects
+  - I18nize the backend with gettext
+  - Extend test suite and code documentation, enforce coding styles
+  - Reworked create widget and numerous other UI improvements
+  - Major extensions and reworking on XIMS::VLibrary
+  - Support operation behind reverse proxies
+
 1.2
   - New Apache::AxKit::Provider::XIMSGoPublic module that can be used to proxy and
     cache XIMS objects that are published via gopublic. Using the gopublic-cache- 

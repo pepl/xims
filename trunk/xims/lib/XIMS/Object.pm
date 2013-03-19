@@ -13,7 +13,7 @@ $Id$
 
 =head1 DESCRIPTION
 
-Class::Accessor provides get/set accessor methods for all the content object
+Class::Accessor::Fast provides get/set accessor methods for all the content object
 properties specified in XIMS::Names. For example uses of the XIMS::Object API
 see code in the unit tests t/unit??_object_*.t
 
@@ -23,12 +23,12 @@ see code in the unit tests t/unit??_object_*.t
 
 package XIMS::Object;
 
-use strict;
+use common::sense;
 
 # use warnings;
 no warnings 'redefine';
 
-use base qw( XIMS::AbstractClass Class::Accessor );
+use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 use XIMS::ObjectType;
 use XIMS::DataFormat;
 use XIMS::User;
@@ -224,7 +224,7 @@ my $body = $object->body();
 
 
 Specific override for body() to the default get/set accessor methods provided
-by Class::Accessor to avoid the memory/performance hit of loading the content
+by Class::Accessor::Fast to avoid the memory/performance hit of loading the content
 body in cases where it is not explictly asked for.
 
 =cut

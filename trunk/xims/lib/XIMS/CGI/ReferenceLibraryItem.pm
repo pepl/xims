@@ -21,8 +21,8 @@ It is based on XIMS::CGI.
 
 package XIMS::CGI::ReferenceLibraryItem;
 
-use strict;
-use base qw(XIMS::CGI);
+use common::sense;
+use parent qw(XIMS::CGI);
 use XIMS::ReferenceLibrary;
 use XIMS::RefLibReference;
 use XIMS::RefLibReferenceType;
@@ -189,11 +189,11 @@ sub event_store {
         $self->sendError( $ctxt, __"Update of object failed." );
         return 0;
     }
-    my $rdpath = $self->redirect_path($ctxt);
+    my $rdpath = $self->redirect_uri($ctxt);
 
     if ( $self->param('proceed_to_edit') == 1 ) {
         $rdpath .=
-          ( $self->redirect_path($ctxt) =~ /\?/ ) ? ';edit=1' : '?edit=1';
+          ( $self->redirect_uri($ctxt) =~ /\?/ ) ? ';edit=1' : '?edit=1';
     }
     $self->redirect( $rdpath );
     return 1;
@@ -336,7 +336,7 @@ sub event_remove_author_mapping {
                 XIMS::Debug( 3, "Updating of object title failed" );
             }
         }
-        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+        $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) . "?edit=1" );
         return 1;
     }
     else {
@@ -377,7 +377,7 @@ sub event_remove_serial_mapping {
         my $reference = $ctxt->object->reference;
         $reference->serial_id( undef );
         if ( $reference->update() ) {
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+            $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) . "?edit=1" );
             return 1;
         }
         else {
@@ -406,8 +406,8 @@ sub event_create_author_mapping {
     $self->param('vleditor', undef);
     $self->create_author_mapping( $ctxt );
     #warn "\n\nObject ID : ".$ctxt->object->id();
-    #warn "\n\nRedPath : ".$self->redirect_path( $ctxt, $ctxt->object->id() );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+    #warn "\n\nRedPath : ".$self->redirect_uri( $ctxt, $ctxt->object->id() );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) . "?edit=1" );
     return 1;
 }
 
@@ -425,7 +425,7 @@ sub event_create_editor_mapping {
 
     $self->param('vlauthor', undef);
     $self->create_author_mapping( $ctxt );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) . "?edit=1" );
     return 1;
 }
 
@@ -442,7 +442,7 @@ sub event_create_serial_mapping {
     }
 
     $self->create_serial_mapping( $ctxt );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) . "?edit=1" );
     return 1;
 }
 
@@ -475,7 +475,7 @@ sub event_reposition_author {
                 XIMS::Debug( 3, "Updating of object title failed" );
             }
         }
-        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+        $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) . "?edit=1" );
         return 1;
     }
     else {
@@ -506,7 +506,7 @@ sub event_change_reference_type {
         my $reference = $ctxt->object->reference();
         $reference->reference_type_id( $reference_type_id );
         if ( $reference->update() ) {
-            $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) . "?edit=1" );
+            $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) . "?edit=1" );
             return 1;
         }
         else {

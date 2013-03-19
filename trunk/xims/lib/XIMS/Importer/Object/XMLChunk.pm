@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::Importer::Object::XMLChunk;
 
-use strict;
-use base qw( XIMS::Importer::Object );
+use common::sense;
+use parent qw( XIMS::Importer::Object );
 use XIMS::Object;
 use XML::LibXML;
 

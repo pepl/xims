@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::NewsItem2;
 
-use strict;
-use base qw( XIMS::Document );
+use common::sense;
+use parent qw( XIMS::Document );
 use XIMS::Importer::Object;
 
 our ($VERSION) = ( q$Revision: 2183 $ =~ /\s+(\d+)\s*$/ );

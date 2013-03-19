@@ -21,8 +21,8 @@ The VLibrary CGI methods
 
 package XIMS::CGI::VLibrary;
 
-use strict;
-use base qw(XIMS::CGI::Folder);
+use common::sense;
+use parent qw(XIMS::CGI::Folder);
 
 use Time::Piece;
 use Locale::TextDomain ('info.xims');
@@ -196,7 +196,7 @@ sub event_subject_view {
 
     # View kind of intro page for the selected subject. Just for public use.
     # call the library with the param subject_view=1
-    if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+    if ( $self->session->auth_module() eq 'XIMS::Auth::Public' ) {
         XIMS::Debug( 5, "Viewing subject" );
 
         #$ctxt->properties->content->escapebody(1);
@@ -607,7 +607,7 @@ warn "\n\nproperty_id: ".$vlibproperty->id();
             if ( $vlibproperty->update == 1 ) {
                 _update_or_publish($ctxt);    # update the VLibrary's timestamps
                 XIMS::Debug( 6, "$class: Update record successful." );
-			$self->redirect( $self->redirect_path($ctxt)."?".$property."s=1");
+			$self->redirect( $self->redirect_uri($ctxt)."?".$property."s=1");
             }
             else {
                 XIMS::Debug( 3, "$class: Update record failed." );
@@ -619,8 +619,8 @@ warn "\n\nproperty_id: ".$vlibproperty->id();
             if ( $vlibproperty->create() ) {
                 _update_or_publish($ctxt);    # update the VLibrary's timestamps
                 XIMS::Debug( 6, "$class: Update record successful." );
-                #warn "\n\n".$objid." - ".$self->redirect_path( $ctxt, $objid )."\n\n";
-                $self->redirect( $self->redirect_path( $ctxt, $objid )."?edit=1" );
+                #warn "\n\n".$objid." - ".$self->redirect_uri( $ctxt, $objid )."\n\n";
+                $self->redirect( $self->redirect_uri( $ctxt, $objid )."?edit=1" );
             }
             else {
                 XIMS::Debug( 3, "could not create $class" );
@@ -697,7 +697,7 @@ sub event_property_delete {
         _update_or_publish($ctxt);    # update the VLibrary's timestamps
         XIMS::Debug( 6, "$class $id: deleted!" );
         #return $self->simple_response( '200 OK', "$class deleted." );
-        $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id() ) );
+        $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id() ) );
     }
     else {
         XIMS::Debug( 3, "$class $id: deletion failed!" );

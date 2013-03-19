@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::VLibraryItem;
 
-use strict;
-use base qw( XIMS::Object );
+use common::sense;
+use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 use XIMS::VLibrary;
 use XIMS::VLibAuthor;

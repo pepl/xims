@@ -20,7 +20,7 @@ This module bla bla
 
 package XIMS::DataProvider::DBI;
 
-use strict;
+use common::sense;
 use XIMS;
 use XIMS::Names;
 use DBIx::SQLEngine 0.017;

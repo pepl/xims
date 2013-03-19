@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::SAX::Generator::ReferenceLibrary;
 
-use strict;
-use base qw(XIMS::SAX::Generator::Content);
+use common::sense;
+use parent qw(XIMS::SAX::Generator::Content);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

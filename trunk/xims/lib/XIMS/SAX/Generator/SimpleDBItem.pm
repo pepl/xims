@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::SAX::Generator::SimpleDBItem;
 
-use strict;
-use base qw( XIMS::SAX::Generator::Content );
+use common::sense;
+use parent qw( XIMS::SAX::Generator::Content );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -56,12 +56,14 @@ sub prepare {
 
     my %args = ();
     # Filter out member properties with gopublic==1 if the user comes in through gopublic
-    $args{gopublic} = 1 if (defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID());
+    $args{gopublic} = 1 if ($ctxt->session->auth_module() eq 'XIMS::Auth::Public' 
+                         or $ctxt->session->user->id() == XIMS::PUBLICUSERID() );
     my @property_list = $simpledb->mapped_member_properties( %args );
     $doc_data->{member_properties} = { member_property => \@property_list };
 
     %args = ();
-    if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
+    if ( $ctxt->session->auth_module() eq 'XIMS::Auth::Public'
+      or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
         my @property_ids = map { $_->{id} } @property_list;
         $args{property_id} = \@property_ids;
     }

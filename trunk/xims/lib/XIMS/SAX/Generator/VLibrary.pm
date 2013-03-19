@@ -23,8 +23,8 @@ Some structures are inserted conditionally for certain XIMS::CGI events.
 
 package XIMS::SAX::Generator::VLibrary;
 
-use strict;
-use base qw(XIMS::SAX::Generator::Content);
+use common::sense;
+use parent qw(XIMS::SAX::Generator::Content);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

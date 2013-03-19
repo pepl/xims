@@ -22,8 +22,8 @@ This module bla bla
 #$Id$
 package XIMS::Portal;
 
-use strict;
-use base qw( XIMS::Object );
+use common::sense;
+use parent qw( XIMS::Object );
 use XIMS::DataFormat;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

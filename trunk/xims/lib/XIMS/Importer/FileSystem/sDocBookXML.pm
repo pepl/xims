@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::Importer::FileSystem::sDocBookXML;
 
-use strict;
-use base qw( XIMS::Importer::FileSystem::XMLChunk );
+use common::sense;
+use parent qw( XIMS::Importer::FileSystem::XMLChunk );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

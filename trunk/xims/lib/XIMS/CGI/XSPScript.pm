@@ -21,8 +21,8 @@ It is based on XIMS::CGI::XML.
 
 package XIMS::CGI::XSPScript;
 
-use strict;
-use base qw( XIMS::CGI::XML );
+use common::sense;
+use parent qw( XIMS::CGI::XML );
 use Apache;
 use AxKit;
 use Apache::AxKit::ConfigReader;
@@ -65,7 +65,7 @@ sub event_default {
          and not defined $self->param('process_xsp')
          and not defined $self->param('do_not_process_xsp') ) {
 
-        my $redirect_path = $self->redirect_path( $ctxt, $ctxt->object->id() );
+        my $redirect_path = $self->redirect_uri( $ctxt, $ctxt->object->id() );
         if ( $redirect_path =~ /\?/ ) {
             $redirect_path .= ';';
         }

@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::Image;
 
-use strict;
-use base qw( XIMS::CGI::File );
+use common::sense;
+use parent qw( XIMS::CGI::File );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

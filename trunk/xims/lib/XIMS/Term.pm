@@ -21,9 +21,9 @@ This module bla bla
 
 package XIMS::Term;
 
-use strict;
+use common::sense;
 # use warnings;
-no warnings 'redefine';
+#no warnings 'redefine';
 use Encode;
 use File::Find;
 use Term::ReadKey;

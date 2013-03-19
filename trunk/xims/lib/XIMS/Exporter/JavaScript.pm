@@ -17,8 +17,8 @@ $Id$
 
 package XIMS::Exporter::JavaScript;
 
-use strict;
-use base qw( XIMS::Exporter::Text );
+use common::sense;
+use parent qw( XIMS::Exporter::Text );
 use JavaScript::Minifier::XS qw(minify);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

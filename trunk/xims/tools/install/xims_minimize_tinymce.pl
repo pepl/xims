@@ -26,10 +26,7 @@ if ( $args{h} ) {
     exit;
 }
 
-unless ( $args{y} ) {
-    die usage();
-}
-
+$args{y} ||= sprintf('%s/tools/install/yuicompressor-current.jar', $xims_home);
 my $yuicompressor = $args{y};
 
 # Custom extra javascripts to pack
@@ -141,8 +138,8 @@ sub get_cwd {
 sub usage {
     return qq*
 
-  Usage: $0 [-h][-d] -y yuicompressor.jar -l languages -t themes -p plugins -f timymce_folder 
-        -y Path to YUI compressor JAR
+  Usage: $0 [-h][-d] [-y yuicompressor.jar] -l languages -t themes -p plugins -f timymce_folder 
+        -y Path to YUI compressor JAR (defaults to tools/install/yuicompressor-current.jar)
         
         -l comma-separated list of languages (eg. en,de)
         -t comma-separated list of themes (eg. simple,advanced)
@@ -164,8 +161,8 @@ xims_minimize_tinymce.pl
 
 =head1 SYNOPSIS
 
-xims_minimize_jscss.pl [-h][-d] -y yuicompressor.jar -l languages -t themes -p plugins -f timymce_folder 
-        -y Path to YUI compressor JAR
+xims_minimize_jscss.pl [-h][-d] [-y yuicompressor.jar] -l languages -t themes -p plugins -f timymce_folder 
+        -y Path to YUI compressor JAR (defaults to tools/install/yuicompressor-current.jar)
         
         -l comma-separated list of languages (eg. en,de)
         -t comma-separated list of themes (eg. simple,advanced)
@@ -187,7 +184,7 @@ Print a brief help message and exits.
 
 =item B<-y>
 
-Path to YUI compressor JAR - http://developer.yahoo.com/yui/compressor/
+Path to YUI compressor JAR - http://yuilibrary.com/projects/yuicompressor/
 
 =item B<-v>
 

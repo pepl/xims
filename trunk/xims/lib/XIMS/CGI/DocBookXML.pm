@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::DocBookXML;
 
-use strict;
-use base qw( XIMS::CGI::XML);
+use common::sense;
+use parent qw( XIMS::CGI::XML);
 
 our ($VERSION) = ( q$Revision: 2183 $ =~ /\s+(\d+)\s*$/ );
 

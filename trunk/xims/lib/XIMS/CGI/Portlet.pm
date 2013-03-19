@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::Portlet;
 
-use strict;
-use base qw( XIMS::CGI );
+use common::sense;
+use parent qw( XIMS::CGI );
 use XIMS::Portlet;
 use Locale::TextDomain ('info.xims');
 

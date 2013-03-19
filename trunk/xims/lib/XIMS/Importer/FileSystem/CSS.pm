@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::Importer::FileSystem::CSS;
 
-use strict;
-use base qw( XIMS::Importer::FileSystem::Text );
+use common::sense;
+use parent qw( XIMS::Importer::FileSystem::Text );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

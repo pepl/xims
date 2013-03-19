@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::RefLibSerial;
 
-use strict;
-use base qw( XIMS::AbstractClass Class::Accessor );
+use common::sense;
+use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};

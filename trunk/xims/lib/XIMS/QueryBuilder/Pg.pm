@@ -22,8 +22,8 @@ This module bla bla
 #$Id$
 package XIMS::QueryBuilder::Pg;
 
-use strict;
-use base qw( XIMS::QueryBuilder );
+use strict; # common::sense isnâ€™t always best :)
+use parent qw( XIMS::QueryBuilder );
 use XIMS::User;
 use Time::Piece;
 
@@ -64,7 +64,7 @@ sub _build {
     my $now = localtime();
 
     use encoding "latin-1";
-    my $allowedusernamechars = XIMS::decode( '-A-Za-z0-9öäüßàáâãåæèçéêëìíîïğñòóôõøùúûıÿ_' );
+    my $allowedusernamechars = XIMS::decode( '-A-Za-z0-9Ã¶Ã¤Ã¼ÃŸÃ Ã¡Ã¢Ã£Ã¥Ã¦Ã¨Ã§Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã°Ã±Ã²Ã³Ã´ÃµÃ¸Ã¹ÃºÃ»Ã½Ã¿_' );
 
     for ( my $i = 0; $i <= scalar(@{$search})-1; $i++ ) {
         # handle fieldbased-searches first

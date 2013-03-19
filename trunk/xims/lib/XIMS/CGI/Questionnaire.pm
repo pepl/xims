@@ -21,8 +21,8 @@ This module introduces a simple poll system.
 
 package XIMS::CGI::Questionnaire;
 
-use strict;
-use base qw( XIMS::CGI );
+use common::sense;
+use parent qw( XIMS::CGI );
 use XIMS::QuestionnaireResult;
 use File::Spec;
 use File::Temp qw/ tempfile unlink0 /;
@@ -78,7 +78,7 @@ sub event_default {
 
     # check if user is coming in via /gopublic (if ximsPublicUserName is
     # configured)
-    if ( $ctxt->apache()->dir_config('ximsPublicUserName') ) {
+    if ( $ctxt->session->auth_module() eq 'XIMS::Auth::Public' ) {
         XIMS::Debug( 6, "Answering of Questionnaire started." );
         $self->_default_public($ctxt);
     }

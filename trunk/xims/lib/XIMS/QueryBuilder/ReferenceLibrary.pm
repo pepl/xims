@@ -22,8 +22,8 @@ This module bla bla
 #$Id$
 package XIMS::QueryBuilder::ReferenceLibrary;
 
-use strict;
-use base qw( XIMS::QueryBuilder );
+use common::sense;
+use parent qw( XIMS::QueryBuilder );
 use XIMS::User;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

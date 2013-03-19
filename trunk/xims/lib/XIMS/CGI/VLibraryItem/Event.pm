@@ -22,8 +22,8 @@ This module bla bla
 # $Id $
 package XIMS::CGI::VLibraryItem::Event;
 
-use strict;
-use base qw( XIMS::CGI::VLibraryItem::Document );
+use common::sense;
+use parent qw( XIMS::CGI::VLibraryItem::Document );
 
 our ($VERSION) = ( q$Revision: 1957 $ =~ /\s+(\d+)\s*$/ );
 

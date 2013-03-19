@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::SymbolicLink;
 
-use strict;
-use base qw( XIMS::CGI );
+use common::sense;
+use parent qw( XIMS::CGI );
 use XIMS::Object;
 use Locale::TextDomain ('info.xims');
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

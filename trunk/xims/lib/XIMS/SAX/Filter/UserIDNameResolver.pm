@@ -22,8 +22,8 @@ This SAX Filter expands a user id to its corresponding name.
 
 package XIMS::SAX::Filter::UserIDNameResolver;
 
-use strict;
-use base qw( XIMS::SAX::Filter::DataCollector );
+use common::sense;
+use parent qw( XIMS::SAX::Filter::DataCollector );
 use XIMS::User;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

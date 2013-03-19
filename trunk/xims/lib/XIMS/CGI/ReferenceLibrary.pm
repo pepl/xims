@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::ReferenceLibrary;
 
-use strict;
-use base qw(XIMS::CGI::Folder);
+use common::sense;
+use parent qw(XIMS::CGI::Folder);
 use XIMS::VLibAuthor;
 use XIMS::ReferenceLibraryItem;
 use XIMS::RefLibReferenceType;
@@ -143,7 +143,8 @@ sub event_default {
     if ( defined $serial_id and $serial_id =~ /^\d+$/ ) {
         $childrenargs{serial_id} = $serial_id;
     }
-    if ( defined $ctxt->apache()->dir_config('ximsPublicUserName') or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
+    if ( defined $ctxt->session->auth_module() eq 'XIMS::Auth::Public'
+              or $ctxt->session->user->id() == XIMS::PUBLICUSERID() ) {
         $childrenargs{published} = 1;
     }
 

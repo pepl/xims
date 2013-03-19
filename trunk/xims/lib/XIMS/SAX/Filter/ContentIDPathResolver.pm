@@ -23,8 +23,8 @@ the element name and therefore we got path-string in *_id elements!
 
 package XIMS::SAX::Filter::ContentIDPathResolver;
 
-use strict;
-use base qw( XML::SAX::Base );
+use common::sense;
+use parent qw( XML::SAX::Base );
 use XIMS::Object;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

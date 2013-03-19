@@ -23,7 +23,7 @@ package XIMS::Names;
 
 # This is a private class that cannot be used directly
 
-use strict;
+use common::sense;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our %Properties = XIMS::Config::Names::Properties();

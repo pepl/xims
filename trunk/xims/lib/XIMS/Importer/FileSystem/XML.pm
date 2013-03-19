@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::Importer::FileSystem::XML;
 
-use strict;
-use base qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XML);
+use common::sense;
+use parent qw(XIMS::Importer::FileSystem XIMS::Importer::Object::XML);
 use XML::LibXML;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );

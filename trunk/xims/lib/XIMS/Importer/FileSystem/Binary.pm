@@ -22,8 +22,8 @@ binary files.
 
 package XIMS::Importer::FileSystem::Binary;
 
-use strict;
-use base qw( XIMS::Importer::FileSystem );
+use common::sense;
+use parent qw( XIMS::Importer::FileSystem );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 

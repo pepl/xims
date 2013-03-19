@@ -17,9 +17,9 @@ $Id$
 
 package XIMS::User;
 
-use strict;
+use common::sense;
 use XIMS;
-use base qw( XIMS::AbstractClass Class::Accessor );
+use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
 use XIMS::Bookmark;
 use XIMS::UserPrefs;
 use Digest::MD5 qw( md5_hex );
@@ -169,8 +169,11 @@ sub system_privileges {
 
 sub userprefs {
     XIMS::Debug( 5, "called" );
-    my $self = shift;
-    my %args = @_;
+    my ($self, %args) = @_;
+
+    if ( scalar(@_) == 1 and defined $self->{userprefs} ) {
+        return $self->{userprefs};
+    }
 
     my @userid = ( $self->id() );
 
@@ -182,24 +185,22 @@ sub userprefs {
     $params{containerview_show} = $args{containerview_show} if exists $args{containerview_show};
 
     my @userprefs_data = $self->data_provider->getUserPrefs(%params);
-    
-    my $userprefs = (map { XIMS::UserPrefs->new->data( %{$_} ) } @userprefs_data)[0];
 
-	#if user's preferences dont't exist, create default preferences
-	if(not defined $userprefs){
-    	$userprefs = XIMS::UserPrefs->new();
-    	$userprefs->profile_type(XIMS->DefaultUserPrefsProfile());
-    	$userprefs->skin(XIMS->DefaultUserPrefsSkin());
-    	$userprefs->publish_at_save(XIMS->DefaultUserPrefsPubOnSave());
-    	$userprefs->containerview_show(XIMS->DefaultUserPrefsContainerview());
-    	$userprefs->id($self->id());
-    	return $userprefs->create();
-    }
-    else{
-    	return $userprefs;;
+    $self->{userprefs} = (map { XIMS::UserPrefs->new->data( %{$_} ) } @userprefs_data)[0];
+
+    #if user's preferences dont't exist, create default preferences
+    if( not defined $self->{userprefs} ){
+        my $userprefs = XIMS::UserPrefs->new();
+        $userprefs->profile_type(XIMS->DefaultUserPrefsProfile());
+        $userprefs->skin(XIMS->DefaultUserPrefsSkin());
+        $userprefs->publish_at_save(XIMS->DefaultUserPrefsPubOnSave());
+        $userprefs->containerview_show(XIMS->DefaultUserPrefsContainerview());
+        $userprefs->id($self->id());
+        $self->{userprefs} = $userprefs->create();
     }
 
-    
+    return $self->{userprefs};
+
 }
 
 =head2 dav_otprivileges()

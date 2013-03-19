@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::CGI::XML;
 
-use strict;
-use base qw( XIMS::CGI );
+use common::sense;
+use parent qw( XIMS::CGI );
 use Text::Iconv;
 use Locale::TextDomain ('info.xims');
 
@@ -228,42 +228,45 @@ sub update_decl_encoding {
     return $body;
 }
 
-=head2 save_PUT_data()
+# BitFlux is long gone
+# =head2 save_PUT_data()
 
-=cut
+# =cut
 
-sub save_PUT_data {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
+# sub save_PUT_data {
+#     XIMS::Debug( 5, "called" );
+#     my ( $self, $ctxt ) = @_;
 
-    # Read PUT-request
-    my $content_length = $ctxt->apache->header_in('Content-length');
-    my $content;
-    $ctxt->apache->read($content, $content_length);
+#     # Read PUT-request
+#     my $content_length = $ctxt->req->header_in('Content-length');
+#     my $content;
+#     $self->env->{'psgi.input'}->read($content, $content_length);
 
-    if ( XIMS::DBENCODING() ) {
-        $content = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($content);
-    }
 
-    # we have to update the encoding attribute in the xml-decl to match
-    # the encoding, the body will be saved in the db. that can't be done
-    # parsing the body, doing a setEncoding() followed by a toString()
-    # because we have to deal with the case that the body itself gets
-    # send by the browser encoded in UTF-8 but still has different
-    # encoding attributes from the user's document.
-    #
-    $content = update_decl_encoding( $content );
 
-    $ctxt->object->body( $content );
+#     if ( XIMS::DBENCODING() ) {
+#         $content = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($content);
+#     }
 
-    # Store in database
-    if ( $ctxt->object->update() ) {
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
+#     # we have to update the encoding attribute in the xml-decl to match
+#     # the encoding, the body will be saved in the db. that can't be done
+#     # parsing the body, doing a setEncoding() followed by a toString()
+#     # because we have to deal with the case that the body itself gets
+#     # send by the browser encoded in UTF-8 but still has different
+#     # encoding attributes from the user's document.
+#     #
+#     $content = update_decl_encoding( $content );
+
+#     $ctxt->object->body( $content );
+
+#     # Store in database
+#     if ( $ctxt->object->update() ) {
+#         return 1;
+#     }
+#     else {
+#         return 0;
+#     }
+# }
 
 
 # If a simple RelaxNG schema with a specific structure has been assigned to the XML object, event simpleformedit
@@ -463,11 +466,11 @@ sub event_simpleformedit {
         if ( $ctxt->object->body( $root->toString() ) and $ctxt->object->update( User => $ctxt->session->user ) ) {
             my $message;
             if ( $action eq 'delete' ) {
-                $self->redirect( $self->redirect_path( $ctxt ) . '?simpleformedit=1;message=Entry%20deleted' );
+                $self->redirect( $self->redirect_uri( $ctxt ) . '?simpleformedit=1;message=Entry%20deleted' );
                 return 1;
             }
             elsif ( $action =~ /^move/ ) {
-                $self->redirect( $self->redirect_path( $ctxt ) . '?simpleformedit=1;message=Entry%20moved.' );
+                $self->redirect( $self->redirect_uri( $ctxt ) . '?simpleformedit=1;message=Entry%20moved.' );
                 return 1;
             }
             elsif ( $elementid ) {

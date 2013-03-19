@@ -21,8 +21,8 @@ This module bla bla
 
 package XIMS::TAN_List;
 
-use strict;
-use base qw( XIMS::Text );
+use common::sense;
+use parent qw( XIMS::Text );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
