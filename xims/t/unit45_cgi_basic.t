@@ -16,7 +16,7 @@ BEGIN {
 # set up a dummy context
 my $u = XIMS::User->new( id => 1 );
 my $o = XIMS::Object->new( id => 2, User => $u );
-my $s = XIMS::Session->new( user_id => $u->id() );
+my $s = XIMS::Session->new( user_id => $u->id(), auth_module => 'Fake' );
 
 ok( $o );
 ok( $u );
