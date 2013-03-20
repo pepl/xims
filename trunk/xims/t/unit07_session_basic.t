@@ -16,7 +16,7 @@ ok( $sess );
 # now create a session in the DB
 $sess = undef;
 
-$sess = XIMS::Session->new( user_id => 1 );
+$sess = XIMS::Session->new( user_id => 1, auth_module => 'Fake' );
 ok( $sess );
 ok( $sess->user_id() == 1 );
 ok( defined( $sess->id() ) );
