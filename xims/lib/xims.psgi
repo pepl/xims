@@ -44,7 +44,7 @@ use Plack::Builder;
 use Plack::App::File;
 use Plack::App::Directory;
 use HTTP::Throwable::Factory qw(http_throw http_exception);
-
+use Log::Dispatch;
 use Time::Piece;
 
 #use Data::Dumper;
@@ -183,8 +183,14 @@ my $godav = sub {
     return &$goxims($env);
 };
 
+my $logger = Log::Dispatch->new( outputs => [
+          [ 'File',   min_level => 'debug', filename =>$ENV{XIMS_HOME}.'/logs/access_log' ],
+      ],);
 
 builder {
+    enable "Plack::Middleware::AccessLog", 
+           format => "combined",
+           logger  => sub { $logger->log(level => 'debug', message => @_) };
     enable "ErrorDocument", 401 => XIMS::PUBROOT() . '/access.html';
     enable "HTTPExceptions";
     enable "ConditionalGET";
