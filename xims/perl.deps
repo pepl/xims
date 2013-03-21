@@ -45,8 +45,12 @@ XML::SAX::Machines
 XML::Generator::DBI 
 XML::Generator::PerlData
 XML::Filter::GenericChunk~0.04
+Net::Server::SS::PreFork
+Plack::Middleware::XForwardedFor
 # If you plan to run all tests
 # XML::Schematron
+# Perl::Critic
 # Test::Perl::Critic
 # Test::Pod
-# Test::Pod::Coverage
+# Test::Pod::Coverage 
+
