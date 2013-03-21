@@ -989,7 +989,7 @@ sub create {
     if ( defined $document_fh ) {
         # Exporter stylesheets generate UTF-8 encoded documents. Make sure
         # that they get written out as such
-        binmode( $document_fh, ':utf8' );
+        binmode( $document_fh, ':encoding(UTF-8)' );
 
         print $document_fh $transd_dom->toString(1);
         # $transd_dom->toFH($document_fh,1);
@@ -1378,7 +1378,7 @@ sub create {
         my $meta_fh = IO::File->new( $meta_path, 'w' );
 
         if ( defined $meta_fh ) {
-            binmode( $meta_fh, ':utf8' );
+            binmode( $meta_fh, ':encoding(UTF-8)' );
             print $meta_fh $transd_dom->toString();
             $meta_fh->close;
             XIMS::Debug( 4, "metadata-dom written" );
@@ -2221,7 +2221,7 @@ sub create {
         my $meta_fh = IO::File->new( $meta_path, 'w' );
 
         if ( defined $meta_fh ) {
-            binmode( $meta_fh, ':utf8' );
+            binmode( $meta_fh, ':encoding(UTF-8)' );
             print $meta_fh $transd_dom->toString();
             $meta_fh->close;
             XIMS::Debug( 4, "metadata-dom written" );
@@ -2251,7 +2251,7 @@ sub create {
         my $meta_fh2 = IO::File->new( $meta_path2, 'w' );
 
         if ( defined $meta_fh2 ) {
-            binmode( $meta_fh2, ':utf8' );
+            binmode( $meta_fh2, ':encoding(UTF-8)' );
             print $meta_fh2 $transd_dom2->toString();
             $meta_fh2->close;
             XIMS::Debug( 4, "metadata-dom written" );
@@ -2283,7 +2283,7 @@ sub create {
         my $meta_fh2 = IO::File->new( $meta_path2, 'w' );
 
         if ( defined $meta_fh2 ) {
-            binmode( $meta_fh2, ':utf8' );
+            binmode( $meta_fh2, ':encoding(UTF-8)' );
             print $meta_fh2 $transd_dom2->toString();
             $meta_fh2->close;
             XIMS::Debug( 4, "metadata-dom written" );
