@@ -12,6 +12,10 @@ stable-2.0 (branch, no formal release)
   - Experimental NewsItem2
   - Dump BitFlux editor
   - AnonDiscussionForum
+  - Auto-generation of location from title
+  - Improved i18n
+  - URL-Links with target search
+  - auto-publish at save
 
 stable-1.4 (branch, no formal release)
   - Bugfixes
