@@ -742,7 +742,7 @@ sub selectStylesheet {
 
 	my $gotpubuilangstylesheet;
 
-    if ( $ctxt->session->auth_module eq 'XIMS::Auth::PublicUser'
+    if ( $ctxt->session->auth_module eq 'XIMS::Auth::Public'
       or $ctxt->properties->application->usepubui() )
 	{
 
