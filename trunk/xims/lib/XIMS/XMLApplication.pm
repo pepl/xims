@@ -31,6 +31,7 @@ use Carp;
 # ################################################################
 use Plack::Request;
 use XIMS;
+use HTTP::Throwable::Factory qw(http_throw);
 use parent qw( CGI::PSGI );
 
 # ################################################################
@@ -49,6 +50,8 @@ $XIMS::XMLApplication::VERSION = "1.1.3";
           'Event not implemented',
           'Application Error',
          );
+
+$XIMS::XMLApplication::Quiet = 1 if XIMS::DEBUGLEVEL < 5;
 
 # ################################################################
 # methods
@@ -413,7 +416,7 @@ sub serialization {
 
     XIMS::Debug( 6, "serialization get output string" );
     eval {
-        $out_string =  $style->output_string( $res );
+        $out_string =  $style->output_as_bytes( $res );
     };
     XIMS::Debug( 6, "serialization rendered output" );
     if ( $@ ) {
@@ -437,27 +440,15 @@ sub panic {
     $pid++;
     $pid*=-1;
 
-    my $str = "Application Panic: ";
-    $str = "PANIC $pid: " .  $XIMS::XMLApplication::panic[$pid] ;
-    # this is nice for debugging from logfiles...
-    $str  = $self->b( $str ) . "<br />\n";
-    $str .= $self->pre( $self->getPanicMsg() );
-    $str .= "Please Contact the Systemadminstrator<br />\n";
+    my $str = "\n$pid: $XIMS::XMLApplication::panic[$pid]\n" ;
+    $str .= $self->getPanicMsg();
 
     XIMS::Debug( 1, "$str" );
 
-    if ( $XIMS::XMLApplication::Quiet == 1 ) {
-        $str = "Application Panic";
-    }
-    if ( $XIMS::XMLApplication::Quiet == 2 ) {
-        $str = "";
-    }
+    $str = "\n$XIMS::XMLApplication::panic[$pid]\n"  if $XIMS::XMLApplication::Quiet == 1;
+    $str = q() if $XIMS::XMLApplication::Quiet == 2;
 
-    my $status = $pid < 3 ? 404 : 500; # default is the application error ...
-    return $self->{REQ}->new_response(
-        $self->psgi_header(-status => $status, -type => 'text/html', -charset => 'UTF-8'), 
-        "$str\n"
-    );
+    http_throw(InternalServerError => {message => "$str\n"});
 }
 
 1;
