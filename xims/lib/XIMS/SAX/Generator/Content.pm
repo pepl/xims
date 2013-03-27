@@ -65,7 +65,7 @@ sub prepare {
         }
 
         $doc_data->{context}->{session}->{public_user} = 1
-            if $ctxt->session->auth_module eq 'XIMS::Auth::PublicUser';
+            if $ctxt->session->auth_module eq 'XIMS::Auth::Public';
     }
 
     # fun with content objects
