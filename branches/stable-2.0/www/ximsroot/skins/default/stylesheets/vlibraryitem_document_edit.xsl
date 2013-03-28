@@ -11,7 +11,7 @@
 	<xsl:import href="edit_common.xsl"/>
 	<xsl:import href="document_common.xsl"/>
 
-	<xsl:param name="selEditor" select="true()"/>
+	<xsl:param name="selEditor">wysiwyg</xsl:param>
 	<xsl:param name="vlib" select="true()"/>
 	
 	<xsl:template name="edit-content">

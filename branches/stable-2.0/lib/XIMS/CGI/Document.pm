@@ -79,7 +79,7 @@ sub event_edit {
     return 0 if $ctxt->properties->application->style() eq 'error';
 
     # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor( $ctxt );
+    my $ed = $self->set_wysiwyg_editor( $ctxt );
     $ctxt->properties->application->style( "edit" . $ed );
 
     # look for inherited CSS assignments
@@ -106,7 +106,7 @@ sub event_create {
     return 0 if $ctxt->properties->application->style eq 'error';
 
     # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor( $ctxt );
+    my $ed = $self->set_wysiwyg_editor( $ctxt );
     $ctxt->properties->application->style( "create" . $ed );
 
     # look for inherited CSS assignments
@@ -396,45 +396,11 @@ sub resolve_annotations {
 
 =over
 
-=item _set_wysiwyg_editor()
-
 =item _absrel_urlmangle()
 
 =back
 
 =cut
-
-sub _set_wysiwyg_editor {
-    my ( $self, $ctxt ) = @_;
-
-    my $cookiename = 'xims_wysiwygeditor';
-    my $editor = $self->cookie($cookiename);
-    my $plain = $self->param( 'plain' );
-    if ( $plain or defined $editor and $editor eq 'plain' ) {
-        $editor = undef;
-    }
-    elsif ($editor eq 'wepro') { 
-        # we just dumped eWebEditPro, now change the remaining cookies
-        $editor = 'tinymce';
-    }
-	elsif ($editor eq 'codemirror') { 
-        # if codemirror is set, use default/undefined editor instead (codemirror is included in tinymce)
-        $editor = undef;
-    }
-    elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
-        $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
-        if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
-             $editor = 'tinymce';
-        }
-        my $cookie = $self->cookie( -name    => $cookiename,
-                                    -value   => $editor,
-                                    -expires => "+2160h"); # 90 days
-        $ctxt->properties->application->cookie( $cookie );
-    }
-    my $ed = '';
-    $ed = "_" . $editor if defined $editor;
-    return $ed;
-}
 
 sub _absrel_urlmangle {
     my $self = shift;

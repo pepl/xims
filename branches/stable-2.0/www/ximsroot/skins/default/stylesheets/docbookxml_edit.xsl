@@ -9,4 +9,6 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
     <xsl:import href="xslstylesheet_edit.xsl"/>
+    
+    <xsl:param name="selEditor" >code</xsl:param>
 </xsl:stylesheet>

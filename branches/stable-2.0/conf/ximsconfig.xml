@@ -82,6 +82,7 @@
         # a Document on non-Windows browsers.
         -->
         <DefaultXHTMLEditor>tinymce</DefaultXHTMLEditor>
+        <DefaultCodeEditor>codemirror</DefaultCodeEditor>
 
         <!--
         # Source IP of the mailable object types' request agent session

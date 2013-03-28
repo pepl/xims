@@ -9,9 +9,12 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns="http://www.w3.org/1999/xhtml">
 
-  <xsl:import href="vlibrary_common.xsl"/>
-  <xsl:import href="create_common.xsl"/>
+<xsl:import href="vlibrary_common.xsl"/>
+<xsl:import href="create_common.xsl"/>
+<xsl:import href="codemirror_scripts.xsl"/>
 
+  <xsl:param name="codemirror" select="true()"/>  
+  <xsl:param name="cm_mode">xml</xsl:param>
   <xsl:param name="selEditor">code</xsl:param>
   
   <xsl:template name="create-content">
@@ -21,9 +24,9 @@
     <xsl:call-template name="form-body-create"/>
     <xsl:call-template name="jsorigbody"/>
     <!-- <xsl:call-template name="tr-bodyfromfile-create"/> -->
-  </xsl:template>
+</xsl:template>
 
-  <xsl:template name="trytobalance"/>
-  <xsl:template name="form-minify"/>
+<xsl:template name="trytobalance"/>
+<xsl:template name="form-minify"/>
 
 </xsl:stylesheet>

@@ -31,7 +31,7 @@
 			</xsl:call-template>
 			<body>
 				<xsl:if test="$selEditor">
-						<xsl:attribute name="onload">timeoutWYSIWYGChange(2);</xsl:attribute>
+						<xsl:attribute name="onload">timeoutEditorChange(2, '<xsl:value-of select="$selEditor"/>');</xsl:attribute>
 					</xsl:if>
 				<xsl:call-template name="header">
 					<xsl:with-param name="containerpath">true</xsl:with-param>

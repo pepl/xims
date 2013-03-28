@@ -38,24 +38,7 @@
 		</script>
 		</div>
 	</xsl:template>
-	
-	<xsl:template name="setdefaulteditor">
-		<!--<script type="text/javascript"  src="{$ximsroot}scripts/setdefaulteditor.js"/>-->
-		<script type="text/javascript">
-		  var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
-        </script>
-		<form name="editor_selector" id="editor_selector" action="#">
-			<select name="xims_wysiwygeditor" id="xims_wysiwygeditor" onchange="javascript:return checkBodyFromSel(this.value);">
-				<xsl:copy-of select="$editoroptions"/>
-			</select>
-			<script type="text/javascript">
-      $().ready(function(){
-				setSel(document.getElementById('xims_wysiwygeditor'), readCookie('xims_wysiwygeditor'));
-				});
-    </script>
-		</form>
-	</xsl:template>
-	
+
 	<xsl:template name="document-options">
 		<!-- deactivated until it is working proper
 		<a href="javascript:previewWindow('{$xims_box}{$goxims_content}{$absolute_path}?pub_preview=1')">

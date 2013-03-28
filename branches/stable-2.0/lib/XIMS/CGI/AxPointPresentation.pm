@@ -52,10 +52,9 @@ sub event_create {
     $self->SUPER::event_create( $ctxt );
     return 0 if $ctxt->properties->application->style eq 'error';
 
-    # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor( $ctxt );
+    # check if a code editor is to be used based on cookie or config
+    my $ed = $self->set_code_editor( $ctxt );
     $ctxt->properties->application->style( "create" . $ed );
-	# $ctxt->properties->application->style( "create" );
 
     return 0;
 }
@@ -83,10 +82,9 @@ sub event_edit {
     $self->SUPER::event_edit( $ctxt );
     return 0 if $ctxt->properties->application->style() eq 'error';
 
-    # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor( $ctxt );
+    # check if a code editor is to be used based on cookie or config
+    my $ed = $self->set_code_editor( $ctxt );
     $ctxt->properties->application->style( "edit" . $ed );
-	# $ctxt->properties->application->style( "edit" );
 
     return 0;
 }
@@ -177,54 +175,6 @@ sub event_download_pdf {
 
     $self->skipSerialization(1);
     return 0;
-}
-
-=head2 private functions/methods
-
-=over
-
-=item _set_wysiwyg_editor()
-
-=back
-
-=cut
-
-sub _set_wysiwyg_editor {
-    my ( $self, $ctxt ) = @_;
-
-    my $cookiename = 'xims_wysiwygeditor';
-    my $editor = $self->cookie($cookiename);
-	# OVERRIDE for TESTING
-	# $editor = 'codemirror';
-    my $plain = $self->param( 'plain' );
-    if ( $plain or defined $editor and $editor eq 'plain' ) {
-        # $editor = undef;
-		$editor = 'codemirror';
-    }
-    elsif ($editor eq 'wepro') { 
-        # we just dumped eWebEditPro, now change the remaining cookies
-        # $editor = 'tinymce';
-    	$editor = 'codemirror';
-	}
-	elsif ($editor eq 'tinymce') {
-		# apply codemirror for syntax highlighting
-		$editor = 'codemirror';
-	}
-    elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
-        # $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
-		$editor = 'codemirror';
-		if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
-             # $editor = 'tinymce';
-			 $editor = 'codemirror';
-        }
-        my $cookie = $self->cookie( -name    => $cookiename,
-                                    -value   => $editor,
-                                    -expires => "+2160h"); # 90 days
-        $ctxt->properties->application->cookie( $cookie );
-    }
-    my $ed = '';
-    $ed = "_" . $editor if defined $editor;
-    return $ed;
 }
 
 package XIMS::CGI::AxPointPresentation::Output;
