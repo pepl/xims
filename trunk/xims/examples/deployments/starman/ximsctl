@@ -1,0 +1,33 @@
+#!/bin/bash
+# This is just a starting point/example, adapt to your needs.
+export XIMS_HOME=/opt/xims
+export PERLBREW_ROOT=/opt/perl5
+source ${PERLBREW_ROOT}/etc/bashrc
+# source db.env
+
+cd "${XIMS_HOME}/lib"
+
+WORKERS=12
+LOG_DIR=${XIMS_HOME}/logs
+PID_FILE=${LOG_DIR}/pid
+STATUS_FILE=${LOG_DIR}/status
+
+case "$1" in 
+	start)
+		start_server --port 127.0.0.1:5000 --pid-file=${PID_FILE} --status-file=${STATUS_FILE} --\
+                             starman --workers ${WORKERS} --preload-app xims.psgi >> ${LOG_DIR}/error_log 2>&1 &
+        ;;
+        restart)
+                start_server --restart --pid-file=${PID_FILE} --status-file=${STATUS_FILE} --
+	;;
+        stop)
+                [[ -e ${PID_FILE} ]] && kill `cat ${PID_FILE}` || echo "Sorry, I cannot find the PID file, is the server still running?"
+        ;;
+	debug)
+                exec plackup -R . --port 5000 xims.psgi  >> ${LOG_DIR}/error_log 2>&1
+        ;;
+    *)
+        	echo "Usage: $0 [start|restart|stop|debug]"
+        	exit 1
+esac
+
