@@ -1283,6 +1283,81 @@ sub clean_userquery {
 	return $userquery;
 }
 
+=head2 set_wysiwyg_editor())=
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->set_wysiwyg_editor();
+
+=cut
+sub set_wysiwyg_editor {
+    my ( $self, $ctxt ) = @_;
+
+    my $cookiename = 'xims_wysiwygeditor';
+    my $editor = $self->cookie($cookiename);
+    my $plain = $self->param( 'plain' );
+    if ( $plain or defined $editor and $editor eq 'plain' ) {
+        $editor = undef;
+    }
+    elsif ($editor eq 'wepro') { 
+        # we just dumped eWebEditPro, now change the remaining cookies
+        $editor = 'tinymce';
+    }
+    elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
+        $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
+        
+        my $cookie = $self->cookie( -name    => $cookiename,
+                                    -value   => $editor,
+                                    -expires => "+2160h"); # 90 days
+        $ctxt->properties->application->cookie( $cookie );
+    }
+    my $ed = '';
+    $ed = "_" . $editor if defined $editor;
+    return $ed;
+}
+
+=head2 set_code_editor())=
+
+=head3 Parameter
+
+=head3 Returns
+
+=head3 Description
+
+    $self->set_code_editor();
+
+=cut
+
+sub set_code_editor {
+    my ( $self, $ctxt ) = @_;
+
+    my $cookiename = 'xims_codeeditor';
+    my $editor = $self->cookie($cookiename);
+
+    my $plain = $self->param( 'plain' );
+    if ( $plain or defined $editor and $editor eq 'plain' ) {
+        $editor = undef;
+    }
+    elsif ($editor eq 'codemirror') {
+        # apply codemirror for syntax highlighting
+        $editor = 'codemirror';
+    }
+    elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
+        $editor = 'codemirror';
+        my $cookie = $self->cookie( -name    => $cookiename,
+                                    -value   => $editor,
+                                    -expires => "+2160h"); # 90 days
+        $ctxt->properties->application->cookie( $cookie );
+    }
+    my $ed = '';
+    $ed = "_" . $editor if defined $editor;
+    return $ed;
+}
+
 =head2 init_store_object()
 
 =head3 Parameter

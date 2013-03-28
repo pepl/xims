@@ -17,6 +17,11 @@
     <option value="plain">Plain Textarea</option>
     <option value="tinymce">TinyMCE Editor</option>
   </xsl:variable>
+  
+  <xsl:variable name="codeeditoroptions">
+    <option value="plain">Plain Textarea</option>
+    <option value="codemirror">Codemirror</option>
+  </xsl:variable>
 
   <xsl:variable name="big_image_threshold">71680</xsl:variable> <!-- 70KiB -->
   <xsl:variable name="searchresultrowlimit">30</xsl:variable>

@@ -13,8 +13,8 @@
  <!-- <xsl:import href="edit_common.xsl"/>-->
   <xsl:import href="vlibraryitem_document_edit.xsl"/>
   
-   <xsl:param name="selEditor" select="true()"/>
-  <xsl:param name="tinymce" select="true()"/>	
+  <xsl:param name="selEditor">wysiwyg</xsl:param>
+  <xsl:param name="tinymce">1</xsl:param>
 <!--
   <xsl:template name="set-body-edit">
     <xsl:call-template name="form-body-edit_tinymce"/> 
@@ -41,7 +41,7 @@
 						<xsl:apply-templates select="*[name()=concat($mo, 'set')]/*[name()=$mo]"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				<span id="message_{$mo}"/>
+				<span id="message_{$mo}"><xsl:comment/></span>
 				<xsl:text>&#160;</xsl:text>
 			</div>
 		</div>

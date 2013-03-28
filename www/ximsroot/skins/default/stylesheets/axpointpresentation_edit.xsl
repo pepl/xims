@@ -9,6 +9,8 @@
 
 	<xsl:import href="edit_common.xsl"/>
 	
+	<xsl:param name="selEditor">code</xsl:param>
+	
 	<xsl:variable name="i18n_xml" select="document(concat($currentuilanguage,'/i18n_xml.xml'))"/>
 	
 	<xsl:template name="edit-content">
@@ -17,6 +19,7 @@
 		<xsl:call-template name="form-body-edit">
 			<xsl:with-param name="method" select="xml"/>
 		</xsl:call-template>
+		<xsl:call-template name="jsorigbody"/>
 		<xsl:call-template name="form-keywordabstract"/>
 	</xsl:template>
 	

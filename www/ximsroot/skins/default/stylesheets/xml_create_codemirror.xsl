@@ -12,5 +12,5 @@
 
 	<xsl:param name="codemirror" select="true()"/>	
 	<xsl:param name="cm_mode">xml</xsl:param>
-	<!--<xsl:param name="selEditor" select="true()"/>-->
+	<xsl:param name="selEditor">code</xsl:param>
 </xsl:stylesheet>

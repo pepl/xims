@@ -11,7 +11,7 @@
 	<xsl:import href="document_common.xsl"/>
 	<xsl:import href="newsitem_common.xsl"/>
 	
-	<xsl:param name="selEditor" select="true()"/>
+	<xsl:param name="selEditor">wysiwyg</xsl:param>
 	<xsl:param name="testlocation" select="false()"/>
 	
 	<xsl:template name="edit-content">
@@ -19,6 +19,7 @@
 		<xsl:call-template name="form-marknew-pubonsave"/>
 		<xsl:call-template name="form-leadimage-edit"/>
 		<xsl:call-template name="form-body-edit_tinymce"/>
+		<xsl:call-template name="jsorigbody"/>
 		<xsl:call-template name="form-metadata"/>
 		<xsl:call-template name="expandrefs"/>
 	</xsl:template>
