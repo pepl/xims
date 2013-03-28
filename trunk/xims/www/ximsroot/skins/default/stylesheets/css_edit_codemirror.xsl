@@ -11,7 +11,6 @@
 	<xsl:import href="codemirror_scripts.xsl"/>
 
 	<xsl:param name="codemirror" select="true()"/>	
-	<!--<xsl:param name="selEditor" select="true()"/>-->
 	<xsl:param name="cm_mode">css</xsl:param>
 
 	

@@ -1011,7 +1011,10 @@ sub get_display_params {
     $offset = $offset - 1 if $offset;
 
     my $limit;
-    if ( defined $self->param('onepage') or defined $style ) {
+    #if ( defined $self->param('onepage') or defined $style ) {
+    #    $limit = undef;
+    #}
+    if ( defined $self->param('onepage') ) {
         $limit = undef;
     }
     else {

@@ -12,7 +12,7 @@
 <xsl:import href="document_common.xsl"/>
 <xsl:import href="newsitem_common.xsl"/>
 
-<xsl:param name="selEditor" select="true()"/>
+<xsl:param name="selEditor">wysiwyg</xsl:param>
 <xsl:param name="testlocation" select="false()"/>
 
 <xsl:template name="create-content">

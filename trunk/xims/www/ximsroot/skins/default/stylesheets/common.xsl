@@ -341,15 +341,15 @@
 							</xsl:with-param>
 						</xsl:call-template>
 						&#160;'<xsl:value-of select="title"/>'&#160;
-						<xsl:if test="$selEditor">
-							<xsl:value-of select="$i18n/l/using"/>
-							<xsl:text>&#160;</xsl:text>
-							<label for="xims_wysiwygeditor">
-								<xsl:value-of select="$i18n/l/Editor"/>
-							</label>
-							<xsl:text>&#160;</xsl:text>
-							<!-- <xsl:call-template name="setdefaulteditor"/> -->
-						</xsl:if>
+						<xsl:if test="$selEditor = 'wysiwyg' or $selEditor = 'code'">
+              <xsl:value-of select="$i18n/l/using"/>
+              <xsl:text>&#160;</xsl:text>
+              <label for="xims_wysiwygeditor">
+              <xsl:attribute name="for">xims_<xsl:value-of select="selEditor"/>editor</xsl:attribute>
+                <xsl:value-of select="$i18n/l/Editor"/>
+              </label>
+              <xsl:text>&#160;</xsl:text>
+            </xsl:if>
 					</xsl:when>
 					<xsl:when test="$mode='move'">
 						<xsl:value-of select="$i18n/l/Move_object"/> '<xsl:value-of select="title"/>' 
@@ -2098,6 +2098,32 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<xsl:template name="setdefaulteditor">
+    <script type="text/javascript" >
+      var bodyContentChanged = "<xsl:value-of select="$i18n/l/Body_content_changed"/>";
+    </script>
+    <form name="editor_selector" id="editor_selector" action="">
+      <select>
+      <xsl:attribute name="onchange">javascript:return checkBodyFromSel(this.value,'<xsl:value-of select='$selEditor'/>');</xsl:attribute>
+      <xsl:attribute name="name">xims_<xsl:value-of select="$selEditor"/>editor</xsl:attribute>
+      <xsl:attribute name="id">xims_<xsl:value-of select="$selEditor"/>editor</xsl:attribute>
+        <xsl:choose>
+          <xsl:when test="$selEditor = 'wysiwyg'">
+            <xsl:copy-of select="$editoroptions"/>
+          </xsl:when>
+          <xsl:when test="$selEditor = 'code'">
+            <xsl:copy-of select="$codeeditoroptions"/>
+          </xsl:when>
+         </xsl:choose>
+      </select>
+      <script type="text/javascript">
+      $().ready(function(){
+        setSel(document.getElementById('xims_<xsl:value-of select="$selEditor"/>editor'), readCookie('xims_<xsl:value-of select="$selEditor"/>editor'));
+        });
+    </script>
+    </form>
+  </xsl:template>
 	
 	<xsl:template name="create_bookmark">
 		<xsl:param name="admin" select="false()"/>

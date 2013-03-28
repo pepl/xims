@@ -29,6 +29,49 @@ use Locale::TextDomain ('info.xims');
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
+=head2 event_create()
+
+=cut
+
+sub event_create {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
+
+    # event edit in SUPER implements operation control
+    $self->SUPER::event_create( $ctxt );
+    return 0 if $ctxt->properties->application->style eq 'error';
+
+    # check if a code editor is to be used based on cookie or config
+    my $ed = $self->set_code_editor( $ctxt );
+    $ctxt->properties->application->style( "create" . $ed );
+
+    return 0;
+}
+
+=head2 event_edit()
+
+=cut
+
+sub event_edit {
+    XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt) = @_;
+
+    # expand the attributes to XML-nodes
+    $self->expand_attributes( $ctxt );
+
+    $ctxt->properties->content->escapebody( 1 );
+
+    # event edit in SUPER implements operation control
+    $self->SUPER::event_edit( $ctxt );
+    return 0 if $ctxt->properties->application->style() eq 'error';
+    
+    # check if a code editor is to be used based on cookie or config
+    my $ed = $self->set_code_editor( $ctxt );
+    $ctxt->properties->application->style( "edit" . $ed );
+    
+    return 0;
+}
+
 =head2 event_store()
 
 =cut

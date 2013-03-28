@@ -11,32 +11,30 @@
 
 <xsl:import href="vlibraryitem_common.xsl"/>
 <xsl:import href="edit_common.xsl"/>
-<xsl:import href="codemirror_scripts.xsl"/>
 
-  <xsl:param name="codemirror" select="true()"/>  
-  <xsl:param name="cm_mode">xml</xsl:param>
-<xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
+  <xsl:param name="selEditor">code</xsl:param>
+  <xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 
-	<xsl:param name="vlib" select="true()"/>
+  <xsl:param name="vlib" select="true()"/>
 
-<xsl:template name="edit-content">
-	<xsl:call-template name="form-locationtitle-edit_xml"/>
-	<xsl:call-template name="form-marknew-pubonsave"/>
-  <xsl:call-template name="form-body-edit"/>
+  <xsl:template name="edit-content">
+    <xsl:call-template name="form-locationtitle-edit_xml"/>
+    <xsl:call-template name="form-marknew-pubonsave"/>
+    <xsl:call-template name="form-body-edit"/>
+    <xsl:call-template name="jsorigbody"/>
+    <xsl:call-template name="form-keywordabstract"/>
+    <xsl:call-template name="form-vlproperties">
+    <xsl:with-param name="mo" select="'keyword'"/>
+  </xsl:call-template>
 
-  <xsl:call-template name="form-keywordabstract"/>
-	<xsl:call-template name="form-vlproperties">
-		<xsl:with-param name="mo" select="'keyword'"/>
-	</xsl:call-template>
+  <xsl:call-template name="form-vlproperties">
+    <xsl:with-param name="mo" select="'subject'"/>
+  </xsl:call-template>
 
-	<xsl:call-template name="form-vlproperties">
-		<xsl:with-param name="mo" select="'subject'"/>
-	</xsl:call-template>
-	
-</xsl:template>
+  </xsl:template>
 
-<xsl:template name="form-keywords"/>
-<xsl:template name="trytobalance"/>
-<xsl:template name="form-minify"/>
+  <xsl:template name="form-keywords"/>
+  <xsl:template name="trytobalance"/>
+  <xsl:template name="form-minify"/>
 
 </xsl:stylesheet>

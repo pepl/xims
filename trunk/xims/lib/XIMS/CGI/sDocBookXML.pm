@@ -26,56 +26,6 @@ use parent qw( XIMS::CGI::XML );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
-=head2 event_create()
-
-=cut
-
-sub event_create {
-   XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt) = @_;
-
-    # event edit in SUPER implements operation control
-    $self->SUPER::event_create( $ctxt );
-    return 0 if $ctxt->properties->application->style eq 'error';
-
-    # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor( $ctxt );
-    $ctxt->properties->application->style( "create" . $ed );
-	# $ctxt->properties->application->style( "create" );
-
-    # look for inherited CSS assignments
-    if ( not defined $ctxt->object->css_id() ) {
-        my $css = $ctxt->object->css;
-        $ctxt->object->css_id( $css->id ) if defined $css;
-    }
-
-    $self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
-
-    return 0;
-}
-
-=head2 event_edit()
-
-=cut
-
-sub event_edit {
-	XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt) = @_;
-
-	$ctxt->properties->content->escapebody( 1 );
-
-	# event edit in SUPER implements operation control
-    $self->SUPER::event_edit( $ctxt );
-    return 0 if $ctxt->properties->application->style() eq 'error';
-	
-	# check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor( $ctxt );
-    $ctxt->properties->application->style( "edit" . $ed );
-
-	$self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
-    
-	return 0;
-}
 
 =head2 event_exit()
 

@@ -57,7 +57,7 @@ sub event_edit {
     return 0 if $ctxt->properties->application->style() eq 'error';
 
     # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor($ctxt);
+    my $ed = $self->set_wysiwyg_editor($ctxt);
     $ctxt->properties->application->style( "edit" . $ed );
 
     return 0;
@@ -182,39 +182,11 @@ sub event_store {
 
 =over
 
-=item _set_wysiwyg_editor()
-
 =item _absrel_urlmangle()
 
 =back
 
 =cut
-
-sub _set_wysiwyg_editor {
-    my ( $self, $ctxt ) = @_;
-
-    my $cookiename = 'xims_wysiwygeditor';
-    my $editor     = $self->cookie($cookiename);
-    my $plain      = $self->param('plain');
-    if ( $plain or defined $editor and $editor eq 'plain' ) {
-        $editor = undef;
-    }
-    elsif ( not( length $editor ) and length XIMS::DEFAULTXHTMLEDITOR() ) {
-        $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
-        if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
-            $editor = 'tinymce';
-        }
-        my $cookie = $self->cookie(
-            -name    => $cookiename,
-            -value   => $editor,
-            -expires => "+2160h"
-        );    # 90 days
-        $ctxt->properties->application->cookie($cookie);
-    }
-    my $ed = '';
-    $ed = "_" . $editor if defined $editor;
-    return $ed;
-}
 
 # TODO: try to use XIMS::CGI::Document's version of this
 sub _absrel_urlmangle {
