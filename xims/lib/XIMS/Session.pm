@@ -40,7 +40,7 @@ sub fields {
     return @Fields;
 }
 
-=head2 resource_type(9
+=head2 resource_type()
 
 =cut
 

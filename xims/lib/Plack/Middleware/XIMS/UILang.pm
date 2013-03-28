@@ -12,7 +12,7 @@ $Id: $
 package Plack::Middleware::XIMS::UILang;
 use parent qw( Plack::Middleware );
 use Plack::Request;
-use HTTP::Throwable::Factory;
+use HTTP::Throwable::Factory qw(http_throw);
 use XIMS;
 use POSIX qw(setlocale LC_ALL);
 
@@ -32,11 +32,7 @@ sub call {
         $env->{'xims.appcontext'}->session->uilanguage($langpref);
     }
     else {
-        HTTP::Throwable::Factory->throw({ 
-            status_code => 500,
-            reason      => 'Internal Server Error',
-            message     => 'Missing Session'
-        });
+        http_throw(InternalServerError =>  {message     => "\nMissing Session."});
     }
 
     my $res = $self->app->($env);
