@@ -10,7 +10,7 @@
 <xsl:import href="create_common.xsl"/>
 <xsl:import href="document_common.xsl"/>
 
-<xsl:param name="selEditor" select="true()"/>	
+<xsl:param name="selEditor">wysiwyg</xsl:param>	
 	
 	<xsl:template name="create-content">
 		<xsl:call-template name="form-locationtitle-create"/>

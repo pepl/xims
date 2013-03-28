@@ -11,10 +11,13 @@
     <xsl:import href="common.xsl"/>
     <xsl:import href="edit_common.xsl"/>
     
+    <xsl:param name="selEditor">code</xsl:param>
+    
     <xsl:template name="edit-content">
 		<xsl:call-template name="form-locationtitle-edit"/>
 		<xsl:call-template name="form-marknew-pubonsave"/>
 		<xsl:call-template name="form-body-edit"/>
+		<xsl:call-template name="jsorigbody"/>
 		<xsl:call-template name="form-keywordabstract"/>
   </xsl:template>
   

@@ -57,18 +57,12 @@ sub event_edit {
     XIMS::Debug( 5, "called" );
     my ( $self, $ctxt) = @_;
 
-    # $ctxt->properties->content->escapebody( 1 );
-
     # event edit in SUPER implements operation control
     $self->SUPER::event_edit( $ctxt );
-    return 0 if $ctxt->properties->application->style() eq 'error';
 
-    # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor( $ctxt );
+    # check if a code editor is to be used based on cookie or config
+    my $ed = $self->set_code_editor( $ctxt );
     $ctxt->properties->application->style( "edit" . $ed );
-	# $ctxt->properties->application->style( "edit" );
-
-    $self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
 
     return 0;
 }
@@ -83,20 +77,10 @@ sub event_create {
 
     # event edit in SUPER implements operation control
     $self->SUPER::event_create( $ctxt );
-    return 0 if $ctxt->properties->application->style eq 'error';
 
-    # check if a WYSIWYG Editor is to be used based on cookie or config
-    my $ed = $self->_set_wysiwyg_editor( $ctxt );
+    # check if a code editor is to be used based on cookie or config
+    my $ed = $self->set_code_editor( $ctxt );
     $ctxt->properties->application->style( "create" . $ed );
-	# $ctxt->properties->application->style( "create" );
-
-    # look for inherited CSS assignments
-    if ( not defined $ctxt->object->css_id() ) {
-        my $css = $ctxt->object->css;
-        $ctxt->object->css_id( $css->id ) if defined $css;
-    }
-
-    $self->resolve_content( $ctxt, [ qw( CSS_ID ) ] );
 
     return 0;
 }
@@ -149,55 +133,6 @@ sub event_store {
 	
     return $self->SUPER::event_store( $ctxt );
 }
-
-=head2 private functions/methods
-
-=over
-
-=item _set_wysiwyg_editor()
-
-=back
-
-=cut
-
-sub _set_wysiwyg_editor {
-    my ( $self, $ctxt ) = @_;
-
-    my $cookiename = 'xims_wysiwygeditor';
-    my $editor = $self->cookie($cookiename);
-	# OVERRIDE for TESTING
-	# $editor = 'codemirror';
-    my $plain = $self->param( 'plain' );
-    if ( $plain or defined $editor and $editor eq 'plain' ) {
-        # $editor = undef;
-		$editor = 'codemirror';
-    }
-    elsif ($editor eq 'wepro') { 
-        # we just dumped eWebEditPro, now change the remaining cookies
-        # $editor = 'tinymce';
-    	$editor = 'codemirror';
-	}
-	elsif ($editor eq 'tinymce') {
-		# apply codemirror for syntax highlighting
-		$editor = 'codemirror';
-	}
-    elsif ( not(length $editor) and length XIMS::DEFAULTXHTMLEDITOR() ) {
-        # $editor = lc( XIMS::DEFAULTXHTMLEDITOR() );
-		$editor = 'codemirror';
-		if ( $self->user_agent('Gecko') or not $self->user_agent('Windows') ) {
-             # $editor = 'tinymce';
-			 $editor = 'codemirror';
-        }
-        my $cookie = $self->cookie( -name    => $cookiename,
-                                    -value   => $editor,
-                                    -expires => "+2160h"); # 90 days
-        $ctxt->properties->application->cookie( $cookie );
-    }
-    my $ed = '';
-    $ed = "_" . $editor if defined $editor;
-    return $ed;
-}
-
 
 1;
 

@@ -179,12 +179,7 @@ function toggleHighlight(hls){
 
       function setSel(selObj, toselect) {
           if ( !toselect ) {
-              if ( window.editor ) {
-                  toselect = 'htmlarea';
-              }
-              else {
                   toselect = 'plain';
-              }
           }
           toselect = toselect.toLowerCase();
           opts=selObj.options,
@@ -197,25 +192,24 @@ function toggleHighlight(hls){
           }
           return false;
       }
+      
+      function checkBodyFromSel (selection, type) {
 
-      function checkBodyFromSel (selection) {
+        createCookie('xims_'+type+'editor',selection,90);
 
-          createCookie('xims_wysiwygeditor',selection,90);
+        if ( hasBodyChanged() ) {
+            $('#xims_'+type+'editor').attr("disabled",true);
+            alert(bodyContentChanged);
+            return false;
+        }
+      /*
+      reload with param 'true' in order to fetch (clean) content from
+      server again; this interfears the least with JS-WYSIWYG editors
+      */
+        window.location.reload(true);
 
-          if ( hasBodyChanged() ) {
-              document.getElementById('xims_wysiwygeditor').disabled = true;
-              alert(bodyContentChanged);
-              return false;
-          }
-
-/*
-	  reload with param 'true' in order to fetch (clean) content from
-	  server again; this interfears the least with JS-WYSIWYG editors
-*/
-          window.location.reload(true);
-
-          return true;
-      }
+        return true;
+    }
 
       function hasBodyChanged () {
           var currentbody;
@@ -240,12 +234,15 @@ function toggleHighlight(hls){
               return false;
           }
       }
-/*
-          Disable possibility of changing WYSIWYG editors for "timeout"
-          seconds. This prevents false-positive errors of "hasBodyChanged()"
-          due to switching to another editor too fast.
-*/
-      function timeoutWYSIWYGChange(timeout) {
-          document.getElementById('xims_wysiwygeditor').disabled = true;
-          window.setTimeout("document.getElementById('xims_wysiwygeditor').disabled = false;",timeout*1000);
-      }
+      
+      /*
+      Disable possibility of changing editors for "timeout"
+      seconds. This prevents false-positive errors of "hasBodyChanged()"
+      due to switching to another editor too fast.
+      type : one of 'wysiwyg' or 'code'
+      */
+      function timeoutEditorChange(timeout, type) {
+        $('#xims_'+type+'editor').attr("disabled",true);;
+        //document.getElementById('xims_wysiwygeditor').disabled = true;
+        window.setTimeout(function(){$('#xims_'+type+'editor').removeAttr('disabled');},timeout*1000);
+    }

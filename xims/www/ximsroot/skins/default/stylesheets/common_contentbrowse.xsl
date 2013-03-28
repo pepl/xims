@@ -8,6 +8,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
 <xsl:import href="common.xsl"/>
+<xsl:import href="container_common.xsl"/>
 
 <xsl:variable name="target_path"><xsl:call-template name="targetpath"/></xsl:variable>
 <xsl:variable name="target_path_abs"><xsl:call-template name="targetpath_abs"/></xsl:variable>
@@ -16,8 +17,37 @@
 <xsl:param name="notfilter"/>
 <xsl:param name="sbfield"/>
 <xsl:param name="urllink" />
+<xsl:param name="order" />
+<xsl:param name="sb" />
+
+<xsl:param name="pagerowlimit" select="$searchresultrowlimit"/>
+<xsl:variable name="totalpages">
+    <xsl:choose>
+      <xsl:when test="$onepage &gt; 0">
+        <xsl:number value="1"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:number value="ceiling(/document/context/object/targetchildren/totalobjects div $pagerowlimit)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
 
 <xsl:template match="/document/context/object">
+ <xsl:variable name="navurl">
+      <xsl:text>javascript:reloadDialog('</xsl:text>
+      <xsl:value-of select="concat($xims_box,$goxims_content,'?')"/>
+      <xsl:value-of select="concat('id=',@id,';')"/>
+      <xsl:text>contentbrowse=1;</xsl:text>
+      <xsl:text>otfilter=</xsl:text><xsl:value-of select="$otfilter"/><xsl:text>;</xsl:text>
+      <xsl:text>notfilter=</xsl:text><xsl:value-of select="$notfilter"/><xsl:text>;</xsl:text>
+      <xsl:if test="$defsorting != 1">
+        <xsl:value-of select="concat('sb=',$sb,';order=',$order,';')"/>
+      </xsl:if>
+      <xsl:if test="$pagerowlimit != $searchresultrowlimit">
+        <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,';')"/>
+      </xsl:if>
+      <xsl:text>','default-dialog')</xsl:text>
+    </xsl:variable> 
 	<form action="{$xims_box}{$goxims_content}" method="post" name="selectform">
 		<p>
 			<xsl:value-of select="$i18n/l/Browse_to"/>:
@@ -26,10 +56,35 @@
 			<xsl:apply-templates select="targetparents/object[@id !='1']"/>
 			<xsl:apply-templates select="target/object"/>
 		</p>
-			<xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
-				<xsl:sort select="title" order="ascending" case-order="lower-first"/>
-			</xsl:apply-templates>		
+		<xsl:call-template name="form-container-sorting"/>
+
+    <xsl:if test="$totalpages &gt; 1">
+      <xsl:call-template name="pagenav">
+      <xsl:with-param name="totalitems">
+        <xsl:value-of  select="/document/context/object/children/@totalobjects"/>
+      </xsl:with-param>
+        <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
+        <xsl:with-param name="currentpage" select="$page"/>
+        <xsl:with-param name="url" select="$navurl"/>
+      </xsl:call-template>
+    </xsl:if>
+    <br class="clear"/>
+      <xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
+        <xsl:sort select="$sb" order="{concat($order,'ending')}" case-order="lower-first"/> 
+      </xsl:apply-templates>    
 		<input type="hidden" name="id" value="{@id}"/>
+		
+		<xsl:if test="$totalpages &gt; 1">
+      <xsl:call-template name="pagenav">
+      <xsl:with-param name="totalitems">
+        <xsl:value-of  select="/document/context/object/children/@totalobjects"/>
+      </xsl:with-param>
+        <xsl:with-param name="itemsperpage" select="$searchresultrowlimit"/>
+        <xsl:with-param name="currentpage" select="$page"/>
+        <xsl:with-param name="url" select="$navurl"/>
+      </xsl:call-template>
+    </xsl:if>
+    <br class="clear"/>
 	</form>
 	<xsl:call-template name="mk-inline-js">
 		<xsl:with-param name="code">
@@ -40,6 +95,29 @@
 		</xsl:with-param>
 </xsl:call-template>
 </xsl:template>
+
+<xsl:template name="pagelink-href">
+   <xsl:param name="url"/>
+   <xsl:param name="page"/>
+   <xsl:text>javascript:reloadDialog('</xsl:text>
+      <xsl:value-of select="concat($xims_box,$goxims_content,'?')"/>
+      <xsl:value-of select="concat('id=',@id,';')"/>
+      <xsl:text>contentbrowse=1;</xsl:text>
+      <xsl:text>otfilter=</xsl:text><xsl:value-of select="$otfilter"/><xsl:text>;</xsl:text>
+      <xsl:text>notfilter=</xsl:text><xsl:value-of select="$notfilter"/><xsl:text>;</xsl:text>
+      <xsl:value-of select="concat('to=',target/object/@id,';')"/>
+      <!-- <xsl:if test="$defsorting != 1"> -->
+        <xsl:value-of select="concat('sb=',$sb,';order=',$order,';')"/>
+      <!-- </xsl:if> -->
+      <xsl:value-of select="concat('sbfield=',$sbfield,';')"/>
+      <xsl:if test="$pagerowlimit != $searchresultrowlimit">
+        <xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,';')"/>
+      </xsl:if>
+      <xsl:value-of select="concat('page=',$page,';')"/>
+      <xsl:text>','default-dialog')</xsl:text>
+  </xsl:template>
+  
+  
 
 <xsl:template name="title">
 <xsl:value-of select="$i18n/l/Browse_for"/>
@@ -102,5 +180,41 @@
 </p>
 </xsl:template>
 
+<xsl:template name="form-container-sorting">
+    <p style="white-space: nowrap;width:100%">Sortierung:
+    <span>
+    <select id="select-sb" >
+      <option value="position"><xsl:if test="$sb='position'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Position</option>
+      <option value="title"><xsl:if test="$sb='title'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Titel</option>
+      <option value="date"><xsl:if test="$sb='date'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Zuletzt geändert</option>
+    </select>
+    <input id="defaultsorting-asc" class="radio-button" type="radio" value="asc" name="defaultsorting">
+      <xsl:if test="$order='asc'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+    </input>
+    <label for="defaultsorting-asc">aufsteigend</label>
+    <input id="defaultsorting-desc" class="radio-button" type="radio" value="desc" name="defaultsorting">
+      <xsl:if test="$order='desc'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+    </input>
+    <label for="defaultsorting-desc">absteigend</label>
+    <xsl:call-template name="mk-inline-js">
+    <xsl:with-param name="code">
+    $('#select-sb, input[name=defaultsorting]').change(function(){    
+      //console.log("style: "+style);
+      //console.log($('#select-sb').val()+'\n'+$('input[name=defaultsorting]:checked').val()+'\n');
+      if (typeof(style) !== 'undefined' &amp;&amp; style != '' ){        
+        var br_url = '<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/>?id=<xsl:value-of select="/document/context/object/@id"/>;contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;style='+style+';sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
+        window.location = br_url;
+      }
+      else{
+        var br_url='<xsl:value-of select="$xims_box"/><xsl:value-of select="$goxims_content"/><xsl:value-of select="/document/context/object/location_path"/>?contentbrowse=1;to=<xsl:value-of select="target/object/@id"/>;otfilter=<xsl:value-of select="$otfilter"/>;notfilter=<xsl:value-of select="$notfilter"/>;sbfield=<xsl:value-of select="$sbfield"/>;urllink=<xsl:value-of select="$urllink"/>;order='+$('input[name=defaultsorting]:checked').val()+';sb='+$('#select-sb').val();
+        console.log(br_url);
+        return reloadDialog(br_url,'default-dialog');
+      }
+    });
+    </xsl:with-param>
+    </xsl:call-template>
+    </span>
+    </p>
+    </xsl:template>
 </xsl:stylesheet>
 

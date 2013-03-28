@@ -10,8 +10,8 @@
 	<xsl:import href="create_common.xsl"/>
 	<xsl:import href="document_common.xsl"/>
 	
-	<xsl:param name="tinymce" select="true()"/>	
-	<xsl:param name="selEditor" select="true()"/>	
+	<xsl:param name="tinymce">1</xsl:param>	
+	<xsl:param name="selEditor">wysiwyg</xsl:param>	
 	
 	<xsl:template name="create-content">
 		<input type="hidden" name="objtype" value="{$objtype}"/>
