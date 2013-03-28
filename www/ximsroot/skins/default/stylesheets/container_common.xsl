@@ -92,8 +92,6 @@
 				<label for="radio-defaultsorting-desc">
 					<xsl:value-of select="$i18n/l/descending"/>
 				</label>
-				<!--<xsl:text>&#160;</xsl:text>
-				<a href="javascript:openDocWindow('defaultsorting')" class="doclink">(?)</a>-->
 		</div>
 	</xsl:template>
 	
@@ -106,14 +104,28 @@
 			<div class="pagenav">
 				<div>
 					<xsl:if test="$currentpage &gt; 1">
-						<a href="{$url}page={number($currentpage)-1};">&lt; <xsl:value-of select="$i18n/l/Previous_page"/>
+						<a>
+						<xsl:attribute name="href">
+						<xsl:call-template name="pagelink-href">
+						<xsl:with-param name="page"><xsl:value-of select="number($currentpage)-1"/></xsl:with-param>
+						<xsl:with-param name="url"><xsl:value-of select="$url"/></xsl:with-param>
+						</xsl:call-template>
+						</xsl:attribute>
+						<xsl:text>&lt; </xsl:text><xsl:value-of select="$i18n/l/Previous_page"/>
 						</a>
 					</xsl:if>
 					<xsl:if test="$currentpage &gt; 1 and $currentpage &lt; $totalpages">
                 |
               </xsl:if>
 					<xsl:if test="$currentpage &lt; $totalpages">
-						<a href="{$url}page={number($currentpage)+1};">&gt; <xsl:value-of select="$i18n/l/Next_page"/>
+						<a>
+						<xsl:attribute name="href">
+          <xsl:call-template name="pagelink-href">
+            <xsl:with-param name="url" select="$url"/>
+            <xsl:with-param name="page" select="number($currentpage)+1"/>
+          </xsl:call-template>
+        </xsl:attribute>
+        <xsl:text>&gt; </xsl:text><xsl:value-of select="$i18n/l/Next_page"/>
 						</a>
 					</xsl:if>
 				</div>
@@ -165,22 +177,46 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		
 		<xsl:if test="$page = $first_in_list - 1">
-			<a href="{$url}page=1;">1</a> ...
+			<a>
+			<xsl:attribute name="href">
+          <xsl:call-template name="pagelink-href">
+            <xsl:with-param name="url" select="$url"/>
+            <xsl:with-param name="page" select="1"/>
+          </xsl:call-template>
+        </xsl:attribute>
+        1</a> ...
   </xsl:if>
 		<xsl:if test="$page &gt;= $first_in_list">
 			<xsl:choose>
 				<xsl:when test="$page = $current">
 					<strong>
-						<a href="{$url}page={$page};">
+						<a>
+						<xsl:attribute name="href">
+          <xsl:call-template name="pagelink-href">
+            <xsl:with-param name="url" select="$url"/>
+            <xsl:with-param name="page" select="$page"/>
+          </xsl:call-template>
+        </xsl:attribute>
 							<xsl:value-of select="$page"/>
 						</a>
 					</strong>
 				</xsl:when>
 				<xsl:when test="$page &lt;= $last_in_list">
+				  <a>
+        <xsl:attribute name="href">
+          <xsl:call-template name="pagelink-href">
+            <xsl:with-param name="url" select="$url"/>
+            <xsl:with-param name="page" select="$page"/>
+          </xsl:call-template>
+        </xsl:attribute>
+        <xsl:value-of select="$page"/>
+      </a>
+      <!-- 
 					<a href="{$url}page={$page};">
 						<xsl:value-of select="$page"/>
-					</a>
+					</a> -->
 				</xsl:when>
 			</xsl:choose>
 			<xsl:text> </xsl:text>
@@ -194,10 +230,23 @@
 			</xsl:call-template>
 		</xsl:if>
 		<xsl:if test="$page = $last_in_list + 1 and $last_in_list &lt; $total">
-    ... <a href="{$url}page={$total};">
+    <!-- ... <a href="{$url}page={$total};"> -->
+    ... <a>
+        <xsl:attribute name="href">
+          <xsl:call-template name="pagelink-href">
+            <xsl:with-param name="url" select="$url"/>
+            <xsl:with-param name="page" select="$page"/>
+          </xsl:call-template>
+        </xsl:attribute>
 				<xsl:value-of select="$total"/>
 			</a>
 		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="pagelink-href">
+	 <xsl:param name="url"/>
+	 <xsl:param name="page"/>
+	 <xsl:value-of select="concat($url,';page=',$page,';')"/>
 	</xsl:template>
 	
 	<xsl:template name="pagenavtable">

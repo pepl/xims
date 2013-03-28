@@ -2152,6 +2152,7 @@ sub event_contentbrowse {
 	XIMS::Debug( 5, "called" );
 	my ( $self, $ctxt ) = @_;
 
+	my $display_params = $self->get_display_params($ctxt);
 	my $to          = $self->param("to");
 	my $otfilter    = $self->param("otfilter");
 	my $notfilter   = $self->param("notfilter");    # negative otfilter :P
@@ -2164,6 +2165,7 @@ sub event_contentbrowse {
 
 	$to = $ctxt->object->id() unless $to =~ /^\d+$/;
 	$ctxt->properties->content->getchildren->objectid($to);
+	$self->expand_attributes($ctxt);
 
 	if ( defined $otfilter and length $otfilter > 0 ) {
 		my @otherot = split '\s*,\s*', $otfilter;    # in case we want to filter
@@ -2185,6 +2187,11 @@ sub event_contentbrowse {
 	}
 
 	$ctxt->properties->content->getchildren->objecttypes($objecttypes);
+	# pagination
+    $ctxt->properties->content->getchildren->limit( $display_params->{limit} );
+    $ctxt->properties->content->getchildren->offset($display_params->{offset} );
+    $ctxt->properties->content->getchildren->order( $display_params->{order} );
+    
 	$ctxt->properties->application->style("contentbrowse");
 
 	my $style;
@@ -2194,6 +2201,97 @@ sub event_contentbrowse {
 	}
 
 	return 0;
+}
+
+=head3 Description
+    
+    my $display_params = $self->get_display_params($ctxt);
+
+A common method to get the values for display-styles (ordering, pagination,
+custom stylesheet names) merged from defaults, container attributes, and
+CGI-parameters.
+
+=cut
+
+sub get_display_params {
+	XIMS::Debug( 5, "called" );
+    my ( $self, $ctxt ) = @_;
+    my $defaultsortby = $ctxt->object->attribute_by_key('defaultsortby');
+    my $defaultsort   = $ctxt->object->attribute_by_key('defaultsort');
+
+    # only sort by title 
+    if($defaultsortby eq 'titlelocation') {
+        $defaultsortby = $ctxt->session->user->userprefs->containerview_show() || '';
+    }
+
+    # maybe put that into config values
+    $defaultsortby ||= 'position';
+    $defaultsort   ||= 'asc';
+
+    unless ( $self->param('sb') and $self->param('order') ) {
+        $self->param( 'sb',    $defaultsortby );
+        $self->param( 'order', $defaultsort );
+        $self->param( 'defsorting', 1 );    # tell stylesheets not to pass
+                                            # 'sb' and 'order' params when
+                                            # linking to children
+    }
+
+    # The params override attribute and default values
+    else {
+        $defaultsortby = $self->param('sb');
+        $defaultsort   = $self->param('order');
+    }
+
+    my %sortbymap = (
+        cdate    => 'creation_timestamp',
+        mdate    => 'last_modification_timestamp',
+        date     => 'last_modification_timestamp',
+        position => 'position',
+        title    => 'title',
+        location    => 'location'
+    );
+    XIMS::Debug(5,"defaultsortby: ".$defaultsortby.", defaultsort: ".$defaultsort);
+    my $order = $sortbymap{$defaultsortby} . ' ' . $defaultsort;
+
+    my $style = $self->param('style');
+
+    my $offset = $self->param('page');
+    $offset = $offset - 1 if $offset;
+
+    my $limit;
+    if ( defined $self->param('onepage') ) {
+        $limit = undef;
+    }
+    else {
+        $limit = $self->param('pagerowlimit');
+        unless ($limit) {
+            $limit ||= $ctxt->object->attribute_by_key('pagerowlimit');
+            $limit ||= XIMS::SEARCHRESULTROWLIMIT();
+
+            # set for stylesheet consumation;
+            $self->param( 'searchresultrowlimit', $limit );
+        }
+        $offset ||= 0;
+        $offset = $offset * $limit;
+    }
+    my $showtrashcan = $self->param('showtrashcan');
+    $showtrashcan ||= 0;
+    
+    my $otfilter = $self->param('otfilter');
+    my $notfilter = $self->param('notfilter');
+
+    XIMS::Debug(5,"offset: ".$offset.", limit: ".$limit.", order: ".$order.", showtrashcan: ".$showtrashcan);
+    return (
+        {
+            offset => $offset,
+            limit  => $limit,
+            order  => $order,
+            style  => $style,
+            showtrashcan => $showtrashcan,
+            otfilter => $otfilter,
+            notfilter => $notfilter
+        }
+    );
 }
 
 =head2 event_move_browse()
