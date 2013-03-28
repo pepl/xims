@@ -34,13 +34,13 @@ my $versionpostfix = $args{v};
 $versionpostfix ||= '';
 
 my %sources = ( 
-    js => { min => [ qw( scripts/default.js skins/2punkt0/scripts/2punkt0.js ) ],
+    js => { min => [ qw( scripts/default.js skins/default/scripts/default.js ) ],
     },
-    css => { min => [qw(skins/2punkt0/stylesheets/common.css skins/2punkt0/stylesheets/content.css skins/2punkt0/stylesheets/sprites.css skins/2punkt0/stylesheets/menu.css) ],
+    css => { min => [qw(skins/default/stylesheets/common.css skins/default/stylesheets/content.css skins/default/stylesheets/sprites.css skins/default/stylesheets/menu.css) ],
     }
 ); 
 my $basedir = $xims_home . '/www/ximsroot/';
-my $outputbasedir = $xims_home . '/www/ximsroot/skins/2punkt0/';
+my $outputbasedir = $xims_home . '/www/ximsroot/skins/default/';
 my %typedirmapping = ( js => 'scripts', css => 'stylesheets' );
 
 foreach my $type ( keys %sources ) {
