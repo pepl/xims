@@ -176,6 +176,9 @@ my $logger = Log::Dispatch->new( outputs => [
       ],);
 
 builder {
+    enable SizeLimit => (
+           max_unshared_size_in_kb => '80000', 
+           check_every_n_requests => 4 );
     enable "Plack::Middleware::AccessLog",
            format => "combined",
            logger  => sub { $logger->log(level => 'debug', message => @_) };
