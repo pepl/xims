@@ -51,7 +51,7 @@ sub new {
                 [ "XML::Generator::PerlData", '' ],
                 [ "XML::Filter::GenericChunk", '0.04' ],
                 [ "CGI::XMLApplication", '1.1.3' ],
-                [ "Class::Accessor::Fast", '' ],
+                [ "Class::XSAccessor::Compat", '' ],
                 [ "DBIx::SQLEngine", '0.017' ],
                 [ "Time::Piece", '' ],
                 [ "XML::Schematron", '' ],

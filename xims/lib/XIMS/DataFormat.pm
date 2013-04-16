@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::DataFormat;
 
 use common::sense;
-use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
+use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 use XIMS::MimeType;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
