@@ -22,7 +22,7 @@ This module bla bla
 package XIMS::RefLibReference;
 
 use common::sense;
-use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
+use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our @Fields = @{XIMS::Names::property_interface_names( resource_type() )};

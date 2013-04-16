@@ -18,7 +18,7 @@ use XIMS::Session;
 package XIMS::Session;
 
 use common::sense;
-use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
+use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 use Digest::MD5;
 use Time::Piece;
 
@@ -28,7 +28,6 @@ our @Fields = (
     qw( error_msg   warning_msg message
         verbose_msg date        serverurl
         skin        uilanguage  searchresultcount
-        auth_module
     )
 );
 

@@ -10,7 +10,7 @@ Archive::Zip
 Array::Iterator 
 CSS::Minifier::XS 
 CSS::Tiny 
-Class::Accessor
+Class::XSAccessor::Compat
 DBI
 # If you’re on Oracle, you may deactive this one; 
 DBD::Pg~1.31           
@@ -55,4 +55,4 @@ Log::Dispatch
 # Test::Perl::Critic
 # Test::Pod
 # Test::Pod::Coverage 
-
+# Devel::Cover

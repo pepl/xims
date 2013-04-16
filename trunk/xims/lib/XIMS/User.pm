@@ -19,7 +19,7 @@ package XIMS::User;
 
 use common::sense;
 use XIMS;
-use parent qw( XIMS::AbstractClass Class::Accessor::Fast );
+use parent qw( XIMS::AbstractClass Class::XSAccessor::Compat );
 use XIMS::Bookmark;
 use XIMS::UserPrefs;
 use Digest::MD5 qw( md5_hex );
