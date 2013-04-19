@@ -33,12 +33,16 @@ use Plack::Builder;
 use Plack::App::File;
 use Plack::App::Directory;
 use HTTP::Throwable::Factory qw(http_throw http_exception);
-use Log::Dispatch;
 
 use XIMS;
 use XIMS::AppContext;
 use XIMS::DataProvider;
 use XIMS::Object;
+use XIMS::SiteRoot;
+use XIMS::Document;
+use XIMS::Image;
+use XIMS::Importer;
+use XIMS::Exporter;
 use XIMS::User;
 use XIMS::Session;
 
@@ -46,8 +50,10 @@ use XIMS::Session;
 use XIMS::CGI::SiteRoot;
 use XIMS::CGI::DepartmentRoot;
 use XIMS::CGI::Document;
+use XIMS::CGI::Image;
 use XIMS::CGI::Portlet;
 use XIMS::CGI::Questionnaire;
+
 
 BEGIN {
     # gettext encoding
@@ -55,7 +61,6 @@ BEGIN {
     bind_textdomain_codeset( 'info.xims', 'utf-8' );
 
     XML::LibXSLT->max_depth(500);
-    DBI->install_driver("Oracle");
 }
 
 
@@ -171,17 +176,10 @@ my $public = sub {
 
 
 
-my $logger = Log::Dispatch->new( outputs => [
-          [ 'File',   min_level => 'debug', filename =>$ENV{XIMS_HOME}.'/logs/access_log' ],
-      ],);
-
 builder {
     enable SizeLimit => (
-           max_unshared_size_in_kb => '80000', 
+           max_unshared_size_in_kb => '500000', 
            check_every_n_requests => 4 );
-    enable "Plack::Middleware::AccessLog",
-           format => "combined",
-           logger  => sub { $logger->log(level => 'debug', message => @_) };
     enable "ErrorDocument", 401 => XIMS::PUBROOT() . '/access.html';
     enable "HTTPExceptions";
     enable "ConditionalGET";

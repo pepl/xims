@@ -48,7 +48,6 @@ XML::Filter::GenericChunk~0.04
 Net::Server::SS::PreFork
 Plack::Middleware::XForwardedFor
 Plack::Middleware::SizeLimit
-Log::Dispatch
 # If you plan to run all tests
 # XML::Schematron
 # Perl::Critic

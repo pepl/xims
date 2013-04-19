@@ -2,8 +2,12 @@
 # This is just a starting point/example, adapt to your needs.
 export XIMS_HOME=/opt/xims
 export PERLBREW_ROOT=/opt/perl5
+export PERLBREW_HOME=/tmp/.perlbrew
 source ${PERLBREW_ROOT}/etc/bashrc
-# source db.env
+#source db.env
+#export DBI_TRACE=1
+
+perlbrew use 5.16.3
 
 cd "${XIMS_HOME}/lib"
 
@@ -11,14 +15,19 @@ WORKERS=12
 LOG_DIR=${XIMS_HOME}/logs
 PID_FILE=${LOG_DIR}/pid
 STATUS_FILE=${LOG_DIR}/status
+PORT=172.0.0.1:5000
+GROUP=nobody
+USER=nobody
+
+OPTIONS="--port ${PORT} --pid-file=${PID_FILE} --interval=5 --status-file=${STATUS_FILE} --signal-on-hup=QUIT --\
+                             starman --workers ${WORKERS} --user ${USER} --group ${GROUP} --access-log ${LOG_DIR}/access_log --error-log ${LOG_DIR}/error_log"
 
 case "$1" in 
 	start)
-		start_server --port 127.0.0.1:5000 --pid-file=${PID_FILE} --status-file=${STATUS_FILE} --\
-                             starman --workers ${WORKERS} --preload-app xims.psgi >> ${LOG_DIR}/error_log 2>&1 &
+	        start_server ${OPTIONS} --preload-app xims.psgi >> ${LOG_DIR}/error_log 2>&1 &
         ;;
         restart)
-                start_server --restart --pid-file=${PID_FILE} --status-file=${STATUS_FILE} --
+	        start_server --restart ${OPTIONS} --
 	;;
         stop)
                 [[ -e ${PID_FILE} ]] && kill `cat ${PID_FILE}` || echo "Sorry, I cannot find the PID file, is the server still running?"
