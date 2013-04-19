@@ -738,7 +738,10 @@ sub selectStylesheet {
 	if ( defined $ctxt->object ) {
 		$self->param( 'request.uri', $ctxt->object->location_path_relative() );
 	}
-	$self->param( 'request.uri.query', $self->query_string() );
+    # $self->query_string() is slow for some reason (says NYTProf);
+	# $self->param( 'request.uri.query', $self->query_string() );
+    # XXX reach down to Plack, pbly not sanitized...
+    $self->param( 'request.uri.query', $self->{REQ}->env->{QUERY_STRING});
 
 	my $gotpubuilangstylesheet;
 
