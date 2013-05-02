@@ -53,6 +53,13 @@ die "Could not resolve data format for Gallery (should not happen).\n" unless $g
 # Convert the folder
 $object->object_type_id( $gallery_ot->id() );
 $object->data_format_id( $gallery_df->id() );
+$object->attribute( imgwidth=>'medium',
+                    shownavigation=>1,
+                    autoindex=>1,
+                    showcaption=>1,
+                    thumbpos=>'no'
+         );
+
 die "Could not convert '$path'.\n" unless $object->update( User => $user );
 print "'$path' converted to Gallery";
 print ".\n";

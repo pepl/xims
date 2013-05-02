@@ -87,16 +87,18 @@ sub authenticate {
         $password = $args{p};
     }
 
-    my $auth;
-    eval { require XIMS::Auth; };
-    if ( $@ ) {
-        die "Could not load XIMS::Auth $@\n";
-    }
-    else {
-        $auth = XIMS::Auth->new( Username => $username, Password => $password );
+    # used as funktion
+    eval {require Plack::Middleware::XIMS::Auth;};
+    die "Could not load XIMS::Auth $@\n" if ( $@ );
+
+    my $login; 
+    if ($login = 
+         Plack::Middleware::XIMS::Auth::authenticate(undef, $username, $password)) 
+    {
+       return $login->getUserInfo();
     }
 
-    return $auth->authenticate();
+    return;
 }
 
 =head2 banner()
