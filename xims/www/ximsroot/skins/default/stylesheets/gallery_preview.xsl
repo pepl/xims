@@ -100,6 +100,9 @@
 
 	<xsl:if test="$thumbnail-pos='no'">
 		<xsl:call-template name="main-img"/>
+		<ul class="gallery_demo_unstyled" style="display:none;">
+      <xsl:apply-templates select="/document/context/object/children/object"/>
+    </ul>
 	</xsl:if>
 </xsl:template>
 
