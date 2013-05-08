@@ -60,7 +60,7 @@
       <div>
         <ul class="no-list-style">
           <xsl:apply-templates select="targetchildren/object[marked_deleted != '1']">
-              <xsl:sort select="$sb" order="$order" case-order="lower-first"/>
+              <xsl:sort select="$sb" order="{concat($order,'ending')}" case-order="lower-first"/>
           </xsl:apply-templates>
         </ul>
     </div>
