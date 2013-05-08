@@ -87,6 +87,7 @@
         # a Document on non-Windows browsers.
         -->
         <DefaultXHTMLEditor>tinymce</DefaultXHTMLEditor>
+        <DefaultCodeEditor>codemirror</DefaultCodeEditor>
 
         <XHTMLEditorOptions>
           <option value="plain">Plain Textarea</option>
