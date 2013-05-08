@@ -797,7 +797,9 @@ Tests whether a string is utf-8 encoded or not.
 =cut
 
 sub is_notutf8 {
-    eval { Encode::decode( 'UTF-8', shift, 1 ); };
+    my $string = shift;
+
+    eval { Encode::decode( 'UTF-8', $string, 1 ); };
     return $@ ? 1 : 0;
 }
 
