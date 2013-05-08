@@ -2483,6 +2483,11 @@ sub event_move {
 			return 0;
 		}
 
+        my $target_user_object_priv
+            = $ctxt->session->user->object_privmask($target);
+        return $self->event_access_denied($ctxt)
+            unless $target_user_object_priv & XIMS::Privileges::CREATE();
+
 		my @children = $target->children(
 			location       => $object->location(),
 			marked_deleted => 0
