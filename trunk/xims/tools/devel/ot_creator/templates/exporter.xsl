@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 <!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-2013 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                >
+                xmlns:date="http://exslt.org/dates-and-times"
+                extension-element-prefixes="date">
 
 <xsl:output method="xml"/>
 
@@ -16,7 +17,7 @@
 </xsl:template>
 
 <xsl:template match="/document"><xsl:text disable-output-escaping="yes">&lt;!--
-# Copyright (c) 2002-2006 The XIMS Project.
+# Copyright (c) 2002-</xsl:text><xsl:value-of select="date:year()"/><xsl:text disable-output-escaping="yes"> The XIMS Project.
 # See the file &quot;LICENSE&quot; for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
