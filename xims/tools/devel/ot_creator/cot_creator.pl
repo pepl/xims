@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Copyright (c) 2002-2011 The XIMS Project.
+# Copyright (c) 2002-2013 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
 # $Id$
@@ -12,6 +12,7 @@ die "\nWhere am I?\n\nPlease set the XIMS_HOME environment variable if you\ninst
 use lib ($ENV{'XIMS_HOME'} || '/usr/local/xims')."/lib",($ENV{'XIMS_HOME'} || '/usr/local/xims')."/tools/lib";
 
 use Getopt::Std;
+use XIMS;
 use XIMS::Term;
 use XIMS::ObjectType;
 use XIMS::DataFormat;
@@ -253,9 +254,6 @@ sub transform {
     return $out_string;
 }
 
-# fake the config, if user specified to use different db credentials or loglevel
-sub XIMS::Config::DBUser() { return ($args{u} || XIMS::Config::DBUser()) }
-sub XIMS::Config::DBPassword() { return ($args{p}|| XIMS::Config::DBPassword()) }
 
 sub usage {
     print qq*
@@ -277,12 +275,6 @@ sub usage {
             -c flag to actually create the data format
             -m mime-type
             -s suffix
-        -u If set, overrides XIMS::Config::DBUser. You may need this if
-           the database user specified in XIMS::Config::DBUser has
-           insufficient privileges to create object types or data
-           formats. For Pg, for example the user default user 'xims' has
-           the privileges, whereas 'ximsrun' does not.
-        -p If set, overrides XIMS::Config::DBPassword
         -o Output directory of template modules and stylesheets,
            defaults to '.'
         -d For more verbose output, specify the XIMS debug level; default is '1'
