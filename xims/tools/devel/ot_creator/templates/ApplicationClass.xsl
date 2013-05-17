@@ -41,7 +41,7 @@ Write me.
 
 package XIMS::CGI::<xsl:value-of select="object_type_name"/>;
 
-use commmon::sense;
+use common::sense;
 use parent qw( <xsl:value-of select="a_isa"/> );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
