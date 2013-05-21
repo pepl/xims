@@ -24,7 +24,7 @@ package XIMS::Exporter::Document2;
 
 use common::sense;
 use XIMS::Exporter;
-use parent qw( XIMS::Exporter::Document );
+use parent -norequire, qw( XIMS::Exporter::Document );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
