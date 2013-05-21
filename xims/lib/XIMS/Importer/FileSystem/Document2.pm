@@ -23,7 +23,7 @@ Write me.
 package XIMS::Importer::FileSystem::Document2;
 
 use common::sense;
-use parent qw( XIMS::Importer::Document );
+use parent -norequire, qw( XIMS::Importer::Document );
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
     
