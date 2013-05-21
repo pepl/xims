@@ -3527,7 +3527,7 @@ sub content_field {
     return 'binfile'
       if (  $df->mime_type
         and $df->mime_type =~ /^(?:application|image|audio|video)\//i
-        and $df->mime_type !~ /container|xsp/i );
+        and $df->mime_type !~ /container|xsp|xml/i );
     return 'body';
 }
 
