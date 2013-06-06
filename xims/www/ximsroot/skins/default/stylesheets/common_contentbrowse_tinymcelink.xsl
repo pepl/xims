@@ -151,7 +151,7 @@
       }
 
       function storeBack(target, linktext) {
-          var re = new RegExp("<xsl:value-of select="$absolute_path_nosite"/>/");
+          var re = new RegExp("^<xsl:value-of select="$absolute_path_nosite"/>/");
           var re_gopublic = new RegExp("<xsl:value-of select="concat($xims_box,$gopublic_content)"/>/");
           if (re.test(target) &amp;&amp; RegExp.rightContext.length > 0 &amp;&amp; !target.match(re_gopublic)) {
               document.selectform.httpLink.value=RegExp.rightContext;
