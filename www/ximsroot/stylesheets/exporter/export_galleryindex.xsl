@@ -355,7 +355,7 @@
         <xsl:if test="position() = 1"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
         <img src="{location}">
           <xsl:attribute name="alt"><xsl:value-of select="title"/></xsl:attribute>
-          <xsl:attribute name="title"><xsl:if test="$showcaption = '1' and abstract != ''"><xsl:value-of select="substring(abstract,0,200)"/></xsl:if></xsl:attribute>
+          <xsl:attribute name="title"><xsl:if test="$showcaption = '1' and abstract != ''"><xsl:value-of select="abstract"/></xsl:if></xsl:attribute>
       </img></li>
     </xsl:if>
   </xsl:template>
