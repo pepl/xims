@@ -79,7 +79,7 @@
 <xsl:if test="object_type_id=3 and published=1">
 	<img>
 	<xsl:attribute name="src"><xsl:value-of select="$absolute_path_nosite"/>/<xsl:value-of select="location"/></xsl:attribute>
-	<xsl:attribute name="alt"><xsl:value-of select="substring(abstract,0,200)"/></xsl:attribute>
+	<xsl:attribute name="alt"><xsl:value-of select="abstract"/></xsl:attribute>
 	<xsl:attribute name="title"><xsl:value-of select="title"/></xsl:attribute>
 	</img>
 	</xsl:if>
