@@ -17,8 +17,5 @@
 		<xsl:apply-templates select="body"/>
 	  </pre>
 	  </div>
-	  <div>
-		<xsl:call-template name="processxsp_switcher"/>
-	  </div>
 	</xsl:template>	
 </xsl:stylesheet>
