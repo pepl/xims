@@ -51,7 +51,8 @@
         <xsl:text>last_modification_timestamp</xsl:text>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="/document/context/object/attributes/defaultsortby"/>
+        <!--  <xsl:value-of select="/document/context/object/attributes/defaultsortby"/> -->
+        <xsl:text>position</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
