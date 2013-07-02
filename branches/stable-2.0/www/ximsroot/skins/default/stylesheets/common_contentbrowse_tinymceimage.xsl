@@ -240,12 +240,15 @@ function insertfile() {
     var win = tinyMCEPopup.getWindowArg("window");
     var title = document.selectform.imgtext.value;
     win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
-    win.document.getElementById("alt").value = title;
-	win.document.getElementById("title").value = title;
-    // for image browsers: update image dimensions
-	win.document.getElementById("width").value = document.selectform.imgwidth.value;
-	win.document.getElementById("height").value = document.selectform.imgheight.value;
-	win.ImageDialog.showPreviewImage(URL);
+    //if we don't have a input field for alternative text, we are in the dialog for table background image
+    if(win.document.getElementById("alt")){
+      win.document.getElementById("alt").value = title;
+      win.document.getElementById("title").value = title;
+      // for image browsers: update image dimensions
+      win.document.getElementById("width").value = document.selectform.imgwidth.value;
+      win.document.getElementById("height").value = document.selectform.imgheight.value;
+      win.ImageDialog.showPreviewImage(URL);
+   }
     tinyMCEPopup.close();
 	
 }
