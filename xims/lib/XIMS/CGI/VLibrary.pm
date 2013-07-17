@@ -490,8 +490,7 @@ sub event_property_edit {
     my $ed = '';
 
     if ($property eq 'subject') {
-        # XXX calling foreign internal methods is certainly not not ugly...
-        $ed = XIMS::CGI::Document::_set_wysiwyg_editor($self, $ctxt);
+        $ed = $self->set_wysiwyg_editor($self, $ctxt);
         # either Plain or HTMLArea
         if (length($ed)) {$ed = '_tinymce';}
     }
