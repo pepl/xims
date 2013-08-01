@@ -72,27 +72,17 @@
         -->
         <htmldocPath>/usr/bin/htmldoc</htmldocPath>
 
-        <!--
-        # After you installed one of HTMLArea, eWebeditPro,
-        # Xinha, or TinyMCE WYSIWYG-editors, add 'htmlarea', 'wepro', 'xinha', or 'tinymce'
-        # respectively as the default editor which users will get at their first time edit action.
-        # XIMS comes with a customized version of HTMLArea3RC1. The original version can be
-        # grabbed from http://sourceforge.net/projects/itools-htmlarea/
-        # and should be installed to $ximsroot/htmlarea. eWebeditProp can be downloaded from
-        # http://www.ektron.com/ewebeditpro.aspx and should be unpacked to $ximsroot/wepro
-        # Xinha is available at xinha.org and should be unpacked to $ximsroot/xinha, TinyMCE
-        # is available at http://tinymce.moxiecode.com/ and should be unpacked to $ximsroot/tinymce
-        #
-        # Note: 'tinymce' will be used even if DefaultXHTMLEditor is set to 'wepro' when editing
-        # a Document on non-Windows browsers.
-        -->
-        <DefaultXHTMLEditor>tinymce</DefaultXHTMLEditor>
-        <DefaultCodeEditor>codemirror</DefaultCodeEditor>
-
         <XHTMLEditorOptions>
           <option value="plain">Plain Textarea</option>
           <option value="tinymce">TinyMCE Editor</option>
         </XHTMLEditorOptions>
+        <DefaultXHTMLEditor>tinymce</DefaultXHTMLEditor>
+
+        <CodeEditorOptions>
+          <option value="plain">Plain Textarea</option>
+          <option value="codemirror">Codemirror</option>
+        </CodeEditorOptions>
+        <DefaultCodeEditor>codemirror</DefaultCodeEditor>
 
         <!--
         # Source IP of the mailable object types' request agent session

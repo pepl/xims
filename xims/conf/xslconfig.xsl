@@ -36,7 +36,10 @@ This stylesheet is used to generate www/ximsroot/stylesheets/config.xsl from con
       <xslt:variable name="editoroptions">
         <xsl:apply-templates select="XHTMLEditorOptions/*" mode="copy"/>
       </xslt:variable>
-      
+      <xslt:variable name="codeeditoroptions">
+        <xsl:apply-templates select="CodeEditorOptions/*" mode="copy"/>
+      </xslt:variable>
+
       <xslt:variable name="big_image_threshold" select="{BigImageLimit}"/> <!-- 70KiB -->
       <xslt:variable name="searchresultrowlimit" select="{SearchResultRowLimit}"/>
       
