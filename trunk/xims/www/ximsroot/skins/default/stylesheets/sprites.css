@@ -124,6 +124,10 @@
 .sprite-locked {
     background-position: -1px -800px;
 }
+.sprite-filter{
+  background-position: -37px -577px;
+  padding: 0 0 0 20px;
+}
 .sprite-option_trashcan {
     background-position: 1px -54px;
 }
