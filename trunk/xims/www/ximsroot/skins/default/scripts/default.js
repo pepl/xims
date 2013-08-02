@@ -474,13 +474,15 @@ function aclTooltip(){
       $(this).tooltip(
         {
         content: function(response){
-          //var geturl = '/goxims/content/?id="'+ currid +'";obj_acllist=1;tooltip=1';
           $.get(geturl, response);
             return "Loading...";
           }
         },
-        {width: "530"},
-        {position: {offset: "-370 10", my: "right top", at: "left bottom", collision: "fit", of: '#'+stroa+currid}}
+        {open: function (event, ui) {
+            ui.tooltip.css("max-width", "800px");
+        }
+        },
+        {position: {my: "right-570 top+10", at: "left bottom", collision: "fit", of: '#'+stroa+currid}}
       );
     });
 }
