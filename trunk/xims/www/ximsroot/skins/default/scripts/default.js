@@ -959,6 +959,8 @@ $(document).ready(function(){
     initMenuMenu();
 		
   aclTooltip();
+  
+  OTFilter();
 		
   /* 
    * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
