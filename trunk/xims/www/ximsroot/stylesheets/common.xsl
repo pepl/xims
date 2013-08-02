@@ -44,6 +44,7 @@
 	</xsl:param>
 	<xsl:param name="page" select="1"/>
 	<xsl:param name="showtrashcan" select="0"/>
+	<xsl:param name="otfilter"/>
 	
 	<xsl:param name="printview" select="'0'"/>
 	<xsl:param name="default"/>
