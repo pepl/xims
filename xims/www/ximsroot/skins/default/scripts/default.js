@@ -1027,14 +1027,6 @@ $(document).ready(function(){
 	$('.ui-dialog').addClass('xims-content');
 	
 	searchFilter();				
-	
-
-
-    //IE hack							
-    jQuery.each(jQuery.browser, function(i){
-        if ($.browser.msie) {
-        }
-    });
     
 });
 
