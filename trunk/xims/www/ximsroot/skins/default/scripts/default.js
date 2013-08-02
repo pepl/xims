@@ -2,67 +2,12 @@
  * @author Susanne Tober
  */
 
-function createMapping ( property, value, text ) {
-    if ( value > 0 ) {
-		var jsonQuery = {
-			create_mapping_async: "1",
-			property: property,
-			property_id: value
-		};
-        var jsonObject = post_async(jsonQuery, property);	
-		mkHandleMapResponse(jsonObject, property);					   
-    }
-    else {
-        alert ( text );
-    }
-    //return false;
-}
-
-function removeMapping ( property, property_id ) {
-	var jsonQuery = {
-		remove_mapping_async: "1",
-		property: property,
-		property_id: property_id
-	};
-	post_async(jsonQuery, property);
-	
-}
-
-function deleteProperty( property, property_id ){
-	var jsonQuery = {
-		property_delete: "1",
-		property: property,
-		property_id: property_id
-	};
-	$.ajax({
-		type: 'GET',
-		url: abspath,
-		dataType: 'json',
-		data: jsonQuery,
-		success: function(jsonObject){
-		}
-	});
-	document.location.replace(abspath);
-	//var jsonObject = post_async(jsonQuery, property);
-	
-}
-
 function post_async(jsonQuery, property) {
 	
 	$.post(abspath, jsonQuery, function(data){ 		
 								mkHandleMapResponse(data, property);
 								initOptionsButtons();
 								}, "html" );		
-}
-
-function refresh( property ) {
-    $("#svl" + property + "container").load(parentpath + '?list_properties_items=1;property=' + property);
-
-} 
-
-function mkHandleMapResponse(data, property) {
-    var mapped_properties = 'mapped_' +  property + 's';
-	$('#' + mapped_properties).html(data); 	
 }
 	
 function trim(str){
@@ -96,7 +41,7 @@ function setARIARoles(){
     $('#menu-widget li').attr('role', 'menuitem');
 	
 	$('#flat-authors').attr('role', 'menu');
-    $('#flat-authorst').attr('aria-expanded', false);
+    $('#flat-authors').attr('aria-expanded', false);
     $('#flat-authors li').attr('role', 'menuitem');
 	
 	
@@ -212,89 +157,10 @@ function initMenuMenu(){
 		});
 }
 
-function initVLibMenu(){
-	$("#vlib-menu").button({
-			icons: {
-				secondary: "ui-icon-triangle-1-s"
-			}
-		}).each(function() {
-			$(this).next().menu({
-				select: function(event, ui) {
-					$(this).hide();
-					window.location = ui.item.children('a').attr('href');
-				},
-				input: $(this)
-			}).hide();
-		}).click(function(event) {
-			var menu = $(this).next();
-			if (menu.is(":visible")) {
-				menu.hide();
-				return false;
-			}
-			menu.menu().show().css({top:0, left:0}).position({
-        my: "left top",
-        at: "left bottom",
-        of: this
-      });
-			/*
-			menu.menu("deactivate").show().css({top:0, left:0}).position({
-				my: "left top",
-				at: "left bottom",
-				of: this
-			});
-			*/
-			$(document).one("click", function() {
-				menu.hide();
-			});
-			return false;
-		});
-}
-
 function findPos(obj) {    
         var position = $(obj).offset();
 	    return [position.left, position.top];
 	}
-	
-function addProperty( property, fullname ) {
-    //original = eval( "document.eform.vl" + property );
-	original = "document.eform.vl" + property;
-    newvalue = fullname;
-    if ( original.value.length > 0 ) {
-        values = original.value.split(';');
-        values.push(newvalue);
-        original.value = values.join(';');
-    }
-    else {
-        original.value = newvalue;
-    }
-}
-
-function initPropDescription(property){
-	var pos = findPos($(property).prev());
-	var inputfield = property.substr(property.indexOf('_')+1);
-	inputfield = 'input-'+inputfield; 
-	var offset = document.getElementById(inputfield).offsetWidth;
-	$(property).css('left',pos[0]+offset+10);
-	$(property).css('top',pos[1]);
-	$(property).css('display', 'block');
-}
-function destroyInfoBox(self){
-	$(self).css('display', 'none');
-}
-	
-function initAuthDescription(auth_desc, inputfield){
-	var neighbour = $(auth_desc).prev();
-	while (neighbour && (neighbour.type == 'hidden' || neighbour.hasClass('hidden-content'))){
-		neighbour = neighbour.prev();
-	}
-	var pos = findPos(neighbour);
-	var offset = getTotalWidth(neighbour); 
-
-	$(auth_desc).css('left',pos[0]+offset+10);
-	$(auth_desc).css('top',pos[1]);
-	$(auth_desc).css('display', 'block');
-}
-
 
 function initOptionsButtons(){
 
@@ -705,7 +571,9 @@ function createDialog(url, dialogid, title){
 			width: 'auto',
 			maxWidth: 800,
 			maxHeight: 400,
-			close: function(ev, ui) {$(dialogid).html('')}
+			close: function(ev, ui) {
+				closeDialog(dialogid.replace('#',''));
+			}
 			}).html(data).addClass('xims-content').dialog('open');
 
 		$(".button").button();
@@ -715,13 +583,14 @@ function createDialog(url, dialogid, title){
 
 function reloadDialog(url, dialogid){
 	dialogid = "#"+dialogid;
-	$.get(url, function(data){		
+	$.get(url, function(data){	
 		$(dialogid).html(data);
 	});
 }
 
 function closeDialog(dialogid){
 	$('#'+dialogid).dialog('close');
+	$('#'+dialogid).html('');
 	$('#'+dialogid).dialog('destroy');
 }
 
@@ -847,13 +716,13 @@ $(document).ready(function(){
 		
 	initOptionsButtons();
 	
-    initCreateMenu();
+    //initCreateMenu();
     initHelpMenu();
     initMenuMenu();
 		
-  aclTooltip();
-  
-  OTFilter();
+    if($(".option-acl").length > 0){
+      aclTooltip();
+    }
 		
   /* 
    * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
@@ -865,11 +734,21 @@ $(document).ready(function(){
   });
   */
 
-	initVLibMenu();
+	
 	
 	$('#help-widget, #create-widget, #menu-widget').css('display', 'inline-block');
 
-	selectAllObjects();
+	//container view sprecials
+	if($(".obj-table").length > 0){
+		//initCreateMenu();
+		selectAllObjects();
+		OTFilter();
+		selectAllOTs();
+		
+	}
+	if($("#create-widget").length > 0){
+		initCreateMenu();
+	}
 
 	$('.button').focusin(
 		function(){ 
@@ -885,39 +764,8 @@ $(document).ready(function(){
 	//save buttons
 	$('.save-button').addClass('hidden');
 	$('.save-button-js').removeClass('hidden');
-
-	$("#svlsubject").combobox({
-		input_id: "vlsubject",
-		button_type: "button",
-		input_size: '43'
-	});
 	
-	$("#svlkeyword").combobox({
-		input_id: "vlkeyword",
-		button_type: "button",
-		input_size: '43'
-	});
-	$("#svlauthor").combobox({
-		input_id: "vlauthor",
-		button_type: "button",
-		input_size: '43'
-	});
-	$("#svlpublication").combobox({
-		input_id: "vlpublication",
-		button_type: "button",
-		input_size: '43'
-	});
-	$("#svleditor").combobox({
-		input_id: "vleditor",
-		button_type: "button",
-		input_size: '43'
-	});
-	$("#svlserial").combobox({
-		input_id: "vlserial",
-		button_type: "button",
-		input_size: '43'
-	});
-
+	
 	$('a.more').removeClass('ui-state-default');
 	$('.ui-dialog').addClass('xims-content');
 	
