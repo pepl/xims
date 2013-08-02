@@ -1,4 +1,3 @@
-
 =head1 NAME
 
 xims.psgi -- start over ... and port XIMS to PSGI
@@ -21,166 +20,24 @@ This module bla bla
 
 use common::sense;
 
-use Locale::Messages qw(bind_textdomain_filter bind_textdomain_codeset turn_utf_8_on);
-use Locale::TextDomain ('info.xims');
-use POSIX qw(setlocale LC_ALL LC_TIME);
-use Time::Piece;
-use XML::LibXSLT ();
-use DBI;
+# use XIMS;
+# use XIMS::AppContext;
+# use XIMS::DataProvider;
 
-use Plack::Request;
+
 use Plack::Builder;
 use Plack::App::File;
 use Plack::App::Directory;
-use HTTP::Throwable::Factory qw(http_throw http_exception);
+use HTTP::Throwable::Factory qw(http_exception);
 
-use XIMS;
-use XIMS::AppContext;
-use XIMS::DataProvider;
-use XIMS::Object;
-use XIMS::SiteRoot;
-use XIMS::Document;
-use XIMS::Image;
-use XIMS::Importer;
-use XIMS::Exporter;
-use XIMS::User;
-use XIMS::Session;
-
-# preload commonly used and publish_gopublic objecttypes
-use XIMS::CGI::SiteRoot;
-use XIMS::CGI::DepartmentRoot;
-use XIMS::CGI::Document;
-use XIMS::CGI::Image;
-use XIMS::CGI::Portlet;
-use XIMS::CGI::Questionnaire;
-
-
-BEGIN {
-    # gettext encoding
-    bind_textdomain_filter( 'info.xims', \&turn_utf_8_on );
-    bind_textdomain_codeset( 'info.xims', 'utf-8' );
-
-    XML::LibXSLT->max_depth(500);
-}
-
-
-# the main app
-my $goxims = sub {
-    my $env = shift;
-    my ($res, $interface_type);
-    my $ctxt = $env->{'xims.appcontext'}; # shortcut
-    my $req = Plack::Request->new($env);
-
-    XIMS::Debug( 5, "'" . $req->script_name() . "' called from " . $req->address() );
-
-    http_throw('NotFound') unless $interface_type = get_interface($req);
-
-    # set some session information
-    my $tp = localtime;
-    $ctxt->session->date( $tp->ymd() . ' ' . $tp->hms() );
-
-    if( $ctxt->session->user->userprefs ){
-    	$ctxt->session->skin( $ctxt->session->user->userprefs->skin() );
-    }
-    else{
-    	$ctxt->session->skin( XIMS::DEFAULT_SKIN() );
-    }
-
-    my $app_class    = 'XIMS::CGI::';
-
-    # 'content' interface
-    if ( "/$interface_type" eq XIMS::CONTENTINTERFACE() ) {
-        #  we have to get the content-object
-        $ctxt->object( get_object( $req ) );
-
-        http_throw('NotFound') unless $ctxt->object( get_object($req) ) and $ctxt->object->id();
-
-        my $ot_fullname = $ctxt->object->object_type->fullname();
-
-        rebless_object( "XIMS::$ot_fullname", $env );
-
-        # if a 'objtype'-parameter is set, we are here to create a new object
-        my $objtype = $req->param('objtype');
-
-        my $prefix;
-        if ( defined $objtype and length $objtype ) {
-            XIMS::Debug( 6, "creating a new $objtype" );
-            $app_class .= $objtype;
-            $prefix = lc $objtype;
-        }
-        else {
-            $app_class .= $ot_fullname;
-            $prefix = lc $ot_fullname;
-        }
-        $prefix =~ s/::/_/g;
-        $ctxt->properties->application->styleprefix($prefix);
-    }
-    # end 'content' case
-    #
-    # every other interface
-    else {
-        $app_class .= $interface_type;
-        $ctxt->properties->application->styleprefix($interface_type);
-    }
-    # end interface-lookup
-
-    # run app and return
-    if ( $res = run_app($app_class, $env) ) {
-        push $res->[1], ('Cache-Control', 'private, must-revalidate');
-        return $res;
-    }
-
-    # something did not work out...
-    http_throw(
-        'InternalServerError' => {
-            message => __("You shouldn't have ended here, sorry!") }
-    );
-};
-
-
-
-# for quick retrieval, see below
-my $public = sub {
-    my $env = shift;
-    my ($res,$prefix);
-    my $ot_fullname = $env->{'xims.appcontext'}->object->object_type->fullname();
-
-    XIMS::Debug( 5, "'" .  $env->{SCRIPT_NAME} . "' called from " . $env->{REMOTE_ADDR} );
-
-    #  object class
-    rebless_object( "XIMS::$ot_fullname", $env );
-
-    # App Class
-    $prefix = lc $ot_fullname;
-    $prefix =~ s/::/_/g;
-    $env->{'xims.appcontext'}->properties->application->styleprefix($prefix);
-
-    if ( $res = run_app("XIMS::CGI::$ot_fullname", $env) ) {
-        # add some headers
-        push $res->[1],      (
-            'Last-Modified', $env->{'xims.appcontext'}->{mtime},
-            'Cache-Control', 'public, s-maxage=300' # 5 Min
-        );
-
-        return $res;
-    }
-
-    # something did not work out...
-    http_throw(
-        'InternalServerError' => {
-            message => __("You shouldn't have ended here, sorry!") }
-    );
-
-};
-
-
-
+use goxims;
+use godav;
 
 builder {
     enable SizeLimit => (
-           max_unshared_size_in_kb => '500000', 
+           max_unshared_size_in_kb => '500000',
            check_every_n_requests => 4 );
-    enable "ErrorDocument", 401 => XIMS::PUBROOT() . '/access.html';
+    #enable "ErrorDocument", 401 => XIMS::PUBROOT() . '/access.html';
     enable "HTTPExceptions";
     enable "ConditionalGET";
 
@@ -188,17 +45,19 @@ builder {
         "Plack::Middleware::XForwardedFor", trust => [split( /,/, XIMS::TRUSTPROXY() )];
 
     # /goxims
+    mount '/login' => \&goxims::login_screen;
     mount XIMS::GOXIMS() => builder {
+        #enable 'Profiler::NYTProf';
         enable 'XIMS::AppContext';
         enable 'XIMS::Auth';
         enable 'XIMS::UILang';
-        mount XIMS::CONTENTINTERFACE()        => builder {$goxims}; # /content
-        mount XIMS::PERSONALINTERFACE()       => builder {$goxims}; # /user
-        mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims}; # /users
-        mount '/userprefs'                    => builder {$goxims};
-        mount '/bookmark'                     => builder {$goxims};
-        mount '/defaultbookmark'              => builder {$goxims};
-        mount '/search_intranet'              => builder {$goxims};
+        mount XIMS::CONTENTINTERFACE()        => \&goxims::handler; # /content
+        mount XIMS::PERSONALINTERFACE()       => \&goxims::handler; # /user
+        mount XIMS::USERMANAGEMENTINTERFACE() => \&goxims::handler; # /users
+        mount '/userprefs'                    => \&goxims::handler;
+        mount '/bookmark'                     => \&goxims::handler;
+        mount '/defaultbookmark'              => \&goxims::handler;
+        mount '/search_intranet'              => \&goxims::handler;
         mount '/' => http_exception(Found => { location => XIMS::GOXIMS() . XIMS::PERSONALINTERFACE() });
     };
 
@@ -207,7 +66,7 @@ builder {
         enable "XIMS::AppContext";
         enable "XIMS::Auth::Public";
         enable 'XIMS::UILang';
-        mount XIMS::CONTENTINTERFACE() => builder {$goxims}; # /content
+        mount XIMS::CONTENTINTERFACE() => \&goxims::handler; # /content
         mount '/' => http_exception('NotFound');
     };
 
@@ -219,26 +78,31 @@ builder {
         enable 'XIMS::MockSession';
         enable 'XIMS::UILang';
         enable "XIMS::ConditionalGET";
-        mount '/' => builder {$public};
+        mount '/' => \&goxims::quick_handler;
     };
 
     # /gobaxims
-    mount XIMS::GOBAXIMS() => builder {
+    # mount XIMS::GOBAXIMS() => builder {
+    #     enable "XIMS::AppContext";
+    #     enable "XIMS::Auth::Basic";
+    #     enable 'XIMS::UILang';
+    #     mount XIMS::CONTENTINTERFACE()        => builder {$goxims}; # /content
+    #     mount XIMS::PERSONALINTERFACE()       => builder {$goxims}; # /user
+    #     mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims}; # /users
+    #     mount '/userprefs'                    => builder {$goxims};
+    #     mount '/bookmark'                     => builder {$goxims};
+    #     mount '/defaultbookmark'              => builder {$goxims};
+    #     mount '/search_intranet'              => builder {$goxims};
+    #     mount '/' => http_exception(Found => { location => XIMS::GOBAXIMS() . XIMS::PERSONALINTERFACE() });
+    # };
+
+    
+    # WebDAV, TODO
+    mount XIMS::GODAV() => builder {
         enable "XIMS::AppContext";
         enable "XIMS::Auth::Basic";
-        enable 'XIMS::UILang';
-        mount XIMS::CONTENTINTERFACE()        => builder {$goxims}; # /content
-        mount XIMS::PERSONALINTERFACE()       => builder {$goxims}; # /user
-        mount XIMS::USERMANAGEMENTINTERFACE() => builder {$goxims}; # /users
-        mount '/userprefs'                    => builder {$goxims};
-        mount '/bookmark'                     => builder {$goxims};
-        mount '/defaultbookmark'              => builder {$goxims};
-        mount '/search_intranet'              => builder {$goxims};
-        mount '/' => http_exception(Found => { location => XIMS::GOBAXIMS() . XIMS::PERSONALINTERFACE() });
+        mount '/' => \&godav::handler;
     };
-
-    # WebDAV, TODO
-    # mount XIMS::GODAV() => $godav;
 
     # static files
     mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );
@@ -248,111 +112,6 @@ builder {
     # Redirect / -> /goxims
     mount '/' => http_exception(Found => { location => XIMS::GOXIMS() . '/' });
 };
-
-sub get_interface {
-    my $req = shift;
-
-    my $script_name = $req->script_name();
-    $script_name =~ s!.*/([^/]+)$!$1!;
-
-    return $script_name;
-}
-
-=head2    getObject($req)
-
-=head3 Parameter
-
-    $req:    Plack::Request object      (mandatory)
-
-=head3 Returns
-
-    $retval: a XIMS::Object
-
-=head3 Description
-
-Watch out: language is hardcoded to de-at here!
-
-=cut
-
-sub get_object {
-    my $req  = shift;
-    my $user = $req->env->{'xims.appcontext'}->session->user();
-    my %args;
-
-    if ( $req and $user ) {
-        my $pathinfo = $req->path();
-
-        my $id = $req->param('id');
-        if ( defined $id and $id > 0 ) {
-            $args{id} = $id;
-        }
-        else {
-            $args{path} = $pathinfo;
-        }
-        return XIMS::Object->new( %args, User => $user, language => 2);
-    }
-
-    return undef;
-}
-
-sub rebless_object {
-    my ($object_class, $env) = @_;
-
-    ## no critic (ProhibitStringyEval)
-    # load the object class
-    eval "require $object_class;";
-
-    if ($@) {
-        XIMS::Debug( 2, "could not load object class $object_class: $@" );
-        http_throw(
-            'InternalServerError' => {
-                message => __x(
-                    "Could not load object class {classname}.",
-                    classname => $object_class,
-                )
-            }
-        );
-    }
-
-    ## use critic
-    # rebless the object
-    XIMS::Debug( 4, "reblessing object to " . $object_class );
-    return bless $env->{'xims.appcontext'}->object(), $object_class;
-}
-
-sub run_app {
-    my ( $app_class, $env ) = @_;
-    my $app;
-
-    eval "require $app_class";
-
-    if ($@) {
-        XIMS::Debug( 2, "could not load application-class $app_class: $@" );
-        http_throw(
-            'InternalServerError' => {
-                message => __x(
-                    "Could not load object class {classname}.",
-                    classname => $app_class,
-                )
-            }
-        );
-    }
-
-    if ($app = $app_class->new($env)) {
-        XIMS::Debug( 4, "application-class $app_class initiated." );
-        $app->setStylesheetDir( XIMS::XIMSROOT()
-                . '/skins/'
-                . $env->{'xims.appcontext'}->session->skin
-                . '/stylesheets/'
-                . $env->{'xims.appcontext'}->session->uilanguage() );
-
-        return $app->run( $env->{'xims.appcontext'} );
-    }
-
-    return;
-}
-
-
 
 __END__
 
@@ -393,4 +152,6 @@ WARRANTIES.
 #   indent-tabs-mode: nil
 # End:
 # ex: set ts=4 sr sw=4 tw=78 ft=perl et :
+
+
 
