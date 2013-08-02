@@ -74,7 +74,10 @@
 <add_portlet>Add Portlet</add_portlet>
 <create_portlet>Create Portlet</create_portlet>
 <DepartmentrootPortlets>DepartmentRoot Portlets</DepartmentrootPortlets>
-<addedPortlets>derzeit zugewiesene Portlets</addedPortlets>
+<addedPortlets>currently assigned Portlets</addedPortlets>
+<Filter>Filter</Filter>
+<filter>filter</filter>
+<FilterbyOT>Filter by object types</FilterbyOT>
 <FilterCriteria>Filter Criteria</FilterCriteria>
 <delete>Delete</delete>
 <purge>Purge</purge>

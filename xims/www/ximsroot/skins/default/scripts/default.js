@@ -893,6 +893,43 @@ function selectAllObjects(){
 	
 }
 
+function selectAllOTs(){
+	$("#select-all-ots").bind("click", function(){
+		var checked = $(this).attr("checked");
+		$(".cb_otfilter").each(function() {
+			if (checked) {
+				$(this).attr("checked", checked);
+			}else{
+				$(this).removeAttr('checked');
+			}
+		});
+	});	
+}
+
+function OTFilter(){
+  $('#filter-link').click(function(){
+     $('#filterots').detach().appendTo($('#default-dialog'));
+     $('#default-dialog').attr('title',$('#filterots').attr('title'));
+     $(".ots-menue-level-2").hide();
+     $("#filterots").show();
+     $('#default-dialog').dialog({
+         modal: true,
+         close: function(event, ui){
+           $("#filterots").hide();
+           $('#filterots').detach().insertAfter($('form[name="multi"]'));
+           $('#default-dialog').attr('title', '');
+           $( "#default-dialog" ).dialog( "destroy" );
+         }
+         }).addClass('xims-content').dialog('open');
+	   });
+	  
+   $('#filter-button').click(function(){
+     $('#otfilter').val($('.cb_otfilter:checked').map(function(){return $(this).attr('name');}).get().join(','));
+   });
+   $(".otf-more").click(function(){$(".ots-menue-level-2").toggle();
+   });
+}
+
 $(document).ready(function(){
 	
 	if (typeof(date_lang) !== 'undefined') {

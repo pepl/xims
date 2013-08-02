@@ -258,6 +258,9 @@
 			<xsl:if test="$pagerowlimit != $searchresultrowlimit">
 				<xsl:value-of select="concat(';pagerowlimit=',$pagerowlimit,';')"/>
 			</xsl:if>
+			<xsl:if test="$otfilter">
+			   <xsl:value-of select="concat(';otfilter=',$otfilter,';')"/>
+			</xsl:if>
 		</xsl:variable>
 		<xsl:if test="$totalpages &gt; 1">
 			<xsl:call-template name="pagenav">
@@ -374,8 +377,6 @@
 	
 	<xsl:template name="childrentable">
 		<xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
-		<!--<form action="{$xims_box}{$goxims_content}?id={@id}" name="msform" method="post" id="create-edit-form" enctype="multipart/form-data">
-			-->
 		<form method="get" name="multi">
 		<xsl:attribute name="action">
 					<xsl:choose>
@@ -387,8 +388,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
-					
-			<!--<input type="hidden" value="1" name="multiselect"/>-->
+
 		<table class="obj-table">
 			<tbody>
 				<tr>
@@ -409,7 +409,7 @@
 							<xsl:choose>
 								<xsl:when test="$order='asc'">
 									<th id="th-pos" class="sorting">
-										<a href="{$location}?sb=position;order=desc;" class="th-icon-right">
+										<a href="{$location}?sb=position;order=desc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 											<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 											<xsl:value-of select="$i18n/l/Pos_short"/>&#160;						
 										</a>
@@ -417,7 +417,7 @@
 								</xsl:when>
 								<xsl:otherwise>
 									<th id="th-pos" class="sorting">
-										<a href="{$location}?sb=position;order=asc;" class="th-icon-right">
+										<a href="{$location}?sb=position;order=asc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 											<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
 											<xsl:value-of select="$i18n/l/Pos_short"/>&#160;				
 										</a>
@@ -427,7 +427,7 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<th id="th-pos" class="sorting">
-								<a href="{$location}?sb=position;order=asc;" class="th-icon-right">
+								<a href="{$location}?sb=position;order=asc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 									<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 									<xsl:value-of select="$i18n/l/Pos_short"/>&#160;						
 								</a>
@@ -436,7 +436,16 @@
 					</xsl:choose>
 					</xsl:if>
 					<th id="th-titel-icon">
-						&#160;
+					 <xsl:if test="$otfilter !=''"><xsl:attribute name="class">active</xsl:attribute></xsl:if>
+						&#160;<a class="xims-sprite sprite-filter" href="#" id="filter-link"> 
+						   <xsl:attribute name="title">
+						    <xsl:choose>
+						      <xsl:when test="$otfilter !=''"><xsl:value-of select="$i18n/l/Filter"/>: <xsl:call-template name="translate-otfilter"/></xsl:when>
+						      <xsl:otherwise><xsl:value-of select="$i18n/l/FilterbyOT"/></xsl:otherwise>
+						    </xsl:choose>
+						 </xsl:attribute>
+						  &#160;<span><xsl:value-of select="$i18n/l/Filter"/></span>
+						</a>
 					</th>
 					<xsl:choose>
 						<xsl:when test="$sb='title' or $sb='location'">
@@ -445,13 +454,13 @@
 									<th id="th-title" class="sorting">
 										<xsl:choose>
 											<xsl:when test="$containerview_show = 'title'">
-												<a href="{$location}?sb=title;order=desc;page={$page}" class="th-icon-right">
+												<a href="{$location}?sb=title;order=desc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 													<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 													<xsl:value-of select="$i18n/l/Title"/>&#160;	
 												</a>
 											</xsl:when>
 											<xsl:when test="$containerview_show = 'location'">
-												<a href="{$location}?sb=location;order=desc;page={$page}" class="th-icon-right">
+												<a href="{$location}?sb=location;order=desc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 													<span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 													<xsl:value-of select="$i18n/l/Location"/>&#160;	
 												</a>
@@ -463,8 +472,8 @@
 									<th id="th-title" class="sorting">
 									<a class="th-icon-right">									
 										<xsl:choose>
-											<xsl:when test="$containerview_show = 'title'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=title;order=asc;page=',$page)"/></xsl:attribute></xsl:when>
-											<xsl:when test="$containerview_show = 'location'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=location;order=asc;page=',$page)"/></xsl:attribute></xsl:when>
+											<xsl:when test="$containerview_show = 'title'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=title;order=asc;page=',$page,';otfilter=',$otfilter)"/></xsl:attribute></xsl:when>
+											<xsl:when test="$containerview_show = 'location'"><xsl:attribute name="href"><xsl:value-of select="concat($location,'?sb=location;order=asc;page=',$page,';otfilter=',$otfilter)"/></xsl:attribute></xsl:when>
 										</xsl:choose>
 											<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
 											<xsl:choose>
@@ -480,13 +489,13 @@
 							<th id="th-title" class="sorting">
 								<xsl:choose>
 									<xsl:when test="$containerview_show = 'title'">
-										<a href="{$location}?sb=title;order=asc;page={$page}" class="th-icon-right">
+										<a href="{$location}?sb=title;order=asc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 											<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 											<xsl:value-of select="$i18n/l/Title"/>&#160;
 										</a>
 									</xsl:when>
 									<xsl:when test="$containerview_show = 'location'">
-										<a href="{$location}?sb=location;order=asc;page={$page}" class="th-icon-right">
+										<a href="{$location}?sb=location;order=asc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 											<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 											<xsl:value-of select="$i18n/l/Location"/>&#160;
 										</a>
@@ -500,14 +509,14 @@
 							<xsl:choose>
 								<xsl:when test="$order='asc'">
 									<th id="th-lastmod" class="sorting">
-										<a href="{$location}?sb=date;order=desc" class="th-icon-right">
+										<a href="{$location}?sb=date;order=desc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 										  <span class="ui-icon ui-icon-triangle-1-n"><xsl:comment/></span>
 										<xsl:value-of select="$i18n/l/Last_modified"/>&#160;</a>
 									</th>
 								</xsl:when>
 								<xsl:otherwise>
 									<th id="th-lastmod" class="sorting">
-										<a href="{$location}?sb=date;order=asc" class="th-icon-right">
+										<a href="{$location}?sb=date;order=asc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 											<span class="ui-icon ui-icon-triangle-1-s"><xsl:comment/></span>
 											<xsl:value-of select="$i18n/l/Last_modified"/>&#160;</a>
 									</th>
@@ -516,7 +525,7 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<th id="th-lastmod" class="sorting">
-								<a href="{$location}?sb=date;order=desc" class="th-icon-right">
+								<a href="{$location}?sb=date;order=desc;page={$page};otfilter={$otfilter}" class="th-icon-right">
 									<span class="ui-icon ui-icon-triangle-2-n-s"><xsl:comment/></span>
 									<xsl:value-of select="$i18n/l/Last_modified"/>&#160;						
 								</a>
@@ -535,6 +544,7 @@
 			</xsl:if>
 		</xsl:if>
 		</form>
+		<xsl:call-template name="filterots"/>
 	</xsl:template>
 	
 	<xsl:template name="get-children">
@@ -742,4 +752,49 @@
         </xsl:choose>
 	</xsl:template>
 	
+	<xsl:template name="filterots">
+	<xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>
+	<div id="filterots" style="display:none;">
+    <xsl:attribute name="title"><xsl:value-of select="$i18n/l/FilterbyOT"/></xsl:attribute>
+	<form action="{$location}?sb={$sb};order={$order};page={$page}">
+	<p><input type="checkbox" id="select-all-ots" name="select-all-ots" ></input>&#160;<xsl:value-of select="$i18n/l/SelectAll"/>
+	&#160;&#160;&#160;&#160;
+	<button type="submit" id="filter-button" style="float:right;">
+	 <xsl:value-of select="$i18n/l/filter"/>
+	</button>
+	</p>
+	<input type="hidden" name="otfilter" id="otfilter" value="" />
+	</form>
+    <ul style="list-style-type: none; padding-left:0;">
+      <xsl:apply-templates select="/document/object_types/object_type[menu_level = '1']" mode="otfilter">
+        <xsl:sort select="name"/>
+      </xsl:apply-templates>
+      <li style="padding-top:5px; padding-bottom:5px;"><a href="#" class="otf-more" ><xsl:value-of select="$i18n/l/More"/></a></li>
+        <xsl:apply-templates select="/document/object_types/object_type[menu_level = '2']" mode="otfilter">
+          <xsl:sort select="name"/>
+        </xsl:apply-templates>
+	 </ul>
+	 </div>
+
+	</xsl:template>
+	
+	<xsl:template match="/document/object_types/object_type" mode="otfilter">
+	<li>
+	<xsl:attribute name="class">ots-menue-level-<xsl:value-of select="menu_level"/></xsl:attribute>
+	 <input type="checkbox" id="otfilter_{@id}" name="{name}" class="cb_otfilter">
+	 <xsl:if test="contains($otfilter,name)"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+	 </input>&#160;
+	 <label for="otfilter_{@id}">
+	 <xsl:call-template name="objtype_name">
+          <xsl:with-param name="ot_name">
+            <xsl:value-of select="name"/>
+          </xsl:with-param>
+        </xsl:call-template>
+	 </label>
+	 </li>
+	</xsl:template>
+	
+  <xsl:template name="translate-otfilter">
+    <xsl:for-each select="str:split($otfilter, ',')"><xsl:call-template name="objtype_name"><xsl:with-param name="ot_name"><xsl:value-of select="."/></xsl:with-param></xsl:call-template><xsl:if test="position() != last()" >,&#160;</xsl:if></xsl:for-each>
+  </xsl:template>
 </xsl:stylesheet>

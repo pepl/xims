@@ -72,6 +72,9 @@
 <create_portlet>Ein neues Portlet hinzufügen</create_portlet>
 <DepartmentrootPortlets>DepartmentRoot Portlets</DepartmentrootPortlets>
 <addedPortlets>derzeit zugewiesene Portlets</addedPortlets>
+<Filter>Filter</Filter>
+<filter>filtern</filter>
+<FilterbyOT>Nach Objekttypen filtern</FilterbyOT>
 <FilterCriteria>Filterkriterien</FilterCriteria>
 <delete>Löschen</delete>
 <purge>Endgültig löschen</purge>
