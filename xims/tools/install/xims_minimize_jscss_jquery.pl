@@ -32,9 +32,9 @@ my $versionpostfix = $args{v};
 $versionpostfix ||= '';
 
 my %sources = ( 
-    js => { jquery_min => [ qw( scripts/jquery/jquery-1.7.2.js scripts/jquery/jquery-ui-1.9m7.js scripts/jquery/jquery-ui-timepicker-addon.js scripts/jquery/jquery-ui-i18n.js ) ],
+    js => { jquery_min => [ qw( scripts/jquery/jquery-2.0.3.js scripts/jquery/jquery-ui-1.10.3.custom.js scripts/jquery/jquery-ui-timepicker-addon.js scripts/jquery/jquery.ui.combobox.js scripts/jquery/jquery-ui-i18n.js ) ],
     },
-    css => { jquery_min => [qw(stylesheets/jquery/jquery-ui-1.9m7.css) ],
+    css => { jquery_min => [qw(stylesheets/jquery/jquery-ui-1.10.3.custom.css) ],
     }
 ); 
 my $basedir = $xims_home . '/www/ximsroot/';

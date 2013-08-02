@@ -101,11 +101,9 @@
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="sitestyle" select="false()"/>
-		<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery_min.css" type="text/css"/>
+		<!-- <link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery_min.css" type="text/css"/>-->
+		 <link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.10.3.custom.css" type="text/css"/>
 		<!-- debuggin mode -->
-		<!--
-		<link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.9m7.css" type="text/css"/>
-		-->
 		<xsl:if test="$questionnaire">
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" type="text/css"/>
 		</xsl:if>
@@ -122,14 +120,16 @@
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/simpledb.css" type="text/css"/>
 		</xsl:if>
-		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/min.css" type="text/css"/>
+		<!-- 
+		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/min.css" type="text/css"/> 
+		-->
 		<!-- debugging mode -->
-		<!--
+
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/common.css" type="text/css"/>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/content.css" type="text/css"/>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/sprites.css" type="text/css"/>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/menu.css" type="text/css"/>
-		-->		
+		
 
 	</xsl:template>
 	
@@ -137,20 +137,21 @@
 		<script type="text/javascript">
             var ximsconfig = <xsl:value-of select="$js-config"/>;
 		</script>
-		<script src="{$ximsroot}scripts/jquery/jquery_min.js"
-                type="text/javascript"><xsl:comment></xsl:comment></script>
+		<!-- <script src="{$ximsroot}scripts/jquery/jquery_min.js"
+                type="text/javascript"><xsl:comment></xsl:comment></script> -->
         <xsl:comment>
           <xsl:text disable-output-escaping="yes">[if lt IE 9]&gt;&lt;script src="</xsl:text>
           <xsl:value-of select="concat($ximsroot,'skins/',$currentskin)"/>
           <xsl:text disable-output-escaping="yes">/scripts/html5shiv.js"&gt;&lt;/script&gt;&lt;![endif]</xsl:text>
         </xsl:comment>
 		<!-- debuggin mode -->
-		<!--
-		<script src="{$ximsroot}scripts/jquery/jquery-1.7.2.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.9m7.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-timepicker-addon.js" type="text/javascript"/>
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"/>
-		-->
+
+		<script src="{$ximsroot}scripts/jquery/jquery-2.0.3.js" type="text/javascript"><xsl:comment></xsl:comment></script>
+		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.10.3.custom.js" type="text/javascript"><xsl:comment></xsl:comment></script>
+		<script src="{$ximsroot}scripts/jquery/jquery-ui-timepicker-addon.js" type="text/javascript"><xsl:comment></xsl:comment></script>
+		<script src="{$ximsroot}scripts/jquery/jquery.ui.combobox.js" type="text/javascript"><xsl:comment></xsl:comment></script>
+		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"><xsl:comment></xsl:comment></script>
+
 	</xsl:template>
 </xsl:stylesheet>
 
