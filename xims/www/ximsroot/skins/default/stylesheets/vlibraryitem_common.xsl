@@ -12,12 +12,11 @@
 	
 	<xsl:variable name="i18n_vlib" select="document(concat($currentuilanguage,'/i18n_vlibrary.xml'))"/>
 	
-	<xsl:output method="xml"
-                encoding="utf-8"
-                media-type="application/xhtml+xml"
-                doctype-system="http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"
-                doctype-public="-//W3C//DTD XHTML Basic 1.1//EN"
-        indent="no"/>
+	<!-- <xsl:output method="xml" -->
+    <!--             encoding="utf-8" -->
+    <!--             media-type="text/html" -->
+    <!--             doctype-system="about:legacy-compat" -->
+    <!--             indent="no"/> -->
 		
 	<xsl:template name="form-vlproperties">
 		<xsl:param name="mo"/>
@@ -38,7 +37,7 @@
 						<xsl:apply-templates select="*[name()=concat($mo, 'set')]/*[name()=$mo]"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				<span id="message_{$mo}"/>
+				<span id="message_{$mo}"><xsl:comment/></span>
 				<xsl:text>&#160;</xsl:text>
 			</div>
 		</div>
@@ -322,7 +321,7 @@
 	<xsl:template name="tr-bibliosource">
 	<div>
 	<label for="input-bibliosource">Bibliosource</label><br/>
-		<textarea rows="3" cols="74" id="input-bibliosource" name="bibliosource"><xsl:value-of select="meta/bibliosource"/></textarea>
+		<textarea rows="3" cols="74" id="input-bibliosource" name="bibliosource"><xsl:value-of select="meta/bibliosource"/><xsl:comment/></textarea>
 			</div>
 	</xsl:template>
 	

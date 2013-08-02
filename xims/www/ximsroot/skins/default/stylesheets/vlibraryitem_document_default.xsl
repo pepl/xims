@@ -7,19 +7,11 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
  
-  <!--<xsl:import href="common.xsl"/>-->
-
   <xsl:import href="document_common.xsl"/>
   <xsl:import href="document_default.xsl"/>
   <xsl:import href="vlibraryitem_docbookxml_default.xsl"/>
-  
-  <xsl:output method="xml"
-                encoding="utf-8"
-                media-type="application/xhtml+xml"
-                doctype-system="http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"
-                doctype-public="-//W3C//DTD XHTML Basic 1.1//EN"
-        indent="no"/>
-		
+ 
+ 		
   <xsl:template name="pre-body-hook">
     <xsl:call-template name="div-vlitemmeta"/>
   </xsl:template>
