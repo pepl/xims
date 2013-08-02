@@ -74,6 +74,20 @@ sub event_default {
     return 0 if $self->SUPER::event_default($ctxt);
 
     $ctxt->properties->content->getformatsandtypes(1);
+    
+    # filter containerview by objecttypes
+    my $otfilter    = $self->param("otfilter");
+
+    my $objecttypes = [];
+    if ( defined $otfilter and length $otfilter > 0 ) {
+        my @otherot = split '\s*,\s*', $otfilter;    # in case we want to filter
+                                                     # a comma separated list of
+                                                     # object types
+         push @{$objecttypes},( @otherot );
+        
+    }
+
+    $ctxt->properties->content->getchildren->objecttypes($objecttypes);
 
     my $display_params = $self->get_display_params($ctxt);
 
