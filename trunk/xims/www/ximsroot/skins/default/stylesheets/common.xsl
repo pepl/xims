@@ -1180,14 +1180,16 @@
 					</xsl:if>
 				</h1>
 			</div>
-			<div id="options">
-				<xsl:if test="not ($showtrashcan) and not (marked_deleted = 1)">
+			
+			<xsl:if test="not ($showtrashcan) and not (marked_deleted = 1)">
+				<div id="options">
 					<xsl:call-template name="state-toolbar"/>
 					<xsl:call-template name="options-toolbar">
 						<xsl:with-param name="email-disabled" select="false()"/>
 					</xsl:call-template>
-				</xsl:if>
-			</div>
+					</div>
+			</xsl:if>
+			
 			<xsl:if test="/document/context/object/user_privileges/create and $createwidget != 'false'">
 				<xsl:call-template name="create-widget">
 					<xsl:with-param name="mode" select="$createwidget"/>
