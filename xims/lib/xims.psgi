@@ -20,11 +20,6 @@ This module bla bla
 
 use common::sense;
 
-# use XIMS;
-# use XIMS::AppContext;
-# use XIMS::DataProvider;
-
-
 use Plack::Builder;
 use Plack::App::File;
 use Plack::App::Directory;
@@ -34,12 +29,13 @@ use goxims;
 use godav;
 
 builder {
+    enable "ConditionalGET";
     enable SizeLimit => (
            max_unshared_size_in_kb => '500000',
            check_every_n_requests => 4 );
     #enable "ErrorDocument", 401 => XIMS::PUBROOT() . '/access.html';
+    enable "ContentLength";
     enable "HTTPExceptions";
-    enable "ConditionalGET";
 
     enable_if { length(XIMS::TRUSTPROXY()) }
         "Plack::Middleware::XForwardedFor", trust => [split( /,/, XIMS::TRUSTPROXY() )];
@@ -96,7 +92,6 @@ builder {
     #     mount '/' => http_exception(Found => { location => XIMS::GOBAXIMS() . XIMS::PERSONALINTERFACE() });
     # };
 
-    
     # WebDAV, TODO
     mount XIMS::GODAV() => builder {
         enable "XIMS::AppContext";
