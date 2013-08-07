@@ -41,10 +41,11 @@
           <br class="clear"/>
           <xsl:call-template name="vlib_filter_buttons" />
           
-          <div style="clear:both" />
+          <!-- <div style="clear:both" />-->
+          <br class="clear"/>
         </form>
         <xsl:call-template name="script_bottom"/>
-        <script src="{$ximsroot}scripts/filter_create.js" type="text/javascript" />
+        <script src="{$ximsroot}scripts/filter_create.js" type="text/javascript" ><xsl:comment/></script>
         </div>
       </body>
     </html>
@@ -71,9 +72,8 @@
           <a class="button arrow-left" href="javascript:remove_item('subject')"><xsl:text>&#160;&gt;&#160;</xsl:text></a>
           </div>
           <div class="div-left">
-            <label for="vlsubjects_selected"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
-            <select id="subject2" name="vlsubjects_selected" size="10" ondblclick="remove_item('subject');" >
-            </select>
+            <label for="subject2"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
+            <select id="subject2" name="vlsubjects_selected" size="10" ondblclick="remove_item('subject');" ><xsl:comment/></select>
           </div>
       </div>
       <br class="clear"/>
@@ -100,8 +100,8 @@
           <a class="button arrow-left" href="javascript:remove_item('keyword')"><xsl:text>&#160;&gt;&#160;</xsl:text></a>
           </div>
           <div class="div-left">
-            <label for="vlkeywords_selected"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
-            <select id="keyword2" name="vlkeywords_selected" size="10" ondblclick="remove_item('keyword');" />
+            <label for="keyword2"><xsl:value-of select="$i18n_vlib/l/selected"/></label><br />
+            <select id="keyword2" name="vlkeywords_selected" size="10" ondblclick="remove_item('keyword');" ><xsl:comment/></select>
           </div>
       </div>
       <br class="clear"/>
@@ -118,7 +118,7 @@
       </label></div>
       <!--<select name="vlmediatype_selected" size="1" >-->
        <select name="vlmediatype_selected" id="input-vlmediatype">
-        <option />
+        <option><xsl:text>&#160;</xsl:text></option>
         <xsl:apply-templates select="mediatype" />
       </select>
       </div>
@@ -135,7 +135,7 @@
       </label></div>
       <!--<select name="vlobjecttype_selected" id="input-vlobjecttype" size="1" >-->
       <select name="vlobjecttype_selected" id="input-vlobjecttype">
-        <option />
+        <option><xsl:text>&#160;</xsl:text></option>
         <xsl:apply-templates select="object_type[parent_id=/document/object_types/object_type[name='VLibraryItem']/@id]" >
           <xsl:sort select="translate(name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"
             order="ascending"/>
@@ -171,7 +171,7 @@
   <xsl:template name="vlib_filter_buttons">
     <div class="cancelsave-form">
       <button name="filter_store" class="control" accesskey="S" onclick="alert(createFilterParams());" ><xsl:value-of select="$i18n/l/save"/></button>
-      <button name="filter_activate" class="control" accesskey="A" onclick="opener.location.href='{$xims_box}{$goxims_content}{$absolute_path}'+createFilterParams() ; //window.close();" ><xsl:value-of select="$i18n_vlib/l/activate"/></button>
+      <button name="filter_activate" class="control" accesskey="A" onclick="opener.location.href='{$xims_box}{$goxims_content}{$absolute_path}'+createFilterParams();" ><xsl:value-of select="$i18n_vlib/l/activate"/></button>
       <button name="cancel" class="control" accesskey="C" onclick="window.close();" ><xsl:value-of select="$i18n/l/cancel"/></button>
     </div>
   </xsl:template>
