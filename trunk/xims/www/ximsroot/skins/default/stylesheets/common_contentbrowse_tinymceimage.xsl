@@ -87,7 +87,7 @@
      <xsl:call-template name="pagenav"></xsl:call-template>
     <input type="hidden" name="id" value="{@id}"/>
     </form>
-    <script type="text/javascript" src="{$ximsroot}tinymce/jscripts/tiny_mce/tiny_mce_popup.js"><xsl:comment/></script>
+    <script type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_popup.js"><xsl:comment/></script>
     <xsl:call-template name="scripts"/>
 </xsl:template>
 
