@@ -105,6 +105,7 @@
       <xsl:text>contentbrowse=1;</xsl:text>
       <xsl:text>otfilter=</xsl:text><xsl:value-of select="$otfilter"/><xsl:text>;</xsl:text>
       <xsl:text>notfilter=</xsl:text><xsl:value-of select="$notfilter"/><xsl:text>;</xsl:text>
+      <xsl:text>urllink=</xsl:text><xsl:value-of select="$urllink"/><xsl:text>;</xsl:text>
       <xsl:value-of select="concat('to=',target/object/@id,';')"/>
       <!-- <xsl:if test="$defsorting != 1"> -->
         <xsl:value-of select="concat('sb=',$sb,';order=',$order,';')"/>
