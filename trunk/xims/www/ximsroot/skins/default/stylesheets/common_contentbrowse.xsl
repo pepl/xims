@@ -181,21 +181,21 @@
 </xsl:template>
 
 <xsl:template name="form-container-sorting">
-    <p style="white-space: nowrap;width:100%">Sortierung:
+    <p style="white-space: nowrap;width:100%"><xsl:value-of select="$i18n/l/Sort_children_default"/>:
     <span>
     <select id="select-sb" >
-      <option value="position"><xsl:if test="$sb='position'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Position</option>
-      <option value="title"><xsl:if test="$sb='title'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Titel</option>
-      <option value="date"><xsl:if test="$sb='date'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Zuletzt geändert</option>
+      <option value="position"><xsl:if test="$sb='position'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="$i18n/l/Position"/></option>
+      <option value="title"><xsl:if test="$sb='title'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="$i18n/l/Title"/></option>
+      <option value="date"><xsl:if test="$sb='date'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="$i18n/l/Last_modified"/></option>
     </select>
     <input id="defaultsorting-asc" class="radio-button" type="radio" value="asc" name="defaultsorting">
       <xsl:if test="$order='asc'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
     </input>
-    <label for="defaultsorting-asc">aufsteigend</label>
+    <label for="defaultsorting-asc"><xsl:value-of select="$i18n/l/ascending"/></label>
     <input id="defaultsorting-desc" class="radio-button" type="radio" value="desc" name="defaultsorting">
       <xsl:if test="$order='desc'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
     </input>
-    <label for="defaultsorting-desc">absteigend</label>
+    <label for="defaultsorting-desc"><xsl:value-of select="$i18n/l/descending"/></label>
     <xsl:call-template name="mk-inline-js">
     <xsl:with-param name="code">
     $('#select-sb, input[name=defaultsorting]').change(function(){    
