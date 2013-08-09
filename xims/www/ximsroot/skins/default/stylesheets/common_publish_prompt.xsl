@@ -91,28 +91,25 @@
 
 			<xsl:if test="/document/objectlist/object">
 				<br/>
-				<p>Die folgenden <strong>verwandten Objekte</strong> (Kinder, Links) wurden gefunden. Bitte wählen Sie die Objekte, die automatisch (wieder-)veröffentlicht werden sollen:</p>
+				<p><xsl:value-of select="$i18n/l/RelObjFound"/></p>
 				<xsl:apply-templates select="/document/objectlist/object"/>
 					<xsl:choose>
 						<xsl:when test="/document/objectlist/object[location != '']">
 							<p>
 								<!--<input type="checkbox" name="selector" value="1"  id="selector" class="checkbox" onclick="switcher(this,'objids') ? document.forms[1].recpublish.checked = 1 : document.forms[1].recpublish.checked = 0;"/>-->
 								<input type="checkbox" name="selector" value="1"  id="selector" class="checkbox" onclick="cbSwitcher($(this),'objids')"/>
-								<label for="selector">Alle Aus/Abwählen</label>		
+								<label for="selector"><xsl:value-of select="$i18n/l/SelectAll"/></label>		
 								<input type="hidden" name="autopublish" id="autopublish" value="1"/>							
 							</p>
 							<xsl:if test="/document/context/session/user/userprefs/profile_type != 'standard'">
 								<p>
-									<input type="checkbox" name="autopublish" id="autopublish" value="1" disabled="disabled" class="checkbox"/>-->
-									<label for="recpublish">Ausgewählte Objekte rekursiv veröffentlichen?</label> 
+									<label for="recpublish"><xsl:value-of select="$i18n/l/PublishRecursive"/></label> 
 									<input type="checkbox" name="recpublish" id="recpublish" value="1" class="checkbox"/>
 								</p>
 							</xsl:if>
 						</xsl:when>
 						<xsl:otherwise>
-							<p>
-								Es wurden keine verwandten Objekte (Kinder, Links) zum (Wieder)Veröffentlichen gefunden.
-							</p>
+							<p><xsl:value-of select="$i18n/l/NoRelObjFound"/></p>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:if>
