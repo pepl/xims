@@ -612,24 +612,19 @@ function searchFilter(){
 }
 
 function hiliteObjrow(cb){
-	if (cb.attr('checked')=='checked') {
-			cb.parents('tr.objrow').addClass('selected');
-		}else{
-			cb.parents('tr.objrow').removeClass('selected');
-		}
+	if (cb.prop('checked')) {
+		cb.parents('tr.objrow').addClass('selected');
+	}else{
+		cb.parents('tr.objrow').removeClass('selected');
+	}
 }
 
 function selectAllObjects(){
 	$("#select-all").bind("click", function(){
-		var checked = $(this).attr("checked");
+		var checked = $(this).prop("checked");
 		$("input[name=multiselect]").each(function() {
-			if (checked) {
-				$(this).attr("checked", checked);
-			}else{
-				$(this).removeAttr('checked');
-			}
-			hiliteObjrow($(this));
-			
+			$(this).prop('checked', checked);
+			hiliteObjrow($(this));	
 		});
 		if(!checked){
 			$('.multi-select-action>div').hide();
@@ -638,7 +633,7 @@ function selectAllObjects(){
 	
 	$('.ctt_select>input, #select-all').bind("click", function(){
 		var showtoolbar = false;
-		if ($(this).attr('checked')=='checked') {
+		if ($(this).prop('checked')=='checked') {
 			$(this).parents('tr.objrow').addClass('selected');
 		}else{
 			$(this).parents('tr.objrow').removeClass('selected');
@@ -657,15 +652,18 @@ function selectAllObjects(){
 
 function selectAllOTs(){
 	$("#select-all-ots").bind("click", function(){
-		var checked = $(this).attr("checked");
+		var checked = $(this).prop("checked");
 		$(".cb_otfilter").each(function() {
-			if (checked) {
-				$(this).attr("checked", checked);
-			}else{
-				$(this).removeAttr('checked');
-			}
+			$(this).prop('checked', checked);
 		});
 	});	
+}
+
+function cbSwitcher(selector, cbname){
+		var checked = selector.prop("checked");
+		$("input[name="+cbname+"]").each(function() {
+			$(this).prop('checked', checked);
+		});
 }
 
 function OTFilter(){
