@@ -40,9 +40,8 @@
 	
 	<xsl:template match="/document/context/object">
 		<html>
-			<xsl:call-template name="head">
-			</xsl:call-template>
-			<body onload="disableIt(document.forms[1].autopublish,'objids');">
+			<xsl:call-template name="head_default"/>
+			<body>
 				<xsl:call-template name="header"/>
 				
 				<div id="content-container" class="publish-dialog"> 
@@ -98,13 +97,12 @@
 						<xsl:when test="/document/objectlist/object[location != '']">
 							<p>
 								<!--<input type="checkbox" name="selector" value="1"  id="selector" class="checkbox" onclick="switcher(this,'objids') ? document.forms[1].recpublish.checked = 1 : document.forms[1].recpublish.checked = 0;"/>-->
-								<input type="checkbox" name="selector" value="1"  id="selector" class="checkbox" onclick="switcher(this,'objids')"/>
+								<input type="checkbox" name="selector" value="1"  id="selector" class="checkbox" onclick="cbSwitcher($(this),'objids')"/>
 								<label for="selector">Alle Aus/Abwählen</label>		
 								<input type="hidden" name="autopublish" id="autopublish" value="1"/>							
 							</p>
 							<xsl:if test="/document/context/session/user/userprefs/profile_type != 'standard'">
 								<p>
-									<!--<label for="autopublish">Ausgewählte Objekte automatisch (wieder)veröffentlichen?</label> 
 									<input type="checkbox" name="autopublish" id="autopublish" value="1" disabled="disabled" class="checkbox"/>-->
 									<label for="recpublish">Ausgewählte Objekte rekursiv veröffentlichen?</label> 
 									<input type="checkbox" name="recpublish" id="recpublish" value="1" class="checkbox"/>
@@ -124,13 +122,13 @@
 				<label for="update_dependencies"><xsl:value-of select="$i18n/l/UpdateDepend"/></label> 
 				<input type="checkbox" name="update_dependencies" value="1" checked="checked" id="update_dependencies" class="checkbox"/>
 			</div>
-			<br clear="all"/>
+			<br class="clear"/>
 			<div>
 				<label for="verbose_result"><xsl:value-of select="$i18n/l/ShowDetailsOfPub"/></label>
 				<input type="checkbox" name="verbose_result" value="1" id="verbose_result" class="checkbox"/>
 			</div>
 			
-			<br clear="all"/>
+			<br class="clear"/>
 			<div id="confirm-buttons">
 				<br/>
 					<button name="publish" type="submit">
@@ -174,13 +172,6 @@
 concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &gt; concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:when>
-					<!--<xsl:when test="published = '1' and
-concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-						<xsl:attribute name="disabled">disabled</xsl:attribute>
-					</xsl:when>-->
-					<!--<xsl:when test="published != '1'">
-						<xsl:attribute name="onclick">isChecked('objids') ? document.forms[1].autopublish.checked = 1 : document.forms[1].autopublish.checked = 0</xsl:attribute>
-					</xsl:when>-->
 				</xsl:choose>
 			</input>
 			<xsl:call-template name="cttobject.dataformat">
@@ -188,111 +179,15 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
 			</xsl:call-template>&#160;
 			<label for="objid-{@id}">
 				<xsl:value-of select="title"/>
-				<!--<a>
-					<xsl:attribute name="href"><xsl:choose><xsl:when test="not(starts-with(location_path,'/')) and not(starts-with(location_path,$goxims_content))"><xsl:value-of select="concat($goxims_content,$parent_path,'/',location_path)"/></xsl:when><xsl:when test="starts-with(location_path,'/') and not(starts-with(location_path,$goxims_content))"><xsl:value-of select="concat($goxims_content,location_path)"/></xsl:when><xsl:otherwise><xsl:value-of select="location_path"/></xsl:otherwise></xsl:choose></xsl:attribute>
-					<xsl:value-of select="location_path"/>
-				</a>-->
 				</label>
 				&#160;
 				(<xsl:value-of select="location_path"/>)
 				<xsl:call-template name="button.state.publish"/>
-				<!--<br/>
-				<span class="indented">
-					<xsl:choose>
-						<xsl:when test="string-length(location) &lt;= 0">
-							<xsl:text>Dies ist kein XIMS Objekt oder konnte nicht aufgelöst werden.</xsl:text>
-						</xsl:when>
-						<xsl:when test="published != '1'">
-							<xsl:text>Dieses Objekt ist zur Zeit nicht veröffentlicht.</xsl:text>
-						</xsl:when>
-						<xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-							<xsl:text>Dieses Objekt wurde zuletzt um </xsl:text>
-							<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>
-							<xsl:text> veröffentlicht und seither nicht mehr verändert.</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>Dieses Objekt wurde seit seiner letzten Veröffentlichung um </xsl:text>
-							<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/> geändert
-                </xsl:otherwise>
-					</xsl:choose>			
-					</span>-->
 		</p>
 	</xsl:template>
-	
-	<xsl:template name="head">
-		<head>
-			<title>
-				<xsl:value-of select="$i18n/l/Confirm_publishing"/> - XIMS
-            </title>
-			<!--<xsl:call-template name="css"/>
-            <script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script><script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>
-            <script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:text>&#160;</xsl:text></script>-->
-			<xsl:call-template name="css">
-				<xsl:with-param name="jquery-ui-smoothness">true</xsl:with-param>
-			</xsl:call-template>
-			<xsl:call-template name="script_head">
-				<xsl:with-param name="jquery">true</xsl:with-param>
-			</xsl:call-template>
-			<script type="text/javascript">
-				<xsl:comment><![CDATA[
-                        function disableIt(obj,ename) {
-                            var objids = window.document.forms[1].elements[ename];
-                            if (!objids) {
-                                return;
-                            }
-                            if ( objids.length ) {
-                                var i;
-                                for (i = 0; i < objids.length; i++) {
-                                    if ( !(objids[i].disabled) ) {
-                                        obj.disabled = false;
-                                        return true;
-                                    }
-                                }
-                            }
-                            else if ( !(objids.disabled) ) {
-                                obj.disabled = false;
-                                return true;
-                            }
-                        }
-                        function switcher(selector,ename){
-                            var ids = window.document.forms[1].elements[ename];
-                            xstate = selector.checked ? 1 : 0;
-                            if ( ids.length ) {
-                                var i;
-                                for (i = 0; i < ids.length; i++) {
-                                    if ( !(ids[i].disabled) ) {
-                                        ids[i].checked = xstate;
-                                    }
-                                }
-                            }
-                            else {
-                                if ( !(ids.disabled) ) {
-                                    ids.checked = xstate;
-                                }
-                            }
-                            return xstate;
-                        }
-                        function isChecked(ename){
-                            var ids = window.document.forms[1].elements[ename];
-                            if ( ids.length ) {
-                                var i;
-                                for (i = 0; i < ids.length; i++) {
-                                    if (ids[i].checked ) {
-                                        return true;
-                                    }
-                                }
-                            }
-                            else {
-                                if (ids.checked ) {
-                                    return true;
-                                }
-                            }
-                            return false;
-                        }
 
-                    ]]></xsl:comment>
-			</script>
-		</head>
+	<xsl:template name="title">
+				<xsl:value-of select="$i18n/l/Confirm_publishing"/> - XIMS
 	</xsl:template>
 	
 	<xsl:template name="csv2ul">
