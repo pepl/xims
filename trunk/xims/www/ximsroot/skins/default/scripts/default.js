@@ -2,6 +2,10 @@
  * @author Susanne Tober
  */
 
+$.ajaxSetup({
+  cache: true
+});
+	
 function post_async(jsonQuery, property) {
 	
 	$.post(abspath, jsonQuery, function(data){ 		
@@ -19,41 +23,6 @@ function trim(str){
         }
     }
     return str;
-}
-
-function setARIARoles(){
-    $('#menu-bar').attr('role', 'menubar');
-    /*
-	$('#create').attr('role', 'menu');
-    $('#create').attr('aria-expanded', false);
-    $('#create li').attr('role', 'menuitem');
-	*/
-	$('#create-widget').attr('role', 'menu');
-    $('#create-widget').attr('aria-expanded', false);
-    $('#create-widget li').attr('role', 'menuitem');
-	
-    $('#help-widget').attr('role', 'menu');
-    $('#help-widget').attr('aria-expanded', false);
-    $('#help-widget li').attr('role', 'menuitem');
-	
-    $('#menu-widget').attr('role', 'menu');
-    $('#menu-widget').attr('aria-expanded', false);
-    $('#menu-widget li').attr('role', 'menuitem');
-	
-	$('#flat-authors').attr('role', 'menu');
-    $('#flat-authors').attr('aria-expanded', false);
-    $('#flat-authors li').attr('role', 'menuitem');
-	
-	
-    $('#menu-bar img').attr('role', 'button');
-    //$('.hidden').attr('aria-hidden', true);
-	//$('.hidden-content').attr('aria-hidden', true);
-    //$(':hidden').attr('aria-hidden', true);
-    $('.popuplink').attr('aria-haspopup', true);
-    $("a[target='_blank']").attr('aria-haspopup', true);
-	
-	$('#menu-search').attr('role', 'search');
-	$('.input-title').attr('aria-required', true);
 }
 
 function initCreateMenu(){
@@ -165,127 +134,25 @@ function findPos(obj) {
 function initOptionsButtons(){
 
 	$(".buttonset").buttonset();
+	
+	$("a.button").button();
+	$("button.button").button();
 
-	$('.option-edit').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_edit'
-			}
-		});
-	 $('.option-edit span:first-child').addClass('xims-sprite');
-		
-	$('.option-copy').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_copy'
-			}
-		});
-	$('.option-copy span:first-child').addClass('xims-sprite');
-		
-	$('.option-move').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_move'
-			}
-		});
-	$('.option-move span:first-child').addClass('xims-sprite');
-		
-	$('.option-publish').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_pub'
-			}
-		});
-	$('.option-publish span:first-child').addClass('xims-sprite');
-		
-	$('.option-acl').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_acl'
-			}
-		});
-	$('.option-acl span:first-child').addClass('xims-sprite');
-		
-		
-	$('.option-delete').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_delete'
-			}
-		});
-	$('.option-delete span:first-child').addClass('xims-sprite');
-		
-	$('.option-purge').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_purge'
-			}
-		});
-	$('.option-purge span:first-child').addClass('xims-sprite');
-		
-	$('.option-undelete').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_undelete'
-			}
-		});
-	$('.option-undelete span:first-child').addClass('xims-sprite');
-	
-	$('.option-send_mail').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_email'
-			}
-		});
-	$('.option-send_mail span:first-child').addClass('xims-sprite');
-	
 	$('.option-disabled').button({
 			text: false,
 			icons: {
-				primary: 'sprite-option_none'
+				primary: 'xims-sprite sprite-option_none'
 			}
 		});	
 	$('.option-disabled').button('disable');
-	$('.option-disabled span:first-child').addClass('xims-sprite');
-	
-	$('.status-pub').button({
-			text: false,
-			icons: {
-				primary: 'sprite-status_pub'
-			}
-		});
-	$('.status-pub span:first-child').addClass('xims-sprite');
-	$('.status-pub_async').button({
-			text: false,
-			icons: {
-				primary: 'sprite-status_pub_async'
-			}
-		});
-	$('.status-pub_async span:first-child').addClass('xims-sprite');
-	$('.status-locked').button({
-			text: false,
-			icons: {
-				primary: 'sprite-locked'
-			}
-		});
-	$('.status-locked span:first-child').addClass('xims-sprite');
-	
+
 	$('.status-disabled').button({
 			text: false,
 			icons: {
-				primary: 'sprite-status_none'
+				primary: 'xims-sprite sprite-status_none'
 			}
 		});
 	$('.status-disabled').button('disable');
-	$('.status-disabled span:first-child').addClass('xims-sprite');
-	
-	$('.option-trashcan').button({
-			text: false,
-			icons: {
-				primary: 'sprite-option_trashcan'
-			}
-		});
-	$('.option-trashcan span:first-child').addClass('xims-sprite');
 	
 	$('.up').button({
 			text: false,
@@ -318,12 +185,7 @@ function initOptionsButtons(){
 				primary: 'ui-icon-search'
 			}
 		});
-	/*$('.button-delete').button({
-			text: false,
-			icons: {
-				primary: 'ui-icon-closethick'
-			}
-		});*/
+
 	$('a.button.warn').button({
 			text: false,
 			icons: {
@@ -691,7 +553,7 @@ function OTFilter(){
 }
 
 $(document).ready(function(){
-	
+	initOptionsButtons();
 	if (typeof(date_lang) !== 'undefined') {
 		$.datepicker.setDefaults($.datepicker.regional[date_lang]);
 	}
@@ -701,10 +563,6 @@ $(document).ready(function(){
 		buttonImageOnly: true		
 	});
 	
-    setARIARoles();
-	
-	$("button").button();
-	$("a.button").button();
 	
 	$("button.icon-search").button({
 			icons: {
@@ -712,27 +570,14 @@ $(document).ready(function(){
 			}
 		});
 		
-	initOptionsButtons();
+	//initOptionsButtons();
 	
-    //initCreateMenu();
     initHelpMenu();
     initMenuMenu();
 		
     if($(".option-acl").length > 0){
       aclTooltip();
     }
-		
-  /* 
-   * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
-  */
-  /* 
-  $("#help-widget a").click( function() {
-    window.open(this.href);
-    return false;
-  });
-  */
-
-	
 	
 	$('#help-widget, #create-widget, #menu-widget').css('display', 'inline-block');
 
@@ -747,18 +592,24 @@ $(document).ready(function(){
 	if($("#create-widget").length > 0){
 		initCreateMenu();
 	}
+	$('.status-pub, .status-pub_async, .status-locked, .option-edit, .option-copy, .option-move, .option-publish, .option-acl, .option-delete, .option-purge, .option-undelete, .option-trashcan').focusin(
+			function(){ 
+				$(this).removeClass('ui-state-default').addClass('ui-state-focus').addClass('ui-state-hover'); 
+			}
+		).focusout(
+			function(){ 
+				$(this).removeClass('ui-state-focus').removeClass('ui-state-hover').addClass('ui-state-default'); 
+			}
+		);
+	$('.status-pub, .status-pub_async, .status-locked, .option-edit, .option-copy, .option-move, .option-publish, .option-acl, .option-delete, .option-purge, .option-undelete, .option-trashcan').hover(
+			function(){ 
+				$(this).removeClass('ui-state-default').addClass('ui-state-focus').addClass('ui-state-hover'); 
+			},
+			function(){ 
+				$(this).removeClass('ui-state-focus').removeClass('ui-state-hover').addClass('ui-state-default'); 
+			}
+		);
 
-	$('.button').focusin(
-		function(){ 
-			$(this).removeClass('ui-state-default').addClass('ui-state-focus').addClass('ui-state-hover'); 
-		}
-	);
-	$('.button').focusout(
-		function(){ 
-			$(this).removeClass('ui-state-focus').removeClass('ui-state-hover').addClass('ui-state-default'); 
-		}
-	);
-	
 	//save buttons
 	$('.save-button').addClass('hidden');
 	$('.save-button-js').removeClass('hidden');
@@ -768,7 +619,7 @@ $(document).ready(function(){
 	$('.ui-dialog').addClass('xims-content');
 	
 	searchFilter();				
-    
+	//initOptionsButtons();
 });
 
 /*  Copyright Mihai Bazon, 2002-2005  |  www.bazon.net/mishoo

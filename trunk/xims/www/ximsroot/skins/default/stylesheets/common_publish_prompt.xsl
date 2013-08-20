@@ -128,7 +128,7 @@
 			<br class="clear"/>
 			<div id="confirm-buttons">
 				<br/>
-					<button name="publish" type="submit">
+					<button name="publish" type="submit" class="button">
 						<xsl:choose>
 							<xsl:when test="published='1'">
 								<xsl:value-of select="$i18n/l/Republish"/>
@@ -142,11 +142,11 @@
 					<!--<xsl:call-template name="rbacknav"/>-->
 					&#160;
 					<xsl:if test="published='1'">
-						<button name="unpublish" type="submit"><xsl:value-of select="$i18n/l/Unpublish"/></button>
+						<button name="unpublish" type="submit" class="button"><xsl:value-of select="$i18n/l/Unpublish"/></button>
 						
 						&#160;
 					</xsl:if>
-					<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+					<button name="default" type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 				</div>
 			</form>
 		</div>

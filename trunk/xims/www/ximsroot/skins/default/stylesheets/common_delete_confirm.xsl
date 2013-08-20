@@ -32,7 +32,7 @@
 							<button name="delete" type="submit"><xsl:value-of select="$i18n/l/Confirm"/></button>
 							<input name="id" type="hidden" value="{$id}"/>
 							&#160;
-							<button type="button" name="default" onclick="javascript:history.go(-1)">
+							<button type="button" name="default" class="button" onclick="javascript:history.go(-1)">
 							<xsl:value-of select="$i18n/l/cancel"/></button>
 						</div>
 					</form>

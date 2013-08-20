@@ -37,7 +37,7 @@
 								</xsl:choose>
 							</input>
 							<xsl:text> </xsl:text>
-							<button type="submit" name="store" id="store"><xsl:value-of select="$i18n/l/Move_object"/></button>
+							<button type="submit" name="store" id="store" class="button"><xsl:value-of select="$i18n/l/Move_object"/></button>
 							<br/>
 							<br/>
 							<xsl:value-of select="$i18n/l/browse_target"/>:
@@ -55,7 +55,7 @@
 							<input type="hidden" name="order" value="desc"/>
 						</form>
 						<br/>
-						<button type="button" name="default" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+						<button type="button" name="default" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 					</div>
 				<xsl:call-template name="script_bottom"/>
 			</body>

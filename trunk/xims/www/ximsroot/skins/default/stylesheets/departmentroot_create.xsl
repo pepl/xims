@@ -42,13 +42,13 @@
 			<xsl:call-template name="form-pagerowlimit-edit"/>
 			<xsl:call-template name="defaultsorting"/>
 			<!-- start uibk-design extras -->
-		    <xsl:if test="contains($absolute_path, 'uniweb') or contains($absolute_path, 'cabal')">
+		    <!-- <xsl:if test="contains($absolute_path, 'uniweb') or contains($absolute_path, 'cabal')">
 		    	<xsl:call-template name="select-faculty"/>
-				<!-- show only to webadmins -->
+				<!-/- show only to webadmins -/->
 				<xsl:if test="/document/context/session/user/userprefs/profile_type = 'webadmin'">
 					<xsl:call-template name="select_category"/>
 				</xsl:if>
-			</xsl:if>
+			</xsl:if> -->
 		    <!-- end uibk-design extras -->
 		</div>
 	</xsl:template>

@@ -36,14 +36,14 @@
 			</xsl:with-param>
 		</xsl:call-template>
 		
-		<script type="text/javascript">
-        tinyMCE_GZ.init({
-                plugins     : 'table,contextmenu,advhr,searchreplace,inlinepopups,safari,xhtmlxtras,paste,advimage',
-                themes      : 'advanced',
-                languages   : 'en,de',
-                disk_cache  : true
-                });
-        </script>
+		<!-- <script type="text/javascript"> -->
+        <!-- tinyMCE_GZ.init({ -->
+        <!--         plugins     : 'table,contextmenu,advhr,searchreplace,inlinepopups,safari,xhtmlxtras,paste,advimage', -->
+        <!--         themes      : 'advanced', -->
+        <!--         languages   : 'en,de', -->
+        <!--         disk_cache  : true -->
+        <!--         }); -->
+        <!-- </script> -->
 
 		<script type="text/javascript" src="{$ximsroot}scripts/tinymce_script.js"><xsl:comment/></script>
 	</xsl:template>

@@ -86,7 +86,7 @@
 				<br /><br/><br/>
 				<input type="hidden" name="id"><xsl:attribute name="value"><xsl:value-of select="userprefs/id"/></xsl:attribute></input>
 				<input type="hidden" name="profile_type"><xsl:attribute name="value"><xsl:value-of select="userprefs/profile_type"/></xsl:attribute></input>
-				<button name="create" type="submit">
+				<button name="create" type="submit" class="button">
 					<xsl:value-of select="$i18n/l/save"/>
 				</button>
 				&#160;
