@@ -505,33 +505,6 @@ sub event_copymultiple {
     return 0;
 }
 
-=head2 event_copymultiple()
-
-=cut
-
-sub event_copymultiple {
-    XIMS::Debug( 5, "called" );
-    my ( $self, $ctxt ) = @_;
-
-    my @ids = $self->param('multiselect');
-    foreach(@ids){
-        my $obj = new XIMS::Object('id' => $_);
-        if($ctxt->session->user->object_privmask( $obj )& XIMS::Privileges::COPY()){
-            $obj->clone( User            => $ctxt->session->user(),
-                        scope_subtree   => 1#,
-                      );
-        }
-        else{
-            XIMS::Debug( 4,  "Could not handle " . $obj->location() );
-        }
-    }
-    XIMS::Debug( 4, "redirecting to the container" );
-    $self->param( 'sb',    'date' );
-    $self->param( 'order', 'desc' );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
-    return 0;
-}
-
 =head2 event_move_browsemultiple()
 
 =head3 Parameter
