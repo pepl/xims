@@ -43,7 +43,7 @@
 			<xsl:call-template name="head_default">
 				<xsl:with-param name="mode">publish</xsl:with-param>
 			</xsl:call-template>
-			<body onload="disableIt(document.forms[1].autopublish,'objids');">
+			<body>
 				<xsl:call-template name="header"/>
 				
 				<div id="content-container" class="publish-dialog"> 
@@ -105,14 +105,14 @@
 			</p>
 			<div id="confirm-buttons">
 				<br/>
-					<button name="publishmultiple" type="submit">
+					<button name="publishmultiple" type="submit" class="button">
 						<xsl:value-of select="$i18n/l/Publish"/>
 					</button>
 					<input name="id" type="hidden" value="{@id}"/>
 					&#160;
-					<button name="unpublishmultiple" type="submit"><xsl:value-of select="$i18n/l/Unpublish"/></button>
+					<button name="unpublishmultiple" type="submit" class="button"><xsl:value-of select="$i18n/l/Unpublish"/></button>
 					&#160;
-					<button name="default" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+					<button name="default" type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 				</div>
 			</form>
 			</xsl:otherwise>

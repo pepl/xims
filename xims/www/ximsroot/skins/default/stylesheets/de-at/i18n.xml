@@ -403,6 +403,8 @@
 <PublishingNotice>Für ausgewählte Objekte, die hier möglicherweise nicht aufgelistet sind, fehlen Ihnen die Berechtigung zum Publizieren.</PublishingNotice>
 <RecUnpublishNotice>Bei "Veröffentlichen rückgangig machen" werden automatisch alle Kindobjekte depubliziert.</RecUnpublishNotice>
 <PublishRecursive>In ausgewählten Ordnern auch alle enthaltenen Objekte veröffentlichen?</PublishRecursive>
+<RelObjFound>Die folgenden verwandten Objekte (Kinder, Links) wurden gefunden. Bitte wählen Sie die Objekte, die automatisch (wieder-)veröffentlicht werden sollen:</RelObjFound>
+<NoRelObjFound>Es wurden keine verwandten Objekte (Kinder, Links) zum (Wieder)VerÃ¶ffentlichen gefunden.</NoRelObjFound>
 <isCurrently>ist derzeit</isCurrently>
 <NOT>NICHT</NOT>
 <under>unter</under>

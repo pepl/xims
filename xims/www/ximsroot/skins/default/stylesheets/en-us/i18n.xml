@@ -418,6 +418,9 @@
 <AboutPublishMultiple>You are about to (re-)publish the following objects</AboutPublishMultiple>
 <PublishingNotice>For selected objects which are not listed here, you do not have the rights to publish.</PublishingNotice>
 <RecUnpublishNotice>When Unpublishing, all child objects will be unpublished automatically.</RecUnpublishNotice>
+<PublishRecursive>Publish contained objects in selected folders?</PublishRecursive>
+<RelObjFound>The following related objects (children, links) were found. Please select the objects, which should be (re-)published:</RelObjFound>
+<NoRelObjFound>No related objects (children, links) were found to (re-)publish.</NoRelObjFound>
 <isCurrently>currently</isCurrently>
 <NOT>NOT</NOT>
 <under>under</under>

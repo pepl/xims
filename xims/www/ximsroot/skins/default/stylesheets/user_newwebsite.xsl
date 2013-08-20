@@ -85,11 +85,11 @@
            
            </div>
            <br/><br/>
-                        <button name="gen_website" type="submit">
+                        <button name="gen_website" type="submit" class="button">
 														<xsl:value-of select="$i18n/l/save"/>                     
                         </button>
 													&#160;
-                        <button name="cancel" type="button" onclick="javascript:history.go(-1)">
+                        <button name="cancel" type="button" class="button" onclick="javascript:history.go(-1)">
 													<xsl:value-of select="$i18n/l/cancel"/></button>
            
             </form>

@@ -49,7 +49,7 @@
 							</xsl:attribute>
 						</input>
 						<xsl:text> </xsl:text>
-						<button type="submit" name="movemultiple" id="movemultiple"><xsl:value-of select="$i18n/l/Move_objects"/></button>
+						<button type="submit" name="movemultiple" id="movemultiple" class="button"><xsl:value-of select="$i18n/l/Move_objects"/></button>
 						<br/>
 						<br/>
 						<xsl:value-of select="$i18n/l/browse_target"/>:
@@ -68,7 +68,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 						<br/>
-						<button type="button" name="default" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+						<button type="button" name="default" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
 					</div>
 				<xsl:call-template name="script_bottom"/>
 			</body>

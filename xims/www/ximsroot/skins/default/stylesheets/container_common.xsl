@@ -319,63 +319,78 @@
 	
 	<xsl:template name="button.options.copy-multiple">
     <xsl:variable name="id" select="@id"/>
-        <button class="button option-copy" title="{$l_Copy}" type="submit" name="copymultiple" value="1">
-          <xsl:value-of select="$l_Access_control"/>
-        </button>
+    <button class="option-copy ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" value="1" name="copymultiple" type="submit" role="button" aria-disabled="false">
+      <xsl:attribute name="title"><xsl:value-of select="$l_Copy"/></xsl:attribute>
+      <span class="ui-button-icon-primary ui-icon sprite-option_copy xims-sprite"><xsl:comment/></span>
+      <span class="ui-button-text"><xsl:value-of select="$l_Copy"/></span>
+    </button>
+  </xsl:template>
+
+  <xsl:template name="button.options.move-multiple">
+    <xsl:variable name="parentid" select="@parent_id"/>
+    <xsl:variable name="id" select="@id"/>
+    <xsl:variable name="to">
+      <xsl:choose>
+        <xsl:when test="$currobjmime='application/x-container'">
+          <xsl:value-of select="/document/context/object/@id"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="/document/context/object/parents/object[@document_id=$parentid]/@id"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <button class="option-move ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" value="1" name="movemultiple_browse" type="submit" role="button" aria-disabled="false">
+      <xsl:attribute name="title"><xsl:value-of select="$l_Move"/></xsl:attribute>
+      <span class="ui-button-icon-primary ui-icon sprite-option_move xims-sprite"><xsl:comment/></span>
+      <span class="ui-button-text"><xsl:value-of select="$l_Move"/></span>
+    </button>
+    <input type="hidden" name="to" value="{$to}"/>
   </xsl:template>
 	
-	<xsl:template name="button.options.move-multiple">
-		<xsl:variable name="parentid" select="@parent_id"/>
-		<xsl:variable name="id" select="@id"/>
-		<xsl:variable name="to">
-			<xsl:choose>
-				<xsl:when test="$currobjmime='application/x-container'">
-					<xsl:value-of select="/document/context/object/@id"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="/document/context/object/parents/object[@document_id=$parentid]/@id"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-				<button class="button option-move" title="{$l_Move}" type="submit" name="movemultiple_browse" value="1">
-					<xsl:value-of select="$l_Move"/>
-				</button>
-				<input type="hidden" name="to" value="{$to}"/>
-	</xsl:template>
-	<xsl:template name="button.options.publish-multiple">
-		<xsl:variable name="id" select="@id"/>
-				<button class="button option-publish" title="{$l_Publishing_options}" type="submit" name="publishmultiple_prompt" value="1">
-					<xsl:value-of select="$l_Publishing_options"/>
-				</button>
+  <xsl:template name="button.options.publish-multiple">
+    <xsl:variable name="id" select="@id"/>
+    <button class="option-publish ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" value="1" name="publishmultiple_prompt" type="submit" role="button" aria-disabled="false">
+      <xsl:attribute name="title"><xsl:value-of select="$l_Publishing_options"/></xsl:attribute>
+      <span class="ui-button-icon-primary ui-icon sprite-option_pub xims-sprite"><xsl:comment/></span>
+      <span class="ui-button-text"><xsl:value-of select="$l_Publishing_options"/></span>
+    </button>
 	</xsl:template>
 	
-	<xsl:template name="button.options.acl-multiple">
-		<xsl:variable name="id" select="@id"/>
-				<button class="button option-acl" title="{$l_Access_control}" type="submit" name="aclmultiple_prompt" value="1">
-					<xsl:value-of select="$l_Access_control"/>
-				</button>
-	</xsl:template>
+  <xsl:template name="button.options.acl-multiple">
+    <xsl:variable name="id" select="@id"/>
+    <button class="option-acl ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" value="1" name="aclmultiple_prompt" type="submit" role="button" aria-disabled="false">
+      <xsl:attribute name="title"><xsl:value-of select="$l_Access_control"/></xsl:attribute>
+      <span class="ui-button-icon-primary ui-icon sprite-option_acl xims-sprite"><xsl:comment/></span>
+      <span class="ui-button-text"><xsl:value-of select="$l_Access_control"/></span>
+</button>
+  </xsl:template>
 	
-	<xsl:template name="button.options.undelete-multiple">
-		<xsl:variable name="id" select="@id"/>
-				<button class="button option-undelete" title="{$l_Undelete}" type="submit" name="undeletemultiple" value="1">
-					<xsl:value-of select="$l_Undelete"/>
-				</button>
-	</xsl:template>
+  <xsl:template name="button.options.undelete-multiple">
+    <xsl:variable name="id" select="@id"/>
+    <button class="option-undelete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" value="1" name="undeletemultiple" type="submit" role="button" aria-disabled="false">
+      <xsl:attribute name="title"><xsl:value-of select="$l_Undelete"/></xsl:attribute>
+      <span class="ui-button-icon-primary ui-icon sprite-option_undelete xims-sprite"><xsl:comment/></span>
+      <span class="ui-button-text"><xsl:value-of select="$l_Undelete"/></span>
+    </button>
+  </xsl:template>
+
+  <xsl:template name="button.options.purge-multiple">
+    <xsl:variable name="id" select="@id"/>
+    <button class="option-purge ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" value="1" name="deletemultiple_prompt" type="submit" role="button" aria-disabled="false">
+      <xsl:attribute name="title"><xsl:value-of select="$l_purge"/></xsl:attribute>
+      <span class="ui-button-icon-primary ui-icon sprite-option_purge xims-sprite"><xsl:comment/></span>
+      <span class="ui-button-text"><xsl:value-of select="$l_purge"/></span>
+</button>
+  </xsl:template>
 	
-	<xsl:template name="button.options.purge-multiple">
-		<xsl:variable name="id" select="@id"/>
-				<button class="button option-purge" title="{$l_purge}" type="submit" name="deletemultiple_prompt" value="1">
-					<xsl:value-of select="$l_purge"/>
-				</button>
-	</xsl:template>
-	
-	<xsl:template name="button.options.delete-multiple">
-		<xsl:variable name="id" select="@id"/>
-				<button class="button option-delete" title="{$l_delete}" type="submit" name="trashcanmultiple_prompt" value="1">
-					<xsl:value-of select="$l_delete"/>
-				</button>
-	</xsl:template>
+  <xsl:template name="button.options.delete-multiple">
+    <xsl:variable name="id" select="@id"/>
+    <button class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" value="1" name="trashcanmultiple_prompt" type="submit" role="button" aria-disabled="false">
+      <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
+      <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+      <span class="ui-button-text"><xsl:value-of select="$l_delete"/></span>
+    </button>
+  </xsl:template>
 	
 	<xsl:template name="childrentable">
 		<xsl:variable name="location" select="concat($goxims_content,$absolute_path)"/>

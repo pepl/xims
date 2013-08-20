@@ -56,7 +56,7 @@
 		<h2><xsl:value-of select="$i18n/l/DepartmentrootPortlets"/></h2>
 		<div class="label-large"><xsl:value-of select="$i18n/l/addedPortlets"/>: </div>
 		
-		<div class="div-left"><xsl:apply-templates select="/document/objectlist"/></div>
+		<div class="div-left"><xsl:apply-templates select="/document/objectlist"/><xsl:comment/></div>
 		</div>
 		<div id="tr-createportlet" class="form-div block">
 			<div id="label-createportlet">
@@ -69,7 +69,7 @@
 			</a>
 			<input type="text" name="portlet" size="40" class="text" value="{portlet_id}" id="input-createportlet"/>
 			<xsl:text>&#160;</xsl:text>
-			<button type="submit" name="add_portlet" id="input-add_portlet">
+			<button type="submit" name="add_portlet" id="input-add_portlet" class="button">
 				<xsl:value-of select="$i18n/l/add_portlet"/>
 			</button>
 	</div>

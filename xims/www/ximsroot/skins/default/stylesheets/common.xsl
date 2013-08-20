@@ -95,7 +95,7 @@
 					<xsl:call-template name="save_jsbutton"/>
 				</xsl:if>
 				<xsl:call-template name="rbacknav"/>
-				<button type="submit" name="cancel" accesskey="C">
+				<button type="submit" name="cancel" accesskey="C" class="button">
 					<xsl:value-of select="$i18n/l/cancel"/>
 				</button>
 			</form>
@@ -105,11 +105,11 @@
 	
 	<xsl:template name="cancelform-copy">
 		<div class="cancel-save cancelsave-form">
-			<button type="submit" name="submit_eform" accesskey="S" onclick="document.eform.store.click(); return false">
+			<button type="submit" name="submit_eform" accesskey="S" class="button" onclick="document.eform.store.click(); return false">
 			<!--<button type="submit" name="submit_eform" accesskey="S" onclick="$('#store').click();return false">-->
 				<xsl:value-of select="$i18n/l/save"/>
 			</button>
-			<button class="save-button-js" type="submit" name="submit_eform" accesskey="C" onclick="document.cform.cancel.click(); return false">
+			<button class="save-button-js button" type="submit" name="submit_eform" accesskey="C" onclick="document.cform.cancel.click(); return false">
 				<xsl:value-of select="$i18n/l/cancel"/>
 			</button>
 		</div>
@@ -127,7 +127,7 @@
 					<xsl:call-template name="save_jsbutton"/>
 				</xsl:if>
 				<xsl:call-template name="rbacknav"/>
-				<button type="submit" name="cancel_create" accesskey="C">
+				<button type="submit" name="cancel_create" accesskey="C" class="button">
 					<xsl:value-of select="$i18n/l/cancel"/>
 				</button>
 			</form>
@@ -159,7 +159,7 @@
 	<!--	end legacy-->
 	
 	<xsl:template name="save_jsbutton">
-		<button class="save-button-js" type="submit" name="submit_eform" accesskey="S" onclick="$('#store').click(); return false">
+		<button class="save-button-js button" type="submit" name="submit_eform" accesskey="S" onclick="$('#store').click(); return false">
 			<xsl:value-of select="$i18n/l/save"/>
 		</button>
 	</xsl:template>
@@ -168,7 +168,7 @@
 		<xsl:variable name="object_type_id" select="object_type_id"/>
 		<xsl:variable name="parent_id" select="@parent_id"/>
 		<form name="userConfirm" action="{$xims_box}{$goxims_content}" method="get">
-			<button name="exit" type="submit">
+			<button name="exit" type="submit" class="button">
 				<xsl:value-of select="$i18n/l/Done"/>
 			</button>
 			<xsl:choose>
@@ -1201,17 +1201,17 @@
 				<div id="trash">
 					<xsl:choose>
 						<xsl:when test="$showtrashcan">
-							<a href="{$xims_box}{$goxims_content}{$absolute_path}" class="button"><xsl:value-of select="$i18n/l/Container_View"/></a>
+							<a href="{$xims_box}{$goxims_content}{$absolute_path}" class="button contview"><xsl:value-of select="$i18n/l/Container_View"/></a>
 						</xsl:when>
 						<xsl:otherwise>
-				<a class="button option-trashcan">
+				<a class="option-trashcan ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Trashcan"/></xsl:attribute>
 					<xsl:attribute name="href">
 						<xsl:value-of select="concat($goxims_content,'?id=',@id,';showtrashcan=1;r=',/document/context/object/@id)"/>
 						<xsl:if test="$defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if>
 					</xsl:attribute>
-					<span>
-						<xsl:value-of select="$i18n/l/Trashcan"/>
-					</span>
+					<span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_trashcan"><xsl:comment> blubb</xsl:comment></span>
+					<span class="ui-button-text"><xsl:value-of select="$i18n/l/Trashcan"/></span>
 				</a>
 				</xsl:otherwise>
 				</xsl:choose>
@@ -1219,6 +1219,7 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
+	
 	<xsl:template name="cttobject.status">
 		<xsl:variable name="objecttype">
 			<xsl:value-of select="object_type_id"/>
@@ -1367,9 +1368,11 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/write and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="button option-edit">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_Edit"/>
+				<a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_Edit"/></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';edit=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_edit"><xsl:comment/></span>
+				  <span class="ui-button-text"><xsl:value-of select="$l_Edit"/></span>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1377,13 +1380,20 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	<xsl:template name="button.options.copy">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/copy and /document/context/object/user_privileges/create">
-				<a class="button option-copy">
+				<!-- <a class="button option-copy">
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 					<xsl:value-of select="$l_Copy"/>
+				</a>-->
+				<a class="option-copy ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_Copy"/></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';copy=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_copy"><xsl:comment/></span>
+				  <span class="ui-button-text"><xsl:value-of select="$l_Copy"/></span>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1391,6 +1401,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	<xsl:template name="button.options.move">
 		<xsl:variable name="parentid" select="@parent_id"/>
 		<xsl:variable name="id" select="@id"/>
@@ -1406,23 +1417,27 @@
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and user_privileges/move and published != '1'  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="button option-move">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_Move"/>
-				</a>
+				<a class="option-move ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_Move"/></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';move_browse=1;to=',$to)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_move"><xsl:comment/></span>
+				  <span class="ui-button-text"><xsl:value-of select="$l_Move"/></span></a>
 			</xsl:when>
 			<xsl:otherwise>
 				<a class="button option-disabled">&#160;</a>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	<xsl:template name="button.options.publish">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="marked_deleted != '1' and (user_privileges/publish|user_privileges/publish_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id) ">
-				<a class="button option-publish">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_Publishing_options"/>
+				<a class="option-publish ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_Publishing_options"/></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';publish_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_pub"><xsl:comment/></span>
+				  <span class="ui-button-text"><xsl:value-of select="$l_Publishing_options"/></span>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1435,10 +1450,12 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="(user_privileges/grant|user_privileges/grant_all)  and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="button option-acl">
-					<xsl:attribute name="id">option-acl_<xsl:value-of select="$id"/></xsl:attribute>
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_Access_control"/>
+				<a id="option-acl_656065" class="option-acl ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_Access_control"/></xsl:attribute>
+				  <xsl:attribute name="id">option-acl_<xsl:value-of select="$id"/></xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';obj_acllist=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_acl"><xsl:comment/></span>
+				  <span class="ui-button-text"><xsl:value-of select="$l_Access_control"/></span>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1451,9 +1468,11 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete">
-				<a class="button option-undelete">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_Undelete"/>
+				<a class="option-undelete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_Undelete"/></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';undelete=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_undelete"><xsl:comment/></span>
+				  <span class="ui-button-text"><xsl:value-of select="$l_Undelete"/></span>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1462,7 +1481,7 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template name="button.options.purge_or_delete">
+	<!-- <xsl:template name="button.options.purge_or_delete">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete and marked_deleted = '1'">
@@ -1473,7 +1492,7 @@
 			</xsl:when>
 			<xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
 				<a class="button option-delete" title="{$l_delete}">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/><!--trashcan_prompt does not check wether the object has any children--><!--		<xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan=1')"/>--><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
 					<xsl:value-of select="$l_delete"/>
 				</a>
 			</xsl:when>
@@ -1481,16 +1500,17 @@
 				<a class="button option-disabled">&#160;</a>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template>-->
 	
 	<xsl:template name="button.options.purge">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete">
-				<a class="button option-purge" title="{$l_purge}">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_purge"/>
-				</a>
+				<a class="option-purge ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_purge"/></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';delete_prompt=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_purge"><xsl:comment/></span>
+				  <span class="ui-button-text"><xsl:value-of select="$l_purge"/></span></a>
 			</xsl:when>
 			<xsl:otherwise>
 				<a class="button option-disabled">&#160;</a>
@@ -1502,9 +1522,18 @@
 		<xsl:variable name="id" select="@id"/>
 		<xsl:choose>
 			<xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
-				<a class="button option-delete" title="{$l_delete}">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/><!--trashcan_prompt does not check wether the object has any children--><!--		<xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan=1')"/>--><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_delete"/>
+				<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
+				  <xsl:attribute name="href">
+				    <xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/>
+				    <!--trashcan_prompt does not check wether the object has any children-->
+				    <!--   <xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan=1')"/>-->
+				    <xsl:if test="$currobjmime='application/x-container'">
+				    <xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/>
+				    </xsl:if>
+				 </xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_delete"><xsl:comment/></span>
+				<span class="ui-button-text"><xsl:value-of select="$l_delete"/></span>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1524,9 +1553,11 @@
                         @id=/document/context/object/object_type_id
                       ]/is_mailable = '1'
                   and published = '1'">
-				<a class="button option-send_mail">
+				<a class="option-send_mail ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Send"/></xsl:attribute>
 					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';prepare_mail=1')"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$i18n/l/Send"/>
+					<span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_email"><xsl:comment/></span>
+					<span class="ui-button-text"><xsl:value-of select="$i18n/l/Send"/></span>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1581,21 +1612,25 @@
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="published = '1'">
-				<a href="{$published_path}" target="_blank">
-					<xsl:choose>
-						<xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
-							<xsl:attribute name="class">button status-pub</xsl:attribute>
-							<span>
-								<xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="$published_path"/>
-							</span>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="class">button status-pub_async</xsl:attribute>
-							<span>
-								<xsl:value-of select="$l_Object_modified"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_changed"/>.
-							</span>
-						</xsl:otherwise>
-					</xsl:choose>
+				<a href="{$published_path}" class="button status-pub ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" target="_blank" aria-haspopup="true" role="button" aria-disabled="false" >
+				  <xsl:choose>
+            <xsl:when test="concat(last_modification_timestamp/year,last_modification_timestamp/month,last_modification_timestamp/day,last_modification_timestamp/hour,last_modification_timestamp/minute,last_modification_timestamp/second) &lt;= concat(last_publication_timestamp/year,last_publication_timestamp/month,last_publication_timestamp/day,last_publication_timestamp/hour,last_publication_timestamp/minute,last_publication_timestamp/second)">
+              <xsl:attribute name="title"><xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="$published_path"/></xsl:attribute>
+              <xsl:attribute name="class">status-pub ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only</xsl:attribute>
+              <span class="ui-button-icon-primary ui-icon xims-sprite sprite-status_pub"><xsl:comment/></span>
+              <span class="ui-button-text">
+                <xsl:value-of select="$l_Object_last_published"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_place"/>&#160;<xsl:value-of select="$published_path"/>
+              </span>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:attribute name="title"><xsl:value-of select="$l_Object_modified"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_changed"/>.</xsl:attribute>
+              <xsl:attribute name="class">status-pub_async ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only</xsl:attribute>
+              <span class="ui-button-icon-primary ui-icon xims-sprite sprite-status_pub_async"><xsl:comment/></span>
+              <span class="ui-button-text">
+                <xsl:value-of select="$l_Object_modified"/>&#160;<xsl:call-template name="lastpublisherfullname"/>&#160;<xsl:value-of select="$l_at_time"/>&#160;<xsl:apply-templates select="last_publication_timestamp" mode="datetime"/>&#160;<xsl:value-of select="$l_changed"/>.
+              </span>
+            </xsl:otherwise>
+          </xsl:choose>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1603,10 +1638,12 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	<xsl:template name="button.state.new">
 		<xsl:choose>
 			<xsl:when test="marked_new= '1'">
 				<span class="xims-sprite sprite-new">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_Object_marked_new"/></xsl:attribute>
 					<span>
 						<xsl:value-of select="$l_Object_marked_new"/>
 					</span>
@@ -1618,19 +1655,22 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	<xsl:template name="button.state.locked">
 		<xsl:choose>
 			<xsl:when test="locked_by_id != '' and locked_time != '' and locked_by_id = /document/context/session/user/@id">
-				<a class="button status-locked">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:attribute>
-					<xsl:value-of select="$l_Release_lock"/>
+				<a class="status-locked ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				  <xsl:attribute name="title"><xsl:value-of select="$l_Release_lock"/></xsl:attribute>
+				  <xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',@id,';cancel=1;r=',/document/context/object/@id)"/><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';page=',$page)"/></xsl:if><xsl:if test="$currobjmime='application/x-container' and $defsorting != 1"><xsl:value-of select="concat(';sb=',$sb,';order=',$order)"/></xsl:if></xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-locked"><xsl:comment/></span>
+				  <span class="ui-button-text"><xsl:value-of select="$l_Release_lock"/></span>
 				</a>
 			</xsl:when>
 			<xsl:when test="locked_by_id != '' and locked_time != ''">
-				<a class="button status-locked">
-					<xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/>&#160;<xsl:apply-templates select="locked_time" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lockerfullname"/>.
-				</xsl:attribute>
-					<xsl:value-of select="$l_Object_locked"/>&#160;<xsl:apply-templates select="locked_time" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lockerfullname"/>.
+				<a class="status-locked ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="true">
+					<xsl:attribute name="title"><xsl:value-of select="$l_Object_locked"/>&#160;<xsl:apply-templates select="locked_time" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lockerfullname"/>.</xsl:attribute>
+				  <span class="ui-button-icon-primary ui-icon xims-sprite sprite-locked"><xsl:comment/></span>
+					<span class="ui-button-text"><xsl:value-of select="$l_Object_locked"/>&#160;<xsl:apply-templates select="locked_time" mode="datetime"/>&#160;<xsl:value-of select="$l_by"/>&#160;<xsl:call-template name="lockerfullname"/>.</span>
 				</a>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1638,6 +1678,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<!-- 
 	<xsl:template name="cttobject.options">
 		<xsl:call-template name="cttobject.options.edit"/>
 		<xsl:call-template name="cttobject.options.copy"/>
@@ -1761,7 +1803,8 @@
 			</xsl:when>
 			<xsl:when test="user_privileges/delete and published != '1' and (locked_time = '' or locked_by_id = /document/context/session/user/@id)">
 				<a class="xims-sprite sprite-option_delete" title="{$l_delete}">
-					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/><!--trashcan_prompt does not check wether the object has any children--><!--		<xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan=1')"/>--><xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($goxims_content,'?id=',$id,';trashcan_prompt=1')"/>
+					<xsl:if test="$currobjmime='application/x-container'"><xsl:value-of select="concat(';sb=',$sb,';order=',$order,';page=',$page,';hd=',$hd,';r=',/document/context/object/@id)"/></xsl:if></xsl:attribute>
           &#xa0;<span>
 						<xsl:value-of select="$l_delete"/>
 					</span>
@@ -1772,10 +1815,19 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	-->
+	
+	<xsl:template name="button.disabled">
+		<a class="button status-disabled ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-button-disabled ui-state-disabled" role="button" aria-disabled="true" title="">
+		 <span class="ui-button-icon-primary ui-icon xims-sprite sprite-status_none"><xsl:comment/></span>
+		 <span class="ui-button-text">&#xa0;</span>
+		</a>
+	</xsl:template>
+	
 	<xsl:template name="cttobject.options.spacer">
 		<span class="sprite-spacer">&#xa0;</span>
 	</xsl:template>
-	<xsl:template name="cttobject.options.send_email">
+	<!-- <xsl:template name="cttobject.options.send_email">
 		<xsl:variable name="id" select="@id"/>
 		<xsl:if test="marked_deleted != '1' 
                   and (user_privileges/send_as_mail = '1')  
@@ -1793,7 +1845,7 @@
 				<img src="{$skimages}option_email.png" border="0" name="email{$id}" width="18" height="19" title="Generate Spam" alt="Generate Spam"/>
 			</a>
 		</xsl:if>
-	</xsl:template>
+	</xsl:template>-->
 	<xsl:template name="ui-icon.spacer">
 		<span class="sprite-ui-icon-spacer">&#xa0;</span>
 	</xsl:template>
@@ -2157,7 +2209,7 @@
 				<input type="hidden" name="name" value="{$name}"/>
 				<input name="userquery" type="hidden" value="{$userquery}"/>
 			</xsl:if>
-			<button type="submit" name="create" value="1">
+			<button type="submit" name="create" value="1" class="button">
 				<xsl:value-of select="$i18n/l/Create"/>
 			</button>
 		</form>
