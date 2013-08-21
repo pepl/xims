@@ -358,25 +358,11 @@ the calling module, the method and @debug to Apache's F<error_log>
 =cut
 
 sub Debug {
-    my $level = shift;
+    my ($level, $message) = @_;
     if ( $level <= XIMS::DEBUGLEVEL() ) {
-        if ( defined @_ and scalar(@_) == 1 ) {
-            my @debug = @_;
-            $debug[-1] =~ s/\n|\s+/ /g;
-            my ( $module, undef, undef, $method ) = caller(1);
-            # if ( $ENV{MOD_PERL} and Apache->request ) {
-            #     my $log = Apache->request->log();
-
-            #     #$log->warn( "[Timed Interval] : "
-            #     #           . int(1000 * Time::HiRes::tv_interval($XIMS::T0))
-            #     #           . "ms" );
-            #     $log->warn( "[$module, $method] " . join( '', @debug ) );
-
-            # }
-            # else {
-            warn( "[$module, $method] " . join( '', @debug ) . "\n" );
-            #}
-        }
+        $message =~ s/\n|\s+/ /g;
+        my ( $module, undef, undef, $method ) = caller(1);
+        warn( "[$module, $method] $message\n" );
     }
     return;
 }
