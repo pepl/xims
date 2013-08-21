@@ -65,9 +65,8 @@ sub _build {
     my $bol;
     my $foundmacro = 0;
 
-    use encoding "latin-1";
     my $allowedusernamechars
-        = XIMS::decode('-A-Za-z0-9φδόίΰαβγεζθηικλμνξοπρςστυψωϊϋύÿ_');
+        = XIMS::decode('-A-Za-z0-9Γ¶Γ¤ΓΌΓΓ Γ΅ΓΆΓ£Γ¥Γ¦Γ¨Γ§Γ©ΓªΓ«Γ¬Γ­Γ®Γ―Γ°Γ±Γ²Γ³Γ΄ΓµΓΈΓΉΓΊΓ»Γ½ΓΏ_');
 
     for ( my $i = 0; $i <= scalar( @{$search} ) - 1; $i++ ) {
 

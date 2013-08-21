@@ -135,7 +135,7 @@ sub event_default {
     if ( defined $author_id and $author_id =~ /^\d+$/ ) {
         $childrenargs{author_id} = $author_id;
     }
-    elsif ( defined $author_lname and $author_lname =~ /^[^()!?_^`΄'"]{2,}/ ) { # '
+    elsif ( defined $author_lname and $author_lname =~ /^[^()!?_^`Β΄'"]{2,}/ ) { # '
         $author_lname =~ s#\*#%#g;
         $author_lname =~ s#%%#%#g;
         $childrenargs{author_lname} = $author_lname;
@@ -205,8 +205,7 @@ sub event_reflibsearch {
         return $self->sendError( $ctxt, __"A valid search string is needed." );
     }
 
-    use encoding "latin-1";
-    my $allowed = q{\!a-zA-Z0-9ΐΑΒΓΕΖΗΘΙΚΛΠΡÒΣΤΥΨΩΪΫΰαβγεζηθικλμνξοπρςστυψωϊϋόύφδόίΦΔάί%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
+    my $allowed = q{\!a-zA-Z0-9Γ€ΓΓ‚ΓƒΓ…Γ†Γ‡ΓΓ‰ΓΓ‹ΓΓ‘Γ’Γ“Γ”Γ•ΓΓ™ΓΓ›Γ Γ΅ΓΆΓ£Γ¥Γ¦Γ§Γ¨Γ©ΓªΓ«Γ¬Γ­Γ®Γ―Γ°Γ±Γ²Γ³Γ΄ΓµΓΈΓΉΓΊΓ»ΓΌΓ½Γ¶Γ¤ΓΌΓΓ–Γ„ΓΓ%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
     my $qb = XIMS::QueryBuilder::ReferenceLibrary->new( { search => $search,
                                                           allowed => $allowed,
                                                           extraargs => { reflib => $ctxt->object() } } );

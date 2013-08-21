@@ -63,7 +63,6 @@ sub _build {
 
     my $now = localtime();
 
-    use encoding "latin-1";
     my $allowedusernamechars = XIMS::decode( '-A-Za-z0-9öäüßàáâãåæèçéêëìíîïðñòóôõøùúûýÿ_' );
 
     for ( my $i = 0; $i <= scalar(@{$search})-1; $i++ ) {
