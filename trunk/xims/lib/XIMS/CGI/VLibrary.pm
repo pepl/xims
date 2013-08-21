@@ -485,7 +485,7 @@ sub event_property_edit {
 
     $ctxt->objectlist( [$vlibproperty] );
 
-    # Hacked-on TinyMCE editable subjects description, an »Extrawurst« for
+    # Hacked-on TinyMCE editable subjects description, an Â»ExtrawurstÂ« for
     # ZIS.
     my $ed = '';
 
@@ -847,10 +847,9 @@ sub event_vlsearch {
             return 0;
         }
         ## use critic
-        use encoding "latin-1";
         my $allowed =
           XIMS::decode(
-            q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~})
+            q{\!a-zA-Z0-9Ã¶Ã¤Ã¼ÃŸÃ–Ã„ÃœÃŸ%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~})
           ;    ## just for emacs' font-lock... ;-)
         my $qb = $qbdriver->new(
             {
@@ -1148,10 +1147,9 @@ sub event_filter {
                 return 0;
             }
             ## use critic
-            use encoding "latin-1";
             my $allowed =
               XIMS::decode(
-                q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~});
+                q{\!a-zA-Z0-9Ã¶Ã¤Ã¼ÃŸÃ–Ã„ÃœÃŸ%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~});
             my $qb = $qbdriver->new(
                 {
                     search         => $text,

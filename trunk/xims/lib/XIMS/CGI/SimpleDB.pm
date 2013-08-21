@@ -127,8 +127,7 @@ sub event_default {
     $search ||= XIMS::decode($self->param('searchstring')); # fallback
 
     if ( defined $search and length($search) >= 2 and length($search) <= 128 ) {
-        use encoding "latin-1";
-        my $allowed = q{\!=a-zA-Z0-9¿¡¬√≈∆«»… À–—“”‘’ÿŸ⁄€‡·‚„ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙı¯˘˙˚¸˝ˆ‰¸ﬂ÷ƒ‹ﬂ%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
+        my $allowed = q{\!=a-zA-Z0-9√Ä√Å√Ç√É√Ö√Ü√á√à√â√ä√ã√ê√ë√í√ì√î√ï√ò√ô√ö√õ√†√°√¢√£√•√¶√ß√®√©√™√´√¨√≠√Æ√Ø√∞√±√≤√≥√¥√µ√∏√π√∫√ª√º√Ω√∂√§√º√ü√ñ√Ñ√ú√ü%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
         my $qb = XIMS::QueryBuilder::SimpleDB->new( { search => $search,
                                                       allowed => $allowed,
                                                       extraargs => { simpledb => $ctxt->object() } } );

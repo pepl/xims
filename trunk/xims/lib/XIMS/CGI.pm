@@ -4368,7 +4368,6 @@ sub event_search {
 			Encode::_utf8_on($search);
 		}
 
-		use encoding "latin-1";
 		my $allowed =
 		  XIMS::decode(
 			q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~}
