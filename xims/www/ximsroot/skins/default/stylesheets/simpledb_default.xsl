@@ -43,7 +43,7 @@
 					<xsl:if test="$searchstring != ''">
 						<strong><xsl:value-of select="$i18n/l/Search_for"/></strong>:
 						<span class="simpledb_filter">'<xsl:value-of select="$searchstring"/>'</span>.
-						<a href="{$xims_box}{$goxims_content}{$absolute_path}">Reset search</a>
+						<a href="{$xims_box}{$goxims_content}{$absolute_path}" class="button">Reset search</a>
 					</xsl:if>
 				</div>
 				<div>
@@ -152,7 +152,7 @@
 					</xsl:if>
 				</input>
 				<xsl:text>&#160;</xsl:text>
-				<button type="submit" name="submit"><xsl:value-of select="$i18n/l/Search"/></button>
+				<button type="submit" name="submit" class="button"><xsl:value-of select="$i18n/l/Search"/></button>
 			</form>
 		</div>
 	</xsl:template>

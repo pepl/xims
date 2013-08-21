@@ -58,7 +58,7 @@
 					<xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
 				</span>
 				<xsl:text>&#160;</xsl:text>
-				<button type="button" name="create_mapping" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
+				<button type="button" name="create_mapping" class="button" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
 				<xsl:text>&#160;</xsl:text>
 			</xsl:if>
 			<xsl:choose>

@@ -329,17 +329,21 @@
 	<xsl:param name="mo"/>	
 	<xsl:param name="property"><xsl:value-of select="$i18n_vlib/l/*[name()=$mo]"/></xsl:param>
 	<xsl:variable name="id" select="@id"/>				
-	<a class="button option-edit" href="javascript:createDialog('{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};','default-dialog','{$i18n/l/edit} {$property}')">
-		<xsl:value-of select="$l_Edit"/>
-	</a>
+  <a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="javascript:createDialog('{$xims_box}{$goxims_content}{$absolute_path}?property_edit=1;property_id={id};property={$mo};','default-dialog','{$i18n/l/edit} {$property}')" role="button" aria-disabled="false">
+    <xsl:attribute name="title"><xsl:value-of select="$l_Edit"/></xsl:attribute>
+    <span class="ui-button-icon-primary ui-icon sprite-option_edit xims-sprite"><xsl:comment/></span>
+    <span class="ui-button-text"><xsl:value-of select="$l_Edit"/></span>
+  </a>
 </xsl:template>
 
 <xsl:template name="vl-button.options.delete">
 	<xsl:param name="mo"/>	
 	<xsl:variable name="id" select="@id"/>		
-	<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={name}">
-		<xsl:value-of select="$l_delete"/>
-	</a>
+  <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?property_delete_prompt=1;property_id={id};property={$mo};display_name={name}" role="button" aria-disabled="false">
+    <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
+    <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+    <span class="ui-button-text"><xsl:value-of select="$l_delete"/></span>
+  </a>
 </xsl:template>
 
 </xsl:stylesheet>

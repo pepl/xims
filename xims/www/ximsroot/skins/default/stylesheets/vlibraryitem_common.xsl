@@ -43,18 +43,18 @@
 		</div>
 		<div>
 			<div class="label-large">
-				<label for="vl{$mo}">
+				<!-- <label for="vl{$mo}">-->
 					<xsl:value-of select="$i18n_vlib/l/Assign_new"/>
 					<xsl:text>&#160;</xsl:text>
 					<xsl:value-of select="$i18n_vlib/l/*[name()=concat($mo,'s')]"/>
-				</label>
+				<!-- </label>-->
 			</div>
 			<xsl:if test="/document/context/*[name()=concat('vl', $mo,'s')]">
 				<span id="svl{$mo}container">
 					<xsl:apply-templates select="/document/context/*[name()=concat('vl', $mo,'s')]"/>
 				</span>
 				<xsl:text>&#160;</xsl:text>
-				<button type="button" name="create_mapping" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
+				<button type="button" name="create_mapping" class="button" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
 				<xsl:text>&#160;</xsl:text>
 			</xsl:if>
 			<a class="button" href="javascript:createDialog('{$xims_box}{$goxims_content}{$parent_path}?property_edit=1;property={$mo}','default-dialog','{$i18n/l/create} {$property}')">
@@ -144,7 +144,7 @@
 				<!--<a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>-->				
 				<xsl:apply-templates select="/document/context/vlkeywords"/>
 				<xsl:text>&#160;</xsl:text>
-				<button type="submit" name="create_mapping"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
+				<button type="submit" name="create_mapping" class="button"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
 		</div>
 		</div>
 	</xsl:template>
@@ -177,7 +177,7 @@
 				-->
 				<xsl:apply-templates select="/document/context/vlsubjects"/>
 				<xsl:text>&#160;</xsl:text>
-				<button type="submit" name="create_mapping"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
+				<button type="submit" name="create_mapping" class="button"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
 		</div>
 	</div>
 	</xsl:template>
@@ -192,9 +192,11 @@
 			</xsl:if>
 		</a>
 		<xsl:text>&#160;</xsl:text>
-		<a class="button option-delete" href="javascript:removeMapping('{name()}', '{id}')" >
-			<xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>:&#160;<xsl:value-of select="name"/>
-		</a>
+    <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="javascript:removeMapping('{name()}', '{id}')" role="button" aria-disabled="false">
+      <xsl:attribute name="title"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>:&#160;<xsl:value-of select="name"/></xsl:attribute>
+      <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+      <span class="ui-button-text"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/></span>
+    </a>
 		<xsl:if test="position()!=last()">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
@@ -205,8 +207,10 @@
 			<xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/>
 		</a>
 		<xsl:text>&#160;</xsl:text>
-		<a class="button option-delete" href="javascript:removeMapping('{name()}', '{id}')" >
-			<xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>:&#160;<xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/>
+		<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="javascript:removeMapping('{name()}', '{id}')" role="button" aria-disabled="false">
+		  <xsl:attribute name="title"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>:&#160;<xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/></xsl:attribute>
+		  <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+			<span class="ui-button-text"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>:&#160;<xsl:value-of select="firstname"/>&#160;<xsl:value-of select="lastname"/></span>
 		</a>
 		<xsl:if test="position()!=last()">
 			<xsl:text>, </xsl:text>
