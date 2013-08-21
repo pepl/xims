@@ -261,14 +261,21 @@
 			&#160;&#160;
 			</td>
 			<td>
-			<a class="button option-edit" href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1;property_id={@id}">
-				<xsl:value-of select="$l_Edit"/>
-			</a>
+			<a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?edit=1;property_id={@id}" role="button" aria-disabled="false" >
+        <xsl:attribute name="title"><xsl:value-of select="$l_Edit"/></xsl:attribute>
+        <span class="ui-button-icon-primary ui-icon sprite-option_edit xims-sprite"><xsl:comment/></span>
+        <span class="ui-button-text"><xsl:value-of select="$l_Edit"/></span>
+      </a>
 			<xsl:if test="/document/context/object/user_privileges/delete">
 				<xsl:text> </xsl:text>
-				<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
-					<xsl:value-of select="$l_delete"/>
-				</a>
+				<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false" onclick="javascript:rv=confirm('{$i18n_simpledb/l/Sure_to_delete}'); if ( rv == true ) location.href='{$xims_box}{$goxims_content}{$absolute_path}?property_id={@id};delete_property_mapping=1'; return false;">
+          <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
+          <xsl:attribute name="href">
+            <xsl:value-of select="concat($xims_box,$goxims_content, $absolute_path, '?property_id=', @id, ';delete_property_mapping=1')"></xsl:value-of>
+          </xsl:attribute>
+          <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+          <span class="ui-button-text"><xsl:value-of select="$l_delete"/></span>
+        </a>
 			</xsl:if>
 			</td>
 		</tr>

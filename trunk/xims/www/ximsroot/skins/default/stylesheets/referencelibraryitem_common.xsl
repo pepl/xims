@@ -146,7 +146,7 @@
             </xsl:if>      
             <xsl:if test="@id != ''">
                 <xsl:text>&#160;</xsl:text>
-                <input type="submit" name="create_author_mapping" value="{$i18n_vlib/l/Create_mapping}" class="ui-state-default ui-corner-all fg-button"/>
+                <input type="submit" name="create_author_mapping" value="{$i18n_vlib/l/Create_mapping}" class="button ui-state-default ui-corner-all fg-button"/>
             </xsl:if>         
             <div class="ui-state-highlight ui-corner-all auth-desc" id="auth-desc">
 								<p>
@@ -316,11 +316,11 @@
 <xsl:template match="serial" mode="edit">
     <xsl:value-of select="title"/>
     <xsl:text> </xsl:text>
-	<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_serial_mapping=1;serial_id={@id}">
-		<xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>
+	<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_serial_mapping=1;serial_id={@id}" role="button" aria-disabled="false" >
+		<xsl:attribute name="title"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/></xsl:attribute>
+		<span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+		<span class="ui-button-text"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/></span>
 	</a>
-    <!--<a href="{$xims_box}{$goxims_content}{$absolute_path}?remove_serial_mapping=1;serial_id={@id}"
-       title="{i18n_vlib/l/Delete_mapping}">(x)</a>-->
 </xsl:template>
 
 <xsl:template name="authorfullname">

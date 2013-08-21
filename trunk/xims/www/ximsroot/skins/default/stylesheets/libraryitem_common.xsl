@@ -55,11 +55,11 @@
 		<div>
 			<div class="label-large">
 				<!--<label for="svl{$mo}">-->
-				<label for="vl{$mo}">
+				<!-- <label for="vl{$mo}">-->
 					<xsl:value-of select="$i18n_vlib/l/Assign_new"/>
 					<xsl:text>&#160;</xsl:text>
 					<xsl:value-of select="$i18n_vlib/l/*[name()=concat($mo,'s')]"/>
-				</label>
+				<!-- </label> -->
 			</div>
 			<xsl:if test="/document/context/*[name()=concat('vl', $mo,'s')] or $mo = 'editor'">
 				<span id="svl{$mo}container">
@@ -83,7 +83,7 @@
 						<button type="submit" name="create_{$mo}_mapping" class="button"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
 					</xsl:when>
 					<xsl:otherwise>
-						<button type="button" name="create_mapping" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
+						<button type="button" name="create_mapping" class="button" onclick="createMapping('{$mo}', $('#svl{$mo}').val(), '{$i18n_vlib/l/select_name}')"><xsl:value-of select="$i18n_vlib/l/Create_mapping" /></button>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>&#160;</xsl:text>
@@ -125,7 +125,7 @@
 				<!--<a href="javascript:openDocWindow('VLKeyword')" class="doclink">(?)</a>-->				
 				<xsl:apply-templates select="/document/context/vlkeywords"/>
 				<xsl:text>&#160;</xsl:text>
-				<button type="submit" name="create_mapping"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
+				<button type="submit" name="create_mapping" class="button"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
 		</div>
 		</div>
 	</xsl:template>
@@ -158,7 +158,7 @@
 				-->
 				<xsl:apply-templates select="/document/context/vlsubjects"/>
 				<xsl:text>&#160;</xsl:text>
-				<button type="submit" name="create_mapping"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
+				<button type="submit" name="create_mapping" class="button"><xsl:value-of select="$i18n_vlib/l/Create_mapping"/></button>
 		</div>
 	</div>
 	</xsl:template>

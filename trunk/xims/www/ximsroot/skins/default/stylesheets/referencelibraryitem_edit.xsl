@@ -104,8 +104,10 @@
         <a href="{$xims_box}{$goxims_content}{$absolute_path}?reposition_author=1;author_id={id};role={$role};old_position={$current_pos};new_position={$current_pos + 1};date={$date};title={$title}"
            title="{i18n/l/Reposition}"><!--&gt;--><span class="ui-icon ui-icon-triangle-1-e ui-icon-small"><xsl:comment/></span></a>
 	</xsl:if>
-	<a class="button option-delete" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}">
-		<xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>: <xsl:call-template name="authorfullname"/>
+	<a class="option-delete ui-button ui-widget ui-corner-all ui-button-icon-only ui-state-default" href="{$xims_box}{$goxims_content}{$absolute_path}?remove_author_mapping=1;property={name()};property_id={id};role={$role};date={$date};title={$title}" aria-disabled="false" role="button">
+		<xsl:attribute name="title"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>: <xsl:call-template name="authorfullname"/></xsl:attribute>
+		<span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+		<span class="ui-button-text"><xsl:value-of select="$i18n_vlib/l/Delete_mapping"/>: <xsl:call-template name="authorfullname"/></span>
 	</a>
 	<xsl:if test="position()!=last()"><xsl:text> | </xsl:text>
     </xsl:if>
