@@ -46,7 +46,7 @@ sub call {
             sub {
                 my $res = shift;
                 push @{ $res->[1] },
-                    'Set-Cookie' => "session=$session_id; path=/";
+                    'Set-Cookie' => "session=$session_id;path=/;httponly;";
                 return;
             }
         );
@@ -149,12 +149,12 @@ sub unauthorized {
     XIMS::Debug( 5, "called" );
     $env->{HTTP_AUTHORIZATION} = undef;
     HTTP::Throwable::Factory->throw({
-             status_code => 401,
-             reason      => 'Unauthorized',
+             status_code => 302,
+             reason      => "Found",
              additional_headers => ['Set-Cookie' => 'session=; path=/; expires=-1Y',
-                                    'X-Reason' => $reason ? $reason : 'none' ]
+                                    'Location'   => "/login?reason=$reason&r=".$env->{PATH_INFO},
+                                    'X-Reason'   => $reason ? $reason : 'none' ]
          });
-
 }
 
 sub authenticate {
