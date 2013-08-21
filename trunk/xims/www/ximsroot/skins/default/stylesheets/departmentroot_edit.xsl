@@ -23,8 +23,10 @@
 	
 	<xsl:template match="objectlist/object">
             <a class="label-large" href="{$goxims_content}{location_path}"><xsl:value-of select="title"/></a>
-            <a class="button option-delete" href="{$goxims_content}{$absolute_path}?portlet_id={id};rem_portlet=1">
-				<xsl:value-of select="$i18n/l/delete"/>&#160;
+            <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$goxims_content}{$absolute_path}?portlet_id={id};rem_portlet=1" role="button" aria-disabled="false" >
+              <xsl:attribute name="title"><xsl:value-of select="$i18n/l/delete"/></xsl:attribute>
+              <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+              <span class="ui-button-text"><xsl:value-of select="$i18n/l/delete"/>&#160;</span>
             </a>
 			<br/>
 </xsl:template>
