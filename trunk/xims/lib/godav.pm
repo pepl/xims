@@ -32,7 +32,7 @@ use XML::LibXML;
 #use Data::UUID;
 use Digest::MD5;
 use HTTP::Exception;
-use Data::Dumper::Concise;
+#use Data::Dumper::Concise;
 use HTTP::Date;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
