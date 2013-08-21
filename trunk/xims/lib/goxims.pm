@@ -20,6 +20,8 @@ This module bla bla
 
 package goxims;
 
+use common::sense;
+
 use Locale::Messages qw(bind_textdomain_filter bind_textdomain_codeset turn_utf_8_on);
 use Locale::TextDomain ('info.xims');
 use POSIX qw(setlocale LC_ALL LC_TIME);
@@ -124,7 +126,8 @@ sub handler {
 
     # run app and return
     if ( $res = run_app($app_class, $env) ) {
-        push $res->[1], ('Cache-Control', 'private, must-revalidate');
+        push $res->[1], ('Cache-Control', 'private, must-revalidate',
+                         'X-UA-Compatible', 'IE=Edge');
         return $res;
     }
 
@@ -171,19 +174,21 @@ sub quick_handler {
 
 };
 
+
+# TODO: i18n. 
 sub login_screen {
     my $env = shift;
     #my ($env, $reason) = @_;
-    my $req = Plack::Request->new($env);
-    my %messages = (mismatch => '<div class="message"><span>Anmeldung fehlgeschlagen.<br/>Bitte geben Sie Benutzerkennung und Passwort korrekt ein.</span></div>',
-                     logout => '<div class="message"><span>Abmeldung erfolgreich.<br/>Geben Sie Benutzerkennung und Passwort ein um sich erneut anzumelden.</span></div>');
+    my $req = Plack::Request->new($env);  
+    my %messages = (mismatch => '<div class="message"><span>Login failed.<br/>Try again with your correct username and password.</span></div>',
+                    logout => '<div class="message"><span>Logout successful.<br/>To log in again, enter your username and password.</span></div>');
     my $message = $messages{ $req->param('reason') };
     my $action =  $req->param('r');
     $action =~ s!(^/[a-z]+(?:/[-_a-z0-9]+(?:\.[a-z0-9]+){,2})*/?)?.*!XIMS::GOXIMS().$1!ie;
     #my $modt = q();
     my $motd = <<MOTD;
-<d class="warning">
-    Hier könnte Ihre Werbung stehen!
+<div class="warning">
+    <p>I am the optional message of the day. (Lorem ipsum, baby!)</p>
 </div>
 MOTD
 
@@ -197,57 +202,33 @@ MOTD
   <body onload="document.forms['login'].userid.focus()">
     <div id="main">
       <div id="header">
-        <h1 class="university">Universit&#xE4;t Innsbruck
+        <h1 class="university">My Organization
                 <br/><span class="infotext">XIMS</span></h1>
         <div id="emotionimage">
-          <a title="XIMS an der Universit&#xE4;t Innsbruck" href="http://www.uibk.ac.at/webredaktion/xims">
+          <a title="XIMS" href="http://xims.info">
             <img alt="XIMS Logo" title="XIMS" src="/ximspubroot/images/xims_logo_44x44.jpg"/>
-          </a>
-        </div>
-        <div id="logo_uni">
-          <a title="Logo der Universit&#xE4;t Innsbruck" href="http://www.uibk.ac.at" class="sprite icon_logouni">
-            <img alt="Logo der Universit&#xE4;t Innsbruck" title="Logo der Universit&#xE4;t Innsbruck" src="/ximspubroot/images/uni-logo.jpg"/>
           </a>
         </div>
       </div>
       $motd
       <form method="post" name="login" action="$action" id="login">
         <h2>
-          <span class="infotext">XIMSTEST1 LOGIN</span>
+          <span class="infotext">XIMS LOGIN</span>
         </h2>
         $message
         <div>
-          <label for="userid">Benutzername: </label>
+          <label for="userid">Username: </label>
           <input tabindex="1" type="text" name="userid" id="userid" class="text" value=""/>
         </div>
         <div>
-          <label for="password">Kennwort: </label>
+          <label for="password">Password: </label>
           <input tabindex="2" type="password" name="password" class="text"/>
         </div>
         <div class="submit">
           <input type="hidden" name="dologin" value="1" />
-          <input tabindex="3" type="submit" name="login" value="Anmelden" class="control"/>
+          <input tabindex="3" type="submit" name="login" value="Login" class="control"/>
         </div>
       </form>
-      <div class="infolinks">
-        <h2>
-          <span class="infotext">Hilfreiche Links</span>
-        </h2>
-        <ul>
-          <li>
-            <a href="http://www.uibk.ac.at/webredaktion/xims/">XIMS an der Universit&#xE4;t Innsbruck</a>
-          </li>
-          <li>
-            <a href="http://www.uibk.ac.at/webredaktion/xims/dokumentation/xims-in-sechs-schritten/">Benutzeranleitung - XIMS in sechs Schritten</a>
-          </li>
-          <li>
-            <a href="http://www.uibk.ac.at/webredaktion/webstyleguide/">Webstyleguide Webredaktion</a>
-          </li>
-          <li>
-            <a href="http://www.uibk.ac.at/webredaktion/xims/zugang-support-schulung.html">Informationen zu XIMS-Zugang, -Support und -Kursen</a>
-          </li>
-        </ul>
-      </div>
     </div>
   </body>
 </html>

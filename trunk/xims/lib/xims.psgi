@@ -92,7 +92,7 @@ builder {
     #     mount '/' => http_exception(Found => { location => XIMS::GOBAXIMS() . XIMS::PERSONALINTERFACE() });
     # };
 
-    # WebDAV, TODO
+    # WebDAV
     mount XIMS::GODAV() => builder {
         enable "XIMS::AppContext";
         enable "XIMS::Auth::Basic";
