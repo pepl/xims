@@ -34,6 +34,7 @@ use Digest::MD5;
 use HTTP::Exception;
 #use Data::Dumper::Concise;
 use HTTP::Date;
+use Encode;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 our $godav = XIMS::GODAV(); # for easy intepolation, as there’s a whole lotta
@@ -46,7 +47,7 @@ our $godav = XIMS::GODAV(); # for easy intepolation, as there’s a whole lotta
 sub handler {
     XIMS::Debug(5, "called");
     my $env = shift;
-    
+
     my $method = lc( $env->{REQUEST_METHOD} );
     my $user   = $env->{'xims.appcontext'}->session->user();
 
@@ -155,16 +156,26 @@ sub get {
         return [ '200', [ 'Content-Type' => 'text/html', ], [$body] ];
     }
     else {
-        my $charset = XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8';
+        my $mime_type =  $object->data_format->mime_type();
 
-        return [
-            200,
-            [   'Content-Type' => $object->data_format->mime_type()
-                    . "; charset=$charset",
-                'Last-Modified' => time2str( str2time( $object->last_modification_timestamp(), 'CET') )
-            ],
-            [ $object->body() ]
-        ];
+        if ($mime_type =~ /^text/ ) {
+            return [
+                200,
+                [   'Content-Type' => "$mime_type; charset=UTF-8",
+                    'Last-Modified' => time2str( str2time( $object->last_modification_timestamp(), 'CET') )
+                ],
+                [  encode("UTF-8", $object->body()) ]
+            ];
+        }
+        else {
+            return [
+                200,
+                [   'Content-Type' => $mime_type,
+                    'Last-Modified' => time2str( str2time( $object->last_modification_timestamp(), 'CET') )
+                ],
+                [  $object->body() ]
+            ];
+        }
     }
 }
 
