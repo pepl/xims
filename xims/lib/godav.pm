@@ -36,6 +36,8 @@ use HTTP::Exception;
 use HTTP::Date;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
+our $godav = XIMS::GODAV(); # for easy intepolation, as there’s a whole lotta
+                            # stringbuilding ahead...
 
 =head2 handler()
 
@@ -96,7 +98,7 @@ sub options {
             'Allow' =>
                 'OPTIONS, GET, HEAD, POST, DELETE, TRACE, PROPFIND, LOCK, UNLOCK, MOVE'
         ],
-        undef
+        [] 
     ];
 }
 
@@ -142,12 +144,12 @@ sub get {
             $location = $child->location();
             if ( $child->object_type->is_fs_container() ) {
                 $body
-                    .= qq|<a href="/godav$path/$location/">$location/</a><br>\n|;
+                    .= qq|<a href="$godav$path/$location/">$location/</a><br>\n|;
             }
             else {
                 $location =~ s#/$##;
                 $body
-                    .= qq|<a href="/godav$path/$location">$location</a><br>\n|;
+                    .= qq|<a href="$godav$path/$location">$location</a><br>\n|;
             }
         }
         return [ '200', [ 'Content-Type' => 'text/html', ], [$body] ];
@@ -546,7 +548,7 @@ sub propfind {
         $multistatus->addChild($nresponse);
 
         my $href       = $dom->createElement("D:href");
-        my $href_value = ( XIMS::encode( '/godav' . $o->location_path() ) )
+        my $href_value = ( XIMS::encode( $godav . $o->location_path() ) )
             || '/';
 
         # append '/' for collections
@@ -831,7 +833,7 @@ sub copymove {
     }
 
     my $destination_path = $req->header('Destination');
-    $destination_path =~ s/^.*?\/godav//; # the cheap and pragmatic way to get the
+    $destination_path =~ s/^.*?$godav//;  # the cheap and pragmatic way to get the
     $destination_path =~ s#/$##;          # location_path
 
     my $depth     = $req->header('Depth');
