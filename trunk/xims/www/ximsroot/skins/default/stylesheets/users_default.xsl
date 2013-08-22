@@ -42,7 +42,7 @@
 	<td>
 	<div class="buttonset">
 		<a class="option-edit" href="{$xims_box}{$goxims_users}?edit=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
-			<xsl:value-of select="$i18n/l/edit"/>&#160;
+			<xsl:value-of select="$i18n/l/Edit"/>&#160;
 		</a>
 		<a href="{$xims_box}{$goxims_users}?prefs=1;name={name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
 			<xsl:value-of select="$i18n/l/Settings"/>

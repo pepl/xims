@@ -41,7 +41,7 @@
 									<xsl:with-param name="admin">true</xsl:with-param>
                 </xsl:call-template>
 <br/><br/>
-<button name="cancel" type="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
+<button name="cancel" type="button" class="button" onclick="javascript:history.go(-1)"><xsl:value-of select="$i18n/l/cancel"/></button>
                 <!--<p class="back">
                     <a href="{$xims_box}{$goxims}/users?sort-by={$sort-by};order-by={$order-by};userquery={$userquery}"><xsl:value-of select="$i18n/l/Back"/></a>
                 </p>-->
@@ -90,8 +90,10 @@
         </td>
         <td>
             &#160;&#160;
-            <a class="button option-delete" title="{$l_delete}" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
-             <xsl:value-of select="$i18n/l/delete"/>&#160;</a>
+            <a class="option-delete ui-button ui-widget ui-corner-all ui-button-icon-only ui-state-default" title="{$l_delete}" href="{$xims_box}{$goxims}/bookmark?id={id};delete=1;name={$name};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+             <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_delete"><xsl:comment/></span>
+             <span class="ui-button-text"><xsl:value-of select="$i18n/l/delete"/>&#160;</span>
+            </a>
         </td>
     </tr>
 </xsl:template>
