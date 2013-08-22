@@ -136,10 +136,11 @@
             </xsl:choose>
         </xsl:variable>
         <li>
-            <xsl:value-of select="$fullname"/>&#160; 
-            <a class="button option-delete" href="{$xims_box}{$goxims}/users?name={$name};objecttypeprivs=1;delpriv=1;grantor_id={grantor_id};object_type_id={@id};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
-				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/delete"/></xsl:attribute>
-				<xsl:value-of select="$i18n/l/delete"/>
+            <xsl:value-of select="$fullname"/>&#160;       
+				    <a class="option-delete ui-button ui-widget ui-corner-all ui-button-icon-only ui-state-default" title="{$l_delete}" href="{$xims_box}{$goxims}/users?name={$name};objecttypeprivs=1;delpriv=1;grantor_id={grantor_id};object_type_id={@id};sort-by={$sort-by};order-by={$order-by};userquery={$userquery}">
+             <xsl:attribute name="title"><xsl:value-of select="$i18n/l/delete"/></xsl:attribute>
+             <span class="ui-button-icon-primary ui-icon xims-sprite sprite-option_delete"><xsl:comment/></span>
+             <span class="ui-button-text"><xsl:value-of select="$i18n/l/delete"/>&#160;</span>
             </a>
         </li>
     </xsl:template>
