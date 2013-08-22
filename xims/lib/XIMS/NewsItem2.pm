@@ -44,7 +44,7 @@ sub add_image {
     else {
         XIMS::Debug( 3, "could not create new image object. Perhaps it already exists." );
     }
-    return 1;
+    return $id;
 }
 
 1;
