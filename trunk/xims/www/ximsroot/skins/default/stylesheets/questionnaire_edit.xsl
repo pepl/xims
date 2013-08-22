@@ -148,8 +148,10 @@
 			&#160;&#160;&#160;
 			<xsl:choose>
 				<xsl:when test="(name() = 'question') and (name(..) = 'questionnaire') and not(@edit)">
-				<a class="button option-edit" href="#{$position_long}" name="{$position_long}" onclick="eform.edit.value='edit_question';eform.qid.value='{$position_long}';eform.submit();return true;">
-						<xsl:value-of select="$i18n/l/Edit"/>
+				<a class="option-edit ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="#{$position_long}" name="{$position_long}" onclick="eform.edit.value='edit_question';eform.qid.value='{$position_long}';eform.submit();return true;" role="button" aria-disabled="false" >
+						<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Edit"/></xsl:attribute>
+						<span class="ui-button-icon-primary ui-icon sprite-option_edit xims-sprite"><xsl:comment/></span>
+						<span class="ui-button-text"><xsl:value-of select="$i18n/l/Edit"/></span>
 					</a>
 				</xsl:when>
 				<xsl:otherwise>
@@ -157,12 +159,16 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:if test="(name() = 'question')">
-				<a class="button option-copy" href="#" onclick="eform.edit.value='copy_question';eform.qid.value='{$position_long}';eform.submit();return true;">
-						<xsl:value-of select="$i18n/l/Copy"/>
+				<a class="option-copy ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="#" onclick="eform.edit.value='copy_question';eform.qid.value='{$position_long}';eform.submit();return true;" role="button" aria-disabled="false">
+						<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Copy"/></xsl:attribute>
+						<span class="ui-button-icon-primary ui-icon sprite-option_copy xims-sprite"><xsl:comment/></span>
+            <span class="ui-button-text"><xsl:value-of select="$i18n/l/Copy"/></span>
 				</a>
 			</xsl:if>
-			<a class="button option-delete" href="#" onclick="eform.edit.value='delete_node';eform.qid.value='{$position_long}';eform.submit();return true;">
-					<xsl:value-of select="$i18n/l/delete"/>
+			<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="#" onclick="eform.edit.value='delete_node';eform.qid.value='{$position_long}';eform.submit();return true;" role="button" aria-disabled="false">
+					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/delete"/></xsl:attribute>
+					<span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+					<span class="ui-button-text"><xsl:value-of select="$i18n/l/delete"/></span>
 			</a>
 		</div>
 	</xsl:template>
@@ -397,10 +403,11 @@
 				<li>
 					<xsl:value-of select="."/>
 					<input type="hidden" name="tanlist_{@id}_title" value="{.}"/>&#xa0;
-							<a class="button option-delete" onclick="eform.edit.value='remove_tanlist';eform.qid.value={@id};return true;">
-						<span>
-							<xsl:value-of select="$i18n_qn/l/Remove_TAN_List"/>
-						</span>&#160;</a>
+							<a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" onclick="eform.edit.value='remove_tanlist';eform.qid.value={@id};return true;" aria-disabled="false" role="button" href="#">
+						    <xsl:attribute name="title"><xsl:value-of select="$i18n_qn/l/Remove_TAN_List"/></xsl:attribute>
+						    <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
+						    <span class="ui-button-text"><xsl:value-of select="$i18n_qn/l/Remove_TAN_List"/></span>&#160;
+						  </a>
 				</li>
 			</xsl:for-each>
 		</ul>
@@ -410,7 +417,7 @@
 				<xsl:value-of select="$i18n_qn/l/browse_TAN_List"/>
 			</a>&#xa0;	
 		<input type="text" name="TAN_List" id="TAN_List" size="40" class="text" />&#xa0;
-			<button type="submit" onclick="eform.edit.value='add_tanlist';eform.qid.value=eform.TAN_List.value;return true;" id="add_tanlist" >
+			<button type="submit" class="button" onclick="eform.edit.value='add_tanlist';eform.qid.value=eform.TAN_List.value;return true;" id="add_tanlist" >
 				<xsl:value-of select="$i18n_qn/l/Add_TAN_List"/>
 			</button>
 		</div>
@@ -421,7 +428,7 @@
 		<div>
 			<input type="hidden" name="edit"/>
 			<input type="hidden" name="qid"/>
-			<button type="submit" onclick="eform.edit.value='add_question';eform.qid.value='';return true;"><xsl:value-of select="$i18n_qn/l/Add_Question"/></button>
+			<button type="submit" class="button" onclick="eform.edit.value='add_question';eform.qid.value='';return true;"><xsl:value-of select="$i18n_qn/l/Add_Question"/></button>
 		</div>
 	</xsl:template>
 	
