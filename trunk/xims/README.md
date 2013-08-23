@@ -1,4 +1,6 @@
-This is XIMS, version 1.2.
+This is XIMS, version 3.
+========================
+
 
 Overview
 --------
@@ -27,20 +29,24 @@ For installation, please follow the instructions in the file
 
 
 Upgrading
-------------
+---------
 For upgrading from an older version of XIMS, please follow the instructions
 in the file "UPGRADING".
 
 
 Documentation
 -------------
-At $ximsdir/documentation and http://xims.info/documentation/ you will find
-XIMS documentation for users, developers, and system administrators.
+
+At $ximsdir/documentation,
+http://www.uibk.ac.at/webredaktion/xims/dokumentation/ (in German), and
+http://xims.info/documentation/ (mostly technical and old) you will find XIMS
+documentation for users, developers, and system administrators.
 
 
 Release Notes
 -------------
 
+There is no release.
 
 
 Changes
@@ -54,37 +60,36 @@ Known Issues
 
 Bug Reporting
 -------------
-Please report bugs via
-https://sourceforge.net/tracker/?group_id=42250&atid=432505
+Please report bugs via [our Bugtracker on Source Forge](https://sourceforge.net/tracker/?group_id=42250&atid=432505)
 
 
 Credits
 -------
 
 XIMS was originally developed by:
-Michael Kröll
-Hansjörg Pehofer
-Kip Hampton
-Christian Glahn
+- Michael Kröll
+- Hansjörg Pehofer
+- Kip Hampton
+- Christian Glahn
 
 XIMS is currently developed and maintained by:
-Susanne Tober
-Hansjörg Pehofer
+- Susanne Tober
+- Hansjörg Pehofer
 
 Contributors (Sorted by most recent initial contribution):
-Emir Tanriverdi
-Heinrich Reimer
-Christian Dablander
-Severin Gehwolf
-Arntraud Bacher
-Simon Bailey
-Volker Hess 
-Jochen Früwirth
-Joachim Kargl
-Martina Kinzl
-Gregor Retti
-Britta Tautermann
-Georg Schönwiese
+- Emir Tanriverdi
+- Heinrich Reimer
+- Christian Dablander
+- Severin Gehwolf
+- Arntraud Bacher
+- Simon Bailey
+- Volker Hess 
+- Jochen Früwirth
+- Joachim Kargl
+- Martina Kinzl
+- Gregor Retti
+- Britta Tautermann
+- Georg Schönwiese
 
 Additionally, we would like to thank everyone who supplied valuable feedback!
 
