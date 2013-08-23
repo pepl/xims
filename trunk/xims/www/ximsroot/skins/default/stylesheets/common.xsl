@@ -2070,7 +2070,6 @@
 	
 	<!-- <script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"><xsl:comment/></script> -->
 	<!-- debugging mode -->
-	<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"><xsl:comment/></script>
 	<script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:comment/></script>
 	<script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:comment/></script>
 

@@ -102,7 +102,7 @@
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="sitestyle" select="false()"/>
 		<!-- <link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery_min.css" type="text/css"/>-->
-		 <link rel="stylesheet" href="{$ximsroot}stylesheets/jquery/jquery-ui-1.10.3.custom.css" type="text/css"/>
+		 <link rel="stylesheet" href="{$ximsroot}vendor/jquery-ui/css/smoothness/jquery-ui-current.css" type="text/css"/>
 		<!-- debuggin mode -->
 		<xsl:if test="$questionnaire">
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" type="text/css"/>
@@ -139,30 +139,12 @@
 		</script>
 		<!-- <script src="{$ximsroot}scripts/jquery/jquery_min.js"
                 type="text/javascript"><xsl:comment></xsl:comment></script> -->
-        <xsl:comment>
-          <xsl:text disable-output-escaping="yes">[if lt IE 9]&gt;&lt;script src="</xsl:text>
-          <xsl:value-of select="concat($ximsroot,'skins/',$currentskin)"/>
-          <xsl:text disable-output-escaping="yes">/scripts/html5shiv.js"&gt;&lt;/script&gt;&lt;![endif]</xsl:text>
-        </xsl:comment>
 		<!-- debuggin mode -->
-    <xsl:comment>
-          <xsl:text disable-output-escaping="yes">[if lt IE 9]&gt;&lt;script src="</xsl:text>
-          <xsl:value-of select="concat($ximsroot,'scripts/jquery/')"/>
-          <xsl:text disable-output-escaping="yes">jquery-1.10.2.js"&gt;&lt;/script&gt;&lt;![endif]</xsl:text>
-    </xsl:comment>
-    <xsl:comment>
-          <xsl:text disable-output-escaping="yes">[if gte IE 9]&gt;&lt;script src="</xsl:text>
-          <xsl:value-of select="concat($ximsroot,'scripts/jquery/')"/>
-          <xsl:text disable-output-escaping="yes">jquery-2.0.3.js"&gt;&lt;/script&gt;&lt;![endif]</xsl:text>
-    </xsl:comment>
-    <xsl:comment><xsl:text disable-output-escaping="yes">[if !IE]&gt;</xsl:text></xsl:comment>
-          <script src="{$ximsroot}scripts/jquery/jquery-2.0.3.js" type="text/javascript"><xsl:comment></xsl:comment></script>
-    <xsl:comment><xsl:text disable-output-escaping="yes">&lt;![endif]</xsl:text></xsl:comment>
-		<!-- <script src="{$ximsroot}scripts/jquery/jquery-2.0.3.js" type="text/javascript"><xsl:comment></xsl:comment></script>-->
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-1.10.3.custom.js" type="text/javascript"><xsl:comment></xsl:comment></script>
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-timepicker-addon.js" type="text/javascript"><xsl:comment></xsl:comment></script>
-		<script src="{$ximsroot}scripts/jquery/jquery.ui.combobox.js" type="text/javascript"><xsl:comment></xsl:comment></script>
-		<script src="{$ximsroot}scripts/jquery/jquery-ui-i18n.js" type="text/javascript"><xsl:comment></xsl:comment></script>
+    <script src="{$ximsroot}vendor/jquery/jquery-current.js" type="text/javascript"><xsl:comment/></script>
+		<script src="{$ximsroot}vendor/jquery-ui/js/jquery-ui-current.js" type="text/javascript"><xsl:comment/></script>
+		<script src="{$ximsroot}vendor/jquery-ui-timepicker/jquery-ui-timepicker-addon.js" type="text/javascript"><xsl:comment/></script>
+		<script src="{$ximsroot}vendor/jquery-ui-combobox/jquery.ui.combobox.js" type="text/javascript"><xsl:comment/></script>
+		<script src="{$ximsroot}scripts/jquery-ui-i18n.js" type="text/javascript"><xsl:comment/></script>
 
 	</xsl:template>
 </xsl:stylesheet>

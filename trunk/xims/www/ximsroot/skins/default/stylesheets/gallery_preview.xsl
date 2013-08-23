@@ -39,12 +39,9 @@
 		
 	<xsl:template name="view-content">
 		<h1><xsl:value-of select="/document/context/object/title"/></h1>
-		<!--<p><em>(<xsl:value-of select="$img-count"/>&#160;<xsl:value-of select="$i18n/l/Images"/>, Größe: <xsl:value-of select="$img-width"/>x<xsl:value-of select="$img-height"/>)</em></p>         -->   
 		<p><xsl:value-of select="abstract"/></p>
 		<xsl:apply-templates select="/document/context/object/children"/>
 	
-		<!--<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery.galleria.js"></script>				
-		<script type="text/javascript" src="{$ximsroot}scripts/galleria.js"></script> 		-->		
 		<script type="text/javascript">
 					function scaleimg(){
 						var height = $('.replaced').height();
@@ -53,7 +50,7 @@
 						$('.replaced').css('height', <xsl:value-of select="$img-width"/> * height / width);
 					}
         </script>
-		<script type="text/javascript" src="{$ximsroot}scripts/jquery/jquery.galleria.js"><xsl:comment/></script>				
+		<script type="text/javascript" src="{$ximsroot}vendor/jquery-galleria/jquery.galleria.js"><xsl:comment/></script>				
 		<script type="text/javascript" src="{$ximsroot}scripts/galleria.js"><xsl:comment/></script>
 	</xsl:template>
 	
