@@ -37,8 +37,6 @@ use HTTP::Date;
 use Encode;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
-our $godav = XIMS::GODAV(); # for easy intepolation, as there’s a whole lotta
-                            # stringbuilding ahead...
 
 =head2 handler()
 
@@ -118,6 +116,7 @@ sub proppatch {
 sub get {
     my ( $env, $user ) = @_;
 
+    my $godav = $env->{SCRIPT_NAME};
     my $path = uri_unescape( $env->{PATH_INFO} );
     $path ||= '/';
 
@@ -559,7 +558,7 @@ sub propfind {
         $multistatus->addChild($nresponse);
 
         my $href       = $dom->createElement("D:href");
-        my $href_value = ( XIMS::encode( $godav . $o->location_path() ) )
+        my $href_value = ( XIMS::encode( $env->{SCRIPT_NAME} . $o->location_path() ) )
             || '/';
 
         # append '/' for collections
@@ -816,6 +815,7 @@ sub unlock {
 sub copymove {
     my ( $env, $user, $method ) = @_;
     my $req  = Plack::Request->new($env);
+    my $godav = $env->{SCRIPT_NAME};
     my $path = uri_unescape( $env->{PATH_INFO} );
     $path ||= '/';
 
