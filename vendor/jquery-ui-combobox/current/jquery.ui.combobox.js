@@ -1,6 +1,6 @@
  /*!
  * Copyright Ben Olson (https://github.com/bseth99/jquery-ui-extensions)
- * jQuery UI ComboBox @VERSION
+ * jQuery UI ComboBox 1.0.5
  *
  *  Adapted from Jörn Zaefferer original implementation at
  *  http://www.learningjquery.com/2010/06/a-jquery-ui-combobox-under-the-hood
@@ -35,7 +35,7 @@
 
    $.widget( "ui.combobox", {
 
-      version: "@VERSION",
+      version: "1.0.5",
 
       widgetEventPrefix: "combobox",
 
@@ -149,7 +149,7 @@
                    // remove invalid value, as it didn't match anything
                    $el.val( "" );
                    this.element.prop('selectedIndex', -1);
-                   return false;
+                   //return false;
 
                 }
             }
@@ -228,6 +228,15 @@
 
       widget: function () {
          return this.uiCombo;
+      },
+
+      _getCreateEventData: function() {
+
+         return {
+            select: this.element,
+            combo: this.uiCombo,
+            input: this.uiInput
+         };
       }
 
     });
