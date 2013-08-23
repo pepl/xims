@@ -60,7 +60,7 @@ Known Issues
 
 Bug Reporting
 -------------
-Please report bugs via [our Bugtracker on Source Forge](https://sourceforge.net/tracker/?group_id=42250&atid=432505)
+Please report bugs via our [Bugtracker on Source Forge](http://sourceforge.net/p/xims/bugs/)
 
 
 Credits
