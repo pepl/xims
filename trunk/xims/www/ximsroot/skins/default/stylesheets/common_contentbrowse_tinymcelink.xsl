@@ -50,7 +50,7 @@
           <option value="_top">Browser Window (_top)</option>
         </select>
       </div>
-      <div><button type="button" onclick="inserthyperlink();"><xsl:value-of select="$i18n/l/StoreBack"/></button></div>
+      <div><button type="button" class="button" onclick="inserthyperlink();"><xsl:value-of select="$i18n/l/StoreBack"/></button></div>
       <p><xsl:value-of select="$i18n/l/Search_objTree_obj"/><br/>
         <xsl:apply-templates select="targetparents/object[@id !='1']"/>
         <xsl:apply-templates select="target/object"/>
@@ -69,7 +69,7 @@
     
     <input type="hidden" name="id" value="{@id}"/>
   </form>
-  <script language="javascript" type="text/javascript" src="{$ximsroot}/editors/tinymce/jscripts/tiny_mce/tiny_mce_popup.js"><xsl:comment/></script>
+  <script language="javascript" type="text/javascript" src="{$ximsroot}/vendor/tinymce3/jscripts/tiny_mce/tiny_mce_popup.js"><xsl:comment/></script>
   <xsl:call-template name="scripts"/>
 </xsl:template>
 

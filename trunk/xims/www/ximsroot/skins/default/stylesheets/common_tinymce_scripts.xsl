@@ -14,8 +14,7 @@
 		<!-- <xsl:call-template name="jqtinymce_load" /> -->
 		<xsl:call-template name="mk-inline-js">
 			<xsl:with-param name="code">
-					//var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'tinymce/jscripts/tiny_mce/tiny_mce.js')" />';
-					var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'editors/tinymce/jscripts/tiny_mce/tiny_mce.js')" />';
+					var tinymceUrl = '<xsl:value-of	select="concat($ximsroot,'vendor/tinymce3/jscripts/tiny_mce/tiny_mce.js')" />';
 					//var origbody = null;
 					var editor = null;
 					// language
@@ -25,65 +24,24 @@
 					// filebrowse browseurl
 					var brUrl = '<xsl:value-of select="concat( $xims_box,$goxims_content,'?id=',/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id,'&amp;contentbrowse=1&amp;to=',/document/context/object/parents/object[@document_id=/document/context/object/@parent_id]/@id,'&amp;')" />';
 					// content_css
-					var css = '<xsl:choose>
-						<xsl:when test="css_id != ''">
-							<xsl:value-of select="concat($xims_box,$goxims_content,css_id,'?plain=1')" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="concat($ximsroot,$defaultcss)" />
-						</xsl:otherwise>
-					</xsl:choose>';			
+					var css = '<xsl:value-of select="$defaultcss" /><xsl:if test="css_id != ''">,<xsl:value-of select="concat($xims_box,$goxims_content,css_id,'?plain=1')" /></xsl:if>';			
 			</xsl:with-param>
 		</xsl:call-template>
-		
-		<!-- <script type="text/javascript"> -->
-        <!-- tinyMCE_GZ.init({ -->
-        <!--         plugins     : 'table,contextmenu,advhr,searchreplace,inlinepopups,safari,xhtmlxtras,paste,advimage', -->
-        <!--         themes      : 'advanced', -->
-        <!--         languages   : 'en,de', -->
-        <!--         disk_cache  : true -->
-        <!--         }); -->
-        <!-- </script> -->
 
 		<script type="text/javascript" src="{$ximsroot}scripts/tinymce_script.js"><xsl:comment/></script>
 	</xsl:template>
-
-
-<!--	<xsl:template name="jsorigbody">
-		<xsl:call-template name="mk-inline-js">
-			<xsl:with-param name="code">
-			if (document.readyState != 'complete') {
-				if (window.tinyMCE) {
-					//var f = function() { origbody = window.tinyMCE.getContent(); }
-					var f = function(){
-						tinyMCE.get('body').execCommand('mceCleanup', false, false);
-						origbody = tinyMCE.get('body').getContent();
-					}
-				}
-				if (navigator.userAgent.indexOf("MSIE") != -1) {
-					setTimeout('f', 3700); // MSIE needs that high timeout value
-				}
-				else {
-					setTimeout('f', 3000);
-				}
-			}
-			else {
-				origbody = tinyMCE.get('body').getContent();
-			}
-    </xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>-->
 	
 	<xsl:template name="tinymce_load">
-	<!--
-		<script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js" />
-		<script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce.js" />
-	-->
-		<!-- ### load minimized tinymce ### -->
-		<script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/jquery.tinymce.js"><xsl:comment/></script>
-        <script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_gzip.js"><xsl:comment/></script>
-        <script  type="text/javascript" src="{$ximsroot}editors/tinymce/jscripts/tiny_mce/tiny_mce_min.js"><xsl:comment/></script>
 
+		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/jquery.tinymce.js" ><xsl:comment/></script>
+		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce.js" ><xsl:comment/></script>
+
+		<!-- ### load minimized tinymce ### -->
+		  <!--
+		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/jquery.tinymce.js"><xsl:comment/></script>
+    <script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce_min.js"><xsl:comment/></script>
+  -->
+  
 	</xsl:template>
 	
 	<xsl:template name="tinymce_simple">
