@@ -1003,17 +1003,12 @@ sub _tmpsafe {
 sub _get_path {
     my $path = uri_unescape( $_[0]->{PATH_INFO}) || '/';
 
-    warn "URI unescaped path: '$path'\n";
-
     eval{
         $path = decode( 'UTF-8', $path, Encode::FB_CROAK );
     };
-
     if ($@) {
         HTTP::Exception->throw(400, status_message => "400 Bad Request\n\n$@.\n");
     }
-
-    warn "Decoded path: '$path'\n";
 
     return $path;
 }
