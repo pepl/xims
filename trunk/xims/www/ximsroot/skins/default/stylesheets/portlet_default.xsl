@@ -89,13 +89,13 @@
 
     <xsl:template match="abstract">
         <p>
-                <xsl:apply-templates/>
+                <xsl:apply-templates/><xsl:comment/>
         </p>
     </xsl:template>
 
     <xsl:template match="body">
         <div>
-                <xsl:apply-templates/>
+                <xsl:apply-templates/><xsl:comment/>
         </div>
     </xsl:template>
 </xsl:stylesheet>
