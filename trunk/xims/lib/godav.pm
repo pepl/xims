@@ -34,7 +34,7 @@ use Digest::MD5;
 use HTTP::Exception;
 #use Data::Dumper::Concise;
 use HTTP::Date;
-use Encode;
+use Encode qw(encode decode);
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -117,8 +117,8 @@ sub get {
     my ( $env, $user ) = @_;
 
     my $godav = $env->{SCRIPT_NAME};
-    my $path = uri_unescape( $env->{PATH_INFO} );
-    $path ||= '/';
+    my $path  = _get_path($env);
+
 
     XIMS::Debug(5, "called: $path");
 
@@ -163,7 +163,7 @@ sub get {
                 [   'Content-Type' => "$mime_type; charset=UTF-8",
                     'Last-Modified' => time2str( str2time( $object->last_modification_timestamp(), 'CET') )
                 ],
-                [  encode("UTF-8", $object->body()) ]
+                [  encode('UTF-8', $object->body()) ]
             ];
         }
         else {
@@ -203,8 +203,8 @@ sub head {
 sub put {
     my ( $env, $user ) = @_;
 
-    my $path = uri_unescape( $env->{PATH_INFO} );
-    $path ||= '/';
+    my $path  = _get_path($env);
+    my $godav = 'https://' . $env->{HTTP_HOST} . $env->{SCRIPT_NAME};
 
     XIMS::Debug( 5, "called: $path" );
 
@@ -246,7 +246,7 @@ sub put {
         # update existing object
         if ( $object->body($body) ) {
             if ( $object->update() ) {
-                return [ 201, [], [] ];
+                return [ 201, ['Location' => $godav. $object->location_path()], [] ];
             }
             else {
                 XIMS::Debug( 3,
@@ -311,7 +311,7 @@ sub put {
         # not-quite-DAV-aware applications
         my $id = $importer->import( $object, undef, _tmpsafe($location) );
         if ( defined $id ) {
-            return [ 201, [], [] ];
+            return [ 201, ['Location' => $godav. $object->location_path()], [] ];
         }
         else {
             XIMS::Debug( 3, "Import failed." );
@@ -332,8 +332,7 @@ sub delete {
 
     HTTP::Exception->throw(404) if $env->{REQUEST_URI} =~ m/#\w+/;
 
-    my $path = uri_unescape( $env->{PATH_INFO} );
-    $path ||= '/';
+    my $path = _get_path($env);
 
     XIMS::Debug( 5, "called: $path" );
 
@@ -427,8 +426,9 @@ sub move {
 sub mkcol {
     my ( $env, $user ) = @_;
 
-    my $path = uri_unescape( $env->{PATH_INFO} );
-    $path =~ s#/$##;
+    my $path =  _get_path($env);
+    $path    =~ s#/$##;
+    my $godav = 'https://' . $env->{HTTP_HOST} . $env->{SCRIPT_NAME};
 
     XIMS::Debug( 5, "called: $path" );
 
@@ -463,7 +463,7 @@ sub mkcol {
         if ( not $importer->import($folder) ) {
             HTTP::Exception->throw(405);
         }
-        return [ 201, [], [] ];
+        return [ 201, ['Location' => $godav . $folder->location_path()], [] ];
     }
     else {
         HTTP::Exception->throw(405);
@@ -478,8 +478,7 @@ sub propfind {
     my ( $env, $user ) = @_;
     my $req = Plack::Request->new($env);
 
-    my $path = uri_unescape( $env->{PATH_INFO} );
-    $path ||= '/';
+    my $path = _get_path($env);
 
     XIMS::Debug( 5, "called: $path" );
 
@@ -705,10 +704,8 @@ sub propfind {
 
 sub lock {
     my ( $env, $user ) = @_;
-    my $req = Plack::Request->new($env);
-
-    my $path = uri_unescape( $env->{PATH_INFO} );
-    $path ||= '/';
+    my $req  = Plack::Request->new($env);
+    my $path = _get_path($env);
 
     XIMS::Debug( 5, "called: $path" );
 
@@ -778,8 +775,8 @@ sub unlock {
     my ( $env, $user ) = @_;
     my $status_code;
 
-    my $path = uri_unescape( $env->{PATH_INFO} );
-    $path ||= '/';
+    my $path = _get_path($env);
+
     XIMS::Debug( 5, "called: $path" );
     my $object = XIMS::Object->new(
         User           => $user,
@@ -814,10 +811,9 @@ sub unlock {
 
 sub copymove {
     my ( $env, $user, $method ) = @_;
-    my $req  = Plack::Request->new($env);
-    my $godav = $env->{SCRIPT_NAME};
-    my $path = uri_unescape( $env->{PATH_INFO} );
-    $path ||= '/';
+    my $req   = Plack::Request->new($env);
+    my $godav = 'https://' . $env->{HTTP_HOST} . $env->{SCRIPT_NAME};
+    my $path  = _get_path($env);
 
     XIMS::Debug( 5, "called: $method $path" );
 
@@ -843,7 +839,7 @@ sub copymove {
         HTTP::Exception->throw(412);
     }
 
-    my $destination_path = $req->header('Destination');
+    my $destination_path = decode( 'UTF-8', uri_unescape( $req->header('Destination') ) );
     $destination_path =~ s/^.*?$godav//;  # the cheap and pragmatic way to get the
     $destination_path =~ s#/$##;          # location_path
 
@@ -950,10 +946,10 @@ sub copymove {
             # not-quite-DAV-aware applications
             $args{dontcleanlocation} = _tmpsafe($destination_location);
         }
-
-        if ($object->$method( target => $destination->document_id(), %args ) )
+        my $newobj;
+        if ($newobj = $object->$method( target => $destination->document_id(), %args ) )
         {
-            return [ 201, [], [] ];
+            return [ 201, ['Location' => $godav . ($method eq 'copy' ? $newobj->location_path() : $object->location_path()) ], [] ];
         }
         else {
             XIMS::Debug( 3,
@@ -1002,6 +998,24 @@ sub _tmpsafe {
         $matched++ if $location =~ $_;
     }
     return $matched;
+}
+
+sub _get_path {
+    my $path = uri_unescape( $_[0]->{PATH_INFO}) || '/';
+
+    warn "URI unescaped path: '$path'\n";
+
+    eval{
+        $path = decode( 'UTF-8', $path, Encode::FB_CROAK );
+    };
+
+    if ($@) {
+        HTTP::Exception->throw(400, status_message => "400 Bad Request\n\n$@.\n");
+    }
+
+    warn "Decoded path: '$path'\n";
+
+    return $path;
 }
 
 1;
