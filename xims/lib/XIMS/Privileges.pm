@@ -24,7 +24,7 @@ package XIMS::Privileges;
 
 use common::sense;
 
-# we use `constant functions´ with prototypes as described in perlsub(1).
+# we use `constant functionsÂ´ with prototypes as described in perlsub(1).
 ## no critic
 
 =head2 list
