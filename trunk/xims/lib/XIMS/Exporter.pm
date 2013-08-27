@@ -2340,7 +2340,11 @@ sub remove {
     # kill the meta file
     unlink $kill_path . '/' . $self->{Object}->location . ".container.xml";
 
-    # kill the autoindex if exists
+    # kill the autoindex if exists (i.e. the object was converted from XIMS::Folder)
+    if ( -f $kill_path . '/' . XIMS::AUTOINDEXFILENAME() ) {
+        unlink $kill_path . '/' . XIMS::AUTOINDEXFILENAME();
+    }
+    # kill the gallery index
     if ( -f $kill_path . '/' . "galleryindex.html" ) {
         unlink $kill_path . '/' . "galleryindex.html";
     }
