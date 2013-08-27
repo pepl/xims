@@ -171,6 +171,7 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
 					</xsl:when>
 				</xsl:choose>
 			</input>
+			<xsl:call-template name="button.state.publish"/>
 			<xsl:call-template name="cttobject.dataformat">
 				<xsl:with-param name="dfname" select="/document/data_formats/data_format[@id=$dataformat]/name"/>
 			</xsl:call-template>&#160;
@@ -178,8 +179,7 @@ concat(last_modification_timestamp/year,last_modification_timestamp/month,last_m
 				<xsl:value-of select="title"/>
 				</label>
 				&#160;
-				(<xsl:value-of select="location_path"/>)
-				<xsl:call-template name="button.state.publish"/>
+				(<xsl:value-of select="location_path"/>)				
 		</p>
 	</xsl:template>
 
