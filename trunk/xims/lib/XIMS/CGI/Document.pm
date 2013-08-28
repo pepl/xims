@@ -135,10 +135,6 @@ sub event_store {
 
     my $body = $self->param( 'body' );
     if ( defined $body and length $body ) {
-        if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-            $body = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($body);
-        }
-
         my $object = $ctxt->object();
 
         # The HTMLArea WYSIWG-editor in combination with MSIE translates relative paths in 'href' and 'src' attributes
@@ -157,8 +153,8 @@ sub event_store {
         # check here, if the two strings have the flag set and set it in case.
         my $oldbody = $object->body();
         my $newbody = $body;
-        if ( Encode::is_utf8($oldbody) and not XIMS::DBENCODING() and not Encode::is_utf8($newbody) ) {
-            $newbody = Encode::decode_utf8($newbody);
+        if ( Encode::is_utf8($oldbody) and not Encode::is_utf8($newbody) ) {
+            $newbody = Encode::decode('UTF-8', $newbody);
         }
 
         if ( $trytobalance eq 'true' and $object->body( $body ) ) {
@@ -471,10 +467,6 @@ sub save_PUT_data {
     my $content_length = $ctxt->apache->header_in('Content-length');
     my $content;
     $ctxt->apache->read($content, $content_length);
-
-    if ( XIMS::DBENCODING() ) {
-        $content = Text::Iconv->new("UTF-8", XIMS::DBENCODING())->convert($content);
-    }
 
     $ctxt->object->body( $content );
 
