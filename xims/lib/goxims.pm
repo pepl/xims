@@ -28,6 +28,7 @@ use POSIX qw(setlocale LC_ALL LC_TIME);
 use Time::Piece;
 use XML::LibXSLT ();
 use DBI;
+use Encode qw(encode);
 
 use Plack::Request;
 
@@ -183,9 +184,16 @@ sub login_screen {
     my %messages = (mismatch => '<div class="message"><span>Login failed.<br/>Try again with your correct username and password.</span></div>',
                     logout => '<div class="message"><span>Logout successful.<br/>To log in again, enter your username and password.</span></div>');
     my $message = $messages{ $req->param('reason') };
-    my $action =  $req->param('r');
-    $action =~ s!(^/[a-z]+(?:/[-_a-z0-9]+(?:\.[a-z0-9]+){,2})*/?)?.*!XIMS::GOXIMS().$1!ie;
-    #my $modt = q();
+    my $action = $req->param('r');
+    my $goxims = XIMS::GOXIMS();
+    if ($action =~ /^$goxims/) {
+        $action =~ s!(^/[a-z]+(?:/[-_a-z0-9]+(?:\.[a-z0-9]+){0,2})*/?)?.*!$1!i;
+    }
+    else {
+        $action = XIMS::GOXIMS();
+    }
+
+    # my $motd = q();
     my $motd = <<MOTD;
 <div class="warning">
     <p>I am the optional message of the day. (Lorem ipsum, baby!)</p>
@@ -235,9 +243,9 @@ MOTD
 FORM
 
 return [ 200,
-         [ 'Content-Type' => 'text/html',
+         [ 'Content-Type' => 'text/html;charset=UTF-8',
            'Set-Cookie' => 'session=; path=/; expires=-1Y', ],
-         [ $body ]
+         [ encode('UTF-8', $body) ]
      ];
 };
 

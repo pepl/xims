@@ -152,7 +152,7 @@ sub unauthorized {
              status_code => 302,
              reason      => "Found",
              additional_headers => ['Set-Cookie' => 'session=; path=/; expires=-1Y',
-                                    'Location'   => "/login?reason=$reason&r=".$env->{PATH_INFO},
+                                    'Location'   => "/login?reason=$reason&r=" . $env->{SCRIPT_NAME} . $env->{PATH_INFO},
                                     'X-Reason'   => $reason ? $reason : 'none' ]
          });
 }
