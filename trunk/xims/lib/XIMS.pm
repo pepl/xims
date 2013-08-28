@@ -275,13 +275,9 @@ sub QBDRIVER                  { return $_CONFIG_->QBDriver(); }
 
 sub DBDSN                     { return $_CONFIG_->DBdsn(); }
 
-sub DBENCODING {
-    (         defined $_CONFIG_->DBEncoding()
-          and length $_CONFIG_->DBEncoding()
-          and $_CONFIG_->DBEncoding() !~ /UTF-?8/i )
-      ? return $_CONFIG_->DBEncoding()
-      : return;
-}
+# drop support for non-UTF-8 databases. 
+# conditional conversions are therefore no-ops and safe to remove.
+sub DBENCODING                { return undef; }
 
 sub UIFALLBACKLANG            { return $_CONFIG_->UIFallbackLang(); }
 
