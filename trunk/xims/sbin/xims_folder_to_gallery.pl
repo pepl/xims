@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # Copyright (c) 2002-2011 The XIMS Project.
 # See the file "LICENSE" for information and conditions for use, reproduction,
 # and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.
@@ -43,7 +43,8 @@ my $privmask = $user->object_privmask( $object );
 die "Access Denied. You do not have privileges to modify '$path'.\n" unless ($privmask and ($privmask & XIMS::Privileges::MODIFY()));
 
 my $folder_ot = XIMS::ObjectType->new( name => 'Folder' );
-die "Object '$path' is not a Folder.\n" unless ($object->object_type_id() == $folder_ot->id());
+my $deptroot_ot = XIMS::ObjectType->new( name => 'DepartmentRoot' );
+die "Object '$path' is not a Folder.\n" unless ($object->object_type_id() == $folder_ot->id() or $object->object_type_id() == $deptroot_ot->id());
 
 my $gallery_ot = XIMS::ObjectType->new( name => 'Gallery');
 die "Could not resolve object type for Gallery (should not happen).\n" unless $gallery_ot;
