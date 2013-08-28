@@ -43,9 +43,6 @@
         <DBDOpt>LongReadLen=67108864;LongTruncOk=1</DBDOpt>
         -->
 
-        <!-- Set this to your dabase encoding if the database is not encoded in UTF-8 -->
-        <DBEncoding></DBEncoding>
-
         <!--
         # Number of found objects displayed per page
         # Must be in sync with the corresponding value in $ximsroot/stylesheets/config.xsl
