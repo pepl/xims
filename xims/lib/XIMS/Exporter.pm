@@ -1048,7 +1048,6 @@ sub generate_dom {
 
     if ( defined $object ) {
         my $handler = XML::LibXML::SAX::Builder->new();
-        $handler->{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
 
         my $controller   = undef;
         my @sax_filters = $self->set_sax_filters();
@@ -2261,7 +2260,7 @@ sub create {
             return;
         }
         ###
-        
+
         ########## image index exp ########
         # first, the object DOM
         my $raw_dom2 = $self->generate_dom_galleryimages();
@@ -2276,7 +2275,7 @@ sub create {
             XIMS::Debug( 2, "transformation failed" );
             return;
         }
-        
+
         my $meta_path2 = $new_path . '/images.htm';
         XIMS::Debug( 4, "index file is $meta_path2" );
         # write the file...

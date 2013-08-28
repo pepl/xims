@@ -40,6 +40,7 @@ use Text::Diff;
 use Text::ParseWords ();    # for _parse_attributes
 use XML::LibXML;            # for balanced_string(), balance_string()
 use IO::File;               # for balanced_string()
+use Carp;
 
 our ($VERSION) = ( q$Revision$ =~ /\s+(\d+)\s*$/ );
 
@@ -3368,7 +3369,8 @@ sub balanced_string {
         else {
             my $encoding;
             $encoding = $args{encoding} if defined $args{encoding};
-            $encoding ||= ( XIMS::DBENCODING() || 'UTF-8' );
+            $encoding ||= 'UTF-8';
+            carp "Non-UTF-8 encoding '$encoding' set!\n" unless $encoding eq 'UTF-8';
             eval { $doc = $parser->parse_xml_chunk( $CDATAstring, $encoding ); };
             if ( !$doc or $@ ) {
                 XIMS::Debug( 2, "string not well-balanced" );

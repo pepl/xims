@@ -240,7 +240,7 @@ sub put {
         if ( $object->data_format->mime_type =~ /^text/ ) {
 
             # for those editors which did not get the encoding right...
-            $body = XIMS::utf8_sanitize($body) unless XIMS::DBENCODING();
+            $body = XIMS::utf8_sanitize($body);
         }
 
         # update existing object
@@ -302,7 +302,7 @@ sub put {
         if ( $object->data_format->mime_type =~ /^text/ ) {
 
             # for those editors which did not get the encoding right...
-            $body = XIMS::utf8_sanitize($body) unless XIMS::DBENCODING();
+            $body = XIMS::utf8_sanitize($body);
         }
 
         $object->body($body);

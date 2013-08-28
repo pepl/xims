@@ -1,7 +1,7 @@
 
 =head1 NAME
 
-XIMS::Entities -- A .... doing bla, bla, bla. (short)
+XIMS::Entities -- a modified version of Gisle Aas' HTML::Entities module.
 
 =head1 VERSION
 
@@ -13,33 +13,31 @@ $Id$
 
 =head1 DESCRIPTION
 
-This module bla bla
+This is is a modified version of Gisle Aas' HTML::Entities module,
+It was stripped down to what we need and pulled into the XIMS namespace,
+to avoid messing up the original Module
+(and potentially rendering it useless for purposes other than ours)
+
+The "decode_entity_old" function was renamed to "decode";
+Some changes where made to avoid decoding entities
+of "'",'"',"&","<" and ">". %decodemap was introduced
+to allow decoding numeric entities known from %entity2char.
+
+Original Copyright:
+
+  Id: Entities.pm,v 1.22 2001/04/11 17:22:45 gisle Exp
+
+  This library is free software; you can redistribute it and/or
+  modify it under the same terms as Perl itself.
 
 =head1 SUBROUTINES/METHODS
 
 =cut
 
-#
-# This is is a modified version of Gisle Aas' HTML::Entities module,
-# It was stripped down to what we need and pulled into the XIMS namespace,
-# to avoid messing up the original Module
-# (and potentially rendering it useless for purposes other than ours)
-#
-# The "decode_entity_old" function was renamed to "decode";
-# Some changes where made to avoid decoding entities
-# of "'",'"',"&","<" and ">". %decodemap was introduced
-# to allow decoding numeric entities known from %entity2char.
-#
-# Original Copyright:
-#
-# Id: Entities.pm,v 1.22 2001/04/11 17:22:45 gisle Exp
-#
-# This library is free software; you can redistribute it and/or
-# modify it under the same terms as Perl itself.
+
 package XIMS::Entities;
 
 use common::sense;
-
 # require instead of use here because we do not want Encode::decode to be
 # exported and trigger a "method decode redefined" warning
 require Encode;
@@ -439,36 +437,22 @@ sub decode {
     }
     my $c;
 
-    # this assumes that if XIMS::DBENCODING() is set, it refers to a one byte
-    # encoding and that users who need multi-byte encodings will use utf-8
-    if ( XIMS::DBENCODING() ) {
-        for (@$array) {
-            s/(&\#(\d+);?)/($2 < 256 and exists $decodemap{$2}) ? chr($2) : $1/eg;
-            s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2);($c < 256 and exists $decodemap{$c}) ? chr($c) : $1/eg;
-            s/(&(\w+);?)/$entity2char{$2} || $1/eg;
-        }
+    for (@$array) {
+        # convert the octets and turn utf-8 flag on.
+        # otherwise lines containing chars chr(127)+, will
+        # be incorrectly utf-8 encoded :-/
+        # XXX do we still need this?
+        $_ = Encode::decode('UTF-8', $_) unless Encode::is_utf8($_);
+
+        s/(&\#(\d+);?)/exists $decodemap{$2} ? chr($2) : $1/eg;
+        s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2);exists $decodemap{$c} ? chr($c) : $1/eg;
+        s/(&(\w+);?)/$entity2char{$2} || $1/eg;
+
+        # convert back and turn utf-8 flag off. otherwise XML::LibXML
+        # will get confused and will not parse the string :-/
+        $_ = Encode::encode('UTF-8', $_);
     }
-    else {
-        for (@$array) {
-            # if XIMS::DBENCODING is not set, the database and input/output are expected to be
-            # encoded in utf-8
-            #utf8::decode($_);
 
-            # convert the octets and turn utf-8 flag on.
-            # otherwise lines containing chars chr(127)+, will
-            # be incorrectly utf-8 encoded :-/
-            $_ = Encode::decode_utf8($_) unless Encode::is_utf8($_);
-
-            s/(&\#(\d+);?)/exists $decodemap{$2} ? chr($2) : $1/eg;
-            s/(&\#[xX]([0-9a-fA-F]+);?)/$c = hex($2);exists $decodemap{$c} ? chr($c) : $1/eg;
-            s/(&(\w+);?)/$entity2char{$2} || $1/eg;
-
-            # convert back and turn utf-8 flag off. otherwise XML::LibXML
-            # will get confused and will not parse the string :-/
-            $_ = Encode::encode_utf8($_);
-
-        }
-    }
     wantarray ? @$array : $array->[0];
 }
 
@@ -480,27 +464,13 @@ __END__
 
 Look at the F<error_log> file for messages.
 
-=head1 CONFIGURATION AND ENVIRONMENT
-
-in F<httpd.conf>: yadda, yadda...
-
-Optional section , remove if bogus
-
-=head1 DEPENDENCIES
-
-Optional section, remove if bogus.
-
-=head1 INCOMPATABILITIES
-
-Optional section, remove if bogus.
-
 =head1 BUGS AND LIMITATION
 
 Grep the source file for: XXX, TODO, ITS_A_HACK_ALARM.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2002-2011 The XIMS Project.
+Copyright (c) 2002-2013 The XIMS Project.
 
 See the file F<LICENSE> for information and conditions for use, reproduction,
 and distribution of this work, and for a DISCLAIMER OF ALL WARRANTIES.

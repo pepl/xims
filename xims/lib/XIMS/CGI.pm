@@ -184,7 +184,7 @@ sub event_test_location {
     $self->{RES} = $self->{REQ}->new_response(
         $self->psgi_header(
             -type    => 'application/json',
-            -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+            -charset => 'UTF-8'
         )
     );
 	$self->skipSerialization(1);
@@ -630,15 +630,12 @@ sub event_plain {
 		$body = XIMS::xml_unescape($body);
 	}
 
-	my $charset;
-	if ( !( $charset = XIMS::DBENCODING ) ) { $charset = "UTF-8"; }
-
 	$self->{RES} = $self->{REQ}->new_response(
         $self->psgi_header(
             -type => $df->mime_type,
-            -charset => $charset,
+            -charset => 'UTF-8',
         ),
-        Encode::encode("UTF-8", $body)
+        Encode::encode('UTF-8', $body)
     );
 	$self->skipSerialization(1);
 
@@ -844,7 +841,6 @@ sub getDOM {
 	  defined $ctxt->sax_generator() ? $ctxt->sax_generator() : undef;
 	my $filter = defined $ctxt->sax_filter() ? $ctxt->sax_filter() : [];
 	my $handler = XML::LibXML::SAX::Builder->new();
-	$handler->{Encoding} = XIMS::DBENCODING() if XIMS::DBENCODING();
 	my $controller = XIMS::SAX->new(
 		Handler    => $handler,
 		Generator  => $generator,
@@ -963,7 +959,7 @@ sub simple_response {
         $self->psgi_header(
             -status  => $status,
             -type    => $type,
-            -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+            -charset => 'UTF-8'
         ),
         "$msg\n"
     );
@@ -1421,14 +1417,14 @@ sub init_store_object {
 	my $abstract = $self->param('abstract');
 	my $notes    = $self->param('notes');
 
-	if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
-		$title = XIMS::decode($title) if ( defined $title and length $title );
-		$keywords = XIMS::decode($keywords)
-		  if ( defined $keywords and length $keywords );
-		$abstract = XIMS::decode($abstract)
-		  if ( defined $abstract and length $abstract );
-		$notes = XIMS::decode($notes) if ( defined $notes and length $notes );
-	}
+	# if ( XIMS::DBENCODING() and $self->request_method eq 'POST' ) {
+	# 	$title = XIMS::decode($title) if ( defined $title and length $title );
+	# 	$keywords = XIMS::decode($keywords)
+	# 	  if ( defined $keywords and length $keywords );
+	# 	$abstract = XIMS::decode($abstract)
+	# 	  if ( defined $abstract and length $abstract );
+	# 	$notes = XIMS::decode($notes) if ( defined $notes and length $notes );
+	# }
 
 	if ( $object and $object->id() and length $self->param('id') ) {
 		unless ( $ctxt->session->user->object_privmask($object) &
@@ -1507,8 +1503,7 @@ sub init_store_object {
 				# return 3 (dirty location) otherwise
 				if ( not defined $is_event_test_location ) {
 					$self->sendError( $ctxt,
-						__
-"Failed to clean the location / filename. Please supply a sane filename!"
+						__"Failed to clean the location / filename. Please supply a sane filename!"
 					);
 					return 0;
 				}
@@ -3154,7 +3149,7 @@ sub event_prettyprintxml {
     $self->{RES} = $self->{REQ}->new_response(
         $self->psgi_header(
             -type    => 'text/plain',
-            -charset => ( XIMS::DBENCODING() ? XIMS::DBENCODING() : 'UTF-8' )
+            -charset => 'UTF-8'
         )
     );
 	$self->skipSerialization(1);
@@ -4362,11 +4357,11 @@ sub event_search {
 
 		# Make sure the utf8 flag is turned on for handling the allowed
 		# chars regex
-		if ( not XIMS::DBENCODING() ) {
+		#if ( not XIMS::DBENCODING() ) {
 			require Encode;
 			no warnings 'prototype';
 			Encode::_utf8_on($search);
-		}
+		#}
 
 		my $allowed =
 		  XIMS::decode(

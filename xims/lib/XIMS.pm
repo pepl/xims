@@ -26,8 +26,8 @@ package XIMS;
 
 use common::sense;
 use XIMS::Config;
-use Text::Iconv;
 use Encode ();
+use Carp;
 
 our $AUTOLOAD;
 our $VERSION = 1.2;
@@ -275,7 +275,7 @@ sub QBDRIVER                  { return $_CONFIG_->QBDriver(); }
 
 sub DBDSN                     { return $_CONFIG_->DBdsn(); }
 
-# drop support for non-UTF-8 databases. 
+# drop support for non-UTF-8 databases.
 # conditional conversions are therefore no-ops and safe to remove.
 sub DBENCODING                { return undef; }
 
@@ -477,60 +477,28 @@ sub xml_escape_noquot {
 
 =head2 encode()
 
-=head3 Parameter
-
-    $to_encode: string
-
-=head3 Returns
-
-    $encoded: string encoded from XIMS::DBENCODING to UTF-8
-
 =head3 Description
 
-    my $encoded = XIMS::encode( $to_encode )
-
-Encodes a string from XIMS::DBENCODING to UTF-8
+Legacy. Returns its input.
 
 =cut
 
 sub encode {
-    my $string = shift;
-
-    return $string unless XIMS::DBENCODING();
-
-    my $converter = Text::Iconv->new( XIMS::DBENCODING(), "UTF-8" );
-    $string = $converter->convert($string) if defined $string;
-
-    return $string;
+    carp "XIMS::encode does nothing for you!\n";
+    return $_[0];
 }
 
 =head2 decode()
 
-=head3 Parameter
-
-    $to_decode: string
-
-=head3 Returns
-
-    $decoded: string encoded from UTF-8 to XIMS::DBENCODING
-
 =head3 Description
 
-    my $decoded = XIMS::decode( $to_decode )
-
-Decodes a string from UTF-8 to XIMS::DBENCODING.
+Legacy. Returns its input.
 
 =cut
 
 sub decode {
-    my $string = shift;
-
-    return $string unless XIMS::DBENCODING();
-
-    my $converter = Text::Iconv->new( "UTF-8", XIMS::DBENCODING() );
-    $string = $converter->convert($string) if defined $string;
-
-    return $string;
+    carp "XIMS::decode does nothing for you!\n";
+    return $_[0];
 }
 
 =head2 nodevalue()
@@ -566,8 +534,6 @@ sub nodevalue {
             $value = $node->textContent();
         }
         if ( length $value ) {
-
-# $value = XIMS::DBENCODING() ? XML::LibXML::decodeFromUTF8(XIMS::DBENCODING(),$value) : $value;
             return $value;
         }
     }
