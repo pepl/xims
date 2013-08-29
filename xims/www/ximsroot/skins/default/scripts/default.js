@@ -126,6 +126,55 @@ function initMenuMenu(){
 		});
 }
 
+function containerDate(){
+	//date is defined by xsl-param $sb
+	if (!date || !date.contains('date') ) date = "date";
+    $('.td-vf,.td-vt').hide();
+    $('.th-lm').click(function(){
+       var sortlink = $(this).parent().parent().next();
+       sortlink.children().last().text($(this).text());
+       $('.td-lm').show(); 
+       $('.td-vf,.td-vt').hide();
+       sortlink.attr('href', sortlink.attr('href').replace(date, "date")) ;
+       date = "date";
+    });
+    $('.th-vf').click(function(){
+    	var sortlink = $(this).parent().parent().next();
+    	$(this).parent().parent().next().children().last().text($(this).text());
+		$('.td-vf').show(); 
+		$('.td-lm,.td-vt').hide();
+		sortlink.attr('href', sortlink.attr('href').replace(date, "vfdate")) ;
+        date = "vfdate";
+     });
+    $('.th-vt').click(function(){
+    	var sortlink = $(this).parent().parent().next();
+    	$(this).parent().parent().next().children().last().text($(this).text());
+    	$('.td-vt').show(); 
+    	$('.td-vf,.td-lm').hide();
+     	sortlink.attr('href', sortlink.attr('href').replace(date, "vtdate")) ;
+     	date = "vtdate";
+     });
+    $('#select-date')
+    	.css('cursor', 'pointer')
+       .click(function() {
+    	   var menu = $( this ).next();
+    	   if (menu.is(":visible")) {
+    		   menu.hide();
+    		   return false;
+    	   }
+    	   menu.menu().show().css({top:0, left:0}).position({
+    		   my: "left top+5px",
+    		   at: "left bottom",
+    		   of: this
+    	   });
+    	   $(document).one("click", function() {
+    		   menu.hide();
+    	   });
+    	   return false;
+       });
+}
+
+
 function findPos(obj) {    
         var position = $(obj).offset();
 	    return [position.left, position.top];
@@ -210,6 +259,7 @@ function aclTooltip(){
             ui.tooltip.css("max-width", "800px");
         }
         },
+        
         {position: {my: "right-570 top+10", at: "left bottom", collision: "fit", of: '#'+stroa+currid}}
       );
     });
@@ -587,6 +637,7 @@ $(document).ready(function(){
 		selectAllObjects();
 		OTFilter();
 		selectAllOTs();
+		containerDate();
 		
 	}
 	if($("#create-widget").length > 0){
