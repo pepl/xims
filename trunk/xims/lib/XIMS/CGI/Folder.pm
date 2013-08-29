@@ -985,6 +985,8 @@ sub get_display_params {
         cdate    => 'creation_timestamp',
         mdate    => 'last_modification_timestamp',
         date     => 'last_modification_timestamp',
+        vfdate     => 'valid_from_timestamp',
+        vtdate     => 'valid_to_timestamp',
         position => 'position',
         title    => 'title',
         location    => 'location'
