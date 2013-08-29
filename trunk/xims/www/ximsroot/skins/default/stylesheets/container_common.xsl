@@ -594,7 +594,7 @@
       var date = '<xsl:value-of select="$sb"/>' ;
     </script>
     <span id="select-date" class="ui-icon ui-icon-gear">
-      <xsl:attribute name="title"><xsl:value-od select="$i18n/l/Selection"/></xsl:attribute>
+      <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Selection"/></xsl:attribute>
       <xsl:comment/>
     </span>
     <ul style="position:absolute !important;z-index:100;display: none">
