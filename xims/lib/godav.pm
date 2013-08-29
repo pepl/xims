@@ -557,7 +557,7 @@ sub propfind {
         $multistatus->addChild($nresponse);
 
         my $href       = $dom->createElement("D:href");
-        my $href_value = ( XIMS::encode( $env->{SCRIPT_NAME} . $o->location_path() ) )
+        my $href_value = ( $env->{SCRIPT_NAME} . $o->location_path() )
             || '/';
 
         # append '/' for collections
