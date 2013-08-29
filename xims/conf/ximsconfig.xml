@@ -236,12 +236,17 @@
 		<DefaultUserPrefsContainerview>title</DefaultUserPrefsContainerview>
 		<DefaultUserPrefsPubOnSave>0</DefaultUserPrefsPubOnSave>
 		
+		<!--  Default CSS for Document's Content -->
+    <DefaultCSS></DefaultCSS>
 		<!--
 		# Maximum Number of objects that can be processed 
 		# by a multiple object action or recursion
 		# (publish, move, delete, grant privileges)
 		-->
 		<RecMaxObjects>1500</RecMaxObjects>
+		
+    <!-- Email Address for Xims-Support -->
+    <SupportMailAddress></SupportMailAddress>
 		
     </General>
     <!-- Relative to $xims_home/conf -->

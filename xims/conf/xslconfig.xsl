@@ -58,10 +58,9 @@ This stylesheet is used to generate www/ximsroot/stylesheets/config.xsl from con
       <xslt:variable name="xims_box"><xslt:value-of select="/document/context/session/serverurl"/></xslt:variable>
       <xslt:variable name="ximsroot"><xslt:value-of select="$xims_box"/><xsl:value-of select="concat('/',XIMSRoot,'/')"/></xslt:variable>
       <xslt:variable name="currentskin"><xslt:value-of select="/document/context/session/skin"/></xslt:variable>
-      <xslt:variable name="defaultcss">skins/<xslt:value-of select="$currentskin"/>/stylesheets/default.css</xslt:variable>
+      <xslt:variable name="defaultcss"><xsl:value-of select="DefaultCSS"/></xslt:variable>
       <xslt:variable name="resolvereltositeroots"><xsl:value-of select="ResolveRelToSiteRoots"/></xslt:variable>
-      <xslt:variable name="jquery"><xslt:value-of select="$ximsroot"/>scripts/jquery/jquery.js</xslt:variable>
-      <xslt:variable name="supportmailaddress">xims-support@uibk.ac.at</xslt:variable>
+      <xslt:variable name="supportmailaddress"><xsl:value-of select="SupportMailAddress"/></xslt:variable>
       <xslt:variable name="js-config">{ goxims:'<xsl:value-of select="concat('/',goxims)"/>',
   gobaxims:'<xsl:value-of select="concat('/',gobaxims)"/>',
   gopublic:'<xsl:value-of select="concat('/',gopublic)"/>',
