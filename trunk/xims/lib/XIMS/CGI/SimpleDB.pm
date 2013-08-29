@@ -85,7 +85,7 @@ sub event_default {
     $self->expand_attributes( $ctxt );
 
     my $style = $self->param('style');
-    if ( defined $style ) {
+    if ( defined $style and style =~ /^[-\w]+$/ ) {
         $ctxt->properties->application->style( $style );
     }
 
@@ -124,7 +124,7 @@ sub event_default {
     if ( defined $search ) {
         $self->param( 'searchstring', $search ); # update CGI param, so that stylesheets get the right one
     }
-    $search ||= XIMS::decode($self->param('searchstring')); # fallback
+    $search ||= $self->param('searchstring'); # fallback
 
     if ( defined $search and length($search) >= 2 and length($search) <= 128 ) {
         my $allowed = q{\!=a-zA-Z0-9ÀÁÂÃÅÆÇÈÉÊËÐÑÒÓÔÕØÙÚÛàáâãåæçèéêëìíîïðñòóôõøùúûüýöäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
@@ -211,7 +211,7 @@ sub event_create_property_mapping {
     my %values;
     foreach my $name ( $property->fields() ) {
         next if $name eq 'id';
-        my $value = XIMS::clean( XIMS::decode( $self->param( "sdbp_" . $name ) ) );
+        my $value = XIMS::clean( $self->param( "sdbp_" . $name ) );
         $values{$name} = $value if defined $value;
     }
 
@@ -268,7 +268,7 @@ sub event_update_property_mapping {
     my %values;
     foreach my $name ( $property->fields() ) {
         next if ( $name eq 'id' or $name eq 'type' ); # skip fields that cannot be updated
-        my $value = XIMS::clean( XIMS::decode( $self->param( "sdbp_" . $name ) ) );
+        my $value = XIMS::clean( $self->param( "sdbp_" . $name ) );
         next if ( $name eq 'name' and not defined $value ); # name is mandatory
         # TODO check property regex
         $property->$name( $value );
