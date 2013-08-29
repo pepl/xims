@@ -99,12 +99,6 @@ builder {
         mount '/' => \&godav::handler;
     };
 
-    mount '/godav' => builder {
-        enable "XIMS::AppContext";
-        enable "XIMS::Auth::Basic";
-        mount '/' => \&godav::handler;
-    };
-
     # static files
     mount XIMS::XIMSROOT_URL()    =>  Plack::App::File->new( root => XIMS::XIMSROOT() );
     mount XIMS::PUBROOT_URL()     =>  Plack::App::File->new( root => XIMS::PUBROOT() );
