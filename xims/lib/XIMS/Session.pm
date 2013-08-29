@@ -107,7 +107,8 @@ sub new {
             my $host = exists $args{host}
                 && length $args{host} ? $args{host} : '127.0.0.1';
 
-            if ( $host =~ /^([0-9]{1,3}\.[0-9]{1,3})/ ) {
+            # XXX: matching the full IP can be annoying if IPs change often
+            if ( $host =~ /^([0-9]{1,3}(?:\.[0-9]{1,3}){3})/ ) {
                 $hostnet = $1;
             }
 
@@ -215,8 +216,8 @@ sub validate {
     my $hostnet = q{};
     my $retval  = undef;
 
-
-    if ( $host =~ /^([0-9]{1,3}\.[0-9]{1,3})/ ) {
+    # XXX: matching the full IP can be annoying if IPs change often
+    if ( $host =~ /^([0-9]{1,3}(?:\.[0-9]{1,3}){3})/ ) {
         $hostnet = $1;
     }
 
