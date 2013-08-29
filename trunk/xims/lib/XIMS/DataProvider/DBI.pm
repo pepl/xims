@@ -980,7 +980,7 @@ sub get_object_id_by_path {
                     XIMS::Debug( 6, "new id: '$id' (symid '" . (defined $symid ? $symid : '') . "')" );
                 }
                 else {
-                    XIMS::Debug( 3, "could not resolve path, got 404" );
+                    XIMS::Debug( 3, "could not resolve path '" . $param{path} . "'" );
                     return;
                 }
             }
