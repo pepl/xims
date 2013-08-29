@@ -85,7 +85,7 @@ sub event_default {
     $self->expand_attributes( $ctxt );
 
     my $style = $self->param('style');
-    if ( defined $style and style =~ /^[-\w]+$/ ) {
+    if ( defined $style and $style =~ /^[-\w]+$/ ) {
         $ctxt->properties->application->style( $style );
     }
 
