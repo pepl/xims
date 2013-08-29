@@ -84,7 +84,7 @@ sub event_default {
     my ( $self, $ctxt ) = @_;
 
     my $style = $self->param('style');
-    if ( defined $style ) {
+    if ( defined $style and $style =~ /^[-\w]+$/ ) {
         $ctxt->properties->application->style( $style );
     }
 
@@ -113,7 +113,7 @@ sub event_default {
     if ( defined $author_lname ) {
         $self->param( 'author_lname', $author_lname ); # update CGI param, so that stylesheets get the right one
     }
-    $author_lname ||= XIMS::decode($self->param('author_lname')); # fallback
+    $author_lname ||= $self->param('author_lname'); # fallback
 
     # The following parameter can be used to specify a title for the citation listing
     # Since it *may* come in as latin1 depending on the pubstylesheet encoding,
@@ -167,7 +167,7 @@ sub event_reflibsearch {
     my ( $self, $ctxt ) = @_;
 
     my $style = $self->param('style');
-    if ( defined $style ) {
+    if ( defined $style and $style =~ /^[-\w]+$/ ) {
         $ctxt->properties->application->style( $style );
     }
     else {
@@ -191,7 +191,7 @@ sub event_reflibsearch {
     if ( defined $search ) {
         $self->param( 'reflibsearch', $search ); # update CGI param, so that stylesheets get the right one
     }
-    $search ||= XIMS::decode($self->param('reflibsearch')); # fallback
+    $search ||= $self->param('reflibsearch'); # fallback
 
     # The following parameter can be used to specify a title for the citation listing
     # Since it *may* come in as latin1 depending on the pubstylesheet encoding,
@@ -533,7 +533,7 @@ sub event_import {
             $object->reference( $reference );
 
             my $importer = XIMS::Importer::Object::ReferenceLibraryItem->new( User => $ctxt->session->user(), Parent => $ctxt->object() );
-            my $identifier = XIMS::trim( XIMS::decode( $self->param( 'identifier' ) ) );
+            my $identifier = XIMS::trim( $self->param( 'identifier' ) );
             if ( defined $identifier and defined $propertyvalues{identifier} and not $importer->check_duplicate_identifier( $propertyvalues{identifier} ) ) {
                 XIMS::Debug( 3, "Reference with the same identifier already exists." );
                 next;
@@ -654,9 +654,9 @@ sub event_author {
 
     my $authorid = $self->param('author_id');
     unless ( $authorid ) {
-        my $authorfirstname  = XIMS::decode( $self->param('author_firstname') );
-        my $authormiddlename = XIMS::decode( $self->param('author_middlename') );
-        my $authorlastname   = XIMS::decode( $self->param('author_lastname') );
+        my $authorfirstname  = $self->param('author_firstname');
+        my $authormiddlename = $self->param('author_middlename');
+        my $authorlastname   = $self->param('author_lastname');
 
         my $author;
         my $author_type;
