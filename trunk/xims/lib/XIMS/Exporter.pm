@@ -2471,7 +2471,7 @@ sub generate_dom_gallery {
     # the result of exporter_document.xsl
 
     $self->{Stylesheet} = XIMS::XIMSROOT() . '/stylesheets/exporter/export_galleryindex.xsl'; # . XIMS::AUTOINDEXEXPORTSTYLESHEET();
-    warn "\n gallery locationpath : ".$self->{Object}->location_path();
+    # warn "\n gallery locationpath : ".$self->{Object}->location_path();
     $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/.galleryindex.html'; # . XIMS::AUTOINDEXFILENAME();
 
     return $dom;
@@ -2503,7 +2503,7 @@ sub generate_dom_galleryimages {
     # the result of exporter_document.xsl
 
     $self->{Stylesheet} = XIMS::XIMSROOT() . '/stylesheets/exporter/export_galleryimages.xsl'; # . XIMS::AUTOINDEXEXPORTSTYLESHEET();
-    warn "\n gallery locationpath : ".$self->{Object}->location_path();
+    # warn "\n gallery locationpath : ".$self->{Object}->location_path();
     $self->{Exportfile} = XIMS::PUBROOT() . $self->{Object}->location_path() . '/.images.htm'; # . XIMS::AUTOINDEXFILENAME();
 
     return $dom;
