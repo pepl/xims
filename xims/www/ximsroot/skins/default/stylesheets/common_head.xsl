@@ -130,6 +130,8 @@
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/sprites.css" type="text/css"/>
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/menu.css" type="text/css"/>
 		
+    <!-- custom content css -->
+    <xsl:if test="$defaultcss != ''"><link type="text/css" href="{$defaultcss}" rel="stylesheet"/></xsl:if>
 
 	</xsl:template>
 	
