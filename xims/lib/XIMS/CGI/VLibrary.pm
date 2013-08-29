@@ -138,7 +138,7 @@ sub event_subject {
     my $subjectid = $self->param('subject_id');
 
     unless ($subjectid) {
-        my $subjectname = XIMS::decode( $self->param('subject_name') );
+        my $subjectname =  $self->param('subject_name');
         if ( defined $subjectname ) {
             my $subject = XIMS::VLibSubject->new(
                 name        => $subjectname,
@@ -196,7 +196,7 @@ sub event_subject_view {
 
     # View kind of intro page for the selected subject. Just for public use.
     # call the library with the param subject_view=1
-    if ( $self->session->auth_module() eq 'XIMS::Auth::Public' ) {
+    if ( $ctxt->session->auth_module() eq 'XIMS::Auth::Public' ) {
         XIMS::Debug( 5, "Viewing subject" );
 
         #$ctxt->properties->content->escapebody(1);
@@ -238,7 +238,7 @@ sub event_keyword {
 
     my $keywordid = $self->param('keyword_id');
     unless ($keywordid) {
-        my $keywordname = XIMS::decode( $self->param('keyword_name') );
+        my $keywordname =  $self->param('keyword_name');
         if ( defined $keywordname ) {
             my $keyword = XIMS::VLibKeyword->new(
                 name        => $keywordname,
@@ -306,10 +306,9 @@ sub event_author {
     my $authorid = $self->param('author_id');
 
     unless ($authorid) {
-        my $authorfirstname = XIMS::decode( $self->param('author_firstname') );
-        my $authormiddlename =
-          XIMS::decode( $self->param('author_middlename') );
-        my $authorlastname = XIMS::decode( $self->param('author_lastname') );
+        my $authorfirstname  = $self->param('author_firstname');
+        my $authormiddlename = $self->param('author_middlename');
+        my $authorlastname   = $self->param('author_lastname');
 
         my $author;
         my $author_type;
@@ -398,9 +397,8 @@ sub event_publication {
 
     my $publicationid = $self->param('publication_id');
     unless ($publicationid) {
-        my $publicationname = XIMS::decode( $self->param('publication_name') );
-        my $publicationvolume =
-          XIMS::decode( $self->param('publication_volume') );
+        my $publicationname   = $self->param('publication_name');
+        my $publicationvolume = $self->param('publication_volume');
 
         #XIMS::Debug( 6, "publicationname: $publicationname publicationvolume:
         #$publicationvolume" );
@@ -847,10 +845,8 @@ sub event_vlsearch {
             return 0;
         }
         ## use critic
-        my $allowed =
-          XIMS::decode(
-            q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~})
-          ;    ## just for emacs' font-lock... ;-)
+        my $allowed = q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
+        ## just for emacs' font-lock... ;-)
         my $qb = $qbdriver->new(
             {
                 search         => $search,
@@ -1147,9 +1143,7 @@ sub event_filter {
                 return 0;
             }
             ## use critic
-            my $allowed =
-              XIMS::decode(
-                q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~});
+            my $allowed = q{\!a-zA-Z0-9öäüßÖÄÜß%:\-<>\/\(\)\\.,\*&\?\+\^'\"\$\;\[\]~};
             my $qb = $qbdriver->new(
                 {
                     search         => $text,
