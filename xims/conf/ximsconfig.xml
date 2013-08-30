@@ -248,6 +248,14 @@
     <!-- Email Address for Xims-Support -->
     <SupportMailAddress></SupportMailAddress>
 		
+    <!--  Custom Help Links (XIMS Documentation, Support, ...) -->
+    <HelpLinks>
+      <li><a href="http://xims.info/documentation/" target="_blank">
+              <xsl:attribute name="title">Systeminfo</xsl:attribute>
+              Systeminfo
+          </a>
+       </li>
+    </HelpLinks>
     </General>
     <!-- Relative to $xims_home/conf -->
     <Include>conf.d</Include>

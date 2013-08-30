@@ -457,132 +457,15 @@
 	</xsl:template>
 
 	<!--Help Widget-->	
-	<!-- customize the items in this widget to fit your needs -->
-	<!-- items and links should be listed in a config file (i18n problem ... ) -->
+	<!-- customize the items in this widget in the config file -->
 	<xsl:template name="help-widget">
 
 		<div id="help-widget">
 			<button><xsl:value-of select="$i18n/l/Help"/></button>
 			<ul style="position:absolute !important; width: 150px">
-					<!--
-					<li>
-						<a href="http://xims.info/documentation/" target="_blank">
-							<xsl:attribute name="title">
-								<xsl:value-of select="$i18n/l/Systeminfo"/>
-							</xsl:attribute>
-								<xsl:value-of select="$i18n/l/Systeminfo"/>
-						</a>
-					</li>
-					-->
-<!--					
-<li>
-						<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank">
-							<xsl:attribute name="title">
-								<xsl:value-of select="$i18n/l/stepManual"/>
-							</xsl:attribute>
-								<xsl:value-of select="$i18n/l/Manual"/>
-						</a>
-					</li>
-					<li>
-						<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank">
-							<xsl:attribute name="title">
-								<xsl:value-of select="$i18n/l/FAQ_long"/>
-							</xsl:attribute>
-								<xsl:value-of select="$i18n/l/FAQ"/>
-						</a>
-					</li>
-					-->
-					<li>
-						<!--<a href="http://www.uibk.ac.at/webredaktion/xims/" target="_blank" >-->
-						 <a href="http://www.uibk.ac.at/webredaktion/xims/" target="_blank">
-
-							<xsl:attribute name="title">XIMS an der Universität Innsbruck</xsl:attribute>XIMS UIBK
-						</a>
-					</li>
-					<li>
-					  <a href="http://www.uibk.ac.at/webredaktion/xims/dokumentation/xims-in-sechs-schritten/" target="_blank">
-					    <xsl:attribute name="title">XIMS in sechs Schritten</xsl:attribute>
-					    Benutzeranleitung
-                                          </a>
-					</li>
-					<li>
-						<a href="http://www.uibk.ac.at/webredaktion/webstyleguide/" target="_blank">
-							<xsl:attribute name="title">Webstyleguide der Webredaktion</xsl:attribute>Webstyleguide
-						</a>
-					</li>
-					<li>
-					  <a href="https://zid-ts.uibk.ac.at/secure/CreateIssue.jspa?pid=10810&amp;issuetype=6&amp;Create=Erstellen" target="_blank">
-					    <xsl:attribute name="title">Supportanfrage via ZID-Ticketsystem senden</xsl:attribute>
-					    Supportanfrage
-					  </a>
-					</li>
-					<!--
-					<li>
-						<a>
-							<xsl:attribute name="href">
-					mailto:<xsl:value-of select="$supportmailaddress"/>?body=<xsl:value-of select="str:encode-uri($supportmail_body)"/>
-						
-	</xsl:attribute>
-							<xsl:attribute name="title">
-								<xsl:value-of select="$i18n/l/MailToSupport"/>
-							</xsl:attribute>
-								<xsl:value-of select="$i18n/l/MailToSupport"/>
-						</a>
-					</li>-->
+			   <xsl:value-of select="$helplinks"/>
 				</ul>
 </div>
-<!--
-		<noscript>
-			<form action="{$xims_box}{$goxims_content}{$absolute_path}?" method="get">
-			<select>
-				<option><xsl:value-of select="$i18n/l/Help"/></option>
-				<option>
-			<a href="http://xims.info/documentation/" target="_blank">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/Systeminfo"/>
-				</xsl:attribute>
-				<span class="text">
-					<xsl:value-of select="$i18n/l/Systeminfo"/>
-				</span>
-			</a>
-							&#160;&#160;
-							</option>
-							<option>
-							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_schritt_fuer_schritt.pdf" target="_blank">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/stepManual"/>
-				</xsl:attribute>
-				<span class="text">
-					<xsl:value-of select="$i18n/l/Manual"/>
-				</span>
-			</a>
-							&#160;&#160;
-							</option>
-							<option>
-							<a href="http://www.uibk.ac.at/zid/systeme/xims/xims_benutzer_faq.html" target="_blank">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/FAQ_long"/>
-				</xsl:attribute>
-				<span class="text">
-					<xsl:value-of select="$i18n/l/FAQ"/>
-				</span>
-			</a>
-							&#160;&#160;
-							</option>
-							<option>
-							<a href="mailto:xims-support@uibk.ac.at">
-				<xsl:attribute name="title">
-					<xsl:value-of select="$i18n/l/MailToSupport"/>
-				</xsl:attribute>
-				<span class="text">
-					<xsl:value-of select="$i18n/l/MailToSupport"/>
-				</span>
-			</a>
-							&#160;&#160;
-							</option>
-							</select>
-							</form>
-			</noscript>
-			-->
+
 	</xsl:template>
 </xsl:stylesheet>
