@@ -1,0 +1,137 @@
+body {
+    color: #9B9B9B;
+    font-family: Verdana,Arial,sans-serif;
+    height: 100.3%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 12px;
+    
+}
+#header {
+    background: url("/ximsroot/images/squares.png") repeat-x scroll 0 34px transparent;
+    height: 84px;
+    /*margin: 0 0 0 5px;*/
+    position: relative;
+    width: 414px;
+}
+h1.university, p.university {
+    background-color: #FFFFFF !important;
+    border: 0 none !important;
+    color: #9B9B9B !important;
+    font-size: 1.5em !important;
+    font-weight: bold !important;
+    line-height: 0.95em !important;
+    margin: 0;
+    padding: 0 0 0 21px;
+}
+.info h2{
+    background-color: #FFFFFF !important;
+    border: 0 none !important;
+    color: #9B9B9B !important;
+    font-size: 1.5em !important;
+    font-weight: bold !important;
+    line-height: 0.95em !important;
+}
+span.infotext {
+    color: #003362;
+    font-size: 0.6em;
+    padding: 0 0 0 2px;
+}
+#emotionimage {
+    left: 23px;
+    position: absolute;
+    top: 34px;
+}
+
+#main{
+    border: 1px solid #9B9B9B;
+    text-align: left;
+    width: 414px;
+    /*height: 300px;*/
+    position: absolute;
+    /*top: 50px;*/
+    left:50%;
+    margin-top: 20px;
+    margin-left: -250px;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px 1px #9b9b9b
+}
+.icon_logouni span{
+    display: inline;
+    height: 0;
+    left: -1000px;
+    overflow: hidden;
+    position: absolute;
+    top: -1000px;
+    width: 0;
+}
+form, .info{
+    width: 370px;
+    position: relative;
+    left: 50%;
+    margin-left: -185px;
+}
+form{
+    clear: all;
+}
+form>div{
+    margin-top: 10px;
+}
+form label{
+    display: inline-block;
+    width: 120px;
+    font-weight: bold;
+}
+.info{
+    height:200px;
+}
+form>h2{
+    margin-top: 44px;
+    margin-bottom: 44px;
+}
+.xims-login{
+    width: 120px;
+}
+div.warning{
+    /*margin-left: 10px;*/
+    border: dotted 1px red;
+    color:#000000;
+    text-align:center;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+.submit{
+    text-align:right;
+}
+.control{
+    border: 1px solid #003362;
+    background: #003362;
+    color: #fff;
+    padding: 3px 10px;
+    font-weight:bold;
+}
+input.text{
+    width: 246px;
+    background-color: #eceded;
+    border: 1px solid #9B9B9B;
+    color: #000;
+}
+.infolinks{
+    margin-top: 44px;
+	
+}
+a, a:visited {
+    color: #003362;
+    text-decoration: underline;
+}
+img{
+    border:none;
+}
+.message{
+    font-weight:bold;
+    text-align:center;
+    color:#000000;
+    padding:0.5em;
+}

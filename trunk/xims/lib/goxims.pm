@@ -205,16 +205,15 @@ MOTD
 <html>
   <head>
     <title>XIMS - Login</title>
-    <link rel="stylesheet" media="screen" type="text/css" href="/ximspubroot/stylesheets/login.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="/ximsroot/stylesheets/login.css"/>
   </head>
-  <body onload="document.forms['login'].userid.focus()">
+  <body">
     <div id="main">
       <div id="header">
-        <h1 class="university">My Organization
-                <br/><span class="infotext">XIMS</span></h1>
+        <h1 class="university">My Organization</h1>
         <div id="emotionimage">
           <a title="XIMS" href="http://xims.info">
-            <img alt="XIMS Logo" title="XIMS" src="/ximspubroot/images/xims_logo_44x44.jpg"/>
+            <img alt="XIMS Logo" title="XIMS" width="44px" height="44px" src="/ximsroot/images/xims_logo_44x44.png"/>
           </a>
         </div>
       </div>
@@ -226,11 +225,11 @@ MOTD
         $message
         <div>
           <label for="userid">Username: </label>
-          <input tabindex="1" type="text" name="userid" id="userid" class="text" value=""/>
+          <input tabindex="1" type="text" name="userid" id="userid" class="text" required autofocus/>
         </div>
         <div>
           <label for="password">Password: </label>
-          <input tabindex="2" type="password" name="password" class="text"/>
+          <input tabindex="2" type="password" name="password" id="password" class="text" required/>
         </div>
         <div class="submit">
           <input type="hidden" name="dologin" value="1" />
@@ -244,7 +243,8 @@ FORM
 
 return [ 200,
          [ 'Content-Type' => 'text/html;charset=UTF-8',
-           'Set-Cookie' => 'session=; path=/; expires=-1Y', ],
+           'Set-Cookie' => 'session=; path=/; expires=-1Y',
+           'Content-Security-Policy' => "default-src 'none'; img-src 'self'; style-src 'self'", ],
          [ encode('UTF-8', $body) ]
      ];
 };
