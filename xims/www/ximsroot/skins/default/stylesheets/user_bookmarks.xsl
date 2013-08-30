@@ -131,7 +131,7 @@
         </td>
         <td>
         &#160;&#160;
-        <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="http://ximstest.uibk.ac.at/goxims/bookmark?id=1797;delete=1" role="button" aria-disabled="false">
+        <a class="option-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" href="{$xims_box}{$goxims}/bookmark?id=1797;delete=1" role="button" aria-disabled="false">
           <xsl:attribute name="title"><xsl:value-of select="$l_delete"/></xsl:attribute>
           <span class="ui-button-icon-primary ui-icon sprite-option_delete xims-sprite"><xsl:comment/></span>
           <span class="ui-button-text"><xsl:value-of select="$l_delete"/></span>
