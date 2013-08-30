@@ -671,7 +671,20 @@ $(document).ready(function(){
 	
 	searchFilter();				
 	//initOptionsButtons();
+	
+	/* 
+	   * workaround: target=_blank in help-menu items opens 2 windows (maybe some conflicts with jquery-ui)
+	  */
+	  
+	  $("#help-widget a").click( function() {
+	    window.open(this.href);
+	    return false;
+	  });
+	  
 });
+
+/* IE special polyfills*/
+if (typeof String.prototype.contains === 'undefined') { String.prototype.contains = function(it) { return this.indexOf(it) != -1; }; }
 
 /*  Copyright Mihai Bazon, 2002-2005  |  www.bazon.net/mishoo
  * -----------------------------------------------------------
