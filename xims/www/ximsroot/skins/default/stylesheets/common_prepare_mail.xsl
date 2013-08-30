@@ -136,8 +136,8 @@
 
 <xsl:template name="form-nl-to">
   <div>
-    <div class="label-std"><label for="input-nl-to"><xsl:value-of select="$i18n/l/Email_To"/></label></div>
-    <input id="input-nl-to" name="to" size="60" type="text" class="text"/>
+    <div class="label-std"><label for="input-nl-to"><xsl:value-of select="$i18n/l/Email_To"/>*</label></div>
+    <input id="input-nl-to" name="to" size="60" type="email" required="" class="text"/>
     <!--<xsl:text>&#160;</xsl:text>
     <a href="javascript:openDocWindow('To')" class="doclink">
     <xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/To"/></xsl:attribute>(?)</a>-->
@@ -147,7 +147,7 @@
 <xsl:template name="form-nl-replyto">
 <div>
 	<div class="label-std"><label for="input-nl-replyto"><xsl:value-of select="$i18n/l/Email_Reply-To"/></label></div>
-	<input id="input-nl-replyto" name="reply-to" size="60" type="text" class="text"/>
+	<input id="input-nl-replyto" name="reply-to" size="60" type="email" class="text"/>
 	<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Reply-To')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Reply-To"/></xsl:attribute>(?)</a>-->
@@ -156,8 +156,8 @@
 
 <xsl:template name="form-nl-subject">
 <div>
-	<div class="label-std"><label for="input-nl-subject"><xsl:value-of select="$i18n/l/Email_Subject"/></label></div>
-	<input id="input-nl-subject" name="subject" size="60" type="text" class="text"/>
+	<div class="label-std"><label for="input-nl-subject"><xsl:value-of select="$i18n/l/Email_Subject"/>*</label></div>
+	<input id="input-nl-subject" name="subject" size="60" type="text" class="text" required=""/>
 	<!--<xsl:text>&#160;</xsl:text>
 			<a href="javascript:openDocWindow('Subject')" class="doclink">
 				<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Subject"/></xsl:attribute>(?)</a>-->
