@@ -847,7 +847,7 @@
 	<form action="{$location}?sb={$sb};order={$order};page={$page}">
 	<p><input type="checkbox" id="select-all-ots" name="select-all-ots" ></input>&#160;<xsl:value-of select="$i18n/l/SelectAll"/>
 	&#160;&#160;&#160;&#160;
-	<button type="submit" id="filter-button" style="float:right;">
+	<button type="submit" class="button" id="filter-button" style="float:right;">
 	 <xsl:value-of select="$i18n/l/filter"/>
 	</button>
 	</p>
