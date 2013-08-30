@@ -61,7 +61,7 @@ This stylesheet is used to generate www/ximsroot/stylesheets/config.xsl from con
       <xslt:variable name="defaultcss"><xsl:value-of select="DefaultCSS"/></xslt:variable>
       <xslt:variable name="resolvereltositeroots"><xsl:value-of select="ResolveRelToSiteRoots"/></xslt:variable>
       <xslt:variable name="supportmailaddress"><xsl:value-of select="SupportMailAddress"/></xslt:variable>
-      <xslt:variable name="helplinks"><xsl:value-of select="HelpLinks"/></xslt:variable>
+      <xslt:variable name="helplinks"><xsl:apply-templates select="HelpLinks/*" mode="copy"/></xslt:variable>
       <xslt:variable name="js-config">{ goxims:'<xsl:value-of select="concat('/',goxims)"/>',
   gobaxims:'<xsl:value-of select="concat('/',gobaxims)"/>',
   gopublic:'<xsl:value-of select="concat('/',gopublic)"/>',

@@ -463,7 +463,7 @@
 		<div id="help-widget">
 			<button><xsl:value-of select="$i18n/l/Help"/></button>
 			<ul style="position:absolute !important; width: 150px">
-			   <xsl:value-of select="$helplinks"/>
+			   <xsl:copy-of select="$helplinks"/>
 				</ul>
 </div>
 
