@@ -250,8 +250,7 @@
 		
     <!--  Custom Help Links (XIMS Documentation, Support, ...) -->
     <HelpLinks>
-      <li><a href="http://xims.info/documentation/" target="_blank">
-              <xsl:attribute name="title">Systeminfo</xsl:attribute>
+      <li><a href="http://xims.info/documentation/" target="_blank" title="Systeminfo">
               Systeminfo
           </a>
        </li>
