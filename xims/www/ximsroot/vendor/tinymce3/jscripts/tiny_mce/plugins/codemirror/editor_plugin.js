@@ -7,25 +7,6 @@
 			var t = this;
 			t.editor = ed;
 			this.CMURL = url;
-
-			//load CSS
-
-			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/lib/codemirror.css');
-			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/xml/xml.css');
-			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/css/css.css');
-			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/javascript/javascript.css');
-			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/css/codemirror-ui.css');
-
-			//load scripts - wait until codemirror is available, then load other scripts
-			$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/lib/codemirror.js', function() {
-				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/js/codemirror-ui.js');
-				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/lib/util/search.js');
-				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/lib/util/searchcursor.js');
-				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/xml/xml.js');
-				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/css/css.js');
-				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/javascript/javascript.js');
-				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/htmlmixed/htmlmixed.js');
-			});
                         
 			// Register commands
 			ed.addCommand('mceCodeMirror', t._editArea, t);
@@ -55,11 +36,36 @@
 		},
 
 		_editArea : function() {
-			this._showEditArea();
+			
+			var t= this;
+			
+			//load CSS
+			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/lib/codemirror.css');
+			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/xml/xml.css');
+			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/css/css.css');
+			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/javascript/javascript.css');
+			tinymce.DOM.loadCSS(ximsconfig.ximsroot + 'vendor/codemirror-ui/css/codemirror-ui.css');
+
+			//load scripts - wait until codemirror is available, then load other scripts
+			$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/lib/codemirror.js', function() {
+				
+				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/lib/util/search.js');
+				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/lib/util/searchcursor.js');
+				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/xml/xml.js');
+				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/css/css.js');
+				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/javascript/javascript.js');
+				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/lib/CodeMirror-2.3/mode/htmlmixed/htmlmixed.js');
+				
+				$.getScript(ximsconfig.ximsroot + 'vendor/codemirror-ui/js/codemirror-ui.js', function(){
+					t._showEditArea();
+				});
+	
+			});
+			
 		},
 	
 		_showEditArea : function()
-		{					
+		{		
 			var t = this, ed = tinyMCE.activeEditor, contentTbl, contentToolBar, bottomToolBar, mw, mh, th, tw, currentSel, border;
 				baseurl = ximsconfig.ximsroot + 'vendor/codemirror_ui/lib/CodeMirror/';
 				contentTbl = $('#body_tbl'); //ed.getContainer().getElementsByTagName("table")[0];
