@@ -16,7 +16,7 @@ use File::Temp qw( tempfile );
 
 our $cwd = get_cwd();
 my %args;
-getopts('hd:p:l:t:y:', \%args);
+getopts('hd:p:l:t:y', \%args);
 
 my $term = XIMS::Term->new( debuglevel => $args{d} );
 print $term->banner( "TinyMCE Minimization Tool" );
@@ -38,7 +38,7 @@ my %modules = (
 );
 my $js_file = 'tiny_mce_min.js';
 
-my $outputbasedir = $xims_home .'/www/ximsroot/editors/tinymce/jscripts/tiny_mce/';
+my $outputbasedir = $xims_home .'/www/ximsroot/vendor/tinymce3/jscripts/tiny_mce/';
 my $outputfile = $outputbasedir.$js_file;
 
 my $data = generate_data(\%modules, $outputbasedir);
@@ -144,8 +144,6 @@ sub usage {
         -l comma-separated list of languages (eg. en,de)
         -t comma-separated list of themes (eg. simple,advanced)
         -p comma-seaprated list of plugins (eg. table,advimage,advlink)
-        
-        -f location of tinymce folder relative to ximsroot (eg. tinymce_3_3_8_jquery)
 
         -d For more verbose output, specify the XIMS debug level; default is '1'
         -h prints this screen
