@@ -123,7 +123,7 @@ sub event_store {
             my $importretval = $self->import_from_zip( $ctxt, $fh, $overwrite );
             if ( defined $importretval ) {
                 # TODO: provide successful/failed message
-                #       either by adding param to redirect_path
+                #       either by adding param to redirect_uri
                 #       or by adding an _update style
                 my $count = $importretval->[0] . '%2F' . ($importretval->[0] + $importretval->[1]);
                 $self->redirect( $self->redirect_uri( $ctxt, $ctxt->parent->id() ) .  "?message=" . $count . "%20objects%20imported." );

@@ -501,7 +501,7 @@ sub event_copymultiple {
     XIMS::Debug( 4, "redirecting to the container" );
     $self->param( 'sb',    'date' );
     $self->param( 'order', 'desc' );
-    $self->redirect( $self->redirect_path( $ctxt, $ctxt->object->id ) );
+    $self->redirect( $self->redirect_uri( $ctxt, $ctxt->object->id ) );
     return 0;
 }
 
