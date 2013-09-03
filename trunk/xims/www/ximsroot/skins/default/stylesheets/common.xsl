@@ -2067,12 +2067,14 @@
 	
 	<!-- container for dialog, i.e. browse for object-->
 	<div id="default-dialog" style="max-height:400px;max-width:800px"><xsl:comment/></div>
-	
-	<!-- <script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"><xsl:comment/></script> -->
+	<!--
+	<script src="{$ximsroot}skins/{$currentskin}/scripts/min.js" type="text/javascript"><xsl:comment/></script> 
+	-->
 	<!-- debugging mode -->
+	 
 	<script src="{$ximsroot}scripts/default.js" type="text/javascript"><xsl:comment/></script>
 	<script src="{$ximsroot}skins/{$currentskin}/scripts/default.js" type="text/javascript"><xsl:comment/></script>
-
+  
 	<xsl:if test="$tinymce">
 		<xsl:call-template name="tinymce_scripts"/>
 	</xsl:if>
