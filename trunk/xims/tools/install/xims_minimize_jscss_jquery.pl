@@ -38,8 +38,8 @@ my %sources = (
     }
 ); 
 my $basedir = $xims_home . '/www/ximsroot/';
-my $outputbasedir = $xims_home . '/www/ximsroot/';
-my %typedirmapping = ( js => 'scripts/jquery', css => 'stylesheets/jquery' );
+my $outputbasedir = $xims_home . '/www/ximsroot/vendor/';
+my %typedirmapping = ( js => 'jquery', css => '/jquery-ui/css/smoothness' );
 
 foreach my $type ( keys %sources ) {
     printf( "Going to process %s files\n", $type);
