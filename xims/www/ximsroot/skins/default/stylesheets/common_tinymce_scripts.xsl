@@ -32,15 +32,16 @@
 	</xsl:template>
 	
 	<xsl:template name="tinymce_load">
-
+    <!-- 
 		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/jquery.tinymce.js" ><xsl:comment/></script>
 		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce.js" ><xsl:comment/></script>
-
+-->
 		<!-- ### load minimized tinymce ### -->
-		  <!--
+
+		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce_gzip.js"><xsl:comment/></script>
 		<script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/jquery.tinymce.js"><xsl:comment/></script>
     <script  type="text/javascript" src="{$ximsroot}vendor/tinymce3/jscripts/tiny_mce/tiny_mce_min.js"><xsl:comment/></script>
-  -->
+
   
 	</xsl:template>
 	
