@@ -141,15 +141,17 @@
 		<script type="text/javascript">
             var ximsconfig = <xsl:value-of select="$js-config"/>;
 		</script>
+		<!--  
 		 <script src="{$ximsroot}vendor/jquery/jquery_min.js" type="text/javascript"><xsl:comment></xsl:comment></script> 
+		-->
 		<!-- debugging mode -->
-		<!--
+
     <script src="{$ximsroot}vendor/jquery/jquery-current.js" type="text/javascript"><xsl:comment/></script>
 		<script src="{$ximsroot}vendor/jquery-ui/js/jquery-ui-current.js" type="text/javascript"><xsl:comment/></script>
 		<script src="{$ximsroot}vendor/jquery-ui-timepicker/jquery-ui-timepicker-addon.js" type="text/javascript"><xsl:comment/></script>
 		<script src="{$ximsroot}vendor/jquery-ui-combobox/jquery.ui.combobox.js" type="text/javascript"><xsl:comment/></script>
 		<script src="{$ximsroot}scripts/jquery-ui-i18n.js" type="text/javascript"><xsl:comment/></script>
-    -->
+    
 	</xsl:template>
 </xsl:stylesheet>
 
