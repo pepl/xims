@@ -875,33 +875,26 @@ sub event_objecttypeprivs {
 # END RUNTIME EVENTS
 # #############################################################################
 
-=head2 redirect_path()
+=head2 redirect_uri()
 
 =cut
 
-sub redirect_path {
+sub redirect_uri {
     my ( $self, $ctxt, $event ) = @_;
 
-    my $uri = Apache::URI->parse( $ctxt->apache() );
-    $uri->path( XIMS::GOXIMS() . '/users' );
-    $uri->query( "name=" . $self->param('name') .
-                 ";$event=1" .
-                 ";sort-by=" . $self->param('sort-by') .
-                 ";order-by=" . $self->param('order-by') .
-                 ";userquery=" . $self->param('userquery')
-                 );
-
-my $port = $uri->port();
-    # warn "port : ".$port;
-    # XXX somehow magically the port is 82... why???
-    $uri->port(80);
-    $port = $uri->port();
-    # warn "port : ".$port;
-    
-    #warn "\n\nredirecting to ". $uri->unparse();
-    return $uri->unparse();
+    return
+          XIMS::GOXIMS()
+        . XIMS::USERMANAGEMENTINTERFACE()
+        . '?name='
+        . $self->param('name')
+        . ";$event=1"
+        . ';sort-by='
+        . $self->param('sort-by')
+        . ';order-by='
+        . $self->param('order-by')
+        . ';userquery='
+        . $self->param('userquery');
 }
-
 
 1;
 
