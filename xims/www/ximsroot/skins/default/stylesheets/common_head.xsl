@@ -122,6 +122,11 @@
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/vlibrary.css" type="text/css"/>
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/simpledb.css" type="text/css"/>
 		</xsl:if>
+    <xsl:if test="$codemirror">
+      <link rel="stylesheet" type="text/css" href="{$ximsroot}vendor/codemirror-ui/css/codemirror-ui.css" />
+      <link rel="stylesheet" type="text/css" href="{$ximsroot}vendor/codemirror-ui/lib/CodeMirror-2.3/lib/codemirror.css"/>
+      <link rel="stylesheet" type="text/css" href="{$ximsroot}vendor/codemirror-ui/lib/CodeMirror-2.3/mode/{$cm_mode}/{$cm_mode}.css"/>
+    </xsl:if>
 		<!--
 		<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/min.css" type="text/css"/> 
     -->
