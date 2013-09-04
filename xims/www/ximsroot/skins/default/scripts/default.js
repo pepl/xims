@@ -308,32 +308,27 @@ function wfcheck() {
         }
 		
 function prettyprint(container_id) {
-			
 		if (ppmethod == "htmltidy") {
 			var jsonQuery = {
 				htmltidy: "1",
-			body: $('#'+container_id).val()
+			body: $(container_id).val()
 			};
 		}
 		else {
 			if (ppmethod == "prettyprintxml") {
 				var jsonQuery = {
 					prettyprintxml: "1",
-				body: $('#'+container_id).val()
+				body: $(container_id).val()
 				};
 			}
 		}
-
-    var tidiestring;
 	
     $.ajax({
-        type: 'POST',
         url: url,
-        dataType: 'json',
+        type: 'POST',
         data: jsonQuery,
-        success: function(jsonObject){
-            tidiedstring = jsonObject.tidiedstring;
-			$('#'+container_id).val(tidiedstring);
+        success: function(tidiedstring){
+			$(container_id).val(tidiedstring);
         }
     });
 }

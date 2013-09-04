@@ -592,10 +592,12 @@
 		<xsl:param name="ppmethod">
 			<xsl:choose>
 				<xsl:when test="$mode = 'xml'">
-					<xsl:value-of select="prettyprintxml"/>
+					<!-- <xsl:value-of select="'prettyprintxml'"/>-->
+					prettyprintxml
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="htmltidy"/>
+					<!-- <xsl:value-of select="'htmltidy'"/>-->
+					htmltidy
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:param>
@@ -650,16 +652,16 @@
 		<xsl:param name="ppmethod">
 			<xsl:choose>
 				<xsl:when test="$mode = 'xml'">
-					<xsl:value-of select="prettyprintxml"/>
+					<xsl:value-of select="'prettyprintxml'"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="htmltidy"/>
+					<xsl:value-of select="'htmltidy'"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:param>
 		<div class="block form-div">
 			<h2>
-				<label for="body">Body</label>
+				<label for="body"><xsl:value-of select="$i18n/l/Body"/></label>
 				<!--<xsl:text>&#160;</xsl:text>
 				<a href="javascript:openDocWindow('Body')" class="doclink">
 					<xsl:attribute name="title"><xsl:value-of select="$i18n/l/Documentation"/>:&#160;<xsl:value-of select="$i18n/l/Body"/></xsl:attribute>(?)</a>-->
@@ -1907,14 +1909,16 @@
 				var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path,'?test_wellformedness=1')"/>";
 		</script>
 	</xsl:template>
+	
 	<xsl:template name="prettyprintjs">
-		<xsl:param name="ppmethod" select="'htmltidy'"/>
+		<xsl:param name="ppmethod" select="$ppmethod"/>
 		<xsl:call-template name="xmlhttpjs"/>
 		<script type="text/javascript">
 					var url = "<xsl:value-of select="concat($xims_box,$goxims_content,$absolute_path)"/>";
 					var ppmethod = "<xsl:value-of select="$ppmethod"/>";
 		</script>
 	</xsl:template>
+	
 	<xsl:template name="testlocationjs">
 		<script type="text/javascript" src="{$ximsroot}scripts/json-min.js"><xsl:comment/></script>
 		<script type="text/javascript" src="{$ximsroot}scripts/test_location.js"><xsl:comment/></script>

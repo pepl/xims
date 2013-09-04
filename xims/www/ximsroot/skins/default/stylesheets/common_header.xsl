@@ -148,8 +148,7 @@
 					</a>
 				</xsl:when>
 				<xsl:otherwise>
-					<!--<img src="{$skimages}navigate-up.png" width="28" height="28" border="0" alt="{$i18n/l/Up}" title="{$i18n/l/Up}" name="up"/>-->
-					<img src="{$skimages}navigate-up.png" alt="{$i18n/l/Up}" title="{$i18n/l/Up}" name="up"/>
+					<img src="{$skimages}navigate-up.png" alt="{$i18n/l/Up}" title="{$i18n/l/Up}"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</div>
