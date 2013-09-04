@@ -101,6 +101,7 @@
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
 		<xsl:param name="sitestyle" select="false()"/>
+		<xsl:param name="codemirror" select="false()"/>
 		<!-- 
 		<link rel="stylesheet" href="{$ximsroot}vendor/jquery-ui/css/smoothness/jquery_min.css" type="text/css"/>
 		-->
