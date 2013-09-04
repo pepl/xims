@@ -14,6 +14,7 @@
 		<xsl:param name="reflib" select="false()"/>
 		<xsl:param name="vlib" select="false()"/>
 		<xsl:param name="simpledb" select="false()"/>
+		<xsl:param name="codemirror" select="false()"/>
 		<head>
             <meta charset="UTF-8"/>
 			<title>
@@ -48,6 +49,7 @@
 				<xsl:with-param name="vlib" select="$vlib"/>
 				<xsl:with-param name="simpledb" select="$simpledb"/>
 				<xsl:with-param name="sitestyle" select="false()"/>
+				<xsl:with-param name="codemirror" select="$codemirror"/>
 			</xsl:call-template>
 			<xsl:call-template name="script_head"/>
 		</head>
@@ -105,8 +107,9 @@
 		<!-- 
 		<link rel="stylesheet" href="{$ximsroot}vendor/jquery-ui/css/smoothness/jquery_min.css" type="text/css"/>
 		-->
-		<!-- debuggin mode -->
+		<!-- debugging mode -->
 		<link rel="stylesheet" href="{$ximsroot}vendor/jquery-ui/css/smoothness/jquery-ui-current.css" type="text/css"/> 
+		
 		<xsl:if test="$questionnaire">
 			<link rel="stylesheet" href="{$ximsroot}skins/{$currentskin}/stylesheets/questionnaire.css" type="text/css"/>
 		</xsl:if>

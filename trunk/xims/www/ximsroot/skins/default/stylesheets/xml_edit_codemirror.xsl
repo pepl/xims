@@ -14,4 +14,6 @@
 <xsl:param name="cm_mode">xml</xsl:param>
 <xsl:param name="selEditor" >code</xsl:param>
 
+<xsl:template name="testbodysxml"/>
+<xsl:template name="prettyprint"/>
 </xsl:stylesheet>
